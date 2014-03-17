@@ -43,18 +43,19 @@ class ExtensionUtility {
 	 * @return void
 	 */
 	static public function configurePlugin($extensionName, $pluginName, array $controllerActions, array $nonCacheableControllerActions = array(), $pluginType = self::PLUGIN_TYPE_PLUGIN) {
-		if (empty($pluginName)) {
-			throw new \InvalidArgumentException('The plugin name must not be empty', 1239891987);
-		}
-		if (empty($extensionName)) {
-			throw new \InvalidArgumentException('The extension name was invalid (must not be empty and must match /[A-Za-z][_A-Za-z0-9]/)', 1239891989);
-		}
+		self::checkPluginNameFormat($pluginName);
+		self::checkExtensionNameFormat($extensionName);
+
 		// Check if vendor name is prepended to extensionName in the format {vendorName}.{extensionName}
 		$vendorName = NULL;
 		$delimiterPosition = strrpos($extensionName, '.');
 		if ($delimiterPosition !== FALSE) {
 			$vendorName = str_replace('.', '\\', substr($extensionName, 0, $delimiterPosition));
 			$extensionName = substr($extensionName, $delimiterPosition + 1);
+
+			if (!empty($vendorName)) {
+				self::checkVendorNameFormat($vendorName, $extensionName);
+			}
 		}
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
 
@@ -113,12 +114,9 @@ tt_content.' . $pluginSignature . ' {
 	 * @return void
 	 */
 	static public function registerPlugin($extensionName, $pluginName, $pluginTitle, $pluginIconPathAndFilename = NULL) {
-		if (empty($pluginName)) {
-			throw new \InvalidArgumentException('The plugin name must not be empty', 1239891988);
-		}
-		if (empty($extensionName)) {
-			throw new \InvalidArgumentException('The extension name was invalid (must not be empty and must match /[A-Za-z][_A-Za-z0-9]/)', 1239891991);
-		}
+		self::checkPluginNameFormat($pluginName);
+		self::checkExtensionNameFormat($extensionName);
+
 		$delimiterPosition = strrpos($extensionName, '.');
 		if ($delimiterPosition !== FALSE) {
 			$extensionName = substr($extensionName, $delimiterPosition + 1);
@@ -170,14 +168,17 @@ tt_content.' . $pluginSignature . ' {
 	 * @return void
 	 */
 	static public function registerModule($extensionName, $mainModuleName = '', $subModuleName = '', $position = '', array $controllerActions = array(), array $moduleConfiguration = array()) {
-		if (empty($extensionName)) {
-			throw new \InvalidArgumentException('The extension name must not be empty', 1239891990);
-		}
+		self::checkExtensionNameFormat($extensionName);
+
 		// Check if vendor name is prepended to extensionName in the format {vendorName}.{extensionName}
 		$vendorName = NULL;
 		if (FALSE !== $delimiterPosition = strrpos($extensionName, '.')) {
 			$vendorName = str_replace('.', '\\', substr($extensionName, 0, $delimiterPosition));
 			$extensionName = substr($extensionName, $delimiterPosition + 1);
+
+			if (!empty($vendorName)) {
+				self::checkVendorNameFormat($vendorName, $extensionName);
+			}
 		}
 		$extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
@@ -235,4 +236,43 @@ tt_content.' . $pluginSignature . ' {
 		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'][] = $typeConverterClassName;
 	}
 
+	/**
+	 * Check a given vendor name for CGL compliance.
+	 * Log a deprecation message if it is not.
+	 *
+	 * @param string $vendorName The vendor name to check
+	 * @param string $extensionName The extension name that is affected
+	 * @return void
+	 */
+	static protected function checkVendorNameFormat($vendorName, $extensionName) {
+		if (preg_match('/^[A-Z]/', $vendorName) !== 1) {
+			\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('The vendor name from tx_' . $extensionName . ' must begin with a capital letter.');
+		}
+	}
+
+	/**
+	 * Check a given extension name for validity.
+	 *
+	 * @param string $extensionName The name of the extension
+	 * @throws \InvalidArgumentException
+	 * @return void
+	 */
+	static protected function checkExtensionNameFormat($extensionName) {
+		if (empty($extensionName)) {
+			throw new \InvalidArgumentException('The extension name must not be empty', 1239891990);
+		}
+	}
+
+	/**
+	 * Check a given plugin name for validity.
+	 *
+	 * @param string $pluginName The name of the plugin
+	 * @throws \InvalidArgumentException
+	 * @return void
+	 */
+	static protected function checkPluginNameFormat($pluginName) {
+		if (empty($pluginName)) {
+			throw new \InvalidArgumentException('The plugin name must not be empty', 1239891988);
+		}
+	}
 }
