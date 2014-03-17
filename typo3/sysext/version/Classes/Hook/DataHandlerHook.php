@@ -1210,6 +1210,26 @@ class DataHandlerHook {
 			// First, we create a placeholder record in the Live workspace that
 			// represents the position to where the record is eventually moved to.
 			$newVersion_placeholderFieldArray = array();
+
+			// Use property for move placeholders if set (since TYPO3 CMS 6.2)
+			if (isset($GLOBALS['TCA'][$table]['ctrl']['shadowColumnsForMovePlaceholders'])) {
+				$shadowColumnsForMovePlaceholder = $GLOBALS['TCA'][$table]['ctrl']['shadowColumnsForMovePlaceholders'];
+			// Fallback to property for new placeholder (existed long time before TYPO3 CMS 6.2)
+			} elseif (isset($GLOBALS['TCA'][$table]['ctrl']['shadowColumnsForNewPlaceholders'])) {
+				$shadowColumnsForMovePlaceholder = $GLOBALS['TCA'][$table]['ctrl']['shadowColumnsForNewPlaceholders'];
+			}
+
+			// Set values from the versioned record to the move placeholder
+			if (!empty($shadowColumnsForMovePlaceholder)) {
+				$versionedRecord = BackendUtility::getRecord($table, $wsUid);
+				$shadowColumns = GeneralUtility::trimExplode(',', $shadowColumnsForMovePlaceholder, TRUE);
+				foreach ($shadowColumns as $shadowColumn) {
+					if (isset($versionedRecord[$shadowColumn])) {
+						$newVersion_placeholderFieldArray[$shadowColumn] = $versionedRecord[$shadowColumn];
+					}
+				}
+			}
+
 			if ($GLOBALS['TCA'][$table]['ctrl']['crdate']) {
 				$newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['crdate']] = $GLOBALS['EXEC_TIME'];
 			}
