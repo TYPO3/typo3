@@ -185,7 +185,8 @@ return array(
 						),
 						'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1'
 					)
-				)
+				),
+				'softref' => 'typolink'
 			)
 		),
 		'description' => array(
