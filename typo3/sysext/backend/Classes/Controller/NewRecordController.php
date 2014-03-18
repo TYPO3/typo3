@@ -368,8 +368,8 @@ class NewRecordController {
 		// Enabled option for the position of a new page
 		$this->newPagesSelectPosition = !empty($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageSelectPosition']);
 		// Pseudo-boolean (0/1) for backward compatibility
-		$this->newPagesInto = !empty($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageInside']) ? 1 : 0;
-		$this->newPagesAfter = !empty($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageAfter']) ? 1 : 0;
+		$displayNewPagesIntoLink = $this->newPagesInto && !empty($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageInside']) ? 1 : 0;
+		$displayNewPagesAfterLink = $this->newPagesAfter && !empty($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageAfter']) ? 1 : 0;
 		// Slight spacer from header:
 		$this->code .= '<div class="typo3-newRecord-treeline">' . $halfLine . '</div>';
 		// New Page
@@ -380,12 +380,12 @@ class NewRecordController {
 		$rowContent = '';
 		// New pages INSIDE this pages
 		$newPageLinks = array();
-		if ($this->newPagesInto && $this->isTableAllowedForThisPage($this->pageinfo, 'pages') && $GLOBALS['BE_USER']->check('tables_modify', 'pages') && $GLOBALS['BE_USER']->workspaceCreateNewRecord(($this->pageinfo['_ORIG_uid'] ?: $this->id), 'pages')) {
+		if ($displayNewPagesIntoLink && $this->isTableAllowedForThisPage($this->pageinfo, 'pages') && $this->getBackendUserAuthentication()->check('tables_modify', 'pages') && $this->getBackendUserAuthentication()->workspaceCreateNewRecord(($this->pageinfo['_ORIG_uid'] ?: $this->id), 'pages')) {
 			// Create link to new page inside:
 			$newPageLinks[] = $this->linkWrap(IconUtility::getSpriteIconForRecord($table, array()) . $GLOBALS['LANG']->sL($v['ctrl']['title'], TRUE) . ' (' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.inside', TRUE) . ')', $table, $this->id);
 		}
 		// New pages AFTER this pages
-		if ($this->newPagesAfter && $this->isTableAllowedForThisPage($this->pidInfo, 'pages') && $GLOBALS['BE_USER']->check('tables_modify', 'pages') && $GLOBALS['BE_USER']->workspaceCreateNewRecord($this->pidInfo['uid'], 'pages')) {
+		if ($displayNewPagesAfterLink && $this->isTableAllowedForThisPage($this->pidInfo, 'pages') && $this->getBackendUserAuthentication()->check('tables_modify', 'pages') && $this->getBackendUserAuthentication()->workspaceCreateNewRecord($this->pidInfo['uid'], 'pages')) {
 			$newPageLinks[] = $this->linkWrap($pageIcon . $GLOBALS['LANG']->sL($v['ctrl']['title'], TRUE) . ' (' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.after', TRUE) . ')', 'pages', -$this->id);
 		}
 		// New pages at selection position
@@ -656,6 +656,11 @@ class NewRecordController {
 	 * @todo Define visibility
 	 */
 	public function showNewRecLink($table, array $allowedNewTables = array(), array $deniedNewTables = array()) {
+
+		if (!$this->getBackendUserAuthentication()->check('tables_modify', $table)) {
+			return FALSE;
+		}
+
 		$allowedNewTables = $allowedNewTables ?: $this->allowedNewTables;
 		$deniedNewTables = $deniedNewTables ?: $this->deniedNewTables;
 		// No deny/allow tables are set:
@@ -668,4 +673,12 @@ class NewRecordController {
 		}
 	}
 
+	/**
+	 * Returns the global BackendUserAuthentication object.
+	 *
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUserAuthentication() {
+		return $GLOBALS['BE_USER'];
+	}
 }
