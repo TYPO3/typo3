@@ -102,7 +102,7 @@ abstract class AbstractAction implements ActionInterface {
 	/**
 	 * Initialize the handle action, sets up fluid stuff and assigns default variables.
 	 *
-	 * @return string content
+	 * @return void
 	 */
 	protected function initializeHandle() {
 		/** @var \TYPO3\CMS\Install\Status\StatusUtility $statusUtility */

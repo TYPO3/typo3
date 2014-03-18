@@ -35,8 +35,6 @@ class CoreUpdateIsUpdateAvailable extends AbstractCoreUpdate {
 	 * @return array Rendered content
 	 */
 	protected function executeAction() {
-		$this->initializeCoreUpdate();
-
 		$status = array();
 		if ($this->coreVersionService->isInstalledVersionAReleasedVersion()) {
 			$isDevelopmentUpdateAvailable = $this->coreVersionService->isYoungerPatchDevelopmentReleaseAvailable();

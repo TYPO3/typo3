@@ -55,12 +55,12 @@ abstract class AbstractCoreUpdate extends AbstractAjaxAction {
 	protected $coreVersionService;
 
 	/**
-	 * Common stuff to be done before performing update tasks
+	 * Initialize the handle action, sets up fluid stuff and assigns default variables.
 	 *
 	 * @return void
 	 * @throws \TYPO3\CMS\Install\Controller\Exception
 	 */
-	protected function initializeCoreUpdate() {
+	protected function initializeHandle() {
 		if (!$this->coreUpdateService->isCoreUpdateEnabled()) {
 			throw new \TYPO3\CMS\Install\Controller\Exception(
 				'Core Update disabled in this environment',
