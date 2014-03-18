@@ -306,4 +306,25 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Man
 		);
 	}
 
+	/**
+	 * @test
+	 * @see DataSet/Assertion/copyPage.csv
+	 */
+	public function copyPage() {
+		parent::copyPage();
+		$this->assertAssertionDataSet('copyPage');
+
+		$responseContent = $this->getFrontendResponse($this->recordIds['newPageId'], 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
+		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Page, 'title', 'Relations');
+		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', array('Regular Element #1', 'Regular Element #2'));
+		$this->assertResponseContentStructureHasRecords(
+			$responseContent, self::TABLE_Content . ':' . $this->recordIds['newContentIdFirst'], 'categories',
+			self::TABLE_Category, 'title', array('Category A', 'Category B')
+		);
+		$this->assertResponseContentStructureHasRecords(
+			$responseContent, self::TABLE_Content . ':' . $this->recordIds['newContentIdLast'], 'categories',
+			self::TABLE_Category, 'title', array('Category B', 'Category C')
+		);
+	}
+
 }

@@ -39,6 +39,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	const VALUE_CategoryIdFirst = 28;
 	const VALUE_CategoryIdSecond = 29;
 
+	const TABLE_Page = 'pages';
 	const TABLE_Content = 'tt_content';
 	const TABLE_Category = 'sys_category';
 	const TABLE_ContentCategory_ManyToMany = 'sys_category_record_mm';
@@ -263,6 +264,30 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		$responseContent = $this->getFrontendResponse(self::VALUE_PageIdTarget)->getResponseContent();
 		$this->assertResponseContentStructureHasRecords(
 			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdLast, 'categories',
+			self::TABLE_Category, 'title', array('Category B', 'Category C')
+		);
+	}
+
+	/**
+	 * @test
+	 * @see DataSet/Assertion/copyPage.csv
+	 */
+	public function copyPage() {
+		$newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
+		$this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
+		$this->recordIds['newContentIdFirst'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdFirst];
+		$this->recordIds['newContentIdLast'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+		$this->assertAssertionDataSet('copyPage');
+
+		$responseContent = $this->getFrontendResponse($this->recordIds['newPageId'])->getResponseContent();
+		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Page, 'title', 'Relations');
+		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', array('Regular Element #1', 'Regular Element #2'));
+		$this->assertResponseContentStructureHasRecords(
+			$responseContent, self::TABLE_Content . ':' . $this->recordIds['newContentIdFirst'], 'categories',
+			self::TABLE_Category, 'title', array('Category A', 'Category B')
+		);
+		$this->assertResponseContentStructureHasRecords(
+			$responseContent, self::TABLE_Content . ':' . $this->recordIds['newContentIdLast'], 'categories',
 			self::TABLE_Category, 'title', array('Category B', 'Category C')
 		);
 	}
