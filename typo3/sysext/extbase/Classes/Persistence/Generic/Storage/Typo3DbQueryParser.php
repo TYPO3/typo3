@@ -231,19 +231,19 @@ class Typo3DbQueryParser {
 	protected function parseConstraint(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface $constraint = NULL, \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source, array &$sql) {
 		if ($constraint instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\AndInterface) {
 			$sql['where'][] = '(';
-			$this->parseConstraint($constraint->getConstraint1(), $source, $sql, $parameters);
+			$this->parseConstraint($constraint->getConstraint1(), $source, $sql);
 			$sql['where'][] = ' AND ';
-			$this->parseConstraint($constraint->getConstraint2(), $source, $sql, $parameters);
+			$this->parseConstraint($constraint->getConstraint2(), $source, $sql);
 			$sql['where'][] = ')';
 		} elseif ($constraint instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\OrInterface) {
 			$sql['where'][] = '(';
-			$this->parseConstraint($constraint->getConstraint1(), $source, $sql, $parameters);
+			$this->parseConstraint($constraint->getConstraint1(), $source, $sql);
 			$sql['where'][] = ' OR ';
-			$this->parseConstraint($constraint->getConstraint2(), $source, $sql, $parameters);
+			$this->parseConstraint($constraint->getConstraint2(), $source, $sql);
 			$sql['where'][] = ')';
 		} elseif ($constraint instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\NotInterface) {
 			$sql['where'][] = 'NOT (';
-			$this->parseConstraint($constraint->getConstraint(), $source, $sql, $parameters);
+			$this->parseConstraint($constraint->getConstraint(), $source, $sql);
 			$sql['where'][] = ')';
 		} elseif ($constraint instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ComparisonInterface) {
 			$this->parseComparison($constraint, $source, $sql);
@@ -305,6 +305,7 @@ class Typo3DbQueryParser {
 	 * @return void
 	 */
 	protected function parseComparison(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\ComparisonInterface $comparison, \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source, array &$sql) {
+		$parameterIdentifier = $this->normalizeParameterIdentifier($comparison->getParameterIdentifier());
 		$operand1 = $comparison->getOperand1();
 		$operator = $comparison->getOperator();
 		$operand2 = $comparison->getOperand2();
@@ -339,14 +340,14 @@ class Typo3DbQueryParser {
 				$typeOfRelation = $columnMap instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap ? $columnMap->getTypeOfRelation() : NULL;
 				if ($typeOfRelation === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 					$relationTableName = $columnMap->getRelationTableName();
-					$sql['where'][] = $tableName . '.uid IN (SELECT ' . $columnMap->getParentKeyFieldName() . ' FROM ' . $relationTableName . ' WHERE ' . $columnMap->getChildKeyFieldName() . '=?)';
+					$sql['where'][] = $tableName . '.uid IN (SELECT ' . $columnMap->getParentKeyFieldName() . ' FROM ' . $relationTableName . ' WHERE ' . $columnMap->getChildKeyFieldName() . '=' . $parameterIdentifier . ')';
 				} elseif ($typeOfRelation === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY) {
 					$parentKeyFieldName = $columnMap->getParentKeyFieldName();
 					if (isset($parentKeyFieldName)) {
 						$childTableName = $columnMap->getChildTableName();
-						$sql['where'][] = $tableName . '.uid=(SELECT ' . $childTableName . '.' . $parentKeyFieldName . ' FROM ' . $childTableName . ' WHERE ' . $childTableName . '.uid=?)';
+						$sql['where'][] = $tableName . '.uid=(SELECT ' . $childTableName . '.' . $parentKeyFieldName . ' FROM ' . $childTableName . ' WHERE ' . $childTableName . '.uid=' . $parameterIdentifier . ')';
 					} else {
-						$sql['where'][] = 'FIND_IN_SET(?,' . $tableName . '.' . $columnName . ')';
+						$sql['where'][] = 'FIND_IN_SET(' . $parameterIdentifier . ', ' . $tableName . '.' . $columnName . ')';
 					}
 				} else {
 					throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException('Unsupported or non-existing property name "' . $propertyName . '" used in relation matching.', 1327065745);
@@ -360,7 +361,7 @@ class Typo3DbQueryParser {
 					$operator = self::OPERATOR_NOT_EQUAL_TO_NULL;
 				}
 			}
-			$this->parseDynamicOperand($comparison, $source, $sql, $parameters);
+			$this->parseDynamicOperand($comparison, $source, $sql);
 		}
 	}
 
@@ -380,9 +381,9 @@ class Typo3DbQueryParser {
 		$operand2 = $comparison->getOperand2();
 
 		if ($operand instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\LowerCaseInterface) {
-			$this->parseDynamicOperand($operand->getOperand(), $operator, $source, $sql, $parameters, 'LOWER');
+			$this->parseDynamicOperand($operand->getOperand(), $operator, $source, $sql, 'LOWER');
 		} elseif ($operand instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\UpperCaseInterface) {
-			$this->parseDynamicOperand($operand->getOperand(), $operator, $source, $sql, $parameters, 'UPPER');
+			$this->parseDynamicOperand($operand->getOperand(), $operator, $source, $sql, 'UPPER');
 		} elseif ($operand instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\PropertyValueInterface) {
 			$propertyName = $operand->getPropertyName();
 			if ($source instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SelectorInterface) {
