@@ -92,21 +92,6 @@
 					<softrefs type="array">
 					</softrefs>
 				</rec>
-				<rec index="2" type="array">
-					<uid>1</uid>
-					<pid>0</pid>
-					<title>typo3_image2.jpg</title>
-					<size>532</size>
-					<relationLevel>1</relationLevel>
-					<relations index="rels" type="array">
-						<element index="sys_file_storage:2" type="array">
-							<id>2</id>
-							<table>sys_file_storage</table>
-						</element>
-					</relations>
-					<softrefs type="array">
-					</softrefs>
-				</rec>
 			</table>
 			<table index="sys_file_metadata" type="array">
 				<rec index="1" type="array">
