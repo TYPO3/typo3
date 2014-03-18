@@ -698,6 +698,12 @@ class ClassLoader {
 		if (!$this->isLoadingLocker) {
 			$lockObject = $this->getLocker();
 
+			if ($lockObject === NULL) {
+				// During installation typo3temp does not yet exist, so the locker can not
+				// do its job. In this case it does not need to be released again.
+				return FALSE;
+			}
+
 			// We didn't lock yet so do it
 			if (!$lockObject->getLockStatus()) {
 				if (!$lockObject->acquireExclusiveLock()) {
@@ -726,12 +732,29 @@ class ClassLoader {
 	/**
 	 * Gets the TYPO3 Locker object or creates an instance of it.
 	 *
-	 * @return \TYPO3\CMS\Core\Locking\Locker
+	 * @throws \RuntimeException
+	 * @return \TYPO3\CMS\Core\Locking\Locker|NULL Only NULL if we are in installer and typo3temp does not exist yet
 	 */
 	protected function getLocker() {
 		if (NULL === $this->lockObject) {
 			$this->isLoadingLocker = TRUE;
-			$this->lockObject = new Locker('ClassLoader-cache-classes', Locker::LOCKING_METHOD_SIMPLE);
+
+			try {
+				$this->lockObject = new Locker('ClassLoader-cache-classes', Locker::LOCKING_METHOD_SIMPLE);
+			} catch (\RuntimeException $e) {
+				// The RuntimeException in constructor happens if directory typo3temp/locks could not be created.
+				// This usually happens during installation step 1 where typo3temp itself does not exist yet. In
+				// this case we proceed without locking, otherwise a missing typo3temp directory indicates a
+				// hard problem of the instance and we throw up.
+				// @TODO: This solution currently conflicts with separation of concerns since the class loader
+				// handles installation specific stuff. Find a better way to do this.
+				if (defined('TYPO3_enterInstallScript') && TYPO3_enterInstallScript) {
+					// Installer is running => So work without Locking.
+					return NULL;
+				} else {
+					throw $e;
+				}
+			}
 			$this->lockObject->setEnableLogging(FALSE);
 			$this->isLoadingLocker = FALSE;
 		}

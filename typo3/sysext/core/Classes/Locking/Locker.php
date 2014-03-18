@@ -123,12 +123,8 @@ class Locker {
 			case self::LOCKING_METHOD_SIMPLE:
 				// intended fall through
 			case self::LOCKING_METHOD_FLOCK:
-				$path = PATH_site . self::FILE_LOCK_FOLDER;
-				if (!is_dir($path)) {
-					GeneralUtility::mkdir($path);
-				}
 				$this->id = md5($id);
-				$this->resource = $path . $this->id;
+				$this->createPathIfNeeded();
 				break;
 			case self::LOCKING_METHOD_SEMAPHORE:
 				$this->id = abs(crc32($id));
@@ -486,4 +482,24 @@ class Locker {
 		}
 	}
 
+	/**
+	 * Tests if the directory for simple locks is available.
+	 * If not, the directory will be created. The lock path is usually
+	 * below typo3temp, typo3temp itself should exist already
+	 *
+	 * @return void
+	 * @throws \RuntimeException If path couldn't be created.
+	 */
+	protected function createPathIfNeeded() {
+		$path = PATH_site . self::FILE_LOCK_FOLDER;
+		if (!is_dir($path)) {
+			// Not using mkdir_deep on purpose here, if typo3temp itself
+			// does not exist, this issue should be solved on a different
+			// level of the application.
+			if (!GeneralUtility::mkdir($path)) {
+				throw new \RuntimeException('Cannot create directory ' . $path, 1395140007);
+			}
+		}
+		$this->resource = $path . $this->id;
+	}
 }
