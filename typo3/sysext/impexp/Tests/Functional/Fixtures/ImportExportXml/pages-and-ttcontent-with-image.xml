@@ -133,9 +133,9 @@
 							<id>1</id>
 							<table>sys_language</table>
 						</element>
-						<element index="sys_file_reference:1" type="array">
+						<element index="sys_file_metadata:1" type="array">
 							<id>1</id>
-							<table>sys_file_reference</table>
+							<table>sys_file_metadata</table>
 						</element>
 						<element index="sys_file:1" type="array">
 							<id>1</id>
@@ -424,7 +424,7 @@
 					<relations index="itemArray" type="array">
 						<element index="0" type="array">
 							<id>1</id>
-							<table>sys_file_reference</table>
+							<table>sys_file_metadata</table>
 						</element>
 					</relations>
 				</field>

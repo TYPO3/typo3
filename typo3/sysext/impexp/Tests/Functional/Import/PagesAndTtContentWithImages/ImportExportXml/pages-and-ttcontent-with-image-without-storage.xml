@@ -379,7 +379,7 @@
 					<relations index="itemArray" type="array">
 						<element index="0" type="array">
 							<id>1</id>
-							<table>sys_file_reference</table>
+							<table>sys_file_metadata</table>
 						</element>
 					</relations>
 				</field>
