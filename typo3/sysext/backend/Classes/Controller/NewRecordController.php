@@ -477,11 +477,10 @@ class NewRecordController {
 											$thisTitle = $EM_CONF[$_EXTKEY]['title'];
 										}
 										$iconFile[$_EXTKEY] = '<img ' . 'src="' . ExtensionManagementUtility::extRelPath($_EXTKEY) . $GLOBALS['TYPO3_LOADED_EXT'][$_EXTKEY]['ext_icon'] . '" ' . 'width="16" height="16" ' . 'alt="' . $thisTitle . '" />';
-									} else {
-										$thisTitle = $nameParts[1];
-										$iconFile[$_EXTKEY] = '';
 									}
-								} else {
+								}
+								if (empty($thisTitle)) {
+									$_EXTKEY = $nameParts[1];
 									$thisTitle = $nameParts[1];
 									$iconFile[$_EXTKEY] = '';
 								}
