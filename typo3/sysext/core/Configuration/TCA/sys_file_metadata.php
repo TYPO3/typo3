@@ -51,8 +51,8 @@ return array(
 				'items' => array(
 					array('', 0)
 				),
-				'foreign_table' => 'sys_file_reference',
-				'foreign_table_where' => 'AND sys_file_reference.uid=###REC_FIELD_l10n_parent### AND sys_file_reference.sys_language_uid IN (-1,0)'
+				'foreign_table' => 'sys_file_metadata',
+				'foreign_table_where' => 'AND sys_file_metadata.uid=###REC_FIELD_l10n_parent### AND sys_file_metadata.sys_language_uid IN (-1,0)'
 			)
 		),
 		'l10n_diffsource' => array(
