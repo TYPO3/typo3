@@ -4141,6 +4141,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	///////////////////////////////////////////////////
 	// Tests concerning callUserFunction
 	///////////////////////////////////////////////////
+
 	/**
 	 * @test
 	 * @dataProvider callUserFunctionInvalidParameterDataprovider
@@ -4149,7 +4150,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$inputData = array('foo' => 'bar');
 		// omit the debug() output
 		ob_start();
-		$result = Utility\GeneralUtility::callUserFunction($functionName, $inputData, $this, 'user_');
+		$result = Utility\GeneralUtility::callUserFunction($functionName, $inputData, $this, 'user_', 1);
 		ob_end_clean();
 		$this->assertFalse($result);
 	}

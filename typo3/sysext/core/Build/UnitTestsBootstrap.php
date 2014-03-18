@@ -91,14 +91,22 @@ unset($webRoot);
 define('PATH_thisScript', PATH_site . 'typo3/cli_dispatch.phpsh');
 $_SERVER['SCRIPT_NAME'] = PATH_thisScript;
 
-/**
- * Basic bootstrap
- * Can be simplified/ stripped down once the according tests are properly mocked
- */
+putenv('TYPO3_CONTEXT=Testing');
+
 require PATH_site . '/typo3/sysext/core/Classes/Core/Bootstrap.php';
+
 \TYPO3\CMS\Core\Core\Bootstrap::getInstance()
 	->baseSetup()
-	->loadConfigurationAndInitialize(TRUE);
+	->initializeClassLoader();
 
-// Load ext_localconf of phpunit. It takes care of registering phpunit classes and dependencies like vfsStream
-require PATH_site . '/typo3conf/ext/phpunit/ext_localconf.php';
+$configurationManager = new \TYPO3\CMS\Core\Configuration\ConfigurationManager();
+$GLOBALS['TYPO3_CONF_VARS'] = $configurationManager->getDefaultConfiguration();
+
+\TYPO3\CMS\Core\Core\Bootstrap::getInstance()
+	->disableCoreAndClassesCache()
+	->initializeCachingFramework()
+	->initializeClassLoaderCaches()
+	->initializePackageManagement('TYPO3\\CMS\\Core\\Package\\PackageManager');
+
+require PATH_site . 'typo3conf/ext/phpunit/Composer/vendor/autoload.php';
+require PATH_site . 'typo3conf/ext/phpunit/Migrations/vfsStream.php';

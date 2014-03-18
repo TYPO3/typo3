@@ -255,8 +255,9 @@ class Bootstrap {
 	 * Initializes the Class Loader
 	 *
 	 * @return Bootstrap
+	 * @internal This is not a public API method, do not use in own extensions
 	 */
-	protected function initializeClassLoader() {
+	public function initializeClassLoader() {
 		$classLoader = new ClassLoader($this->applicationContext);
 		$this->setEarlyInstance('TYPO3\\CMS\\Core\\Core\\ClassLoader', $classLoader);
 		$classLoader->setRuntimeClassLoadingInformationFromAutoloadRegistry((array) include __DIR__ . '/../../ext_autoload.php');
@@ -292,8 +293,9 @@ class Bootstrap {
 	 * Initialize class loader cache.
 	 *
 	 * @return Bootstrap
+	 * @internal This is not a public API method, do not use in own extensions
 	 */
-	protected function initializeClassLoaderCaches() {
+	public function initializeClassLoaderCaches() {
 		/** @var $classLoader ClassLoader */
 		$classLoader = $this->getEarlyInstance('TYPO3\\CMS\\Core\\Core\\ClassLoader');
 		$classLoader->injectCoreCache($this->getEarlyInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_core'));
@@ -307,8 +309,9 @@ class Bootstrap {
 	 *
 	 * @param string $packageManagerClassName Define an alternative package manager implementation (usually for the installer)
 	 * @return Bootstrap
+	 * @internal This is not a public API method, do not use in own extensions
 	 */
-	protected function initializePackageManagement($packageManagerClassName) {
+	public function initializePackageManagement($packageManagerClassName) {
 		/** @var \TYPO3\CMS\Core\Package\PackageManager $packageManager */
 		$packageManager = new $packageManagerClassName();
 		$this->setEarlyInstance('TYPO3\\Flow\\Package\\PackageManager', $packageManager);
@@ -467,8 +470,9 @@ class Bootstrap {
 	 * Initialize caching framework
 	 *
 	 * @return Bootstrap
+	 * @internal This is not a public API method, do not use in own extensions
 	 */
-	protected function initializeCachingFramework() {
+	public function initializeCachingFramework() {
 		$this->setEarlyInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager', \TYPO3\CMS\Core\Cache\Cache::initializeCachingFramework());
 		// @deprecated since 6.2 will be removed in two versions
 		$GLOBALS['typo3CacheManager'] = new \TYPO3\CMS\Core\Compatibility\GlobalObjectDeprecationDecorator('TYPO3\\CMS\\Core\\Cache\\CacheManager');
