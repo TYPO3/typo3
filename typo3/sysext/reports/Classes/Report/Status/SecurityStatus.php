@@ -26,6 +26,7 @@ namespace TYPO3\CMS\Reports\Report\Status;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Service\EnableFileService;
 
 /**
  * Performs several checks about the system's health
@@ -168,7 +169,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		$command = GeneralUtility::_GET('adminCmd');
 		switch ($command) {
 			case 'remove_ENABLE_INSTALL_TOOL':
-				unlink(PATH_site . 'typo3conf/ENABLE_INSTALL_TOOL');
+				EnableFileService::removeInstallToolEnableFile();
 				break;
 			default:
 				// Do nothing
@@ -250,18 +251,16 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		$value = $GLOBALS['LANG']->getLL('status_disabled');
 		$message = '';
 		$severity = \TYPO3\CMS\Reports\Status::OK;
-		$enableInstallToolFileExists = is_file($enableInstallToolFile);
-		if ($enableInstallToolFileExists) {
-			if (trim(file_get_contents($enableInstallToolFile)) === 'KEEP_FILE') {
+		if (EnableFileService::installToolEnableFileExists()) {
+			if (EnableFileService::isInstallToolEnableFilePermanent()) {
 				$severity = \TYPO3\CMS\Reports\Status::WARNING;
 				$disableInstallToolUrl = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '&amp;adminCmd=remove_ENABLE_INSTALL_TOOL';
 				$value = $GLOBALS['LANG']->getLL('status_enabledPermanently');
 				$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_enabled'), '<span style="white-space: nowrap;">' . $enableInstallToolFile . '</span>');
 				$message .= ' <a href="' . $disableInstallToolUrl . '">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_enabled_cmd') . '</a>';
 			} else {
-				$enableInstallToolFileTtl = filemtime($enableInstallToolFile) + 3600 - time();
-				if ($enableInstallToolFileTtl <= 0) {
-					unlink($enableInstallToolFile);
+				if (EnableFileService::installToolEnableFileLifetimeExpired()) {
+					EnableFileService::removeInstallToolEnableFile();
 				} else {
 					$severity = \TYPO3\CMS\Reports\Status::NOTICE;
 					$disableInstallToolUrl = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '&amp;adminCmd=remove_ENABLE_INSTALL_TOOL';

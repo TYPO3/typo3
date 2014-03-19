@@ -63,8 +63,6 @@ class BackendModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 	 */
 	public function indexAction() {
 		if ($this->enableFileService->checkInstallToolEnableFile()) {
-			// Install Tool is already enabled
-			$this->enableFileService->extendInstallToolEnableFileLifetime();
 			$this->redirect('sysext/install/Start/Install.php?install[context]=backend');
 		} else {
 			$this->forward('showEnableInstallToolButton');
