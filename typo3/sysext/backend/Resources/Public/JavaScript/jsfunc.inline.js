@@ -475,6 +475,8 @@ var inline = {
 
 		var elName = this.parseObjectId('full', objectId, 2, 0, true);
 
+		var escapeSelectorObjectId = this.escapeSelectorObjectId(objectId);
+
 		formObj = $$('[name="' + elName + '[hidden]_0"]');
 		valueObj = $$('[name="' + elName + '[hidden]"]');
 
@@ -499,7 +501,7 @@ var inline = {
 		}
 
 			// remove loading-indicator
-		TYPO3.jQuery('#' + objectId + '_loadingbar').remove();
+		TYPO3.jQuery('#' + escapeSelectorObjectId + '_loadingbar').remove();
 
 			// now that the content is loaded, set the expandState
 		this.expandCollapseRecord(objectId, expandSingle);
@@ -1239,9 +1241,23 @@ var inline = {
 	escapeObjectId: function(objectId) {
 		var escapedObjectId;
 		escapedObjectId = objectId.replace(/:/g, '\\:');
-		escapedObjectId = objectId.replace(/\./g, '\\.');
+		escapedObjectId = escapedObjectId.replace(/\./g, '\\.');
 		return escapedObjectId;
-	}
+	},
+
+	/**
+	 * Escapes object identifiers to be used as jQuery selector.
+	 *
+	 * @param string objectId
+	 * @return string
+	 */
+	escapeSelectorObjectId: function(objectId) {
+		var escapedSelectorObjectId;
+		var escapedObjectId = this.escapeObjectId(objectId);
+		escapedSelectorObjectId = escapedObjectId.replace(/\\:/g, '\\\\\\:');
+		escapedSelectorObjectId = escapedSelectorObjectId.replace(/\\\./g, '\\\\\\.');
+		return escapedSelectorObjectId;
+	},
 }
 
 Object.extend(Array.prototype, {
