@@ -55,6 +55,11 @@ class FormController {
 	protected $requestHandler;
 
 	/**
+	 * @var \TYPO3\CMS\Form\Layout
+	 */
+	protected $layoutHandler;
+
+	/**
 	 * @var \TYPO3\CMS\Form\Utility\ValidatorUtility
 	 */
 	protected $validate;
@@ -68,6 +73,7 @@ class FormController {
 	public function initialize(array $typoscript) {
 		$this->typoscriptFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Domain\\Factory\\TypoScriptFactory');
 		$this->localizationHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Localization');
+		$this->layoutHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Layout');
 		$this->requestHandler = $this->typoscriptFactory->setRequestHandler($typoscript);
 		$this->validate = $this->typoscriptFactory->setRules($typoscript);
 		$this->typoscript = $typoscript;
@@ -167,7 +173,10 @@ class FormController {
 	 * @return string The form HTML
 	 */
 	protected function renderForm() {
+		$layout = $this->typoscriptFactory->getLayoutFromTypoScript($this->typoscript['form.']);
+		$this->layoutHandler->setLayout($layout);
 		$this->requestHandler->destroySession();
+
 		$form = $this->typoscriptFactory->buildModelFromTyposcript($this->typoscript);
 		/** @var $view \TYPO3\CMS\Form\View\Form\FormView */
 		$view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\View\\Form\\FormView', $form);
@@ -200,12 +209,16 @@ class FormController {
 	 * @return string The confirmation screen HTML
 	 */
 	protected function renderConfirmation() {
-		$form = $this->typoscriptFactory->buildModelFromTyposcript($this->typoscript);
-		$this->requestHandler->storeSession();
 		$confirmationTyposcript = array();
 		if (isset($this->typoscript['confirmation.'])) {
 			$confirmationTyposcript = $this->typoscript['confirmation.'];
 		}
+
+		$layout = $this->typoscriptFactory->getLayoutFromTypoScript($confirmationTyposcript);
+		$form = $this->typoscriptFactory->buildModelFromTyposcript($this->typoscript);
+
+		$this->layoutHandler->setLayout($layout);
+		$this->requestHandler->storeSession();
 		/** @var $view \TYPO3\CMS\Form\View\Confirmation\ConfirmationView */
 		$view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\View\\Confirmation\\ConfirmationView', $form, $confirmationTyposcript);
 		return $view->get();
@@ -225,7 +238,7 @@ class FormController {
 			$postProcessorTypoScript = $this->typoscript['postProcessor.'];
 		}
 		/** @var $postProcessor \TYPO3\CMS\Form\PostProcess\PostProcessor */
-		$postProcessor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\PostProcess\\PostProcessor', $form, $postProcessorTypoScript);
+		$postProcessor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\PostProcess\\PostProcessor', $form, $this->typoscriptFactory, $postProcessorTypoScript);
 		$content = $postProcessor->process();
 		$this->requestHandler->destroySession();
 		return $content;
