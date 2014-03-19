@@ -1589,7 +1589,7 @@ class TypoScriptFrontendController {
 				}
 				break;
 			case PageRepository::SHORTCUT_MODE_PARENT_PAGE:
-				$parent = $this->sys_page->getPage($thisUid, $disableGroupCheck);
+				$parent = $this->sys_page->getPage($idArray[0] ? $idArray[0] : $thisUid, $disableGroupCheck);
 				$page = $this->sys_page->getPage($parent['pid'], $disableGroupCheck);
 				if (count($page) == 0) {
 					$message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to its parent page. ' . 'However, the parent page is not accessible.';
