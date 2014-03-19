@@ -1,0 +1,22 @@
+<f:if condition="{listOfOpcodeCaches}">
+	<h4>Clear PHP opcode cache</h4>
+	<p>
+		This clears the complete opcode caches of the active opcode cache systems, if the system supports reset.
+	</p>
+	<p>Available PHP opcode cache systems</p>
+	<ul>
+		<f:for each="{listOfOpcodeCaches}" as="opcodeCache" key="opcodeCacheName">
+			<li>{opcodeCacheName} ({opcodeCache.version}) -
+				<f:if condition="{opcodeCache.canReset}">
+					<f:then>reset is supported</f:then>
+					<f:else>reset is not supported</f:else>
+				</f:if>
+			</li>
+		</f:for>
+	</ul>
+	<form method="post">
+		<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
+		<f:render partial="Action/Common/SubmitButton" arguments="{name:'clearOpcodeCache', text:'Clear PHP opcode cache'}"/>
+	</form>
+	<hr />
+</f:if>

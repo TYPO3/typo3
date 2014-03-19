@@ -68,7 +68,7 @@ class OpcodeCacheUtility {
 				'canInvalidate' => function_exists('opcache_invalidate'),
 				'error' => FALSE,
 				'clearCallback' => function ($fileAbsPath) {
-					if (function_exists('opcache_invalidate')) {
+					if ($fileAbsPath !== NULL && function_exists('opcache_invalidate')) {
 						opcache_invalidate($fileAbsPath);
 					} else {
 						opcache_reset();
@@ -89,7 +89,7 @@ class OpcodeCacheUtility {
 				// Versions lower then 3.1.7 are known as malfunction
 				'error' => $apcVersion && VersionNumberUtility::convertVersionNumberToInteger($apcVersion) < 3001007,
 				'clearCallback' => function ($fileAbsPath) {
-					if (OpcodeCacheUtility::getCanInvalidate('APC')) {
+					if ($fileAbsPath !== NULL && OpcodeCacheUtility::getCanInvalidate('APC')) {
 						// This may output a warning like: PHP Warning: apc_delete_file(): Could not stat file
 						// This warning isn't true, this means that apc was unable to generate the cache key
 						// which depends on the configuration of APC.
@@ -108,7 +108,12 @@ class OpcodeCacheUtility {
 				'canInvalidate' => TRUE, // wincache_refresh_if_changed()
 				'error' => FALSE,
 				'clearCallback' => function ($fileAbsPath) {
-					wincache_refresh_if_changed(array($fileAbsPath));
+					if ($fileAbsPath !== NULL) {
+						wincache_refresh_if_changed(array($fileAbsPath));
+					} else {
+						// No argument means refreshing all.
+						wincache_refresh_if_changed();
+					}
 				}
 			),
 
@@ -182,11 +187,11 @@ class OpcodeCacheUtility {
 	/**
 	 * Clears a file from an opcache, if one exists.
 	 *
-	 * @param string $fileAbsPath The file as absolute path to be cleared.
+	 * @param string|NULL $fileAbsPath The file as absolute path to be cleared or NULL to clear completely.
 	 *
 	 * @return void
 	 */
-	static public function clearAllActive($fileAbsPath) {
+	static public function clearAllActive($fileAbsPath = NULL) {
 		foreach (static::getAllActive() as $properties) {
 			$callback = $properties['clearCallback'];
 			$callback($fileAbsPath);

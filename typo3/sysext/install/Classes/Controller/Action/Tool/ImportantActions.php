@@ -26,6 +26,7 @@ namespace TYPO3\CMS\Install\Controller\Action\Tool;
 
 use TYPO3\CMS\Install\Controller\Action;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\OpcodeCacheUtility;
 
 /**
  * Handle important actions
@@ -54,6 +55,9 @@ class ImportantActions extends Action\AbstractAction {
 		}
 		if (isset($this->postValues['set']['clearAllCache'])) {
 			$actionMessages[] = $this->clearAllCache();
+		}
+		if (isset($this->postValues['set']['clearOpcodeCache'])) {
+			$actionMessages[] = $this->clearOpcodeCache();
 		}
 
 		// Database analyzer handling
@@ -89,7 +93,8 @@ class ImportantActions extends Action\AbstractAction {
 			->assign('databaseSocket', $GLOBALS['TYPO3_CONF_VARS']['DB']['socket'])
 			->assign('databaseNumberOfTables', count($this->getDatabaseConnection()->admin_get_tables()))
 			->assign('extensionCompatibilityTesterProtocolFile', GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3temp/ExtensionCompatibilityTester.txt')
-			->assign('extensionCompatibilityTesterErrorProtocolFile', GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3temp/ExtensionCompatibilityTesterErrors.json');
+			->assign('extensionCompatibilityTesterErrorProtocolFile', GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3temp/ExtensionCompatibilityTesterErrors.json')
+			->assign('listOfOpcodeCaches', OpcodeCacheUtility::getAllActive());
 
 		return $this->view->render();
 	}
@@ -160,6 +165,19 @@ class ImportantActions extends Action\AbstractAction {
 		$clearCacheService->clearAll();
 		$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\OkStatus');
 		$message->setTitle('Successfully cleared all caches');
+		return $message;
+	}
+
+	/**
+	 * Clear PHP opcode cache
+	 *
+	 * @return \TYPO3\CMS\Install\Status\StatusInterface
+	 */
+	protected function clearOpcodeCache() {
+		/** @var \TYPO3\CMS\Install\Service\ClearCacheService $clearCacheService */
+		OpcodeCacheUtility::clearAllActive();
+		$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\OkStatus');
+		$message->setTitle('Successfully cleared all available opcode caches');
 		return $message;
 	}
 
