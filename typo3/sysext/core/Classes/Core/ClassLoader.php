@@ -169,7 +169,7 @@ class ClassLoader {
 
 		$cacheEntryIdentifier = strtolower(str_replace('\\', '_', $className));
 		$classLoadingInformation = $this->getClassLoadingInformationFromCache($cacheEntryIdentifier);
-
+		// Handle a cache miss
 		if ($classLoadingInformation === FALSE) {
 			$classLoadingInformation = $this->buildCachedClassLoadingInformation($cacheEntryIdentifier, $className);
 		}
@@ -181,7 +181,7 @@ class ClassLoader {
 		//   2 and following => alias class names
 		// )
 		$loadingSuccessful = FALSE;
-		if ($classLoadingInformation !== FALSE && $classLoadingInformation !== NULL) {
+		if (is_array($classLoadingInformation) && count($classLoadingInformation) > 0) {
 			// The call to class_exists fixes a rare case when early instances need to be aliased
 			// but PHP fails to recognize the real path of the class. See #55904
 			$loadingSuccessful = class_exists($classLoadingInformation[1], FALSE) || (bool)require_once $classLoadingInformation[0];
@@ -198,9 +198,13 @@ class ClassLoader {
 
 	/**
 	 * Get class loading information for the given identifier for cache
+	 * Return values:
+	 *  - array with class information (empty if the class is invalid)
+	 *  - FALSE if no class information is found in cache (cache miss)
+	 *  - NULL if the cache identifier is invalid (cache failure)
 	 *
 	 * @param string $cacheEntryIdentifier The identifier to fetch entry from cache
-	 * @return array|FALSE|NULL The class information or FALSE if class information was not found in cache. NULL if a class couldn't be resolved
+	 * @return array|FALSE|NULL The class information, empty array if class is unkown or FALSE if class information was not found in cache. NULL if a cache identifier is invalid.
 	 */
 	public function getClassLoadingInformationFromCache($cacheEntryIdentifier) {
 		try {
@@ -210,7 +214,7 @@ class ClassLoader {
 		}
 
 		if ($rawClassLoadingInformation === '') {
-			return FALSE;
+			return array();
 		}
 
 		if ($rawClassLoadingInformation) {
@@ -228,7 +232,7 @@ class ClassLoader {
 	 * @param string $cacheEntryIdentifier Cache identifier for this class
 	 * @param string $className Name of class this information is for
 	 *
-	 * @return array|FALSE|NULL The class information or FALSE if class was not found
+	 * @return array|FALSE|NULL The class information, empty array if class is unkown or FALSE if class information was not found in cache. NULL if a cache identifier is invalid.
 	 */
 	protected function buildCachedClassLoadingInformation($cacheEntryIdentifier, $className) {
 		// We do not need locking if we are in earlyCache mode
@@ -239,16 +243,20 @@ class ClassLoader {
 
 		// Look again into the cache after we got the lock, data might have been generated meanwhile
 		$classLoadingInformation = $this->getClassLoadingInformationFromCache($cacheEntryIdentifier);
+		// Handle repeated cache miss
 		if ($classLoadingInformation === FALSE) {
+			// Generate class information
 			$classLoadingInformation = $this->buildClassLoadingInformation($className);
 
 			if ($classLoadingInformation !== FALSE) {
+				// If we found class information, cache it
 				$this->classesCache->set(
 					$cacheEntryIdentifier,
 					implode("\xff", $classLoadingInformation),
 					$this->isEarlyCache ? array('early') : array()
 				);
 			} elseif (!$this->isEarlyCache) {
+				// Cache that the class is unknown
 				$this->classesCache->set($cacheEntryIdentifier, '');
 			}
 		}
