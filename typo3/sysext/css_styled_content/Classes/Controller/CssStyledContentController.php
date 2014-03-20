@@ -590,7 +590,12 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 
 				/** @var $file \TYPO3\CMS\Core\Resource\File */
 				if (MathUtility::canBeInterpretedAsInteger($imgs[$imgKey])) {
-					$file = $this->getResourceFactory()->getFileObject((int)$imgs[$imgKey]);
+					if ($imgListContainsReferenceUids) {
+						$file = $this->getResourceFactory()->getFileReferenceObject((int)$imgs[$imgKey])->getOriginalFile();
+					} else {
+						$file = $this->getResourceFactory()->getFileObject((int)$imgs[$imgKey]);
+					}
+
 				} else {
 					$file = $this->getResourceFactory()->getFileObjectFromCombinedIdentifier($imgPath . $imgs[$imgKey]);
 				}
