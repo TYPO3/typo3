@@ -191,6 +191,11 @@
 	border-color:#A2AAB8;
 }
 
+ul.x-tab-strip {
+	padding-left: 0;
+	list-style: none;
+}
+
 ul.x-tab-strip-top{
 	padding-top: 1px;
 }

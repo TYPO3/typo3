@@ -18,6 +18,11 @@ div.overflow-hidden {
 	overflow: hidden;
 }
 
+form ol {
+	padding-left: 0;
+	list-style: none;
+}
+
 #formwizard {
 	height: 100%;
 	background-color: #F8F8F8;
