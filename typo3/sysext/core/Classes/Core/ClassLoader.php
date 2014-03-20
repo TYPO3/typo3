@@ -38,6 +38,8 @@ use TYPO3\CMS\Core\Cache;
  */
 class ClassLoader {
 
+	const VALID_CLASSNAME_PATTERN = '/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9\\\\_\x7f-\xff]*$/';
+
 	/**
 	 * @var ClassAliasMap
 	 */
@@ -204,14 +206,10 @@ class ClassLoader {
 	 *  - NULL if the cache identifier is invalid (cache failure)
 	 *
 	 * @param string $cacheEntryIdentifier The identifier to fetch entry from cache
-	 * @return array|FALSE|NULL The class information, empty array if class is unkown or FALSE if class information was not found in cache. NULL if a cache identifier is invalid.
+	 * @return array|FALSE The class information, empty array if class is unkown or FALSE if class information was not found in cache.
 	 */
 	public function getClassLoadingInformationFromCache($cacheEntryIdentifier) {
-		try {
-			$rawClassLoadingInformation = $this->classesCache->get($cacheEntryIdentifier);
-		} catch (\InvalidArgumentException $exception) {
-			return NULL;
-		}
+		$rawClassLoadingInformation = $this->classesCache->get($cacheEntryIdentifier);
 
 		if ($rawClassLoadingInformation === '') {
 			return array();
@@ -232,7 +230,7 @@ class ClassLoader {
 	 * @param string $cacheEntryIdentifier Cache identifier for this class
 	 * @param string $className Name of class this information is for
 	 *
-	 * @return array|FALSE|NULL The class information, empty array if class is unkown or FALSE if class information was not found in cache. NULL if a cache identifier is invalid.
+	 * @return array|FALSE The class information, empty array if class is unkown or FALSE if class information was not found in cache.
 	 */
 	protected function buildCachedClassLoadingInformation($cacheEntryIdentifier, $className) {
 		// We do not need locking if we are in earlyCache mode
@@ -298,7 +296,7 @@ class ClassLoader {
 	 * @return bool
 	 */
 	protected function isValidClassName($className) {
-		return strpos($className, ' ') === FALSE;
+		return (bool)preg_match(self::VALID_CLASSNAME_PATTERN, $className);
 	}
 
 	/**
