@@ -80,27 +80,26 @@ class FileTableSplittingUpdate extends AbstractUpdate {
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 
 		if (!array_key_exists($this->metaDataTable, $GLOBALS['TYPO3_DB']->admin_get_tables())) {
-			$customMessages = 'ERROR! Make sure you already created the table. If you added custom metadata to sys_file table add TCA configuration as well as sql definitions to sys_file_metadata, too.';
+			$customMessages = 'ERROR! Make sure you already created the table. If you added custom metadata to sys_file table add TCA ' .
+				'configuration as well as SQL definitions to sys_file_metadata, too.';
 			return FALSE;
 		}
 
-		$filesToMigrateRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'uid',
-			'sys_file',
-			'uid NOT IN (' . $GLOBALS['TYPO3_DB']->SELECTquery('file', $this->metaDataTable, '') . ')'
-		);
-		$filesToMigrateUids = array();
-		foreach ($filesToMigrateRows as $row) {
-			$filesToMigrateUids[] = (int)$row['uid'];
+		$fieldsToMigrate = $this->detectFieldsToMigrate();
+		if (empty($fieldsToMigrate)) {
+			return TRUE;
 		}
-		$filesToMigrateUids = array_unique($filesToMigrateUids);
-		$dataToMove = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			implode(',', $this->detectFieldsToMigrate()) . ', uid AS file',
-			'sys_file',
-			'uid IN (' . implode(',', $filesToMigrateUids) . ')'
-		);
+		$fieldsToWrite = $fieldsToMigrate;
+		$fieldsToWrite[] = 'file';
+		$fieldsToSelect = $fieldsToMigrate;
+		$fieldsToSelect[] = 'uid AS file';
 
-		$resultObject = $GLOBALS['TYPO3_DB']->exec_INSERTmultipleRows($this->metaDataTable, array_keys(current($dataToMove)), $dataToMove);
+		$resultObject = $GLOBALS['TYPO3_DB']->sql_query(
+				'INSERT INTO ' . $this->metaDataTable . ' (' . implode(',', $fieldsToWrite) . ') ' .
+				'SELECT ' . implode(',', $fieldsToSelect) .
+				'FROM sys_file ' .
+				'WHERE uid NOT IN (SELECT file FROM ' . $this->metaDataTable . ')');
+
 		return $resultObject !== FALSE;
 	}
 
