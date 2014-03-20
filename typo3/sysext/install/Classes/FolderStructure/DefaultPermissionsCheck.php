@@ -83,8 +83,13 @@ class DefaultPermissionsCheck {
 			$permissionStatus = new \TYPO3\CMS\Install\Status\ErrorStatus();
 			$extraMessage = ' (not read or writable by the user)';
 		} elseif ($perms['ow']) {
-			$permissionStatus = new \TYPO3\CMS\Install\Status\ErrorStatus();
-			$extraMessage = ' (writable by anyone on the server)';
+			if (TYPO3_OS === 'WIN') {
+				$permissionStatus = new \TYPO3\CMS\Install\Status\InfoStatus();
+				$extraMessage = ' (writable by anyone on the server). This is the default behavior on a Windows system';
+			} else {
+				$permissionStatus = new \TYPO3\CMS\Install\Status\ErrorStatus();
+				$extraMessage = ' (writable by anyone on the server)';
+			}
 		} elseif ($perms['or']) {
 			$permissionStatus = new \TYPO3\CMS\Install\Status\WarningStatus();
 			$extraMessage = ' (readable by anyone on the server)';
