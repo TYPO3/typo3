@@ -2,14 +2,12 @@
 Module menu
 - - - - - - - - - - - - - - - - - - - - - */
 
-#typo3-menu {
-	padding-top: 25px;
-}
-
 #typo3-module-menu .x-panel-body {
     overflow-x: hidden !important;
 }
-
+#typo3-menu {
+    margin-top: 18px;
+}
 #typo3-menu ul {
 	padding: 0;
 	margin: 0;
@@ -55,7 +53,7 @@ Module menu
 }
 
 #typo3-menu li ul {
-	margin-bottom: 6px;
+	margin: 6px 0 6px 0;
 }
 
 #typo3-menu li ul li {
