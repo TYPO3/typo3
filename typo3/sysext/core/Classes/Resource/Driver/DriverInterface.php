@@ -52,12 +52,11 @@ interface DriverInterface {
 	public function getCapabilities();
 
 	/**
-	 * Merges the capabilites merged by the user at the storage
+	 * Merges the capabilities merged by the user at the storage
 	 * configuration into the actual capabilities of the driver
 	 * and returns the result.
 	 *
 	 * @param int $capabilities
-	 *
 	 * @return int
 	 */
 	public function mergeConfigurationCapabilities($capabilities);
@@ -119,7 +118,6 @@ interface DriverInterface {
 	 * Returns the identifier of the folder the file resides in
 	 *
 	 * @param string $fileIdentifier
-	 *
 	 * @return string
 	 */
 	public function getParentFolderIdentifierOfIdentifier($fileIdentifier);
@@ -127,7 +125,6 @@ interface DriverInterface {
 	/**
 	 * Returns the public URL to a file.
 	 * Either fully qualified URL or relative to PATH_site (rawurlencoded).
-	 *
 	 *
 	 * @param string $identifier
 	 * @return string
@@ -167,7 +164,6 @@ interface DriverInterface {
 	 * Checks if a file exists.
 	 *
 	 * @param string $fileIdentifier
-	 *
 	 * @return bool
 	 */
 	public function fileExists($fileIdentifier);
@@ -176,7 +172,6 @@ interface DriverInterface {
 	 * Checks if a folder exists.
 	 *
 	 * @param string $folderIdentifier
-	 *
 	 * @return bool
 	 */
 	public function folderExists($folderIdentifier);
@@ -271,7 +266,6 @@ interface DriverInterface {
 	 * @param string $fileIdentifier
 	 * @param string $targetFolderIdentifier
 	 * @param string $newFileName
-	 *
 	 * @return string
 	 */
 	public function moveFileWithinStorage($fileIdentifier, $targetFolderIdentifier, $newFileName);
@@ -283,7 +277,6 @@ interface DriverInterface {
 	 * @param string $sourceFolderIdentifier
 	 * @param string $targetFolderIdentifier
 	 * @param string $newFolderName
-	 *
 	 * @return array All files which are affected, map of old => new file identifiers
 	 */
 	public function moveFolderWithinStorage($sourceFolderIdentifier, $targetFolderIdentifier, $newFolderName);
@@ -294,7 +287,6 @@ interface DriverInterface {
 	 * @param string $sourceFolderIdentifier
 	 * @param string $targetFolderIdentifier
 	 * @param string $newFolderName
-	 *
 	 * @return bool
 	 */
 	public function copyFolderWithinStorage($sourceFolderIdentifier, $targetFolderIdentifier, $newFolderName);
@@ -410,10 +402,15 @@ interface DriverInterface {
 	 * @param int $numberOfItems
 	 * @param bool $recursive
 	 * @param array $filenameFilterCallbacks callbacks for filtering the items
-	 *
+	 * @param string $sort Property name used to sort the items.
+	 *                     Among them may be: '' (empty, no sorting), name,
+	 *                     fileext, size, tstamp and rw.
+	 *                     If a driver does not support the given property, it
+	 *                     should fall back to "name".
+	 * @param bool $sortRev TRUE to indicate reverse sorting (last to first)
 	 * @return array of FileIdentifiers
 	 */
-	public function getFilesInFolder($folderIdentifier, $start = 0, $numberOfItems = 0, $recursive = FALSE, array $filenameFilterCallbacks = array());
+	public function getFilesInFolder($folderIdentifier, $start = 0, $numberOfItems = 0, $recursive = FALSE, array $filenameFilterCallbacks = array(), $sort = '', $sortRev = FALSE);
 
 	/**
 	 * Returns a list of folders inside the specified path
@@ -423,9 +420,34 @@ interface DriverInterface {
 	 * @param int $numberOfItems
 	 * @param bool $recursive
 	 * @param array $folderNameFilterCallbacks callbacks for filtering the items
-	 *
+	 * @param string $sort Property name used to sort the items.
+	 *                     Among them may be: '' (empty, no sorting), name,
+	 *                     fileext, size, tstamp and rw.
+	 *                     If a driver does not support the given property, it
+	 *                     should fall back to "name".
+	 * @param bool $sortRev TRUE to indicate reverse sorting (last to first)
 	 * @return array of Folder Identifier
 	 */
-	public function getFoldersInFolder($folderIdentifier, $start = 0, $numberOfItems = 0, $recursive = FALSE, array $folderNameFilterCallbacks = array());
+	public function getFoldersInFolder($folderIdentifier, $start = 0, $numberOfItems = 0, $recursive = FALSE, array $folderNameFilterCallbacks = array(), $sort = '', $sortRev = FALSE);
+
+	/**
+	 * Returns the number of files inside the specified path
+	 *
+	 * @param string  $folderIdentifier
+	 * @param boolean $recursive
+	 * @param array   $filenameFilterCallbacks callbacks for filtering the items
+	 * @return integer Number of files in folder
+	 */
+	public function getFilesInFolderCount($folderIdentifier, $recursive = FALSE, array $filenameFilterCallbacks = array());
+
+	/**
+	 * Returns the number of folders inside the specified path
+	 *
+	 * @param string  $folderIdentifier
+	 * @param boolean $recursive
+	 * @param array   $folderNameFilterCallbacks callbacks for filtering the items
+	 * @return integer Number of folders in folder
+	 */
+	public function getFoldersInFolderCount($folderIdentifier, $recursive = FALSE, array $folderNameFilterCallbacks = array());
 
 }

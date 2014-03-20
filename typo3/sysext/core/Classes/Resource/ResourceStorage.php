@@ -1304,23 +1304,25 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @param int $maxNumberOfItems
 	 * @param bool $useFilters
 	 * @param bool $recursive
+	 * @param string $sort Property name used to sort the items.
+	 *                     Among them may be: '' (empty, no sorting), name,
+	 *                     fileext, size, tstamp and rw.
+	 *                     If a driver does not support the given property, it
+	 *                     should fall back to "name".
+	 * @param bool $sortRev TRUE to indicate reverse sorting (last to first)
 	 * @return File[]
+	 * @throws Exception\InsufficientFolderAccessPermissionsException
 	 */
-	public function getFilesInFolder(Folder $folder, $start = 0, $maxNumberOfItems = 0, $useFilters = TRUE, $recursive = FALSE) {
+	public function getFilesInFolder(Folder $folder, $start = 0, $maxNumberOfItems = 0, $useFilters = TRUE, $recursive = FALSE, $sort = '', $sortRev = FALSE) {
 		$this->assureFolderReadPermission($folder);
 
 		$rows = $this->getFileIndexRepository()->findByFolder($folder);
 
 		$filters = $useFilters == TRUE ? $this->fileAndFolderNameFilters : array();
-		$fileIdentifiers = array_values($this->driver->getFilesInFolder($folder->getIdentifier(), $start, $maxNumberOfItems, $recursive, $filters));
-		$fileIdentifiersCount = count($fileIdentifiers);
+		$fileIdentifiers = array_values($this->driver->getFilesInFolder($folder->getIdentifier(), $start, $maxNumberOfItems, $recursive, $filters, $sort, $sortRev));
+
 		$items = array();
-		if ($maxNumberOfItems === 0) {
-			$maxNumberOfItems = $fileIdentifiersCount;
-		}
-		$end = min($fileIdentifiersCount, $start + $maxNumberOfItems);
-		for ($i = $start; $i < $end; $i++) {
-			$identifier = $fileIdentifiers[$i];
+		foreach ($fileIdentifiers as $identifier) {
 			if (isset($rows[$identifier])) {
 				$fileObject = $this->getFileFactory()->getFileObject($rows[$identifier]['uid'], $rows[$identifier]);
 			} else {
@@ -1334,7 +1336,6 @@ class ResourceStorage implements ResourceStorageInterface {
 				$items[$key] = $fileObject;
 			}
 		}
-		uksort($items, 'strnatcasecmp');
 
 		return $items;
 	}
@@ -1343,7 +1344,6 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @param string $folderIdentifier
 	 * @param bool $useFilters
 	 * @param bool $recursive
-	 *
 	 * @return array
 	 */
 	public function getFileIdentifiersInFolder($folderIdentifier, $useFilters = TRUE, $recursive = FALSE) {
@@ -1352,10 +1352,21 @@ class ResourceStorage implements ResourceStorageInterface {
 	}
 
 	/**
+	 * @param Folder $folder
+	 * @param bool $useFilters
+	 * @param bool $recursive
+	 * @return int Number of files in folder
+	 */
+	public function getFilesInFolderCount(Folder $folder, $useFilters = TRUE, $recursive = FALSE) {
+		$this->assureFolderReadPermission($folder);
+		$filters = $useFilters ? $this->fileAndFolderNameFilters : array();
+		return $this->driver->getFilesInFolderCount($folder->getIdentifier(), $recursive, $filters);
+	}
+
+	/**
 	 * @param string $folderIdentifier
 	 * @param bool $useFilters
 	 * @param bool $recursive
-	 *
 	 * @return array
 	 */
 	public function getFolderIdentifiersInFolder($folderIdentifier, $useFilters = TRUE, $recursive = FALSE) {
@@ -1946,12 +1957,18 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @param int $maxNumberOfItems
 	 * @param bool $useFilters
 	 * @param bool $recursive
-	 *
+	 * @param string $sort Property name used to sort the items.
+	 *                     Among them may be: '' (empty, no sorting), name,
+	 *                     fileext, size, tstamp and rw.
+	 *                     If a driver does not support the given property, it
+	 *                     should fall back to "name".
+	 * @param bool $sortRev TRUE to indicate reverse sorting (last to first)
 	 * @return Folder[]
 	 */
-	public function getFoldersInFolder(Folder $folder, $start = 0, $maxNumberOfItems = 0, $useFilters = TRUE, $recursive = FALSE) {
+	public function getFoldersInFolder(Folder $folder, $start = 0, $maxNumberOfItems = 0, $useFilters = TRUE, $recursive = FALSE, $sort = '', $sortRev = FALSE) {
 		$filters = $useFilters == TRUE ? $this->fileAndFolderNameFilters : array();
-		$folderIdentifiers = $this->driver->getFoldersInFolder($folder->getIdentifier(), $start, $maxNumberOfItems, $recursive, $filters);
+
+		$folderIdentifiers = $this->driver->getFoldersInFolder($folder->getIdentifier(), $start, $maxNumberOfItems, $recursive, $filters, $sort, $sortRev);
 
 		// Exclude processing folders
 		foreach ($this->getProcessingFolders() as $processingFolder) {
@@ -1965,6 +1982,18 @@ class ResourceStorage implements ResourceStorageInterface {
 			$folders[$folderIdentifier] = $this->getFolder($folderIdentifier, TRUE);
 		}
 		return $folders;
+	}
+
+	/**
+	 * @param Folder  $folder
+	 * @param bool $useFilters
+	 * @param bool $recursive
+	 * @return integer Number of subfolders
+	 */
+	public function getFoldersInFolderCount(Folder $folder, $useFilters = TRUE, $recursive = FALSE) {
+		$this->assureFolderReadPermission($folder);
+		$filters = $useFilters ? $this->fileAndFolderNameFilters : array();
+		return $this->driver->getFoldersInFolderCount($folder->getIdentifier(), $recursive, $filters);
 	}
 
 	/**

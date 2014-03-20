@@ -169,9 +169,15 @@ class Folder implements FolderInterface {
 	 * @param int $numberOfItems The number of items to return
 	 * @param int $filterMode The filter mode to use for the file list.
 	 * @param bool $recursive
+	 * @param string $sort Property name used to sort the items.
+	 *                     Among them may be: '' (empty, no sorting), name,
+	 *                     fileext, size, tstamp and rw.
+	 *                     If a driver does not support the given property, it
+	 *                     should fall back to "name".
+	 * @param bool $sortRev TRUE to indicate reverse sorting (last to first)
 	 * @return \TYPO3\CMS\Core\Resource\File[]
 	 */
-	public function getFiles($start = 0, $numberOfItems = 0, $filterMode = self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, $recursive = FALSE) {
+	public function getFiles($start = 0, $numberOfItems = 0, $filterMode = self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, $recursive = FALSE, $sort = '', $sortRev = FALSE) {
 		// Fallback for compatibility with the old method signature variable $useFilters that was used instead of $filterMode
 		if ($filterMode === FALSE) {
 			$useFilters = FALSE;
@@ -180,7 +186,7 @@ class Folder implements FolderInterface {
 			list($backedUpFilters, $useFilters) = $this->prepareFiltersInStorage($filterMode);
 		}
 
-		$fileObjects = $this->storage->getFilesInFolder($this, $start, $numberOfItems, $useFilters, $recursive);
+		$fileObjects = $this->storage->getFilesInFolder($this, $start, $numberOfItems, $useFilters, $recursive, $sort, $sortRev);
 
 		$this->restoreBackedUpFiltersInStorage($backedUpFilters);
 
@@ -193,20 +199,18 @@ class Folder implements FolderInterface {
 	 *
 	 * @param array $filterMethods
 	 * @param bool $recursive
-	 *
 	 * @return int
 	 */
 	public function getFileCount(array $filterMethods = array(), $recursive = FALSE) {
-		return count($this->storage->getFileIdentifiersInFolder($this->identifier, TRUE, $recursive));
+		return $this->storage->getFilesInFolderCount($this, TRUE, $recursive);
 	}
 
 	/**
 	 * Returns the object for a subfolder of the current folder, if it exists.
 	 *
 	 * @param string $name Name of the subfolder
-	 *
-	 * @throws \InvalidArgumentException
 	 * @return Folder
+	 * @throws \InvalidArgumentException
 	 */
 	public function getSubfolder($name) {
 		if (!$this->storage->hasFolderInFolder($name, $this)) {

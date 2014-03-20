@@ -84,7 +84,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * and returns the result.
 	 *
 	 * @param int $capabilities
-	 *
 	 * @return int
 	 */
 	public function mergeConfigurationCapabilities($capabilities) {
@@ -339,11 +338,16 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @param bool $includeFiles
 	 * @param bool $includeDirs
 	 * @param bool $recursive
-	 *
+	 * @param string $sort Property name used to sort the items.
+	 *                     Among them may be: '' (empty, no sorting), name,
+	 *                     fileext, size, tstamp and rw.
+	 *                     If a driver does not support the given property, it
+	 *                     should fall back to "name".
+	 * @param bool $sortRev TRUE to indicate reverse sorting (last to first)
 	 * @return array
 	 * @throws \InvalidArgumentException
 	 */
-	protected function getDirectoryItemList($folderIdentifier, $start = 0, $numberOfItems = 0, array $filterMethods, $includeFiles = TRUE, $includeDirs = TRUE, $recursive = FALSE) {
+	protected function getDirectoryItemList($folderIdentifier, $start = 0, $numberOfItems = 0, array $filterMethods, $includeFiles = TRUE, $includeDirs = TRUE, $recursive = FALSE, $sort = '', $sortRev = FALSE) {
 		$folderIdentifier = $this->canonicalizeAndCheckFolderIdentifier($folderIdentifier);
 		$realPath = $this->getAbsolutePath($folderIdentifier);
 		if (!is_dir($realPath)) {
@@ -357,15 +361,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 			$start--;
 		}
 
-		// Fetch the files and folders and sort them by name; we have to do
-		// this here because the directory iterator does return them in
-		// an arbitrary order
-		$items = $this->retrieveFileAndFoldersInPath($realPath, $recursive, $includeFiles, $includeDirs);
-		uksort(
-			$items,
-			array(\TYPO3\CMS\Core\Utility\ResourceUtility::class, 'recursiveFileListSortingHelper')
-		);
-
+		$items = $this->retrieveFileAndFoldersInPath($realPath, $recursive, $includeFiles, $includeDirs, $sort, $sortRev);
 		$iterator = new \ArrayIterator($items);
 		if ($iterator->count() === 0) {
 			return array();
@@ -391,7 +387,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 			) {
 				continue;
 			}
-
 
 			$items[$iteratorItem['identifier']] = $iteratorItem['identifier'];
 			// Decrement item counter to make sure we only return $numberOfItems
@@ -437,11 +432,28 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @param int $numberOfItems
 	 * @param bool $recursive
 	 * @param array $filenameFilterCallbacks The method callbacks to use for filtering the items
-	 *
+	 * @param string $sort Property name used to sort the items.
+	 *                     Among them may be: '' (empty, no sorting), name,
+	 *                     fileext, size, tstamp and rw.
+	 *                     If a driver does not support the given property, it
+	 *                     should fall back to "name".
+	 * @param bool $sortRev TRUE to indicate reverse sorting (last to first)
 	 * @return array of FileIdentifiers
 	 */
-	public function getFilesInFolder($folderIdentifier, $start = 0, $numberOfItems = 0, $recursive = FALSE, array $filenameFilterCallbacks = array()) {
-		return $this->getDirectoryItemList($folderIdentifier, $start, $numberOfItems, $filenameFilterCallbacks, TRUE, FALSE, $recursive);
+	public function getFilesInFolder($folderIdentifier, $start = 0, $numberOfItems = 0, $recursive = FALSE, array $filenameFilterCallbacks = array(), $sort = '', $sortRev = FALSE) {
+		return $this->getDirectoryItemList($folderIdentifier, $start, $numberOfItems, $filenameFilterCallbacks, TRUE, FALSE, $recursive, $sort, $sortRev);
+	}
+
+	/**
+	 * Returns the number of files inside the specified path
+	 *
+	 * @param string $folderIdentifier
+	 * @param bool $recursive
+	 * @param array $filenameFilterCallbacks callbacks for filtering the items
+	 * @return int Number of files in folder
+	 */
+	public function getFilesInFolderCount($folderIdentifier, $recursive = FALSE, array $filenameFilterCallbacks = array()) {
+		return count($this->getFilesInFolder($folderIdentifier, 0, 0, $recursive, $filenameFilterCallbacks));
 	}
 
 	/**
@@ -452,11 +464,28 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @param int $numberOfItems
 	 * @param bool $recursive
 	 * @param array $folderNameFilterCallbacks The method callbacks to use for filtering the items
-	 *
+	 * @param string $sort Property name used to sort the items.
+	 *                     Among them may be: '' (empty, no sorting), name,
+	 *                     fileext, size, tstamp and rw.
+	 *                     If a driver does not support the given property, it
+	 *                     should fall back to "name".
+	 * @param bool $sortRev TRUE to indicate reverse sorting (last to first)
 	 * @return array of Folder Identifier
 	 */
-	public function getFoldersInFolder($folderIdentifier, $start = 0, $numberOfItems = 0, $recursive = FALSE, array $folderNameFilterCallbacks = array()) {
-		return $this->getDirectoryItemList($folderIdentifier, $start, $numberOfItems, $folderNameFilterCallbacks, FALSE, TRUE, $recursive);
+	public function getFoldersInFolder($folderIdentifier, $start = 0, $numberOfItems = 0, $recursive = FALSE, array $folderNameFilterCallbacks = array(), $sort = '', $sortRev = FALSE) {
+		return $this->getDirectoryItemList($folderIdentifier, $start, $numberOfItems, $folderNameFilterCallbacks, FALSE, TRUE, $recursive, $sort, $sortRev);
+	}
+
+	/**
+	 * Returns the number of folders inside the specified path
+	 *
+	 * @param string  $folderIdentifier
+	 * @param boolean $recursive
+	 * @param array   $folderNameFilterCallbacks callbacks for filtering the items
+	 * @return integer Number of folders in folder
+	 */
+	public function getFoldersInFolderCount($folderIdentifier, $recursive = FALSE, array $folderNameFilterCallbacks = array()) {
+		return count($this->getFoldersInFolder($folderIdentifier, 0, 0, $recursive, $folderNameFilterCallbacks));
 	}
 
 	/**
@@ -466,9 +495,15 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @param bool $recursive If TRUE, recursively fetches files and folders
 	 * @param bool $includeFiles
 	 * @param bool $includeDirs
+	 * @param string $sort Property name used to sort the items.
+	 *                     Among them may be: '' (empty, no sorting), name,
+	 *                     fileext, size, tstamp and rw.
+	 *                     If a driver does not support the given property, it
+	 *                     should fall back to "name".
+	 * @param bool $sortRev TRUE to indicate reverse sorting (last to first)
 	 * @return array
 	 */
-	protected function retrieveFileAndFoldersInPath($path, $recursive = FALSE, $includeFiles = TRUE, $includeDirs = TRUE) {
+	protected function retrieveFileAndFoldersInPath($path, $recursive = FALSE, $includeFiles = TRUE, $includeDirs = TRUE, $sort = '', $sortRev = FALSE) {
 		$pathLength = strlen($this->getAbsoluteBasePath());
 		$iteratorMode = \FilesystemIterator::UNIX_PATHS | \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::CURRENT_AS_FILEINFO | \FilesystemIterator::FOLLOW_SYMLINKS;
 		if ($recursive) {
@@ -503,7 +538,68 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 			$directoryEntries[$entryIdentifier] = $entryArray;
 			$iterator->next();
 		}
-		return $directoryEntries;
+		return $this->sortDirectoryEntries($directoryEntries, $sort, $sortRev);
+	}
+
+	/**
+	 * Sort the directory entries by a certain key
+	 *
+	 * @param array $directoryEntries Array of directory entry arrays from
+	 *                                retrieveFileAndFoldersInPath()
+	 * @param string $sort Property name used to sort the items.
+	 *                     Among them may be: '' (empty, no sorting), name,
+	 *                     fileext, size, tstamp and rw.
+	 *                     If a driver does not support the given property, it
+	 *                     should fall back to "name".
+	 * @param bool $sortRev TRUE to indicate reverse sorting (last to first)
+	 * @return array Sorted entries. Content of the keys is undefined.
+	 */
+	protected function sortDirectoryEntries($directoryEntries, $sort = '', $sortRev = FALSE) {
+		$entriesToSort = array();
+		foreach ($directoryEntries as $entryArray) {
+			$dir	  = pathinfo($entryArray['name'], PATHINFO_DIRNAME) . '/';
+			$fullPath = $this->getAbsoluteBasePath() . $entryArray['identifier'];
+			switch ($sort) {
+				case 'size':
+					if ($entryArray['type'] === 'file') {
+						$sortingKey = $this->getSpecificFileInformation($fullPath, $dir, 'size');
+					} else {
+						$sortingKey = '0';
+					}
+					break;
+				case 'rw':
+					$perms = $this->getPermissions($entryArray['identifier']);
+					$sortingKey = ($perms['r'] ? 'R' : '')
+						. ($perms['w'] ? 'W' : '');
+					break;
+				case 'fileext':
+					$sortingKey = pathinfo($entryArray['name'], PATHINFO_EXTENSION);
+					break;
+				case 'tstamp':
+					if ($entryArray['type'] === 'file') {
+						$sortingKey = $this->getSpecificFileInformation($fullPath, $dir, 'mtime');
+					} else {
+						$sortingKey = '0';
+					}
+					break;
+				case 'name':
+				case 'file':
+				default:
+					$sortingKey = $entryArray['name'];
+			}
+			$i = 0;
+			while (isset($entriesToSort[$sortingKey . $i])) {
+				$i++;
+			}
+			$entriesToSort[$sortingKey . $i] = $entryArray;
+		}
+		uksort($entriesToSort, 'strnatcasecmp');
+
+		if ($sortRev) {
+			$entriesToSort = array_reverse($entriesToSort);
+		}
+
+		return $entriesToSort;
 	}
 
 	/**
@@ -715,7 +811,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 *
 	 * @param string $folderName The name of the target folder
 	 * @param string $folderIdentifier
-	 *
 	 * @return string
 	 */
 	public function getFolderInFolder($folderName, $folderIdentifier) {
@@ -769,7 +864,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @param string $fileIdentifier
 	 * @param string $targetFolderIdentifier
 	 * @param string $newFileName
-	 *
 	 * @return string
 	 * @throws \RuntimeException
 	 */
@@ -1212,12 +1306,10 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * buffer before. Will be taken care of by the Storage.
 	 *
 	 * @param string $identifier
-	 *
 	 * @return void
 	 */
 	public function dumpFileContents($identifier) {
 		readfile($this->getAbsolutePath($this->canonicalizeAndCheckFileIdentifier($identifier)), 0);
 	}
-
 
 }
