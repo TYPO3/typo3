@@ -137,7 +137,7 @@ class TimeTracker {
 		$this->wrapIcon = array(
 			0 => '',
 			1 => '<img src="' . TYPO3_mainDir . 'gfx/icon_note.gif" width="18" height="16" align="absmiddle" alt="" />',
-			2 => '<img src="' . TYPO3_mainDir . 'gfx/icon_warning.gif" width="18" height="16" align="absmiddle" alt="" />',
+			2 => '<img src="' . TYPO3_mainDir . 'gfx/icon_warning2.gif" width="18" height="16" align="absmiddle" alt="" />',
 			3 => '<img src="' . TYPO3_mainDir . 'gfx/icon_fatalerror.gif" width="18" height="16" align="absmiddle" alt="" />'
 		);
 		$this->starttime = $this->getMilliseconds();
