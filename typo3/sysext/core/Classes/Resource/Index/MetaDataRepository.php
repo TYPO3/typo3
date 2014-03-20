@@ -56,7 +56,7 @@ class MetaDataRepository implements SingletonInterface {
 	 *
 	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
-	protected function getDatabase() {
+	protected function getDatabaseConnection() {
 		return $GLOBALS['TYPO3_DB'];
 	}
 
@@ -82,7 +82,7 @@ class MetaDataRepository implements SingletonInterface {
 		if ($uid <= 0) {
 			throw new \RuntimeException('Metadata can only be retrieved for indexed files.', 1381590731);
 		}
-		$record = $this->getDatabase()->exec_SELECTgetSingleRow('*', $this->tableName, 'file = ' . $uid . $this->getGeneralWhereClause());
+		$record = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', $this->tableName, 'file = ' . $uid . $this->getGeneralWhereClause());
 
 		if ($record === FALSE) {
 			$record = $this->createMetaDataRecord($uid);
@@ -118,9 +118,9 @@ class MetaDataRepository implements SingletonInterface {
 			'cruser_id' => TYPO3_MODE == 'BE' ? $GLOBALS['BE_USER']->user['uid'] : 0
 		);
 		$emptyRecord = array_merge($emptyRecord, $additionalFields);
-		$this->getDatabase()->exec_INSERTquery($this->tableName, $emptyRecord);
+		$this->getDatabaseConnection()->exec_INSERTquery($this->tableName, $emptyRecord);
 		$record = $emptyRecord;
-		$record['uid'] = $this->getDatabase()->sql_insert_id();
+		$record['uid'] = $this->getDatabaseConnection()->sql_insert_id();
 
 		$this->emitRecordCreated($record);
 
@@ -137,7 +137,7 @@ class MetaDataRepository implements SingletonInterface {
 	 */
 	public function update($fileUid, array $data) {
 		if (count($this->tableFields) === 0) {
-			$this->tableFields = $this->getDatabase()->admin_get_fields($this->tableName);
+			$this->tableFields = $this->getDatabaseConnection()->admin_get_fields($this->tableName);
 		}
 		$updateRow = array_intersect_key($data, $this->tableFields);
 		if (array_key_exists('uid', $updateRow)) {
@@ -146,7 +146,7 @@ class MetaDataRepository implements SingletonInterface {
 		$row = $this->findByFileUid($fileUid);
 		if (count($updateRow) > 0) {
 			$updateRow['tstamp'] = time();
-			$this->getDatabase()->exec_UPDATEquery($this->tableName, 'uid = ' . (int)$row['uid'], $updateRow);
+			$this->getDatabaseConnection()->exec_UPDATEquery($this->tableName, 'uid = ' . (int)$row['uid'], $updateRow);
 
 			$this->emitRecordUpdated(array_merge($row, $updateRow));
 		}
@@ -159,7 +159,7 @@ class MetaDataRepository implements SingletonInterface {
 	 * @return void
 	 */
 	public function removeByFileUid($fileUid) {
-		$this->getDatabase()->exec_DELETEquery($this->tableName, 'file=' . (int)$fileUid);
+		$this->getDatabaseConnection()->exec_DELETEquery($this->tableName, 'file=' . (int)$fileUid);
 		$this->emitRecordDeleted($fileUid);
 	}
 

@@ -60,7 +60,7 @@ class CategoryBasedFileCollection extends \TYPO3\CMS\Core\Resource\Collection\Ab
 	 */
 	public function loadContents() {
 
-		$resource = $this->getDatabase()->exec_SELECT_mm_query(
+		$resource = $this->getDatabaseConnection()->exec_SELECT_mm_query(
 			'sys_file_metadata.file',
 			'sys_category',
 			'sys_category_record_mm',
@@ -71,10 +71,10 @@ class CategoryBasedFileCollection extends \TYPO3\CMS\Core\Resource\Collection\Ab
 
 		$resourceFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
 		if ($resource) {
-			while (($record = $this->getDatabase()->sql_fetch_assoc($resource)) !== FALSE) {
+			while (($record = $this->getDatabaseConnection()->sql_fetch_assoc($resource)) !== FALSE) {
 				$this->add($resourceFactory->getFileObject((int)$record['file']));
 			}
-			$this->getDatabase()->sql_free_result($resource);
+			$this->getDatabaseConnection()->sql_free_result($resource);
 		}
 	}
 
@@ -83,7 +83,7 @@ class CategoryBasedFileCollection extends \TYPO3\CMS\Core\Resource\Collection\Ab
 	 *
 	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
-	protected function getDatabase() {
+	protected function getDatabaseConnection() {
 		return $GLOBALS['TYPO3_DB'];
 	}
 

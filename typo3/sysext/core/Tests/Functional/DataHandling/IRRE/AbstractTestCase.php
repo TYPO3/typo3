@@ -152,7 +152,7 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
 	protected function getLastLogEntryMessage() {
 		$message = '';
 
-		$logEntries = $this->getDatabase()->exec_SELECTgetRows('*', 'sys_log', 'error IN (1,2)', '', '', 1);
+		$logEntries = $this->getDatabaseConnection()->exec_SELECTgetRows('*', 'sys_log', 'error IN (1,2)', '', '', 1);
 
 		if (is_array($logEntries) && count($logEntries)) {
 			$message = $logEntries[0]['details'];
@@ -183,7 +183,7 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
 	 * @return array
 	 */
 	protected function getAllRecords($table, $indexField = 'uid') {
-		return $this->getDatabase()->exec_SELECTgetRows('*', $table, '1=1', '', '', '', $indexField);
+		return $this->getDatabaseConnection()->exec_SELECTgetRows('*', $table, '1=1', '', '', '', $indexField);
 	}
 
 	/**
@@ -377,7 +377,7 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
 	 * @return array
 	 */
 	protected function getLogEntries() {
-		return $this->getDatabase()->exec_SELECTgetRows('*', 'sys_log', 'error IN (1,2)');
+		return $this->getDatabaseConnection()->exec_SELECTgetRows('*', 'sys_log', 'error IN (1,2)');
 	}
 
 	/**

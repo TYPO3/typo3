@@ -99,12 +99,12 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
 		// Assemble where clause
 		$where = 'AND ' . self::$storageTableName . '.uid = ' . (int)$this->getIdentifier();
 		// Add condition on tablenames fields
-		$where .= ' AND sys_category_record_mm.tablenames = ' . $this->getDatabase()->fullQuoteStr(
+		$where .= ' AND sys_category_record_mm.tablenames = ' . $this->getDatabaseConnection()->fullQuoteStr(
 			$this->getItemTableName(),
 			'sys_category_record_mm'
 		);
 		// Add condition on fieldname field
-		$where .= ' AND sys_category_record_mm.fieldname = ' . $this->getDatabase()->fullQuoteStr(
+		$where .= ' AND sys_category_record_mm.fieldname = ' . $this->getDatabaseConnection()->fullQuoteStr(
 			$this->getRelationFieldName(),
 			'sys_category_record_mm'
 		);
@@ -126,7 +126,7 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
 			$where .= ' AND (' . $languageCondition . ')';
 		}
 		// Get the related records from the database
-		$resource = $this->getDatabase()->exec_SELECT_mm_query(
+		$resource = $this->getDatabaseConnection()->exec_SELECT_mm_query(
 			$this->getItemTableName() . '.*',
 			self::$storageTableName,
 			'sys_category_record_mm',
@@ -135,7 +135,7 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
 		);
 
 		if ($resource) {
-			while ($record = $this->getDatabase()->sql_fetch_assoc($resource)) {
+			while ($record = $this->getDatabaseConnection()->sql_fetch_assoc($resource)) {
 				// Overlay the record for workspaces
 				$this->getFrontendObject()->sys_page->versionOL(
 					$this->getItemTableName(),
@@ -159,7 +159,7 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
 					$relatedRecords[] = $record;
 				}
 			}
-			$this->getDatabase()->sql_free_result($resource);
+			$this->getDatabaseConnection()->sql_free_result($resource);
 		}
 		return $relatedRecords;
 	}

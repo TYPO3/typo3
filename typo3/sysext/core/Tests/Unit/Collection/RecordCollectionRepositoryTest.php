@@ -67,8 +67,8 @@ class RecordCollectionRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 			'TYPO3\\CMS\\Core\\Database\\DatabaseConnection',
 			array('exec_UPDATEquery', 'exec_SELECTgetSingleRow', 'exec_SELECTgetRows', 'fullQuoteStr')
 		);
-		$this->fixture = $this->getMock('TYPO3\\CMS\\Core\\Collection\\RecordCollectionRepository', array('getDatabase'));
-		$this->fixture->expects($this->any())->method('getDatabase')->will($this->returnValue($this->databaseMock));
+		$this->fixture = $this->getMock('TYPO3\\CMS\\Core\\Collection\\RecordCollectionRepository', array('getDatabaseConnection'));
+		$this->fixture->expects($this->any())->method('getDatabaseConnection')->will($this->returnValue($this->databaseMock));
 		$this->testTableName = uniqid('tx_testtable');
 	}
 

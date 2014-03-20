@@ -224,7 +224,7 @@ abstract class FunctionalTestCase extends BaseTestCase {
 	 *
 	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
-	protected function getDatabase() {
+	protected function getDatabaseConnection() {
 		return $GLOBALS['TYPO3_DB'];
 	}
 
@@ -237,7 +237,7 @@ abstract class FunctionalTestCase extends BaseTestCase {
 	 */
 	protected function setUpBackendUserFromFixture($userUid) {
 		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/be_users.xml');
-		$database = $this->getDatabase();
+		$database = $this->getDatabaseConnection();
 		$userRow = $database->exec_SELECTgetSingleRow('*', 'be_users', 'uid = ' . $userUid);
 
 		/** @var $backendUser \TYPO3\CMS\Core\Authentication\BackendUserAuthentication */
@@ -277,7 +277,7 @@ abstract class FunctionalTestCase extends BaseTestCase {
 			);
 		}
 
-		$database = $this->getDatabase();
+		$database = $this->getDatabaseConnection();
 
 		$xml = simplexml_load_file($path);
 		$foreignKeys = array();
@@ -324,7 +324,7 @@ abstract class FunctionalTestCase extends BaseTestCase {
 	 */
 	protected function setUpFrontendRootPage($pageId, array $typoScriptFiles = array()) {
 		$pageId = (int)$pageId;
-		$page = $this->getDatabase()->exec_SELECTgetSingleRow('*', 'pages', 'uid=' . $pageId);
+		$page = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'pages', 'uid=' . $pageId);
 
 		if (empty($page)) {
 			$this->fail('Cannot set up frontend root page "' . $pageId . '"');
@@ -334,7 +334,7 @@ abstract class FunctionalTestCase extends BaseTestCase {
 			'is_siteroot' => 1
 		);
 
-		$this->getDatabase()->exec_UPDATEquery('pages', 'uid=' . $pageId, $pagesFields);
+		$this->getDatabaseConnection()->exec_UPDATEquery('pages', 'uid=' . $pageId, $pagesFields);
 
 		$templateFields = array(
 			'pid' => $pageId,
@@ -348,7 +348,7 @@ abstract class FunctionalTestCase extends BaseTestCase {
 			$templateFields['config'] .= '<INCLUDE_TYPOSCRIPT: source="FILE:' . $typoScriptFile . '">' . LF;
 		}
 
-		$this->getDatabase()->exec_INSERTquery('sys_template', $templateFields);
+		$this->getDatabaseConnection()->exec_INSERTquery('sys_template', $templateFields);
 	}
 
 	/**

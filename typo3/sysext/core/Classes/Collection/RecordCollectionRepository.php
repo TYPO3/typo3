@@ -59,7 +59,7 @@ class RecordCollectionRepository {
 	 */
 	public function findByUid($uid) {
 		$result = NULL;
-		$data = $this->getDatabase()->exec_SELECTgetSingleRow('*', $this->table, 'uid=' . (int)$uid . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($this->table));
+		$data = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', $this->table, 'uid=' . (int)$uid . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($this->table));
 		if ($data !== NULL) {
 			$result = $this->createDomainObject($data);
 		}
@@ -83,7 +83,7 @@ class RecordCollectionRepository {
 	 */
 	public function findByTableName($tableName) {
 		$conditions = array(
-			$this->tableField . '=' . $this->getDatabase()->fullQuoteStr($tableName, $this->table)
+			$this->tableField . '=' . $this->getDatabaseConnection()->fullQuoteStr($tableName, $this->table)
 		);
 		return $this->queryMultipleRecords($conditions);
 	}
@@ -96,7 +96,7 @@ class RecordCollectionRepository {
 	 */
 	public function findByType($type) {
 		$conditions = array(
-			$this->typeField . '=' . $this->getDatabase()->fullQuoteStr($type, $this->table)
+			$this->typeField . '=' . $this->getDatabaseConnection()->fullQuoteStr($type, $this->table)
 		);
 		return $this->queryMultipleRecords($conditions);
 	}
@@ -110,8 +110,8 @@ class RecordCollectionRepository {
 	 */
 	public function findByTypeAndTableName($type, $tableName) {
 		$conditions = array(
-			$this->typeField . '=' . $this->getDatabase()->fullQuoteStr($type, $this->table),
-			$this->tableField . '=' . $this->getDatabase()->fullQuoteStr($tableName, $this->table)
+			$this->typeField . '=' . $this->getDatabaseConnection()->fullQuoteStr($type, $this->table),
+			$this->tableField . '=' . $this->getDatabaseConnection()->fullQuoteStr($tableName, $this->table)
 		);
 		return $this->queryMultipleRecords($conditions);
 	}
@@ -123,7 +123,7 @@ class RecordCollectionRepository {
 	 * @return void
 	 */
 	public function deleteByUid($uid) {
-		$this->getDatabase()->exec_UPDATEquery($this->table, 'uid=' . (int)$uid, array('deleted' => 1, 'tstamp' => $GLOBALS['EXEC_TIME']));
+		$this->getDatabaseConnection()->exec_UPDATEquery($this->table, 'uid=' . (int)$uid, array('deleted' => 1, 'tstamp' => $GLOBALS['EXEC_TIME']));
 	}
 
 	/**
@@ -139,7 +139,7 @@ class RecordCollectionRepository {
 		} else {
 			$conditionsWhereClause = '1=1';
 		}
-		$data = $this->getDatabase()->exec_SELECTgetRows('*', $this->table, $conditionsWhereClause . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($this->table));
+		$data = $this->getDatabaseConnection()->exec_SELECTgetRows('*', $this->table, $conditionsWhereClause . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($this->table));
 		if ($data !== NULL) {
 			$result = $this->createMultipleDomainObjects($data);
 		}
@@ -182,7 +182,7 @@ class RecordCollectionRepository {
 	 *
 	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
-	protected function getDatabase() {
+	protected function getDatabaseConnection() {
 		return $GLOBALS['TYPO3_DB'];
 	}
 

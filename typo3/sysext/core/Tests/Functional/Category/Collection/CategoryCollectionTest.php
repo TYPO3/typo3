@@ -74,7 +74,7 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	 */
 	public function setUp() {
 		parent::setUp();
-		$this->database = $this->getDatabase();
+		$this->database = $this->getDatabaseConnection();
 		$this->fixture = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Category\\Collection\\CategoryCollection', $this->tableName);
 		$this->collectionRecord = array(
 			'uid' => 0,

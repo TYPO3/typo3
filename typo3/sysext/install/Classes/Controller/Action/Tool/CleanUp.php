@@ -117,7 +117,7 @@ class CleanUp extends Action\AbstractAction {
 				'description' => 'Login process key storage'
 			),
 		);
-		$database = $this->getDatabase();
+		$database = $this->getDatabaseConnection();
 		$allTables = array_keys($database->admin_get_tables());
 		$tables = array();
 		foreach ($tableCandidates as $candidate) {
@@ -136,7 +136,7 @@ class CleanUp extends Action\AbstractAction {
 	 */
 	protected function clearSelectedTables() {
 		$clearedTables = array();
-		$database = $this->getDatabase();
+		$database = $this->getDatabaseConnection();
 		foreach ($this->postValues['values'] as $tableName => $selected) {
 			if ($selected == 1) {
 				$database->exec_TRUNCATEquery($tableName);
@@ -162,7 +162,7 @@ class CleanUp extends Action\AbstractAction {
 	 * @return \TYPO3\CMS\Install\Status\StatusInterface
 	 */
 	protected function resetBackendUserUc() {
-		$database = $this->getDatabase();
+		$database = $this->getDatabaseConnection();
 		$database->exec_UPDATEquery('be_users', '', array('uc' => ''));
 		/** @var \TYPO3\CMS\Install\Status\OkStatus $message */
 		$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\OkStatus');

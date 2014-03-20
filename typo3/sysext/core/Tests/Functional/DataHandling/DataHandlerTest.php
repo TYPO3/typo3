@@ -69,7 +69,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 
 		$this->assertGreaterThanOrEqual(1, $uid);
 
-		$database = $this->getDatabase();
+		$database = $this->getDatabaseConnection();
 		$row = $database->exec_SELECTgetSingleRow('*', 'tt_content', 'uid = ' . $uid);
 		$this->assertNotEmpty($row);
 
@@ -103,7 +103,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$uid = $dataHandler->copyMappingArray_merged['tt_content'][$originalRecordId];
 		$this->assertGreaterThanOrEqual(2, $uid);
 
-		$database = $this->getDatabase();
+		$database = $this->getDatabaseConnection();
 		$row = $database->exec_SELECTgetSingleRow('*', 'tt_content', 'uid = ' . $uid);
 		$this->assertNotEmpty($row);
 
@@ -118,7 +118,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	 */
 	public function canCopyPasteTtContent() {
 		$this->importDataSet(dirname(__FILE__) . '/../Fixtures/tt_content.xml');
-		$database = $this->getDatabase();
+		$database = $this->getDatabaseConnection();
 
 		$dataHandler = $this->getDataHandler();
 		$originalRecordId  = 1;
@@ -171,7 +171,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	 */
 	public function canCutPasteTtContent() {
 		$this->importDataSet(dirname(__FILE__) . '/../Fixtures/tt_content.xml');
-		$database = $this->getDatabase();
+		$database = $this->getDatabaseConnection();
 
 		$dataHandler = $this->getDataHandler();
 		$originalRecordId  = 1;

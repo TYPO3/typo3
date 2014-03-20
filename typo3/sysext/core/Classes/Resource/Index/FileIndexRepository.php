@@ -62,7 +62,7 @@ class FileIndexRepository implements SingletonInterface {
 	 *
 	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
-	protected function getDatabase() {
+	protected function getDatabaseConnection() {
 		return $GLOBALS['TYPO3_DB'];
 	}
 
@@ -103,7 +103,7 @@ class FileIndexRepository implements SingletonInterface {
 	 * @return array|boolean
 	 */
 	public function findOneByUid($fileUid) {
-		$row = $this->getDatabase()->exec_SELECTgetSingleRow(
+		$row = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
 			implode(',', $this->fields),
 			$this->table,
 			'uid=' . (int)$fileUid
@@ -135,10 +135,10 @@ class FileIndexRepository implements SingletonInterface {
 	 * @internal only for use from FileRepository
 	 */
 	public function findOneByStorageUidAndIdentifierHash($storageUid, $identifierHash) {
-		$row = $this->getDatabase()->exec_SELECTgetSingleRow(
+		$row = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
 			implode(',', $this->fields),
 			$this->table,
-			sprintf('storage=%u AND identifier_hash=%s', (int)$storageUid, $this->getDatabase()->fullQuoteStr($identifierHash, $this->table))
+			sprintf('storage=%u AND identifier_hash=%s', (int)$storageUid, $this->getDatabaseConnection()->fullQuoteStr($identifierHash, $this->table))
 		);
 		return is_array($row) ? $row : FALSE;
 	}
@@ -168,10 +168,10 @@ class FileIndexRepository implements SingletonInterface {
 		if (!preg_match('/^[0-9a-f]{40}$/i', $hash)) {
 			return array();
 		}
-		$resultRows = $this->getDatabase()->exec_SELECTgetRows(
+		$resultRows = $this->getDatabaseConnection()->exec_SELECTgetRows(
 			implode(',', $this->fields),
 			$this->table,
-			'sha1=' . $this->getDatabase()->fullQuoteStr($hash, $this->table)
+			'sha1=' . $this->getDatabaseConnection()->fullQuoteStr($hash, $this->table)
 		);
 		return $resultRows;
 	}
@@ -183,10 +183,10 @@ class FileIndexRepository implements SingletonInterface {
 	 * @return array|NULL
 	 */
 	public function findByFolder(\TYPO3\CMS\Core\Resource\Folder $folder) {
-		$resultRows = $this->getDatabase()->exec_SELECTgetRows(
+		$resultRows = $this->getDatabaseConnection()->exec_SELECTgetRows(
 			implode(',', $this->fields),
 			$this->table,
-			'folder_hash = ' . $this->getDatabase()->fullQuoteStr($folder->getHashedIdentifier(), $this->table) .
+			'folder_hash = ' . $this->getDatabaseConnection()->fullQuoteStr($folder->getHashedIdentifier(), $this->table) .
 				' AND storage  = ' . (int)$folder->getStorage()->getUid(),
 			'',
 			'',
@@ -233,8 +233,8 @@ class FileIndexRepository implements SingletonInterface {
 	protected function insertRecord(array $data) {
 		$data = array_intersect_key($data, array_flip($this->fields));
 		$data['tstamp'] = time();
-		$this->getDatabase()->exec_INSERTquery($this->table, $data);
-		$data['uid'] = $this->getDatabase()->sql_insert_id();
+		$this->getDatabaseConnection()->exec_INSERTquery($this->table, $data);
+		$data['uid'] = $this->getDatabaseConnection()->sql_insert_id();
 		$this->emitRecordCreated($data);
 		return $data['uid'];
 	}
@@ -245,7 +245,7 @@ class FileIndexRepository implements SingletonInterface {
 	 * @return boolean
 	 */
 	public function hasIndexRecord(File $file) {
-		return $this->getDatabase()->exec_SELECTcountRows('uid', $this->table, $this->getWhereClauseForFile($file)) >= 1;
+		return $this->getDatabaseConnection()->exec_SELECTcountRows('uid', $this->table, $this->getWhereClauseForFile($file)) >= 1;
 	}
 
 	/**
@@ -262,7 +262,7 @@ class FileIndexRepository implements SingletonInterface {
 		}
 		if (count($updateRow) > 0) {
 			$updateRow['tstamp'] = time();
-			$this->getDatabase()->exec_UPDATEquery($this->table, $this->getWhereClauseForFile($file), $updateRow);
+			$this->getDatabaseConnection()->exec_UPDATEquery($this->table, $this->getWhereClauseForFile($file), $updateRow);
 			$this->emitRecordUpdated(array_intersect_key($file->getProperties(), array_flip($this->fields)));
 		}
 	}
@@ -275,7 +275,7 @@ class FileIndexRepository implements SingletonInterface {
 	 * @return array
 	 */
 	public function findInStorageWithIndexOutstanding(\TYPO3\CMS\Core\Resource\ResourceStorage $storage, $limit = -1) {
-		return $this->getDatabase()->exec_SELECTgetRows(
+		return $this->getDatabaseConnection()->exec_SELECTgetRows(
 			implode(',', $this->fields),
 			$this->table,
 			'tstamp > last_indexed AND storage = ' . (int)$storage->getUid(),
@@ -297,7 +297,7 @@ class FileIndexRepository implements SingletonInterface {
 		array_walk($uidList, 'intval');
 		$uidList = array_unique($uidList);
 
-		return $this->getDatabase()->exec_SELECTgetRows(
+		return $this->getDatabaseConnection()->exec_SELECTgetRows(
 			implode(',', $this->fields),
 			$this->table,
 			'storage = ' . (int)$storage->getUid() . ' AND uid NOT IN (' . implode(',', $uidList) . ')'
@@ -311,7 +311,7 @@ class FileIndexRepository implements SingletonInterface {
 	 * @return void
 	 */
 	public function updateIndexingTime($fileUid) {
-		$this->getDatabase()->exec_UPDATEquery($this->table, 'uid = ' . (int)$fileUid, array('last_indexed' => time()));
+		$this->getDatabaseConnection()->exec_UPDATEquery($this->table, 'uid = ' . (int)$fileUid, array('last_indexed' => time()));
 	}
 
 	/**
@@ -321,7 +321,7 @@ class FileIndexRepository implements SingletonInterface {
 	 * @return void
 	 */
 	public function markFileAsMissing($fileUid) {
-		$this->getDatabase()->exec_UPDATEquery($this->table, 'uid = ' . (int)$fileUid, array('missing' => 1));
+		$this->getDatabaseConnection()->exec_UPDATEquery($this->table, 'uid = ' . (int)$fileUid, array('missing' => 1));
 	}
 
 	/**
@@ -338,7 +338,7 @@ class FileIndexRepository implements SingletonInterface {
 			$where = sprintf(
 				'storage=%u AND identifier=%s',
 				(int)$file->getStorage()->getUid(),
-				$this->getDatabase()->fullQuoteStr($file->_getPropertyRaw('identifier'), $this->table)
+				$this->getDatabaseConnection()->fullQuoteStr($file->_getPropertyRaw('identifier'), $this->table)
 			);
 		}
 		return $where;
@@ -351,7 +351,7 @@ class FileIndexRepository implements SingletonInterface {
 	 * @return void
 	 */
 	public function remove($fileUid) {
-		$this->getDatabase()->exec_DELETEquery($this->table, 'uid=' . (int)$fileUid);
+		$this->getDatabaseConnection()->exec_DELETEquery($this->table, 'uid=' . (int)$fileUid);
 		$this->emitRecordDeleted($fileUid);
 	}
 

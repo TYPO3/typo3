@@ -249,7 +249,7 @@ abstract class AbstractAction implements ActionInterface {
 	 *
 	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
-	protected function getDatabase() {
+	protected function getDatabaseConnection() {
 		static $database;
 		if (!is_object($database)) {
 			/** @var \TYPO3\CMS\Core\Database\DatabaseConnection $database */

@@ -123,16 +123,16 @@ class CategoryCollection extends \TYPO3\CMS\Core\Collection\AbstractRecordCollec
 		// Assemble where clause
 		$where = 'AND ' . self::$storageTableName . '.uid = ' . (int)$this->getIdentifier();
 		// Add condition on tablenames fields
-		$where .= ' AND sys_category_record_mm.tablenames = ' . $this->getDatabase()->fullQuoteStr(
+		$where .= ' AND sys_category_record_mm.tablenames = ' . $this->getDatabaseConnection()->fullQuoteStr(
 			$this->getItemTableName(),
 			'sys_category_record_mm'
 		);
 		// Add condition on fieldname field
-		$where .= ' AND sys_category_record_mm.fieldname = ' . $this->getDatabase()->fullQuoteStr(
+		$where .= ' AND sys_category_record_mm.fieldname = ' . $this->getDatabaseConnection()->fullQuoteStr(
 			$this->getRelationFieldName(),
 			'sys_category_record_mm'
 		);
-		$resource = $this->getDatabase()->exec_SELECT_mm_query(
+		$resource = $this->getDatabaseConnection()->exec_SELECT_mm_query(
 			$this->getItemTableName() . '.*',
 			self::$storageTableName,
 			'sys_category_record_mm',
@@ -140,10 +140,10 @@ class CategoryCollection extends \TYPO3\CMS\Core\Collection\AbstractRecordCollec
 			$where
 		);
 		if ($resource) {
-			while ($record = $this->getDatabase()->sql_fetch_assoc($resource)) {
+			while ($record = $this->getDatabaseConnection()->sql_fetch_assoc($resource)) {
 				$relatedRecords[] = $record;
 			}
-			$this->getDatabase()->sql_free_result($resource);
+			$this->getDatabaseConnection()->sql_free_result($resource);
 		}
 		return $relatedRecords;
 	}
@@ -286,7 +286,7 @@ class CategoryCollection extends \TYPO3\CMS\Core\Collection\AbstractRecordCollec
 	 *
 	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
-	protected function getDatabase() {
+	protected function getDatabaseConnection() {
 		return $GLOBALS['TYPO3_DB'];
 	}
 

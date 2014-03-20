@@ -87,7 +87,7 @@ class ImportantActions extends Action\AbstractAction {
 			->assign('databaseHost', $GLOBALS['TYPO3_CONF_VARS']['DB']['host'])
 			->assign('databasePort', $GLOBALS['TYPO3_CONF_VARS']['DB']['port'])
 			->assign('databaseSocket', $GLOBALS['TYPO3_CONF_VARS']['DB']['socket'])
-			->assign('databaseNumberOfTables', count($this->getDatabase()->admin_get_tables()))
+			->assign('databaseNumberOfTables', count($this->getDatabaseConnection()->admin_get_tables()))
 			->assign('extensionCompatibilityTesterProtocolFile', GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3temp/ExtensionCompatibilityTester.txt')
 			->assign('extensionCompatibilityTesterErrorProtocolFile', GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3temp/ExtensionCompatibilityTesterErrors.json');
 
@@ -211,7 +211,7 @@ class ImportantActions extends Action\AbstractAction {
 			$message->setTitle('Administrator user not created');
 			$message->setMessage('Password must be at least eight characters long.');
 		} else {
-			$database = $this->getDatabase();
+			$database = $this->getDatabaseConnection();
 			$userExists = $database->exec_SELECTcountRows(
 				'uid',
 				'be_users',

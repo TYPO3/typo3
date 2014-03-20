@@ -75,7 +75,7 @@ class FileDeletionAspect {
 	 *
 	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
-	protected function getDatabase() {
+	protected function getDatabaseConnection() {
 		return $GLOBALS['TYPO3_DB'];
 	}
 
@@ -94,13 +94,13 @@ class FileDeletionAspect {
 			$this->getMetaDataRepository()->removeByFileUid($fileObject->getUid());
 
 			// remove all references
-			$this->getDatabase()->exec_DELETEquery(
+			$this->getDatabaseConnection()->exec_DELETEquery(
 				'sys_file_reference',
 				'uid_local=' . (int)$fileObject->getUid() . ' AND table_local = \'sys_file\''
 			);
 
 		} elseif ($fileObject instanceof ProcessedFile) {
-			$this->getDatabase()->exec_DELETEquery('sys_file_processedfile', 'uid=' . (int)$fileObject->getUid());
+			$this->getDatabaseConnection()->exec_DELETEquery('sys_file_processedfile', 'uid=' . (int)$fileObject->getUid());
 		}
 	}
 
@@ -116,7 +116,7 @@ class FileDeletionAspect {
 		$metadataProperties = $fileObject->_getMetaData();
 
 		$metaDataUid = isset($metadataProperties['_ORIG_uid']) ? $metadataProperties['_ORIG_uid'] : $metadataProperties['uid'];
-		$this->getDatabase()->exec_DELETEquery(
+		$this->getDatabaseConnection()->exec_DELETEquery(
 			'sys_category_record_mm',
 			'uid_foreign=' . (int)$metaDataUid . ' AND tablenames = \'sys_file_metadata\''
 		);

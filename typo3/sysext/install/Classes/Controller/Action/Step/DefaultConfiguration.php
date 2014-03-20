@@ -45,7 +45,7 @@ class DefaultConfiguration extends AbstractStepAction {
 
 			// update the admin backend user to show the distribution management on login
 			$adminUserFirstLogin = array('startModuleOnFirstLogin' => 'tools_ExtensionmanagerExtensionmanager->tx_extensionmanager_tools_extensionmanagerextensionmanager%5Baction%5D=distributions&tx_extensionmanager_tools_extensionmanagerextensionmanager%5Bcontroller%5D=List');
-			$this->getDatabase()->exec_UPDATEquery(
+			$this->getDatabaseConnection()->exec_UPDATEquery(
 					'be_users',
 					'admin=1',
 					array('uc' => serialize($adminUserFirstLogin))

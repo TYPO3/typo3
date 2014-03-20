@@ -122,11 +122,11 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 
 		foreach ($dataSet->getTableNames() as $tableName) {
 			foreach ($dataSet->getElements($tableName) as $element) {
-				$this->getDatabase()->exec_INSERTquery(
+				$this->getDatabaseConnection()->exec_INSERTquery(
 					$tableName,
 					$element
 				);
-				$sqlError = $this->getDatabase()->sql_error();
+				$sqlError = $this->getDatabaseConnection()->sql_error();
 				if (!empty($sqlError)) {
 					$this->fail('SQL Error for table "' . $tableName . '": ' . LF . $sqlError);
 				}
@@ -207,7 +207,7 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 		if ($this->expectedErrorLogEntries === NULL) {
 			return;
 		}
-		$errorLogEntries = $this->getDatabase()->exec_SELECTgetRows('*', 'sys_log', 'error IN (1,2)');
+		$errorLogEntries = $this->getDatabaseConnection()->exec_SELECTgetRows('*', 'sys_log', 'error IN (1,2)');
 		$actualErrorLogEntries = count($errorLogEntries);
 		if ($actualErrorLogEntries === $this->expectedErrorLogEntries) {
 			$this->assertSame($this->expectedErrorLogEntries, $actualErrorLogEntries);
@@ -230,7 +230,7 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 	protected function getAllRecords($tableName, $hasUidField = FALSE) {
 		$allRecords = array();
 
-		$records = $this->getDatabase()->exec_SELECTgetRows(
+		$records = $this->getDatabaseConnection()->exec_SELECTgetRows(
 			'*',
 			$tableName,
 			'1=1',

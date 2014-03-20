@@ -64,7 +64,7 @@ class ClearCacheService {
 		$bootstrap->reinitializeClassLoaderAndCachesAndPackageManagement();
 
 		// Get all table names starting with 'cf_' and truncate them
-		$database = $this->getDatabaseInstance();
+		$database = $this->getDatabaseConnection();
 		$tables = $database->admin_get_tables();
 		foreach ($tables as $table) {
 			$tableName = $table['Name'];
@@ -102,7 +102,7 @@ class ClearCacheService {
 	 * @TODO: This method is a copy from AbstractAction. Review them and extract to service
 	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
-	protected function getDatabaseInstance() {
+	protected function getDatabaseConnection() {
 		static $database;
 		if (!is_object($database)) {
 			/** @var \TYPO3\CMS\Core\Database\DatabaseConnection $database */

@@ -167,7 +167,7 @@ class UpgradeWizard extends Action\AbstractAction {
 	 * @return \TYPO3\CMS\Install\Status\StatusInterface
 	 */
 	protected function performUpdate() {
-		$this->getDatabase()->store_lastBuiltQuery = TRUE;
+		$this->getDatabaseConnection()->store_lastBuiltQuery = TRUE;
 
 		$wizardIdentifier = $this->postValues['values']['identifier'];
 		$className = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$wizardIdentifier];
@@ -219,7 +219,7 @@ class UpgradeWizard extends Action\AbstractAction {
 
 		$this->view->assign('wizardData', $wizardData);
 
-		$this->getDatabase()->store_lastBuiltQuery = FALSE;
+		$this->getDatabaseConnection()->store_lastBuiltQuery = FALSE;
 
 		// Next update wizard, if available
 		$nextUpgradeWizard = $this->getNextUpgradeWizardInstance($updateObject);
@@ -313,7 +313,7 @@ class UpgradeWizard extends Action\AbstractAction {
 	 *
 	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
-	protected function getDatabase() {
+	protected function getDatabaseConnection() {
 		return $GLOBALS['TYPO3_DB'];
 	}
 }

@@ -73,7 +73,7 @@ class DatabaseData extends AbstractStepAction {
 			'tstamp' => $GLOBALS['EXEC_TIME'],
 			'crdate' => $GLOBALS['EXEC_TIME']
 		);
-		$this->getDatabase()->exec_INSERTquery('be_users', $adminUserFields);
+		$this->getDatabaseConnection()->exec_INSERTquery('be_users', $adminUserFields);
 
 		// Set password as install tool password
 		$configurationManager->setLocalConfigurationValueByPath('BE/installToolPassword', $hashedPassword);
@@ -88,7 +88,7 @@ class DatabaseData extends AbstractStepAction {
 	 */
 	public function needsExecution() {
 		$result = FALSE;
-		$existingTables = $this->getDatabase()->admin_get_tables();
+		$existingTables = $this->getDatabaseConnection()->admin_get_tables();
 		if (count($existingTables) === 0) {
 			$result = TRUE;
 		}
@@ -116,7 +116,7 @@ class DatabaseData extends AbstractStepAction {
 		$this->loadExtLocalconfDatabaseAndExtTables();
 
 		// Import database data
-		$database = $this->getDatabase();
+		$database = $this->getDatabaseConnection();
 		/** @var \TYPO3\CMS\Install\Service\SqlSchemaMigrationService $schemaMigrationService */
 		$schemaMigrationService = $this->objectManager->get('TYPO3\\CMS\\Install\\Service\\SqlSchemaMigrationService');
 		/** @var \TYPO3\CMS\Install\Service\SqlExpectedSchemaService $expectedSchemaService */

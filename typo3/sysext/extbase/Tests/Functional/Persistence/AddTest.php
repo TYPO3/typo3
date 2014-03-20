@@ -77,7 +77,7 @@ class AddTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$this->blogRepository->add($newBlog);
 		$this->persistentManager->persistAll();
 
-		$newBlogCount = $this->getDatabase()->exec_SELECTcountRows('*', 'tx_blogexample_domain_model_blog', 'title = \'' . $newBlogTitle . '\'');
+		$newBlogCount = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'tx_blogexample_domain_model_blog', 'title = \'' . $newBlogTitle . '\'');
 		$this->assertSame(1, $newBlogCount);
 	}
 }
