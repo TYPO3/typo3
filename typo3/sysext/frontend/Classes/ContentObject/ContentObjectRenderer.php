@@ -154,8 +154,8 @@ class ContentObjectRenderer {
 		'rawUrlEncode.' => 'array',
 		'htmlSpecialChars' => 'boolean',
 		'htmlSpecialChars.' => 'array',
-		'escapeJsValue' => 'boolean',
-		'escapeJsValue.' => 'array',
+		'encodeForJavaScriptValue' => 'boolean',
+		'encodeForJavaScriptValue.' => 'array',
 		'doubleBrTag' => 'string',
 		'doubleBrTag.' => 'array',
 		'br' => 'boolean',
@@ -2848,16 +2848,16 @@ class ContentObjectRenderer {
 	}
 
 	/**
-	 * escapeJsValue
+	 * encodeForJavaScriptValue
 	 * Escapes content to be used inside JavaScript strings. No quotes are added around the value
 	 * as this can easily be done in TypoScript
 	 *
 	 * @param string $content Input value undergoing processing in this function
-	 * @param array $conf stdWrap properties for escapeJsvalue
+	 * @param array $conf stdWrap properties for encodeForJavaScriptValue
 	 * @return string The processed input value
 	 */
-	public function stdWrap_escapeJsValue($content = '', $conf = array()) {
-		return trim(GeneralUtility::quoteJSvalue($content), '\'');
+	public function stdWrap_encodeForJavaScriptValue($content = '', $conf = array()) {
+		return GeneralUtility::quoteJSvalue($content);
 	}
 
 	/**

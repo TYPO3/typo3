@@ -1514,59 +1514,59 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Data provider for stdWrap_escapeJsValue test
+	 * Data provider for stdWrap_encodeForJavaScriptValue test
 	 *
 	 * @return array multi-dimensional array with the second level like this:
-	 * @see escapeJsValue
+	 * @see encodeForJavaScriptValue
 	 */
-	public function stdWrap_escapeJsValueDataProvider() {
+	public function stdWrap_encodeForJavaScriptValueDataProvider() {
 		return array(
 			'double quote in string' => array(
 				'double quote"',
 				array(),
-				'double\u0020quote\u0022'
+				'\'double\u0020quote\u0022\''
 			),
 			'backslash in string' => array(
 				'backslash \\',
 				array(),
-				'backslash\u0020\u005C'
+				'\'backslash\u0020\u005C\''
 			),
 			'exclamation mark' => array(
 				'exclamation!',
 				array(),
-				'exclamation\u0021'
+				'\'exclamation\u0021\''
 			),
 			'whitespace tab, newline and carriage return' => array(
 				"white\tspace\ns\r",
 				array(),
-				'white\u0009space\u000As\u000D'
+				'\'white\u0009space\u000As\u000D\''
 			),
 			'single quote in string' => array(
 				'single quote \'',
 				array(),
-				'single\u0020quote\u0020\u0027'
+				'\'single\u0020quote\u0020\u0027\''
 			),
 			'tag' => array(
 				'<tag>',
 				array(),
-				'\u003Ctag\u003E'
+				'\'\u003Ctag\u003E\''
 			),
 			'ampersand in string' => array(
 				'amper&sand',
 				array(),
-				'amper\u0026sand'
+				'\'amper\u0026sand\''
 			),
 		);
 	}
 
 	/**
-	 * Check if escapeJsValue works properly
+	 * Check if encodeForJavaScriptValue works properly
 	 *
-	 * @dataProvider stdWrap_escapeJsValueDataProvider
+	 * @dataProvider stdWrap_encodeForJavaScriptValueDataProvider
 	 * @test
 	 */
-	public function stdWrap_escapeJsValue($input, $conf, $expected) {
-		$result = $this->cObj->stdWrap_escapeJsValue($input, $conf);
+	public function stdWrap_encodeForJavaScriptValue($input, $conf, $expected) {
+		$result = $this->cObj->stdWrap_encodeForJavaScriptValue($input, $conf);
 		$this->assertEquals($expected, $result);
 	}
 
