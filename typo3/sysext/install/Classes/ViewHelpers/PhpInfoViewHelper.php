@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Install\Utility;
+namespace TYPO3\CMS\Install\ViewHelpers;
 
 /***************************************************************
  *  Copyright notice
@@ -29,14 +29,22 @@ namespace TYPO3\CMS\Install\Utility;
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
  */
-class PhpInfo {
+class PhpInfoViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
-	 * Get the content of the body tag of phpinfo()
+	 * Disable the escaping interceptor because otherwise the child nodes would be escaped before this view helper
+	 * can decode the text's entities.
+	 *
+	 * @var boolean
+	 */
+	protected $escapingInterceptorEnabled = FALSE;
+
+	/**
+	 * Render PHP info
 	 *
 	 * @return string
 	 */
-	public function getBodyContent() {
+	public function render() {
 		return $this->removeAllHtmlOutsideBody(
 			$this->changeHtmlToHtml5(
 				$this->getPhpInfo()
@@ -63,7 +71,7 @@ class PhpInfo {
 	 * @return string Content of the body tag
 	 */
 	protected function removeAllHtmlOutsideBody($html) {
-			// Delete anything outside of the body tag and the body tag itself
+		// Delete anything outside of the body tag and the body tag itself
 		$html = preg_replace('/^.*?<body.*?>/is', '', $html);
 		$html = preg_replace('/<\/body>.*?$/is', '', $html);
 
@@ -77,12 +85,10 @@ class PhpInfo {
 	 * @return string
 	 */
 	protected function changeHtmlToHtml5($html) {
-			// Delete obsolete attributes
+		// Delete obsolete attributes
 		$html = preg_replace('#\s(cellpadding|border|width)="[^"]+"#', '', $html);
 
-			// Replace font tag with span
-		$html = str_replace(array('<font', '</font>'), array('<span', '</span>'), $html);
-
-		return $html;
+		// Replace font tag with span
+		return str_replace(array('<font', '</font>'), array('<span', '</span>'), $html);
 	}
 }
