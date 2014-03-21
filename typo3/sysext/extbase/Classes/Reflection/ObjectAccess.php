@@ -94,7 +94,7 @@ class ObjectAccess {
 	 * @internal
 	 */
 	static public function getPropertyInternal($subject, $propertyName, $forceDirectAccess, &$propertyExists) {
-		if ($subject === NULL) {
+		if ($subject === NULL || is_scalar($subject)) {
 			return NULL;
 		}
 		$propertyExists = TRUE;
