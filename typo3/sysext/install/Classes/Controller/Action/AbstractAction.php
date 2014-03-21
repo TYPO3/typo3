@@ -105,28 +105,6 @@ abstract class AbstractAction implements ActionInterface {
 	 * @return void
 	 */
 	protected function initializeHandle() {
-		/** @var \TYPO3\CMS\Install\Status\StatusUtility $statusUtility */
-		$statusUtility = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\StatusUtility');
-
-		// Count of failed environment checks are displayed in the left navigation menu
-		$environmentStatus = $this->objectManager->get('TYPO3\\CMS\\Install\\SystemEnvironment\\Check')->getStatus();
-		$environmentErrors = $statusUtility->filterBySeverity($environmentStatus, 'error');
-
-		// Count of folder structure errors are displayed in left navigation menu
-		/** @var $folderStructureFacade \TYPO3\CMS\Install\FolderStructure\StructureFacade */
-		$folderStructureFacade = $this->objectManager->get('TYPO3\\CMS\\Install\\FolderStructure\\DefaultFactory')->getStructure();
-		$folderStatus = $folderStructureFacade->getStatus();
-
-		/** @var $permissionCheck \TYPO3\CMS\Install\FolderStructure\DefaultPermissionsCheck */
-		$permissionCheck = $this->objectManager->get('TYPO3\\CMS\\Install\\FolderStructure\\DefaultPermissionsCheck');
-		$folderStatus[] = $permissionCheck->getMaskStatus('fileCreateMask');
-		$folderStatus[] = $permissionCheck->getMaskStatus('folderCreateMask');
-
-		$folderStructureErrors = array_merge(
-			$statusUtility->filterBySeverity($folderStatus, 'error'),
-			$statusUtility->filterBySeverity($folderStatus, 'warning')
-		);
-
 		// Context service distinguishes between standalone and backend context
 		$contextService = $this->objectManager->get('TYPO3\\CMS\\Install\\Service\\ContextService');
 
@@ -147,9 +125,7 @@ abstract class AbstractAction implements ActionInterface {
 			->assign('lastError', $this->lastError)
 			->assign('messages', $this->messages)
 			->assign('typo3Version', TYPO3_version)
-			->assign('siteName', $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'])
-			->assign('environmentErrors', $environmentErrors)
-			->assign('folderStructureErrors', $folderStructureErrors);
+			->assign('siteName', $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
 	}
 
 	/**

@@ -53,6 +53,8 @@ class AjaxController extends AbstractController {
 		'coreUpdateUnpack',
 		'coreUpdateMove',
 		'coreUpdateActivate',
+		'folderStatus',
+		'environmentStatus'
 	);
 
 	/**
