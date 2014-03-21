@@ -32,7 +32,41 @@ use TYPO3\CMS\Core\Resource;
 /**
  * An Interface for MetaData extractors the FAL Indexer uses
  */
-interface ExtractorInterface extends Resource\Processing\FileBasedConstraintInterface {
+interface ExtractorInterface {
+
+	/**
+	 * Returns an array of supported file types;
+	 * An empty array indicates all filetypes
+	 *
+	 * @return array
+	 */
+	public function getFileTypeRestrictions();
+
+
+	/**
+	 * Get all supported DriverClasses
+	 *
+	 * Since some extractors may only work for local files, and other extractors
+	 * are especially made for grabbing data from remote.
+	 *
+	 * Returns array of string with driver names of Drivers which are supported,
+	 * If the driver did not register a name, it's the classname.
+	 * empty array indicates no restrictions
+	 *
+	 * @return array
+	 */
+	public function getDriverRestrictions();
+
+	/**
+	 * Returns the data priority of the extraction Service.
+	 * Defines the precedence of Data if several extractors
+	 * extracted the same property.
+	 *
+	 * Should be between 1 and 100, 100 is more important than 1
+	 *
+	 * @return integer
+	 */
+	public function getPriority();
 
 	/**
 	 * Returns the execution priority of the extraction Service
@@ -60,5 +94,6 @@ interface ExtractorInterface extends Resource\Processing\FileBasedConstraintInte
 	 * @return array
 	 */
 	public function extractMetaData(Resource\File $file, array $previousExtractedData = array());
+
 
 }
