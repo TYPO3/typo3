@@ -98,7 +98,7 @@ class LiveSearchToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHoo
 	 * @return string List item HTML attributes
 	 */
 	public function getAdditionalAttributes() {
-		return ' id="live-search-menu"';
+		return 'id="live-search-menu"';
 	}
 
 }

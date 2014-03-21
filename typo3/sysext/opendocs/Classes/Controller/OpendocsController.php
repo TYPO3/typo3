@@ -189,7 +189,7 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 	 * @return string List item HTML attibutes
 	 */
 	public function getAdditionalAttributes() {
-		return ' id="tx-opendocs-menu"';
+		return 'id="tx-opendocs-menu"';
 	}
 
 	/**

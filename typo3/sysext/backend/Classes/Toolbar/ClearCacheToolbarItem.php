@@ -177,7 +177,7 @@ class ClearCacheToolbarItem implements ToolbarItemHookInterface {
 	 * @return string List item HTML attributes
 	 */
 	public function getAdditionalAttributes() {
-		return ' id="clear-cache-actions-menu"';
+		return 'id="clear-cache-actions-menu"';
 	}
 
 	/**

@@ -162,7 +162,7 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 	 * @return 	string		list item HTML attibutes
 	 */
 	public function getAdditionalAttributes() {
-		return ' id="workspace-selector-menu"';
+		return 'id="workspace-selector-menu"';
 	}
 
 }

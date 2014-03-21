@@ -241,7 +241,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 	 * @return string List item HTML attibutes
 	 */
 	public function getAdditionalAttributes() {
-		return ' id="shortcut-menu"';
+		return 'id="shortcut-menu"';
 	}
 
 	/**

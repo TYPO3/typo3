@@ -133,7 +133,7 @@ class ActionToolbarMenu implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInt
 	 * @return string List item HTML attibutes
 	 */
 	public function getAdditionalAttributes() {
-		return 'id="tx-sys-action-menu" ';
+		return 'id="tx-sys-action-menu"';
 	}
 
 	/**

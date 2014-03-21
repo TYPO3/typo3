@@ -304,19 +304,23 @@ class BackendController {
 		$toolbar .= '<li>' . $this->getLoggedInUserLabel() . '</li>';
 		$toolbar .= '<li class="separator"><div id="logout-button" class="toolbar-item no-separator">' . $this->moduleMenu->renderLogoutButton() . '</div></li>';
 		$i = 0;
+		$numberOfToolbarItems = count($this->toolbarItems);
 		foreach ($this->toolbarItems as $key => $toolbarItem) {
 			$i++;
 			$menu = $toolbarItem->render();
 			if ($menu) {
-				$additionalAttributes = $toolbarItem->getAdditionalAttributes();
-				if (sizeof($this->toolbarItems) > 1 && $i == sizeof($this->toolbarItems) - 1) {
-					if (strpos($additionalAttributes, 'class="')) {
-						str_replace('class="', 'class="separator ', $additionalAttributes);
+				$additionalAttributes = trim($toolbarItem->getAdditionalAttributes());
+				if ($numberOfToolbarItems > 1 && $i == $numberOfToolbarItems - 1) {
+					if (strpos($additionalAttributes, 'class="') !== FALSE) {
+						$additionalAttributes = str_replace('class="', 'class="separator ', $additionalAttributes);
 					} else {
-						$additionalAttributes .= 'class="separator"';
+						$additionalAttributes .= ' class="separator"';
 					}
 				}
-				$toolbar .= '<li ' . $additionalAttributes . '>' . $menu . '</li>';
+				if ($additionalAttributes !== '') {
+					$additionalAttributes = ' ' . $additionalAttributes;
+				}
+				$toolbar .= '<li' . $additionalAttributes . '>' . $menu . '</li>';
 			}
 		}
 		return $toolbar . '</ul>';
