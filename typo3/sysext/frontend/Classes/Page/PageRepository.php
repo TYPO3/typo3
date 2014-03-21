@@ -898,7 +898,7 @@ class PageRepository {
 				}
 
 				// Filter out versioned records
-				if (!$noVersionPreview) {
+				if (!$noVersionPreview && empty($ignore_array['pid'])) {
 					$query .= ' AND ' . $table . '.pid<>-1';
 				}
 			}

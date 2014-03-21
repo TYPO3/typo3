@@ -1280,10 +1280,12 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 		$this->cObj->expects($this->at(0))
 			->method('getTreeList')
-			->with(-16, 15);
+			->with(-16, 15)
+			->will($this->returnValue('15,16'));
 		$this->cObj->expects($this->at(1))
 			->method('getTreeList')
-			->with(-35, 15);
+			->with(-35, 15)
+			->will($this->returnValue('15,35'));
 		$this->cObj->getQuery('tt_content', $conf, TRUE);
 	}
 
@@ -1316,7 +1318,8 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 		$this->cObj->expects($this->once())
 			->method('getTreeList')
-			->with(-27);
+			->with(-27)
+			->will($this->returnValue('27'));
 		$this->cObj->getQuery('tt_content', $conf, TRUE);
 	}
 

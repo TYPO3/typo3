@@ -54,14 +54,7 @@ page {
 				watcher.parentRecordField = categories
 				table = sys_category
 				select {
-					pidInList = 0
-					uidInList.preUserFunc = TYPO3\CMS\Core\Tests\Functional\Framework\Frontend\UserFunction->getManyToManyIds
-					uidInList.preUserFunc {
-						uidForeign.data = field:_ORIG_uid // field:uid
-						manyToManyTableName = sys_category_record_mm
-						matchTableName = tt_content
-						matchFieldName = categories
-					}
+					pidInList = root,-1
 					selectFields = sys_category.*
 					join = sys_category_record_mm ON sys_category_record_mm.uid_local = sys_category.uid
 					where.data = field:_ORIG_uid // field:uid
