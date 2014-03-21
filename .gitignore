@@ -18,6 +18,7 @@
 .buildpath
 .cache
 .project
+.sass-cache
 .session
 .settings
 .TemporaryItems
