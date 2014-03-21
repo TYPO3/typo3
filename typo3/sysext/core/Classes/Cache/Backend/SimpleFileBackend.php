@@ -312,8 +312,7 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
 	 * @api
 	 */
 	public function flush() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::flushDirectory($this->cacheDirectory);
-		$this->createFinalCacheDirectory($this->cacheDirectory);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::flushDirectory($this->cacheDirectory, TRUE);
 	}
 
 	/**

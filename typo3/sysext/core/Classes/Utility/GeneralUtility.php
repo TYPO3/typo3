@@ -2851,14 +2851,18 @@ Connection: close
 	 * to prevent race conditions on concurrent processes accessing the same directory.
 	 *
 	 * @param string $directory The directory to be renamed and flushed
+	 * @param bool $keepOriginalDirectory Whether to only empty the directory and not remove it
 	 * @return boolean Whether the action was successful
 	 */
-	static public function flushDirectory($directory) {
+	static public function flushDirectory($directory, $keepOriginalDirectory = FALSE) {
 		$result = FALSE;
 
 		if (is_dir($directory)) {
 			$temporaryDirectory = rtrim($directory, '/') . '.' . uniqid('remove') . '/';
 			if (rename($directory, $temporaryDirectory)) {
+				if ($keepOriginalDirectory) {
+					self::mkdir($directory);
+				}
 				clearstatcache();
 				$result = self::rmdir($temporaryDirectory, TRUE);
 			}
