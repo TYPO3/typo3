@@ -263,6 +263,7 @@ class Typo3DbQueryParser {
 	 * @param array $orderings An array of orderings (Tx_Extbase_Persistence_QOM_Ordering)
 	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source The source
 	 * @param array &$sql The query parts
+	 * @throws \RuntimeException
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedOrderException
 	 * @return void
 	 */
@@ -329,7 +330,7 @@ class Typo3DbQueryParser {
 			if ($hasValue === FALSE) {
 				$sql['where'][] = '1<>1';
 			} else {
-				$this->parseDynamicOperand($comparison, $source, $sql, NULL);
+				$this->parseDynamicOperand($comparison, $operator, $source, $sql, NULL);
 			}
 		} elseif ($operator === \TYPO3\CMS\Extbase\Persistence\QueryInterface::OPERATOR_CONTAINS) {
 			if ($operand2 === NULL) {
@@ -368,25 +369,22 @@ class Typo3DbQueryParser {
 					$operator = self::OPERATOR_NOT_EQUAL_TO_NULL;
 				}
 			}
-			$this->parseDynamicOperand($comparison, $source, $sql);
+			$this->parseDynamicOperand($comparison, $operator, $source, $sql);
 		}
 	}
 
 	/**
 	 * Parse a DynamicOperand into SQL and parameter arrays.
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface $operand
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ComparisonInterface $comparison
 	 * @param string $operator One of the JCR_OPERATOR_* constants
 	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source The source
 	 * @param array &$sql The query parts
 	 * @param string $valueFunction an optional SQL function to apply to the operand value
 	 * @return void
 	 */
-	protected function parseDynamicOperand(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\ComparisonInterface $comparison, \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source, array &$sql, $valueFunction = NULL) {
+	protected function parseDynamicOperand(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\ComparisonInterface $comparison, $operator, \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source, array &$sql, $valueFunction = NULL) {
 		$operand = $comparison->getOperand1();
-		$operator = $comparison->getOperator();
-		$operand2 = $comparison->getOperand2();
-
 		if ($operand instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\LowerCaseInterface) {
 			$this->parseDynamicOperand($operand->getOperand(), $operator, $source, $sql, 'LOWER');
 		} elseif ($operand instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\UpperCaseInterface) {
