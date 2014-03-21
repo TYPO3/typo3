@@ -31,25 +31,25 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * Determines the relative order of two rows in the result set by evaluating operand for
  * each.
  */
-class Ordering implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\OrderingInterface {
+class Ordering implements OrderingInterface {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface
+	 * @var DynamicOperandInterface
 	 */
 	protected $operand;
 
 	/**
-	 * @var string One of \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelConstantsInterface::JCR_ORDER_*
+	 * @var string One of \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_*
 	 */
 	protected $order;
 
 	/**
 	 * Constructs the Ordering instance
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface $operand The operand; non-null
-	 * @param string $order either \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelConstantsInterface::JCR_ORDER_ASCENDING or \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelConstantsInterface::JCR_ORDER_DESCENDING
+	 * @param DynamicOperandInterface $operand The operand; non-null
+	 * @param string $order One of \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_*
 	 */
-	public function __construct(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface $operand, $order = \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelConstantsInterface::JCR_ORDER_ASCENDING) {
+	public function __construct(DynamicOperandInterface $operand, $order = \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING) {
 		$this->operand = $operand;
 		$this->order = $order;
 	}
@@ -57,7 +57,7 @@ class Ordering implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\OrderingInt
 	/**
 	 * The operand by which to order.
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface the operand; non-null
+	 * @return DynamicOperandInterface the operand; non-null
 	 */
 	public function getOperand() {
 		return $this->operand;
@@ -66,7 +66,7 @@ class Ordering implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\OrderingInt
 	/**
 	 * Gets the order.
 	 *
-	 * @return string either \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelConstantsInterface::JCR_ORDER_ASCENDING or \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelConstantsInterface::JCR_ORDER_DESCENDING
+	 * @return string One of \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_*
 	 */
 	public function getOrder() {
 		return $this->order;

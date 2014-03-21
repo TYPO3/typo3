@@ -27,12 +27,14 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+
 /**
  * A lazy result list that is returned by Query::execute()
  *
  * @api
  */
-class QueryResult implements \TYPO3\CMS\Extbase\Persistence\QueryResultInterface {
+class QueryResult implements QueryResultInterface {
 
 	/**
 	 * This field is only needed to make debugging easier:

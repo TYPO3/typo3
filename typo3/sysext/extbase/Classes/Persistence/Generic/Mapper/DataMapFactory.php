@@ -27,7 +27,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 
 /**
  * A factory for a data map to map a single table configured in $TCA on a domain object.

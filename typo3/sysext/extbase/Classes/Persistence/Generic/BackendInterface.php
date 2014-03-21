@@ -101,4 +101,21 @@ interface BackendInterface {
 	 */
 	public function isNewObject($object);
 
+	/**
+	 * Returns the number of records matching the query.
+	 *
+	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
+	 * @return integer
+	 * @api
+	 */
+	public function getObjectCountByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query);
+
+	/**
+	 * Returns the object data matching the $query.
+	 *
+	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
+	 * @return array
+	 * @api
+	 */
+	public function getObjectDataByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query);
 }

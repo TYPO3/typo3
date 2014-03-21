@@ -35,23 +35,23 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * satisfy constraint2 but not constraint1, or
  * satisfy both constraint1 and constraint2.
  */
-class LogicalOr implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\OrInterface {
+class LogicalOr implements OrInterface {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface
+	 * @var ConstraintInterface
 	 */
 	protected $constraint1;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface
+	 * @var ConstraintInterface
 	 */
 	protected $constraint2;
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface $constraint1
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface $constraint2
+	 * @param ConstraintInterface $constraint1
+	 * @param ConstraintInterface $constraint2
 	 */
-	public function __construct(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface $constraint1, \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface $constraint2) {
+	public function __construct(ConstraintInterface $constraint1, ConstraintInterface $constraint2) {
 		$this->constraint1 = $constraint1;
 		$this->constraint2 = $constraint2;
 	}
@@ -70,7 +70,7 @@ class LogicalOr implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\OrInterfac
 	/**
 	 * Gets the first constraint.
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface the constraint; non-null
+	 * @return ConstraintInterface the constraint; non-null
 	 */
 	public function getConstraint1() {
 		return $this->constraint1;
@@ -79,7 +79,7 @@ class LogicalOr implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\OrInterfac
 	/**
 	 * Gets the second constraint.
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface the constraint; non-null
+	 * @return ConstraintInterface the constraint; non-null
 	 */
 	public function getConstraint2() {
 		return $this->constraint2;

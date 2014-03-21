@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 /**
  * A statement acting as a constraint.
  */
-class Statement {
+class Statement implements ConstraintInterface {
 
 	/**
 	 * @var string|\TYPO3\CMS\Core\Database\PreparedStatement
@@ -78,5 +78,14 @@ class Statement {
 	 */
 	public function getBoundVariables() {
 		return $this->boundVariables;
+	}
+
+	/**
+	 * Fills an array with the names of all bound variables in the constraints
+	 *
+	 * @param array &$boundVariables
+	 * @return void
+	 */
+	public function collectBoundVariableNames(&$boundVariables) {
 	}
 }

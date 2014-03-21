@@ -27,6 +27,8 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+
 /**
  * The persistence session - acts as a Unit of Work for Extbase persistence framework.
  */
@@ -35,7 +37,7 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Reconstituted objects
 	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+	 * @var ObjectStorage
 	 */
 	protected $reconstitutedEntities;
 
@@ -49,7 +51,7 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $reconstitutedEntitiesData = array();
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+	 * @var ObjectStorage
 	 */
 	protected $objectMap;
 
@@ -68,8 +70,8 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Constructs a new Session
 	 */
 	public function __construct() {
-		$this->reconstitutedEntities = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		$this->objectMap = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->reconstitutedEntities = new ObjectStorage();
+		$this->objectMap = new ObjectStorage();
 	}
 
 	/**
@@ -115,7 +117,7 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Returns all objects which have been registered as reconstituted
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage All reconstituted objects
+	 * @return ObjectStorage All reconstituted objects
 	 */
 	public function getReconstitutedEntities() {
 		return $this->reconstitutedEntities;
@@ -198,7 +200,7 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Unregister an object
 	 *
-	 * @param string $object
+	 * @param object $object
 	 * @return void
 	 */
 	public function unregisterObject($object) {
@@ -214,8 +216,8 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function destroy() {
 		$this->identifierMap = array();
-		$this->objectMap = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		$this->reconstitutedEntities = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->objectMap = new ObjectStorage();
+		$this->reconstitutedEntities = new ObjectStorage();
 		$this->reconstitutedEntitiesData = array();
 	}
 

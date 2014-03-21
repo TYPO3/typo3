@@ -216,11 +216,11 @@ interface QueryInterface {
 	/**
 	 * Performs a logical negation of the given constraint
 	 *
-	 * @param object $constraint Constraint to negate
-	 * @return object
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface $constraint Constraint to negate
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\NotInterface
 	 * @api
 	 */
-	public function logicalNot($constraint);
+	public function logicalNot(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface $constraint);
 
 	/**
 	 * Returns an equals criterion used for matching objects against a query.
@@ -232,7 +232,7 @@ interface QueryInterface {
 	 * @param string $propertyName The name of the property to compare against
 	 * @param mixed $operand The value to compare with
 	 * @param boolean $caseSensitive Whether the equality test should be done case-sensitive for strings
-	 * @return object
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ComparisonInterface
 	 * @api
 	 */
 	public function equals($propertyName, $operand, $caseSensitive = TRUE);
@@ -339,13 +339,13 @@ interface QueryInterface {
 	 * @todo decide whether this can be deprecated somewhen
 	 * @api This method is not part of TYPO3Flow API
 	 */
-	public function setQuerySettings(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings);
+	public function setQuerySettings(Generic\QuerySettingsInterface $querySettings);
 
 	/**
 	 * Returns the Query Settings.
 	 *
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings The Query Settings
-	 * @todo decide whether this can be deprecated somewhen
+	 * @todo decide whether this can be deprecated eventually
 	 * @api This method is not part of  TYPO3Flow API
 	 */
 	public function getQuerySettings();
@@ -389,7 +389,7 @@ interface QueryInterface {
 	/**
 	 * Gets the constraint for this query.
 	 *
-	 * @return mixed the constraint, or null if none
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface|NULL the constraint, or null if none
 	 * @api
 	 */
 	public function getConstraint();
@@ -404,4 +404,19 @@ interface QueryInterface {
 	 * @api
 	 */
 	public function isEmpty($propertyName);
+
+	/**
+	 * Sets the source to fetch the result from
+	 *
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source
+	 */
+	public function setSource(Generic\Qom\SourceInterface $source);
+
+	/**
+	 * Returns the statement of this query.
+	 *
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement
+	 */
+	public function getStatement();
+
 }

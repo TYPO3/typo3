@@ -89,4 +89,31 @@ interface DomainObjectInterface {
 	 * @return array The properties
 	 */
 	public function _getProperties();
+
+	/**
+	 * Returns the clean value of the given property. The returned value will be NULL if the clean state was not memorized before, or
+	 * if the clean value is NULL.
+	 *
+	 * @param string $propertyName The name of the property to be memorized.
+	 * @return mixed The clean property value or NULL
+	 */
+	public function _getCleanProperty($propertyName);
+
+	/**
+	 * Returns TRUE if the properties were modified after reconstitution
+	 *
+	 * @param string $propertyName An optional name of a property to be checked if its value is dirty
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\TooDirtyException
+	 * @return boolean
+	 */
+	public function _isDirty($propertyName = NULL);
+
+	/**
+	 * Register an object's clean state, e.g. after it has been reconstituted
+	 * from the database.
+	 *
+	 * @param string $propertyName The name of the property to be memorized. If omitted all persistable properties are memorized.
+	 * @return void
+	 */
+	public function _memorizeCleanState($propertyName = NULL);
 }

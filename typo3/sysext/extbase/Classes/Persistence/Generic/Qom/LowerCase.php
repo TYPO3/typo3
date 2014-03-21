@@ -36,10 +36,10 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  *
  * If operand evaluates to null, the LowerCase operand also evaluates to null.
  */
-class LowerCase implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\LowerCaseInterface {
+class LowerCase implements LowerCaseInterface {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface
+	 * @var DynamicOperandInterface
 	 */
 	protected $operand;
 
@@ -48,14 +48,14 @@ class LowerCase implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\LowerCaseI
 	 *
 	 * @param DynamicOperandInterface $operand
 	 */
-	public function __construct(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface $operand) {
+	public function __construct(DynamicOperandInterface $operand) {
 		$this->operand = $operand;
 	}
 
 	/**
 	 * Gets the operand whose value is converted to a lower-case string.
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface the operand; non-null
+	 * @return DynamicOperandInterface the operand; non-null
 	 */
 	public function getOperand() {
 		return $this->operand;

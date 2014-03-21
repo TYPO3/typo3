@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Extbase\Persistence;
  *
  * Opposed to the SplObjectStorage the ObjectStorage does not implement the Serializable interface.
  */
-class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, \TYPO3\CMS\Extbase\Persistence\ObjectMonitoringInterface {
+class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonitoringInterface {
 
 	/**
 	 * This field is only needed to make debugging easier:
@@ -258,10 +258,10 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, \TYPO3\CMS\E
 	/**
 	 * Adds all objects-data pairs from a different storage in the current storage.
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $objectStorage
+	 * @param ObjectStorage $objectStorage
 	 * @return void
 	 */
-	public function addAll(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $objectStorage) {
+	public function addAll(ObjectStorage $objectStorage) {
 		foreach ($objectStorage as $object) {
 			$this->attach($object, $objectStorage->getInfo());
 		}
@@ -270,10 +270,10 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, \TYPO3\CMS\E
 	/**
 	 * Removes objects contained in another storage from the current storage.
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $objectStorage The storage containing the elements to remove.
+	 * @param ObjectStorage $objectStorage The storage containing the elements to remove.
 	 * @return void
 	 */
-	public function removeAll(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $objectStorage) {
+	public function removeAll(ObjectStorage $objectStorage) {
 		foreach ($objectStorage as $object) {
 			$this->detach($object);
 		}

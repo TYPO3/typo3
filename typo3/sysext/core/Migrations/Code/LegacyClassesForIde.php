@@ -2284,11 +2284,6 @@ interface Tx_Extbase_Persistence_QOM_ComparisonInterface extends \TYPO3\CMS\Extb
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class Tx_Extbase_Persistence_QOM_Constraint extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Constraint {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
 interface Tx_Extbase_Persistence_QOM_ConstraintInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface {}
 
 /**

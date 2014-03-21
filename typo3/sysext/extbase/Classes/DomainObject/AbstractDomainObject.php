@@ -243,7 +243,7 @@ abstract class AbstractDomainObject implements \TYPO3\CMS\Extbase\DomainObject\D
 	 * Returns the clean value of the given property. The returned value will be NULL if the clean state was not memorized before, or
 	 * if the clean value is NULL.
 	 *
-	 * @param string $propertyName The name of the property to be memorized. If omittet all persistable properties are memorized.
+	 * @param string $propertyName The name of the property to be memorized.
 	 * @return mixed The clean property value or NULL
 	 */
 	public function _getCleanProperty($propertyName) {

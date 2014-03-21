@@ -36,12 +36,12 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  *
  * If operand evaluates to null, the UpperCase operand also evaluates to null.
  */
-interface UpperCaseInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface {
+interface UpperCaseInterface extends DynamicOperandInterface {
 
 	/**
 	 * Gets the operand whose value is converted to a upper-case string.
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface the operand; non-null
+	 * @return DynamicOperandInterface the operand; non-null
 	 */
 	public function getOperand();
 }

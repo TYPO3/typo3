@@ -215,8 +215,6 @@ class PropertyType {
 
 	/**
 	 * Make instantiation impossible...
-	 *
-	 * @return void
 	 */
 	private function __construct() {
 	}
@@ -354,8 +352,6 @@ class PropertyType {
 			case 'double':
 				$value = \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::DOUBLE;
 				break;
-			case 'integer':
-
 			case 'int':
 				$value = \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::INTEGER;
 				break;

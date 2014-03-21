@@ -32,7 +32,7 @@ namespace TYPO3\CMS\Extbase\Persistence;
  *
  * @api
  */
-class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, \TYPO3\CMS\Core\SingletonInterface {
+class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\IdentityMap
@@ -153,7 +153,7 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	/**
 	 * Returns all objects of this repository.
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array
+	 * @return QueryResultInterface|array
 	 * @api
 	 */
 	public function findAll() {
@@ -292,7 +292,7 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 			$query = $this->createQuery();
 
 			$result = $query->matching($query->equals($propertyName, $arguments[0]))->setLimit(1)->execute();
-			if ($result instanceof \TYPO3\CMS\Extbase\Persistence\QueryResultInterface) {
+			if ($result instanceof QueryResultInterface) {
 				return $result->getFirst();
 			} elseif (is_array($result)) {
 				return isset($result[0]) ? $result[0] : NULL;

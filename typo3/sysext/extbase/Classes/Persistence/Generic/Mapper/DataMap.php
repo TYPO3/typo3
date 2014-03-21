@@ -234,7 +234,7 @@ class DataMap {
 	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap $columnMap The column map
 	 * @return void
 	 */
-	public function addColumnMap(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap $columnMap) {
+	public function addColumnMap(ColumnMap $columnMap) {
 		$this->columnMaps[$columnMap->getPropertyName()] = $columnMap;
 	}
 

@@ -29,12 +29,13 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage;
  ***************************************************************/
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
 /**
  * A Storage backend
  */
-class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface, \TYPO3\CMS\Core\SingletonInterface {
+class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * The TYPO3 database object
@@ -283,12 +284,12 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	/**
 	 * Returns the object data matching the $query.
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
+	 * @param QueryInterface $query
 	 * @return array
 	 */
-	public function getObjectDataByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query) {
+	public function getObjectDataByQuery(QueryInterface $query) {
 		$statement = $query->getStatement();
-		if ($statement instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement) {
+		if ($statement instanceof Statement) {
 			$rows = $this->getObjectDataByRawQuery($statement);
 		} else {
 			$rows = $this->getRowsByStatementParts($query);
@@ -323,10 +324,10 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	/**
 	 * Determines whether to use prepared statement or not and returns the rows from the corresponding method
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
+	 * @param QueryInterface $query
 	 * @return array
 	 */
-	protected function getRowsByStatementParts(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query) {
+	protected function getRowsByStatementParts(QueryInterface $query) {
 		if ($query->getQuerySettings()->getUsePreparedStatement()) {
 			list($statementParts, $parameters) = $this->getStatementParts($query, FALSE);
 			$rows = $this->getRowsFromPreparedDatabase($statementParts, $parameters);
@@ -387,10 +388,10 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	/**
 	 * Returns the object data using a custom statement
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement $statement
+	 * @param Statement $statement
 	 * @return array
 	 */
-	protected function getObjectDataByRawQuery(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement $statement) {
+	protected function getObjectDataByRawQuery(Statement $statement) {
 		$realStatement = $statement->getStatement();
 		$parameters = $statement->getBoundVariables();
 
@@ -426,13 +427,13 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	/**
 	 * Returns the number of tuples matching the query.
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
+	 * @param QueryInterface $query
 	 * @throws Exception\BadConstraintException
 	 * @return integer The number of matching tuples
 	 */
-	public function getObjectCountByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query) {
-		if ($query->getConstraint() instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement) {
-			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\BadConstraintException('Could not execute count on queries with a constraint of type TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\StatementInterface', 1256661045);
+	public function getObjectCountByQuery(QueryInterface $query) {
+		if ($query->getConstraint() instanceof Statement) {
+			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\BadConstraintException('Could not execute count on queries with a constraint of type TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\Statement', 1256661045);
 		}
 
 		list($statementParts) = $this->getStatementParts($query);
@@ -464,57 +465,56 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	/**
 	 * Looks for the query in cache or builds it up otherwise
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
+	 * @param QueryInterface $query
 	 * @param bool $resolveParameterPlaceholders whether to resolve the parameters or leave the placeholders
 	 * @return array
-	 * @throws \Exception
+	 * @throws \RuntimeException
 	 */
 	protected function getStatementParts($query, $resolveParameterPlaceholders = TRUE) {
-			/**
-			 * The queryParser will preparse the query to get the query's hash and parameters.
-			 * If the hash is found in the cache and useQueryCaching is enabled, extbase will
-			 * then take the string representation from cache and build a prepared query with
-			 * the parameters found.
-			 *
-			 * Otherwise extbase will parse the complete query, build the string representation
-			 * and run a usual query.
-			 */
-			list($queryHash, $parameters) = $this->queryParser->preparseQuery($query);
+		/**
+		 * The queryParser will preparse the query to get the query's hash and parameters.
+		 * If the hash is found in the cache and useQueryCaching is enabled, extbase will
+		 * then take the string representation from cache and build a prepared query with
+		 * the parameters found.
+		 *
+		 * Otherwise extbase will parse the complete query, build the string representation
+		 * and run a usual query.
+		 */
+		list($queryHash, $parameters) = $this->queryParser->preparseQuery($query);
 
-			if ($query->getQuerySettings()->getUseQueryCache()) {
-				$statementParts = $this->queryCache->get($queryHash);
-
-				if ($queryHash && !$statementParts) {
-					$statementParts = $this->queryParser->parseQuery($query);
-					$this->queryCache->set($queryHash, $statementParts, array(), 0);
-				}
-			} else {
+		if ($query->getQuerySettings()->getUseQueryCache()) {
+			$statementParts = $this->queryCache->get($queryHash);
+			if ($queryHash && !$statementParts) {
 				$statementParts = $this->queryParser->parseQuery($query);
+				$this->queryCache->set($queryHash, $statementParts, array(), 0);
 			}
+		} else {
+			$statementParts = $this->queryParser->parseQuery($query);
+		}
 
-			if (!$statementParts) {
-				throw new \Exception('Your query could not be built.', 1394453197);
-			}
+		if (!$statementParts) {
+			throw new \RuntimeException('Your query could not be built.', 1394453197);
+		}
 
-			// Limit and offset are not cached to allow caching of pagebrowser queries.
-			$statementParts['limit'] = ((int)$query->getLimit() ?: NULL);
-			$statementParts['offset'] = ((int)$query->getOffset() ?: NULL);
+		// Limit and offset are not cached to allow caching of pagebrowser queries.
+		$statementParts['limit'] = ((int)$query->getLimit() ?: NULL);
+		$statementParts['offset'] = ((int)$query->getOffset() ?: NULL);
 
-			if ($resolveParameterPlaceholders === TRUE) {
-				$statementParts = $this->resolveParameterPlaceholders($statementParts, $parameters);
-			}
+		if ($resolveParameterPlaceholders === TRUE) {
+			$statementParts = $this->resolveParameterPlaceholders($statementParts, $parameters);
+		}
 
-			return array($statementParts, $parameters);
+		return array($statementParts, $parameters);
 	}
 
 	/**
 	 * Replaces the parameters in the queryStructure with given values
 	 *
-	 * @param string $whereStatement
+	 * @param array $statementParts
 	 * @param array $parameters
-	 * @return string
+	 * @return array
 	 */
-	protected function resolveParameterPlaceholders($statementParts, $parameters = array()) {
+	protected function resolveParameterPlaceholders(array $statementParts, array $parameters) {
 		$tableNameForEscape = (reset($statementParts['tables']) ?: 'foo');
 
 		foreach ($parameters as $parameterPlaceholder => $parameter) {
@@ -534,8 +534,8 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 				$parameter = implode(',', $subParameters);
 			} elseif ($parameter === NULL) {
 				$parameter = 'NULL';
-			} elseif (is_bool($input)) {
-				return ($input === TRUE ? 1 : 0);
+			} elseif (is_bool($parameter)) {
+				$parameter = (int)$parameter;
 			} else {
 				$parameter = $this->databaseHandle->fullQuoteStr((string)$parameter, $tableNameForEscape);
 			}
@@ -618,7 +618,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 				throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException('An object of class "' . get_class($realInput) . '" could not be converted to a plain value.', 1274799934);
 			}
 		} elseif (is_bool($input)) {
-			return $input === TRUE ? 1 : 0;
+			return (int)$input;
 		} else {
 			return $input;
 		}
@@ -748,68 +748,68 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 * @param null|integer $workspaceUid
 	 * @return array
 	 */
-	protected function doLanguageAndWorkspaceOverlay(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source, array $rows, $querySettings, $workspaceUid = NULL) {
+	protected function doLanguageAndWorkspaceOverlay(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source, array $rows, \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings, $workspaceUid = NULL) {
 		if ($source instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SelectorInterface) {
 			$tableName = $source->getSelectorName();
 		} elseif ($source instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinInterface) {
 			$tableName = $source->getRight()->getSelectorName();
+		} else {
+			// No proper source, so we do not have a table name here
+			// we cannot do an overlay and return the original rows instead.
+			return $rows;
 		}
-		// If we do not have a table name here, we cannot do an overlay and return the original rows instead.
-		if (isset($tableName)) {
-			$pageRepository = $this->getPageRepository();
-			if (is_object($GLOBALS['TSFE'])) {
-				if ($workspaceUid !== NULL) {
-					$pageRepository->versioningWorkspaceId = $workspaceUid;
-				}
-			} else {
-				if ($workspaceUid === NULL) {
-					$workspaceUid = $GLOBALS['BE_USER']->workspace;
-				}
+
+		$pageRepository = $this->getPageRepository();
+		if (is_object($GLOBALS['TSFE'])) {
+			if ($workspaceUid !== NULL) {
 				$pageRepository->versioningWorkspaceId = $workspaceUid;
 			}
+		} else {
+			if ($workspaceUid === NULL) {
+				$workspaceUid = $GLOBALS['BE_USER']->workspace;
+			}
+			$pageRepository->versioningWorkspaceId = $workspaceUid;
+		}
 
-			$overlayedRows = array();
-			foreach ($rows as $row) {
-				// If current row is a translation select its parent
-				if (isset($tableName) && isset($GLOBALS['TCA'][$tableName])
-					&& isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])
-					&& isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
-					&& !isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerTable'])
+		$overlaidRows = array();
+		foreach ($rows as $row) {
+			// If current row is a translation select its parent
+			if (isset($tableName) && isset($GLOBALS['TCA'][$tableName])
+				&& isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])
+				&& isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
+				&& !isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerTable'])
+			) {
+				if (isset($row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']])
+					&& $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] > 0
 				) {
-					if (isset($row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']])
-						&& $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] > 0
-					) {
-						$row = $this->databaseHandle->exec_SELECTgetSingleRow(
-							$tableName . '.*',
-							$tableName,
-							$tableName . '.uid=' . (int)$row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] .
-								' AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '=0'
-						);
-					}
-				}
-				$pageRepository->versionOL($tableName, $row, TRUE);
-				if ($pageRepository->versioningPreview && isset($row['_ORIG_uid'])) {
-					$row['uid'] = $row['_ORIG_uid'];
-				}
-				if ($tableName == 'pages') {
-					$row = $pageRepository->getPageOverlay($row, $querySettings->getLanguageUid());
-				} elseif (isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])
-					&& $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== ''
-					&& !isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerTable'])
-				) {
-					if (in_array($row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']], array(-1, 0))) {
-						$overlayMode = $querySettings->getLanguageMode() === 'strict' ? 'hideNonTranslated' : '';
-						$row = $pageRepository->getRecordOverlay($tableName, $row, $querySettings->getLanguageUid(), $overlayMode);
-					}
-				}
-				if ($row !== NULL && is_array($row)) {
-					$overlayedRows[] = $row;
+					$row = $this->databaseHandle->exec_SELECTgetSingleRow(
+						$tableName . '.*',
+						$tableName,
+						$tableName . '.uid=' . (int)$row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] .
+							' AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '=0'
+					);
 				}
 			}
-		} else {
-			$overlayedRows = $rows;
+			$pageRepository->versionOL($tableName, $row, TRUE);
+			if ($pageRepository->versioningPreview && isset($row['_ORIG_uid'])) {
+				$row['uid'] = $row['_ORIG_uid'];
+			}
+			if ($tableName == 'pages') {
+				$row = $pageRepository->getPageOverlay($row, $querySettings->getLanguageUid());
+			} elseif (isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])
+				&& $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== ''
+				&& !isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerTable'])
+			) {
+				if (in_array($row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']], array(-1, 0))) {
+					$overlayMode = $querySettings->getLanguageMode() === 'strict' ? 'hideNonTranslated' : '';
+					$row = $pageRepository->getRecordOverlay($tableName, $row, $querySettings->getLanguageUid(), $overlayMode);
+				}
+			}
+			if ($row !== NULL && is_array($row)) {
+				$overlaidRows[] = $row;
+			}
 		}
-		return $overlayedRows;
+		return $overlaidRows;
 	}
 
 	/**

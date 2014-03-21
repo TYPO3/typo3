@@ -36,14 +36,14 @@ interface OrderingInterface {
 	/**
 	 * The operand by which to order.
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface the operand; non-null
+	 * @return DynamicOperandInterface the operand; non-null
 	 */
 	public function getOperand();
 
 	/**
 	 * Gets the order.
 	 *
-	 * @return string either \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelConstantsInterface::JCR_ORDER_ASCENDING or \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelConstantsInterface::JCR_ORDER_DESCENDING
+	 * @return string One of \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_*
 	 */
 	public function getOrder();
 }

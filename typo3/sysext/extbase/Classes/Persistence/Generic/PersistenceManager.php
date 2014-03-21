@@ -27,6 +27,9 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+
 /**
  * The Extbase Persistence Manager
  *
@@ -40,17 +43,17 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 	protected $newObjects = array();
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+	 * @var ObjectStorage
 	 */
 	protected $changedObjects;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+	 * @var ObjectStorage
 	 */
 	protected $addedObjects;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+	 * @var ObjectStorage
 	 */
 	protected $removedObjects;
 
@@ -76,9 +79,9 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 	 * Create new instance
 	 */
 	public function __construct() {
-		$this->addedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		$this->removedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		$this->changedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->addedObjects = new ObjectStorage();
+		$this->removedObjects = new ObjectStorage();
+		$this->changedObjects = new ObjectStorage();
 	}
 
 	/**
@@ -94,22 +97,22 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 	/**
 	 * Returns the number of records matching the query.
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
+	 * @param QueryInterface $query
 	 * @return integer
 	 * @api
 	 */
-	public function getObjectCountByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query) {
+	public function getObjectCountByQuery(QueryInterface $query) {
 		return $this->backend->getObjectCountByQuery($query);
 	}
 
 	/**
 	 * Returns the object data matching the $query.
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
+	 * @param QueryInterface $query
 	 * @return array
 	 * @api
 	 */
-	public function getObjectDataByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query) {
+	public function getObjectDataByQuery(QueryInterface $query) {
 		return $this->backend->getObjectDataByQuery($query);
 	}
 
@@ -167,16 +170,16 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 		$this->backend->setDeletedEntities($this->removedObjects);
 		$this->backend->commit();
 
-		$this->addedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		$this->removedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		$this->changedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->addedObjects = new ObjectStorage();
+		$this->removedObjects = new ObjectStorage();
+		$this->changedObjects = new ObjectStorage();
 	}
 
 	/**
 	 * Return a query object for the given type.
 	 *
 	 * @param string $type
-	 * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
+	 * @return QueryInterface
 	 */
 	public function createQueryForType($type) {
 		return $this->queryFactory->create($type);
@@ -256,9 +259,9 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 	 */
 	public function clearState() {
 		$this->newObjects = array();
-		$this->addedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		$this->removedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		$this->changedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->addedObjects = new ObjectStorage();
+		$this->removedObjects = new ObjectStorage();
+		$this->changedObjects = new ObjectStorage();
 		$this->persistenceSession->destroy();
 	}
 
@@ -295,6 +298,7 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 	 *
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException
 	 * @param object $object The object to be converted
+	 * @return array
 	 * @api
 	 */
 	public function convertObjectToIdentityArray($object) {
@@ -307,6 +311,7 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 	 *
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException
 	 * @param array $array The array to be iterated over
+	 * @return array
 	 * @api
 	 * @see convertObjectToIdentityArray()
 	 */

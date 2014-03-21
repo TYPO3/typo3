@@ -35,7 +35,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @api
  */
-class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface {
+class Typo3QuerySettings implements QuerySettingsInterface {
 
 	/**
 	 * Flag if the storage page should be respected for the query.
@@ -158,7 +158,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	 * Sets the flag if the storage page should be respected for the query.
 	 *
 	 * @param bool $respectStoragePage If TRUE the storage page ID will be determined and the statement will be extended accordingly.
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
+	 * @return QuerySettingsInterface
 	 * @api
 	 */
 	public function setRespectStoragePage($respectStoragePage) {
@@ -179,7 +179,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	 * Sets the pid(s) of the storage page(s) that should be respected for the query.
 	 *
 	 * @param array $storagePageIds If given the storage page IDs will be determined and the statement will be extended accordingly.
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
+	 * @return QuerySettingsInterface
 	 * @api
 	 */
 	public function setStoragePageIds(array $storagePageIds) {
@@ -198,7 +198,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 
 	/**
 	 * @param bool $respectSysLanguage TRUE if TYPO3 language settings are to be applied
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface (fluent interface)
+	 * @return QuerySettingsInterface
 	 * @api
 	 */
 	public function setRespectSysLanguage($respectSysLanguage) {
@@ -215,7 +215,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 
 	/**
 	 * @param mixed $languageOverlayMode TRUE, FALSE or "hideNonTranslated"
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
+	 * @return QuerySettingsInterface instance of $this to allow method chaining
 	 * @api
 	 */
 	public function setLanguageOverlayMode($languageOverlayMode = FALSE) {
@@ -232,7 +232,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 
 	/**
 	 * @param string $languageMode NULL, "content_fallback", "strict" or "ignore"
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
+	 * @return QuerySettingsInterface instance of $this to allow method chaining
 	 * @api
 	 */
 	public function setLanguageMode($languageMode = '') {
@@ -249,7 +249,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 
 	/**
 	 * @param int $languageUid
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
+	 * @return QuerySettingsInterface instance of $this to allow method chaining
 	 * @api
 	 */
 	public function setLanguageUid($languageUid) {
@@ -268,7 +268,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	 * Sets the language uid for the language overlay.
 	 *
 	 * @param int $sysLanguageUid language uid for the language overlay
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
+	 * @return QuerySettingsInterface instance of $this to allow method chaining
 	 * @deprecated since Extbase 6.2, will be removed two versions later. Use setLanguageUid() instead.
 	 */
 	public function setSysLanguageUid($sysLanguageUid) {
@@ -291,7 +291,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	 * Sets the flag if the visibility in the frontend should be respected.
 	 *
 	 * @param bool $respectEnableFields TRUE if the visibility in the frontend should be respected. If TRUE, the "enable fields" of TYPO3 will be added to the query statement.
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
+	 * @return QuerySettingsInterface
 	 * @deprecated since Extbase 6.0, will be removed two versions later. Use setIgnoreEnableFields() and setEnableFieldsToBeIgnored() instead.
 	 * @see setIgnoreEnableFields()
 	 * @see setEnableFieldsToBeIgnored()
@@ -323,7 +323,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	 * enable fields are taken into account, regardless of the enableFieldsToBeIgnored setting.
 	 *
 	 * @param bool $ignoreEnableFields
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
+	 * @return QuerySettingsInterface
 	 * @see setEnableFieldsToBeIgnored()
 	 * @api
 	 */
@@ -351,7 +351,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	 * by this column. This setting is only taken into account if $this->ignoreEnableFields = TRUE.
 	 *
 	 * @param array $enableFieldsToBeIgnored
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
+	 * @return QuerySettingsInterface
 	 * @see setIgnoreEnableFields()
 	 * @api
 	 */
@@ -375,7 +375,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	 * Sets the flag if the query should return objects that are deleted.
 	 *
 	 * @param bool $includeDeleted
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
+	 * @return QuerySettingsInterface
 	 * @api
 	 */
 	public function setIncludeDeleted($includeDeleted) {
@@ -396,7 +396,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	 * Sets the state, if the QueryResult should be returned unmapped.
 	 *
 	 * @param bool $returnRawQueryResult TRUE, if the QueryResult should be returned unmapped; otherwise FALSE.
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
+	 * @return QuerySettingsInterface
 	 * @deprecated since Extbase 6.2, will be removed two versions later. Please use argument in query->execute() instead.
 	 */
 	public function setReturnRawQueryResult($returnRawQueryResult) {
@@ -418,7 +418,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 
 	/**
 	 * @param bool $usePreparedStatement
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
+	 * @return QuerySettingsInterface
 	 */
 	public function usePreparedStatement($usePreparedStatement) {
 		$this->usePreparedStatement = $usePreparedStatement;
@@ -434,7 +434,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 
 	/**
 	 * @param bool $useQueryCache
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
+	 * @return QuerySettingsInterface
 	 */
 	public function useQueryCache($useQueryCache) {
 		$this->useQueryCache = $useQueryCache;

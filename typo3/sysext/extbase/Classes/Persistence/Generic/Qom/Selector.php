@@ -38,7 +38,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * the node has a mixin node type that is nodeType, or
  * the node has a mixin node type that is a subtype of nodeType.
  */
-class Selector implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SelectorInterface {
+class Selector implements SelectorInterface {
 
 	/**
 	 * @var string

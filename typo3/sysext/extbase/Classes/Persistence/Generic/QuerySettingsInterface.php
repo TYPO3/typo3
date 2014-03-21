@@ -192,4 +192,14 @@ interface QuerySettingsInterface {
 	 * @deprecated since Extbase 6.2, will be removed two versions later
 	 */
 	public function getReturnRawQueryResult();
+
+	/**
+	 * @return bool
+	 */
+	public function getUseQueryCache();
+
+	/**
+	 * @return bool
+	 */
+	public function getUsePreparedStatement();
 }

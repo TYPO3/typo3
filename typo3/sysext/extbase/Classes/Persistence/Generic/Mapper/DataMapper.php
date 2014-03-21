@@ -27,7 +27,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Core\Type\TypeInterface;
+
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 
 /**
@@ -473,6 +473,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return mixed
 	 */
 	public function mapResultToPropertyValue(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, $result) {
+		$propertyValue = NULL;
 		if ($result instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LoadingStrategyInterface) {
 			$propertyValue = $result;
 		} else {

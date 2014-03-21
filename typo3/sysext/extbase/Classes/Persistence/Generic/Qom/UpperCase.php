@@ -38,10 +38,10 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class UpperCase implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\UpperCaseInterface {
+class UpperCase implements UpperCaseInterface {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface
+	 * @var DynamicOperandInterface
 	 */
 	protected $operand;
 
@@ -50,14 +50,14 @@ class UpperCase implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\UpperCaseI
 	 *
 	 * @param DynamicOperandInterface $operand
 	 */
-	public function __construct(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface $operand) {
+	public function __construct(DynamicOperandInterface $operand) {
 		$this->operand = $operand;
 	}
 
 	/**
 	 * Gets the operand whose value is converted to a upper-case string.
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface the operand; non-null
+	 * @return DynamicOperandInterface the operand; non-null
 	 */
 	public function getOperand() {
 		return $this->operand;

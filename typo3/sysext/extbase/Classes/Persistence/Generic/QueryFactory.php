@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 /**
  * The QueryFactory used to create queries against the storage backend
  */
-class QueryFactory implements \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface, \TYPO3\CMS\Core\SingletonInterface {
+class QueryFactory implements QueryFactoryInterface, \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface

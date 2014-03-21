@@ -38,7 +38,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * selector is not the name of a selector in the query, or
  * property is not a syntactically valid JCR name.
  */
-interface PropertyValueInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface {
+interface PropertyValueInterface extends DynamicOperandInterface {
 
 	/**
 	 * Gets the name of the selector against which to evaluate this operand.

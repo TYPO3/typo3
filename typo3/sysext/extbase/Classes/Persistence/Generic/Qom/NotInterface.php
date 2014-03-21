@@ -32,12 +32,12 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  *
  * To satisfy the Not constraint, the node-tuple must not satisfy constraint.
  */
-interface NotInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface {
+interface NotInterface extends ConstraintInterface {
 
 	/**
 	 * Gets the constraint negated by this Not constraint.
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface the constraint; non-null
+	 * @return ConstraintInterface the constraint; non-null
 	 */
 	public function getConstraint();
 }

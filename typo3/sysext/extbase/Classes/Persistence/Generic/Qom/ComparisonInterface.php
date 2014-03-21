@@ -72,26 +72,37 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-interface ComparisonInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface {
+interface ComparisonInterface extends ConstraintInterface {
 
 	/**
 	 * Gets the first operand.
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface the operand; non-null
+	 * @return PropertyValueInterface the operand; non-null
 	 */
 	public function getOperand1();
 
 	/**
 	 * Gets the operator.
 	 *
-	 * @return string one of \TYPO3\CMS\Extbase\Persistence\QueryObjectModelConstantsInterface.OPERATOR_*
+	 * @return string one of \TYPO3\CMS\Extbase\Persistence\QueryInterface::*
 	 */
 	public function getOperator();
 
 	/**
 	 * Gets the second operand.
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\StaticOperandInterface the operand; non-null
+	 * @return StaticOperandInterface the operand; non-null
 	 */
 	public function getOperand2();
+
+	/**
+	 * @param string $parameterIdentifier
+	 * @return void
+	 */
+	public function setParameterIdentifier($parameterIdentifier);
+
+	/**
+	 * @return string
+	 */
+	public function getParameterIdentifier();
 }

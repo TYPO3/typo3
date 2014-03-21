@@ -35,19 +35,19 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * satisfy constraint2 but not constraint1, or
  * satisfy both constraint1 and constraint2.
  */
-interface OrInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface {
+interface OrInterface extends ConstraintInterface {
 
 	/**
 	 * Gets the first constraint.
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface the constraint; non-null
+	 * @return ConstraintInterface the constraint; non-null
 	 */
 	public function getConstraint1();
 
 	/**
 	 * Gets the second constraint.
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface the constraint; non-null
+	 * @return ConstraintInterface the constraint; non-null
 	 */
 	public function getConstraint2();
 }

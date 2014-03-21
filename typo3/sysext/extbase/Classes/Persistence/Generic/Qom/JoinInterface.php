@@ -30,19 +30,19 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 /**
  * Performs a join between two node-tuple sources.
  */
-interface JoinInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface {
+interface JoinInterface extends SourceInterface {
 
 	/**
 	 * Gets the left node-tuple source.
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface the left source; non-null
+	 * @return SelectorInterface the left source; non-null
 	 */
 	public function getLeft();
 
 	/**
 	 * Gets the right node-tuple source.
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface the right source; non-null
+	 * @return SelectorInterface the right source; non-null
 	 */
 	public function getRight();
 

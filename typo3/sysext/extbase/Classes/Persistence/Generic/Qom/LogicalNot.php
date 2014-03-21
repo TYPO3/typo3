@@ -32,17 +32,17 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  *
  * To satisfy the Not constraint, the node-tuple must not satisfy constraint.
  */
-class LogicalNot implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\NotInterface {
+class LogicalNot implements NotInterface {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface
+	 * @var ConstraintInterface
 	 */
 	protected $constraint;
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface $constraint
+	 * @param ConstraintInterface $constraint
 	 */
-	public function __construct(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface $constraint) {
+	public function __construct(ConstraintInterface $constraint) {
 		$this->constraint = $constraint;
 	}
 
@@ -59,7 +59,7 @@ class LogicalNot implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\NotInterf
 	/**
 	 * Gets the constraint negated by this Not constraint.
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface the constraint; non-null
+	 * @return ConstraintInterface the constraint; non-null
 	 */
 	public function getConstraint() {
 		return $this->constraint;

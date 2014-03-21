@@ -34,7 +34,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * the selector2Name node has a property named property2Name, and
  * the value of property property1Name is equal to the value of property property2Name.
  */
-class EquiJoinCondition implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinConditionInterface {
+class EquiJoinCondition implements EquiJoinConditionInterface {
 
 	/**
 	 * @var string
@@ -106,5 +106,23 @@ class EquiJoinCondition implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Jo
 	 */
 	public function getProperty2Name() {
 		return $this->property2Name;
+	}
+
+	/**
+	 * Gets the name of the child selector.
+	 *
+	 * @return string the selector name; non-null
+	 */
+	public function getChildSelectorName() {
+		return '';
+	}
+
+	/**
+	 * Gets the name of the parent selector.
+	 *
+	 * @return string the selector name; non-null
+	 */
+	public function getParentSelectorName() {
+		return '';
 	}
 }
