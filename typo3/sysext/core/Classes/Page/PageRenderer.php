@@ -28,6 +28,7 @@ namespace TYPO3\CMS\Core\Page;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -2244,6 +2245,9 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				$this->csConvObj->convArray($this->inlineSettings, $this->getCharSet(), 'utf-8');
 			}
 		}
+		if (TYPO3_MODE === 'BE') {
+			$this->addAjaxUrlsToInlineSettings();
+		}
 		$inlineSettings = $this->inlineLanguageLabels ? 'TYPO3.lang = ' . json_encode($this->inlineLanguageLabels) . ';' : '';
 		$inlineSettings .= $this->inlineSettings ? 'TYPO3.settings = ' . json_encode($this->inlineSettings) . ';' : '';
 		if ($this->addExtCore || $this->addExtJS) {
@@ -2291,6 +2295,17 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 		}
 		return $out;
+	}
+
+	/**
+	 * Make URLs to all backend ajax handlers available as inline setting.
+	 */
+	protected function addAjaxUrlsToInlineSettings() {
+		$ajaxUrls = array();
+		foreach (array_keys($GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']) as $ajaxHandler) {
+			$ajaxUrls[$ajaxHandler] = BackendUtility::getAjaxUrl($ajaxHandler);
+		}
+		$this->inlineSettings['ajaxUrls'] = $ajaxUrls;
 	}
 
 	/**

@@ -191,7 +191,7 @@ var inline = {
 	makeAjaxCall: function(method, params, lock, context) {
 		var max, url='', urlParams='', options={};
 		if (method && params && params.length && this.lockAjaxMethod(method, lock)) {
-			url = TBE_EDITOR.getBackendPath() + TYPO3.settings.TCEFORMS.Inline[method].ajaxUrl;
+			url = TBE_EDITOR.getBackendPath() + TYPO3.settings.ajaxUrls['t3lib_TCEforms_inline::' + method];
 			urlParams = '';
 			for (var i=0, max=params.length; i<max; i++) {
 				urlParams += '&ajax[' + i + ']=' + encodeURIComponent(params[i]);

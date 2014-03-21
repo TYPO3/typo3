@@ -103,14 +103,6 @@ class BackendController {
 		$this->pageRenderer->enableExtJSQuickTips();
 		$this->pageRenderer->addJsInlineCode('consoleOverrideWithDebugPanel', '//already done', FALSE);
 		$this->pageRenderer->addExtDirectCode();
-		$this->pageRenderer->addInlineSetting('ModuleMenu.getData', 'ajaxUrl', BackendUtility::getAjaxUrl('ModuleMenu::getData'));
-		$this->pageRenderer->addInlineSetting('ModuleMenu.saveMenuState', 'ajaxUrl', BackendUtility::getAjaxUrl('ModuleMenu::saveMenuState'));
-		$this->pageRenderer->addInlineSetting('BackendLogin.BackendLogin::login', 'ajaxUrl', BackendUtility::getAjaxUrl('BackendLogin::login'));
-		$this->pageRenderer->addInlineSetting('BackendLogin.BackendLogin::logout', 'ajaxUrl', BackendUtility::getAjaxUrl('BackendLogin::logout'));
-		$this->pageRenderer->addInlineSetting('BackendLogin.BackendLogin::refreshLogin', 'ajaxUrl', BackendUtility::getAjaxUrl('BackendLogin::refreshLogin'));
-		$this->pageRenderer->addInlineSetting('BackendLogin.BackendLogin::isTimedOut', 'ajaxUrl', BackendUtility::getAjaxUrl('BackendLogin::isTimedOut'));
-		$this->pageRenderer->addInlineSetting('BackendLogin.BackendLogin::getChallenge', 'ajaxUrl', BackendUtility::getAjaxUrl('BackendLogin::getChallenge'));
-		$this->pageRenderer->addInlineSetting('ImportExport', 'moduleUrl', BackendUtility::getModuleUrl('xMOD_tximpexp'));
 		// Add default BE javascript
 		$this->js = '';
 		$this->jsFiles = array(

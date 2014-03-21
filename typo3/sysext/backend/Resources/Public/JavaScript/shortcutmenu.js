@@ -58,7 +58,7 @@ var ShortcutMenu = Class.create({
 			var shortcutId = element.up('tr.shortcut').identify().slice(9);
 
 				// map InPlaceEditor to edit icons
-			var edit = new Ajax.InPlaceEditor('shortcut-label-' + shortcutId, TYPO3.settings.ShortcutMenu.saveShortcut.ajaxUrl, {
+			var edit = new Ajax.InPlaceEditor('shortcut-label-' + shortcutId, TYPO3.settings.ajaxUrls['ShortcutMenu::saveShortcut'], {
 				externalControl     : 'shortcut-edit-' + shortcutId,
 				externalControlOnly : true,
 				highlightcolor      : '#f9f9f9',
@@ -91,7 +91,7 @@ var ShortcutMenu = Class.create({
 					var deleteControl = event.element();
 					var shortcutId = deleteControl.up('tr.shortcut').identify().slice(9);
 
-					var del = new Ajax.Request(TYPO3.settings.ShortcutMenu.delete.ajaxUrl, {
+					var del = new Ajax.Request(TYPO3.settings.ajaxUrls['ShortcutMenu::delete'], {
 						parameters : '&shortcutId=' + shortcutId,
 						onComplete : this.reRenderMenu.bind(this)
 					});
@@ -158,7 +158,7 @@ var ShortcutMenu = Class.create({
 		selectField.appendChild(option);
 
 			// get the groups
-		var getGroups = new Ajax.Request(TYPO3.settings.ShortcutMenu.getGroups.ajaxUrl, {
+		var getGroups = new Ajax.Request(TYPO3.settings.ajaxUrls['ShortcutMenu::getGroups'], {
 			method: 'get',
 			asynchronous: false, // needs to be synchronous to build the options before adding the selectfield
 			requestHeaders: {Accept: 'application/json'},
@@ -201,7 +201,7 @@ var ShortcutMenu = Class.create({
 
 		var render = new Ajax.Updater(
 			container,
-			backPath + TYPO3.settings.ShortcutMenu.render.ajaxUrl,
+			backPath + TYPO3.settings.ajaxUrls['ShortcutMenu::render'],
 			{
 				asynchronous : false
 			}
@@ -227,7 +227,7 @@ var ShortcutMenu = Class.create({
 
 		// synchrous call to wait for it to complete and call the render
 		// method with backpath _afterwards_
-		var call = new Ajax.Request(backPath + TYPO3.settings.ShortcutMenu.create.ajaxUrl, {
+		var call = new Ajax.Request(backPath + TYPO3.settings.ajaxUrls['ShortcutMenu::create'], {
 			parameters : 'module=' + moduleName + '&url=' + url,
 			asynchronous : false
 		});

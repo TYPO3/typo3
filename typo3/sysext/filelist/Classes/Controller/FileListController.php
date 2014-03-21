@@ -334,8 +334,6 @@ class FileListController {
 				&& $this->folderObject->checkActionPermission('write')
 			) {
 				$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DragUploader');
-				$pageRenderer->addInlineSetting('DragUploader', 'ajaxUrl', BackendUtility::getAjaxUrl('TYPO3_tcefile::process'));
-				$pageRenderer->addInlineSetting('DragUploader', 'ajaxFlashMessagesUrl', BackendUtility::getAjaxUrl('DocumentTemplate::getFlashMessages'));
 				$pageRenderer->addInlineLanguagelabelFile(
 					\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('lang') . 'locallang_core.xlf',
 					'file_upload'

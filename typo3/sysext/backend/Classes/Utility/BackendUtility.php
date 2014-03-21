@@ -2972,11 +2972,16 @@ class BackendUtility {
 	/**
 	 * Returns the Ajax URL for a given AjaxID including a CSRF token.
 	 *
+	 * This method is only called by the core and must not be used by extensions.
+	 * Ajax URLs of all registered backend Ajax handlers are automatically published
+	 * to JavaScript inline settings: TYPO3.settings.ajaxUrls['ajaxId']
+	 *
 	 * @param string $ajaxIdentifier Identifier of the AJAX callback
 	 * @param array $urlParameters URL parameters that should be added as key value pairs
 	 * @param bool/string $backPathOverride Backpath that should be used instead of the global $BACK_PATH
 	 * @param bool $returnAbsoluteUrl If set to TRUE, the URL returned will be absolute, $backPathOverride will be ignored in this case
 	 * @return string Calculated URL
+	 * @internal
 	 */
 	static public function getAjaxUrl($ajaxIdentifier, array $urlParameters = array(), $backPathOverride = FALSE, $returnAbsoluteUrl = FALSE) {
 		if ($backPathOverride) {

@@ -5642,10 +5642,6 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 				// We want to load jQuery-ui inside our js. Enable this using requirejs.
 				$pageRenderer->loadRequireJs();
 				$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.inline.js');
-				$pageRenderer->addInlineSetting('TCEFORMS.Inline.setExpandedCollapsedState', 'ajaxUrl', BackendUtility::getAjaxUrl('t3lib_TCEforms_inline::setExpandedCollapsedState'));
-				$pageRenderer->addInlineSetting('TCEFORMS.Inline.synchronizeLocalizeRecords', 'ajaxUrl', BackendUtility::getAjaxUrl('t3lib_TCEforms_inline::synchronizeLocalizeRecords'));
-				$pageRenderer->addInlineSetting('TCEFORMS.Inline.getRecordDetails', 'ajaxUrl', BackendUtility::getAjaxUrl('t3lib_TCEforms_inline::getRecordDetails'));
-				$pageRenderer->addInlineSetting('TCEFORMS.Inline.createNewRecord', 'ajaxUrl', BackendUtility::getAjaxUrl('t3lib_TCEforms_inline::createNewRecord'));
 				$out .= '
 				inline.setPrependFormFieldNames("' . $this->inline->prependNaming . '");
 				inline.setNoTitleString("' . addslashes(BackendUtility::getNoRecordTitle(TRUE)) . '");
@@ -5653,13 +5649,11 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 				// Always include JS functions for Suggest fields as we don't know what will come
 				$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.tceforms_suggest.js');
 				$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.tceforms_selectboxfilter.js');
-				$pageRenderer->addInlineSetting('TCEFORMS.Suggest', 'ajaxUrl', BackendUtility::getAjaxUrl('t3lib_TCEforms_suggest::searchRecord'));
 			} else {
 				// If Suggest fields were processed, add the JS functions
 				if ($this->suggest->suggestCount > 0) {
 					$pageRenderer->loadScriptaculous();
 					$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.tceforms_suggest.js');
-					$pageRenderer->addInlineSetting('TCEFORMS.Suggest', 'ajaxUrl', BackendUtility::getAjaxUrl('t3lib_TCEforms_suggest::searchRecord'));
 				}
 				if ($this->multiSelectFilterCount > 0) {
 					$pageRenderer->loadScriptaculous();

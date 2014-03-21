@@ -58,12 +58,13 @@ custom label for each category field.
 * Ajax API addition
 
 New API has been added to register an Ajax handler for the backend.
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler('TxMyExt::process', '\Vendor\Ext\AjaxHandler->process');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler('TxMyExt::process', 'Vendor\\Ext\\AjaxHandler->process');
 
-Along with that, new API has been added to get the Ajax URL for a given AjaxId.
-This URL will contain a CSRF protection token that will be checked
-in the ajax.php dispatcher:
-$ajaxUrl = \TYPO3\CMS\Core\Utility\BackendUtility::getAjaxUrl('TxMyExt::process');
+Along with that, URLs to all registered handlers will be
+published to JavaScript inline settings and can be looked up
+by providing the Ajax ID:
+
+var ajaxUrl = TYPO3.settings.ajaxUrls['TxMyExt::process'];
 
 Registering an Ajax script the "old" way by just adding it to TYPO3_CONF_VARS has been deprecated,
 but no deprecation log is been written and the handler still work in a backwards compatible way.

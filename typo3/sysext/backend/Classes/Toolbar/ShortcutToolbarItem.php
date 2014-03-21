@@ -228,11 +228,6 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 	 */
 	protected function addJavascriptToBackend() {
 		$this->backendReference->addJavascriptFile('sysext/backend/Resources/Public/JavaScript/shortcutmenu.js');
-		$this->backendReference->getPageRenderer()->addInlineSetting('ShortcutMenu.saveShortcut', 'ajaxUrl', BackendUtility::getAjaxUrl('ShortcutMenu::saveShortcut'));
-		$this->backendReference->getPageRenderer()->addInlineSetting('ShortcutMenu.delete', 'ajaxUrl', BackendUtility::getAjaxUrl('ShortcutMenu::delete'));
-		$this->backendReference->getPageRenderer()->addInlineSetting('ShortcutMenu.getGroups', 'ajaxUrl', BackendUtility::getAjaxUrl('ShortcutMenu::getGroups'));
-		$this->backendReference->getPageRenderer()->addInlineSetting('ShortcutMenu.render', 'ajaxUrl', BackendUtility::getAjaxUrl('ShortcutMenu::render'));
-		$this->backendReference->getPageRenderer()->addInlineSetting('ShortcutMenu.create', 'ajaxUrl', BackendUtility::getAjaxUrl('ShortcutMenu::create'));
 	}
 
 	/**

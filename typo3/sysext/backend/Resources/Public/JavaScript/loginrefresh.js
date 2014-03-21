@@ -41,7 +41,7 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 			run: function(){
 				// interval run
 				Ext.Ajax.request({
-					url: TYPO3.settings.BackendLogin['BackendLogin::isTimedOut'].ajaxUrl,
+					url: TYPO3.settings.ajaxUrls['BackendLogin::isTimedOut'],
 					params: {
 						'skipSessionUpdate': 1
 					},
@@ -88,7 +88,7 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 
 	initComponents: function() {
 		var loginPanel = new Ext.FormPanel({
-			url: TYPO3.settings.BackendLogin['BackendLogin::login'].ajaxUrl,
+			url: TYPO3.settings.ajaxUrls['BackendLogin::login'],
 			id: 'loginform',
 			title: TYPO3.LLL.core.refresh_login_title,
 			defaultType: 'textfield',
@@ -187,7 +187,7 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 				text: TYPO3.LLL.core.refresh_login_refresh_button,
 				handler: function() {
 					var refresh = Ext.Ajax.request({
-						url: TYPO3.settings.BackendLogin['BackendLogin::isTimedOut'].ajaxUrl,
+						url: TYPO3.settings.ajaxUrls['BackendLogin::isTimedOut'],
 						method: 'GET',
 						scope: this
 					});
@@ -232,7 +232,7 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 		if (TYPO3.configuration.showRefreshLoginPopup) {
 			//log off for sure
 			Ext.Ajax.request({
-				url: TYPO3.settings.BackendLogin['BackendLogin::logout'].ajaxUrl,
+				url: TYPO3.settings.ajaxUrls['BackendLogin::logout'],
 				method: 'GET',
 				scope: this,
 				success: function(response, opts) {
@@ -315,7 +315,7 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 	triggerSubmitForm: function() {
 		if (TYPO3.configuration.securityLevel === 'superchallenged' || TYPO3.configuration.securityLevel === 'challenged') {
 			Ext.Ajax.request({
-				url: TYPO3.settings.BackendLogin['BackendLogin::getChallenge'].ajaxUrl,
+				url: TYPO3.settings.ajaxUrls['BackendLogin::getChallenge'],
 				params: {
 					'skipSessionUpdate': 1
 				},
@@ -331,7 +331,7 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 			});
 		} else if (TYPO3.configuration.securityLevel === 'rsa') {
 			Ext.Ajax.request({
-				url: TYPO3.settings.BackendLogin['BackendLogin::getRsaPublicKey'].ajaxUrl,
+				url: TYPO3.settings.ajaxUrls['BackendLogin::getRsaPublicKey'],
 				params: {
 					'skipSessionUpdate': 1
 				},

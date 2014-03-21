@@ -163,7 +163,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 				me.queueLength--;
 				if (me.queueLength == 0) {
 					$.ajax({
-						url: TYPO3.settings.DragUploader.ajaxFlashMessagesUrl,
+						url: TYPO3.settings.ajaxUrls['DocumentTemplate::getFlashMessages'],
 						cache: false,
 						success: function(data) {
 							var messages = $('#typo3-messages');
@@ -349,7 +349,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 			formData.append('upload_1', me.file);
 
 			var s = $.extend(true, {}, $.ajaxSettings, {
-				url: TYPO3.settings.DragUploader.ajaxUrl,
+				url: TYPO3.settings.ajaxUrls['TYPO3_tcefile::process'],
 				contentType: false,
 				processData: false,
 				data: formData,

@@ -117,10 +117,6 @@ var DragDrop = {
 
 var Tree = {
 	ajaxID: 'SC_alt_db_navframe::expandCollapse',	// has to be either "SC_alt_db_navframe::expandCollapse" or "SC_alt_file_navframe::expandCollapse"
-	ajaxUrls: {
-		'SC_alt_file_navframe::expandCollapse': TYPO3.settings.Tree['SC_alt_file_navframe'].ajaxUrl,
-		'SC_alt_db_navframe::expandCollapse': TYPO3.settings.Tree['SC_alt_db_navframe'].ajaxUrl
-	},
 	frameSetModule: null,
 	activateDragDrop: true,
 	highlightClass: 'active',
@@ -136,7 +132,7 @@ var Tree = {
 
 			// fallback if AJAX is not possible (e.g. IE < 6)
 		if (typeof Ajax.getTransport() !== 'object') {
-			window.location.href = this.ajaxUrls[this.ajaxID] + '&PM=' + encodeURIComponent(params) + scope;
+			window.location.href = TYPO3.settings.ajaxUrls[this.ajaxID] + '&PM=' + encodeURIComponent(params) + scope;
 			return;
 		}
 
@@ -156,7 +152,7 @@ var Tree = {
 		} else {
 			obj.style.cursor = 'wait';
 		}
-		var call = new Ajax.Request(this.ajaxUrls[this.ajaxID], {
+		var call = new Ajax.Request(TYPO3.settings.ajaxUrls[this.ajaxID], {
 			method: 'get',
 			parameters: 'PM=' + encodeURIComponent(params) + scope,
 			onComplete: function(xhr) {

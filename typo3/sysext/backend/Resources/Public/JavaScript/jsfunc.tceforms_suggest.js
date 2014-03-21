@@ -60,7 +60,7 @@ TCEForms.Suggest = Class.create({
 		this.suggestResultList = objectId + 'SuggestChoices';
 		this.fieldType = fieldType;
 
-		new Ajax.Autocompleter(this.suggestField, this.suggestResultList, PATH_typo3 + TYPO3.settings.TCEFORMS.Suggest.ajaxUrl, {
+		new Ajax.Autocompleter(this.suggestField, this.suggestResultList, PATH_typo3 + TYPO3.settings.ajaxUrls['t3lib_TCEforms_suggest::searchRecord'], {
 				paramName: 'value',
 				minChars: (minimumCharacters ? minimumCharacters : this.minimumCharacters),
 				updateElement: this.addElementToList.bind(this),
