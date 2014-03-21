@@ -181,7 +181,7 @@ class ClassLoader {
 		//   2 and following => alias class names
 		// )
 		$loadingSuccessful = FALSE;
-		if (is_array($classLoadingInformation) && count($classLoadingInformation) > 0) {
+		if (!empty($classLoadingInformation)) {
 			// The call to class_exists fixes a rare case when early instances need to be aliased
 			// but PHP fails to recognize the real path of the class. See #55904
 			$loadingSuccessful = class_exists($classLoadingInformation[1], FALSE) || (bool)require_once $classLoadingInformation[0];
