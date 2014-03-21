@@ -72,7 +72,7 @@ class FileExtensionFilter {
 				$fileReferenceUid = $parts[count($parts) - 1];
 				$fileReference = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileReferenceObject($fileReferenceUid);
 				$file = $fileReference->getOriginalFile();
-				if ($this->isAllowed($file->getIdentifier())) {
+				if ($this->isAllowed($file->getName())) {
 					$cleanValues[] = $value;
 				} else {
 					// Remove the erroneously created reference record again
