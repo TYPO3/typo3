@@ -434,22 +434,22 @@ class RecordList {
 			$this->body .= '
 						</form>
 					</div>';
-			// Printing clipboard if enabled:
-			if ($this->MOD_SETTINGS['clipBoard'] && $dblist->showClipboard) {
-				$this->body .= '<div class="db_list-dashboard">' . $dblist->clipObj->printClipboard() . '</div>';
-			}
-			// Search box:
-			if (!$this->modTSconfig['properties']['disableSearchBox']) {
-				$sectionTitle = BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_searchbox', $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.search', TRUE));
-				$this->body .= '<div class="db_list-searchbox">' . $this->doc->section($sectionTitle, $dblist->getSearchBox(), FALSE, TRUE, FALSE, TRUE) . '</div>';
-			}
-			// Additional footer content
-			$footerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['recordlist/mod1/index.php']['drawFooterHook'];
-			if (is_array($footerContentHook)) {
-				foreach ($footerContentHook as $hook) {
-					$params = array();
-					$this->body .= GeneralUtility::callUserFunction($hook, $params, $this);
-				}
+		}
+		// Printing clipboard if enabled 
+		if ($this->MOD_SETTINGS['clipBoard'] && $dblist->showClipboard && ($dblist->HTMLcode || $dblist->clipObj->hasElements())) {
+			$this->body .= '<div class="db_list-dashboard">' . $dblist->clipObj->printClipboard() . '</div>';
+		}
+		// Search box:
+		if (!$this->modTSconfig['properties']['disableSearchBox'] && $dblist->HTMLcode) {
+			$sectionTitle = BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_searchbox', $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.search', TRUE));
+			$this->body .= '<div class="db_list-searchbox">' . $this->doc->section($sectionTitle, $dblist->getSearchBox(), FALSE, TRUE, FALSE, TRUE) . '</div>';
+		}
+		// Additional footer content
+		$footerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['recordlist/mod1/index.php']['drawFooterHook'];
+		if (is_array($footerContentHook)) {
+			foreach ($footerContentHook as $hook) {
+				$params = array();
+				$this->body .= GeneralUtility::callUserFunction($hook, $params, $this);
 			}
 		}
 		// Setting up the buttons and markers for docheader

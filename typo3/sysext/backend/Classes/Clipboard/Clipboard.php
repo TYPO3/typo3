@@ -417,6 +417,21 @@ class Clipboard {
 	}
 
 	/**
+	 * Returns true if the clipboard contains elements
+	 *
+	 * @return boolean
+	 */
+	public function hasElements() {
+		foreach ($this->clipData as $data) {
+			if (is_array($data['el']) && !empty($data['el'])) {
+				return TRUE;
+			}
+		}
+
+		return FALSE;
+	}
+
+	/**
 	 * Gets all localizations of the current record.
 	 *
 	 * @param string $table The table
