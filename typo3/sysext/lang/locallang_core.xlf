@@ -687,11 +687,17 @@ Would you like to save now in order to refresh the display?</source>
 			<trans-unit id="flushAllCachesDescription" xml:space="preserve">
 				<source>Clear all caches, including frontend caches, and extension-specific caches. Compile-time caches / system caches that are needed for TYPO3 to run are not touched.</source>
 			</trans-unit>
+			<trans-unit id="flushGeneralCachesTitle" xml:space="preserve">
+				<source>Flush general caches</source>
+			</trans-unit>
+			<trans-unit id="flushGeneralCachesDescription" xml:space="preserve">
+				<source>Clear frontend and page-related caches, plus some backend-related caches.</source>
+			</trans-unit>
 			<trans-unit id="flushSystemCachesTitle" xml:space="preserve">
 				<source>Flush system caches</source>
 			</trans-unit>
 			<trans-unit id="flushSystemCachesDescription" xml:space="preserve">
-				<source>Clears all system-related caches. This includes the class loader cache, the cache of all extension configuration files. Rebuilding this cache may take some time.</source>
+				<source>Clear all system-related caches, including the class loader, localization and extension configuration file caches. Rebuilding this cache may take some time. </source>
 			</trans-unit>
 			<trans-unit id="rm.adminFunctions" xml:space="preserve">
 				<source>Admin functions</source>

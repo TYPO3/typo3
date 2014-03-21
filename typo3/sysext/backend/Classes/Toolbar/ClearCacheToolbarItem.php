@@ -89,8 +89,8 @@ class ClearCacheToolbarItem implements ToolbarItemHookInterface {
 		if ($backendUser->isAdmin() || $backendUser->getTSConfigVal('options.clearCache.all')) {
 			$this->cacheActions[] = array(
 				'id' => 'all',
-				'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:flushAllCachesTitle', TRUE),
-				'description' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:flushAllCachesDescription', TRUE),
+				'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:flushGeneralCachesTitle', TRUE),
+				'description' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:flushGeneralCachesDescription', TRUE),
 				'href' => $this->backPath . 'tce_db.php?vC=' . $backendUser->veriCode() . '&cacheCmd=all&ajaxCall=1' . BackendUtility::getUrlToken('tceAction'),
 				'icon' => IconUtility::getSpriteIcon('actions-system-cache-clear-impact-medium')
 			);
