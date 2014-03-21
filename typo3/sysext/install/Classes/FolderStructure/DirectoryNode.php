@@ -78,7 +78,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface {
 	public function getStatus() {
 		$result = array();
 		if (!$this->exists()) {
-			$status = new Status\ErrorStatus();
+			$status = new Status\WarningStatus();
 			$status->setTitle('Directory ' . $this->getRelativePathBelowSiteRoot() . ' does not exist');
 			$status->setMessage('The Install Tool can try to create it');
 			$result[] = $status;

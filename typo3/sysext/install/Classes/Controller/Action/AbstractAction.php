@@ -122,7 +122,10 @@ abstract class AbstractAction implements ActionInterface {
 		$folderStatus[] = $permissionCheck->getMaskStatus('fileCreateMask');
 		$folderStatus[] = $permissionCheck->getMaskStatus('folderCreateMask');
 
-		$folderStructureErrors = $statusUtility->filterBySeverity($folderStatus, 'error');
+		$folderStructureErrors = array_merge(
+			$statusUtility->filterBySeverity($folderStatus, 'error'),
+			$statusUtility->filterBySeverity($folderStatus, 'warning')
+		);
 
 		// Context service distinguishes between standalone and backend context
 		$contextService = $this->objectManager->get('TYPO3\\CMS\\Install\\Service\\ContextService');
