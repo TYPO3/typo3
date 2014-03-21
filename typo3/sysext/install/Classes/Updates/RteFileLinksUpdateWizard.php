@@ -213,7 +213,7 @@ class RteFileLinksUpdateWizard extends AbstractUpdate {
 		if ($fileObject instanceof \TYPO3\CMS\Core\Resource\AbstractFile) {
 			// Next, match the reference path in the content to be sure it's present inside a <link> tag
 			$content = $record[$reference['field']];
-			$regularExpression = '$<(link ' . $reference['ref_string'] . ').*>$';
+			$regularExpression = '$<(link ' . str_replace(' ', '%20', $reference['ref_string']) . ').*>$';
 			$matches = array();
 			$result = preg_match($regularExpression, $content, $matches);
 			if ($result) {
