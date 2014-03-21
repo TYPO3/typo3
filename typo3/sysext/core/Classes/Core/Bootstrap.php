@@ -1065,6 +1065,21 @@ class Bootstrap {
 	}
 
 	/**
+	 * Send HTTP headers if configured
+	 *
+	 * @return Bootstrap
+	 * @internal This is not a public API method, do not use in own extensions
+	 */
+	public function sendHttpHeaders() {
+		if (!empty($GLOBALS['TYPO3_CONF_VARS']['BE']['HTTP']['Response']['Headers']) && is_array($GLOBALS['TYPO3_CONF_VARS']['BE']['HTTP']['Response']['Headers'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['BE']['HTTP']['Response']['Headers'] as $header) {
+				header($header);
+			}
+		}
+		return $this;
+	}
+
+	/**
 	 * Things that should be performed to shut down the framework.
 	 * This method is called in all important scripts for a clean
 	 * shut down of the system.

@@ -74,4 +74,5 @@ require __DIR__ . '/sysext/core/Classes/Core/Bootstrap.php';
 	->initializeLanguageObject()
 	->initializeBackendTemplate()
 	->endOutputBufferingAndCleanPreviousOutput()
-	->initializeOutputCompression();
+	->initializeOutputCompression()
+	->sendHttpHeaders();

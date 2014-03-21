@@ -713,6 +713,11 @@ return array(
 				'csrfTokenCheck' => TRUE
 			),
 		),
+		'HTTP' => array(
+			'Response' => array(
+				'Headers' => array('clickJackingProtection' => 'X-Frame-Options: SAMEORIGIN')
+			)
+		),
 		'XCLASS' => array()
 	),
 	'FE' => array( // Configuration for the TypoScript frontend (FE). Nothing here relates to the administration backend!
