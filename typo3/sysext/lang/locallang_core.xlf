@@ -292,8 +292,20 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.clipNoEl" xml:space="preserve">
 				<source>No elements</source>
 			</trans-unit>
+			<trans-unit id="labels.normal" xml:space="preserve">
+				<source>Normal (single record mode)</source>
+			</trans-unit>
+			<trans-unit id="labels.normal-description" xml:space="preserve">
+				<source>"Normal" clipboard allows to copy/move one record at time.</source>
+			</trans-unit>
 			<trans-unit id="labels.cliptabs" xml:space="preserve">
 				<source>Clipboard #</source>
+			</trans-unit>
+			<trans-unit id="labels.cliptabs-name" xml:space="preserve">
+				<source>Clipboard #%s (multi-selection mode)</source>
+			</trans-unit>
+			<trans-unit id="labels.cliptabs-description" xml:space="preserve">
+				<source>This clipboard allows to select and edit/copy/move multiple records at once. Choose it to show a checkbox by each record.</source>
 			</trans-unit>
 			<trans-unit id="labels.removeItem" xml:space="preserve">
 				<source>Remove item</source>

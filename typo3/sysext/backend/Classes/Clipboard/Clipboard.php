@@ -312,7 +312,10 @@ class Clipboard {
 		// Print header and content for the NORMAL tab:
 		$out[] = '
 			<tr class="bgColor5">
-				<td colspan="3"><a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('CB' => array('setP' => 'normal')))) . '#clip_head">' . IconUtility::getSpriteIcon(('actions-view-table-' . ($this->current == 'normal' ? 'collapse' : 'expand'))) . $this->padTitleWrap('Normal', 'normal') . '</a></td>
+				<td colspan="3"><a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('CB' => array('setP' => 'normal')))) . '#clip_head" title="' . $this->clLabel('normal-description') . '">'
+					. IconUtility::getSpriteIcon(('actions-view-table-' . ($this->current == 'normal' ? 'collapse' : 'expand')))
+					. $this->padTitleWrap($this->clLabel('normal'), 'normal')
+					. '</a></td>
 			</tr>';
 		if ($this->current == 'normal') {
 			$out = array_merge($out, $this->printContentFromTab('normal'));
@@ -321,7 +324,10 @@ class Clipboard {
 		for ($a = 1; $a <= $this->numberTabs; $a++) {
 			$out[] = '
 				<tr class="bgColor5">
-					<td colspan="3"><a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('CB' => array('setP' => ('tab_' . $a))))) . '#clip_head">' . IconUtility::getSpriteIcon(('actions-view-table-' . ($this->current == 'tab_' . $a ? 'collapse' : 'expand'))) . $this->padTitleWrap(($this->clLabel('cliptabs') . $a), ('tab_' . $a)) . '</a></td>
+					<td colspan="3"><a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('CB' => array('setP' => ('tab_' . $a))))) . '#clip_head" title="' . $this->clLabel('cliptabs-description') . '">'
+						. IconUtility::getSpriteIcon(('actions-view-table-' . ($this->current == 'tab_' . $a ? 'collapse' : 'expand')))
+						. $this->padTitleWrap(sprintf($this->clLabel('cliptabs-name'), $a), ('tab_' . $a))
+						. '</a></td>
 				</tr>';
 			if ($this->current == 'tab_' . $a) {
 				$out = array_merge($out, $this->printContentFromTab('tab_' . $a));
