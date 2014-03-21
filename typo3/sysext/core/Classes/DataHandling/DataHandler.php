@@ -3347,6 +3347,7 @@ class DataHandler {
 						$dbAnalysis->itemArray[$index]['id'] = $this->localize($item['table'], $item['id'], $language);
 					}
 				}
+				$dbAnalysis->purgeItemArray();
 				$value = implode(',', $dbAnalysis->getValueArray($prependName));
 			} elseif ($language > 0 && $localizeChildren === FALSE && $localizationMode === 'select' && $inlineSubType === 'mm') {
 				foreach ($dbAnalysis->itemArray as $index => $item) {
@@ -3358,8 +3359,10 @@ class DataHandler {
 						unset($dbAnalysis->itemArray[$index]);
 					}
 				}
+				$dbAnalysis->purgeItemArray();
 				$value = implode(',', $dbAnalysis->getValueArray($prependName));
 			} elseif ($mmTable) {
+				$dbAnalysis->purgeItemArray();
 				$value = implode(',', $dbAnalysis->getValueArray($prependName));
 			}
 			// Setting the value in this array will notify the remapListedDBRecords() function that this field MAY need references to be corrected
@@ -5052,6 +5055,29 @@ class DataHandler {
 			if ($mapID && !in_array($v['table'], $dontRemapTables)) {
 				$dbAnalysis->itemArray[$k]['id'] = $mapID;
 				$set = TRUE;
+			}
+		}
+		if (!empty($conf['MM'])) {
+			// Purge invalid items (live/version)
+			$dbAnalysis->purgeItemArray();
+			if ($dbAnalysis->isPurged()) {
+				$set = TRUE;
+			}
+
+			// If record has been versioned/copied in this process, handle invalid relations of the live record
+			$liveId = BackendUtility::getLiveVersionIdOfRecord($table, $MM_localUid);
+			if (!empty($this->copyMappingArray_merged[$table])) {
+				$originalId = array_search($MM_localUid, $this->copyMappingArray_merged[$table]);
+			}
+			if (!empty($liveId) && !empty($originalId) && (int)$liveId === (int)$originalId) {
+				$liveRelations = $this->createRelationHandlerInstance();
+				$liveRelations->setWorkspaceId(0);
+				$liveRelations->start('', $allowedTables, $conf['MM'], $liveId, $table, $conf);
+				// Purge invalid relations in the live workspace ("0")
+				$liveRelations->purgeItemArray(0);
+				if ($liveRelations->isPurged()) {
+					$liveRelations->writeMM($conf['MM'], $liveId, $prependName);
+				}
 			}
 		}
 		// If a change has been done, set the new value(s)

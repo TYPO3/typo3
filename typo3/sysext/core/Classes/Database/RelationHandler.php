@@ -229,11 +229,51 @@ class RelationHandler {
 	protected $useLiveReferenceIds = TRUE;
 
 	/**
+	 * @var int
+	 */
+	protected $workspaceId;
+
+	/**
+	 * @var bool
+	 */
+	protected $purged = FALSE;
+
+	/**
 	 * This array will be filled by getFromDB().
 	 *
 	 * @var array
 	 */
 	public $results = array();
+
+	/**
+	 * Gets the current workspace id.
+	 *
+	 * @return int
+	 */
+	public function getWorkspaceId() {
+		if (!isset($this->workspaceId)) {
+			$this->workspaceId = (int)$GLOBALS['BE_USER']->workspace;
+		}
+		return $this->workspaceId;
+	}
+
+	/**
+	 * Sets the current workspace id.
+	 *
+	 * @param int $workspaceId
+	 */
+	public function setWorkspaceId($workspaceId) {
+		$this->workspaceId = (int)$workspaceId;
+	}
+
+	/**
+	 * Whether item array has been purged in this instance.
+	 *
+	 * @return bool
+	 */
+	public function isPurged() {
+		return $this->purged;
+	}
 
 	/**
 	 * Initialization of the class.
@@ -311,9 +351,11 @@ class RelationHandler {
 		if ($MMtable) {
 			if ($MMuid) {
 				$this->readMM($MMtable, $MMuid);
+				$this->purgeItemArray();
 			} else {
 				// Revert to readList() for new records in order to load possible default values from $itemlist
 				$this->readList($itemlist, $conf);
+				$this->purgeItemArray();
 			}
 		} elseif ($MMuid && $conf['foreign_field']) {
 			// If not MM but foreign_field, the read the records by the foreign_field
@@ -1095,11 +1137,124 @@ class RelationHandler {
 			/** @var $refIndexObj \TYPO3\CMS\Core\Database\ReferenceIndex */
 			$refIndexObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ReferenceIndex');
 			if (BackendUtility::isTableWorkspaceEnabled($table)) {
-				$refIndexObj->setWorkspaceId($GLOBALS['BE_USER']->workspace);
+				$refIndexObj->setWorkspaceId($this->getWorkspaceId());
 			}
 			$statisticsArray = $refIndexObj->updateRefIndexTable($table, $id);
 		}
 		return $statisticsArray;
+	}
+
+	/**
+	 * @param NULL|int $workspaceId
+	 * @return bool
+	 */
+	public function purgeItemArray($workspaceId = NULL) {
+		$itemArrayHasBeenPurged = FALSE;
+
+		if ($workspaceId === NULL) {
+			$workspaceId = $this->getWorkspaceId();
+		} else {
+			$workspaceId = (int)$workspaceId;
+		}
+
+		// Ensure, only live relations are in the items Array
+		if ($workspaceId === 0) {
+			$purgeCallback = 'purgeVersionedIds';
+		// Otherwise, ensure that live relations are purged if version exists
+		} else {
+			$purgeCallback = 'purgeLiveVersionedIds';
+		}
+
+		foreach ($this->tableArray as $itemTableName => $itemIds) {
+			if (!count($itemIds)) {
+				continue;
+			}
+			$purgedItemIds = call_user_func(array($this, $purgeCallback), $itemTableName, $itemIds);
+			$removedItemIds = array_diff($itemIds, $purgedItemIds);
+			foreach ($removedItemIds as $removedItemId) {
+				$this->removeFromItemArray($itemTableName, $removedItemId);
+			}
+			$this->tableArray[$itemTableName] = $purgedItemIds;
+			if (count($removedItemIds)) {
+				$itemArrayHasBeenPurged = TRUE;
+			}
+		}
+
+		$this->purged = ($this->purged || $itemArrayHasBeenPurged);
+		return $itemArrayHasBeenPurged;
+	}
+
+	/**
+	 * Purges ids that are versioned.
+	 *
+	 * @param string $tableName
+	 * @param array $ids
+	 * @return array
+	 */
+	protected function purgeVersionedIds($tableName, array $ids) {
+		$ids = $this->getDatabaseConnection()->cleanIntArray($ids);
+		$ids = array_combine($ids, $ids);
+
+		$versions = $this->getDatabaseConnection()->exec_SELECTgetRows(
+			'uid,t3ver_oid,t3ver_state',
+			$tableName,
+			'pid=-1 AND t3ver_oid IN (' . implode(',', $ids) . ') AND t3ver_wsid<>0',
+			'',
+			't3ver_state DESC'
+		);
+
+		if (!empty($versions)) {
+			foreach ($versions as $version) {
+				$versionId = $version['uid'];
+				if (isset($ids[$versionId])) {
+					unset($ids[$versionId]);
+				}
+			}
+		}
+
+		return array_values($ids);
+	}
+
+	/**
+	 * Purges ids that are live but have an accordant version.
+	 *
+	 * @param string $tableName
+	 * @param array $ids
+	 * @return array
+	 */
+	protected function purgeLiveVersionedIds($tableName, array $ids) {
+		$ids = $this->getDatabaseConnection()->cleanIntArray($ids);
+		$ids = array_combine($ids, $ids);
+
+		$versions = $this->getDatabaseConnection()->exec_SELECTgetRows(
+			'uid,t3ver_oid,t3ver_state',
+			$tableName,
+			'pid=-1 AND t3ver_oid IN (' . implode(',', $ids) . ') AND t3ver_wsid<>0',
+			'',
+			't3ver_state DESC'
+		);
+
+		if (!empty($versions)) {
+			foreach ($versions as $version) {
+				$versionId = $version['uid'];
+				$liveId = $version['t3ver_oid'];
+				if (isset($ids[$liveId]) && isset($ids[$versionId])) {
+					unset($ids[$liveId]);
+				}
+			}
+		}
+
+		return array_values($ids);
+	}
+
+	protected function removeFromItemArray($tableName, $id) {
+		foreach ($this->itemArray as $index => $item) {
+			if ($item['table'] === $tableName && (string)$item['id'] === (string)$id) {
+				unset($this->itemArray[$index]);
+				return TRUE;
+			}
+		}
+		return FALSE;
 	}
 
 	/**
@@ -1223,7 +1378,14 @@ class RelationHandler {
 		if ($liveDefaultId === NULL) {
 			$liveDefaultId = $id;
 		}
-		return $liveDefaultId;
+		return (int)$liveDefaultId;
+	}
+
+	/**
+	 * @return DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
 	}
 
 }

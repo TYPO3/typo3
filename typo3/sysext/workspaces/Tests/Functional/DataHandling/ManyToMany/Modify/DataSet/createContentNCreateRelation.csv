@@ -4,8 +4,8 @@ sys_category
 ,29,0,512,0,0,0,0,0,0,0,0,"Category B",0,0
 ,30,0,768,0,0,0,0,0,0,0,0,"Category C",0,0
 ,31,0,1024,0,0,0,0,0,0,0,0,"Category A.A",28,0
-,32,89,256,0,0,0,1,1,0,0,0,"Testing #1",0,0
-,33,-1,256,0,0,0,1,-1,0,32,0,"Testing #1",0,0
+,32,0,128,0,0,0,1,1,0,0,0,"Testing #1",0,0
+,33,-1,128,0,0,0,1,-1,0,32,0,"Testing #1",0,0
 sys_category_record_mm
 ,uid_local,uid_foreign,tablenames,sorting,sorting_foreign,fieldname
 ,28,297,tt_content,0,1,categories

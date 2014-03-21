@@ -66,7 +66,9 @@ class ActionService {
 		$previousUid = NULL;
 		foreach ($tableRecordData as $tableName => $recordData) {
 			$recordData = $this->resolvePreviousUid($recordData, $currentUid);
-			$recordData['pid'] = $pageId;
+			if (!isset($recordData['pid'])) {
+				$recordData['pid'] = $pageId;
+			}
 			$currentUid = uniqid('NEW');
 			$newTableIds[$tableName][] = $currentUid;
 			$dataMap[$tableName][$currentUid] = $recordData;

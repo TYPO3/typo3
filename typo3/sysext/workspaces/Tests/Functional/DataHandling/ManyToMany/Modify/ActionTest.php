@@ -113,15 +113,12 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Man
 		parent::createCategoryAndAddRelation();
 		$this->assertAssertionDataSet('createCategoryNAddRelation');
 
-		// @todo Does not work due to the core bug of not setting the reference field in the MM record
-		/*
-			$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
-			$this->assertResponseContentHasRecords($responseContent, self::TABLE_Category, 'title', 'Testing #1');
-			$this->assertResponseContentStructureHasRecords(
-				$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, 'categories',
-				self::TABLE_Category, 'title', 'Testing #1'
-			);
-		*/
+		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
+		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Category, 'title', 'Testing #1');
+		$this->assertResponseContentStructureHasRecords(
+			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, 'categories',
+			self::TABLE_Category, 'title', 'Testing #1'
+		);
 	}
 
 	/**
@@ -134,15 +131,10 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Man
 
 		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
 		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', 'Testing #1');
-
-		// @todo New category is not resolved in new content element due to core bug
-		// The frontend query ignores pid=-1 and thus the specific workspace record in sys_category:33
-		/*
-			$this->assertResponseContentStructureHasRecords(
-				$responseContent, self::TABLE_Content . ':' . $this->recordIds['newContentId'], 'categories',
-				self::TABLE_Category, 'title', 'Testing #1'
-			);
-		*/
+		$this->assertResponseContentStructureHasRecords(
+			$responseContent, self::TABLE_Content . ':' . $this->recordIds['newContentId'], 'categories',
+			self::TABLE_Category, 'title', 'Testing #1'
+		);
 	}
 
 	/**
@@ -250,14 +242,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Man
 		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
 		$this->assertResponseContentStructureHasRecords(
 			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, 'categories',
-			self::TABLE_Category, 'title', 'Category A'
-			// @todo Actually it should be twice "Category A" since the category got copied
-			// The frontend query ignores pid=-1 and thus the specific workspace record in sys_category:33
-			// SELECT sys_category.* FROM sys_category JOIN sys_category_record_mm ON sys_category_record_mm.uid_local = sys_category.uid WHERE sys_category.uid IN (33,28,29)
-			// AND sys_category_record_mm.uid_foreign=297 AND (sys_category.sys_language_uid IN (0,-1))
-			// AND sys_category.deleted=0 AND (sys_category.t3ver_wsid=0 OR sys_category.t3ver_wsid=1) AND sys_category.pid<>-1
-			// ORDER BY sys_category_record_mm.sorting_foreign
-			// self::TABLE_Category, 'title', array('Category A', 'Category A')
+			self::TABLE_Category, 'title', array('Category A', 'Category A (copy 1)')
 		);
 	}
 

@@ -133,7 +133,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		$newTableIds = $this->actionService->createNewRecords(
 			self::VALUE_PageId,
 			array(
-				self::TABLE_Category => array('title' => 'Testing #1'),
+				self::TABLE_Category => array('pid' => 0, 'title' => 'Testing #1'),
 				self::TABLE_Content => array('header' => 'Testing #1', 'categories' => '__previousUid'),
 			)
 		);
@@ -150,7 +150,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 			self::VALUE_PageId,
 			array(
 				self::TABLE_Content => array('header' => 'Testing #1',),
-				self::TABLE_Category => array('title' => 'Testing #1', 'items' => 'tt_content___previousUid'),
+				self::TABLE_Category => array('pid' => 0, 'title' => 'Testing #1', 'items' => 'tt_content___previousUid'),
 			)
 		);
 		$this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
