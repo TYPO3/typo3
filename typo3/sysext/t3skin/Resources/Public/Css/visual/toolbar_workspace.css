@@ -4,6 +4,7 @@ Workspace Selector
 
 #workspace-selector-menu ul {
 	position: static;
+	list-style: none;
 }
 
 #workspace-selector-menu .items {
