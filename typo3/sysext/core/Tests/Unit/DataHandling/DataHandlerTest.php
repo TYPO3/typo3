@@ -568,10 +568,6 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				FALSE,
 				'0', NULL, 'int', TRUE
 			),
-			'integer with allowed null value null vs. null' => array(
-				TRUE,
-				NULL, NULL, 'int', TRUE
-			),
 		);
 	}
 

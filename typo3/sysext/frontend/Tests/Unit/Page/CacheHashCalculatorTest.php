@@ -118,7 +118,7 @@ class CacheHashCalculatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				'id=1&type=3&exclude1=x&no_cache=1',
 				array()
 			),
-			'System and exclude parameters should be omitted' => array(
+			'System and exclude parameters should be omitted, others should stay' => array(
 				'id=1&type=3&key=x&no_cache=1',
 				array('encryptionKey', 'key')
 			)
@@ -144,7 +144,7 @@ class CacheHashCalculatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'Querystring has only system parameters so we should not have a cacheHash' => array('id=1&type=val', ''),
 			'Trivial key value combination should generate hash' => array('&key=value', $knowHash),
 			'Only the relevant parts should be taken into account' => array('&key=value&exclude1=val', $knowHash),
-			'Only the relevant parts should be taken into account' => array('&exclude2=val&key=value', $knowHash),
+			'Only the relevant parts should be taken into account(exclude2 before key)' => array('&exclude2=val&key=value', $knowHash),
 			'System parameters should not be taken into account' => array('&id=1&key=value', $knowHash),
 			'Admin panel parameters should not be taken into account' => array('&TSFE_ADMIN_PANEL[display]=7&key=value', $knowHash),
 			'Trivial hash for sorted parameters should be right' => array('a=v&b=v', '0f40b089cdad149aea99e9bf4badaa93'),
@@ -168,8 +168,8 @@ class CacheHashCalculatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'Empty parameter strings should not require anything.' => array('', FALSE),
 			'Normal parameters aren\'t required.' => array('key=value', FALSE),
 			'Configured "req1" to be required.' => array('req1=value', TRUE),
-			'Configured "req1" to be requiredm, should also work in combined context' => array('&key=value&req1=value', TRUE),
-			'Configured "req1" to be requiredm, should also work in combined context' => array('req1=value&key=value', TRUE)
+			'Configured "req1" to be required, should also work in combined context' => array('&key=value&req1=value', TRUE),
+			'Configured "req1" to be required, should also work in combined context (key at the end)' => array('req1=value&key=value', TRUE)
 		);
 	}
 
@@ -222,12 +222,12 @@ class CacheHashCalculatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				array('excludedParametersIfEmpty' => array(), 'excludeAllEmptyParameters' => FALSE),
 				array('encryptionKey', 'key1', 'key2', 'key3')
 			),
-			'Due to the empty value, "key2" should be skipped' => array(
+			'Due to the empty value, "key2" should be skipped(with equals sign' => array(
 				'key1=v&key2=&key3=',
 				array('excludedParametersIfEmpty' => array('key2'), 'excludeAllEmptyParameters' => FALSE),
 				array('encryptionKey', 'key1', 'key3')
 			),
-			'Due to the empty value, "key2" should be skipped' => array(
+			'Due to the empty value, "key2" should be skipped(without equals sign)' => array(
 				'key1=v&key2&key3',
 				array('excludedParametersIfEmpty' => array('key2'), 'excludeAllEmptyParameters' => FALSE),
 				array('encryptionKey', 'key1', 'key3')

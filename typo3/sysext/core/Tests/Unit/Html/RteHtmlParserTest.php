@@ -271,9 +271,9 @@ class RteHtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				'<p>paragraph1</p>' . CRLF . '<p>paragraph2</p>',
 				'paragraph1' . CRLF . 'paragraph2',
 			),
-			'Double spacing paragraph' => array(
+			'Double spacing paragraph with text' => array(
 				'<p>&nbsp;</p><p>&nbsp;</p><p>paragraph1</p>',
-				CRLF . CRLF . paragraph1,
+				CRLF . CRLF . 'paragraph1',
 			),
 			'Paragraph followed by linebreak' => array(
 				'<p>paragraph</p>' . CRLF,
@@ -294,14 +294,6 @@ class RteHtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'Paragraph followed by double spacing paragraph, linebreak-separated' => array(
 				'<p>paragraph</p>' . CRLF . '<p>&nbsp;</p>' . CRLF . '<p>&nbsp;</p>',
 				'paragraph' . CRLF . CRLF . CRLF,
-			),
-			'Paragraph followed by paragraph' => array(
-				'<p>paragraph1</p>' . '<p>paragraph2</p>',
-				'paragraph1' . CRLF . 'paragraph2',
-			),
-			'Paragraph followed by paragraph, linebreak-separated' => array(
-				'<p>paragraph1</p>' . CRLF . '<p>paragraph2</p>',
-				'paragraph1' . CRLF . 'paragraph2',
 			),
 			'Paragraph followed by spacing paragraph and by paragraph' => array(
 				'<p>paragraph1</p>' . '<p>&nbsp;</p>' . '<p>paragraph2</p>',

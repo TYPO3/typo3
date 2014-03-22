@@ -164,7 +164,6 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
 			'columns' => array(
 				'type' => array(
 					'config' => array(
-						'items' => array('Type A', 'typeA'),
 						'items' => array('Type B', 'typeB')
 					)
 				)

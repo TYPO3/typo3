@@ -292,8 +292,8 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		return array(
 			'in be: respectEnableFields=false' => array('BE', FALSE, NULL),
 			'in be: respectEnableFields=true' => array('BE', TRUE, array('tx_foo_table.disabled_column=0 AND (tx_foo_table.starttime_column<=123456789) AND tx_foo_table.deleted_column=0')),
-			'in be: respectEnableFields=false' => array('FE', FALSE, NULL),
-			'in be: respectEnableFields=true' => array('FE', TRUE, array('tx_foo_table.deleted_column=0 AND tx_foo_table.disabled_column=0 AND tx_foo_table.starttime_column<=123456789'))
+			'in FE: respectEnableFields=false' => array('FE', FALSE, NULL),
+			'in FE: respectEnableFields=true' => array('FE', TRUE, array('tx_foo_table.deleted_column=0 AND tx_foo_table.disabled_column=0 AND tx_foo_table.starttime_column<=123456789'))
 		);
 	}
 
