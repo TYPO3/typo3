@@ -284,7 +284,7 @@
 				<source>Read online</source>
 			</trans-unit>
 			<trans-unit id="extensionList.distribution.key" xml:space="preserve">
-				<source>Distribution-Key:</source>
+				<source>Distribution Key:</source>
 			</trans-unit>
 			<trans-unit id="distributions" xml:space="preserve">
 				<source>Get preconfigured distribution</source>

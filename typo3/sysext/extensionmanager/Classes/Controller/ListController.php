@@ -104,8 +104,11 @@ class ListController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractCont
 			$repositoryHelper->updateExtList();
 		}
 
-		$distributions = $this->extensionRepository->findAllDistributions();
-		$this->view->assign('distributions', $distributions);
+		$officialDistributions = $this->extensionRepository->findAllOfficialDistributions();
+		$this->view->assign('officialDistributions', $officialDistributions);
+
+		$communityDistributions = $this->extensionRepository->findAllCommunityDistributions();
+		$this->view->assign('communityDistributions', $communityDistributions);
 	}
 
 	/**

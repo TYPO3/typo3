@@ -199,18 +199,46 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	}
 
 	/**
-	 * Finds all extensions with category "distribution"
+	 * Finds all extensions with category "distribution" not published by the TYPO3 CMS Team
 	 *
 	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
 	 */
-	public function findAllDistributions() {
+	public function findAllCommunityDistributions() {
 		$query = $this->createQuery();
 		$query->matching(
 			$query->logicalAnd(
 				$query->equals('category', \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::DISTRIBUTION_CATEGORY),
-				$query->equals('currentVersion', 1)
+				$query->equals('currentVersion', 1),
+				$query->logicalNot($query->equals('ownerusername', 'typo3v4'))
 			)
 		);
+
+		$query->setOrderings(array(
+			'alldownloadcounter' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
+		));
+
+		return $query->execute();
+	}
+
+	/**
+	 * Finds all extensions with category "distribution" that are published by the TYPO3 CMS Team
+	 *
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+	 */
+	public function findAllOfficialDistributions() {
+		$query = $this->createQuery();
+		$query->matching(
+			$query->logicalAnd(
+				$query->equals('category', \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::DISTRIBUTION_CATEGORY),
+				$query->equals('currentVersion', 1),
+				$query->equals('ownerusername', 'typo3v4')
+			)
+		);
+
+		$query->setOrderings(array(
+			'alldownloadcounter' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
+		));
+
 		return $query->execute();
 	}
 
