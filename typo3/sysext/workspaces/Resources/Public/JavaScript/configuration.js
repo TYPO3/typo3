@@ -303,7 +303,7 @@ TYPO3.Workspaces.Configuration.RowButtons = {
 				}
 			},
 			getClass: function(v, meta, rec) {
-				if(!rec.json.allowedAction_editVersionedPage || !top.TYPO3.configuration.pageModule) {
+				if(!rec.json.allowedAction_editVersionedPage || !TYPO3.Workspaces.Helpers.isDefined('top.TYPO3.configuration.pageModule') || !top.TYPO3.configuration.pageModule) {
 					return 'icon-hidden';
 				} else {
 					return '';
