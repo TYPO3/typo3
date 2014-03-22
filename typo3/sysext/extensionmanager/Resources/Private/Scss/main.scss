@@ -7,6 +7,9 @@
  *
  */
 
+// Import Variables
+@import "var/settings";
+
 // Some helpers
 @import "helpers/mixins";
 
@@ -16,5 +19,5 @@
 // Appearance of the page
 @import "page/base",
 		"page/manage",
-		"page/get";
-
+		"page/get",
+		"page/distribution";

@@ -25,6 +25,11 @@
 				$(this).parent().css('z-index', 1);
 			}
 		});
+
+		$('.t3-button-action-installdistribution').click(function(){
+			$('.typo3-extension-manager').mask();
+		});
+
 	});
 
 	function getUrlVars() {

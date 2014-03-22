@@ -1,0 +1,89 @@
+.distribution {
+	border: 1px solid darken($gray-lighter,15%);
+	background-color: $gray-lighter;
+	margin-bottom: 20px;
+	margin-left: 20px;
+	width: 300px;
+	float: left;
+	&:hover {
+		background-color: darken($gray-lighter,3%);
+		.distribution-hover {
+			top: 0px;
+			opacity: 1;
+		}
+	}
+}
+.distribution-holder {
+	@include clearfix;
+	top: 0px;
+	bottom: 0px;
+	margin-left: -20px;
+}
+.distribution-image {
+	position: relative;
+	width: 300px;
+	height: 225px;
+	overflow: hidden;
+	img {
+		display: block;
+		height: 100%;
+		width: 100%;
+	}
+}
+.distribution-hover {
+	background-color: $gray-lighter;
+	position: absolute;
+	top: 100%;
+	left: 0px;
+	width: 300px;
+	height: 225px;
+	overflow: hidden;
+	opacity: 0;
+	@include transition(all 0.2s ease-in-out);
+}
+.distribution-hover-inner {
+	padding: 15px;
+}
+.distribution-meta {
+	border-top: 1px solid darken($gray-lighter,10%);
+	padding: 15px;
+	.distribution-title {
+		margin: 0;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		font-size: 14px;
+	}
+	.distribution-install {
+		margin-top: 0.5em;
+	}
+	.t3-button {
+		margin: 0;
+		padding-right: 8px;
+	}
+	.distribution-official {
+		border: 1px solid $brand-color;
+		background-color: $brand-color;
+		border-radius: 2px;
+		display: inline-block;
+		padding: 3px 8px;
+		vertical-align: middle;
+		color: #FFFFFF;
+	}
+}
+.distribution-info {
+	@include clearfix();
+	margin-top: 0;
+	dt {
+		font-weight: bold;
+		float: left;
+		width: 60px;
+		clear: left;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	dd {
+		margin-left: 70px;
+	}
+}

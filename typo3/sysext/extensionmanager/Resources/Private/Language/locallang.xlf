@@ -284,13 +284,28 @@
 				<source>Read online</source>
 			</trans-unit>
 			<trans-unit id="extensionList.distribution.key" xml:space="preserve">
-				<source>Distribution Key:</source>
+				<source>Key:</source>
+			</trans-unit>
+			<trans-unit id="extensionList.distribution.author" xml:space="preserve">
+				<source>Author:</source>
+			</trans-unit>
+			<trans-unit id="extensionList.distribution.title" xml:space="preserve">
+			<source>Title:</source>
+			</trans-unit>
+			<trans-unit id="extensionList.distribution.version" xml:space="preserve">
+				<source>Version:</source>
+			</trans-unit>
+			<trans-unit id="extensionList.distribution.lastUpdated" xml:space="preserve">
+				<source>Last Update:</source>
+			</trans-unit>
+			<trans-unit id="extensionList.officialDistribution" xml:space="preserve">
+				<source>Official distribution</source>
 			</trans-unit>
 			<trans-unit id="distributions" xml:space="preserve">
 				<source>Get preconfigured distribution</source>
 			</trans-unit>
 			<trans-unit id="extensionList.installDistribution" xml:space="preserve">
-				<source>Install distribution</source>
+				<source>Install</source>
 			</trans-unit>
 			<trans-unit id="extensionList.updateFromTer.label" xml:space="preserve">
 				<source>Retrieving Extension-List from TYPO3 Extension Repository (TER)</source>

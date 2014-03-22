@@ -338,3 +338,95 @@ span.ter-ext-state-alpha {
 
 #typo3-docbody form.download {
   margin-bottom: 0; }
+
+.distribution {
+  border: 1px solid #d4d4d4;
+  background-color: #fafafa;
+  margin-bottom: 20px;
+  margin-left: 20px;
+  width: 300px;
+  float: left; }
+  .distribution:hover {
+    background-color: #f2f2f2; }
+    .distribution:hover .distribution-hover {
+      top: 0px;
+      opacity: 1; }
+
+.distribution-holder {
+  top: 0px;
+  bottom: 0px;
+  margin-left: -20px; }
+  .distribution-holder:before, .distribution-holder:after {
+    content: " ";
+    display: table; }
+  .distribution-holder:after {
+    clear: both; }
+
+.distribution-image {
+  position: relative;
+  width: 300px;
+  height: 225px;
+  overflow: hidden; }
+  .distribution-image img {
+    display: block;
+    height: 100%;
+    width: 100%; }
+
+.distribution-hover {
+  background-color: #fafafa;
+  position: absolute;
+  top: 100%;
+  left: 0px;
+  width: 300px;
+  height: 225px;
+  overflow: hidden;
+  opacity: 0;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out; }
+
+.distribution-hover-inner {
+  padding: 15px; }
+
+.distribution-meta {
+  border-top: 1px solid #e0e0e0;
+  padding: 15px; }
+  .distribution-meta .distribution-title {
+    margin: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 14px; }
+  .distribution-meta .distribution-install {
+    margin-top: 0.5em; }
+  .distribution-meta .t3-button {
+    margin: 0;
+    padding-right: 8px; }
+  .distribution-meta .distribution-official {
+    border: 1px solid #ff8600;
+    background-color: #ff8600;
+    border-radius: 2px;
+    display: inline-block;
+    padding: 3px 8px;
+    vertical-align: middle;
+    color: #FFFFFF; }
+
+.distribution-info {
+  margin-top: 0; }
+  .distribution-info:before, .distribution-info:after {
+    content: " ";
+    display: table; }
+  .distribution-info:after {
+    clear: both; }
+  .distribution-info dt {
+    font-weight: bold;
+    float: left;
+    width: 60px;
+    clear: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
+  .distribution-info dd {
+    margin-left: 70px; }

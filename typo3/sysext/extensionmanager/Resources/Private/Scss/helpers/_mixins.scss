@@ -1,18 +1,32 @@
 // SASS MIXINS
 $useIEFilters: 0;
 
+// clearfix
+@mixin clearfix {
+	&:before,
+	&:after {
+		content: " "; // 1
+		display: table; // 2
+	}
+	&:after {
+		clear: both;
+	}
+}
+
+// border-radius
 @mixin border-radius ($values) {
 	-webkit-border-radius: $values;
 	   -moz-border-radius: $values;
-	        border-radius: $values;
+		border-radius: $values;
 }
 
+// box-shadow
 @mixin box-shadow ($values) {
 	-webkit-box-shadow: $values;
-	        box-shadow: $values;
+		box-shadow: $values;
 }
 
-
+// linear-gradient
 @mixin linear-gradient($preset, $from, $to, $ie: $useIEFilters) {
 	background-color: $preset;
 	background-image: -webkit-gradient(linear, left top, left bottom, from($from), to($to));
@@ -27,6 +41,7 @@ $useIEFilters: 0;
 	}
 }
 
+// rotate
 @mixin rotate ($deg) {
 	-webkit-transform: rotate(#{$deg}deg);
 	   -moz-transform: rotate(#{$deg}deg);
@@ -35,6 +50,7 @@ $useIEFilters: 0;
 	        transform: rotate(#{$deg}deg);
 }
 
+// scale
 @mixin scale ($size) {
 	-webkit-transform: scale(#{$size});
 	   -moz-transform: scale(#{$size});
@@ -43,6 +59,7 @@ $useIEFilters: 0;
 	        transform: scale(#{$size});
 }
 
+// transform
 @mixin transform ($values) {
 	-webkit-transform: #{$values};
 	   -moz-transform: #{$values};
@@ -51,6 +68,7 @@ $useIEFilters: 0;
 	        transform: #{$values};
 }
 
+// transition
 @mixin transition ($value) {
 	-webkit-transition: $value;
 	   -moz-transition: $value;
@@ -58,7 +76,6 @@ $useIEFilters: 0;
 	    -ms-transition: $value;
 	        transition: $value;
 }
-
 
 // box-sizing
 @mixin box-sizing ($type: border-box) {
@@ -72,6 +89,7 @@ $useIEFilters: 0;
 	@include transform(translate3d(0,0,0) #{$values});
 }
 
+// colors
 @mixin alpha { color: #f14400; }
 @mixin beta { color: #f4bd00; }
 @mixin stable { color: #3db900; }

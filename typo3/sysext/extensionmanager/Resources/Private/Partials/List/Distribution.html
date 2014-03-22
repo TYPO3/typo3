@@ -1,21 +1,39 @@
 {namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
 <div class="distribution">
-	<div class="distributionInner">
-		<div class="distributionName"><h2>{distribution.title}</h2></div>
-		<div class="distributionImage">
-			<em:image
+	<div class="distribution-image">
+		<em:image
 				src="EXT:{distribution.extensionKey}/Resources/Public/Images/Distribution.png" alt="{distribution.title}"
 				fallbackImage="EXT:extensionmanager/Resources/Public/Images/Distribution.png"
-				height="150px"
-				width="220px"
-				/>
+				height="225px"
+				width="300px"
+			/>
+		<div class="distribution-hover">
+			<div class="distribution-hover-inner">
+				<dl class="distribution-info">
+					 <dt><f:translate key="extensionList.distribution.title" /></dt>
+					<dd>{distribution.title}</dd>
+					<dt><f:translate key="extensionList.distribution.key" /></dt>
+					<dd>{distribution.extensionKey}</dd>
+					<dt><f:translate key="extensionList.distribution.version" /></dt>
+					<dd>{distribution.version} (<f:format.date format="d.m.Y">{distribution.lastUpdated}</f:format.date>)</dd>
+					<dt><f:translate key="extensionList.distribution.author" /></dt>
+					<dd>{distribution.authorName}</dd>
+				</dl>
+				<div class="distributionDescription">{distribution.description}</div>
+			</div>
 		</div>
-		<div class="distributionKey"><strong><f:translate key="extensionList.distribution.key" /> </strong>{distribution.extensionKey}</div>
-		<div class="distributionDescription expandable">{distribution.description} </div>
-		<div class="distributionInstall">
-			<f:link.action action="installDistribution" controller="Download" arguments="{extension:distribution}">
-				<f:translate key="extensionList.installDistribution">Install Distribution</f:translate>
+	</div>
+	<div class="distribution-meta">
+		<h2 class="distribution-title">{distribution.title}</h2>
+		<div class="distribution-install">
+			<f:link.action action="installDistribution" controller="Download" arguments="{extension:distribution}" class="t3-button t3-button-action-installdistribution">
+				<span class="t3-icon t3-icon-actions t3-icon-system-extension-import">&nbsp;</span><f:translate key="extensionList.installDistribution">Install</f:translate>
 			</f:link.action>
+			<f:if condition="{official}">
+				<span class="distribution-official">
+					<f:translate key="extensionList.officialDistribution">Official Distribution</f:translate>
+				</span>
+			</f:if>
 		</div>
 	</div>
 </div>
