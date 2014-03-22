@@ -242,15 +242,19 @@ class ModuleMenuView {
 			'title' => '',
 			'html' => ''
 		);
-		$iconFileRelative = $this->getModuleIconRelative($GLOBALS['LANG']->moduleLabels['tabs_images'][$moduleKey]);
-		$iconFileAbsolute = $this->getModuleIconAbsolute($GLOBALS['LANG']->moduleLabels['tabs_images'][$moduleKey]);
-		$iconSizes = @getimagesize($iconFileAbsolute);
-		$iconTitle = $GLOBALS['LANG']->moduleLabels['tabs'][$moduleKey];
-		if (!empty($iconFileRelative)) {
-			$icon['filename'] = $iconFileRelative;
-			$icon['size'] = $iconSizes[3];
-			$icon['title'] = htmlspecialchars($iconTitle);
-			$icon['html'] = '<img src="' . $iconFileRelative . '" ' . $iconSizes[3] . ' title="' . htmlspecialchars($iconTitle) . '" alt="' . htmlspecialchars($iconTitle) . '" />';
+
+		if (!empty($GLOBALS['LANG']->moduleLabels['tabs_images'][$moduleKey])) {
+			$imageReference = $GLOBALS['LANG']->moduleLabels['tabs_images'][$moduleKey];
+			$iconFileRelative = $this->getModuleIconRelative($imageReference);
+			if (!empty($iconFileRelative)) {
+				$iconTitle = $GLOBALS['LANG']->moduleLabels['tabs'][$moduleKey];
+				$iconFileAbsolute = $this->getModuleIconAbsolute($imageReference);
+				$iconSizes = @getimagesize($iconFileAbsolute);
+				$icon['filename'] = $iconFileRelative;
+				$icon['size'] = $iconSizes[3];
+				$icon['title'] = htmlspecialchars($iconTitle);
+				$icon['html'] = '<img src="' . $iconFileRelative . '" ' . $iconSizes[3] . ' title="' . htmlspecialchars($iconTitle) . '" alt="' . htmlspecialchars($iconTitle) . '" />';
+			}
 		}
 		return $icon;
 	}
