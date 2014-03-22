@@ -28,13 +28,6 @@ before_script:
   - mkdir fileadmin uploads typo3temp
   - mv build-environment/typo3conf .
   - git clone --single-branch --branch master --depth 1 git://git.typo3.org/TYPO3CMS/Extensions/phpunit.git typo3conf/ext/phpunit/
-  - >
-    if [[ "$DB" == "mysql" ]]; then
-    	mysql -e "DROP DATABASE IF EXISTS typo3_test;" -uroot
-    	mysql -e "CREATE DATABASE IF NOT EXISTS typo3_test;" -uroot
-    	php build-environment/dbimport/DatabaseImport.php
-    	mysql -uroot typo3_test < build-environment/dbimport/cli_users.sql
-    fi
 
 script:
   - printf "UnitTests\nFunctionalTests\nLint" | parallel --gnu --keep-order 'echo "Running {}"; ./build-environment/execute{}.sh'
