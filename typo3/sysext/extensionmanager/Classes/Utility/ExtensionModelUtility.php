@@ -69,6 +69,10 @@ class ExtensionModelUtility {
 		$unserializedDependencies = unserialize($dependencies);
 		$dependenciesObject = new \SplObjectStorage();
 		foreach ($unserializedDependencies as $dependencyType => $dependencyValues) {
+			// Dependencies might be given as empty string, e.g. conflicts => ''
+			if (!is_array($dependencyValues)) {
+				continue;
+			}
 			foreach ($dependencyValues as $dependency => $versions) {
 				if ($dependencyType && $dependency) {
 					$versionNumbers = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionsStringToVersionNumbers($versions);

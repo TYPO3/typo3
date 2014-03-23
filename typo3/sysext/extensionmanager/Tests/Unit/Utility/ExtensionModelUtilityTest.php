@@ -146,4 +146,18 @@ class ExtensionModelUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$dependencyModelMock->expects($this->atLeastOnce())->method('setHighestVersion')->with($this->identicalTo($returnValue[1]));
 		$dependencyUtility->convertDependenciesToObjects($serializedDependencies);
 	}
+
+	/**
+	 * @test
+	 */
+	public function convertDependenciesToObjectCanDealWithEmptyStringDependencyValues() {
+		$dependencies = array(
+			'depends' => ''
+		);
+		$serializedDependencies = serialize($dependencies);
+		/** @var $dependencyUtility \TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility */
+		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\ExtensionModelUtility', array('dummy'));
+		$dependencyObject = $dependencyUtility->convertDependenciesToObjects($serializedDependencies);
+		$this->assertSame(0, $dependencyObject->count());
+	}
 }
