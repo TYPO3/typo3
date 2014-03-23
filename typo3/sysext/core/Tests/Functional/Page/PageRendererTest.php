@@ -184,7 +184,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$subject->addInlineSettingArray('myApp', array(
 			'myKey3' => 'myValue3'
 		));
-		$expectedInlineSettingsReturnValue = 'TYPO3.settings = {"myApp":{"myKey":"myValue","myKey1":"myValue1","myKey2":"myValue2","myKey3":"myValue3"}};';
+		$expectedInlineSettingsReturnValue = 'TYPO3.settings = {"myApp":{"myKey":"myValue","myKey1":"myValue1","myKey2":"myValue2","myKey3":"myValue3"}';
 
 		$renderedString = $subject->render(\TYPO3\CMS\Core\Page\PageRenderer::PART_FOOTER);
 
