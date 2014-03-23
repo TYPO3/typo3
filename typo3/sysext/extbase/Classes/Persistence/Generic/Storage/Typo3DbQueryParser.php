@@ -99,11 +99,12 @@ class Typo3DbQueryParser {
 	 * @return array the hash and the parameters
 	 */
 	public function preparseQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query) {
-		$parameters = $this->preparseComparison($query->getConstraint());
+		list($parameters, $operators) = $this->preparseComparison($query->getConstraint());
 		$hashPartials = array(
 			$query->getQuerySettings(),
 			$query->getSource(),
 			array_keys($parameters),
+			$operators,
 			$query->getOrderings(),
 		);
 		$hash = md5(serialize($hashPartials));
@@ -121,11 +122,12 @@ class Typo3DbQueryParser {
 	 *
 	 * @param object $comparison The constraint. Could be And-, Or-, Not- or ComparisonInterface
 	 * @param string $qomPath current position of the child in the qom
-	 * @return array string representation of constraint and array of parameters
+	 * @return array Array of parameters and operators
 	 * @throws \Exception
 	 */
 	protected function preparseComparison($comparison, $qomPath = '') {
 		$parameters = array();
+		$operators = array();
 		$objectsToParse = array();
 
 		if ($comparison instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\AndInterface) {
@@ -140,22 +142,27 @@ class Typo3DbQueryParser {
 		} elseif ($comparison instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ComparisonInterface) {
 			$parameterIdentifier = $this->normalizeParameterIdentifier($qomPath . $comparison->getOperand1()->getPropertyName());
 			$comparison->setParameterIdentifier($parameterIdentifier);
+			$operators[] = $comparison->getOperator();
 			$parameters[$parameterIdentifier] = $comparison->getOperand2();
 		} elseif (!is_object($comparison)) {
-			return array(array(), $comparison);
+			$parameters = array(array(), $comparison);
+			return array($parameters, $operators);
 		} else {
 			throw new \Exception('Can not hash Query Component "' . get_class($comparison) . '".', 1392840462);
 		}
 
 		$childObjectIterator = 0;
 		foreach ($objectsToParse as $objectToParse) {
-			$preparsedParameters = $this->preparseComparison($objectToParse, $qomPath . $delimiter . $childObjectIterator++);
+			list($preparsedParameters, $preparsedOperators) = $this->preparseComparison($objectToParse, $qomPath . $delimiter . $childObjectIterator++);
 			if (!empty($preparsedParameters)) {
 				$parameters = array_merge($parameters, $preparsedParameters);
 			}
+			if (!empty($preparsedOperators)) {
+				$operators = array_merge($operators, $preparsedOperators);
+			}
 		}
 
-		return $parameters;
+		return array($parameters, $operators);
 	}
 
 	/**
