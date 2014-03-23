@@ -341,8 +341,8 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	 */
 	public function findRecycler($theFile) {
 		GeneralUtility::logDeprecatedFunction();
-		if ($this->isPathValid($theFile)) {
-			$theFile = $this->cleanDirectoryName($theFile);
+		if (GeneralUtility::validPathStr($theFile)) {
+			$theFile = \TYPO3\CMS\Core\Utility\PathUtility::getCanonicalPath($theFile);
 			$fI = GeneralUtility::split_fileref($theFile);
 			$c = 0;
 			// !!! Method has been put in the storage, can be saftely removed
@@ -352,7 +352,7 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 					return $rDir;
 				}
 				$theFile = $fI['path'];
-				$theFile = $this->cleanDirectoryName($theFile);
+				$theFile = \TYPO3\CMS\Core\Utility\PathUtility::getCanonicalPath($theFile);
 				$fI = GeneralUtility::split_fileref($theFile);
 				$c++;
 			}

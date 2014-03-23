@@ -224,7 +224,6 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 		if ($folderObject) {
 			$title = htmlspecialchars($folderObject->getIdentifier());
 			// Start compiling the HTML
-			// @todo: how to fix this? $title = $GLOBALS['SOBE']->basicFF->blindPath($title);
 			// If this is some subFolder under the mount root....
 			if ($folderObject->getStorage()->isWithinFileMountBoundaries($folderObject)) {
 				// The icon with link
