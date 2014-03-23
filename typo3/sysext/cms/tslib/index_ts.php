@@ -217,7 +217,12 @@ $TSFE->storeSessionData();
 // Statistics
 $TYPO3_MISC['microtime_end'] = microtime(TRUE);
 $TSFE->setParseTime();
-if ($TSFE->isOutputting() && (!empty($TSFE->TYPO3_CONF_VARS['FE']['debug']) || !empty($TSFE->config['config']['debug']))) {
+if (isset($TSFE->config['config']['debug'])) {
+	$debugParseTime = (bool)$TSFE->config['config']['debug'];
+} else {
+	$debugParseTime = !empty($TSFE->TYPO3_CONF_VARS['FE']['debug']);
+}
+if ($TSFE->isOutputting() && $debugParseTime) {
 	$TSFE->content .= LF . '<!-- Parsetime: ' . $TSFE->scriptParseTime . 'ms -->';
 }
 // Check JumpUrl
