@@ -38,6 +38,7 @@ table.t3-table thead th,
 table.t3-table thead td {
 	background-color: #666;
 	color: #fff;
+	font-weight: normal;
 }
 table.t3-table thead th a,
 table.t3-table thead td a {

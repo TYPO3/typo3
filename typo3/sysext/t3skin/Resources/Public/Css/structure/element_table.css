@@ -65,6 +65,7 @@ table.t3-table td {
 	padding: 6px;
 	/** Height of sprite icon */
 	min-height: 16px;
+	text-align: left;
 }
 
 table.t3-table tr th:first-child,
