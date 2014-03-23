@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="saltedpasswords">
+		<header/>
+		<body>
+			<trans-unit id="saltedpasswords.config.checkConfigurationFE" xml:space="preserve">
+				<source>Frontend configuration check</source>
+			</trans-unit>
+			<trans-unit id="saltedpasswords.config.checkConfigurationBE" xml:space="preserve">
+				<source>Backend configuration check</source>
+			</trans-unit>
+			<trans-unit id="saltedpasswords.config.FE.enabled" xml:space="preserve">
+				<source>Enable FE: Enable SaltedPasswords in the frontend</source>
+			</trans-unit>
+			<trans-unit id="saltedpasswords.config.FE.saltedPWHashingMethod" xml:space="preserve">
+				<source>Hashing method for the frontend: Defines salted hashing method to use. Choose "Portable PHP password hashing" to stay compatible with other CMS (e.g. Drupal, Wordpress). Choose "MD5 salted hashing" to reuse TYPO3 passwords for OS level authentication (other servers could use TYPO3 passwords). Choose "Blowfish salted hashing" for advanced security to reuse passwords on OS level (Blowfish might not be supported on your system TODO).</source>
+			</trans-unit>
+			<trans-unit id="saltedpasswords.config.BE.saltedPWHashingMethod" xml:space="preserve">
+				<source>Hashing method for the backend: Defines salted hashing method to use. Choose "Portable PHP password hashing" to stay compatible with other CMS (e.g. Drupal, Wordpress). Choose "MD5 salted hashing" to reuse TYPO3 passwords for OS level authentication (other servers could use TYPO3 passwords). Choose "Blowfish salted hashing" for advanced security to reuse passwords on OS level (Blowfish might not be supported on your system TODO).</source>
+			</trans-unit>
+			<trans-unit id="saltedpasswords.config.checkConfigurationFE2" xml:space="preserve">
+				<source>Frontend configuration check</source>
+			</trans-unit>
+			<trans-unit id="saltedpasswords.config.FE.forceSalted" xml:space="preserve">
+				<source>Force salted passwords: Enforce usage of SaltedPasswords. Old MD5 hashed passwords will stop working.</source>
+			</trans-unit>
+			<trans-unit id="saltedpasswords.config.FE.onlyAuthService" xml:space="preserve">
+				<source>Exclusive FE usage: If enabled and authentication fails, no further authentication service will be tried.</source>
+			</trans-unit>
+			<trans-unit id="saltedpasswords.config.FE.updatePasswd" xml:space="preserve">
+				<source>Update FE user passwords: Keep existing FE user passwords but automatically convert them to the salted hash format during authentication (will not work if forceSalted is used).</source>
+			</trans-unit>
+			<trans-unit id="saltedpasswords.config.checkConfigurationBE2" xml:space="preserve">
+				<source>Backend configuration check</source>
+			</trans-unit>
+			<trans-unit id="saltedpasswords.config.BE.forceSalted" xml:space="preserve">
+				<source>Force salted passwords: Enforce usage of SaltedPasswords. Old MD5 hashed passwords will stop working.</source>
+			</trans-unit>
+			<trans-unit id="saltedpasswords.config.BE.onlyAuthService" xml:space="preserve">
+				<source>Exclusive BE usage: If enabled and authentication fails, no further authentication service will be tried.</source>
+			</trans-unit>
+			<trans-unit id="saltedpasswords.config.BE.updatePasswd" xml:space="preserve">
+				<source>Update BE user passwords: Keep existing BE user passwords but automatically convert them to the salted hash format during authentication (will not work if forceSalted is used).</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

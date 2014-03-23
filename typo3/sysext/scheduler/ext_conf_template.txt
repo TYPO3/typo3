@@ -1,14 +1,14 @@
-# cat=basic//; type=string; label=Maximum lifetime: Enter the maximum lifetime (in minutes) of a scheduler task. If a task is still running after that time, it will be dropped from the execution list (but not stopped).
+# cat=basic//; type=string; label=LLL:EXT:scheduler/Resources/Private/Language/locallang_em.xlf:scheduler.config.maxLifetime
 maxLifetime = 1440
 
-# cat=basic//; type=boolean; label=Enable logging: When turned on, every start and end of every executed task is logged into TYPO3's BE Log. While this is convenient when setting things up, it may clutter the BE Log in the long run.
+# cat=basic//; type=boolean; label=LLL:EXT:scheduler/Resources/Private/Language/locallang_em.xlf:scheduler.config.enableBELog
 enableBELog = 1
 
-# cat=basic//; type=boolean; label=Enable sample tasks: When turned on, you can use the sample, test tasks provided by the scheduler. Before turning this off, make sure you don't have any of those sample tasks currently scheduled. You will also need to clear the configuration cache.
+# cat=basic//; type=boolean; label=LLL:EXT:scheduler/Resources/Private/Language/locallang_em.xlf:scheduler.config.showSampleTasks
 showSampleTasks = 1
 
-# cat=basic//; type=boolean; label=Use "at"-daemon: This allows automatic scheduling of the next execution of the scheduler. Your system must have the at daemon installed and configured for the user PHP runs with.
+# cat=basic//; type=boolean; label=LLL:EXT:scheduler/Resources/Private/Language/locallang_em.xlf:scheduler.config.useAtdaemon
 useAtdaemon = 0
 
-# cat=basic//; type=boolean; label=Show description of tasks as hover: If disabled descriptions of tasks will be shown below the job-name in the scheduler-list
+# cat=basic//; type=boolean; label=LLL:EXT:scheduler/Resources/Private/Language/locallang_em.xlf:scheduler.config.listShowTaskDescriptionAsHover
 listShowTaskDescriptionAsHover = 1

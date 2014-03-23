@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="rsaauth">
+		<header/>
+		<body>
+			<trans-unit id="rsaauth.config.temporaryDirectory" xml:space="preserve">
+				<source>Path to the temporary directory:This directory will contain temporary files for encryption/decrytion. It should be located outside of the web site root and it should not be /tmp. Directory permissions should be 0700 and the owner should be the web server user. If left empty, typo3conf/ will be used and it is INSECURE! Make sure that the directory is included into open_basedir if you use this setting.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

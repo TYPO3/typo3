@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="scheduler">
+		<header/>
+		<body>
+			<trans-unit id="scheduler.config.maxLifetime" xml:space="preserve">
+				<source>Maximum lifetime: Enter the maximum lifetime (in minutes) of a scheduler task. If a task is still running after that time, it will be dropped from the execution list (but not stopped).</source>
+			</trans-unit>
+			<trans-unit id="scheduler.config.enableBELog" xml:space="preserve">
+				<source>Enable logging: When turned on, every start and end of every executed task is logged into TYPO3's BE Log. While this is convenient when setting things up, it may clutter the BE Log in the long run.</source>
+			</trans-unit>
+			<trans-unit id="scheduler.config.showSampleTasks" xml:space="preserve">
+				<source>Enable sample tasks: When turned on, you can use the sample, test tasks provided by the scheduler. Before turning this off, make sure you don't have any of those sample tasks currently scheduled. You will also need to clear the configuration cache.</source>
+			</trans-unit>
+			<trans-unit id="scheduler.config.useAtdaemon" xml:space="preserve">
+				<source>Use "at"-daemon: This allows automatic scheduling of the next execution of the scheduler. Your system must have the at daemon installed and configured for the user PHP runs with.</source>
+			</trans-unit>
+			<trans-unit id="scheduler.config.listShowTaskDescriptionAsHover" xml:space="preserve">
+				<source>Show description of tasks as hover: If disabled descriptions of tasks will be shown below the job-name in the scheduler-list.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

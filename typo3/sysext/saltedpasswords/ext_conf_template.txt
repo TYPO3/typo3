@@ -1,38 +1,38 @@
-# cat=Basic/enable; type=user[EXT:saltedpasswords/Classes/Utility/ExtensionManagerConfigurationUtility.php:TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->checkConfigurationFrontend]; label=Frontend configuration check
+# cat=Basic/enable; type=user[EXT:saltedpasswords/Classes/Utility/ExtensionManagerConfigurationUtility.php:TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->checkConfigurationFrontend]; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.checkConfigurationFE
 checkConfigurationFE=0
 
-# cat=Basic/enable; type=user[EXT:saltedpasswords/Classes/Utility/ExtensionManagerConfigurationUtility.php:TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->checkConfigurationBackend]; label=Backend configuration check
+# cat=Basic/enable; type=user[EXT:saltedpasswords/Classes/Utility/ExtensionManagerConfigurationUtility.php:TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->checkConfigurationBackend]; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.checkConfigurationBE
 checkConfigurationBE=0
 
-# cat=Basic/enable; type=boolean; label=Enable FE: Enable SaltedPasswords in the frontend
+# cat=Basic/enable; type=boolean; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.FE.enabled
 FE.enabled = 1
 
-# cat=Basic/enable; type=user[EXT:saltedpasswords/Classes/Utility/ExtensionManagerConfigurationUtility.php:TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->buildHashMethodSelectorFE]; label=Hashing method for the frontend: Defines salted hashing method to use. Choose "Portable PHP password hashing" to stay compatible with other CMS (e.g. Drupal, Wordpress). Choose "MD5 salted hashing" to reuse TYPO3 passwords for OS level authentication (other servers could use TYPO3 passwords). Choose "Blowfish salted hashing" for advanced security to reuse passwords on OS level (Blowfish might not be supported on your system TODO).
+# cat=Basic/enable; type=user[EXT:saltedpasswords/Classes/Utility/ExtensionManagerConfigurationUtility.php:TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->buildHashMethodSelectorFE]; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.FE.saltedPWHashingMethod
 FE.saltedPWHashingMethod = tx_saltedpasswords_salts_phpass
 
-# cat=Basic/enable; type=user[EXT:saltedpasswords/Classes/Utility/ExtensionManagerConfigurationUtility.php:TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->buildHashMethodSelectorBE]; label=Hashing method for the backend: Defines salted hashing method to use. Choose "Portable PHP password hashing" to stay compatible with other CMS (e.g. Drupal, Wordpress). Choose "MD5 salted hashing" to reuse TYPO3 passwords for OS level authentication (other servers could use TYPO3 passwords). Choose "Blowfish salted hashing" for advanced security to reuse passwords on OS level (Blowfish might not be supported on your system TODO).
+# cat=Basic/enable; type=user[EXT:saltedpasswords/Classes/Utility/ExtensionManagerConfigurationUtility.php:TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->buildHashMethodSelectorBE]; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.BE.saltedPWHashingMethod
 BE.saltedPWHashingMethod = tx_saltedpasswords_salts_phpass
 
-# cat=Frontend; type=user[EXT:saltedpasswords/Classes/Utility/ExtensionManagerConfigurationUtility.php:TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->checkConfigurationFrontend]; label=Frontend configuration check
+# cat=Frontend; type=user[EXT:saltedpasswords/Classes/Utility/ExtensionManagerConfigurationUtility.php:TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->checkConfigurationFrontend]; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.checkConfigurationFE2
 checkConfigurationFE2=0
 
-# cat=Frontend; type=boolean; label=Force salted passwords: Enforce usage of SaltedPasswords. Old MD5 hashed passwords will stop working.
+# cat=Frontend; type=boolean; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.FE.forceSalted
 FE.forceSalted = 0
 
-# cat=Frontend; type=boolean; label=Exclusive FE usage: If enabled and authentication fails, no further authentication service will be tried.
+# cat=Frontend; type=boolean; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.FE.onlyAuthService
 FE.onlyAuthService = 0
 
-# cat=Frontend; type=boolean; label=Update FE user passwords: Keep existing FE user passwords but automatically convert them to the salted hash format during authentication (will not work if forceSalted is used).
+# cat=Frontend; type=boolean; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.FE.updatePasswd
 FE.updatePasswd = 1
 
-# cat=Backend; type=user[EXT:saltedpasswords/Classes/Utility/ExtensionManagerConfigurationUtility.php:TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->checkConfigurationBackend]; label=Backend configuration check
+# cat=Backend; type=user[EXT:saltedpasswords/Classes/Utility/ExtensionManagerConfigurationUtility.php:TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility->checkConfigurationBackend]; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.checkConfigurationBE2
 checkConfigurationBE2=0
 
-# cat=Backend; type=boolean; label=Force salted passwords: Enforce usage of SaltedPasswords. Old MD5 hashed passwords will stop working.
+# cat=Backend; type=boolean; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.BE.forceSalted
 BE.forceSalted = 0
 
-# cat=Backend; type=boolean; label=Exclusive BE usage: If enabled and authentication fails, no further authentication service will be tried.
+# cat=Backend; type=boolean; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.BE.onlyAuthService
 BE.onlyAuthService = 0
 
-# cat=Backend; type=boolean; label=Update BE user passwords: Keep existing BE user passwords but automatically convert them to the salted hash format during authentication (will not work if forceSalted is used).
+# cat=Backend; type=boolean; label=LLL:EXT:saltedpasswords/Resources/Private/Language/locallang_em.xlf:saltedpasswords.config.BE.updatePasswd
 BE.updatePasswd = 1

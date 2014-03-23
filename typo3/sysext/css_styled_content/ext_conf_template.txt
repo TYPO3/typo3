@@ -1,5 +1,5 @@
-  # cat=basic/enable; type=boolean; label=Set PageTSconfig by default: If you are going to use this extension by default in this database then set this flag. In that case you don't need to set specific PageTSconfig for each page, which you have to do otherwise!
+  # cat=basic/enable; type=boolean; label=LLL:EXT:css_styled_content/Resources/Private/Language/locallang_em.xlf:cssstyledcontent.config.setPageTSconfig
 setPageTSconfig = 1
 
-  # cat=basic/enable; type=boolean; label=Remove unused positioning types: This will disable the image positions that make no sense on CType=image (it leaves just "above left", "center" and "right").
+  # cat=basic/enable; type=boolean; label=LLL:EXT:css_styled_content/Resources/Private/Language/locallang_em.xlf:cssstyledcontent.config.removePositionTypes
 removePositionTypes = 1

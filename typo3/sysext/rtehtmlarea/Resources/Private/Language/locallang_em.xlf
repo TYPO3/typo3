@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="rtehtmlarea">
+		<header/>
+		<body>
+			<trans-unit id="rtehtmlarea.config.noSpellCheckLanguages" xml:space="preserve">
+				<source>No spell checking languages: The list of languages for which Aspell does not provide spell checking (see http://aspell.net/man-html/Unsupported.html#Unsupported) and for which the htmlArea SpellChecker plugin will therefore be disabled.</source>
+			</trans-unit>
+			<trans-unit id="rtehtmlarea.config.AspellDirectory" xml:space="preserve">
+				<source>Aspell path: The server path where Aspell is installed.</source>
+			</trans-unit>
+			<trans-unit id="rtehtmlarea.config.defaultConfiguration" xml:space="preserve">
+				<source>Default configuration settings</source>
+			</trans-unit>
+			<trans-unit id="rtehtmlarea.config.enableImages" xml:space="preserve">
+				<source>Enable images in the RTE: If set, the use of images will be enabled in the "Minimal" or the "Typical" default configuration of the RTE.</source>
+			</trans-unit>
+			<trans-unit id="rtehtmlarea.config.enableInlineElements" xml:space="preserve">
+				<source>Enable additional inline elements: If set, the potential use of additional inline elements will be enabled.</source>
+			</trans-unit>
+			<trans-unit id="rtehtmlarea.config.allowStyleAttribute" xml:space="preserve">
+				<source>Enable features that use the style attribute: If set, the potential use of features that use the style attribute (textcolor, bgcolor, fontstyle, fontsize) will be enabled.</source>
+			</trans-unit>
+			<trans-unit id="rtehtmlarea.config.enableAccessibilityIcons" xml:space="preserve">
+				<source>Enable links accessibility icons: If set, accessibility icons will be added in front of links.</source>
+			</trans-unit>
+			<trans-unit id="rtehtmlarea.config.forceCommandMode" xml:space="preserve">
+				<source>Force Aspell command mode: If set, the spellchecker will use the Aspell command interface. Presumably. PHP is compiled with pspell, but with an old version of Aspell.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="indexed_search">
+		<header/>
+		<body>
+			<trans-unit id="indexedsearch.config.pdftools" xml:space="preserve">
+				<source>Path to PDF parsers: The indexer uses the applications 'pdftotext' and 'pdfinfo' for extracting content from PDF files. These applications must be installed in this path. Otherwise leave the field empty.</source>
+			</trans-unit>
+			<trans-unit id="indexedsearch.config.pdf_mode" xml:space="preserve">
+				<source>PDF parsing mode: Zero=whole file is indexed in one. Positive value indicates number of pages at a time, eg. "5" would mean 1-5,6-10,.... Negative integer would indicate (abs value) number of groups. Eg "3" groups of 10 pages would be 1-4,5-8,9-10. Range is -100 to 100.</source>
+			</trans-unit>
+			<trans-unit id="indexedsearch.config.unzip" xml:space="preserve">
+				<source>Path to unzip: The indexer uses "unzip" to extract the contents from OpenOffice.org/Oasis OpenDocument files. The application must be installed in this path. Otherwise leave the field empty.</source>
+			</trans-unit>
+			<trans-unit id="indexedsearch.config.catdoc" xml:space="preserve">
+				<source>Path to WORD parser: The indexer uses the application 'catdoc' for extracting content from WORD files. The application must be installed in this path. Otherwise leave the field empty.</source>
+			</trans-unit>
+			<trans-unit id="indexedsearch.config.xlhtml" xml:space="preserve">
+				<source>Path to EXCEL parser: The indexer uses the application 'xlhtml' for extracting content from EXCEL files. The application must be installed in this path. Otherwise leave the field empty.</source>
+			</trans-unit>
+			<trans-unit id="indexedsearch.config.ppthtml" xml:space="preserve">
+				<source>Path to POWERPOINT parser: The indexer uses the application 'ppthtml' for extracting content from POWERPOINT files. The application must be installed in this path. Otherwise leave the field empty.</source>
+			</trans-unit>
+			<trans-unit id="indexedsearch.config.unrtf" xml:space="preserve">
+				<source>Path to RTF parser: The indexer uses the application 'unrtf' for extracting content from RTF files. The application must be installed in this path. Otherwise leave the field empty.</source>
+			</trans-unit>
+			<trans-unit id="indexedsearch.config.debugMode" xml:space="preserve">
+				<source>Debug mode: If set, debugging information is collected during indexing and can be shown in the backend. Only for debugging since it slows down the system and fills the database with crap.</source>
+			</trans-unit>
+			<trans-unit id="indexedsearch.config.fullTextDataLength" xml:space="preserve">
+				<source>Full Text Data Length: If set, the full text data stored will be limited to this byte length. It means you can save some database space but to the degree you cut the length down you also limit possibilities to search for sentences and the search result resume will be limited.</source>
+			</trans-unit>
+			<trans-unit id="indexedsearch.config.disableFrontendIndexing" xml:space="preserve">
+				<source>Disable Indexing in Frontend: By default pages are indexed during viewing of pages in the frontend. You can disable this features so indexing of pages is only initiated through the backend page crawler.</source>
+			</trans-unit>
+			<trans-unit id="indexedsearch.config.enableMetaphoneSearch" xml:space="preserve">
+				<source>Enable metaphone search (sounds like): 0=disabled, 1=use internal metaphone parser, 2=use advanced doubleMetaphone parser.</source>
+			</trans-unit>
+			<trans-unit id="indexedsearch.config.minAge" xml:space="preserve">
+				<source>Min TTL (hours) for indexed page: The time in hours that must pass before an indexed page can be indexed again regardless of changes on the page.</source>
+			</trans-unit>
+			<trans-unit id="indexedsearch.config.maxAge" xml:space="preserve">
+				<source>Deprecated! Max TTL (hours) for indexed page: The time in hours that is the maximum age of an indexed page before it will get indexed again. Usually the index is kept consistent, therefore you won't need this feature.</source>
+			</trans-unit>
+			<trans-unit id="indexedsearch.config.maxExternalFiles" xml:space="preserve">
+				<source>Max external files to index: When external files are found on a page this number indicates how many may be indexed at that point. This prevents pages with links to many external documents to take the server down - but it may also prevent documents from being indexed.</source>
+			</trans-unit>
+			<trans-unit id="indexedsearch.config.useCrawlerForExternalFiles" xml:space="preserve">
+				<source>Use "crawler" extension to index external files: When external files are found on a page they are added to the "crawler" extensions queue and indexed via the cronscript running the crawler. This eliminates problems with for example many PDF files on a page. Requires a proper configuration of the "crawler" extension.</source>
+			</trans-unit>
+			<trans-unit id="indexedsearch.config.flagBitMask" xml:space="preserve">
+				<source>Bitmask for Flags (Advanced): By this value (0-255) you can filter the importance of &lt;title&gt; (128), &lt;keywords&gt; (64) and &lt;description&gt; (32) content from HTML documents. By setting this to 0, none of these fields will have any importance over the other. The default value 192 means that title-tag content and meta-keywords will be flagged (and rated higher in search results)</source>
+			</trans-unit>
+			<trans-unit id="indexedsearch.config.ignoreExtensions" xml:space="preserve">
+				<source>Ignore Extensions: List of file extensions that the external parser will ignore (despite having support for them). Comma list.</source>
+			</trans-unit>
+			<trans-unit id="indexedsearch.config.indexExternalURLs" xml:space="preserve">
+				<source>Index External HTML URLs: If set, links to external URLs will be indexed if they are of type "text/html".</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

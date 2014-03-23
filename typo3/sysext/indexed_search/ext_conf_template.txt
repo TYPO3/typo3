@@ -1,53 +1,53 @@
-  # cat=basic; type=string; label=Path to PDF parsers: The indexer uses the applications 'pdftotext' and 'pdfinfo' for extracting content from PDF files. These applications must be installed in this path. Otherwise leave the field empty.
+  # cat=basic; type=string; label=LLL:EXT:indexed_search/Resources/Private/Language/locallang_em.xlf:indexedsearch.config.pdftools
 pdftools = /usr/bin/
 
-  # cat=basic; type=int; label=PDF parsing mode: Zero=whole file is indexed in one. Positive value: Indicates number of pages at a time, eg. "5" would mean 1-5,6-10,.... Negative integer would indicate (abs value) number of groups. Eg "3" groups of 10 pages would be 1-4,5-8,9-10. Range is -100 to 100.
+  # cat=basic; type=int; label=LLL:EXT:indexed_search/Resources/Private/Language/locallang_em.xlf:indexedsearch.config.pdf_mode
 pdf_mode = 20
 
-  # cat=basic; type=string; label=Path to unzip: The indexer uses "unzip" to extract the contents from OpenOffice.org/Oasis OpenDocument files. The application must be installed in this path. Otherwise leave the field empty.
+  # cat=basic; type=string; label=LLL:EXT:indexed_search/Resources/Private/Language/locallang_em.xlf:indexedsearch.config.unzip
 unzip = /usr/bin/
 
-  # cat=basic; type=string; label=Path to WORD parser: The indexer uses the application 'catdoc' for extracting content from WORD files. The application must be installed in this path. Otherwise leave the field empty.
+  # cat=basic; type=string; label=LLL:EXT:indexed_search/Resources/Private/Language/locallang_em.xlf:indexedsearch.config.catdoc
 catdoc = /usr/bin/
 
-  # cat=basic; type=string; label=Path to EXCEL parser: The indexer uses the application 'xlhtml' for extracting content from EXCEL files. The application must be installed in this path. Otherwise leave the field empty.
+  # cat=basic; type=string; label=LLL:EXT:indexed_search/Resources/Private/Language/locallang_em.xlf:indexedsearch.config.xlhtml
 xlhtml = /usr/bin/
 
-  # cat=basic; type=string; label=Path to POWERPOINT parser: The indexer uses the application 'ppthtml' for extracting content from POWERPOINT files. The application must be installed in this path. Otherwise leave the field empty.
+  # cat=basic; type=string; label=LLL:EXT:indexed_search/Resources/Private/Language/locallang_em.xlf:indexedsearch.config.ppthtml
 ppthtml = /usr/bin/
 
-  # cat=basic; type=string; label=Path to RTF parser: The indexer uses the application 'unrtf' for extracting content from RTF files. The application must be installed in this path. Otherwise leave the field empty.
+  # cat=basic; type=string; label=LLL:EXT:indexed_search/Resources/Private/Language/locallang_em.xlf:indexedsearch.config.unrtf
 unrtf = /usr/bin/
 
-   # cat=basic; type=boolean; label=Debug mode: If set, debugging information is collected during indexing and can be shown in the backend. Only for debugging since it slows down the system and fills the database with crap.
+   # cat=basic; type=boolean; label=LLL:EXT:indexed_search/Resources/Private/Language/locallang_em.xlf:indexedsearch.config.debugMode
 debugMode = 0
 
-  # cat=basic; type=int; label=Full Text Data Length: If set, the full text data stored will be limited to this byte length. It means you can save some database space but to the degree you cut the length down you also limit possibilities to search for sentences and the search result resume will be limited.
+  # cat=basic; type=int; label=LLL:EXT:indexed_search/Resources/Private/Language/locallang_em.xlf:indexedsearch.config.fullTextDataLength
 fullTextDataLength = 0
 
-  # cat=basic; type=boolean; label=Disable Indexing in Frontend: By default pages are indexed during viewing of pages in the frontend. You can disable this features so indexing of pages is only initiated through the backend page crawler.
+  # cat=basic; type=boolean; label=LLL:EXT:indexed_search/Resources/Private/Language/locallang_em.xlf:indexedsearch.config.disableFrontendIndexing
 disableFrontendIndexing = 0
 
-  # cat=basic; type=int; label=Enable metaphone search (sounds like). 0=disabled, 1=use internal metaphone parser, 2=use advanced doubleMetaphone parser.
+  # cat=basic; type=int; label=LLL:EXT:indexed_search/Resources/Private/Language/locallang_em.xlf:indexedsearch.config.enableMetaphoneSearch
 enableMetaphoneSearch = 1
 
-  # cat=basic; type=int; label=Min TTL (hours) for indexed page: The time in hours that must pass before an indexed page can be indexed again regardless of changes on the page.
+  # cat=basic; type=int; label=LLL:EXT:indexed_search/Resources/Private/Language/locallang_em.xlf:indexedsearch.config.minAge
 minAge = 24
 
-  # cat=basic; type=int; label=Deprecated! Max TTL (hours) for indexed page: The time in hours that is the maximum age of an indexed page before it will get indexed again. Usually the index is kept consistent, therefore you won't need this feature.
+  # cat=basic; type=int; label=LLL:EXT:indexed_search/Resources/Private/Language/locallang_em.xlf:indexedsearch.config.maxAge
 maxAge = 0
 
-  # cat=basic; type=int; label=Max external files to index: When external files are found on a page this number indicates how many may be indexed at that point. This prevents pages with links to many external documents to take the server down - but it may also prevent documents from being indexed.
+  # cat=basic; type=int; label=LLL:EXT:indexed_search/Resources/Private/Language/locallang_em.xlf:indexedsearch.config.maxExternalFiles
 maxExternalFiles = 5
 
-  # cat=basic; type=boolean; label=Use "crawler" extension to index external files: When external files are found on a page they are added to the "crawler" extensions queue and indexed via the cronscript running the crawler. This eliminates problems with for example many PDF files on a page. Requires a proper configuration of the "crawler" extension.
+  # cat=basic; type=boolean; label=LLL:EXT:indexed_search/Resources/Private/Language/locallang_em.xlf:indexedsearch.config.useCrawlerForExternalFiles
 useCrawlerForExternalFiles = 0
 
-  # cat=basic; type=int; label=Bitmask for Flags (Advanced): By this value (0-255) you can filter the importance of <title> (128), <keywords> (64) and <description> (32) content from HTML documents. By setting this to 0, none of these fields will have any importance over the other. The default value 192 means that title-tag content and meta-keywords will be flagged (and rated higher in search results)
+  # cat=basic; type=int; label=LLL:EXT:indexed_search/Resources/Private/Language/locallang_em.xlf:indexedsearch.config.flagBitMask
 flagBitMask = 192
 
-  # cat=basic; type=string; label=Ignore Extensions: List of file extensions that the external parser will ignore (despite having support for them). Comma list.
+  # cat=basic; type=string; label=LLL:EXT:indexed_search/Resources/Private/Language/locallang_em.xlf:indexedsearch.config.ignoreExtensions
 ignoreExtensions =
 
-  # cat=basic; type=boolean; label=Index External HTML URLs: If set, links to external URLs will be indexed if they are of type "text/html".
+  # cat=basic; type=boolean; label=LLL:EXT:indexed_search/Resources/Private/Language/locallang_em.xlf:indexedsearch.config.indexExternalURLs
 indexExternalURLs = 0
