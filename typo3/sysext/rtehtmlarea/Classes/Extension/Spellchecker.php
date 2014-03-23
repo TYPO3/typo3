@@ -23,6 +23,8 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Spell Checker plugin for htmlArea RTE
  *
@@ -97,7 +99,7 @@ class Spellchecker extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.spellCheckerMode = "' . $spellCheckerMode . '";
 			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.enablePersonalDicts = ' . ($enablePersonalDicts ? 'true' : 'false') . ';';
 			$registerRTEinJavascriptString .= '
-			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.path = "' . ($this->htmlAreaRTE->is_FE() || $this->htmlAreaRTE->isFrontendEditActive() ? ($GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . 'index.php?eID=rtehtmlarea_spellchecker' : $this->htmlAreaRTE->backPath . 'ajax.php?ajaxID=rtehtmlarea::spellchecker') . '";';
+			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.path = "' . ($this->htmlAreaRTE->is_FE() || $this->htmlAreaRTE->isFrontendEditActive() ? ($GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . 'index.php?eID=rtehtmlarea_spellchecker' : $this->htmlAreaRTE->backPath . BackendUtility::getAjaxUrl('rtehtmlarea::spellchecker')) . '";';
 		}
 		return $registerRTEinJavascriptString;
 	}

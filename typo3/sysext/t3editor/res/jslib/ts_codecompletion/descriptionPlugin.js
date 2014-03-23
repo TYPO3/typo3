@@ -1,4 +1,4 @@
-/***************************************************************
+﻿/***************************************************************
 * Copyright notice
 *
 * (c) 2008-2010 Stephan Petzl <spetzl@gmx.at> and Christian Kartnig <office@hahnepeter.de>
@@ -70,7 +70,7 @@ var DescriptionPlugin = function() {
 			// first a container has to be built
 			descriptionBox.innerHTML  = '<div class="TSREF_type_label">Object-type: </div><div class="TSREF_type">'+type.typeId+'</div>';
 			descriptionBox.innerHTML += '<div class="TSREF_type_label">Property-type: </div><div class="TSREF_type">'+type.properties[proposalObj.word].value+'</div><br/>';
-			descriptionBox.innerHTML += '<div class="TSREF_description_label">TSREF-description:</div><div id="TSREF_description"><img src="../../../gfx/spinner.gif" border="0" alt="one moment please..."/></div>';
+			descriptionBox.innerHTML += '<div class="TSREF_description_label">TSREF-description:</div><div id="TSREF_description"><img src="gfx/spinner.gif" border="0" alt="one moment please..."/></div>';
 			var prop = type.properties[proposalObj.word];
 			// if there is another request for a description in the queue -> cancel it
 

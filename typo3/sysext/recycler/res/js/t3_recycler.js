@@ -73,7 +73,7 @@ Recycler.MainStore = new Ext.data.Store({
 		direction: "ASC"
 	},
 	groupField: 'table',
-	url: TYPO3.settings.Recycler.ajaxController + '&cmd=getDeletedRecords',
+	url: TYPO3.settings.ajaxUrls['RecyclerAjaxController::init'] + '&cmd=getDeletedRecords',
 	baseParams: {
 		depth: TYPO3.settings.Recycler.depthSelection,
 		startUid: TYPO3.settings.Recycler.startUid,
@@ -87,7 +87,7 @@ Recycler.MainStore = new Ext.data.Store({
  * Simple table store
  ****************************************************/
 Recycler.TableStore = new Ext.data.Store({
-	url: TYPO3.settings.Recycler.ajaxController + '&startUid=' + TYPO3.settings.Recycler.startUid + '&cmd=getTables' + '&depth=' + TYPO3.settings.Recycler.depthSelection,
+	url: TYPO3.settings.ajaxUrls['RecyclerAjaxController::init'] + '&startUid=' + TYPO3.settings.Recycler.startUid + '&cmd=getTables' + '&depth=' + TYPO3.settings.Recycler.depthSelection,
 	reader: new Ext.data.ArrayReader({}, [
 		{name: 'table', type: 'string'},
 		{name: 'records', type: 'int'},
@@ -165,7 +165,7 @@ Recycler.ConfirmWindow = Ext.extend(Ext.Window, {
 							tcemainData[i] = [this.records[i].data.table, this.records[i].data.uid];
 						}
 						Ext.Ajax.request({
-							url: TYPO3.settings.Recycler.ajaxController + '&cmd=' + this.command,
+							url: TYPO3.settings.ajaxUrls['RecyclerAjaxController::init'] + '&cmd=' + this.command,
 							params: {
 								'data': Ext.encode(tcemainData),
 								'recursive': this.getComponent('recursiveCheck').getValue()

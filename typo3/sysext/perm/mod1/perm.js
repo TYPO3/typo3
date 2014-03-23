@@ -59,27 +59,26 @@ function jumpToUrl(URL)	{ window.location.href = URL; }
 // Methods for AJAX permission manipulation
 var WebPermissions = {
 
-    thisScript: 'ajax.php',
-	ajaxID: 'PermissionAjaxController::dispatch',
+    thisScript: TYPO3.settings.ajaxUrls['PermissionAjaxController::dispatch'],
 
 		// set the permission bits through an ajax call
 	setPermissions: function(page, bits, mode, who, permissions) {
 		new Ajax.Updater($(page + '_' + who), this.thisScript, {
-			parameters: { ajaxID: this.ajaxID, page: page, permissions: permissions, mode: mode, who: who, bits: bits }
+			parameters: { page: page, permissions: permissions, mode: mode, who: who, bits: bits }
 		});
 	},
 
 		// load the selector for selecting the owner of a page by executing an ajax call
 	showChangeOwnerSelector: function(page, ownerUid, elementID, username) {
 		new Ajax.Updater($(elementID), this.thisScript, {
-			parameters: { ajaxID: this.ajaxID, action: 'show_change_owner_selector', page: page, ownerUid: ownerUid, username: username }
+			parameters: { action: 'show_change_owner_selector', page: page, ownerUid: ownerUid, username: username }
 		});
 	},
 
 		// Set the new owner of a page by executing an ajax call
 	changeOwner: function(page, ownerUid, elementID) {
 		new Ajax.Updater($(elementID), this.thisScript, {
-			parameters: { ajaxID: this.ajaxID, action: 'change_owner', page: page, ownerUid: ownerUid, newOwnerUid: $('new_page_owner').value }
+			parameters: { action: 'change_owner', page: page, ownerUid: ownerUid, newOwnerUid: $('new_page_owner').value }
 		});
 	},
 
@@ -92,14 +91,14 @@ var WebPermissions = {
 		// Load the selector by executing an ajax call
 	showChangeGroupSelector: function(page, groupUid, elementID, groupname) {
 		new Ajax.Updater($(elementID), this.thisScript, {
-			parameters: { ajaxID: this.ajaxID, action: 'show_change_group_selector', page: page, groupUid: groupUid, groupname: groupname }
+			parameters: { action: 'show_change_group_selector', page: page, groupUid: groupUid, groupname: groupname }
 		});
 	},
 
 		// Set the new group by executing an ajax call
 	changeGroup: function(page, groupUid, elementID) {
 		new Ajax.Updater($(elementID), this.thisScript, {
-			parameters: { ajaxID: this.ajaxID, action: 'change_group', page: page, groupUid: groupUid, newGroupUid: $('new_page_group').value }
+			parameters: { action: 'change_group', page: page, groupUid: groupUid, newGroupUid: $('new_page_group').value }
 		});
 	},
 
@@ -112,7 +111,7 @@ var WebPermissions = {
 		// set or remove the edit lock by executing an ajax call
 	toggleEditLock: function(page, editLockState) {
 		new Ajax.Updater($('el_' + page), this.thisScript, {
-			parameters: { ajaxID: this.ajaxID, action: 'toggle_edit_lock', page: page, editLockState: editLockState }
+			parameters: { action: 'toggle_edit_lock', page: page, editLockState: editLockState }
 		});
 	}
 };

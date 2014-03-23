@@ -11,9 +11,9 @@ Event.observe(document, "dom:loaded", function(){
 	 },
 
 	 onUpdate: function(list) {
-		 new Ajax.Request("ajax.php", {
+		 new Ajax.Request(TYPO3.settings.ajaxUrls['Taskcenter::saveSortingState'], {
 			 method: "post",
-			 parameters: { ajaxID :"Taskcenter::saveSortingState", data:  Sortable.serialize(list)}
+			 parameters: { data: Sortable.serialize(list)}
 		 });
 			// activate link
 		 Event.observe(window,"mouseup",function(){
@@ -39,8 +39,8 @@ Event.observe(document, "dom:loaded", function(){
 			Effect.BlindDown(item, {duration : 0.5});
 			state = 0;
 		}
-		new Ajax.Request("ajax.php", {
-			parameters : "ajaxID=Taskcenter::saveCollapseState&item=" + itemParent.id + "&state=" + state
+		new Ajax.Request(TYPO3.settings.ajaxUrls['Taskcenter::saveCollapseState'], {
+			parameters : "item=" + itemParent.id + "&state=" + state
 		});
 	});
 });

@@ -173,7 +173,7 @@ $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['Language']['disableInFE'] = 0;
 
 // Spell checking configuration
 $TYPO3_CONF_VARS['FE']['eID_include']['rtehtmlarea_spellchecker'] = 'EXT:' . $_EXTKEY . '/pi1/class.tx_rtehtmlarea_pi1.php';
-$TYPO3_CONF_VARS['BE']['AJAX']['rtehtmlarea::spellchecker'] = 'TYPO3\\CMS\\Rtehtmlarea\\Controller\\SpellCheckingController->main';
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler('rtehtmlarea::spellchecker', 'TYPO3\\CMS\\Rtehtmlarea\\Controller\\SpellCheckingController->main');
 
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['SpellChecker'] = array();
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['SpellChecker']['objectReference'] = '&TYPO3\\CMS\\Rtehtmlarea\\Extension\\Spellchecker';

@@ -329,16 +329,15 @@ if (!Prototype.Browser.MobileSafari) {
 				Event.observe(document, 't3editor:save',
 					function(event) {
 						var params = Object.extend({
-							ajaxID: "T3Editor::saveCode",
 							t3editor_savetype: T3editor.ajaxSavetype
 						}, event.memo.parameters);
 
 						new Ajax.Request(
-							T3editor.URL_typo3 + "ajax.php", {
+							T3editor.URL_typo3 + TYPO3.settings.ajaxUrls['T3Editor::saveCode'], {
 								parameters: params,
 								onComplete: function(ajaxrequest) {
 									var wasSuccessful = ajaxrequest.status == 200
-									&& ajaxrequest.headerJSON.result == true
+									&& ajaxrequest.headerJSON.result == true;
 									event.memo.t3editor.saveFunctionComplete(wasSuccessful,ajaxrequest.headerJSON);
 								}
 							}

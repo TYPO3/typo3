@@ -40,12 +40,10 @@ var TsRefProperty = function(parentType,name,value) {
 	var descriptionCache = null;
 	this.getDescription = function(callBack) {
 		if(descriptionCache == null){
-			var urlParameters = '&ajaxID=T3Editor_TSrefLoader::getDescription' +
-				'&typeId=' + this.parentType +
-				'&parameterName=' + this.name;
+			var urlParameters = '&typeId=' + this.parentType + '&parameterName=' + this.name;
 
 			new Ajax.Request(
-				T3editor.URL_typo3 + 'ajax.php',
+				T3editor.URL_typo3 + TYPO3.settings.ajaxUrls['T3Editor_TSrefLoader::getDescription'],
 				{
 					method: 'get',
 					parameters: urlParameters,
@@ -89,12 +87,10 @@ var TsRef = function() {
 	var doc;
 
 	this.loadTsrefAsync = function() {
-		var urlParameters = '&ajaxID=T3Editor_TSrefLoader::getTypes';
 		new Ajax.Request(
-			T3editor.URL_typo3 + 'ajax.php',
+			T3editor.URL_typo3 + TYPO3.settings.ajaxUrls['T3Editor_TSrefLoader::getTypes'],
 			{
 				method: 'get',
-				parameters: urlParameters,
 				onSuccess: function(transport) {
 					doc = eval('('+ transport.responseText +')');
 					buildTree();

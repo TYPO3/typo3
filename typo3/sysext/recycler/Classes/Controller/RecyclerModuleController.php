@@ -172,7 +172,6 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 			'tableDefault' => 'pages',
 			'renderTo' => 'recyclerContent',
 			'isSSL' => \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SSL'),
-			'ajaxController' => $this->doc->backPath . 'ajax.php?ajaxID=RecyclerAjaxController::init',
 			'deleteDisable' => $this->allowDelete ? 0 : 1,
 			'depthSelection' => $this->getDataFromSession('depthSelection', 0),
 			'tableSelection' => $this->getDataFromSession('tableSelection', 'pages'),

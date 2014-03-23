@@ -5,11 +5,11 @@ if (!defined('TYPO3_MODE')) {
 
 if (TYPO3_MODE === 'BE') {
 	// Register AJAX handlers:
-	$TYPO3_CONF_VARS['BE']['AJAX']['T3Editor::saveCode'] = 'TYPO3\\CMS\\T3editor\\T3editor->ajaxSaveCode';
-	$TYPO3_CONF_VARS['BE']['AJAX']['T3Editor::getPlugins'] = 'TYPO3\\CMS\\T3editor\\T3editor->getPlugins';
-	$TYPO3_CONF_VARS['BE']['AJAX']['T3Editor_TSrefLoader::getTypes'] = 'TYPO3\\CMS\\T3editor\\TypoScriptReferenceLoader->processAjaxRequest';
-	$TYPO3_CONF_VARS['BE']['AJAX']['T3Editor_TSrefLoader::getDescription'] = 'TYPO3\\CMS\\T3editor\\TypoScriptReferenceLoader->processAjaxRequest';
-	$TYPO3_CONF_VARS['BE']['AJAX']['CodeCompletion::loadTemplates'] = 'TYPO3\\CMS\\T3editor\\CodeCompletion->processAjaxRequest';
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler('T3Editor::saveCode', 'TYPO3\\CMS\\T3editor\\T3editor->ajaxSaveCode');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler('T3Editor::getPlugins', 'TYPO3\\CMS\\T3editor\\T3editor->getPlugins');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler('T3Editor_TSrefLoader::getTypes', 'TYPO3\\CMS\\T3editor\\TypoScriptReferenceLoader->processAjaxRequest');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler('T3Editor_TSrefLoader::getDescription', 'TYPO3\\CMS\\T3editor\\TypoScriptReferenceLoader->getDescription');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler('CodeCompletion::loadTemplates', 'TYPO3\\CMS\\T3editor\\CodeCompletion->processAjaxRequest');
 
 	// Add the t3editor wizard on the bodytext field of tt_content
 	$TCA['tt_content']['columns']['bodytext']['config']['wizards']['t3editor'] = array(
