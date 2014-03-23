@@ -267,9 +267,11 @@ class ConfigurationItemRepository {
 	 * @return string|NULL The value from LOCAL_LANG or NULL if no translation was found.
 	 */
 	protected function translate($key, $extensionName) {
+		$translation = NULL;
 		if (\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, $extensionName)) {
-			$configurationOption['label'] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, $extensionName);
+			$translation = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, $extensionName);
 		}
+		return $translation;
 	}
 
 }
