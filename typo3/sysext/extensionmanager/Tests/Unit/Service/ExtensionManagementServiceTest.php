@@ -201,7 +201,7 @@ class ExtensionManagementServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	public function installDependenciesCallsInstall() {
 		$managementMock = $this->getAccessibleMock(
 			'TYPO3\\CMS\\Extensionmanager\\Service\\ExtensionManagementService',
-			array('dummy')
+			array('emitWillInstallExtensions')
 		);
 		$installQueue = array(
 			'foobar' => array(
@@ -224,7 +224,7 @@ class ExtensionManagementServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	 */
 	public function installDependenciesReturnsResolvedDependencies() {
 		$managementMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Service\\ExtensionManagementService', array(
-			'dummy'
+			'emitWillInstallExtensions'
 		));
 		$installQueue = array(
 			'foobar' => 'foobar'

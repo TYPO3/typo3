@@ -71,7 +71,7 @@ class IndexerServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function indexFileSetsCreationdateAndTimestampPropertiesOfRecordToCurrentExecutionTime() {
 		$fileInfo = array();
 		/** @var $subject \TYPO3\CMS\Core\Resource\Service\IndexerService|\PHPUnit_Framework_MockObject_MockObject */
-		$subject = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Service\\IndexerService', array('gatherFileInformation', 'getFileIndexRepository'));
+		$subject = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Service\\IndexerService', array('gatherFileInformation', 'getFileIndexRepository', 'emitPreFileIndexSignal', 'emitPostFileIndexSignal'));
 
 		$subject->expects($this->any())->method('gatherFileInformation')->will($this->returnValue($fileInfo));
 
