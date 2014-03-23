@@ -29,18 +29,28 @@ class UsernameViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 	protected $backendUserRepository;
 
 	/**
+	 * First level cache of user names
+	 *
+	 * @var array
+	 */
+	static protected $usernameRuntimeCache = array();
+
+	/**
 	 * Resolve user name from backend user id.
 	 *
 	 * @param int $uid Uid of the user
 	 * @return string Username or an empty string if there is no user with that UID
 	 */
 	public function render($uid) {
+		if (isset(static::$usernameRuntimeCache[$uid])) {
+			return static::$usernameRuntimeCache[$uid];
+		}
+
 		/** @var $user \TYPO3\CMS\Extbase\Domain\Model\BackendUser */
 		$user = $this->backendUserRepository->findByUid($uid);
-		if ($user === NULL) {
-			return '';
-		}
-		return $user->getUserName();
+		// $user may be NULL if user was deleted from DB, set it to empty string to always return a string
+		static::$usernameRuntimeCache[$uid] = ($user === NULL) ? '' : $user->getUserName();
+		return static::$usernameRuntimeCache[$uid];
 	}
 
 }

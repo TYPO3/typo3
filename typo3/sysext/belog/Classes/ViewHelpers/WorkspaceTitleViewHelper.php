@@ -29,26 +29,35 @@ class WorkspaceTitleViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
 	protected $workspaceRepository = NULL;
 
 	/**
+	 * First level cache of workspace titles
+	 *
+	 * @var array
+	 */
+	static protected $workspaceTitleRuntimeCache = array();
+
+	/**
 	 * Resolve workspace title from UID.
 	 *
 	 * @param int $uid UID of the workspace
 	 * @return string username or UID
 	 */
 	public function render($uid) {
+		if (isset(static::$workspaceTitleRuntimeCache[$uid])) {
+			return static::$workspaceTitleRuntimeCache[$uid];
+		}
+
 		if ($uid === 0) {
-			return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('live', $this->controllerContext->getRequest()->getControllerExtensionName());
-		}
-		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
-			return '';
-		}
-		/** @var $workspace \TYPO3\CMS\Belog\Domain\Model\Workspace */
-		$workspace = $this->workspaceRepository->findByUid($uid);
-		if ($workspace !== NULL) {
-			$title = $workspace->getTitle();
+			static::$workspaceTitleRuntimeCache[$uid] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('live', $this->controllerContext->getRequest()->getControllerExtensionName());
+		} elseif (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
+			static::$workspaceTitleRuntimeCache[$uid] = '';
 		} else {
-			$title = '';
+			/** @var $workspace \TYPO3\CMS\Belog\Domain\Model\Workspace */
+			$workspace = $this->workspaceRepository->findByUid($uid);
+			// $workspace may be null, force empty string in this case
+			static::$workspaceTitleRuntimeCache[$uid] = ($workspace === NULL) ? '' : $workspace->getTitle();
 		}
-		return $title;
+
+		return static::$workspaceTitleRuntimeCache[$uid];
 	}
 
 }
