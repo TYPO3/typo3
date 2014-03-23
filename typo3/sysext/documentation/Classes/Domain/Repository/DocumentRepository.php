@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Documentation\Domain\Repository;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Xavier Perseguers <xavier@typo3.org>
+ *  (c) 2013-2014 Xavier Perseguers <xavier@typo3.org>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,6 +23,8 @@ namespace TYPO3\CMS\Documentation\Domain\Repository;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * An extension helper repository to be used in ext:documentation context
@@ -68,7 +70,7 @@ class DocumentRepository {
 		// Initialize the dependency of languages
 		$languageDependencies = array();
 		/** @var $locales \TYPO3\CMS\Core\Localization\Locales */
-		$locales = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Locales');
+		$locales = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Locales');
 		// Language is found. Configure it:
 		$shortLanguage = $language;
 		if (!in_array($shortLanguage, $locales->getLocales()) && strpos($shortLanguage, '_') !== FALSE) {
@@ -134,14 +136,14 @@ class DocumentRepository {
 		$basePath = 'typo3conf/Documentation/';
 
 		$documents = array();
-		$documentKeys = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs(PATH_site . $basePath);
+		$documentKeys = GeneralUtility::get_dirs(PATH_site . $basePath);
 		// Early return in case no document keys were found
 		if (!is_array($documentKeys)) {
 			return $documents;
 		}
 
 		foreach ($documentKeys as $documentKey) {
-			$icon = \TYPO3\CMS\Documentation\Utility\GeneralUtility::getIcon($documentKey);
+			$icon = \TYPO3\CMS\Documentation\Utility\MiscUtility::getIcon($documentKey);
 
 			/** @var \TYPO3\CMS\Documentation\Domain\Model\Document $document */
 			$document = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\Document')
@@ -149,7 +151,7 @@ class DocumentRepository {
 				->setIcon($icon);
 
 			$languagePath = $basePath . $documentKey . '/';
-			$languages = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs(PATH_site . $languagePath);
+			$languages = GeneralUtility::get_dirs(PATH_site . $languagePath);
 			foreach ($languages as $language) {
 				$metadata = $this->getMetadata($documentKey, $language);
 				if (!empty($metadata['extensionKey'])) {
@@ -163,7 +165,7 @@ class DocumentRepository {
 					->setDescription($metadata['description']);
 
 				$formatPath = $languagePath . $language . '/';
-				$formats = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs(PATH_site . $formatPath);
+				$formats = GeneralUtility::get_dirs(PATH_site . $formatPath);
 				foreach ($formats as $format) {
 					$documentFile = '';
 					switch ($format) {
@@ -179,7 +181,7 @@ class DocumentRepository {
 							break;
 						case 'pdf':
 							// Retrieve first PDF
-							$files = \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir(PATH_site . $formatPath . $format, 'pdf');
+							$files = GeneralUtility::getFilesInDir(PATH_site . $formatPath . $format, 'pdf');
 							if (count($files) > 0) {
 								$documentFile = current($files);
 							}
@@ -218,7 +220,7 @@ class DocumentRepository {
 			$path = $extensionData['siteRelPath'] . 'doc/';
 			if (is_file(PATH_site . $path . 'manual.sxw')) {
 				$documentKey = 'typo3cms.extensions.' . $extensionKey;
-				$icon = \TYPO3\CMS\Documentation\Utility\GeneralUtility::getIcon($documentKey);
+				$icon = \TYPO3\CMS\Documentation\Utility\MiscUtility::getIcon($documentKey);
 
 				/** @var \TYPO3\CMS\Documentation\Domain\Model\Document $document */
 				$document = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\Document')
@@ -260,10 +262,10 @@ class DocumentRepository {
 			'title' => $documentKey,
 			'description' => '',
 		);
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($documentKey, 'typo3cms.extensions.')) {
+		if (GeneralUtility::isFirstPartOfStr($documentKey, 'typo3cms.extensions.')) {
 			$extensionKey = substr($documentKey, 20);
 			if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extensionKey)) {
-				$metadata = \TYPO3\CMS\Documentation\Utility\GeneralUtility::getExtensionMetaData($extensionKey);
+				$metadata = \TYPO3\CMS\Documentation\Utility\MiscUtility::getExtensionMetaData($extensionKey);
 			}
 		} elseif (is_file($documentPath . 'composer.json')) {
 			$info = json_decode(file_get_contents($documentPath . 'composer.json'), TRUE);

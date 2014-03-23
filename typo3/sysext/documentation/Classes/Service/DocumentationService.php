@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Documentation\Service;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Xavier Perseguers <xavier@typo3.org>
+ *  (c) 2013-2014 Xavier Perseguers <xavier@typo3.org>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -45,7 +45,7 @@ class DocumentationService {
 		if ($json) {
 			$documents = json_decode($json, TRUE);
 			foreach ($documents as &$document) {
-				$document['icon'] = \TYPO3\CMS\Documentation\Utility\GeneralUtility::getIcon($document['key']);
+				$document['icon'] = \TYPO3\CMS\Documentation\Utility\MiscUtility::getIcon($document['key']);
 			}
 
 			// Cache file locally to be able to create a composer.json file when fetching a document
@@ -66,7 +66,7 @@ class DocumentationService {
 		foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $extensionKey => $extensionData) {
 			$absoluteExtensionPath = GeneralUtility::getFileAbsFileName($extensionData['siteRelPath']);
 			if (is_file($absoluteExtensionPath . 'README.rst') || is_file($absoluteExtensionPath . 'Documentation' . DIRECTORY_SEPARATOR . 'Index.rst')) {
-				$metadata = \TYPO3\CMS\Documentation\Utility\GeneralUtility::getExtensionMetaData($extensionKey);
+				$metadata = \TYPO3\CMS\Documentation\Utility\MiscUtility::getExtensionMetaData($extensionKey);
 				if ($extensionData['type'] === 'S') {
 					$version = TYPO3_branch;
 				} else {
@@ -76,7 +76,7 @@ class DocumentationService {
 				$documentKey = 'typo3cms.extensions.' . $extensionKey;
 				$documents[] = array(
 					'title'   => $metadata['title'],
-					'icon'    => \TYPO3\CMS\Documentation\Utility\GeneralUtility::getIcon($documentKey),
+					'icon'    => \TYPO3\CMS\Documentation\Utility\MiscUtility::getIcon($documentKey),
 					'type'    => 'Extension',
 					'key'     => $documentKey,
 					'shortcut' => $extensionKey,
@@ -126,7 +126,7 @@ class DocumentationService {
 				continue;
 			} else {
 				foreach ($packages[$version] as $locale => $_) {
-					if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($locale, $language)) {
+					if (GeneralUtility::isFirstPartOfStr($locale, $language)) {
 						$success |= $this->fetchDocument($url, $key, $version, $locale);
 						// Fetch next language (jump current foreach up to the loop of $languages)
 						continue 2;

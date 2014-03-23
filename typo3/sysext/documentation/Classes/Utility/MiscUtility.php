@@ -27,11 +27,11 @@ namespace TYPO3\CMS\Documentation\Utility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
- * General utility.
+ * Misc utility.
  *
  * @author Xavier Perseguers <xavier@typo3.org>
  */
-class GeneralUtility {
+class MiscUtility {
 
 	/**
 	 * Returns meta-data for a given extension.

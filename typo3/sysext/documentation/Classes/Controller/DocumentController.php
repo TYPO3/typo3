@@ -149,7 +149,7 @@ class DocumentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 
 			if ($result) {
 				$this->controllerContext->getFlashMessageQueue()->enqueue(
-					\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+					GeneralUtility::makeInstance(
 						'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
 						\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
 							'downloadSucceeded',
@@ -162,7 +162,7 @@ class DocumentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 				);
 			} else {
 				$this->controllerContext->getFlashMessageQueue()->enqueue(
-					\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+					GeneralUtility::makeInstance(
 						'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
 						\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
 							'downloadFailedNoArchive',
@@ -179,7 +179,7 @@ class DocumentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 			}
 		} catch (\Exception $e) {
 			$this->controllerContext->getFlashMessageQueue()->enqueue(
-				\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+				GeneralUtility::makeInstance(
 					'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
 					\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
 						'downloadFailedDetails',
