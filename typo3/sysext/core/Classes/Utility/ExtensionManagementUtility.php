@@ -206,6 +206,7 @@ class ExtensionManagementUtility {
 	 * @param string $key The key of the extension to look up, must not be empty
 	 *
 	 * @throws \InvalidArgumentException
+	 * @throws \TYPO3\CMS\Core\Package\Exception
 	 * @return string The extension version as a string in the format "x.y.z",
 	 */
 	static public function getExtensionVersion($key) {
@@ -215,7 +216,11 @@ class ExtensionManagementUtility {
 		if (!static::isLoaded($key)) {
 			return '';
 		}
-		return static::$packageManager->getPackage($key)->getPackageMetaData()->getVersion();
+		$version = static::$packageManager->getPackage($key)->getPackageMetaData()->getVersion();
+		if (empty($version)) {
+			throw new \TYPO3\CMS\Core\Package\Exception('Version number in composer manifest of package "' . $key . '" is missing or invalid', 1395614959);
+		}
+		return $version;
 	}
 
 	/**************************************
