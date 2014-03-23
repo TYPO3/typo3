@@ -1,0 +1,92 @@
+{namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
+<f:layout name="main" />
+
+<f:section name="docheader-buttons">
+	<f:be.buttons.icon uri="{f:uri.action(controller: 'List',action: 'distributions')}" icon="actions-view-go-back" title="{f:translate(key:'extConfTemplate.backToList')}" />
+</f:section>
+
+<f:section name="module-headline">
+</f:section>
+
+<f:section name="Content">
+	<f:flashMessages class="distribution-detail-flashmessage" renderMode="div" />
+	<div class="distribution-detail">
+		<div class="distribution-detail-previewpane">
+			<em:image
+				src="EXT:{extension.extensionKey}/Resources/Public/Images/DistributionWelcome.png" alt="{distribution.title}"
+				class="distribution-detail-preview"
+				/>
+		</div>
+		<div class="distribution-detail-body">
+			<div class="distribution-detail-header">
+				<h1>{extension.title}</h1>
+				<p>{extension.description}</p>
+			</div>
+			<ul class="list-unstyled">
+				<f:if condition="{distributionActive}">
+					<f:else>
+						<li>
+							<f:link.action action="installDistribution" controller="Download" arguments="{extension:extension}" class="t3-button t3-button-action-installdistribution">
+								<f:be.buttons.icon icon="actions-system-extension-import" /><f:translate key="extensionList.installDistribution">Install</f:translate>
+							</f:link.action>
+						</li>
+					</f:else>
+					<f:then>
+						<f:if condition="{configurationLink}">
+							<li>
+								<a href="{configurationLink}" class="distribution-openViewModule t3-button" onclick="top.goToModule('web_ViewpageView');">
+									<f:be.buttons.icon icon="actions-system-extension-configure" /><f:translate key="extensionList.configure" />
+								</a>
+							</li>
+						</f:if>
+						<li>
+							<button class="distribution-openViewModule t3-button" onclick="top.goToModule('web_ViewpageView');">
+								<f:be.buttons.icon icon="actions-document-view"	/><f:translate key="distribution.welcome.openViewModule" />
+							</button>
+						</li>
+						<li>
+							<button class="distribution-openPageModule t3-button" onclick="top.goToModule('web_page');">
+								<f:be.buttons.icon icon="actions-document-open"	/><f:translate key="distribution.welcome.openPageModule" />
+							</button>
+						</li>
+					</f:then>
+				</f:if>
+			</ul>
+			<dl class="description-horizontal description-horizontal-wide distribution-detail-summary">
+				<dt><f:translate key="extensionList.distribution.title" /></dt>
+				<dd>{extension.title}</dd>
+				<dt><f:translate key="extensionList.distribution.key" /></dt>
+				<dd>{extension.extensionKey}</dd>
+				<dt><f:translate key="extensionList.distribution.version" /></dt>
+				<dd>{extension.version} (<f:format.date format="d.m.Y">{extension.lastUpdated}</f:format.date>)<br><span class="{extension.stateString}">{extension.stateString}</span></dd>
+				<dt><f:translate key="extensionList.distribution.author" /></dt>
+				<dd>{extension.authorName}</dd>
+				<dt><f:translate key="extensionList.distribution.downloads" /></dt>
+				<dd>{extension.alldownloadcounter}</dd>
+			</dl>
+			<f:if condition="{extension.dependencies}">
+				<h2><f:translate key="distribution.dependency.headline" /></h2>
+				<table class="t3-table">
+					<thead>
+						<tr class="t3-row-header">
+							<td><f:translate key="distribution.dependency.identifier" /></td>
+							<td><f:translate key="distribution.dependency.type" /></td>
+							<td><f:translate key="distribution.dependency.version" /></td>
+						</tr>
+					</thead>
+					<tbody>
+						<f:for each="{extension.dependencies}" as="dependency">
+							<tr>
+								<td>{dependency.identifier}</td>
+								<td>{dependency.type}</td>
+								<td>
+									{dependency.lowestVersion}<f:if condition="{dependency.highestVersion}">-{dependency.highestVersion}</f:if>
+								</td>
+							</tr>
+						</f:for>
+					</tbody>
+				</table>
+			</f:if>
+		</div>
+	</div>
+</f:section>

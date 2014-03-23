@@ -9,7 +9,7 @@
 			/>
 		<div class="distribution-hover">
 			<div class="distribution-hover-inner">
-				<dl class="distribution-info">
+				<dl class="description-horizontal">
 					 <dt><f:translate key="extensionList.distribution.title" /></dt>
 					<dd>{distribution.title}</dd>
 					<dt><f:translate key="extensionList.distribution.key" /></dt>
@@ -24,7 +24,11 @@
 		</div>
 	</div>
 	<div class="distribution-meta">
-		<h2 class="distribution-title">{distribution.title}</h2>
+		<h2 class="distribution-title">
+			<f:link.action action="show" controller="Distribution" arguments="{extension:distribution}" class="distribution-more">
+				{distribution.title}
+			</f:link.action>
+		</h2>
 		<div class="distribution-install">
 			<f:link.action action="installDistribution" controller="Download" arguments="{extension:distribution}" class="t3-button t3-button-action-installdistribution">
 				<span class="t3-icon t3-icon-actions t3-icon-system-extension-import">&nbsp;</span><f:translate key="extensionList.installDistribution">Install</f:translate>

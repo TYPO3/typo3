@@ -15,7 +15,7 @@ if (TYPO3_MODE === 'BE') {
 			'UpdateScript' => 'show',
 			'UpdateFromTer' => 'updateExtensionListFromTer',
 			'UploadExtensionFile' => 'form,extract',
-			'Distribution' => 'welcome'
+			'Distribution' => 'show'
 		),
 		array(
 			'access' => 'admin',

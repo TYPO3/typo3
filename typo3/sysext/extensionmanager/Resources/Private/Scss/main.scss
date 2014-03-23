@@ -14,7 +14,8 @@
 @import "helpers/mixins";
 
 // Import Modules
-@import "modules/tabs";
+@import "modules/tabs",
+		"modules/description";
 
 // Appearance of the page
 @import "page/base",

@@ -135,13 +135,19 @@ class DownloadController extends \TYPO3\CMS\Extensionmanager\Controller\Abstract
 				->assign('result', $result)
 				->assign('errorMessage', $errorMessage);
 		} else {
+			// FlashMessage that extension is installed
+			$this->addFlashMessage(
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('distribution.welcome.message', 'extensionmanager')
+					. ' <strong>' . $extension->getExtensionKey() . '</strong>',
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('distribution.welcome.headline', 'extensionmanager')
+			);
+
+			// Redirect to show action
 			$this->redirect(
-				'showConfigurationForm',
-				'Configuration',
+				'show',
+				'Distribution',
 				NULL,
-				array(
-					'extension' => $this->installUtility->enrichExtensionWithDetails($extension->getExtensionKey())
-				)
+				array('extension' => $extension)
 			);
 		}
 	}

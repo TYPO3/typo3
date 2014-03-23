@@ -295,6 +295,9 @@
 			<trans-unit id="extensionList.distribution.version" xml:space="preserve">
 				<source>Version:</source>
 			</trans-unit>
+			<trans-unit id="extensionList.distribution.downloads" xml:space="preserve">
+				<source>Downloads</source>
+			</trans-unit>
 			<trans-unit id="extensionList.distribution.lastUpdated" xml:space="preserve">
 				<source>Last Update:</source>
 			</trans-unit>
@@ -351,6 +354,18 @@
 			</trans-unit>
 			<trans-unit id="distribution.welcome.openPageModule" xml:space="preserve">
 				<source>Start editing your website</source>
+			</trans-unit>
+			<trans-unit id="distribution.dependency.headline" xml:space="preserve">
+				<source>Dependencies, conflics and suggestions</source>
+			</trans-unit>
+			<trans-unit id="distribution.dependency.identifier" xml:space="preserve">
+				<source>Identifier</source>
+			</trans-unit>
+			<trans-unit id="distribution.dependency.type" xml:space="preserve">
+				<source>Type</source>
+			</trans-unit>
+			<trans-unit id="distribution.dependency.version" xml:space="preserve">
+				<source>Version</source>
 			</trans-unit>
 			<trans-unit id="task.updateExtensionListTask.name" xml:space="preserve">
 				<source>Update extension list</source>

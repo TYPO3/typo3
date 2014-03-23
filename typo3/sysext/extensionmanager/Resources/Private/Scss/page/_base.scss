@@ -106,6 +106,28 @@
 	color: #fff;
 }
 
+.alpha {
+	color: $alpha;
+}
+.beta {
+	color: $beta;
+}
+.stable {
+	color: $stable;
+}
+.experimental {
+	color: $experimental;
+}
+.test {
+	color: $test;
+}
+.obsolete {
+	color: $obsolete;
+}
+.excludeFromUpdates {
+	color: $excludeFromUpdates;
+}
+
 .typo3-extension-list td.icons {
 	width: 140px;
 }

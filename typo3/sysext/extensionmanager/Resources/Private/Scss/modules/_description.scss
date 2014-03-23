@@ -1,0 +1,24 @@
+.description-horizontal {
+	@include clearfix();
+	margin-top: 0;
+	dt {
+		font-weight: bold;
+		float: left;
+		width: 60px;
+		clear: left;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	dd {
+		margin-left: 70px;
+	}
+	&.description-horizontal-wide {
+		dt {
+			width: 100px;
+		}
+		dd {
+			margin-left: 110px;
+		}
+	}
+}

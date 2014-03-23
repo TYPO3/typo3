@@ -1,3 +1,6 @@
+/**
+ * Extension List View
+ **/
 .distribution {
 	border: 1px solid darken($gray-lighter,15%);
 	background-color: $gray-lighter;
@@ -10,6 +13,9 @@
 		.distribution-hover {
 			top: 0px;
 			opacity: 1;
+		}
+		.distribution-more {
+			text-decoration: underline;
 		}
 	}
 }
@@ -71,19 +77,52 @@
 		color: #FFFFFF;
 	}
 }
-.distribution-info {
-	@include clearfix();
-	margin-top: 0;
-	dt {
-		font-weight: bold;
-		float: left;
-		width: 60px;
-		clear: left;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
+
+
+/**
+ * Extension Detail View
+ **/
+.distribution-detail-flashmessage {
+	margin-bottom: 2.5em;
+	p {
+		padding-bottom: 0;
 	}
-	dd {
-		margin-left: 70px;
+}
+.distribution-detail {
+	@include clearfix();
+	min-width: 750px;
+}
+.distribution-detail-previewpane {
+	float: left;
+	margin-right: 30px;
+}
+.distribution-detail-preview {
+	display: block;
+	border: 1px solid darken($gray-lighter,15%);
+}
+.distribution-detail-body {
+	overflow: hidden;
+	zoom: 1;
+}
+.distribution-detail-header {
+	h1 {
+		margin-bottom: 0.5em;
+	}
+	p {
+		padding: 0px;
+		max-width: 500px;
+		margin-bottom: 1.25em;
+	}
+	margin-bottom: 2.5em;
+}
+.distribution-detail-summary {
+	margin-top: 2.5em;
+	margin-bottom: 2.5em;
+}
+.distribution-installed {
+	hr {
+		margin: 2.5em 0;
+		border: 0;
+		border-top: 1px solid darken($gray-lighter,15%);
 	}
 }
