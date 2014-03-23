@@ -52,6 +52,12 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $installUtility;
 
 	/**
+	 * @var \TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility
+	 * @inject
+	 */
+	protected $extensionModelUtility;
+
+	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility
 	 * @inject
 	 */
@@ -64,10 +70,23 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $downloadUtility;
 
 	/**
+	 * @var \TYPO3\CMS\Core\Package\PackageManager
+	 * @inject
+	 */
+	protected $packageManager;
+
+	/**
 	 * @param string $extensionKey
 	 * @return void
 	 */
 	public function markExtensionForInstallation($extensionKey) {
+		// We have to check for dependencies of the extension first, before marking it for installation
+		// because this extension might have dependencies, which need to be installed first
+		$this->dependencyUtility->buildExtensionDependenciesTree(
+			$this->extensionModelUtility->mapExtensionArrayToModel(
+				$this->installUtility->enrichExtensionWithDetails($extensionKey)
+			)
+		);
 		$this->downloadQueue->addExtensionToInstallQueue($extensionKey);
 	}
 
@@ -89,8 +108,10 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	public function markExtensionForDownload(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension) {
-		$this->downloadQueue->addExtensionToQueue($extension);
+		// We have to check for dependencies of the extension first, before marking it for download
+		// because this extension might have dependencies, which need to be downloaded and installed first
 		$this->dependencyUtility->buildExtensionDependenciesTree($extension);
+		$this->downloadQueue->addExtensionToQueue($extension);
 	}
 
 	/**
@@ -98,8 +119,10 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	public function markExtensionForUpdate(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension) {
-		$this->downloadQueue->addExtensionToQueue($extension, 'update');
+		// We have to check for dependencies of the extension first, before marking it for download
+		// because this extension might have dependencies, which need to be downloaded and installed first
 		$this->dependencyUtility->buildExtensionDependenciesTree($extension);
+		$this->downloadQueue->addExtensionToQueue($extension, 'update');
 	}
 
 	/**
@@ -110,7 +133,7 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return array
 	 */
 	public function resolveDependenciesAndInstall(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension) {
-		$downloadedDependencies = $this->downloadMainExtension($extension);
+		$this->downloadMainExtension($extension);
 		$extensionKey = $extension->getExtensionKey();
 		$this->setInExtensionRepository($extensionKey);
 		$this->dependencyUtility->buildExtensionDependenciesTree($extension);
@@ -123,9 +146,9 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 		if (count($copyQueue) > 0) {
 			$this->copyDependencies($copyQueue);
 		}
-
+		$downloadedDependencies = array();
 		if (array_key_exists('download', $queue)) {
-			$downloadedDependencies = array_merge($downloadedDependencies, $this->downloadDependencies($queue['download']));
+			$downloadedDependencies = $this->downloadDependencies($queue['download']);
 		}
 		if (array_key_exists('update', $queue)) {
 			$this->downloadDependencies($queue['update']);
@@ -200,6 +223,7 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 		$resolvedDependencies = array();
 		foreach ($installQueue as $extensionKey => $extensionDetails) {
 			$this->installUtility->install($extensionDetails);
+			$this->emitHasInstalledExtension($extensionDetails);
 			if (!is_array($resolvedDependencies['installed'])) {
 				$resolvedDependencies['installed'] = array();
 			}
@@ -247,16 +271,12 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * as an extension is able to provide it's own dependencies
 	 *
 	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
-	 * @return array
+	 * @return void
 	 */
 	public function downloadMainExtension(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension) {
-		$downloadedDependencies = array();
-		if ($extension->getUid()) {
-			$this->downloadQueue->addExtensionToQueue($extension);
-			$queue = $this->downloadQueue->getExtensionQueue();
-			$downloadedDependencies = $this->downloadDependencies($queue['download']);
+		if (!$this->packageManager->isPackageAvailable($extension->getExtensionKey())) {
+			$this->downloadUtility->download($extension);
 		}
-		return $downloadedDependencies;
 	}
 
 	/**
@@ -264,6 +284,13 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function emitWillInstallExtensions(array $installQueue) {
 		$this->getSignalSlotDispatcher()->dispatch(__CLASS__, 'willInstallExtensions', array($installQueue));
+	}
+
+	/**
+	 * @param string $extensionKey
+	 */
+	protected function emitHasInstalledExtension($extensionKey) {
+		$this->getSignalSlotDispatcher()->dispatch(__CLASS__, 'hasInstalledExtensions', array($extensionKey));
 	}
 
 	/**

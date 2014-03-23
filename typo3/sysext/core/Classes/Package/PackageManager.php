@@ -157,6 +157,19 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	}
 
 	/**
+	 * Updates the class loader with currently active packages.
+	 * This method is currently a slot that monitors the after
+	 * extension is installed signal to make the class loader
+	 * populate its caches again.
+	 * Maybe we find a better solution in the future, but as of now
+	 * we have to do this as all caches are flushed after an extension
+	 * is installed and the current request might fail otherwise.
+	 */
+	public function updatePackagesForClassLoader() {
+		$this->classLoader->setPackages($this->activePackages);
+	}
+
+	/**
 	 * @return PackageFactory
 	 */
 	protected function getPackageFactory() {
