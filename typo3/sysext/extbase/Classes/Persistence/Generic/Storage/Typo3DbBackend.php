@@ -287,8 +287,9 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 * @return array
 	 */
 	public function getObjectDataByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query) {
-		if ($query->getStatement() instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement) {
-			$rows = $this->getObjectDataByRawQuery($query);
+		$statement = $query->getStatement();
+		if ($statement instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement) {
+			$rows = $this->getObjectDataByRawQuery($statement);
 		} else {
 			$rows = $this->getRowsByStatementParts($query);
 		}
@@ -386,32 +387,28 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	/**
 	 * Returns the object data using a custom statement
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement $statement
 	 * @return array
 	 */
-	protected function getObjectDataByRawQuery(QueryInterface $query) {
-		$statement = $query->getStatement();
+	protected function getObjectDataByRawQuery(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement $statement) {
+		$realStatement = $statement->getStatement();
 		$parameters = $statement->getBoundVariables();
 
-		if ($statement instanceof \TYPO3\CMS\Core\Database\PreparedStatement) {
-			$preparedStatement = $statement->getStatement();
+		if ($realStatement instanceof \TYPO3\CMS\Core\Database\PreparedStatement) {
+			$realStatement->execute($parameters);
+			$rows = $realStatement->fetchAll();
 
-			$preparedStatement->execute($parameters);
-			$rows = $preparedStatement->fetchAll();
-
-			$preparedStatement->free();
+			$realStatement->free();
 		} else {
-
-			$sqlString = $statement->getStatement();
 			/**
 			 * @deprecated since 6.2, this block will be removed in two versions
 			 * the deprecation log is in Qom\Statement
 			 */
 			if (!empty($parameters)) {
-				$this->replacePlaceholders($sqlString, $parameters);
+				$this->replacePlaceholders($realStatement, $parameters);
 			}
 
-			$result = $this->databaseHandle->sql_query($sqlString);
+			$result = $this->databaseHandle->sql_query($realStatement);
 			$this->checkSqlErrors();
 
 			$rows = array();
@@ -420,6 +417,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 					$rows[] = $row;
 				}
 			}
+			$this->databaseHandle->sql_free_result($result);
 		}
 
 		return $rows;
