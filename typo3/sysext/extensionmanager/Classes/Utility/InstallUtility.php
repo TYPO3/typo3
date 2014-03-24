@@ -101,16 +101,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $registry;
 
 	/**
-	 * __construct
-	 */
-	public function __construct() {
-		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-		/** @var $installToolSqlParser \TYPO3\CMS\Install\Service\SqlSchemaMigrationService */
-		$this->installToolSqlParser = $this->objectManager->get('TYPO3\\CMS\\Install\\Service\\SqlSchemaMigrationService');
-		$this->dependencyUtility = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility');
-	}
-
-	/**
 	 * Helper function to install an extension
 	 * also processes db updates and clears the cache if the extension asks for it
 	 *
