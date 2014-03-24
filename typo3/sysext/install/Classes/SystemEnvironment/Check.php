@@ -746,6 +746,8 @@ class Check {
 	 * @return Status\StatusInterface
 	 */
 	protected function checkSomePhpOpcodeCacheIsLoaded() {
+		// Link to our wiki page, so we can update opcode cache issue information independent of TYPO3 CMS releases.
+		$wikiLink = 'For more information take a look in our wiki ' . TYPO3_URL_WIKI_OPCODECACHE . '.';
 		$opcodeCaches = \TYPO3\CMS\Core\Utility\OpcodeCacheUtility::getAllActive();
 		if (count($opcodeCaches) === 0) {
 			// Set status to notice. It needs to be notice so email won't be triggered.
@@ -757,8 +759,7 @@ class Check {
 				' This can be a massive performance improvement and can reduce the load on a' .
 				' server in general. A parse time reduction by factor three for fully cached' .
 				' pages can be achieved easily if using an opcode cache.' .
-				' If you\'re not sure which to choose, APC runs well and can be used as a data' .
-				' cache layer in TYPO3 CMS as an additional feature.'
+				LF . $wikiLink
 			);
 		} else {
 			$status = new Status\OkStatus();
@@ -785,6 +786,8 @@ class Check {
 				}
 				$message .= LF;
 			}
+
+			$message .= $wikiLink;
 
 			// Set title of status depending on serverity
 			switch ($status->getSeverity()) {
@@ -828,7 +831,8 @@ class Check {
 				. ' zend_optimizerplus.save_comments and enable it.' . LF
 				. '* The PHP extension eaccelerator is known to break this if'
 				. ' it is compiled without --with-eaccelerator-doc-comment-inclusion flag.'
-				. ' This compile flag must be specified, otherwise TYPO3 CMS will not work.'
+				. ' This compile flag must be specified, otherwise TYPO3 CMS will not work.' . LF
+				. 'For more information take a look in our wiki ' . TYPO3_URL_WIKI_OPCODECACHE . '.'
 			);
 		} else {
 			$status = new Status\OkStatus();

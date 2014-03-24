@@ -94,6 +94,7 @@ class SystemEnvironmentBuilder {
 		define('TYPO3_URL_DOWNLOAD', 'http://typo3.org/download/');
 		define('TYPO3_URL_SYSTEMREQUIREMENTS', 'http://typo3.org/about/typo3-the-cms/system-requirements/');
 		define('TYPO3_URL_DONATE', 'http://typo3.org/donate/online-donation/');
+		define('TYPO3_URL_WIKI_OPCODECACHE', 'http://wiki.typo3.org/Opcode_Cache');
 
 		// A tabulator, a linefeed, a carriage return, a CR-LF combination
 		define('TAB', chr(9));
