@@ -137,7 +137,7 @@ class EnableFileService {
 
 
 	/**
-	 * Checks if the lifetime of the instal tool file is expired
+	 * Checks if the lifetime of the install tool file is expired
 	 *
 	 * @return bool
 	 */
@@ -178,7 +178,7 @@ class EnableFileService {
 	}
 
 	/**
-	 * Returns the path to the INSTALL_TOOL_ENABLE file
+	 * Returns the path to the FIRST_INSTALL file
 	 *
 	 * @return string
 	 */
