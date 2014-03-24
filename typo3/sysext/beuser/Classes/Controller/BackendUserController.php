@@ -220,6 +220,10 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
 			// User switchback or replace current session?
 			if ($switchBack) {
 				$updateData['ses_backuserid'] = (int)$GLOBALS['BE_USER']->user['uid'];
+
+				// Set backend user listing module as starting module for switchback
+				$GLOBALS['BE_USER']->uc['startModuleOnFirstLogin'] = 'system_BeuserTxBeuser';
+				$GLOBALS['BE_USER']->writeUC();
 			}
 
 			$whereClause = 'ses_id=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($GLOBALS['BE_USER']->id, 'be_sessions');
@@ -231,6 +235,7 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
 				$whereClause,
 				$updateData
 			);
+
 			$redirectUrl = $GLOBALS['BACK_PATH'] . 'index.php' . ($GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces'] ? '' : '?commandLI=1');
 			\TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectUrl);
 		}
