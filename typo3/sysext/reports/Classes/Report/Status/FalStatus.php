@@ -40,7 +40,8 @@ class FalStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	 */
 	public function getStatus() {
 		$statuses = array(
-			'MissingFiles' => $this->getMissingFilesStatus()
+			'MissingFiles' => $this->getMissingFilesStatus(),
+			'ContentAdapter' => $this->getContentAdapterStatus(),
 		);
 		return $statuses;
 	}
@@ -103,5 +104,29 @@ class FalStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		}
 
 		return GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->getLL('status_missingFiles'), $value, $message, $severity);
+	}
+
+	/**
+	 * Checks if content adapter is active
+	 *
+	 * @return \TYPO3\CMS\Reports\Status An object representing whether the content adapter is active or not
+	 */
+	protected function getContentAdapterStatus() {
+		$value = $GLOBALS['LANG']->getLL('status_disabled');
+		$message = '';
+		$severity = \TYPO3\CMS\Reports\Status::OK;
+		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['activateContentAdapter']) {
+			$value = $GLOBALS['LANG']->getLL('status_enabled');
+			$message = '<p>' . $GLOBALS['LANG']->getLL('status_contentAdapterActiveMessage') . '</p>';
+			$severity = \TYPO3\CMS\Reports\Status::WARNING;
+		}
+		return GeneralUtility::makeInstance(
+			'TYPO3\\CMS\\Reports\\Status',
+			$GLOBALS['LANG']->getLL('status_contentAdapterActive'),
+			$value,
+			$message,
+			$severity
+		);
+
 	}
 }

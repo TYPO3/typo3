@@ -69,11 +69,17 @@
 			<trans-unit id="status_missingFiles" xml:space="preserve">
 				<source>Files flagged as missing</source>
 			</trans-unit>
+			<trans-unit id="status_contentAdapterActive" xml:space="preserve">
+				<source>Content Adapter is active</source>
+			</trans-unit>
 			<trans-unit id="status_missingFilesCount" xml:space="preserve">
 				<source>%1$s files</source>
 			</trans-unit>
 			<trans-unit id="status_missingFilesMessage" xml:space="preserve">
 				<source>These files are flagged as missing. Restore the files and run the indexer to reset the missing flag.</source>
+			</trans-unit>
+			<trans-unit id="status_contentAdapterActiveMessage" xml:space="preserve">
+				<source>The Install Tool option [FE][activateContentAdapter] is active to provide compatibility with TypoScript from TYPO3 4.x regarding file handling. This has quite an impact on the performance of frontend rendering. Change TypoScript to support FAL in handling files and disable the setting to increase performance.</source>
 			</trans-unit>
 			<trans-unit id="status_memcachedConfiguration" xml:space="preserve">
 				<source>Memcached Configuration</source>
