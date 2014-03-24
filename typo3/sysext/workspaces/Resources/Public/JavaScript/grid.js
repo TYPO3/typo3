@@ -96,25 +96,20 @@ TYPO3.Workspaces.WorkspaceGrid = new Ext.grid.GridPanel({
 			this.colModel = new Ext.grid.ColumnModel({
 				columns: [
 					TYPO3.Workspaces.RowExpander,
-					TYPO3.Workspaces.Configuration.Integrity,
 					{id: 'uid', dataIndex : 'uid', width: 40, sortable: true, header : TYPO3.l10n.localize('column.uid'), hidden: true, filterable : true },
 					{id: 't3ver_oid', dataIndex : 't3ver_oid', width: 40, sortable: true, header : TYPO3.l10n.localize('column.oid'), hidden: true, filterable : true },
 					{id: 'workspace_Title', dataIndex : 'workspace_Title', width: 120, sortable: true, header : TYPO3.l10n.localize('column.workspaceName'), hidden: true, filter : {type : 'string'}},
 					TYPO3.Workspaces.Configuration.WsPath,
-					TYPO3.Workspaces.Configuration.Language,
 					TYPO3.Workspaces.Configuration.LivePath,
 					TYPO3.Workspaces.Configuration.WsTitleWithIcon,
 					TYPO3.Workspaces.Configuration.TitleWithIcon,
-					TYPO3.Workspaces.Configuration.ChangeDate
+					TYPO3.Workspaces.Configuration.ChangeDate,
+					TYPO3.Workspaces.Configuration.Integrity,
+					TYPO3.Workspaces.Configuration.Language
 				].concat(TYPO3.Workspaces.Helpers.getAdditionalColumnHandler()),
 				listeners: {
-
-					columnmoved: function(colModel) {
-						TYPO3.Workspaces.Actions.updateColModel(colModel);
-					},
-					hiddenchange: function(colModel) {
-						TYPO3.Workspaces.Actions.updateColModel(colModel);
-					}
+					columnmoved: TYPO3.Workspaces.Actions.updateColModel,
+					hiddenchange: TYPO3.Workspaces.Actions.updateColModel
 				}
 			});
 		} else {
@@ -122,32 +117,26 @@ TYPO3.Workspaces.WorkspaceGrid = new Ext.grid.GridPanel({
 				columns: [
 					TYPO3.Workspaces.SelectionModel,
 					TYPO3.Workspaces.RowExpander,
-					TYPO3.Workspaces.Configuration.Integrity,
 					{id: 'uid', dataIndex : 'uid', width: 40, sortable: true, header : TYPO3.l10n.localize('column.uid'), hidden: true, filterable : true },
 					{id: 't3ver_oid', dataIndex : 't3ver_oid', width: 40, sortable: true, header : TYPO3.l10n.localize('column.oid'), hidden: true, filterable : true },
 					{id: 'workspace_Title', dataIndex : 'workspace_Title', width: 120, sortable: true, header : TYPO3.l10n.localize('column.workspaceName'), hidden: true, filter : {type : 'string'}},
 					TYPO3.Workspaces.Configuration.WsPath,
-					TYPO3.Workspaces.Configuration.Language,
 					TYPO3.Workspaces.Configuration.LivePath,
 					TYPO3.Workspaces.Configuration.WsTitleWithIcon,
 					TYPO3.Workspaces.Configuration.SwapButton,
 					TYPO3.Workspaces.Configuration.TitleWithIcon,
 					TYPO3.Workspaces.Configuration.ChangeDate,
 					TYPO3.Workspaces.Configuration.Stage,
-					TYPO3.Workspaces.Configuration.RowButtons
+					TYPO3.Workspaces.Configuration.RowButtons,
+					TYPO3.Workspaces.Configuration.Integrity,
+					TYPO3.Workspaces.Configuration.Language
 				].concat(TYPO3.Workspaces.Helpers.getAdditionalColumnHandler()),
 				listeners: {
-
-					columnmoved: function(colModel) {
-						TYPO3.Workspaces.Actions.updateColModel(colModel);
-					},
-					hiddenchange: function(colModel) {
-						TYPO3.Workspaces.Actions.updateColModel(colModel);
-					}
+					columnmoved: TYPO3.Workspaces.Actions.updateColModel,
+					hiddenchange: TYPO3.Workspaces.Actions.updateColModel
 				}
 			});
 		}
-
 	},
 	border : true,
 	store : TYPO3.Workspaces.MainStore,

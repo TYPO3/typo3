@@ -177,6 +177,8 @@ class ReviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControll
 		$custom = $this->getAdditionalResourceService()->getJavaScriptResources();
 
 		$resources = array(
+			$resourcePath . 'Component/RowDetailTemplate.js',
+			$resourcePath . 'Component/RowExpander.js',
 			$resourcePath . 'Store/mainstore.js',
 			$resourcePath . 'configuration.js',
 			$resourcePath . 'helpers.js',

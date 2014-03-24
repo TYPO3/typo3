@@ -215,3 +215,46 @@ img.t3-icon-workspaces-sendtoprevstage {
 table.t3-workspaces-foldout-contentDiff td.content {
 	word-break: break-all;
 }
+
+.typo3-workspaces-collection-level-node,
+.typo3-workspaces-collection-level-leaf,
+.typo3-workspaces-collection-level-none {
+	float: left;
+	width: 18px;
+}
+
+.x-grid3-row-expander {
+	background-position: left top;
+	float: left;
+}
+.x-grid3-row-collapsed .x-grid3-row-expander {
+	background-position: left top;
+	background-image: url('../Images/zoom_in.png');
+}
+.x-grid3-row-expanded .x-grid3-row-expander {
+	background-position: left top;
+	background-image: url('../Images/zoom_out.png');
+}
+
+.typo3-workspaces-collection-child-collapsed {
+	display: none;
+}
+
+.typo3-workspaces-collection-child-expanded {
+	display: block;
+}
+
+.typo3-workspaces-collection-level-node {
+	width: 18px;
+	height: 18px;
+	background-position: 4px 2px;
+	background-color: transparent;
+	background-repeat: no-repeat;
+	background-image: url('../../../../t3skin/extjs/images/grid/row-expand-sprite.png');
+}
+.typo3-workspaces-collection-parent-collapsed .typo3-workspaces-collection-level-node {
+	background-position: 4px 2px;
+}
+.typo3-workspaces-collection-parent-expanded .typo3-workspaces-collection-level-node {
+	background-position: -21px 2px;
+}

@@ -106,19 +106,33 @@ TYPO3.Workspaces.Configuration.LivePath = {
 TYPO3.Workspaces.Configuration.WsTitleWithIcon = {
 	id: 'label_Workspace',
 	dataIndex : 'label_Workspace',
+	// basic definition
+	defaultWidth: 120,
+	// width is extended depending on collection levels
+	// the value is set in addition to this.defaultWidth
 	width: 120,
-	hideable: true,
+	// additional width used for each collection level
+	levelWidth: 18,
+	hideable: false,
 	sortable: true,
 	header : TYPO3.l10n.localize('column.wsTitle'),
 	renderer: function(value, metaData, record, rowIndex, colIndex, store) {
 		var dekoClass = 'item-state-' + record.json.state_Workspace;
 		value = "<span class=\"" + dekoClass + "\">" + value + "</span>";
-		if (record.json.icon_Live === record.json.icon_Workspace) {
-			return value;
-		} else {
-			return "<span class=\"" + record.json.icon_Workspace + "\">&nbsp;</span>&nbsp;" + value;
+		// Prepend icon
+		if (record.json.icon_Live !== record.json.icon_Workspace) {
+			valud = "<span class=\"" + record.json.icon_Workspace + "\">&nbsp;</span>&nbsp;" + value;
 		}
-
+		// Prepend nested collection level
+		var levelStyle = 'margin-left: ' + record.json.Workspaces_CollectionLevel * this.levelWidth + 'px;';
+		if (record.json.Workspaces_CollectionChildren > 0) {
+			value = '<div class="typo3-workspaces-collection-level-node" style="' + levelStyle + '">&#160;</div>' + value;
+		} else if (record.json.Workspaces_CollectionLevel > 0) {
+			value = '<div class="typo3-workspaces-collection-level-leaf" style="' + levelStyle + '">&#160;</div>' + value;
+		} else {
+			value = '<div class="typo3-workspaces-collection-level-none" style="' + levelStyle + '">&#160;</div>' + value;
+		}
+		return value;
 	},
 	filter : {type: 'string'}
 };

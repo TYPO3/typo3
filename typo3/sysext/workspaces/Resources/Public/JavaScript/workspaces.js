@@ -68,7 +68,7 @@ Ext.onReady(function() {
 		directFn : TYPO3.Workspaces.ExtDirect.getSystemLanguages
 	});
 
-	TYPO3.Workspaces.RowDetail.rowDataStore.proxy = new Ext.data.DirectProxy({
+	TYPO3.Workspaces.RowExpander.detailStore.proxy = new Ext.data.DirectProxy({
 		directFn: TYPO3.Workspaces.ExtDirect.getRowDetails
 	});
 	// late binding of ExtDirect
