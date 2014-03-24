@@ -136,7 +136,7 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 			if ($operator === QueryInterface::OPERATOR_IN) {
 				$items = array();
 				foreach ($operand2 as $value) {
-					$value = $this->getPlainValue($value);
+					$value = $this->dataMapper->getPlainValue($value);
 					if ($value !== NULL) {
 						$items[] = $value;
 					}
@@ -343,7 +343,7 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 		if ($operator === QueryInterface::OPERATOR_IN) {
 			$hasValue = FALSE;
 			foreach ($operand2 as $value) {
-				$value = $this->getPlainValue($value);
+				$value = $this->dataMapper->getPlainValue($value);
 				if ($value !== NULL) {
 					$parameters[] = $value;
 					$hasValue = TRUE;
@@ -694,40 +694,6 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 			$this->parseJoin($rightSource, $sql);
 		}
 	}
-
-	/**
-	 * Returns a plain value, i.e. objects are flattened out if possible.
-	 *
-	 * @param mixed $input
-	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException
-	 * @return mixed
-	 */
-	protected function getPlainValue($input) {
-		if (is_array($input)) {
-			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException('An array could not be converted to a plain value.', 1274799932);
-		}
-		if ($input instanceof \DateTime) {
-			return $input->format('U');
-		} elseif (TypeHandlingUtility::isCoreType($input)) {
-			return (string) $input;
-		} elseif (is_object($input)) {
-			if ($input instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy) {
-				$realInput = $input->_loadRealInstance();
-			} else {
-				$realInput = $input;
-			}
-			if ($realInput instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface) {
-				return $realInput->getUid();
-			} else {
-				throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException('An object of class "' . get_class($realInput) . '" could not be converted to a plain value.', 1274799934);
-			}
-		} elseif (is_bool($input)) {
-			return $input === TRUE ? 1 : 0;
-		} else {
-			return $input;
-		}
-	}
-
 
 	/**
 	 * adds a union statement to the query, mostly for tables referenced in the where condition.

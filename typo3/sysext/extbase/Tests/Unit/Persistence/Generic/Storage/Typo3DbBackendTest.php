@@ -13,11 +13,24 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Storage;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 
 /**
  * Test case
  */
 class Typo3DbBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+
+	/**
+	 * @var DataMapper
+	 */
+	protected static $dataMapper;
+
+	/**
+	 * Setup DataMapper
+	 */
+	public static function setUpBeforeClass() {
+		self::$dataMapper = new DataMapper();
+	}
 
 	/**
 	 * @test
@@ -32,16 +45,16 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$mockDataMap->expects($this->any())->method('isPersistableProperty')->will($this->returnValue(TRUE));
 		$mockDataMap->expects($this->any())->method('getColumnMap')->will($this->returnValue($mockColumnMap));
 		$mockDataMap->expects($this->any())->method('getTableName')->will($this->returnValue($tableName));
-		$mockDataMapper = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapper', array('getDataMap'), array(), '', FALSE);
+		$mockDataMapper = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapper', array('getDataMap', 'getPlainValue'), array(), '', FALSE);
 		$mockDataMapper->expects($this->once())->method('getDataMap')->will($this->returnValue($mockDataMap));
+		$mockDataMapper->expects($this->once())->method('getPlainValue')->will($this->returnValue('plainPropertyValue'));
 		$expectedStatement = 'SELECT * FROM tx_foo_table WHERE column_name=?';
 		$expectedParameters = array('plainPropertyValue');
 		$expectedUid = 52;
 		$mockDataBaseHandle = $this->getMock('TYPO3\CMS\Core\Database\DatabaseConnection', array('sql_query', 'sql_fetch_assoc'), array(), '', FALSE);
 		$mockDataBaseHandle->expects($this->once())->method('sql_query')->will($this->returnValue('resource'));
 		$mockDataBaseHandle->expects($this->any())->method('sql_fetch_assoc')->with('resource')->will($this->returnValue(array('uid' => $expectedUid)));
-		$mockTypo3DbBackend = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend', array('getPlainValue', 'checkSqlErrors', 'replacePlaceholders', 'addVisibilityConstraintStatement'), array(), '', FALSE);
-		$mockTypo3DbBackend->expects($this->once())->method('getPlainValue')->will($this->returnValue('plainPropertyValue'));
+		$mockTypo3DbBackend = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend', array('checkSqlErrors', 'replacePlaceholders', 'addVisibilityConstraintStatement'), array(), '', FALSE);
 		$mockTypo3DbBackend->expects($this->once())->method('addVisibilityConstraintStatement')->with($this->isInstanceOf('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface'), $tableName, $this->isType('array'));
 		$mockTypo3DbBackend->expects($this->once())->method('replacePlaceholders')->with($expectedStatement, $expectedParameters);
 		$mockTypo3DbBackend->_set('dataMapper', $mockDataMapper);
@@ -80,5 +93,32 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$mockTypo3DbBackend = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend', array('dummy'), array(), '', FALSE);
 		$mockTypo3DbBackend->_set('pageRepository', $pageRepositoryMock);
 		$this->assertSame(array($comparisonRow), $mockTypo3DbBackend->_call('doLanguageAndWorkspaceOverlay', $sourceMock, array($row), $mockQuerySettings, $workspaceUid));
+	}
+
+	/**
+	 * @return array
+	 */
+	public function resolveParameterPlaceholdersReplacesValuesDataProvider() {
+		return array(
+			'string' => array('bar', '123', '123'),
+			'array' => array('bar', array(1,2,3), '1,2,3'),
+		);
+	}
+
+	/**
+	 * @param $parameter
+	 * @param $value
+	 * @param $expected
+	 * @test
+	 * @dataProvider resolveParameterPlaceholdersReplacesValuesDataProvider
+	 */
+	public function resolveParameterPlaceholdersReplacesValues($parameter, $value, $expected) {
+		$mock = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend', array('quoteTextValueCallback'));
+		$mock->expects($this->any())->method('quoteTextValueCallback')->will($this->returnArgument(0));
+		$mock->_set('dataMapper', self::$dataMapper);
+		$stmtParts = array('tables' => array('foo'), 'where' => $parameter);
+		$parameters = array($parameter => $value);
+		$result = $mock->_call('resolveParameterPlaceholders', $stmtParts, $parameters);
+		$this->assertSame($expected, $result['where']);
 	}
 }

@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
 /**
@@ -282,7 +282,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
 	 */
 	public function getObjectDataByQuery(QueryInterface $query) {
 		$statement = $query->getStatement();
-		if ($statement instanceof Statement) {
+		if ($statement instanceof Qom\Statement) {
 			$rows = $this->getObjectDataByRawQuery($statement);
 		} else {
 			$rows = $this->getRowsByStatementParts($query);
@@ -381,10 +381,10 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
 	/**
 	 * Returns the object data using a custom statement
 	 *
-	 * @param Statement $statement
+	 * @param Qom\Statement $statement
 	 * @return array
 	 */
-	protected function getObjectDataByRawQuery(Statement $statement) {
+	protected function getObjectDataByRawQuery(Qom\Statement $statement) {
 		$realStatement = $statement->getStatement();
 		$parameters = $statement->getBoundVariables();
 
@@ -425,7 +425,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
 	 * @return integer The number of matching tuples
 	 */
 	public function getObjectCountByQuery(QueryInterface $query) {
-		if ($query->getConstraint() instanceof Statement) {
+		if ($query->getConstraint() instanceof Qom\Statement) {
 			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\BadConstraintException('Could not execute count on queries with a constraint of type TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\Statement', 1256661045);
 		}
 
@@ -510,35 +510,25 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
 	 * @return array
 	 */
 	protected function resolveParameterPlaceholders(array $statementParts, array $parameters) {
-		$tableNameForEscape = (reset($statementParts['tables']) ?: 'foo');
+		$tableName = reset($statementParts['tables']) ?: 'foo';
 
 		foreach ($parameters as $parameterPlaceholder => $parameter) {
-			if ($parameter instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy) {
-				$parameter = $parameter->_loadRealInstance();
-			}
-
-			if ($parameter instanceof \DateTime) {
-				$parameter = $parameter->format('U');
-			} elseif ($parameter instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface) {
-				$parameter = (int)$parameter->getUid();
-			} elseif (is_array($parameter)) {
-				$subParameters = array();
-				foreach ($parameter as $subParameter) {
-					$subParameters[] = $this->databaseHandle->fullQuoteStr($subParameter, $tableNameForEscape);
-				}
-				$parameter = implode(',', $subParameters);
-			} elseif ($parameter === NULL) {
-				$parameter = 'NULL';
-			} elseif (is_bool($parameter)) {
-				$parameter = (int)$parameter;
-			} else {
-				$parameter = $this->databaseHandle->fullQuoteStr((string)$parameter, $tableNameForEscape);
-			}
-
+			$parameter = $this->dataMapper->getPlainValue($parameter, NULL, array($this, 'quoteTextValueCallback'), array('tablename' => $tableName));
 			$statementParts['where'] = str_replace($parameterPlaceholder, $parameter, $statementParts['where']);
 		}
 
 		return $statementParts;
+	}
+
+	/**
+	 * Will be called by the data mapper to quote string values.
+	 *
+	 * @param string $value The value to be quoted.
+	 * @param array $parameters Additional parameters array currently containing the "tablename" key.
+	 * @return string The quoted string.
+	 */
+	public function quoteTextValueCallback($value, $parameters) {
+		return $this->databaseHandle->fullQuoteStr($value, $parameters['tablename']);
 	}
 
 	/**
@@ -560,7 +550,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
 					$fields[] = $dataMap->getColumnMap($propertyName)->getColumnName() . ' IS NULL';
 				} else {
 					$fields[] = $dataMap->getColumnMap($propertyName)->getColumnName() . '=?';
-					$parameters[] = $this->getPlainValue($propertyValue);
+					$parameters[] = $this->dataMapper->getPlainValue($propertyValue);
 				}
 			}
 		}
@@ -582,40 +572,6 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
 			return (int)$row['uid'];
 		} else {
 			return FALSE;
-		}
-	}
-
-	/**
-	 * Returns a plain value, i.e. objects are flattened out if possible.
-	 *
-	 * @param mixed $input
-	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException
-	 * @return mixed
-	 * @todo remove after getUidOfAlreadyPersistedValueObject is adjusted, this was moved to queryParser
-	 */
-	protected function getPlainValue($input) {
-		if (is_array($input)) {
-			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException('An array could not be converted to a plain value.', 1274799932);
-		}
-		if ($input instanceof \DateTime) {
-			return $input->format('U');
-		} elseif ($input instanceof \TYPO3\CMS\Core\Type\TypeInterface) {
-			return (string) $input;
-		} elseif (is_object($input)) {
-			if ($input instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy) {
-				$realInput = $input->_loadRealInstance();
-			} else {
-				$realInput = $input;
-			}
-			if ($realInput instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface) {
-				return $realInput->getUid();
-			} else {
-				throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException('An object of class "' . get_class($realInput) . '" could not be converted to a plain value.', 1274799934);
-			}
-		} elseif (is_bool($input)) {
-			return (int)$input;
-		} else {
-			return $input;
 		}
 	}
 
@@ -737,16 +693,16 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
 	 * Performs workspace and language overlay on the given row array. The language and workspace id is automatically
 	 * detected (depending on FE or BE context). You can also explicitly set the language/workspace id.
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source The source (selector od join)
+	 * @param Qom\SourceInterface $source The source (selector od join)
 	 * @param array $rows
 	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings The TYPO3 CMS specific query settings
 	 * @param null|integer $workspaceUid
 	 * @return array
 	 */
-	protected function doLanguageAndWorkspaceOverlay(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source, array $rows, \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings, $workspaceUid = NULL) {
-		if ($source instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SelectorInterface) {
+	protected function doLanguageAndWorkspaceOverlay(Qom\SourceInterface $source, array $rows, \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings, $workspaceUid = NULL) {
+		if ($source instanceof Qom\SelectorInterface) {
 			$tableName = $source->getSelectorName();
-		} elseif ($source instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinInterface) {
+		} elseif ($source instanceof Qom\JoinInterface) {
 			$tableName = $source->getRight()->getSelectorName();
 		} else {
 			// No proper source, so we do not have a table name here

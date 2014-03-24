@@ -14,6 +14,10 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Object\Exception\CannotReconstituteObjectException;
+use TYPO3\CMS\Extbase\Persistence;
+use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException;
+use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 
 /**
@@ -145,14 +149,15 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Creates a skeleton of the specified object
 	 *
 	 * @param string $className Name of the class to create a skeleton for
-	 * @throws \TYPO3\CMS\Extbase\Object\Exception\CannotReconstituteObjectException
+	 * @throws CannotReconstituteObjectException
 	 * @return object The object skeleton
 	 */
 	protected function createEmptyObject($className) {
 		// Note: The class_implements() function also invokes autoload to assure that the interfaces
 		// and the class are loaded. Would end up with __PHP_Incomplete_Class without it.
 		if (!in_array('TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface', class_implements($className))) {
-			throw new \TYPO3\CMS\Extbase\Object\Exception\CannotReconstituteObjectException('Cannot create empty instance of the class "' . $className . '" because it does not implement the TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface.', 1234386924);
+			throw new CannotReconstituteObjectException('Cannot create empty instance of the class "' . $className
+				. '" because it does not implement the TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface.', 1234386924);
 		}
 		$object = $this->objectManager->getEmptyObject($className);
 		return $object;
@@ -161,11 +166,11 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Sets the given properties on the object.
 	 *
-	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object The object to set properties on
+	 * @param DomainObjectInterface $object The object to set properties on
 	 * @param array $row
 	 * @return void
 	 */
-	protected function thawProperties(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, array $row) {
+	protected function thawProperties(DomainObjectInterface $object, array $row) {
 		$className = get_class($object);
 		$classSchema = $this->reflectionService->getClassSchema($className);
 		$dataMap = $this->getDataMap($className);
@@ -271,13 +276,13 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Fetches a collection of objects related to a property of a parent object
 	 *
-	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject The object instance this proxy is part of
+	 * @param DomainObjectInterface $parentObject The object instance this proxy is part of
 	 * @param string $propertyName The name of the proxied property in it's parent
 	 * @param mixed $fieldValue The raw field value.
 	 * @param boolean $enableLazyLoading A flag indication if the related objects should be lazy loaded
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface The result
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage|Persistence\QueryResultInterface The result
 	 */
-	public function fetchRelated(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, $fieldValue = '', $enableLazyLoading = TRUE) {
+	public function fetchRelated(DomainObjectInterface $parentObject, $propertyName, $fieldValue = '', $enableLazyLoading = TRUE) {
 		$propertyMetaData = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
 		if ($enableLazyLoading === TRUE && $propertyMetaData['lazy']) {
 			if (in_array($propertyMetaData['type'], array('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', 'Tx_Extbase_Persistence_ObjectStorage'), TRUE)) {
@@ -298,33 +303,33 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Fetches the related objects from the storage backend.
 	 *
-	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject The object instance this proxy is part of
+	 * @param DomainObjectInterface $parentObject The object instance this proxy is part of
 	 * @param string $propertyName The name of the proxied property in it's parent
 	 * @param mixed $fieldValue The raw field value.
 	 * @return mixed
 	 */
-	protected function fetchRelatedEager(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, $fieldValue = '') {
+	protected function fetchRelatedEager(DomainObjectInterface $parentObject, $propertyName, $fieldValue = '') {
 		return $fieldValue === '' ? $this->getEmptyRelationValue($parentObject, $propertyName) : $this->getNonEmptyRelationValue($parentObject, $propertyName, $fieldValue);
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject
+	 * @param DomainObjectInterface $parentObject
 	 * @param string $propertyName
 	 * @return array|NULL
 	 */
-	protected function getEmptyRelationValue(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName) {
+	protected function getEmptyRelationValue(DomainObjectInterface $parentObject, $propertyName) {
 		$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
-		$relatesToOne = $columnMap->getTypeOfRelation() == \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_ONE;
+		$relatesToOne = $columnMap->getTypeOfRelation() == ColumnMap::RELATION_HAS_ONE;
 		return $relatesToOne ? NULL : array();
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject
+	 * @param DomainObjectInterface $parentObject
 	 * @param string $propertyName
 	 * @param string $fieldValue
-	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+	 * @return Persistence\QueryResultInterface
 	 */
-	protected function getNonEmptyRelationValue(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, $fieldValue) {
+	protected function getNonEmptyRelationValue(DomainObjectInterface $parentObject, $propertyName, $fieldValue) {
 		$query = $this->getPreparedQuery($parentObject, $propertyName, $fieldValue);
 		return $query->execute();
 	}
@@ -332,25 +337,25 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Builds and returns the prepared query, ready to be executed.
 	 *
-	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject
+	 * @param DomainObjectInterface $parentObject
 	 * @param string $propertyName
 	 * @param string $fieldValue
-	 * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
+	 * @return Persistence\QueryInterface
 	 */
-	protected function getPreparedQuery(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, $fieldValue = '') {
+	protected function getPreparedQuery(DomainObjectInterface $parentObject, $propertyName, $fieldValue = '') {
 		$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
 		$type = $this->getType(get_class($parentObject), $propertyName);
 		$query = $this->queryFactory->create($type);
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
-		if ($columnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY) {
+		if ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_MANY) {
 			if ($columnMap->getChildSortByFieldName() !== NULL) {
-				$query->setOrderings(array($columnMap->getChildSortByFieldName() => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING));
+				$query->setOrderings(array($columnMap->getChildSortByFieldName() => Persistence\QueryInterface::ORDER_ASCENDING));
 			}
-		} elseif ($columnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+		} elseif ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 			$query->setSource($this->getSource($parentObject, $propertyName));
 			if ($columnMap->getChildSortByFieldName() !== NULL) {
-				$query->setOrderings(array($columnMap->getChildSortByFieldName() => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING));
+				$query->setOrderings(array($columnMap->getChildSortByFieldName() => Persistence\QueryInterface::ORDER_ASCENDING));
 			}
 		}
 		$query->matching($this->getConstraint($query, $parentObject, $propertyName, $fieldValue, $columnMap->getRelationTableMatchFields()));
@@ -360,19 +365,22 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Builds and returns the constraint for multi value properties.
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
-	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject
+	 * @param Persistence\QueryInterface $query
+	 * @param DomainObjectInterface $parentObject
 	 * @param string $propertyName
 	 * @param string $fieldValue
 	 * @param array $relationTableMatchFields
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface $constraint
 	 */
-	protected function getConstraint(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query, \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, $fieldValue = '', $relationTableMatchFields = array()) {
+	protected function getConstraint(Persistence\QueryInterface $query, DomainObjectInterface $parentObject, $propertyName, $fieldValue = '', $relationTableMatchFields = array()) {
 		$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
 		if ($columnMap->getParentKeyFieldName() !== NULL) {
 			$constraint = $query->equals($columnMap->getParentKeyFieldName(), $parentObject);
 			if ($columnMap->getParentTableFieldName() !== NULL) {
-				$constraint = $query->logicalAnd($constraint, $query->equals($columnMap->getParentTableFieldName(), $this->getDataMap(get_class($parentObject))->getTableName()));
+				$constraint = $query->logicalAnd(
+					$constraint,
+					$query->equals($columnMap->getParentTableFieldName(), $this->getDataMap(get_class($parentObject))->getTableName())
+				);
 			}
 		} else {
 			$constraint = $query->in('uid', \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $fieldValue));
@@ -388,17 +396,17 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Builds and returns the source to build a join for a m:n relation.
 	 *
-	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject
+	 * @param DomainObjectInterface $parentObject
 	 * @param string $propertyName
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source
 	 */
-	protected function getSource(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName) {
+	protected function getSource(DomainObjectInterface $parentObject, $propertyName) {
 		$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
 		$left = $this->qomFactory->selector(NULL, $columnMap->getRelationTableName());
 		$childClassName = $this->getType(get_class($parentObject), $propertyName);
 		$right = $this->qomFactory->selector($childClassName, $columnMap->getChildTableName());
 		$joinCondition = $this->qomFactory->equiJoinCondition($columnMap->getRelationTableName(), $columnMap->getChildKeyFieldName(), $columnMap->getChildTableName(), 'uid');
-		$source = $this->qomFactory->join($left, $right, \TYPO3\CMS\Extbase\Persistence\Generic\Query::JCR_JOIN_TYPE_INNER, $joinCondition);
+		$source = $this->qomFactory->join($left, $right, Persistence\Generic\Query::JCR_JOIN_TYPE_INNER, $joinCondition);
 		return $source;
 	}
 
@@ -411,13 +419,13 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * the correct type and identity (fieldValue), this function returns that object.
 	 * Otherwise, it proceeds with mapResultToPropertyValue().
 	 *
-	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject
+	 * @param DomainObjectInterface $parentObject
 	 * @param string $propertyName
 	 * @param mixed $fieldValue the raw field value
 	 * @return mixed
 	 * @see mapResultToPropertyValue()
 	 */
-	protected function mapObjectToClassProperty(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, $fieldValue) {
+	protected function mapObjectToClassProperty(DomainObjectInterface $parentObject, $propertyName, $fieldValue) {
 		if ($this->propertyMapsByForeignKey($parentObject, $propertyName)) {
 				$result = $this->fetchRelated($parentObject, $propertyName, $fieldValue);
 				$propertyValue = $this->mapResultToPropertyValue($parentObject, $propertyName, $result);
@@ -441,11 +449,11 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Checks if the relation is based on a foreign key.
 	 *
-	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject
+	 * @param DomainObjectInterface $parentObject
 	 * @param string $propertyName
 	 * @return boolean TRUE if the property is mapped
 	 */
-	protected function propertyMapsByForeignKey(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName) {
+	protected function propertyMapsByForeignKey(DomainObjectInterface $parentObject, $propertyName) {
 		$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
 		return ($columnMap->getParentKeyFieldName() !== NULL);
 	}
@@ -453,14 +461,14 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Returns the given result as property value of the specified property type.
 	 *
-	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject
+	 * @param DomainObjectInterface $parentObject
 	 * @param string $propertyName
 	 * @param mixed $result The result
 	 * @return mixed
 	 */
-	public function mapResultToPropertyValue(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, $result) {
+	public function mapResultToPropertyValue(DomainObjectInterface $parentObject, $propertyName, $result) {
 		$propertyValue = NULL;
-		if ($result instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LoadingStrategyInterface) {
+		if ($result instanceof Persistence\Generic\LoadingStrategyInterface) {
 			$propertyValue = $result;
 		} else {
 			$propertyMetaData = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
@@ -472,7 +480,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 				if ($propertyMetaData['type'] === 'ArrayObject') {
 					$propertyValue = new \ArrayObject($objects);
 				} elseif (in_array($propertyMetaData['type'], array('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', 'Tx_Extbase_Persistence_ObjectStorage'), TRUE)) {
-					$propertyValue = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+					$propertyValue = new Persistence\ObjectStorage();
 					foreach ($objects as $object) {
 						$propertyValue->attach($object);
 					}
@@ -481,7 +489,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 					$propertyValue = $objects;
 				}
 			} elseif (strpbrk($propertyMetaData['type'], '_\\') !== FALSE) {
-				if (is_object($result) && $result instanceof \TYPO3\CMS\Extbase\Persistence\QueryResultInterface) {
+				if (is_object($result) && $result instanceof Persistence\QueryResultInterface) {
 					$propertyValue = $result->getFirst();
 				} else {
 					$propertyValue = $result;
@@ -494,12 +502,12 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Counts the number of related objects assigned to a property of a parent object
 	 *
-	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject The object instance this proxy is part of
+	 * @param DomainObjectInterface $parentObject The object instance this proxy is part of
 	 * @param string $propertyName The name of the proxied property in it's parent
 	 * @param mixed $fieldValue The raw field value.
 	 * @return integer
 	 */
-	public function countRelated(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, $fieldValue = '') {
+	public function countRelated(DomainObjectInterface $parentObject, $propertyName, $fieldValue = '') {
 		$query = $this->getPreparedQuery($parentObject, $propertyName, $fieldValue);
 		return $query->execute()->count();
 	}
@@ -521,12 +529,12 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Returns a data map for a given class name
 	 *
 	 * @param string $className The class name you want to fetch the Data Map for
-	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap The data map
+	 * @throws Persistence\Generic\Exception
+	 * @return DataMap The data map
 	 */
 	public function getDataMap($className) {
 		if (!is_string($className) || strlen($className) === 0) {
-			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception('No class name was given to retrieve the Data Map for.', 1251315965);
+			throw new Persistence\Generic\Exception('No class name was given to retrieve the Data Map for.', 1251315965);
 		}
 		if (!isset($this->dataMaps[$className])) {
 			$this->dataMaps[$className] = $this->dataMapFactory->buildDataMap($className);
@@ -574,7 +582,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $parentClassName The class name of the object this proxy is part of
 	 * @param string $propertyName The name of the proxied property in it's parent
-	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException
+	 * @throws UnexpectedTypeException
 	 * @return string The class name of the child object
 	 */
 	public function getType($parentClassName, $propertyName) {
@@ -584,8 +592,80 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 		} elseif (!empty($propertyMetaData['type'])) {
 			$type = $propertyMetaData['type'];
 		} else {
-			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException('Could not determine the child object type.', 1251315967);
+			throw new UnexpectedTypeException('Could not determine the child object type.', 1251315967);
 		}
 		return $type;
+	}
+
+	/**
+	 * Returns a plain value, i.e. objects are flattened out if possible.
+	 * Multi value objects or arrays will be converted to a comma-separated list for use in IN SQL queries.
+	 *
+	 * @param mixed $input The value that will be converted.
+	 * @param ColumnMap $columnMap Optional column map for retrieving the date storage format.
+	 * @param callable $parseStringValueCallback Optional callback method that will be called for string values. Can be used to do database quotation.
+	 * @param array $parseStringValueCallbackParameters Additional parameters that will be passed to the callabck as second parameter.
+	 * @throws \InvalidArgumentException
+	 * @throws UnexpectedTypeException
+	 * @return int|string
+	 */
+	public function getPlainValue($input, $columnMap = NULL, $parseStringValueCallback = NULL, array $parseStringValueCallbackParameters = array()) {
+		if ($input === NULL) {
+			return 'NULL';
+		}
+		if ($input instanceof Persistence\Generic\LazyLoadingProxy) {
+			$input = $input->_loadRealInstance();
+		}
+
+		if (is_bool($input)) {
+			$parameter = (int)$input;
+		} elseif ($input instanceof \DateTime) {
+			if (!is_null($columnMap) && !is_null($columnMap->getDateTimeStorageFormat())) {
+				$storageFormat = $columnMap->getDateTimeStorageFormat();
+				switch ($storageFormat) {
+					case 'datetime':
+						$parameter = $input->format('Y-m-d H:i:s');
+						break;
+					case 'date':
+						$parameter = $input->format('Y-m-d');
+						break;
+					default:
+						throw new \InvalidArgumentException('Column map DateTime format "' . $storageFormat . '" is unknown. Allowed values are datetime or date.', 1395353470);
+				}
+			} else {
+				$parameter = $input->format('U');
+			}
+		} elseif (TypeHandlingUtility::isValidTypeForMultiValueComparison($input)) {
+			$plainValueArray = array();
+			foreach ($input as $inputElement) {
+				$plainValueArray[] = $this->getPlainValue($inputElement, $columnMap, $parseStringValueCallback, $parseStringValueCallbackParameters);
+			}
+			$parameter = implode(',', $plainValueArray);
+		} elseif ($input instanceof DomainObjectInterface) {
+			$parameter = (int)$input->getUid();
+		} elseif (TypeHandlingUtility::isCoreType($input)) {
+			$parameter = $this->getPlainStringValue($input, $parseStringValueCallback, $parseStringValueCallbackParameters);
+		} elseif (is_object($input)) {
+			throw new UnexpectedTypeException('An object of class "' . get_class($input) . '" could not be converted to a plain value.', 1274799934);
+		} else {
+			$parameter = $this->getPlainStringValue($input, $parseStringValueCallback, $parseStringValueCallbackParameters);
+		}
+		return $parameter;
+	}
+
+	/**
+	 * If the given callback is set the value will be passed on the the callback function.
+	 * The value will be converted to a string.
+	 *
+	 * @param string $value The string value that should be processed. Will be passed to the callback as first parameter.
+	 * @param callable $callback The data passed to call_user_func().
+	 * @param array $additionalParameters Optional additional parameters passed to the callback as second argument.
+	 * @return string
+	 */
+	protected function getPlainStringValue($value, $callback = NULL , array $additionalParameters = array()) {
+		if (is_callable($callback)) {
+			$value = call_user_func($callback, $value, $additionalParameters);
+		}
+		return (string)$value;
 	}
 }

@@ -106,8 +106,8 @@ class TypeHandlingUtility {
 	/**
 	 * Returns TRUE if the $type is a CMS core type object.
 	 *
-	 * @param string $type
-	 * @return boolean
+	 * @param string|object $type
+	 * @return bool
 	 */
 	static public function isCoreType($type) {
 		return is_subclass_of($type, 'TYPO3\\CMS\\Core\\Type\\TypeInterface');
@@ -133,6 +133,16 @@ class TypeHandlingUtility {
 		}
 
 		return FALSE;
+	}
+
+	/**
+	 * Returns TRUE when the given value can be used in an "in" comparison in a query.
+	 *
+	 * @param mixed $value
+	 * @return bool
+	 */
+	static public function isValidTypeForMultiValueComparison($value) {
+		return is_array($value) || $value instanceof \Traversable;
 	}
 
 	/**

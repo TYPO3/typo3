@@ -376,11 +376,14 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 					if ($propertyValue->_isNew()) {
 						$this->insertObject($propertyValue, $object, $propertyName);
 					}
-					$row[$columnMap->getColumnName()] = $this->getPlainValue($propertyValue);
+					// Check explicitly for NULL, as getPlainValue would convert this to 'NULL'
+					$row[$columnMap->getColumnName()] = $propertyValue !== NULL
+						? $this->dataMapper->getPlainValue($propertyValue)
+						: NULL;
 				}
 				$queue[] = $propertyValue;
 			} elseif ($object->_isNew() || $object->_isDirty($propertyName)) {
-				$row[$columnMap->getColumnName()] = $this->getPlainValue($propertyValue, $columnMap);
+				$row[$columnMap->getColumnName()] = $this->dataMapper->getPlainValue($propertyValue, $columnMap);
 			}
 		}
 		if (count($row) > 0) {
@@ -1019,36 +1022,5 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 		}
 		$storagePidList = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $frameworkConfiguration['persistence']['storagePid']);
 		return (int)$storagePidList[0];
-	}
-
-	/**
-	 * Returns a plain value, i.e. objects are flattened out if possible.
-	 *
-	 * @param mixed $input
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap $columnMap
-	 * @return mixed
-	 */
-	protected function getPlainValue($input, $columnMap = NULL) {
-		if ($input instanceof \DateTime) {
-			if (!is_null($columnMap) && !is_null($columnMap->getDateTimeStorageFormat())) {
-				if ($columnMap->getDateTimeStorageFormat() == 'datetime') {
-					return $input->format('Y-m-d H:i:s');
-				}
-				if ($columnMap->getDateTimeStorageFormat() == 'date') {
-					return $input->format('Y-m-d');
-				}
-			} else {
-				return $input->format('U');
-			}
-		} elseif ($input instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface) {
-			return $input->getUid();
-		} elseif ($input instanceof \TYPO3\CMS\Core\Type\TypeInterface) {
-			return (string) $input;
-		} elseif (is_bool($input)) {
-			return $input === TRUE ? 1 : 0;
-		} else {
-			return $input;
-		}
-		return NULL;
 	}
 }
