@@ -2423,11 +2423,11 @@ class ElementBrowser {
 		}
 		// Read configuration of upload field count
 		$userSetting = $GLOBALS['BE_USER']->getTSConfigVal('options.folderTree.uploadFieldsInLinkBrowser');
-		$count = isset($userSetting) ? $userSetting : 3;
+		$count = isset($userSetting) ? $userSetting : 1;
 		if ($count === '0') {
 			return '';
 		}
-		$count = (int)$count === 0 ? 3 : (int)$count;
+		$count = (int)$count === 0 ? 1 : (int)$count;
 		// Create header, showing upload path:
 		$header = $folderObject->getIdentifier();
 		$code = '
