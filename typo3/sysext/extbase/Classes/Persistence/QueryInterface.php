@@ -42,11 +42,25 @@ interface QueryInterface {
 	const OPERATOR_EQUAL_TO = 1;
 
 	/**
+	 * For NULL we have to use 'IS' instead of '='
+	 *
+	 * @api
+	 */
+	const OPERATOR_EQUAL_TO_NULL = 101;
+
+	/**
 	 * The '!=' comparison operator.
 	 *
 	 * @api
 	 */
 	const OPERATOR_NOT_EQUAL_TO = 2;
+
+	/**
+	 * For NULL we have to use 'IS NOT' instead of '!='
+	 *
+	 * @api
+	 */
+	const OPERATOR_NOT_EQUAL_TO_NULL = 202;
 
 	/**
 	 * The '<' comparison operator.

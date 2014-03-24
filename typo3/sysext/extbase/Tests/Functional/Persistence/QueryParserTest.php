@@ -82,4 +82,27 @@ class QueryParserTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 
 		$this->assertNotSame($hashWithEquals, $hashWithIn);
 	}
+
+	/**
+	 * @test
+	 */
+	public function preparseQueryHasDiffersForIsNullOperator() {
+		$queryWithIsNull = $this->blogRepository->createQuery();
+
+		$queryWithIsNull->matching(
+			$queryWithIsNull->equals('title', NULL)
+		);
+
+		list($hashWithIsNull) = $this->queryParser->preparseQuery($queryWithIsNull);
+
+		$queryWithoutIsNull = $this->blogRepository->createQuery();
+
+		$queryWithoutIsNull->matching(
+			$queryWithoutIsNull->equals('title', '')
+		);
+
+		list($hashWithoutIsNull) = $this->queryParser->preparseQuery($queryWithoutIsNull);
+
+		$this->assertNotSame($hashWithIsNull, $hashWithoutIsNull);
+	}
 }

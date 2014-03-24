@@ -36,9 +36,6 @@ use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
  */
 class Typo3DbQueryParser {
 
-	const OPERATOR_EQUAL_TO_NULL = 'operatorEqualToNull';
-	const OPERATOR_NOT_EQUAL_TO_NULL = 'operatorNotEqualToNull';
-
 	/**
 	 * The TYPO3 database object
 	 *
@@ -375,13 +372,6 @@ class Typo3DbQueryParser {
 				}
 			}
 		} else {
-			if ($operand2 === NULL) {
-				if ($operator === \TYPO3\CMS\Extbase\Persistence\QueryInterface::OPERATOR_EQUAL_TO) {
-					$operator = self::OPERATOR_EQUAL_TO_NULL;
-				} elseif ($operator === \TYPO3\CMS\Extbase\Persistence\QueryInterface::OPERATOR_NOT_EQUAL_TO) {
-					$operator = self::OPERATOR_NOT_EQUAL_TO_NULL;
-				}
-			}
 			$this->parseDynamicOperand($comparison, $operator, $source, $sql);
 		}
 	}
@@ -757,20 +747,20 @@ class Typo3DbQueryParser {
 	 */
 	protected function resolveOperator($operator) {
 		switch ($operator) {
-			case self::OPERATOR_EQUAL_TO_NULL:
-				$operator = 'IS';
-				break;
-			case self::OPERATOR_NOT_EQUAL_TO_NULL:
-				$operator = 'IS NOT';
-				break;
 			case \TYPO3\CMS\Extbase\Persistence\QueryInterface::OPERATOR_IN:
 				$operator = 'IN';
 				break;
 			case \TYPO3\CMS\Extbase\Persistence\QueryInterface::OPERATOR_EQUAL_TO:
 				$operator = '=';
 				break;
+			case \TYPO3\CMS\Extbase\Persistence\QueryInterface::OPERATOR_EQUAL_TO_NULL:
+				$operator = 'IS';
+				break;
 			case \TYPO3\CMS\Extbase\Persistence\QueryInterface::OPERATOR_NOT_EQUAL_TO:
 				$operator = '!=';
+				break;
+			case \TYPO3\CMS\Extbase\Persistence\QueryInterface::OPERATOR_NOT_EQUAL_TO_NULL:
+				$operator = 'IS NOT';
 				break;
 			case \TYPO3\CMS\Extbase\Persistence\QueryInterface::OPERATOR_LESS_THAN:
 				$operator = '<';
