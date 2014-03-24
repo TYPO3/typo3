@@ -489,10 +489,23 @@ class ResourceStorage implements ResourceStorageInterface {
 	}
 
 	/**
+	 * Sets whether the permissions to access or write
+	 * into this storage should be checked or not.
+	 *
 	 * @param boolean $evaluatePermissions
 	 */
 	public function setEvaluatePermissions($evaluatePermissions) {
 		$this->evaluatePermissions = (boolean) $evaluatePermissions;
+	}
+
+	/**
+	 * Gets whether the permissions to access or write
+	 * into this storage should be checked or not.
+	 *
+	 * @return boolean $evaluatePermissions
+	 */
+	public function getEvaluatePermissions() {
+		return $this->evaluatePermissions;
 	}
 
 	/**

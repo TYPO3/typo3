@@ -358,6 +358,24 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 
 	/**
 	 * @test
+	 */
+	public function getEvaluatePermissionsWhenSetFalse() {
+		$this->prepareFixture(array());
+		$this->fixture->setEvaluatePermissions(FALSE);
+		$this->assertFalse($this->fixture->getEvaluatePermissions());
+	}
+
+	/**
+	 * @test
+	 */
+	public function getEvaluatePermissionsWhenSetTrue() {
+		$this->prepareFixture(array());
+		$this->fixture->setEvaluatePermissions(TRUE);
+		$this->assertTrue($this->fixture->getEvaluatePermissions());
+	}
+
+	/**
+	 * @test
 	 * @group integration
 	 * @TODO: Rewrite or move to functional suite
 	 */
