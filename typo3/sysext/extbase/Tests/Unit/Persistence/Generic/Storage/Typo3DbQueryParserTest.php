@@ -313,8 +313,10 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['TSFE'] = new \stdClass();
 		$GLOBALS['TSFE']->sys_page = new \TYPO3\CMS\Frontend\Page\PageRepository();
 		$GLOBALS['SIM_ACCESS_TIME'] = 123456789;
+		/** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $mockQuerySettings */
 		$mockQuerySettings = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings', array('dummy'), array(), '', FALSE);
-		$mockQuerySettings->setRespectEnableFields($respectEnableFields);
+		$mockQuerySettings->setIgnoreEnableFields(!$respectEnableFields);
+		$mockQuerySettings->setIncludeDeleted(!$respectEnableFields);
 		$sql = array();
 
 		/** @var $mockEnvironmentService \TYPO3\CMS\Extbase\Service\EnvironmentService | \PHPUnit_Framework_MockObject_MockObject */

@@ -37,17 +37,6 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 class QueryResult implements QueryResultInterface {
 
 	/**
-	 * This field is only needed to make debugging easier:
-	 * If you call current() on a class that implements Iterator, PHP will return the first field of the object
-	 * instead of calling the current() method of the interface.
-	 * We use this unusual behavior of PHP to return the warning below in this case.
-	 *
-	 * @var string
-	 * @deprecated since Extbase 1.3.0; will be removed in Extbase 6.1
-	 */
-	private $warning = 'You should never see this warning. If you do, you probably used PHP array functions like current() on the TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult. To retrieve the first result, you can use the getFirst() method.';
-
-	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
 	 * @inject
 	 */

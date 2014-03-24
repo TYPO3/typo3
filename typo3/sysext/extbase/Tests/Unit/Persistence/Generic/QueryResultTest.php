@@ -175,10 +175,9 @@ class QueryResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function usingCurrentOnTheQueryResultReturnsAWarning() {
+	public function usingCurrentOnTheQueryResultReturnsNull() {
 		$queryResult = new \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult($this->mockQuery);
-		$expectedResult = 'You should never see this warning. If you do, you probably used PHP array functions like current() on the TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult. To retrieve the first result, you can use the getFirst() method.';
 		$actualResult = current($queryResult);
-		$this->assertEquals($expectedResult, $actualResult);
+		$this->assertNull($actualResult);
 	}
 }

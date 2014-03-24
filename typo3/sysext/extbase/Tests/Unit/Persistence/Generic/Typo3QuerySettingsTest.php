@@ -139,24 +139,6 @@ class Typo3QuerySettingsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 *
 	 * @param boolean $input
 	 */
-	public function setRespectEnableFieldsSetsRespectEnableFieldsCorrectly($input) {
-		$this->typo3QuerySettings->setRespectEnableFields($input);
-		$this->assertEquals($input, $this->typo3QuerySettings->getRespectEnableFields());
-	}
-
-	/**
-	 * @test
-	 */
-	public function setRespectEnableFieldsAllowsChaining() {
-		$this->assertTrue($this->typo3QuerySettings->setRespectEnableFields(TRUE) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface);
-	}
-
-	/**
-	 * @test
-	 * @dataProvider booleanValueProvider
-	 *
-	 * @param boolean $input
-	 */
 	public function setIgnoreEnableFieldsSetsIgnoreEnableFieldsCorrectly($input) {
 		$this->typo3QuerySettings->setIgnoreEnableFields($input);
 		$this->assertEquals($input, $this->typo3QuerySettings->getIgnoreEnableFields());

@@ -37,18 +37,6 @@ namespace TYPO3\CMS\Extbase\Security\Cryptography;
 class HashService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * Generate a hash for a given string
-	 *
-	 * @param string $string The string for which a hash should be generated
-	 * @return string The hash of the string
-	 * @deprecated since Extbase 6.0, will be removed in Extbase 6.2
-	 */
-	public function generateHash($string) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		return $this->generateHmac($string);
-	}
-
-	/**
 	 * Generate a hash (HMAC) for a given string
 	 *
 	 * @param string $string The string for which a hash should be generated
@@ -77,19 +65,6 @@ class HashService implements \TYPO3\CMS\Core\SingletonInterface {
 	public function appendHmac($string) {
 		$hmac = $this->generateHmac($string);
 		return $string . $hmac;
-	}
-
-	/**
-	 * Test if a string $string has the hash given by $hash.
-	 *
-	 * @param string $string The string which should be validated
-	 * @param string $hash The hash of the string
-	 * @return boolean TRUE if string and hash fit together, FALSE otherwise.
-	 * @deprecated since Extbase 6.0, will be removed in Extbase 6.2
-	 */
-	public function validateHash($string, $hash) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		return $this->validateHmac($string, $hash);
 	}
 
 	/**

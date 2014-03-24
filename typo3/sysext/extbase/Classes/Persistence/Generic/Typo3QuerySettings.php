@@ -288,36 +288,6 @@ class Typo3QuerySettings implements QuerySettingsInterface {
 	}
 
 	/**
-	 * Sets the flag if the visibility in the frontend should be respected.
-	 *
-	 * @param bool $respectEnableFields TRUE if the visibility in the frontend should be respected. If TRUE, the "enable fields" of TYPO3 will be added to the query statement.
-	 * @return QuerySettingsInterface
-	 * @deprecated since Extbase 6.0, will be removed two versions later. Use setIgnoreEnableFields() and setEnableFieldsToBeIgnored() instead.
-	 * @see setIgnoreEnableFields()
-	 * @see setEnableFieldsToBeIgnored()
-	 * @api
-	 */
-	public function setRespectEnableFields($respectEnableFields) {
-		GeneralUtility::logDeprecatedFunction();
-		$this->setIgnoreEnableFields(!$respectEnableFields);
-		$this->setIncludeDeleted(!$respectEnableFields);
-		return $this;
-	}
-
-	/**
-	 * Returns the state, if the visibility settings for the frontend should be respected for the query.
-	 *
-	 * @return bool TRUE, if the visibility settings for the frontend should should be respected; otherwise FALSE.
-	 * @deprecated since Extbase 6.0, will be removed two versions later. Use getIgnoreEnableFields() and getEnableFieldsToBeIgnored() instead.
-	 * @see getIgnoreEnableFields()
-	 * @see getEnableFieldsToBeIgnored()
-	 */
-	public function getRespectEnableFields() {
-		GeneralUtility::logDeprecatedFunction();
-		return !($this->getIgnoreEnableFields() && $this->getIncludeDeleted());
-	}
-
-	/**
 	 * Sets a flag indicating whether all or some enable fields should be ignored. If TRUE, all enable fields are ignored.
 	 * If--in addition to this--enableFieldsToBeIgnored is set, only fields specified there are ignored. If FALSE, all
 	 * enable fields are taken into account, regardless of the enableFieldsToBeIgnored setting.
