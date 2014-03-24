@@ -472,7 +472,10 @@ class StagesService {
 				}
 		}
 		if (!empty($userList)) {
-			$userRecords = BackendUtility::getUserNames('username, uid, email, realName', 'AND uid IN (' . $userList . ')');
+			$userRecords = BackendUtility::getUserNames(
+				'username, uid, email, realName',
+				'AND uid IN (' . $userList . ')' . BackendUtility::BEenableFields('be_users')
+			);
 		}
 		if (!empty($userRecords) && is_array($userRecords)) {
 			foreach ($userRecords as $userUid => $userRecord) {
