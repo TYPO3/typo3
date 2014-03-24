@@ -461,4 +461,27 @@ class LanguageService {
 		}
 	}
 
+	/**
+	 * Gets labels with a specific fetched from the current locallang file.
+	 * This is useful for e.g gathering javascript labels.
+	 *
+	 * @param string $prefix Prefix to select the correct labels
+	 * @param string $strip Sub-prefix to be removed from label names in the result
+	 * @return array Processed labels
+	 */
+	public function getLabelsWithPrefix($prefix, $strip = '') {
+		$extraction = array();
+		$labels = array_merge((array)$GLOBALS['LOCAL_LANG']['default'], (array)$GLOBALS['LOCAL_LANG'][$GLOBALS['LANG']->lang]);
+		// Regular expression to strip the selection prefix and possibly something from the label name:
+		$labelPattern = '#^' . preg_quote($prefix, '#') . '(' . preg_quote($strip, '#') . ')?#';
+		// Iterate through all locallang labels:
+		foreach ($labels as $label => $value) {
+			if (strpos($label, $prefix) === 0) {
+				$key = preg_replace($labelPattern, '', $label);
+				$extraction[$key] = $value;
+			}
+		}
+		return $extraction;
+	}
+
 }

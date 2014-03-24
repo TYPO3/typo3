@@ -226,32 +226,9 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 			'depth_4' => $this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_4'),
 			'depth_infi' => $this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi')
 		);
-		$extensionLabels = $this->getJavaScriptLabelsFromLocallang('js.', 'label_');
+		$extensionLabels = $this->languageService->getLabelsWithPrefix('js.', 'label_');
 		$javaScriptLabels = array_merge($coreLabels, $extensionLabels);
 		return $javaScriptLabels;
-	}
-
-	/**
-	 * Gets labels to be used in JavaScript fetched from the current locallang file.
-	 *
-	 * @param string $selectionPrefix Prefix to select the correct labels (default: 'js.')
-	 * @param string $stripFromSelectionName  Sub-prefix to be removed from label names in the result (default: '')
-	 * @return array Labels to be used in JavaScript of the current locallang file
-	 * @todo Check, whether this method can be moved in a generic way to $GLOBALS['LANG']
-	 */
-	protected function getJavaScriptLabelsFromLocallang($selectionPrefix = 'js.', $stripFromSelectionName = '') {
-		$extraction = array();
-		$labels = array_merge((array)$GLOBALS['LOCAL_LANG']['default'], (array)$GLOBALS['LOCAL_LANG'][$this->languageService->lang]);
-		// Regular expression to strip the selection prefix and possibly something from the label name:
-		$labelPattern = '#^' . preg_quote($selectionPrefix, '#') . '(' . preg_quote($stripFromSelectionName, '#') . ')?#';
-		// Iterate through all locallang labels:
-		foreach ($labels as $label => $value) {
-			if (strpos($label, $selectionPrefix) === 0) {
-				$key = preg_replace($labelPattern, '', $label);
-				$extraction[$key] = $value;
-			}
-		}
-		return $extraction;
 	}
 
 	/**
