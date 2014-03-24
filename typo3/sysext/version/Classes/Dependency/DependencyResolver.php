@@ -105,6 +105,7 @@ class DependencyResolver {
 			$callback = $this->eventCallbacks[$eventName];
 			return $callback->execute($callerArguments, $caller, $eventName);
 		}
+		return NULL;
 	}
 
 	/**
@@ -136,7 +137,7 @@ class DependencyResolver {
 	/**
 	 * Gets the outermost parents that define complete dependent structure each.
 	 *
-	 * @return array
+	 * @return array|\TYPO3\CMS\Version\Dependency\ElementEntity[]
 	 */
 	public function getOuterMostParents() {
 		if (!isset($this->outerMostParents)) {
@@ -170,7 +171,7 @@ class DependencyResolver {
 	/**
 	 * Gets all nested elements (including the parent) of a particular outermost parent element.
 	 *
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 * @param \TYPO3\CMS\Version\Dependency\ElementEntity $outerMostParent
 	 * @return array
 	 */

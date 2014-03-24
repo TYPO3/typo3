@@ -188,7 +188,7 @@ class ElementEntity {
 	 * Determines whether a particular key holds data.
 	 *
 	 * @param string $key
-	 * @return
+	 * @return bool
 	 */
 	public function hasDataValue($key) {
 		return isset($this->data[$key]);
@@ -215,12 +215,14 @@ class ElementEntity {
 	/**
 	 * Gets all child references.
 	 *
-	 * @return array
+	 * @return array|ReferenceEntity[]
 	 */
 	public function getChildren() {
 		if (!isset($this->children)) {
 			$this->children = array();
-			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->table, 'sys_refindex') . ' AND recuid=' . $this->id . ' AND workspace=' . $this->dependency->getWorkspace(), '', 'sorting');
+			$where = 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->table, 'sys_refindex') . ' AND recuid='
+				. $this->id . ' AND workspace=' . $this->dependency->getWorkspace();
+			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', $where, '', 'sorting');
 			if (is_array($rows)) {
 				foreach ($rows as $row) {
 					$arguments = array('table' => $row['ref_table'], 'id' => $row['ref_uid'], 'field' => $row['field'], 'scope' => self::REFERENCES_ChildOf);
@@ -243,12 +245,14 @@ class ElementEntity {
 	/**
 	 * Gets all parent references.
 	 *
-	 * @return array
+	 * @return array|ReferenceEntity[]
 	 */
 	public function getParents() {
 		if (!isset($this->parents)) {
 			$this->parents = array();
-			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->table, 'sys_refindex') . ' AND deleted=0 AND ref_uid=' . $this->id . ' AND workspace=' . $this->dependency->getWorkspace(), '', 'sorting');
+			$where = 'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->table, 'sys_refindex')
+				. ' AND deleted=0 AND ref_uid=' . $this->id . ' AND workspace=' . $this->dependency->getWorkspace();
+			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', $where, '', 'sorting');
 			if (is_array($rows)) {
 				foreach ($rows as $row) {
 					$arguments = array('table' => $row['tablename'], 'id' => $row['recuid'], 'field' => $row['field'], 'scope' => self::REFERENCES_ParentOf);
@@ -280,7 +284,7 @@ class ElementEntity {
 	/**
 	 * Gets the outermost parent element.
 	 *
-	 * @return \TYPO3\CMS\Version\Dependency\ElementEntity
+	 * @return ElementEntity
 	 */
 	public function getOuterMostParent() {
 		if (!isset($this->outerMostParent)) {
@@ -307,7 +311,7 @@ class ElementEntity {
 	/**
 	 * Gets nested children accumulated.
 	 *
-	 * @return array
+	 * @return array|ReferenceEntity[]
 	 */
 	public function getNestedChildren() {
 		if (!isset($this->nestedChildren)) {

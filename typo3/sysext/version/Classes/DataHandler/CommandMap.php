@@ -27,8 +27,9 @@ namespace TYPO3\CMS\Version\DataHandler;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Versioning\VersionState;
+use TYPO3\CMS\Version\Dependency\ElementEntity;
 
 /**
  * Handles the \TYPO3\CMS\Core\DataHandling\DataHandler command map and is
@@ -90,11 +91,17 @@ class CommandMap {
 	protected $scopes;
 
 	/**
+	 * @var \TYPO3\CMS\Version\Dependency\ElementEntityProcessor
+	 */
+	protected $elementEntityProcessor;
+
+	/**
 	 * Creates this object.
 	 *
 	 * @param \TYPO3\CMS\Version\Hook\DataHandlerHook $parent
 	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain
 	 * @param array $commandMap
+	 * @param int $workspace
 	 */
 	public function __construct(\TYPO3\CMS\Version\Hook\DataHandlerHook $parent, \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain, array $commandMap, $workspace) {
 		$this->setParent($parent);
@@ -222,6 +229,21 @@ class CommandMap {
 	}
 
 	/**
+	 * Gets the element entity processor.
+	 *
+	 * @return \TYPO3\CMS\Version\Dependency\ElementEntityProcessor
+	 */
+	protected function getElementEntityProcessor() {
+		if (!isset($this->elementEntityProcessor)) {
+			$this->elementEntityProcessor = GeneralUtility::makeInstance(
+				'TYPO3\\CMS\\Version\\Dependency\\ElementEntityProcessor'
+			);
+			$this->elementEntityProcessor->setWorkspace($this->getWorkspace());
+		}
+		return $this->elementEntityProcessor;
+	}
+
+	/**
 	 * Processes the command map.
 	 *
 	 * @return \TYPO3\CMS\Version\DataHandler\CommandMap
@@ -266,7 +288,7 @@ class CommandMap {
 	protected function resolveWorkspacesSwapDependencies() {
 		$scope = self::SCOPE_WorkspacesSwap;
 		$dependency = $this->getDependencyUtility($scope);
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('any,pages', $this->workspacesSwapMode)) {
+		if (GeneralUtility::inList('any,pages', $this->workspacesSwapMode)) {
 			$this->invokeWorkspacesSwapItems('applyWorkspacesSwapBehaviour');
 		}
 		$this->invokeWorkspacesSwapItems('addWorkspacesSwapElements', array($dependency));
@@ -356,7 +378,7 @@ class CommandMap {
 	protected function resolveWorkspacesSetStageDependencies() {
 		$scope = self::SCOPE_WorkspacesSetStage;
 		$dependency = $this->getDependencyUtility($scope);
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('any,pages', $this->workspacesChangeStageMode)) {
+		if (GeneralUtility::inList('any,pages', $this->workspacesChangeStageMode)) {
 			$this->invokeWorkspacesSetStageItems('applyWorkspacesSetStageBehaviour');
 		}
 		$this->invokeWorkspacesSetStageItems('explodeSetStage');
@@ -374,9 +396,9 @@ class CommandMap {
 	 */
 	protected function applyWorkspacesSetStageBehaviour($table, $versionIdList, array $properties) {
 		$extendedCommandMap = array();
-		$versionIds = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $versionIdList, TRUE);
+		$versionIds = GeneralUtility::trimExplode(',', $versionIdList, TRUE);
 		$elementList = array($table => $versionIds);
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('any,pages', $this->workspacesChangeStageMode)) {
+		if (GeneralUtility::inList('any,pages', $this->workspacesChangeStageMode)) {
 			if (count($versionIds) === 1) {
 				$workspaceRecord = BackendUtility::getRecord($table, $versionIds[0], 't3ver_wsid');
 				$workspaceId = $workspaceRecord['t3ver_wsid'];
@@ -452,7 +474,7 @@ class CommandMap {
 	 */
 	protected function explodeSetStage($table, $versionIdList, array $properties) {
 		$extractedCommandMap = array();
-		$versionIds = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $versionIdList, TRUE);
+		$versionIds = GeneralUtility::trimExplode(',', $versionIdList, TRUE);
 		if (count($versionIds) > 1) {
 			foreach ($versionIds as $versionId) {
 				if (isset($this->commandMap[$table][$versionId]['version'])) {
@@ -475,21 +497,21 @@ class CommandMap {
 	 */
 	protected function applyWorkspacesDependencies(\TYPO3\CMS\Version\Dependency\DependencyResolver $dependency, $scope) {
 		$transformDependentElementsToUseLiveId = $this->getScopeData($scope, self::KEY_TransformDependentElementsToUseLiveId);
-		$elementsToBeVersionized = $dependency->getElements();
+		$elementsToBeVersioned = $dependency->getElements();
 		// Use the uid of the live record instead of the workspace record:
 		if ($transformDependentElementsToUseLiveId) {
-			$elementsToBeVersionized = $this->transformDependentElementsToUseLiveId($elementsToBeVersionized);
+			$elementsToBeVersioned = $this->getElementEntityProcessor()->transformDependentElementsToUseLiveId($elementsToBeVersioned);
 		}
 		$outerMostParents = $dependency->getOuterMostParents();
-		/** @var $outerMostParent \TYPO3\CMS\Version\Dependency\ElementEntity */
+		/** @var $outerMostParent ElementEntity */
 		foreach ($outerMostParents as $outerMostParent) {
 			$dependentElements = $dependency->getNestedElements($outerMostParent);
 			if ($transformDependentElementsToUseLiveId) {
-				$dependentElements = $this->transformDependentElementsToUseLiveId($dependentElements);
+				$dependentElements = $this->getElementEntityProcessor()->transformDependentElementsToUseLiveId($dependentElements);
 			}
 			// Gets the difference (intersection) between elements that were submitted by the user
 			// and the evaluation of all dependent records that should be used for this action instead:
-			$intersectingElements = array_intersect_key($dependentElements, $elementsToBeVersionized);
+			$intersectingElements = array_intersect_key($dependentElements, $elementsToBeVersioned);
 			if (count($intersectingElements) > 0) {
 				// If at least one element intersects but not all, throw away all elements of the depdendent structure:
 				if (count($intersectingElements) !== count($dependentElements) && $this->workspacesConsiderReferences === FALSE) {
@@ -509,7 +531,7 @@ class CommandMap {
 	 * @return void
 	 */
 	protected function purgeWithErrorMessage(array $elements, $scope) {
-		/** @var $element \TYPO3\CMS\Version\Dependency\ElementEntity */
+		/** @var $element ElementEntity */
 		foreach ($elements as $element) {
 			$table = $element->getTable();
 			$id = $this->processCallback($this->getScopeData($scope, self::KEY_PurgeWithErrorMessageGetIdCallback), array($element));
@@ -525,18 +547,18 @@ class CommandMap {
 	/**
 	 * Updates the command map accordant to valid structures and takes care of the correct order.
 	 *
-	 * @param \TYPO3\CMS\Version\Dependency\ElementEntity $intersectingElement
+	 * @param ElementEntity $intersectingElement
 	 * @param array $elements
 	 * @param string $scope
 	 * @return void
 	 */
-	protected function update(\TYPO3\CMS\Version\Dependency\ElementEntity $intersectingElement, array $elements, $scope) {
+	protected function update(ElementEntity $intersectingElement, array $elements, $scope) {
 		$orderedCommandMap = array();
 		$commonProperties = array();
 		if ($this->getScopeData($scope, self::KEY_GetCommonPropertiesCallback)) {
 			$commonProperties = $this->processCallback($this->getScopeData($scope, self::KEY_GetCommonPropertiesCallback), array($intersectingElement));
 		}
-		/** @var $element \TYPO3\CMS\Version\Dependency\ElementEntity */
+		/** @var $element ElementEntity */
 		foreach ($elements as $element) {
 			$table = $element->getTable();
 			$id = $this->processCallback($this->getScopeData($scope, self::KEY_UpdateGetIdCallback), array($element));
@@ -593,30 +615,30 @@ class CommandMap {
 	/**
 	 * Callback to get the liveId of an dependent element.
 	 *
-	 * @param \TYPO3\CMS\Version\Dependency\ElementEntity $element
+	 * @param ElementEntity $element
 	 * @return integer
 	 */
-	protected function getElementLiveIdCallback(\TYPO3\CMS\Version\Dependency\ElementEntity $element) {
+	protected function getElementLiveIdCallback(ElementEntity $element) {
 		return $element->getDataValue('liveId');
 	}
 
 	/**
 	 * Callback to get the real id of an dependent element.
 	 *
-	 * @param \TYPO3\CMS\Version\Dependency\ElementEntity $element
+	 * @param ElementEntity $element
 	 * @return integer
 	 */
-	protected function getElementIdCallback(\TYPO3\CMS\Version\Dependency\ElementEntity $element) {
+	protected function getElementIdCallback(ElementEntity $element) {
 		return $element->getId();
 	}
 
 	/**
 	 * Callback to get the specific properties of a dependent element for swapping/publishing.
 	 *
-	 * @param \TYPO3\CMS\Version\Dependency\ElementEntity $element
+	 * @param ElementEntity $element
 	 * @return array
 	 */
-	protected function getElementSwapPropertiesCallback(\TYPO3\CMS\Version\Dependency\ElementEntity $element) {
+	protected function getElementSwapPropertiesCallback(ElementEntity $element) {
 		return array(
 			'swapWith' => $element->getId()
 		);
@@ -625,10 +647,10 @@ class CommandMap {
 	/**
 	 * Callback to get common properties of dependent elements for clearing.
 	 *
-	 * @param \TYPO3\CMS\Version\Dependency\ElementEntity $element
+	 * @param ElementEntity $element
 	 * @return array
 	 */
-	protected function getCommonClearPropertiesCallback(\TYPO3\CMS\Version\Dependency\ElementEntity $element) {
+	protected function getCommonClearPropertiesCallback(ElementEntity $element) {
 		$commonSwapProperties = array();
 		$elementProperties = $element->getDataValue('properties');
 		if (isset($elementProperties['action'])) {
@@ -640,10 +662,10 @@ class CommandMap {
 	/**
 	 * Callback to get common properties of dependent elements for swapping/publishing.
 	 *
-	 * @param \TYPO3\CMS\Version\Dependency\ElementEntity $element
+	 * @param ElementEntity $element
 	 * @return array
 	 */
-	protected function getCommonSwapPropertiesCallback(\TYPO3\CMS\Version\Dependency\ElementEntity $element) {
+	protected function getCommonSwapPropertiesCallback(ElementEntity $element) {
 		$commonSwapProperties = array();
 		$elementProperties = $element->getDataValue('properties');
 		if (isset($elementProperties['action'])) {
@@ -665,20 +687,20 @@ class CommandMap {
 	/**
 	 * Callback to get the specific properties of a dependent element for staging.
 	 *
-	 * @param \TYPO3\CMS\Version\Dependency\ElementEntity $element
+	 * @param ElementEntity $element
 	 * @return array
 	 */
-	protected function getElementSetStagePropertiesCallback(\TYPO3\CMS\Version\Dependency\ElementEntity $element) {
+	protected function getElementSetStagePropertiesCallback(ElementEntity $element) {
 		return $this->getCommonSetStagePropertiesCallback($element);
 	}
 
 	/**
 	 * Callback to get common properties of dependent elements for staging.
 	 *
-	 * @param \TYPO3\CMS\Version\Dependency\ElementEntity $element
+	 * @param ElementEntity $element
 	 * @return array
 	 */
-	protected function getCommonSetStagePropertiesCallback(\TYPO3\CMS\Version\Dependency\ElementEntity $element) {
+	protected function getCommonSetStagePropertiesCallback(ElementEntity $element) {
 		$commonSetStageProperties = array();
 		$elementProperties = $element->getDataValue('properties');
 		if (isset($elementProperties['stageId'])) {
@@ -704,164 +726,19 @@ class CommandMap {
 	 */
 	protected function getDependencyUtility($scope) {
 		/** @var $dependency \TYPO3\CMS\Version\Dependency\DependencyResolver */
-		$dependency = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\Dependency\\DependencyResolver');
+		$dependency = GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\Dependency\\DependencyResolver');
 		$dependency->setWorkspace($this->getWorkspace());
 		$dependency->setOuterMostParentsRequireReferences(TRUE);
 		if ($this->getScopeData($scope, self::KEY_ElementConstructCallback)) {
-			$dependency->setEventCallback(\TYPO3\CMS\Version\Dependency\ElementEntity::EVENT_Construct, $this->getDependencyCallback($this->getScopeData($scope, self::KEY_ElementConstructCallback)));
+			$dependency->setEventCallback(ElementEntity::EVENT_Construct, $this->getDependencyCallback($this->getScopeData($scope, self::KEY_ElementConstructCallback)));
 		}
 		if ($this->getScopeData($scope, self::KEY_ElementCreateChildReferenceCallback)) {
-			$dependency->setEventCallback(\TYPO3\CMS\Version\Dependency\ElementEntity::EVENT_CreateChildReference, $this->getDependencyCallback($this->getScopeData($scope, self::KEY_ElementCreateChildReferenceCallback)));
+			$dependency->setEventCallback(ElementEntity::EVENT_CreateChildReference, $this->getDependencyCallback($this->getScopeData($scope, self::KEY_ElementCreateChildReferenceCallback)));
 		}
 		if ($this->getScopeData($scope, self::KEY_ElementCreateParentReferenceCallback)) {
-			$dependency->setEventCallback(\TYPO3\CMS\Version\Dependency\ElementEntity::EVENT_CreateParentReference, $this->getDependencyCallback($this->getScopeData($scope, self::KEY_ElementCreateParentReferenceCallback)));
+			$dependency->setEventCallback(ElementEntity::EVENT_CreateParentReference, $this->getDependencyCallback($this->getScopeData($scope, self::KEY_ElementCreateParentReferenceCallback)));
 		}
 		return $dependency;
-	}
-
-	/**
-	 * Callback to determine whether a new child reference shall be considered in the dependency resolver utility.
-	 *
-	 * @param array $callerArguments
-	 * @param array $targetArgument
-	 * @param \TYPO3\CMS\Version\Dependency\ElementEntity $caller
-	 * @param string $eventName
-	 * @return string Skip response (if required)
-	 */
-	public function createNewDependentElementChildReferenceCallback(array $callerArguments, array $targetArgument, \TYPO3\CMS\Version\Dependency\ElementEntity $caller, $eventName) {
-		$fieldConfiguration = BackendUtility::getTcaFieldConfiguration($caller->getTable(), $callerArguments['field']);
-		if (!$fieldConfiguration || !\TYPO3\CMS\Core\Utility\GeneralUtility::inList('field,list', $this->getTceMain()->getInlineFieldType($fieldConfiguration))) {
-			return \TYPO3\CMS\Version\Dependency\ElementEntity::RESPONSE_Skip;
-		}
-	}
-
-	/**
-	 * Callback to determine whether a new parent reference shall be considered in the dependency resolver utility.
-	 *
-	 * @param array $callerArguments
-	 * @param array $targetArgument
-	 * @param \TYPO3\CMS\Version\Dependency\ElementEntity $caller
-	 * @param string $eventName
-	 * @return string Skip response (if required)
-	 */
-	public function createNewDependentElementParentReferenceCallback(array $callerArguments, array $targetArgument, \TYPO3\CMS\Version\Dependency\ElementEntity $caller, $eventName) {
-		$fieldConfiguration = BackendUtility::getTcaFieldConfiguration($callerArguments['table'], $callerArguments['field']);
-		if (!$fieldConfiguration || !\TYPO3\CMS\Core\Utility\GeneralUtility::inList('field,list', $this->getTceMain()->getInlineFieldType($fieldConfiguration))) {
-			return \TYPO3\CMS\Version\Dependency\ElementEntity::RESPONSE_Skip;
-		}
-	}
-
-	/**
-	 * Callback to determine whether a new child reference shall be considered in the dependency resolver utility.
-	 * Only elements that are a delete placeholder are considered.
-	 *
-	 * @param array $callerArguments
-	 * @param array $targetArgument
-	 * @param \TYPO3\CMS\Version\Dependency\ElementEntity $caller
-	 * @param string $eventName
-	 * @return string Skip response (if required)
-	 */
-	public function createClearDependentElementChildReferenceCallback(array $callerArguments, array $targetArgument, \TYPO3\CMS\Version\Dependency\ElementEntity $caller, $eventName) {
-		$response = $this->createNewDependentElementChildReferenceCallback($callerArguments, $targetArgument, $caller, $eventName);
-		if (empty($response)) {
-			$record = BackendUtility::getRecord($callerArguments['table'], $callerArguments['id']);
-			if (!VersionState::cast($record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
-				$response = \TYPO3\CMS\Version\Dependency\ElementEntity::RESPONSE_Skip;
-			}
-		}
-		return $response;
-	}
-
-	/**
-	 * Callback to determine whether a new parent reference shall be considered in the dependency resolver utility.
-	 * Only elements that are a delete placeholder are considered.
-	 *
-	 * @param array $callerArguments
-	 * @param array $targetArgument
-	 * @param \TYPO3\CMS\Version\Dependency\ElementEntity $caller
-	 * @param string $eventName
-	 * @return string Skip response (if required)
-	 */
-	public function createClearDependentElementParentReferenceCallback(array $callerArguments, array $targetArgument, \TYPO3\CMS\Version\Dependency\ElementEntity $caller, $eventName) {
-		$response = $this->createNewDependentElementParentReferenceCallback($callerArguments, $targetArgument, $caller, $eventName);
-		if (empty($response)) {
-			$record = BackendUtility::getRecord($callerArguments['table'], $callerArguments['id']);
-			if (!VersionState::cast($record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
-				$response = \TYPO3\CMS\Version\Dependency\ElementEntity::RESPONSE_Skip;
-			}
-		}
-		return $response;
-	}
-
-	/**
-	 * Callback to add additional data to new elements created in the dependency resolver utility.
-	 *
-	 * @throws \RuntimeException
-	 * @param \TYPO3\CMS\Version\Dependency\ElementEntity $caller
-	 * @param array $callerArguments
-	 * @param array $targetArgument
-	 * @return void
-	 */
-	public function createNewDependentElementCallback(array $callerArguments, array $targetArgument, \TYPO3\CMS\Version\Dependency\ElementEntity $caller) {
-		$versionRecord = $caller->getRecord();
-		// If version record does not exist, it probably has been deleted (cleared from workspace), this means,
-		// that the reference index still has an old reference pointer, which is "fine" for deleted parents
-		if (empty($versionRecord)) {
-			throw new \RuntimeException(
-				'Element "' . $caller::getIdentifier($caller->getTable(), $caller->getId()) . '" does not exist',
-				1393960943
-			);
-		}
-		// If version is on live workspace, but the pid is negative, mark the record as invalid.
-		// This happens if a change has been discarded (clearWSID) - it will be removed from the command map.
-		if ((int)$versionRecord['t3ver_wsid'] === 0 && (int)$versionRecord['pid'] === -1) {
-			$caller->setDataValue('liveId', $caller->getId());
-			$caller->setInvalid(TRUE);
-			return;
-		}
-		if ($caller->hasDataValue('liveId') === FALSE) {
-			// Set the original uid from the version record
-			if (!empty($versionRecord['t3ver_oid']) && (int)$versionRecord['pid'] === -1 && (int)$versionRecord['t3ver_wsid'] === $this->getWorkspace()) {
-				$caller->setDataValue('liveId', $versionRecord['t3ver_oid']);
-			// The current version record is actually a live record or an accordant placeholder for live
-			} elseif ((int)$versionRecord['t3ver_wsid'] === 0 || (int)$versionRecord['pid'] !== -1) {
-				$caller->setDataValue('liveId', $caller->getId());
-				$versionRecord = BackendUtility::getWorkspaceVersionOfRecord(
-					$this->getWorkspace(),
-					$caller->getTable(),
-					$caller->getId(),
-					'uid,t3ver_state'
-				);
-				// Set version uid to caller, most likely it's a delete placeholder
-				// for a child record that is not recognized in the reference index
-				if (!empty($versionRecord['uid'])) {
-					$caller->setId($versionRecord['uid']);
-				// If no version could be determined, mark record as invalid
-				// (thus, it will be removed from the command map)
-				} else {
-					$caller->setInvalid(TRUE);
-				}
-			// In case of an unexpected record state, mark the record as invalid
-			} else {
-				$caller->setInvalid(TRUE);
-			}
-		}
-	}
-
-	/**
-	 * Transforms dependent elements to use the liveId as array key.
-	 *
-	 * @param $elements array<\TYPO3\CMS\Version\Dependency\ElementEntity>
-	 * @return array
-	 */
-	protected function transformDependentElementsToUseLiveId(array $elements) {
-		$transformedElements = array();
-		/** @var $element \TYPO3\CMS\Version\Dependency\ElementEntity */
-		foreach ($elements as $element) {
-			$elementName = \TYPO3\CMS\Version\Dependency\ElementEntity::getIdentifier($element->getTable(), $element->getDataValue('liveId'));
-			$transformedElements[$elementName] = $element;
-		}
-		return $transformedElements;
 	}
 
 	/**
@@ -944,7 +821,7 @@ class CommandMap {
 	/**
 	 * Gets data for a particular scope.
 	 *
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 * @param string $scope Scope identifier
 	 * @param string $key
 	 * @return string
@@ -964,7 +841,10 @@ class CommandMap {
 	 * @return \TYPO3\CMS\Version\Dependency\EventCallback
 	 */
 	protected function getDependencyCallback($method, array $targetArguments = array()) {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\Dependency\\EventCallback', $this, $method, $targetArguments);
+		return GeneralUtility::makeInstance(
+			'TYPO3\\CMS\\Version\\Dependency\\EventCallback',
+			$this->getElementEntityProcessor(), $method, $targetArguments
+		);
 	}
 
 	/**
