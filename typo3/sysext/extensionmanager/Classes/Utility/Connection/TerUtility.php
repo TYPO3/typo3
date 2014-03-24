@@ -60,7 +60,7 @@ class TerUtility {
 		if ($t3x === FALSE) {
 			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(sprintf('The T3X file "%s" could not be fetched. Possible reasons: network problems, allow_url_fopen is off,' . ' cURL is not enabled in Install Tool.', $mirrorUrl), 1334426097);
 		}
-		if ($md5 == $expectedMd5) {
+		if ($md5 === $expectedMd5) {
 			// Fetch and return:
 			$extensionData = $this->decodeExchangeData($t3x);
 		} else {
@@ -121,7 +121,7 @@ class TerUtility {
 				throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Decoding Error: No decompressor available for compressed content. gzcompress()/gzuncompress() ' . 'functions are not available!', 1344761814);
 			}
 		}
-		if (md5($parts[2]) == $parts[0]) {
+		if (md5($parts[2]) === $parts[0]) {
 			$output = unserialize($parts[2]);
 			if (!is_array($output)) {
 				throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Error: Content could not be unserialized to an array. Strange (since MD5 hashes match!)', 1344761938);

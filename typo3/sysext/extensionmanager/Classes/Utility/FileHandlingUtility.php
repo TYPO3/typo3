@@ -58,6 +58,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		$extensionDir = $this->makeAndClearExtensionDir($extensionData['extKey'], $pathType);
 		$files = $this->extractFilesArrayFromExtensionData($extensionData);
 		$directories = $this->extractDirectoriesFromExtensionData($files);
+		$files = array_diff_key($files, array_flip($directories));
 		$this->createDirectoriesForExtensionFiles($directories, $extensionDir);
 		$this->writeExtensionFiles($files, $extensionDir);
 		$this->writeEmConfToFile($extensionData, $extensionDir, $extension);
@@ -73,9 +74,11 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		$directories = array();
 		foreach ($files as $filePath => $file) {
 			preg_match('/(.*)\\//', $filePath, $matches);
-			$directories[] = $matches[0];
+			if (!empty($matches[0])) {
+				$directories[] = $matches[0];
+			}
 		}
-		return $directories;
+		return array_unique($directories);
 	}
 
 	/**
