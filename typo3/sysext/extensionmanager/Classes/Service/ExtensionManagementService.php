@@ -70,12 +70,6 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $downloadUtility;
 
 	/**
-	 * @var \TYPO3\CMS\Core\Package\PackageManager
-	 * @inject
-	 */
-	protected $packageManager;
-
-	/**
 	 * @param string $extensionKey
 	 * @return void
 	 */
@@ -274,7 +268,9 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	public function downloadMainExtension(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension) {
-		if (!$this->packageManager->isPackageAvailable($extension->getExtensionKey())) {
+		// The extension object has a uid if the extension is not present in the system
+		// or an update of a present extension is triggered.
+		if ($extension->getUid()) {
 			$this->downloadUtility->download($extension);
 		}
 	}
