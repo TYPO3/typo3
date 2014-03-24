@@ -142,8 +142,21 @@ class Typo3DbQueryParser {
 		} elseif ($comparison instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ComparisonInterface) {
 			$parameterIdentifier = $this->normalizeParameterIdentifier($qomPath . $comparison->getOperand1()->getPropertyName());
 			$comparison->setParameterIdentifier($parameterIdentifier);
-			$operators[] = $comparison->getOperator();
-			$parameters[$parameterIdentifier] = $comparison->getOperand2();
+			$operator = $comparison->getOperator();
+			$operand2 = $comparison->getOperand2();
+			if ($operator === \TYPO3\CMS\Extbase\Persistence\QueryInterface::OPERATOR_IN) {
+				$items = array();
+				foreach ($operand2 as $value) {
+					$value = $this->getPlainValue($value);
+					if ($value !== NULL) {
+						$items[] = $value;
+					}
+				}
+				$parameters[$parameterIdentifier] = $items;
+			} else {
+				$parameters[$parameterIdentifier] = $operand2;
+			}
+			$operators[] = $operator;
 		} elseif (!is_object($comparison)) {
 			$parameters = array(array(), $comparison);
 			return array($parameters, $operators);
