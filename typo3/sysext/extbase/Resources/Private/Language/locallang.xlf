@@ -43,7 +43,7 @@
 				<source>The given subject did not match the pattern.</source>
 			</trans-unit>
 			<trans-unit id="validator.regularexpression.error" xml:space="preserve">
-				<source>The reguar expression '%s' contained an error.</source>
+				<source>The regular expression '%s' contained an error.</source>
 			</trans-unit>
 			<trans-unit id="validator.numberrange.notvalid" xml:space="preserve">
 				<source>The given subject was not a valid number.</source>
@@ -61,7 +61,7 @@
 				<source>The given subject was not a valid number.</source>
 			</trans-unit>
 			<trans-unit id="validator.integer.notvalid" xml:space="preserve">
-				<source>The given subject was not a valid integer</source>
+				<source>The given subject was not a valid integer.</source>
 			</trans-unit>
 		</body>
 	</file>
