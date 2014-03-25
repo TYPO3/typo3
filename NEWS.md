@@ -8,7 +8,7 @@ This document provides information about what is new in the 6.2 release
 of TYPO3. An up-to-date version of this document also containing links to
 further in depth information can be found here:
 
-http://wiki.typo3.org/TYPO3_6.2
+http://wiki.typo3.org/TYPO3_CMS_6.2
 
 System requirement changes
 --------------------------
@@ -25,8 +25,9 @@ Changes and Improvements
 
 ### Removed and moved components
 
-* Removed PHP constant PATH_t3lib
+* Removed directory t3lib and PHP constant PATH_t3lib
 * Moved ExtJS- & JavaScript files from t3lib to typo3
+
 
 ### General
 
@@ -38,12 +39,26 @@ The session cookies "fe_typo_user" and "be_typo_user" now have set the
 HttpOnly attribute by default.  This will make it harder to steal the cookie
 by XSS attacks.
 
+* Frontend Cookie now only set when needed, not set by default anymore
+
+The cookie "fe_typo_user" set in the frontend by each request, is now only
+being set if the session data is used via $TSFE->fe_user->setKey('ses')
+so it can be used for shopping baskets for non-logged-in users
+out-of-the-box without hacking the default behaviour of setting the
+cookie.
+The previous behaviour always set the "fe_typo_user" cookie, but changed
+the session ID on each request, until it was fixated by a user login.
+The superfluous option "dontSetCookie" is now ineffective as the cookie
+is not set anymore by default.
+
+
 ### Logging
 
 * Logging API PSR-3 compliance
 
 The logger of the Logging API now complies with the PSR-3 standard of the
 PHP Framework Interop Group: http://www.php-fig.org/psr/3/
+
 
 ### Backend
 
@@ -53,7 +68,6 @@ PHP Framework Interop Group: http://www.php-fig.org/psr/3/
 be used multiple times on the same table to add more than one category field.
 The options array (the fourth parameter) now can contain a 'label' to set a
 custom label for each category field.
-
 
 * Ajax API addition
 
@@ -68,6 +82,7 @@ var ajaxUrl = TYPO3.settings.ajaxUrls['TxMyExt::process'];
 
 Registering an Ajax script the "old" way by just adding it to TYPO3_CONF_VARS has been deprecated,
 but no deprecation log is been written and the handler still work in a backwards compatible way.
+
 
 #### CSS Styled Content
 
@@ -106,7 +121,8 @@ to the caching framework and use the API instead of using hooks within TCEmain,
 as the clearing via TCEmain would only be triggered if going through
 the TCEmain calls (not via Extbase e.g.).
 
-* Re-ordered backend menu items
+* Re-ordered menu items in cache toolbar
+
 With grouped caching (see above) items in the menu bar of the TYPO3 Backend
 have been re-arranged and renamed to reflect the impact of the icons.
 
@@ -115,7 +131,7 @@ have been re-arranged and renamed to reflect the impact of the icons.
  "cache_pagesection", which affects links, TypoScript, fully-cached pages and
  cached page elements.
 
- - "Flush all caches" clears all caches inside the groups "all" and "pages"
+ - "Flush general caches" clears all caches inside the groups "all" and "pages"
  as well as additional database tables registered via hooks in TCEmain. However
  the system-related caches are NOT flushed.
 
@@ -170,18 +186,6 @@ The extension works with the same options as before.
 Previously $row['cache_data'] was a serialized array. To avoid double serializing and unserializing,
 from now on $row['cache_data'] is just reconstituted as array when fetching from cache.
 
-* Frontend Cookie now only set when needed, not set by default anymore
-
-The cookie "fe_typo_user" set in the frontend by each request, is now only
-being set if the session data is used via $TSFE->fe_user->setKey('ses')
-so it can be used for shopping baskets for non-logged-in users
-out-of-the-box without hacking the default behaviour of setting the
-cookie.
-The previous behaviour always set the "fe_typo_user" cookie, but changed
-the session ID on each request, until it was fixated by a user login.
-The superfluous option "dontSetCookie" is now ineffective as the cookie
-is not set anymore by default.
-
 * No backward compatibility for classes inheriting localPageTree or localFolderTree
 
 Backwards compatibility for extensions that inherit from one of the classes
@@ -193,6 +197,7 @@ is dropped.
 
 * Content-length header (TypoScript setting config.enableContentLengthHeader)
   is now enabled by default
+
 
 ### Extbase
 
@@ -206,6 +211,7 @@ is validated, but all objects.
 
 In order to make a property required you now need to add the NotEmptyValidator
 to your property. The return value of validators is now optional.
+
 
 ### Fluid
 
@@ -230,6 +236,7 @@ Example:
 The fluid date view helper now uses $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']
 as fallback format instead of hardcoded Y-m-d if no explicit format is given as
 argument. This may change the output of dates from Y-m-d to d-m-y.
+
 
 ### System categories
 
