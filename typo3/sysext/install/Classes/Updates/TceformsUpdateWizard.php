@@ -332,12 +332,8 @@ class TceformsUpdateWizard extends AbstractUpdate {
 					);
 
 					$format = 'File \'%s\' does not exist. Referencing field: %s.%d.%s. The reference was not migrated.';
-					$message = GeneralUtility::makeInstance('\TYPO3\CMS\Core\Messaging\FlashMessage',
-						sprintf($format, $fieldConfiguration['sourcePath'] . $item, $table, $row['uid'], $fieldname),
-						'', \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
-					);
-					/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $message */
-					$customMessages .= '<br />' . $message->render();
+					$message = sprintf($format, $fieldConfiguration['sourcePath'] . $item, $table, $row['uid'], $fieldname);
+					$customMessages .= PHP_EOL . $message;
 
 					continue;
 				}

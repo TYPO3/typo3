@@ -158,12 +158,8 @@ class RteMagicImagesUpdateWizard extends AbstractUpdate {
 					$this->logger->notice('File ' . $sourceFileName . ' does not exist. Reference was not migrated.', array());
 
 					$format = 'File \'%s\' does not exist. Referencing field: %s.%d.%s. The reference was not migrated.';
-					$message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Messaging\FlashMessage',
-						sprintf($format, $sourceFileName, $refRecord['tablename'], $refRecord['recuid'], $refRecord['field']),
-						'', \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
-					);
-					/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $message */
-					$customMessages .= '<br />' . $message->render();
+					$message = sprintf($format, $sourceFileName, $refRecord['tablename'], $refRecord['recuid'], $refRecord['field']);
+					$customMessages .= PHP_EOL . $message;
 
 					continue;
 				}
