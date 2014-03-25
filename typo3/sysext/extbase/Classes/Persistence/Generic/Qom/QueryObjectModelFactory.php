@@ -158,7 +158,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\LowerCaseInterface the operand; non-null
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException if the operation otherwise fails
 	 */
-	public function lowerCase(DynamicOperandInterface $operand) {
+	public function lowerCase(PropertyValueInterface $operand) {
 		return $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\LowerCase', $operand);
 	}
 
@@ -169,7 +169,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\UpperCaseInterface the operand; non-null
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException if the operation otherwise fails
 	 */
-	public function upperCase(DynamicOperandInterface $operand) {
+	public function upperCase(PropertyValueInterface $operand) {
 		return $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\UpperCase', $operand);
 	}
 

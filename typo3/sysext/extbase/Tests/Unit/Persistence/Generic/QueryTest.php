@@ -164,7 +164,7 @@ class QueryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		/** @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject $objectManager */
 		$objectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		/** @var \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface $dynamicOperand */
-		$dynamicOperand = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\DynamicOperandInterface');
+		$dynamicOperand = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\PropertyValueInterface');
 		$objectManager->expects($this->any())->method('get')->will($this->returnValue($dynamicOperand));
 		/** @var $qomFactory \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory */
 		$qomFactory = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\QueryObjectModelFactory', array('comparison'));
