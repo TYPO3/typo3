@@ -29,6 +29,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
  ***************************************************************/
 
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
+use TYPO3\CMS\Extbase\Persistence\ObjectMonitoringInterface;
 
 /**
  * A persistence backend. This backend maps objects to the relational model of the storage backend.
@@ -361,7 +362,8 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 						$queue[] = $containedObject;
 					}
 				}
-			} elseif ($propertyValue instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface) {
+			} elseif ($propertyValue instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface
+				&& $object instanceof ObjectMonitoringInterface) {
 				if ($object->_isDirty($propertyName)) {
 					if ($propertyValue->_isNew()) {
 						$this->insertObject($propertyValue, $object, $propertyName);
