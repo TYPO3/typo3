@@ -343,12 +343,6 @@ class FormEngine {
 	 */
 	public $edit_docModuleUpload = FALSE;
 
-	// If set, the forms will be rendered a little wider, more precisely with a factor of $this->form_largeComp.
-	/**
-	 * @todo Define visibility
-	 */
-	public $docLarge = 0;
-
 	// Loaded with info about the browser when class is instantiated.
 	/**
 	 * @todo Define visibility
@@ -656,7 +650,6 @@ class FormEngine {
 		$this->prependFormFieldNames = 'data';
 		$this->formName = 'editform';
 		$this->setNewBEDesign();
-		$this->docLarge = $GLOBALS['BE_USER']->uc['edit_wideDocument'] ? 1 : 0;
 		$this->edit_showFieldHelp = $GLOBALS['BE_USER']->uc['edit_showFieldHelp'];
 		$this->edit_docModuleUpload = (bool)$GLOBALS['BE_USER']->uc['edit_docModuleUpload'];
 		$this->inline->init($this);
@@ -2708,9 +2701,8 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 					}
 				}
 			}
-			if ($this->docLarge) {
-				$cols = round($cols * $this->form_largeComp);
-			}
+
+			$cols = round($cols * $this->form_largeComp);
 			$width = ceil($cols * $this->form_rowsToStylewidth);
 			// Hardcoded: 12 is the height of the font
 			$height = $rows * 12;
@@ -2721,9 +2713,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 				$itemValue = htmlspecialchars($itemValue);
 			}
 			$cols = $config['cols'] ? $config['cols'] : ($config['size'] ? $config['size'] : $this->maxInputWidth);
-			if ($this->docLarge) {
-				$cols = round($cols * $this->form_largeComp);
-			}
+			$cols = round($cols * $this->form_largeComp);
 			$width = ceil($cols * $this->form_rowsToStylewidth);
 			// Overflow:auto crashes mozilla here. Title tag is useful when text is longer than the div box (overflow:hidden).
 			$item = '
@@ -4618,9 +4608,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 */
 	protected function formWidthAsArray($size = 48, $textarea = FALSE) {
 		$fieldWidthAndStyle = array('style' => '', 'class' => '', 'width' => '');
-		if ($this->docLarge) {
-			$size = round($size * $this->form_largeComp);
-		}
+		$size = round($size * $this->form_largeComp);
 
 		// Setting width by style-attribute. 'cols' MUST be avoided with NN6+
 		$widthInPixels = ceil($size * $this->form_rowsToStylewidth);
