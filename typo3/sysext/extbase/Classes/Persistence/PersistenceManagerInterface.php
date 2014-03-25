@@ -93,7 +93,8 @@ interface PersistenceManagerInterface {
 	 *
 	 * @param QueryInterface $query
 	 * @return integer
-	 * @deprecated since Extbase 6.0, will be removed in Extbase 7.0
+	 * @deprecated since Extbase 6.0, will be removed in Extbase 7.0. It is deprecated only in the interface to be more
+	 * in sync with Flow in future and will stay in Generic Persistence.
 	 * @api
 	 */
 	public function getObjectCountByQuery(QueryInterface $query);
@@ -103,7 +104,8 @@ interface PersistenceManagerInterface {
 	 *
 	 * @param QueryInterface $query
 	 * @return array
-	 * @deprecated since Extbase 6.0, will be removed in Extbase 7.0
+	 * @deprecated since Extbase 6.0, will be removed in Extbase 7.0. It is deprecated only in the interface to be more
+	 * in sync with Flow in future and will stay in Generic Persistence.
 	 * @api
 	 */
 	public function getObjectDataByQuery(QueryInterface $query);
@@ -112,7 +114,8 @@ interface PersistenceManagerInterface {
 	 * Registers a repository
 	 *
 	 * @param string $className The class name of the repository to be reigistered
-	 * @deprecated since Extbase 6.0, will be removed in Extbase 7.0
+	 * @deprecated since Extbase 6.0, will be removed in Extbase 7.0. It is deprecated only in the interface to be more
+	 * in sync with Flow in future and will stay in Generic Persistence.
 	 * @return void
 	 */
 	public function registerRepositoryClassName($className);

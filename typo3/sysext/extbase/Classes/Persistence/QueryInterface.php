@@ -135,7 +135,8 @@ interface QueryInterface {
 	 * Gets the node-tuple source for this query.
 	 *
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface the node-tuple source; non-NULL
-	 * @deprecated since Extbase 6.0, will be removed in Extbase 7.0
+	 * @deprecated since Extbase 6.0, will be removed in Extbase 7.0. It is deprecated only in the interface to be more
+	 * in sync with Flow in future and will stay in Generic Persistence.
 	 */
 	public function getSource();
 
@@ -325,7 +326,6 @@ interface QueryInterface {
 	 * Returns the type this query cares for.
 	 *
 	 * @return string
-	 * @deprecated since Extbase 6.0, will be removed in Extbase 7.0
 	 * @api
 	 */
 	public function getType();
