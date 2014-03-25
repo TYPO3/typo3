@@ -419,9 +419,10 @@ $(document).ready(function() {
 			$(e.target).closest('.t3-install-form-submit').remove();
 		}));
 	}
-
-	TYPO3.Install.Status.getFolderStatus();
-	TYPO3.Install.Status.getEnvironmentStatus();
+	if ($('#t3-install-left').length > 0) {
+		TYPO3.Install.Status.getFolderStatus();
+		TYPO3.Install.Status.getEnvironmentStatus();
+	}
 });
 
 function handleButtonScrolling() {
