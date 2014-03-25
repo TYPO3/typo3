@@ -2190,7 +2190,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @return void
 	 */
 	protected function emitPreFolderAddSignal(Folder $targetFolder, $name) {
-		$this->getSignalSlotDispatcher()->dispatch('ResourceStorage', self::SIGNAL_PreFolderAdd, array($targetFolder, $name));
+		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PreFolderAdd, array($targetFolder, $name));
 	}
 
 	/**
@@ -2200,7 +2200,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @return void
 	 */
 	protected function emitPostFolderAddSignal(Folder $folder) {
-		$this->getSignalSlotDispatcher()->dispatch('ResourceStorage', self::SIGNAL_PostFolderAdd, array($folder));
+		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PostFolderAdd, array($folder));
 	}
 
 	/**
@@ -2212,7 +2212,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @return void
 	 */
 	protected function emitPreFolderCopySignal(Folder $folder, Folder $targetFolder, $newName) {
-		$this->getSignalSlotDispatcher()->dispatch('ResourceStorage', self::SIGNAL_PreFolderCopy, array($folder, $targetFolder));
+		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PreFolderCopy, array($folder, $targetFolder, $newName));
 	}
 
 	/**
@@ -2224,7 +2224,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @return void
 	 */
 	protected function emitPostFolderCopySignal(Folder $folder, Folder $targetFolder, $newName) {
-		$this->getSignalSlotDispatcher()->dispatch('ResourceStorage', self::SIGNAL_PostFolderCopy, array($folder, $targetFolder));
+		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PostFolderCopy, array($folder, $targetFolder, $newName));
 	}
 
 	/**
@@ -2236,7 +2236,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @return void
 	 */
 	protected function emitPreFolderMoveSignal(Folder $folder, Folder $targetFolder, $newName) {
-		$this->getSignalSlotDispatcher()->dispatch('ResourceStorage', self::SIGNAL_PreFolderMove, array($folder, $targetFolder));
+		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PreFolderMove, array($folder, $targetFolder, $newName));
 	}
 
 	/**
@@ -2248,7 +2248,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @return void
 	 */
 	protected function emitPostFolderMoveSignal(Folder $folder, Folder $targetFolder, $newName) {
-		$this->getSignalSlotDispatcher()->dispatch('ResourceStorage', self::SIGNAL_PostFolderMove, array($folder, $targetFolder));
+		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PostFolderMove, array($folder, $targetFolder, $newName));
 	}
 
 	/**
@@ -2259,7 +2259,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @return void
 	 */
 	protected function emitPreFolderRenameSignal(Folder $folder, $newName) {
-		$this->getSignalSlotDispatcher()->dispatch('ResourceStorage', self::SIGNAL_PreFolderRename, array($folder, $newName));
+		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PreFolderRename, array($folder, $newName));
 	}
 
 	/**
@@ -2270,7 +2270,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @return void
 	 */
 	protected function emitPostFolderRenameSignal(Folder $folder, $newName) {
-		$this->getSignalSlotDispatcher()->dispatch('ResourceStorage', self::SIGNAL_PostFolderRename, array($folder, $newName));
+		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PostFolderRename, array($folder, $newName));
 	}
 
 	/**
@@ -2280,7 +2280,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @return void
 	 */
 	protected function emitPreFolderDeleteSignal(Folder $folder) {
-		$this->getSignalSlotDispatcher()->dispatch('ResourceStorage', self::SIGNAL_PreFolderDelete, array($folder));
+		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PreFolderDelete, array($folder));
 	}
 
 	/**
@@ -2290,7 +2290,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @return void
 	 */
 	protected function emitPostFolderDeleteSignal(Folder $folder) {
-		$this->getSignalSlotDispatcher()->dispatch('ResourceStorage', self::SIGNAL_PostFolderDelete, array($folder));
+		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PostFolderDelete, array($folder));
 	}
 
 	/**
