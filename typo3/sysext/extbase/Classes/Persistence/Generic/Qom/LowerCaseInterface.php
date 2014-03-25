@@ -36,12 +36,12 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  *
  * If operand evaluates to null, the LowerCase operand also evaluates to null.
  */
-interface LowerCaseInterface extends DynamicOperandInterface {
+interface LowerCaseInterface extends PropertyValueInterface {
 
 	/**
 	 * Gets the operand whose value is converted to a lower-case string.
 	 *
-	 * @return DynamicOperandInterface the operand; non-null
+	 * @return PropertyValueInterface the operand; non-null
 	 */
 	public function getOperand();
 }

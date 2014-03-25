@@ -129,13 +129,13 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Filters node-tuples based on the outcome of a binary operation.
 	 *
-	 * @param DynamicOperandInterface $operand1 the first operand; non-null
+	 * @param PropertyValueInterface $operand1 the first operand; non-null
 	 * @param string $operator the operator; one of QueryObjectModelConstants.JCR_OPERATOR_*
 	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\StaticOperandInterface $operand2 the second operand; non-null
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ComparisonInterface the constraint; non-null
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException if the operation otherwise fails
 	 */
-	public function comparison(DynamicOperandInterface $operand1, $operator, $operand2) {
+	public function comparison(PropertyValueInterface $operand1, $operator, $operand2) {
 		return $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\Comparison', $operand1, $operator, $operand2);
 	}
 
@@ -154,7 +154,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Evaluates to the lower-case string value (or values, if multi-valued) of an operand.
 	 *
-	 * @param DynamicOperandInterface $operand the operand whose value is converted to a lower-case string; non-null
+	 * @param PropertyValueInterface $operand the operand whose value is converted to a lower-case string; non-null
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\LowerCaseInterface the operand; non-null
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException if the operation otherwise fails
 	 */
@@ -165,7 +165,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Evaluates to the upper-case string value (or values, if multi-valued) of an operand.
 	 *
-	 * @param DynamicOperandInterface $operand the operand whose value is converted to a upper-case string; non-null
+	 * @param PropertyValueInterface $operand the operand whose value is converted to a upper-case string; non-null
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\UpperCaseInterface the operand; non-null
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException if the operation otherwise fails
 	 */

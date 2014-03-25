@@ -345,7 +345,7 @@ class Typo3DbQueryParser {
 			if ($hasValue === FALSE) {
 				$sql['where'][] = '1<>1';
 			} else {
-				$this->parseDynamicOperand($comparison, $operator, $source, $sql);
+				$this->parseDynamicOperand($comparison, $source, $sql);
 			}
 		} elseif ($operator === QueryInterface::OPERATOR_CONTAINS) {
 			if ($operand2 === NULL) {
@@ -381,7 +381,7 @@ class Typo3DbQueryParser {
 				}
 			}
 		} else {
-			$this->parseDynamicOperand($comparison, $operator, $source, $sql);
+			$this->parseDynamicOperand($comparison, $source, $sql);
 		}
 	}
 
@@ -389,18 +389,37 @@ class Typo3DbQueryParser {
 	 * Parse a DynamicOperand into SQL and parameter arrays.
 	 *
 	 * @param Qom\ComparisonInterface $comparison
-	 * @param string $operator One of the JCR_OPERATOR_* constants
 	 * @param Qom\SourceInterface $source The source
 	 * @param array &$sql The query parts
-	 * @param string $valueFunction an optional SQL function to apply to the operand value
 	 * @return void
 	 */
-	protected function parseDynamicOperand(Qom\ComparisonInterface $comparison, $operator, Qom\SourceInterface $source, array &$sql, $valueFunction = NULL) {
+	protected function parseDynamicOperand(Qom\ComparisonInterface $comparison, Qom\SourceInterface $source, array &$sql) {
+		$operator = $this->resolveOperator($comparison->getOperator());
 		$operand = $comparison->getOperand1();
+
+		$constraintSQL = $this->parseOperand($operand, $source, $sql) . ' ' . $operator . ' ';
+
+		$parameterIdentifier = $this->normalizeParameterIdentifier($comparison->getParameterIdentifier());
+		if ($operator === 'IN') {
+			$parameterIdentifier = '(' . $parameterIdentifier . ')';
+		}
+		$constraintSQL .= $parameterIdentifier;
+
+		$sql['where'][] = $constraintSQL;
+	}
+
+	/**
+	 * @param Qom\DynamicOperandInterface $operand
+	 * @param Qom\SourceInterface $source The source
+	 * @param array &$sql The query parts
+	 * @return string
+	 * @throws \InvalidArgumentException
+	 */
+	protected function parseOperand(Qom\DynamicOperandInterface $operand, Qom\SourceInterface $source, array &$sql) {
 		if ($operand instanceof Qom\LowerCaseInterface) {
-			$this->parseDynamicOperand($operand->getOperand(), $operator, $source, $sql, 'LOWER');
+			$constraintSQL = 'LOWER(' . $this->parseOperand($operand->getOperand(), $source, $sql) . ')';
 		} elseif ($operand instanceof Qom\UpperCaseInterface) {
-			$this->parseDynamicOperand($operand->getOperand(), $operator, $source, $sql, 'UPPER');
+			$constraintSQL = 'UPPER(' . $this->parseOperand($operand->getOperand(), $source, $sql) . ')';
 		} elseif ($operand instanceof Qom\PropertyValueInterface) {
 			$propertyName = $operand->getPropertyName();
 			$className = '';
@@ -415,22 +434,11 @@ class Typo3DbQueryParser {
 				$tableName = $source->getJoinCondition()->getSelector1Name();
 			}
 			$columnName = $this->dataMapper->convertPropertyNameToColumnName($propertyName, $className);
-			$operator = $this->resolveOperator($operator);
-			$constraintSQL = '';
-			if ($valueFunction === NULL) {
-				$constraintSQL .= (!empty($tableName) ? $tableName . '.' : '') . $columnName . ' ' . $operator . ' ';
-			} else {
-				$constraintSQL .= $valueFunction . '(' . (!empty($tableName) ? $tableName . '.' : '') . $columnName . ') ' . $operator . ' ';
-			}
-
-			if ($operator === 'LIKE' || $operator === 'IN') {
-				$constraintSQL .= '(' . $this->normalizeParameterIdentifier($comparison->getParameterIdentifier()) . ')';
-			} else {
-				$constraintSQL .= $this->normalizeParameterIdentifier($comparison->getParameterIdentifier());
-			}
-
-			$sql['where'][] = $constraintSQL;
+			$constraintSQL = (!empty($tableName) ? $tableName . '.' : '') . $columnName;
+		} else {
+			throw new \InvalidArgumentException('Given operand has invalid type "' . get_class($operand) . '".', 1395710211);
 		}
+		return $constraintSQL;
 	}
 
 	/**

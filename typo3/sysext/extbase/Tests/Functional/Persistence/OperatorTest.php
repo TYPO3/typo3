@@ -25,7 +25,6 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 class OperatorTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 
@@ -83,5 +82,18 @@ class OperatorTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		);
 
 		$this->assertSame(0, $query->count());
+	}
+
+	/**
+	 * @test
+	 */
+	public function equalsCorrectlyHandlesCaseSensivity() {
+		$query = $this->postRepository->createQuery();
+
+		$query->matching(
+			$query->equals('title', 'PoSt1', FALSE)
+		);
+
+		$this->assertSame(2, $query->count());
 	}
 }

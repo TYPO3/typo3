@@ -32,7 +32,7 @@ namespace TYPO3\CMS\Extbase\DomainObject;
  *
  * All Model domain objects need to inherit from either AbstractEntity or AbstractValueObject, as this provides important framework information.
  */
-abstract class AbstractDomainObject implements \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface, \TYPO3\CMS\Extbase\Persistence\ObjectMonitoringInterface {
+abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS\Extbase\Persistence\ObjectMonitoringInterface {
 
 	/**
 	 * @var int The uid of the record. The uid is only unique in the context of the database table.
@@ -291,7 +291,7 @@ abstract class AbstractDomainObject implements \TYPO3\CMS\Extbase\DomainObject\D
 		// In case it is an object and it implements the ObjectMonitoringInterface, we call _isDirty() instead of a simple comparison of objects.
 		// We do this, because if the object itself contains a lazy loaded property, the comparison of the objects might fail even if the object didn't change
 		if (is_object($currentValue)) {
-			if ($currentValue instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface) {
+			if ($currentValue instanceof DomainObjectInterface) {
 				$result = !is_object($previousValue) || get_class($previousValue) !== get_class($currentValue) || $currentValue->getUid() !== $previousValue->getUid();
 			} elseif ($currentValue instanceof \TYPO3\CMS\Extbase\Persistence\ObjectMonitoringInterface) {
 				$result = !is_object($previousValue) || $currentValue->_isDirty() || get_class($previousValue) !== get_class($currentValue);
