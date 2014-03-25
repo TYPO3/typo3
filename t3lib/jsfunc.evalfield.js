@@ -62,7 +62,7 @@ function evalFunc_evalObjValue(FObj,value) {
 	var theEvalType = (FObj.evallist) ? this.split(evallist, ",", index) : false;
 	var newValue=value;
 	while (theEvalType) {
-		if (typeof TBE_EDITOR == 'function' && TBE_EDITOR.customEvalFunctions[theEvalType] && typeof TBE_EDITOR.customEvalFunctions[theEvalType] == 'function') {
+		if (typeof TBE_EDITOR == 'object' && TBE_EDITOR.customEvalFunctions[theEvalType] && typeof TBE_EDITOR.customEvalFunctions[theEvalType] == 'function') {
 			newValue = TBE_EDITOR.customEvalFunctions[theEvalType](newValue);
 		} else {
 			newValue = evalFunc.input(theEvalType, newValue);
