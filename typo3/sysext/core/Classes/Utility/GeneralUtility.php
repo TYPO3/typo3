@@ -3744,10 +3744,11 @@ Connection: close
 				\RecursiveIteratorIterator::SELF_FIRST
 			);
 			foreach ($iterator as $item) {
+				$target = $destination . '/' . $iterator->getSubPathName();
 				if ($item->isDir()) {
-					@mkdir($destination . '/' . $iterator->getSubPathName());
+					static::mkdir($target);
 				} else {
-					@copy($item, $destination . '/' . $iterator->getSubPathName());
+					static::upload_copy_move($item, $target);
 				}
 			}
 		}
