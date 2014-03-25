@@ -229,6 +229,9 @@
 			<trans-unit id="downloadExtension.dependencyType.install" xml:space="preserve">
 				<source>install</source>
 			</trans-unit>
+			<trans-unit id="downloadExtension.updateExtension.error" xml:space="preserve">
+				<source>Error while updating extension</source>
+			</trans-unit>
 			<trans-unit id="extensionList.dependenciesResolveDownloadError.title" xml:space="preserve">
 				<source>Download Error</source>
 			</trans-unit>

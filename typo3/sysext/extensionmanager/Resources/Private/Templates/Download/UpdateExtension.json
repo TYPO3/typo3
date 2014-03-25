@@ -1,2 +1,5 @@
 {namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
-<em:format.jsonEncode additionalAttributes="{extension:extension.extensionKey}" />
+<em:format.jsonEncode additionalAttributes="{extension:extension.extensionKey,
+errorMessage:errorMessage,
+hasErrors:hasErrors
+}" />

@@ -161,11 +161,23 @@ class DownloadController extends \TYPO3\CMS\Extensionmanager\Controller\Abstract
 	 * @return void
 	 */
 	protected function updateExtensionAction() {
+		$hasErrors = FALSE;
+		$errorMessage = '';
+		$result = array();
+
 		$extensionKey = $this->request->getArgument('extension');
 		/** @var $highestTerVersionExtension \TYPO3\CMS\Extensionmanager\Domain\Model\Extension */
 		$highestTerVersionExtension = $this->extensionRepository->findHighestAvailableVersion($extensionKey);
-		$result = $this->managementService->resolveDependenciesAndInstall($highestTerVersionExtension);
-		$this->view->assign('result', $result)->assign('extension', $highestTerVersionExtension);
+		try {
+			$result = $this->managementService->resolveDependenciesAndInstall($highestTerVersionExtension);
+		} catch (\Exception $e) {
+			$hasErrors = TRUE;
+			$errorMessage = $e->getMessage();
+		}
+		$this->view->assign('result', $result)
+			->assign('extension', $highestTerVersionExtension)
+			->assign('hasErrors', $hasErrors)
+			->assign('errorMessage', $errorMessage);
 	}
 
 	/**
