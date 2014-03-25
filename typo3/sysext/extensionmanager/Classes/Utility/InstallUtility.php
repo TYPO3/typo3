@@ -477,7 +477,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $extensionKey
 	 */
 	protected function importInitialFiles($extensionSiteRelPath, $extensionKey) {
-		$importRelFolder = $extensionSiteRelPath . '/Initialisation/Files';
+		$importRelFolder = $extensionSiteRelPath . 'Initialisation/Files';
 		if (!$this->registry->get('extensionDataImport', $importRelFolder)) {
 			$importFolder = PATH_site . $importRelFolder;
 			if (file_exists($importFolder)) {
