@@ -4966,7 +4966,7 @@ if (version == "n3") {
 			$sysDomainData = $runtimeCache->get($entryIdentifier);
 		} else {
 			$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-				'pid, domainName, forced',
+				'uid, pid, domainName, forced',
 				'sys_domain',
 				'redirectTo=\'\' ' . $GLOBALS['TSFE']->sys_page->enableFields('sys_domain'),
 				'',
@@ -4989,6 +4989,7 @@ if (version == "n3") {
 
 				// as we passed all previous checks, we save this domain for the current pid
 				$sysDomainData[$row['pid']] = array(
+					'uid' => $row['uid'],
 					'pid' => $row['pid'],
 					'domainName' => rtrim($row['domainName'], '/'),
 					'forced' => $row['forced'],
