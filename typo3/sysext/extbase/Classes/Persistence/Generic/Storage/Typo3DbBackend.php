@@ -105,6 +105,13 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
 	protected $queryParser;
 
 	/**
+	 * A first level cache for queries during runtime
+	 *
+	 * @var array
+	 */
+	protected $queryRuntimeCache = array();
+
+	/**
 	 * Constructor. takes the database handle from $GLOBALS['TYPO3_DB']
 	 */
 	public function __construct() {
@@ -483,10 +490,10 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
 		list($queryHash, $parameters) = $this->queryParser->preparseQuery($query);
 
 		if ($query->getQuerySettings()->getUseQueryCache()) {
-			$statementParts = $this->queryCache->get($queryHash);
+			$statementParts = $this->getQueryCacheEntry($queryHash);
 			if ($queryHash && !$statementParts) {
 				$statementParts = $this->queryParser->parseQuery($query);
-				$this->queryCache->set($queryHash, $statementParts, array(), 0);
+				$this->setQueryCacheEntry($queryHash, $statementParts);
 			}
 		} else {
 			$statementParts = $this->queryParser->parseQuery($query);
@@ -893,5 +900,30 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
 		foreach ($pageIdsToClear as $pageIdToClear) {
 			$this->cacheService->getPageIdStack()->push($pageIdToClear);
 		}
+	}
+
+	/**
+	 * Finds and returns a variable value from the query cache.
+	 *
+	 * @param string $entryIdentifier Identifier of the cache entry to fetch
+	 * @return mixed The value
+	 */
+	protected function getQueryCacheEntry($entryIdentifier) {
+		if (!isset($this->queryRuntimeCache[$entryIdentifier])) {
+			$this->queryRuntimeCache[$entryIdentifier] = $this->queryCache->get($entryIdentifier);
+		}
+		return $this->queryRuntimeCache[$entryIdentifier];
+	}
+
+	/**
+	 * Saves the value of a PHP variable in the query cache.
+	 *
+	 * @param string $entryIdentifier An identifier used for this cache entry
+	 * @param mixed $variable The query to cache
+	 * @return void
+	 */
+	protected function setQueryCacheEntry($entryIdentifier, $variable) {
+		$this->queryRuntimeCache[$entryIdentifier] = $variable;
+		$this->queryCache->set($entryIdentifier, $variable, array(), 0);
 	}
 }
