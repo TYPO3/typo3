@@ -201,6 +201,56 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	/**
 	 * @test
 	 */
+	public function pageRendererRendersFooterValuesAfterItRenderedHeaderValues() {
+		$subject = new \TYPO3\CMS\Core\Page\PageRenderer();
+		$subject->setCharSet('utf-8');
+		$subject->setLanguage('default');
+
+		$expectedFooterData = '<tag method="footer" name="test" />';
+		$subject->addFooterData($expectedFooterData);
+
+		$expectedHeaderData = '<tag method="header" name="test" />';
+		$subject->addHeaderData($expectedHeaderData);
+
+		$renderedString = $subject->render(\TYPO3\CMS\Core\Page\PageRenderer::PART_HEADER);
+
+		$this->assertContains($expectedHeaderData, $renderedString);
+		$this->assertNotContains($expectedFooterData, $renderedString);
+
+		$renderedString = $subject->render(\TYPO3\CMS\Core\Page\PageRenderer::PART_FOOTER);
+
+		$this->assertContains($expectedFooterData, $renderedString);
+		$this->assertNotContains($expectedHeaderData, $renderedString);
+	}
+
+	/**
+	 * @test
+	 */
+	public function pageRendererResetsStateWhenRenderingAllParts() {
+		$subject = new \TYPO3\CMS\Core\Page\PageRenderer();
+		$subject->setCharSet('utf-8');
+		$subject->setLanguage('default');
+
+		$expectedFooterData = '<tag method="footer" name="test" />';
+		$subject->addFooterData($expectedFooterData);
+
+		$expectedHeaderData = '<tag method="header" name="test" />';
+		$subject->addHeaderData($expectedHeaderData);
+
+		$renderedString = $subject->render();
+
+		$this->assertContains($expectedHeaderData, $renderedString);
+		$this->assertContains($expectedFooterData, $renderedString);
+
+		$renderedString = $subject->render();
+
+		$this->assertNotContains($expectedHeaderData, $renderedString);
+		$this->assertNotContains($expectedFooterData, $renderedString);
+	}
+
+	/**
+	 * @test
+	 */
 	public function isScriptaculousLoadedCompressedIfConfiguredAndClientIsCapable() {
 		$subject = new \TYPO3\CMS\Core\Page\PageRenderer();
 
