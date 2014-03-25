@@ -429,7 +429,7 @@ class Clipboard {
 	 */
 	public function hasElements() {
 		foreach ($this->clipData as $data) {
-			if (is_array($data['el']) && !empty($data['el'])) {
+			if (isset($data['el']) && is_array($data['el']) && !empty($data['el'])) {
 				return TRUE;
 			}
 		}
