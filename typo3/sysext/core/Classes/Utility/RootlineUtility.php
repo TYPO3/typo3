@@ -178,9 +178,15 @@ class RootlineUtility {
 	 * @return string
 	 */
 	public function getCacheIdentifier($otherUid = NULL) {
+
+		$mountPointParameter = (string)$this->mountPointParameter;
+		if ($mountPointParameter !== '' && strpos($mountPointParameter, ',') !== FALSE) {
+			$mountPointParameter = str_replace(',', '__', $mountPointParameter);
+		}
+
 		return implode('_', array(
 			$otherUid !== NULL ? (int)$otherUid : $this->pageUid,
-			$this->mountPointParameter,
+			$mountPointParameter,
 			$this->languageUid,
 			$this->workspaceUid,
 			$this->versionPreview ? 1 : 0

@@ -259,6 +259,19 @@ class RootlineUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function getCacheIdentifierReturnsValidIdentifierWithCommasInMountPointParameter() {
+		/** @var \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend $cacheFrontendMock */
+		$cacheFrontendMock = $this->getMockForAbstractClass('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), '', FALSE);
+		$this->pageContextMock->sys_language_uid = 8;
+		$this->pageContextMock->versioningWorkspaceId = 15;
+		$this->pageContextMock->versioningPreview = TRUE;
+		$this->fixture->__construct(42, '47-11,48-12', $this->pageContextMock);
+		$this->assertTrue($cacheFrontendMock->isValidEntryIdentifier($this->fixture->getCacheIdentifier()));
+	}
+
+	/**
+	 * @test
+	 */
 	public function getRecordArrayFetchesTranslationWhenLanguageIdIsSet() {
 		$pageData = array(
 			'uid' => 1,
