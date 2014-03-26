@@ -153,21 +153,6 @@ class DownloadController extends \TYPO3\CMS\Extensionmanager\Controller\Abstract
 	}
 
 	/**
-	 * Prepares an extension for import from TER
-	 * Uninstalls the extension if it is already loaded (case: update)
-	 * and reloads the caches.
-	 *
-	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
-	 * @return void
-	 */
-	protected function prepareExtensionForImport(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension) {
-		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extension->getExtensionKey())) {
-			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::unloadExtension($extension->getExtensionKey());
-			$this->installUtility->reloadCaches();
-		}
-	}
-
-	/**
 	 * Update an extension. Makes no sanity check but directly searches highest
 	 * available version from TER and updates. Update check is done by the list
 	 * already. This method should only be called if we are sure that there is
@@ -179,7 +164,6 @@ class DownloadController extends \TYPO3\CMS\Extensionmanager\Controller\Abstract
 		$extensionKey = $this->request->getArgument('extension');
 		/** @var $highestTerVersionExtension \TYPO3\CMS\Extensionmanager\Domain\Model\Extension */
 		$highestTerVersionExtension = $this->extensionRepository->findHighestAvailableVersion($extensionKey);
-		$this->prepareExtensionForImport($highestTerVersionExtension);
 		$result = $this->managementService->resolveDependenciesAndInstall($highestTerVersionExtension);
 		$this->view->assign('result', $result)->assign('extension', $highestTerVersionExtension);
 	}
@@ -216,7 +200,6 @@ class DownloadController extends \TYPO3\CMS\Extensionmanager\Controller\Abstract
 		$errorMessage = '';
 		try {
 			$this->downloadUtility->setDownloadPath($downloadPath);
-			$this->prepareExtensionForImport($extension);
 			$result = $this->managementService->resolveDependenciesAndInstall($extension);
 		} catch (\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException $e) {
 			$errorMessage = $e->getMessage();
