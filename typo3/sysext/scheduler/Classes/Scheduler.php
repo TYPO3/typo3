@@ -263,7 +263,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 		if (empty($uid)) {
 			$queryArray = array(
 				'SELECT' => 'tx_scheduler_task.uid AS uid, serialized_task_object',
-				'FROM' => 'tx_scheduler_task LEFT JOIN tx_scheduler_task_group ON (tx_scheduler_task.task_group = tx_scheduler_task_group.uid)',
+				'FROM' => 'tx_scheduler_task LEFT JOIN tx_scheduler_task_group ON tx_scheduler_task.task_group = tx_scheduler_task_group.uid',
 				'WHERE' => 'disable = 0 AND nextexecution != 0 AND nextexecution <= ' . $GLOBALS['EXEC_TIME'] . ' AND (tx_scheduler_task_group.hidden = 0 OR tx_scheduler_task_group.hidden IS NULL)',
 				'LIMIT' => 1
 			);
