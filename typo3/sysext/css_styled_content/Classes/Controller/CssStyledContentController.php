@@ -726,9 +726,11 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 					if ($image_compression == 1) {
 						$tempImport = $imgConf['file.']['import'];
 						$tempImport_dot = $imgConf['file.']['import.'];
+						$tempTreatIdAsReference = $imgConf['file.']['treatIdAsReference'];
 						unset($imgConf['file.']);
 						$imgConf['file.']['import'] = $tempImport;
 						$imgConf['file.']['import.'] = $tempImport_dot;
+						$imgConf['file.']['treatIdAsReference'] = $tempTreatIdAsReference;
 					} elseif (isset($this->cObj->image_compression[$image_compression])) {
 						$imgConf['file.']['params'] .= ' ' . $this->cObj->image_compression[$image_compression]['params'];
 						$imgConf['file.']['ext'] = $this->cObj->image_compression[$image_compression]['ext'];
