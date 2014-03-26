@@ -20,7 +20,6 @@ if (!defined('TYPO3_MODE')) {
 
 // Add a hook to the BE login form
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginFormHook'][$_EXTKEY] = 'TYPO3\\CMS\\Rsaauth\\Hook\\LoginFormHook->getLoginFormTag';
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginScriptHook'][$_EXTKEY] = 'TYPO3\\CMS\\Rsaauth\\Hook\\LoginFormHook->getLoginScripts';
 // Add hook for user setup module
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/setup/mod/index.php']['setupScriptHook'][$_EXTKEY] = 'TYPO3\\CMS\\Rsaauth\\Hook\\UserSetupHook->getLoginScripts';
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/setup/mod/index.php']['modifyUserDataBeforeSave'][$_EXTKEY] = 'TYPO3\\CMS\\Rsaauth\\Hook\\UserSetupHook->decryptPassword';

@@ -28,6 +28,7 @@ namespace TYPO3\CMS\Rsaauth\Hook;
  * and supply a proper form tag.
  *
  * @author Dmitry Dulepov <dmitry@typo3.org>
+ * @author Helmut Hummel <helmut@typo3.org>
  */
 class LoginFormHook {
 
@@ -41,53 +42,24 @@ class LoginFormHook {
 	 */
 	public function getLoginFormTag(array $params, \TYPO3\CMS\Backend\Controller\LoginController &$pObj) {
 		$form = NULL;
-		if ($pObj->loginSecurityLevel == 'rsa') {
-			// If we can get the backend, we can proceed
-			$backend = \TYPO3\CMS\Rsaauth\Backend\BackendFactory::getBackend();
-			if (!is_null($backend)) {
-				// Add form tag
-				$form = '<form action="index.php" method="post" name="loginform" onsubmit="tx_rsaauth_encrypt();">';
-				// Generate a new key pair
-				$keyPair = $backend->createNewKeyPair();
-				// Save private key
-				$storage = \TYPO3\CMS\Rsaauth\Storage\StorageFactory::getStorage();
-				/** @var $storage \TYPO3\CMS\Rsaauth\Storage\AbstractStorage */
-				$storage->put($keyPair->getPrivateKey());
-				// Add RSA hidden fields
-				$form .= '<input type="hidden" id="rsa_n" name="n" value="' . htmlspecialchars($keyPair->getPublicKeyModulus()) . '" />';
-				$form .= '<input type="hidden" id="rsa_e" name="e" value="' . sprintf('%x', $keyPair->getExponent()) . '" />';
-			} else {
-				throw new \TYPO3\CMS\Core\Error\Exception('No OpenSSL backend could be obtained for rsaauth.', 1318283565);
-			}
-		}
-		return $form;
-	}
-
-	/**
-	 * Provides form code for the superchallenged authentication.
-	 *
-	 * @param array $params Parameters to the script
-	 * @param \TYPO3\CMS\Backend\Controller\LoginController $pObj Calling object
-	 * @return string The code for the login form
-	 */
-	public function getLoginScripts(array $params, \TYPO3\CMS\Backend\Controller\LoginController &$pObj) {
-		$content = '';
-		if ($pObj->loginSecurityLevel == 'rsa') {
-			$javascriptPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('rsaauth') . 'resources/';
+		if ($pObj->loginSecurityLevel === 'rsa') {
+			/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
+			$pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
+			$javascriptPath = '../' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('rsaauth') . 'resources/';
 			$files = array(
 				'jsbn/jsbn.js',
 				'jsbn/prng4.js',
 				'jsbn/rng.js',
 				'jsbn/rsa.js',
 				'jsbn/base64.js',
-				'rsaauth_min.js'
+				'BackendLoginFormRsaEncryption.js'
 			);
-			$content = '';
 			foreach ($files as $file) {
-				$content .= '<script type="text/javascript" src="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $javascriptPath . $file . '"></script>';
+				$pageRenderer->addJsFooterFile($javascriptPath . $file);
 			}
-		}
-		return $content;
-	}
 
+			return '<form action="index.php" id="typo3-login-form" method="post" name="loginform">';
+		}
+		return $form;
+	}
 }

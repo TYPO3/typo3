@@ -1,3 +1,4 @@
+// Deprecated since 6.2 will be removed 2 versions later
 function tx_rsaauth_encrypt() {
 	var rsa = new RSAKey();
 	rsa.setPublic(document.loginform.n.value, document.loginform.e.value);
