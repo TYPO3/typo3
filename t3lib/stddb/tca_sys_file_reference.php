@@ -148,7 +148,8 @@ $TCA['sys_file_reference'] = array(
 						'script' => 'browse_links.php?mode=wizard',
 						'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1'
 					)
-				)
+				),
+				'softref' => 'typolink'
 			)
 		),
 		'description' => array(
