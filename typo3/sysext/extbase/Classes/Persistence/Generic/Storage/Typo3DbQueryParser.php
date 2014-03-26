@@ -38,7 +38,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 /**
  * QueryParser, converting the qom to string representation
  */
-class Typo3DbQueryParser {
+class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * The TYPO3 database object
