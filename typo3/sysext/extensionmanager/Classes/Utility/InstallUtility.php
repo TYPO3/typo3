@@ -233,7 +233,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param array $extension
 	 */
 	public function processDatabaseUpdates(array $extension) {
-		$extTablesSqlFile = PATH_site . $extension['siteRelPath'] . '/ext_tables.sql';
+		$extTablesSqlFile = PATH_site . $extension['siteRelPath'] . 'ext_tables.sql';
 		$extTablesSqlContent = '';
 		if (file_exists($extTablesSqlFile)) {
 			$extTablesSqlContent .= \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($extTablesSqlFile);
@@ -376,8 +376,8 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	public function getExtensionSqlDataDump($extension) {
 		$extension = $this->enrichExtensionWithDetails($extension);
 		$filePrefix = PATH_site . $extension['siteRelPath'];
-		$sqlData['extTables'] = $this->getSqlDataDumpForFile($filePrefix . '/ext_tables.sql');
-		$sqlData['staticSql'] = $this->getSqlDataDumpForFile($filePrefix . '/ext_tables_static+adt.sql');
+		$sqlData['extTables'] = $this->getSqlDataDumpForFile($filePrefix . 'ext_tables.sql');
+		$sqlData['staticSql'] = $this->getSqlDataDumpForFile($filePrefix . 'ext_tables_static+adt.sql');
 		return $sqlData;
 	}
 
@@ -431,7 +431,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	protected function importT3DFile($extensionSiteRelPath) {
-		$t3dImportRelFile = $extensionSiteRelPath . '/Initialisation/data.t3d';
+		$t3dImportRelFile = $extensionSiteRelPath . 'Initialisation/data.t3d';
 		if (!$this->registry->get('extensionDataImport', $t3dImportRelFile)) {
 			$t3dImportFile = PATH_site . $t3dImportRelFile;
 			if (file_exists($t3dImportFile)) {
@@ -457,7 +457,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	protected function importStaticSqlFile($extensionSiteRelPath) {
-		$extTablesStaticSqlRelFile = $extensionSiteRelPath . '/ext_tables_static+adt.sql';
+		$extTablesStaticSqlRelFile = $extensionSiteRelPath . 'ext_tables_static+adt.sql';
 		if (!$this->registry->get('extensionDataImport', $extTablesStaticSqlRelFile)) {
 			$extTablesStaticSqlFile = PATH_site . $extTablesStaticSqlRelFile;
 			if (file_exists($extTablesStaticSqlFile)) {

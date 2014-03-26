@@ -48,7 +48,7 @@ class ConfigureExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\Act
 	 */
 	public function render($extension, $forceConfiguration = TRUE, $showDescription = FALSE) {
 		$content = (string)$this->renderChildren();
-		if ($extension['installed'] && file_exists(PATH_site . $extension['siteRelPath'] . '/ext_conf_template.txt')) {
+		if ($extension['installed'] && file_exists(PATH_site . $extension['siteRelPath'] . 'ext_conf_template.txt')) {
 			$uriBuilder = $this->controllerContext->getUriBuilder();
 			$action = 'showConfigurationForm';
 			$uri = $uriBuilder->reset()->uriFor(

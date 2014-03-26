@@ -110,7 +110,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected function createFakeExtension() {
 		$extKey = strtolower(uniqid('testing'));
 		$absExtPath = PATH_site . 'typo3temp/' . $extKey;
-		$relPath = 'typo3temp/' . $extKey;
+		$relPath = 'typo3temp/' . $extKey . '/';
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($absExtPath);
 		$this->fakedExtensions[$extKey] = array(
 			'siteRelPath' => $relPath
@@ -223,7 +223,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function processDatabaseUpdatesCallsImportStaticSqlFile() {
 		$extKey = $this->createFakeExtension();
-		$extRelPath = 'typo3temp/' . $extKey;
+		$extRelPath = 'typo3temp/' . $extKey . '/';
 		$installMock = $this->getAccessibleMock(
 			'TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility',
 			array('importStaticSqlFile', 'updateDbWithExtTablesSql', 'importT3DFile'),
@@ -270,7 +270,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$registryMock
 			->expects($this->once())
 			->method('get')
-			->with('extensionDataImport', $this->fakedExtensions[$extKey]['siteRelPath'] . '/Initialisation/data.t3d')
+			->with('extensionDataImport', $this->fakedExtensions[$extKey]['siteRelPath'] . 'Initialisation/data.t3d')
 			->will($this->returnValue(TRUE)
 			);
 		$installMock = $this->getAccessibleMock(

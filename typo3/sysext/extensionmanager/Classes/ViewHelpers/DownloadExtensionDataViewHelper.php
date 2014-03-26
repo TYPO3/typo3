@@ -46,7 +46,7 @@ class DownloadExtensionDataViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\
 	 */
 	public function render($extension) {
 		$filePrefix = PATH_site . $extension['siteRelPath'];
-		if (!file_exists(($filePrefix . '/ext_tables.sql')) && !file_exists(($filePrefix . '/ext_tables_static+adt.sql'))) {
+		if (!file_exists(($filePrefix . 'ext_tables.sql')) && !file_exists(($filePrefix . 'ext_tables_static+adt.sql'))) {
 			return '';
 		}
 		$uriBuilder = $this->controllerContext->getUriBuilder();

@@ -41,7 +41,7 @@ class EmConfUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function includeEmConf(array $extension) {
 		$_EXTKEY = $extension['key'];
-		$path = PATH_site . $extension['siteRelPath'] . '/ext_emconf.php';
+		$path = PATH_site . $extension['siteRelPath'] . 'ext_emconf.php';
 		$EM_CONF = NULL;
 		if (file_exists($path)) {
 			include $path;
