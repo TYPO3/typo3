@@ -91,8 +91,8 @@ class DefaultPermissionsCheck {
 				$extraMessage = ' (writable by anyone on the server)';
 			}
 		} elseif ($perms['or']) {
-			$permissionStatus = new \TYPO3\CMS\Install\Status\WarningStatus();
-			$extraMessage = ' (readable by anyone on the server)';
+			$permissionStatus = new \TYPO3\CMS\Install\Status\NoticeStatus();
+			$extraMessage = ' (readable by anyone on the server). This is the default set by TYPO3 CMS to be as much compatible as possible but if your system allows, please consider to change rights';
 		} elseif ($perms['gw']) {
 			$permissionStatus = new \TYPO3\CMS\Install\Status\OkStatus();
 			$extraMessage = ' (group writeable)';
