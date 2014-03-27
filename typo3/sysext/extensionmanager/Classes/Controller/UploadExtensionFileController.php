@@ -55,6 +55,18 @@ class UploadExtensionFileController extends AbstractController {
 	protected $installUtility;
 
 	/**
+	 * @var \TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService
+	 * @inject
+	 */
+	protected $managementService;
+
+	/**
+	 * @var \TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility
+	 * @inject
+	 */
+	protected $extensionModelUtility;
+
+	/**
 	 * Render upload extension form
 	 *
 	 * @return void
@@ -121,7 +133,7 @@ class UploadExtensionFileController extends AbstractController {
 			throw new ExtensionManagerException($this->translate('extensionList.overwritingDisabled'), 1342864310);
 		}
 		$this->fileHandlingUtility->unpackExtensionFromExtensionDataArray($extensionData);
-		$this->installUtility->install($extensionData['extKey']);
+		$this->installExtension($extensionData['extKey']);
 		return $extensionData;
 	}
 
@@ -144,8 +156,36 @@ class UploadExtensionFileController extends AbstractController {
 			throw new ExtensionManagerException('Extension is already available and overwriting is disabled.', 1342864311);
 		}
 		$this->fileHandlingUtility->unzipExtensionFromFile($file, $extensionKey);
-		$this->installUtility->install($extensionKey);
+		$this->installExtension($extensionKey);
 		return array('extKey' => $extensionKey);
 	}
 
+	/**
+	 * Install extension if not yet installed
+	 *
+	 * @param string $extensionKey
+	 * @return bool
+	 */
+	protected function installExtension($extensionKey) {
+		$installedExtensions = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray();
+		if (in_array($extensionKey, $installedExtensions)) {
+			return TRUE;
+		}
+		try {
+			// install
+			$this->managementService->resolveDependenciesAndInstall(
+				$this->extensionModelUtility->mapExtensionArrayToModel(
+					$this->installUtility->enrichExtensionWithDetails($extensionKey)
+				)
+			);
+			return TRUE;
+		} catch (ExtensionManagerException $e) {
+			$message = nl2br(htmlspecialchars($e->getMessage())) . $this->getForceInstallationMessage($extensionKey, 'Action');
+			$this->addFlashMessage($message, '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+		} catch (\TYPO3\Flow\Package\Exception\PackageStatesFileNotWritableException $e) {
+			$this->addFlashMessage(htmlspecialchars($e->getMessage()), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+		}
+
+		return FALSE;
+	}
 }

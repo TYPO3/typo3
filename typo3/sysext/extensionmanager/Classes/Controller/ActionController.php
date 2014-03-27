@@ -78,12 +78,23 @@ class ActionController extends AbstractController {
 				);
 			}
 		} catch (\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException $e) {
-			$message = nl2br(htmlspecialchars($e->getMessage()));
+			$message = nl2br(htmlspecialchars($e->getMessage())) . $this->getForceInstallationMessage($extensionKey);
 			$this->addFlashMessage($message, '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 		} catch (\TYPO3\Flow\Package\Exception\PackageStatesFileNotWritableException $e) {
 			$this->addFlashMessage(htmlspecialchars($e->getMessage()), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 		}
 		$this->redirect('index', 'List', NULL, array(self::TRIGGER_RefreshModuleMenu => TRUE));
+	}
+
+	/**
+	 * Install an extension and omit dependency checking
+	 *
+	 * @param string $extensionKey
+	 * @return void
+	 */
+	public function installExtensionWithoutSystemDependencyCheckAction($extensionKey) {
+		$this->managementService->setSkipSystemDependencyCheck(TRUE);
+		$this->forward('toggleExtensionInstallationState', NULL, NULL, array('extensionKey' => $extensionKey));
 	}
 
 	/**

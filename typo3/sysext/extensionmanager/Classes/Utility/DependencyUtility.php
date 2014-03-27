@@ -77,7 +77,18 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $localExtensionStorage = '';
 
 	/**
+	 * @var array
+	 */
+	protected $dependencyErrors = array();
+
+	/**
+	 * @var bool
+	 */
+	protected $skipSystemDependencyCheck = FALSE;
+
+	/**
 	 * @param string $localExtensionStorage
+	 * @return void
 	 */
 	public function setLocalExtensionStorage($localExtensionStorage) {
 		$this->localExtensionStorage = $localExtensionStorage;
@@ -103,6 +114,14 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
+	 * @param bool $skipSpecialDependencyCheck
+	 * @return void
+	 */
+	public function setSkipSystemDependencyCheck($skipSpecialDependencyCheck) {
+		$this->skipSystemDependencyCheck = $skipSpecialDependencyCheck;
+	}
+
+	/**
 	 * Checks dependencies for special cases (currently typo3 and php)
 	 *
 	 * @param \SplObjectStorage $dependencies
@@ -114,15 +133,30 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		foreach ($dependencies as $dependency) {
 			/** @var Dependency $dependency */
 			$identifier = strtolower($dependency->getIdentifier());
-			if (in_array($identifier, Dependency::$specialDependencies)) {
-				$methodname = 'check' . ucfirst($identifier) . 'Dependency';
-				$this->{$methodname}($dependency);
-			} else {
-				if ($dependency->getType() === 'depends') {
-					$dependenciesToResolve = !(bool) $this->checkExtensionDependency($dependency);
+			try {
+				if (in_array($identifier, Dependency::$specialDependencies)) {
+					if (!$this->skipSystemDependencyCheck) {
+						$methodName = 'check' . ucfirst($identifier) . 'Dependency';
+						$this->{$methodName}($dependency);
+					}
+				} else {
+					if ($dependency->getType() === 'depends') {
+						$dependenciesToResolve = !(bool) $this->checkExtensionDependency($dependency);
+					}
+				}
+			} catch (ExtensionManagerException $e) {
+				if (in_array($identifier, Dependency::$specialDependencies)) {
+					$this->dependencyErrors[] = $e->getMessage();
+				} else {
+					$this->dependencyErrors[] = $identifier . ': ' . $e->getMessage();
 				}
 			}
 		}
+
+		if (!empty($this->dependencyErrors)) {
+			throw new ExtensionManagerException(implode(LF . LF, $this->dependencyErrors), 1396301826);
+		}
+
 		return $dependenciesToResolve;
 	}
 
@@ -263,17 +297,28 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	protected function getExtensionFromTer($extensionKey, Dependency $dependency) {
-		if (!$this->isExtensionDownloadableFromTer($extensionKey)) {
-			throw new ExtensionManagerException('The extension ' . $extensionKey . ' is not available from TER.');
+		$isExtensionDownloadableFromTer = $this->isExtensionDownloadableFromTer($extensionKey);
+		if (!$isExtensionDownloadableFromTer) {
+			if (!$this->skipSystemDependencyCheck) {
+				throw new ExtensionManagerException('The extension ' . $extensionKey . ' is not available from TER.');
+			}
+			return;
 		}
 
-		if (!$this->isDownloadableVersionCompatible($dependency)) {
-			throw new ExtensionManagerException('No compatible version found for extension ' . $extensionKey);
+		$isDownloadableVersionCompatible = $this->isDownloadableVersionCompatible($dependency);
+		if (!$isDownloadableVersionCompatible) {
+			if (!$this->skipSystemDependencyCheck) {
+				throw new ExtensionManagerException('No compatible version found for extension ' . $extensionKey);
+			}
+			return;
 		}
 
 		$latestCompatibleExtensionByIntegerVersionDependency = $this->getLatestCompatibleExtensionByIntegerVersionDependency($dependency);
 		if (!$latestCompatibleExtensionByIntegerVersionDependency instanceof \TYPO3\CMS\Extensionmanager\Domain\Model\Extension) {
-			throw new ExtensionManagerException('Could not resolve dependency for "' . $dependency->getIdentifier() . '"');
+			if (!$this->skipSystemDependencyCheck) {
+				throw new ExtensionManagerException('Could not resolve dependency for "' . $dependency->getIdentifier() . '"');
+			}
+			return;
 		}
 
 		if ($this->isDependentExtensionLoaded($extensionKey)) {

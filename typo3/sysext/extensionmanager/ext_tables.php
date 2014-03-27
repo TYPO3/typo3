@@ -9,9 +9,9 @@ if (TYPO3_MODE === 'BE') {
 		'tools',
 		'extensionmanager', '', array(
 			'List' => 'index,ter,showAllVersions,distributions',
-			'Action' => 'toggleExtensionInstallationState,removeExtension,downloadExtensionZip,downloadExtensionData',
+			'Action' => 'toggleExtensionInstallationState,installExtensionWithoutSystemDependencyCheck,removeExtension,downloadExtensionZip,downloadExtensionData',
 			'Configuration' => 'showConfigurationForm,save',
-			'Download' => 'checkDependencies,installFromTer,installDistribution,updateExtension,updateCommentForUpdatableVersions',
+			'Download' => 'checkDependencies,installFromTer,installExtensionWithoutSystemDependencyCheck,installDistribution,updateExtension,updateCommentForUpdatableVersions',
 			'UpdateScript' => 'show',
 			'UpdateFromTer' => 'updateExtensionListFromTer',
 			'UploadExtensionFile' => 'form,extract',

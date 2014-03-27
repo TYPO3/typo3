@@ -99,13 +99,24 @@ class DownloadController extends AbstractController {
 		} catch (\Exception $e) {
 			$hasErrors = TRUE;
 			$title = $this->translate('downloadExtension.dependencies.errorTitle');
-			$message = $e->getMessage();
+			$message = nl2br($e->getMessage()) . $this->getForceInstallationMessage($extension->getExtensionKey());
 		}
 		$this->view->assign('extension', $extension)
 			->assign('hasDependencies', $hasDependencies)
 			->assign('hasErrors', $hasErrors)
 			->assign('message', $message)
 			->assign('title', $title);
+	}
+
+	/**
+	 * Check extension dependencies with special dependencies
+	 *
+	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
+	 * @throws \Exception
+	 */
+	public function installExtensionWithoutSystemDependencyCheckAction(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension) {
+		$this->managementService->setSkipSystemDependencyCheck(TRUE);
+		$this->forward('installFromTer', NULL, NULL, array('extension' => $extension, 'downloadPath' => 'Local'));
 	}
 
 	/**
