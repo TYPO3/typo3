@@ -2205,7 +2205,13 @@ class TypoScriptFrontendController {
 					// Setting flag, so we know, that some cached content has been loaded
 					$this->cacheContentFlag = 1;
 					$this->cacheExpires = $row['expires'];
-					if ($this->TYPO3_CONF_VARS['FE']['debug'] || isset($this->config['config']['debug']) && $this->config['config']['debug']) {
+
+					if (isset($this->config['config']['debug'])) {
+						$debugCacheTime = (bool)$this->config['config']['debug'];
+					} else {
+						$debugCacheTime = !empty($this->TYPO3_CONF_VARS['FE']['debug']);
+					}
+					if ($debugCacheTime) {
 						$dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
 						$timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
 						$this->content .= LF . '<!-- Cached page generated ' . date(($dateFormat . ' ' . $timeFormat), $row['tstamp']) . '. Expires ' . Date(($dateFormat . ' ' . $timeFormat), $row['expires']) . ' -->';
