@@ -47,12 +47,6 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request {
 	protected $baseUri;
 
 	/**
-	 * @var boolean TRUE if the HMAC of this request could be verified, FALSE otherwise
-	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
-	 */
-	protected $hmacVerified = FALSE;
-
-	/**
 	 * @var boolean TRUE if the current request is cached, false otherwise.
 	 */
 	protected $isCached = FALSE;
@@ -135,27 +129,6 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request {
 		} else {
 			return $this->baseUri;
 		}
-	}
-
-	/**
-	 * Could the request be verified via a HMAC?
-	 *
-	 * @param boolean $hmacVerified TRUE if request could be verified, FALSE otherwise
-	 * @return void
-	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
-	 */
-	public function setHmacVerified($hmacVerified) {
-		$this->hmacVerified = (boolean) $hmacVerified;
-	}
-
-	/**
-	 * Could the request be verified via a HMAC?
-	 *
-	 * @return boolean TRUE if request could be verified, FALSE otherwise
-	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
-	 */
-	public function isHmacVerified() {
-		return $this->hmacVerified;
 	}
 
 	/**

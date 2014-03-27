@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
+
 /**
  * A controller argument
  *
@@ -21,34 +23,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
 class Argument {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-	 * @inject
-	 */
-	protected $objectManager;
-
-	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory
-	 * @inject
-	 */
-	protected $queryFactory;
-
-	/**
-	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-	 * @inject
-	 */
-	protected $configurationManager;
-
-	/**
-	 * This is the old property mapper, which has been completely rewritten for 1.4.
-	 * @inject
-	 *
-	 * @var \TYPO3\CMS\Extbase\Property\Mapper
-	 */
-	protected $deprecatedPropertyMapper;
-
-	/**
-	 * The new, completely rewritten property mapper since Extbase 1.4.
-	 *
 	 * @var \TYPO3\CMS\Extbase\Property\PropertyMapper
 	 * @inject
 	 */
@@ -59,16 +33,6 @@ class Argument {
 	 * @inject
 	 */
 	protected $propertyMappingConfiguration;
-
-	/**
-	 * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
-	 */
-	protected $reflectionService;
-
-	/**
-	 * @var \TYPO3\CMS\Extbase\Service\TypeHandlingService
-	 */
-	protected $typeHandlingService;
 
 	/**
 	 * Name of this argument
@@ -90,13 +54,6 @@ class Argument {
 	 * @var string
 	 */
 	protected $dataType = NULL;
-
-	/**
-	 * If the data type is an object, the class schema of the data type class is resolved
-	 *
-	 * @var \TYPO3\CMS\Extbase\Reflection\ClassSchema
-	 */
-	protected $dataTypeClassSchema;
 
 	/**
 	 * TRUE if this argument is required
@@ -134,33 +91,6 @@ class Argument {
 	protected $validationResults = NULL;
 
 	/**
-	 * Uid for the argument, if it has one
-	 *
-	 * @var string
-	 */
-	protected $uid = NULL;
-
-	const ORIGIN_CLIENT = 0;
-	const ORIGIN_PERSISTENCE = 1;
-	const ORIGIN_PERSISTENCE_AND_MODIFIED = 2;
-	const ORIGIN_NEWLY_CREATED = 3;
-
-	/**
-	 * The origin of the argument value. This is only meaningful after argument mapping.
-	 *
-	 * One of the ORIGIN_* constants above
-	 *
-	 * @var integer
-	 */
-	protected $origin = 0;
-
-	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
-	 * @inject
-	 */
-	protected $persistenceManager;
-
-	/**
 	 * Constructs this controller argument
 	 *
 	 * @param string $name Name of this argument
@@ -176,26 +106,7 @@ class Argument {
 			throw new \InvalidArgumentException('$name must be a non-empty string, ' . strlen($name) . ' characters given.', 1232551853);
 		}
 		$this->name = $name;
-		$this->dataType = $dataType;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
-	 * @return void
-	 */
-	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService) {
-		$this->reflectionService = $reflectionService;
-		// Check for classnames (which have at least one underscore or backslash)
-		$this->dataTypeClassSchema = strpbrk($this->dataType, '_\\') !== FALSE ? $this->reflectionService->getClassSchema($this->dataType) : NULL;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Service\TypeHandlingService $typeHandlingService
-	 * @return void
-	 */
-	public function injectTypeHandlingService(\TYPO3\CMS\Extbase\Service\TypeHandlingService $typeHandlingService) {
-		$this->typeHandlingService = $typeHandlingService;
-		$this->dataType = $this->typeHandlingService->normalizeType($this->dataType);
+		$this->dataType = TypeHandlingUtility::normalizeType($dataType);
 	}
 
 	/**
@@ -232,19 +143,6 @@ class Argument {
 	 */
 	public function getShortName() {
 		return $this->shortName;
-	}
-
-	/**
-	 * Sets the data type of this argument's value
-	 *
-	 * @param string $dataType The data type. Can be either a built-in type such as "Text" or "Integer" or a fully qualified object name
-	 * @return \TYPO3\CMS\Extbase\Mvc\Controller\Argument $this
-	 * @api
-	 */
-	public function setDataType($dataType) {
-		$this->dataType = $dataType;
-		$this->dataTypeClassSchema = $this->reflectionService->getClassSchema($dataType);
-		return $this;
 	}
 
 	/**
@@ -314,27 +212,6 @@ class Argument {
 	}
 
 	/**
-	 * Create and set a validator chain
-	 *
-	 * @param array $objectNames Object names of the validators
-	 * @return \TYPO3\CMS\Extbase\Mvc\Controller\Argument Returns $this (used for fluent interface)
-	 * @api
-	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
-	 */
-	public function setNewValidatorConjunction(array $objectNames) {
-		if ($this->validator === NULL) {
-			$this->validator = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ConjunctionValidator');
-		}
-		foreach ($objectNames as $objectName) {
-			if (!class_exists($objectName)) {
-				$objectName = 'Tx_Extbase_Validation_Validator_' . $objectName;
-			}
-			$this->validator->addValidator($this->objectManager->get($objectName));
-		}
-		return $this;
-	}
-
-	/**
 	 * Returns the set validator
 	 *
 	 * @return \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface The set validator, NULL if none was set
@@ -345,16 +222,6 @@ class Argument {
 	}
 
 	/**
-	 * Get the origin of the argument value. This is only meaningful after argument mapping.
-	 *
-	 * @return integer one of the ORIGIN_* constants
-	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
-	 */
-	public function getOrigin() {
-		return $this->origin;
-	}
-
-	/**
 	 * Sets the value of this argument.
 	 *
 	 * @param mixed $rawValue The value of this argument
@@ -362,83 +229,22 @@ class Argument {
 	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException if the argument is not a valid object of type $dataType
 	 */
 	public function setValue($rawValue) {
-		if ($this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper')) {
-			if ($rawValue === NULL) {
-				$this->value = NULL;
-				return $this;
-			}
-			if (is_object($rawValue) && $rawValue instanceof $this->dataType) {
-				$this->value = $rawValue;
-				return $this;
-			}
-			$this->value = $this->propertyMapper->convert($rawValue, $this->dataType, $this->propertyMappingConfiguration);
-			$this->validationResults = $this->propertyMapper->getMessages();
-			if ($this->validator !== NULL) {
-				// TODO: Validation API has also changed!!!
-				$validationMessages = $this->validator->validate($this->value);
-				$this->validationResults->merge($validationMessages);
-			}
-			return $this;
-		} else {
-			if ($rawValue === NULL || is_object($rawValue) && $rawValue instanceof $this->dataType) {
-				$this->value = $rawValue;
-			} else {
-				$this->value = $this->transformValue($rawValue);
-			}
+		if ($rawValue === NULL) {
+			$this->value = NULL;
 			return $this;
 		}
-	}
-
-	/**
-	 * Checks if the value is a UUID or an array but should be an object, i.e.
-	 * the argument's data type class schema is set. If that is the case, this
-	 * method tries to look up the corresponding object instead.
-	 *
-	 * Additionally, it maps arrays to objects in case it is a normal object.
-	 *
-	 * @param mixed $value The value of an argument
-	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException
-	 * @return mixed
-	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
-	 */
-	protected function transformValue($value) {
-		if (!class_exists($this->dataType)) {
-			return $value;
+		if (is_object($rawValue) && $rawValue instanceof $this->dataType) {
+			$this->value = $rawValue;
+			return $this;
 		}
-		$transformedValue = NULL;
-		if ($this->dataTypeClassSchema !== NULL) {
-			// The target object is an Entity or ValueObject.
-			if (is_numeric($value)) {
-				$this->origin = self::ORIGIN_PERSISTENCE;
-				$transformedValue = $this->findObjectByUid($value);
-			} elseif (is_array($value)) {
-				$this->origin = self::ORIGIN_PERSISTENCE_AND_MODIFIED;
-				$transformedValue = $this->deprecatedPropertyMapper->map(array_keys($value), $value, $this->dataType);
-			}
-		} else {
-			if (!is_array($value)) {
-				throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException('The value was a simple type, so we could not map it to an object. Maybe the @entity or @valueobject annotations are missing?', 1251730701);
-			}
-			$this->origin = self::ORIGIN_NEWLY_CREATED;
-			$transformedValue = $this->deprecatedPropertyMapper->map(array_keys($value), $value, $this->dataType);
+		$this->value = $this->propertyMapper->convert($rawValue, $this->dataType, $this->propertyMappingConfiguration);
+		$this->validationResults = $this->propertyMapper->getMessages();
+		if ($this->validator !== NULL) {
+			// TODO: Validation API has also changed!!!
+			$validationMessages = $this->validator->validate($this->value);
+			$this->validationResults->merge($validationMessages);
 		}
-		if (!$transformedValue instanceof $this->dataType && ($transformedValue !== NULL || $this->isRequired())) {
-			throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException('The value must be of type "' . $this->dataType . '", but was of type "' . (is_object($transformedValue) ? get_class($transformedValue) : gettype($transformedValue)) . '".' . ($this->deprecatedPropertyMapper->getMappingResults()->hasErrors() ? '<p>' . implode('<br />', $this->deprecatedPropertyMapper->getMappingResults()->getErrors()) . '</p>' : ''), 1251730702);
-		}
-		return $transformedValue;
-	}
-
-	/**
-	 * Finds an object from the repository by searching for its technical UID.
-	 *
-	 * @param integer $uid The object's uid
-	 * @return object Either the object matching the uid or, if none or more than one object was found, NULL
-	 */
-	protected function findObjectByUid($uid) {
-		$query = $this->queryFactory->create($this->dataType);
-		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
-		$query->getQuerySettings()->setRespectStoragePage(FALSE);
-		return $query->matching($query->equals('uid', $uid))->execute()->getFirst();
+		return $this;
 	}
 
 	/**
@@ -453,16 +259,6 @@ class Argument {
 		} else {
 			return $this->value;
 		}
-	}
-
-	/**
-	 * Checks if this argument has a value set.
-	 *
-	 * @return boolean TRUE if a value was set, otherwise FALSE
-	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
-	 */
-	public function isValue() {
-		return $this->value !== NULL;
 	}
 
 	/**

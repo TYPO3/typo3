@@ -152,7 +152,6 @@ class ActionController extends AbstractController {
 			call_user_func(array($this, $actionInitializationMethodName));
 		}
 		$this->mapRequestArgumentsToControllerArguments();
-		$this->checkRequestHash();
 		$this->controllerContext = $this->buildControllerContext();
 		$this->view = $this->resolveView();
 		if ($this->view !== NULL) {
@@ -200,57 +199,33 @@ class ActionController extends AbstractController {
 	 */
 	protected function initializeActionMethodValidators() {
 
-		if (!$this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper')) {
-			// @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
+		/**
+		 * @todo: add validation group support
+		 * (https://review.typo3.org/#/c/13556/4)
+		 */
 
-			$parameterValidators = $this->validatorResolver->buildMethodArgumentsValidatorConjunctions(get_class($this), $this->actionMethodName);
-			$dontValidateAnnotations = array();
-
-			$methodTagsValues = $this->reflectionService->getMethodTagsValues(get_class($this), $this->actionMethodName);
-			if (isset($methodTagsValues['dontvalidate'])) {
-				$dontValidateAnnotations = $methodTagsValues['dontvalidate'];
-			}
-
-			/** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
-			foreach ($this->arguments as $argument) {
-				$validator = $parameterValidators[$argument->getName()];
-				if (array_search('$' . $argument->getName(), $dontValidateAnnotations) === FALSE) {
-					$baseValidatorConjunction = $this->validatorResolver->getBaseValidatorConjunction($argument->getDataType());
-					if ($baseValidatorConjunction !== NULL && $validator instanceof AbstractCompositeValidator) {
-						$validator->addValidator($baseValidatorConjunction);
-					}
-				}
-				$argument->setValidator($validator);
-			}
+		$actionMethodParameters = static::getActionMethodParameters($this->objectManager);
+		if (isset($actionMethodParameters[$this->actionMethodName])) {
+			$methodParameters = $actionMethodParameters[$this->actionMethodName];
 		} else {
-			/**
-			 * @todo: add validation group support
-			 * (https://review.typo3.org/#/c/13556/4)
-			 */
+			$methodParameters = array();
+		}
 
-			$actionMethodParameters = static::getActionMethodParameters($this->objectManager);
-			if (isset($actionMethodParameters[$this->actionMethodName])) {
-				$methodParameters = $actionMethodParameters[$this->actionMethodName];
-			} else {
-				$methodParameters = array();
+		/**
+		 * @todo: add resolving of $actionValidateAnnotations and pass them to
+		 * buildMethodArgumentsValidatorConjunctions as in TYPO3.Flow
+		 */
+
+		$parameterValidators = $this->validatorResolver->buildMethodArgumentsValidatorConjunctions(get_class($this), $this->actionMethodName, $methodParameters);
+		/** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
+		foreach ($this->arguments as $argument) {
+			$validator = $parameterValidators[$argument->getName()];
+
+			$baseValidatorConjunction = $this->validatorResolver->getBaseValidatorConjunction($argument->getDataType());
+			if (count($baseValidatorConjunction) > 0 && $validator instanceof AbstractCompositeValidator) {
+				$validator->addValidator($baseValidatorConjunction);
 			}
-
-			/**
-			 * @todo: add resolving of $actionValidateAnnotations and pass them to
-			 * buildMethodArgumentsValidatorConjunctions as in TYPO3.Flow
-			 */
-
-			$parameterValidators = $this->validatorResolver->buildMethodArgumentsValidatorConjunctions(get_class($this), $this->actionMethodName, $methodParameters);
-			/** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
-			foreach ($this->arguments as $argument) {
-				$validator = $parameterValidators[$argument->getName()];
-
-				$baseValidatorConjunction = $this->validatorResolver->getBaseValidatorConjunction($argument->getDataType());
-				if (count($baseValidatorConjunction) > 0  && $validator instanceof AbstractCompositeValidator) {
-					$validator->addValidator($baseValidatorConjunction);
-				}
-				$argument->setValidator($validator);
-			}
+			$argument->setValidator($validator);
 		}
 	}
 
@@ -279,56 +254,41 @@ class ActionController extends AbstractController {
 	 * @api
 	 */
 	protected function callActionMethod() {
-		if ($this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper')) {
-			// enabled since Extbase 1.4.0.
-			$preparedArguments = array();
-			/** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
-			foreach ($this->arguments as $argument) {
-				$preparedArguments[] = $argument->getValue();
-			}
-			$validationResult = $this->arguments->getValidationResults();
-			if (!$validationResult->hasErrors()) {
-				$this->emitBeforeCallActionMethodSignal($preparedArguments);
-				$actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
-			} else {
-				$methodTagsValues = $this->reflectionService->getMethodTagsValues(get_class($this), $this->actionMethodName);
-				$ignoreValidationAnnotations = array();
-				if (isset($methodTagsValues['ignorevalidation'])) {
-					$ignoreValidationAnnotations = $methodTagsValues['ignorevalidation'];
-				}
-				// if there exists more errors than in ignoreValidationAnnotations_=> call error method
-				// else => call action method
-				$shouldCallActionMethod = TRUE;
-				foreach ($validationResult->getSubResults() as $argumentName => $subValidationResult) {
-					if (!$subValidationResult->hasErrors()) {
-						continue;
-					}
-					if (array_search('$' . $argumentName, $ignoreValidationAnnotations) !== FALSE) {
-						continue;
-					}
-					$shouldCallActionMethod = FALSE;
-				}
-				if ($shouldCallActionMethod) {
-					$this->emitBeforeCallActionMethodSignal($preparedArguments);
-					$actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
-				} else {
-					$actionResult = call_user_func(array($this, $this->errorMethodName));
-				}
-			}
+		$preparedArguments = array();
+		/** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
+		foreach ($this->arguments as $argument) {
+			$preparedArguments[] = $argument->getValue();
+		}
+		$validationResult = $this->arguments->getValidationResults();
+		if (!$validationResult->hasErrors()) {
+			$this->emitBeforeCallActionMethodSignal($preparedArguments);
+			$actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
 		} else {
-			// @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
-			$preparedArguments = array();
-			/** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
-			foreach ($this->arguments as $argument) {
-				$preparedArguments[] = $argument->getValue();
+			$methodTagsValues = $this->reflectionService->getMethodTagsValues(get_class($this), $this->actionMethodName);
+			$ignoreValidationAnnotations = array();
+			if (isset($methodTagsValues['ignorevalidation'])) {
+				$ignoreValidationAnnotations = $methodTagsValues['ignorevalidation'];
 			}
-			if ($this->argumentsMappingResults->hasErrors()) {
-				$actionResult = call_user_func(array($this, $this->errorMethodName));
-			} else {
+			// if there exists more errors than in ignoreValidationAnnotations_=> call error method
+			// else => call action method
+			$shouldCallActionMethod = TRUE;
+			foreach ($validationResult->getSubResults() as $argumentName => $subValidationResult) {
+				if (!$subValidationResult->hasErrors()) {
+					continue;
+				}
+				if (array_search('$' . $argumentName, $ignoreValidationAnnotations) !== FALSE) {
+					continue;
+				}
+				$shouldCallActionMethod = FALSE;
+			}
+			if ($shouldCallActionMethod) {
 				$this->emitBeforeCallActionMethodSignal($preparedArguments);
 				$actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
+			} else {
+				$actionResult = call_user_func(array($this, $this->errorMethodName));
 			}
 		}
+
 		if ($actionResult === NULL && $this->view instanceof ViewInterface) {
 			$this->response->appendContent($this->view->render());
 		} elseif (is_string($actionResult) && strlen($actionResult) > 0) {
@@ -552,51 +512,24 @@ class ActionController extends AbstractController {
 	 */
 	protected function errorAction() {
 		$this->clearCacheOnError();
-		if ($this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper')) {
-			$errorFlashMessage = $this->getErrorFlashMessage();
-			if ($errorFlashMessage !== FALSE) {
-				$errorFlashMessageObject = new \TYPO3\CMS\Core\Messaging\FlashMessage(
-					$errorFlashMessage,
-					'',
-					\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
-				);
-				$this->controllerContext->getFlashMessageQueue()->enqueue($errorFlashMessageObject);
-			}
-			if ($this->request instanceof WebRequest) {
-				$referringRequest = $this->request->getReferringRequest();
-				if ($referringRequest !== NULL) {
-					$originalRequest = clone $this->request;
-					$this->request->setOriginalRequest($originalRequest);
-					$this->request->setOriginalRequestMappingResults($this->arguments->getValidationResults());
-					$this->forward(
-						$referringRequest->getControllerActionName(),
-						$referringRequest->getControllerName(),
-						$referringRequest->getControllerExtensionName(),
-						$referringRequest->getArguments()
-					);
-				}
-			}
-			$message = 'An error occurred while trying to call ' . get_class($this) . '->' . $this->actionMethodName . '().' . PHP_EOL;
-			return $message;
-		} else {
-			// @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
-			$this->request->setErrors($this->argumentsMappingResults->getErrors());
-			$errorFlashMessage = $this->getErrorFlashMessage();
-			if ($errorFlashMessage !== FALSE) {
-				$errorFlashMessageObject = new \TYPO3\CMS\Core\Messaging\FlashMessage(
-					$errorFlashMessage,
-					'',
-					\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
-				);
-				$this->controllerContext->getFlashMessageQueue()->enqueue($errorFlashMessageObject);
-			}
-			$referrer = $this->request->getInternalArgument('__referrer');
-			if ($referrer !== NULL) {
-				$this->forward($referrer['actionName'], $referrer['controllerName'], $referrer['extensionName'], $this->request->getArguments());
-			}
-			$message = 'An error occurred while trying to call ' . get_class($this) . '->' . $this->actionMethodName . '().' . PHP_EOL;
-			return $message;
+		$errorFlashMessage = $this->getErrorFlashMessage();
+		if ($errorFlashMessage !== FALSE) {
+			$errorFlashMessageObject = new \TYPO3\CMS\Core\Messaging\FlashMessage(
+				$errorFlashMessage,
+				'',
+				\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+			);
+			$this->controllerContext->getFlashMessageQueue()->enqueue($errorFlashMessageObject);
 		}
+		$referringRequest = $this->request->getReferringRequest();
+		if ($referringRequest !== NULL) {
+			$originalRequest = clone $this->request;
+			$this->request->setOriginalRequest($originalRequest);
+			$this->request->setOriginalRequestMappingResults($this->arguments->getValidationResults());
+			$this->forward($referringRequest->getControllerActionName(), $referringRequest->getControllerName(), $referringRequest->getControllerExtensionName(), $referringRequest->getArguments());
+		}
+		$message = 'An error occurred while trying to call ' . get_class($this) . '->' . $this->actionMethodName . '().' . PHP_EOL;
+		return $message;
 	}
 
 	/**
@@ -609,46 +542,6 @@ class ActionController extends AbstractController {
 	 */
 	protected function getErrorFlashMessage() {
 		return 'An error occurred while trying to call ' . get_class($this) . '->' . $this->actionMethodName . '()';
-	}
-
-	/**
-	 * Checks the request hash (HMAC), if arguments have been touched by the property mapper.
-	 *
-	 * In case the @dontverifyrequesthash-Annotation has been set, this suppresses the exception.
-	 *
-	 * @return void
-	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidOrNoRequestHashException In case request hash checking failed
-	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
-	 */
-	protected function checkRequestHash() {
-		if ($this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper')) {
-			// If the new property mapper is enabled, the request hash is not needed anymore.
-			return;
-		}
-		if (!$this->request instanceof WebRequest) {
-			return;
-		}
-		// We only want to check it for now for web requests.
-		if ($this->request->isHmacVerified()) {
-			return;
-		}
-		// all good
-		$verificationNeeded = FALSE;
-		/** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
-		foreach ($this->arguments as $argument) {
-			if (
-				$argument->getOrigin() == \TYPO3\CMS\Extbase\Mvc\Controller\Argument::ORIGIN_NEWLY_CREATED
-				|| $argument->getOrigin() == \TYPO3\CMS\Extbase\Mvc\Controller\Argument::ORIGIN_PERSISTENCE_AND_MODIFIED
-			) {
-				$verificationNeeded = TRUE;
-			}
-		}
-		if ($verificationNeeded) {
-			$methodTagsValues = $this->reflectionService->getMethodTagsValues(get_class($this), $this->actionMethodName);
-			if (!isset($methodTagsValues['dontverifyrequesthash'])) {
-				throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidOrNoRequestHashException('Request hash (HMAC) checking failed. The parameter __hmac was invalid or not set, and objects were modified.', 1255082824);
-			}
-		}
 	}
 
 	/**

@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 /**
  * Validator for boolean values
  */
-class BooleanValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
+class BooleanValidator extends AbstractValidator {
 
 	/**
 	 * @var array

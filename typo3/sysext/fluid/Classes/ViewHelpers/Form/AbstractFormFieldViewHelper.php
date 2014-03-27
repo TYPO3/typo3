@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+
 /**
  * Abstract Form View Helper. Bundles functionality related to direct property access of objects in other Form ViewHelpers.
  *
@@ -28,7 +30,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *
  * @api
  */
-abstract class AbstractFormFieldViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewHelper {
+abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
@@ -101,16 +103,19 @@ abstract class AbstractFormFieldViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\
 	 */
 	protected function getValue($convertObjects = TRUE) {
 		$value = NULL;
+
 		if ($this->hasArgument('value')) {
 			$value = $this->arguments['value'];
-		} elseif ($this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper') && $this->hasMappingErrorOccurred()) {
+		} elseif ($this->isObjectAccessorMode()) {
+			if ($this->hasMappingErrorOccurred()) {
+				$value = $this->getLastSubmittedFormData();
+			} else {
+				$value = $this->getPropertyValue();
+			}
 			$this->addAdditionalIdentityPropertiesIfNeeded();
-			$value = $this->getLastSubmittedFormData();
-		} elseif ($this->isObjectAccessorMode() && $this->viewHelperVariableContainer->exists('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObject')) {
-			$this->addAdditionalIdentityPropertiesIfNeeded();
-			$value = $this->getPropertyValue();
 		}
-		if ($convertObjects === TRUE && is_object($value)) {
+
+		if ($convertObjects && is_object($value)) {
 			$identifier = $this->persistenceManager->getIdentifierByObject($value);
 			if ($identifier !== NULL) {
 				$value = $identifier;
@@ -136,7 +141,7 @@ abstract class AbstractFormFieldViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\
 	 */
 	protected function getLastSubmittedFormData() {
 		$propertyPath = rtrim(preg_replace('/(\\]\\[|\\[|\\])/', '.', $this->getNameWithoutPrefix()), '.');
-		$value = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($this->controllerContext->getRequest()->getOriginalRequest()->getArguments(), $propertyPath);
+		$value = ObjectAccess::getPropertyPath($this->controllerContext->getRequest()->getOriginalRequest()->getArguments(), $propertyPath);
 		return $value;
 	}
 
@@ -154,7 +159,7 @@ abstract class AbstractFormFieldViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\
 			$objectName = $this->viewHelperVariableContainer->get('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObjectName');
 			// If Count == 2 -> we need to go through the for-loop exactly once
 			for ($i = 1; $i < count($propertySegments); $i++) {
-				$object = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($formObject, implode('.', array_slice($propertySegments, 0, $i)));
+				$object = ObjectAccess::getPropertyPath($formObject, implode('.', array_slice($propertySegments, 0, $i)));
 				$objectName .= '[' . $propertySegments[($i - 1)] . ']';
 				$hiddenIdentityField = $this->renderHiddenIdentityField($object, $objectName);
 				// Add the hidden identity field to the ViewHelperVariableContainer
@@ -179,7 +184,7 @@ abstract class AbstractFormFieldViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\
 		if (is_array($formObject)) {
 			return isset($formObject[$propertyName]) ? $formObject[$propertyName] : NULL;
 		}
-		return \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($formObject, $propertyName);
+		return ObjectAccess::getPropertyPath($formObject, $propertyName);
 	}
 
 	/**
@@ -202,34 +207,22 @@ abstract class AbstractFormFieldViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\
 		} else {
 			$cssClass = '';
 		}
-		if ($this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper')) {
-			$mappingResultsForProperty = $this->getMappingResultsForProperty();
-			if ($mappingResultsForProperty->hasErrors()) {
-				if ($this->hasArgument('errorClass')) {
-					$cssClass .= $this->arguments['errorClass'];
-				} else {
-					$cssClass .= 'error';
-				}
-				$this->tag->addAttribute('class', $cssClass);
+
+		$mappingResultsForProperty = $this->getMappingResultsForProperty();
+		if ($mappingResultsForProperty->hasErrors()) {
+			if ($this->hasArgument('errorClass')) {
+				$cssClass .= $this->arguments['errorClass'];
+			} else {
+				$cssClass .= 'error';
 			}
-		} else {
-			// @deprecated since Fluid 1.4.0, will will be removed two versions after Fluid 6.1.
-			$errors = $this->getErrorsForProperty();
-			if (count($errors) > 0) {
-				if ($this->hasArgument('errorClass')) {
-					$cssClass .= $this->arguments['errorClass'];
-				} else {
-					$cssClass .= 'error';
-				}
-				$this->tag->addAttribute('class', $cssClass);
-			}
+			$this->tag->addAttribute('class', $cssClass);
 		}
 	}
 
 	/**
 	 * Get errors for the property and form name of this view helper
 	 *
-	 * @return array<Tx_Extbase_Error_Result> Array of errors
+	 * @return \TYPO3\CMS\Extbase\Error\Result Array of errors
 	 */
 	protected function getMappingResultsForProperty() {
 		if (!$this->isObjectAccessorMode()) {
@@ -238,32 +231,6 @@ abstract class AbstractFormFieldViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\
 		$originalRequestMappingResults = $this->controllerContext->getRequest()->getOriginalRequestMappingResults();
 		$formObjectName = $this->viewHelperVariableContainer->get('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObjectName');
 		return $originalRequestMappingResults->forProperty($formObjectName)->forProperty($this->arguments['property']);
-	}
-
-	/**
-	 * Get errors for the property and form name of this view helper
-	 *
-	 * @return array An array of Tx_Fluid_Error_Error objects
-	 * @deprecated since Fluid 1.4.0, will will be removed two versions after Fluid 6.1.
-	 */
-	protected function getErrorsForProperty() {
-		if (!$this->isObjectAccessorMode()) {
-			return array();
-		}
-		$errors = $this->controllerContext->getRequest()->getErrors();
-		$formObjectName = $this->viewHelperVariableContainer->get('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObjectName');
-		$propertyName = $this->arguments['property'];
-		foreach ($errors as $error) {
-			if ($error instanceof \TYPO3\CMS\Extbase\Validation\PropertyError && $error->getPropertyName() === $formObjectName) {
-				$formErrors = $error->getErrors();
-				foreach ($formErrors as $formError) {
-					if ($formError instanceof \TYPO3\CMS\Extbase\Validation\PropertyError && $formError->getPropertyName() === $propertyName) {
-						return $formError->getErrors();
-					}
-				}
-			}
-		}
-		return array();
 	}
 
 	/**

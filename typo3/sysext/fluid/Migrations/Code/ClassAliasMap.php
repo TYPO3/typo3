@@ -84,7 +84,6 @@ return array(
 	'Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper' => 'TYPO3\\CMS\\Fluid\\ViewHelpers\\Form\\AbstractFormFieldViewHelper',
 	'Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper' => 'TYPO3\\CMS\\Fluid\\ViewHelpers\\Form\\AbstractFormViewHelper',
 	'Tx_Fluid_ViewHelpers_Form_CheckboxViewHelper' => 'TYPO3\\CMS\\Fluid\\ViewHelpers\\Form\\CheckboxViewHelper',
-	'Tx_Fluid_ViewHelpers_Form_ErrorsViewHelper' => 'TYPO3\\CMS\\Fluid\\ViewHelpers\\Form\\ErrorsViewHelper',
 	'Tx_Fluid_ViewHelpers_Form_HiddenViewHelper' => 'TYPO3\\CMS\\Fluid\\ViewHelpers\\Form\\HiddenViewHelper',
 	'Tx_Fluid_ViewHelpers_Form_PasswordViewHelper' => 'TYPO3\\CMS\\Fluid\\ViewHelpers\\Form\\PasswordViewHelper',
 	'Tx_Fluid_ViewHelpers_Form_RadioViewHelper' => 'TYPO3\\CMS\\Fluid\\ViewHelpers\\Form\\RadioViewHelper',

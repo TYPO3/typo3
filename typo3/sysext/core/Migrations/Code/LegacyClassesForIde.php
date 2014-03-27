@@ -1729,17 +1729,7 @@ class Tx_Extbase_MVC_Controller_Argument extends \TYPO3\CMS\Extbase\Mvc\Controll
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class Tx_Extbase_MVC_Controller_ArgumentError extends \TYPO3\CMS\Extbase\Mvc\Controller\ArgumentError {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
 class Tx_Extbase_MVC_Controller_Arguments extends \TYPO3\CMS\Extbase\Mvc\Controller\Arguments {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extbase_MVC_Controller_ArgumentsValidator extends \TYPO3\CMS\Extbase\Mvc\Controller\ArgumentsValidator {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
@@ -2589,16 +2579,6 @@ class Tx_Extbase_Property_Exception_TypeConverterException extends \TYPO3\CMS\Ex
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class Tx_Extbase_Property_Mapper extends \TYPO3\CMS\Extbase\Property\Mapper {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extbase_Property_MappingResults extends \TYPO3\CMS\Extbase\Property\MappingResults {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
 class Tx_Extbase_Property_PropertyMapper extends \TYPO3\CMS\Extbase\Property\PropertyMapper {}
 
 /**
@@ -2779,11 +2759,6 @@ class Tx_Extbase_Scheduler_TaskExecutor extends \TYPO3\CMS\Extbase\Scheduler\Tas
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class Tx_Extbase_Security_Channel_RequestHashService extends \TYPO3\CMS\Extbase\Security\Channel\RequestHashService {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
 class Tx_Extbase_Security_Cryptography_HashService extends \TYPO3\CMS\Extbase\Security\Cryptography\HashService {}
 
 /**
@@ -2919,17 +2894,7 @@ class Tx_Extbase_Validation_Exception_NoValidatorFound extends \TYPO3\CMS\Extbas
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class Tx_Extbase_Validation_PropertyError extends \TYPO3\CMS\Extbase\Validation\PropertyError {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
 abstract class Tx_Extbase_Validation_Validator_AbstractCompositeValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractCompositeValidator {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-abstract class Tx_Extbase_Validation_Validator_AbstractObjectValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractObjectValidator {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
@@ -3490,11 +3455,6 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper extends \TYPO3\C
  * @deprecated since 6.0 will be removed in 7.0
  */
 class Tx_Fluid_ViewHelpers_Form_CheckboxViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\CheckboxViewHelper {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Fluid_ViewHelpers_Form_ErrorsViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\ErrorsViewHelper {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0

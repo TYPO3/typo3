@@ -35,15 +35,13 @@ interface ValidatorInterface {
 	 * @param mixed $value The value that should be validated
 	 * @return \TYPO3\CMS\Extbase\Error\Result
 	 * @api
-	 * @todo: enable once the old property mapper is removed
 	 */
-	//public function validate($value);
+	public function validate($value);
 
 	/**
 	 * Returns the options of this validator which can be specified in the constructor
 	 *
 	 * @return array
-	 * @todo: enable once the old property mapper is removed
 	 */
-	//public function getOptions();
+	public function getOptions();
 }

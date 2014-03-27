@@ -44,14 +44,10 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
 	protected $validatedInstancesContainer;
 
 	/**
-	 * @var array
-	 */
-	protected $errors = array();
-
-	/**
 	 * Constructs the composite validator and sets validation options
 	 *
 	 * @param array $options Options for the validator
+	 * @throws \TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException
 	 * @api
 	 */
 	public function __construct(array $options = array()) {
@@ -82,26 +78,6 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
 			$options
 		);
 		$this->validators = new \SplObjectStorage();
-	}
-
-	/**
-	 * Does nothing.
-	 *
-	 * @param array $options Not used
-	 * @return void
-	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
-	 */
-	public function setOptions(array $options) {
-	}
-
-	/**
-	 * Returns an array of errors which occurred during the last isValid() call.
-	 *
-	 * @return array An array of \TYPO3\CMS\Extbase\Validation\Error objects or an empty array if no errors occurred.
-	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
-	 */
-	public function getErrors() {
-		return $this->errors;
 	}
 
 	/**
@@ -170,32 +146,5 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
 	 */
 	public function setValidatedInstancesContainer(\SplObjectStorage $validatedInstancesContainer) {
 		$this->validatedInstancesContainer = $validatedInstancesContainer;
-	}
-
-	/**
-	 * Checks the given object can be validated by the validator implementation
-	 *
-	 * @param object $object The object to be checked
-	 * @return boolean TRUE if this validator can validate instances of the given object or FALSE if it can't
-	 *
-	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
-	 */
-	public function canValidate($object) {
-		// deliberately empty
-	}
-
-	/**
-	 * Checks if the specified property of the given object is valid.
-	 *
-	 * If at least one error occurred, the result is FALSE.
-	 *
-	 * @param object $object The object containing the property to validate
-	 * @param string $propertyName Name of the property to validate
-	 * @return boolean TRUE if the property value is valid, FALSE if an error occurred
-	 *
-	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
-	 */
-	public function isPropertyValid($object, $propertyName) {
-		// deliberately empty
 	}
 }

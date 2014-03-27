@@ -37,11 +37,6 @@ class CollectionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $mockValidatorResolver;
 
 	/**
-	 * @var \TYPO3\CMS\Core\Configuration\ConfigurationManager
-	 */
-	protected $configurationManager;
-
-	/**
 	 * @var \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface
 	 */
 	protected $validator;
@@ -64,18 +59,6 @@ class CollectionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			array('createValidator', 'buildBaseValidatorConjunction', 'getBaseValidatorConjunction')
 		);
 		$this->validator = $this->getValidator();
-		$this->configurationManager = $this->getMock(
-			'TYPO3\CMS\Extbase\Configuration\ConfigurationManager',
-			array('isFeatureEnabled'),
-			array(),
-			'',
-			FALSE
-		);
-		$this->configurationManager->expects($this->any())
-			->method('isFeatureEnabled')
-			->with('rewrittenPropertyMapper')
-			->will($this->returnValue(TRUE));
-		$this->validator->injectConfigurationManager($this->configurationManager);
 		$this->validator->_set('validatorResolver', $this->mockValidatorResolver);
 	}
 
@@ -133,7 +116,6 @@ class CollectionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		// Create validators
 		$aValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\GenericObjectValidator', array('translateErrorMessage'), array(array()));
-		$aValidator->injectConfigurationManager($this->configurationManager);
 		$this->validator->_set('options', array('elementValidator' => 'Integer'));
 		$integerValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\IntegerValidator', array('translateErrorMessage'), array(array()));
 
@@ -168,7 +150,6 @@ class CollectionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			// only in this test case we want to mock the isValid method
 		$validator = $this->getValidator(array('elementType' => $elementType), array('isValid'));
 		$validator->expects($this->never())->method('isValid');
-		$validator->injectConfigurationManager($this->configurationManager);
 		$this->mockValidatorResolver->expects($this->never())->method('createValidator');
 		$validator->validate($lazyObjectStorage);
 	}
@@ -182,7 +163,6 @@ class CollectionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$objectStorage->attach($entity);
 		$aValidator = new \TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator(array());
-		$aValidator->injectConfigurationManager($this->configurationManager);
 
 		$this->mockValidatorResolver->expects($this->never())->method('createValidator');
 		$this->mockValidatorResolver->expects($this->once())

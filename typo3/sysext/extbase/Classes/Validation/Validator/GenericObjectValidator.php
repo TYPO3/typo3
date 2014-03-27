@@ -13,13 +13,15 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+
 /**
  * A generic object validator which allows for specifying property validators
  */
 class GenericObjectValidator extends AbstractValidator implements ObjectValidatorInterface {
 
 	/**
-	 * @var array
+	 * @var \SplObjectStorage[]
 	 */
 	protected $propertyValidators = array();
 
@@ -55,10 +57,10 @@ class GenericObjectValidator extends AbstractValidator implements ObjectValidato
 	 */
 	protected function getPropertyValue($object, $propertyName) {
 		// TODO: add support for lazy loading proxies, if needed
-		if (\TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertyGettable($object, $propertyName)) {
-			return \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($object, $propertyName);
+		if (ObjectAccess::isPropertyGettable($object, $propertyName)) {
+			return ObjectAccess::getProperty($object, $propertyName);
 		} else {
-			return \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($object, $propertyName, TRUE);
+			return ObjectAccess::getProperty($object, $propertyName, TRUE);
 		}
 	}
 
@@ -67,11 +69,12 @@ class GenericObjectValidator extends AbstractValidator implements ObjectValidato
 	 * found errors to the $messages object.
 	 *
 	 * @param mixed $value The value to be validated
-	 * @param array $validators The validators to be called on the value
+	 * @param \Traversable $validators The validators to be called on the value
 	 * @param string $propertyName Name of ther property to check
 	 * @return void
 	 */
 	protected function checkProperty($value, $validators, $propertyName) {
+		/** @var \TYPO3\CMS\Extbase\Error\Result $result */
 		$result = NULL;
 		foreach ($validators as $validator) {
 			if ($validator instanceof ObjectValidatorInterface) {
@@ -97,35 +100,11 @@ class GenericObjectValidator extends AbstractValidator implements ObjectValidato
 	 * @param mixed $object The value that should be validated
 	 * @return void
 	 * @api
-	 * @todo: method must be protected once the old property mapper is removed
 	 */
-	public function isValid($object) {
-		if ($this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper')) {
-			foreach ($this->propertyValidators as $propertyName => $validators) {
-				$propertyValue = $this->getPropertyValue($object, $propertyName);
-				$this->checkProperty($propertyValue, $validators, $propertyName);
-			}
-
-			return;
-		} else {
-			/* @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1 */
-			if (!is_object($object)) {
-				$this->addError(
-					$this->translateErrorMessage(
-						'validator.genericobject.noobject',
-						'extbase'
-					), 1241099148);
-
-				return FALSE;
-			}
-			$result = TRUE;
-			foreach (array_keys($this->propertyValidators) as $propertyName) {
-				if ($this->isPropertyValid($object, $propertyName) === FALSE) {
-					$result = FALSE;
-				}
-			}
-
-			return $result;
+	protected function isValid($object) {
+		foreach ($this->propertyValidators as $propertyName => $validators) {
+			$propertyValue = $this->getPropertyValue($object, $propertyName);
+			$this->checkProperty($propertyValue, $validators, $propertyName);
 		}
 	}
 
@@ -141,57 +120,14 @@ class GenericObjectValidator extends AbstractValidator implements ObjectValidato
 	}
 
 	/**
-	 * Checks if the specified property of the given object is valid.
-	 *
-	 * If at least one error occurred, the result is FALSE.
-	 *
-	 * @param object $object The object containing the property to validate
-	 * @param string $propertyName Name of the property to validate
-	 * @throws \InvalidArgumentException
-	 * @return boolean TRUE if the property value is valid, FALSE if an error occurred
-	 * @api
-	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
-	 */
-	public function isPropertyValid($object, $propertyName) {
-		if (!is_object($object)) {
-			throw new \InvalidArgumentException('Object expected, ' . gettype($object) . ' given.', 1241099149);
-		}
-		if (!isset($this->propertyValidators[$propertyName])) {
-			return TRUE;
-		}
-		$result = TRUE;
-		foreach ($this->propertyValidators[$propertyName] as $validator) {
-			$validator->isValid(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($object, $propertyName));
-			if (count($validator->getErrors()) > 0) {
-				$this->addErrorsForProperty($validator->getErrors(), $propertyName);
-				$result = FALSE;
-			}
-		}
-		return $result;
-	}
-
-	/**
-	 * @param array $errors Array of \TYPO3\CMS\Extbase\Validation\Error
-	 * @param string $propertyName Name of the property to add errors
-	 * @return void
-	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
-	 */
-	protected function addErrorsForProperty($errors, $propertyName) {
-		if (!isset($this->errors[$propertyName])) {
-			$this->errors[$propertyName] = new \TYPO3\CMS\Extbase\Validation\PropertyError($propertyName);
-		}
-		$this->errors[$propertyName]->addErrors($errors);
-	}
-
-	/**
 	 * Adds the given validator for validation of the specified property.
 	 *
 	 * @param string $propertyName Name of the property to validate
-	 * @param \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $validator The property validator
+	 * @param ValidatorInterface $validator The property validator
 	 * @return void
 	 * @api
 	 */
-	public function addPropertyValidator($propertyName, \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $validator) {
+	public function addPropertyValidator($propertyName, ValidatorInterface $validator) {
 		if (!isset($this->propertyValidators[$propertyName])) {
 			$this->propertyValidators[$propertyName] = new \SplObjectStorage();
 		}
@@ -227,20 +163,6 @@ class GenericObjectValidator extends AbstractValidator implements ObjectValidato
 		} else {
 			return $this->propertyValidators;
 		}
-	}
-
-	/**
-	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-	 */
-	protected $configurationManager;
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-	 * @return void
-	 */
-	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
-		// @todo: remove configuration manager once the old property mapper is removed
-		$this->configurationManager = $configurationManager;
 	}
 
 	/**

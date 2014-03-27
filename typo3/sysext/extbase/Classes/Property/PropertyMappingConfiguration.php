@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Core\ClassLoader;
  *
  * @api
  */
-class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface {
+class PropertyMappingConfiguration implements PropertyMappingConfigurationInterface {
 
 	/**
 	 * Placeholder in property paths for multi-valued types
@@ -48,7 +48,7 @@ class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\Proper
 	/**
 	 * Stores the configuration for specific child properties.
 	 *
-	 * @var array<\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface>
+	 * @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface[]
 	 */
 	protected $subConfigurationForProperty = array();
 

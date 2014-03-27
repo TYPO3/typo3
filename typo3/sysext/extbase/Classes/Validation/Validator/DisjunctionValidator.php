@@ -59,28 +59,4 @@ class DisjunctionValidator extends AbstractCompositeValidator {
 
 		return $result;
 	}
-
-	/**
-	 * Checks if the given value is valid according to the validators of the conjunction.
-	 *
-	 * If at least one error occurred, the result is FALSE.
-	 *
-	 * @param mixed $value The value that should be validated
-	 * @return boolean TRUE if the value is valid, FALSE if an error occurred
-	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
-	 */
-	public function isValid($value) {
-		$result = FALSE;
-		foreach ($this->validators as $validator) {
-			if ($validator->isValid($value) === FALSE) {
-				$this->errors = array_merge($this->errors, $validator->getErrors());
-			} else {
-				$result = TRUE;
-			}
-		}
-		if ($result === TRUE) {
-			$this->errors = array();
-		}
-		return $result;
-	}
 }

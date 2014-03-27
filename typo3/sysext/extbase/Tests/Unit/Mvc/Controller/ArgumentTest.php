@@ -160,7 +160,6 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setValueProvidesFluentInterface() {
-		$this->enableRewrittenPropertyMapperInArgument($this->simpleValueArgument);
 		$returnedArgument = $this->simpleValueArgument->setValue(NULL);
 		$this->assertSame($this->simpleValueArgument, $returnedArgument, 'The returned argument is not the original argument.');
 	}
@@ -172,56 +171,8 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setValueUsesNullAsIs() {
 		$this->simpleValueArgument = new \TYPO3\CMS\Extbase\Mvc\Controller\Argument('dummy', 'string');
 		$this->simpleValueArgument = $this->getAccessibleMock('TYPO3\CMS\Extbase\Mvc\Controller\Argument', array('dummy'), array('dummy', 'string'));
-		$this->enableRewrittenPropertyMapperInArgument($this->simpleValueArgument);
 		$this->simpleValueArgument->setValue(NULL);
 		$this->assertNull($this->simpleValueArgument->getValue());
-	}
-
-	/**
-	 * @return array
-	 */
-	public function validClassNameDataTypes() {
-		return array(
-			array('Tx_Foo_Bar'),
-			array('ExtbaseTeam\\BlogExample\\Foo\\Bar'),
-		);
-	}
-
-	/**
-	 * @test
-	 * @dataProvider validClassNameDataTypes
-	 */
-	public function classSchemaIsBuiltForClassNameDataTypesWhenReflectionServiceIsInjected($dataType) {
-		/** @var $argument \TYPO3\CMS\Extbase\Mvc\Controller\Argument|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-		$argument = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('dummy'), array(), '', FALSE);
-		$argument->_set('dataType', $dataType);
-		$reflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService');
-		$reflectionService->expects($this->once())->method('getClassSchema')->with($dataType);
-		$argument->injectReflectionService($reflectionService);
-	}
-
-	/**
-	 * @return array
-	 */
-	public function primitiveOrBuiltInObjectsDataTypes() {
-		return array(
-			array('integer'),
-			array('array'),
-			array('DateTime'),
-		);
-	}
-
-	/**
-	 * @test
-	 * @dataProvider primitiveOrBuiltInObjectsDataTypes
-	 */
-	public function classSchemaIsNotBuiltForPrimitiveDataTypesWhenReflectionServiceIsInjected($dataType) {
-		/** @var $argument \TYPO3\CMS\Extbase\Mvc\Controller\Argument|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-		$argument = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('dummy'), array(), '', FALSE);
-		$argument->_set('dataType', $dataType);
-		$reflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService');
-		$reflectionService->expects($this->never())->method('getClassSchema');
-		$argument->injectReflectionService($reflectionService);
 	}
 
 	/**
@@ -229,7 +180,6 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function setValueUsesMatchingInstanceAsIs() {
-		$this->enableRewrittenPropertyMapperInArgument($this->objectArgument);
 		$this->mockPropertyMapper->expects($this->never())->method('convert');
 		$this->objectArgument->setValue(new \DateTime());
 	}
@@ -248,7 +198,6 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setValueShouldCallPropertyMapperCorrectlyAndStoreResultInValue() {
-		$this->enableRewrittenPropertyMapperInArgument($this->simpleValueArgument);
 		$this->setupPropertyMapperAndSetValue();
 		$this->assertSame('convertedValue', $this->simpleValueArgument->getValue());
 		$this->assertTrue($this->simpleValueArgument->isValid());
@@ -259,7 +208,6 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setValueShouldBeFluentInterface() {
-		$this->enableRewrittenPropertyMapperInArgument($this->simpleValueArgument);
 		$this->assertSame($this->simpleValueArgument, $this->setupPropertyMapperAndSetValue());
 	}
 
@@ -268,9 +216,8 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setValueShouldSetValidationErrorsIfValidatorIsSetAndValidationFailed() {
-		$this->enableRewrittenPropertyMapperInArgument($this->simpleValueArgument);
 		$error = new \TYPO3\CMS\Extbase\Error\Error('Some Error', 1234);
-		$mockValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate'));
+		$mockValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate', 'getOptions'));
 		$validationMessages = new \TYPO3\CMS\Extbase\Error\Result();
 		$validationMessages->addError($error);
 		$mockValidator->expects($this->once())->method('validate')->with('convertedValue')->will($this->returnValue($validationMessages));
@@ -287,16 +234,5 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function defaultPropertyMappingConfigurationDoesNotAllowCreationOrModificationOfObjects() {
 		$this->assertNull($this->simpleValueArgument->getPropertyMappingConfiguration()->getConfigurationValue('TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter', \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED));
 		$this->assertNull($this->simpleValueArgument->getPropertyMappingConfiguration()->getConfigurationValue('TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter', \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED));
-	}
-
-	/**
-	 * Helper which enables the new property mapper in the Argument class.
-	 *
-	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument
-	 */
-	protected function enableRewrittenPropertyMapperInArgument(\TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument) {
-		$mockConfigurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
-		$mockConfigurationManager->expects($this->any())->method('isFeatureEnabled')->with('rewrittenPropertyMapper')->will($this->returnValue(TRUE));
-		$argument->_set('configurationManager', $mockConfigurationManager);
 	}
 }

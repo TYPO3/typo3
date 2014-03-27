@@ -46,13 +46,13 @@ class ConjunctionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function allValidatorsInTheConjunctionAreCalledEvenIfOneReturnsError() {
 		$validatorConjunction = new \TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator(array());
-		$validatorObject = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate'));
+		$validatorObject = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate', 'getOptions'));
 		$validatorObject->expects($this->once())->method('validate')->will($this->returnValue(new \TYPO3\CMS\Extbase\Error\Result()));
 		$errors = new \TYPO3\CMS\Extbase\Error\Result();
 		$errors->addError(new \TYPO3\CMS\Extbase\Error\Error('Error', 123));
-		$secondValidatorObject = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate'));
+		$secondValidatorObject = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate', 'getOptions'));
 		$secondValidatorObject->expects($this->once())->method('validate')->will($this->returnValue($errors));
-		$thirdValidatorObject = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate'));
+		$thirdValidatorObject = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate', 'getOptions'));
 		$thirdValidatorObject->expects($this->once())->method('validate')->will($this->returnValue(new \TYPO3\CMS\Extbase\Error\Result()));
 		$validatorConjunction->addValidator($validatorObject);
 		$validatorConjunction->addValidator($secondValidatorObject);
@@ -66,9 +66,9 @@ class ConjunctionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function validatorConjunctionReturnsNoErrorsIfAllJunctionedValidatorsReturnNoErrors() {
 		$validatorConjunction = new \TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator(array());
-		$validatorObject = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate'));
+		$validatorObject = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate', 'getOptions'));
 		$validatorObject->expects($this->any())->method('validate')->will($this->returnValue(new \TYPO3\CMS\Extbase\Error\Result()));
-		$secondValidatorObject = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate'));
+		$secondValidatorObject = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate', 'getOptions'));
 		$secondValidatorObject->expects($this->any())->method('validate')->will($this->returnValue(new \TYPO3\CMS\Extbase\Error\Result()));
 		$validatorConjunction->addValidator($validatorObject);
 		$validatorConjunction->addValidator($secondValidatorObject);
@@ -82,7 +82,7 @@ class ConjunctionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function validatorConjunctionReturnsErrorsIfOneValidatorReturnsErrors() {
 		$validatorConjunction = new \TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator(array());
-		$validatorObject = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate'));
+		$validatorObject = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate', 'getOptions'));
 		$errors = new \TYPO3\CMS\Extbase\Error\Result();
 		$errors->addError(new \TYPO3\CMS\Extbase\Error\Error('Error', 123));
 		$validatorObject->expects($this->any())->method('validate')->will($this->returnValue($errors));
@@ -97,8 +97,8 @@ class ConjunctionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function removingAValidatorOfTheValidatorConjunctionWorks() {
 		/** @var \TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
 		$validatorConjunction = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ConjunctionValidator', array('dummy'), array(array()), '', TRUE);
-		$validator1 = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate'));
-		$validator2 = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate'));
+		$validator1 = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate', 'getOptions'));
+		$validator2 = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate', 'getOptions'));
 		$validatorConjunction->addValidator($validator1);
 		$validatorConjunction->addValidator($validator2);
 		$validatorConjunction->removeValidator($validator1);
@@ -113,7 +113,7 @@ class ConjunctionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function removingANotExistingValidatorIndexThrowsException() {
 		$validatorConjunction = new \TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator(array());
-		$validator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate'));
+		$validator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate', 'getOptions'));
 		$validatorConjunction->removeValidator($validator);
 	}
 
@@ -123,8 +123,8 @@ class ConjunctionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function countReturnesTheNumberOfValidatorsContainedInTheConjunction() {
 		$validatorConjunction = new \TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator(array());
-		$validator1 = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate'));
-		$validator2 = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate'));
+		$validator1 = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate', 'getOptions'));
+		$validator2 = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate', 'getOptions'));
 		$this->assertSame(0, count($validatorConjunction));
 		$validatorConjunction->addValidator($validator1);
 		$validatorConjunction->addValidator($validator2);

@@ -30,7 +30,7 @@ class DateTimeValidator extends AbstractValidator {
 	 * @return boolean TRUE if the value is valid, FALSE if an error occurred
 	 */
 	public function isValid($value) {
-		$this->errors = array();
+		$this->result->clear();
 		if ($value instanceof \DateTime) {
 			return;
 		}

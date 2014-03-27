@@ -72,20 +72,8 @@ class CollectionValidator extends GenericObjectValidator {
 	 *
 	 * @param mixed $value A collection to be validated
 	 * @return void
-	 * @todo: method must be protected once the old property mapper is removed
 	 */
-	public function isValid($value) {
-		if (!$this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper')) {
-			// @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
-			if ($this->validatedInstancesContainer == NULL) {
-				$this->validatedInstancesContainer = new \SplObjectStorage();
-			}
-
-			if ($this->result == NULL) {
-				$this->result = new \TYPO3\CMS\Extbase\Error\Result();
-			}
-		}
-
+	protected function isValid($value) {
 		foreach ($value as $index => $collectionElement) {
 			if (isset($this->options['elementValidator'])) {
 				$collectionElementValidator = $this->validatorResolver->createValidator($this->options['elementValidator']);

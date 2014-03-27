@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Extbase\Error\Result;
 
 /**
  * Validator to chain many validators in a conjunction (logical and).
@@ -26,13 +27,15 @@ class ConjunctionValidator extends AbstractCompositeValidator {
 	 * Every validator has to be valid, to make the whole conjunction valid.
 	 *
 	 * @param mixed $value The value that should be validated
-	 * @return \TYPO3\CMS\Extbase\Error\Result
+	 * @return Result
 	 * @api
 	 */
 	public function validate($value) {
 		$validators = $this->getValidators();
 		if ($validators->count() > 0) {
+			/** @var Result $result */
 			$result = NULL;
+			/** @var AbstractValidator $validator */
 			foreach ($validators as $validator) {
 				if ($result === NULL) {
 					$result = $validator->validate($value);
@@ -41,29 +44,9 @@ class ConjunctionValidator extends AbstractCompositeValidator {
 				}
 			}
 		} else {
-			$result = new \TYPO3\CMS\Extbase\Error\Result;
+			$result = new Result;
 		}
 
-		return $result;
-	}
-
-	/**
-	 * Checks if the given value is valid according to the validators of the conjunction.
-	 *
-	 * If at least one error occurred, the result is FALSE.
-	 *
-	 * @param mixed $value The value that should be validated
-	 * @return boolean
-	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
-	 */
-	public function isValid($value) {
-		$result = TRUE;
-		foreach ($this->validators as $validator) {
-			if ($validator->isValid($value) === FALSE) {
-				$this->errors = array_merge($this->errors, $validator->getErrors());
-				$result = FALSE;
-			}
-		}
 		return $result;
 	}
 }

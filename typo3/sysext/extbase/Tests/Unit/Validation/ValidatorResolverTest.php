@@ -45,7 +45,9 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$className = uniqid('Foo');
 		$realClassName = 'Tx_' . $extensionName . '_Validation_Validator_' . $className . 'Validator';
 		$validatorName = $extensionName . ':' . $className;
-		eval('class ' . $realClassName . ' implements TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface {}');
+		eval('class ' . $realClassName . ' implements TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface {
+		public function validate($value){} public function getOptions(){}
+		}');
 		$this->assertEquals($realClassName, $this->validatorResolver->_call('resolveValidatorObjectName', $validatorName));
 	}
 
@@ -80,7 +82,9 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function resolveValidatorObjectNameReturnsValidatorNameIfClassExists() {
 		$className = uniqid('Foo_');
 		$expectedValidatorName = $className . 'Validator';
-		eval('class ' . $expectedValidatorName . ' implements TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface {}');
+		eval('class ' . $expectedValidatorName . ' implements TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface {
+		public function validate($value){} public function getOptions(){}
+		}');
 		$this->assertEquals(
 			$expectedValidatorName,
 			$this->validatorResolver->_call('resolveValidatorObjectName', $className)
@@ -128,7 +132,9 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider namespacedShorthandValidatornames
 	 */
 	public function resolveValidatorObjectNameCanResolveNamespacedShorthandValidatornames($namespace, $className, $shorthandValidatorname) {
-		eval('namespace ' . $namespace . '; class ' . $className . ' implements \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface {}');
+		eval('namespace ' . $namespace . '; class ' . $className . ' implements \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface {
+		public function validate($value){} public function getOptions(){}
+		}');
 		$this->assertSame($namespace . '\\' . $className, $this->validatorResolver->_call('resolveValidatorObjectName', $shorthandValidatorname));
 	}
 
@@ -136,7 +142,9 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function resolveValidatorObjectNameCanResolveShortNamesOfBuiltInValidators() {
-		eval('namespace TYPO3\\CMS\\Extbase\\Validation\\Validator;' . LF . 'class FooValidator implements \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface {}');
+		eval('namespace TYPO3\\CMS\\Extbase\\Validation\\Validator;' . LF . 'class FooValidator implements \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface {
+		public function validate($value){} public function getOptions(){}
+		}');
 		$this->assertSame('TYPO3\\CMS\\Extbase\\Validation\\Validator\\FooValidator', $this->validatorResolver->_call('resolveValidatorObjectName', 'Foo'));
 	}
 
@@ -145,14 +153,13 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function createValidatorResolvesAndReturnsAValidatorAndPassesTheGivenOptions() {
 		$className = uniqid('Test');
-		$validatorOptions = array('requiredOption' => 'foo', 'demoOption' => 'bar');
-		$mockValidator = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Tests\\Unit\\Validation\\Validator\\Fixture\\AbstractValidatorClass', array('dummy'), array($validatorOptions), $className);
-		$this->mockObjectManager->expects($this->any())->method('get')->with($className, $validatorOptions)->will($this->returnValue($mockValidator));
+		$mockValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ObjectValidatorInterface', array('validate', 'getOptions', 'setValidatedInstancesContainer'), array(), $className);
+		$this->mockObjectManager->expects($this->any())->method('get')->with($className)->will($this->returnValue($mockValidator));
+		/** @var \TYPO3\CMS\Extbase\Validation\ValidatorResolver $validatorResolver */
 		$validatorResolver = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Validation\\ValidatorResolver', array('resolveValidatorObjectName'));
 		$validatorResolver->_set('objectManager', $this->mockObjectManager);
 		$validatorResolver->expects($this->once())->method('resolveValidatorObjectName')->with($className)->will($this->returnValue($className));
-		$validator = $validatorResolver->createValidator($className, $validatorOptions);
-		$this->assertEquals($validatorOptions, $validator->_get('options'));
+		$validator = $validatorResolver->createValidator($className);
 		$this->assertSame($mockValidator, $validator);
 	}
 
@@ -361,7 +368,9 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function resolveValidatorObjectNameCallsGetValidatorType() {
 		$validatorName = uniqid('FooValidator');
-		eval('namespace TYPO3\CMS\Extbase\Validation\Validator;' . LF . 'class ' . $validatorName . 'Validator implements \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface {}');
+		eval('namespace TYPO3\CMS\Extbase\Validation\Validator;' . LF . 'class ' . $validatorName . 'Validator implements \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface {
+		public function validate($value){} public function getOptions(){}
+		}');
 		$mockValidatorResolver = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Validation\\ValidatorResolver', array('getValidatorType'));
 		$mockValidatorResolver->expects($this->once())->method('getValidatorType')->with($validatorName)->will($this->returnValue($validatorName));
 

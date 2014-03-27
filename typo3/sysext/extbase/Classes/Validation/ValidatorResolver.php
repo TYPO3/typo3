@@ -80,7 +80,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 	 * the \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface or NULL if no validator
 	 * could be resolved.
 	 *
-	 * @param string $validatorName Either one of the built-in data types or fully qualified validator class name
+	 * @param string $validatorType Either one of the built-in data types or fully qualified validator class name
 	 * @param array $validatorOptions Options to be passed to the validator
 	 * @return \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface Validator or NULL if none found.
 	 */
@@ -110,7 +110,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 	 * If no validator could be resolved (which usually means that no validation is necessary),
 	 * NULL is returned.
 	 *
-	 * @param string $dataType The data type to search a validator for. Usually the fully qualified object name
+	 * @param string $targetClassName The data type to search a validator for. Usually the fully qualified object name
 	 * @return \TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator The validator conjunction or NULL
 	 */
 	public function getBaseValidatorConjunction($targetClassName) {
@@ -130,12 +130,13 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $methodName
 	 * @param array $methodParameters Optional pre-compiled array of method parameters
 	 * @param array $methodValidateAnnotations Optional pre-compiled array of validate annotations (as array)
-	 * @return array An Array of ValidatorConjunctions for each method parameters.
+	 * @return ConjunctionValidator[] An Array of ValidatorConjunctions for each method parameters.
 	 * @throws \TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationConfigurationException
 	 * @throws \TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException
 	 * @throws \TYPO3\CMS\Extbase\Validation\Exception\InvalidTypeHintException
 	 */
 	public function buildMethodArgumentsValidatorConjunctions($className, $methodName, array $methodParameters = NULL, array $methodValidateAnnotations = NULL) {
+		/** @var ConjunctionValidator[] $validatorConjunctions */
 		$validatorConjunctions = array();
 
 		if ($methodParameters === NULL) {
@@ -146,7 +147,8 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 
 		foreach ($methodParameters as $parameterName => $methodParameter) {
-			$validatorConjunction = $this->createValidator('TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator');
+			/** @var ConjunctionValidator $validatorConjunction */
+			$validatorConjunction = $this->createValidator('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ConjunctionValidator');
 
 			if (!array_key_exists('type', $methodParameter)) {
 				throw new Exception\InvalidTypeHintException('Missing type information, probably no @param annotation for parameter "$' . $parameterName . '" in ' . $className . '->' . $methodName . '()', 1281962564);

@@ -26,9 +26,7 @@ class NumberRangeValidator extends AbstractValidator {
 	 */
 	protected $supportedOptions = array(
 		'minimum' => array(0, 'The minimum value to accept', 'integer'),
-		'maximum' => array(PHP_INT_MAX, 'The maximum value to accept', 'integer'),
-		'startRange' => array(0, 'The minimum value to accept', 'integer'),
-		'endRange' => array(PHP_INT_MAX, 'The maximum value to accept', 'integer')
+		'maximum' => array(PHP_INT_MAX, 'The maximum value to accept', 'integer')
 	);
 
 	/**
@@ -48,24 +46,8 @@ class NumberRangeValidator extends AbstractValidator {
 			return;
 		}
 
-		/**
-		 * @todo: remove this fallback to startRange/endRange in 6.3 when the setOptions() method is removed too
-		 * @deprecated since Extbase 1.4, will be removed two versions after Extbase 6.1
-		 */
-		if (isset($this->options['minimum'])) {
-			$minimum = $this->options['minimum'];
-		} elseif (isset($this->options['startRange'])) {
-			$minimum = $this->options['startRange'];
-		} else {
-			$minimum = 0;
-		}
-		if (isset($this->options['maximum'])) {
-			$maximum = $this->options['maximum'];
-		} elseif (isset($this->options['endRange'])) {
-			$maximum = $this->options['endRange'];
-		} else {
-			$maximum = PHP_INT_MAX;
-		}
+		$minimum = $this->options['minimum'];
+		$maximum = $this->options['maximum'];
 
 		if ($minimum > $maximum) {
 			$x = $minimum;

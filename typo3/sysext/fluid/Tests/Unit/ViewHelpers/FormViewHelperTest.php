@@ -49,8 +49,11 @@ class FormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
 	protected function injectDependenciesIntoViewHelper(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper $viewHelper) {
 		$viewHelper->_set('configurationManager', $this->mockConfigurationManager);
 		parent::injectDependenciesIntoViewHelper($viewHelper);
-		$this->mvcPropertyMapperConfigurationService->_set('hashService', new \TYPO3\CMS\Extbase\Security\Cryptography\HashService());
+		$hashService = $this->getMock('TYPO3\CMS\Extbase\Security\Cryptography\HashService', array('appendHmac'));
+		$hashService->expects($this->any())->method('appendHmac')->will($this->returnValue(''));
+		$this->mvcPropertyMapperConfigurationService->_set('hashService', $hashService);
 		$viewHelper->_set('mvcPropertyMapperConfigurationService', $this->mvcPropertyMapperConfigurationService);
+		$viewHelper->_set('hashService', $hashService);
 	}
 
 	/**
@@ -109,7 +112,7 @@ class FormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
 	 */
 	public function renderCallsRenderHiddenIdentityField() {
 		$object = new \stdClass();
-		$viewHelper = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', array('renderChildren', 'renderRequestHashField', 'renderHiddenIdentityField', 'getFormObjectName', 'renderTrustedPropertiesField'), array(), '', FALSE);
+		$viewHelper = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', array('renderChildren', 'renderRequestHashField', 'renderHiddenReferrerFields', 'renderHiddenIdentityField', 'getFormObjectName', 'renderTrustedPropertiesField'), array(), '', FALSE);
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->setArguments(array('object' => $object));
 		$viewHelper->expects($this->atLeastOnce())->method('getFormObjectName')->will($this->returnValue('MyName'));
@@ -121,7 +124,7 @@ class FormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
 	 * @test
 	 */
 	public function renderCallsRenderAdditionalIdentityFields() {
-		$viewHelper = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', array('renderChildren', 'renderRequestHashField', 'renderAdditionalIdentityFields', 'renderTrustedPropertiesField'), array(), '', FALSE);
+		$viewHelper = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', array('renderChildren', 'renderRequestHashField', 'renderHiddenReferrerFields', 'renderAdditionalIdentityFields', 'renderTrustedPropertiesField'), array(), '', FALSE);
 		$viewHelper->expects($this->once())->method('renderAdditionalIdentityFields');
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->render();
@@ -130,32 +133,8 @@ class FormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
 	/**
 	 * @test
 	 */
-	public function renderWrapsHiddenFieldsWithDivForXhtmlCompatibilityWithOldPropertyMapper() {
-		$viewHelper = $this->getAccessibleMock($this->buildAccessibleProxy('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper'), array('renderChildren', 'renderHiddenIdentityField', 'renderAdditionalIdentityFields', 'renderHiddenReferrerFields', 'renderRequestHashField'), array(), '', FALSE);
-		$configurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager', array('isFeatureEnabled'));
-		$configurationManager->expects($this->once())->method('isFeatureEnabled')->with('rewrittenPropertyMapper')->will($this->returnValue(FALSE));
-		$viewHelper->_set('configurationManager', $configurationManager);
-		$this->mvcPropertyMapperConfigurationService->_set('hashService', new \TYPO3\CMS\Extbase\Security\Cryptography\HashService());
-		$viewHelper->_set('mvcPropertyMapperConfigurationService', $this->mvcPropertyMapperConfigurationService);
-		parent::injectDependenciesIntoViewHelper($viewHelper);
-		$viewHelper->expects($this->once())->method('renderHiddenIdentityField')->will($this->returnValue('hiddenIdentityField'));
-		$viewHelper->expects($this->once())->method('renderAdditionalIdentityFields')->will($this->returnValue('additionalIdentityFields'));
-		$viewHelper->expects($this->once())->method('renderHiddenReferrerFields')->will($this->returnValue('hiddenReferrerFields'));
-		$viewHelper->expects($this->once())->method('renderRequestHashField')->will($this->returnValue('requestHashField'));
-		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('formContent'));
-		$expectedResult = chr(10) . '<div>' . 'hiddenIdentityFieldadditionalIdentityFieldshiddenReferrerFieldsrequestHashField' . chr(10) . '</div>' . chr(10) . 'formContent';
-		$this->tagBuilder->expects($this->once())->method('setContent')->with($expectedResult);
-		$viewHelper->render();
-	}
-
-	/**
-	 * @test
-	 */
 	public function renderWrapsHiddenFieldsWithDivForXhtmlCompatibilityWithRewrittenPropertyMapper() {
 		$viewHelper = $this->getAccessibleMock($this->buildAccessibleProxy('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper'), array('renderChildren', 'renderHiddenIdentityField', 'renderAdditionalIdentityFields', 'renderHiddenReferrerFields', 'renderTrustedPropertiesField'), array(), '', FALSE);
-		$configurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager', array('isFeatureEnabled'));
-		$configurationManager->expects($this->once())->method('isFeatureEnabled')->with('rewrittenPropertyMapper')->will($this->returnValue(TRUE));
-		$viewHelper->_set('configurationManager', $configurationManager);
 		$this->mvcPropertyMapperConfigurationService->_set('hashService', new \TYPO3\CMS\Extbase\Security\Cryptography\HashService());
 		$viewHelper->_set('mvcPropertyMapperConfigurationService', $this->mvcPropertyMapperConfigurationService);
 		parent::injectDependenciesIntoViewHelper($viewHelper);
@@ -173,9 +152,6 @@ class FormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
 	 */
 	public function renderWrapsHiddenFieldsWithDivAndAnAdditionalClassForXhtmlCompatibilityWithRewrittenPropertyMapper() {
 		$viewHelper = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper'), array('renderChildren', 'renderHiddenIdentityField', 'renderAdditionalIdentityFields', 'renderHiddenReferrerFields', 'renderTrustedPropertiesField'), array(), '', FALSE);
-		$configurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager', array('isFeatureEnabled'));
-		$configurationManager->expects($this->once())->method('isFeatureEnabled')->with('rewrittenPropertyMapper')->will($this->returnValue(TRUE));
-		$viewHelper->_set('configurationManager', $configurationManager);
 		$this->mvcPropertyMapperConfigurationService->_set('hashService', new \TYPO3\CMS\Extbase\Security\Cryptography\HashService());
 		$viewHelper->_set('mvcPropertyMapperConfigurationService', $this->mvcPropertyMapperConfigurationService);
 		parent::injectDependenciesIntoViewHelper($viewHelper);
@@ -217,7 +193,7 @@ class FormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
 		$this->request->expects($this->atLeastOnce())->method('getControllerName')->will($this->returnValue('controllerName'));
 		$this->request->expects($this->atLeastOnce())->method('getControllerActionName')->will($this->returnValue('controllerActionName'));
 		$hiddenFields = $viewHelper->_call('renderHiddenReferrerFields');
-		$expectedResult = chr(10) . '<input type="hidden" name="__referrer[extensionName]" value="extensionName" />' . chr(10) . '<input type="hidden" name="__referrer[controllerName]" value="controllerName" />' . chr(10) . '<input type="hidden" name="__referrer[actionName]" value="controllerActionName" />' . chr(10);
+		$expectedResult = chr(10) . '<input type="hidden" name="__referrer[@extension]" value="extensionName" />' . chr(10) . '<input type="hidden" name="__referrer[@controller]" value="controllerName" />' . chr(10) . '<input type="hidden" name="__referrer[@action]" value="controllerActionName" />' . chr(10) . '<input type="hidden" name="__referrer[arguments]" value="" />' . chr(10);
 		$this->assertEquals($expectedResult, $hiddenFields);
 	}
 

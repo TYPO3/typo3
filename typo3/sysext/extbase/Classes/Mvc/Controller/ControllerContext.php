@@ -37,12 +37,6 @@ class ControllerContext {
 	protected $arguments;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Property\MappingResults
-	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
-	 */
-	protected $argumentsMappingResults;
-
-	/**
 	 * @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
 	 */
 	protected $uriBuilder;
@@ -133,28 +127,6 @@ class ControllerContext {
 	 */
 	public function getArguments() {
 		return $this->arguments;
-	}
-
-	/**
-	 * Set the arguments mapping results of the controller
-	 *
-	 * @param \TYPO3\CMS\Extbase\Property\MappingResults $argumentsMappingResults
-	 * @return void
-	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
-	 */
-	public function setArgumentsMappingResults(\TYPO3\CMS\Extbase\Property\MappingResults $argumentsMappingResults) {
-		$this->argumentsMappingResults = $argumentsMappingResults;
-	}
-
-	/**
-	 * Get the arguments mapping results of the controller
-	 *
-	 * @return \TYPO3\CMS\Extbase\Property\MappingResults
-	 * @api
-	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
-	 */
-	public function getArgumentsMappingResults() {
-		return $this->argumentsMappingResults;
 	}
 
 	/**

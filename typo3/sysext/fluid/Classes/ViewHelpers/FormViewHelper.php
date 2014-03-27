@@ -55,12 +55,6 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
 	protected $tagName = 'form';
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Security\Channel\RequestHashService
-	 * @inject
-	 */
-	protected $requestHashService;
-
-	/**
 	 * @var \TYPO3\CMS\Extbase\Security\Cryptography\HashService
 	 * @inject
 	 */
@@ -85,12 +79,6 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
 	 * @var array
 	 */
 	protected $formActionUriArguments;
-
-	/**
-	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-	 * @inject
-	 */
-	protected $configurationManager;
 
 	/**
 	 * Initialize arguments.
@@ -153,13 +141,10 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
 		$content .= $this->renderHiddenIdentityField($this->arguments['object'], $this->getFormObjectName());
 		$content .= $this->renderAdditionalIdentityFields();
 		$content .= $this->renderHiddenReferrerFields();
-		if ($this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper') === FALSE) {
-			// Render hmac after everything else has been rendered
-			$content .= $this->renderRequestHashField();
-		} else {
-			// Render the trusted list of all properties after everything else has been rendered
-			$content .= $this->renderTrustedPropertiesField();
-		}
+
+		// Render the trusted list of all properties after everything else has been rendered
+		$content .= $this->renderTrustedPropertiesField();
+
 		$content .= chr(10) . '</div>' . chr(10);
 		$content .= $formContent;
 		$this->tag->setContent($content);
@@ -219,20 +204,14 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
 		$controllerName = $request->getControllerName();
 		$actionName = $request->getControllerActionName();
 		$result = chr(10);
-		if ($this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper')) {
-			$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@extension]') . '" value="' . $extensionName . '" />' . chr(10);
-			if ($vendorName !== NULL) {
-				$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@vendor]') . '" value="' . $vendorName . '" />' . chr(10);
-			}
-			$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@controller]') . '" value="' . $controllerName . '" />' . chr(10);
-			$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@action]') . '" value="' . $actionName . '" />' . chr(10);
-			$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[arguments]') . '" value="' . htmlspecialchars($this->hashService->appendHmac(base64_encode(serialize($request->getArguments())))) . '" />' . chr(10);
-		} else {
-			// @deprecated since Fluid 1.4.0, will be removed two versions after Fluid 6.1.
-			$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[extensionName]') . '" value="' . $extensionName . '" />' . chr(10);
-			$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[controllerName]') . '" value="' . $controllerName . '" />' . chr(10);
-			$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[actionName]') . '" value="' . $actionName . '" />' . chr(10);
+		$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@extension]') . '" value="' . $extensionName . '" />' . chr(10);
+		if ($vendorName !== NULL) {
+			$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@vendor]') . '" value="' . $vendorName . '" />' . chr(10);
 		}
+		$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@controller]') . '" value="' . $controllerName . '" />' . chr(10);
+		$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@action]') . '" value="' . $actionName . '" />' . chr(10);
+		$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[arguments]') . '" value="' . htmlspecialchars($this->hashService->appendHmac(base64_encode(serialize($request->getArguments())))) . '" />' . chr(10);
+
 		return $result;
 	}
 

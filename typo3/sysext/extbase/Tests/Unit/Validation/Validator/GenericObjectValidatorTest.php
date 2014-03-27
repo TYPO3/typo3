@@ -30,17 +30,8 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
 
 	protected $validatorClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\GenericObjectValidator';
 
-	/**
-	 * @var \TYPO3\CMS\Core\Configuration\ConfigurationManager
-	 */
-	protected $configurationManager;
-
 	public function setUp() {
 		parent::setUp();
-
-		$this->configurationManager = $this->getMock('TYPO3\CMS\Extbase\Configuration\ConfigurationManager', array('isFeatureEnabled'), array(), '', FALSE);
-		$this->configurationManager->expects($this->any())->method('isFeatureEnabled')->with('rewrittenPropertyMapper')->will($this->returnValue(TRUE));
-		$this->validator->injectConfigurationManager($this->configurationManager);
 	}
 
 	/**
@@ -92,9 +83,9 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
 	 * @param mixed $errors
 	 */
 	public function validateChecksAllPropertiesForWhichAPropertyValidatorExists($mockObject, $validationResultForFoo, $validationResultForBar, $errors) {
-		$validatorForFoo = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate'));
+		$validatorForFoo = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate', 'getOptions'));
 		$validatorForFoo->expects($this->once())->method('validate')->with('foovalue')->will($this->returnValue($validationResultForFoo));
-		$validatorForBar = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate'));
+		$validatorForBar = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate', 'getOptions'));
 		$validatorForBar->expects($this->once())->method('validate')->with('barvalue')->will($this->returnValue($validationResultForBar));
 		$this->validator->addPropertyValidator('foo', $validatorForFoo);
 		$this->validator->addPropertyValidator('bar', $validatorForBar);
@@ -118,9 +109,6 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
 		$aValidator = new \TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator(array());
 		$bValidator = new \TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator(array());
 
-		$aValidator->injectConfigurationManager($this->configurationManager);
-		$bValidator->injectConfigurationManager($this->configurationManager);
-
 		$aValidator->addPropertyValidator('b', $bValidator);
 		$bValidator->addPropertyValidator('a', $aValidator);
 		$this->assertFalse($aValidator->validate($A)->hasErrors());
@@ -142,15 +130,12 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
 		$aValidator = $this->getValidator();
 		$bValidator = $this->getValidator();
 
-		$aValidator->injectConfigurationManager($this->configurationManager);
-		$bValidator->injectConfigurationManager($this->configurationManager);
-
 		$aValidator->addPropertyValidator('b', $bValidator);
 		$bValidator->addPropertyValidator('a', $aValidator);
 		$error = new \TYPO3\CMS\Extbase\Error\Error('error1', 123);
 		$result = new \TYPO3\CMS\Extbase\Error\Result();
 		$result->addError($error);
-		$mockUuidValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate'));
+		$mockUuidValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate', 'getOptions'));
 		$mockUuidValidator->expects($this->any())->method('validate')->with(15)->will($this->returnValue($result));
 		$bValidator->addPropertyValidator('uuid', $mockUuidValidator);
 		$this->assertSame(array('b.uuid' => array($error)), $aValidator->validate($A)->getFlattenedErrors());
@@ -172,15 +157,12 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
 		$aValidator = $this->getValidator();
 		$bValidator = $this->getValidator();
 
-		$aValidator->injectConfigurationManager($this->configurationManager);
-		$bValidator->injectConfigurationManager($this->configurationManager);
-
 		$aValidator->addPropertyValidator('b', $bValidator);
 		$bValidator->addPropertyValidator('a', $aValidator);
 		$error1 = new \TYPO3\CMS\Extbase\Error\Error('error1', 123);
 		$result1 = new \TYPO3\CMS\Extbase\Error\Result();
 		$result1->addError($error1);
-		$mockUuidValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate'));
+		$mockUuidValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate', 'getOptions'));
 		$mockUuidValidator->expects($this->any())->method('validate')->with(15)->will($this->returnValue($result1));
 		$aValidator->addPropertyValidator('uuid', $mockUuidValidator);
 		$bValidator->addPropertyValidator('uuid', $mockUuidValidator);

@@ -111,12 +111,6 @@ class Request implements RequestInterface {
 	protected $originalRequestMappingResults = NULL;
 
 	/**
-	 * @var array Errors that occurred during this request
-	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
-	 */
-	protected $errors = array();
-
-	/**
 	 * Sets the dispatched flag
 	 *
 	 * @param boolean $flag If this request has been dispatched
@@ -497,28 +491,6 @@ class Request implements RequestInterface {
 	 */
 	public function getFormat() {
 		return $this->format;
-	}
-
-	/**
-	 * Set errors that occurred during the request (e.g. argument mapping errors)
-	 *
-	 * @param array $errors An array of \TYPO3\CMS\Extbase\Error\Error objects
-	 *
-	 * @return void
-	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
-	 */
-	public function setErrors(array $errors) {
-		$this->errors = $errors;
-	}
-
-	/**
-	 * Get errors that occurred during the request (e.g. argument mapping errors)
-	 *
-	 * @return array The errors that occurred during the request
-	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
-	 */
-	public function getErrors() {
-		return $this->errors;
 	}
 
 	/**

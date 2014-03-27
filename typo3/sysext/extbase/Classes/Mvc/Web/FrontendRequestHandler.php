@@ -37,9 +37,6 @@ class FrontendRequestHandler extends AbstractRequestHandler {
 	 */
 	public function handleRequest() {
 		$request = $this->requestBuilder->build();
-		/** @var $requestHashService \TYPO3\CMS\Extbase\Security\Channel\RequestHashService */
-		$requestHashService = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Security\\Channel\\RequestHashService');
-		$requestHashService->verifyRequest($request);
 		if ($this->extensionService->isActionCacheable(NULL, NULL, $request->getControllerName(), $request->getControllerActionName())) {
 			$request->setIsCached(TRUE);
 		} else {

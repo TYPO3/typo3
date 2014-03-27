@@ -44,12 +44,6 @@ abstract class AbstractValidator implements ValidatorInterface {
 	protected $options = array();
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\ArgumentError[]
-	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1. You should use constructor parameter to set validation options.
-	 */
-	protected $errors = array();
-
-	/**
 	 * @var \TYPO3\CMS\Extbase\Error\Result
 	 */
 	protected $result;
@@ -116,28 +110,7 @@ abstract class AbstractValidator implements ValidatorInterface {
 	abstract protected function isValid($value);
 
 	/**
-	 * Sets options for the validator
-	 *
-	 * @param array $options Options for the validator
-	 * @return void
-	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1. use constructor instead.
-	 */
-	public function setOptions(array $options) {
-		$this->options = $options;
-	}
-
-	/**
-	 * Returns an array of errors which occurred during the last isValid() call.
-	 *
-	 * @return array An array of \TYPO3\CMS\Extbase\Validation\Error objects or an empty array if no errors occurred.
-	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1. use validate() instead.
-	 */
-	public function getErrors() {
-		return $this->errors;
-	}
-
-	/**
-	 * Creates a new validation error object and adds it to $this->errors
+	 * Creates a new validation error object and adds it to $this->results
 	 *
 	 * @param string $message The error message
 	 * @param integer $code The error code (a unix timestamp)
@@ -146,12 +119,7 @@ abstract class AbstractValidator implements ValidatorInterface {
 	 * @return void
 	 */
 	protected function addError($message, $code, array $arguments = array(), $title = '') {
-		if ($this->result !== NULL) {
-			// backwards compatibility before Extbase 1.4.0: we cannot expect the "result" object to be there.
-			$this->result->addError(new \TYPO3\CMS\Extbase\Validation\Error($message, $code, $arguments, $title));
-		}
-		// the following is @deprecated since Extbase 1.4.0:
-		$this->errors[] = new \TYPO3\CMS\Extbase\Validation\Error($message, $code, $arguments, $title);
+		$this->result->addError(new \TYPO3\CMS\Extbase\Validation\Error($message, $code, $arguments, $title));
 	}
 
 	/**
