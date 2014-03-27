@@ -97,7 +97,4 @@ config.tx_extbase {
 		# if set to 1, the enable fields are ignored in BE context
 		ignoreAllEnableFieldsInBe = 0
 	}
-	legacy {
-		enableLegacyFlashMessageHandling = 1
-	}
 }

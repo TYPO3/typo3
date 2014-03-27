@@ -50,7 +50,11 @@ class UserStorageCapabilityService {
 					\TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
 				);
 
-				\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($message);
+				/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+				$flashMessageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+				/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+				$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+				$defaultFlashMessageQueue->enqueue($message);
 			}
 		}
 

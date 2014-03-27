@@ -105,12 +105,6 @@ abstract class AbstractController implements ControllerInterface {
 	}
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer
-	 * @api
-	 */
-	protected $flashMessageContainer;
-
-	/**
 	 * @var ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
@@ -151,19 +145,6 @@ abstract class AbstractController implements ControllerInterface {
 	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 		$this->arguments = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Arguments');
-	}
-
-	/**
-	 * This method is deprecated! For further information have a look at
-	 * the PhpDoc of class \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer
-	 *
-	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer $flashMessageContainer
-	 * @return void
-	 *
-	 * @deprecated since Extbase 6.1, will be removed 2 versions later
-	 */
-	public function injectFlashMessageContainer(\TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer $flashMessageContainer) {
-		$this->flashMessageContainer = $flashMessageContainer;
 	}
 
 	/**
@@ -251,7 +232,6 @@ abstract class AbstractController implements ControllerInterface {
 		}
 		$controllerContext->setUriBuilder($this->uriBuilder);
 
-		$controllerContext->setFlashMessageContainer($this->flashMessageContainer);
 		return $controllerContext;
 	}
 

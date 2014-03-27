@@ -1759,11 +1759,6 @@ class Tx_Extbase_MVC_Controller_Exception_RequiredArgumentMissingException exten
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class Tx_Extbase_MVC_Controller_FlashMessages extends \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
 class Tx_Extbase_MVC_Controller_MvcPropertyMappingConfiguration extends \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfiguration {}
 
 /**

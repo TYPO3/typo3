@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Core\Messaging;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
+
 /**
  * A class which collects and renders flash messages.
  *
@@ -39,7 +41,8 @@ class FlashMessageQueue extends \SplQueue {
 	 * Adds a message either to the BE_USER session (if the $message has the storeInSession flag set)
 	 * or it enqueues the message.
 	 *
-	 * @param \TYPO3\CMS\Core\Messaging\FlashMessage $message Instance of \TYPO3\CMS\Core\Messaging\FlashMessage, representing a message
+	 * @param FlashMessage $message Instance of \TYPO3\CMS\Core\Messaging\FlashMessage, representing a message
+	 * @throws \TYPO3\CMS\Core\Exception
 	 * @return void
 	 */
 	public function enqueue($message) {
@@ -57,6 +60,14 @@ class FlashMessageQueue extends \SplQueue {
 	}
 
 	/**
+	 * @param FlashMessage $message
+	 * @return void
+	 */
+	public function addMessage(FlashMessage $message) {
+		$this->enqueue($message);
+	}
+
+	/**
 	 * @return void
 	 */
 	public function dequeue() {
@@ -67,10 +78,10 @@ class FlashMessageQueue extends \SplQueue {
 	 * Adds the given flash message to the array of
 	 * flash messages that will be stored in the session.
 	 *
-	 * @param \TYPO3\CMS\Core\Messaging\FlashMessage $message
+	 * @param FlashMessage $message
 	 * @return void
 	 */
-	protected function addFlashMessageToSession(\TYPO3\CMS\Core\Messaging\FlashMessage $message) {
+	protected function addFlashMessageToSession(FlashMessage $message) {
 		$queuedFlashMessages = $this->getFlashMessagesFromSession();
 		$queuedFlashMessages[] = $message;
 		$this->storeFlashMessagesInSession($queuedFlashMessages);
@@ -79,9 +90,9 @@ class FlashMessageQueue extends \SplQueue {
 	/**
 	 * Returns all messages from the current PHP session and from the current request.
 	 *
-	 * @return array Array of \TYPO3\CMS\Core\Messaging\FlashMessage objects
+	 * @return FlashMessage[]
 	 */
-	protected function getAllMessages() {
+	public function getAllMessages() {
 		// Get messages from user session
 		$queuedFlashMessagesFromSession = $this->getFlashMessagesFromSession();
 		$queuedFlashMessages = array_merge($queuedFlashMessagesFromSession, $this->toArray());
@@ -93,9 +104,9 @@ class FlashMessageQueue extends \SplQueue {
 	 * After fetching the messages the internal queue and the message queue in the session
 	 * will be emptied.
 	 *
-	 * @return array Array of \TYPO3\CMS\Core\Messaging\FlashMessage objects
+	 * @return FlashMessage[]
 	 */
-	protected function getAllMessagesAndFlush() {
+	public function getAllMessagesAndFlush() {
 		$queuedFlashMessages = $this->getAllMessages();
 		// Reset messages in user session
 		$this->removeAllFlashMessagesFromSession();
@@ -107,7 +118,7 @@ class FlashMessageQueue extends \SplQueue {
 	/**
 	 * Stores given flash messages in the session
 	 *
-	 * @param array $flashMessages Array of \TYPO3\CMS\Core\Messaging\FlashMessage
+	 * @param FlashMessage[] $flashMessages
 	 * @return void
 	 */
 	protected function storeFlashMessagesInSession(array $flashMessages) {
@@ -127,7 +138,7 @@ class FlashMessageQueue extends \SplQueue {
 	 * Returns current flash messages from the session, making sure to always
 	 * return an array.
 	 *
-	 * @return array An array of \TYPO3\CMS\Core\Messaging\FlashMessage flash messages.
+	 * @return FlashMessage[]
 	 */
 	protected function getFlashMessagesFromSession() {
 		$flashMessages = $this->getUserByContext()->getSessionData($this->identifier);
@@ -137,7 +148,7 @@ class FlashMessageQueue extends \SplQueue {
 	/**
 	 * Gets user object by context
 	 *
-	 * @return object User object
+	 * @return AbstractUserAuthentication
 	 */
 	protected function getUserByContext() {
 		return TYPO3_MODE === 'BE' ? $GLOBALS['BE_USER'] : $GLOBALS['TSFE']->fe_user;
@@ -148,12 +159,11 @@ class FlashMessageQueue extends \SplQueue {
 	 *
 	 * @return string All flash messages in the queue rendered as HTML.
 	 */
-	protected function renderFlashMessages() {
+	public function renderFlashMessages() {
 		$content = '';
 		$flashMessages = $this->getAllMessagesAndFlush();
-		if (count($flashMessages)) {
+		if (!empty($flashMessages)) {
 			foreach ($flashMessages as $flashMessage) {
-				/** @var $flashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
 				$content .= $flashMessage->render();
 			}
 		}
@@ -163,7 +173,7 @@ class FlashMessageQueue extends \SplQueue {
 	/**
 	 * Returns all items of the queue as array
 	 *
-	 * @return array
+	 * @return FlashMessage[]
 	 */
 	public function toArray() {
 		$array = array();
@@ -184,81 +194,6 @@ class FlashMessageQueue extends \SplQueue {
 		$this->rewind();
 		while (!$this->isEmpty()) {
 			parent::dequeue();
-		}
-	}
-
-	/**
-	 * This method provides a fallback for deprecated static calls like:
-	 * FlashMessageQueue::renderFlashMessages,
-	 * FlashMessageQueue::getAllMessagesAndFlush,
-	 * FlashMessageQueue::getAllMessages and
-	 * FlashMessageQueue::addMessage
-	 *
-	 * From 6.3 on __callStatic and __call will be removed and the
-	 * protected non static methods "renderFlashMessages",
-	 * "getAllMessagesAndFlush", "getAllMessages" and "addMessage"
-	 * will be made public.
-	 *
-	 * @param string $name
-	 * @param array $arguments
-	 * @throws \RuntimeException
-	 * @return void|array|string
-	 * @deprecated since 6.1 will be removed in 6.3
-	 */
-	static public function __callStatic($name, array $arguments) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-		$flashMessageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
-		$identifier = 'core.template.flashMessages';
-		switch ($name) {
-			case 'renderFlashMessages':
-				return $flashMessageService->getMessageQueueByIdentifier($identifier)->renderFlashMessages();
-				break;
-			case 'getAllMessagesAndFlush':
-				return $flashMessageService->getMessageQueueByIdentifier($identifier)->getAllMessagesAndFlush();
-				break;
-			case 'getAllMessages':
-				return $flashMessageService->getMessageQueueByIdentifier($identifier)->getAllMessages();
-				break;
-			case 'addMessage':
-				$flashMessageService->getMessageQueueByIdentifier($identifier)->enqueue(current($arguments));
-				break;
-			default:
-				throw new \RuntimeException('The requested method "' . $name . '" cannot be called via __callStatic.', 1363300030);
-		}
-	}
-
-	/**
-	 * This method is deprecated but will not log a deprecation
-	 * message because once the here used method names are 'free'
-	 * again they will be implemented natively in this class. This
-	 * is not possible at the moment because these methods have
-	 * been static and need to be statically callable through
-	 * __callStatic until 6.3.
-	 *
-	 * @param string $name
-	 * @param array $arguments
-	 * @throws \RuntimeException
-	 * @return void|array|string
-	 * @see __callStatic
-	 * @deprecated since 6.1 will be removed in 6.3
-	 */
-	public function __call($name, array $arguments) {
-		switch ($name) {
-			case 'renderFlashMessages':
-				return $this->renderFlashMessages();
-				break;
-			case 'getAllMessagesAndFlush':
-				return $this->getAllMessagesAndFlush();
-				break;
-			case 'getAllMessages':
-				return $this->getAllMessages();
-				break;
-			case 'addMessage':
-				$this->enqueue(current($arguments));
-				break;
-			default:
-				throw new \RuntimeException('The requested method "' . $name . '" cannot be called via __call.', 1363300072);
 		}
 	}
 }

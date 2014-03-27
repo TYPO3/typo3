@@ -189,7 +189,7 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
 		);
 		if ($GLOBALS['TYPO3_DB']->sql_affected_rows() == 1) {
 			$message = 'Session successfully terminated.';
-			$this->flashMessageContainer->add($message, '', \TYPO3\CMS\Core\Messaging\FlashMessage::OK);
+			$this->controllerContext->getFlashMessageQueue()->enqueue($message, '', \TYPO3\CMS\Core\Messaging\FlashMessage::OK);
 		}
 		$this->forward('online');
 	}

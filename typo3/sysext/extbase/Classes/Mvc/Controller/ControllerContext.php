@@ -42,11 +42,6 @@ class ControllerContext {
 	protected $uriBuilder;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer
-	 */
-	protected $flashMessageContainer;
-
-	/**
 	 * @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue
 	 */
 	protected $flashMessageQueue;
@@ -146,54 +141,16 @@ class ControllerContext {
 	}
 
 	/**
-	 * Set the flash messages
-	 *
-	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer $flashMessageContainer
-	 * @deprecated since 6.1, will be removed 2 versions later
-	 * @return void
-	 */
-	public function setFlashMessageContainer(\TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer $flashMessageContainer) {
-		$this->flashMessageContainer = $flashMessageContainer;
-		$flashMessageContainer->setControllerContext($this);
-	}
-
-	/**
-	 * Get the flash messages
-	 *
-	 * @return \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer
-	 * @deprecated since 6.1, will be removed 2 versions later
-	 */
-	public function getFlashMessageContainer() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		return $this->flashMessageContainer;
-	}
-
-	/**
 	 * @return \TYPO3\CMS\Core\Messaging\FlashMessageQueue
 	 * @api
 	 */
 	public function getFlashMessageQueue() {
 		if (!$this->flashMessageQueue instanceof \TYPO3\CMS\Core\Messaging\FlashMessageQueue) {
-			if ($this->useLegacyFlashMessageHandling()) {
-				$this->flashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
-			} else {
-				$this->flashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier(
-					'extbase.flashmessages.' . $this->extensionService->getPluginNamespace($this->request->getControllerExtensionName(), $this->request->getPluginName())
-				);
-			}
+			$this->flashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier(
+				'extbase.flashmessages.' . $this->extensionService->getPluginNamespace($this->request->getControllerExtensionName(), $this->request->getPluginName())
+			);
 		}
 
 		return $this->flashMessageQueue;
-	}
-
-	/**
-	 * @deprecated since 6.1, will be removed 2 versions later
-	 * @return boolean
-	 */
-	public function useLegacyFlashMessageHandling() {
-		return (boolean) \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath(
-			$this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK),
-			'legacy.enableLegacyFlashMessageHandling'
-		);
 	}
 }

@@ -82,11 +82,6 @@ class StandaloneViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $mockConfigurationManager;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer
-	 */
-	protected $mockFlashMessageContainer;
-
-	/**
 	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
 	 */
 	protected $mockContentObject;
@@ -112,7 +107,6 @@ class StandaloneViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->mockObjectManager->expects($this->any())->method('get')->will($this->returnCallback(array($this, 'objectManagerCallback')));
 		$this->mockRequest = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request');
 		$this->mockUriBuilder = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
-		$this->mockFlashMessageContainer = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\FlashMessageContainer');
 		$this->mockContentObject = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 		$this->mockControllerContext = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerContext');
 		$this->mockControllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->mockRequest));
@@ -161,8 +155,6 @@ class StandaloneViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				return $this->mockUriBuilder;
 			case 'TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerContext':
 				return $this->mockControllerContext;
-			case 'TYPO3\\CMS\\Extbase\\Mvc\\Controller\\FlashMessageContainer':
-				return $this->mockFlashMessageContainer;
 			case 'TYPO3\\CMS\\Fluid\\Core\\Compiler\\TemplateCompiler':
 				return $this->mockTemplateCompiler;
 		}
