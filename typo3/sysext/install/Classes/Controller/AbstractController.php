@@ -293,7 +293,7 @@ class AbstractController {
 			$mailMessage
 				->addTo($warningEmailAddress)
 				->setSubject('Install Tool Login at \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\'')
-				->addFrom('typo3installtool@example.org', 'TYPO3 Install Tool WARNING')
+				->addFrom($this->getSenderEmailAddress(), 'TYPO3 Install Tool WARNING')
 				->setBody('There has been an Install Tool login at TYPO3 site'
 				. ' \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\''
 				. ' (' . GeneralUtility::getIndpEnv('HTTP_HOST') . ')'
@@ -317,7 +317,7 @@ class AbstractController {
 			$mailMessage
 				->addTo($warningEmailAddress)
 				->setSubject('Install Tool Login ATTEMPT at \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\'')
-				->addFrom('typo3installtool@example.org', 'TYPO3 Install Tool WARNING')
+				->addFrom($this->getSenderEmailAddress(), 'TYPO3 Install Tool WARNING')
 				->setBody('There has been an Install Tool login attempt at TYPO3 site'
 				. ' \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\''
 				. ' (' . GeneralUtility::getIndpEnv('HTTP_HOST') . ')'
@@ -592,5 +592,18 @@ class AbstractController {
 		header('Pragma: no-cache');
 		echo $content;
 		die;
+	}
+
+	/**
+	 * Get sender address from configuration
+	 * ['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress']
+	 * If this setting is empty fall back to 'no-reply@example.com'
+	 *
+	 * @return string Returns an email address
+	 */
+	protected function getSenderEmailAddress() {
+		return !empty($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'])
+			? $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress']
+			: 'no-reply@example.com';
 	}
 }

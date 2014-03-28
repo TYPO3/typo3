@@ -97,7 +97,7 @@ class TestSetup extends Action\AbstractAction {
 		}
 
 		$this->view->assign('actionMessages', $actionMessages);
-
+		$this->view->assign('senderEmailAddress', $this->getSenderEmailAddress());
 		$this->view->assign('imageConfiguration', $this->getImageConfiguration());
 
 		return $this->view->render();
@@ -122,7 +122,7 @@ class TestSetup extends Action\AbstractAction {
 			$mailMessage = $this->objectManager->get('TYPO3\\CMS\\Core\\Mail\\MailMessage');
 			$mailMessage
 				->addTo($recipient)
-				->addFrom('typo3installtool@example.org', 'TYPO3 CMS install tool')
+				->addFrom($this->getSenderEmailAddress(), 'TYPO3 CMS install tool')
 				->setSubject('Test TYPO3 CMS mail delivery')
 				->setBody('<html><body>html test content</body></html>')
 				->addPart('TEST CONTENT')
@@ -132,6 +132,19 @@ class TestSetup extends Action\AbstractAction {
 			$message->setMessage('Recipient: ' . $recipient);
 		}
 		return $message;
+	}
+
+	/**
+	 * Get sender address from configuration
+	 * ['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress']
+	 * If this setting is empty fall back to 'no-reply@example.com'
+	 *
+	 * @return string Returns an email address
+	 */
+	protected function getSenderEmailAddress() {
+		return !empty($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'])
+			? $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress']
+			: 'no-reply@example.com';
 	}
 
 	/**
