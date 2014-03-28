@@ -141,6 +141,39 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	/**
 	 * @test
 	 */
+	public function createFolderRecursiveSanitizesFilename() {
+		/** @var \TYPO3\CMS\Core\Resource\Driver\LocalDriver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $driver */
+		$driver = $this->createDriverFixture(array(), array('sanitizeFilename'));
+		$driver->expects($this->exactly(2))
+			->method('sanitizeFileName')
+			->will(
+				$this->returnValue('sanitized')
+			);
+		$driver->createFolder('newFolder/andSubfolder', '/', TRUE);
+		$this->assertFileExists($this->getUrlInMount('/sanitized/sanitized/'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function determineBaseUrlUrlEncodesUriParts() {
+		/** @var \TYPO3\CMS\Core\Resource\Driver\LocalDriver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $driver */
+		$driver = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Resource\\Driver\\LocalDriver', array('hasCapability'), array(), '', FALSE);
+		$driver->expects($this->once())
+			->method('hasCapability')
+			->with(\TYPO3\CMS\Core\Resource\ResourceStorage::CAPABILITY_PUBLIC)
+			->will(
+				$this->returnValue(TRUE)
+			);
+		$driver->_set('absoluteBasePath', PATH_site . 'un encö/ded %path/');
+		$driver->_call('determineBaseUrl');
+		$baseUri = $driver->_get('baseUri');
+		$this->assertEquals(rawurlencode('un encö') . '/' . rawurlencode('ded %path') . '/', $baseUri);
+	}
+
+	/**
+	 * @test
+	 */
 	public function getDefaultFolderReturnsFolderForUserUploadPath() {
 		$fixture = $this->createDriverFixture();
 		$folderIdentifier = $fixture->getDefaultFolder();

@@ -142,7 +142,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 				$temporaryBaseUri = rtrim(\TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($this->absoluteBasePath), '/');
 				if ($temporaryBaseUri !== '') {
 					$uriParts = explode('/', $temporaryBaseUri);
-					array_map('rawurlencode', $uriParts);
+					$uriParts = array_map('rawurlencode', $uriParts);
 					$temporaryBaseUri = implode('/', $uriParts) . '/';
 				}
 				$this->baseUri = $temporaryBaseUri;
@@ -244,7 +244,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 			GeneralUtility::mkdir($this->getAbsoluteBasePath() . $newIdentifier);
 		} else {
 			$parts = GeneralUtility::trimExplode('/', $newFolderName);
-			array_map(array($this, 'sanitizeFileName'), $parts);
+			$parts = array_map(array($this, 'sanitizeFileName'), $parts);
 			$newFolderName = implode('/', $parts);
 			$newIdentifier = $parentFolderIdentifier . $newFolderName . '/';
 			GeneralUtility::mkdir_deep($this->getAbsoluteBasePath() . $parentFolderIdentifier, $newFolderName);
