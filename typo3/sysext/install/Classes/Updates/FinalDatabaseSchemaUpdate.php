@@ -135,15 +135,20 @@ class FinalDatabaseSchemaUpdate extends AbstractDatabaseSchemaUpdate {
 		$databaseDifferences = $this->getDatabaseDifferences();
 		$updateStatements = $this->schemaMigrationService->getUpdateSuggestions($databaseDifferences);
 
+		$customMessagesArray = array();
 		foreach ((array)$updateStatements['change'] as $query) {
 			$GLOBALS['TYPO3_DB']->admin_query($query);
 			$dbQueries[] = $query;
 			if ($GLOBALS['TYPO3_DB']->sql_error()) {
-				$customMessages = 'SQL-ERROR: ' . htmlspecialchars($GLOBALS['TYPO3_DB']->sql_error());
-				return FALSE;
+				$customMessagesArray[] = 'SQL-ERROR: ' . htmlspecialchars($GLOBALS['TYPO3_DB']->sql_error());
 			}
 		}
 
-		return TRUE;
+		if (!empty($customMessagesArray)) {
+			$customMessages = 'Update process not fully processed. This can happen because of dependencies of table fields and ' .
+				'indexes. Please repeat this step! Following errors occurred:' . LF . LF . implode(LF, $customMessagesArray);
+		}
+
+		return count($customMessagesArray) === 0;
 	}
 }
