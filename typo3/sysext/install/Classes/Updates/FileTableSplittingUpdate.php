@@ -95,10 +95,10 @@ class FileTableSplittingUpdate extends AbstractUpdate {
 		$fieldsToSelect[] = 'uid AS file';
 
 		$resultObject = $GLOBALS['TYPO3_DB']->sql_query(
-				'INSERT INTO ' . $this->metaDataTable . ' (' . implode(',', $fieldsToWrite) . ') ' .
-				'SELECT ' . implode(',', $fieldsToSelect) .
-				'FROM sys_file ' .
-				'WHERE uid NOT IN (SELECT file FROM ' . $this->metaDataTable . ')');
+				'INSERT INTO ' . $this->metaDataTable . ' (' . implode(',', $fieldsToWrite) . ')' .
+				' SELECT ' . implode(',', $fieldsToSelect) .
+				' FROM sys_file' .
+				' WHERE uid NOT IN (SELECT file FROM ' . $this->metaDataTable . ')');
 
 		return $resultObject !== FALSE;
 	}
