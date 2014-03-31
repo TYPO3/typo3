@@ -209,6 +209,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 		me.uploadStart = function() {
 			me.$progressPercentage.text('(0%)');
 			me.$progressBar.width('1%');
+			me.dragUploader.$trigger.trigger('uploadStart', [me]);
 		};
 
 		me.uploadError = function(response) {
@@ -221,12 +222,14 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 			}
 			me.$row.addClass('error');
 			dragUploader.decrementQueueLength();
+			me.dragUploader.$trigger.trigger('uploadError', [me, response]);
 		};
 
 		me.updateProgress = function(event) {
 			var percentage = Math.round((event.loaded / event.total) * 100) + '%'
 			me.$progressBar.width(percentage);
 			me.$progressPercentage.text(percentage);
+			me.dragUploader.$trigger.trigger('updateProgress', [me, percentage, event]);
 		};
 
 		me.uploadComplete = function(data) {
@@ -254,12 +257,16 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 						me.$row.remove();
 						if ($('tr', me.dragUploader.$fileList).length === 0) {
 							me.dragUploader.$fileList.hide();
+							me.dragUploader.$trigger.trigger('uploadComplete', [me, data]);
 						}
 					}, 3000);
 
 
 				} else {
-					setTimeout(function() {me.showFileInfo(data.result.upload[0])}, 3000);
+					setTimeout(function() {
+						me.showFileInfo(data.result.upload[0]);
+						me.dragUploader.$trigger.trigger('uploadComplete', [me, data]);
+					}, 3000);
 				}
 			}
 		};
