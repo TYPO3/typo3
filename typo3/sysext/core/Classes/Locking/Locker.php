@@ -500,6 +500,9 @@ class Locker {
 				throw new \RuntimeException('Cannot create directory ' . $path, 1395140007);
 			}
 		}
+		if (!is_writable($path)) {
+			throw new \RuntimeException('Cannot write to directory ' . $path, 1396278700);
+		}
 		$this->resource = $path . $this->id;
 	}
 }
