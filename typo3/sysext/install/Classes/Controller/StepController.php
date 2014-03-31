@@ -288,8 +288,14 @@ class StepController extends AbstractController {
 		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
 		$localConfigurationFileLocation = $configurationManager->getLocalConfigurationFileLocation();
 		$localConfigurationFileExists = is_file($localConfigurationFileLocation);
+		$packageStatesFilePath = PATH_typo3conf . 'PackageStates.php';
+		$localConfigurationBackupFilePath = preg_replace(
+			'/\\.php$/',
+			'.beforePackageStatesMigration.php',
+			$configurationManager->getLocalConfigurationFileLocation()
+		);
 
-		if (file_exists(PATH_typo3conf . 'PackageStates.php')
+		if (file_exists($packageStatesFilePath)
 			|| (is_dir(PATH_typo3conf) && !$localConfigurationFileExists)
 			|| !is_dir(PATH_typo3conf)
 		) {
@@ -326,20 +332,21 @@ class StepController extends AbstractController {
 			}
 
 			// Backup LocalConfiguration.php
-			if (file_exists(PATH_typo3conf . 'PackageStates.php')) {
-				copy(
-					$configurationManager->getLocalConfigurationFileLocation(),
-					preg_replace('/\.php$/', '.beforePackageStatesMigration.php', $configurationManager->getLocalConfigurationFileLocation())
-				);
-			}
+			copy(
+				$configurationManager->getLocalConfigurationFileLocation(),
+				$localConfigurationBackupFilePath
+			);
 
 			$packageManager->forceSortAndSavePackageStates();
 
 			// Perform a reload to self, so bootstrap now uses new PackageStates.php
 			$this->redirect();
 		} catch (\Exception $exception) {
-			if (file_exists(PATH_typo3conf . 'PackageStates.php')) {
-				unlink(PATH_typo3conf . 'PackageStates.php');
+			if (file_exists($packageStatesFilePath)) {
+				unlink($packageStatesFilePath);
+			}
+			if (file_exists($localConfigurationBackupFilePath)) {
+				unlink($localConfigurationBackupFilePath);
 			}
 			throw $exception;
 		}
