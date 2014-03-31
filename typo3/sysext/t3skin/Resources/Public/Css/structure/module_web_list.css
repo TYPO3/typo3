@@ -185,10 +185,6 @@ div#typo3-dblist-pagination span.bar {
 	padding-right: 0px;
 }
 
-#typo3-dblist-search-container {
-	position: relative;
-}
-
 .t3-list-table-header-icon-down {
 	display: inline-block;
 	height: 6px;
