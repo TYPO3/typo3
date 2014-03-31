@@ -360,7 +360,6 @@ class PageLayoutController {
 			$modules = $moduleLoader->modules;
 			if (is_array($modules['web']['sub']['list'])) {
 				$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', '<p>' . $GLOBALS['LANG']->getLL('goToListModuleMessage') . '</p>
-					<br />
 					<p>' . IconUtility::getSpriteIcon('actions-system-list-open') . '<a href="javascript:top.goToModule( \'web_list\',1);">' . $GLOBALS['LANG']->getLL('goToListModule') . '
 						</a>
 					</p>', '', FlashMessage::INFO);
