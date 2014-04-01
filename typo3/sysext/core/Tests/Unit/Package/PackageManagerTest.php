@@ -54,9 +54,9 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->packageManager->injectClassLoader($mockClassLoader);
 		$this->packageManager->injectCoreCache($mockCache);
 		$this->inject($this->packageManager, 'composerNameToPackageKeyMap', $composerNameToPackageKeyMap);
-		$this->packageManager->initialize($mockBootstrap);
 		$this->packageManager->_set('packagesBasePath', 'vfs://Test/Packages/');
 		$this->packageManager->_set('packageStatesPathAndFilename', 'vfs://Test/Configuration/PackageStates.php');
+		$this->packageManager->initialize($mockBootstrap);
 	}
 
 	/**

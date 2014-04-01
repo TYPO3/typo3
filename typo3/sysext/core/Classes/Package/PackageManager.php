@@ -88,6 +88,8 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 			'sysext'    => PATH_typo3 . 'sysext',
 			'composer'  => PATH_site . 'Packages',
 		);
+		$this->packageStatesPathAndFilename = PATH_typo3conf . 'PackageStates.php';
+		$this->packageFactory = new PackageFactory($this);
 	}
 
 	/**
@@ -119,8 +121,6 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	 */
 	public function initialize(\TYPO3\Flow\Core\Bootstrap $bootstrap) {
 		$this->bootstrap = $bootstrap;
-		$this->packageStatesPathAndFilename = PATH_typo3conf . 'PackageStates.php';
-		$this->packageFactory = new PackageFactory($this);
 
 		$loadedFromCache = FALSE;
 		try {
