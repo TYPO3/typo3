@@ -136,7 +136,7 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 					'crdate' => $GLOBALS['EXEC_TIME'],
 					'tstamp' => $GLOBALS['EXEC_TIME']
 				);
-				if (TYPO3_MODE === 'BE') {
+				if (isset($GLOBALS['BE_USER']->user['uid'])) {
 					$additionalInfo['cruser_id'] = (int)$GLOBALS['BE_USER']->user['uid'];
 				}
 				$indexRecord = array_merge($fileInfo, $additionalInfo);
