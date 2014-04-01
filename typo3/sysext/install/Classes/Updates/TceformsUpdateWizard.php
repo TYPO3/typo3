@@ -192,9 +192,8 @@ class TceformsUpdateWizard extends AbstractUpdate {
 					}
 				} while (count($records) === self::RECORDS_PER_QUERY);
 
-				// add the field to the "finished fields"
-				// this can only be done
-				if (is_array($records) && count($records) === 0) {
+				// add the field to the "finished fields" if things didn't fail above
+				if (is_array($records)) {
 					$finishedFields[] = $fieldKey;
 				}
 			}
