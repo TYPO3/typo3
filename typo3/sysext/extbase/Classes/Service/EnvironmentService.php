@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Extbase\Service;
 /**
  * Service for determining environment params
  */
-class EnvironmentService {
+class EnvironmentService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Detects if TYPO3_MODE is defined and its value is "FE"
