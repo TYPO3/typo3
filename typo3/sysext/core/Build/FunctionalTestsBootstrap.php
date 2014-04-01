@@ -53,6 +53,7 @@ if (getenv('TYPO3_PATH_WEB')) {
 } else {
 	$webRoot = getcwd() . '/';
 }
+$webRoot = strtr($webRoot, '\\', '/');
 
 if (!defined('ORIGINAL_ROOT')) {
 	define('ORIGINAL_ROOT', $webRoot);

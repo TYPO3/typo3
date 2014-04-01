@@ -40,14 +40,14 @@ script:
   - >
     echo;
     echo "Running unit tests";
-    ./bin/phpunit -c typo3/sysext/core/Build/UnitTests.xml
+    ./bin/phpunit --colors -c typo3/sysext/core/Build/UnitTests.xml
   - >
     echo;
     export typo3DatabaseName="typo3";
     export typo3DatabaseHost="localhost";
     export typo3DatabaseUsername="root";
     export typo3DatabasePassword="";
-    grep directory typo3/sysext/core/Build/FunctionalTests.xml | awk '{print $1}' | sed 's%<directory>\(\.\./\)*\(typo3/sysext.*\)</directory>$%\2%g' | parallel --gnu 'echo; echo "Running functional {} tests"; ./bin/phpunit -c typo3/sysext/core/Build/FunctionalTests.xml {}'
+    grep directory typo3/sysext/core/Build/FunctionalTests.xml | awk '{print $1}' | sed 's%<directory>\(\.\./\)*\(typo3/sysext.*\)</directory>$%\2%g' | parallel --gnu 'echo; echo "Running functional {} tests"; ./bin/phpunit --colors -c typo3/sysext/core/Build/FunctionalTests.xml {}'
   - >
     echo;
     echo "Running php lint";
