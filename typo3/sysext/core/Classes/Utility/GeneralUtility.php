@@ -1762,7 +1762,7 @@ class GeneralUtility {
 	 * @param boolean $includeEmptyValues If set, values from $arr1 will overrule if they are empty or zero. Default: TRUE
 	 * @param boolean $enableUnsetFeature If set, special values "__UNSET" can be used in the second array in order to unset array keys in the resulting array.
 	 * @return array Resulting array where $arr1 values has overruled $arr0 values
-	 * @deprecated since 6.2 - will be removed two versions later: use ArrayUtility::mergeRecursiveWithOverrule instead. Consider that the first array is directly modified there. (better performance)
+	 * @deprecated [!!!] Since 6.2, use ArrayUtility::mergeRecursiveWithOverrule - WARNING: The new method changed its signature and does not return the first parameter anymore, but it is more performant.
 	 */
 	static public function array_merge_recursive_overrule(array $arr0, array $arr1, $notAddKeys = FALSE, $includeEmptyValues = TRUE, $enableUnsetFeature = TRUE) {
 		self::logDeprecatedFunction();
