@@ -1891,7 +1891,7 @@ return array(
 			'showitem' => 'sys_language_uid, l18n_parent, colPos'
 		),
 		'general' => array(
-			'showitem' => 'CType;LLL:EXT:cms/locallang_ttc.xlf:CType_formlabel, colPos;LLL:EXT:cms/locallang_ttc.xlf:colPos_formlabel, sys_language_uid;LLL:EXT:cms/locallang_ttc.xlf:sys_language_uid_formlabel',
+			'showitem' => 'CType;LLL:EXT:cms/locallang_ttc.xlf:CType_formlabel, colPos;LLL:EXT:cms/locallang_ttc.xlf:colPos_formlabel, sys_language_uid;LLL:EXT:cms/locallang_ttc.xlf:sys_language_uid_formlabel, --linebreak--, l18n_parent',
 			'canNotCollapse' => 1
 		),
 		'header' => array(
