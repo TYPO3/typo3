@@ -135,6 +135,7 @@ class ConfigurationView {
 	public function main() {
 		$arrayBrowser = GeneralUtility::makeInstance('TYPO3\\CMS\\Lowlevel\\Utility\\ArrayBrowser');
 		$label = $this->MOD_MENU['function'][$this->MOD_SETTINGS['function']];
+		$search_field = GeneralUtility::_GP('search_field');
 		$this->content = $this->doc->header($GLOBALS['LANG']->getLL('configuration', TRUE));
 		$this->content .= '<h2>' . $label . '</h2>';
 
@@ -215,7 +216,7 @@ class ConfigurationView {
 		$arrayBrowser->regexMode = $this->MOD_SETTINGS['regexsearch'];
 		$arrayBrowser->fixedLgd = $this->MOD_SETTINGS['fixedLgd'];
 		$arrayBrowser->searchKeysToo = TRUE;
-		$search_field = GeneralUtility::_GP('search_field');
+
 		// If any POST-vars are send, update the condition array
 		if (GeneralUtility::_POST('search') && trim($search_field)) {
 			$arrayBrowser->depthKeys = $arrayBrowser->getSearchKeys($theVar, '', $search_field, array());
