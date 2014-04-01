@@ -106,7 +106,7 @@ $GLOBALS['TYPO3_CONF_VARS'] = $configurationManager->getDefaultConfiguration();
 	->disableCoreAndClassesCache()
 	->initializeCachingFramework()
 	->initializeClassLoaderCaches()
-	->initializePackageManagement('TYPO3\\CMS\\Core\\Package\\PackageManager');
+	->initializePackageManagement('TYPO3\\CMS\\Core\\Package\\UnitTestPackageManager');
 
 require PATH_site . 'typo3conf/ext/phpunit/Composer/vendor/autoload.php';
 require PATH_site . 'typo3conf/ext/phpunit/Migrations/vfsStream.php';
