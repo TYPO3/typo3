@@ -60,9 +60,14 @@ class FileTableSplittingUpdate extends AbstractUpdate {
 		if (!array_key_exists($this->metaDataTable, $GLOBALS['TYPO3_DB']->admin_get_tables())) {
 			$result = TRUE;
 		} else {
-			$sysFileCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'sys_file');
-			$sysFileMetaDataCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $this->metaDataTable);
-			$result = $sysFileCount > $sysFileMetaDataCount;
+			$fields = $GLOBALS['TYPO3_DB']->admin_get_fields('sys_file');
+			// Check if the field exists on sys_file if not there is no data to migrate (TYPO3 < 6.0 or >= 6.2)
+			if (isset($fields['width']) && isset($fields['height'])) {
+				// Check if the 1:1 integrity is ok, if not we need to migrate the metadata.
+				$sysFileCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'sys_file');
+				$sysFileMetaDataCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $this->metaDataTable);
+				$result = $sysFileCount > $sysFileMetaDataCount;
+			}
 		}
 
 		return $result;
