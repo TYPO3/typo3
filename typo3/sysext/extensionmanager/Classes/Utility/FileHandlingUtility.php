@@ -1,6 +1,8 @@
 <?php
 namespace TYPO3\CMS\Extensionmanager\Utility;
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -52,11 +54,11 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Unpack an extension in t3x data format and write files
 	 *
 	 * @param array $extensionData
-	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
+	 * @param Extension $extension
 	 * @param string $pathType
 	 * @return void
 	 */
-	public function unpackExtensionFromExtensionDataArray(array $extensionData, \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension = NULL, $pathType = 'Local') {
+	public function unpackExtensionFromExtensionDataArray(array $extensionData, Extension $extension = NULL, $pathType = 'Local') {
 		$extensionDir = $this->makeAndClearExtensionDir($extensionData['extKey'], $pathType);
 		$files = $this->extractFilesArrayFromExtensionData($extensionData);
 		$directories = $this->extractDirectoriesFromExtensionData($files);
@@ -142,27 +144,37 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Removes the current extension of $type and creates the base folder for
 	 * the new one (which is going to be imported)
 	 *
-	 * @param string $extensionkey
+	 * @param string $extensionKey
 	 * @param string $pathType Extension installation scope (Local,Global,System)
 	 * @throws ExtensionManagerException
 	 * @return string
 	 */
-	protected function makeAndClearExtensionDir($extensionkey, $pathType = 'Local') {
-		$paths = \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::returnInstallPaths();
-		$path = $paths[$pathType];
-		if (!$path || !is_dir($path) || !$extensionkey) {
-			throw new ExtensionManagerException(
-				sprintf('ERROR: The extension install path "%s" was no directory!', $this->getRelativePath($path)),
-				1337280417
-			);
-		} else {
-			$extDirPath = $path . $extensionkey . '/';
-			if (is_dir($extDirPath)) {
-				$this->removeDirectory($extDirPath);
-			}
-			$this->addDirectory($extDirPath);
+	protected function makeAndClearExtensionDir($extensionKey, $pathType = 'Local') {
+		$extDirPath = $this->getExtensionDir($extensionKey, $pathType);
+		if (is_dir($extDirPath)) {
+			$this->removeDirectory($extDirPath);
 		}
+		$this->addDirectory($extDirPath);
+
 		return $extDirPath;
+	}
+
+	/**
+	 * Returns the installation directory for an extension depending on the installation scope
+	 *
+	 * @param string $extensionKey
+	 * @param string $pathType Extension installation scope (Local,Global,System)
+	 * @return string
+	 * @throws ExtensionManagerException
+	 */
+	public function getExtensionDir($extensionKey, $pathType = 'Local') {
+		$paths = Extension::returnInstallPaths();
+		$path = $paths[$pathType];
+		if (!$path || !is_dir($path) || !$extensionKey) {
+			throw new ExtensionManagerException(sprintf('ERROR: The extension install path "%s" was no directory!', $this->getRelativePath($path)), 1337280417);
+		}
+
+		return $path . $extensionKey . '/';
 	}
 
 	/**
@@ -265,10 +277,10 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param array $extensionData
 	 * @param string $rootPath
-	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
+	 * @param Extension $extension
 	 * @return void
 	 */
-	protected function writeEmConfToFile(array $extensionData, $rootPath, \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension = NULL) {
+	protected function writeEmConfToFile(array $extensionData, $rootPath, Extension $extension = NULL) {
 		$emConfContent = $this->emConfUtility->constructEmConf($extensionData, $extension);
 		GeneralUtility::writeFile($rootPath . 'ext_emconf.php', $emConfContent);
 	}
@@ -280,7 +292,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return boolean
 	 */
 	public function isValidExtensionPath($path) {
-		$allowedPaths = \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::returnAllowedInstallPaths();
+		$allowedPaths = Extension::returnAllowedInstallPaths();
 		foreach ($allowedPaths as $allowedPath) {
 			if (GeneralUtility::isFirstPartOfStr($path, $allowedPath)) {
 				return TRUE;
@@ -311,7 +323,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return string
 	 */
 	protected function getRelativePath($absolutePath) {
-		return \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($absolutePath);
+		return PathUtility::stripPathSitePrefix($absolutePath);
 	}
 
 	/**
@@ -349,7 +361,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		$extensionPath = $this->getAbsoluteExtensionPath($extension);
 
 		// Add trailing slash to the extension path, getAllFilesAndFoldersInPath explicitly requires that.
-		$extensionPath = \TYPO3\CMS\Core\Utility\PathUtility::sanitizeTrailingSeparator($extensionPath);
+		$extensionPath = PathUtility::sanitizeTrailingSeparator($extensionPath);
 
 		$version = $this->getExtensionVersion($extension);
 		if (empty($version)) {
@@ -364,7 +376,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		$excludePattern = $GLOBALS['TYPO3_CONF_VARS']['EXT']['excludeForPackaging'];
 
 		// Get all the files of the extension, but exclude the ones specified in the excludePattern
-		$files = \TYPO3\CMS\Core\Utility\GeneralUtility::getAllFilesAndFoldersInPath(
+		$files = GeneralUtility::getAllFilesAndFoldersInPath(
 			array(),			// No files pre-added
 			$extensionPath,		// Start from here
 			'',					// Do not filter files by extension
@@ -374,7 +386,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		);
 
 		// Make paths relative to extension root directory.
-		$files = \TYPO3\CMS\Core\Utility\GeneralUtility::removePrefixPathFromList($files, $extensionPath);
+		$files = GeneralUtility::removePrefixPathFromList($files, $extensionPath);
 
 		// Remove the one empty path that is the extension dir itself.
 		$files = array_filter($files);
