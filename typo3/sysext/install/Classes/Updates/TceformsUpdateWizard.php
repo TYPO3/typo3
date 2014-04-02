@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Install\Updates;
 
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Domain\Model\File;
 
 /**
  * Upgrade wizard which goes through all files referenced in the tt_content.image filed
@@ -151,45 +152,49 @@ class TceformsUpdateWizard extends AbstractUpdate {
 			// Nothing to do
 			return TRUE;
 		}
-		$this->init();
-		$finishedFields = $this->getFinishedFields();
-		foreach ($this->tables as $table => $tableConfiguration) {
-			// find all additional fields we should get from the database
-			foreach ($tableConfiguration as $fieldToMigrate => $fieldConfiguration) {
-				$fieldKey = $table . ':' . $fieldToMigrate;
-				if (in_array($fieldKey, $finishedFields)) {
-					// this field was already migrated
-					continue;
-				}
-				$fieldsToGet = array($fieldToMigrate);
-				if (isset($fieldConfiguration['titleTexts'])) {
-					$fieldsToGet[] = $fieldConfiguration['titleTexts'];
-				}
-				if (isset($fieldConfiguration['alternativeTexts'])) {
-					$fieldsToGet[] = $fieldConfiguration['alternativeTexts'];
-				}
-				if (isset($fieldConfiguration['captions'])) {
-					$fieldsToGet[] = $fieldConfiguration['captions'];
-				}
-				if (isset($fieldConfiguration['links'])) {
-					$fieldsToGet[] = $fieldConfiguration['links'];
-				}
-
-				do {
-					$records = $this->getRecordsFromTable($table, $fieldToMigrate, $fieldsToGet, self::RECORDS_PER_QUERY);
-					foreach ($records as $record) {
-						$this->migrateField($table, $record, $fieldToMigrate, $fieldConfiguration, $customMessages);
+		try {
+			$this->init();
+			$finishedFields = $this->getFinishedFields();
+			foreach ($this->tables as $table => $tableConfiguration) {
+				// find all additional fields we should get from the database
+				foreach ($tableConfiguration as $fieldToMigrate => $fieldConfiguration) {
+					$fieldKey = $table . ':' . $fieldToMigrate;
+					if (in_array($fieldKey, $finishedFields)) {
+						// this field was already migrated
+						continue;
 					}
-				} while (count($records) === self::RECORDS_PER_QUERY);
+					$fieldsToGet = array($fieldToMigrate);
+					if (isset($fieldConfiguration['titleTexts'])) {
+						$fieldsToGet[] = $fieldConfiguration['titleTexts'];
+					}
+					if (isset($fieldConfiguration['alternativeTexts'])) {
+						$fieldsToGet[] = $fieldConfiguration['alternativeTexts'];
+					}
+					if (isset($fieldConfiguration['captions'])) {
+						$fieldsToGet[] = $fieldConfiguration['captions'];
+					}
+					if (isset($fieldConfiguration['links'])) {
+						$fieldsToGet[] = $fieldConfiguration['links'];
+					}
 
-				// add the field to the "finished fields" if things didn't fail above
-				if (is_array($records)) {
-					$finishedFields[] = $fieldKey;
+					do {
+						$records = $this->getRecordsFromTable($table, $fieldToMigrate, $fieldsToGet, self::RECORDS_PER_QUERY);
+						foreach ($records as $record) {
+							$this->migrateField($table, $record, $fieldToMigrate, $fieldConfiguration, $customMessages);
+						}
+					} while (count($records) === self::RECORDS_PER_QUERY);
+
+					// add the field to the "finished fields" if things didn't fail above
+					if (is_array($records)) {
+						$finishedFields[] = $fieldKey;
+					}
 				}
 			}
+			$this->markWizardAsDone(implode(',', $finishedFields));
+		} catch (\Exception $e) {
+			$customMessages .= PHP_EOL . $e->getMessage();
 		}
-		$this->markWizardAsDone(implode(',', $finishedFields));
-		return TRUE;
+		return empty($customMessages);
 	}
 
 	/**
@@ -314,10 +319,11 @@ class TceformsUpdateWizard extends AbstractUpdate {
 				try {
 					// if the source file does not exist, we should just continue, but leave a message in the docs;
 					// ideally, the user would be informed after the update as well.
+					/** @var File $file */
 					$file = $this->storage->getFile($fieldConfiguration['targetPath'] . $item);
 					$fileUid = $file->getUid();
 
-				} catch (\Exception $e) {
+				} catch (\InvalidArgumentException $e) {
 
 					// no file found, no reference can be set
 					$this->logger->notice(
