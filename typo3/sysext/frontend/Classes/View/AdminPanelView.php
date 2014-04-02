@@ -22,7 +22,6 @@ namespace TYPO3\CMS\Frontend\View;
  *  This copyright notice MUST APPEAR in all copies of the scri.pt!
  ***************************************************************/
 
-use TYPO3\CMS\Backend\Sprite\SpriteManager;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -45,6 +44,11 @@ class AdminPanelView {
 	 * @var boolean
 	 */
 	protected $ext_forcePreview = FALSE;
+
+	/**
+	 * @var string
+	 */
+	protected $extJSCODE = '';
 
 	/**
 	 * Constructor
@@ -240,7 +244,7 @@ class AdminPanelView {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_adminpanel.php']['extendAdminPanel'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_adminpanel.php']['extendAdminPanel'] as $classRef) {
 				$hookObject = GeneralUtility::getUserObj($classRef);
-				if (!$hookObject instanceof \TYPO3\CMS\Frontend\View\AdminPanelViewHookInterface) {
+				if (!$hookObject instanceof AdminPanelViewHookInterface) {
 					throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Frontend\\View\\AdminPanelViewHookInterface', 1311942539);
 				}
 				$moduleContent .= $hookObject->extendAdminPanel($moduleContent, $this);
@@ -389,7 +393,7 @@ class AdminPanelView {
 			$options .= '<option value="2"' . ($levels == 2 ? ' selected="selected"' : '') . '>' . $this->extGetLL('div_Levels_2') . '</option>';
 			$out .= $this->extGetItem('cache_clearLevels', '<select id="cache_clearLevels" name="TSFE_ADMIN_PANEL[cache_clearCacheLevels]">' . $options . '</select>' . '<input type="hidden" name="TSFE_ADMIN_PANEL[cache_clearCacheId]" value="' . $GLOBALS['TSFE']->id . '" /> <input type="submit" value="' . $this->extGetLL('update') . '" />');
 			// Generating tree:
-			$depth = $this->extGetFeAdminValue('cache', 'clearCacheLevels');
+			$depth = (int)$this->extGetFeAdminValue('cache', 'clearCacheLevels');
 			$outTable = '';
 			$GLOBALS['BE_USER']->extPageInTreeInfo = array();
 			$GLOBALS['BE_USER']->extPageInTreeInfo[] = array($GLOBALS['TSFE']->page['uid'], htmlspecialchars($GLOBALS['TSFE']->page['title']), $depth + 1);
@@ -547,7 +551,7 @@ class AdminPanelView {
 	 * Wraps a string in a link which will open/close a certain part of the Admin Panel
 	 *
 	 * @param string $sectionSuffix The code for the display_ label/key
-	 * @param string $sectionTitle Input string
+	 * @param string $sectionTitle Title (in HTML-format)
 	 * @param string $className The classname for the <a> tag
 	 * @return string $className Linked input string
 	 * @see extGetHead()
@@ -595,27 +599,27 @@ class AdminPanelView {
 		$id = $GLOBALS['TSFE']->id;
 		$returnUrl = '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
 
-		$icon = IconUtility::getSpriteIcon('actions-document-history-open', array('title' => $this->extGetLL('edit_newContentElement')));
+		$icon = IconUtility::getSpriteIcon('actions-document-history-open', array('title' => $this->extGetLL('edit_recordHistory', FALSE)));
 		$toolBar = '<a href="' . htmlspecialchars(TYPO3_mainDir . BackendUtility::getModuleUrl('record_history', array('element' => 'pages:' . $id)) . $returnUrl) . '#latest">' . $icon . '</a>';
 		if ($perms & 16 && $langAllowed) {
 			$params = '';
 			if ($GLOBALS['TSFE']->sys_language_uid) {
 				$params = '&sys_language_uid=' . $GLOBALS['TSFE']->sys_language_uid;
 			}
-			$icon = IconUtility::getSpriteIcon('actions-document-new', array('title' => $this->extGetLL('edit_newContentElement')));
+			$icon = IconUtility::getSpriteIcon('actions-document-new', array('title' => $this->extGetLL('edit_newContentElement', FALSE)));
 			$toolBar .= '<a href="' . htmlspecialchars(($newContentWizScriptPath . '?id=' . $id . $params . '&returnUrl=' . $returnUrl)) . '">' . $icon . '</a>';
 		}
 		if ($perms & 2) {
-			$icon = IconUtility::getSpriteIcon('actions-document-move', array('title' => $this->extGetLL('edit_move_page')));
+			$icon = IconUtility::getSpriteIcon('actions-document-move', array('title' => $this->extGetLL('edit_move_page', FALSE)));
 			$toolBar .= '<a href="' . htmlspecialchars((TYPO3_mainDir . 'move_el.php?table=pages&uid=' . $id . '&returnUrl=' . $returnUrl)) . '">' . $icon . '</a>';
 		}
 		if ($perms & 8) {
-			$icon = IconUtility::getSpriteIcon('actions-page-new', array('title' => $this->extGetLL('edit_newPage')));
+			$icon = IconUtility::getSpriteIcon('actions-page-new', array('title' => $this->extGetLL('edit_newPage', FALSE)));
 			$toolBar .= '<a href="' . htmlspecialchars((TYPO3_mainDir . 'db_new.php?id=' . $id . '&pagesOnly=1&returnUrl=' . $returnUrl)) . '">' . $icon . '</a>';
 		}
 		if ($perms & 2) {
 			$params = '&edit[pages][' . $id . ']=edit';
-			$icon = IconUtility::getSpriteIcon('actions-document-open', array('title' => $this->extGetLL('edit_editPageProperties')));
+			$icon = IconUtility::getSpriteIcon('actions-document-open', array('title' => $this->extGetLL('edit_editPageProperties', FALSE)));
 			$toolBar .= '<a href="' . htmlspecialchars((TYPO3_mainDir . 'alt_doc.php?' . $params . '&noView=1&returnUrl=' . $returnUrl)) . '">' . $icon . '</a>';
 			if ($GLOBALS['TSFE']->sys_language_uid && $langAllowed) {
 				$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
@@ -628,7 +632,7 @@ class AdminPanelView {
 				$GLOBALS['TSFE']->sys_page->versionOL('pages_language_overlay', $row);
 				if (is_array($row)) {
 					$params = '&edit[pages_language_overlay][' . $row['uid'] . ']=edit';
-					$icon = IconUtility::getSpriteIcon('mimetypes-x-content-page-language-overlay', array('title' => $this->extGetLL('edit_editPageOverlay')));
+					$icon = IconUtility::getSpriteIcon('mimetypes-x-content-page-language-overlay', array('title' => $this->extGetLL('edit_editPageOverlay', FALSE)));
 					$toolBar .= '<a href="' . htmlspecialchars((TYPO3_mainDir . 'alt_doc.php?' . $params . '&noView=1&returnUrl=' . $returnUrl)) . '">' . $icon . '</a>';
 				}
 			}
@@ -638,7 +642,7 @@ class AdminPanelView {
 				'id' => $id,
 				'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
 			);
-			$icon = IconUtility::getSpriteIcon('actions-system-list-open', array('title' => $this->extGetLL('edit_db_list')));
+			$icon = IconUtility::getSpriteIcon('actions-system-list-open', array('title' => $this->extGetLL('edit_db_list', FALSE)));
 			$toolBar .= '<a href="' . htmlspecialchars((TYPO3_mainDir . BackendUtility::getModuleUrl('web_list', $urlParams))) . '">' . $icon . '</a>';
 		}
 
@@ -651,10 +655,14 @@ class AdminPanelView {
 	 * Translate given key
 	 *
 	 * @param string $key Key for a label in the $LOCAL_LANG array of "sysext/lang/locallang_tsfe.xlf
+	 * @param bool $convertWithHtmlspecialchars If TRUE the language-label will be sent through htmlspecialchars
 	 * @return string The value for the $key
 	 */
-	public function extGetLL($key) {
-		$labelStr = htmlspecialchars($GLOBALS['LANG']->getLL($key));
+	protected function extGetLL($key, $convertWithHtmlspecialchars = TRUE) {
+		$labelStr = $GLOBALS['LANG']->getLL($key);
+		if ($convertWithHtmlspecialchars) {
+			$labelStr = htmlspecialchars($labelStr);
+		}
 		return $labelStr;
 	}
 

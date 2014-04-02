@@ -120,7 +120,7 @@ class FormProtectionFactory {
 	 * @return boolean
 	 */
 	static protected function isBackendSession() {
-		return isset($GLOBALS['BE_USER']) && $GLOBALS['BE_USER'] instanceof \TYPO3\CMS\Core\Authentication\BackendUserAuthentication && isset($GLOBALS['BE_USER']->user['uid']) && !(TYPO3_MODE === 'FE');
+		return isset($GLOBALS['BE_USER']) && $GLOBALS['BE_USER'] instanceof \TYPO3\CMS\Core\Authentication\BackendUserAuthentication && isset($GLOBALS['BE_USER']->user['uid']);
 	}
 
 	/**
