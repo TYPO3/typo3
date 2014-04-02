@@ -224,6 +224,7 @@ class TceformsUpdateWizard extends AbstractUpdate {
 	 * @param string $fieldToMigrate
 	 * @param array $relationFields
 	 * @param int $limit Maximum number records to select
+	 * @throws \RuntimeException
 	 * @return array
 	 */
 	protected function getRecordsFromTable($table, $fieldToMigrate, $relationFields, $limit) {
@@ -235,7 +236,11 @@ class TceformsUpdateWizard extends AbstractUpdate {
 			. ' AND ' . $fieldToMigrate . ' != \'\''
 			. ' AND CAST(CAST(' . $fieldToMigrate . ' AS DECIMAL) AS CHAR) <> ' . $fieldToMigrate
 			. $deletedCheck;
-		return $this->database->exec_SELECTgetRows($fields, $table, $where, '', '', $limit);
+		$result = $this->database->exec_SELECTgetRows($fields, $table, $where, '', '', $limit);
+		if ($result === NULL) {
+			throw new \RuntimeException('Database query failed. Error was: ' . $this->database->sql_error());
+		}
+		return $result;
 	}
 
 	/**
