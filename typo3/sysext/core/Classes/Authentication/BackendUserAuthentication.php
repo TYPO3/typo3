@@ -1335,10 +1335,14 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 			$this->dataLists['allowed_languages'] = $this->user['allowed_languages'];
 			// Set user value for workspace permissions.
 			$this->dataLists['workspace_perms'] = $this->user['workspace_perms'];
-			// Database mountpoints
-			$this->dataLists['webmount_list'] = $this->user['db_mountpoints'];
-			// File mountpoints
-			$this->dataLists['filemount_list'] = $this->user['file_mountpoints'];
+			// User mount points are only added if the user is not an admin as admins do not have visible
+			// mountpoints fields. Processing them loads mountpoints defined when the user was a non-admin.
+			if (!$this->isAdmin()) {
+				// Database mountpoints
+				$this->dataLists['webmount_list'] = $this->user['db_mountpoints'];
+				// File mountpoints
+				$this->dataLists['filemount_list'] = $this->user['file_mountpoints'];
+			}
 			// Fileoperation permissions
 			$this->dataLists['file_permissions'] = $this->user['file_permissions'];
 			// Setting default User TSconfig:
