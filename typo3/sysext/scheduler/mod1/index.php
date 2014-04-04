@@ -743,8 +743,8 @@ class tx_scheduler_Module extends t3lib_SCbase {
 		}
 
 			// Start rendering the add/edit form
-		$content .= '<input type="hidden" name="tx_scheduler[uid]" value="' . $this->submittedData['uid'] . '" />';
-		$content .= '<input type="hidden" name="previousCMD" value="' . $this->CMD . '" />';
+		$content .= '<input type="hidden" name="tx_scheduler[uid]" value="' . htmlspecialchars($this->submittedData['uid']) . '" />';
+		$content .= '<input type="hidden" name="previousCMD" value="' . htmlspecialchars($this->CMD) . '" />';
 		$content .= '<input type="hidden" name="CMD" value="save" />';
 
 		$table = array();
@@ -770,7 +770,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			// On editing, don't allow changing of the task class, unless it was not valid
 		if ($this->submittedData['uid'] > 0 && !empty($taskInfo['class'])) {
 			$cell = $registeredClasses[$taskInfo['class']]['title'] . ' (' . $registeredClasses[$taskInfo['class']]['extension'] . ')';
-			$cell .= '<input type="hidden" name="tx_scheduler[class]" id="task_class" value="' . $taskInfo['class'] . '" />';
+			$cell .= '<input type="hidden" name="tx_scheduler[class]" id="task_class" value="' . htmlspecialchars($taskInfo['class']) . '" />';
 		} else {
 			$cell = '<select name="tx_scheduler[class]" id="task_class" class="wide" onchange="actOnChangedTaskClass(this)">';
 				// Loop on all registered classes to display a selector
