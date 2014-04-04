@@ -34,15 +34,14 @@ interface ErrorHandlerInterface {
 	/**
 	 * Registers this class as default error handler
 	 *
-	 * @param integer $errorHandlerErrors The integer representing the E_* error level which should be
-	 * @return void
+	 * @param int $errorHandlerErrors The integer representing the E_* error level which should be
 	 */
 	public function __construct($errorHandlerErrors);
 
 	/**
 	 * Defines which error levels should result in an exception thrown.
 	 *
-	 * @param integer $exceptionalErrors The integer representing the E_* error level to handle as exceptions
+	 * @param int $exceptionalErrors The integer representing the E_* error level to handle as exceptions
 	 * @return void
 	 */
 	public function setExceptionalErrors($exceptionalErrors);
@@ -54,11 +53,11 @@ interface ErrorHandlerInterface {
 	 * If TYPO3_MODE is 'BE' the error message is also added to the flashMessageQueue, in FE the error message
 	 * is displayed in the admin panel (as TsLog message)
 	 *
-	 * @param integer $errorLevel The error level - one of the E_* constants
+	 * @param int $errorLevel The error level - one of the E_* constants
 	 * @param string $errorMessage The error message
 	 * @param string $errorFile Name of the file the error occurred in
-	 * @param integer $errorLine Line number where the error occurred
-	 * @return void
+	 * @param int $errorLine Line number where the error occurred
+	 * @return bool
 	 * @throws \TYPO3\CMS\Core\Error\Exception with the data passed to this method if the error is registered as exceptionalError
 	 */
 	public function handleError($errorLevel, $errorMessage, $errorFile, $errorLine);

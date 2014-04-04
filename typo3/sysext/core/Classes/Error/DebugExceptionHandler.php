@@ -46,7 +46,7 @@ class DebugExceptionHandler extends \TYPO3\CMS\Core\Error\AbstractExceptionHandl
 	/**
 	 * Formats and echoes the exception as XHTML.
 	 *
-	 * @param Exception $exception The exception object
+	 * @param \Exception $exception The exception object
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
@@ -54,7 +54,9 @@ class DebugExceptionHandler extends \TYPO3\CMS\Core\Error\AbstractExceptionHandl
 		$this->sendStatusHeaders($exception);
 		$filePathAndName = $exception->getFile();
 		$exceptionCodeNumber = $exception->getCode() > 0 ? '#' . $exception->getCode() . ': ' : '';
-		$moreInformationLink = $exceptionCodeNumber != '' ? '(<a href="' . TYPO3_URL_EXCEPTION . 'debug/' . $exception->getCode() . '" target="_blank">More information</a>)' : '';
+		$moreInformationLink = $exceptionCodeNumber !== ''
+			? '(<a href="' . TYPO3_URL_EXCEPTION . 'debug/' . $exception->getCode() . '" target="_blank">More information</a>)'
+			: '';
 		$backtraceCode = $this->getBacktraceCode($exception->getTrace());
 		$this->writeLogEntries($exception, self::CONTEXT_WEB);
 		// Set the XML prologue
@@ -64,7 +66,9 @@ class DebugExceptionHandler extends \TYPO3\CMS\Core\Error\AbstractExceptionHandl
      PUBLIC "-//W3C//DTD XHTML 1.1//EN"
      "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">';
 		// Get the browser info
-		$browserInfo = \TYPO3\CMS\Core\Utility\ClientUtility::getBrowserInfo(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT'));
+		$browserInfo = \TYPO3\CMS\Core\Utility\ClientUtility::getBrowserInfo(
+			\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT')
+		);
 		// Put the XML prologue before or after the doctype declaration according to browser
 		if ($browserInfo['browser'] === 'msie' && $browserInfo['version'] < 7) {
 			$headerStart = $docType . LF . $xmlPrologue;
@@ -120,7 +124,7 @@ class DebugExceptionHandler extends \TYPO3\CMS\Core\Error\AbstractExceptionHandl
 	/**
 	 * Formats and echoes the exception for the command line
 	 *
-	 * @param Exception $exception The exception object
+	 * @param \Exception $exception The exception object
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
@@ -156,7 +160,9 @@ Uncaught TYPO3 Exception ' . $exceptionCodeNumber . $exception->getMessage() . L
 						if (is_object($argument)) {
 							$arguments .= '<span style="color:#FF8700;"><em>' . get_class($argument) . '</em></span>';
 						} elseif (is_string($argument)) {
-							$preparedArgument = strlen($argument) < 100 ? $argument : substr($argument, 0, 50) . '#tripleDot#' . substr($argument, -50);
+							$preparedArgument = strlen($argument) < 100
+								? $argument
+								: substr($argument, 0, 50) . '#tripleDot#' . substr($argument, -50);
 							$preparedArgument = str_replace(
 								array(
 									'#tripleDot#',
@@ -167,7 +173,8 @@ Uncaught TYPO3 Exception ' . $exceptionCodeNumber . $exception->getMessage() . L
 								),
 								htmlspecialchars($preparedArgument)
 							);
-							$arguments .= '"<span style="color:#FF8700;" title="' . htmlspecialchars($argument) . '">' . $preparedArgument . '</span>"';
+							$arguments .= '"<span style="color:#FF8700;" title="' . htmlspecialchars($argument) . '">'
+								. $preparedArgument . '</span>"';
 						} elseif (is_numeric($argument)) {
 							$arguments .= '<span style="color:#FF8700;">' . (string) $argument . '</span>';
 						} else {
@@ -176,7 +183,8 @@ Uncaught TYPO3 Exception ' . $exceptionCodeNumber . $exception->getMessage() . L
 					}
 				}
 				$backtraceCode .= '<pre style="color:#69A550; background-color: #414141; padding: 4px 2px 4px 2px;">';
-				$backtraceCode .= '<span style="color:white;">' . (count($trace) - $index) . '</span> ' . $class . $step['function'] . '<span style="color:white;">(' . $arguments . ')</span>';
+				$backtraceCode .= '<span style="color:white;">' . (count($trace) - $index) . '</span> ' . $class
+					. $step['function'] . '<span style="color:white;">(' . $arguments . ')</span>';
 				$backtraceCode .= '</pre>';
 				if (isset($step['file'])) {
 					$backtraceCode .= $this->getCodeSnippet($step['file'], $step['line']) . '<br />';
@@ -190,7 +198,7 @@ Uncaught TYPO3 Exception ' . $exceptionCodeNumber . $exception->getMessage() . L
 	 * Returns a code snippet from the specified file.
 	 *
 	 * @param string $filePathAndName Absolute path and file name of the PHP file
-	 * @param integer $lineNumber Line number defining the center of the code snippet
+	 * @param int $lineNumber Line number defining the center of the code snippet
 	 * @return string The code snippet
 	 * @author Robert Lemke <robert@typo3.org>
 	 */

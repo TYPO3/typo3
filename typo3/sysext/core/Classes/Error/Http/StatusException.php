@@ -46,7 +46,7 @@ class StatusException extends \TYPO3\CMS\Core\Error\Exception {
 	 * @param string|array $statusHeaders HTTP Status header line(s)
 	 * @param string $title Title of the error message
 	 * @param string $message Error Message
-	 * @param integer $code Exception Code
+	 * @param int $code Exception Code
 	 */
 	public function __construct($statusHeaders, $message, $title = '', $code = 0) {
 		if (is_array($statusHeaders)) {

@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Core\Error;
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
-class ProductionExceptionHandler extends \TYPO3\CMS\Core\Error\AbstractExceptionHandler {
+class ProductionExceptionHandler extends AbstractExceptionHandler {
 
 	/**
 	 * Default title for error messages
@@ -58,20 +58,24 @@ class ProductionExceptionHandler extends \TYPO3\CMS\Core\Error\AbstractException
 	/**
 	 * Echoes an exception for the web.
 	 *
-	 * @param Exception $exception The exception
+	 * @param \Exception $exception The exception
 	 * @return void
 	 */
 	public function echoExceptionWeb(\Exception $exception) {
 		$this->sendStatusHeaders($exception);
 		$this->writeLogEntries($exception, self::CONTEXT_WEB);
-		$messageObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\ErrorpageMessage', $this->getMessage($exception), $this->getTitle($exception));
+		$messageObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+			'TYPO3\\CMS\\Core\\Messaging\\ErrorpageMessage',
+			$this->getMessage($exception),
+			$this->getTitle($exception)
+		);
 		$messageObj->output();
 	}
 
 	/**
 	 * Echoes an exception for the command line.
 	 *
-	 * @param Exception $exception The exception
+	 * @param \Exception $exception The exception
 	 * @return void
 	 */
 	public function echoExceptionCLI(\Exception $exception) {
@@ -82,12 +86,12 @@ class ProductionExceptionHandler extends \TYPO3\CMS\Core\Error\AbstractException
 	/**
 	 * Determines, whether Exception details should be outputted
 	 *
-	 * @param Exception $exception The exception
+	 * @param \Exception $exception The exception
 	 * @return boolean
 	 */
 	protected function discloseExceptionInformation(\Exception $exception) {
 		// Show client error messages 40x in every case
-		if ($exception instanceof \TYPO3\CMS\Core\Error\Http\AbstractClientErrorException) {
+		if ($exception instanceof Http\AbstractClientErrorException) {
 			return TRUE;
 		}
 		// Only show errors in FE, if a BE user is authenticated
@@ -100,11 +104,11 @@ class ProductionExceptionHandler extends \TYPO3\CMS\Core\Error\AbstractException
 	/**
 	 * Returns the title for the error message
 	 *
-	 * @param Exception $exception Exception causing the error
+	 * @param \Exception $exception Exception causing the error
 	 * @return string
 	 */
 	protected function getTitle(\Exception $exception) {
-		if ($this->discloseExceptionInformation($exception) && method_exists($exception, 'getTitle') && strlen($exception->getTitle()) > 0) {
+		if ($this->discloseExceptionInformation($exception) && method_exists($exception, 'getTitle') && $exception->getTitle() !== '') {
 			return htmlspecialchars($exception->getTitle());
 		} else {
 			return $this->defaultTitle;
@@ -114,14 +118,15 @@ class ProductionExceptionHandler extends \TYPO3\CMS\Core\Error\AbstractException
 	/**
 	 * Returns the message for the error message
 	 *
-	 * @param Exception $exception Exception causing the error
+	 * @param \Exception $exception Exception causing the error
 	 * @return string
 	 */
 	protected function getMessage(\Exception $exception) {
 		if ($this->discloseExceptionInformation($exception)) {
 			// Exception has an error code given
 			if ($exception->getCode() > 0) {
-				$moreInformationLink = '<p>More information regarding this error might be available <a href="' . TYPO3_URL_EXCEPTION . $exception->getCode() . '" target="_blank">online</a>.</p>';
+				$moreInformationLink = '<p>More information regarding this error might be available <a href="'
+					. TYPO3_URL_EXCEPTION . $exception->getCode() . '" target="_blank">online</a>.</p>';
 			} else {
 				$moreInformationLink = '';
 			}

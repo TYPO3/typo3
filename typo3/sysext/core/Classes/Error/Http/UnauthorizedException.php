@@ -28,7 +28,7 @@ namespace TYPO3\CMS\Core\Error\Http;
  *
  * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
-class UnauthorizedException extends \TYPO3\CMS\Core\Error\Http\AbstractClientErrorException {
+class UnauthorizedException extends AbstractClientErrorException {
 
 	/**
 	 * @var array HTTP Status Header lines
@@ -49,7 +49,7 @@ class UnauthorizedException extends \TYPO3\CMS\Core\Error\Http\AbstractClientErr
 	 * Constructor for this Status Exception
 	 *
 	 * @param string $message Error Message
-	 * @param integer $code Exception Code
+	 * @param int $code Exception Code
 	 */
 	public function __construct($message = NULL, $code = 0) {
 		if (!empty($message)) {

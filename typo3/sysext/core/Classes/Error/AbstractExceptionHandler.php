@@ -23,6 +23,8 @@ namespace TYPO3\CMS\Core\Error;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * An abstract exception handler
  *
@@ -30,14 +32,15 @@ namespace TYPO3\CMS\Core\Error;
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
-abstract class AbstractExceptionHandler implements \TYPO3\CMS\Core\Error\ExceptionHandlerInterface, \TYPO3\CMS\Core\SingletonInterface {
+abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, \TYPO3\CMS\Core\SingletonInterface {
 
 	const CONTEXT_WEB = 'WEB';
 	const CONTEXT_CLI = 'CLI';
+
 	/**
 	 * Displays the given exception
 	 *
-	 * @param Exception $exception The exception object
+	 * @param \Exception $exception The exception object
 	 * @return void
 	 */
 	public function handleException(\Exception $exception) {
@@ -53,7 +56,7 @@ abstract class AbstractExceptionHandler implements \TYPO3\CMS\Core\Error\Excepti
 	/**
 	 * Writes exception to different logs
 	 *
-	 * @param Exception $exception The exception
+	 * @param \Exception $exception The exception
 	 * @param string $context The context where the exception was thrown, WEB or CLI
 	 * @return void
 	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(), \TYPO3\CMS\Core\Utility\GeneralUtility::devLog()
@@ -62,13 +65,14 @@ abstract class AbstractExceptionHandler implements \TYPO3\CMS\Core\Error\Excepti
 		$filePathAndName = $exception->getFile();
 		$exceptionCodeNumber = $exception->getCode() > 0 ? '#' . $exception->getCode() . ': ' : '';
 		$logTitle = 'Core: Exception handler (' . $context . ')';
-		$logMessage = 'Uncaught TYPO3 Exception: ' . $exceptionCodeNumber . $exception->getMessage() . ' | ' . get_class($exception) . ' thrown in file ' . $filePathAndName . ' in line ' . $exception->getLine();
+		$logMessage = 'Uncaught TYPO3 Exception: ' . $exceptionCodeNumber . $exception->getMessage() . ' | '
+			. get_class($exception) . ' thrown in file ' . $filePathAndName . ' in line ' . $exception->getLine();
 		if ($context === 'WEB') {
-			$logMessage .= '. Requested URL: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
+			$logMessage .= '. Requested URL: ' . GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
 		}
 		$backtrace = $exception->getTrace();
 		// Write error message to the configured syslogs
-		\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog($logMessage, $logTitle, \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_FATAL);
+		GeneralUtility::sysLog($logMessage, $logTitle, GeneralUtility::SYSLOG_SEVERITY_FATAL);
 		// When database credentials are wrong, the exception is probably
 		// caused by this. Therefor we cannot do any database operation,
 		// otherwise this will lead into recurring exceptions.
@@ -76,7 +80,7 @@ abstract class AbstractExceptionHandler implements \TYPO3\CMS\Core\Error\Excepti
 			// Write error message to devlog
 			// see: $TYPO3_CONF_VARS['SYS']['enable_exceptionDLOG']
 			if (TYPO3_EXCEPTION_DLOG) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog($logMessage, $logTitle, 3, array(
+				GeneralUtility::devLog($logMessage, $logTitle, 3, array(
 					'TYPO3_MODE' => TYPO3_MODE,
 					'backtrace' => $backtrace
 				));
@@ -113,7 +117,7 @@ abstract class AbstractExceptionHandler implements \TYPO3\CMS\Core\Error\Excepti
 				'error' => 2,
 				'details_nr' => 0,
 				'details' => str_replace('%', '%%', $logMessage),
-				'IP' => \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR'),
+				'IP' => GeneralUtility::getIndpEnv('REMOTE_ADDR'),
 				'tstamp' => $GLOBALS['EXEC_TIME'],
 				'workspace' => $workspace
 			);
@@ -123,9 +127,9 @@ abstract class AbstractExceptionHandler implements \TYPO3\CMS\Core\Error\Excepti
 
 	/**
 	 * Sends the HTTP Status 500 code, if $exception is *not* a
-	 * TYPO3\\CMS\\Core\\Error\\Http\\StatusException and headers are not sent, yet.
+	 * TYPO3\CMS\Core\Error\Http\StatusException and headers are not sent, yet.
 	 *
-	 * @param Exception $exception
+	 * @param \Exception $exception
 	 * @return void
 	 */
 	protected function sendStatusHeaders(\Exception $exception) {

@@ -28,7 +28,7 @@ namespace TYPO3\CMS\Core\Error\Http;
  *
  * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
-abstract class AbstractClientErrorException extends \TYPO3\CMS\Core\Error\Http\StatusException {
+abstract class AbstractClientErrorException extends StatusException {
 
 
 }
