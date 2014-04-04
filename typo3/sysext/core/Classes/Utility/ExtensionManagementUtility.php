@@ -649,7 +649,7 @@ class ExtensionManagementUtility {
 		// Remove the field names from the insertionlist.
 		$fieldReplacePatterns = array();
 		foreach ($listMatches[1] as $fieldName) {
-			$fieldReplacePatterns[] = '/(?:^|,)\\s*\\b' . $fieldName . '\\b[^,$]*/';
+			$fieldReplacePatterns[] = '/(?:^|,)\\s*\\b' . preg_quote($fieldName, '/') . '\\b[^,$]*/';
 		}
 		return preg_replace($fieldReplacePatterns, '', $insertionList);
 	}
