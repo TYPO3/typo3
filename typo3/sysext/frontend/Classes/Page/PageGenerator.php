@@ -876,6 +876,23 @@ class PageGenerator {
 				$pageRenderer->addJsFooterInlineCode('TS_inlineFooter', $inlineFooterJs, $tsfe->config['config']['compressJs']);
 			}
 		}
+		if (is_array($tsfe->pSetup['inlineLanguageLabelFiles.'])) {
+			foreach ($tsfe->pSetup['inlineLanguageLabelFiles.'] as $key => $languageFile) {
+				if (is_array($languageFile)) {
+					continue;
+				}
+				$languageFileConfig = &$tsfe->pSetup['inlineLanguageLabelFiles.'][$key . '.'];
+				if (isset($languageFileConfig['if.']) && !$tsfe->cObj->checkIf($languageFileConfig['if.'])) {
+					continue;
+				}
+				$pageRenderer->addInlineLanguageLabelFile(
+					$languageFile,
+					$languageFileConfig['selectionPrefix'] ?: '',
+					$languageFileConfig['stripFromSelectionName'] ?: '',
+					$languageFileConfig['errorMode'] ? (int)$languageFileConfig['errorMode'] : 0
+				);
+			}
+		}
 		// ExtJS specific code
 		if (is_array($tsfe->pSetup['inlineLanguageLabel.'])) {
 			$pageRenderer->addInlineLanguageLabelArray($tsfe->pSetup['inlineLanguageLabel.'], TRUE);
