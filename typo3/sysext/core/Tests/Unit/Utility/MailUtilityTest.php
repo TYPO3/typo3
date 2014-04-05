@@ -83,7 +83,10 @@ class MailUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$mockMailer = $this->getMock('TYPO3\\CMS\\Core\\Mail\\MailerAdapterInterface', array('mail'));
 		$mockClassName = get_class($mockMailer);
 		\TYPO3\CMS\Core\Utility\GeneralUtility::addInstance($mockClassName, $mockMailer);
-		$mockMailer->expects($this->once())->method('mail')->with($to, $subject, $messageBody, $additionalHeadersExpected, $additionalParameters, $fakeThis);
+		$mockMailer->expects($this->once())
+			->method('mail')
+			->with($to, $subject, $messageBody, $additionalHeadersExpected, $additionalParameters, $fakeThis)
+			->will($this->returnValue(TRUE));
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/utility/class.t3lib_utility_mail.php']['substituteMailDelivery'] = array($mockClassName);
 		\TYPO3\CMS\Core\Utility\MailUtility::mail($to, $subject, $messageBody, $additionalHeaders, $additionalParameters);
 		// Restore configuration
