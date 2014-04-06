@@ -1538,24 +1538,25 @@ class ResourceStorage implements ResourceStorageInterface {
 		if ($targetFileName === NULL) {
 			$targetFileName = $file->getName();
 		}
-		$this->assureFileCopyPermissions($file, $targetFolder, $targetFileName);
+		$sanitizedTargetFileName = $this->driver->sanitizeFileName($targetFileName);
+		$this->assureFileCopyPermissions($file, $targetFolder, $sanitizedTargetFileName);
 		$this->emitPreFileCopySignal($file, $targetFolder);
 		// File exists and we should abort, let's abort
-		if ($conflictMode === 'cancel' && $targetFolder->hasFile($targetFileName)) {
+		if ($conflictMode === 'cancel' && $targetFolder->hasFile($sanitizedTargetFileName)) {
 			throw new Exception\ExistingTargetFileNameException('The target file already exists.', 1320291064);
 		}
 		// File exists and we should find another name, let's find another one
-		if ($conflictMode === 'renameNewFile' && $targetFolder->hasFile($targetFileName)) {
-			$targetFileName = $this->getUniqueName($targetFolder, $targetFileName);
+		if ($conflictMode === 'renameNewFile' && $targetFolder->hasFile($sanitizedTargetFileName)) {
+			$sanitizedTargetFileName = $this->getUniqueName($targetFolder, $sanitizedTargetFileName);
 		}
 		$sourceStorage = $file->getStorage();
 		// Call driver method to create a new file from an existing file object,
 		// and return the new file object
 		if ($sourceStorage === $this) {
-			$newFileObjectIdentifier = $this->driver->copyFileWithinStorage($file->getIdentifier(), $targetFolder->getIdentifier(), $targetFileName);
+			$newFileObjectIdentifier = $this->driver->copyFileWithinStorage($file->getIdentifier(), $targetFolder->getIdentifier(), $sanitizedTargetFileName);
 		} else {
 			$tempPath = $file->getForLocalProcessing();
-			$newFileObjectIdentifier = $this->driver->addFile($tempPath, $targetFolder->getIdentifier(), $targetFileName);
+			$newFileObjectIdentifier = $this->driver->addFile($tempPath, $targetFolder->getIdentifier(), $sanitizedTargetFileName);
 		}
 		$newFileObject = ResourceFactory::getInstance()->getFileObjectByStorageAndIdentifier($this->getUid(), $newFileObjectIdentifier);
 		$this->emitPostFileCopySignal($file, $targetFolder);
@@ -1581,11 +1582,12 @@ class ResourceStorage implements ResourceStorageInterface {
 		if ($targetFileName === NULL) {
 			$targetFileName = $file->getName();
 		}
-		$this->assureFileMovePermissions($file, $targetFolder, $targetFileName);
-		if ($targetFolder->hasFile($targetFileName)) {
+		$sanitizedTargetFileName = $this->driver->sanitizeFileName($targetFileName);
+		$this->assureFileMovePermissions($file, $targetFolder, $sanitizedTargetFileName);
+		if ($targetFolder->hasFile($sanitizedTargetFileName)) {
 			// File exists and we should abort, let's abort
 			if ($conflictMode === 'renameNewFile') {
-				$targetFileName = $this->getUniqueName($targetFolder, $targetFileName);
+				$sanitizedTargetFileName = $this->getUniqueName($targetFolder, $sanitizedTargetFileName);
 			} elseif ($conflictMode === 'cancel') {
 				throw new Exception\ExistingTargetFileNameException('The target file already exists', 1329850997);
 			}
@@ -1595,14 +1597,14 @@ class ResourceStorage implements ResourceStorageInterface {
 		// Call driver method to move the file and update the index entry
 		try {
 			if ($sourceStorage === $this) {
-				$newIdentifier = $this->driver->moveFileWithinStorage($file->getIdentifier(), $targetFolder->getIdentifier(), $targetFileName);
+				$newIdentifier = $this->driver->moveFileWithinStorage($file->getIdentifier(), $targetFolder->getIdentifier(), $sanitizedTargetFileName);
 				if (!$file instanceof AbstractFile) {
 					throw new \RuntimeException('The given file is not of type AbstractFile.', 1384209025);
 				}
 				$file->updateProperties(array('identifier' => $newIdentifier));
 			} else {
 				$tempPath = $file->getForLocalProcessing();
-				$newIdentifier = $this->driver->addFile($tempPath, $targetFolder->getIdentifier(), $targetFileName);
+				$newIdentifier = $this->driver->addFile($tempPath, $targetFolder->getIdentifier(), $sanitizedTargetFileName);
 				$sourceStorage->driver->deleteFile($file->getIdentifier());
 				if ($file instanceof File) {
 					$file->updateProperties(array('storage' => $this->getUid(), 'identifier' => $newIdentifier));
@@ -1634,12 +1636,13 @@ class ResourceStorage implements ResourceStorageInterface {
 		if ($file->getName() === $targetFileName) {
 			return $file;
 		}
-		$this->assureFileRenamePermissions($file, $targetFileName);
-		$this->emitPreFileRenameSignal($file, $targetFileName);
+		$sanitizedTargetFileName = $this->driver->sanitizeFileName($targetFileName);
+		$this->assureFileRenamePermissions($file, $sanitizedTargetFileName);
+		$this->emitPreFileRenameSignal($file, $sanitizedTargetFileName);
 
 		// Call driver method to rename the file and update the index entry
 		try {
-			$newIdentifier = $this->driver->renameFile($file->getIdentifier(), $targetFileName);
+			$newIdentifier = $this->driver->renameFile($file->getIdentifier(), $sanitizedTargetFileName);
 			if ($file instanceof File) {
 				$file->updateProperties(array('identifier' => $newIdentifier));
 			}
@@ -1648,7 +1651,7 @@ class ResourceStorage implements ResourceStorageInterface {
 
 		}
 
-		$this->emitPostFileRenameSignal($file, $targetFileName);
+		$this->emitPostFileRenameSignal($file, $sanitizedTargetFileName);
 
 		return $file;
 	}
@@ -1746,15 +1749,15 @@ class ResourceStorage implements ResourceStorageInterface {
 		$this->assureFolderMovePermissions($folderToMove, $targetParentFolder);
 		$sourceStorage = $folderToMove->getStorage();
 		$returnObject = NULL;
-		$newFolderName = $newFolderName ? $newFolderName : $folderToMove->getName();
+		$sanitizedNewFolderName = $this->driver->sanitizeFileName($newFolderName ?: $folderToMove->getName());
 		// TODO check if folder already exists in $targetParentFolder, handle this conflict then
-		$this->emitPreFolderMoveSignal($folderToMove, $targetParentFolder, $newFolderName);
+		$this->emitPreFolderMoveSignal($folderToMove, $targetParentFolder, $sanitizedNewFolderName);
 		// Get all file objects now so we are able to update them after moving the folder
 		$fileObjects = $this->getAllFileObjectsInFolder($folderToMove);
 		if ($sourceStorage === $this) {
-			$fileMappings = $this->driver->moveFolderWithinStorage($folderToMove->getIdentifier(), $targetParentFolder->getIdentifier(), $newFolderName);
+			$fileMappings = $this->driver->moveFolderWithinStorage($folderToMove->getIdentifier(), $targetParentFolder->getIdentifier(), $sanitizedNewFolderName);
 		} else {
-			$fileMappings = $this->moveFolderBetweenStorages($folderToMove, $targetParentFolder, $newFolderName);
+			$fileMappings = $this->moveFolderBetweenStorages($folderToMove, $targetParentFolder, $sanitizedNewFolderName);
 		}
 		// Update the identifier and storage of all file objects
 		foreach ($fileObjects as $oldIdentifier => $fileObject) {
@@ -1763,7 +1766,7 @@ class ResourceStorage implements ResourceStorageInterface {
 			$this->getIndexer()->updateIndexEntry($fileObject);
 		}
 		$returnObject = $this->getFolder($fileMappings[$folderToMove->getIdentifier()]);
-		$this->emitPostFolderMoveSignal($folderToMove, $targetParentFolder, $newFolderName);
+		$this->emitPostFolderMoveSignal($folderToMove, $targetParentFolder, $returnObject->getName());
 		return $returnObject;
 	}
 
@@ -1794,24 +1797,24 @@ class ResourceStorage implements ResourceStorageInterface {
 		// TODO implement the $conflictMode handling
 		$this->assureFolderCopyPermissions($folderToCopy, $targetParentFolder);
 		$returnObject = NULL;
-		$newFolderName = $newFolderName ?: $folderToCopy->getName();
+		$sanitizedNewFolderName = $this->driver->sanitizeFileName($newFolderName ?: $folderToCopy->getName());
 		if ($folderToCopy instanceof Folder && $targetParentFolder instanceof Folder) {
-			$this->emitPreFolderCopySignal($folderToCopy, $targetParentFolder, $newFolderName);
+			$this->emitPreFolderCopySignal($folderToCopy, $targetParentFolder, $sanitizedNewFolderName);
 		}
 		$sourceStorage = $folderToCopy->getStorage();
 		// call driver method to move the file
 		// that also updates the file object properties
 		try {
 			if ($sourceStorage === $this) {
-				$this->driver->copyFolderWithinStorage($folderToCopy->getIdentifier(), $targetParentFolder->getIdentifier(), $newFolderName);
-				$returnObject = $this->getFolder($targetParentFolder->getSubfolder($newFolderName)->getIdentifier());
+				$this->driver->copyFolderWithinStorage($folderToCopy->getIdentifier(), $targetParentFolder->getIdentifier(), $sanitizedNewFolderName);
+				$returnObject = $this->getFolder($targetParentFolder->getSubfolder($sanitizedNewFolderName)->getIdentifier());
 			} else {
-				$this->copyFolderBetweenStorages($folderToCopy, $targetParentFolder, $newFolderName);
+				$this->copyFolderBetweenStorages($folderToCopy, $targetParentFolder, $sanitizedNewFolderName);
 			}
 		} catch (\TYPO3\CMS\Core\Exception $e) {
 			echo $e->getMessage();
 		}
-		$this->emitPostFolderCopySignal($folderToCopy, $targetParentFolder, $newFolderName);
+		$this->emitPostFolderCopySignal($folderToCopy, $targetParentFolder, $returnObject->getName());
 		return $returnObject;
 	}
 
@@ -1846,15 +1849,16 @@ class ResourceStorage implements ResourceStorageInterface {
 			throw new Exception\InsufficientUserPermissionsException('You are not allowed to rename the folder "' . $folderObject->getIdentifier() . '\'', 1357811441);
 		}
 
+		$sanitizedNewName = $this->driver->sanitizeFileName($newName);
 		$returnObject = NULL;
-		if ($this->driver->folderExistsInFolder($newName, $folderObject->getIdentifier())) {
-			throw new \InvalidArgumentException('The folder ' . $newName . ' already exists in folder ' . $folderObject->getIdentifier(), 1325418870);
+		if ($this->driver->folderExistsInFolder($sanitizedNewName, $folderObject->getIdentifier())) {
+			throw new \InvalidArgumentException('The folder ' . $sanitizedNewName . ' already exists in folder ' . $folderObject->getIdentifier(), 1325418870);
 		}
 
-		$this->emitPreFolderRenameSignal($folderObject, $newName);
+		$this->emitPreFolderRenameSignal($folderObject, $sanitizedNewName);
 
 		$fileObjects = $this->getAllFileObjectsInFolder($folderObject);
-		$fileMappings = $this->driver->renameFolder($folderObject->getIdentifier(), $newName);
+		$fileMappings = $this->driver->renameFolder($folderObject->getIdentifier(), $sanitizedNewName);
 		// Update the identifier of all file objects
 		foreach ($fileObjects as $oldIdentifier => $fileObject) {
 			$newIdentifier = $fileMappings[$oldIdentifier];
@@ -1863,7 +1867,7 @@ class ResourceStorage implements ResourceStorageInterface {
 		}
 		$returnObject = $this->getFolder($fileMappings[$folderObject->getIdentifier()]);
 
-		$this->emitPostFolderRenameSignal($folderObject, $newName);
+		$this->emitPostFolderRenameSignal($folderObject, $returnObject->getName());
 
 		return $returnObject;
 	}
