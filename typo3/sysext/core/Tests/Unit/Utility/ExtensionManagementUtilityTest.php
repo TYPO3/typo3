@@ -121,6 +121,8 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 				'  public static function getExtTablesCacheIdentifier() {' .
 				'    return parent::getExtTablesCacheIdentifier();' .
 				'  }' .
+				'  public static function buildBaseTcaFromSingleFiles() {' .
+				'  }' .
 				'}'
 			);
 		}
@@ -949,7 +951,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		$mockCacheManager = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
 		$mockCacheManager->expects($this->never())->method('getCache');
 		ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
-		ExtensionManagementUtility::loadBaseTca(FALSE);
+		ExtensionManagementUtilityAccessibleProxy::loadBaseTca(FALSE);
 	}
 
 	/**
@@ -968,7 +970,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
 		$mockCache->expects($this->any())->method('has')->will($this->returnValue(TRUE));
 		$mockCache->expects($this->once())->method('get');
-		ExtensionManagementUtility::loadBaseTca(TRUE);
+		ExtensionManagementUtilityAccessibleProxy::loadBaseTca(TRUE);
 	}
 
 	/**
@@ -1018,7 +1020,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
 		$mockCache->expects($this->once())->method('has')->will($this->returnValue(FALSE));
 		$mockCache->expects($this->once())->method('set')->with($this->anything(), $this->anything(), $this->equalTo(array()));
-		ExtensionManagementUtility::loadBaseTca();
+		ExtensionManagementUtilityAccessibleProxy::loadBaseTca();
 	}
 
 	/////////////////////////////////////////
