@@ -486,7 +486,7 @@ class SetupModuleController {
 			if ($style) {
 				$more .= ' style="' . $style . '"';
 			}
-			if ($this->overrideConf[$fieldName]) {
+			if (isset($this->overrideConf[$fieldName])) {
 				$more .= ' disabled="disabled"';
 			}
 			$value = $config['table'] == 'be_users' ? $GLOBALS['BE_USER']->user[$fieldName] : $GLOBALS['BE_USER']->uc[$fieldName];
