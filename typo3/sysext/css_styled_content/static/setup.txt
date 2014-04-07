@@ -1914,7 +1914,7 @@ tt_content.menu {
 		4 < .1
 		4 {
 			stdWrap {
-				prepend.renderObj.wrap = <dt class="csc-nav-bypass">|</dt><dd>&nbsp;</dd>
+				prepend.20.renderObj.wrap = <dt class="csc-nav-bypass">|</dt><dd>&nbsp;</dd>
 				outerWrap = <dl class="csc-menu csc-menu-4">|</dl>
 			}
 			1.NO {
