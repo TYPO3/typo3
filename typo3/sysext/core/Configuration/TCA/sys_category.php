@@ -141,7 +141,12 @@ return array(
 				'foreign_table' => 'sys_category',
 				'foreign_table_where' => ' AND sys_category.sys_language_uid IN (-1,0) ORDER BY sys_category.sorting ASC',
 				'treeConfig' => array(
-					'parentField' => 'parent'
+					'parentField' => 'parent',
+					'appearance' => array(
+						'expandAll' => TRUE,
+						'showHeader' => TRUE,
+						'maxLevels' => 99,
+					),
 				)
 			)
 		),

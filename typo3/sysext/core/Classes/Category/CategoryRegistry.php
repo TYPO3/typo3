@@ -345,6 +345,7 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 					'appearance' => array(
 						'expandAll' => TRUE,
 						'showHeader' => TRUE,
+						'maxLevels' => 99,
 					),
 				),
 			);
