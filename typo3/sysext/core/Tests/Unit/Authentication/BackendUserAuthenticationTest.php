@@ -90,7 +90,8 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['BE_USER']->user = array('uid' => uniqid());
 		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array(), array(), '', FALSE);
 
-		$subject = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array('dummy'), array(), '', FALSE);
+		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array('dummy'), array(), '', FALSE);
+		$subject->_set('db', $GLOBALS['TYPO3_DB']);
 		$subject->logoff();
 	}
 
