@@ -76,16 +76,13 @@ class ImportantActions extends Action\AbstractAction {
 		$this->view->assign('actionMessages', $actionMessages);
 
 		$operatingSystem = TYPO3_OS === 'WIN' ? 'Windows' : 'Unix';
-		$cgiDetected = (PHP_SAPI == 'fpm-fcgi' || PHP_SAPI == 'cgi' || PHP_SAPI == 'isapi' || PHP_SAPI == 'cgi-fcgi')
-			? TRUE
-			: FALSE;
 
 		/** @var \TYPO3\CMS\Install\Service\CoreUpdateService $coreUpdateService */
 		$coreUpdateService = $this->objectManager->get('TYPO3\\CMS\\Install\\Service\\CoreUpdateService');
 		$this->view
 			->assign('enableCoreUpdate', $coreUpdateService->isCoreUpdateEnabled())
 			->assign('operatingSystem', $operatingSystem)
-			->assign('cgiDetected', $cgiDetected)
+			->assign('cgiDetected', GeneralUtility::isRunningOnCgiServerApi())
 			->assign('databaseName', $GLOBALS['TYPO3_CONF_VARS']['DB']['database'])
 			->assign('databaseUsername', $GLOBALS['TYPO3_CONF_VARS']['DB']['username'])
 			->assign('databaseHost', $GLOBALS['TYPO3_CONF_VARS']['DB']['host'])

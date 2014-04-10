@@ -49,6 +49,21 @@ namespace TYPO3\CMS\Core\Core;
 class SystemEnvironmentBuilder {
 
 	/**
+	 * A list of supported CGI server APIs
+	 * NOTICE: This is a duplicate of the SAME array in GeneralUtility!
+	 *         It is duplicated here as this information is needed early in bootstrap
+	 *         and GeneralUtility is not available yet.
+	 * @var array
+	 */
+	static protected $supportedCgiServerApis = array(
+		'fpm-fcgi',
+		'cgi',
+		'isapi',
+		'cgi-fcgi',
+		'srv', // HHVM with fastcgi
+	);
+
+	/**
 	 * Run base setup.
 	 * This entry method is used in all scopes (FE, BE, eid, ajax, ...)
 	 *
@@ -343,7 +358,7 @@ class SystemEnvironmentBuilder {
 		} elseif (isset($_SERVER['PATH_TRANSLATED'])) {
 			$cgiPath = $_SERVER['PATH_TRANSLATED'];
 		}
-		if ($cgiPath && (PHP_SAPI === 'fpm-fcgi' || PHP_SAPI === 'cgi' || PHP_SAPI === 'isapi' || PHP_SAPI === 'cgi-fcgi')) {
+		if ($cgiPath && in_array(PHP_SAPI, self::$supportedCgiServerApis, TRUE)) {
 			$scriptPath = $cgiPath;
 		} else {
 			if (isset($_SERVER['ORIG_SCRIPT_FILENAME'])) {
@@ -488,5 +503,4 @@ class SystemEnvironmentBuilder {
 		}
 		return $directory . '/';
 	}
-
 }

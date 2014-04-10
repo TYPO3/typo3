@@ -26,6 +26,7 @@ namespace TYPO3\CMS\Core\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * The legendary "t3lib_div" class - Miscellaneous functions for general purpose.
  * Most of the functions do not relate specifically to TYPO3
@@ -90,6 +91,19 @@ class GeneralUtility {
 	 * @var \idna_convert
 	 */
 	static protected $idnaConverter = NULL;
+
+	/**
+	 * A list of supported CGI server APIs
+	 * NOTICE: This is a duplicate of the SAME array in SystemEnvironmentBuilder
+	 * @var array
+	 */
+	static protected $supportedCgiServerApis = array(
+		'fpm-fcgi',
+		'cgi',
+		'isapi',
+		'cgi-fcgi',
+		'srv', // HHVM with fastcgi
+	);
 
 	/*************************
 	 *
@@ -3292,7 +3306,10 @@ Connection: close
 		$retVal = '';
 		switch ((string) $getEnvName) {
 			case 'SCRIPT_NAME':
-				$retVal = (PHP_SAPI == 'fpm-fcgi' || PHP_SAPI == 'cgi' || PHP_SAPI == 'cgi-fcgi') && ($_SERVER['ORIG_PATH_INFO'] ? $_SERVER['ORIG_PATH_INFO'] : $_SERVER['PATH_INFO']) ? ($_SERVER['ORIG_PATH_INFO'] ? $_SERVER['ORIG_PATH_INFO'] : $_SERVER['PATH_INFO']) : ($_SERVER['ORIG_SCRIPT_NAME'] ? $_SERVER['ORIG_SCRIPT_NAME'] : $_SERVER['SCRIPT_NAME']);
+				$retVal = self::isRunningOnCgiServerApi()
+					&& ($_SERVER['ORIG_PATH_INFO'] ?: $_SERVER['PATH_INFO'])
+						? ($_SERVER['ORIG_PATH_INFO'] ?: $_SERVER['PATH_INFO'])
+						: ($_SERVER['ORIG_SCRIPT_NAME'] ?: $_SERVER['SCRIPT_NAME']);
 				// Add a prefix if TYPO3 is behind a proxy: ext-domain.com => int-server.com/prefix
 				if (self::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])) {
 					if (self::getIndpEnv('TYPO3_SSL') && $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefixSSL']) {
@@ -3327,10 +3344,15 @@ Connection: close
 				}
 				break;
 			case 'PATH_INFO':
-				// $_SERVER['PATH_INFO']!=$_SERVER['SCRIPT_NAME'] is necessary because some servers (Windows/CGI) are seen to set PATH_INFO equal to script_name
+				// $_SERVER['PATH_INFO'] != $_SERVER['SCRIPT_NAME'] is necessary because some servers (Windows/CGI)
+				// are seen to set PATH_INFO equal to script_name
 				// Further, there must be at least one '/' in the path - else the PATH_INFO value does not make sense.
-				// IF 'PATH_INFO' never works for our purpose in TYPO3 with CGI-servers, then 'PHP_SAPI=='cgi'' might be a better check. Right now strcmp($_SERVER['PATH_INFO'],\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME')) will always return FALSE for CGI-versions, but that is only as long as SCRIPT_NAME is set equal to PATH_INFO because of PHP_SAPI=='cgi' (see above)
-				if (PHP_SAPI != 'cgi' && PHP_SAPI != 'cgi-fcgi' && PHP_SAPI != 'fpm-fcgi') {
+				// IF 'PATH_INFO' never works for our purpose in TYPO3 with CGI-servers,
+				// then 'PHP_SAPI=='cgi'' might be a better check.
+				// Right now strcmp($_SERVER['PATH_INFO'], GeneralUtility::getIndpEnv('SCRIPT_NAME')) will always
+				// return FALSE for CGI-versions, but that is only as long as SCRIPT_NAME is set equal to PATH_INFO
+				// because of PHP_SAPI=='cgi' (see above)
+				if (!self::isRunningOnCgiServerApi()) {
 					$retVal = $_SERVER['PATH_INFO'];
 				}
 				break;
@@ -5227,5 +5249,13 @@ Connection: close
 	 */
 	static public function getApplicationContext() {
 		return static::$applicationContext;
+	}
+
+	/**
+	 * Check if the current request is running on a CGI server API
+	 * @return bool
+	 */
+	static public function isRunningOnCgiServerApi() {
+		return in_array(PHP_SAPI, self::$supportedCgiServerApis, TRUE);
 	}
 }
