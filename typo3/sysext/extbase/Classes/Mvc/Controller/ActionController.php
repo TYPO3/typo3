@@ -15,13 +15,15 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
  */
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Extbase\Mvc\Web\Request as WebRequest;
+use TYPO3\CMS\Extbase\Validation\Validator\AbstractCompositeValidator;
 
 /**
  * A multi action controller. This is by far the most common base class for Controllers.
  *
  * @api
  */
-class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractController {
+class ActionController extends AbstractController {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
@@ -103,19 +105,20 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 	protected $mvcPropertyMappingConfigurationService;
 
 	/**
-	 * Checks if the current request type is supported by the controller.
+	 * The current request.
 	 *
-	 * If your controller only supports certain request types, either
-	 * replace / modify the supporteRequestTypes property or override this
-	 * method.
-	 *
-	 * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The current request
-	 *
-	 * @return boolean TRUE if this request type is supported, otherwise FALSE
+	 * @var \TYPO3\CMS\Extbase\Mvc\Request
+	 * @api
 	 */
-	public function canProcessRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request) {
-		return parent::canProcessRequest($request);
-	}
+	protected $request;
+
+	/**
+	 * The response which will be returned by this action controller
+	 *
+	 * @var \TYPO3\CMS\Extbase\Mvc\Response
+	 * @api
+	 */
+	protected $response;
 
 	/**
 	 * Handles a request. The result output is returned by altering the given response.
@@ -130,7 +133,8 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 		if (!$this->canProcessRequest($request)) {
 			throw new \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException(get_class($this) . ' does not support requests of type "' . get_class($request) . '". Supported types are: ' . implode(' ', $this->supportedRequestTypes), 1187701131);
 		}
-		if ($response instanceof \TYPO3\CMS\Extbase\Mvc\Web\Response) {
+
+		if ($response instanceof \TYPO3\CMS\Extbase\Mvc\Web\Response && $request instanceof WebRequest) {
 			$response->setRequest($request);
 		}
 		$this->request = $request;
@@ -207,11 +211,12 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 				$dontValidateAnnotations = $methodTagsValues['dontvalidate'];
 			}
 
+			/** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
 			foreach ($this->arguments as $argument) {
 				$validator = $parameterValidators[$argument->getName()];
 				if (array_search('$' . $argument->getName(), $dontValidateAnnotations) === FALSE) {
 					$baseValidatorConjunction = $this->validatorResolver->getBaseValidatorConjunction($argument->getDataType());
-					if ($baseValidatorConjunction !== NULL) {
+					if ($baseValidatorConjunction !== NULL && $validator instanceof AbstractCompositeValidator) {
 						$validator->addValidator($baseValidatorConjunction);
 					}
 				}
@@ -236,12 +241,12 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 			 */
 
 			$parameterValidators = $this->validatorResolver->buildMethodArgumentsValidatorConjunctions(get_class($this), $this->actionMethodName, $methodParameters);
-
+			/** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
 			foreach ($this->arguments as $argument) {
 				$validator = $parameterValidators[$argument->getName()];
 
 				$baseValidatorConjunction = $this->validatorResolver->getBaseValidatorConjunction($argument->getDataType());
-				if (count($baseValidatorConjunction) > 0) {
+				if (count($baseValidatorConjunction) > 0  && $validator instanceof AbstractCompositeValidator) {
 					$validator->addValidator($baseValidatorConjunction);
 				}
 				$argument->setValidator($validator);
@@ -277,6 +282,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 		if ($this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper')) {
 			// enabled since Extbase 1.4.0.
 			$preparedArguments = array();
+			/** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
 			foreach ($this->arguments as $argument) {
 				$preparedArguments[] = $argument->getValue();
 			}
@@ -312,6 +318,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 		} else {
 			// @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
 			$preparedArguments = array();
+			/** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
 			foreach ($this->arguments as $argument) {
 				$preparedArguments[] = $argument->getValue();
 			}
@@ -341,11 +348,10 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 	}
 
 	/**
-	 * Prepares a view for the current action and stores it in $this->view.
-	 * By default, this method tries to locate a view with a name matching
-	 * the current action.
+	 * Prepares a view for the current action.
+	 * By default, this method tries to locate a view with a name matching the current action.
 	 *
-	 * @return string
+	 * @return ViewInterface
 	 * @api
 	 */
 	protected function resolveView() {
@@ -556,12 +562,19 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 				);
 				$this->controllerContext->getFlashMessageQueue()->enqueue($errorFlashMessageObject);
 			}
-			$referringRequest = $this->request->getReferringRequest();
-			if ($referringRequest !== NULL) {
-				$originalRequest = clone $this->request;
-				$this->request->setOriginalRequest($originalRequest);
-				$this->request->setOriginalRequestMappingResults($this->arguments->getValidationResults());
-				$this->forward($referringRequest->getControllerActionName(), $referringRequest->getControllerName(), $referringRequest->getControllerExtensionName(), $referringRequest->getArguments());
+			if ($this->request instanceof WebRequest) {
+				$referringRequest = $this->request->getReferringRequest();
+				if ($referringRequest !== NULL) {
+					$originalRequest = clone $this->request;
+					$this->request->setOriginalRequest($originalRequest);
+					$this->request->setOriginalRequestMappingResults($this->arguments->getValidationResults());
+					$this->forward(
+						$referringRequest->getControllerActionName(),
+						$referringRequest->getControllerName(),
+						$referringRequest->getControllerExtensionName(),
+						$referringRequest->getArguments()
+					);
+				}
 			}
 			$message = 'An error occurred while trying to call ' . get_class($this) . '->' . $this->actionMethodName . '().' . PHP_EOL;
 			return $message;
@@ -612,7 +625,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 			// If the new property mapper is enabled, the request hash is not needed anymore.
 			return;
 		}
-		if (!$this->request instanceof \TYPO3\CMS\Extbase\Mvc\Web\Request) {
+		if (!$this->request instanceof WebRequest) {
 			return;
 		}
 		// We only want to check it for now for web requests.
@@ -621,8 +634,12 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 		}
 		// all good
 		$verificationNeeded = FALSE;
+		/** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
 		foreach ($this->arguments as $argument) {
-			if ($argument->getOrigin() == \TYPO3\CMS\Extbase\Mvc\Controller\Argument::ORIGIN_NEWLY_CREATED || $argument->getOrigin() == \TYPO3\CMS\Extbase\Mvc\Controller\Argument::ORIGIN_PERSISTENCE_AND_MODIFIED) {
+			if (
+				$argument->getOrigin() == \TYPO3\CMS\Extbase\Mvc\Controller\Argument::ORIGIN_NEWLY_CREATED
+				|| $argument->getOrigin() == \TYPO3\CMS\Extbase\Mvc\Controller\Argument::ORIGIN_PERSISTENCE_AND_MODIFIED
+			) {
 				$verificationNeeded = TRUE;
 			}
 		}

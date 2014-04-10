@@ -70,6 +70,7 @@ class ArgumentsValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstrac
 		if (!$arguments instanceof \TYPO3\CMS\Extbase\Mvc\Controller\Arguments) {
 			throw new \InvalidArgumentException('Expected TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Arguments, ' . gettype($arguments) . ' given.', 1241079562);
 		}
+		/** @var Argument $argument */
 		$argument = $arguments[$argumentName];
 		$validatorConjunction = $argument->getValidator();
 		if ($validatorConjunction === NULL) {

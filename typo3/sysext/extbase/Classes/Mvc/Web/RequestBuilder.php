@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Extbase\Mvc\Web;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Mvc\Exception as MvcException;
+
 /**
  * Builds a web request.
  */
@@ -85,16 +88,16 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $environmentService;
 
 	/**
-	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception
+	 * @throws MvcException
 	 * @return void
 	 */
 	protected function loadDefaultValues() {
-		$configuration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$configuration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		if (empty($configuration['extensionName'])) {
-			throw new \TYPO3\CMS\Extbase\Mvc\Exception('"extensionName" is not properly configured. Request can\'t be dispatched!', 1289843275);
+			throw new MvcException('"extensionName" is not properly configured. Request can\'t be dispatched!', 1289843275);
 		}
 		if (empty($configuration['pluginName'])) {
-			throw new \TYPO3\CMS\Extbase\Mvc\Exception('"pluginName" is not properly configured. Request can\'t be dispatched!', 1289843277);
+			throw new MvcException('"pluginName" is not properly configured. Request can\'t be dispatched!', 1289843277);
 		}
 		if (!empty($configuration['vendorName'])) {
 			$this->vendorName = $configuration['vendorName'];
@@ -158,20 +161,20 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param array $parameters
 	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException
-	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception if the controller could not be resolved
+	 * @throws MvcException if the controller could not be resolved
 	 * @throws \TYPO3\CMS\Core\Error\Http\PageNotFoundException
 	 * @return string
 	 */
 	protected function resolveControllerName(array $parameters) {
 		if (!isset($parameters['controller']) || strlen($parameters['controller']) === 0) {
 			if (strlen($this->defaultControllerName) === 0) {
-				throw new \TYPO3\CMS\Extbase\Mvc\Exception('The default controller for extension "' . $this->extensionName . '" and plugin "' . $this->pluginName . '" can not be determined. Please check for TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php.', 1316104317);
+				throw new MvcException('The default controller for extension "' . $this->extensionName . '" and plugin "' . $this->pluginName . '" can not be determined. Please check for TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php.', 1316104317);
 			}
 			return $this->defaultControllerName;
 		}
 		$allowedControllerNames = array_keys($this->allowedControllerActions);
 		if (!in_array($parameters['controller'], $allowedControllerNames)) {
-			$configuration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+			$configuration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 			if (isset($configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) && (boolean) $configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) {
 				throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException('The requested resource was not found', 1313857897);
 			} elseif (isset($configuration['mvc']['callDefaultActionIfActionCantBeResolved']) && (boolean) $configuration['mvc']['callDefaultActionIfActionCantBeResolved']) {
@@ -190,7 +193,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $controllerName
 	 * @param array $parameters
 	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException
-	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception
+	 * @throws MvcException
 	 * @throws \TYPO3\CMS\Core\Error\Http\PageNotFoundException
 	 * @return string
 	 */
@@ -198,14 +201,14 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 		$defaultActionName = is_array($this->allowedControllerActions[$controllerName]) ? current($this->allowedControllerActions[$controllerName]) : '';
 		if (!isset($parameters['action']) || strlen($parameters['action']) === 0) {
 			if (strlen($defaultActionName) === 0) {
-				throw new \TYPO3\CMS\Extbase\Mvc\Exception('The default action can not be determined for controller "' . $controllerName . '". Please check TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php.', 1295479651);
+				throw new MvcException('The default action can not be determined for controller "' . $controllerName . '". Please check TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php.', 1295479651);
 			}
 			return $defaultActionName;
 		}
 		$actionName = $parameters['action'];
 		$allowedActionNames = $this->allowedControllerActions[$controllerName];
 		if (!in_array($actionName, $allowedActionNames)) {
-			$configuration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+			$configuration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 			if (isset($configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) && (boolean) $configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) {
 				throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException('The requested resource was not found', 1313857898);
 			} elseif (isset($configuration['mvc']['callDefaultActionIfActionCantBeResolved']) && (boolean) $configuration['mvc']['callDefaultActionIfActionCantBeResolved']) {

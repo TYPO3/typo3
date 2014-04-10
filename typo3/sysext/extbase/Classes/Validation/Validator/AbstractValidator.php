@@ -44,7 +44,7 @@ abstract class AbstractValidator implements ValidatorInterface {
 	protected $options = array();
 
 	/**
-	 * @var array
+	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\ArgumentError[]
 	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1. You should use constructor parameter to set validation options.
 	 */
 	protected $errors = array();

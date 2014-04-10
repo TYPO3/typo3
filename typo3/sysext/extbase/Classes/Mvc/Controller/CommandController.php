@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class CommandController implements \TYPO3\CMS\Extbase\Mvc\Controller\CommandControllerInterface {
+class CommandController implements CommandControllerInterface {
 
 	const MAXIMUM_LINE_LENGTH = 79;
 
@@ -159,6 +159,7 @@ class CommandController implements \TYPO3\CMS\Extbase\Mvc\Controller\CommandCont
 	 * @return void
 	 */
 	protected function mapRequestArgumentsToControllerArguments() {
+		/** @var Argument $argument */
 		foreach ($this->arguments as $argument) {
 			$argumentName = $argument->getName();
 			if ($this->request->hasArgument($argumentName)) {
@@ -204,6 +205,7 @@ class CommandController implements \TYPO3\CMS\Extbase\Mvc\Controller\CommandCont
 	 */
 	protected function callCommandMethod() {
 		$preparedArguments = array();
+		/** @var Argument $argument */
 		foreach ($this->arguments as $argument) {
 			$preparedArguments[] = $argument->getValue();
 		}
@@ -264,11 +266,11 @@ class CommandController implements \TYPO3\CMS\Extbase\Mvc\Controller\CommandCont
 	 *
 	 * @param string $text Text to output
 	 * @param array $arguments Optional arguments to use for sprintf
-	 * @return string
+	 * @return void
 	 * @see output()
 	 */
 	protected function outputLine($text = '', array $arguments = array()) {
-		return $this->output($text . PHP_EOL, $arguments);
+		$this->output($text . PHP_EOL, $arguments);
 	}
 
 	/**

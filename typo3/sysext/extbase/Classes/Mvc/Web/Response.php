@@ -13,6 +13,10 @@ namespace TYPO3\CMS\Extbase\Mvc\Web;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+
 /**
  * A web specific response implementation
  *
@@ -168,7 +172,7 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response {
 	/**
 	 * Returns the HTTP headers - including the status header - of this web response
 	 *
-	 * @return string The HTTP headers
+	 * @return string[] The HTTP headers
 	 * @api
 	 */
 	public function getHeaders() {
@@ -232,12 +236,16 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response {
 			throw new \InvalidArgumentException('The additiona header data must be of type String, ' . gettype($additionalHeaderData) . ' given.', 1237370877);
 		}
 		if ($this->request->isCached()) {
+			/** @var PageRenderer $pageRenderer */
+			$pageRenderer = NULL;
 			if ($this->environmentService->isEnvironmentInFrontendMode()) {
-				$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
+				$pageRenderer = $this->getTypoScriptFrontendController()->getPageRenderer();
 			} elseif ($this->environmentService->isEnvironmentInBackendMode()) {
-				$pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
+				$pageRenderer = $this->getDocumentTemplate()->getPageRenderer();
 			}
-			$pageRenderer->addHeaderData($additionalHeaderData);
+			if ($pageRenderer !== NULL) {
+				$pageRenderer->addHeaderData($additionalHeaderData);
+			}
 		} else {
 			$this->additionalHeaderData[] = $additionalHeaderData;
 		}
@@ -274,9 +282,23 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response {
 	 */
 	public function shutdown() {
 		if (count($this->getAdditionalHeaderData()) > 0) {
-			$GLOBALS['TSFE']->additionalHeaderData[] = implode(chr(10), $this->getAdditionalHeaderData());
+			$this->getTypoScriptFrontendController()->additionalHeaderData[] = implode(chr(10), $this->getAdditionalHeaderData());
 		}
 		$this->sendHeaders();
 		return parent::shutdown();
+	}
+
+	/**
+	 * @return TypoScriptFrontendController
+	 */
+	protected function getTypoScriptFrontendController() {
+		return $GLOBALS['TSFE'];
+	}
+
+	/**
+	 * @return DocumentTemplate
+	 */
+	protected function getDocumentTemplate() {
+		return $GLOBALS['TBE_TEMPLATE'];
 	}
 }

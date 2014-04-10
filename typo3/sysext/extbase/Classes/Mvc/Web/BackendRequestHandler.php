@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Extbase\Mvc\Web;
 /**
  * A request handler which can handle web requests invoked by the backend.
  */
-class BackendRequestHandler extends \TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestHandler {
+class BackendRequestHandler extends AbstractRequestHandler {
 
 	/**
 	 * Handles the web request. The response will automatically be sent to the client.

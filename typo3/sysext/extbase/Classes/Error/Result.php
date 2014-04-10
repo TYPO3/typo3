@@ -462,7 +462,7 @@ class Result {
 	/**
 	 * Get a list of all sub Result objects available.
 	 *
-	 * @return array<\TYPO3\CMS\Extbase\Error\Result>
+	 * @return \TYPO3\CMS\Extbase\Error\Result[]
 	 */
 	public function getSubResults() {
 		return $this->propertyResults;

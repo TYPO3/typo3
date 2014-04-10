@@ -39,7 +39,7 @@ class CommandManager implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Returns an array of all commands
 	 *
-	 * @return array<\TYPO3\CMS\Extbase\Mvc\Cli\Command>
+	 * @return Command[]
 	 * @api
 	 */
 	public function getAvailableCommands() {
@@ -66,7 +66,7 @@ class CommandManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 * If more than one Command matches an AmbiguousCommandIdentifierException is thrown that contains the matched Commands
 	 *
 	 * @param string $commandIdentifier command identifier in the format foo:bar:baz
-	 * @return \TYPO3\CMS\Extbase\Mvc\Cli\Command
+	 * @return Command
 	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException if no matching command is available
 	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\AmbiguousCommandIdentifierException if more than one Command matches the identifier (the exception contains the matched commands)
 	 * @api
@@ -95,11 +95,11 @@ class CommandManager implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Returns the shortest, non-ambiguous command identifier for the given command
 	 *
-	 * @param \TYPO3\CMS\Extbase\Mvc\Cli\Command $command The command
+	 * @param Command $command The command
 	 * @return string The shortest possible command identifier
 	 * @api
 	 */
-	public function getShortestIdentifierForCommand(\TYPO3\CMS\Extbase\Mvc\Cli\Command $command) {
+	public function getShortestIdentifierForCommand(Command $command) {
 		if ($command->getCommandIdentifier() === 'extbase:help:help') {
 			return 'help';
 		}
@@ -144,11 +144,11 @@ class CommandManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Returns TRUE if the specified command identifier matches the identifier of the specified command.
 	 * This is the case, if the identifiers are the same or if at least the last two command parts match (case sensitive).
 	 *
-	 * @param \TYPO3\CMS\Extbase\Mvc\Cli\Command $command
+	 * @param Command $command
 	 * @param string $commandIdentifier command identifier in the format foo:bar:baz (all lower case)
 	 * @return boolean TRUE if the specified command identifier matches this commands identifier
 	 */
-	protected function commandMatchesIdentifier(\TYPO3\CMS\Extbase\Mvc\Cli\Command $command, $commandIdentifier) {
+	protected function commandMatchesIdentifier(Command $command, $commandIdentifier) {
 		$commandIdentifierParts = explode(':', $command->getCommandIdentifier());
 		$searchedCommandIdentifierParts = explode(':', $commandIdentifier);
 		$extensionKey = array_shift($commandIdentifierParts);

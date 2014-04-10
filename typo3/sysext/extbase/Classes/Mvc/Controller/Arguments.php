@@ -51,7 +51,7 @@ class Arguments extends \ArrayObject {
 	 * @return void
 	 */
 	public function offsetSet($offset, $value) {
-		if (!$value instanceof \TYPO3\CMS\Extbase\Mvc\Controller\Argument) {
+		if (!$value instanceof Argument) {
 			throw new \InvalidArgumentException('Controller arguments must be valid TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument objects.', 1187953786);
 		}
 		$argumentName = $value->getName();
@@ -67,7 +67,7 @@ class Arguments extends \ArrayObject {
 	 * @return void
 	 */
 	public function append($value) {
-		if (!$value instanceof \TYPO3\CMS\Extbase\Mvc\Controller\Argument) {
+		if (!$value instanceof Argument) {
 			throw new \InvalidArgumentException('Controller arguments must be valid TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument objects.', 1187953787);
 		}
 		$this->offsetSet(NULL, $value);
@@ -103,7 +103,7 @@ class Arguments extends \ArrayObject {
 	 * Returns the value at the specified index
 	 *
 	 * @param mixed $offset Offset
-	 * @return \TYPO3\CMS\Extbase\Mvc\Controller\Argument The requested argument object
+	 * @return Argument The requested argument object
 	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException if the argument does not exist
 	 */
 	public function offsetGet($offset) {
@@ -123,10 +123,10 @@ class Arguments extends \ArrayObject {
 	 * @param string $dataType Name of one of the built-in data types
 	 * @param boolean $isRequired TRUE if this argument should be marked as required
 	 * @param mixed $defaultValue Default value of the argument. Only makes sense if $isRequired==FALSE
-	 * @return \TYPO3\CMS\Extbase\Mvc\Controller\Argument The new argument
+	 * @return Argument The new argument
 	 */
 	public function addNewArgument($name, $dataType = 'Text', $isRequired = FALSE, $defaultValue = NULL) {
-		/** @var $argument \TYPO3\CMS\Extbase\Mvc\Controller\Argument */
+		/** @var $argument Argument */
 		$argument = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', $name, $dataType);
 		$argument->setRequired($isRequired);
 		$argument->setDefaultValue($defaultValue);
@@ -141,10 +141,10 @@ class Arguments extends \ArrayObject {
 	 *
 	 * Note that the argument will be cloned, not referenced.
 	 *
-	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument The argument to add
+	 * @param Argument $argument The argument to add
 	 * @return void
 	 */
-	public function addArgument(\TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument) {
+	public function addArgument(Argument $argument) {
 		$this->offsetSet(NULL, $argument);
 	}
 
@@ -152,7 +152,7 @@ class Arguments extends \ArrayObject {
 	 * Returns an argument specified by name
 	 *
 	 * @param string $argumentName Name of the argument to retrieve
-	 * @return \TYPO3\CMS\Extbase\Mvc\Controller\Argument
+	 * @return Argument
 	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
 	 */
 	public function getArgument($argumentName) {
@@ -189,6 +189,7 @@ class Arguments extends \ArrayObject {
 	 */
 	public function getArgumentShortNames() {
 		$argumentShortNames = array();
+		/** @var Argument $argument */
 		foreach ($this as $argument) {
 			$argumentShortNames[$argument->getShortName()] = TRUE;
 		}
@@ -233,6 +234,7 @@ class Arguments extends \ArrayObject {
 		if (in_array($argumentName, $this->getArgumentNames())) {
 			return $argumentName;
 		}
+		/** @var Argument $argument */
 		foreach ($this as $argument) {
 			if ($argumentName === $argument->getShortName()) {
 				return $argument->getName();
@@ -260,6 +262,7 @@ class Arguments extends \ArrayObject {
 	 */
 	public function getValidationResults() {
 		$results = new \TYPO3\CMS\Extbase\Error\Result();
+		/** @var Argument $argument */
 		foreach ($this as $argument) {
 			$argumentValidationResults = $argument->getValidationResults();
 			if ($argumentValidationResults === NULL) {

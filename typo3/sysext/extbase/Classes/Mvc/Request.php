@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Utility\ClassNamingUtility;
  *
  * @api
  */
-class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
+class Request implements RequestInterface {
 
 	const PATTERN_MATCH_FORMAT = '/^[a-z0-9]{1,5}$/';
 

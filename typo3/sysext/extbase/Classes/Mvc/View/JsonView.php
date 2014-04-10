@@ -13,12 +13,14 @@ namespace TYPO3\CMS\Extbase\Mvc\View;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Extbase\Mvc\Web\Response as WebResponse;
+
 /**
  * A JSON view
  *
  * @api
  */
-class JsonView extends \TYPO3\CMS\Extbase\Mvc\View\AbstractView {
+class JsonView extends AbstractView {
 
 	/**
 	 * Definition for the class name exposure configuration,
@@ -182,14 +184,17 @@ class JsonView extends \TYPO3\CMS\Extbase\Mvc\View\AbstractView {
 
 	/**
 	 * Transforms the value view variable to a serializable
-	 * array represantion using a YAML view configuration and JSON encodes
+	 * array representation using a YAML view configuration and JSON encodes
 	 * the result.
 	 *
 	 * @return string The JSON encoded variables
 	 * @api
 	 */
 	public function render() {
-		$this->controllerContext->getResponse()->setHeader('Content-Type', 'application/json');
+		$response = $this->controllerContext->getResponse();
+		if ($response instanceof WebResponse) {
+			$response->setHeader('Content-Type', 'application/json');
+		}
 		$propertiesToRender = $this->renderArray();
 		return json_encode($propertiesToRender);
 	}

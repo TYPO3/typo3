@@ -13,12 +13,17 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
+use TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException;
+use TYPO3\CMS\Extbase\Mvc\Web\Request as WebRequest;
+
 /**
  * An abstract base class for Controllers
  *
  * @api
  */
-abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface {
+abstract class AbstractController implements ControllerInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
@@ -52,7 +57,7 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 	/**
 	 * The current request.
 	 *
-	 * @var \TYPO3\CMS\Extbase\Mvc\Request
+	 * @var \TYPO3\CMS\Extbase\Mvc\RequestInterface
 	 * @api
 	 */
 	protected $request;
@@ -60,7 +65,7 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 	/**
 	 * The response which will be returned by this action controller
 	 *
-	 * @var \TYPO3\CMS\Extbase\Mvc\Response
+	 * @var \TYPO3\CMS\Extbase\Mvc\ResponseInterface
 	 * @api
 	 */
 	protected $response;
@@ -93,7 +98,7 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 	protected $argumentsMappingResults;
 
 	/**
-	 * An array of supported request types. By default only web requests are supported.
+	 * An array of supported request types.
 	 * Modify or replace this array if your specific controller supports certain
 	 * (additional) request types.
 	 *
@@ -122,7 +127,7 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 	protected $flashMessageContainer;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+	 * @var ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
 
@@ -145,12 +150,12 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+	 * @param ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
-		$this->settings = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
+		$this->settings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
 	}
 
 	/**
@@ -204,7 +209,7 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 	 * Checks if the current request type is supported by the controller.
 	 *
 	 * If your controller only supports certain request types, either
-	 * replace / modify the supporteRequestTypes property or override this
+	 * replace / modify the supportedRequestTypes property or override this
 	 * method.
 	 *
 	 * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The current request
@@ -226,14 +231,16 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 	 * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request object
 	 * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response The response, modified by this handler
 	 * @return void
-	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException if the controller doesn't support the current request type
+	 * @throws UnsupportedRequestTypeException if the controller doesn't support the current request type
 	 * @api
 	 */
 	public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response) {
 		if (!$this->canProcessRequest($request)) {
-			throw new \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException(get_class($this) . ' does not support requests of type "' . get_class($request) . '". Supported types are: ' . implode(' ', $this->supportedRequestTypes), 1187701132);
+			throw new UnsupportedRequestTypeException(get_class($this) . ' does not support requests of type "' . get_class($request) . '". Supported types are: ' . implode(' ', $this->supportedRequestTypes), 1187701132);
 		}
-		$response->setRequest($request);
+		if ($response instanceof \TYPO3\CMS\Extbase\Mvc\Web\Response && $request instanceof WebRequest) {
+			$response->setRequest($request);
+		}
 		$this->request = $request;
 		$this->request->setDispatched(TRUE);
 		$this->response = $response;
@@ -278,23 +285,25 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 	 * @param string $extensionName Name of the extension containing the controller to forward to. If not specified, the current extension is assumed.
 	 * @param array $arguments Arguments to pass to the target action
 	 * @return void
-	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
+	 * @throws StopActionException
 	 * @see redirect()
 	 * @api
 	 */
 	public function forward($actionName, $controllerName = NULL, $extensionName = NULL, array $arguments = NULL) {
 		$this->request->setDispatched(FALSE);
-		$this->request->setControllerActionName($actionName);
-		if ($controllerName !== NULL) {
-			$this->request->setControllerName($controllerName);
-		}
-		if ($extensionName !== NULL) {
-			$this->request->setControllerExtensionName($extensionName);
+		if ($this->request instanceof WebRequest) {
+			$this->request->setControllerActionName($actionName);
+			if ($controllerName !== NULL) {
+				$this->request->setControllerName($controllerName);
+			}
+			if ($extensionName !== NULL) {
+				$this->request->setControllerExtensionName($extensionName);
+			}
 		}
 		if ($arguments !== NULL) {
 			$this->request->setArguments($arguments);
 		}
-		throw new \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException();
+		throw new StopActionException();
 	}
 
 	/**
@@ -313,14 +322,14 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 	 * @param integer $delay (optional) The delay in seconds. Default is no delay.
 	 * @param integer $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other
 	 * @return void
-	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException If the request is not a web request
-	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
+	 * @throws UnsupportedRequestTypeException If the request is not a web request
+	 * @throws StopActionException
 	 * @see forward()
 	 * @api
 	 */
 	protected function redirect($actionName, $controllerName = NULL, $extensionName = NULL, array $arguments = NULL, $pageUid = NULL, $delay = 0, $statusCode = 303) {
-		if (!$this->request instanceof \TYPO3\CMS\Extbase\Mvc\Web\Request) {
-			throw new \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException('redirect() only supports web requests.', 1220539734);
+		if (!$this->request instanceof WebRequest) {
+			throw new UnsupportedRequestTypeException('redirect() only supports web requests.', 1220539734);
 		}
 		if ($controllerName === NULL) {
 			$controllerName = $this->request->getControllerName();
@@ -341,13 +350,13 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 	 * @param mixed $uri A string representation of a URI
 	 * @param integer $delay (optional) The delay in seconds. Default is no delay.
 	 * @param integer $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other
-	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException If the request is not a web request
-	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
+	 * @throws UnsupportedRequestTypeException If the request is not a web request
+	 * @throws StopActionException
 	 * @api
 	 */
 	protected function redirectToUri($uri, $delay = 0, $statusCode = 303) {
-		if (!$this->request instanceof \TYPO3\CMS\Extbase\Mvc\Web\Request) {
-			throw new \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException('redirect() only supports web requests.', 1220539735);
+		if (!$this->request instanceof WebRequest) {
+			throw new UnsupportedRequestTypeException('redirect() only supports web requests.', 1220539735);
 		}
 
 		$this->objectManager->get('TYPO3\CMS\Extbase\Service\CacheService')->clearCachesOfRegisteredPageIds();
@@ -355,9 +364,11 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 		$uri = $this->addBaseUriIfNecessary($uri);
 		$escapedUri = htmlentities($uri, ENT_QUOTES, 'utf-8');
 		$this->response->setContent('<html><head><meta http-equiv="refresh" content="' . (int)$delay . ';url=' . $escapedUri . '"/></head></html>');
-		$this->response->setStatus($statusCode);
-		$this->response->setHeader('Location', (string) $uri);
-		throw new \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException();
+		if ($this->response instanceof \TYPO3\CMS\Extbase\Mvc\Web\Response) {
+			$this->response->setStatus($statusCode);
+			$this->response->setHeader('Location', (string) $uri);
+		}
+		throw new StopActionException();
 	}
 
 	/**
@@ -378,20 +389,22 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 	 * @param integer $statusCode The HTTP status code
 	 * @param string $statusMessage A custom HTTP status message
 	 * @param string $content Body content which further explains the status
-	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException If the request is not a web request
-	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
+	 * @throws UnsupportedRequestTypeException If the request is not a web request
+	 * @throws StopActionException
 	 * @api
 	 */
 	public function throwStatus($statusCode, $statusMessage = NULL, $content = NULL) {
-		if (!$this->request instanceof \TYPO3\CMS\Extbase\Mvc\Web\Request) {
-			throw new \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException('throwStatus() only supports web requests.', 1220539739);
+		if (!$this->request instanceof WebRequest) {
+			throw new UnsupportedRequestTypeException('throwStatus() only supports web requests.', 1220539739);
 		}
-		$this->response->setStatus($statusCode, $statusMessage);
-		if ($content === NULL) {
-			$content = $this->response->getStatus();
+		if ($this->response instanceof \TYPO3\CMS\Extbase\Mvc\Web\Response) {
+			$this->response->setStatus($statusCode, $statusMessage);
+			if ($content === NULL) {
+				$content = $this->response->getStatus();
+			}
 		}
 		$this->response->setContent($content);
-		throw new \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException();
+		throw new StopActionException();
 	}
 
 	/**
@@ -401,6 +414,7 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 	 * @return void
 	 */
 	public function initializeControllerArgumentsBaseValidators() {
+		/** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
 		foreach ($this->arguments as $argument) {
 			$validator = $this->validatorResolver->getBaseValidatorConjunction($argument->getDataType());
 			if ($validator !== NULL) {
@@ -417,6 +431,7 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 	 */
 	protected function mapRequestArgumentsToControllerArguments() {
 		if ($this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper')) {
+			/** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
 			foreach ($this->arguments as $argument) {
 				$argumentName = $argument->getName();
 				if ($this->request->hasArgument($argumentName)) {
@@ -430,7 +445,9 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 			$optionalPropertyNames = array();
 			$allPropertyNames = $this->arguments->getArgumentNames();
 			foreach ($allPropertyNames as $propertyName) {
-				if ($this->arguments[$propertyName]->isRequired() === FALSE) {
+				/** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
+				$argument = $this->arguments[$propertyName];
+				if (!$argument->isRequired()) {
 					$optionalPropertyNames[] = $propertyName;
 				}
 			}
