@@ -150,7 +150,7 @@ if (
 ) {
 	// Remove user
 	unset($BE_USER);
-	$TSFE->beUserLogin = 0;
+	$TSFE->beUserLogin = FALSE;
 	// Re-evaluate the page-id.
 	$TSFE->checkAlternativeIdMethods();
 	$TSFE->clear_preview();

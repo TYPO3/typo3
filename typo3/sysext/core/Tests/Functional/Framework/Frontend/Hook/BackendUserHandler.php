@@ -46,7 +46,7 @@ class BackendUserHandler implements \TYPO3\CMS\Core\SingletonInterface {
 		$backendUser = $this->createBackendUser();
 		$backendUser->user = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'be_users', 'uid=' . $backendUserId);
 		$backendUser->setTemporaryWorkspace($workspaceId);
-		$frontendController->beUserLogin = 1;
+		$frontendController->beUserLogin = TRUE;
 
 		$parameters['BE_USER'] = $backendUser;
 		$GLOBALS['BE_USER'] = $backendUser;

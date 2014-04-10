@@ -62,8 +62,8 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 	 * hook to check if the preview is activated
 	 * right now, this hook is called at the end of "$TSFE->connectToDB"
 	 *
-	 * @param $params (not needed right now)
-	 * @param $pObj the instance of the \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController object
+	 * @param array $params (not needed right now)
+	 * @param \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $pObj
 	 * @return void
 	 */
 	public function checkForPreview($params, &$pObj) {
@@ -74,7 +74,18 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 			// re-initialize the TSFE object:
 			// because the GET variables are taken from the preview
 			// configuration
-			$GLOBALS['TSFE'] = ($this->tsfeObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', $GLOBALS['TYPO3_CONF_VARS'], GeneralUtility::_GP('id'), GeneralUtility::_GP('type'), GeneralUtility::_GP('no_cache'), GeneralUtility::_GP('cHash'), GeneralUtility::_GP('jumpurl'), GeneralUtility::_GP('MP'), GeneralUtility::_GP('RDCT')));
+			$this->tsfeObj = GeneralUtility::makeInstance(
+				'TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController',
+				$GLOBALS['TYPO3_CONF_VARS'],
+				GeneralUtility::_GP('id'),
+				GeneralUtility::_GP('type'),
+				GeneralUtility::_GP('no_cache'),
+				GeneralUtility::_GP('cHash'),
+				GeneralUtility::_GP('jumpurl'),
+				GeneralUtility::_GP('MP'),
+				GeneralUtility::_GP('RDCT')
+			);
+			$GLOBALS['TSFE'] = $this->tsfeObj;
 			// Configuration after initialization of TSFE object.
 			// Basically this unsets the BE cookie if any and forces
 			// the BE user set according to the preview configuration.
@@ -89,8 +100,8 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 	 * if there is no BE user login, but a preview configuration
 	 * the BE user of the preview configuration gets initialized
 	 *
-	 * @param $params holding the BE_USER object
-	 * @param $pObj the instance of the \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController object
+	 * @param array $params holding the BE_USER object
+	 * @param \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $pObj
 	 * @return void
 	 */
 	public function initializePreviewUser(&$params, &$pObj) {
@@ -103,10 +114,10 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 			$BE_USER->unpack_uc('');
 			if ($BE_USER->user['uid']) {
 				$BE_USER->fetchGroupData();
-				$pObj->beUserLogin = 1;
+				$pObj->beUserLogin = TRUE;
 			} else {
 				$BE_USER = NULL;
-				$pObj->beUserLogin = 0;
+				$pObj->beUserLogin = FALSE;
 				$_SESSION['TYPO3-TT-start'] = FALSE;
 			}
 			$params['BE_USER'] = $BE_USER;
@@ -127,11 +138,19 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Looking for a ADMCMD_prev code, looks it up if found and returns configuration data.
-	 * Background: From the backend a request to the frontend to show a page, possibly with workspace preview can be "recorded" and associated with a keyword. When the frontend is requested with this keyword the associated request parameters are restored from the database AND the backend user is loaded - only for that request.
-	 * The main point is that a special URL valid for a limited time, eg. http://localhost/typo3site/index.php?ADMCMD_prev=035d9bf938bd23cb657735f68a8cedbf will open up for a preview that doesn't require login. Thus it's useful for sending in an email to someone without backend account.
-	 * This can also be used to generate previews of hidden pages, start/endtimes, usergroups and those other settings from the Admin Panel - just not implemented yet.
+	 * Background: From the backend a request to the frontend to show a page, possibly with
+	 * workspace preview can be "recorded" and associated with a keyword.
+	 * When the frontend is requested with this keyword the associated request parameters are
+	 * restored from the database AND the backend user is loaded - only for that request.
+	 * The main point is that a special URL valid for a limited time,
+	 * eg. http://localhost/typo3site/index.php?ADMCMD_prev=035d9bf938bd23cb657735f68a8cedbf will
+	 * open up for a preview that doesn't require login. Thus it's useful for sending in an email
+	 * to someone without backend account.
+	 * This can also be used to generate previews of hidden pages, start/endtimes, usergroups and
+	 * those other settings from the Admin Panel - just not implemented yet.
 	 *
-	 * @return 	array		Preview configuration array from sys_preview record.
+	 * @throws \Exception
+	 * @return array Preview configuration array from sys_preview record.
 	 */
 	public function getPreviewConfiguration() {
 		$inputCode = $this->getPreviewInputCode();
@@ -145,7 +164,9 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 					if (@is_file($templateFile)) {
 						$message = GeneralUtility::getUrl(PATH_site . $this->tsfeObj->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate']);
 					} else {
-						$message = '<strong>ERROR!</strong><br>Template File "' . $this->tsfeObj->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate'] . '" configured with $TYPO3_CONF_VARS["FE"]["workspacePreviewLogoutTemplate"] not found. Please contact webmaster about this problem.';
+						$message = '<strong>ERROR!</strong><br>Template File "'
+							. $this->tsfeObj->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate']
+							. '" configured with $TYPO3_CONF_VARS["FE"]["workspacePreviewLogoutTemplate"] not found. Please contact webmaster about this problem.';
 					}
 				} else {
 					$message = 'You logged out from Workspace preview mode. Click this link to <a href="%1$s">go back to the website</a>';
@@ -154,7 +175,8 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 				die(sprintf($message, htmlspecialchars(preg_replace('/\\&?' . $this->previewKey . '=[[:alnum:]]+/', '', $returnUrl))));
 			}
 			// Look for keyword configuration record:
-			$previewData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_preview', 'keyword=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($inputCode, 'sys_preview') . ' AND endtime>' . $GLOBALS['EXEC_TIME']);
+			$where = 'keyword=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($inputCode, 'sys_preview') . ' AND endtime>' . $GLOBALS['EXEC_TIME'];
+			$previewData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_preview', $where);
 			// Get: Backend login status, Frontend login status
 			// - Make sure to remove fe/be cookies (temporarily);
 			// BE already done in ADMCMD_preview_postInit()
@@ -190,7 +212,9 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 					} else {
 						// This check is to prevent people from setting additional
 						// GET vars via realurl or other URL path based ways of passing parameters.
-						throw new \Exception(htmlspecialchars('Request URL did not match "' . GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'index.php?' . $this->previewKey . '=' . $inputCode . '"', 1294585190));
+						throw new \Exception(htmlspecialchars('Request URL did not match "'
+							. GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'index.php?' . $this->previewKey . '='
+							. $inputCode . '"', 1294585190));
 					}
 				} else {
 					throw new \Exception('POST requests are incompatible with keyword preview.', 1294585191);
@@ -218,17 +242,17 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Set preview keyword, eg:
-	 * $previewUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.$this->compilePreviewKeyword('id='.$pageId.'&L='.$language.'&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS='.$this->workspace, $GLOBALS['BE_USER']->user['uid'], 120);
+	 * $previewUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.$this->compilePreviewKeyword('id='.$pageId.'&L='.$language.'&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS='.$this->workspace, $GLOBALS['BE_USER']->user['uid'], 120);
 	 *
 	 * todo for sys_preview:
 	 * - Add a comment which can be shown to previewer in frontend in some way (plus maybe ability to write back, take other action?)
 	 * - Add possibility for the preview keyword to work in the backend as well: So it becomes a quick way to a certain action of sorts?
 	 *
-	 * @param 	string		Get variables to preview, eg. 'id=1150&L=0&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS=8'
-	 * @param 	string		32 byte MD5 hash keyword for the URL: "?ADMCMD_prev=[keyword]
-	 * @param 	integer		Time-To-Live for keyword
-	 * @param 	integer		Which workspace to preview. Workspace UID, -1 or >0. If set, the getVars is ignored in the frontend, so that string can be empty
-	 * @return 	string		Returns keyword to use in URL for ADMCMD_prev=
+	 * @param string $getVarsStr Get variables to preview, eg. 'id=1150&L=0&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS=8'
+	 * @param string $backendUserUid 32 byte MD5 hash keyword for the URL: "?ADMCMD_prev=[keyword]
+	 * @param int $ttl Time-To-Live for keyword
+	 * @param int|NULL $fullWorkspace Which workspace to preview. Workspace UID, -1 or >0. If set, the getVars is ignored in the frontend, so that string can be empty
+	 * @return string Returns keyword to use in URL for ADMCMD_prev=
 	 */
 	public function compilePreviewKeyword($getVarsStr, $backendUserUid, $ttl = 172800, $fullWorkspace = NULL) {
 		$fieldData = array(
