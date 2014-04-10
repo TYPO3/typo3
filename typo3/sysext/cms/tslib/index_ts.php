@@ -24,11 +24,18 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * This is the MAIN DOCUMENT of the TypoScript driven standard front-end (from the "cms" extension)
- * Basically put this is the "index.php" script which all requests for TYPO3 delivered pages goes to in the frontend (the website)
- * The script configures constants, includes libraries and does a little logic here and there in order to instantiate the right classes to create the webpage.
- * All the real data processing goes on in the "tslib/" classes which this script will include and use as needed.
+ * This is the MAIN DOCUMENT of the TypoScript driven standard front-end (from
+ * the "cms" extension)
+ *
+ * Basically put this is the "index.php" script which all requests for TYPO3
+ * delivered pages goes to in the frontend (the website) The script configures
+ * constants, includes libraries and does a little logic here and there in order
+ * to instantiate the right classes to create the webpage.
+ *
+ * All the real data processing goes on in the "tslib/" classes which this script
+ * will include and use as needed.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
@@ -119,8 +126,9 @@ $TT->pull();
 /** @var $BE_USER \TYPO3\CMS\Backend\FrontendBackendUserAuthentication */
 $BE_USER = $TSFE->initializeBackendUser();
 
-// Process the ID, type and other parameters
-// After this point we have an array, $page in TSFE, which is the page-record of the current page, $id
+// Process the ID, type and other parameters.
+// After this point we have an array, $page in TSFE, which is the page-record
+// of the current page, $id.
 $TT->push('Process ID', '');
 // Initialize admin panel since simulation settings are required here:
 if ($TSFE->isBackendUserLoggedIn()) {
@@ -132,10 +140,14 @@ if ($TSFE->isBackendUserLoggedIn()) {
 $TSFE->checkAlternativeIdMethods();
 $TSFE->clear_preview();
 $TSFE->determineId();
-// Now, if there is a backend user logged in and he has NO access to this page, then re-evaluate the id shown!
-if ($TSFE->isBackendUserLoggedIn() && (!$BE_USER->extPageReadAccess($TSFE->page) || \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('ADMCMD_noBeUser'))) {
-	// \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('ADMCMD_noBeUser') is placed here because
-	// \TYPO3\CMS\Version\Hook\PreviewHook might need to know if a backend user is logged in!
+
+// Now, if there is a backend user logged in and he has NO access to this page,
+// then re-evaluate the id shown! _GP('ADMCMD_noBeUser') is placed here because
+// \TYPO3\CMS\Version\Hook\PreviewHook might need to know if a backend user is logged in.
+if (
+	$TSFE->isBackendUserLoggedIn()
+	&& (!$BE_USER->extPageReadAccess($TSFE->page) || \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('ADMCMD_noBeUser'))
+) {
 	// Remove user
 	unset($BE_USER);
 	$TSFE->beUserLogin = 0;
@@ -144,6 +156,7 @@ if ($TSFE->isBackendUserLoggedIn() && (!$BE_USER->extPageReadAccess($TSFE->page)
 	$TSFE->clear_preview();
 	$TSFE->determineId();
 }
+
 $TSFE->makeCacheHash();
 $TT->pull();
 
@@ -176,8 +189,10 @@ $TT->push('Setting language and locale', '');
 $TSFE->settingLanguage();
 $TSFE->settingLocale();
 $TT->pull();
+
 // Convert POST data to internal "renderCharset" if different from the metaCharset
 $TSFE->convPOSTCharset();
+
 // Check JumpUrl
 $TSFE->setExternalJumpUrl();
 $TSFE->checkJumpUrlReferer();

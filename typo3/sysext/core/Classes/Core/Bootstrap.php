@@ -145,12 +145,12 @@ class Bootstrap {
 	}
 
 	/**
-	 * Run the base setup that checks server environment,
-	 * determines pathes, populates base files and sets common configuration.
+	 * Run the base setup that checks server environment, determines pathes,
+	 * populates base files and sets common configuration.
 	 *
 	 * Script execution will be aborted if something fails here.
 	 *
-	 * @param string $relativePathPart Relative path of the entry script back to document root
+	 * @param string $relativePathPart Relative path of entry script back to document root
 	 * @return Bootstrap
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
@@ -163,7 +163,7 @@ class Bootstrap {
 	/**
 	 * Redirect to install tool if LocalConfiguration.php is missing.
 	 *
-	 * @param string $pathUpToDocumentRoot Can contain eg. '../' if called from a sub directory
+	 * @param string $pathUpToDocumentRoot Can contain '../' if called from a sub directory
 	 * @return Bootstrap
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
