@@ -122,6 +122,9 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 				'    return parent::getExtTablesCacheIdentifier();' .
 				'  }' .
 				'  public static function buildBaseTcaFromSingleFiles() {' .
+				'    $GLOBALS[\'TCA\'] = array();' .
+				'  }' .
+				'  public static function emitTcaIsBeingBuiltSignal(array $tca) {' .
 				'  }' .
 				'}'
 			);

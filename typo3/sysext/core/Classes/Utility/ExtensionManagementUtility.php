@@ -75,13 +75,30 @@ class ExtensionManagementUtility {
 	/**
 	 * Getter for the cache manager
 	 *
-	 * @return \TYPO3\CMS\Core\Cache\CacheManager $cacheManager
+	 * @return \TYPO3\CMS\Core\Cache\CacheManager
 	 */
 	static protected function getCacheManager() {
 		if (static::$cacheManager === NULL) {
 			static::$cacheManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager');
 		}
 		return static::$cacheManager;
+	}
+
+	/**
+	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 */
+	static protected $signalSlotDispatcher;
+
+	/**
+	 * Getter for the signal slot dispatcher
+	 *
+	 * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 */
+	static protected function getSignalSlotDispatcher() {
+		if (static::$signalSlotDispatcher === NULL) {
+			static::$signalSlotDispatcher = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+		}
+		return static::$signalSlotDispatcher;
 	}
 
 	/**************************************
@@ -1582,6 +1599,7 @@ tt_content.' . $key . $prefix . ' {
 				$GLOBALS['TCA'] = unserialize(substr($codeCache->get($cacheIdentifier), 6, -2));
 			} else {
 				static::buildBaseTcaFromSingleFiles();
+				static::emitTcaIsBeingBuiltSignal($GLOBALS['TCA']);
 				static::createBaseTcaCacheFile();
 			}
 		} else {
@@ -1620,6 +1638,21 @@ tt_content.' . $key . $prefix . ' {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Emits the signal and uses the result of slots for the final TCA
+	 * This means, that *all* slots *must* return the complete TCA to
+	 * be effective. If a slot calls methods that manipulate the global array,
+	 * it needs to return the global array in the end. To be future proof,
+	 * a slot should manipulate the signal argument only and return it
+	 * after manipulation.
+	 *
+	 * @param array $tca
+	 */
+	static protected function emitTcaIsBeingBuiltSignal(array $tca) {
+		list($tca) = static::getSignalSlotDispatcher()->dispatch(__CLASS__, 'tcaIsBeingBuilt', array($tca));
+		$GLOBALS['TCA'] = $tca;
 	}
 
 	/**
