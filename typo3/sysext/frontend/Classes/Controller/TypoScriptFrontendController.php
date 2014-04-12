@@ -90,7 +90,6 @@ class TypoScriptFrontendController {
 	/**
 	 * The pagerecord
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $page = '';
 
@@ -205,7 +204,6 @@ class TypoScriptFrontendController {
 	/**
 	 * Flag that indicates if a backend user is logged in!
 	 * @var bool
-	 * @todo Define visibility
 	 */
 	public $beUserLogin = FALSE;
 
@@ -286,7 +284,6 @@ class TypoScriptFrontendController {
 	 * "CONFIG" object from TypoScript. Array generated based on the TypoScript
 	 * configuration of the current page. Saved with the cached pages.
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $config = '';
 
@@ -816,7 +813,6 @@ class TypoScriptFrontendController {
 	/**
 	 * All page content is accumulated in this variable. See pagegen.php
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $content = '';
 
@@ -1106,7 +1102,6 @@ class TypoScriptFrontendController {
 	 * Initializes the front-end login user.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function initFEuser() {
 		$this->fe_user = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication');
@@ -1214,7 +1209,6 @@ class TypoScriptFrontendController {
 	 * 2) Using hook which enables features like those provided from "realurl" extension (AKA "Speaking URLs")
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function checkAlternativeIdMethods() {
 		$this->siteScript = GeneralUtility::getIndpEnv('TYPO3_SITE_SCRIPT');
@@ -1233,7 +1227,6 @@ class TypoScriptFrontendController {
 	 * in bootstrap initializeGlobalTimeVariables(). Alter it by adding or subtracting seconds.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function clear_preview() {
 		$this->showHiddenPage = FALSE;
@@ -1315,7 +1308,6 @@ class TypoScriptFrontendController {
 	 * Basically this function is about determining whether a backend user is logged in, if he has read access to the page and if he's previewing the page. That all determines which id to show and how to initialize the id.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function determineId() {
 		// Call pre processing function for id determination
@@ -2006,7 +1998,6 @@ class TypoScriptFrontendController {
 	 * @param string $reason Reason text
 	 * @param string $header HTTP header to send
 	 * @return void Function exits.
-	 * @todo Define visibility
 	 */
 	public function pageUnavailableAndExit($reason = '', $header = '') {
 		$header = $header ?: $this->TYPO3_CONF_VARS['FE']['pageUnavailable_handling_statheader'];
@@ -2283,7 +2274,6 @@ class TypoScriptFrontendController {
 	 *
 	 * @return void
 	 * @see reqCHash()
-	 * @todo Define visibility
 	 */
 	public function makeCacheHash() {
 		// No need to test anything if caching was already disabled.
@@ -2336,7 +2326,6 @@ class TypoScriptFrontendController {
 	 * Initialize the TypoScript template parser
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function initTemplate() {
 		$this->tmpl = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\TemplateService');
@@ -2349,7 +2338,6 @@ class TypoScriptFrontendController {
 	 * Stores the page content in $this->content if something is found.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function getFromCache() {
 		if (!$this->no_cache) {
@@ -2545,7 +2533,6 @@ class TypoScriptFrontendController {
 	 *
 	 * @throws \TYPO3\CMS\Core\Error\Http\ServiceUnavailableException
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function getConfigArray() {
 		$setStatPageName = FALSE;
@@ -2692,7 +2679,6 @@ class TypoScriptFrontendController {
 	 *
 	 * @return void
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function settingLanguage() {
 		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['settingLanguage_preProcess'])) {
@@ -2806,7 +2792,6 @@ class TypoScriptFrontendController {
 	 * Setting locale for frontend rendering
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function settingLocale() {
 		// Setting locale
@@ -2995,7 +2980,6 @@ class TypoScriptFrontendController {
 	 * Sets the jumpurl for page type "External URL"
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function setExternalJumpUrl() {
 		if ($extUrl = $this->sys_page->getExtURL($this->page, $this->config['config']['disablePageExternalUrl'])) {
@@ -3008,7 +2992,6 @@ class TypoScriptFrontendController {
 	 * Check the jumpUrl referer if required
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function checkJumpUrlReferer() {
 		if (strlen($this->jumpurl) && !$this->TYPO3_CONF_VARS['SYS']['doNotCheckReferer']) {
@@ -3027,7 +3010,6 @@ class TypoScriptFrontendController {
 	 *
 	 * @throws \Exception
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function jumpUrl() {
 		if ($this->jumpurl) {
@@ -3123,7 +3105,6 @@ class TypoScriptFrontendController {
 	 *
 	 * @return void
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function setUrlIdToken() {
 		if ($this->config['config']['ftu']) {
@@ -3209,7 +3190,6 @@ class TypoScriptFrontendController {
 	 * That is if jumpurl is not set and the cacheContentFlag is not set.
 	 *
 	 * @return boolean
-	 * @todo Define visibility
 	 */
 	public function isGeneratePage() {
 		return !$this->cacheContentFlag && !$this->jumpurl;
@@ -3456,7 +3436,6 @@ class TypoScriptFrontendController {
 	 * Does some processing BEFORE the pagegen script is included.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function generatePage_preProcessing() {
 		// Same codeline as in getFromCache(). But $this->all has been changed by
@@ -3477,7 +3456,6 @@ class TypoScriptFrontendController {
 	 * returns script-filename if a TypoScript (config) script is defined and should be include instead of pagegen.php
 	 *
 	 * @return string The relative filepath of "config.pageGenScript" if found and allowed
-	 * @todo Define visibility
 	 */
 	public function generatePage_whichScript() {
 		if (!$this->TYPO3_CONF_VARS['FE']['noPHPscriptInclude'] && $this->config['config']['pageGenScript']) {
@@ -3490,7 +3468,6 @@ class TypoScriptFrontendController {
 	 * This includes calling XHTML cleaning (if configured), caching the page, indexing the page (if configured) and setting sysLastChanged
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function generatePage_postProcessing() {
 		// This is to ensure, that the page is NOT cached if the no_cache parameter was set before the page was generated. This is a safety precaution, as it could have been unset by some script.
@@ -3577,7 +3554,6 @@ class TypoScriptFrontendController {
 	 * Processes the INTinclude-scripts
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function INTincScript() {
 		// Deprecated stuff:
@@ -3750,7 +3726,6 @@ if (version == "n3") {
 	 * Determines if there are any INTincScripts to include
 	 *
 	 * @return boolean Returns TRUE if scripts are found (and not jumpurl)
-	 * @todo Define visibility
 	 */
 	public function isINTincScript() {
 		return is_array($this->config['INTincScript']) && !$this->jumpurl;
@@ -3786,7 +3761,6 @@ if (version == "n3") {
 	 * Outputting content is done only if jumpUrl is NOT set.
 	 *
 	 * @return boolean Returns TRUE if $this->jumpurl is not set.
-	 * @todo Define visibility
 	 */
 	public function isOutputting() {
 		// Initialize by status of jumpUrl:
@@ -3807,7 +3781,6 @@ if (version == "n3") {
 	 * Works on $this->content.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function processOutput() {
 		// Set header for charset-encoding unless disabled
@@ -3983,7 +3956,6 @@ if (version == "n3") {
 	 * Stores session data for the front end user
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function storeSessionData() {
 		$this->fe_user->storeSessionData();
@@ -3994,7 +3966,6 @@ if (version == "n3") {
 	 *
 	 * @return void
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function setParseTime() {
 		// Compensates for the time consumed with Back end user initialization.
@@ -4009,7 +3980,6 @@ if (version == "n3") {
 	 * Outputs preview info.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function previewInfo() {
 		if ($this->fePreview !== 0) {
@@ -4028,7 +3998,6 @@ if (version == "n3") {
 	 * End-Of-Frontend hook
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function hook_eofe() {
 		// Call hook for end-of-frontend processing:
@@ -4044,7 +4013,6 @@ if (version == "n3") {
 	 * Returns a link to the BE login screen with redirect to the front-end
 	 *
 	 * @return string HTML, a tag for a link to the backend.
-	 * @todo Define visibility
 	 */
 	public function beLoginLinkIPList() {
 		if (!empty($this->config['config']['beLoginLinkIPList'])) {
@@ -4211,7 +4179,6 @@ if (version == "n3") {
 	 *
 	 * @return void
 	 * @see pagegen.php
-	 * @todo Define visibility
 	 */
 	public function newCObj() {
 		$this->cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
@@ -4224,7 +4191,6 @@ if (version == "n3") {
 	 * @return void
 	 * @access private
 	 * @see pagegen.php, INTincScript()
-	 * @todo Define visibility
 	 */
 	public function setAbsRefPrefix() {
 		if (!$this->absRefPrefix) {
@@ -4884,7 +4850,6 @@ if (version == "n3") {
 	 * Converts the $_POST array from metaCharset (page HTML charset from input form) to renderCharset (internal processing) IF the two charsets are different.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function convPOSTCharset() {
 		if ($this->renderCharset != $this->metaCharset && is_array($_POST) && count($_POST)) {
