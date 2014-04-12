@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
  *
  * @author Susanne Moog <typo3@susannemoog.de>
  */
-class ListController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractController {
+class ListController extends AbstractController {
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository

@@ -92,7 +92,10 @@ $EM_CONF[$_EXTKEY] = ' . $emConf . ';
 	 * @return array
 	 */
 	public function fixEmConf(array $emConf) {
-		if (!isset($emConf['constraints']) || !isset($emConf['constraints']['depends']) || !isset($emConf['constraints']['conflicts']) || !isset($emConf['constraints']['suggests'])) {
+		if (
+			!isset($emConf['constraints']) || !isset($emConf['constraints']['depends'])
+			|| !isset($emConf['constraints']['conflicts']) || !isset($emConf['constraints']['suggests'])
+		) {
 			if (!isset($emConf['constraints']) || !isset($emConf['constraints']['depends'])) {
 				$emConf['constraints']['depends'] = $this->stringToDependency($emConf['dependencies']);
 				if (strlen($emConf['PHP_version'])) {

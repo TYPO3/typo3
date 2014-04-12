@@ -56,7 +56,7 @@ class ToggleExtensionInstallationStateViewHelper extends \TYPO3\CMS\Fluid\ViewHe
 		$uriBuilder = $this->controllerContext->getUriBuilder();
 		$action = 'toggleExtensionInstallationState';
 		$uri = $uriBuilder->reset()->uriFor($action, array(
-			'extension' => $extension['key']
+			'extensionKey' => $extension['key']
 		), 'Action');
 		$this->tag->addAttribute('href', $uri);
 		$label = $extension['installed'] ? 'deactivate' : 'activate';

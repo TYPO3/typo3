@@ -317,14 +317,15 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 			$fieldDefinitionsFromCurrentDatabase = $this->installToolSqlParser->getFieldDefinitions_database();
 			$diff = $this->installToolSqlParser->getDatabaseExtra($fieldDefinitionsFromFile, $fieldDefinitionsFromCurrentDatabase);
 			$updateStatements = $this->installToolSqlParser->getUpdateSuggestions($diff);
+			$db = $this->getDatabaseConnection();
 			foreach ((array) $updateStatements['add'] as $string) {
-				$GLOBALS['TYPO3_DB']->admin_query($string);
+				$db->admin_query($string);
 			}
 			foreach ((array) $updateStatements['change'] as $string) {
-				$GLOBALS['TYPO3_DB']->admin_query($string);
+				$db->admin_query($string);
 			}
 			foreach ((array) $updateStatements['create_table'] as $string) {
-				$GLOBALS['TYPO3_DB']->admin_query($string);
+				$db->admin_query($string);
 			}
 		}
 	}
@@ -338,14 +339,15 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	public function importStaticSql($rawDefinitions) {
 		$statements = $this->installToolSqlParser->getStatementarray($rawDefinitions, 1);
 		list($statementsPerTable, $insertCount) = $this->installToolSqlParser->getCreateTables($statements, 1);
+		$db = $this->getDatabaseConnection();
 		// Traverse the tables
 		foreach ($statementsPerTable as $table => $query) {
-			$GLOBALS['TYPO3_DB']->admin_query('DROP TABLE IF EXISTS ' . $table);
-			$GLOBALS['TYPO3_DB']->admin_query($query);
+			$db->admin_query('DROP TABLE IF EXISTS ' . $table);
+			$db->admin_query($query);
 			if ($insertCount[$table]) {
 				$insertStatements = $this->installToolSqlParser->getTableInsertStatements($statements, $table);
 				foreach ($insertStatements as $statement) {
-					$GLOBALS['TYPO3_DB']->admin_query($statement);
+					$db->admin_query($statement);
 				}
 			}
 		}
@@ -493,5 +495,13 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 				$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterExtensionFileImport', array($destinationAbsolutePath, $this));
 			}
 		}
+	}
+
+
+	/**
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
 	}
 }

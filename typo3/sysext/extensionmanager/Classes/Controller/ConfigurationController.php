@@ -26,6 +26,7 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 
 /**
@@ -33,7 +34,7 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
  *
  * @author Susanne Moog <typo3@susannemoog.de>
  */
-class ConfigurationController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractController {
+class ConfigurationController extends AbstractController {
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ConfigurationItemRepository
@@ -68,10 +69,10 @@ class ConfigurationController extends \TYPO3\CMS\Extensionmanager\Controller\Abs
 				->assign('configuration', $configuration)
 				->assign('extension', $extension);
 		} else {
-			/** @var \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension */
+			/** @var Extension $extension */
 			$extension = $this->extensionRepository->findOneByCurrentVersionByExtensionKey($extension['key']);
 			// Extension has no configuration and is a distribution
-			if ($extension->getCategory() === \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::DISTRIBUTION_CATEGORY) {
+			if ($extension->getCategory() === Extension::DISTRIBUTION_CATEGORY) {
 				$this->redirect('welcome', 'Distribution', NULL, array('extension' => $extension->getUid()));
 			}
 			throw new ExtensionManagerException('The extension ' . htmlspecialchars($extension['key']) . ' has no configuration.');
@@ -96,11 +97,11 @@ class ConfigurationController extends \TYPO3\CMS\Extensionmanager\Controller\Abs
 			$extensionKey
 		);
 		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterExtensionConfigurationWrite', array($newConfiguration, $this));
-		/** @var \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension */
+		/** @var Extension $extension */
 		$extension = $this->extensionRepository->findOneByCurrentVersionByExtensionKey($extensionKey);
 		// Different handling for distribution installation
-		if ($extension instanceof \TYPO3\CMS\Extensionmanager\Domain\Model\Extension &&
-			$extension->getCategory() === \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::DISTRIBUTION_CATEGORY
+		if ($extension instanceof Extension &&
+			$extension->getCategory() === Extension::DISTRIBUTION_CATEGORY
 		) {
 			$this->redirect('welcome', 'Distribution', NULL, array('extension' => $extension->getUid()));
 		} else {

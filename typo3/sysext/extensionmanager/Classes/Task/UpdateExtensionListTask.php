@@ -38,7 +38,7 @@ class UpdateExtensionListTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 */
 	public function execute() {
 		// Throws exceptions if something went wrong
-		$this->updateExtensionlist();
+		$this->updateExtensionList();
 
 		return TRUE;
 	}
@@ -49,7 +49,7 @@ class UpdateExtensionListTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 * @TODO: Adapt to multiple repositories if the Helper can handle this
 	 * @return void
 	 */
-	protected function updateExtensionlist() {
+	protected function updateExtensionList() {
 		/** @var $objectManager \TYPO3\CMS\Extbase\Object\ObjectManager */
 		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 

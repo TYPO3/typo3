@@ -157,7 +157,6 @@
 				});
 			});
 		});
-
 	}
 
 	function updateExtension(data) {

@@ -32,7 +32,7 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
  *
  * @author Francois Suter <francois.suter@typo3.org>
  */
-class UpdateScriptController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractController {
+class UpdateScriptController extends AbstractController {
 
 	/**
 	 * Show the content of the update script (if any).

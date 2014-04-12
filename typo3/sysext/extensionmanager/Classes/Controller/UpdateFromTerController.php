@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
  *
  * @author Susanne Moog <typo3@susannemoog.de>
  */
-class UpdateFromTerController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractController {
+class UpdateFromTerController extends AbstractController {
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\Repository\Helper

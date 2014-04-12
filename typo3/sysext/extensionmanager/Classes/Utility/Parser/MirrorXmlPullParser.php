@@ -34,14 +34,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
  * @author Steffen Kamper <info@sk-typo3.de>
  * @sincer 2010-02-19
  */
-class MirrorXmlPullParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\AbstractMirrorXmlParser implements \SplSubject {
-
-	/**
-	 * Keeps list of attached observers.
-	 *
-	 * @var SplObserver[]
-	 */
-	protected $observers = array();
+class MirrorXmlPullParser extends AbstractMirrorXmlParser {
 
 	/**
 	 * Class constructor.
@@ -169,43 +162,4 @@ class MirrorXmlPullParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\Abs
 		}
 		return $value;
 	}
-
-	/**
-	 * Method attaches an observer.
-	 *
-	 * @param SplObserver $observer an observer to attach
-	 * @return void
-	 * @see $observers, detach(), notify()
-	 */
-	public function attach(\SplObserver $observer) {
-		$this->observers[] = $observer;
-	}
-
-	/**
-	 * Method detaches an attached observer
-	 *
-	 * @param SplObserver $observer an observer to detach
-	 * @return void
-	 * @see $observers, attach(), notify()
-	 */
-	public function detach(\SplObserver $observer) {
-		$key = array_search($observer, $this->observers, TRUE);
-		if (!($key === FALSE)) {
-			unset($this->observers[$key]);
-		}
-	}
-
-	/**
-	 * Method notifies attached observers.
-	 *
-	 * @access public
-	 * @return void
-	 * @see $observers, attach(), detach()
-	 */
-	public function notify() {
-		foreach ($this->observers as $observer) {
-			$observer->update($this);
-		}
-	}
-
 }

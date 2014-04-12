@@ -26,13 +26,15 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
+
 /**
  * Controller for handling upload of a local extension file
  * Handles .t3x or .zip files
  *
  * @author Susanne Moog <typo3@susannemoog.de>
  */
-class UploadExtensionFileController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractController {
+class UploadExtensionFileController extends AbstractController {
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility
@@ -65,7 +67,7 @@ class UploadExtensionFileController extends \TYPO3\CMS\Extensionmanager\Controll
 	 * Extract an uploaded file and install the matching extension
 	 *
 	 * @param boolean $overwrite Overwrite existing extension if TRUE
-	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
+	 * @throws ExtensionManagerException
 	 * @return void
 	 */
 	public function extractAction($overwrite = FALSE) {
@@ -74,15 +76,15 @@ class UploadExtensionFileController extends \TYPO3\CMS\Extensionmanager\Controll
 			$fileExtension = pathinfo($file['name']['extensionFile'], PATHINFO_EXTENSION);
 			$fileName = pathinfo($file['name']['extensionFile'], PATHINFO_BASENAME);
 			if (empty($file['name']['extensionFile'])) {
-				throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('No file given.', 1342858852);
+				throw new ExtensionManagerException('No file given.', 1342858852);
 			}
 			if ($fileExtension !== 't3x' && $fileExtension !== 'zip') {
-				throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Wrong file format given.', 1342858853);
+				throw new ExtensionManagerException('Wrong file format given.', 1342858853);
 			}
 			if (!empty($file['tmp_name']['extensionFile'])) {
 				$tempFile = \TYPO3\CMS\Core\Utility\GeneralUtility::upload_to_tempfile($file['tmp_name']['extensionFile']);
 			} else {
-				throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(
+				throw new ExtensionManagerException(
 					'Creating temporary file failed. Check your upload_max_filesize and post_max_size limits.',
 					1342864339
 				);
@@ -92,10 +94,10 @@ class UploadExtensionFileController extends \TYPO3\CMS\Extensionmanager\Controll
 			} else {
 				$extensionData = $this->getExtensionFromZipFile($tempFile, $fileName, $overwrite);
 			}
+			$this->view->assign('extensionKey', $extensionData['extKey']);
 		} catch (\Exception $exception) {
 			$this->view->assign('error', $exception->getMessage());
 		}
-		$this->view->assign('extensionKey', $extensionData['extKey']);
 	}
 
 	/**
@@ -103,20 +105,20 @@ class UploadExtensionFileController extends \TYPO3\CMS\Extensionmanager\Controll
 	 *
 	 * @param string $file Path to uploaded file
 	 * @param boolean $overwrite Overwrite existing extension if TRUE
-	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
+	 * @throws ExtensionManagerException
 	 * @return array
 	 */
 	protected function getExtensionFromT3xFile($file, $overwrite = FALSE) {
 		$fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($file);
 		if (!$fileContent) {
-			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('File had no or wrong content.', 1342859339);
+			throw new ExtensionManagerException('File had no or wrong content.', 1342859339);
 		}
 		$extensionData = $this->terUtility->decodeExchangeData($fileContent);
 		if (empty($extensionData['extKey'])) {
-			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Decoding the file went wrong. No extension key found', 1342864309);
+			throw new ExtensionManagerException('Decoding the file went wrong. No extension key found', 1342864309);
 		}
 		if (!$overwrite && $this->installUtility->isAvailable($extensionData['extKey'])) {
-			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException($this->translate('extensionList.overwritingDisabled'), 1342864310);
+			throw new ExtensionManagerException($this->translate('extensionList.overwritingDisabled'), 1342864310);
 		}
 		$this->fileHandlingUtility->unpackExtensionFromExtensionDataArray($extensionData);
 		$this->installUtility->install($extensionData['extKey']);
@@ -133,13 +135,13 @@ class UploadExtensionFileController extends \TYPO3\CMS\Extensionmanager\Controll
 	 * @param string $fileName Filename (basename) of uploaded file
 	 * @param boolean $overwrite Overwrite existing extension if TRUE
 	 * @return array
-	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
+	 * @throws ExtensionManagerException
 	 */
 	protected function getExtensionFromZipFile($file, $fileName, $overwrite = FALSE) {
 			// Remove version and ending from filename to determine extension key
 		$extensionKey = preg_replace('/_(\d+)(\.|\-)(\d+)(\.|\-)(\d+).*/i', '', strtolower(substr($fileName, 0, -4)));
 		if (!$overwrite && $this->installUtility->isAvailable($extensionKey)) {
-			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Extension is already available and overwriting is disabled.', 1342864311);
+			throw new ExtensionManagerException('Extension is already available and overwriting is disabled.', 1342864311);
 		}
 		$this->fileHandlingUtility->unzipExtensionFromFile($file, $extensionKey);
 		$this->installUtility->install($extensionKey);

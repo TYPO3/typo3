@@ -26,6 +26,8 @@ namespace TYPO3\CMS\Extensionmanager\Service;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
+
 /**
  * Service class for managing multiple step processes (dependencies for example)
  *
@@ -98,10 +100,10 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Mark an extension for download
 	 *
-	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
+	 * @param Extension $extension
 	 * @return void
 	 */
-	public function markExtensionForDownload(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension) {
+	public function markExtensionForDownload(Extension $extension) {
 		// We have to check for dependencies of the extension first, before marking it for download
 		// because this extension might have dependencies, which need to be downloaded and installed first
 		$this->dependencyUtility->buildExtensionDependenciesTree($extension);
@@ -109,10 +111,10 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
+	 * @param Extension $extension
 	 * @return void
 	 */
-	public function markExtensionForUpdate(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension) {
+	public function markExtensionForUpdate(Extension $extension) {
 		// We have to check for dependencies of the extension first, before marking it for download
 		// because this extension might have dependencies, which need to be downloaded and installed first
 		$this->dependencyUtility->buildExtensionDependenciesTree($extension);
@@ -123,10 +125,10 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Resolve an extensions dependencies (download, copy and install dependent
 	 * extensions) and install the extension
 	 *
-	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
+	 * @param Extension $extension
 	 * @return array
 	 */
-	public function resolveDependenciesAndInstall(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension) {
+	public function resolveDependenciesAndInstall(Extension $extension) {
 		$this->downloadMainExtension($extension);
 		$extensionKey = $extension->getExtensionKey();
 		$this->setInExtensionRepository($extensionKey);
@@ -165,7 +167,7 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $extensionKey
 	 */
 	protected function setInExtensionRepository($extensionKey) {
-		$paths = \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::returnInstallPaths();
+		$paths = Extension::returnInstallPaths();
 		$path = $paths[$this->downloadUtility->getDownloadPath()];
 		$localExtensionStorage = $path . $extensionKey . '/Initialisation/Extensions/';
 		$this->dependencyUtility->setLocalExtensionStorage($localExtensionStorage);
@@ -178,7 +180,7 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	protected function copyDependencies(array $copyQueue) {
-		$installPaths = \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::returnAllowedInstallPaths();
+		$installPaths = Extension::returnAllowedInstallPaths();
 		foreach ($copyQueue as $extensionKey => $sourceFolder) {
 			$destination = $installPaths['Local'] . $extensionKey;
 			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($destination);
@@ -192,7 +194,7 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Uninstall extensions that will be updated
 	 * This is not strictly necessary but cleaner all in all
 	 *
-	 * @param array<Tx_Extensionmanager_Domain_Model_Extension> $updateQueue
+	 * @param Extension[] $updateQueue
 	 * @return array
 	 */
 	protected function uninstallDependenciesToBeUpdated(array $updateQueue) {
@@ -230,7 +232,7 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Download dependencies
 	 * expects an array of extension objects to download
 	 *
-	 * @param array<Tx_Extensionmanager_Domain_Model_Extension> $downloadQueue
+	 * @param Extension[] $downloadQueue
 	 * @return array
 	 */
 	protected function downloadDependencies(array $downloadQueue) {
@@ -247,10 +249,10 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Get and resolve dependencies
 	 *
-	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
+	 * @param Extension $extension
 	 * @return array
 	 */
-	public function getAndResolveDependencies(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension) {
+	public function getAndResolveDependencies(Extension $extension) {
 		$this->dependencyUtility->buildExtensionDependenciesTree($extension);
 		$installQueue = $this->downloadQueue->getExtensionInstallStorage();
 		if (is_array($installQueue) && count($installQueue) > 0) {
@@ -264,10 +266,10 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * This is separated from downloading the dependencies
 	 * as an extension is able to provide it's own dependencies
 	 *
-	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
+	 * @param Extension $extension
 	 * @return void
 	 */
-	public function downloadMainExtension(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension) {
+	public function downloadMainExtension(Extension $extension) {
 		// The extension object has a uid if the extension is not present in the system
 		// or an update of a present extension is triggered.
 		if ($extension->getUid()) {

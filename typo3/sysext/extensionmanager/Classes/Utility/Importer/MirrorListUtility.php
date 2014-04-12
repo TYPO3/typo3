@@ -56,9 +56,8 @@ class MirrorListUtility implements \SplObserver {
 	/**
 	 * Class constructor.
 	 *
-	 * Method retrieves and initializes extension XML parser instance.
-	 *
-	 * @throws tx_em_XmlException
+	 * Method retrieves and initializes extension XML parser instance
+	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
 	 */
 	public function __construct() {
 		// TODO catch parser exception
@@ -90,7 +89,7 @@ class MirrorListUtility implements \SplObserver {
 	/**
 	 * Method receives an update from a subject.
 	 *
-	 * @param SplSubject $subject a subject notifying this observer
+	 * @param \SplSubject $subject a subject notifying this observer
 	 * @return void
 	 */
 	public function update(\SplSubject $subject) {

@@ -37,14 +37,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
  * @author 	  Steffen Kamper <info@sk-typo3.de>
  * @since 	   2010-02-09
  */
-class ExtensionXmlPullParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\AbstractExtensionXmlParser implements \SplSubject {
-
-	/**
-	 * Keeps list of attached observers.
-	 *
-	 * @var SplObserver[]
-	 */
-	protected $observers = array();
+class ExtensionXmlPullParser extends AbstractExtensionXmlParser {
 
 	/**
 	 * Class constructor.
@@ -200,39 +193,4 @@ class ExtensionXmlPullParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\
 		}
 		return $value;
 	}
-
-	/**
-	 * Method attaches an observer.
-	 *
-	 * @param SplObserver  $observer: an observer to attach
-	 * @return void
-	 */
-	public function attach(\SplObserver $observer) {
-		$this->observers[] = $observer;
-	}
-
-	/**
-	 * Method detaches an attached observer
-	 *
-	 * @param SplObserver  $observer: an observer to detach
-	 * @return void
-	 */
-	public function detach(\SplObserver $observer) {
-		$key = array_search($observer, $this->observers, TRUE);
-		if (!($key === FALSE)) {
-			unset($this->observers[$key]);
-		}
-	}
-
-	/**
-	 * Method notifies attached observers.
-	 *
-	 * @return void
-	 */
-	public function notify() {
-		foreach ($this->observers as $observer) {
-			$observer->update($this);
-		}
-	}
-
 }

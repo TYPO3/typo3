@@ -41,7 +41,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
  * @author Steffen Kamper <info@sk-typo3.de>
  * @since 2010-02-10
  */
-class ExtensionXmlPushParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\AbstractExtensionXmlParser implements \SplSubject {
+class ExtensionXmlPushParser extends AbstractExtensionXmlParser {
 
 	/**
 	 * Keeps current element to process.
@@ -49,13 +49,6 @@ class ExtensionXmlPushParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\
 	 * @var string
 	 */
 	protected $element = NULL;
-
-	/**
-	 * Keeps list of attached observers.
-	 *
-	 * @var SplObserver[]
-	 */
-	protected $observers = array();
 
 	/**
 	 * Class constructor.
@@ -148,8 +141,8 @@ class ExtensionXmlPushParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\
 	/**
 	 * Method is invoked when parser accesses any character other than elements.
 	 *
-	 * @param resource  $parser: parser resource
-	 * @param string	 $data: an element's value
+	 * @param resource $parser parser resource
+	 * @param string $data: an element's value
 	 * @return void
 	 */
 	protected function characterData($parser, $data) {
@@ -206,39 +199,4 @@ class ExtensionXmlPushParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\
 			}
 		}
 	}
-
-	/**
-	 * Method attaches an observer.
-	 *
-	 * @param SplObserver  $observer: an observer to attach
-	 * @return void
-	 */
-	public function attach(\SplObserver $observer) {
-		$this->observers[] = $observer;
-	}
-
-	/**
-	 * Method detaches an attached observer
-	 *
-	 * @param SplObserver  $observer: an observer to detach
-	 * @return void
-	 */
-	public function detach(\SplObserver $observer) {
-		$key = array_search($observer, $this->observers, TRUE);
-		if (!($key === FALSE)) {
-			unset($this->observers[$key]);
-		}
-	}
-
-	/**
-	 * Method notifies attached observers.
-	 *
-	 * @return void
-	 */
-	public function notify() {
-		foreach ($this->observers as $observer) {
-			$observer->update($this);
-		}
-	}
-
 }

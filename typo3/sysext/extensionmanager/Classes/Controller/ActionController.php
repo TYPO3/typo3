@@ -32,7 +32,7 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
  *
  * @author Susanne Moog <typo3@susannemoog.de>
  */
-class ActionController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractController {
+class ActionController extends AbstractController {
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\InstallUtility
@@ -61,40 +61,27 @@ class ActionController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractCo
 	/**
 	 * Toggle extension installation state action
 	 *
-	 * @param string $extension
+	 * @param string $extensionKey
 	 */
-	protected function toggleExtensionInstallationStateAction($extension) {
+	protected function toggleExtensionInstallationStateAction($extensionKey) {
 		$installedExtensions = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray();
 		try {
-			if (in_array($extension, $installedExtensions)) {
+			if (in_array($extensionKey, $installedExtensions)) {
 				// uninstall
-				$this->installUtility->uninstall($extension);
+				$this->installUtility->uninstall($extensionKey);
 			} else {
 				// install
 				$this->managementService->resolveDependenciesAndInstall(
 					$this->extensionModelUtility->mapExtensionArrayToModel(
-						$this->installUtility->enrichExtensionWithDetails($extension)
+						$this->installUtility->enrichExtensionWithDetails($extensionKey)
 					)
 				);
 			}
 		} catch (\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException $e) {
-			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-				'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
-				htmlspecialchars($e->getMessage()),
-				'',
-				\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR,
-				TRUE
-			);
-			$this->getControllerContext()->getFlashMessageQueue()->enqueue($flashMessage);
+			$message = nl2br(htmlspecialchars($e->getMessage()));
+			$this->addFlashMessage($message, '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 		} catch (\TYPO3\Flow\Package\Exception\PackageStatesFileNotWritableException $e) {
-			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-				'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
-				htmlspecialchars($e->getMessage()),
-				'',
-				\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR,
-				TRUE
-			);
-			$this->getControllerContext()->getFlashMessageQueue()->enqueue($flashMessage);
+			$this->addFlashMessage(htmlspecialchars($e->getMessage()), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 		}
 		$this->redirect('index', 'List', NULL, array(self::TRIGGER_RefreshModuleMenu => TRUE));
 	}

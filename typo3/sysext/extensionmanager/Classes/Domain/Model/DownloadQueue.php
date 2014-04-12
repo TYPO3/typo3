@@ -76,7 +76,10 @@ class DownloadQueue implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		if (array_key_exists($extension->getExtensionKey(), $this->extensionStorage)) {
 			if (!($this->extensionStorage[$extension->getExtensionKey()] === $extension)) {
-				throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException($extension->getExtensionKey() . ' was requested to be downloaded in different versions.', 1342432101);
+				throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(
+					$extension->getExtensionKey() . ' was requested to be downloaded in different versions.',
+					1342432101
+				);
 			}
 		}
 		$this->extensionStorage[$stack][$extension->getExtensionKey()] = $extension;

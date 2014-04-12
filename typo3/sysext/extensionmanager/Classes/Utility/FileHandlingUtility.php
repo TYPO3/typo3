@@ -1,6 +1,8 @@
 <?php
 namespace TYPO3\CMS\Extensionmanager\Utility;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
+use TYPO3\CMS\Lang\LanguageService;
 
 /***************************************************************
  *  Copyright notice
@@ -109,13 +111,16 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Wrapper for utility method to create directory recusively
 	 *
 	 * @param string $directory Absolute path
-	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
+	 * @throws ExtensionManagerException
 	 */
 	protected function createNestedDirectory($directory) {
 		try {
 			GeneralUtility::mkdir_deep($directory);
 		} catch(\RuntimeException $exception) {
-			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(sprintf($GLOBALS['LANG']->getLL('clearMakeExtDir_could_not_create_dir'), $this->getRelativePath($directory)), 1337280416);
+			throw new ExtensionManagerException(
+				sprintf($this->getLanguageService()->getLL('clearMakeExtDir_could_not_create_dir'), $this->getRelativePath($directory)),
+				1337280416
+			);
 		}
 
 	}
@@ -139,14 +144,17 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $extensionkey
 	 * @param string $pathType Extension installation scope (Local,Global,System)
-	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
+	 * @throws ExtensionManagerException
 	 * @return string
 	 */
 	protected function makeAndClearExtensionDir($extensionkey, $pathType = 'Local') {
 		$paths = \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::returnInstallPaths();
 		$path = $paths[$pathType];
 		if (!$path || !is_dir($path) || !$extensionkey) {
-			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(sprintf('ERROR: The extension install path "%s" was no directory!', $this->getRelativePath($path)), 1337280417);
+			throw new ExtensionManagerException(
+				sprintf('ERROR: The extension install path "%s" was no directory!', $this->getRelativePath($path)),
+				1337280417
+			);
 		} else {
 			$extDirPath = $path . $extensionkey . '/';
 			if (is_dir($extDirPath)) {
@@ -161,13 +169,16 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Add specified directory
 	 *
 	 * @param string $extDirPath
-	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
+	 * @throws ExtensionManagerException
 	 * @return void
 	 */
 	protected function addDirectory($extDirPath) {
 		GeneralUtility::mkdir($extDirPath);
 		if (!is_dir($extDirPath)) {
-			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(sprintf($GLOBALS['LANG']->getLL('clearMakeExtDir_could_not_create_dir'), $this->getRelativePath($extDirPath)), 1337280418);
+			throw new ExtensionManagerException(
+				sprintf($this->getLanguageService()->getLL('clearMakeExtDir_could_not_create_dir'), $this->getRelativePath($extDirPath)),
+				1337280418
+			);
 		}
 	}
 
@@ -231,7 +242,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Remove specified directory
 	 *
 	 * @param string $extDirPath
-	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
+	 * @throws ExtensionManagerException
 	 * @return void
 	 */
 	public function removeDirectory($extDirPath) {
@@ -242,7 +253,10 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 			$result = GeneralUtility::rmdir($extDirPath, TRUE);
 		}
 		if ($result === FALSE) {
-			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(sprintf($GLOBALS['LANG']->getLL('clearMakeExtDir_could_not_remove_dir'), $this->getRelativePath($extDirPath)), 1337280415);
+			throw new ExtensionManagerException(
+				sprintf($this->getLanguageService()->getLL('clearMakeExtDir_could_not_remove_dir'), $this->getRelativePath($extDirPath)),
+				1337280415
+			);
 		}
 	}
 
@@ -279,12 +293,13 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Returns absolute path
 	 *
 	 * @param string $relativePath
+	 * @throws ExtensionManagerException
 	 * @return string
 	 */
 	protected function getAbsolutePath($relativePath) {
 		$absolutePath = GeneralUtility::getFileAbsFileName(GeneralUtility::resolveBackPath(PATH_site . $relativePath));
 		if (empty($absolutePath)) {
-			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Illegal relative path given', 1350742864);
+			throw new ExtensionManagerException('Illegal relative path given', 1350742864);
 		}
 		return $absolutePath;
 	}
@@ -385,7 +400,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $file path to zip file
 	 * @param string $fileName file name
 	 * @param string $pathType path type (Local, Global, System)
-	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
+	 * @throws ExtensionManagerException
 	 * @return void
 	 */
 	public function unzipExtensionFromFile($file, $fileName, $pathType = 'Local') {
@@ -403,7 +418,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 					if (strlen(trim($file)) > 0) {
 						$return = GeneralUtility::writeFile($extensionDir . $dir . '/' . $file, zip_entry_read($zipEntry, zip_entry_filesize($zipEntry)));
 						if ($return === FALSE) {
-							throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Could not write file ' . $this->getRelativePath($file), 1344691048);
+							throw new ExtensionManagerException('Could not write file ' . $this->getRelativePath($file), 1344691048);
 						}
 					}
 				} else {
@@ -411,7 +426,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 				}
 			}
 		} else {
-			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Unable to open zip file ' . $this->getRelativePath($file), 1344691049);
+			throw new ExtensionManagerException('Unable to open zip file ' . $this->getRelativePath($file), 1344691049);
 		}
 	}
 
@@ -453,6 +468,13 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		readfile($fileName);
 		unlink($fileName);
 		die;
+	}
+
+	/**
+	 * @return LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 
 }

@@ -167,7 +167,7 @@ class ExtensionListUtility implements \SplObserver {
 	/**
 	 * Method collects and stores extension version details into the database.
 	 *
-	 * @param SplSubject &$subject a subject notifying this observer
+	 * @param \SplSubject|\TYPO3\CMS\Extensionmanager\Utility\Parser\AbstractExtensionXmlParser &$subject a subject notifying this observer
 	 * @return void
 	 */
 	protected function loadIntoDatabase(\SplSubject &$subject) {
@@ -177,7 +177,7 @@ class ExtensionListUtility implements \SplObserver {
 			$this->arrRows = array();
 		}
 		$versionRepresentations = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionStringToArray($subject->getVersion());
-		// order must match that of self::$fieldNamses!
+		// order must match that of self::$fieldNames!
 		$this->arrRows[] = array(
 			$subject->getExtkey(),
 			$subject->getVersion(),
@@ -207,7 +207,7 @@ class ExtensionListUtility implements \SplObserver {
 	/**
 	 * Method receives an update from a subject.
 	 *
-	 * @param SplSubject $subject a subject notifying this observer
+	 * @param \SplSubject $subject a subject notifying this observer
 	 * @return void
 	 */
 	public function update(\SplSubject $subject) {

@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
  * @author Steffen Kamper <info@sk-typo3.de>
  * @since 2010-02-09
  */
-abstract class AbstractXmlParser {
+abstract class AbstractXmlParser implements \SplSubject {
 
 	/**
 	 * Keeps XML parser instance.
@@ -47,6 +47,51 @@ abstract class AbstractXmlParser {
 	 * @var string
 	 */
 	protected $requiredPhpExtensions;
+
+	/**
+	 * Keeps list of attached observers.
+	 *
+	 * @var \SplObserver[]
+	 */
+	protected $observers = array();
+
+	/**
+	 * Method attaches an observer.
+	 *
+	 * @param \SplObserver $observer an observer to attach
+	 * @return void
+	 * @see $observers, detach(), notify()
+	 */
+	public function attach(\SplObserver $observer) {
+		$this->observers[] = $observer;
+	}
+
+	/**
+	 * Method detaches an attached observer
+	 *
+	 * @param \SplObserver $observer an observer to detach
+	 * @return void
+	 * @see $observers, attach(), notify()
+	 */
+	public function detach(\SplObserver $observer) {
+		$key = array_search($observer, $this->observers, TRUE);
+		if ($key !== FALSE) {
+			unset($this->observers[$key]);
+		}
+	}
+
+	/**
+	 * Method notifies attached observers.
+	 *
+	 * @access public
+	 * @return void
+	 * @see $observers, attach(), detach()
+	 */
+	public function notify() {
+		foreach ($this->observers as $observer) {
+			$observer->update($this);
+		}
+	}
 
 	/**
 	 * Method determines if a necessary PHP extension is available.

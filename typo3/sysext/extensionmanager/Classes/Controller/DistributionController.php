@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
  *
  * @author Susanne Moog <typo3@susannemoog.de>
  */
-class DistributionController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractController {
+class DistributionController extends AbstractController {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Package\PackageManager

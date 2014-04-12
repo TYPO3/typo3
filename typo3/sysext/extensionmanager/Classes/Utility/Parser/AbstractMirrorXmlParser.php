@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
  * @author Steffen Kamper <info@sk-typo3.de>
  * @since 2010-02-09
  */
-abstract class AbstractMirrorXmlParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\AbstractXmlParser {
+abstract class AbstractMirrorXmlParser extends AbstractXmlParser {
 
 	/**
 	 * Keeps country of currently processed mirror.
@@ -189,7 +189,8 @@ abstract class AbstractMirrorXmlParser extends \TYPO3\CMS\Extensionmanager\Utili
 	 * @see $country, $host, $path, $sponsorlink, $sponsorlogo, $sponsorname, $title
 	 */
 	protected function resetProperties() {
-		$this->title = ($this->host = ($this->path = ($this->country = ($this->sponsorname = ($this->sponsorlink = $this->sponsorlogo)))));
+		$this->title = $this->host = $this->path = $this->country
+			= $this->sponsorname = $this->sponsorlink = $this->sponsorlogo = NULL;
 	}
 
 }
