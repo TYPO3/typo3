@@ -35,7 +35,7 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Core\Category\CategoryRegistry
 	 */
-	protected $fixture;
+	protected $subject;
 
 	/**
 	 * @var array
@@ -46,7 +46,7 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Sets up this test suite.
 	 */
 	protected function setUp() {
-		$this->fixture = new \TYPO3\CMS\Core\Category\CategoryRegistry();
+		$this->subject = new \TYPO3\CMS\Core\Category\CategoryRegistry();
 		$this->tables = array(
 			'first' => uniqid('first'),
 			'second' => uniqid('second')
@@ -66,7 +66,7 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function doesAddReturnTrueOnDefinedTable() {
-		$this->assertTrue($this->fixture->add('test_extension_a', $this->tables['first'], 'categories'));
+		$this->assertTrue($this->subject->add('test_extension_a', $this->tables['first'], 'categories'));
 	}
 
 	/**
@@ -75,65 +75,78 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedExceptionCode 1369122038
 	 */
 	public function doesAddThrowExceptionOnEmptyTablename() {
-		$this->fixture->add('test_extension_a', '', 'categories');
+		$this->subject->add('test_extension_a', '', 'categories');
+	}
+
+	/**
+	 * @test
+	 */
+	public function addCategoryRegistryTcaChangesReturnsGlobalTcaArray() {
+		$GLOBALS['TCA'] = array(
+			'foo' => array(
+				'bar' => 'baz'
+			)
+		);
+		list($tca) = $this->subject->addCategoryRegistryTcaChanges($GLOBALS['TCA']);
+		$this->assertSame($tca, $GLOBALS['TCA']);
 	}
 
 	/**
 	 * @test
 	 */
 	public function areMultipleElementsOfSameExtensionRegistered() {
-		$this->fixture->add('test_extension_a', $this->tables['first'], 'categories');
-		$this->fixture->add('test_extension_a', $this->tables['second'], 'categories');
-		$this->fixture->applyTca();
+		$this->subject->add('test_extension_a', $this->tables['first'], 'categories');
+		$this->subject->add('test_extension_a', $this->tables['second'], 'categories');
+		list($tca) = $this->subject->addCategoryRegistryTcaChanges(array());
 
-		$this->assertArrayHasKey('categories', $GLOBALS['TCA'][$this->tables['first']]['columns']);
-		$this->assertArrayHasKey('categories', $GLOBALS['TCA'][$this->tables['second']]['columns']);
+		$this->assertArrayHasKey('categories', $tca[$this->tables['first']]['columns']);
+		$this->assertArrayHasKey('categories', $tca[$this->tables['second']]['columns']);
 	}
 
 	/**
 	 * @test
 	 */
 	public function areElementsOfDifferentExtensionsRegistered() {
-		$this->fixture->add('test_extension_a', $this->tables['first'], 'categories');
-		$this->fixture->add('test_extension_b', $this->tables['second'], 'categories');
-		$this->fixture->applyTca();
+		$this->subject->add('test_extension_a', $this->tables['first'], 'categories');
+		$this->subject->add('test_extension_b', $this->tables['second'], 'categories');
+		list($tca) = $this->subject->addCategoryRegistryTcaChanges(array());
 
-		$this->assertArrayHasKey('categories', $GLOBALS['TCA'][$this->tables['first']]['columns']);
-		$this->assertArrayHasKey('categories', $GLOBALS['TCA'][$this->tables['second']]['columns']);
+		$this->assertArrayHasKey('categories', $tca[$this->tables['first']]['columns']);
+		$this->assertArrayHasKey('categories', $tca[$this->tables['second']]['columns']);
 	}
 
 	/**
 	 * @test
 	 */
 	public function areElementsOfDifferentExtensionsOnSameTableRegistered() {
-		$this->fixture->add('test_extension_a', $this->tables['first'], 'categories1');
-		$this->fixture->add('test_extension_b', $this->tables['first'], 'categories2');
-		$this->fixture->applyTca();
+		$this->subject->add('test_extension_a', $this->tables['first'], 'categories1');
+		$this->subject->add('test_extension_b', $this->tables['first'], 'categories2');
+		list($tca) = $this->subject->addCategoryRegistryTcaChanges(array());
 
-		$this->assertArrayHasKey('categories1', $GLOBALS['TCA'][$this->tables['first']]['columns']);
-		$this->assertArrayHasKey('categories2', $GLOBALS['TCA'][$this->tables['first']]['columns']);
+		$this->assertArrayHasKey('categories1', $tca[$this->tables['first']]['columns']);
+		$this->assertArrayHasKey('categories2', $tca[$this->tables['first']]['columns']);
 	}
 
 	/**
 	 * @test
 	 */
 	public function areElementsOfSameExtensionOnSameTableRegistered() {
-		$this->fixture->add('test_extension_a', $this->tables['first'], 'categories1');
-		$this->fixture->add('test_extension_a', $this->tables['first'], 'categories2');
-		$this->fixture->applyTca();
+		$this->subject->add('test_extension_a', $this->tables['first'], 'categories1');
+		$this->subject->add('test_extension_a', $this->tables['first'], 'categories2');
+		list($tca) = $this->subject->addCategoryRegistryTcaChanges(array());
 
-		$this->assertArrayHasKey('categories1', $GLOBALS['TCA'][$this->tables['first']]['columns']);
-		$this->assertArrayHasKey('categories2', $GLOBALS['TCA'][$this->tables['first']]['columns']);
+		$this->assertArrayHasKey('categories1', $tca[$this->tables['first']]['columns']);
+		$this->assertArrayHasKey('categories2', $tca[$this->tables['first']]['columns']);
 	}
 
 	/**
 	 * @test
 	 */
 	public function areDatabaseDefinitionsOfAllElementsAvailable() {
-		$this->fixture->add('test_extension_a', $this->tables['first'], 'categories');
-		$this->fixture->add('test_extension_b', $this->tables['second'], 'categories');
-		$this->fixture->add('test_extension_c', $this->tables['first'], 'categories');
-		$definitions = $this->fixture->getDatabaseTableDefinitions();
+		$this->subject->add('test_extension_a', $this->tables['first'], 'categories');
+		$this->subject->add('test_extension_b', $this->tables['second'], 'categories');
+		$this->subject->add('test_extension_c', $this->tables['first'], 'categories');
+		$definitions = $this->subject->getDatabaseTableDefinitions();
 		$matches = array();
 		preg_match_all('#CREATE TABLE\\s*([^ (]+)\\s*\\(\\s*([^ )]+)\\s+int\\(11\\)[^)]+\\);#mis', $definitions, $matches);
 		$this->assertEquals(2, count($matches[0]));
@@ -147,9 +160,9 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function areDatabaseDefinitionsOfParticularExtensionAvailable() {
-		$this->fixture->add('test_extension_a', $this->tables['first'], 'categories');
-		$this->fixture->add('test_extension_b', $this->tables['second'], 'categories');
-		$definitions = $this->fixture->getDatabaseTableDefinition('test_extension_a');
+		$this->subject->add('test_extension_a', $this->tables['first'], 'categories');
+		$this->subject->add('test_extension_b', $this->tables['second'], 'categories');
+		$definitions = $this->subject->getDatabaseTableDefinition('test_extension_a');
 		$matches = array();
 		preg_match_all('#CREATE TABLE\\s*([^ (]+)\\s*\\(\\s*([^ )]+)\\s+int\\(11\\)[^)]+\\);#mis', $definitions, $matches);
 		$this->assertEquals(1, count($matches[0]));
@@ -162,49 +175,49 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function areDefaultCategorizedTablesLoaded() {
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultCategorizedTables'] = $this->tables['first'] . ',' . $this->tables['second'];
-		$this->fixture->applyTca();
+		list($tca) = $this->subject->addCategoryRegistryTcaChanges(array());
 
-		$this->assertArrayHasKey('categories', $GLOBALS['TCA'][$this->tables['first']]['columns']);
-		$this->assertArrayHasKey('categories', $GLOBALS['TCA'][$this->tables['second']]['columns']);
+		$this->assertArrayHasKey('categories', $tca[$this->tables['first']]['columns']);
+		$this->assertArrayHasKey('categories', $tca[$this->tables['second']]['columns']);
 	}
 
 	/**
 	 * @test
 	 */
 	public function canApplyTca() {
-		$this->fixture->add('test_extension_a', $this->tables['first'], 'categories');
-		$this->fixture->add('test_extension_b', $this->tables['second'], 'categories');
-		$this->fixture->applyTca();
+		$this->subject->add('test_extension_a', $this->tables['first'], 'categories');
+		$this->subject->add('test_extension_b', $this->tables['second'], 'categories');
+		list($tca) = $this->subject->addCategoryRegistryTcaChanges(array());
 
-		$this->assertNotEmpty($GLOBALS['TCA'][$this->tables['first']]['columns']['categories']);
-		$this->assertNotEmpty($GLOBALS['TCA'][$this->tables['second']]['columns']['categories']);
+		$this->assertNotEmpty($tca[$this->tables['first']]['columns']['categories']);
+		$this->assertNotEmpty($tca[$this->tables['second']]['columns']['categories']);
 	}
 
 	/**
 	 * @test
 	 */
 	public function isRegisteredReturnsTrueIfElementIsAlreadyRegistered() {
-		$this->fixture->add('test_extension_a', $this->tables['first'], 'categories');
-		$this->assertTrue($this->fixture->isRegistered($this->tables['first'], 'categories'));
+		$this->subject->add('test_extension_a', $this->tables['first'], 'categories');
+		$this->assertTrue($this->subject->isRegistered($this->tables['first'], 'categories'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function isRegisteredReturnsFalseIfElementIsNotRegistered() {
-		$this->fixture->add('test_extension_a', $this->tables['first'], 'categories');
-		$this->assertFalse($this->fixture->isRegistered($this->tables['first'], '_not_registered'));
-		$this->assertFalse($this->fixture->isRegistered($this->tables['second'], 'categories'));
+		$this->subject->add('test_extension_a', $this->tables['first'], 'categories');
+		$this->assertFalse($this->subject->isRegistered($this->tables['first'], '_not_registered'));
+		$this->assertFalse($this->subject->isRegistered($this->tables['second'], 'categories'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function tabIsAddedForElement() {
-		$this->fixture->add('text_extension_a', $this->tables['first']);
-		$this->fixture->applyTca();
+		$this->subject->add('text_extension_a', $this->tables['first']);
+		list($tca) = $this->subject->addCategoryRegistryTcaChanges(array());
 
-		foreach($GLOBALS['TCA'][$this->tables['first']]['types'] as $typeConfig) {
+		foreach($tca[$this->tables['first']]['types'] as $typeConfig) {
 			$this->assertContains('--div--;LLL:EXT:lang/locallang_tca.xlf:sys_category.tabs.category', $typeConfig['showitem']);
 		}
 	}
@@ -213,10 +226,10 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function tabIsNotAddedForElementIfFieldListIsSpecified() {
-		$this->fixture->add('text_extension_a', $this->tables['first'], 'categories', array('fieldList' => 'categories'));
-		$this->fixture->applyTca();
+		$this->subject->add('text_extension_a', $this->tables['first'], 'categories', array('fieldList' => 'categories'));
+		list($tca) = $this->subject->addCategoryRegistryTcaChanges(array());
 
-		foreach($GLOBALS['TCA'][$this->tables['first']]['types'] as $typeConfig) {
+		foreach($tca[$this->tables['first']]['types'] as $typeConfig) {
 			$this->assertNotContains('--div--;LLL:EXT:lang/locallang_tca.xlf:sys_category.tabs.category', $typeConfig['showitem']);
 		}
 	}
@@ -225,11 +238,11 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function tabIsAddedOnlyOncePerTable() {
-		$this->fixture->add('text_extension_a', $this->tables['first'], 'categories1');
-		$this->fixture->add('text_extension_a', $this->tables['first'], 'categories2');
-		$this->fixture->applyTca();
+		$this->subject->add('text_extension_a', $this->tables['first'], 'categories1');
+		$this->subject->add('text_extension_a', $this->tables['first'], 'categories2');
+		list($tca) = $this->subject->addCategoryRegistryTcaChanges(array());
 
-		foreach($GLOBALS['TCA'][$this->tables['first']]['types'] as $typeConfig) {
+		foreach($tca[$this->tables['first']]['types'] as $typeConfig) {
 			$this->assertSame(
 				1, substr_count($typeConfig['showitem'], '--div--;LLL:EXT:lang/locallang_tca.xlf:sys_category.tabs.category')
 			);

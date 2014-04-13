@@ -221,7 +221,7 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @return void
 	 */
-	public function applyTca() {
+	protected function applyTca() {
 
 		$this->registerDefaultCategorizedTables();
 
@@ -233,6 +233,18 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Slot that is registered for tcaIsBeingBuilt
+	 * TCA changes are applied and then cached in ExtensionManagementUtility
+	 *
+	 * @param array $tca
+	 * @return array
+	 */
+	public function addCategoryRegistryTcaChanges(array $tca) {
+		$this->applyTca();
+		return array($GLOBALS['TCA']);
 	}
 
 	/**
