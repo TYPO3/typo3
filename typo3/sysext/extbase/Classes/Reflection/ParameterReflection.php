@@ -19,28 +19,18 @@ namespace TYPO3\CMS\Extbase\Reflection;
 class ParameterReflection extends \ReflectionParameter {
 
 	/**
-	 * The constructor, initializes the reflection parameter
-	 *
-	 * @param string $function
-	 * @param string $parameterName
-	 */
-	public function __construct($function, $parameterName) {
-		parent::__construct($function, $parameterName);
-	}
-
-	/**
 	 * Returns the declaring class
 	 *
-	 * @return \TYPO3\CMS\Extbase\Reflection\ClassReflection The declaring class
+	 * @return ClassReflection The declaring class
 	 */
 	public function getDeclaringClass() {
-		return new \TYPO3\CMS\Extbase\Reflection\ClassReflection(parent::getDeclaringClass()->getName());
+		return new ClassReflection(parent::getDeclaringClass()->getName());
 	}
 
 	/**
 	 * Returns the parameter class
 	 *
-	 * @return \TYPO3\CMS\Extbase\Reflection\ClassReflection The parameter class
+	 * @return ClassReflection The parameter class
 	 */
 	public function getClass() {
 		try {
@@ -48,6 +38,6 @@ class ParameterReflection extends \ReflectionParameter {
 		} catch (\Exception $e) {
 			return NULL;
 		}
-		return is_object($class) ? new \TYPO3\CMS\Extbase\Reflection\ClassReflection($class->getName()) : NULL;
+		return is_object($class) ? new ClassReflection($class->getName()) : NULL;
 	}
 }

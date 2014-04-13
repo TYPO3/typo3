@@ -162,7 +162,7 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function initialize() {
 		if ($this->initialized) {
-			throw new \TYPO3\CMS\Extbase\Reflection\Exception('The Reflection Service can only be initialized once.', 1232044696);
+			throw new Exception('The Reflection Service can only be initialized once.', 1232044696);
 		}
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		$this->cacheIdentifier = 'ReflectionData_' . $frameworkConfiguration['extensionName'];
@@ -208,7 +208,7 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Returns the class schema for the given class
 	 *
 	 * @param mixed $classNameOrObject The class name or an object
-	 * @return \TYPO3\CMS\Extbase\Reflection\ClassSchema
+	 * @return ClassSchema
 	 */
 	public function getClassSchema($classNameOrObject) {
 		$className = is_object($classNameOrObject) ? get_class($classNameOrObject) : $classNameOrObject;
@@ -230,7 +230,7 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	public function hasMethod($className, $methodName) {
 		try {
 			if (!array_key_exists($className, $this->methodReflections) || !array_key_exists($methodName, $this->methodReflections[$className])) {
-				$this->methodReflections[$className][$methodName] = new \TYPO3\CMS\Extbase\Reflection\MethodReflection($className, $methodName);
+				$this->methodReflections[$className][$methodName] = new MethodReflection($className, $methodName);
 				$this->dataCacheNeedsUpdate = TRUE;
 			}
 		} catch (\ReflectionException $e) {
@@ -377,7 +377,7 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	protected function reflectClass($className) {
-		$class = new \TYPO3\CMS\Extbase\Reflection\ClassReflection($className);
+		$class = new ClassReflection($className);
 		$this->reflectedClassNames[$className] = time();
 		foreach ($class->getTagsValues() as $tag => $values) {
 			if (array_search($tag, $this->ignoredTags) === FALSE) {
@@ -414,21 +414,21 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $className
 	 * @throws Exception\UnknownClassException
-	 * @return \TYPO3\CMS\Extbase\Reflection\ClassSchema The class schema
+	 * @return ClassSchema The class schema
 	 */
 	protected function buildClassSchema($className) {
 		if (!class_exists($className)) {
-			throw new \TYPO3\CMS\Extbase\Reflection\Exception\UnknownClassException('The classname "' . $className . '" was not found and thus can not be reflected.', 1278450972);
+			throw new Exception\UnknownClassException('The classname "' . $className . '" was not found and thus can not be reflected.', 1278450972);
 		}
 		$classSchema = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\ClassSchema', $className);
 		if (is_subclass_of($className, 'TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity')) {
-			$classSchema->setModelType(\TYPO3\CMS\Extbase\Reflection\ClassSchema::MODELTYPE_ENTITY);
+			$classSchema->setModelType(ClassSchema::MODELTYPE_ENTITY);
 			$possibleRepositoryClassName = ClassNamingUtility::translateModelNameToRepositoryName($className);
 			if (class_exists($possibleRepositoryClassName)) {
 				$classSchema->setAggregateRoot(TRUE);
 			}
 		} elseif (is_subclass_of($className, 'TYPO3\\CMS\\Extbase\\DomainObject\\AbstractValueObject')) {
-			$classSchema->setModelType(\TYPO3\CMS\Extbase\Reflection\ClassSchema::MODELTYPE_VALUEOBJECT);
+			$classSchema->setModelType(ClassSchema::MODELTYPE_VALUEOBJECT);
 		}
 		foreach ($this->getClassPropertyNames($className) as $propertyName) {
 			if (!$this->isPropertyTaggedWith($className, $propertyName, 'transient') && $this->isPropertyTaggedWith($className, $propertyName, 'var')) {
@@ -450,12 +450,12 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Converts the given parameter reflection into an information array
 	 *
-	 * @param \ReflectionParameter $parameter The parameter to reflect
+	 * @param ParameterReflection $parameter The parameter to reflect
 	 * @param integer $parameterPosition
-	 * @param \ReflectionMethod|NULL $method
+	 * @param MethodReflection|NULL $method
 	 * @return array Parameter information array
 	 */
-	protected function convertParameterReflectionToArray(\ReflectionParameter $parameter, $parameterPosition, \ReflectionMethod $method = NULL) {
+	protected function convertParameterReflectionToArray(ParameterReflection $parameter, $parameterPosition, MethodReflection $method = NULL) {
 		$parameterInformation = array(
 			'position' => $parameterPosition,
 			'byReference' => $parameter->isPassedByReference(),
@@ -490,11 +490,11 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $className Name of the class containing the method
 	 * @param string $methodName Name of the method to return the Reflection for
-	 * @return \TYPO3\CMS\Extbase\Reflection\MethodReflection the method Reflection object
+	 * @return MethodReflection the method Reflection object
 	 */
 	protected function getMethodReflection($className, $methodName) {
 		if (!isset($this->methodReflections[$className][$methodName])) {
-			$this->methodReflections[$className][$methodName] = new \TYPO3\CMS\Extbase\Reflection\MethodReflection($className, $methodName);
+			$this->methodReflections[$className][$methodName] = new MethodReflection($className, $methodName);
 			$this->dataCacheNeedsUpdate = TRUE;
 		}
 		return $this->methodReflections[$className][$methodName];
@@ -522,7 +522,7 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function saveToCache() {
 		if (!is_object($this->dataCache)) {
-			throw new \TYPO3\CMS\Extbase\Reflection\Exception('A cache must be injected before initializing the Reflection Service.', 1232044697);
+			throw new Exception('A cache must be injected before initializing the Reflection Service.', 1232044697);
 		}
 		$data = array();
 		$propertyNames = array(

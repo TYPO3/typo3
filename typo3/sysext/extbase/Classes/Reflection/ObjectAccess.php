@@ -62,7 +62,7 @@ class ObjectAccess {
 		if ($propertyExists === TRUE) {
 			return $propertyValue;
 		}
-		throw new \TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException('The property "' . $propertyName . '" on the subject was not accessible.', 1263391473);
+		throw new Exception\PropertyNotAccessibleException('The property "' . $propertyName . '" on the subject was not accessible.', 1263391473);
 	}
 
 	/**
@@ -95,12 +95,12 @@ class ObjectAccess {
 		}
 		if ($forceDirectAccess === TRUE) {
 			if (property_exists(get_class($subject), $propertyName)) {
-				$propertyReflection = new \TYPO3\CMS\Extbase\Reflection\PropertyReflection(get_class($subject), $propertyName);
+				$propertyReflection = new PropertyReflection(get_class($subject), $propertyName);
 				return $propertyReflection->getValue($subject);
 			} elseif (property_exists($subject, $propertyName)) {
 				return $subject->{$propertyName};
 			} else {
-				throw new \TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException('The property "' . $propertyName . '" on the subject does not exist.', 1302855001);
+				throw new Exception\PropertyNotAccessibleException('The property "' . $propertyName . '" on the subject does not exist.', 1302855001);
 			}
 		}
 		if ($subject instanceof \SplObjectStorage || $subject instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage) {
@@ -190,7 +190,7 @@ class ObjectAccess {
 		}
 		if ($forceDirectAccess === TRUE) {
 			if (property_exists(get_class($subject), $propertyName)) {
-				$propertyReflection = new \TYPO3\CMS\Extbase\Reflection\PropertyReflection(get_class($subject), $propertyName);
+				$propertyReflection = new PropertyReflection(get_class($subject), $propertyName);
 				$propertyReflection->setAccessible(TRUE);
 				$propertyReflection->setValue($subject, $propertyValue);
 			} else {

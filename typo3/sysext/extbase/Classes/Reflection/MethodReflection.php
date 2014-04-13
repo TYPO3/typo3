@@ -24,22 +24,12 @@ class MethodReflection extends \ReflectionMethod {
 	protected $docCommentParser;
 
 	/**
-	 * The constructor, initializes the reflection class
-	 *
-	 * @param string $className Name of the method's class
-	 * @param string $methodName Name of the method to reflect
-	 */
-	public function __construct($className, $methodName) {
-		parent::__construct($className, $methodName);
-	}
-
-	/**
 	 * Returns the declaring class
 	 *
-	 * @return \TYPO3\CMS\Extbase\Reflection\ClassReflection The declaring class
+	 * @return ClassReflection The declaring class
 	 */
 	public function getDeclaringClass() {
-		return new \TYPO3\CMS\Extbase\Reflection\ClassReflection(parent::getDeclaringClass()->getName());
+		return new ClassReflection(parent::getDeclaringClass()->getName());
 	}
 
 	/**
@@ -47,12 +37,12 @@ class MethodReflection extends \ReflectionMethod {
 	 * that \TYPO3\CMS\Extbase\Reflection\ParameterReflection objects are returned instead of the
 	 * orginal ReflectionParameter instances.
 	 *
-	 * @return array of \TYPO3\CMS\Extbase\Reflection\ParameterReflection Parameter reflection objects of the parameters of this method
+	 * @return ParameterReflection[] Parameter reflection objects of the parameters of this method
 	 */
 	public function getParameters() {
 		$extendedParameters = array();
 		foreach (parent::getParameters() as $parameter) {
-			$extendedParameters[] = new \TYPO3\CMS\Extbase\Reflection\ParameterReflection(array($this->getDeclaringClass()->getName(), $this->getName()), $parameter->getName());
+			$extendedParameters[] = new ParameterReflection(array($this->getDeclaringClass()->getName(), $this->getName()), $parameter->getName());
 		}
 		return $extendedParameters;
 	}
@@ -101,11 +91,11 @@ class MethodReflection extends \ReflectionMethod {
 	 * Returns an instance of the doc comment parser and
 	 * runs the parse() method.
 	 *
-	 * @return \TYPO3\CMS\Extbase\Reflection\DocCommentParser
+	 * @return DocCommentParser
 	 */
 	protected function getDocCommentParser() {
 		if (!is_object($this->docCommentParser)) {
-			$this->docCommentParser = new \TYPO3\CMS\Extbase\Reflection\DocCommentParser();
+			$this->docCommentParser = new DocCommentParser();
 			$this->docCommentParser->parseDocComment($this->getDocComment());
 		}
 		return $this->docCommentParser;

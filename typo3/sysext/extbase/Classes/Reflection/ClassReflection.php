@@ -19,32 +19,23 @@ namespace TYPO3\CMS\Extbase\Reflection;
 class ClassReflection extends \ReflectionClass {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Reflection\DocCommentParser Holds an instance of the doc comment parser for this class
+	 * @var DocCommentParser Holds an instance of the doc comment parser for this class
 	 */
 	protected $docCommentParser;
 
 	/**
-	 * The constructor - initializes the class
-	 *
-	 * @param string $className Name of the class \TYPO3\CMS\Extbase\Reflection to reflect
-	 */
-	public function __construct($className) {
-		parent::__construct($className);
-	}
-
-	/**
 	 * Replacement for the original getMethods() method which makes sure
 	 * that \TYPO3\CMS\Extbase\Reflection\MethodReflection objects are returned instead of the
-	 * orginal ReflectionMethod instances.
+	 * original ReflectionMethod instances.
 	 *
 	 * @param integer|NULL $filter A filter mask
-	 * @return \TYPO3\CMS\Extbase\Reflection\MethodReflection Method reflection objects of the methods in this class
+	 * @return MethodReflection[] Method reflection objects of the methods in this class
 	 */
 	public function getMethods($filter = NULL) {
 		$extendedMethods = array();
 		$methods = $filter === NULL ? parent::getMethods() : parent::getMethods($filter);
 		foreach ($methods as $method) {
-			$extendedMethods[] = new \TYPO3\CMS\Extbase\Reflection\MethodReflection($this->getName(), $method->getName());
+			$extendedMethods[] = new MethodReflection($this->getName(), $method->getName());
 		}
 		return $extendedMethods;
 	}
@@ -52,47 +43,47 @@ class ClassReflection extends \ReflectionClass {
 	/**
 	 * Replacement for the original getMethod() method which makes sure
 	 * that \TYPO3\CMS\Extbase\Reflection\MethodReflection objects are returned instead of the
-	 * orginal ReflectionMethod instances.
+	 * original ReflectionMethod instances.
 	 *
 	 * @param string $name
-	 * @return \TYPO3\CMS\Extbase\Reflection\MethodReflection Method reflection object of the named method
+	 * @return MethodReflection Method reflection object of the named method
 	 */
 	public function getMethod($name) {
 		$parentMethod = parent::getMethod($name);
 		if (!is_object($parentMethod)) {
 			return $parentMethod;
 		}
-		return new \TYPO3\CMS\Extbase\Reflection\MethodReflection($this->getName(), $parentMethod->getName());
+		return new MethodReflection($this->getName(), $parentMethod->getName());
 	}
 
 	/**
 	 * Replacement for the original getConstructor() method which makes sure
 	 * that \TYPO3\CMS\Extbase\Reflection\MethodReflection objects are returned instead of the
-	 * orginal ReflectionMethod instances.
+	 * original ReflectionMethod instances.
 	 *
-	 * @return \TYPO3\CMS\Extbase\Reflection\MethodReflection Method reflection object of the constructor method
+	 * @return MethodReflection Method reflection object of the constructor method
 	 */
 	public function getConstructor() {
 		$parentConstructor = parent::getConstructor();
 		if (!is_object($parentConstructor)) {
 			return $parentConstructor;
 		}
-		return new \TYPO3\CMS\Extbase\Reflection\MethodReflection($this->getName(), $parentConstructor->getName());
+		return new MethodReflection($this->getName(), $parentConstructor->getName());
 	}
 
 	/**
 	 * Replacement for the original getProperties() method which makes sure
 	 * that \TYPO3\CMS\Extbase\Reflection\PropertyReflection objects are returned instead of the
-	 * orginal ReflectionProperty instances.
+	 * original ReflectionProperty instances.
 	 *
 	 * @param integer|NULL $filter A filter mask
-	 * @return array of \TYPO3\CMS\Extbase\Reflection\PropertyReflection Property reflection objects of the properties in this class
+	 * @return PropertyReflection[] Property reflection objects of the properties in this class
 	 */
 	public function getProperties($filter = NULL) {
 		$extendedProperties = array();
 		$properties = $filter === NULL ? parent::getProperties() : parent::getProperties($filter);
 		foreach ($properties as $property) {
-			$extendedProperties[] = new \TYPO3\CMS\Extbase\Reflection\PropertyReflection($this->getName(), $property->getName());
+			$extendedProperties[] = new PropertyReflection($this->getName(), $property->getName());
 		}
 		return $extendedProperties;
 	}
@@ -100,27 +91,27 @@ class ClassReflection extends \ReflectionClass {
 	/**
 	 * Replacement for the original getProperty() method which makes sure
 	 * that a \TYPO3\CMS\Extbase\Reflection\PropertyReflection object is returned instead of the
-	 * orginal ReflectionProperty instance.
+	 * original ReflectionProperty instance.
 	 *
 	 * @param string $name Name of the property
-	 * @return \TYPO3\CMS\Extbase\Reflection\PropertyReflection Property reflection object of the specified property in this class
+	 * @return PropertyReflection Property reflection object of the specified property in this class
 	 */
 	public function getProperty($name) {
-		return new \TYPO3\CMS\Extbase\Reflection\PropertyReflection($this->getName(), $name);
+		return new PropertyReflection($this->getName(), $name);
 	}
 
 	/**
 	 * Replacement for the original getInterfaces() method which makes sure
 	 * that \TYPO3\CMS\Extbase\Reflection\ClassReflection objects are returned instead of the
-	 * orginal ReflectionClass instances.
+	 * original ReflectionClass instances.
 	 *
-	 * @return array of \TYPO3\CMS\Extbase\Reflection\ClassReflection Class reflection objects of the properties in this class
+	 * @return ClassReflection[] Class reflection objects of the properties in this class
 	 */
 	public function getInterfaces() {
 		$extendedInterfaces = array();
 		$interfaces = parent::getInterfaces();
 		foreach ($interfaces as $interface) {
-			$extendedInterfaces[] = new \TYPO3\CMS\Extbase\Reflection\ClassReflection($interface->getName());
+			$extendedInterfaces[] = new ClassReflection($interface->getName());
 		}
 		return $extendedInterfaces;
 	}
@@ -128,13 +119,13 @@ class ClassReflection extends \ReflectionClass {
 	/**
 	 * Replacement for the original getParentClass() method which makes sure
 	 * that a \TYPO3\CMS\Extbase\Reflection\ClassReflection object is returned instead of the
-	 * orginal ReflectionClass instance.
+	 * original ReflectionClass instance.
 	 *
-	 * @return \TYPO3\CMS\Extbase\Reflection\ClassReflection Reflection of the parent class - if any
+	 * @return ClassReflection Reflection of the parent class - if any
 	 */
 	public function getParentClass() {
 		$parentClass = parent::getParentClass();
-		return $parentClass === FALSE ? FALSE : new \TYPO3\CMS\Extbase\Reflection\ClassReflection($parentClass->getName());
+		return $parentClass === FALSE ? FALSE : new ClassReflection($parentClass->getName());
 	}
 
 	/**
@@ -172,11 +163,11 @@ class ClassReflection extends \ReflectionClass {
 	 * Returns an instance of the doc comment parser and
 	 * runs the parse() method.
 	 *
-	 * @return \TYPO3\CMS\Extbase\Reflection\DocCommentParser
+	 * @return DocCommentParser
 	 */
 	protected function getDocCommentParser() {
 		if (!is_object($this->docCommentParser)) {
-			$this->docCommentParser = new \TYPO3\CMS\Extbase\Reflection\DocCommentParser();
+			$this->docCommentParser = new DocCommentParser();
 			$this->docCommentParser->parseDocComment($this->getDocComment());
 		}
 		return $this->docCommentParser;

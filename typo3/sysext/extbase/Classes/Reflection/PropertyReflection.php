@@ -19,19 +19,9 @@ namespace TYPO3\CMS\Extbase\Reflection;
 class PropertyReflection extends \ReflectionProperty {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Reflection\DocCommentParser An instance of the doc comment parser
+	 * @var DocCommentParser An instance of the doc comment parser
 	 */
 	protected $docCommentParser;
-
-	/**
-	 * The constructor, initializes the reflection class
-	 *
-	 * @param string $className Name of the property's class
-	 * @param string $propertyName Name of the property to reflect
-	 */
-	public function __construct($className, $propertyName) {
-		parent::__construct($className, $propertyName);
-	}
 
 	/**
 	 * Checks if the doc comment of this property is tagged with
@@ -69,18 +59,18 @@ class PropertyReflection extends \ReflectionProperty {
 	 *
 	 * @param object $object Instance of the declaring class \TYPO3\CMS\Extbase\Reflection to read the value from
 	 * @return mixed Value of the property
-	 * @throws \TYPO3\CMS\Extbase\Reflection\Exception
+	 * @throws Exception
 	 * @todo Maybe support private properties as well, as of PHP 5.3.0 we can do
 	 */
 	public function getValue($object = NULL) {
 		if (!is_object($object)) {
-			throw new \TYPO3\CMS\Extbase\Reflection\Exception('$object is of type ' . gettype($object) . ', instance of class ' . $this->class . ' expected.', 1210859212);
+			throw new Exception('$object is of type ' . gettype($object) . ', instance of class ' . $this->class . ' expected.', 1210859212);
 		}
 		if ($this->isPublic()) {
 			return parent::getValue($object);
 		}
 		if ($this->isPrivate()) {
-			throw new \TYPO3\CMS\Extbase\Reflection\Exception('Cannot return value of private property "' . $this->name . '.', 1210859206);
+			throw new Exception('Cannot return value of private property "' . $this->name . '.', 1210859206);
 		}
 		parent::setAccessible(TRUE);
 		return parent::getValue($object);
@@ -90,11 +80,11 @@ class PropertyReflection extends \ReflectionProperty {
 	 * Returns an instance of the doc comment parser and
 	 * runs the parse() method.
 	 *
-	 * @return \TYPO3\CMS\Extbase\Reflection\DocCommentParser
+	 * @return DocCommentParser
 	 */
 	protected function getDocCommentParser() {
 		if (!is_object($this->docCommentParser)) {
-			$this->docCommentParser = new \TYPO3\CMS\Extbase\Reflection\DocCommentParser();
+			$this->docCommentParser = new DocCommentParser();
 			$this->docCommentParser->parseDocComment($this->getDocComment());
 		}
 		return $this->docCommentParser;
