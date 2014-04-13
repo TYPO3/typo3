@@ -226,7 +226,7 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 				$buttons['csv'] = '<a href="' . htmlspecialchars(($this->listURL() . '&csv=1')) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.csv', TRUE) . '">' . IconUtility::getSpriteIcon('mimetypes-text-csv') . '</a>';
 				// Export
 				if (ExtensionManagementUtility::isLoaded('impexp')) {
-					$url = $this->backPath . ExtensionManagementUtility::extRelPath('impexp') . 'app/index.php?tx_impexp[action]=export';
+					$url = BackendUtility::getModuleUrl('xMOD_tximpexp', array('tx_impexp[action]' => 'export'));
 					$buttons['export'] = '<a href="' . htmlspecialchars(($url . '&tx_impexp[list][]=' . rawurlencode(($this->table . ':' . $this->id)))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.export', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-export-t3d') . '</a>';
 				}
 			}

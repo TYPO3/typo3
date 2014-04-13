@@ -283,7 +283,8 @@ class Clipboard {
 		$opt[] = '<option value="" selected="selected">' . $this->clLabel('menu', 'rm') . '</option>';
 		// Import / Export link:
 		if ($elCount && ExtensionManagementUtility::isLoaded('impexp')) {
-			$opt[] = '<option value="' . htmlspecialchars(('window.location.href=\'' . $this->backPath . ExtensionManagementUtility::extRelPath('impexp') . 'app/index.php' . $this->exportClipElementParameters() . '\';')) . '">' . $this->clLabel('export', 'rm') . '</option>';
+			$url = BackendUtility::getModuleUrl('xMOD_tximpexp', $this->exportClipElementParameters());
+			$opt[] = '<option value="' . htmlspecialchars(('window.location.href=' . GeneralUtility::quoteJSvalue($url) . ';')) . '">' . $this->clLabel('export', 'rm') . '</option>';
 		}
 		// Edit:
 		if (!$this->fileMode && $elCount) {
@@ -697,14 +698,13 @@ class Clipboard {
 	/**
 	 * Creates GET parameters for linking to the export module.
 	 *
-	 * @return string GET parameters for current clipboard content to be exported.
-	 * @todo Define visibility
+	 * @return array GET parameters for current clipboard content to be exported
 	 */
-	public function exportClipElementParameters() {
+	protected function exportClipElementParameters() {
 		// Init
 		$pad = $this->current;
 		$params = array();
-		$params[] = 'tx_impexp[action]=export';
+		$params['tx_impexp[action]'] = 'export';
 		// Traverse items:
 		if (is_array($this->clipData[$pad]['el'])) {
 			foreach ($this->clipData[$pad]['el'] as $k => $v) {
@@ -713,19 +713,19 @@ class Clipboard {
 					// Rendering files/directories on the clipboard
 					if ($table == '_FILE') {
 						if (file_exists($v) && GeneralUtility::isAllowedAbsPath($v)) {
-							$params[] = 'tx_impexp[' . (is_dir($v) ? 'dir' : 'file') . '][]=' . rawurlencode($v);
+							$params['tx_impexp[' . (is_dir($v) ? 'dir' : 'file') . '][]'] = $v;
 						}
 					} else {
 						// Rendering records:
 						$rec = BackendUtility::getRecord($table, $uid);
 						if (is_array($rec)) {
-							$params[] = 'tx_impexp[record][]=' . rawurlencode(($table . ':' . $uid));
+							$params['tx_impexp[record][]'] = $table . ':' . $uid;
 						}
 					}
 				}
 			}
 		}
-		return '?' . implode('&', $params);
+		return $params;
 	}
 
 	/*****************************************
