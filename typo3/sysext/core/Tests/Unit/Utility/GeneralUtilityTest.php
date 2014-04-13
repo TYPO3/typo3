@@ -25,6 +25,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility;
+use \org\bovigo\vfs\vfsStream;
 use \org\bovigo\vfs\vfsStreamDirectory;
 use \org\bovigo\vfs\vfsStreamWrapper;
 
@@ -3279,8 +3280,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'test.css' => 'apples',
 			'.secret.txt' => 'sammon',
 		);
-		\vfsStream::setup('test', NULL, $structure);
-		$vfsUrl = \vfsStream::url('test');
+		vfsStream::setup('test', NULL, $structure);
+		$vfsUrl = vfsStream::url('test');
 
 		if (version_compare(PHP_VERSION, '5.4.0', '>=')) {
 			// set random values for mtime
