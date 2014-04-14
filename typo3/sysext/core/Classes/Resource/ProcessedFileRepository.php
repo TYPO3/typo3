@@ -196,7 +196,7 @@ class ProcessedFileRepository extends AbstractRepository {
 			throw new \InvalidArgumentException('Parameter is no File object but got type "'
 				. (is_object($file) ? get_class($file) : gettype($file)) . '"', 1382006142);
 		}
-		$whereClause = 'original=' . (int)$file->getUid() . $this->getWhereClauseForEnabledFields();
+		$whereClause = 'original=' . (int)$file->getUid();
 		$rows = $this->databaseConnection->exec_SELECTgetRows('*', $this->table, $whereClause);
 
 		$itemList = array();
