@@ -2238,7 +2238,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				$this->includeLanguageFileForInline($languageLabelFile['fileRef'], $languageLabelFile['selectionPrefix'], $languageLabelFile['stripFromSelectionName'], $languageLabelFile['$errorMode']);
 			}
 		}
-		unset($this->inlineLanguageLabelFiles);
+		$this->inlineLanguageLabelFiles = array();
 		// Convert labels/settings back to UTF-8 since json_encode() only works with UTF-8:
 		if ($this->getCharSet() !== 'utf-8') {
 			if ($this->inlineLanguageLabels) {
@@ -2270,7 +2270,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 					. $code
 				. ' });'
 				. $this->inlineJavascriptWrap[1];
-			unset($this->extOnReadyCode);
+			$this->extOnReadyCode = array();
 			// Include TYPO3.l10n object
 			if (TYPO3_MODE === 'BE') {
 				$out .= '<script src="' . $this->processJsFile(($this->backPath . 'sysext/lang/Resources/Public/JavaScript/Typo3Lang.js')) . '" type="text/javascript" charset="utf-8"></script>' . LF;
