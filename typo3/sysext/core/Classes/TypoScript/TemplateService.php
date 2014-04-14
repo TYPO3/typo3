@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Core\TypoScript;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -184,6 +185,12 @@ class TemplateService {
 	 * @todo Define visibility
 	 */
 	public $constants = array();
+
+	/**
+	 * Holds the include paths of the templates (empty if from database)
+	 * @var array
+	 */
+	protected $templateIncludePaths = array();
 
 	// For Template Analyser in backend
 	/**
@@ -620,11 +627,12 @@ class TemplateService {
 	 * @param array $pid The PID of the input template record
 	 * @param string $templateID The id of the current template. Same syntax as $idList ids, eg. "sys_123
 	 * @param string $templateParent Parent template id (during recursive call); Same syntax as $idList ids, eg. "sys_123
+	 * @param string $includePath Specifies the path from which the template was included (used with static_includes)
 	 * @return void
 	 * @see runThroughTemplates()
 	 * @todo Define visibility
 	 */
-	public function processTemplate($row, $idList, $pid, $templateID = '', $templateParent = '') {
+	public function processTemplate($row, $idList, $pid, $templateID = '', $templateParent = '', $includePath = '') {
 		// Adding basic template record information to rowSum array
 		$this->rowSum[] = array($row['uid'], $row['title'], $row['tstamp']);
 		// Processing "Clear"-flags
@@ -707,6 +715,7 @@ class TemplateService {
 		// Adding the content of the fields constants (Constants) and config (Setup)
 		$this->constants[] = $row['constants'];
 		$this->config[] = $row['config'];
+		$this->templateIncludePaths[] = $includePath;
 		// For backend analysis (Template Analyser) provide the order of added constants/config template IDs
 		$this->clearList_const[] = $templateID;
 		$this->clearList_setup[] = $templateID;
@@ -808,7 +817,7 @@ class TemplateService {
 								'uid' => $mExtKey
 							);
 							$subrow = $this->prependStaticExtra($subrow);
-							$this->processTemplate($subrow, $idList . ',ext_' . $mExtKey, $pid, 'ext_' . $mExtKey, $templateID);
+							$this->processTemplate($subrow, $idList . ',ext_' . $mExtKey, $pid, 'ext_' . $mExtKey, $templateID, $ISF_filePath);
 						}
 					}
 				}
@@ -859,7 +868,8 @@ class TemplateService {
 					'uid' => $mExtKey
 				);
 				$subrow = $this->prependStaticExtra($subrow);
-				$this->processTemplate($subrow, $idList . ',ext_' . $mExtKey, $pid, 'ext_' . $mExtKey, $templateID);
+				$extPath = ExtensionManagementUtility::extPath($extKey);
+				$this->processTemplate($subrow, $idList . ',ext_' . $mExtKey, $pid, 'ext_' . $mExtKey, $templateID, $extPath);
 			}
 		}
 	}
@@ -1053,15 +1063,17 @@ class TemplateService {
 			return;
 		}
 
+		$paths = $this->templateIncludePaths;
 		$files = array();
 		foreach ($this->constants as &$value) {
-			$includeData = \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::checkIncludeLines($value, 1, TRUE);
+			$includeData = \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::checkIncludeLines($value, 1, TRUE, array_shift($paths));
 			$files = array_merge($files, $includeData['files']);
 			$value = $includeData['typoscript'];
 		}
 		unset($value);
+		$paths = $this->templateIncludePaths;
 		foreach ($this->config as &$value) {
-			$includeData = \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::checkIncludeLines($value, 1, TRUE);
+			$includeData = \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::checkIncludeLines($value, 1, TRUE, array_shift($paths));
 			$files = array_merge($files, $includeData['files']);
 			$value = $includeData['typoscript'];
 		}
@@ -1658,9 +1670,10 @@ class TemplateService {
 		if (!$this->isDefaultTypoScriptAdded) {
 			// adding default setup and constants
 			// defaultTypoScript_setup is *very* unlikely to be empty
-			// the count of elements in ->constants and ->config have to be in sync so we always add *both*
+			// the count of elements in ->constants, ->config and ->templateIncludePaths have to be in sync
 			array_unshift($this->constants, (string)$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants']);
 			array_unshift($this->config, (string)$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup']);
+			array_unshift($this->templateIncludePaths, '');
 			// prepare a proper entry to hierachyInfo (used by TemplateAnalyzer in BE)
 			$rootTemplateId = $this->hierarchyInfo[count($this->hierarchyInfo)-1]['templateID'];
 			$defaultTemplateInfo = array(

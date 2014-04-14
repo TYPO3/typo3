@@ -23,6 +23,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\TypoScript;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Testcase for \TYPO3\CMS\Core\TypoScript\TemplateService
@@ -78,7 +80,7 @@ class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$identifier = uniqid('test');
 		$GLOBALS['TYPO3_LOADED_EXT'] = array(
 			$identifier => array(
-				'ext_typoscript_setup.txt' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(
+				'ext_typoscript_setup.txt' => ExtensionManagementUtility::extPath(
 					'core', 'Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.txt'
 				),
 			),
@@ -97,17 +99,29 @@ class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$identifier = uniqid('test');
 		$GLOBALS['TYPO3_LOADED_EXT'] = array(
 			$identifier => array(
-				'ext_typoscript_setup.txt' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(
-					'core', 'Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.txt'
-				),
+				'ext_typoscript_setup.txt' => ExtensionManagementUtility::extPath(
+						'core', 'Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.txt'
+					),
+				'ext_typoscript_constants.txt' => ''
 			),
 		);
 
+		$mockPackage = $this->getMock('TYPO3\\CMS\\Core\\Package\\Package', array('getPackagePath'), array(), '', FALSE);
+		$mockPackage->expects($this->any())->method('getPackagePath')->will($this->returnValue(''));
+
+		$mockPackageManager = $this->getMock('TYPO3\\CMS\\Core\\Package\\PackageManager', array('isPackageActive' , 'getPackage'));
+		$mockPackageManager->expects($this->any())->method('isPackageActive')->will($this->returnValue(TRUE));
+		$mockPackageManager->expects($this->any())->method('getPackage')->will($this->returnValue($mockPackage));
+		ExtensionManagementUtility::setPackageManager($mockPackageManager);
+
 		$this->templateService->setProcessExtensionStatics(TRUE);
 		$this->templateService->runThroughTemplates(array(), 0);
+
 		$this->assertTrue(
 			in_array('test.Core.TypoScript = 1', $this->templateService->config)
 		);
+
+		ExtensionManagementUtility::setPackageManager(GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Package\\PackageManager'));
 	}
 
 	/**
