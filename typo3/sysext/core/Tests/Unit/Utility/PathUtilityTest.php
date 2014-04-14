@@ -227,7 +227,17 @@ class PathUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				'/abc/one.txt',
 				'../../two.txt',
 				'/two.txt',
-			)
+			),
+			'base folder with same folder path' => array(
+				'/abc/',
+				'./two.txt',
+				'/abc/two.txt'
+			),
+			'base folder with parent folder path' => array(
+				'/abc/bar/',
+				'../foo.txt',
+				'/abc/foo.txt'
+			),
 		);
 	}
 

@@ -233,7 +233,8 @@ class PathUtility {
 	 */
 	static public function getAbsolutePathOfRelativeReferencedFileOrPath($baseFilenameOrPath, $includeFileName) {
 		$fileName = static::basename($includeFileName);
-		$newDir = static::getCanonicalPath(static::dirname($baseFilenameOrPath) . '/' . static::dirname($includeFileName));
+		$basePath = substr($baseFilenameOrPath, -1) === '/' ? $baseFilenameOrPath : static::dirname($baseFilenameOrPath);
+		$newDir = static::getCanonicalPath($basePath . '/' . static::dirname($includeFileName));
 		// Avoid double slash on empty path
 		$result = (($newDir !== '/') ? $newDir : '') . '/' . $fileName;
 		return $result;
