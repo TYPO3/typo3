@@ -1275,17 +1275,12 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider replaceL10nModeFieldsReplacesFieldsDataProvider
 	 */
 	public function replaceL10nModeFieldsReplacesFields($table, $row, $tca, $originalRow, $expected) {
-		$backupTCA = $GLOBALS['TCA'];
-		$backupDB = $GLOBALS['TYPO3_DB'];
 		$GLOBALS['TCA'] = $tca;
 		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection');
 		$GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')->will($this->returnValue($originalRow));
 
-		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\TYPO3\CMS\Backend\Utility\BackendUtility $fixture */
-		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Backend\\Utility\\BackendUtility', array('dummy'));
-		$this->assertSame($expected, $fixture->_call('replaceL10nModeFields', $table, $row));
-
-		$GLOBALS['TCA'] = $backupTCA;
-		$GLOBALS['TYPO3_DB'] = $backupDB;
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\TYPO3\CMS\Backend\Utility\BackendUtility $subject */
+		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Backend\\Utility\\BackendUtility', array('dummy'));
+		$this->assertSame($expected, $subject->_call('replaceL10nModeFields', $table, $row));
 	}
 }

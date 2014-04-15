@@ -1928,7 +1928,9 @@ class BackendUtility {
 				GeneralUtility::callUserFunction($GLOBALS['TCA'][$table]['ctrl']['label_userFunc'], $params, $null);
 				$t = $params['title'];
 			} else {
-				$row = self::replaceL10nModeFields($table, $row);
+				if (is_array($row)) {
+					$row = self::replaceL10nModeFields($table, $row);
+				}
 
 				// No userFunc: Build label
 				$t = self::getProcessedValue($table, $GLOBALS['TCA'][$table]['ctrl']['label'], $row[$GLOBALS['TCA'][$table]['ctrl']['label']], 0, 0, FALSE, $row['uid'], $forceResult);
