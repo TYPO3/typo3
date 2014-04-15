@@ -54,13 +54,6 @@ if (getenv('TYPO3_PATH_WEB')) {
 	$webRoot = getcwd() . '/';
 }
 
-/**
- * Fail if configuration is not found
- */
-if (!file_exists($webRoot . 'typo3conf/LocalConfiguration.php')) {
-	throw new \Exception('TYPO3 web root not found. Call PHPUnit from that directory or set TYPO3_PATH_WEB to it.');
-}
-
 if (!defined('ORIGINAL_ROOT')) {
 	define('ORIGINAL_ROOT', $webRoot);
 }

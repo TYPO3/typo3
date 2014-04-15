@@ -275,7 +275,42 @@ class FunctionalTestCaseBootstrapUtility {
 	 * @return void
 	 */
 	protected function setUpLocalConfiguration(array $configurationToMerge) {
-		$originalConfigurationArray = require ORIGINAL_ROOT . 'typo3conf/LocalConfiguration.php';
+		$databaseName = getenv('typo3DatabaseName');
+		$databaseHost = getenv('typo3DatabaseHost');
+		$databaseUsername = getenv('typo3DatabaseUsername');
+		$databasePassword = getenv('typo3DatabasePassword');
+		$databasePort = getenv('typo3DatabasePort');
+		if ($databaseName || $databaseHost || $databaseUsername || $databasePassword || $databasePort) {
+			// Try to get database credentials from environment variables first
+			$originalConfigurationArray = array(
+				'DB' => array(),
+			);
+			if ($databaseName) {
+				$originalConfigurationArray['DB']['database'] = $databaseName;
+			}
+			if ($databaseHost) {
+				$originalConfigurationArray['DB']['host'] = $databaseHost;
+			}
+			if ($databaseUsername) {
+				$originalConfigurationArray['DB']['username'] = $databaseUsername;
+			}
+			if ($databasePassword) {
+				$originalConfigurationArray['DB']['password'] = $databasePassword;
+			}
+			if ($databasePort) {
+				$originalConfigurationArray['DB']['port'] = $databasePort;
+			}
+		} elseif (file_exists(ORIGINAL_ROOT . 'typo3conf/LocalConfiguration.php')) {
+			// See if a LocalConfiguration file exists in "parent" instance to get db credentials from
+			$originalConfigurationArray = require ORIGINAL_ROOT . 'typo3conf/LocalConfiguration.php';
+		} else {
+			throw new Exception(
+				'Database credentials for functional tests are neither set through environment'
+				. ' variables, and can not be found in an existing LocalConfiguration file',
+				1397406356
+			);
+		}
+
 		// Base of final LocalConfiguration is core factory configuration
 		$finalConfigurationArray = require ORIGINAL_ROOT .'typo3/sysext/core/Configuration/FactoryConfiguration.php';
 

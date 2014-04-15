@@ -8,27 +8,52 @@ php:
 env:
   - DB=mysql
 
+services:
+  - memcached
+  - redis-server
+
 notifications:
   irc:
     - "irc.freenode.net#typo3-cms"
   email:
     - typo3-team-core@lists.typo3.org
 
-services:
-  - memcached
-
 before_script:
+  - >
+    if [[ "$TRAVIS_PHP_VERSION" != "5.5" ]]; then
+        echo "extension = apc.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini;
+        echo "apc.enable_cli=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini;
+        echo "apc.slam_defense=0" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini;
+    fi
+  - >
+    if [[ "$TRAVIS_PHP_VERSION" != "5.5" ]]; then
+        pecl install igbinary > /dev/null;
+    fi
+  - echo "extension = memcache.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - sudo apt-get install parallel
-  - git clone --single-branch --branch master --depth 1 git://github.com/typo3-ci/TYPO3-Travis-Integration.git build-environment
-  - source build-environment/install-helper.sh
-  - if [[ "$TRAVIS_PHP_VERSION" == "5.3" ]]; then installPhpModule -y apc; fi
-  - if [[ "$TRAVIS_PHP_VERSION" != "5.5" ]]; then installPhpModule igbinary; fi
-  - installPhpModule -y memcache
-  - installPhpModule redis
-  - mkdir fileadmin uploads typo3temp
-  - mv build-environment/typo3conf .
-  - git clone --single-branch --branch master --depth 1 git://git.typo3.org/TYPO3CMS/Extensions/phpunit.git typo3conf/ext/phpunit/
+  - composer self-update
+  - composer --dev install
+  - mkdir -p uploads typo3temp typo3conf/ext
 
 script:
-  - printf "UnitTests\nLint" | parallel --gnu --keep-order 'echo "Running {}"; ./build-environment/execute{}.sh'
-  - grep directory typo3/sysext/core/Build/FunctionalTests.xml | sed 's#[	]*<directory>\.\./\.\./\.\./\.\./\(typo3/sysext.*\)</directory>$#\1#g' | parallel --gnu 'echo "Running {} tests"; ./typo3conf/ext/phpunit/Composer/vendor/bin/phpunit -c typo3/sysext/core/Build/FunctionalTests.xml {}'
+  - >
+    echo;
+    echo "Running unit tests";
+    ./bin/phpunit -c typo3/sysext/core/Build/UnitTests.xml
+  - >
+    echo;
+    export typo3DatabaseName="typo3";
+    export typo3DatabaseHost="localhost";
+    export typo3DatabaseUsername="root";
+    export typo3DatabasePassword="";
+    grep directory typo3/sysext/core/Build/FunctionalTests.xml | awk '{print $1}' | sed 's%<directory>\(\.\./\)*\(typo3/sysext.*\)</directory>$%\2%g' | parallel --gnu 'echo; echo "Running functional {} tests"; ./bin/phpunit -c typo3/sysext/core/Build/FunctionalTests.xml {}'
+  - >
+    echo;
+    echo "Running php lint";
+    /bin/bash -c "
+        if ! find typo3/ -name \*.php | parallel --gnu 'php -l {}' > /tmp/errors 2>&1; then
+            grep -v \"No syntax errors detected in\" /tmp/errors;
+            exit 99;
+        fi
+    "
