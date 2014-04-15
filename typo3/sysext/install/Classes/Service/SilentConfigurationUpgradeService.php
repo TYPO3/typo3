@@ -66,6 +66,8 @@ class SilentConfigurationUpgradeService {
 		'BE/TSconfigConditions',
 		// #30613
 		'BE/useOnContextMenuHandler',
+		// #57921
+		'BE/usePHPFileFunctions',
 		// #48179
 		'EXT/em_mirrorListURL',
 		'EXT/em_wsdlURL',
