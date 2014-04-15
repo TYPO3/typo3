@@ -274,8 +274,17 @@ class RootlineUtility {
 				if ($configuration['MM']) {
 					/** @var $loadDBGroup \TYPO3\CMS\Core\Database\RelationHandler */
 					$loadDBGroup = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
-					$loadDBGroup->start($pageRecord[$column], $configuration['foreign_table'], $configuration['MM'], $uid, 'pages', $configuration);
-					$relatedUids = $loadDBGroup->tableArray[$configuration['foreign_table']];
+					$loadDBGroup->start(
+						$pageRecord[$column],
+						isset($configuration['allowed']) ? $configuration['allowed'] : $configuration['foreign_table'],
+						$configuration['MM'],
+						$uid,
+						'pages',
+						$configuration
+					);
+					$relatedUids = isset($loadDBGroup->tableArray[$configuration['foreign_table']])
+						? $loadDBGroup->tableArray[$configuration['foreign_table']]
+						: array();
 				} else {
 					$columnIsOverlaid = in_array($column, $pageOverlayFields, TRUE);
 					$table = $configuration['foreign_table'];
