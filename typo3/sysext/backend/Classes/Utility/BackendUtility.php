@@ -57,9 +57,14 @@ class BackendUtility {
 	 *
 	 *******************************************/
 	/**
-	 * Returns the WHERE clause " AND NOT [tablename].[deleted-field]" if a deleted-field is configured in $GLOBALS['TCA'] for the tablename, $table
-	 * This function should ALWAYS be called in the backend for selection on tables which are configured in $GLOBALS['TCA'] since it will ensure consistent selection of records, even if they are marked deleted (in which case the system must always treat them as non-existent!)
-	 * In the frontend a function, ->enableFields(), is known to filter hidden-field, start- and endtime and fe_groups as well. But that is a job of the frontend, not the backend. If you need filtering on those fields as well in the backend you can use ->BEenableFields() though.
+	 * Returns the WHERE clause " AND NOT [tablename].[deleted-field]" if a deleted-field
+	 * is configured in $GLOBALS['TCA'] for the tablename, $table
+	 * This function should ALWAYS be called in the backend for selection on tables which
+	 * are configured in $GLOBALS['TCA'] since it will ensure consistent selection of records,
+	 * even if they are marked deleted (in which case the system must always treat them as non-existent!)
+	 * In the frontend a function, ->enableFields(), is known to filter hidden-field, start- and endtime
+	 * and fe_groups as well. But that is a job of the frontend, not the backend. If you need filtering
+	 * on those fields as well in the backend you can use ->BEenableFields() though.
 	 *
 	 * @param string $table Table name present in $GLOBALS['TCA']
 	 * @param string $tableAlias Table alias if any
@@ -861,7 +866,22 @@ class BackendUtility {
 
 	/**
 	 * Finds the Data Structure for a FlexForm field
-	 * NOTE ON data structures for deleted records: This function may fail to deliver the data structure for a record for a few reasons: a) The data structure could be deleted (either with deleted-flagged or hard-deleted), b) the data structure is fetched using the ds_pointerField_searchParent in which case any deleted record on the route to the final location of the DS will make it fail. In theory, we can solve the problem in the case where records that are deleted-flagged keeps us from finding the DS - this is done at the markers ###NOTE_A### where we make sure to also select deleted records. However, we generally want the DS lookup to fail for deleted records since for the working website we expect a deleted-flagged record to be as inaccessible as one that is completely deleted from the DB. Any way we look at it, this may lead to integrity problems of the reference index and even lost files if attached. However, that is not really important considering that a single change to a data structure can instantly invalidate large amounts of the reference index which we do accept as a cost for the flexform features. Other than requiring a reference index update, deletion of/changes in data structure or the failure to look them up when completely deleting records may lead to lost files in the uploads/ folders since those are now without a proper reference.
+	 *
+	 * NOTE ON data structures for deleted records: This function may fail to deliver the data structure
+	 * for a record for a few reasons:
+	 *  a) The data structure could be deleted (either with deleted-flagged or hard-deleted),
+	 *  b) the data structure is fetched using the ds_pointerField_searchParent in which case any
+	 *     deleted record on the route to the final location of the DS will make it fail.
+	 * In theory, we can solve the problem in the case where records that are deleted-flagged keeps us
+	 * from finding the DS - this is done at the markers ###NOTE_A### where we make sure to also select deleted records.
+	 * However, we generally want the DS lookup to fail for deleted records since for the working website we expect a
+	 * deleted-flagged record to be as inaccessible as one that is completely deleted from the DB. Any way we look
+	 * at it, this may lead to integrity problems of the reference index and even lost files if attached.
+	 * However, that is not really important considering that a single change to a data structure can instantly
+	 * invalidate large amounts of the reference index which we do accept as a cost for the flexform features.
+	 * Other than requiring a reference index update, deletion of/changes in data structure or the failure to look
+	 * them up when completely deleting records may lead to lost files in the uploads/ folders since those are now
+	 * without a proper reference.
 	 *
 	 * @param array $conf Field config array
 	 * @param array $row Record data
@@ -1856,6 +1876,35 @@ class BackendUtility {
 	}
 
 	/**
+	 * Replace field values in given row with values from the original language
+	 * if l10n_mode TCA settings require to do so.
+	 *
+	 * @param string $table Table name
+	 * @param array $row Row to fill with original language values
+	 * @return array Row with values from the original language
+	 */
+	static protected function replaceL10nModeFields($table, array $row) {
+		$originalUidField = isset($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'])
+			? $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
+			: '';
+		if (empty($row[$originalUidField])) {
+			return $row;
+		}
+
+		$originalTable = self::getOriginalTranslationTable($table);
+		$originalRow = self::getRecord($originalTable, $row[$originalUidField]);
+		foreach (array_keys($row) as $field) {
+			$l10n_mode = isset($GLOBALS['TCA'][$originalTable]['columns'][$field]['l10n_mode'])
+				? $GLOBALS['TCA'][$originalTable]['columns'][$field]['l10n_mode']
+				: '';
+			if ($l10n_mode === 'exclude' || ($l10n_mode === 'mergeIfNotBlank' && trim($originalRow[$field]) !== '')) {
+				$row[$field] = $originalRow[$field];
+			}
+		}
+		return $row;
+	}
+
+	/**
 	 * Returns the "title"-value in record, $row, from table, $table
 	 * The field(s) from which the value is taken is determined by the "ctrl"-entries 'label', 'label_alt' and 'label_alt_force'
 	 *
@@ -1879,6 +1928,8 @@ class BackendUtility {
 				GeneralUtility::callUserFunction($GLOBALS['TCA'][$table]['ctrl']['label_userFunc'], $params, $null);
 				$t = $params['title'];
 			} else {
+				$row = self::replaceL10nModeFields($table, $row);
+
 				// No userFunc: Build label
 				$t = self::getProcessedValue($table, $GLOBALS['TCA'][$table]['ctrl']['label'], $row[$GLOBALS['TCA'][$table]['ctrl']['label']], 0, 0, FALSE, $row['uid'], $forceResult);
 				if ($GLOBALS['TCA'][$table]['ctrl']['label_alt'] && ($GLOBALS['TCA'][$table]['ctrl']['label_alt_force'] || (string)$t === '')) {

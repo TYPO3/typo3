@@ -1136,4 +1136,156 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$this->assertSame($completeConfiguration, $subject::getModTSconfig(42, 'notrelevant'));
 	}
+
+	/**
+	 * Data provider for replaceL10nModeFieldsReplacesFields
+	 * @return array
+	 */
+	public function replaceL10nModeFieldsReplacesFieldsDataProvider() {
+		return array(
+			'same table: mergeIfNotBlank' => array(
+				'foo',
+				array(
+					'origUid' => 1,
+					'field2' => 'fdas',
+					'field3' => 'trans',
+				),
+				array(
+					'foo' => array(
+						'ctrl' => array(
+							'transOrigPointerTable' => '',
+							'transOrigPointerField' => 'origUid'
+						),
+						'columns' => array(
+							'field2' => array('l10n_mode' => 'mergeIfNotBlank'),
+							'field3' => array('l10n_mode' => 'mergeIfNotBlank')
+						)
+					)
+				),
+				array(
+					'origUid' => 0,
+					'field2' => 'basic',
+					'field3' => '',
+				),
+				array(
+					'origUid' => 1,
+					'field2' => 'basic',
+					'field3' => 'trans',
+				)
+			),
+			'other table: mergeIfNotBlank' => array(
+				'foo',
+				array(
+					'origUid' => 1,
+					'field2' => 'fdas',
+					'field3' => 'trans',
+				),
+				array(
+					'foo' => array(
+						'ctrl' => array(
+							'transOrigPointerTable' => 'bar',
+							'transOrigPointerField' => 'origUid'
+						)
+					),
+					'bar' => array(
+						'columns' => array(
+							'field2' => array('l10n_mode' => 'mergeIfNotBlank'),
+							'field3' => array('l10n_mode' => 'mergeIfNotBlank')
+						)
+					)
+				),
+				array(
+					'origUid' => 0,
+					'field2' => 'basic',
+					'field3' => '',
+				),
+				array(
+					'origUid' => 1,
+					'field2' => 'basic',
+					'field3' => 'trans',
+				)
+			),
+			'same table: exclude' => array(
+				'foo',
+				array(
+					'origUid' => 1,
+					'field2' => 'fdas',
+					'field3' => 'trans',
+				),
+				array(
+					'foo' => array(
+						'ctrl' => array(
+							'transOrigPointerTable' => '',
+							'transOrigPointerField' => 'origUid'
+						),
+						'columns' => array(
+							'field2' => array('l10n_mode' => 'exclude'),
+							'field3' => array('l10n_mode' => 'exclude')
+						)
+					)
+				),
+				array(
+					'origUid' => 0,
+					'field2' => 'basic',
+					'field3' => '',
+				),
+				array(
+					'origUid' => 1,
+					'field2' => 'basic',
+					'field3' => '',
+				)
+			),
+			'other table: exclude' => array(
+				'foo',
+				array(
+					'origUid' => 1,
+					'field2' => 'fdas',
+					'field3' => 'trans',
+				),
+				array(
+					'foo' => array(
+						'ctrl' => array(
+							'transOrigPointerTable' => 'bar',
+							'transOrigPointerField' => 'origUid'
+						)
+					),
+					'bar' => array(
+						'columns' => array(
+							'field2' => array('l10n_mode' => 'exclude'),
+							'field3' => array('l10n_mode' => 'exclude')
+						)
+					)
+				),
+				array(
+					'origUid' => 0,
+					'field2' => 'basic',
+					'field3' => '',
+				),
+				array(
+					'origUid' => 1,
+					'field2' => 'basic',
+					'field3' => '',
+				)
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider replaceL10nModeFieldsReplacesFieldsDataProvider
+	 */
+	public function replaceL10nModeFieldsReplacesFields($table, $row, $tca, $originalRow, $expected) {
+		$backupTCA = $GLOBALS['TCA'];
+		$backupDB = $GLOBALS['TYPO3_DB'];
+		$GLOBALS['TCA'] = $tca;
+		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection');
+		$GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')->will($this->returnValue($originalRow));
+
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\TYPO3\CMS\Backend\Utility\BackendUtility $fixture */
+		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Backend\\Utility\\BackendUtility', array('dummy'));
+		$this->assertSame($expected, $fixture->_call('replaceL10nModeFields', $table, $row));
+
+		$GLOBALS['TCA'] = $backupTCA;
+		$GLOBALS['TYPO3_DB'] = $backupDB;
+	}
 }
