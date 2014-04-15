@@ -1337,36 +1337,28 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	/**
 	 * @test
 	 */
-	public function isMakeCategorizableAvailableInRegistryWithDefaultField() {
+	public function doesMakeCategorizableCallsTheCategoryRegistryWithDefaultFieldName() {
 		$extensionKey = uniqid('extension');
 		$tableName = uniqid('table');
-		$GLOBALS['TCA'][$tableName] = array(
-			'ctrl' => array(),
-			'columns' => array()
-		);
-		$registryMock = $this->getMock('TYPO3\\CMS\\Core\\Category\\CategoryRegistry', array('dummy'));
+
+		$registryMock = $this->getMock('TYPO3\\CMS\\Core\\Category\\CategoryRegistry');
+		$registryMock->expects($this->once())->method('add')->with($extensionKey, $tableName, 'categories', array());
 		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Category\\CategoryRegistry', $registryMock);
 		ExtensionManagementUtility::makeCategorizable($extensionKey, $tableName);
-		$registryMock->applyTca();
-		$this->assertNotEmpty($GLOBALS['TCA'][$tableName]['columns']['categories']);
 	}
 
 	/**
 	 * @test
 	 */
-	public function isMakeCategorizableAvailableInRegistryWithSpecifictField() {
+	public function doesMakeCategorizableCallsTheCategoryRegistryWithFieldName() {
 		$extensionKey = uniqid('extension');
 		$tableName = uniqid('table');
 		$fieldName = uniqid('field');
-		$GLOBALS['TCA'][$tableName] = array(
-			'ctrl' => array(),
-			'columns' => array()
-		);
-		$registryMock = $this->getMock('TYPO3\\CMS\\Core\\Category\\CategoryRegistry', array('dummy'));
+
+		$registryMock = $this->getMock('TYPO3\\CMS\\Core\\Category\\CategoryRegistry');
+		$registryMock->expects($this->once())->method('add')->with($extensionKey, $tableName, $fieldName, array());
 		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Category\\CategoryRegistry', $registryMock);
 		ExtensionManagementUtility::makeCategorizable($extensionKey, $tableName, $fieldName);
-		$registryMock->applyTca();
-		$this->assertNotEmpty($GLOBALS['TCA'][$tableName]['columns'][$fieldName]);
 	}
 
 }
