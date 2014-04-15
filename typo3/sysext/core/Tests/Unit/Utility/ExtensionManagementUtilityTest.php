@@ -1337,23 +1337,24 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	/**
 	 * @test
 	 */
-	public function doesMakeCategorizableCallsTheCategoryRegistryWithDefaultFieldName() {
+	public function isMakeCategorizableAvailableInRegistryWithDefaultField() {
 		$extensionKey = uniqid('extension');
 		$tableName = uniqid('table');
 		$GLOBALS['TCA'][$tableName] = array(
 			'ctrl' => array(),
 			'columns' => array()
 		);
-		$registryMock = $this->getMock('TYPO3\\CMS\\Core\\Category\\CategoryRegistry');
-		$registryMock->expects($this->once())->method('add')->with($extensionKey, $tableName, 'categories', array());
+		$registryMock = $this->getMock('TYPO3\\CMS\\Core\\Category\\CategoryRegistry', array('dummy'));
 		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Category\\CategoryRegistry', $registryMock);
 		ExtensionManagementUtility::makeCategorizable($extensionKey, $tableName);
+		$registryMock->applyTca();
+		$this->assertNotEmpty($GLOBALS['TCA'][$tableName]['columns']['categories']);
 	}
 
 	/**
 	 * @test
 	 */
-	public function doesMakeCategorizableCallsTheCategoryRegistryWithFieldName() {
+	public function isMakeCategorizableAvailableInRegistryWithSpecifictField() {
 		$extensionKey = uniqid('extension');
 		$tableName = uniqid('table');
 		$fieldName = uniqid('field');
@@ -1361,10 +1362,11 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 			'ctrl' => array(),
 			'columns' => array()
 		);
-		$registryMock = $this->getMock('TYPO3\\CMS\\Core\\Category\\CategoryRegistry');
-		$registryMock->expects($this->once())->method('add')->with($extensionKey, $tableName, $fieldName, array());
+		$registryMock = $this->getMock('TYPO3\\CMS\\Core\\Category\\CategoryRegistry', array('dummy'));
 		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Category\\CategoryRegistry', $registryMock);
 		ExtensionManagementUtility::makeCategorizable($extensionKey, $tableName, $fieldName);
+		$registryMock->applyTca();
+		$this->assertNotEmpty($GLOBALS['TCA'][$tableName]['columns'][$fieldName]);
 	}
 
 }

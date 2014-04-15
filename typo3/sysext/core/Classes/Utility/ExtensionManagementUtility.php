@@ -1924,7 +1924,6 @@ tt_content.' . $key . $prefix . ' {
 
 	/**
 	 * Makes a table categorizable by adding value into the category registry.
-	 * FOR USE IN ext_localconf.php FILES.
 	 *
 	 * @param string $extensionKey Extension key to be used
 	 * @param string $tableName Name of the table to be categorized
