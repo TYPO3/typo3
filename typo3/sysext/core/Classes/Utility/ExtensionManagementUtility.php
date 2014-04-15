@@ -251,7 +251,7 @@ class ExtensionManagementUtility {
 	 * Adds an array with $GLOBALS['TCA'] column-configuration to the $GLOBALS['TCA']-entry for that table.
 	 * This function adds the configuration needed for rendering of the field in TCEFORMS - but it does NOT add the field names to the types lists!
 	 * So to have the fields displayed you must also call fx. addToAllTCAtypes or manually add the fields to the types list.
-	 * FOR USE IN ext_tables.php FILES
+	 * FOR USE IN ext_tables.php FILES or files in Configuration/TCA/Overrides/*.php Use the latter to benefit from TCA caching!
 	 *
 	 * @param string $table The table name of a table already present in $GLOBALS['TCA'] with a columns section
 	 * @param array $columnArray The array with the additional columns (typical some fields an extension wants to add)
@@ -276,7 +276,7 @@ class ExtensionManagementUtility {
 	 * Adds a string $string (comma separated list of field names) to all ["types"][xxx]["showitem"] entries for table $table (unless limited by $typeList)
 	 * This is needed to have new fields shown automatically in the TCEFORMS of a record from $table.
 	 * Typically this function is called after having added new columns (database fields) with the addTCAcolumns function
-	 * FOR USE IN ext_tables.php FILES
+	 * FOR USE IN ext_tables.php FILES or files in Configuration/TCA/Overrides/*.php Use the latter to benefit from TCA caching!
 	 *
 	 * @param string $table Table name
 	 * @param string $newFieldsString Field list to add.
@@ -1243,7 +1243,7 @@ class ExtensionManagementUtility {
 	 * Takes the $itemArray (label, value[,icon]) and adds to the items-array of $GLOBALS['TCA'][tt_content] elements with CType "listtype" (or another field if $type points to another fieldname)
 	 * If the value (array pos. 1) is already found in that items-array, the entry is substituted, otherwise the input array is added to the bottom.
 	 * Use this function to add a frontend plugin to this list of plugin-types - or more generally use this function to add an entry to any selectorbox/radio-button set in the TCEFORMS
-	 * FOR USE IN ext_tables.php FILES
+	 * FOR USE IN ext_tables.php FILES or files in Configuration/TCA/Overrides/*.php Use the latter to benefit from TCA caching!
 	 *
 	 * @param array $itemArray Item Array
 	 * @param string $type Type (eg. "list_type") - basically a field from "tt_content" table
@@ -1284,7 +1284,7 @@ class ExtensionManagementUtility {
 	/**
 	 * Adds the $table tablename to the list of tables allowed to be includes by content element type "Insert records"
 	 * By using $content_table and $content_field you can also use the function for other tables.
-	 * FOR USE IN ext_tables.php FILES
+	 * FOR USE IN ext_tables.php FILES or files in Configuration/TCA/Overrides/*.php Use the latter to benefit from TCA caching!
 	 *
 	 * @param string $table Table name to allow for "insert record
 	 * @param string $content_table Table name TO WHICH the $table name is applied. See $content_field as well.
@@ -1368,7 +1368,7 @@ tt_content.' . $key . $prefix . ' {
 
 	/**
 	 * Call this method to add an entry in the static template list found in sys_templates
-	 * FOR USE IN ext_tables.php FILES
+	 * FOR USE IN ext_tables.php FILES or files in Configuration/TCA/Overrides/*.php Use the latter to benefit from TCA caching!
 	 *
 	 * @param string $extKey Is of course the extension key
 	 * @param string $path Is the path where the template files (fixed names) include_static.txt (integer list of uids from the table "static_templates"), constants.txt, setup.txt, and include_static_file.txt is found (relative to extPath, eg. 'static/'). The file include_static_file.txt, allows you to include other static templates defined in files, from your static template, and thus corresponds to the field 'include_static_file' in the sys_template table. The syntax for this is a comma separated list of static templates to include, like:  EXT:css_styled_content/static/,EXT:da_newsletter_subscription/static/,EXT:cc_random_image/pi2/static/
@@ -1913,7 +1913,7 @@ tt_content.' . $key . $prefix . ' {
 	 *
 	 * @TODO: This method should be protected, but with current em it is hard to do so,
 	 * @TODO: Find out if we may remove this already
-	 * @param array Extension array to load, loader order is kept
+	 * @param array $newExtensionList Extension array to load, loader order is kept
 	 * @return void
 	 * @internal
 	 * @deprecated since 6.2, will be removed two versions later
@@ -1924,6 +1924,7 @@ tt_content.' . $key . $prefix . ' {
 
 	/**
 	 * Makes a table categorizable by adding value into the category registry.
+	 * FOR USE IN ext_localconf.php FILES or files in Configuration/TCA/Overrides/*.php Use the latter to benefit from TCA caching!
 	 *
 	 * @param string $extensionKey Extension key to be used
 	 * @param string $tableName Name of the table to be categorized
@@ -1944,5 +1945,4 @@ tt_content.' . $key . $prefix . ' {
 			);
 		}
 	}
-
 }

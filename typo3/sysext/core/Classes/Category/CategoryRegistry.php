@@ -220,6 +220,7 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Apply TCA to all registered tables
 	 *
 	 * @return void
+	 * @internal
 	 */
 	public function applyTca() {
 
@@ -396,6 +397,7 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return array
 	 */
 	public function addCategoryDatabaseSchemaToTablesDefinition(array $sqlString) {
+		$this->registerDefaultCategorizedTables();
 		$sqlString[] = $this->getDatabaseTableDefinitions();
 		return array('sqlString' => $sqlString);
 	}

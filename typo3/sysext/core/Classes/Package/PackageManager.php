@@ -680,7 +680,7 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	 * A package is active, if it is available and has been activated in the package
 	 * manager settings. This method returns runtime activated packages too
 	 *
-	 * @return array Array of \TYPO3\Flow\Package\PackageInterface
+	 * @return \TYPO3\Flow\Package\PackageInterface[]
 	 * @api
 	 */
 	public function getActivePackages() {

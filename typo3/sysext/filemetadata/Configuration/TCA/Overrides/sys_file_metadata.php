@@ -1,5 +1,4 @@
 <?php
-if (!defined('TYPO3_MODE')) die ('Access denied.');
 
 $tca = array(
 	'ctrl' => array(
@@ -440,4 +439,4 @@ $tca = array(
 	),
 );
 
-return array_replace_recursive($GLOBALS['TCA']['sys_file_metadata'], $tca);
+$GLOBALS['TCA']['sys_file_metadata'] = array_replace_recursive($GLOBALS['TCA']['sys_file_metadata'], $tca);
