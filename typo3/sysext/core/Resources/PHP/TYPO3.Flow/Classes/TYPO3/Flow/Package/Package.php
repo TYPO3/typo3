@@ -214,7 +214,7 @@ class Package implements PackageInterface {
 		if (!$this->namespace) {
 			$manifest = $this->getComposerManifest();
 			if (isset($manifest->autoload->{'psr-0'})) {
-				$namespaces = $manifest->autoload->{'psr-0'};
+				$namespaces = (array)$manifest->autoload->{'psr-0'};
 				if (count($namespaces) === 1) {
 					$namespace = key($namespaces);
 				} else {
