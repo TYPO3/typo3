@@ -1809,7 +1809,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			$onlySelectedIconShown = 1;
 		}
 		// Register as required if minitems is greater than zero
-		if (($minItems = MathUtility::forceIntegerInRange($config['minitems'], 0)) > 0) {
+		if (($minItems = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($config['minitems'], 0)) > 0) {
 			$this->registerRequiredProperty('field', $table . '_' . $row['uid'] . '_' . $field, $PA['itemFormElName']);
 		}
 
