@@ -2179,6 +2179,10 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				$output = $this->map_assocArray($output, $tables, 1);
 			}
 		}
+		if ($output === NULL) {
+			// Needed for compatibility
+			$output = FALSE;
+		}
 		// Return result:
 		return $output;
 	}
@@ -2226,6 +2230,10 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		case 'userdefined':
 			$output = $res->sql_fetch_row();
 			break;
+		}
+		if ($output === NULL) {
+			// Needed for compatibility
+			$output = FALSE;
 		}
 		return $output;
 	}
