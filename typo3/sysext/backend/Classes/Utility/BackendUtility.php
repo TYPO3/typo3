@@ -1531,8 +1531,15 @@ class BackendUtility {
 		$referenceUids = $relationHandler->tableArray[$configuration['foreign_table']];
 
 		foreach ($referenceUids as $referenceUid) {
-			$fileReference = ResourceFactory::getInstance()->getFileReferenceObject($referenceUid, array(), ($workspaceId === 0));
-			$fileReferences[$fileReference->getUid()] = $fileReference;
+			try {
+				$fileReference = ResourceFactory::getInstance()->getFileReferenceObject($referenceUid, array(), ($workspaceId === 0));
+				$fileReferences[$fileReference->getUid()] = $fileReference;
+			} catch (\TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException $e) {
+				/**
+				 * We just catch the exception here
+				 * Reasoning: There is nothing an editor or even admin could do
+				 */
+			}
 		}
 
 		return $fileReferences;
