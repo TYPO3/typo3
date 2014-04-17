@@ -31,4 +31,4 @@ before_script:
 
 script:
   - printf "UnitTests\nLint" | parallel --gnu --keep-order 'echo "Running {}"; ./build-environment/execute{}.sh'
-  - grep directory typo3/sysext/core/Build/FunctionalTests.xml | sed 's#[	]*<directory>\.\./\.\./\.\./\.\./\(typo3/sysext.*\)</directory>$#\1#g' | parallel --gnu --keep-order 'echo "Running {} tests"; ./typo3conf/ext/phpunit/Composer/vendor/bin/phpunit -c typo3/sysext/core/Build/FunctionalTests.xml {}'
+  - grep directory typo3/sysext/core/Build/FunctionalTests.xml | sed 's#[	]*<directory>\.\./\.\./\.\./\.\./\(typo3/sysext.*\)</directory>$#\1#g' | parallel --gnu 'echo "Running {} tests"; ./typo3conf/ext/phpunit/Composer/vendor/bin/phpunit -c typo3/sysext/core/Build/FunctionalTests.xml {}'
