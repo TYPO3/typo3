@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Core\Resource\Index;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Resource\Exception\InvalidUidException;
 use TYPO3\CMS\Core\Type\File as FileType;
 
 /**
@@ -91,7 +92,7 @@ class MetaDataRepository implements SingletonInterface {
 	public function findByFileUid($uid) {
 		$uid = (int)$uid;
 		if ($uid <= 0) {
-			throw new \RuntimeException('Metadata can only be retrieved for indexed files. UID: "' . $uid . '"', 1381590731);
+			throw new InvalidUidException('Metadata can only be retrieved for indexed files. UID: "' . $uid . '"', 1381590731);
 		}
 		$record = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', $this->tableName, 'file = ' . $uid . $this->getGeneralWhereClause());
 

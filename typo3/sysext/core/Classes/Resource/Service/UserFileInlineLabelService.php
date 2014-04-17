@@ -51,9 +51,16 @@ class UserFileInlineLabelService {
 				if (isset($params['row']['title'])) {
 					$fullTitle = $params['row']['title'];
 				} else {
-					$metaDataRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class);
-					$metaData = $metaDataRepository->findByFileUid($fileRecord['uid']);
-					$fullTitle = $metaData['title'];
+					try {
+						$metaDataRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class);
+						$metaData = $metaDataRepository->findByFileUid($fileRecord['uid']);
+						$fullTitle = $metaData['title'];
+					} catch (\TYPO3\CMS\Core\Resource\Exception\InvalidUidException $e) {
+						/**
+						 * We just catch the exception here
+						 * Reasoning: There is nothing an editor or even admin could do
+						 */
+					}
 				}
 
 				$value = BackendUtility::getRecordTitlePrep(htmlspecialchars($fullTitle));
