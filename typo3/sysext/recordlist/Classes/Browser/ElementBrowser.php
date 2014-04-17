@@ -544,6 +544,8 @@ class ElementBrowser {
 				window.opener.' . $v;
 			}
 			$P2 = array();
+			$P2['uid'] = $this->P['uid'];
+			$P2['pid'] = $this->P['pid'];
 			$P2['itemName'] = $this->P['itemName'];
 			$P2['formName'] = $this->P['formName'];
 			$P2['fieldChangeFunc'] = $this->P['fieldChangeFunc'];
