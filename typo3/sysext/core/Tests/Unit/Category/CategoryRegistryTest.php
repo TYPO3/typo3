@@ -46,6 +46,8 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Sets up this test suite.
 	 */
 	protected function setUp() {
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultCategorizedTables'] = 'pages';
+		$GLOBALS['TCA']['pages']['columns'] = array();
 		$this->subject = new \TYPO3\CMS\Core\Category\CategoryRegistry();
 		$this->tables = array(
 			'first' => uniqid('first'),
@@ -71,6 +73,14 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
+	 */
+	public function doesAddReturnTrueOnDefinedTableTheFirstTimeAndFalseTheSecondTime() {
+		$this->assertTrue($this->subject->add('test_extension_a', $this->tables['first'], 'categories'));
+		$this->assertFalse($this->subject->add('test_extension_a', $this->tables['first'], 'categories'));
+	}
+
+	/**
+	 * @test
 	 * @expectedException \InvalidArgumentException
 	 * @expectedExceptionCode 1369122038
 	 */
@@ -80,11 +90,58 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
+	 * @expectedException \InvalidArgumentException
+	 * @expectedExceptionCode 1397836158
+	 */
+	public function doesAddThrowExceptionOnEmptyExtensionKey() {
+		$this->subject->add('', 'foo', 'categories');
+	}
+
+	/**
+	 * @test
+	 * @expectedException \InvalidArgumentException
+	 * @expectedExceptionCode 1369122038
+	 */
+	public function doesAddThrowExceptionOnInvalidTablename() {
+		$this->subject->add('test_extension_a', array(), 'categories');
+	}
+
+	/**
+	 * @test
+	 * @expectedException \InvalidArgumentException
+	 * @expectedExceptionCode 1397836158
+	 */
+	public function doesAddThrowExceptionOnInvalidExtensionKey() {
+		$this->subject->add(array(), 'foo', 'categories');
+	}
+
+	/**
+	 * @test
+	 * @expectedException \RuntimeException
+	 * @expectedExceptionCode 1397838817
+	 */
+	public function throwsExceptionIfAddIsCalledForNotExistentTableAfterTcaHasBeenApplied() {
+		$this->subject->applyTcaForPreRegisteredTables();
+		$this->subject->add('test_extension_a', uniqid('foo'));
+	}
+
+	/**
+	 * @expectedException \RuntimeException
+	 * @expectedExceptionCode 1397841334
+	 * @test
+	 */
+	public function throwsExceptionIfRegistryIsAppliedTwice() {
+		$this->subject->applyTcaForPreRegisteredTables();
+		$this->subject->applyTcaForPreRegisteredTables();
+	}
+
+	/**
+	 * @test
 	 */
 	public function areMultipleElementsOfSameExtensionRegistered() {
 		$this->subject->add('test_extension_a', $this->tables['first'], 'categories');
 		$this->subject->add('test_extension_a', $this->tables['second'], 'categories');
-		$this->subject->applyTca();
+		$this->subject->applyTcaForPreRegisteredTables();
 
 		$this->assertArrayHasKey('categories', $GLOBALS['TCA'][$this->tables['first']]['columns']);
 		$this->assertArrayHasKey('categories', $GLOBALS['TCA'][$this->tables['second']]['columns']);
@@ -96,7 +153,7 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function areElementsOfDifferentExtensionsRegistered() {
 		$this->subject->add('test_extension_a', $this->tables['first'], 'categories');
 		$this->subject->add('test_extension_b', $this->tables['second'], 'categories');
-		$this->subject->applyTca();
+		$this->subject->applyTcaForPreRegisteredTables();
 
 		$this->assertArrayHasKey('categories', $GLOBALS['TCA'][$this->tables['first']]['columns']);
 		$this->assertArrayHasKey('categories', $GLOBALS['TCA'][$this->tables['second']]['columns']);
@@ -108,7 +165,7 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function areElementsOfDifferentExtensionsOnSameTableRegistered() {
 		$this->subject->add('test_extension_a', $this->tables['first'], 'categories1');
 		$this->subject->add('test_extension_b', $this->tables['first'], 'categories2');
-		$this->subject->applyTca();
+		$this->subject->applyTcaForPreRegisteredTables();
 
 		$this->assertArrayHasKey('categories1', $GLOBALS['TCA'][$this->tables['first']]['columns']);
 		$this->assertArrayHasKey('categories2', $GLOBALS['TCA'][$this->tables['first']]['columns']);
@@ -120,7 +177,7 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function areElementsOfSameExtensionOnSameTableRegistered() {
 		$this->subject->add('test_extension_a', $this->tables['first'], 'categories1');
 		$this->subject->add('test_extension_a', $this->tables['first'], 'categories2');
-		$this->subject->applyTca();
+		$this->subject->applyTcaForPreRegisteredTables();
 
 		$this->assertArrayHasKey('categories1', $GLOBALS['TCA'][$this->tables['first']]['columns']);
 		$this->assertArrayHasKey('categories2', $GLOBALS['TCA'][$this->tables['first']]['columns']);
@@ -162,7 +219,7 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function areDefaultCategorizedTablesLoaded() {
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultCategorizedTables'] = $this->tables['first'] . ',' . $this->tables['second'];
-		$this->subject->applyTca();
+		$this->subject->applyTcaForPreRegisteredTables();
 
 		$this->assertArrayHasKey('categories', $GLOBALS['TCA'][$this->tables['first']]['columns']);
 		$this->assertArrayHasKey('categories', $GLOBALS['TCA'][$this->tables['second']]['columns']);
@@ -174,7 +231,7 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function canApplyTca() {
 		$this->subject->add('test_extension_a', $this->tables['first'], 'categories');
 		$this->subject->add('test_extension_b', $this->tables['second'], 'categories');
-		$this->subject->applyTca();
+		$this->subject->applyTcaForPreRegisteredTables();
 
 		$this->assertNotEmpty($GLOBALS['TCA'][$this->tables['first']]['columns']['categories']);
 		$this->assertNotEmpty($GLOBALS['TCA'][$this->tables['second']]['columns']['categories']);
@@ -202,7 +259,7 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function tabIsAddedForElement() {
 		$this->subject->add('text_extension_a', $this->tables['first']);
-		$this->subject->applyTca();
+		$this->subject->applyTcaForPreRegisteredTables();
 
 		foreach($GLOBALS['TCA'][$this->tables['first']]['types'] as $typeConfig) {
 			$this->assertContains('--div--;LLL:EXT:lang/locallang_tca.xlf:sys_category.tabs.category', $typeConfig['showitem']);
@@ -214,7 +271,7 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function tabIsNotAddedForElementIfFieldListIsSpecified() {
 		$this->subject->add('text_extension_a', $this->tables['first'], 'categories', array('fieldList' => 'categories'));
-		$this->subject->applyTca();
+		$this->subject->applyTcaForPreRegisteredTables();
 
 		foreach($GLOBALS['TCA'][$this->tables['first']]['types'] as $typeConfig) {
 			$this->assertNotContains('--div--;LLL:EXT:lang/locallang_tca.xlf:sys_category.tabs.category', $typeConfig['showitem']);
@@ -227,7 +284,7 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function tabIsAddedOnlyOncePerTable() {
 		$this->subject->add('text_extension_a', $this->tables['first'], 'categories1');
 		$this->subject->add('text_extension_a', $this->tables['first'], 'categories2');
-		$this->subject->applyTca();
+		$this->subject->applyTcaForPreRegisteredTables();
 
 		foreach($GLOBALS['TCA'][$this->tables['first']]['types'] as $typeConfig) {
 			$this->assertSame(

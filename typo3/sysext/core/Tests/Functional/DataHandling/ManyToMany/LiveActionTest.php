@@ -36,4 +36,19 @@ class LiveActionTest extends AbstractActionTestCase {
 		$this->backendUser->workspace = 0;
 	}
 
+	/**
+	 * @test
+	 * @see DataSet/Assertion/copyCategoryRecordOfCategoryRelation.csv
+	 */
+	public function copyCategoryOfRelation() {
+		$this->actionService->copyRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, 0);
+		$this->assertAssertionDataSet('copyCategoryOfRelation');
+
+		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
+		$this->assertResponseContentStructureHasRecords(
+			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, 'categories',
+			self::TABLE_Category, 'title', array('Category A', 'Category A (copy 1)')
+		);
+	}
+
 }

@@ -54,6 +54,7 @@ class TcaBuildingAspect {
 	 * @return array
 	 */
 	public function applyTcaOverrides() {
+		$this->categoryRegistry->applyTcaForPreRegisteredTables();
 		foreach ($this->packageManager->getActivePackages() as $package) {
 			$tcaOverridesPathForPackage = $package->getPackagePath() . self::TCA_OVERRIDES_PATH;
 			if (is_dir($tcaOverridesPathForPackage)) {
@@ -71,7 +72,6 @@ class TcaBuildingAspect {
 			}
 
 		}
-		$this->categoryRegistry->applyTca();
 		return array($GLOBALS['TCA']);
 	}
 }

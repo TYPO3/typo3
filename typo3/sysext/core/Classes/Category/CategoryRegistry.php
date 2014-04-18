@@ -26,6 +26,10 @@ namespace TYPO3\CMS\Core\Category;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
 /**
  * Class to register category configurations.
  *
@@ -35,9 +39,19 @@ namespace TYPO3\CMS\Core\Category;
 class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
+	 * @var bool
+	 */
+	protected $preRegisteredTablesHaveBeenApplied = FALSE;
+
+	/**
 	 * @var array
 	 */
 	protected $registry = array();
+
+	/**
+	 * @var array
+	 */
+	protected $extensions = array();
 
 	/**
 	 * @var array
@@ -68,6 +82,7 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Adds a new category configuration to this registry.
+	 * TCA changes are directly applied
 	 *
 	 * @param string $extensionKey Extension key to be used
 	 * @param string $tableName Name of the table to be registered
@@ -80,20 +95,35 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 *              + fieldConfiguration: TCA field config array to override defaults
 	 * @return boolean
 	 * @throws \InvalidArgumentException
+	 * @throws \RuntimeException
 	 */
 	public function add($extensionKey, $tableName, $fieldName = 'categories', array $options = array()) {
-		$result = FALSE;
-
-		if ($tableName === '') {
-			throw new \InvalidArgumentException('TYPO3\\CMS\\Core\\Category\\CategoryRegistry No tableName given.', 1369122038);
+		$didRegister = FALSE;
+		if (empty($tableName) || !is_string($tableName)) {
+			throw new \InvalidArgumentException('No or invalid table name "' . $tableName . '" given.', 1369122038);
+		}
+		if (empty($extensionKey) || !is_string($extensionKey)) {
+			throw new \InvalidArgumentException('No or invalid extension key "' . $extensionKey . '" given.', 1397836158);
 		}
 
-		// Makes sure nothing was registered yet.
 		if (!$this->isRegistered($tableName, $fieldName)) {
-			$this->registry[$extensionKey][$tableName][$fieldName] = $options;
-			$result = TRUE;
+			$this->registry[$tableName][$fieldName] = $options;
+			$this->extensions[$extensionKey][$tableName][$fieldName] = $fieldName;
+
+			if (!isset($GLOBALS['TCA'][$tableName]['columns']) && isset($GLOBALS['TCA'][$tableName]['ctrl']['dynamicConfigFile'])) {
+				// Handle deprecated old style dynamic TCA column loading.
+				ExtensionManagementUtility::loadNewTcaColumnsConfigFiles();
+			}
+
+			if (isset($GLOBALS['TCA'][$tableName]['columns'])) {
+				$this->applyTcaForTableAndField($tableName, $fieldName);
+			} elseif ($this->preRegisteredTablesHaveBeenApplied) {
+				throw new \RuntimeException('You tried to add a category column to a non-existing table "' . $tableName . '"!', 1397838817);
+			}
+			$didRegister = TRUE;
 		}
-		return $result;
+
+		return $didRegister;
 	}
 
 	/**
@@ -113,7 +143,7 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return array
 	 */
 	public function getExtensionKeys() {
-		return array_keys($this->registry);
+		return array_keys($this->extensions);
 	}
 
 	/**
@@ -122,13 +152,7 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return array
 	 */
 	public function getCategorizedTables() {
-		$categorizedTables = array();
-
-		foreach ($this->registry as $registry) {
-			$categorizedTables = array_merge($categorizedTables, array_keys($registry));
-		}
-
-		return $categorizedTables;
+		return array_keys($this->registry);
 	}
 
 	/**
@@ -153,13 +177,11 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			throw new \UnexpectedValueException('The given menu_type is not supported.', 1381823570);
 		}
 		// Loop on all registries and find entries for the correct table
-		foreach ($this->registry as $registry) {
-			foreach ($registry as $tableName => $fields) {
-				if ($tableName === $table) {
-					foreach ($fields as $fieldName => $options) {
-						$fieldLabel = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label']);
-						$configuration['items'][] = array($fieldLabel, $fieldName);
-					}
+		foreach ($this->registry as $tableName => $fields) {
+			if ($tableName === $table) {
+				foreach ($fields as $fieldName => $options) {
+					$fieldLabel = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label']);
+					$configuration['items'][] = array($fieldLabel, $fieldName);
 				}
 			}
 		}
@@ -173,14 +195,7 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return boolean
 	 */
 	public function isRegistered($tableName, $fieldName = 'categories') {
-		$isRegistered = FALSE;
-		foreach ($this->registry as $configuration) {
-			if (isset($configuration[$tableName][$fieldName])) {
-				$isRegistered = TRUE;
-				break;
-			}
-		}
-		return $isRegistered;
+		return isset($this->registry[$tableName][$fieldName]);
 	}
 
 	/**
@@ -203,13 +218,13 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return string
 	 */
 	public function getDatabaseTableDefinition($extensionKey) {
-		if (!isset($this->registry[$extensionKey]) || !is_array($this->registry[$extensionKey])) {
+		if (!isset($this->extensions[$extensionKey]) || !is_array($this->extensions[$extensionKey])) {
 			return '';
 		}
 		$sql = '';
 
-		foreach ($this->registry[$extensionKey] as $tableName => $fields) {
-			foreach (array_keys($fields) as $fieldName) {
+		foreach ($this->extensions[$extensionKey] as $tableName => $fields) {
+			foreach ($fields as $fieldName) {
 				$sql .= sprintf($this->template, $tableName, $fieldName);
 			}
 		}
@@ -217,23 +232,41 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
+	 * @deprecated Since 6.2.2. This method was never intended to be called by extensions. Is is now deprecated and will be removed without substitution after two versions.
+	 */
+	public function applyTca() {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+	}
+
+	/**
 	 * Apply TCA to all registered tables
 	 *
 	 * @return void
 	 * @internal
+	 * @throws \RuntimeException
 	 */
-	public function applyTca() {
-
+	public function applyTcaForPreRegisteredTables() {
+		if ($this->preRegisteredTablesHaveBeenApplied) {
+			throw new \RuntimeException('applyTcaForPreRegisteredTables has already been called. It is not allowed to call it a second time.', 1397841334);
+		}
+		$this->preRegisteredTablesHaveBeenApplied = TRUE;
 		$this->registerDefaultCategorizedTables();
-
-		foreach ($this->registry as $registry) {
-			foreach ($registry as $tableName => $fields) {
-				foreach ($fields as $fieldName => $options) {
-					$this->addTcaColumn($tableName, $fieldName, $options);
-					$this->addToAllTCAtypes($tableName, $fieldName, $options);
-				}
+		foreach ($this->registry as $tableName => $fields) {
+			foreach (array_keys($fields) as $fieldName) {
+				$this->applyTcaForTableAndField($tableName, $fieldName);
 			}
 		}
+	}
+
+	/**
+	 * Applies the additions directly to the TCA
+	 *
+	 * @param string $tableName
+	 * @param string $fieldName
+	 */
+	protected function applyTcaForTableAndField($tableName, $fieldName) {
+		$this->addTcaColumn($tableName, $fieldName, $this->registry[$tableName][$fieldName]);
+		$this->addToAllTCAtypes($tableName, $fieldName, $this->registry[$tableName][$fieldName]);
 	}
 
 	/**
@@ -287,7 +320,7 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 
 			// Makes the new "categories" field to be visible in TSFE.
-			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes($tableName, $fieldList, $typesList, $position);
+			ExtensionManagementUtility::addToAllTCAtypes($tableName, $fieldList, $typesList, $position);
 
 		}
 	}
@@ -321,43 +354,8 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	protected function addTcaColumn($tableName, $fieldName, array $options) {
-
 		// Makes sure to add more TCA to an existing structure
 		if (isset($GLOBALS['TCA'][$tableName]['columns'])) {
-
-			// Forges a new field, default name is "categories"
-			$fieldConfiguration = array(
-				'type' => 'select',
-				'foreign_table' => 'sys_category',
-				'foreign_table_where' => ' AND sys_category.sys_language_uid IN (-1, 0) ORDER BY sys_category.sorting ASC',
-				'MM' => 'sys_category_record_mm',
-				'MM_opposite_field' => 'items',
-				'MM_match_fields' => array(
-					'tablenames' => $tableName,
-					'fieldname' => $fieldName,
-				),
-				'size' => 10,
-				'autoSizeMax' => 50,
-				'maxitems' => 9999,
-				'renderMode' => 'tree',
-				'treeConfig' => array(
-					'parentField' => 'parent',
-					'appearance' => array(
-						'expandAll' => TRUE,
-						'showHeader' => TRUE,
-						'maxLevels' => 99,
-					),
-				),
-			);
-
-			// Merge changes to TCA configuration
-			if (!empty($options['fieldConfiguration'])) {
-				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
-					$fieldConfiguration,
-					$options['fieldConfiguration']
-				);
-			}
-
 			// Take specific label into account
 			$label = 'LLL:EXT:lang/locallang_tca.xlf:sys_category.categories';
 			if (!empty($options['label'])) {
@@ -370,11 +368,13 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				$exclude = (bool)$options['exclude'];
 			}
 
+			$fieldConfiguration = empty($options['fieldConfiguration']) ? array() : $options['fieldConfiguration'];
+
 			$columns = array(
 				$fieldName => array(
 					'exclude' => $exclude,
 					'label' => $label,
-					'config' => $fieldConfiguration,
+					'config' =>  static::getTcaFieldConfiguration($tableName, $fieldName, $fieldConfiguration),
 				),
 			);
 
@@ -386,8 +386,56 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 
 			// Adding fields to an existing table definition
-			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns($tableName, $columns);
+			ExtensionManagementUtility::addTCAcolumns($tableName, $columns);
 		}
+	}
+
+	/**
+	 * Get the config array for given table and field.
+	 * This method does NOT take care of adding sql fields, adding the field to TCA types
+	 * nor does it set the MM_oppositeUsage in the sys_category TCA. This has to be taken care of manually!
+	 *
+	 * @param string $tableName The table name
+	 * @param string $fieldName The field name (default categories)
+	 * @param array $fieldConfigurationOverride Changes to the default configuration
+	 * @return array
+	 * @api
+	 */
+	static public function getTcaFieldConfiguration($tableName, $fieldName = 'categories', array $fieldConfigurationOverride = array()) {
+		// Forges a new field, default name is "categories"
+		$fieldConfiguration = array(
+			'type' => 'select',
+			'foreign_table' => 'sys_category',
+			'foreign_table_where' => ' AND sys_category.sys_language_uid IN (-1, 0) ORDER BY sys_category.sorting ASC',
+			'MM' => 'sys_category_record_mm',
+			'MM_opposite_field' => 'items',
+			'MM_match_fields' => array(
+				'tablenames' => $tableName,
+				'fieldname' => $fieldName,
+			),
+			'size' => 10,
+			'autoSizeMax' => 50,
+			'maxitems' => 9999,
+			'renderMode' => 'tree',
+			'treeConfig' => array(
+				'parentField' => 'parent',
+				'appearance' => array(
+					'expandAll' => TRUE,
+					'showHeader' => TRUE,
+					'maxLevels' => 99,
+				),
+			),
+		);
+
+		// Merge changes to TCA configuration
+		if (!empty($fieldConfigurationOverride)) {
+			ArrayUtility::mergeRecursiveWithOverrule(
+				$fieldConfiguration,
+				$fieldConfigurationOverride
+			);
+		}
+
+		return $fieldConfiguration;
 	}
 
 	/**
