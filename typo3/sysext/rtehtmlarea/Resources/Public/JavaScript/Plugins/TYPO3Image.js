@@ -89,8 +89,8 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TYPO3Image',
 				this.getButton(buttonId).tooltip,
 				this.getWindowDimensions(
 					{
-						width:	650,
-						height:	500
+						width:	top.TYPO3.configuration.RTEPopupWindow.width,
+						height:	top.TYPO3.configuration.RTEPopupWindow.height
 					},
 					buttonId
 				),

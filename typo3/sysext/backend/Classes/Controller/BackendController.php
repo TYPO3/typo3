@@ -471,6 +471,21 @@ class BackendController {
 		// Needed for tceform manipulation (date picker)
 		$dateFormat = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? array('MM-DD-YYYY', 'HH:mm MM-DD-YYYY') : array('DD-MM-YYYY', 'HH:mm DD-MM-YYYY'));
 		$this->pageRenderer->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
+		// define the window size of the element browser etc.
+		$popupWindowSize = trim($GLOBALS['BE_USER']->getTSConfigVal('options.popupWindowSize'));
+		if (!empty($popupWindowSize)) {
+			list($popupWindowWidth, $popupWindowHeight) = GeneralUtility::trimExplode('x', $popupWindowSize);
+		}
+		$popupWindowWidth  = !empty($popupWindowWidth) ? (int)$popupWindowWidth : 700;
+		$popupWindowHeight = !empty($popupWindowHeight) ? (int)$popupWindowHeight : 750;
+
+		// define the window size of the popups within the RTE
+		$rtePopupWindowSize = trim($GLOBALS['BE_USER']->getTSConfigVal('options.rte.popupWindowSize'));
+		if (!empty($rtePopupWindowSize)) {
+			list($rtePopupWindowWidth, $rtePopupWindowHeight) = GeneralUtility::trimExplode('x', $rtePopupWindowSize);
+		}
+		$rtePopupWindowWidth  = !empty($rtePopupWindowWidth) ? (int)$rtePopupWindowWidth : ($popupWindowWidth-200);
+		$rtePopupWindowHeight = !empty($rtePopupWindowHeight) ? (int)$rtePopupWindowHeight : ($popupWindowHeight-250);
 
 		$pathTYPO3 = GeneralUtility::dirname(GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '/';
 		// If another page module was specified, replace the default Page module with the new one
@@ -507,6 +522,14 @@ class BackendController {
 				'width' => 600,
 				'height' => 400
 			),
+			'PopupWindow' => array(
+				'width' => $popupWindowWidth,
+				'height' => $popupWindowHeight
+			),
+			'RTEPopupWindow' => array(
+				'width' => $rtePopupWindowWidth,
+				'height' => $rtePopupWindowHeight
+			)
 		);
 		$this->js .= '
 	TYPO3.configuration = ' . json_encode($t3Configuration) . ';

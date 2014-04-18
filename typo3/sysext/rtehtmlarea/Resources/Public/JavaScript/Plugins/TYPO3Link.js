@@ -164,8 +164,8 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TYPO3Link',
 					this.getButton(buttonId).tooltip,
 					this.getWindowDimensions(
 						{
-							width:	550,
-							height:	500
+							width:	top.TYPO3.configuration.RTEPopupWindow.width,
+							height:	top.TYPO3.configuration.RTEPopupWindow.height
 						},
 						buttonId
 					),
