@@ -2598,8 +2598,20 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 				$info .= '<span class="nobr">' . htmlspecialchars($this->getLL('l_allTables')) . '</span><br />';
 			} elseif ($tempFT) {
 				$onlySingleTableAllowed = count($tempFT) == 1;
+
+				$width = 0;
+				$height = 0;
+				if (is_array($config['appearance'])) {
+					if (isset($config['appearance']['elementBrowserWidth'])) {
+						$width = $config['appearance']['elementBrowserWidth'];
+					}
+					if (isset($config['appearance']['elementBrowserHeight'])) {
+						$height = $config['appearance']['elementBrowserHeight'];
+					}
+				}
+
 				foreach ($tempFT as $theT) {
-					$aOnClick = 'setFormValueOpenBrowser(\'db\', \'' . ($PA['itemFormElName'] . '|||' . $theT) . '\'); return false;';
+					$aOnClick = 'setFormValueOpenBrowser(\'db\', \'' . ($PA['itemFormElName'] . '|||' . $theT) . '\',' . (int)$width . ',' . (int)$height . '); return false;';
 					$info .= '<span class="nobr">
 									<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . IconUtility::getSpriteIconForRecord($theT, array()) . htmlspecialchars($this->sL($GLOBALS['TCA'][$theT]['ctrl']['title'])) . '</a></span><br />';
 				}
@@ -3907,7 +3919,15 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 				} else {
 					$elementBrowserAllowed = $allowed;
 				}
-				$aOnClick = 'setFormValueOpenBrowser(\'' . $elementBrowserType . '\',\'' . ($fName . '|||' . $elementBrowserAllowed . '|' . $aOnClickInline) . '\'); return false;';
+				$width = 0;
+				$height = 0;
+				if (isset($config['appearance']['elementBrowserWidth'])) {
+					$width = $config['appearance']['elementBrowserWidth'];
+				}
+				if (isset($config['appearance']['elementBrowserHeight'])) {
+					$height = $config['appearance']['elementBrowserHeight'];
+				}
+				$aOnClick = 'setFormValueOpenBrowser(\'' . $elementBrowserType . '\',\'' . ($fName . '|||' . $elementBrowserAllowed . '|' . $aOnClickInline) . '\',' . $width . ',' . $height .'); return false;';
 				$icons['R'][] = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . IconUtility::getSpriteIcon('actions-insert-record', array('title' => htmlspecialchars($this->getLL(('l_browse_' . ($mode == 'db' ? 'db' : 'file')))))) . '</a>';
 			}
 			if (!$params['dontShowMoveIcons']) {
