@@ -1599,7 +1599,6 @@ tt_content.' . $key . $prefix . ' {
 				$GLOBALS['TCA'] = unserialize(substr($codeCache->get($cacheIdentifier), 6, -2));
 			} else {
 				static::buildBaseTcaFromSingleFiles();
-				static::emitTcaIsBeingBuiltSignal($GLOBALS['TCA']);
 				static::createBaseTcaCacheFile();
 			}
 		} else {
@@ -1638,6 +1637,8 @@ tt_content.' . $key . $prefix . ' {
 				}
 			}
 		}
+
+		static::emitTcaIsBeingBuiltSignal($GLOBALS['TCA']);
 	}
 
 	/**
