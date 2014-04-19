@@ -205,6 +205,7 @@ class ResourceCompressor {
 				'rel' => 'stylesheet',
 				'media' => 'all',
 				'compress' => TRUE,
+				'excludeFromConcatenation' => TRUE,
 				'forceOnTop' => FALSE,
 				'allWrap' => ''
 			);
@@ -249,6 +250,7 @@ class ResourceCompressor {
 					'type' => 'text/javascript',
 					'section' => $section,
 					'compress' => TRUE,
+					'excludeFromConcatenation' => TRUE,
 					'forceOnTop' => FALSE,
 					'allWrap' => ''
 				);
@@ -360,6 +362,7 @@ class ResourceCompressor {
 			// if compression is enabled
 			if ($fileOptions['compress']) {
 				$filename = $this->compressCssFile($fileOptions['file']);
+				$fileOptions['compress'] = FALSE;
 				$fileOptions['file'] = $filename;
 				$filesAfterCompression[$filename] = $fileOptions;
 			} else {
@@ -509,6 +512,7 @@ class ResourceCompressor {
 			// If compression is enabled
 			if ($fileOptions['compress']) {
 				$compressedFilename = $this->compressJsFile($fileOptions['file']);
+				$fileOptions['compress'] = FALSE;
 				$fileOptions['file'] = $compressedFilename;
 				$filesAfterCompression[$compressedFilename] = $fileOptions;
 			} else {

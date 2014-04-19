@@ -35,7 +35,7 @@ use TYPO3\CMS\Core\Resource\ResourceCompressor;
 class ResourceCompressorTest extends BaseTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Core\Resource\ResourceCompressor
+	 * @var \TYPO3\CMS\Core\Resource\ResourceCompressor|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
 	protected $subject;
 
@@ -44,7 +44,7 @@ class ResourceCompressorTest extends BaseTestCase {
 	 */
 	public function setUp() {
 		parent::setUp();
-		$this->subject = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Resource\\ResourceCompressor', array('dummy'));
+		$this->subject = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Resource\\ResourceCompressor', array('compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory'));
 	}
 
 	/**
@@ -87,6 +87,105 @@ class ResourceCompressorTest extends BaseTestCase {
 		$result = $this->subject->_call('cssFixStatements', $input);
 		$resultWithReadableLinefeed = str_replace(LF, 'LF', $result);
 		$this->assertEquals($expected, $resultWithReadableLinefeed);
+	}
+
+	/**
+	 * @test
+	 */
+	public function compressedCssFileIsFlaggedToNotCompressAgain() {
+		$fileName = 'fooFile.css';
+		$compressedFileName = $fileName . '.gz';
+		$testFileFixture = array(
+			$fileName => array(
+				'file' => $fileName,
+				'compress' => TRUE,
+			)
+		);
+		$this->subject->expects($this->once())
+			->method('compressCssFile')
+			->with($fileName)
+			->will($this->returnValue($compressedFileName));
+
+		$result = $this->subject->compressCssFiles($testFileFixture);
+
+		$this->assertArrayHasKey($compressedFileName, $result);
+		$this->assertArrayHasKey('compress', $result[$compressedFileName]);
+		$this->assertFalse($result[$compressedFileName]['compress']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function compressedJsFileIsFlaggedToNotCompressAgain() {
+		$fileName = 'fooFile.js';
+		$compressedFileName = $fileName . '.gz';
+		$testFileFixture = array(
+			$fileName => array(
+				'file' => $fileName,
+				'compress' => TRUE,
+			)
+		);
+		$this->subject->expects($this->once())
+			->method('compressJsFile')
+			->with($fileName)
+			->will($this->returnValue($compressedFileName));
+
+		$result = $this->subject->compressJsFiles($testFileFixture);
+
+		$this->assertArrayHasKey($compressedFileName, $result);
+		$this->assertArrayHasKey('compress', $result[$compressedFileName]);
+		$this->assertFalse($result[$compressedFileName]['compress']);
+	}
+
+
+	/**
+	 * @test
+	 */
+	public function concatenatedCssFileIsFlaggedToNotConcatenateAgain() {
+		$fileName = 'fooFile.css';
+		$concatenatedFileName = 'merged_' . $fileName;
+		$testFileFixture = array(
+			$fileName => array(
+				'file' => $fileName,
+				'excludeFromConcatenation' => FALSE,
+				'media' => 'all',
+			)
+		);
+		$this->subject->expects($this->once())
+			->method('createMergedCssFile')
+			->will($this->returnValue($concatenatedFileName));
+		$this->subject->setRelativePath('');
+
+		$result = $this->subject->concatenateCssFiles($testFileFixture);
+
+		$this->assertArrayHasKey($concatenatedFileName, $result);
+		$this->assertArrayHasKey('excludeFromConcatenation', $result[$concatenatedFileName]);
+		$this->assertTrue($result[$concatenatedFileName]['excludeFromConcatenation']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function concatenatedJsFileIsFlaggedToNotConcatenateAgain() {
+		$fileName = 'fooFile.js';
+		$concatenatedFileName = 'merged_' . $fileName;
+		$testFileFixture = array(
+			$fileName => array(
+				'file' => $fileName,
+				'excludeFromConcatenation' => FALSE,
+				'section' => 'top',
+			)
+		);
+		$this->subject->expects($this->once())
+			->method('createMergedJsFile')
+			->will($this->returnValue($concatenatedFileName));
+		$this->subject->setRelativePath('');
+
+		$result = $this->subject->concatenateJsFiles($testFileFixture);
+
+		$this->assertArrayHasKey($concatenatedFileName, $result);
+		$this->assertArrayHasKey('excludeFromConcatenation', $result[$concatenatedFileName]);
+		$this->assertTrue($result[$concatenatedFileName]['excludeFromConcatenation']);
 	}
 
 }
