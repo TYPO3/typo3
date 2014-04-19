@@ -29,6 +29,8 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
  */
 class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 
+	protected $coreExtensionsToLoad = array('fluid');
+
 	/**
 	 * @test
 	 */

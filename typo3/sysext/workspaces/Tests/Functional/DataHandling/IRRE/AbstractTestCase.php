@@ -48,7 +48,11 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\Functional\DataHan
 	const COMMAND_Version_Flush = 'flush';
 	const COMMAND_Version_Clear = 'clearWSID';
 
-	protected $coreExtensionsToLoad = array('version', 'workspaces');
+	protected $coreExtensionsToLoad = array(
+		'fluid',
+		'version',
+		'workspaces'
+	);
 
 	/**
 	 * @var integer

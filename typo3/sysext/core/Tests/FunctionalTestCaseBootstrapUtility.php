@@ -58,14 +58,8 @@ class FunctionalTestCaseBootstrapUtility {
 		'frontend',
 		'cms',
 		'lang',
-		'sv',
-		'extensionmanager',
-		'recordlist',
 		'extbase',
-		'fluid',
-		'cshmanual',
 		'install',
-		'saltedpasswords'
 	);
 
 	/**
@@ -101,38 +95,40 @@ class FunctionalTestCaseBootstrapUtility {
 	) {
 		$this->setUpIdentifier($testCaseClassName);
 		$this->setUpInstancePath();
-		$this->removeOldInstanceIfExists();
-		$this->setUpInstanceDirectories($additionalFoldersToCreate);
-		$this->setUpInstanceCoreLinks();
-		$this->linkTestExtensionsToInstance($testExtensionsToLoad);
-		$this->linkPathsInTestInstance($pathsToLinkInTestInstance);
-		$this->setUpLocalConfiguration($configurationToUse);
-		$this->setUpPackageStates($coreExtensionsToLoad, $testExtensionsToLoad);
-		$this->setUpBasicTypo3Bootstrap();
-		$this->setUpTestDatabase();
-		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadExtensionTables(TRUE);
-		$this->createDatabaseStructure();
+		if ($this->recentTestInstanceExists()) {
+			$this->setUpBasicTypo3Bootstrap();
+			$this->initializeTestDatabase();
+			\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadExtensionTables(TRUE);
+		} else {
+			$this->removeOldInstanceIfExists();
+			$this->setUpInstanceDirectories($additionalFoldersToCreate);
+			$this->setUpInstanceCoreLinks();
+			$this->linkTestExtensionsToInstance($testExtensionsToLoad);
+			$this->linkPathsInTestInstance($pathsToLinkInTestInstance);
+			$this->setUpLocalConfiguration($configurationToUse);
+			$this->setUpPackageStates($coreExtensionsToLoad, $testExtensionsToLoad);
+			$this->setUpBasicTypo3Bootstrap();
+			$this->setUpTestDatabase();
+			\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadExtensionTables(TRUE);
+			$this->createDatabaseStructure();
+        }
 
 		return $this->instancePath;
 	}
 
 	/**
-	 * Tear down destroys the instance and database.
+	 * Checks whether the current test instance exists and is younger than
+	 * some minutes.
 	 *
-	 * @throws Exception
-	 * @return void
+	 * @return bool
 	 */
-	public function tearDown() {
-		$classLoader = \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getEarlyInstance('TYPO3\\CMS\\Core\\Core\\ClassLoader');
-		spl_autoload_unregister(array($classLoader, 'loadClass'));
-		if (empty($this->identifier)) {
-			throw new Exception(
-				'Test identifier not set. Is parent::setUp() called in setUp()?',
-				1376739702
-			);
+	protected function recentTestInstanceExists() {
+		if (@file_get_contents($this->instancePath . '/last_run.txt') <= (time() - 300)) {
+			return FALSE;
+		} else {
+			// Test instance exists and is pretty young -> re-use
+			return TRUE;
 		}
-		$this->tearDownTestDatabase();
-		$this->removeInstance();
 	}
 
 	/**
@@ -186,6 +182,9 @@ class FunctionalTestCaseBootstrapUtility {
 				);
 			}
 		}
+
+		// Store the time we created this directory
+		file_put_contents($this->instancePath . '/last_run.txt', time());
 	}
 
 	/**
@@ -438,8 +437,8 @@ class FunctionalTestCaseBootstrapUtility {
 		require_once $this->instancePath . '/typo3/sysext/core/Classes/Core/Bootstrap.php';
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()
 			->baseSetup('')
-			->loadConfigurationAndInitialize(FALSE)
-			->loadTypo3LoadedExtAndExtLocalconf(FALSE)
+			->loadConfigurationAndInitialize(TRUE)
+			->loadTypo3LoadedExtAndExtLocalconf(TRUE)
 			->applyAdditionalConfigurationSettings();
 	}
 
@@ -476,6 +475,32 @@ class FunctionalTestCaseBootstrapUtility {
 		}
 		$database->setDatabaseName($this->databaseName);
 		$database->sql_select_db($this->databaseName);
+	}
+
+	/**
+	 * Populate $GLOBALS['TYPO3_DB'] reusing an existing database with
+	 * all tables truncated.
+	 *
+	 * @throws \TYPO3\CMS\Core\Tests\Exception
+	 * @return void
+	 */
+	protected function initializeTestDatabase() {
+		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->initializeTypo3DbGlobal();
+		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection $database */
+		$database = $GLOBALS['TYPO3_DB'];
+		if (!$database->sql_pconnect()) {
+			throw new Exception(
+				'TYPO3 Fatal Error: The current username, password or host was not accepted when the'
+				. ' connection to the database was attempted to be established!',
+				1377620117
+			);
+		}
+		$this->databaseName = $GLOBALS['TYPO3_CONF_VARS']['DB']['database'];
+		$database->setDatabaseName($this->databaseName);
+		$database->sql_select_db($this->databaseName);
+		foreach ($database->admin_get_tables() as $table) {
+			$database->admin_query('TRUNCATE ' . $table['Name'] . ';');
+		}
 	}
 
 	/**

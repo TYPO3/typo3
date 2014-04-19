@@ -199,24 +199,6 @@ abstract class FunctionalTestCase extends BaseTestCase {
 	}
 
 	/**
-	 * Tear down destroys the instance and database.
-	 *
-	 * This method should be called with parent::tearDown() in your test cases!
-	 *
-	 * @throws Exception
-	 * @return void
-	 */
-	public function tearDown() {
-		if (!($this->bootstrapUtility instanceof FunctionalTestCaseBootstrapUtility)) {
-			throw new Exception(
-				'Bootstrap utility not set. Is parent::setUp() called in setUp()?',
-				1376826527
-			);
-		}
-		$this->bootstrapUtility->tearDown();
-	}
-
-	/**
 	 * Get DatabaseConnection instance - $GLOBALS['TYPO3_DB']
 	 *
 	 * This method should be used instead of direct access to
