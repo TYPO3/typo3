@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Page;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Page\PageRenderer;
 
 /**
  * Unit test case
@@ -30,6 +31,18 @@ namespace TYPO3\CMS\Core\Tests\Unit\Page;
  * @see According functional test case
  */
 class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+
+	/**
+	 * @test
+	 */
+	public function renderMethodCallsResetInAnyCase() {
+		$pageRenderer = $this->getMock('TYPO3\\CMS\\Core\\Page\\PageRenderer', array('reset', 'prepareRendering', 'renderJavaScriptAndCss', 'getPreparedMarkerArray', 'getTemplateForPart'));
+		$pageRenderer->expects($this->exactly(3))->method('reset');
+
+		$pageRenderer->render(PageRenderer::PART_COMPLETE);
+		$pageRenderer->render(PageRenderer::PART_HEADER);
+		$pageRenderer->render(PageRenderer::PART_FOOTER);
+	}
 
 	/**
 	 * @expectedException \UnexpectedValueException
