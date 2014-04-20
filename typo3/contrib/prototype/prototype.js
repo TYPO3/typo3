@@ -3147,7 +3147,7 @@ Ajax.PeriodicalUpdater = Class.create(Ajax.Base, {
 
 
   function getOpacity(element) {
-    return Element.getStyle(element, 'opacity');
+    return parseFloat(Element.getStyle(element, 'opacity'));
   }
 
   function getOpacity_IE(element) {
