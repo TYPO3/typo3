@@ -23,10 +23,10 @@
 		"irc": "irc://irc.freenode.net/#typo3-cms",
 		"news": "nntp://lists.typo3.org"
 	},
-    "config": {
-        "vendor-dir": "Packages/Libraries",
-        "bin-dir": "bin"
-    },
+	"config": {
+		"vendor-dir": "Packages/Libraries",
+		"bin-dir": "bin"
+	},
 	"require": {
 		"php": ">=5.3.7",
 		"ext-fileinfo": "*",
@@ -37,7 +37,7 @@
 	},
 	"require-dev": {
 		"mikey179/vfsStream": "1.3.*@dev",
-		"phpunit/phpunit": "3.7.*"
+		"phpunit/phpunit": "4.1.*"
 	},
 	"suggest": {
 		"ext-gd": "GDlib/Freetype is required for building images with text (GIFBUILDER) and can also be used to scale images",

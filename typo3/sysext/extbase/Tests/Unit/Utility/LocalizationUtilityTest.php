@@ -24,15 +24,19 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+
 /**
  * Test case
  */
 class LocalizationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Utility\LocalizationUtility|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+	 * Instance of configurationManager, injected to subject
+	 *
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManager
 	 */
-	protected $localization;
+	protected $configurationManagerMock;
 
 	/**
 	 * LOCAL_LANG array fixture
@@ -152,8 +156,39 @@ class LocalizationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		),
 	);
 
+	/**
+	 * Prepare class mocking some dependencies
+	 */
 	public function setUp() {
-		$this->localization = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Utility\\LocalizationUtility', array('getConfigurationManager'));
+		$reflectionClass = new \ReflectionClass('TYPO3\\CMS\\Extbase\\Utility\\LocalizationUtility');
+
+		$this->configurationManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager', array('getConfiguration'));
+		$property = $reflectionClass->getProperty('configurationManager');
+		$property->setAccessible(TRUE);
+		$property->setValue($this->configurationManager);
+	}
+
+	/**
+	 * Reset static properties
+	 */
+	public function tearDown() {
+		$reflectionClass = new \ReflectionClass('TYPO3\\CMS\\Extbase\\Utility\\LocalizationUtility');
+
+		$property = $reflectionClass->getProperty('configurationManager');
+		$property->setAccessible(TRUE);
+		$property->setValue(NULL);
+
+		$property = $reflectionClass->getProperty('LOCAL_LANG');
+		$property->setAccessible(TRUE);
+		$property->setValue(array());
+
+		$property = $reflectionClass->getProperty('languageKey');
+		$property->setAccessible(TRUE);
+		$property->setValue('default');
+
+		$property = $reflectionClass->getProperty('alternativeLanguageKeys');
+		$property->setAccessible(TRUE);
+		$property->setValue(array());
 	}
 
 	/**
@@ -161,13 +196,17 @@ class LocalizationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function implodeTypoScriptLabelArrayWorks() {
+		$reflectionClass = new \ReflectionClass('TYPO3\\CMS\\Extbase\\Utility\\LocalizationUtility');
+		$method = $reflectionClass->getMethod('flattenTypoScriptLabelArray');
+		$method->setAccessible(TRUE);
+
 		$expected = array(
 			'key1' => 'value1',
 			'key2' => 'value2',
 			'key3.subkey1' => 'subvalue1',
 			'key3.subkey2.subsubkey' => 'val'
 		);
-		$actual = $this->localization->_call('flattenTypoScriptLabelArray', array(
+		$input = array(
 			'key1' => 'value1',
 			'key2' => 'value2',
 			'key3' => array(
@@ -176,28 +215,23 @@ class LocalizationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					'subsubkey' => 'val'
 				)
 			)
-		));
-		$this->assertEquals($expected, $actual);
+		);
+		$result = $method->invoke(NULL, $input);
+		$this->assertEquals($expected, $result);
 	}
 
 	/**
 	 * @test
 	 */
 	public function translateForEmptyStringKeyReturnsNull() {
-		$this->localization->_setStatic('LOCAL_LANG', array());
-		$configurationManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager', array('getConfiguration'));
-		$this->localization->staticExpects($this->atLeastOnce())->method('getConfigurationManager')->will($this->returnValue($configurationManager));
-		$this->assertNull($this->localization->translate('', 'extbase'));
+		$this->assertNull(LocalizationUtility::translate('', 'extbase'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function translateForEmptyStringKeyWithArgumentsReturnsNull() {
-		$this->localization->_setStatic('LOCAL_LANG', array());
-		$configurationManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager', array('getConfiguration'));
-		$this->localization->staticExpects($this->atLeastOnce())->method('getConfigurationManager')->will($this->returnValue($configurationManager));
-		$this->assertNull($this->localization->translate('', 'extbase', array('argument')));
+		$this->assertNull(LocalizationUtility::translate('', 'extbase', array('argument')));
 	}
 
 	/**
@@ -246,11 +280,21 @@ class LocalizationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function translateTest($key, array $LOCAL_LANG, $languageKey, $expected, array $altLanguageKeys = array(), array $arguments = NULL) {
-		$this->localization->_setStatic('LOCAL_LANG', $LOCAL_LANG);
-		$this->localization->_setStatic('languageKey', $languageKey);
-		$this->localization->_setStatic('alternativeLanguageKeys', $altLanguageKeys);
+		$reflectionClass = new \ReflectionClass('TYPO3\\CMS\\Extbase\\Utility\\LocalizationUtility');
 
-		$this->assertEquals($expected, $this->localization->translate($key, 'extensionKey', $arguments));
+		$property = $reflectionClass->getProperty('LOCAL_LANG');
+		$property->setAccessible(TRUE);
+		$property->setValue($LOCAL_LANG);
+
+		$property = $reflectionClass->getProperty('languageKey');
+		$property->setAccessible(TRUE);
+		$property->setValue($languageKey);
+
+		$property = $reflectionClass->getProperty('alternativeLanguageKeys');
+		$property->setAccessible(TRUE);
+		$property->setValue($altLanguageKeys);
+
+		$this->assertEquals($expected, LocalizationUtility::translate($key, 'extensionKey', $arguments));
 	}
 
 	/**
@@ -356,20 +400,27 @@ class LocalizationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function loadTypoScriptLabels(array $LOCAL_LANG, array $typoScriptLocalLang, $languageKey, array $expected) {
+		$reflectionClass = new \ReflectionClass('TYPO3\\CMS\\Extbase\\Utility\\LocalizationUtility');
+
+		$property = $reflectionClass->getProperty('LOCAL_LANG');
+		$property->setAccessible(TRUE);
+		$property->setValue($LOCAL_LANG);
+
+		$property = $reflectionClass->getProperty('languageKey');
+		$property->setAccessible(TRUE);
+		$property->setValue($languageKey);
 
 		$configurationType = \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
+		$this->configurationManager->expects($this->at(0))->method('getConfiguration')->with($configurationType, 'extensionKey', NULL)->will($this->returnValue($typoScriptLocalLang));
 
-		$configurationManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager', array('getConfiguration'));
-		$configurationManager->expects($this->at(0))->method('getConfiguration')->with($configurationType, 'extensionKey', NULL)->will($this->returnValue($typoScriptLocalLang));
+		$method = $reflectionClass->getMethod('loadTypoScriptLabels');
+		$method->setAccessible(TRUE);
+		$method->invoke(NULL, 'extensionKey');
 
-		$this->localization->staticExpects($this->atLeastOnce())->method('getConfigurationManager')->will($this->returnValue($configurationManager));
+		$property = $reflectionClass->getProperty('LOCAL_LANG');
+		$property->setAccessible(TRUE);
+		$result = $property->getValue();
 
-		// translations loaded from xml files
-		$this->localization->_setStatic('LOCAL_LANG', $LOCAL_LANG);
-		$this->localization->_setStatic('languageKey', $languageKey);
-
-		$this->localization->_call('loadTypoScriptLabels', 'extensionKey');
-		$result = $this->localization->_getStatic('LOCAL_LANG');
 		$this->assertEquals($expected, $result['extensionKey'][$languageKey]);
 	}
 
@@ -378,8 +429,15 @@ class LocalizationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function clearLabelWithTypoScript() {
-		$this->localization->_setStatic('LOCAL_LANG', $this->LOCAL_LANG);
-		$this->localization->_setStatic('languageKey', 'dk');
+		$reflectionClass = new \ReflectionClass('TYPO3\\CMS\\Extbase\\Utility\\LocalizationUtility');
+
+		$property = $reflectionClass->getProperty('LOCAL_LANG');
+		$property->setAccessible(TRUE);
+		$property->setValue($this->LOCAL_LANG);
+
+		$property = $reflectionClass->getProperty('languageKey');
+		$property->setAccessible(TRUE);
+		$property->setValue('dk');
 
 		$typoScriptLocalLang = array(
 			'_LOCAL_LANG' => array(
@@ -390,14 +448,13 @@ class LocalizationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 
 		$configurationType = \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
+		$this->configurationManager->expects($this->at(0))->method('getConfiguration')->with($configurationType, 'extensionKey', NULL)->will($this->returnValue($typoScriptLocalLang));
 
-		$configurationManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager', array('getConfiguration'));
-		$configurationManager->expects($this->at(0))->method('getConfiguration')->with($configurationType, 'extensionKey', NULL)->will($this->returnValue($typoScriptLocalLang));
+		$method = $reflectionClass->getMethod('loadTypoScriptLabels');
+		$method->setAccessible(TRUE);
+		$method->invoke(NULL, 'extensionKey');
 
-		$this->localization->staticExpects($this->atLeastOnce())->method('getConfigurationManager')->will($this->returnValue($configurationManager));
-
-		$this->localization->_call('loadTypoScriptLabels', 'extensionKey');
-		$result = $this->localization->translate('key1', 'extensionKey');
+		$result = LocalizationUtility::translate('key1', 'extensionKey');
 		$this->assertNotNull($result);
 		$this->assertEquals('', $result);
 	}

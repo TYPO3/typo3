@@ -78,6 +78,11 @@ class LocalizationUtility {
 	static protected $alternativeLanguageKeys = array();
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+	 */
+	static protected $configurationManager = NULL;
+
+	/**
 	 * Returns the localized label of the LOCAL_LANG key, $key.
 	 *
 	 * @param string $key The key from the LOCAL_LANG array for which to return the value.
@@ -298,8 +303,12 @@ class LocalizationUtility {
 	 * @return \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 */
 	static protected function getConfigurationManager() {
+		if (!is_null(static::$configurationManager)) {
+			return static::$configurationManager;
+		}
 		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		$configurationManager = $objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
+		static::$configurationManager = $configurationManager;
 		return $configurationManager;
 	}
 }

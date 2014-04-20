@@ -130,7 +130,6 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @see http://forge.typo3.org/issues/20994
 	 */
 	public function getProcessedValueForZeroStringIsZero() {
-		$subject = new BackendUtility();
 		$GLOBALS['TCA'] = array(
 			'tt_content' => array(
 				'columns' => array(
@@ -142,7 +141,7 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				),
 			),
 		);
-		$this->assertEquals('0', $subject->getProcessedValue('tt_content', 'header', '0'));
+		$this->assertEquals('0', BackendUtility::getProcessedValue('tt_content', 'header', '0'));
 	}
 
 	/**
@@ -167,6 +166,36 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getProcessedValueForGroupWithOneAllowedTable() {
+		// Disable getRecordWSOL and getRecordTitle dependency by returning stable results
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Backend\Utility\BackendUtility $subject */
+		$className = uniqid('BackendUtility');
+		$subject = __NAMESPACE__ . '\\' . $className;
+		eval(
+			'namespace ' . __NAMESPACE__ . ';' .
+			'class ' . $className . ' extends \\TYPO3\\CMS\\Backend\\Utility\\BackendUtility {' .
+			'  static public function getRecordWSOL() {' .
+			'    static $called = 0;' .
+			'    ++$called;' .
+			'    if ($called === 1) {' .
+			'      return array(\'title\' => \'Page 1\');' .
+			'    }' .
+			'    if ($called === 2) {' .
+			'      return array(\'title\' => \'Page 2\');' .
+			'    }' .
+			'  }' .
+			'  static public function getRecordTitle() {' .
+			'    static $called = 0;' .
+			'    ++$called;' .
+			'    if ($called === 1) {' .
+			'      return \'Page 1\';' .
+			'    }' .
+			'    if ($called === 2) {' .
+			'      return \'Page 2\';' .
+			'    }' .
+			'  }' .
+			'}'
+		);
+
 		$GLOBALS['TCA'] = array(
 			'tt_content' => array(
 				'columns' => array(
@@ -184,19 +213,44 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				),
 			),
 		);
-		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Backend\Utility\BackendUtility $subject */
-		$subject = $this->getMock('TYPO3\\CMS\\Backend\\Utility\\BackendUtility', array('getRecordWSOL', 'getRecordTitle'));
-		$subject->staticExpects($this->at(0))->method('getRecordWSOL')->will($this->returnValue(array('title' => 'Page 1')));
-		$subject->staticExpects($this->at(1))->method('getRecordTitle')->will($this->returnValue('Page 1'));
-		$subject->staticExpects($this->at(2))->method('getRecordWSOL')->will($this->returnValue(array('title' => 'Page 2')));
-		$subject->staticExpects($this->at(3))->method('getRecordTitle')->will($this->returnValue('Page 2'));
-		$this->assertSame('Page 1, Page 2', $subject->getProcessedValue('tt_content', 'pages', '1,2'));
+
+		$this->assertSame('Page 1, Page 2', $subject::getProcessedValue('tt_content', 'pages', '1,2'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function getProcessedValueForGroupWithMultipleAllowedTables() {
+		// Disable getRecordWSOL and getRecordTitle dependency by returning stable results
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Backend\Utility\BackendUtility $subject */
+		$className = uniqid('BackendUtility');
+		$subject = __NAMESPACE__ . '\\' . $className;
+		eval(
+			'namespace ' . __NAMESPACE__ . ';' .
+			'class ' . $className . ' extends \\TYPO3\\CMS\\Backend\\Utility\\BackendUtility {' .
+			'  static public function getRecordWSOL() {' .
+			'    static $called = 0;' .
+			'    ++$called;' .
+			'    if ($called === 1) {' .
+			'      return array(\'title\' => \'Page 1\');' .
+			'    }' .
+			'    if ($called === 2) {' .
+			'      return array(\'header\' => \'Content 2\');' .
+			'    }' .
+			'  }' .
+			'  static public function getRecordTitle() {' .
+			'    static $called = 0;' .
+			'    ++$called;' .
+			'    if ($called === 1) {' .
+			'      return \'Page 1\';' .
+			'    }' .
+			'    if ($called === 2) {' .
+			'      return \'Content 2\';' .
+			'    }' .
+			'  }' .
+			'}'
+		);
+
 		$GLOBALS['TCA'] = array(
 			'sys_category' => array(
 				'columns' => array(
@@ -212,13 +266,8 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				),
 			),
 		);
-		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Backend\Utility\BackendUtility $subject */
-		$subject = $this->getMock('TYPO3\\CMS\\Backend\\Utility\\BackendUtility', array('getRecordWSOL', 'getRecordTitle'));
-		$subject->staticExpects($this->at(0))->method('getRecordWSOL')->will($this->returnValue(array('title' => 'Page 1')));
-		$subject->staticExpects($this->at(1))->method('getRecordTitle')->will($this->returnValue('Page 1'));
-		$subject->staticExpects($this->at(2))->method('getRecordWSOL')->will($this->returnValue(array('header' => 'Content 2')));
-		$subject->staticExpects($this->at(3))->method('getRecordTitle')->will($this->returnValue('Content 2'));
-		$this->assertSame('Page 1, Content 2', $subject->getProcessedValue('sys_category', 'items', 'pages_1,tt_content_2'));
+
+		$this->assertSame('Page 1, Content 2', $subject::getProcessedValue('sys_category', 'items', 'pages_1,tt_content_2'));
 	}
 
 	/**
@@ -475,10 +524,21 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider getLabelFromItemListMergedReturnsCorrectFieldsDataProvider
 	 */
 	public function getLabelFromItemListMergedReturnsCorrectFields($pageId, $table, $column = '', $key = '', array $tca, $expectedLabel = '') {
+		// Disable getPagesTSconfig by returning stable result
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Backend\Utility\BackendUtility $subject */
+		$className = uniqid('BackendUtility');
+		$subject = __NAMESPACE__ . '\\' . $className;
+		eval(
+			'namespace ' . __NAMESPACE__ . ';' .
+			'class ' . $className . ' extends \\TYPO3\\CMS\\Backend\\Utility\\BackendUtility {' .
+			'  static public function getPagesTSconfig() {' .
+			'    return array();' .
+			'  }' .
+			'}'
+		);
+
 		$GLOBALS['TCA'][$table] = $tca;
-		/** @var \TYPO3\CMS\Backend\Utility\BackendUtility|\PHPUnit_Framework_MockObject_MockObject $subject */
-		$subject = $this->getMockClass('TYPO3\\CMS\\Backend\\Utility\\BackendUtility', array('getPagesTSconfig'), array(), '', FALSE);
-		$subject::staticExpects($this->once())->method('getPagesTSconfig')->will($this->returnValue(array()));
+
 		$this->assertEquals($expectedLabel, $subject::getLabelFromItemListMerged($pageId, $table, $column, $key));
 	}
 
@@ -713,6 +773,18 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider getExcludeFieldsDataProvider
 	 */
 	public function getExcludeFieldsReturnsCorrectFieldList($tca, $expected) {
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Backend\Utility\BackendUtility $subject */
+		$className = uniqid('BackendUtility');
+		$subject = __NAMESPACE__ . '\\' . $className;
+		eval(
+			'namespace ' . __NAMESPACE__ . ';' .
+			'class ' . $className . ' extends \\TYPO3\\CMS\\Backend\\Utility\\BackendUtility {' .
+			'  static public function getRegisteredFlexForms() {' .
+			'    return array();' .
+			'  }' .
+			'}'
+		);
+
 		$GLOBALS['TCA'] = $tca;
 
 		// Stub LanguageService and let sL() return the same value that came in again
@@ -723,9 +795,7 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					return $name;
 				}
 			));
-		/** @var \TYPO3\CMS\Backend\Utility\BackendUtility|\PHPUnit_Framework_MockObject_MockObject $subject */
-		$subject = $this->getMockClass('TYPO3\\CMS\\Backend\\Utility\\BackendUtility', array('getRegisteredFlexForms'), array(), '', FALSE);
-		$subject::staticExpects($this->any())->method('getRegisteredFlexForms')->will($this->returnValue(array()));
+
 		$this->assertSame($expected, $subject::getExcludeFields());
 	}
 
@@ -733,35 +803,6 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getExcludeFieldsReturnsCorrectListWithFlexFormFields() {
-		$parsedFlexForm = array(
-			'abarfoo' => array(
-				'dummy' => array(
-					'title' => 'dummy',
-					'ds' => array(
-						'sheets' => array(
-							'sGeneral' => array(
-								'ROOT' => array(
-									'type' => 'array',
-									'el' => array(
-										'xmlTitle' => array(
-											'TCEforms' => array(
-												'exclude' => 1,
-												'label' => 'The Title:',
-												'config' => array(
-													'type' => 'input',
-													'size' => 48,
-												),
-											),
-										),
-									),
-								),
-							),
-						),
-					),
-				),
-			),
-		);
-
 		$GLOBALS['TCA'] = array(
 			'tx_foo' => array(
 				'ctrl' => array(
@@ -859,20 +900,58 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				}
 			));
 
-		/** @var \TYPO3\CMS\Backend\Utility\BackendUtility|\PHPUnit_Framework_MockObject_MockObject $subject */
-		$subject = $this->getMockClass('TYPO3\\CMS\\Backend\\Utility\\BackendUtility', array('getRegisteredFlexForms'), array(), '', FALSE);
-		$subject::staticExpects($this->at(0))
-			->method('getRegisteredFlexForms')
-			->will($this->returnValue(array()));
-
-		$subject::staticExpects($this->at(1))
-			->method('getRegisteredFlexForms')
-			->with('tx_foo')
-			->will($this->returnValue($parsedFlexForm));
-
-		$subject::staticExpects($this->at(2))
-			->method('getRegisteredFlexForms')
-			->will($this->returnValue(array()));
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Backend\Utility\BackendUtility $subject */
+		$className = uniqid('BackendUtility');
+		$subject = __NAMESPACE__ . '\\' . $className;
+		eval(
+			'namespace ' . __NAMESPACE__ . ';' .
+			'class ' . $className . ' extends \\TYPO3\\CMS\\Backend\\Utility\\BackendUtility {' .
+			'  static public function getRegisteredFlexForms($table) {' .
+			'    static $called = 0;' .
+			'    ++$called;' .
+			'    if ($called === 1) {' .
+			'      return array();' .
+			'    }' .
+			'    if ($called === 2) {' .
+			'      if ($table !== \'tx_foo\') {' .
+			'        throw new Exception(\'Expected tx_foo as argument on call 2\', 1399638572);' .
+			'      }' .
+			'      $parsedFlexForm = array(' .
+			'        \'abarfoo\' => array(' .
+			'          \'dummy\' => array(' .
+			'            \'title\' => \'dummy\',' .
+			'            \'ds\' => array(' .
+			'              \'sheets\' => array(' .
+			'                \'sGeneral\' => array(' .
+			'                  \'ROOT\' => array(' .
+			'                    \'type\' => \'array\',' .
+			'                    \'el\' => array(' .
+			'                      \'xmlTitle\' => array(' .
+			'                        \'TCEforms\' => array(' .
+			'                          \'exclude\' => 1,' .
+			'                          \'label\' => \'The Title:\',' .
+			'                          \'config\' => array(' .
+			'                            \'type\' => \'input\',' .
+			'                            \'size\' => 48,' .
+			'                          ),' .
+			'                        ),' .
+			'                      ),' .
+			'                    ),' .
+			'                  ),' .
+			'                ),' .
+			'              ),' .
+			'            ),' .
+			'          ),' .
+			'        ),' .
+			'      );' .
+			'      return $parsedFlexForm;' .
+			'    }' .
+			'    if ($called === 3) {' .
+			'      return array();' .
+			'    }' .
+			'  }' .
+			'}'
+		);
 
 		$this->assertSame($expectedResult, $subject::getExcludeFields());
 	}
@@ -1106,7 +1185,7 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				'PAGE_TSCONFIG_IDLIST' => '1,a,2,b,3,c'
 			),
 		);
-		BackendUtility::replaceMarkersInWhereClause($whereClause, 'dummytable', 'dummyfield', $tsConfig);
+		BackendUtility::replaceMarkersInWhereClause($where, 'dummytable', 'dummyfield', $tsConfig);
 	}
 
 	/**
@@ -1130,9 +1209,17 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['BE_USER']->expects($this->at(0))->method('getTSConfig')->will($this->returnValue($completeConfiguration));
 		$GLOBALS['BE_USER']->expects($this->at(1))->method('getTSConfig')->will($this->returnValue(array('value' => NULL, 'properties' => NULL)));
 
-		/** @var \TYPO3\CMS\Backend\Utility\BackendUtility|\PHPUnit_Framework_MockObject_MockObject $subject */
-		$subject = $this->getMockClass('TYPO3\\CMS\\Backend\\Utility\\BackendUtility', array('getPagesTSconfig'), array(), '', FALSE);
-		$subject::staticExpects($this->any())->method('getPagesTSconfig')->will($this->returnValue(array()));
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Backend\Utility\BackendUtility $subject */
+		$className = uniqid('BackendUtility');
+		$subject = __NAMESPACE__ . '\\' . $className;
+		eval(
+			'namespace ' . __NAMESPACE__ . ';' .
+			'class ' . $className . ' extends \\TYPO3\\CMS\\Backend\\Utility\\BackendUtility {' .
+			'  static public function getPagesTSconfig() {' .
+			'    return array();' .
+			'  }' .
+			'}'
+		);
 
 		$this->assertSame($completeConfiguration, $subject::getModTSconfig(42, 'notrelevant'));
 	}
