@@ -55,7 +55,7 @@ class LoginFormHook {
 				'BackendLoginFormRsaEncryption.js'
 			);
 			foreach ($files as $file) {
-				$pageRenderer->addJsFooterFile($javascriptPath . $file);
+				$pageRenderer->addJsFile($javascriptPath . $file);
 			}
 
 			return '<form action="index.php" id="typo3-login-form" method="post" name="loginform">';

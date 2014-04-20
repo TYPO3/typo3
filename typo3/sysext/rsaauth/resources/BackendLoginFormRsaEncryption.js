@@ -6,17 +6,19 @@ TYPO3RsaBackendLogin = {
 	/**
 	 * Field in which users enter their password
 	 */
-	userPasswordField: document.loginform.p_field,
+	userPasswordField: '',
 
 	/**
 	 * Field that is used by TYPO3 to evaluate the password during login process
 	 */
-	typo3PasswordField: document.loginform.userident,
+	typo3PasswordField: '',
 
 	/**
 	 * Replace event handler of submit button
 	 */
 	initialize: function() {
+		this.userPasswordField = document.loginform.p_field;
+		this.typo3PasswordField = document.loginform.userident;
 		var submitButton = $('t3-login-submit');
 		Event.stopObserving(
 			submitButton,
