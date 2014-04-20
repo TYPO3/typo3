@@ -1949,9 +1949,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 		$metaTags = implode(LF, $this->metaTags);
 		$markerArray = $this->getPreparedMarkerArray($jsLibs, $jsFiles, $jsFooterFiles, $cssLibs, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs, $metaTags);
 		$template = $this->getTemplateForPart($part);
-		if ($part === self::PART_COMPLETE) {
-			$this->reset();
-		}
+		$this->reset();
 		return trim(\TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($template, $markerArray, '###|###'));
 	}
 
@@ -2146,7 +2144,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 		if ($this->removeLineBreaksFromTemplate) {
 			$template = strtr($template, array(LF => '', CR => ''));
 		}
-		if ($part !== self::PART_COMPLETE) {
+		if ($part != self::PART_COMPLETE) {
 			$templatePart = explode('###BODY###', $template);
 			$template = $templatePart[$part - 1];
 		}
