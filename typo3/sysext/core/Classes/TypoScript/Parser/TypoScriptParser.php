@@ -928,22 +928,26 @@ class TypoScriptParser {
 
 		// Resolve a possible relative paths if a parent file is given
 		if ($parentFilenameOrPath !== '' && $dirPath[0] === '.') {
-			$absDirPath = PathUtility::getAbsolutePathOfRelativeReferencedFileOrPath($parentFilenameOrPath, $dirPath);
+			$resolvedDirPath = PathUtility::getAbsolutePathOfRelativeReferencedFileOrPath($parentFilenameOrPath, $dirPath);
 		} else {
-			$absDirPath = $dirPath;
+			$resolvedDirPath = $dirPath;
 		}
-		$absDirPath = rtrim(GeneralUtility::getFileAbsFileName($absDirPath), '/') . '/';
-
-		$newString .= LF . '### <INCLUDE_TYPOSCRIPT: source="DIR:' . $dirPath . '"' . $optionalProperties . '> BEGIN:' . LF;
-		// Get alphabetically sorted file index in array
-		$fileIndex = GeneralUtility::getAllFilesAndFoldersInPath(array(), $absDirPath, $includedFileExtensions);
-		// Prepend file contents to $newString
-		$prefixLength = strlen(PATH_site);
-		foreach ($fileIndex as $absFileRef) {
-			$relFileRef = substr($absFileRef, $prefixLength);
-			self::includeFile($relFileRef, $cycle_counter, $returnFiles, $newString, $includedFiles, '', $absDirPath);
+		$absDirPath = GeneralUtility::getFileAbsFileName($resolvedDirPath);
+		if ($absDirPath) {
+			$absDirPath = rtrim($absDirPath, '/') . '/';
+			$newString .= LF . '### <INCLUDE_TYPOSCRIPT: source="DIR:' . $dirPath . '"' . $optionalProperties . '> BEGIN:' . LF;
+			// Get alphabetically sorted file index in array
+			$fileIndex = GeneralUtility::getAllFilesAndFoldersInPath(array(), $absDirPath, $includedFileExtensions);
+			// Prepend file contents to $newString
+			$prefixLength = strlen(PATH_site);
+			foreach ($fileIndex as $absFileRef) {
+				$relFileRef = substr($absFileRef, $prefixLength);
+				self::includeFile($relFileRef, $cycle_counter, $returnFiles, $newString, $includedFiles, '', $absDirPath);
+			}
+			$newString .= '### <INCLUDE_TYPOSCRIPT: source="DIR:' . $dirPath . '"' . $optionalProperties . '> END:' . LF . LF;
+		} else {
+			$newString .= self::typoscriptIncludeError('The path "' . $resolvedDirPath . '" is invalid.');
 		}
-		$newString .= '### <INCLUDE_TYPOSCRIPT: source="DIR:' . $dirPath . '"' . $optionalProperties . '> END:' . LF . LF;
 	}
 
 	/**
