@@ -1790,9 +1790,16 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Need extJs loaded
 	 *
 	 * @param array $array
+	 * @param bool $parseWithLanguageService
 	 * @return void
 	 */
-	public function addInlineLanguageLabelArray(array $array) {
+	public function addInlineLanguageLabelArray(array $array, $parseWithLanguageService = FALSE) {
+		if ($parseWithLanguageService === TRUE) {
+			foreach ($array as $key => $value) {
+				$array[$key] = $this->getLanguageService()->sL($value);
+			}
+		}
+
 		$this->inlineLanguageLabels = array_merge($this->inlineLanguageLabels, $array);
 	}
 
@@ -2768,6 +2775,15 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				break;
 		}
 		return $filename;
+	}
+
+	/**
+	 * Returns global language service instance
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 
 	/*****************************************************/

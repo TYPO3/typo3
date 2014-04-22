@@ -943,7 +943,7 @@ class PageGenerator {
 		}
 		// ExtJS specific code
 		if (is_array($tsfe->pSetup['inlineLanguageLabel.'])) {
-			$pageRenderer->addInlineLanguageLabelArray($tsfe->pSetup['inlineLanguageLabel.']);
+			$pageRenderer->addInlineLanguageLabelArray($tsfe->pSetup['inlineLanguageLabel.'], TRUE);
 		}
 		if (is_array($tsfe->pSetup['inlineSettings.'])) {
 			$pageRenderer->addInlineSettingArray('TS', $tsfe->pSetup['inlineSettings.']);
