@@ -38,14 +38,10 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 	 *
 	 * @param mode can be "db" or "file"
 	 * @param params additional params for the browser window
-	 * @param width width of the window
-	 * @param height height of the window
 	 */
-	FormEngine.openPopupWindow = setFormValueOpenBrowser = function(mode, params, width, height) {
+	FormEngine.openPopupWindow = setFormValueOpenBrowser = function(mode, params) {
 		var url = FormEngine.backPath + 'browser.php?mode=' + mode + '&bparams=' + params;
-		width = width ? width : 650;
-		height = height ? height : 650;
-		FormEngine.openedPopupWindow = window.open(url, 'Typo3WinBrowser', 'height=' + height + ',width=' + width + ',status=0,menubar=0,resizable=1,scrollbars=1');
+		FormEngine.openedPopupWindow = window.open(url, 'Typo3WinBrowser', 'height=650,width=' + (mode == 'db' ? 650 : 600) + ',status=0,menubar=0,resizable=1,scrollbars=1');
 		FormEngine.openedPopupWindow.focus();
 	};
 

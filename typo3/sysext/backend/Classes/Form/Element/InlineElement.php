@@ -885,8 +885,6 @@ class InlineElement {
 		$objectPrefix = $this->inlineNames['object'] . self::Structure_Separator . $foreign_table;
 		$mode = 'db';
 		$showUpload = FALSE;
-		$width = 0;
-		$height = 0;
 		if (!empty($conf['appearance']['createNewRelationLinkTitle'])) {
 			$createNewRelationText = $GLOBALS['LANG']->sL($conf['appearance']['createNewRelationLinkTitle'], TRUE);
 		} else {
@@ -905,15 +903,9 @@ class InlineElement {
 			if (isset($config['appearance']['elementBrowserAllowed'])) {
 				$allowed = $config['appearance']['elementBrowserAllowed'];
 			}
-			if (isset($config['appearance']['elementBrowserWidth'])) {
-				$width = $config['appearance']['elementBrowserWidth'];
-			}
-			if (isset($config['appearance']['elementBrowserHeight'])) {
-				$height = $config['appearance']['elementBrowserHeight'];
-			}
 		}
 		$browserParams = '|||' . $allowed . '|' . $objectPrefix . '|inline.checkUniqueElement||inline.importElement';
-		$onClick = 'setFormValueOpenBrowser(\'' . $mode . '\', \'' . $browserParams . '\',' . (int)$width . ',' . (int)$height . '); return false;';
+		$onClick = 'setFormValueOpenBrowser(\'' . $mode . '\', \'' . $browserParams . '\'); return false;';
 
 		$item = '<a href="#" class="t3-button" onclick="' . htmlspecialchars($onClick) . '">';
 		$item .= IconUtility::getSpriteIcon('actions-insert-record', array('title' => $createNewRelationText));
