@@ -61,7 +61,18 @@ class UserFileMountService {
 			$storageRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
 			/** @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
 			$storage = $storageRepository->findByUid($storageUid);
-			if ($storage->isBrowsable()) {
+			if ($storage === NULL) {
+				/** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
+				$flashMessageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+				$queue = $flashMessageService->getMessageQueueByIdentifier();
+				$queue->enqueue(new FlashMessage('Storage #' . $storageUid . ' does not exist. No folder is currently selectable.', '', FlashMessage::ERROR));
+				if (!count($PA['items'])) {
+					$PA['items'][] = array(
+						$PA['row'][$PA['field']],
+						$PA['row'][$PA['field']]
+					);
+				}
+			} elseif ($storage->isBrowsable()) {
 				$rootLevelFolders = array();
 
 				$fileMounts = $storage->getFileMounts();
