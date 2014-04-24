@@ -40,8 +40,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Menus;
  *
  * <code title="Localized">
  * <f:be.menus.actionMenu>
- * <f:be.menus.actionMenuItem label="{f:translate(key='overview')}" controller="Blog" action="index" />
- * <f:be.menus.actionMenuItem label="{f:translate(key='create_blog')}" controller="Blog" action="new" />
+ * <f:be.menus.actionMenuItem label="{f:translate(key:'overview')}" controller="Blog" action="index" />
+ * <f:be.menus.actionMenuItem label="{f:translate(key:'create_blog')}" controller="Blog" action="new" />
  * </f:be.menus.actionMenu>
  * </code>
  * <output>
