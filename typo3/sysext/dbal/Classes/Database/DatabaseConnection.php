@@ -2912,7 +2912,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			case 'native':
 				// Compiling query:
 				$compiledQuery = $this->SQLparser->compileSQL($this->lastParsedAndMappedQueryArray);
-				if (in_array($this->lastParsedAndMappedQueryArray['type'], array('INSERT', 'DROPTABLE'))) {
+				if (in_array($this->lastParsedAndMappedQueryArray['type'], array('INSERT', 'DROPTABLE', 'ALTERTABLE'))) {
 					$result = $this->query($compiledQuery);
 				} else {
 					$result = $this->query($compiledQuery[0]);
