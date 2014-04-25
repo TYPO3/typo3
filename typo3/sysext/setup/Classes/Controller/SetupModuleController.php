@@ -499,15 +499,12 @@ class SetupModuleController {
 			}
 			switch ($type) {
 			case 'text':
-
 			case 'password':
-				if ($eval == 'md5') {
-					$more .= ' onchange="this.value=this.value?MD5(this.value):\'\';"';
-				}
-				if ($type == 'password') {
+				$noAutocomplete = '';
+				if ($type === 'password') {
 					$value = '';
+					$noAutocomplete = 'autocomplete="off" ';
 				}
-				$noAutocomplete = $type == 'password' ? 'autocomplete="off" ' : '';
 				$html = '<input id="field_' . $fieldName . '"
 							type="' . $type . '"
 							name="data' . $dataAdd . '[' . $fieldName . ']" ' . $noAutocomplete . 'value="' . htmlspecialchars($value) . '" ' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . $more . ' />';

@@ -57,7 +57,7 @@ class UserSetupHook {
 	 * Provides form code and javascript for the user setup.
 	 *
 	 * @param array $parameters Parameters to the script
-	 * @param \TYPO3\CMS\Backend\Controller\LoginController $userSetupObject Calling object: user setup module
+	 * @param \TYPO3\CMS\Setup\Controller\SetupModuleController $userSetupObject Calling object: user setup module
 	 * @return string The code for the user setup
 	 */
 	public function getLoginScripts(array $parameters, \TYPO3\CMS\Setup\Controller\SetupModuleController $userSetupObject) {

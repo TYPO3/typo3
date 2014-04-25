@@ -221,9 +221,7 @@ be ignored (except "rsauth", which is implicitely used).';
 			$problems[] = 'SaltedPasswords has been configured to enforce salted passwords (forceSalted).
 <br />
 This means that only passwords in the format of this extension will succeed for
-login.<br />
-<strong><i>IMPORTANT:</i></strong> This has the effect that passwords that are set from
-the Install Tool will not work!';
+login.';
 		}
 		// updatePasswd wont work with "forceSalted"
 		if ($extConf['updatePasswd'] && $extConf['forceSalted']) {

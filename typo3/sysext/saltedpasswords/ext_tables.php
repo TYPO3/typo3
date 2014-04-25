@@ -26,8 +26,5 @@ $operations['tx_saltedpasswords_eval_be'] = 1;
 $operations['password'] = 1;
 $GLOBALS['TCA']['be_users']['columns']['password']['config']['eval'] = implode(',', array_keys($operations));
 unset($operations);
-// Prevent md5 hashing on client side via JS
-$GLOBALS['TYPO3_USER_SETTINGS']['columns']['password']['eval'] = '';
-$GLOBALS['TYPO3_USER_SETTINGS']['columns']['password2']['eval'] = '';
 // Add context sensitive help (csh) for scheduler task
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_txsaltedpasswords', 'EXT:' . $_EXTKEY . '/locallang_csh_saltedpasswords.xlf');

@@ -41,14 +41,12 @@ if (TYPO3_MODE === 'BE') {
 				'label' => 'LLL:EXT:setup/mod/locallang.xlf:newPassword',
 				'table' => 'be_users',
 				'csh' => 'newPassword',
-				'eval' => 'md5'
 			),
 			'password2' => array(
 				'type' => 'password',
 				'label' => 'LLL:EXT:setup/mod/locallang.xlf:newPasswordAgain',
 				'table' => 'be_users',
 				'csh' => 'newPasswordAgain',
-				'eval' => 'md5'
 			),
 			'lang' => array(
 				'type' => 'select',
