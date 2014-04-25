@@ -676,7 +676,14 @@ class InlineElement {
 		}
 		// "Info": (All records)
 		if ($enabledControls['info'] && !$isNewItem) {
-			$cells['info'] = '<a href="#" onclick="' . htmlspecialchars(('top.launchView(\'' . $foreign_table . '\', \'' . $rec['uid'] . '\'); return false;')) . '">' . IconUtility::getSpriteIcon('status-dialog-information', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:showInfo', TRUE))) . '</a>';
+			if ($rec['table_local'] === 'sys_file') {
+				$uid = (int)substr($rec['uid_local'], 9);
+				$table = '_FILE';
+			} else {
+				$uid = $rec['uid'];
+				$table = $foreign_table;
+			}
+			$cells['info'] = '<a href="#" onclick="' . htmlspecialchars(('top.launchView(\'' . $table . '\', \'' . $uid . '\'); return false;')) . '">' . IconUtility::getSpriteIcon('status-dialog-information', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:showInfo', TRUE))) . '</a>';
 		}
 		// If the table is NOT a read-only table, then show these links:
 		if (!$tcaTableCtrl['readOnly'] && !$isVirtualRecord) {
