@@ -6784,7 +6784,9 @@ Form.EventObserver = Class.create(Abstract.EventObserver, {
     try {
       document.documentElement.doScroll('left');
     } catch (e) {
-      TIMER = pollDoScroll.defer();
+      // modified defer() argument value
+      // @see http://forge.typo3.org/issues/58187
+      TIMER = pollDoScroll.defer(0.01);
       return;
     }
 
@@ -6795,7 +6797,9 @@ Form.EventObserver = Class.create(Abstract.EventObserver, {
     document.addEventListener('DOMContentLoaded', fireContentLoadedEvent, false);
   } else {
     document.attachEvent('onreadystatechange', checkReadyState);
-    if (window == top) TIMER = pollDoScroll.defer();
+    // modified defer() argument value
+    // @see http://forge.typo3.org/issues/58187
+    if (window == top) TIMER = pollDoScroll.defer(0.01);
   }
 
   Event.observe(window, 'load', fireContentLoadedEvent);
