@@ -10,6 +10,7 @@ config.tx_extbase {
 	persistence{
 		enableAutomaticCacheClearing = 1
 		updateReferenceIndex = 0
+		useQueryCache = 1
 		classes {
 			TYPO3\CMS\Extbase\Domain\Model\FileMount {
 				mapping {

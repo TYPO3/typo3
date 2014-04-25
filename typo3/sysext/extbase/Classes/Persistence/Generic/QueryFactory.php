@@ -68,6 +68,9 @@ class QueryFactory implements QueryFactoryInterface, \TYPO3\CMS\Core\SingletonIn
 
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		$querySettings->setStoragePageIds(\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $frameworkConfiguration['persistence']['storagePid']));
+		if ($querySettings instanceof Typo3QuerySettings) {
+			$querySettings->useQueryCache($frameworkConfiguration['persistence']['useQueryCache']);
+		}
 		$query->setQuerySettings($querySettings);
 		return $query;
 	}

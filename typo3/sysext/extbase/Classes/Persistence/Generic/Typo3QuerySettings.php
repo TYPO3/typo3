@@ -407,7 +407,7 @@ class Typo3QuerySettings implements QuerySettingsInterface {
 	 * @return QuerySettingsInterface
 	 */
 	public function useQueryCache($useQueryCache) {
-		$this->useQueryCache = $useQueryCache;
+		$this->useQueryCache = (bool)$useQueryCache;
 		return $this;
 	}
 
@@ -415,6 +415,6 @@ class Typo3QuerySettings implements QuerySettingsInterface {
 	 * @return bool
 	 */
 	public function getUseQueryCache() {
-		return (bool)$this->useQueryCache;
+		return $this->useQueryCache;
 	}
 }
