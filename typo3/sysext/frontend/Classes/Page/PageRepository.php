@@ -1150,7 +1150,7 @@ class PageRepository {
 	 * @todo Define visibility
 	 */
 	public function getWorkspaceVersionOfRecord($workspace, $table, $uid, $fields = '*', $bypassEnableFieldsCheck = FALSE) {
-		if ($workspace !== 0) {
+		if ($workspace !== 0 && !empty($GLOBALS['TCA'][$table]['ctrl']['versioningWS'])) {
 			// Have to hardcode it for "pages" table since TCA is not loaded at this moment!
 			// Setting up enableFields for version record:
 			if ($table == 'pages') {
