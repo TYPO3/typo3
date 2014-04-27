@@ -184,22 +184,20 @@ class Check {
 	 */
 	protected function checkMaximumFileUploadSize() {
 		$maximumUploadFilesize = $this->getBytesFromSizeMeasurement(ini_get('upload_max_filesize'));
-		if ($maximumUploadFilesize < 1024 * 1024 * 10) {
+		$configuredMaximumUploadFilesize = 1024 * $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'];
+		if ($maximumUploadFilesize < $configuredMaximumUploadFilesize) {
 			$status = new Status\ErrorStatus();
 			$status->setTitle('PHP Maximum upload filesize too small');
 			$status->setMessage(
-				'upload_max_filesize=' . ini_get('upload_max_filesize') . LF .
-				'By default TYPO3 supports uploading, copying and moving' .
-				' files of sizes up to 10MB (you can alter the TYPO3 defaults' .
-				' with the config option TYPO3_CONF_VARS[BE][maxFileSize]).' .
-				' Your current PHP value is below this, so right now, PHP determines' .
-				' the limits for uploaded filesizes and not TYPO3.' .
+				'PHP upload_max_filesize = ' . (int)ini_get('upload_max_filesize') . ' MB' . LF .
+				'TYPO3_CONF_VARS[BE][maxFileSize] = ' . (int)($configuredMaximumUploadFilesize / 1024 / 1024) . ' MB' . LF . LF .
+				'Currently PHP determines the limits for uploaded file\'s sizes and not TYPO3.' .
 				' It is recommended that the value of upload_max_filesize is at least equal to the value' .
-				' of TYPO3_CONF_VARS[BE][maxFileSize]'
+				' of TYPO3_CONF_VARS[BE][maxFileSize].'
 			);
 		} else {
 			$status = new Status\OkStatus();
-			$status->setTitle('PHP Maximum file upload size is higher than or equal to 10MB');
+			$status->setTitle('PHP Maximum file upload size is higher than or equal to [BE][maxFileSize]');
 		}
 		return $status;
 	}
