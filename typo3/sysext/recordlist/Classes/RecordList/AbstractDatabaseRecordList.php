@@ -291,6 +291,12 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	public $modTSconfig;
 
 	/**
+	 * Override/add urlparameters in listUrl() method
+	 * @var array
+	 */
+	protected $overrideUrlParameters = array();
+
+	/**
 	 * Initializes the list generation
 	 *
 	 * @param integer $id Page id for which the list is rendered. Must be >= 0
@@ -853,11 +859,9 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 			$urlParameters['sortRev'] = $this->sortRev;
 		}
 
-		// Current request GET arguments might be required by module so we add them to url
-		// GET array contains also controller and action names required to generate valid pagination url
-		$urlParameters = array_replace_recursive(GeneralUtility::_GET(), $urlParameters);
+		$urlParameters = array_merge_recursive($urlParameters, $this->overrideUrlParameters);
 
-		return BackendUtility::getModuleUrl($urlParameters['M'], $urlParameters);
+		return BackendUtility::getModuleUrl(GeneralUtility::_GP('M'), $urlParameters);
 	}
 
 	/**
@@ -1000,6 +1004,16 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 				\TYPO3\CMS\Core\Utility\HttpUtility::redirect($location);
 			}
 		}
+	}
+
+	/**
+	 * Set URL parameters to override or add in the listUrl() method.
+	 *
+	 * @param array $urlParameters
+	 * @return void
+	 */
+	public function setOverrideUrlParameters(array $urlParameters) {
+		$this->overrideUrlParameters = $urlParameters;
 	}
 
 }
