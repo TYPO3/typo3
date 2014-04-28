@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * The Inline-Relational-Record-Editing (IRRE) functions as part of the TCEforms.
@@ -1747,9 +1748,13 @@ class InlineElement {
 	 */
 	public function getRecord($pid, $table, $uid, $cmd = '') {
 		// Fetch workspace version of a record (if any):
-		if ($cmd !== 'new' && $GLOBALS['BE_USER']->workspace !== 0) {
-			$workspaceVersion = BackendUtility::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $table, $uid, 'uid');
+		if ($cmd !== 'new' && $GLOBALS['BE_USER']->workspace !== 0 && BackendUtility::isTableWorkspaceEnabled($table)) {
+			$workspaceVersion = BackendUtility::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $table, $uid, 'uid,t3ver_state');
 			if ($workspaceVersion !== FALSE) {
+				$versionState = VersionState::cast($workspaceVersion['t3ver_state']);
+				if ($versionState->equals(VersionState::DELETE_PLACEHOLDER)) {
+					return FALSE;
+				}
 				$uid = $workspaceVersion['uid'];
 			}
 		}

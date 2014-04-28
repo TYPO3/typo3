@@ -414,7 +414,7 @@ class RelationHandler {
 	}
 
 	/**
-	 * @param bool $useLiveReferences
+	 * @param bool $useLiveReferenceIds
 	 */
 	public function setUseLiveReferenceIds($useLiveReferenceIds) {
 		$this->useLiveReferenceIds = (bool)$useLiveReferenceIds;
@@ -1146,11 +1146,9 @@ class RelationHandler {
 
 	/**
 	 * @param NULL|int $workspaceId
-	 * @return bool
+	 * @return bool Whether items have been purged
 	 */
 	public function purgeItemArray($workspaceId = NULL) {
-		$itemArrayHasBeenPurged = FALSE;
-
 		if ($workspaceId === NULL) {
 			$workspaceId = $this->getWorkspaceId();
 		} else {
@@ -1164,6 +1162,33 @@ class RelationHandler {
 		} else {
 			$purgeCallback = 'purgeLiveVersionedIds';
 		}
+
+		$itemArrayHasBeenPurged = $this->purgeItemArrayHandler($purgeCallback);
+		$this->purged = ($this->purged || $itemArrayHasBeenPurged);
+		return $itemArrayHasBeenPurged;
+	}
+
+	/**
+	 * Removes items having a delete placeholder from $this->itemArray
+	 *
+	 * @return bool Whether items have been purged
+	 */
+	public function processDeletePlaceholder() {
+		if (!$this->useLiveReferenceIds || $this->getWorkspaceId() === 0) {
+			return FALSE;
+		}
+
+		return $this->purgeItemArrayHandler('purgeDeletePlaceholder');
+	}
+
+	/**
+	 * Handles a purge callback on $this->itemArray
+	 *
+	 * @param callable $purgeCallback
+	 * @return bool Whether items have been purged
+	 */
+	protected function purgeItemArrayHandler($purgeCallback) {
+		$itemArrayHasBeenPurged = FALSE;
 
 		foreach ($this->tableArray as $itemTableName => $itemIds) {
 			if (!count($itemIds) || !BackendUtility::isTableWorkspaceEnabled($itemTableName)) {
@@ -1181,7 +1206,6 @@ class RelationHandler {
 			}
 		}
 
-		$this->purged = ($this->purged || $itemArrayHasBeenPurged);
 		return $itemArrayHasBeenPurged;
 	}
 
@@ -1240,6 +1264,36 @@ class RelationHandler {
 				$versionId = $version['uid'];
 				$liveId = $version['t3ver_oid'];
 				if (isset($ids[$liveId]) && isset($ids[$versionId])) {
+					unset($ids[$liveId]);
+				}
+			}
+		}
+
+		return array_values($ids);
+	}
+
+	/**
+	 * Purges ids that have a delete placeholder
+	 *
+	 * @param string $tableName
+	 * @param array $ids
+	 * @return array
+	 */
+	protected function purgeDeletePlaceholder($tableName, array $ids) {
+		$ids = $this->getDatabaseConnection()->cleanIntArray($ids);
+		$ids = array_combine($ids, $ids);
+
+		$versions = $this->getDatabaseConnection()->exec_SELECTgetRows(
+			'uid,t3ver_oid,t3ver_state',
+			$tableName,
+			'pid=-1 AND t3ver_oid IN (' . implode(',', $ids) . ') AND t3ver_wsid=' . $this->getWorkspaceId() .
+				' AND t3ver_state=' . VersionState::cast(VersionState::DELETE_PLACEHOLDER)
+		);
+
+		if (!empty($versions)) {
+			foreach ($versions as $version) {
+				$liveId = $version['t3ver_oid'];
+				if (isset($ids[$liveId])) {
 					unset($ids[$liveId]);
 				}
 			}

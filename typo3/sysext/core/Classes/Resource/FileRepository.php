@@ -181,19 +181,46 @@ class FileRepository extends AbstractRepository {
 		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($uid)) {
 			throw new \InvalidArgumentException('Uid of related record has to be an integer.', 1316789798);
 		}
-		$references = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'*',
-			'sys_file_reference',
-			'tablenames=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tableName, 'sys_file_reference') .
-				' AND deleted = 0' .
-				' AND hidden = 0' .
-				' AND uid_foreign=' . (int)$uid .
-				' AND fieldname=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($fieldName, 'sys_file_reference'),
-			'',
-			'sorting_foreign'
-		);
-		foreach ($references as $referenceRecord) {
-			$itemList[] = $this->createFileReferenceObject($referenceRecord);
+		$referenceUids = NULL;
+		if ($this->getEnvironmentMode() === 'FE' && !empty($GLOBALS['TSFE']->sys_page)) {
+			/** @var $frontendController \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
+			$frontendController = $GLOBALS['TSFE'];
+			$references = $this->getDatabaseConnection()->exec_SELECTgetRows(
+				'uid',
+				'sys_file_reference',
+				'tablenames=' . $this->getDatabaseConnection()->fullQuoteStr($tableName, 'sys_file_reference') .
+					' AND uid_foreign=' . (int)$uid .
+					' AND fieldname=' . $this->getDatabaseConnection()->fullQuoteStr($fieldName, 'sys_file_reference')
+					. $frontendController->sys_page->enableFields('sys_file_reference', $frontendController->showHiddenRecords),
+				'',
+				'sorting_foreign',
+				'',
+				'uid'
+			);
+			if (!empty($references)) {
+				$referenceUids = array_keys($references);
+			}
+		} else {
+			/** @var $relationHandler \TYPO3\CMS\Core\Database\RelationHandler */
+			$relationHandler = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+			$relationHandler->start(
+				'', 'sys_file_reference', '', $uid, $tableName,
+				\TYPO3\CMS\Backend\Utility\BackendUtility::getTcaFieldConfiguration($tableName, $fieldName)
+			);
+			if (!empty($relationHandler->tableArray['sys_file_reference'])) {
+				$referenceUids = $relationHandler->tableArray['sys_file_reference'];
+			}
+		}
+		if (!empty($referenceUids)) {
+			foreach ($referenceUids as $referenceUid) {
+				try {
+					// Just passing the reference uid, the factory is doing workspace
+					// overlays automatically depending on the current environment
+					$itemList[] = $this->factory->getFileReferenceObject($referenceUid);
+				} catch (\InvalidArgumentException $exception) {
+					// No handling, just omit the invalid reference uid
+				}
+			}
 		}
 		return $itemList;
 	}
@@ -207,19 +234,13 @@ class FileRepository extends AbstractRepository {
 	 * @api
 	 */
 	public function findFileReferenceByUid($uid) {
-		$fileReferenceObject = FALSE;
 		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($uid)) {
 			throw new \InvalidArgumentException('uid of record has to be an integer.', 1316889798);
 		}
-		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
-			'*',
-			'sys_file_reference',
-			'uid=' . $uid .
-				' AND deleted=0' .
-				' AND hidden=0'
-		);
-		if (is_array($row)) {
-			$fileReferenceObject = $this->createFileReferenceObject($row);
+		try {
+			$fileReferenceObject = $this->factory->getFileReferenceObject($uid);
+		} catch (\InvalidArgumentException $exception) {
+			$fileReferenceObject = FALSE;
 		}
 		return $fileReferenceObject;
 	}
@@ -243,6 +264,7 @@ class FileRepository extends AbstractRepository {
 	 *
 	 * @param array $databaseRow
 	 * @return FileReference
+	 * @deprecated Use $this->factory->getFileReferenceObject() directly
 	 */
 	protected function createFileReferenceObject(array $databaseRow) {
 		return $this->factory->getFileReferenceObject($databaseRow['uid'], $databaseRow);

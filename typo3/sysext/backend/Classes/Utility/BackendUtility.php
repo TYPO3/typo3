@@ -1506,21 +1506,15 @@ class BackendUtility {
 		}
 		$thumbData = '';
 		// FAL references
-		if ($tcaConfig['type'] === 'inline') {
-			$sortingField = isset($tcaConfig['foreign_sortby']) ? $tcaConfig['foreign_sortby'] : '';
-			$referenceUids = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-				'uid',
-				'sys_file_reference',
-				'tablenames = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_file_reference')
-					. ' AND fieldname=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($field, 'sys_file_reference')
-					. ' AND uid_foreign=' . (int)$row['uid']
-					. self::deleteClause('sys_file_reference')
-					. self::versioningPlaceholderClause('sys_file_reference'),
-				'',
-				$sortingField
-			);
+		if ($tcaConfig['type'] === 'inline' && $tcaConfig['foreign_table'] === 'sys_file_reference') {
+			/** @var $relationHandler \TYPO3\CMS\Core\Database\RelationHandler */
+			$relationHandler = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+			$relationHandler->start($row[$field], $tcaConfig['foreign_table'], $tcaConfig['MM'], $row['uid'], $table, $tcaConfig);
+			$relationHandler->processDeletePlaceholder();
+			$referenceUids = $relationHandler->tableArray[$tcaConfig['foreign_table']];
+
 			foreach ($referenceUids as $referenceUid) {
-				$fileReferenceObject = ResourceFactory::getInstance()->getFileReferenceObject($referenceUid['uid']);
+				$fileReferenceObject = ResourceFactory::getInstance()->getFileReferenceObject($referenceUid);
 				$fileObject = $fileReferenceObject->getOriginalFile();
 
 				if ($fileObject->isMissing()) {
