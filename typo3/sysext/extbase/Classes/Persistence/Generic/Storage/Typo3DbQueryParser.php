@@ -367,7 +367,17 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 				$typeOfRelation = $columnMap instanceof ColumnMap ? $columnMap->getTypeOfRelation() : NULL;
 				if ($typeOfRelation === ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 					$relationTableName = $columnMap->getRelationTableName();
-					$sql['where'][] = $tableName . '.uid IN (SELECT ' . $columnMap->getParentKeyFieldName() . ' FROM ' . $relationTableName . ' WHERE ' . $columnMap->getChildKeyFieldName() . '=' . $parameterIdentifier . ')';
+					$relationTableMatchFields = $columnMap->getRelationTableMatchFields();
+					if (is_array($relationTableMatchFields)) {
+						$additionalWhere = array();
+						foreach ($relationTableMatchFields as $fieldName => $value) {
+							$additionalWhere[] = $fieldName . ' = ' . $this->databaseHandle->fullQuoteStr($value, $relationTableName);
+						}
+						$additionalWhereForMatchFields = ' AND ' . implode(' AND ', $additionalWhere);
+					} else {
+						$additionalWhereForMatchFields = '';
+					}
+					$sql['where'][] = $tableName . '.uid IN (SELECT ' . $columnMap->getParentKeyFieldName() . ' FROM ' . $relationTableName . ' WHERE ' . $columnMap->getChildKeyFieldName() . '=' . $parameterIdentifier . $additionalWhereForMatchFields . ')';
 				} elseif ($typeOfRelation === ColumnMap::RELATION_HAS_MANY) {
 					$parentKeyFieldName = $columnMap->getParentKeyFieldName();
 					if (isset($parentKeyFieldName)) {

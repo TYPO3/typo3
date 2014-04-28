@@ -64,6 +64,8 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/posts.xml');
 		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/tags.xml');
 		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/post-tag-mm.xml');
+		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/categories.xml');
+		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/category-mm.xml');
 
 		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		$this->persistentManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
@@ -433,6 +435,72 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	}
 
 	/**
+	 * Test query matching for mm relation without MM_match_fields defined
+	 *
+	 * @test
+	 */
+	public function MmRelationWithoutMatchFieldIsResolved() {
+		/** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
+		$postRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\PostRepository');
+		$posts = $postRepository->findByTagAndBlog('Tag2', $this->blog);
+		$this->assertSame(1, count($posts));
+	}
+
+	/**
+	 * @test
+	 */
+	public function MmRelationWithMatchFieldIsResolvedFromLocalSide() {
+		$countCategories = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'sys_category_record_mm', 'uid_foreign=1 AND tablenames="tx_blogexample_domain_model_post" AND fieldname="categories"');
+		$this->assertSame(3, $countCategories);
+
+		/** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
+		$postRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\PostRepository');
+		$post = $postRepository->findByUid(1);
+		$this->assertSame(3, count($post->getCategories()));
+	}
+
+	/**
+	 * Test query matching respects MM_match_fields
+	 *
+	 * @test
+	 */
+	public function MmRelationWithMatchFieldIsResolvedFromForeignSide() {
+		/** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
+		$postRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\PostRepository');
+		$posts = $postRepository->findByCategory(1);
+		$this->assertSame(2, count($posts));
+
+		$posts = $postRepository->findByCategory(4);
+		$this->assertSame(0, count($posts));
+	}
+
+	/**
+	 * @test
+	 */
+	public function MmRelationWithMatchFieldIsCreatedFromLocalSide() {
+		$countCategories = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'sys_category_record_mm', 'uid_foreign=1 AND tablenames="tx_blogexample_domain_model_post" AND fieldname="categories"');
+		$this->assertSame(3, $countCategories);
+
+		$postRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\PostRepository');
+		$post = $postRepository->findByUid(1);
+
+		$newCategory = $this->objectManager->get('\\TYPO3\\CMS\\Extbase\\Domain\\Model\\Category');
+		$newCategory->setTitle('New Category');
+
+		$post->addCategory($newCategory);
+
+		$postRepository->update($post);
+		$this->persistentManager->persistAll();
+
+		$countCategories = $this->getDatabaseConnection()->exec_SELECTcountRows(
+			'*',
+			'sys_category_record_mm',
+			'uid_foreign=1 AND tablenames="tx_blogexample_domain_model_post" AND fieldname="categories"'
+		);
+		$this->assertSame(4, $countCategories);
+	}
+
+	/**
 	 * Helper method for persisting blog
 	 */
 	protected function updateAndPersistBlog() {
@@ -442,3 +510,4 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$this->persistentManager->persistAll();
 	}
 }
+

@@ -10,7 +10,7 @@
 	<tx_blogexample_domain_model_tag>
 		<uid>2</uid>
 		<pid>0</pid>
-		<posts>1</posts>
+		<posts>2</posts>
 		<name>Tag2</name>
 		<deleted>0</deleted>
 	</tx_blogexample_domain_model_tag>

@@ -62,6 +62,11 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $tags = NULL;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\Category>
+	 */
+	protected $categories = NULL;
+
+	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\ExtbaseTeam\BlogExample\Domain\Model\Comment>
 	 * @lazy
 	 * @cascade remove
@@ -79,6 +84,7 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function __construct() {
 		$this->tags = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->categories = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$this->comments = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$this->relatedPosts = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$this->date = new \DateTime();
@@ -189,6 +195,42 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function getTags() {
 		return clone $this->tags;
+	}
+
+	/**
+	 * Add category to a post
+	 *
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\Category $category
+	 */
+	public function addCategory(\TYPO3\CMS\Extbase\Domain\Model\Category $category) {
+		$this->categories->attach($category);
+	}
+
+	/**
+	 * Set categories
+	 *
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $categories
+	 */
+	public function setCategories($categories) {
+		$this->categories = $categories;
+	}
+
+	/**
+	 * Get categories
+	 *
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+	 */
+	public function getCategories() {
+		return $this->categories;
+	}
+
+	/**
+	 * Remove category from post
+	 *
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\Category $category
+	 */
+	public function removeCategory(\TYPO3\CMS\Extbase\Domain\Model\Category $category) {
+		$this->categories->detach($category);
 	}
 
 	/**

@@ -70,6 +70,12 @@
 		<sorting_foreign>2</sorting_foreign>
 	</tx_blogexample_post_tag_mm>
 	<tx_blogexample_post_tag_mm>
+		<uid_local>2</uid_local>
+		<uid_foreign>11</uid_foreign>
+		<sorting>2</sorting>
+		<sorting_foreign>1</sorting_foreign>
+	</tx_blogexample_post_tag_mm>
+	<tx_blogexample_post_tag_mm>
 		<uid_local>3</uid_local>
 		<uid_foreign>1</uid_foreign>
 		<sorting>1</sorting>

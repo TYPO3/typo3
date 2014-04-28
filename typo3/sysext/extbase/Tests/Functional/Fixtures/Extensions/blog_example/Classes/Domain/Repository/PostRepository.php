@@ -135,5 +135,20 @@ class PostRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 			->execute();
 	}
 
+	/**
+	 * Find posts by category
+	 *
+	 * @param int $categoryUid
+	 * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+	 */
+	public function findByCategory($categoryUid) {
+		$query = $this->createQuery();
+		return $query
+			->matching(
+				$query->contains('categories', $categoryUid)
+			)
+			->execute();
+	}
+
 }
 ?>

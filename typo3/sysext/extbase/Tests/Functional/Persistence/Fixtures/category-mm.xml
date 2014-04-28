@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<!-- post 1 gets categories 1,2,3 -->
+	<sys_category_record_mm>
+		<uid_local>1</uid_local>
+		<uid_foreign>1</uid_foreign>
+		<tablenames>tx_blogexample_domain_model_post</tablenames>
+		<fieldname>categories</fieldname>
+		<sorting>1</sorting>
+		<sorting_foreign>2</sorting_foreign>
+	</sys_category_record_mm>
+	<sys_category_record_mm>
+		<uid_local>2</uid_local>
+		<uid_foreign>1</uid_foreign>
+		<tablenames>tx_blogexample_domain_model_post</tablenames>
+		<fieldname>categories</fieldname>
+		<sorting>1</sorting>
+		<sorting_foreign>2</sorting_foreign>
+	</sys_category_record_mm>
+	<sys_category_record_mm>
+		<uid_local>3</uid_local>
+		<uid_foreign>1</uid_foreign>
+		<tablenames>tx_blogexample_domain_model_post</tablenames>
+		<fieldname>categories</fieldname>
+		<sorting>1</sorting>
+		<sorting_foreign>2</sorting_foreign>
+	</sys_category_record_mm>
+
+	<!-- post 2 gets category 1 -->
+	<sys_category_record_mm>
+		<uid_local>1</uid_local>
+		<uid_foreign>2</uid_foreign>
+		<tablenames>tx_blogexample_domain_model_post</tablenames>
+		<fieldname>categories</fieldname>
+		<sorting>1</sorting>
+		<sorting_foreign>2</sorting_foreign>
+	</sys_category_record_mm>
+
+	<!-- some bogus records to test MM_match_fields -->
+	<sys_category_record_mm>
+		<uid_local>4</uid_local>
+		<uid_foreign>1</uid_foreign>
+		<tablenames>tx_my_extension</tablenames>
+		<fieldname>categories</fieldname>
+		<sorting>1</sorting>
+		<sorting_foreign>2</sorting_foreign>
+	</sys_category_record_mm>
+</dataset>

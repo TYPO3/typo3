@@ -556,7 +556,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 				$row[$parentTableFieldName] = $parentDataMap->getTableName();
 			}
 			$relationTableMatchFields = $parentColumnMap->getRelationTableMatchFields();
-			if (is_array($relationTableMatchFields) && count($relationTableMatchFields)) {
+			if (is_array($relationTableMatchFields)) {
 				$row = array_merge($relationTableMatchFields, $row);
 			}
 		}
@@ -631,7 +631,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 		if ($parentObject !== NULL && $parentPropertyName) {
 			$parentColumnDataMap = $this->dataMapper->getDataMap(get_class($parentObject))->getColumnMap($parentPropertyName);
 			$relationTableMatchFields = $parentColumnDataMap->getRelationTableMatchFields();
-			if (is_array($relationTableMatchFields) && count($relationTableMatchFields) > 0) {
+			if (is_array($relationTableMatchFields)) {
 				$row = array_merge($relationTableMatchFields, $row);
 			}
 			if ($parentColumnDataMap->getParentKeyFieldName() !== NULL) {
@@ -678,25 +678,16 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 			$columnMap->getChildSortByFieldName() => !is_null($sortingPosition) ? (int)$sortingPosition : 0
 		);
 		$relationTableName = $columnMap->getRelationTableName();
-		// FIXME Reenable support for tablenames
-		// $childTableName = $columnMap->getChildTableName();
-		// if (isset($childTableName)) {
-		// 	$row['tablenames'] = $childTableName;
-		// }
 		if ($columnMap->getRelationTablePageIdColumnName() !== NULL) {
 			$row[$columnMap->getRelationTablePageIdColumnName()] = $this->determineStoragePageIdForNewRecord();
 		}
 		$relationTableMatchFields = $columnMap->getRelationTableMatchFields();
-		if (count($relationTableMatchFields)) {
-			foreach ($relationTableMatchFields as $matchField => $matchValue) {
-				$row[$matchField] = $matchValue;
-			}
+		if (is_array($relationTableMatchFields)) {
+			$row = array_merge($relationTableMatchFields, $row);
 		}
 		$relationTableInsertFields = $columnMap->getRelationTableInsertFields();
-		if (count($relationTableInsertFields)) {
-			foreach ($relationTableInsertFields as $insertField => $insertValue) {
-				$row[$insertField] = $insertValue;
-			}
+		if (is_array($relationTableInsertFields)) {
+			$row = array_merge($relationTableInsertFields, $row);
 		}
 		$res = $this->storageBackend->addRow($relationTableName, $row, TRUE);
 		return $res;
@@ -720,14 +711,8 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 			$columnMap->getChildSortByFieldName() => (int)$sortingPosition
 		);
 		$relationTableName = $columnMap->getRelationTableName();
-		// FIXME Reenable support for tablenames
-		// $childTableName = $columnMap->getChildTableName();
-		// if (isset($childTableName)) {
-		// 	$row['tablenames'] = $childTableName;
-		// }
-
 		$relationTableMatchFields = $columnMap->getRelationTableMatchFields();
-		if (is_array($relationTableMatchFields) && count($relationTableMatchFields) > 0) {
+		if (is_array($relationTableMatchFields)) {
 			$row = array_merge($relationTableMatchFields, $row);
 		}
 		$res = $this->storageBackend->updateRelationTableRow(
@@ -751,7 +736,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 			$columnMap->getParentKeyFieldName() => (int)$parentObject->getUid()
 		);
 		$relationTableMatchFields = $columnMap->getRelationTableMatchFields();
-		if (is_array($relationTableMatchFields) && count($relationTableMatchFields) > 0) {
+		if (is_array($relationTableMatchFields)) {
 			$relationMatchFields = array_merge($relationTableMatchFields, $relationMatchFields);
 		}
 		$res = $this->storageBackend->removeRow($relationTableName, $relationMatchFields, FALSE);
@@ -770,10 +755,15 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 		$dataMap = $this->dataMapper->getDataMap(get_class($parentObject));
 		$columnMap = $dataMap->getColumnMap($parentPropertyName);
 		$relationTableName = $columnMap->getRelationTableName();
-		$res = $this->storageBackend->removeRow($relationTableName, array(
+		$relationMatchFields = array(
 			$columnMap->getParentKeyFieldName() => (int)$parentObject->getUid(),
 			$columnMap->getChildKeyFieldName() => (int)$relatedObject->getUid()
-		), FALSE);
+		);
+		$relationTableMatchFields = $columnMap->getRelationTableMatchFields();
+		if (is_array($relationTableMatchFields)) {
+			$relationMatchFields = array_merge($relationTableMatchFields, $relationMatchFields);
+		}
+		$res = $this->storageBackend->removeRow($relationTableName, $relationMatchFields, FALSE);
 		return $res;
 	}
 
@@ -817,7 +807,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 			);
 
 			$relationTableMatchFields = $parentColumnMap->getRelationTableMatchFields();
-			if (is_array($relationTableMatchFields) && count($relationTableMatchFields) > 0) {
+			if (is_array($relationTableMatchFields)) {
 				$matchFields = array_merge($relationTableMatchFields, $matchFields);
 			}
 		} else {

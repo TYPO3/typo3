@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<sys_category>
+		<uid>1</uid>
+		<pid>0</pid>
+		<title>Category 1</title>
+		<deleted>0</deleted>
+	</sys_category>
+	<sys_category>
+		<uid>2</uid>
+		<pid>0</pid>
+		<title>Category 2</title>
+		<deleted>0</deleted>
+	</sys_category>
+	<sys_category>
+		<uid>3</uid>
+		<pid>0</pid>
+		<title>Category 3</title>
+		<deleted>0</deleted>
+	</sys_category>
+	<sys_category>
+		<uid>4</uid>
+		<pid>0</pid>
+		<title>Category 4</title>
+		<deleted>0</deleted>
+	</sys_category>
+</dataset>
