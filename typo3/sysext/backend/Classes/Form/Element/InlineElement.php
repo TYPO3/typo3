@@ -185,11 +185,14 @@ class InlineElement {
 			return FALSE;
 		}
 		$item = '';
+		$levelLinks = '';
+		$localizationLinks = '';
 		// Count the number of processed inline elements
 		$this->inlineCount++;
 		// Init:
 		$config = $PA['fieldConf']['config'];
 		$foreign_table = $config['foreign_table'];
+		$language = 0;
 		if (BackendUtility::isTableLocalizable($table)) {
 			$language = (int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']];
 		}
@@ -273,6 +276,17 @@ class InlineElement {
 				'possible' => $this->getPossibleRecordsFlat($possibleRecords)
 			);
 		}
+		// Render the localization links
+		if ($language > 0 && $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] > 0 && MathUtility::canBeInterpretedAsInteger($row['uid'])) {
+			// Add the "Localize all records" link before all child records:
+			if (isset($config['appearance']['showAllLocalizationLink']) && $config['appearance']['showAllLocalizationLink']) {
+				$localizationLinks .= ' ' . $this->getLevelInteractionLink('localize', $nameObject . self::Structure_Separator . $foreign_table, $config);
+			}
+			// Add the "Synchronize with default language" link before all child records:
+			if (isset($config['appearance']['showSynchronizationLink']) && $config['appearance']['showSynchronizationLink']) {
+				$localizationLinks .= ' ' . $this->getLevelInteractionLink('synchronize', $nameObject . self::Structure_Separator . $foreign_table, $config);
+			}
+		}
 		// If it's required to select from possible child records (reusable children), add a selector box
 		if ($config['foreign_selector'] && $config['appearance']['showPossibleRecordsSelector'] !== FALSE) {
 			// If not already set by the foreign_unique, set the possibleRecords here and the uniqueIds to an empty array
@@ -281,7 +295,10 @@ class InlineElement {
 				$uniqueIds = array();
 			}
 			$selectorBox = $this->renderPossibleRecordsSelector($possibleRecords, $config, $uniqueIds);
-			$item .= $selectorBox;
+			$item .= $selectorBox . $localizationLinks;
+		// Render the level links (create new record):
+		} else {
+			$levelLinks = $this->getLevelInteractionLink('newRecord', $nameObject . self::Structure_Separator . $foreign_table, $config);
 		}
 		// Wrap all inline fields of a record with a <div> (like a container)
 		$item .= '<div id="' . $nameObject . '">';
@@ -289,23 +306,9 @@ class InlineElement {
 		if ($relatedRecords['count'] >= $maxitems || $uniqueMax > 0 && $relatedRecords['count'] >= $uniqueMax) {
 			$config['inline']['inlineNewButtonStyle'] = 'display: none;';
 		}
-		// Render the level links (create new record, localize all, synchronize):
-		if ($config['appearance']['levelLinksPosition'] != 'none') {
-			$levelLinks = $this->getLevelInteractionLink('newRecord', $nameObject . self::Structure_Separator . $foreign_table, $config);
-			if ($language > 0 && $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] > 0) {
-				// Add the "Localize all records" link before all child records:
-				if (isset($config['appearance']['showAllLocalizationLink']) && $config['appearance']['showAllLocalizationLink']) {
-					$levelLinks .= ' ' . $this->getLevelInteractionLink('localize', $nameObject . self::Structure_Separator . $foreign_table, $config);
-				}
-				// Add the "Synchronize with default language" link before all child records:
-				if (isset($config['appearance']['showSynchronizationLink']) && $config['appearance']['showSynchronizationLink']) {
-					$levelLinks .= ' ' . $this->getLevelInteractionLink('synchronize', $nameObject . self::Structure_Separator . $foreign_table, $config);
-				}
-			}
-		}
 		// Add the level links before all child records:
 		if (in_array($config['appearance']['levelLinksPosition'], array('both', 'top'))) {
-			$item .= $levelLinks;
+			$item .= $levelLinks . $localizationLinks;
 		}
 		$item .= '<div id="' . $nameObject . '_records">';
 		$relationList = array();
@@ -320,7 +323,7 @@ class InlineElement {
 		$item .= '</div>';
 		// Add the level links after all child records:
 		if (in_array($config['appearance']['levelLinksPosition'], array('both', 'bottom'))) {
-			$item .= $levelLinks;
+			$item .= $levelLinks . $localizationLinks;
 		}
 		if (is_array($config['customControls'])) {
 			$item .= '<div id="' . $nameObject . '_customControls">';
@@ -642,6 +645,7 @@ class InlineElement {
 		// Initialize:
 		$cells = array();
 		$isNewItem = substr($rec['uid'], 0, 3) == 'NEW';
+		$isParentExisting = MathUtility::canBeInterpretedAsInteger($parentUid);
 		$tcaTableCtrl = &$GLOBALS['TCA'][$foreign_table]['ctrl'];
 		$tcaTableCols = &$GLOBALS['TCA'][$foreign_table]['columns'];
 		$isPagesTable = $foreign_table == 'pages' ? TRUE : FALSE;
@@ -726,7 +730,7 @@ class InlineElement {
 			if ($enabledControls['dragdrop'] && $permsEdit && $enableManualSorting && $config['appearance']['useSortable']) {
 				$cells['dragdrop'] = IconUtility::getSpriteIcon('actions-move-move', array('data-id' => $rec['uid'], 'class' => 'sortableHandle', 'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.move', TRUE)));
 			}
-		} elseif ($isVirtualRecord) {
+		} elseif ($isVirtualRecord && $isParentExisting) {
 			if ($enabledControls['localize'] && isset($rec['__create'])) {
 				$onClick = 'inline.synchronizeLocalizeRecords(\'' . $nameObjectFt . '\', ' . $rec['uid'] . ');';
 				$cells['localize'] = '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . IconUtility::getSpriteIcon('actions-document-localize', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:localize', TRUE))) . '</a>';
@@ -1718,6 +1722,7 @@ class InlineElement {
 				$uid = $workspaceVersion['uid'];
 			}
 		}
+		/** @var $trData \TYPO3\CMS\Backend\Form\DataPreprocessor */
 		$trData = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\DataPreprocessor');
 		$trData->addRawData = TRUE;
 		$trData->lockRecords = 1;
