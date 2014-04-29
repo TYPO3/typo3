@@ -163,36 +163,34 @@ class AdminPanelView {
 	 *
 	 * @param string $sectionName Module key
 	 * @param string $val Setting key
-	 * @return string The setting value
+	 * @return mixed The setting value
 	 */
 	public function extGetFeAdminValue($sectionName, $val = '') {
-		// Check if module is enabled.
-		if ($this->isAdminModuleEnabled($sectionName)) {
-			// Exceptions where the values can be overridden from backend:
-			// deprecated
-			if ($sectionName . '_' . $val == 'edit_displayIcons' && $GLOBALS['BE_USER']->extAdminConfig['module.']['edit.']['forceDisplayIcons']) {
-				return TRUE;
-			}
-			if ($sectionName . '_' . $val == 'edit_displayFieldIcons' && $GLOBALS['BE_USER']->extAdminConfig['module.']['edit.']['forceDisplayFieldIcons']) {
-				return TRUE;
-			}
-			// Override all settings with user TSconfig
-			if ($val && $GLOBALS['BE_USER']->extAdminConfig['override.'][$sectionName . '.'][$val]) {
-				return $GLOBALS['BE_USER']->extAdminConfig['override.'][$sectionName . '.'][$val];
-			}
-			if ($GLOBALS['BE_USER']->extAdminConfig['override.'][$sectionName]) {
-				return $GLOBALS['BE_USER']->extAdminConfig['override.'][$sectionName];
-			}
-			$retVal = $val ? $GLOBALS['BE_USER']->uc['TSFE_adminConfig'][$sectionName . '_' . $val] : 1;
-			if ($sectionName == 'preview' && $this->ext_forcePreview) {
-				return !$val ? TRUE : $retVal;
-			}
-
-			// See if the menu is expanded!
-			if ($this->isAdminModuleOpen($sectionName)) {
-				return $retVal;
-			}
+		if (!$this->isAdminModuleEnabled($sectionName)) {
+			return NULL;
 		}
+		// Exceptions where the values can be overridden from backend:
+		// deprecated
+		if ($sectionName . '_' . $val === 'edit_displayIcons' && $GLOBALS['BE_USER']->extAdminConfig['module.']['edit.']['forceDisplayIcons']) {
+			return TRUE;
+		}
+		if ($sectionName . '_' . $val === 'edit_displayFieldIcons' && $GLOBALS['BE_USER']->extAdminConfig['module.']['edit.']['forceDisplayFieldIcons']) {
+			return TRUE;
+		}
+		// Override all settings with user TSconfig
+		if ($val && isset($GLOBALS['BE_USER']->extAdminConfig['override.'][$sectionName . '.'][$val])) {
+			return $GLOBALS['BE_USER']->extAdminConfig['override.'][$sectionName . '.'][$val];
+		}
+		if (isset($GLOBALS['BE_USER']->extAdminConfig['override.'][$sectionName])) {
+			return $GLOBALS['BE_USER']->extAdminConfig['override.'][$sectionName];
+		}
+		$retVal = $val ? $GLOBALS['BE_USER']->uc['TSFE_adminConfig'][$sectionName . '_' . $val] : 1;
+		if ($sectionName === 'preview' && $this->ext_forcePreview) {
+			return !$val ? TRUE : $retVal;
+		}
+
+		// See if the menu is expanded!
+		return $this->isAdminModuleOpen($sectionName) ? $retVal : NULL;
 	}
 
 	/**
