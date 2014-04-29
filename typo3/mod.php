@@ -36,7 +36,7 @@ $moduleName = (string)\TYPO3\CMS\Core\Utility\GeneralUtility::_GET('M');
 $isDispatched = FALSE;
 $formprotection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
 if (!$formprotection->validateToken(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('moduleToken'), 'moduleCall', $moduleName)) {
-	throw new \UnexpectedValueException('Invalid form/module token detected. Access Denied!', 1392409507);
+	throw new UnexpectedValueException('Invalid form/module token detected. Access Denied!', 1392409507);
 }
 if ($temp_path = $TBE_MODULES['_PATHS'][$moduleName]) {
 	$MCONF['_'] = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl($moduleName);
