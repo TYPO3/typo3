@@ -39,6 +39,17 @@ class NumberRangeValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function deprecatedOptionsAreStillSupported() {
+		$this->getMock(
+			'TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberRangeValidator',
+			array(),
+			array(array('startRange' => 0, 'endRange' => 1000))
+		);
+	}
+
+	/**
+	 * @test
+	 */
 	public function numberRangeValidatorReturnsTrueForASimpleIntegerInRange() {
 		$numberRangeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberRangeValidator', array('addError'), array(), '', FALSE);
 		$numberRangeValidator->expects($this->never())->method('addError');
