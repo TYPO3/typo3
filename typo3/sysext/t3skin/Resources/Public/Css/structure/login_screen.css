@@ -139,6 +139,7 @@
 }
 
 #typo3-index-php #t3-login-news-outer #t3-login-news {
+	margin-top: 0;
 	clear: both;
 }
 
