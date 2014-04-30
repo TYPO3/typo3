@@ -86,19 +86,7 @@ class FilesContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 				}
 			}
 
-			// It's important that this always stays "fieldName" and not be renamed to "field" as it would otherwise collide with the stdWrap key of that name
-			if (!empty($conf['references.'])) {
-				$referencesFieldName = $this->cObj->stdWrapValue('fieldName', $conf['references.']);
-				if ($referencesFieldName) {
-					$table = $this->cObj->getCurrentTable();
-					if ($table === 'pages' && isset($this->cObj->data['_LOCALIZED_UID']) && (int)$this->cObj->data['sys_language_uid'] > 0) {
-						$table = 'pages_language_overlay';
-					}
-					$referencesForeignTable = $this->cObj->stdWrapValue('table', $conf['references.'], $table);
-					$referencesForeignUid = $this->cObj->stdWrapValue('uid', $conf['references.'], isset($this->cObj->data['_LOCALIZED_UID']) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']);
-					$this->addToArray($this->getFileRepository()->findByRelation($referencesForeignTable, $referencesFieldName, $referencesForeignUid), $fileObjects);
-				}
-			}
+			$this->handleFileReferences($conf, (array)$this->cObj->data, $fileObjects);
 		}
 		if ($conf['files'] || $conf['files.']) {
 			/*
@@ -281,6 +269,66 @@ class FilesContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 	}
 
 	/**
+	 * Handles and resolves file references.
+	 *
+	 * @param array $configuration TypoScript configuration
+	 * @param array $element The parent element referencing to files
+	 * @param array $fileObjects Collection of file objects
+	 * @return void
+	 */
+	protected function handleFileReferences(array $configuration, array $element, array &$fileObjects) {
+		if (empty($configuration['references.'])) {
+			return;
+		}
+
+		// It's important that this always stays "fieldName" and not be renamed to "field" as it would otherwise collide with the stdWrap key of that name
+		$referencesFieldName = $this->cObj->stdWrapValue('fieldName', $configuration['references.']);
+
+		// If no reference fieldName is set, there's nothing to do
+		if (empty($referencesFieldName)) {
+			return;
+		}
+
+		$currentId = !empty($element['uid']) ? $element['uid'] : 0;
+		$tableName = $this->cObj->getCurrentTable();
+
+		// Fetch the references of the default element
+		$referencesForeignTable = $this->cObj->stdWrapValue('table', $configuration['references.'], $tableName);
+		$referencesForeignUid = $this->cObj->stdWrapValue('uid', $configuration['references.'], $currentId);
+
+		$pageRepository = $this->getPageRepository();
+		// Fetch element if definition has been modified via TypoScript
+		if ($referencesForeignTable !== $tableName || $referencesForeignUid !== $currentId) {
+			$element = $pageRepository->getRawRecord(
+				$referencesForeignTable,
+				$referencesForeignUid,
+				'*',
+				FALSE
+			);
+
+			$pageRepository->versionOL($referencesForeignTable, $element, TRUE);
+			if ($referencesForeignTable === 'pages') {
+				$element = $pageRepository->getPageOverlay($element);
+			} else {
+				$element = $pageRepository->getRecordOverlay(
+					$referencesForeignTable,
+					$element,
+					$GLOBALS['TSFE']->sys_language_content,
+					$GLOBALS['TSFE']->sys_language_contentOL
+				);
+			}
+		}
+
+		$references = $pageRepository->getFileReferences(
+			$referencesForeignTable,
+			$referencesFieldName,
+			$element
+		);
+
+		$this->addToArray($references, $fileObjects);
+	}
+
+	/**
 	 * Adds $newItems to $theArray, which is passed by reference. Array must only consist of numerical keys.
 	 *
 	 * @param mixed $newItems Array with new items or single object that's added.
@@ -305,6 +353,13 @@ class FilesContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 	 */
 	protected function stdWrapValue($key, array $config, $defaultValue = '') {
 		return $this->cObj->stdWrapValue($key, $config, $defaultValue);
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Frontend\Page\PageRepository
+	 */
+	protected function getPageRepository() {
+		return $GLOBALS['TSFE']->sys_page;
 	}
 
 }

@@ -97,12 +97,7 @@ class FrontendContentAdapterService {
 		if (array_key_exists($table, static::$migrateFields)) {
 			foreach (static::$migrateFields[$table] as $migrateFieldName => $oldFieldNames) {
 				if ($row !== NULL && isset($row[$migrateFieldName]) && self::fieldIsInType($migrateFieldName, $table, $row)) {
-					/** @var $fileRepository \TYPO3\CMS\Core\Resource\FileRepository */
-					$fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
-					if ($table === 'pages' && isset($row['_LOCALIZED_UID']) && intval($row['sys_language_uid']) > 0) {
-						$table = 'pages_language_overlay';
-					}
-					$files = $fileRepository->findByRelation($table, $migrateFieldName, isset($row['_LOCALIZED_UID']) ? intval($row['_LOCALIZED_UID']) : intval($row['uid']));
+					$files = self::getPageRepository()->getFileReferences($table, $migrateFieldName, $row);
 					$fileFieldContents = array(
 						'paths' => array(),
 						'titleTexts' => array(),
@@ -208,4 +203,12 @@ class FrontendContentAdapterService {
 			return in_array($row[$fieldConfiguration['__typeMatch']['typeField']], $fieldConfiguration['__typeMatch']['types']);
 		}
 	}
+
+	/**
+	 * @return \TYPO3\CMS\Frontend\Page\PageRepository
+	 */
+	static protected function getPageRepository() {
+		return $GLOBALS['TSFE']->sys_page;
+	}
+
 }

@@ -1360,6 +1360,48 @@ class PageRepository {
 	}
 
 	/**
+	 * Gets file references for a given record field.
+	 *
+	 * @param string $tableName Name of the table
+	 * @param string $fieldName Name of the field
+	 * @param array $element The parent element referencing to files
+	 * @return array
+	 */
+	public function getFileReferences($tableName, $fieldName, array $element) {
+		/** @var $fileRepository \TYPO3\CMS\Core\Resource\FileRepository */
+		$fileRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
+		$currentId = !empty($element['uid']) ? $element['uid'] : 0;
+
+		// Fetch the references of the default element
+		$references = $fileRepository->findByRelation($tableName, $fieldName, $currentId);
+
+		$localizedId = NULL;
+		if (isset($element['_LOCALIZED_UID'])) {
+			$localizedId = $element['_LOCALIZED_UID'];
+		} elseif (isset($element['_PAGES_OVERLAY_UID'])) {
+			$localizedId = $element['_PAGES_OVERLAY_UID'];
+		}
+
+		if (!empty($GLOBALS['TCA'][$tableName]['ctrl']['transForeignTable'])) {
+			$tableName = $GLOBALS['TCA'][$tableName]['ctrl']['transForeignTable'];
+		}
+
+		$isTableLocalizable = (
+			!empty($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])
+			&& !empty($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
+		);
+		if ($isTableLocalizable && $localizedId !== NULL) {
+			$localizedReferences = $fileRepository->findByRelation($tableName, $fieldName, $localizedId);
+			$localizedReferencesValue = $localizedReferences ?: '';
+			if ($this->shouldFieldBeOverlaid($tableName, $fieldName, $localizedReferencesValue)) {
+				$references = $localizedReferences;
+			}
+		}
+
+		return $references;
+	}
+
+	/**
 	 * Determine if a field needs an overlay
 	 *
 	 * @param string $table TCA tablename
