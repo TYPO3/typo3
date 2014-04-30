@@ -77,7 +77,17 @@ class PageGenerator {
 		} else {
 			$GLOBALS['TSFE']->spamProtectEmailAddresses = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses'], -10, 10, 0);
 		}
-		$GLOBALS['TSFE']->absRefPrefix = $GLOBALS['TSFE']->config['config']['absRefPrefix'] ? trim($GLOBALS['TSFE']->config['config']['absRefPrefix']) : '';
+		// calculate the absolute path prefix
+		if (!empty($GLOBALS['TSFE']->config['config']['absRefPrefix'])) {
+			$absRefPrefix = trim($GLOBALS['TSFE']->config['config']['absRefPrefix']);
+			if ($absRefPrefix === 'auto') {
+				$GLOBALS['TSFE']->absRefPrefix = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
+			} else {
+				$GLOBALS['TSFE']->absRefPrefix = $absRefPrefix;
+			}
+		} else {
+			$GLOBALS['TSFE']->absRefPrefix = '';
+		}
 		if ($GLOBALS['TSFE']->type && $GLOBALS['TSFE']->config['config']['frameReloadIfNotInFrameset']) {
 			$tdlLD = $GLOBALS['TSFE']->tmpl->linkData($GLOBALS['TSFE']->page, '_top', $GLOBALS['TSFE']->no_cache, '');
 			$GLOBALS['TSFE']->additionalJavaScript['JSCode'] .= 'if(!parent.' . trim($GLOBALS['TSFE']->sPre) . ' && !parent.view_frame) top.location.href="' . $GLOBALS['TSFE']->baseUrlWrap($tdlLD['totalURL']) . '"';
