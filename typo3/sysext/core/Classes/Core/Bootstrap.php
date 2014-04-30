@@ -103,7 +103,7 @@ class Bootstrap {
 		if (is_null(static::$instance)) {
 			require_once(__DIR__ . '/../Exception.php');
 			require_once(__DIR__ . '/ApplicationContext.php');
-			$applicationContext = trim(getenv('TYPO3_CONTEXT'), '"\' ') ? : 'Production';
+			$applicationContext = getenv('TYPO3_CONTEXT') ?: (getenv('REDIRECT_TYPO3_CONTEXT') ?: 'Production');
 			self::$instance = new static($applicationContext);
 			// Establish an alias for Flow/Package interoperability
 			class_alias(get_class(static::$instance), 'TYPO3\\Flow\\Core\\Bootstrap');

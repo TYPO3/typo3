@@ -94,7 +94,8 @@ class CoreUpdateService {
 	 * @return boolean
 	 */
 	public function isCoreUpdateEnabled() {
-		return (getenv('TYPO3_DISABLE_CORE_UPDATER') !== '1');
+		$coreUpdateDisabled = getenv('TYPO3_DISABLE_CORE_UPDATER') ?: (getenv('REDIRECT_TYPO3_DISABLE_CORE_UPDATER') ?: FALSE);
+		return !$coreUpdateDisabled;
 	}
 
 	/**

@@ -42,4 +42,37 @@ class CoreUpdateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$instance->_set('messages', $aMessage);
 		$this->assertSame($aMessage, $instance->getMessages());
 	}
+
+	/**
+	 * @test
+	 */
+	public function isCoreUpdateEnabledReturnsTrueForEnvironmentVariableNotSet() {
+		/** @var $instance \TYPO3\CMS\Install\Service\CoreUpdateService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+		$instance = $this->getAccessibleMock('TYPO3\\CMS\\Install\\Service\\CoreUpdateService', array('dummy'), array(), '', FALSE);
+		putenv('TYPO3_DISABLE_CORE_UPDATER');
+		putenv('REDIRECT_TYPO3_DISABLE_CORE_UPDATER');
+		$this->assertTrue($instance->isCoreUpdateEnabled());
+	}
+
+	/**
+	 * @test
+	 */
+	public function isCoreUpdateEnabledReturnsFalseFor_TYPO3_DISABLE_CORE_UPDATER_EnvironmentVariableSet() {
+		/** @var $instance \TYPO3\CMS\Install\Service\CoreUpdateService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+		$instance = $this->getAccessibleMock('TYPO3\\CMS\\Install\\Service\\CoreUpdateService', array('dummy'), array(), '', FALSE);
+		putenv('TYPO3_DISABLE_CORE_UPDATER=1');
+		putenv('REDIRECT_TYPO3_DISABLE_CORE_UPDATER');
+		$this->assertFalse($instance->isCoreUpdateEnabled());
+	}
+
+	/**
+	 * @test
+	 */
+	public function isCoreUpdateEnabledReturnsFalseFor_REDIRECT_TYPO3_DISABLE_CORE_UPDATER_EnvironmentVariableSet() {
+		/** @var $instance \TYPO3\CMS\Install\Service\CoreUpdateService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+		$instance = $this->getAccessibleMock('TYPO3\\CMS\\Install\\Service\\CoreUpdateService', array('dummy'), array(), '', FALSE);
+		putenv('TYPO3_DISABLE_CORE_UPDATER');
+		putenv('REDIRECT_TYPO3_DISABLE_CORE_UPDATER=1');
+		$this->assertFalse($instance->isCoreUpdateEnabled());
+	}
 }
