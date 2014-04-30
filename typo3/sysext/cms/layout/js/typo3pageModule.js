@@ -31,89 +31,7 @@ TYPO3.Components.PageModule = {
 	 * Initialization
 	 */
 	init: function() {
-		this.enableHighlighting();
 		this.enableDragDrop();
-	},
-
-	/**
-	 * This method is used to bind the highlighting function "setElementActive"
-	 * to the mouseover event and the "setElementInactive" to the mouseout event.
-	 */
-	enableHighlighting: function() {
-		Ext.select('div.t3-page-ce')
-			.on('mouseover',this.setElementActive, this)
-			.on('mouseout',this.setElementInactive, this);
-		Ext.select('td.t3-page-column')
-			.on('mouseover',this.setColumnActive, this)
-			.on('mouseout',this.setColumnInactive, this);
-		Ext.select('#typo3-dblist-sysnotes div.single-note')
-			.on('mouseover',this.setSysnoteActive, this)
-			.on('mouseout',this.setSysnoteInactive, this);
-	},
-
-	/**
-	 * This method is used to unbind the highlighting function "setElementActive"
-	 * from the mouseover event and the "setElementInactive" from the mouseout event.
-	 */
-	disableHighlighting: function() {
-		Ext.select('div.t3-page-ce')
-			.un('mouseover', this.setElementActive, this)
-			.un('mouseout', this.setElementInactive, this);
-		Ext.select('td.t3-page-column')
-			.un('mouseover',this.setColumnActive, this)
-			.un('mouseout',this.setColumnInactive, this);
-	},
-
-	/**
-	 * This method is used as an event handler when the
-	 * user hovers the a content element.
-	 */
-	setElementActive: function(event, target) {
-		Ext.get(target).findParent('div.t3-page-ce', null, true).addClass('active');
-	},
-
-	/**
-	 * This method is used as event handler to unset active state of
-	 * a content element when the mouse of the user leaves the
-	 * content element.
-	 */
-	setElementInactive: function(event, target) {
-		Ext.get(target).findParent('div.t3-page-ce', null, true).removeClass('active');
-
-	},
-
-	/**
-	 * This method is used as an event handler when the
-	 * user hovers the a content element.
-	 */
-	setColumnActive: function(event, target) {
-		Ext.get(target).findParent('td.t3-page-column', null, true).addClass('active');
-	},
-
-	/**
-	 * This method is used as event handler to unset active state of
-	 * a content element when the mouse of the user leaves the
-	 * content element.
-	 */
-	setColumnInactive: function(event, target) {
-		Ext.get(target).findParent('td.t3-page-column', null, true).removeClass('active');
-	},
-
-	/**
-	 * This method is used as an event handler when the
-	 * user hovers the a sysnote.
-	 */
-	setSysnoteActive: function(event, target) {
-		Ext.get(target).findParent('div.single-note', null, true).addClass('active');
-	},
-
-	/**
-	 * This method is used as event handler to unset active state of
-	 * a sysnote when the mouse of the user leaves the sysnote.
-	 */
-	setSysnoteInactive: function(event, target) {
-		Ext.get(target).findParent('div.single-note', null, true).removeClass('active');
-
 	},
 
 	/**
@@ -138,7 +56,6 @@ TYPO3.Components.PageModule = {
 
 				// Hide create new element button
 				this.el.findParent('td.t3-page-column', null, true).removeClass('active');
-				TYPO3.Components.PageModule.disableHighlighting();
 
 				var dropZones = Ext.select('.t3-page-ce-dropzone');
 				var self = this;
@@ -188,7 +105,6 @@ TYPO3.Components.PageModule = {
 				this.el.child('.t3-page-ce-dragitem').removeClass('dragitem-shadow');
 				// Show create new element button again
 				this.el.child('.t3-icon-document-new').removeClass('drag-start');
-				TYPO3.Components.PageModule.enableHighlighting();
 
 				// Remove dragitem-shadow after dragging
 				this.el.child('.t3-page-ce-dragitem').removeClass('dragitem-shadow');

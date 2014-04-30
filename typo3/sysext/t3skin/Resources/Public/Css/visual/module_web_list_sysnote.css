@@ -16,12 +16,12 @@ Sys notes
 	background:  url(../../../../icons/ext/sys_note/icon-default.png) no-repeat top left;
 }
 
-#typo3-dblist-sysnotes .single-note.active .header {
+#typo3-dblist-sysnotes .single-note:hover .header {
 	background-color: #666;
 }
 
-#typo3-dblist-sysnotes .single-note.active .header,
-#typo3-dblist-sysnotes .single-note.active .header span {
+#typo3-dblist-sysnotes .single-note:hover .header,
+#typo3-dblist-sysnotes .single-note:hover .header span {
 	color: #d7d7d7;
 }
 

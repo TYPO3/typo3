@@ -27,7 +27,7 @@ Sys notes
 	visibility: hidden;
 }
 
-#typo3-dblist-sysnotes .single-note.active .header .right.icons {
+#typo3-dblist-sysnotes .single-note:hover .header .right.icons {
 	visibility: visible;
 }
 

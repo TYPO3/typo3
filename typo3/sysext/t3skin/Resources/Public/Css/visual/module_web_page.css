@@ -28,7 +28,7 @@ Web > Page
 }
 
 .t3-page-colHeader:hover .t3-page-colHeader-icons,
-.t3-page-column.active .t3-page-colHeader .t3-page-colHeader-icons {
+.t3-page-column:hover .t3-page-colHeader .t3-page-colHeader-icons {
 	visibility: visible;
 }
 
@@ -52,16 +52,16 @@ Web > Page
 }
 
 .t3-page-ce .t3-page-ce-body,
-.t3-page-ce.active .t3-page-ce-body {
+.t3-page-ce:hover .t3-page-ce-body {
 	background-color: #ffffff;
 	border: 1px solid #ffffff;
 	border-top: none;
 }
 
-.t3-page-ce.active .t3-page-ce-body {
+.t3-page-ce:hover .t3-page-ce-body {
 	border-color: #5b5b5b;
 }
-.t3-page-column.active .t3-icon-document-new {
+.t3-page-column:hover .t3-icon-document-new {
 	visibility: visible;
 }
 
@@ -73,11 +73,11 @@ Web > Page
 	visibility: visible;
 }
 
-.t3-page-ce.active .t3-icon-document-new {
+.t3-page-ce:hover .t3-icon-document-new {
 	visibility: visible;
 }
 
-.t3-page-ce.active .drag-start {
+.t3-page-ce:hover .drag-start {
 	visibility: hidden;
 }
 
@@ -92,14 +92,14 @@ Web > Page
 	filter: alpha(opacity = 60);
 }
 
-.t3-page-ce.t3-page-ce-hidden.active {
+.t3-page-ce.t3-page-ce-hidden:hover {
 	-moz-opacity: 1.0;
 	opacity: 1.0;
 	filter: alpha(opacity = 100);
 }
 
-.t3-page-ce-hidden.active .t3-page-ce-body,
-.t3-page-ce-hidden.active .t3-page-ce-body a {
+.t3-page-ce-hidden:hover .t3-page-ce-body,
+.t3-page-ce-hidden:hover .t3-page-ce-body a {
 	color: #000000;
 }
 
@@ -114,8 +114,8 @@ Web > Page
 	filter: alpha(opacity = 60);
 }
 
-.t3-page-ce.active .t3-page-ce-body .t3-icon ,
-.t3-page-ce.active .t3-page-ce-body img {
+.t3-page-ce:hover .t3-page-ce-body .t3-icon ,
+.t3-page-ce:hover .t3-page-ce-body img {
 	-moz-opacity: 1.0;
 	opacity: 1.0;
 	filter: alpha(opacity = 100);
@@ -181,8 +181,8 @@ td.t3-gridCell-restricted div.t3-row-header div {
 	visibility: hidden;
 }
 
-.t3-page-ce.active .t3-row-header .ce-icons,
-.t3-page-ce.active .t3-row-header .ce-icons-left{
+.t3-page-ce:hover .t3-row-header .ce-icons,
+.t3-page-ce:hover .t3-row-header .ce-icons-left{
 	visibility: visible;
 }
 
@@ -204,6 +204,6 @@ td.t3-gridCell-restricted div.t3-row-header div {
 	box-shadow: 0 1px 12px rgba(0, 0, 0, 0.50);
 }
 
-.t3-page-ce.active .t3-row-header {
+.t3-page-ce:hover .t3-row-header {
 	background-color: #666;
 }
