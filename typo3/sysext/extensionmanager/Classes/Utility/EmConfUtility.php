@@ -68,7 +68,7 @@ class EmConfUtility implements \TYPO3\CMS\Core\SingletonInterface {
 
 $EM_CONF[$_EXTKEY] = ' . $emConf . ';
 
-?>';
+';
 		return str_replace('  ', TAB, $code);
 	}
 
@@ -98,38 +98,27 @@ $EM_CONF[$_EXTKEY] = ' . $emConf . ';
 			if (!isset($emConf['constraints']) || !isset($emConf['constraints']['suggests'])) {
 				$emConf['constraints']['suggests'] = array();
 			}
-		} elseif (isset($emConf['constraints']) && isset($emConf['dependencies'])) {
-			$emConf['suggests'] = isset($emConf['suggests']) ? $emConf['suggests'] : array();
-			$emConf['dependencies'] = $this->dependencyToString($emConf['constraints']);
-			$emConf['conflicts'] = $this->dependencyToString($emConf['constraints'], 'conflicts');
 		}
+
+		// Remove TER v1-style entries
+		unset($emConf['dependencies']);
+		unset($emConf['conflicts']);
+		unset($emConf['suggests']);
 		unset($emConf['private']);
 		unset($emConf['download_password']);
 		unset($emConf['TYPO3_version']);
 		unset($emConf['PHP_version']);
+		unset($emConf['internal']);
+		unset($emConf['module']);
+		unset($emConf['loadOrder']);
+		unset($emConf['lockType']);
+		unset($emConf['shy']);
+		unset($emConf['priority']);
+		unset($emConf['modify_tables']);
+		unset($emConf['CGLcompliance']);
+		unset($emConf['CGLcompliance_note']);
+
 		return $emConf;
-	}
-
-	/**
-	 * Checks whether the passed dependency is TER2-style (array) and returns a
-	 * single string for displaying the dependencies.
-	 *
-	 * It leaves out all version numbers and the "php" and "typo3" dependencies,
-	 * as they are implicit and of no interest without the version number.
-	 *
-	 * @param mixed $dependency Either a string or an array listing dependencies.
-	 * @param string $type The dependency type to list if $dep is an array
-	 * @return string A simple dependency list for display
-	 */
-	static public function dependencyToString($dependency, $type = 'depends') {
-		if (!is_array($dependency) || !is_array($dependency[$type])) {
-			return '';
-		}
-
-		unset($dependency[$type]['php']);
-		unset($dependency[$type]['typo3']);
-
-		return implode(',', array_keys($dependency[$type]));
 	}
 
 	/**
