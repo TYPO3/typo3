@@ -196,7 +196,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObject($uid);
 			// Get default values for alt and title attributes from file properties
 			$altText = $fileObject->getProperty('alternative');
-			$titleText = $fileObject->getProperty('name');
+			$titleText = $fileObject->getProperty('title');
 			switch ($this->act) {
 			case 'magic':
 				$this->insertMagicImage($fileObject, $altText, $titleText, 'data-htmlarea-file-uid="' . $uid . '" data-htmlarea-file-table="' . $table . '"');
