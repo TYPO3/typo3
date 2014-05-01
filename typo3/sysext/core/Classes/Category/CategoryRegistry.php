@@ -39,11 +39,6 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @var bool
-	 */
-	protected $preRegisteredTablesHaveBeenApplied = FALSE;
-
-	/**
 	 * @var array
 	 */
 	protected $registry = array();
@@ -117,10 +112,8 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 
 			if (isset($GLOBALS['TCA'][$tableName]['columns'])) {
 				$this->applyTcaForTableAndField($tableName, $fieldName);
-			} elseif ($this->preRegisteredTablesHaveBeenApplied) {
-				throw new \RuntimeException('You tried to add a category column to a non-existing table "' . $tableName . '"!', 1397838817);
+				$didRegister = TRUE;
 			}
-			$didRegister = TRUE;
 		}
 
 		return $didRegister;
@@ -246,10 +239,6 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @throws \RuntimeException
 	 */
 	public function applyTcaForPreRegisteredTables() {
-		if ($this->preRegisteredTablesHaveBeenApplied) {
-			throw new \RuntimeException('applyTcaForPreRegisteredTables has already been called. It is not allowed to call it a second time.', 1397841334);
-		}
-		$this->preRegisteredTablesHaveBeenApplied = TRUE;
 		$this->registerDefaultCategorizedTables();
 		foreach ($this->registry as $tableName => $fields) {
 			foreach (array_keys($fields) as $fieldName) {
