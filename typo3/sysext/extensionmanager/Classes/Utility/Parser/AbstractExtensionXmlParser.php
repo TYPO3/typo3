@@ -407,7 +407,9 @@ abstract class AbstractExtensionXmlParser extends AbstractXmlParser {
 		$dependenciesArray = unserialize($dependencies);
 		if (is_array($dependenciesArray)) {
 			foreach ($dependenciesArray as $version) {
-				$newDependencies[$version['kind']][$version['extensionKey']] = $version['versionRange'];
+				if (!empty($version['kind']) && !empty($version['extensionKey'])) {
+					$newDependencies[$version['kind']][$version['extensionKey']] = $version['versionRange'];
+				}
 			}
 		}
 		return serialize($newDependencies);
