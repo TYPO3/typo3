@@ -236,7 +236,6 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @return void
 	 * @internal
-	 * @throws \RuntimeException
 	 */
 	public function applyTcaForPreRegisteredTables() {
 		$this->registerDefaultCategorizedTables();

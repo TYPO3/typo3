@@ -117,26 +117,6 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException \RuntimeException
-	 * @expectedExceptionCode 1397838817
-	 */
-	public function throwsExceptionIfAddIsCalledForNotExistentTableAfterTcaHasBeenApplied() {
-		$this->subject->applyTcaForPreRegisteredTables();
-		$this->subject->add('test_extension_a', uniqid('foo'));
-	}
-
-	/**
-	 * @expectedException \RuntimeException
-	 * @expectedExceptionCode 1397841334
-	 * @test
-	 */
-	public function throwsExceptionIfRegistryIsAppliedTwice() {
-		$this->subject->applyTcaForPreRegisteredTables();
-		$this->subject->applyTcaForPreRegisteredTables();
-	}
-
-	/**
-	 * @test
 	 */
 	public function areMultipleElementsOfSameExtensionRegistered() {
 		$this->subject->add('test_extension_a', $this->tables['first'], 'categories');
