@@ -313,6 +313,12 @@
 			<trans-unit id="extensionList.installDistribution" xml:space="preserve">
 				<source>Install</source>
 			</trans-unit>
+			<trans-unit id="extensionList.installImpexp" xml:space="preserve">
+				<source>Please install the Import/Export (impexp) extension to enable distribution support.</source>
+			</trans-unit>
+			<trans-unit id="distribution.installImpexp" xml:space="preserve">
+				<source>Install impexp</source>
+			</trans-unit>
 			<trans-unit id="extensionList.updateFromTer.label" xml:space="preserve">
 				<source>Retrieving Extension-List from TYPO3 Extension Repository (TER)</source>
 			</trans-unit>

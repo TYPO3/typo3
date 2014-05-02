@@ -130,6 +130,9 @@ class DownloadController extends AbstractController {
 	 * @return void
 	 */
 	public function installDistributionAction(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension) {
+		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('impexp')) {
+			$this->forward('distributions', 'List');
+		}
 		list($result, $errorMessage) = $this->installFromTer($extension);
 		if ($errorMessage) {
 			// @TODO: write Template
