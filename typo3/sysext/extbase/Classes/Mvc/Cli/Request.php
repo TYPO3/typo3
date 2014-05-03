@@ -83,6 +83,25 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	protected $command = NULL;
 
 	/**
+	 * @var string
+	 */
+	protected $callingScript;
+
+	/**
+	 * @param string $callingScript
+	 */
+	public function setCallingScript($callingScript) {
+		$this->callingScript = $callingScript;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCallingScript() {
+		return $this->callingScript;
+	}
+
+	/**
 	 * Sets the dispatched flag
 	 *
 	 * @param boolean $flag If this request has been dispatched

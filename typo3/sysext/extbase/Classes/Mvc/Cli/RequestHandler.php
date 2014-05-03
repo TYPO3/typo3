@@ -62,7 +62,11 @@ class RequestHandler implements \TYPO3\CMS\Extbase\Mvc\RequestHandlerInterface {
 	 */
 	public function handleRequest() {
 		$commandLine = isset($_SERVER['argv']) ? $_SERVER['argv'] : array();
-		$request = $this->requestBuilder->build(array_slice($commandLine, 1));
+		$callingScript = array_shift($commandLine);
+		if ($callingScript !== $_SERVER['_']) {
+			$callingScript = $_SERVER['_'] . ' ' . $callingScript;
+		}
+		$request = $this->requestBuilder->build($commandLine, $callingScript . ' extbase');
 		/** @var $response \TYPO3\CMS\Extbase\Mvc\Cli\Response */
 		$response = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Response');
 		$this->dispatcher->dispatch($request, $response);
