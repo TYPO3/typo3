@@ -64,7 +64,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
 	/**
 	 * @var array An array holding the clean property values. Set right after reconstitution of the object
 	 */
-	private $_cleanProperties;
+	private $_cleanProperties = array();
 
 	/**
 	 * This is the magic __wakeup() method. It's invoked by the unserialize statement in the reconstitution process
@@ -211,9 +211,6 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
 	 */
 	public function _memorizePropertyCleanState($propertyName) {
 		$propertyValue = $this->{$propertyName};
-		if (!is_array($this->_cleanProperties)) {
-			$this->_cleanProperties = array();
-		}
 		if (is_object($propertyValue)) {
 			$this->_cleanProperties[$propertyName] = clone $propertyValue;
 			// We need to make sure the clone and the original object
@@ -247,11 +244,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
 	 * @return mixed The clean property value or NULL
 	 */
 	public function _getCleanProperty($propertyName) {
-		if (is_array($this->_cleanProperties)) {
-			return isset($this->_cleanProperties[$propertyName]) ? $this->_cleanProperties[$propertyName] : NULL;
-		} else {
-			return NULL;
-		}
+		return isset($this->_cleanProperties[$propertyName]) ? $this->_cleanProperties[$propertyName] : NULL;
 	}
 
 	/**
