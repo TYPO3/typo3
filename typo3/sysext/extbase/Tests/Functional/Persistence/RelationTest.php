@@ -439,7 +439,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	 *
 	 * @test
 	 */
-	public function MmRelationWithoutMatchFieldIsResolved() {
+	public function mmRelationWithoutMatchFieldIsResolved() {
 		/** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
 		$postRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\PostRepository');
 		$posts = $postRepository->findByTagAndBlog('Tag2', $this->blog);
@@ -449,7 +449,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	/**
 	 * @test
 	 */
-	public function MmRelationWithMatchFieldIsResolvedFromLocalSide() {
+	public function mmRelationWithMatchFieldIsResolvedFromLocalSide() {
 		$countCategories = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'sys_category_record_mm', 'uid_foreign=1 AND tablenames="tx_blogexample_domain_model_post" AND fieldname="categories"');
 		$this->assertSame(3, $countCategories);
 
@@ -464,7 +464,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	 *
 	 * @test
 	 */
-	public function MmRelationWithMatchFieldIsResolvedFromForeignSide() {
+	public function mmRelationWithMatchFieldIsResolvedFromForeignSide() {
 		/** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
 		$postRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\PostRepository');
 		$posts = $postRepository->findByCategory(1);
@@ -477,7 +477,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	/**
 	 * @test
 	 */
-	public function MmRelationWithMatchFieldIsCreatedFromLocalSide() {
+	public function mmRelationWithMatchFieldIsCreatedFromLocalSide() {
 		$countCategories = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'sys_category_record_mm', 'uid_foreign=1 AND tablenames="tx_blogexample_domain_model_post" AND fieldname="categories"');
 		$this->assertSame(3, $countCategories);
 
