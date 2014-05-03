@@ -14,20 +14,22 @@ namespace TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Matching TypoScript conditions for frontend disposal.
  *
- * Used with the TypoScript parser.
- * Matches browserinfo, IPnumbers for use with templates
+ * Used with the TypoScript parser. Matches browserinfo
+ * and IP numbers for use with templates.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher {
+class ConditionMatcher extends AbstractConditionMatcher {
 
 	/**
-	 * Evaluates a TypoScript condition given as input, eg. "[browser=net][...(other conditions)...]"
+	 * Evaluates a TypoScript condition given as input,
+	 * eg. "[browser=net][...(other conditions)...]"
 	 *
 	 * @param string $string The condition to match against its criterias.
 	 * @return bool Whether the condition matched
@@ -37,6 +39,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	protected function evaluateCondition($string) {
 		list($key, $value) = GeneralUtility::trimExplode('=', $string, FALSE, 2);
 		$result = parent::evaluateConditionCommon($key, $value);
+
 		if (is_bool($result)) {
 			return $result;
 		} else {
@@ -63,13 +66,12 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 					}
 					break;
 				case 'PIDupinRootline':
-
 				case 'PIDinRootline':
 					$values = GeneralUtility::trimExplode(',', $value, TRUE);
 					if ($key == 'PIDinRootline' || !in_array($this->pageId, $values)) {
 						foreach ($values as $test) {
-							foreach ($this->rootline as $rl_dat) {
-								if ($rl_dat['uid'] == $test) {
+							foreach ($this->rootline as $rlDat) {
+								if ($rlDat['uid'] == $test) {
 									return TRUE;
 								}
 							}
@@ -98,6 +100,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 					}
 			}
 		}
+
 		return FALSE;
 	}
 
@@ -115,9 +118,10 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 			$k = trim($splitAgain[0]);
 			if ($k) {
 				switch ((string)trim($vars[0])) {
-				case 'TSFE':
-					$val = $this->getGlobal('TSFE|' . $vars[1]);
-					break;
+					case 'TSFE':
+						$val = $this->getGlobal('TSFE|' . $vars[1]);
+						break;
+					default:
 				}
 			}
 		}
@@ -130,8 +134,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 * @return string The usergroup list of the current user
 	 */
 	protected function getGroupList() {
-		$groupList = $GLOBALS['TSFE']->gr_list;
-		return $groupList;
+		return $this->getTypoScriptFrontendController()->gr_list;
 	}
 
 	/**
@@ -140,7 +143,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 * @return int The current page Id
 	 */
 	protected function determinePageId() {
-		return (int)$GLOBALS['TSFE']->id;
+		return (int)$this->getTypoScriptFrontendController()->id;
 	}
 
 	/**
@@ -149,7 +152,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 * @return array The properties for the current page.
 	 */
 	protected function getPage() {
-		return $GLOBALS['TSFE']->page;
+		return $this->getTypoScriptFrontendController()->page;
 	}
 
 	/**
@@ -158,8 +161,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 * @return array The rootline for the current page.
 	 */
 	protected function determineRootline() {
-		$rootline = (array)$GLOBALS['TSFE']->tmpl->rootLine;
-		return $rootline;
+		return (array)$this->getTypoScriptFrontendController()->tmpl->rootLine;
 	}
 
 	/**
@@ -168,8 +170,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 * @return int The id of the current user
 	 */
 	protected function getUserId() {
-		$userId = $GLOBALS['TSFE']->fe_user->user['uid'];
-		return $userId;
+		return $this->getTypoScriptFrontendController()->fe_user->user['uid'];
 	}
 
 	/**
@@ -178,11 +179,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 * @return bool Determines if a user is logged in
 	 */
 	protected function isUserLoggedIn() {
-		$userLoggedIn = FALSE;
-		if ($GLOBALS['TSFE']->loginUser) {
-			$userLoggedIn = TRUE;
-		}
-		return $userLoggedIn;
+		return (bool)$this->getTypoScriptFrontendController()->loginUser;
 	}
 
 	/**
@@ -192,9 +189,23 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 * @return void
 	 */
 	protected function log($message) {
-		if (is_object($GLOBALS['TT'])) {
-			$GLOBALS['TT']->setTSlogMessage($message, 3);
+		if ($this->getTimeTracker() !== NULL) {
+			$this->getTimeTracker()->setTSlogMessage($message, 3);
 		}
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+	 */
+	protected function getTypoScriptFrontendController() {
+		return $GLOBALS['TSFE'];
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\TimeTracker\TimeTracker
+	 */
+	protected function getTimeTracker() {
+		return $GLOBALS['TT'];
 	}
 
 }
