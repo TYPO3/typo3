@@ -369,7 +369,7 @@ class StepController extends AbstractController {
 	protected function executeOrOutputFirstInstallStepIfNeeded() {
 		$postValues = $this->getPostValues();
 
-		$wasExecuted= FALSE;
+		$wasExecuted = FALSE;
 		$errorMessagesFromExecute = array();
 		if (isset($postValues['action'])
 			&& $postValues['action'] === 'environmentAndFolders'
