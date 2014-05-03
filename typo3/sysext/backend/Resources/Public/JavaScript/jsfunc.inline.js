@@ -190,19 +190,19 @@ var inline = {
 				urlParams += '&ajax[context]=' + encodeURIComponent(Object.toJSON(context));
 			}
 			options = {
-				method: 'post',
-				parameters: urlParams,
-				onSuccess: function (xhr) {
+				type: 'POST',
+				data: urlParams,
+				success: function (data, message, jqXHR) {
 					inline.isLoading = false;
-					inline.processAjaxResponse(method, xhr);
+					inline.processAjaxResponse(method, jqXHR);
 				},
-				onFailure: function (xhr) {
+				error: function (jqXHR, statusText, errorThrown) {
 					inline.isLoading = false;
-					inline.showAjaxFailure(method, xhr);
+					inline.showAjaxFailure(method, jqXHR);
 				}
 			};
 
-			new Ajax.Request(url, options);
+			TYPO3.jQuery.ajax(url, options);
 		}
 	},
 
