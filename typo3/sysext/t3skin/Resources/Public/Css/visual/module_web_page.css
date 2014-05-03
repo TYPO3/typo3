@@ -51,6 +51,10 @@ Web > Page
 	background-color: #cacaca;
 }
 
+.t3-page-ce:hover {
+    z-index: 150;
+}
+
 .t3-page-ce .t3-page-ce-body,
 .t3-page-ce:hover .t3-page-ce-body {
 	background-color: #ffffff;
