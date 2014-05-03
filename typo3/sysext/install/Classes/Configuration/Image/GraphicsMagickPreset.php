@@ -80,7 +80,7 @@ class GraphicsMagickPreset extends AbstractImagePreset implements Configuration\
 			} else {
 				$executable = 'gm';
 			}
-			if (@is_dir($path) && @is_file($path . $executable)) {
+			if (@is_file($path . $executable)) {
 				$command = escapeshellarg($path . $executable) . ' -version';
 				$executingResult = FALSE;
 				\TYPO3\CMS\Core\Utility\CommandUtility::exec($command, $executingResult);

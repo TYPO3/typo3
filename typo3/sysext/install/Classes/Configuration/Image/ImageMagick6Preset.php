@@ -80,7 +80,7 @@ class ImageMagick6Preset extends AbstractImagePreset implements Configuration\Pr
 			} else {
 				$executable = 'identify';
 			}
-			if (@is_dir($path) && @is_file($path . $executable)) {
+			if (@is_file($path . $executable)) {
 				$command = escapeshellarg($path . $executable) . ' -version';
 				$executingResult = FALSE;
 				\TYPO3\CMS\Core\Utility\CommandUtility::exec($command, $executingResult);
