@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Extbase\Tests\Functional\Relations;
+namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
 /***************************************************************
  *  Copyright notice
