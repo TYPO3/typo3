@@ -673,7 +673,7 @@ tt_content.image.20 {
 		layoutKey = {$styles.content.imgtext.layoutKey}
 		layout {
 			default {
-				element = <img src="###SRC###" width="###WIDTH###" height="###HEIGHT###" ###PARAMS######ALTPARAMS######BORDER######SELFCLOSINGTAGSLASH###>
+				element = <img src="###SRC###" width="###WIDTH###" height="###HEIGHT###"###PARAMS######ALTPARAMS######BORDER######SELFCLOSINGTAGSLASH###>
 			}
 			srcset {
 				element = <img src="###SRC###" srcset="###SOURCECOLLECTION###"###PARAMS######ALTPARAMS######SELFCLOSINGTAGSLASH###>

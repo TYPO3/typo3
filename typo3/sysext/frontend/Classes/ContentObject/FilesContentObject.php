@@ -71,7 +71,7 @@ class FilesContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 			}# or: sys_file_references with uid 27:
 			references = 27
 			 */
-			$referencesUid = $this->stdWrapValue('references', $conf);
+			$referencesUid = $this->cObj->stdWrapValue('references', $conf);
 			$referencesUidArray = GeneralUtility::intExplode(',', $referencesUid, TRUE);
 			foreach ($referencesUidArray as $referenceUid) {
 				try {
@@ -88,14 +88,14 @@ class FilesContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 
 			// It's important that this always stays "fieldName" and not be renamed to "field" as it would otherwise collide with the stdWrap key of that name
 			if (!empty($conf['references.'])) {
-				$referencesFieldName = $this->stdWrapValue('fieldName', $conf['references.']);
+				$referencesFieldName = $this->cObj->stdWrapValue('fieldName', $conf['references.']);
 				if ($referencesFieldName) {
 					$table = $this->cObj->getCurrentTable();
 					if ($table === 'pages' && isset($this->cObj->data['_LOCALIZED_UID']) && (int)$this->cObj->data['sys_language_uid'] > 0) {
 						$table = 'pages_language_overlay';
 					}
-					$referencesForeignTable = $this->stdWrapValue('table', $conf['references.'], $table);
-					$referencesForeignUid = $this->stdWrapValue('uid', $conf['references.'], isset($this->cObj->data['_LOCALIZED_UID']) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']);
+					$referencesForeignTable = $this->cObj->stdWrapValue('table', $conf['references.'], $table);
+					$referencesForeignUid = $this->cObj->stdWrapValue('uid', $conf['references.'], isset($this->cObj->data['_LOCALIZED_UID']) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']);
 					$this->addToArray($this->getFileRepository()->findByRelation($referencesForeignTable, $referencesFieldName, $referencesForeignUid), $fileObjects);
 				}
 			}
@@ -107,7 +107,7 @@ class FilesContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 			files = 12,14,15# using stdWrap:
 			files.field = some_field
 			 */
-			$fileUids = GeneralUtility::intExplode(',', $this->stdWrapValue('files', $conf), TRUE);
+			$fileUids = GeneralUtility::intExplode(',', $this->cObj->stdWrapValue('files', $conf), TRUE);
 			foreach ($fileUids as $fileUid) {
 				try {
 					$this->addToArray($this->getFileFactory()->getFileObject($fileUid), $fileObjects);
@@ -119,7 +119,7 @@ class FilesContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 			}
 		}
 		if ($conf['collections'] || $conf['collections.']) {
-			$collectionUids = GeneralUtility::intExplode(',', $this->stdWrapValue('collections', $conf), TRUE);
+			$collectionUids = GeneralUtility::intExplode(',', $this->cObj->stdWrapValue('collections', $conf), TRUE);
 			foreach ($collectionUids as $collectionUid) {
 				try {
 					$fileCollection = $this->getCollectionRepository()->findByUid($collectionUid);
@@ -135,7 +135,7 @@ class FilesContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 			}
 		}
 		if ($conf['folders'] || $conf['folders.']) {
-			$folderIdentifiers = GeneralUtility::trimExplode(',', $this->stdWrapValue('folders', $conf));
+			$folderIdentifiers = GeneralUtility::trimExplode(',', $this->cObj->stdWrapValue('folders', $conf));
 			foreach ($folderIdentifiers as $folderIdentifier) {
 				if ($folderIdentifier) {
 					try {
@@ -159,7 +159,7 @@ class FilesContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 		// Enable sorting for multiple fileObjects
 		$sortingProperty = '';
 		if ($conf['sorting'] || $conf['sorting.']) {
-			$sortingProperty = $this->stdWrapValue('sorting', $conf);
+			$sortingProperty = $this->cObj->stdWrapValue('sorting', $conf);
 		}
 		if ($sortingProperty !== '' && count($fileObjects) > 1) {
 			@usort($fileObjects, function(\TYPO3\CMS\Core\Resource\FileInterface $a, \TYPO3\CMS\Core\Resource\FileInterface $b) use($sortingProperty) {
@@ -301,21 +301,10 @@ class FilesContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 	 * @param array $config The TypoScript array.
 	 * @param string $defaultValue Optional default value.
 	 * @return string Value of the config variable
+	 * @deprecated since TYPO3 CMS 6.2, use ContentObjectRenderer::stdWrapValue() instead. Will be removed two versions later.
 	 */
 	protected function stdWrapValue($key, array $config, $defaultValue = '') {
-		if (isset($config[$key])) {
-			if (!isset($config[$key . '.'])) {
-				return $config[$key];
-			}
-		} else {
-			if (isset($config[$key . '.'])) {
-				$config[$key] = '';
-			} else {
-				return $defaultValue;
-			}
-		}
-		$stdWrapped = $this->cObj->stdWrap($config[$key], $config[$key . '.']);
-		return $stdWrapped ? $stdWrapped : $defaultValue;
+		return $this->cObj->stdWrapValue($key, $config, $defaultValue);
 	}
 
 }

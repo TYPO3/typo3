@@ -1277,11 +1277,9 @@ class ContentObjectRenderer {
 			// This array is used to collect the image-refs on the page...
 			$GLOBALS['TSFE']->imagesOnPage[] = $source;
 			$altParam = $this->getAltParam($conf);
-			$params = '';
-			if ($conf['params'] && !isset($conf['params.'])) {
-				$params = ' ' . $conf['params'];
-			} elseif ($conf['params'] && is_array($conf['params.'])) {
-				$params = ' ' . $this->stdWrap($conf['params'], $conf['params.']);
+			$params = $this->stdWrapValue('params', $conf);
+			if ($params !== '' && $params{0} !== ' ') {
+				$params = ' ' . $params;
 			}
 
 			$imageTagValues = array(
@@ -2103,6 +2101,28 @@ class ContentObjectRenderer {
 		$this->stdWrapRecursionLevel--;
 
 		return $content;
+	}
+
+	/**
+	 * Gets a configuration value by passing them through stdWrap first and taking a default value if stdWrap doesn't yield a result.
+	 *
+	 * @param string $key The config variable key (from TS array).
+	 * @param array $config The TypoScript array.
+	 * @param string $defaultValue Optional default value.
+	 * @return string Value of the config variable
+	 */
+	public function stdWrapValue($key, array $config, $defaultValue = '') {
+		if (isset($config[$key])) {
+			if (!isset($config[$key . '.'])) {
+				return $config[$key];
+			}
+		} elseif (isset($config[$key . '.'])) {
+			$config[$key] = '';
+		} else {
+			return $defaultValue;
+		}
+		$stdWrapped = $this->stdWrap($config[$key], $config[$key . '.']);
+		return $stdWrapped ?: $defaultValue;
 	}
 
 	/**
