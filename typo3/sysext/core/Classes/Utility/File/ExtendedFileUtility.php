@@ -935,6 +935,7 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 				$fileObject = $targetFolderObject->addUploadedFile($fileInfo, $conflictMode);
 				$this->fileRepository->addToIndex($fileObject);
 				$resultObjects[] = $fileObject;
+				$this->internalUploadMap[$uploadPosition] = $fileObject->getCombinedIdentifier();
 				$this->writelog(1, 0, 1, 'Uploading file "%s" to "%s"', array($fileInfo['name'], $targetFolderObject->getIdentifier()));
 			} catch (\TYPO3\CMS\Core\Resource\Exception\UploadException $e) {
 				$this->writelog(1, 2, 106, 'The upload has failed, no uploaded file found!', '');
