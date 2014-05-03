@@ -46,6 +46,9 @@ TYPO3.Components.PageModule = {
 					this.el = Ext.get(this.getEl());
 				}
 
+				// Add css class to define active state
+				this.el.addClass('active-drag');
+
 				// Add css class for the drag shadow
 				this.el.child('.t3-page-ce-dragitem').addClass('dragitem-shadow');
 				// Hide create new element button
@@ -101,13 +104,12 @@ TYPO3.Components.PageModule = {
 					Ext.get(el).removeClass('t3-page-ce-dropzone-available');
 				});
 
+				// Remove css class to define inactive state
+				this.el.removeClass('active-drag');
 				// Remove dragitem-shadow after dragging
 				this.el.child('.t3-page-ce-dragitem').removeClass('dragitem-shadow');
 				// Show create new element button again
 				this.el.child('.t3-icon-document-new').removeClass('drag-start');
-
-				// Remove dragitem-shadow after dragging
-				this.el.child('.t3-page-ce-dragitem').removeClass('dragitem-shadow');
 			},
 
 			// Called upon successful drop of an element on a DDTarget with the same

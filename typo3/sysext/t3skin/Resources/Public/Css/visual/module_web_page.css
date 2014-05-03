@@ -51,8 +51,8 @@ Web > Page
 	background-color: #cacaca;
 }
 
-.t3-page-ce:hover {
-    z-index: 150;
+.t3-page-ce.active-drag {
+    z-index: 4500;
 }
 
 .t3-page-ce .t3-page-ce-body,
