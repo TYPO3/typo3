@@ -173,8 +173,8 @@ class MysqlFulltextIndexHook {
 			$siteIdNumbers = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $this->pObj->wholeSiteIdList);
 			$idList = array();
 			foreach ($siteIdNumbers as $rootId) {
-				$cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 				/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj */
+				$cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 				$idList[] = $cObj->getTreeList( -1 * $rootId, 9999);
 			}
 			$pageWhere = ' ISEC.page_id IN (' . implode(',', $idList) . ')';

@@ -66,6 +66,7 @@ abstract class AbstractAdditionalElement {
 	 * @param mixed $value Value of the object
 	 */
 	public function __construct($type, $value) {
+		/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer localCobj */
 		$this->localCobj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 		$this->value = $value;
 		$this->type = $type;

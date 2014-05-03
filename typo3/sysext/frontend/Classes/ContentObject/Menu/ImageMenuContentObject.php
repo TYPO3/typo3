@@ -159,6 +159,7 @@ class ImageMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abst
 								// Checks if disabled is set...
 								$setObjFlag = 1;
 								if ($theValArr['if.']) {
+									/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj */
 									$cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 									$cObj->start($cObjData, 'pages');
 									if (!$cObj->checkIf($theValArr['if.'])) {
