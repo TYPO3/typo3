@@ -177,12 +177,6 @@
 			<trans-unit id="uploadTemplate.extensionLabel" xml:space="preserve">
 				<source>Extension</source>
 			</trans-unit>
-			<trans-unit id="extensionList.skipSystemDependencyCheckConfirmation.title" xml:space="preserve">
-				<source>Install extension without system dependency check</source>
-			</trans-unit>
-			<trans-unit id="extensionList.skipSystemDependencyCheckConfirmation.message" xml:space="preserve">
-				<source>PLEASE READ CAREFULLY! All depended extensions are fetched from TER if not existing yet. Version dependency check is skipped as well. Be aware that an installation without system dependency check may turn your installation unusable. In such a case manual intervention is required. We recommend to stop installation process.</source>
-			</trans-unit>
 			<trans-unit id="extensionList.removalConfirmation.title" xml:space="preserve">
 				<source>Extension Removal</source>
 			</trans-unit>

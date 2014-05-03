@@ -87,27 +87,4 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 
 		$this->view->assign('triggers', $triggers);
 	}
-
-	/**
-	 * Renders the link to force the installation of an extension. The handling is implemented in the controller.
-	 *
-	 * @param string $extensionKey
-	 * @param string $controllerName
-	 * @return string
-	 */
-	protected function getForceInstallationMessage($extensionKey, $controllerName = NULL) {
-		$forceInstallationUri = $this->uriBuilder->uriFor(
-			'installExtensionWithoutSystemDependencyCheck',
-			array_merge(
-				$this->request->getArguments(),
-				array(
-					'extensionKey' => $extensionKey,
-					'skipSystemDependencyCheck' => 1
-				)
-			),
-			$controllerName
-		);
-
-		return '<br /><br /><a class="skipSystemDependencyCheck" href="' . htmlspecialchars($forceInstallationUri) . '">I know what I\'m doing, install anyway!</a>';
-	}
 }

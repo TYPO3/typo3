@@ -122,25 +122,6 @@
 	}
 
 	function bindActions() {
-		$('.skipSystemDependencyCheck').not('.transformed').each(function() {
-			$(this).data('href', $(this).attr('href'));
-			$(this).attr('href', '#');
-			$(this).addClass('transformed');
-			$(this).click(function (event) {
-				event.preventDefault();
-				TYPO3.Dialog.QuestionDialog({
-					title: TYPO3.l10n.localize('extensionList.skipSystemDependencyCheckConfirmation.title'),
-					msg: TYPO3.l10n.localize('extensionList.skipSystemDependencyCheckConfirmation.message'),
-					url: $(this).data('href'),
-					fn: function (button, dummy, dialog) {
-						if (button == 'no') {
-							window.document.location = dialog.url;
-						}
-					}
-				});
-			})
-		});
-
 		$('.removeExtension').not('.transformed').each(function() {
 			$(this).data('href', $(this).attr('href'));
 			$(this).attr('href', '#');

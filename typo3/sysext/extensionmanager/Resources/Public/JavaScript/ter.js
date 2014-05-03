@@ -82,27 +82,6 @@
 		});
 	}
 
-	function bindSkipSystemDependencyCheck() {
-		$('.skipSystemDependencyCheck').not('.transformed').each(function() {
-			$(this).data('href', $(this).attr('href'));
-			$(this).attr('href', '#');
-			$(this).addClass('transformed');
-			$(this).click(function () {
-				TYPO3.Dialog.QuestionDialog({
-					title: TYPO3.l10n.localize('extensionList.skipSystemDependencyCheckConfirmation.title'),
-					msg: TYPO3.l10n.localize('extensionList.skipSystemDependencyCheckConfirmation.message'),
-					url: $(this).data('href'),
-					fn: function (button, dummy, dialog) {
-						if (button == 'no') {
-							$('.typo3-extension-manager').mask();
-							getResolveDependenciesAndInstallResult('yes', dummy, dialog);
-						}
-					}
-				});
-			})
-		});
-	}
-
 	function getDependencies(data) {
 		if (data.hasDependencies) {
 			TYPO3.Dialog.QuestionDialog({
@@ -114,8 +93,7 @@
 		} else {
 			if(data.hasErrors) {
 				$('.typo3-extension-manager').unmask();
-				TYPO3.Flashmessage.display(TYPO3.Severity.error, data.title, data.message, 15);
-				bindSkipSystemDependencyCheck();
+				TYPO3.Flashmessage.display(TYPO3.Severity.error, data.title, data.message, 10);
 			} else {
 				var button = 'yes';
 				var dialog = [];
@@ -136,7 +114,7 @@
 				success: function (data) {
 					$('.typo3-extension-manager').unmask();
 					if (data.errorMessage.length) {
-						TYPO3.Flashmessage.display(TYPO3.Severity.error, TYPO3.l10n.localize('extensionList.dependenciesResolveDownloadError.title'), data.errorMessage, 15);
+						TYPO3.Flashmessage.display(TYPO3.Severity.error, TYPO3.l10n.localize('extensionList.dependenciesResolveDownloadError.title'), data.errorMessage, 5);
 					} else {
 						var successMessage = TYPO3.l10n.localize('extensionList.dependenciesResolveDownloadSuccess.message').replace(/\{0\}/g, data.extension) + ' <br />';
 						successMessage += '<br /><h3>' + TYPO3.l10n.localize('extensionList.dependenciesResolveDownloadSuccess.header') + ':</h3>';
