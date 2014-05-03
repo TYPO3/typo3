@@ -270,22 +270,14 @@ class Bootstrap {
 	}
 
 	/**
-	 * Reinitializes the class loader during clear cache actions
-	 * Beware! This is not public API and necessary for edge cases in the install tool
+	 * Unregister class loader
 	 *
-	 * @param string $packageManagerClassName
 	 * @return Bootstrap
+	 * @internal This is not a public API method, do not use in own extensions
 	 */
-	public function reinitializeClassLoaderAndCachesAndPackageManagement($packageManagerClassName = 'TYPO3\\CMS\\Core\\Package\\PackageManager') {
+	public function unregisterClassLoader() {
 		$currentClassLoader = $this->getEarlyInstance('TYPO3\\CMS\\Core\\Core\\ClassLoader');
 		spl_autoload_unregister(array($currentClassLoader, 'loadClass'));
-		\TYPO3\CMS\Core\Cache\Cache::flagCachingFrameworkForReinitialization();
-		$this
-			->initializeClassLoader()
-			->populateLocalConfiguration()
-			->initializeCachingFramework()
-			->initializeClassLoaderCaches()
-			->initializePackageManagement($packageManagerClassName);
 		return $this;
 	}
 
