@@ -71,15 +71,15 @@ class ActionController extends AbstractController {
 				$this->installUtility->uninstall($extensionKey);
 			} else {
 				// install
-				$this->managementService->resolveDependenciesAndInstall(
-					$this->extensionModelUtility->mapExtensionArrayToModel(
-						$this->installUtility->enrichExtensionWithDetails($extensionKey)
-					)
+				$extension = $this->extensionModelUtility->mapExtensionArrayToModel(
+					$this->installUtility->enrichExtensionWithDetails($extensionKey)
 				);
+				if ($this->managementService->installExtension($extension) === FALSE) {
+					$this->redirect('unresolvedDependencies', 'List', NULL, array('extensionKey' => $extensionKey));
+				}
 			}
 		} catch (\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException $e) {
-			$message = nl2br(htmlspecialchars($e->getMessage()));
-			$this->addFlashMessage($message, '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+			$this->addFlashMessage(htmlspecialchars($e->getMessage()), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 		} catch (\TYPO3\Flow\Package\Exception\PackageStatesFileNotWritableException $e) {
 			$this->addFlashMessage(htmlspecialchars($e->getMessage()), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 		}
@@ -87,20 +87,39 @@ class ActionController extends AbstractController {
 	}
 
 	/**
+	 * Install an extension and omit dependency checking
+	 *
+	 * @param string $extensionKey
+	 * @return void
+	 */
+	public function installExtensionWithoutSystemDependencyCheckAction($extensionKey) {
+		$this->managementService->setSkipSystemDependencyCheck(TRUE);
+		$this->forward('toggleExtensionInstallationState', NULL, NULL, array('extensionKey' => $extensionKey));
+	}
+
+	/**
 	 * Remove an extension (if it is still installed, uninstall it first)
 	 *
 	 * @param string $extension
+	 * @return string
 	 */
 	protected function removeExtensionAction($extension) {
-		$success = TRUE;
-		$message = '';
 		try {
 			$this->installUtility->removeExtension($extension);
+			$this->addFlashMessage(
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+					'extensionList.remove.message',
+					'extensionmanager',
+					array(
+						'extension' => $extension,
+					)
+				)
+			);
 		} catch (\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException $e) {
-			$message = $e->getMessage();
-			$success = FALSE;
+			$this->addFlashMessage(htmlspecialchars($e->getMessage()), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 		}
-		$this->view->assign('success', $success)->assign('message', $message)->assign('extension', $extension);
+
+		return '';
 	}
 
 	/**

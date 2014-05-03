@@ -115,11 +115,22 @@ class DownloadController extends AbstractController {
 	 * @param string $downloadPath
 	 */
 	public function installFromTerAction(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension, $downloadPath) {
-		list($result, $errorMessage) = $this->installFromTer($extension, $downloadPath);
+		list($result, $errorMessages) = $this->installFromTer($extension, $downloadPath);
 		$this->view
 			->assign('result', $result)
 			->assign('extension', $extension)
-			->assign('errorMessage', $errorMessage);
+			->assign('unresolvedDependencies', $errorMessages);
+	}
+
+	/**
+	 * Check extension dependencies with special dependencies
+	 *
+	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
+	 * @throws \Exception
+	 */
+	public function installExtensionWithoutSystemDependencyCheckAction(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension) {
+		$this->managementService->setSkipSystemDependencyCheck(TRUE);
+		$this->forward('installFromTer', NULL, NULL, array('extension' => $extension, 'downloadPath' => 'Local'));
 	}
 
 	/**
@@ -214,13 +225,21 @@ class DownloadController extends AbstractController {
 	 */
 	protected function installFromTer(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension, $downloadPath = 'Local') {
 		$result = FALSE;
-		$errorMessage = '';
+		$errorMessages = array();
 		try {
 			$this->downloadUtility->setDownloadPath($downloadPath);
-			$result = $this->managementService->resolveDependenciesAndInstall($extension);
+			if (($result = $this->managementService->installExtension($extension)) === FALSE) {
+				$errorMessages = $this->managementService->getDependencyErrors();
+			}
 		} catch (\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException $e) {
-			$errorMessage = $e->getMessage();
+			$errorMessages = array(
+				$extension->getExtensionKey() => array(
+					'code' => $e->getCode(),
+					'message' => $e->getMessage(),
+				),
+			);
 		}
-		return array($result, $errorMessage);
+
+		return array($result, $errorMessages);
 	}
 }

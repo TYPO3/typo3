@@ -72,13 +72,18 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $downloadUtility;
 
 	/**
+	 * @var bool
+	 */
+	protected $skipSystemDependencyCheck = FALSE;
+
+	/**
 	 * @param string $extensionKey
 	 * @return void
 	 */
 	public function markExtensionForInstallation($extensionKey) {
 		// We have to check for dependencies of the extension first, before marking it for installation
 		// because this extension might have dependencies, which need to be installed first
-		$this->dependencyUtility->buildExtensionDependenciesTree(
+		$this->dependencyUtility->checkDependencies(
 			$this->extensionModelUtility->mapExtensionArrayToModel(
 				$this->installUtility->enrichExtensionWithDetails($extensionKey)
 			)
@@ -106,7 +111,7 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	public function markExtensionForDownload(Extension $extension) {
 		// We have to check for dependencies of the extension first, before marking it for download
 		// because this extension might have dependencies, which need to be downloaded and installed first
-		$this->dependencyUtility->buildExtensionDependenciesTree($extension);
+		$this->dependencyUtility->checkDependencies($extension);
 		$this->downloadQueue->addExtensionToQueue($extension);
 	}
 
@@ -117,22 +122,31 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	public function markExtensionForUpdate(Extension $extension) {
 		// We have to check for dependencies of the extension first, before marking it for download
 		// because this extension might have dependencies, which need to be downloaded and installed first
-		$this->dependencyUtility->buildExtensionDependenciesTree($extension);
+		$this->dependencyUtility->checkDependencies($extension);
 		$this->downloadQueue->addExtensionToQueue($extension, 'update');
 	}
 
 	/**
-	 * Resolve an extensions dependencies (download, copy and install dependent
-	 * extensions) and install the extension
+	 * Enables or disables the dependency check for system environment (PHP, TYPO3) before extension installation
+	 *
+	 * @param bool $skipSystemDependencyCheck
+	 */
+	public function setSkipSystemDependencyCheck($skipSystemDependencyCheck) {
+		$this->skipSystemDependencyCheck = $skipSystemDependencyCheck;
+	}
+
+	/**
+	 * Install the extension
 	 *
 	 * @param Extension $extension
-	 * @return array
+	 * @return bool|array Returns FALSE if dependencies cannot be resolved, otherwise array with installation information
 	 */
-	public function resolveDependenciesAndInstall(Extension $extension) {
-		$this->downloadMainExtension($extension);
-		$extensionKey = $extension->getExtensionKey();
-		$this->setInExtensionRepository($extensionKey);
-		$this->dependencyUtility->buildExtensionDependenciesTree($extension);
+	public function installExtension(Extension $extension) {
+		$this->downloadExtension($extension);
+
+		if (!$this->checkDependencies($extension)) {
+			return FALSE;
+		}
 
 		$updatedDependencies = array();
 		$installedDependencies = array();
@@ -151,12 +165,44 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 			$updatedDependencies = $this->uninstallDependenciesToBeUpdated($queue['update']);
 		}
 		// add extension at the end of the download queue
-		$this->downloadQueue->addExtensionToInstallQueue($extensionKey);
+		$this->downloadQueue->addExtensionToInstallQueue($extension->getExtensionKey());
 		$installQueue = $this->downloadQueue->getExtensionInstallStorage();
 		if (count($installQueue) > 0) {
 			$installedDependencies = $this->installDependencies($installQueue);
 		}
 		return array_merge($downloadedDependencies, $updatedDependencies, $installedDependencies);
+	}
+
+	/**
+	 * Returns the unresolved dependency errors
+	 *
+	 * @return array
+	 */
+	public function getDependencyErrors() {
+		return $this->dependencyUtility->getDependencyErrors();
+	}
+
+	/**
+	 * Download an extension
+	 *
+	 * @param Extension $extension
+	 */
+	protected function downloadExtension(Extension $extension) {
+		$this->downloadMainExtension($extension);
+		$this->setInExtensionRepository($extension->getExtensionKey());
+	}
+
+	/**
+	 * Check dependencies for an extension and its required extensions
+	 *
+	 * @param Extension $extension
+	 * @return bool Returns TRUE if all dependencies can be resolved, otherwise FALSE
+	 */
+	protected function checkDependencies(Extension $extension) {
+		$this->dependencyUtility->setSkipSystemDependencyCheck($this->skipSystemDependencyCheck);
+		$this->dependencyUtility->checkDependencies($extension);
+
+		return !$this->dependencyUtility->hasDependencyErrors();
 	}
 
 	/**
@@ -253,7 +299,8 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return array
 	 */
 	public function getAndResolveDependencies(Extension $extension) {
-		$this->dependencyUtility->buildExtensionDependenciesTree($extension);
+		$this->dependencyUtility->setSkipSystemDependencyCheck($this->skipSystemDependencyCheck);
+		$this->dependencyUtility->checkDependencies($extension);
 		$installQueue = $this->downloadQueue->getExtensionInstallStorage();
 		if (is_array($installQueue) && count($installQueue) > 0) {
 			$installQueue = array('install' => $installQueue);

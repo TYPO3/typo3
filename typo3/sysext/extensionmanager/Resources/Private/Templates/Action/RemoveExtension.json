@@ -1,2 +1,0 @@
-{namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
-<em:format.jsonEncode additionalAttributes="{success:success, message:message, extension:extension}" />

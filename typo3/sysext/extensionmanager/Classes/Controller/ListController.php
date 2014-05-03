@@ -52,6 +52,12 @@ class ListController extends AbstractController {
 	protected $pageRenderer;
 
 	/**
+	 * @var \TYPO3\CMS\Extensionmanager\Utility\DependencyUtility
+	 * @inject
+	 */
+	protected $dependencyUtility;
+
+	/**
 	 * Add the needed JavaScript files for all actions
 	 */
 	public function initializeAction() {
@@ -68,6 +74,32 @@ class ListController extends AbstractController {
 		$availableAndInstalledExtensions = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
 		$this->view->assign('extensions', $availableAndInstalledExtensions);
 		$this->handleTriggerArguments();
+	}
+
+	/**
+	 * Shows a list of unresolved dependency errors with the possibility to bypass the dependency check
+	 *
+	 * @param string $extensionKey
+	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
+	 * @return void
+	 */
+	public function unresolvedDependenciesAction($extensionKey) {
+		$availableExtensions = $this->listUtility->getAvailableExtensions();
+		if (isset($availableExtensions[$extensionKey])) {
+			$extensionArray = $this->listUtility->enrichExtensionsWithEmConfAndTerInformation(
+				array(
+					$extensionKey => $availableExtensions[$extensionKey]
+				)
+			);
+			/** @var \TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility $extensionModelUtility */
+			$extensionModelUtility = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\ExtensionModelUtility');
+			$extension = $extensionModelUtility->mapExtensionArrayToModel($extensionArray[$extensionKey]);
+		} else {
+			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Extension ' . $extensionKey . ' is not available', 1402421007);
+		}
+		$this->dependencyUtility->checkDependencies($extension);
+		$this->view->assign('extension', $extension);
+		$this->view->assign('unresolvedDependencies', $this->dependencyUtility->getDependencyErrors());
 	}
 
 	/**

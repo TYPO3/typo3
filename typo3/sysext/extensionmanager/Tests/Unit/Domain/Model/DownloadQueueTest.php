@@ -31,16 +31,34 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Domain\Model;
 class DownloadQueueTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
+	 * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue
+	 */
+	protected $downloadQueueMock;
+
+	/**
+	 * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Extensionmanager\Domain\Model\Extension
+	 */
+	protected $extensionMock;
+
+	/**
+	 * @return void
+	 */
+	public function setUp() {
+		$this->downloadQueueMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\DownloadQueue', array('dummy'));
+		$this->extensionMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Extension', array('dummy'));
+		$this->extensionMock->setExtensionKey('foobar');
+		$this->extensionMock->setVersion('1.0.0');
+
+	}
+
+	/**
 	 * @test
 	 * @return void
 	 */
 	public function addExtensionToQueueAddsExtensionToDownloadStorageArray() {
-		$extensionModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Extension', array('dummy'));
-		$extensionModelMock->_set('extensionKey', 'foobar');
-		$extensionModelMock->_set('version', '1.0.0');
-		$downloadQueueMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\DownloadQueue', array('dummy'));
-		$downloadQueueMock->addExtensionToQueue($extensionModelMock);
-		$extensionStorage = $downloadQueueMock->_get('extensionStorage');
+		$this->downloadQueueMock->addExtensionToQueue($this->extensionMock);
+		$extensionStorage = $this->downloadQueueMock->_get('extensionStorage');
+
 		$this->assertArrayHasKey('foobar', $extensionStorage['download']);
 	}
 
@@ -49,12 +67,9 @@ class DownloadQueueTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function addExtensionToQueueAddsExtensionToUpdateStorageArray() {
-		$extensionModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Extension', array('dummy'));
-		$extensionModelMock->_set('extensionKey', 'foobar');
-		$extensionModelMock->_set('version', '1.0.0');
-		$downloadQueueMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\DownloadQueue', array('dummy'));
-		$downloadQueueMock->addExtensionToQueue($extensionModelMock, 'update');
-		$extensionStorage = $downloadQueueMock->_get('extensionStorage');
+		$this->downloadQueueMock->addExtensionToQueue($this->extensionMock, 'update');
+		$extensionStorage = $this->downloadQueueMock->_get('extensionStorage');
+
 		$this->assertArrayHasKey('foobar', $extensionStorage['update']);
 	}
 
@@ -63,14 +78,8 @@ class DownloadQueueTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function addExtensionToQueueThrowsExceptionIfUnknownStackIsGiven() {
-		/** @var $extensionModelMock \TYPO3\CMS\Extensionmanager\Domain\Model\Extension */
-		$extensionModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Extension', array('dummy'));
-		$extensionModelMock->_set('extensionKey', 'foobar');
-		$extensionModelMock->_set('version', '1.0.0');
-		/** @var $downloadQueueMock \TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue */
-		$downloadQueueMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\DownloadQueue', array('dummy'));
 		$this->setExpectedException('TYPO3\\CMS\\Extensionmanager\\Exception\\ExtensionManagerException', $this->any(), 1342432103);
-		$downloadQueueMock->addExtensionToQueue($extensionModelMock, 'unknownStack');
+		$this->downloadQueueMock->addExtensionToQueue($this->extensionMock, 'unknownStack');
 	}
 
 	/**
@@ -78,16 +87,14 @@ class DownloadQueueTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function addExtensionToQueueThrowsExceptionIfExtensionWithSameKeyAndDifferentValuesAlreadyExists() {
-		$extensionModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Extension', array('dummy'));
-		$extensionModelMock->_set('extensionKey', 'foobar');
-		$extensionModelMock->_set('version', '1.0.0');
-		$extensionModelMock2 = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Extension', array('dummy'));
-		$extensionModelMock2->_set('extensionKey', 'foobar');
-		$extensionModelMock2->_set('version', '1.0.3');
-		$downloadQueueMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\DownloadQueue', array('dummy'));
-		$downloadQueueMock->_set('extensionStorage', array('foobar' => $extensionModelMock2));
+		/** @var \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extensionMock2 */
+		$extensionMock2 = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Extension', array('dummy'));
+		$extensionMock2->setExtensionKey('foobar');
+		$extensionMock2->setVersion('1.0.3');
+		$this->downloadQueueMock->_set('extensionStorage', array('foobar' => $extensionMock2));
+
 		$this->setExpectedException('TYPO3\\CMS\\Extensionmanager\\Exception\\ExtensionManagerException', $this->any(), 1342432101);
-		$downloadQueueMock->addExtensionToQueue($extensionModelMock);
+		$this->downloadQueueMock->addExtensionToQueue($this->extensionMock);
 	}
 
 	/**
@@ -95,23 +102,22 @@ class DownloadQueueTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function removeExtensionFromQueueRemovesExtension() {
-		$extensionModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Extension', array('dummy'));
-		$extensionModelMock->_set('extensionKey', 'foobar');
-		$extensionModelMock->_set('version', '1.0.0');
-		$extensionModelMock2 = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Extension', array('dummy'));
-		$extensionModelMock2->_set('extensionKey', 'foobarbaz');
-		$extensionModelMock2->_set('version', '1.0.3');
-		$downloadQueueMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\DownloadQueue', array('dummy'));
-		$downloadQueueMock->_set('extensionStorage', array(
+		$extensionMock2 = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Extension', array('dummy'));
+		$extensionMock2->_set('extensionKey', 'foobarbaz');
+		$extensionMock2->_set('version', '1.0.3');
+		$this->downloadQueueMock->_set('extensionStorage', array(
 			'download' => array(
-				'foobar' => $extensionModelMock,
-				'foobarbaz' => $extensionModelMock2
+				'foobar' => $this->extensionMock,
+				'foobarbaz' => $extensionMock2
 			)
 		));
-		$extensionStorageBefore = $downloadQueueMock->_get('extensionStorage');
+		$extensionStorageBefore = $this->downloadQueueMock->_get('extensionStorage');
+
 		$this->assertTrue(array_key_exists('foobar', $extensionStorageBefore['download']));
-		$downloadQueueMock->removeExtensionFromQueue($extensionModelMock);
-		$extensionStorageAfter = $downloadQueueMock->_get('extensionStorage');
+
+		$this->downloadQueueMock->removeExtensionFromQueue($this->extensionMock);
+		$extensionStorageAfter = $this->downloadQueueMock->_get('extensionStorage');
+
 		$this->assertFalse(array_key_exists('foobar', $extensionStorageAfter['download']));
 	}
 

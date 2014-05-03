@@ -136,8 +136,12 @@
 							$('.typo3-extension-manager').mask();
 							$.ajax({
 								url: dialog.url,
-								dataType: 'json',
-								success: removeExtension
+								success: function() {
+									location.reload();
+								},
+								error: function() {
+									$('.typo3-extension-manager').unmask();
+								}
 							});
 						}
 					}
@@ -214,14 +218,5 @@
 				}
 			}
 		});
-	}
-
-	function removeExtension(data) {
-		$('.typo3-extension-manager').unmask();
-		if (data.success) {
-			datatable.fnDeleteRow(datatable.fnGetPosition(document.getElementById(data.extension)));
-		} else {
-			TYPO3.Flashmessage.display(TYPO3.Severity.error, TYPO3.l10n.localize('extensionList.removalConfirmation.title'), data.message, 15);
-		}
 	}
 }(jQuery));

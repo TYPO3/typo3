@@ -33,24 +33,28 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
-	protected $mockObjectManager;
+	protected $objectManagerMock;
 
+	/**
+	 * @return void
+	 */
 	public function setUp() {
-		$this->mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$this->objectManagerMock = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
 	}
-
 
 	/**
 	 * @test
 	 * @return void
 	 */
 	public function checkTypo3DependencyThrowsExceptionIfVersionNumberIsTooLow() {
-		$dependencyModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
-		$dependencyModelMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue('15.0.0'));
-		$dependencyModelMock->_set('identifier', 'typo3');
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency $dependencyMock */
+		$dependencyMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
+		$dependencyMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue('15.0.0'));
+		$dependencyMock->setIdentifier('typo3');
 		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('dummy'));
+
 		$this->setExpectedException('TYPO3\\CMS\\Extensionmanager\\Exception\\ExtensionManagerException', 'Your TYPO3 version is lower than necessary. You need at least TYPO3 version 15.0.0');
-		$dependencyUtility->_call('checkTypo3Dependency', $dependencyModelMock);
+		$dependencyUtility->_call('checkTypo3Dependency', $dependencyMock);
 	}
 
 	/**
@@ -58,13 +62,15 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function checkTypo3DependencyThrowsExceptionIfVersionNumberIsTooHigh() {
-		$dependencyModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
-		$dependencyModelMock->expects($this->atLeastOnce())->method('getHighestVersion')->will($this->returnValue('3.0.0'));
-		$dependencyModelMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue('1.0.0'));
-		$dependencyModelMock->_set('identifier', 'typo3');
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency $dependencyMock */
+		$dependencyMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
+		$dependencyMock->expects($this->atLeastOnce())->method('getHighestVersion')->will($this->returnValue('3.0.0'));
+		$dependencyMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue('1.0.0'));
+		$dependencyMock->setIdentifier('typo3');
 		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('dummy'));
+
 		$this->setExpectedException('TYPO3\\CMS\\Extensionmanager\\Exception\\ExtensionManagerException', 'Your TYPO3 version is higher than allowed. You can use TYPO3 versions 1.0.0 - 3.0.0');
-		$dependencyUtility->_call('checkTypo3Dependency', $dependencyModelMock);
+		$dependencyUtility->_call('checkTypo3Dependency', $dependencyMock);
 	}
 
 	/**
@@ -72,11 +78,13 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function checkTypo3DependencyThrowsExceptionIfIdentifierIsNotTypo3() {
-		$dependencyModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
-		$dependencyModelMock->_set('identifier', '123');
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency $dependencyMock */
+		$dependencyMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
+		$dependencyMock->setIdentifier('123');
 		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('dummy'));
+
 		$this->setExpectedException('TYPO3\\CMS\\Extensionmanager\\Exception\\ExtensionManagerException', 'checkTypo3Dependency can only check TYPO3 dependencies. Found dependency with identifier "123"');
-		$dependencyUtility->_call('checkTypo3Dependency', $dependencyModelMock);
+		$dependencyUtility->_call('checkTypo3Dependency', $dependencyMock);
 	}
 
 	/**
@@ -84,12 +92,14 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function checkTypo3DependencyReturnsTrueIfVersionNumberIsInRange() {
-		$dependencyModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
-		$dependencyModelMock->expects($this->atLeastOnce())->method('getHighestVersion')->will($this->returnValue('15.0.0'));
-		$dependencyModelMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue('1.0.0'));
-		$dependencyModelMock->_set('identifier', 'typo3');
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency $dependencyMock */
+		$dependencyMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
+		$dependencyMock->expects($this->atLeastOnce())->method('getHighestVersion')->will($this->returnValue('15.0.0'));
+		$dependencyMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue('1.0.0'));
+		$dependencyMock->setIdentifier('typo3');
 		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('dummy'));
-		$this->assertTrue($dependencyUtility->_call('checkTypo3Dependency', $dependencyModelMock));
+
+		$this->assertTrue($dependencyUtility->_call('checkTypo3Dependency', $dependencyMock));
 	}
 
 	/**
@@ -97,12 +107,14 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function checkTypo3DependencyCanHandleEmptyVersionHighestVersion() {
-		$dependencyModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
-		$dependencyModelMock->expects($this->atLeastOnce())->method('getHighestVersion')->will($this->returnValue(''));
-		$dependencyModelMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue('1.0.0'));
-		$dependencyModelMock->_set('identifier', 'typo3');
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency $dependencyMock */
+		$dependencyMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
+		$dependencyMock->expects($this->atLeastOnce())->method('getHighestVersion')->will($this->returnValue(''));
+		$dependencyMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue('1.0.0'));
+		$dependencyMock->setIdentifier('typo3');
 		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('dummy'));
-		$this->assertTrue($dependencyUtility->_call('checkTypo3Dependency', $dependencyModelMock));
+
+		$this->assertTrue($dependencyUtility->_call('checkTypo3Dependency', $dependencyMock));
 	}
 
 	/**
@@ -110,12 +122,14 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function checkTypo3DependencyCanHandleEmptyVersionLowestVersion() {
-		$dependencyModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
-		$dependencyModelMock->expects($this->atLeastOnce())->method('getHighestVersion')->will($this->returnValue('15.0.0'));
-		$dependencyModelMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue(''));
-		$dependencyModelMock->_set('identifier', 'typo3');
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency $dependencyMock */
+		$dependencyMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
+		$dependencyMock->expects($this->atLeastOnce())->method('getHighestVersion')->will($this->returnValue('15.0.0'));
+		$dependencyMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue(''));
+		$dependencyMock->setIdentifier('typo3');
 		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('dummy'));
-		$this->assertTrue($dependencyUtility->_call('checkTypo3Dependency', $dependencyModelMock));
+
+		$this->assertTrue($dependencyUtility->_call('checkTypo3Dependency', $dependencyMock));
 	}
 
 	/**
@@ -123,12 +137,14 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function checkPhpDependencyThrowsExceptionIfVersionNumberIsTooLow() {
-		$dependencyModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
-		$dependencyModelMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue('15.0.0'));
-		$dependencyModelMock->_set('identifier', 'php');
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency $dependencyMock */
+		$dependencyMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
+		$dependencyMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue('15.0.0'));
+		$dependencyMock->setIdentifier('php');
 		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('dummy'));
+
 		$this->setExpectedException('TYPO3\\CMS\\Extensionmanager\\Exception\\ExtensionManagerException', 'Your PHP version is lower than necessary. You need at least PHP version 15.0.0');
-		$dependencyUtility->_call('checkPhpDependency', $dependencyModelMock);
+		$dependencyUtility->_call('checkPhpDependency', $dependencyMock);
 	}
 
 	/**
@@ -136,13 +152,15 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function checkPhpDependencyThrowsExceptionIfVersionNumberIsTooHigh() {
-		$dependencyModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
-		$dependencyModelMock->expects($this->atLeastOnce())->method('getHighestVersion')->will($this->returnValue('3.0.0'));
-		$dependencyModelMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue('1.0.0'));
-		$dependencyModelMock->_set('identifier', 'PHP');
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency $dependencyMock */
+		$dependencyMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
+		$dependencyMock->expects($this->atLeastOnce())->method('getHighestVersion')->will($this->returnValue('3.0.0'));
+		$dependencyMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue('1.0.0'));
+		$dependencyMock->setIdentifier('php');
 		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('dummy'));
+
 		$this->setExpectedException('TYPO3\\CMS\\Extensionmanager\\Exception\\ExtensionManagerException', 'Your PHP version is higher than allowed. You can use PHP versions 1.0.0 - 3.0.0');
-		$dependencyUtility->_call('checkPhpDependency', $dependencyModelMock);
+		$dependencyUtility->_call('checkPhpDependency', $dependencyMock);
 	}
 
 	/**
@@ -150,11 +168,13 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function checkPhpDependencyThrowsExceptionIfIdentifierIsNotTypo3() {
-		$dependencyModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
-		$dependencyModelMock->_set('identifier', '123');
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency $dependencyMock */
+		$dependencyMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
+		$dependencyMock->setIdentifier('123');
 		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('dummy'));
+
 		$this->setExpectedException('TYPO3\\CMS\\Extensionmanager\\Exception\\ExtensionManagerException', 'checkPhpDependency can only check PHP dependencies. Found dependency with identifier "123"');
-		$dependencyUtility->_call('checkPhpDependency', $dependencyModelMock);
+		$dependencyUtility->_call('checkPhpDependency', $dependencyMock);
 	}
 
 	/**
@@ -162,12 +182,14 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function checkPhpDependencyReturnsTrueIfVersionNumberIsInRange() {
-		$dependencyModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
-		$dependencyModelMock->expects($this->atLeastOnce())->method('getHighestVersion')->will($this->returnValue('15.0.0'));
-		$dependencyModelMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue('1.0.0'));
-		$dependencyModelMock->_set('identifier', 'PHP');
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency $dependencyMock */
+		$dependencyMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
+		$dependencyMock->expects($this->atLeastOnce())->method('getHighestVersion')->will($this->returnValue('15.0.0'));
+		$dependencyMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue('1.0.0'));
+		$dependencyMock->setIdentifier('php');
 		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('dummy'));
-		$this->assertTrue($dependencyUtility->_call('checkPhpDependency', $dependencyModelMock));
+
+		$this->assertTrue($dependencyUtility->_call('checkPhpDependency', $dependencyMock));
 	}
 
 	/**
@@ -175,12 +197,14 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function checkPhpDependencyCanHandleEmptyVersionHighestVersion() {
-		$dependencyModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
-		$dependencyModelMock->expects($this->atLeastOnce())->method('getHighestVersion')->will($this->returnValue(''));
-		$dependencyModelMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue('1.0.0'));
-		$dependencyModelMock->_set('identifier', 'PHP');
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency $dependencyMock */
+		$dependencyMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
+		$dependencyMock->expects($this->atLeastOnce())->method('getHighestVersion')->will($this->returnValue(''));
+		$dependencyMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue('1.0.0'));
+		$dependencyMock->setIdentifier('php');
 		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('dummy'));
-		$this->assertTrue($dependencyUtility->_call('checkPhpDependency', $dependencyModelMock));
+
+		$this->assertTrue($dependencyUtility->_call('checkPhpDependency', $dependencyMock));
 	}
 
 	/**
@@ -188,12 +212,14 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function checkPhpDependencyCanHandleEmptyVersionLowestVersion() {
-		$dependencyModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
-		$dependencyModelMock->expects($this->atLeastOnce())->method('getHighestVersion')->will($this->returnValue('15.0.0'));
-		$dependencyModelMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue(''));
-		$dependencyModelMock->_set('identifier', 'PHP');
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency $dependencyMock */
+		$dependencyMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
+		$dependencyMock->expects($this->atLeastOnce())->method('getHighestVersion')->will($this->returnValue('15.0.0'));
+		$dependencyMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue(''));
+		$dependencyMock->setIdentifier('php');
 		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('dummy'));
-		$this->assertTrue($dependencyUtility->_call('checkPhpDependency', $dependencyModelMock));
+
+		$this->assertTrue($dependencyUtility->_call('checkPhpDependency', $dependencyMock));
 	}
 
 	/**
@@ -201,13 +227,18 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function checkDependenciesCallsMethodToCheckPhpDependencies() {
-		$dependencyModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
-		$dependencyModelMock->_set('identifier', 'php');
+		/** @var \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extensionMock */
+		$extensionMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Extension', array('dummy'));
+		/** @var \TYPO3\CMS\Extensionmanager\Domain\Model\Dependency $dependencyMock */
+		$dependencyMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
+		$dependencyMock->setIdentifier('php');
 		$dependencyStorage = new \SplObjectStorage();
-		$dependencyStorage->attach($dependencyModelMock);
-		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('checkPhpDependency', 'checkTypo3Dependency'));
+		$dependencyStorage->attach($dependencyMock);
+		$extensionMock->setDependencies($dependencyStorage);
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility $dependencyUtility */
+		$dependencyUtility = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('checkPhpDependency', 'checkTypo3Dependency'));
 		$dependencyUtility->expects($this->atLeastOnce())->method('checkPhpDependency');
-		$dependencyUtility->_call('checkDependencies', $dependencyStorage);
+		$dependencyUtility->checkDependencies($extensionMock);
 	}
 
 	/**
@@ -215,13 +246,19 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function checkDependenciesCallsMethodToCheckTypo3Dependencies() {
-		$dependencyModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
-		$dependencyModelMock->_set('identifier', 'TyPo3');
+		/** @var \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extensionMock */
+		$extensionMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Extension', array('dummy'));
+		/** @var \TYPO3\CMS\Extensionmanager\Domain\Model\Dependency $dependencyMock */
+		$dependencyMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
+		$dependencyMock->setIdentifier('typo3');
 		$dependencyStorage = new \SplObjectStorage();
-		$dependencyStorage->attach($dependencyModelMock);
-		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('checkPhpDependency', 'checkTypo3Dependency'));
+		$dependencyStorage->attach($dependencyMock);
+		$extensionMock->setDependencies($dependencyStorage);
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility $dependencyUtility */
+		$dependencyUtility = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('checkPhpDependency', 'checkTypo3Dependency'));
+
 		$dependencyUtility->expects($this->atLeastOnce())->method('checkTypo3Dependency');
-		$dependencyUtility->_call('checkDependencies', $dependencyStorage);
+		$dependencyUtility->checkDependencies($extensionMock);
 	}
 
 	/**
@@ -229,12 +266,14 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function isVersionCompatibleReturnsTrueForCompatibleVersion() {
-		$dependencyModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
-		$dependencyModelMock->expects($this->atLeastOnce())->method('getHighestVersion')->will($this->returnValue('15.0.0'));
-		$dependencyModelMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue('1.0.0'));
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency $dependencyMock */
+		$dependencyMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
+		$dependencyMock->expects($this->atLeastOnce())->method('getHighestVersion')->will($this->returnValue('15.0.0'));
+		$dependencyMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue('1.0.0'));
 		$version = '3.3.3';
 		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('dummy'));
-		$this->assertTrue($dependencyUtility->_call('isVersionCompatible', $version, $dependencyModelMock));
+
+		$this->assertTrue($dependencyUtility->_call('isVersionCompatible', $version, $dependencyMock));
 	}
 
 	/**
@@ -242,12 +281,14 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function isVersionCompatibleReturnsFalseForIncompatibleVersion() {
-		$dependencyModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
-		$dependencyModelMock->expects($this->atLeastOnce())->method('getHighestVersion')->will($this->returnValue('1.0.1'));
-		$dependencyModelMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue('1.0.0'));
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency $dependencyMock */
+		$dependencyMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
+		$dependencyMock->expects($this->atLeastOnce())->method('getHighestVersion')->will($this->returnValue('1.0.1'));
+		$dependencyMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue('1.0.0'));
 		$version = '3.3.3';
 		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('dummy'));
-		$this->assertFalse($dependencyUtility->_call('isVersionCompatible', $version, $dependencyModelMock));
+
+		$this->assertFalse($dependencyUtility->_call('isVersionCompatible', $version, $dependencyMock));
 	}
 
 	/**
@@ -260,10 +301,11 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'foo' => array(),
 			'bar' => array()
 		);
-		$listUtilityMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\ListUtility', array('getAvailableExtensions'));
+		$listUtilityMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\ListUtility', array('getAvailableExtensions'));
 		$listUtilityMock->expects($this->atLeastOnce())->method('getAvailableExtensions')->will($this->returnValue($availableExtensions));
 		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('dummy'));
 		$dependencyUtility->_set('listUtility', $listUtilityMock);
+
 		$this->assertTrue($dependencyUtility->_call('isDependentExtensionAvailable', 'dummy'));
 	}
 
@@ -277,10 +319,11 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'foo' => array(),
 			'bar' => array()
 		);
-		$listUtilityMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\ListUtility', array('getAvailableExtensions'));
+		$listUtilityMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\ListUtility', array('getAvailableExtensions'));
 		$listUtilityMock->expects($this->atLeastOnce())->method('getAvailableExtensions')->will($this->returnValue($availableExtensions));
 		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('dummy'));
 		$dependencyUtility->_set('listUtility', $listUtilityMock);
+
 		$this->assertFalse($dependencyUtility->_call('isDependentExtensionAvailable', '42'));
 	}
 
@@ -289,14 +332,14 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function isAvailableVersionCompatibleCallsIsVersionCompatibleWithExtensionVersion() {
-		$emConfUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\EmConfUtility', array('includeEmConf'));
+		$emConfUtility = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\EmConfUtility', array('includeEmConf'));
 		$emConfUtility->expects($this->once())->method('includeEmConf')->will($this->returnValue(array(
 			'key' => 'dummy',
 			'version' => '1.0.0'
 		)));
 		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('setAvailableExtensions', 'isVersionCompatible'));
-		$dependencyModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getIdentifier'));
-		$dependencyModelMock->expects($this->once())->method('getIdentifier')->will($this->returnValue('dummy'));
+		$dependencyMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getIdentifier'));
+		$dependencyMock->expects($this->once())->method('getIdentifier')->will($this->returnValue('dummy'));
 		$dependencyUtility->_set('emConfUtility', $emConfUtility);
 		$dependencyUtility->_set('availableExtensions', array(
 			'dummy' => array(
@@ -305,7 +348,7 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		));
 		$dependencyUtility->expects($this->once())->method('setAvailableExtensions');
 		$dependencyUtility->expects($this->once())->method('isVersionCompatible')->with('1.0.0', $this->anything());
-		$dependencyUtility->_call('isAvailableVersionCompatible', $dependencyModelMock);
+		$dependencyUtility->_call('isAvailableVersionCompatible', $dependencyMock);
 	}
 
 	/**
@@ -313,11 +356,12 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function isExtensionDownloadableFromTerReturnsTrueIfOneVersionExists() {
-		$extensionRepositoryMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ExtensionRepository', array('countByExtensionKey'), array($this->mockObjectManager));
+		$extensionRepositoryMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ExtensionRepository', array('countByExtensionKey'), array($this->objectManagerMock));
 		$extensionRepositoryMock->expects($this->once())->method('countByExtensionKey')->with('test123')->will($this->returnValue(1));
 		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('dummy'));
 		$dependencyUtility->_set('extensionRepository', $extensionRepositoryMock);
 		$count = $dependencyUtility->_call('isExtensionDownloadableFromTer', 'test123');
+
 		$this->assertTrue($count);
 	}
 
@@ -326,11 +370,12 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function isExtensionDownloadableFromTerReturnsFalseIfNoVersionExists() {
-		$extensionRepositoryMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ExtensionRepository', array('countByExtensionKey'), array($this->mockObjectManager));
+		$extensionRepositoryMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ExtensionRepository', array('countByExtensionKey'), array($this->objectManagerMock));
 		$extensionRepositoryMock->expects($this->once())->method('countByExtensionKey')->with('test123')->will($this->returnValue(0));
 		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('dummy'));
 		$dependencyUtility->_set('extensionRepository', $extensionRepositoryMock);
 		$count = $dependencyUtility->_call('isExtensionDownloadableFromTer', 'test123');
+
 		$this->assertFalse($count);
 	}
 
@@ -339,15 +384,16 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function isDownloadableVersionCompatibleReturnsTrueIfCompatibleVersionExists() {
-		$dependencyModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getIdentifier', 'getHighestVersion', 'getLowestVersion'));
-		$dependencyModelMock->expects($this->once())->method('getIdentifier')->will($this->returnValue('dummy'));
-		$dependencyModelMock->expects($this->once())->method('getHighestVersion')->will($this->returnValue('10.0.0'));
-		$dependencyModelMock->expects($this->once())->method('getLowestVersion')->will($this->returnValue('1.0.0'));
-		$extensionRepositoryMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ExtensionRepository', array('countByVersionRangeAndExtensionKey'), array($this->mockObjectManager));
+		$dependencyMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getIdentifier', 'getHighestVersion', 'getLowestVersion'));
+		$dependencyMock->expects($this->once())->method('getIdentifier')->will($this->returnValue('dummy'));
+		$dependencyMock->expects($this->once())->method('getHighestVersion')->will($this->returnValue('10.0.0'));
+		$dependencyMock->expects($this->once())->method('getLowestVersion')->will($this->returnValue('1.0.0'));
+		$extensionRepositoryMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ExtensionRepository', array('countByVersionRangeAndExtensionKey'), array($this->objectManagerMock));
 		$extensionRepositoryMock->expects($this->once())->method('countByVersionRangeAndExtensionKey')->with('dummy', 1000000, 10000000)->will($this->returnValue(2));
 		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('dummy'));
 		$dependencyUtility->_set('extensionRepository', $extensionRepositoryMock);
-		$count = $dependencyUtility->_call('isDownloadableVersionCompatible', $dependencyModelMock);
+		$count = $dependencyUtility->_call('isDownloadableVersionCompatible', $dependencyMock);
+
 		$this->assertTrue($count);
 	}
 
@@ -356,9 +402,9 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function isDownloadableVersionCompatibleReturnsFalseIfIncompatibleVersionExists() {
-		$dependencyModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getIdentifier'));
-		$dependencyModelMock->expects($this->once())->method('getIdentifier')->will($this->returnValue('dummy'));
-		$extensionRepositoryMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ExtensionRepository', array('countByVersionRangeAndExtensionKey'), array($this->mockObjectManager));
+		$dependencyMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getIdentifier'));
+		$dependencyMock->expects($this->once())->method('getIdentifier')->will($this->returnValue('dummy'));
+		$extensionRepositoryMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ExtensionRepository', array('countByVersionRangeAndExtensionKey'), array($this->objectManagerMock));
 		$extensionRepositoryMock->expects($this->once())->method('countByVersionRangeAndExtensionKey')->with('dummy', 1000000, 2000000)->will($this->returnValue(0));
 		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('getLowestAndHighestIntegerVersions'));
 		$dependencyUtility->_set('extensionRepository', $extensionRepositoryMock);
@@ -366,7 +412,8 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'lowestIntegerVersion' => 1000000,
 			'highestIntegerVersion' => 2000000
 		)));
-		$count = $dependencyUtility->_call('isDownloadableVersionCompatible', $dependencyModelMock);
+		$count = $dependencyUtility->_call('isDownloadableVersionCompatible', $dependencyMock);
+
 		$this->assertFalse($count);
 	}
 
@@ -375,15 +422,18 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function getLowestAndHighestIntegerVersionsReturnsArrayWithVersions() {
-		$dependencyModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
-		$dependencyModelMock->expects($this->once())->method('getHighestVersion')->will($this->returnValue('2.0.0'));
-		$dependencyModelMock->expects($this->once())->method('getLowestVersion')->will($this->returnValue('1.0.0'));
-		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('dummy'));
-		$versions = $dependencyUtility->_call('getLowestAndHighestIntegerVersions', $dependencyModelMock);
-		$this->assertEquals(array(
+		$expectedVersions = array(
 			'lowestIntegerVersion' => 1000000,
 			'highestIntegerVersion' => 2000000
-		), $versions);
+		);
+
+		$dependencyMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getHighestVersion', 'getLowestVersion'));
+		$dependencyMock->expects($this->once())->method('getHighestVersion')->will($this->returnValue('2.0.0'));
+		$dependencyMock->expects($this->once())->method('getLowestVersion')->will($this->returnValue('1.0.0'));
+		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('dummy'));
+		$versions = $dependencyUtility->_call('getLowestAndHighestIntegerVersions', $dependencyMock);
+
+		$this->assertSame($expectedVersions, $versions);
 	}
 
 	/**
@@ -402,19 +452,20 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$myStorage = new $className();
 		$myStorage->extensions[] = $extension1;
 		$myStorage->extensions[] = $extension2;
-		$dependencyModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getIdentifier'));
-		$dependencyModelMock->expects($this->once())->method('getIdentifier')->will($this->returnValue('foobar'));
+		$dependencyMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('getIdentifier'));
+		$dependencyMock->expects($this->once())->method('getIdentifier')->will($this->returnValue('foobar'));
 		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('getLowestAndHighestIntegerVersions'));
 		$dependencyUtility->expects($this->once())->method('getLowestAndHighestIntegerVersions')->will($this->returnValue(array(
 			'lowestIntegerVersion' => 1000000,
 			'highestIntegerVersion' => 2000000
 		)));
-		$extensionRepositoryMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ExtensionRepository', array('findByVersionRangeAndExtensionKeyOrderedByVersion'), array($this->mockObjectManager));
+		$extensionRepositoryMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ExtensionRepository', array('findByVersionRangeAndExtensionKeyOrderedByVersion'), array($this->objectManagerMock));
 		$extensionRepositoryMock->expects($this->once())->method('findByVersionRangeAndExtensionKeyOrderedByVersion')->with('foobar', 1000000, 2000000)->will($this->returnValue($myStorage));
 		$dependencyUtility->_set('extensionRepository', $extensionRepositoryMock);
-		$extension = $dependencyUtility->_call('getLatestCompatibleExtensionByIntegerVersionDependency', $dependencyModelMock);
-		$this->assertTrue($extension instanceof \TYPO3\CMS\Extensionmanager\Domain\Model\Extension);
-		$this->assertEquals('foo', $extension->getExtensionKey());
+		$extension = $dependencyUtility->_call('getLatestCompatibleExtensionByIntegerVersionDependency', $dependencyMock);
+
+		$this->assertInstanceOf('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Extension', $extension);
+		$this->assertSame('foo', $extension->getExtensionKey());
 	}
 
 }

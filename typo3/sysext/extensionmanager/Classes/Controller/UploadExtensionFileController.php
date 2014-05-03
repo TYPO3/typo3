@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 
@@ -72,7 +73,6 @@ class UploadExtensionFileController extends AbstractController {
 	 * @return void
 	 */
 	public function formAction() {
-
 	}
 
 	/**
@@ -83,10 +83,10 @@ class UploadExtensionFileController extends AbstractController {
 	 * @return void
 	 */
 	public function extractAction($overwrite = FALSE) {
+		$file = $_FILES['tx_extensionmanager_tools_extensionmanagerextensionmanager'];
+		$fileExtension = pathinfo($file['name']['extensionFile'], PATHINFO_EXTENSION);
+		$fileName = pathinfo($file['name']['extensionFile'], PATHINFO_BASENAME);
 		try {
-			$file = $_FILES['tx_extensionmanager_tools_extensionmanagerextensionmanager'];
-			$fileExtension = pathinfo($file['name']['extensionFile'], PATHINFO_EXTENSION);
-			$fileName = pathinfo($file['name']['extensionFile'], PATHINFO_BASENAME);
 			if (empty($file['name']['extensionFile'])) {
 				throw new ExtensionManagerException('No file given.', 1342858852);
 			}
@@ -101,16 +101,30 @@ class UploadExtensionFileController extends AbstractController {
 					1342864339
 				);
 			}
+
+			// Import extension
 			if ($fileExtension === 't3x') {
 				$extensionData = $this->getExtensionFromT3xFile($tempFile, $overwrite);
 			} else {
 				$extensionData = $this->getExtensionFromZipFile($tempFile, $fileName, $overwrite);
 			}
-			$this->view->assign('extensionKey', $extensionData['extKey']);
+			$this->installUtility->install($extensionData['extKey']);
+			$this->removeBackupFolder();
+			$this->addFlashMessage(
+				htmlspecialchars($this->translate('extensionList.uploadFlashMessage.message', array($extensionData['extKey']))),
+				htmlspecialchars($this->translate('extensionList.uploadFlashMessage.title')),
+				FlashMessage::OK
+			);
+			$this->addFlashMessage(
+				htmlspecialchars($this->translate('extensionList.installedFlashMessage.message', array($extensionData['extKey']))),
+				'',
+				FlashMessage::OK
+			);
 		} catch (\Exception $exception) {
 			$this->removeExtensionAndRestoreFromBackup($fileName);
-			$this->view->assign('error', $exception->getMessage());
+			$this->addFlashMessage(htmlspecialchars($exception->getMessage()), '', FlashMessage::ERROR);
 		}
+		$this->redirect('index', 'List', NULL, array(self::TRIGGER_RefreshModuleMenu => TRUE));
 	}
 
 	/**
@@ -139,8 +153,7 @@ class UploadExtensionFileController extends AbstractController {
 		}
 		$this->removeFromOriginalPath = TRUE;
 		$this->fileHandlingUtility->unpackExtensionFromExtensionDataArray($extensionData);
-		$this->installUtility->install($extensionData['extKey']);
-		$this->removeBackupFolder();
+
 		return $extensionData;
 	}
 
@@ -157,7 +170,7 @@ class UploadExtensionFileController extends AbstractController {
 	 * @throws ExtensionManagerException
 	 */
 	protected function getExtensionFromZipFile($file, $fileName, $overwrite = FALSE) {
-			// Remove version and extension from filename to determine the extension key
+		// Remove version and extension from filename to determine the extension key
 		$extensionKey = $this->getExtensionKeyFromFileName($fileName);
 		$isExtensionAvailable = $this->installUtility->isAvailable($extensionKey);
 		if (!$overwrite && $isExtensionAvailable) {
@@ -168,8 +181,6 @@ class UploadExtensionFileController extends AbstractController {
 		}
 		$this->removeFromOriginalPath = TRUE;
 		$this->fileHandlingUtility->unzipExtensionFromFile($file, $extensionKey);
-		$this->installUtility->install($extensionKey);
-		$this->removeBackupFolder();
 
 		return array('extKey' => $extensionKey);
 	}

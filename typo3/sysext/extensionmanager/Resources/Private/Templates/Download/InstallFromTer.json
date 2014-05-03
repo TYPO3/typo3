@@ -1,2 +1,9 @@
 {namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
-<em:format.jsonEncode additionalAttributes="{result:result, extension:extension.extensionKey, errorMessage: errorMessage}" />
+<em:format.jsonEncode additionalAttributes="{
+	result: result,
+	extension: extension.extensionKey,
+	errorCount: '{f:count(subject: unresolvedDependencies)}',
+	errorTitle: '{f:translate(key: \'downloadExtension.dependencies.errorTitle\')}',
+	errorMessage: '{f:render(partial: \'List/UnresolvedDependencies\', arguments: \'{_all}\')}',
+	skipDependencyUri: '{f:uri.action(action: \'installExtensionWithoutSystemDependencyCheck\', format: \'json\', arguments: \'{extension: extension}\')}'
+}" />

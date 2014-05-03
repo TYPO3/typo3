@@ -1,0 +1,29 @@
+{namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
+
+<f:layout name="main" />
+
+<f:section name="docheader-buttons">
+</f:section>
+
+<f:section name="module-headline">
+	<h1><f:translate key="installExtension">Install extension</f:translate></h1>
+</f:section>
+
+<f:section name="Content">
+	<f:flashMessages renderMode="div" />
+	<f:render partial="List/UnresolvedDependencies" arguments="{_all}" />
+	<br />
+	<div class="typo3-message message-error">
+		<div class="header-container">
+			<div class="message-header"><f:translate key="dependencyCheck.unresolvedDependencies.title" /></div>
+		</div>
+		<div class="message-body"><f:render partial="List/UnresolvedDependenciesMessage" /></div>
+	</div>
+	<br />
+	<f:link.action action="index" class="t3-button">
+		Go back
+	</f:link.action>
+	<f:link.action action="installExtensionWithoutSystemDependencyCheck" controller="Action" arguments="{extensionKey: extension.extensionKey}" class="t3-button">
+		<span class="t3-icon t3-icon-actions t3-icon-dialog-error">&nbsp;</span> <f:translate key="dependencyCheck.unresolvedDependencies.proceed" />
+	</f:link.action>
+</f:section>
