@@ -216,7 +216,7 @@
 								</softref_element>
 							</softref_key>
 						</keys>
-						<tokenizedContent>&lt;img src=&quot;fileadmin/_processed_/csm_typo3_image2_5c2670fd59.jpg&quot; title=&quot;typo3_image2.jpg&quot; data-htmlarea-file-uid=&quot;{softref:00e731fe86bdecc2a8f81302b206db00}&quot; data-htmlarea-file-table=&quot;sys_file&quot; height=&quot;225&quot; width=&quot;300&quot; alt=&quot;&quot; style=&quot;&quot; /&gt;&amp;nbsp;&amp;nbsp;And here a &lt;LINK {softref:747a4a59a9f66015a82d1648e919e0b8} - download "Initiates file download"&gt;link to an image&lt;/link&gt;.</tokenizedContent>
+						<tokenizedContent>&lt;img src=&quot;fileadmin/_processed_/csm_typo3_image2_5c2670fd59.jpg&quot; title=&quot;typo3_image2.jpg&quot; data-htmlarea-file-uid=&quot;{softref:00e731fe86bdecc2a8f81302b206db00}&quot; data-htmlarea-file-table=&quot;sys_file&quot; height=&quot;225&quot; width=&quot;300&quot; alt=&quot;&quot; style=&quot;&quot; /&gt;&amp;nbsp;&amp;nbsp;And here a &lt;LINK {softref:747a4a59a9f66015a82d1648e919e0b8} - "download" "Initiates file download"&gt;link to an image&lt;/link&gt;.</tokenizedContent>
 					</softrefs>
 				</field>
 			</related>
