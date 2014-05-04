@@ -155,16 +155,7 @@ return array(
 		'media' => array(
 			'exclude' => 1,
 			'label' => $GLOBALS['TCA']['pages']['columns']['media']['label'],
-			'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
-				'media',
-				array(
-					'appearance' => array(
-						'levelLinksPosition' => 'top',
-						'showPossibleLocalizationRecords' => TRUE,
-						'showAllLocalizationLink' => TRUE,
-					),
-				)
-			)
+			'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('media')
 		),
 		'url' => array(
 			'exclude' => 1,

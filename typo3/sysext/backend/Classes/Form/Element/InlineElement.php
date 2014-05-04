@@ -1473,6 +1473,7 @@ class InlineElement {
 	 * @todo Define visibility
 	 */
 	public function getRelatedRecords($table, $field, $row, &$PA, $config) {
+		$language = 0;
 		$pid = $row['pid'];
 		$elements = $PA['itemFormElValue'];
 		$foreignTable = $config['foreign_table'];
@@ -1498,13 +1499,36 @@ class InlineElement {
 		$records = $this->getRelatedRecordsArray($pid, $foreignTable, $elements);
 		$relatedRecords = array('records' => $records, 'count' => count($records));
 		// Merge original language with current localization and show differences:
-		if (is_array($recordsOriginal)) {
+		if (!empty($recordsOriginal)) {
 			$options = array(
 				'showPossible' => isset($config['appearance']['showPossibleLocalizationRecords']) && $config['appearance']['showPossibleLocalizationRecords'],
 				'showRemoved' => isset($config['appearance']['showRemovedLocalizationRecords']) && $config['appearance']['showRemovedLocalizationRecords']
 			);
+			// Either show records that possibly can localized or removed
 			if ($options['showPossible'] || $options['showRemoved']) {
 				$relatedRecords['records'] = $this->getLocalizationDifferences($foreignTable, $options, $recordsOriginal, $records);
+			// Otherwise simulate localizeChildrenAtParentLocalization behaviour when creating a new record
+			// (which has language and translation pointer values set)
+			} elseif (!empty($config['behaviour']['localizeChildrenAtParentLocalization']) && !MathUtility::canBeInterpretedAsInteger($row['uid'])) {
+				if (!empty($GLOBALS['TCA'][$foreignTable]['ctrl']['transOrigPointerField'])) {
+					$foreignLanguageField = $GLOBALS['TCA'][$foreignTable]['ctrl']['languageField'];
+				}
+				if (!empty($GLOBALS['TCA'][$foreignTable]['ctrl']['transOrigPointerField'])) {
+					$foreignTranslationPointerField = $GLOBALS['TCA'][$foreignTable]['ctrl']['transOrigPointerField'];
+				}
+				// Duplicate child records of default language in form
+				foreach ($recordsOriginal as $record) {
+					if (!empty($foreignLanguageField)) {
+						$record[$foreignLanguageField] = $language;
+					}
+					if (!empty($foreignTranslationPointerField)) {
+						$record[$foreignTranslationPointerField] = $record['uid'];
+					}
+					$newId = uniqid('NEW');
+					$record['uid'] = $newId;
+					$record['pid'] = $this->inlineFirstPid;
+					$relatedRecords['records'][$newId] = $record;
+				}
 			}
 		}
 		return $relatedRecords;
