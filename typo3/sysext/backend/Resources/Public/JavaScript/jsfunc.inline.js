@@ -31,8 +31,11 @@ var inline = {
 	isLoading: false,
 
 	addToDataArray: function (object) {
-		$H(object).each(function (pair) {
-			inline.data[pair.key] = $H(inline.data[pair.key]).merge(pair.value).toObject();
+		TYPO3.jQuery.each(object, function (key, value) {
+			if (!inline.data[key]) {
+				inline.data[key] = {};
+			}
+			TYPO3.jQuery.extend(inline.data[key], value);
 		});
 	},
 	setPrependFormFieldNames: function (value) {
@@ -61,9 +64,9 @@ var inline = {
 
 		var currentObject = TYPO3.jQuery('#' + escapedObjectId + '_div');
 		// if content is not loaded yet, get it now from server
-		if ((TYPO3.jQuery('#' + escapedObjectId + '_fields') && $("irre-loading-indicator" + objectId)) || inline.isLoading) {
+		if (inline.isLoading || (TYPO3.jQuery('#' + escapedObjectId + '_fields').length > 0 && TYPO3.jQuery("#irre-loading-indicator" + objectId).length > 0)) {
 			return false;
-		} else if ($(objectId + '_fields') && $(objectId + '_fields').innerHTML.substr(0, 16) == '<!--notloaded-->') {
+		} else if (TYPO3.jQuery('#' + objectId + '_fields').length > 0 && TYPO3.jQuery('#' + objectId + '_fields').html().substr(0, 16) == '<!--notloaded-->') {
 			inline.isLoading = true;
 			// add loading-indicator
 			if (TYPO3.jQuery('#' + escapedObjectId + '_loadingbar').length === 0) {
@@ -228,7 +231,7 @@ var inline = {
 		if (json.headData) {
 			var head = inline.getDomHeadTag();
 			var headTags = inline.getDomHeadChildren(head);
-			$A(json.headData).each(function (addTag) {
+			TYPO3.jQuery.each(json.headData, function (index, addTag) {
 				if (!restart) {
 					if (addTag && (addTag.innerHTML || !inline.searchInDomTags(headTags, addTag))) {
 						if (addTag.name == 'SCRIPT' && addTag.innerHTML && processedCount) {
@@ -265,8 +268,8 @@ var inline = {
 			if (method) {
 				inline.unlockAjaxMethod(method);
 			}
-			if (json.scriptCall && json.scriptCall.length) {
-				$A(json.scriptCall).each(function (value) {
+			if (json.scriptCall && json.scriptCall.length > 0) {
+				TYPO3.jQuery.each(json.scriptCall, function (index, value) {
 					eval(value);
 				});
 			}
@@ -278,7 +281,7 @@ var inline = {
 	reprocessAjaxResponse: function (method, json, sourcesWaiting) {
 		var sourcesLoaded = true;
 		if (sourcesWaiting && sourcesWaiting.length) {
-			$A(sourcesWaiting).each(function (source) {
+			TYPO3.jQuery.each(sourcesWaiting, function (index, source) {
 				if (!inline.sourcesLoaded[source]) {
 					sourcesLoaded = false;
 					return false;
@@ -286,7 +289,7 @@ var inline = {
 			});
 		}
 		if (sourcesLoaded) {
-			$A(sourcesWaiting).each(function (source) {
+			TYPO3.jQuery.each(sourcesWaiting, function (index, source) {
 				delete(inline.sourcesLoaded[source]);
 			});
 			window.setTimeout(function () {
@@ -312,7 +315,7 @@ var inline = {
 
 	// foreign_selector: used by selector box (type='select')
 	importNewRecord: function (objectId) {
-		var selector = $(objectId + '_selector');
+		var selector = TYPO3.jQuery('#' + objectId + '_selector');
 		if (selector.selectedIndex != -1) {
 			var context = this.getContext(objectId);
 			var selectedValue = selector.options[selector.selectedIndex].value;
@@ -356,7 +359,7 @@ var inline = {
 	checkUniqueUsed: function (objectId, uid, table) {
 		if (this.data.unique && this.data.unique[objectId]) {
 			var unique = this.data.unique[objectId];
-			var values = $H(unique.used).values();
+			var values = this.getValuesFromHashMap(unique.used);
 
 			// for select: only the uid is stored
 			if (unique['type'] == 'select') {
@@ -382,6 +385,19 @@ var inline = {
 		// alert(objectId+'/'+table+'/'+uid+'/'+recordUid);
 		this.setUnique(objectId, recordUid, uid);
 	},
+
+	getKeysFromHashMap: function (unique) {
+		return TYPO3.jQuery.map(unique, function(value, key) {
+			return key;
+		});
+	},
+
+	getValuesFromHashMap: function (hashMap) {
+		return TYPO3.jQuery.map(hashMap, function(value, key) {
+			return value;
+		});
+	},
+
 	// Remove all select items already used
 	// from a newly retrieved/expanded record
 	removeUsed: function (objectId, recordUid) {
@@ -391,7 +407,7 @@ var inline = {
 				var formName = this.prependFormFieldNames + this.parseObjectId('parts', objectId, 3, 1, true);
 				var formObj = document.getElementsByName(formName);
 				var recordObj = document.getElementsByName(this.prependFormFieldNames + '[' + unique.table + '][' + recordUid + '][' + unique.field + ']');
-				var values = $H(unique.used).values();
+				var values = this.getValuesFromHashMap(unique.used);
 				if (recordObj.length) {
 					if (recordObj[0].hasOwnProperty('options')) {
 						var selectedValue = recordObj[0].options[recordObj[0].selectedIndex].value;
@@ -415,8 +431,8 @@ var inline = {
 					var formName = this.prependFormFieldNames + this.parseObjectId('parts', objectId, 3, 1, true);
 					var formObj = document.getElementsByName(formName);
 					var recordObj = document.getElementsByName(this.prependFormFieldNames + '[' + unique.table + '][' + recordUid + '][' + unique.field + ']');
-					var values = $H(unique.used).values();
-					var selector = $(objectId + '_selector');
+					var values = this.getValuesFromHashMap(unique.used);
+					var selector = TYPO3.jQuery('#' + objectId + '_selector');
 					if (selector.length) {
 						// remove all items from the new select-item which are already used in other children
 						if (recordObj.length) {
@@ -457,7 +473,7 @@ var inline = {
 
 			// remove used items from a selector-box
 			if (unique.selector == 'select' && selectedValue) {
-				var selector = $(objectId + '_selector');
+				var selector = TYPO3.jQuery('#' + objectId + '_selector');
 				this.removeSelectOption(selector, selectedValue);
 				this.data.unique[objectId]['used'][recordUid] = selectedValue;
 			}
@@ -467,16 +483,16 @@ var inline = {
 	domAddNewRecord: function (method, insertObject, objectPrefix, htmlData) {
 		if (this.isBelowMax(objectPrefix)) {
 			if (method == 'bottom') {
-				new Insertion.Bottom(insertObject, htmlData);
+				TYPO3.jQuery('#' + insertObject).append(htmlData);
 			} else if (method == 'after') {
-				new Insertion.After(insertObject, htmlData);
+				TYPO3.jQuery('#' + insertObject).after(htmlData);
 			}
 		}
 	},
 	domAddRecordDetails: function (objectId, objectPrefix, expandSingle, htmlData) {
 		var hiddenValue, formObj, valueObj;
-		var objectDiv = $(objectId + '_fields');
-		if (!objectDiv || objectDiv.innerHTML.substr(0, 16) != '<!--notloaded-->') {
+		var objectDiv = TYPO3.jQuery('#' + objectId + '_fields');
+		if (!objectDiv || objectDiv.html().substr(0, 16) != '<!--notloaded-->') {
 			return;
 		}
 
@@ -484,8 +500,8 @@ var inline = {
 
 		var escapeSelectorObjectId = this.escapeSelectorObjectId(objectId);
 
-		formObj = $$('[name="' + elName + '[hidden]_0"]');
-		valueObj = $$('[name="' + elName + '[hidden]"]');
+		formObj = TYPO3.jQuery('[name="' + elName + '[hidden]_0"]');
+		valueObj = TYPO3.jQuery('[name="' + elName + '[hidden]"]');
 
 		// It might be the case that a child record
 		// cannot be hidden at all (no hidden field)
@@ -496,7 +512,7 @@ var inline = {
 		}
 
 		// Update DOM
-		objectDiv.update(htmlData);
+		objectDiv.html(htmlData);
 
 		formObj = document.getElementsByName(elName + '[hidden]_0');
 		valueObj = document.getElementsByName(elName + '[hidden]');
@@ -517,8 +533,8 @@ var inline = {
 	// Get script and link elements from head tag:
 	getDomHeadChildren: function (head) {
 		var headTags = [];
-		$$('head script', 'head link').each(function (tag) {
-			headTags.push(tag);
+		TYPO3.jQuery('head script, head link').each(function () {
+			headTags.push(this);
 		});
 		return headTags;
 	},
@@ -527,7 +543,7 @@ var inline = {
 		if (document && document.head) {
 			return document.head;
 		} else {
-			var head = $$('head');
+			var head = TYPO3.jQuery('head');
 			if (head.length) {
 				return head[0];
 			}
@@ -538,7 +554,7 @@ var inline = {
 	// Search whether elements exist in a given haystack:
 	searchInDomTags: function (haystack, needle) {
 		var result = false;
-		$A(haystack).each(function (element) {
+		TYPO3.jQuery.each(haystack, function (index, element) {
 			if (element.nodeName.toUpperCase() == needle.name) {
 				var attributesCount = $H(needle.attributes).keys().length;
 				var attributesFound = 0;
@@ -560,8 +576,8 @@ var inline = {
 	createNewDomElement: function (addTag) {
 		var element = document.createElement(addTag.name);
 		if (addTag.attributes) {
-			$H(addTag.attributes).each(function (attribute) {
-				element[attribute.key] = attribute.value;
+			TYPO3.jQuery.map(addTag.attributes, function (value, key) {
+				element[key] = value;
 			});
 		}
 		return element;
@@ -595,9 +611,9 @@ var inline = {
 			if (changed) {
 				formObj[0].value = records.join(',');
 				var cAdj = direction > 0 ? 1 : 0; // adjustment
-				$(objectId + '_div').parentNode.insertBefore(
-					$(objectPrefix + this.structureSeparator + records[current - cAdj] + '_div'),
-					$(objectPrefix + this.structureSeparator + records[current + 1 - cAdj] + '_div')
+				var objectIdPrefix = '#' + objectPrefix + this.structureSeparator;
+				TYPO3.jQuery(objectIdPrefix + records[current - cAdj] + '_div').insertBefore(
+					TYPO3.jQuery(objectIdPrefix + records[current + 1 - cAdj] + '_div')
 				);
 				this.redrawSortingButtons(objectPrefix, records);
 			}
@@ -611,7 +627,7 @@ var inline = {
 			var objectId = element.getAttribute('id').replace(/_records$/, '');
 			var objectName = inline.prependFormFieldNames + inline.parseObjectId('parts', objectId, 3, 0, true);
 			var formObj = document.getElementsByName(objectName);
-			var $element = $(element);
+			var $element = TYPO3.jQuery('#' + element);
 
 			if (formObj.length) {
 				var checked = new Array();
@@ -675,9 +691,7 @@ var inline = {
 	},
 
 	redrawSortingButtons: function (objectPrefix, records) {
-		var i;
-		var headerObj;
-		var sortingObj = new Array();
+		var i, headerObj, sortUp, sortDown;
 
 		// if no records were passed, fetch them from form field
 		if (typeof records == 'undefined') {
@@ -694,15 +708,15 @@ var inline = {
 				continue;
 			}
 
-			headerObj = $(objectPrefix + this.structureSeparator + records[i] + '_header');
-			sortingObj[0] = Element.select(headerObj, '.sortingUp');
-			sortingObj[1] = Element.select(headerObj, '.sortingDown');
+			headerObj = TYPO3.jQuery('#' + objectPrefix + this.structureSeparator + records[i] + '_header');
+			sortUp = headerObj.find('.sortingUp');
+			sortDown = headerObj.find('.sortingDown');
 
-			if (sortingObj[0].length) {
-				sortingObj[0][0].style.visibility = (i == 0 ? 'hidden' : 'visible');
+			if (sortUp) {
+				sortUp.css('visibility', (i == 0 ? 'hidden' : 'visible'));
 			}
-			if (sortingObj[1].length) {
-				sortingObj[1][0].style.visibility = (i == records.length - 1 ? 'hidden' : 'visible');
+			if (sortDown) {
+				sortDown.css('visibility', (i == records.length - 1 ? 'hidden' : 'visible'));
 			}
 		}
 	},
@@ -907,9 +921,9 @@ var inline = {
 		}
 
 		// Mark this container as deleted
-		var deletedRecordContainer = $(objectId + '_div');
+		var deletedRecordContainer = TYPO3.jQuery('#' + objectId + '_div');
 		if (deletedRecordContainer) {
-			deletedRecordContainer.addClassName('inlineIsDeletedRecord');
+			deletedRecordContainer.addClass('inlineIsDeletedRecord');
 		}
 
 		// If the record is new and was never saved before, just remove it from DOM:
@@ -1088,7 +1102,7 @@ var inline = {
 			} else {
 				value = formObj.value;
 			}
-			$(objectId + '_label').innerHTML = value.length ? value : this.noTitleString;
+			TYPO3.jQuery('#' + objectId + '_label').html(value.length ? value : this.noTitleString);
 		}
 		return true;
 	},
@@ -1143,7 +1157,7 @@ var inline = {
 	readdSelectOption: function (selectObj, value, unique) {
 		var index = null;
 		var optionsHash = this.getOptionsHash(selectObj);
-		var possibleValues = $H(unique.possible).keys();
+		var possibleValues = this.getKeysFromHashMap(unique.possible);
 
 		for (var possibleValue in unique.possible) {
 			if (possibleValue == value) {
@@ -1178,11 +1192,11 @@ var inline = {
 	setVisibilityOfElementsWithClassName: function (action, selector, parentElement) {
 		var domObjects = Selector.findChildElements($(parentElement), [selector]);
 		if (action == 'hide') {
-			$A(domObjects).each(function (domObject) {
+			TYPO3.jQuery.each(domObjects, function (index, domObject) {
 				new Effect.Fade(domObject);
 			});
 		} else if (action == 'show') {
-			$A(domObjects).each(function (domObject) {
+			TYPO3.jQuery.each(domObjects, function (index, domObject) {
 				new Effect.Appear(domObject);
 			});
 		}
@@ -1198,7 +1212,7 @@ var inline = {
 	},
 
 	isNewRecord: function (objectId) {
-		return $(objectId + '_div') && $(objectId + '_div').hasClassName('inlineIsNewRecord')
+		return TYPO3.jQuery('#' + objectId + '_div') && TYPO3.jQuery('#' + objectId + '_div').hasClass('inlineIsNewRecord')
 			? true
 			: false;
 	},
@@ -1232,7 +1246,7 @@ var inline = {
 	},
 
 	fadeAndRemove: function (element) {
-		if ($(element)) {
+		if (TYPO3.jQuery('#' + element)) {
 			new Effect.Fade(element, { afterFinish: function () {
 				Element.remove(element);
 			}    });
@@ -1274,8 +1288,8 @@ var inline = {
 		escapedSelectorObjectId = escapedObjectId.replace(/\\:/g, '\\\\\\:');
 		escapedSelectorObjectId = escapedSelectorObjectId.replace(/\\\./g, '\\\\\\.');
 		return escapedSelectorObjectId;
-	},
-}
+	}
+};
 
 Object.extend(Array.prototype, {
 	diff: function (current) {
