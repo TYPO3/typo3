@@ -272,9 +272,9 @@ return array(
 		'RTE_imageStorageDir' => 'uploads/',			// Default storage directory for Rich Text Editor files
 		'RTE_reg' => array(),							// Contains arrays of possible RTEs available (keys=extKey, values=cfg-array). Each array contains a key, "objRef", which contains a user function call with prefixed script path and instanciating a persistent global object. This can report back if browser requirements are OK, draw the RTE and do the transformations needed.
 		'staticFileEditPath' => 'fileadmin/static/',	// Path to directory with static files for editing (see table sys_staticfiles_edit). Relative to PATH_site.
-		'lockRootPath' => '',							// This path is used to evaluate if paths outside of PATH_site should be allowed. Ending slash required! This path is also used to restrict userHomePath/groupHomePath. Observe that the first part of 'userHomePath' and 'groupHomePath' must be the value of 'lockRootPath'. Eg. '/home/typo3/'.
-		'userHomePath' => '',							// Path to the directory where TYPO3 backend-users have their home-dirs.  Eg. '/home/typo3/users/'. A home for backend user 2 would be: '/home/typo3/users/2/'. Ending slash required!
-		'groupHomePath' => '',							// Path to the directory where TYPO3 backend-groups have their home-dirs. Remember that the first part of this path must be 'lockRootPath'. Eg. '/home/typo3/groups/'. A home for backend group 1 would be: '/home/typo3/groups/1/'. Ending slash required!
+		'lockRootPath' => '',							// This path is used to evaluate if paths outside of PATH_site should be allowed. Ending slash required!
+		'userHomePath' => '',							// Combined folder identifier of the directory where TYPO3 backend-users have their home-dirs. A combined folder identifier looks like this: [storageUid]:[folderIdentifier]. Eg. '2:users/'. A home for backend user 2 would be: '2:users/2/'. Ending slash required!
+		'groupHomePath' => '',							// Combined folder identifier of the directory where TYPO3 backend-groups have their home-dirs. A combined folder identifier looks like this: [storageUid]:[folderIdentifier]. Eg. '2:groups/'. A home for backend group 1 would be: '2:groups/1/'. Ending slash required!
 		'userUploadDir' => '',							// Suffix to the user home dir which is what gets mounted in TYPO3. Eg. if the user dir is "../123_user/" and this value is "/upload" then "../123_user/upload" gets mounted.
 		'fileCreateMask' => '0644',						// File mode mask for Unix file systems (when files are uploaded/created).
 		'folderCreateMask' => '0755',					// As above, but for folders.
