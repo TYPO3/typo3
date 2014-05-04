@@ -28,6 +28,8 @@ namespace TYPO3\CMS\Impexp\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Utility for import / export
  * Can be used for API access for simple importing of files
@@ -53,8 +55,10 @@ class ImportExportUtility {
 			throw new \InvalidArgumentException('Input parameter $int has to be of type integer', 1377625646);
 		}
 		/** @var $import \TYPO3\CMS\Impexp\ImportExport */
-		$import = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Impexp\\ImportExport');
+		$import = GeneralUtility::makeInstance('TYPO3\\CMS\\Impexp\\ImportExport');
 		$import->init(0, 'import');
+
+		$this->emitAfterImportExportInitialisationSignal($import);
 
 		if ($file && @is_file($file)) {
 			if ($import->loadFile($file, 1)) {
@@ -73,5 +77,25 @@ class ImportExportUtility {
 		} else {
 			return $importResponse;
 		}
+	}
+
+	/**
+	 * Get the SignalSlot dispatcher
+	 *
+	 * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 */
+	protected function getSignalSlotDispatcher() {
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+	}
+
+	/**
+	 * Emits a signal after initialization
+	 *
+	 * @param \TYPO3\CMS\Impexp\ImportExport $import
+	 * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
+	 * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
+	 */
+	protected function emitAfterImportExportInitialisationSignal(\TYPO3\CMS\Impexp\ImportExport $import) {
+		$this->getSignalSlotDispatcher()->dispatch(__CLASS__, 'afterImportExportInitialisation', array($import));
 	}
 }
