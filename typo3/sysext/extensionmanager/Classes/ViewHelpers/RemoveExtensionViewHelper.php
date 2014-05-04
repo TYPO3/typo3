@@ -41,10 +41,13 @@ class RemoveExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\Action
 	/**
 	 * Renders an install link
 	 *
-	 * @param string $extension
+	 * @param array $extension
 	 * @return string the rendered a tag
 	 */
 	public function render($extension) {
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extension['key'])) {
+			return '';
+		}
 		if (
 			!in_array($extension['type'], \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::returnAllowedInstallTypes()) ||
 			$extension['type'] === 'System'
@@ -60,9 +63,6 @@ class RemoveExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\Action
 		), 'Action');
 		$this->tag->addAttribute('href', $uri);
 		$cssClass = 'removeExtension';
-		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extension['key'])) {
-			$cssClass .= ' isLoadedWarning';
-		}
 		$this->tag->addAttribute('class', $cssClass);
 		$this->tag->addAttribute('title', \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('extensionList.remove', 'extensionmanager'));
 		$this->tag->setContent(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete'));

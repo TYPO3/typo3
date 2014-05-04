@@ -127,20 +127,21 @@
 			$(this).attr('href', '#');
 			$(this).addClass('transformed');
 			$(this).click(function() {
-				if ($(this).hasClass('isLoadedWarning')) {
-					TYPO3.Dialog.QuestionDialog({
-						title: TYPO3.l10n.localize('extensionList.removalConfirmation.title'),
-						msg: TYPO3.l10n.localize('extensionList.removalConfirmation.message'),
-						url: $(this).data('href'),
-						fn: function(button, dummy, dialog) {
-							if (button == 'yes') {
-								confirmDeletionAndDelete(dialog.url);
-							}
+				TYPO3.Dialog.QuestionDialog({
+					title: TYPO3.l10n.localize('extensionList.removalConfirmation.title'),
+					msg: TYPO3.l10n.localize('extensionList.removalConfirmation.question'),
+					url: $(this).data('href'),
+					fn: function(button, dummy, dialog) {
+						if (button == 'yes') {
+							$('.typo3-extension-manager').mask();
+							$.ajax({
+								url: dialog.url,
+								dataType: 'json',
+								success: removeExtension
+							});
 						}
-					});
-				} else {
-					confirmDeletionAndDelete($(this).data('href'));
-				}
+					}
+				});
 			});
 		});
 
@@ -210,24 +211,6 @@
 					});
 				} else {
 					$('.typo3-extension-manager').unmask();
-				}
-			}
-		});
-	}
-
-	function confirmDeletionAndDelete(url) {
-		TYPO3.Dialog.QuestionDialog({
-			title: TYPO3.l10n.localize('extensionList.removalConfirmation.title'),
-			msg: TYPO3.l10n.localize('extensionList.removalConfirmation.question'),
-			url: url,
-			fn: function(button, dummy, dialog) {
-				if (button == 'yes') {
-					$('.typo3-extension-manager').mask();
-					$.ajax({
-						url: dialog.url,
-						dataType: 'json',
-						success: removeExtension
-					});
 				}
 			}
 		});
