@@ -290,13 +290,23 @@ usage:<br />
 <br />
 Make sure that the Login Security Level is not set to "" or "challenged"!';
 			} elseif (trim($GLOBALS['TYPO3_CONF_VARS']['FE']['loginSecurityLevel']) === 'rsa') {
-				if ($this->isRsaAuthBackendAvailable()) {
-					$this->setErrorLevel('ok');
-					$problems[] = 'The frontend is configured to use SaltedPasswords with RSA authentication.';
+				if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('rsaauth')) {
+					if ($this->isRsaAuthBackendAvailable()) {
+						$this->setErrorLevel('ok');
+						$problems[] = 'The frontend is configured to use SaltedPasswords with RSA authentication.';
+					} else {
+						// This means that login would fail because rsaauth is not working properly
+						$this->setErrorLevel('error');
+						$problems[] = '<strong>Using the extension "rsaauth" is not possible, as no encryption backend '
+							. 'is available. Please install and configure the PHP extension "openssl". '
+							. 'See <a href="http://php.net/manual/en/openssl.installation.php" target="_blank">PHP.net</a></strong>.';
+					}
 				} else {
-					// This means that login would fail because rsaauth is not working properly
-					$this->setErrorLevel('error');
-					$problems[] = '<strong>Using the extension "rsaauth" is not possible, as no encryption backend ' . 'is available. Please install and configure the PHP extension "openssl". ' . 'See <a href="http://php.net/manual/en/openssl.installation.php" target="_blank">PHP.net</a></strong>.';
+					// Rsaauth is not installed but configured to be used
+					$this->setErrorLevel('warning');
+					$problems[] = 'The "rsaauth" extension is not installed, but TYPO3 CMS is configured to use it.'
+						. ' Either install the extension or adapt the configuration by setting [FE][loginSecurityLevel]'
+						. ' to "normal" in the Install Tool.';
 				}
 			}
 			// Only saltedpasswords as authsservice
