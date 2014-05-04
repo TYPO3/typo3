@@ -15,10 +15,10 @@ namespace TYPO3\CMS\Backend\Form\Wizard;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Lang\LanguageService;
-use TYPO3\CMS\Backend\Form\Wizard\SuggestWizardDefaultReceiver;
 
 /**
  * Wizard for rendering an AJAX selector for records
@@ -146,10 +146,9 @@ class SuggestWizard {
 		// If the $uid is numeric, we have an already existing element, so get the
 		// TSconfig of the page itself or the element container (for non-page elements)
 		// otherwise it's a new element, so use given id of parent page (i.e., don't modify it here)
-		$row = NULL;
 		if (is_numeric($uid)) {
 			$row = BackendUtility::getRecord($table, $uid);
-			if ($table == 'pages') {
+			if ($table === 'pages') {
 				$pageId = $uid;
 			} else {
 				$pageId = $row['pid'];
@@ -158,55 +157,16 @@ class SuggestWizard {
 			$row = unserialize($newRecordRow);
 		}
 		$TSconfig = BackendUtility::getPagesTSconfig($pageId);
-		$queryTables = array();
-		$foreign_table_where = '';
 		$fieldConfig = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
-		$parts = explode('|', $field);
-		if ($GLOBALS['TCA'][$table]['columns'][$parts[0]]['config']['type'] === 'flex') {
-			$flexfieldTCAConfig = $GLOBALS['TCA'][$table]['columns'][$parts[0]]['config'];
-			$flexformDSArray = BackendUtility::getFlexFormDS($flexfieldTCAConfig, $row, $table, $parts[0]);
-			$flexformDSArray = GeneralUtility::resolveAllSheetsInDS($flexformDSArray);
-			$flexformElement = $parts[count($parts) - 2];
-			$continue = TRUE;
-			foreach ($flexformDSArray as $sheet) {
-				foreach ($sheet as $dataStructure) {
-					$fieldConfig = $this->getNestedDsFieldConfig($dataStructure, $flexformElement);
-					if (!empty($fieldConfig)) {
-						$continue = FALSE;
-						break;
-					}
-				}
-				if (!$continue) {
-					break;
-				}
-			}
-			$field = str_replace('|', '][', $field);
-		}
+		$this->overrideFieldNameAndConfigurationForFlexform($table, $field, $row, $fieldConfig);
+
 		$wizardConfig = $fieldConfig['wizards']['suggest'];
-		if (isset($fieldConfig['allowed'])) {
-			if ($fieldConfig['allowed'] === '*') {
-				foreach ($GLOBALS['TCA'] as $tableName => $tableConfig) {
-					// @todo Refactor function to BackendUtility
-					if (empty($tableConfig['ctrl']['hideTable'])
-						&& ($GLOBALS['BE_USER']->isAdmin()
-							|| (empty($tableConfig['ctrl']['adminOnly'])
-								&& (empty($tableConfig['ctrl']['rootLevel'])
-									|| !empty($tableConfig['ctrl']['security']['ignoreRootLevelRestriction']))))
-					) {
-						$queryTables[] = $tableName;
-					}
-				}
-				unset($tableName, $tableConfig);
-			} else {
-				$queryTables = GeneralUtility::trimExplode(',', $fieldConfig['allowed']);
-			}
-		} elseif (isset($fieldConfig['foreign_table'])) {
-			$queryTables = array($fieldConfig['foreign_table']);
-			$foreign_table_where = $fieldConfig['foreign_table_where'];
-			// strip ORDER BY clause
-			$foreign_table_where = trim(preg_replace('/ORDER[[:space:]]+BY.*/i', '', $foreign_table_where));
-		}
+
+		$queryTables = $this->getTablesToQueryFromFieldConfiguration($fieldConfig);
+		$whereClause = $this->getWhereClause($fieldConfig);
+
 		$resultRows = array();
+
 		// fetch the records for each query table. A query table is a table from which records are allowed to
 		// be added to the TCEForm selector, originally fetched from the "allowed" config option in the TCA
 		foreach ($queryTables as $queryTable) {
@@ -214,29 +174,12 @@ class SuggestWizard {
 			if (!is_array($GLOBALS['TCA'][$queryTable]) || empty($GLOBALS['TCA'][$queryTable])) {
 				continue;
 			}
-			$config = (array)$wizardConfig['default'];
-			if (is_array($wizardConfig[$queryTable])) {
-				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($config, $wizardConfig[$queryTable]);
-			}
-			// merge the configurations of different "levels" to get the working configuration for this table and
-			// field (i.e., go from the most general to the most special configuration)
-			if (is_array($TSconfig['TCEFORM.']['suggest.']['default.'])) {
-				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($config, $TSconfig['TCEFORM.']['suggest.']['default.']);
-			}
-			if (is_array($TSconfig['TCEFORM.']['suggest.'][$queryTable . '.'])) {
-				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($config, $TSconfig['TCEFORM.']['suggest.'][$queryTable . '.']);
-			}
-			// use $table instead of $queryTable here because we overlay a config
-			// for the input-field here, not for the queried table
-			if (is_array($TSconfig['TCEFORM.'][$table . '.'][$field . '.']['suggest.']['default.'])) {
-				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($config, $TSconfig['TCEFORM.'][$table . '.'][$field . '.']['suggest.']['default.']);
-			}
-			if (is_array($TSconfig['TCEFORM.'][$table . '.'][$field . '.']['suggest.'][$queryTable . '.'])) {
-				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($config, $TSconfig['TCEFORM.'][$table . '.'][$field . '.']['suggest.'][$queryTable . '.']);
-			}
-			//process addWhere
-			if (!isset($config['addWhere']) && $foreign_table_where) {
-				$config['addWhere'] = $foreign_table_where;
+
+			$config = $this->getConfigurationForTable($queryTable, $wizardConfig, $TSconfig, $table, $field);
+
+			// process addWhere
+			if (!isset($config['addWhere']) && $whereClause) {
+				$config['addWhere'] = $whereClause;
 			}
 			if (isset($config['addWhere'])) {
 				$replacement = array(
@@ -257,6 +200,7 @@ class SuggestWizard {
 				}
 				$config['addWhere'] = strtr(' ' . $config['addWhere'], $replacement);
 			}
+
 			// instantiate the class that should fetch the records for this $queryTable
 			$receiverClassName = $config['receiverClass'];
 			if (!class_exists($receiverClassName)) {
@@ -271,25 +215,14 @@ class SuggestWizard {
 			$resultRows = $rows + $resultRows;
 			unset($rows);
 		}
-		$listItems = array();
-		if (!empty($resultRows)) {
-			// traverse all found records and sort them
-			$rowsSort = array();
-			foreach ($resultRows as $key => $row) {
-				$rowsSort[$key] = $row['text'];
-			}
-			asort($rowsSort);
-			$rowsSort = array_keys($rowsSort);
-			// Limit the number of items in the result list
-			$maxItems = $config['maxItemsInResultList'] ?: 10;
-			$maxItems = min(count($resultRows), $maxItems);
-			// put together the selector entry
-			for ($i = 0; $i < $maxItems; $i++) {
-				$row = $resultRows[$rowsSort[$i]];
-				$rowId = $row['table'] . '-' . $row['uid'] . '-' . $table . '-' . $uid . '-' . $field;
-				$listItems[] = '<li' . ($row['class'] != '' ? ' class="' . $row['class'] . '"' : '') . ' id="' . $rowId . '"' . ($row['style'] != '' ? ' style="' . $row['style'] . '"' : '') . '>' . $row['sprite'] . $row['text'] . '</li>';
-			}
-		}
+
+		// Limit the number of items in the result list
+		$maxItems = isset($config['maxItemsInResultList']) ? $config['maxItemsInResultList'] : 10;
+		$maxItems = min(count($resultRows), $maxItems);
+
+		$rowIdSuffix = '-' . $table . '-' . $uid . '-' . $field;
+		$listItems = $this->createListItemsFromResultRow($resultRows, $maxItems, $rowIdSuffix);
+
 		if (!empty($listItems)) {
 			$list = implode('', $listItems);
 		} else {
@@ -297,6 +230,203 @@ class SuggestWizard {
 		}
 		$list = '<ul class="' . $this->cssClass . '-resultlist">' . $list . '</ul>';
 		$ajaxObj->addContent(0, $list);
+	}
+
+	/**
+	 * Returns TRUE if a table has been marked as hidden in the configuration
+	 *
+	 * @param array $tableConfig
+	 * @return bool
+	 */
+	protected function isTableHidden(array $tableConfig) {
+		return !$tableConfig['ctrl']['hideTable'];
+	}
+
+	/**
+	 * Checks if the current backend user is allowed to access the given table, based on the ctrl-section of the
+	 * table's configuration array (TCA) entry.
+	 *
+	 * @param array $tableConfig
+	 * @return bool
+	 */
+	protected function currentBackendUserMayAccessTable(array $tableConfig) {
+		if ($GLOBALS['BE_USER']->isAdmin()) {
+			return TRUE;
+		}
+
+		// If the user is no admin, they may not access admin-only tables
+		if ($tableConfig['ctrl']['adminOnly']) {
+			return FALSE;
+		}
+
+		// allow access to root level pages if security restrictions should be bypassed
+		return !$tableConfig['ctrl']['rootLevel'] || $tableConfig['ctrl']['security']['ignoreRootLevelRestriction'];
+	}
+
+	/**
+	 * Checks if the query comes from a Flexform element and if yes, resolves the field configuration from the Flexform
+	 * data structure.
+	 *
+	 * @param string $table
+	 * @param string &$field The field identifier, either a simple table field or a Flexform field path separated with |
+	 * @param array $row The row we're dealing with; optional (only required for Flexform records)
+	 * @param array &$fieldConfig
+	 */
+	protected function overrideFieldNameAndConfigurationForFlexform($table, &$field, array $row, array &$fieldConfig) {
+		// check if field is a flexform reference
+		if (strpos($field, '|') === FALSE) {
+			$fieldConfig = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
+		} else {
+			$parts = explode('|', $field);
+
+			if ($GLOBALS['TCA'][$table]['columns'][$parts[0]]['config']['type'] !== 'flex') {
+				return;
+			}
+
+			$flexfieldTCAConfig = $GLOBALS['TCA'][$table]['columns'][$parts[0]]['config'];
+			$flexformDSArray = BackendUtility::getFlexFormDS($flexfieldTCAConfig, $row, $table);
+			$flexformDSArray = GeneralUtility::resolveAllSheetsInDS($flexformDSArray);
+			$flexformElement = $parts[count($parts) - 2];
+			$continue = TRUE;
+			foreach ($flexformDSArray as $sheet) {
+				foreach ($sheet as $_ => $dataStructure) {
+					$fieldConfig = $this->getNestedDsFieldConfig($dataStructure, $flexformElement);
+					if (!empty($fieldConfig)) {
+						$continue = FALSE;
+						break;
+					}
+				}
+				if (!$continue) {
+					break;
+				}
+			}
+			// Flexform field name levels are separated with | instead of encapsulation in [];
+			// reverse this here to be compatible with regular field names.
+			$field = str_replace('|', '][', $field);
+		}
+	}
+
+	/**
+	 * Returns the configuration for the suggest wizard for the given table. This does multiple overlays from the
+	 * TSconfig.
+	 *
+	 * @param string $queryTable The table to query
+	 * @param array $wizardConfig The configuration for the wizard as configured in the data structure
+	 * @param array $TSconfig The TSconfig array of the current page
+	 * @param string $table The table where the wizard is used
+	 * @param string $field The field where the wizard is used
+	 * @return array
+	 */
+	protected function getConfigurationForTable($queryTable, array $wizardConfig, array $TSconfig, $table, $field) {
+		$config = (array)$wizardConfig['default'];
+
+		if (is_array($wizardConfig[$queryTable])) {
+			ArrayUtility::mergeRecursiveWithOverrule($config, $wizardConfig[$queryTable]);
+		}
+		$globalSuggestTsConfig = $TSconfig['TCEFORM.']['suggest.'];
+		$currentFieldSuggestTsConfig = $TSconfig['TCEFORM.'][$table . '.'][$field . '.']['suggest.'];
+
+		// merge the configurations of different "levels" to get the working configuration for this table and
+		// field (i.e., go from the most general to the most special configuration)
+		if (is_array($globalSuggestTsConfig['default.'])) {
+			ArrayUtility::mergeRecursiveWithOverrule($config, $globalSuggestTsConfig['default.']);
+		}
+
+		if (is_array($globalSuggestTsConfig[$queryTable . '.'])) {
+			ArrayUtility::mergeRecursiveWithOverrule($config, $globalSuggestTsConfig[$queryTable . '.']);
+		}
+
+		// use $table instead of $queryTable here because we overlay a config
+		// for the input-field here, not for the queried table
+		if (is_array($currentFieldSuggestTsConfig['default.'])) {
+			ArrayUtility::mergeRecursiveWithOverrule($config, $currentFieldSuggestTsConfig['default.']);
+		}
+
+		if (is_array($currentFieldSuggestTsConfig[$queryTable . '.'])) {
+			ArrayUtility::mergeRecursiveWithOverrule($config, $currentFieldSuggestTsConfig[$queryTable . '.']);
+		}
+
+		return $config;
+	}
+
+	/**
+	 * Creates a list of <li> elements from a list of results returned by the receiver.
+	 *
+	 * @param array $resultRows
+	 * @param int $maxItems
+	 * @param string $rowIdSuffix
+	 * @return array
+	 */
+	protected function createListItemsFromResultRow(array $resultRows, $maxItems, $rowIdSuffix) {
+		if (empty($resultRows)) {
+			return array();
+		}
+		$listItems = array();
+
+		// traverse all found records and sort them
+		$rowsSort = array();
+		foreach ($resultRows as $key => $row) {
+			$rowsSort[$key] = $row['text'];
+		}
+		asort($rowsSort);
+		$rowsSort = array_keys($rowsSort);
+
+		// put together the selector entries
+		for ($i = 0; $i < $maxItems; ++$i) {
+			$row = $resultRows[$rowsSort[$i]];
+			$rowId = $row['table'] . '-' . $row['uid'] . $rowIdSuffix;
+			$listItems[] = '<li' . ($row['class'] !== '' ? ' class="' . $row['class'] . '"' : '') . ' id="' . $rowId . '"' . ($row['style'] !== '' ? ' style="' . $row['style'] . '"' : '') . '>' . $row['sprite'] . $row['text'] . '</li>';
+		}
+
+		return $listItems;
+	}
+
+	/**
+	 * Checks the given field configuration for the tables that should be used for querying and returns them as an
+	 * array.
+	 *
+	 * @param array $fieldConfig
+	 * @return array
+	 */
+	protected function getTablesToQueryFromFieldConfiguration(array $fieldConfig) {
+		$queryTables = array();
+
+		if (isset($fieldConfig['allowed'])) {
+			if ($fieldConfig['allowed'] !== '*') {
+				// list of allowed tables
+				$queryTables = GeneralUtility::trimExplode(',', $fieldConfig['allowed']);
+			} else {
+				// all tables are allowed, if the user can access them
+				foreach ($GLOBALS['TCA'] as $tableName => $tableConfig) {
+					if (!$this->isTableHidden($tableConfig) && $this->currentBackendUserMayAccessTable($tableConfig)) {
+						$queryTables[] = $tableName;
+					}
+				}
+				unset($tableName, $tableConfig);
+			}
+		} elseif (isset($fieldConfig['foreign_table'])) {
+			// use the foreign table
+			$queryTables = array($fieldConfig['foreign_table']);
+		}
+
+		return $queryTables;
+	}
+
+	/**
+	 * Returns the SQL WHERE clause to use for querying records. This is currently only relevant if a foreign_table
+	 * is configured and should be used; it could e.g. be used to limit to a certain subset of records from the
+	 * foreign table
+	 *
+	 * @param array $fieldConfig
+	 * @return string
+	 */
+	protected function getWhereClause(array $fieldConfig) {
+		if (!isset($fieldConfig['foreign_table'])) {
+			return '';
+		}
+
+		// strip ORDER BY clause
+		return trim(preg_replace('/ORDER[[:space:]]+BY.*/i', '', $fieldConfig['foreign_table_where']));
 	}
 
 	/**
