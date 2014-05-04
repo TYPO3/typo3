@@ -792,7 +792,7 @@ class SoftReferenceIndex {
 		if (strlen($content) && isset($tLP['target']) && $tLP['target'] !== '') {
 			$content .= ' ' . $tLP['target'];
 			if (isset($tLP['class']) && $tLP['class'] !== '') {
-				$content .= ' ' . $tLP['class'];
+				$content .= ' "' . $tLP['class'] . '"';
 				if (isset($tLP['title']) && $tLP['title'] !== '') {
 					$content .= ' "' . $tLP['title'] . '"';
 					if (isset($tLP['additionalParams']) && $tLP['additionalParams'] !== '') {
