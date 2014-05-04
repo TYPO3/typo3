@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Impexp\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -43,6 +44,8 @@ class ImportExportUtility {
 		$import->init(0, 'import');
 
 		$importResponse = 0;
+		$this->emitAfterImportExportInitialisationSignal($import);
+
 		if ($file && @is_file($file)) {
 			if ($import->loadFile($file, 1)) {
 				// Import to root page:
@@ -66,4 +69,25 @@ class ImportExportUtility {
 		}
 		return $importResponse;
 	}
+
+	/**
+	 * Get the SignalSlot dispatcher
+	 *
+	 * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 */
+	protected function getSignalSlotDispatcher() {
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+	}
+
+	/**
+	 * Emits a signal after initialization
+	 *
+	 * @param \TYPO3\CMS\Impexp\ImportExport $import
+	 * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
+	 * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
+	 */
+	protected function emitAfterImportExportInitialisationSignal(\TYPO3\CMS\Impexp\ImportExport $import) {
+		$this->getSignalSlotDispatcher()->dispatch(__CLASS__, 'afterImportExportInitialisation', array($import));
+	}
+
 }
