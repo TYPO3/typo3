@@ -435,12 +435,12 @@ class RecordList {
 						</form>
 					</div>';
 		}
-		// Printing clipboard if enabled 
+		// Printing clipboard if enabled
 		if ($this->MOD_SETTINGS['clipBoard'] && $dblist->showClipboard && ($dblist->HTMLcode || $dblist->clipObj->hasElements())) {
 			$this->body .= '<div class="db_list-dashboard">' . $dblist->clipObj->printClipboard() . '</div>';
 		}
 		// Search box:
-		if (!$this->modTSconfig['properties']['disableSearchBox'] && $dblist->HTMLcode) {
+		if (!$this->modTSconfig['properties']['disableSearchBox'] && ($dblist->HTMLcode || $dblist->searchString !== '')) {
 			$sectionTitle = BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_searchbox', $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.search', TRUE));
 			$this->body .= '<div class="db_list-searchbox">' . $this->doc->section($sectionTitle, $dblist->getSearchBox(), FALSE, TRUE, FALSE, TRUE) . '</div>';
 		}
