@@ -1513,8 +1513,9 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 				$this->dataLists['file_permissions'] .= ',' . $row['file_permissions'];
 				// Setting workspace permissions:
 				$this->dataLists['workspace_perms'] |= $row['workspace_perms'];
-				// If this function is processing the users OWN group-list (not subgroups) AND if the ->firstMainGroup is not set, then the ->firstMainGroup will be set.
-				if ((string)$idList !== '' && !$this->firstMainGroup) {
+				// If this function is processing the users OWN group-list (not subgroups) AND
+				// if the ->firstMainGroup is not set, then the ->firstMainGroup will be set.
+				if ($idList === '' && !$this->firstMainGroup) {
 					$this->firstMainGroup = $uid;
 				}
 			}
