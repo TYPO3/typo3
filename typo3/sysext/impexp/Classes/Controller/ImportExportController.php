@@ -775,7 +775,10 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		if (!empty($thumbnailFiles)) {
 			array_unshift($thumbnailFiles, '');
 		}
-		$thumbnail = $this->getFile($inData['meta']['thumbnail']);
+		$thumbnail = NULL;
+		if (!empty($inData['meta']['thumbnail'])) {
+			$thumbnail = $this->getFile($inData['meta']['thumbnail']);
+		}
 		$saveFolder = $this->getDefaultImportExportFolder();
 
 		$row[] = '
@@ -1459,7 +1462,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$thumbnailFiles = array();
 		$defaultTemporaryFolder = $this->getDefaultImportExportFolder();
 
-		if ($defaultTemporaryFolder === FALSE) {
+		if ($defaultTemporaryFolder === NULL) {
 			return $thumbnailFiles;
 		}
 
