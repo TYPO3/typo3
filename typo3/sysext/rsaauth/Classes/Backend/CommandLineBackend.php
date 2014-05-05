@@ -84,6 +84,10 @@ class CommandLineBackend extends \TYPO3\CMS\Rsaauth\Backend\AbstractBackend {
 			return $keyPair;
 		}
 
+		if ($this->opensslPath === FALSE) {
+			return NULL;
+		}
+
 		// Create a temporary file. Security: tempnam() sets permissions to 0600
 		$privateKeyFile = tempnam($this->temporaryDirectory, uniqid());
 
@@ -93,6 +97,11 @@ class CommandLineBackend extends \TYPO3\CMS\Rsaauth\Backend\AbstractBackend {
 		// to do the same and use the F4 (0x10001) exponent. This is the most
 		// secure.
 		$command = $this->opensslPath . ' genrsa -out ' . escapeshellarg($privateKeyFile) . ' 1024';
+		if (TYPO3_OS === 'WIN') {
+			$command .= ' 2>NUL';
+		} else {
+			$command .= ' 2>/dev/null';
+		}
 		\TYPO3\CMS\Core\Utility\CommandUtility::exec($command);
 		// Test that we got a private key
 		$privateKey = file_get_contents($privateKeyFile);

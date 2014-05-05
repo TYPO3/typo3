@@ -40,6 +40,10 @@ class CommandLineBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase  {
 	protected $subject = NULL;
 
 	public function setUp() {
+		if (TYPO3_OS === 'WIN') {
+			$this->markTestSkipped('This test is not available on Windows.');
+		}
+
 		$this->subject = new CommandLineBackend();
 	}
 
@@ -47,18 +51,26 @@ class CommandLineBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase  {
 	 * @test
 	 */
 	public function createNewKeyPairCreatesReadyKeyPair() {
-		$this->assertTrue(
-			$this->subject->createNewKeyPair()->isReady()
-		);
+		$keyPair = $this->subject->createNewKeyPair();
+		if ($keyPair === NULL) {
+			$this->markTestSkipped('KeyPair could not be generated. Maybe openssl was not found.');
+		}
+
+		$this->assertTrue($keyPair->isReady());
 	}
 
 	/**
 	 * @test
 	 */
 	public function createNewKeyPairCreatesKeyPairWithDefaultExponent() {
+		$keyPair = $this->subject->createNewKeyPair();
+		if ($keyPair === NULL) {
+			$this->markTestSkipped('KeyPair could not be generated. Maybe openssl was not found.');
+		}
+
 		$this->assertSame(
 			CommandLineBackend::DEFAULT_EXPONENT,
-			$this->subject->createNewKeyPair()->getExponent()
+			$keyPair->getExponent()
 		);
 	}
 
