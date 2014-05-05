@@ -15,74 +15,11 @@
 	verbose="false"
 >
 	<testsuites>
-		<testsuite name="EXT:core tests">
-			<directory>../../../../typo3/sysext/core/Tests/Unit/</directory>
-		</testsuite>
-		<testsuite name="EXT:backend tests">
-			<directory>../../../../typo3/sysext/backend/Tests/Unit/</directory>
-		</testsuite>
-		<testsuite name="EXT:frontend tests">
-			<directory>../../../../typo3/sysext/frontend/Tests/Unit/</directory>
+		<testsuite name="Core tests">
+			<directory>../../../../typo3/sysext/*/Tests/Unit/</directory>
 		</testsuite>
 		<testsuite name="Core legacy tests">
 			<directory>../../../../typo3/sysext/core/Tests/Legacy/</directory>
-		</testsuite>
-		<testsuite name="EXT:belog tests">
-			<directory>../../../../typo3/sysext/belog/Tests/Unit/</directory>
-		</testsuite>
-		<testsuite name="EXT:beuser tests">
-			<directory>../../../../typo3/sysext/beuser/Tests/Unit/</directory>
-		</testsuite>
-		<testsuite name="EXT:documentation tests">
-			<directory>../../../../typo3/sysext/documentation/Tests/Unit/</directory>
-		</testsuite>
-		<testsuite name="EXT:dbal tests">
-			<directory>../../../../typo3/sysext/dbal/Tests/Unit/</directory>
-		</testsuite>
-		<testsuite name="EXT:extbase tests">
-			<directory>../../../../typo3/sysext/extbase/Tests/Unit/</directory>
-		</testsuite>
-		<testsuite name="EXT:extensionmanager tests">
-			<directory>../../../../typo3/sysext/extensionmanager/Tests/Unit/</directory>
-		</testsuite>
-		<testsuite name="EXT:felogin tests">
-			<directory>../../../../typo3/sysext/felogin/Tests/Unit/</directory>
-		</testsuite>
-		<testsuite name="EXT:fluid tests">
-			<directory>../../../../typo3/sysext/fluid/Tests/Unit/</directory>
-		</testsuite>
-		<testsuite name="EXT:form tests">
-			<directory>../../../../typo3/sysext/form/Tests/Unit/</directory>
-		</testsuite>
-		<testsuite name="EXT:indexed_search tests">
-			<directory>../../../../typo3/sysext/indexed_search/Tests/Unit/</directory>
-		</testsuite>
-		<testsuite name="EXT:install tests">
-			<directory>../../../../typo3/sysext/install/Tests/Unit/</directory>
-		</testsuite>
-		<testsuite name="EXT:lang tests">
-			<directory>../../../../typo3/sysext/lang/Tests/Unit/</directory>
-		</testsuite>
-		<testsuite name="EXT:lowlevel tests">
-			<directory>../../../../typo3/sysext/lowlevel/Tests/Unit/</directory>
-		</testsuite>
-		<testsuite name="EXT:recordlist tests">
-			<directory>../../../../typo3/sysext/recordlist/Tests/Unit/</directory>
-		</testsuite>
-		<testsuite name="EXT:reports tests">
-			<directory>../../../../typo3/sysext/reports/Tests/Unit/</directory>
-		</testsuite>
-		<testsuite name="EXT:rsaauth tests">
-			<directory>../../../../typo3/sysext/rsaauth/Tests/Unit/</directory>
-		</testsuite>
-		<testsuite name="EXT:saltedpasswords tests">
-			<directory>../../../../typo3/sysext/saltedpasswords/Tests/Unit/</directory>
-		</testsuite>
-		<testsuite name="EXT:scheduler tests">
-			<directory>../../../../typo3/sysext/scheduler/Tests/Unit/</directory>
-		</testsuite>
-		<testsuite name="EXT:sv tests">
-			<directory>../../../../typo3/sysext/sv/Tests/Unit/</directory>
 		</testsuite>
 		<testsuite name="Suite integrity tests">
 			<directory>../../../../typo3/sysext/core/Tests/Integrity/</directory>
