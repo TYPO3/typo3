@@ -1,74 +1,79 @@
 <?php
 namespace TYPO3\CMS\Dbal\Tests\Unit\Database;
 
-/**
- * Test MS SQL database handling.
+/***************************************************************
+ * Copyright notice
  *
- * @author Xavier Perseguers <xavier@typo3.org>
+ * (c) 2010-2014 Xavier Perseguers <xavier@typo3.org>
+ * All rights reserved
+ *
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * A copy is found in the text file GPL.txt and important notices to the license
+ * from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
+
+/**
+ * Test case
  */
-class DatabaseConnectionMssqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class DatabaseConnectionMssqlTest extends AbstractTestCase {
 
 	/**
-	 * Prepares the environment before running a test.
+	 * @var \TYPO3\CMS\Dbal\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+	 */
+	protected $subject;
+
+	/**
+	 * Prepare a DatabaseConnection subject ready to parse mssql queries
+	 *
+	 * @return \TYPO3\CMS\Dbal\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
 	public function setUp() {
-		// Reconfigure DBAL to use MS SQL
-		require __DIR__ . '/Fixtures/mssql.config.php';
-		$GLOBALS['TYPO3_DB'] = $this->getAccessibleMock('TYPO3\\CMS\\Dbal\\Database\\DatabaseConnection', array('dummy'));
-		$GLOBALS['TYPO3_DB']->SQLparser = $this->getAccessibleMock('TYPO3\\CMS\\Dbal\\Database\\SqlParser', array('dummy'));
-		$this->assertFalse($GLOBALS['TYPO3_DB']->isConnected());
-		// Initialize a fake MS SQL connection
-		\TYPO3\CMS\Dbal\Tests\Unit\Database\FakeDatabaseConnection::connect($GLOBALS['TYPO3_DB'], 'mssql');
-		$this->assertTrue($GLOBALS['TYPO3_DB']->isConnected());
-	}
-
-	/**
-	 * Cleans up the environment after running a test.
-	 */
-	public function tearDown() {
-		// Clear DBAL-generated cache files
-		$GLOBALS['TYPO3_DB']->clearCachedFieldInfo();
-		parent::tearDown();
-	}
-
-	/**
-	 * Cleans a SQL query.
-	 *
-	 * @param mixed $sql
-	 * @return mixed (string or array)
-	 */
-	private function cleanSql($sql) {
-		if (!is_string($sql)) {
-			return $sql;
-		}
-		$sql = str_replace("\n", ' ', $sql);
-		$sql = preg_replace('/\\s+/', ' ', $sql);
-		return trim($sql);
+		$configuration = array(
+			'handlerCfg' => array(
+				'_DEFAULT' => array(
+					'type' => 'adodb',
+					'config' => array(
+						'driver' => 'mssql',
+					),
+				),
+			),
+			'mapping' => array(
+				'tx_templavoila_tmplobj' => array(
+					'mapFieldNames' => array(
+						'datastructure' => 'ds',
+					),
+				),
+				'Members' => array(
+					'mapFieldNames' => array(
+						'pid' => '0',
+						'cruser_id' => '1',
+						'uid' => 'MemberID',
+					),
+				),
+			),
+		);
+		$this->subject = $this->prepareSubject('mssql', $configuration);
 	}
 
 	/**
 	 * @test
 	 */
-	public function configurationIsUsingAdodbAndDriverMssql() {
-		$configuration = $GLOBALS['TYPO3_DB']->conf['handlerCfg'];
-		$this->assertTrue(is_array($configuration) && count($configuration) > 0, 'No configuration found');
-		$this->assertEquals('adodb', $configuration['_DEFAULT']['type']);
-		$this->assertTrue($GLOBALS['TYPO3_DB']->runningADOdbDriver('mssql') !== FALSE, 'Not using mssql driver');
-	}
-
-	/**
-	 * @test
-	 */
-	public function tablesWithMappingAreDetected() {
-		$tablesWithMapping = array_keys($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal']['mapping']);
-		foreach ($GLOBALS['TYPO3_DB']->cache_fieldType as $table => $fieldTypes) {
-			$tableDef = $GLOBALS['TYPO3_DB']->_call('map_needMapping', $table);
-			if (in_array($table, $tablesWithMapping)) {
-				self::assertTrue(is_array($tableDef), 'Table ' . $table . ' was expected to need mapping');
-			} else {
-				self::assertFalse($tableDef, 'Table ' . $table . ' was not expected to need mapping');
-			}
-		}
+	public function runningADOdbDriverReturnsTrueWithMssqlForMssqlDefaultDriverConfiguration() {
+		$this->assertTrue($this->subject->runningADOdbDriver('mssql'));
 	}
 
 	/**
@@ -76,9 +81,9 @@ class DatabaseConnectionMssqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @see http://forge.typo3.org/issues/23087
 	 */
 	public function findInSetIsProperlyRemapped() {
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*', 'fe_users', 'FIND_IN_SET(10, usergroup)'));
 		$expected = 'SELECT * FROM "fe_users" WHERE \',\'+"usergroup"+\',\' LIKE \'%,10,%\'';
-		$this->assertEquals($expected, $query);
+		$result = $this->subject->SELECTquery('*', 'fe_users', 'FIND_IN_SET(10, usergroup)');
+		$this->assertEquals($expected, $this->cleanSql($result));
 	}
 
 	/**
@@ -87,9 +92,10 @@ class DatabaseConnectionMssqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function canParseSingleQuote() {
 		$parseString = 'SELECT * FROM pages WHERE title=\'1\'\'\' AND deleted=0';
-		$components = $GLOBALS['TYPO3_DB']->SQLparser->_callRef('parseSELECT', $parseString);
+		$components = $this->subject->SQLparser->_callRef('parseSELECT', $parseString);
+
 		$this->assertTrue(is_array($components), $components);
-		$this->assertTrue(empty($components['parseString']), 'parseString is not empty');
+		$this->assertEmpty($components['parseString']);
 	}
 
 	///////////////////////////////////////
@@ -106,10 +112,11 @@ class DatabaseConnectionMssqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$whereClause = 'pid=0 AND cruser_id=1';
 		$groupBy = '';
 		$orderBy = '';
-		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
+
+		$remappedParameters = $this->subject->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$result = $this->subject->_call('SELECTqueryFromArray', $remappedParameters);
 		$expected = 'SELECT "MemberID", "FirstName", "LastName" FROM "Members" WHERE 0 = 0 AND 1 = 1';
-		$this->assertEquals($expected, $query);
+		$this->assertEquals($expected, $this->cleanSql($result));
 	}
 
 	///////////////////////////////////////
@@ -120,9 +127,9 @@ class DatabaseConnectionMssqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @see http://forge.typo3.org/issues/21902
 	 */
 	public function locateStatementIsProperlyQuoted() {
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*, CASE WHEN' . ' LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure)>0 THEN 2' . ' ELSE 1' . ' END AS scope', 'tx_templavoila_tmplobj', '1=1'));
+		$result = $this->subject->SELECTquery('*, CASE WHEN' . ' LOCATE(' . $this->subject->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure)>0 THEN 2' . ' ELSE 1' . ' END AS scope', 'tx_templavoila_tmplobj', '1=1');
 		$expected = 'SELECT *, CASE WHEN CHARINDEX(\'(fce)\', "datastructure") > 0 THEN 2 ELSE 1 END AS "scope" FROM "tx_templavoila_tmplobj" WHERE 1 = 1';
-		$this->assertEquals($expected, $query);
+		$this->assertEquals($expected, $this->cleanSql($result));
 	}
 
 	/**
@@ -130,9 +137,9 @@ class DatabaseConnectionMssqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @see http://forge.typo3.org/issues/21902
 	 */
 	public function locateStatementWithPositionIsProperlyQuoted() {
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*, CASE WHEN' . ' LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure, 4)>0 THEN 2' . ' ELSE 1' . ' END AS scope', 'tx_templavoila_tmplobj', '1=1'));
+		$result = $this->subject->SELECTquery('*, CASE WHEN' . ' LOCATE(' . $this->subject->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure, 4)>0 THEN 2' . ' ELSE 1' . ' END AS scope', 'tx_templavoila_tmplobj', '1=1');
 		$expected = 'SELECT *, CASE WHEN CHARINDEX(\'(fce)\', "datastructure", 4) > 0 THEN 2 ELSE 1 END AS "scope" FROM "tx_templavoila_tmplobj" WHERE 1 = 1';
-		$this->assertEquals($expected, $query);
+		$this->assertEquals($expected, $this->cleanSql($result));
 	}
 
 	/**
@@ -140,15 +147,16 @@ class DatabaseConnectionMssqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @see http://forge.typo3.org/issues/21902
 	 */
 	public function locateStatementIsProperlyRemapped() {
-		$selectFields = '*, CASE WHEN' . ' LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure, 4)>0 THEN 2' . ' ELSE 1' . ' END AS scope';
+		$selectFields = '*, CASE WHEN' . ' LOCATE(' . $this->subject->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure, 4)>0 THEN 2' . ' ELSE 1' . ' END AS scope';
 		$fromTables = 'tx_templavoila_tmplobj';
 		$whereClause = '1=1';
 		$groupBy = '';
 		$orderBy = '';
-		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
+		$remappedParameters = $this->subject->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+
+		$result = $this->subject->_call('SELECTqueryFromArray', $remappedParameters);
 		$expected = 'SELECT *, CASE WHEN CHARINDEX(\'(fce)\', "ds", 4) > 0 THEN 2 ELSE 1 END AS "scope" FROM "tx_templavoila_tmplobj" WHERE 1 = 1';
-		$this->assertEquals($expected, $query);
+		$this->assertEquals($expected, $this->cleanSql($result));
 	}
 
 	/**
@@ -156,15 +164,16 @@ class DatabaseConnectionMssqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @see http://forge.typo3.org/issues/21902
 	 */
 	public function locateStatementWithExternalTableIsProperlyRemapped() {
-		$selectFields = '*, CASE WHEN' . ' LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', tx_templavoila_tmplobj.datastructure, 4)>0 THEN 2' . ' ELSE 1' . ' END AS scope';
+		$selectFields = '*, CASE WHEN' . ' LOCATE(' . $this->subject->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', tx_templavoila_tmplobj.datastructure, 4)>0 THEN 2' . ' ELSE 1' . ' END AS scope';
 		$fromTables = 'tx_templavoila_tmplobj';
 		$whereClause = '1=1';
 		$groupBy = '';
 		$orderBy = '';
-		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
+		$remappedParameters = $this->subject->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+
+		$result = $this->subject->_call('SELECTqueryFromArray', $remappedParameters);
 		$expected = 'SELECT *, CASE WHEN CHARINDEX(\'(fce)\', "tx_templavoila_tmplobj"."ds", 4) > 0 THEN 2 ELSE 1 END AS "scope" FROM "tx_templavoila_tmplobj" WHERE 1 = 1';
-		$this->assertEquals($expected, $query);
+		$this->assertEquals($expected, $this->cleanSql($result));
 	}
 
 	/**
@@ -172,9 +181,8 @@ class DatabaseConnectionMssqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @see http://forge.typo3.org/issues/17552
 	 */
 	public function IfNullIsProperlyRemapped() {
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*', 'tt_news_cat_mm', 'IFNULL(tt_news_cat_mm.uid_foreign,0) IN (21,22)'));
+		$result = $this->subject->SELECTquery('*', 'tt_news_cat_mm', 'IFNULL(tt_news_cat_mm.uid_foreign,0) IN (21,22)');
 		$expected = 'SELECT * FROM "tt_news_cat_mm" WHERE ISNULL("tt_news_cat_mm"."uid_foreign", 0) IN (21,22)';
-		$this->assertEquals($expected, $query);
+		$this->assertEquals($expected, $this->cleanSql($result));
 	}
-
 }
