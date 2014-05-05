@@ -371,7 +371,10 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function isDownloadableVersionCompatible(\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency $dependency) {
 		$versions = $this->getLowestAndHighestIntegerVersions($dependency);
-		return count($this->extensionRepository->countByVersionRangeAndExtensionKey($dependency->getIdentifier(), $versions['lowestIntegerVersion'], $versions['highestIntegerVersion'])) > 0;
+		$count = $this->extensionRepository->countByVersionRangeAndExtensionKey(
+			$dependency->getIdentifier(), $versions['lowestIntegerVersion'], $versions['highestIntegerVersion']
+		);
+		return !empty($count);
 	}
 
 	/**
