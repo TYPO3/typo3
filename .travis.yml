@@ -4,6 +4,7 @@ php:
   - 5.3
   - 5.4
   - 5.5
+  - 5.6
 
 env:
   - DB=mysql
@@ -20,13 +21,13 @@ notifications:
 
 before_script:
   - >
-    if [[ "$TRAVIS_PHP_VERSION" != "5.5" ]]; then
+    if [[ "$TRAVIS_PHP_VERSION" = "5.3" || "$TRAVIS_PHP_VERSION" = "5.4" ]]; then
         echo "extension = apc.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini;
         echo "apc.enable_cli=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini;
         echo "apc.slam_defense=0" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini;
     fi
   - >
-    if [[ "$TRAVIS_PHP_VERSION" != "5.5" ]]; then
+    if [[ "$TRAVIS_PHP_VERSION" = "5.3" || "$TRAVIS_PHP_VERSION" = "5.4" ]]; then
         pecl install igbinary > /dev/null;
     fi
   - echo "extension = memcache.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
