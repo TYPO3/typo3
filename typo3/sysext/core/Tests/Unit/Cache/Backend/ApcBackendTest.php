@@ -43,8 +43,8 @@ class ApcBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setUp() {
 		// Currently APCu identifies itself both as "apcu" and "apc" (for compatibility) although it doesn't provide the APC-opcache functionality
-		if (!extension_loaded('apc')) {
-			$this->markTestSkipped('APC/APCu extension was not available');
+		if (!extension_loaded('apc') || ini_get('apc.enabled') == 0 || ini_get('apc.enable_cli') == 0) {
+			$this->markTestSkipped('APC/APCu extension was not available, or it was disabled for CLI.');
 		}
 		if (ini_get('apc.slam_defense') == 1) {
 			$this->markTestSkipped('This testcase can only be executed with apc.slam_defense = Off');
