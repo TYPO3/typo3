@@ -61,7 +61,7 @@ class Clickmenu {
 				$urlParameters['tx_impexp']['pagetree']['levels'] = 0;
 				$urlParameters['tx_impexp']['pagetree']['tables'][] = '_ALL';
 			} else {
-				$urlParameters['tx_impexp']['record'][] = rawurlencode($table . ':' . $uid);
+				$urlParameters['tx_impexp']['record'][] = $table . ':' . $uid;
 				$urlParameters['tx_impexp']['external_ref']['tables'][] = '_ALL';
 			}
 			$url = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('xMOD_tximpexp', $urlParameters);
