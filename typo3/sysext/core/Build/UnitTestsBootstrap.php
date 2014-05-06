@@ -67,6 +67,7 @@ if (getenv('TYPO3_PATH_WEB')) {
 } else {
 	$webRoot = getcwd() . '/';
 }
+$webRoot = strtr($webRoot, '\\', '/');
 
 /**
  * Define basic TYPO3 constants
