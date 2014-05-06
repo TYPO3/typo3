@@ -47,7 +47,7 @@ script:
     export typo3DatabaseHost="localhost";
     export typo3DatabaseUsername="root";
     export typo3DatabasePassword="";
-    grep directory typo3/sysext/core/Build/FunctionalTests.xml | awk '{print $1}' | sed 's%<directory>\(\.\./\)*\(typo3/sysext.*\)</directory>$%\2%g' | parallel --gnu 'echo; echo "Running functional {} tests"; ./bin/phpunit --colors -c typo3/sysext/core/Build/FunctionalTests.xml {}'
+    find . -wholename '*typo3/sysext/*/Tests/Functional/*Test.php' | parallel --gnu 'echo; echo "Running functional test suite {}"; ./bin/phpunit --colors -c typo3/sysext/core/Build/FunctionalTests.xml {}'
   - >
     echo;
     echo "Running php lint";
