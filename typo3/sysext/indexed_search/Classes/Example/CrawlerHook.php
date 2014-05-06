@@ -73,8 +73,6 @@ class CrawlerHook {
 		switch ((int)$session_data['step']) {
 			case 1:
 				// Indexing Example: Content accessed with GET parameters added to URL:
-				// Load indexer if not yet [DON'T CHANGE]:
-				$pObj->loadIndexerClass();
 				// Get rootline from the Indexing Record (needed because the indexer relates all search results to a position in the page tree!) [DON'T CHANGE]:
 				$rl = $pObj->getUidRootLineForClosestTemplate($cfgRec['pid']);
 				// Set up language uid, if any:
@@ -107,8 +105,6 @@ class CrawlerHook {
 				break;
 			case 2:
 				// Indexing Example: Content accessed directly in file system:
-				// Load indexer if not yet [DON'T CHANGE]:
-				$pObj->loadIndexerClass();
 				// Get rootline from the Indexing Record (needed because the indexer relates all search results to a position in the page tree!) [DON'T CHANGE]:
 				$rl = $pObj->getUidRootLineForClosestTemplate($cfgRec['pid']);
 				// Set up language uid, if any:
@@ -124,8 +120,6 @@ class CrawlerHook {
 				break;
 			case 3:
 				// Indexing Example: Content accessed on External URLs:
-				// Load indexer if not yet.
-				$pObj->loadIndexerClass();
 				// Index external URL:
 				$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
 				$indexerObj->backend_initIndexer($cfgRec['pid'], 0, $sys_language_uid, '', $rl);

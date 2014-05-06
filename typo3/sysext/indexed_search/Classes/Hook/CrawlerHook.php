@@ -291,8 +291,6 @@ class CrawlerHook {
 				// If file, index it!
 				// Get root line (need to provide this when indexing external files)
 				$rl = $this->getUidRootLineForClosestTemplate($cfgRec['pid']);
-				// Load indexer if not yet.
-				$this->loadIndexerClass();
 				// (Re)-Indexing file on page.
 				$indexerObj = GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
 				$indexerObj->backend_initIndexer($cfgRec['pid'], 0, 0, '', $rl);
@@ -495,8 +493,6 @@ class CrawlerHook {
 	 * @todo Define visibility
 	 */
 	public function indexExtUrl($url, $pageId, $rl, $cfgUid, $setId) {
-		// Load indexer if not yet.
-		$this->loadIndexerClass();
 		// Index external URL:
 		$indexerObj = GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
 		$indexerObj->backend_initIndexer($pageId, 0, 0, '', $rl);
@@ -544,8 +540,6 @@ class CrawlerHook {
 	 * @todo Define visibility
 	 */
 	public function indexSingleRecord($r, $cfgRec, $rl = NULL) {
-		// Load indexer if not yet.
-		$this->loadIndexerClass();
 		// Init:
 		$rl = is_array($rl) ? $rl : $this->getUidRootLineForClosestTemplate($cfgRec['pid']);
 		$fieldList = GeneralUtility::trimExplode(',', $cfgRec['fieldlist'], TRUE);
@@ -574,10 +568,10 @@ class CrawlerHook {
 	 *
 	 * @return 	void
 	 * @todo Define visibility
+	 * @deprecated since 6.2 will be removed two version later. Rely on autoloading of the indexer class.
 	 */
 	public function loadIndexerClass() {
-		global $TYPO3_CONF_VARS;
-		require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('indexed_search') . 'class.indexer.php';
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 	}
 
 	/**
