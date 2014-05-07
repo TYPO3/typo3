@@ -27,6 +27,8 @@ namespace TYPO3\CMS\Extbase\Reflection;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\MathUtility;
+
 /**
  * Provides methods to call appropriate getter/setter on an object given the
  * property name. It does this following these rules:
@@ -115,11 +117,19 @@ class ObjectAccess {
 				throw new \TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException('The property "' . $propertyName . '" on the subject does not exist.', 1302855001);
 			}
 		}
-		if (
-			$subject instanceof \ArrayAccess
-			&& !($subject instanceof \SplObjectStorage || $subject instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage)
-			&& isset($subject[$propertyName])
-		) {
+		if ($subject instanceof \SplObjectStorage || $subject instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage) {
+			if (MathUtility::canBeInterpretedAsInteger($propertyName)) {
+				$index = 0;
+				foreach ($subject as $value) {
+					if ($index === (int)$propertyName) {
+						return $value;
+					}
+					$index++;
+				}
+			}
+			$propertyExists = FALSE;
+			return NULL;
+		} elseif ($subject instanceof \ArrayAccess && isset($subject[$propertyName])) {
 			return $subject[$propertyName];
 		}
 		$getterMethodName = 'get' . ucfirst($propertyName);
@@ -154,20 +164,9 @@ class ObjectAccess {
 		$propertyPathSegments = explode('.', $propertyPath);
 		foreach ($propertyPathSegments as $pathSegment) {
 			$propertyExists = FALSE;
-			$propertyValue = self::getPropertyInternal($subject, $pathSegment, FALSE, $propertyExists);
-			if (
-				$propertyExists !== TRUE
-				&& ($subject instanceof \SplObjectStorage || $subject instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage)
-			) {
-				$subject = NULL;
-			} elseif (
-				$propertyExists !== TRUE
-				&& (is_array($subject) || $subject instanceof \ArrayAccess)
-				&& isset($subject[$pathSegment])
-			) {
-				$subject = $subject[$pathSegment];
-			} else {
-				$subject = $propertyValue;
+			$subject = self::getPropertyInternal($subject, $pathSegment, FALSE, $propertyExists);
+			if (!$propertyExists || $subject === NULL) {
+				return $subject;
 			}
 		}
 		return $subject;

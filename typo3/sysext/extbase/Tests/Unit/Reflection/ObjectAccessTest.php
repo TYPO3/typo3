@@ -220,15 +220,37 @@ class ObjectAccessTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function getPropertyPathCanNotAccessPropertiesOfAnSplObjectStorageObject() {
+	public function getPropertyPathCanAccessPropertiesOfAnExtbaseObjectStorageObject() {
 		$objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$exampleObject = new \stdClass();
 		$exampleObject->key = 'value';
+		$exampleObject2 = new \stdClass();
+		$exampleObject2->key = 'value2';
 		$objectStorage->attach($exampleObject);
+		$objectStorage->attach($exampleObject2);
 		$array = array(
 			'parent' => $objectStorage,
 		);
-		$this->assertNull(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($array, 'parent.0.key'));
+		$this->assertSame('value', \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($array, 'parent.0.key'));
+		$this->assertSame('value2', \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($array, 'parent.1.key'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getPropertyPathCanAccessPropertiesOfAnSplObjectStorageObject() {
+		$objectStorage = new \SplObjectStorage();
+		$exampleObject = new \stdClass();
+		$exampleObject->key = 'value';
+		$exampleObject2 = new \stdClass();
+		$exampleObject2->key = 'value2';
+		$objectStorage->attach($exampleObject);
+		$objectStorage->attach($exampleObject2);
+		$array = array(
+			'parent' => $objectStorage,
+		);
+		$this->assertSame('value', \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($array, 'parent.0.key'));
+		$this->assertSame('value2', \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($array, 'parent.1.key'));
 	}
 
 	/**
