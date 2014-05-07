@@ -259,7 +259,7 @@ class LocalizationUtility {
 	 * @param string $parentKey the name of the parent key in the recursion; is only needed for recursion.
 	 * @return array flattened array of labels.
 	 */
-	protected function flattenTypoScriptLabelArray(array $labelValues, $parentKey = '') {
+	static protected function flattenTypoScriptLabelArray(array $labelValues, $parentKey = '') {
 		$result = array();
 		foreach ($labelValues as $key => $labelValue) {
 			if (!empty($parentKey)) {
@@ -283,7 +283,7 @@ class LocalizationUtility {
 	 * @param string $charset The source charset
 	 * @return string converted string
 	 */
-	protected function convertCharset($value, $charset) {
+	static protected function convertCharset($value, $charset) {
 		if (TYPO3_MODE === 'FE') {
 			return $GLOBALS['TSFE']->csConv($value, $charset);
 		} else {
