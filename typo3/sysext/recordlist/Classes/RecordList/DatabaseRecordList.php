@@ -902,6 +902,16 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 	}
 
 	/**
+	 * Get pointer for first element on the page
+	 *
+	 * @param int $page Page number starting with 1
+	 * @return int Pointer to first element on the page (starting with 0)
+	 */
+	protected function getPointerForPage($page) {
+		return ($page - 1) * $this->iLimit;
+	}
+
+	/**
 	 * Creates a page browser for tables with many records
 	 *
 	 * @param string $renderPart Distinguish between 'top' and 'bottom' part of the navigation (above or below the records)
@@ -913,33 +923,27 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 		$returnContent = '';
 		// Show page selector if not all records fit into one page
 		if ($totalPages > 1) {
-			$first = ($previous = ($next = ($last = ($reload = ''))));
 			$listURL = $this->listURL('', $this->table);
 			// 1 = first page
-			$currentPage = floor(($this->firstElementNumber + 1) / $this->iLimit) + 1;
+			// 0 = first element
+			$currentPage = floor($this->firstElementNumber / $this->iLimit) + 1;
 			// Compile first, previous, next, last and refresh buttons
 			if ($currentPage > 1) {
 				$labelFirst = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:first');
-				$first = '<a href="' . $listURL . '&pointer=0">' . IconUtility::getSpriteIcon('actions-view-paging-first', array('title' => $labelFirst)) . '</a>';
+				$labelPrevious = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:previous');
+				$first = '<a href="' . $listURL . '&pointer=' . $this->getPointerForPage(1) . '">' . IconUtility::getSpriteIcon('actions-view-paging-first', array('title' => $labelFirst)) . '</a>';
+				$previous = '<a href="' . $listURL . '&pointer=' . $this->getPointerForPage($currentPage - 1) . '">' . IconUtility::getSpriteIcon('actions-view-paging-previous', array('title' => $labelPrevious)) . '</a>';
 			} else {
 				$first = IconUtility::getSpriteIcon('actions-view-paging-first-disabled');
-			}
-			if ($currentPage - 1 > 0) {
-				$labelPrevious = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:previous');
-				$previous = '<a href="' . $listURL . '&pointer=' . ($currentPage - 2) * $this->iLimit . '">' . IconUtility::getSpriteIcon('actions-view-paging-previous', array('title' => $labelPrevious)) . '</a>';
-			} else {
 				$previous = IconUtility::getSpriteIcon('actions-view-paging-previous-disabled');
 			}
-			if ($currentPage + 1 <= $totalPages) {
+			if ($currentPage < $totalPages) {
 				$labelNext = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:next');
-				$next = '<a href="' . $listURL . '&pointer=' . $currentPage * $this->iLimit . '">' . IconUtility::getSpriteIcon('actions-view-paging-next', array('title' => $labelNext)) . '</a>';
+				$labelLast = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:last');
+				$next = '<a href="' . $listURL . '&pointer=' . $this->getPointerForPage($currentPage + 1) . '">' . IconUtility::getSpriteIcon('actions-view-paging-next', array('title' => $labelNext)) . '</a>';
+				$last = '<a href="' . $listURL . '&pointer=' . $this->getPointerForPage($totalPages) . '">' . IconUtility::getSpriteIcon('actions-view-paging-last', array('title' => $labelLast)) . '</a>';
 			} else {
 				$next = IconUtility::getSpriteIcon('actions-view-paging-next-disabled');
-			}
-			if ($currentPage != $totalPages) {
-				$labelLast = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:last');
-				$last = '<a href="' . $listURL . '&pointer=' . ($totalPages - 1) * $this->iLimit . '">' . IconUtility::getSpriteIcon('actions-view-paging-last', array('title' => $labelLast)) . '</a>';
-			} else {
 				$last = IconUtility::getSpriteIcon('actions-view-paging-last-disabled');
 			}
 			$reload = '<a href="#" onclick="document.dblistForm.action=\'' . $listURL . '&pointer=\'+calculatePointer(document.getElementById(\'jumpPage-' . $renderPart . '\').value); document.dblistForm.submit(); return true;" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:reload', TRUE) . '">' . IconUtility::getSpriteIcon('actions-system-refresh') . '</a>';
