@@ -49,35 +49,35 @@ class MediaWizardProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		return array(
 			'http://youtu.be/2PMeCSQ--08' => array(
 				'http://youtu.be/2PMeCSQ--08',
-				'http://www.youtube.com/embed/2PMeCSQ--08?fs=1'
+				'http://www.youtube.com/v/2PMeCSQ--08?fs=1'
 			),
 			'http://www.youtube.com/embed/2PMeCSQ--08' => array(
 				'http://www.youtube.com/embed/2PMeCSQ--08',
-				'http://www.youtube.com/embed/2PMeCSQ--08?fs=1'
+				'http://www.youtube.com/v/2PMeCSQ--08?fs=1'
 			),
 			'http://www.youtube.com/watch?v=2PMeCSQ--08' => array(
 				'http://www.youtube.com/watch?v=2PMeCSQ--08',
-				'http://www.youtube.com/embed/2PMeCSQ--08?fs=1'
+				'http://www.youtube.com/v/2PMeCSQ--08?fs=1'
 			),
 			'http://www.youtube.com/?v=2PMeCSQ--08' => array(
 				'http://www.youtube.com/?v=2PMeCSQ--08',
-				'http://www.youtube.com/embed/2PMeCSQ--08?fs=1'
+				'http://www.youtube.com/v/2PMeCSQ--08?fs=1'
 			),
 			'http://www.youtube.com/v/2PMeCSQ--08' => array(
 				'http://www.youtube.com/v/2PMeCSQ--08',
-				'http://www.youtube.com/embed/2PMeCSQ--08?fs=1'
+				'http://www.youtube.com/v/2PMeCSQ--08?fs=1'
 			),
 			'http://www.youtube.com/e/2PMeCSQ--08' => array(
 				'http://www.youtube.com/e/2PMeCSQ--08',
-				'http://www.youtube.com/embed/2PMeCSQ--08?fs=1'
+				'http://www.youtube.com/v/2PMeCSQ--08?fs=1'
 			),
 			'http://www.youtube.com/watch?feature=player_embedded&v=2PMeCSQ--08' => array(
 				'http://www.youtube.com/watch?feature=player_embedded&v=2PMeCSQ--08',
-				'http://www.youtube.com/embed/2PMeCSQ--08?fs=1'
+				'http://www.youtube.com/v/2PMeCSQ--08?fs=1'
 			),
 			'http://www.youtube.com/watch?v=2PMeCSQ--08&list=PLGWGc5dfbzn_pvtJg7XskLva9XZpNTI88' => array(
 				'http://www.youtube.com/watch?v=2PMeCSQ--08&list=PLGWGc5dfbzn_pvtJg7XskLva9XZpNTI88',
-				'http://www.youtube.com/embed/2PMeCSQ--08?fs=1'
+				'http://www.youtube.com/v/2PMeCSQ--08?fs=1'
 			),
 		);
 	}

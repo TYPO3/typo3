@@ -34,7 +34,7 @@ namespace TYPO3\CMS\Frontend\MediaWizard;
  * @author Steffen Kamper <info@sk-typo3.de>
  * @author Ernesto Baschny <ernst@cron-it.de>
  */
-class MediaWizardProvider implements \TYPO3\CMS\Frontend\MediaWizard\MediaWizardProviderInterface {
+class MediaWizardProvider implements MediaWizardProviderInterface {
 
 	/**
 	 * @var array List of providers we can handle in this class
@@ -65,6 +65,13 @@ class MediaWizardProvider implements \TYPO3\CMS\Frontend\MediaWizard\MediaWizard
 	protected function getMethod($url) {
 		$urlInfo = @parse_url($url);
 		if ($urlInfo === FALSE) {
+			return NULL;
+		}
+		// The URL passed might not contain http:// prefix
+		if (!isset($urlInfo['host'])) {
+			$urlInfo = @parse_url('http://' . $url);
+		}
+		if (empty($urlInfo['host'])) {
 			return NULL;
 		}
 		$hostName = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $urlInfo['host'], TRUE);
@@ -138,7 +145,7 @@ class MediaWizardProvider implements \TYPO3\CMS\Frontend\MediaWizard\MediaWizard
 		}
 
 		if ($videoId) {
-			$url = $this->getUrlSchema() . 'www.youtube.com/embed/' . $videoId . '?fs=1';
+			$url = $this->getUrlSchema() . 'www.youtube.com/v/' . $videoId . '?fs=1';
 		}
 		return $url;
 	}

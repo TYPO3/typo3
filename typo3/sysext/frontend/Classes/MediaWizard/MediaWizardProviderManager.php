@@ -43,12 +43,13 @@ class MediaWizardProviderManager {
 	 * Allows extensions to register themselves as media wizard providers
 	 *
 	 * @param string $className A class implementing MediaWizardProviderInterface
+	 * @throws \UnexpectedValueException
 	 * @return void
 	 */
 	static public function registerMediaWizardProvider($className) {
 		if (!isset(self::$providers[$className])) {
 			$provider = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className);
-			if (!$provider instanceof \TYPO3\CMS\Frontend\MediaWizard\MediaWizardProviderInterface) {
+			if (!$provider instanceof MediaWizardProviderInterface) {
 				throw new \UnexpectedValueException($className . ' is registered as a mediaWizardProvider, so it must implement interface TYPO3\\CMS\\Frontend\\MediaWizard\\MediaWizardProviderInterface', 1285022360);
 			}
 			self::$providers[$className] = $provider;
@@ -57,13 +58,13 @@ class MediaWizardProviderManager {
 
 	/**
 	 * @param string $url
-	 * @return A valid mediaWizardProvider that can handle this URL
+	 * @return MediaWizardProviderInterface|NULL A valid mediaWizardProvider that can handle this URL
 	 */
 	static public function getValidMediaWizardProvider($url) {
 		// Go through registered providers in reverse order (last one registered wins)
 		$providers = array_reverse(self::$providers, TRUE);
 		foreach ($providers as $provider) {
-			/** @var $provider \TYPO3\CMS\Frontend\MediaWizard\MediaWizardProviderInterface */
+			/** @var $provider MediaWizardProviderInterface */
 			if ($provider->canHandle($url)) {
 				return $provider;
 			}
