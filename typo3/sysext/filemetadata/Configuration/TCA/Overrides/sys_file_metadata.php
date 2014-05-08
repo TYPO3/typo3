@@ -440,3 +440,11 @@ $tca = array(
 );
 
 $GLOBALS['TCA']['sys_file_metadata'] = array_replace_recursive($GLOBALS['TCA']['sys_file_metadata'], $tca);
+
+// Add category tab if categories column is present
+if (isset($GLOBALS['TCA']['sys_file_metadata']['columns']['categories'])) {
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
+		'sys_file_metadata',
+		'--div--;LLL:EXT:lang/locallang_tca.xlf:sys_category.tabs.category,categories'
+	);
+}
