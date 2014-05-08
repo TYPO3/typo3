@@ -503,6 +503,8 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
 			throw new \RuntimeException('Your query could not be built.', 1394453197);
 		}
 
+		$this->queryParser->addDynamicQueryParts($query->getQuerySettings(), $statementParts);
+
 		// Limit and offset are not cached to allow caching of pagebrowser queries.
 		$statementParts['limit'] = ((int)$query->getLimit() ?: NULL);
 		$statementParts['offset'] = ((int)$query->getOffset() ?: NULL);
