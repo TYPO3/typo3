@@ -53,6 +53,32 @@ $TCA['tx_blogexample_domain_model_blog'] = array(
 				'type' => 'check'
 			)
 		),
+		'fe_group' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.fe_group',
+			'config' => array(
+				'type' => 'select',
+				'size' => 5,
+				'maxitems' => 20,
+				'items' => array(
+					array(
+						'LLL:EXT:lang/locallang_general.xlf:LGL.hide_at_login',
+						-1,
+					),
+					array(
+						'LLL:EXT:lang/locallang_general.xlf:LGL.any_login',
+						-2,
+					),
+					array(
+						'LLL:EXT:lang/locallang_general.xlf:LGL.usergroups',
+						'--div--',
+					),
+				),
+				'exclusiveKeys' => '-1,-2',
+				'foreign_table' => 'fe_groups',
+				'foreign_table_where' => 'ORDER BY fe_groups.title',
+			),
+		),
 		'title' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_blog.title',
@@ -139,7 +165,7 @@ $TCA['tx_blogexample_domain_model_blog'] = array(
 		),
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid, hidden, title, description, logo, posts, administrator')
+		'1' => array('showitem' => 'sys_language_uid, hidden, fe_group, title, description, logo, posts, administrator')
 	),
 	'palettes' => array(
 		'1' => array('showitem' => '')

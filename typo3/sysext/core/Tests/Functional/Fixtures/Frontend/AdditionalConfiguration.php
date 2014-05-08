@@ -11,6 +11,8 @@ $GLOBALS['TYPO3_CONF_VARS']['FE']['debug'] = FALSE;
 
 // Register hooks for frontend test
 if (TYPO3_MODE === 'FE') {
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['initFEuser']['FunctionalTest'] =
+		\TYPO3\CMS\Core\Tests\Functional\Framework\Frontend\Hook\FrontendUserHandler::class . '->initialize';
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['postBeUser']['FunctionalTest'] =
 		\TYPO3\CMS\Core\Tests\Functional\Framework\Frontend\Hook\BackendUserHandler::class . '->initialize';
 }

@@ -9,6 +9,8 @@ defined('TYPO3_MODE') or die();
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'BlogExample setup');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript/DefaultStyles', 'BlogExample CSS Styles (optional)');
 
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin($_EXTKEY, 'Blogs', 'Blog listing');
+
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_blogexample_domain_model_blog');
 $TCA['tx_blogexample_domain_model_blog'] = array (
 	'ctrl' => array (
@@ -24,8 +26,9 @@ $TCA['tx_blogexample_domain_model_blog'] = array (
 		'transOrigDiffSourceField' => 'l18n_diffsource',
 		'delete' => 'deleted',
 		'enablecolumns' => array(
-			'disabled' => 'hidden'
-			),
+			'disabled' => 'hidden',
+			'fe_group' => 'fe_group',
+		),
 		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TCA/Blog.php',
 		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/icon_tx_blogexample_domain_model_blog.gif'
 	)

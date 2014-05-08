@@ -329,13 +329,18 @@ abstract class FunctionalTestCase extends BaseTestCase {
 	 * @param int $backendUserId
 	 * @param int $workspaceId
 	 * @param bool $failOnFailure
+	 * @param int $frontendUserId
 	 * @return Response
 	 */
-	protected function getFrontendResponse($pageId, $languageId = 0, $backendUserId = 0, $workspaceId = 0, $failOnFailure = TRUE) {
+	protected function getFrontendResponse($pageId, $languageId = 0, $backendUserId = 0, $workspaceId = 0, $failOnFailure = TRUE, $frontendUserId = 0) {
 		$pageId = (int)$pageId;
 		$languageId = (int)$languageId;
 
 		$additionalParameter = '';
+
+		if (!empty($frontendUserId)) {
+			$additionalParameter .= '&frontendUserId=' . (int)$frontendUserId;
+		}
 		if (!empty($backendUserId)) {
 			$additionalParameter .= '&backendUserId=' . (int)$backendUserId;
 		}

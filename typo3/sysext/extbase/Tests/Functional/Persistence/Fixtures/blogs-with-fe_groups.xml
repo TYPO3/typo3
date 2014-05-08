@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<tx_blogexample_domain_model_blog>
+		<uid>1</uid>
+		<pid>1</pid>
+		<title>Blog1</title>
+		<deleted>0</deleted>
+		<posts>0</posts>
+	</tx_blogexample_domain_model_blog>
+	<tx_blogexample_domain_model_blog>
+		<uid>2</uid>
+		<pid>1</pid>
+		<title>Blog2</title>
+		<fe_group>1</fe_group>
+		<deleted>0</deleted>
+		<posts>0</posts>
+	</tx_blogexample_domain_model_blog>
+	<tx_blogexample_domain_model_blog>
+		<uid>3</uid>
+		<pid>1</pid>
+		<title>Blog3</title>
+		<fe_group>2</fe_group>
+		<deleted>0</deleted>
+		<posts>0</posts>
+	</tx_blogexample_domain_model_blog>
+</dataset>
