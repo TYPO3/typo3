@@ -1924,7 +1924,9 @@ class ImportExport {
 						'sys_file_metadata',
 						'file = ' . $this->import_mapId['sys_file'][$record['file']] . ' AND sys_language_uid = 0 AND pid = 0'
 					);
-					if ($recordInDatabase !== NULL) {
+					// if no record could be found, $this->import_mapId['sys_file'][$record['file']] is pointing
+					// to a file, that was already there, thus a new metadata record should be created
+					if (is_array($recordInDatabase)) {
 						$this->import_mapId['sys_file_metadata'][$record['uid']] = $recordInDatabase['uid'];
 						$ID = $recordInDatabase['uid'];
 					} else {
