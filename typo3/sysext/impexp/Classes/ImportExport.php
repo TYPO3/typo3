@@ -1507,6 +1507,8 @@ class ImportExport {
 
 		$defaultStorage = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getDefaultStorage();
 
+		$sanitizedFolderMappings = array();
+
 		foreach (array_keys($this->dat['header']['records']['sys_file']) as $sysFileUid) {
 			$fileRecord = $this->dat['records']['sys_file:' . $sysFileUid]['data'];
 
@@ -1560,16 +1562,22 @@ class ImportExport {
 			if ($newFile === NULL) {
 
 				$folderName = PathUtility::dirname(ltrim($fileRecord['identifier'], '/'));
+				if (in_array($folderName, $sanitizedFolderMappings)) {
+					$folderName = $sanitizedFolderMappings[$folderName];
+				}
 				if (!$storage->hasFolder($folderName)) {
 					try {
-						$storage->createFolder($folderName);
+						$importFolder = $storage->createFolder($folderName);
+						if ($importFolder->getIdentifier() !== $folderName && !in_array($folderName, $sanitizedFolderMappings)) {
+							$sanitizedFolderMappings[$folderName] = $importFolder->getIdentifier();
+						}
 					} catch (Exception $e) {
 						$this->error('Error: Folder could not be created for file "' . $fileRecord['identifier'] . '" with storage uid "' . $fileRecord['storage'] . '"');
 						continue;
 					}
+				} else {
+					$importFolder = $storage->getFolder($folderName);
 				}
-
-				$importFolder = $storage->getFolder($folderName);
 
 				try {
 					/** @var $file \TYPO3\CMS\Core\Resource\File */

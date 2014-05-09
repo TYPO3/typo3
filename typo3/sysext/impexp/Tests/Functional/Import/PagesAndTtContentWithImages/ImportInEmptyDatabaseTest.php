@@ -99,4 +99,18 @@ class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Impor
 		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', PATH_site . 'fileadmin/user_upload/typo3_image2.jpg');
 	}
 
+	/**
+	 * @test
+	 */
+	public function importPagesAndRelatedTtContentWithImagesWithSpacesInPath() {
+
+		$this->import->loadFile(__DIR__ . '/ImportExportXml/pages-and-ttcontent-with-image-with-spaces-in-path.xml', 1);
+		$this->import->importData(0);
+
+		$this->assertAssertionDataSet('importPagesAndRelatedTtContentWithImagesWithSpacesInPath');
+
+		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', PATH_site . 'fileadmin/user_upload/folder_with_spaces/typo3_image2.jpg');
+		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image3.jpg', PATH_site . 'fileadmin/user_upload/folder_with_spaces/typo3_image3.jpg');
+	}
+
 }

@@ -1,0 +1,22 @@
+"pages"
+,"uid","pid","sorting","deleted","title"
+,1,0,256,0,"Root"
+,2,1,256,0,"Dummy 1-2"
+"tt_content"
+,"uid","pid","sorting","deleted","header","image"
+,1,1,256,0,"Test content",1
+"sys_file_storage"
+,"uid","pid","name","driver"
+,1,0,"fileadmin/ (auto-created)","Local"
+"sys_file"
+,"uid","pid","storage","type","identifier","identifier_hash","folder_hash","extension","mime_type","name","sha1","size"
+,1,0,1,2,"/user_upload/folder_with_spaces/typo3_image2.jpg","060a2cd7f623c1c4c3edaf20f2dd561dadc30354","9de358f64a020b01f020a76ff7c59674913ba5c5","jpg","image/jpeg","typo3_image2.jpg","da9acdf1e105784a57bbffec9520969578287797","7958"
+,2,0,1,2,"/user_upload/folder_with_spaces/typo3_image3.jpg","53313966f99b5d632c1db8799ae25349ad3318f8","9de358f64a020b01f020a76ff7c59674913ba5c5","jpg","image/jpeg","typo3_image3.jpg","e873c1e2ffd0f191e183a1057de3eef4d62e782d","5565"
+"sys_file_reference"
+,"uid","pid","uid_local","uid_foreign","tablenames","fieldname","table_local","title","description","alternative","link"
+,1,1,1,1,"tt_content","image","sys_file",\NULL,\NULL,\NULL,""
+"sys_file_metadata"
+,"uid","pid","file","title","width","height","description","alternative"
+,1,0,1,Dummy image,400,300,"This is a dummy image.","Photo of program code"
+,2,0,2,Dummy image 2,400,267,\NULL,,\NULL
+
