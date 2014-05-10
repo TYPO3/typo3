@@ -764,7 +764,125 @@ class DependencyResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					),
 				),
 			),
+			'Suggestions without reverse dependency' => array(
+				array(
+					'A' => array(
+						'state' => 'active',
+						'suggestions' => array('B'),
+					),
+					'B' => array(
+						'state' => 'active',
+					),
+					'C' => array(
+						'state' => 'active',
+						'dependencies' => array('A')
+					),
+				),
+				array(
+					'A' => array(
+						'A' => FALSE,
+						'B' => TRUE,
+						'C' => FALSE,
+					),
+					'B' => array(
+						'A' => FALSE,
+						'B' => FALSE,
+						'C' => FALSE,
+					),
+					'C' => array(
+						'A' => TRUE,
+						'B' => FALSE,
+						'C' => FALSE,
+					),
+				),
+			),
+			'Suggestions with reverse dependency' => array(
+				array(
+					'A' => array(
+						'state' => 'active',
+						'suggestions' => array('B'),
+					),
+					'B' => array(
+						'state' => 'active',
+						'dependencies' => array('A')
+					),
+					'C' => array(
+						'state' => 'active',
+						'dependencies' => array('A')
+					),
+				),
+				array(
+					'A' => array(
+						'A' => FALSE,
+						'B' => FALSE,
+						'C' => FALSE,
+					),
+					'B' => array(
+						'A' => TRUE,
+						'B' => FALSE,
+						'C' => FALSE,
+					),
+					'C' => array(
+						'A' => TRUE,
+						'B' => FALSE,
+						'C' => FALSE,
+					),
+				),
+			),
 		);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function findPathInGraphReturnsCorrectPathDataProvider() {
+		return array(
+			'Simple path' => array(
+				array(
+					'A' => array('A' => FALSE, 'B' => FALSE, 'C' => FALSE, 'Z' => TRUE),
+					'B' => array('A' => FALSE, 'B' => FALSE, 'C' => FALSE, 'Z' => FALSE),
+					'C' => array('A' => FALSE, 'B' => FALSE, 'C' => FALSE, 'Z' => FALSE),
+					'Z' => array('A' => FALSE, 'B' => FALSE, 'C' => FALSE, 'Z' => FALSE)
+				),
+			    'A', 'Z',
+			    array('A', 'Z')
+			),
+			'No path' => array(
+				array(
+					'A' => array('A' => FALSE, 'B' => TRUE, 'C' => FALSE, 'Z' => FALSE),
+					'B' => array('A' => FALSE, 'B' => FALSE, 'C' => FALSE, 'Z' => FALSE),
+					'C' => array('A' => FALSE, 'B' => TRUE, 'C' => FALSE, 'Z' => FALSE),
+					'Z' => array('A' => FALSE, 'B' => TRUE, 'C' => FALSE, 'Z' => FALSE)
+				),
+				'A', 'C',
+				array()
+			),
+			'Longer path' => array(
+				array(
+					'A' => array('A' => FALSE, 'B' => TRUE, 'C' => TRUE, 'Z' => TRUE),
+					'B' => array('A' => FALSE, 'B' => FALSE, 'C' => FALSE, 'Z' => FALSE),
+					'C' => array('A' => FALSE, 'B' => FALSE, 'C' => FALSE, 'Z' => TRUE),
+					'Z' => array('A' => FALSE, 'B' => FALSE, 'C' => FALSE, 'Z' => FALSE)
+				),
+				'A', 'Z',
+				array('A', 'C', 'Z')
+			),
+		);
+	}
+
+	/**
+	 * @param array $graph
+	 * @param string $from
+	 * @param string $to
+	 * @param array $expected
+	 * @test
+	 * @dataProvider findPathInGraphReturnsCorrectPathDataProvider
+	 */
+	public function findPathInGraphReturnsCorrectPath(array $graph, $from, $to, array $expected) {
+		$dependencyResolver = $this->getAccessibleMock('\TYPO3\CMS\Core\Package\DependencyResolver', array('dummy'));
+		$path = $dependencyResolver->_call('findPathInGraph', $graph, $from, $to);
+
+		$this->assertSame($expected, $path);
 	}
 
 }
