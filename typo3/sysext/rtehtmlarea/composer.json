@@ -12,6 +12,9 @@
 	"replace": {
 		"rtehtmlarea": "*"
 	},
+	"suggest": {
+		"typo3/cms-setup": "*"
+	},
 	"extra": {
 		"typo3/cms": {
 			"Package": {
