@@ -708,6 +708,43 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	}
 
 	/**
+	 * Resolves the dependent packages from the meta data of all packages recursively. The
+	 * resolved direct or indirect dependencies of each package will put into the package
+	 * states configuration array.
+	 *
+	 * @return void
+	 */
+	protected function resolvePackageDependencies() {
+		parent::resolvePackageDependencies();
+		foreach ($this->packages as $packageKey => $package) {
+			$this->packageStatesConfiguration['packages'][$packageKey]['suggestions'] = $this->getSuggestionArrayForPackage($packageKey);
+		}
+	}
+
+	/**
+	 * Returns an array of suggested package keys for the given package.
+	 *
+	 * @param string $packageKey The package key to fetch the suggestions for
+	 * @return array|NULL An array of directly suggested packages
+	 */
+	protected function getSuggestionArrayForPackage($packageKey) {
+		if (!isset($this->packages[$packageKey])) {
+			return NULL;
+		}
+		$suggestedPackageKeys = array();
+		$suggestedPackageConstraints = $this->packages[$packageKey]->getPackageMetaData()->getConstraintsByType(\TYPO3\Flow\Package\MetaDataInterface::CONSTRAINT_TYPE_SUGGESTS);
+		foreach ($suggestedPackageConstraints as $constraint) {
+			if ($constraint instanceof \TYPO3\Flow\Package\MetaData\PackageConstraint) {
+				$suggestedPackageKey = $constraint->getValue();
+				if (isset($this->packages[$suggestedPackageKey])) {
+					$suggestedPackageKeys[] = $suggestedPackageKey;
+				}
+			}
+		}
+		return array_reverse($suggestedPackageKeys);
+	}
+
+	/**
 	 * Saves the current content of $this->packageStatesConfiguration to the
 	 * PackageStates.php file.
 	 *

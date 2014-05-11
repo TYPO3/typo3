@@ -180,7 +180,41 @@ class Package extends \TYPO3\Flow\Package\Package implements PackageInterface {
 					}
 				}
 			}
+			if (isset($extensionManagerConfiguration['constraints']['suggests']) && is_array($extensionManagerConfiguration['constraints']['conflicts'])) {
+				$composerManifest->suggest = new \stdClass();
+				foreach ($extensionManagerConfiguration['constraints']['suggests'] as $conflictingPackageKey => $conflictingPackageVersion) {
+					if (!empty($conflictingPackageKey)) {
+						$composerManifest->suggest->$conflictingPackageKey = $conflictingPackageVersion;
+					} else {
+						// TODO: throw meaningful exception or fail silently?
+					}
+				}
+			}
 		}
+	}
+
+	/**
+	 * Returns the package meta data object of this package.
+	 *
+	 * @return \TYPO3\Flow\Package\MetaData
+	 */
+	public function getPackageMetaData() {
+		if ($this->packageMetaData === NULL) {
+			parent::getPackageMetaData();
+			$suggestions = $this->getComposerManifest('suggest');
+			if ($suggestions !== NULL) {
+				foreach ($suggestions as $suggestion => $version) {
+					if ($this->packageRequirementIsComposerPackage($suggestion) === FALSE) {
+						// Skip non-package requirements
+						continue;
+					}
+					$packageKey = $this->packageManager->getPackageKeyFromComposerName($suggestion);
+					$constraint = new \TYPO3\Flow\Package\MetaData\PackageConstraint(\TYPO3\Flow\Package\MetaDataInterface::CONSTRAINT_TYPE_SUGGESTS, $packageKey);
+					$this->packageMetaData->addConstraint($constraint);
+				}
+			}
+		}
+		return $this->packageMetaData;
 	}
 
 	/**
