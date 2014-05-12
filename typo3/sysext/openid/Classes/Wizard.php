@@ -201,7 +201,7 @@ class Wizard extends OpenidService {
 			$messages[] = $message->render();
 		}
 		$view->assign('messages', $messages);
-		$view->assign('formAction', htmlspecialchars($this->getSelfURL()));
+		$view->assign('formAction', $this->getSelfURL());
 		$view->assign('claimedId', $this->claimedId);
 		$view->assign('parentFormItemName', $this->parentFormItemName);
 		$view->assign('parentFormItemNameNoHr', strtr($this->parentFormItemName, array('_hr' => '')));
