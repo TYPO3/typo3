@@ -1,5 +1,9 @@
 {namespace is=TYPO3\CMS\IndexedSearch\ViewHelpers}
 
+<f:alias map="{sword: searchParams.sword}">
+	<f:render partial="Form" arguments="{_all}"/>
+</f:alias>
+
 <f:for each="{resultsets}" as="result">
 	<f:if condition="{result.categoryTitle}">
 		<h1 class="tx-indexedsearch-category">{result.categoryTitle}</h1>
@@ -43,10 +47,10 @@
 					</div>
 				</f:if>
 				<p>
-					<is:pageBrowsingResults numberOfResults="{result.count}" currentPage="{searchData.pointer}" resultsPerPage="{searchData.results}" />
+					<is:pageBrowsingResults numberOfResults="{result.count}" currentPage="{searchParams.pointer}" resultsPerPage="{searchParams.results}" />
 					{result.sectionText}
 				</p>
-				<is:pageBrowsing maximumNumberOfResultPages="{settings.search.page_links}" numberOfResults="{result.count}" currentPage="{searchData.pointer}" resultsPerPage="{result.pageBrowser.resultsPerPage}" />
+				<is:pageBrowsing maximumNumberOfResultPages="{settings.search.page_links}" numberOfResults="{result.count}" currentPage="{searchParams.pointer}" resultsPerPage="{searchParams.results}" />
 			</div>
 			<f:for each="{result.rows}" as="row">
 				<f:if condition="{row.isSectionHeader}">
@@ -61,7 +65,7 @@
 				</f:if>
 			</f:for>
 			<div class="tx-indexedsearch-browsebox">
-				<is:pageBrowsing numberOfResults="{result.count}" maximumNumberOfResultPages="{settings.search.page_links}" currentPage="{searchData.pointer}" resultsPerPage="{searchData.results}" />
+				<is:pageBrowsing numberOfResults="{result.count}" maximumNumberOfResultPages="{settings.search.page_links}" currentPage="{searchParams.pointer}" resultsPerPage="{searchParams.results}" />
 			</div>
 		</f:then>
 		<f:else>
