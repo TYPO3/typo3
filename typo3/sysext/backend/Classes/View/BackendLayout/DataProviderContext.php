@@ -103,7 +103,7 @@ class DataProviderContext implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return DataProviderContext
 	 */
 	public function setFieldName($fieldName) {
-		$this->field = $fieldName;
+		$this->fieldName = $fieldName;
 		return $this;
 	}
 
