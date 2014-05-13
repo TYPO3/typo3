@@ -70,10 +70,7 @@ class UserFileMountService {
 					);
 				}
 			} else {
-				/** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
-				$flashMessageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
-				$queue = $flashMessageService->getMessageQueueByIdentifier();
-				$queue->enqueue(new FlashMessage('Storage "' . $storage->getName() . '" is not browsable. No folder is currently selectable.', '', FlashMessage::WARNING));
+				\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage(new FlashMessage('Storage "' . $storage->getName() . '" is not browsable. No folder is currently selectable.', '', FlashMessage::WARNING));
 				if (!count($PA['items'])) {
 					$PA['items'][] = array(
 						$PA['row'][$PA['field']],
