@@ -27,12 +27,12 @@ if (TYPO3_MODE === 'BE') {
 	// Register extension status report system
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['Extension Manager'][] =
 		'TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus';
-
-	// Register specific icon for update script button
-	\TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons(
-		array(
-			'update-script' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Images/Icons/ExtensionUpdateScript.png'
-		),
-		$_EXTKEY
-	);
 }
+
+// Register specific icon for update script button
+\TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons(
+	array(
+		'update-script' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Images/Icons/ExtensionUpdateScript.png'
+	),
+	$_EXTKEY
+);

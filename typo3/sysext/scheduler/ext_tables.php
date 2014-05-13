@@ -16,13 +16,12 @@ if (TYPO3_MODE === 'BE') {
 		'_MOD_system_txschedulerM1',
 		'EXT:' . $_EXTKEY . '/mod1/locallang_csh_scheduler.xlf'
 	);
-
-	// Register specific icon for run task button
-	\TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons(
-		array(
-			'run-task' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Images/Icons/RunTask.png'
-		),
-		$_EXTKEY
-	);
-
 }
+
+// Register specific icon for run task button
+\TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons(
+	array(
+		'run-task' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Images/Icons/RunTask.png'
+	),
+	$_EXTKEY
+);
