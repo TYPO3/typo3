@@ -966,8 +966,22 @@ class ImportExport {
 			$this->error('File ' . $file->getPublicUrl() . ': ' . $e->getMessage());
 			return;
 		}
+		$fileUid = $file->getUid();
+		$fileInfo = $file->getStorage()->getFileInfo($file);
+		// we sadly have to cast it to string here, because the size property is also returning a string
+		$fileSize = (string)$fileInfo['size'];
+		if ($fileSize !== $file->getProperty('size')) {
+			$this->error('File size of ' . $file->getCombinedIdentifier() . ' is not up-to-date in index! File added with current size.');
+			$this->dat['records']['sys_file:' . $fileUid]['data']['size'] = $fileSize;
+		}
+		$fileSha1 = $file->getStorage()->hashFile($file, 'sha1');
+		if ($fileSha1 !== $file->getProperty('sha1')) {
+			$this->error('File sha1 hash of ' . $file->getCombinedIdentifier() . ' is not up-to-date in index! File added on current sha1.');
+			$this->dat['records']['sys_file:' . $fileUid]['data']['sha1'] = $fileSha1;
+		}
+
 		$fileRec = array();
-		$fileRec['filesize'] = $file->getProperty('size');
+		$fileRec['filesize'] = $fileSize;
 		$fileRec['filename'] = $file->getProperty('name');
 		$fileRec['filemtime'] = $file->getProperty('modification_date');
 
@@ -979,7 +993,7 @@ class ImportExport {
 
 		// ... and finally add the heavy stuff:
 		$fileRec['content'] = $fileContent;
-		$fileRec['content_sha1'] = $file->getProperty('sha1');
+		$fileRec['content_sha1'] = $fileSha1;
 
 		$this->dat['files_fal'][$fileId] = $fileRec;
 	}

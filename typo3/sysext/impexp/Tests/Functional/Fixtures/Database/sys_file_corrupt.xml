@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<sys_file>
+		<uid>1</uid>
+		<pid>0</pid>
+		<storage>1</storage>
+		<type>2</type>
+		<identifier>/user_upload/typo3_image2.jpg</identifier>
+		<identifier_hash>f90bb9a35622f35b5279195e324eddbaec8164b2</identifier_hash>
+		<folder_hash>19669f1e02c2f16705ec7587044c66443be70725</folder_hash>
+		<extension>jpg</extension>
+		<mime_type>image/jpeg</mime_type>
+		<name>typo3_image2.jpg</name>
+		<sha1>Xa9acdf1e105784a57bbffec9520969578287797</sha1>
+		<size>1958</size>
+		<creation_date>1389878273</creation_date>
+		<modification_date>1389878273</modification_date>
+	</sys_file>
+</dataset>

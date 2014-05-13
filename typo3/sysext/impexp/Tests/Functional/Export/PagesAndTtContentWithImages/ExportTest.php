@@ -43,7 +43,6 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
 		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/pages.xml');
 		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/tt_content-with-image.xml');
 		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_language.xml');
-		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_file.xml');
 		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_file_metadata.xml');
 		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_file_reference.xml');
 		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_file_storage.xml');
@@ -54,6 +53,41 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
 	 * @test
 	 */
 	public function exportPagesAndRelatedTtContentWithImages() {
+
+		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_file.xml');
+
+		$this->compileExportPagesAndRelatedTtContentWithImages();
+
+		$out = $this->export->compileMemoryToFileContent('xml');
+
+		$errors = $this->export->printErrorLog();
+		$this->assertSame('', $errors);
+
+		$this->assertXmlStringEqualsXmlFile(__DIR__ . '/../../Fixtures/ImportExportXml/pages-and-ttcontent-with-image.xml', $out);
+	}
+
+	/**
+	 * @test
+	 */
+	public function exportPagesAndRelatedTtContentWithImagesFromCorruptSysFileRecord() {
+
+		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_file_corrupt.xml');
+
+		$this->compileExportPagesAndRelatedTtContentWithImages();
+
+		$out = $this->export->compileMemoryToFileContent('xml');
+
+		$expectedErrors = array(
+			'File size of 1:/user_upload/typo3_image2.jpg is not up-to-date in index! File added with current size.',
+			'File sha1 hash of 1:/user_upload/typo3_image2.jpg is not up-to-date in index! File added on current sha1.'
+		);
+		$errors = $this->export->errorLog;
+		$this->assertSame($expectedErrors, $errors);
+
+		$this->assertXmlStringEqualsXmlFile(__DIR__ . '/../../Fixtures/ImportExportXml/pages-and-ttcontent-with-image.xml', $out);
+	}
+
+	protected function compileExportPagesAndRelatedTtContentWithImages() {
 
 		$this->export->setRecordTypesIncludeFields(
 			array(
@@ -155,10 +189,6 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
 
 		$this->export->export_addFilesFromRelations();
 		$this->export->export_addFilesFromSysFilesRecords();
-
-		$out = $this->export->compileMemoryToFileContent('xml');
-
-		$this->assertXmlStringEqualsXmlFile(__DIR__ . '/../../Fixtures/ImportExportXml/pages-and-ttcontent-with-image.xml', $out);
 	}
 
 }
