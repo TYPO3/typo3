@@ -172,6 +172,18 @@ class RootlineUtility {
 	}
 
 	/**
+	 * Purges all rootline caches.
+	 *
+	 * Note: This function is intended to be used in unit tests only.
+	 *
+	 * @return void
+	 */
+	static public function purgeCaches() {
+		self::$localCache = array();
+		self::$pageRecordCache = array();
+	}
+
+	/**
 	 * Constructs the cache Identifier
 	 *
 	 * @param integer $otherUid

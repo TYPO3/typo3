@@ -24,6 +24,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\RootlineUtility;
+
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\RootlineUtility
  *
@@ -32,7 +34,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 class RootlineUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Core\Utility\RootlineUtility|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject
+	 * @var RootlineUtility|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $fixture;
 
@@ -41,11 +43,15 @@ class RootlineUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $pageContextMock;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->pageContextMock = $this->getMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
-		$this->fixture = $this->getAccessibleMock('\TYPO3\CMS\Core\Utility\RootlineUtility', array('enrichWithRelationFields'), array(1, '', $this->pageContextMock));
+		$this->fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Utility\\RootlineUtility', array('enrichWithRelationFields'), array(1, '', $this->pageContextMock));
 	}
 
+	protected function tearDown() {
+		parent::tearDown();
+		RootlineUtility::purgeCaches();
+	}
 
 	/***
 	 *
