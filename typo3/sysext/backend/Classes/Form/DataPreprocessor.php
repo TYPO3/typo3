@@ -815,10 +815,15 @@ class DataPreprocessor {
 	 * @todo Define visibility
 	 */
 	public function getDataIdList($elements, $fieldConfig, $row, $table) {
-		$liveDefaultId = $this->getLiveDefaultId($table, $row['uid']);
+		// Use given uid (might be the uid of a workspace record)
+		$recordId = $row['uid'];
+		// If not dealing with MM relations, then always(!) use the default live uid
+		if (empty($fieldConfig['config']['MM'])) {
+			$recordId = $this->getLiveDefaultId($table, $row['uid']);
+		}
 		$loadDB = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
 		$loadDB->registerNonTableValues = $fieldConfig['config']['allowNonIdValues'] ? 1 : 0;
-		$loadDB->start(implode(',', $elements), $fieldConfig['config']['foreign_table'] . ',' . $fieldConfig['config']['neg_foreign_table'], $fieldConfig['config']['MM'], $liveDefaultId, $table, $fieldConfig['config']);
+		$loadDB->start(implode(',', $elements), $fieldConfig['config']['foreign_table'] . ',' . $fieldConfig['config']['neg_foreign_table'], $fieldConfig['config']['MM'], $recordId, $table, $fieldConfig['config']);
 		$idList = $loadDB->convertPosNeg($loadDB->getValueArray(), $fieldConfig['config']['foreign_table'], $fieldConfig['config']['neg_foreign_table']);
 		return $idList;
 	}
