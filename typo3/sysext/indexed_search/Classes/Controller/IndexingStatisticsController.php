@@ -23,6 +23,7 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Module extension (addition to function menu) 'Indexed search statistics' for the 'indexed_search' extension.
@@ -154,8 +155,7 @@ class IndexingStatisticsController extends \TYPO3\CMS\Backend\Module\AbstractFun
 	 * @todo Define visibility
 	 */
 	public function extGetTreeList($id, $depth, $begin = 0, $perms_clause) {
-		// TODO: Fix this as this calls a non-static method
-		return \TYPO3\CMS\Backend\FrontendBackendUserAuthentication::extGetTreeList($id, $depth, $begin, $perms_clause);
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\FrontendBackendUserAuthentication')->extGetTreeList($id, $depth, $begin, $perms_clause);
 	}
 
 	/**
