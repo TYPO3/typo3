@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Impexp\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Utility for import / export
@@ -31,7 +32,6 @@ class ImportExportUtility {
 	 * @return int
 	 */
 	public function importT3DFile($file, $pid) {
-		$importResponse = array();
 		if (!is_string($file)) {
 			throw new \InvalidArgumentException('Input parameter $file has to be of type string', 1377625645);
 		}
@@ -39,25 +39,31 @@ class ImportExportUtility {
 			throw new \InvalidArgumentException('Input parameter $int has to be of type integer', 1377625646);
 		}
 		/** @var $import \TYPO3\CMS\Impexp\ImportExport */
-		$import = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Impexp\\ImportExport');
+		$import = GeneralUtility::makeInstance('TYPO3\\CMS\\Impexp\\ImportExport');
 		$import->init(0, 'import');
 
+		$importResponse = 0;
 		if ($file && @is_file($file)) {
 			if ($import->loadFile($file, 1)) {
 				// Import to root page:
 				$import->importData($pid);
-				// Get id of container page:
+				// Get id of first created page:
 				$newPages = $import->import_mapId['pages'];
-				reset($newPages);
-				$importResponse = current($newPages);
+				$importResponse = (int)reset($newPages);
 			}
 		}
 
 		// Check for errors during the import process:
-		if (empty($importResponse) && $errors = $import->printErrorLog()) {
-			throw new \ErrorException($errors, 1377625537);
-		} else {
-			return $importResponse;
+		$errors = $import->printErrorLog();
+		if ($errors !== '') {
+			/** @var \TYPO3\CMS\Core\Log\Logger $logger */
+			$logger = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager')->getLogger(__CLASS__);
+			$logger->warning($errors);
+
+			if (!$importResponse) {
+				throw new \ErrorException('No page records imported', 1377625537);
+			}
 		}
+		return $importResponse;
 	}
 }
