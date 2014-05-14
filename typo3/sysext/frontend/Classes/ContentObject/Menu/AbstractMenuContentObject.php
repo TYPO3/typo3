@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Generating navigation / menus from TypoScript
@@ -734,7 +735,7 @@ class AbstractMenuContentObject {
 								$recArr['index'] = $this->sys_page->getPage($recArr['up']['pid']);
 							}
 							// prev / next is found
-							$prevnext_menu = $this->sys_page->getMenu($value_rec['pid'], '*', $altSortField);
+							$prevnext_menu = $this->removeInaccessiblePages($this->sys_page->getMenu($value_rec['pid'], '*', $altSortField));
 							$lastKey = 0;
 							$nextActive = 0;
 							foreach ($prevnext_menu as $k_b => $v_b) {
@@ -757,12 +758,12 @@ class AbstractMenuContentObject {
 							// prevsection / nextsection is found
 							// You can only do this, if there is a valid page two levels up!
 							if (is_array($recArr['index'])) {
-								$prevnextsection_menu = $this->sys_page->getMenu($recArr['index']['uid'], '*', $altSortField);
+								$prevnextsection_menu = $this->removeInaccessiblePages($this->sys_page->getMenu($recArr['index']['uid'], '*', $altSortField));
 								$lastKey = 0;
 								$nextActive = 0;
 								foreach ($prevnextsection_menu as $k_b => $v_b) {
 									if ($nextActive) {
-										$sectionRec_temp = $this->sys_page->getMenu($v_b['uid'], '*', $altSortField);
+										$sectionRec_temp = $this->removeInaccessiblePages($this->sys_page->getMenu($v_b['uid'], '*', $altSortField));
 										if (count($sectionRec_temp)) {
 											reset($sectionRec_temp);
 											$recArr['nextsection'] = pos($sectionRec_temp);
@@ -773,7 +774,7 @@ class AbstractMenuContentObject {
 									}
 									if ($v_b['uid'] == $value_rec['pid']) {
 										if ($lastKey) {
-											$sectionRec_temp = $this->sys_page->getMenu($prevnextsection_menu[$lastKey]['uid'], '*', $altSortField);
+											$sectionRec_temp = $this->removeInaccessiblePages($this->sys_page->getMenu($prevnextsection_menu[$lastKey]['uid'], '*', $altSortField));
 											if (count($sectionRec_temp)) {
 												reset($sectionRec_temp);
 												$recArr['prevsection'] = pos($sectionRec_temp);
@@ -904,6 +905,18 @@ class AbstractMenuContentObject {
 				$this->sys_page->where_groupAccess = $SAVED_where_groupAccess;
 			}
 		}
+	}
+
+	/**
+	 * Gets an array of page rows and removes all, which are not accessible
+	 *
+	 * @param array $pages
+	 * @return array
+	 */
+	protected function removeInaccessiblePages(array $pages) {
+		return array_filter($pages, function($page) {
+			return $this->filterMenuPages($page, $this->getBannedUids(), $page['doktype'] === PageRepository::DOKTYPE_SPACER);
+		});
 	}
 
 	/**
