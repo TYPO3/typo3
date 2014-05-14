@@ -1134,6 +1134,8 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$msg = '';
 		// Save preset
 		$beUser = $this->getBackendUser();
+		// cast public checkbox to int, since this is a int field and NULL is not allowed
+		$inData['preset']['public'] = (int)$inData['preset']['public'];
 		if (isset($presetData['save'])) {
 			$preset = $this->getPreset($presetData['select']);
 			// Update existing
