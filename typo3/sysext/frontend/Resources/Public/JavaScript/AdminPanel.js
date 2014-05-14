@@ -37,7 +37,7 @@ var TYPO3AdminPanel = function() {
 		x: 0,
 		y: 0
 	};
-}
+};
 
 TYPO3AdminPanel.prototype = {
 
@@ -110,11 +110,11 @@ TYPO3AdminPanel.prototype = {
 		this.previousMouseUpHandler = this.dragElement.onmouseup;
 		this.dragElement.onmouseup = function() {
 			_this.dragEnd.apply(_this, arguments);
-		}
+		};
 		this.previousMouseMoveHandler = this.dragElement.onmousemove;
 		this.dragElement.onmousemove = function() {
 			_this.drag.apply(_this, arguments);
-		}
+		};
 	},
 
 	setInitialPosition: function() {
@@ -132,8 +132,10 @@ TYPO3AdminPanel.prototype = {
 
 	setMouseDownHandler: function(headerElementId) {
 		var _this = this, headerElement = document.getElementById(headerElementId);
-		headerElement.onmousedown = function() {
+		headerElement.onmousedown = function(event) {
 			_this.dragStart.apply(_this, arguments);
+			event.preventDefault();
+			return false;
 		}
 	},
 
