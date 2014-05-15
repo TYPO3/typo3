@@ -165,7 +165,7 @@ class IconUtility {
 		// The icon is generated only if a default icon for groups is not found... So effectively this is ineffective.
 		$doNotRenderUserGroupNumber = TRUE;
 		// Shadow
-		if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+		if (!empty($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) && !empty($row['t3ver_state'])) {
 			switch (VersionState::cast($row['t3ver_state'])) {
 				case new VersionState(VersionState::NEW_PLACEHOLDER):
 					return 'gfx/i/shadow_hide.png';
