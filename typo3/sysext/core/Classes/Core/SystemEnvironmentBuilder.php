@@ -93,7 +93,7 @@ class SystemEnvironmentBuilder {
 		define('TYPO3_URL_CONTRIBUTE', 'http://typo3.org/contribute/');
 		define('TYPO3_URL_SECURITY', 'http://typo3.org/teams/security/');
 		define('TYPO3_URL_DOWNLOAD', 'http://typo3.org/download/');
-		define('TYPO3_URL_SYSTEMREQUIREMENTS', 'http://typo3.org/about/typo3-the-cms/system-requirements/');
+		define('TYPO3_URL_SYSTEMREQUIREMENTS', 'http://typo3.org/typo3-cms/overview/requirements/');
 		define('TYPO3_URL_DONATE', 'http://typo3.org/donate/online-donation/');
 
 		// A tabulator, a linefeed, a carriage return, a CR-LF combination
