@@ -1543,7 +1543,7 @@ class ImportExport {
 				$useStorageFromStorageRecords = TRUE;
 			}
 
-			if (empty($fileRecord['storage'])) {
+			if (empty($fileRecord['storage']) && !$this->isFallbackStorage($fileRecord['storage'])) {
 				// no storage for the file is defined, mostly because of a missing default storage.
 				$this->error('Error: No storage for the file "' . $fileRecord['identifier'] . '" with storage uid "' . $originalStorageUid . '"');
 				continue;
@@ -1554,6 +1554,8 @@ class ImportExport {
 			if ($useStorageFromStorageRecords && isset($storageRecords[$fileRecord['storage']])) {
 				/** @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
 				$storage = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getStorageObject($fileRecord['storage'], $storageRecords[$fileRecord['storage']]);
+			} elseif ($this->isFallbackStorage($fileRecord['storage'])) {
+				$storage = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getStorageObject(0);
 			} elseif ($defaultStorage !== NULL) {
 				$storage = $defaultStorage;
 			} else {
@@ -1614,6 +1616,16 @@ class ImportExport {
 
 		// unset the sys_file records to prevent a import in writeRecords_records
 		unset($this->dat['header']['records']['sys_file']);
+	}
+
+	/**
+	 * Checks if the $storageId is the id of the fallback storage
+	 *
+	 * @param int|string $storageId
+	 * @return bool
+	 */
+	protected function isFallbackStorage($storageId) {
+		return $storageId === 0 || $storageId === '0';
 	}
 
 	/**
