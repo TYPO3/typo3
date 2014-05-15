@@ -1601,6 +1601,7 @@ class ImportExport {
 		if (!isset($this->dat['header']['records']['sys_file'])) {
 			return;
 		}
+		$this->addGeneralErrorsByTable('sys_file');
 
 		// fetch fresh storage records from database
 		$storageRecords = $this->fetchStorageRecords();
@@ -1839,6 +1840,7 @@ class ImportExport {
 	public function writeRecords_pages($pid) {
 		// First, write page structure if any:
 		if (is_array($this->dat['header']['records']['pages'])) {
+			$this->addGeneralErrorsByTable('pages');
 			// $pageRecords is a copy of the pages array in the imported file. Records here are unset one by one when the addSingle function is called.
 			$pageRecords = $this->dat['header']['records']['pages'];
 			$this->import_data = array();
@@ -1935,6 +1937,7 @@ class ImportExport {
 		$this->import_data = array();
 		if (is_array($this->dat['header']['records'])) {
 			foreach ($this->dat['header']['records'] as $table => $recs) {
+				$this->addGeneralErrorsByTable($table);
 				if ($table != 'pages') {
 					foreach ($recs as $uid => $thisRec) {
 						// PID: Set the main $pid, unless a NEW-id is found
@@ -3463,18 +3466,28 @@ class ImportExport {
 	 */
 	public function traverseAllRecords($pT, &$lines) {
 		foreach ($pT as $t => $recUidArr) {
-			if ($this->update && $t === 'sys_file') {
-				$this->error('Updating sys_file records is not supported! They will be imported as new records!');
-			}
-			if ($this->force_all_UIDS && $t === 'sys_file') {
-				$this->error('Forcing uids of sys_file records is not supported! They will be imported as new records!');
-			}
+			$this->addGeneralErrorsByTable($t);
 			if ($t != 'pages') {
 				$preCode = '';
 				foreach ($recUidArr as $ruid => $value) {
 					$this->singleRecordLines($t, $ruid, $lines, $preCode, 1);
 				}
 			}
+		}
+	}
+
+    /**
+     * Log general error message for a given table
+     *
+     * @param string $table database table name
+     * @return void
+     */
+	protected function addGeneralErrorsByTable($table) {
+		if ($this->update && $table === 'sys_file') {
+			$this->error('Updating sys_file records is not supported! They will be imported as new records!');
+		}
+		if ($this->force_all_UIDS && $table === 'sys_file') {
+			$this->error('Forcing uids of sys_file records is not supported! They will be imported as new records!');
 		}
 	}
 
