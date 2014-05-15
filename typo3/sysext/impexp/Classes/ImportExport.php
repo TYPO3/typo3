@@ -2132,7 +2132,11 @@ class ImportExport {
 					// Map same ID to same ID....
 					$this->import_mapId[$table][$old_uid] = $id;
 				} else {
-					$this->error('Possible error: ' . $table . ':' . $old_uid . ' had no new id assigned to it. This indicates that the record was not added to database during import. Please check changelog!', 1);
+					// if $this->import_mapId contains already the right mapping, skip the error msg. See special handling of sys_file_metadata in addSingle() => nothing to do
+					if (!($table === 'sys_file_metadata' && isset($this->import_mapId[$table][$old_uid]) && $this->import_mapId[$table][$old_uid] == $id)) {
+						$this->error('Possible error: ' . $table . ':' . $old_uid . ' had no new id assigned to it. This indicates that the record was not added to database during import. Please check changelog!', 1);
+					}
+
 				}
 			}
 		}
