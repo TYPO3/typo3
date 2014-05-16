@@ -114,6 +114,22 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 
 	/**
 	 * @test
+	 * @see DataSet/copyParentContentToDifferentPage.csv
+	 */
+	public function copyParentContentToDifferentPage() {
+		parent::copyParentContentToDifferentPage();
+		$this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+		$this->assertAssertionDataSet('copyParentContentToDifferentPage');
+
+		$responseContent = $this->getFrontendResponse(self::VALUE_PageIdTarget, 0)->getResponseContent();
+		$this->assertResponseContentStructureHasRecords(
+			$responseContent, self::TABLE_Content . ':' . $this->recordIds['newContentId'], self::FIELD_ContentHotel,
+			self::TABLE_Hotel, 'title', array('Hotel #1')
+		);
+	}
+
+	/**
+	 * @test
 	 * @see DataSet/Assertion/localizeParentContentRecord.csv
 	 */
 	public function localizeParentContent() {

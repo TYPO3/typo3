@@ -36,6 +36,9 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	const VALUE_PageIdWebsite = 1;
 	const VALUE_ContentIdFirst = 297;
 	const VALUE_ContentIdLast = 298;
+	const VALUE_HotelIdFirst = 3;
+	const VALUE_HotelIdSecond = 4;
+	const VALUE_HotelIdThird = 5;
 	const VALUE_LanguageId = 1;
 	const VALUE_WorkspaceId = 1;
 
@@ -111,6 +114,14 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 */
 	public function copyParentContent() {
 		$newTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageId);
+		$this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+	}
+
+	/**
+	 * @see DataSet/copyParentContentToDifferentPage.csv
+	 */
+	public function copyParentContentToDifferentPage() {
+		$newTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageIdTarget);
 		$this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
 	}
 
