@@ -49,12 +49,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	/**
 	 * @var string
 	 */
-	protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/IRRE/CSV/DataSet/Scenario/';
-
-	/**
-	 * @var string
-	 */
-	protected $assertionDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/IRRE/CSV/DataSet/Assertion/';
+	protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/IRRE/CSV/DataSet/';
 
 	public function setUp() {
 		parent::setUp();
@@ -62,6 +57,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		$this->importScenarioDataSet('LiveDefaultElements');
 
 		$this->setUpFrontendRootPage(1, array('typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.ts'));
+		$this->backendUser->workspace = 0;
 	}
 
 	/**
@@ -74,10 +70,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 */
 	public function createParentContent() {
 		$this->actionService->createNewRecord(self::TABLE_Content, self::VALUE_PageId, array('header' => 'Testing #1'));
-		$this->assertAssertionDataSet('createParentContent');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', 'Testing #1');
 	}
 
 	/**
@@ -86,14 +78,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 */
 	public function modifyParentContent() {
 		$this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, array('header' => 'Testing #1'));
-		$this->assertAssertionDataSet('modifyParentContent');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', 'Testing #1');
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdLast, self::FIELD_ContentHotel,
-			self::TABLE_Hotel, 'title', array('Hotel #1')
-		);
 	}
 
 	/**
@@ -102,10 +86,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 */
 	public function deleteParentContent() {
 		$this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
-		$this->assertAssertionDataSet('deleteParentContent');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentDoesNotHaveRecords($responseContent, self::TABLE_Content, 'header', 'Regular Element #2');
 	}
 
 	/**
@@ -114,14 +94,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 */
 	public function copyParentContent() {
 		$newTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageId);
-		$this->assertAssertionDataSet('copyParentContent');
-
-		$newContentId = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . $newContentId, self::FIELD_ContentHotel,
-			self::TABLE_Hotel, 'title', array('Hotel #1')
-		);
+		$this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
 	}
 
 	/**
@@ -130,13 +103,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 */
 	public function localizeParentContent() {
 		$this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
-		$this->assertAssertionDataSet('localizeParentContent');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseContent();
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdLast, self::FIELD_ContentHotel,
-			self::TABLE_Hotel, 'title', array('[Translate to Dansk:] Hotel #1')
-		);
 	}
 
 	/**
@@ -145,17 +111,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 */
 	public function changeParentContentSorting() {
 		$this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdLast);
-		$this->assertAssertionDataSet('changeParentContentSorting');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, self::FIELD_ContentHotel,
-			self::TABLE_Hotel, 'title', array('Hotel #1', 'Hotel #2')
-		);
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdLast, self::FIELD_ContentHotel,
-			self::TABLE_Hotel, 'title', array('Hotel #1')
-		);
 	}
 
 	/**
@@ -164,14 +119,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 */
 	public function moveParentContentToDifferentPage() {
 		$this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageIdTarget);
-		$this->assertAssertionDataSet('moveParentContentToDifferentPage');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageIdTarget)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', 'Regular Element #2');
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdLast, self::FIELD_ContentHotel,
-			self::TABLE_Hotel, 'title', array('Hotel #1')
-		);
 	}
 
 	/**
@@ -181,18 +128,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	public function moveParentContentToDifferentPageAndChangeSorting() {
 		$this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageIdTarget);
 		$this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdLast);
-		$this->assertAssertionDataSet('moveParentContentToDifferentPageNChangeSorting');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageIdTarget)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', array('Regular Element #2', 'Regular Element #1'));
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, self::FIELD_ContentHotel,
-			self::TABLE_Hotel, 'title', array('Hotel #1', 'Hotel #2')
-		);
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdLast, self::FIELD_ContentHotel,
-			self::TABLE_Hotel, 'title', array('Hotel #1')
-		);
 	}
 
 	/**
@@ -205,10 +140,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 */
 	public function modifyPage() {
 		$this->actionService->modifyRecord(self::TABLE_Page, self::VALUE_PageId, array('title' => 'Testing #1'));
-		$this->assertAssertionDataSet('modifyPage');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Page, 'title', 'Testing #1');
 	}
 
 	/**
@@ -217,10 +148,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 */
 	public function deletePage() {
 		$this->actionService->deleteRecord(self::TABLE_Page, self::VALUE_PageId);
-		$this->assertAssertionDataSet('deletePage');
-
-		$response = $this->getFrontendResponse(self::VALUE_PageId, 0, 0, 0, FALSE);
-		$this->assertContains('PageNotFoundException', $response->getError());
 	}
 
 	/**
@@ -229,11 +156,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 */
 	public function copyPage() {
 		$newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
-		$this->assertAssertionDataSet('copyPage');
-
-		$newPageId = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
-		$responseContent = $this->getFrontendResponse($newPageId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Hotel, 'title', array('Hotel #1', 'Hotel #2', 'Hotel #1'));
+		$this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
 	}
 
 	/**
@@ -248,11 +171,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		);
 
 		$newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
-		$this->assertAssertionDataSet('copyPageWHotelBeforeParentContent');
-
-		$newPageId = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
-		$responseContent = $this->getFrontendResponse($newPageId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Hotel, 'title', array('Hotel #1', 'Hotel #2', 'Hotel #1'));
+		$this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
 	}
 
 	/**
@@ -272,15 +191,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 				self::TABLE_Offer => array('title' => 'Offer #1'),
 			)
 		);
-		$this->assertAssertionDataSet('createParentContentNHotelNOfferChildren');
-
-		$newContentId = $newTableIds[self::TABLE_Content][0];
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', 'Testing #1');
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . $newContentId, self::FIELD_ContentHotel,
-			self::TABLE_Hotel, 'title', 'Hotel #1'
-		);
+		$this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
 	}
 
 	/**
@@ -296,26 +207,11 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 				self::TABLE_Offer => array('title' => 'Offer #1'),
 			)
 		);
-		$newContentId = $newTableIds[self::TABLE_Content][0];
-		$newHotelId = $newTableIds[self::TABLE_Hotel][0];
-		$copiedTableIds = $this->actionService->copyRecord(self::TABLE_Content, $newContentId, self::VALUE_PageId);
-		$this->assertAssertionDataSet('createNCopyParentContentNHotelNOfferChildren');
-
-		$copiedContentId = $copiedTableIds[self::TABLE_Content][$newContentId];
-		$copiedHotelId = $copiedTableIds[self::TABLE_Hotel][$newHotelId];
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . $newContentId, self::FIELD_ContentHotel,
-			self::TABLE_Hotel, 'title', 'Hotel #1'
-		);
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . $copiedContentId, self::FIELD_ContentHotel,
-			self::TABLE_Hotel, 'title', 'Hotel #1'
-		);
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Hotel . ':' . $copiedHotelId, self::FIELD_HotelOffer,
-			self::TABLE_Offer, 'title', 'Offer #1'
-		);
+		$this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
+		$this->recordIds['newHotelId'] = $newTableIds[self::TABLE_Hotel][0];
+		$copiedTableIds = $this->actionService->copyRecord(self::TABLE_Content, $this->recordIds['newContentId'], self::VALUE_PageId);
+		$this->recordIds['copiedContentId'] = $copiedTableIds[self::TABLE_Content][$this->recordIds['newContentId']];
+		$this->recordIds['copiedHotelId'] = $copiedTableIds[self::TABLE_Hotel][$this->recordIds['newHotelId']];
 	}
 
 	/**
@@ -331,23 +227,10 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 				self::TABLE_Offer => array('title' => 'Offer #1'),
 			)
 		);
-		$newContentId = $newTableIds[self::TABLE_Content][0];
-		$newHotelId = $newTableIds[self::TABLE_Hotel][0];
-		$localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, $newContentId, self::VALUE_LanguageId);
-		$this->assertAssertionDataSet('createNLocalizeParentContentNHotelNOfferChildren');
-
-		$localizedHotelId = $localizedTableIds[self::TABLE_Hotel][$newHotelId];
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseContent();
-		// Content record gets overlaid, thus using newContentId
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . $newContentId, self::FIELD_ContentHotel,
-			self::TABLE_Hotel, 'title', '[Translate to Dansk:] Hotel #1'
-		);
-		// Content record directly points to localized child, thus using localizedHotelId
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Hotel . ':' . $localizedHotelId, self::FIELD_HotelOffer,
-			self::TABLE_Offer, 'title', '[Translate to Dansk:] Offer #1'
-		);
+		$this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
+		$this->recordIds['newHotelId'] = $newTableIds[self::TABLE_Hotel][0];
+		$localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, $this->recordIds['newContentId'], self::VALUE_LanguageId);
+		$this->recordIds['localizedHotelId'] = $localizedTableIds[self::TABLE_Hotel][$this->recordIds['newHotelId']];
 	}
 
 	/**
@@ -356,13 +239,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 */
 	public function modifyOnlyHotelChild() {
 		$this->actionService->modifyRecord(self::TABLE_Hotel, 4, array('title' => 'Testing #1'));
-		$this->assertAssertionDataSet('modifyOnlyHotelChild');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, self::FIELD_ContentHotel,
-			self::TABLE_Hotel, 'title', array('Hotel #1', 'Testing #1')
-		);
 	}
 
 	/**
@@ -371,13 +247,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 */
 	public function modifyParentAndChangeHotelChildrenSorting() {
 		$this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, array(self::FIELD_ContentHotel => '4,3'));
-		$this->assertAssertionDataSet('modifyParentNChangeHotelChildrenSorting');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, self::FIELD_ContentHotel,
-			self::TABLE_Hotel, 'title', array('Hotel #2', 'Hotel #1')
-		);
 	}
 
 	/**
@@ -391,13 +260,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 				self::TABLE_Content => array('uid' => self::VALUE_ContentIdFirst, self::FIELD_ContentHotel => '3,4'),
 				self::TABLE_Hotel => array('uid' => 4, 'title' => 'Testing #1'),
 			)
-		);
-		$this->assertAssertionDataSet('modifyParentNHotelChild');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, self::FIELD_ContentHotel,
-			self::TABLE_Hotel, 'title', array('Hotel #1', 'Testing #1')
 		);
 	}
 
@@ -413,13 +275,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 				self::TABLE_Hotel => array('uid' => '__NEW', 'title' => 'Hotel #2'),
 			)
 		);
-		$this->assertAssertionDataSet('modifyParentNAddHotelChild');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdLast, self::FIELD_ContentHotel,
-			self::TABLE_Hotel, 'title', array('Hotel #1', 'Hotel #2')
-		);
 	}
 
 	/**
@@ -432,17 +287,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 			self::VALUE_ContentIdFirst,
 			array(self::FIELD_ContentHotel => '3'),
 			array(self::TABLE_Hotel => array(4))
-		);
-		$this->assertAssertionDataSet('modifyParentNDeleteHotelChild');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdLast, self::FIELD_ContentHotel,
-			self::TABLE_Hotel, 'title', 'Hotel #1'
-		);
-		$this->assertResponseContentStructureDoesNotHaveRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdLast, self::FIELD_ContentHotel,
-			self::TABLE_Hotel, 'title', 'Hotel #2'
 		);
 	}
 

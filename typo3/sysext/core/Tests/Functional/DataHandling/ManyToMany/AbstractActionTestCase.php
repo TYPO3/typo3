@@ -47,12 +47,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	/**
 	 * @var string
 	 */
-	protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/ManyToMany/DataSet/Scenario/';
-
-	/**
-	 * @var string
-	 */
-	protected $assertionDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/ManyToMany/DataSet/Assertion/';
+	protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/ManyToMany/DataSet/';
 
 	public function setUp() {
 		parent::setUp();
@@ -60,6 +55,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		$this->importScenarioDataSet('LiveDefaultElements');
 
 		$this->setUpFrontendRootPage(1, array('typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.ts'));
+		$this->backendUser->workspace = 0;
 	}
 
 	/**
@@ -74,13 +70,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		$this->actionService->modifyReferences(
 			self::TABLE_Content, self::VALUE_ContentIdFirst, 'categories', array(self::VALUE_CategoryIdFirst, self::VALUE_CategoryIdSecond, 31)
 		);
-		$this->assertAssertionDataSet('addCategoryRelation');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, 'categories',
-			self::TABLE_Category, 'title', array('Category A', 'Category B', 'Category A.A')
-		);
 	}
 
 	/**
@@ -90,17 +79,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	public function deleteCategoryRelation() {
 		$this->actionService->modifyReferences(
 			self::TABLE_Content, self::VALUE_ContentIdFirst, 'categories', array(self::VALUE_CategoryIdFirst)
-		);
-		$this->assertAssertionDataSet('deleteCategoryRelation');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, 'categories',
-			self::TABLE_Category, 'title', array('Category A')
-		);
-		$this->assertResponseContentStructureDoesNotHaveRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, 'categories',
-			self::TABLE_Category, 'title', array('Category B', 'Category C', 'Category A.A')
 		);
 	}
 
@@ -112,13 +90,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		$this->actionService->modifyReferences(
 			self::TABLE_Content, self::VALUE_ContentIdFirst, 'categories', array(self::VALUE_CategoryIdSecond, self::VALUE_CategoryIdFirst)
 		);
-		$this->assertAssertionDataSet('changeCategoryRelationSorting');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, 'categories',
-			self::TABLE_Category, 'title', array('Category A', 'Category B')
-		);
 	}
 
 	/**
@@ -127,13 +98,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 */
 	public function modifyCategoryOfRelation() {
 		$this->actionService->modifyRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, array('title' => 'Testing #1'));
-		$this->assertAssertionDataSet('modifyCategoryOfRelation');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, 'categories',
-			self::TABLE_Category, 'title', array('Testing #1', 'Category B')
-		);
 	}
 
 	/**
@@ -142,10 +106,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 */
 	public function modifyContentOfRelation() {
 		$this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, array('header' => 'Testing #1'));
-		$this->assertAssertionDataSet('modifyContentOfRelation');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', 'Testing #1');
 	}
 
 	/**
@@ -155,14 +115,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	public function modifyBothsOfRelation() {
 		$this->actionService->modifyRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, array('title' => 'Testing #1'));
 		$this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, array('header' => 'Testing #1'));
-		$this->assertAssertionDataSet('modifyBothsOfRelation');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, 'categories',
-			self::TABLE_Category, 'title', array('Testing #1', 'Category B')
-		);
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', 'Testing #1');
 	}
 
 	/**
@@ -171,10 +123,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 */
 	public function deleteContentOfRelation() {
 		$this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
-		$this->assertAssertionDataSet('deleteContentOfRelation');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentDoesNotHaveRecords($responseContent, self::TABLE_Content, 'header', 'Testing #1');
 	}
 
 	/**
@@ -183,13 +131,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 */
 	public function deleteCategoryOfRelation() {
 		$this->actionService->deleteRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst);
-		$this->assertAssertionDataSet('deleteCategoryOfRelation');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentStructureDoesNotHaveRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, 'categories',
-			self::TABLE_Category, 'title', array('Category A')
-		);
 	}
 
 	/**
@@ -198,14 +139,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 */
 	public function copyContentOfRelation() {
 		$newTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageId);
-		$this->assertAssertionDataSet('copyContentOfRelation');
-
-		$newContentId = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . $newContentId, 'categories',
-			self::TABLE_Category, 'title', array('Category B', 'Category C')
-		);
+		$this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
 	}
 
 	/**
@@ -214,13 +148,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 */
 	public function copyCategoryOfRelation() {
 		$this->actionService->copyRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, 0);
-		$this->assertAssertionDataSet('copyCategoryOfRelation');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, 'categories',
-			self::TABLE_Category, 'title', array('Category A', 'Category A (copy 1)')
-		);
 	}
 
 	/**
@@ -229,13 +156,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 */
 	public function localizeContentOfRelation() {
 		$this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
-		$this->assertAssertionDataSet('localizeContentOfRelation');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseContent();
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdLast, 'categories',
-			self::TABLE_Category, 'title', array('Category B', 'Category C')
-		);
 	}
 
 	/**
@@ -244,13 +164,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 */
 	public function localizeCategoryOfRelation() {
 		$this->actionService->localizeRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, self::VALUE_LanguageId);
-		$this->assertAssertionDataSet('localizeCategoryOfRelation');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseContent();
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, 'categories',
-			self::TABLE_Category, 'title', array('[Translate to Dansk:] Category A', 'Category B')
-		);
 	}
 
 	/**
@@ -259,13 +172,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 */
 	public function moveContentOfRelationToDifferentPage() {
 		$this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageIdTarget);
-		$this->assertAssertionDataSet('moveContentOfRelationToDifferentPage');
-
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageIdTarget)->getResponseContent();
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdLast, 'categories',
-			self::TABLE_Category, 'title', array('Category B', 'Category C')
-		);
 	}
 
 	/**
@@ -277,19 +183,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		$this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
 		$this->recordIds['newContentIdFirst'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdFirst];
 		$this->recordIds['newContentIdLast'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
-		$this->assertAssertionDataSet('copyPage');
-
-		$responseContent = $this->getFrontendResponse($this->recordIds['newPageId'])->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Page, 'title', 'Relations');
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', array('Regular Element #1', 'Regular Element #2'));
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . $this->recordIds['newContentIdFirst'], 'categories',
-			self::TABLE_Category, 'title', array('Category A', 'Category B')
-		);
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . $this->recordIds['newContentIdLast'], 'categories',
-			self::TABLE_Category, 'title', array('Category B', 'Category C')
-		);
 	}
 
 }
