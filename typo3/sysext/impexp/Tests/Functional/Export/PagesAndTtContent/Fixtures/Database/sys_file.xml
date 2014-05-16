@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<sys_file>
+		<uid>4</uid>
+		<pid>0</pid>
+		<storage>0</storage>
+		<type>1</type>
+		<identifier>/typo3conf/ext/template_extension/Resources/Public/Templates/Empty.html</identifier>
+		<identifier_hash>ae03df120da87352822f4aae6d476086cb8c0cf8</identifier_hash>
+		<folder_hash>85051482e1ba204348a9b9f6c1a37069e77de027</folder_hash>
+		<extension>html</extension>
+		<mime_type>text/html</mime_type>
+		<name>Empty.html</name>
+		<sha1>4a53ba5b5a156b82e3efd443f9a402f8c6e6dd08</sha1>
+		<size>92</size>
+		<creation_date>1400176659</creation_date>
+		<modification_date>1400176659</modification_date>
+	</sys_file>
+</dataset>

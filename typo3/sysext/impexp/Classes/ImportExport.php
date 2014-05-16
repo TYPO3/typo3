@@ -698,6 +698,7 @@ class ImportExport {
 						$refIndexObj->WSOL = TRUE;
 						$relations = $refIndexObj->getRelations($table, $row);
 						$relations = $this->fixFileIDsInRelations($relations);
+						$relations = $this->removeSoftrefsHavingTheSameDatabaseRelation($relations);
 						// Data:
 						$this->dat['records'][$table . ':' . $row['uid']] = array();
 						$this->dat['records'][$table . ':' . $row['uid']]['data'] = $row;
@@ -755,6 +756,44 @@ class ImportExport {
 		return $relations;
 	}
 
+	/**
+	 * Relations could contain db relations to sys_file records. Some configuration combinations of TCA and
+	 * SoftReferenceIndex create also softref relation entries for the identical file. This results
+	 * in double included files, one in array "files" and one in array "file_fal".
+	 * This function checks the relations for this double inclusions and removes the redundant softref relation.
+	 *
+	 * @param array $relations
+	 * @return array
+	 */
+	protected function removeSoftrefsHavingTheSameDatabaseRelation($relations) {
+		$fixedRelations = array();
+		foreach ($relations as $field => $relation) {
+			$newRelation = $relation;
+			if (isset($newRelation['type']) && $newRelation['type'] === 'db') {
+				foreach ($newRelation['itemArray'] as $key => $dbRelationData) {
+					if ($dbRelationData['table'] === 'sys_file') {
+						if (isset($newRelation['softrefs']['keys']['typolink'])) {
+							foreach ($newRelation['softrefs']['keys']['typolink'] as $softrefKey => $softRefData) {
+								if ($softRefData['subst']['type'] === 'file') {
+									$file = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($softRefData['subst']['relFileName']);
+									if ($file instanceof \TYPO3\CMS\Core\Resource\File) {
+										if ($file->getUid() == $dbRelationData['id']) {
+											unset($newRelation['softrefs']['keys']['typolink'][$softrefKey]);
+										}
+									}
+								}
+							}
+							if (empty($newRelation['softrefs']['keys']['typolink'])) {
+								unset($newRelation['softrefs']);
+							}
+						}
+					}
+				}
+			}
+			$fixedRelations[$field] = $newRelation;
+		}
+		return $fixedRelations;
+	}
 
 
 	/**
@@ -2341,6 +2380,18 @@ class ImportExport {
 				// sys_file records Datahandler requires the value as uid of the the related sys_file record only
 				if ($itemConfig['type'] === 'group' && $itemConfig['internal_type'] === 'file_reference') {
 					$value = $this->import_mapId[$relDat['table']][$relDat['id']];
+				} elseif ($itemConfig['type'] === 'input' && isset($itemConfig['wizards']['link'])) {
+					// If an input field has a relation to a sys_file record this need to be converted back to
+					// the public path. But use getPublicUrl here, because could normally only be a local file path.
+					$fileUid = $this->import_mapId[$relDat['table']][$relDat['id']];
+					// Fallback value
+					$value = 'file:' . $fileUid;
+					try {
+						$file = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($fileUid);
+					} catch (\Exception $e) {}
+					if ($file instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
+						$value = $file->getPublicUrl();
+					}
 				} else {
 					$value = $relDat['table'] . '_' . $this->import_mapId[$relDat['table']][$relDat['id']];
 				}

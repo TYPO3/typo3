@@ -23,17 +23,30 @@ require_once __DIR__ . '/../AbstractExportTestCase.php';
  */
 class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExportTestCase {
 
+	protected $pathsToLinkInTestInstance = array(
+			'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload' => 'fileadmin/user_upload'
+	);
+
+	/**
+	 * @var array
+	 */
+	protected $testExtensionsToLoad = array(
+			'typo3/sysext/impexp/Tests/Functional/Fixtures/Extensions/template_extension'
+	);
+
 	public function setUp() {
 		parent::setUp();
 
 		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/pages.xml');
 		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/tt_content.xml');
+		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_file.xml');
+		$this->importDataSet(__DIR__ . '/Fixtures/Database/sys_file.xml');
 	}
 
 	/**
 	 * @test
 	 */
-	public function exportSimplePagesAndRelatedTtContent() {
+	public function exportPagesAndRelatedTtContent() {
 
 		$this->export->setRecordTypesIncludeFields(
 			array(
@@ -47,16 +60,36 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
 				'tt_content' => array(
 					'CType',
 					'header',
+					'header_link',
 					'deleted',
 					'hidden',
 					't3ver_oid'
-				)
+				),
+				'sys_file' => array(
+					'storage',
+					'type',
+					'metadata',
+					'identifier',
+					'identifier_hash',
+					'folder_hash',
+					'mime_type',
+					'name',
+					'sha1',
+					'size',
+					'creation_date',
+					'modification_date',
+				),
 			)
+		);
+
+		$this->export->relOnlyTables = array(
+				'sys_file',
 		);
 
 		$this->export->export_addRecord('pages', BackendUtility::getRecord('pages', 1));
 		$this->export->export_addRecord('pages', BackendUtility::getRecord('pages', 2));
 		$this->export->export_addRecord('tt_content', BackendUtility::getRecord('tt_content', 1));
+		$this->export->export_addRecord('tt_content', BackendUtility::getRecord('tt_content', 2));
 
 		$this->setPageTree(1, 1);
 
@@ -69,6 +102,7 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
 		}
 
 		$this->export->export_addFilesFromRelations();
+		$this->export->export_addFilesFromSysFilesRecords();
 
 		$out = $this->export->compileMemoryToFileContent('xml');
 
