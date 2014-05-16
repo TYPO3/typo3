@@ -112,11 +112,56 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\Fore
 
 	/**
 	 * @test
-	 * @see DataSet/Assertion/localizeParentContentRecord.csv
+	 * @see DataSet/localizeParentContentKeep.csv
 	 */
-	public function localizeParentContent() {
-		parent::localizeParentContent();
-		$this->assertAssertionDataSet('localizeParentContent');
+	public function localizeParentContentInKeepMode() {
+		parent::localizeParentContentInKeepMode();
+		$this->assertAssertionDataSet('localizeParentContentKeep');
+
+		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseContent();
+		$this->assertResponseContentStructureDoesNotHaveRecords(
+			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdLast, self::FIELD_ContentHotel,
+			self::TABLE_Hotel, 'title', array('[Translate to Dansk:] Hotel #1')
+		);
+	}
+
+	/**
+	 * @test
+	 * @see DataSet/localizeParentContentWAllChildrenKeep.csv
+	 */
+	public function localizeParentContentWithAllChildrenInKeepMode() {
+		parent::localizeParentContentWithAllChildrenInKeepMode();
+		$this->assertAssertionDataSet('localizeParentContentWAllChildrenKeep');
+
+		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseContent();
+		$this->assertResponseContentStructureDoesNotHaveRecords(
+			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdLast, self::FIELD_ContentHotel,
+			self::TABLE_Hotel, 'title', array('[Translate to Dansk:] Hotel #1')
+		);
+	}
+
+	/**
+	 * @test
+	 * @see DataSet/localizeParentContentSelect.csv
+	 */
+	public function localizeParentContentInSelectMode() {
+		parent::localizeParentContentInSelectMode();
+		$this->assertAssertionDataSet('localizeParentContentSelect');
+
+		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseContent();
+		$this->assertResponseContentStructureDoesNotHaveRecords(
+			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdLast, self::FIELD_ContentHotel,
+			self::TABLE_Hotel, 'title', array('[Translate to Dansk:] Hotel #1')
+		);
+	}
+
+	/**
+	 * @test
+	 * @see DataSet/localizeParentContentWAllChildrenSelect.csv
+	 */
+	public function localizeParentContentWithAllChildrenInSelectMode() {
+		parent::localizeParentContentWithAllChildrenInSelectMode();
+		$this->assertAssertionDataSet('localizeParentContentWAllChildrenSelect');
 
 		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseContent();
 		$this->assertResponseContentStructureHasRecords(

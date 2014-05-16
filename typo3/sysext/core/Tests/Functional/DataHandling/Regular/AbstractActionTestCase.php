@@ -96,6 +96,14 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
 	/**
 	 * @test
+	 * @see DataSet/copyPasteContent.csv
+	 */
+	public function copyPasteContent() {
+		$this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageId, array('header' => 'Testing #1'));
+	}
+
+	/**
+	 * @test
 	 * @see DataSet/Assertion/localizeContentRecord.csv
 	 */
 	public function localizeContent() {
@@ -116,6 +124,14 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 */
 	public function moveContentToDifferentPage() {
 		$this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageIdTarget);
+	}
+
+	/**
+	 * @test
+	 * @see DataSet/movePasteContentToDifferentPage.csv
+	 */
+	public function movePasteContentToDifferentPage() {
+		$this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageIdTarget, array('header' => 'Testing #1'));
 	}
 
 	/**

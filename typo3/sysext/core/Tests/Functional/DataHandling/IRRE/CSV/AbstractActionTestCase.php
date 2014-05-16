@@ -68,7 +68,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 */
 
 	/**
-	 * @test
 	 * @see DataSet/Assertion/createParentContentRecord.csv
 	 */
 	public function createParentContent() {
@@ -76,7 +75,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	}
 
 	/**
-	 * @test
 	 * @see DataSet/Assertion/modifyParentContentRecord.csv
 	 */
 	public function modifyParentContent() {
@@ -84,7 +82,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	}
 
 	/**
-	 * @test
 	 * @see DataSet/Assertion/deleteParentContentRecord.csv
 	 */
 	public function deleteParentContent() {
@@ -92,7 +89,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	}
 
 	/**
-	 * @test
 	 * @see DataSet/Assertion/copyParentContentRecord.csv
 	 */
 	public function copyParentContent() {
@@ -109,15 +105,50 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	}
 
 	/**
-	 * @test
-	 * @see DataSet/Assertion/localizeParentContentRecord.csv
+	 * @see DataSet/localizeParentContentKeep.csv
 	 */
-	public function localizeParentContent() {
-		$this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+	public function localizeParentContentInKeepMode() {
+		$GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_ContentHotel]['config']['behaviour']['localizationMode'] = 'keep';
+		$GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_ContentHotel]['config']['behaviour']['localizeChildrenAtParentLocalization'] = FALSE;
+		$GLOBALS['TCA'][self::TABLE_Hotel]['columns'][self::FIELD_HotelOffer]['config']['behaviour']['localizeChildrenAtParentLocalization'] = FALSE;
+		$newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+		$this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
 	}
 
 	/**
-	 * @test
+	 * @see DataSet/localizeParentContentWAllChildrenKeep.csv
+	 */
+	public function localizeParentContentWithAllChildrenInKeepMode() {
+		$GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_ContentHotel]['config']['behaviour']['localizationMode'] = 'keep';
+		$GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_ContentHotel]['config']['behaviour']['localizeChildrenAtParentLocalization'] = TRUE;
+		$GLOBALS['TCA'][self::TABLE_Hotel]['columns'][self::FIELD_HotelOffer]['config']['behaviour']['localizeChildrenAtParentLocalization'] = TRUE;
+		$newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+		$this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+	}
+
+	/**
+	 * @see DataSet/localizeParentContentSelect.csv
+	 */
+	public function localizeParentContentInSelectMode() {
+		$GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_ContentHotel]['config']['behaviour']['localizationMode'] = 'select';
+		$GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_ContentHotel]['config']['behaviour']['localizeChildrenAtParentLocalization'] = FALSE;
+		$GLOBALS['TCA'][self::TABLE_Hotel]['columns'][self::FIELD_HotelOffer]['config']['behaviour']['localizeChildrenAtParentLocalization'] = FALSE;
+		$newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+		$this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+	}
+
+	/**
+	 * @see DataSet/localizeParentContentWAllChildrenSelect.csv
+	 */
+	public function localizeParentContentWithAllChildrenInSelectMode() {
+		$GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_ContentHotel]['config']['behaviour']['localizationMode'] = 'select';
+		$GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_ContentHotel]['config']['behaviour']['localizeChildrenAtParentLocalization'] = TRUE;
+		$GLOBALS['TCA'][self::TABLE_Hotel]['columns'][self::FIELD_HotelOffer]['config']['behaviour']['localizeChildrenAtParentLocalization'] = TRUE;
+		$newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+		$this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+	}
+
+	/**
 	 * @see DataSet/Assertion/changeParentContentRecordSorting.csv
 	 */
 	public function changeParentContentSorting() {
@@ -125,7 +156,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	}
 
 	/**
-	 * @test
 	 * @see DataSet/Assertion/moveParentContentRecordToDifferentPage.csv
 	 */
 	public function moveParentContentToDifferentPage() {
@@ -133,7 +163,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	}
 
 	/**
-	 * @test
 	 * @see DataSet/Assertion/moveParentContentRecordToDifferentPageAndChangeSorting.csv
 	 */
 	public function moveParentContentToDifferentPageAndChangeSorting() {
@@ -146,7 +175,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 */
 
 	/**
-	 * @test
 	 * @see DataSet/Assertion/modifyPageRecord.csv
 	 */
 	public function modifyPage() {
@@ -154,7 +182,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	}
 
 	/**
-	 * @test
 	 * @see DataSet/Assertion/deletePageRecord.csv
 	 */
 	public function deletePage() {
@@ -162,7 +189,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	}
 
 	/**
-	 * @test
 	 * @see DataSet/Assertion/copyPageRecord.csv
 	 */
 	public function copyPage() {
@@ -171,7 +197,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	}
 
 	/**
-	 * @test
 	 * @see DataSet/Assertion/copyPageWHotelBeforeParentContent.csv
 	 */
 	public function copyPageWithHotelBeforeParentContent() {
@@ -190,7 +215,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 */
 
 	/**
-	 * @test
 	 * @see DataSet/Assertion/createParentContentRecordWithHotelAndOfferChildRecords.csv
 	 */
 	public function createParentContentWithHotelAndOfferChildren() {
@@ -206,7 +230,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	}
 
 	/**
-	 * @test
 	 * @see DataSet/Assertion/createAndCopyParentContentRecordWithHotelAndOfferChildRecords.csv
 	 */
 	public function createAndCopyParentContentWithHotelAndOfferChildren() {
@@ -226,7 +249,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	}
 
 	/**
-	 * @test
 	 * @see DataSet/Assertion/createAndLocalizeParentContentRecordWithHotelAndOfferChildRecords.csv
 	 */
 	public function createAndLocalizeParentContentWithHotelAndOfferChildren() {
@@ -245,7 +267,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	}
 
 	/**
-	 * @test
 	 * @see DataSet/Assertion/modifyOnlyHotelChildRecord.csv
 	 */
 	public function modifyOnlyHotelChild() {
@@ -253,7 +274,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	}
 
 	/**
-	 * @test
 	 * @see DataSet/Assertion/modifyParentRecordAndChangeHotelChildRecordsSorting.csv
 	 */
 	public function modifyParentAndChangeHotelChildrenSorting() {
@@ -261,7 +281,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	}
 
 	/**
-	 * @test
 	 * @see DataSet/Assertion/modifyParentRecordWithHotelChildRecord.csv
 	 */
 	public function modifyParentWithHotelChild() {
@@ -275,7 +294,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	}
 
 	/**
-	 * @test
 	 * @see DataSet/Assertion/modifyParentRecordAndAddHotelChildRecord.csv
 	 */
 	public function modifyParentAndAddHotelChild() {
@@ -289,7 +307,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	}
 
 	/**
-	 * @test
 	 * @see DataSet/Assertion/modifyParentRecordAndDeleteHotelChildRecord.csv
 	 */
 	public function modifyParentAndDeleteHotelChild() {

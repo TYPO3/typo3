@@ -227,9 +227,10 @@ class ActionService {
 	 * @param string $tableName
 	 * @param integer $uid
 	 * @param integer $pageId
+	 * @param NULL|array $recordData
 	 * @return array
 	 */
-	public function copyRecord($tableName, $uid, $pageId) {
+	public function copyRecord($tableName, $uid, $pageId, array $recordData = NULL) {
 		$commandMap = array(
 			$tableName => array(
 				$uid => array(
@@ -237,6 +238,13 @@ class ActionService {
 				),
 			),
 		);
+		if ($recordData !== NULL) {
+			$commandMap[$tableName][$uid]['copy'] = array(
+				'action' => 'paste',
+				'target' => $pageId,
+				'update' => $recordData,
+			);
+		}
 		$this->createDataHandler();
 		$this->dataHandler->start(array(), $commandMap);
 		$this->dataHandler->process_cmdmap();
@@ -247,8 +255,9 @@ class ActionService {
 	 * @param string $tableName
 	 * @param integer $uid
 	 * @param integer $pageId
+	 * @param NULL|array $recordData
 	 */
-	public function moveRecord($tableName, $uid, $pageId) {
+	public function moveRecord($tableName, $uid, $pageId, array $recordData = NULL) {
 		$commandMap = array(
 			$tableName => array(
 				$uid => array(
@@ -256,6 +265,13 @@ class ActionService {
 				),
 			),
 		);
+		if ($recordData !== NULL) {
+			$commandMap[$tableName][$uid]['move'] = array(
+				'action' => 'paste',
+				'target' => $pageId,
+				'update' => $recordData,
+			);
+		}
 		$this->createDataHandler();
 		$this->dataHandler->start(array(), $commandMap);
 		$this->dataHandler->process_cmdmap();
