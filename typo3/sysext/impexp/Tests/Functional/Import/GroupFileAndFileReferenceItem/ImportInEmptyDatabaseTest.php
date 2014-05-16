@@ -27,6 +27,7 @@ class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Impor
 	protected $additionalFoldersToCreate = array(
 		'/uploads/tx_impexpgroupfiles'
 	);
+
 	/**
 	 * @var array
 	 */

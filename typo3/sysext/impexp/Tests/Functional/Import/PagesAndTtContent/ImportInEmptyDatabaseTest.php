@@ -26,12 +26,15 @@ class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Impor
 	/**
 	 * @test
 	 */
-	public function importSimplePagesAndRelatedTtContent() {
+	public function importPagesAndRelatedTtContent() {
 
 		$this->import->loadFile(__DIR__ . '/../../Fixtures/ImportExportXml/pages-and-ttcontent.xml', 1);
 		$this->import->importData(0);
 
-		$this->assertAssertionDataSet('importSimplePagesAndRelatedTtContent');
+		$this->assertAssertionDataSet('importPagesAndRelatedTtContent');
+
+		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image3.jpg', PATH_site . 'fileadmin/user_upload/typo3_image3.jpg');
+		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Extensions/template_extension/Resources/Public/Templates/Empty.html', PATH_site . 'typo3conf/ext/template_extension/Resources/Public/Templates/Empty.html');
 	}
 
 }
