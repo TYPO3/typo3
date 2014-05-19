@@ -410,13 +410,14 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 			if (count($refIndexRecords) > 0) {
 				$shortcutContent = array();
 				foreach ($refIndexRecords as $fileReferenceRow) {
+					$row = $fileReferenceRow;
 					if ($fileReferenceRow['tablename'] === 'sys_file_reference') {
 						$row = $this->transformFileReferenceToRecordReference($fileReferenceRow);
-						$shortcutRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($row['tablename'], $row['recuid']);
-						$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($row['tablename'], $shortcutRecord);
-						$onClick = 'showClickmenu("' . $row['tablename'] . '", "' . $row['recuid'] . '", "1", "+info,history,edit", "|", "");return false;';
-						$shortcutContent[] = '<a href="#" oncontextmenu="' . htmlspecialchars($onClick) . '" onclick="' . htmlspecialchars($onClick) . '">' . $icon . '</a>' . htmlspecialchars((\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($row['tablename'], $shortcutRecord) . '  [' . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordPath($shortcutRecord['pid'], '', 80) . ']'));
 					}
+					$shortcutRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($row['tablename'], $row['recuid']);
+					$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($row['tablename'], $shortcutRecord);
+					$onClick = 'showClickmenu("' . $row['tablename'] . '", "' . $row['recuid'] . '", "1", "+info,history,edit", "|", "");return false;';
+					$shortcutContent[] = '<a href="#" oncontextmenu="' . htmlspecialchars($onClick) . '" onclick="' . htmlspecialchars($onClick) . '">' . $icon . '</a>' . htmlspecialchars((\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($row['tablename'], $shortcutRecord) . '  [' . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordPath($shortcutRecord['pid'], '', 80) . ']'));
 				}
 
 				// render a message that the file could not be deleted

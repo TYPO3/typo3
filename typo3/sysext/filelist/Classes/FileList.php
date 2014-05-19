@@ -763,7 +763,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 			if ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\Folder) {
 				$referenceCountText = \TYPO3\CMS\Backend\Utility\BackendUtility::referenceCount('_FILE', $identifier, ' (There are %s reference(s) to this folder!)');
 			} else {
-				$referenceCountText = \TYPO3\CMS\Backend\Utility\BackendUtility::referenceCount('sys_file', $identifier, ' (There are %s reference(s) to this file!)');
+				$referenceCountText = \TYPO3\CMS\Backend\Utility\BackendUtility::referenceCount('sys_file', $fileOrFolderObject->getUid(), ' (There are %s reference(s) to this file!)');
 			}
 
 			if ($GLOBALS['BE_USER']->jsConfirmation(4)) {
