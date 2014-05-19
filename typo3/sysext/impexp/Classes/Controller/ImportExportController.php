@@ -205,9 +205,9 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	public function exportData($inData) {
 		// BUILDING EXPORT DATA:
 		// Processing of InData array values:
-		$inData['pagetree']['maxNumber'] = MathUtility::forceIntegerInRange($inData['pagetree']['maxNumber'], 1, 10000, 100);
-		$inData['listCfg']['maxNumber'] = MathUtility::forceIntegerInRange($inData['listCfg']['maxNumber'], 1, 10000, 100);
-		$inData['maxFileSize'] = MathUtility::forceIntegerInRange($inData['maxFileSize'], 1, 10000, 1000);
+		$inData['pagetree']['maxNumber'] = MathUtility::forceIntegerInRange($inData['pagetree']['maxNumber'], 1, 1000000, 100);
+		$inData['listCfg']['maxNumber'] = MathUtility::forceIntegerInRange($inData['listCfg']['maxNumber'], 1, 1000000, 100);
+		$inData['maxFileSize'] = MathUtility::forceIntegerInRange($inData['maxFileSize'], 1, 1000000, 1000);
 		$inData['filename'] = trim(preg_replace('/[^[:alnum:]._-]*/', '', preg_replace('/\\.(t3d|xml)$/', '', $inData['filename'])));
 		if (strlen($inData['filename'])) {
 			$inData['filename'] .= $inData['filetype'] == 'xml' ? '.xml' : '.t3d';
