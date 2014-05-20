@@ -241,10 +241,10 @@ HTMLArea.RemoveFormat = Ext.extend(HTMLArea.Plugin, {
 				html = html.replace(/<\/?(img|imagedata)(>|[^>a-zA-Z][^>]*>)/gi, "");
 					// Remove MS-specific tags
 				html = html.replace(/<\/?(f|formulas|lock|path|shape|shapetype|stroke)(>|[^>a-zA-Z][^>]*>)/gi, "");
-					// Remove unwanted tags and their contents: style, title
-				html = html.replace(/<style[^>]*>.*<\/style[^>]*>/gi, "").
+				// Remove unwanted tags and their contents: style, title
+				html = html.replace(/<style[^>]*>.*?<\/style[^>]*>/gi, "").
 					replace(/<title[^>]*>.*<\/title[^>]*>/gi, "");
-					// Remove comments
+				// Remove comments
 				html = html.replace(/<!--[^>]*>/gi, "");
 					// Remove xml tags
 				html = html.replace(/<xml.[^>]*>/gi, "");
