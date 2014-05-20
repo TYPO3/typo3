@@ -158,8 +158,8 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		$this->backPath = isset($backPath) ? $backPath : $GLOBALS['BACK_PATH'];
 
 		$this->inlineJavascriptWrap = array(
-			'<script type="text/javascript">' . LF . '/*<![CDATA[*/' . LF . '<!-- ' . LF,
-			'// -->' . LF . '/*]]>*/' . LF . '</script>' . LF
+			'<script type="text/javascript">' . LF . '/*<![CDATA[*/' . LF,	
+			'/*]]>*/' . LF . '</script>' . LF
 		);
 		$this->inlineCssWrap = array(
 			'<style type="text/css">' . LF . '/*<![CDATA[*/' . LF . '<!-- ' . LF,
