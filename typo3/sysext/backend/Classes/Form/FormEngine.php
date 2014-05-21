@@ -2837,7 +2837,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 
 					// If there is a title, check for LLL label
 					if (strlen($theTitle) > 0) {
-						$theTitle = htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($this->sL($theTitle), 30));
+						$theTitle = htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($this->sL($theTitle), (int)$GLOBALS['BE_USER']->uc['titleLen']));
 					}
 					// If it's a "section" or "container":
 					if ($value['type'] == 'array') {
