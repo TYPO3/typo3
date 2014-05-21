@@ -954,12 +954,12 @@ class PageRepository {
 	 * @todo Define visibility
 	 */
 	public function enableFields($table, $show_hidden = -1, $ignore_array = array(), $noVersionPreview = FALSE) {
-		if ($show_hidden == -1 && is_object($GLOBALS['TSFE'])) {
+		if ($show_hidden === -1 && is_object($GLOBALS['TSFE'])) {
 			// If show_hidden was not set from outside and if TSFE is an object, set it
 			// based on showHiddenPage and showHiddenRecords from TSFE
 			$show_hidden = $table == 'pages' ? $GLOBALS['TSFE']->showHiddenPage : $GLOBALS['TSFE']->showHiddenRecords;
 		}
-		if ($show_hidden == -1) {
+		if ($show_hidden === -1) {
 			$show_hidden = 0;
 		}
 		// If show_hidden was not changed during the previous evaluation, do it here.
