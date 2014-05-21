@@ -256,6 +256,12 @@ class ReviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControll
 			'id' => (int)$this->pageId,
 			'workspace' => (int)$workspaceId,
 		);
+		// The "all workspaces" tab is handled in fullIndexAction
+		// which is required as additional GET parameter in the URI then
+		if ($workspaceId === \TYPO3\CMS\Workspaces\Service\WorkspaceService::SELECT_ALL_WORKSPACES) {
+			$this->uriBuilder->reset()->uriFor('fullIndex');
+			$parameters = array_merge($parameters, $this->uriBuilder->getArguments());
+		}
 		return \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_WorkspacesWorkspaces', $parameters);
 	}
 
