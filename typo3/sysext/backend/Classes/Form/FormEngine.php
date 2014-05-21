@@ -31,10 +31,17 @@ use TYPO3\CMS\Backend\Form\Element\InlineElement;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\Html\RteHtmlParser;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * 'TCEforms' - Class for creating the backend editing forms.
@@ -579,7 +586,6 @@ class FormEngine {
 	/**
 	 * Constructor function, setting internal variables, loading the styles used.
 	 *
-	 * @return 	void
 	 * @todo Define visibility
 	 */
 	public function __construct() {
@@ -1009,7 +1015,7 @@ class FormEngine {
 	 * @return mixed String (normal) or array (palettes)
 	 * @todo Define visibility
 	 */
-	public function getSingleField($table, $field, $row, $altName = '', $palette = 0, $extra = '', $pal = 0) {
+	public function getSingleField($table, $field, $row, $altName = '', $palette = FALSE, $extra = '', $pal = 0) {
 		// Hook: getSingleField_preProcess
 		foreach ($this->hookObjectsSingleField as $hookObj) {
 			if (method_exists($hookObj, 'getSingleField_preProcess')) {
@@ -1105,8 +1111,6 @@ class FormEngine {
 					}
 					// onFocus attribute to add to the field:
 					$PA['onFocus'] = $palJSfunc && !$GLOBALS['BE_USER']->uc['dontShowPalettesOnFocusInAB'] ? ' onfocus="' . htmlspecialchars($palJSfunc) . '"' : '';
-					// Find item
-					$item = '';
 					$PA['label'] = $PA['altName'] ?: $PA['fieldConf']['label'];
 					$PA['label'] = $PA['fieldTSConfig']['label'] ?: $PA['label'];
 					$PA['label'] = $PA['fieldTSConfig']['label.'][$GLOBALS['LANG']->lang] ?: $PA['label'];
@@ -1542,7 +1546,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 						if (!$this->disableRTE) {
 							$this->RTEcounter++;
 							// Find alternative relative path for RTE images/links:
-							$eFile = \TYPO3\CMS\Core\Html\RteHtmlParser::evalWriteFile($specConf['static_write'], $row);
+							$eFile = RteHtmlParser::evalWriteFile($specConf['static_write'], $row);
 							$RTErelPath = is_array($eFile) ? dirname($eFile['relEditFile']) : '';
 							// Get RTE object, draw form and set flag:
 							$RTEobj = BackendUtility::RTEgetObj();
@@ -1991,7 +1995,6 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 		// Closing optgroup if open
 		if ($optGroupOpen) {
 			$opt[] = '</optgroup>';
-			$optGroupOpen = FALSE;
 		}
 		// No-matching-value:
 		if ($PA['itemFormElValue'] && $noMatchingValue && !$PA['fieldTSConfig']['disableNoMatchingValueElement'] && !$config['disableNoMatchingValueElement']) {
@@ -2412,7 +2415,6 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	public function getSingleField_typeGroup($table, $field, $row, &$PA) {
 		// Init:
 		$config = $PA['fieldConf']['config'];
-		$internal_type = $config['internal_type'];
 		$show_thumbs = $config['show_thumbs'];
 		$size = isset($config['size']) ? (int)$config['size'] : 5;
 		$maxitems = MathUtility::forceIntegerInRange($config['maxitems'], 1);
@@ -2471,7 +2473,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			}
 			// Making the array of file items:
 			$itemArray = GeneralUtility::trimExplode(',', $PA['itemFormElValue'], TRUE);
-			$fileFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
+			$fileFactory = ResourceFactory::getInstance();
 			// Correct the filename for the FAL items
 			foreach ($itemArray as &$fileItem) {
 				list($fileUid, $fileLabel) = explode('|', $fileItem);
@@ -2496,7 +2498,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 							$flashMessage = \TYPO3\CMS\Core\Resource\Utility\BackendUtility::getFlashMessageForMissingFile($fileObject);
 							$imgs[] = $flashMessage->render();
 						} elseif (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileObject->getExtension())) {
-							$imageUrl = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array())->getPublicUrl(TRUE);
+							$imageUrl = $fileObject->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, array())->getPublicUrl(TRUE);
 							$imgTag = '<img src="' . $imageUrl . '" alt="' . htmlspecialchars($fileObject->getName()) . '" />';
 							$imgs[] = '<span class="nobr">' . $imgTag . htmlspecialchars($fileObject->getName()) . '</span>';
 						} else {
@@ -2899,7 +2901,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 * @return string HTML for menu
 	 * @todo Define visibility
 	 */
-	public function getSingleField_typeFlex_langMenu($languages, $elName, $selectedLanguage, $multi = 1) {
+	public function getSingleField_typeFlex_langMenu($languages, $elName, $selectedLanguage, $multi = TRUE) {
 		$opt = array();
 		foreach ($languages as $lArr) {
 			$opt[] = '<option value="' . htmlspecialchars($lArr['ISOcode']) . '"' . (in_array($lArr['ISOcode'], $selectedLanguage) ? ' selected="selected"' : '') . '>' . htmlspecialchars($lArr['title']) . '</option>';
@@ -2942,7 +2944,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 * @param array $PA Array of standard information for rendering of a form field in TCEforms, see other rendering functions too
 	 * @param string $formPrefix Form field prefix, eg. "[data][sDEF][lDEF][...][...]
 	 * @param integer $level Indicates nesting level for the function call
-	 * @param string $level Prefix for ID-values
+	 * @param string $idPrefix Prefix for ID-values
 	 * @param boolean $toggleClosed Defines whether the next flexform level is open or closed. Comes from _TOGGLE pseudo field in FlexForm xml.
 	 * @return string HTMl code for form.
 	 * @todo Define visibility
@@ -2983,7 +2985,6 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 							$output .= '<div class="t3-form-field-label-flexsection"><strong>' . $theTitle . '</strong></div>';
 							// Render elements in data array for section:
 							$tRows = array();
-							$cc = 0;
 							if (is_array($editData[$key]['el'])) {
 								foreach ($editData[$key]['el'] as $k3 => $v3) {
 									$cc = $k3;
@@ -3334,6 +3335,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 * @param string $table The table name. MUST be in $GLOBALS['TCA']
 	 * @param array $row The row from the table, should contain at least the "type" field, if applicable.
 	 * @return string Return the "type" value for this record, ready to pick a "types" configuration from the $GLOBALS['TCA'] array.
+	 * @throws \RuntimeException
 	 * @todo Define visibility
 	 */
 	public function getRTypeNum($table, $row) {
@@ -3486,7 +3488,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			$c = 0;
 			$found = FALSE;
 			foreach ($fields as $fieldInfo) {
-				list($fieldName, $label, $paletteName) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(';', $fieldInfo);
+				list($fieldName, $label, $paletteName) = GeneralUtility::trimExplode(';', $fieldInfo);
 				if ($fieldName === $fieldsToAdd[1]) {
 					$found = TRUE;
 				} elseif ($fieldName === '--palette--' && $paletteName && $table !== '') {
@@ -3494,9 +3496,9 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 					if (is_array($GLOBALS['TCA'][$table]['palettes'][$paletteName])) {
 						$itemList = $GLOBALS['TCA'][$table]['palettes'][$paletteName]['showitem'];
 						if ($itemList) {
-							$paletteFields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $itemList, TRUE);
+							$paletteFields = GeneralUtility::trimExplode(',', $itemList, TRUE);
 							foreach ($paletteFields as $info) {
-								$fieldParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(';', $info);
+								$fieldParts = GeneralUtility::trimExplode(';', $info);
 								$theField = $fieldParts[0];
 								if ($theField === $fieldsToAdd[1]) {
 									$found = TRUE;
@@ -3563,7 +3565,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 				}
 				// Override $GLOBALS['TCA'] field config by remaining TSconfig['config']:
 				if (count($TSconfig['config'])) {
-					\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($fieldConfig, $TSconfig['config']);
+					ArrayUtility::mergeRecursiveWithOverrule($fieldConfig, $TSconfig['config']);
 				}
 			}
 		}
@@ -3690,8 +3692,8 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 * Can be used to render read only fields for example.
 	 *
 	 * @param string $table Table name of the record being edited
-	 * @param string $row Field name represented by $item
-	 * @param array $field Record array of the record being edited in current language
+	 * @param array $row Record array of the record being edited in current language
+	 * @param string $field Field name represented by $item
 	 * @param array $fieldConf Content of $PA['fieldConf']
 	 * @return string Unprocessed field value merged with default language data if needed
 	 * @todo Define visibility
@@ -3813,10 +3815,10 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 * @param string $uid (optional) uid of table record processing for
 	 * @param array $config (optional) The TCA field config
 	 * @return string The form fields for the selection.
+	 * @throws \UnexpectedValueException
 	 * @todo Define visibility
 	 */
 	public function dbFileIcons($fName, $mode, $allowed, $itemArray, $selector = '', $params = array(), $onFocus = '', $table = '', $field = '', $uid = '', $config = array()) {
-		$title = '';
 		$disabled = '';
 		if ($this->renderReadonly || $params['readOnly']) {
 			$disabled = ' disabled="disabled"';
@@ -4083,7 +4085,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 * @return string HTML
 	 * @todo Define visibility
 	 */
-	public function getClickMenu($str, $table, $uid = '') {
+	public function getClickMenu($str, $table, $uid = 0) {
 		if ($this->enableClickMenu) {
 			$onClick = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($str, $table, $uid, 1, '', '+copy,info,edit,view', TRUE);
 			return '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $str . '</a>';
@@ -4105,7 +4107,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 * @return string The new item value.
 	 * @todo Define visibility
 	 */
-	public function renderWizards($itemKinds, $wizConf, $table, $row, $field, &$PA, $itemName, $specConf, $RTE = 0) {
+	public function renderWizards($itemKinds, $wizConf, $table, $row, $field, &$PA, $itemName, $specConf, $RTE = FALSE) {
 		// Init:
 		$fieldChangeFunc = $PA['fieldChangeFunc'];
 		$item = $itemKinds[0];
@@ -4185,7 +4187,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 									if (substr($wConf['script'], 0, 4) === 'EXT:') {
 										$wScript = GeneralUtility::getFileAbsFileName($wConf['script']);
 										if ($wScript) {
-											$wScript = '../' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($wScript);
+											$wScript = '../' . PathUtility::stripPathSitePrefix($wScript);
 										} else {
 											// Illeagal configuration, fail silently
 											break;
@@ -4333,7 +4335,6 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 				if ($wizConf['_HIDDENFIELD']) {
 					$item = $itemKinds[1];
 				}
-				$outStr = '';
 				$vAlign = $wizConf['_VALIGN'] ? ' style="vertical-align:' . $wizConf['_VALIGN'] . '"' : '';
 				if (count($outArr) > 1 || $wizConf['_PADDING']) {
 					$dist = (int)$wizConf['_DISTANCE'];
@@ -4374,7 +4375,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 		if (substr($icon, 0, 4) == 'EXT:') {
 			$file = GeneralUtility::getFileAbsFileName($icon);
 			if ($file) {
-				$file = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($file);
+				$file = PathUtility::stripPathSitePrefix($file);
 				$selIconFile = $this->backPath . '../' . $file;
 				$selIconInfo = @getimagesize((PATH_site . $file));
 			}
@@ -4402,7 +4403,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 * @param string $icon The icon passed, could be a file-reference or a sprite Icon name
 	 * @param string $alt Alt attribute of the icon returned
 	 * @param string $title Title attribute of the icon return
-	 * @return A tag representing to show the asked icon
+	 * @return string A tag representing to show the asked icon
 	 */
 	protected function getIconHtml($icon, $alt = '', $title = '') {
 		$iconArray = $this->getIcon($icon);
@@ -4583,8 +4584,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 * @return string Either a "style" attribute string or "cols"/"size" attribute string.
 	 * @todo Define visibility
 	 */
-	public function formWidth($size = 48, $textarea = 0) {
-		$widthAndStyleAttributes = '';
+	public function formWidth($size = 48, $textarea = FALSE) {
 		$fieldWidthAndStyle = $this->formWidthAsArray($size, $textarea);
 		// Setting width by style-attribute. 'cols' MUST be avoided with NN6+
 		$widthAndStyleAttributes = ' style="' . htmlspecialchars($fieldWidthAndStyle['style']) . '"';
@@ -4848,7 +4848,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 				$fileArr = GeneralUtility::removePrefixPathFromList($fileArr, $fileFolder);
 				foreach ($fileArr as $fileRef) {
 					$fI = pathinfo($fileRef);
-					$icon = GeneralUtility::inList('gif,png,jpeg,jpg', strtolower($fI['extension'])) ? '../' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($fileFolder) . $fileRef : '';
+					$icon = GeneralUtility::inList('gif,png,jpeg,jpg', strtolower($fI['extension'])) ? '../' . PathUtility::stripPathSitePrefix($fileFolder) . $fileRef : '';
 					$items[] = array(
 						$fileRef,
 						$fileRef,
@@ -5008,7 +5008,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 							// Icon:
 							$icon = $GLOBALS['LANG']->moduleLabels['tabs_images'][$theMod . '_tab'];
 							if ($icon) {
-								$icon = '../' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($icon);
+								$icon = '../' . PathUtility::stripPathSitePrefix($icon);
 							}
 							// Add help text
 							$helpText = array(
@@ -5064,7 +5064,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 * @see addSelectOptionsToItemArray(), BackendUtility::exec_foreign_table_where_query()
 	 * @todo Define visibility
 	 */
-	public function foreignTable($items, $fieldValue, $TSconfig, $field, $pFFlag = 0) {
+	public function foreignTable($items, $fieldValue, $TSconfig, $field, $pFFlag = FALSE) {
 		// Init:
 		$pF = $pFFlag ? 'neg_' : '';
 		$f_table = $fieldValue['config'][$pF . 'foreign_table'];
@@ -5387,7 +5387,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			$fieldAttributes .= ' class="t3-form-palette-field ' . $this->classScheme[4] . '"';
 		}
 		$row = 0;
-		$hRow = ($iRow = array());
+		$iRow = array();
 		$lastLineWasLinebreak = FALSE;
 		// Traverse palette fields and render them into containers:
 		foreach ($palArr as $content) {
@@ -6037,7 +6037,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 * @return array
 	 * @todo Define visibility
 	 */
-	public function getAvailableLanguages($onlyIsoCoded = 1, $setDefault = 1) {
+	public function getAvailableLanguages($onlyIsoCoded = TRUE, $setDefault = TRUE) {
 		$isL = ExtensionManagementUtility::isLoaded('static_info_tables');
 		// Find all language records in the system:
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('static_lang_isocode,title,uid', 'sys_language', 'pid=0 AND hidden=0' . BackendUtility::deleteClause('sys_language'), '', 'title');
@@ -6072,7 +6072,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 * @param string $table Table name
 	 * @param array $row Record
 	 * @param string $sys_language_uid Sys language uid OR ISO language code prefixed with "v", eg. "vDA
-	 * @return void
+	 * @return string
 	 * @todo Define visibility
 	 */
 	public function getLanguageIcon($table, $row, $sys_language_uid) {
