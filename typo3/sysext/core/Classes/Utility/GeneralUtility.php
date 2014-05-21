@@ -1045,7 +1045,7 @@ class GeneralUtility {
 	 * @return string Converted result.
 	 */
 	static public function htmlspecialchars_decode($value) {
-		GeneralUtility::logDeprecatedFunction();
+		self::logDeprecatedFunction();
 		return htmlspecialchars_decode($value);
 	}
 
@@ -4903,7 +4903,7 @@ Connection: close
 			$messageSubstituted = preg_replace_callback(
 				'/(http|https):\\/\\/.+(?=[\\]\\.\\?]*([\\! \'"()<>]+|$))/iU',
 				function (array $matches) use ($lengthLimit, $index_script_url) {
-					return GeneralUtility::makeRedirectUrl($matches[0], $lengthLimit, $index_script_url);
+					return self::makeRedirectUrl($matches[0], $lengthLimit, $index_script_url);
 				},
 				$message
 			);
