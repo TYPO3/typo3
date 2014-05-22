@@ -131,10 +131,10 @@ class SC_wizard_colorpicker {
 			}
 		}
 
-			// Setting field-change functions:
-		$fieldChangeFuncArr = unserialize($this->fieldChangeFunc);
 		$update = '';
 		if ($this->areFieldChangeFunctionsValid()) {
+				// Setting field-change functions:
+			$fieldChangeFuncArr = unserialize($this->fieldChangeFunc);
 			unset($fieldChangeFuncArr['alert']);
 			foreach($fieldChangeFuncArr as $v)	{
 				$update.= '
