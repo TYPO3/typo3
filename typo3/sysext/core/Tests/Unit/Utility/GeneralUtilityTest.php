@@ -1,6 +1,5 @@
 <?php
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
-use TYPO3\CMS\Core\Utility;
 
 /***************************************************************
  *  Copyright notice
@@ -24,6 +23,9 @@ use TYPO3\CMS\Core\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility;
+use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\GeneralUtilityFixture;
 
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\GeneralUtility
@@ -54,6 +56,9 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $singletonInstances = array();
 
 	public function setUp() {
+		GeneralUtilityFixture::$isAllowedHostHeaderValueCallCount = 0;
+		GeneralUtilityFixture::setAllowHostHeaderValue(FALSE);
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = Utility\GeneralUtility::ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL;
 		$this->singletonInstances = Utility\GeneralUtility::getSingletonInstances();
 	}
 
@@ -1597,6 +1602,175 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
+	 */
+	public function isAllowedHostHeaderValueReturnsFalseIfTrusedHostsIsNotConfigured() {
+		unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern']);
+		$this->assertFalse(Utility\GeneralUtility::isAllowedHostHeaderValue('evil.foo.bar'));
+	}
+
+	/**
+	 * @return array
+	 */
+	static public function hostnamesMatchingTrustedHostsConfigurationDataProvider() {
+		return array(
+			'hostname without port matching' => array('lolli.did.this', '.*\.did\.this'),
+			'other hostname without port matching' => array('helmut.did.this', '.*\.did\.this'),
+			'two different hostnames without port matching 1st host' => array('helmut.is.secure', '(helmut\.is\.secure|lolli\.is\.secure)'),
+			'two different hostnames without port matching 2nd host' => array('lolli.is.secure', '(helmut\.is\.secure|lolli\.is\.secure)'),
+			'hostname with port matching' => array('lolli.did.this:42', '.*\.did\.this:42'),
+		);
+	}
+
+	/**
+	 * @return array
+	 */
+	static public function hostnamesNotMatchingTrustedHostsConfigurationDataProvider() {
+		return array(
+			'hostname without port' => array('lolli.did.this', 'helmut\.did\.this'),
+			'hostname with port, but port not allowed' => array('lolli.did.this:42', 'helmut\.did\.this'),
+			'two different hostnames in pattern but host header starts with differnet value #1' => array('sub.helmut.is.secure', '(helmut\.is\.secure|lolli\.is\.secure)'),
+			'two different hostnames in pattern but host header starts with differnet value #2' => array('sub.lolli.is.secure', '(helmut\.is\.secure|lolli\.is\.secure)'),
+			'two different hostnames in pattern but host header ends with differnet value #1' => array('helmut.is.secure.tld', '(helmut\.is\.secure|lolli\.is\.secure)'),
+			'two different hostnames in pattern but host header ends with differnet value #2' => array('lolli.is.secure.tld', '(helmut\.is\.secure|lolli\.is\.secure)'),
+		);
+	}
+
+	/**
+	 * @param string $httpHost HTTP_HOST string
+	 * @param string $hostNamePattern trusted hosts pattern
+	 * @test
+	 * @dataProvider hostnamesMatchingTrustedHostsConfigurationDataProvider
+	 */
+	public function isAllowedHostHeaderValueReturnsTrueIfHostValueMatches($httpHost, $hostNamePattern) {
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = $hostNamePattern;
+		$this->assertTrue(Utility\GeneralUtility::isAllowedHostHeaderValue($httpHost));
+	}
+
+	/**
+	 * @param string $httpHost HTTP_HOST string
+	 * @param string $hostNamePattern trusted hosts pattern
+	 * @test
+	 * @dataProvider hostnamesNotMatchingTrustedHostsConfigurationDataProvider
+	 */
+	public function isAllowedHostHeaderValueReturnsFalseIfHostValueMatches($httpHost, $hostNamePattern) {
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = $hostNamePattern;
+		$this->assertFalse(Utility\GeneralUtility::isAllowedHostHeaderValue($httpHost));
+	}
+
+	public function serverNamePatternDataProvider() {
+		return array(
+			'host value matches server name and server port is default http' => array(
+				'httpHost' => 'secure.web.server',
+				'serverName' => 'secure.web.server',
+				'isAllowed' => TRUE,
+				'serverPort' => '80',
+				'ssl' => 'Off',
+			),
+			'host value matches server name and server port is default https' => array(
+				'httpHost' => 'secure.web.server',
+				'serverName' => 'secure.web.server',
+				'isAllowed' => TRUE,
+				'serverPort' => '443',
+				'ssl' => 'On',
+			),
+			'host value matches server name and server port' => array(
+				'httpHost' => 'secure.web.server:88',
+				'serverName' => 'secure.web.server',
+				'isAllowed' => TRUE,
+				'serverPort' => '88',
+			),
+			'host value is ipv6 but matches server name and server port' => array(
+				'httpHost' => '[::1]:81',
+				'serverName' => '[::1]',
+				'isAllowed' => TRUE,
+				'serverPort' => '81',
+			),
+			'host value does not match server name' => array(
+				'httpHost' => 'insecure.web.server',
+				'serverName' => 'secure.web.server',
+				'isAllowed' => FALSE,
+			),
+			'host value does not match server port' => array(
+				'httpHost' => 'secure.web.server:88',
+				'serverName' => 'secure.web.server',
+				'isAllowed' => FALSE,
+				'serverPort' => '89',
+			),
+			'host value has default port that does not match server port' => array(
+				'httpHost' => 'secure.web.server',
+				'serverName' => 'secure.web.server',
+				'isAllowed' => FALSE,
+				'serverPort' => '81',
+				'ssl' => 'Off',
+			),
+			'host value has default port that does not match server ssl port' => array(
+				'httpHost' => 'secure.web.server',
+				'serverName' => 'secure.web.server',
+				'isAllowed' => FALSE,
+				'serverPort' => '444',
+				'ssl' => 'On',
+			),
+		);
+	}
+
+	/**
+	 * @param string $httpHost
+	 * @param string $serverName
+	 * @param bool $isAllowed
+	 * @param string $serverPort
+	 * @param string $ssl
+	 *
+	 * @test
+	 * @dataProvider serverNamePatternDataProvider
+	 */
+	public function isAllowedHostHeaderValueWorksCorrectlyWithWithServerNamePattern($httpHost, $serverName, $isAllowed, $serverPort = '80', $ssl = 'Off') {
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = Utility\GeneralUtility::ENV_TRUSTED_HOSTS_PATTERN_SERVER_NAME;
+		$_SERVER['SERVER_NAME'] = $serverName;
+		$_SERVER['SERVER_PORT'] = $serverPort;
+		$_SERVER['HTTPS'] = $ssl;
+		$this->assertSame($isAllowed, Utility\GeneralUtility::isAllowedHostHeaderValue($httpHost));
+	}
+
+	/**
+	 * @test
+	 */
+	public function allGetIndpEnvCallsRelatedToHostNamesCallIsAllowedHostHeaderValue() {
+		GeneralUtilityFixture::getIndpEnv('HTTP_HOST');
+		GeneralUtilityFixture::getIndpEnv('TYPO3_HOST_ONLY');
+		GeneralUtilityFixture::getIndpEnv('TYPO3_REQUEST_HOST');
+		GeneralUtilityFixture::getIndpEnv('TYPO3_REQUEST_URL');
+		$this->assertSame(4, GeneralUtilityFixture::$isAllowedHostHeaderValueCallCount);
+	}
+
+	/**
+	 * @param string $httpHost HTTP_HOST string
+	 * @param string $hostNamePattern trusted hosts pattern
+	 * @test
+	 * @dataProvider hostnamesNotMatchingTrustedHostsConfigurationDataProvider
+	 * @expectedException \UnexpectedValueException
+	 * @expectedExceptionCode 1396795884
+	 */
+	public function getIndpEnvForHostThrowsExceptionForNotAllowedHostnameValues($httpHost, $hostNamePattern) {
+		$_SERVER['HTTP_HOST'] = $httpHost;
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = $hostNamePattern;
+		Utility\GeneralUtility::getIndpEnv('HTTP_HOST');
+	}
+
+	/**
+	 * @param string $httpHost HTTP_HOST string
+	 * @param string $hostNamePattern trusted hosts pattern (not used in this test currently)
+	 * @test
+	 * @dataProvider hostnamesNotMatchingTrustedHostsConfigurationDataProvider
+	 */
+	public function getIndpEnvForHostAllowsAllHostnameValuesOfDefaultConfiguration($httpHost, $hostNamePattern) {
+		$_SERVER['HTTP_HOST'] = $httpHost;
+		// DefaultConfiguration is currently applied for tests. In case this is changed, this test needs to be adapted.
+		// $GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = '/.*/';
+		$this->assertSame($httpHost, Utility\GeneralUtility::getIndpEnv('HTTP_HOST'));
+	}
+
+	/**
+	 * @test
 	 * @dataProvider hostnameAndPortDataProvider
 	 */
 	public function getIndpEnvTypo3PortParsesHostnamesAndIpAdresses($httpHost, $dummy, $expectedPort) {
@@ -1824,6 +1998,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return array Valid url
 	 */
 	public function sanitizeLocalUrlValidUrlDataProvider() {
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = Utility\GeneralUtility::ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL;
 		$subDirectory = Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
 		$typo3SiteUrl = Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 		$typo3RequestHost = Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST');
