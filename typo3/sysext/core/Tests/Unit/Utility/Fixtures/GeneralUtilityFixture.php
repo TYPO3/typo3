@@ -47,7 +47,7 @@ class GeneralUtilityFixture extends GeneralUtility {
 	 */
 	static public function isAllowedHostHeaderValue($hostHeaderValue) {
 		self::$isAllowedHostHeaderValueCallCount++;
-		return TRUE;
+		return parent::isAllowedHostHeaderValue($hostHeaderValue);
 	}
 
 	/**
@@ -55,6 +55,15 @@ class GeneralUtilityFixture extends GeneralUtility {
 	 */
 	static public function setAllowHostHeaderValue($allowHostHeaderValue) {
 		static::$allowHostHeaderValue = $allowHostHeaderValue;
+	}
+
+	/**
+	 * For testing we must not generally allow HTTP Host headers
+	 *
+	 * @return bool
+	 */
+	static protected function isInternalRequestType() {
+		return FALSE;
 	}
 
 
