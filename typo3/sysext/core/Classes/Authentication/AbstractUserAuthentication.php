@@ -1008,6 +1008,7 @@ abstract class AbstractUserAuthentication {
 			} else {
 				// Delete any user set...
 				$this->logoff();
+				$user = FALSE;
 			}
 		}
 		return $user;
