@@ -13,7 +13,7 @@
 &lt;b&gt;The Pagetree&lt;/b&gt;
 The pages are organized in a tree structure that reflects the organization of your website.
 
-&lt;p&gt;UID, PID and the Pagetree Root&lt;/b&gt;
+&lt;b&gt;UID, PID and the Pagetree Root&lt;/b&gt;
 All database elements have a field 'uid' which is a unique identification number. They also have a field 'pid' (page id) which holds the ID number of the page to which they belong. If the 'pid' field is zero, the record is found in the 'root.' Only administrators are allowed access to the root. Table records must be configured to either belong to a page or be found in the root.
 
 &lt;b&gt;Storage of Database Records&lt;/b&gt;
