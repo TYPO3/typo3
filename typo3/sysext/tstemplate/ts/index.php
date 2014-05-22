@@ -530,7 +530,7 @@ page.10.value = HELLO WORLD!
 					if (isset($pArray[$k . "_"])) {
 						$lines[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
 							<td nowrap><img src="clear.gif" width="1" height="1" hspace=' . ($c * 10) . ' align="top">' .
-							'<a href="' . t3lib_div::linkThisScript(array('id' => $k)) . '">' .
+							'<a href="' . htmlspecialchars(t3lib_div::linkThisScript(array('id' => $k))) . '">' .
 							t3lib_iconWorks::getSpriteIconForRecord('pages', t3lib_BEfunc::getRecordWSOL('pages', $k), array("title"=>'ID: ' . $k )) .
 							t3lib_div::fixed_lgd_cs($pArray[$k], 30) . '</a></td>
 							<td align="center">' . $pArray[$k . '_']['count'] . '</td>
