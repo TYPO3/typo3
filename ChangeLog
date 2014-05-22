@@ -1,3 +1,16 @@
+2014-05-22  2ee368c                  [RELEASE] Release of TYPO3 4.5.34 (TYPO3 Release Team)
+2014-05-22  55d5f38  #30377          [SECURITY] Add trusted HTTP_HOST configuration (Helmut Hummel)
+2014-05-22  efb098b  #54111,#54113   [SECURITY] XSS in (old) extension manager information function (Marc Bastian Heinrichs)
+2014-05-22  94011a3  #48695          [SECURITY] XSS in new content element wizard (Markus Klein)
+2014-05-22  b62651b  #54109          [SECURITY] XSS in template tools on root page (Marc Bastian Heinrichs)
+2014-05-22  a98ae3c  #57576          [SECURITY] XSS in Backend Layout Wizard (Nicole Cordes)
+2014-05-22  4f7258c  #48693          [SECURITY] Encode URL for use in JavaScript (Markus Klein)
+2014-05-22  742ad49  #56458          [SECURITY] Fix insecure unserialize in colorpicker (Helmut Hummel)
+2014-05-22  9bd7776  #54526          [SECURITY] Remove charts.swf to get rid of XSS vulnerability (Helmut Hummel)
+2014-05-08  6ffdcee  #58187          [BUGFIX] Solve stackoverflow in prototype in IE8 (Jigal van Hemert)
+2014-04-16  5d6a16e                  [TASK] Set TYPO3 version to 4.5.34-dev (TYPO3 Release Team)
+
+
 2014-04-16  5bd6b52                  [RELEASE] Release of TYPO3 4.5.33 (TYPO3 Release Team)
 2014-04-15  aebc244  #51768          [TASK] Updates prototype and scriptaculous, fixing IE9+ issues (Ernesto Baschny)
 2014-04-15  51a3897  #57934          [BUGFIX] Use validEmail() instead of deprecated checkEmail() (Stefan Neufeind)
