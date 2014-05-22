@@ -14,8 +14,11 @@ namespace TYPO3\CMS\Core\Category;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Class to register category configurations.
@@ -23,7 +26,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  * @author Fabien Udriot <fabien.udriot@typo3.org>
  * @author Oliver Hader <oliver.hader@typo3.org>
  */
-class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
+class CategoryRegistry implements SingletonInterface {
 
 	/**
 	 * @var array
@@ -48,10 +51,10 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Returns a class instance
 	 *
-	 * @return \TYPO3\CMS\Core\Category\CategoryRegistry
+	 * @return CategoryRegistry
 	 */
 	static public function getInstance() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(__CLASS__);
+		return GeneralUtility::makeInstance(__CLASS__);
 	}
 
 	/**
@@ -129,11 +132,10 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * in tt_content table (called as itemsProcFunc).
 	 *
 	 * @param array $configuration Current field configuration
-	 * @param \TYPO3\CMS\Backend\Form\FormEngine $formObject Back-reference to the calling object
 	 * @throws \UnexpectedValueException
 	 * @return void
 	 */
-	public function getCategoryFieldsForTable(array &$configuration, \TYPO3\CMS\Backend\Form\FormEngine $formObject) {
+	public function getCategoryFieldsForTable(array &$configuration) {
 		$table = '';
 		// Define the table being looked up from the type of menu
 		if ($configuration['row']['menu_type'] == 'categorized_pages') {
@@ -149,7 +151,7 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		foreach ($this->registry as $tableName => $fields) {
 			if ($tableName === $table) {
 				foreach ($fields as $fieldName => $options) {
-					$fieldLabel = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label']);
+					$fieldLabel = $this->getLanguageService()->sL($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label']);
 					$configuration['items'][] = array($fieldLabel, $fieldName);
 				}
 			}
@@ -232,7 +234,7 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	protected function registerDefaultCategorizedTables() {
-		$defaultCategorizedTables = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(
+		$defaultCategorizedTables = GeneralUtility::trimExplode(
 			',',
 			$GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultCategorizedTables'],
 			TRUE
@@ -308,6 +310,7 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param array $options Additional configuration options
 	 *              + fieldConfiguration: TCA field config array to override defaults
 	 *              + label: backend label of the categories field
+	 *              + interface: boolean if the category should be included in the "interface" section of the TCA table
 	 * @return void
 	 */
 	protected function addTcaColumn($tableName, $fieldName, array $options) {
@@ -335,11 +338,21 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				),
 			);
 
+			// Register opposite references for the foreign side of a relation
 			if (empty($GLOBALS['TCA']['sys_category']['columns']['items']['config']['MM_oppositeUsage'][$tableName])) {
 				$GLOBALS['TCA']['sys_category']['columns']['items']['config']['MM_oppositeUsage'][$tableName] = array();
 			}
 			if (!in_array($fieldName, $GLOBALS['TCA']['sys_category']['columns']['items']['config']['MM_oppositeUsage'][$tableName])) {
 				$GLOBALS['TCA']['sys_category']['columns']['items']['config']['MM_oppositeUsage'][$tableName][] = $fieldName;
+			}
+
+			// Add field to interface list per default (unless the 'interface' property is FALSE)
+			if (
+				(!isset($options['interface']) || $options['interface'])
+				&& !empty($GLOBALS['TCA'][$tableName]['interface']['showRecordFieldList'])
+				&& !GeneralUtility::inList($GLOBALS['TCA'][$tableName]['interface']['showRecordFieldList'], $fieldName)
+			) {
+				$GLOBALS['TCA'][$tableName]['interface']['showRecordFieldList'] .= ',' . $fieldName;
 			}
 
 			// Adding fields to an existing table definition
@@ -419,6 +432,13 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	public function addExtensionCategoryDatabaseSchemaToTablesDefinition(array $sqlString, $extensionKey) {
 		$sqlString[] = $this->getDatabaseTableDefinition($extensionKey);
 		return array('sqlString' => $sqlString, 'extensionKey' => $extensionKey);
+	}
+
+	/**
+	 * @return LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 
 }
