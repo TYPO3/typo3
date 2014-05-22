@@ -505,7 +505,7 @@ page.10.value = HELLO WORLD!
 				if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($k)) {
 					if (isset($pArray[$k . '_'])) {
 						$lines[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
-							<td nowrap><img src="clear.gif" width="1" height="1" hspace=' . $c * 10 . ' align="top">' . '<a href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('id' => $k)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $k), array('title' => ('ID: ' . $k))) . \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($pArray[$k], 30) . '</a></td>
+							<td nowrap><img src="clear.gif" width="1" height="1" hspace=' . $c * 10 . ' align="top">' . '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('id' => $k))) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $k), array('title' => ('ID: ' . $k))) . \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($pArray[$k], 30) . '</a></td>
 							<td align="center">' . $pArray[($k . '_')]['count'] . '</td>
 							<td align="center" class="bgColor5">' . ($pArray[$k . '_']['root_max_val'] > 0 ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-checked') : '&nbsp;') . '</td>
 							<td align="center">' . ($pArray[$k . '_']['root_min_val'] == 0 ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-checked') : '&nbsp;') . '</td>
