@@ -3484,10 +3484,7 @@ Connection: close
 			return TRUE;
 		}
 
-		// Allow all install tool requests
-		// We accept this risk to have the install tool always available
-		// Also CLI needs to be allowed as unfortunately AbstractUserAuthentication::getAuthInfoArray() accesses HTTP_HOST without reason on CLI
-		if (defined('TYPO3_REQUESTTYPE') && (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL) || (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI)) {
+		if (static::isInternalRequestType()) {
 			return static::$allowHostHeaderValue = TRUE;
 		}
 
@@ -3515,6 +3512,18 @@ Connection: close
 		}
 
 		return static::$allowHostHeaderValue;
+	}
+
+	/**
+	 * Allows internal requests to the install tool and from the command line.
+	 * We accept this risk to have the install tool always available.
+	 * Also CLI needs to be allowed as unfortunately AbstractUserAuthentication::getAuthInfoArray()
+	 * accesses HTTP_HOST without reason on CLI
+	 *
+	 * @return bool
+	 */
+	static protected function isInternalRequestType() {
+		return (defined('TYPO3_REQUESTTYPE') && TYPO3_REQUESTTYPE & (TYPO3_REQUESTTYPE_INSTALL | TYPO3_REQUESTTYPE_CLI));
 	}
 
 	/**

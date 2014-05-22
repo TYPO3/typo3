@@ -1572,7 +1572,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function isAllowedHostHeaderValueReturnsFalseIfTrusedHostsIsNotConfigured() {
 		unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern']);
-		$this->assertFalse(Utility\GeneralUtility::isAllowedHostHeaderValue('evil.foo.bar'));
+		$this->assertFalse(GeneralUtilityFixture::isAllowedHostHeaderValue('evil.foo.bar'));
 	}
 
 	/**
@@ -1610,7 +1610,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function isAllowedHostHeaderValueReturnsTrueIfHostValueMatches($httpHost, $hostNamePattern) {
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = $hostNamePattern;
-		$this->assertTrue(Utility\GeneralUtility::isAllowedHostHeaderValue($httpHost));
+		$this->assertTrue(GeneralUtilityFixture::isAllowedHostHeaderValue($httpHost));
 	}
 
 	/**
@@ -1621,7 +1621,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function isAllowedHostHeaderValueReturnsFalseIfHostValueMatches($httpHost, $hostNamePattern) {
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = $hostNamePattern;
-		$this->assertFalse(Utility\GeneralUtility::isAllowedHostHeaderValue($httpHost));
+		$this->assertFalse(GeneralUtilityFixture::isAllowedHostHeaderValue($httpHost));
 	}
 
 	public function serverNamePatternDataProvider() {
@@ -1695,7 +1695,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$_SERVER['SERVER_NAME'] = $serverName;
 		$_SERVER['SERVER_PORT'] = $serverPort;
 		$_SERVER['HTTPS'] = $ssl;
-		$this->assertSame($isAllowed, Utility\GeneralUtility::isAllowedHostHeaderValue($httpHost));
+		$this->assertSame($isAllowed, GeneralUtilityFixture::isAllowedHostHeaderValue($httpHost));
 	}
 
 	/**
@@ -1720,7 +1720,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getIndpEnvForHostThrowsExceptionForNotAllowedHostnameValues($httpHost, $hostNamePattern) {
 		$_SERVER['HTTP_HOST'] = $httpHost;
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = $hostNamePattern;
-		Utility\GeneralUtility::getIndpEnv('HTTP_HOST');
+		GeneralUtilityFixture::getIndpEnv('HTTP_HOST');
 	}
 
 	/**
