@@ -587,9 +587,9 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		}
 		// Back
 		if (($this->CMD['showExt'] && (!$this->CMD['standAlone'] && !t3lib_div::_GP('standAlone'))) || ($this->CMD['importExt'] || $this->CMD['uploadExt'] && (!$this->CMD['standAlone'])) || $this->CMD['importExtInfo']) {
-			$buttons['back'] = '<a href="' . t3lib_div::linkThisScript(array(
+			$buttons['back'] = '<a href="' . htmlspecialchars(t3lib_div::linkThisScript(array(
 				'CMD' => ''
-			)) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->getLL('go_back') . '">' .
+			))) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->getLL('go_back') . '">' .
 					t3lib_iconWorks::getSpriteIcon('actions-view-go-back') .
 					'</a>';
 		}

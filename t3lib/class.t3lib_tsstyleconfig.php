@@ -162,7 +162,7 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext {
 		$content = '';
 		$content .= t3lib_div::wrapJS('
 			function uFormUrl(aname) {
-				document.' . $this->ext_CEformName . '.action = "' . t3lib_div::linkThisScript() . '#"+aname;
+				document.' . $this->ext_CEformName . '.action = ' . t3lib_div::quoteJSvalue(t3lib_div::linkThisScript() . '#' ) . '+aname;
 			}
 		');
 
