@@ -62,6 +62,10 @@ abstract class t3lib_error_AbstractExceptionHandler implements t3lib_error_Excep
 	 * @see t3lib_div::sysLog(), t3lib_div::devLog()
 	 */
 	protected function writeLogEntries(Exception $exception, $context) {
+			// Do not write any logs for this message to avoid filling up tables or files with illegal requests
+		if ($exception->getCode() === 1396795884) {
+			return;
+		}
 		$filePathAndName = $exception->getFile();
 		$exceptionCodeNumber = ($exception->getCode() > 0) ? '#' . $exception->getCode() . ': ' : '';
 		$logTitle = 'Core: Exception handler (' . $context . ')';
