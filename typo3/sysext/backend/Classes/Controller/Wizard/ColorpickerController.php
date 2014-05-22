@@ -138,10 +138,10 @@ class ColorpickerController {
 				$this->imageError = 'ERROR: The image, "' . $this->exampleImg . '", could not be found!';
 			}
 		}
-		// Setting field-change functions:
-		$fieldChangeFuncArr = unserialize($this->fieldChangeFunc);
 		$update = '';
 		if ($this->areFieldChangeFunctionsValid()) {
+			// Setting field-change functions:
+			$fieldChangeFuncArr = unserialize($this->fieldChangeFunc);
 			unset($fieldChangeFuncArr['alert']);
 			foreach ($fieldChangeFuncArr as $v) {
 				$update .= '
