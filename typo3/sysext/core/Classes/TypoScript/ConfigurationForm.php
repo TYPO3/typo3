@@ -144,7 +144,7 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 		$content = '';
 		$content .= \TYPO3\CMS\Core\Utility\GeneralUtility::wrapJS('
 			function uFormUrl(aname) {
-				document.' . $this->ext_CEformName . '.action = "' . \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript() . '#"+aname;
+				document.' . $this->ext_CEformName . '.action = ' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript() . '#') . '+aname;
 			}
 		');
 		if ($addFormTag) {
