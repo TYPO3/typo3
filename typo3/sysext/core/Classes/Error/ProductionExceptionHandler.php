@@ -23,6 +23,8 @@ namespace TYPO3\CMS\Core\Error;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Messaging\ErrorpageMessage;
+
 /**
  * A quite exception handler which catches but ignores any exception.
  *
@@ -90,6 +92,13 @@ class ProductionExceptionHandler extends AbstractExceptionHandler {
 	 * @return boolean
 	 */
 	protected function discloseExceptionInformation(\Exception $exception) {
+		// Allow message to be shown in production mode if the exception is about
+		// trusted host configuration.  By doing so we do not disclose
+		// any valuable information to an attacker but avoid confusions among TYPO3 admins
+		// in production context.
+		if ($exception->getCode() === 1396795884) {
+			return TRUE;
+		}
 		// Show client error messages 40x in every case
 		if ($exception instanceof Http\AbstractClientErrorException) {
 			return TRUE;

@@ -62,6 +62,10 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, \T
 	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(), \TYPO3\CMS\Core\Utility\GeneralUtility::devLog()
 	 */
 	protected function writeLogEntries(\Exception $exception, $context) {
+		// Do not write any logs for this message to avoid filling up tables or files with illegal requests
+		if ($exception->getCode() === 1396795884) {
+			return;
+		}
 		$filePathAndName = $exception->getFile();
 		$exceptionCodeNumber = $exception->getCode() > 0 ? '#' . $exception->getCode() . ': ' : '';
 		$logTitle = 'Core: Exception handler (' . $context . ')';
