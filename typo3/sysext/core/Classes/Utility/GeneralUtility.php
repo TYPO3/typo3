@@ -48,6 +48,18 @@ class GeneralUtility {
 	const SYSLOG_SEVERITY_WARNING = 2;
 	const SYSLOG_SEVERITY_ERROR = 3;
 	const SYSLOG_SEVERITY_FATAL = 4;
+
+	const ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL = '.*';
+	const ENV_TRUSTED_HOSTS_PATTERN_SERVER_NAME = 'SERVER_NAME';
+
+	/**
+	 * State of host header value security check
+	 * in order to avoid unnecessary multiple checks during one request
+	 *
+	 * @var bool
+	 */
+	static protected $allowHostHeaderValue = FALSE;
+
 	/**
 	 * Singleton instances returned by makeInstance, using the class names as
 	 * array keys
@@ -3185,6 +3197,7 @@ Connection: close
 	 *
 	 * @param string $getEnvName Name of the "environment variable"/"server variable" you wish to use. Valid values are SCRIPT_NAME, SCRIPT_FILENAME, REQUEST_URI, PATH_INFO, REMOTE_ADDR, REMOTE_HOST, HTTP_REFERER, HTTP_HOST, HTTP_USER_AGENT, HTTP_ACCEPT_LANGUAGE, QUERY_STRING, TYPO3_DOCUMENT_ROOT, TYPO3_HOST_ONLY, TYPO3_HOST_ONLY, TYPO3_REQUEST_HOST, TYPO3_REQUEST_URL, TYPO3_REQUEST_SCRIPT, TYPO3_REQUEST_DIR, TYPO3_SITE_URL, _ARRAY
 	 * @return string Value based on the input key, independent of server/os environment.
+	 * @throws \UnexpectedValueException
 	 */
 	static public function getIndpEnv($getEnvName) {
 		/*
@@ -3327,6 +3340,12 @@ Connection: close
 					$retVal = $host;
 				}
 			}
+			if (!static::isAllowedHostHeaderValue($retVal)) {
+				throw new \UnexpectedValueException(
+					'The current host header value does not match the configured trusted hosts pattern! Check the pattern defined in $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'trustedHostsPattern\'] and adapt it, if you want to allow the current host header \'' . $retVal . '\' for your installation.',
+					1396795884
+				);
+			}
 			break;
 		case 'HTTP_REFERER':
 
@@ -3451,6 +3470,51 @@ Connection: close
 			break;
 		}
 		return $retVal;
+	}
+
+	/**
+	 * Checks if the provided host header value matches the trusted hosts pattern.
+	 * If the pattern is not defined (which only can happen early in the bootstrap), deny any value.
+	 *
+	 * @param string $hostHeaderValue HTTP_HOST header value as sent during the request (may include port)
+	 * @return bool
+	 */
+	static public function isAllowedHostHeaderValue($hostHeaderValue) {
+		if (static::$allowHostHeaderValue === TRUE) {
+			return TRUE;
+		}
+
+		// Allow all install tool requests
+		// We accept this risk to have the install tool always available
+		// Also CLI needs to be allowed as unfortunately AbstractUserAuthentication::getAuthInfoArray() accesses HTTP_HOST without reason on CLI
+		if (defined('TYPO3_REQUESTTYPE') && (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL) || (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI)) {
+			return static::$allowHostHeaderValue = TRUE;
+		}
+
+		// Deny the value if trusted host patterns is empty, which means we are early in the bootstrap
+		if (empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'])) {
+			return FALSE;
+		}
+
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] === self::ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL) {
+			static::$allowHostHeaderValue = TRUE;
+		} elseif ($GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] === self::ENV_TRUSTED_HOSTS_PATTERN_SERVER_NAME) {
+			// Allow values that equal the server name
+			// Note that this is only secure if name base virtual host are configured correctly in the webserver
+			$defaultPort = self::getIndpEnv('TYPO3_SSL') ? '443' : '80';
+			$parsedHostValue = parse_url('http://' . $hostHeaderValue);
+			if (isset($parsedHostValue['port'])) {
+				static::$allowHostHeaderValue = ($parsedHostValue['host'] === $_SERVER['SERVER_NAME'] && (string)$parsedHostValue['port'] === $_SERVER['SERVER_PORT']);
+			} else {
+				static::$allowHostHeaderValue = ($hostHeaderValue === $_SERVER['SERVER_NAME'] && $defaultPort === $_SERVER['SERVER_PORT']);
+			}
+		} else {
+			// In case name based virtual hosts are not possible, we allow setting a trusted host pattern
+			// See https://typo3.org/teams/security/security-bulletins/typo3-core/typo3-core-sa-2014-001/ for further details
+			static::$allowHostHeaderValue = (bool)preg_match('/^' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] . '$/', $hostHeaderValue);
+		}
+
+		return static::$allowHostHeaderValue;
 	}
 
 	/**

@@ -98,7 +98,10 @@ abstract class AbstractStandaloneMessage extends \TYPO3\CMS\Core\Messaging\Abstr
 			'###CSS_CLASS###' => $classes[$this->severity],
 			'###TITLE###' => $this->title,
 			'###MESSAGE###' => $this->message,
-			'###BASEURL###' => \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'),
+			// Avoid calling TYPO3_SITE_URL here to get the base URL as it might be that we output an exception message with
+			// invalid trusted host, which would lead to a nested exception! See: #30377
+			// Instead we calculate the relative path to the document root without involving HTTP request parameters.
+			'###BASEURL###' => substr(PATH_site, strlen(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_DOCUMENT_ROOT'))),
 			'###TYPO3_mainDir###' => TYPO3_mainDir,
 			'###TYPO3_copyright_year###' => TYPO3_copyright_year
 		);
