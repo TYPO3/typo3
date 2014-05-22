@@ -123,7 +123,7 @@ class NewContentElementController {
 		$this->id = (int)GeneralUtility::_GP('id');
 		$this->sys_language = (int)GeneralUtility::_GP('sys_language_uid');
 		$this->R_URI = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
-		$this->colPos = GeneralUtility::_GP('colPos');
+		$this->colPos = (int)GeneralUtility::_GP('colPos');
 		$this->uid_pid = (int)GeneralUtility::_GP('uid_pid');
 		$this->MCONF['name'] = 'xMOD_db_new_content_el';
 		$this->modTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.wizards.newContentElement');
