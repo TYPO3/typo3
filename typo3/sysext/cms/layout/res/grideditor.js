@@ -208,7 +208,7 @@ TYPO3.Backend.t3Grid = Ext.extend(Ext.Component, {
 				}
 				cellHtml += '</div>';
 
-				cellHtml += '<div class="cell_data">' + TYPO3.lang.name + ': ' + (cell.name ? cell.name : TYPO3.lang.notSet)
+				cellHtml += '<div class="cell_data">' + TYPO3.lang.name + ': ' + (cell.name ? Ext.util.Format.htmlEncode(cell.name) : TYPO3.lang.notSet)
 						+ '<br />' + TYPO3.lang.column + ': '
 						+ (cell.column === undefined ? TYPO3.lang.notSet : parseInt(cell.column, 10)) + '</div>';
 

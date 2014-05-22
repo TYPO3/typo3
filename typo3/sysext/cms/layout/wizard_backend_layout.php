@@ -114,7 +114,7 @@ class SC_wizard_backend_layout {
 		// select record
 		$record = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($this->P['field'], $this->P['table'], 'uid=' . intval($this->P['uid']));
 		if (trim($record[0][$this->P['field']]) == '') {
-			$t3GridData = "[[{colspan:1,rowspan:1,spanned:false,name:''}]]";
+			$rows = array(array(array('colspan' => 1, 'rowspan' => 1, 'spanned' => FALSE, 'name' => '')));
 			$colCount = 1;
 			$rowCount = 1;
 		} else {
@@ -123,93 +123,78 @@ class SC_wizard_backend_layout {
 			$parser = t3lib_div::makeInstance('t3lib_TSparser');
 			$parser->parse($record[0][$this->P['field']]);
 			$data = $parser->setup['backend_layout.'];
-			$t3GridData = '[';
+			$rows = array();
 			$colCount = $data['colCount'];
 			$rowCount = $data['rowCount'];
 			$dataRows = $data['rows.'];
 			$spannedMatrix = array();
 
 			for ($i = 1; $i <= $rowCount; $i++) {
-				$rowString = '';
+				$cells = array();
+				$row = array_shift($dataRows);
+				$columns = $row['columns.'];
 				for ($j = 1; $j <= $colCount; $j++) {
-					if ($j == 1) {
-						$row = array_shift($dataRows);
-						$columns = $row['columns.'];
-						$rowString = '[';
-						$cells = array();
-					}
+					$cellData = array();
 					if (!$spannedMatrix[$i][$j]) {
 						if (is_array($columns) && count($columns)) {
 							$column = array_shift($columns);
-							$cellString = '{';
-							$cellData = array();
 							if (isset($column['colspan'])) {
-								$cellData[] = 'colspan:' . intval($column['colspan']);
+								$cellData['colspan'] = (int)$column['colspan'];
+								$columnColSpan = (int)$column['colspan'];
 								if (isset($column['rowspan'])) {
-									for ($spanRow = 0; $spanRow < intval($column['rowspan']); $spanRow++) {
-										for ($spanColumn = 0; $spanColumn < intval($column['colspan']); $spanColumn++) {
+									$columnRowSpan = (int)$column['rowspan'];
+									for ($spanRow = 0; $spanRow < $columnRowSpan; $spanRow++) {
+										for ($spanColumn = 0; $spanColumn < $columnColSpan; $spanColumn++) {
 											$spannedMatrix[$i + $spanRow][$j + $spanColumn] = 1;
 										}
 									}
 								} else {
-									for ($spanColumn = 0; $spanColumn < intval($column['colspan']); $spanColumn++) {
+									for ($spanColumn = 0; $spanColumn < $columnColSpan; $spanColumn++) {
 										$spannedMatrix[$i][$j + $spanColumn] = 1;
 									}
 								}
 							} else {
-								$cellData[] = 'colspan:1';
+								$cellData['colspan'] = 1;
 								if (isset($column['rowspan'])) {
-									for ($spanRow = 0; $spanRow < intval($column['rowspan']); $spanRow++) {
+									$columnRowSpan = (int)$column['rowspan'];
+									for ($spanRow = 0; $spanRow < $columnRowSpan; $spanRow++) {
 										$spannedMatrix[$i + $spanRow][$j] = 1;
 									}
 								}
 							}
 							if (isset($column['rowspan'])) {
-								$cellData[] = 'rowspan:' . intval($column['rowspan']);
+								$cellData['rowspan'] = (int)$column['rowspan'];
 							} else {
-								$cellData[] = 'rowspan:1';
+								$cellData['rowspan'] = 1;
 							}
 							if (isset($column['name'])) {
-								$cellData[] = 'name:\'' . $column['name'] . '\'';
+								$cellData['name'] = $column['name'];
 							}
 							if (isset($column['colPos'])) {
-								$cellData[] = 'column:' . $column['colPos'];
+								$cellData['column'] = (int)$column['colPos'];
 							}
-
-							$cellString .= implode(',', $cellData) . '}';
-							$cells[] = $cellString;
-
 						}
 					} else {
-						$cells[] = '{colspan:1,rowspan:1,spanned:1}';
+						$cellData = array('colspan' => 1, 'rowspan' => 1, 'spanned' => 1);
 					}
+					$cells[] = $cellData;
 				}
-				$rowString .= implode(',', $cells);
-				if ($rowString) {
-					$rowString .= ']';
+				$rows[] = $cells;
+				if (!empty($spannedMatrix[$i]) && is_array($spannedMatrix[$i])) {
+					ksort($spannedMatrix[$i]);
 				}
-				$rows[] = $rowString;
-				ksort($spannedMatrix[$i]);
 			}
-
-			$t3GridData .= implode(',', $rows) . ']';
-
-
 		}
-
 		$pageRenderer->enableExtJSQuickTips();
-
 		$pageRenderer->addExtOnReadyCode('
 			t3Grid = new TYPO3.Backend.t3Grid({
-				data: ' . $t3GridData . ',
-				colCount: ' . $colCount . ',
-				rowCount: ' . $rowCount . ',
+				data: ' . json_encode($rows) . ',
+				colCount: ' . (int)$colCount . ',
+				rowCount: ' . (int)$rowCount . ',
 				targetElement: \'editor\'
 			});
 			t3Grid.drawTable();
 			');
-
-
 		$this->doc->styleSheetFile_post = TYPO3_MOD_PATH . 'res/grideditor.css';
 	}
 
