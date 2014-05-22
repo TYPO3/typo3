@@ -91,6 +91,13 @@ class t3lib_error_ProductionExceptionHandler extends t3lib_error_AbstractExcepti
 	 * @return bool
 	 */
 	protected function discloseExceptionInformation(Exception $exception) {
+			// Allow message to be shown in production mode if the exception is about
+			// trusted host configuration.  By doing so we do not disclose
+			// any valuable information to an attacker but avoid confusions among TYPO3 admins
+			// in production context.
+		if ($exception->getCode() === 1396795884) {
+			return TRUE;
+		}
 			// Show client error messages 40x in every case
 		if ($exception instanceof t3lib_error_http_AbstractClientErrorException) {
 			return TRUE;
