@@ -985,11 +985,8 @@ class ImportExport {
 		}
 		try {
 			$fileContent = $file->getContents();
-		} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException $e) {
-			$this->error('File ' . $file->getPublicUrl() . ': ' . $e->getMessage());
-			return;
-		} catch (\TYPO3\CMS\Core\Resource\Exception\IllegalFileExtensionException $e) {
-			$this->error('File ' . $file->getPublicUrl() . ': ' . $e->getMessage());
+		} catch (\Exception $e) {
+			$this->error('Error when trying to add file ' . $file->getCombinedIdentifier() . ': ' . $e->getMessage());
 			return;
 		}
 		$fileUid = $file->getUid();
