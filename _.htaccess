@@ -85,11 +85,11 @@ RewriteEngine On
 
 # Rules to set ApplicationContext based on hostname
 #RewriteCond %{HTTP_HOST} ^dev\.example\.com$
-#RewriteRule (.*) $1 [E=TYPO3_CONTEXT:Development]
+#RewriteRule .? - [E=TYPO3_CONTEXT:Development]
 #RewriteCond %{HTTP_HOST} ^staging\.example\.com$
-#RewriteRule (.*) $1 [E=TYPO3_CONTEXT:Production/Staging]
+#RewriteRule .? - [E=TYPO3_CONTEXT:Production/Staging]
 #RewriteCond %{HTTP_HOST} ^www\.example\.com$
-#RewriteRule (.*) $1 [E=TYPO3_CONTEXT:Production]
+#RewriteRule .? - [E=TYPO3_CONTEXT:Production]
 
 # Rule for versioned static files, configured through:
 # - $TYPO3_CONF_VARS['BE']['versionNumberInFilename']
