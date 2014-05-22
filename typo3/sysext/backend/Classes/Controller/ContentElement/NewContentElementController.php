@@ -93,7 +93,7 @@ class NewContentElementController {
 		$this->id = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'));
 		$this->sys_language = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sys_language_uid'));
 		$this->R_URI = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('returnUrl'));
-		$this->colPos = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('colPos');
+		$this->colPos = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('colPos');
 		$this->uid_pid = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('uid_pid'));
 		$this->MCONF['name'] = 'xMOD_db_new_content_el';
 		$this->modTSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->id, 'mod.wizards.newContentElement');
