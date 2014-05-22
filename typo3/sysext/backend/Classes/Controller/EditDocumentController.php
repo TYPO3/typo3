@@ -1032,7 +1032,7 @@ class EditDocumentController {
 		if ($this->returnUrl == 'close.html') {
 			return '';
 		}
-		$aOnClick = 'vHWin=window.open(\'' . \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('returnUrl' => 'close.html')) . '\',\'' . md5($this->R_URI) . '\',\'width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1\');vHWin.focus();return false;';
+		$aOnClick = 'vHWin=window.open(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('returnUrl' => 'close.html'))) . ',\'' . md5($this->R_URI) . '\',\'width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1\');vHWin.focus();return false;';
 		return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.openInNewWindow', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-window-open') . '</a>';
 	}
 
