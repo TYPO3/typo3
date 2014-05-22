@@ -1,3 +1,15 @@
+2014-05-22  4ebc6ca                  [RELEASE] Release of TYPO3 4.7.19 (TYPO3 Release Team)
+2014-05-22  07eba3e  #30377          [SECURITY] Add trusted HTTP_HOST configuration (Helmut Hummel)
+2014-05-22  ec33beb  #54111,#54113   [SECURITY] XSS in (old) extension manager information function (Marc Bastian Heinrichs)
+2014-05-22  fb096e3  #48695          [SECURITY] XSS in new content element wizard (Markus Klein)
+2014-05-22  1389da5  #54109          [SECURITY] XSS in template tools on root page (Marc Bastian Heinrichs)
+2014-05-22  65fc32f  #57576          [SECURITY] XSS in Backend Layout Wizard (Nicole Cordes)
+2014-05-22  7bec5c8  #48693          [SECURITY] Encode URL for use in JavaScript (Markus Klein)
+2014-05-22  b907b64  #56458          [SECURITY] Fix insecure unserialize in colorpicker (Helmut Hummel)
+2014-05-22  c39bca9  #54526          [SECURITY] Remove charts.swf to get rid of XSS vulnerability (Helmut Hummel)
+2014-04-16  53b74d7                  [TASK] Set TYPO3 version to 4.7.19-dev (TYPO3 Release Team)
+
+
 2014-04-16  26f503d                  [RELEASE] Release of TYPO3 4.7.18 (TYPO3 Release Team)
 2014-04-15  f329f76  #51768          [TASK] Updates prototype and scriptaculous, fixing IE9+ issues (Ernesto Baschny)
 2014-04-15  9a2f402  #56580          [BUGFIX] SoftReferenceIndex typolink lacks support for title attributes (Marc Bastian Heinrichs)
