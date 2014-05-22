@@ -186,7 +186,7 @@ class SC_db_new_content_el {
 		$this->id = intval(t3lib_div::_GP('id'));
 		$this->sys_language = intval(t3lib_div::_GP('sys_language_uid'));
 		$this->R_URI = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
-		$this->colPos = t3lib_div::_GP('colPos');
+		$this->colPos = (int)t3lib_div::_GP('colPos');
 		$this->uid_pid = intval(t3lib_div::_GP('uid_pid'));
 
 		$this->MCONF['name'] = 'xMOD_db_new_content_el';
