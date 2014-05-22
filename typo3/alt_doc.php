@@ -1020,7 +1020,7 @@ class SC_alt_doc {
 		if ($this->returnUrl == 'close.html') {
 			return '';
 		}
-		$aOnClick = 'vHWin=window.open(\''.t3lib_div::linkThisScript(array('returnUrl'=>'close.html')).'\',\''.md5($this->R_URI).'\',\'width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1\');vHWin.focus();return false;';
+		$aOnClick = 'vHWin=window.open('.t3lib_div::quoteJSvalue(t3lib_div::linkThisScript(array('returnUrl'=>'close.html'))).',\''.md5($this->R_URI).'\',\'width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1\');vHWin.focus();return false;';
 		return '<a href="#" onclick="'.htmlspecialchars($aOnClick).'" title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.openInNewWindow', TRUE) . '">' .
 				t3lib_iconWorks::getSpriteIcon('actions-window-open') .
 			'</a>';
