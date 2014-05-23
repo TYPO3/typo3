@@ -41,7 +41,7 @@ class FrontendLoginHook {
 		if (trim($GLOBALS['TYPO3_CONF_VARS']['FE']['loginSecurityLevel']) === 'rsa') {
 			$backend = \TYPO3\CMS\Rsaauth\Backend\BackendFactory::getBackend();
 			if ($backend) {
-				$result[0] = 'tx_rsaauth_feencrypt(this);';
+				$result[0] = 'return TYPO3FrontendLoginFormRsaEncryption.submitForm(this, TYPO3FrontendLoginFormRsaEncryptionPublicKeyUrl);';
 				$javascriptPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('rsaauth') . 'resources/';
 				$files = array(
 					'jsbn/jsbn.js',
@@ -49,24 +49,14 @@ class FrontendLoginHook {
 					'jsbn/rng.js',
 					'jsbn/rsa.js',
 					'jsbn/base64.js',
-					'rsaauth_min.js'
+					'FrontendLoginFormRsaEncryption.min.js'
 				);
-
-				$additionalHeader = '';
+				$eIdUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($GLOBALS['TSFE']->absRefPrefix . 'index.php?eID=FrontendLoginRsaPublicKey');
+				$additionalHeader = '<script type="text/javascript">var TYPO3FrontendLoginFormRsaEncryptionPublicKeyUrl = ' . $eIdUrl . ';</script>';
 				foreach ($files as $file) {
 					$additionalHeader .= '<script type="text/javascript" src="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $javascriptPath . $file . '"></script>';
 				}
 				$GLOBALS['TSFE']->additionalHeaderData['rsaauth_js'] = $additionalHeader;
-
-				// Generate a new key pair
-				$keyPair = $backend->createNewKeyPair();
-				// Save private key
-				$storage = \TYPO3\CMS\Rsaauth\Storage\StorageFactory::getStorage();
-				/** @var $storage \TYPO3\CMS\Rsaauth\Storage\AbstractStorage */
-				$storage->put($keyPair->getPrivateKey());
-				// Add RSA hidden fields
-				$result[1] .= '<input type="hidden" id="rsa_n" name="n" value="' . htmlspecialchars($keyPair->getPublicKeyModulus()) . '" />';
-				$result[1] .= '<input type="hidden" id="rsa_e" name="e" value="' . sprintf('%x', $keyPair->getExponent()) . '" />';
 			}
 		}
 		return $result;

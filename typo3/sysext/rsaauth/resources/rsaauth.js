@@ -18,6 +18,7 @@ function tx_rsaauth_encrypt() {
 	}
 }
 
+// Deprecated since 6.2 will be removed 2 versions later
 function tx_rsaauth_feencrypt(form) {
 	// check if the form was already sent (see #40085)
 	if (form.pass.value.match(/^rsa:/) || form.n.value == '' || form.e.value == '') {

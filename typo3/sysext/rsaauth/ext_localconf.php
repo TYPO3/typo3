@@ -34,4 +34,8 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displ
 	FALSE
 );
 
+// eID for FrontendLoginRsaPublicKey
+$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['FrontendLoginRsaPublicKey'] =
+	'EXT:rsaauth/resources/Private/Php/FrontendLoginRsaPublicKey.php';
+
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/backend.php']['constructPostProcess'][] = 'TYPO3\\CMS\\Rsaauth\\Hook\\BackendHookForAjaxLogin->addRsaJsLibraries';
