@@ -136,6 +136,8 @@ class Bootstrap {
 			!file_exists($configurationManager->getLocalConfigurationFileLocation())
 			&& !file_exists($configurationManager->getLocalconfFileLocation())
 		) {
+			define('TYPO3_enterInstallScript', '1');
+			$this->defineTypo3RequestTypes();
 			require_once __DIR__ . '/../Utility/HttpUtility.php';
 			Utility\HttpUtility::redirect($pathUpToDocumentRoot . 'typo3/install/index.php?mode=123&step=1&password=joh316');
 		}
