@@ -171,6 +171,8 @@ class Bootstrap {
 		$configurationManager = new \TYPO3\CMS\Core\Configuration\ConfigurationManager;
 		$this->setEarlyInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager', $configurationManager);
 		if (!file_exists($configurationManager->getLocalConfigurationFileLocation()) || !file_exists(PATH_typo3conf . 'PackageStates.php')) {
+			define('TYPO3_enterInstallScript', '1');
+			$this->defineTypo3RequestTypes();
 			require_once __DIR__ . '/../Utility/HttpUtility.php';
 			Utility\HttpUtility::redirect($pathUpToDocumentRoot . 'typo3/sysext/install/Start/Install.php');
 		}
