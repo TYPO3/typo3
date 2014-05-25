@@ -120,7 +120,7 @@ class NewContentElementController {
 		$this->id = intval(GeneralUtility::_GP('id'));
 		$this->sys_language = intval(GeneralUtility::_GP('sys_language_uid'));
 		$this->R_URI = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
-		$this->colPos = (int)GeneralUtility::_GP('colPos');
+		$this->colPos = GeneralUtility::_GP('colPos') === NULL ? NULL : (int)GeneralUtility::_GP('colPos');
 		$this->uid_pid = intval(GeneralUtility::_GP('uid_pid'));
 		$this->MCONF['name'] = 'xMOD_db_new_content_el';
 		$this->modTSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->id, 'mod.wizards.newContentElement');
@@ -153,7 +153,7 @@ class NewContentElementController {
 			$posMap->cur_sys_language = $this->sys_language;
 			$posMap->backPath = $GLOBALS['BACK_PATH'];
 			// If a column is pre-set:
-			if ((string) $this->colPos != '') {
+			if (isset($this->colPos)) {
 				if ($this->uid_pid < 0) {
 					$row = array();
 					$row['uid'] = abs($this->uid_pid);
