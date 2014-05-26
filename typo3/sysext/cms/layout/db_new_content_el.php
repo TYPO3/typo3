@@ -186,7 +186,7 @@ class SC_db_new_content_el {
 		$this->id = intval(t3lib_div::_GP('id'));
 		$this->sys_language = intval(t3lib_div::_GP('sys_language_uid'));
 		$this->R_URI = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
-		$this->colPos = (int)t3lib_div::_GP('colPos');
+		$this->colPos = t3lib_div::_GP('colPos') === NULL ? NULL : (int)t3lib_div::_GP('colPos');
 		$this->uid_pid = intval(t3lib_div::_GP('uid_pid'));
 
 		$this->MCONF['name'] = 'xMOD_db_new_content_el';
@@ -227,7 +227,7 @@ class SC_db_new_content_el {
 			$posMap->cur_sys_language = $this->sys_language;
 			$posMap->backPath = $BACK_PATH;
 
-			if ((string)$this->colPos!='')	{	// If a column is pre-set:
+			if (isset($this->colPos))	{	// If a column is pre-set:
 				if ($this->uid_pid<0)	{
 					$row=array();
 					$row['uid']=abs($this->uid_pid);
