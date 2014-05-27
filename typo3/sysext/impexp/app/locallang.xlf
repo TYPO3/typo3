@@ -132,6 +132,15 @@
 			<trans-unit id="makeadvanc_excludeHtmlCssFile" xml:space="preserve">
 				<source>Exclude HTML/CSS file resources:</source>
 			</trans-unit>
+			<trans-unit id="makeadvanc_files" xml:space="preserve">
+				<source>Files:</source>
+			</trans-unit>
+			<trans-unit id="makeadvanc_saveFilesOutsideExportFile" xml:space="preserve">
+				<source>Save files in extra folder beside the export file:</source>
+			</trans-unit>
+			<trans-unit id="makeadvanc_saveFilesOutsideExportFile_limit" xml:space="preserve">
+				<source>(supported for "Save to filename" only)</source>
+			</trans-unit>
 			<trans-unit id="makeadvanc_extensionDependencies" xml:space="preserve">
 				<source>Extension dependencies:</source>
 			</trans-unit>

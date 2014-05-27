@@ -87,6 +87,26 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
 		$this->assertXmlStringEqualsXmlFile(__DIR__ . '/../../Fixtures/ImportExportXml/pages-and-ttcontent-with-image.xml', $out);
 	}
 
+	/**
+	 * @test
+	 */
+	public function exportPagesAndRelatedTtContentWithImagesButNotIncluded() {
+
+		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_file.xml');
+
+		$this->export->setSaveFilesOutsideExportFile(TRUE);
+
+		$this->compileExportPagesAndRelatedTtContentWithImages();
+
+		$out = $this->export->compileMemoryToFileContent('xml');
+
+		$this->assertXmlStringEqualsXmlFile(__DIR__ . '/../../Fixtures/ImportExportXml/pages-and-ttcontent-with-image-but-not-included.xml', $out);
+
+		$temporaryFilesDirectory = $this->export->getTemporaryFilesPathForExport();
+		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', $temporaryFilesDirectory . 'da9acdf1e105784a57bbffec9520969578287797');
+
+	}
+
 	protected function compileExportPagesAndRelatedTtContentWithImages() {
 
 		$this->export->setRecordTypesIncludeFields(

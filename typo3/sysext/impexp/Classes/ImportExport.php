@@ -399,6 +399,20 @@ class ImportExport {
 	 */
 	protected $legacyImportMigrationRecords = array();
 
+	/**
+	 * @var bool
+	 */
+	protected $saveFilesOutsideExportFile = FALSE;
+
+	/**
+	 * @var null|string
+	 */
+	protected $temporaryFilesPathForExport = NULL;
+
+	/**
+	 * @var null|string
+	 */
+	protected $filesPathForImport = NULL;
 
 	/**************************
 	 * Initialize
@@ -487,6 +501,17 @@ class ImportExport {
 			'TYPO3_version' => TYPO3_version,
 			'created' => strftime('%A %e. %B %Y', $GLOBALS['EXEC_TIME'])
 		);
+	}
+
+	/**
+	 * Option to enable having the files not included in the export file.
+	 * The files are saved to a temporary folder instead.
+	 *
+	 * @param boolean $saveFilesOutsideExportFile
+	 * @see getTemporaryFilesPathForExport()
+	 */
+	public function setSaveFilesOutsideExportFile($saveFilesOutsideExportFile) {
+		$this->saveFilesOutsideExportFile = $saveFilesOutsideExportFile;
 	}
 
 	/**
@@ -958,7 +983,12 @@ class ImportExport {
 			return;
 		}
 		try {
-			$fileContent = $file->getContents();
+			if (!$this->saveFilesOutsideExportFile) {
+				$fileContent = $file->getContents();
+			} else {
+				$file->checkActionPermission('read');
+			}
+
 		} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException $e) {
 			$this->error('File ' . $file->getPublicUrl() . ': ' . $e->getMessage());
 			return;
@@ -991,8 +1021,12 @@ class ImportExport {
 		// Setting this data in the header
 		$this->dat['header']['files_fal'][$fileId] = $fileRec;
 
-		// ... and finally add the heavy stuff:
-		$fileRec['content'] = $fileContent;
+		if (!$this->saveFilesOutsideExportFile) {
+			// ... and finally add the heavy stuff:
+			$fileRec['content'] = $fileContent;
+		} else {
+			GeneralUtility::upload_copy_move($file->getForLocalProcessing(FALSE), $this->getTemporaryFilesPathForExport() . $file->getProperty('sha1'));
+		}
 		$fileRec['content_sha1'] = $fileSha1;
 
 		$this->dat['files_fal'][$fileId] = $fileRec;
@@ -1034,9 +1068,14 @@ class ImportExport {
 					}
 					$this->dat['header']['records'][$refParts[0]][$refParts[1]]['filerefs'][] = $fI['ID'];
 				}
-				// ... and finally add the heavy stuff:
-				$fileRec['content'] = GeneralUtility::getUrl($fI['ID_absFile']);
-				$fileRec['content_md5'] = md5($fileRec['content']);
+				$fileMd5 = md5_file($fI['ID_absFile']);
+				if (!$this->saveFilesOutsideExportFile) {
+					// ... and finally add the heavy stuff:
+					$fileRec['content'] = GeneralUtility::getUrl($fI['ID_absFile']);
+				} else {
+					GeneralUtility::upload_copy_move($fI['ID_absFile'], $this->getTemporaryFilesPathForExport() . $fileMd5);
+				}
+				$fileRec['content_md5'] = $fileMd5;
 				$this->dat['files'][$fI['ID']] = $fileRec;
 				// For soft references, do further processing:
 				if ($recordRef === '_SOFTREF_') {
@@ -1054,9 +1093,14 @@ class ImportExport {
 							$this->dat['header']['files'][$fI['ID']]['RTE_ORIG_ID'] = $RTEoriginal_ID;
 							// Setting this data in the header
 							$this->dat['header']['files'][$RTEoriginal_ID] = $fileRec;
-							// ... and finally add the heavy stuff:
-							$fileRec['content'] = GeneralUtility::getUrl($RTEoriginal_absPath);
-							$fileRec['content_md5'] = md5($fileRec['content']);
+							$fileMd5 = md5_file($RTEoriginal_absPath);
+							if (!$this->saveFilesOutsideExportFile) {
+								// ... and finally add the heavy stuff:
+								$fileRec['content'] = GeneralUtility::getUrl($RTEoriginal_absPath);
+							} else {
+								GeneralUtility::upload_copy_move($RTEoriginal_absPath, $this->getTemporaryFilesPathForExport() . $fileMd5);
+							}
+							$fileRec['content_md5'] = $fileMd5;
 							$this->dat['files'][$RTEoriginal_ID] = $fileRec;
 						} else {
 							$this->error('RTE original file "' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($RTEoriginal_absPath) . '" was not found!');
@@ -1115,6 +1159,38 @@ class ImportExport {
 		} else {
 			$this->error($fI['ID_absFile'] . ' was not a file! Skipping.');
 		}
+	}
+
+	/**
+	 * If saveFilesOutsideExportFile is enabled, this function returns the path
+	 * where the files referenced in the export are copied to.
+	 *
+	 * @return string
+	 * @throws \RuntimeException
+	 * @see setSaveFilesOutsideExportFile()
+	 */
+	public function getTemporaryFilesPathForExport() {
+		if (!$this->saveFilesOutsideExportFile) {
+			throw new \RuntimeException('You need to set saveFilesOutsideExportFile to TRUE before you want to get the temporary files path for export.', 1401205213);
+		}
+		if ($this->temporaryFilesPathForExport === NULL) {
+			$temporaryFolderName = $this->getTemporaryFolderName();
+			$this->temporaryFilesPathForExport = $temporaryFolderName . '/';
+		}
+		return $this->temporaryFilesPathForExport;
+	}
+
+	/**
+	 *
+	 * @return string
+	 */
+	protected function getTemporaryFolderName() {
+		$temporaryPath = PATH_site . 'typo3temp/';
+		do {
+			$temporaryFolderName = $temporaryPath . 'export_temp_files_' . mt_rand(1, PHP_INT_MAX);
+		} while (is_dir($temporaryFolderName));
+		GeneralUtility::mkdir($temporaryFolderName);
+		return $temporaryFolderName;
 	}
 
 	/**
@@ -1526,12 +1602,22 @@ class ImportExport {
 		foreach (array_keys($this->dat['header']['records']['sys_file']) as $sysFileUid) {
 			$fileRecord = $this->dat['records']['sys_file:' . $sysFileUid]['data'];
 
+			$temporaryFile = NULL;
+			// check if there is the right file already in the local folder
+			if ($this->filesPathForImport !== NULL) {
+				if (is_file($this->filesPathForImport . '/' . $fileRecord['sha1']) && sha1_file($this->filesPathForImport . '/' . $fileRecord['sha1']) === $fileRecord['sha1']) {
+					$temporaryFile = $this->filesPathForImport . '/' . $fileRecord['sha1'];
+				}
+			}
+
 			// save file to disk
-			$fileId = md5($fileRecord['storage'] . ':' . $fileRecord['identifier_hash']);
-			$temporaryFile = $this->writeTemporaryFileFromData($fileId);
 			if ($temporaryFile === NULL) {
-				// error on writing the file. Error message was already added
-				continue;
+				$fileId = md5($fileRecord['storage'] . ':' . $fileRecord['identifier_hash']);
+				$temporaryFile = $this->writeTemporaryFileFromData($fileId);
+				if ($temporaryFile === NULL) {
+					// error on writing the file. Error message was already added
+					continue;
+				}
 			}
 
 			$originalStorageUid = $fileRecord['storage'];
@@ -2249,8 +2335,18 @@ class ImportExport {
 	 */
 	public function import_addFileNameToBeCopied($fI) {
 		if (is_array($this->dat['files'][$fI['ID']])) {
-			$tmpFile = GeneralUtility::tempnam('import_temp_');
-			GeneralUtility::writeFile($tmpFile, $this->dat['files'][$fI['ID']]['content']);
+			$tmpFile = NULL;
+			// check if there is the right file already in the local folder
+			if ($this->filesPathForImport !== NULL) {
+				if (is_file($this->filesPathForImport . '/' . $this->dat['files'][$fI['ID']]['content_md5']) &&
+					md5_file($this->filesPathForImport . '/' . $this->dat['files'][$fI['ID']]['content_md5']) === $this->dat['files'][$fI['ID']]['content_md5']) {
+					$tmpFile = $this->filesPathForImport . '/' . $this->dat['files'][$fI['ID']]['content_md5'];
+				}
+			}
+			if ($tmpFile === NULL) {
+				$tmpFile = GeneralUtility::tempnam('import_temp_');
+				GeneralUtility::writeFile($tmpFile, $this->dat['files'][$fI['ID']]['content']);
+			}
 			clearstatcache();
 			if (@is_file($tmpFile)) {
 				$this->unlinkFiles[] = $tmpFile;
@@ -2978,6 +3074,16 @@ class ImportExport {
 	public function loadFile($filename, $all = 0) {
 		if (@is_file($filename)) {
 			$fI = pathinfo($filename);
+			if (@is_dir($filename . '.files')) {
+				if (GeneralUtility::isAllowedAbsPath($filename . '.files')) {
+					// copy the folder lowlevel to typo3temp, because the files would be deleted after import
+					$temporaryFolderName = $this->getTemporaryFolderName();
+					GeneralUtility::copyDirectory($filename . '.files', $temporaryFolderName);
+					$this->filesPathForImport = $temporaryFolderName;
+				} else {
+					$this->error('External import files for the given import source is currently not supported.');
+				}
+			}
 			if (strtolower($fI['extension']) == 'xml') {
 				// XML:
 				$xmlContent = GeneralUtility::getUrl($filename);

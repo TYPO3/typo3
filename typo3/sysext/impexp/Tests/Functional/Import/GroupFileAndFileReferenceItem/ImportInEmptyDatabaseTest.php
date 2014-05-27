@@ -63,4 +63,18 @@ class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Impor
 		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/uploads/tx_impexpgroupfiles/typo3_image4.jpg', PATH_site . 'uploads/tx_impexpgroupfiles/typo3_image4.jpg');
 	}
 
+	/**
+	 * @test
+	 */
+	public function importGroupFileAndFileReferenceItemButImagesNotIncluded() {
+
+		$this->import->loadFile(PATH_site . 'typo3/sysext/impexp/Tests/Functional/Fixtures/ImportExportXml/impexp-group-file-and-file_reference-item-but-images-not-included.xml', 1);
+		$this->import->importData(0);
+
+		$this->assertAssertionDataSet('importGroupFileAndFileReferenceItem');
+
+		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image5.jpg', PATH_site . 'fileadmin/user_upload/typo3_image5.jpg');
+		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/uploads/tx_impexpgroupfiles/typo3_image4.jpg', PATH_site . 'uploads/tx_impexpgroupfiles/typo3_image4.jpg');
+	}
+
 }
