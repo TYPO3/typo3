@@ -1226,7 +1226,7 @@ class InlineElement {
 				}
 			}
 			// Set language of new child record to the language of the parent record:
-			if ($config['localizationMode'] == 'select') {
+			if ($parent['localizationMode'] === 'select') {
 				$parentRecord = $this->getRecord(0, $parent['table'], $parent['uid']);
 				$parentLanguageField = $GLOBALS['TCA'][$parent['table']]['ctrl']['languageField'];
 				$childLanguageField = $GLOBALS['TCA'][$current['table']]['ctrl']['languageField'];
