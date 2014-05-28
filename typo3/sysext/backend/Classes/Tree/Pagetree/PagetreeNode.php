@@ -253,7 +253,6 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 			$this->canCreate($this->record)
 			&& !VersionState::cast($this->record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
 			&& $GLOBALS['BE_USER']->checkLanguageAccess(0)
-
 		);
 	}
 
@@ -320,7 +319,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	 * @return boolean
 	 */
 	public function canBeViewed() {
-		return TRUE;
+		return !$this->isDeleted();
 	}
 
 	/**
@@ -339,6 +338,18 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	 */
 	public function canBeTemporaryMountPoint() {
 		return TRUE;
+	}
+
+	/**
+	 * Determines whether this node is deleted.
+	 *
+	 * @return bool
+	 */
+	public function isDeleted() {
+		return (
+			!empty($this->record['deleted'])
+			|| VersionState::cast($this->record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
+		);
 	}
 
 	/**

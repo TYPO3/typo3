@@ -567,7 +567,10 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 		if ($pageUid > 0 && $workspaceUid > 0) {
 			$pageRecord = BackendUtility::getRecord('pages', $pageUid);
 			BackendUtility::workspaceOL('pages', $pageRecord, $workspaceUid);
-			if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['FE']['content_doktypes'], $pageRecord['doktype'])) {
+			if (
+				!GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['FE']['content_doktypes'], $pageRecord['doktype'])
+				|| VersionState::cast($pageRecord['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
+			) {
 				$result = FALSE;
 			}
 		} else {
