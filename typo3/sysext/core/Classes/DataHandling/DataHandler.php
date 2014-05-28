@@ -3186,7 +3186,13 @@ class DataHandler {
 								$newId = $workspaceVersion['uid'];
 							}
 						} else {
-							$newId = $this->copyRecord_raw($v['table'], $v['id'], $realDestPid, array(), $workspaceOptions);
+							// If a record has been copied already during this request,
+							// prevent superfluous duplication and use the existing copy
+							if (isset($this->copyMappingArray[$v['table']][$v['id']])) {
+								$newId = $this->copyMappingArray[$v['table']][$v['id']];
+							} else {
+								$newId = $this->copyRecord_raw($v['table'], $v['id'], $realDestPid, array(), $workspaceOptions);
+							}
 						}
 					}
 					// If the current field is set on a page record, update the pid of related child records:
