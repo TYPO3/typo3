@@ -431,27 +431,44 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * Uses the export import extension to import a T3DFile to PID 0
+	 * Uses the export import extension to import a T3D or XML file to PID 0
 	 * Execution state is saved in the this->registry, so it only happens once
 	 *
 	 * @param string $extensionSiteRelPath
 	 * @return void
 	 */
 	protected function importT3DFile($extensionSiteRelPath) {
-		$t3dImportRelFile = $extensionSiteRelPath . 'Initialisation/data.t3d';
-		if (!$this->registry->get('extensionDataImport', $t3dImportRelFile)) {
-			$t3dImportFile = PATH_site . $t3dImportRelFile;
-			if (file_exists($t3dImportFile)) {
-				$importExportUtility = $this->objectManager->get('TYPO3\\CMS\\Impexp\\Utility\\ImportExportUtility');
-				try {
-					$importResult = $importExportUtility->importT3DFile($t3dImportFile, 0);
-					$this->registry->set('extensionDataImport', $t3dImportRelFile, 1);
-					$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterExtensionT3DImport', array($t3dImportRelFile, $importResult, $this));
-				} catch (\ErrorException $e) {
-					/** @var \TYPO3\CMS\Core\Log\Logger $logger */
-					$logger = $this->objectManager->get('TYPO3\\CMS\\Core\\Log\\LogManager')->getLogger(__CLASS__);
-					$logger->log(\TYPO3\CMS\Core\Log\LogLevel::WARNING, $e->getMessage());
-				}
+		$registryKeysToCheck = array(
+			$extensionSiteRelPath . 'Initialisation/data.t3d',
+			$extensionSiteRelPath . 'Initialisation/dataImported',
+		);
+		foreach ($registryKeysToCheck as $registryKeyToCheck) {
+			if ($this->registry->get('extensionDataImport', $registryKeyToCheck)) {
+				// Data was imported before => early return
+				return;
+			}
+		}
+		$importFileToUse = NULL;
+		$possibleImportFiles = array(
+			$extensionSiteRelPath . 'Initialisation/data.t3d',
+			$extensionSiteRelPath . 'Initialisation/data.xml'
+		);
+		foreach ($possibleImportFiles as $possibleImportFile) {
+			if (!file_exists(PATH_site . $possibleImportFile)) {
+				continue;
+			}
+			$importFileToUse = $possibleImportFile;
+		}
+		if ($importFileToUse !== NULL) {
+			$importExportUtility = $this->objectManager->get('TYPO3\\CMS\\Impexp\\Utility\\ImportExportUtility');
+			try {
+				$importResult = $importExportUtility->importT3DFile(PATH_site . $importFileToUse, 0);
+				$this->registry->set('extensionDataImport', $extensionSiteRelPath . 'Initialisation/dataImported', 1);
+				$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterExtensionT3DImport', array($importFileToUse, $importResult, $this));
+			} catch (\ErrorException $e) {
+				/** @var \TYPO3\CMS\Core\Log\Logger $logger */
+				$logger = $this->objectManager->get('TYPO3\\CMS\\Core\\Log\\LogManager')->getLogger(__CLASS__);
+				$logger->log(\TYPO3\CMS\Core\Log\LogLevel::WARNING, $e->getMessage());
 			}
 		}
 	}

@@ -238,13 +238,29 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * @test
+	 * @return array
 	 */
-	public function processDatabaseUpdatesCallsImportT3DFile() {
+	public function processDatabaseUpdatesCallsImportFileDataProvider() {
+		return array(
+			'T3D file' => array(
+				'data.t3d'
+			),
+			'XML file' => array(
+				'data.xml'
+			)
+		);
+	}
+
+	/**
+	 * @param string $fileName
+	 * @test
+	 * @dataProvider processDatabaseUpdatesCallsImportFileDataProvider
+	 */
+	public function processDatabaseUpdatesCallsImportFile($fileName) {
 		$extKey = $this->createFakeExtension();
 		$absPath = PATH_site . $this->fakedExtensions[$extKey]['siteRelPath'];
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($absPath . '/Initialisation');
-		file_put_contents($absPath . '/Initialisation/data.t3d', 'DUMMY');
+		file_put_contents($absPath . '/Initialisation/' . $fileName, 'DUMMY');
 		$installMock = $this->getAccessibleMock(
 			'TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility',
 			array('updateDbWithExtTablesSql', 'importStaticSqlFile', 'importT3DFile'),
@@ -259,20 +275,56 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * @test
+	 * @return array
 	 */
-	public function importT3DFileDoesNotImportFileIfAlreadyImported() {
+	public function importT3DFileDoesNotImportFileIfAlreadyImportedDataProvider() {
+		return array(
+			'Import T3D file when T3D was imported before extension to XML' => array(
+				'data.t3d',
+				'dataImported',
+				'data.t3d',
+			),
+			'Import T3D file when a file was imported after extension to XML' => array(
+				'data.t3d',
+				'data.t3d',
+				'dataImported'
+			),
+			'Import XML file when T3D was imported before extension to XML' => array(
+				'data.xml',
+				'dataImported',
+				'data.t3d'
+			),
+			'Import XML file when a file was imported after extension to XML' => array(
+				'data.xml',
+				'data.t3d',
+				'dataImported'
+			)
+		);
+	}
+
+	/**
+	 *
+	 * @param string $fileName
+	 * @param string $registryNameReturnsFalse
+	 * @param string $registryNameReturnsTrue
+	 * @test
+	 * @dataProvider importT3DFileDoesNotImportFileIfAlreadyImportedDataProvider
+	 */
+	public function importT3DFileDoesNotImportFileIfAlreadyImported($fileName, $registryNameReturnsFalse, $registryNameReturnsTrue) {
 		$extKey = $this->createFakeExtension();
 		$absPath = PATH_site . $this->fakedExtensions[$extKey]['siteRelPath'];
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($absPath . 'Initialisation');
-		file_put_contents($absPath . 'Initialisation/data.t3d', 'DUMMY');
+		file_put_contents($absPath . 'Initialisation/' . $fileName, 'DUMMY');
 		$registryMock = $this->getMock('\\TYPO3\\CMS\\Core\\Registry', array('get', 'set'));
 		$registryMock
-			->expects($this->once())
+			->expects($this->any())
 			->method('get')
-			->with('extensionDataImport', $this->fakedExtensions[$extKey]['siteRelPath'] . 'Initialisation/data.t3d')
-			->will($this->returnValue(TRUE)
-			);
+			->will($this->returnValueMap(
+				array(
+					array('extensionDataImport', $this->fakedExtensions[$extKey]['siteRelPath'] . 'Initialisation/' . $registryNameReturnsFalse, NULL, FALSE),
+					array('extensionDataImport', $this->fakedExtensions[$extKey]['siteRelPath'] . 'Initialisation/' . $registryNameReturnsTrue, NULL, TRUE),
+				)
+			));
 		$installMock = $this->getAccessibleMock(
 			'TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility',
 			array('getRegistry', 'getImportExportUtility'),
