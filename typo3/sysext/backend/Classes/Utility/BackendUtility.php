@@ -3920,9 +3920,22 @@ class BackendUtility {
 		if ($workspace != 0) {
 			foreach ($GLOBALS['TCA'] as $tableName => $cfg) {
 				if ($tableName != 'pages' && $cfg['ctrl']['versioningWS']) {
+					$joinStatement = 'A.t3ver_oid=B.uid';
+					// Consider records that are moved to a different page
+					if (self::isTableMovePlaceholderAware($tableName)) {
+						$movePointer = new VersionState(VersionState::MOVE_POINTER);
+						$joinStatement = '(A.t3ver_oid=B.uid AND A.t3ver_state<>' . $movePointer
+							. ' OR A.t3ver_oid=B.t3ver_move_id AND A.t3ver_state=' . $movePointer . ')';
+					}
 					// Select all records from this table in the database from the workspace
 					// This joins the online version with the offline version as tables A and B
-					$output[$tableName] = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('B.uid as live_uid, A.uid as offline_uid', $tableName . ' A,' . $tableName . ' B', 'A.pid=-1' . ' AND B.pid=' . (int)$pageId . ' AND A.t3ver_wsid=' . (int)$workspace . ' AND A.t3ver_oid=B.uid' . self::deleteClause($tableName, 'A') . self::deleteClause($tableName, 'B'));
+					$output[$tableName] = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+						'B.uid as live_uid, A.uid as offline_uid',
+						$tableName . ' A,' . $tableName . ' B',
+						'A.pid=-1' . ' AND B.pid=' . (int)$pageId
+							. ' AND A.t3ver_wsid=' . (int)$workspace . ' AND ' . $joinStatement
+							. self::deleteClause($tableName, 'A') . self::deleteClause($tableName, 'B')
+					);
 					if (!is_array($output[$tableName]) || !count($output[$tableName])) {
 						unset($output[$tableName]);
 					}
