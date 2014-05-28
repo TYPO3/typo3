@@ -506,12 +506,16 @@ class GridDataService {
 	 * @return string
 	 */
 	protected function workspaceState($stateId, $hiddenOnline = FALSE, $hiddenOffline = FALSE) {
+		$hiddenState = NULL;
+		if ($hiddenOnline == 0 && $hiddenOffline == 1) {
+			$hiddenState = 'hidden';
+		} elseif ($hiddenOnline == 1 && $hiddenOffline == 0) {
+			$hiddenState = 'unhidden';
+		}
 		switch ($stateId) {
 			case -1:
 				$state = 'new';
 				break;
-			case 1:
-
 			case 2:
 				$state = 'deleted';
 				break;
@@ -519,12 +523,7 @@ class GridDataService {
 				$state = 'moved';
 				break;
 			default:
-				$state = 'modified';
-		}
-		if ($hiddenOnline == 0 && $hiddenOffline == 1) {
-			$state = 'hidden';
-		} elseif ($hiddenOnline == 1 && $hiddenOffline == 0) {
-			$state = 'unhidden';
+				$state = ($hiddenState ?: 'modified');
 		}
 		return $state;
 	}
