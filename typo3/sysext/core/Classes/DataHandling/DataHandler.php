@@ -7230,25 +7230,26 @@ class DataHandler {
 	 * @param array $data Array with special information that may go into $details by '%s' marks / sprintf() when the log is shown
 	 * @param integer $event_pid The page_uid (pid) where the event occurred. Used to select log-content for specific pages.
 	 * @param string $NEWid NEW id for new records
-	 * @return integer Log entry UID
+	 * @return integer Log entry UID (0 if no log entry was written or logging is disabled)
 	 * @todo Define visibility
 	 */
 	public function log($table, $recuid, $action, $recpid, $error, $details, $details_nr = -1, $data = array(), $event_pid = -1, $NEWid = '') {
-		if ($this->enableLogging) {
-			// Type value for tce_db.php
-			$type = 1;
-			if (!$this->storeLogMessages) {
-				$details = '';
-			}
-			if ($error > 0) {
-				$detailMessage = $details;
-				if (is_array($data)) {
-					$detailMessage = vsprintf($details, $data);
-				}
-				$this->errorLog[] = '[' . $type . '.' . $action . '.' . $details_nr . ']: ' . $detailMessage;
-			}
-			return $this->BE_USER->writelog($type, $action, $error, $details_nr, $details, $data, $table, $recuid, $recpid, $event_pid, $NEWid);
+		if (!$this->enableLogging) {
+			return 0;
 		}
+		// Type value for tce_db.php
+		$type = 1;
+		if (!$this->storeLogMessages) {
+			$details = '';
+		}
+		if ($error > 0) {
+			$detailMessage = $details;
+			if (is_array($data)) {
+				$detailMessage = vsprintf($details, $data);
+			}
+			$this->errorLog[] = '[' . $type . '.' . $action . '.' . $details_nr . ']: ' . $detailMessage;
+		}
+		return $this->BE_USER->writelog($type, $action, $error, $details_nr, $details, $data, $table, $recuid, $recpid, $event_pid, $NEWid);
 	}
 
 	/**
