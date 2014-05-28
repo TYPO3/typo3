@@ -6040,7 +6040,7 @@ class DataHandler {
 				}
 				// Set log message if there were fields with unmatching values:
 				if (count($errorString)) {
-					$this->log($table, $id, $action, 0, 102, 'These fields are not properly updated in database: (' . implode(',', $errorString) . ') Probably value mismatch with fieldtype.');
+					$this->log($table, $id, $action, 0, 1, 'These fields are not properly updated in database: (' . implode(',', $errorString) . ') Probably value mismatch with fieldtype.');
 				}
 				// Return selected rows:
 				return $row;
