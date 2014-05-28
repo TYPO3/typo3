@@ -1595,6 +1595,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'two different hostnames without port matching 1st host' => array('helmut.is.secure', '(helmut\.is\.secure|lolli\.is\.secure)'),
 			'two different hostnames without port matching 2nd host' => array('lolli.is.secure', '(helmut\.is\.secure|lolli\.is\.secure)'),
 			'hostname with port matching' => array('lolli.did.this:42', '.*\.did\.this:42'),
+			'hostnames are case insensitive 1' => array('lolli.DID.this:42', '.*\.did.this:42'),
+			'hostnames are case insensitive 2' => array('lolli.did.this:42', '.*\.DID.this:42'),
 		);
 	}
 
@@ -1643,6 +1645,16 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				'serverPort' => '80',
 				'ssl' => 'Off',
 			),
+			'host value matches server name if compared case insensitive 1' => array(
+				'httpHost' => 'secure.web.server',
+				'serverName' => 'secure.WEB.server',
+				'isAllowed' => TRUE,
+			),
+			'host value matches server name if compared case insensitive 2' => array(
+				'httpHost' => 'secure.WEB.server',
+				'serverName' => 'secure.web.server',
+				'isAllowed' => TRUE,
+			),
 			'host value matches server name and server port is default https' => array(
 				'httpHost' => 'secure.web.server',
 				'serverName' => 'secure.web.server',
@@ -1653,6 +1665,18 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'host value matches server name and server port' => array(
 				'httpHost' => 'secure.web.server:88',
 				'serverName' => 'secure.web.server',
+				'isAllowed' => TRUE,
+				'serverPort' => '88',
+			),
+			'host value matches server name case insensitive 1 and server port' => array(
+				'httpHost' => 'secure.WEB.server:88',
+				'serverName' => 'secure.web.server',
+				'isAllowed' => TRUE,
+				'serverPort' => '88',
+			),
+			'host value matches server name case insensitive 2 and server port' => array(
+				'httpHost' => 'secure.web.server:88',
+				'serverName' => 'secure.WEB.server',
 				'isAllowed' => TRUE,
 				'serverPort' => '88',
 			),
