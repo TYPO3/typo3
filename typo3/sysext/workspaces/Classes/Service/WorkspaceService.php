@@ -528,7 +528,11 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 			if ($versionRecord === NULL) {
 				$versionRecord = BackendUtility::getRecord($table, $uid);
 			}
+			if (VersionState::cast($versionRecord['t3ver_state'])->equals(VersionState::MOVE_POINTER)) {
+				$movePlaceholder = BackendUtility::getMovePlaceholder($table, $liveRecord['uid'], 'pid');
+			}
 
+			$previewPageId = (empty($movePlaceholder['pid']) ? $liveRecord['pid'] : $movePlaceholder['pid']);
 			$additionalParameters = '&tx_workspaces_web_workspacesworkspaces[previewWS]=' . $versionRecord['t3ver_wsid'];
 
 			$languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
@@ -536,7 +540,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 				$additionalParameters .= '&L=' . $versionRecord[$languageField];
 			}
 
-			$viewUrl = BackendUtility::viewOnClick($liveRecord['pid'], '', '', '', '', $additionalParameters);
+			$viewUrl = BackendUtility::viewOnClick($previewPageId, '', '', '', '', $additionalParameters);
 		} else {
 			if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['viewSingleRecord'])) {
 				$_params = array(
