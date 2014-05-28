@@ -17,7 +17,8 @@ tx_irretutorial_1nff_offer
 ,6,89,2,0,0,0,0,0,0,0,0,"Offer #1.2",3,tx_irretutorial_1nff_hotel,,2
 ,7,89,1,0,0,0,0,0,0,0,0,"Offer #2.1",4,tx_irretutorial_1nff_hotel,,1
 ,8,89,1,0,0,0,0,0,0,0,0,"Offer #1.1",5,tx_irretutorial_1nff_hotel,,1
-,9,-1,1,0,0,0,1,0,0,8,0,"Offer #1.1",5,tx_irretutorial_1nff_hotel,,1
+,9,-1,1,0,0,0,1,4,0,8,0,"Offer #1.1",5,tx_irretutorial_1nff_hotel,,1
+,10,90,256,0,0,0,1,3,0,0,8,"[MOVE-TO PLACEHOLDER for #8, WS#1]",5,tx_irretutorial_1nff_hotel,,0
 tx_irretutorial_1nff_price
 ,uid,pid,sorting,deleted,sys_language_uid,l18n_parent,t3ver_wsid,t3ver_state,t3ver_stage,t3ver_oid,t3ver_move_id,title,parentid,parenttable,parentidentifier
 ,7,89,1,0,0,0,0,0,0,0,0,"Price #1.1.1",5,tx_irretutorial_1nff_offer,
@@ -27,4 +28,5 @@ tx_irretutorial_1nff_price
 ,11,89,2,0,0,0,0,0,0,0,0,"Price #1.2.2",6,tx_irretutorial_1nff_offer,
 ,12,89,1,0,0,0,0,0,0,0,0,"Price #2.1.1",7,tx_irretutorial_1nff_offer,
 ,13,89,1,0,0,0,0,0,0,0,0,"Price #1.1.1",8,tx_irretutorial_1nff_offer,
-,14,-1,1,0,0,0,1,0,0,13,0,"Price #1.1.1",8,tx_irretutorial_1nff_offer,
+,14,-1,1,0,0,0,1,4,0,13,0,"Price #1.1.1",8,tx_irretutorial_1nff_offer,
+,15,90,256,0,0,0,1,3,0,0,13,"[MOVE-TO PLACEHOLDER for #13, WS#1]",8,tx_irretutorial_1nff_offer,

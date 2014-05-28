@@ -291,15 +291,20 @@ class DataHandlerHook {
 			$moveRecVersionState = VersionState::cast($moveRec['t3ver_state']);
 			// Get workspace version of the source record, if any:
 			$WSversion = BackendUtility::getWorkspaceVersionOfRecord($tcemainObj->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid');
-			// If no version exists and versioningWS is in version 2, a new placeholder is made automatically:
+			// Handle move-placeholders if the current record is not one already
 			if (
-				!$WSversion['uid']
-				&& BackendUtility::isTableMovePlaceholderAware($table)
+				BackendUtility::isTableMovePlaceholderAware($table)
 				&& !$moveRecVersionState->equals(VersionState::MOVE_PLACEHOLDER)
 			) {
-				$tcemainObj->versionizeRecord($table, $uid, 'Placeholder version for moving record');
-				$WSversion = BackendUtility::getWorkspaceVersionOfRecord($tcemainObj->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid');
-				$this->moveRecord_processFields($tcemainObj, $resolvedPid, $table, $uid);
+				// Create version of record first, if it does not exist
+				if (empty($WSversion['uid'])) {
+					$tcemainObj->versionizeRecord($table, $uid, 'Placeholder version for moving record');
+					$WSversion = BackendUtility::getWorkspaceVersionOfRecord($tcemainObj->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid');
+					$this->moveRecord_processFields($tcemainObj, $resolvedPid, $table, $uid);
+				// If the record has been versioned before (e.g. cascaded parent-child structure), create only the move-placeholders
+				} elseif ($tcemainObj->isRecordCopied($table, $uid) && (int)$tcemainObj->copyMappingArray[$table][$uid] === (int)$WSversion['uid']) {
+					$this->moveRecord_processFields($tcemainObj, $resolvedPid, $table, $uid);
+				}
 			}
 			// Check workspace permissions:
 			$workspaceAccessBlocked = array();
@@ -391,7 +396,7 @@ class DataHandlerHook {
 			if ($table === 'pages') {
 				// If the inline elements are related to a page record,
 				// make sure they reside at that page and not at its parent
-				$destinationPageId = $uid;
+				$resolvedPageId = $uid;
 			}
 
 			$dbAnalysis = $this->createRelationHandlerInstance();
@@ -404,7 +409,7 @@ class DataHandlerHook {
 				if (empty($versionedRecord) || VersionState::cast($versionedRecord['t3ver_state'])->indicatesPlaceholder()) {
 					continue;
 				}
-				$this->moveRecord_wsPlaceholders($item['table'], $item['id'], $resolvedPageId, $versionedRecord['uid'], $dataHandler);
+				$dataHandler->moveRecord($item['table'], $item['id'], $resolvedPageId);
 			}
 		}
 	}
