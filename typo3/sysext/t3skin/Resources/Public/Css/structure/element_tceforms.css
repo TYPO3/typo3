@@ -181,6 +181,7 @@ select option.c-divider {
 }
 
 .typo3-TCEforms td.formField-header,
+.typo3-TCEforms td.palette-header,
 .typo3-TCEforms td.formField-field {
 	display: block;
 	position: relative;
