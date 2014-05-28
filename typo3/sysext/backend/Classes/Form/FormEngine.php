@@ -908,9 +908,7 @@ class FormEngine {
 		} else {
 			// Only one tab, so just implode and wrap the background image (= tab container) around:
 			$output = implode('', $out_array[$out_sheet]);
-			if ($this->inline->inlineCount == 0) {
-				$output = '<div class="typo3-dyntabmenu-divs">' . $output . '</div>';
-			}
+			$output = '<div class="typo3-dyntabmenu-divs">' . $output . '</div>';
 		}
 
 		return $output;
