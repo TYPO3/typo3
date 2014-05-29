@@ -94,6 +94,7 @@ class Check {
 		$statusArray[] = $this->checkPhpVersion();
 		$statusArray[] = $this->checkMaxExecutionTime();
 		$statusArray[] = $this->checkDisableFunctions();
+		$statusArray[] = $this->checkDownloadsPossible();
 		$statusArray[] = $this->checkSafeMode();
 		$statusArray[] = $this->checkDocRoot();
 		$statusArray[] = $this->checkOpenBaseDir();
@@ -400,6 +401,28 @@ class Check {
 		} else {
 			$status = new Status\OkStatus();
 			$status->setTitle('No disabled PHP functions');
+		}
+		return $status;
+	}
+
+	/**
+	 * Check if it is possible to download external data (e.g. TER)
+	 * Either allow_url_fopen must be enabled or curl must be used
+	 *
+	 * @return Status\OkStatus|Status\WarningStatus
+	 */
+	protected function checkDownloadsPossible() {
+		$allowUrlFopen = (bool)ini_get('allow_url_fopen');
+		$curlEnabled = !empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse']);
+		if ($allowUrlFopen || $curlEnabled) {
+			$status = new Status\OkStatus();
+			$status->setTitle('Fetching external URLs is allowed');
+		} else {
+			$status = new Status\WarningStatus();
+			$status->setTitle('Fetching external URLs is not allowed');
+			$status->setMessage(
+				'Either enable PHP runtime setting "allow_url_fopen"' . LF .  'or enable curl by setting [SYS][curlUse] accordingly.'
+			);
 		}
 		return $status;
 	}
