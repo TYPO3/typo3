@@ -297,16 +297,16 @@ class ElementBrowser {
 		}
 
 		// Initializing the target value (RTE)
-		$this->setTarget = $this->curUrlArray['target'] != '-' ? rawurlencode($this->curUrlArray['target']) : '';
+		$this->setTarget = $this->curUrlArray['target'] != '-' ? $this->curUrlArray['target'] : '';
 		if ($this->thisConfig['defaultLinkTarget'] && !isset($this->curUrlArray['target'])) {
 			$this->setTarget = $this->thisConfig['defaultLinkTarget'];
 		}
 		// Initializing the class value (RTE)
-		$this->setClass = $this->curUrlArray['class'] != '-' ? rawurlencode($this->curUrlArray['class']) : '';
+		$this->setClass = $this->curUrlArray['class'] != '-' ? $this->curUrlArray['class'] : '';
 		// Initializing the title value (RTE)
-		$this->setTitle = $this->curUrlArray['title'] != '-' ? rawurlencode($this->curUrlArray['title']) : '';
+		$this->setTitle = $this->curUrlArray['title'] != '-' ? $this->curUrlArray['title'] : '';
 		// Initializing the params value
-		$this->setParams = $this->curUrlArray['params'] != '-' ? rawurlencode($this->curUrlArray['params']) : '';
+		$this->setParams = $this->curUrlArray['params'] != '-' ? $this->curUrlArray['params'] : '';
 
 		// Finally, add the accumulated JavaScript to the template object:
 		// also unset the default jumpToUrl() function before
