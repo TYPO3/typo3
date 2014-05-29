@@ -4883,7 +4883,6 @@ Connection: close
 	 * @see makeRedirectUrl()
 	 */
 	static public function substUrlsInPlainText($message, $urlmode = '76', $index_script_url = '') {
-		$lengthLimit = FALSE;
 		switch ((string) $urlmode) {
 			case '':
 				$lengthLimit = FALSE;
@@ -4903,7 +4902,7 @@ Connection: close
 			$messageSubstituted = preg_replace_callback(
 				'/(http|https):\\/\\/.+(?=[\\]\\.\\?]*([\\! \'"()<>]+|$))/iU',
 				function (array $matches) use ($lengthLimit, $index_script_url) {
-					return self::makeRedirectUrl($matches[0], $lengthLimit, $index_script_url);
+					return GeneralUtility::makeRedirectUrl($matches[0], $lengthLimit, $index_script_url);
 				},
 				$message
 			);
