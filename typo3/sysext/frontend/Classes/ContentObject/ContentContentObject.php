@@ -42,6 +42,10 @@ class ContentContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCon
 	 * @return string Output
 	 */
 	public function render($conf = array()) {
+		if (!empty($conf['if.']) && !$this->cObj->checkIf($conf['if.'])) {
+			return '';
+		}
+
 		$theValue = '';
 		$originalRec = $GLOBALS['TSFE']->currentRecord;
 		// If the currentRecord is set, we register, that this record has invoked this function.

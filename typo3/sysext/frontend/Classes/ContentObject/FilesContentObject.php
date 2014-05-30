@@ -59,6 +59,10 @@ class FilesContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 	 * @return string Output
 	 */
 	public function render($conf = array()) {
+		if (!empty($conf['if.']) && !$this->cObj->checkIf($conf['if.'])) {
+			return '';
+		}
+
 		$fileObjects = array();
 		// Getting the files
 		if ($conf['references'] || $conf['references.']) {

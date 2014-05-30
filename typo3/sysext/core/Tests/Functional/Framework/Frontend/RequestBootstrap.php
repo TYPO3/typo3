@@ -32,8 +32,8 @@ class RequestBootstrap {
 	/**
 	 * @return void
 	 */
-	static public function setGlobalVariables() {
-		if (empty($_SERVER['argv'][1]) || ($requestArguments = json_decode($_SERVER['argv'][1], TRUE)) === FALSE) {
+	static public function setGlobalVariables(array $requestArguments = NULL) {
+		if (empty($requestArguments)) {
 			die('No JSON encoded arguments given');
 		}
 
