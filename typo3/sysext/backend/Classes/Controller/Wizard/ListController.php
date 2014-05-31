@@ -86,8 +86,13 @@ class ListController {
 		// Get TSconfig for it.
 		$TSconfig = BackendUtility::getTCEFORM_TSconfig($this->table, is_array($origRow) ? $origRow : array('pid' => $this->P['pid']));
 		// Set [params][pid]
-		if (substr($this->P['params']['pid'], 0, 3) == '###' && substr($this->P['params']['pid'], -3) == '###') {
-			$this->pid = (int)$TSconfig['_' . substr($this->P['params']['pid'], 3, -3)];
+		if (substr($this->P['params']['pid'], 0, 3) === '###' && substr($this->P['params']['pid'], -3) === '###') {
+			$keyword = substr($this->P['params']['pid'], 3, -3);
+			if (strpos($keyword, 'PAGE_TSCONFIG_') === 0) {
+				$this->pid = (int)$TSconfig[$this->P['field']][$keyword];
+			} else {
+				$this->pid = (int)$TSconfig['_' . $keyword];
+			}
 		} else {
 			$this->pid = (int)$this->P['params']['pid'];
 		}
