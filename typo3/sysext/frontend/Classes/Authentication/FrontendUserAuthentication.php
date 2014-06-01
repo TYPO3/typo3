@@ -480,8 +480,8 @@ class FrontendUserAuthentication extends \TYPO3\CMS\Core\Authentication\Abstract
 	 */
 	public function logoff() {
 		parent::logoff();
-		// Remove the cookie on log-off
-		if ($this->isCookieSet()) {
+		// Remove the cookie on log-off, but only if we do not have an anonymous session
+		if (!$this->isExistingSessionRecord($this->id) && $this->isCookieSet()) {
 			$this->removeCookie($this->name);
 		}
 	}
