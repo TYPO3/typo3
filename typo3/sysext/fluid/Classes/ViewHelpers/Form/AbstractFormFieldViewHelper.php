@@ -65,6 +65,15 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper {
 	}
 
 	/**
+	 * Shortcut for retrieving the request from the controller context
+	 *
+	 * @return \TYPO3\CMS\Extbase\Mvc\Request
+	 */
+	protected function getRequest() {
+		return $this->controllerContext->getRequest();
+	}
+
+	/**
 	 * Get the name of this form element, without prefix.
 	 *
 	 * @return string name
@@ -130,7 +139,7 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper {
 	 * @return bool TRUE if a mapping error occurred, FALSE otherwise
 	 */
 	protected function hasMappingErrorOccurred() {
-		return $this->controllerContext->getRequest()->getOriginalRequest() !== NULL;
+		return $this->getRequest()->getOriginalRequest() !== NULL;
 	}
 
 	/**
@@ -152,21 +161,25 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper {
 	 * @return void
 	 */
 	protected function addAdditionalIdentityPropertiesIfNeeded() {
+		if (!$this->viewHelperVariableContainer->exists('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObject')) {
+			return;
+		}
 		$propertySegments = explode('.', $this->arguments['property']);
-		if (count($propertySegments) >= 2) {
-			// hierarchical property. If there is no "." inside (thus $propertySegments == 1), we do not need to do anything
-			$formObject = $this->viewHelperVariableContainer->get('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObject');
-			$objectName = $this->viewHelperVariableContainer->get('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObjectName');
-			// If Count == 2 -> we need to go through the for-loop exactly once
-			for ($i = 1; $i < count($propertySegments); $i++) {
-				$object = ObjectAccess::getPropertyPath($formObject, implode('.', array_slice($propertySegments, 0, $i)));
-				$objectName .= '[' . $propertySegments[($i - 1)] . ']';
-				$hiddenIdentityField = $this->renderHiddenIdentityField($object, $objectName);
-				// Add the hidden identity field to the ViewHelperVariableContainer
-				$additionalIdentityProperties = $this->viewHelperVariableContainer->get('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'additionalIdentityProperties');
-				$additionalIdentityProperties[$objectName] = $hiddenIdentityField;
-				$this->viewHelperVariableContainer->addOrUpdate('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'additionalIdentityProperties', $additionalIdentityProperties);
-			}
+		// hierarchical property. If there is no "." inside (thus $propertySegments == 1), we do not need to do anything
+		if (count($propertySegments) < 2) {
+			return;
+		}
+		$formObject = $this->viewHelperVariableContainer->get('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObject');
+		$objectName = $this->viewHelperVariableContainer->get('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObjectName');
+		// If count == 2 -> we need to go through the for-loop exactly once
+		for ($i = 1; $i < count($propertySegments); $i++) {
+			$object = ObjectAccess::getPropertyPath($formObject, implode('.', array_slice($propertySegments, 0, $i)));
+			$objectName .= '[' . $propertySegments[($i - 1)] . ']';
+			$hiddenIdentityField = $this->renderHiddenIdentityField($object, $objectName);
+			// Add the hidden identity field to the ViewHelperVariableContainer
+			$additionalIdentityProperties = $this->viewHelperVariableContainer->get('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'additionalIdentityProperties');
+			$additionalIdentityProperties[$objectName] = $hiddenIdentityField;
+			$this->viewHelperVariableContainer->addOrUpdate('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'additionalIdentityProperties', $additionalIdentityProperties);
 		}
 	}
 
@@ -228,7 +241,7 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper {
 		if (!$this->isObjectAccessorMode()) {
 			return new \TYPO3\CMS\Extbase\Error\Result();
 		}
-		$originalRequestMappingResults = $this->controllerContext->getRequest()->getOriginalRequestMappingResults();
+		$originalRequestMappingResults = $this->getRequest()->getOriginalRequestMappingResults();
 		$formObjectName = $this->viewHelperVariableContainer->get('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObjectName');
 		return $originalRequestMappingResults->forProperty($formObjectName)->forProperty($this->arguments['property']);
 	}

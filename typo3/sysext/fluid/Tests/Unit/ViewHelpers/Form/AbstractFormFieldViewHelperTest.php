@@ -270,8 +270,9 @@ class AbstractFormFieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHe
 		$this->injectDependenciesIntoViewHelper($formFieldViewHelper);
 		$arguments = array('property' => $property);
 		$formFieldViewHelper->_set('arguments', $arguments);
-		$this->viewHelperVariableContainer->expects($this->at(0))->method('get')->with('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObject')->will($this->returnValue($mockFormObject));
-		$this->viewHelperVariableContainer->expects($this->at(1))->method('get')->with('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObjectName')->will($this->returnValue($objectName));
+		$this->viewHelperVariableContainer->expects($this->at(0))->method('exists')->with('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObject')->will($this->returnValue(TRUE));
+		$this->viewHelperVariableContainer->expects($this->at(1))->method('get')->with('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObject')->will($this->returnValue($mockFormObject));
+		$this->viewHelperVariableContainer->expects($this->at(2))->method('get')->with('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObjectName')->will($this->returnValue($objectName));
 
 		$formFieldViewHelper->expects($this->once())->method('renderHiddenIdentityField')->with($mockFormObject, $expectedProperty);
 
@@ -303,8 +304,9 @@ class AbstractFormFieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHe
 		$this->injectDependenciesIntoViewHelper($formFieldViewHelper);
 		$arguments = array('property' => $property);
 		$formFieldViewHelper->_set('arguments', $arguments);
-		$this->viewHelperVariableContainer->expects($this->at(0))->method('get')->with('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObject')->will($this->returnValue($mockFormObject));
-		$this->viewHelperVariableContainer->expects($this->at(1))->method('get')->with('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObjectName')->will($this->returnValue($objectName));
+		$this->viewHelperVariableContainer->expects($this->at(0))->method('exists')->with('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObject')->will($this->returnValue(TRUE));
+		$this->viewHelperVariableContainer->expects($this->at(1))->method('get')->with('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObject')->will($this->returnValue($mockFormObject));
+		$this->viewHelperVariableContainer->expects($this->at(2))->method('get')->with('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObjectName')->will($this->returnValue($objectName));
 
 		$formFieldViewHelper->expects($this->at(0))->method('renderHiddenIdentityField')->with($mockFormObject, $expectedProperty1);
 		$formFieldViewHelper->expects($this->at(1))->method('renderHiddenIdentityField')->with($mockFormObject, $expectedProperty2);
