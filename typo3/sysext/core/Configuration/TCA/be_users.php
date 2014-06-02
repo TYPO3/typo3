@@ -257,8 +257,8 @@ return array(
 					array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.files_delete', 'deleteFile', 'mimetypes-other-other')
 				),
 				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
-				'size' => 16,
-				'maxitems' => 16,
+				'size' => 17,
+				'maxitems' => 17,
 				'itemListStyle' => 'width:500px',
 				'default' => 'readFolder,writeFolder,addFolder,renameFolder,moveFolder,deleteFolder,readFile,writeFile,addFile,renameFile,moveFile,files_copy,deleteFile'
 			)
