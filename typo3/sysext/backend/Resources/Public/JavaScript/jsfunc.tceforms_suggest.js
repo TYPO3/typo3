@@ -81,34 +81,22 @@ TCEForms.Suggest = Class.create({
 			var arr = item.id.split('-');
 			var ins_table = arr[0];
 			var ins_uid = arr[1];
+			var ins_uid_string = (this.fieldType == 'select') ? ins_uid : (ins_table + '_' + ins_uid);
 			var rec_table = arr[2];
 			var rec_uid = arr[3];
 			var rec_field = arr[4];
 
 			var formEl = this.objectId;
-			var suggestLabelNode = Element.select(this.escapeObjectId(item.id), '.suggest-label')[0];
-			var label = (suggestLabelNode.textContent ? suggestLabelNode.textContent : suggestLabelNode.innerText)
-			var ins_uid_string = (this.fieldType == 'select') ? ins_uid : (ins_table + '_' + ins_uid);
 
-			setFormValueFromBrowseWin(formEl, ins_uid_string, label);
+			var suggestLabelNode = Element.select(item, '.suggest-label')[0];
+			var label = suggestLabelNode.textContent ? suggestLabelNode.textContent : suggestLabelNode.innerText;
+			var suggestLabelTitleNode = Element.select(suggestLabelNode, '[title]')[0];
+			var title = suggestLabelTitleNode ? suggestLabelTitleNode.readAttribute('title') : '';
+
+			setFormValueFromBrowseWin(formEl, ins_uid_string, label, title);
 			TBE_EDITOR.fieldChanged(rec_table, rec_uid, rec_field, formEl);
 
 			$(this.suggestField).value = this.defaultValue;
 		}
-	},
-
-	/**
-	 * Escapes object identifiers of e.g. Flexform CSS IDs
-	 *
-	 * @param string objectId
-	 * @return string
-	 */
-	escapeObjectId: function(objectId) {
-		var escapedObjectId;
-		escapedObjectId = objectId.replace(/:/g, '\\:');
-		escapedObjectId = objectId.replace(/\./g, '\\.');
-		escapedObjectId = objectId.replace(/\[/g, '\\[');
-		escapedObjectId = objectId.replace(/\]/g, '\\]');
-		return escapedObjectId;
 	}
 });
