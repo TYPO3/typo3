@@ -1472,6 +1472,7 @@ class ResourceStorage implements ResourceStorageInterface {
 		// Call driver method to update the file and update file index entry afterwards
 		$result = $this->driver->setFileContents($file->getIdentifier(), $contents);
 		$this->getIndexer()->updateIndexEntry($file);
+		$this->emitPostFileSetContentsSignal($file, $contents);
 		return $result;
 	}
 
@@ -1490,6 +1491,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	public function createFile($fileName, Folder $targetFolderObject) {
 		$this->assureFileAddPermissions('', $targetFolderObject, $fileName);
 		$newFileIdentifier = $this->driver->createFile($fileName, $targetFolderObject->getIdentifier());
+		$this->emitPostFileCreateSignal($newFileIdentifier, $targetFolderObject);
 		return ResourceFactory::getInstance()->getFileObjectByStorageAndIdentifier($this->getUid(), $newFileIdentifier);
 	}
 
@@ -1582,6 +1584,7 @@ class ResourceStorage implements ResourceStorageInterface {
 		if ($targetFileName === NULL) {
 			$targetFileName = $file->getName();
 		}
+		$originalFolder = $file->getParentFolder();
 		$sanitizedTargetFileName = $this->driver->sanitizeFileName($targetFileName);
 		$this->assureFileMovePermissions($file, $targetFolder, $sanitizedTargetFileName);
 		if ($targetFolder->hasFile($sanitizedTargetFileName)) {
@@ -1614,7 +1617,7 @@ class ResourceStorage implements ResourceStorageInterface {
 		} catch (\TYPO3\CMS\Core\Exception $e) {
 			echo $e->getMessage();
 		}
-		$this->emitPostFileMoveSignal($file, $targetFolder);
+		$this->emitPostFileMoveSignal($file, $targetFolder, $originalFolder);
 		return $file;
 	}
 
@@ -1746,6 +1749,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 */
 	public function moveFolder(Folder $folderToMove, Folder $targetParentFolder, $newFolderName = NULL, $conflictMode = 'renameNewFolder') {
 		// TODO add tests
+		$originalFolder = $folderToMove->getParentFolder();
 		$this->assureFolderMovePermissions($folderToMove, $targetParentFolder);
 		$sourceStorage = $folderToMove->getStorage();
 		$returnObject = NULL;
@@ -1766,7 +1770,7 @@ class ResourceStorage implements ResourceStorageInterface {
 			$this->getIndexer()->updateIndexEntry($fileObject);
 		}
 		$returnObject = $this->getFolder($fileMappings[$folderToMove->getIdentifier()]);
-		$this->emitPostFolderMoveSignal($folderToMove, $targetParentFolder, $returnObject->getName());
+		$this->emitPostFolderMoveSignal($folderToMove, $targetParentFolder, $returnObject->getName(), $originalFolder);
 		return $returnObject;
 	}
 
@@ -2145,10 +2149,11 @@ class ResourceStorage implements ResourceStorageInterface {
 	 *
 	 * @param FileInterface $file
 	 * @param Folder $targetFolder
+	 * @param Folder $originalFolder
 	 * @return void
 	 */
-	protected function emitPostFileMoveSignal(FileInterface $file, Folder $targetFolder) {
-		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PostFileMove, array($file, $targetFolder));
+	protected function emitPostFileMoveSignal(FileInterface $file, Folder $targetFolder, Folder $originalFolder) {
+		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PostFileMove, array($file, $targetFolder, $originalFolder));
 	}
 
 	/**
@@ -2196,6 +2201,16 @@ class ResourceStorage implements ResourceStorageInterface {
 	}
 
 	/**
+	 * Emits the file post-create signal
+	 *
+	 * @param string $newFileIdentifier
+	 * @param Folder $targetFolder
+	 */
+	protected function emitPostFileCreateSignal($newFileIdentifier, Folder $targetFolder) {
+		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PostFileCreate, array($newFileIdentifier, $targetFolder));
+	}
+
+	/**
 	 * Emits the file pre-deletion signal.
 	 *
 	 * @param FileInterface $file
@@ -2213,6 +2228,17 @@ class ResourceStorage implements ResourceStorageInterface {
 	 */
 	protected function emitPostFileDeleteSignal(FileInterface $file) {
 		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PostFileDelete, array($file));
+	}
+
+	/**
+	 * Emits the file post-set-contents signal
+	 *
+	 * @param FileInterface $file
+	 * @param mixed $content
+	 * @return void
+	 */
+	protected function emitPostFileSetContentsSignal(FileInterface $file, $content) {
+		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PostFileSetContents, array($file, $content));
 	}
 
 	/**
@@ -2278,10 +2304,11 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @param Folder $folder
 	 * @param Folder $targetFolder
 	 * @param $newName
+	 * @param Folder $originalFolder
 	 * @return void
 	 */
-	protected function emitPostFolderMoveSignal(Folder $folder, Folder $targetFolder, $newName) {
-		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PostFolderMove, array($folder, $targetFolder, $newName));
+	protected function emitPostFolderMoveSignal(Folder $folder, Folder $targetFolder, $newName, Folder $originalFolder) {
+		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PostFolderMove, array($folder, $targetFolder, $newName, $originalFolder));
 	}
 
 	/**

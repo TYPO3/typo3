@@ -35,6 +35,7 @@ interface ResourceStorageInterface {
 
 	const SIGNAL_PreFileAdd = 'preFileAdd';
 	const SIGNAL_PostFileAdd = 'postFileAdd';
+	const SIGNAL_PostFileCreate = 'postFileCreate';
 	const SIGNAL_PreFileCopy = 'preFileCopy';
 	const SIGNAL_PostFileCopy = 'postFileCopy';
 	const SIGNAL_PreFileMove = 'preFileMove';
@@ -45,6 +46,7 @@ interface ResourceStorageInterface {
 	const SIGNAL_PostFileRename = 'postFileRename';
 	const SIGNAL_PreFileReplace = 'preFileReplace';
 	const SIGNAL_PostFileReplace = 'postFileReplace';
+	const SIGNAL_PostFileSetContents = 'postFileSetContents';
 	const SIGNAL_PreFolderAdd = 'preFolderAdd';
 	const SIGNAL_PostFolderAdd = 'postFolderAdd';
 	const SIGNAL_PreFolderCopy = 'preFolderCopy';
