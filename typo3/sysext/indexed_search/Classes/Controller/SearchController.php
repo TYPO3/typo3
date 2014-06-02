@@ -369,7 +369,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			// Prepare search words for markup in content:
 			if ($this->settings['forwardSearchWordsInResultLink']) {
 				$markUpSwParams = array('no_cache' => 1);
-				foreach ($this->sWArr as $d) {
+				foreach ($this->searchWords as $d) {
 					$markUpSwParams['sword_list'][] = $d['sword'];
 				}
 			} else {
@@ -604,7 +604,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	}
 
 	/**
-	 * Marks up the search words from $this->sWarr in the $str with a color.
+	 * Marks up the search words from $this->searchWords in the $str with a color.
 	 *
 	 * @param string $str Text in which to find and mark up search words. This text is assumed to be UTF-8 like the search words internally is.
 	 * @return string Processed content
@@ -615,7 +615,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 		$str = preg_replace('/\\s\\s+/', ' ', $str);
 		$swForReg = array();
 		// Prepare search words for regex:
-		foreach ($this->sWArr as $d) {
+		foreach ($this->searchWords as $d) {
 			$swForReg[] = preg_quote($d['sword'], '/');
 		}
 		$regExString = '(' . implode('|', $swForReg) . ')';
