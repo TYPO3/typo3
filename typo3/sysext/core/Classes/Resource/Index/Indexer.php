@@ -62,8 +62,12 @@ class Indexer {
 	 *
 	 * @param string $identifier
 	 * @return File
+	 * @throws \InvalidArgumentException
 	 */
 	public function createIndexEntry($identifier) {
+		if (!isset($identifier) || !is_string($identifier) || $identifier === '') {
+			throw new \InvalidArgumentException('Invalid file identifier given. It must be of type string and not empty. "' . gettype($identifier) . '" given.', 1401732565);
+		}
 		$fileProperties = $this->gatherFileInformationArray($identifier);
 		$record = $this->getFileIndexRepository()->addRaw($fileProperties);
 		$fileObject = $this->getResourceFactory()->getFileObject($record['uid'], $record);

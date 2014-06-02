@@ -370,8 +370,12 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 	 *
 	 * @param string $identifier
 	 * @return File
+	 * @throws \InvalidArgumentException
 	 */
 	public function getFileObjectFromCombinedIdentifier($identifier) {
+		if (!isset($identifier) || !is_string($identifier) || $identifier === '') {
+			throw new \InvalidArgumentException('Invalid file identifier given. It must be of type string and not empty. "' . gettype($identifier) . '" given.', 1401732564);
+		}
 		$parts = GeneralUtility::trimExplode(':', $identifier);
 		if (count($parts) === 2) {
 			$storageUid = $parts[0];

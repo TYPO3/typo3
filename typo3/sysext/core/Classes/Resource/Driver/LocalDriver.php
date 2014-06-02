@@ -267,7 +267,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 		$absoluteFilePath = $this->getAbsolutePath($fileIdentifier);
 		// don't use $this->fileExists() because we need the absolute path to the file anyways, so we can directly
 		// use PHP's filesystem method.
-		if (!file_exists($absoluteFilePath)) {
+		if (!file_exists($absoluteFilePath) || !is_file($absoluteFilePath)) {
 			throw new \InvalidArgumentException('File ' . $fileIdentifier . ' does not exist.', 1314516809);
 		}
 		return $this->extractFileInformation($absoluteFilePath, $dirPath, $propertiesToExtract);
