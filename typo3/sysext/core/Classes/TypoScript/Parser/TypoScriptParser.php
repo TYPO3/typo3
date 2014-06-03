@@ -835,8 +835,8 @@ class TypoScriptParser {
 
 						// load default TypoScript
 						$defaultTypoScriptKey = implode('/', $filePointerPathParts) . '/';
-						if (isset($GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $includeType . '.'][$defaultTypoScriptKey])) {
-							$newString .= $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $includeType . '.'][$defaultTypoScriptKey];
+						if (in_array($defaultTypoScriptKey, $GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'], TRUE)) {
+							$newString .= $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $includeType . '.']['defaultContentRendering'];
 						}
 					}
 				}
