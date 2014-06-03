@@ -275,7 +275,7 @@ class ExtendedFileUtility extends BasicFileUtility {
 		foreach ($this->getErrorMessages() as $msg) {
 			$flashMessage = GeneralUtility::makeInstance(
 				FlashMessage::class,
-				$msg,
+				htmlspecialchars($msg),
 				'',
 				FlashMessage::ERROR,
 				TRUE
