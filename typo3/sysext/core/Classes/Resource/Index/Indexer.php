@@ -122,13 +122,14 @@ class Indexer {
 	 * that files that are in indexed but not touched in this run are missing
 	 */
 	protected function detectMissingFiles() {
-		if (count($this->identifiedFileUids) > 0) {
-			$indexedNotExistentFiles = $this->getFileIndexRepository()->findInStorageAndNotInUidList($this->storage, $this->identifiedFileUids);
+		$indexedNotExistentFiles = $this->getFileIndexRepository()->findInStorageAndNotInUidList(
+			$this->storage,
+			$this->identifiedFileUids
+		);
 
-			foreach ($indexedNotExistentFiles as $record) {
-				if (!$this->storage->hasFile($record['identifier'])) {
-					$this->getFileIndexRepository()->markFileAsMissing($record['uid']);
-				}
+		foreach ($indexedNotExistentFiles as $record) {
+			if (!$this->storage->hasFile($record['identifier'])) {
+				$this->getFileIndexRepository()->markFileAsMissing($record['uid']);
 			}
 		}
 	}

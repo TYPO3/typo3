@@ -281,14 +281,13 @@ class FileIndexRepository implements SingletonInterface {
 	 * @return array
 	 */
 	public function findInStorageAndNotInUidList(\TYPO3\CMS\Core\Resource\ResourceStorage $storage, array $uidList) {
-		array_walk($uidList, 'intval');
-		$uidList = array_unique($uidList);
-
-		return $this->getDatabaseConnection()->exec_SELECTgetRows(
-			implode(',', $this->fields),
-			$this->table,
-			'storage = ' . (int)$storage->getUid() . ' AND uid NOT IN (' . implode(',', $uidList) . ')'
-		);
+		$where = 'storage = ' . (int)$storage->getUid();
+		if (!empty($uidList)) {
+			array_walk($uidList, 'intval');
+			$uidList = array_unique($uidList);
+			$where .= ' AND uid NOT IN (' . implode(',', $uidList) . ')';
+		}
+		return $this->getDatabaseConnection()->exec_SELECTgetRows(implode(',', $this->fields), $this->table, $where);
 	}
 
 	/**
