@@ -628,7 +628,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 						// URL + onclick event:
 						$onClickEvent = '';
 						if (isset($v[$k2i . '.']['target'])) {
-							$onClickEvent .= 'TYPO3\\CMS\\Recordlist\\Browser\\ElementBrowser_setTarget(\'' . $v[($k2i . '.')]['target'] . '\');';
+							$onClickEvent .= 'browse_links_setTarget(\'' . $v[($k2i . '.')]['target'] . '\');';
 						}
 						$v[$k2i . '.']['url'] = str_replace('###_URL###', $this->siteURL, $v[$k2i . '.']['url']);
 						if (substr($v[$k2i . '.']['url'], 0, 7) == 'http://' || substr($v[$k2i . '.']['url'], 0, 7) == 'mailto:') {
