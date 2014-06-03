@@ -302,7 +302,7 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 		foreach ($this->getErrorMessages() as $msg) {
 			$flashMessage = GeneralUtility::makeInstance(
 				'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
-				$msg,
+				htmlspecialchars($msg),
 				'',
 				\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR,
 				TRUE
