@@ -94,7 +94,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 * Returns GP / ENV / TSFE vars
 	 *
 	 * @param string $var Identifier
-	 * @return mixed The value of the variable pointed to.
+	 * @return mixed The value of the variable pointed to or NULL if variable did not exist
 	 */
 	protected function getVariable($var) {
 		$vars = explode(':', $var, 2);

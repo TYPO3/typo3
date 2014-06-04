@@ -110,13 +110,12 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 * Returns GP / ENV vars
 	 *
 	 * @param string $var Identifier
-	 * @return mixed The value of the variable pointed to.
+	 * @return mixed The value of the variable pointed to or NULL if variable did not exist
 	 * @access private
 	 */
 	protected function getVariable($var) {
 		$vars = explode(':', $var, 2);
-		$val = parent::getVariableCommon($vars);
-		return $val;
+		return parent::getVariableCommon($vars);
 	}
 
 	/**

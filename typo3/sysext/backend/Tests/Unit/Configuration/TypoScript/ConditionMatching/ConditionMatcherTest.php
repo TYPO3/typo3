@@ -382,10 +382,10 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function globalVarConditionMatchesOnEqualExpression() {
-		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 = 10]'));
-		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 = 10.1]'));
-		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 == 10]'));
-		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 == 10.1]'));
+		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 = 10]'), '1');
+		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 = 10.1]'), '2');
+		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 == 10]'), '3');
+		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 == 10.1]'), '4');
 	}
 
 	/**
@@ -522,6 +522,16 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$_POST = array($testKey => '');
 		$this->assertTrue($this->matchCondition->match('[globalString = GP:' . $testKey . '=]'));
 		$this->assertTrue($this->matchCondition->match('[globalString = GP:' . $testKey . ' = ]'));
+	}
+
+	/**
+	 * Tests whether string comparison matches.
+	 *
+	 * @test
+	 */
+	public function globalStringConditionMatchesOnEmptyLiteralExpressionWithValueSetToEmptyString() {
+		$this->assertTrue($this->matchCondition->match('[globalString = LIT:=]'));
+		$this->assertTrue($this->matchCondition->match('[globalString = LIT: = ]'));
 	}
 
 	/**

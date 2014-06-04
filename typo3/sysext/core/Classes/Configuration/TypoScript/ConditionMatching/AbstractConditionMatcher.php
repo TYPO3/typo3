@@ -255,7 +255,7 @@ abstract class AbstractConditionMatcher {
 			$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
 			// Take all identified systems into account, e.g. mac for iOS, Linux
 			// for android and Windows NT for Windows XP
-			$allSystems .= ' ' . implode(' ', $browserInfo['all_systems']);
+			$allSystems = ' ' . implode(' ', $browserInfo['all_systems']);
 			foreach ($values as $test) {
 				if (stripos($allSystems, $test) !== FALSE) {
 					return TRUE;
@@ -275,8 +275,8 @@ abstract class AbstractConditionMatcher {
 			break;
 		case 'useragent':
 			$test = trim($value);
-			if (strlen($test)) {
-				return $this->searchStringWildcard($browserInfo['useragent'], $test);
+			if ($test !== '') {
+				return $this->searchStringWildcard((string)$browserInfo['useragent'], $test);
 			}
 			break;
 		case 'language':
@@ -395,7 +395,7 @@ abstract class AbstractConditionMatcher {
 			foreach ($values as $test) {
 				$point = strcspn($test, '=');
 				$theVarName = substr($test, 0, $point);
-				$nv = $this->getVariable(trim($theVarName));
+				$nv = (string)$this->getVariable(trim($theVarName));
 				$testValue = substr($test, $point + 1);
 				if ($this->searchStringWildcard($nv, trim($testValue))) {
 					return TRUE;
@@ -461,7 +461,7 @@ abstract class AbstractConditionMatcher {
 	 * Evaluates a $leftValue based on an operator: "<", ">", "<=", ">=", "!=" or "="
 	 *
 	 * @param string $test The value to compare with on the form [operator][number]. Eg. "< 123
-	 * @param integer $leftValue The value on the left side
+	 * @param float $leftValue The value on the left side
 	 * @return boolean If $value is "50" and $test is "< 123" then it will return TRUE.
 	 */
 	protected function compareNumber($test, $leftValue) {
@@ -534,7 +534,7 @@ abstract class AbstractConditionMatcher {
 				// Replace the marker with .* to match anything (wildcard)
 				$regex = str_replace(array('###MANY###', '###ONE###'), array('.*', '.'), $regex);
 			}
-			$result = (bool) preg_match($regex, ((string) $haystack));
+			$result = (bool)preg_match($regex, $haystack);
 		}
 		return $result;
 	}
