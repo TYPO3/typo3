@@ -1762,10 +1762,9 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 * @dataProvider hostnamesNotMatchingTrustedHostsConfigurationDataProvider
 	 */
-	public function getIndpEnvForHostAllowsAllHostnameValuesOfDefaultConfiguration($httpHost, $hostNamePattern) {
+	public function getIndpEnvForHostAllowsAllHostnameValuesIfHostPatternIsSetToAllowAll($httpHost, $hostNamePattern) {
 		$_SERVER['HTTP_HOST'] = $httpHost;
-		// DefaultConfiguration is currently applied for tests. In case this is changed, this test needs to be adapted.
-		// $GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = '/.*/';
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = Utility\GeneralUtility::ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL;
 		$this->assertSame($httpHost, Utility\GeneralUtility::getIndpEnv('HTTP_HOST'));
 	}
 
@@ -1998,7 +1997,6 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return array Valid url
 	 */
 	public function sanitizeLocalUrlValidUrlDataProvider() {
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = Utility\GeneralUtility::ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL;
 		$subDirectory = Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
 		$typo3SiteUrl = Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 		$typo3RequestHost = Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST');
