@@ -316,6 +316,11 @@ class ElementInformationController {
 			);
 		}
 
+		if (in_array($this->type, array('folder', 'file'), TRUE)) {
+			$extraFields['storage'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xlf:sys_file.storage', TRUE);
+			$extraFields['folder'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:folder', TRUE);
+		}
+
 		foreach ($extraFields as $name => $value) {
 			$rowValue = BackendUtility::getProcessedValueExtra($this->table, $name, $this->row[$name]);
 			if ($name === 'cruser_id' && $rowValue) {
@@ -325,6 +330,13 @@ class ElementInformationController {
 					if ($userTemp[0]['realName'] !== '') {
 						$rowValue .= ' - ' . $userTemp[0]['realName'];
 					}
+				}
+			} elseif ($rowValue === NULL) {
+				$resourceObject = $this->fileObject ?: $this->folderObject;
+				if ($name === 'storage') {
+					$rowValue = $resourceObject->getStorage()->getName();
+				} elseif ($name === 'folder') {
+					$rowValue = $resourceObject->getParentFolder()->getIdentifier();
 				}
 			}
 			$tableRows[] = '
