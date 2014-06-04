@@ -479,6 +479,16 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 *
 	 * @test
 	 */
+	public function globalStringConditionMatchesOnEmptyLiteralExpressionWithValueSetToEmptyString() {
+		$this->assertTrue($this->matchCondition->match('[globalString = LIT:=]'));
+		$this->assertTrue($this->matchCondition->match('[globalString = LIT: = ]'));
+	}
+
+	/**
+	 * Tests whether string comparison matches.
+	 *
+	 * @test
+	 */
 	public function globalStringConditionMatchesWildcardExpression() {
 		$this->assertTrue($this->matchCondition->match('[globalString = LIT:TYPO3.Test.Condition = TYPO3?Test?Condition]'));
 		$this->assertTrue($this->matchCondition->match('[globalString = LIT:TYPO3.Test.Condition = TYPO3.T*t.Condition]'));
