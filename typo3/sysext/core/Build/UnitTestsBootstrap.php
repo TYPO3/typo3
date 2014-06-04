@@ -96,6 +96,10 @@ require PATH_site . '/typo3/sysext/core/Classes/Core/Bootstrap.php';
 $configurationManager = new \TYPO3\CMS\Core\Configuration\ConfigurationManager();
 $GLOBALS['TYPO3_CONF_VARS'] = $configurationManager->getDefaultConfiguration();
 
+// Avoid failing tests that rely on HTTP_HOST retrieval
+// TODO: Check if we could do better mocking in these tests
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = '.*';
+
 \TYPO3\CMS\Core\Core\Bootstrap::getInstance()
 	->disableCoreAndClassesCache()
 	->initializeCachingFramework()
