@@ -3509,7 +3509,7 @@ Connection: close
 				if ($proxySSL == '*') {
 					$proxySSL = $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'];
 				}
-				if (self::cmpIP(self::getIndpEnv('REMOTE_ADDR'), $proxySSL)) {
+				if (self::cmpIP($_SERVER['REMOTE_ADDR'], $proxySSL)) {
 					$retVal = TRUE;
 				} else {
 					$retVal = $_SERVER['SSL_SESSION_ID'] || strtolower($_SERVER['HTTPS']) === 'on' || (string)$_SERVER['HTTPS'] === '1' ? TRUE : FALSE;
