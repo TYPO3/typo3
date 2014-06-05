@@ -191,7 +191,7 @@ class Command {
 			$explodedAnnotation = explode(' ', $annotations['param'][$i]);
 			array_shift($explodedAnnotation);
 			array_shift($explodedAnnotation);
-			$description = implode(' ', $explodedAnnotation);
+			$description = ltrim(implode(' ', $explodedAnnotation));
 			$required = $commandParameterDefinition['optional'] !== TRUE;
 			$commandArgumentDefinitions[] = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\CommandArgumentDefinition', $commandParameterName, $required, $description);
 			$i++;
