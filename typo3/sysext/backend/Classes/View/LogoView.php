@@ -32,8 +32,15 @@ namespace TYPO3\CMS\Backend\View;
  * @author Ingo Renner <ingo@typo3.org>
  */
 class LogoView {
+
+	/**
+	 * @var string
+	 */
 	protected $logo = '';
 
+	/**
+	 * Constructor
+	 */
 	public function __construct() {
 		$this->logo = 'gfx/typo3-topbar@2x.png';
 	}
