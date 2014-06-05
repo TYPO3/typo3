@@ -1039,7 +1039,7 @@ abstract class AbstractUserAuthentication {
 		}
 		$this->db->exec_DELETEquery($this->session_table, 'ses_id = ' . $this->db->fullQuoteStr($this->id, $this->session_table) . '
 						AND ses_name = ' . $this->db->fullQuoteStr($this->name, $this->session_table));
-		$this->user = '';
+		$this->user = NULL;
 		// Hook for post-processing the logoff() method, requested and implemented by andreas.otto@dkd.de:
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing'])) {
 			$_params = array();
