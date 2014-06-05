@@ -1589,6 +1589,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						if ($row['bodytext']) {
 							$out .= $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br />';
 						}
+						if ($row['image']) {
+							$out .= $this->thumbCode($row, 'tt_content', 'image') . '<br />';
+						}
 					} else {
 						$message = sprintf(
 							$this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noMatchingValue'),
