@@ -438,7 +438,11 @@ class DataPreprocessor {
 	 */
 	public function renderRecord_flexProc($data, $fieldConfig, $TSconfig, $table, $row, $field) {
 		// Convert the XML data to PHP array:
-		$currentValueArray = GeneralUtility::xml2array($data);
+		if (!is_array($data)) {
+			$currentValueArray = GeneralUtility::xml2array($data);
+		} else {
+			$currentValueArray = $data;
+		}
 		if (is_array($currentValueArray)) {
 			// Get current value array:
 			$dataStructArray = BackendUtility::getFlexFormDS($fieldConfig['config'], $row, $table, $field);

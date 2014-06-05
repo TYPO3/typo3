@@ -497,7 +497,7 @@ class ReferenceIndex {
 			$this->temp_flexRelations['db'][$structurePath] = $resultsFromDatabase;
 		}
 		// Soft References:
-		if (strlen($dataValue) && ($softRefs = BackendUtility::explodeSoftRefParserList($dsConf['softref']))) {
+		if ((is_array($dataValue) || strlen($dataValue)) && $softRefs = BackendUtility::explodeSoftRefParserList($dsConf['softref'])) {
 			$softRefValue = $dataValue;
 			foreach ($softRefs as $spKey => $spParams) {
 				$softRefObj = BackendUtility::softRefParserObj($spKey);
