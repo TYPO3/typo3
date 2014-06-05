@@ -232,6 +232,16 @@ class ModuleMenuView {
 					$submoduleIcon = $this->getModuleIcon($submoduleKey);
 					$submoduleDescription = $GLOBALS['LANG']->moduleLabels['labels'][$submoduleKey . 'label'];
 					$originalLink = $submoduleLink;
+					if (isset($submoduleData['navigationFrameModule'])) {
+						$navigationFrameScript = BackendUtility::getModuleUrl(
+							$submoduleData['navigationFrameModule'],
+							isset($submoduleData['navigationFrameModuleParameters'])
+								? $submoduleData['navigationFrameModuleParameters']
+								: array()
+						);
+					} else {
+						$navigationFrameScript = $submoduleData['navFrameScript'];
+					}
 					$modules[$moduleKey]['subitems'][$submoduleKey] = array(
 						'name' => $moduleName . '_' . $submoduleName,
 						'title' => $GLOBALS['LANG']->moduleLabels['tabs'][$submoduleKey],
@@ -240,7 +250,7 @@ class ModuleMenuView {
 						'link' => $submoduleLink,
 						'originalLink' => $originalLink,
 						'description' => $submoduleDescription,
-						'navigationFrameScript' => $submoduleData['navFrameScript'],
+						'navigationFrameScript' => $navigationFrameScript,
 						'navigationFrameScriptParam' => $submoduleData['navFrameScriptParam'],
 						'navigationComponentId' => $submoduleData['navigationComponentId']
 					);
