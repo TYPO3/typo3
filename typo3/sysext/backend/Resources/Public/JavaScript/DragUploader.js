@@ -244,7 +244,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 				}
 
 				if (me.dragUploader.$element.data('file-irre-object')) {
-					inline.importElement(
+					inline.delayedImportElement(
 						me.dragUploader.$element.data('file-irre-object'),
 						'sys_file',
 						data.result.upload[0].uid,
