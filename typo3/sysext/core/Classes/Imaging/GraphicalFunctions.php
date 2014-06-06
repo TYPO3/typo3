@@ -2351,8 +2351,8 @@ class GraphicalFunctions {
 	 * Gets the input image dimensions.
 	 *
 	 * @param string $imageFile The image filepath
-	 * @return array Returns an array where [0]/[1] is w/h, [2] is extension and [3] is the filename.
-	 * @see imageMagickConvert(), tslib_cObj::getImgResource()
+	 * @return array|NULL Returns an array where [0]/[1] is w/h, [2] is extension and [3] is the filename.
+	 * @see imageMagickConvert(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getImgResource()
 	 * @todo Define visibility
 	 */
 	public function getImageDimensions($imageFile) {
@@ -2372,7 +2372,7 @@ class GraphicalFunctions {
 				}
 			}
 		}
-		return FALSE;
+		return NULL;
 	}
 
 	/**

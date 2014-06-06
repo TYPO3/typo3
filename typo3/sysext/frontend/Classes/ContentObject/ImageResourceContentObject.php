@@ -43,8 +43,13 @@ class ImageResourceContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstr
 	 */
 	public function render($conf = array()) {
 		$GLOBALS['TSFE']->lastImgResourceInfo = $this->cObj->getImgResource($conf['file'], $conf['file.']);
-		$imageResource = $GLOBALS['TSFE']->lastImgResourceInfo[3];
-		$theValue = isset($conf['stdWrap.']) ? $this->cObj->stdWrap($imageResource, $conf['stdWrap.']) : $imageResource;
+		if ($GLOBALS['TSFE']->lastImgResourceInfo) {
+			$imageResource = $GLOBALS['TSFE']->lastImgResourceInfo[3];
+			$theValue = isset($conf['stdWrap.']) ? $this->cObj->stdWrap($imageResource, $conf['stdWrap.']) : $imageResource;
+		} else {
+			$theValue = '';
+		}
+
 		return $theValue;
 	}
 

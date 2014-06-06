@@ -1329,34 +1329,35 @@ class ContentObjectRenderer {
 	public function cImage($file, $conf) {
 		$info = $this->getImgResource($file, $conf['file.']);
 		$GLOBALS['TSFE']->lastImageInfo = $info;
-		if (is_array($info)) {
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath(PATH_site . $info['3'])) {
-				$source = \TYPO3\CMS\Core\Utility\GeneralUtility::rawUrlEncodeFP(\TYPO3\CMS\Core\Utility\GeneralUtility::png_to_gif_by_imagemagick($info[3]));
-				$source = $GLOBALS['TSFE']->absRefPrefix . $source;
-			} else {
-				$source = $info[3];
-			}
-			// This array is used to collect the image-refs on the page...
-			$GLOBALS['TSFE']->imagesOnPage[] = $source;
-			$altParam = $this->getAltParam($conf);
-			if ($conf['params'] && !isset($conf['params.'])) {
-				$params = ' ' . $conf['params'];
-			} else {
-				$params = isset($conf['params.']) ? ' ' . $this->stdWrap($conf['params'], $conf['params.']) : '';
-			}
-			$theValue = '<img src="' . htmlspecialchars($source) . '" width="' . $info[0] . '" height="' . $info[1] . '"' . $this->getBorderAttr(' border="' . intval($conf['border']) . '"') . $params . $altParam . (!empty($GLOBALS['TSFE']->xhtmlDoctype) ? ' /' : '') . '>';
-			$linkWrap = isset($conf['linkWrap.']) ? $this->stdWrap($conf['linkWrap'], $conf['linkWrap.']) : $conf['linkWrap'];
-			if ($linkWrap) {
-				$theValue = $this->linkWrap($theValue, $linkWrap);
-			} elseif ($conf['imageLinkWrap']) {
-				$theValue = $this->imageLinkWrap($theValue, $info['origFile'], $conf['imageLinkWrap.']);
-			}
-			$wrap = isset($conf['wrap.']) ? $this->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
-			if ($wrap) {
-				$theValue = $this->wrap($theValue, $conf['wrap']);
-			}
-			return $theValue;
+		if (!is_array($info)) {
+			return '';
 		}
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath(PATH_site . $info['3'])) {
+			$source = \TYPO3\CMS\Core\Utility\GeneralUtility::rawUrlEncodeFP(\TYPO3\CMS\Core\Utility\GeneralUtility::png_to_gif_by_imagemagick($info[3]));
+			$source = $GLOBALS['TSFE']->absRefPrefix . $source;
+		} else {
+			$source = $info[3];
+		}
+		// This array is used to collect the image-refs on the page...
+		$GLOBALS['TSFE']->imagesOnPage[] = $source;
+		$altParam = $this->getAltParam($conf);
+		if ($conf['params'] && !isset($conf['params.'])) {
+			$params = ' ' . $conf['params'];
+		} else {
+			$params = isset($conf['params.']) ? ' ' . $this->stdWrap($conf['params'], $conf['params.']) : '';
+		}
+		$theValue = '<img src="' . htmlspecialchars($source) . '" width="' . $info[0] . '" height="' . $info[1] . '"' . $this->getBorderAttr(' border="' . intval($conf['border']) . '"') . $params . $altParam . (!empty($GLOBALS['TSFE']->xhtmlDoctype) ? ' /' : '') . '>';
+		$linkWrap = isset($conf['linkWrap.']) ? $this->stdWrap($conf['linkWrap'], $conf['linkWrap.']) : $conf['linkWrap'];
+		if ($linkWrap) {
+			$theValue = $this->linkWrap($theValue, $linkWrap);
+		} elseif ($conf['imageLinkWrap']) {
+			$theValue = $this->imageLinkWrap($theValue, $info['origFile'], $conf['imageLinkWrap.']);
+		}
+		$wrap = isset($conf['wrap.']) ? $this->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
+		if ($wrap) {
+			$theValue = $this->wrap($theValue, $conf['wrap']);
+		}
+		return $theValue;
 	}
 
 	/**
@@ -5105,11 +5106,22 @@ class ContentObjectRenderer {
 	 * In the latter case a GIFBUILDER image is returned; This means an image is made by TYPO3 from layers of elements as GIFBUILDER defines.
 	 * In the function IMG_RESOURCE() this function is called like $this->getImgResource($conf['file'], $conf['file.']);
 	 *
-	 * @param string $file A "imgResource" TypoScript data type. Either a TypoScript file resource or the string GIFBUILDER. See description above.
+	 * Structure of the returned info array:
+	 *  0 => width
+	 *  1 => height
+	 *  2 => file extension
+	 *  3 => file name
+	 *  origFile => original file name
+	 *  origFile_mtime => original file mtime
+	 *  -- only available if processed via FAL: --
+	 *  originalFile => original file object
+	 *  processedFile => processed file object
+	 *  fileCacheHash => checksum of processed file
+	 *
+	 * @param string|\TYPO3\CMS\Core\Resource\File|\TYPO3\CMS\Core\Resource\FileReference $file A "imgResource" TypoScript data type. Either a TypoScript file resource, a file or a file reference object or the string GIFBUILDER. See description above.
 	 * @param array $fileArray TypoScript properties for the imgResource type
-	 * @return array Returns info-array. info[origFile] = original file. [0]/[1] is w/h, [2] is file extension and [3] is the filename.
+	 * @return array|NULL Returns info-array
 	 * @see IMG_RESOURCE(), cImage(), \TYPO3\CMS\Frontend\Imaging\GifBuilder
-	 * @todo Define visibility
 	 */
 	public function getImgResource($file, $fileArray) {
 		if (!is_array($fileArray)) {
@@ -5117,6 +5129,7 @@ class ContentObjectRenderer {
 		}
 		switch ($file) {
 			case 'GIFBUILDER':
+				/** @var \TYPO3\CMS\Frontend\Imaging\GifBuilder $gifCreator */
 				$gifCreator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
 				$gifCreator->init();
 				$theImage = '';
@@ -5157,7 +5170,7 @@ class ContentObjectRenderer {
 					$logger->warning('The image "' . $file . '" could not be found and won\'t be included in frontend output');
 					return NULL;
 				}
-				if ($fileObject instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
+				if ($fileObject instanceof \TYPO3\CMS\Core\Resource\File) {
 					$processingConfiguration = array();
 					$processingConfiguration['width'] = isset($fileArray['width.']) ? $this->stdWrap($fileArray['width'], $fileArray['width.']) : $fileArray['width'];
 					$processingConfiguration['height'] = isset($fileArray['height.']) ? $this->stdWrap($fileArray['height'], $fileArray['height.']) : $fileArray['height'];
@@ -5179,10 +5192,15 @@ class ContentObjectRenderer {
 						// Must render mask images and include in hash-calculating
 						// - otherwise we cannot be sure the filename is unique for the setup!
 						if (is_array($maskArray)) {
-							$processingConfiguration['maskImages']['m_mask'] = $this->getImgResource($maskArray['mask'], $maskArray['mask.']);
-							$processingConfiguration['maskImages']['m_bgImg'] = $this->getImgResource($maskArray['bgImg'], $maskArray['bgImg.']);
-							$processingConfiguration['maskImages']['m_bottomImg'] = $this->getImgResource($maskArray['bottomImg'], $maskArray['bottomImg.']);
-							$processingConfiguration['maskImages']['m_bottomImg_mask'] = $this->getImgResource($maskArray['bottomImg_mask'], $maskArray['bottomImg_mask.']);
+							$mask = $this->getImgResource($maskArray['mask'], $maskArray['mask.']);
+							$bgImg = $this->getImgResource($maskArray['bgImg'], $maskArray['bgImg.']);
+							$bottomImg = $this->getImgResource($maskArray['bottomImg'], $maskArray['bottomImg.']);
+							$bottomImg_mask = $this->getImgResource($maskArray['bottomImg_mask'], $maskArray['bottomImg_mask.']);
+
+							$processingConfiguration['maskImages']['maskImage'] = $mask['processedFile'];
+							$processingConfiguration['maskImages']['backgroundImage'] = $bgImg['processedFile'];
+							$processingConfiguration['maskImages']['maskBottomImage'] = $bottomImg['processedFile'];
+							$processingConfiguration['maskImages']['maskBottomImageMask'] = $bottomImg_mask['processedFile'];
 						}
 						if ($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix']) {
 							$processingConfiguration['useTargetFileNameAsPrefix'] = 1;
