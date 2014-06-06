@@ -511,7 +511,7 @@ class Check {
 	 */
 	protected function checkXdebugMaxNestingLevel() {
 		if (extension_loaded('xdebug')) {
-			$recommendedMaxNestingLevel = 250;
+			$recommendedMaxNestingLevel = 400;
 			$currentMaxNestingLevel = ini_get('xdebug.max_nesting_level');
 			if ($currentMaxNestingLevel < $recommendedMaxNestingLevel) {
 				$status = new Status\ErrorStatus();
