@@ -645,7 +645,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 	 *
 	 * @param string $file Filename value OR the string "GIFBUILDER", see documentation in TSref for the "datatype" called "imgResource
 	 * @param array $fileArray TypoScript properties passed to the function. Either GIFBUILDER properties or imgResource properties, depending on the value of $file (whether that is "GIFBUILDER" or a file reference)
-	 * @return array Returns an array with file information if an image was returned. Otherwise FALSE.
+	 * @return array|NULL Returns an array with file information from ContentObjectRenderer::getImgResource()
 	 * @access private
 	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getImgResource()
 	 * @todo Define visibility

@@ -20,11 +20,11 @@ use \TYPO3\CMS\Core\Resource, \TYPO3\CMS\Core\Utility;
  * Helper class to locally perform a crop/scale/mask task with the TYPO3 image processing classes.
  */
 class LocalCropScaleMaskHelper {
+
 	/**
 	 * @var LocalImageProcessor
 	 */
 	protected $processor;
-
 
 	/**
 	 * @param LocalImageProcessor $processor
@@ -41,8 +41,13 @@ class LocalCropScaleMaskHelper {
 	 * copies the typo3temp/ file to the processing folder of the target storage and
 	 * removes the typo3temp/ file.
 	 *
+	 * The returned array has the following structure:
+	 *   width => 100
+	 *   height => 200
+	 *   filePath => /some/path
+	 *
 	 * @param TaskInterface $task
-	 * @return array
+	 * @return array|NULL
 	 */
 	public function process(TaskInterface $task) {
 		$result = NULL;
@@ -98,7 +103,7 @@ class LocalCropScaleMaskHelper {
 				);
 				if (is_array($tempFileInfo)) {
 					$maskBottomImage = $configuration['maskImages']['maskBottomImage'];
-					if ($maskBottomImage instanceof $maskBottomImage) {
+					if ($maskBottomImage instanceof Resource\FileInterface) {
 						$maskBottomImageMask = $configuration['maskImages']['maskBottomImageMask'];
 					} else {
 						$maskBottomImageMask = NULL;
@@ -127,6 +132,7 @@ class LocalCropScaleMaskHelper {
 					}
 					// The image onto the background
 					$gifBuilder->combineExec($tempScale['m_bgImg'], $tempFileInfo[3], $tempScale['m_mask'], $temporaryFileName);
+					$tempFileInfo[3] = $temporaryFileName;
 					// Unlink the temp-images...
 					foreach ($tempScale as $tempFile) {
 						if (@is_file($tempFile)) {
