@@ -164,7 +164,7 @@ class Command {
 	 */
 	public function getDescription() {
 		$lines = explode(chr(10), $this->getCommandMethodReflection()->getDescription());
-		array_pop($lines);
+		array_shift($lines);
 		$descriptionLines = array();
 		foreach ($lines as $line) {
 			$trimmedLine = trim($line);
