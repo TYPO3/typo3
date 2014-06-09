@@ -112,9 +112,9 @@ class ObjectAccess {
 					}
 					$index++;
 				}
+				$propertyExists = FALSE;
+				return NULL;
 			}
-			$propertyExists = FALSE;
-			return NULL;
 		} elseif ($subject instanceof \ArrayAccess && isset($subject[$propertyName])) {
 			return $subject[$propertyName];
 		}

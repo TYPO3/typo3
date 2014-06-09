@@ -172,6 +172,16 @@ class ObjectAccessTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function getPropertyCanAccessPropertiesOfAnObjectStorageObject() {
+		$objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$objectStorage->key = 'value';
+		$actual = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($objectStorage, 'key');
+		$this->assertEquals('value', $actual, 'getProperty does not work with ObjectStorage property.');
+	}
+
+	/**
+	 * @test
+	 */
 	public function getPropertyCanAccessPropertiesOfAnObjectImplementingArrayAccess() {
 		$arrayAccessInstance = new \TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\ArrayAccessClass(array('key' => 'value'));
 		$actual = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($arrayAccessInstance, 'key');
