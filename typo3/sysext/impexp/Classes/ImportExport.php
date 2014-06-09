@@ -2301,7 +2301,7 @@ class ImportExport {
 									$conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 									if (is_array($origRecordRow) && is_array($conf) && $conf['type'] === 'flex') {
 										// Get current data structure and value array:
-										$dataStructArray = BackendUtility::getFlexFormDS($conf, $origRecordRow, $table);
+										$dataStructArray = BackendUtility::getFlexFormDS($conf, $origRecordRow, $table, $field);
 										$currentValueArray = GeneralUtility::xml2array($updateData[$table][$thisNewUid][$field]);
 										// Do recursive processing of the XML data:
 										$iteratorObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
@@ -2409,7 +2409,7 @@ class ImportExport {
 									$origRecordRow = BackendUtility::getRecord($table, $thisNewUid, '*');
 									if (is_array($origRecordRow)) {
 										// Get current data structure and value array:
-										$dataStructArray = BackendUtility::getFlexFormDS($conf, $origRecordRow, $table);
+										$dataStructArray = BackendUtility::getFlexFormDS($conf, $origRecordRow, $table, $field);
 										$currentValueArray = GeneralUtility::xml2array($origRecordRow[$field]);
 										// Do recursive processing of the XML data:
 										/** @var $iteratorObj \TYPO3\CMS\Core\DataHandling\DataHandler */

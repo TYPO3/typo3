@@ -172,7 +172,7 @@ class SuggestElement {
 		if ($GLOBALS['TCA'][$table]['columns'][$parts[0]]['config']['type'] === 'flex') {
 			if (is_array($row) && count($row) > 0) {
 				$flexfieldTCAConfig = $GLOBALS['TCA'][$table]['columns'][$parts[0]]['config'];
-				$flexformDSArray = BackendUtility::getFlexFormDS($flexfieldTCAConfig, $row, $table);
+				$flexformDSArray = BackendUtility::getFlexFormDS($flexfieldTCAConfig, $row, $table, $parts[0]);
 				$flexformDSArray = GeneralUtility::resolveAllSheetsInDS($flexformDSArray);
 				$flexformElement = $parts[count($parts) - 2];
 				$continue = TRUE;

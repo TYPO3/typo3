@@ -3448,7 +3448,7 @@ class DataHandler {
 		// For "flex" fieldtypes we need to traverse the structure for two reasons: If there are file references they have to be prepended with absolute paths and if there are database reference they MIGHT need to be remapped (still done in remapListedDBRecords())
 		if ($conf['type'] == 'flex') {
 			// Get current value array:
-			$dataStructArray = BackendUtility::getFlexFormDS($conf, $row, $table);
+			$dataStructArray = BackendUtility::getFlexFormDS($conf, $row, $table, $field);
 			$currentValueArray = GeneralUtility::xml2array($value);
 			// Traversing the XML structure, processing files:
 			if (is_array($currentValueArray)) {
@@ -4852,13 +4852,13 @@ class DataHandler {
 				}
 			} elseif ($conf['type'] == 'flex') {
 				// Current record
-				$dataStructArray = BackendUtility::getFlexFormDS($conf, $currentRec, $table);
+				$dataStructArray = BackendUtility::getFlexFormDS($conf, $currentRec, $table, $field);
 				$currentValueArray = GeneralUtility::xml2array($currentRec[$field]);
 				if (is_array($currentValueArray)) {
 					$this->checkValue_flex_procInData($currentValueArray['data'], array(), array(), $dataStructArray, array($table, $id, $field), 'version_remapMMForVersionSwap_flexFormCallBack');
 				}
 				// Swap record
-				$dataStructArray = BackendUtility::getFlexFormDS($conf, $swapRec, $table);
+				$dataStructArray = BackendUtility::getFlexFormDS($conf, $swapRec, $table, $field);
 				$currentValueArray = GeneralUtility::xml2array($swapRec[$field]);
 				if (is_array($currentValueArray)) {
 					$this->checkValue_flex_procInData($currentValueArray['data'], array(), array(), $dataStructArray, array($table, $swapWith, $field), 'version_remapMMForVersionSwap_flexFormCallBack');
@@ -4981,7 +4981,7 @@ class DataHandler {
 									if (is_array($origRecordRow)) {
 										BackendUtility::workspaceOL($table, $origRecordRow);
 										// Get current data structure and value array:
-										$dataStructArray = BackendUtility::getFlexFormDS($conf, $origRecordRow, $table);
+										$dataStructArray = BackendUtility::getFlexFormDS($conf, $origRecordRow, $table, $fieldName);
 										$currentValueArray = GeneralUtility::xml2array($origRecordRow[$fieldName]);
 										// Do recursive processing of the XML data:
 										$currentValueArray['data'] = $this->checkValue_flex_procInData($currentValueArray['data'], array(), array(), $dataStructArray, array($table, $theUidToUpdate, $fieldName), 'remapListedDBRecords_flexFormCallBack');
