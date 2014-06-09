@@ -1617,29 +1617,29 @@ class ImportExport {
 					// Traverse relation fields of each record
 					foreach ($this->dat['records'][$table . ':' . $uid]['rels'] as $field => $config) {
 						switch ((string) $config['type']) {
-						case 'flex':
-							// Get XML content and set as default value (string, non-processed):
-							$updateData[$table][$thisNewUid][$field] = $this->dat['records'][$table . ':' . $uid]['data'][$field];
-							// If there has been registered relations inside the flex form field, run processing on the content:
-							if (count($config['flexFormRels']['db']) || count($config['flexFormRels']['file'])) {
-								$origRecordRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $thisNewUid, '*');
-								// This will fetch the new row for the element (which should be updated with any references to data structures etc.)
-								$conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
-								if (is_array($origRecordRow) && is_array($conf) && $conf['type'] === 'flex') {
-									// Get current data structure and value array:
-									$dataStructArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($conf, $origRecordRow, $table);
-									$currentValueArray = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($updateData[$table][$thisNewUid][$field]);
-									// Do recursive processing of the XML data:
-									$iteratorObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
-									$iteratorObj->callBackObj = $this;
-									$currentValueArray['data'] = $iteratorObj->checkValue_flex_procInData($currentValueArray['data'], array(), array(), $dataStructArray, array($table, $thisNewUid, $field, $config), 'remapListedDBRecords_flexFormCallBack');
-									// The return value is set as an array which means it will be processed by tcemain for file and DB references!
-									if (is_array($currentValueArray['data'])) {
-										$updateData[$table][$thisNewUid][$field] = $currentValueArray;
+							case 'flex':
+								// Get XML content and set as default value (string, non-processed):
+								$updateData[$table][$thisNewUid][$field] = $this->dat['records'][$table . ':' . $uid]['data'][$field];
+								// If there has been registered relations inside the flex form field, run processing on the content:
+								if (count($config['flexFormRels']['db']) || count($config['flexFormRels']['file'])) {
+									$origRecordRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $thisNewUid, '*');
+									// This will fetch the new row for the element (which should be updated with any references to data structures etc.)
+									$conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
+									if (is_array($origRecordRow) && is_array($conf) && $conf['type'] === 'flex') {
+										// Get current data structure and value array:
+										$dataStructArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($conf, $origRecordRow, $table, $field);
+										$currentValueArray = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($updateData[$table][$thisNewUid][$field]);
+										// Do recursive processing of the XML data:
+										$iteratorObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+										$iteratorObj->callBackObj = $this;
+										$currentValueArray['data'] = $iteratorObj->checkValue_flex_procInData($currentValueArray['data'], array(), array(), $dataStructArray, array($table, $thisNewUid, $field, $config), 'remapListedDBRecords_flexFormCallBack');
+										// The return value is set as an array which means it will be processed by tcemain for file and DB references!
+										if (is_array($currentValueArray['data'])) {
+											$updateData[$table][$thisNewUid][$field] = $currentValueArray;
+										}
 									}
 								}
-							}
-							break;
+								break;
 						}
 					}
 				} else {
@@ -1735,7 +1735,7 @@ class ImportExport {
 									$origRecordRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $thisNewUid, '*');
 									if (is_array($origRecordRow)) {
 										// Get current data structure and value array:
-										$dataStructArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($conf, $origRecordRow, $table);
+										$dataStructArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($conf, $origRecordRow, $table, $field);
 										$currentValueArray = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($origRecordRow[$field]);
 										// Do recursive processing of the XML data:
 										/** @var $iteratorObj \TYPO3\CMS\Core\DataHandling\DataHandler */

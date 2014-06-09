@@ -134,7 +134,7 @@ class SuggestElement {
 		if ($GLOBALS['TCA'][$table]['columns'][$parts[0]]['config']['type'] === 'flex') {
 			if (is_array($row) && count($row) > 0) {
 				$flexfieldTCAConfig = $GLOBALS['TCA'][$table]['columns'][$parts[0]]['config'];
-				$flexformDSArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($flexfieldTCAConfig, $row, $table);
+				$flexformDSArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($flexfieldTCAConfig, $row, $table, $parts[0]);
 				$flexformDSArray = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveAllSheetsInDS($flexformDSArray);
 				$flexformElement = $parts[count($parts) - 2];
 				$continue = TRUE;
