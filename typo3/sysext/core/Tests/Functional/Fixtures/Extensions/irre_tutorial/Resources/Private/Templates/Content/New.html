@@ -1,0 +1,26 @@
+
+<f:layout name="Default" />
+
+This template displays a NEW form for the current domain object.
+
+If you modify this template, do not forget to change the overwrite settings
+in /Configuration/ExtensionBuilder/settings.yaml:
+  Resources:
+    Private:
+      Templates:
+        New.html: keep
+
+Otherwise your changes will be overwritten the next time you save the extension in the extension builder
+
+<f:section name="main">
+<h1>New Content</h1>
+
+<f:flashMessages renderMode="div" />
+
+<f:render partial="FormErrors" arguments="{object:Content}" />
+
+<f:form action="create"  name="newContent" object="{newContent}">
+<f:render partial="Content/FormFields" />
+	<f:form.submit value="Create new" />
+</f:form>
+</f:section>

@@ -59,7 +59,13 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		$this->importScenarioDataSet('LiveDefaultPages');
 		$this->importScenarioDataSet('LiveDefaultElements');
 
-		$this->setUpFrontendRootPage(1, array('typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.ts'));
+		$this->setUpFrontendRootPage(
+			1,
+			array(
+				'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.ts',
+				// 'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/ExtbaseJsonRenderer.ts',
+			)
+		);
 		$this->backendUser->workspace = 0;
 	}
 

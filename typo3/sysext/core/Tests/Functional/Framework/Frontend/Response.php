@@ -50,7 +50,7 @@ class Response {
 	/**
 	 * @var ResponseContent
 	 */
-	protected $responseContent;
+	protected $responseSection;
 
 	/**
 	 * @param string $status
@@ -92,6 +92,24 @@ class Response {
 			$this->responseContent = new ResponseContent($this);
 		}
 		return $this->responseContent;
+	}
+
+	/**
+	 * @return NULL|array|ResponseSection[]
+	 */
+	public function getResponseSections() {
+		$sectionIdentifiers = func_get_args();
+
+		if (empty($sectionIdentifiers)) {
+			$sectionIdentifiers = array('Default');
+		}
+
+		$sections = array();
+		foreach ($sectionIdentifiers as $sectionIdentifier) {
+			$sections[] = $this->getResponseContent()->getSection($sectionIdentifier);
+		}
+
+		return $sections;
 	}
 
 }

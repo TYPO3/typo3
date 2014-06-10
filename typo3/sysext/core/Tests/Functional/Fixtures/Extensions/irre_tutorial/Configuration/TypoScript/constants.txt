@@ -1,0 +1,15 @@
+
+plugin.tx_irretutorial {
+	view {
+		# cat=plugin.tx_irretutorial/file; type=string; label=Path to template root (FE)
+		templateRootPath = EXT:irre_tutorial/Resources/Private/Templates/
+		# cat=plugin.tx_irretutorial/file; type=string; label=Path to template partials (FE)
+		partialRootPath = EXT:irre_tutorial/Resources/Private/Partials/
+		# cat=plugin.tx_irretutorial/file; type=string; label=Path to template layouts (FE)
+		layoutRootPath = EXT:irre_tutorial/Resources/Private/Layouts/
+	}
+	persistence {
+		# cat=plugin.tx_irretutorial//a; type=string; label=Default storage PID
+		storagePid =
+	}
+}

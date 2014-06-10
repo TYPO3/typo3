@@ -48,8 +48,9 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
 		parent::createContents();
 		$this->assertAssertionDataSet('createContents');
 
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', array('Testing #1', 'Testing #2'));
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId)->getResponseSections();
+		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1', 'Testing #2'));
 	}
 
 	/**
@@ -60,8 +61,9 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
 		parent::modifyContent();
 		$this->assertAssertionDataSet('modifyContent');
 
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', 'Testing #1');
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId)->getResponseSections();
+		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
 	}
 
 	/**
@@ -72,9 +74,11 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
 		parent::deleteContent();
 		$this->assertAssertionDataSet('deleteContent');
 
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', 'Regular Element #1');
-		$this->assertResponseContentDoesNotHaveRecords($responseContent, self::TABLE_Content, 'header', 'Regular Element #2');
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId)->getResponseSections();
+		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
+		$this->assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
 	}
 
 	/**
@@ -85,8 +89,9 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
 		parent::copyContent();
 		$this->assertAssertionDataSet('copyContent');
 
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', 'Regular Element #2 (copy 1)');
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId)->getResponseSections();
+		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2 (copy 1)'));
 	}
 
 	/**
@@ -97,8 +102,9 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
 		parent::copyPasteContent();
 		$this->assertAssertionDataSet('copyPasteContent');
 
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', 'Testing #1');
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId)->getResponseSections();
+		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
 	}
 
 	/**
@@ -109,8 +115,9 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
 		parent::localizeContent();
 		$this->assertAssertionDataSet('localizeContent');
 
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', array('Regular Element #1', '[Translate to Dansk:] Regular Element #2'));
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', '[Translate to Dansk:] Regular Element #2'));
 	}
 
 	/**
@@ -121,8 +128,9 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
 		parent::changeContentSorting();
 		$this->assertAssertionDataSet('changeContentSorting');
 
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', array('Regular Element #1', 'Regular Element #2'));
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId)->getResponseSections();
+		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
 	}
 
 	/**
@@ -133,10 +141,12 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
 		parent::moveContentToDifferentPage();
 		$this->assertAssertionDataSet('moveContentToDifferentPage');
 
-		$responseContentSource = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContentSource, self::TABLE_Content, 'header', 'Regular Element #1');
-		$responseContentTarget = $this->getFrontendResponse(self::VALUE_PageIdTarget)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContentTarget, self::TABLE_Content, 'header', 'Regular Element #2');
+		$responseSectionsSource = $this->getFrontendResponse(self::VALUE_PageId)->getResponseSections();
+		$this->assertThat($responseSectionsSource, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
+		$responseSectionsTarget = $this->getFrontendResponse(self::VALUE_PageIdTarget)->getResponseSections();
+		$this->assertThat($responseSectionsTarget, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
 	}
 
 	/**
@@ -147,10 +157,12 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
 		parent::movePasteContentToDifferentPage();
 		$this->assertAssertionDataSet('movePasteContentToDifferentPage');
 
-		$responseContentSource = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContentSource, self::TABLE_Content, 'header', 'Regular Element #1');
-		$responseContentTarget = $this->getFrontendResponse(self::VALUE_PageIdTarget)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContentTarget, self::TABLE_Content, 'header', 'Testing #1');
+		$responseSectionsSource = $this->getFrontendResponse(self::VALUE_PageId)->getResponseSections();
+		$this->assertThat($responseSectionsSource, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
+		$responseSectionsTarget = $this->getFrontendResponse(self::VALUE_PageIdTarget)->getResponseSections();
+		$this->assertThat($responseSectionsTarget, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
 	}
 
 	/**
@@ -161,8 +173,9 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
 		parent::moveContentToDifferentPageAndChangeSorting();
 		$this->assertAssertionDataSet('moveContentToDifferentPageNChangeSorting');
 
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageIdTarget)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', array('Regular Element #1', 'Regular Element #2'));
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageIdTarget)->getResponseSections();
+		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
 	}
 
 	/**
@@ -177,8 +190,9 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
 		parent::createPage();
 		$this->assertAssertionDataSet('createPage');
 
-		$responseContent = $this->getFrontendResponse($this->recordIds['newPageId'])->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Page, 'title', 'Testing #1');
+		$responseSections = $this->getFrontendResponse($this->recordIds['newPageId'])->getResponseSections();
+		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1'));
 	}
 
 	/**
@@ -189,8 +203,9 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
 		parent::modifyPage();
 		$this->assertAssertionDataSet('modifyPage');
 
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Page, 'title', 'Testing #1');
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId)->getResponseSections();
+		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1'));
 	}
 
 	/**
@@ -213,8 +228,9 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
 		parent::copyPage();
 		$this->assertAssertionDataSet('copyPage');
 
-		$responseContent = $this->getFrontendResponse($this->recordIds['newPageId'])->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Page, 'title', 'Relations');
+		$responseSections = $this->getFrontendResponse($this->recordIds['newPageId'])->getResponseSections();
+		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Page)->setField('title')->setValues('Relations'));
 	}
 
 	/**
@@ -225,8 +241,9 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
 		parent::localizePage();
 		$this->assertAssertionDataSet('localizePage');
 
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Page, 'title', '[Translate to Dansk:] Relations');
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Page)->setField('title')->setValues('[Translate to Dansk:] Relations'));
 	}
 
 	/**
@@ -237,9 +254,11 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
 		parent::changePageSorting();
 		$this->assertAssertionDataSet('changePageSorting');
 
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Page, 'title', 'Relations');
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', array('Regular Element #1', 'Regular Element #2'));
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId)->getResponseSections();
+		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Page)->setField('title')->setValues('Relations'));
+		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
 	}
 
 	/**
@@ -250,9 +269,11 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
 		parent::movePageToDifferentPage();
 		$this->assertAssertionDataSet('movePageToDifferentPage');
 
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Page, 'title', 'Relations');
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', array('Regular Element #1', 'Regular Element #2'));
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId)->getResponseSections();
+		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Page)->setField('title')->setValues('Relations'));
+		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
 	}
 
 	/**
@@ -263,9 +284,11 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
 		parent::movePageToDifferentPageAndChangeSorting();
 		$this->assertAssertionDataSet('movePageToDifferentPageNChangeSorting');
 
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Page, 'title', 'Relations');
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', array('Regular Element #1', 'Regular Element #2'));
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId)->getResponseSections();
+		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Page)->setField('title')->setValues('Relations'));
+		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
 	}
 
 }

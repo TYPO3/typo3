@@ -1,0 +1,23 @@
+
+<f:layout name="Default" />
+
+This Template is responsible for displaying a single view for a domain object
+
+If you modify this template, do not forget to change the overwrite settings
+in /Configuration/ExtensionBuilder/settings.yaml:
+  Resources:
+    Private:
+      Templates:
+        Show.html: keep
+
+Otherwise your changes will be overwritten the next time you save the extension in the extension builder
+
+<f:section name="main">
+<h1>Single View for Content</h1>
+<f:debug>{content}</f:debug>
+
+<f:flashMessages renderMode="div" />
+<f:render partial="Content/Properties" arguments="{content:content}" />
+<f:link.action action="list">Back to list</f:link.action><br />
+<f:link.action action="new">New Content</f:link.action>
+</f:section>

@@ -26,7 +26,6 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\Framework\DataSet;
-use TYPO3\CMS\Core\Tests\Functional\Framework\Frontend\ResponseContent;
 
 /**
  * Functional test for the DataHandler
@@ -349,194 +348,31 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 	}
 
 	/**
-	 * @param ResponseContent $responseContent
-	 * @param string $structureRecordIdentifier
-	 * @param string $structureFieldName
-	 * @param string $tableName
-	 * @param string $fieldName
-	 * @param bool $strict
-	 * @param string|array $values
+	 * @return \TYPO3\CMS\Core\Tests\Functional\Framework\Constraint\RequestSection\HasRecordConstraint
 	 */
-	protected function assertResponseContentStructureHasRecords(ResponseContent $responseContent, $structureRecordIdentifier, $structureFieldName, $tableName, $fieldName, $values, $strict = FALSE) {
-		$nonMatchingVariants = array();
-		$remainingRecordVariants = array();
-
-		foreach ($responseContent->findStructures($structureRecordIdentifier, $structureFieldName) as $path => $structure) {
-			$remainingRecords = array();
-			$nonMatchingValues = $this->getNonMatchingValuesFrontendResponseRecords($structure, $tableName, $fieldName, $values);
-
-			if ($strict) {
-				$remainingRecords = $this->getRemainingFrontendResponseRecords($structure, $tableName, $fieldName, $values);
-			}
-
-			if (empty($nonMatchingValues) && (!$strict || empty($remainingRecords))) {
-				// Increase assertion counter
-				$this->assertEmpty($nonMatchingValues);
-				return;
-			}
-
-			if (!empty($nonMatchingValues)) {
-				$nonMatchingVariants[$path] = $nonMatchingValues;
-			}
-			if ($strict && !empty($remainingRecords)) {
-				$remainingRecordVariants[$path] = $remainingRecords;
-			}
-		}
-
-		$failureMessage = '';
-
-		if (!empty($nonMatchingVariants)) {
-			$failureMessage .= 'Could not assert all values for "' . $tableName . '.' . $fieldName . '"' . LF;
-			foreach ($nonMatchingVariants as $path => $nonMatchingValues) {
-				$failureMessage .= '* ' . $path . ': ' . implode(', ', $nonMatchingValues) . LF;
-			}
-		}
-
-		if (!empty($remainingRecordVariants)) {
-			$failureMessage .= 'Found remaining records for "' . $tableName . '.' . $fieldName . '"' . LF;
-			foreach ($remainingRecordVariants as $path => $remainingRecords) {
-				$failureMessage .= '* ' . $path . ': ' . implode(', ', array_keys($remainingRecords)) . LF;
-			}
-		}
-
-		$this->fail($failureMessage);
+	protected function getRequestSectionHasRecordConstraint() {
+		return new \TYPO3\CMS\Core\Tests\Functional\Framework\Constraint\RequestSection\HasRecordConstraint();
 	}
 
 	/**
-	 * @param ResponseContent $responseContent
-	 * @param string $structureRecordIdentifier
-	 * @param string $structureFieldName
-	 * @param string $tableName
-	 * @param string $fieldName
-	 * @param string|array $values
+	 * @return \TYPO3\CMS\Core\Tests\Functional\Framework\Constraint\RequestSection\DoesNotHaveRecordConstraint
 	 */
-	protected function assertResponseContentStructureDoesNotHaveRecords(ResponseContent $responseContent, $structureRecordIdentifier, $structureFieldName, $tableName, $fieldName, $values) {
-		if (is_string($values)) {
-			$values = array($values);
-		}
-
-		$matchingVariants = array();
-
-		foreach ($responseContent->findStructures($structureRecordIdentifier, $structureFieldName) as $path => $structure) {
-			$nonMatchingValues = $this->getNonMatchingValuesFrontendResponseRecords($structure, $tableName, $fieldName, $values);
-			$matchingValues = array_diff($values, $nonMatchingValues);
-
-			if (!empty($matchingValues)) {
-				$matchingVariants[$path] = $matchingValues;
-			}
-		}
-
-		if (empty($matchingVariants)) {
-			// Increase assertion counter
-			$this->assertEmpty($matchingVariants);
-			return;
-		}
-
-		$matchingMessage = '';
-		foreach ($matchingVariants as $path => $matchingValues) {
-			$matchingMessage .= '* ' . $path . ': ' . implode(', ', $matchingValues);
-		}
-
-		$this->fail('Could not assert not having values for "' . $tableName . '.' . $fieldName . '"' . LF . $matchingMessage);
+	protected function getRequestSectionDoesNotHaveRecordConstraint() {
+		return new \TYPO3\CMS\Core\Tests\Functional\Framework\Constraint\RequestSection\DoesNotHaveRecordConstraint();
 	}
 
 	/**
-	 * @param ResponseContent $responseContent
-	 * @param string $tableName
-	 * @param string $fieldName
-	 * @param string|array $values
+	 * @return \TYPO3\CMS\Core\Tests\Functional\Framework\Constraint\RequestSection\StructureHasRecordConstraint
 	 */
-	protected function assertResponseContentHasRecords(ResponseContent $responseContent, $tableName, $fieldName, $values) {
-		$nonMatchingValues = $this->getNonMatchingValuesFrontendResponseRecords($responseContent->getRecords(), $tableName, $fieldName, $values);
-
-		if (!empty($nonMatchingValues)) {
-			$this->fail('Could not assert all values for "' . $tableName . '.' . $fieldName . '": ' . implode(', ', $nonMatchingValues));
-		}
-
-		// Increase assertion counter
-		$this->assertEmpty($nonMatchingValues);
+	protected function getRequestSectionStructureHasRecordConstraint() {
+		return new \TYPO3\CMS\Core\Tests\Functional\Framework\Constraint\RequestSection\StructureHasRecordConstraint();
 	}
 
 	/**
-	 * @param ResponseContent $responseContent
-	 * @param string $tableName
-	 * @param string $fieldName
-	 * @param string|array $values
+	 * @return \TYPO3\CMS\Core\Tests\Functional\Framework\Constraint\RequestSection\StructureDoesNotHaveRecordConstraint
 	 */
-	protected function assertResponseContentDoesNotHaveRecords(ResponseContent $responseContent, $tableName, $fieldName, $values) {
-		if (is_string($values)) {
-			$values = array($values);
-		}
-
-		$nonMatchingValues = $this->getNonMatchingValuesFrontendResponseRecords($responseContent->getRecords(), $tableName, $fieldName, $values);
-		$matchingValues = array_diff($values, $nonMatchingValues);
-
-		if (!empty($matchingValues)) {
-			$this->fail('Could not assert not having values for "' . $tableName . '.' . $fieldName . '": ' . implode(', ', $matchingValues));
-		}
-
-		// Increase assertion counter
-		$this->assertTrue(TRUE);
-	}
-
-	/**
-	 * @param string|array $data
-	 * @param string $tableName
-	 * @param string $fieldName
-	 * @param string|array $values
-	 * @return array
-	 */
-	protected function getNonMatchingValuesFrontendResponseRecords($data, $tableName, $fieldName, $values) {
-		if (empty($data) || !is_array($data)) {
-			$this->fail('Frontend Response data does not have any records');
-		}
-
-		if (is_string($values)) {
-			$values = array($values);
-		}
-
-		foreach ($data as $recordIdentifier => $recordData) {
-			if (strpos($recordIdentifier, $tableName . ':') !== 0) {
-				continue;
-			}
-
-			if (($foundValueIndex = array_search($recordData[$fieldName], $values)) !== FALSE) {
-				unset($values[$foundValueIndex]);
-			}
-		}
-
-		return $values;
-	}
-
-	/**
-	 * @param string|array $data
-	 * @param string $tableName
-	 * @param string $fieldName
-	 * @param string|array $values
-	 * @return array
-	 */
-	protected function getRemainingFrontendResponseRecords($data, $tableName, $fieldName, $values) {
-		if (empty($data) || !is_array($data)) {
-			$this->fail('Frontend Response data does not have any records');
-		}
-
-		if (is_string($values)) {
-			$values = array($values);
-		}
-
-		foreach ($data as $recordIdentifier => $recordData) {
-			if (strpos($recordIdentifier, $tableName . ':') !== 0) {
-				unset($data[$recordIdentifier]);
-				continue;
-			}
-
-			if (($foundValueIndex = array_search($recordData[$fieldName], $values)) !== FALSE) {
-				unset($values[$foundValueIndex]);
-				unset($data[$recordIdentifier]);
-			}
-		}
-
-		return $data;
+	protected function getRequestSectionStructureDoesNotHaveRecordConstraint() {
+		return new \TYPO3\CMS\Core\Tests\Functional\Framework\Constraint\RequestSection\StructureDoesNotHaveRecordConstraint();
 	}
 
 }

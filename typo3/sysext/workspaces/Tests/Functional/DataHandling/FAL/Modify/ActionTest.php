@@ -48,12 +48,12 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL
 		parent::modifyContent();
 		$this->assertAssertionDataSet('modifyContent');
 
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', 'Testing #1');
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdLast, self::FIELD_ContentImage,
-			self::TABLE_FileReference, 'title', array('This is Kasper', 'Taken at T3BOARD'), TRUE
-		);
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
+		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentImage)
+			->setTable(self::TABLE_FileReference)->setField('title')->setValues('This is Kasper', 'Taken at T3BOARD')->setStrict(TRUE));
 	}
 
 	/**
@@ -64,9 +64,11 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL
 		parent::deleteContent();
 		$this->assertAssertionDataSet('deleteContent');
 
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', 'Regular Element #1');
-		$this->assertResponseContentDoesNotHaveRecords($responseContent, self::TABLE_Content, 'header', 'Regular Element #2');
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
+		$this->assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
 	}
 
 	/**
@@ -77,12 +79,12 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL
 		parent::copyContent();
 		$this->assertAssertionDataSet('copyContent');
 
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', 'Regular Element #2 (copy 1)');
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . $this->recordIds['copiedContentId'], self::FIELD_ContentImage,
-			self::TABLE_FileReference, 'title', array('This is Kasper', 'Taken at T3BOARD'), TRUE
-		);
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2 (copy 1)'));
+		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+			->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['copiedContentId'])->setRecordField(self::FIELD_ContentImage)
+			->setTable(self::TABLE_FileReference)->setField('title')->setValues('This is Kasper', 'Taken at T3BOARD')->setStrict(TRUE));
 	}
 
 	/**
@@ -93,15 +95,15 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL
 		parent::localizeContent();
 		$this->assertAssertionDataSet('localizeContent');
 
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', array('Regular Element #1', '[Translate to Dansk:] Regular Element #2'));
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', '[Translate to Dansk:] Regular Element #2'));
 
 		// @todo Values in sys_file_reference are not copied during localization...
 		/*
-			$this->assertResponseContentStructureHasRecords(
-				$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdLast, self::FIELD_ContentImage,
-				self::TABLE_FileReference, 'title', array('This is Kasper', 'Taken at T3BOARD'), TRUE
-			);
+			$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentImage)
+			->setTable(self::TABLE_FileReference)->setField('title')->setValues('This is Kasper', 'Taken at T3BOARD')->setStrict(TRUE));
 		*/
 	}
 
@@ -113,16 +115,15 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL
 		parent::changeContentSorting();
 		$this->assertAssertionDataSet('changeContentSorting');
 
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', array('Regular Element #1', 'Regular Element #2'));
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, self::FIELD_ContentImage,
-			self::TABLE_FileReference, 'title', array('Kasper', 'T3BOARD')
-		);
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdLast, self::FIELD_ContentImage,
-			self::TABLE_FileReference, 'title', array('This is Kasper', 'Taken at T3BOARD'), TRUE
-		);
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
+		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_ContentImage)
+			->setTable(self::TABLE_FileReference)->setField('title')->setValues('Kasper', 'T3BOARD'));
+		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentImage)
+			->setTable(self::TABLE_FileReference)->setField('title')->setValues('This is Kasper', 'Taken at T3BOARD')->setStrict(TRUE));
 	}
 
 	/**
@@ -133,19 +134,19 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL
 		parent::moveContentToDifferentPage();
 		$this->assertAssertionDataSet('moveContentToDifferentPage');
 
-		$responseContentSource = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContentSource, self::TABLE_Content, 'header', 'Regular Element #1');
-		$this->assertResponseContentStructureHasRecords(
-			$responseContentSource, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, self::FIELD_ContentImage,
-			self::TABLE_FileReference, 'title', array('Kasper', 'T3BOARD'), TRUE
-		);
+		$responseSectionsSource = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$this->assertThat($responseSectionsSource, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
+		$this->assertThat($responseSectionsSource, $this->getRequestSectionStructureHasRecordConstraint()
+			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_ContentImage)
+			->setTable(self::TABLE_FileReference)->setField('title')->setValues('Kasper', 'T3BOARD')->setStrict(TRUE));
 
-		$responseContentTarget = $this->getFrontendResponse(self::VALUE_PageIdTarget, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContentTarget, self::TABLE_Content, 'header', 'Regular Element #2');
-		$this->assertResponseContentStructureHasRecords(
-			$responseContentTarget, self::TABLE_Content . ':' . self::VALUE_ContentIdLast, self::FIELD_ContentImage,
-			self::TABLE_FileReference, 'title', array('This is Kasper', 'Taken at T3BOARD'), TRUE
-		);
+		$responseSectionsTarget = $this->getFrontendResponse(self::VALUE_PageIdTarget, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$this->assertThat($responseSectionsTarget, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
+		$this->assertThat($responseSectionsTarget, $this->getRequestSectionStructureHasRecordConstraint()
+			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentImage)
+			->setTable(self::TABLE_FileReference)->setField('title')->setValues('This is Kasper', 'Taken at T3BOARD')->setStrict(TRUE));
 	}
 
 	/**
@@ -156,16 +157,15 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL
 		parent::moveContentToDifferentPageAndChangeSorting();
 		$this->assertAssertionDataSet('moveContentToDifferentPageNChangeSorting');
 
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageIdTarget, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', array('Regular Element #1', 'Regular Element #2'));
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdFirst, self::FIELD_ContentImage,
-			self::TABLE_FileReference, 'title', array('Kasper', 'T3BOARD'), TRUE
-		);
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdLast, self::FIELD_ContentImage,
-			self::TABLE_FileReference, 'title', array('This is Kasper', 'Taken at T3BOARD'), TRUE
-		);
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageIdTarget, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
+		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_ContentImage)
+			->setTable(self::TABLE_FileReference)->setField('title')->setValues('Kasper', 'T3BOARD')->setStrict(TRUE));
+		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentImage)
+			->setTable(self::TABLE_FileReference)->setField('title')->setValues('This is Kasper', 'Taken at T3BOARD')->setStrict(TRUE));
 	}
 
 	/**
@@ -180,12 +180,12 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL
 		parent::createContentWithFileReference();
 		$this->assertAssertionDataSet('createContentWFileReference');
 
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', 'Testing #1');
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . $this->recordIds['newContentId'], self::FIELD_ContentImage,
-			self::TABLE_FileReference, 'title', 'Image #1', TRUE
-		);
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
+		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+			->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentId'])->setRecordField(self::FIELD_ContentImage)
+			->setTable(self::TABLE_FileReference)->setField('title')->setValues('Image #1')->setStrict(TRUE));
 	}
 
 	/**
@@ -196,12 +196,12 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL
 		parent::modifyContentWithFileReference();
 		$this->assertAssertionDataSet('modifyContentWFileReference');
 
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
-		$this->assertResponseContentHasRecords($responseContent, self::TABLE_Content, 'header', 'Testing #1');
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdLast, self::FIELD_ContentImage,
-			self::TABLE_FileReference, 'title', array('Taken at T3BOARD', 'Image #1'), TRUE
-		);
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
+		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentImage)
+			->setTable(self::TABLE_FileReference)->setField('title')->setValues('Taken at T3BOARD', 'Image #1')->setStrict(TRUE));
 	}
 
 	/**
@@ -212,11 +212,10 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL
 		parent::modifyContentAndAddFileReference();
 		$this->assertAssertionDataSet('modifyContentNAddFileReference');
 
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdLast, self::FIELD_ContentImage,
-			self::TABLE_FileReference, 'title', array('Taken at T3BOARD', 'This is Kasper', 'Image #3'), TRUE
-		);
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentImage)
+			->setTable(self::TABLE_FileReference)->setField('title')->setValues('Taken at T3BOARD', 'This is Kasper', 'Image #3')->setStrict(TRUE));
 	}
 
 	/**
@@ -227,15 +226,13 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL
 		parent::modifyContentAndDeleteFileReference();
 		$this->assertAssertionDataSet('modifyContentNDeleteFileReference');
 
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
-		$this->assertResponseContentStructureHasRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdLast, self::FIELD_ContentImage,
-			self::TABLE_FileReference, 'title', 'This is Kasper', TRUE
-		);
-		$this->assertResponseContentStructureDoesNotHaveRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdLast, self::FIELD_ContentImage,
-			self::TABLE_FileReference, 'title', 'Taken at T3BOARD'
-		);
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentImage)
+			->setTable(self::TABLE_FileReference)->setField('title')->setValues('This is Kasper')->setStrict(TRUE));
+		$this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
+			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentImage)
+			->setTable(self::TABLE_FileReference)->setField('title')->setValues('Taken at T3BOARD'));
 	}
 
 	/**
@@ -246,11 +243,10 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL
 		parent::modifyContentAndDeleteAllFileReference();
 		$this->assertAssertionDataSet('modifyContentNDeleteAllFileReference');
 
-		$responseContent = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseContent();
-		$this->assertResponseContentStructureDoesNotHaveRecords(
-			$responseContent, self::TABLE_Content . ':' . self::VALUE_ContentIdLast, self::FIELD_ContentImage,
-			self::TABLE_FileReference, 'title', array('Taken at T3BOARD', 'This is Kasper')
-		);
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
+			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentImage)
+			->setTable(self::TABLE_FileReference)->setField('title')->setValues('Taken at T3BOARD', 'This is Kasper'));
 	}
 
 }

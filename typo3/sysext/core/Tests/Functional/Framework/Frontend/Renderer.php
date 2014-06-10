@@ -32,148 +32,68 @@ class Renderer implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * @var array
 	 */
-	protected $tableFields;
+	protected $sections = array();
 
 	/**
-	 * @var array
+	 * @param string $content
+	 * @param NULL|array $configuration
+	 * @return void
 	 */
-	protected $structure = array();
-
-	/**
-	 * @var array
-	 */
-	protected $structurePaths = array();
-
-	/**
-	 * @var array
-	 */
-	protected $records = array();
-
-	/**
-	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
-	 */
-	public $cObj;
-
-	public function addRecordData($content, array $configuration = NULL) {
-		$recordIdentifier = $this->cObj->currentRecord;
-		list($tableName) = explode(':', $recordIdentifier);
-		$currentWatcherValue = $this->getCurrentWatcherValue();
-		$position = strpos($currentWatcherValue, '/' . $recordIdentifier);
-
-		$recordData = $this->filterFields($tableName, $this->cObj->data);
-		$this->records[$recordIdentifier] = $recordData;
-
-		if ($currentWatcherValue === $recordIdentifier) {
-			$this->structure[$recordIdentifier] = $recordData;
-			$this->structurePaths[$recordIdentifier] = array(array());
-		} elseif(!empty($position)) {
-			$levelIdentifier = substr($currentWatcherValue, 0, $position);
-			$this->addToStructure($levelIdentifier, $recordIdentifier, $recordData);
-		}
-	}
-
-	public function addFileData($content, array $configuration = NULL) {
-		$currentFile = $this->cObj->getCurrentFile();
-
-		if ($currentFile instanceof \TYPO3\CMS\Core\Resource\File) {
-			$tableName = 'sys_file';
-		} elseif ($currentFile instanceof \TYPO3\CMS\Core\Resource\FileReference) {
-			$tableName = 'sys_file_reference';
-		} else {
+	public function parseValues($content, array $configuration = NULL) {
+		if (empty($content)) {
 			return;
 		}
 
-		$recordData = $this->filterFields($tableName, $currentFile->getProperties());
-		$recordIdentifier = $tableName . ':' . $currentFile->getUid();
-		$this->records[$recordIdentifier] = $recordData;
+		$values = json_decode($content, TRUE);
 
-		$currentWatcherValue = $this->getCurrentWatcherValue();
-		$levelIdentifier = rtrim($currentWatcherValue, '/');
-		$this->addToStructure($levelIdentifier, $recordIdentifier, $recordData);
-	}
-
-	/**
-	 * @param string $tableName
-	 * @param array $recordData
-	 * @return array
-	 */
-	protected function filterFields($tableName, array $recordData) {
-		$recordData = array_intersect_key(
-			$recordData,
-			array_flip($this->getTableFields($tableName))
-		);
-		return $recordData;
-	}
-
-	protected function addToStructure($levelIdentifier, $recordIdentifier, array $recordData) {
-		$steps = explode('/', $levelIdentifier);
-		$structurePaths = array();
-		$structure = &$this->structure;
-
-		foreach ($steps as $step) {
-			list($identifier, $fieldName) = explode('.', $step);
-			$structurePaths[] = $identifier;
-			$structurePaths[] = $fieldName;
-			if (!isset($structure[$identifier])) {
-				return;
-			}
-			$structure = &$structure[$identifier];
-			if (!isset($structure[$fieldName]) || !is_array($structure[$fieldName])) {
-				$structure[$fieldName] = array();
-			}
-			$structure = &$structure[$fieldName];
+		if (empty($values) || !is_array($values)) {
+			return;
 		}
 
-		$structure[$recordIdentifier] = $recordData;
-		$this->structurePaths[$recordIdentifier][] = $structurePaths;
+		$asPrefix = (!empty($configuration['as']) ? $configuration['as'] . ':' : NULL);
+		foreach ($values as $identifier => $structure) {
+			$parser = $this->createParser();
+			$parser->parse($structure);
+
+			$section = array(
+				'structure' => $structure,
+				'structurePaths' => $parser->getPaths(),
+				'records' => $parser->getRecords(),
+			);
+
+			$this->addSection($section, $asPrefix . $identifier);
+		}
 	}
 
 	/**
-	 * @param array $parameters
-	 * @param \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $frontendController
+	 * @param array $section
+	 * @param NULL|string $as
 	 */
-	public function render($content, array $configuration = NULL) {
-		$result = array(
-			'structure' => $this->structure,
-			'structurePaths' => $this->structurePaths,
-			'records' => $this->records,
-		);
-		$content = json_encode($result);
+	public function addSection(array $section, $as = NULL) {
+		if (!empty($as)) {
+			$this->sections[$as] = $section;
+		} else {
+			$this->sections[] = $section;
+		}
+	}
+
+	/**
+	 * @param string $content
+	 * @param NULL|array $configuration
+	 * @return string
+	 */
+	public function renderSections($content, array $configuration = NULL) {
+		$content = json_encode($this->sections);
 		return $content;
 	}
 
 	/**
-	 * @param string $tableName
-	 * @return array
+	 * @return Parser
 	 */
-	protected function getTableFields($tableName) {
-		if (!isset($this->tableFields) && !empty($this->getFrontendController()->tmpl->setup['config.']['watcher.']['tableFields.'])) {
-			$this->tableFields = $this->getFrontendController()->tmpl->setup['config.']['watcher.']['tableFields.'];
-			foreach ($this->tableFields as &$fieldList) {
-				$fieldList = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $fieldList, TRUE);
-			}
-			unset($fieldList);
-		}
-
-		return (!empty($this->tableFields[$tableName]) ? $this->tableFields[$tableName] : array());
-	}
-
-	/**
-	 * @return string
-	 */
-	protected function getCurrentWatcherValue() {
-		$watcherValue = NULL;
-		if (isset($this->getFrontendController()->register['watcher'])) {
-			$watcherValue = $this->getFrontendController()->register['watcher'];
-		}
-		return $watcherValue;
-	}
-
-	/**
-	 * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-	 */
-	protected function getFrontendController() {
-		return $GLOBALS['TSFE'];
+	protected function createParser() {
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+			'TYPO3\\CMS\\Core\\Tests\\Functional\\Framework\\Frontend\\Parser'
+		);
 	}
 
 }

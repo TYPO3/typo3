@@ -1,0 +1,71 @@
+plugin.tx_irretutorial {
+	view {
+		templateRootPath = {$plugin.tx_irretutorial.view.templateRootPath}
+		partialRootPath = {$plugin.tx_irretutorial.view.partialRootPath}
+		layoutRootPath = {$plugin.tx_irretutorial.view.layoutRootPath}
+	}
+	persistence {
+		storagePid.data = page:uid
+		classes {
+			OliverHader\IrreTutorial\Domain\Model\Content {
+				mapping {
+					tableName = tt_content
+					columns {
+						tx_irretutorial_1nff_hotels.mapOnProperty = hotels
+					}
+				}
+			}
+			OliverHader\IrreTutorial\Domain\Model\Hotel {
+				mapping {
+					tableName = tx_irretutorial_1nff_hotel
+				}
+			}
+			OliverHader\IrreTutorial\Domain\Model\Offer {
+				mapping {
+					tableName = tx_irretutorial_1nff_offer
+				}
+			}
+			OliverHader\IrreTutorial\Domain\Model\Price {
+				mapping {
+					tableName = tx_irretutorial_1nff_price
+				}
+			}
+		}
+	}
+	features {
+		rewrittenPropertyMapper = 1
+	}
+}
+
+plugin.tx_irretutorial._CSS_DEFAULT_STYLE (
+	textarea.f3-form-error {
+		background-color:#FF9F9F;
+		border: 1px #FF0000 solid;
+	}
+
+	input.f3-form-error {
+		background-color:#FF9F9F;
+		border: 1px #FF0000 solid;
+	}
+
+	.tx-irre-tutorial table {
+		border-collapse:separate;
+		border-spacing:10px;
+	}
+
+	.tx-irre-tutorial table th {
+		font-weight:bold;
+	}
+
+	.tx-irre-tutorial table td {
+		vertical-align:top;
+	}
+
+	.typo3-messages .message-error {
+		color:red;
+	}
+
+	.typo3-messages .message-ok {
+		color:green;
+	}
+)
