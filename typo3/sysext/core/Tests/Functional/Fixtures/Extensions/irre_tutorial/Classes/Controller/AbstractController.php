@@ -52,12 +52,21 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 		}
 
 		foreach ($iterator as $entity) {
-			$tableName = $this->dataMapFactory->buildDataMap(get_class($entity))->getTableName();
+			$dataMap = $this->dataMapFactory->buildDataMap(get_class($entity));
+			$tableName = $dataMap->getTableName();
 			$identifier = $tableName . ':' . $entity->getUid();
-			$structureItem = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getGettableProperties($entity);
-			foreach ($structureItem as $propertyName => $propertyValue) {
+			$properties = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getGettableProperties($entity);
+
+			$structureItem = array();
+			foreach ($properties as $propertyName => $propertyValue) {
+				$columnMap = $dataMap->getColumnMap($propertyName);
+				if ($columnMap !== NULL) {
+					$propertyName = $columnMap->getColumnName();
+				}
 				if ($propertyValue instanceof \Iterator) {
 					$structureItem[$propertyName] = $this->getStructure($propertyValue);
+				} else {
+					$structureItem[$propertyName] = $propertyValue;
 				}
 			}
 			$structure[$identifier] = $structureItem;

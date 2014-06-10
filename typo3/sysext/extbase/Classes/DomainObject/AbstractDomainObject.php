@@ -36,6 +36,11 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
 	protected $_languageUid;
 
 	/**
+	 * @var int The uid of the versioned record.
+	 */
+	protected $_versionedUid;
+
+	/**
 	 * @var int The id of the page the record is "stored".
 	 */
 	protected $pid;

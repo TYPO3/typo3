@@ -38,7 +38,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 		parent::createParentContent();
 		$this->assertAssertionDataSet('createParentContent');
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
 		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
 			->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
 	}
@@ -51,7 +51,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 		parent::modifyParentContent();
 		$this->assertAssertionDataSet('modifyParentContent');
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
 		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
 			->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
 		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
@@ -67,7 +67,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 		parent::deleteParentContent();
 		$this->assertAssertionDataSet('deleteParentContent');
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
 		$this->assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
 			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
 	}
@@ -80,7 +80,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 		parent::deleteParentContentAndDiscardDeletedParent();
 		$this->assertAssertionDataSet('deleteParentContentNDiscardDeletedParent');
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
 		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
 			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
 	}
@@ -93,7 +93,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 		parent::copyParentContent();
 		$this->assertAssertionDataSet('copyParentContent');
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
 		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
 			->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentId'])->setRecordField(self::FIELD_ContentHotel)
 			->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1'));
@@ -107,7 +107,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 		parent::copyParentContentToDifferentPage();
 		$this->assertAssertionDataSet('copyParentContentToDifferentPage');
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageIdTarget, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageIdTarget, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
 		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
 			->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentId'])->setRecordField(self::FIELD_ContentHotel)
 			->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1'));
@@ -121,7 +121,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 		parent::localizeParentContentInKeepMode();
 		$this->assertAssertionDataSet('localizeParentContentKeep');
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
 		$this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
 			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentHotel)
 			->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #1'));
@@ -135,7 +135,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 		parent::localizeParentContentWithAllChildrenInKeepMode();
 		$this->assertAssertionDataSet('localizeParentContentWAllChildrenKeep');
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
 		$this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
 			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentHotel)
 			->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #1'));
@@ -149,7 +149,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 		parent::localizeParentContentInSelectMode();
 		$this->assertAssertionDataSet('localizeParentContentSelect');
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
 		$this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
 			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentHotel)
 			->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #1'));
@@ -163,7 +163,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 		parent::localizeParentContentWithAllChildrenInSelectMode();
 		$this->assertAssertionDataSet('localizeParentContentWAllChildrenSelect');
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
 		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
 			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentHotel)
 			->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #1'));
@@ -177,7 +177,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 		parent::changeParentContentSorting();
 		$this->assertAssertionDataSet('changeParentContentSorting');
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
 		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
 			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_ContentHotel)
 			->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1', 'Hotel #2'));
@@ -194,7 +194,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 		parent::moveParentContentToDifferentPage();
 		$this->assertAssertionDataSet('moveParentContentToDifferentPage');
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageIdTarget, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageIdTarget, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
 		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
 			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
 		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
@@ -210,7 +210,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 		parent::moveParentContentToDifferentPageAndChangeSorting();
 		$this->assertAssertionDataSet('moveParentContentToDifferentPageNChangeSorting');
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageIdTarget, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageIdTarget, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
 		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
 			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2', 'Regular Element #1'));
 		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
@@ -233,7 +233,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 		parent::modifyPage();
 		$this->assertAssertionDataSet('modifyPage');
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
 		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
 			->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1'));
 		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
@@ -261,7 +261,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 		parent::copyPage();
 		$this->assertAssertionDataSet('copyPage');
 
-		$responseSections = $this->getFrontendResponse($this->recordIds['newPageId'], 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$responseSections = $this->getFrontendResponse($this->recordIds['newPageId'], 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
 		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
 			->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1', 'Hotel #2', 'Hotel #1'));
 	}
@@ -274,7 +274,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 		parent::copyPageWithHotelBeforeParentContent();
 		$this->assertAssertionDataSet('copyPageWHotelBeforeParentContent');
 
-		$responseSections = $this->getFrontendResponse($this->recordIds['newPageId'], 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$responseSections = $this->getFrontendResponse($this->recordIds['newPageId'], 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
 		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
 			->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1', 'Hotel #2', 'Hotel #1'));
 	}
@@ -291,7 +291,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 		parent::createParentContentWithHotelAndOfferChildren();
 		$this->assertAssertionDataSet('createParentContentNHotelNOfferChildren');
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
 		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
 			->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
 		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
@@ -307,7 +307,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 		parent::createAndCopyParentContentWithHotelAndOfferChildren();
 		$this->assertAssertionDataSet('createNCopyParentContentNHotelNOfferChildren');
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
 		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
 			->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1 (copy 1)'));
 		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
@@ -329,7 +329,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 		parent::createAndCopyParentContentWithHotelAndOfferChildrenAndDiscardCopiedParent();
 		$this->assertAssertionDataSet('createNCopyParentContentNHotelNOfferChildrenNDiscardCopiedParent');
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
 		$this->assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
 			->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1 (copy 1)'));
 	}
@@ -342,7 +342,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 		parent::createAndLocalizeParentContentWithHotelAndOfferChildren();
 		$this->assertAssertionDataSet('createNLocalizeParentContentNHotelNOfferChildren');
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
 		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
 			->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Testing #1'));
 		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
@@ -361,7 +361,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 		parent::createAndLocalizeParentContentWithHotelAndOfferChildrenAndDiscardCreatedParent();
 		$this->assertAssertionDataSet('createNLocalizeParentContentNHotelNOfferChildrenNDiscardCreatedParent');
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
 		$this->assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
 			->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1', '[Translate to Dansk:] Testing #1'));
 	}
@@ -374,7 +374,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 		parent::createAndLocalizeParentContentWithHotelAndOfferChildrenAndDiscardLocalizedParent();
 		$this->assertAssertionDataSet('createNLocalizeParentContentNHotelNOfferChildrenNDiscardLocalizedParent');
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
 		$this->assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
 			->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Testing #1'));
 	}
@@ -387,7 +387,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 		parent::modifyOnlyHotelChild();
 		$this->assertAssertionDataSet('modifyOnlyHotelChild');
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
 		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
 			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_ContentHotel)
 			->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1', 'Testing #1'));
@@ -401,7 +401,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 		parent::modifyParentAndChangeHotelChildrenSorting();
 		$this->assertAssertionDataSet('modifyParentNChangeHotelChildrenSorting');
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
 		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
 			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_ContentHotel)
 			->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #2', 'Hotel #1'));
@@ -415,7 +415,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 		parent::modifyParentWithHotelChild();
 		$this->assertAssertionDataSet('modifyParentNHotelChild');
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
 		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
 			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_ContentHotel)
 			->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1', 'Testing #1'));
@@ -429,7 +429,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 		parent::modifyParentWithHotelChildAndDiscardModifiedParent();
 		$this->assertAssertionDataSet('modifyParentNHotelChildNDiscardModifiedParent');
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
 		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
 			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
 		// Discarding the parent shall not discard the child records
@@ -449,7 +449,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 		parent::modifyParentWithHotelChildAndDiscardAll();
 		$this->assertAssertionDataSet('modifyParentNHotelChildNDiscardAll');
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
 		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
 			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
 		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
@@ -465,7 +465,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 		parent::modifyParentAndAddHotelChild();
 		$this->assertAssertionDataSet('modifyParentNAddHotelChild');
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
 		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
 			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentHotel)
 			->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1', 'Hotel #2'));
@@ -479,7 +479,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 		parent::modifyParentAndDeleteHotelChild();
 		$this->assertAssertionDataSet('modifyParentNDeleteHotelChild');
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
 		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
 			->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentHotel)
 			->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1'));
@@ -496,7 +496,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 		parent::modifyAndDiscardAndModifyParentWithHotelChild();
 		$this->assertAssertionDataSet('modifyNDiscardNModifyParentWHotelChild');
 
-		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections('Default', 'Extbase:list()');
 		$this->assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
 			->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
 		$this->assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
