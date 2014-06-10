@@ -65,6 +65,7 @@ body#ext-taskcenter-task-index-php h3 {
 	height: 23px;
 	width: 23px;
 }
+
 #taskcenter-menu .image img {
 	margin: 3px 0 0 1px;
 }
@@ -92,7 +93,6 @@ body#ext-taskcenter-task-index-php h3 {
 	cursor: move;
 }
 
-
 #taskcenter-menu .link {
 	border: 1px solid #adadad;
 	border-width: 1px 1px 0;
@@ -100,7 +100,7 @@ body#ext-taskcenter-task-index-php h3 {
 	display: block;
 }
 
-#taskcenter-menu .t3-row-header a{
+#taskcenter-menu .t3-row-header a {
 	float: none;
 }
 
@@ -129,7 +129,6 @@ body#ext-taskcenter-task-index-php h3 {
 	border: 0;
 }
 
-
 #taskcenter-menu .content ul li a {
 	display: block;
 	line-height: 16px;
@@ -148,10 +147,12 @@ body#ext-taskcenter-task-index-php h3 {
 	background-image: url(list-item-act.gif);
 }
 
-
-
 /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
 /* content section */
+#taskcenter-item {
+	margin-bottom: 20px;
+}
+
 #taskcenter-item ul {
 	padding: 5px 0 5px 5px;
 	margin: 0;
@@ -193,14 +194,21 @@ body#ext-taskcenter-task-index-php h3 {
 	margin-top: 2px;
 }
 
-
 /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
 /* forms */
+#taskcenter-item fieldset {
+	padding: 0;
+}
+
 #taskcenter-item fieldset.fields legend {
 	font-weight: bold;
 	border-bottom: 1px solid #ccc;
 	width: 100%;
-	padding: 0 0 2px 20px;
+	padding: 0 0 2px 0;
+}
+
+#taskcenter-item form {
+	padding: 0;
 }
 
 #taskcenter-item fieldset.fields {
@@ -208,22 +216,34 @@ body#ext-taskcenter-task-index-php h3 {
 }
 
 #taskcenter-item fieldset.fields .row {
-	width: 350px;
+	width: 420px;
 	clear: both;
 	padding: 5px 0;
 }
 
 #taskcenter-item fieldset.fields label {
-	width: 120px;
+	width: 150px;
 	display: block;
 	float: left;
 }
 
 #taskcenter-item fieldset.fields select {
-	width: 170px;
+	width: 215px;
+	height: 120px;
+	margin-right: 5px;
+	resize: both;
+}
+
+#taskcenter-item fieldset.fields input {
+	width: 200px;
 }
 
 #taskcenter-item fieldset.fields input[type=checkbox] {
 	width: 16px;
 	text-align: left;
+}
+
+#taskcenter-item fieldset.fields input[type=submit] {
+	margin-left: 150px;
+	width: 215px;
 }

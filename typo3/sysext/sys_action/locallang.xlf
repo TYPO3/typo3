@@ -102,6 +102,12 @@
 			<trans-unit id="action_t1_listOfUsers" xml:space="preserve">
 				<source>List of backend users</source>
 			</trans-unit>
+			<trans-unit id="action_t1_legend_generalFields">
+				<source>General fields</source>
+			</trans-unit>
+			<trans-unit id="action_t1_legend_configuration">
+				<source>Configuration</source>
+			</trans-unit>
 			<trans-unit id="action_BEu_db_mount" xml:space="preserve">
 				<source>Pagetree starting points</source>
 			</trans-unit>

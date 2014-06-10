@@ -286,7 +286,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 		$loadDB->start($vars['db_mountpoints'], 'pages');
 		$content .= '<form action="" method="post" enctype="multipart/form-data">
 						<fieldset class="fields">
-							<legend>General fields</legend>
+							<legend>' . $GLOBALS['LANG']->getLL('action_t1_legend_generalFields') . '</legend>
 							<div class="row">
 								<label for="field_disable">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.disable') . '</label>
 								<input type="checkbox" id="field_disable" name="data[disable]" value="1" class="checkbox" ' . ($vars['disable'] == 1 ? ' checked="checked" ' : '') . ' />
@@ -309,7 +309,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 							</div>
 						</fieldset>
 						<fieldset class="fields">
-							<legend>Configuration</legend>
+							<legend>' . $GLOBALS['LANG']->getLL('action_t1_legend_configuration') . '</legend>
 
 							<div class="row">
 								<label for="field_usergroup">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xlf:be_users.usergroup') . '</label>
@@ -414,9 +414,9 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 		// Link to delete the user record
 		$onClick = ' onClick="return confirm(' . GeneralUtility::quoteJSvalue($GLOBALS['LANG']->getLL('lDelete_warning')) . ');"';
 		$link .= '
-				<a href="' . htmlspecialchars(($href . '&delete=1')) . '" ' . $onClick . '>
-					<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/delete_record.gif') . ' alt="" />
-				</a>';
+				<a href="' . htmlspecialchars(($href . '&delete=1')) . '" ' . $onClick . '>'
+					. \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete') .
+				'</a>';
 		return $link;
 	}
 
