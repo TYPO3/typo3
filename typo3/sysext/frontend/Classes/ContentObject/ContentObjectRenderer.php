@@ -510,6 +510,12 @@ class ContentObjectRenderer {
 
 	// Containing hooks for userdefined cObjects
 	/**
+	 * Additionally registered content object types and class names
+	 * @var array
+	 */
+	protected $cObjHookObjectsRegistry = array();
+
+	/**
 	 * @todo Define visibility
 	 */
 	public $cObjHookObjectsArr = array();
@@ -570,7 +576,7 @@ class ContentObjectRenderer {
 		$this->parameters = array();
 		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'])) {
 			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'] as $classArr) {
-				$this->cObjHookObjectsArr[$classArr[0]] = GeneralUtility::getUserObj($classArr[1]);
+				$this->cObjHookObjectsRegistry[$classArr[0]] = $classArr[1];
 			}
 		}
 		$this->stdWrapHookObjects = array();
@@ -734,7 +740,10 @@ class ContentObjectRenderer {
 			} else {
 				$hooked = FALSE;
 				// Application defined cObjects
-				if (!empty($this->cObjHookObjectsArr[$name])) {
+				if (!empty($this->cObjHookObjectsRegistry[$name])) {
+					if (empty($this->cObjHookObjectsArr[$name])) {
+						$this->cObjHookObjectsArr[$name] = GeneralUtility::getUserObj($this->cObjHookObjectsRegistry[$name]);
+					}
 					$hookObj = $this->cObjHookObjectsArr[$name];
 					if (method_exists($hookObj, 'cObjGetSingleExt')) {
 						$content .= $hookObj->cObjGetSingleExt($name, $conf, $TSkey, $this);
