@@ -55,7 +55,7 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function doLanguageAndWorkspaceOverlayChangesUidIfInPreview() {
 		$comparisonRow = array(
-			'uid' => '43',
+			'uid' => '42',
 			'pid' => '42',
 			'_ORIG_pid' => '-1',
 			'_ORIG_uid' => '43'
