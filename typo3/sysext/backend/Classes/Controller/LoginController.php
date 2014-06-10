@@ -536,6 +536,8 @@ class LoginController {
 		if (is_array($systemNews) && count($systemNews) && !GeneralUtility::_GP('loginRefresh')) {
 			/** @var $htmlParser \TYPO3\CMS\Core\Html\RteHtmlParser */
 			$htmlParser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\RteHtmlParser');
+			$htmlParser->procOptions['dontHSC_rte'] = TRUE;
+
 			// Get the main news template, and replace the subpart after looped through
 			$newsContent = HtmlParser::getSubpart($GLOBALS['TBE_TEMPLATE']->moduleTemplate, '###LOGIN_NEWS###');
 			$newsItemTemplate = HtmlParser::getSubpart($newsContent, '###NEWS_ITEM###');
