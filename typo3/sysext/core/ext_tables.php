@@ -40,108 +40,6 @@ $GLOBALS['PAGES_TYPES'] = array(
 	),
 );
 
-/**
- * $GLOBALS['TCA']:
- * This array configures TYPO3 to work with the tables from the database by
- * assigning meta information about data types, relations etc. The global
- * variable $TCA will contain the information needed to recognize and
- * render each table in the backend
- * See documentation 'Inside TYPO3' for the syntax and list of
- * required tables/fields!
- *
- * The tables configured in this document
- * is the required minimum set of tables/field that any TYPO3 system MUST have.
- * These tables are therefore a part of the TYPO3 core.
- * The SQL definitions of these tables (and some more which are not defined in
- * $TCA) is found in the file "ext_tables.sql". Only "ctrl" part is defined and
- * the columns are defined in detail in the associated file.
- *
- * NOTE: The (default) icon for a table is defined 1) as a giffile named
- * 'gfx/i/[tablename].gif' or 2) as the value of [table][ctrl][iconfile]
- * NOTE: [table][ctrl][rootLevel] goes NOT for pages. Apart from that if
- * rootLevel is TRUE, records can ONLY be created on rootLevel. If it's
- * FALSE records can ONLY be created OUTSIDE rootLevel
- */
-
-// If the compat version is less than 4.2, pagetype 2 ("Advanced")
-// and pagetype 5 ("Not in menu") are added to TCA.
-if (!\TYPO3\CMS\Core\Utility\GeneralUtility::compat_version('4.2')) {
-	// Merging in CMS doktypes
-	array_splice($GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'], 2, 0, array(
-		array(
-			'LLL:EXT:cms/locallang_tca.xlf:pages.doktype.I.0',
-			'2',
-			'i/pages.gif'
-		),
-		array(
-			'LLL:EXT:cms/locallang_tca.xlf:pages.doktype.I.3',
-			'5',
-			'i/pages_notinmenu.gif'
-		)
-	));
-	// Set the doktype 1 ("Standard") to show less fields
-	$GLOBALS['TCA']['pages']['types'][1] = array(
-		// standard
-		'showitem' => 'doktype;;2;;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle,
-			--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.access,
-				starttime, endtime, fe_group, extendToSubpages,
-			--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.options,
-				TSconfig;;6;nowrap;4-4-4, storage_pid;;7, l18n_cfg, backend_layout;;8,
-			--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.extended,
-	'
-	);
-	// Add doktype 2 ("Advanced")
-	$GLOBALS['TCA']['pages']['types'][2] = array(
-		'showitem' => 'doktype;;2;;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle, nav_title,
-			--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.metadata,
-				abstract;;5;;3-3-3, keywords, description,
-			--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.files,
-				media,
-			--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.access,
-				starttime, endtime, fe_login_mode, fe_group, extendToSubpages,
-			--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.options,
-				TSconfig;;6;nowrap;6-6-6, storage_pid;;7, l18n_cfg, module, content_from_pid, backend_layout;;8,
-			--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.extended,
-	'
-	);
-}
-
-// Keep old code (pre-FAL) for installations that haven't upgraded yet. please remove this code in TYPO3 6.2
-// @deprecated since TYPO3 6.0, please remove at earliest in TYPO3 6.2
-if (
-	(
-		!isset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['TYPO3\\CMS\\Install\\Updates\\TceformsUpdateWizard'])
-		|| !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['TYPO3\\CMS\\Install\\Updates\\TceformsUpdateWizard'], 'pages:media')
-	)
-	&& !\TYPO3\CMS\Core\Utility\GeneralUtility::compat_version('6.0')
-) {
-	\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
-		'This installation hasn\'t been migrated to FAL for the field $GLOBALS[TCA][pages][columns][media] yet. Please do so before TYPO3 v7.'
-	);
-	// existing installation and no upgrade wizard was executed - and files haven't been merged: use the old code
-	$GLOBALS['TCA']['pages']['columns']['media']['config'] = array(
-		'type' => 'group',
-		'internal_type' => 'file',
-		'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] . ',html,htm,ttf,txt,css',
-		'max_size' => $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'],
-		'uploadfolder' => 'uploads/media',
-		'show_thumbs' => '1',
-		'size' => '3',
-		'maxitems' => '100',
-		'minitems' => '0'
-	);
-}
-
-// Populate available languages
-/** @var $locales \TYPO3\CMS\Core\Localization\Locales */
-$locales = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Locales');
-$languageItems = $locales->getLanguages();
-unset($languageItems['default']);
-asort($languageItems);
-foreach ($languageItems as $locale => $name) {
-	$GLOBALS['TCA']['be_users']['columns']['lang']['config']['items'][] = array($name, $locale);
-}
-
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('sys_category');
 
 /** @var \TYPO3\CMS\Core\Resource\Driver\DriverRegistry $registry */
@@ -149,7 +47,6 @@ $registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Co
 $registry->addDriversToTCA();
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('sys_file_reference');
-
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('sys_file_collection');
 
 /**
