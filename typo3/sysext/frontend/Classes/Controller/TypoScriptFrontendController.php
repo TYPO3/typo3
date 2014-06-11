@@ -4534,7 +4534,7 @@ if (version == "n3") {
 	 * @todo Define visibility
 	 */
 	public function set_no_cache($reason = '', $internal = FALSE) {
-		if ($internal && isset($GLOBALS['BE_USER]'])) {
+		if ($internal && isset($GLOBALS['BE_USER'])) {
 			$severity = GeneralUtility::SYSLOG_SEVERITY_NOTICE;
 		} else {
 			$severity = GeneralUtility::SYSLOG_SEVERITY_WARNING;
