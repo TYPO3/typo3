@@ -309,7 +309,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 								$sortingKey = $fileObject->getName();
 							}
 					}
-					$i = 0;
+					$i = 1000000;
 					while (isset($filesToSort[$sortingKey . $i])) {
 						$i++;
 					}
