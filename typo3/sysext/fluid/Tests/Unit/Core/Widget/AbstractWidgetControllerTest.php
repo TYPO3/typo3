@@ -21,25 +21,34 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Widget;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
+use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
+use TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService;
 use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController;
+use TYPO3\CMS\Fluid\Core\Widget\WidgetContext;
 use TYPO3\CMS\Fluid\Core\Widget\WidgetRequest;
+use TYPO3\CMS\Fluid\View\TemplateView;
+use TYPO3\CMS\Fluid\ViewHelpers\Widget\PaginateViewHelper;
 
 /**
  * Test case
  */
-class AbstractWidgetControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class AbstractWidgetControllerTest extends UnitTestCase {
 
 	/**
 	 * @test
 	 */
 	public function canHandleWidgetRequest() {
 		/** @var WidgetRequest|\PHPUnit_Framework_MockObject_MockObject $request */
-		$request = $this->getMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequest::class, array('dummy'), array(), '', FALSE);
+		$request = $this->getMock(WidgetRequest::class, array('dummy'), array(), '', FALSE);
 		/** @var AbstractWidgetController|\PHPUnit_Framework_MockObject_MockObject $abstractWidgetController */
-		$abstractWidgetController = $this->getMock(\TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController::class, array('dummy'), array(), '', FALSE);
+		$abstractWidgetController = $this->getMock(AbstractWidgetController::class, array('dummy'), array(), '', FALSE);
 		$this->assertTrue($abstractWidgetController->canProcessRequest($request));
 	}
 
@@ -47,20 +56,20 @@ class AbstractWidgetControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function processRequestSetsWidgetConfiguration() {
-		$widgetContext = $this->getMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetContext::class);
+		$widgetContext = $this->getMock(WidgetContext::class);
 		$widgetContext->expects($this->once())->method('getWidgetConfiguration')->will($this->returnValue('myConfiguration'));
 		/** @var WidgetRequest|\PHPUnit_Framework_MockObject_MockObject $request */
-		$request = $this->getMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequest::class, array(), array(), '', FALSE);
+		$request = $this->getMock(WidgetRequest::class, array(), array(), '', FALSE);
 		$request->expects($this->once())->method('getWidgetContext')->will($this->returnValue($widgetContext));
 		/** @var ResponseInterface|\PHPUnit_Framework_MockObject_MockObject $response */
-		$response = $this->getMock(\TYPO3\CMS\Extbase\Mvc\ResponseInterface::class);
+		$response = $this->getMock(ResponseInterface::class);
 		/** @var AbstractWidgetController|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $abstractWidgetController */
-		$abstractWidgetController = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController::class, array('resolveActionMethodName', 'initializeActionMethodArguments', 'initializeActionMethodValidators', 'initializeAction', 'checkRequestHash', 'mapRequestArgumentsToControllerArguments', 'buildControllerContext', 'resolveView', 'callActionMethod'), array(), '', FALSE);
-		$mockUriBuilder = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class);
-		$objectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
-		$objectManager->expects($this->any())->method('get')->with(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class)->will($this->returnValue($mockUriBuilder));
+		$abstractWidgetController = $this->getAccessibleMock(AbstractWidgetController::class, array('resolveActionMethodName', 'initializeActionMethodArguments', 'initializeActionMethodValidators', 'initializeAction', 'checkRequestHash', 'mapRequestArgumentsToControllerArguments', 'buildControllerContext', 'resolveView', 'callActionMethod'), array(), '', FALSE);
+		$mockUriBuilder = $this->getMock(UriBuilder::class);
+		$objectManager = $this->getMock(ObjectManagerInterface::class);
+		$objectManager->expects($this->any())->method('get')->with(UriBuilder::class)->will($this->returnValue($mockUriBuilder));
 
-		$configurationService = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService::class);
+		$configurationService = $this->getMock(MvcPropertyMappingConfigurationService::class);
 		$abstractWidgetController->_set('mvcPropertyMappingConfigurationService', $configurationService);
 		$abstractWidgetController->_set('arguments', new Arguments());
 
@@ -77,24 +86,39 @@ class AbstractWidgetControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$frameworkConfiguration = array(
 			'view' => array(
 				'widget' => array(
-					\TYPO3\CMS\Fluid\ViewHelpers\Widget\PaginateViewHelper::class => array(
-						'templateRootPath' => 'EXT:fluid/Resources/Private/DummyTestTemplates'
+					PaginateViewHelper::class => array(
+						'templateRootPath' => 'EXT:fluid/Resources/Private',
+						'templateRootPaths' => ['EXT:fluid/Resources/Private']
 					)
 				)
 			)
 		);
-		$widgetContext = $this->getMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetContext::class);
-		$widgetContext->expects($this->any())->method('getWidgetViewHelperClassName')->will($this->returnValue(\TYPO3\CMS\Fluid\ViewHelpers\Widget\PaginateViewHelper::class));
-		$request = $this->getMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequest::class, array(), array(), '', FALSE);
+		$overriddenConfiguration['view'] = array_merge_recursive($frameworkConfiguration['view'], $frameworkConfiguration['view']['widget'][PaginateViewHelper::class]);
+
+		$widgetContext = $this->getMock(WidgetContext::class);
+		$widgetContext->expects($this->any())->method('getWidgetViewHelperClassName')->will($this->returnValue(PaginateViewHelper::class));
+
+		$request = $this->getMock(WidgetRequest::class, array(), array(), '', FALSE);
 		$request->expects($this->any())->method('getWidgetContext')->will($this->returnValue($widgetContext));
-		$configurationManager = $this->getMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::class);
-		$configurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($frameworkConfiguration));
-		$view = $this->getAccessibleMock(\TYPO3\CMS\Fluid\View\TemplateView::class, array('dummy'), array(), '', FALSE);
-		$abstractWidgetController = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController::class, array('dummy'));
+		$request->expects($this->any())->method('getControllerExtensionKey')->will($this->returnValue('fluid'));
+
+		$configurationManager = $this->getMock(ConfigurationManager::class);
+		$configurationManager->expects($this->at(1))->method('setConfiguration')->with($overriddenConfiguration);
+		$configurationManager->expects($this->any())->method('getConfiguration')->willReturnOnConsecutiveCalls($this->returnValue($frameworkConfiguration), $this->returnValue($overriddenConfiguration));
+
+		$controllerContext = $this->getMock(ControllerContext::class);
+		$controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($request));
+
+		/** @var TemplateView|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $view */
+		$view = $this->getAccessibleMock(TemplateView::class, array('dummy'), array(), '', FALSE);
+		$view->_set('controllerContext', $controllerContext);
+
+		$abstractWidgetController = $this->getAccessibleMock(AbstractWidgetController::class, array('dummy'));
 		$abstractWidgetController->_set('configurationManager', $configurationManager);
 		$abstractWidgetController->_set('request', $request);
+		$abstractWidgetController->_set('controllerContext', $controllerContext);
 		$abstractWidgetController->_call('setViewConfiguration', $view);
-		$this->assertSame(array(GeneralUtility::getFileAbsFileName('EXT:fluid/Resources/Private/DummyTestTemplates')), $view->_call('getTemplateRootPaths'));
+		$this->assertSame(array('EXT:fluid/Resources/Private'), $view->_call('getTemplateRootPaths'));
 	}
 
 }
