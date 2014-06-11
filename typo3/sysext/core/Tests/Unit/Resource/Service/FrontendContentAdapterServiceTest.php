@@ -28,38 +28,31 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Service;
  */
 class FrontendContentAdapterServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
-	 * @var \PHPUnit_Framework_MockObject_MockObject
-	 */
-	protected $fileRepositoryMock;
-
 	/**
 	 * @var array A backup of registered singleton instances
 	 */
 	protected $singletonInstances = array();
 
 	/**
+	 * @var \TYPO3\CMS\Frontend\Page\PageRepository|\PHPUnit_Framework_MockObject_MockObject
+	 */
+	protected $pageRepositoryMock;
+
+	/**
 	 * Saving the singletons
 	 */
 	public function setUp() {
-		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
-		$this->fileRepositoryMock = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileRepository');
-		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository', $this->fileRepositoryMock);
-	}
-
-	/**
-	 * Restoring the singletons
-	 */
-	public function tearDown() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
-		parent::tearDown();
+		$this->pageRepositoryMock = $this->getMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+		$GLOBALS['TSFE'] = new \stdClass;
+		$GLOBALS['TSFE']->sys_page = $this->pageRepositoryMock;
 	}
 
 	/**
 	 * @test
 	 */
 	public function emptyRelationResetsLegacyFields() {
-		$this->fileRepositoryMock->expects($this->any())
-			->method('findByRelation')
+		$this->pageRepositoryMock->expects($this->any())
+			->method('getFileReferences')
 			->will($this->returnValue(array()));
 		$dbRow = array(
 			'CType' => 'image',
@@ -81,8 +74,8 @@ class FrontendContentAdapterServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCa
 		$fileReference->expects($this->any())
 			->method('getPublicUrl')
 			->will($this->returnValue('path/to/file'));
-		$this->fileRepositoryMock->expects($this->any())
-			->method('findByRelation')
+		$this->pageRepositoryMock->expects($this->any())
+			->method('getFileReferences')
 			->will($this->returnValue(array($fileReference)));
 		$dbRow = array(
 			'CType' => 'image',
@@ -150,8 +143,8 @@ class FrontendContentAdapterServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCa
 		$fileReference->expects($this->any())
 			->method('getPublicUrl')
 			->will($this->returnValue('path/to/file'));
-		$this->fileRepositoryMock->expects($this->any())
-			->method('findByRelation')
+		$this->pageRepositoryMock->expects($this->any())
+			->method('getFileReferences')
 			->will($this->returnValue(array($fileReference)));
 
 		\TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService::modifyDBRow($dbRow, 'tt_content');
