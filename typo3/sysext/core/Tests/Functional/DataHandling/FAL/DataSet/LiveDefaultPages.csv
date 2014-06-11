@@ -1,0 +1,6 @@
+pages
+,uid,pid,sorting,deleted,t3ver_wsid,t3ver_state,t3ver_stage,t3ver_oid,t3ver_move_id,title
+,1,0,256,0,0,0,0,0,0,FunctionalTest
+,88,1,256,0,0,0,0,0,0,DataHandlerTest
+,89,88,256,0,0,0,0,0,0,FAL
+,90,88,512,0,0,0,0,0,0,Target

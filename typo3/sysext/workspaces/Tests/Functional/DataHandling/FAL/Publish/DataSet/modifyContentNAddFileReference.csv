@@ -1,0 +1,14 @@
+sys_file_reference
+,uid,pid,sorting,deleted,sys_language_uid,l10n_parent,t3ver_wsid,t3ver_state,t3ver_stage,t3ver_oid,t3ver_move_id,uid_local,uid_foreign,tablenames,fieldname,sorting_foreign,table_local,title,description,alternative,link,downloadname
+,126,89,128,0,0,0,0,0,0,0,0,1,330,tt_content,image,2,sys_file,T3BOARD,,,,
+,127,89,64,0,0,0,0,0,0,0,0,21,330,tt_content,image,1,sys_file,Kasper,,,,
+,128,89,32,0,0,0,0,0,0,0,0,21,331,tt_content,image,1,sys_file,"Taken at T3BOARD",,,,
+,129,89,16,0,0,0,0,0,0,0,0,1,331,tt_content,image,2,sys_file,"This is Kasper",,,,
+,130,-1,32,0,0,0,0,0,0,128,0,21,331,tt_content,image,1,sys_file,"Taken at T3BOARD",,,,
+,131,-1,16,0,0,0,0,0,0,129,0,1,331,tt_content,image,2,sys_file,"This is Kasper",,,,
+,132,89,8,0,0,0,0,0,0,0,0,1,331,tt_content,image,3,sys_file,"Image #3",,,,
+tt_content
+,uid,pid,sorting,deleted,sys_language_uid,l18n_parent,t3ver_wsid,t3ver_state,t3ver_stage,t3ver_oid,t3ver_move_id,header,image
+,330,89,256,0,0,0,0,0,0,0,0,"Regular Element #1",2
+,331,89,512,0,0,0,0,0,0,0,0,"Regular Element #2",3
+,332,-1,512,0,0,0,0,0,0,331,0,"Regular Element #2",2

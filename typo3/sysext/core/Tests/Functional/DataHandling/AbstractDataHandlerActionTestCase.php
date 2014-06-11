@@ -354,29 +354,52 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 	 * @param string $structureFieldName
 	 * @param string $tableName
 	 * @param string $fieldName
+	 * @param bool $strict
 	 * @param string|array $values
 	 */
-	protected function assertResponseContentStructureHasRecords(ResponseContent $responseContent, $structureRecordIdentifier, $structureFieldName, $tableName, $fieldName, $values) {
+	protected function assertResponseContentStructureHasRecords(ResponseContent $responseContent, $structureRecordIdentifier, $structureFieldName, $tableName, $fieldName, $values, $strict = FALSE) {
 		$nonMatchingVariants = array();
+		$remainingRecordVariants = array();
 
 		foreach ($responseContent->findStructures($structureRecordIdentifier, $structureFieldName) as $path => $structure) {
+			$remainingRecords = array();
 			$nonMatchingValues = $this->getNonMatchingValuesFrontendResponseRecords($structure, $tableName, $fieldName, $values);
 
-			if (empty($nonMatchingValues)) {
+			if ($strict) {
+				$remainingRecords = $this->getRemainingFrontendResponseRecords($structure, $tableName, $fieldName, $values);
+			}
+
+			if (empty($nonMatchingValues) && (!$strict || empty($remainingRecords))) {
 				// Increase assertion counter
 				$this->assertEmpty($nonMatchingValues);
 				return;
 			}
 
-			$nonMatchingVariants[$path] = $nonMatchingValues;
+			if (!empty($nonMatchingValues)) {
+				$nonMatchingVariants[$path] = $nonMatchingValues;
+			}
+			if ($strict && !empty($remainingRecords)) {
+				$remainingRecordVariants[$path] = $remainingRecords;
+			}
 		}
 
-		$nonMatchingMessage = '';
-		foreach ($nonMatchingVariants as $path => $nonMatchingValues) {
-			$nonMatchingMessage .= '* ' . $path . ': ' . implode(', ', $nonMatchingValues);
+		$failureMessage = '';
+
+		if (!empty($nonMatchingVariants)) {
+			$failureMessage .= 'Could not assert all values for "' . $tableName . '.' . $fieldName . '"' . LF;
+			foreach ($nonMatchingVariants as $path => $nonMatchingValues) {
+				$failureMessage .= '* ' . $path . ': ' . implode(', ', $nonMatchingValues) . LF;
+			}
 		}
 
-		$this->fail('Could not assert all values for "' . $tableName . '.' . $fieldName . '"' . LF . $nonMatchingMessage);
+		if (!empty($remainingRecordVariants)) {
+			$failureMessage .= 'Found remaining records for "' . $tableName . '.' . $fieldName . '"' . LF;
+			foreach ($remainingRecordVariants as $path => $remainingRecords) {
+				$failureMessage .= '* ' . $path . ': ' . implode(', ', array_keys($remainingRecords)) . LF;
+			}
+		}
+
+		$this->fail($failureMessage);
 	}
 
 	/**
@@ -483,6 +506,37 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 		}
 
 		return $values;
+	}
+
+	/**
+	 * @param string|array $data
+	 * @param string $tableName
+	 * @param string $fieldName
+	 * @param string|array $values
+	 * @return array
+	 */
+	protected function getRemainingFrontendResponseRecords($data, $tableName, $fieldName, $values) {
+		if (empty($data) || !is_array($data)) {
+			$this->fail('Frontend Response data does not have any records');
+		}
+
+		if (is_string($values)) {
+			$values = array($values);
+		}
+
+		foreach ($data as $recordIdentifier => $recordData) {
+			if (strpos($recordIdentifier, $tableName . ':') !== 0) {
+				unset($data[$recordIdentifier]);
+				continue;
+			}
+
+			if (($foundValueIndex = array_search($recordData[$fieldName], $values)) !== FALSE) {
+				unset($values[$foundValueIndex]);
+				unset($data[$recordIdentifier]);
+			}
+		}
+
+		return $data;
 	}
 
 }

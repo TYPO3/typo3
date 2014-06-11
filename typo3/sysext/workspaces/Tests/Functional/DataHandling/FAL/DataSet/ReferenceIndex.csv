@@ -1,0 +1,17 @@
+sys_refindex
+,hash,tablename,recuid,field,flexpointer,softref_key,softref_id,sorting,deleted,ref_table,ref_uid,ref_string
+,8765176f1ce58edcb5efdcabd59ca123,sys_category,31,parent,,,,0,0,sys_category,28,
+,b1315f6a325027205050c81764294b72,sys_file,1,storage,,,,0,0,sys_file_storage,1,
+,10034d14de6b8c87aa0096de9d029498,sys_file,1,metadata,,,,0,0,sys_file_metadata,1,
+,6588728f1c2f2069b4b781ab1d102fff,sys_file,21,storage,,,,0,0,sys_file_storage,1,
+,ff0a9ca5f364b75bccb699b74d167c83,sys_file,21,metadata,,,,0,0,sys_file_metadata,21,
+,557de1cd99f1b4d25f681d822c060598,sys_file_metadata,1,file,,,,0,0,sys_file,1,
+,4821da930346696406e3ccf3ec22d999,sys_file_metadata,21,file,,,,0,0,sys_file,21,
+,aa821da8cdc56afc736974735c9b1c1c,sys_file_reference,126,uid_local,,,,0,0,sys_file,1,
+,8e50f38980afa6f4e84530b12f9cd0b3,sys_file_reference,127,uid_local,,,,0,0,sys_file,21,
+,1f1d715dd5783cd50ecbda978e23dccb,sys_file_reference,128,uid_local,,,,0,0,sys_file,21,
+,c08c2538c324b0a98b0957bc4bdf36ae,sys_file_reference,129,uid_local,,,,0,0,sys_file,1,
+,a1f2ffdc6bf235cb5516c4bfdeec5552,tt_content,330,image,,,,0,0,sys_file_reference,127,
+,fc208fc9d55a71b2faa9f4e4d4fa941d,tt_content,330,image,,,,1,0,sys_file_reference,126,
+,48540de7710e3082f347bdd65ca340f2,tt_content,331,image,,,,0,0,sys_file_reference,128,
+,ceaebd2148901a6d7b0a52c546aa5218,tt_content,331,image,,,,1,0,sys_file_reference,129,
