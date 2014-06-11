@@ -20,10 +20,10 @@
 		<div class="message-body"><f:render partial="List/UnresolvedDependenciesMessage" /></div>
 	</div>
 	<br />
-	<f:link.action action="index" class="t3-button">
+	<f:link.action action="index" class="t3-button onClickMaskExtensionManager">
 		Go back
 	</f:link.action>
-	<f:link.action action="installExtensionWithoutSystemDependencyCheck" controller="Action" arguments="{extensionKey: extension.extensionKey}" class="t3-button">
+	<f:link.action action="installExtensionWithoutSystemDependencyCheck" controller="Action" arguments="{extensionKey: extension.extensionKey}" class="t3-button onClickMaskExtensionManager">
 		<span class="t3-icon t3-icon-actions t3-icon-dialog-error">&nbsp;</span> <f:translate key="dependencyCheck.unresolvedDependencies.proceed" />
 	</f:link.action>
 </f:section>
