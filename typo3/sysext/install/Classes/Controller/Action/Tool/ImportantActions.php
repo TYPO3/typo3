@@ -264,13 +264,13 @@ class ImportantActions extends Action\AbstractAction {
 	protected function databaseAnalyzerExecute() {
 		$messages = array();
 
-		// Early return in case no updade was selected
+		// Early return in case no update was selected
 		if (empty($this->postValues['values'])) {
 			/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
 			$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\WarningStatus');
 			$message->setTitle('No database changes selected');
 			$messages[] = $message;
-			return $message;
+			return $messages;
 		}
 
 		/** @var \TYPO3\CMS\Install\Service\SqlSchemaMigrationService $schemaMigrationService */
