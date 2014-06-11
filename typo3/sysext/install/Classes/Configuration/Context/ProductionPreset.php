@@ -52,6 +52,7 @@ class ProductionPreset extends Configuration\AbstractPreset {
 		'SYS/enableDeprecationLog' => FALSE,
 		'SYS/sqlDebug' => 0,
 		'SYS/systemLogLevel' => 2,
+		'SYS/clearCacheSystem' => FALSE,
 	);
 
 	/**

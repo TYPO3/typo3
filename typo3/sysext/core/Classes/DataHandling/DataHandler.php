@@ -7166,7 +7166,8 @@ class DataHandler {
 				break;
 			case 'temp_cached':
 			case 'system':
-				if ($this->admin || $this->BE_USER->getTSConfigVal('options.clearCache.system')) {
+				if ($this->admin || $this->BE_USER->getTSConfigVal('options.clearCache.system')
+					|| ((bool) $GLOBALS['TYPO3_CONF_VARS']['SYS']['clearCacheSystem'] === TRUE && $this->admin)) {
 					GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->flushCachesInGroup('system');
 				}
 				break;

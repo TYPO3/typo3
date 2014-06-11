@@ -42,5 +42,6 @@ class CustomPreset extends Configuration\AbstractCustomPreset implements Configu
 		'SYS/enableDeprecationLog' => '',
 		'SYS/sqlDebug' => '',
 		'SYS/systemLogLevel' => '',
+		'SYS/clearCacheSystem' => '',
 	);
 }
