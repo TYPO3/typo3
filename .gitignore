@@ -23,4 +23,7 @@
 .settings
 .TemporaryItems
 .webprj
+bin/*
 nbproject
+Packages/*
+typo3temp/*
