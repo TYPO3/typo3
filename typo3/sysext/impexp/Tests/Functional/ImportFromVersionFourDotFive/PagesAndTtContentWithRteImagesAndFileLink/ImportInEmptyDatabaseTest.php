@@ -24,6 +24,17 @@ class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Impor
 	protected $assertionDataSetDirectory = 'typo3/sysext/impexp/Tests/Functional/ImportFromVersionFourDotFive/PagesAndTtContentWithRteImagesAndFileLink/DataSet/Assertion/';
 
 	/**
+	 * @return void
+	 */
+	public function setUp() {
+		parent::setUp();
+
+		// Force the storage record to be caseSensitive "1" and prevent on-the-fly
+		// storage creation which is dependant on the OS .
+		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/sys_file_storage.xml');
+	}
+
+	/**
 	 * @test
 	 */
 	public function importPagesAndRelatedTtContentWithRteImagesAndFileLink() {
