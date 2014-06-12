@@ -69,7 +69,7 @@ class ActionService {
 			if (!isset($recordData['pid'])) {
 				$recordData['pid'] = $pageId;
 			}
-			$currentUid = uniqid('NEW');
+			$currentUid = uniqid('NEW', TRUE);
 			$newTableIds[$tableName][] = $currentUid;
 			$dataMap[$tableName][$currentUid] = $recordData;
 			if ($previousTableName !== NULL && $previousUid !== NULL) {
