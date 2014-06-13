@@ -238,7 +238,7 @@ class FormController {
 			$postProcessorTypoScript = $this->typoscript['postProcessor.'];
 		}
 		/** @var $postProcessor \TYPO3\CMS\Form\PostProcess\PostProcessor */
-		$postProcessor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\PostProcess\\PostProcessor', $form, $this->typoscriptFactory, $postProcessorTypoScript);
+		$postProcessor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\PostProcess\\PostProcessor', $form, $postProcessorTypoScript);
 		$content = $postProcessor->process();
 		$this->requestHandler->destroySession();
 		return $content;

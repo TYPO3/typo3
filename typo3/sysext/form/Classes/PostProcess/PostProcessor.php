@@ -45,12 +45,11 @@ class PostProcessor {
 	 * Constructor
 	 *
 	 * @param \TYPO3\CMS\Form\Domain\Model\Form $form Form domain model
-	 * @param \TYPO3\CMS\Form\Domain\Factory\TypoScriptFactory $typoscriptFactory
 	 * @param array $typoScript Post processor TypoScript settings
 	 */
-	public function __construct(\TYPO3\CMS\Form\Domain\Model\Form $form, \TYPO3\CMS\Form\Domain\Factory\TypoScriptFactory $typoscriptFactory, array $typoScript) {
+	public function __construct(\TYPO3\CMS\Form\Domain\Model\Form $form, array $typoScript) {
 		$this->form = $form;
-		$this->typoscriptFactory = $typoscriptFactory;
+		$this->typoscriptFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Domain\\Factory\\TypoScriptFactory');
 		$this->typoScript = $typoScript;
 	}
 
