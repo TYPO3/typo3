@@ -89,7 +89,7 @@ class HistoryService implements \TYPO3\CMS\Core\SingletonInterface {
 		if (!empty($entry['action'])) {
 			$differences = $entry['action'];
 		} else {
-			$differences = implode('<br/>', $this->getDifferences($entry));
+			$differences = $this->getDifferences($entry);
 		}
 		return array(
 			'datetime' => htmlspecialchars(BackendUtility::datetime($entry['tstamp'])),
@@ -117,7 +117,12 @@ class HistoryService implements \TYPO3\CMS\Core\SingletonInterface {
 						BackendUtility::getProcessedValue($tableName, $field, $entry['oldRecord'][$field], 0, TRUE),
 						BackendUtility::getProcessedValue($tableName, $field, $entry['newRecord'][$field], 0, TRUE)
 					);
-					$differences[] = nl2br($fieldDifferences);
+					if (!empty($fieldDifferences)) {
+						$differences[] = array(
+							'label' => $this->getLanguageService()->sl((string)BackendUtility::getItemLabel($tableName, $field)),
+							'html' => nl2br(trim($fieldDifferences)),
+						);
+					}
 				}
 			}
 		}
@@ -166,6 +171,13 @@ class HistoryService implements \TYPO3\CMS\Core\SingletonInterface {
 			$this->differencesObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\DiffUtility');
 		}
 		return $this->differencesObject;
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 
 }

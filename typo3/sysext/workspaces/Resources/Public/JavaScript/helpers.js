@@ -172,7 +172,23 @@ TYPO3.Workspaces.Helpers = {
 						columns: [
 							{ width: 30, id: 'datetime', header: 'Date' },
 							{ width: 20, id: 'user', header: 'User', dataIndex: 'user' },
-							{ id: 'differences', header: 'Differences', dataIndex: 'differences' }
+							{
+								id: 'differences',
+								header: 'Differences',
+								dataIndex: 'differences',
+								renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+									if (typeof value === 'string') {
+										return value;
+									} else {
+										var template = new Ext.XTemplate(
+											'<tpl for=".">',
+												'<div style="display: block; padding: 3px 0;"><strong>{label}</strong> {html}</div>',
+											'</tpl>'
+										);
+										return template.apply(value);
+									}
+								}
+							}
 						]
 					})
 				}
