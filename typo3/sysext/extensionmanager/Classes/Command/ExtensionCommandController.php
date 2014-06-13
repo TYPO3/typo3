@@ -37,6 +37,11 @@ use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
 class ExtensionCommandController extends CommandController {
 
 	/**
+	 * @var bool
+	 */
+	protected $requestAdminPermissions = TRUE;
+
+	/**
 	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
 	 * @inject
 	 */
