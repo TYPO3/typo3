@@ -24,6 +24,8 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
+
 /**
  * A controller which processes requests from the command line
  *
@@ -56,6 +58,19 @@ class CommandController implements \TYPO3\CMS\Extbase\Mvc\Controller\CommandCont
 	protected $commandMethodName = '';
 
 	/**
+	 * Whether the command needs admin access to perform its job
+	 *
+	 * @var bool
+	 * @api
+	 */
+	protected $requestAdminPermissions = FALSE;
+
+	/**
+	 * @var AbstractUserAuthentication
+	 */
+	protected $userAuthentication;
+
+	/**
 	 * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
 	 * @inject
 	 */
@@ -73,6 +88,7 @@ class CommandController implements \TYPO3\CMS\Extbase\Mvc\Controller\CommandCont
 	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 		$this->arguments = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Arguments');
+		$this->userAuthentication = isset($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER'] : NULL;
 	}
 
 	/**
@@ -202,11 +218,39 @@ class CommandController implements \TYPO3\CMS\Extbase\Mvc\Controller\CommandCont
 		foreach ($this->arguments as $argument) {
 			$preparedArguments[] = $argument->getValue();
 		}
+		$originalRole = $this->ensureAdminRoleIfRequested();
 		$commandResult = call_user_func_array(array($this, $this->commandMethodName), $preparedArguments);
+		$this->restoreUserRole($originalRole);
 		if (is_string($commandResult) && strlen($commandResult) > 0) {
 			$this->response->appendContent($commandResult);
 		} elseif (is_object($commandResult) && method_exists($commandResult, '__toString')) {
 			$this->response->appendContent((string) $commandResult);
+		}
+	}
+
+	/**
+	 * Set admin permissions for currently authenticated user if requested
+	 * and returns the original state or NULL
+	 *
+	 * @return NULL|int
+	 */
+	protected function ensureAdminRoleIfRequested() {
+		if (!$this->requestAdminPermissions || !$this->userAuthentication || !isset($this->userAuthentication->user['admin'])) {
+			return NULL;
+		}
+		$originalRole = $this->userAuthentication->user['admin'];
+		$this->userAuthentication->user['admin'] = 1;
+		return $originalRole;
+	}
+
+	/**
+	 * Restores the original user role
+	 *
+	 * @param NULL|int $originalRole
+	 */
+	protected function restoreUserRole($originalRole) {
+		if ($originalRole !== NULL) {
+			$this->userAuthentication->user['admin'] = $originalRole;
 		}
 	}
 

@@ -37,7 +37,7 @@ class CommandControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $commandController;
 
 	public function setUp() {
-		$this->commandController = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\CommandController', array('dummy'));
+		$this->commandController = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\CommandController', array('dummyCommand'));
 	}
 
 	/**
@@ -89,5 +89,30 @@ class CommandControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$mockResponse->expects($this->once())->method('setExitCode')->with(123);
 		$this->commandController->_set('response', $mockResponse);
 		$this->commandController->_call('quit', 123);
+	}
+
+	/**
+	 * @test
+	 */
+	public function settingRequestAdminPropertySetsAdminRoleInUserAuthentication() {
+		$mockedUserAuthentication = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication');
+		$mockedUserAuthentication->user['admin'] = 42;
+		$this->commandController->expects($this->once())
+			->method('dummyCommand')
+			->will(
+				$this->returnCallback(
+					function() use ($mockedUserAuthentication) {
+						if ($mockedUserAuthentication->user['admin'] !== 1) {
+							throw new \Exception('User role is not admin');
+						}
+					}
+				));
+		$this->commandController->_set('userAuthentication', $mockedUserAuthentication);
+		$this->commandController->_set('arguments', array());
+		$this->commandController->_set('commandMethodName', 'dummyCommand');
+		$this->commandController->_set('requestAdminPermissions', TRUE);
+		$this->commandController->_call('callCommandMethod');
+
+		$this->assertSame(42, $mockedUserAuthentication->user['admin']);
 	}
 }
