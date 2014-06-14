@@ -180,7 +180,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 		}
 		// Process the redirect
 		if (($this->logintype === 'login' || $this->logintype === 'logout') && $this->redirectUrl && !$this->noRedirect) {
-			if (!$GLOBALS['TSFE']->fe_user->isCookieSet()) {
+			if (!$GLOBALS['TSFE']->fe_user->isCookieSet() && $this->userIsLoggedIn) {
 				$content .= $this->cObj->stdWrap($this->pi_getLL('cookie_warning', '', TRUE), $this->conf['cookieWarning_stdWrap.']);
 			} else {
 				// Add hook for extra processing before redirect
