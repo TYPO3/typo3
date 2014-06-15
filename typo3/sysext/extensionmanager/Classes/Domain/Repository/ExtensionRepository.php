@@ -29,6 +29,7 @@ namespace TYPO3\CMS\Extensionmanager\Domain\Repository;
  * @author Susanne Moog <typo3@susannemoog.de>
  */
 class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
+
 	/**
 	 * @var string
 	 */
@@ -77,6 +78,11 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	public function findAll() {
 		$query = $this->createQuery();
 		$query = $this->addDefaultConstraints($query);
+		$query->setOrderings(
+			array(
+				'lastUpdated' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
+			)
+		);
 		return $query->execute();
 	}
 
