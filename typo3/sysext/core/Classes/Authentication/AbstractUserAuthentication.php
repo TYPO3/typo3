@@ -706,7 +706,6 @@ abstract class AbstractUserAuthentication {
 				}
 				// Delete old user session if any
 				$this->logoff();
-				$this->newSessionID = TRUE;
 			}
 			// Refuse login for _CLI users, if not processing a CLI request type
 			// (although we shouldn't be here in case of a CLI request type)
