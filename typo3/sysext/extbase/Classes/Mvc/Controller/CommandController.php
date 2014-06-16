@@ -14,6 +14,21 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Mvc\Cli\ConsoleOutput;
+use TYPO3\CMS\Extbase\Mvc\Cli\Request;
+use TYPO3\CMS\Extbase\Mvc\Cli\Response;
+use Symfony\Component\Console\Output\ConsoleOutput as SymfonyConsoleOutput;
+use Symfony\Component\Console\Helper\DialogHelper;
+use Symfony\Component\Console\Helper\FormatterHelper;
+use Symfony\Component\Console\Helper\HelperSet;
+use Symfony\Component\Console\Helper\ProgressHelper;
+use Symfony\Component\Console\Helper\TableHelper;
+use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException;
+use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException;
+use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
+use TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
+use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Extbase\Mvc\Cli\CommandArgumentDefinition;
 
@@ -24,20 +39,18 @@ use TYPO3\CMS\Extbase\Mvc\Cli\CommandArgumentDefinition;
  */
 class CommandController implements CommandControllerInterface {
 
-	const MAXIMUM_LINE_LENGTH = 79;
-
 	/**
-	 * @var \TYPO3\CMS\Extbase\Mvc\Cli\Request
+	 * @var Request
 	 */
 	protected $request;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Mvc\Cli\Response
+	 * @var Response
 	 */
 	protected $response;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\Arguments
+	 * @var Arguments
 	 */
 	protected $arguments;
 
@@ -73,6 +86,11 @@ class CommandController implements CommandControllerInterface {
 	protected $objectManager;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Mvc\Cli\ConsoleOutput
+	 */
+	protected $output;
+
+	/**
 	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 * @return void
 	 */
@@ -80,6 +98,7 @@ class CommandController implements CommandControllerInterface {
 		$this->objectManager = $objectManager;
 		$this->arguments = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Controller\Arguments::class);
 		$this->userAuthentication = isset($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER'] : NULL;
+		$this->output = $this->objectManager->get(ConsoleOutput::class);
 	}
 
 	/**
@@ -89,25 +108,27 @@ class CommandController implements CommandControllerInterface {
 	 * @return bool TRUE if this request type is supported, otherwise FALSE
 	 */
 	public function canProcessRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request) {
-		return $request instanceof \TYPO3\CMS\Extbase\Mvc\Cli\Request;
+		return $request instanceof Request;
 	}
 
 	/**
 	 * Processes a command line request.
 	 *
-	 * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request object
-	 * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response The response, modified by this controller
-	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
+	 * @param RequestInterface $request The request object
+	 * @param ResponseInterface $response The response, modified by this handler
 	 * @return void
+	 * @throws UnsupportedRequestTypeException if the controller doesn't support the current request type
 	 * @api
 	 */
-	public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response) {
+	public function processRequest(RequestInterface $request, ResponseInterface $response) {
 		if (!$this->canProcessRequest($request)) {
-			throw new \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException(get_class($this) . ' does not support requests of type "' . get_class($request) . '".', 1300787096);
+			throw new UnsupportedRequestTypeException(sprintf('%s only supports command line requests – requests of type "%s" given.', get_class($this), get_class($request)), 1300787096);
 		}
+
 		$this->request = $request;
 		$this->request->setDispatched(TRUE);
 		$this->response = $response;
+
 		$this->commandMethodName = $this->resolveCommandMethodName();
 		$this->initializeCommandMethodArguments();
 		$this->mapRequestArgumentsToControllerArguments();
@@ -122,11 +143,12 @@ class CommandController implements CommandControllerInterface {
 	 *
 	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException
 	 * @return string Method name of the current command
+	 * @throws NoSuchCommandException
 	 */
 	protected function resolveCommandMethodName() {
 		$commandMethodName = $this->request->getControllerCommandName() . 'Command';
 		if (!is_callable(array($this, $commandMethodName))) {
-			throw new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException('A command method "' . $commandMethodName . '()" does not exist in controller "' . get_class($this) . '".', 1300902143);
+			throw new NoSuchCommandException(sprintf('A command method "%s()" does not exist in controller "%s".', $commandMethodName, get_class($this)), 1300902143);
 		}
 		return $commandMethodName;
 	}
@@ -137,9 +159,12 @@ class CommandController implements CommandControllerInterface {
 	 *
 	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException
 	 * @return void
+	 * @throws InvalidArgumentTypeException
 	 */
 	protected function initializeCommandMethodArguments() {
+		$this->arguments->removeAll();
 		$methodParameters = $this->reflectionService->getMethodParameters(get_class($this), $this->commandMethodName);
+
 		foreach ($methodParameters as $parameterName => $parameterInfo) {
 			$dataType = NULL;
 			if (isset($parameterInfo['type'])) {
@@ -148,10 +173,10 @@ class CommandController implements CommandControllerInterface {
 				$dataType = 'array';
 			}
 			if ($dataType === NULL) {
-				throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException('The argument type for parameter $' . $parameterName . ' of method ' . get_class($this) . '->' . $this->commandMethodName . '() could not be detected.', 1306755296);
+				throw new InvalidArgumentTypeException(sprintf('The argument type for parameter $%s of method %s->%s() could not be detected.', $parameterName, get_class($this), $this->commandMethodName), 1306755296);
 			}
-			$defaultValue = isset($parameterInfo['defaultValue']) ? $parameterInfo['defaultValue'] : NULL;
-			$this->arguments->addNewArgument($parameterName, $dataType, $parameterInfo['optional'] === FALSE, $defaultValue);
+			$defaultValue = (isset($parameterInfo['defaultValue']) ? $parameterInfo['defaultValue'] : NULL);
+			$this->arguments->addNewArgument($parameterName, $dataType, ($parameterInfo['optional'] === FALSE), $defaultValue);
 		}
 	}
 
@@ -166,11 +191,17 @@ class CommandController implements CommandControllerInterface {
 			$argumentName = $argument->getName();
 			if ($this->request->hasArgument($argumentName)) {
 				$argument->setValue($this->request->getArgument($argumentName));
-			} elseif ($argument->isRequired()) {
-				$commandArgumentDefinition = $this->objectManager->get(CommandArgumentDefinition::class, $argumentName, TRUE, NULL);
-				$exception = new \TYPO3\CMS\Extbase\Mvc\Exception\CommandException('Required argument "' . $commandArgumentDefinition->getDashedName() . '" is not set.', 1306755520);
-				$this->forward('error', \TYPO3\CMS\Extbase\Command\HelpCommandController::class, array('exception' => $exception));
+				continue;
 			}
+			if (!$argument->isRequired()) {
+				continue;
+			}
+			$argumentValue = NULL;
+			$commandArgumentDefinition = $this->objectManager->get(CommandArgumentDefinition::class, $argumentName, TRUE, NULL);
+			while ($argumentValue === NULL) {
+				$argumentValue = $this->output->ask(sprintf('<comment>Please specify the required argument "%s":</comment> ', $commandArgumentDefinition->getDashedName()));
+			}
+			$argument->setValue($argumentValue);
 		}
 	}
 
@@ -183,8 +214,8 @@ class CommandController implements CommandControllerInterface {
 	 * @param string $commandName
 	 * @param string $controllerObjectName
 	 * @param array $arguments
-	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
 	 * @return void
+	 * @throws StopActionException
 	 */
 	protected function forward($commandName, $controllerObjectName = NULL, array $arguments = array()) {
 		$this->request->setDispatched(FALSE);
@@ -193,8 +224,9 @@ class CommandController implements CommandControllerInterface {
 			$this->request->setControllerObjectName($controllerObjectName);
 		}
 		$this->request->setArguments($arguments);
+
 		$this->arguments->removeAll();
-		throw new \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException();
+		throw new StopActionException();
 	}
 
 	/**
@@ -258,10 +290,7 @@ class CommandController implements CommandControllerInterface {
 	 * @return void
 	 */
 	protected function output($text, array $arguments = array()) {
-		if ($arguments !== array()) {
-			$text = vsprintf($text, $arguments);
-		}
-		$this->response->appendContent($text);
+		$this->output->output($text, $arguments);
 	}
 
 	/**
@@ -273,7 +302,21 @@ class CommandController implements CommandControllerInterface {
 	 * @see output()
 	 */
 	protected function outputLine($text = '', array $arguments = array()) {
-		$this->output($text . PHP_EOL, $arguments);
+		$this->output->outputLine($text, $arguments);
+	}
+
+	/**
+	 * Formats the given text to fit into MAXIMUM_LINE_LENGTH and outputs it to the
+	 * console window
+	 *
+	 * @param string $text Text to output
+	 * @param array $arguments Optional arguments to use for sprintf
+	 * @param int $leftPadding The number of spaces to use for indentation
+	 * @return void
+	 * @see outputLine()
+	 */
+	protected function outputFormatted($text = '', array $arguments = array(), $leftPadding = 0) {
+		$this->output->outputFormatted($text, $arguments, $leftPadding);
 	}
 
 	/**
@@ -281,12 +324,12 @@ class CommandController implements CommandControllerInterface {
 	 * An exit status code can be specified @see http://www.php.net/exit
 	 *
 	 * @param int $exitCode Exit code to return on exit
-	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
+	 * @throws StopActionException
 	 * @return void
 	 */
 	protected function quit($exitCode = 0) {
 		$this->response->setExitCode($exitCode);
-		throw new \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException();
+		throw new StopActionException;
 	}
 
 	/**
@@ -298,7 +341,7 @@ class CommandController implements CommandControllerInterface {
 	 */
 	protected function sendAndExit($exitCode = 0) {
 		$this->response->send();
-		die($exitCode);
+		exit($exitCode);
 	}
 
 }

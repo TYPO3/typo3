@@ -37,6 +37,7 @@
 		"pear/http_request2": "2.2.1",
 		"phpwhois/idna-convert": "0.8.2",
 		"swiftmailer/swiftmailer": "5.2.1",
+		"symfony/console": "2.5.*",
 		"helhum/class-alias-loader": "~1.1",
 		"typo3/cms-composer-installers": "1.1.*@dev"
 	},

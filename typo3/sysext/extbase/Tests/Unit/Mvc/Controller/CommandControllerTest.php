@@ -24,17 +24,22 @@ class CommandControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $commandController;
 
+	/**
+	 * \Symfony\Component\Console\Output\ConsoleOutput|\PHPUnit_Framework_MockObject_MockObject
+	 */
+	protected $mockConsoleOutput;
+
 	protected function setUp() {
 		$this->commandController = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\CommandController::class, array('dummyCommand'));
+		$this->mockConsoleOutput = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Cli\ConsoleOutput::class)->disableOriginalConstructor()->getMock();
+		$this->commandController->_set('output', $this->mockConsoleOutput);
 	}
 
 	/**
 	 * @test
 	 */
 	public function outputAppendsGivenStringToTheResponseContent() {
-		$mockResponse = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Cli\Response::class);
-		$mockResponse->expects($this->once())->method('appendContent')->with('some text');
-		$this->commandController->_set('response', $mockResponse);
+		$this->mockConsoleOutput->expects($this->once())->method('output')->with('some text');
 		$this->commandController->_call('output', 'some text');
 	}
 
@@ -42,20 +47,8 @@ class CommandControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function outputReplacesArgumentsInGivenString() {
-		$mockResponse = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Cli\Response::class);
-		$mockResponse->expects($this->once())->method('appendContent')->with('some text');
-		$this->commandController->_set('response', $mockResponse);
+		$this->mockConsoleOutput->expects($this->once())->method('output')->with('%2$s %1$s', array('text', 'some'));
 		$this->commandController->_call('output', '%2$s %1$s', array('text', 'some'));
-	}
-
-	/**
-	 * @test
-	 */
-	public function outputLineAppendsGivenStringAndNewlineToTheResponseContent() {
-		$mockResponse = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Cli\Response::class);
-		$mockResponse->expects($this->once())->method('appendContent')->with('some text' . PHP_EOL);
-		$this->commandController->_set('response', $mockResponse);
-		$this->commandController->_call('outputLine', 'some text');
 	}
 
 	/**

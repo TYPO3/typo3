@@ -59,6 +59,8 @@ class LanguageCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Comman
 		$packageManager = $this->objectManager->get(\TYPO3\CMS\Core\Package\PackageManager::class);
 		$this->emitPackagesMayHaveChangedSignal();
 		$packages = $packageManager->getAvailablePackages();
+		$this->outputLine((sprintf('Updating language packs of all activated extensions for locales "%s"', implode(', ', $locales))));
+		$this->output->progressStart(count($locales)*count($packages));
 		foreach ($locales as $locale) {
 			/** @var PackageInterface $package */
 			foreach ($packages as $package) {
@@ -67,8 +69,10 @@ class LanguageCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Comman
 				if (empty($result[$extensionKey][$locale]['error'])) {
 					$this->registryService->set($locale, $GLOBALS['EXEC_TIME']);
 				}
+				$this->output->progressAdvance();
 			}
 		}
+		$this->output->progressFinish();
 	}
 
 	/**
