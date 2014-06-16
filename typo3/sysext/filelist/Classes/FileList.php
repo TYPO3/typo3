@@ -466,7 +466,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 
 				// The icon with link
 				$theIcon = IconUtility::getSpriteIconForResource($folderObject, array('title' => $folderName));
-				if (!$isLocked && !$this->clickMenus) {
+				if (!$isLocked && $this->clickMenus) {
 					$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($theIcon, $folderObject->getCombinedIdentifier());
 				}
 
