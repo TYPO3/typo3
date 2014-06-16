@@ -49,12 +49,15 @@ table#typo3-altdoc-header input,
 .t3-tceforms-input-wrapper-datetime .t3-tceforms-input-clearer,
 .t3-tceforms-input-wrapper-datetime-hover .t3-tceforms-input-clearer {
 	position: absolute;
-	right: 24px;
-	top: 28%;
+	right: 27px;
+	top: 5px;
 	z-index: 1000;
 	cursor: pointer;
 }
-
+.t3-tceforms-input-wrapper-datetime .t3-icon-edit-pick-date,
+.t3-tceforms-input-wrapper-datetime-hover .t3-icon-edit-pick-date {
+	top: -4px;
+}
 .t3-tceforms-input-wrapper .tceforms-textfield,
 .t3-tceforms-input-wrapper-hover .tceforms-textfield,
 .t3-tceforms-input-wrapper .tceforms-datetimefield,
