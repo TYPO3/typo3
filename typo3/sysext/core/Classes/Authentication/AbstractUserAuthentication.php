@@ -746,6 +746,9 @@ abstract class AbstractUserAuthentication {
 			} elseif ($haveSession) {
 				$this->user = $authInfo['userSession'];
 			}
+			if ($activeLogin && !$this->newSessionID) {
+				$this->regenerateSessionId();
+			}
 			// User logged in - write that to the log!
 			if ($this->writeStdLog && $activeLogin) {
 				$this->writelog(255, 1, 0, 1, 'User %s logged in from %s (%s)', array($tempuser[$this->username_column], GeneralUtility::getIndpEnv('REMOTE_ADDR'), GeneralUtility::getIndpEnv('REMOTE_HOST')), '', '', '', -1, '', $tempuser['uid']);
@@ -795,6 +798,24 @@ abstract class AbstractUserAuthentication {
 	 */
 	public function createSessionId() {
 		return GeneralUtility::getRandomHexString($this->hash_length);
+	}
+
+	/**
+	 * Regenerate the session ID and transfer the session to new ID
+	 * Call this method whenever a user proceeds to a higher authorization level
+	 * e.g. when an anonymous session is now authenticated.
+	 */
+	protected function regenerateSessionId() {
+		$oldSessionId = $this->id;
+		$this->id = $this->createSessionId();
+		// Update session record with new ID
+		$this->db->exec_UPDATEquery(
+			$this->session_table,
+			'ses_id = ' . $this->db->fullQuoteStr($oldSessionId, $this->session_table)
+				. ' AND ses_name = ' . $this->db->fullQuoteStr($this->name, $this->session_table),
+			array('ses_id' => $this->id)
+		);
+		$this->newSessionID = TRUE;
 	}
 
 	/*************************
