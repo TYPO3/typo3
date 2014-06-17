@@ -24,6 +24,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Cache\Backend\MemcachedBackend;
+
 /**
  * Testcase for the cache to memcached backend
  *
@@ -57,7 +59,7 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setThrowsExceptionIfNoFrontEndHasBeenSet() {
 		$backendOptions = array('servers' => array('localhost:11211'));
-		$backend = new \TYPO3\CMS\Core\Cache\Backend\MemcachedBackend('Testing', $backendOptions);
+		$backend = new MemcachedBackend('Testing', $backendOptions);
 		$backend->initializeObject();
 		$data = 'Some data';
 		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
@@ -69,7 +71,7 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \TYPO3\CMS\Core\Cache\Exception
 	 */
 	public function initializeObjectThrowsExceptionIfNoMemcacheServerIsConfigured() {
-		$backend = new \TYPO3\CMS\Core\Cache\Backend\MemcachedBackend('Testing');
+		$backend = new MemcachedBackend('Testing');
 		$backend->initializeObject();
 	}
 
@@ -206,14 +208,17 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function flushRemovesOnlyOwnEntries() {
 		$backendOptions = array('servers' => array('localhost:11211'));
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $thisCache */
 		$thisCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);
 		$thisCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thisCache'));
-		$thisBackend = new \TYPO3\CMS\Core\Cache\Backend\MemcachedBackend('Testing', $backendOptions);
+		$thisBackend = new MemcachedBackend('Testing', $backendOptions);
 		$thisBackend->setCache($thisCache);
 		$thisBackend->initializeObject();
+
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $thatCache */
 		$thatCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);
 		$thatCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thatCache'));
-		$thatBackend = new \TYPO3\CMS\Core\Cache\Backend\MemcachedBackend('Testing', $backendOptions);
+		$thatBackend = new MemcachedBackend('Testing', $backendOptions);
 		$thatBackend->setCache($thatCache);
 		$thatBackend->initializeObject();
 		$thisBackend->set('thisEntry', 'Hello');
@@ -238,17 +243,46 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * @test
+	 */
+	public function setTagsOnlyOnceToIdentifier() {
+		$backendOptions = array('servers' => array('localhost:11211'));
+		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
+		$tags = array('UnitTestTag%test', 'UnitTestTag%boring');
+
+		$backend = $this->setUpBackend($backendOptions, TRUE);
+		$backend->_call('addIdentifierToTags', $identifier, $tags);
+		$this->assertSame(
+			$tags,
+			$backend->_call('findTagsByIdentifier', $identifier)
+		);
+
+		$backend->_call('addIdentifierToTags', $identifier, $tags);
+		$this->assertSame(
+			$tags,
+			$backend->_call('findTagsByIdentifier', $identifier)
+		);
+	}
+
+	/**
 	 * Sets up the memcached backend used for testing
 	 *
 	 * @param array $backendOptions Options for the memcache backend
-	 * @return \TYPO3\CMS\Core\Cache\Backend\MemcachedBackend
+	 * @param bool $accessible TRUE if backend should be encapsulated in accessible proxy otherwise FALSE.
+	 * @return \TYPO3\CMS\Core\Tests\AccessibleObjectInterface|MemcachedBackend
 	 */
-	protected function setUpBackend(array $backendOptions = array()) {
+	protected function setUpBackend(array $backendOptions = array(), $accessible = FALSE) {
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache */
 		$cache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
 		if ($backendOptions == array()) {
 			$backendOptions = array('servers' => array('localhost:11211'));
 		}
-		$backend = new \TYPO3\CMS\Core\Cache\Backend\MemcachedBackend('Testing', $backendOptions);
+		if ($accessible) {
+			$accessibleClassName = $this->buildAccessibleProxy('\\TYPO3\\CMS\\Core\\Cache\\Backend\\MemcachedBackend');
+			$backend = new $accessibleClassName('Testing', $backendOptions);
+		} else {
+			$backend = new MemcachedBackend('Testing', $backendOptions);
+		}
 		$backend->setCache($cache);
 		$backend->initializeObject();
 		return $backend;

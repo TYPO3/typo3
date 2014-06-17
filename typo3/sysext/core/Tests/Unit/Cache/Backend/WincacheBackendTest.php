@@ -24,6 +24,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Cache\Backend\WincacheBackend;
+
 /**
  * Testcase for the WinCache cache backend
  *
@@ -47,7 +49,7 @@ class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \TYPO3\CMS\Core\Cache\Exception
 	 */
 	public function setThrowsExceptionIfNoFrontEndHasBeenSet() {
-		$backend = new \TYPO3\CMS\Core\Cache\Backend\WincacheBackend('Testing');
+		$backend = new WincacheBackend('Testing');
 		$data = 'Some data';
 		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data);
@@ -185,13 +187,16 @@ class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function flushRemovesOnlyOwnEntries() {
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $thisCache */
 		$thisCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
 		$thisCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thisCache'));
-		$thisBackend = new \TYPO3\CMS\Core\Cache\Backend\WincacheBackend('Testing');
+		$thisBackend = new WincacheBackend('Testing');
 		$thisBackend->setCache($thisCache);
+
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $thatCache */
 		$thatCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
 		$thatCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thatCache'));
-		$thatBackend = new \TYPO3\CMS\Core\Cache\Backend\WincacheBackend('Testing');
+		$thatBackend = new WincacheBackend('Testing');
 		$thatBackend->setCache($thatCache);
 		$thisBackend->set('thisEntry', 'Hello');
 		$thatBackend->set('thatEntry', 'World!');
@@ -215,13 +220,41 @@ class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * @test
+	 */
+	public function setTagsOnlyOnceToIdentifier() {
+		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
+		$tags = array('UnitTestTag%test', 'UnitTestTag%boring');
+
+		$backend = $this->setUpBackend(TRUE);
+		$backend->_call('addIdentifierToTags', $identifier, $tags);
+		$this->assertSame(
+			$tags,
+			$backend->_call('findTagsByIdentifier', $identifier)
+		);
+
+		$backend->_call('addIdentifierToTags', $identifier, $tags);
+		$this->assertSame(
+			$tags,
+			$backend->_call('findTagsByIdentifier', $identifier)
+		);
+	}
+
+	/**
 	 * Sets up the WinCache backend used for testing
 	 *
-	 * @return \TYPO3\CMS\Core\Cache\Backend\WincacheBackend
+	 * @param bool $accessible TRUE if backend should be encapsulated in accessible proxy otherwise FALSE.
+	 * @return \TYPO3\CMS\Core\Tests\AccessibleObjectInterface|WincacheBackend
 	 */
-	protected function setUpBackend() {
+	protected function setUpBackend($accessible = FALSE) {
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache */
 		$cache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
-		$backend = new \TYPO3\CMS\Core\Cache\Backend\WincacheBackend('Testing');
+		if ($accessible) {
+			$accessibleClassName = $this->buildAccessibleProxy('\\TYPO3\\CMS\\Core\\Cache\\Backend\\WincacheBackend');
+			$backend = new $accessibleClassName('Testing');
+		} else {
+			$backend = new WincacheBackend('Testing');
+		}
 		$backend->setCache($cache);
 		return $backend;
 	}
