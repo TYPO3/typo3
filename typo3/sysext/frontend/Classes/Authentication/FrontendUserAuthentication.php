@@ -468,6 +468,24 @@ class FrontendUserAuthentication extends AbstractUserAuthentication {
 	}
 
 	/**
+	 * Regenerate the id, take seperate session data table into account
+	 * and set cookie again
+	 */
+	protected function regenerateSessionId() {
+		$oldSessionId = $this->id;
+		parent::regenerateSessionId();
+		// Update session data with new ID
+		$this->db->exec_UPDATEquery(
+			'fe_session_data',
+			'hash=' . $this->db->fullQuoteStr($oldSessionId, 'fe_session_data'),
+			array('hash' => $this->id)
+		);
+
+		// We force the cookie to be set later in the authentication process
+		$this->dontSetCookie = FALSE;
+	}
+
+	/**
 	 * Executes the garbage collection of session data and session.
 	 * The lifetime of session data is defined by $TYPO3_CONF_VARS['FE']['sessionDataLifetime'].
 	 *
