@@ -258,7 +258,7 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	 * Find highest version available of an extension
 	 *
 	 * @param string $extensionKey
-	 * @return object
+	 * @return \TYPO3\CMS\Extensionmanager\Domain\Model\Extension
 	 */
 	public function findHighestAvailableVersion($extensionKey) {
 		$query = $this->createQuery();

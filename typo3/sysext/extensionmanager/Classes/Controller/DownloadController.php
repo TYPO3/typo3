@@ -182,10 +182,9 @@ class DownloadController extends AbstractController {
 		$result = array();
 
 		$extensionKey = $this->request->getArgument('extension');
-		/** @var Extension $highestTerVersionExtension */
 		$highestTerVersionExtension = $this->extensionRepository->findHighestAvailableVersion($extensionKey);
 		try {
-			$result = $this->managementService->resolveDependenciesAndInstall($highestTerVersionExtension);
+			$result = $this->managementService->installExtension($highestTerVersionExtension);
 		} catch (\Exception $e) {
 			$hasErrors = TRUE;
 			$errorMessage = $e->getMessage();
