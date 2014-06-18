@@ -36,7 +36,7 @@ class CaseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 		if (is_null($value) && $default === FALSE) {
 			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('The case View helper must have either value or default argument', 1382867521);
 		}
-		$switchExpression = $viewHelperVariableContainer->get(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'switchExpression');
+		$switchExpression = unserialize($viewHelperVariableContainer->get(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'switchExpression'));
 
 		// non-type-safe comparison by intention
 		if ($default === TRUE || $switchExpression == $value) {
