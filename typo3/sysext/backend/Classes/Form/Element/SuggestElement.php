@@ -34,9 +34,14 @@ namespace TYPO3\CMS\Backend\Form\Element;
  */
 class SuggestElement {
 
-	// Count the number of ajax selectors used
+	/**
+	 * @var int Count the number of ajax selectors used
+	 */
 	public $suggestCount = 0;
 
+	/**
+	 * @var string
+	 */
 	public $cssClass = 'typo3-TCEforms-suggest';
 
 	/**
@@ -50,8 +55,8 @@ class SuggestElement {
 	 * @param \TYPO3\CMS\Backend\Form\FormEngine $tceForms Reference to an TCEforms instance
 	 * @return void
 	 */
-	public function init(&$tceForms) {
-		$this->TCEformsObj = &$tceForms;
+	public function init($tceForms) {
+		$this->TCEformsObj = $tceForms;
 	}
 
 	/**
@@ -84,6 +89,7 @@ class SuggestElement {
 
 		</div>';
 		// Get minimumCharacters from TCA
+		$minChars = 0;
 		if (isset($config['fieldConf']['config']['wizards']['suggest']['default']['minimumCharacters'])) {
 			$minChars = intval($config['fieldConf']['config']['wizards']['suggest']['default']['minimumCharacters']);
 		}
@@ -118,11 +124,12 @@ class SuggestElement {
 		// If the $uid is numeric, we have an already existing element, so get the
 		// TSconfig of the page itself or the element container (for non-page elements)
 		// otherwise it's a new element, so use given id of parent page (i.e., don't modify it here)
+		$row = NULL;
 		if (is_numeric($uid)) {
+			$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $uid);
 			if ($table == 'pages') {
 				$pageId = $uid;
 			} else {
-				$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $uid);
 				$pageId = $row['pid'];
 			}
 		}
@@ -131,27 +138,25 @@ class SuggestElement {
 		$foreign_table_where = '';
 		$fieldConfig = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 		$parts = explode('|', $field);
-		if ($GLOBALS['TCA'][$table]['columns'][$parts[0]]['config']['type'] === 'flex') {
-			if (is_array($row) && count($row) > 0) {
-				$flexfieldTCAConfig = $GLOBALS['TCA'][$table]['columns'][$parts[0]]['config'];
-				$flexformDSArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($flexfieldTCAConfig, $row, $table, $parts[0]);
-				$flexformDSArray = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveAllSheetsInDS($flexformDSArray);
-				$flexformElement = $parts[count($parts) - 2];
-				$continue = TRUE;
-				foreach ($flexformDSArray as $sheet) {
-					foreach ($sheet as $_ => $dataStructure) {
-						if (isset($dataStructure['ROOT']['el'][$flexformElement]['TCEforms']['config'])) {
-							$fieldConfig = $dataStructure['ROOT']['el'][$flexformElement]['TCEforms']['config'];
-							$continue = FALSE;
-							break;
-						}
-					}
-					if (!$continue) {
+		if (!empty($row) && $GLOBALS['TCA'][$table]['columns'][$parts[0]]['config']['type'] === 'flex') {
+			$flexfieldTCAConfig = $GLOBALS['TCA'][$table]['columns'][$parts[0]]['config'];
+			$flexformDSArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($flexfieldTCAConfig, $row, $table, $parts[0]);
+			$flexformDSArray = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveAllSheetsInDS($flexformDSArray);
+			$flexformElement = $parts[count($parts) - 2];
+			$continue = TRUE;
+			foreach ($flexformDSArray as $sheet) {
+				foreach ($sheet as $dataStructure) {
+					if (isset($dataStructure['ROOT']['el'][$flexformElement]['TCEforms']['config'])) {
+						$fieldConfig = $dataStructure['ROOT']['el'][$flexformElement]['TCEforms']['config'];
+						$continue = FALSE;
 						break;
 					}
 				}
-				$field = str_replace('|', '][', $field);
+				if (!$continue) {
+					break;
+				}
 			}
+			$field = str_replace('|', '][', $field);
 		}
 		$wizardConfig = $fieldConfig['wizards']['suggest'];
 		if (isset($fieldConfig['allowed'])) {
@@ -186,7 +191,7 @@ class SuggestElement {
 			if (!is_array($GLOBALS['TCA'][$queryTable]) || !count($GLOBALS['TCA'][$queryTable])) {
 				continue;
 			}
-			$config = (array) $wizardConfig['default'];
+			$config = (array)$wizardConfig['default'];
 			if (is_array($wizardConfig[$queryTable])) {
 				$config = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($config, $wizardConfig[$queryTable]);
 			}
