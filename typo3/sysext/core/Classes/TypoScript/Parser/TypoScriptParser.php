@@ -13,8 +13,10 @@ namespace TYPO3\CMS\Core\TypoScript\Parser;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use \TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * The TypoScript parser
@@ -469,6 +471,9 @@ class TypoScriptParser {
 							$this->lastComment .= rtrim($line) . LF;
 						}
 					}
+					if (StringUtility::beginsWith($line, '### ERROR')) {
+						$this->error(substr($line, 11));
+					}
 				}
 			}
 			// Unset comment
@@ -814,7 +819,7 @@ class TypoScriptParser {
 				// css_styled_content if those have been included through f.e.
 				// <INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/static/setup.txt">
 				$filePointer = strtolower($filename);
-				if (GeneralUtility::isFirstPartOfStr($filePointer, 'ext:')) {
+				if (StringUtility::beginsWith($filePointer, 'ext:')) {
 					$filePointerPathParts = explode('/', substr($filePointer, 4));
 
 					// remove file part, determine whether to load setup or constants
@@ -876,7 +881,7 @@ class TypoScriptParser {
 			if (!GeneralUtility::verifyFilenameAgainstDenyPattern($absfilename)) {
 				$newString .= self::typoscriptIncludeError('File "' . $filename . '" was not included since it is not allowed due to fileDenyPattern.');
 			} elseif (!@file_exists($absfilename)) {
-				$newString .= self::typoscriptIncludeError('File "' . $filename . '" was not was not found.');
+				$newString .= self::typoscriptIncludeError('File "' . $filename . '" was not found.');
 			} else {
 				$includedFiles[] = $absfilename;
 				// check for includes in included text
