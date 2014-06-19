@@ -3483,7 +3483,7 @@ class DataHandler {
 		// Process references and files, currently that means only the files, prepending absolute paths:
 		$dataValue = $this->copyRecord_procFilesRefs($dsConf, $uid, $dataValue);
 		// If references are set for this field, set flag so they can be corrected later (in ->remapListedDBRecords())
-		if ($this->isReferenceField($dsConf) && strlen($dataValue)) {
+		if (($this->isReferenceField($dsConf) || $this->getInlineFieldType($dsConf) !== FALSE) && strlen($dataValue)) {
 			$dataValue = $this->copyRecord_procBasedOnFieldType($table, $uid, $field, $dataValue, array(), $dsConf, $realDestPid);
 			$this->registerDBList[$table][$uid][$field] = 'FlexForm_reference';
 		}
