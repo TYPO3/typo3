@@ -111,6 +111,7 @@ class AbstractControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider addFlashMessageDataProvider
 	 */
 	public function addFlashMessageAddsFlashMessageObjectToFlashMessageQueue($expectedMessage, $messageBody, $messageTitle = '', $severity = \TYPO3\CMS\Core\Messaging\FlashMessage::OK, $storeInSession = TRUE) {
+		$this->markTestSkipped('Triggers "UnexpectedValueException: Serialized string cannot be empty", with phpunit since PHP in 5.4.29 and 5.5.13, needs investigation, see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/178');
 		$flashMessageQueue = $this->getMock(
 			'TYPO3\\CMS\\Core\\Messaging\\FlashMessageQueue',
 			array('enqueue'),
