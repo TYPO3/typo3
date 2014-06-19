@@ -533,10 +533,11 @@ function jumpToUrl(URL) {
 	 * @param string $path Alt text
 	 * @param boolean $noViewPageIcon Set $noViewPageIcon TRUE if you don't want a magnifier-icon for viewing the page in the frontend
 	 * @param array $tWrap is an array with indexes 0 and 1 each representing HTML-tags (start/end) which will wrap the title
+	 * @param bool $enableClickMenu If TRUE, render click menu code around icon image
 	 * @return string HTML content
 	 * @todo Define visibility
 	 */
-	public function getHeader($table, $row, $path, $noViewPageIcon = FALSE, $tWrap = array('', '')) {
+	public function getHeader($table, $row, $path, $noViewPageIcon = FALSE, $tWrap = array('', ''), $enableClickMenu = TRUE) {
 		$viewPage = '';
 		if (is_array($row) && $row['uid']) {
 			$iconImgTag = IconUtility::getSpriteIconForRecord($table, $row, array('title' => htmlspecialchars($path)));
@@ -549,7 +550,12 @@ function jumpToUrl(URL) {
 			$iconImgTag = IconUtility::getSpriteIcon('apps-pagetree-page-domain', array('title' => htmlspecialchars($path)));
 			$title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
 		}
-		return '<span class="typo3-moduleHeader">' . $this->wrapClickMenuOnIcon($iconImgTag, $table, $row['uid']) . $viewPage . $tWrap[0] . htmlspecialchars(GeneralUtility::fixed_lgd_cs($title, 45)) . $tWrap[1] . '</span>';
+
+		if ($enableClickMenu) {
+			$iconImgTag = $this->wrapClickMenuOnIcon($iconImgTag, $table, $row['uid']);
+		}
+
+		return '<span class="typo3-moduleHeader">' . $iconImgTag . $viewPage . $tWrap[0] . htmlspecialchars(GeneralUtility::fixed_lgd_cs($title, 45)) . $tWrap[1] . '</span>';
 	}
 
 	/**
@@ -558,13 +564,14 @@ function jumpToUrl(URL) {
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\ResourceInterface $resource
 	 * @param array $tWrap is an array with indexes 0 and 1 each representing HTML-tags (start/end) which will wrap the title
+	 * @param bool $enableClickMenu If TRUE, render click menu code around icon image
 	 * @return string
 	 */
-	public function getResourceHeader(\TYPO3\CMS\Core\Resource\ResourceInterface $resource, $tWrap = array('', '')) {
+	public function getResourceHeader(\TYPO3\CMS\Core\Resource\ResourceInterface $resource, $tWrap = array('', ''), $enableClickMenu = TRUE) {
 		$path = $resource->getStorage()->getName() . $resource->getParentFolder()->getIdentifier();
 		$iconImgTag = IconUtility::getSpriteIconForResource($resource, array('title' => htmlspecialchars($path)));
 
-		if ($resource instanceof \TYPO3\CMS\Core\Resource\File) {
+		if ($enableClickMenu && ($resource instanceof \TYPO3\CMS\Core\Resource\File)) {
 			$metaData = $resource->_getMetaData();
 			$iconImgTag = $this->wrapClickMenuOnIcon($iconImgTag, 'sys_file_metadata', $metaData['uid']);
 		}

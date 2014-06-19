@@ -217,13 +217,13 @@ class ElementInformationController {
 	protected function renderPageTitle() {
 		if ($this->type === 'folder') {
 			$table = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:folder');
-			$title = $this->doc->getResourceHeader($this->folderObject, array(' ', ''));
+			$title = $this->doc->getResourceHeader($this->folderObject, array(' ', ''), FALSE);
 		} elseif ($this->type === 'file') {
 			$table = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$this->table]['ctrl']['title']);
-			$title = $this->doc->getResourceHeader($this->fileObject, array(' ', ''));
+			$title = $this->doc->getResourceHeader($this->fileObject, array(' ', ''), FALSE);
 		} else {
 			$table = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$this->table]['ctrl']['title']);
-			$title = $this->doc->getHeader($this->table, $this->row, $this->pageinfo['_thePath'], 1, array(' ', ''));
+			$title = $this->doc->getHeader($this->table, $this->row, $this->pageinfo['_thePath'], 1, array(' ', ''), FALSE);
 		}
 
 		return '<h1>' .
