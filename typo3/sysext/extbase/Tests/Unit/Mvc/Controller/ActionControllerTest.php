@@ -320,6 +320,7 @@ class ActionControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function initializeActionMethodArgumentsRegistersArgumentsFoundInTheSignatureOfTheCurrentActionMethod() {
+		$this->markTestSkipped('Triggers "UnexpectedValueException: Serialized string cannot be empty", with phpunit since PHP in 5.4.29 and 5.5.13, needs investigation, see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/178');
 		$mockRequest = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array(), array(), '', FALSE);
 		$mockArguments = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Arguments', array('addNewArgument', 'removeAll'), array(), '', FALSE);
 		$mockArguments->expects($this->at(0))->method('addNewArgument')->with('stringArgument', 'string', TRUE);
@@ -440,6 +441,7 @@ class ActionControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @author Sebastian Kurfürst <sbastian@typo3.org>
 	 */
 	public function initializeActionMethodValidatorsCorrectlyRegistersValidatorsBasedOnDataType() {
+		$this->markTestSkipped('Triggers "UnexpectedValueException: Serialized string cannot be empty", with phpunit since PHP in 5.4.29 and 5.5.13, needs investigation, see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/178');
 		$mockController = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController', array('fooAction'), array(), '', FALSE);
 		$this->enableDeprecatedPropertyMapperInController($mockController);
 		$argument = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('getName'), array(), '', FALSE);
@@ -466,6 +468,7 @@ class ActionControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @author Sebastian Kurfürst <sbastian@typo3.org>
 	 */
 	public function initializeActionMethodValidatorsRegistersModelBasedValidators() {
+		$this->markTestSkipped('Triggers "UnexpectedValueException: Serialized string cannot be empty", with phpunit since PHP in 5.4.29 and 5.5.13, needs investigation, see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/178');
 		$mockController = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController', array('fooAction'), array(), '', FALSE);
 		$this->enableDeprecatedPropertyMapperInController($mockController);
 		$argument = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('getName', 'getDataType'), array(), '', FALSE);
@@ -496,6 +499,7 @@ class ActionControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @author Sebastian Kurfürst <sbastian@typo3.org>
 	 */
 	public function initializeActionMethodValidatorsDoesNotRegisterModelBasedValidatorsIfDontValidateAnnotationIsSet() {
+		$this->markTestSkipped('Triggers "UnexpectedValueException: Serialized string cannot be empty", with phpunit since PHP in 5.4.29 and 5.5.13, needs investigation, see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/178');
 		$mockController = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController', array('fooAction'), array(), '', FALSE);
 		$this->enableDeprecatedPropertyMapperInController($mockController);
 		$argument = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('getName', 'getDataType'), array(), '', FALSE);
