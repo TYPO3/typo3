@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Rtehtmlarea;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Form\FormEngine;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -320,21 +321,21 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	/**
 	 * Draws the RTE as an iframe
 	 *
-	 * @param 	object		Reference to parent object, which is an instance of the TCEforms.
-	 * @param 	string		The table name
-	 * @param 	string		The field name
-	 * @param 	array		The current row from which field is being rendered
-	 * @param 	array		Array of standard content for rendering form fields from TCEforms. See TCEforms for details on this. Includes for instance the value and the form field name, java script actions and more.
-	 * @param 	array		"special" configuration - what is found at position 4 in the types configuration of a field from record, parsed into an array.
-	 * @param 	array		Configuration for RTEs; A mix between TSconfig and otherwise. Contains configuration for display, which buttons are enabled, additional transformation information etc.
-	 * @param 	string		Record "type" field value.
-	 * @param 	string		Relative path for images/links in RTE; this is used when the RTE edits content from static files where the path of such media has to be transformed forth and back!
-	 * @param 	integer		PID value of record (true parent page id)
-	 * @return 	string		HTML code for RTE!
+	 * @param FormEngine $parentObject Reference to parent object, which is an instance of the TCEforms.
+	 * @param string $table The table name
+	 * @param string $field The field name
+	 * @param array $row The current row from which field is being rendered
+	 * @param array $PA Array of standard content for rendering form fields from TCEforms. See TCEforms for details on this. Includes for instance the value and the form field name, java script actions and more.
+	 * @param array $specConf "special" configuration - what is found at position 4 in the types configuration of a field from record, parsed into an array.
+	 * @param array $thisConfig Configuration for RTEs; A mix between TSconfig and otherwise. Contains configuration for display, which buttons are enabled, additional transformation information etc.
+	 * @param string $RTEtypeVal Record "type" field value.
+	 * @param string $RTErelPath Relative path for images/links in RTE; this is used when the RTE edits content from static files where the path of such media has to be transformed forth and back!
+	 * @param integer $thePidValue PID value of record (true parent page id)
+	 * @return string HTML code for RTE!
 	 * @todo Define visibility
 	 */
-	public function drawRTE(&$parentObject, $table, $field, $row, $PA, $specConf, $thisConfig, $RTEtypeVal, $RTErelPath, $thePidValue) {
-		global $LANG, $TYPO3_DB, $TYPO3_CONF_VARS;
+	public function drawRTE($parentObject, $table, $field, $row, $PA, $specConf, $thisConfig, $RTEtypeVal, $RTErelPath, $thePidValue) {
+		global $LANG, $TYPO3_DB;
 		$this->TCEform = $parentObject;
 		$inline = $this->TCEform->inline;
 		$LANG->includeLLFile('EXT:' . $this->ID . '/locallang.xml');
@@ -441,9 +442,8 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 				$RTEPaddingRight = '0';
 				$editorWrapWidth = '100%';
 			} else {
-				$RTEWidth = isset($GLOBALS['BE_USER']->userTS['options.']['RTESmallWidth']) ? $GLOBALS['BE_USER']->userTS['options.']['RTESmallWidth'] : '530';
-				$RTEHeight = isset($GLOBALS['BE_USER']->userTS['options.']['RTESmallHeight']) ? $GLOBALS['BE_USER']->userTS['options.']['RTESmallHeight'] : '380';
-				$RTEWidth = $RTEWidth + ($this->TCEform->docLarge ? (isset($GLOBALS['BE_USER']->userTS['options.']['RTELargeWidthIncrement']) ? $GLOBALS['BE_USER']->userTS['options.']['RTELargeWidthIncrement'] : '150') : 0);
+				$options = $GLOBALS['BE_USER']->userTS['options.'];
+				$RTEWidth = 530 + (isset($options['RTELargeWidthIncrement']) ? (int)$options['RTELargeWidthIncrement'] : 150);
 				$RTEWidth -= $inline->getStructureDepth() > 0 ? ($inline->getStructureDepth() + 1) * $inline->getLevelMargin() : 0;
 				$RTEWidthOverride = is_object($GLOBALS['BE_USER']) && isset($GLOBALS['BE_USER']->uc['rteWidth']) && trim($GLOBALS['BE_USER']->uc['rteWidth']) ? trim($GLOBALS['BE_USER']->uc['rteWidth']) : trim($this->thisConfig['RTEWidthOverride']);
 				if ($RTEWidthOverride) {
@@ -456,7 +456,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 					}
 				}
 				$RTEWidth = strstr($RTEWidth, '%') ? $RTEWidth : $RTEWidth . 'px';
-				$RTEHeight = $RTEHeight + ($this->TCEform->docLarge ? (isset($GLOBALS['BE_USER']->userTS['options.']['RTELargeHeightIncrement']) ? $GLOBALS['BE_USER']->userTS['options.']['RTELargeHeightIncrement'] : 0) : 0);
+				$RTEHeight = 380 + (isset($options['RTELargeHeightIncrement']) ? (int)$options['RTELargeHeightIncrement'] : 0);
 				$RTEHeightOverride = is_object($GLOBALS['BE_USER']) && isset($GLOBALS['BE_USER']->uc['rteHeight']) && (int)$GLOBALS['BE_USER']->uc['rteHeight'] ? (int)$GLOBALS['BE_USER']->uc['rteHeight'] : (int)$this->thisConfig['RTEHeightOverride'];
 				$RTEHeight = $RTEHeightOverride > 0 ? $RTEHeightOverride : $RTEHeight;
 				$RTEPaddingRight = '2px';
