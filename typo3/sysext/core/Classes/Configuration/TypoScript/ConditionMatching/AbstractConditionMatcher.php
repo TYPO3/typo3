@@ -292,6 +292,9 @@ abstract class AbstractConditionMatcher {
 				}
 				break;
 			case 'language':
+				if (GeneralUtility::getIndpEnv('HTTP_ACCEPT_LANGUAGE') === $value) {
+					return TRUE;
+				}
 				$values = GeneralUtility::trimExplode(',', $value, TRUE);
 				foreach ($values as $test) {
 					if (preg_match('/^\\*.+\\*$/', $test)) {

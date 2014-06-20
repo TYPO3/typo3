@@ -236,9 +236,8 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function languageConditionMatchesCompleteLanguagesExpression() {
-		$this->markTestSkipped('This comparison seems to be incomplete in \TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher.');
 		$_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'de-de,de;q=0.8,en-us;q=0.5,en;q=0.3';
-		$this->assertTrue($this->matchCondition->match('[language = de-de,de;q=0.8]'));
+		$this->assertTrue($this->matchCondition->match('[language = de-de,de;q=0.8,en-us;q=0.5,en;q=0.3]'));
 	}
 
 	/**
