@@ -31,11 +31,11 @@ This should probably not be disabled. But the point is that Typo3 is able to wor
 	'author_company' => 'CURBY SOFT Multimedie',
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
-	'version' => '6.2.0',
+	'version' => '6.3.0',
 	'_md5_values_when_last_written' => '',
 	'constraints' => array(
 		'depends' => array(
-			'typo3' => '6.2.0-6.2.99',
+			'typo3' => '6.3.0-6.3.99',
 		),
 		'conflicts' => array(),
 		'suggests' => array()
