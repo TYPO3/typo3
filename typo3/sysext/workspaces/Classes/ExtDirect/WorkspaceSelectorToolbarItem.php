@@ -87,7 +87,9 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 		$this->addJavascriptToBackend();
 
 		$index = 0;
-		$availableWorkspaces = \TYPO3\CMS\Workspaces\Service\WorkspaceService::getAvailableWorkspaces();
+		/** @var \TYPO3\CMS\Workspaces\Service\WorkspaceService $wsService */
+		$wsService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
+		$availableWorkspaces = $wsService->getAvailableWorkspaces();
 		$activeWorkspace = (int)$GLOBALS['BE_USER']->workspace;
 		$stateCheckedIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-checked');
 		$stateUncheckedIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('empty-empty', array(
