@@ -61,41 +61,42 @@ class InputElement extends AbstractFormElement {
 			if (isset($config['range']['upper'])) {
 				$dateRange .= ' upper-' . (int)$config['range']['upper'];
 			}
-			$inputId = uniqid('tceforms-' . $class . 'field-');
+			$inputId = uniqid('tceforms-' . $class . 'field-', TRUE);
 			$cssClasses[] = 'tceforms-textfield tceforms-' . $class . 'field' . $dateRange;
 			$fieldAppendix = IconUtility::getSpriteIcon('actions-edit-pick-date', array(
 				'style' => 'cursor:pointer;',
 				'id' => 'picker-' . $inputId
 			));
 		} elseif (in_array('timesec', $evalList)) {
-			$inputId = uniqid('tceforms-timesecfield-');
+			$inputId = uniqid('tceforms-timesecfield-', TRUE);
 			$cssClasses[] = 'tceforms-textfield tceforms-timesecfield';
 		} elseif (in_array('year', $evalList)) {
-			$inputId = uniqid('tceforms-yearfield-');
+			$inputId = uniqid('tceforms-yearfield-', TRUE);
 			$cssClasses[] = 'tceforms-textfield tceforms-yearfield';
 		} elseif (in_array('time', $evalList)) {
-			$inputId = uniqid('tceforms-timefield-');
+			$inputId = uniqid('tceforms-timefield-', TRUE);
 			$cssClasses[] = 'tceforms-textfield tceforms-timefield';
 		} elseif (in_array('int', $evalList)) {
-			$inputId = uniqid('tceforms-intfield-');
+			$inputId = uniqid('tceforms-intfield-', TRUE);
 			$cssClasses[] = 'tceforms-textfield tceforms-intfield';
 		} elseif (in_array('double2', $evalList)) {
-			$inputId = uniqid('tceforms-double2field-');
+			$inputId = uniqid('tceforms-double2field-', TRUE);
 			$cssClasses[] = 'tceforms-textfield tceforms-double2field';
 		} else {
-			$inputId = uniqid('tceforms-textfield-');
+			$inputId = uniqid('tceforms-textfield-', TRUE);
 			$cssClasses[] = 'tceforms-textfield';
 			if ($checkboxIsset === FALSE) {
 				$config['checkbox'] = '';
 			}
 		}
 		if (isset($config['wizards']['link'])) {
-			$inputId = uniqid('tceforms-linkfield-');
+			$inputId = uniqid('tceforms-linkfield-', TRUE);
 			$cssClasses[] = 'tceforms-textfield tceforms-linkfield';
 		} elseif (isset($config['wizards']['color'])) {
-			$inputId = uniqid('tceforms-colorfield-');
+			$inputId = uniqid('tceforms-colorfield-', TRUE);
 			$cssClasses[] = 'tceforms-textfield tceforms-colorfield';
 		}
+		$inputId = str_replace('.', '', $inputId);
 		if ($this->formEngine->renderReadonly || $config['readOnly']) {
 			$itemFormElValue = $additionalInformation['itemFormElValue'];
 			if (in_array('date', $evalList)) {

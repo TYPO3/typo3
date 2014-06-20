@@ -673,7 +673,7 @@ class PageLayoutController {
 			reset($trData->regTableItems_data);
 			$rec = current($trData->regTableItems_data);
 			if ($uidVal == 'new') {
-				$new_unique_uid = uniqid('NEW');
+				$new_unique_uid = uniqid('NEW', TRUE);
 				$rec['uid'] = $new_unique_uid;
 				$rec['pid'] = (int)$ex_pid ?: $this->id;
 				$recordAccess = TRUE;

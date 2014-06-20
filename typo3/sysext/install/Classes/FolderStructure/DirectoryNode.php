@@ -243,7 +243,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface {
 	 * @return boolean TRUE if test file creation was successful
 	 */
 	protected function canFileBeCreated() {
-		$testFileName = uniqid('installToolTest_');
+		$testFileName = uniqid('installToolTest_', TRUE);
 		$result = @touch($this->getAbsolutePath() . '/' . $testFileName);
 		if ($result === TRUE) {
 			unlink($this->getAbsolutePath() . '/' . $testFileName);

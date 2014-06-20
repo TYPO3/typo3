@@ -2425,7 +2425,7 @@ class ResourceStorage implements ResourceStorageInterface {
 			if ($a <= $maxNumber) {
 				$insert = '_' . sprintf('%02d', $a);
 			} else {
-				$insert = '_' . substr(md5(uniqId('')), 0, 6);
+				$insert = '_' . substr(md5(uniqid('', TRUE)), 0, 6);
 			}
 			$theTestFile = $theTempFileBody . $insert . $theOrigExt;
 			// The destinations file

@@ -143,7 +143,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 * @return 	[type]		...
 	 */
 	public function substituteConstants($all) {
-		$this->Cmarker = substr(md5(uniqid('')), 0, 6);
+		$this->Cmarker = substr(md5(uniqid('', TRUE)), 0, 6);
 		return preg_replace_callback('/\\{\\$(.[^}]+)\\}/', array($this, 'substituteConstantsCallBack'), $all);
 	}
 

@@ -99,7 +99,7 @@ class ShockwaveFlashObjectContentObject extends \TYPO3\CMS\Frontend\ContentObjec
 		if (!$flashVersion) {
 			$flashVersion = '9';
 		}
-		$replaceElementIdString = uniqid('mmswf');
+		$replaceElementIdString = str_replace('.', '', uniqid('mmswf', TRUE));
 		$GLOBALS['TSFE']->register['MMSWFID'] = $replaceElementIdString;
 		$alternativeContent = isset($conf['alternativeContent.']) ? $this->cObj->stdWrap($conf['alternativeContent'], $conf['alternativeContent.']) : $conf['alternativeContent'];
 		$layout = isset($conf['layout.']) ? $this->cObj->stdWrap($conf['layout'], $conf['layout.']) : $conf['layout'];

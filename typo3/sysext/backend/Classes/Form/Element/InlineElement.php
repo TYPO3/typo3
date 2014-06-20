@@ -1521,7 +1521,7 @@ class InlineElement {
 					if (!empty($foreignTranslationPointerField)) {
 						$record[$foreignTranslationPointerField] = $record['uid'];
 					}
-					$newId = uniqid('NEW');
+					$newId = uniqid('NEW', TRUE);
 					$record['uid'] = $newId;
 					$record['pid'] = $this->inlineFirstPid;
 					$relatedRecords['records'][$newId] = $record;
@@ -1764,7 +1764,7 @@ class InlineElement {
 	 */
 	public function getNewRecord($pid, $table) {
 		$rec = $this->getRecord($pid, $table, $pid, 'new');
-		$rec['uid'] = uniqid('NEW');
+		$rec['uid'] = uniqid('NEW', TRUE);
 		$rec['pid'] = $this->getNewRecordPid($table, $pid);
 		return $rec;
 	}

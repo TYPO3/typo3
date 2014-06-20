@@ -728,7 +728,7 @@ class EditDocumentController {
 								// 'new'
 								$trData->fetchRecord($table, $theUid, $cmd == 'new' ? 'new' : '');
 								$rec = reset($trData->regTableItems_data);
-								$rec['uid'] = $cmd == 'new' ? uniqid('NEW') : $theUid;
+								$rec['uid'] = $cmd == 'new' ? uniqid('NEW', TRUE) : $theUid;
 								if ($cmd == 'new') {
 									$rec['pid'] = $theUid == 'prev' ? $thePrevUid : $theUid;
 								}

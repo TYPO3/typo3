@@ -243,7 +243,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function compilePreviewKeyword($getVarsStr, $backendUserUid, $ttl = 172800, $fullWorkspace = NULL) {
 		$fieldData = array(
-			'keyword' => md5(uniqid(microtime())),
+			'keyword' => md5(uniqid(microtime(), TRUE)),
 			'tstamp' => $GLOBALS['EXEC_TIME'],
 			'endtime' => $GLOBALS['EXEC_TIME'] + $ttl,
 			'config' => serialize(array(

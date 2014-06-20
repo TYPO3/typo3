@@ -188,7 +188,7 @@ class TextElement extends AbstractFormElement {
 				}
 				$textOnChange = implode('', $additionalInformation['fieldChangeFunc']);
 				$item .= '
-							<textarea ' . 'id="' . uniqid('tceforms-textarea-') . '" ' . 'name="' . $additionalInformation['itemFormElName']
+							<textarea ' . 'id="' . str_replace('.', '', uniqid('tceforms-textarea-', TRUE)) . '" ' . 'name="' . $additionalInformation['itemFormElName']
 					. '"' . $formWidthText . $class . ' ' . 'rows="' . $rows . '" ' . 'wrap="' . $wrap . '" ' . 'onchange="'
 					. htmlspecialchars($textOnChange) . '"' . $this->formEngine->getPlaceholderAttribute($table, $field, $config, $row)
 					. $additionalInformation['onFocus'] . '>' . GeneralUtility::formatForTextarea($additionalInformation['itemFormElValue']) . '</textarea>';

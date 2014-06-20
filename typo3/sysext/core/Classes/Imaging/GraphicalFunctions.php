@@ -1966,7 +1966,7 @@ class GraphicalFunctions {
 	 */
 	public function randomName() {
 		$this->createTempSubDir('temp/');
-		return $this->tempPath . 'temp/' . md5(uniqid(''));
+		return $this->tempPath . 'temp/' . md5(uniqid('', TRUE));
 	}
 
 	/**

@@ -291,7 +291,7 @@ class FlexElement extends AbstractFormElement {
 									$formPrefix . '[' . $key . '][el][' . $idTagPrefix . '-form]', $level + 1,
 									$idTagPrefix);
 								// Makes a "Add new" link:
-								$var = uniqid('idvar');
+								$var = str_replace('.', '', uniqid('idvar', TRUE));
 								$replace = 'replace(/' . $idTagPrefix . '-/g,"' . $idTagPrefix . '-"+' . $var . '+"-")';
 								$replace .= '.replace(/(tceforms-(datetime|date)field-)/g,"$1" + (new Date()).getTime())';
 								$onClickInsert = 'var ' . $var . ' = "' . 'idx"+(new Date()).getTime();'

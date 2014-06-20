@@ -147,7 +147,7 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
 			throw new \RuntimeException(sprintf('Cannot add or modify cache entry because the backend of cache "%s" is frozen.', $this->cacheIdentifier), 1323344192);
 		}
 		$this->remove($entryIdentifier);
-		$temporaryCacheEntryPathAndFilename = $this->cacheDirectory . uniqid() . '.temp';
+		$temporaryCacheEntryPathAndFilename = $this->cacheDirectory . uniqid('', TRUE) . '.temp';
 		$lifetime = $lifetime === NULL ? $this->defaultLifetime : $lifetime;
 		$expiryTime = $lifetime === 0 ? 0 : $GLOBALS['EXEC_TIME'] + $lifetime;
 		$metaData = str_pad($expiryTime, self::EXPIRYTIME_LENGTH) . implode(' ', $tags) . str_pad(strlen($data), self::DATASIZE_DIGITS);

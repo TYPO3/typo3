@@ -69,7 +69,7 @@ class Bootstrap {
 	 * @var string Application context
 	 */
 	protected function __construct($applicationContext) {
-		$this->requestId = uniqid();
+		$this->requestId = substr(md5(uniqid('', TRUE)), 0, 13);
 		$this->applicationContext = new ApplicationContext($applicationContext);
 	}
 

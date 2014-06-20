@@ -1557,7 +1557,7 @@ class FormEngine {
 				. (in_array($lArr['ISOcode'], $selectedLanguage) ? ' selected="selected"' : '') . '>'
 				. htmlspecialchars($lArr['title']) . '</option>';
 		}
-		$output = '<select id="' . uniqid('tceforms-multiselect-')
+		$output = '<select id="' . str_replace('.', '', uniqid('tceforms-multiselect-', TRUE))
 			. ' class="tceforms-select tceforms-multiselect tceforms-flexlangmenu" name="' . $elName . '[]"'
 			. ($multi ? ' multiple="multiple" size="' . count($languages) . '"' : '') . '>' . implode('', $opt)
 			. '</select>';
@@ -2293,7 +2293,7 @@ class FormEngine {
 			: $params['size'];
 		if (!$selector) {
 			$isMultiple = $params['maxitems'] != 1 && $params['size'] != 1;
-			$selector = '<select id="' . uniqid('tceforms-multiselect-') . '" '
+			$selector = '<select id="' . str_replace('.', '', uniqid('tceforms-multiselect-', TRUE)) . '" '
 				. ($params['noList'] ? 'style="display: none"' : 'size="' . $sSize . '"' . $this->insertDefStyle('group', 'tceforms-multiselect'))
 				. ($isMultiple ? ' multiple="multiple"' : '')
 				. ' name="' . $fName . '_list" ' . $onFocus . $params['style'] . $disabled . '>' . implode('', $opt)
@@ -2752,7 +2752,7 @@ class FormEngine {
 								$assignValue = $this->elName($itemName) . '.value=this.options[this.selectedIndex].value';
 							}
 							$sOnChange = $assignValue . ';this.blur();this.selectedIndex=0;' . implode('', $fieldChangeFunc);
-							$outArr[] = '<select id="' . uniqid('tceforms-select-')
+							$outArr[] = '<select id="' . str_replace('.', '', uniqid('tceforms-select-', TRUE))
 								. '" class="tceforms-select tceforms-wizardselect" name="_WIZARD' . $fName . '" onchange="'
 								. htmlspecialchars($sOnChange) . '">' . implode('', $opt) . '</select>';
 							break;

@@ -359,7 +359,7 @@ class BasicFileUtility {
 					$insert = '_' . sprintf('%02d', $a);
 				} else {
 					// .. then we try unique-strings...
-					$insert = '_' . substr(md5(uniqId('')), 0, $this->uniquePrecision);
+					$insert = '_' . substr(md5(uniqid('', TRUE)), 0, $this->uniquePrecision);
 				}
 				$theTestFile = $theTempFileBody . $insert . $theOrigExt;
 				$theDestFile = $theDest . '/' . $theTestFile;

@@ -475,7 +475,7 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 	protected function removeIdentifierEntriesAndRelations(array $identifiers, array $tags) {
 		// Set a temporary entry which holds all identifiers that need to be removed from
 		// the tag to identifiers sets
-		$uniqueTempKey = 'temp:' . uniqId();
+		$uniqueTempKey = 'temp:' . uniqid('', TRUE);
 		$prefixedKeysToDelete = array($uniqueTempKey);
 		$prefixedIdentifierToTagsKeysToDelete = array();
 		foreach ($identifiers as $identifier) {

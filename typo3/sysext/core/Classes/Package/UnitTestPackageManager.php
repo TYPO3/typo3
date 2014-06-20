@@ -34,7 +34,7 @@ class UnitTestPackageManager extends \TYPO3\CMS\Core\Package\PackageManager {
 		$this->scanAvailablePackages();
 		$this->activePackages = $this->packages;
 
-		$cacheIdentifier = uniqid();
+		$cacheIdentifier = str_replace('.', '', uniqid('', TRUE));
 		$this->classLoader->setCacheIdentifier($cacheIdentifier)->setPackages($this->activePackages);
 	}
 

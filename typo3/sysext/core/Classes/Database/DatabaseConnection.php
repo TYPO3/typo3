@@ -316,7 +316,7 @@ class DatabaseConnection {
 	 * @see exec_SELECTquery()
 	 */
 	public function exec_SELECT_mm_query($select, $local_table, $mm_table, $foreign_table, $whereClause = '', $groupBy = '', $orderBy = '', $limit = '') {
-		$foreign_table_as = $foreign_table == $local_table ? $foreign_table . uniqid('_join') : '';
+		$foreign_table_as = $foreign_table == $local_table ? $foreign_table . str_replace('.', '', uniqid('_join', TRUE)) : '';
 		$mmWhere = $local_table ? $local_table . '.uid=' . $mm_table . '.uid_local' : '';
 		$mmWhere .= ($local_table and $foreign_table) ? ' AND ' : '';
 		$tables = ($local_table ? $local_table . ',' : '') . $mm_table;

@@ -176,7 +176,7 @@ class SelectElement extends AbstractFormElement {
 				: $size;
 			$sOnChange = implode('', $PA['fieldChangeFunc']);
 
-			$multiSelectId = uniqid('tceforms-multiselect-');
+			$multiSelectId = str_replace('.', '', uniqid('tceforms-multiselect-', TRUE));
 			$itemsToSelect = '
 				<select data-relatedfieldname="' . htmlspecialchars($PA['itemFormElName']) . '" data-exclusivevalues="'
 				. htmlspecialchars($config['exclusiveKeys']) . '" id="' . $multiSelectId . '" name="' . $PA['itemFormElName'] . '_sel"'
@@ -473,7 +473,7 @@ class SelectElement extends AbstractFormElement {
 		if ($config['iconsInOptionTags']) {
 			$classesForSelectTag[] = 'icon-select';
 		}
-		$item .= '<select' . $selectedStyle . ' id="' . uniqid('tceforms-select-') . '" name="' . $PA['itemFormElName'] . '"' . $this->formEngine->insertDefStyle('select', implode(' ', $classesForSelectTag)) . ($size ? ' size="' . $size . '"' : '') . ' onchange="' . htmlspecialchars($sOnChange) . '"' . $PA['onFocus'] . $disabled . '>';
+		$item .= '<select' . $selectedStyle . ' id="' . str_replace('.', '', uniqid('tceforms-select-', TRUE)) . '" name="' . $PA['itemFormElName'] . '"' . $this->formEngine->insertDefStyle('select', implode(' ', $classesForSelectTag)) . ($size ? ' size="' . $size . '"' : '') . ' onchange="' . htmlspecialchars($sOnChange) . '"' . $PA['onFocus'] . $disabled . '>';
 		$item .= implode('', $opt);
 		$item .= '</select>';
 		// Create icon table:
@@ -561,7 +561,7 @@ class SelectElement extends AbstractFormElement {
 						$selIcon = IconUtility::getSpriteIcon('empty-empty');
 					}
 					// Compile row:
-					$rowId = uniqid('select_checkbox_row_');
+					$rowId = str_replace('.', '', uniqid('select_checkbox_row_', TRUE));
 					$onClickCell = $this->formEngine->elName(($PA['itemFormElName'] . '[' . $c . ']')) . '.checked=!' . $this->formEngine->elName(($PA['itemFormElName'] . '[' . $c . ']')) . '.checked;';
 					$onClick = 'this.attributes.getNamedItem("class").nodeValue = ' . $this->formEngine->elName(($PA['itemFormElName'] . '[' . $c . ']')) . '.checked ? "c-selectedItem" : "c-unselectedItem";';
 					$setAll[] = $this->formEngine->elName(($PA['itemFormElName'] . '[' . $c . ']')) . '.checked=1;';
@@ -715,7 +715,7 @@ class SelectElement extends AbstractFormElement {
 		$size = $config['autoSizeMax']
 			? MathUtility::forceIntegerInRange(count($selItems) + 1, MathUtility::forceIntegerInRange($size, 1), $config['autoSizeMax'])
 			: $size;
-		$selectBox = '<select id="' . uniqid($cssPrefix) . '" name="' . $PA['itemFormElName'] . '[]"'
+		$selectBox = '<select id="' . str_replace('.', '', uniqid($cssPrefix, TRUE)) . '" name="' . $PA['itemFormElName'] . '[]"'
 			. $this->formEngine->insertDefStyle('select', $cssPrefix) . ($size ? ' size="' . $size . '"' : '')
 			. ' multiple="multiple" onchange="' . htmlspecialchars($sOnChange) . '"' . $PA['onFocus']
 			. $selector_itemListStyle . $disabled . '>

@@ -2058,11 +2058,11 @@ class ImportExport {
 					$this->import_mapId['sys_file_metadata'][$record['uid']] = $recordInDatabase['uid'];
 					$ID = $recordInDatabase['uid'];
 				} else {
-					$ID = uniqid('NEW');
+					$ID = uniqid('NEW', TRUE);
 				}
 
 			} else {
-				$ID = uniqid('NEW');
+				$ID = uniqid('NEW', TRUE);
 			}
 			$this->import_newId[$table . ':' . $ID] = array('table' => $table, 'uid' => $uid);
 			if ($table == 'pages') {
@@ -2266,7 +2266,7 @@ class ImportExport {
 												}
 											}
 											if ($fileObject !== NULL) {
-												$refId = uniqid('NEW');
+												$refId = uniqid('NEW', TRUE);
 												$refIds[] = $refId;
 												$updateData['sys_file_reference'][$refId] = array(
 													'uid_local' => $fileObject->getUid(),
