@@ -27,9 +27,10 @@ class ExtensionManagementServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	public function resolveDependenciesCallsDownloadDependenciesIfDownloadKeyExistsInQueue() {
 		$managementMock = $this->getAccessibleMock(
 			\TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService::class,
-			array('downloadDependencies', 'uninstallDependenciesToBeUpdated', 'setInExtensionRepository', 'downloadMainExtension')
+			array('downloadDependencies', 'uninstallDependenciesToBeUpdated', 'setInExtensionRepository', 'downloadMainExtension', 'isAutomaticInstallationEnabled')
 		);
 		$managementMock->expects($this->any())->method('downloadMainExtension')->will($this->returnValue(array()));
+		$managementMock->expects($this->any())->method('isAutomaticInstallationEnabled')->will($this->returnValue(array(false)));
 		$extensionModelMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class);
 		$extensionModelMock->_set('extensionKey', 'foobar');
 		$extensionModelMock->_set('version', '1.0.0');
@@ -54,9 +55,10 @@ class ExtensionManagementServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	public function resolveDependenciesCallsUpdateAndDownloadDependenciesIfUpdateKeyExistsInQueue() {
 		$managementMock = $this->getAccessibleMock(
 			\TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService::class,
-			array('downloadDependencies', 'uninstallDependenciesToBeUpdated', 'setInExtensionRepository', 'downloadMainExtension')
+			array('downloadDependencies', 'uninstallDependenciesToBeUpdated', 'setInExtensionRepository', 'downloadMainExtension', 'isAutomaticInstallationEnabled')
 		);
 		$managementMock->expects($this->any())->method('downloadMainExtension')->will($this->returnValue(array()));
+		$managementMock->expects($this->any())->method('isAutomaticInstallationEnabled')->will($this->returnValue(true));
 		$extensionModelMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class);
 		$extensionModelMock->_set('extensionKey', 'foobar');
 		$extensionModelMock->_set('version', '1.0.0');

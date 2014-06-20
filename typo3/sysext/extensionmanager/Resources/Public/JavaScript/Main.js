@@ -424,7 +424,7 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 						}
 					]);
 				} else {
-					var successMessage = TYPO3.lang['extensionList.dependenciesResolveDownloadSuccess.message'].replace(/\{0\}/g, data.extension) + ' <br />';
+					var successMessage = TYPO3.lang['extensionList.dependenciesResolveDownloadSuccess.message' + data.installationTypeLanguageKey].replace(/\{0\}/g, data.extension) + ' <br />';
 					successMessage += '<br /><h3>' + TYPO3.lang['extensionList.dependenciesResolveDownloadSuccess.header'] + ':</h3>';
 					$.each(data.result, function(index, value) {
 						successMessage += TYPO3.lang['extensionList.dependenciesResolveDownloadSuccess.item'] + ' ' + index + ':<br /><ul>';
@@ -433,7 +433,7 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 						});
 						successMessage += '</ul>';
 					});
-					top.TYPO3.Flashmessage.display(top.TYPO3.Severity.info, TYPO3.lang['extensionList.dependenciesResolveFlashMessage.title'].replace(/\{0\}/g, data.extension), successMessage, 15);
+					top.TYPO3.Flashmessage.display(top.TYPO3.Severity.info, TYPO3.lang['extensionList.dependenciesResolveFlashMessage.title' + data.installationTypeLanguageKey].replace(/\{0\}/g, data.extension), successMessage, 15);
 					top.TYPO3.ModuleMenu.App.refreshMenu();
 				}
 			}

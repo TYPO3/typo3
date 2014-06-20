@@ -54,6 +54,12 @@ class DownloadController extends AbstractController {
 	protected $downloadUtility;
 
 	/**
+	 * @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility
+	 * @inject
+	 */
+	protected $configurationUtility;
+
+	/**
 	 * Check extension dependencies
 	 *
 	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
@@ -104,9 +110,11 @@ class DownloadController extends AbstractController {
 	 */
 	public function installFromTerAction(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension, $downloadPath) {
 		list($result, $errorMessages) = $this->installFromTer($extension, $downloadPath);
+		$emConfiguration = $this->configurationUtility->getCurrentConfiguration('extensionmanager');
 		$this->view
 			->assign('result', $result)
 			->assign('extension', $extension)
+			->assign('installationTypeLanguageKey', (bool)$emConfiguration['automaticInstallation']['value'] ? '' : '.downloadOnly')
 			->assign('unresolvedDependencies', $errorMessages);
 	}
 

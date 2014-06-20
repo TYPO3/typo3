@@ -60,6 +60,12 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $downloadUtility;
 
 	/**
+	 * @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility
+	 * @inject
+	 */
+	protected $configurationUtility;
+
+	/**
 	 * @var bool
 	 */
 	protected $skipSystemDependencyCheck = FALSE;
@@ -124,6 +130,16 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
+	 * Returns whether automatic installation is enabled.
+	 *
+	 * @return array
+	 */
+	protected function isAutomaticInstallationEnabled() {
+		$emConfiguration = $this->configurationUtility->getCurrentConfiguration('extensionmanager');
+		return (bool)$emConfiguration['automaticInstallation']['value'];
+	}
+
+	/**
 	 * Install the extension
 	 *
 	 * @param Extension $extension
@@ -131,7 +147,6 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function installExtension(Extension $extension) {
 		$this->downloadExtension($extension);
-
 		if (!$this->checkDependencies($extension)) {
 			return FALSE;
 		}
@@ -148,15 +163,17 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 		if (array_key_exists('download', $queue)) {
 			$downloadedDependencies = $this->downloadDependencies($queue['download']);
 		}
-		if (array_key_exists('update', $queue)) {
-			$this->downloadDependencies($queue['update']);
-			$updatedDependencies = $this->uninstallDependenciesToBeUpdated($queue['update']);
-		}
-		// add extension at the end of the download queue
-		$this->downloadQueue->addExtensionToInstallQueue($extension->getExtensionKey());
-		$installQueue = $this->downloadQueue->getExtensionInstallStorage();
-		if (count($installQueue) > 0) {
-			$installedDependencies = $this->installDependencies($installQueue);
+		if ($this->isAutomaticInstallationEnabled()) {
+			if (array_key_exists('update', $queue)) {
+				$this->downloadDependencies($queue['update']);
+				$updatedDependencies = $this->uninstallDependenciesToBeUpdated($queue['update']);
+			}
+			// add extension at the end of the download queue
+			$this->downloadQueue->addExtensionToInstallQueue($extension->getExtensionKey());
+			$installQueue = $this->downloadQueue->getExtensionInstallStorage();
+			if (count($installQueue) > 0) {
+				$installedDependencies = $this->installDependencies($installQueue);
+			}
 		}
 		return array_merge($downloadedDependencies, $updatedDependencies, $installedDependencies);
 	}

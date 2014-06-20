@@ -290,6 +290,9 @@
 			<trans-unit id="extensionList.dependenciesResolveDownloadSuccess.message" xml:space="preserve">
 				<source>Your installation of {0} was successful.</source>
 			</trans-unit>
+			<trans-unit id="extensionList.dependenciesResolveDownloadSuccess.message.downloadOnly" xml:space="preserve">
+				<source>Your download of {0} was successful.</source>
+			</trans-unit>
 			<trans-unit id="extensionList.dependenciesResolveDownloadSuccess.header" xml:space="preserve">
 				<source>Log</source>
 			</trans-unit>
@@ -298,6 +301,9 @@
 			</trans-unit>
 			<trans-unit id="extensionList.dependenciesResolveFlashMessage.title" xml:space="preserve">
 				<source>{0} installed.</source>
+			</trans-unit>
+			<trans-unit id="extensionList.dependenciesResolveFlashMessage.title.downloadOnly" xml:space="preserve">
+				<source>{0} downloaded.</source>
 			</trans-unit>
 			<trans-unit id="extensionList.uploadFlashMessage.title" xml:space="preserve">
 				<source>Extension Upload</source>
@@ -351,7 +357,7 @@
 				<source>Author:</source>
 			</trans-unit>
 			<trans-unit id="extensionList.distribution.title" xml:space="preserve">
-			<source>Title:</source>
+				<source>Title:</source>
 			</trans-unit>
 			<trans-unit id="extensionList.distribution.version" xml:space="preserve">
 				<source>Version:</source>
@@ -529,6 +535,9 @@
 			</trans-unit>
 			<trans-unit id="fileHandling.installPathWasNoDirectory" xml:space="preserve">
 				<source>ERROR: The extension install path "%s" was no directory!</source>
+			</trans-unit>
+			<trans-unit id="config.automaticInstallation">
+				<source>Install extensions automatically after download from TER or file upload</source>
 			</trans-unit>
 		</body>
 	</file>

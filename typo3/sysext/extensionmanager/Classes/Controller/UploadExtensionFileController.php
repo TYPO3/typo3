@@ -27,6 +27,12 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 class UploadExtensionFileController extends AbstractController {
 
 	/**
+	 * @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility
+	 * @inject
+	 */
+	protected $configurationUtility;
+
+	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility
 	 * @inject
 	 */
@@ -91,17 +97,20 @@ class UploadExtensionFileController extends AbstractController {
 				);
 			}
 			$extensionData = $this->extractExtensionFromFile($tempFile, $fileName, $overwrite);
-			$this->activateExtension($extensionData['extKey']);
 			$this->addFlashMessage(
 				htmlspecialchars($this->translate('extensionList.uploadFlashMessage.message', array($extensionData['extKey']))),
 				htmlspecialchars($this->translate('extensionList.uploadFlashMessage.title')),
 				FlashMessage::OK
 			);
-			$this->addFlashMessage(
-				htmlspecialchars($this->translate('extensionList.installedFlashMessage.message', array($extensionData['extKey']))),
-				'',
-				FlashMessage::OK
-			);
+			$emConfiguration = $this->configurationUtility->getCurrentConfiguration('extensionmanager');
+			if ($emConfiguration['automaticInstallation']['value']) {
+				$this->activateExtension($extensionData['extKey']);
+				$this->addFlashMessage(
+					htmlspecialchars($this->translate('extensionList.installedFlashMessage.message', array($extensionData['extKey']))),
+					'',
+					FlashMessage::OK
+				);
+			}
 		} catch (\Exception $exception) {
 			$this->removeExtensionAndRestoreFromBackup($fileName);
 			$this->addFlashMessage(htmlspecialchars($exception->getMessage()), '', FlashMessage::ERROR);

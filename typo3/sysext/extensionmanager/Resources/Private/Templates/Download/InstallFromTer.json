@@ -2,6 +2,7 @@
 <em:format.jsonEncode additionalAttributes="{
 	result: result,
 	extension: extension.extensionKey,
+	installationTypeLanguageKey: installationTypeLanguageKey,
 	errorCount: '{f:count(subject: unresolvedDependencies)}',
 	errorTitle: '{f:translate(key: \'downloadExtension.dependencies.errorTitle\')}',
 	errorMessage: '{f:render(partial: \'List/UnresolvedDependencies\', arguments: \'{_all}\')}',
