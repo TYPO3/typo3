@@ -35,37 +35,34 @@ if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
 }
 
 /**
- * class to render the workspace selector
+ * Class to render the workspace selector
  *
- * @author 	Ingo Renner <ingo@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
  */
 class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInterface {
 
-	protected $changeWorkspace;
-
-	protected $changeWorkspacePreview;
-
 	/**
-	 * reference back to the backend object
+	 * Reference back to the backend object
 	 *
 	 * @var \TYPO3\CMS\Backend\Controller\BackendController
 	 */
 	protected $backendReference;
 
+	/**
+	 * @var bool|null
+	 */
 	protected $checkAccess = NULL;
 
 	/**
-	 * constructor
+	 * Constructor
 	 *
-	 * @param \TYPO3\CMS\Backend\Controller\BackendController TYPO3 backend object reference
+	 * @param \TYPO3\CMS\Backend\Controller\BackendController $backendReference TYPO3 backend object reference
 	 */
 	public function __construct(\TYPO3\CMS\Backend\Controller\BackendController &$backendReference = NULL) {
 		$this->backendReference = $backendReference;
-		$this->changeWorkspace = GeneralUtility::_GP('changeWorkspace');
-		$this->changeWorkspacePreview = GeneralUtility::_GP('changeWorkspacePreview');
-		$pageRenderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
-		$this->backendReference->addJavaScript('TYPO3.Workspaces = { workspaceTitle : \'' . addslashes(\TYPO3\CMS\Workspaces\Service\WorkspaceService::getWorkspaceTitle($GLOBALS['BE_USER']->workspace)) . '\'};
-');
+		$this->backendReference->addJavaScript(
+			'TYPO3.Workspaces = { workspaceTitle : ' . GeneralUtility::quoteJSvalue(addslashes(\TYPO3\CMS\Workspaces\Service\WorkspaceService::getWorkspaceTitle($GLOBALS['BE_USER']->workspace))) . '};'
+		);
 	}
 
 	/**
@@ -78,7 +75,7 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 			return FALSE;
 		}
 
-		if ($this->checkAccess == NULL) {
+		if ($this->checkAccess === NULL) {
 			/** @var \TYPO3\CMS\Workspaces\Service\WorkspaceService $wsService */
 			$wsService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
 			$availableWorkspaces = $wsService->getAvailableWorkspaces();
@@ -94,7 +91,7 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 	/**
 	 * Creates the selector for workspaces
 	 *
-	 * @return 	string		workspace selector as HTML select
+	 * @return string workspace selector as HTML select
 	 */
 	public function render() {
 		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.workspace', TRUE);
@@ -131,7 +128,6 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 			$workspaceSections['top'][] = '<li>' . $stateUncheckedIcon . ' ' . $GLOBALS['LANG']->getLL('bookmark_noWSfound', TRUE) . '</li>';
 		}
 
-
 		$workspaceMenu = array(
 			'<a href="#" class="toolbar-item">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-toolbar-menu-workspace', array('title' => $title)) . '</a>',
 			'<div class="toolbar-item-menu" style="display: none">' ,
@@ -148,25 +144,26 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 	}
 
 	/**
-	 * adds the necessary JavaScript to the backend
+	 * Adds the necessary JavaScript to the backend
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	protected function addJavascriptToBackend() {
-		$this->backendReference->addJavascriptFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('workspaces') . 'Resources/Public/JavaScript/workspacemenu.js');
+		$this->backendReference->addJavascriptFile(
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('workspaces') . 'Resources/Public/JavaScript/workspacemenu.js'
+		);
 	}
 
 	/**
-	 * returns additional attributes for the list item in the toolbar
+	 * Returns additional attributes for the list item in the toolbar
 	 *
-	 * @return 	string		list item HTML attibutes
+	 * @return string List item HTML attibutes
 	 */
 	public function getAdditionalAttributes() {
 		return 'id="workspace-selector-menu"';
 	}
 
 }
-
 
 if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX)) {
 	$GLOBALS['TYPO3backend']->addToolbarItem('workSpaceSelector', 'TYPO3\\CMS\\Workspaces\\ExtDirect\\WorkspaceSelectorToolbarItem');
