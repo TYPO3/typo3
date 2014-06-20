@@ -2073,7 +2073,18 @@ class BackendUtility {
 							if ($noRecordLookup) {
 								$l = $value;
 							} else {
-								$rParts = GeneralUtility::trimExplode(',', $value, TRUE);
+								$rParts = array();
+								if (isset($theColConf['foreign_field']) && $theColConf['foreign_field'] !== '') {
+									$records = self::getRecordsByField($theColConf['foreign_table'], $theColConf['foreign_field'], $uid);
+									if (!empty($records)) {
+										foreach ($records as $record) {
+											$rParts[] = $record['uid'];
+										}
+									}
+								}
+								if (empty($rParts)) {
+									$rParts = GeneralUtility::trimExplode(',', $value, TRUE);
+								}
 								$lA = array();
 								foreach ($rParts as $rVal) {
 									$rVal = (int)$rVal;
