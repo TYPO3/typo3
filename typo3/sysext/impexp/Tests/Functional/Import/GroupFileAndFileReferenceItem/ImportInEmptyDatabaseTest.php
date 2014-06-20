@@ -61,6 +61,10 @@ class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Impor
 
 		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image5.jpg', PATH_site . 'fileadmin/user_upload/typo3_image5.jpg');
 		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/uploads/tx_impexpgroupfiles/typo3_image4.jpg', PATH_site . 'uploads/tx_impexpgroupfiles/typo3_image4.jpg');
+
+		$this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/typo3_image5.jpg';
+		$this->testFilesToDelete[] = PATH_site . 'uploads/tx_impexpgroupfiles/typo3_image4.jpg';
+
 	}
 
 	/**
@@ -75,6 +79,9 @@ class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Impor
 
 		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/fileadmin/user_upload/typo3_image5.jpg', PATH_site . 'fileadmin/user_upload/typo3_image5.jpg');
 		$this->assertFileEquals(__DIR__ . '/../../Fixtures/Folders/uploads/tx_impexpgroupfiles/typo3_image4.jpg', PATH_site . 'uploads/tx_impexpgroupfiles/typo3_image4.jpg');
+
+		$this->testFilesToDelete[] = PATH_site . 'fileadmin/user_upload/typo3_image5.jpg';
+		$this->testFilesToDelete[] = PATH_site . 'uploads/tx_impexpgroupfiles/typo3_image4.jpg';
 	}
 
 }
