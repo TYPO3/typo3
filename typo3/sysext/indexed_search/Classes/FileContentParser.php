@@ -621,7 +621,7 @@ class FileContentParser {
 			$this->setLocaleForServerFileSystem(TRUE);
 			break;
 		case 'jpg':
-		case 'sxc':
+		case 'jpeg':
 		case 'tif':
 			$this->setLocaleForServerFileSystem();
 			// PHP EXIF
