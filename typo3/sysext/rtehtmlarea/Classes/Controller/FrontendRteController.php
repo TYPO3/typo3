@@ -207,7 +207,7 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 		 * SET STYLES
 		 * =======================================
 		 */
-		$width = 460 + ($this->TCEform->docLarge ? 150 : 0);
+		$width = 610;
 		if (isset($this->thisConfig['RTEWidthOverride'])) {
 			if (strstr($this->thisConfig['RTEWidthOverride'], '%')) {
 				if ($this->client['browser'] != 'msie') {

@@ -409,29 +409,6 @@ options.noThumbsInRTEimageSelect
 
 
 
-.. _options-rtesmallwidth:
-
-options.RTESmallWidth
-^^^^^^^^^^^^^^^^^^^^^
-
-.. container:: table-row
-
-   Property
-         options.RTESmallWidth
-
-         options.RTESmallHeight
-
-   Data type
-         pixels
-
-   Description
-         Width and height of the editor area when edit\_wideDocument is NOT
-         set.
-
-         Default: RTESmallWidth = 530, RTESmallHeight = 380
-
-
-
 .. _options-rtelargewidthincrement:
 
 options.RTELargeWidthIncrement
@@ -448,8 +425,7 @@ options.RTELargeWidthIncrement
          pixels
 
    Description
-         Increments applied to the width and height of the editor area when
-         edit\_wideDocument IS set.
+         Increments applied to the width and height of the editor area
 
          Default: RTELargeWidthIncrement= 150, RTELargeHeilghtIncrement = 0
 
