@@ -14,8 +14,10 @@ namespace TYPO3\CMS\Frontend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Class for the built TypoScript based frontend. Instantiated in
@@ -89,6 +91,15 @@ class TypoScriptFrontendController {
 	public $contentPid = 0;
 
 	/**
+	 * Gets set when we are processing a page of type mounpoint with enabled overlay in getPageAndRootline()
+	 * Used later in checkPageForMountpointRedirect() to determine the final target URL where the user
+	 * should be redirected to.
+	 *
+	 * @var array|NULL
+	 */
+	protected $originalMountPointPage = NULL;
+
+	/**
 	 * Gets set when we are processing a page of type shortcut in the early stages
 	 * opf init.php when we do not know about languages yet, used later in init.php
 	 * to determine the correct shortcut in case a translation changes the shortcut
@@ -100,7 +111,7 @@ class TypoScriptFrontendController {
 	/**
 	 * sys_page-object, pagefunctions
 	 *
-	 * @var \TYPO3\CMS\Frontend\Page\PageRepository
+	 * @var PageRepository
 	 * @todo Define visibility
 	 */
 	public $sys_page = '';
@@ -1554,7 +1565,7 @@ class TypoScriptFrontendController {
 	 * Sets or manipulates internal variables such as: $this->id, $this->page, $this->rootLine, $this->MP, $this->pageNotFound
 	 *
 	 * @throws \TYPO3\CMS\Core\Error\Http\ServiceUnavailableException
-	 * @throws \TYPO3\CMS\Core\Error\Http\PageNotFoundException
+	 * @throws PageNotFoundException
 	 * @return void
 	 * @access private
 	 * @todo Define visibility
@@ -1587,22 +1598,22 @@ class TypoScriptFrontendController {
 					$this->pageNotFoundAndExit($message);
 				} else {
 					GeneralUtility::sysLog($message, 'cms', GeneralUtility::SYSLOG_SEVERITY_ERROR);
-					throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException($message, 1301648780);
+					throw new PageNotFoundException($message, 1301648780);
 				}
 			}
 		}
 		// Spacer is not accessible in frontend
-		if ($this->page['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SPACER) {
+		if ($this->page['doktype'] == PageRepository::DOKTYPE_SPACER) {
 			$message = 'The requested page does not exist!';
 			if ($this->TYPO3_CONF_VARS['FE']['pageNotFound_handling']) {
 				$this->pageNotFoundAndExit($message);
 			} else {
 				GeneralUtility::sysLog($message, 'cms', GeneralUtility::SYSLOG_SEVERITY_ERROR);
-				throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException($message, 1301648781);
+				throw new PageNotFoundException($message, 1301648781);
 			}
 		}
 		// Is the ID a link to another page??
-		if ($this->page['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT) {
+		if ($this->page['doktype'] == PageRepository::DOKTYPE_SHORTCUT) {
 			// We need to clear MP if the page is a shortcut. Reason is if the short cut goes to another page, then we LEAVE the rootline which the MP expects.
 			$this->MP = '';
 			// saving the page so that we can check later - when we know
@@ -1611,6 +1622,20 @@ class TypoScriptFrontendController {
 			// target and we need to follow the new target
 			$this->originalShortcutPage = $this->page;
 			$this->page = $this->getPageShortcut($this->page['shortcut'], $this->page['shortcut_mode'], $this->page['uid']);
+			$this->id = $this->page['uid'];
+		}
+		// If the page is a mountpoint which should be overlaid with the contents of the mounted page,
+		// it must never be accessible directly, but only in the mountpoint context. Therefore we change
+		// the current ID and the user is redirected by checkPageForMountpointRedirect().
+		if ($this->page['doktype'] === PageRepository::DOKTYPE_MOUNTPOINT && $this->page['mount_pid_ol']) {
+			$this->originalMountPointPage = $this->page;
+			$this->page = $this->sys_page->getPage($this->page['mount_pid']);
+			if (empty($this->page)) {
+				$message = 'This page (ID ' . $this->originalMountPointPage['uid'] . ') is of type "Mount point" and '
+					. 'mounts a page which is not accessible (ID ' . $this->originalMountPointPage['mount_pid'] . ').';
+				throw new PageNotFoundException($message, 1402043263);
+			}
+			$this->MP = $this->page['uid'] . '-' . $this->originalMountPointPage['uid'];
 			$this->id = $this->page['uid'];
 		}
 		// Gets the rootLine
@@ -1663,7 +1688,7 @@ class TypoScriptFrontendController {
 	 * @param integer $itera Safety feature which makes sure that the function is calling itself recursively max 20 times (since this function can find shortcuts to other shortcuts to other shortcuts...)
 	 * @param array $pageLog An array filled with previous page uids tested by the function - new page uids are evaluated against this to avoid going in circles.
 	 * @throws \RuntimeException
-	 * @throws \TYPO3\CMS\Core\Error\Http\PageNotFoundException
+	 * @throws PageNotFoundException
 	 * @return mixed Returns the page record of the page that the shortcut pointed to.
 	 * @access private
 	 * @see getPageAndRootline()
@@ -1673,12 +1698,12 @@ class TypoScriptFrontendController {
 		$idArray = GeneralUtility::intExplode(',', $SC);
 		// Find $page record depending on shortcut mode:
 		switch ($mode) {
-			case \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_FIRST_SUBPAGE:
+			case PageRepository::SHORTCUT_MODE_FIRST_SUBPAGE:
 
-			case \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE:
-				$pageArray = $this->sys_page->getMenu($idArray[0] ? $idArray[0] : $thisUid, '*', 'sorting', 'AND pages.doktype<199 AND pages.doktype!=' . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION);
+			case PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE:
+				$pageArray = $this->sys_page->getMenu($idArray[0] ? $idArray[0] : $thisUid, '*', 'sorting', 'AND pages.doktype<199 AND pages.doktype!=' . PageRepository::DOKTYPE_BE_USER_SECTION);
 				$pO = 0;
-				if ($mode == \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE && count($pageArray)) {
+				if ($mode == PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE && count($pageArray)) {
 					$randval = (int)rand(0, count($pageArray) - 1);
 					$pO = $randval;
 				}
@@ -1692,26 +1717,26 @@ class TypoScriptFrontendController {
 				}
 				if (count($page) == 0) {
 					$message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a subpage. ' . 'However, this page has no accessible subpages.';
-					throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException($message, 1301648328);
+					throw new PageNotFoundException($message, 1301648328);
 				}
 				break;
-			case \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_PARENT_PAGE:
+			case PageRepository::SHORTCUT_MODE_PARENT_PAGE:
 				$parent = $this->sys_page->getPage($thisUid);
 				$page = $this->sys_page->getPage($parent['pid']);
 				if (count($page) == 0) {
 					$message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to its parent page. ' . 'However, the parent page is not accessible.';
-					throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException($message, 1301648358);
+					throw new PageNotFoundException($message, 1301648358);
 				}
 				break;
 			default:
 				$page = $this->sys_page->getPage($idArray[0]);
 				if (count($page) == 0) {
 					$message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a page, which is not accessible (ID ' . $idArray[0] . ').';
-					throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException($message, 1301648404);
+					throw new PageNotFoundException($message, 1301648404);
 				}
 		}
 		// Check if short cut page was a shortcut itself, if so look up recursively:
-		if ($page['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT) {
+		if ($page['doktype'] == PageRepository::DOKTYPE_SHORTCUT) {
 			if (!in_array($page['uid'], $pageLog) && $itera > 0) {
 				$pageLog[] = $page['uid'];
 				$page = $this->getPageShortcut($page['shortcut'], $page['shortcut_mode'], $page['uid'], $itera - 1, $pageLog);
@@ -1742,7 +1767,7 @@ class TypoScriptFrontendController {
 				$this->pageAccessFailureHistory['sub_section'][] = $this->rootLine[$a];
 				$removeTheRestFlag = 1;
 			}
-			if ($this->rootLine[$a]['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION) {
+			if ($this->rootLine[$a]['doktype'] == PageRepository::DOKTYPE_BE_USER_SECTION) {
 				// If there is a backend user logged in, check if he has read access to the page:
 				if ($this->beUserLogin) {
 					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'uid=' . (int)$this->id . ' AND ' . $GLOBALS['BE_USER']->getPagePermsClause(1));
@@ -3135,6 +3160,20 @@ class TypoScriptFrontendController {
 	}
 
 	/**
+	 * Redirect to target page if the current page is an overlaid mountpoint.
+	 *
+	 * If the current page is of type mountpoint and should be overlaid with the contents of the mountpoint page
+	 * and is accessed directly, the user will be redirected to the mountpoint context.
+	 *
+	 * @return void
+	 */
+	public function checkPageForMountpointRedirect() {
+		if (!empty($this->originalMountPointPage) && $this->originalMountPointPage['doktype'] === PageRepository::DOKTYPE_MOUNTPOINT) {
+			$this->redirectToCurrentPage();
+		}
+	}
+
+	/**
 	 * Redirect to target page, if the current page is a Shortcut.
 	 *
 	 * If the current page is of type shortcut and accessed directly via its URL, this function redirects to the
@@ -3143,21 +3182,31 @@ class TypoScriptFrontendController {
 	 * @return void If page is not a Shortcut, redirects and exits otherwise
 	 */
 	public function checkPageForShortcutRedirect() {
-		if (!empty($this->originalShortcutPage) && $this->originalShortcutPage['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT) {
-			$this->calculateLinkVars();
-			// instantiate tslib_content to generate the correct target URL
-			/** @var $cObj \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
-			$cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
-			$parameter = $this->page['uid'];
-			$type = GeneralUtility::_GET('type');
-			if ($type) {
-				$parameter .= ',' . $type;
-			}
-			$redirectUrl = $cObj->typoLink_URL(array('parameter' => $parameter));
-
-			// redirect and exit
-			HttpUtility::redirect($redirectUrl, HttpUtility::HTTP_STATUS_307);
+		if (!empty($this->originalShortcutPage) && $this->originalShortcutPage['doktype'] == PageRepository::DOKTYPE_SHORTCUT) {
+			$this->redirectToCurrentPage();
 		}
+	}
+
+	/**
+	 * Builds a typolink to the current page, appends the type paremeter if required
+	 * and redirects the user to the generated URL using a Location header.
+	 *
+	 * @return void
+	 */
+	protected function redirectToCurrentPage() {
+		$this->calculateLinkVars();
+		// instantiate tslib_content to generate the correct target URL
+		/** @var $cObj \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
+		$cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+		$parameter = $this->page['uid'];
+		$type = GeneralUtility::_GET('type');
+		if ($type) {
+			$parameter .= ',' . $type;
+		}
+		$redirectUrl = $cObj->typoLink_URL(array('parameter' => $parameter));
+
+		// redirect and exit
+		HttpUtility::redirect($redirectUrl, HttpUtility::HTTP_STATUS_307);
 	}
 
 	/********************************************

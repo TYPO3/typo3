@@ -186,6 +186,7 @@ class FrontendRequestHandler {
 
 		// Check for shortcut page and redirect
 		$GLOBALS['TSFE']->checkPageForShortcutRedirect();
+		$GLOBALS['TSFE']->checkPageForMountpointRedirect();
 
 		// Generate page
 		$GLOBALS['TSFE']->setUrlIdToken();
