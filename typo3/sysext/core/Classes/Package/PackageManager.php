@@ -209,7 +209,7 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 		$cacheEntryIdentifier = $this->getCacheEntryIdentifier();
 		if ($cacheEntryIdentifier !== NULL && !$this->coreCache->has($cacheEntryIdentifier)) {
 			// Package objects get their own cache entry, so PHP does not have to parse the serialized string
-			$packageObjectsCacheEntryIdentifier = uniqid('PackageObjects_');
+			$packageObjectsCacheEntryIdentifier = str_replace('.', '', uniqid('PackageObjects_', TRUE));
 			// Build cache file
 			$packageCache = array(
 				'packageStatesConfiguration'  => $this->packageStatesConfiguration,

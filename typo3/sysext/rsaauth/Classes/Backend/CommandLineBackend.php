@@ -79,7 +79,7 @@ class CommandLineBackend extends \TYPO3\CMS\Rsaauth\Backend\AbstractBackend {
 		}
 
 		// Create a temporary file. Security: tempnam() sets permissions to 0600
-		$privateKeyFile = tempnam($this->temporaryDirectory, uniqid());
+		$privateKeyFile = tempnam($this->temporaryDirectory, uniqid('', TRUE));
 
 		// Generate the private key.
 		//
@@ -122,9 +122,9 @@ class CommandLineBackend extends \TYPO3\CMS\Rsaauth\Backend\AbstractBackend {
 	 */
 	public function decrypt($privateKey, $data) {
 		// Key must be put to the file
-		$privateKeyFile = tempnam($this->temporaryDirectory, uniqid());
+		$privateKeyFile = tempnam($this->temporaryDirectory, uniqid('', TRUE));
 		file_put_contents($privateKeyFile, $privateKey);
-		$dataFile = tempnam($this->temporaryDirectory, uniqid());
+		$dataFile = tempnam($this->temporaryDirectory, uniqid('', TRUE));
 		file_put_contents($dataFile, base64_decode($data));
 		// Prepare the command
 		$command = $this->opensslPath . ' rsautl -inkey ' . escapeshellarg($privateKeyFile) . ' -in ' . escapeshellarg($dataFile) . ' -decrypt';

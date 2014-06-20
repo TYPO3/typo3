@@ -137,7 +137,7 @@ class AjaxLoginHandler {
 	 */
 	public function getChallenge(array $parameters, \TYPO3\CMS\Core\Http\AjaxRequestHandler $parent) {
 		session_start();
-		$_SESSION['login_challenge'] = md5(uniqid('') . getmypid());
+		$_SESSION['login_challenge'] = md5(uniqid('', TRUE) . getmypid());
 		session_commit();
 		$parent->addContent('challenge', $_SESSION['login_challenge']);
 		$parent->setContentFormat('json');

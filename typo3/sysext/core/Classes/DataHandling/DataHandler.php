@@ -3034,7 +3034,7 @@ class DataHandler {
 					$row = BackendUtility::getRecordWSOL($table, $uid);
 					if (is_array($row)) {
 						// Initializing:
-						$theNewID = uniqid('NEW');
+						$theNewID = uniqid('NEW', TRUE);
 						$enableField = isset($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']) ? $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] : '';
 						$headerField = $GLOBALS['TCA'][$table]['ctrl']['label'];
 						// Getting default data:
@@ -3284,7 +3284,7 @@ class DataHandler {
 	 * @todo Define visibility
 	 */
 	public function insertNewCopyVersion($table, $fieldArray, $realPid) {
-		$id = uniqid('NEW');
+		$id = uniqid('NEW', TRUE);
 		// $fieldArray is set as current record.
 		// The point is that when new records are created as copies with flex type fields there might be a field containing information about which DataStructure to use and without that information the flexforms cannot be correctly processed.... This should be OK since the $checkValueRecord is used by the flexform evaluation only anyways...
 		$this->checkValue_currentRecord = $fieldArray;

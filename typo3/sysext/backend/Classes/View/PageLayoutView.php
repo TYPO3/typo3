@@ -462,8 +462,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					$content[$key] .= '">';
 					// Add new content at the top most position
 					$content[$key] .= '
-					<div class="t3-page-ce" id="' . uniqid() . '">
-						<div class="t3-page-ce-dropzone" id="colpos-' . $key . '-' . 'page-' . $id . '-' . uniqid() . '">
+					<div class="t3-page-ce" id="' . str_replace('.', '', uniqid('', TRUE)) . '">
+						<div class="t3-page-ce-dropzone" id="colpos-' . $key . '-' . 'page-' . $id . '-' . uniqid('', TRUE) . '">
 							<div class="t3-page-ce-wrapper-new-ce">
 								<a href="#" onclick="' . htmlspecialchars($this->newContentElementOnClick($id, $key, $lP))
 									. '" title="' . $this->getLanguageService()->getLL('newRecordHere', TRUE) . '">'
@@ -493,7 +493,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 							$editUidList .= $row['uid'] . ',';
 							$disableMoveAndNewButtons = $this->defLangBinding && $lP > 0;
 							if (!$this->tt_contentConfig['languageMode']) {
-								$singleElementHTML .= '<div class="t3-page-ce-dragitem" id="' . uniqid() . '">';
+								$singleElementHTML .= '<div class="t3-page-ce-dragitem" id="' . str_replace('.', '', uniqid('', TRUE)) . '">';
 							}
 							$singleElementHTML .= $this->tt_content_drawHeader(
 								$row,
@@ -517,7 +517,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 								$singleElementHTML .= '<div class="t3-page-ce">';
 							}
 							$singleElementHTML .= '<div class="t3-page-ce-dropzone" id="colpos-' . $key . '-' . 'page-' . $id .
-								'-' . uniqid() . '">';
+								'-' . str_replace('.', '', uniqid('', TRUE)) . '">';
 							// Add icon "new content element below"
 							if (!$disableMoveAndNewButtons) {
 								// New content element:

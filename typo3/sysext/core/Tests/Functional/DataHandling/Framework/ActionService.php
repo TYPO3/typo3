@@ -131,7 +131,7 @@ class ActionService {
 			$currentUid = $recordData['uid'];
 			if ($recordData['uid'] === '__NEW') {
 				$recordData['pid'] = $pageId;
-				$currentUid = uniqid('NEW');
+				$currentUid = uniqid('NEW', TRUE);
 			}
 			unset($recordData['uid']);
 			$dataMap[$tableName][$currentUid] = $recordData;

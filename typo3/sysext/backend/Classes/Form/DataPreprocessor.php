@@ -158,7 +158,7 @@ class DataPreprocessor {
 							$GLOBALS['TYPO3_DB']->sql_free_result($res);
 						}
 						// Finally, call renderRecord:
-						$this->renderRecord($table, uniqid('NEW'), $id, $newRow);
+						$this->renderRecord($table, uniqid('NEW', TRUE), $id, $newRow);
 					} else {
 						$id = (int)$id;
 						// Fetch database values

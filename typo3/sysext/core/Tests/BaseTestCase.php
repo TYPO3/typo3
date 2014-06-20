@@ -114,7 +114,7 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase {
 	 * @return string Fully qualified name of the built class, will not be empty
 	 */
 	protected function buildAccessibleProxy($className) {
-		$accessibleClassName = uniqid('Tx_Phpunit_AccessibleProxy');
+		$accessibleClassName = str_replace('.', '', uniqid('Tx_Phpunit_AccessibleProxy', TRUE));
 		$class = new \ReflectionClass($className);
 		$abstractModifier = $class->isAbstract() ? 'abstract ' : '';
 

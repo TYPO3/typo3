@@ -202,7 +202,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 			$prefix = $GLOBALS['TSFE']->absRefPrefix;
 		}
 		// Initialize content
-		$replaceElementIdString = uniqid('mmswf');
+		$replaceElementIdString = str_replace('.', '', uniqid('mmswf', TRUE));
 		$GLOBALS['TSFE']->register['MMSWFID'] = $replaceElementIdString;
 		$layout = isset($conf['layout.']) ? $this->cObj->stdWrap($conf['layout'], $conf['layout.']) : $conf['layout'];
 		$content = str_replace('###ID###', $replaceElementIdString, $layout);

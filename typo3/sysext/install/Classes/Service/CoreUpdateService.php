@@ -181,7 +181,7 @@ class CoreUpdateService {
 
 		if ($success) {
 			// Explicit write check to document root
-			$file = PATH_site . uniqid('install-core-update-test-');
+			$file = PATH_site . uniqid('install-core-update-test-', TRUE);
 			$result = @touch($file);
 			if (!$result) {
 				$success = FALSE;
@@ -196,7 +196,7 @@ class CoreUpdateService {
 
 			// Explicit write check to upper directory of current core location
 			$coreLocation = @realPath($this->currentCoreLocation . '/../');
-			$file = $coreLocation . '/' . uniqid('install-core-update-test-');
+			$file = $coreLocation . '/' . uniqid('install-core-update-test-', TRUE);
 			$result = @touch($file);
 			if (!$result) {
 				$success = FALSE;

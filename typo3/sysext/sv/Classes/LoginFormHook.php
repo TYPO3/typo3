@@ -83,7 +83,7 @@ class LoginFormHook {
 	 * @return string Challenge value
 	 */
 	protected function getChallenge() {
-		$challenge = md5(uniqid('') . getmypid());
+		$challenge = md5(uniqid('', TRUE) . getmypid());
 		return $challenge;
 	}
 

@@ -1465,41 +1465,42 @@ class FormEngine {
 			if (isset($config['range']['upper'])) {
 				$dateRange .= ' upper-' . (int)$config['range']['upper'];
 			}
-			$inputId = uniqid('tceforms-' . $class . 'field-');
+			$inputId = uniqid('tceforms-' . $class . 'field-', TRUE);
 			$cssClasses[] = 'tceforms-textfield tceforms-' . $class . 'field' . $dateRange;
 			$fieldAppendix = IconUtility::getSpriteIcon('actions-edit-pick-date', array(
 				'style' => 'cursor:pointer;',
 				'id' => 'picker-' . $inputId
 			));
 		} elseif (in_array('timesec', $evalList)) {
-			$inputId = uniqid('tceforms-timesecfield-');
+			$inputId = uniqid('tceforms-timesecfield-', TRUE);
 			$cssClasses[] = 'tceforms-textfield tceforms-timesecfield';
 		} elseif (in_array('year', $evalList)) {
-			$inputId = uniqid('tceforms-yearfield-');
+			$inputId = uniqid('tceforms-yearfield-', TRUE);
 			$cssClasses[] = 'tceforms-textfield tceforms-yearfield';
 		} elseif (in_array('time', $evalList)) {
-			$inputId = uniqid('tceforms-timefield-');
+			$inputId = uniqid('tceforms-timefield-', TRUE);
 			$cssClasses[] = 'tceforms-textfield tceforms-timefield';
 		} elseif (in_array('int', $evalList)) {
-			$inputId = uniqid('tceforms-intfield-');
+			$inputId = uniqid('tceforms-intfield-', TRUE);
 			$cssClasses[] = 'tceforms-textfield tceforms-intfield';
 		} elseif (in_array('double2', $evalList)) {
-			$inputId = uniqid('tceforms-double2field-');
+			$inputId = uniqid('tceforms-double2field-', TRUE);
 			$cssClasses[] = 'tceforms-textfield tceforms-double2field';
 		} else {
-			$inputId = uniqid('tceforms-textfield-');
+			$inputId = uniqid('tceforms-textfield-', TRUE);
 			$cssClasses[] = 'tceforms-textfield';
 			if ($checkboxIsset === FALSE) {
 				$config['checkbox'] = '';
 			}
 		}
 		if (isset($config['wizards']['link'])) {
-			$inputId = uniqid('tceforms-linkfield-');
+			$inputId = uniqid('tceforms-linkfield-', TRUE);
 			$cssClasses[] = 'tceforms-textfield tceforms-linkfield';
 		} elseif (isset($config['wizards']['color'])) {
-			$inputId = uniqid('tceforms-colorfield-');
+			$inputId = uniqid('tceforms-colorfield-', TRUE);
 			$cssClasses[] = 'tceforms-textfield tceforms-colorfield';
 		}
+		$inputId = str_replace('.', '', $inputId);
 		if ($this->renderReadonly || $config['readOnly']) {
 			$itemFormElValue = $PA['itemFormElValue'];
 			if (in_array('date', $evalList)) {
@@ -1769,7 +1770,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 				}
 				$iOnChange = implode('', $PA['fieldChangeFunc']);
 				$item .= '
-							<textarea ' . 'id="' . uniqid('tceforms-textarea-') . '" ' . 'name="' . $PA['itemFormElName']
+							<textarea ' . 'id="' . str_replace('.', '', uniqid('tceforms-textarea-', TRUE)) . '" ' . 'name="' . $PA['itemFormElName']
 					. '"' . $formWidthText . $class . ' ' . 'rows="' . $rows . '" ' . 'wrap="' . $wrap . '" ' . 'onchange="'
 					. htmlspecialchars($iOnChange) . '"' . $this->getPlaceholderAttribute($table, $field, $config, $row)
 					. $PA['onFocus'] . '>' . GeneralUtility::formatForTextarea($PA['itemFormElValue']) . '</textarea>';
@@ -2187,7 +2188,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 		if ($config['iconsInOptionTags']) {
 			$classesForSelectTag[] = 'icon-select';
 		}
-		$item .= '<select' . $selectedStyle . ' id="' . uniqid('tceforms-select-') . '" name="' . $PA['itemFormElName'] . '"' . $this->insertDefStyle('select', implode(' ', $classesForSelectTag)) . ($size ? ' size="' . $size . '"' : '') . ' onchange="' . htmlspecialchars($sOnChange) . '"' . $PA['onFocus'] . $disabled . '>';
+		$item .= '<select' . $selectedStyle . ' id="' . str_replace('.', '', uniqid('tceforms-select-', TRUE)) . '" name="' . $PA['itemFormElName'] . '"' . $this->insertDefStyle('select', implode(' ', $classesForSelectTag)) . ($size ? ' size="' . $size . '"' : '') . ' onchange="' . htmlspecialchars($sOnChange) . '"' . $PA['onFocus'] . $disabled . '>';
 		$item .= implode('', $opt);
 		$item .= '</select>';
 		// Create icon table:
@@ -2276,7 +2277,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 						$selIcon = IconUtility::getSpriteIcon('empty-empty');
 					}
 					// Compile row:
-					$rowId = uniqid('select_checkbox_row_');
+					$rowId = str_replace('.', '', uniqid('select_checkbox_row_', TRUE));
 					$onClickCell = $this->elName(($PA['itemFormElName'] . '[' . $c . ']')) . '.checked=!' . $this->elName(($PA['itemFormElName'] . '[' . $c . ']')) . '.checked;';
 					$onClick = 'this.attributes.getNamedItem("class").nodeValue = ' . $this->elName(($PA['itemFormElName'] . '[' . $c . ']')) . '.checked ? "c-selectedItem" : "c-unselectedItem";';
 					$setAll[] = $this->elName(($PA['itemFormElName'] . '[' . $c . ']')) . '.checked=1;';
@@ -2431,7 +2432,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 		$size = $config['autoSizeMax']
 			? MathUtility::forceIntegerInRange(count($selItems) + 1, MathUtility::forceIntegerInRange($size, 1), $config['autoSizeMax'])
 			: $size;
-		$selectBox = '<select id="' . uniqid($cssPrefix) . '" name="' . $PA['itemFormElName'] . '[]"'
+		$selectBox = '<select id="' . str_replace('.', '', uniqid($cssPrefix, TRUE)) . '" name="' . $PA['itemFormElName'] . '[]"'
 			. $this->insertDefStyle('select', $cssPrefix) . ($size ? ' size="' . $size . '"' : '')
 			. ' multiple="multiple" onchange="' . htmlspecialchars($sOnChange) . '"' . $PA['onFocus']
 			. $selector_itemListStyle . $disabled . '>
@@ -2559,7 +2560,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 				: $size;
 			$sOnChange = implode('', $PA['fieldChangeFunc']);
 
-			$multiSelectId = uniqid('tceforms-multiselect-');
+			$multiSelectId = str_replace('.', '', uniqid('tceforms-multiselect-', TRUE));
 			$itemsToSelect = '
 				<select data-relatedfieldname="' . htmlspecialchars($PA['itemFormElName']) . '" data-exclusivevalues="'
 				. htmlspecialchars($config['exclusiveKeys']) . '" id="' . $multiSelectId . '" name="' . $PA['itemFormElName'] . '_sel"'
@@ -3154,7 +3155,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 				. (in_array($lArr['ISOcode'], $selectedLanguage) ? ' selected="selected"' : '') . '>'
 				. htmlspecialchars($lArr['title']) . '</option>';
 		}
-		$output = '<select id="' . uniqid('tceforms-multiselect-')
+		$output = '<select id="' . str_replace('.', '', uniqid('tceforms-multiselect-', TRUE))
 			. ' class="tceforms-select tceforms-multiselect tceforms-flexlangmenu" name="' . $elName . '[]"'
 			. ($multi ? ' multiple="multiple" size="' . count($languages) . '"' : '') . '>' . implode('', $opt)
 			. '</select>';
@@ -3279,7 +3280,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 									$formPrefix . '[' . $key . '][el][' . $idTagPrefix . '-form]', $level + 1,
 									$idTagPrefix);
 								// Makes a "Add new" link:
-								$var = uniqid('idvar');
+								$var = str_replace('.', '', uniqid('idvar', TRUE));
 								$replace = 'replace(/' . $idTagPrefix . '-/g,"' . $idTagPrefix . '-"+' . $var . '+"-")';
 								$replace .= '.replace(/(tceforms-(datetime|date)field-)/g,"$1" + (new Date()).getTime())';
 								$onClickInsert = 'var ' . $var . ' = "' . 'idx"+(new Date()).getTime();'
@@ -4231,7 +4232,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			: $params['size'];
 		if (!$selector) {
 			$isMultiple = $params['maxitems'] != 1 && $params['size'] != 1;
-			$selector = '<select id="' . uniqid('tceforms-multiselect-') . '" '
+			$selector = '<select id="' . str_replace('.', '', uniqid('tceforms-multiselect-', TRUE)) . '" '
 				. ($params['noList'] ? 'style="display: none"' : 'size="' . $sSize . '"' . $this->insertDefStyle('group', 'tceforms-multiselect'))
 				. ($isMultiple ? ' multiple="multiple"' : '')
 				. ' name="' . $fName . '_list" ' . $onFocus . $params['style'] . $disabled . '>' . implode('', $opt)
@@ -4693,7 +4694,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 								$assignValue = $this->elName($itemName) . '.value=this.options[this.selectedIndex].value';
 							}
 							$sOnChange = $assignValue . ';this.blur();this.selectedIndex=0;' . implode('', $fieldChangeFunc);
-							$outArr[] = '<select id="' . uniqid('tceforms-select-')
+							$outArr[] = '<select id="' . str_replace('.', '', uniqid('tceforms-select-', TRUE))
 								. '" class="tceforms-select tceforms-wizardselect" name="_WIZARD' . $fName . '" onchange="'
 								. htmlspecialchars($sOnChange) . '">' . implode('', $opt) . '</select>';
 							break;

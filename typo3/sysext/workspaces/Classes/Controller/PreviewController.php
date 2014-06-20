@@ -209,7 +209,7 @@ class PreviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControl
 			'PATH_typo3' => $pathTYPO3,
 			'PATH_typo3_enc' => rawurlencode($pathTYPO3),
 			'username' => htmlspecialchars($GLOBALS['BE_USER']->user['username']),
-			'uniqueID' => GeneralUtility::shortMD5(uniqid('')),
+			'uniqueID' => GeneralUtility::shortMD5(uniqid('', TRUE)),
 			'securityLevel' => $loginSecurityLevel,
 			'TYPO3_mainDir' => TYPO3_mainDir,
 			'pageModule' => $pageModule,

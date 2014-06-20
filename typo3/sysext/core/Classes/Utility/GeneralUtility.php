@@ -281,7 +281,7 @@ class GeneralUtility {
 			// IM
 			if (($type == 'IM' || !$type) && $gfxConf['im'] && $gfxConf['im_path_lzw']) {
 				// Use temporary file to prevent problems with read and write lock on same file on network file systems
-				$temporaryName = dirname($theFile) . '/' . md5(uniqid()) . '.gif';
+				$temporaryName = dirname($theFile) . '/' . md5(uniqid('', TRUE)) . '.gif';
 				// Rename could fail, if a simultaneous thread is currently working on the same thing
 				if (@rename($theFile, $temporaryName)) {
 					$cmd = self::imageMagickCommand('convert', '"' . $temporaryName . '" "' . $theFile . '"', $gfxConf['im_path_lzw']);
@@ -1289,7 +1289,7 @@ class GeneralUtility {
 	static protected function generateRandomBytesFallback($bytesToReturn) {
 		$bytes = '';
 		// We initialize with somewhat random.
-		$randomState = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] . base_convert(memory_get_usage() % pow(10, 6), 10, 2) . microtime() . uniqid('') . getmypid();
+		$randomState = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] . base_convert(memory_get_usage() % pow(10, 6), 10, 2) . microtime() . uniqid('', TRUE) . getmypid();
 		while (!isset($bytes[($bytesToReturn - 1)])) {
 			$randomState = sha1(microtime() . mt_rand() . $randomState);
 			$bytes .= sha1(mt_rand() . $randomState, TRUE);
@@ -2935,7 +2935,7 @@ Connection: close
 		$result = FALSE;
 
 		if (is_dir($directory)) {
-			$temporaryDirectory = rtrim($directory, '/') . '.' . uniqid('remove') . '/';
+			$temporaryDirectory = rtrim($directory, '/') . '.' . uniqid('remove', TRUE) . '/';
 			if (rename($directory, $temporaryDirectory)) {
 				if ($keepOriginalDirectory) {
 					self::mkdir($directory);
