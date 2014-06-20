@@ -1176,6 +1176,7 @@ class BackendUtility {
 			foreach ($rootLine as $k => $v) {
 				$TSdataArray['uid_' . $v['uid']] = $v['TSconfig'];
 			}
+			$TSdataArray = static::emitGetPagesTSconfigPreIncludeSignal($TSdataArray, $id, $rootLine, $returnPartArray);
 			$TSdataArray = TypoScriptParser::checkIncludeLines_array($TSdataArray);
 			if ($returnPartArray) {
 				return $TSdataArray;
@@ -4173,4 +4174,26 @@ class BackendUtility {
 		return !empty($GLOBALS['TCA'][$table]['ctrl']['security']['ignoreRootLevelRestriction']);
 	}
 
+	/**
+	 * Get the SignalSlot dispatcher
+	 *
+	 * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 */
+	static protected function getSignalSlotDispatcher() {
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+	}
+
+	/**
+	 * Emits signal to modify the page TSconfig before include
+	 *
+	 * @param array $TSdataArray Current TSconfig data array - Can be modified by slots!
+	 * @param int $id Page ID we are handling
+	 * @param array $rootLine Rootline array of page
+	 * @param boolean $returnPartArray Whether TSdata should be parsed by TS parser or returned as plain text
+	 * @return array Modified Data array
+	 */
+	static protected function emitGetPagesTSconfigPreIncludeSignal(array $TSdataArray, $id, array $rootLine, $returnPartArray) {
+		$signalArguments = static::getSignalSlotDispatcher()->dispatch(__CLASS__, 'getPagesTSconfigPreInclude', array($TSdataArray, $id, $rootLine, $returnPartArray));
+		return $signalArguments[0];
+	}
 }
