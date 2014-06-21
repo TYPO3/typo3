@@ -122,7 +122,7 @@ class MetaDataRepository implements SingletonInterface {
 		$record = $emptyRecord;
 		$record['uid'] = $this->getDatabaseConnection()->sql_insert_id();
 
-		$this->emitRecordCreated($record);
+		$this->emitRecordCreatedSignal($record);
 
 		return $record;
 	}
@@ -148,7 +148,7 @@ class MetaDataRepository implements SingletonInterface {
 			$updateRow['tstamp'] = time();
 			$this->getDatabaseConnection()->exec_UPDATEquery($this->tableName, 'uid = ' . (int)$row['uid'], $updateRow);
 
-			$this->emitRecordUpdated(array_merge($row, $updateRow));
+			$this->emitRecordUpdatedSignal(array_merge($row, $updateRow));
 		}
 	}
 
@@ -160,7 +160,7 @@ class MetaDataRepository implements SingletonInterface {
 	 */
 	public function removeByFileUid($fileUid) {
 		$this->getDatabaseConnection()->exec_DELETEquery($this->tableName, 'file=' . (int)$fileUid);
-		$this->emitRecordDeleted($fileUid);
+		$this->emitRecordDeletedSignal($fileUid);
 	}
 
 	/**
@@ -199,7 +199,7 @@ class MetaDataRepository implements SingletonInterface {
 	 * @param array $data
 	 * @signal
 	 */
-	protected function emitRecordUpdated(array $data) {
+	protected function emitRecordUpdatedSignal(array $data) {
 		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\Index\\MetaDataRepository', 'recordUpdated', array($data));
 	}
 
@@ -209,7 +209,7 @@ class MetaDataRepository implements SingletonInterface {
 	 * @param array $data
 	 * @signal
 	 */
-	protected function emitRecordCreated(array $data) {
+	protected function emitRecordCreatedSignal(array $data) {
 		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\Index\\MetaDataRepository', 'recordCreated', array($data));
 	}
 
@@ -219,7 +219,7 @@ class MetaDataRepository implements SingletonInterface {
 	 * @param integer $fileUid
 	 * @signal
 	 */
-	protected function emitRecordDeleted($fileUid) {
+	protected function emitRecordDeletedSignal($fileUid) {
 		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\Index\\MetaDataRepository', 'recordDeleted', array($fileUid));
 	}
 

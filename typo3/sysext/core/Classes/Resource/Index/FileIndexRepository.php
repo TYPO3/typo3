@@ -235,7 +235,7 @@ class FileIndexRepository implements SingletonInterface {
 		$data['tstamp'] = time();
 		$this->getDatabaseConnection()->exec_INSERTquery($this->table, $data);
 		$data['uid'] = $this->getDatabaseConnection()->sql_insert_id();
-		$this->emitRecordCreated($data);
+		$this->emitRecordCreatedSignal($data);
 		return $data['uid'];
 	}
 	/**
@@ -263,7 +263,7 @@ class FileIndexRepository implements SingletonInterface {
 		if (count($updateRow) > 0) {
 			$updateRow['tstamp'] = time();
 			$this->getDatabaseConnection()->exec_UPDATEquery($this->table, $this->getWhereClauseForFile($file), $updateRow);
-			$this->emitRecordUpdated(array_intersect_key($file->getProperties(), array_flip($this->fields)));
+			$this->emitRecordUpdatedSignal(array_intersect_key($file->getProperties(), array_flip($this->fields)));
 		}
 	}
 
@@ -352,7 +352,7 @@ class FileIndexRepository implements SingletonInterface {
 	 */
 	public function remove($fileUid) {
 		$this->getDatabaseConnection()->exec_DELETEquery($this->table, 'uid=' . (int)$fileUid);
-		$this->emitRecordDeleted($fileUid);
+		$this->emitRecordDeletedSignal($fileUid);
 	}
 
 	/*
@@ -381,7 +381,7 @@ class FileIndexRepository implements SingletonInterface {
 	 * @param array $data
 	 * @signal
 	 */
-	protected function emitRecordUpdated(array $data) {
+	protected function emitRecordUpdatedSignal(array $data) {
 		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository', 'recordUpdated', array($data));
 	}
 
@@ -391,7 +391,7 @@ class FileIndexRepository implements SingletonInterface {
 	 * @param array $data
 	 * @signal
 	 */
-	protected function emitRecordCreated(array $data) {
+	protected function emitRecordCreatedSignal(array $data) {
 		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository', 'recordCreated', array($data));
 	}
 
@@ -401,7 +401,7 @@ class FileIndexRepository implements SingletonInterface {
 	 * @param integer $fileUid
 	 * @signal
 	 */
-	protected function emitRecordDeleted($fileUid) {
+	protected function emitRecordDeletedSignal($fileUid) {
 		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository', 'recordDeleted', array($fileUid));
 	}
 }

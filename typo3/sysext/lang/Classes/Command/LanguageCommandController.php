@@ -65,7 +65,7 @@ class LanguageCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Comman
 			}
 		}
 		$this->packageManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Package\\PackageManager');
-		$this->emitPackagesMayHaveChanged();
+		$this->emitPackagesMayHaveChangedSignal();
 		foreach ($this->packageManager->getAvailablePackages() as $package) {
 			$updateTranslationService->updateTranslation($package->getPackageKey(), $locales);
 		}
@@ -74,7 +74,7 @@ class LanguageCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Comman
 	/**
 	 * Emits packages may have changed signal
 	 */
-	protected function emitPackagesMayHaveChanged() {
+	protected function emitPackagesMayHaveChangedSignal() {
 		$this->signalSlotDispatcher->dispatch('PackageManagement', 'packagesMayHaveChanged');
 	}
 }

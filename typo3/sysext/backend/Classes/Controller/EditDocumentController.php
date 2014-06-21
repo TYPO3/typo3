@@ -384,6 +384,15 @@ class EditDocumentController {
 	}
 
 	/**
+	 * Emits a signal after a function was executed
+	 *
+	 * @param string $signalName
+	 */
+	protected function emitFunctionAfterSignal($signalName) {
+		$this->getSignalSlotDispatcher()->dispatch(__CLASS__, $signalName . 'After', array($this));
+	}
+
+	/**
 	 * First initialization.
 	 *
 	 * @return void
@@ -440,7 +449,7 @@ class EditDocumentController {
 			$this->getBackendUser()->setTemporaryWorkspace($this->workspace);
 		}
 
-		$this->getSignalSlotDispatcher()->dispatch(__CLASS__, __FUNCTION__ . 'After', array($this));
+		$this->emitFunctionAfterSignal(__FUNCTION__);
 	}
 
 	/**
@@ -666,7 +675,7 @@ class EditDocumentController {
 		$this->doc->getContextMenuCode();
 		$this->doc->bodyTagAdditions = 'onload="window.scrollTo(0,' . MathUtility::forceIntegerInRange(GeneralUtility::_GP('_scrollPosition'), 0, 10000) . ');"';
 
-		$this->getSignalSlotDispatcher()->dispatch(__CLASS__, __FUNCTION__ . 'After', array($this));
+		$this->emitFunctionAfterSignal(__FUNCTION__);
 	}
 
 	/**

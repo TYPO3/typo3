@@ -195,16 +195,28 @@ class UpdateTranslationService {
 	protected function getMirrorUrl($extensionKey) {
 		$mirrorUrl = $this->repositoryHelper->getMirrors()->getMirrorUrl();
 
-		$this->signalSlotDispatcher->dispatch(
+		$mirrorUrl = $this->emitPostProcessMirrorUrlSignal($extensionKey, $mirrorUrl);
+
+		return $mirrorUrl;
+	}
+
+	/**
+	 * Emits a signal after the mirror URL of an extension was fetched
+	 *
+	 * @param string $extensionKey
+	 * @param string $mirrorUrl
+	 * @return string Modified mirror url
+	 */
+	protected function emitPostProcessMirrorUrlSignal($extensionKey, $mirrorUrl) {
+		$signalArguments = $this->signalSlotDispatcher->dispatch(
 			__CLASS__,
 			'postProcessMirrorUrl',
 			array(
 				'extensionKey' => $extensionKey,
-				'mirrorUrl' => &$mirrorUrl,
+				'mirrorUrl' => $mirrorUrl,
 			)
 		);
-
-		return $mirrorUrl;
+		return $signalArguments[1];
 	}
 
 }

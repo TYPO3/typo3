@@ -40,7 +40,7 @@ class ListUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function setUp() {
-		$this->subject = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\ListUtility', array('emitPackagesMayHaveChanged'));
+		$this->subject = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\ListUtility', array('emitPackagesMayHaveChangedSignal'));
 		$packageManagerMock = $this->getMock('TYPO3\\CMS\\Core\\Package\\PackageManager');
 		$packageManagerMock
 				->expects($this->any())

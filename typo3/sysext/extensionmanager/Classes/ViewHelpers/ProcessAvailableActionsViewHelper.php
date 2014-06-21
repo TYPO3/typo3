@@ -53,16 +53,28 @@ class ProcessAvailableActionsViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Lin
 		$html = $this->renderChildren();
 		$actions = preg_split('#\\n\\s*#s', trim($html));
 
-		$this->signalSlotDispatcher->dispatch(
+		$actions = $this->emitProcessActionsSignal($extension, $actions);
+
+		return implode(' ', $actions);
+	}
+
+	/**
+	 * Emits a signal after the list of actions is processed
+	 *
+	 * @param string $extension
+	 * @param array $actions
+	 * @return array Modified action array
+	 */
+	protected function emitProcessActionsSignal($extension, array $actions) {
+		$signalArguments = $this->signalSlotDispatcher->dispatch(
 			__CLASS__,
 			static::SIGNAL_ProcessActions,
 			array(
 				'extension' => $extension,
-				'actions' => &$actions,
+				'actions' => $actions,
 			)
 		);
-
-		return implode(' ', $actions);
+		return $signalArguments[1];
 	}
 
 }

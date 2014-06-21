@@ -185,11 +185,33 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 * @api
 	 */
 	public function getObjectDataByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query) {
-		$signalResult = $this->signalSlotDispatcher->dispatch(__CLASS__, 'beforeGettingObjectData', array($query));
-		list($query) = $signalResult;
+		$query = $this->emitBeforeGettingObjectDataSignal($query);
 		$result = $this->storageBackend->getObjectDataByQuery($query);
-		list($query, $result) = $this->signalSlotDispatcher->dispatch(__CLASS__, 'afterGettingObjectData', array($query, $result));
+		$result = $this->emitafterGettingObjectDataSignal($query, $result);
 		return $result;
+	}
+
+	/**
+	 * Emits a signal before object data is fetched
+	 *
+	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface Modified query
+	 */
+	protected function emitBeforeGettingObjectDataSignal(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query) {
+		$signalArguments = $this->signalSlotDispatcher->dispatch(__CLASS__, 'beforeGettingObjectData', array($query));
+		return $signalArguments[0];
+	}
+
+	/**
+	 * Emits a signal after object data is fetched
+	 *
+	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
+	 * @param array $result
+	 * @return array Modified result
+	 */
+	protected function emitAfterGettingObjectDataSignal(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query, array $result) {
+		$signalArguments = $this->signalSlotDispatcher->dispatch(__CLASS__, 'afterGettingObjectData', array($query, $result));
+		return $signalArguments[1];
 	}
 
 	/**
@@ -641,13 +663,22 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 		$uid = $this->storageBackend->addRow($dataMap->getTableName(), $row);
 		$object->_setProperty('uid', (int)$uid);
 		if ((int)$uid >= 1) {
-			$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterInsertObject', array('object' => $object));
+			$this->emitAfterInsertObjectSignal($object);
 		}
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		if ($frameworkConfiguration['persistence']['updateReferenceIndex'] === '1') {
 			$this->referenceIndex->updateRefIndexTable($dataMap->getTableName(), $uid);
 		}
 		$this->session->registerObject($object, $uid);
+	}
+
+	/**
+	 * Emits a signal after an object was added to the storage
+	 *
+	 * @param DomainObjectInterface $object
+	 */
+	protected function emitAfterInsertObjectSignal(DomainObjectInterface $object) {
+		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterInsertObject', array('object' => $object));
 	}
 
 	/**
@@ -840,13 +871,22 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 		}
 		$res = $this->storageBackend->updateRow($dataMap->getTableName(), $row);
 		if ($res === TRUE) {
-			$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterUpdateObject', array('object' => $object));
+			$this->emitAfterUpdateObjectSignal($object);
 		}
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		if ($frameworkConfiguration['persistence']['updateReferenceIndex'] === '1') {
 			$this->referenceIndex->updateRefIndexTable($dataMap->getTableName(), $row['uid']);
 		}
 		return $res;
+	}
+
+	/**
+	 * Emits a signal after an object was updated in storage
+	 *
+	 * @param DomainObjectInterface $object
+	 */
+	protected function emitAfterUpdateObjectSignal(DomainObjectInterface $object) {
+		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterUpdateObject', array('object' => $object));
 	}
 
 	/**
@@ -922,13 +962,22 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 			$res = $this->storageBackend->removeRow($tableName, array('uid' => $object->getUid()));
 		}
 		if ($res === TRUE) {
-			$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterRemoveObject', array('object' => $object));
+			$this->emitAfterRemoveObjectSignal($object);
 		}
 		$this->removeRelatedObjects($object);
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		if ($frameworkConfiguration['persistence']['updateReferenceIndex'] === '1') {
 			$this->referenceIndex->updateRefIndexTable($tableName, $object->getUid());
 		}
+	}
+
+	/**
+	 * Emits a signal after an object was removed from storage
+	 *
+	 * @param DomainObjectInterface $object
+	 */
+	protected function emitAfterRemoveObjectSignal(DomainObjectInterface $object) {
+		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterRemoveObject', array('object' => $object));
 	}
 
 	/**

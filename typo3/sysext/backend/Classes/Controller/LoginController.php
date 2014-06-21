@@ -365,7 +365,7 @@ class LoginController {
 			// Global variables will now be replaced (at last)
 			'SITENAME' => htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'])
 		);
-		$this->emitRenderLoginFormSignal($markers);
+		$markers = $this->emitRenderLoginFormSignal($markers);
 		return HtmlParser::substituteMarkerArray($mainContent, $markers, '###|###');
 	}
 
@@ -717,11 +717,11 @@ class LoginController {
 	 * Emits the render login form signal
 	 *
 	 * @param array $markers Array with markers for the login form
-	 * @return void
+	 * @return array Modified markers array
 	 */
-	protected function emitRenderLoginFormSignal(array &$markers) {
+	protected function emitRenderLoginFormSignal(array $markers) {
 		$signalArguments = $this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Backend\\Controller\\LoginController', self::SIGNAL_RenderLoginForm, array($this, $markers));
-		$markers = $signalArguments[1];
+		return $signalArguments[1];
 	}
 
 	/**

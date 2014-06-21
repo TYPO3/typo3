@@ -296,7 +296,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 			}
 			$validationResult = $this->arguments->getValidationResults();
 			if (!$validationResult->hasErrors()) {
-				$this->signalSlotDispatcher->dispatch(__CLASS__, 'beforeCallActionMethod', array('controllerName' => get_class($this), 'actionMethodName' => $this->actionMethodName, 'preparedArguments' => $preparedArguments));
+				$this->emitBeforeCallActionMethodSignal($preparedArguments);
 				$actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
 			} else {
 				$methodTagsValues = $this->reflectionService->getMethodTagsValues(get_class($this), $this->actionMethodName);
@@ -317,7 +317,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 					$shouldCallActionMethod = FALSE;
 				}
 				if ($shouldCallActionMethod) {
-					$this->signalSlotDispatcher->dispatch(__CLASS__, 'beforeCallActionMethod', array('controllerName' => get_class($this), 'actionMethodName' => $this->actionMethodName, 'preparedArguments' => $preparedArguments));
+					$this->emitBeforeCallActionMethodSignal($preparedArguments);
 					$actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
 				} else {
 					$actionResult = call_user_func(array($this, $this->errorMethodName));
@@ -332,7 +332,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 			if ($this->argumentsMappingResults->hasErrors()) {
 				$actionResult = call_user_func(array($this, $this->errorMethodName));
 			} else {
-				$this->signalSlotDispatcher->dispatch(__CLASS__, 'beforeCallActionMethod', array('controllerName' => get_class($this), 'actionMethodName' => $this->actionMethodName, 'preparedArguments' => $preparedArguments));
+				$this->emitBeforeCallActionMethodSignal($preparedArguments);
 				$actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
 			}
 		}
@@ -343,6 +343,15 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 		} elseif (is_object($actionResult) && method_exists($actionResult, '__toString')) {
 			$this->response->appendContent((string)$actionResult);
 		}
+	}
+
+	/**
+	 * Emits a signal before the current action is called
+	 *
+	 * @param array $preparedArguments
+	 */
+	protected function emitBeforeCallActionMethodSignal(array $preparedArguments) {
+		$this->signalSlotDispatcher->dispatch(__CLASS__, 'beforeCallActionMethod', array('controllerName' => get_class($this), 'actionMethodName' => $this->actionMethodName, 'preparedArguments' => $preparedArguments));
 	}
 
 	/**

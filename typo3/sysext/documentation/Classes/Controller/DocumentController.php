@@ -96,16 +96,28 @@ class DocumentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 		$language = $this->languageUtility->getDocumentationLanguage();
 		$documents = $this->documentRepository->findByLanguage($language);
 
-		$this->signalSlotDispatcher->dispatch(
+		$documents = $this->emitAfterInitializeDocumentsSignal($language, $documents);
+
+		return $documents;
+	}
+
+	/**
+	 * Emits a signal after the documents are initialized
+	 *
+	 * @param string $language
+	 * @param \TYPO3\CMS\Documentation\Domain\Model\Document[] $documents
+	 * @return \TYPO3\CMS\Documentation\Domain\Model\Document[]
+	 */
+	protected function emitAfterInitializeDocumentsSignal($language, array $documents) {
+		$signalArguments = $this->signalSlotDispatcher->dispatch(
 			__CLASS__,
 			'afterInitializeDocuments',
 			array(
 				'language'  => $language,
-				'documents' => &$documents,
+				'documents' => $documents,
 			)
 		);
-
-		return $documents;
+		return $signalArguments[1];
 	}
 
 	/**
