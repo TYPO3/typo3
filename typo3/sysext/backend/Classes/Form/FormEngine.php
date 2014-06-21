@@ -42,203 +42,242 @@ use TYPO3\CMS\Lang\LanguageService;
  */
 class FormEngine {
 
-	// variables not commented yet.... (do so...)
 	/**
 	 * @todo Define visibility
+	 * @var array
 	 */
 	public $palFieldArr = array();
 
 	/**
 	 * @todo Define visibility
+	 * @var bool
 	 */
-	public $disableWizards = 0;
+	public $disableWizards = FALSE;
 
 	/**
 	 * @todo Define visibility
+	 * @var bool
 	 */
-	public $isPalettedoc = 0;
+	public $isPalettedoc = FALSE;
 
 	/**
 	 * @todo Define visibility
+	 * @var int
 	 */
 	public $paletteMargin = 1;
 
 	/**
 	 * @todo Define visibility
+	 * @var string
 	 */
 	public $defStyle = '';
 
 	/**
 	 * @todo Define visibility
+	 * @var array
 	 */
 	public $cachedTSconfig = array();
 
 	/**
 	 * @todo Define visibility
+	 * @var array
 	 */
 	public $cachedTSconfig_fieldLevel = array();
 
 	/**
 	 * @todo Define visibility
+	 * @var array
 	 */
 	public $cachedLanguageFlag = array();
 
 	/**
 	 * @todo Define visibility
+	 * @var array|NULL
 	 */
 	public $cachedAdditionalPreviewLanguages = NULL;
 
 	/**
-	 * Cache for the real PID of a record. The array key consists for a combinded string "<table>:<uid>:<pid>".
+	 * Cache for the real PID of a record. The array key consists for a combined string "<table>:<uid>:<pid>".
 	 * The value is an array with two values: first is the real PID of a record, second is the PID value for TSconfig.
 	 *
 	 * @var array
 	 */
-	protected $cache_getTSCpid;
+	protected $cache_getTSCpid = array();
 
 	/**
 	 * @todo Define visibility
+	 * @var array
 	 */
 	public $transformedRow = array();
 
 	/**
 	 * @todo Define visibility
+	 * @var string
 	 */
 	public $extJSCODE = '';
 
 	/**
 	 * @todo Define visibility
+	 * @var array
 	 */
 	public $printNeededJS = array();
 
 	/**
 	 * @todo Define visibility
+	 * @var array
 	 */
 	public $hiddenFieldAccum = array();
 
 	/**
 	 * @todo Define visibility
+	 * @var string
 	 */
 	public $TBE_EDITOR_fieldChanged_func = '';
 
 	/**
 	 * @todo Define visibility
+	 * @var bool
 	 */
-	public $loadMD5_JS = 1;
+	public $loadMD5_JS = TRUE;
 
-	// Something unique...
 	/**
+	 * Array where records in the default language is stored. (processed by transferdata)
+	 *
 	 * @todo Define visibility
-	 */
-	public $prevBorderStyle = '[nothing here...]';
-
-	// If set direct upload fields will be shown
-	/**
-	 * @todo Define visibility
-	 */
-	public $allowUpload = 0;
-
-	// Array where records in the default language is stored. (processed by transferdata)
-	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $defaultLanguageData = array();
 
-	// Array where records in the default language is stored (raw without any processing. used for making diff)
 	/**
+	 * Array where records in the default language is stored (raw without any processing. used for making diff)
+	 *
 	 * @todo Define visibility
+	 * @var array
 	 */
 	public $defaultLanguageData_diff = array();
 
 	/**
 	 * @todo Define visibility
+	 * @var array
 	 */
 	public $additionalPreviewLanguageData = array();
 
 	// EXTERNAL, static
-	// Set this to the 'backPath' pointing back to the typo3 admin directory from the script where this form is displayed.
 	/**
+	 * Set this to the 'backPath' pointing back to the typo3 admin directory
+	 * from the script where this form is displayed.
+	 *
 	 * @todo Define visibility
+	 * @var string
 	 */
 	public $backPath = '';
 
-	// Alternative return URL path (default is \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript())
 	/**
+	 * Alternative return URL path (default is \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript())
+	 *
 	 * @todo Define visibility
+	 * @var string
 	 */
 	public $returnUrl = '';
 
-	// Can be set to point to a field name in the form which will be set to '1' when the form is submitted with a *save* button. This way the recipient script can determine that the form was submitted for save and not "close" for example.
 	/**
+	 * Can be set to point to a field name in the form which will be set to '1' when the form
+	 * is submitted with a *save* button. This way the recipient script can determine that
+	 * the form was submitted for save and not "close" for example.
+	 *
 	 * @todo Define visibility
+	 * @var string
 	 */
 	public $doSaveFieldName = '';
 
-	// Can be set TRUE/FALSE to whether palettes (secondary options) are in the topframe or in form. TRUE means they are NOT IN-form. So a collapsed palette is one, which is shown in the top frame, not in the page.
 	/**
+	 * Can be set TRUE/FALSE to whether palettes (secondary options) are in the topframe or in form.
+	 * TRUE means they are NOT IN-form. So a collapsed palette is one, which is shown in the top frame, not in the page.
+	 *
 	 * @todo Define visibility
+	 * @var bool
 	 */
-	public $palettesCollapsed = 0;
+	public $palettesCollapsed = FALSE;
 
-	// If set, the RTE is disabled (from form display, eg. by checkbox in the bottom of the page!)
 	/**
+	 * If set, the RTE is disabled (from form display, eg. by checkbox in the bottom of the page!)
+	 *
 	 * @todo Define visibility
+	 * @var bool
 	 */
-	public $disableRTE = 0;
+	public $disableRTE = FALSE;
 
-	// If FALSE, then all CSH will be disabled, regardless of settings in $this->edit_showFieldHelp
 	/**
+	 * If FALSE, then all CSH will be disabled, regardless of settings in $this->edit_showFieldHelp
+	 *
 	 * @todo Define visibility
+	 * @var bool
 	 */
-	public $globalShowHelp = 1;
+	public $globalShowHelp = TRUE;
 
-	// If TRUE, the forms are rendering only localization relevant fields of the records.
 	/**
+	 * If this evaluates to TRUE, the forms are rendering only localization relevant fields of the records.
+	 *
 	 * @todo Define visibility
+	 * @var string
 	 */
 	public $localizationMode = '';
 
-	// Overrule the field order set in TCA[types][showitem], eg for tt_content this value, 'bodytext,image', would make first the 'bodytext' field, then the 'image' field (if set for display)... and then the rest in the old order.
 	/**
+	 * Overrule the field order set in TCA[types][showitem], eg for tt_content this value,
+	 * 'bodytext,image', would make first the 'bodytext' field, then the 'image' field (if set for display)...
+	 * and then the rest in the old order.
+	 *
 	 * @todo Define visibility
+	 * @var string
 	 */
 	public $fieldOrder = '';
 
-	// If set to FALSE, palettes will NEVER be rendered.
 	/**
-	 * @todo Define visibility
-	 */
-	public $doPrintPalette = 1;
-
-	/**
-	 * Set to initialized clipboard object; Then the element browser will offer a link to paste in records from clipboard.
+	 * If set to FALSE, palettes will NEVER be rendered.
 	 *
-	 * @var \TYPO3\CMS\Backend\Clipboard\Clipboard
+	 * @todo Define visibility
+	 * @var bool
+	 */
+	public $doPrintPalette = TRUE;
+
+	/**
+	 * Set to initialized clipboard object;
+	 * Then the element browser will offer a link to paste in records from clipboard.
+	 *
+	 * @var \TYPO3\CMS\Backend\Clipboard\Clipboard|NULL
 	 * @todo Define visibility
 	 */
-	public $clipObj = FALSE;
+	public $clipObj = NULL;
 
-	// Enable click menu on reference icons.
 	/**
+	 * Enable click menu on reference icons.
+	 *
 	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $enableClickMenu = FALSE;
 
-	// Enable Tab Menus.
 	/**
 	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $enableTabMenu = FALSE;
 
-	// When enabled all fields are rendered non-editable.
 	/**
+	 * When enabled all fields are rendered non-editable
+	 *
 	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $renderReadonly = FALSE;
 
-	// Form field width compensation: Factor of "size=12" to "style="width: 12*9.58px" for form field widths of style-aware browsers
 	/**
+	 * Form field width compensation: Factor of "size=12" to "style="width: 12*9.58px"
+	 * for form field widths of style-aware browsers
+	 *
 	 * @todo Define visibility
+	 * @var float
 	 */
 	public $form_rowsToStylewidth = 9.58;
 
@@ -249,291 +288,393 @@ class FormEngine {
 	 */
 	protected $form_additionalTextareaStyleWidth = 23;
 
-	// Form field width compensation: Compensation for large documents, doc-tab (editing)
 	/**
+	 * Form field width compensation: Compensation for large documents, doc-tab (editing)
+	 *
 	 * @todo Define visibility
+	 * @var float
 	 */
 	public $form_largeComp = 1.33;
 
-	// The number of chars expected per row when the height of a text area field is automatically calculated based on the number of characters found in the field content.
 	/**
+	 * The number of chars expected per row when the height of a text area field is
+	 * automatically calculated based on the number of characters found in the field content.
+	 *
 	 * @todo Define visibility
+	 * @var int
 	 */
 	public $charsPerRow = 40;
 
-	// The maximum abstract value for textareas
 	/**
+	 * The maximum abstract value for textareas
+	 *
 	 * @todo Define visibility
+	 * @var int
 	 */
 	public $maxTextareaWidth = 48;
 
-	// The maximum abstract value for input fields
 	/**
+	 * The maximum abstract value for input fields
 	 * @todo Define visibility
+	 *
+	 * @var int
 	 */
 	public $maxInputWidth = 48;
 
-	// Default style for the selector boxes used for multiple items in "select" and "group" types.
 	/**
+	 * Default style for the selector boxes used for multiple items in "select" and "group" types.
+	 *
 	 * @todo Define visibility
+	 * @var string
 	 */
 	public $defaultMultipleSelectorStyle = 'width:310px;';
 
 	// INTERNAL, static
-	// The string to prepend formfield names with.
 	/**
+	 * The string to prepend formfield names with.
 	 * @todo Define visibility
+	 *
+	 * @var string
 	 */
 	public $prependFormFieldNames = 'data';
 
-	// The string to prepend commands for tcemain::process_cmdmap with.
 	/**
+	 * The string to prepend commands for tcemain::process_cmdmap with
+	 *
 	 * @todo Define visibility
+	 * @var string
 	 */
 	public $prependCmdFieldNames = 'cmd';
 
-	// The string to prepend FILE form field names with.
 	/**
+	 * The string to prepend FILE form field names with
+	 *
 	 * @todo Define visibility
+	 * @var string
 	 */
 	public $prependFormFieldNames_file = 'data_files';
 
 	/**
-	 * The string to prepend form field names that are active (not NULL).
+	 * The string to prepend form field names that are active (not NULL)
 	 *
 	 * @var string
 	 */
 	protected $prependFormFieldNamesActive = 'control[active]';
 
-	// The name attribute of the form.
 	/**
+	 * The name attribute of the form
+	 *
 	 * @todo Define visibility
+	 * @var string
 	 */
 	public $formName = 'editform';
 
-	// Whitelist that allows TCA field configuration to be overridden by TSconfig, @see overrideFieldConf()
 	/**
+	 * Whitelist that allows TCA field configuration to be overridden by TSconfig
+	 *
 	 * @todo Define visibility
+	 * @see overrideFieldConf()
+	 * @var array
 	 */
 	public $allowOverrideMatrix = array();
 
 	// INTERNAL, dynamic
-	// Set by readPerms()  (caching)
 	/**
+	 * Set by readPerms()  (caching)
+	 *
 	 * @todo Define visibility
+	 * @var string
 	 */
 	public $perms_clause = '';
 
-	// Set by readPerms()  (caching-flag)
 	/**
+	 * Set by readPerms()  (caching-flag)
+	 *
 	 * @todo Define visibility
+	 * @var bool
 	 */
-	public $perms_clause_set = 0;
+	public $perms_clause_set = FALSE;
 
-	// Used to indicate the mode of CSH (Context Sensitive Help), whether it should be icons-only ('icon') or not at all (blank).
 	/**
+	 * Used to indicate the mode of CSH (Context Sensitive Help),
+	 * whether it should be icons-only ('icon') or not at all (blank).
+	 *
 	 * @todo Define visibility
+	 * @var bool
 	 */
-	public $edit_showFieldHelp = '';
+	public $edit_showFieldHelp = FALSE;
 
 	/**
 	 * @var bool
 	 */
 	public $edit_docModuleUpload = FALSE;
 
-	// Loaded with info about the browser when class is instantiated.
 	/**
+	 * Loaded with info about the browser when class is instantiated
+	 *
 	 * @todo Define visibility
+	 * @var array
 	 */
 	public $clientInfo = array();
 
-	// TRUE, if RTE is possible for the current user (based on result from BE_USER->isRTE())
 	/**
+	 * TRUE, if RTE is possible for the current user (based on result from BE_USER->isRTE())
+	 *
 	 * @todo Define visibility
+	 * @var bool
 	 */
-	public $RTEenabled = 0;
+	public $RTEenabled = FALSE;
 
-	// If $this->RTEenabled was FALSE, you can find the reasons listed in this array which is filled with reasons why the RTE could not be loaded)
 	/**
+	 * If $this->RTEenabled was FALSE, you can find the reasons listed in this array
+	 * which is filled with reasons why the RTE could not be loaded)
 	 * @todo Define visibility
+	 *
+	 * @var string
 	 */
 	public $RTEenabled_notReasons = '';
 
-	// Counter that is incremented before an RTE is created. Can be used for unique ids etc.
 	/**
+	 * Counter that is incremented before an RTE is created. Can be used for unique ids etc.
+	 *
 	 * @todo Define visibility
+	 * @var int
 	 */
 	public $RTEcounter = 0;
 
-	// Contains current color scheme
 	/**
+	 * Contains current color scheme
+	 *
 	 * @todo Define visibility
+	 * @var array
 	 */
-	public $colorScheme;
+	public $colorScheme = array();
 
-	// Contains current class scheme
 	/**
+	 * Contains current class scheme
+	 *
 	 * @todo Define visibility
+	 * @var array
 	 */
-	public $classScheme;
+	public $classScheme = array();
 
-	// Contains the default color scheme
 	/**
+	 * Contains the default color scheme
+	 *
 	 * @todo Define visibility
+	 * @var array
 	 */
-	public $defColorScheme;
+	public $defColorScheme = array();
 
-	// Contains the default class scheme
 	/**
+	 * Contains the default class scheme
+	 *
 	 * @todo Define visibility
+	 * @var array
 	 */
-	public $defClassScheme;
+	public $defClassScheme = array();
 
-	// Contains field style values
 	/**
+	 * Contains field style values
+	 *
 	 * @todo Define visibility
+	 * @var array|NULL
 	 */
-	public $fieldStyle;
+	public $fieldStyle = NULL;
 
-	// Contains border style values.
 	/**
+	 * Contains border style values
+	 *
 	 * @todo Define visibility
+	 * @var array|NULL
 	 */
-	public $borderStyle;
+	public $borderStyle = NULL;
 
-	// An accumulation of messages from the class.
 	/**
+	 * An accumulation of messages from the class
+	 *
 	 * @todo Define visibility
+	 * @var array
 	 */
 	public $commentMessages = array();
 
 	// INTERNAL, templates
-	// Total wrapping for the table rows.
 	/**
+	 * Total wrapping for the table rows
+	 *
 	 * @todo Define visibility
+	 * @var string
 	 */
 	public $totalWrap = '<hr />|<hr />';
 
-	// Field template
 	/**
+	 * Field template
+	 *
 	 * @todo Define visibility
+	 * @var string
 	 */
 	public $fieldTemplate = '<strong>###FIELD_NAME###</strong><br />###FIELD_ITEM###<hr />';
 
 	/**
-	 * Template subpart for palette fields.
+	 * Template subpart for palette fields
 	 *
 	 * @var string
 	 */
-	protected $paletteFieldTemplate;
+	protected $paletteFieldTemplate = '';
 
-	// Wrapping template code for a section
 	/**
+	 * Wrapping template code for a section
+	 *
 	 * @todo Define visibility
+	 * @var string
 	 */
 	public $sectionWrap = '';
 
-	// Template for palette headers
 	/**
+	 * Template for palette headers
+	 *
 	 * @todo Define visibility
+	 * @var string
 	 */
 	public $palFieldTemplateHeader = '';
 
-	// Template for palettes
 	/**
+	 * Template for palettes
+	 *
 	 * @todo Define visibility
+	 * @var string
 	 */
 	public $palFieldTemplate = '';
 
 	// INTERNAL, working memory
-	// Set to the fields NOT to display, if any.
 	/**
+	 * Set to the fields NOT to display, if any
+	 *
 	 * @todo Define visibility
+	 * @var array|NULL
 	 */
-	public $excludeElements = '';
+	public $excludeElements = NULL;
 
-	// During rendering of forms this will keep track of which palettes has already been rendered (so they are not rendered twice by mistake)
 	/**
+	 * During rendering of forms this will keep track of which palettes
+	 * has already been rendered (so they are not rendered twice by mistake)
+	 *
 	 * @todo Define visibility
+	 * @var array
 	 */
 	public $palettesRendered = array();
 
-	// This array of fields will be set as hidden-fields instead of rendered normally! For instance palette fields edited in the top frame are set as hidden fields since the main form has to submit the values. The top frame actually just sets the value in the main form!
 	/**
+	 * This array of fields will be set as hidden-fields instead of rendered normally!
+	 * For instance palette fields edited in the top frame are set as hidden fields
+	 * since the main form has to submit the values.
+	 * The top frame actually just sets the value in the main form!
+	 *
 	 * @todo Define visibility
+	 * @var array
 	 */
 	public $hiddenFieldListArr = array();
 
-	// Used to register input-field names, which are required. (Done during rendering of the fields). This information is then used later when the JavaScript is made.
 	/**
+	 * Used to register input-field names, which are required. (Done during rendering of the fields).
+	 * This information is then used later when the JavaScript is made.
+	 *
 	 * @todo Define visibility
+	 * @var array
 	 */
 	public $requiredFields = array();
 
-	// Used to register input-field names, which are required an have additional requirements (e.g. like a date/time must be positive integer). The information of this array is merged with $this->requiredFields later.
 	/**
+	 * Used to register input-field names, which are required an have additional requirements.
+	 * (e.g. like a date/time must be positive integer)
+	 * The information of this array is merged with $this->requiredFields later.
+	 *
 	 * @todo Define visibility
+	 * @var array
 	 */
 	public $requiredAdditional = array();
 
-	// Used to register the min and max number of elements for selectorboxes where that apply (in the "group" type for instance)
 	/**
+	 * Used to register the min and max number of elements
+	 * for selector boxes where that apply (in the "group" type for instance)
+	 *
 	 * @todo Define visibility
+	 * @var array
 	 */
 	public $requiredElements = array();
 
-	// Used to determine where $requiredFields or $requiredElements are nested (in Tabs or IRRE)
 	/**
+	 * Used to determine where $requiredFields or $requiredElements are nested (in Tabs or IRRE)
+	 *
 	 * @todo Define visibility
+	 * @var array
 	 */
 	public $requiredNested = array();
 
-	// Keeps track of the rendering depth of nested records.
 	/**
+	 * Keeps track of the rendering depth of nested records
+	 *
 	 * @todo Define visibility
+	 * @var int
 	 */
 	public $renderDepth = 0;
 
-	// Color scheme buffer.
 	/**
+	 * Color scheme buffer
+	 *
 	 * @todo Define visibility
+	 * @var array
 	 */
 	public $savedSchemes = array();
 
-	// holds the path an element is nested in (e.g. required for RTEhtmlarea)
 	/**
+	 * holds the path an element is nested in (e.g. required for RTEhtmlarea)
 	 * @todo Define visibility
+	 *
+	 * @var array
 	 */
 	public $dynNestedStack = array();
 
 	// Internal, registers for user defined functions etc.
-	// Additional HTML code, printed before the form.
 	/**
+	 * Additional HTML code, printed before the form
+	 *
 	 * @todo Define visibility
+	 * @var array
 	 */
 	public $additionalCode_pre = array();
 
-	// Additional JavaScript, printed before the form
 	/**
+	 * Additional JavaScript, printed before the form
+	 *
 	 * @todo Define visibility
+	 * @var array
 	 */
 	public $additionalJS_pre = array();
 
-	// Additional JavaScript printed after the form
 	/**
+	 * Additional JavaScript printed after the form
+	 *
 	 * @todo Define visibility
+	 * @var array
 	 */
 	public $additionalJS_post = array();
 
-	// Additional JavaScript executed on submit; If you set "OK" variable it will raise an error about RTEs not being loaded and offer to block further submission.
 	/**
+	 * Additional JavaScript executed on submit; If you set "OK" variable it will raise an error
+	 * about RTEs not being loaded and offer to block further submission.
+	 *
 	 * @todo Define visibility
+	 * @var array
 	 */
 	public $additionalJS_submit = array();
 
-	// Additional JavaScript executed when section element is deleted. This is necessary, for example, to correctly clean up HTMLArea RTE (bug #8232)
 	/**
+	 * Additional JavaScript executed when section element is deleted.
+	 * This is necessary, for example, to correctly clean up HTMLArea RTE (bug #8232)
+	 *
 	 * @todo Define visibility
+	 * @var array
 	 */
 	public $additionalJS_delete = array();
 
@@ -543,24 +684,35 @@ class FormEngine {
 	 */
 	public $inline;
 
-	// Array containing hook class instances called once for a form
 	/**
+	 * Array containing hook class instances called once for a form
+	 *
 	 * @todo Define visibility
+	 * @var array
 	 */
 	public $hookObjectsMainFields = array();
 
-	// Array containing hook class instances called for each field
 	/**
+	 * Array containing hook class instances called for each field
+	 *
 	 * @todo Define visibility
+	 * @var array
 	 */
 	public $hookObjectsSingleField = array();
 
-	// Rows gettings inserted into the alt_doc headers (when called from alt_doc.php)
 	/**
+	 * Rows getting inserted into the alt_doc headers (when called from alt_doc.php)
+	 *
 	 * @todo Define visibility
+	 * @var array
 	 */
 	public $extraFormHeaders = array();
 
+	/**
+	 * Form template, relative to typo3 directory
+	 *
+	 * @var string
+	 */
 	public $templateFile = '';
 
 	/**
@@ -573,7 +725,6 @@ class FormEngine {
 	 */
 	protected $suggest;
 
-	// Form templates, relative to typo3 directory
 	/**
 	 * Constructor function, setting internal variables, loading the styles used.
 	 *
@@ -648,7 +799,7 @@ class FormEngine {
 		$this->prependFormFieldNames = 'data';
 		$this->formName = 'editform';
 		$this->setNewBEDesign();
-		$this->edit_showFieldHelp = $this->getBackendUserAuthentication()->uc['edit_showFieldHelp'];
+		$this->edit_showFieldHelp = (bool)$this->getBackendUserAuthentication()->uc['edit_showFieldHelp'];
 		$this->edit_docModuleUpload = (bool)$this->getBackendUserAuthentication()->uc['edit_docModuleUpload'];
 		$this->inline->init($this);
 		$this->suggest->init($this);
@@ -858,7 +1009,7 @@ class FormEngine {
 			foreach ($mParr as $mP) {
 				if (!isset($this->palettesRendered[$this->renderDepth][$table][$mP])) {
 					$temp_palettesCollapsed = $this->palettesCollapsed;
-					$this->palettesCollapsed = 0;
+					$this->palettesCollapsed = FALSE;
 					$label = $i == 0 ? $this->getLL('l_generalOptions') : $this->getLL('l_generalOptions_more');
 					$out_array[$out_sheet][$out_pointer] .= $this->getPaletteFields($table, $row, $mP, $label);
 					$this->palettesCollapsed = $temp_palettesCollapsed;
@@ -5921,7 +6072,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	public function readPerms() {
 		if (!$this->perms_clause_set) {
 			$this->perms_clause = $this->getBackendUserAuthentication()->getPagePermsClause(1);
-			$this->perms_clause_set = 1;
+			$this->perms_clause_set = TRUE;
 		}
 		return $this->perms_clause;
 	}
@@ -6170,6 +6321,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 */
 	public function getAdditionalPreviewLanguages() {
 		if (!isset($this->cachedAdditionalPreviewLanguages)) {
+			$this->cachedAdditionalPreviewLanguages = array();
 			if ($this->getBackendUserAuthentication()->getTSConfigVal('options.additionalPreviewLanguages')) {
 				$uids = GeneralUtility::intExplode(',', $this->getBackendUserAuthentication()->getTSConfigVal('options.additionalPreviewLanguages'));
 				foreach ($uids as $uid) {
@@ -6184,9 +6336,6 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 						}
 					}
 				}
-			} else {
-				// None:
-				$this->cachedAdditionalPreviewLanguages = array();
 			}
 		}
 		return $this->cachedAdditionalPreviewLanguages;
