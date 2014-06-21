@@ -15,8 +15,11 @@ namespace TYPO3\CMS\Backend\Form;
  */
 
 use TYPO3\CMS\Backend\Form\Element\InlineElement;
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Html\RteHtmlParser;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -29,6 +32,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * 'TCEforms' - Class for creating the backend editing forms.
@@ -577,18 +581,19 @@ class FormEngine {
 	 */
 	public function __construct() {
 		$this->clientInfo = GeneralUtility::clientInfo();
-		$this->RTEenabled = $GLOBALS['BE_USER']->isRTE();
+		$this->RTEenabled = $this->getBackendUserAuthentication()->isRTE();
 		if (!$this->RTEenabled) {
-			$this->RTEenabled_notReasons = implode(LF, $GLOBALS['BE_USER']->RTE_errors);
+			$this->RTEenabled_notReasons = implode(LF, $this->getBackendUserAuthentication()->RTE_errors);
 			$this->commentMessages[] = 'RTE NOT ENABLED IN SYSTEM due to:' . LF . $this->RTEenabled_notReasons;
 		}
 		// Default color+class scheme
+		$docTemplate = $this->getControllerDocumentTemplate();
 		$this->defColorScheme = array(
-			$GLOBALS['SOBE']->doc->bgColor,
+			$docTemplate->bgColor,
 			// Background for the field AND palette
-			GeneralUtility::modifyHTMLColorAll($GLOBALS['SOBE']->doc->bgColor, -20),
+			GeneralUtility::modifyHTMLColorAll($docTemplate->bgColor, -20),
 			// Background for the field header
-			GeneralUtility::modifyHTMLColorAll($GLOBALS['SOBE']->doc->bgColor, -10),
+			GeneralUtility::modifyHTMLColorAll($docTemplate->bgColor, -10),
 			// Background for the palette field header
 			'black',
 			// Field header font color
@@ -643,8 +648,8 @@ class FormEngine {
 		$this->prependFormFieldNames = 'data';
 		$this->formName = 'editform';
 		$this->setNewBEDesign();
-		$this->edit_showFieldHelp = $GLOBALS['BE_USER']->uc['edit_showFieldHelp'];
-		$this->edit_docModuleUpload = (bool)$GLOBALS['BE_USER']->uc['edit_docModuleUpload'];
+		$this->edit_showFieldHelp = $this->getBackendUserAuthentication()->uc['edit_showFieldHelp'];
+		$this->edit_docModuleUpload = (bool)$this->getBackendUserAuthentication()->uc['edit_docModuleUpload'];
 		$this->inline->init($this);
 		$this->suggest->init($this);
 	}
@@ -727,7 +732,7 @@ class FormEngine {
 			$dividers2tabs = &$GLOBALS['TCA'][$table]['ctrl']['dividers2tabs'];
 			// Load the description content for the table.
 			if ($this->edit_showFieldHelp || $this->doLoadTableDescr($table)) {
-				$GLOBALS['LANG']->loadSingleTableDescription($table);
+				$this->getLanguageService()->loadSingleTableDescription($table);
 			}
 			// Get the current "type" value for the record.
 			$typeNum = $this->getRTypeNum($table, $row);
@@ -752,7 +757,7 @@ class FormEngine {
 					$tabIdentStringMD5 = '';
 					if (strstr($itemList, '--div--') !== FALSE && $this->enableTabMenu && $dividers2tabs) {
 						$tabIdentString = 'TCEforms:' . $table . ':' . $row['uid'];
-						$tabIdentStringMD5 = $GLOBALS['TBE_TEMPLATE']->getDynTabMenuId($tabIdentString);
+						$tabIdentStringMD5 = $this->getDocumentTemplate()->getDynTabMenuId($tabIdentString);
 						// Remember that were currently working on the general tab:
 						if (isset($fields[0]) && strpos($fields[0], '--div--') !== 0) {
 							$this->pushToDynNestedStack('tab', $tabIdentStringMD5 . '-1');
@@ -920,7 +925,7 @@ class FormEngine {
 	 */
 	public function getListedFields($table, $row, $list) {
 		if ($this->edit_showFieldHelp || $this->doLoadTableDescr($table)) {
-			$GLOBALS['LANG']->loadSingleTableDescription($table);
+			$this->getLanguageService()->loadSingleTableDescription($table);
 		}
 		$out = '';
 		$types_fieldConfig = BackendUtility::getTCAtypes($table, $row, 1);
@@ -1033,7 +1038,7 @@ class FormEngine {
 		if (
 			is_array($PA['fieldConf'])
 			&& !$skipThisField
-			&& (!$PA['fieldConf']['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', $table . ':' . $field))
+			&& (!$PA['fieldConf']['exclude'] || $this->getBackendUserAuthentication()->check('non_exclude_fields', $table . ':' . $field))
 			&& $PA['fieldConf']['config']['form_type'] != 'passthrough'
 			&& ($this->RTEenabled || !$PA['fieldConf']['config']['showIfRTE'])
 			&& $displayConditionResult
@@ -1073,7 +1078,7 @@ class FormEngine {
 					|| !empty($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'])
 					&& GeneralUtility::inList(str_replace(' ', '', $GLOBALS['TCA'][$table]['ctrl']['requestUpdate']), $field)
 				) {
-					if ($GLOBALS['BE_USER']->jsConfirmation(1)) {
+					if ($this->getBackendUserAuthentication()->jsConfirmation(1)) {
 						$alertMsgOnChange = 'if (confirm(TBE_EDITOR.labels.onChangeAlert) && TBE_EDITOR.checkSubmit(-1)){ TBE_EDITOR.submitForm() };';
 					} else {
 						$alertMsgOnChange = 'if (TBE_EDITOR.checkSubmit(-1)){ TBE_EDITOR.submitForm() };';
@@ -1097,10 +1102,10 @@ class FormEngine {
 						}
 					}
 					// onFocus attribute to add to the field:
-					$PA['onFocus'] = $palJSfunc && !$GLOBALS['BE_USER']->uc['dontShowPalettesOnFocusInAB'] ? ' onfocus="' . htmlspecialchars($palJSfunc) . '"' : '';
+					$PA['onFocus'] = $palJSfunc && !$this->getBackendUserAuthentication()->uc['dontShowPalettesOnFocusInAB'] ? ' onfocus="' . htmlspecialchars($palJSfunc) . '"' : '';
 					$PA['label'] = $PA['altName'] ?: $PA['fieldConf']['label'];
 					$PA['label'] = $PA['fieldTSConfig']['label'] ?: $PA['label'];
-					$PA['label'] = $PA['fieldTSConfig']['label.'][$GLOBALS['LANG']->lang] ?: $PA['label'];
+					$PA['label'] = $PA['fieldTSConfig']['label.'][$this->getLanguageService()->lang] ?: $PA['label'];
 					$PA['label'] = $this->sL($PA['label']);
 					// JavaScript code for event handlers:
 					$PA['fieldChangeFunc'] = array();
@@ -1147,7 +1152,7 @@ class FormEngine {
 							'<input type="hidden" name="' . htmlspecialchars($PA['itemFormElNameActive']) . '" value="0" />' .
 							'<input type="checkbox" name="' . htmlspecialchars($PA['itemFormElNameActive']) . '" value="1" id="tce-forms-textfield-use-override-' . $field . '-' . $row['uid'] . '" onchange="' . htmlspecialchars($onChange) . '"' . $checked . ' />' .
 							'<label for="tce-forms-textfield-use-override-' . $field . '-' . $row['uid'] . '">' .
-							sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.placeholder.override'),
+							sprintf($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.placeholder.override'),
 							BackendUtility::getRecordTitlePrep($placeholder, 20)) . '</label>' .
 						'</span>'
 						. '<div class="t3-form-placeholder-placeholder">' . $this->getSingleField_typeNone_render(
@@ -1526,7 +1531,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 				list($tscPID, $thePidValue) = $this->getTSCpid($table, $row['uid'], $row['pid']);
 				// If the pid-value is not negative (that is, a pid could NOT be fetched)
 				if ($thePidValue >= 0) {
-					$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE', BackendUtility::getPagesTSconfig($tscPID));
+					$RTEsetup = $this->getBackendUserAuthentication()->getTSConfig('RTE', BackendUtility::getPagesTSconfig($tscPID));
 					$RTEtypeVal = BackendUtility::getTCAtypeValue($table, $row);
 					$thisConfig = BackendUtility::RTEsetup($RTEsetup['properties'], $table, $field, $RTEtypeVal);
 					if (!$thisConfig['disabled']) {
@@ -1822,10 +1827,11 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 
 			// Checking languages and authMode:
 			$languageDeny = FALSE;
+			$beUserAuth = $this->getBackendUserAuthentication();
 			if (
 				!empty($GLOBALS['TCA'][$table]['ctrl']['languageField'])
 				&& $GLOBALS['TCA'][$table]['ctrl']['languageField'] === $fieldName
-				&& !$GLOBALS['BE_USER']->checkLanguageAccess($selectItem[1])
+				&& !$beUserAuth->checkLanguageAccess($selectItem[1])
 			) {
 				$languageDeny = TRUE;
 			}
@@ -1834,7 +1840,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			if (
 				($config['form_type'] === 'select')
 				&& $config['authMode']
-				&& !$GLOBALS['BE_USER']->checkAuthMode($table, $fieldName, $selectItem[1], $config['authMode'])
+				&& !$beUserAuth->checkAuthMode($table, $fieldName, $selectItem[1], $config['authMode'])
 			) {
 				$authModeDeny = TRUE;
 			}
@@ -1847,7 +1853,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 
 			// Removing doktypes with no access:
 			if (($table === 'pages' || $table === 'pages_language_overlay') && $fieldName === 'doktype') {
-				if (!($GLOBALS['BE_USER']->isAdmin() || GeneralUtility::inList($GLOBALS['BE_USER']->groupData['pagetypes_select'], $selectItem[1]))) {
+				if (!($beUserAuth->isAdmin() || GeneralUtility::inList($beUserAuth->groupData['pagetypes_select'], $selectItem[1]))) {
 					unset($selectItems[$selectItemIndex]);
 				}
 			}
@@ -2300,7 +2306,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 		foreach ($itemArray as $tk => $tv) {
 			$tvP = explode('|', $tv, 2);
 			$evalValue = $tvP[0];
-			$isRemoved = in_array($evalValue, $removeItems) || $config['form_type'] == 'select' && $config['authMode'] && !$GLOBALS['BE_USER']->checkAuthMode($table, $field, $evalValue, $config['authMode']);
+			$isRemoved = in_array($evalValue, $removeItems) || $config['form_type'] == 'select' && $config['authMode'] && !$this->getBackendUserAuthentication()->checkAuthMode($table, $field, $evalValue, $config['authMode']);
 			if ($isRemoved && !$PA['fieldTSConfig']['disableNoMatchingValueElement'] && !$config['disableNoMatchingValueElement']) {
 				$tvP[1] = rawurlencode(@sprintf($nMV_label, $evalValue));
 			} elseif (isset($PA['fieldTSConfig']['altLabels.'][$evalValue])) {
@@ -2588,7 +2594,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 									<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . IconUtility::getSpriteIconForRecord($theT, array()) . htmlspecialchars($this->sL($GLOBALS['TCA'][$theT]['ctrl']['title'])) . '</a></span><br />';
 				}
 			}
-			$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
+			$perms_clause = $this->getBackendUserAuthentication()->getPagePermsClause(1);
 			$itemArray = array();
 			$imgs = array();
 			// Thumbnails:
@@ -2733,8 +2739,8 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			$xmlHeaderAttributes = GeneralUtility::xmlGetHeaderAttribs($xmlData);
 			$storeInCharset = strtolower($xmlHeaderAttributes['encoding']);
 			if ($storeInCharset) {
-				$currentCharset = $GLOBALS['LANG']->charSet;
-				$xmlData = $GLOBALS['LANG']->csConvObj->conv($xmlData, $storeInCharset, $currentCharset, 1);
+				$currentCharset = $this->getLanguageService()->charSet;
+				$xmlData = $this->getLanguageService()->csConvObj->conv($xmlData, $storeInCharset, $currentCharset, 1);
 			}
 			$editData = GeneralUtility::xml2array($xmlData);
 			// Must be XML parsing error...
@@ -2751,13 +2757,13 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			$langDisabled = $dataStructArray['meta']['langDisable'] ? 1 : 0;
 			$editData['meta']['currentLangId'] = array();
 			// Look up page overlays:
-			$checkPageLanguageOverlay = $GLOBALS['BE_USER']->getTSConfigVal('options.checkPageLanguageOverlay') ? TRUE : FALSE;
+			$checkPageLanguageOverlay = $this->getBackendUserAuthentication()->getTSConfigVal('options.checkPageLanguageOverlay') ? TRUE : FALSE;
 			if ($checkPageLanguageOverlay) {
-				$pageOverlays = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'pages_language_overlay', 'pid=' . (int)$row['pid'] . BackendUtility::deleteClause('pages_language_overlay') . BackendUtility::versioningPlaceholderClause('pages_language_overlay'), '', '', '', 'sys_language_uid');
+				$pageOverlays = $this->getDatabaseConnection()->exec_SELECTgetRows('*', 'pages_language_overlay', 'pid=' . (int)$row['pid'] . BackendUtility::deleteClause('pages_language_overlay') . BackendUtility::versioningPlaceholderClause('pages_language_overlay'), '', '', '', 'sys_language_uid');
 			}
 			$languages = $this->getAvailableLanguages();
 			foreach ($languages as $lInfo) {
-				if ($GLOBALS['BE_USER']->checkLanguageAccess($lInfo['uid']) && (!$checkPageLanguageOverlay || $lInfo['uid'] <= 0 || is_array($pageOverlays[$lInfo['uid']]))) {
+				if ($this->getBackendUserAuthentication()->checkLanguageAccess($lInfo['uid']) && (!$checkPageLanguageOverlay || $lInfo['uid'] <= 0 || is_array($pageOverlays[$lInfo['uid']]))) {
 					$editData['meta']['currentLangId'][] = $lInfo['ISOcode'];
 				}
 			}
@@ -2844,7 +2850,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 						}
 						// Push the sheet level tab to DynNestedStack
 						if (is_array($dataStructArray['sheets'])) {
-							$tabIdentString = $GLOBALS['TBE_TEMPLATE']->getDynTabMenuId('TCEFORMS:flexform:' . $PA['itemFormElName'] . $PA['_lang']);
+							$tabIdentString = $this->getDocumentTemplate()->getDynTabMenuId('TCEFORMS:flexform:' . $PA['itemFormElName'] . $PA['_lang']);
 							$this->pushToDynNestedStack('tab', $tabIdentString . '-' . (count($tabParts) + 1));
 						}
 						// Render flexform:
@@ -2910,7 +2916,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 		$tCells = array();
 		$pct = round(100 / count($sArr));
 		foreach ($sArr as $sKey => $sheetCfg) {
-			if ($GLOBALS['BE_USER']->jsConfirmation(1)) {
+			if ($this->getBackendUserAuthentication()->jsConfirmation(1)) {
 				$onClick = 'if (confirm(TBE_EDITOR.labels.onChangeAlert) && TBE_EDITOR.checkSubmit(-1)){' . $this->elName($elName) . '.value=\'' . $sKey . '\'; TBE_EDITOR.submitForm()};';
 			} else {
 				$onClick = 'if(TBE_EDITOR.checkSubmit(-1)){ ' . $this->elName($elName) . '.value=\'' . $sKey . '\'; TBE_EDITOR.submitForm();}';
@@ -2938,7 +2944,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 */
 	public function getSingleField_typeFlex_draw($dataStruct, $editData, $table, $field, $row, &$PA, $formPrefix = '', $level = 0, $idPrefix = 'ID', $toggleClosed = FALSE) {
 		$output = '';
-		$mayRestructureFlexforms = $GLOBALS['BE_USER']->checkLanguageAccess(0);
+		$mayRestructureFlexforms = $this->getBackendUserAuthentication()->checkLanguageAccess(0);
 		// Data Structure array must be ... and array of course...
 		if (is_array($dataStruct)) {
 			foreach ($dataStruct as $key => $value) {
@@ -2954,7 +2960,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 
 					// If there is a title, check for LLL label
 					if (strlen($theTitle) > 0) {
-						$theTitle = htmlspecialchars(GeneralUtility::fixed_lgd_cs($this->sL($theTitle), (int)$GLOBALS['BE_USER']->uc['titleLen']));
+						$theTitle = htmlspecialchars(GeneralUtility::fixed_lgd_cs($this->sL($theTitle), (int)$this->getBackendUserAuthentication()->uc['titleLen']));
 					}
 					// If it's a "section" or "container":
 					if ($value['type'] == 'array') {
@@ -2967,7 +2973,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 						// If it's a "section" containing other elements:
 						if ($value['section']) {
 							// Load script.aculo.us if flexform sections can be moved by drag'n'drop:
-							$GLOBALS['SOBE']->doc->getPageRenderer()->loadScriptaculous();
+							$this->getControllerDocumentTemplate()->getPageRenderer()->loadScriptaculous();
 							// Render header of section:
 							$output .= '<div class="t3-form-field-label-flexsection"><strong>' . $theTitle . '</strong></div>';
 							// Render elements in data array for section:
@@ -3033,7 +3039,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 							// Reverting internal variables we don't want to change:
 							$this->requiredElements = $TEMP_requiredElements;
 							// Adding the sections:
-							$toggleAll = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.toggleall', TRUE);
+							$toggleAll = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.toggleall', TRUE);
 							$output .= '
 							<div class="t3-form-field-toggle-flexsection">
 								<a href="#" onclick="' . htmlspecialchars(('flexFormToggleSubs("' . $idTagPrefix . '"); return false;')) . '">' . IconUtility::getSpriteIcon('actions-move-right', array('title' => $toggleAll)) . $toggleAll . '
@@ -3041,7 +3047,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 							</div>
 
 							<div id="' . $idTagPrefix . '" class="t3-form-field-container-flexsection">' . implode('', $tRows) . '</div>';
-							$output .= $mayRestructureFlexforms ? '<div class="t3-form-field-add-flexsection"><strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.addnew', TRUE) . ':</strong> ' . implode(' | ', $newElementsLinks) . '</div>' : '';
+							$output .= $mayRestructureFlexforms ? '<div class="t3-form-field-add-flexsection"><strong>' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.addnew', TRUE) . ':</strong> ' . implode(' | ', $newElementsLinks) . '</div>' : '';
 						} else {
 							// It is a container
 							$toggleIcon_open = IconUtility::getSpriteIcon('actions-move-down');
@@ -3125,7 +3131,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 									|| !empty($GLOBALS['TCA'][$table]['ctrl']['type']) && (string)$key === $GLOBALS['TCA'][$table]['ctrl']['type']
 									|| !empty($GLOBALS['TCA'][$table]['ctrl']['requestUpdate']) && GeneralUtility::inList($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'], $key)
 								) {
-									if ($GLOBALS['BE_USER']->jsConfirmation(1)) {
+									if ($this->getBackendUserAuthentication()->jsConfirmation(1)) {
 										$alertMsgOnChange = 'if (confirm(TBE_EDITOR.labels.onChangeAlert) && TBE_EDITOR.checkSubmit(-1)){ TBE_EDITOR.submitForm() };';
 									} else {
 										$alertMsgOnChange = 'if(TBE_EDITOR.checkSubmit(-1)){ TBE_EDITOR.submitForm();}';
@@ -3249,7 +3255,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 					$value = '';
 				}
 				if ($config['format.']['appendAge']) {
-					$value .= ' (' . BackendUtility::calcAge(($GLOBALS['EXEC_TIME'] - $itemValue), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')) . ')';
+					$value .= ' (' . BackendUtility::calcAge(($GLOBALS['EXEC_TIME'] - $itemValue), $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')) . ')';
 				}
 				$itemValue = $value;
 				break;
@@ -4074,7 +4080,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 */
 	public function getClickMenu($str, $table, $uid = 0) {
 		if ($this->enableClickMenu) {
-			$onClick = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($str, $table, $uid, 1, '', '+copy,info,edit,view', TRUE);
+			$onClick = $this->getControllerDocumentTemplate()->wrapClickMenuOnIcon($str, $table, $uid, 1, '', '+copy,info,edit,view', TRUE);
 			return '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $str . '</a>';
 		}
 	}
@@ -4698,9 +4704,10 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 * @todo Define visibility
 	 */
 	public function getDynTabMenu($parts, $idString, $dividersToTabsBehaviour = 1) {
-		if (is_object($GLOBALS['TBE_TEMPLATE'])) {
-			$GLOBALS['TBE_TEMPLATE']->backPath = $this->backPath;
-			return $GLOBALS['TBE_TEMPLATE']->getDynTabMenu($parts, $idString, 0, FALSE, 1, FALSE, 1, $dividersToTabsBehaviour);
+		$docTemplate = $this->getDocumentTemplate();
+		if (is_object($docTemplate)) {
+			$docTemplate->backPath = $this->backPath;
+			return $docTemplate->getDynTabMenu($parts, $idString, 0, FALSE, 1, FALSE, 1, $dividersToTabsBehaviour);
 		} else {
 			$output = '';
 			foreach ($parts as $singlePad) {
@@ -4846,6 +4853,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 		}
 		// If 'special' is configured:
 		if ($fieldValue['config']['special']) {
+			$lang = $this->getLanguageService();
 			switch ($fieldValue['config']['special']) {
 				case 'tables':
 					$temp_tc = array_keys($GLOBALS['TCA']);
@@ -4855,7 +4863,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 							$icon = IconUtility::mapRecordTypeToSpriteIconName($theTableNames, array());
 							// Add help text
 							$helpText = array();
-							$GLOBALS['LANG']->loadSingleTableDescription($theTableNames);
+							$lang->loadSingleTableDescription($theTableNames);
 							$helpTextArray = $GLOBALS['TCA_DESCR'][$theTableNames]['columns'][''];
 							if (!empty($helpTextArray['description'])) {
 								$helpText['description'] = $helpTextArray['description'];
@@ -4904,14 +4912,14 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 						}
 						// Add help text
 						$helpText = array();
-						$GLOBALS['LANG']->loadSingleTableDescription($theTable);
+						$lang->loadSingleTableDescription($theTable);
 						$helpTextArray = $GLOBALS['TCA_DESCR'][$theTable]['columns'][$theFullField];
 						if (!empty($helpTextArray['description'])) {
 							$helpText['description'] = $helpTextArray['description'];
 						}
 						// Item configuration:
 						$items[] = array(
-							rtrim($GLOBALS['LANG']->sl($GLOBALS['TCA'][$theTable]['columns'][$theField]['label']), ':') . ' (' . $theField . ')',
+							rtrim($lang->sl($GLOBALS['TCA'][$theTable]['columns'][$theField]['label']), ':') . ' (' . $theField . ')',
 							$theTypeArrays[1],
 							'empty-empty',
 							$helpText
@@ -4956,7 +4964,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 							if (is_array($coValue['items'])) {
 								// Add header:
 								$items[] = array(
-									$GLOBALS['LANG']->sl($coValue['header']),
+									$lang->sl($coValue['header']),
 									'--div--'
 								);
 								// Traverse items:
@@ -4970,11 +4978,11 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 									// Add help text
 									$helpText = array();
 									if (!empty($itemCfg[2])) {
-										$helpText['description'] = $GLOBALS['LANG']->sl($itemCfg[2]);
+										$helpText['description'] = $lang->sl($itemCfg[2]);
 									}
 									// Add item to be selected:
 									$items[] = array(
-										$GLOBALS['LANG']->sl($itemCfg[0]),
+										$lang->sl($itemCfg[0]),
 										$coKey . ':' . preg_replace('/[:|,]/', '', $itemKey),
 										$icon,
 										$helpText
@@ -4993,14 +5001,14 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 					if (is_array($modList)) {
 						foreach ($modList as $theMod) {
 							// Icon:
-							$icon = $GLOBALS['LANG']->moduleLabels['tabs_images'][$theMod . '_tab'];
+							$icon = $lang->moduleLabels['tabs_images'][$theMod . '_tab'];
 							if ($icon) {
 								$icon = '../' . PathUtility::stripPathSitePrefix($icon);
 							}
 							// Add help text
 							$helpText = array(
-								'title' => $GLOBALS['LANG']->moduleLabels['labels'][$theMod . '_tablabel'],
-								'description' => $GLOBALS['LANG']->moduleLabels['labels'][$theMod . '_tabdescr']
+								'title' => $lang->moduleLabels['labels'][$theMod . '_tablabel'],
+								'description' => $lang->moduleLabels['labels'][$theMod . '_tabdescr']
 							);
 							// Item configuration:
 							$items[] = array(
@@ -5032,10 +5040,10 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 		// Add label for main module:
 		$pp = explode('_', $value);
 		if (count($pp) > 1) {
-			$label .= $GLOBALS['LANG']->moduleLabels['tabs'][($pp[0] . '_tab')] . '>';
+			$label .= $this->getLanguageService()->moduleLabels['tabs'][($pp[0] . '_tab')] . '>';
 		}
 		// Add modules own label now:
-		$label .= $GLOBALS['LANG']->moduleLabels['tabs'][$value . '_tab'];
+		$label .= $this->getLanguageService()->moduleLabels['tabs'][$value . '_tab'];
 		return $label;
 	}
 
@@ -5059,8 +5067,9 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 		// Exec query:
 		$res = BackendUtility::exec_foreign_table_where_query($fieldValue, $field, $TSconfig, $pF);
 		// Perform error test
-		if ($GLOBALS['TYPO3_DB']->sql_error()) {
-			$msg = htmlspecialchars($GLOBALS['TYPO3_DB']->sql_error());
+		$db = $this->getDatabaseConnection();
+		if ($db->sql_error()) {
+			$msg = htmlspecialchars($db->sql_error());
 			$msg .= '<br />' . LF;
 			$msg .= $this->sL('LLL:EXT:lang/locallang_core.xlf:error.database_schema_mismatch');
 			$msgTitle = $this->sL('LLL:EXT:lang/locallang_core.xlf:error.database_schema_mismatch_title');
@@ -5079,7 +5088,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 		$iField = $GLOBALS['TCA'][$f_table]['ctrl']['selicon_field'];
 		$iPath = trim($GLOBALS['TCA'][$f_table]['ctrl']['selicon_field_path']);
 		// Traverse the selected rows to add them:
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+		while ($row = $db->sql_fetch_assoc($res)) {
 			BackendUtility::workspaceOL($f_table, $row);
 			if (is_array($row)) {
 				// Prepare the icon if available:
@@ -5099,7 +5108,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 				);
 			}
 		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		$db->sql_free_result($res);
 		return $items;
 	}
 
@@ -5213,22 +5222,23 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 */
 	public function replaceTableWrap($arr, $rec, $table) {
 		// Make "new"-label
+		$lang = $this->getLanguageService();
 		if (strstr($rec['uid'], 'NEW')) {
-			$newLabel = ' <span class="typo3-TCEforms-newToken">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.new', TRUE) . '</span>';
+			$newLabel = ' <span class="typo3-TCEforms-newToken">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.new', TRUE) . '</span>';
 			// BackendUtility::fixVersioningPid Should not be used here because NEW records are not offline workspace versions...
 			$truePid = BackendUtility::getTSconfig_pidValue($table, $rec['uid'], $rec['pid']);
 			$prec = BackendUtility::getRecordWSOL('pages', $truePid, 'title');
 			$pageTitle = BackendUtility::getRecordTitle('pages', $prec, TRUE, FALSE);
 			$rLabel = '<em>[PID: ' . $truePid . '] ' . $pageTitle . '</em>';
 			// Fetch translated title of the table
-			$tableTitle = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['ctrl']['title']);
+			$tableTitle = $lang->sL($GLOBALS['TCA'][$table]['ctrl']['title']);
 			if ($table === 'pages') {
-				$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.createNewPage', TRUE);
+				$label = $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.createNewPage', TRUE);
 				$pageTitle = sprintf($label, $tableTitle);
 			} else {
-				$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.createNewRecord', TRUE);
+				$label = $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.createNewRecord', TRUE);
 				if ($rec['pid'] == 0) {
-					$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.createNewRecordRootLevel', TRUE);
+					$label = $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.createNewRecordRootLevel', TRUE);
 				}
 				$pageTitle = sprintf($label, $tableTitle, $pageTitle);
 			}
@@ -5237,19 +5247,19 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			$rLabel = BackendUtility::getRecordTitle($table, $rec, TRUE, FALSE);
 			$prec = BackendUtility::getRecordWSOL('pages', $rec['pid'], 'uid,title');
 			// Fetch translated title of the table
-			$tableTitle = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['ctrl']['title']);
+			$tableTitle = $lang->sL($GLOBALS['TCA'][$table]['ctrl']['title']);
 			if ($table === 'pages') {
-				$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.editPage', TRUE);
+				$label = $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.editPage', TRUE);
 				// Just take the record title and prepend an edit label.
 				$pageTitle = sprintf($label, $tableTitle, $rLabel);
 			} else {
-				$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.editRecord', TRUE);
+				$label = $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.editRecord', TRUE);
 				$pageTitle = BackendUtility::getRecordTitle('pages', $prec, TRUE, FALSE);
 				if ($rLabel === BackendUtility::getNoRecordTitle(TRUE)) {
-					$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.editRecordNoTitle', TRUE);
+					$label = $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.editRecordNoTitle', TRUE);
 				}
 				if ($rec['pid'] == 0) {
-					$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.editRecordRootLevel', TRUE);
+					$label = $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.editRecordRootLevel', TRUE);
 				}
 				if ($rLabel !== BackendUtility::getNoRecordTitle(TRUE)) {
 					// Just take the record title and prepend an edit label.
@@ -5536,7 +5546,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 *
 	 * Example use:
 	 *
-	 * $msg .= 'Distribution time (hh:mm dd-mm-yy):<br /><input type="text" name="send_mail_datetime_hr" onchange="typo3form.fieldGet(\'send_mail_datetime\', \'datetime\', \'\', 0,0);"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' /><input type="hidden" value="' . $GLOBALS['EXEC_TIME'] . '" name="send_mail_datetime" /><br />';
+	 * $msg .= 'Distribution time (hh:mm dd-mm-yy):<br /><input type="text" name="send_mail_datetime_hr" onchange="typo3form.fieldGet(\'send_mail_datetime\', \'datetime\', \'\', 0,0);"' . $this->getTBE()->formWidth(20) . ' /><input type="hidden" value="' . $GLOBALS['EXEC_TIME'] . '" name="send_mail_datetime" /><br />';
 	 * $this->extJSCODE.='typo3form.fieldSet("send_mail_datetime", "datetime", "", 0,0);';
 	 *
 	 * ... and then include the result of this function after the form
@@ -5584,14 +5594,15 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			$pageRenderer->loadJquery();
 			$pageRenderer->loadExtJS();
 			// Make textareas resizable and flexible
-			if (!($GLOBALS['BE_USER']->uc['resizeTextareas'] == '0' && $GLOBALS['BE_USER']->uc['resizeTextareas_Flexible'] == '0')) {
+			$beUserAuth = $this->getBackendUserAuthentication();
+			if (!($beUserAuth->uc['resizeTextareas'] == '0' && $beUserAuth->uc['resizeTextareas_Flexible'] == '0')) {
 				$pageRenderer->addCssFile($this->backPath . 'js/extjs/ux/resize.css');
 				$this->loadJavascriptLib('js/extjs/ux/ext.resizable.js');
 			}
 			$resizableSettings = array(
-				'textareaMaxHeight' => $GLOBALS['BE_USER']->uc['resizeTextareas_MaxHeight'] > 0 ? $GLOBALS['BE_USER']->uc['resizeTextareas_MaxHeight'] : '600',
-				'textareaFlexible' => !$GLOBALS['BE_USER']->uc['resizeTextareas_Flexible'] == '0',
-				'textareaResize' => !$GLOBALS['BE_USER']->uc['resizeTextareas'] == '0'
+				'textareaMaxHeight' => $beUserAuth->uc['resizeTextareas_MaxHeight'] > 0 ? $beUserAuth->uc['resizeTextareas_MaxHeight'] : '600',
+				'textareaFlexible' => !$beUserAuth->uc['resizeTextareas_Flexible'] == '0',
+				'textareaResize' => !$beUserAuth->uc['resizeTextareas'] == '0'
 			);
 			$pageRenderer->addInlineSettingArray('', $resizableSettings);
 			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.evalfield.js');
@@ -5703,7 +5714,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			TBE_EDITOR.images.sel.src = "' . IconUtility::skinImg($this->backPath, 'gfx/content_selected.gif', '', 1) . '";
 			TBE_EDITOR.images.clear.src = "' . $this->backPath . 'clear.gif";
 
-			TBE_EDITOR.auth_timeout_field = ' . (int)$GLOBALS['BE_USER']->auth_timeout_field . ';
+			TBE_EDITOR.auth_timeout_field = ' . (int)$beUserAuth->auth_timeout_field . ';
 			TBE_EDITOR.formname = "' . $formname . '";
 			TBE_EDITOR.formnameUENC = "' . rawurlencode($formname) . '";
 			TBE_EDITOR.backPath = "' . addslashes($this->backPath) . '";
@@ -5712,12 +5723,12 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			TBE_EDITOR.prependFormFieldNamesCnt = ' . substr_count($this->prependFormFieldNames, '[') . ';
 			TBE_EDITOR.isPalettedoc = ' . ($this->isPalettedoc ? addslashes($this->isPalettedoc) : 'null') . ';
 			TBE_EDITOR.doSaveFieldName = "' . ($this->doSaveFieldName ? addslashes($this->doSaveFieldName) : '') . '";
-			TBE_EDITOR.labels.fieldsChanged = ' . GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.fieldsChanged')) . ';
-			TBE_EDITOR.labels.fieldsMissing = ' . GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.fieldsMissing')) . ';
+			TBE_EDITOR.labels.fieldsChanged = ' . GeneralUtility::quoteJSvalue($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.fieldsChanged')) . ';
+			TBE_EDITOR.labels.fieldsMissing = ' . GeneralUtility::quoteJSvalue($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.fieldsMissing')) . ';
 			TBE_EDITOR.labels.refresh_login = ' . GeneralUtility::quoteJSvalue($this->getLL('m_refresh_login')) . ';
 			TBE_EDITOR.labels.onChangeAlert = ' . GeneralUtility::quoteJSvalue($this->getLL('m_onChangeAlert')) . ';
 			evalFunc.USmode = ' . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? '1' : '0') . ';
-			TBE_EDITOR.backend_interface = "' . $GLOBALS['BE_USER']->uc['interfaceSetup'] . '";
+			TBE_EDITOR.backend_interface = "' . $beUserAuth->uc['interfaceSetup'] . '";
 
 			TBE_EDITOR.customEvalFunctions = {};
 
@@ -5784,7 +5795,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	public function printNeededJSFunctions() {
 
 		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
-		$pageRenderer = $GLOBALS['SOBE']->doc->getPageRenderer();
+		$pageRenderer = $this->getControllerDocumentTemplate()->getPageRenderer();
 
 		// set variables to be accessible for JS
 		$pageRenderer->addInlineSetting('FormEngine', 'formName', $this->formName);
@@ -5820,7 +5831,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 * @return void
 	 */
 	public function loadJavascriptLib($lib) {
-		$GLOBALS['SOBE']->doc->loadJavascriptLib($lib);
+		$this->getControllerDocumentTemplate()->loadJavascriptLib($lib);
 	}
 
 	/**
@@ -5829,7 +5840,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 * @return \TYPO3\CMS\Core\Page\PageRenderer
 	 */
 	protected function getPageRenderer() {
-		return $GLOBALS['SOBE']->doc->getPageRenderer();
+		return $this->getControllerDocumentTemplate()->getPageRenderer();
 	}
 
 	/********************************************
@@ -5850,8 +5861,9 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			$row = array();
 			if ($pid < 0 && $GLOBALS['TCA'][$table]['ctrl']['useColumnsForDefaultValues']) {
 				// Fetches the previous record:
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'uid=' . abs($pid) . BackendUtility::deleteClause($table));
-				if ($drow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+				$db = $this->getDatabaseConnection();
+				$res = $db->exec_SELECTquery('*', $table, 'uid=' . abs($pid) . BackendUtility::deleteClause($table));
+				if ($drow = $db->sql_fetch_assoc($res)) {
 					// Gets the list of fields to copy from the previous record.
 					$fArr = explode(',', $GLOBALS['TCA'][$table]['ctrl']['useColumnsForDefaultValues']);
 					foreach ($fArr as $theF) {
@@ -5860,7 +5872,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 						}
 					}
 				}
-				$GLOBALS['TYPO3_DB']->sql_free_result($res);
+				$db->sql_free_result($res);
 			}
 			foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $info) {
 				if (isset($info['config']['default'])) {
@@ -5908,7 +5920,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 */
 	public function readPerms() {
 		if (!$this->perms_clause_set) {
-			$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
+			$this->perms_clause = $this->getBackendUserAuthentication()->getPagePermsClause(1);
 			$this->perms_clause_set = 1;
 		}
 		return $this->perms_clause;
@@ -5922,7 +5934,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 * @todo Define visibility
 	 */
 	public function sL($str) {
-		return $GLOBALS['LANG']->sL($str);
+		return $this->getLanguageService()->sL($str);
 	}
 
 	/**
@@ -5939,10 +5951,10 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 		$content = '';
 		switch (substr($str, 0, 2)) {
 			case 'l_':
-				$content = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.' . substr($str, 2));
+				$content = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.' . substr($str, 2));
 				break;
 			case 'm_':
-				$content = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.' . substr($str, 2));
+				$content = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:mess.' . substr($str, 2));
 				break;
 		}
 		return $content;
@@ -6027,7 +6039,8 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	public function getAvailableLanguages($onlyIsoCoded = TRUE, $setDefault = TRUE) {
 		$isL = ExtensionManagementUtility::isLoaded('static_info_tables');
 		// Find all language records in the system:
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('static_lang_isocode,title,uid', 'sys_language', 'pid=0 AND hidden=0' . BackendUtility::deleteClause('sys_language'), '', 'title');
+		$db = $this->getDatabaseConnection();
+		$res = $db->exec_SELECTquery('static_lang_isocode,title,uid', 'sys_language', 'pid=0 AND hidden=0' . BackendUtility::deleteClause('sys_language'), '', 'title');
 		// Traverse them:
 		$output = array();
 		if ($setDefault) {
@@ -6037,7 +6050,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 				'ISOcode' => 'DEF'
 			);
 		}
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+		while ($row = $db->sql_fetch_assoc($res)) {
 			$output[$row['uid']] = $row;
 			if ($isL && $row['static_lang_isocode']) {
 				$rr = BackendUtility::getRecord('static_languages', $row['static_lang_isocode'], 'lg_iso_2');
@@ -6049,7 +6062,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 				unset($output[$row['uid']]);
 			}
 		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		$db->sql_free_result($res);
 		return $output;
 	}
 
@@ -6157,8 +6170,8 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 */
 	public function getAdditionalPreviewLanguages() {
 		if (!isset($this->cachedAdditionalPreviewLanguages)) {
-			if ($GLOBALS['BE_USER']->getTSConfigVal('options.additionalPreviewLanguages')) {
-				$uids = GeneralUtility::intExplode(',', $GLOBALS['BE_USER']->getTSConfigVal('options.additionalPreviewLanguages'));
+			if ($this->getBackendUserAuthentication()->getTSConfigVal('options.additionalPreviewLanguages')) {
+				$uids = GeneralUtility::intExplode(',', $this->getBackendUserAuthentication()->getTSConfigVal('options.additionalPreviewLanguages'));
 				foreach ($uids as $uid) {
 					if ($sys_language_rec = BackendUtility::getRecord('sys_language', $uid)) {
 						$this->cachedAdditionalPreviewLanguages[$uid] = array('uid' => $uid);
@@ -6328,6 +6341,43 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 * @return void
 	 */
 	public function addStyleSheet($key, $href, $title = '', $relation = 'stylesheet') {
-		$GLOBALS['SOBE']->doc->addStyleSheet($key, $href, $title, $relation);
+		$this->getControllerDocumentTemplate()->addStyleSheet($key, $href, $title, $relation);
+	}
+
+	/**
+	 * @return BackendUserAuthentication
+	 */
+	protected function getBackendUserAuthentication() {
+		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * @return DocumentTemplate
+	 */
+	protected function getControllerDocumentTemplate() {
+		// $GLOBALS['SOBE'] might be any kind of PHP class (controller most of the times)
+		// These class do not inherit from any common class, but they all seem to have a "doc" member
+		return $GLOBALS['SOBE']->doc;
+	}
+
+	/**
+	 * @return DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
+	}
+
+	/**
+	 * @return LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
+
+	/**
+	 * @return DocumentTemplate
+	 */
+	protected function getDocumentTemplate() {
+		return $GLOBALS['TBE_TEMPLATE'];
 	}
 }
