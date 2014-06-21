@@ -13,7 +13,6 @@ return array(
 		'transOrigDiffSourceField' => 'l10n_diffsource',
 		'default_sortby' => 'ORDER BY crdate',
 		'delete' => 'deleted',
-		'rootlevel' => -1,
 		'type' => 'type',
 		'typeicon_column' => 'type',
 		'typeicon_classes' => array(
