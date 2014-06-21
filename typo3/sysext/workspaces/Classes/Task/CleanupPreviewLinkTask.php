@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Workspaces\Task;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * This class provides a task to cleanup ol preview links.
  *

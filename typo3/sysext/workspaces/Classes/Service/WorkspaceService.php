@@ -86,6 +86,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param integer $wsId
 	 * @return string
+	 * @throws \InvalidArgumentException
 	 */
 	static public function getWorkspaceTitle($wsId) {
 		$title = FALSE;
@@ -109,11 +110,11 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Building tcemain CMD-array for swapping all versions in a workspace.
 	 *
-	 * @param 	integer		Real workspace ID, cannot be ONLINE (zero).
-	 * @param 	boolean		If set, then the currently online versions are swapped into the workspace in exchange for the offline versions. Otherwise the workspace is emptied.
-	 * @param 	integer		$pageId: ...
-	 * @param 	integer		$language Select specific language only
-	 * @return 	array		Command array for tcemain
+	 * @param integer Real workspace ID, cannot be ONLINE (zero).
+	 * @param boolean If set, then the currently online versions are swapped into the workspace in exchange for the offline versions. Otherwise the workspace is emptied.
+	 * @param integer $pageId The page id
+	 * @param integer $language Select specific language only
+	 * @return array Command array for tcemain
 	 */
 	public function getCmdArrayForPublishWS($wsid, $doSwap, $pageId = 0, $language = NULL) {
 		$wsid = (int)$wsid;
@@ -143,11 +144,11 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Building tcemain CMD-array for releasing all versions in a workspace.
 	 *
-	 * @param 	integer		Real workspace ID, cannot be ONLINE (zero).
-	 * @param 	boolean		Run Flush (TRUE) or ClearWSID (FALSE) command
-	 * @param 	integer		$pageId: ...
-	 * @param 	integer		$language Select specific language only
-	 * @return 	array		Command array for tcemain
+	 * @param integer Real workspace ID, cannot be ONLINE (zero).
+	 * @param boolean Run Flush (TRUE) or ClearWSID (FALSE) command
+	 * @param integer $pageId The page id
+	 * @param integer $language Select specific language only
+	 * @return array Command array for tcemain
 	 */
 	public function getCmdArrayForFlushWS($wsid, $flush = TRUE, $pageId = 0, $language = NULL) {
 		$wsid = (int)$wsid;
@@ -173,14 +174,14 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Used from backend to display workspace overview
 	 * User for auto-publishing for selecting versions for publication
 	 *
-	 * @param 	integer		Workspace ID. If -99, will select ALL versions from ANY workspace. If -98 will select all but ONLINE. >=-1 will select from the actual workspace
-	 * @param 	integer		Lifecycle filter: 1 = select all drafts (never-published), 2 = select all published one or more times (archive/multiple), anything else selects all.
-	 * @param 	integer		Stage filter: -99 means no filtering, otherwise it will be used to select only elements with that stage. For publishing, that would be "10
-	 * @param 	integer		Page id: Live page for which to find versions in workspace!
-	 * @param 	integer		Recursion Level - select versions recursive - parameter is only relevant if $pageId != -1
-	 * @param 	string		How to collect records for "listing" or "modify" these tables. Support the permissions of each type of record, see \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::check.
-	 * @param 	integer		$language Select specific language only
-	 * @return 	array		Array of all records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid and t3ver_oidfields. The pid of the online record is found as "livepid" the pid of the offline record is found in "wspid
+	 * @param integer Workspace ID. If -99, will select ALL versions from ANY workspace. If -98 will select all but ONLINE. >=-1 will select from the actual workspace
+	 * @param integer Lifecycle filter: 1 = select all drafts (never-published), 2 = select all published one or more times (archive/multiple), anything else selects all.
+	 * @param integer Stage filter: -99 means no filtering, otherwise it will be used to select only elements with that stage. For publishing, that would be "10
+	 * @param integer Page id: Live page for which to find versions in workspace!
+	 * @param integer Recursion Level - select versions recursive - parameter is only relevant if $pageId != -1
+	 * @param string How to collect records for "listing" or "modify" these tables. Support the permissions of each type of record, see \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::check.
+	 * @param integer $language Select specific language only
+	 * @return array Array of all records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid and t3ver_oidfields. The pid of the online record is found as "livepid" the pid of the offline record is found in "wspid
 	 */
 	public function selectVersionsInWorkspace($wsid, $filter = 0, $stage = -99, $pageId = -1, $recursionLevel = 0, $selectionType = 'tables_select', $language = NULL) {
 		$wsid = (int)$wsid;
@@ -341,17 +342,17 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Find all page uids recursive starting from a specific page
 	 *
-	 * @param 	 integer	$pageId
-	 * @param 	 integer	$wsid
-	 * @param 	 integer	$recursionLevel
-	 * @return 	string	Comma sep. uid list
+	 * @param integer $pageId
+	 * @param integer $wsid
+	 * @param integer $recursionLevel
+	 * @return string Comma sep. uid list
 	 */
 	protected function getTreeUids($pageId, $wsid, $recursionLevel) {
 		// Reusing existing functionality with the drawback that
 		// mount points are not covered yet
 		$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 		/** @var $searchObj \TYPO3\CMS\Core\Database\QueryView */
-		$searchObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\QueryView');
+		$searchObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\QueryView');
 		if ($pageId > 0) {
 			$pageList = $searchObj->getTreeList($pageId, $recursionLevel, 0, $perms_clause);
 		} else {
@@ -370,7 +371,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 		if ((int)$GLOBALS['TCA']['pages']['ctrl']['versioningWS'] === 2 && $pageList) {
 			// Remove the "subbranch" if a page was moved away
 			$movedAwayPages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid, pid, t3ver_move_id', 'pages', 't3ver_move_id IN (' . $pageList . ') AND t3ver_wsid=' . (int)$wsid . BackendUtility::deleteClause('pages'), '', 'uid', '', 't3ver_move_id');
-			$pageIds = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $pageList, TRUE);
+			$pageIds = GeneralUtility::intExplode(',', $pageList, TRUE);
 			// move all pages away
 			$newList = array_diff($pageIds, array_keys($movedAwayPages));
 			// keep current page in the list
@@ -389,7 +390,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 			// In case moving pages is enabled we need to replace all move-to pointer with their origin
 			$pages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid, t3ver_move_id', 'pages', 'uid IN (' . $pageList . ')' . BackendUtility::deleteClause('pages'), '', 'uid', '', 'uid');
 			$newList = array();
-			$pageIds = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $pageList, TRUE);
+			$pageIds = GeneralUtility::intExplode(',', $pageList, TRUE);
 			if (!in_array($pageId, $pageIds)) {
 				$pageIds[] = $pageId;
 			}
@@ -467,7 +468,6 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Determine whether a specific page is new and not yet available in the LIVE workspace
 	 *
-	 * @static
 	 * @param integer $id Primary key of the page to check
 	 * @param integer $language Language for which to check the page
 	 * @return boolean
@@ -539,7 +539,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 				);
 				$_funcRef = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['viewSingleRecord'];
 				$null = NULL;
-				$viewUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $_params, $null);
+				$viewUrl = GeneralUtility::callUserFunction($_funcRef, $_params, $null);
 			}
 		}
 
@@ -577,14 +577,14 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return string the full domain including the protocol http:// or https://, but without the trailing '/'
 	 */
 	public function generateWorkspacePreviewLink($uid) {
-		$previewObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\Hook\\PreviewHook');
+		$previewObject = GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\Hook\\PreviewHook');
 		$timeToLiveHours = $previewObject->getPreviewLinkLifetime();
 		$previewKeyword = $previewObject->compilePreviewKeyword('', $GLOBALS['BE_USER']->user['uid'], $timeToLiveHours * 3600, $this->getCurrentWorkspace());
 		$linkParams = array(
 			'ADMCMD_prev' => $previewKeyword,
 			'id' => $uid
 		);
-		return BackendUtility::getViewDomain($uid) . '/index.php?' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $linkParams);
+		return BackendUtility::getViewDomain($uid) . '/index.php?' . GeneralUtility::implodeArrayForUrl('', $linkParams);
 	}
 
 	/**
@@ -642,7 +642,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \TYPO3\CMS\Extbase\Object\ObjectManager
 	 */
 	protected function getObjectManager() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 	}
 
 }

@@ -44,8 +44,8 @@ class CombinedRecord {
 	 * @return \TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord
 	 */
 	static public function create($table, $liveId, $versionId) {
-		$liveRecord = \TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord::create($table, $liveId);
-		$versionRecord = \TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord::create($table, $versionId);
+		$liveRecord = DatabaseRecord::create($table, $liveId);
+		$versionRecord = DatabaseRecord::create($table, $versionId);
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Domain\\Model\\CombinedRecord', $table, $liveRecord, $versionRecord);
 	}
 
@@ -58,8 +58,8 @@ class CombinedRecord {
 	 * @return \TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord
 	 */
 	static public function createFromArrays($table, array $liveRow, array $versionRow) {
-		$liveRecord = \TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord::createFromArray($table, $liveRow);
-		$versionRecord = \TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord::createFromArray($table, $versionRow);
+		$liveRecord = DatabaseRecord::createFromArray($table, $liveRow);
+		$versionRecord = DatabaseRecord::createFromArray($table, $versionRow);
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Domain\\Model\\CombinedRecord', $table, $liveRecord, $versionRecord);
 	}
 
@@ -70,7 +70,7 @@ class CombinedRecord {
 	 * @param \TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord $liveRecord
 	 * @param \TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord $versionRecord
 	 */
-	public function __construct($table, \TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord $liveRecord, \TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord $versionRecord) {
+	public function __construct($table, DatabaseRecord $liveRecord, DatabaseRecord $versionRecord) {
 		$this->setTable($table);
 		$this->setLiveRecord($liveRecord);
 		$this->setVersionRecord($versionRecord);
@@ -110,7 +110,7 @@ class CombinedRecord {
 	 * @param \TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord $liveRecord
 	 * @return void
 	 */
-	public function setLiveRecord(\TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord $liveRecord) {
+	public function setLiveRecord(DatabaseRecord $liveRecord) {
 		$this->liveRecord = $liveRecord;
 	}
 
@@ -129,7 +129,7 @@ class CombinedRecord {
 	 * @param \TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord $versionRecord
 	 * @return void
 	 */
-	public function setVersionRecord(\TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord $versionRecord) {
+	public function setVersionRecord(DatabaseRecord $versionRecord) {
 		$this->versionRecord = $versionRecord;
 	}
 

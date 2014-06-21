@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Workspaces\Task;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * This class provides a wrapper around the autopublication
  * mechanism of workspaces, as a Scheduler task

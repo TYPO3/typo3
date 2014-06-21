@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Workspaces;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Interface for (additional) columns.
  *
@@ -32,4 +33,3 @@ interface ColumnDataProviderInterface {
 	public function getData(\TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord $combinedRecord);
 
 }
-?>

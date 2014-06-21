@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Workspaces\Controller;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Utility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  */
-class PreviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractController {
+class PreviewController extends AbstractController {
 
 	/**
 	 * @var \TYPO3\CMS\Workspaces\Service\StagesService
@@ -45,7 +45,7 @@ class PreviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControl
 		$this->stageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\StagesService');
 		$this->workspaceService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
 		$this->template->setExtDirectStateProvider();
-		$resourcePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('workspaces') . 'Resources/Public/StyleSheet/preview.css';
+		$resourcePath = ExtensionManagementUtility::extRelPath('workspaces') . 'Resources/Public/StyleSheet/preview.css';
 		$GLOBALS['TBE_STYLES']['extJS']['theme'] = $resourcePath;
 		$this->pageRenderer->loadExtJS();
 		$this->pageRenderer->enableExtJSQuickTips();
@@ -59,7 +59,7 @@ class PreviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControl
 		$this->pageRenderer->addJsFile($this->backPath . 'sysext/backend/Resources/Public/JavaScript/notifications.js');
 		$this->pageRenderer->addJsFile($this->backPath . 'sysext/backend/Resources/Public/JavaScript/flashmessages.js');
 		$this->pageRenderer->addJsFile($this->backPath . 'sysext/backend/Resources/Public/JavaScript/iframepanel.js');
-		$resourcePathJavaScript = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('workspaces') . 'Resources/Public/JavaScript/';
+		$resourcePathJavaScript = ExtensionManagementUtility::extRelPath('workspaces') . 'Resources/Public/JavaScript/';
 		$jsFiles = array(
 			'Ext.ux.plugins.TabStripContainer.js',
 			'Store/mainstore.js',
@@ -138,25 +138,25 @@ class PreviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControl
 		$this->pageRenderer->addInlineSetting('Workspaces', 'disableNextStageButton', $this->isInvalidStage($nextStage));
 		$this->pageRenderer->addInlineSetting('Workspaces', 'disablePreviousStageButton', $this->isInvalidStage($previousStage));
 		$this->pageRenderer->addInlineSetting('Workspaces', 'disableDiscardStageButton', $this->isInvalidStage($nextStage) && $this->isInvalidStage($previousStage));
-		$resourcePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('lang') . 'Resources/Public/JavaScript/';
+		$resourcePath = ExtensionManagementUtility::extRelPath('lang') . 'Resources/Public/JavaScript/';
 		$this->pageRenderer->addJsFile($resourcePath . 'Typo3Lang.js');
 		$this->pageRenderer->addJsInlineCode('workspaces.preview.lll', '
 		TYPO3.lang = {
-			visualPreview: ' . Utility\GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:preview.visualPreview', TRUE)) . ',
-			listView: ' . Utility\GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:preview.listView', TRUE)) . ',
-			livePreview: ' . Utility\GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:preview.livePreview', TRUE)) . ',
-			livePreviewDetail: ' . Utility\GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:preview.livePreviewDetail', TRUE)) . ',
-			workspacePreview: ' . Utility\GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:preview.workspacePreview', TRUE)) . ',
-			workspacePreviewDetail: ' . Utility\GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:preview.workspacePreviewDetail', TRUE)) . ',
-			modeSlider: ' . Utility\GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:preview.modeSlider', TRUE)) . ',
-			modeVbox: ' . Utility\GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:preview.modeVbox', TRUE)) . ',
-			modeHbox: ' . Utility\GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:preview.modeHbox', TRUE)) . ',
-			discard: ' . Utility\GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:label_doaction_discard', TRUE)) . ',
-			nextStage: ' . Utility\GeneralUtility::quoteJSvalue($nextStage['title']) . ',
-			previousStage: ' . Utility\GeneralUtility::quoteJSvalue($previousStage['title']) . '
+			visualPreview: ' . GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:preview.visualPreview', TRUE)) . ',
+			listView: ' . GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:preview.listView', TRUE)) . ',
+			livePreview: ' . GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:preview.livePreview', TRUE)) . ',
+			livePreviewDetail: ' . GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:preview.livePreviewDetail', TRUE)) . ',
+			workspacePreview: ' . GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:preview.workspacePreview', TRUE)) . ',
+			workspacePreviewDetail: ' . GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:preview.workspacePreviewDetail', TRUE)) . ',
+			modeSlider: ' . GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:preview.modeSlider', TRUE)) . ',
+			modeVbox: ' . GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:preview.modeVbox', TRUE)) . ',
+			modeHbox: ' . GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:preview.modeHbox', TRUE)) . ',
+			discard: ' . GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:label_doaction_discard', TRUE)) . ',
+			nextStage: ' . GeneralUtility::quoteJSvalue($nextStage['title']) . ',
+			previousStage: ' . GeneralUtility::quoteJSvalue($previousStage['title']) . '
 		};TYPO3.l10n.initialize();
 ');
-		$resourcePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('workspaces') . 'Resources/Public/';
+		$resourcePath = ExtensionManagementUtility::extRelPath('workspaces') . 'Resources/Public/';
 		$this->pageRenderer->addJsFile($resourcePath . 'JavaScript/preview.js');
 	}
 
@@ -165,7 +165,6 @@ class PreviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControl
 	 *
 	 * @param array $stageArray
 	 * @return boolean
-	 * @author Michael Klapper <development@morphodo.com>
 	 */
 	protected function isInvalidStage($stageArray) {
 		return !(is_array($stageArray) && count($stageArray) > 0);
@@ -188,7 +187,7 @@ class PreviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControl
 	 * and since we're loading a backend module outside of the actual backend
 	 * this copies parts of the backend.php
 	 *
-	 * @return 	string
+	 * @return string
 	 */
 	protected function generateJavascript() {
 		$pathTYPO3 = GeneralUtility::dirname(GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '/';
@@ -220,7 +219,7 @@ class PreviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControl
 			'moduleMenuWidth' => $this->menuWidth - 1,
 			'topBarHeight' => isset($GLOBALS['TBE_STYLES']['dims']['topFrameH']) ? (int)$GLOBALS['TBE_STYLES']['dims']['topFrameH'] : 30,
 			'showRefreshLoginPopup' => isset($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) ? (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] : FALSE,
-			'listModulePath' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('recordlist') . 'mod1/',
+			'listModulePath' => ExtensionManagementUtility::extRelPath('recordlist') . 'mod1/',
 			'debugInWindow' => $GLOBALS['BE_USER']->uc['debugInWindow'] ? 1 : 0,
 			'ContextHelpWindows' => array(
 				'width' => 600,
@@ -257,7 +256,7 @@ class PreviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControl
 			'donateWindow_button_disable' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:donateWindow.button_disable'),
 			'donateWindow_button_postpone' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:donateWindow.button_postpone')
 		);
-		$js = '
+		return '
 		TYPO3.configuration = ' . json_encode($t3Configuration) . ';
 		TYPO3.LLL = {
 			core : ' . json_encode($t3LLLcore) . '
@@ -279,7 +278,6 @@ class PreviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControl
 		var TS = new typoSetup();
 			//backwards compatibility
 		';
-		return $js;
 	}
 
 }

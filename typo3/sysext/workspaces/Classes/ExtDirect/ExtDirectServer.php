@@ -15,13 +15,14 @@ namespace TYPO3\CMS\Workspaces\ExtDirect;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * ExtDirect server
  *
  * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  */
-class ExtDirectServer extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
+class ExtDirectServer extends AbstractHandler {
 
 	/**
 	 * @var \TYPO3\CMS\Workspaces\Service\GridDataService
@@ -73,7 +74,7 @@ class ExtDirectServer extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 	 */
 	public function getHistory($parameters) {
 		/** @var $historyService \TYPO3\CMS\Workspaces\Service\HistoryService */
-		$historyService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\HistoryService');
+		$historyService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\HistoryService');
 		$history = $historyService->getHistory($parameters->table, $parameters->liveId);
 		return array(
 			'data' => $history,
@@ -110,9 +111,9 @@ class ExtDirectServer extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 		$diffReturnArray = array();
 		$liveReturnArray = array();
 		/** @var $t3lib_diff \TYPO3\CMS\Core\Utility\DiffUtility */
-		$t3lib_diff = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\DiffUtility');
+		$t3lib_diff = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\DiffUtility');
 		/** @var $parseObj \TYPO3\CMS\Core\Html\RteHtmlParser */
-		$parseObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\RteHtmlParser');
+		$parseObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\RteHtmlParser');
 		$liveRecord = BackendUtility::getRecord($parameter->table, $parameter->t3ver_oid);
 		$versionRecord = BackendUtility::getRecord($parameter->table, $parameter->uid);
 		$icon_Live = \TYPO3\CMS\Backend\Utility\IconUtility::mapRecordTypeToSpriteIconClass($parameter->table, $liveRecord);
@@ -122,12 +123,12 @@ class ExtDirectServer extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 		if ($GLOBALS['TCA'][$parameter->table]) {
 			if ($GLOBALS['TCA'][$parameter->table]['interface']['showRecordFieldList']) {
 				$fieldsOfRecords = $GLOBALS['TCA'][$parameter->table]['interface']['showRecordFieldList'];
-				$fieldsOfRecords = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $fieldsOfRecords, TRUE);
+				$fieldsOfRecords = GeneralUtility::trimExplode(',', $fieldsOfRecords, TRUE);
 			}
 		}
 		foreach ($fieldsOfRecords as $fieldName) {
 			// check for exclude fields
-			if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['exclude'] == 0 || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['BE_USER']->groupData['non_exclude_fields'], $parameter->table . ':' . $fieldName)) {
+			if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['exclude'] == 0 || GeneralUtility::inList($GLOBALS['BE_USER']->groupData['non_exclude_fields'], $parameter->table . ':' . $fieldName)) {
 				// call diff class only if there is a difference
 				if ((string)$liveRecord[$fieldName] !== (string)$versionRecord[$fieldName]) {
 					// Select the human readable values before diff
@@ -186,7 +187,7 @@ class ExtDirectServer extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 		// (this may be used by custom or dynamically-defined fields)
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['modifyDifferenceArray'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['modifyDifferenceArray'] as $className) {
-				$hookObject =& \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($className);
+				$hookObject =& GeneralUtility::getUserObj($className);
 				$hookObject->modifyDifferenceArray($parameter, $diffReturnArray, $liveReturnArray, $t3lib_diff);
 			}
 		}
@@ -218,9 +219,14 @@ class ExtDirectServer extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 	 */
 	public function getCommentsForRecord($uid, $table) {
 		$sysLogReturnArray = array();
-		$sysLogRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('log_data,tstamp,userid', 'sys_log', 'action=6 and details_nr=30
-				AND tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_log') . '
-				AND recuid=' . (int)$uid, '', 'tstamp DESC');
+		$sysLogRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'log_data,tstamp,userid',
+			'sys_log',
+			'action=6 and details_nr=30 AND tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_log')
+				. ' AND recuid=' . (int)$uid,
+			'',
+			'tstamp DESC'
+		);
 		foreach ($sysLogRows as $sysLogRow) {
 			$sysLogEntry = array();
 			$data = unserialize($sysLogRow['log_data']);
@@ -272,7 +278,7 @@ class ExtDirectServer extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 	 */
 	protected function getGridDataService() {
 		if (!isset($this->gridDataService)) {
-			$this->gridDataService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\GridDataService');
+			$this->gridDataService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\GridDataService');
 		}
 		return $this->gridDataService;
 	}
@@ -284,7 +290,7 @@ class ExtDirectServer extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 	 */
 	protected function getStagesService() {
 		if (!isset($this->stagesService)) {
-			$this->stagesService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\StagesService');
+			$this->stagesService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\StagesService');
 		}
 		return $this->stagesService;
 	}

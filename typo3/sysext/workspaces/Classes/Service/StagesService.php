@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Workspaces\Service;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Stages service
@@ -308,7 +310,7 @@ class StagesService {
 	 * @throws \InvalidArgumentException
 	 */
 	public function getNextStage($stageId) {
-		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($stageId)) {
+		if (!MathUtility::canBeInterpretedAsInteger($stageId)) {
 			throw new \InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.stageId.integer'), 1291109987);
 		}
 		$nextStage = FALSE;
@@ -375,7 +377,7 @@ class StagesService {
 	 * @throws \InvalidArgumentException
 	 */
 	public function getPrevStage($stageId) {
-		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($stageId)) {
+		if (!MathUtility::canBeInterpretedAsInteger($stageId)) {
 			throw new \InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.stageId.integer'));
 		}
 		$prevStage = FALSE;
@@ -479,7 +481,7 @@ class StagesService {
 	 * @return string Uid list of responsible be_users
 	 */
 	public function getResponsibleUser($stageRespValue) {
-		$stageValuesArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $stageRespValue, TRUE);
+		$stageValuesArray = GeneralUtility::trimExplode(',', $stageRespValue, TRUE);
 		$beuserUidArray = array();
 		$begroupUidArray = array();
 
@@ -501,7 +503,7 @@ class StagesService {
 			$begroupUidArray = $this->fetchGroups($begroupUidList);
 			foreach ($begroupUidArray as $groupkey => $groupData) {
 				foreach ($allBeUserArray as $useruid => $userdata) {
-					if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($userdata['usergroup_cached_list'], $groupData['uid'])) {
+					if (GeneralUtility::inList($userdata['usergroup_cached_list'], $groupData['uid'])) {
 						$beuserUidArray[] = $useruid;
 					}
 				}
@@ -534,7 +536,7 @@ class StagesService {
 	}
 
 	/**
-	 * @param array 	$groups
+	 * @param array $groups
 	 * @return void
 	 */
 	private function fetchGroupsFromDB(array $groups) {
@@ -544,6 +546,7 @@ class StagesService {
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$this->userGroups[$row['uid']] = $row;
 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 	}
 
 	/**
@@ -554,7 +557,7 @@ class StagesService {
 	 * @return array
 	 */
 	private function fetchGroupsRecursive($grList, $idList = '') {
-		$requiredGroups = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $grList, TRUE);
+		$requiredGroups = GeneralUtility::intExplode(',', $grList, TRUE);
 		$existingGroups = array_keys($this->userGroups);
 		$missingGroups = array_diff($requiredGroups, $existingGroups);
 		if (count($missingGroups) > 0) {
@@ -565,14 +568,14 @@ class StagesService {
 			// traversing list
 			// Get row:
 			$row = $this->userGroups[$uid];
-			if (is_array($row) && !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($idList, $uid)) {
+			if (is_array($row) && !GeneralUtility::inList($idList, $uid)) {
 				// Must be an array and $uid should not be in the idList, because then it is somewhere previously in the grouplist
 				// If the localconf.php option isset the user of the sub- sub- groups will also be used
 				if ($GLOBALS['TYPO3_CONF_VARS']['BE']['customStageShowRecipientRecursive'] == 1) {
 					// Include sub groups
 					if (trim($row['subgroup'])) {
 						// Make integer list
-						$theList = implode(',', \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $row['subgroup']));
+						$theList = implode(',', GeneralUtility::intExplode(',', $row['subgroup']));
 						// Get the subarray
 						$subbarray = $this->fetchGroups($theList, $idList . ',' . $uid);
 						list($subUid, $subArray) = each($subbarray);
@@ -595,7 +598,7 @@ class StagesService {
 	 */
 	public function getPropertyOfCurrentWorkspaceStage($stageId, $property) {
 		$result = NULL;
-		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($stageId)) {
+		if (!MathUtility::canBeInterpretedAsInteger($stageId)) {
 			throw new \InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.stageId.integer'));
 		}
 		$workspaceStage = BackendUtility::getRecord(self::TABLE_STAGE, $stageId);
@@ -725,7 +728,7 @@ class StagesService {
 	 * @throws \InvalidArgumentException
 	 */
 	public function getNotificationMode($stageId) {
-		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($stageId)) {
+		if (!MathUtility::canBeInterpretedAsInteger($stageId)) {
 			throw new \InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.stageId.integer'));
 		}
 		switch ($stageId) {

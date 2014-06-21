@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Workspaces\ExtDirect;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * ExtDirect toolbar menu
  *
@@ -21,8 +22,11 @@ namespace TYPO3\CMS\Workspaces\ExtDirect;
 class ToolbarMenu {
 
 	/**
+	 * Toggle workspace preview mode
+	 *
 	 * @param $parameter
 	 * @return array
+	 * @todo Check where this is used.
 	 */
 	public function toggleWorkspacePreviewMode($parameter) {
 		$newState = $GLOBALS['BE_USER']->user['workspace_preview'] ? '0' : '1';
@@ -31,6 +35,8 @@ class ToolbarMenu {
 	}
 
 	/**
+	 * Set workspace
+	 *
 	 * @param $parameter
 	 * @return array
 	 */

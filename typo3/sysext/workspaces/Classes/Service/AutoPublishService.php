@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Workspaces\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Automatic publishing of workspaces.
  *
@@ -35,10 +36,14 @@ class AutoPublishService {
 		$currentAdminStatus = $GLOBALS['BE_USER']->user['admin'];
 		$GLOBALS['BE_USER']->user['admin'] = 1;
 		// Select all workspaces that needs to be published / unpublished:
-		$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,swap_modes,publish_time,unpublish_time', 'sys_workspace', 'pid=0
+		$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'uid,swap_modes,publish_time,unpublish_time',
+			'sys_workspace',
+			'pid=0
 				AND
 				((publish_time!=0 AND publish_time<=' . (int)$GLOBALS['EXEC_TIME'] . ')
-				OR (publish_time=0 AND unpublish_time!=0 AND unpublish_time<=' . (int)$GLOBALS['EXEC_TIME'] . '))' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_workspace'));
+				OR (publish_time=0 AND unpublish_time!=0 AND unpublish_time<=' . (int)$GLOBALS['EXEC_TIME'] . '))' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_workspace')
+		);
 		$workspaceService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
 		foreach ($workspaces as $rec) {
 			// First, clear start/end time so it doesn't get select once again:

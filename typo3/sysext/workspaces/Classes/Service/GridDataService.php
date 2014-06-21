@@ -154,18 +154,15 @@ class GridDataService {
 					$versionArray['uid'] = $record['uid'];
 					$versionArray['workspace'] = $versionRecord['t3ver_id'];
 					$versionArray = array_merge($versionArray, $defaultGridColumns);
-					$versionArray['label_Workspace'] = htmlspecialchars(
-						BackendUtility::getRecordTitle($table, $versionRecord));
+					$versionArray['label_Workspace'] = htmlspecialchars(BackendUtility::getRecordTitle($table, $versionRecord));
 					$versionArray['label_Live'] = htmlspecialchars(BackendUtility::getRecordTitle($table, $origRecord));
 					$versionArray['label_Stage'] = htmlspecialchars($stagesObj->getStageTitle($versionRecord['t3ver_stage']));
 					$tempStage = $stagesObj->getNextStage($versionRecord['t3ver_stage']);
 					$versionArray['label_nextStage'] = htmlspecialchars($stagesObj->getStageTitle($tempStage['uid']));
 					$tempStage = $stagesObj->getPrevStage($versionRecord['t3ver_stage']);
 					$versionArray['label_prevStage'] = htmlspecialchars($stagesObj->getStageTitle($tempStage['uid']));
-					$versionArray['path_Live'] = htmlspecialchars(
-						BackendUtility::getRecordPath($record['livepid'], '', 999));
-					$versionArray['path_Workspace'] = htmlspecialchars(
-						BackendUtility::getRecordPath($record['wspid'], '', 999));
+					$versionArray['path_Live'] = htmlspecialchars(BackendUtility::getRecordPath($record['livepid'], '', 999));
+					$versionArray['path_Workspace'] = htmlspecialchars(BackendUtility::getRecordPath($record['wspid'], '', 999));
 					$versionArray['workspace_Title'] = htmlspecialchars(\TYPO3\CMS\Workspaces\Service\WorkspaceService::getWorkspaceTitle($versionRecord['t3ver_wsid']));
 					$versionArray['workspace_Tstamp'] = $versionRecord['tstamp'];
 					$versionArray['workspace_Formated_Tstamp'] = BackendUtility::datetime($versionRecord['tstamp']);
@@ -631,7 +628,7 @@ class GridDataService {
 	 * @return \TYPO3\CMS\Extbase\Object\ObjectManager
 	 */
 	protected function getObjectManager() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 	}
 
 }

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Workspaces\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Service for additional columns in GridPanel
  *
@@ -77,6 +78,8 @@ class AdditionalResourceService implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
+	 * Resolve path
+	 *
 	 * @param string $resourcePath
 	 * @return NULL|string
 	 */

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Workspaces\Hook;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Frontend hooks
  *

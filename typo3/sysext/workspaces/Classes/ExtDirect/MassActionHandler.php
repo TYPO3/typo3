@@ -13,15 +13,17 @@ namespace TYPO3\CMS\Workspaces\ExtDirect;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Class encapsulates all actions which are triggered for all elements within the current workspace.
  *
  * @author Kasper Skårhøj (kasperYYYY@typo3.com)
  * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  */
-class MassActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
+class MassActionHandler extends AbstractHandler {
 
 	const MAX_RECORDS_TO_PROCESS = 30;
+
 	/**
 	 * Path to the locallang file
 	 *

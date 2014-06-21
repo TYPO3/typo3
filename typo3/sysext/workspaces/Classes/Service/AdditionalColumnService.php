@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Workspaces\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Service for additional columns in GridPanel
  *

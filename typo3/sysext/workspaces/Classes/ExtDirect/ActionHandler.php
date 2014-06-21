@@ -16,16 +16,17 @@ namespace TYPO3\CMS\Workspaces\ExtDirect;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Workspaces\Service\StagesService;
 
 /**
  * ExtDirect action handler
  *
  * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  */
-class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
+class ActionHandler extends AbstractHandler {
 
 	/**
-	 * @var \TYPO3\CMS\Workspaces\Service\StagesService
+	 * @var StagesService
 	 */
 	protected $stageService;
 
@@ -188,7 +189,7 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 		if (is_array($elementRecord)) {
 			$stageId = $elementRecord['t3ver_stage'];
 			if ($this->getStageService()->isValid($stageId)) {
-				if ($stageId !== \TYPO3\CMS\Workspaces\Service\StagesService::STAGE_EDIT_ID) {
+				if ($stageId !== StagesService::STAGE_EDIT_ID) {
 					$prevStage = $this->getStageService()->getPrevStage($stageId);
 					$result = $this->getSentToStageWindow($prevStage['uid']);
 					$result['affects'] = array(
@@ -253,7 +254,7 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 		}
 		// the notification mode can be configured in the workspace stage record
 		$notification_mode = (int)$this->getStageService()->getNotificationMode($stageId);
-		if ($notification_mode === \TYPO3\CMS\Workspaces\Service\StagesService::MODE_NOTIFY_ALL || $notification_mode === \TYPO3\CMS\Workspaces\Service\StagesService::MODE_NOTIFY_ALL_STRICT) {
+		if ($notification_mode === StagesService::MODE_NOTIFY_ALL || $notification_mode === StagesService::MODE_NOTIFY_ALL_STRICT) {
 			// get the default recipients from the stage configuration
 			// the default recipients needs to be added in some cases of the notification_mode
 			$default_recipients = $this->getStageService()->getResponsibleBeUser($stageId, TRUE);
@@ -300,7 +301,7 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 		$cmdMapArray = array();
 		/** @var $workspaceService \TYPO3\CMS\Workspaces\Service\WorkspaceService */
 		$workspaceService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
-		/** @var $stageService \TYPO3\CMS\Workspaces\Service\StagesService */
+		/** @var $stageService StagesService */
 		$stageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\StagesService');
 		$workspaceItemsArray = $workspaceService->selectVersionsInWorkspace($stageService->getWorkspaceId(), ($filter = 1), ($stage = -99), $pageId, ($recursionLevel = 0), ($selectionType = 'tables_modify'));
 		foreach ($workspaceItemsArray as $tableName => $items) {
@@ -343,7 +344,7 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 		foreach ($parameters->affects as $tableName => $items) {
 			foreach ($items as $item) {
 				// Publishing uses live id in command map
-				if ($stageId == \TYPO3\CMS\Workspaces\Service\StagesService::STAGE_PUBLISH_EXECUTE_ID) {
+				if ($stageId == StagesService::STAGE_PUBLISH_EXECUTE_ID) {
 					$cmdMapArray[$tableName][$item->t3ver_oid]['version']['action'] = 'swap';
 					$cmdMapArray[$tableName][$item->t3ver_oid]['version']['swapWith'] = $item->uid;
 					$cmdMapArray[$tableName][$item->t3ver_oid]['version']['comment'] = $comment;
@@ -405,7 +406,7 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 		$currentWorkspace = $this->setTemporaryWorkspace($elementRecord['t3ver_wsid']);
 
 		$recipients = $this->getRecipientList($parameters->receipients, $parameters->additional, $setStageId);
-		if ($setStageId == \TYPO3\CMS\Workspaces\Service\StagesService::STAGE_PUBLISH_EXECUTE_ID) {
+		if ($setStageId == StagesService::STAGE_PUBLISH_EXECUTE_ID) {
 			$cmdArray[$table][$t3ver_oid]['version']['action'] = 'swap';
 			$cmdArray[$table][$t3ver_oid]['version']['swapWith'] = $uid;
 			$cmdArray[$table][$t3ver_oid]['version']['comment'] = $comments;
@@ -491,7 +492,7 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 		$elements = $parameters->affects->elements;
 		$recipients = $this->getRecipientList($parameters->receipients, $parameters->additional, $setStageId);
 		foreach ($elements as $key => $element) {
-			if ($setStageId == \TYPO3\CMS\Workspaces\Service\StagesService::STAGE_PUBLISH_EXECUTE_ID) {
+			if ($setStageId == StagesService::STAGE_PUBLISH_EXECUTE_ID) {
 				$cmdArray[$element->table][$element->t3ver_oid]['version']['action'] = 'swap';
 				$cmdArray[$element->table][$element->t3ver_oid]['version']['swapWith'] = $element->uid;
 				$cmdArray[$element->table][$element->t3ver_oid]['version']['comment'] = $comments;
@@ -531,14 +532,14 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 			)
 		);
 		switch ($nextStageId) {
-			case \TYPO3\CMS\Workspaces\Service\StagesService::STAGE_PUBLISH_EXECUTE_ID:
+			case StagesService::STAGE_PUBLISH_EXECUTE_ID:
 
-			case \TYPO3\CMS\Workspaces\Service\StagesService::STAGE_PUBLISH_ID:
+			case StagesService::STAGE_PUBLISH_ID:
 				if (!empty($workspaceRec['publish_allow_notificaton_settings'])) {
 					$showNotificationFields = TRUE;
 				}
 				break;
-			case \TYPO3\CMS\Workspaces\Service\StagesService::STAGE_EDIT_ID:
+			case StagesService::STAGE_EDIT_ID:
 				if (!empty($workspaceRec['edit_allow_notificaton_settings'])) {
 					$showNotificationFields = TRUE;
 				}
@@ -595,10 +596,10 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 				$name = $user['realName'] ? $user['realName'] : $user['username'];
 				// the notification mode can be configured in the workspace stage record
 				$notification_mode = (int)$this->getStageService()->getNotificationMode($stage);
-				if ($notification_mode === \TYPO3\CMS\Workspaces\Service\StagesService::MODE_NOTIFY_SOMEONE) {
+				if ($notification_mode === StagesService::MODE_NOTIFY_SOMEONE) {
 					// all responsible users are checked per default, as in versions before
 					$checked = TRUE;
-				} elseif ($notification_mode === \TYPO3\CMS\Workspaces\Service\StagesService::MODE_NOTIFY_ALL) {
+				} elseif ($notification_mode === StagesService::MODE_NOTIFY_ALL) {
 					// the default users are checked only
 					if (!empty($default_recipients[$id])) {
 						$checked = TRUE;
@@ -606,7 +607,7 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 					} else {
 						$checked = FALSE;
 					}
-				} elseif ($notification_mode === \TYPO3\CMS\Workspaces\Service\StagesService::MODE_NOTIFY_ALL_STRICT) {
+				} elseif ($notification_mode === StagesService::MODE_NOTIFY_ALL_STRICT) {
 					// all responsible users are checked
 					$checked = TRUE;
 					$disabled = TRUE;
@@ -636,7 +637,7 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 	/**
 	 * Gets an instance of the Stage service.
 	 *
-	 * @return \TYPO3\CMS\Workspaces\Service\StagesService
+	 * @return StagesService
 	 */
 	protected function getStageService() {
 		if (!isset($this->stageService)) {
