@@ -78,7 +78,7 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @see getInstExtList()
 	 */
 	public function getAvailableExtensions() {
-		$this->emitPackagesMayHaveChanged();
+		$this->emitPackagesMayHaveChangedSignal();
 		$extensions = array();
 		foreach ($this->packageManager->getAvailablePackages() as $package) {
 			// Only TYPO3 related packages could be handled by the extension manager
@@ -100,7 +100,7 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Emits packages may have changed signal
 	 */
-	protected function emitPackagesMayHaveChanged() {
+	protected function emitPackagesMayHaveChangedSignal() {
 		$this->signalSlotDispatcher->dispatch('PackageManagement', 'packagesMayHaveChanged');
 	}
 

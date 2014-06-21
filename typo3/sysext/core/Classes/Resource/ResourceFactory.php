@@ -179,10 +179,19 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 			if (!$storageObject instanceof ResourceStorage) {
 				$storageObject = $this->createStorageObject($recordData, $storageConfiguration);
 			}
-			$this->signalSlotDispatcher->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceFactory', self::SIGNAL_PostProcessStorage, array($this, $storageObject));
+			$this->emitPostProcessStorageSignal($storageObject);
 			$this->storageInstances[$uid] = $storageObject;
 		}
 		return $this->storageInstances[$uid];
+	}
+
+	/**
+	 * Emits a signal after a resource storage was initialized
+	 *
+	 * @param ResourceStorage $storageObject
+	 */
+	protected function emitPostProcessStorageSignal(ResourceStorage $storageObject) {
+		$this->signalSlotDispatcher->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceFactory', self::SIGNAL_PostProcessStorage, array($this, $storageObject));
 	}
 
 	/**

@@ -96,7 +96,7 @@ class ConfigurationController extends AbstractController {
 			$configurationUtility->convertValuedToNestedConfiguration($newConfiguration),
 			$extensionKey
 		);
-		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterExtensionConfigurationWrite', array($newConfiguration, $this));
+		$this->emitAfterExtensionConfigurationWriteSignal($newConfiguration);
 		/** @var Extension $extension */
 		$extension = $this->extensionRepository->findOneByCurrentVersionByExtensionKey($extensionKey);
 		// Different handling for distribution installation
@@ -107,6 +107,15 @@ class ConfigurationController extends AbstractController {
 		} else {
 			$this->redirect('showConfigurationForm', NULL, NULL, array('extension' => array('key' => $extensionKey)));
 		}
+	}
+
+	/**
+	 * Emits a signal after the configuration file was written
+	 *
+	 * @param array $newConfiguration
+	 */
+	protected function emitAfterExtensionConfigurationWriteSignal(array $newConfiguration) {
+		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterExtensionConfigurationWrite', array($newConfiguration, $this));
 	}
 
 }

@@ -238,7 +238,7 @@ class ExtensionManagementServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	public function installDependenciesCallsInstall() {
 		$managementMock = $this->getAccessibleMock(
 			'TYPO3\\CMS\\Extensionmanager\\Service\\ExtensionManagementService',
-			array('emitWillInstallExtensions', 'emitHasInstalledExtension')
+			array('emitWillInstallExtensionsSignal', 'emitHasInstalledExtensionSignal')
 		);
 		$installQueue = array(
 			'foobar' => array(
@@ -246,7 +246,7 @@ class ExtensionManagementServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 				'siteRelPath' => 'path'
 			)
 		);
-		$installUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility', array('install','emitWillInstallExtensions'), array(), '', FALSE);
+		$installUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility', array('install','emitWillInstallExtensionsSignal'), array(), '', FALSE);
 		$installUtility->expects($this->once())->method('install')->with(array(
 			'key' => 'foobar',
 			'siteRelPath' => 'path'
@@ -261,13 +261,13 @@ class ExtensionManagementServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	 */
 	public function installDependenciesReturnsResolvedDependencies() {
 		$managementMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Service\\ExtensionManagementService', array(
-			'emitWillInstallExtensions',
-			'emitHasInstalledExtension'
+			'emitWillInstallExtensionsSignal',
+			'emitHasInstalledExtensionSignal'
 		));
 		$installQueue = array(
 			'foobar' => 'foobar'
 		);
-		$installUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility', array('install','emitWillInstallExtensions'), array(), '', FALSE);
+		$installUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility', array('install','emitWillInstallExtensionsSignal'), array(), '', FALSE);
 		$installUtility->expects($this->once())->method('install')->with('foobar');
 		$managementMock->_set('installUtility', $installUtility);
 		$resolvedDependencies = $managementMock->_call('installDependencies', $installQueue);

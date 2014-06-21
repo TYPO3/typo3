@@ -464,13 +464,23 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 			try {
 				$importResult = $importExportUtility->importT3DFile(PATH_site . $importFileToUse, 0);
 				$this->registry->set('extensionDataImport', $extensionSiteRelPath . 'Initialisation/dataImported', 1);
-				$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterExtensionT3DImport', array($importFileToUse, $importResult, $this));
+				$this->emitAfterExtensionT3DImportSignal($importFileToUse, $importResult);
 			} catch (\ErrorException $e) {
 				/** @var \TYPO3\CMS\Core\Log\Logger $logger */
 				$logger = $this->objectManager->get('TYPO3\\CMS\\Core\\Log\\LogManager')->getLogger(__CLASS__);
 				$logger->log(\TYPO3\CMS\Core\Log\LogLevel::WARNING, $e->getMessage());
 			}
 		}
+	}
+
+	/**
+	 * Emits a signal after an t3d file was imported
+	 *
+	 * @param string $importFileToUse
+	 * @param array $importResult
+	 */
+	protected function emitAfterExtensionT3DImportSignal($importFileToUse, array $importResult) {
+		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterExtensionT3DImport', array($importFileToUse, $importResult, $this));
 	}
 
 	/**
@@ -489,8 +499,17 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 				$this->importStaticSql($extTablesStaticSqlContent);
 			}
 			$this->registry->set('extensionDataImport', $extTablesStaticSqlRelFile, 1);
-			$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterExtensionStaticSqlImport', array($extTablesStaticSqlRelFile, $this));
+			$this->emitAfterExtensionStaticSqlImportSignal($extTablesStaticSqlRelFile);
 		}
+	}
+
+	/**
+	 * Emits a signal after a static sql file was imported
+	 *
+	 * @param string $extTablesStaticSqlRelFile
+	 */
+	protected function emitAfterExtensionStaticSqlImportSignal($extTablesStaticSqlRelFile) {
+		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterExtensionStaticSqlImport', array($extTablesStaticSqlRelFile, $this));
 	}
 
 	/**
@@ -514,11 +533,19 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 				}
 				\TYPO3\CMS\Core\Utility\GeneralUtility::copyDirectory($importRelFolder, $destinationRelPath);
 				$this->registry->set('extensionDataImport', $importRelFolder, 1);
-				$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterExtensionFileImport', array($destinationAbsolutePath, $this));
+				$this->emitAfterExtensionFileImportSignal($destinationAbsolutePath);
 			}
 		}
 	}
 
+	/**
+	 * Emits a signal after extension files were imported
+	 *
+	 * @param string $destinationAbsolutePath
+	 */
+	protected function emitAfterExtensionFileImportSignal($destinationAbsolutePath) {
+		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterExtensionFileImport', array($destinationAbsolutePath, $this));
+	}
 
 	/**
 	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection

@@ -260,12 +260,12 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function installDependencies(array $installQueue) {
 		if (!empty($installQueue)) {
-			$this->emitWillInstallExtensions($installQueue);
+			$this->emitWillInstallExtensionsSignal($installQueue);
 		}
 		$resolvedDependencies = array();
 		foreach ($installQueue as $extensionKey => $extensionDetails) {
 			$this->installUtility->install($extensionDetails);
-			$this->emitHasInstalledExtension($extensionDetails);
+			$this->emitHasInstalledExtensionSignal($extensionDetails);
 			if (!is_array($resolvedDependencies['installed'])) {
 				$resolvedDependencies['installed'] = array();
 			}
@@ -327,14 +327,14 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * @param array $installQueue
 	 */
-	protected function emitWillInstallExtensions(array $installQueue) {
+	protected function emitWillInstallExtensionsSignal(array $installQueue) {
 		$this->getSignalSlotDispatcher()->dispatch(__CLASS__, 'willInstallExtensions', array($installQueue));
 	}
 
 	/**
 	 * @param string $extensionKey
 	 */
-	protected function emitHasInstalledExtension($extensionKey) {
+	protected function emitHasInstalledExtensionSignal($extensionKey) {
 		$this->getSignalSlotDispatcher()->dispatch(__CLASS__, 'hasInstalledExtensions', array($extensionKey));
 	}
 

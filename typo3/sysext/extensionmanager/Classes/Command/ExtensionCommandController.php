@@ -57,7 +57,7 @@ class ExtensionCommandController extends CommandController {
 	 * @return void
 	 */
 	public function installCommand($extensionKey) {
-		$this->emitPackagesMayHaveChanged();
+		$this->emitPackagesMayHaveChangedSignal();
 
 		/** @var $service \TYPO3\CMS\Extensionmanager\Utility\InstallUtility */
 		$service = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility');
@@ -82,7 +82,7 @@ class ExtensionCommandController extends CommandController {
 	/**
 	 * Emits packages may have changed signal
 	 */
-	protected function emitPackagesMayHaveChanged() {
+	protected function emitPackagesMayHaveChangedSignal() {
 		$this->signalSlotDispatcher->dispatch('PackageManagement', 'packagesMayHaveChanged');
 	}
 }

@@ -94,7 +94,7 @@ class FileProcessingService {
 
 		// set the storage of the processed file
 		// Pre-process the file
-		$this->emitPreFileProcess($processedFile, $fileObject, $taskType, $configuration);
+		$this->emitPreFileProcessSignal($processedFile, $fileObject, $taskType, $configuration);
 
 		// Only handle the file if it is not processed yet
 		// (maybe modified or already processed by a signal)
@@ -104,7 +104,7 @@ class FileProcessingService {
 		}
 
 		// Post-process (enrich) the file
-		$this->emitPostFileProcess($processedFile, $fileObject, $taskType, $configuration);
+		$this->emitPostFileProcessSignal($processedFile, $fileObject, $taskType, $configuration);
 
 		return $processedFile;
 	}
@@ -163,7 +163,7 @@ class FileProcessingService {
 	 * @param string $context
 	 * @param array $configuration
 	 */
-	protected function emitPreFileProcess(Resource\ProcessedFile $processedFile, Resource\FileInterface $file, $context, array $configuration = array()) {
+	protected function emitPreFileProcessSignal(Resource\ProcessedFile $processedFile, Resource\FileInterface $file, $context, array $configuration = array()) {
 		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PreFileProcess, array($this, $this->driver, $processedFile, $file, $context, $configuration));
 	}
 
@@ -175,7 +175,7 @@ class FileProcessingService {
 	 * @param $context
 	 * @param array $configuration
 	 */
-	protected function emitPostFileProcess(Resource\ProcessedFile $processedFile, Resource\FileInterface $file, $context, array $configuration = array()) {
+	protected function emitPostFileProcessSignal(Resource\ProcessedFile $processedFile, Resource\FileInterface $file, $context, array $configuration = array()) {
 		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PostFileProcess, array($this, $this->driver, $processedFile, $file, $context, $configuration));
 	}
 }

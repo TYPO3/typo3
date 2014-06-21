@@ -84,6 +84,16 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface {
 			} catch (\TYPO3\CMS\Extbase\Mvc\Exception\StopActionException $ignoredException) {
 			}
 		}
+		$this->emitAfterRequestDispatchSignal($request, $response);
+	}
+
+	/**
+	 * Emits a signal after a request was dispatched
+	 *
+	 * @param RequestInterface $request
+	 * @param ResponseInterface $response
+	 */
+	protected function emitAfterRequestDispatchSignal(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response) {
 		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterRequestDispatch', array('request' => $request, 'response' => $response));
 	}
 
