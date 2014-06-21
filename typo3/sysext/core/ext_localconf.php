@@ -27,13 +27,6 @@ $signalSlotDispatcher->connect(
 	'removeFromRepository'
 );
 
-$signalSlotDispatcher->connect(
-	'TYPO3\\CMS\\Core\\Utility\\ExtensionManagementUtility',
-	'tcaIsBeingBuilt',
-	'TYPO3\\CMS\\Core\\Configuration\\TcaBuildingAspect',
-	'applyTcaOverrides'
-);
-
 unset($signalSlotDispatcher);
 
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['dumpFile'] = 'EXT:core/Resources/PHP/FileDumpEID.php';
