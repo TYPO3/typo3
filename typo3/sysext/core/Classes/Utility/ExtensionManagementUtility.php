@@ -1603,6 +1603,8 @@ tt_content.' . $key . $prefix . ' {
 	 */
 	static protected function buildBaseTcaFromSingleFiles() {
 		$GLOBALS['TCA'] = array();
+
+		// First load "full table" files from Configuration/TCA
 		foreach (self::getLoadedExtensionListArray() as $extensionName) {
 			$tcaConfigurationDirectory = self::extPath($extensionName) . 'Configuration/TCA';
 			if (is_dir($tcaConfigurationDirectory)) {
@@ -1620,6 +1622,27 @@ tt_content.' . $key . $prefix . ' {
 							$tcaTableName = substr($file, 0, -4);
 							$GLOBALS['TCA'][$tcaTableName] = $tcaOfTable;
 						}
+					}
+				}
+			}
+		}
+
+		// Apply category stuff
+		\TYPO3\CMS\Core\Category\CategoryRegistry::getInstance()->applyTcaForPreRegisteredTables();
+
+		// Execute override files from Configuration/TCA/Overrides
+		foreach (static::$packageManager->getActivePackages() as $package) {
+			$tcaOverridesPathForPackage = $package->getPackagePath() . 'Configuration/TCA/Overrides';
+			if (is_dir($tcaOverridesPathForPackage)) {
+				$files = scandir($tcaOverridesPathForPackage);
+				foreach ($files as $file) {
+					if (
+						is_file($tcaOverridesPathForPackage . '/' . $file)
+						&& ($file !== '.')
+						&& ($file !== '..')
+						&& (substr($file, -4, 4) === '.php')
+					) {
+						require($tcaOverridesPathForPackage . '/' . $file);
 					}
 				}
 			}
