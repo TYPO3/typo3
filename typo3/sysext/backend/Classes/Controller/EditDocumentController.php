@@ -884,7 +884,7 @@ class EditDocumentController {
 									}
 									// Setting variables in TCEforms object:
 									$this->tceforms->hiddenFieldList = '';
-									$this->tceforms->globalShowHelp = $this->disHelp ? 0 : 1;
+									$this->tceforms->globalShowHelp = !$this->disHelp;
 									if (is_array($this->overrideVals) && is_array($this->overrideVals[$table])) {
 										$this->tceforms->hiddenFieldListArr = array_keys($this->overrideVals[$table]);
 									}
