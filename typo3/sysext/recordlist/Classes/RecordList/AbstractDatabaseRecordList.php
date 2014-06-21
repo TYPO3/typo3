@@ -460,27 +460,19 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 		foreach ($parts as $kv => $label) {
 			$opt[] = '<option value="' . $kv . '"' . ($kv == (int)$this->searchLevels ? ' selected="selected"' : '') . '>' . htmlspecialchars($label) . '</option>';
 		}
-		$lMenu = '<select name="search_levels">' . implode('', $opt) . '</select>';
+		$lMenu = '<select name="search_levels" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.search_levels', TRUE) . '" id="search_levels">' . implode('', $opt) . '</select>';
 		// Table with the search box:
-		$content = '<div class="db_list-searchbox-form">
+		$content = '<div class="db_list-searchbox-form db_list-searchbox-toolbar" id="db_list-searchbox-toolbar" style="display: ' . ($this->searchString == '' ? 'none' : 'block') . ';">
 			' . $formElements[0] . '
-
-				<!--
-					Search box:
-				-->
-				<table border="0" cellpadding="0" cellspacing="0" id="typo3-dblist-search">
-					<tr>
-						<td><label for="search_field">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.enterSearchString', TRUE) . '</label></td>
-						<td><input type="search" name="search_field" id="search_field" value="' . htmlspecialchars($this->searchString) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . ' /></td>
-						<td>' . $lMenu . '</td>
-						<td><input type="submit" name="search" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.search', TRUE) . '" /></td>
-					</tr>
-					<tr>
-						<td><label for="showLimit">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showRecords', TRUE) . ':</label></td>
-						<td colspan="3"><input type="number" name="showLimit" id="showLimit" value="' . htmlspecialchars(($this->showLimit ? $this->showLimit : '')) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(5) . ' /></td>
-					</tr>
-				</table>
-			' . $formElements[1] . '</div>';
+				<div id="typo3-dblist-search">
+					<label for="search_field">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.label.searchString', TRUE) . ': </label>
+					<input type="search" placeholder="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.enterSearchString', TRUE) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.searchString', TRUE) . '" name="search_field" id="search_field" value="' . htmlspecialchars($this->searchString) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(15) . ' />
+					<label for="search_levels">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.label.search_levels', TRUE) . ': </label>
+					' . $lMenu . '
+					<label for="showLimit">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.label.limit', TRUE) . ': </label>
+					<input type="number" placeholder="10" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.limit', TRUE) . '" name="showLimit" id="showLimit" value="' . htmlspecialchars(($this->showLimit ? $this->showLimit : '')) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(5) . ' />
+					<input type="submit" name="search" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.search', TRUE) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.search', TRUE) . '" />
+			' . $formElements[1] . '</div></div>';
 		return $content;
 	}
 

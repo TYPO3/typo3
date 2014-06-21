@@ -223,6 +223,11 @@ class PageLayoutController {
 	public $activeColPosList;
 
 	/**
+	 * @var array markers array
+	 */
+	protected $markers = array();
+
+	/**
 	 * Initializing the module
 	 *
 	 * @return void
@@ -254,6 +259,9 @@ class PageLayoutController {
 		$this->current_sys_language = (int)$this->MOD_SETTINGS['language'];
 		// CSH / Descriptions:
 		$this->descrTable = '_MOD_' . $this->MCONF['name'];
+
+		$this->markers['SEARCHBOX'] = '';
+		$this->markers['BUTTONLIST_ADDITIONAL'] = '';
 	}
 
 	/**
@@ -568,14 +576,12 @@ class PageLayoutController {
 			}
 			// Setting up the buttons and markers for docheader
 			$docHeaderButtons = $this->getButtons($this->MOD_SETTINGS['function'] == 0 ? 'quickEdit' : '');
-			$markers = array(
-				'CSH' => $docHeaderButtons['csh'],
-				'TOP_FUNCTION_MENU' => $this->topFuncMenu . $this->editSelect,
-				'LANGSELECTOR' => $this->languageMenu,
-				'CONTENT' => $body
-			);
+			$this->markers['CSH'] = $docHeaderButtons['csh'];
+			$this->markers['TOP_FUNCTION_MENU'] = $this->topFuncMenu . $this->editSelect;
+			$this->markers['LANGSELECTOR'] = $this->languageMenu;
+			$this->markers['CONTENT'] = $body;
 			// Build the <body> for the module
-			$this->content .= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+			$this->content .= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $this->markers);
 			// Renders the module page
 			$this->content = $this->doc->render($GLOBALS['LANG']->getLL('title'), $this->content);
 		} else {
@@ -608,13 +614,11 @@ class PageLayoutController {
 				'history_record' => '',
 				'edit_language' => ''
 			);
-			$markers = array(
-				'CSH' => BackendUtility::cshItem($this->descrTable, '', $GLOBALS['BACK_PATH'], '', TRUE),
-				'TOP_FUNCTION_MENU' => '',
-				'LANGSELECTOR' => '',
-				'CONTENT' => $body
-			);
-			$this->content .= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+			$this->markers['CSH'] = BackendUtility::cshItem($this->descrTable, '', $GLOBALS['BACK_PATH'], '', TRUE);
+			$this->markers['TOP_FUNCTION_MENU'] = '';
+			$this->markers['LANGSELECTOR'] = '';
+			$this->markers['CONTENT'] = $body;
+			$this->content .= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $this->markers);
 			// Renders the module page
 			$this->content = $this->doc->render($GLOBALS['LANG']->getLL('title'), $this->content);
 		}
@@ -1023,8 +1027,8 @@ class PageLayoutController {
 		}
 		// Making search form:
 		if (!$this->modTSconfig['properties']['disableSearchBox'] && count($tableOutput)) {
-			$sectionTitle = BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_searchbox', $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.search', TRUE));
-			$content .= $this->doc->section($sectionTitle, $dblist->getSearchBox(0), FALSE, TRUE, FALSE, TRUE);
+			$this->markers['BUTTONLIST_ADDITIONAL'] = '<a href="#" onclick="toggleSearchToolbox(); return false;" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.searchIcon', TRUE) . '">'.\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-toolbar-menu-search').'</a>';
+			$this->markers['SEARCHBOX'] = $dblist->getSearchBox(0);
 		}
 		// Additional footer content
 		$footerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/db_layout.php']['drawFooterHook'];

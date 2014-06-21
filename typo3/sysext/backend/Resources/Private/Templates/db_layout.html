@@ -6,11 +6,20 @@
 			<div class="right">###PAGEPATH###</div>
 		</div>
 		<div class="typo3-docheader-buttons">
-			<div class="left">###BUTTONLIST_LEFT###</div>
+			<div class="left">###BUTTONLIST_LEFT### <div class="buttongroup">###BUTTONLIST_ADDITIONAL###</div></div>
 			<div class="right">###BUTTONLIST_RIGHT###</div>
 		</div>
+		###SEARCHBOX###
 	</div>
-
+	<script>
+		function toggleSearchToolbox() {
+			if (document.getElementById('db_list-searchbox-toolbar').style.display == 'none') {
+				document.getElementById('db_list-searchbox-toolbar').style.display = 'block';
+			} else {
+				document.getElementById('db_list-searchbox-toolbar').style.display = 'none';
+			}
+		}
+	</script>
 	<div id="typo3-docbody">
 		<div id="typo3-inner-docbody">
 			###CONTENT###

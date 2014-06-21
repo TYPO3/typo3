@@ -1778,13 +1778,15 @@ class ElementBrowser {
 		);
 		$dbList->setDispFields();
 		$dbList->generateList();
+		$out .= $dbList->getSearchBox();
+		$out .= "<script>document.getElementById('db_list-searchbox-toolbar').style.display = 'block';document.getElementById('db_list-searchbox-toolbar').style.position = 'relative';</script>";
+
 		//	Add the HTML for the record list to output variable:
 		$out .= $dbList->HTMLcode;
 		// Add support for fieldselectbox in singleTableMode
 		if ($dbList->table) {
 			$out .= $dbList->fieldSelectBox($dbList->table);
 		}
-		$out .= $dbList->getSearchBox();
 
 		// Return accumulated content:
 		return $out;

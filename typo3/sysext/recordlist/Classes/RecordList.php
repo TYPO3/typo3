@@ -444,11 +444,6 @@ class RecordList {
 		if ($this->MOD_SETTINGS['clipBoard'] && $dblist->showClipboard && ($dblist->HTMLcode || $dblist->clipObj->hasElements())) {
 			$this->body .= '<div class="db_list-dashboard">' . $dblist->clipObj->printClipboard() . '</div>';
 		}
-		// Search box:
-		if (!$this->modTSconfig['properties']['disableSearchBox'] && ($dblist->HTMLcode || $dblist->searchString !== '')) {
-			$sectionTitle = BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_searchbox', $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.search', TRUE));
-			$this->body .= '<div class="db_list-searchbox">' . $this->doc->section($sectionTitle, $dblist->getSearchBox(), FALSE, TRUE, FALSE, TRUE) . '</div>';
-		}
 		// Additional footer content
 		$footerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['recordlist/mod1/index.php']['drawFooterHook'];
 		if (is_array($footerContentHook)) {
@@ -462,8 +457,16 @@ class RecordList {
 		$markers = array(
 			'CSH' => $docHeaderButtons['csh'],
 			'CONTENT' => $this->body,
-			'EXTRACONTAINERCLASS' => $this->table ? 'singletable' : ''
+			'EXTRACONTAINERCLASS' => $this->table ? 'singletable' : '',
+			'BUTTONLIST_ADDITIONAL' => '',
+			'SEARCHBOX' => '',
+			'BUTTONLIST_ADDITIONAL' => ''
 		);
+		// searchbox toolbar
+		if (!$this->modTSconfig['properties']['disableSearchBox'] && ($dblist->HTMLcode || !empty($dblist->searchString))) {
+			$markers['SEARCHBOX'] = $dblist->getSearchBox();
+			$markers['BUTTONLIST_ADDITIONAL'] = '<a href="#" onclick="toggleSearchToolbox(); return false;" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.searchIcon', TRUE) . '">'.\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-toolbar-menu-search').'</a>';
+		}
 		// Build the <body> for the module
 		$this->content = $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 		// Renders the module page
