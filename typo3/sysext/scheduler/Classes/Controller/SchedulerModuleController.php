@@ -151,7 +151,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		$this->submittedData = GeneralUtility::_GPmerged('tx_scheduler');
 		$this->submittedData['uid'] = (int)$this->submittedData['uid'];
 		// If a save command was submitted, handle saving now
-		if ($this->CMD == 'save' || $this->CMD == 'saveclose') {
+		if ($this->CMD === 'save' || $this->CMD === 'saveclose' || $this->CMD === 'savenew') {
 			$previousCMD = GeneralUtility::_GP('previousCMD');
 			// First check the submitted data
 			$result = $this->preprocessData();
@@ -164,6 +164,11 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				} elseif ($this->CMD == 'save') {
 					// After saving a "add form", return to edit
 					$this->CMD = 'edit';
+				} elseif ($this->CMD === 'savenew') {
+					// Unset submitted data, so that empty form gets displayed
+					unset($this->submittedData);
+					// After saving a "add/edit form", return to add
+					$this->CMD = 'add';
 				} else {
 					// Return to edit form
 					$this->CMD = $previousCMD;
@@ -1521,6 +1526,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			'close' => '',
 			'save' => '',
 			'saveclose' => '',
+			'savenew' => '',
 			'delete' => '',
 			'reload' => '',
 			'shortcut' => $this->getShortcutButton()
@@ -1537,6 +1543,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			$buttons['close'] = '<a href="#" onclick="document.location=\'' . $GLOBALS['MCONF']['_'] . '\'" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:cancel', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-close') . '</a>';
 			$buttons['save'] = '<button style="padding: 0; margin: 0; cursor: pointer;" type="submit" name="CMD" value="save" class="c-inputButton" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:save', TRUE) . '" />' . IconUtility::getSpriteIcon('actions-document-save') . '</button>';
 			$buttons['saveclose'] = '<button style="padding: 0; margin: 0; cursor: pointer;" type="submit" name="CMD" value="saveclose" class="c-inputButton" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:saveAndClose', TRUE) . '" />' . IconUtility::getSpriteIcon('actions-document-save-close') . '</button>';
+			$buttons['savenew'] = '<button style="padding: 0; margin: 0; cursor: pointer;" type="submit" name="CMD" value="savenew" class="c-inputButton" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:saveAndCreateNewDoc', TRUE) . '" />' . IconUtility::getSpriteIcon('actions-document-save-new') . '</button>';
 		}
 		if ($this->CMD === 'edit') {
 			$buttons['delete'] = '<button style="padding: 0; margin: 0; cursor: pointer;" type="submit" name="CMD" value="delete" class="c-inputButton" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:delete', TRUE) . '" />' . IconUtility::getSpriteIcon('actions-edit-delete') . '</button>';
