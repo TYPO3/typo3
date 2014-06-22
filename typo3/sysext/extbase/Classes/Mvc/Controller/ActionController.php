@@ -337,7 +337,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 	 * @param array $preparedArguments
 	 */
 	protected function emitBeforeCallActionMethodSignal(array $preparedArguments) {
-		$this->signalSlotDispatcher->dispatch(__CLASS__, 'beforeCallActionMethod', array('controllerName' => get_class($this), 'actionMethodName' => $this->actionMethodName, 'preparedArguments' => $preparedArguments));
+		$this->signalSlotDispatcher->dispatch(__CLASS__, 'beforeCallActionMethod', array(get_class($this), $this->actionMethodName, $preparedArguments));
 	}
 
 	/**

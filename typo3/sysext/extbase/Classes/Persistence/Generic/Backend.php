@@ -664,7 +664,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 * @param DomainObjectInterface $object
 	 */
 	protected function emitAfterInsertObjectSignal(DomainObjectInterface $object) {
-		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterInsertObject', array('object' => $object));
+		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterInsertObject', array($object));
 	}
 
 	/**
@@ -872,7 +872,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 * @param DomainObjectInterface $object
 	 */
 	protected function emitAfterUpdateObjectSignal(DomainObjectInterface $object) {
-		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterUpdateObject', array('object' => $object));
+		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterUpdateObject', array($object));
 	}
 
 	/**
@@ -963,7 +963,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 * @param DomainObjectInterface $object
 	 */
 	protected function emitAfterRemoveObjectSignal(DomainObjectInterface $object) {
-		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterRemoveObject', array('object' => $object));
+		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterRemoveObject', array($object));
 	}
 
 	/**

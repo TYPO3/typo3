@@ -86,8 +86,8 @@ class SqlExpectedSchemaService {
 	 * @return mixed
 	 */
 	protected function emitTablesDefinitionIsBeingBuiltSignal(array $sqlString) {
-		$signalReturn = $this->signalSlotDispatcher->dispatch(__CLASS__, 'tablesDefinitionIsBeingBuilt', array('sqlString' => $sqlString));
-		$sqlString = $signalReturn['sqlString'];
+		$signalReturn = $this->signalSlotDispatcher->dispatch(__CLASS__, 'tablesDefinitionIsBeingBuilt', array($sqlString));
+		$sqlString = $signalReturn[0];
 		if (!is_array($sqlString)) {
 			throw new Exception\UnexpectedSignalReturnValueTypeException(
 				sprintf(

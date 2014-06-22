@@ -103,8 +103,8 @@ class DocumentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 			__CLASS__,
 			'afterInitializeDocuments',
 			array(
-				'language'  => $language,
-				'documents' => $documents,
+				$language,
+				$documents,
 			)
 		);
 		return $signalArguments[1];

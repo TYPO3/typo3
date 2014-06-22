@@ -57,8 +57,8 @@ class ProcessAvailableActionsViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Lin
 			__CLASS__,
 			static::SIGNAL_ProcessActions,
 			array(
-				'extension' => $extension,
-				'actions' => $actions,
+				$extension,
+				$actions,
 			)
 		);
 		return $signalArguments[1];
