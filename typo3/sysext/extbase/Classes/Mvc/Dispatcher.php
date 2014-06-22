@@ -80,7 +80,7 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param ResponseInterface $response
 	 */
 	protected function emitAfterRequestDispatchSignal(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response) {
-		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterRequestDispatch', array('request' => $request, 'response' => $response));
+		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterRequestDispatch', array($request, $response));
 	}
 
 	/**

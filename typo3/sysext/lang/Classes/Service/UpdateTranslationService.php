@@ -202,8 +202,8 @@ class UpdateTranslationService {
 			__CLASS__,
 			'postProcessMirrorUrl',
 			array(
-				'extensionKey' => $extensionKey,
-				'mirrorUrl' => $mirrorUrl,
+				$extensionKey,
+				$mirrorUrl,
 			)
 		);
 		return $signalArguments[1];

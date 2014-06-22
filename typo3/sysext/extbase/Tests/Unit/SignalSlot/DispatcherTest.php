@@ -78,7 +78,7 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			($arguments = func_get_args());
 		};
 		$this->signalSlotDispatcher->connect('Foo', 'bar', $mockSlot, NULL, FALSE);
-		$this->signalSlotDispatcher->dispatch('Foo', 'bar', array('foo' => 'bar', 'baz' => 'quux'));
+		$this->signalSlotDispatcher->dispatch('Foo', 'bar', array('bar', 'quux'));
 		$this->assertSame(array('bar', 'quux'), $arguments);
 	}
 
@@ -95,7 +95,7 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->signalSlotDispatcher->_set('objectManager', $mockObjectManager);
 		$this->signalSlotDispatcher->_set('isInitialized', TRUE);
 		$this->signalSlotDispatcher->connect('Foo', 'emitBar', $slotClassName, 'slot', FALSE);
-		$this->signalSlotDispatcher->dispatch('Foo', 'emitBar', array('foo' => 'bar', 'baz' => 'quux'));
+		$this->signalSlotDispatcher->dispatch('Foo', 'emitBar', array('bar', 'quux'));
 		$this->assertSame($mockSlot->arguments, array('bar', 'quux'));
 	}
 
@@ -197,7 +197,7 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					));
 
 		$this->signalSlotDispatcher->connect('Foo', 'emitBar', $mockSlot, 'slot', FALSE);
-		$this->signalSlotDispatcher->dispatch('Foo', 'emitBar', array('foo' => 'bar', 'baz' => 'quux'));
+		$this->signalSlotDispatcher->dispatch('Foo', 'emitBar', array('bar', 'quux'));
 	}
 
 	/**
@@ -246,7 +246,7 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->signalSlotDispatcher->_set('objectManager', $mockObjectManager);
 		$this->signalSlotDispatcher->_set('isInitialized', TRUE);
 		$this->signalSlotDispatcher->connect('Foo', 'emitBar', $slotClassName, 'unknownMethodName', TRUE);
-		$this->signalSlotDispatcher->dispatch('Foo', 'emitBar', array('foo' => 'bar', 'baz' => 'quux'));
+		$this->signalSlotDispatcher->dispatch('Foo', 'emitBar', array('bar', 'quux'));
 		$this->assertSame($mockSlot->arguments, array('bar', 'quux'));
 	}
 
@@ -262,7 +262,7 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->signalSlotDispatcher->connect('SignalClassName', 'methodName', $mockSlot, NULL, TRUE);
 		$this->signalSlotDispatcher->_set('objectManager', $mockObjectManager);
 		$this->signalSlotDispatcher->_set('isInitialized', TRUE);
-		$this->signalSlotDispatcher->dispatch('SignalClassName', 'methodName', array('foo' => 'bar', 'baz' => 'quux'));
+		$this->signalSlotDispatcher->dispatch('SignalClassName', 'methodName', array('bar', 'quux'));
 		$this->assertSame(array('bar', 'quux', 'SignalClassName::methodName'), $arguments);
 	}
 
@@ -295,9 +295,9 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function dispatchReturnsArgumentsArrayAsIsIfSignalIsNotRegistered() {
 		$arguments = array(
-			'argument1' => 42,
-			'argument2' => 'a string',
-			'argument3' => new \stdClass()
+			42,
+			'a string',
+			new \stdClass()
 		);
 		$this->assertSame($arguments, $this->signalSlotDispatcher->dispatch('ClassA', 'emitSomeSignal', $arguments));
 	}
