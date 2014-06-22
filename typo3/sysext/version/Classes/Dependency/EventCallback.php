@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Version\Dependency;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Object to hold information on a callback to a defined object and method.
  */
