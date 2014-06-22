@@ -1,40 +1,18 @@
 <?php
 namespace TYPO3\CMS\IndexedSearch\Utility;
 
-/***************************************************************
- *	VERSION DoubleMetaphone Class 1.01
+/**
+ * This file is part of the TYPO3 CMS project.
  *
- *	DESCRIPTION
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
  *
- *	  This class implements a "sounds like" algorithm developed
- *	  by Lawrence Philips which he published in the June, 2000 issue
- *	  of C/C++ Users Journal.  Double Metaphone is an improved
- *	  version of Philips' original Metaphone algorithm.
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
  *
- *	COPYRIGHT
- *
- *	  Copyright 2001, Stephen Woodbridge <woodbri@swoodbridge.com>
- *	  All rights reserved.
- *
- *	  http://swoodbridge.com/DoubleMetaPhone/
- *
- *	  This PHP translation is based heavily on the C implementation
- *	  by Maurice Aubrey <maurice@hevanet.com>, which in turn
- *	  is based heavily on the C++ implementation by
- *	  Lawrence Philips and incorporates several bug fixes courtesy
- *	  of Kevin Atkinson <kevina@users.sourceforge.net>.
- *
- *	  This module is free software; you may redistribute it and/or
- *	  modify it under the same terms as Perl itself.
- *
- *	CONTRIBUTIONS
- *
- *	  17-May-2002 Geoff Caplan	http://www.advantae.com
- *		Bug fix: added code to return class object which I forgot to do
- *		Created a functional callable version instead of the class version
- *		which is faster if you are calling this a lot.
- *
- ***************************************************************/
+ * The TYPO3 project - inspiring people to share!
+ */
 
 /**
  * TYPO3: Had to change name to "\TYPO3\CMS\IndexedSearch\Utility\DoubleMetaPhoneUtility" from just "DoubleMetaPhone" because TYPO3 requires a user class to be prefixed so:
