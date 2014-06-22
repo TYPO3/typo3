@@ -216,7 +216,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * returns the input code value from the admin command variable
 	 *
-	 * @return input code
+	 * @return string Input code
 	 */
 	protected function getPreviewInputCode() {
 		$inputCode = GeneralUtility::_GP($this->previewKey);
@@ -261,7 +261,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 	 * a preview link is valid, based on the TSconfig value "options.workspaces.previewLinkTTLHours"
 	 * by default, it's 48hs
 	 *
-	 * @return integer	the hours as a number
+	 * @return integer The hours as a number
 	 */
 	public function getPreviewLinkLifetime() {
 		$ttlHours = (int)$GLOBALS['BE_USER']->getTSConfigVal('options.workspaces.previewLinkTTLHours');

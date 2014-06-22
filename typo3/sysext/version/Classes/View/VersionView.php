@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Version\View;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Contains some parts for staging, versioning and workspaces
  * to interact with the TYPO3 Core Engine
@@ -23,9 +24,9 @@ class VersionView {
 	 * Creates the version selector for the page id inputted.
 	 * Moved out of the core file \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 *
-	 * @param 	integer		Page id to create selector for.
-	 * @param 	boolean		If set, there will be no button for swapping page.
-	 * @return 	void
+	 * @param integer $id Page id to create selector for.
+	 * @param boolean $noAction If set, there will be no button for swapping page.
+	 * @return void
 	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 */
 	public function getVersionSelector($id, $noAction = FALSE) {

@@ -1,4 +1,3 @@
-
 #
 # Table structure for table 'sys_preview'
 #

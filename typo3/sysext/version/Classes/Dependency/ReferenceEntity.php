@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Version\Dependency;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Object to hold reference information of a database field and one accordant element.
  */

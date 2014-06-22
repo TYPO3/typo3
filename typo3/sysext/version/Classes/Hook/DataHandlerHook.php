@@ -73,7 +73,7 @@ class DataHandlerHook {
 	 * @param mixed $value the value containing the data
 	 * @param boolean $commandIsProcessed can be set so that other hooks or
 	 * @param DataHandler $tcemainObj reference to the main tcemain object
-	 * @return 	void
+	 * @return void
 	 */
 	public function processCmdmap($command, $table, $id, $value, &$commandIsProcessed, DataHandler $tcemainObj) {
 		// custom command "version"
@@ -132,7 +132,7 @@ class DataHandlerHook {
 	 * executed
 	 *
 	 * @param DataHandler $tcemainObj reference to the main tcemain object
-	 * @return 	void
+	 * @return void
 	 */
 	public function processCmdmap_afterFinish(DataHandler $tcemainObj) {
 		// Empty accumulation array:
@@ -153,7 +153,7 @@ class DataHandlerHook {
 	 * @param array $record The accordant database record
 	 * @param boolean $recordWasDeleted can be set so that other hooks or
 	 * @param DataHandler $tcemainObj reference to the main tcemain object
-	 * @return 	void
+	 * @return void
 	 */
 	public function processCmdmap_deleteAction($table, $id, array $record, &$recordWasDeleted, DataHandler $tcemainObj) {
 		// only process the hook if it wasn't processed
@@ -615,9 +615,9 @@ class DataHandlerHook {
 	 * Return be_users that should be notified on stage change from input list.
 	 * previously called notifyStageChange_getEmails() in tcemain
 	 *
-	 * @param 	string		$listOfUsers List of backend users, on the form "be_users_10,be_users_2" or "10,2" in case noTablePrefix is set.
-	 * @param 	boolean		$noTablePrefix If set, the input list are integers and not strings.
-	 * @return 	array		Array of emails
+	 * @param string $listOfUsers List of backend users, on the form "be_users_10,be_users_2" or "10,2" in case noTablePrefix is set.
+	 * @param boolean $noTablePrefix If set, the input list are integers and not strings.
+	 * @return array Array of emails
 	 */
 	protected function getEmailsForStageChangeNotification($listOfUsers, $noTablePrefix = FALSE) {
 		$users = GeneralUtility::trimExplode(',', $listOfUsers, TRUE);
@@ -1001,7 +1001,7 @@ class DataHandlerHook {
 	 * @param integer $id Record UID
 	 * @param boolean $flush If set, will completely delete element
 	 * @param DataHandler $tcemainObj TCEmain object
-	 * @return 	void
+	 * @return void
 	 */
 	protected function version_clearWSID($table, $id, $flush = FALSE, DataHandler $tcemainObj) {
 		if ($errorCode = $tcemainObj->BE_USER->workspaceCannotEditOfflineVersion($table, $id)) {
@@ -1183,8 +1183,8 @@ class DataHandlerHook {
 	/**
 	 * Finds real page IDs for state change.
 	 *
-	 * @param 	array	$idList	List of page UIDs, possibly versioned
-	 * @return 	void
+	 * @param array $idList List of page UIDs, possibly versioned
+	 * @return void
 	 */
 	public function findRealPageIds(array &$idList) {
 		foreach ($idList as $key => $id) {

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Version\Dependency;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Object to create and keep track of element or reference entities.
  */
@@ -68,7 +69,7 @@ class DependencyEntityFactory {
 	 * @param string $table
 	 * @param integer $id
 	 * @param string $field
-	 * @param array $data (optional
+	 * @param array $data (optional)
 	 * @param \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency
 	 * @return \TYPO3\CMS\Version\Dependency\ReferenceEntity
 	 * @see getElement

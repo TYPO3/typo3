@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Version\Dependency;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Object to handle and determine dependent references of elements.
  */

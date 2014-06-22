@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Version\Hook;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
@@ -32,7 +33,7 @@ class IconUtilityHook {
 		if (
 			isset($row['t3ver_state'])
 			&& VersionState::cast($row['t3ver_state'])->equals(
-				\TYPO3\CMS\Core\Versioning\VersionState::DELETE_PLACEHOLDER
+				VersionState::DELETE_PLACEHOLDER
 			)
 		) {
 			$status['deleted'] = TRUE;

@@ -21,29 +21,34 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
 /**
  * Versioning module, including workspace management
  *
- * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
-	// Default variables for backend modules
 	/**
+	 * Module configuration
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $MCONF = array();
 
-	// Module configuration
 	/**
+	 * Module menu items
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $MOD_MENU = array();
 
-	// Module menu items
 	/**
+	 * Module session settings
+	 *
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $MOD_SETTINGS = array();
 
-	// Module session settings
 	/**
 	 * document template object
 	 *
@@ -53,55 +58,67 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	public $doc;
 
 	/**
+	 * @var string
 	 * @todo Define visibility
 	 */
 	public $content;
 
-	// Accumulated content
-	// Internal:
 	/**
+	 * Accumulated content
+	 *
+	 * @var int
 	 * @todo Define visibility
 	 */
 	public $showWorkspaceCol = 0;
 
 	/**
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $formatWorkspace_cache = array();
 
 	/**
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $formatCount_cache = array();
 
 	/**
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $targets = array();
 
-	// Accumulation of online targets.
 	/**
+	 * Accumulation of online targets.
+	 *
+	 * @var string
 	 * @todo Define visibility
 	 */
 	public $pageModule = '';
 
-	// Name of page module
 	/**
+	 * Name of page module
+	 *
+	 * @var bool
 	 * @todo Define visibility
 	 */
 	public $publishAccess = FALSE;
 
 	/**
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $be_user_Array = array();
 
 	/**
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $stageIndex = array();
 
 	/**
+	 * @var array
 	 * @todo Define visibility
 	 */
 	public $recIndex = array();
@@ -113,16 +130,10 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 		$GLOBALS['LANG']->includeLLFile('EXT:version/locallang.xlf');
 	}
 
-	// Determines whether to show the dummy draft workspace
-	/*********************************
-	 *
-	 * Standard module initialization
-	 *
-	 *********************************/
 	/**
 	 * Initialize menu configuration
 	 *
-	 * @return 	void
+	 * @return void
 	 * @todo Define visibility
 	 */
 	public function menuConfig() {
@@ -133,7 +144,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	/**
 	 * Main function of the module. Write the content to $this->content
 	 *
-	 * @return 	void
+	 * @return void
 	 * @todo Define visibility
 	 */
 	public function main() {
@@ -239,8 +250,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	/**
 	 * Outputs accumulated module content to browser.
 	 *
-	 * @return 	void
-	 * @todo Define visibility
+	 * @return void
 	 */
 	public function printContent() {
 		echo $this->content;
@@ -249,7 +259,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	/**
 	 * Create the panel of buttons for submitting the form or otherwise perform operations.
 	 *
-	 * @return 	array	all available buttons as an assoc. array
+	 * @return array All available buttons as an assoc. array
 	 */
 	protected function getButtons() {
 		$buttons = array(
@@ -283,7 +293,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	/**
 	 * Management of versions for record
 	 *
-	 * @return 	void
+	 * @return void
 	 * @todo Define visibility
 	 */
 	public function versioningMgm() {
@@ -413,9 +423,9 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	/**
 	 * Recursively look for children for page version with $pid
 	 *
-	 * @param 	integer		UID of page record for which to look up sub-elements following that version
-	 * @param 	integer		Counter, do not set (limits to 100 levels)
-	 * @return 	string		Table with content if any
+	 * @param integer $pid UID of page record for which to look up sub-elements following that version
+	 * @param integer $c Counter, do not set (limits to 100 levels)
+	 * @return string Table with content if any
 	 * @todo Define visibility
 	 */
 	public function pageSubContent($pid, $c = 0) {
@@ -455,6 +465,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 					}
 				}
 			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($mres);
 		}
 		return $content ? '<table border="1" cellpadding="1" cellspacing="0" width="100%">' . $content . '</table>' : '';
 	}
@@ -462,9 +473,9 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	/**
 	 * Look for number of versions of a record
 	 *
-	 * @param 	string		Table name
-	 * @param 	integer		Record uid
-	 * @return 	integer		Number of versions for record, FALSE if none.
+	 * @param string $table Table name
+	 * @param integer $uid Record uid
+	 * @return integer Number of versions for record, FALSE if none.
 	 * @todo Define visibility
 	 */
 	public function lookForOwnVersions($table, $uid) {
@@ -478,9 +489,9 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	/**
 	 * Administrative links for a table / record
 	 *
-	 * @param 	string		Table name
-	 * @param 	array		Record for which administrative links are generated.
-	 * @return 	string		HTML link tags.
+	 * @param string $table Table name
+	 * @param array $row Record for which administrative links are generated.
+	 * @return string HTML link tags.
 	 * @todo Define visibility
 	 */
 	public function adminLinks($table, $row) {
@@ -488,7 +499,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 		$adminLink = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick(('&edit[' . $table . '][' . $row['uid'] . ']=edit'), $this->doc->backPath)) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.edit', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 		// Delete link:
 		$adminLink .= '<a href="' . htmlspecialchars($this->doc->issueCommand(('&cmd[' . $table . '][' . $row['uid'] . '][delete]=1'))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.delete', TRUE) . '">' . IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
-		if ($table == 'pages') {
+		if ($table === 'pages') {
 			// If another page module was specified, replace the default Page module with the new one
 			$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
 			$pageModule = BackendUtility::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';

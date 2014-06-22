@@ -37,6 +37,7 @@ class CommandMap {
 	const KEY_PurgeWithErrorMessageGetIdCallback = 'KEY_PurgeWithErrorMessageGetIdCallback';
 	const KEY_UpdateGetIdCallback = 'KEY_UpdateGetIdCallback';
 	const KEY_TransformDependentElementsToUseLiveId = 'KEY_TransformDependentElementsToUseLiveId';
+
 	/**
 	 * @var \TYPO3\CMS\Version\Hook\DataHandlerHook
 	 */
