@@ -34,6 +34,14 @@ abstract class AbstractImportTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	protected $import;
 
 	/**
+	 * Absolute path to files that must be removed
+	 * after a test - handled in tearDown
+	 *
+	 * @var array
+	 */
+	protected $testFilesToDelete = array();
+
+	/**
 	 * Set up for set up the backend user, initialize the language object
 	 * and creating the ImportExport instance
 	 *
@@ -46,6 +54,17 @@ abstract class AbstractImportTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		$this->import->init(0, 'import');
 	}
 
+	/**
+	 * Tear down for remove of the test files
+	 */
+	public function tearDown() {
+		foreach ($this->testFilesToDelete as $absoluteFileName) {
+			if (@is_file($absoluteFileName)) {
+				unlink($absoluteFileName);
+			}
+		}
+		parent::tearDown();
+	}
 
 	/**
 	 * Test if the local filesystem is case sensitive
