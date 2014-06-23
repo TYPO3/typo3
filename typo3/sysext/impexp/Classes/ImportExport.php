@@ -1978,9 +1978,17 @@ class ImportExport {
 				if ($table != 'pages') {
 					foreach ($recs as $uid => $thisRec) {
 						// PID: Set the main $pid, unless a NEW-id is found
-						$setPid = isset($this->import_mapId['pages'][$thisRec['pid']]) ? $this->import_mapId['pages'][$thisRec['pid']] : $pid;
-						if (is_array($GLOBALS['TCA'][$table]) && $GLOBALS['TCA'][$table]['ctrl']['rootLevel']) {
-							$setPid = 0;
+						$setPid = isset($this->import_mapId['pages'][$thisRec['pid']])
+							? (int)$this->import_mapId['pages'][$thisRec['pid']]
+							: (int)$pid;
+						if (is_array($GLOBALS['TCA'][$table]) && isset($GLOBALS['TCA'][$table]['ctrl']['rootLevel'])) {
+							$rootLevelSetting = (int)$GLOBALS['TCA'][$table]['ctrl']['rootLevel'];
+							if ($rootLevelSetting === 1) {
+								$setPid = 0;
+							} elseif ($rootLevelSetting === 0 && $setPid === 0) {
+								$this->error('Error: Record type ' . $table . ' is not allowed on pid 0');
+								continue;
+							}
 						}
 						// Add record:
 						$this->addSingle($table, $uid, $setPid);
@@ -3593,7 +3601,7 @@ class ImportExport {
 				if ($GLOBALS['TCA'][$table]['ctrl']['is_static']) {
 					$pInfo['msg'] .= 'TABLE \'' . $table . '\' is a STATIC TABLE! ';
 				}
-				if ($GLOBALS['TCA'][$table]['ctrl']['rootLevel']) {
+				if ((int)$GLOBALS['TCA'][$table]['ctrl']['rootLevel'] === 1) {
 					$pInfo['msg'] .= 'TABLE \'' . $table . '\' will be inserted on ROOT LEVEL! ';
 				}
 				$diffInverse = FALSE;
