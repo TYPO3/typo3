@@ -8,7 +8,7 @@ if (TYPO3_MODE === 'BE') {
 		'extensionmanager', '', array(
 			'List' => 'index,unresolvedDependencies,ter,showAllVersions,distributions',
 			'Action' => 'toggleExtensionInstallationState,installExtensionWithoutSystemDependencyCheck,removeExtension,downloadExtensionZip,downloadExtensionData',
-			'Configuration' => 'showConfigurationForm,save',
+			'Configuration' => 'showConfigurationForm,save,saveAndClose',
 			'Download' => 'checkDependencies,installFromTer,installExtensionWithoutSystemDependencyCheck,installDistribution,updateExtension,updateCommentForUpdatableVersions',
 			'UpdateScript' => 'show',
 			'UpdateFromTer' => 'updateExtensionListFromTer',

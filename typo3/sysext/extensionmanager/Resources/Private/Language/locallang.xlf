@@ -60,9 +60,6 @@
 			<trans-unit id="extConfTemplate.backToList" xml:space="preserve">
 				<source>Back to list</source>
 			</trans-unit>
-			<trans-unit id="extConfTemplate.submitButton" xml:space="preserve">
-				<source>Submit</source>
-			</trans-unit>
 			<trans-unit id="updateScript.headline" xml:space="preserve">
 				<source>Update script for %s</source>
 			</trans-unit>
