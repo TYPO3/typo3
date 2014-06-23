@@ -52,10 +52,16 @@ return array(
 				'items' => array(),
 				'itemsProcFunc' => 'typo3/sysext/core/Classes/Resource/Service/UserFileMountService.php:TYPO3\CMS\Core\Resource\Service\UserFileMountService->renderTceformsSelectDropdown',
 			)
-		)
+		),
+		'read_only' => array(
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_filemounts.read_only',
+			'config' => array(
+				'type' => 'check'
+			),
+		),
 	),
 	'types' => array(
-		'0' => array('showitem' => '--palette--;;mount, base, path')
+		'0' => array('showitem' => '--palette--;;mount, base, path, read_only')
 	),
 	'palettes' => array(
 		'mount' => array('showitem' => 'title,hidden', 'canNotCollapse' => 1)

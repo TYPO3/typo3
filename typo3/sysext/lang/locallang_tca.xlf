@@ -282,6 +282,9 @@
 			<trans-unit id="sys_filemounts.base" xml:space="preserve">
 				<source>Base:</source>
 			</trans-unit>
+			<trans-unit id="sys_filemounts.read_only">
+				<source>Read-only:</source>
+			</trans-unit>
 			<trans-unit id="sys_filemounts.base_absolute" xml:space="preserve">
 				<source>absolute (root) / </source>
 			</trans-unit>

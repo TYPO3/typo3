@@ -245,6 +245,7 @@ CREATE TABLE sys_filemounts (
   hidden tinyint(3) unsigned DEFAULT '0' NOT NULL,
   deleted tinyint(1) unsigned DEFAULT '0' NOT NULL,
   sorting int(11) unsigned DEFAULT '0' NOT NULL,
+  read_only tinyint(1) unsigned DEFAULT '0' NOT NULL,
   PRIMARY KEY (uid),
   KEY parent (pid)
 );

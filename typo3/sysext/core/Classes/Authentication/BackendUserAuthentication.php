@@ -1627,9 +1627,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 				? $this->db->stripOrderBy($GLOBALS['TCA']['sys_filemounts']['ctrl']['default_sortby'])
 				: 'sorting';
 			$fileMountRecords = $this->db->exec_SELECTgetRows(
-				// Select read_only as (int)0, as there is no real database field for this.
-				// Don't select as false as this is not supported by DBAL!
-				'*,0 as read_only',
+				'*',
 				'sys_filemounts',
 				'deleted=0 AND hidden=0 AND pid=0 AND uid IN (' . implode(',', $fileMounts) . ')',
 				'',

@@ -48,6 +48,13 @@ class FileMount extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $isAbsolutePath = FALSE;
 
 	/**
+	 * Determines whether this file mount should be read only.
+	 *
+	 * @var bool
+	 */
+	protected $readOnly = FALSE;
+
+	/**
 	 * Getter for the title of the file mount.
 	 *
 	 * @return string
@@ -105,11 +112,20 @@ class FileMount extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * Getter for the virtual field read_only
+	 * Setter for the readOnly property of the file mount.
+	 *
+	 * @param bool $readOnly
+	 */
+	public function setReadOnly($readOnly) {
+		$this->readOnly = $readOnly;
+	}
+
+	/**
+	 * Getter for the readOnly property of the file mount.
 	 *
 	 * @return bool
 	 */
 	public function isReadOnly() {
-		return FALSE;
+		return $this->readOnly;
 	}
 }

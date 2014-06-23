@@ -68,6 +68,12 @@ The directory structure of "fileadmin/" where you can see the "user_upload" fold
 				<source>sys_filemounts:path</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
+			<trans-unit id="read_only.description">
+				<source>Display this file mount as read-only.</source>
+			</trans-unit>
+			<trans-unit id="read_only.details" xml:space="preserve">
+				<source>Read-only file mounts are displayed in the File List and the Element Browser. They allow displaying of files and folders which are neither writable nor editable for the user.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
