@@ -255,6 +255,8 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function emitTablesDefinitionIsBeingBuiltSignal($extensionKey) {
 		$signalReturn = $this->signalSlotDispatcher->dispatch(__CLASS__, 'tablesDefinitionIsBeingBuilt', array(array(), $extensionKey));
+		// This is important to support old associated returns
+		$signalReturn = array_values($signalReturn);
 		$sqlString = $signalReturn[0];
 		if (!is_array($sqlString)) {
 			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(

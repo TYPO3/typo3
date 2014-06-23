@@ -198,15 +198,15 @@ class UpdateTranslationService {
 	 * @return string Modified mirror url
 	 */
 	protected function emitPostProcessMirrorUrlSignal($extensionKey, $mirrorUrl) {
-		$signalArguments = $this->signalSlotDispatcher->dispatch(
+		$this->signalSlotDispatcher->dispatch(
 			__CLASS__,
 			'postProcessMirrorUrl',
 			array(
 				$extensionKey,
-				$mirrorUrl,
+				&$mirrorUrl,
 			)
 		);
-		return $signalArguments[1];
+		return $mirrorUrl;
 	}
 
 }
