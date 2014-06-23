@@ -53,15 +53,15 @@ class ProcessAvailableActionsViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Lin
 	 * @return array Modified action array
 	 */
 	protected function emitProcessActionsSignal($extension, array $actions) {
-		$signalArguments = $this->signalSlotDispatcher->dispatch(
+		$this->signalSlotDispatcher->dispatch(
 			__CLASS__,
 			static::SIGNAL_ProcessActions,
 			array(
 				$extension,
-				$actions,
+				&$actions,
 			)
 		);
-		return $signalArguments[1];
+		return $actions;
 	}
 
 }

@@ -2084,8 +2084,8 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @return string Modified target file name
 	 */
 	protected function emitPreFileAddSignal($targetFileName, Folder $targetFolder, $sourceFilePath) {
-		$signalArguments = $this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PreFileAdd, array($targetFileName, $targetFolder, $sourceFilePath, $this, $this->driver));
-		return $signalArguments[0];
+		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PreFileAdd, array(&$targetFileName, $targetFolder, $sourceFilePath, $this, $this->driver));
+		return $targetFileName;
 	}
 
 	/**

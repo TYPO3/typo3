@@ -99,15 +99,15 @@ class DocumentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 * @return \TYPO3\CMS\Documentation\Domain\Model\Document[]
 	 */
 	protected function emitAfterInitializeDocumentsSignal($language, array $documents) {
-		$signalArguments = $this->signalSlotDispatcher->dispatch(
+		$this->signalSlotDispatcher->dispatch(
 			__CLASS__,
 			'afterInitializeDocuments',
 			array(
 				$language,
-				$documents,
+				&$documents,
 			)
 		);
-		return $signalArguments[1];
+		return $documents;
 	}
 
 	/**
