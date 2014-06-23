@@ -95,6 +95,7 @@ TYPO3.Workspaces.Actions = {
 			top.Ext.getCmp('executeMassActionCancleButton').setText(TYPO3.l10n.localize('close'));
 			top.Ext.getCmp('executeMassActionForm').show();
 			top.Ext.getCmp('executeMassActionForm').update(response.error);
+			TYPO3.Workspaces.Helpers.refreshPageTree();
 		} else {
 			if (response.total > response.processed) {
 				TYPO3.Workspaces.Actions.runMassAction(response);
@@ -104,7 +105,7 @@ TYPO3.Workspaces.Actions = {
 				top.Ext.getCmp('executeMassActionCancleButton').setText(TYPO3.l10n.localize('close'));
 				top.Ext.getCmp('executeMassActionForm').show();
 				top.Ext.getCmp('executeMassActionForm').update(TYPO3.l10n.localize('runMassAction.done').replace('%d', response.total));
-				top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
+				TYPO3.Workspaces.Helpers.refreshPageTree();
 			}
 		}
 	},
@@ -123,6 +124,7 @@ TYPO3.Workspaces.Actions = {
 	},
 	deleteSingleRecord: function(table, uid) {
 		TYPO3.Workspaces.ExtDirectActions.deleteSingleRecord(table, uid, function(response) {
+			TYPO3.Workspaces.Helpers.refreshPageTree();
 			TYPO3.Workspaces.MainStore.load();
 		});
 	},
@@ -152,7 +154,7 @@ TYPO3.Workspaces.Actions = {
 					TYPO3.Workspaces.Actions.sendToStageExecute(parameters);
 					top.TYPO3.Windows.close('sendToStageWindow');
 					TYPO3.Workspaces.MainStore.reload();
-					top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
+					TYPO3.Workspaces.Helpers.refreshPageTree();
 				}
 			});
 		}

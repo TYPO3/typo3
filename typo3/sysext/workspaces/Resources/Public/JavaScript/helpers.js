@@ -202,5 +202,11 @@ TYPO3.Workspaces.Helpers = {
 			pointer = pointer[item];
 		});
 		return result;
+	},
+
+	refreshPageTree: function() {
+		if (TYPO3.Workspaces.Helpers.isDefined('top.TYPO3.Backend.NavigationContainer.PageTree')) {
+			top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
+		}
 	}
 };
