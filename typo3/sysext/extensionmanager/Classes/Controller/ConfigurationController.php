@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 
@@ -67,23 +68,15 @@ class ConfigurationController extends AbstractController {
 	}
 
 	/**
-	 * Save configuration to file
-	 * Merges existing with new configuration.
+	 * Save configuration and redirects back to form
+	 * or to the welcome page of a distribution
 	 *
 	 * @param array $config The new extension configuration
 	 * @param string $extensionKey The extension key
 	 * @return void
 	 */
 	public function saveAction(array $config, $extensionKey) {
-		/** @var $configurationUtility \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility */
-		$configurationUtility = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\ConfigurationUtility');
-		$newConfiguration = $configurationUtility->getCurrentConfiguration($extensionKey);
-		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($newConfiguration, $config);
-		$configurationUtility->writeConfiguration(
-			$configurationUtility->convertValuedToNestedConfiguration($newConfiguration),
-			$extensionKey
-		);
-		$this->emitAfterExtensionConfigurationWriteSignal($newConfiguration);
+		$this->saveConfiguration($config, $extensionKey);
 		/** @var Extension $extension */
 		$extension = $this->extensionRepository->findOneByCurrentVersionByExtensionKey($extensionKey);
 		// Different handling for distribution installation
@@ -97,12 +90,44 @@ class ConfigurationController extends AbstractController {
 	}
 
 	/**
+	 * Saves new configuration and redirects back to list
+	 *
+	 * @param array $config
+	 * @param string $extensionKey
+	 * @return void
+	 */
+	public function saveAndCloseAction(array $config, $extensionKey) {
+		$this->saveConfiguration($config, $extensionKey);
+		$this->redirect('index', 'List');
+	}
+
+
+	/**
 	 * Emits a signal after the configuration file was written
 	 *
 	 * @param array $newConfiguration
 	 */
 	protected function emitAfterExtensionConfigurationWriteSignal(array $newConfiguration) {
 		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterExtensionConfigurationWrite', array($newConfiguration, $this));
+	}
+
+	/**
+	 * Merge and save new configuration
+	 *
+	 * @param array $config
+	 * @param $extensionKey
+	 * @return void
+	 */
+	protected function saveConfiguration(array $config, $extensionKey) {
+		/** @var $configurationUtility \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility */
+		$configurationUtility = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\ConfigurationUtility');
+		$newConfiguration = $configurationUtility->getCurrentConfiguration($extensionKey);
+		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($newConfiguration, $config);
+		$configurationUtility->writeConfiguration(
+			$configurationUtility->convertValuedToNestedConfiguration($newConfiguration),
+			$extensionKey
+		);
+		$this->emitAfterExtensionConfigurationWriteSignal($newConfiguration);
 	}
 
 }

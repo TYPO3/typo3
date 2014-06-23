@@ -4,6 +4,9 @@
 	$(document).ready(function() {
 		configurationFieldSupport();
 		$(".validate").validate();
+		$(".t3-icon-document-save-close").on("click", function() {
+			$(".validate").append("<input type=\"hidden\" name=\"tx_extensionmanager_tools_extensionmanagerextensionmanager[action]\" value=\"saveAndClose\">").submit();
+		});
 	});
 
 	function configurationFieldSupport() {

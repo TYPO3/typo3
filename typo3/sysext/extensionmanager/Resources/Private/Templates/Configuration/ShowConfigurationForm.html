@@ -3,7 +3,8 @@
 
 <f:section name="docheader-buttons">
 	<f:be.buttons.icon uri="{f:uri.action(action:'index',controller:'List',additionalParams:{search:extension.key})}" icon="actions-view-go-back" title="{f:translate(key:'extConfTemplate.backToList')}" />
-	<f:be.buttons.icon uri="javascript:document.configurationform.submit();" icon="actions-document-save" title="{f:translate(key:'extConfTemplate.submitButton')}"/>
+	<f:be.buttons.icon uri="javascript:document.configurationform.submit();" icon="actions-document-save" title="{f:translate(key:'LLL:EXT:lang/locallang_common.xlf:save')}" />
+	<f:be.buttons.icon uri="#" icon="actions-document-save-close" title="{f:translate(key:'LLL:EXT:lang/locallang_common.xlf:saveAndClose')}" />
 </f:section>
 
 <f:section name="module-headline">
