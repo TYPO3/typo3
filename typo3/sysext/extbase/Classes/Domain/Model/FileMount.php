@@ -103,4 +103,13 @@ class FileMount extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function setIsAbsolutePath($value) {
 		$this->isAbsolutePath = $value;
 	}
+
+	/**
+	 * Getter for the virtual field read_only
+	 *
+	 * @return bool
+	 */
+	public function isReadOnly() {
+		return FALSE;
+	}
 }

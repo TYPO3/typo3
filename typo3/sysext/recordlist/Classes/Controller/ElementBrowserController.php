@@ -115,18 +115,6 @@ class ElementBrowserController {
 					$GLOBALS['BE_USER']->groupData['webmounts'] = implode(',', array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $altMountPoints)));
 					$GLOBALS['WEBMOUNTS'] = $GLOBALS['BE_USER']->returnWebmounts();
 				}
-			case 'file':
-			case 'filedrag':
-			case 'folder':
-				// Setting additional read-only browsing file mounts
-				$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.folderTree.altElementBrowserMountPoints'));
-				if ($altMountPoints) {
-					$altMountPoints = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $altMountPoints);
-					foreach ($altMountPoints as $filePathRelativeToFileadmindir) {
-						// @todo: add this feature for FAL and TYPO3 6.2
-					}
-				}
-				break;
 		}
 		// Render type by user func
 		$browserRendered = FALSE;

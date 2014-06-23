@@ -747,37 +747,54 @@ class IconUtility {
 	static public function getSpriteIconForResource(\TYPO3\CMS\Core\Resource\ResourceInterface $resource, array $options = array(), array $overlays = array()) {
 		// Folder
 		if ($resource instanceof \TYPO3\CMS\Core\Resource\FolderInterface) {
+			$iconName = NULL;
+			$role = $resource->getRole();
 			// non browsable storage
 			if ($resource->getStorage()->isBrowsable() === FALSE && !empty($options['mount-root'])) {
 				$iconName = 'apps-filetree-folder-locked';
-			// storage root
-			} elseif ($resource->getStorage()->getRootLevelFolder()->getIdentifier() === $resource->getIdentifier()) {
-				$iconName = 'apps-filetree-root';
-			// user/group mount root
-			} elseif (!empty($options['mount-root'])) {
-				$iconName = 'apps-filetree-mount';
 			} else {
-
-				// in folder tree view $options['folder-open'] can define a open folder icon
-				if (!empty($options['folder-open'])) {
-					$iconName = 'apps-filetree-folder-opened';
-				} else {
-					$iconName = 'apps-filetree-folder-default';
+				// storage root
+				if ($resource->getStorage()->getRootLevelFolder()->getIdentifier() === $resource->getIdentifier()) {
+					$iconName = 'apps-filetree-root';
 				}
 
-				$role = $resource->getRole();
-				if ($role === \TYPO3\CMS\Core\Resource\FolderInterface::ROLE_TEMPORARY) {
-					$iconName = 'apps-filetree-folder-temp';
-				} elseif ($role === \TYPO3\CMS\Core\Resource\FolderInterface::ROLE_RECYCLER) {
-					$iconName = 'apps-filetree-folder-recycler';
+
+				// user/group mount root
+				if (!empty($options['mount-root'])) {
+					$iconName = 'apps-filetree-mount';
+					if ($role === \TYPO3\CMS\Core\Resource\FolderInterface::ROLE_READONLY_MOUNT) {
+						$overlays['status-overlay-locked'] = array();
+					} elseif ($role === \TYPO3\CMS\Core\Resource\FolderInterface::ROLE_USER_MOUNT) {
+						$overlays['status-overlay-access-restricted'] = array();
+					}
+				}
+
+				if ($iconName === NULL) {
+					// in folder tree view $options['folder-open'] can define a open folder icon
+					if (!empty($options['folder-open'])) {
+						$iconName = 'apps-filetree-folder-opened';
+					} else {
+						$iconName = 'apps-filetree-folder-default';
+					}
+
+					if ($role === \TYPO3\CMS\Core\Resource\FolderInterface::ROLE_TEMPORARY) {
+						$iconName = 'apps-filetree-folder-temp';
+					} elseif ($role === \TYPO3\CMS\Core\Resource\FolderInterface::ROLE_RECYCLER) {
+						$iconName = 'apps-filetree-folder-recycler';
+					}
 				}
 
 				// if locked add overlay
-				if ($resource instanceof \TYPO3\CMS\Core\Resource\InaccessibleFolder) {
+				if ($resource instanceof \TYPO3\CMS\Core\Resource\InaccessibleFolder ||
+					!$resource->getStorage()->checkFolderActionPermission('add', $resource)
+				) {
 					$overlays['status-overlay-locked'] = array();
 				}
 			}
-		// File
+
+
+
+			// File
 		} else {
 			$iconName = self::mapFileExtensionToSpriteIconName($resource->getExtension());
 
