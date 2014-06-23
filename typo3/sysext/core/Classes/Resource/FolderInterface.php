@@ -28,6 +28,9 @@ interface FolderInterface extends ResourceInterface
 	const ROLE_PROCESSING = 'processing';
 	const ROLE_TEMPORARY = 'temporary';
 	const ROLE_USERUPLOAD = 'userupload';
+	const ROLE_MOUNT = 'mount';
+	const ROLE_READONLY_MOUNT = 'readonly-mount';
+	const ROLE_USER_MOUNT = 'user-mount';
 
 	/**
 	 * Returns a list of all subfolders

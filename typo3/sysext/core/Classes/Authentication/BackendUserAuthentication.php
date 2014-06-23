@@ -1607,74 +1607,122 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @internal
 	 */
 	public function getFileMountRecords() {
-		static $fileMountRecords = array();
+		static $fileMountRecordCache = array();
 
-		if (empty($fileMountRecords)) {
-			// Processing filemounts (both from the user and the groups)
-			$fileMounts = array_unique(GeneralUtility::intExplode(',', $this->dataLists['filemount_list'], TRUE));
+		if (!empty($fileMountRecordCache)) {
+			return $fileMountRecordCache;
+		}
 
-			// Limit filemounts if set in workspace record
-			if ($this->workspace > 0 && !empty($this->workspaceRec['file_mountpoints'])) {
-				$workspaceFileMounts = GeneralUtility::intExplode(',', $this->workspaceRec['file_mountpoints'], TRUE);
-				$fileMounts = array_intersect($fileMounts, $workspaceFileMounts);
+		// Processing file mounts (both from the user and the groups)
+		$fileMounts = array_unique(GeneralUtility::intExplode(',', $this->dataLists['filemount_list'], TRUE));
+
+		// Limit file mounts if set in workspace record
+		if ($this->workspace > 0 && !empty($this->workspaceRec['file_mountpoints'])) {
+			$workspaceFileMounts = GeneralUtility::intExplode(',', $this->workspaceRec['file_mountpoints'], TRUE);
+			$fileMounts = array_intersect($fileMounts, $workspaceFileMounts);
+		}
+
+		if (!empty($fileMounts)) {
+			$orderBy = isset($GLOBALS['TCA']['sys_filemounts']['ctrl']['default_sortby'])
+				? $this->db->stripOrderBy($GLOBALS['TCA']['sys_filemounts']['ctrl']['default_sortby'])
+				: 'sorting';
+			$fileMountRecords = $this->db->exec_SELECTgetRows(
+				// Select read_only as (int)0, as there is no real database field for this.
+				// Don't select as false as this is not supported by DBAL!
+				'*,0 as read_only',
+				'sys_filemounts',
+				'deleted=0 AND hidden=0 AND pid=0 AND uid IN (' . implode(',', $fileMounts) . ')',
+				'',
+				$orderBy
+			);
+			foreach ($fileMountRecords as $fileMount) {
+				$fileMountRecordCache[$fileMount['base'] . $fileMount['path']] = $fileMount;
 			}
+		}
 
-			if (!empty($fileMounts)) {
-				$orderBy = isset($GLOBALS['TCA']['sys_filemounts']['ctrl']['default_sortby'])
-					? $this->db->stripOrderBy($GLOBALS['TCA']['sys_filemounts']['ctrl']['default_sortby'])
-					: 'sorting';
-				$fileMountRecords = $this->db->exec_SELECTgetRows(
-					'*',
-					'sys_filemounts',
-					'deleted=0 AND hidden=0 AND pid=0 AND uid IN (' . implode(',', $fileMounts) . ')',
-					'',
-					$orderBy
+		// Read-only file mounts
+		$readOnlyMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.folderTree.altElementBrowserMountPoints'));
+		if ($readOnlyMountPoints) {
+			// We cannot use the API here but need to fetch the default storage record directly
+			// to not instantiate it (which directly applies mount points) before all mount points are resolved!
+			$whereClause = 'is_default=1 ' . BackendUtility::BEenableFields('sys_file_storage') . BackendUtility::deleteClause('sys_file_storage');
+			$defaultStorageRow = $this->db->exec_SELECTgetSingleRow('uid', 'sys_file_storage', $whereClause);
+			$readOnlyMountPointArray = GeneralUtility::trimExplode(',', $readOnlyMountPoints);
+			foreach ($readOnlyMountPointArray as $readOnlyMountPoint) {
+				$readOnlyMountPointConfiguration = GeneralUtility::trimExplode(':', $readOnlyMountPoint);
+				if (count($readOnlyMountPointConfiguration) === 2) {
+					// A storage is passed in the configuration
+					$storageUid = (int)$readOnlyMountPointConfiguration[0];
+					$path = $readOnlyMountPointConfiguration[1];
+				} else {
+					if (empty($defaultStorageRow)) {
+						throw new \RuntimeException('Read only mount points have been defined in User TsConfig without specific storage, but a default storage could not be resolved.', 1404472382);
+					}
+					// Backwards compatibility: If no storage is passed, we use the default storage
+					$storageUid = $defaultStorageRow['uid'];
+					$path = $readOnlyMountPointConfiguration[0];
+				}
+				$fileMountRecordCache[$storageUid . $path] = array(
+					'base' => $storageUid,
+					'title' => $path,
+					'path' => $path,
+					'read_only' => TRUE
 				);
 			}
+		}
 
-			// Personal or Group filemounts are not accessible if file mount list is set in workspace record
-			if ($this->workspace <= 0 || empty($this->workspaceRec['file_mountpoints'])) {
-				// If userHomePath is set, we attempt to mount it
-				if ($GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath']) {
-					list($userHomeStorageUid, $userHomeFilter) = explode(':', $GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'], 2);
-					$userHomeStorageUid = (int)$userHomeStorageUid;
-					$userHomeFilter = '/' . ltrim($userHomeFilter, '/');
-					if ($userHomeStorageUid > 0) {
-						// Try and mount with [uid]_[username]
-						$fileMountRecords[] = array(
-							'base' => $userHomeStorageUid,
-							'title' => $this->user['username'],
-							'path' => $userHomeFilter . $this->user['uid'] . '_' . $this->user['username'] . $GLOBALS['TYPO3_CONF_VARS']['BE']['userUploadDir']
-						);
-						// Try and mount with only [uid]
-						$fileMountRecords[] = array(
-							'base' => $userHomeStorageUid,
-							'title' => $this->user['username'],
-							'path' => $userHomeFilter . $this->user['uid'] . $GLOBALS['TYPO3_CONF_VARS']['BE']['userUploadDir']
-						);
-					}
+
+		// Personal or Group filemounts are not accessible if file mount list is set in workspace record
+		if ($this->workspace <= 0 || empty($this->workspaceRec['file_mountpoints'])) {
+			// If userHomePath is set, we attempt to mount it
+			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath']) {
+				list($userHomeStorageUid, $userHomeFilter) = explode(':', $GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'], 2);
+				$userHomeStorageUid = (int)$userHomeStorageUid;
+				$userHomeFilter = '/' . ltrim($userHomeFilter, '/');
+				if ($userHomeStorageUid > 0) {
+					// Try and mount with [uid]_[username]
+					$path = $userHomeFilter . $this->user['uid'] . '_' . $this->user['username'] . $GLOBALS['TYPO3_CONF_VARS']['BE']['userUploadDir'];
+					$fileMountRecordCache[$userHomeStorageUid . $path] = array(
+						'base' => $userHomeStorageUid,
+						'title' => $this->user['username'],
+						'path' => $path,
+						'read_only' => FALSE,
+						'user_mount' => TRUE
+					);
+					// Try and mount with only [uid]
+					$path = $userHomeFilter . $this->user['uid'] . $GLOBALS['TYPO3_CONF_VARS']['BE']['userUploadDir'];
+					$fileMountRecordCache[$userHomeStorageUid . $path] = array(
+						'base' => $userHomeStorageUid,
+						'title' => $this->user['username'],
+						'path' => $path,
+						'read_only' => FALSE,
+						'user_mount' => TRUE
+					);
 				}
+			}
 
-				// Mount group home-dirs
-				if ((is_array($this->user) && $this->user['options'] & 2) == 2 && $GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'] != '') {
-					// If groupHomePath is set, we attempt to mount it
-					list($groupHomeStorageUid, $groupHomeFilter) = explode(':', $GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'], 2);
-					$groupHomeStorageUid = (int)$groupHomeStorageUid;
-					$groupHomeFilter = '/' . ltrim($groupHomeFilter, '/');
-					if ($groupHomeStorageUid > 0) {
-						foreach ($this->userGroups as $groupData) {
-							$fileMountRecords[] = array(
-								'base' => $groupHomeStorageUid,
-								'title' => $groupData['title'],
-								'path' => $groupHomeFilter . $groupData['uid']
-							);
-						}
+			// Mount group home-dirs
+			if ((is_array($this->user) && $this->user['options'] & 2) == 2 && $GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'] != '') {
+				// If groupHomePath is set, we attempt to mount it
+				list($groupHomeStorageUid, $groupHomeFilter) = explode(':', $GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'], 2);
+				$groupHomeStorageUid = (int)$groupHomeStorageUid;
+				$groupHomeFilter = '/' . ltrim($groupHomeFilter, '/');
+				if ($groupHomeStorageUid > 0) {
+					foreach ($this->userGroups as $groupData) {
+						$path = $groupHomeFilter . $groupData['uid'];
+						$fileMountRecordCache[$groupHomeStorageUid . $path] = array(
+							'base' => $groupHomeStorageUid,
+							'title' => $groupData['title'],
+							'path' => $path,
+							'read_only' => FALSE,
+							'user_mount' => TRUE
+						);
 					}
 				}
 			}
 		}
 
-		return $fileMountRecords;
+		return $fileMountRecordCache;
 	}
 
 	/**

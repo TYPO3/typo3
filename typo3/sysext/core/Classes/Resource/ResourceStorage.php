@@ -427,6 +427,16 @@ class ResourceStorage implements ResourceStorageInterface {
 		}
 		$data = $this->driver->getFolderInfoByIdentifier($folderIdentifier);
 		$folderObject = ResourceFactory::getInstance()->createFolderObject($this, $data['identifier'], $data['name']);
+		// Use the canonical identifier instead of the user provided one!
+		$folderIdentifier = $folderObject->getIdentifier();
+		if (
+			!empty($this->fileMounts[$folderIdentifier])
+			&& empty($this->fileMounts[$folderIdentifier]['read_only'])
+			&& !empty($additionalData['read_only'])
+		) {
+			// Do not overwrite a regular mount with a read only mount
+			return;
+		}
 		if (empty($additionalData)) {
 			$additionalData = array(
 				'path' => $folderIdentifier,
@@ -572,16 +582,28 @@ class ResourceStorage implements ResourceStorageInterface {
 			$isWriteCheck = TRUE;
 		}
 
+		// Check 4: "Read-only" filemount
+		if ($isWriteCheck) {
+			foreach ($this->fileMounts as $fileMount) {
+				if ($this->driver->isWithin($fileMount['folder']->getIdentifier(), $file->getIdentifier())) {
+					if (!empty($fileMount['read_only'])) {
+						return FALSE;
+					}
+					break;
+				}
+			}
+		}
+
 		$isMissing = FALSE;
 		if (!$isProcessedFile && $file instanceof File) {
 			$isMissing = $file->isMissing();
 		}
 
-		// Check 4: Check the capabilities of the storage (and the driver)
+		// Check 5: Check the capabilities of the storage (and the driver)
 		if ($isWriteCheck && ($isMissing || !$this->isWritable())) {
 			return FALSE;
 		}
-		// Check 5: "File permissions" of the driver (only when file isn't marked as missing)
+		// Check 6: "File permissions" of the driver (only when file isn't marked as missing)
 		if (!$isMissing) {
 			$filePermissions = $this->driver->getPermissions($file->getIdentifier());
 			if ($isReadCheck && !$filePermissions['r']) {
@@ -635,7 +657,20 @@ class ResourceStorage implements ResourceStorageInterface {
 		if ($isWriteCheck && !$this->isWritable()) {
 			return FALSE;
 		}
-		// Check 4: "Folder permissions" of the driver
+
+		// Check 4: "Read-only" filemount
+		if ($isWriteCheck) {
+			foreach ($this->fileMounts as $fileMount) {
+				if ($this->driver->isWithin($fileMount['folder']->getIdentifier(), $folder->getIdentifier())) {
+					if (!empty($fileMount['read_only'])) {
+						return FALSE;
+					}
+					break;
+				}
+			}
+		}
+
+		// Check 5: "Folder permissions" of the driver
 		$folderPermissions = $this->driver->getPermissions($folder->getIdentifier());
 		if ($isReadCheck && !$folderPermissions['r']) {
 			return FALSE;
@@ -2458,12 +2493,22 @@ class ResourceStorage implements ResourceStorageInterface {
 	 */
 	public function getRole(FolderInterface $folder) {
 		$folderRole = FolderInterface::ROLE_DEFAULT;
-
+		$identifier = $folder->getIdentifier();
 		if (method_exists($this->driver, 'getRole')) {
 			$folderRole = $this->driver->getRole($folder->getIdentifier());
 		}
+		if (isset($this->fileMounts[$identifier])) {
+			$folderRole = FolderInterface::ROLE_MOUNT;
 
-		if ($folder->getIdentifier() === $this->getProcessingFolder()->getIdentifier()) {
+			if (!empty($this->fileMounts[$identifier]['read_only'])) {
+				$folderRole = FolderInterface::ROLE_READONLY_MOUNT;
+			}
+			if ($this->fileMounts[$identifier]['user_mount']) {
+				$folderRole = FolderInterface::ROLE_USER_MOUNT;
+			}
+		}
+
+		if ($identifier === $this->getProcessingFolder()->getIdentifier()) {
 			$folderRole = FolderInterface::ROLE_PROCESSING;
 		}
 
