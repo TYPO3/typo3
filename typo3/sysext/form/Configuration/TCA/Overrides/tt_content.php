@@ -15,16 +15,15 @@ $GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['wizards']['forms
 	)
 );
 $GLOBALS['TCA']['tt_content']['types']['mailform']['showitem'] = '
-	CType;;4;;1-1-1,
-	hidden,
-	header;;3;;2-2-2,
-	linkToTop;;;;3-3-3,
+	--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.general;general,
+	--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.header;header,
 	--div--;LLL:EXT:cms/locallang_ttc.xlf:CType.I.8,
-	bodytext;LLL:EXT:cms/locallang_ttc.xlf:bodytext.ALT.mailform;;nowrap:wizards[forms];3-3-3,
-	--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.access,
-	starttime,
-	endtime,
-	fe_group
+		bodytext;LLL:EXT:cms/locallang_ttc.xlf:bodytext.ALT.mailform;;nowrap:wizards[forms];3-3-3,
+	--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.appearance,
+		--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.frames;frames,
+	--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,
+		--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.visibility;visibility,
+		--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.access;access,
 ';
 
 // Add Default TS to Include static (from extensions)
