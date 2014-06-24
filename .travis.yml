@@ -16,8 +16,9 @@ services:
 notifications:
   irc:
     - "irc.freenode.net#typo3-cms"
-  email:
-    - typo3-team-core@lists.typo3.org
+  slack:
+    rooms:
+      - typo3:DHkQdCNWc6x2znPAYA5T2LXO#typo3-cms
 
 before_script:
   - >
