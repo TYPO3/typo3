@@ -271,9 +271,15 @@ class DependencyResolver {
 	protected function getPackageKeysInBasePath(array $packageStateConfiguration, $basePath, array $excludedPaths = array()) {
 		$packageKeys = array();
 		foreach ($packageStateConfiguration as $packageKey => $package) {
-			if ($basePath === '' || in_array($basePath, $package['packagePathStack'], TRUE)) {
-				$containedExcludedPaths = array_intersect($package['packagePathStack'], $excludedPaths);
-				if (empty($containedExcludedPaths)) {
+			if (($basePath === '' || strpos($package['packagePath'], $basePath) === 0)) {
+				$isExcluded = FALSE;
+				foreach ($excludedPaths as $excludedPath) {
+					if (strpos($package['packagePath'], $excludedPath) === 0) {
+						$isExcluded = TRUE;
+						break;
+					}
+				}
+				if (!$isExcluded) {
 					$packageKeys[] = $packageKey;
 				}
 			}

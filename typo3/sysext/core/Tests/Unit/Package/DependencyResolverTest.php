@@ -84,15 +84,22 @@ class DependencyResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'A' => array(
 				'state' => 'active',
 				'dependencies' => array('B'),
-				'packagePathStack' => array('foo')
 			),
 			'B' => array(
 				'state' => 'active',
-				'dependencies' => array('A'),
-				'packagePathStack' => array('foo')
+				'dependencies' => array('A')
 			),
 		);
-		$dependencyResolver = $this->getAccessibleMock('\TYPO3\CMS\Core\Package\DependencyResolver', array('dummy'));
+
+		$packageKeys = array_keys($unsortedPackageStatesConfiguration);
+
+		$basePathAssignment = array(
+			array($unsortedPackageStatesConfiguration, '', array(DependencyResolver::SYSEXT_FOLDER), $packageKeys),
+			array($unsortedPackageStatesConfiguration, DependencyResolver::SYSEXT_FOLDER, array(), array()),
+		);
+
+		$dependencyResolver = $this->getAccessibleMock('\TYPO3\CMS\Core\Package\DependencyResolver', array('getActivePackageKeysOfType'));
+		$dependencyResolver->expects($this->any())->method('getActivePackageKeysOfType')->will($this->returnValueMap($basePathAssignment));
 		$dependencyResolver->_call('sortPackageStatesConfigurationByDependency', $unsortedPackageStatesConfiguration);
 	}
 
@@ -868,94 +875,4 @@ class DependencyResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertSame($expected, $path);
 	}
 
-	/**
-	 * Data provider for getPackageKeysInBasePathReturnsCorrectKeys
-	 * @return array
-	 */
-	public function getPackageKeysInBasePathReturnsCorrectKeysDataProvider() {
-		return array(
-			'Single paths only, include all' => array(
-				array(
-					'key1' => array('packagePathStack' => array(DependencyResolver::SYSEXT_FOLDER)),
-					'key2' => array('packagePathStack' => array('somewhereelse')),
-					'key3' => array('packagePathStack' => array(DependencyResolver::SYSEXT_FOLDER)),
-				),
-				'',
-				array(),
-				array('key1', 'key2', 'key3')
-			),
-			'Single paths only, include sysext' => array(
-				array(
-					'key1' => array('packagePathStack' => array(DependencyResolver::SYSEXT_FOLDER)),
-					'key2' => array('packagePathStack' => array('somewhereelse')),
-					'key3' => array('packagePathStack' => array(DependencyResolver::SYSEXT_FOLDER)),
-				),
-				DependencyResolver::SYSEXT_FOLDER,
-				array(),
-				array('key1', 'key3')
-			),
-			'Single paths only, exclude sysext' => array(
-				array(
-					'key1' => array('packagePathStack' => array(DependencyResolver::SYSEXT_FOLDER)),
-					'key2' => array('packagePathStack' => array('somewhereelse')),
-					'key3' => array('packagePathStack' => array(DependencyResolver::SYSEXT_FOLDER)),
-				),
-				'',
-				array(DependencyResolver::SYSEXT_FOLDER),
-				array('key2')
-			),
-			'Multiple paths, include sysext' => array(
-				array(
-					'key1' => array('packagePathStack' => array(DependencyResolver::SYSEXT_FOLDER, 'somewhereelse')),
-					'key2' => array('packagePathStack' => array('somewhereelse')),
-					'key3' => array('packagePathStack' => array(DependencyResolver::SYSEXT_FOLDER)),
-				),
-				DependencyResolver::SYSEXT_FOLDER,
-				array(),
-				array('key1', 'key3')
-			),
-			'Multiple paths, exclude sysext' => array(
-				array(
-					'key1' => array('packagePathStack' => array(DependencyResolver::SYSEXT_FOLDER, 'somewhereelse')),
-					'key2' => array('packagePathStack' => array('somewhereelse')),
-					'key3' => array('packagePathStack' => array(DependencyResolver::SYSEXT_FOLDER)),
-					'key4' => array('packagePathStack' => array('elsewhere')),
-				),
-				'',
-				array(DependencyResolver::SYSEXT_FOLDER),
-				array('key2', 'key4')
-			),
-			'Multiple paths, include somewhereelse' => array(
-				array(
-					'key1' => array('packagePathStack' => array(DependencyResolver::SYSEXT_FOLDER, 'somewhereelse')),
-					'key2' => array('packagePathStack' => array('somewhereelse')),
-					'key3' => array('packagePathStack' => array(DependencyResolver::SYSEXT_FOLDER)),
-				),
-				'somewhereelse',
-				array(),
-				array('key1', 'key2')
-			),
-			'Multiple paths, include somewhereelse, exclude sysext' => array(
-				array(
-					'key1' => array('packagePathStack' => array(DependencyResolver::SYSEXT_FOLDER, 'somewhereelse')),
-					'key2' => array('packagePathStack' => array('somewhereelse')),
-					'key3' => array('packagePathStack' => array(DependencyResolver::SYSEXT_FOLDER)),
-					'key4' => array('packagePathStack' => array('elsewhere')),
-				),
-				'somewhereelse',
-				array(DependencyResolver::SYSEXT_FOLDER),
-				array('key2')
-			),
-		);
-	}
-
-	/**
-	 * @test
-	 * @dataProvider getPackageKeysInBasePathReturnsCorrectKeysDataProvider
-	 */
-	public function getPackageKeysInBasePathReturnsCorrectKeys(array $packageStates, $include, array $exclude, array $expectedKeys) {
-		$dependencyResolver = $this->getAccessibleMock('\TYPO3\CMS\Core\Package\DependencyResolver', array('dummy'));
-		$keys = $dependencyResolver->_call('getPackageKeysInBasePath', $packageStates, $include, $exclude);
-		$this->assertSame($expectedKeys, $keys);
-	}
 }

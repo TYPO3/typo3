@@ -83,9 +83,9 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	 */
 	public function __construct() {
 		$this->packagesBasePaths = array(
-			'sysext'    => PATH_typo3 . 'sysext',
-			'global'    => PATH_typo3 . 'ext',
 			'local'     => PATH_typo3conf . 'ext',
+			'global'    => PATH_typo3 . 'ext',
+			'sysext'    => PATH_typo3 . 'sysext',
 			'composer'  => PATH_site . 'Packages',
 		);
 		$this->packageStatesPathAndFilename = PATH_typo3conf . 'PackageStates.php';
@@ -384,10 +384,6 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 			}
 
 			$this->packageStatesConfiguration['packages'][$packageKey]['packagePath'] = str_replace($this->packagesBasePath, '', $packagePath);
-			// An extension might be overwritten by another one. (eg sysext overwritten with ext)
-			// We have to remember which paths we found the extension in as
-			// we need to know this in the DependencyResolver later.
-			$this->packageStatesConfiguration['packages'][$packageKey]['packagePathStack'][] = $this->packageStatesConfiguration['packages'][$packageKey]['packagePath'];
 
 			// Change this to read the target from Composer or any other source
 			$this->packageStatesConfiguration['packages'][$packageKey]['classesPath'] = Package::DIRECTORY_CLASSES;
@@ -707,9 +703,6 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 		$newPackages = array();
 		foreach (array_keys($this->packageStatesConfiguration['packages']) as $packageKey) {
 			$newPackages[$packageKey] = $this->packages[$packageKey];
-			// Remove the packagePathStack here again. We don't need it anymore and
-			// we don't want it in the package states file
-			unset($this->packageStatesConfiguration['packages'][$packageKey]['packagePathStack']);
 		}
 		$this->packages = $newPackages;
 	}
