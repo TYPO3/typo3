@@ -3,4 +3,10 @@ php:
   - 5.2
   - 5.3
   - 5.4
+
+notifications:
+  slack:
+    rooms:
+      - typo3:DHkQdCNWc6x2znPAYA5T2LXO#typo3-cms
+
 script: function check_files() { for file in `find . -name \*.php`; do if ! php -l $file > /dev/null; then echo "Syntax errors detected in file $file"; return 99; fi;  done }; check_files
