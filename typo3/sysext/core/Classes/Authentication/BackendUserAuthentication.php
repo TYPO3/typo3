@@ -1270,6 +1270,15 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 				// Fetch groups will add a lot of information to the internal arrays: modules, accesslists, TSconfig etc. Refer to fetchGroups() function.
 				$this->fetchGroups($grList);
 			}
+
+			// Populating the $this->userGroupsUID -array with the groups in the order in which they were LAST included.!!
+			$this->userGroupsUID = array_reverse(array_unique(array_reverse($this->includeGroupArray)));
+			// Finally this is the list of group_uid's in the order they are parsed (including subgroups!)
+			// and without duplicates (duplicates are presented with their last entrance in the list,
+			// which thus reflects the order of the TypoScript in TSconfig)
+			$this->groupList = implode(',', $this->userGroupsUID);
+			$this->setCachedList($this->groupList);
+
 			// Add the TSconfig for this specific user:
 			$this->TSdataArray[] = $this->addTScomment('USER TSconfig field') . $this->user['TSconfig'];
 			// Check include lines.
@@ -1316,11 +1325,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 			$this->groupData['modules'] = \TYPO3\CMS\Core\Utility\GeneralUtility::uniqueList($this->dataLists['modList']);
 			$this->groupData['fileoper_perms'] = $this->dataLists['fileoper_perms'];
 			$this->groupData['workspace_perms'] = $this->dataLists['workspace_perms'];
-			// Populating the $this->userGroupsUID -array with the groups in the order in which they were LAST included.!!
-			$this->userGroupsUID = array_reverse(array_unique(array_reverse($this->includeGroupArray)));
-			// Finally this is the list of group_uid's in the order they are parsed (including subgroups!) and without duplicates (duplicates are presented with their last entrance in the list, which thus reflects the order of the TypoScript in TSconfig)
-			$this->groupList = implode(',', $this->userGroupsUID);
-			$this->setCachedList($this->groupList);
+
 			// Checking read access to webmounts:
 			if (trim($this->groupData['webmounts']) !== '') {
 				$webmounts = explode(',', $this->groupData['webmounts']);
