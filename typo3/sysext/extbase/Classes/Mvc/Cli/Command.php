@@ -174,10 +174,8 @@ class Command {
 		$commandParameters = $this->reflectionService->getMethodParameters($this->controllerClassName, $this->controllerCommandName . 'Command');
 		$i = 0;
 		foreach ($commandParameters as $commandParameterName => $commandParameterDefinition) {
-			$explodedAnnotation = explode(' ', $annotations['param'][$i]);
-			array_shift($explodedAnnotation);
-			array_shift($explodedAnnotation);
-			$description = ltrim(implode(' ', $explodedAnnotation));
+			$explodedAnnotation = preg_split('/\s+/', $annotations['param'][$i], 3);
+			$description = !empty($explodedAnnotation[2]) ? $explodedAnnotation[2] : '';
 			$required = $commandParameterDefinition['optional'] !== TRUE;
 			$commandArgumentDefinitions[] = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\CommandArgumentDefinition', $commandParameterName, $required, $description);
 			$i++;
