@@ -4720,6 +4720,14 @@ class DataHandler {
 		$l10nRecords = BackendUtility::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], $uid, $where);
 		if (is_array($l10nRecords)) {
 			foreach ($l10nRecords as $record) {
+				// Ignore workspace delete placeholders. Those records have been marked for
+				// deletion before - deleting them again in a workspace would revert that state.
+				if ($this->BE_USER->workspace > 0 && BackendUtility::isTableWorkspaceEnabled($table)) {
+					BackendUtility::workspaceOL($table, $record);
+					if (VersionState::cast($record['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
+						continue;
+					}
+				}
 				$this->deleteAction($table, (int)$record['t3ver_oid'] > 0 ? (int)$record['t3ver_oid'] : (int)$record['uid']);
 			}
 		}

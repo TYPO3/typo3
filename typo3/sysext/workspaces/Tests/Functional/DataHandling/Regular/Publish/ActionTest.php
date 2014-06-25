@@ -116,7 +116,6 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
 	 * @see DataSet/deleteLocalizedContentNDeleteContent.csv
 	 */
 	public function deleteLocalizedContentAndDeleteContent() {
-		$this->markTestSkipped('see http://forge.typo3.org/issues/59113');
 		parent::deleteLocalizedContentAndDeleteContent();
 		$this->actionService->publishRecords(
 			array(
