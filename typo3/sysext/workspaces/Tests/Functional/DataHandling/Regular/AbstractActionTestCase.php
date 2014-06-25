@@ -25,7 +25,9 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	const VALUE_PageIdTarget = 90;
 	const VALUE_PageIdWebsite = 1;
 	const VALUE_ContentIdFirst = 297;
-	const VALUE_ContentIdLast = 298;
+	const VALUE_ContentIdSecond = 298;
+	const VALUE_ContentIdThird = 299;
+	const VALUE_ContentIdThirdLocalized = 300;
 	const VALUE_LanguageId = 1;
 	const VALUE_WorkspaceId = 1;
 
@@ -69,7 +71,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		$newTableIds = $this->actionService->createNewRecord(self::TABLE_Content, self::VALUE_PageId, array('header' => 'Testing #1'));
 		$this->recordIds['newContentIdFirst'] = $newTableIds[self::TABLE_Content][0];
 		// Creating record at the end of the page (after last one)
-		$newTableIds = $this->actionService->createNewRecord(self::TABLE_Content, -self::VALUE_ContentIdLast, array('header' => 'Testing #2'));
+		$newTableIds = $this->actionService->createNewRecord(self::TABLE_Content, -self::VALUE_ContentIdSecond, array('header' => 'Testing #2'));
 		$this->recordIds['newContentIdLast'] = $newTableIds[self::TABLE_Content][0];
 	}
 
@@ -99,52 +101,60 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 * @see DataSet/Assertion/modifyContentRecord.csv
 	 */
 	public function modifyContent() {
-		$this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, array('header' => 'Testing #1'));
+		$this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, array('header' => 'Testing #1'));
 	}
 
 	/**
 	 * @see DataSet/Assertion/deleteContentRecord.csv
 	 */
 	public function deleteContent() {
-		$this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
+		$this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
+	}
+
+	/**
+	 * @see DataSet/deleteLocalizedContentNDeleteContent.csv
+	 */
+	public function deleteLocalizedContentAndDeleteContent() {
+		$this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized);
+		$this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdThird);
 	}
 
 	/**
 	 * @see DataSet/Assertion/copyContentRecord.csv
 	 */
 	public function copyContent() {
-		$copiedTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageId);
-		$this->recordIds['copiedContentId'] = $copiedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+		$copiedTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageId);
+		$this->recordIds['copiedContentId'] = $copiedTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
 	}
 
 	/**
 	 * @see DataSet/Assertion/localizeContentRecord.csv
 	 */
 	public function localizeContent() {
-		$localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
-		$this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+		$localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
+		$this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
 	}
 
 	/**
 	 * @see DataSet/Assertion/changeContentRecordSorting.csv
 	 */
 	public function changeContentSorting() {
-		$this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdLast);
+		$this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdSecond);
 	}
 
 	/**
 	 * @see DataSet/Assertion/moveContentRecordToDifferentPage.csv
 	 */
 	public function moveContentToDifferentPage() {
-		$this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageIdTarget);
+		$this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageIdTarget);
 	}
 
 	/**
 	 * @see DataSet/Assertion/moveContentRecordToDifferentPageAndChangeSorting.csv
 	 */
 	public function moveContentToDifferentPageAndChangeSorting() {
-		$this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageIdTarget);
-		$this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdLast);
+		$this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageIdTarget);
+		$this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdSecond);
 	}
 
 	/**
@@ -180,7 +190,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		$newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
 		$this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
 		$this->recordIds['newContentIdFirst'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdFirst];
-		$this->recordIds['newContentIdLast'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+		$this->recordIds['newContentIdLast'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
 	}
 
 	/**
