@@ -16,7 +16,10 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
+use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
+use TYPO3\CMS\Frontend\ContentObject\Exception\ExceptionHandlerInterface;
 
 /**
  * This class contains all main TypoScript features.
@@ -477,6 +480,11 @@ class ContentObjectRenderer {
 	protected $stdWrapRecursionLevel = 0;
 
 	/**
+	 * @var TypoScriptFrontendController
+	 */
+	protected $typoScriptFrontendController;
+
+	/**
 	 * Indicates that object type is USER.
 	 *
 	 * @see ContentObjectRender::$userObjectType
@@ -488,6 +496,14 @@ class ContentObjectRenderer {
 	 * @see ContentObjectRender::$userObjectType
 	 */
 	const OBJECTTYPE_USER = 2;
+
+	/**
+	 * @param TypoScriptFrontendController $typoScriptFrontendController
+	 */
+	public function __construct(TypoScriptFrontendController $typoScriptFrontendController = NULL) {
+		$this->typoScriptFrontendController = $typoScriptFrontendController ?: $GLOBALS['TSFE'];
+	}
+
 	/**
 	 * Class constructor.
 	 * Well, it has to be called manually since it is not a real constructor function.
@@ -678,7 +694,7 @@ class ContentObjectRenderer {
 				if (!$hooked) {
 					$contentObject = $this->getContentObject($name);
 					if ($contentObject) {
-						$content .= $contentObject->render($conf);
+						$content .= $this->render($contentObject, $conf);
 					} else {
 						// Call hook functions for extra processing
 						if ($name && is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClassDefault'])) {
@@ -728,13 +744,108 @@ class ContentObjectRenderer {
 	 ********************************************/
 
 	/**
+	 * Renders a content object by taking exception handling into consideration
+	 *
+	 * @param AbstractContentObject $contentObject Content object instance
+	 * @param array $configuration Array of TypoScript properties
+	 *
+	 * @throws ContentRenderingException
+	 * @throws \Exception
+	 * @return string
+	 */
+	public function render(AbstractContentObject $contentObject, $configuration = array()) {
+		$content = '';
+		try {
+			$content .= $contentObject->render($configuration);
+		} catch (ContentRenderingException $exception) {
+			// Content rendering Exceptions indicate a critical problem which should not be
+			// caught e.g. when something went wrong with Exception handling itself
+			throw $exception;
+		} catch (\Exception $exception) {
+			$exceptionHandler = $this->createExceptionHandler($configuration);
+			if ($exceptionHandler === NULL) {
+				throw $exception;
+			} else {
+				$content = $exceptionHandler->handle($exception, $contentObject, $configuration);
+			}
+		}
+		return $content;
+	}
+
+	/**
+	 * Creates the content object exception handler from local content object configuration
+	 * or, from global configuration if not explicitly disabled in local configuration
+	 *
+	 * @param array $configuration
+	 * @return NULL|ExceptionHandlerInterface
+	 * @throws ContentRenderingException
+	 */
+	protected function createExceptionHandler($configuration = array()) {
+		$exceptionHandler = NULL;
+		$exceptionHandlerClassName = $this->determineExceptionHandlerClassName($configuration);
+		if (!empty($exceptionHandlerClassName)) {
+			$exceptionHandler = GeneralUtility::makeInstance($exceptionHandlerClassName, $this->mergeExceptionHandlerConfiguration($configuration));
+			if (!$exceptionHandler instanceof ExceptionHandlerInterface) {
+				throw new ContentRenderingException('An exception handler was configured but the class does not exist or does not implement the ExceptionHandlerInterface', 1403653369, $exception);
+			}
+		}
+
+		return $exceptionHandler;
+	}
+
+	/**
+	 * Determine exception handler class name from global and content object configuration
+	 *
+	 * @param array $configuration
+	 * @return string|NULL
+	 */
+	protected function determineExceptionHandlerClassName($configuration) {
+		$exceptionHandlerClassName = NULL;
+		if (!isset($this->typoScriptFrontendController->config['config']['contentObjectExceptionHandler'])) {
+			if (GeneralUtility::getApplicationContext()->isProduction()) {
+				$exceptionHandlerClassName = '1';
+			}
+		} else {
+			$exceptionHandlerClassName = $this->typoScriptFrontendController->config['config']['contentObjectExceptionHandler'];
+		}
+
+		if (isset($configuration['exceptionHandler'])) {
+			$exceptionHandlerClassName = $configuration['exceptionHandler'];
+		}
+
+		if ($exceptionHandlerClassName === '1') {
+			$exceptionHandlerClassName = Exception\ProductionExceptionHandler::class;
+		}
+
+		return $exceptionHandlerClassName;
+	}
+
+	/**
+	 * Merges global exception handler configuration with the one from the content object
+	 * and returns the merged exception handler configuration
+	 *
+	 * @param array $configuration
+	 * @return array
+	 */
+	protected function mergeExceptionHandlerConfiguration($configuration) {
+		$exceptionHandlerConfiguration = array();
+		if (!empty($this->typoScriptFrontendController->config['config']['contentObjectExceptionHandler.'])) {
+			$exceptionHandlerConfiguration = $this->typoScriptFrontendController->config['config']['contentObjectExceptionHandler.'];
+		}
+		if (!empty($configuration['exceptionHandler.'])) {
+			$exceptionHandlerConfiguration = array_replace_recursive($exceptionHandlerConfiguration, $configuration['exceptionHandler.']);
+		}
+
+		return $exceptionHandlerConfiguration;
+	}
+	/**
 	 * Rendering the cObject, FLOWPLAYER
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
 	 */
 	public function FLOWPLAYER($conf) {
-		return $this->getContentObject('FLOWPLAYER')->render($conf);
+		return $this->render($this->getContentObject('FLOWPLAYER'), $conf);
 	}
 
 	/**
@@ -744,7 +855,7 @@ class ContentObjectRenderer {
 	 * @return string Output
 	 */
 	public function TEXT($conf) {
-		return $this->getContentObject('TEXT')->render($conf);
+		return $this->render($this->getContentObject('TEXT'), $conf);
 	}
 
 	/**
@@ -754,7 +865,7 @@ class ContentObjectRenderer {
 	 * @return string Output
 	 */
 	public function CLEARGIF($conf) {
-		return $this->getContentObject('CLEARGIF')->render($conf);
+		return $this->render($this->getContentObject('CLEARGIF'), $conf);
 	}
 
 	/**
@@ -766,9 +877,9 @@ class ContentObjectRenderer {
 	 */
 	public function COBJ_ARRAY($conf, $ext = '') {
 		if ($ext === 'INT') {
-			return $this->getContentObject('COA_INT')->render($conf);
+			return $this->render($this->getContentObject('COA_INT'), $conf);
 		} else {
-			return $this->getContentObject('COA')->render($conf);
+			return $this->render($this->getContentObject('COA'), $conf);
 		}
 	}
 
@@ -781,9 +892,9 @@ class ContentObjectRenderer {
 	 */
 	public function USER($conf, $ext = '') {
 		if ($ext === 'INT') {
-			return $this->getContentObject('USER_INT')->render($conf);
+			return $this->render($this->getContentObject('USER_INT'), $conf);
 		} else {
-			return $this->getContentObject('USER')->render($conf);
+			return $this->render($this->getContentObject('USER'), $conf);
 		}
 	}
 
@@ -829,7 +940,7 @@ class ContentObjectRenderer {
 	 * @return string Output
 	 */
 	public function FILE($conf) {
-		return $this->getContentObject('FILE')->render($conf);
+		return $this->render($this->getContentObject('FILE'), $conf);
 	}
 
 	/**
@@ -839,7 +950,7 @@ class ContentObjectRenderer {
 	 * @return string Output
 	 */
 	public function FILES($conf) {
-		return $this->getContentObject('FILES')->render($conf);
+		return $this->render($this->getContentObject('FILES'), $conf);
 	}
 
 	/**
@@ -850,7 +961,7 @@ class ContentObjectRenderer {
 	 * @see cImage()
 	 */
 	public function IMAGE($conf) {
-		return $this->getContentObject('IMAGE')->render($conf);
+		return $this->render($this->getContentObject('IMAGE'), $conf);
 	}
 
 	/**
@@ -861,7 +972,7 @@ class ContentObjectRenderer {
 	 * @see getImgResource()
 	 */
 	public function IMG_RESOURCE($conf) {
-		return $this->getContentObject('IMG_RESOURCE')->render($conf);
+		return $this->render($this->getContentObject('IMG_RESOURCE'), $conf);
 	}
 
 	/**
@@ -871,7 +982,7 @@ class ContentObjectRenderer {
 	 * @return string Output
 	 */
 	public function IMGTEXT($conf) {
-		return $this->getContentObject('IMGTEXT')->render($conf);
+		return $this->render($this->getContentObject('IMGTEXT'), $conf);
 	}
 
 	/**
@@ -881,7 +992,7 @@ class ContentObjectRenderer {
 	 * @return string Output
 	 */
 	public function CONTENT($conf) {
-		return $this->getContentObject('CONTENT')->render($conf);
+		return $this->render($this->getContentObject('CONTENT'), $conf);
 	}
 
 	/**
@@ -891,7 +1002,7 @@ class ContentObjectRenderer {
 	 * @return string Output
 	 */
 	public function RECORDS($conf) {
-		return $this->getContentObject('RECORDS')->render($conf);
+		return $this->render($this->getContentObject('RECORDS'), $conf);
 	}
 
 	/**
@@ -901,7 +1012,7 @@ class ContentObjectRenderer {
 	 * @return string Output
 	 */
 	public function HMENU($conf) {
-		return $this->getContentObject('HMENU')->render($conf);
+		return $this->render($this->getContentObject('HMENU'), $conf);
 	}
 
 	/**
@@ -911,7 +1022,7 @@ class ContentObjectRenderer {
 	 * @return string Output
 	 */
 	public function CTABLE($conf) {
-		return $this->getContentObject('CTABLE')->render($conf);
+		return $this->render($this->getContentObject('CTABLE'), $conf);
 	}
 
 	/**
@@ -921,7 +1032,7 @@ class ContentObjectRenderer {
 	 * @return string Output
 	 */
 	public function OTABLE($conf) {
-		return $this->getContentObject('OTABLE')->render($conf);
+		return $this->render($this->getContentObject('OTABLE'), $conf);
 	}
 
 	/**
@@ -931,7 +1042,7 @@ class ContentObjectRenderer {
 	 * @return string Output
 	 */
 	public function COLUMNS($conf) {
-		return $this->getContentObject('COLUMNS')->render($conf);
+		return $this->render($this->getContentObject('COLUMNS'), $conf);
 	}
 
 	/**
@@ -941,7 +1052,7 @@ class ContentObjectRenderer {
 	 * @return string Output
 	 */
 	public function HRULER($conf) {
-		return $this->getContentObject('HRULER')->render($conf);
+		return $this->render($this->getContentObject('HRULER'), $conf);
 	}
 
 	/**
@@ -951,7 +1062,7 @@ class ContentObjectRenderer {
 	 * @return string Output
 	 */
 	public function CASEFUNC($conf) {
-		return $this->getContentObject('CASE')->render($conf);
+		return $this->render($this->getContentObject('CASE'), $conf);
 	}
 
 	/**
@@ -964,9 +1075,9 @@ class ContentObjectRenderer {
 	 */
 	public function LOAD_REGISTER($conf, $name) {
 		if ($name === 'RESTORE_REGISTER') {
-			return $this->getContentObject('RESTORE_REGISTER')->render();
+			return $this->render($this->getContentObject('RESTORE_REGISTER'), $conf);
 		} else {
-			return $this->getContentObject('LOAD_REGISTER')->render($conf);
+			return $this->render($this->getContentObject('LOAD_REGISTER'), $conf);
 		}
 	}
 
@@ -978,7 +1089,7 @@ class ContentObjectRenderer {
 	 * @return string Output
 	 */
 	public function FORM($conf, $formData = '') {
-		return $this->getContentObject('FORM')->render($conf, $formData);
+		return $this->render($this->getContentObject('FORM'), $conf);
 	}
 
 	/**
@@ -988,7 +1099,7 @@ class ContentObjectRenderer {
 	 * @return string Output
 	 */
 	public function SEARCHRESULT($conf) {
-		return $this->getContentObject('SEARCHRESULT')->render($conf);
+		return $this->render($this->getContentObject('SEARCHRESULT'), $conf);
 	}
 
 	/**
@@ -999,7 +1110,7 @@ class ContentObjectRenderer {
 	 * @see substituteMarkerArrayCached()
 	 */
 	public function TEMPLATE($conf) {
-		return $this->getContentObject('TEMPLATE')->render($conf);
+		return $this->render($this->getContentObject('TEMPLATE'), $conf);
 	}
 
 	/**
@@ -1011,7 +1122,7 @@ class ContentObjectRenderer {
 	 * @author Benjamin Mack <benni@typo3.org>
 	 */
 	protected function FLUIDTEMPLATE(array $conf) {
-		return $this->getContentObject('FLUIDTEMPLATE')->render($conf);
+		return $this->render($this->getContentObject('FLUIDTEMPLATE'), $conf);
 	}
 
 	/**
@@ -1021,7 +1132,7 @@ class ContentObjectRenderer {
 	 * @return string Output
 	 */
 	public function MULTIMEDIA($conf) {
-		return $this->getContentObject('MULTIMEDIA')->render($conf);
+		return $this->render($this->getContentObject('MULTIMEDIA'), $conf);
 	}
 
 	/**
@@ -1031,7 +1142,7 @@ class ContentObjectRenderer {
 	 * @return string Output
 	 */
 	public function MEDIA($conf) {
-		return $this->getContentObject('MEDIA')->render($conf);
+		return $this->render($this->getContentObject('MEDIA'), $conf);
 	}
 
 	/**
@@ -1041,7 +1152,7 @@ class ContentObjectRenderer {
 	 * @return string Output
 	 */
 	public function SWFOBJECT($conf) {
-		return $this->getContentObject('SWFOBJECT')->render($conf);
+		return $this->render($this->getContentObject('SWFOBJECT'), $conf);
 	}
 
 	/**
@@ -1051,7 +1162,7 @@ class ContentObjectRenderer {
 	 * @return string Output
 	 */
 	public function QTOBJECT($conf) {
-		return $this->getContentObject('QTOBJECT')->render($conf);
+		return $this->render($this->getContentObject('QTOBJECT'), $conf);
 	}
 
 	/**
@@ -1061,7 +1172,7 @@ class ContentObjectRenderer {
 	 * @return string Output
 	 */
 	public function SVG($conf) {
-		return $this->getContentObject('SVG')->render($conf);
+		return $this->render($this->getContentObject('SVG'), $conf);
 	}
 
 	/************************************

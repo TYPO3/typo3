@@ -13,6 +13,13 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Core\Charset\CharsetConverter;
+use TYPO3\CMS\Core\Core\ApplicationContext;
+use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
+
 /**
  * Testcase for TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
  *
@@ -22,46 +29,76 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
+	 * @var array A backup of registered singleton instances
+	 */
+	protected $singletonInstances = array();
+
+	/**
 	 * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
 	 */
-	protected $cObj = NULL;
+	protected $subject = NULL;
 
 	/**
 	 * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
-	protected $tsfe = NULL;
+	protected $typoScriptFrontendControllerMock = NULL;
 
 	/**
 	 * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\TypoScript\TemplateService
 	 */
-	protected $template = NULL;
+	protected $templateServiceMock = NULL;
 
 	/**
 	 * Set up
 	 */
 	public function setUp() {
+		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
+		$this->createMockedLoggerAndLogManager();
+
+		$this->templateServiceMock = $this->getMock('TYPO3\\CMS\\Core\\TypoScript\\TemplateService', array('getFileName', 'linkData'));
+		$pageRepositoryMock = $this->getMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository', array('getRawRecord'));
+
+		$this->typoScriptFrontendControllerMock = $this->getAccessibleMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array('dummy'), array(), '', FALSE);
+		$this->typoScriptFrontendControllerMock->tmpl = $this->templateServiceMock;
+		$this->typoScriptFrontendControllerMock->config = array();
+		$this->typoScriptFrontendControllerMock->page = array();
+		$this->typoScriptFrontendControllerMock->sys_page = $pageRepositoryMock;
+		$this->typoScriptFrontendControllerMock->csConvObj = new CharsetConverter();
+		$this->typoScriptFrontendControllerMock->renderCharset = 'utf-8';
+		$GLOBALS['TSFE'] = $this->typoScriptFrontendControllerMock;
+
 		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array());
-		$this->template = $this->getMock('TYPO3\\CMS\\Core\\TypoScript\\TemplateService', array('getFileName', 'linkData'));
-		$this->tsfe = $this->getAccessibleMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array('dummy'), array(), '', FALSE);
-		$this->tsfe->tmpl = $this->template;
-		$this->tsfe->config = array();
-		$this->tsfe->page = array();
-		$sysPageMock = $this->getMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository', array('getRawRecord'));
-		$this->tsfe->sys_page = $sysPageMock;
-		$GLOBALS['TSFE'] = $this->tsfe;
-		$GLOBALS['TSFE']->csConvObj = new \TYPO3\CMS\Core\Charset\CharsetConverter();
-		$GLOBALS['TSFE']->renderCharset = 'utf-8';
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['TYPO3\\CMS\\Core\\Charset\\CharsetConverter_utils'] = 'mbstring';
-		$this->cObj = $this->getAccessibleMock(
+
+		$this->subject = $this->getAccessibleMock(
 			'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer',
-			array('getResourceFactory', 'getEnvironmentVariable')
+			array('getResourceFactory', 'getEnvironmentVariable'),
+			array($this->typoScriptFrontendControllerMock)
 		);
-		$this->cObj->start(array(), 'tt_content');
+		$this->subject->start(array(), 'tt_content');
+	}
+
+	public function tearDown() {
+		GeneralUtility::resetSingletonInstances($this->singletonInstances);
+		parent::tearDown();
 	}
 
 	////////////////////////
 	// Utitility functions
 	////////////////////////
+
+	/**
+	 * Avoid logging to the file system (file writer is currently the only configured writer)
+	 */
+	protected function createMockedLoggerAndLogManager() {
+		$logManagerMock = $this->getMock(LogManager::class);
+		$loggerMock = $this->getMock(LoggerInterface::class);
+		$logManagerMock->expects($this->any())
+			->method('getLogger')
+			->willReturn($loggerMock);
+		GeneralUtility::setSingletonInstance(LogManager::class, $logManagerMock);
+	}
+
 	/**
 	 * Converts the subject and the expected result into the target charset.
 	 *
@@ -82,14 +119,14 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getImgResourceCallsGetImgResourcePostProcessHook() {
-		$this->template
+		$this->templateServiceMock
 			->expects($this->atLeastOnce())
 			->method('getFileName')
 			->with('typo3/clear.gif')
 			->will($this->returnValue('typo3/clear.gif'));
 
 		$resourceFactory = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceFactory', array(), array(), '', FALSE);
-		$this->cObj->expects($this->any())->method('getResourceFactory')->will($this->returnValue($resourceFactory));
+		$this->subject->expects($this->any())->method('getResourceFactory')->will($this->returnValue($resourceFactory));
 
 		$className = uniqid('tx_coretest');
 		$getImgResourceHookMock = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectGetImageResourceHookInterface', array('getImgResourcePostProcess'), array(), $className);
@@ -98,8 +135,8 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			->method('getImgResourcePostProcess')
 			->will($this->returnCallback(array($this, 'isGetImgResourceHookCalledCallback')));
 		$getImgResourceHookObjects = array($getImgResourceHookMock);
-		$this->cObj->_setRef('getImgResourceHookObjects', $getImgResourceHookObjects);
-		$this->cObj->getImgResource('typo3/clear.gif', array());
+		$this->subject->_setRef('getImgResourceHookObjects', $getImgResourceHookObjects);
+		$this->subject->getImgResource('typo3/clear.gif', array());
 	}
 
 	/**
@@ -170,7 +207,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$fullClassName = 'TYPO3\\CMS\\Frontend\\ContentObject\\' . $className . 'ContentObject';
 		$contentObjectInstance = $this->getMock($fullClassName, array(), array(), '', FALSE);
 		\TYPO3\CMS\Core\Utility\GeneralUtility::addInstance($fullClassName, $contentObjectInstance);
-		$this->assertSame($contentObjectInstance, $this->cObj->getContentObject($name));
+		$this->assertSame($contentObjectInstance, $this->subject->getContentObject($name));
 	}
 
 	//////////////////////////
@@ -181,7 +218,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function formWithSecureFormMailEnabledDoesNotContainRecipientField() {
 		$GLOBALS['TYPO3_CONF_VARS']['FE']['secureFormmail'] = TRUE;
-		$this->assertNotContains('name="recipient', $this->cObj->FORM(array('recipient' => 'foo@bar.com', 'recipient.' => array()), array()));
+		$this->assertNotContains('name="recipient', $this->subject->FORM(array('recipient' => 'foo@bar.com', 'recipient.' => array()), array()));
 	}
 
 	/**
@@ -189,7 +226,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function formWithSecureFormMailDisabledDoesNotContainRecipientField() {
 		$GLOBALS['TYPO3_CONF_VARS']['FE']['secureFormmail'] = FALSE;
-		$this->assertContains('name="recipient', $this->cObj->FORM(array('recipient' => 'foo@bar.com', 'recipient.' => array()), array()));
+		$this->assertContains('name="recipient', $this->subject->FORM(array('recipient' => 'foo@bar.com', 'recipient.' => array()), array()));
 	}
 
 	/////////////////////////////////////////
@@ -199,7 +236,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getQueryArgumentsExcludesParameters() {
-		$this->cObj->expects($this->any())->method('getEnvironmentVariable')->with($this->equalTo('QUERY_STRING'))->will(
+		$this->subject->expects($this->any())->method('getEnvironmentVariable')->with($this->equalTo('QUERY_STRING'))->will(
 			$this->returnValue('key1=value1&key2=value2&key3[key31]=value31&key3[key32][key321]=value321&key3[key32][key322]=value322')
 		);
 		$getQueryArgumentsConfiguration = array();
@@ -209,7 +246,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$getQueryArgumentsConfiguration['exclude'][] = 'key3[key32][key321]';
 		$getQueryArgumentsConfiguration['exclude'] = implode(',', $getQueryArgumentsConfiguration['exclude']);
 		$expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('&key2=value2&key3[key32][key322]=value322');
-		$actualResult = $this->cObj->getQueryArguments($getQueryArgumentsConfiguration);
+		$actualResult = $this->subject->getQueryArguments($getQueryArgumentsConfiguration);
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 
@@ -236,7 +273,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$getQueryArgumentsConfiguration['exclude'][] = 'key3[key32][key321]';
 		$getQueryArgumentsConfiguration['exclude'] = implode(',', $getQueryArgumentsConfiguration['exclude']);
 		$expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('&key2=value2&key3[key32][key322]=value322');
-		$actualResult = $this->cObj->getQueryArguments($getQueryArgumentsConfiguration);
+		$actualResult = $this->subject->getQueryArguments($getQueryArgumentsConfiguration);
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 
@@ -244,7 +281,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getQueryArgumentsOverrulesSingleParameter() {
-		$this->cObj->expects($this->any())->method('getEnvironmentVariable')->with($this->equalTo('QUERY_STRING'))->will(
+		$this->subject->expects($this->any())->method('getEnvironmentVariable')->with($this->equalTo('QUERY_STRING'))->will(
 			$this->returnValue('key1=value1')
 		);
 		$getQueryArgumentsConfiguration = array();
@@ -255,7 +292,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'key2' => 'value2Overruled'
 		);
 		$expectedResult = '&key1=value1Overruled';
-		$actualResult = $this->cObj->getQueryArguments($getQueryArgumentsConfiguration, $overruleArguments);
+		$actualResult = $this->subject->getQueryArguments($getQueryArgumentsConfiguration, $overruleArguments);
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 
@@ -296,7 +333,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			)
 		);
 		$expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('&key2=value2Overruled&key3[key32][key322]=value322Overruled');
-		$actualResult = $this->cObj->getQueryArguments($getQueryArgumentsConfiguration, $overruleArguments);
+		$actualResult = $this->subject->getQueryArguments($getQueryArgumentsConfiguration, $overruleArguments);
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 
@@ -304,7 +341,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getQueryArgumentsOverrulesMultiDimensionalForcedParameters() {
-		$this->cObj->expects($this->any())->method('getEnvironmentVariable')->with($this->equalTo('QUERY_STRING'))->will(
+		$this->subject->expects($this->any())->method('getEnvironmentVariable')->with($this->equalTo('QUERY_STRING'))->will(
 			$this->returnValue('key1=value1&key2=value2&key3[key31]=value31&key3[key32][key321]=value321&key3[key32][key322]=value322')
 		);
 		$_POST = array(
@@ -338,10 +375,10 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			)
 		);
 		$expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('&key2=value2Overruled&key3[key32][key321]=value321Overruled&key3[key32][key323]=value323Overruled');
-		$actualResult = $this->cObj->getQueryArguments($getQueryArgumentsConfiguration, $overruleArguments, TRUE);
+		$actualResult = $this->subject->getQueryArguments($getQueryArgumentsConfiguration, $overruleArguments, TRUE);
 		$this->assertEquals($expectedResult, $actualResult);
 		$getQueryArgumentsConfiguration['method'] = 'POST';
-		$actualResult = $this->cObj->getQueryArguments($getQueryArgumentsConfiguration, $overruleArguments, TRUE);
+		$actualResult = $this->subject->getQueryArguments($getQueryArgumentsConfiguration, $overruleArguments, TRUE);
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 
@@ -373,7 +410,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$getQueryArgumentsConfiguration = array();
 		$getQueryArgumentsConfiguration['method'] = 'POST,GET';
 		$expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('&key1=POST1&key2=GET2&key3[key31]=POST31&key3[key32]=GET32&key3[key33][key331]=GET331&key3[key33][key332]=POST332');
-		$actualResult = $this->cObj->getQueryArguments($getQueryArgumentsConfiguration);
+		$actualResult = $this->subject->getQueryArguments($getQueryArgumentsConfiguration);
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 
@@ -405,7 +442,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$getQueryArgumentsConfiguration = array();
 		$getQueryArgumentsConfiguration['method'] = 'GET,POST';
 		$expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('&key1=GET1&key2=POST2&key3[key31]=GET31&key3[key32]=POST32&key3[key33][key331]=POST331&key3[key33][key332]=GET332');
-		$actualResult = $this->cObj->getQueryArguments($getQueryArgumentsConfiguration);
+		$actualResult = $this->subject->getQueryArguments($getQueryArgumentsConfiguration);
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 
@@ -426,7 +463,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function cropIsMultibyteSafe() {
-		$this->assertEquals('бла', $this->cObj->crop('бла', '3|...'));
+		$this->assertEquals('бла', $this->subject->crop('бла', '3|...'));
 	}
 
 	//////////////////////////////
@@ -710,7 +747,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function cropHtmlWithDataProvider($settings, $subject, $expected, $charset) {
 		$this->handleCharset($charset, $subject, $expected);
-		$this->assertEquals($expected, $this->cObj->cropHTML($subject, $settings), 'cropHTML failed with settings: "' . $settings . '" and charset "' . $charset . '"');
+		$this->assertEquals($expected, $this->subject->cropHTML($subject, $settings), 'cropHTML failed with settings: "' . $settings . '" and charset "' . $charset . '"');
 	}
 
 	/**
@@ -761,7 +798,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	? TYPO3 Association
 </p>
 ';
-		$result = $this->cObj->cropHTML($subject, '300');
+		$result = $this->subject->cropHTML($subject, '300');
 		$expected = '
 <h1>Blog Example</h1>
 <hr>
@@ -780,7 +817,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			<h3>
 				<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[blog]=&amp;tx_blogexample_pi1[action]=show&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=003b0131ed">The Pos</a></h3></li></ul></div>';
 		$this->assertEquals($expected, $result);
-		$result = $this->cObj->cropHTML($subject, '-100');
+		$result = $this->subject->cropHTML($subject, '-100');
 		$expected = '<div class="tx-blogexample-list-container"><ul><li><p>Design]&nbsp;<br>
 				<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[action]=show&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=f982643bc3">read more &gt;&gt;</a><br>
 				<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[blog][uid]=70&amp;tx_blogexample_pi1[action]=edit&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=5b481bc8f0">Edit</a>&nbsp;<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[blog][uid]=70&amp;tx_blogexample_pi1[action]=delete&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=4e52879656">Delete</a>
@@ -853,7 +890,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function cropHtmlWorksWithLinebreaks() {
 		$subject = "Lorem ipsum dolor sit amet,\nconsetetur sadipscing elitr,\nsed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam";
 		$expected = "Lorem ipsum dolor sit amet,\nconsetetur sadipscing elitr,\nsed diam nonumy eirmod tempor invidunt ut labore et dolore magna";
-		$result = $this->cObj->cropHTML($subject, '121');
+		$result = $this->subject->cropHTML($subject, '121');
 		$this->assertEquals($expected, $result);
 	}
 
@@ -871,7 +908,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$conf = array(
 			'round.' => $conf
 		);
-		$result = $this->cObj->stdWrap_round($float, $conf);
+		$result = $this->subject->stdWrap_round($float, $conf);
 		$this->assertEquals($expected, $result);
 	}
 
@@ -978,7 +1015,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$conf = array(
 			'strPad.' => $conf
 		);
-		$result = $this->cObj->stdWrap_strPad($content, $conf);
+		$result = $this->subject->stdWrap_strPad($content, $conf);
 		$this->assertEquals($expected, $result);
 	}
 
@@ -1038,7 +1075,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function stdWrap_hash($text, array $conf, $expected) {
-		$result = $this->cObj->stdWrap_hash($text, $conf);
+		$result = $this->subject->stdWrap_hash($text, $conf);
 		$this->assertEquals($expected, $result);
 	}
 
@@ -1054,7 +1091,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 		$this->assertSame(
 			'<b>Test</b> 123',
-			$this->cObj->stdWrap('Test', $stdWrapConfiguration)
+			$this->subject->stdWrap('Test', $stdWrapConfiguration)
 		);
 	}
 
@@ -1083,7 +1120,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 		$this->assertSame(
 			'Counter:1',
-			$this->cObj->stdWrap('Counter:', $stdWrapConfiguration)
+			$this->subject->stdWrap('Counter:', $stdWrapConfiguration)
 		);
 	}
 
@@ -1151,7 +1188,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function numberFormat($float, $formatConf, $expected) {
-		$result = $this->cObj->numberFormat($float, $formatConf);
+		$result = $this->subject->numberFormat($float, $formatConf);
 		$this->assertEquals($expected, $result);
 	}
 
@@ -1222,7 +1259,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function replacement($input, $conf, $expected) {
-		$result = $this->cObj->stdWrap_replacement($input, $conf);
+		$result = $this->subject->stdWrap_replacement($input, $conf);
 		$this->assertEquals($expected, $result);
 	}
 
@@ -1351,7 +1388,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				)
 			),
 		);
-		$result = $this->cObj->getQuery($table, $conf, TRUE);
+		$result = $this->subject->getQuery($table, $conf, TRUE);
 		foreach ($expected as $field => $value) {
 			$this->assertEquals($value, $result[$field]);
 		}
@@ -1377,21 +1414,21 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				)
 			),
 		);
-		$this->cObj = $this->getAccessibleMock('\\TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', array('getTreeList'));
-		$this->cObj->start(array(), 'tt_content');
+		$this->subject = $this->getAccessibleMock('\\TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', array('getTreeList'));
+		$this->subject->start(array(), 'tt_content');
 		$conf = array(
 			'recursive' => '15',
 			'pidInList' => '16, -35'
 		);
-		$this->cObj->expects($this->at(0))
+		$this->subject->expects($this->at(0))
 			->method('getTreeList')
 			->with(-16, 15)
 			->will($this->returnValue('15,16'));
-		$this->cObj->expects($this->at(1))
+		$this->subject->expects($this->at(1))
 			->method('getTreeList')
 			->with(-35, 15)
 			->will($this->returnValue('15,35'));
-		$this->cObj->getQuery('tt_content', $conf, TRUE);
+		$this->subject->getQuery('tt_content', $conf, TRUE);
 	}
 
 	/**
@@ -1414,18 +1451,18 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				)
 			),
 		);
-		$this->cObj = $this->getAccessibleMock('\\TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', array('getTreeList'));
+		$this->subject = $this->getAccessibleMock('\\TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', array('getTreeList'));
 		$GLOBALS['TSFE']->id = 27;
-		$this->cObj->start(array(), 'tt_content');
+		$this->subject->start(array(), 'tt_content');
 		$conf = array(
 			'pidInList' => 'this',
 			'recursive' => '4'
 		);
-		$this->cObj->expects($this->once())
+		$this->subject->expects($this->once())
 			->method('getTreeList')
 			->with(-27)
 			->will($this->returnValue('27'));
-		$this->cObj->getQuery('tt_content', $conf, TRUE);
+		$this->subject->getQuery('tt_content', $conf, TRUE);
 	}
 
 	/**
@@ -1470,7 +1507,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$timezoneBackup = date_default_timezone_get();
 		date_default_timezone_set('UTC');
 
-		$result = $this->cObj->stdWrap_strftime($content, $conf);
+		$result = $this->subject->stdWrap_strftime($content, $conf);
 
 			// Reset timezone
 		date_default_timezone_set($timezoneBackup);
@@ -1486,7 +1523,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function stdWrap_ifNullDeterminesNullValues($content, array $configuration, $expected) {
-		$result = $this->cObj->stdWrap_ifNull($content, $configuration);
+		$result = $this->subject->stdWrap_ifNull($content, $configuration);
 		$this->assertEquals($expected, $result);
 	}
 
@@ -1522,7 +1559,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function stdWrap_noTrimWrapAcceptsSplitChar($content, array $configuration, $expected) {
-		$result = $this->cObj->stdWrap_noTrimWrap($content, $configuration);
+		$result = $this->subject->stdWrap_noTrimWrap($content, $configuration);
 		$this->assertEquals($expected, $result);
 	}
 
@@ -1594,8 +1631,8 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider stdWrap_addPageCacheTagsAddsPageTagsDataProvider
 	 */
 	public function stdWrap_addPageCacheTagsAddsPageTags(array $expectedTags, array $configuration) {
-		$this->cObj->stdWrap_addPageCacheTags('', $configuration);
-		$this->assertEquals($expectedTags, $this->tsfe->_get('pageCacheTags'));
+		$this->subject->stdWrap_addPageCacheTags('', $configuration);
+		$this->assertEquals($expectedTags, $this->typoScriptFrontendControllerMock->_get('pageCacheTags'));
 	}
 
 	/**
@@ -1674,7 +1711,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function stdWrap_encodeForJavaScriptValue($input, $conf, $expected) {
-		$result = $this->cObj->stdWrap_encodeForJavaScriptValue($input, $conf);
+		$result = $this->subject->stdWrap_encodeForJavaScriptValue($input, $conf);
 		$this->assertEquals($expected, $result);
 	}
 
@@ -1709,7 +1746,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'onlyInPost' => 'PostValue',
 			'inGetAndPost' => 'ValueInPost',
 		);
-		$this->assertEquals($expectedValue, $this->cObj->getData('gp:' . $key));
+		$this->assertEquals($expectedValue, $this->subject->getData('gp:' . $key));
 	}
 
 	/**
@@ -1718,7 +1755,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getDataWithTypeTsfe() {
-		$this->assertEquals($GLOBALS['TSFE']->renderCharset, $this->cObj->getData('tsfe:renderCharset'));
+		$this->assertEquals($GLOBALS['TSFE']->renderCharset, $this->subject->getData('tsfe:renderCharset'));
 	}
 
 	/**
@@ -1730,7 +1767,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$envName = uniqid('frontendtest');
 		$value = uniqid('someValue');
 		putenv($envName . '=' . $value);
-		$this->assertEquals($value, $this->cObj->getData('getenv:' . $envName));
+		$this->assertEquals($value, $this->subject->getData('getenv:' . $envName));
 	}
 
 	/**
@@ -1739,9 +1776,9 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getDataWithTypeGetindpenv() {
-		$this->cObj->expects($this->once())->method('getEnvironmentVariable')
+		$this->subject->expects($this->once())->method('getEnvironmentVariable')
 			->with($this->equalTo('SCRIPT_FILENAME'))->will($this->returnValue('dummyPath'));
-		$this->assertEquals('dummyPath', $this->cObj->getData('getindpenv:SCRIPT_FILENAME'));
+		$this->assertEquals('dummyPath', $this->subject->getData('getindpenv:SCRIPT_FILENAME'));
 	}
 
 	/**
@@ -1754,7 +1791,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$value = 'someValue';
 		$field = array($key => $value);
 
-		$this->assertEquals($value, $this->cObj->getData('field:' . $key, $field));
+		$this->assertEquals($value, $this->subject->getData('field:' . $key, $field));
 	}
 
 	/**
@@ -1766,8 +1803,8 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$uid = uniqid();
 		$file = $this->getMock('TYPO3\\CMS\\Core\\Resource\File', array(), array(), '', FALSE);
 		$file->expects($this->once())->method('getUid')->will($this->returnValue($uid));
-		$this->cObj->setCurrentFile($file);
-		$this->assertEquals($uid, $this->cObj->getData('file:current:uid'));
+		$this->subject->setCurrentFile($file);
+		$this->assertEquals($uid, $this->subject->getData('file:current:uid'));
 	}
 
 	/**
@@ -1778,9 +1815,9 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getDataWithTypeParameters() {
 		$key = uniqid('someKey');
 		$value = uniqid('someValue');
-		$this->cObj->parameters[$key] = $value;
+		$this->subject->parameters[$key] = $value;
 
-		$this->assertEquals($value, $this->cObj->getData('parameters:' . $key));
+		$this->assertEquals($value, $this->subject->getData('parameters:' . $key));
 	}
 
 	/**
@@ -1793,7 +1830,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$value = uniqid('someValue');
 		$GLOBALS['TSFE']->register[$key] = $value;
 
-		$this->assertEquals($value, $this->cObj->getData('register:' . $key));
+		$this->assertEquals($value, $this->subject->getData('register:' . $key));
 	}
 
 	/**
@@ -1809,7 +1846,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 
 		$GLOBALS['TSFE']->tmpl->rootLine = $rootline;
-		$this->assertEquals(2, $this->cObj->getData('level'));
+		$this->assertEquals(2, $this->subject->getData('level'));
 	}
 
 	/**
@@ -1818,7 +1855,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getDataWithTypeGlobal() {
-		$this->assertEquals($GLOBALS['TSFE']->renderCharset, $this->cObj->getData('global:TSFE|renderCharset'));
+		$this->assertEquals($GLOBALS['TSFE']->renderCharset, $this->subject->getData('global:TSFE|renderCharset'));
 	}
 
 	/**
@@ -1834,9 +1871,9 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 
 		$GLOBALS['TSFE']->tmpl->rootLine = $rootline;
-		$this->assertEquals('', $this->cObj->getData('leveltitle:-1'));
+		$this->assertEquals('', $this->subject->getData('leveltitle:-1'));
 		// since "title3" is not set, it will slide to "title2"
-		$this->assertEquals('title2', $this->cObj->getData('leveltitle:-1,slide'));
+		$this->assertEquals('title2', $this->subject->getData('leveltitle:-1,slide'));
 	}
 
 	/**
@@ -1852,9 +1889,9 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 
 		$GLOBALS['TSFE']->tmpl->rootLine = $rootline;
-		$this->assertEquals('', $this->cObj->getData('levelmedia:-1'));
+		$this->assertEquals('', $this->subject->getData('levelmedia:-1'));
 		// since "title3" is not set, it will slide to "title2"
-		$this->assertEquals('media2', $this->cObj->getData('levelmedia:-1,slide'));
+		$this->assertEquals('media2', $this->subject->getData('levelmedia:-1,slide'));
 	}
 
 	/**
@@ -1870,9 +1907,9 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 
 		$GLOBALS['TSFE']->tmpl->rootLine = $rootline;
-		$this->assertEquals(3, $this->cObj->getData('leveluid:-1'));
+		$this->assertEquals(3, $this->subject->getData('leveluid:-1'));
 		// every element will have a uid - so adding slide doesn't really make sense, just for completeness
-		$this->assertEquals(3, $this->cObj->getData('leveluid:-1,slide'));
+		$this->assertEquals(3, $this->subject->getData('leveluid:-1,slide'));
 	}
 
 	/**
@@ -1888,8 +1925,8 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 
 		$GLOBALS['TSFE']->tmpl->rootLine = $rootline;
-		$this->assertEquals('', $this->cObj->getData('levelfield:-1,testfield'));
-		$this->assertEquals('field2', $this->cObj->getData('levelfield:-1,testfield,slide'));
+		$this->assertEquals('', $this->subject->getData('levelfield:-1,testfield'));
+		$this->assertEquals('field2', $this->subject->getData('levelfield:-1,testfield,slide'));
 	}
 
 	/**
@@ -1909,7 +1946,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$GLOBALS['TSFE']->tmpl->rootLine = $rootline1;
 		$GLOBALS['TSFE']->rootLine = $rootline2;
-		$this->assertEquals('field2', $this->cObj->getData('fullrootline:-1,testfield'));
+		$this->assertEquals('field2', $this->subject->getData('fullrootline:-1,testfield'));
 	}
 
 	/**
@@ -1921,8 +1958,8 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$format = 'Y-M-D';
 		$defaultFormat = 'd/m Y';
 
-		$this->assertEquals(date($format, $GLOBALS['EXEC_TIME']), $this->cObj->getData('date:' . $format));
-		$this->assertEquals(date($defaultFormat, $GLOBALS['EXEC_TIME']), $this->cObj->getData('date'));
+		$this->assertEquals(date($format, $GLOBALS['EXEC_TIME']), $this->subject->getData('date:' . $format));
+		$this->assertEquals(date($defaultFormat, $GLOBALS['EXEC_TIME']), $this->subject->getData('date'));
 	}
 
 	/**
@@ -1933,7 +1970,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getDataWithTypePage() {
 		$uid = rand();
 		$GLOBALS['TSFE']->page['uid'] = $uid;
-		$this->assertEquals($uid, $this->cObj->getData('page:uid'));
+		$this->assertEquals($uid, $this->subject->getData('page:uid'));
 	}
 
 	/**
@@ -1944,9 +1981,9 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getDataWithTypeCurrent() {
 		$key = uniqid('someKey');
 		$value = uniqid('someValue');
-		$this->cObj->data[$key] = $value;
-		$this->cObj->currentValKey = $key;
-		$this->assertEquals($value, $this->cObj->getData('current'));
+		$this->subject->data[$key] = $value;
+		$this->subject->currentValKey = $key;
+		$this->assertEquals($value, $this->subject->getData('current'));
 	}
 
 	/**
@@ -1958,7 +1995,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$dummyRecord = array('uid' => 5, 'title' => 'someTitle');
 
 		$GLOBALS['TSFE']->sys_page->expects($this->atLeastOnce())->method('getRawRecord')->with('tt_content', '106')->will($this->returnValue($dummyRecord));
-		$this->assertEquals($dummyRecord['title'], $this->cObj->getData('db:tt_content:106:title'));
+		$this->assertEquals($dummyRecord['title'], $this->subject->getData('db:tt_content:106:title'));
 	}
 
 	/**
@@ -1973,7 +2010,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['TSFE']->LL_labels_cache[$language]['LLL:' . $key] = $value;
 		$GLOBALS['TSFE']->lang = $language;
 
-		$this->assertEquals($value, $this->cObj->getData('lll:' . $key));
+		$this->assertEquals($value, $this->subject->getData('lll:' . $key));
 	}
 
 	/**
@@ -1984,8 +2021,8 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getDataWithTypePath() {
 		$filenameIn = uniqid('someValue');
 		$filenameOut = uniqid('someValue');
-		$this->template->expects($this->atLeastOnce())->method('getFileName')->with($filenameIn)->will($this->returnValue($filenameOut));
-		$this->assertEquals($filenameOut, $this->cObj->getData('path:' . $filenameIn));
+		$this->templateServiceMock->expects($this->atLeastOnce())->method('getFileName')->with($filenameIn)->will($this->returnValue($filenameOut));
+		$this->assertEquals($filenameOut, $this->subject->getData('path:' . $filenameIn));
 	}
 
 	/**
@@ -1995,8 +2032,8 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getDataWithTypeParentRecordNumber() {
 		$recordNumber = rand();
-		$this->cObj->parentRecordNumber = $recordNumber;
-		$this->assertEquals($recordNumber, $this->cObj->getData('cobj:parentRecordNumber'));
+		$this->subject->parentRecordNumber = $recordNumber;
+		$this->assertEquals($recordNumber, $this->subject->getData('cobj:parentRecordNumber'));
 	}
 
 	/**
@@ -2013,7 +2050,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$expectedResult = '0uid1titletitle11uid2titletitle22uid3title';
 		$GLOBALS['TSFE']->tmpl->rootLine = $rootline;
 
-		$result = $this->cObj->getData('debug:rootLine');
+		$result = $this->subject->getData('debug:rootLine');
 		$cleanedResult = strip_tags($result);
 		$cleanedResult = str_replace("\r", '', $cleanedResult);
 		$cleanedResult = str_replace("\n", '', $cleanedResult);
@@ -2037,7 +2074,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$expectedResult = '0uid1titletitle11uid2titletitle22uid3title';
 		$GLOBALS['TSFE']->rootLine = $rootline;
 
-		$result = $this->cObj->getData('debug:fullRootLine');
+		$result = $this->subject->getData('debug:fullRootLine');
 		$cleanedResult = strip_tags($result);
 		$cleanedResult = str_replace("\r", '', $cleanedResult);
 		$cleanedResult = str_replace("\n", '', $cleanedResult);
@@ -2055,11 +2092,11 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getDataWithTypeDebugData() {
 		$key = uniqid('someKey');
 		$value = uniqid('someValue');
-		$this->cObj->data = array($key => $value);
+		$this->subject->data = array($key => $value);
 
 		$expectedResult = $key . $value;
 
-		$result = $this->cObj->getData('debug:data');
+		$result = $this->subject->getData('debug:data');
 		$cleanedResult = strip_tags($result);
 		$cleanedResult = str_replace("\r", '', $cleanedResult);
 		$cleanedResult = str_replace("\n", '', $cleanedResult);
@@ -2081,7 +2118,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$expectedResult = $key . $value;
 
-		$result = $this->cObj->getData('debug:register');
+		$result = $this->subject->getData('debug:register');
 		$cleanedResult = strip_tags($result);
 		$cleanedResult = str_replace("\r", '', $cleanedResult);
 		$cleanedResult = str_replace("\n", '', $cleanedResult);
@@ -2102,7 +2139,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$expectedResult = 'uid' . $uid;
 
-		$result = $this->cObj->getData('debug:page');
+		$result = $this->subject->getData('debug:page');
 		$cleanedResult = strip_tags($result);
 		$cleanedResult = str_replace("\r", '', $cleanedResult);
 		$cleanedResult = str_replace("\n", '', $cleanedResult);
@@ -2148,7 +2185,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			);
 		// 17 = pageId, 5 = recursionLevel, 0 = begin (entry to recursion, internal), TRUE = do not check enable fields
 		// 17 is positive, we expect 17 NOT to be included in result
-		$result = $this->cObj->getTreeList(17, 5, 0, TRUE);
+		$result = $this->subject->getTreeList(17, 5, 0, TRUE);
 		$expectedResult = '42,719,321';
 		$this->assertEquals($expectedResult, $result);
 	}
@@ -2189,7 +2226,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			);
 		// 17 = pageId, 5 = recursionLevel, 0 = begin (entry to recursion, internal), TRUE = do not check enable fields
 		// 17 is negative, we expect 17 to be included in result
-		$result = $this->cObj->getTreeList(-17, 5, 0, TRUE);
+		$result = $this->subject->getTreeList(-17, 5, 0, TRUE);
 		$expectedResult = '42,719,321,17';
 		$this->assertEquals($expectedResult, $result);
 	}
@@ -2198,7 +2235,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function aTagParamsHasLeadingSpaceIfNotEmpty() {
-		$aTagParams = $this->cObj->getATagParams(array('ATagParams' => 'data-test="testdata"'));
+		$aTagParams = $this->subject->getATagParams(array('ATagParams' => 'data-test="testdata"'));
 		$this->assertEquals(' data-test="testdata"', $aTagParams );
 	}
 
@@ -2207,7 +2244,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function aTagParamsHaveSpaceBetweenLocalAndGlobalParams() {
 		$GLOBALS['TSFE']->ATagParams = 'data-global="dataglobal"';
-		$aTagParams = $this->cObj->getATagParams(array('ATagParams' => 'data-test="testdata"'));
+		$aTagParams = $this->subject->getATagParams(array('ATagParams' => 'data-test="testdata"'));
 		$this->assertEquals(' data-global="dataglobal" data-test="testdata"', $aTagParams );
 	}
 
@@ -2217,7 +2254,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function aTagParamsHasNoLeadingSpaceIfEmpty() {
 		// make sure global ATagParams are empty
 		$GLOBALS['TSFE']->ATagParams = '';
-		$aTagParams = $this->cObj->getATagParams(array('ATagParams' => ''));
+		$aTagParams = $this->subject->getATagParams(array('ATagParams' => ''));
 		$this->assertEquals('', $aTagParams);
 	}
 
@@ -2243,7 +2280,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getImageTagTemplateFallsBackToDefaultTemplateIfNoTemplateIsFound($key, $configuration) {
 		$defaultImgTagTemplate = '<img src="###SRC###" width="###WIDTH###" height="###HEIGHT###" ###PARAMS### ###ALTPARAMS### ###BORDER######SELFCLOSINGTAGSLASH###>';
-		$result = $this->cObj->getImageTagTemplate($key, $configuration);
+		$result = $this->subject->getImageTagTemplate($key, $configuration);
 		$this->assertEquals($result, $defaultImgTagTemplate);
 	}
 
@@ -2277,7 +2314,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param string $expectation
 	 */
 	public function getImageTagTemplateReturnTemplateElementIdentifiedByKey($key, $configuration, $expectation) {
-		$result = $this->cObj->getImageTagTemplate($key, $configuration);
+		$result = $this->subject->getImageTagTemplate($key, $configuration);
 		$this->assertEquals($result, $expectation);
 	}
 
@@ -2302,7 +2339,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param string $file
 	 */
 	public function getImageSourceCollectionReturnsEmptyStringIfNoSourcesAreDefined($layoutKey, $configuration, $file) {
-		$result = $this->cObj->getImageSourceCollection($layoutKey, $configuration, $file);
+		$result = $this->subject->getImageSourceCollection($layoutKey, $configuration, $file);
 		$this->assertSame($result, '');
 	}
 
@@ -2564,23 +2601,23 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getImageSourceCollectionHookCalled() {
-		$this->cObj = $this->getAccessibleMock(
+		$this->subject = $this->getAccessibleMock(
 			'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer',
 			array('getResourceFactory', 'stdWrap', 'getImgResource')
 		);
-		$this->cObj->start(array(), 'tt_content');
+		$this->subject->start(array(), 'tt_content');
 
 		// Avoid calling stdwrap and getImgResource
-		$this->cObj->expects($this->any())
+		$this->subject->expects($this->any())
 			->method('stdWrap')
 			->will($this->returnArgument(0));
 
-		$this->cObj->expects($this->any())
+		$this->subject->expects($this->any())
 			->method('getImgResource')
 			->will($this->returnValue(array(100, 100, NULL, 'bar-file.jpg')));
 
 		$resourceFactory = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceFactory', array(), array(), '', FALSE);
-		$this->cObj->expects($this->any())->method('getResourceFactory')->will($this->returnValue($resourceFactory));
+		$this->subject->expects($this->any())->method('getResourceFactory')->will($this->returnValue($resourceFactory));
 
 		$className = uniqid('tx_coretest_getImageSourceCollectionHookCalled');
 		$getImageSourceCollectionHookMock = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectOneSourceCollectionHookInterface', array('getOneSourceCollection'), array(), $className);
@@ -2610,7 +2647,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			),
 		);
 
-		$result = $this->cObj->getImageSourceCollection('data', $configuration, uniqid('testImage-'));
+		$result = $this->subject->getImageSourceCollection('data', $configuration, uniqid('testImage-'));
 
 		$this->assertSame($result, 'isGetOneSourceCollectionCalledCallback');
 	}
@@ -2637,14 +2674,14 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function forceAbsoluteUrlReturnsCorrectAbsoluteUrl($expected, $url, array $configuration) {
 		// Force hostname
-		$this->cObj->expects($this->any())->method('getEnvironmentVariable')->will($this->returnValueMap(
+		$this->subject->expects($this->any())->method('getEnvironmentVariable')->will($this->returnValueMap(
 			array(
 				array('HTTP_HOST', 'localhost'),
 				array('TYPO3_SITE_PATH', '/'),
 			)
 		));
 
-		$this->assertEquals($expected, $this->cObj->_call('forceAbsoluteUrl', $url, $configuration));
+		$this->assertEquals($expected, $this->subject->_call('forceAbsoluteUrl', $url, $configuration));
 	}
 
 	/**
@@ -2699,5 +2736,132 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				)
 			),
 		);
+	}
+
+	/**
+	 * @test
+	 * @expectedException \LogicException
+	 * @expectedExceptionCode 1414513947
+	 */
+	public function renderingContentObjectThrowsException() {
+		$contentObjectFixture = $this->createContentObjectThrowingExceptionFixture();
+		$this->subject->render($contentObjectFixture, array());
+	}
+
+	/**
+	 * @test
+	 */
+	public function exceptionHandlerIsEnabledByDefaultInProductionContext() {
+		$backupApplicationContext = GeneralUtility::getApplicationContext();
+		Fixtures\GeneralUtilityFixture::setApplicationContext(new ApplicationContext('Production'));
+
+		$contentObjectFixture = $this->createContentObjectThrowingExceptionFixture();
+		$this->subject->render($contentObjectFixture, array());
+
+		Fixtures\GeneralUtilityFixture::setApplicationContext($backupApplicationContext);
+	}
+
+	/**
+	 * @test
+	 */
+	public function renderingContentObjectDoesNotThrowExceptionIfExceptionHandlerIsConfiguredLocally() {
+		$contentObjectFixture = $this->createContentObjectThrowingExceptionFixture();
+
+		$configuration = array(
+			'exceptionHandler' => '1'
+		);
+		$this->subject->render($contentObjectFixture, $configuration);
+	}
+
+	/**
+	 * @test
+	 */
+	public function renderingContentObjectDoesNotThrowExceptionIfExceptionHandlerIsConfiguredGlobally() {
+		$contentObjectFixture = $this->createContentObjectThrowingExceptionFixture();
+
+		$this->typoScriptFrontendControllerMock->config['config']['contentObjectExceptionHandler'] = '1';
+		$this->subject->render($contentObjectFixture, array());
+	}
+
+	/**
+	 * @test
+	 * @expectedException \LogicException
+	 * @expectedExceptionCode 1414513947
+	 */
+	public function globalExceptionHandlerConfigurationCanBeOverriddenByLocalConfiguration() {
+		$contentObjectFixture = $this->createContentObjectThrowingExceptionFixture();
+
+		$this->typoScriptFrontendControllerMock->config['config']['contentObjectExceptionHandler'] = '1';
+		$configuration = array(
+			'exceptionHandler' => '0'
+		);
+		$this->subject->render($contentObjectFixture, $configuration);
+	}
+
+	/**
+	 * @test
+	 */
+	public function renderedErrorMessageCanBeCustomized() {
+		$contentObjectFixture = $this->createContentObjectThrowingExceptionFixture();
+
+		$configuration = array(
+			'exceptionHandler' => '1',
+			'exceptionHandler.' => array(
+				'errorMessage' => 'New message for testing',
+			)
+		);
+
+		$this->assertSame('New message for testing', $this->subject->render($contentObjectFixture, $configuration));
+	}
+
+	/**
+	 * @test
+	 */
+	public function localConfigurationOverridesGlobalConfiguration() {
+		$contentObjectFixture = $this->createContentObjectThrowingExceptionFixture();
+
+		$this->typoScriptFrontendControllerMock
+			->config['config']['contentObjectExceptionHandler.'] = array(
+				'errorMessage' => 'Global message for testing',
+			);
+		$configuration = array(
+			'exceptionHandler' => '1',
+			'exceptionHandler.' => array(
+				'errorMessage' => 'New message for testing',
+			)
+		);
+
+		$this->assertSame('New message for testing', $this->subject->render($contentObjectFixture, $configuration));
+	}
+
+	/**
+	 * @test
+	 * @expectedException \LogicException
+	 * @expectedExceptionCode 1414513947
+	 */
+	public function specificExceptionsCanBeIgnoredByExceptionHandler() {
+		$contentObjectFixture = $this->createContentObjectThrowingExceptionFixture();
+
+		$configuration = array(
+			'exceptionHandler' => '1',
+			'exceptionHandler.' => array(
+				'ignoreCodes.' => array('10.' => '1414513947'),
+			)
+		);
+
+		$this->subject->render($contentObjectFixture, $configuration);
+	}
+
+	/**
+	 * @return \PHPUnit_Framework_MockObject_MockObject | AbstractContentObject
+	 */
+	protected function createContentObjectThrowingExceptionFixture() {
+		$contentObjectFixture = $this->getMock(AbstractContentObject::class, array(), array($this->subject));
+		$contentObjectFixture->expects($this->once())
+			->method('render')
+			->willReturnCallback(function() {
+				throw new \LogicException('Exception during rendering', 1414513947);
+			});
+		return $contentObjectFixture;
 	}
 }
