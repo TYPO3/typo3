@@ -73,6 +73,19 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
 
 	/**
 	 * @test
+	 * @see DataSet/deleteLocalizedContentNDeleteContent.csv
+	 */
+	public function deleteLocalizedContentAndDeleteContent() {
+		parent::deleteLocalizedContentAndDeleteContent();
+		$this->assertAssertionDataSet('deleteLocalizedContentNDeleteContent');
+
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+		$this->assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #3', '[Translate to Dansk:] Regular Element #3'));
+	}
+
+	/**
+	 * @test
 	 * @see DataSet/Assertion/copyContentRecord.csv
 	 */
 	public function copyContent() {

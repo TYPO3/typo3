@@ -87,7 +87,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
 	 */
 	public function modifyContent() {
 		parent::modifyContent();
-		$this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
+		$this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
 		$this->assertAssertionDataSet('modifyContent');
 
 		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
@@ -101,7 +101,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
 	 */
 	public function deleteContent() {
 		parent::deleteContent();
-		$this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
+		$this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
 		$this->assertAssertionDataSet('deleteContent');
 
 		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
@@ -109,6 +109,25 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
 			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
 		$this->assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
 			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
+	}
+
+	/**
+	 * @test
+	 * @see DataSet/deleteLocalizedContentNDeleteContent.csv
+	 */
+	public function deleteLocalizedContentAndDeleteContent() {
+		$this->markTestSkipped('see http://forge.typo3.org/issues/59113');
+		parent::deleteLocalizedContentAndDeleteContent();
+		$this->actionService->publishRecords(
+			array(
+				self::TABLE_Content => array(self::VALUE_ContentIdThird, self::VALUE_ContentIdThirdLocalized),
+			)
+		);
+		$this->assertAssertionDataSet('deleteLocalizedContentNDeleteContent');
+
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
+		$this->assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #3', '[Translate to Dansk:] Regular Element #3'));
 	}
 
 	/**
@@ -159,7 +178,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
 	 */
 	public function moveContentToDifferentPage() {
 		parent::moveContentToDifferentPage();
-		$this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
+		$this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
 		$this->assertAssertionDataSet('moveContentToDifferentPage');
 
 		$responseSectionsSource = $this->getFrontendResponse(self::VALUE_PageId, 0)->getResponseSections();
@@ -178,7 +197,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
 		parent::moveContentToDifferentPageAndChangeSorting();
 		$this->actionService->publishRecords(
 			array(
-				self::TABLE_Content => array(self::VALUE_ContentIdFirst, self::VALUE_ContentIdLast),
+				self::TABLE_Content => array(self::VALUE_ContentIdFirst, self::VALUE_ContentIdSecond),
 			)
 		);
 		$this->assertAssertionDataSet('moveContentToDifferentPageNChangeSorting');
