@@ -60,6 +60,11 @@ class CollectionService implements \TYPO3\CMS\Core\SingletonInterface {
 			$this->dependencyResolver->setWorkspace($this->getWorkspace());
 
 			$this->dependencyResolver->setEventCallback(
+				Dependency\ElementEntity::EVENT_Construct,
+				$this->getDependencyCallback('createNewDependentElementCallback')
+			);
+
+			$this->dependencyResolver->setEventCallback(
 				Dependency\ElementEntity::EVENT_CreateChildReference,
 				$this->getDependencyCallback('createNewDependentElementChildReferenceCallback')
 			);
