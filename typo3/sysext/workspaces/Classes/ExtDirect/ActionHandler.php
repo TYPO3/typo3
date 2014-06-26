@@ -102,6 +102,68 @@ class ActionHandler extends AbstractHandler {
 	}
 
 	/**
+	 * Executes an action (publish, discard, swap) to a selection set.
+	 *
+	 * @param \stdClass $parameter
+	 * @return array
+	 */
+	public function executeSelectionAction($parameter) {
+		$result = array();
+
+		if (empty($parameter->action) || empty($parameter->selection)) {
+			$result['error'] = 'No action or record selection given';
+			return $result;
+		}
+
+		$commands = array();
+		$swapIntoWorkspace = ($parameter->action === 'swap');
+		if ($parameter->action === 'publish' || $swapIntoWorkspace) {
+			$commands = $this->getPublishSwapCommands($parameter->selection, $swapIntoWorkspace);
+		} elseif ($parameter->action === 'discard') {
+			$commands = $this->getFlushCommands($parameter->selection);
+		}
+
+		$result = $this->processTcaCmd($commands);
+		$result['total'] = count($commands);
+		return $result;
+	}
+
+	/**
+	 * Get publish swap commands
+	 *
+	 * @param array|\stdClass[] $selection
+	 * @param boolean $swapIntoWorkspace
+	 * @return array
+	 */
+	protected function getPublishSwapCommands(array $selection, $swapIntoWorkspace) {
+		$commands = array();
+		foreach ($selection as $record) {
+			$commands[$record->table][$record->liveId]['version'] = array(
+				'action' => 'swap',
+				'swapWith' => $record->versionId,
+				'swapIntoWS' => (bool)$swapIntoWorkspace,
+			);
+		}
+		return $commands;
+	}
+
+	/**
+	 * Get flush commands
+	 *
+	 * @param array|\stdClass[] $selection
+	 * @return array
+	 */
+	protected function getFlushCommands(array $selection) {
+		$commands = array();
+		foreach ($selection as $record) {
+			$commands[$record->table][$record->versionId]['version'] = array(
+				'action' => 'clearWSID',
+			);
+		}
+		return $commands;
+	}
+
+	/**
 	 * Saves the selected columns to be shown to the preferences of the current backend user.
 	 *
 	 * @param object $model
@@ -370,13 +432,27 @@ class ActionHandler extends AbstractHandler {
 	 * Process TCA command map array.
 	 *
 	 * @param array $cmdMapArray
-	 * @return void
+	 * @return array
 	 * @author Michael Klapper <development@morphodo.com>
 	 */
 	protected function processTcaCmd(array $cmdMapArray) {
-		$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
-		$tce->start(array(), $cmdMapArray);
-		$tce->process_cmdmap();
+		$result = array();
+
+		if (empty($cmdMapArray)) {
+			$result['error'] = 'No commands given to be processed';
+			return $result;
+		}
+
+		/** @var \TYPO3\CMS\Core\DataHandling\DataHandler $dataHandler */
+		$dataHandler = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$dataHandler->start(array(), $cmdMapArray);
+		$dataHandler->process_cmdmap();
+
+		if ($dataHandler->errorLog) {
+			$result['error'] = implode('<br/>', $dataHandler->errorLog);
+		}
+
+		return $result;
 	}
 
 	/**

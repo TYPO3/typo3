@@ -80,6 +80,15 @@
 			<trans-unit id="tooltip.discardAll" xml:space="preserve">
 				<source>Do you really want to discard changes from the whole workspace?</source>
 			</trans-unit>
+			<trans-unit id="tooltip.publishSelected" xml:space="preserve">
+				<source>Really publish selected elements?</source>
+			</trans-unit>
+			<trans-unit id="tooltip.swapSelected" xml:space="preserve">
+				<source>Really swap selected elements?</source>
+			</trans-unit>
+			<trans-unit id="tooltip.discardSelected" xml:space="preserve">
+				<source>Really discard changes of the selected elements?</source>
+			</trans-unit>
 			<trans-unit id="tooltip.affectWholeWorkspace" xml:space="preserve">
 				<source>Please note that this will affect all changes in the current workspace, which may be more than
 					you are currently seeing on your screen.
@@ -177,6 +186,9 @@
 			</trans-unit>
 			<trans-unit id="window.massAction.title" xml:space="preserve">
 				<source>Prepare to start mass action</source>
+			</trans-unit>
+			<trans-unit id="window.selectionAction.title" xml:space="preserve">
+				<source>Prepare to execute actions on selection</source>
 			</trans-unit>
 			<trans-unit id="error.stageId.integer" xml:space="preserve">
 				<source>StageId is supposed to be an integer</source>
