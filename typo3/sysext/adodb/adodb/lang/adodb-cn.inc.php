@@ -32,4 +32,3 @@ $ADODB_LANG_ARRAY = array (
             DB_ERROR_NOSUCHDB           => '没有相应的数据库',
             DB_ERROR_ACCESS_VIOLATION   => '没有合适的权限'
 );
-?>

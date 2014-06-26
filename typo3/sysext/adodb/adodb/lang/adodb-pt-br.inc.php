@@ -21,7 +21,7 @@ $ADODB_LANG_ARRAY = array (
             DB_ERROR_NOT_FOUND          => 'não encontrado',
             DB_ERROR_NOT_LOCKED         => 'não bloqueado',
             DB_ERROR_SYNTAX             => 'erro de sintaxe',
-            DB_ERROR_UNSUPPORTED        => 
+            DB_ERROR_UNSUPPORTED        =>
 'não suportado',
             DB_ERROR_VALUE_COUNT_ON_ROW => 'a quantidade de colunas não corresponde ao de valores',
             DB_ERROR_INVALID_DSN        => 'DSN inválido',
@@ -32,4 +32,3 @@ $ADODB_LANG_ARRAY = array (
             DB_ERROR_NOSUCHDB           => 'banco de dados não encontrado',
             DB_ERROR_ACCESS_VIOLATION   => 'permissão insuficiente'
 );
-?>

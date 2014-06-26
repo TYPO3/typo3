@@ -1,6 +1,6 @@
 <?php
 /*
-V5.18 3 Sep 2012  (c) 2000-2012 John Lim (jlim#natsoft.com). All rights reserved.
+V5.19  23-Apr-2014  (c) 2000-2014 John Lim (jlim#natsoft.com). All rights reserved.
   Released under both BSD license and Lesser GPL library license.
   Whenever there is any discrepancy between the two licenses,
   the BSD license will take precedence. See License.txt.
@@ -90,8 +90,13 @@ class perf_db2 extends adodb_perf{
 		return $s;
 	}
 
-
-	function Tables()
+	/**
+	 *  Gets a list of tables
+	 *
+	 * @param int $throwaway discarded variable to match the parent method
+	 * @return string The formatted table list
+	 */
+	function Tables($throwaway=0)
 	{
 		$rs = $this->conn->Execute("select tabschema,tabname,card as rows,
 			npages pages_used,fpages pages_allocated, tbspace tablespace
@@ -99,4 +104,3 @@ class perf_db2 extends adodb_perf{
 		return rs2html($rs,false,false,false,false);
 	}
 }
-?>

@@ -32,4 +32,3 @@ $ADODB_LANG_ARRAY = array (
             DB_ERROR_NOSUCHDB           => 'nie znaleziono bazy',
             DB_ERROR_ACCESS_VIOLATION   => 'niedostateczne uprawnienia'
 );
-?>

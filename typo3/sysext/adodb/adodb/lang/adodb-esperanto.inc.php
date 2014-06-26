@@ -1,5 +1,5 @@
 <?php
-// Vivu Esperanto cxiam! 
+// Vivu Esperanto cxiam!
 // Traduko fare de Antono Vasiljev (anders[#]brainactive.org)
 
 $ADODB_LANG_ARRAY = array (
@@ -32,4 +32,3 @@ $ADODB_LANG_ARRAY = array (
             DB_ERROR_NOSUCHDB           => 'datumbazo ne ekzistas',
             DB_ERROR_ACCESS_VIOLATION   => 'ne suficxe da rajto por atingo'
 );
-?>

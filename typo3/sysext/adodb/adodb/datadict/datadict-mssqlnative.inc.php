@@ -1,7 +1,7 @@
 <?php
 
 /**
-  V5.18 3 Sep 2012  (c) 2000-2012 John Lim (jlim#natsoft.com). All rights reserved.
+  V5.19  23-Apr-2014  (c) 2000-2014 John Lim (jlim#natsoft.com). All rights reserved.
   Released under both BSD license and Lesser GPL library license.
   Whenever there is any discrepancy between the two licenses,
   the BSD license will take precedence.
@@ -43,16 +43,15 @@ if (!defined('ADODB_DIR')) die();
 
 class ADODB2_mssqlnative extends ADODB_DataDict {
 	var $databaseType = 'mssqlnative';
-	var $dropIndex = 'DROP INDEX %2$s.%1$s';
+	var $dropIndex = 'DROP INDEX %1$s ON %2$s';
 	var $renameTable = "EXEC sp_rename '%s','%s'";
 	var $renameColumn = "EXEC sp_rename '%s.%s','%s'";
-
 	var $typeX = 'TEXT';  ## Alternatively, set it to VARCHAR(4000)
 	var $typeXL = 'TEXT';
 
 	//var $alterCol = ' ALTER COLUMN ';
 
-	function MetaType($t, $len=-1, $fieldobj=false)
+	function MetaType($t,$len=-1,$fieldobj=false)
 	{
 		if (is_object($t)) {
 			$fieldobj = $t;
@@ -60,24 +59,47 @@ class ADODB2_mssqlnative extends ADODB_DataDict {
 			$len = $fieldobj->max_length;
 		}
 
-		$len = -1; // mysql max_length is not accurate
-		switch (strtoupper($t)) {
-		case 'R':
-		case 'INT':
-		case 'INTEGER': return  'I';
-		case 'BIT':
-		case 'TINYINT': return  'I1';
-		case 'SMALLINT': return 'I2';
-		case 'BIGINT':  return  'I8';
+		$_typeConversion = array(
+			-155 => 'D',
+			  93 => 'D',
+			-154 => 'D',
+			  -2 => 'D',
+			  91 => 'D',
 
-		case 'REAL':
-		case 'FLOAT': return 'F';
-		default: return parent::MetaType($t,$len,$fieldobj);
-		}
+			  12 => 'C',
+			   1 => 'C',
+			  -9 => 'C',
+			  -8 => 'C',
+
+			  -7 => 'L',
+			  -6 => 'I2',
+			  -5 => 'I8',
+			 -11 => 'I',
+			   4 => 'I',
+			   5 => 'I4',
+
+			  -1 => 'X',
+			 -10 => 'X',
+
+			   2 => 'N',
+			   3 => 'N',
+			   6 => 'N',
+			   7 => 'N',
+
+			-152 => 'X',
+			-151 => 'X',
+			  -4 => 'X',
+			  -3 => 'X'
+			);
+
+		return $_typeConversion($t);
+
 	}
 
 	function ActualType($meta)
 	{
+		$DATE_TYPE = 'DATETIME';
+
 		switch(strtoupper($meta)) {
 
 		case 'C': return 'VARCHAR';
@@ -88,8 +110,8 @@ class ADODB2_mssqlnative extends ADODB_DataDict {
 
 		case 'B': return 'IMAGE';
 
-		case 'D': return 'DATETIME';
-		case 'T': return 'DATETIME';
+		case 'D': return $DATE_TYPE;
+		case 'T': return 'TIME';
 		case 'L': return 'BIT';
 
 		case 'R':
@@ -102,6 +124,7 @@ class ADODB2_mssqlnative extends ADODB_DataDict {
 		case 'F': return 'REAL';
 		case 'N': return 'NUMERIC';
 		default:
+			print "RETURN $meta";
 			return $meta;
 		}
 	}
@@ -135,15 +158,26 @@ class ADODB2_mssqlnative extends ADODB_DataDict {
 	}
 	*/
 
-	function DropColumnSQL($tabname, $flds, $tableflds='', $tableoptions='')
+	/**
+	 * Drop a column, syntax is ALTER TABLE table DROP COLUMN column,column
+	 *
+	 * @param string   $tabname      Table Name
+	 * @param string[] $flds         One, or an array of Fields To Drop
+	 * @param string   $tableflds    Throwaway value to make the function match the parent
+	 * @param string   $tableoptions Throway value to make the function match the parent
+	 *
+	 * @return string  The SQL necessary to drop the column
+	 */
+	function DropColumnSQL($tabname, $flds, $tableflds='',$tableoptions='')
 	{
 		$tabname = $this->TableName ($tabname);
 		if (!is_array($flds))
 			$flds = explode(',',$flds);
 		$f = array();
-		$s = 'ALTER TABLE ' . $tabname;
+		$s = 'ALTER TABLE ' . $tabname . ' DROP COLUMN ';
 		foreach($flds as $v) {
-			$f[] = "\n$this->dropCol ".$this->NameQuote($v);
+			//$f[] = "\n$this->dropCol ".$this->NameQuote($v);
+			$f[] = $this->NameQuote($v);
 		}
 		$s .= implode(', ',$f);
 		$sql[] = $s;
@@ -279,4 +313,3 @@ CREATE TABLE
 
 	}
 }
-?>

@@ -6,7 +6,7 @@ global $ADODB_INCLUDED_LIB;
 $ADODB_INCLUDED_LIB = 1;
 
 /*
-  @version V5.18 3 Sep 2012  (c) 2000-2012 John Lim (jlim#natsoft.com). All rights reserved.
+  @version V5.19  23-Apr-2014  (c) 2000-2014 John Lim (jlim#natsoft.com). All rights reserved.
   Released under both BSD license and Lesser GPL library license.
   Whenever there is any discrepancy between the two licenses,
   the BSD license will take precedence. See License.txt.
@@ -17,10 +17,10 @@ $ADODB_INCLUDED_LIB = 1;
 
 function adodb_strip_order_by($sql)
 {
-	$rez = preg_match('/(\sORDER\s+BY\s[^)]*)/is',$sql,$arr);
+	$rez = preg_match('/(\sORDER\s+BY\s(?:[^)](?!limit))*)(?:\sLIMIT\s+[0-9]+)?/is', $sql, $arr);
 	if ($arr)
-		if (strpos($arr[0],'(') !== false) {
-			$at = strpos($sql,$arr[0]);
+		if (strpos($arr[1], '(') !== false) {
+			$at = strpos($sql, $arr[1]);
 			$cntin = 0;
 			for ($i=$at, $max=strlen($sql); $i < $max; $i++) {
 				$ch = $sql[$i];
@@ -34,8 +34,9 @@ function adodb_strip_order_by($sql)
 				}
 			}
 			$sql = substr($sql,0,$at).substr($sql,$i);
-		} else
-			$sql = str_replace($arr[0], '', $sql);
+		} else {
+			$sql = str_replace($arr[1], '', $sql);
+		}
 	return $sql;
  }
 
@@ -542,7 +543,7 @@ function _adodb_pageexecute_all_rows(&$zthis, $sql, $nrows, $page,
 	return $rsreturn;
 }
 
-// Ivï¿½n Oliva version
+// Iván Oliva version
 function _adodb_pageexecute_no_last_page(&$zthis, $sql, $nrows, $page, $inputarr=false, $secs2cache=0)
 {
 
@@ -644,7 +645,7 @@ function _adodb_getupdatesql(&$zthis,&$rs, $arrFields,$forceUpdate=false,$magicq
 					}
 
 					if ((strpos($upperfname,' ') !== false) || ($ADODB_QUOTE_FIELDNAMES)) {
-						switch (ADODB_QUOTE_FIELDNAMES) {
+						switch ($ADODB_QUOTE_FIELDNAMES) {
 						case 'LOWER':
 							$fnameq = $zthis->nameQuote.strtolower($field->name).$zthis->nameQuote;break;
 						case 'NATIVE':
@@ -656,8 +657,6 @@ function _adodb_getupdatesql(&$zthis,&$rs, $arrFields,$forceUpdate=false,$magicq
 					} else
 						$fnameq = $upperfname;
 
-
-                // is_null requires php 4.0.4
                 //********************************************************//
                 if (is_null($arrFields[$upperfname])
 					|| (empty($arrFields[$upperfname]) && strlen($arrFields[$upperfname]) == 0)
@@ -816,7 +815,7 @@ static $cacheCols;
 		if (adodb_key_exists($upperfname,$arrFields,$force)) {
 			$bad = false;
 			if ((strpos($upperfname,' ') !== false) || ($ADODB_QUOTE_FIELDNAMES)) {
-				switch (ADODB_QUOTE_FIELDNAMES) {
+				switch ($ADODB_QUOTE_FIELDNAMES) {
 				case 'LOWER':
 					$fnameq = $zthis->nameQuote.strtolower($field->name).$zthis->nameQuote;break;
 				case 'NATIVE':
@@ -1205,5 +1204,3 @@ function _adodb_find_from($sql)
 	}
 }
 */
-
-?>

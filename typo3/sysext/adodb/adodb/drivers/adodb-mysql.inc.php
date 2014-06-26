@@ -1,6 +1,6 @@
 <?php
 /*
-V5.18 3 Sep 2012  (c) 2000-2012 John Lim (jlim#natsoft.com). All rights reserved.
+V5.19  23-Apr-2014  (c) 2000-2014 John Lim (jlim#natsoft.com). All rights reserved.
   Released under both BSD license and Lesser GPL library license.
   Whenever there is any discrepancy between the two licenses,
   the BSD license will take precedence.
@@ -23,7 +23,11 @@ class ADODB_mysql extends ADOConnection {
 	var $dataProvider = 'mysql';
 	var $hasInsertID = true;
 	var $hasAffectedRows = true;
-	var $metaTablesSQL = "SELECT TABLE_NAME, CASE WHEN TABLE_TYPE = 'VIEW' THEN 'V' ELSE 'T' END FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA=SCHEMA()";
+	var $metaTablesSQL = "SELECT
+			TABLE_NAME,
+			CASE WHEN TABLE_TYPE = 'VIEW' THEN 'V' ELSE 'T' END
+		FROM INFORMATION_SCHEMA.TABLES
+		WHERE TABLE_SCHEMA=";
 	var $metaColumnsSQL = "SHOW COLUMNS FROM `%s`";
 	var $fmtTimeStamp = "'Y-m-d H:i:s'";
 	var $hasLimit = true;
@@ -136,16 +140,27 @@ class ADODB_mysql extends ADOConnection {
         return $procedures;
     }
 
+	/**
+	 * Retrieves a list of tables based on given criteria
+	 *
+	 * @param string $ttype Table type = 'TABLE', 'VIEW' or false=both (default)
+	 * @param string $showSchema schema name, false = current schema (default)
+	 * @param string $mask filters the table by name
+	 *
+	 * @return array list of tables
+	 */
 	function MetaTables($ttype=false,$showSchema=false,$mask=false)
 	{
 		$save = $this->metaTablesSQL;
 		if ($showSchema && is_string($showSchema)) {
-			$this->metaTablesSQL .= " from $showSchema";
+			$this->metaTablesSQL .= $this->qstr($showSchema);
+		} else {
+			$this->metaTablesSQL .= "schema()";
 		}
 
 		if ($mask) {
 			$mask = $this->qstr($mask);
-			$this->metaTablesSQL .= " like $mask";
+			$this->metaTablesSQL .= " AND table_name LIKE $mask";
 		}
 		$ret = ADOConnection::MetaTables($ttype,$showSchema);
 
@@ -580,10 +595,15 @@ class ADODB_mysql extends ADOConnection {
 	// returns queryID or false
 	function _query($sql,$inputarr=false)
 	{
-	//global $ADODB_COUNTRECS;
-		//if($ADODB_COUNTRECS)
-		return mysql_query($sql,$this->_connectionID);
-		//else return @mysql_unbuffered_query($sql,$this->_connectionID); // requires PHP >= 4.0.6
+
+	return mysql_query($sql,$this->_connectionID);
+	/*
+	global $ADODB_COUNTRECS;
+		if($ADODB_COUNTRECS)
+			return mysql_query($sql,$this->_connectionID);
+		else
+			return @mysql_unbuffered_query($sql,$this->_connectionID); // requires PHP >= 4.0.6
+	*/
 	}
 
 	/*	Returns: the last error message from previous database operation	*/
@@ -872,4 +892,3 @@ class ADORecordSet_ext_mysql extends ADORecordSet_mysql {
 
 
 }
-?>

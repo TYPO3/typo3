@@ -32,4 +32,3 @@ $ADODB_LANG_ARRAY = array (
             DB_ERROR_NOSUCHDB           => 'не існує БД',
             DB_ERROR_ACCESS_VIOLATION   => 'недостатньо прав доступа'
 );
-?>

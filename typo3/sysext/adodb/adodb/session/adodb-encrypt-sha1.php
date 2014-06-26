@@ -29,4 +29,3 @@ class ADODB_Encrypt_SHA1 {
 
 
 return 1;
-?>

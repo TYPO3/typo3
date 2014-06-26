@@ -2403,4 +2403,3 @@ function logMsg( $msg, $title = NULL, $force = FALSE ) {
 		echo '</pre>';
 	}
 }
-?>
