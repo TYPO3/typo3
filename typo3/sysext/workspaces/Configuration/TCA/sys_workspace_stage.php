@@ -78,7 +78,7 @@ return array(
 		),
 		'notification_defaults' => array(
 			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.notification_defaults',
-			'displayCond' => 'FIELD:notification_mode:IN:0,1',
+			'displayCond' => 'FIELD:allow_notificaton_settings:BIT:1',
 			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'db',
@@ -96,16 +96,41 @@ return array(
 			)
 		),
 		'allow_notificaton_settings' => array(
-			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.allow_notificaton_settings',
+			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.settingsDialog',
 			'config' => array(
 				'type' => 'check',
-				'default' => 1
+				'items' => array(
+					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.settingsDialog.showDialog', ''),
+					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.settingsDialog.changeablePreselection', ''),
+				),
+				'default' => 3,
+				'cols' => 2,
 			)
+		),
+		'notification_preselection' => array(
+			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection',
+			'config' => array(
+				'type' => 'check',
+				'items' => array(
+					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.owners', ''),
+					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.members', ''),
+					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.editors', ''),
+					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.responsiblePersons', ''),
+				),
+				'default' => 8,
+				'cols' => 4,
+			)
+		)
+	),
+	'palettes' => array(
+		'stage' => array(
+			'canNotCollapse' => TRUE,
+			'showitem' => 'allow_notificaton_settings, notification_preselection,',
 		)
 	),
 	'types' => array(
 		'0' => array('showitem' => '
 			--div--;LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:tabs.general,title,responsible_persons,
-			--div--;LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:tabs.notification_settings,notification_mode,notification_defaults,allow_notificaton_settings,default_mailcomment')
+			--div--;LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:tabs.notification_settings,--palette--;;stage, notification_defaults, default_mailcomment')
 	)
 );

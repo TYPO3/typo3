@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Workspaces\ExtDirect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Workspaces\Service\StagesService;
+use TYPO3\CMS\Workspaces\Domain\Record\WorkspaceRecord;
+use TYPO3\CMS\Workspaces\Domain\Record\StageRecord;
 
 /**
  * ExtDirect action handler
@@ -224,13 +226,14 @@ class ActionHandler extends AbstractHandler {
 		$currentWorkspace = $this->setTemporaryWorkspace($elementRecord['t3ver_wsid']);
 
 		if (is_array($elementRecord)) {
-			$stageId = $elementRecord['t3ver_stage'];
-			if ($this->getStageService()->isValid($stageId)) {
-				$nextStage = $this->getStageService()->getNextStage($stageId);
-				$result = $this->getSentToStageWindow($nextStage['uid']);
+			$workspaceRecord = WorkspaceRecord::get($elementRecord['t3ver_wsid']);
+			$nextStageRecord = $workspaceRecord->getNextStage($elementRecord['t3ver_stage']);
+			if ($nextStageRecord !== NULL) {
+				$this->stageService->getRecordService()->add($table, $uid);
+				$result = $this->getSentToStageWindow($nextStageRecord);
 				$result['affects'] = array(
 					'table' => $table,
-					'nextStage' => $nextStage['uid'],
+					'nextStage' => $nextStageRecord->getUid(),
 					't3ver_oid' => $t3ver_oid,
 					'uid' => $uid
 				);
@@ -257,15 +260,18 @@ class ActionHandler extends AbstractHandler {
 		$currentWorkspace = $this->setTemporaryWorkspace($elementRecord['t3ver_wsid']);
 
 		if (is_array($elementRecord)) {
-			$stageId = $elementRecord['t3ver_stage'];
-			if ($this->getStageService()->isValid($stageId)) {
-				if ($stageId !== StagesService::STAGE_EDIT_ID) {
-					$prevStage = $this->getStageService()->getPrevStage($stageId);
-					$result = $this->getSentToStageWindow($prevStage['uid']);
+			$workspaceRecord = WorkspaceRecord::get($elementRecord['t3ver_wsid']);
+			$stageRecord = $workspaceRecord->getStage($elementRecord['t3ver_stage']);
+
+			if ($stageRecord !== NULL) {
+				if (!$stageRecord->isEditStage()) {
+					$this->stageService->getRecordService()->add($table, $uid);
+					$previousStageRecord = $stageRecord->getPrevious();
+					$result = $this->getSentToStageWindow($previousStageRecord);
 					$result['affects'] = array(
 						'table' => $table,
 						'uid' => $uid,
-						'nextStage' => $prevStage['uid']
+						'nextStage' => $previousStageRecord->getUid()
 					);
 				} else {
 					// element is already in edit stage, there is no prev stage - return an error message
@@ -286,9 +292,17 @@ class ActionHandler extends AbstractHandler {
 	 * Gets the dialog window to be displayed before a record can be sent to a specific stage.
 	 *
 	 * @param int $nextStageId
+	 * @param array|\stdClass[] $elements
 	 * @return array
 	 */
-	public function sendToSpecificStageWindow($nextStageId) {
+	public function sendToSpecificStageWindow($nextStageId, array $elements) {
+		foreach ($elements as $element) {
+			$this->stageService->getRecordService()->add(
+				$element->table,
+				$element->uid
+			);
+		}
+
 		$result = $this->getSentToStageWindow($nextStageId);
 		$result['affects'] = array(
 			'nextStage' => $nextStageId
@@ -299,20 +313,27 @@ class ActionHandler extends AbstractHandler {
 	/**
 	 * Gets a merged variant of recipient defined by uid and custom ones.
 	 *
-	 * @param array list of recipients
-	 * @param string given user string of additional recipients
-	 * @param int stage id
+	 * @param array $uidOfRecipients list of recipients
+	 * @param string $additionalRecipients given user string of additional recipients
+	 * @param int $stageId stage id
 	 * @return array
+	 * @throws \InvalidArgumentException
 	 */
 	public function getRecipientList(array $uidOfRecipients, $additionalRecipients, $stageId) {
-		$finalRecipients = array();
-		if (!$this->getStageService()->isValid($stageId)) {
+		$stageRecord = WorkspaceRecord::get($this->getCurrentWorkspace())->getStage($stageId);
+
+		if ($stageRecord === NULL) {
 			throw new \InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.stageId.integer'));
-		} else {
-			$stageId = (int)$stageId;
 		}
+
 		$recipients = array();
+		$finalRecipients = array();
+		$backendUserIds = $stageRecord->getAllRecipients();
 		foreach ($uidOfRecipients as $userUid) {
+			// Ensure that only configured backend users are considered
+			if (!in_array($userUid, $backendUserIds)) {
+				continue;
+			}
 			$beUserRecord = BackendUtility::getRecord('be_users', (int)$userUid);
 			if (is_array($beUserRecord) && $beUserRecord['email'] !== '') {
 				$uc = $beUserRecord['uc'] ? unserialize($beUserRecord['uc']) : array();
@@ -322,22 +343,26 @@ class ActionHandler extends AbstractHandler {
 				);
 			}
 		}
-		// the notification mode can be configured in the workspace stage record
-		$notification_mode = (int)$this->getStageService()->getNotificationMode($stageId);
-		if ($notification_mode === StagesService::MODE_NOTIFY_ALL || $notification_mode === StagesService::MODE_NOTIFY_ALL_STRICT) {
-			// get the default recipients from the stage configuration
-			// the default recipients needs to be added in some cases of the notification_mode
-			$default_recipients = $this->getStageService()->getResponsibleBeUser($stageId, TRUE);
-			foreach ($default_recipients as $default_recipient_uid => $default_recipient_record) {
-				if (!isset($recipients[$default_recipient_record['email']])) {
-					$uc = $default_recipient_record['uc'] ? unserialize($default_recipient_record['uc']) : array();
-					$recipients[$default_recipient_record['email']] = array(
-						'email' => $default_recipient_record['email'],
-						'lang' => isset($uc['lang']) ? $uc['lang'] : $default_recipient_record['lang']
+
+		if ($stageRecord->hasPreselection() && !$stageRecord->isPreselectionChangeable()) {
+			$preselectedBackendUsers = $this->getStageService()->getBackendUsers(
+				implode(',', $this->stageService->getPreselectedRecipients($stageRecord))
+			);
+
+			foreach ($preselectedBackendUsers as $preselectedBackendUser) {
+				if (empty($preselectedBackendUser['email']) || !GeneralUtility::validEmail($preselectedBackendUser['email'])) {
+					continue;
+				}
+				if (!isset($recipients[$preselectedBackendUser['email']])) {
+					$uc = (!empty($preselectedBackendUser['uc']) ? unserialize($preselectedBackendUser['uc']) : array());
+					$recipients[$preselectedBackendUser['email']] = array(
+						'email' => $preselectedBackendUser['email'],
+						'lang' => (isset($uc['lang']) ? $uc['lang'] : $preselectedBackendUser['lang'])
 					);
 				}
 			}
 		}
+
 		if ($additionalRecipients !== '') {
 			$emails = GeneralUtility::trimExplode(LF, $additionalRecipients, TRUE);
 			$additionalRecipients = array();
@@ -601,43 +626,26 @@ class ActionHandler extends AbstractHandler {
 	/**
 	 * Gets the dialog window to be displayed before a record can be sent to a stage.
 	 *
-	 * @param $nextStageId
+	 * @param StageRecord|int $nextStageId
 	 * @return array
 	 */
-	protected function getSentToStageWindow($nextStageId) {
-		$workspaceRec = BackendUtility::getRecord('sys_workspace', $this->getStageService()->getWorkspaceId());
-		$showNotificationFields = FALSE;
-		$stageTitle = $this->getStageService()->getStageTitle($nextStageId);
+	protected function getSentToStageWindow($nextStage) {
+		if (!$nextStage instanceof StageRecord) {
+			$nextStage = WorkspaceRecord::get($this->getCurrentWorkspace())->getStage($nextStage);
+		}
+
 		$result = array(
 			'title' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:actionSendToStage'),
 			'items' => array(
 				array(
 					'xtype' => 'panel',
 					'bodyStyle' => 'margin-bottom: 7px; border: none;',
-					'html' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:window.sendToNextStageWindow.itemsWillBeSentTo') . ' ' . $stageTitle
+					'html' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:window.sendToNextStageWindow.itemsWillBeSentTo') . ' ' . $nextStage->getTitle()
 				)
 			)
 		);
-		switch ($nextStageId) {
-			case StagesService::STAGE_PUBLISH_EXECUTE_ID:
 
-			case StagesService::STAGE_PUBLISH_ID:
-				if (!empty($workspaceRec['publish_allow_notificaton_settings'])) {
-					$showNotificationFields = TRUE;
-				}
-				break;
-			case StagesService::STAGE_EDIT_ID:
-				if (!empty($workspaceRec['edit_allow_notificaton_settings'])) {
-					$showNotificationFields = TRUE;
-				}
-				break;
-			default:
-				$allow_notificaton_settings = $this->getStageService()->getPropertyOfCurrentWorkspaceStage($nextStageId, 'allow_notificaton_settings');
-				if (!empty($allow_notificaton_settings)) {
-					$showNotificationFields = TRUE;
-				}
-		}
-		if ($showNotificationFields == TRUE) {
+		if ($nextStage->isDialogEnabled()) {
 			$result['items'][] = array(
 				'fieldLabel' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:window.sendToNextStageWindow.sendMailTo'),
 				'xtype' => 'checkboxgroup',
@@ -646,7 +654,7 @@ class ActionHandler extends AbstractHandler {
 				'style' => 'max-height: 200px',
 				'autoScroll' => TRUE,
 				'items' => array(
-					$this->getReceipientsOfStage($nextStageId)
+					$this->getReceipientsOfStage($nextStage->getUid())
 				)
 			);
 			$result['items'][] = array(
@@ -661,52 +669,45 @@ class ActionHandler extends AbstractHandler {
 			'name' => 'comments',
 			'xtype' => 'textarea',
 			'width' => 250,
-			'value' => $this->getDefaultCommentOfStage($nextStageId)
+			'value' => ($nextStage->isInternal() ? '' : $nextStage->getDefaultComment())
 		);
+
 		return $result;
 	}
 
 	/**
 	 * Gets all assigned recipients of a particular stage.
 	 *
-	 * @param int $stage
+	 * @param StageRecord|int $stageRecord
 	 * @return array
 	 */
-	protected function getReceipientsOfStage($stage) {
-		$result = array();
-		$recipients = $this->getStageService()->getResponsibleBeUser($stage);
-		$default_recipients = $this->getStageService()->getResponsibleBeUser($stage, TRUE);
-		foreach ($recipients as $id => $user) {
-			if (GeneralUtility::validEmail($user['email'])) {
-				$checked = FALSE;
-				$disabled = FALSE;
-				$name = $user['realName'] ? $user['realName'] : $user['username'];
-				// the notification mode can be configured in the workspace stage record
-				$notification_mode = (int)$this->getStageService()->getNotificationMode($stage);
-				if ($notification_mode === StagesService::MODE_NOTIFY_SOMEONE) {
-					// all responsible users are checked per default, as in versions before
-					$checked = TRUE;
-				} elseif ($notification_mode === StagesService::MODE_NOTIFY_ALL) {
-					// the default users are checked only
-					if (!empty($default_recipients[$id])) {
-						$checked = TRUE;
-						$disabled = TRUE;
-					} else {
-						$checked = FALSE;
-					}
-				} elseif ($notification_mode === StagesService::MODE_NOTIFY_ALL_STRICT) {
-					// all responsible users are checked
-					$checked = TRUE;
-					$disabled = TRUE;
-				}
-				$result[] = array(
-					'boxLabel' => sprintf('%s (%s)', $name, $user['email']),
-					'name' => 'receipients-' . $id,
-					'checked' => $checked,
-					'disabled' => $disabled
-				);
-			}
+	protected function getReceipientsOfStage($stageRecord) {
+		if (!$stageRecord instanceof StageRecord) {
+			$stageRecord = WorkspaceRecord::get($this->getCurrentWorkspace())->getStage($stageRecord);
 		}
+
+		$result = array();
+		$allRecipients = $this->getStageService()->getResponsibleBeUser($stageRecord);
+		$preselectedRecipients = $this->stageService->getPreselectedRecipients($stageRecord);
+		$isPreselectionChangeable = $stageRecord->isPreselectionChangeable();
+
+		foreach ($allRecipients as $backendUserId => $backendUser) {
+			if (empty($backendUser['email']) || !GeneralUtility::validEmail($backendUser['email'])) {
+				continue;
+			}
+
+			$name = (!empty($backendUser['realName']) ? $backendUser['realName'] : $backendUser['username']);
+			$checked = in_array($backendUserId, $preselectedRecipients);
+			$disabled = ($checked && !$isPreselectionChangeable);
+
+			$result[] = array(
+				'boxLabel' => sprintf('%s (%s)', $name, $backendUser['email']),
+				'name' => 'receipients-' . $backendUserId,
+				'checked' => $checked,
+				'disabled' => $disabled
+			);
+		}
+
 		return $result;
 	}
 

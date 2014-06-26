@@ -17,11 +17,13 @@ namespace TYPO3\CMS\Workspaces\Service;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Workspaces\Domain\Record\WorkspaceRecord;
+use TYPO3\CMS\Workspaces\Domain\Record\StageRecord;
 
 /**
  * Stages service
  */
-class StagesService {
+class StagesService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	const TABLE_STAGE = 'sys_workspace_stage';
 	// if a record is in the "ready to publish" stage STAGE_PUBLISH_ID the nextStage is STAGE_PUBLISH_EXECUTE_ID, this id wont be saved at any time in db
@@ -39,6 +41,11 @@ class StagesService {
 	 * @var string
 	 */
 	private $pathToLocallang = 'LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf';
+
+	/**
+	 * @var RecordService
+	 */
+	protected $recordService;
 
 	/**
 	 * Local cache to reduce number of database queries for stages, groups, etc.
@@ -173,35 +180,12 @@ class StagesService {
 	 * @return array id and title of the stages
 	 */
 	public function getStagesForWS() {
-		$stages = array();
 		if (isset($this->workspaceStageCache[$this->getWorkspaceId()])) {
 			$stages = $this->workspaceStageCache[$this->getWorkspaceId()];
+		} elseif ($this->getWorkspaceId() === 0) {
+			$stages = array();
 		} else {
-			$stages[] = array(
-				'uid' => self::STAGE_EDIT_ID,
-				'title' => $GLOBALS['LANG']->sL(($this->pathToLocallang . ':actionSendToStage')) . ' "'
-					. $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xlf:stage_editing') . '"'
-			);
-			$workspaceRec = BackendUtility::getRecord('sys_workspace', $this->getWorkspaceId());
-			if ($workspaceRec['custom_stages'] > 0) {
-				// Get all stage records for this workspace
-				$where = 'parentid=' . $this->getWorkspaceId() . ' AND parenttable='
-					. $GLOBALS['TYPO3_DB']->fullQuoteStr('sys_workspace', self::TABLE_STAGE) . ' AND deleted=0';
-				$workspaceStageRecs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', self::TABLE_STAGE, $where, '', 'sorting', '', 'uid');
-				foreach ($workspaceStageRecs as $stage) {
-					$stage['title'] = $GLOBALS['LANG']->sL(($this->pathToLocallang . ':actionSendToStage')) . ' "' . $stage['title'] . '"';
-					$stages[] = $stage;
-				}
-			}
-			$stages[] = array(
-				'uid' => self::STAGE_PUBLISH_ID,
-				'title' => $GLOBALS['LANG']->sL(($this->pathToLocallang . ':actionSendToStage')) . ' "'
-					. $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:stage_ready_to_publish') . '"'
-			);
-			$stages[] = array(
-				'uid' => self::STAGE_PUBLISH_EXECUTE_ID,
-				'title' => $GLOBALS['LANG']->sL($this->pathToLocallang . ':publish_execute_action_option')
-			);
+			$stages = $this->prepareStagesArray($this->getWorkspaceRecord()->getStages());
 			$this->workspaceStageCache[$this->getWorkspaceId()] = $stages;
 		}
 		return $stages;
@@ -213,39 +197,58 @@ class StagesService {
 	 * @return array id and title of stages
 	 */
 	public function getStagesForWSUser() {
-		$stagesForWSUserData = array();
+		if ($GLOBALS['BE_USER']->isAdmin()) {
+			return $this->getStagesForWS();
+		}
+
+		/** @var $allowedStages StageRecord[] */
 		$allowedStages = array();
-		$orderedAllowedStages = array();
-		$workspaceStageRecs = $this->getStagesForWS();
-		if (is_array($workspaceStageRecs) && !empty($workspaceStageRecs)) {
-			if ($GLOBALS['BE_USER']->isAdmin()) {
-				$orderedAllowedStages = $workspaceStageRecs;
-			} else {
-				foreach ($workspaceStageRecs as $workspaceStageRec) {
-					if ($workspaceStageRec['uid'] === self::STAGE_EDIT_ID) {
-						$allowedStages[self::STAGE_EDIT_ID] = $workspaceStageRec;
-						$stagesForWSUserData[$workspaceStageRec['uid']] = $workspaceStageRec;
-					} elseif ($this->isStageAllowedForUser($workspaceStageRec['uid'])) {
-						$stagesForWSUserData[$workspaceStageRec['uid']] = $workspaceStageRec;
-					} elseif ($workspaceStageRec['uid'] == self::STAGE_PUBLISH_EXECUTE_ID && $GLOBALS['BE_USER']->workspacePublishAccess($this->getWorkspaceId())) {
-						$allowedStages[] = $workspaceStageRec;
-						$stagesForWSUserData[$workspaceStageRec['uid']] = $workspaceStageRec;
-					}
-				}
-				foreach ($stagesForWSUserData as $allowedStage) {
-					$nextStage = $this->getNextStage($allowedStage['uid']);
-					$prevStage = $this->getPrevStage($allowedStage['uid']);
-					if (isset($prevStage['uid'])) {
-						$allowedStages[$prevStage['uid']] = $prevStage;
-					}
-					if (isset($nextStage['uid'])) {
-						$allowedStages[$nextStage['uid']] = $nextStage;
-					}
-				}
-				$orderedAllowedStages = array_values($allowedStages);
+		$stageRecords = $this->getWorkspaceRecord()->getStages();
+
+		// Only use stages that are allowed for current backend user
+		foreach ($stageRecords as $stageRecord) {
+			if ($stageRecord->isAllowed()) {
+				$allowedStages[$stageRecord->getUid()] = $stageRecord;
 			}
 		}
-		return $orderedAllowedStages;
+
+		// Add previous and next stages (even if they are not allowed!)
+		foreach ($allowedStages as $allowedStage) {
+			$previousStage = $allowedStage->getPrevious();
+			$nextStage = $allowedStage->getNext();
+			if ($previousStage !== NULL && !isset($allowedStages[$previousStage->getUid()])) {
+				$allowedStages[$previousStage->getUid()] = $previousStage;
+			}
+			if ($nextStage !== NULL && !isset($allowedStages[$nextStage->getUid()])) {
+				$allowedStages[$nextStage->getUid()] = $nextStage;
+			}
+		}
+
+		uasort($allowedStages, function(StageRecord $first, StageRecord $second) { return $first->determineOrder($second); });
+		return $this->prepareStagesArray($allowedStages);
+	}
+
+	/**
+	 * Prepares simplified stages array to be used in ExtJs components.
+	 *
+	 * @param StageRecord[] $stageRecords
+	 * @return array
+	 */
+	protected function prepareStagesArray(array $stageRecords) {
+		$stagesArray = array();
+		foreach ($stageRecords as $stageRecord) {
+			$stage = array(
+				'uid' => $stageRecord->getUid(),
+				'label' => $stageRecord->getTitle(),
+			);
+			if (!$stageRecord->isExecuteStage()) {
+				$stage['title'] = $GLOBALS['LANG']->sL(($this->pathToLocallang . ':actionSendToStage')) . ' "' . $stageRecord->getTitle() . '"';
+			} else {
+				$stage['title'] = $GLOBALS['LANG']->sL($this->pathToLocallang . ':publish_execute_action_option');
+			}
+			$stagesArray[] = $stage;
+		}
+		return $stagesArray;
 	}
 
 	/**
@@ -406,95 +409,129 @@ class StagesService {
 	}
 
 	/**
-	 * Get array of all responsilbe be_users for a stage
+	 * Gets all backend user records that are considered to be responsible
+	 * for a particular stage or workspace.
 	 *
-	 * @param int $stageId Stage id
+	 * @param StageRecord|int $stageRecord Stage
 	 * @param bool $selectDefaultUserField If field notification_defaults should be selected instead of responsible users
 	 * @return array be_users with e-mail and name
 	 */
-	public function getResponsibleBeUser($stageId, $selectDefaultUserField = FALSE) {
-		$workspaceRec = BackendUtility::getRecord('sys_workspace', $this->getWorkspaceId());
-		$recipientArray = array();
-		switch ($stageId) {
-			case self::STAGE_PUBLISH_EXECUTE_ID:
+	public function getResponsibleBeUser($stageRecord, $selectDefaultUserField = FALSE) {
+		if (!$stageRecord instanceof StageRecord) {
+			$stageRecord = $this->getWorkspaceRecord()->getStage($stageRecord);
+		}
 
-			case self::STAGE_PUBLISH_ID:
-				if (!$selectDefaultUserField) {
-					$userList = $this->getResponsibleUser($workspaceRec['adminusers'] . ',' . $workspaceRec['members']);
-				} else {
-					$notification_default_user = $workspaceRec['publish_notification_defaults'];
-					$userList = $this->getResponsibleUser($notification_default_user);
-				}
-				break;
-			case self::STAGE_EDIT_ID:
-				if (!$selectDefaultUserField) {
-					$userList = $this->getResponsibleUser($workspaceRec['adminusers'] . ',' . $workspaceRec['members']);
-				} else {
-					$notification_default_user = $workspaceRec['edit_notification_defaults'];
-					$userList = $this->getResponsibleUser($notification_default_user);
-				}
-				break;
-			default:
-				if (!$selectDefaultUserField) {
-					$responsible_persons = $this->getPropertyOfCurrentWorkspaceStage($stageId, 'responsible_persons');
-					$userList = $this->getResponsibleUser($responsible_persons);
-				} else {
-					$notification_default_user = $this->getPropertyOfCurrentWorkspaceStage($stageId, 'notification_defaults');
-					$userList = $this->getResponsibleUser($notification_default_user);
-				}
+		$recipientArray = array();
+
+		if (!$selectDefaultUserField) {
+			$backendUserIds = $stageRecord->getAllRecipients();
+		} else {
+			$backendUserIds = $stageRecord->getDefaultRecipients();
 		}
-		if (!empty($userList)) {
-			$userRecords = BackendUtility::getUserNames(
-				'username, uid, email, realName',
-				'AND uid IN (' . $userList . ')' . BackendUtility::BEenableFields('be_users')
-			);
-		}
-		if (!empty($userRecords) && is_array($userRecords)) {
-			foreach ($userRecords as $userUid => $userRecord) {
-				$recipientArray[$userUid] = $userRecord;
-			}
+
+		$userList = implode(',', $backendUserIds);
+		$userRecords = $this->getBackendUsers($userList);
+		foreach ($userRecords as $userUid => $userRecord) {
+			$recipientArray[$userUid] = $userRecord;
 		}
 		return $recipientArray;
 	}
 
 	/**
-	 * Get uids of all responsilbe persons for a stage
+	 * Gets backend user ids from a mixed list of backend users
+	 * and backend users groups. This is used for notifying persons
+	 * responsible for a particular stage or workspace.
 	 *
 	 * @param string $stageRespValue Responsible_person value from stage record
-	 * @return string Uid list of responsible be_users
+	 * @return string List of backend user ids
 	 */
 	public function getResponsibleUser($stageRespValue) {
-		$stageValuesArray = GeneralUtility::trimExplode(',', $stageRespValue, TRUE);
-		$beuserUidArray = array();
-		$begroupUidArray = array();
+		return implode(',', $this->resolveBackendUserIds($stageRespValue));
+	}
 
-		foreach ($stageValuesArray as $uidvalue) {
-			if (strstr($uidvalue, 'be_users') !== FALSE) {
+	/**
+	 * Resolves backend user ids from a mixed list of backend users
+	 * and backend user groups (e.g. "be_users_1,be_groups_3,be_users_4,...")
+	 *
+	 * @param string $backendUserGroupList
+	 * @return array
+	 */
+	public function resolveBackendUserIds($backendUserGroupList) {
+		$elements = GeneralUtility::trimExplode(',', $backendUserGroupList, TRUE);
+		$backendUserIds = array();
+		$backendGroupIds = array();
+
+		foreach ($elements as $element) {
+			if (strpos($element, 'be_users_') === 0) {
 				// Current value is a uid of a be_user record
-				$beuserUidArray[] = str_replace('be_users_', '', $uidvalue);
-			} elseif (strstr($uidvalue, 'be_groups') !== FALSE) {
-				$begroupUidArray[] = str_replace('be_groups_', '', $uidvalue);
-			} elseif ((int)$uidvalue) {
-				$beuserUidArray[] = (int)$uidvalue;
+				$backendUserIds[] = str_replace('be_users_', '', $element);
+			} elseif (strpos($element, 'be_groups_') === 0) {
+				$backendGroupIds[] = str_replace('be_groups_', '', $element);
+			} elseif ((int)$element) {
+				$backendUserIds[] = (int)$element;
 			}
 		}
 
-		if (!empty($begroupUidArray)) {
+		if (!empty($backendGroupIds)) {
 			$allBeUserArray = BackendUtility::getUserNames();
-			$begroupUidList = implode(',', $begroupUidArray);
+			$backendGroupList = implode(',', $backendGroupIds);
 			$this->userGroups = array();
-			$begroupUidArray = $this->fetchGroups($begroupUidList);
-			foreach ($begroupUidArray as $groupkey => $groupData) {
-				foreach ($allBeUserArray as $useruid => $userdata) {
-					if (GeneralUtility::inList($userdata['usergroup_cached_list'], $groupData['uid'])) {
-						$beuserUidArray[] = $useruid;
+			$backendGroups = $this->fetchGroups($backendGroupList);
+			foreach ($backendGroups as $backendGroup) {
+				foreach ($allBeUserArray as $backendUserId => $backendUser) {
+					if (GeneralUtility::inList($backendUser['usergroup_cached_list'], $backendGroup['uid'])) {
+						$backendUserIds[] = $backendUserId;
 					}
 				}
 			}
 		}
 
-		array_unique($beuserUidArray);
-		return implode(',', $beuserUidArray);
+		return array_unique($backendUserIds);
+	}
+
+	/**
+	 * Gets backend user records from a given list of ids.
+	 *
+	 * @param string $backendUserList
+	 * @return array
+	 */
+	public function getBackendUsers($backendUserList) {
+		if (empty($backendUserList)) {
+			return array();
+		}
+
+		$backendUserList = $this->getDatabaseConnection()->cleanIntList($backendUserList);
+		$backendUsers = BackendUtility::getUserNames(
+			'username, uid, email, realName',
+			'AND uid IN (' . $backendUserList . ')' . BackendUtility::BEenableFields('be_users')
+		);
+
+		if (empty($backendUsers)) {
+			$backendUsers = array();
+		}
+		return $backendUsers;
+	}
+
+	/**
+	 * @param StageRecord $stageRecord
+	 * @return array
+	 */
+	public function getPreselectedRecipients(StageRecord $stageRecord) {
+		if ($stageRecord->areEditorsPreselected()) {
+			return array_merge(
+				$stageRecord->getPreselectedRecipients(),
+				$this->getRecordService()->getCreateUserIds()
+			);
+		} else {
+			return $stageRecord->getPreselectedRecipients();
+		}
+	}
+
+	/**
+	 * @return WorkspaceRecord
+	 */
+	protected function getWorkspaceRecord() {
+		return WorkspaceRecord::get($this->getWorkspaceId());
 	}
 
 	/**
@@ -734,10 +771,27 @@ class StagesService {
 	}
 
 	/**
+	 * @return RecordService
+	 */
+	public function getRecordService() {
+		if (!isset($this->recordService)) {
+			$this->recordService = GeneralUtility::makeInstance(RecordService::class);
+		}
+		return $this->recordService;
+	}
+
+	/**
 	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
 	 */
 	protected function getBackendUser() {
 		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
 	}
 
 }
