@@ -68,9 +68,11 @@ TYPO3.Workspaces.SelectionModel = new Ext.grid.CheckboxSelectionModel({
 			var record = selection.grid.getSelectionModel().getSelections();
 			if (record.length > 0) {
 				TYPO3.Workspaces.Toolbar.selectStateActionCombo.setDisabled(false);
+				TYPO3.Workspaces.Toolbar.selectionActionCombo.setDisabled(false);
 				TYPO3.Workspaces.Toolbar.selectStateMassActionCombo.setDisabled(true);
 			} else {
 				TYPO3.Workspaces.Toolbar.selectStateActionCombo.setDisabled(true);
+				TYPO3.Workspaces.Toolbar.selectionActionCombo.setDisabled(true);
 				TYPO3.Workspaces.Toolbar.selectStateMassActionCombo.setDisabled(false);
 			}
 		}

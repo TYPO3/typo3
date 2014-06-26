@@ -92,9 +92,111 @@ TYPO3.Workspaces.Toolbar.selectMassActionStore = new Ext.data.DirectStore({
 	listeners : {
 		load : function(store, records) {
 			if (records.length == 0 || TYPO3.settings.Workspaces.singleView === '1') {
+				TYPO3.Workspaces.Toolbar.selectionActionCombo.hide();
 				TYPO3.Workspaces.Toolbar.selectStateMassActionCombo.hide();
 			} else {
+				TYPO3.Workspaces.Toolbar.selectionActionCombo.show();
 				TYPO3.Workspaces.Toolbar.selectStateMassActionCombo.show();
+			}
+		}
+	}
+});
+
+TYPO3.Workspaces.Toolbar.selectionActionCombo = new Ext.form.ComboBox({
+	width: 150,
+	lazyRender: true,
+	valueField: 'action',
+	displayField: 'title',
+	mode: 'local',
+	emptyText: 'choose selection action',
+	selectOnFocus: true,
+	triggerAction: 'all',
+	editable: false,
+	disabled : true, // disabled per default, enabled if selections are done in the grid
+	hidden : true, // hidden per default, shown if actions are available
+	forceSelection: true,
+	store: TYPO3.Workspaces.Toolbar.selectMassActionStore,
+	listeners: {
+		'select' : function(combo, record) {
+			var label;
+			var checkIntegrity = false;
+			var selection = TYPO3.Workspaces.Helpers.getElementsArrayOfSelectionForIntegrityCheck(
+				TYPO3.Workspaces.WorkspaceGrid.getSelectionModel().getSelections()
+			);
+
+			switch (record.data.action) {
+				case 'publish':
+					label = TYPO3.l10n.localize('tooltip.publishSelected');
+					checkIntegrity = true;
+					break;
+				case 'swap':
+					label = TYPO3.l10n.localize('tooltip.swapSelected');
+					checkIntegrity = true;
+					break;
+				case 'discard':
+					label = TYPO3.l10n.localize('tooltip.discardSelected');
+					break;
+			}
+
+			top.TYPO3.Windows.close('executeSelectionActionWindow');
+
+			var configuration = {
+				id: 'executeSelectionActionWindow',
+				title: TYPO3.l10n.localize('window.selectionAction.title'),
+				items: [
+					{
+						xtype: 'form',
+						id: 'executeSelectionActionForm',
+						width: '100%',
+						html: label,
+						bodyStyle: 'padding: 5px 5px 3px 5px; border-width: 0; margin-bottom: 7px;'
+					}
+				],
+				buttons: [
+					{
+						id: 'executeSelectionActionOkButton',
+						data: { action: record.data.action, selection: selection },
+						scope: this,
+						text: TYPO3.l10n.localize('ok'),
+						disabled:false,
+						handler: function(event) {
+							top.Ext.getCmp('executeSelectionActionForm').update('Working...');
+							top.Ext.getCmp('executeSelectionActionOkButton').disable();
+							TYPO3.Workspaces.ExtDirectActions.executeSelectionAction(event.data, function(response) {
+								top.Ext.getCmp('executeSelectionActionOkButton').hide();
+								top.Ext.getCmp('executeSelectionActionCancelButton').setText(TYPO3.lang.close);
+								if (response.error) {
+									top.Ext.getCmp('executeSelectionActionForm').update('<strong>' + TYPO3.l10n.localize('status.error') + ':</strong> ' + response.error);
+								} else {
+									top.Ext.getCmp('executeSelectionActionForm').update(TYPO3.l10n.localize('runMassAction.done').replace('%d', response.total));
+									top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
+								}
+							});
+						}
+					},
+					{
+						id: 'executeSelectionActionCancelButton',
+						scope: this,
+						text: TYPO3.l10n.localize('cancel'),
+						handler: function() {
+							top.TYPO3.Windows.close('executeSelectionActionWindow');
+							top.TYPO3.ModuleMenu.App.reloadFrames();
+						}
+					}
+				]
+			};
+
+			if (checkIntegrity) {
+				var parameters = {
+					type: 'selection',
+					selection: selection
+				};
+
+				TYPO3.Workspaces.Actions.checkIntegrity(parameters, function() {
+					top.TYPO3.Windows.showWindow(configuration);
+				});
+			} else {
+				top.TYPO3.Windows.showWindow(configuration);
 			}
 		}
 	}
@@ -296,6 +398,8 @@ TYPO3.Workspaces.Toolbar.FullTopToolbar = [
 
 TYPO3.Workspaces.Toolbar.FullBottomBar = [
 	(TYPO3.settings.Workspaces.isLiveWorkspace == true || TYPO3.settings.Workspaces.allView) ? {hidden: true} : TYPO3.Workspaces.Toolbar.selectStateActionCombo,
+	(TYPO3.settings.Workspaces.isLiveWorkspace == true || TYPO3.settings.Workspaces.allView) ? {hidden: true} : '-',
+	(TYPO3.settings.Workspaces.isLiveWorkspace == true || TYPO3.settings.Workspaces.allView) ? {hidden: true} : TYPO3.Workspaces.Toolbar.selectionActionCombo,
 	(TYPO3.settings.Workspaces.isLiveWorkspace == true || TYPO3.settings.Workspaces.allView) ? {hidden: true} : '-',
 	(TYPO3.settings.Workspaces.isLiveWorkspace == true || TYPO3.settings.Workspaces.allView) ? {hidden: true} : TYPO3.Workspaces.Toolbar.selectStateMassActionCombo,
 	{xtype: 'tbfill'},
