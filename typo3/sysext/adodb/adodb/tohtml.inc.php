@@ -1,6 +1,6 @@
 <?php
 /*
-  V4.93 10 Oct 2006  (c) 2000-2012 John Lim (jlim#natsoft.com). All rights reserved.
+  V5.19  23-Apr-2014  (c) 2000-2014 John Lim (jlim#natsoft.com). All rights reserved.
   Released under both BSD license and Lesser GPL library license.
   Whenever there is any discrepancy between the two licenses,
   the BSD license will take precedence.
@@ -197,5 +197,3 @@ function arr2html(&$arr,$ztabhtml='',$zheaderarray='')
 	$s .= '</TABLE>';
 	print $s;
 }
-
-?>

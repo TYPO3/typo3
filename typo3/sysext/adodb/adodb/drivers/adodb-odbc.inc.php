@@ -1,6 +1,6 @@
 <?php
 /*
-V5.18 3 Sep 2012  (c) 2000-2012 John Lim (jlim#natsoft.com). All rights reserved.
+V5.19  23-Apr-2014  (c) 2000-2014 John Lim (jlim#natsoft.com). All rights reserved.
   Released under both BSD license and Lesser GPL library license.
   Whenever there is any discrepancy between the two licenses,
   the BSD license will take precedence.
@@ -240,7 +240,7 @@ class ADODB_odbc extends ADOConnection {
 		return $ret;
 	}
 
-	function MetaPrimaryKeys($table)
+	function MetaPrimaryKeys($table,$owner=false)
 	{
 	global $ADODB_FETCH_MODE;
 
@@ -274,7 +274,7 @@ class ADODB_odbc extends ADOConnection {
 
 
 
-	function MetaTables($ttype=false)
+	function MetaTables($ttype=false,$showSchema=false,$mask=false)
 	{
 	global $ADODB_FETCH_MODE;
 
@@ -701,17 +701,7 @@ class ADORecordSet_odbc extends ADORecordSet {
 	{
 		if ($this->_numOfRows != 0 && !$this->EOF) {
 			$this->_currentRow++;
-
-			if ($this->_has_stupid_odbc_fetch_api_change)
-				$rez = @odbc_fetch_into($this->_queryID,$this->fields);
-			else {
-				$row = 0;
-				$rez = @odbc_fetch_into($this->_queryID,$row,$this->fields);
-			}
-			if ($rez) {
-				if ($this->fetchMode & ADODB_FETCH_ASSOC) {
-					$this->fields = $this->GetRowAssoc(ADODB_ASSOC_CASE);
-				}
+			if( $this->_fetch() ) {
 				return true;
 			}
 		}
@@ -722,7 +712,7 @@ class ADORecordSet_odbc extends ADORecordSet {
 
 	function _fetch()
 	{
-
+		$this->fields = false;
 		if ($this->_has_stupid_odbc_fetch_api_change)
 			$rez = @odbc_fetch_into($this->_queryID,$this->fields);
 		else {
@@ -735,7 +725,6 @@ class ADORecordSet_odbc extends ADORecordSet {
 			}
 			return true;
 		}
-		$this->fields = false;
 		return false;
 	}
 
@@ -745,4 +734,3 @@ class ADORecordSet_odbc extends ADORecordSet {
 	}
 
 }
-?>

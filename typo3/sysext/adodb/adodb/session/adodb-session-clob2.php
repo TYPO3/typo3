@@ -2,7 +2,7 @@
 
 
 /*
-V5.18 3 Sep 2012  (c) 2000-2012 John Lim (jlim#natsoft.com). All rights reserved.
+V5.19  23-Apr-2014  (c) 2000-2014 John Lim (jlim#natsoft.com). All rights reserved.
          Contributed by Ross Smith (adodb@netebb.com).
   Released under both BSD license and Lesser GPL library license.
   Whenever there is any discrepancy between the two licenses,
@@ -20,5 +20,3 @@ if (!defined('ADODB_SESSION')) {
 	require_once dirname(__FILE__) . '/adodb-session2.php';
 }
 ADODB_Session::clob('CLOB');
-
-?>

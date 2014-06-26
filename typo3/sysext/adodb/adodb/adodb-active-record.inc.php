@@ -1,7 +1,7 @@
 <?php
 /*
 
-@version V5.18 3 Sep 2012   (c) 2000-2012 John Lim (jlim#natsoft.com). All rights reserved.
+@version V5.19  23-Apr-2014  (c) 2000-2014 John Lim (jlim#natsoft.com). All rights reserved.
   Latest version is available at http://adodb.sourceforge.net
 
   Released under both BSD license and Lesser GPL library license.
@@ -999,4 +999,3 @@ global $_ADODB_ACTIVE_DBS;
 
 	return $arr;
 }
-?>

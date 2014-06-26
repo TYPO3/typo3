@@ -57,7 +57,7 @@ adodb_mktime(0,0,0,10,15,1582) - adodb_mktime(0,0,0,10,4,1582)
 
 COPYRIGHT
 
-(c) 2003-2005 John Lim and released under BSD-style license except for code by
+(c) 2003-2014 John Lim and released under BSD-style license except for code by
 jackbbs, which includes adodb_mktime, adodb_get_gmt_diff, adodb_is_leap_year
 and originally found at http://www.php.net/manual/en/function.mktime.php
 
@@ -1456,6 +1456,3 @@ global $ADODB_DATE_LOCALE;
 	$ret = adodb_date($fmtdate, $ts, $is_gmt);
 	return $ret;
 }
-
-
-?>
