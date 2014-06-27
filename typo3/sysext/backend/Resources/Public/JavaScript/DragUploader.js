@@ -1,19 +1,15 @@
-/***************************************************************
+/**
+ * This file is part of the TYPO3 CMS project.
  *
- *  Copyright notice
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
  *
- *  (c) 2013 Steffen Ritter <steffen.ritter@typo3.org>
- *  All rights reserved
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
  *
- *  Released under GNU/GPL2+ (see license file in the main directory)
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
- *  This copyright notice MUST APPEAR in all copies of this script
- *
- ***************************************************************/
+ * The TYPO3 project - inspiring people to share!
+ */
 /**
  * JavaScript RequireJS module called "TYPO3/CMS/Backend/DragUploader"
  *

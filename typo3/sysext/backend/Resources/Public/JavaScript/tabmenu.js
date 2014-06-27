@@ -1,25 +1,19 @@
-/***************************************************************
+/**
+ * This file is part of the TYPO3 CMS project.
  *
- *  javascript functions regarding the "dyntabmenu"
- *  used throughout the TYPO3 backend
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
  *
- *  Copyright notice
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2003-2011 Kasper Skaarhoj <kasperYYYY@typo3.com>
- *  All rights reserved
- *
- *  This script is part of the TYPO3 t3lib/ library provided by
- *  Kasper Skaarhoj <kasper@typo3.com> together with TYPO3
- *
- *  Released under GNU/GPL (see license file in tslib/)
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
- *  This copyright notice MUST APPEAR in all copies of this script
- *
- ***************************************************************/
+ * The TYPO3 project - inspiring people to share!
+ */
+
+/**
+ * javascript functions regarding the "dyntabmenu" used throughout the TYPO3 backend
+ */
 
 var DTM_array = DTM_array || [];
 

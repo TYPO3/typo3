@@ -1,20 +1,19 @@
 /**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+/**
  * Javascript functions regarding the clickmenu
  * relies on the javascript library "prototype"
- *
- * (c) 2007-2011 Benjamin Mack <www.xnos.org>
- * All rights reserved
- *
- * This script is part of TYPO3 by
- * Kasper Skaarhoj <kasperYYYYY@typo3.com>
- *
- * Released under GNU/GPL (see license file in tslib/)
- *
- * This script is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
- * This copyright notice MUST APPEAR in all copies of this script
  */
 
 /**
