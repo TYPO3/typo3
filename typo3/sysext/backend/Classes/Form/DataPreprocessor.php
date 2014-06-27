@@ -392,7 +392,7 @@ class DataPreprocessor {
 		// New data set, ready for interface (list of values, rawurlencoded)
 		$dataAcc = array();
 		// For list selectors (multi-value):
-		if (intval($fieldConfig['config']['maxitems']) > 1) {
+		if (intval($fieldConfig['config']['maxitems']) > 1 || $fieldConfig['config']['renderMode'] === 'tree') {
 			// Add regular elements:
 			if (!is_array($fieldConfig['config']['items'])) {
 				$fieldConfig['config']['items'] = array();
