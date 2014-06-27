@@ -475,7 +475,10 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 						}
 					}
 					if (classesImage && document.imageData.iClass) {
-						var iClass = document.imageData.iClass.options[document.imageData.iClass.selectedIndex].value;
+						var iClass;
+						if (document.imageData.iClass.options.length > 0) {
+							iClass = document.imageData.iClass.options[document.imageData.iClass.selectedIndex].value;
+						}
 						if (iClass || (selectedImageRef.attributes["class"] && selectedImageRef.attributes["class"].value)) {
 							selectedImageRef.className = iClass;
 						} else {
