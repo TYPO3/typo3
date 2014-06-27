@@ -27,7 +27,7 @@ var ShortcutMenu = Class.create({
 				function() { TYPO3BackendToolbarManager.positionMenu('shortcut-menu'); }
 			);
 			TYPO3BackendToolbarManager.positionMenu('shortcut-menu');
-			
+
 			this.toolbarItemIcon = $$('#shortcut-menu .toolbar-item span.t3-icon')[0];
 
 			Event.observe($$('#shortcut-menu .toolbar-item')[0], 'click', this.toggleMenu);
@@ -53,9 +53,8 @@ var ShortcutMenu = Class.create({
 				onFormCustomization : this.addGroupSelect,
 				onComplete          : this.reRenderMenu.bind(this),
 				callback            : function(form, nameInputFieldValue) {
-					var params = form.serialize();
-					params += '&shortcutId=' + shortcutId;
-
+					var params = form.serialize(true);
+					params.shortcutId = shortcutId;
 					return params;
 				},
 				textBetweenControls : ' ',
