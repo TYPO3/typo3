@@ -1,34 +1,23 @@
-/***************************************************************
-*
-*  javascript functions regarding the page & folder tree
-*  relies on the javascript library "prototype"
-*
-*
-*  Copyright notice
-*
-*  (c) 2006-2011 Benjamin Mack <benni@typo3.org>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 t3lib/ library provided by
-*  Kasper Skaarhoj <kasper@typo3.com> together with TYPO3
-*
-*  Released under GNU/GPL (see license file in tslib/)
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-*
-*  This copyright notice MUST APPEAR in all copies of this script
-*
-***************************************************************/
-
-
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
 
 /**
+ * javascript functions regarding the page & folder tree
+ * relies on the javascript library "prototype"
  *
  * @author	Benjamin Mack
  */
- 
+
 // new object-oriented drag and drop - code,
 // tested in IE 6, Firefox 2, Opera 9
 var DragDrop = {
@@ -101,7 +90,7 @@ var DragDrop = {
 	// -- helper functions --
 	getIdFromEvent: function(event) {
 		var obj = Event.element(event);
-		while (obj.id == false && obj.parentNode) { 
+		while (obj.id == false && obj.parentNode) {
 			obj = obj.parentNode;
 		}
 		return obj.id.substring(obj.id.indexOf('_') + 1);

@@ -1,15 +1,23 @@
 /**
- * (c) 2013 Benjamin Mack
- * Released under the GPL v2+, part of TYPO3
+ * This file is part of the TYPO3 CMS project.
  *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+/**
  * contains all JS functions related to TYPO3 TCEforms/FormEngine
  *
  * there are separate issues in this main object
  *   - functions, related to Element Browser ("Popup Window") and select fields
  *   - filling select fields (by wizard etc) from outside, formerly known via "setFormValueFromBrowseWin"
  *   - select fields: move selected items up and down via buttons, remove items etc
- *   -
- *
  */
 
 // add legacy functions to be accessible in the global scope

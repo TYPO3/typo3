@@ -1,25 +1,19 @@
-/***************************************************************
+/**
+ * This file is part of the TYPO3 CMS project.
  *
- *  Various JavaScript functions for the Install Tool
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
  *
- *  Copyright notice
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2009-2010 Marcus Krause, Helmut Hummel, Lars Houmark
- *  (c) 2013 Wouter Wolters <typo3@wouterwolters.nl>
- *  All rights reserved
- *
- *  This script is part of the TYPO3 backend provided by
- *  Kasper Skaarhoj <kasper@typo3.com> together with TYPO3
- *
- *  Released under GNU/GPL (see license file in /typo3/)
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
- *  This copyright notice MUST APPEAR in all copies of this script
- *
- ***************************************************************/
+ * The TYPO3 project - inspiring people to share!
+ */
+
+/**
+ * Various JavaScript functions for the Install Tool
+ */
 
 /**
  * Handle core update
