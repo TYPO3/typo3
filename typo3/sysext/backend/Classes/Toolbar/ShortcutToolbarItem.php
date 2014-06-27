@@ -636,7 +636,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 					$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
 					$icon = IconUtility::getIcon($table, $row, $this->backPath);
 				} elseif ($shortcut['type'] == 'new') {
-					$icon = IconUtility::getIcon($table, '', $this->backPath);
+					$icon = IconUtility::getIcon($table, array(), $this->backPath);
 				}
 				$icon = IconUtility::skinImg($this->backPath, $icon, '', 1);
 				break;

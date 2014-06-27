@@ -607,7 +607,7 @@ function jumpToUrl(URL) {
 		if (preg_match('/typo3\\/mod\\.php$/', $pathInfo['path']) && isset($GLOBALS['TBE_MODULES']['_PATHS'][$modName])) {
 			$storeUrl = '&M=' . $modName . $storeUrl;
 		}
-		if ($motherModName === '1') {
+		if ((int)$motherModName === 1) {
 			$mMN = '&motherModName=\'+top.currentModuleLoaded+\'';
 		} elseif ($motherModName) {
 			$mMN = '&motherModName=' . rawurlencode($motherModName);
