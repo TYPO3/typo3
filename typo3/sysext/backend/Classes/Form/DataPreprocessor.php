@@ -135,7 +135,7 @@ class DataPreprocessor {
 							}
 						}
 						// Default values as submitted:
-						if (is_array($this->defVals[$table])) {
+						if (!empty($this->defVals[$table]) && is_array($this->defVals[$table])) {
 							foreach ($this->defVals[$table] as $theF => $theV) {
 								if (isset($GLOBALS['TCA'][$table]['columns'][$theF])) {
 									$newRow[$theF] = $theV;
