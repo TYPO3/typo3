@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Frontend\Page;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Service\TypoScriptService;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Class for starting TypoScript page generation
@@ -750,29 +752,15 @@ class PageGenerator {
 		}
 		static::generatePageTitle();
 
-		// Add ending slash only to documents rendered as xhtml
-		$endingSlash = $GLOBALS['TSFE']->xhtmlVersion ? ' /' : '';
-		$pageRenderer->addMetaTag('<meta name="generator" content="TYPO3 ' . TYPO3_branch . ' CMS"' . $endingSlash . '>');
-		$conf = $GLOBALS['TSFE']->pSetup['meta.'];
-		if (is_array($conf)) {
-			foreach ($conf as $theKey => $theValue) {
-				// Only if 1) the property is set but not the value itself, 2) the value and/or any property
-				if (!strstr($theKey, '.') || !isset($conf[substr($theKey, 0, -1)])) {
-					if (strstr($theKey, '.')) {
-						$theKey = substr($theKey, 0, -1);
-					}
-					$val = $GLOBALS['TSFE']->cObj->stdWrap($conf[$theKey], $conf[$theKey . '.']);
-					$key = $theKey;
-					if (trim($val)) {
-						$a = 'name';
-						if (strtolower($key) === 'refresh' || !empty($conf[($theKey . '.')]['httpEquivalent'])) {
-							$a = 'http-equiv';
-						}
-						$pageRenderer->addMetaTag('<meta ' . $a . '="' . $key . '" content="' . htmlspecialchars(trim($val)) . '"' . $endingSlash . '>');
-					}
-				}
-			}
+		$metaTagsHtml = static::generateMetaTagHtml(
+			isset($GLOBALS['TSFE']->pSetup['meta.']) ? $GLOBALS['TSFE']->pSetup['meta.'] : array(),
+			$GLOBALS['TSFE']->xhtmlVersion,
+			$GLOBALS['TSFE']->cObj
+		);
+		foreach ($metaTagsHtml as $metaTag) {
+			$pageRenderer->addMetaTag($metaTag);
 		}
+
 		unset($GLOBALS['TSFE']->additionalHeaderData['JSCode']);
 		unset($GLOBALS['TSFE']->additionalHeaderData['JSImgCode']);
 		if (is_array($GLOBALS['TSFE']->config['INTincScript'])) {
@@ -1123,5 +1111,42 @@ class PageGenerator {
 		if ($titleTagContent !== '' && (int)$GLOBALS['TSFE']->config['config']['noPageTitle'] !== self::NO_PAGE_TITLE) {
 			$GLOBALS['TSFE']->getPageRenderer()->setTitle($titleTagContent);
 		}
+	}
+
+	/**
+	 * Generate meta tags from meta tag TypoScript
+	 *
+	 * @param array $metaTagTypoScript TypoScript configuration for meta tags (e.g. $GLOBALS['TSFE']->pSetup['meta.'])
+	 * @param bool $xhtml Whether xhtml tag-style should be used. (e.g. pass $GLOBALS['TSFE']->xhtmlVersion here)
+	 * @param ContentObjectRenderer $cObj
+	 * @return array Array of HTML meta tags
+	 */
+	static protected function generateMetaTagHtml(array $metaTagTypoScript, $xhtml, ContentObjectRenderer $cObj) {
+		// Add ending slash only to documents rendered as xhtml
+		$endingSlash = $xhtml ? ' /' : '';
+
+		$metaTags = array(
+			'<meta name="generator" content="TYPO3 ' . TYPO3_branch . ' CMS"' . $endingSlash . '>'
+		);
+
+		/** @var TypoScriptService $typoScriptService */
+		$typoScriptService = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Service\\TypoScriptService');
+		$conf = $typoScriptService->convertTypoScriptArrayToPlainArray($metaTagTypoScript);
+		foreach ($conf as $key => $properties) {
+			if (is_array($properties)) {
+				$nodeValue = isset($properties['_typoScriptNodeValue']) ? $properties['_typoScriptNodeValue'] : '';
+				$value = trim($cObj->stdWrap($nodeValue, $metaTagTypoScript[$key . '.']));
+			} else {
+				$value = $properties;
+			}
+			if ($value !== '') {
+				$attribute = 'name';
+				if ( (is_array($properties) && !empty($properties['httpEquivalent'])) || strtolower($key) === 'refresh') {
+					$attribute = 'http-equiv';
+				}
+				$metaTags[] = '<meta ' . $attribute . '="' . $key . '" content="' . htmlspecialchars($value) . '"' . $endingSlash . '>';
+			}
+		}
+		return $metaTags;
 	}
 }
