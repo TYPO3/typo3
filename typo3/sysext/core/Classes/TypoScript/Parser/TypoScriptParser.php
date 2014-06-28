@@ -342,7 +342,11 @@ class TypoScriptParser {
 					} elseif ($line[0] !== '}' && $line[0] !== '#' && $line[0] !== '/') {
 						// If not brace-end or comment
 						// Find object name string until we meet an operator
-						$varL = strcspn($line, TAB . ' {=<>:(');
+						$varL = strcspn($line, TAB . ' {=<>(');
+						// check for special ":=" operator
+						if ($varL > 0 && substr($line, $varL-1, 2) === ':=') {
+							--$varL;
+						}
 						// also remove tabs after the object string name
 						$objStrName = substr($line, 0, $varL);
 						if ($this->syntaxHighLight) {
@@ -350,8 +354,8 @@ class TypoScriptParser {
 						}
 						if ($objStrName !== '') {
 							$r = array();
-							if ($this->strict && preg_match('/[^[:alnum:]_\\\\\\.-]/i', $objStrName, $r)) {
-								$this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': Object Name String, "' . htmlspecialchars($objStrName) . '" contains invalid character "' . $r[0] . '". Must be alphanumeric or one of: "_-\\."');
+							if ($this->strict && preg_match('/[^[:alnum:]_\\\\\\.:-]/i', $objStrName, $r)) {
+								$this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': Object Name String, "' . htmlspecialchars($objStrName) . '" contains invalid character "' . $r[0] . '". Must be alphanumeric or one of: "_:-\\."');
 							} else {
 								$line = ltrim(substr($line, $varL));
 								if ($this->syntaxHighLight) {
