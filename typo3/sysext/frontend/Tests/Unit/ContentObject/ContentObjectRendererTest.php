@@ -2511,7 +2511,13 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getImageSourceCollectionHookCalled() {
-		// Avoid calling stdwrap and getIMgResouce
+		$this->cObj = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer',
+			array('getResourceFactory', 'stdWrap', 'getImgResource')
+		);
+		$this->cObj->start(array(), 'tt_content');
+
+		// Avoid calling stdwrap and getImgResource
 		$this->cObj->expects($this->any())
 			->method('stdWrap')
 			->will($this->returnArgument(0));
