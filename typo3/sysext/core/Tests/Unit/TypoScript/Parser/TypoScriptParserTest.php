@@ -607,6 +607,30 @@ class TypoScriptParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					),
 				),
 			),
+		    'key with colon' => array(
+				'some:key = is valid',
+				array(
+					'some:key' => 'is valid'
+				)
+		    ),
+		    'special operator' => array(
+			    'some := addToList(a)',
+			    array(
+				    'some' => 'a'
+			    )
+		    ),
+		    'special operator and colon, no spaces' => array(
+			    'some:key:=addToList(a)',
+			    array(
+				    'some:key' => 'a'
+			    )
+		    ),
+		    'key with all special symbols' => array(
+			    'someSpecial\\_:-\\.Chars = is valid',
+			    array(
+				    'someSpecial\\_:-.Chars' => 'is valid'
+			    )
+		    ),
 		);
 	}
 
