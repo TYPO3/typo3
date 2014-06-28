@@ -69,9 +69,7 @@ class LiveSearch {
 	protected $queryParser = NULL;
 
 	/**
-	 * Initialize access settings.
-	 *
-	 * @return void
+	 * Initialize access settings
 	 */
 	public function __construct() {
 		$this->userPermissions = $GLOBALS['BE_USER']->getPagePermsClause(1);
@@ -179,7 +177,6 @@ class LiveSearch {
 		if (count($fieldsToSearchWithin) > 0) {
 			$pageBasedPermission = $tableName == 'pages' && $this->userPermissions ? $this->userPermissions : '1=1 ';
 			$where = 'pid IN (' . $pageIdList . ') AND ' . $pageBasedPermission . $this->makeQuerySearchByTable($tableName, $fieldsToSearchWithin);
-			$orderBy = $this->makeOrderByTable($tableName);
 			$getRecordArray = $this->getRecordArray($tableName, $where, $this->makeOrderByTable($tableName), $limit);
 		}
 		return $getRecordArray;
@@ -215,7 +212,7 @@ class LiveSearch {
 				'pageId' => $tableName === 'pages' ? $row['uid'] : $row['pid'],
 				'recordTitle' => $isFirst ? $this->getRecordTitlePrep($this->getTitleOfCurrentRecordType($tableName), self::GROUP_TITLE_MAX_LENGTH) : '',
 				'iconHTML' => IconUtility::getSpriteIconForRecord($tableName, $row, array('title' => 'id=' . $row['uid'] . ', pid=' . $row['pid'])),
-				'title' => $this->getRecordTitlePrep($this->getTitleFromCurrentRow($tableName, $row), self::RECORD_TITLE_MAX_LENGTH),
+				'title' => $this->getRecordTitlePrep(BackendUtility::getRecordTitle($tableName, $row), self::RECORD_TITLE_MAX_LENGTH),
 				'editLink' => $this->getEditLink($tableName, $row)
 			);
 			$isFirst = FALSE;
@@ -276,19 +273,6 @@ class LiveSearch {
 			$titleLength = $GLOBALS['BE_USER']->uc['titleLen'];
 		}
 		return htmlspecialchars(GeneralUtility::fixed_lgd_cs($title, $titleLength));
-	}
-
-	/**
-	 * Retrieve the column name which contains the title value
-	 *
-	 * @param string $tableName Record table name
-	 * @param array $row Current record row from database.
-	 * @return string
-	 * @todo Use the backend function to get the calculated label instead.
-	 */
-	protected function getTitleFromCurrentRow($tableName, $row) {
-		$titleColumnName = $GLOBALS['TCA'][$tableName]['ctrl']['label'];
-		return $row[$titleColumnName];
 	}
 
 	/**
