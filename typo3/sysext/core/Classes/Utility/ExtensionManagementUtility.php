@@ -1038,12 +1038,18 @@ class ExtensionManagementUtility {
 	 *
 	 * @param string $module
 	 * @param string $componentId
-	 * @return void
+	 * @param string $extensionKey
+	 * @throws \RuntimeException
+	 *@return void
 	 */
-	static public function addNavigationComponent($module, $componentId) {
+	static public function addNavigationComponent($module, $componentId, $extensionKey = NULL) {
+		$extensionKey = $extensionKey ?: $GLOBALS['_EXTKEY'];
+		if (!isset($extensionKey)) {
+			throw new \RuntimeException('No extensionKey set in addNavigationComponent(). Provide it as third Parameter', 1404068039);
+		}
 		$GLOBALS['TBE_MODULES']['_navigationComponents'][$module] = array(
 			'componentId' => $componentId,
-			'extKey' => $GLOBALS['_EXTKEY'],
+			'extKey' => $extensionKey,
 			'isCoreComponent' => FALSE
 		);
 	}
@@ -1234,12 +1240,17 @@ class ExtensionManagementUtility {
 	 *
 	 * @param array $itemArray Item Array
 	 * @param string $type Type (eg. "list_type") - basically a field from "tt_content" table
+	 * @param string $extensionKey The extension key
+	 * @throws \RuntimeException
 	 * @return void
 	 */
-	static public function addPlugin($itemArray, $type = 'list_type') {
-		$_EXTKEY = $GLOBALS['_EXTKEY'];
-		if ($_EXTKEY && !$itemArray[2]) {
-			$itemArray[2] = self::extRelPath($_EXTKEY) . $GLOBALS['TYPO3_LOADED_EXT'][$_EXTKEY]['ext_icon'];
+	static public function addPlugin($itemArray, $type = 'list_type', $extensionKey = NULL) {
+		$extensionKey = $extensionKey ?: $GLOBALS['_EXTKEY'];
+		if (!isset($extensionKey)) {
+			throw new \RuntimeException('No extensionKey set in addPlugin(). Provide it as third Parameter', 1404068038);
+		}
+		if ($extensionKey && !$itemArray[2]) {
+			$itemArray[2] = self::extRelPath($extensionKey) . $GLOBALS['TYPO3_LOADED_EXT'][$extensionKey]['ext_icon'];
 		}
 		if (is_array($GLOBALS['TCA']['tt_content']['columns']) && is_array($GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'])) {
 			foreach ($GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'] as $k => $v) {
