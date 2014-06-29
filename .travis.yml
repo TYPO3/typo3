@@ -5,8 +5,16 @@ php:
   - 5.4
 
 notifications:
+  irc:
+    channels:
+      - "irc.freenode.net#typo3-cms"
+    on_success: change
+    on_failure: always
+    use_notice: true
   slack:
     rooms:
-      - typo3:DHkQdCNWc6x2znPAYA5T2LXO#typo3-cms
+      secure: a7c9Nw3KblUQsO4np7Sa685y7tqSJ5nSvzO8hnFjKEeQlgkbnC7Qq2TBvVSr92A1UMouL+6E9ngp3cb7rSYWsNKIaHn51CjhrvlfFElTZ0qd/jLVNDf1B765i0txiIZLLed0e3871/151xBgnggsXC4hcv4mPGc9g//ZPabp++E=
+    on_success: change
+    on_failure: always
 
 script: function check_files() { for file in `find . -name \*.php`; do if ! php -l $file > /dev/null; then echo "Syntax errors detected in file $file"; return 99; fi;  done }; check_files
