@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Frontend\Page\PageRepository;
-use TYPO3\CMS\Core\Utility\DateTimeUtility;
 
 /**
  * Standard functions available for the TYPO3 backend.
@@ -1417,16 +1416,27 @@ class BackendUtility {
 	 * Returns the "age" in minutes / hours / days / years of the number of $seconds inputted.
 	 *
 	 * @param integer $seconds Seconds could be the difference of a certain timestamp and time()
-	 * @param string $labels Labels should be something like ' min| hrs| days| yrs| min| hour| day| year'.
-	 *  This value is typically delivered by this function call: $GLOBALS["LANG"]->sL("LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears")
-	 *
+	 * @param string $labels Labels should be something like ' min| hrs| days| yrs| min| hour| day| year'. This value is typically delivered by this function call: $GLOBALS["LANG"]->sL("LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears")
 	 * @return string Formatted time
-	 * @deprecated since 6.2, will be removed two versions later, use \TYPO3\CMS\Core\Utility\DateTimeUtility::getAgeStringUnix
-	 *  or \TYPO3\CMS\Core\Utility\DateTimeUtility::getSimpleAgeString
 	 */
 	static public function calcAge($seconds, $labels = ' min| hrs| days| yrs| min| hour| day| year') {
-		GeneralUtility::logDeprecatedFunction();
-		return DateTimeUtility::getSimpleAgeString($seconds, $labels);
+		$labelArr = explode('|', $labels);
+		$absSeconds = abs($seconds);
+		$sign = $seconds < 0 ? -1 : 1;
+		if ($absSeconds < 3600) {
+			$val = round($absSeconds / 60);
+			$seconds = $sign * $val . ($val == 1 ? $labelArr[4] : $labelArr[0]);
+		} elseif ($absSeconds < 24 * 3600) {
+			$val = round($absSeconds / 3600);
+			$seconds = $sign * $val . ($val == 1 ? $labelArr[5] : $labelArr[1]);
+		} elseif ($absSeconds < 365 * 24 * 3600) {
+			$val = round($absSeconds / (24 * 3600));
+			$seconds = $sign * $val . ($val == 1 ? $labelArr[6] : $labelArr[2]);
+		} else {
+			$val = round($absSeconds / (365 * 24 * 3600));
+			$seconds = $sign * $val . ($val == 1 ? $labelArr[7] : $labelArr[3]);
+		}
+		return $seconds;
 	}
 
 	/**
@@ -1439,16 +1449,7 @@ class BackendUtility {
 	 * @return string
 	 */
 	static public function dateTimeAge($tstamp, $prefix = 1, $date = '') {
-		if (!$tstamp) {
-			return '';
-		}
-		$date = $date == 'date'
-			? self::date($tstamp)
-			: self::datetime($tstamp);
-		$age = $prefix === 1
-			? DateTimeUtility::getTimeDiffStringUnix($GLOBALS['EXEC_TIME'], $tstamp)
-			: DateTimeUtility::getTimeDiffStringUnix($tstamp, $GLOBALS['EXEC_TIME']);
-		return $date . ' (' . $age . ')';
+		return $tstamp ? ($date == 'date' ? self::date($tstamp) : self::datetime($tstamp)) . ' (' . self::calcAge($prefix * ($GLOBALS['EXEC_TIME'] - $tstamp), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')) . ')' : '';
 	}
 
 	/**
@@ -2143,7 +2144,7 @@ class BackendUtility {
 								$value = $value !== $emptyValue ? strtotime($value) : 0;
 							}
 							if (!empty($value)) {
-								$l = static::dateTimeAge($value, -1, 'date');
+								$l = self::date($value) . ' (' . ($GLOBALS['EXEC_TIME'] - $value > 0 ? '-' : '') . self::calcAge(abs(($GLOBALS['EXEC_TIME'] - $value)), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')) . ')';
 							}
 						} elseif (GeneralUtility::inList($theColConf['eval'], 'time')) {
 							if (!empty($value)) {
@@ -3133,19 +3134,9 @@ class BackendUtility {
 					$userName = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.unknownUser');
 				}
 				$GLOBALS['LOCKED_RECORDS'][$row['record_table'] . ':' . $row['record_uid']] = $row;
-				$GLOBALS['LOCKED_RECORDS'][$row['record_table'] . ':' . $row['record_uid']]['msg'] = sprintf(
-					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.lockedRecordUser'),
-					$userType,
-					$userName,
-					DateTimeUtility::getAgeStringUnix($row['tstamp'])
-				);
+				$GLOBALS['LOCKED_RECORDS'][$row['record_table'] . ':' . $row['record_uid']]['msg'] = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.lockedRecordUser'), $userType, $userName, self::calcAge($GLOBALS['EXEC_TIME'] - $row['tstamp'], $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')));
 				if ($row['record_pid'] && !isset($GLOBALS['LOCKED_RECORDS'][($row['record_table'] . ':' . $row['record_pid'])])) {
-					$GLOBALS['LOCKED_RECORDS']['pages:' . $row['record_pid']]['msg'] = sprintf(
-						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.lockedRecordUser_content'),
-						$userType,
-						$userName,
-						DateTimeUtility::getAgeStringUnix($row['tstamp'])
-					);
+					$GLOBALS['LOCKED_RECORDS']['pages:' . $row['record_pid']]['msg'] = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.lockedRecordUser_content'), $userType, $userName, self::calcAge($GLOBALS['EXEC_TIME'] - $row['tstamp'], $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')));
 				}
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);

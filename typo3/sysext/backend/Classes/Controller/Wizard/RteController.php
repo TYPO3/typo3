@@ -243,15 +243,7 @@ class RteController {
 								'returnUrl' => $this->R_URI,
 							)
 						)
-					) . '; return false;') . '">' . 
-					'<img' . IconUtility::skinImg($this->doc->backPath, 'gfx/undo.gif') .
-					' class="c-inputButton" title="' .
-					htmlspecialchars(
-						sprintf(
-							$GLOBALS['LANG']->getLL('rte_undoLastChange'),
-							\TYPO3\CMS\Core\Utility\DateTimeUtility::getAgeStringUnix($undoButtonR['tstamp'])
-						)
-					) . '" alt="" /></a>';
+					) . '; return false;') . '">' . '<img' . IconUtility::skinImg($this->doc->backPath, 'gfx/undo.gif') . ' class="c-inputButton" title="' . htmlspecialchars(sprintf($GLOBALS['LANG']->getLL('rte_undoLastChange'), BackendUtility::calcAge(($GLOBALS['EXEC_TIME'] - $undoButtonR['tstamp']), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')))) . '" alt="" />' . '</a>';
 			}
 			// Shortcut
 			if ($GLOBALS['BE_USER']->mayMakeShortcut()) {

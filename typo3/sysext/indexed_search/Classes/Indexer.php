@@ -15,7 +15,6 @@ namespace TYPO3\CMS\IndexedSearch;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\DateTimeUtility;
 
 /**
  * This class is a search indexer for TYPO3
@@ -539,7 +538,7 @@ class Indexer {
 			// This will also prevent pages from being indexed if a fe_users has logged in and it turns out that the page content is not changed anyway. fe_users logged in should always search with hash_gr_list = "0,-1" OR "[their_group_list]". This situation will be prevented only if the page has been indexed with no user login on before hand. Else the page will be indexed by users until that event. However that does not present a serious problem.
 			$checkCHash = $this->checkContentHash();
 			if (!is_array($checkCHash) || $check === 1) {
-				$Pstart = DateTimeUtility::milliseconds();
+				$Pstart = GeneralUtility::milliseconds();
 				$this->log_push('Converting charset of content (' . $this->conf['metaCharset'] . ') to utf-8', '');
 				$this->charsetEntity2utf8($this->contentParts, $this->conf['metaCharset']);
 				$this->log_pull();
@@ -563,7 +562,7 @@ class Indexer {
 				}
 				$this->log_pull();
 				// Set parsetime
-				$this->updateParsetime($this->hash['phash'], DateTimeUtility::milliseconds() - $Pstart);
+				$this->updateParsetime($this->hash['phash'], GeneralUtility::milliseconds() - $Pstart);
 				// Checking external files if configured for.
 				$this->log_push('Checking external files', '');
 				if ($this->conf['index_externals']) {
@@ -1121,7 +1120,7 @@ class Indexer {
 				foreach ($cParts as $cPKey) {
 					$this->internal_log = array();
 					$this->log_push('Index: ' . str_replace('.', '_', basename($file)) . ($cPKey ? '#' . $cPKey : ''), '');
-					$Pstart = DateTimeUtility::milliseconds();
+					$Pstart = GeneralUtility::milliseconds();
 					$subinfo = array('key' => $cPKey);
 					// Setting page range. This is "0" (zero) when no division is made, otherwise a range like "1-3"
 					$phash_arr = ($this->file_phash_arr = $this->setExtHashes($file, $subinfo));
@@ -1165,7 +1164,7 @@ class Indexer {
 									}
 									$this->log_pull();
 									// Set parsetime
-									$this->updateParsetime($phash_arr['phash'], DateTimeUtility::milliseconds() - $Pstart);
+									$this->updateParsetime($phash_arr['phash'], GeneralUtility::milliseconds() - $Pstart);
 								} else {
 									// Update the timestamp
 									$this->updateTstamp($phash_arr['phash'], $fileInfo['mtime']);

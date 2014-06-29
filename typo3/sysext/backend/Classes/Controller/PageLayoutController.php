@@ -845,6 +845,7 @@ class PageLayoutController {
 		$dblist->setLMargin = 0;
 		$dblist->doEdit = $this->EDIT_CONTENT;
 		$dblist->ext_CALC_PERMS = $this->CALC_PERMS;
+		$dblist->agePrefixes = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears');
 		$dblist->id = $this->id;
 		$dblist->nextThree = MathUtility::forceIntegerInRange($this->modTSconfig['properties']['editFieldsAtATime'], 0, 10);
 		$dblist->option_showBigButtons = $this->modTSconfig['properties']['disableBigButtons'] === '0';
@@ -1109,12 +1110,7 @@ class PageLayoutController {
 									)
 								)
 							) . '; return false;') . '"
-						title="' . htmlspecialchars(
-							sprintf(
-								$GLOBALS['LANG']->getLL('undoLastChange'),
-								\TYPO3\CMS\Core\Utility\DateTimeUtility::getAgeStringUnix($this->undoButtonR['tstamp'])
-							)
-						) . '">' . IconUtility::getSpriteIcon('actions-edit-undo') . '</a>';
+						title="' . htmlspecialchars(sprintf($GLOBALS['LANG']->getLL('undoLastChange'), BackendUtility::calcAge(($GLOBALS['EXEC_TIME'] - $this->undoButtonR['tstamp']), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')))) . '">' . IconUtility::getSpriteIcon('actions-edit-undo') . '</a>';
 					// History button
 					$buttons['history_record'] = '<a href="#"
 						onclick="' . htmlspecialchars('jumpToUrl(' .

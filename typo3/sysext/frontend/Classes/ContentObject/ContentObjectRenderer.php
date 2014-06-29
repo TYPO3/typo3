@@ -2752,12 +2752,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_age($content = '', $conf = array()) {
-		$ageLabels = NULL;
-		// When config option "age" is set to "1" retrieve labels from default locallang settings by passing NULL
-		if (isset($conf['age']) && !\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($conf['age'])) {
-			$ageLabels = $conf['age'];
-		}
-		return \TYPO3\CMS\Core\Utility\DateTimeUtility::getAgeStringUnix($content, $ageLabels);
+		return $this->calcAge($GLOBALS['EXEC_TIME'] - $content, $conf['age']);
 	}
 
 	/**
@@ -6696,14 +6691,35 @@ class ContentObjectRenderer {
 	 *
 	 * @param integer $seconds Seconds to return age for. Example: "70" => "1 min", "3601" => "1 hrs
 	 * @param string $labels The labels of the individual units. Defaults to : ' min| hrs| days| yrs'
-	 *
 	 * @return string The formatted string
-	 * @deprecated since 6.2, will be removed two versions later, use \TYPO3\CMS\Core\Utility\DateTimeUtility::getAgeStringUnix
-	 *  or \TYPO3\CMS\Core\Utility\DateTimeUtility::getSimpleAgeString
+	 * @todo Define visibility
 	 */
 	public function calcAge($seconds, $labels) {
-		GeneralUtility::logDeprecatedFunction();
-		return \TYPO3\CMS\Core\Utility\DateTimeUtility::getSimpleAgeString($seconds, $labels);
+		if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($labels)) {
+			$labels = ' min| hrs| days| yrs| min| hour| day| year';
+		} else {
+			$labels = str_replace('"', '', $labels);
+		}
+		$labelArr = explode('|', $labels);
+		if (count($labelArr) == 4) {
+			$labelArr = array_merge($labelArr, $labelArr);
+		}
+		$absSeconds = abs($seconds);
+		$sign = $seconds > 0 ? 1 : -1;
+		if ($absSeconds < 3600) {
+			$val = round($absSeconds / 60);
+			$seconds = $sign * $val . ($val == 1 ? $labelArr[4] : $labelArr[0]);
+		} elseif ($absSeconds < 24 * 3600) {
+			$val = round($absSeconds / 3600);
+			$seconds = $sign * $val . ($val == 1 ? $labelArr[5] : $labelArr[1]);
+		} elseif ($absSeconds < 365 * 24 * 3600) {
+			$val = round($absSeconds / (24 * 3600));
+			$seconds = $sign * $val . ($val == 1 ? $labelArr[6] : $labelArr[2]);
+		} else {
+			$val = round($absSeconds / (365 * 24 * 3600));
+			$seconds = $sign * $val . ($val == 1 ? $labelArr[7] : $labelArr[3]);
+		}
+		return $seconds;
 	}
 
 	/**
