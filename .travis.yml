@@ -10,6 +10,19 @@ env:
 services:
   - memcached
 
+notifications:
+  irc:
+    channels:
+      - "irc.freenode.net#typo3-cms"
+    on_success: change
+    on_failure: always
+    use_notice: true
+  slack:
+    rooms:
+      secure: a7c9Nw3KblUQsO4np7Sa685y7tqSJ5nSvzO8hnFjKEeQlgkbnC7Qq2TBvVSr92A1UMouL+6E9ngp3cb7rSYWsNKIaHn51CjhrvlfFElTZ0qd/jLVNDf1B765i0txiIZLLed0e3871/151xBgnggsXC4hcv4mPGc9g//ZPabp++E=
+    on_success: change
+    on_failure: always
+
 before_script:
 # Install build dependencies
   - sudo apt-get install parallel
@@ -24,7 +37,7 @@ before_script:
 # Install rudimentary TYPO3
   - if [[ "$PHPUNIT" == "1" ]]; then git clone --single-branch --branch master --depth 1 git://git.typo3.org/TYPO3CMS/Distributions/Introduction.git build-environment/Introduction; fi
   - if [[ "$PHPUNIT" == "1" ]]; then mv build-environment/typo3conf .; fi
-  - if [[ "$PHPUNIT" == "1" ]]; then git clone --single-branch --branch master --depth 1 git://git.typo3.org/TYPO3CMS/Extensions/phpunit.git typo3conf/ext/phpunit/; fi
+  - if [[ "$PHPUNIT" == "1" ]]; then git clone --single-branch --branch core-6.1 --depth 1 git://git.typo3.org/TYPO3CMS/Extensions/phpunit.git typo3conf/ext/phpunit/; fi
   - if [[ "$PHPUNIT" == "1" ]]; then mkdir fileadmin; fi
   - if [[ "$PHPUNIT" == "1" ]]; then mkdir uploads; fi
   - if [[ "$DB" == "mysql" ]]; then mysql -e "DROP DATABASE IF EXISTS typo3_test;" -uroot; fi
