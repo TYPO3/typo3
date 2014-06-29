@@ -394,6 +394,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 		foreach ($queue as $queuedObject) {
 			$this->persistObject($queuedObject);
 		}
+		$this->emitAfterPersistObjectSignal($object);
 	}
 
 	/**
@@ -876,6 +877,15 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 */
 	protected function emitAfterUpdateObjectSignal(DomainObjectInterface $object) {
 		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterUpdateObject', array($object));
+	}
+
+	/**
+	 * Emits a signal after an object was persisted
+	 *
+	 * @param DomainObjectInterface $object
+	 */
+	protected function emitAfterPersistObjectSignal(DomainObjectInterface $object) {
+		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterPersistObject', array($object));
 	}
 
 	/**
