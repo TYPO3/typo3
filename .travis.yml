@@ -36,7 +36,6 @@ before_script:
   - sudo apt-get install parallel
   - composer self-update
   - composer --dev install
-  - mkdir -p uploads typo3temp typo3conf/ext
 
 script:
   - >
