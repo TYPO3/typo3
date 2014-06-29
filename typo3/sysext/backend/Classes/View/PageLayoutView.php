@@ -75,6 +75,12 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 */
 	public $doEdit = 1;
 
+	// Age prefixes for displaying times. May be set externally to localized values.
+	/**
+	 * @todo Define visibility
+	 */
+	public $agePrefixes = ' min| hrs| days| yrs| min| hour| day| year';
+
 	// Array of tables to be listed by the Web > Page module in addition to the default tables.
 	/**
 	 * @todo Define visibility
@@ -2093,7 +2099,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * External renderings
 	 *
 	 *****************************************/
-
 
 	/**
 	 * Creates a menu of the tables that can be listed by this function

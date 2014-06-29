@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Install\Controller\Action\Tool;
 
 use TYPO3\CMS\Install\Controller\Action;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\DateTimeUtility;
 
 /**
  * Test various system setup settings
@@ -144,7 +143,7 @@ class TestSetup extends Action\AbstractAction {
 	 * @return \TYPO3\CMS\Install\Status\StatusInterface
 	 */
 	protected function createTrueTypeFontDpiTestImage() {
-		$parseTimeStart = DateTimeUtility::milliseconds();
+		$parseTimeStart = GeneralUtility::milliseconds();
 
 		$image = @imagecreate(200, 50);
 		imagecolorallocate($image, 255, 255, 55);
@@ -177,7 +176,7 @@ class TestSetup extends Action\AbstractAction {
 		$testResults['ttf']['referenceFile'] = $this->imageBasePath . 'TestReference/Font.gif';
 
 		$this->view->assign('testResults', $testResults);
-		return $this->imageTestDoneMessage(DateTimeUtility::milliseconds() - $parseTimeStart);
+		return $this->imageTestDoneMessage(GeneralUtility::milliseconds() - $parseTimeStart);
 	}
 
 	/**
@@ -188,7 +187,7 @@ class TestSetup extends Action\AbstractAction {
 	protected function convertImageFormatsToJpg() {
 		$this->setUpDatabaseConnectionMock();
 		$imageProcessor = $this->initializeImageProcessor();
-		$parseTimeStart = DateTimeUtility::milliseconds();
+		$parseTimeStart = GeneralUtility::milliseconds();
 
 		$inputFormatsToTest = array('jpg', 'gif', 'png', 'tif', 'bmp', 'pcx', 'tga', 'pdf', 'ai');
 
@@ -220,7 +219,7 @@ class TestSetup extends Action\AbstractAction {
 		}
 
 		$this->view->assign('testResults', $testResults);
-		return $this->imageTestDoneMessage(DateTimeUtility::milliseconds() - $parseTimeStart);
+		return $this->imageTestDoneMessage(GeneralUtility::milliseconds() - $parseTimeStart);
 	}
 
 	/**
@@ -231,7 +230,7 @@ class TestSetup extends Action\AbstractAction {
 	protected function writeGifAndPng() {
 		$this->setUpDatabaseConnectionMock();
 		$imageProcessor = $this->initializeImageProcessor();
-		$parseTimeStart = DateTimeUtility::milliseconds();
+		$parseTimeStart = GeneralUtility::milliseconds();
 
 		$testResults = array(
 			'gif' => array(),
@@ -285,7 +284,7 @@ class TestSetup extends Action\AbstractAction {
 		}
 
 		$this->view->assign('testResults', $testResults);
-		return $this->imageTestDoneMessage(DateTimeUtility::milliseconds() - $parseTimeStart);
+		return $this->imageTestDoneMessage(GeneralUtility::milliseconds() - $parseTimeStart);
 	}
 
 	/**
@@ -296,7 +295,7 @@ class TestSetup extends Action\AbstractAction {
 	protected function scaleImages() {
 		$this->setUpDatabaseConnectionMock();
 		$imageProcessor = $this->initializeImageProcessor();
-		$parseTimeStart = DateTimeUtility::milliseconds();
+		$parseTimeStart = GeneralUtility::milliseconds();
 
 		$testResults = array(
 			'gif-to-gif' => array(),
@@ -344,7 +343,7 @@ class TestSetup extends Action\AbstractAction {
 		}
 
 		$this->view->assign('testResults', $testResults);
-		return $this->imageTestDoneMessage(DateTimeUtility::milliseconds() - $parseTimeStart);
+		return $this->imageTestDoneMessage(GeneralUtility::milliseconds() - $parseTimeStart);
 	}
 
 	/**
@@ -355,7 +354,7 @@ class TestSetup extends Action\AbstractAction {
 	protected function combineImages() {
 		$this->setUpDatabaseConnectionMock();
 		$imageProcessor = $this->initializeImageProcessor();
-		$parseTimeStart = DateTimeUtility::milliseconds();
+		$parseTimeStart = GeneralUtility::milliseconds();
 
 		$testResults = array(
 			'combine1' => array(),
@@ -396,7 +395,7 @@ class TestSetup extends Action\AbstractAction {
 		}
 
 		$this->view->assign('testResults', $testResults);
-		return $this->imageTestDoneMessage(DateTimeUtility::milliseconds() - $parseTimeStart);
+		return $this->imageTestDoneMessage(GeneralUtility::milliseconds() - $parseTimeStart);
 	}
 
 	/**
@@ -407,7 +406,7 @@ class TestSetup extends Action\AbstractAction {
 	protected function gdlib() {
 		$this->setUpDatabaseConnectionMock();
 		$imageProcessor = $this->initializeImageProcessor();
-		$parseTimeStart = DateTimeUtility::milliseconds();
+		$parseTimeStart = GeneralUtility::milliseconds();
 		$gifOrPng = $imageProcessor->gifExtension;
 		$testResults = array();
 
@@ -538,7 +537,7 @@ class TestSetup extends Action\AbstractAction {
 		}
 
 		$this->view->assign('testResults', $testResults);
-		return $this->imageTestDoneMessage(DateTimeUtility::milliseconds() - $parseTimeStart);
+		return $this->imageTestDoneMessage(GeneralUtility::milliseconds() - $parseTimeStart);
 	}
 
 	/**
