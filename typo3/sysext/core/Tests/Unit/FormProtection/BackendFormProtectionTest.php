@@ -173,9 +173,7 @@ class BackendFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$flashMessageQueueMock = $this->getMock(
 			'TYPO3\\CMS\\Core\\Messaging\\FlashMessageQueue',
 			array(),
-			array(),
-			'',
-			FALSE
+			array(uniqid('identifier_', TRUE))
 		);
 		$flashMessageServiceMock
 			->expects($this->once())
@@ -211,9 +209,7 @@ class BackendFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$flashMessageQueueMock = $this->getMock(
 			'TYPO3\\CMS\\Core\\Messaging\\FlashMessageQueue',
 			array(),
-			array(),
-			'',
-			FALSE
+			array(uniqid('identifier_', TRUE))
 		);
 		$flashMessageServiceMock
 			->expects($this->once())
