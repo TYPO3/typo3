@@ -65,25 +65,26 @@ class DownloadQueueTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @return void
+	 * @expectedException \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
+	 * @expectedExceptionCode 1342432103
 	 */
 	public function addExtensionToQueueThrowsExceptionIfUnknownStackIsGiven() {
-		$this->setExpectedException('TYPO3\\CMS\\Extensionmanager\\Exception\\ExtensionManagerException', $this->any(), 1342432103);
 		$this->downloadQueueMock->addExtensionToQueue($this->extensionMock, 'unknownStack');
 	}
 
 	/**
 	 * @test
 	 * @return void
+	 * @expectedException \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
+	 * @expectedExceptionCode 1342432101
 	 */
 	public function addExtensionToQueueThrowsExceptionIfExtensionWithSameKeyAndDifferentValuesAlreadyExists() {
 		/** @var \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extensionMock2 */
 		$extensionMock2 = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Extension', array('dummy'));
 		$extensionMock2->setExtensionKey('foobar');
 		$extensionMock2->setVersion('1.0.3');
-		$this->downloadQueueMock->_set('extensionStorage', array('foobar' => $extensionMock2));
 
-		$this->setExpectedException('TYPO3\\CMS\\Extensionmanager\\Exception\\ExtensionManagerException', $this->any(), 1342432101);
+		$this->downloadQueueMock->addExtensionToQueue($extensionMock2);
 		$this->downloadQueueMock->addExtensionToQueue($this->extensionMock);
 	}
 

@@ -23,7 +23,7 @@ class DownloadQueue implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Storage for extensions to be downloaded
 	 *
-	 * @var array<Tx_Extensionmanager_Domain_Model_Extension>
+	 * @var Extension[string][string]
 	 */
 	protected $extensionStorage = array();
 
@@ -61,8 +61,11 @@ class DownloadQueue implements \TYPO3\CMS\Core\SingletonInterface {
 		if (!is_string($stack) || !in_array($stack, array('download', 'update'))) {
 			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Stack has to be either "download" or "update"', 1342432103);
 		}
-		if (array_key_exists($extension->getExtensionKey(), $this->extensionStorage)) {
-			if (!($this->extensionStorage[$extension->getExtensionKey()] === $extension)) {
+		if (!isset($this->extensionStorage[$stack])) {
+			$this->extensionStorage[$stack] = array();
+		}
+		if (array_key_exists($extension->getExtensionKey(), $this->extensionStorage[$stack])) {
+			if ($this->extensionStorage[$stack][$extension->getExtensionKey()] !== $extension) {
 				throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(
 					$extension->getExtensionKey() . ' was requested to be downloaded in different versions.',
 					1342432101
