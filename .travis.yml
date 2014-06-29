@@ -10,6 +10,19 @@ env:
 services:
   - memcached
 
+notifications:
+  irc:
+    channels:
+      - "irc.freenode.net#typo3-cms"
+    on_success: change
+    on_failure: always
+    use_notice: true
+  slack:
+    rooms:
+      secure: a7c9Nw3KblUQsO4np7Sa685y7tqSJ5nSvzO8hnFjKEeQlgkbnC7Qq2TBvVSr92A1UMouL+6E9ngp3cb7rSYWsNKIaHn51CjhrvlfFElTZ0qd/jLVNDf1B765i0txiIZLLed0e3871/151xBgnggsXC4hcv4mPGc9g//ZPabp++E=
+    on_success: change
+    on_failure: always
+
 before_script:
 # Install build dependencies
   - sudo apt-get install parallel
