@@ -24,7 +24,7 @@ before_script:
 # Install rudimentary TYPO3
   - if [[ "$PHPUNIT" == "1" ]]; then git clone --single-branch --branch master --depth 1 git://git.typo3.org/TYPO3CMS/Distributions/Introduction.git build-environment/Introduction; fi
   - if [[ "$PHPUNIT" == "1" ]]; then mv build-environment/typo3conf .; fi
-  - if [[ "$PHPUNIT" == "1" ]]; then git clone --single-branch --branch master --depth 1 git://git.typo3.org/TYPO3CMS/Extensions/phpunit.git typo3conf/ext/phpunit/; fi
+  - if [[ "$PHPUNIT" == "1" ]]; then git clone --single-branch --branch core-6.1 --depth 1 git://git.typo3.org/TYPO3CMS/Extensions/phpunit.git typo3conf/ext/phpunit; fi
   - if [[ "$PHPUNIT" == "1" ]]; then mkdir fileadmin; fi
   - if [[ "$PHPUNIT" == "1" ]]; then mkdir uploads; fi
   - if [[ "$DB" == "mysql" ]]; then mysql -e "DROP DATABASE IF EXISTS typo3_test;" -uroot; fi
