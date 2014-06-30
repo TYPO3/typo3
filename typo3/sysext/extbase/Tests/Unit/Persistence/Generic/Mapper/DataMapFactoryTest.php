@@ -198,7 +198,7 @@ class DataMapFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			)
 		);
 		$mockColumnMap = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\ColumnMap', array(), array(), '', FALSE);
-		$mockColumnMap->expects($this->once())->method('setTypeOfRelation')->with($this->equalTo(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY));
+		$mockColumnMap->expects($this->once())->method('setTypeOfRelation')->with($this->equalTo(ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY));
 		$mockColumnMap->expects($this->once())->method('setRelationTableName')->with($this->equalTo('tx_myextension_mm'));
 		$mockColumnMap->expects($this->once())->method('setChildTableName')->with($this->equalTo('tx_myextension_righttable'));
 		$mockColumnMap->expects($this->once())->method('setChildTableWhereStatement')->with($this->equalTo('WHERE 1=1'));
@@ -225,7 +225,7 @@ class DataMapFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 		$leftColumnsDefinition['rights']['MM_opposite_field'] = 'opposite_field';
 		$mockColumnMap = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\ColumnMap', array(), array(), '', FALSE);
-		$mockColumnMap->expects($this->once())->method('setTypeOfRelation')->with($this->equalTo(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY));
+		$mockColumnMap->expects($this->once())->method('setTypeOfRelation')->with($this->equalTo(ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY));
 		$mockColumnMap->expects($this->once())->method('setRelationTableName')->with($this->equalTo('tx_myextension_mm'));
 		$mockColumnMap->expects($this->once())->method('setChildTableName')->with($this->equalTo('tx_myextension_lefttable'));
 		$mockColumnMap->expects($this->once())->method('setChildTableWhereStatement')->with(NULL);
@@ -251,7 +251,7 @@ class DataMapFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			)
 		);
 		$mockColumnMap = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\ColumnMap', array(), array(), '', FALSE);
-		$mockColumnMap->expects($this->once())->method('setTypeOfRelation')->with($this->equalTo(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY));
+		$mockColumnMap->expects($this->once())->method('setTypeOfRelation')->with($this->equalTo(ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY));
 		$mockColumnMap->expects($this->once())->method('setRelationTableName')->with($this->equalTo('tx_myextension_mm'));
 		$mockColumnMap->expects($this->once())->method('setChildTableName')->with($this->equalTo('tx_myextension_righttable'));
 		$mockColumnMap->expects($this->once())->method('setChildTableWhereStatement');
@@ -484,7 +484,7 @@ class DataMapFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		/** @var $dataMapFactory \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory | AccessibleObjectInterface */
 		$dataMapFactory = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapFactory', array('dummy'));
 
-		/** @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap $columnMap */
+		/** @var ColumnMap $columnMap */
 		$columnMap = $this->getAccessibleMock('TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap', array('dummy'), array(), '', FALSE);
 
 		$dataMapFactory->_call('setType', $columnMap, $columnConfiguration);

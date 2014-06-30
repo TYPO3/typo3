@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Workspaces\Tests\Functional\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 /**
  * Workspace service test
  *

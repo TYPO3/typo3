@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Core\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\PathUtility;
-
 /**
  * A representation for an inaccessible folder.
  *

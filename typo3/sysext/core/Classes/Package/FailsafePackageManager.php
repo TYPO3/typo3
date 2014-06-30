@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Core\Package;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 /**
  * This is an intermediate package manager that loads just
  * the required extensions for the install in case the package

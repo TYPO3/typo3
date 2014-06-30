@@ -13,7 +13,6 @@ namespace TYPO3\CMS\Core\Error;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Core\Messaging\ErrorpageMessage;
 
 /**
  * A quite exception handler which catches but ignores any exception.

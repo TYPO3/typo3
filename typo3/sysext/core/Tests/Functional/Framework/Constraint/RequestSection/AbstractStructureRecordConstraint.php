@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Core\Tests\Functional\Framework\Constraint\RequestSection;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\Functional\Framework\Frontend\ResponseSection;
-
 /**
  * Model of frontend response
  */

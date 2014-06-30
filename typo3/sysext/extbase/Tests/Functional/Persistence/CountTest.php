@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 class CountTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 

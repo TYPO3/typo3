@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Core\Resource\Driver;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Resource\FileInterface;
-use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**

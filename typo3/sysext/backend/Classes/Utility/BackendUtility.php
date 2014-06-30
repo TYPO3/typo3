@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Backend\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
@@ -1550,11 +1549,11 @@ class BackendUtility {
 							continue;
 						}
 					} catch (\TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException $exception) {
-						/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
-						$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+						/** @var FlashMessage $flashMessage */
+						$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
 							htmlspecialchars($exception->getMessage()),
 							$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing', TRUE),
-							\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+							FlashMessage::ERROR
 						);
 						$thumbData .= $flashMessage->render();
 						continue;

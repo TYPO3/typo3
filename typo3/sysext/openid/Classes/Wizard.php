@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Openid;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 
 /**
  * OpenID selection wizard for the backend

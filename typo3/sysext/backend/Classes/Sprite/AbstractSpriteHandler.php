@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Backend\Sprite;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Sprite\SpriteManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**

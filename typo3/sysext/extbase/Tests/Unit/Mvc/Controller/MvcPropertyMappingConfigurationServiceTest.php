@@ -21,9 +21,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-use TYPO3\CMS\Core\Utility\DebugUtility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
-
 /**
  * Test case
  */

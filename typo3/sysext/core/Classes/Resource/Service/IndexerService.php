@@ -52,7 +52,7 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * @return \TYPO3\CMS\Core\Resource\Index\FileIndexRepository
+	 * @return FileIndexRepository
 	 */
 	protected function getFileIndexRepository() {
 		return GeneralUtility::makeInstance('TYPO3\CMS\Core\Resource\Index\FileIndexRepository');

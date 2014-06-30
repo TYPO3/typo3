@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Install\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 /**
  * Abstract custom preset class implements common preset code
  */

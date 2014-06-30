@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 /**
  * A caching backend customized explicitly for the class loader.
  * This backend is NOT public API

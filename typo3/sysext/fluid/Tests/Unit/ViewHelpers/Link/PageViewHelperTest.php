@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Link;
  * Public License for more details.                                       *
  *                                                                        */
 
-use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
-use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Fluid\ViewHelpers\Link\PageViewHelper;
 
 /**

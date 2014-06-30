@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Backend\Tree\Pagetree;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Tree\Pagetree\Commands;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 

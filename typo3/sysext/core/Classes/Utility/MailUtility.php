@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Core\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 /**
  * Class to handle mail specific functionality
  *
@@ -66,7 +64,7 @@ class MailUtility {
 				if ($hookSubscriberContainsArrow !== FALSE) {
 					throw new \RuntimeException($hookSubscriber . ' is an invalid hook implementation. Please consider using an implementation of TYPO3\\CMS\\Core\\Mail\\MailerAdapter.', 1322287600);
 				} else {
-					$mailerAdapter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($hookSubscriber);
+					$mailerAdapter = GeneralUtility::makeInstance($hookSubscriber);
 					if ($mailerAdapter instanceof \TYPO3\CMS\Core\Mail\MailerAdapterInterface) {
 						$success = $success && $mailerAdapter->mail($to, $subject, $messageBody, $additionalHeaders, $additionalParameters, $fakeThis);
 					} else {
@@ -83,7 +81,7 @@ class MailUtility {
 			}
 		}
 		if (!$success) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Mail to "' . $to . '" could not be sent (Subject: "' . $subject . '").', 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
+			GeneralUtility::sysLog('Mail to "' . $to . '" could not be sent (Subject: "' . $subject . '").', 'Core', GeneralUtility::SYSLOG_SEVERITY_ERROR);
 		}
 		return $success;
 	}
@@ -138,13 +136,13 @@ class MailUtility {
 	static public function getSystemFromAddress() {
 		// default, first check the localconf setting
 		$address = $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'];
-		if (!\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($address)) {
+		if (!GeneralUtility::validEmail($address)) {
 			// just get us a domain record we can use as the host
 			$host = '';
 			$domainRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('domainName', 'sys_domain', 'hidden = 0', '', 'pid ASC, sorting ASC');
 			if (!empty($domainRecord['domainName'])) {
 				$tempUrl = $domainRecord['domainName'];
-				if (!\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($tempUrl, 'http')) {
+				if (!GeneralUtility::isFirstPartOfStr($tempUrl, 'http')) {
 					// shouldn't be the case anyways, but you never know
 					// ... there're crazy people out there
 					$tempUrl = 'http://' . $tempUrl;
@@ -152,10 +150,10 @@ class MailUtility {
 				$host = parse_url($tempUrl, PHP_URL_HOST);
 			}
 			$address = 'no-reply@' . $host;
-			if (!\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($address)) {
+			if (!GeneralUtility::validEmail($address)) {
 				// still nothing, get host name from server
 				$address = 'no-reply@' . php_uname('n');
-				if (!\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($address)) {
+				if (!GeneralUtility::validEmail($address)) {
 					// if everything fails use a dummy address
 					$address = 'no-reply@example.com';
 				}

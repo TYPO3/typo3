@@ -14,9 +14,6 @@ namespace TYPO3\CMS\Core\Package;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\Flow\Utility\Files;
-
 /**
  * This is an intermediate package manager that loads
  * all extensions that are present in one of the package base paths,

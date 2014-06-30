@@ -13,7 +13,6 @@ namespace TYPO3\CMS\Rsaauth\Hook;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * This class adds RSA JavaScript to the backend

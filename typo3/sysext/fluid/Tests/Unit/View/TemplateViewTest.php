@@ -15,7 +15,6 @@ include_once(__DIR__ . '/Fixtures/TransparentSyntaxTreeNode.php');
 include_once(__DIR__ . '/Fixtures/TemplateViewFixture.php');
 
 use org\bovigo\vfs\vfsStreamWrapper;
-use org\bovigo\vfs\vfsStreamDirectory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**

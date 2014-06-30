@@ -44,25 +44,25 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	protected $backUpPackageManager;
 
 	public function setUp() {
-		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
+		$this->singletonInstances = GeneralUtility::getSingletonInstances();
 		$this->createAccessibleProxyClass();
 		$this->testFilesToDelete = array();
 		$this->backUpPackageManager = ExtensionManagementUtilityAccessibleProxy::getPackageManager();
-		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
+		$this->singletonInstances = GeneralUtility::getSingletonInstances();
 	}
 
 	public function tearDown() {
 		ExtensionManagementUtility::clearExtensionKeyMap();
 		foreach ($this->testFilesToDelete as $absoluteFileName) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile($absoluteFileName);
+			GeneralUtility::unlink_tempfile($absoluteFileName);
 		}
 		if (file_exists(PATH_site . 'typo3temp/test_ext/')) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir(PATH_site . 'typo3temp/test_ext/', TRUE);
+			GeneralUtility::rmdir(PATH_site . 'typo3temp/test_ext/', TRUE);
 		}
 		ExtensionManagementUtilityAccessibleProxy::setPackageManager($this->backUpPackageManager);
 		ExtensionManagementUtilityAccessibleProxy::setCacheManager(NULL);
 		$GLOBALS['TYPO3_LOADED_EXT'] = new \TYPO3\CMS\Core\Compatibility\LoadedExtensionsArray($this->backUpPackageManager);
-		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
+		GeneralUtility::resetSingletonInstances($this->singletonInstances);
 		parent::tearDown();
 	}
 
@@ -128,7 +128,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	 */
 	protected function createMockPackageManagerWithMockPackage($packageKey, $packageMethods = array('getPackagePath', 'getPackageKey')) {
 		$packagePath = PATH_site . 'typo3temp/test_ext/' . $packageKey . '/';
-		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($packagePath);
+		GeneralUtility::mkdir_deep($packagePath);
 		$package = $this->getMockBuilder('TYPO3\\CMS\\Core\\Package\\Package')
 				->disableOriginalConstructor()
 				->setMethods($packageMethods)
@@ -973,9 +973,9 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		$extensionName = uniqid('test_baseTca_');
 		$packageManager = $this->createMockPackageManagerWithMockPackage($extensionName);
 		$packagePath = $packageManager->getPackage($extensionName)->getPackagePath();
-		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($packagePath);
-		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($packagePath . 'Configuration/');
-		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($packagePath . 'Configuration/TCA/');
+		GeneralUtility::mkdir($packagePath);
+		GeneralUtility::mkdir($packagePath . 'Configuration/');
+		GeneralUtility::mkdir($packagePath . 'Configuration/TCA/');
 		$GLOBALS['TYPO3_LOADED_EXT'] = new \TYPO3\CMS\Core\Compatibility\LoadedExtensionsArray($packageManager);
 		ExtensionManagementUtility::setPackageManager($packageManager);
 		$uniqueTableName = uniqid('table_name_');
@@ -1333,7 +1333,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 
 		$registryMock = $this->getMock('TYPO3\\CMS\\Core\\Category\\CategoryRegistry');
 		$registryMock->expects($this->once())->method('add')->with($extensionKey, $tableName, 'categories', array());
-		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Category\\CategoryRegistry', $registryMock);
+		GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Category\\CategoryRegistry', $registryMock);
 		ExtensionManagementUtility::makeCategorizable($extensionKey, $tableName);
 	}
 
@@ -1347,7 +1347,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 
 		$registryMock = $this->getMock('TYPO3\\CMS\\Core\\Category\\CategoryRegistry');
 		$registryMock->expects($this->once())->method('add')->with($extensionKey, $tableName, $fieldName, array());
-		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Category\\CategoryRegistry', $registryMock);
+		GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Category\\CategoryRegistry', $registryMock);
 		ExtensionManagementUtility::makeCategorizable($extensionKey, $tableName, $fieldName);
 	}
 
