@@ -386,6 +386,9 @@
 			<trans-unit id="extensionList.uninstall.dependencyError" xml:space="preserve">
 				<source>Cannot deactivate extension '%s' - The extension(s) '%s' depend on it.</source>
 			</trans-unit>
+			<trans-unit id="distribution.error.headline" xml:space="preserve">
+				<source>Could not install distribution '%s'</source>
+			</trans-unit>
 			<trans-unit id="distribution.welcome.headline" xml:space="preserve">
 				<source>Congratulations...</source>
 			</trans-unit>
