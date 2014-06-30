@@ -2046,6 +2046,7 @@ class BackendUtility {
 							$selectUids = $dbGroup->tableArray[$theColConf['foreign_table']];
 							if (is_array($selectUids) && count($selectUids) > 0) {
 								$MMres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid, ' . $MMfield, $theColConf['foreign_table'], 'uid IN (' . implode(',', $selectUids) . ')' . self::deleteClause($theColConf['foreign_table']));
+								$mmlA = array();
 								while ($MMrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($MMres)) {
 									// Keep sorting of $selectUids
 									$mmlA[array_search($MMrow['uid'], $selectUids)] = $noRecordLookup ?
@@ -2053,8 +2054,8 @@ class BackendUtility {
 										self::getRecordTitle($theColConf['foreign_table'], $MMrow, FALSE, $forceResult);
 								}
 								$GLOBALS['TYPO3_DB']->sql_free_result($MMres);
-								ksort($mmlA);
-								if (is_array($mmlA)) {
+								if (!empty($mmlA)) {
+									ksort($mmlA);
 									$l = implode('; ', $mmlA);
 								} else {
 									$l = 'N/A';
