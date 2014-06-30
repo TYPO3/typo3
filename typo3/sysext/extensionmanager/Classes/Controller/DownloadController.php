@@ -220,8 +220,10 @@ class DownloadController extends AbstractController {
 		} catch (\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException $e) {
 			$errorMessages = array(
 				$extension->getExtensionKey() => array(
-					'code' => $e->getCode(),
-					'message' => $e->getMessage(),
+					array(
+						'code' => $e->getCode(),
+						'message' => $e->getMessage(),
+					)
 				),
 			);
 		}
