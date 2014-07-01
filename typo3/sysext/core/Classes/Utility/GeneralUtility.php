@@ -3149,6 +3149,8 @@ Connection: close
 	static public function createVersionNumberedFilename($file, $forceQueryString = FALSE) {
 		$lookupFile = explode('?', $file);
 		$path = self::resolveBackPath(self::dirname(PATH_thisScript) . '/' . $lookupFile[0]);
+
+		$doNothing = FALSE;
 		if (TYPO3_MODE == 'FE') {
 			$mode = strtolower($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['versionNumberInFilename']);
 			if ($mode === 'embed') {
