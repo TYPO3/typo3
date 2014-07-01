@@ -101,7 +101,7 @@ class FormProtectionFactory {
 	 * @return boolean
 	 */
 	static protected function isInstallToolSession() {
-		return defined(TYPO3_enterInstallScript) && TYPO3_enterInstallScript;
+		return defined('TYPO3_enterInstallScript') && TYPO3_enterInstallScript;
 	}
 
 	/**
