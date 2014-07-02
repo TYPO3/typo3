@@ -5,8 +5,7 @@ defined('TYPO3_MODE') or die();
 $pluginContent = trim('
 plugin.tx_felogin_pi1 = USER_INT
 plugin.tx_felogin_pi1 {
-  includeLibs = EXT:felogin/pi1/class.tx_felogin_pi1.php
-  userFunc = tx_felogin_pi1->main
+	userFunc = TYPO3\\CMS\\Felogin\\Controller\\FrontendLoginController->main
 }
 ');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript($_EXTKEY, 'setup', '

@@ -34,6 +34,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 	 * Path to this script relative to the extension dir.
 	 *
 	 * @todo Define visibility
+	 * @TODO This is still set to the "old" class location since the locallang.xlf file in the same dir is loaded by pi_loadLL
 	 */
 	public $scriptRelPath = 'pi1/class.tx_felogin_pi1.php';
 
