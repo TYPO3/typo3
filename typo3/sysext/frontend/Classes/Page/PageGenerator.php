@@ -404,15 +404,16 @@ class PageGenerator {
 		}
 		if ($GLOBALS['TSFE']->pSetup['shortcutIcon']) {
 			$favIcon = $GLOBALS['TSFE']->tmpl->getFileName($GLOBALS['TSFE']->pSetup['shortcutIcon']);
-			$iconMimeType = '';
-			if (function_exists('finfo_open')) {
-				if ($finfo = @finfo_open(FILEINFO_MIME)) {
-					$iconMimeType = ' type="' . finfo_file($finfo, (PATH_site . $favIcon)) . '"';
-					finfo_close($finfo);
-					$pageRenderer->setIconMimeType($iconMimeType);
+			if (is_file(PATH_site . $favIcon)) {
+				if (function_exists('finfo_open')) {
+					if ($finfo = @finfo_open(FILEINFO_MIME)) {
+						$iconMimeType = ' type="' . finfo_file($finfo, (PATH_site . $favIcon)) . '"';
+						finfo_close($finfo);
+						$pageRenderer->setIconMimeType($iconMimeType);
+					}
 				}
+				$pageRenderer->setFavIcon(GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $favIcon);
 			}
-			$pageRenderer->setFavIcon(GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $favIcon);
 		}
 		// Including CSS files
 		if (is_array($GLOBALS['TSFE']->tmpl->setup['plugin.'])) {
