@@ -818,7 +818,7 @@ class RelationHandler {
 		}
 		// Select children from the live(!) workspace only
 		if (BackendUtility::isTableWorkspaceEnabled($foreign_table)) {
-			$workspaceList = '0,' . (int)$GLOBALS['BE_USER']->workspace;
+			$workspaceList = '0,' . $this->getWorkspaceId();
 			$whereClause .= ' AND ' . $foreign_table . '.t3ver_wsid IN (' . $workspaceList . ') AND ' . $foreign_table . '.pid<>-1';
 		}
 		// Get the correct sorting field
