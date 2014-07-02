@@ -560,26 +560,19 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 	 *
 	 * @param integer $uid The uid of the file usage (sys_file_reference) to instantiate.
 	 * @param array $fileReferenceData The record row from database.
+	 * @param bool $raw Whether to get raw results without performing overlays
 	 *
 	 * @throws \TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException
 	 * @return FileReference
 	 */
-	public function getFileReferenceObject($uid, array $fileReferenceData = array()) {
+	public function getFileReferenceObject($uid, array $fileReferenceData = array(), $raw = FALSE) {
 		if (!is_numeric($uid)) {
 			throw new \InvalidArgumentException('uid of file usage (sys_file_reference) has to be numeric.', 1300086584);
 		}
 		if (!$this->fileReferenceInstances[$uid]) {
 			// Fetches data in case $fileData is empty
 			if (empty($fileReferenceData)) {
-				// fetch the reference record of the current workspace
-				if (TYPO3_MODE === 'BE') {
-					$fileReferenceData = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('sys_file_reference', $uid);
-				} elseif (is_object($GLOBALS['TSFE'])) {
-					$fileReferenceData = $GLOBALS['TSFE']->sys_page->checkRecord('sys_file_reference', $uid);
-				} else {
-					/** @var $GLOBALS['TYPO3_DB'] \TYPO3\CMS\Core\Database\DatabaseConnection */
-					$fileReferenceData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_file_reference', 'uid=' . (int)$uid . ' AND deleted=0');
-				}
+				$fileReferenceData = $this->getFileReferenceData($uid, $raw);
 				if (!is_array($fileReferenceData)) {
 					throw new \TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException('No file usage (sys_file_reference) found for given UID.', 1317178794);
 				}
@@ -601,6 +594,25 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 		/** @var FileReference $fileReferenceObject */
 		$fileReferenceObject = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileReference', $fileReferenceData);
 		return $fileReferenceObject;
+	}
+
+	/**
+	 * Gets data for the given uid of the file reference record.
+	 *
+	 * @param int $uid The uid of the file usage (sys_file_reference) to be fetched
+	 * @param bool $raw Whether to get raw results without performing overlays
+	 * @return NULL|array
+	 */
+	protected function getFileReferenceData($uid, $raw = FALSE) {
+		if (!$raw && TYPO3_MODE === 'BE') {
+			$fileReferenceData = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('sys_file_reference', $uid);
+		} elseif (!$raw && is_object($GLOBALS['TSFE'])) {
+			$fileReferenceData = $GLOBALS['TSFE']->sys_page->checkRecord('sys_file_reference', $uid);
+		} else {
+			/** @var $GLOBALS['TYPO3_DB'] \TYPO3\CMS\Core\Database\DatabaseConnection */
+			$fileReferenceData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_file_reference', 'uid=' . (int)$uid . ' AND deleted=0');
+		}
+		return $fileReferenceData;
 	}
 
 	/**

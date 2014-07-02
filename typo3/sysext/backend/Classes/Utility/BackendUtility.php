@@ -1470,6 +1470,43 @@ class BackendUtility {
 	}
 
 	/**
+	 * Resolves file references for a given record.
+	 *
+	 * @param string $tableName Name of the table of the record
+	 * @param string $fieldName Name of the field of the record
+	 * @param array $element Record data
+	 * @param NULL|int $workspaceId Workspace to fetch data for
+	 * @return NULL|array|\TYPO3\CMS\Core\Resource\FileReference[]
+	 */
+	static public function resolveFileReferences($tableName, $fieldName, $element, $workspaceId = NULL) {
+		if (empty($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'])) {
+			return NULL;
+		}
+		$configuration = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
+		if (empty($configuration['type']) || $configuration['type'] !== 'inline'
+			|| empty($configuration['foreign_table']) || $configuration['foreign_table'] !== 'sys_file_reference') {
+			return NULL;
+		}
+
+		$fileReferences = array();
+		/** @var $relationHandler \TYPO3\CMS\Core\Database\RelationHandler */
+		$relationHandler = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+		if ($workspaceId !== NULL) {
+			$relationHandler->setWorkspaceId($workspaceId);
+		}
+		$relationHandler->start($element[$fieldName], $configuration['foreign_table'], $configuration['MM'], $element['uid'], $tableName, $configuration);
+		$relationHandler->processDeletePlaceholder();
+		$referenceUids = $relationHandler->tableArray[$configuration['foreign_table']];
+
+		foreach ($referenceUids as $referenceUid) {
+			$fileReference = ResourceFactory::getInstance()->getFileReferenceObject($referenceUid, array(), ($workspaceId === 0));
+			$fileReferences[$fileReference->getUid()] = $fileReference;
+		}
+
+		return $fileReferences;
+	}
+
+	/**
 	 * Returns a linked image-tag for thumbnail(s)/fileicons/truetype-font-previews from a database row with a list of image files in a field
 	 * All $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] extension are made to thumbnails + ttf file (renders font-example)
 	 * Thumbsnails are linked to the show_item.php script which will display further details.
@@ -1487,7 +1524,6 @@ class BackendUtility {
 	 * @return string Thumbnail image tag.
 	 */
 	static public function thumbCode($row, $table, $field, $backPath, $thumbScript = '', $uploaddir = NULL, $abs = 0, $tparams = '', $size = '', $linkInfoPopup = TRUE) {
-		$tcaConfig = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 		// Check and parse the size parameter
 		$sizeParts = array(64, 64);
 		if ($size = trim($size)) {
@@ -1497,16 +1533,10 @@ class BackendUtility {
 			}
 		}
 		$thumbData = '';
+		$fileReferences = static::resolveFileReferences($table, $field, $row);
 		// FAL references
-		if ($tcaConfig['type'] === 'inline' && $tcaConfig['foreign_table'] === 'sys_file_reference') {
-			/** @var $relationHandler \TYPO3\CMS\Core\Database\RelationHandler */
-			$relationHandler = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
-			$relationHandler->start($row[$field], $tcaConfig['foreign_table'], $tcaConfig['MM'], $row['uid'], $table, $tcaConfig);
-			$relationHandler->processDeletePlaceholder();
-			$referenceUids = $relationHandler->tableArray[$tcaConfig['foreign_table']];
-
-			foreach ($referenceUids as $referenceUid) {
-				$fileReferenceObject = ResourceFactory::getInstance()->getFileReferenceObject($referenceUid);
+		if ($fileReferences !== NULL) {
+			foreach ($fileReferences as $fileReferenceObject) {
 				$fileObject = $fileReferenceObject->getOriginalFile();
 
 				if ($fileObject->isMissing()) {
