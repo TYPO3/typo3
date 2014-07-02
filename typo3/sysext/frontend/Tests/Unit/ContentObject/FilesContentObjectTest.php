@@ -207,7 +207,7 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				->with('name')
 				->will($this->returnValue('File ' . $i));
 
-			$fileReferenceMap[] = array($i, array(), $fileReference);
+			$fileReferenceMap[] = array($i, array(), FALSE, $fileReference);
 		}
 
 		$resourceFactory = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
