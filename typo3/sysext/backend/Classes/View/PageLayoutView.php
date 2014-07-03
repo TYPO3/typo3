@@ -1284,6 +1284,19 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		// Get processed values:
 		$info = array();
 		$this->getProcessedValue('tt_content', 'starttime,endtime,fe_group,spaceBefore,spaceAfter', $row, $info);
+
+		// Call drawFooter hooks
+		$drawFooterHooks = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawFooter'];
+		if (is_array($drawFooterHooks)) {
+			foreach ($drawFooterHooks as $hookClass) {
+				$hookObject = GeneralUtility::getUserObj($hookClass);
+				if (!$hookObject instanceof PageLayoutViewDrawFooterHookInterface) {
+					throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Backend\\View\\PageLayoutViewDrawFooterHookInterface', 1404378171);
+				}
+				$hookObject->preProcess($this, $info, $row);
+			}
+		}
+
 		// Display info from records fields:
 		if (count($info)) {
 			$content = '<div class="t3-page-ce-info">
