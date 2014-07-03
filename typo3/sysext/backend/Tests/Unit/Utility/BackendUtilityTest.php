@@ -1354,7 +1354,7 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function replaceL10nModeFieldsReplacesFields($table, $row, $tca, $originalRow, $expected) {
 		$GLOBALS['TCA'] = $tca;
 		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection');
-		$GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')->will($this->returnValue($originalRow));
+		$GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetSingleRow')->will($this->returnValue($originalRow));
 
 		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\TYPO3\CMS\Backend\Utility\BackendUtility $subject */
 		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Backend\\Utility\\BackendUtility', array('dummy'));

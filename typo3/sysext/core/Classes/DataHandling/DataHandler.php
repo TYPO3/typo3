@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\DataHandling;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
@@ -5835,18 +5836,20 @@ class DataHandler {
 	 * @param string $table Table name
 	 * @param integer $id UID of the record from $table
 	 * @param string $fieldList Field list for the SELECT query, eg. "*" or "uid,pid,...
-	 * @return mixed Returns the selected record on success, otherwise FALSE.
-	 * @todo Define visibility
+	 * @return NULL|array Returns the selected record on success, otherwise NULL.
 	 */
 	public function recordInfo($table, $id, $fieldList) {
-		if (is_array($GLOBALS['TCA'][$table])) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fieldList, $table, 'uid=' . (int)$id);
-			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
-				$result = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-				$GLOBALS['TYPO3_DB']->sql_free_result($res);
-				return $result;
-			}
+		// Skip, if searching for NEW records or there's no TCA table definition
+		if (!(int)$id || !isset($GLOBALS['TCA'][$table])) {
+			return NULL;
 		}
+		/** @var DatabaseConnection $db */
+		$db = $GLOBALS['TYPO3_DB'];
+		$result = $db->exec_SELECTgetSingleRow($fieldList, $table, 'uid=' . (int)$id);
+		if ($result) {
+			return $result;
+		}
+		return NULL;
 	}
 
 	/**

@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
@@ -76,17 +77,20 @@ class BackendUtility {
 	 * @param string $fields List of fields to select
 	 * @param string $where Additional WHERE clause, eg. " AND blablabla = 0
 	 * @param boolean $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
-	 * @return array Returns the row if found, otherwise nothing
+	 * @return array|NULL Returns the row if found, otherwise NULL
 	 */
 	static public function getRecord($table, $uid, $fields = '*', $where = '', $useDeleteClause = TRUE) {
-		if ($GLOBALS['TCA'][$table]) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $table, 'uid=' . (int)$uid . ($useDeleteClause ? self::deleteClause($table) : '') . $where);
-			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		// Ensure we have a valid uid (not 0 and not NEWxxxx) and a valid TCA
+		if ((int)$uid && !empty($GLOBALS['TCA'][$table])) {
+			/** @var DatabaseConnection $db */
+			$db = $GLOBALS['TYPO3_DB'];
+			$where = 'uid=' . (int)$uid . ($useDeleteClause ? self::deleteClause($table) : '') . $where;
+			$row = $db->exec_SELECTgetSingleRow($fields, $table, $where);
 			if ($row) {
 				return $row;
 			}
 		}
+		return NULL;
 	}
 
 	/**
