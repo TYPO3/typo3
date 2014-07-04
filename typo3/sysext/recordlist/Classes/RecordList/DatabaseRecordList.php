@@ -390,6 +390,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			$selectFields[] = 'extendToSubpages';
 			$selectFields[] = 'nav_hide';
 			$selectFields[] = 'doktype';
+			$selectFields[] = 'shortcut';
 		}
 		if (is_array($GLOBALS['TCA'][$table]['ctrl']['enablecolumns'])) {
 			$selectFields = array_merge($selectFields, $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']);
