@@ -109,6 +109,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	public function checkDependencies(Extension $extension) {
+		$this->dependencyErrors = array();
 		$dependencies = $extension->getDependencies();
 		foreach ($dependencies as $dependency) {
 			/** @var Dependency $dependency */
