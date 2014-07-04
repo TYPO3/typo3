@@ -155,27 +155,11 @@ class DownloadController extends \TYPO3\CMS\Extensionmanager\Controller\Abstract
 		$errorMessage = '';
 		try {
 			$this->downloadUtility->setDownloadPath($downloadPath);
-			$this->prepareExtensionForImport($extension);
 			$result = $this->managementService->resolveDependenciesAndInstall($extension);
 		} catch (\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException $e) {
 			$errorMessage = $e->getMessage();
 		}
 		$this->view->assign('result', $result)->assign('extension', $extension)->assign('errorMessage', $errorMessage);
-	}
-
-	/**
-	 * Prepares an extension for import from TER
-	 * Uninstalls the extension if it is already loaded (case: update)
-	 * and reloads the caches.
-	 *
-	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
-	 * @return void
-	 */
-	protected function prepareExtensionForImport(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension) {
-		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extension->getExtensionKey())) {
-			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::unloadExtension($extension->getExtensionKey());
-			$this->installUtility->reloadCaches();
-		}
 	}
 
 	/**
@@ -195,7 +179,6 @@ class DownloadController extends \TYPO3\CMS\Extensionmanager\Controller\Abstract
 		/** @var $highestTerVersionExtension \TYPO3\CMS\Extensionmanager\Domain\Model\Extension */
 		$highestTerVersionExtension = $this->extensionRepository->findHighestAvailableVersion($extensionKey);
 		try {
-			$this->prepareExtensionForImport($highestTerVersionExtension);
 			$result = $this->managementService->resolveDependenciesAndInstall($highestTerVersionExtension);
 		} catch (\Exception $e) {
 			$hasErrors = TRUE;
