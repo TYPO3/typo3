@@ -55,6 +55,13 @@ class UploadExtensionFileController extends AbstractController {
 	protected $removeFromOriginalPath = FALSE;
 
 	/**
+	 * Remove backup folder before destruction
+	 */
+	public function __destruct() {
+		$this->removeBackupFolder();
+	}
+
+	/**
 	 * Render upload extension form
 	 *
 	 * @return void
@@ -71,15 +78,10 @@ class UploadExtensionFileController extends AbstractController {
 	 */
 	public function extractAction($overwrite = FALSE) {
 		$file = $_FILES['tx_extensionmanager_tools_extensionmanagerextensionmanager'];
-		$fileExtension = pathinfo($file['name']['extensionFile'], PATHINFO_EXTENSION);
 		$fileName = pathinfo($file['name']['extensionFile'], PATHINFO_BASENAME);
 		try {
-			if (empty($file['name']['extensionFile'])) {
-				throw new ExtensionManagerException('No file given.', 1342858852);
-			}
-			if ($fileExtension !== 't3x' && $fileExtension !== 'zip') {
-				throw new ExtensionManagerException('Wrong file format given.', 1342858853);
-			}
+			// If the file name isn't valid an error will be thrown
+			$this->checkFileName($fileName);
 			if (!empty($file['tmp_name']['extensionFile'])) {
 				$tempFile = GeneralUtility::upload_to_tempfile($file['tmp_name']['extensionFile']);
 			} else {
@@ -88,15 +90,8 @@ class UploadExtensionFileController extends AbstractController {
 					1342864339
 				);
 			}
-
-			// Import extension
-			if ($fileExtension === 't3x') {
-				$extensionData = $this->getExtensionFromT3xFile($tempFile, $overwrite);
-			} else {
-				$extensionData = $this->getExtensionFromZipFile($tempFile, $fileName, $overwrite);
-			}
-			$this->installUtility->install($extensionData['extKey']);
-			$this->removeBackupFolder();
+			$extensionData = $this->extractExtensionFromFile($tempFile, $fileName, $overwrite);
+			$this->activateExtension($extensionData['extKey']);
 			$this->addFlashMessage(
 				htmlspecialchars($this->translate('extensionList.uploadFlashMessage.message', array($extensionData['extKey']))),
 				htmlspecialchars($this->translate('extensionList.uploadFlashMessage.title')),
@@ -112,6 +107,51 @@ class UploadExtensionFileController extends AbstractController {
 			$this->addFlashMessage(htmlspecialchars($exception->getMessage()), '', FlashMessage::ERROR);
 		}
 		$this->redirect('index', 'List', NULL, array(self::TRIGGER_RefreshModuleMenu => TRUE));
+	}
+
+	/**
+	 * Validate the filename of an uploaded file
+	 *
+	 * @param string $fileName
+	 * @return void
+	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
+	 */
+	public function checkFileName($fileName) {
+		$extension = pathinfo($fileName, PATHINFO_EXTENSION);
+		if (empty($fileName)) {
+			throw new ExtensionManagerException('No file given.', 1342858852);
+		}
+		if ($extension !== 't3x' && $extension !== 'zip') {
+			throw new ExtensionManagerException('Wrong file format "' . $extension . '" given. Allowed formats are t3x and zip.', 1342858853);
+		}
+	}
+
+	/**
+	 * Extract a given t3x or zip file
+	 *
+	 * @param string $uploadPath Path to existing extension file
+	 * @param string $fileName Filename of the uploaded file
+	 * @param bool $overwrite If true, extension will be replaced
+	 * @return array Extension data
+	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
+	 */
+	public function extractExtensionFromFile($uploadPath, $fileName, $overwrite) {
+		$fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
+		if ($fileExtension === 't3x') {
+			$extensionData = $this->getExtensionFromT3xFile($uploadPath, $overwrite);
+		} else {
+			$extensionData = $this->getExtensionFromZipFile($uploadPath, $fileName, $overwrite);
+		}
+
+		return $extensionData;
+	}
+
+	/**
+	 * @param string $extensionKey
+	 * @return void
+	 */
+	public function activateExtension($extensionKey) {
+		$this->installUtility->install($extensionKey);
 	}
 
 	/**
@@ -213,7 +253,6 @@ class UploadExtensionFileController extends AbstractController {
 		if (!empty($this->extensionBackupPath)) {
 			GeneralUtility::mkdir($extDirPath);
 			GeneralUtility::copyDirectory($this->extensionBackupPath, $extDirPath);
-			$this->removeBackupFolder();
 		}
 	}
 
