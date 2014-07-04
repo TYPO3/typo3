@@ -181,18 +181,16 @@ class DownloadController extends AbstractController {
 	protected function updateExtensionAction() {
 		$hasErrors = FALSE;
 		$errorMessage = '';
-		$result = array();
 
 		$extensionKey = $this->request->getArgument('extension');
 		$highestTerVersionExtension = $this->extensionRepository->findHighestAvailableVersion($extensionKey);
 		try {
-			$result = $this->managementService->installExtension($highestTerVersionExtension);
+			$this->managementService->downloadMainExtension($highestTerVersionExtension);
 		} catch (\Exception $e) {
 			$hasErrors = TRUE;
 			$errorMessage = $e->getMessage();
 		}
-		$this->view->assign('result', $result)
-			->assign('extension', $highestTerVersionExtension)
+		$this->view->assign('extension', $highestTerVersionExtension)
 			->assign('hasErrors', $hasErrors)
 			->assign('errorMessage', $errorMessage);
 	}
