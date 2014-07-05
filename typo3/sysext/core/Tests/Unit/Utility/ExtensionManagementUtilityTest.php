@@ -1351,4 +1351,54 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		ExtensionManagementUtility::makeCategorizable($extensionKey, $tableName, $fieldName);
 	}
 
+	///////////////////////////////
+	// Tests concerning addPlugin
+	///////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function addPluginSetsTcaCorrectlyForGivenExtkeyAsParameter() {
+		$extKey = 'indexed_search';
+		$GLOBALS['TYPO3_LOADED_EXT'] = array();
+		$GLOBALS['TYPO3_LOADED_EXT'][$extKey]['ext_icon'] = 'foo.gif';
+		$expectedTCA = array(
+			array(
+				'label',
+				$extKey,
+				'sysext/' . $extKey . '/foo.gif'
+			)
+		);
+		$GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = array();
+		ExtensionManagementUtility::addPlugin(array('label', $extKey), 'list_type', $extKey);
+		$this->assertEquals($expectedTCA, $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function addPluginSetsTcaCorrectlyForGivenExtkeyAsGlobal() {
+		$extKey = 'indexed_search';
+		$GLOBALS['TYPO3_LOADED_EXT'] = array();
+		$GLOBALS['TYPO3_LOADED_EXT'][$extKey]['ext_icon'] = 'foo.gif';
+		$GLOBALS['_EXTKEY'] = $extKey;
+		$expectedTCA = array(
+			array(
+				'label',
+				$extKey,
+				'sysext/' . $extKey . '/foo.gif'
+			)
+		);
+		$GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = array();
+		ExtensionManagementUtility::addPlugin(array('label', $extKey));
+		$this->assertEquals($expectedTCA, $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items']);
+	}
+
+	/**
+	 * @test
+	 * @expectedException \RuntimeException
+	 */
+	public function addPluginThrowsExceptionForMissingExtkey() {
+		ExtensionManagementUtility::addPlugin('test');
+	}
 }
