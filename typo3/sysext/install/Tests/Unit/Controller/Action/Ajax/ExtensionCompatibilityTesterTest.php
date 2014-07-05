@@ -22,11 +22,29 @@ use TYPO3\CMS\Core\Utility;
 class ExtensionCompatibilityTesterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
+	 * @var \TYPO3\CMS\Core\Package\UnitTestPackageManager A backup of unit test package manager
+	 */
+	protected $backupPackageManager = NULL;
+
+	/**
+	 * Set up
+	 *
+	 * @return void
+	 */
+	public function setUp() {
+		// Package manager is mocked in some tests. Backup the original one here to re-inject it to
+		// ExtensionManagementUtility in tearDown() again. makeInstance() is allowed to be used here
+		// since the PackageManager is registered as singleton by bootstrap.
+		$this->backupPackageManager = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Package\\PackageManager');
+	}
+
+	/**
 	 * Tear down
 	 *
 	 * @return void
 	 */
 	public function tearDown() {
+		Utility\ExtensionManagementUtility::setPackageManager($this->backupPackageManager);
 		if (file_exists(PATH_site . 'typo3temp/ExtensionCompatibilityTester.txt')) {
 			unlink(PATH_site . 'typo3temp/ExtensionCompatibilityTester.txt');
 		}
@@ -106,6 +124,13 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 	 * @test
 	 */
 	public function tryToLoadExtLocalconfAndExtTablesOfExtensionsCallsLoadExtTablesForExtension() {
+		// tryToLoadExtLocalconfAndExtTablesOfExtensions() triggers a call to ExtensionManagementUtility::loadBaseTca
+		// that works on our UnitTestPackageManager to do things. This package manager needs to be mocked here to
+		// not trigger unwanted side effects.
+		$packageManager = $this->getMock('TYPO3\\CMS\\Core\\Package\\PackageManager', array(), array(), '', FALSE);
+		$packageManager->expects($this->any())->method('getActivePackages')->will($this->returnValue(array()));
+		Utility\ExtensionManagementUtility::setPackageManager($packageManager);
+
 		$extension = array(
 			'demo1' => array(
 				'type' => 'L',
@@ -121,6 +146,13 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 	 * @test
 	 */
 	public function tryToLoadExtLocalconfAndExtTablesOfExtensionsCallsLoadExtLocalconfForExtension() {
+		// tryToLoadExtLocalconfAndExtTablesOfExtensions() triggers a call to ExtensionManagementUtility::loadBaseTca
+		// that works on our UnitTestPackageManager to do things. This package manager needs to be mocked here to
+		// not trigger unwanted side effects.
+		$packageManager = $this->getMock('TYPO3\\CMS\\Core\\Package\\PackageManager', array(), array(), '', FALSE);
+		$packageManager->expects($this->any())->method('getActivePackages')->will($this->returnValue(array()));
+		Utility\ExtensionManagementUtility::setPackageManager($packageManager);
+
 		$extension = array(
 			'demo1' => array(
 				'type' => 'L',
@@ -153,6 +185,13 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 	 * @test
 	 */
 	public function tryToLoadExtLocalconfAndExtTablesOfExtensionsCallsWriteCurrentExtensionToFile() {
+		// tryToLoadExtLocalconfAndExtTablesOfExtensions() triggers a call to ExtensionManagementUtility::loadBaseTca
+		// that works on our UnitTestPackageManager to do things. This package manager needs to be mocked here to
+		// not trigger unwanted side effects.
+		$packageManager = $this->getMock('TYPO3\\CMS\\Core\\Package\\PackageManager', array(), array(), '', FALSE);
+		$packageManager->expects($this->any())->method('getActivePackages')->will($this->returnValue(array()));
+		Utility\ExtensionManagementUtility::setPackageManager($packageManager);
+
 		$extension = array(
 			'demo1' => array(
 				'type' => 'L',
