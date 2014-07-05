@@ -1,7 +1,6 @@
 <?php
-if (!defined('TYPO3_MODE')) {
-	die('Access denied.');
-}
+defined('TYPO3_MODE') or die();
+
 // Adding soft reference keys in tt_content configuration
 // htmlArea RTE soft reference keys are inserted in front so that their tokens are inserted first
 $GLOBALS['TCA']['tt_content']['columns']['header']['config']['softref'] = 'typolink_tag' . ($GLOBALS['TCA']['tt_content']['columns']['header']['config']['softref'] ? ',' . $GLOBALS['TCA']['tt_content']['columns']['header']['config']['softref'] : '');

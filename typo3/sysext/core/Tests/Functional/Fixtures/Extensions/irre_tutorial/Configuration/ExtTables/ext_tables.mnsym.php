@@ -1,4 +1,6 @@
 <?php
+defined('TYPO3_MODE') or die();
+
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_irretutorial_mnsym_hotel');
 
 $TCA['tx_irretutorial_mnsym_hotel'] = array(
@@ -12,7 +14,7 @@ $TCA['tx_irretutorial_mnsym_hotel'] = array(
 		'transOrigPointerField'    => 'l18n_parent',
 		'transOrigDiffSourceField' => 'l18n_diffsource',
 		'sortby' => 'sorting',
-		'delete' => 'deleted',	
+		'delete' => 'deleted',
 		'enablecolumns' => array(
 			'disabled' => 'hidden',
 		),
@@ -33,7 +35,7 @@ $TCA['tx_irretutorial_mnsym_hotel'] = array(
 $TCA['tx_irretutorial_mnsym_hotel_rel'] = array(
 	'ctrl' => array(
 		'title' => 'LLL:EXT:irre_tutorial/locallang_db.xml:tx_irretutorial_mnsym_hotel_rel',
-		'label' => 'uid',	
+		'label' => 'uid',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',

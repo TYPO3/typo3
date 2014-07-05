@@ -1,7 +1,6 @@
 <?php
-if (!defined('TYPO3_MODE')) {
-	die('Access denied.');
-}
+defined('TYPO3_MODE') or die();
+
 if (TYPO3_MODE === 'BE') {
 	$opendocsPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('opendocs');
 	// Register toolbar item

@@ -1,7 +1,6 @@
 <?php
-if (!defined('TYPO3_MODE')) {
-	die('Access denied.');
-}
+defined('TYPO3_MODE') or die();
+
 //replace old Login
 $pluginContent = trim('
 plugin.tx_felogin_pi1 = USER_INT

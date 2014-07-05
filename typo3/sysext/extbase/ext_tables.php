@@ -1,8 +1,7 @@
 <?php
-if (!defined('TYPO3_MODE')) {
-	die('Access denied.');
-}
-if (TYPO3_MODE == 'BE') {
+defined('TYPO3_MODE') or die();
+
+if (TYPO3_MODE === 'BE') {
 	// register Extbase dispatcher for modules
 	$TBE_MODULES['_dispatcher'][] = 'TYPO3\\CMS\\Extbase\\Core\\ModuleRunnerInterface';
 }

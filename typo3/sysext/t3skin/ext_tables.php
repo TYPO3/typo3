@@ -1,8 +1,7 @@
 <?php
-if (!defined('TYPO3_MODE')) {
-	die('Access denied.');
-}
-if (TYPO3_MODE == 'BE' || TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER'])) {
+defined('TYPO3_MODE') or die();
+
+if (TYPO3_MODE === 'BE' || TYPO3_MODE === 'FE' && isset($GLOBALS['BE_USER'])) {
 	global $TBE_STYLES;
 	// Register as a skin
 	$TBE_STYLES['skins'][$_EXTKEY] = array(

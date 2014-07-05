@@ -1,7 +1,5 @@
 <?php
-if (!defined ('TYPO3_MODE')) {
-	die('Access denied.');
-}
+defined('TYPO3_MODE') or die();
 
 $TCA['tx_irretutorial_mnmmasym_hotel'] = array(
 	'ctrl' => $TCA['tx_irretutorial_mnmmasym_hotel']['ctrl'],

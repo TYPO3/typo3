@@ -1,7 +1,6 @@
 <?php
-if (!defined('TYPO3_MODE')) {
-	die('Access denied.');
-}
+defined('TYPO3_MODE') or die();
+
 if (TYPO3_MODE == 'BE') {
 	// Register hooks for tstemplate module
 	$TYPO3_CONF_VARS['SC_OPTIONS']['typo3/template.php']['preStartPageHook'][] = 'TYPO3\\CMS\\T3editor\\Hook\\TypoScriptTemplateInfoHook->preStartPageHook';

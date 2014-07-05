@@ -1,4 +1,6 @@
 <?php
+defined('TYPO3_MODE') or die();
+
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_irretutorial_mnmmasym_hotel');
 
 $TCA['tx_irretutorial_mnmmasym_hotel'] = array(

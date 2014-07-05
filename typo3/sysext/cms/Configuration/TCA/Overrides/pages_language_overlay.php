@@ -1,7 +1,6 @@
 <?php
-if (!defined('TYPO3_MODE')) {
-	die('Access denied.');
-}
+defined('TYPO3_MODE') or die();
+
 // Keep old code (pre-FAL) for installations that haven't upgraded yet.
 // @deprecated since TYPO3 6.0, please remove at earliest in TYPO3 6.2
 // existing installation - and files are merged, nothing to do

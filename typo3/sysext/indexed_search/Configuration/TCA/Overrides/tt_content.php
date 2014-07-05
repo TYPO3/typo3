@@ -1,7 +1,5 @@
 <?php
-if (!defined('TYPO3_MODE')) {
-	die('Access denied.');
-}
+defined('TYPO3_MODE') or die();
 
 // Register "old" FE plugin and hide layout, select_key and pages fields in BE
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(

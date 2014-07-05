@@ -1,7 +1,6 @@
 <?php
-if (!defined('TYPO3_MODE')) {
-	die('Access denied.');
-}
+defined('TYPO3_MODE') or die();
+
 if (TYPO3_MODE === 'BE') {
 	// Module Admin > Backend Users
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(

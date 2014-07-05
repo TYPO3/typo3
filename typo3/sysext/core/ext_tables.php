@@ -1,7 +1,5 @@
 <?php
-if (!defined('TYPO3_MODE')) {
-	die('Access denied.');
-}
+defined('TYPO3_MODE') or die();
 
 /**
  * $GLOBALS['PAGES_TYPES'] defines the various types of pages (field: doktype) the system

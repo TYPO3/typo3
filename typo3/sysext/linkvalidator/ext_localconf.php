@@ -1,7 +1,5 @@
 <?php
-if (!defined('TYPO3_MODE')) {
-	die('Access denied.');
-}
+defined('TYPO3_MODE') or die();
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
 	'<INCLUDE_TYPOSCRIPT: source="FILE:EXT:linkvalidator/Configuration/TsConfig/Page/pagetsconfig.txt">'
