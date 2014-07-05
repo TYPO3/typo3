@@ -20,23 +20,6 @@ namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var array Directories or files in typo3temp/ created during tests to delete afterwards
-	 */
-	protected $testNodesToDelete = array();
-
-	/**
-	 * Tear down
-	 */
-	public function tearDown() {
-		foreach ($this->testNodesToDelete as $node) {
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($node, PATH_site . 'typo3temp/')) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($node, TRUE);
-			}
-		}
-		parent::tearDown();
-	}
-
-	/**
 	 * @test
 	 * @expectedException \TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException
 	 */
@@ -263,7 +246,7 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$path = PATH_site . 'typo3temp/' . uniqid('link_');
 		$target = PATH_site . uniqid('linkTarget_');
 		symlink($target, $path);
-		$this->testNodesToDelete[] = $path;
+		$this->testFilesToDelete[] = $path;
 		$node->expects($this->any())->method('exists')->will($this->returnValue(TRUE));
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
 		$this->assertTrue($node->_call('isLink'));
@@ -280,7 +263,7 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\LinkNode', array('exists', 'getAbsolutePath'), array(), '', FALSE);
 		$path = PATH_site . 'typo3temp/' . uniqid('file_');
 		touch($path);
-		$this->testNodesToDelete[] = $path;
+		$this->testFilesToDelete[] = $path;
 		$node->expects($this->any())->method('exists')->will($this->returnValue(TRUE));
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
 		$this->assertFalse($node->_call('isLink'));
@@ -344,7 +327,7 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$path = PATH_site . 'typo3temp/' . uniqid('link_');
 		$target = uniqid('linkTarget_');
 		symlink($target, $path);
-		$this->testNodesToDelete[] = $path;
+		$this->testFilesToDelete[] = $path;
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\LinkNode',
 			array('exists', 'isLink', 'getTarget', 'getAbsolutePath'),
@@ -369,7 +352,7 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$path = PATH_site . 'typo3temp/' . uniqid('link_');
 		$target = uniqid('linkTarget_');
 		symlink($target, $path);
-		$this->testNodesToDelete[] = $path;
+		$this->testFilesToDelete[] = $path;
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\LinkNode',
 			array('exists', 'isLink', 'getTarget', 'getAbsolutePath'),

@@ -22,12 +22,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * Absolute path to files that must be removed
-	 * after a test - handled in tearDown
-	 */
-	protected $testFilesToDelete = array();
-
-	/**
 	 * @var \TYPO3\CMS\Core\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $fixture;
@@ -39,16 +33,6 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				'getLocalConfigurationFileLocation',
 			)
 		);
-	}
-
-	/**
-	 * Tear down test case
-	 */
-	public function tearDown() {
-		foreach ($this->testFilesToDelete as $absoluteFileName) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile($absoluteFileName);
-		}
-		parent::tearDown();
 	}
 
 	/**
@@ -446,6 +430,7 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$result = $fixture->canWriteConfiguration();
 
 		$this->assertTrue($result);
+		$this->testFilesToDelete[] = $absoluteDirectory;
 	}
 
 	/**

@@ -26,28 +26,6 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $fakedExtensions = array();
 
 	/**
-	 * @var array List of resources (files or empty directories) that need to be removed in tearDown() again
-	 */
-	protected $resourcesToRemove = array();
-
-	/**
-	 * @return void
-	 */
-	public function tearDown() {
-		foreach ($this->fakedExtensions as $extension => $dummy) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir(PATH_site . 'typo3conf/ext/' . $extension, TRUE);
-		}
-		foreach ($this->resourcesToRemove as $resource) {
-			if (file_exists($resource) && is_file($resource)) {
-				unlink($resource);
-			} elseif(file_exists($resource) && is_dir($resource)) {
-				rmdir($resource);
-			}
-		}
-		parent::tearDown();
-	}
-
-	/**
 	 * Creates a fake extension inside typo3temp/. No configuration is created,
 	 * just the folder
 	 *
@@ -56,8 +34,8 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected function createFakeExtension($extkeyOnly = FALSE) {
 		$extKey = strtolower(uniqid('testing'));
-		$absExtPath = PATH_site . 'typo3conf/ext/' . $extKey . '/';
-		$relPath = 'typo3conf/ext/' . $extKey . '/';
+		$absExtPath = PATH_site . 'typo3temp/ext-' . $extKey . '/';
+		$relPath = 'typo3temp/ext-' . $extKey . '/';
 		$this->fakedExtensions[$extKey] = array(
 			'siteRelPath' => $relPath,
 			'siteAbsPath' => $absExtPath
@@ -66,6 +44,7 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			return $extKey;
 		}
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($absExtPath);
+		$this->testFilesToDelete[] = PATH_site . 'typo3temp/ext-' . $extKey;
 		return $extKey;
 	}
 
@@ -75,8 +54,13 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function makeAndClearExtensionDirRemovesExtensionDirIfAlreadyExists() {
 		$extKey = $this->createFakeExtension();
-		$fileHandlerMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\FileHandlingUtility', array('removeDirectory', 'addDirectory'), array(), '', FALSE);
-		$fileHandlerMock->expects($this->once())->method('removeDirectory')->with(PATH_site . 'typo3conf/ext/' . $extKey . '/');
+		$fileHandlerMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\FileHandlingUtility', array('removeDirectory', 'addDirectory', 'getExtensionDir'), array(), '', FALSE);
+		$fileHandlerMock->expects($this->once())
+			->method('removeDirectory')
+			->with(PATH_site . 'typo3temp/ext-' . $extKey . '/');
+		$fileHandlerMock->expects($this->any())
+			->method('getExtensionDir')
+			->willReturn(PATH_site . 'typo3temp/ext-' . $extKey . '/');
 		$fileHandlerMock->_call('makeAndClearExtensionDir', $extKey);
 	}
 
@@ -130,8 +114,13 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function makeAndClearExtensionDirAddsDir() {
 		$extKey = $this->createFakeExtension();
-		$fileHandlerMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\FileHandlingUtility', array('removeDirectory', 'addDirectory'));
-		$fileHandlerMock->expects($this->once())->method('addDirectory')->with(PATH_site . 'typo3conf/ext/' . $extKey . '/');
+		$fileHandlerMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\FileHandlingUtility', array('removeDirectory', 'addDirectory', 'getExtensionDir'));
+		$fileHandlerMock->expects($this->once())
+			->method('addDirectory')
+			->with(PATH_site . 'typo3temp/ext-' . $extKey . '/');
+		$fileHandlerMock->expects($this->any())
+			->method('getExtensionDir')
+			->willReturn(PATH_site . 'typo3temp/ext-' . $extKey . '/');
 		$fileHandlerMock->_call('makeAndClearExtensionDir', $extKey);
 	}
 
@@ -152,9 +141,9 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function addDirectoryAddsDirectory() {
-		$extDirPath = $this->fakedExtensions[$this->createFakeExtension(TRUE)]['siteAbsPath'];
+		$extDirPath = PATH_site . '/typo3temp/' . uniqid('test-extensions-', TRUE);
+		$this->testFilesToDelete[] = $extDirPath;
 		$fileHandlerMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\FileHandlingUtility', array('dummy'));
-		$this->assertFalse(is_dir($extDirPath));
 		$fileHandlerMock->_call('addDirectory', $extDirPath);
 		$this->assertTrue(is_dir($extDirPath));
 	}
@@ -164,9 +153,9 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function removeDirectoryRemovesDirectory() {
-		$extDirPath = $this->fakedExtensions[$this->createFakeExtension()]['siteAbsPath'];
+		$extDirPath = PATH_site . '/typo3temp/' . uniqid('test-extensions-', TRUE);
+		@mkdir($extDirPath);
 		$fileHandlerMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\FileHandlingUtility', array('dummy'));
-		$this->assertTrue(is_dir($extDirPath));
 		$fileHandlerMock->_call('removeDirectory', $extDirPath);
 		$this->assertFalse(is_dir($extDirPath));
 	}
@@ -179,7 +168,7 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$absoluteSymlinkPath = PATH_site . 'typo3temp/' . uniqid('test_symlink_');
 		$absoluteFilePath = PATH_site . 'typo3temp/' . uniqid('test_file_');
 		touch($absoluteFilePath);
-		$this->resourcesToRemove[] = $absoluteFilePath;
+		$this->testFilesToDelete[] = $absoluteFilePath;
 		symlink($absoluteFilePath, $absoluteSymlinkPath);
 		$fileHandler = new \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility();
 		$fileHandler->removeDirectory($absoluteSymlinkPath);
@@ -198,8 +187,8 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		mkdir($absoluteDirectoryPath);
 		touch($absoluteDirectoryPath . $relativeFilePath);
 
-		$this->resourcesToRemove[] = $absoluteDirectoryPath . $relativeFilePath;
-		$this->resourcesToRemove[] = $absoluteDirectoryPath;
+		$this->testFilesToDelete[] = $absoluteDirectoryPath . $relativeFilePath;
+		$this->testFilesToDelete[] = $absoluteDirectoryPath;
 
 		symlink($absoluteDirectoryPath, $absoluteSymlinkPath);
 
@@ -567,7 +556,7 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		// File was created
 		$this->assertTrue(file_exists($filename), 'Zip file not created');
-		$this->resourcesToRemove[] = $filename;
+		$this->testFilesToDelete[] = $filename;
 
 		// Read archive and check its contents
 		$archive = new \ZipArchive();

@@ -85,8 +85,8 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function tearDown() {
-		foreach ($this->fakedExtensions as $extension => $dummy) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir(PATH_site . 'typo3temp/' . $extension, TRUE);
+		foreach ($this->fakedExtensions as $fakeExtkey => $fakeExtension) {
+			$this->testFilesToDelete[] = PATH_site . 'typo3temp/' . $fakeExtkey;
 		}
 		parent::tearDown();
 	}

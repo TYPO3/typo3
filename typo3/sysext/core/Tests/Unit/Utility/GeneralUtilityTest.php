@@ -29,11 +29,6 @@ use \org\bovigo\vfs\vfsStreamWrapper;
 class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var array Files, directories and links to be deleted after a test
-	 */
-	protected $testFilesToDelete = array();
-
-	/**
 	 * @var array A backup of registered singleton instances
 	 */
 	protected $singletonInstances = array();
@@ -47,9 +42,6 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	public function tearDown() {
 		Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
-		foreach ($this->testFilesToDelete as $absoluteFileName) {
-			Utility\GeneralUtility::rmdir($absoluteFileName, TRUE);
-		}
 		parent::tearDown();
 	}
 
@@ -2947,13 +2939,13 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		}
 		// Create and prepare test file
 		$filename = PATH_site . 'typo3temp/../typo3temp/' . uniqid('test_');
-		$this->testFilesToDelete[] = $filename;
 		touch($filename);
 		chmod($filename, 482);
 		// Set target permissions and run method
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0660';
 		$fixPermissionsResult = Utility\GeneralUtility::fixPermissions($filename);
 		clearstatcache();
+		$this->testFilesToDelete[] = $filename;
 		$this->assertFalse($fixPermissionsResult);
 	}
 
@@ -4288,16 +4280,26 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		if (TYPO3_OS == 'WIN') {
 			$this->markTestSkipped('deprecationLogFixesPermissionsOnLogFile() test not available on Windows.');
 		}
-		// Fake all required settings and get an unique logfilename
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = uniqid('test_');
-		$deprecationLogFilename = Utility\GeneralUtility::getDeprecationLogFileName();
+		// Create extending class and let getDeprecationLogFileName return something within typo3temp/
+		$className = uniqid('GeneralUtility');
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Utility\GeneralUtility $subject */
+		$subject = __NAMESPACE__ . '\\' . $className;
+		eval(
+			'namespace ' . __NAMESPACE__ . ';' .
+			'class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Utility\\GeneralUtility {' .
+			'  static public function getDeprecationLogFileName() {' .
+			'    return PATH_site . \'typo3temp/test_deprecation/test.log\';' .
+			'  }' .
+			'}'
+		);
+		$filePath = PATH_site . 'typo3temp/test_deprecation/';
+		@mkdir($filePath);
+		$this->testFilesToDelete[] = $filePath;
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog'] = TRUE;
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0777';
-		// Call method, get actual permissions and clean up
-		Utility\GeneralUtility::deprecationLog('foo');
-		$this->testFilesToDelete[] = $deprecationLogFilename;
+		$subject::deprecationLog('foo');
 		clearstatcache();
-		$resultFilePermissions = substr(decoct(fileperms($deprecationLogFilename)), 2);
+		$resultFilePermissions = substr(decoct(fileperms($filePath . 'test.log')), 2);
 		$this->assertEquals('0777', $resultFilePermissions);
 	}
 

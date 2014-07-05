@@ -31,14 +31,6 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	protected $singletonInstances = array();
 
 	/**
-	 * Absolute path to files that must be removed
-	 * after a test - handled in tearDown
-	 *
-	 * @TODO : Check if the tests can use vfs:// instead
-	 */
-	protected $testFilesToDelete = array();
-
-	/**
 	 * @var \TYPO3\CMS\Core\Package\PackageManager
 	 */
 	protected $backUpPackageManager;
@@ -46,19 +38,12 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	public function setUp() {
 		$this->singletonInstances = GeneralUtility::getSingletonInstances();
 		$this->createAccessibleProxyClass();
-		$this->testFilesToDelete = array();
 		$this->backUpPackageManager = ExtensionManagementUtilityAccessibleProxy::getPackageManager();
 		$this->singletonInstances = GeneralUtility::getSingletonInstances();
 	}
 
 	public function tearDown() {
 		ExtensionManagementUtility::clearExtensionKeyMap();
-		foreach ($this->testFilesToDelete as $absoluteFileName) {
-			GeneralUtility::unlink_tempfile($absoluteFileName);
-		}
-		if (file_exists(PATH_site . 'typo3temp/test_ext/')) {
-			GeneralUtility::rmdir(PATH_site . 'typo3temp/test_ext/', TRUE);
-		}
 		ExtensionManagementUtilityAccessibleProxy::setPackageManager($this->backUpPackageManager);
 		ExtensionManagementUtilityAccessibleProxy::setCacheManager(NULL);
 		$GLOBALS['TYPO3_LOADED_EXT'] = new \TYPO3\CMS\Core\Compatibility\LoadedExtensionsArray($this->backUpPackageManager);
@@ -127,8 +112,9 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	 * @return object
 	 */
 	protected function createMockPackageManagerWithMockPackage($packageKey, $packageMethods = array('getPackagePath', 'getPackageKey')) {
-		$packagePath = PATH_site . 'typo3temp/test_ext/' . $packageKey . '/';
+		$packagePath = PATH_site . 'typo3temp/' . $packageKey . '/';
 		GeneralUtility::mkdir_deep($packagePath);
+		$this->testFilesToDelete[] = $packagePath;
 		$package = $this->getMockBuilder('TYPO3\\CMS\\Core\\Package\\Package')
 				->disableOriginalConstructor()
 				->setMethods($packageMethods)
@@ -859,7 +845,6 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		$extensionName = uniqid('foo');
 		$packageManager = $this->createMockPackageManagerWithMockPackage($extensionName);
 		$extLocalconfLocation = $packageManager->getPackage($extensionName)->getPackagePath() . 'ext_localconf.php';
-		$this->testFilesToDelete[] = $extLocalconfLocation;
 		$uniqueStringInLocalconf = uniqid('foo');
 		file_put_contents($extLocalconfLocation, "<?php\n\n" . $uniqueStringInLocalconf . "\n\n?>");
 		$GLOBALS['TYPO3_LOADED_EXT'] = new \TYPO3\CMS\Core\Compatibility\LoadedExtensionsArray($packageManager);

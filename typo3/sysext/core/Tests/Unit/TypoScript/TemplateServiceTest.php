@@ -24,13 +24,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * Enable backup of global and system variables
-	 *
-	 * @var boolean
-	 */
-	protected $backupGlobals = TRUE;
-
-	/**
 	 * @var \TYPO3\CMS\Core\TypoScript\TemplateService
 	 */
 	protected $templateService;

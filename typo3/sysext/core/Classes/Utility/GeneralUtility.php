@@ -5094,7 +5094,7 @@ Connection: close
 				require_once ExtensionManagementUtility::extPath('core') . 'Classes/Locking/Locker.php';
 			}
 			// Write a longer message to the deprecation log
-			$destination = self::getDeprecationLogFileName();
+			$destination = static::getDeprecationLogFileName();
 			$file = @fopen($destination, 'a');
 			if ($file) {
 				@fwrite($file, ($date . $msg . LF));

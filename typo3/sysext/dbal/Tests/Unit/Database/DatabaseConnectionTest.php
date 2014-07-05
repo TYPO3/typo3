@@ -27,11 +27,6 @@ class DatabaseConnectionTest extends AbstractTestCase {
 	protected $subject;
 
 	/**
-	 * @var array
-	 */
-	protected $temporaryFiles = array();
-
-	/**
 	 * Set up
 	 */
 	public function setUp() {
@@ -61,17 +56,6 @@ class DatabaseConnectionTest extends AbstractTestCase {
 	}
 
 	/**
-	 * Tear down.
-	 */
-	public function tearDown() {
-		// Delete temporary files
-		foreach ($this->temporaryFiles as $filename) {
-			unlink($filename);
-		}
-		parent::tearDown();
-	}
-
-	/**
 	 * Creates a fake extension with a given table definition.
 	 *
 	 * @param string $tableDefinition SQL script to create the extension's tables
@@ -84,7 +68,7 @@ class DatabaseConnectionTest extends AbstractTestCase {
 		if (!GeneralUtility::writeFile($ext_tables, $tableDefinition)) {
 			throw new \RuntimeException('Can\'t write temporary ext_tables file.');
 		}
-		$this->temporaryFiles[] = $ext_tables;
+		$this->testFilesToDelete[] = $ext_tables;
 		$GLOBALS['TYPO3_LOADED_EXT'] = array(
 			'test_dbal' => array(
 				'ext_tables.sql' => $ext_tables

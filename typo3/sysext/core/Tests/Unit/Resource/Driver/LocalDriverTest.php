@@ -794,6 +794,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 		));
 		$fixture = $this->createDriverFixture();
 		$filePath = GeneralUtility::fixWindowsFilePath($fixture->_call('copyFileToTemporaryPath', '/someDir/someFile'));
+		$this->testFilesToDelete[] = $filePath;
 		$this->assertContains('/typo3temp/', $filePath);
 		$this->assertEquals($fileContents, file_get_contents($filePath));
 	}

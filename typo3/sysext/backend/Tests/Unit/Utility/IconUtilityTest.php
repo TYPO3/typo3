@@ -110,12 +110,12 @@ class IconUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		// Create image resource, determine target filename, fake target permission, run method and clean up
 		$fixtureGifRessource = imagecreatefromgif($fixtureGifFile);
 		$targetFilename = PATH_site . 'typo3temp/' . uniqid('test_') . '.gif';
+		$this->testFilesToDelete[] = $targetFilename;
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0777';
 		$subject = $this->subject;
 		$subject::imagemake($fixtureGifRessource, $targetFilename);
 		clearstatcache();
 		$resultFilePermissions = substr(decoct(fileperms($targetFilename)), 2);
-		\TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile($targetFilename);
 		$this->assertEquals($resultFilePermissions, '0777');
 	}
 

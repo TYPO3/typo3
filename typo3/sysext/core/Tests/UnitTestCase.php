@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Core\Tests;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Base test case for unit tests.
@@ -33,6 +36,15 @@ abstract class UnitTestCase extends BaseTestCase {
 	protected $backupGlobalsBlacklist = array('TYPO3_LOADED_EXT');
 
 	/**
+	 * Absolute path to files that should be removed after a test.
+	 * Handled in tearDown. Tests can register here to get any files
+	 * within typo3temp/ or typo3conf/ext cleaned up again.
+	 *
+	 * @var array
+	 */
+	protected $testFilesToDelete = array();
+
+	/**
 	 * Unset all additional properties of test classes to help PHP
 	 * garbage collection. This reduces memory footprint with lots
 	 * of tests.
@@ -41,9 +53,11 @@ abstract class UnitTestCase extends BaseTestCase {
 	 * parent::tearDown() at the end. Unsetting of own properties
 	 * is not needed this way.
 	 *
+	 * @throws \RuntimeException
 	 * @return void
 	 */
 	protected function tearDown() {
+		// Unset properties of test classes to safe memory
 		$reflection = new \ReflectionObject($this);
 		foreach ($reflection->getProperties() as $property) {
 			$declaringClass = $property->getDeclaringClass()->getName();
@@ -58,5 +72,28 @@ abstract class UnitTestCase extends BaseTestCase {
 			}
 		}
 		unset($reflection);
+
+		// Delete registered test files and directories
+		foreach ($this->testFilesToDelete as $absoluteFileName) {
+			$absoluteFileName = GeneralUtility::fixWindowsFilePath(PathUtility::getCanonicalPath($absoluteFileName));
+			if (!GeneralUtility::validPathStr($absoluteFileName)) {
+				throw new \RuntimeException('tearDown() cleanup: Filename contains illegal characters', 1410633087);
+			}
+			if (!StringUtility::beginsWith($absoluteFileName, PATH_site . 'typo3temp/')) {
+				throw new \RuntimeException(
+					'tearDown() cleanup:  Files to delete must be within typo3temp/',
+					1410633412
+				);
+			}
+			// file_exists returns false for links pointing to not existing targets, so handle links before next check.
+			if (@is_link($absoluteFileName) || @is_file($absoluteFileName)) {
+				unlink($absoluteFileName);
+			} elseif(@is_dir($absoluteFileName)) {
+				GeneralUtility::rmdir($absoluteFileName, TRUE);
+			} else {
+				throw new \RuntimeException('tearDown() cleanup: File, link or directory does not exist', 1410633510);
+			}
+		}
+		$this->testFilesToDelete = array();
 	}
 }

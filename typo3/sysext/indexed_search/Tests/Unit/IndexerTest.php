@@ -30,27 +30,10 @@ class IndexerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $fixture = NULL;
 
 	/**
-	 * A name of the temporary file
-	 *
-	 * @var string
-	 */
-	protected $temporaryFileName = '';
-
-	/**
 	 * Sets up the test
 	 */
 	public function setUp() {
 		$this->fixture = $this->getMock('TYPO3\CMS\IndexedSearch\Indexer', array('dummy'));
-	}
-
-	/**
-	 * Explicitly clean up the indexer object to prevent any memory leaks
-	 */
-	public function tearDown() {
-		if ($this->temporaryFileName) {
-			@unlink($this->temporaryFileName);
-		}
-		parent::tearDown();
 	}
 
 	/**
@@ -67,14 +50,15 @@ class IndexerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function extractHyperLinksReturnsCorrectFileUsingT3Vars() {
-		$this->temporaryFileName = tempnam(sys_get_temp_dir(), 't3unit-');
+		$temporaryFileName = tempnam(PATH_site . 'typo3temp/', 't3unit-');
+		$this->testFilesToDelete[] = $temporaryFileName;
 		$html = 'test <a href="testfile">test</a> test';
 		$GLOBALS['T3_VAR']['ext']['indexed_search']['indexLocalFiles'] = array(
-			\TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5('testfile') => $this->temporaryFileName,
+			\TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5('testfile') => $temporaryFileName,
 		);
 		$result = $this->fixture->extractHyperLinks($html);
 		$this->assertEquals(1, count($result));
-		$this->assertEquals($this->temporaryFileName, $result[0]['localPath']);
+		$this->assertEquals($temporaryFileName, $result[0]['localPath']);
 	}
 
 	/**

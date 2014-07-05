@@ -20,23 +20,6 @@ namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var array Directories or files in typo3temp/ created during tests to delete afterwards
-	 */
-	protected $testNodesToDelete = array();
-
-	/**
-	 * Tear down
-	 */
-	public function tearDown() {
-		foreach($this->testNodesToDelete as $node) {
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($node, PATH_site . 'typo3temp/')) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($node, TRUE);
-			}
-		}
-		parent::tearDown();
-	}
-
-	/**
 	 * @test
 	 */
 	public function getNameReturnsSetName() {
@@ -127,7 +110,7 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\AbstractNode', array('getAbsolutePath'), array(), '', FALSE);
 		$path = PATH_site . 'typo3temp/' . uniqid('dir_');
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($path);
-		$this->testNodesToDelete[] = $path;
+		$this->testFilesToDelete[] = $path;
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
 		$this->assertTrue($node->_call('exists'));
 	}
@@ -144,7 +127,7 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$path = PATH_site . 'typo3temp/' . uniqid('link_');
 		$target = PATH_site . 'typo3temp/' . uniqid('notExists_');
 		symlink($target, $path);
-		$this->testNodesToDelete[] = $path;
+		$this->testFilesToDelete[] = $path;
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
 		$this->assertTrue($node->_call('exists'));
 	}
@@ -203,7 +186,7 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$subPath = $path . '/' . uniqid('dir_');
 		mkdir($subPath);
 		chmod($path, 02000);
-		$this->testNodesToDelete[] = $path;
+		$this->testFilesToDelete[] = $path;
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($subPath));
 		$node->_set('targetPermission', '2770');
 		$this->assertInstanceOf('TYPO3\\CMS\\Install\\Status\\NoticeStatus', $node->_call('fixPermission'));
@@ -235,7 +218,7 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$subPath = $path . '/' . uniqid('dir_');
 		mkdir($subPath);
 		chmod($path, 02000);
-		$this->testNodesToDelete[] = $path;
+		$this->testFilesToDelete[] = $path;
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($subPath));
 		$node->_set('targetPermission', '2770');
 		$this->assertInstanceOf('TYPO3\\CMS\\Install\\Status\\NoticeStatus', $node->_call('fixPermission'));
@@ -264,7 +247,7 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$subPath = $path . '/' . uniqid('dir_');
 		mkdir($subPath);
 		chmod($path, 02770);
-		$this->testNodesToDelete[] = $path;
+		$this->testFilesToDelete[] = $path;
 		$node->_set('targetPermission', '2770');
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($subPath));
 		$this->assertInstanceOf('TYPO3\\CMS\\Install\\Status\\OkStatus', $node->_call('fixPermission'));
@@ -305,7 +288,7 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\AbstractNode', array('getAbsolutePath'), array(), '', FALSE);
 		$path = PATH_site . 'typo3temp/' . uniqid('dir_');
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($path);
-		$this->testNodesToDelete[] = $path;
+		$this->testFilesToDelete[] = $path;
 		chmod($path, 02775);
 		clearstatcache();
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
@@ -323,7 +306,7 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\AbstractNode', array('getAbsolutePath'), array(), '', FALSE);
 		$file = PATH_site . 'typo3temp/' . uniqid('file_');
 		touch($file);
-		$this->testNodesToDelete[] = $file;
+		$this->testFilesToDelete[] = $file;
 		chmod($file, 0770);
 		clearstatcache();
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($file));
