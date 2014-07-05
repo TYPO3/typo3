@@ -125,7 +125,21 @@ tt_content.' . $pluginSignature . ' {
 		}
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
 		$pluginSignature = strtolower($extensionName) . '_' . strtolower($pluginName);
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(array($pluginTitle, $pluginSignature, $pluginIconPathAndFilename), $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['pluginType']);
+
+		// At this point $extensionName is normalized, no matter which format the method was feeded with.
+		// Calculate the original extensionKey from this again.
+		$extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
+
+		// pluginType is usually defined by configurePlugin() in the global array. Use this or fall back to default "list_type".
+		$pluginType = isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['pluginType'])
+			? $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['pluginType']
+			: 'list_type';
+
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
+			array($pluginTitle, $pluginSignature, $pluginIconPathAndFilename),
+			$pluginType,
+			$extensionKey
+		);
 	}
 
 	/**

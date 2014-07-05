@@ -251,4 +251,66 @@ class ExtensionUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 		$this->assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
 	}
+
+	/**
+	 * Tests method combination of registerPlugin() and its dependency addPlugin() to
+	 * verify plugin icon path resolving works.
+	 *
+	 * @test
+	 */
+	public function registerPluginTriggersAddPluginWhichSetsPluginIconPathIfUsingUnderscoredExtensionNameAndIconPathNotGiven() {
+		$GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = array();
+		$GLOBALS['TYPO3_LOADED_EXT'] = array();
+		$GLOBALS['TYPO3_LOADED_EXT']['indexed_search']['ext_icon'] = 'foo.gif';
+		\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+			'indexed_search',
+			'Pi2',
+			'Testing'
+		);
+		$this->assertEquals(
+			'sysext/indexed_search/foo.gif',
+			$GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'][0][2]
+		);
+	}
+
+	/**
+	 * Tests method combination of registerPlugin() and its dependency addPlugin() to
+	 * verify plugin icon path resolving works.
+	 *
+	 * @test
+	 */
+	public function registerPluginTriggersAddPluginWhichSetsPluginIconPathIfUsingUpperCameCasedExtensionNameAndIconPathNotGiven() {
+		$GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = array();
+		$GLOBALS['TYPO3_LOADED_EXT'] = array();
+		$GLOBALS['TYPO3_LOADED_EXT']['indexed_search']['ext_icon'] = 'foo.gif';
+		\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+			'IndexedSearch',
+			'Pi2',
+			'Testing'
+		);
+		$this->assertEquals(
+			'sysext/indexed_search/foo.gif',
+			$GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'][0][2]
+		);
+	}
+
+	/**
+	 * Tests method combination of registerPlugin() and its dependency addPlugin() to
+	 * verify plugin icon path resolving works.
+	 *
+	 * @test
+	 */
+	public function registerPluginTriggersAddPluginWhichSetsPluginIconPathIfIconPathIsGiven() {
+		$GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = array();
+		\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+			'IndexedSearch',
+			'Pi2',
+			'Testing',
+			'sysext/indexed_search/foo.gif'
+		);
+		$this->assertEquals(
+			'sysext/indexed_search/foo.gif',
+			$GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'][0][2]
+		);
+	}
 }
