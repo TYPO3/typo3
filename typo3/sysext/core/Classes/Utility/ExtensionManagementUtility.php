@@ -1615,9 +1615,11 @@ tt_content.' . $key . $prefix . ' {
 	static protected function buildBaseTcaFromSingleFiles() {
 		$GLOBALS['TCA'] = array();
 
+		$activePackages = static::$packageManager->getActivePackages();
+
 		// First load "full table" files from Configuration/TCA
-		foreach (self::getLoadedExtensionListArray() as $extensionName) {
-			$tcaConfigurationDirectory = self::extPath($extensionName) . 'Configuration/TCA';
+		foreach ($activePackages as $package) {
+			$tcaConfigurationDirectory = $package->getPackagePath() . 'Configuration/TCA';
 			if (is_dir($tcaConfigurationDirectory)) {
 				$files = scandir($tcaConfigurationDirectory);
 				foreach ($files as $file) {
@@ -1642,7 +1644,7 @@ tt_content.' . $key . $prefix . ' {
 		\TYPO3\CMS\Core\Category\CategoryRegistry::getInstance()->applyTcaForPreRegisteredTables();
 
 		// Execute override files from Configuration/TCA/Overrides
-		foreach (static::$packageManager->getActivePackages() as $package) {
+		foreach ($activePackages as $package) {
 			$tcaOverridesPathForPackage = $package->getPackagePath() . 'Configuration/TCA/Overrides';
 			if (is_dir($tcaOverridesPathForPackage)) {
 				$files = scandir($tcaOverridesPathForPackage);
