@@ -106,7 +106,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		$this->reloadCaches();
 		$this->processRuntimeDatabaseUpdates($extensionKey);
 		$this->saveDefaultConfiguration($extension['key']);
-		if ($extension['clearcacheonload']) {
+		if (!empty($extension['clearcacheonload']) || !empty($extension['clearCacheOnLoad'])) {
 			$this->cacheManager->flushCaches();
 		} else {
 			$this->cacheManager->flushCachesInGroup('system');
