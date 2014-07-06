@@ -13,24 +13,13 @@ $EM_CONF[$_EXTKEY] = array(
 	'description' => 'The core TypoScript Content Management engine in TYPO3.
 This should probably not be disabled. But the point is that Typo3 is able to work as a framework for... anything without this (and the whole tslib/ frontend which is tied to this extension). A LOT of the other extensions - in particular all plugins - are dependant on this extension being loaded.',
 	'category' => 'be',
-	'shy' => 1,
-	'dependencies' => '',
-	'conflicts' => '',
-	'priority' => 'top',
-	'loadOrder' => '',
-	'module' => 'layout',
 	'state' => 'stable',
-	'internal' => 1,
 	'uploadfolder' => 0,
 	'createDirs' => '',
-	'modify_tables' => 'pages',
 	'clearCacheOnLoad' => 1,
-	'lockType' => 'S',
 	'author' => 'Kasper Skaarhoj',
 	'author_email' => 'kasperYYYY@typo3.com',
 	'author_company' => 'CURBY SOFT Multimedie',
-	'CGLcompliance' => '',
-	'CGLcompliance_note' => '',
 	'version' => '6.3.0',
 	'_md5_values_when_last_written' => '',
 	'constraints' => array(
@@ -38,7 +27,6 @@ This should probably not be disabled. But the point is that Typo3 is able to wor
 			'typo3' => '6.3.0-6.3.99',
 		),
 		'conflicts' => array(),
-		'suggests' => array()
+		'suggests' => array(),
 	),
-	'suggests' => array()
 );

@@ -12,18 +12,10 @@ $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Web>Func, Wizards, Sort pages',
 	'description' => 'A little utility to rearrange the sorting order of pages in the backend.',
 	'category' => 'module',
-	'shy' => 1,
-	'dependencies' => 'func_wizards',
-	'conflicts' => '',
-	'priority' => '',
-	'module' => '',
 	'state' => 'stable',
-	'internal' => 0,
 	'uploadfolder' => 0,
 	'createDirs' => '',
-	'modify_tables' => '',
 	'clearCacheOnLoad' => 0,
-	'lockType' => '',
 	'author' => 'Kasper Skaarhoj',
 	'author_email' => 'kasperYYYY@typo3.com',
 	'author_company' => 'Curby Soft Multimedia',
@@ -35,7 +27,6 @@ $EM_CONF[$_EXTKEY] = array(
 			'func_wizards' => '6.3.0-6.3.99',
 		),
 		'conflicts' => array(),
-		'suggests' => array()
+		'suggests' => array(),
 	),
-	'suggests' => array()
 );

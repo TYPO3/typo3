@@ -12,24 +12,14 @@ $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Scheduler',
 	'description' => 'The TYPO3 Scheduler let\'s you register tasks to happen at a specific time',
 	'category' => 'misc',
-	'shy' => 0,
 	'version' => '6.3.0',
-	'dependencies' => '',
-	'conflicts' => 'gabriel',
-	'priority' => '',
-	'loadOrder' => '',
-	'module' => 'mod1',
 	'state' => 'stable',
 	'uploadfolder' => 0,
 	'createDirs' => '',
-	'modify_tables' => '',
 	'clearcacheonload' => 0,
-	'lockType' => '',
 	'author' => 'Francois Suter',
 	'author_email' => 'francois@typo3.org',
 	'author_company' => '',
-	'CGLcompliance' => '',
-	'CGLcompliance_note' => '',
 	'constraints' => array(
 		'depends' => array(
 			'typo3' => '6.3.0-6.3.99',
@@ -37,8 +27,7 @@ $EM_CONF[$_EXTKEY] = array(
 		'conflicts' => array(
 			'gabriel' => ''
 		),
-		'suggests' => array()
+		'suggests' => array(),
 	),
 	'_md5_values_when_last_written' => '',
-	'suggests' => array()
 );

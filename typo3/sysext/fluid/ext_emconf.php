@@ -14,27 +14,18 @@ $EM_CONF[$_EXTKEY] = array(
 	'category' => 'fe',
 	'author' => 'Sebastian Kurfürst, Bastian Waidelich',
 	'author_email' => 'sebastian@typo3.org, bastian@typo3.org',
-	'shy' => '',
-	'dependencies' => 'extbase',
-	'conflicts' => '',
-	'priority' => '',
-	'module' => '',
+	'author_company' => '',
 	'state' => 'stable',
-	'internal' => '',
 	'uploadfolder' => 0,
 	'createDirs' => '',
-	'modify_tables' => '',
 	'clearCacheOnLoad' => 0,
-	'lockType' => '',
-	'author_company' => '',
 	'version' => '6.3.0',
 	'constraints' => array(
 		'depends' => array(
 			'extbase' => '6.3.0-6.3.99',
 		),
 		'conflicts' => array(),
-		'suggests' => array()
+		'suggests' => array(),
 	),
 	'_md5_values_when_last_written' => '',
-	'suggests' => array()
 );

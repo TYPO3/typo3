@@ -14,27 +14,18 @@ $EM_CONF[$_EXTKEY] = array(
 	'category' => 'fe',
 	'author' => 'Jeff Segars, David Slayback',
 	'author_email' => 'jeff@webempoweredchurch.org, dave@webempoweredchurch.org',
-	'shy' => '',
-	'dependencies' => '',
-	'conflicts' => '',
-	'priority' => '',
-	'module' => '',
+	'author_company' => 'Web-Empowered Church',
 	'state' => 'stable',
-	'internal' => '',
 	'uploadfolder' => 0,
 	'createDirs' => '',
-	'modify_tables' => '',
 	'clearCacheOnLoad' => 0,
-	'lockType' => 'system',
-	'author_company' => 'Web-Empowered Church',
 	'version' => '6.3.0',
 	'constraints' => array(
 		'depends' => array(
 			'typo3' => '6.3.0-6.3.99',
 		),
 		'conflicts' => array(),
-		'suggests' => array()
+		'suggests' => array(),
 	),
 	'_md5_values_when_last_written' => '',
-	'suggests' => array()
 );

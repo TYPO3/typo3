@@ -12,24 +12,13 @@ $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Web>Info',
 	'description' => 'Shows various infos',
 	'category' => 'module',
-	'shy' => 1,
-	'dependencies' => '',
-	'conflicts' => '',
-	'priority' => '',
-	'loadOrder' => '',
-	'module' => 'view',
 	'state' => 'stable',
-	'internal' => 0,
 	'uploadfolder' => 0,
 	'createDirs' => '',
-	'modify_tables' => '',
 	'clearCacheOnLoad' => 0,
-	'lockType' => '',
 	'author' => 'Kasper Skaarhoj',
 	'author_email' => 'kasperYYYY@typo3.com',
 	'author_company' => '',
-	'CGLcompliance' => '',
-	'CGLcompliance_note' => '',
 	'version' => '6.3.0',
 	'_md5_values_when_last_written' => '',
 	'constraints' => array(
@@ -37,7 +26,6 @@ $EM_CONF[$_EXTKEY] = array(
 			'typo3' => '6.3.0-6.3.99',
 		),
 		'conflicts' => array(),
-		'suggests' => array()
+		'suggests' => array(),
 	),
-	'suggests' => array()
 );

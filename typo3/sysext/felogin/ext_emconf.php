@@ -14,27 +14,18 @@ $EM_CONF[$_EXTKEY] = array(
 	'category' => 'plugin',
 	'author' => 'Steffen Kamper',
 	'author_email' => 'info@sk-typo3.de',
-	'shy' => '',
-	'dependencies' => '',
-	'conflicts' => '',
-	'priority' => '',
-	'module' => '',
+	'author_company' => '',
 	'state' => 'stable',
-	'internal' => '',
 	'uploadfolder' => 1,
 	'createDirs' => '',
-	'modify_tables' => 'fe_groups,fe_users',
 	'clearCacheOnLoad' => 1,
-	'lockType' => '',
-	'author_company' => '',
 	'version' => '6.3.0',
 	'constraints' => array(
 		'depends' => array(
 			'typo3' => '6.3.0-6.3.99',
 		),
 		'conflicts' => array(),
-		'suggests' => array()
+		'suggests' => array(),
 	),
 	'_md5_values_when_last_written' => '',
-	'suggests' => array()
 );

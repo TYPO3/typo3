@@ -15,26 +15,17 @@ $EM_CONF[$_EXTKEY] = array(
 	'author' => 'Felix Kopp',
 	'author_email' => 'felix-source@phorax.com',
 	'author_company' => 'PHORAX',
-	'shy' => '',
-	'dependencies' => '',
-	'priority' => '',
-	'module' => 'mod',
 	'state' => 'beta',
-	'internal' => '',
 	'uploadfolder' => 0,
 	'createDirs' => '',
-	'modify_tables' => '',
 	'clearCacheOnLoad' => 0,
-	'lockType' => '',
 	'version' => '6.3.0',
 	'constraints' => array(
 		'depends' => array(
 			'typo3' => '6.3.0-6.3.99',
 		),
 		'conflicts' => array(),
-		'suggests' => array()
+		'suggests' => array(),
 	),
-	'suggests' => array(),
-	'conflicts' => '',
-	'_md5_values_when_last_written' => ''
+	'_md5_values_when_last_written' => '',
 );
