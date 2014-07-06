@@ -1,15 +1,4 @@
 <?php
-
-########################################################################
-# Extension Manager/Repository config file for ext "blog_example".
-#
-# Auto generated 15-02-2011 19:01
-#
-# Manual updates:
-# Only the data in the array - everything else is removed by next
-# writing. "version" and "dependencies" must not be touched!
-########################################################################
-
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'A Blog Example for the Extbase Framework',
 	'description' => 'An example extension demonstrating the features of the Extbase Framework. It is the back-ported and tweaked Blog Example package of FLOW3. Have fun playing with it!',

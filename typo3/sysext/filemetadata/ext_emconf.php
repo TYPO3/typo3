@@ -1,9 +1,4 @@
 <?php
-
-/*********************************************************************
- * Extension configuration file for ext "filemetadata".
- *********************************************************************/
-
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Advanced file metadata',
 	'description' => 'Add advanced metadata to File.',
