@@ -1,13 +1,4 @@
 <?php
-/***************************************************************
- * Extension Manager/Repository config file for ext "version".
- *
- * Auto generated 13-03-2012 16:03
- *
- * Manual updates:
- * Only the data in the array - everything else is removed by next
- * writing. "version" and "dependencies" must not be touched!
- ***************************************************************/
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Versioning Management',
 	'description' => 'Backend Interface for management of the versioning API.',

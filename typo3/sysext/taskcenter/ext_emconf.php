@@ -1,13 +1,4 @@
 <?php
-/***************************************************************
- * Extension Manager/Repository config file for ext "taskcenter".
- *
- * Auto generated 25-10-2011 13:11
- *
- * Manual updates:
- * Only the data in the array - everything else is removed by next
- * writing. "version" and "dependencies" must not be touched!
- ***************************************************************/
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'User>Task Center',
 	'description' => 'The Task Center is the framework for a host of other extensions, see below.',

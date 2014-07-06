@@ -1,13 +1,4 @@
 <?php
-/***************************************************************
- * Extension Manager/Repository config file for ext "cshmanual".
- *
- * Auto generated 10-10-2011 14:47
- *
- * Manual updates:
- * Only the data in the array - everything else is removed by next
- * writing. "version" and "dependencies" must not be touched!
- ***************************************************************/
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Help>TYPO3 Manual',
 	'description' => 'Shows TYPO3 inline user manual.',

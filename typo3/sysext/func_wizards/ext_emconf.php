@@ -1,13 +1,4 @@
 <?php
-/***************************************************************
- * Extension Manager/Repository config file for ext "func_wizards".
- *
- * Auto generated 25-10-2011 13:11
- *
- * Manual updates:
- * Only the data in the array - everything else is removed by next
- * writing. "version" and "dependencies" must not be touched!
- ***************************************************************/
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Web>Func, Wizards',
 	'description' => 'Adds the \'Wizards\' item to the function menu in Web>Func. This is just a framework for wizard extensions.',

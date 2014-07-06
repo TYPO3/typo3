@@ -1,13 +1,4 @@
 <?php
-/***************************************************************
- * Extension Manager/Repository config file for ext "frontend".
- *
- * Auto generated 25-10-2011 13:10
- *
- * Manual updates:
- * Only the data in the array - everything else is removed by next
- * writing. "version" and "dependencies" must not be touched!
- ***************************************************************/
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'TYPO3 Frontend library',
 	'description' => 'Classes for the frontend of TYPO3.',

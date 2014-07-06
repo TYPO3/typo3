@@ -1,13 +1,4 @@
 <?php
-/***************************************************************
- * Extension Manager/Repository config file for ext "rsaauth".
- *
- * Auto generated 25-10-2011 13:11
- *
- * Manual updates:
- * Only the data in the array - everything else is removed by next
- * writing. "version" and "dependencies" must not be touched!
- ***************************************************************/
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'RSA authentication for TYPO3',
 	'description' => 'Contains a service to authenticate TYPO3 BE and FE users using private/public key encryption of passwords',

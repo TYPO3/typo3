@@ -1,13 +1,4 @@
 <?php
-/***************************************************************
- * Extension Manager/Repository config file for ext "context_help".
- *
- * Auto generated 25-10-2011 13:10
- *
- * Manual updates:
- * Only the data in the array - everything else is removed by next
- * writing. "version" and "dependencies" must not be touched!
- ***************************************************************/
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Context Sensitive Help',
 	'description' => 'Provides context sensitive help to tables, fields and modules in the system languages.',

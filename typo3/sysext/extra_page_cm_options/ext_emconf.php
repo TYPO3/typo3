@@ -1,13 +1,4 @@
 <?php
-/***************************************************************
- * Extension Manager/Repository config file for ext "extra_page_cm_options".
- *
- * Auto generated 25-10-2011 13:10
- *
- * Manual updates:
- * Only the data in the array - everything else is removed by next
- * writing. "version" and "dependencies" must not be touched!
- ***************************************************************/
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Extra Click Menu Options',
 	'description' => 'Adds a submenu with extra options for page and tt_content click-menus.',
