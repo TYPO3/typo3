@@ -14,27 +14,18 @@ $EM_CONF[$_EXTKEY] = array(
 	'category' => 'module',
 	'author' => 'Ingo Renner',
 	'author_email' => 'ingo@typo3.org',
-	'shy' => '',
-	'dependencies' => '',
-	'conflicts' => '',
-	'priority' => '',
-	'module' => 'mod',
+	'author_company' => '',
 	'state' => 'stable',
-	'internal' => '',
 	'uploadfolder' => 0,
 	'createDirs' => '',
-	'modify_tables' => '',
 	'clearCacheOnLoad' => 0,
-	'lockType' => '',
-	'author_company' => '',
 	'version' => '6.2.0',
 	'constraints' => array(
 		'depends' => array(
 			'typo3' => '6.2.0-6.2.99',
 		),
 		'conflicts' => array(),
-		'suggests' => array()
+		'suggests' => array(),
 	),
 	'_md5_values_when_last_written' => '',
-	'suggests' => array()
 );

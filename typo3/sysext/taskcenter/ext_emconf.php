@@ -12,23 +12,13 @@ $EM_CONF[$_EXTKEY] = array(
 	'title' => 'User>Task Center',
 	'description' => 'The Task Center is the framework for a host of other extensions, see below.',
 	'category' => 'module',
-	'shy' => 1,
-	'dependencies' => '',
-	'conflicts' => '',
-	'priority' => '',
-	'loadOrder' => '',
 	'state' => 'stable',
-	'internal' => 0,
 	'uploadfolder' => 0,
 	'createDirs' => '',
-	'modify_tables' => '',
 	'clearCacheOnLoad' => 0,
-	'lockType' => '',
 	'author' => 'Kasper Skaarhoj',
 	'author_email' => 'kasperYYYY@typo3.com',
 	'author_company' => 'Curby Soft Multimedia',
-	'CGLcompliance' => '',
-	'CGLcompliance_note' => '',
 	'version' => '6.2.0',
 	'_md5_values_when_last_written' => '',
 	'constraints' => array(
@@ -38,7 +28,6 @@ $EM_CONF[$_EXTKEY] = array(
 		'conflicts' => array(),
 		'suggests' => array(
 			'sys_action' => '6.2.0-6.2.99',
-		)
+		),
 	),
-	'suggests' => array('sys_action')
 );

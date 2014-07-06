@@ -12,24 +12,13 @@ $EM_CONF[$_EXTKEY] = array(
 	'title' => 'CSS styled content',
 	'description' => 'Contains configuration for CSS content-rendering of the table "tt_content". This is meant as a modern substitute for the classic "content (default)" template which was based more on <font>-tags, while this is pure CSS. It is intended to work with all modern browsers (which excludes the NS4 series).',
 	'category' => 'fe',
-	'shy' => 0,
-	'dependencies' => '',
-	'conflicts' => '',
-	'priority' => 'top',
-	'loadOrder' => '',
-	'module' => '',
 	'state' => 'stable',
-	'internal' => 1,
 	'uploadfolder' => 0,
 	'createDirs' => '',
-	'modify_tables' => '',
 	'clearCacheOnLoad' => 1,
-	'lockType' => '',
 	'author' => 'Kasper Skaarhoj',
 	'author_email' => 'kasperYYYY@typo3.com',
 	'author_company' => 'Curby Soft Multimedia',
-	'CGLcompliance' => '',
-	'CGLcompliance_note' => '',
 	'version' => '6.2.0',
 	'_md5_values_when_last_written' => '',
 	'constraints' => array(
@@ -37,7 +26,6 @@ $EM_CONF[$_EXTKEY] = array(
 			'typo3' => '6.2.0-6.2.99',
 		),
 		'conflicts' => array(),
-		'suggests' => array()
+		'suggests' => array(),
 	),
-	'suggests' => array()
 );

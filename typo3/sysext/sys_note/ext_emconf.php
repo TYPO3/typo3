@@ -12,24 +12,13 @@ $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Internal notes',
 	'description' => 'Records with messages which can be placed on any page and contain instructions or other information related to a page or section.',
 	'category' => 'be',
-	'shy' => 0,
-	'dependencies' => '',
-	'conflicts' => '',
-	'priority' => '',
-	'loadOrder' => '',
-	'module' => '',
 	'state' => 'stable',
-	'internal' => 1,
 	'uploadfolder' => 0,
 	'createDirs' => '',
-	'modify_tables' => '',
 	'clearCacheOnLoad' => 0,
-	'lockType' => '',
 	'author' => 'Kasper Skaarhoj',
 	'author_email' => 'kasperYYYY@typo3.com',
 	'author_company' => 'Curby Soft Multimedia',
-	'CGLcompliance' => '',
-	'CGLcompliance_note' => '',
 	'version' => '6.2.0',
 	'_md5_values_when_last_written' => '',
 	'constraints' => array(
@@ -37,7 +26,6 @@ $EM_CONF[$_EXTKEY] = array(
 			'typo3' => '6.2.0-6.2.99',
 		),
 		'conflicts' => array(),
-		'suggests' => array()
+		'suggests' => array(),
 	),
-	'suggests' => array()
 );

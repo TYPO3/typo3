@@ -12,24 +12,13 @@ $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Tools>Log',
 	'description' => 'Displays backend log, both per page and systemwide. Available as the module Tools>Log (system wide overview) and Web>Info/Log (page relative overview).',
 	'category' => 'module',
-	'shy' => 1,
-	'dependencies' => '',
-	'conflicts' => '',
-	'priority' => '',
-	'loadOrder' => '',
-	'module' => 'mod',
 	'state' => 'stable',
-	'internal' => 0,
 	'uploadfolder' => 0,
 	'createDirs' => '',
-	'modify_tables' => '',
 	'clearCacheOnLoad' => 0,
-	'lockType' => '',
 	'author' => 'Christian Kuhn',
 	'author_email' => '',
 	'author_company' => '',
-	'CGLcompliance' => '',
-	'CGLcompliance_note' => '',
 	'version' => '6.2.0',
 	'_md5_values_when_last_written' => '',
 	'constraints' => array(
@@ -37,7 +26,6 @@ $EM_CONF[$_EXTKEY] = array(
 			'typo3' => '6.2.0-6.2.99',
 		),
 		'conflicts' => array(),
-		'suggests' => array()
+		'suggests' => array(),
 	),
-	'suggests' => array()
 );
