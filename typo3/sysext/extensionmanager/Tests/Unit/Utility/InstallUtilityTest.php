@@ -147,6 +147,17 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function installCallsFlushCachesIfClearCacheOnLoadCamelCasedIsSet() {
+		$this->extensionData['clearCacheOnLoad'] = TRUE;
+		$cacheManagerMock = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager');
+		$cacheManagerMock->expects($this->once())->method('flushCaches');
+		$this->installMock->_set('cacheManager', $cacheManagerMock);
+		$this->installMock->install($this->extensionKey);
+	}
+
+	/**
+	 * @test
+	 */
 	public function installationOfAnExtensionWillCallEnsureThatDirectoriesExist() {
 		$cacheManagerMock = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager');
 		$cacheManagerMock->expects($this->once())->method('flushCachesInGroup');
