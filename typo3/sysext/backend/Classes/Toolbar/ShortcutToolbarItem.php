@@ -316,9 +316,21 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 	protected function getTokenUrl($url) {
 		$parsedUrl = parse_url($url);
 		parse_str($parsedUrl['query'], $parameters);
+
+		// parse the returnUrl and replace the module token of it
+		if (isset($parameters['returnUrl'])) {
+			$parsedReturnUrl = parse_url($parameters['returnUrl']);
+			parse_str($parsedReturnUrl['query'], $returnUrlParameters);
+			if (strpos($parsedReturnUrl['path'], 'mod.php') !== FALSE && isset($returnUrlParameters['M'])) {
+				$module = $returnUrlParameters['M'];
+				$returnUrl = BackendUtility::getModuleUrl($module, $returnUrlParameters);
+				$parameters['returnUrl'] = $returnUrl;
+				$url = $parsedUrl['path'] . '?' . http_build_query($parameters);
+			}
+		}
+
 		if (strpos($parsedUrl['path'], 'mod.php') !== FALSE && isset($parameters['M'])) {
 			$module = $parameters['M'];
-			unset($parameters['M']);
 			$url = str_replace('mod.php', '', $parsedUrl['path']) . BackendUtility::getModuleUrl($module, $parameters);
 		}
 		return $url;
