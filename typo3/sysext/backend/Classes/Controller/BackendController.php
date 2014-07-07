@@ -139,7 +139,7 @@ class BackendController {
 		$coreToolbarItems = array(
 			'shortcuts' => 'TYPO3\\CMS\\Backend\\Toolbar\\ShortcutToolbarItem',
 			'clearCacheActions' => 'TYPO3\\CMS\\Backend\\Toolbar\\ClearCacheToolbarItem',
-			'liveSearch' => '\\TYPO3\\CMS\\Backend\\Toolbar\\LiveSearchToolbarItem'
+			'liveSearch' => 'TYPO3\\CMS\\Backend\\Toolbar\\LiveSearchToolbarItem'
 		);
 		foreach ($coreToolbarItems as $toolbarItemName => $toolbarItemClassName) {
 			$toolbarItem = GeneralUtility::makeInstance($toolbarItemClassName, $this);
