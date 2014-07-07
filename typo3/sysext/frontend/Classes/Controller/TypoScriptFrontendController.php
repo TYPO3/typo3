@@ -1265,12 +1265,12 @@ class TypoScriptFrontendController {
 			// Object is initialized
 			$BE_USER->start();
 			$BE_USER->unpack_uc('');
-			if ($BE_USER->user['uid']) {
+			if (!empty($BE_USER->user['uid'])) {
 				$BE_USER->fetchGroupData();
 				$this->beUserLogin = TRUE;
 			}
 			// Unset the user initialization.
-			if (!$BE_USER->checkLockToIP() || !$BE_USER->checkBackendAccessSettingsFromInitPhp() || !$BE_USER->user['uid']) {
+			if (!$BE_USER->checkLockToIP() || !$BE_USER->checkBackendAccessSettingsFromInitPhp() || empty($BE_USER->user['uid'])) {
 				$BE_USER = NULL;
 				$this->beUserLogin = FALSE;
 				$_SESSION['TYPO3-TT-start'] = FALSE;
