@@ -603,7 +603,7 @@ class SoftReferenceIndex {
 
 		// Dispatch available signal slots.
 		$linkHandlerFound = FALSE;
-		list($linkHandlerFound, $finalTagParts) = $this->getSignalSlotDispatcher()->dispatch(get_class($this), 'getTypoLinkParts', array($linkHandlerFound, $finalTagParts, $linkHandlerKeyword, $linkHandlerValue));
+		list($linkHandlerFound, $finalTagParts) = $this->emitGetTypoLinkParts($linkHandlerFound, $finalTagParts, $linkHandlerKeyword, $linkHandlerValue);
 		if ($linkHandlerFound) {
 			return $finalTagParts;
 		}
@@ -788,7 +788,7 @@ class SoftReferenceIndex {
 				break;
 			default:
 				$linkHandlerFound = FALSE;
-				list($linkHandlerFound, $tLP, $content, $newElements) = $this->getSignalSlotDispatcher()->dispatch(get_class($this), 'setTypoLinkPartsElement', array($linkHandlerFound, $tLP, $content, $elements, $idx, $tokenID, $this));
+				list($linkHandlerFound, $tLP, $content, $newElements) = $this->emitSetTypoLinkPartsElement($linkHandlerFound, $tLP, $content, $elements, $idx, $tokenID);
 				// We need to merge the array, otherwise we would loose the reference.
 				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($elements, $newElements);
 
@@ -842,6 +842,30 @@ class SoftReferenceIndex {
 	 */
 	protected function getSignalSlotDispatcher() {
 		return GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\Dispatcher');
+	}
+
+	/**
+	 * @param bool $linkHandlerFound
+	 * @param array $finalTagParts
+	 * @param string $linkHandlerKeyword
+	 * @param string $linkHandlerValue
+	 * @return array
+	 */
+	protected function emitGetTypoLinkParts($linkHandlerFound, $finalTagParts, $linkHandlerKeyword, $linkHandlerValue) {
+		return $this->getSignalSlotDispatcher()->dispatch(get_class($this), 'getTypoLinkParts', array($linkHandlerFound, $finalTagParts, $linkHandlerKeyword, $linkHandlerValue));
+	}
+
+	/**
+	 * @param bool $linkHandlerFound
+	 * @param array $tLP
+	 * @param string $content
+	 * @param array $elements
+	 * @param int $idx
+	 * @param string $tokenID
+	 * @return array
+	 */
+	protected function emitSetTypoLinkPartsElement($linkHandlerFound, $tLP, $content, $elements, $idx, $tokenID) {
+		return $this->getSignalSlotDispatcher()->dispatch(get_class($this), 'setTypoLinkPartsElement', array($linkHandlerFound, $tLP, $content, $elements, $idx, $tokenID, $this));
 	}
 
 }
