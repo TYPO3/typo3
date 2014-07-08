@@ -28,7 +28,7 @@ class ImportExportUtility {
 	 * @param int $pid The pid under which the t3d file should be imported
 	 * @throws \ErrorException
 	 * @throws \InvalidArgumentException
-	 * @return array
+	 * @return int
 	 */
 	public function importT3DFile($file, $pid) {
 		$importResponse = array();
