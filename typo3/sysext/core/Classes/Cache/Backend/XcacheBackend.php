@@ -24,6 +24,8 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Cache\Exception;
+
 /**
  * A caching backend which stores cache entries by using xcache opcode cache.
  *
