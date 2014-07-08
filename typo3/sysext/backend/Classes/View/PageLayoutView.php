@@ -445,6 +445,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					';
 					$editUidList = '';
 					$rowArr = $contentRecordsPerColumn[$key];
+					$this->generateTtContentDataArray($rowArr);
 					foreach ((array) $rowArr as $rKey => $row) {
 						if ($this->tt_contentConfig['languageMode']) {
 							$languageColumn[$key][$lP] = $head[$key] . $content[$key];
@@ -694,6 +695,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				foreach ($cList as $counter => $key) {
 					$c = 0;
 					$rowArr = $contentRecordsPerColumn[$key];
+					$this->generateTtContentDataArray($rowArr);
 					$numberOfContentElementsInColumn = count($rowArr);
 					$rowOut = '';
 					// If it turns out that there are not content elements in the column, then display a big button which links directly to the wizard script:
@@ -1583,11 +1585,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @todo Define visibility
 	 */
 	public function getResult($result, $table = 'tt_content') {
-		// Initialize:
-		$editUidList = '';
-		$recs = array();
-		$nextTree = $this->nextThree;
-		$c = 0;
 		$output = array();
 		// Traverse the result:
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
@@ -1595,26 +1592,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			if ($row) {
 				// Add the row to the array:
 				$output[] = $row;
-				// Set an internal register:
-				$recs[$c] = $row['uid'];
-				// Create the list of the next three ids (for editing links...)
-				for ($a = 0; $a < $nextTree; $a++) {
-					if (isset($recs[$c - $a]) && !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->tt_contentData['nextThree'][$recs[$c - $a]], $row['uid'])) {
-						$this->tt_contentData['nextThree'][$recs[$c - $a]] .= $row['uid'] . ',';
-					}
-				}
-				// Set next/previous ids:
-				if (isset($recs[$c - 1])) {
-					if (isset($recs[$c - 2])) {
-						$this->tt_contentData['prev'][$row['uid']] = -$recs[($c - 2)];
-					} else {
-						$this->tt_contentData['prev'][$row['uid']] = $row['pid'];
-					}
-					$this->tt_contentData['next'][$recs[$c - 1]] = -$row['uid'];
-				}
-				$c++;
 			}
 		}
+		$this->generateTtContentDataArray($output);
 		// Return selected records
 		return $output;
 	}
@@ -1624,6 +1604,40 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * Various helper functions
 	 *
 	 ********************************/
+	/**
+	 * Generates the data for previous and next elements which is needed for movements.
+	 *
+	 * @param array $rowArray
+	 * @return void
+	 */
+	protected function generateTtContentDataArray(array $rowArray) {
+		$this->tt_contentData = array(
+			'nextThree' => array(),
+			'next' => array(),
+			'prev' => array(),
+		);
+		foreach ($rowArray as $key => $value) {
+			// Create the list of the next three ids (for editing links...)
+			for ($i = 0; $i < $this->nextThree; $i++) {
+				if (isset($rowArray[$key - $i])
+					&& !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->tt_contentData['nextThree'][$rowArray[$key - $i]['uid']], $value['uid'])
+				) {
+					$this->tt_contentData['nextThree'][$rowArray[$key - $i]['uid']] .= $value['uid'] . ',';
+				}
+			}
+
+			// Create information for next and previous content elements
+			if (isset($rowArray[$key - 1])) {
+				if (isset($rowArray[$key - 2])) {
+					$this->tt_contentData['prev'][$value['uid']] = -$rowArray[$key - 2]['uid'];
+				} else {
+					$this->tt_contentData['prev'][$value['uid']] = $value['pid'];
+				}
+				$this->tt_contentData['next'][$rowArray[$key - 1]['uid']] = -$value['uid'];
+			}
+		}
+	}
+
 	/**
 	 * Counts and returns the number of records on the page with $pid
 	 *
