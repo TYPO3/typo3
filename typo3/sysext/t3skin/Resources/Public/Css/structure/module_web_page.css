@@ -30,6 +30,10 @@ td.t3-page-lang-column h3 {
 	margin-top: 0;
 }
 
+td.t3-page-lang-column .t3-page-ce .t3-page-ce-header .t3-row-header {
+	height: 18px;
+}
+
 .t3-page-colHeader {
 	margin-bottom: 0;
 	padding-left: 10px;
