@@ -78,6 +78,7 @@ class IconUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$mockedStorage->expects($this->any())->method('getRootLevelFolder')->will($this->returnValue(
 			new \TYPO3\CMS\Core\Resource\Folder($mockedStorage, '/', '/')
 		));
+		$mockedStorage->expects($this->any())->method('checkFolderActionPermission')->will($this->returnValue(TRUE));
 		return new \TYPO3\CMS\Core\Resource\Folder($mockedStorage, $identifier, $identifier);
 	}
 
