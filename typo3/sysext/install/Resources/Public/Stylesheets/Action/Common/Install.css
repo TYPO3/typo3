@@ -469,8 +469,7 @@ body.standalone #t3-install-menu-logout a {
 #t3-install-box-body .toggleButton {
 	background-image: url('../../../Images/Icon/arrowright-white.png');
 	background-repeat: no-repeat;
-	background-position-y: 8px;
-	background-position-x: 3px;
+	background-position: 3px 8px;
 	padding-left: 20px;
 	cursor: pointer;
 }
