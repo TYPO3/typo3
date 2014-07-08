@@ -1,3 +1,15 @@
+2014-07-08  6ca633d                  [RELEASE] Release of TYPO3 4.5.35 (TYPO3 Release Team)
+2014-07-08  ebdd15e  #48939,#49055   [BUGFIX] Movements pollute colPos value of content elements (Nicole Cordes)
+2014-06-29  021526a                  [TASK] Improve travis notifications to channels (Helmut Hummel)
+2014-06-29  4f13b3a  #59838          [TASK] Update Travis CI notification settings (Michael Stucki)
+2014-06-23  64a43ca  #59825          [BUGFIX] AbstractBackendViewHelper uses namespaces (Markus Klein)
+2014-06-05  05bbf37  #59059          [BUGFIX] New content elements are always stored on pid 0 (Markus Klein)
+2014-06-03  4fbb250  #59034          [BUGFIX] Fix double ? in eID url for encryption key (Markus Klein)
+2014-05-23  418e313  #58936          [BUGFIX] Wrong HTML in locallang_csh_pages.xlf (Markus Klein)
+2014-05-23  81e31f1  #58484          [BUGFIX] SoftReferenceIndex support for more values in class attribute (Marc Bastian Heinrichs)
+2014-05-22  dd2d0ad                  [TASK] Set TYPO3 version to 4.5.35-dev (TYPO3 Release Team)
+
+
 2014-05-22  2ee368c                  [RELEASE] Release of TYPO3 4.5.34 (TYPO3 Release Team)
 2014-05-22  55d5f38  #30377          [SECURITY] Add trusted HTTP_HOST configuration (Helmut Hummel)
 2014-05-22  efb098b  #54111,#54113   [SECURITY] XSS in (old) extension manager information function (Marc Bastian Heinrichs)
