@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Cache\Exception;
+
 /**
  * A caching backend which stores cache entries by using xcache opcode cache.
  *
