@@ -487,6 +487,7 @@ class tx_cms_layout extends recordList {
 					}
 
 					$rowArr = $contentRecordsPerColumn[$key];
+					$this->generateTtContentDataArray($rowArr);
 
 					// If it turns out that there are not content elements in the column, then display a big button which links directly to the wizard script:
 					if ($this->doEdit && $this->option_showBigButtons && !intval($key) && count($rowArr) == 0) {
@@ -787,6 +788,7 @@ class tx_cms_layout extends recordList {
 
 					$c = 0;
 					$rowArr = $contentRecordsPerColumn[$key];
+					$this->generateTtContentDataArray($rowArr);
 					$rowOut = '';
 
 					// If it turns out that there are not content elements in the column, then display a big button which links directly to the wizard script:
@@ -2161,46 +2163,16 @@ class tx_cms_layout extends recordList {
 	 * @return	array		The selected rows returned in this array.
 	 */
 	function getResult($result, $table = 'tt_content') {
-
-		// Initialize:
-		$editUidList = '';
-		$recs = Array();
-		$nextTree = $this->nextThree;
-		$c = 0;
-		$output = Array();
-
+		$output = array();
 		// Traverse the result:
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
-
 			t3lib_BEfunc::workspaceOL($table, $row, -99, TRUE);
-
 			if ($row) {
 				// Add the row to the array:
 				$output[] = $row;
-
-				// Set an internal register:
-				$recs[$c] = $row['uid'];
-
-				// Create the list of the next three ids (for editing links...)
-				for ($a = 0; $a < $nextTree; $a++) {
-					if (isset($recs[$c - $a])) {
-						$this->tt_contentData['nextThree'][$recs[$c - $a]] .= $row['uid'] . ',';
-					}
-				}
-
-				// Set next/previous ids:
-				if (isset($recs[$c - 1])) {
-					if (isset($recs[$c - 2])) {
-						$this->tt_contentData['prev'][$row['uid']] = -$recs[$c - 2];
-					} else {
-						$this->tt_contentData['prev'][$row['uid']] = $row['pid'];
-					}
-					$this->tt_contentData['next'][$recs[$c - 1]] = -$row['uid'];
-				}
-				$c++;
 			}
 		}
-
+		$this->generateTtContentDataArray($output);
 		// Return selected records
 		return $output;
 	}
@@ -2285,6 +2257,40 @@ class tx_cms_layout extends recordList {
 	 * Various helper functions
 	 *
 	 ********************************/
+
+	/**
+	 * Generates the data for previous and next elements which is needed for movements.
+	 *
+	 * @param array $rowArray
+	 * @return void
+	 */
+	protected function generateTtContentDataArray(array $rowArray) {
+		$this->tt_contentData = array(
+			'nextThree' => array(),
+			'next' => array(),
+			'prev' => array(),
+		);
+		foreach ($rowArray as $key => $value) {
+			// Create the list of the next three ids (for editing links...)
+			for ($i = 0; $i < $this->nextThree; $i++) {
+				if (isset($rowArray[$key - $i])
+					&& !t3lib_div::inList($this->tt_contentData['nextThree'][$rowArray[$key - $i]['uid']], $value['uid'])
+				) {
+					$this->tt_contentData['nextThree'][$rowArray[$key - $i]['uid']] .= $value['uid'] . ',';
+				}
+			}
+
+			// Create information for next and previous content elements
+			if (isset($rowArray[$key - 1])) {
+				if (isset($rowArray[$key - 2])) {
+					$this->tt_contentData['prev'][$value['uid']] = -$rowArray[$key - 2]['uid'];
+				} else {
+					$this->tt_contentData['prev'][$value['uid']] = $value['pid'];
+				}
+				$this->tt_contentData['next'][$rowArray[$key - 1]['uid']] = -$value['uid'];
+			}
+		}
+	}
 
 	/**
 	 * Counts and returns the number of records on the page with $pid
