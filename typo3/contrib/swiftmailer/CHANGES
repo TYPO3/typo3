@@ -1,6 +1,37 @@
 Changelog
 =========
 
+5.2.1 (2014-06-13)
+------------------
+
+ * SECURITY FIX: fixed CLI escaping when using sendmail as a transport
+
+   Prior to 5.2.1, the sendmail transport (Swift_Transport_SendmailTransport)
+   was vulnerable to an arbitrary shell execution if the "From" header came
+   from a non-trusted source and no "Return-Path" is configured.
+
+ * fixed parameter in DKIMSigner
+ * fixed compatibility with PHP < 5.4
+
+5.2.0 (2014-05-08)
+------------------
+
+ * fixed Swift_ByteStream_FileByteStream::read() to match to the specification
+ * fixed from-charset and to-charset arguments in mbstring_convert_encoding() usages
+ * fixed infinite loop in StreamBuffer
+ * fixed NullTransport to return the number of ignored emails instead of 0
+ * Use phpunit and mockery for unit testing (realityking)
+
+5.1.0 (2014-03-18)
+------------------
+
+ * fixed data writing to stream when sending large messages
+ * added support for libopendkim (https://github.com/xdecock/php-opendkim)
+ * merged SignedMessage and Message
+ * added Gmail XOAuth2 authentication
+ * updated the list of known mime types
+ * added NTLM authentication
+
 5.0.3 (2013-12-03)
 ------------------
 
