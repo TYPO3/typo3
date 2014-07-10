@@ -63,6 +63,16 @@ class Bootstrap {
 	protected $installToolPath;
 
 	/**
+	 * @var string The currently active exception handling class. It is set after LocalConfiguration is included and might be changed after ex_localconf.php are loaded.
+	 */
+	protected $activeExceptionHandlerClassName;
+
+	/**
+	 * @var string The currently active error handling class. It is set after LocalConfiguration is included and might be changed after ex_localconf.php are loaded.
+	 */
+	protected $activeErrorHandlerClassName;
+
+	/**
 	 * Disable direct creation of this object.
 	 * Set unique requestId and the application context
 	 *
@@ -235,6 +245,7 @@ class Bootstrap {
 			// @deprecated since 6.1, will be removed two versions later - will be removed together with \TYPO3\CMS\Core\Utility\MailUtility::mail()
 			->registerSwiftMailer()
 			->configureExceptionHandling()
+			->initializeExceptionHandling()
 			->setMemoryLimit()
 			->defineTypo3RequestTypes();
 		return $this;
@@ -650,20 +661,34 @@ class Bootstrap {
 
 	/**
 	 * Initialize exception handling
+	 * This method is called twice. First when LocalConfiguration has been loaded
+	 * and a second time after extension ext_loclconf.php have been included to allow extensions
+	 * to change the exception and error handler configuration.
 	 *
 	 * @return Bootstrap
 	 */
 	protected function initializeExceptionHandling() {
 		if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['errors']['exceptionHandler'])) {
 			if (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['errorHandler'])) {
-				// Register an error handler for the given errorHandlerErrors
-				$errorHandler = Utility\GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SYS']['errorHandler'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['errorHandlerErrors']);
-				// Set errors which will be converted in an exception
-				$errorHandler->setExceptionalErrors($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['errors']['exceptionalErrors']);
+				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['errorHandler'] !== $this->activeErrorHandlerClassName) {
+					$this->activeErrorHandlerClassName = $GLOBALS['TYPO3_CONF_VARS']['SYS']['errorHandler'];
+					// Register an error handler for the given errorHandlerErrors
+					$errorHandler = Utility\GeneralUtility::makeInstance($this->activeErrorHandlerClassName, $GLOBALS['TYPO3_CONF_VARS']['SYS']['errorHandlerErrors']);
+					// Set errors which will be converted in an exception
+					$errorHandler->setExceptionalErrors($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['errors']['exceptionalErrors']);
+				}
+			} elseif (!empty($this->activeErrorHandlerClassName)) {
+				// Restore error handler in case extensions have unset the configuration in ext_localconf.php
+				restore_error_handler();
 			}
-			// Instantiate the exception handler once to make sure object is registered
-			// @TODO: Figure out if this is really needed
-			Utility\GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['errors']['exceptionHandler']);
+			if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['errors']['exceptionHandler'] !== $this->activeExceptionHandlerClassName) {
+				$this->activeExceptionHandlerClassName = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['errors']['exceptionHandler'];
+				// Registering the exception handler is done in the constructor
+				Utility\GeneralUtility::makeInstance($this->activeExceptionHandlerClassName);
+			}
+		} elseif (!empty($this->activeExceptionHandlerClassName)) {
+			// Restore exception handler in case extensions have unset the configuration in ext_localconf.php
+			restore_exception_handler();
 		}
 		return $this;
 	}
