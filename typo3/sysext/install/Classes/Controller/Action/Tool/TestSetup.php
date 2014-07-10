@@ -114,7 +114,7 @@ class TestSetup extends Action\AbstractAction {
 				->addTo($recipient)
 				->addFrom($this->getSenderEmailAddress(), 'TYPO3 CMS install tool')
 				->setSubject('Test TYPO3 CMS mail delivery')
-				->setBody('<html><body>html test content</body></html>')
+				->setBody('<html><body>html test content</body></html>', 'text/html')
 				->addPart('TEST CONTENT')
 				->send();
 			$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\OkStatus');
