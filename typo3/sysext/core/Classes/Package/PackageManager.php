@@ -184,8 +184,9 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	 */
 	protected function getCacheIdentifier() {
 		if ($this->cacheIdentifier === NULL) {
-			if (@file_exists($this->packageStatesPathAndFilename)) {
-				$this->cacheIdentifier = md5_file($this->packageStatesPathAndFilename);
+			$mTime = @filemtime($this->packageStatesPathAndFilename);
+			if ($mTime !== FALSE) {
+				$this->cacheIdentifier = md5($this->packageStatesPathAndFilename . $mTime);
 			} else {
 				$this->cacheIdentifier = NULL;
 			}
