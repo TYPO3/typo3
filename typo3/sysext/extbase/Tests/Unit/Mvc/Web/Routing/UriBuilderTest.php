@@ -151,12 +151,45 @@ class UriBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * @param bool $isActionCacheable
+	 * @param bool $requestIsCached
+	 * @param bool $expectedUseCacheHash
 	 * @test
+	 * @dataProvider uriForDisablesCacheHashIfPossibleDataProvider
 	 */
-	public function uriForDoesNotDisableCacheHashForNonCacheableActions() {
-		$this->mockExtensionService->expects($this->any())->method('isActionCacheable')->will($this->returnValue(FALSE));
+	public function uriForDisablesCacheHashIfPossible($isActionCacheable, $requestIsCached, $expectedUseCacheHash) {
+		$this->mockExtensionService->expects($this->once())->method('isActionCacheable')->will($this->returnValue($isActionCacheable));
+		$this->mockRequest->expects($this->once())->method('isCached')->will($this->returnValue($requestIsCached));
 		$this->uriBuilder->uriFor('someNonCacheableAction', array(), 'SomeController', 'SomeExtension');
-		$this->assertTrue($this->uriBuilder->getUseCacheHash());
+		$this->assertEquals($expectedUseCacheHash, $this->uriBuilder->getUseCacheHash());
+	}
+
+	/**
+	 * @return array
+	 */
+	public function uriForDisablesCacheHashIfPossibleDataProvider() {
+		return array(
+			'request cached, action cacheable' => array(
+				TRUE,
+				TRUE,
+				TRUE,
+			),
+			'request cached, action not cacheable' => array(
+				TRUE,
+				FALSE,
+				TRUE,
+			),
+			'request not cached, action cacheable' => array(
+				FALSE,
+				TRUE,
+				TRUE,
+			),
+			'request not cached, action not cacheable' => array(
+				FALSE,
+				FALSE,
+				FALSE,
+			),
+		);
 	}
 
 	/**
