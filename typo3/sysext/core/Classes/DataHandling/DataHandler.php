@@ -4266,7 +4266,7 @@ class DataHandler {
 	 * @todo Define visibility
 	 */
 	public function deleteVersionsForRecord($table, $uid, $forceHardDelete) {
-		$versions = BackendUtility::selectVersionsOfRecord($table, $uid, 'uid,pid');
+		$versions = BackendUtility::selectVersionsOfRecord($table, $uid, 'uid,pid', $this->BE_USER->workspace);
 		if (is_array($versions)) {
 			foreach ($versions as $verRec) {
 				if (!$verRec['_CURRENT_VERSION']) {
