@@ -3635,6 +3635,7 @@ class BackendUtility {
 	static public function selectVersionsOfRecord($table, $uid, $fields = '*', $workspace = 0, $includeDeletedRecords = FALSE, $row = NULL) {
 		$realPid = 0;
 		$outputRows = array();
+		$workspace = (int)$workspace;
 		if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 			if (is_array($row) && !$includeDeletedRecords) {
 				$row['_CURRENT_VERSION'] = TRUE;
@@ -3642,25 +3643,28 @@ class BackendUtility {
 				$outputRows[] = $row;
 			} else {
 				// Select UID version:
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $table, 'uid=' . (int)$uid . ($includeDeletedRecords ? '' : self::deleteClause($table)));
+				$row = BackendUtility::getRecord($table, $uid, $fields, '', !$includeDeletedRecords);
 				// Add rows to output array:
-				if ($res) {
-					$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-					if ($row) {
-						$row['_CURRENT_VERSION'] = TRUE;
-						$realPid = $row['pid'];
-						$outputRows[] = $row;
-					}
-					$GLOBALS['TYPO3_DB']->sql_free_result($res);
+				if ($row) {
+					$row['_CURRENT_VERSION'] = TRUE;
+					$realPid = $row['pid'];
+					$outputRows[] = $row;
 				}
 			}
 			// Select all offline versions of record:
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $table, 'pid=-1 AND uid<>' . (int)$uid . ' AND t3ver_oid=' . (int)$uid . ($workspace != 0 ? ' AND t3ver_wsid=' . (int)$workspace : '') . ($includeDeletedRecords ? '' : self::deleteClause($table)), '', 't3ver_id DESC');
+			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				$fields,
+				$table,
+				'pid=-1 AND uid<>' . (int)$uid . ' AND t3ver_oid=' . (int)$uid
+					. ' AND t3ver_wsid' . ($workspace !== 0 ? ' IN (0,' . (int)$workspace . ')' : '=0')
+					. ($includeDeletedRecords ? '' : self::deleteClause($table)),
+				'',
+				't3ver_id DESC'
+			);
 			// Add rows to output array:
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				$outputRows[] = $row;
+			if (is_array($rows)) {
+				$outputRows = array_merge($outputRows, $rows);
 			}
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			// Set real-pid:
 			foreach ($outputRows as $idx => $oRow) {
 				$outputRows[$idx]['_REAL_PID'] = $realPid;
