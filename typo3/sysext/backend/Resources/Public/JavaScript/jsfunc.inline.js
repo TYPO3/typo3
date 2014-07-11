@@ -232,31 +232,34 @@ var inline = {
 			var head = inline.getDomHeadTag();
 			var headTags = inline.getDomHeadChildren(head);
 			TYPO3.jQuery.each(json.headData, function (index, addTag) {
-				if (!restart) {
-					if (addTag && (addTag.innerHTML || !inline.searchInDomTags(headTags, addTag))) {
-						if (addTag.name == 'SCRIPT' && addTag.innerHTML && processedCount) {
-							restart = true;
-							return false;
-						} else {
-							if (addTag.name == 'SCRIPT' && addTag.innerHTML) {
-								try {
-									eval(addTag.innerHTML);
-								} catch (e) {
-									errorCatch.push(e);
-								}
-							} else {
-								element = inline.createNewDomElement(addTag);
-								// Set onload handler for external JS scripts:
-								if (addTag.name == 'SCRIPT' && element.src) {
-									element.onload = inline.sourceLoadedHandler(element);
-									sourcesWaiting.push(element.src);
-								}
-								head.appendChild(element);
-								processedCount++;
-							}
-							json.headData.shift();
+				if (restart) {
+					return;
+				}
+				if (!addTag || (!addTag.innerHTML && inline.searchInDomTags(headTags, addTag))) {
+					return;
+				}
+
+				if (addTag.name == 'SCRIPT' && addTag.innerHTML && processedCount) {
+					restart = true;
+					return false;
+				} else {
+					if (addTag.name == 'SCRIPT' && addTag.innerHTML) {
+						try {
+							eval(addTag.innerHTML);
+						} catch (e) {
+							errorCatch.push(e);
 						}
+					} else {
+						element = inline.createNewDomElement(addTag);
+						// Set onload handler for external JS scripts:
+						if (addTag.name == 'SCRIPT' && element.src) {
+							element.onload = inline.sourceLoadedHandler(element);
+							sourcesWaiting.push(element.src);
+						}
+						head.appendChild(element);
+						processedCount++;
 					}
+					json.headData.shift();
 				}
 			});
 		}
@@ -358,26 +361,29 @@ var inline = {
 
 	// Checks if a record was used and should be unique:
 	checkUniqueUsed: function (objectId, uid, table) {
-		if (this.data.unique && this.data.unique[objectId]) {
-			var unique = this.data.unique[objectId];
-			var values = this.getValuesFromHashMap(unique.used);
+		if (!this.data.unique || !this.data.unique[objectId]) {
+			return false;
+		}
 
-			// for select: only the uid is stored
-			if (unique['type'] == 'select') {
-				if (values.indexOf(uid) != -1) {
+		var unique = this.data.unique[objectId];
+		var values = this.getValuesFromHashMap(unique.used);
+
+		// for select: only the uid is stored
+		if (unique['type'] == 'select') {
+			if (values.indexOf(uid) != -1) {
+				return true;
+			}
+
+			// for group/db: table and uid is stored in a assoc array
+		} else if (unique.type == 'groupdb') {
+			for (var i = values.length - 1; i >= 0; i--) {
+				// if the pair table:uid is already used:
+				if (values[i].table == table && values[i].uid == uid) {
 					return true;
-				}
-
-				// for group/db: table and uid is stored in a assoc array
-			} else if (unique.type == 'groupdb') {
-				for (var i = values.length - 1; i >= 0; i--) {
-					// if the pair table:uid is already used:
-					if (values[i].table == table && values[i].uid == uid) {
-						return true;
-					}
 				}
 			}
 		}
+
 		return false;
 	},
 
@@ -402,22 +408,26 @@ var inline = {
 	// Remove all select items already used
 	// from a newly retrieved/expanded record
 	removeUsed: function (objectId, recordUid) {
-		if (this.data.unique && this.data.unique[objectId]) {
-			var unique = this.data.unique[objectId];
-			if (unique.type == 'select') {
-				var formName = this.prependFormFieldNames + this.parseObjectId('parts', objectId, 3, 1, true);
-				var formObj = document.getElementsByName(formName);
-				var recordObj = document.getElementsByName(this.prependFormFieldNames + '[' + unique.table + '][' + recordUid + '][' + unique.field + ']');
-				var values = this.getValuesFromHashMap(unique.used);
-				if (recordObj.length) {
+		if (!this.data.unique || !this.data.unique[objectId]) {
+			return;
+		}
+
+		var unique = this.data.unique[objectId];
+		if (unique.type != 'select') {
+			return;
+		}
+
+		var formName = this.prependFormFieldNames + this.parseObjectId('parts', objectId, 3, 1, true);
+		var formObj = document.getElementsByName(formName);
+		var recordObj = document.getElementsByName(this.prependFormFieldNames + '[' + unique.table + '][' + recordUid + '][' + unique.field + ']');
+		var values = this.getValuesFromHashMap(unique.used);
+		if (recordObj.length) {
 					if (recordObj[0].hasOwnProperty('options')) {
 						var selectedValue = recordObj[0].options[recordObj[0].selectedIndex].value;
-						for (var i=0; i<values.length; i++) {
+						for (var i = 0; i < values.length; i++) {
 							if (values[i] != selectedValue) {
 								this.removeSelectOption(recordObj[0], values[i]);
 							}
-						}
-					}
 				}
 			}
 		}
@@ -425,58 +435,60 @@ var inline = {
 	// this function is applied to a newly inserted record by AJAX
 	// it removes the used select items, that should be unique
 	setUnique: function (objectId, recordUid, selectedValue) {
-		if (this.data.unique && this.data.unique[objectId]) {
-			var $selector = TYPO3.jQuery('#' + this.escapeObjectId(objectId) + '_selector');
-			var unique = this.data.unique[objectId];
-			if (unique.type == 'select') {
-				if (!(unique.selector && unique.max == -1)) {
-					var formName = this.prependFormFieldNames + this.parseObjectId('parts', objectId, 3, 1, true);
-					var formObj = document.getElementsByName(formName);
-					var recordObj = document.getElementsByName(this.prependFormFieldNames + '[' + unique.table + '][' + recordUid + '][' + unique.field + ']');
-					var values = this.getValuesFromHashMap(unique.used);
-					if ($selector.length) {
-						// remove all items from the new select-item which are already used in other children
-						if (recordObj.length) {
-							for (var i = 0; i < values.length; i++) {
-								this.removeSelectOption(recordObj[0], values[i]);
-							}
-							// set the selected item automatically to the first of the remaining items if no selector is used
-							if (!unique.selector) {
-								selectedValue = recordObj[0].options[0].value;
-								recordObj[0].options[0].selected = true;
-								this.updateUnique(recordObj[0], objectId, formName, recordUid);
-								this.handleChangedField(recordObj[0], objectId + '[' + recordUid + ']');
-							}
-						}
+		if (!this.data.unique || !this.data.unique[objectId]) {
+			return;
+		}
+		var $selector = TYPO3.jQuery('#' + this.escapeObjectId(objectId) + '_selector');
+
+		var unique = this.data.unique[objectId];
+		if (unique.type == 'select') {
+			if (!(unique.selector && unique.max == -1)) {
+				var formName = this.prependFormFieldNames + this.parseObjectId('parts', objectId, 3, 1, true);
+				var formObj = document.getElementsByName(formName);
+				var recordObj = document.getElementsByName(this.prependFormFieldNames + '[' + unique.table + '][' + recordUid + '][' + unique.field + ']');
+				var values = this.getValuesFromHashMap(unique.used);
+				if ($selector.length) {
+					// remove all items from the new select-item which are already used in other children
+					if (recordObj.length) {
 						for (var i = 0; i < values.length; i++) {
-							this.removeSelectOption($selector, values[i]);
+							this.removeSelectOption(recordObj[0], values[i]);
 						}
-						if (typeof this.data.unique[objectId].used.length != 'undefined') {
-							this.data.unique[objectId].used = {};
+						// set the selected item automatically to the first of the remaining items if no selector is used
+						if (!unique.selector) {
+							selectedValue = recordObj[0].options[0].value;
+							recordObj[0].options[0].selected = true;
+							this.updateUnique(recordObj[0], objectId, formName, recordUid);
+							this.handleChangedField(recordObj[0], objectId + '[' + recordUid + ']');
 						}
-						this.data.unique[objectId].used[recordUid] = selectedValue;
 					}
-					// remove the newly used item from each select-field of the child records
-					if (formObj.length && selectedValue) {
-						var records = formObj[0].value.split(',');
-						for (var i = 0; i < records.length; i++) {
-							recordObj = document.getElementsByName(this.prependFormFieldNames + '[' + unique.table + '][' + records[i] + '][' + unique.field + ']');
-							if (recordObj.length && records[i] != recordUid) {
-								this.removeSelectOption(TYPO3.jQuery(recordObj[0]), selectedValue);
-							}
+					for (var i = 0; i < values.length; i++) {
+						this.removeSelectOption($selector, values[i]);
+					}
+					if (typeof this.data.unique[objectId].used.length != 'undefined') {
+						this.data.unique[objectId].used = {};
+					}
+					this.data.unique[objectId].used[recordUid] = selectedValue;
+				}
+				// remove the newly used item from each select-field of the child records
+				if (formObj.length && selectedValue) {
+					var records = formObj[0].value.split(',');
+					for (var i = 0; i < records.length; i++) {
+						recordObj = document.getElementsByName(this.prependFormFieldNames + '[' + unique.table + '][' + records[i] + '][' + unique.field + ']');
+						if (recordObj.length && records[i] != recordUid) {
+							this.removeSelectOption(TYPO3.jQuery(recordObj[0]), selectedValue);
 						}
 					}
 				}
-			} else if (unique.type == 'groupdb') {
-				// add the new record to the used items:
-				this.data.unique[objectId].used[recordUid] = {'table': unique.elTable, 'uid': selectedValue};
 			}
+		} else if (unique.type == 'groupdb') {
+			// add the new record to the used items:
+			this.data.unique[objectId].used[recordUid] = {'table': unique.elTable, 'uid': selectedValue};
+		}
 
-			// remove used items from a selector-box
-			if (unique.selector == 'select' && selectedValue) {
-				this.removeSelectOption($selector, selectedValue);
-				this.data.unique[objectId]['used'][recordUid] = selectedValue;
-			}
+		// remove used items from a selector-box
+		if (unique.selector == 'select' && selectedValue) {
+			this.removeSelectOption($selector, selectedValue);
+			this.data.unique[objectId]['used'][recordUid] = selectedValue;
 		}
 	},
 
@@ -588,35 +600,37 @@ var inline = {
 		var objectPrefix = this.parseObjectId('full', objectId, 0, 1);
 		var formObj = document.getElementsByName(objectName);
 
-		if (formObj.length) {
-			// the uid of the calling object (last part in objectId)
-			var callingUid = this.parseObjectId('none', objectId, 1);
-			var records = formObj[0].value.split(',');
-			var current = records.indexOf(callingUid);
-			var changed = false;
+		if (!formObj.length) {
+			return false;
+		}
 
-			// move up
-			if (direction > 0 && current > 0) {
-				records[current] = records[current - 1];
-				records[current - 1] = callingUid;
-				changed = true;
+		// the uid of the calling object (last part in objectId)
+		var callingUid = this.parseObjectId('none', objectId, 1);
+		var records = formObj[0].value.split(',');
+		var current = records.indexOf(callingUid);
+		var changed = false;
 
-				// move down
-			} else if (direction < 0 && current < records.length - 1) {
-				records[current] = records[current + 1];
-				records[current + 1] = callingUid;
-				changed = true;
-			}
+		// move up
+		if (direction > 0 && current > 0) {
+			records[current] = records[current - 1];
+			records[current - 1] = callingUid;
+			changed = true;
 
-			if (changed) {
-				formObj[0].value = records.join(',');
-				var cAdj = direction > 0 ? 1 : 0; // adjustment
-				var objectIdPrefix = '#' + this.escapeObjectId(objectPrefix) + this.structureSeparator;
-				TYPO3.jQuery(objectIdPrefix + records[current - cAdj] + '_div').insertBefore(
-					TYPO3.jQuery(objectIdPrefix + records[current + 1 - cAdj] + '_div')
-				);
-				this.redrawSortingButtons(objectPrefix, records);
-			}
+			// move down
+		} else if (direction < 0 && current < records.length - 1) {
+			records[current] = records[current + 1];
+			records[current + 1] = callingUid;
+			changed = true;
+		}
+
+		if (changed) {
+			formObj[0].value = records.join(',');
+			var cAdj = direction > 0 ? 1 : 0; // adjustment
+			var objectIdPrefix = '#' + this.escapeObjectId(objectPrefix) + this.structureSeparator;
+			TYPO3.jQuery(objectIdPrefix + records[current - cAdj] + '_div').insertBefore(
+				TYPO3.jQuery(objectIdPrefix + records[current + 1 - cAdj] + '_div')
+			);
+			this.redrawSortingButtons(objectPrefix, records);
 		}
 
 		return false;
@@ -629,28 +643,30 @@ var inline = {
 			var formObj = document.getElementsByName(objectName);
 			var $element = TYPO3.jQuery(element);
 
-			if (formObj.length) {
-				var checked = [];
-				var order = [];
-				$element.find('.sortableHandle').each(function (i, e) {
-					order.push($(e).data('id').toString());
-				});
-				var records = formObj[0].value.split(',');
+			if (!formObj.length) {
+				return;
+			}
 
-				// check if ordered uid is really part of the records
-				// virtually deleted items might still be there but ordering shouldn't saved at all on them
-				for (var i = 0; i < order.length; i++) {
-					if (records.indexOf(order[i]) != -1) {
-						checked.push(order[i]);
-					}
+			var checked = [];
+			var order = [];
+			$element.find('.sortableHandle').each(function (i, e) {
+				order.push($(e).data('id').toString());
+			});
+			var records = formObj[0].value.split(',');
+
+			// check if ordered uid is really part of the records
+			// virtually deleted items might still be there but ordering shouldn't saved at all on them
+			for (var i = 0; i < order.length; i++) {
+				if (records.indexOf(order[i]) != -1) {
+					checked.push(order[i]);
 				}
+			}
 
-				formObj[0].value = checked.join(',');
+			formObj[0].value = checked.join(',');
 
-				if (inline.data.config && inline.data.config[objectId]) {
-					var table = inline.data.config[objectId].table;
-					inline.redrawSortingButtons(objectId + inline.structureSeparator + table, checked);
-				}
+			if (inline.data.config && inline.data.config[objectId]) {
+				var table = inline.data.config[objectId].table;
+				inline.redrawSortingButtons(objectId + inline.structureSeparator + table, checked);
 			}
 		});
 	},
@@ -787,74 +803,88 @@ var inline = {
 	},
 
 	updateUnique: function (srcElement, objectPrefix, formName, recordUid) {
-		if (this.data.unique && this.data.unique[objectPrefix]) {
-			var unique = this.data.unique[objectPrefix];
-			var oldValue = unique.used[recordUid];
+		if (!this.data.unique || !this.data.unique[objectPrefix]) {
+			return;
+		}
 
-			if (unique.selector == 'select') {
-				var selector = $(objectPrefix + '_selector');
-				this.removeSelectOption(selector, srcElement.value);
-				if (typeof oldValue != 'undefined') {
-					this.readdSelectOption(selector, oldValue, unique);
-				}
+		var unique = this.data.unique[objectPrefix];
+		var oldValue = unique.used[recordUid];
+
+		if (unique.selector == 'select') {
+			var selector = $(objectPrefix + '_selector');
+			this.removeSelectOption(selector, srcElement.value);
+			if (typeof oldValue != 'undefined') {
+				this.readdSelectOption(selector, oldValue, unique);
 			}
+		}
 
-			if (!(unique.selector && unique.max == -1)) {
-				var formObj = document.getElementsByName(formName);
-				if (unique && formObj.length) {
-					var records = formObj[0].value.split(',');
-					var recordObj;
-					for (var i = 0; i < records.length; i++) {
-						recordObj = document.getElementsByName(this.prependFormFieldNames + '[' + unique.table + '][' + records[i] + '][' + unique.field + ']');
-						if (recordObj.length && recordObj[0] != srcElement) {
-							this.removeSelectOption(recordObj[0], srcElement.value);
-							if (typeof oldValue != 'undefined') {
-								this.readdSelectOption(recordObj[0], oldValue, unique);
-							}
-						}
-					}
-					this.data.unique[objectPrefix].used[recordUid] = srcElement.value;
+		if (unique.selector && unique.max == -1) {
+			return;
+		}
+
+		var formObj = document.getElementsByName(formName);
+		if (!unique || !formObj.length) {
+			return;
+		}
+
+		var records = formObj[0].value.split(',');
+		var recordObj;
+		for (var i = 0; i < records.length; i++) {
+			recordObj = document.getElementsByName(this.prependFormFieldNames + '[' + unique.table + '][' + records[i] + '][' + unique.field + ']');
+			if (recordObj.length && recordObj[0] != srcElement) {
+				this.removeSelectOption(recordObj[0], srcElement.value);
+				if (typeof oldValue != 'undefined') {
+					this.readdSelectOption(recordObj[0], oldValue, unique);
 				}
 			}
 		}
+		this.data.unique[objectPrefix].used[recordUid] = srcElement.value;
 	},
 
 	revertUnique: function (objectPrefix, elName, recordUid) {
-		if (this.data.unique && this.data.unique[objectPrefix]) {
-			var unique = this.data.unique[objectPrefix];
-			var fieldObj = elName ? document.getElementsByName(elName + '[' + unique.field + ']') : null;
+		if (!this.data.unique || !this.data.unique[objectPrefix]) {
+			return;
+		}
 
-			if (unique.type == 'select') {
-				if (fieldObj && fieldObj.length) {
-					delete(this.data.unique[objectPrefix].used[recordUid]);
+		var unique = this.data.unique[objectPrefix];
+		var fieldObj = elName ? document.getElementsByName(elName + '[' + unique.field + ']') : null;
 
-					if (unique.selector == 'select') {
-						if (!isNaN(fieldObj[0].value)) {
-							var $selector = TYPO3.jQuery('#' + objectPrefix + '_selector');
-							this.readdSelectOption($selector, fieldObj[0].value, unique);
-						}
-					}
-
-					if (!(unique.selector && unique.max == -1)) {
-						var formName = this.prependFormFieldNames + this.parseObjectId('parts', objectPrefix, 3, 1, true);
-						var formObj = document.getElementsByName(formName);
-						if (formObj.length) {
-							var records = formObj[0].value.split(',');
-							var recordObj;
-							// walk through all inline records on that level and get the select field
-							for (var i = 0; i < records.length; i++) {
-								recordObj = document.getElementsByName(this.prependFormFieldNames + '[' + unique.table + '][' + records[i] + '][' + unique.field + ']');
-								if (recordObj.length) {
-									this.readdSelectOption(recordObj[0], fieldObj[0].value, unique);
-								}
-							}
-						}
-					}
-				}
-			} else if (unique.type == 'groupdb') {
-				// alert(objectPrefix+'/'+recordUid);
-				delete(this.data.unique[objectPrefix].used[recordUid])
+		if (unique.type == 'select') {
+			if (!fieldObj || !fieldObj.length) {
+				return;
 			}
+
+			delete(this.data.unique[objectPrefix].used[recordUid]);
+
+			if (unique.selector == 'select') {
+				if (!isNaN(fieldObj[0].value)) {
+					var $selector = TYPO3.jQuery('#' + objectPrefix + '_selector');
+					this.readdSelectOption($selector, fieldObj[0].value, unique);
+				}
+			}
+
+			if (unique.selector && unique.max == -1) {
+				return;
+			}
+
+			var formName = this.prependFormFieldNames + this.parseObjectId('parts', objectPrefix, 3, 1, true);
+			var formObj = document.getElementsByName(formName);
+			if (!formObj.length) {
+				return;
+			}
+
+			var records = formObj[0].value.split(',');
+			var recordObj;
+			// walk through all inline records on that level and get the select field
+			for (var i = 0; i < records.length; i++) {
+				recordObj = document.getElementsByName(this.prependFormFieldNames + '[' + unique.table + '][' + records[i] + '][' + unique.field + ']');
+				if (recordObj.length) {
+					this.readdSelectOption(recordObj[0], fieldObj[0].value, unique);
+				}
+			}
+		} else if (unique.type == 'groupdb') {
+			// alert(objectPrefix+'/'+recordUid);
+			delete(this.data.unique[objectPrefix].used[recordUid])
 		}
 	},
 
