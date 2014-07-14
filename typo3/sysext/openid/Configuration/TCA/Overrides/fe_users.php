@@ -1,4 +1,5 @@
 <?php
+defined('TYPO3_MODE') or die();
 
 // Prepare new columns for fe_users table
 $tempColumns = array(

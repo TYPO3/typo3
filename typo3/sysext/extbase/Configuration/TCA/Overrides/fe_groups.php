@@ -1,4 +1,6 @@
 <?php
+defined('TYPO3_MODE') or die();
+
 if (!isset($GLOBALS['TCA']['fe_groups']['ctrl']['type'])) {
 	$tca = array(
 		'ctrl' => array(
