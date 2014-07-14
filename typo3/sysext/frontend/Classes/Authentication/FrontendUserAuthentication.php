@@ -259,7 +259,10 @@ class FrontendUserAuthentication extends \TYPO3\CMS\Core\Authentication\Abstract
 	 * @return array The session data for the newly created session.
 	 */
 	public function createUserSession($tempuser) {
-		$this->setSessionCookie();
+		// At this point we do not know if we need to set a session or a "permanant" cookie
+		// So we force the cookie to be set after authentication took place, which will
+		// then call setSessionCookie(), which will set a cookie with correct settings.
+		$this->dontSetCookie = FALSE;
 		return parent::createUserSession($tempuser);
 	}
 
