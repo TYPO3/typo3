@@ -1,4 +1,6 @@
 <?php
+defined('TYPO3_MODE') or die();
+
 // Prepare new columns for be_users table
 $tempColumns = array(
 	'tx_openid_openid' => array(
