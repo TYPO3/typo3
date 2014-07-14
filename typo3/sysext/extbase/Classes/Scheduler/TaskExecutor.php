@@ -107,10 +107,10 @@ class TaskExecutor implements \TYPO3\CMS\Core\SingletonInterface {
 		$this->configurationManager->setContentObject(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer'));
 		$this->configurationManager->setConfiguration($configuration);
 		// configure object container
-		$typoScriptSetup = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
-		if (isset($typoScriptSetup['config.']['tx_extbase.']['objects.'])) {
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		if (isset($frameworkConfiguration['objects'])) {
 			$objectContainer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\Container\\Container');
-			foreach ($typoScriptSetup['config.']['tx_extbase.']['objects.'] as $classNameWithDot => $classConfiguration) {
+			foreach ($frameworkConfiguration['objects'] as $classNameWithDot => $classConfiguration) {
 				if (isset($classConfiguration['className'])) {
 					$originalClassName = rtrim($classNameWithDot, '.');
 					$objectContainer->registerImplementation($originalClassName, $classConfiguration['className']);
