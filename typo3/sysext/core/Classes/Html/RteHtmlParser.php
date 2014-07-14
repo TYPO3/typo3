@@ -731,8 +731,9 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 							// Try to transform the href into a FAL reference
 							try {
 								$fileOrFolderObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($link_param);
-							} catch (\TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException $notFoundException) {
-								// Nothing to be done if file/folder not found
+							} catch (\TYPO3\CMS\Core\Resource\Exception $exception) {
+								// Nothing to be done if file/folder not found or path invalid
+								$fileOrFolderObject = NULL;
 							}
 							if ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\Folder) {
 								// It's a folder
