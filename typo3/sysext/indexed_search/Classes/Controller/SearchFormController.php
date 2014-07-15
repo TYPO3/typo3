@@ -1585,51 +1585,55 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Returns a results browser
 	 *
-	 * @param 	boolean		Show result count
-	 * @param 	string		String appended to "displaying results..." notice.
-	 * @param 	string		String appended after section "displaying results...
-	 * @param 	string		List of integers pointing to free indexing configurations to search. -1 represents no filtering, 0 represents TYPO3 pages only, any number above zero is a uid of an indexing configuration!
-	 * @return 	string		HTML output
+	 * @param boolean $showResultCount Show result count
+	 * @param string $addString String appended to "displaying results..." notice.
+	 * @param string $addPart String appended after section "displaying results...
+	 * @param string $freeIndexUid List of integers pointing to free indexing configurations to search. -1 represents no filtering, 0 represents TYPO3 pages only, any number above zero is a uid of an indexing configuration!
+	 * @return string HTML output
 	 * @todo Define visibility
 	 */
-	public function pi_list_browseresults($showResultCount = 1, $addString = '', $addPart = '', $freeIndexUid = -1) {
+	public function pi_list_browseresults($showResultCount = TRUE, $addString = '', $addPart = '', $freeIndexUid = -1) {
 		// Initializing variables:
-		$pointer = $this->piVars['pointer'];
-		$count = $this->internal['res_count'];
+		$pointer = (int)$this->piVars['pointer'];
+		$count = (int)$this->internal['res_count'];
 		$results_at_a_time = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->internal['results_at_a_time'], 1, 1000);
-		$maxPages = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->internal['maxPages'], 1, 100);
 		$pageCount = ceil($count / $results_at_a_time);
-		$sTables = '';
+
+		$links = array();
+		// only show the result browser if more than one page is needed
 		if ($pageCount > 1) {
-			// only show the result browser if more than one page is needed
-			$pointer = (int)$pointer;
-			$links = array();
+			$maxPages = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->internal['maxPages'], 1, $pageCount);
+
 			// Make browse-table/links:
 			if ($pointer > 0) {
 				// all pages after the 1st one
-				$links[] = '<li>' . $this->makePointerSelector_link($this->pi_getLL('pi_list_browseresults_prev', '< Previous', TRUE), ($pointer - 1), $freeIndexUid) . '</li>';
+				$links[] = '<li>' . $this->makePointerSelector_link($this->pi_getLL('pi_list_browseresults_prev', '< Previous', TRUE), $pointer - 1, $freeIndexUid) . '</li>';
 			}
-			for ($a = 0; $a < $pageCount; $a++) {
-				$min = max(0, $pointer + 1 - ceil($maxPages / 2));
-				$max = $min + $maxPages;
-				if ($max > $pageCount) {
-					$min = $min - ($max - $pageCount);
-				}
-				if ($a >= $min && $a < $max) {
-					if ($a == $pointer) {
-						$links[] = '<li' . $this->pi_classParam('browselist-currentPage') . '><strong>' . $this->makePointerSelector_link(trim(($this->pi_getLL('pi_list_browseresults_page', 'Page', 1) . ' ' . ($a + 1))), $a, $freeIndexUid) . '</strong></li>';
-					} else {
-						$links[] = '<li>' . $this->makePointerSelector_link(trim(($this->pi_getLL('pi_list_browseresults_page', 'Page', TRUE) . ' ' . ($a + 1))), $a, $freeIndexUid) . '</li>';
-					}
+			$minPage = $pointer - floor($maxPages / 2);
+			$maxPage = $minPage + $maxPages - 1;
+			// Check if the indexes are within the page limits
+			if ($minPage < 0) {
+				$maxPage -= $minPage;
+				$minPage = 0;
+			} elseif ($maxPage >= $pageCount) {
+				$minPage -= $maxPage - $pageCount + 1;
+				$maxPage = $pageCount - 1;
+			}
+			$pageLabel = $this->pi_getLL('pi_list_browseresults_page', 'Page', TRUE);
+			for ($a = $minPage; $a <= $maxPage; $a++) {
+				$label = trim($pageLabel . ' ' . ($a + 1));
+				$link = $this->makePointerSelector_link($label, $a, $freeIndexUid);
+				if ($a === $pointer) {
+					$links[] = '<li' . $this->pi_classParam('browselist-currentPage') . '><strong>' . $link . '</strong></li>';
+				} else {
+					$links[] = '<li>' . $link . '</li>';
 				}
 			}
 			if ($pointer + 1 < $pageCount) {
-				$links[] = '<li>' . $this->makePointerSelector_link($this->pi_getLL('pi_list_browseresults_next', 'Next >', TRUE), ($pointer + 1), $freeIndexUid) . '</li>';
+				$links[] = '<li>' . $this->makePointerSelector_link($this->pi_getLL('pi_list_browseresults_next', 'Next >', TRUE), $pointer + 1, $freeIndexUid) . '</li>';
 			}
 		}
-		$pR1 = $pointer * $results_at_a_time + 1;
-		$pR2 = $pointer * $results_at_a_time + $results_at_a_time;
-		if (is_array($links)) {
+		if (!empty($links)) {
 			$addPart .= '
 		<ul class="browsebox">
 			' . implode('', $links) . '
@@ -1638,9 +1642,17 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		$label = str_replace(
 			array('###TAG_BEGIN###', '###TAG_END###'),
 			array('<strong>', '</strong>'),
-			$this->pi_getLL('pi_list_browseresults_display', 'Displaying results ###TAG_BEGIN###%s to %s###TAG_END### out of ###TAG_BEGIN###%s###TAG_END###')
+			$this->pi_getLL('pi_list_browseresults_display', 'Displaying results ###TAG_BEGIN###%1$s to %2$s###TAG_END### out of ###TAG_BEGIN###%3$s###TAG_END###')
 		);
-		$sTables = '<div' . $this->pi_classParam('browsebox') . '>' . ($showResultCount ? '<p>' . sprintf($label, $pR1, min(array($this->internal['res_count'], $pR2)), $this->internal['res_count']) . $addString . '</p>' : '') . $addPart . '</div>';
+		$resultsFrom = $pointer * $results_at_a_time + 1;
+		$resultsTo = min($resultsFrom + $results_at_a_time - 1, $count);
+		$resultCountText = '';
+		if ($showResultCount) {
+			$resultCountText = '<p>' . sprintf($label, $resultsFrom, $resultsTo, $count) . $addString . '</p>';
+		}
+		$sTables = '<div' . $this->pi_classParam('browsebox') . '>'
+			. $resultCountText
+			. $addPart . '</div>';
 		return $sTables;
 	}
 
