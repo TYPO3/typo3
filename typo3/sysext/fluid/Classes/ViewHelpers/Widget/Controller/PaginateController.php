@@ -20,15 +20,29 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController {
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController;
+
+/**
+ * Class PaginateController
+ */
+class PaginateController extends AbstractWidgetController {
 
 	/**
 	 * @var array
 	 */
-	protected $configuration = array('itemsPerPage' => 10, 'insertAbove' => FALSE, 'insertBelow' => TRUE, 'maximumNumberOfLinks' => 99, 'addQueryStringMethod' => '');
+	protected $configuration = array(
+		'itemsPerPage' => 10,
+		'insertAbove' => FALSE,
+		'insertBelow' => TRUE,
+		'maximumNumberOfLinks' => 99,
+		'addQueryStringMethod' => ''
+	);
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+	 * @var QueryResultInterface|ObjectStorage|array
 	 */
 	protected $objects;
 
@@ -48,11 +62,21 @@ class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
 	protected $numberOfPages = 1;
 
 	/**
+	 * @var int
+	 */
+	protected $displayRangeStart = NULL;
+
+	/**
+	 * @var int
+	 */
+	protected $displayRangeEnd = NULL;
+
+	/**
 	 * @return void
 	 */
 	public function initializeAction() {
 		$this->objects = $this->widgetConfiguration['objects'];
-		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->configuration, $this->widgetConfiguration['configuration'], FALSE);
+		ArrayUtility::mergeRecursiveWithOverrule($this->configuration, $this->widgetConfiguration['configuration'], FALSE);
 		$this->numberOfPages = ceil(count($this->objects) / (int)$this->configuration['itemsPerPage']);
 		$this->maximumNumberOfLinks = (int)$this->configuration['maximumNumberOfLinks'];
 	}
@@ -73,12 +97,11 @@ class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
 		} else {
 			// modify query
 			$itemsPerPage = (int)$this->configuration['itemsPerPage'];
-			$query = $this->objects->getQuery();
-			$query->setLimit($itemsPerPage);
+			$offset = 0;
 			if ($this->currentPage > 1) {
-				$query->setOffset((int)($itemsPerPage * ($this->currentPage - 1)));
+				$offset = ((int)($itemsPerPage * ($this->currentPage - 1)));
 			}
-			$modifiedObjects = $query->execute();
+			$modifiedObjects = $this->prepareObjectsSlice($itemsPerPage, $offset);
 		}
 		$this->view->assign('contentArguments', array(
 			$this->widgetConfiguration['as'] => $modifiedObjects
@@ -112,7 +135,8 @@ class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
 	}
 
 	/**
-	 * Returns an array with the keys "pages", "current", "numberOfPages", "nextPage" & "previousPage"
+	 * Returns an array with the keys "pages", "current", "numberOfPages",
+	 * "nextPage" & "previousPage"
 	 *
 	 * @return array
 	 */
@@ -138,6 +162,40 @@ class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
 			$pagination['previousPage'] = $this->currentPage - 1;
 		}
 		return $pagination;
+	}
+
+	/**
+	 * @param int $itemsPerPage
+	 * @param int $offset
+	 *
+	 * @return array|QueryResultInterface
+	 * @throws \InvalidArgumentException
+	 */
+	protected function prepareObjectsSlice($itemsPerPage, $offset) {
+		if ($this->objects instanceof QueryResultInterface) {
+			$query = $this->objects->getQuery();
+			$query->setLimit($itemsPerPage);
+			if ($offset > 0) {
+				$query->setOffset($offset);
+			}
+			$modifiedObjects = $query->execute();
+			return $modifiedObjects;
+		} elseif ($this->objects instanceof ObjectStorage) {
+			$modifiedObjects = array();
+			$endOfRange = $offset + $itemsPerPage;
+			for ($i = $offset; $i < $endOfRange; $i++) {
+				$modifiedObjects[] = $this->objects->toArray()[$i];
+			}
+			return $modifiedObjects;
+		} elseif (is_array($this->objects)) {
+			$modifiedObjects = array_slice($this->objects, $offset, $itemsPerPage);
+			return $modifiedObjects;
+		} else {
+			throw new \InvalidArgumentException('The view helper "' . get_class($this)
+				. '" accepts as argument "QueryResultInterface", "\SplObjectStorage", "ObjectStorage" or an array. '
+				. 'given: ' . get_class($this->objects), 1385547291
+			);
+		}
 	}
 
 }

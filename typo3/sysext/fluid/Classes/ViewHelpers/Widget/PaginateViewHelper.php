@@ -20,6 +20,11 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Widget;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper;
+use TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\PaginateController;
+
 /**
  * This ViewHelper renders a Pagination of objects.
  *
@@ -50,7 +55,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Widget;
  *
  * @api
  */
-class PaginateViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper {
+class PaginateViewHelper extends AbstractWidgetViewHelper {
 
 	/**
 	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\PaginateController
@@ -59,12 +64,12 @@ class PaginateViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetView
 	protected $controller;
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $objects
+	 * @param QueryResultInterface|ObjectStorage|array $objects
 	 * @param string $as
 	 * @param array $configuration
 	 * @return string
 	 */
-	public function render(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface $objects, $as, array $configuration = array('itemsPerPage' => 10, 'insertAbove' => FALSE, 'insertBelow' => TRUE, 'maximumNumberOfLinks' => 99)) {
+	public function render($objects, $as, array $configuration = array('itemsPerPage' => 10, 'insertAbove' => FALSE, 'insertBelow' => TRUE, 'maximumNumberOfLinks' => 99)) {
 		return $this->initiateSubRequest();
 	}
 
