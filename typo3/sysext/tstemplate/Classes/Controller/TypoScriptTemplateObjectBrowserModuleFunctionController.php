@@ -327,6 +327,8 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 			} else {
 				$noTemplateMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('noCurrentTemplate'), $GLOBALS['LANG']->getLL('edit'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				$this->addFlashMessage($noTemplateMessage);
+				$theOutput .= htmlspecialchars($this->pObj->sObj) . ' = <strong>' . htmlspecialchars($theSetupValue) . '</strong>';
+				$theOutput .= $this->pObj->doc->spacer(10);
 			}
 			// Links:
 			$out = '';
