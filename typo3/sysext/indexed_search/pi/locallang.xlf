@@ -234,7 +234,7 @@ All search words are converted to lowercase.</source>
 				<source>Next &gt;</source>
 			</trans-unit>
 			<trans-unit id="pi_list_browseresults_display" xml:space="preserve">
-				<source>Displaying results ###TAG_BEGIN###%s to %s###TAG_END### out of ###TAG_BEGIN###%s###TAG_END###</source>
+				<source>Displaying results ###TAG_BEGIN###%1$s to %2$s###TAG_END### out of ###TAG_BEGIN###%3$s###TAG_END###</source>
 			</trans-unit>
 			<trans-unit id="local_operator_AND" xml:space="preserve">
 				<source>AND</source>
