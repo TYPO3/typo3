@@ -92,7 +92,10 @@ class Check {
 		$statusArray[] = $this->checkOpenSslInstalled();
 		$statusArray[] = $this->checkSuhosinLoaded();
 		$statusArray[] = $this->checkSuhosinRequestMaxVars();
+		$statusArray[] = $this->checkSuhosinRequestMaxVarnameLength();
+		$statusArray[] = $this->checkSuhosinPostMaxNameLength();
 		$statusArray[] = $this->checkSuhosinPostMaxVars();
+		$statusArray[] = $this->checkSuhosinGetMaxNameLength();
 		$statusArray[] = $this->checkSuhosinGetMaxValueLength();
 		$statusArray[] = $this->checkSuhosinExecutorIncludeWhitelistContainsPhar();
 		$statusArray[] = $this->checkSuhosinExecutorIncludeWhitelistContainsVfs();
@@ -617,6 +620,76 @@ class Check {
 	}
 
 	/**
+	 * Check suhosin.request.max_varname_length
+	 *
+	 * @return Status\StatusInterface
+	 */
+	protected function checkSuhosinRequestMaxVarnameLength() {
+		$recommendedRequestMaxVarnameLength = 200;
+		if ($this->isSuhosinLoaded()) {
+			$currentRequestMaxVarnameLength = ini_get('suhosin.request.max_varname_length');
+			if ($currentRequestMaxVarnameLength < $recommendedRequestMaxVarnameLength) {
+				$status = new Status\ErrorStatus();
+				$status->setTitle('PHP suhosin.request.max_varname_length too low');
+				$status->setMessage(
+					'suhosin.request.max_varname_length=' . $currentRequestMaxVarnameLength . LF .
+					'This setting can lead to lost information if submitting forms with lots of data in TYPO3 CMS' .
+					' (as the install tool does). It is highly recommended to raise this' .
+					' to at least ' . $recommendedRequestMaxVarnameLength . ':' . LF .
+					'suhosin.request.max_varname_length=' . $recommendedRequestMaxVarnameLength
+				);
+			} else {
+				$status = new Status\OkStatus();
+				$status->setTitle('PHP suhosin.request.max_varname_length ok');
+			}
+		} else {
+			$status = new Status\InfoStatus();
+			$status->setTitle('Suhosin not loaded');
+			$status->setMessage(
+				'If enabling suhosin, suhosin.request.max_varname_length' .
+				' should be set to at least ' . $recommendedRequestMaxVarnameLength . ':' . LF .
+				'suhosin.request.max_varname_length=' . $recommendedRequestMaxVarnameLength
+			);
+		}
+		return $status;
+	}
+
+	/**
+	 * Check suhosin.post.max_name_length
+	 *
+	 * @return Status\StatusInterface
+	 */
+	protected function checkSuhosinPostMaxNameLength() {
+		$recommendedPostMaxNameLength = 200;
+		if ($this->isSuhosinLoaded()) {
+			$currentPostMaxNameLength = ini_get('suhosin.post.max_name_length');
+			if ($currentPostMaxNameLength < $recommendedPostMaxNameLength) {
+				$status = new Status\ErrorStatus();
+				$status->setTitle('PHP suhosin.post.max_name_length too low');
+				$status->setMessage(
+					'suhosin.post.max_name_length=' . $currentPostMaxNameLength . LF .
+					'This setting can lead to lost information if submitting forms with lots of data in TYPO3 CMS' .
+					' (as the install tool does). It is highly recommended to raise this' .
+					' to at least ' . $recommendedPostMaxNameLength . ':' . LF .
+					'suhosin.post.max_name_length=' . $recommendedPostMaxNameLength
+				);
+			} else {
+				$status = new Status\OkStatus();
+				$status->setTitle('PHP suhosin.post.max_name_length ok');
+			}
+		} else {
+			$status = new Status\InfoStatus();
+			$status->setTitle('Suhosin not loaded');
+			$status->setMessage(
+				'If enabling suhosin, suhosin.post.max_name_length' .
+				' should be set to at least ' . $recommendedPostMaxNameLength . ':' . LF .
+				'suhosin.post.max_name_length=' . $recommendedPostMaxNameLength
+			);
+		}
+		return $status;
+	}
+
+	/**
 	 * Check suhosin.post.max_vars
 	 *
 	 * @return Status\StatusInterface
@@ -681,6 +754,41 @@ class Check {
 				'If enabling suhosin, suhosin.get.max_value_length' .
 				' should be set to at least ' . $recommendedGetMaxValueLength . ':' . LF .
 				'suhosin.get.max_value_length=' . $recommendedGetMaxValueLength
+			);
+		}
+		return $status;
+	}
+
+	/**
+	 * Check suhosin.get.max_name_length
+	 *
+	 * @return Status\StatusInterface
+	 */
+	protected function checkSuhosinGetMaxNameLength() {
+		$recommendedGetMaxNameLength = 200;
+		if ($this->isSuhosinLoaded()) {
+			$currentGetMaxNameLength = ini_get('suhosin.get.max_name_length');
+			if ($currentGetMaxNameLength < $recommendedGetMaxNameLength) {
+				$status = new Status\ErrorStatus();
+				$status->setTitle('PHP suhosin.get.max_name_length too low');
+				$status->setMessage(
+					'suhosin.get.max_name_length=' . $currentGetMaxNameLength . LF .
+					'This setting can lead to lost information if submitting forms with lots of data in TYPO3 CMS' .
+					' (as the install tool does). It is highly recommended to raise this' .
+					' to at least ' . $recommendedGetMaxNameLength . ':' . LF .
+					'suhosin.get.max_name_length=' . $recommendedGetMaxNameLength
+				);
+			} else {
+				$status = new Status\OkStatus();
+				$status->setTitle('PHP suhosin.get.max_name_length ok');
+			}
+		} else {
+			$status = new Status\InfoStatus();
+			$status->setTitle('Suhosin not loaded');
+			$status->setMessage(
+				'If enabling suhosin, suhosin.get.max_name_length' .
+				' should be set to at least ' . $recommendedGetMaxNameLength . ':' . LF .
+				'suhosin.get.max_name_length=' . $recommendedGetMaxNameLength
 			);
 		}
 		return $status;
