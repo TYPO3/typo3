@@ -174,7 +174,6 @@ class InlineElement {
 			return FALSE;
 		}
 		$item = '';
-		$levelLinks = '';
 		$localizationLinks = '';
 		// Count the number of processed inline elements
 		$this->inlineCount++;
@@ -285,10 +284,10 @@ class InlineElement {
 			}
 			$selectorBox = $this->renderPossibleRecordsSelector($possibleRecords, $config, $uniqueIds);
 			$item .= $selectorBox . $localizationLinks;
-		// Render the level links (create new record):
-		} else {
-			$levelLinks = $this->getLevelInteractionLink('newRecord', $nameObject . self::Structure_Separator . $foreign_table, $config);
 		}
+		// Render the level links (create new record):
+		$levelLinks = $this->getLevelInteractionLink('newRecord', $nameObject . self::Structure_Separator . $foreign_table, $config);
+
 		// Wrap all inline fields of a record with a <div> (like a container)
 		$item .= '<div id="' . $nameObject . '">';
 		// Define how to show the "Create new record" link - if there are more than maxitems, hide it
