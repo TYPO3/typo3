@@ -1620,7 +1620,9 @@ class AbstractMenuContentObject {
 	 * @todo Define visibility
 	 */
 	public function setATagParts() {
-		$this->I['A1'] = '<a ' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($this->I['linkHREF'], 1) . ' ' . $this->I['val']['ATagParams'] . $this->I['accessKey']['code'] . '>';
+		$params = trim($this->I['val']['ATagParams']) . $this->I['accessKey']['code'];
+		$params = $params !== '' ? ' ' . $params : '';
+		$this->I['A1'] = '<a ' . GeneralUtility::implodeAttributes($this->I['linkHREF'], 1) . $params . '>';
 		$this->I['A2'] = '</a>';
 	}
 
