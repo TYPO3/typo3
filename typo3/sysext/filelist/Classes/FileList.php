@@ -817,7 +817,9 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 					'sys_file_metadata' => array($metaData['uid'] => 'edit')
 				);
 				$editOnClick = BackendUtility::editOnClick(GeneralUtility::implodeArrayForUrl('edit', $data), $GLOBALS['BACK_PATH'], $this->listUrl());
-				$cells['editmetadata'] = '<a href="#" onclick="' . $editOnClick . '" title="Edit Metadata of this file">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+				$title = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.editMetadata'));
+				$cells['editmetadata'] = '<a href="#" onclick="' . $editOnClick . '" title="' . $title . '">'
+					. IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 			} else {
 				$cells['editmetadata'] = IconUtility::getSpriteIcon('empty-empty');
 			}
