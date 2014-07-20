@@ -360,7 +360,7 @@ abstract class FunctionalTestCase extends BaseTestCase {
 		$response = $php->runJob($template->render());
 		$result = json_decode($response['stdout'], TRUE);
 
-		if ($result === FALSE) {
+		if ($result === NULL) {
 			$this->fail('Frontend Response is empty');
 		}
 
