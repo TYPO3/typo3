@@ -14,7 +14,9 @@ namespace TYPO3\CMS\Backend\Tree\Pagetree;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Controller\UserSettingsController;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -25,13 +27,13 @@ class ExtdirectTreeCommands
     /**
      * Visibly the page
      *
-     * @param stdClass $nodeData
+     * @param \stdClass $nodeData
      * @return array
      */
     public function visiblyNode($nodeData)
     {
-        /** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
-        $node = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode::class, (array)$nodeData);
+        /** @var $node PagetreeNode */
+        $node = GeneralUtility::makeInstance(PagetreeNode::class, (array)$nodeData);
         try {
             Commands::visiblyNode($node);
             $newNode = Commands::getNode($node->getId());
@@ -49,13 +51,13 @@ class ExtdirectTreeCommands
     /**
      * Hide the page
      *
-     * @param stdClass $nodeData
+     * @param \stdClass $nodeData
      * @return array
      */
     public function disableNode($nodeData)
     {
-        /** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
-        $node = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode::class, (array)$nodeData);
+        /** @var $node PagetreeNode */
+        $node = GeneralUtility::makeInstance(PagetreeNode::class, (array)$nodeData);
         try {
             Commands::disableNode($node);
             $newNode = Commands::getNode($node->getId());
@@ -73,17 +75,17 @@ class ExtdirectTreeCommands
     /**
      * Delete the page
      *
-     * @param stdClass $nodeData
+     * @param \stdClass $nodeData
      * @return array
      */
     public function deleteNode($nodeData)
     {
-        /** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
-        $node = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode::class, (array)$nodeData);
+        /** @var $node PagetreeNode */
+        $node = GeneralUtility::makeInstance(PagetreeNode::class, (array)$nodeData);
         try {
             Commands::deleteNode($node);
             $returnValue = array();
-            if ($GLOBALS['BE_USER']->workspace) {
+            if (static::getBackendUser()->workspace) {
                 $record = Commands::getNodeRecord($node->getId());
                 if ($record['_ORIG_uid']) {
                     $newNode = Commands::getNewNode($record);
@@ -102,14 +104,14 @@ class ExtdirectTreeCommands
     /**
      * Restore the page
      *
-     * @param stdClass $nodeData
+     * @param \stdClass $nodeData
      * @param int $destination
      * @return array
      */
     public function restoreNode($nodeData, $destination)
     {
-        /** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
-        $node = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode::class, (array)$nodeData);
+        /** @var $node PagetreeNode */
+        $node = GeneralUtility::makeInstance(PagetreeNode::class, (array)$nodeData);
         try {
             Commands::restoreNode($node, $destination);
             $newNode = Commands::getNode($node->getId());
@@ -127,7 +129,7 @@ class ExtdirectTreeCommands
      * Updates the given field with a new text value, may be used to inline update
      * the title field in the new page tree
      *
-     * @param stdClass $nodeData
+     * @param \stdClass $nodeData
      * @param string $updatedLabel
      * @return array
      */
@@ -136,11 +138,11 @@ class ExtdirectTreeCommands
         if ($updatedLabel === '') {
             return array();
         }
-        /** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
-        $node = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode::class, (array)$nodeData);
+        /** @var $node PagetreeNode */
+        $node = GeneralUtility::makeInstance(PagetreeNode::class, (array)$nodeData);
         try {
             Commands::updateNodeLabel($node, $updatedLabel);
-            $shortendedText = GeneralUtility::fixed_lgd_cs($updatedLabel, (int)$GLOBALS['BE_USER']->uc['titleLen']);
+            $shortendedText = GeneralUtility::fixed_lgd_cs($updatedLabel, (int)static::getBackendUser()->uc['titleLen']);
             $returnValue = array(
                 'editableText' => $updatedLabel,
                 'updatedText' => htmlspecialchars($shortendedText)
@@ -157,29 +159,29 @@ class ExtdirectTreeCommands
     /**
      * Sets a temporary mount point
      *
-     * @param stdClass $nodeData
+     * @param \stdClass $nodeData
      * @return array
      */
     public static function setTemporaryMountPoint($nodeData)
     {
-        /** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
-        $node = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode::class, (array)$nodeData);
-        $GLOBALS['BE_USER']->uc['pageTree_temporaryMountPoint'] = $node->getId();
-        $GLOBALS['BE_USER']->writeUC($GLOBALS['BE_USER']->uc);
+        /** @var $node PagetreeNode */
+        $node = GeneralUtility::makeInstance(PagetreeNode::class, (array)$nodeData);
+        static::getBackendUser()->uc['pageTree_temporaryMountPoint'] = $node->getId();
+        static::getBackendUser()->writeUC(static::getBackendUser()->uc);
         return Commands::getMountPointPath();
     }
 
     /**
      * Moves the source node directly as the first child of the destination node
      *
-     * @param stdClass $nodeData
+     * @param \stdClass $nodeData
      * @param int $destination
      * @return array
      */
     public function moveNodeToFirstChildOfDestination($nodeData, $destination)
     {
-        /** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
-        $node = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode::class, (array)$nodeData);
+        /** @var $node PagetreeNode */
+        $node = GeneralUtility::makeInstance(PagetreeNode::class, (array)$nodeData);
         try {
             Commands::moveNode($node, $destination);
             $newNode = Commands::getNode($node->getId(), false);
@@ -197,14 +199,14 @@ class ExtdirectTreeCommands
     /**
      * Moves the source node directly after the destination node
      *
-     * @param stdClass $nodeData
+     * @param \stdClass $nodeData
      * @param int $destination
-     * @return void
+     * @return array
      */
     public function moveNodeAfterDestination($nodeData, $destination)
     {
-        /** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
-        $node = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode::class, (array)$nodeData);
+        /** @var $node PagetreeNode */
+        $node = GeneralUtility::makeInstance(PagetreeNode::class, (array)$nodeData);
         try {
             Commands::moveNode($node, -$destination);
             $newNode = Commands::getNode($node->getId(), false);
@@ -223,16 +225,14 @@ class ExtdirectTreeCommands
      * Copies the source node directly as the first child of the destination node and
      * returns the created node.
      *
-     * @param stdClass $nodeData
+     * @param \stdClass $nodeData
      * @param int $destination
      * @return array
      */
     public function copyNodeToFirstChildOfDestination($nodeData, $destination)
     {
-        /** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
-        $node = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode::class, (array)$nodeData);
-        /** @var $dataProvider \TYPO3\CMS\Backend\Tree\Pagetree\DataProvider */
-        $dataProvider = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\DataProvider::class);
+        /** @var $node PagetreeNode */
+        $node = GeneralUtility::makeInstance(PagetreeNode::class, (array)$nodeData);
         try {
             $newPageId = Commands::copyNode($node, $destination);
             $newNode = Commands::getNode($newPageId);
@@ -251,16 +251,14 @@ class ExtdirectTreeCommands
      * Copies the source node directly after the destination node and returns the
      * created node.
      *
-     * @param stdClass $nodeData
+     * @param \stdClass $nodeData
      * @param int $destination
      * @return array
      */
     public function copyNodeAfterDestination($nodeData, $destination)
     {
-        /** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
-        $node = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode::class, (array)$nodeData);
-        /** @var $dataProvider \TYPO3\CMS\Backend\Tree\Pagetree\DataProvider */
-        $dataProvider = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\DataProvider::class);
+        /** @var $node PagetreeNode */
+        $node = GeneralUtility::makeInstance(PagetreeNode::class, (array)$nodeData);
         try {
             $newPageId = Commands::copyNode($node, -$destination);
             $newNode = Commands::getNode($newPageId);
@@ -278,14 +276,14 @@ class ExtdirectTreeCommands
     /**
      * Inserts a new node as the first child node of the destination node and returns the created node.
      *
-     * @param stdClass $parentNodeData
+     * @param \stdClass $parentNodeData
      * @param int $pageType
      * @return array
      */
     public function insertNodeToFirstChildOfDestination($parentNodeData, $pageType)
     {
-        /** @var $parentNode \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
-        $parentNode = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode::class, (array)$parentNodeData);
+        /** @var $parentNode PagetreeNode */
+        $parentNode = GeneralUtility::makeInstance(PagetreeNode::class, (array)$parentNodeData);
         try {
             $newPageId = Commands::createNode($parentNode, $parentNode->getId(), $pageType);
             $returnValue = Commands::getNode($newPageId)->toArray();
@@ -301,15 +299,15 @@ class ExtdirectTreeCommands
     /**
      * Inserts a new node directly after the destination node and returns the created node.
      *
-     * @param stdClass $parentNodeData
+     * @param \stdClass $parentNodeData
      * @param int $destination
      * @param int $pageType
      * @return array
      */
     public function insertNodeAfterDestination($parentNodeData, $destination, $pageType)
     {
-        /** @var $parentNode \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
-        $parentNode = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode::class, (array)$parentNodeData);
+        /** @var $parentNode PagetreeNode */
+        $parentNode = GeneralUtility::makeInstance(PagetreeNode::class, (array)$parentNodeData);
         try {
             $newPageId = Commands::createNode($parentNode, -$destination, $pageType);
             $returnValue = Commands::getNode($newPageId)->toArray();
@@ -330,8 +328,8 @@ class ExtdirectTreeCommands
      */
     public static function getViewLink($nodeData)
     {
-        /** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
-        $node = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode::class, (array)$nodeData);
+        /** @var $node PagetreeNode */
+        $node = GeneralUtility::makeInstance(PagetreeNode::class, (array)$nodeData);
         $javascriptLink = BackendUtility::viewOnClick($node->getId());
         $extractedLink = '';
         if (preg_match('/window\\.open\\(\'([^\']+)\'/i', $javascriptLink, $match)) {
@@ -354,23 +352,23 @@ class ExtdirectTreeCommands
      */
     public static function addRootlineOfNodeToStateHash($stateId, $nodeId)
     {
-        $mountPoints = array_map('intval', $GLOBALS['BE_USER']->returnWebmounts());
+        $mountPoints = array_map('intval', static::getBackendUser()->returnWebmounts());
         if (empty($mountPoints)) {
             $mountPoints = array(0);
         }
-        if (!empty($GLOBALS['BE_USER']->uc['pageTree_temporaryMountPoint'])){
-            $mountPoints[] = (int)$GLOBALS['BE_USER']->uc['pageTree_temporaryMountPoint'];
+        if (!empty(static::getBackendUser()->uc['pageTree_temporaryMountPoint'])){
+            $mountPoints[] = (int)static::getBackendUser()->uc['pageTree_temporaryMountPoint'];
         }
         $mountPoints = array_unique($mountPoints);
-        /** @var $userSettingsController \TYPO3\CMS\Backend\Controller\UserSettingsController */
-        $userSettingsController = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\UserSettingsController::class);
+        /** @var $userSettingsController UserSettingsController */
+        $userSettingsController = GeneralUtility::makeInstance(UserSettingsController::class);
         $state = $userSettingsController->process('get', 'BackendComponents.States.' . $stateId);
         if (empty($state)) {
-            $state = new \StdClass();
-            $state->stateHash = new \StdClass();
+            $state = new \stdClass();
+            $state->stateHash = new \stdClass();
         }
         $state->stateHash = (object)$state->stateHash;
-        $rootline = BackendUtility::BEgetRootLine($nodeId, '', $GLOBALS['BE_USER']->workspace != 0);
+        $rootline = BackendUtility::BEgetRootLine($nodeId, '', (int)static::getBackendUser()->workspace !== 0);
         $rootlineIds = array();
         foreach ($rootline as $pageData) {
             $rootlineIds[] = (int)$pageData['uid'];
@@ -392,5 +390,64 @@ class ExtdirectTreeCommands
         }
         $userSettingsController->process('set', 'BackendComponents.States.' . $stateId, $state);
         return (array)$state->stateHash;
+    }
+
+    /**
+     * Gets the path steps for a given page.
+     * This methods considers multiple mount points,
+     * thus the returned array is multidimensional, e.g.
+     *
+     * array(
+     *   array('p0', 'p1', 'p13', 'p44'),
+     *   array('p0', 'p13-1', 'p44-1'),
+     * )
+     *
+     * @param int $pageId
+     * @return array
+     */
+    public static function getNodePaths($pageId)
+    {
+        $pagePaths = array();
+        $mountPoints = array_map('intval', static::getBackendUser()->returnWebmounts());
+        if (empty($mountPoints)) {
+            $mountPoints = array(0);
+        }
+        $mountPoints[] = (int)static::getBackendUser()->uc['pageTree_temporaryMountPoint'];
+        $mountPoints = array_unique($mountPoints);
+        $rootLine = BackendUtility::BEgetRootLine($pageId, '', (int)static::getBackendUser()->workspace !== 0);
+        $rootLineIds = array();
+        foreach ($rootLine as $rootLineLevel) {
+            $rootLineIds[] = (int)$rootLineLevel['uid'];
+        }
+        foreach ($mountPoints as $mountPoint) {
+            $pagePath = array();
+            if (!in_array($mountPoint, $rootLineIds, true)) {
+                continue;
+            }
+            foreach ($rootLine as $rootLineLevel) {
+                $node = Commands::getNewNode($rootLineLevel, $mountPoint);
+                array_unshift($pagePath, $node->calculateNodeId());
+                // Break if mount-point has been reached
+                if ($mountPoint === (int)$rootLineLevel['uid']) {
+                    break;
+                }
+            }
+            // Attach valid partial root-lines
+            if (!empty($pagePath)) {
+                if ($mountPoint !== 0) {
+                    array_unshift($pagePath, Commands::getNewNode(array('uid' => 0))->calculateNodeId());
+                }
+                $pagePaths[] = $pagePath;
+            }
+        }
+        return $pagePaths;
+    }
+
+    /**
+     * @return BackendUserAuthentication
+     */
+    protected static function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

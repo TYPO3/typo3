@@ -57,6 +57,13 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 	mainTree: null,
 
 	/**
+	 * Local cache for node paths
+	 *
+	 * @type {object}
+	 */
+	nodePaths: {},
+
+	/**
 	 * Initializes the application
 	 *
 	 * Set's the necessary language labels, configuration options and sprite icons by an
@@ -345,22 +352,47 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 	},
 
 	/**
-	 * Selects a node defined by the page id. If the second parameter is set, we
-	 * store the new location into the state hash.
+	 * Selects a node defined by the page id.
 	 *
 	 * @param {int} pageId
-	 * @return {Boolean}
 	 */
 	select: function(pageId) {
-		TYPO3.Components.PageTree.Commands.addRootlineOfNodeToStateHash(
-			TYPO3.Backend.NavigationContainer.PageTree.mainTree.stateId,
-			pageId, function(stateHash) {
-				TYPO3.Backend.NavigationContainer.PageTree.mainTree.stateHash = stateHash;
-				TYPO3.Backend.NavigationContainer.PageTree.mainTree.refreshTree();
-			}
-		);
+		this.selectPageId(pageId);
+	},
 
-		return true;
+	selectPageId: function(pageId, allResults) {
+		this.invokePageId(pageId, Ext.createDelegate(this.mainTree.selectPath, this.mainTree), allResults);
+	},
+
+	expandPageId: function(pageId, allResults) {
+		this.invokePageId(pageId, Ext.createDelegate(this.mainTree.expandPath, this.mainTree), allResults);
+	},
+
+	/**
+	 * @param {int} pageId
+	 * @param {Function} callback
+	 * @param {Boolean} allResults
+	 */
+	invokePageId: function(pageId, callback, allResults) {
+		if (typeof this.nodePaths[pageId] !== 'undefined') {
+			this.invokeNodePaths(this.nodePaths[pageId], pageId, callback, allResults);
+		} else {
+			var handler = function(nodePaths) {
+				this.nodePaths[pageId] = nodePaths;
+				this.invokeNodePaths(nodePaths, pageId, callback, allResults);
+			};
+			TYPO3.Components.PageTree.Commands.getNodePaths(pageId, handler, this);
+		}
+	},
+
+	invokeNodePaths: function(nodePaths, pageId, callback, allResults) {
+		if (!nodePaths.length) {
+			return;
+		}
+		if (!allResults) {
+			nodePaths = [nodePaths[0]];
+		}
+		Ext.each(nodePaths, function(nodePath) { callback('/root/' + nodePath.join('/')); });
 	},
 
 	/**
