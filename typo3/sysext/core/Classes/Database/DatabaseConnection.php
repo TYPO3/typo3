@@ -1069,7 +1069,8 @@ class DatabaseConnection {
 	 */
 	public function sql_free_result($res) {
 		if ($this->debug_check_recordset($res) && is_object($res)) {
-			return $res->free();
+			$res->free();
+			return TRUE;
 		} else {
 			return FALSE;
 		}
