@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Core\Resource;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
+
 /**
  * Repository for accessing the collections stored in the database
  *
@@ -34,15 +37,14 @@ class FileCollectionRepository extends \TYPO3\CMS\Core\Collection\RecordCollecti
 	/**
 	 * Finds a record collection by uid.
 	 *
-	 * @todo the parent function throws already an exception if not found
 	 * @param integer $uid The uid to be looked up
 	 * @return NULL|Collection\AbstractFileCollection
-	 * @throws \RuntimeException
+	 * @throws ResourceDoesNotExistException
 	 */
 	public function findByUid($uid) {
 		$object = parent::findByUid($uid);
 		if ($object === NULL) {
-			throw new \RuntimeException('Could not find row with uid "' . $uid . '" in table "' . $this->table . '"', 1314354066);
+			throw new ResourceDoesNotExistException('Could not find row with uid "' . $uid . '" in table "' . $this->table . '"', 1314354066);
 		}
 		return $object;
 	}
