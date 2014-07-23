@@ -2171,7 +2171,8 @@ class ImportExport {
 	 ***************************/
 
 	/**
-	 * At the end of the import process all file and DB relations should be set properly (that is relations to imported records are all re-created so imported records are correctly related again)
+	 * At the end of the import process all file and DB relations should be set properly (that is relations
+	 * to imported records are all re-created so imported records are correctly related again)
 	 * Relations in flexform fields are processed in setFlexFormRelations() after this function
 	 *
 	 * @return void
@@ -2229,7 +2230,8 @@ class ImportExport {
 											try {
 												// check, if there is alreay the same file in the folder
 												if ($this->legacyImportFolder->hasFile($fileName)) {
-													$file = $this->legacyImportFolder->getFile($fileName);
+													$fileStorage = $this->legacyImportFolder->getStorage();
+													$file = $fileStorage->getFile($this->legacyImportFolder->getIdentifier() . $fileName);
 													if ($file->getSha1() === sha1_file($tempFile)) {
 														$fileObject = $file;
 													}
@@ -2895,7 +2897,8 @@ class ImportExport {
 		try {
 			// check, if there is alreay the same file in the folder
 			if ($importFolder->hasFile($fileName)) {
-				$file = $importFolder->getFile($fileName);
+				$fileStorage = $importFolder->getStorage();
+				$file = $fileStorage->getFile($importFolder->getIdentifier() . $fileName);
 				if ($file->getSha1() === sha1_file($temporaryFile)) {
 					$fileObject = $file;
 				}
