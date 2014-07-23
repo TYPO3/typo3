@@ -302,7 +302,7 @@ CREATE TABLE sys_file (
 	mime_type varchar(255) DEFAULT '' NOT NULL,
 	name tinytext,
 	sha1 tinytext,
-	size int(11) DEFAULT '0' NOT NULL,
+	size bigint(20) unsigned DEFAULT '0' NOT NULL,
 	creation_date int(11) DEFAULT '0' NOT NULL,
 	modification_date int(11) DEFAULT '0' NOT NULL,
 
