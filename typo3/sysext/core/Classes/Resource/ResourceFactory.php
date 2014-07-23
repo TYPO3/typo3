@@ -561,12 +561,12 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 	 * @param integer $uid The uid of the file usage (sys_file_reference) to instantiate.
 	 * @param array $fileReferenceData The record row from database.
 	 *
-	 * @throws \InvalidArgumentException
+	 * @throws \TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException
 	 * @return FileReference
 	 */
 	public function getFileReferenceObject($uid, array $fileReferenceData = array()) {
 		if (!is_numeric($uid)) {
-			throw new \InvalidArgumentException('uid of fileusage (sys_file_reference) has to be numeric.', 1300086584);
+			throw new \InvalidArgumentException('uid of file usage (sys_file_reference) has to be numeric.', 1300086584);
 		}
 		if (!$this->fileReferenceInstances[$uid]) {
 			// Fetches data in case $fileData is empty
@@ -581,7 +581,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 					$fileReferenceData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_file_reference', 'uid=' . (int)$uid . ' AND deleted=0');
 				}
 				if (!is_array($fileReferenceData)) {
-					throw new \InvalidArgumentException('No fileusage (sys_file_reference) found for given UID.', 1317178794);
+					throw new \TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException('No file usage (sys_file_reference) found for given UID.', 1317178794);
 				}
 			}
 			$this->fileReferenceInstances[$uid] = $this->createFileReferenceObject($fileReferenceData);

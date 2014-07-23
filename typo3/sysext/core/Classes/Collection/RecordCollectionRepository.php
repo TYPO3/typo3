@@ -47,7 +47,7 @@ class RecordCollectionRepository {
 	public function findByUid($uid) {
 		$result = NULL;
 		$data = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', $this->table, 'uid=' . (int)$uid . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($this->table));
-		if ($data !== NULL) {
+		if (is_array($data)) {
 			$result = $this->createDomainObject($data);
 		}
 		return $result;
