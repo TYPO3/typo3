@@ -655,7 +655,7 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 										}
 										$output .= ' ' . $v['comparator'];
 										// Detecting value type; list or plain:
-										$comparator = strtoupper(str_replace(array(' ', TAB, CR, LF), '', $v['comparator']));
+										$comparator = $this->normalizeKeyword($v['comparator']);
 										if (GeneralUtility::inList('NOTIN,IN', $comparator)) {
 											if (isset($v['subquery'])) {
 												$output .= ' (' . $this->compileSELECT($v['subquery']) . ')';
@@ -685,6 +685,8 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 															case 'NOTIN':
 																$operator = 'AND';
 																break;
+															default:
+																$operator = '';
 														}
 
 														for ($i = 0; $i < $chunkCount; ++$i) {

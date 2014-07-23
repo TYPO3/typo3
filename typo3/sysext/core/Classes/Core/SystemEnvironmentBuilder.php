@@ -98,10 +98,12 @@ class SystemEnvironmentBuilder {
 		define('TYPO3_URL_DONATE', 'http://typo3.org/donate/online-donation/');
 		define('TYPO3_URL_WIKI_OPCODECACHE', 'http://wiki.typo3.org/Opcode_Cache');
 
-		// A tabulator, a linefeed, a carriage return, a CR-LF combination
+		// A null, a tabulator, a linefeed, a carriage return, a substitution, a CR-LF combination
+		define('NUL', chr(0));
 		define('TAB', chr(9));
 		define('LF', chr(10));
 		define('CR', chr(13));
+		define('SUB', chr(26));
 		define('CRLF', CR . LF);
 
 		// Security related constant: Default value of fileDenyPattern
