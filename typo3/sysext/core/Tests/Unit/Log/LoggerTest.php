@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log;
  */
 
 /**
- * Testcase for \TYPO3\CMS\Core\Log\Logger.
+ * Test case
  *
  * @author Ingo Renner <ingo@typo3.org>
  * @author Steffen Gebert <steffen.gebert@typo3.org>
