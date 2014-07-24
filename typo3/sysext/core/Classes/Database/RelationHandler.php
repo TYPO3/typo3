@@ -1308,7 +1308,7 @@ class RelationHandler {
 	 * @return boolean Returns TRUE if looking from the symmetric ("other") side to the relation.
 	 * @todo Define visibility
 	 */
-	public function isOnSymmetricSide($parentUid, $parentConf, $childRec) {
+	static public function isOnSymmetricSide($parentUid, $parentConf, $childRec) {
 		return MathUtility::canBeInterpretedAsInteger($childRec['uid'])
 			&& $parentConf['symmetric_field']
 			&& $parentUid == $childRec[$parentConf['symmetric_field']];
