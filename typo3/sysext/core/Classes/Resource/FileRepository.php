@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -204,7 +205,7 @@ class FileRepository extends AbstractRepository {
 					// Just passing the reference uid, the factory is doing workspace
 					// overlays automatically depending on the current environment
 					$itemList[] = $this->factory->getFileReferenceObject($referenceUid);
-				} catch (\InvalidArgumentException $exception) {
+				} catch (ResourceDoesNotExistException $exception) {
 					// No handling, just omit the invalid reference uid
 				}
 			}
