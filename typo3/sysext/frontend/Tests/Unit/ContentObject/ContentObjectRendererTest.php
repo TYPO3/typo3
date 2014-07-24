@@ -2706,6 +2706,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				array('TYPO3_SITE_PATH', '/'),
 			)
 		));
+		$GLOBALS['TSFE']->absRefPrefix = '';
 
 		$this->assertEquals($expected, $this->subject->_call('forceAbsoluteUrl', $url, $configuration));
 	}
@@ -2920,6 +2921,27 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				throw new \LogicException('Exception during rendering', 1414513947);
 			});
 		return $contentObjectFixture;
+	}
+
+	/**
+	 * @test
+	 */
+	public function forceAbsoluteUrlReturnsCorrectAbsoluteUrlWithSubfolder() {
+		// Force hostname and subfolder
+		$this->subject->expects($this->any())->method('getEnvironmentVariable')->will($this->returnValueMap(
+			array(
+				array('HTTP_HOST', 'localhost'),
+				array('TYPO3_SITE_PATH', '/subfolder/'),
+			)
+		));
+
+		$expected = 'http://localhost/subfolder/fileadmin/my.pdf';
+		$url = 'fileadmin/my.pdf';
+		$configuration = array(
+			'forceAbsoluteUrl' => '1'
+		);
+
+		$this->assertEquals($expected, $this->subject->_call('forceAbsoluteUrl', $url, $configuration));
 	}
 
 }

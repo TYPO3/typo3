@@ -6411,6 +6411,12 @@ class ContentObjectRenderer {
 					$urlParts['scheme'] = 'http';
 					$urlParts['host'] = $this->getEnvironmentVariable('HTTP_HOST');
 					$urlParts['path'] = '/' . ltrim($urlParts['path'], '/');
+					// absRefPrefix has been prepended to $url beforehand
+					// so we only modify the path if no absRefPrefix has been set
+					// otherwise we would destroy the path
+					if ($GLOBALS['TSFE']->absRefPrefix === '') {
+						$urlParts['path'] = $this->getEnvironmentVariable('TYPO3_SITE_PATH') . ltrim($urlParts['path'], '/');
+					}
 					$isUrlModified = TRUE;
 				}
 				// Override scheme:
