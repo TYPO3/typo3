@@ -485,7 +485,6 @@ TCEforms Sections
 	cursor: default;
 	opacity: 0.5;
 	filter: ~"alpha(opacity=@50)";
-	-webkit-box-shadow: none;
 	box-shadow: none;
 }
 
@@ -523,7 +522,6 @@ TCEforms Sections
 
 	opacity: 0.5;
 	filter: alpha(opacity=50);
-	-moz-opacity: 0.5;
 }
 
 .t3-form-palette-field-label {

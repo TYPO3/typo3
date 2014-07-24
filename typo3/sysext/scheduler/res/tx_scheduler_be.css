@@ -66,11 +66,6 @@
 	height: 14px;
 
 	background-color: #5b5b5b;
-	background-image: -moz-linear-gradient(top,  #7f7f7f 10%, #5b5b5b 100%);
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(10%,#7f7f7f), color-stop(100%,#5b5b5b));
-	background-image: -webkit-linear-gradient(top,  #7f7f7f 10%,#5b5b5b 100%);
-	background-image: -o-linear-gradient(top,  #7f7f7f 10%,#5b5b5b 100%);
-	background-image: -ms-linear-gradient(top,  #7f7f7f 10%,#5b5b5b 100%);
 	background-image: linear-gradient(top,  #7f7f7f 10%,#5b5b5b 100%);
 	background-repeat: repeat-x;
 

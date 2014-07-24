@@ -13,10 +13,6 @@ table#typo3-tabmenu td.disabled {
 	border-top-left-radius: 3px;
 	border-top-right-radius: 3px;
 	color: #606060;
-	-moz-border-radius-topleft: 3px;
-	-moz-border-radius-topright: 3px;
-	-webkit-border-top-left-radius: 3px;
-	-webkit-border-top-right-radius: 3px;
 }
 
 table.typo3-dyntabmenu td.tabact a,
@@ -65,8 +61,6 @@ div.typo3-dyntabmenu-divs {
 	background-color: #ececec;
 	background-image: url('../../../../images/backgrounds/tab.png');
 	background-image: linear-gradient(center top, #ffffff 0px, #ececec 100px);
-	background-image: -moz-linear-gradient(center top, #ffffff 0px, #ececec 100px);
-	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0px, #ffffff), color-stop(100px, #ececec));
 	background-repeat: repeat-x;
 	border: 1px solid #adadad;
 }
@@ -82,8 +76,6 @@ div.typo3-dyntabmenu-divs-foldout div.tabact,
 div.typo3-dyntabmenu-divs-foldout div.disabled {
 	border: solid black 1px;
 	border-radius: 3px;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
 }
 
 div.typo3-dyntabmenu-divs-foldout div.tab {

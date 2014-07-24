@@ -4,7 +4,6 @@ Web > List
 
 /** @deprecated styles */
 table.typo3-dblist {
-	border: none;
 	border: 1px solid #d7d7d7;
 }
 

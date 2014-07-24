@@ -65,7 +65,6 @@
 
 .headerTooltip,
 .tooltip {
-  -webkit-box-shadow: 2px 2px 11px #666666;
   box-shadow: 2px 2px 11px #666666;
   display: none;
   width: 400px;

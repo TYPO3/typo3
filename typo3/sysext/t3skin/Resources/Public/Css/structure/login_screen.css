@@ -110,10 +110,6 @@
 	margin-top: 30px;
 }
 
-* html #typo3-index-php div#t3-copyright-notice {
-	height: 35px;
-}
-
 #typo3-index-php div#t3-copyright-notice img {
 	display: none;
 }

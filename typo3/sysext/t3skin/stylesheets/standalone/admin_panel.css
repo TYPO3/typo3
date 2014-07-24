@@ -31,8 +31,6 @@
 
 #TSFE_ADMIN_PANEL_FORM {
 	background-color: #fff;
-	-moz-box-shadow: 0 3px 15px #808080;
-	-webkit-box-shadow: 0 3px 15px #808080;
 	box-shadow: 0 3px 15px #808080;
 	margin: 0;
 	padding: 0;
@@ -43,7 +41,6 @@
 	border: 1px solid black;
 	border-spacing: 0;
 	border-collapse: separate;
-	*border-collapse: collapse;
 	margin: 0;
 	min-width: 315px;
 	padding: 0;
@@ -63,8 +60,7 @@
 
 #TSFE_ADMIN_PANEL_FORM tr.typo3-adminPanel-header td,
 #TSFE_ADMIN_PANEL_FORM tr.typo3-adminPanel-footer td {
-	background-image: -moz-linear-gradient(center top, #555 10%, #444547 90%);
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.1, #555), color-stop(0.1, #555), color-stop(0.9, #444547), color-stop(1.0, #444547));
+	background-image: linear-gradient(center top, #555 10%, #444547 90%);
 	background-color: #555;
 	color: white;
 	font-weight: bold;
@@ -166,11 +162,6 @@
 	padding: 5px 15px;
 }
 
-/*#TSFE_ADMIN_PANEL_FORM tr.typo3-adminPanel-itemRow td.typo3-adminPanel-section-content-title {*/
-/*padding-right: 9px;*/
-/*padding-top: 5px;*/
-/*}*/
-
 #TSFE_ADMIN_PANEL_FORM td.typo3-adminPanel-section-content {
 	padding-right: 11px;
 }
@@ -201,7 +192,6 @@
 	margin: 0;
 	vertical-align: inherit;
 	border-color: inherit;
-	padding: 2px 5px 3px 5px;
 	padding: 0 5px;
 	text-align: left;
 	white-space: nowrap;
@@ -214,10 +204,6 @@
 #TSFE_ADMIN_PANEL_FORM .admin-panel-table th span[style] {
 	color: #fff !important;
 }
-
-/*#TSFE_ADMIN_PANEL_FORM #typo3-adminPanel-tsLog .typo3-adminPanel-tsLogTime {*/
-/*text-align: center;*/
-/*}*/
 
 #TSFE_ADMIN_PANEL_FORM #typo3-adminPanel-tsLog .typo3-adminPanel-logRow-highlight {
 	background-color: #fcd3cf;
@@ -245,8 +231,6 @@
 #TSFE_ADMIN_PANEL_FORM input[type="submit"] {
 	background-color: #f6f6f6;
 	background-image: url('../../images/backgrounds/button-hover.png');
-	background-image: -moz-linear-gradient(center top, #f6f6f6 10%, #c8c8c8 90%);
-	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #f6f6f6), color-stop(0.9, #c8c8c8));
 	background-image: linear-gradient(center top, #f6f6f6 10%, #c8c8c8 90%);
 	background-position: center bottom;
 	background-repeat: repeat-x;

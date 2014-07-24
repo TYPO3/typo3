@@ -19,10 +19,6 @@ Workspace Selector
 	vertical-align: middle;
 }
 
-* html #workspace-selector-menu li {
-	height: 19px;
-}
-
 #workspace-selector-menu li img {
 	float: left;
 	position: relative;

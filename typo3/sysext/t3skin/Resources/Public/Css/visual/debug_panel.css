@@ -2,9 +2,6 @@
 TYPO3 debug panel
 - - - - - - - - - - - - - - - - - - - - - */
 
-.typo3-debugPanel-dragDropOver {
-}
-
 .typo3-debugPanel-dragDropArrowDown {
 	background-image: url('../../../../icons/gfx/arrowdown.png');
 	display: block;

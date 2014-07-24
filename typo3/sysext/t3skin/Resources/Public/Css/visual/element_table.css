@@ -28,7 +28,6 @@ table.t3-table-info {
  * Common style for tables
  */
 table.t3-table {
-	border: none;
 	border: 1px solid #d7d7d7;
 }
 
@@ -54,10 +53,6 @@ table.t3-table tbody tr:nth-child(even) td {
 
 table.t3-table tbody tr:hover td {
 	background-color: #efefef;
-	-webkit-transition: background-color 100ms linear;
-	-moz-transition: background-color 100ms linear;
-	-o-transition: background-color 100ms linear;
-	-ms-transition: background-color 100ms linear;
 	transition: background-color 100ms linear;
 }
 

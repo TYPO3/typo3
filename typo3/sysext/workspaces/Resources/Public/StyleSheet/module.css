@@ -44,10 +44,6 @@ div.typo3-dyntabmenu-divs {
 .x-toolbar {
 	background:none !important;
 }
-/* fixes positioning of toolbar in IE6 */
-* html .x-panel-tbar {
-	border: 1px none;
-}
 .x-grid3 {
 	background: none !important;
 }
@@ -81,15 +77,11 @@ div.t3-workspaces-foldoutWrapper {
 	padding: 10px;
 	margin-left: 40px;
 	background-color: #FFFFFF;
-	background-image: -moz-linear-gradient(center top , #ececec 0px, #f7f7f7 200px);
-	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0, #ececec), color-stop(0.3, #f7f7f7));
 	background-image: linear-gradient(center top, #ececec 0px, #f7f7f7 200px);
 	background-repeat: repeat-x;
 	color: #606060;
 }
 .x-grid3-row-selected div.t3-workspaces-foldoutWrapper {
-	background-image: -moz-linear-gradient(center top , #dedede 0px, #f7f7f7 200px);
-	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0, #dedede), color-stop(200px, #f7f7f7));
 	background-image: linear-gradient(center top, #dedede 0px, #f7f7f7 200px);
 	background-repeat: repeat-x;
 }
@@ -99,8 +91,6 @@ div.t3-workspaces-foldoutWrapper table {
 }
 div.t3-workspaces-foldoutWrapper tr.header {
 	background-color: #B5B5B5;
-	background-image: -moz-linear-gradient(center top , #7f7f7f 10%, #5b5b5b 100%);
-	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #7f7f7f), color-stop(1, #5b5b5b));
 	background-image: linear-gradient(center top, #7f7f7f 10%, #5b5b5b 100%);
 	background-repeat: repeat-x;
 }
@@ -270,10 +260,6 @@ table.t3-workspaces-foldout-contentDiff td.content {
 	border-color: #adadad;
 	border-style: solid;
 	border-width: 1px;
-	-moz-border-radius-topleft: 3px;
-	-moz-border-radius-topright: 3px;
-	-webkit-border-top-left-radius: 3px;
-	-webkit-border-top-right-radius: 3px;
 	border-top-left-radius: 3px;
 	border-top-right-radius: 3px;
 	color: #666666;

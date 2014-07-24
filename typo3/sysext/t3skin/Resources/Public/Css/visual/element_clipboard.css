@@ -6,7 +6,6 @@ Clipboard
 table#typo3-clipboard {
 	background-color: #efeff4;
 	border: 1px solid #a2aab8;
-	border-top: 1px solid #a2aab8;
 }
 
 table#typo3-clipboard tr.bgColor2 {

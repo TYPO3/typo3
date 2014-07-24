@@ -81,8 +81,6 @@
 	background-color: #ff8600;
 	background-image: url('../../../../images/login/login-submit-background.gif');
 	background-image: linear-gradient(center top, #fe9500 0%, #cf6610 100%);
-	background-image: -moz-linear-gradient(center top, #fe9500 0%, #cf6610 100%);
-	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0, #fe9500), color-stop(1, #cf6610));
 	background-repeat: repeat-x;
 	border-top: 1px solid #ffb955;
 	border-left: 1px solid #E69036;
@@ -132,8 +130,6 @@
  * @section login news
  */
 #typo3-index-php .shadow {
-	-webkit-box-shadow: 0px 0px 18px rgba(0, 0, 0, 0.3);
-	-moz-box-shadow: 0px 0px 18px rgba(0, 0, 0, 0.3);
 	box-shadow: 0px 0px 18px rgba(0, 0, 0, 0.3);
 }
 
@@ -211,7 +207,5 @@
 .t3-login-box-body {
 	background-color: #c2c2c2;
 	background-image: linear-gradient(center top, #e2e2e2 0%, #c2c2c2 100%);
-	background-image: -moz-linear-gradient(center top, #e2e2e2 0%, #c2c2c2 100%);
-	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0, #e2e2e2), color-stop(1, #c2c2c2));
 	background-repeat: repeat-x;
 }

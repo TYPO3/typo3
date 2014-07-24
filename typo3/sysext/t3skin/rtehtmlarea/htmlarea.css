@@ -145,7 +145,6 @@ body.ext-ie6 .htmlarea-context-menu .buttonActive,
 .htmlarea .toolbar .buttonDisabled {
 	filter: gray() alpha(opacity=25);
 	opacity: 0.25;
-	-moz-opacity: 0.25;
 }
 .htmlarea .toolbar .separator {
 	background-color: transparent;

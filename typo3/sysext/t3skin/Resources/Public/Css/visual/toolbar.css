@@ -13,9 +13,6 @@ Toolbar inside the Topbar
 #typo3-toolbar .separator {
 	border-right: 1px solid #000;
 	box-shadow: 1px 0 #585858;
-	-moz-box-shadow: 1px 0 #585858;
-	-webkit-box-shadow: 1px 0 #585858;
-	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Color='#585858', Direction=90, Strength=1)";
 }
 
 .toolbar-item-active {

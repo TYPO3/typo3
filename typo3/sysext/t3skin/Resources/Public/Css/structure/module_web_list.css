@@ -41,17 +41,9 @@ table.typo3-dblist tr td div.typo3-DBctrl {
 	min-width: 252px;
 }
 
-* html table.typo3-dblist tr td div.typo3-DBctrl {
-	width: 252px;
-}
-
 table.typo3-dblist tr td div.typo3-clipCtrl {
 	height: 16px;
 	min-width: 72px;
-}
-
-* html table.typo3-dblist tr td div.typo3-clipCtrl {
-	width: 72px;
 }
 
 table.typo3-dblist tr td .typo3-DBctrl .typo3-ctrl-versioning {

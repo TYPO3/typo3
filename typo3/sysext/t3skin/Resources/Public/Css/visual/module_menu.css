@@ -12,8 +12,6 @@ Module menu
 #typo3-module-menu,
 #typo3-menu li.menuSection li a:hover {
 	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA9JREFUeNpi3LFjB0CAAQAEWAIqGE4BVwAAAABJRU5ErkJggg==");
-	/* star-hack targets IE7 */
-	*background-image: url("../../../../images/backgrounds/module-menu-right.png");
 	background-position: right;
 	background-repeat: repeat-y;
 }
@@ -36,8 +34,6 @@ Module menu
 #typo3-menu > li {
 	border-bottom: 1px solid #c7c7c7;
 	border-bottom-right-radius: 3px;
-	-moz-border-radius-bottomright: 3px;
-	-webkit-border-bottom-right-radius: 3px;
 }
 
 #typo3-menu > li:last-child {
@@ -65,9 +61,6 @@ Module menu
 .no-boxshadow #typo3-menu li.menuSection li.highlighted a:hover {
 	background-color: #ebebeb;
 	background-image: none;
-	-moz-box-shadow: none;
-	-ms-box-shadow: none;
-	-webkit-box-shadow: none;
 	box-shadow: none;
 }
 
@@ -81,14 +74,12 @@ Module menu
 #typo3-menu li div.collapsed {
 	background-image: url('../../../../images/arrows/module-menu-left-gray.png');
 	background-position: right 23px top 7px;
-	background-position: 90% 50%\9; /* IE8 hack */
 	background-repeat: no-repeat;
 }
 
 #typo3-menu li div.expanded {
 	background-image: url('../../../../images/arrows/module-menu-down-gray.png');
 	background-position: right 22px top 9px;
-	background-position: 90% 50%\9; /* IE8 hack */
 	background-repeat: no-repeat;
 }
 

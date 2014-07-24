@@ -18,10 +18,7 @@ Shortcuts menu in the toolbar
 	text-align: center;
 }
 
-#shortcut-menu .shortcut-list tr.shortcut td.shortcut-label a {
-	cursor: pointer;
-}
-
+#shortcut-menu .shortcut-list tr.shortcut td.shortcut-label a,
 #shortcut-menu .shortcut-list tr.shortcut td.shortcut-edit img,
 #shortcut-menu .shortcut-list tr.shortcut td.shortcut-delete img {
 	cursor: pointer;

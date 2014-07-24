@@ -6,7 +6,6 @@ body tags
 body {
 	min-height: 100%;
 	margin: 0;
-/*	overflow: hidden;*/
 	padding: 0;
 }
 
@@ -57,16 +56,4 @@ div#typo3-docbody {
 div#typo3-inner-docbody {
 	padding: 24px;
 	margin-top: 0;
-}
-
-/* Fix for IE 7 */
-* + html div#typo3-inner-docbody {
-	width: 95%;
-}
-
-* html div#typo3-docbody {
-	height: 90%;
-	padding-bottom: 0;
-	padding-top: 0;
-	top: 51px;
 }

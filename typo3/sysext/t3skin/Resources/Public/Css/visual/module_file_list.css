@@ -9,10 +9,6 @@ table#typo3-filelist tr td div.typo3-editCtrl {
 }
 
 #typo3-inner-docbody {
-	-webkit-transition:border 0.2s ease;
-	-moz-transition:border 0.2s ease;
-	-ms-transition:border 0.2s ease;
-	-o-transition:border 0.2s ease;
 	transition:border 0.2s ease;
 }
 .t3-dropzone {
