@@ -108,6 +108,13 @@ class PageLayoutController {
 	 */
 	public $modTSconfig;
 
+	/**
+	 * Module shared TSconfig
+	 *
+	 * @var array
+	 */
+	public $modSharedTSconfig;
+
 	// Current ids page record
 	/**
 	 * @todo Define visibility
@@ -206,6 +213,14 @@ class PageLayoutController {
 	 * @todo Define visibility
 	 */
 	public $editIcon;
+
+	/**
+	 * List of column-integers accessible to the current BE user.
+	 * Is set from TSconfig, default is $colPosList
+	 *
+	 * @var string
+	 */
+	public $activeColPosList;
 
 	/**
 	 * Initializing the module
@@ -523,7 +538,22 @@ class PageLayoutController {
 				$this->colPosList = implode(',', $backendLayout['__colPosList']);
 			}
 			// Removing duplicates, if any
-			$this->colPosList = implode(',', array_unique(GeneralUtility::intExplode(',', $this->colPosList)));
+			$this->colPosList = array_unique(GeneralUtility::intExplode(',', $this->colPosList));
+			// Accessible columns
+			if (trim($this->modSharedTSconfig['properties']['colPos_list']) !== '') {
+				$this->activeColPosList = array_unique(GeneralUtility::intExplode(',', trim($this->modSharedTSconfig['properties']['colPos_list'])));
+				// Match with the list which is present in the colPosList for the current page
+				if (!empty($this->colPosList) && !empty($this->colActivePosList)) {
+					$this->activeColPosList = implode(',', array_unique(array_intersect(
+						$this->activeColPosList,
+						$this->colPosList
+					)));
+				}
+			} else {
+				$this->activeColPosList = implode(',', $this->colPosList);
+			}
+			$this->colPosList = implode(',', $this->colPosList);
+
 			// Page title
 			$body = $this->doc->header($this->getLocalizedPageTitle());
 			$body .= $this->getHeaderFlashMessagesForCurrentPid();
@@ -903,6 +933,7 @@ class PageLayoutController {
 				}
 				// The order of the rows: Default is left(1), Normal(0), right(2), margin(3)
 				$dblist->tt_contentConfig['cols'] = implode(',', $colList);
+				$dblist->tt_contentConfig['activeCols'] = $this->activeColPosList;
 				$dblist->tt_contentConfig['showHidden'] = $this->MOD_SETTINGS['tt_content_showHidden'];
 				$dblist->tt_contentConfig['sys_language_uid'] = (int)$this->current_sys_language;
 				// If the function menu is set to "Language":
