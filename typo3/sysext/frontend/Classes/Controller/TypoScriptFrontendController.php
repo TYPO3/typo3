@@ -461,13 +461,6 @@ class TypoScriptFrontendController {
 	);
 
 	/**
-	 * Used to accumulate JavaScript loaded images (by menus)
-	 * @var string
-	 * @todo Define visibility
-	 */
-	public $JSImgCode = '';
-
-	/**
 	 * Used to accumulate DHTML-layers.
 	 * @var string
 	 * @todo Define visibility
@@ -3549,7 +3542,6 @@ class TypoScriptFrontendController {
 		$this->additionalFooterData = is_array($this->config['INTincScript_ext']['additionalFooterData']) ? $this->config['INTincScript_ext']['additionalFooterData'] : array();
 		$this->additionalJavaScript = $this->config['INTincScript_ext']['additionalJavaScript'];
 		$this->additionalCSS = $this->config['INTincScript_ext']['additionalCSS'];
-		$this->JSImgCode = $this->additionalHeaderData['JSImgCode'];
 		$this->divSection = '';
 		if (!empty($this->config['INTincScript_ext']['pageRenderer'])) {
 			$this->setPageRenderer(unserialize($this->config['INTincScript_ext']['pageRenderer']));
@@ -3663,20 +3655,6 @@ class TypoScriptFrontendController {
 	 * @todo Define visibility
 	 */
 	public function INTincScript_loadJSCode() {
-		// If any images added, then add them to the javascript section
-		$jsImgCode = trim($this->JSImgCode);
-		if ($jsImgCode !== '') {
-			$this->additionalHeaderData['JSImgCode'] = '
-<script type="text/javascript">
-	/*<![CDATA[*/
-<!--
-if (version == "n3") {
-' . $jsImgCode . '
-}
-// -->
-	/*]]>*/
-</script>';
-		}
 		// Add javascript
 		$jsCode = trim($this->JSCode);
 		$additionalJavaScript = is_array($this->additionalJavaScript)

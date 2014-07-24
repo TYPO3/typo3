@@ -370,6 +370,9 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 			$this->WMmenuItems = count($this->result['NO']);
 			$this->WMsubmenuObjSuffixes = $this->tmpl->splitConfArray(array('sOSuffix' => $this->mconf['submenuObjSuffixes']), $this->WMmenuItems);
 			$this->extProc_init();
+			if (!isset($GLOBALS['TSFE']->additionalJavaScript['JSImgCode'])) {
+				$GLOBALS['TSFE']->additionalJavaScript['JSImgCode'] = '';
+			}
 			for ($key = 0; $key < $this->WMmenuItems; $key++) {
 				if ($this->result['NO'][$key]['output_file']) {
 					// Initialize the cObj with the page record of the menu item
@@ -412,8 +415,8 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 						$this->I['name'] = ' ' . $this->nameAttribute . '="' . $this->I['theName'] . '"';
 						$this->I['linkHREF']['onMouseover'] = $this->WMfreezePrefix . 'over(\'' . $this->I['theName'] . '\');';
 						$this->I['linkHREF']['onMouseout'] = $this->WMfreezePrefix . 'out(\'' . $this->I['theName'] . '\');';
-						$GLOBALS['TSFE']->JSImgCode .= LF . $this->I['theName'] . '_n=new Image(); ' . $this->I['theName'] . '_n.src = "' . $GLOBALS['TSFE']->absRefPrefix . $this->I['val']['output_file'] . '"; ';
-						$GLOBALS['TSFE']->JSImgCode .= LF . $this->I['theName'] . '_h=new Image(); ' . $this->I['theName'] . '_h.src = "' . $GLOBALS['TSFE']->absRefPrefix . $this->result['RO'][$key]['output_file'] . '"; ';
+						$GLOBALS['TSFE']->additionalJavaScript['JSImgCode'] .= LF . $this->I['theName'] . '_n=new Image(); ' . $this->I['theName'] . '_n.src = "' . $GLOBALS['TSFE']->absRefPrefix . $this->I['val']['output_file'] . '"; ';
+						$GLOBALS['TSFE']->additionalJavaScript['JSImgCode'] .= LF . $this->I['theName'] . '_h=new Image(); ' . $this->I['theName'] . '_h.src = "' . $GLOBALS['TSFE']->absRefPrefix . $this->result['RO'][$key]['output_file'] . '"; ';
 						$GLOBALS['TSFE']->imagesOnPage[] = $this->result['RO'][$key]['output_file'];
 						$GLOBALS['TSFE']->setJS('mouseOver');
 						$this->extProc_RO($key);
