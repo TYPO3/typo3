@@ -122,7 +122,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		// Displays hidden records as well
 		'sys_language_uid' => 0,
 		// Which language
-		'cols' => '1,0,2,3'
+		'cols' => '1,0,2,3',
+		'activeCols' => '1,0,2,3'
+		// Which columns can be accessed by current BE user
 	);
 
 	// Contains icon/title of pages which are listed in the tables menu (see getTableMenu() function )
@@ -610,16 +612,28 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 								($rowSpan > 0 ? ' rowspan="' . $rowSpan . '"' : '') .
 								' class="t3-gridCell t3-page-column t3-page-column-' . $columnKey .
 								((!isset($columnConfig['colPos']) || $columnConfig['colPos'] === '') ? ' t3-gridCell-unassigned' : '') .
-								((isset($columnConfig['colPos']) && $columnConfig['colPos'] !== '' && !$head[$columnKey]) ? ' t3-gridCell-restricted' : '') .
+								((isset($columnConfig['colPos']) && $columnConfig['colPos'] !== '' && !$head[$columnKey]) || !GeneralUtility::inList($this->tt_contentConfig['activeCols'], $columnConfig['colPos']) ? ' t3-gridCell-restricted' : '') .
 								($colSpan > 0 ? ' t3-gridCell-width' . $colSpan : '') .
 								($rowSpan > 0 ? ' t3-gridCell-height' . $rowSpan : '') . '">';
 
 							// Draw the pre-generated header with edit and new buttons if a colPos is assigned.
 							// If not, a new header without any buttons will be generated.
-							if (isset($columnConfig['colPos']) && $columnConfig['colPos'] !== '' && $head[$columnKey]) {
+							if (
+								isset($columnConfig['colPos']) && $columnConfig['colPos'] !== '' && $head[$columnKey]
+								&& GeneralUtility::inList($this->tt_contentConfig['activeCols'], $columnConfig['colPos'])
+							) {
 								$grid .= $head[$columnKey] . $content[$columnKey];
-							} elseif (isset($columnConfig['colPos']) && $columnConfig['colPos'] !== '') {
+							} elseif (
+								isset($columnConfig['colPos']) && $columnConfig['colPos'] !== ''
+								&& GeneralUtility::inList($this->tt_contentConfig['activeCols'], $columnConfig['colPos'])
+							) {
 								$grid .= $this->tt_content_drawColHeader($this->getLanguageService()->getLL('noAccess'), '', '');
+							} elseif (
+								isset($columnConfig['colPos']) && $columnConfig['colPos'] !== ''
+								&& !GeneralUtility::inList($this->tt_contentConfig['activeCols'], $columnConfig['colPos'])
+							) {
+								$grid .= $this->tt_content_drawColHeader($this->getLanguageService()->sL($columnConfig['name']) .
+									' (' . $this->getLanguageService()->getLL('noAccess') . ')', '', '');
 							} elseif (isset($columnConfig['name']) && strlen($columnConfig['name']) > 0) {
 								$grid .= $this->tt_content_drawColHeader($this->getLanguageService()->sL($columnConfig['name'])
 									. ' (' . $this->getLanguageService()->getLL('notAssigned') . ')', '', '');
