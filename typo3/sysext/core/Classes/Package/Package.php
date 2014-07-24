@@ -70,7 +70,7 @@ class Package extends \TYPO3\Flow\Package\Package implements PackageInterface {
 	 * @throws \TYPO3\Flow\Package\Exception\InvalidPackageManifestException if no composer manifest file could be found
 	 */
 	public function __construct(\TYPO3\Flow\Package\PackageManager $packageManager, $packageKey, $packagePath, $classesPath = NULL, $manifestPath = '') {
-		if (!\TYPO3\CMS\Core\Package\PackageManager::isPackageKeyValid($packageKey)) {
+		if (!$packageManager->isPackageKeyValid($packageKey)) {
 			throw new \TYPO3\Flow\Package\Exception\InvalidPackageKeyException('"' . $packageKey . '" is not a valid package key.', 1217959511);
 		}
 		if (!(@is_dir($packagePath) || (\TYPO3\Flow\Utility\Files::is_link($packagePath) && is_dir(\TYPO3\Flow\Utility\Files::getNormalizedPath($packagePath))))) {
