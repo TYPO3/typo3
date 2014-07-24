@@ -105,10 +105,12 @@ class ConfigurationController extends AbstractController {
 	/**
 	 * Emits a signal after the configuration file was written
 	 *
+	 * @param string $extensionKey
 	 * @param array $newConfiguration
+	 * @return void
 	 */
-	protected function emitAfterExtensionConfigurationWriteSignal(array $newConfiguration) {
-		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterExtensionConfigurationWrite', array($newConfiguration, $this));
+	protected function emitAfterExtensionConfigurationWriteSignal($extensionKey, array $newConfiguration) {
+		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterExtensionConfigurationWrite', array($extensionKey, $newConfiguration, $this));
 	}
 
 	/**
@@ -127,7 +129,7 @@ class ConfigurationController extends AbstractController {
 			$configurationUtility->convertValuedToNestedConfiguration($newConfiguration),
 			$extensionKey
 		);
-		$this->emitAfterExtensionConfigurationWriteSignal($newConfiguration);
+		$this->emitAfterExtensionConfigurationWriteSignal($extensionKey, $newConfiguration);
 	}
 
 }
