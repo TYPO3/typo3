@@ -455,8 +455,7 @@ class InlineElement {
 			$header .= $this->renderForeignRecordHeader($parentUid, $foreign_table, $rec, $config, $isVirtualRecord);
 			$out = '<div class="t3-form-field-header-inline" id="' . $objectId . '_header">' . $header . '</div>' . $out;
 			// Wrap the header, fields and combination part of a child record with a div container
-			$classMSIE = $this->fObj->clientInfo['BROWSER'] == 'msie' && $this->fObj->clientInfo['VERSION'] < 8 ? 'MSIE' : '';
-			$class .= ' inlineDiv' . $classMSIE . ($isNewRecord ? ' inlineIsNewRecord' : '');
+			$class .= ' inlineDiv' . ($isNewRecord ? ' inlineIsNewRecord' : '');
 			$out = '<div id="' . $objectId . '_div" class="t3-form-field-container-inline ' . trim($class) . '">' . $out . '</div>';
 		}
 		// Remove the current level also from the dynNestedStack of TCEforms:

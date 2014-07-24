@@ -132,9 +132,6 @@ var Clickmenu = {
 			obj.style.top  = y + 'px';
 			Element.show(obj);
 		}
-		if (/MSIE5/.test(navigator.userAgent)) {
-			this._toggleSelectorBoxes('hidden');
-		}
 	},
 
 
@@ -164,9 +161,6 @@ var Clickmenu = {
 		obj = $(obj);
 		if (obj && Element.visible(obj) && !Position.within(obj, this.mousePos.X, this.mousePos.Y)) {
 			this.hide(obj);
-			if (/MSIE5/.test(navigator.userAgent) && obj.id === 'contentMenu0') {
-				this._toggleSelectorBoxes('visible');
-			}
 		} else if (obj && Element.visible(obj)) {
 			this.delayClickMenuHide = true;
 		}

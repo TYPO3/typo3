@@ -1859,9 +1859,6 @@ function jumpToUrl(URL) {
 	 * @return void
 	 */
 	public function setModuleTemplate($filename) {
-		// Load Prototype lib for IE event
-		$this->pageRenderer->loadPrototype();
-		$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/iecompatibility.js');
 		$this->moduleTemplate = $this->getHtmlTemplate($filename);
 	}
 
