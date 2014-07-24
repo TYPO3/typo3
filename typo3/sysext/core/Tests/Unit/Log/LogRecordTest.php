@@ -15,11 +15,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log;
  */
 
 /**
- * Testcase for \TYPO3\CMS\Core\Log\LogRecord.
+ * Test case
  *
  * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
-class RecordTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class LogRecordTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * Returns a \TYPO3\CMS\Core\Log\LogRecord

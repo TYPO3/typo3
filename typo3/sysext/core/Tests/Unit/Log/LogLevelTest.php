@@ -15,11 +15,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log;
  */
 
 /**
- * Testcase for \TYPO3\CMS\Core\Log\Level.
+ * Test case
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
-class LevelTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class LogLevelTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test

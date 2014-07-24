@@ -15,20 +15,24 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
  */
 
 /**
- * Testcase for the memoryPeakUsage log processor.
+ * Test case
  *
+ * @author Ingo Renner <ingo@typo3.org>
  * @author Steffen Müller <typo3@t3node.com>
  */
-class MemoryPeakUsageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class WebProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
 	 */
-	public function memoryPeakUsagePRocessorAddsMemoryPeakUsageDataToLogRecord() {
+	public function webProcessorAddsWebDataToLogRecord() {
+		$environmentVariables = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('_ARRAY');
 		$logRecord = new \TYPO3\CMS\Core\Log\LogRecord('test.core.log', \TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'test');
-		$processor = new \TYPO3\CMS\Core\Log\Processor\MemoryPeakUsageProcessor();
+		$processor = new \TYPO3\CMS\Core\Log\Processor\WebProcessor();
 		$logRecord = $processor->processLogRecord($logRecord);
-		$this->assertArrayHasKey('memoryPeakUsage', $logRecord['data']);
+		foreach ($environmentVariables as $key => $value) {
+			$this->assertEquals($value, $logRecord['data'][$key]);
+		}
 	}
 
 }

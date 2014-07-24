@@ -15,24 +15,20 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
  */
 
 /**
- * Testcase for the web log processor.
+ * Test case
  *
- * @author Ingo Renner <ingo@typo3.org>
  * @author Steffen Müller <typo3@t3node.com>
  */
-class WebTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class MemoryUsageProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
 	 */
-	public function webProcessorAddsWebDataToLogRecord() {
-		$environmentVariables = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('_ARRAY');
+	public function memoryUsagePRocessorAddsMemoryUsageDataToLogRecord() {
 		$logRecord = new \TYPO3\CMS\Core\Log\LogRecord('test.core.log', \TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'test');
-		$processor = new \TYPO3\CMS\Core\Log\Processor\WebProcessor();
+		$processor = new \TYPO3\CMS\Core\Log\Processor\MemoryUsageProcessor();
 		$logRecord = $processor->processLogRecord($logRecord);
-		foreach ($environmentVariables as $key => $value) {
-			$this->assertEquals($value, $logRecord['data'][$key]);
-		}
+		$this->assertArrayHasKey('memoryUsage', $logRecord['data']);
 	}
 
 }
