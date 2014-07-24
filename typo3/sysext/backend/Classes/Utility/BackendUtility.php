@@ -2078,7 +2078,7 @@ class BackendUtility {
 								$l = $value;
 							} else {
 								$rParts = array();
-								if (isset($theColConf['foreign_field']) && $theColConf['foreign_field'] !== '') {
+								if ($uid && isset($theColConf['foreign_field']) && $theColConf['foreign_field'] !== '') {
 									$records = self::getRecordsByField($theColConf['foreign_table'], $theColConf['foreign_field'], $uid);
 									if (!empty($records)) {
 										foreach ($records as $record) {
