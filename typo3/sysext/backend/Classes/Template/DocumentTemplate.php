@@ -1341,11 +1341,10 @@ function jumpToUrl(URL) {
 			// <script wrapped in nl?
 			$cr = $linebreak ? LF : '';
 			// Remove nl from the beginning
-			$string = preg_replace('/^\\n+/', '', $string);
+			$string = ltrim($string, LF);
 			// Re-ident to one tab using the first line as reference
-			$match = array();
-			if (preg_match('/^(\\t+)/', $string, $match)) {
-				$string = str_replace($match[1], TAB, $string);
+			if ($string[0] === TAB) {
+				$string = TAB . ltrim($string, TAB);
 			}
 			$string = $cr . '<script type="text/javascript">
 /*<![CDATA[*/

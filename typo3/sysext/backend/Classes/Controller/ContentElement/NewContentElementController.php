@@ -337,7 +337,7 @@ class NewContentElementController {
 		$wizardItems = array();
 		if (is_array($wizards)) {
 			foreach ($wizards as $groupKey => $wizardGroup) {
-				$groupKey = preg_replace('/\\.$/', '', $groupKey);
+				$groupKey = rtrim($groupKey, '.');
 				$showItems = GeneralUtility::trimExplode(',', $wizardGroup['show'], TRUE);
 				$showAll = $wizardGroup['show'] === '*';
 				$groupItems = array();
@@ -348,7 +348,7 @@ class NewContentElementController {
 				}
 				if (is_array($wizardElements)) {
 					foreach ($wizardElements as $itemKey => $itemConf) {
-						$itemKey = preg_replace('/\\.$/', '', $itemKey);
+						$itemKey = rtrim($itemKey, '.');
 						if ($showAll || in_array($itemKey, $showItems)) {
 							$tmpItem = $this->wizard_getItem($groupKey, $itemKey, $itemConf);
 							if ($tmpItem) {

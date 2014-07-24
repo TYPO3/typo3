@@ -318,7 +318,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 			$cleanFileName = preg_replace('/[' . self::UNSAFE_FILENAME_CHARACTER_EXPRESSION . '\\xC0-\\xFF]/', '_', trim($fileName));
 		}
 		// Strip trailing dots and return
-		$cleanFileName = preg_replace('/\\.*$/', '', $cleanFileName);
+		$cleanFileName = rtrim($cleanFileName, '.');
 		if (!$cleanFileName) {
 			throw new Exception\InvalidFileNameException(
 				'File name ' . $cleanFileName . ' is invalid.',

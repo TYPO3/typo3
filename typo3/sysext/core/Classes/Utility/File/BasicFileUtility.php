@@ -420,7 +420,7 @@ class BasicFileUtility {
 			$cleanFileName = preg_replace('/[' . self::UNSAFE_FILENAME_CHARACTER_EXPRESSION . '\\xC0-\\xFF]/', '_', trim($fileName));
 		}
 		// Strip trailing dots and return
-		return preg_replace('/\\.*$/', '', $cleanFileName);
+		return rtrim($cleanFileName, '.');
 	}
 
 }
