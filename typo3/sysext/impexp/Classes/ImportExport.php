@@ -3030,7 +3030,7 @@ class ImportExport {
 	 * @param pointer $fd File pointer
 	 * @param boolean $unserialize If set, the returned content is unserialized into an array, otherwise you get the raw string
 	 * @param string $name For error messages this indicates the section of the problem.
-	 * @return string Data string
+	 * @return string|NULL Data string or NULL in case of an error
 	 * @access private
 	 * @see loadFile()
 	 * @todo Define visibility
@@ -3039,6 +3039,10 @@ class ImportExport {
 		$initStrLen = 32 + 1 + 1 + 1 + 10 + 1;
 		// Getting header data
 		$initStr = fread($fd, $initStrLen);
+		if (empty($initStr)) {
+			$this->error('File does not contain data for "' . $name . '"');
+			return NULL;
+		}
 		$initStrDat = explode(':', $initStr);
 		if (strstr($initStrDat[0], 'Warning') == FALSE) {
 			if ((string)$initStrDat[3] === '') {
