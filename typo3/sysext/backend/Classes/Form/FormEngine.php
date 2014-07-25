@@ -2637,7 +2637,10 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 		$config = $PA['fieldConf']['config'];
 		$show_thumbs = $config['show_thumbs'];
 		$size = isset($config['size']) ? (int)$config['size'] : 5;
-		$maxitems = MathUtility::forceIntegerInRange($config['maxitems'], 1);
+		$maxitems = MathUtility::forceIntegerInRange($config['maxitems'], 0);
+		if (!$maxitems) {
+			$maxitems = 100000;
+		}
 		$minitems = MathUtility::forceIntegerInRange($config['minitems'], 0);
 		$allowed = trim($config['allowed']);
 		$disallowed = trim($config['disallowed']);
