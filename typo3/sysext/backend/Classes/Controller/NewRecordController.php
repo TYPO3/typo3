@@ -582,14 +582,14 @@ class NewRecordController {
 	 * @param string $linkText Link text
 	 * @param string $table Table name (in which to create new record)
 	 * @param integer $pid PID value for the "&edit['.$table.']['.$pid.']=new" command (positive/negative)
-	 * @param boolean $addContentTable If $addContentTable is set, then a new contentTable record is created together with pages
+	 * @param boolean $addContentTable If $addContentTable is set, then a new tt_content record is created together with pages
 	 * @return string The link.
 	 * @todo Define visibility
 	 */
 	public function linkWrap($linkText, $table, $pid, $addContentTable = FALSE) {
 		$parameters = '&edit[' . $table . '][' . $pid . ']=new';
-		if ($table == 'pages' && $GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'] && isset($GLOBALS['TCA'][$GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable']]) && $addContentTable) {
-			$parameters .= '&edit[' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'] . '][prev]=new&returnNewPageId=1';
+		if ($table == 'pages' && $addContentTable) {
+			$parameters .= '&edit[tt_content][prev]=new&returnNewPageId=1';
 		} elseif ($table == 'pages_language_overlay') {
 			$parameters .= '&overrideVals[pages_language_overlay][doktype]=' . (int)$this->pageinfo['doktype'];
 		}

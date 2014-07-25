@@ -166,8 +166,7 @@ class DataPreprocessor {
 						if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 							BackendUtility::fixVersioningPid($table, $row);
 							$this->renderRecord($table, $id, $row['pid'], $row);
-							$contentTable = $GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'];
-							$this->lockRecord($table, $id, $contentTable == $table ? $row['pid'] : 0);
+							$this->lockRecord($table, $id, $table === 'tt_content' ? $row['pid'] : 0);
 						}
 						$GLOBALS['TYPO3_DB']->sql_free_result($res);
 					}

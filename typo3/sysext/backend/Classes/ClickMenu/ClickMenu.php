@@ -227,7 +227,7 @@ class ClickMenu {
 				if ($table === 'pages') {
 					$menuItems['view'] = $this->DB_view($uid);
 				}
-				if ($table === $GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable']) {
+				if ($table === 'tt_content') {
 					$ws_rec = BackendUtility::getRecordWSOL($table, $this->rec['uid']);
 					$menuItems['view'] = $this->DB_view($ws_rec['pid']);
 				}

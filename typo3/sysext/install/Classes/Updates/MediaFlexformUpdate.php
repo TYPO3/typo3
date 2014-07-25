@@ -32,7 +32,7 @@ class MediaFlexformUpdate extends AbstractUpdate {
 	 * @return boolean
 	 */
 	public function checkForUpdate(&$description, &$showUpdate = 0) {
-		$mediaElements = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', $GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'], 'CType = "media" AND pi_flexform LIKE "%<sheet index=\\"sDEF\\">%"');
+		$mediaElements = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'tt_content', 'CType = "media" AND pi_flexform LIKE "%<sheet index=\\"sDEF\\">%"');
 		if ($mediaElements > 0) {
 			$description = 'You have media elements within your installation. As the structure of the flexform changed, your data needs to be migrated.';
 			$showUpdate = 1;
@@ -53,7 +53,7 @@ class MediaFlexformUpdate extends AbstractUpdate {
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'uid,pi_flexform',
-			$GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'],
+			'tt_content',
 			'CType = "media" AND pi_flexform LIKE "%<sheet index=\\"sDEF\\">%"'
 		);
 		/** @var $flexformTools \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools */
@@ -90,7 +90,7 @@ class MediaFlexformUpdate extends AbstractUpdate {
 			$newXML = $flexformTools->flexArray2Xml($data, TRUE);
 			$newXML = str_replace('encoding=""', 'encoding="utf-8"', $newXML);
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'],
+				'tt_content',
 				'uid = ' . $row['uid'],
 				array('pi_flexform' => $newXML)
 			);
