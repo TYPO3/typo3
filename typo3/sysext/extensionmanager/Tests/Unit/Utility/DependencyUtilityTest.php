@@ -43,7 +43,7 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$dependencyMock->setIdentifier('typo3');
 		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('dummy'));
 
-		$this->setExpectedException('TYPO3\\CMS\\Extensionmanager\\Exception\\ExtensionManagerException', 'Your TYPO3 version is lower than necessary. You need at least TYPO3 version 15.0.0');
+		$this->setExpectedException('TYPO3\\CMS\\Extensionmanager\\Exception\\ExtensionManagerException','', 1399144499);
 		$dependencyUtility->_call('checkTypo3Dependency', $dependencyMock);
 	}
 
@@ -59,7 +59,7 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$dependencyMock->setIdentifier('typo3');
 		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('dummy'));
 
-		$this->setExpectedException('TYPO3\\CMS\\Extensionmanager\\Exception\\ExtensionManagerException', 'Your TYPO3 version is higher than allowed. You can use TYPO3 versions 1.0.0 - 3.0.0');
+		$this->setExpectedException('TYPO3\\CMS\\Extensionmanager\\Exception\\ExtensionManagerException', '', 1399144521);
 		$dependencyUtility->_call('checkTypo3Dependency', $dependencyMock);
 	}
 
@@ -73,7 +73,7 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$dependencyMock->setIdentifier('123');
 		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('dummy'));
 
-		$this->setExpectedException('TYPO3\\CMS\\Extensionmanager\\Exception\\ExtensionManagerException', 'checkTypo3Dependency can only check TYPO3 dependencies. Found dependency with identifier "123"');
+		$this->setExpectedException('TYPO3\\CMS\\Extensionmanager\\Exception\\ExtensionManagerException', '', 1399144551);
 		$dependencyUtility->_call('checkTypo3Dependency', $dependencyMock);
 	}
 
@@ -133,7 +133,7 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$dependencyMock->setIdentifier('php');
 		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('dummy'));
 
-		$this->setExpectedException('TYPO3\\CMS\\Extensionmanager\\Exception\\ExtensionManagerException', 'Your PHP version is lower than necessary. You need at least PHP version 15.0.0');
+		$this->setExpectedException('TYPO3\\CMS\\Extensionmanager\\Exception\\ExtensionManagerException', '', 1377977857);
 		$dependencyUtility->_call('checkPhpDependency', $dependencyMock);
 	}
 
@@ -149,7 +149,7 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$dependencyMock->setIdentifier('php');
 		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('dummy'));
 
-		$this->setExpectedException('TYPO3\\CMS\\Extensionmanager\\Exception\\ExtensionManagerException', 'Your PHP version is higher than allowed. You can use PHP versions 1.0.0 - 3.0.0');
+		$this->setExpectedException('TYPO3\\CMS\\Extensionmanager\\Exception\\ExtensionManagerException', '', 1377977856);
 		$dependencyUtility->_call('checkPhpDependency', $dependencyMock);
 	}
 
@@ -163,7 +163,7 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$dependencyMock->setIdentifier('123');
 		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility', array('dummy'));
 
-		$this->setExpectedException('TYPO3\\CMS\\Extensionmanager\\Exception\\ExtensionManagerException', 'checkPhpDependency can only check PHP dependencies. Found dependency with identifier "123"');
+		$this->setExpectedException('TYPO3\\CMS\\Extensionmanager\\Exception\\ExtensionManagerException', '', 1377977858);
 		$dependencyUtility->_call('checkPhpDependency', $dependencyMock);
 	}
 
