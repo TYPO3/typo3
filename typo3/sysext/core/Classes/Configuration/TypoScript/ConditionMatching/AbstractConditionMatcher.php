@@ -187,7 +187,7 @@ abstract class AbstractConditionMatcher {
 	}
 
 	/**
-	 * Evaluates a TypoScript condition given as input, eg. "[browser=net][...(other conditions)...]"
+	 * Evaluates a TypoScript condition given as input, eg. "[applicationContext = Production][...(other condition)...]"
 	 *
 	 * @param string $key The condition to match against its criterias.
 	 * @param string $value
@@ -195,6 +195,9 @@ abstract class AbstractConditionMatcher {
 	 */
 	protected function evaluateConditionCommon($key, $value) {
 		if (GeneralUtility::inList('browser,version,system,useragent', strtolower($key))) {
+			GeneralUtility::deprecationLog(
+				'Usage of client related conditions (browser, version, system, useragent) is deprecated since 6.3.'
+			);
 			$browserInfo = $this->getBrowserInfo(GeneralUtility::getIndpEnv('HTTP_USER_AGENT'));
 		}
 		$keyParts = GeneralUtility::trimExplode('|', $key);
