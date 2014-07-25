@@ -4359,7 +4359,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 				$hookObject->dbFileIcons_postProcess($params, $selector, $thumbnails, $icons, $rightbox, $fName, $uidList, $additionalParams, $this);
 			}
 		}
-		$str = '<table border="0" cellpadding="0" cellspacing="0" width="1">
+		$str = '<table border="0" cellpadding="0" cellspacing="0" width="1" class="t3-form-field-group-file">
 			' . ($params['headers'] ? '
 				<tr>
 					<td>' . $this->wrapLabels($params['headers']['selector']) . '</td>
@@ -4368,14 +4368,14 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 					<td>' . ($params['thumbnails'] ? $this->wrapLabels($params['headers']['items']) : '') . '</td>
 				</tr>' : '') . '
 			<tr>
-				<td valign="top">' . $selector . $thumbnails;
+				<td>' . $selector . $thumbnails;
 		if (!$params['noList'] && $params['info'] !== '') {
 			$str .= '<span class="filetypes">' . $this->wrapLabels($params['info']) . '</span>';
 		}
 		$str .= '</td>
-					<td valign="top" class="icons">' . implode('<br />', $icons['L']) . '</td>
-					<td valign="top" class="icons">' . implode('<br />', $icons['R']) . '</td>
-					<td valign="top">' . $rightbox . '</td>
+					<td class="icons">' . implode('<br />', $icons['L']) . '</td>
+					<td class="icons">' . implode('<br />', $icons['R']) . '</td>
+					<td>' . $rightbox . '</td>
 			</tr>
 		</table>';
 		// Creating the hidden field which contains the actual value as a comma list.
