@@ -22,7 +22,7 @@ namespace TYPO3\CMS\Core\Log;
  * @author Steffen Müller <typo3@t3node.com>
  * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
-class LogManager implements \TYPO3\CMS\Core\SingletonInterface {
+class LogManager implements \TYPO3\CMS\Core\SingletonInterface, LogManagerInterface {
 
 	/**
 	 * @var string
