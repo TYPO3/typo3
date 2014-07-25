@@ -43,10 +43,12 @@ TYPO3.Install.Scrolling = {
 		return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
 	},
 	handleButtonScrolling: function() {
-		if (!this.isScrolledIntoView($('#fixed-footer-handler'))) {
-			$('#fixed-footer').addClass('fixed');
-		} else {
-			$('#fixed-footer').removeClass('fixed');
+		if ($('#fixed-footer-handler').length > 0) {
+			if (!this.isScrolledIntoView($('#fixed-footer-handler'))) {
+				$('#fixed-footer').addClass('fixed');
+			} else {
+				$('#fixed-footer').removeClass('fixed');
+			}
 		}
 	}
 };
@@ -577,12 +579,6 @@ $(document).ready(function() {
 		e.preventDefault();
 		return false;
 	});
-
-	// Footer scrolling and visibility
-	if ($('#fixed-footer-handler').length > 0) {
-		$(window).scroll(TYPO3.Install.Scrolling.handleButtonScrolling());
-		$('body.backend #typo3-docbody').scroll(TYPO3.Install.Scrolling.handleButtonScrolling());
-	}
 
 	// Handle core update
 	var $coreUpdateSection = $('#coreUpdate');
