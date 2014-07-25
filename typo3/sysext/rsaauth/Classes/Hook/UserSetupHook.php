@@ -55,7 +55,7 @@ class UserSetupHook {
 		if ($this->isRsaAvailable()) {
 			// If we can get the backend, we can proceed
 			$backend = \TYPO3\CMS\Rsaauth\Backend\BackendFactory::getBackend();
-			$javascriptPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('rsaauth') . 'resources/';
+			$javascriptPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('rsaauth') . 'Resources/Public/JavaScript/';
 			$files = array(
 				'jsbn/jsbn.js',
 				'jsbn/prng4.js',

@@ -32,7 +32,7 @@ class FrontendLoginHook {
 			$backend = \TYPO3\CMS\Rsaauth\Backend\BackendFactory::getBackend();
 			if ($backend) {
 				$result[0] = 'return TYPO3FrontendLoginFormRsaEncryption.submitForm(this, TYPO3FrontendLoginFormRsaEncryptionPublicKeyUrl);';
-				$javascriptPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('rsaauth') . 'resources/';
+				$javascriptPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('rsaauth') . 'Resources/Public/JavaScript/';
 				$files = array(
 					'jsbn/jsbn.js',
 					'jsbn/prng4.js',

@@ -35,7 +35,7 @@ class LoginFormHook {
 		if ($pObj->loginSecurityLevel === 'rsa') {
 			/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
 			$pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
-			$javascriptPath = '../' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('rsaauth') . 'resources/';
+			$javascriptPath = '../' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('rsaauth') . 'Resources/Public/JavaScript/';
 			$files = array(
 				'jsbn/jsbn.js',
 				'jsbn/prng4.js',
