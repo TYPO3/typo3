@@ -24,39 +24,45 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * As for examples there are lots of them if you search for classes which extends \TYPO3\CMS\Backend\Module\BaseScriptClass
  * However you can see a prototype example of how a module might use this class in an index.php file typically hosting a backend module.
- * NOTICE: This example only outlines the basic structure of how this class is used. You should consult the documentation and other real-world examples for some actual things to do when building modules.
  *
- * TYPICAL 'HEADER' OF A BACKEND MODULE:
- * unset($MCONF);
- * require ('conf.php');
- * require ($BACK_PATH.'init.php');
- * $GLOBALS['LANG']->includeLLFile('EXT:prototype/locallang.php');
- * $GLOBALS['BE_USER']->modAccess($MCONF,1);
+ * NOTICE: This example only outlines the basic structure of how this class is used.
+ * You should consult the documentation and other real-world examples for some actual things to do when building modules.
  *
- * SC_mod_prototype EXTENDS THE CLASS \TYPO3\CMS\Backend\Module\BaseScriptClass with a main() and printContent() function:
+ * TYPICAL SETUP OF A BACKEND MODULE:
  *
- * class SC_mod_prototype extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
+ * PrototypeController EXTENDS THE CLASS \TYPO3\CMS\Backend\Module\BaseScriptClass with a main() and printContent() function:
+ *
+ * namespace Vendor\Prototype\Controller;
+ *
+ * class PrototypeController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
+ * 	public function __construct() {
+ * 		$GLOBALS['LANG']->includeLLFile('EXT:prototype/Resources/Private/Language/locallang.xlf');
+ * 		$GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], TRUE);
+ * 	}
+ * }
+ *
  * MAIN FUNCTION - HERE YOU CREATE THE MODULE CONTENT IN $this->content
- * function main() {
- * TYPICALLY THE INTERNAL VAR, $this->doc is instantiated like this:
- * $this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
- * TYPICALLY THE INTERNAL VAR, $this->backPath is set like this:
- * $this->backPath = $this->doc->backPath = $GLOBALS['BACK_PATH'];
- * ... AND OF COURSE A LOT OF OTHER THINGS GOES ON - LIKE PUTTING CONTENT INTO $this->content
- * $this->content='';
+ * public function main() {
+ * 	TYPICALLY THE INTERNAL VAR, $this->doc is instantiated like this:
+ * 	$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+ * 	TYPICALLY THE INTERNAL VAR, $this->backPath is set like this:
+ * 	$this->backPath = $this->doc->backPath = $GLOBALS['BACK_PATH'];
+ * 	... AND OF COURSE A LOT OF OTHER THINGS GOES ON - LIKE PUTTING CONTENT INTO $this->content
+ * 	$this->content='';
  * }
  * PRINT CONTENT - DONE AS THE LAST THING
- * function printContent() {
- * echo $this->content;
- * }
+ * public function printContent() {
+ * 	echo $this->content;
  * }
  *
  * MAKE INSTANCE OF THE SCRIPT CLASS AND CALL init()
- * $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('SC_mod_prototype');
+ * $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Vendor\\Prototype\\Controller\\PrototypeController');
  * $SOBE->init();
  *
  * AFTER INIT THE INTERNAL ARRAY ->include_once MAY HOLD FILENAMES TO INCLUDE
- * foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
+ * foreach($SOBE->include_once as $INC_FILE) {
+ * 	include_once($INC_FILE);
+ * }
  * Note: This "include_once" is deprecated since TYPO3 6.2: use auto-loading instead!
  *
  * THEN WE WILL CHECK IF THERE IS A 'SUBMODULE' REGISTERED TO BE INITIALIZED AS WELL:
