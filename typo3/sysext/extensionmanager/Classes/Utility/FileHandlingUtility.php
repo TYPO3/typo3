@@ -38,6 +38,21 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $installUtility;
 
 	/**
+	 * @var \TYPO3\CMS\Lang\LanguageService
+	 * @inject
+	 */
+	protected $languageService;
+
+	/**
+	 * Initialize method - loads language file
+	 *
+	 * @return void
+	 */
+	public function initializeObject() {
+		$this->languageService->includeLLFile('EXT:extensionmanager/Resources/Private/Language/locallang.xlf');
+	}
+
+	/**
 	 * Unpack an extension in t3x data format and write files
 	 *
 	 * @param array $extensionData
@@ -107,7 +122,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 			GeneralUtility::mkdir_deep($directory);
 		} catch(\RuntimeException $exception) {
 			throw new ExtensionManagerException(
-				sprintf($this->getLanguageService()->getLL('clearMakeExtDir_could_not_create_dir'), $this->getRelativePath($directory)),
+				sprintf($this->languageService->getLL('fileHandling.couldNotCreateDirectory'), $this->getRelativePath($directory)),
 				1337280416
 			);
 		}
@@ -158,7 +173,10 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		$paths = Extension::returnInstallPaths();
 		$path = $paths[$pathType];
 		if (!$path || !is_dir($path) || !$extensionKey) {
-			throw new ExtensionManagerException(sprintf('ERROR: The extension install path "%s" was no directory!', $this->getRelativePath($path)), 1337280417);
+			throw new ExtensionManagerException(
+				sprintf($this->languageService->getLL('fileHandling.installPathWasNoDirectory'), $this->getRelativePath($path)),
+				1337280417
+			);
 		}
 
 		return $path . $extensionKey . '/';
@@ -175,7 +193,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		GeneralUtility::mkdir($extDirPath);
 		if (!is_dir($extDirPath)) {
 			throw new ExtensionManagerException(
-				sprintf($this->getLanguageService()->getLL('clearMakeExtDir_could_not_create_dir'), $this->getRelativePath($extDirPath)),
+				sprintf($this->languageService->getLL('fileHandling.couldNotCreateDirectory'), $this->getRelativePath($extDirPath)),
 				1337280418
 			);
 		}
@@ -253,7 +271,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		if ($result === FALSE) {
 			throw new ExtensionManagerException(
-				sprintf($this->getLanguageService()->getLL('clearMakeExtDir_could_not_remove_dir'), $this->getRelativePath($extDirPath)),
+				sprintf($this->languageService->getLL('fileHandling.couldNotRemoveDirectory'), $this->getRelativePath($extDirPath)),
 				1337280415
 			);
 		}
@@ -467,13 +485,6 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		readfile($fileName);
 		unlink($fileName);
 		die;
-	}
-
-	/**
-	 * @return LanguageService
-	 */
-	protected function getLanguageService() {
-		return $GLOBALS['LANG'];
 	}
 
 }

@@ -70,7 +70,7 @@ class UploadExtensionFileControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCa
 			->with($expectedKey)
 			->will($this->returnValue(FALSE));
 		$fixture->_set('installUtility', $installUtilityMock);
-		$fileHandlingUtilityMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\FileHandlingUtility');
+		$fileHandlingUtilityMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\FileHandlingUtility', array(), array(), '', FALSE);
 		$fileHandlingUtilityMock->expects($this->once())->method('unzipExtensionFromFile');
 		$fixture->_set('fileHandlingUtility', $fileHandlingUtilityMock);
 

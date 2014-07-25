@@ -75,7 +75,7 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function makeAndClearExtensionDirRemovesExtensionDirIfAlreadyExists() {
 		$extKey = $this->createFakeExtension();
-		$fileHandlerMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\FileHandlingUtility', array('removeDirectory', 'addDirectory'));
+		$fileHandlerMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\FileHandlingUtility', array('removeDirectory', 'addDirectory'), array(), '', FALSE);
 		$fileHandlerMock->expects($this->once())->method('removeDirectory')->with(PATH_site . 'typo3conf/ext/' . $extKey . '/');
 		$fileHandlerMock->_call('makeAndClearExtensionDir', $extKey);
 	}
@@ -99,7 +99,7 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
 	 */
 	public function getAbsolutePathThrowsExceptionForInvalidRelativePaths($invalidRelativePath) {
-		$fileHandlerMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\FileHandlingUtility', array('dummy'));
+		$fileHandlerMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\FileHandlingUtility', array('dummy'), array());
 		$fileHandlerMock->_call('getAbsolutePath', $invalidRelativePath);
 	}
 
@@ -142,6 +142,8 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function makeAndClearExtensionDirThrowsExceptionOnInvalidPath() {
 		$fileHandlerMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\FileHandlingUtility', array('removeDirectory', 'addDirectory'));
+		$languageServiceMock = $this->getMock('TYPO3\\CMS\\Lang\\LanguageService');
+		$fileHandlerMock->_set('languageService', $languageServiceMock);
 		$fileHandlerMock->_call('makeAndClearExtensionDir', 'testing123', 'fakepath');
 	}
 

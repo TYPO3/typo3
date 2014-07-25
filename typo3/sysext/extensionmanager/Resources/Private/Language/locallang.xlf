@@ -500,6 +500,15 @@
 			<trans-unit id="report.status.existingOutdatedExtensions.outdatedExtensionExists.message.extension" xml:space="preserve">
 				<source>&lt;strong&gt;%1s&lt;/strong&gt; (version %2s)&lt;br&gt;</source>
 			</trans-unit>
+			<trans-unit id="fileHandling.couldNotRemoveDirectory" xml:space="preserve">
+				<source>ERROR: Could not remove extension directory "%s". Reasons:</source>
+			</trans-unit>
+			<trans-unit id="fileHandling.couldNotCreateDirectory" xml:space="preserve">
+				<source>ERROR: Could not create extension directory "%s"!</source>
+			</trans-unit>
+			<trans-unit id="fileHandling.installPathWasNoDirectory" xml:space="preserve">
+				<source>ERROR: The extension install path "%s" was no directory!</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
