@@ -6019,7 +6019,12 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			$pageRenderer->addInlineSettingArray('', $resizableSettings);
 			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.evalfield.js');
 			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.tbe_editor.js');
-			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.placeholder.js');
+
+			// support placeholders for IE9 and lower
+			if ($this->clientInfo['BROWSER'] == 'msie' && $this->clientInfo['VERSION'] <= 9) {
+				$this->loadJavascriptLib('contrib/placeholdersjs/placeholders.jquery.min.js');
+			}
+
 			// Needed for tceform manipulation (date picker)
 			$typo3Settings = array(
 				'datePickerUSmode' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? 1 : 0,

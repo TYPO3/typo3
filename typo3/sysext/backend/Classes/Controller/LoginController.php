@@ -198,6 +198,12 @@ class LoginController {
 		$pageRenderer->loadExtJS();
 		$pageRenderer->loadPrototype();
 		$pageRenderer->loadScriptaculous();
+		$pageRenderer->loadJquery();
+		// support placeholders for IE9 and lower
+		$clientInfo = GeneralUtility::clientInfo();
+		if ($clientInfo['BROWSER'] == 'msie' && $clientInfo['VERSION'] <= 9) {
+			$pageRenderer->addJsLibrary('placeholders', 'contrib/placeholdersjs/placeholders.jquery.min.js');
+		}
 		// Set JavaScript for creating a MD5 hash of the password:
 		$GLOBALS['TBE_TEMPLATE']->JScode .= $this->getJScode();
 		// Checking, if we should make a redirect.
