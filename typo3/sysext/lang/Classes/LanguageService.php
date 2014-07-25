@@ -121,14 +121,14 @@ class LanguageService {
 	 */
 	public function init($lang) {
 		// Initialize the conversion object:
-		$this->csConvObj = GeneralUtility::makeInstance('TYPO3\CMS\Core\Charset\CharsetConverter');
+		$this->csConvObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
 		$this->charSetArray = $this->csConvObj->charSetArray;
 		// Initialize the parser factory object
-		$this->parserFactory = GeneralUtility::makeInstance('TYPO3\CMS\Core\Localization\LocalizationFactory');
+		$this->parserFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\LocalizationFactory');
 		// Find the requested language in this list based
 		// on the $lang key being inputted to this function.
 		/** @var $locales \TYPO3\CMS\Core\Localization\Locales */
-		$locales = GeneralUtility::makeInstance('TYPO3\CMS\Core\Localization\Locales');
+		$locales = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Locales');
 		// Language is found. Configure it:
 		if (in_array($lang, $locales->getLocales())) {
 			// The current language key

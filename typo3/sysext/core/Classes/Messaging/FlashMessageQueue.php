@@ -208,7 +208,7 @@ class FlashMessageQueue extends \SplQueue {
 	static public function __callStatic($name, array $arguments) {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-		$flashMessageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Messaging\FlashMessageService');
+		$flashMessageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
 		$identifier = 'core.template.flashMessages';
 		switch ($name) {
 			case 'renderFlashMessages':

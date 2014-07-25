@@ -45,7 +45,7 @@ class FileStorageIndexingAdditionalFieldProvider implements \TYPO3\CMS\Scheduler
 	 */
 	protected function getAllStoragesField(FileStorageIndexingTask $task = NULL) {
 		/** @var \TYPO3\CMS\Core\Resource\ResourceStorage[] $storages */
-		$storages = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Resource\StorageRepository')->findAll();
+		$storages = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository')->findAll();
 		$options = array();
 		foreach ($storages as $storage) {
 			if ($task != NULL && $task->storageUid === $storage->getUid()) {

@@ -1014,7 +1014,7 @@ class Bootstrap {
 	 */
 	public function initializeLanguageObject() {
 		/** @var $GLOBALS['LANG'] \TYPO3\CMS\Lang\LanguageService */
-		$GLOBALS['LANG'] = Utility\GeneralUtility::makeInstance('TYPO3\CMS\Lang\LanguageService');
+		$GLOBALS['LANG'] = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Lang\\LanguageService');
 		$GLOBALS['LANG']->init($GLOBALS['BE_USER']->uc['lang']);
 		return $this;
 	}

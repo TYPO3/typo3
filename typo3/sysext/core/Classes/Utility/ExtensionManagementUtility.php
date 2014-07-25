@@ -1970,7 +1970,7 @@ tt_content.' . $key . $prefix . ' {
 		if ($result === FALSE) {
 			$message = '\TYPO3\CMS\Core\Category\CategoryRegistry: no category registered for table "%s". Key was already registered.';
 			/** @var $logger \TYPO3\CMS\Core\Log\Logger */
-			$logger = GeneralUtility::makeInstance('TYPO3\CMS\Core\Log\LogManager')->getLogger(__CLASS__);
+			$logger = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager')->getLogger(__CLASS__);
 			$logger->warning(
 				sprintf($message, $tableName)
 			);

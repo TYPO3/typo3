@@ -73,7 +73,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * times inclusion sections in their index.php scripts. For example (from web_func):
  *
  * Make instance:
- * $SOBE = GeneralUtility::makeInstance("SC_mod_web_func_index");
+ * $SOBE = GeneralUtility::makeInstance('TYPO3\\CMS\\Func\\Controller\\PageFunctionsController');
  * $SOBE->init();
  *
  * Include files?

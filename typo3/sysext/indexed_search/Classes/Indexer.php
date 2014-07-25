@@ -822,7 +822,7 @@ class Indexer {
 	 * @todo Define visibility
 	 */
 	public function extractHyperLinks($html) {
-		$htmlParser = GeneralUtility::makeInstance('TYPO3\CMS\Core\Html\HtmlParser');
+		$htmlParser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
 		$htmlParts = $htmlParser->splitTags('a', $html);
 		$hyperLinksData = array();
 		foreach ($htmlParts as $index => $tagData) {
@@ -851,7 +851,7 @@ class Indexer {
 	 */
 	public function extractBaseHref($html) {
 		$href = '';
-		$htmlParser = GeneralUtility::makeInstance('TYPO3\CMS\Core\Html\HtmlParser');
+		$htmlParser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
 		$htmlParts = $htmlParser->splitTags('base', $html);
 		foreach ($htmlParts as $index => $tagData) {
 			if ($index % 2 !== 0) {

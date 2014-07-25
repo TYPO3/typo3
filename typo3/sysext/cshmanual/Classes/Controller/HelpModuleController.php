@@ -683,7 +683,7 @@ class HelpModuleController {
 	 * @todo Define visibility
 	 */
 	public function substituteGlossaryWords($code) {
-		$htmlParser = GeneralUtility::makeInstance('TYPO3\CMS\Core\Html\HtmlParser');
+		$htmlParser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
 		$htmlParser->pObj = $this;
 		$code = $htmlParser->HTMLcleaner($code, array(), 1);
 		return $code;

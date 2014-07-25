@@ -58,7 +58,7 @@ class FileProcessingService {
 		$this->driver = $driver;
 
 		/** @var $logManager \TYPO3\CMS\Core\Log\LogManager */
-		$logManager = Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Log\LogManager');
+		$logManager = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager');
 		$this->logger = $logManager->getLogger(__CLASS__);
 	}
 
@@ -118,7 +118,7 @@ class FileProcessingService {
 
 			$task = $processedFile->getTask();
 			/** @var $processor Resource\Processing\LocalImageProcessor */
-			$processor = Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Resource\Processing\LocalImageProcessor');
+			$processor = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Processing\\LocalImageProcessor');
 			$processor->processTask($task);
 
 			if ($processedFile->isProcessed()) {
