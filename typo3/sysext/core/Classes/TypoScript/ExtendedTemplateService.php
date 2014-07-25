@@ -300,7 +300,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	}
 
 	/**
-	 * Parses the constants in $this->const with respect to the constant-editor in this module.
+	 * Parse constants with respect to the constant-editor in this module.
 	 * In particular comments in the code are registered and the edit_divider is taken into account.
 	 *
 	 * @return 	[type]		...
@@ -314,8 +314,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 		$constants = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
 		// Register comments!
 		$constants->regComments = 1;
-		$constants->setup = $this->const;
-		$constants->setup = $this->mergeConstantsFromPageTSconfig($constants->setup);
+		$constants->setup = $this->mergeConstantsFromPageTSconfig(array());
 		/** @var $matchObj \TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher */
 		$matchObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Configuration\\TypoScript\\ConditionMatching\\ConditionMatcher');
 		// Matches ALL conditions in TypoScript

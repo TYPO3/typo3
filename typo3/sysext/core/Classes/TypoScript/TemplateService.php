@@ -147,19 +147,6 @@ class TemplateService {
 	 */
 	public $flatSetup = array();
 
-	// Default TypoScript Constants code:
-	/**
-	 * @todo Define visibility
-	 */
-	public $const = array(
-		'_clear' => '<img src="clear.gif" width="1" height="1" alt="" />',
-		'_blackBorderWrap' => '<table border="0" bgcolor="black" cellspacing="0" cellpadding="1"><tr><td> | </td></tr></table>',
-		'_tableWrap' => '<table border="0" cellspacing="0" cellpadding="0"> | </table>',
-		'_tableWrap_DEBUG' => '<table border="1" cellspacing="0" cellpadding="0"> | </table>',
-		'_stdFrameParams' => 'frameborder="no" marginheight="0" marginwidth="0" noresize="noresize"',
-		'_stdFramesetParams' => 'border="0" framespacing="0" frameborder="no"'
-	);
-
 	// For fetching TypoScript code from template hierarchy before parsing it. Each array contains code field values from template records/files:
 	// Setup field
 	/**
@@ -935,8 +922,7 @@ class TemplateService {
 		/** @var $constants \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser */
 		$constants = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
 		$constants->breakPointLN = (int)$this->ext_constants_BRP;
-		$constants->setup = $this->const;
-		$constants->setup = $this->mergeConstantsFromPageTSconfig($constants->setup);
+		$constants->setup = $this->mergeConstantsFromPageTSconfig(array());
 		/** @var $matchObj \TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher */
 		$matchObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Configuration\\TypoScript\\ConditionMatching\\ConditionMatcher');
 		$matchObj->setSimulateMatchConditions($this->matchAlternative);
