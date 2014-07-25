@@ -5408,7 +5408,7 @@ class ContentObjectRenderer {
 						$retVal = getenv($key);
 						break;
 					case 'getindpenv':
-						$retVal = GeneralUtility::getIndpEnv($key);
+						$retVal = $this->getEnvironmentVariable($key);
 						break;
 					case 'field':
 						$retVal = $fieldArray[$key];
@@ -6004,7 +6004,7 @@ class ContentObjectRenderer {
 							unset($params);
 						}
 						$targetDomain = '';
-						$currentDomain = GeneralUtility::getIndpEnv('HTTP_HOST');
+						$currentDomain = $this->getEnvironmentVariable('HTTP_HOST');
 						// Mount pages are always local and never link to another domain
 						if (count($MPvarAcc)) {
 							// Add "&MP" var:
@@ -6045,17 +6045,17 @@ class ContentObjectRenderer {
 								$absoluteUrlScheme = $conf['forceAbsoluteUrl.']['scheme'];
 							} elseif ($page['url_scheme'] > 0) {
 								$absoluteUrlScheme = (int)$page['url_scheme'] === \TYPO3\CMS\Core\Utility\HttpUtility::SCHEME_HTTP ? 'http' : 'https';
-							} elseif (GeneralUtility::getIndpEnv('TYPO3_SSL')) {
+							} elseif ($this->getEnvironmentVariable('TYPO3_SSL')) {
 								$absoluteUrlScheme = 'https';
 							}
 							// If no domain records are defined, use current domain:
-							$currentUrlScheme = parse_url(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), PHP_URL_SCHEME);
+							$currentUrlScheme = parse_url($this->getEnvironmentVariable('TYPO3_REQUEST_URL'), PHP_URL_SCHEME);
 							if ($targetDomain === '' && ($conf['forceAbsoluteUrl'] || $absoluteUrlScheme !== $currentUrlScheme)) {
 								$targetDomain = $currentDomain;
 							}
 							// If go for an absolute link, add site path if it's not taken care about by absRefPrefix
 							if (!$GLOBALS['TSFE']->config['config']['absRefPrefix'] && $targetDomain == $currentDomain) {
-								$targetDomain = $currentDomain . rtrim(GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'), '/');
+								$targetDomain = $currentDomain . rtrim($this->getEnvironmentVariable('TYPO3_SITE_PATH'), '/');
 							}
 						}
 						// If target page has a different domain and the current domain's linking scheme (e.g. RealURL/...) should not be used
@@ -6222,7 +6222,7 @@ class ContentObjectRenderer {
 				// Set scheme and host if not yet part of the URL:
 				if (empty($urlParts['host'])) {
 					$urlParts['scheme'] = 'http';
-					$urlParts['host'] = GeneralUtility::getIndpEnv('HTTP_HOST');
+					$urlParts['host'] = $this->getEnvironmentVariable('HTTP_HOST');
 					$isUrlModified = TRUE;
 				}
 				// Override scheme:
@@ -6451,7 +6451,7 @@ class ContentObjectRenderer {
 				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($currentQueryArray, GeneralUtility::_GET());
 				break;
 			default:
-				$currentQueryArray = GeneralUtility::explodeUrl2Array(GeneralUtility::getIndpEnv('QUERY_STRING'), TRUE);
+				$currentQueryArray = GeneralUtility::explodeUrl2Array($this->getEnvironmentVariable('QUERY_STRING'), TRUE);
 		}
 		if ($conf['exclude']) {
 			$exclude = str_replace(',', '&', $conf['exclude']);
@@ -8058,5 +8058,16 @@ class ContentObjectRenderer {
 	 */
 	protected function getResourceFactory() {
 		return \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
+	}
+
+	/**
+	 * Wrapper function for GeneralUtility::getIndpEnv()
+	 *
+	 * @see GeneralUtility::getIndpEnv
+	 * @param string $key Name of the "environment variable"/"server variable" you wish to get.
+	 * @return string
+	 */
+	protected function getEnvironmentVariable($key) {
+		return GeneralUtility::getIndpEnv($key);
 	}
 }
