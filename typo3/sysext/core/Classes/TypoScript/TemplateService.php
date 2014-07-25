@@ -1015,7 +1015,6 @@ class TemplateService {
 				}
 			}
 		}
-		unset($this->setup['styles.']);
 		unset($this->setup['temp.']);
 		unset($constants);
 		// Storing the conditions found/matched information:
