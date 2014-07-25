@@ -396,12 +396,6 @@ $(document).ready(function() {
 		return false;
 	});
 
-	// Footer scrolling and visibility
-	if ($('#fixed-footer-handler').length > 0) {
-		$(window).scroll(handleButtonScrolling);
-		$('body.backend #typo3-docbody').scroll(handleButtonScrolling);
-	}
-
 	// Handle core update
 	var $coreUpdateSection = $('#coreUpdate');
 	if ($coreUpdateSection) {
@@ -420,10 +414,12 @@ $(document).ready(function() {
 });
 
 function handleButtonScrolling() {
-	if (!isScrolledIntoView($('#fixed-footer-handler'))) {
-		$('#fixed-footer').addClass('fixed');
-	} else {
-		$('#fixed-footer').removeClass('fixed');
+	if ($('#fixed-footer-handler').length > 0) {
+		if (!isScrolledIntoView($('#fixed-footer-handler'))) {
+			$('#fixed-footer').addClass('fixed');
+		} else {
+			$('#fixed-footer').removeClass('fixed');
+		}
 	}
 }
 function isScrolledIntoView(elem) {
