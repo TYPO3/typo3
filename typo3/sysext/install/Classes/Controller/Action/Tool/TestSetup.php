@@ -332,7 +332,7 @@ class TestSetup extends Action\AbstractAction {
 		$imageProcessor->IM_commands = array();
 		$inputFile = $this->imageBasePath . 'TestInput/Transparent.gif';
 		$imageProcessor->imageMagickConvert_forceFileNameBody = uniqid('scale-jpg');
-		$imResult = $imageProcessor->imageMagickConvert($inputFile, 'jpg', '150', '', '', '', array(), TRUE);
+		$imResult = $imageProcessor->imageMagickConvert($inputFile, 'jpg', '150', '', '-opaque white -background white -flatten', '', array(), TRUE);
 		if ($imResult !== NULL) {
 			$testResults['gif-to-jpg']['title'] = 'gif to jpg';
 			$testResults['gif-to-jpg']['outputFile'] = $imResult[3];
