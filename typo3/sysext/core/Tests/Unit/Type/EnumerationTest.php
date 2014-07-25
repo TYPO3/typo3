@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration;
 use TYPO3\CMS\Core\Type;
 
 /**
- * Testcase for class \TYPO3\CMS\Core\Type\Enumeration
+ * Test case
  */
 class EnumerationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
@@ -26,8 +26,16 @@ class EnumerationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 * @expectedException \TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException
 	 */
-	public function constructThrowsExceptionIfNoConstantsAreDefined() {
+	public function constructorThrowsExceptionIfNoConstantsAreDefined() {
 		new Enumeration\MissingConstantsEnumeration();
+	}
+
+	/**
+	 * @test
+	 * @expectedException \TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException
+	 */
+	public function constructorThrowsExceptionIfInvalidValueIsRequested() {
+		new Enumeration\CompleteEnumeration('bar');
 	}
 
 	/**
@@ -87,7 +95,7 @@ class EnumerationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function constructerSetsValue() {
+	public function constructorSetsValue() {
 		$enumeration = $this->getAccessibleMock(
 			'TYPO3\\CMS\\Core\\Tests\\Unit\\Type\\Fixture\\Enumeration\\CompleteEnumeration',
 			array('dummy'),

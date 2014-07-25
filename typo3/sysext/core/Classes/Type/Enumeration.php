@@ -60,7 +60,8 @@ abstract class Enumeration implements TypeInterface {
 	}
 
 	/**
-	 * @throws \Exception
+	 * @throws Exception\InvalidEnumerationValueException
+	 * @throws Exception\InvalidEnumerationDefinitionException
 	 * @internal param string $class
 	 */
 	protected function loadValues() {
