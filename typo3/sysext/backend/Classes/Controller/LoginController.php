@@ -321,7 +321,7 @@ class LoginController {
 		}
 		$markers = array(
 			'LOGO' => $logo,
-			'LOGINBOX_IMAGE' => $this->makeLoginBoxImage(),
+			'LOGINBOX_IMAGE' => '',
 			'FORM' => $content,
 			'NEWS' => $this->makeLoginNews(),
 			'COPYRIGHT' => BackendUtility::TYPO3_copyRightNotice($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightShowVersion']),
@@ -470,42 +470,11 @@ class LoginController {
 	 * Returns the login box image, whether the default or an image from the rotation folder.
 	 *
 	 * @return string HTML image tag.
-	 * @todo Define visibility
+	 * @deprecated since 6.3, will be removed
 	 */
 	public function makeLoginBoxImage() {
-		$loginboxImage = '';
-		// Look for rotation image folder:
-		if ($GLOBALS['TBE_STYLES']['loginBoxImage_rotationFolder']) {
-			$absPath = GeneralUtility::resolveBackPath(PATH_typo3 . $GLOBALS['TBE_STYLES']['loginBoxImage_rotationFolder']);
-			// Get rotation folder:
-			$dir = GeneralUtility::getFileAbsFileName($absPath);
-			if ($dir && @is_dir($dir)) {
-				// Get files for rotation into array:
-				$files = GeneralUtility::getFilesInDir($dir, 'png,jpg,gif');
-				// Pick random file:
-				$randImg = array_rand($files, 1);
-				// Get size of random file:
-				$imgSize = @getimagesize(($dir . $files[$randImg]));
-				$imgAuthor = is_array($GLOBALS['TBE_STYLES']['loginBoxImage_author']) && $GLOBALS['TBE_STYLES']['loginBoxImage_author'][$files[$randImg]] ? htmlspecialchars($GLOBALS['TBE_STYLES']['loginBoxImage_author'][$files[$randImg]]) : '';
-				// Create image tag:
-				if (is_array($imgSize)) {
-					$loginboxImage = '<img src="' . htmlspecialchars(($GLOBALS['TBE_STYLES']['loginBoxImage_rotationFolder'] . $files[$randImg])) . '" ' . $imgSize[3] . ' id="loginbox-image" alt="' . $imgAuthor . '" title="' . $imgAuthor . '" />';
-				}
-			}
-		} else {
-			// If no rotation folder configured, print default image:
-			// Development version
-			if (strstr(TYPO3_version, '-dev')) {
-				$loginImage = 'loginbox_image_dev.png';
-				$imagecopy = 'You are running a development version of TYPO3 ' . TYPO3_branch;
-			} else {
-				$loginImage = 'loginbox_image.jpg';
-				$imagecopy = 'Photo by J.C. Franca (www.digitalphoto.com.br)';
-			}
-			$loginboxImage = '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/' . $loginImage), 'width="200" height="133"') . ' id="loginbox-image" alt="' . $imagecopy . '" title="' . $imagecopy . '" />';
-		}
-		// Return image tag:
-		return $loginboxImage;
+		GeneralUtility::logDeprecatedFunction();
+		return '';
 	}
 
 	/**
