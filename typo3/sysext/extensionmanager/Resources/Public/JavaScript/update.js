@@ -36,6 +36,7 @@
 		// Show loaders
 		$('.splash-receivedata').addClass('is-shown');
 		$('#terTable_wrapper').addClass('is-loading');
+		$('#typo3-dblist-pagination').addClass('is-loading');
 
 		$.ajax({
 			url: url,
@@ -86,6 +87,7 @@
 				// Hide loaders
 				$('.splash-receivedata').removeClass('is-shown');
 				$('#terTable_wrapper').removeClass('is-loading');
+				$('#typo3-dblist-pagination').removeClass('is-loading');
 
 				// Show triggers for TER-update
 				$('.update-from-ter').removeClass('is-hidden');
