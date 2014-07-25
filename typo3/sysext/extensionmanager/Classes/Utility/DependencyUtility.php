@@ -172,13 +172,13 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		if ($lowerCaseIdentifier === 'typo3') {
 			if (!($dependency->getLowestVersion() === '') && version_compare(VersionNumberUtility::getNumericTypo3Version(), $dependency->getLowestVersion()) === -1) {
 				throw new Exception\UnresolvedTypo3DependencyException(
-					'Your TYPO3 version is lower than necessary. You need at least TYPO3 version ' . $dependency->getLowestVersion(),
+					'Your TYPO3 version is lower than this extension requires. It requires TYPO3 versions ' . $dependency->getLowestVersion() . ' - ' . $dependency->getHighestVersion(),
 					1399144499
 				);
 			}
 			if (!($dependency->getHighestVersion() === '') && version_compare($dependency->getHighestVersion(), VersionNumberUtility::getNumericTypo3Version()) === -1) {
 				throw new Exception\UnresolvedTypo3DependencyException(
-					'Your TYPO3 version is higher than allowed. You can use TYPO3 versions ' . $dependency->getLowestVersion() . ' - ' . $dependency->getHighestVersion(),
+					'Your TYPO3 version is higher than this extension requires. It requires TYPO3 versions ' . $dependency->getLowestVersion() . ' - ' . $dependency->getHighestVersion(),
 					1399144521
 				);
 			}
