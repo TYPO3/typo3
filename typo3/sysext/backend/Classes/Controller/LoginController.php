@@ -470,7 +470,7 @@ class LoginController {
 	 * Returns the login box image, whether the default or an image from the rotation folder.
 	 *
 	 * @return string HTML image tag.
-	 * @deprecated since 6.3, will be removed
+	 * @deprecated since 7, see Deprecation-60559-MakeLoginBoxImage.rst
 	 */
 	public function makeLoginBoxImage() {
 		GeneralUtility::logDeprecatedFunction();
