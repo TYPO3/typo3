@@ -63,16 +63,6 @@ class Bootstrap {
 	protected $installToolPath;
 
 	/**
-	 * @var string The currently active exception handling class. It is set after LocalConfiguration is included and might be changed after ex_localconf.php are loaded.
-	 */
-	protected $activeExceptionHandlerClassName;
-
-	/**
-	 * @var string The currently active error handling class. It is set after LocalConfiguration is included and might be changed after ex_localconf.php are loaded.
-	 */
-	protected $activeErrorHandlerClassName;
-
-	/**
 	 * A list of all registered request handlers, see the Application class / entry points for the registration
 	 * @var \TYPO3\CMS\Core\Http\RequestHandlerInterface[]|\TYPO3\CMS\Core\Console\RequestHandlerInterface[]
 	 */
@@ -174,7 +164,6 @@ class Bootstrap {
 		$this->startOutputBuffering()
 			->loadConfigurationAndInitialize()
 			->loadTypo3LoadedExtAndExtLocalconf(TRUE)
-			->initializeExceptionHandling()
 			->setFinalCachingFrameworkCacheConfiguration()
 			->defineLoggingAndExceptionConstants()
 			->unsetReservedGlobalVariables()
@@ -366,7 +355,8 @@ class Bootstrap {
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function loadConfigurationAndInitialize($allowCaching = TRUE, $packageManagerClassName = \TYPO3\CMS\Core\Package\PackageManager::class) {
-		$this->populateLocalConfiguration();
+		$this->populateLocalConfiguration()
+			->initializeErrorHandling();
 		if (!$allowCaching) {
 			$this->disableCoreCache();
 		}
@@ -382,8 +372,6 @@ class Bootstrap {
 			->initializeL10nLocales()
 			->convertPageNotFoundHandlingToBoolean()
 			->registerGlobalDebugFunctions()
-			->configureExceptionHandling()
-			->initializeExceptionHandling()
 			->setMemoryLimit()
 			->defineTypo3RequestTypes();
 		if ($allowCaching) {
@@ -684,29 +672,52 @@ class Bootstrap {
 	 * Configure and set up exception and error handling
 	 *
 	 * @return Bootstrap
+	 * @throws \RuntimeException
 	 */
-	protected function configureExceptionHandling() {
-		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['errors']['exceptionHandler'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['productionExceptionHandler'];
-		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['errors']['exceptionalErrors'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['exceptionalErrors'];
-		$doesIpMatch = GeneralUtility::cmpIP(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']);
-		$displayErrors = (int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['displayErrors'];
-		// Turn error logging on/off.
-		if ($displayErrors !== -1) {
-			// Special value "2" enables this feature only if $GLOBALS['TYPO3_CONF_VARS'][SYS][devIPmask] matches
-			if ($displayErrors === 2) {
-				$displayErrors = (int)$doesIpMatch;
+	protected function initializeErrorHandling() {
+		$productionExceptionHandlerClassName = $GLOBALS['TYPO3_CONF_VARS']['SYS']['productionExceptionHandler'];
+		$debugExceptionHandlerClassName = $GLOBALS['TYPO3_CONF_VARS']['SYS']['debugExceptionHandler'];
+
+		$errorHandlerClassName = $GLOBALS['TYPO3_CONF_VARS']['SYS']['errorHandler'];
+		$errorHandlerErrors = $GLOBALS['TYPO3_CONF_VARS']['SYS']['errorHandlerErrors'];
+		$exceptionalErrors = $GLOBALS['TYPO3_CONF_VARS']['SYS']['exceptionalErrors'];
+
+		$displayErrorsSetting = (int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['displayErrors'];
+		switch ($displayErrorsSetting) {
+			case 2:
+				GeneralUtility::deprecationLog('The option "$TYPO3_CONF_VARS[SYS][displayErrors]" is set to "2" which is deprecated as of TYPO3 CMS 7, and will be removed with TYPO3 CMS 8. Please change the value to "-1"');
+				// intentionally fall through
+			case -1:
+				$ipMatchesDevelopmentSystem = GeneralUtility::cmpIP(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']);
+				$exceptionHandlerClassName = $ipMatchesDevelopmentSystem ? $debugExceptionHandlerClassName : $productionExceptionHandlerClassName;
+				$displayErrors = $ipMatchesDevelopmentSystem ? 1 : 0;
+				$exceptionalErrors = $ipMatchesDevelopmentSystem ? $exceptionalErrors : 0;
+				break;
+			case 0:
+				$exceptionHandlerClassName = $productionExceptionHandlerClassName;
+				$displayErrors = 0;
+				break;
+			case 1:
+				$exceptionHandlerClassName = $debugExceptionHandlerClassName;
+				$displayErrors = 1;
+				break;
+			default:
+				// Throw exception if an invalid option is set.
+				throw new \RuntimeException('The option $TYPO3_CONF_VARS[SYS][displayErrors] is not set to "-1", "0" or "1".');
+		}
+		@ini_set('display_errors', $displayErrors);
+
+		if (!empty($errorHandlerClassName)) {
+			// Register an error handler for the given errorHandlerError
+			$errorHandler = GeneralUtility::makeInstance($errorHandlerClassName, $errorHandlerErrors);
+			$errorHandler->setExceptionalErrors($exceptionalErrors);
+			if (is_callable(array($errorHandler, 'setDebugMode'))) {
+				$errorHandler->setDebugMode($displayErrors === 1);
 			}
-			if ($displayErrors === 0) {
-				$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['errors']['exceptionalErrors'] = 0;
-			}
-			if ($displayErrors === 1) {
-				$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['errors']['exceptionHandler'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['debugExceptionHandler'];
-				define('TYPO3_ERRORHANDLER_MODE', 'debug');
-			}
-			@ini_set('display_errors', $displayErrors);
-		} elseif ($doesIpMatch) {
-			// With displayErrors = -1 (default), turn on debugging if devIPmask matches:
-			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['errors']['exceptionHandler'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['debugExceptionHandler'];
+		}
+		if (!empty($exceptionHandlerClassName)) {
+			// Registering the exception handler is done in the constructor
+			GeneralUtility::makeInstance($exceptionHandlerClassName);
 		}
 		return $this;
 	}
@@ -737,41 +748,6 @@ class Bootstrap {
 		define('TYPO3_REQUESTTYPE_AJAX', 8);
 		define('TYPO3_REQUESTTYPE_INSTALL', 16);
 		define('TYPO3_REQUESTTYPE', (TYPO3_MODE == 'FE' ? TYPO3_REQUESTTYPE_FE : 0) | (TYPO3_MODE == 'BE' ? TYPO3_REQUESTTYPE_BE : 0) | (defined('TYPO3_cliMode') && TYPO3_cliMode ? TYPO3_REQUESTTYPE_CLI : 0) | (defined('TYPO3_enterInstallScript') && TYPO3_enterInstallScript ? TYPO3_REQUESTTYPE_INSTALL : 0) | ($GLOBALS['TYPO3_AJAX'] ? TYPO3_REQUESTTYPE_AJAX : 0));
-		return $this;
-	}
-
-	/**
-	 * Initialize exception handling
-	 * This method is called twice. First when LocalConfiguration has been loaded
-	 * and a second time after extension ext_localconf.php have been included to allow extensions
-	 * to change the exception and error handler configuration.
-	 *
-	 * @return Bootstrap
-	 * @internal This is not a public API method, do not use in own extensions
-	 */
-	public function initializeExceptionHandling() {
-		if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['errors']['exceptionHandler'])) {
-			if (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['errorHandler'])) {
-				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['errorHandler'] !== $this->activeErrorHandlerClassName) {
-					$this->activeErrorHandlerClassName = $GLOBALS['TYPO3_CONF_VARS']['SYS']['errorHandler'];
-					// Register an error handler for the given errorHandlerErrors
-					$errorHandler = GeneralUtility::makeInstance($this->activeErrorHandlerClassName, $GLOBALS['TYPO3_CONF_VARS']['SYS']['errorHandlerErrors']);
-					// Set errors which will be converted in an exception
-					$errorHandler->setExceptionalErrors($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['errors']['exceptionalErrors']);
-				}
-			} elseif (!empty($this->activeErrorHandlerClassName)) {
-				// Restore error handler in case extensions have unset the configuration in ext_localconf.php
-				restore_error_handler();
-			}
-			if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['errors']['exceptionHandler'] !== $this->activeExceptionHandlerClassName) {
-				$this->activeExceptionHandlerClassName = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['errors']['exceptionHandler'];
-				// Registering the exception handler is done in the constructor
-				GeneralUtility::makeInstance($this->activeExceptionHandlerClassName);
-			}
-		} elseif (!empty($this->activeExceptionHandlerClassName)) {
-			// Restore exception handler in case extensions have unset the configuration in ext_localconf.php
-			restore_exception_handler();
-		}
 		return $this;
 	}
 

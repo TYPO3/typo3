@@ -433,7 +433,6 @@ class FunctionalTestCaseBootstrapUtility {
 			->baseSetup('')
 			->loadConfigurationAndInitialize(TRUE)
 			->loadTypo3LoadedExtAndExtLocalconf(TRUE)
-			->initializeExceptionHandling()
 			->setFinalCachingFrameworkCacheConfiguration()
 			->defineLoggingAndExceptionConstants()
 			->unsetReservedGlobalVariables();

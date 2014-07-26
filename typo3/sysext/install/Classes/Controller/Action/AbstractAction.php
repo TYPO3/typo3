@@ -248,7 +248,6 @@ abstract class AbstractAction implements ActionInterface {
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()
 			->ensureClassLoadingInformationExists()
 			->loadTypo3LoadedExtAndExtLocalconf(FALSE)
-			->initializeExceptionHandling()
 			->defineLoggingAndExceptionConstants()
 			->unsetReservedGlobalVariables()
 			->initializeTypo3DbGlobal()

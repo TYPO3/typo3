@@ -33,6 +33,13 @@ class ErrorHandler implements ErrorHandlerInterface {
 	protected $exceptionalErrors = array();
 
 	/**
+	 * Whether to write a flash message in case of an error
+	 *
+	 * @var bool
+	 */
+	protected $debugMode = FALSE;
+
+	/**
 	 * Registers this class as default error handler
 	 *
 	 * @param int $errorHandlerErrors The integer representing the E_* error level which should be
@@ -52,6 +59,13 @@ class ErrorHandler implements ErrorHandlerInterface {
 	 */
 	public function setExceptionalErrors($exceptionalErrors) {
 		$this->exceptionalErrors = (int)$exceptionalErrors;
+	}
+
+	/**
+	 * @param bool $debugMode
+	 */
+	public function setDebugMode($debugMode) {
+		$this->debugMode = (bool)$debugMode;
 	}
 
 	/**
@@ -135,8 +149,7 @@ class ErrorHandler implements ErrorHandlerInterface {
 				// Let the internal handler continue. This will stop the script
 				return FALSE;
 			} else {
-				// Add error message to the flashmessageQueue
-				if (defined('TYPO3_ERRORHANDLER_MODE') && TYPO3_ERRORHANDLER_MODE == 'debug') {
+				if ($this->debugMode) {
 					/** @var $flashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
 					$flashMessage = GeneralUtility::makeInstance(
 						\TYPO3\CMS\Core\Messaging\FlashMessage::class,
