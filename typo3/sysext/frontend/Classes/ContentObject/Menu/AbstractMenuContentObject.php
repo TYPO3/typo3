@@ -27,6 +27,8 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Generating navigation / menus from TypoScript
  *
@@ -256,7 +258,7 @@ class AbstractMenuContentObject {
 				if (isset($this->conf['alwaysActivePIDlist.'])) {
 					$this->conf['alwaysActivePIDlist'] = $this->parent_cObj->stdWrap($this->conf['alwaysActivePIDlist'], $this->conf['alwaysActivePIDlist.']);
 				}
-				$this->alwaysActivePIDlist = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $this->conf['alwaysActivePIDlist']);
+				$this->alwaysActivePIDlist = GeneralUtility::intExplode(',', $this->conf['alwaysActivePIDlist']);
 			}
 			// 'not in menu' doktypes
 			if ($this->conf['excludeDoktypes']) {
@@ -397,7 +399,7 @@ class AbstractMenuContentObject {
 					// Getting current page record NOT overlaid by any translation:
 					$currentPageWithNoOverlay = $this->sys_page->getRawRecord('pages', $GLOBALS['TSFE']->page['uid']);
 					// Traverse languages set up:
-					$languageItems = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $value);
+					$languageItems = GeneralUtility::intExplode(',', $value);
 					foreach ($languageItems as $sUid) {
 						// Find overlay record:
 						if ($sUid) {
@@ -406,7 +408,7 @@ class AbstractMenuContentObject {
 							$lRecs = array();
 						}
 						// Checking if the "disabled" state should be set.
-						if (\TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated($GLOBALS['TSFE']->page['l18n_cfg']) && $sUid && !count($lRecs) || $GLOBALS['TSFE']->page['l18n_cfg'] & 1 && (!$sUid || !count($lRecs)) || !$this->conf['special.']['normalWhenNoLanguage'] && $sUid && !count($lRecs)) {
+						if (GeneralUtility::hideIfNotTranslated($GLOBALS['TSFE']->page['l18n_cfg']) && $sUid && !count($lRecs) || $GLOBALS['TSFE']->page['l18n_cfg'] & 1 && (!$sUid || !count($lRecs)) || !$this->conf['special.']['normalWhenNoLanguage'] && $sUid && !count($lRecs)) {
 							$iState = $GLOBALS['TSFE']->sys_language_uid == $sUid ? 'USERDEF2' : 'USERDEF1';
 						} else {
 							$iState = $GLOBALS['TSFE']->sys_language_uid == $sUid ? 'ACT' : 'NO';
@@ -428,7 +430,7 @@ class AbstractMenuContentObject {
 					if ($value == '') {
 						$value = $GLOBALS['TSFE']->page['uid'];
 					}
-					$items = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $value);
+					$items = GeneralUtility::intExplode(',', $value);
 					foreach ($items as $id) {
 						$MP = $this->tmpl->getFromMPmap($id);
 						// Checking if a page is a mount page and if so, change the ID and set the MP var properly.
@@ -480,7 +482,7 @@ class AbstractMenuContentObject {
 						$value = $this->id;
 					}
 					/** @var \TYPO3\CMS\Core\Database\RelationHandler $loadDB*/
-					$loadDB = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+					$loadDB = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
 					$loadDB->setFetchAllFields(TRUE);
 					$loadDB->start($value, 'pages');
 					$loadDB->additionalWhere['pages'] = $this->parent_cObj->enableFields('pages');
@@ -529,7 +531,7 @@ class AbstractMenuContentObject {
 					if ($value == '') {
 						$value = $GLOBALS['TSFE']->page['uid'];
 					}
-					$items = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $value);
+					$items = GeneralUtility::intExplode(',', $value);
 					if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->conf['special.']['depth'])) {
 						$depth = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->conf['special.']['depth'], 1, 20);
 					} else {
@@ -593,7 +595,7 @@ class AbstractMenuContentObject {
 					}
 					break;
 				case 'keywords':
-					list($value) = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $value);
+					list($value) = GeneralUtility::intExplode(',', $value);
 					if (!$value) {
 						$value = $GLOBALS['TSFE']->page['uid'];
 					}
@@ -711,7 +713,7 @@ class AbstractMenuContentObject {
 					}
 					break;
 				case 'browse':
-					list($value) = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $value);
+					list($value) = GeneralUtility::intExplode(',', $value);
 					if (!$value) {
 						$value = $GLOBALS['TSFE']->page['uid'];
 					}
@@ -847,7 +849,7 @@ class AbstractMenuContentObject {
 			// Fill in the menuArr with elements that should go into the menu:
 			$this->menuArr = array();
 			foreach ($temp as $data) {
-				$spacer = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->spacerIDList, $data['doktype']) || !strcmp($data['ITEM_STATE'], 'SPC') ? 1 : 0;
+				$spacer = GeneralUtility::inList($this->spacerIDList, $data['doktype']) || !strcmp($data['ITEM_STATE'], 'SPC') ? 1 : 0;
 				// if item is a spacer, $spacer is set
 				if ($this->filterMenuPages($data, $banUidArray, $spacer)) {
 					$c_b++;
@@ -916,7 +918,7 @@ class AbstractMenuContentObject {
 		$includePage = TRUE;
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/tslib/class.tslib_menu.php']['filterMenuPages'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/tslib/class.tslib_menu.php']['filterMenuPages'] as $classRef) {
-				$hookObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
+				$hookObject = GeneralUtility::getUserObj($classRef);
 				if (!$hookObject instanceof \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuFilterPagesHookInterface) {
 					throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Frontend\\ContentObject\\Menu\\AbstractMenuFilterPagesHookInterface', 1269877402);
 				}
@@ -933,11 +935,11 @@ class AbstractMenuContentObject {
 		// If the spacer-function is not enabled, spacers will not enter the $menuArr
 		if ($this->mconf['SPC'] || !$spacer) {
 			// Page may not be 'not_in_menu' or 'Backend User Section'
-			if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->doktypeExcludeList, $data['doktype'])) {
+			if (!GeneralUtility::inList($this->doktypeExcludeList, $data['doktype'])) {
 				// Not hidden in navigation
 				if (!$data['nav_hide'] || $this->conf['includeNotInMenu']) {
 					// not in banned uid's
-					if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inArray($banUidArray, $uid)) {
+					if (!GeneralUtility::inArray($banUidArray, $uid)) {
 						// Checks if the default language version can be shown:
 						// Block page is set, if l18n_cfg allows plus: 1) Either default language or 2) another language but NO overlay record set for page!
 						$blockPage = $data['l18n_cfg'] & 1 && (!$GLOBALS['TSFE']->sys_language_uid || $GLOBALS['TSFE']->sys_language_uid && !$data['_PAGES_OVERLAY']);
@@ -945,7 +947,7 @@ class AbstractMenuContentObject {
 							// Checking if a page should be shown in the menu depending on whether a translation exists:
 							$tok = TRUE;
 							// There is an alternative language active AND the current page requires a translation:
-							if ($GLOBALS['TSFE']->sys_language_uid && \TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated($data['l18n_cfg'])) {
+							if ($GLOBALS['TSFE']->sys_language_uid && GeneralUtility::hideIfNotTranslated($data['l18n_cfg'])) {
 								if (!$data['_PAGES_OVERLAY']) {
 									$tok = FALSE;
 								}
@@ -955,7 +957,7 @@ class AbstractMenuContentObject {
 								// Checking if "&L" should be modified so links to non-accessible pages will not happen.
 								if ($this->conf['protectLvar']) {
 									$languageUid = intval($GLOBALS['TSFE']->config['config']['sys_language_uid']);
-									if ($languageUid && ($this->conf['protectLvar'] == 'all' || \TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated($data['l18n_cfg']))) {
+									if ($languageUid && ($this->conf['protectLvar'] == 'all' || GeneralUtility::hideIfNotTranslated($data['l18n_cfg']))) {
 										$olRec = $GLOBALS['TSFE']->sys_page->getPageOverlay($data['uid'], $languageUid);
 										if (!count($olRec)) {
 											// If no pages_language_overlay record then page can NOT be accessed in the language pointed to by "&L" and therefore we protect the link by setting "&L=0"
@@ -1265,7 +1267,7 @@ class AbstractMenuContentObject {
 			$LD = $this->menuTypoLink($this->menuArr[$key], $mainTarget, '', '', $overrideArray, $this->mconf['addParams'] . $MP_params . $this->I['val']['additionalParams'] . $this->menuArr[$key]['_ADD_GETVARS'], $typeOverride);
 		}
 		// Override URL if using "External URL" as doktype with a valid e-mail address:
-		if ($this->menuArr[$key]['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK && $this->menuArr[$key]['urltype'] == 3 && \TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($this->menuArr[$key]['url'])) {
+		if ($this->menuArr[$key]['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK && $this->menuArr[$key]['urltype'] == 3 && GeneralUtility::validEmail($this->menuArr[$key]['url'])) {
 			// Create mailto-link using tslib_cObj::typolink (concerning spamProtectEmailAddresses):
 			$LD['totalURL'] = $this->parent_cObj->typoLink_URL(array('parameter' => $this->menuArr[$key]['url']));
 			$LD['target'] = '';
@@ -1323,7 +1325,7 @@ class AbstractMenuContentObject {
 			if ($matches[3] && $matches[4]) {
 				$JSparamWH = 'width=' . $matches[3] . ',height=' . $matches[4] . ($matches[5] ? ',' . substr($matches[5], 1) : '');
 				$onClick = 'vHWin=window.open('
-					. \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($GLOBALS['TSFE']->baseUrlWrap($LD['totalURL']))
+					. GeneralUtility::quoteJSvalue($GLOBALS['TSFE']->baseUrlWrap($LD['totalURL']))
 					. ',\'FEopenLink\',\'' . $JSparamWH . '\');vHWin.focus();return false;';
 				$LD['target'] = '';
 			}
@@ -1383,7 +1385,7 @@ class AbstractMenuContentObject {
 		}
 		if (($this->mconf['expAll'] || $this->isNext($uid, $this->getMPvar($this->I['key'])) || is_array($altArray)) && !$this->mconf['sectionIndex']) {
 			try {
-				$menuObjectFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\Menu\\MenuContentObjectFactory');
+				$menuObjectFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\Menu\\MenuContentObjectFactory');
 				$submenu = $menuObjectFactory->getMenuObjectByType($menuType);
 				$submenu->entryLevel = $this->entryLevel + 1;
 				$submenu->rL_uidRegister = $this->rL_uidRegister;
@@ -1493,7 +1495,7 @@ class AbstractMenuContentObject {
 		$bannedUids = $this->getBannedUids();
 		foreach ($recs as $theRec) {
 			// no valid subpage if the document type is excluded from the menu
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->doktypeExcludeList, $theRec['doktype'])) {
+			if (GeneralUtility::inList($this->doktypeExcludeList, $theRec['doktype'])) {
 				continue;
 			}
 			// No valid subpage if the page is hidden inside menus and
@@ -1503,12 +1505,12 @@ class AbstractMenuContentObject {
 			}
 			// No valid subpage if the default language should be shown and the page settings
 			// are excluding the visibility of the default language
-			if (!$GLOBALS['TSFE']->sys_language_uid && \TYPO3\CMS\Core\Utility\GeneralUtility::hideIfDefaultLanguage($theRec['l18n_cfg'])) {
+			if (!$GLOBALS['TSFE']->sys_language_uid && GeneralUtility::hideIfDefaultLanguage($theRec['l18n_cfg'])) {
 				continue;
 			}
 			// No valid subpage if the alternative language should be shown and the page settings
 			// are requiring a valid overlay but it doesn't exists
-			$hideIfNotTranslated = \TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated($theRec['l18n_cfg']);
+			$hideIfNotTranslated = GeneralUtility::hideIfNotTranslated($theRec['l18n_cfg']);
 			if ($GLOBALS['TSFE']->sys_language_uid && $hideIfNotTranslated && !$theRec['_PAGES_OVERLAY']) {
 				continue;
 			}
@@ -1687,7 +1689,7 @@ class AbstractMenuContentObject {
 		}
 
 		$banUidList = str_replace('current', $GLOBALS['TSFE']->page['uid'], $excludeUidList);
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $banUidList);
+		return GeneralUtility::intExplode(',', $banUidList);
 	}
 
 	/**
