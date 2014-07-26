@@ -36,7 +36,7 @@ class DownloadExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\FormViewH
 		$pathSelector = '<ul class="is-hidden">';
 		foreach ($installPaths as $installPathType => $installPath) {
 			$pathSelector .= '<li>
-				<input type="radio" id="' . htmlspecialchars($extension->getExtensionKey()) . '-downloadPath-' . htmlspecialchars($installPathType) . '" name="' . htmlspecialchars($this->getFieldNamePrefix('downloadPath')) . '[downloadPath]" class="downloadPath" value="' . htmlspecialchars($installPathType) . '"' . ($installPathType == 'Local' ? 'checked="checked"' : '') . '/>
+				<input type="radio" id="' . htmlspecialchars($extension->getExtensionKey()) . '-downloadPath-' . htmlspecialchars($installPathType) . '" name="' . htmlspecialchars($this->getFieldNamePrefix('downloadPath')) . '[downloadPath]" class="downloadPath" value="' . htmlspecialchars($installPathType) . '"' . ($installPathType == 'Local' ? ' checked="checked"' : '') . '/>
 				<label for="' . htmlspecialchars($extension->getExtensionKey()) . '-downloadPath-' . htmlspecialchars($installPathType) . '">' . htmlspecialchars($installPathType) . '</label>
 			</li>';
 		}
@@ -48,7 +48,7 @@ class DownloadExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\FormViewH
 		$uri = $uriBuilder->uriFor($action, array(
 			'extension' => (int)$extension->getUid()
 		), 'Download');
-		$this->tag->addAttribute('href', $uri);
+		$this->tag->addAttribute('data-href', $uri);
 
 		// @TODO Clean-up
 		$iconClasses = "t3-icon t3-icon-actions t3-icon-system-extension-import";

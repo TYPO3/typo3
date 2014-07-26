@@ -72,7 +72,7 @@
 		installButtons.on('click', function(event) {
 			event.preventDefault();
 			$('.typo3-extension-manager').mask();
-			var url = $(event.currentTarget.form).attr('href');
+			var url = $(event.currentTarget.form).attr('data-href');
 			downloadPath = $(event.currentTarget.form).find('input.downloadPath:checked').val();
 			$.ajax({
 				url: url,
