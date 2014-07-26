@@ -25,18 +25,18 @@
 			<f:render partial="List/UpdateFromTer" />
 		</div>
 	</div>
-	<f:if condition="{search}">
-		<f:then>
-			<table id="terSearchTable" class="t3-table typo3-extension-list">
-				<f:render partial="List/TerTable" arguments="{paginatedExtensions:extensions, availableAndInstalled:availableAndInstalled}" />
-			</table>
-		</f:then>
-		<f:else>
-			<div id="terTableWrapper">
+	<div id="terTableWrapper">
+		<f:if condition="{search}">
+			<f:then>
+				<table id="terSearchTable" class="t3-table typo3-extension-list">
+					<f:render partial="List/TerTable" arguments="{paginatedExtensions:extensions, availableAndInstalled:availableAndInstalled}" />
+				</table>
+			</f:then>
+			<f:else>
 				<f:render partial="List/TerPaginator" arguments="{extensions:extensions, showVersionList:showVersionList,  availableAndInstalled:availableAndInstalled}" />
-				<div class="splash-receivedata x-mask-loading"><div class="spinner"><f:translate key="extensionList.updateFromTer.label"/></div></div>
-			</div>
-		</f:else>
-	</f:if>
+			</f:else>
+		</f:if>
+		<div class="splash-receivedata x-mask-loading"><div class="spinner"><f:translate key="extensionList.updateFromTer.label"/></div></div>
+	</div>
 
 </f:section>
