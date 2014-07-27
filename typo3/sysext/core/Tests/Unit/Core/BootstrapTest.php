@@ -108,5 +108,85 @@ class BootstrapTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			->method('set');
 		$bootstrapInstance->loadCachedTca();
 	}
+
+	/**
+	 * Dataprovider for transferDeprecatedCurlSettings
+	 *
+	 * @return array
+	 */
+	public function curlProxySettingsToHttpSettingsMapping() {
+		return array(
+			array('http://proxy:3128/', 'proxy', '3128'),
+			array('http://proxy:3128', 'proxy', '3128'),
+			array('proxy:3128', 'proxy', '3128'),
+			array('https://proxy:3128/', 'proxy', '3128'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider curlProxySettingsToHttpSettingsMapping
+	 */
+	public function transferDeprecatedCurlSettings($curlProxyServer, $proxyHost, $proxyPort) {
+		/** @var $bootstrapInstance \TYPO3\CMS\Core\Core\Bootstrap|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+		$bootstrapInstance = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Core\\Core\\Bootstrap',
+			array('dummy'),
+			array(),
+			'',
+			FALSE
+		);
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer'] = $curlProxyServer;
+		$bootstrapInstance->_call('transferDeprecatedCurlSettings');
+		$this->assertEquals($proxyHost, $GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_host']);
+		$this->assertEquals($proxyPort, $GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_port']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function curlProxyServerDoesNotOverwriteHttpSettings() {
+		/** @var $bootstrapInstance \TYPO3\CMS\Core\Core\Bootstrap|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+		$bootstrapInstance = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Core\\Core\\Bootstrap',
+			array('dummy'),
+			array(),
+			'',
+			FALSE
+		);
+
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer'] = 'http://proxyOld:3128/';
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass'] = 'userOld:passOld';
+		$GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_host'] = 'proxyNew';
+		$GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_port'] = '3128';
+		$GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_user'] = 'userNew';
+		$GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_pass'] = 'passNew';
+
+		$bootstrapInstance->_call('transferDeprecatedCurlSettings');
+		$this->assertEquals('http://proxyOld:3128/', $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']);
+		$this->assertEquals('userOld:passOld', $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass']);
+		$this->assertEquals('proxyNew', $GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_host']);
+		$this->assertEquals('3128', $GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_port']);
+		$this->assertEquals('userNew', $GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_user']);
+		$this->assertEquals('passNew', $GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_pass']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function curlAdapterUsedIfCurlUse() {
+		/** @var $bootstrapInstance \TYPO3\CMS\Core\Core\Bootstrap|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+		$bootstrapInstance = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Core\\Core\\Bootstrap',
+			array('dummy'),
+			array(),
+			'',
+			FALSE
+		);
+
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] = TRUE;
+		$bootstrapInstance->_call('transferDeprecatedCurlSettings');
+		$this->assertEquals('curl', $GLOBALS['TYPO3_CONF_VARS']['HTTP']['adapter']);
+	}
 }
 ?>
