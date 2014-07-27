@@ -13,10 +13,11 @@ namespace TYPO3\CMS\Scheduler\Example;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Additional fields provider class for usage with the Scheduler's test task
  *
- * @author 		François Suter <francois@typo3.org>
+ * @author François Suter <francois@typo3.org>
  */
 class TestTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface {
 
@@ -27,15 +28,15 @@ class TestTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Additional
 	 * @param array $taskInfo Reference to the array containing the info used in the add/edit form
 	 * @param object $task When editing, reference to the current task object. Null when adding.
 	 * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
-	 * @return array	Array containing all the information pertaining to the additional fields
+	 * @return array Array containing all the information pertaining to the additional fields
 	 */
 	public function getAdditionalFields(array &$taskInfo, $task, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject) {
 		// Initialize extra field value
 		if (empty($taskInfo['email'])) {
-			if ($parentObject->CMD == 'add') {
+			if ($parentObject->CMD === 'add') {
 				// In case of new task and if field is empty, set default email address
 				$taskInfo['email'] = $GLOBALS['BE_USER']->user['email'];
-			} elseif ($parentObject->CMD == 'edit') {
+			} elseif ($parentObject->CMD === 'edit') {
 				// In case of edit, and editing a test task, set to internal value if not data was submitted already
 				$taskInfo['email'] = $task->email;
 			} else {
@@ -49,7 +50,7 @@ class TestTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Additional
 		$additionalFields = array();
 		$additionalFields[$fieldID] = array(
 			'code' => $fieldCode,
-			'label' => 'LLL:EXT:scheduler/mod1/locallang.xlf:label.email',
+			'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.email',
 			'cshKey' => '_MOD_system_txschedulerM1',
 			'cshLabel' => $fieldID
 		);
@@ -67,7 +68,7 @@ class TestTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Additional
 	public function validateAdditionalFields(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject) {
 		$submittedData['email'] = trim($submittedData['email']);
 		if (empty($submittedData['email'])) {
-			$parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/mod1/locallang.xlf:msg.noEmail'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+			$parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.noEmail'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 			$result = FALSE;
 		} else {
 			$result = TRUE;

@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Scheduler\Task;
 
 /**
  * Additional BE fields for tasks which indexes files in a storage
- *
  */
 class FileStorageIndexingAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface {
 
@@ -61,7 +60,7 @@ class FileStorageIndexingAdditionalFieldProvider implements \TYPO3\CMS\Scheduler
 
 		$fieldConfiguration = array(
 			'code' => $fieldHtml,
-			'label' => 'LLL:EXT:scheduler/mod1/locallang.xlf:label.fileStorageIndexing.storage',
+			'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.fileStorageIndexing.storage',
 			'cshKey' => '_MOD_system_txschedulerM1',
 			'cshLabel' => $fieldId
 		);

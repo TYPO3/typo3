@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Scheduler\Task;
 
 /**
  * This task which indexes files in storage
- *
  */
 class FileStorageExtractionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
@@ -29,6 +28,7 @@ class FileStorageExtractionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
 	/**
 	 * FileCount
+	 *
 	 * @var integer
 	 */
 	public $maxFileCount = 100;

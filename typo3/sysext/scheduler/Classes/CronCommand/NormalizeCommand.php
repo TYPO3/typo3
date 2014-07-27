@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Scheduler\CronCommand;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
@@ -55,7 +56,6 @@ class NormalizeCommand {
 	static protected function convertKeywordsToCronCommand($cronCommand) {
 		switch ($cronCommand) {
 			case '@yearly':
-
 			case '@annually':
 				$cronCommand = '0 0 1 1 *';
 				break;

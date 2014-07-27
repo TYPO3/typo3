@@ -13,13 +13,14 @@ namespace TYPO3\CMS\Scheduler\Task;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * This is the base class for all Scheduler tasks
  * It's an abstract class, not designed to be instantiated directly
  * All Scheduler tasks should inherit from this class
  *
- * @author 	François Suter <francois@typo3.org>
- * @author 	Christian Jul Jensen <julle@typo3.org>
+ * @author François Suter <francois@typo3.org>
+ * @author Christian Jul Jensen <julle@typo3.org>
  */
 abstract class AbstractTask {
 

@@ -25,7 +25,7 @@ class SleepTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	/**
 	 * Number of seconds the task should be sleeping for
 	 *
-	 * @var integer $sleepTime
+	 * @var integer
 	 */
 	public $sleepTime = 10;
 
@@ -50,7 +50,7 @@ class SleepTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 * @return string Information to display
 	 */
 	public function getAdditionalInformation() {
-		return $GLOBALS['LANG']->sL('LLL:EXT:scheduler/mod1/locallang.xlf:label.sleepTime') . ': ' . $this->sleepTime;
+		return $GLOBALS['LANG']->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.sleepTime') . ': ' . $this->sleepTime;
 	}
 
 }

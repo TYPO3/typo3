@@ -13,13 +13,14 @@ namespace TYPO3\CMS\Scheduler;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Interface for classes who want to provide additional fields when adding a task
  *
- * @author 		Ingo Renner <ingo@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
  */
-interface AdditionalFieldProviderInterface
-{
+interface AdditionalFieldProviderInterface {
+
 	/**
 	 * Gets additional fields to render in the form to add/edit a task
 	 *

@@ -45,7 +45,7 @@ class TableGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask 
 	/**
 	 * Execute garbage collection, called by scheduler.
 	 *
-	 * @throws \RuntimeException if configured table was not cleaned up
+	 * @throws \RuntimeException If configured table was not cleaned up
 	 * @return boolean TRUE if task run was successful
 	 */
 	public function execute() {
@@ -106,9 +106,9 @@ class TableGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask 
 	 */
 	public function getAdditionalInformation() {
 		if ($this->allTables) {
-			$message = $GLOBALS['LANG']->sL('LLL:EXT:scheduler/mod1/locallang.xlf:label.tableGarbageCollection.additionalInformationAllTables');
+			$message = $GLOBALS['LANG']->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.tableGarbageCollection.additionalInformationAllTables');
 		} else {
-			$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:scheduler/mod1/locallang.xlf:label.tableGarbageCollection.additionalInformationTable'), $this->table);
+			$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.tableGarbageCollection.additionalInformationTable'), $this->table);
 		}
 		return $message;
 	}

@@ -13,13 +13,14 @@ namespace TYPO3\CMS\Scheduler\Task;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Additional BE fields for recycler garbage collection task.
  *
  * Creates an integer input field for difference between scheduler run time
  * and file modification time in days to select from.
  *
- * @author 2011 Kai Vogel <kai.vogel@speedprogs.de>
+ * @author Kai Vogel <kai.vogel@speedprogs.de>
  */
 class RecyclerGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface {
 
@@ -53,7 +54,7 @@ class RecyclerGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Sch
 		$fieldHtml = '<input type="text" name="' . $fieldName . '" id="' . $fieldId . '" value="' . htmlspecialchars($fieldValue) . '" />';
 		$additionalFields[$fieldId] = array(
 			'code' => $fieldHtml,
-			'label' => 'LLL:EXT:scheduler/mod1/locallang.xlf:label.recyclerGarbageCollection.numberOfDays',
+			'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.recyclerGarbageCollection.numberOfDays',
 			'cshKey' => '_MOD_system_txschedulerM1',
 			'cshLabel' => $fieldId
 		);
@@ -73,7 +74,7 @@ class RecyclerGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Sch
 		// If not, fail validation and issue error message
 		if (!is_numeric($submittedData['scheduler_recyclerGarbageCollection_numberOfDays']) || (int)$submittedData['scheduler_recyclerGarbageCollection_numberOfDays'] < 0) {
 			$result = FALSE;
-			$parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/mod1/locallang.xlf:msg.invalidNumberOfDays'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+			$parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidNumberOfDays'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 		}
 		return $result;
 	}

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Scheduler\Tests\Unit\CronCommand;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Test case
  *

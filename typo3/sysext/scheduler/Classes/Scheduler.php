@@ -13,17 +13,18 @@ namespace TYPO3\CMS\Scheduler;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * TYPO3 Scheduler. This class handles scheduling and execution of tasks.
  * Formerly known as "Gabriel TYPO3 arch angel"
  *
- * @author 	François Suter <francois@typo3.org>
- * @author 	Christian Jul Jensen <julle@typo3.org>
+ * @author François Suter <francois@typo3.org>
+ * @author Christian Jul Jensen <julle@typo3.org>
  */
 class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @var 	array		$extConf: settings from the extension manager
+	 * @var array $extConf Settings from the extension manager
 	 * @todo Define visibility
 	 */
 	public $extConf = array();
@@ -245,6 +246,8 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param integer $uid Primary key of a task
 	 * @return \TYPO3\CMS\Scheduler\Task\AbstractTask The fetched task object
+	 * @throws \OutOfBoundsException
+	 * @throws \UnexpectedValueException
 	 */
 	public function fetchTask($uid = 0) {
 		// Define where clause
@@ -294,7 +297,8 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param integer $uid Primary key of the task to get
 	 * @return array Database record for the task
-	 * @see tx_scheduler::fetchTask()
+	 * @see \TYPO3\CMS\Scheduler\Scheduler::fetchTask()
+	 * @throws \OutOfBoundsException
 	 */
 	public function fetchTaskRecord($uid) {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_scheduler_task', 'uid = ' . (int)$uid);

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Scheduler\Example;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Provides testing procedures
  *
@@ -84,7 +85,7 @@ class TestTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 * @return string Information to display
 	 */
 	public function getAdditionalInformation() {
-		return $GLOBALS['LANG']->sL('LLL:EXT:scheduler/mod1/locallang.xlf:label.email') . ': ' . $this->email;
+		return $GLOBALS['LANG']->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.email') . ': ' . $this->email;
 	}
 
 }

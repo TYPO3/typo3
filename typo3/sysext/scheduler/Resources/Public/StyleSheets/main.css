@@ -17,27 +17,34 @@
 .tx_scheduler_mod1 td.right {
 	text-align: right;
 }
+
 .tx_scheduler_mod1 tr.disabled td {
 	color: #666;
 }
+
 .tx_scheduler_mod1 .late {
 	color: #f00;
 	font-weight: bold;
 }
+
 .tx_scheduler_mod1 label {
 	width: 200px;
 }
+
 .tx_scheduler_mod1 table.typo3-usersettings td {
 	padding-top: 2px;
 	padding-bottom: 2px;
 }
+
 .tx_scheduler_mod1 table.typo3-usersettings td.td-input {
 	width: 400px;
 }
+
 .tx_scheduler_mod1 select {
 	margin-bottom: 1.2em;
 	width: 200px;
 }
+
 .tx_scheduler_mod1 input.wide,
 .tx_scheduler_mod1 select.wide {
 	width: 350px;
@@ -64,12 +71,9 @@
 .tx_scheduler_mod1 .progress .bar {
 	width: 0%;
 	height: 14px;
-
 	background-color: #5b5b5b;
 	background-image: linear-gradient(top,  #7f7f7f 10%,#5b5b5b 100%);
 	background-repeat: repeat-x;
-
-
 	text-align: left;
 	color: #fff;
 	font-size: 8px;
@@ -77,7 +81,6 @@
 	padding-left: 3px;
 	padding-top: -1px;
 }
-
 
 /* Definition for BE function "Setup check" */
 .info-block {

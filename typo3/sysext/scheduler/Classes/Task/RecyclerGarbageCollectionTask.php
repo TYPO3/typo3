@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Scheduler\Task;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Recycler folder garbage collection task
  *
@@ -43,10 +44,11 @@ class RecyclerGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTa
 	 * Cleanup recycled files, called by scheduler.
 	 *
 	 * @return boolean TRUE if task run was successful
+	 * @throws \BadMethodCallException
 	 */
 	public function execute() {
 		// There is no file ctime on windows, so this task disables itself if OS = win
-		if (TYPO3_OS == 'WIN') {
+		if (TYPO3_OS === 'WIN') {
 			throw new \BadMethodCallException('This task is not reliable for Windows OS', 1308270454);
 		}
 		$seconds = 60 * 60 * 24 * (int)$this->numberOfDays;

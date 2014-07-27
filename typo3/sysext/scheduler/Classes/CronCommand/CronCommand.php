@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Scheduler\CronCommand;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * This class provides calculations for the cron command format.
  *
@@ -54,7 +55,7 @@ class CronCommand {
 	 * @return \TYPO3\CMS\Scheduler\CronCommand\CronCommand
 	 */
 	public function __construct($cronCommand, $timestamp = FALSE) {
-		$cronCommand = \TYPO3\CMS\Scheduler\CronCommand\NormalizeCommand::normalize($cronCommand);
+		$cronCommand = NormalizeCommand::normalize($cronCommand);
 		// Explode cron command to sections
 		$this->cronCommandSections = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(' ', $cronCommand);
 		// Initialize the values with the starting time
@@ -72,6 +73,7 @@ class CronCommand {
 	 *
 	 * @api
 	 * @return void
+	 * @throws \RuntimeException
 	 */
 	public function calculateNextValue() {
 		$newTimestamp = $this->getTimestamp();
@@ -106,7 +108,7 @@ class CronCommand {
 		$this->timestamp = $newTimestamp;
 	}
 
-	/*
+	/**
 	 * Get next timestamp
 	 *
 	 * @api

@@ -13,7 +13,7 @@ if (TYPO3_MODE === 'BE') {
 	// Add context sensitive help (csh) to the backend module
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
 		'_MOD_system_txschedulerM1',
-		'EXT:' . $_EXTKEY . '/mod1/locallang_csh_scheduler.xlf'
+		'EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_csh_scheduler.xlf'
 	);
 }
 

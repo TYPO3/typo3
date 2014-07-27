@@ -13,47 +13,48 @@ namespace TYPO3\CMS\Scheduler;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * This class manages the logic of a particular execution of a task
  *
- * @author 	François Suter <francois@typo3.org>
- * @author 	Christian Jul Jensen <julle@typo3.org>
- * @author 	Markus Friedrich <markus.friedrich@dkd.de>
+ * @author François Suter <francois@typo3.org>
+ * @author Christian Jul Jensen <julle@typo3.org>
+ * @author Markus Friedrich <markus.friedrich@dkd.de>
  */
 class Execution {
 
 	/**
 	 * Start date of a task (timestamp)
 	 *
-	 * @var 	integer	$start
+	 * @var integer
 	 */
 	protected $start;
 
 	/**
 	 * End date of a task (timestamp)
 	 *
-	 * @var 	integer	$end
+	 * @var integer
 	 */
 	protected $end;
 
 	/**
 	 * Interval between executions (in seconds)
 	 *
-	 * @var 	integer	$interval
+	 * @var integer
 	 */
 	protected $interval;
 
 	/**
 	 * Flag for concurrent executions: TRUE if allowed, FALSE otherwise (default)
 	 *
-	 * @var 	boolean	$multiple
+	 * @var boolean
 	 */
 	protected $multiple = FALSE;
 
 	/**
 	 * The cron command string of this task,
 	 *
-	 * @var 	string		$cronCmd
+	 * @var string
 	 */
 	protected $cronCmd;
 
@@ -61,7 +62,7 @@ class Execution {
 	 * This flag is used to mark a new single execution
 	 * See explanations in method setIsNewSingleExecution()
 	 *
-	 * @var 	boolean		$isNewSingleExecution
+	 * @var boolean
 	 * @see \TYPO3\CMS\Scheduler\Execution::setIsNewSingleExecution()
 	 */
 	protected $isNewSingleExecution = FALSE;

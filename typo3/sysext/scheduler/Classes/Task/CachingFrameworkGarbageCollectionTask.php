@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Scheduler\Task;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Garbage collection of caching framework cache backends.
  *

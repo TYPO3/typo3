@@ -72,14 +72,13 @@ class SchedulerModuleControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 * @see http://de.php.net/manual/de/function.strtotime.php
 	 * @param string $strToTimeValue Test value which will be passed to $this->testObject->checkDate
-	 * @param integer $expectedTimestamp Expected value to compare with result from operation
 	 */
 	public function checkDateWithStrtotimeValues($strToTimeValue) {
 		$expectedTimestamp = strtotime($strToTimeValue);
 		$checkDateResult = $this->testObject->checkDate($strToTimeValue);
-			// We use assertLessThan here, because we test with relative values (eg. next Thursday, now, ..)
-			// If this tests runs over 1 seconds the test will fail if we use assertSame / assertEquals
-			// With assertLessThan the tests could run 0 till 3 seconds ($delta = 4)
+		// We use assertLessThan here, because we test with relative values (eg. next Thursday, now, ..)
+		// If this tests runs over 1 seconds the test will fail if we use assertSame / assertEquals
+		// With assertLessThan the tests could run 0 till 3 seconds ($delta = 4)
 		$delta = 4;
 		$this->assertLessThan($delta, $checkDateResult - $expectedTimestamp, 'assertLessThan fails with value "' . $strToTimeValue . '"');
 		$this->assertInternalType(\PHPUnit_Framework_Constraint_IsType::TYPE_INT, $checkDateResult, 'assertType fails with value "' . $strToTimeValue . '"');
@@ -89,7 +88,7 @@ class SchedulerModuleControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Provides dates in TYPO3 date field formats (non-US), i.e. H:i Y-m-d
 	 *
 	 * @see checkDateWithTypo3DateSyntax
-	 * @return 	array	Testdata for "checkDateWithTypo3DateSyntax".
+	 * @return array Test data for "checkDateWithTypo3DateSyntax".
 	 */
 	public function checkDateWithTypo3DateSyntaxDataProvider() {
 		return array(
@@ -146,7 +145,7 @@ class SchedulerModuleControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Provides some invalid dates
 	 *
 	 * @see checkDateWithInvalidDateValues
-	 * @return 	array	Test data for "checkDateWithInvalidDateValues".
+	 * @return array Test data for "checkDateWithInvalidDateValues".
 	 */
 	public function checkDateWithInvalidDateValuesDataProvider() {
 		return array(

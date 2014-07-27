@@ -13,9 +13,9 @@ namespace TYPO3\CMS\Scheduler\Task;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * This task tries to find changes in storage and writes them back to DB
- *
  */
 class FileStorageIndexingTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 

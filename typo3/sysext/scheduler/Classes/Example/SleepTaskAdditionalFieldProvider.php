@@ -13,10 +13,11 @@ namespace TYPO3\CMS\Scheduler\Example;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Additional fields provider class for usage with the Scheduler's sleep task
  *
- * @author 		François Suter <francois@typo3.org>
+ * @author François Suter <francois@typo3.org>
  */
 class SleepTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface {
 
@@ -27,15 +28,15 @@ class SleepTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Additiona
 	 * @param array $taskInfo Reference to the array containing the info used in the add/edit form
 	 * @param object $task When editing, reference to the current task object. Null when adding.
 	 * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
-	 * @return array	Array containing all the information pertaining to the additional fields
+	 * @return array Array containing all the information pertaining to the additional fields
 	 */
 	public function getAdditionalFields(array &$taskInfo, $task, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject) {
 		// Initialize extra field value
 		if (empty($taskInfo['sleepTime'])) {
-			if ($parentObject->CMD == 'add') {
+			if ($parentObject->CMD === 'add') {
 				// In case of new task and if field is empty, set default sleep time
 				$taskInfo['sleepTime'] = 30;
-			} elseif ($parentObject->CMD == 'edit') {
+			} elseif ($parentObject->CMD === 'edit') {
 				// In case of edit, set to internal value if no data was submitted already
 				$taskInfo['sleepTime'] = $task->sleepTime;
 			} else {
@@ -49,7 +50,7 @@ class SleepTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Additiona
 		$additionalFields = array();
 		$additionalFields[$fieldID] = array(
 			'code' => $fieldCode,
-			'label' => 'LLL:EXT:scheduler/mod1/locallang.xlf:label.sleepTime',
+			'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.sleepTime',
 			'cshKey' => '_MOD_system_txschedulerM1',
 			'cshLabel' => $fieldID
 		);
@@ -67,7 +68,7 @@ class SleepTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Additiona
 	public function validateAdditionalFields(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject) {
 		$submittedData['sleepTime'] = (int)$submittedData['sleepTime'];
 		if ($submittedData['sleepTime'] < 0) {
-			$parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/mod1/locallang.xlf:msg.invalidSleepTime'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+			$parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidSleepTime'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 			$result = FALSE;
 		} else {
 			$result = TRUE;

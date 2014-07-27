@@ -64,7 +64,7 @@ class FileStorageExtractionAdditionalFieldProvider implements \TYPO3\CMS\Schedul
 
 		$fieldConfiguration = array(
 			'code' => $fieldHtml,
-			'label' => 'LLL:EXT:scheduler/mod1/locallang.xlf:label.fileStorageIndexing.storage',
+			'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.fileStorageIndexing.storage',
 			'cshKey' => '_MOD_system_txschedulerM1',
 			'cshLabel' => $fieldId
 		);
@@ -85,7 +85,7 @@ class FileStorageExtractionAdditionalFieldProvider implements \TYPO3\CMS\Schedul
 
 		$fieldConfiguration = array(
 			'code' => $fieldHtml,
-			'label' => 'LLL:EXT:scheduler/mod1/locallang.xlf:label.fileStorageExtraction.fileCount',
+			'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.fileStorageExtraction.fileCount',
 			'cshKey' => '_MOD_system_txschedulerM1',
 			'cshLabel' => $fieldId
 		);
@@ -100,8 +100,10 @@ class FileStorageExtractionAdditionalFieldProvider implements \TYPO3\CMS\Schedul
 	 * @return boolean True if validation was ok (or selected class is not relevant), false otherwise
 	 */
 	public function validateAdditionalFields(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject) {
-		if (!MathUtility::canBeInterpretedAsInteger($submittedData['scheduler_fileStorageIndexing_storage']) ||
-			!MathUtility::canBeInterpretedAsInteger($submittedData['scheduler_fileStorageIndexing_fileCount'])) {
+		if (
+			!MathUtility::canBeInterpretedAsInteger($submittedData['scheduler_fileStorageIndexing_storage'])
+			|| !MathUtility::canBeInterpretedAsInteger($submittedData['scheduler_fileStorageIndexing_fileCount'])
+		) {
 			return FALSE;
 		} elseif(\TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getStorageObject($submittedData['scheduler_fileStorageIndexing_storage']) === NULL) {
 			return FALSE;

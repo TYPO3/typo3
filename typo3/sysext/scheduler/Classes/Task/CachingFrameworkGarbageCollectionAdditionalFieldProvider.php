@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Scheduler\Task;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Additional BE fields for caching framework garbage collection task.
  * Creates a multi selectbox with all available cache backends to select from.
@@ -33,12 +34,12 @@ class CachingFrameworkGarbageCollectionAdditionalFieldProvider implements \TYPO3
 		// Initialize selected fields
 		if (empty($taskInfo['scheduler_cachingFrameworkGarbageCollection_selectedBackends'])) {
 			$taskInfo['scheduler_cachingFrameworkGarbageCollection_selectedBackends'] = array();
-			if ($parentObject->CMD == 'add') {
+			if ($parentObject->CMD === 'add') {
 				// In case of new task, set to dbBackend if it's available
 				if (in_array('TYPO3\\CMS\\Core\\Cache\\Backend\\Typo3DatabaseBackend', $this->getRegisteredBackends())) {
 					$taskInfo['scheduler_cachingFrameworkGarbageCollection_selectedBackends'][] = 'TYPO3\\CMS\\Core\\Cache\\Backend\\Typo3DatabaseBackend';
 				}
-			} elseif ($parentObject->CMD == 'edit') {
+			} elseif ($parentObject->CMD === 'edit') {
 				// In case of editing the task, set to currently selected value
 				$taskInfo['scheduler_cachingFrameworkGarbageCollection_selectedBackends'] = $task->selectedBackends;
 			}
@@ -49,7 +50,7 @@ class CachingFrameworkGarbageCollectionAdditionalFieldProvider implements \TYPO3
 		$fieldHtml = '<select name="' . $fieldName . '" id="' . $fieldId . '" class="wide" size="10" multiple="multiple">' . $fieldOptions . '</select>';
 		$additionalFields[$fieldId] = array(
 			'code' => $fieldHtml,
-			'label' => 'LLL:EXT:scheduler/mod1/locallang.xlf:label.cachingFrameworkGarbageCollection.selectBackends',
+			'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.cachingFrameworkGarbageCollection.selectBackends',
 			'cshKey' => '_MOD_system_txschedulerM1',
 			'cshLabel' => $fieldId
 		);
@@ -69,11 +70,11 @@ class CachingFrameworkGarbageCollectionAdditionalFieldProvider implements \TYPO3
 		if (is_array($submittedData['scheduler_cachingFrameworkGarbageCollection_selectedBackends'])) {
 			$invalidBackends = array_diff($submittedData['scheduler_cachingFrameworkGarbageCollection_selectedBackends'], $availableBackends);
 			if (!empty($invalidBackends)) {
-				$parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/mod1/locallang.xlf:msg.selectionOfNonExistingCacheBackends'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+				$parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.selectionOfNonExistingCacheBackends'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				$validData = FALSE;
 			}
 		} else {
-			$parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/mod1/locallang.xlf:msg.noCacheBackendSelected'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+			$parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.noCacheBackendSelected'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 			$validData = FALSE;
 		}
 		return $validData;
