@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<tx_blogexample_domain_model_post>
+		<uid>1</uid>
+		<pid>1</pid>
+		<blog>1</blog>
+		<title>Post1</title>
+		<deleted>0</deleted>
+	</tx_blogexample_domain_model_post>
+	<tx_blogexample_domain_model_post>
+		<uid>2</uid>
+		<pid>1</pid>
+		<l18n_parent>1</l18n_parent>
+		<sys_language_uid>1</sys_language_uid>
+		<blog>1</blog>
+		<title>B EN:Post1</title>
+		<deleted>0</deleted>
+	</tx_blogexample_domain_model_post>
+	<tx_blogexample_domain_model_post>
+		<uid>3</uid>
+		<pid>1</pid>
+		<l18n_parent>1</l18n_parent>
+		<sys_language_uid>2</sys_language_uid>
+		<blog>1</blog>
+		<title>GR:Post1</title>
+		<deleted>0</deleted>
+	</tx_blogexample_domain_model_post>
+	<tx_blogexample_domain_model_post>
+		<uid>4</uid>
+		<pid>1</pid>
+		<blog>1</blog>
+		<title>Post2</title>
+		<deleted>0</deleted>
+	</tx_blogexample_domain_model_post>
+	<tx_blogexample_domain_model_post>
+		<uid>5</uid>
+		<pid>1</pid>
+		<l18n_parent>4</l18n_parent>
+		<sys_language_uid>1</sys_language_uid>
+		<blog>1</blog>
+		<title>A EN:Post2</title>
+		<deleted>0</deleted>
+	</tx_blogexample_domain_model_post>
+	<tx_blogexample_domain_model_post>
+		<uid>6</uid>
+		<pid>1</pid>
+		<blog>1</blog>
+		<title>Post3</title>
+		<deleted>0</deleted>
+	</tx_blogexample_domain_model_post>
+</dataset>
