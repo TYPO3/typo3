@@ -464,19 +464,23 @@ class Bootstrap {
 	/**
 	 * Parse old curl options and set new http ones instead
 	 *
-	 * @TODO: This code segment must still be finished
+	 * @TODO: Move this functionality to the silent updater in the Install Tool
 	 * @return Bootstrap
 	 */
 	protected function transferDeprecatedCurlSettings() {
-		if (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer'])) {
-			$proxyParts = Utility\GeneralUtility::revExplode(':', $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer'], 2);
+		if (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']) && empty($GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_host'])) {
+			$curlProxy = rtrim(preg_replace('#^https?://#', '', $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']), '/');
+			$proxyParts = Utility\GeneralUtility::revExplode(':', $curlProxy, 2);
 			$GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_host'] = $proxyParts[0];
 			$GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_port'] = $proxyParts[1];
 		}
-		if (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass'])) {
+		if (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass']) && empty($GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_user'])) {
 			$userPassParts = explode(':', $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass'], 2);
 			$GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_user'] = $userPassParts[0];
 			$GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_password'] = $userPassParts[1];
+		}
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse']) {
+			$GLOBALS['TYPO3_CONF_VARS']['HTTP']['adapter'] = 'curl';
 		}
 		return $this;
 	}
