@@ -6219,6 +6219,7 @@ class ContentObjectRenderer {
 					'host' => $matches[3],
 					'path' => $matches[4]
 				);
+				$isUrlModified = FALSE;
 				// Set scheme and host if not yet part of the URL:
 				if (empty($urlParts['host'])) {
 					$urlParts['scheme'] = 'http';

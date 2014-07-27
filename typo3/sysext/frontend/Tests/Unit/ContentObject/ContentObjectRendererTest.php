@@ -54,7 +54,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['TYPO3\\CMS\\Core\\Charset\\CharsetConverter_utils'] = 'mbstring';
 		$this->cObj = $this->getAccessibleMock(
 			'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer',
-			array('getResourceFactory')
+			array('getResourceFactory', 'getEnvironmentVariable')
 		);
 		$this->cObj->start(array(), 'tt_content');
 	}
@@ -199,7 +199,9 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getQueryArgumentsExcludesParameters() {
-		$_SERVER['QUERY_STRING'] = 'key1=value1' . '&key2=value2' . '&key3[key31]=value31' . '&key3[key32][key321]=value321' . '&key3[key32][key322]=value322';
+		$this->cObj->expects($this->any())->method('getEnvironmentVariable')->with($this->equalTo('QUERY_STRING'))->will(
+			$this->returnValue('key1=value1&key2=value2&key3[key31]=value31&key3[key32][key321]=value321&key3[key32][key322]=value322')
+		);
 		$getQueryArgumentsConfiguration = array();
 		$getQueryArgumentsConfiguration['exclude'] = array();
 		$getQueryArgumentsConfiguration['exclude'][] = 'key1';
@@ -242,7 +244,9 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getQueryArgumentsOverrulesSingleParameter() {
-		$_SERVER['QUERY_STRING'] = 'key1=value1';
+		$this->cObj->expects($this->any())->method('getEnvironmentVariable')->with($this->equalTo('QUERY_STRING'))->will(
+			$this->returnValue('key1=value1')
+		);
 		$getQueryArgumentsConfiguration = array();
 		$overruleArguments = array(
 			// Should be overridden
@@ -300,7 +304,9 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getQueryArgumentsOverrulesMultiDimensionalForcedParameters() {
-		$_SERVER['QUERY_STRING'] = 'key1=value1' . '&key2=value2' . '&key3[key31]=value31' . '&key3[key32][key321]=value321' . '&key3[key32][key322]=value322';
+		$this->cObj->expects($this->any())->method('getEnvironmentVariable')->with($this->equalTo('QUERY_STRING'))->will(
+			$this->returnValue('key1=value1&key2=value2&key3[key31]=value31&key3[key32][key321]=value321&key3[key32][key322]=value322')
+		);
 		$_POST = array(
 			'key1' => 'value1',
 			'key2' => 'value2',
@@ -1688,7 +1694,9 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getDataWithTypeGetindpenv() {
-		$this->assertEquals(PATH_thisScript, $this->cObj->getData('getindpenv:SCRIPT_FILENAME'));
+		$this->cObj->expects($this->once())->method('getEnvironmentVariable')
+			->with($this->equalTo('SCRIPT_FILENAME'))->will($this->returnValue('dummyPath'));
+		$this->assertEquals('dummyPath', $this->cObj->getData('getindpenv:SCRIPT_FILENAME'));
 	}
 
 	/**
@@ -2573,5 +2581,78 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertTrue(is_array($sourceRenderConfiguration));
 		$this->assertTrue(is_array($sourceConfiguration));
 		return 'isGetOneSourceCollectionCalledCallback';
+	}
+
+	/**
+	 * @param string $expected The expected URL
+	 * @param string $url The URL to parse and manipulate
+	 * @param array $configuration The configuration array
+	 * @test
+	 * @dataProvider forceAbsoluteUrlReturnsCorrectAbsoluteUrlDataProvider
+	 */
+	public function forceAbsoluteUrlReturnsCorrectAbsoluteUrl($expected, $url, array $configuration) {
+		// Force hostname
+		$this->cObj->expects($this->any())->method('getEnvironmentVariable')->will($this->returnValueMap(
+			array(
+				array('HTTP_HOST', 'localhost'),
+				array('TYPO3_SITE_PATH', '/'),
+			)
+		));
+
+		$this->assertEquals($expected, $this->cObj->_call('forceAbsoluteUrl', $url, $configuration));
+	}
+
+	/**
+	 * @return array The test data for forceAbsoluteUrlReturnsAbsoluteUrl
+	 */
+	public function forceAbsoluteUrlReturnsCorrectAbsoluteUrlDataProvider() {
+		return array(
+			'Missing forceAbsoluteUrl leaves URL untouched' => array(
+				'foo',
+				'foo',
+				array()
+			),
+			'Absolute URL stays unchanged' => array(
+				'http://example.org/',
+				'http://example.org/',
+				array(
+					'forceAbsoluteUrl' => '1'
+				)
+			),
+			'Absolute URL stays unchanged 2' => array(
+				'http://example.org/resource.html',
+				'http://example.org/resource.html',
+				array(
+					'forceAbsoluteUrl' => '1'
+				)
+			),
+			'Scheme and host w/o ending slash stays unchanged' => array(
+				'http://example.org',
+				'http://example.org',
+				array(
+					'forceAbsoluteUrl' => '1'
+				)
+			),
+			'Scheme can be forced' => array(
+				'typo3://example.org',
+				'http://example.org',
+				array(
+					'forceAbsoluteUrl' => '1',
+					'forceAbsoluteUrl.' => array(
+						'scheme' => 'typo3'
+					)
+				)
+			),
+			'Scheme can be forced with relative path' => array(
+				'typo3://localhost/fileadmin/dummy.txt',
+				'/fileadmin/dummy.txt', // this leading slash is weird, but we need it to really get an absolute link
+				array(
+					'forceAbsoluteUrl' => '1',
+					'forceAbsoluteUrl.' => array(
+						'scheme' => 'typo3'
+					)
+				)
+			),
+		);
 	}
 }
