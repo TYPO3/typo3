@@ -175,13 +175,13 @@ class Check {
 	 */
 	protected function checkMaximumFileUploadSize() {
 		$maximumUploadFilesize = $this->getBytesFromSizeMeasurement(ini_get('upload_max_filesize'));
-		$configuredMaximumUploadFilesize = 1024 * $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'];
+		$configuredMaximumUploadFilesize = 1024 * (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'];
 		if ($maximumUploadFilesize < $configuredMaximumUploadFilesize) {
 			$status = new Status\ErrorStatus();
 			$status->setTitle('PHP Maximum upload filesize too small');
 			$status->setMessage(
-				'PHP upload_max_filesize = ' . (int)ini_get('upload_max_filesize') . ' MB' . LF .
-				'TYPO3_CONF_VARS[BE][maxFileSize] = ' . (int)($configuredMaximumUploadFilesize / 1024 / 1024) . ' MB' . LF . LF .
+				'PHP upload_max_filesize = ' . (int)($maximumUploadFilesize / 1024) . ' KB' . LF .
+				'TYPO3_CONF_VARS[BE][maxFileSize] = ' . (int)($configuredMaximumUploadFilesize / 1024) . ' KB' . LF . LF .
 				'Currently PHP determines the limits for uploaded file\'s sizes and not TYPO3.' .
 				' It is recommended that the value of upload_max_filesize is at least equal to the value' .
 				' of TYPO3_CONF_VARS[BE][maxFileSize].'
@@ -1331,6 +1331,6 @@ class Check {
 		} elseif (stripos($measurement, 'K')) {
 			$bytes *= 1024;
 		}
-		return $bytes;
+		return (int)$bytes;
 	}
 }
