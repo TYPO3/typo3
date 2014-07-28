@@ -655,12 +655,8 @@ return array(
 				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Toolbar\\ShortcutToolbarItem->createAjaxShortcut',
 				'csrfTokenCheck' => TRUE
 			),
-			'ModuleMenu::saveMenuState' => array(
-				'callbackMethod' => 'TYPO3\\CMS\\Backend\\View\\ModuleMenuView->saveMenuState',
-				'csrfTokenCheck' => TRUE
-			),
-			'ModuleMenu::getData' => array(
-				'callbackMethod' => 'TYPO3\\CMS\\Backend\\View\\ModuleMenuView->getModuleData',
+			'ModuleMenu::reload' => array(
+				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Controller\\BackendController->getModuleMenuForReload',
 				'csrfTokenCheck' => TRUE
 			),
 			'BackendLogin::login' => array(

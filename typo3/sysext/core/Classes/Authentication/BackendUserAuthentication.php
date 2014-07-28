@@ -342,7 +342,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 		'thumbnailsByDefault' => 1,
 		'emailMeAtLogin' => 0,
 		'noMenuMode' => 0,
-		'startModule' => 'help_aboutmodules',
+		'startModule' => 'help_AboutmodulesAboutmodules',
 		'hideSubmoduleIcons' => 0,
 		'helpText' => 1,
 		'titleLen' => 50,

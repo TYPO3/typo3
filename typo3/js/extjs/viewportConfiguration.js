@@ -68,6 +68,7 @@ TYPO3.Viewport.configuration = {
 			layout: 'fit',
 			region: 'west',
 			id: 'typo3-module-menu',
+			contentEl: 'typo3-menu',
 			collapsible: false,
 			collapseMode: null,
 			floatable: true,

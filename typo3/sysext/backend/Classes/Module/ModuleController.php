@@ -33,8 +33,10 @@ class ModuleController {
 
 	/**
 	 * Constructor
+	 * @deprecated since TYPO3 CMS 6.3, not in use, as everything can be done via the ModuleMenuRepository directly
 	 */
 	public function __construct() {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		$this->moduleMenu = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleStorage');
 		$this->moduleMenuRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Domain\\Repository\\Module\\BackendModuleRepository');
 	}

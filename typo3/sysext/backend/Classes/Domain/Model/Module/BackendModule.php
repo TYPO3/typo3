@@ -22,42 +22,52 @@ namespace TYPO3\CMS\Backend\Domain\Model\Module;
 class BackendModule {
 
 	/**
-	 * @var string $title
+	 * @var string
 	 */
 	protected $title = '';
 
 	/**
-	 * @var string $name
+	 * @var string
 	 */
 	protected $name = '';
 
 	/**
-	 * @var array $icon
+	 * @var array
 	 */
 	protected $icon = array();
 
 	/**
-	 * @var string $link
+	 * @var string
 	 */
 	protected $link = '';
 
 	/**
-	 * @var string $onClick
+	 * @var string
 	 */
 	protected $onClick = '';
 
 	/**
-	 * @var string $description
+	 * @var string
 	 */
 	protected $description = '';
 
 	/**
-	 * @var string $navigationComponentId
+	 * @var string
 	 */
 	protected $navigationComponentId = '';
 
 	/**
-	 * @var \SplObjectStorage $children
+	 * @var string
+	 */
+	protected $navigationFrameScript = '';
+
+	/**
+	 * @var string
+	 */
+	protected $navigationFrameScriptParameters = '';
+
+	/**
+	 * @var \SplObjectStorage
 	 */
 	protected $children;
 
@@ -209,6 +219,34 @@ class BackendModule {
 	 */
 	public function getNavigationComponentId() {
 		return $this->navigationComponentId;
+	}
+
+	/**
+	 * @param string $navigationFrameScript
+	 */
+	public function setNavigationFrameScript($navigationFrameScript) {
+		$this->navigationFrameScript = $navigationFrameScript;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getNavigationFrameScript() {
+		return $this->navigationFrameScript;
+	}
+
+	/**
+	 * @param string $navigationFrameScriptParameters
+	 */
+	public function setNavigationFrameScriptParameters($navigationFrameScriptParameters) {
+		$this->navigationFrameScriptParameters = $navigationFrameScriptParameters;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getNavigationFrameScriptParameters() {
+		return $this->navigationFrameScriptParameters;
 	}
 
 	/**

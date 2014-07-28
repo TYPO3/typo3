@@ -39,8 +39,10 @@ class ModuleMenuView {
 
 	/**
 	 * Constructor, initializes several variables
+	 * @deprecated since TYPO3 CMS 6.3, not in use, as everything can be done via the ModuleMenuRepository directly
 	 */
 	public function __construct() {
+		GeneralUtility::logDeprecatedFunction();
 		if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
 			$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xlf');
 		}

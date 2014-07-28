@@ -2,8 +2,11 @@
 Module menu
 - - - - - - - - - - - - - - - - - - - - - */
 
-#typo3-module-menu .x-panel-body {
-    overflow-x: hidden !important;
+#typo3-module-menu {
+	left: 0;
+	top: 0;
+	position: absolute;
+	overflow: hidden;
 }
 #typo3-menu {
     margin-top: 18px;

@@ -23,231 +23,98 @@ Ext.ns('TYPO3', 'ModuleMenu');
 
 TYPO3.ModuleMenu = {};
 
-TYPO3.ModuleMenu.Store = new Ext.data.JsonStore({
-	storeId: 'ModuleMenuStore',
-	root: 'root',
-	fields: [
-		{name: 'index', type: 'int', mapping: 'sub.index'},
-		{name: 'key', type: 'string'},
-		{name: 'label', type: 'string'},
-		{name: 'menuState', type: 'int'},
-		{name: 'subitems', type: 'int'},
-		'sub'
-	],
-	url: TYPO3.settings.ajaxUrls['ModuleMenu::getData'],
-	baseParams: {
-		'action': 'getModules'
-	},
-	listeners: {
-		beforeload: function(store) {
-			this.loaded = false;
-		},
-		load: function(store) {
-			this.loaded = true;
-		}
-	},
-	// Custom indicator for loaded store:
-	loaded: false,
-	isLoaded: function() {
-		return this.loaded;
-	}
-
-});
-
-TYPO3.ModuleMenu.Template = new Ext.XTemplate(
-		'<ul id="typo3-menu">',
-		'<tpl for=".">',
-		'	<li class="menuSection" id="{key}">',
-		'		<div class="modgroup {[this.getStateClass(values)]}">{label}</div>',
-		'	<ul {[this.getStateStyle(values)]}>',
-		'	<tpl for="sub">',
-		'	<li id="{name}" class="submodule mod-{name}">',
-		'		<a title="{description}" href="#" class="modlink">',
-		'			<span class="submodule-icon">',
-		'				<img width="16" height="16" alt="{label}" title="{label}" src="{icon}" />',
-		'			</span>',
-		'			<span>{label}</span>',
-		'		</a>',
-		'	</li>',
-		'	</tpl>',
-		'	</ul>',
-		'	</li>',
-		'</tpl>',
-		'</ul>',
-		{
-			getStateClass: function(value) {
-				return value.menuState ? 'collapsed' : 'expanded';
-			},
-			getStateStyle: function(value) {
-				return value.menuState ? 'style="display:none"' : '';
-			}
-		}
-);
-
 TYPO3.ModuleMenu.App = {
 	loadedModule: null,
 	loadedNavigationComponentId: '',
 	availableNavigationComponents: {},
 
-	init: function() {
-		TYPO3.ModuleMenu.Store.load({
-			scope: this,
-			callback: function(records, options) {
-				this.renderMenu(records);
-				if (top.startInModule) {
-					this.showModule(top.startInModule[0], top.startInModule[1]);
-				} else {
-					this.loadFirstAvailableModule();
-				}
-			}
-		});
-	},
+	initialize: function() {
+		var me = this;
 
-	renderMenu: function(records) {
-		TYPO3.Backend.ModuleMenuContainer.removeAll();
-		TYPO3.Backend.ModuleMenuContainer.add({
-			xtype: 'dataview',
-			animCollapse: true,
-			store: TYPO3.ModuleMenu.Store,
-			tpl: TYPO3.ModuleMenu.Template,
-			singleSelect: true,
-			itemSelector: 'li.submodule',
-			overClass: 'x-view-over',
-			selectedClass: 'highlighted',
-			autoHeight: true,
-			itemId: 'modDataView',
-			tbar: [{text: 'test'}],
-			listeners: {
-				click: function(view, index, node, event) {
-					var el = Ext.fly(node);
-					if (el.hasClass('submodule')) {
-						TYPO3.ModuleMenu.App.showModule(el.getAttribute('id'));
-					}
-				},
-				containerclick: function(view, event) {
-					var item = event.getTarget('li.menuSection', view.getEl());
-					if (item) {
-						var el = Ext.fly(item);
-						var id = el.getAttribute('id');
-						var section = el.first('div'), state;
-						if (section.hasClass('expanded')) {
-							state = true;
-							section.removeClass('expanded').addClass('collapsed');
-							el.first('ul').slideOut('t', {
-								easing: 'easeOut',
-								duration: .2,
-								remove: false,
-								useDisplay: true
-							});
-
-						} else {
-							state = false;
-							section.removeClass('collapsed').addClass('expanded');
-							el.first('ul').slideIn('t', {
-								easing: 'easeIn',
-								duration: .2,
-								remove: false,
-								useDisplay: true
-							});
-						}
-						// save menu state
-						Ext.Ajax.request({
-							url: TYPO3.settings.ajaxUrls['ModuleMenu::saveMenuState'],
-							params: {
-								'menuid': 'modmenu_' + id,
-								'state': state
-							}
-						});
-					}
-					return false;
-				},
-				scope: this
-			}
-		});
-		TYPO3.Backend.ModuleMenuContainer.doLayout();
-	},
-
-	getRecordFromIndex: function(index) {
-		var i, record;
-		for (i = 0; i < TYPO3.ModuleMenu.Store.getCount(); i++) {
-			record = TYPO3.ModuleMenu.Store.getAt(i);
-			if (index < record.data.subitems) {
-				return record.data.sub[index];
-			}
-			index -= record.data.subitems;
+		// load the start module
+		if (top.startInModule && top.startInModule[0] && top.startInModule[0].length > 0) {
+			me.showModule(top.startInModule[0]);
+		} else {
+			// fetch first module
+			me.showModule(jQuery('.t3-menuitem-submodule:first').attr('id'));
 		}
+
+		// check if there are collapsed items in the local storage
+		var collapsedMainMenuItems = this.getCollapsedMainMenuItems();
+		jQuery.each(collapsedMainMenuItems, function(key, itm) {
+			var $headerElement = jQuery('#' + key).find('.modgroup:first');
+			if ($headerElement.length > 0) {
+				$headerElement.addClass('collapsed').removeClass('expanded').next('.t3-menuitem-submodules').slideUp('fast');
+			}
+		});
+
+		me.initializeEvents();
 	},
 
+	initializeEvents: function() {
+		var me = this;
+		jQuery(document).on('click', '.t3-menuitem-main .modgroup', function() {
+			var $headerElement = jQuery(this);
+			if ($headerElement.hasClass('expanded')) {
+				me.addCollapsedMainMenuItem($headerElement.parent().attr('id'));
+				$headerElement.addClass('collapsed').removeClass('expanded').next('.t3-menuitem-submodules').slideUp();
+			} else {
+				me.removeCollapseMainMenuItem($headerElement.parent().attr('id'));
+				$headerElement.addClass('expanded').removeClass('collapsed').next('.t3-menuitem-submodules').slideDown();
+			}
+		});
+
+		// register clicking on sub modules
+		jQuery(document).on('click', '.t3-menuitem-submodule', function(evt) {
+			evt.preventDefault();
+			me.showModule(jQuery(this).attr('id'));
+		});
+	},
+
+	/* fetch the data for a submodule */
 	getRecordFromName: function(name) {
-		var i, j, record;
-		for (i = 0; i < TYPO3.ModuleMenu.Store.getCount(); i++) {
-			record = TYPO3.ModuleMenu.Store.getAt(i);
-			for (j = 0; j < record.data.subitems; j++) {
-				if (record.data.sub[j].name === name) {
-					return record.data.sub[j];
-				}
-			}
-		}
+		var $subModuleElement = jQuery('#' + name);
+		return {
+			name: name,
+			navigationComponentId: $subModuleElement.data('navigationcomponentid'),
+			navigationFrameScript: $subModuleElement.data('navigationframescript'),
+			navigationFrameScriptParam: $subModuleElement.data('navigationframescriptparameters'),
+			link: $subModuleElement.find('a').attr('href')
+		};
 	},
 
 	showModule: function(mod, params) {
 		params = params || '';
-		this.selectedModule = mod;
-
 		params = this.includeId(mod, params);
 		var record = this.getRecordFromName(mod);
-
-		if (record) {
-			this.loadModuleComponents(record, params);
-		} else {
-				//defined startup module is not present, use the first available instead
-			this.loadFirstAvailableModule(params);
-		}
-	},
-
-	loadFirstAvailableModule: function(params) {
-		params = params || '';
-		if (TYPO3.ModuleMenu.Store.isLoaded() === false) {
-			new Ext.util.DelayedTask(
-				this.loadFirstAvailableModule,
-				this,
-				[params]
-			).delay(250);
-		} else if (TYPO3.ModuleMenu.Store.getCount() === 0) {
-				// Store is empty, something went wrong
-			TYPO3.Flashmessage.display(TYPO3.Severity.error, 'Module loader', 'No module found. If this is a temporary error, please reload the Backend!', 50000);
-		} else {
-			mod = TYPO3.ModuleMenu.Store.getAt(0).data.sub[0];
-			this.loadModuleComponents(mod, params);
-		}
+		this.loadModuleComponents(record, params);
 	},
 
 	loadModuleComponents: function(record, params) {
 		var mod = record.name;
 		if (record.navigationComponentId) {
-				this.loadNavigationComponent(record.navigationComponentId);
-				TYPO3.Backend.NavigationDummy.hide();
-				TYPO3.Backend.NavigationIframe.getEl().parent().setStyle('overflow', 'auto');
-			} else if (record.navframe || record.navigationFrameScript) {
-				TYPO3.Backend.NavigationDummy.hide();
-				TYPO3.Backend.NavigationContainer.show();
-				this.loadNavigationComponent('typo3-navigationIframe');
-				this.openInNavFrame(record.navigationFrameScript || record.navframe, record.navigationFrameScriptParam);
-				TYPO3.Backend.NavigationIframe.getEl().parent().setStyle('overflow', 'hidden');
-			} else {
-				TYPO3.Backend.NavigationContainer.hide();
-				TYPO3.Backend.NavigationDummy.show();
-			}
+			this.loadNavigationComponent(record.navigationComponentId);
+			TYPO3.Backend.NavigationDummy.hide();
+			TYPO3.Backend.NavigationIframe.getEl().parent().setStyle('overflow', 'auto');
+		} else if (record.navigationFrameScript) {
+			TYPO3.Backend.NavigationDummy.hide();
+			TYPO3.Backend.NavigationContainer.show();
+			this.loadNavigationComponent('typo3-navigationIframe');
+			this.openInNavFrame(record.navigationFrameScript, record.navigationFrameScriptParam);
+			TYPO3.Backend.NavigationIframe.getEl().parent().setStyle('overflow', 'hidden');
+		} else {
+			TYPO3.Backend.NavigationContainer.hide();
+			TYPO3.Backend.NavigationDummy.show();
+		}
 
-			this.highlightModuleMenuItem(mod);
-			this.loadedModule = mod;
-			this.openInContentFrame(record.originalLink, params);
+		this.highlightModuleMenuItem(mod);
+		this.openInContentFrame(record.link, params);
 
-				// compatibility
-			top.currentSubScript = record.originalLink;
-			top.currentModuleLoaded = mod;
+		// compatibility
+		top.currentSubScript = record.link;
+		top.currentModuleLoaded = mod;
 
-			TYPO3.Backend.doLayout();
+		TYPO3.Backend.doLayout();
 	},
 
 	includeId: function(mod, params) {
@@ -288,7 +155,7 @@ TYPO3.ModuleMenu.App = {
 
 			// backwards compatibility
 		top.nav = component;
-		
+
 		TYPO3.Backend.NavigationContainer.show();
 		this.loadedNavigationComponentId = navigationComponentId;
 	},
@@ -306,40 +173,66 @@ TYPO3.ModuleMenu.App = {
 	},
 
 	openInContentFrame: function(url, params) {
-		var urlToLoad;
 		if (top.nextLoadModuleUrl) {
 			TYPO3.Backend.ContentContainer.setUrl(top.nextLoadModuleUrl);
 			top.nextLoadModuleUrl = '';
 		} else {
-			urlToLoad = url + (params ? (url.indexOf('?') !== -1 ? '&' : '?') + params : '')
+			var urlToLoad = url + (params ? (url.indexOf('?') !== -1 ? '&' : '?') + params : '')
 			TYPO3.Backend.ContentContainer.setUrl(urlToLoad);
-			return;
 		}
 	},
 
 	highlightModuleMenuItem: function(module, mainModule) {
-		TYPO3.Backend.ModuleMenuContainer.getComponent('modDataView').select(module, false, false);
+		jQuery('#typo3-menu').find('.highlighted').removeClass('highlighted');
+		jQuery('#' + module).addClass('highlighted');
 	},
 
 	relativeUrl: function(url) {
 		return url.replace(TYPO3.configuration.siteUrl + 'typo3/', '');
 	},
 
+		// refresh the HTML by fetching the menu again
 	refreshMenu: function() {
-		TYPO3.ModuleMenu.Store.load({
-			scope: this,
-			callback: function(records, options) {
-				this.renderMenu(records);
-				if (this.loadedModule) {
-					this.highlightModuleMenuItem(this.loadedModule);
-				}
-			}
+		jQuery.ajax(TYPO3.settings.ajaxUrls['ModuleMenu::reload']).done(function(result) {
+			jQuery('#typo3-menu').replaceWith(result.menu);
 		});
 	},
 
 	reloadFrames: function() {
 		TYPO3.Backend.NavigationIframe.refresh();
 		TYPO3.Backend.ContentContainer.refresh();
+	},
+
+	/**
+	 * fetches all module menu elements in the local storage that should be collapsed
+	 * @returns {*}
+	 */
+	getCollapsedMainMenuItems: function() {
+		if (typeof localStorage.getItem('t3-modulemenu') !== "undefined" && typeof localStorage.getItem('t3-modulemenu') !== "null" && localStorage.getItem('t3-modulemenu') != 'undefined' && localStorage.getItem('t3-modulemenu')) {
+			return JSON.parse(localStorage.getItem('t3-modulemenu'));
+		} else {
+			return {};
+		}
+	},
+
+	/**
+	 * adds a module menu item to the local storage
+	 * @param item
+	 */
+	addCollapsedMainMenuItem: function(item) {
+		var existingItems = this.getCollapsedMainMenuItems();
+		existingItems[item] = true;
+		localStorage.setItem('t3-modulemenu', JSON.stringify(existingItems));
+	},
+
+	/**
+	 * removes a module menu item from the local storage
+	 * @param item
+	 */
+	removeCollapseMainMenuItem: function(item) {
+		var existingItems = this.getCollapsedMainMenuItems();
+		existingItems[item] = null;
+		localStorage.setItem('t3-modulemenu', JSON.stringify(jQuery.existingItems));
 	}
 
 };
@@ -347,7 +240,7 @@ TYPO3.ModuleMenu.App = {
 
 
 Ext.onReady(function() {
-	TYPO3.ModuleMenu.App.init();
+	TYPO3.ModuleMenu.App.initialize();
 
 		// keep backward compatibility
 	top.list = TYPO3.Backend.ContentContainer;
