@@ -3200,6 +3200,7 @@ class DataHandler {
 					$GLOBALS['TYPO3_DB']->sql_free_result($mres);
 				}
 			}
+			$this->processRemapStack();
 			return $theNewRootID;
 		}
 	}
