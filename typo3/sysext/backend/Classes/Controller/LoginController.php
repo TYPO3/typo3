@@ -322,9 +322,7 @@ class LoginController {
 		} else {
 			$logo = '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/typo3logo.gif', 'width="123" height="34"') . ' alt="" class="t3-login-logo" />';
 		}
-		/** @var $browserWarning \TYPO3\CMS\Core\Messaging\FlashMessage */
-		$browserWarning = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('warning.incompatibleBrowser') . ' ' . $GLOBALS['LANG']->getLL('warning.incompatibleBrowserInternetExplorer'), $GLOBALS['LANG']->getLL('warning.incompatibleBrowserHeadline'), FlashMessage::ERROR);
-		$browserWarning = $browserWarning->render();
+
 		$additionalCssClasses = array();
 		if ($this->isLoginInProgress()) {
 			$additionalCssClasses[] = 'error';
@@ -346,7 +344,6 @@ class LoginController {
 			'INFO_ABOUT' => $GLOBALS['LANG']->getLL('info.about', TRUE),
 			'INFO_RELOAD' => $GLOBALS['LANG']->getLL('info.reset', TRUE),
 			'INFO' => $GLOBALS['LANG']->getLL('info.cookies_and_js', TRUE),
-			'WARNING_BROWSER_INCOMPATIBLE' => $browserWarning,
 			'ERROR_JAVASCRIPT' => $GLOBALS['LANG']->getLL('error.javascript', TRUE),
 			'ERROR_COOKIES' => $GLOBALS['LANG']->getLL('error.cookies', TRUE),
 			'ERROR_COOKIES_IGNORE' => $GLOBALS['LANG']->getLL('error.cookies_ignore', TRUE),
