@@ -109,9 +109,10 @@ class PersistentObjectConverter extends ObjectConverter {
 			return $configuredTargetType;
 		}
 
-		$schema = $this->reflectionService->getClassSchema($targetType);
+		$specificTargetType = $this->objectContainer->getImplementationClassName($targetType);
+		$schema = $this->reflectionService->getClassSchema($specificTargetType);
 		if (!$schema->hasProperty($propertyName)) {
-			throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException('Property "' . $propertyName . '" was not found in target object of type "' . $targetType . '".', 1297978366);
+			throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException('Property "' . $propertyName . '" was not found in target object of type "' . $specificTargetType . '".', 1297978366);
 		}
 		$propertyInformation = $schema->getProperty($propertyName);
 		return $propertyInformation['type'] . ($propertyInformation['elementType'] !== NULL ? '<' . $propertyInformation['elementType'] . '>' : '');
