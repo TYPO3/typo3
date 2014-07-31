@@ -59,6 +59,12 @@ class ObjectConverter extends AbstractTypeConverter implements \TYPO3\CMS\Core\S
 	protected $objectManager;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Object\Container\Container
+	 * @inject
+	 */
+	protected $objectContainer;
+
+	/**
 	 * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
 	 * @inject
 	 */
@@ -103,20 +109,21 @@ class ObjectConverter extends AbstractTypeConverter implements \TYPO3\CMS\Core\S
 			return $configuredTargetType;
 		}
 
-		if ($this->reflectionService->hasMethod($targetType, \TYPO3\CMS\Extbase\Reflection\ObjectAccess::buildSetterMethodName($propertyName))) {
-			$methodParameters = $this->reflectionService->getMethodParameters($targetType, \TYPO3\CMS\Extbase\Reflection\ObjectAccess::buildSetterMethodName($propertyName));
+		$specificTargetType = $this->objectContainer->getImplementationClassName($targetType);
+		if ($this->reflectionService->hasMethod($specificTargetType, \TYPO3\CMS\Extbase\Reflection\ObjectAccess::buildSetterMethodName($propertyName))) {
+			$methodParameters = $this->reflectionService->getMethodParameters($specificTargetType, \TYPO3\CMS\Extbase\Reflection\ObjectAccess::buildSetterMethodName($propertyName));
 			$methodParameter = current($methodParameters);
 			if (!isset($methodParameter['type'])) {
-				throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException('Setter for property "' . $propertyName . '" had no type hint or documentation in target object of type "' . $targetType . '".', 1303379158);
+				throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException('Setter for property "' . $propertyName . '" had no type hint or documentation in target object of type "' . $specificTargetType . '".', 1303379158);
 			} else {
 				return $methodParameter['type'];
 			}
 		} else {
-			$methodParameters = $this->reflectionService->getMethodParameters($targetType, '__construct');
+			$methodParameters = $this->reflectionService->getMethodParameters($specificTargetType, '__construct');
 			if (isset($methodParameters[$propertyName]) && isset($methodParameters[$propertyName]['type'])) {
 				return $methodParameters[$propertyName]['type'];
 			} else {
-				throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException('Property "' . $propertyName . '" had no setter or constructor argument in target object of type "' . $targetType . '".', 1303379126);
+				throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException('Property "' . $propertyName . '" had no setter or constructor argument in target object of type "' . $specificTargetType . '".', 1303379126);
 			}
 		}
 	}
@@ -199,8 +206,9 @@ class ObjectConverter extends AbstractTypeConverter implements \TYPO3\CMS\Core\S
 	 * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException if a required constructor argument is missing
 	 */
 	protected function buildObject(array &$possibleConstructorArgumentValues, $objectType) {
-		if ($this->reflectionService->hasMethod($objectType, '__construct')) {
-			$constructorSignature = $this->reflectionService->getMethodParameters($objectType, '__construct');
+		$specificObjectType = $this->objectContainer->getImplementationClassName($objectType);
+		if ($this->reflectionService->hasMethod($specificObjectType, '__construct')) {
+			$constructorSignature = $this->reflectionService->getMethodParameters($specificObjectType, '__construct');
 			$constructorArguments = array();
 			foreach ($constructorSignature as $constructorArgumentName => $constructorArgumentInformation) {
 				if (array_key_exists($constructorArgumentName, $possibleConstructorArgumentValues)) {

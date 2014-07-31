@@ -288,7 +288,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $className Base class name to evaluate
 	 * @return string Final class name to instantiate with "new [classname]
 	 */
-	protected function getImplementationClassName($className) {
+	public function getImplementationClassName($className) {
 		if (isset($this->alternativeImplementation[$className])) {
 			$className = $this->alternativeImplementation[$className];
 		}
