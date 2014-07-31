@@ -1441,6 +1441,9 @@ class QueryGenerator {
 		$depth = (int)$depth;
 		$begin = (int)$begin;
 		$id = (int)$id;
+		if ($id < 0) {
+			$id = abs($id);
+		}
 		if ($begin == 0) {
 			$theList = $id;
 		} else {
