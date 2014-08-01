@@ -167,7 +167,7 @@ class RteFileLinksUpdateWizard extends AbstractUpdate {
 			$reference['tablename'],
 			'uid = ' . $reference['recuid']
 		);
-		if ($record !== NULL) {
+		if (is_array($record)) {
 			$this->convertFileLinks($reference, $record);
 		} else {
 			// Original record could not be found (happens if sys_refindex is not up to date), issue error
