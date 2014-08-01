@@ -59,6 +59,9 @@ abstract class AbstractFormViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\A
 	 * @see \TYPO3\CMS\Extbase\Mvc\Controller\Argument::setValue()
 	 */
 	protected function renderHiddenIdentityField($object, $name) {
+		if ($object instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy) {
+			$object = $object->_loadRealInstance();
+		}
 		if (!is_object($object)
 			|| !($object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject)
 			|| ($object->_isNew() && !$object->_isClone())) {
