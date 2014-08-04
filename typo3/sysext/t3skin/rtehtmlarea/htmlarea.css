@@ -60,10 +60,6 @@
 	border-style:none;
 	margin:0;padding:3px 3px 0px 3px;
 }
-/* Fix combo box left loat in IE6 */
-body.ext-ie6 .htmlarea .toolbar .x-form-item {
-	width: 1%;
-}
 .htmlarea .toolbar .button {
 	background-color: transparent;
 	color: ButtonText;
@@ -74,10 +70,6 @@ body.ext-ie6 .htmlarea .toolbar .x-form-item {
 	margin: 0 0 4px 0;
 	padding: 0;
 	float: left;
-}
-/* fixing button border-color in IE6 */
-body.ext-ie6 .htmlarea .toolbar .button {
-	border-color: #f3f3f3;
 }
 .htmlarea .toolbar .x-btn-mc {
 	background-color: transparent;
@@ -104,11 +96,6 @@ body.ext-ie6 .htmlarea .toolbar .button {
 	padding: 0;
 	margin: 1px 0 1px 2px;
 }
-body.ext-ie6 .htmlarea .toolbar .x-btn-text {
-	background-image: url("images/sprites/actions.gif");
-}
-/* fixing button background-color and border-color in IE6 */
-body.ext-ie6 .htmlarea .toolbar .buttonHover,
 .htmlarea .toolbar .buttonHover {
 	border-style: solid;
 	border-width: 1px;
@@ -116,10 +103,6 @@ body.ext-ie6 .htmlarea .toolbar .buttonHover,
 	background-color: #E0E0E9;
 	opacity: 1.00;
 }
-/* fixing button background-color and border-color in IE6 */
-body.ext-ie6 .htmlarea .toolbar .buttonActive,
-body.ext-ie6 .htmlarea .toolbar .buttonPressed,
-body.ext-ie6 .htmlarea-context-menu .buttonActive,
 .htmlarea .toolbar .buttonActive,
 .htmlarea .toolbar .buttonPressed,
 .htmlarea-context-menu .buttonActive {
@@ -222,9 +205,6 @@ body.ext-ie6 .htmlarea-context-menu .buttonActive,
 	background-repeat: no-repeat;
 	margin-top: 2px;
 	height: 22px;
-}
-body.ext-ie6 .htmlarea-window .x-panel-icon {
-	background-image: url("images/sprites/actions.gif");
 }
 .htmlarea-window .x-window-header-text {
 	display: inline-block;
@@ -429,9 +409,6 @@ body.ext-ie6 .htmlarea-window .x-panel-icon {
 	margin-left: -2px;
 	width: 18px;
 	height: 18px;
-}
-body.ext-ie6 .htmlarea-context-menu .x-menu-item-icon {
-	background-image: url("images/sprites/actions.gif");
 }
 /* Window status bar selectors */
 .htmlarea-window .status-ready {
