@@ -180,7 +180,7 @@ class FlexFormsHelper extends \TYPO3\CMS\Backend\Form\FormEngine {
 				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($sheet[$fieldName]['TCEforms'], $fieldConf);
 			}
 			// Manipulate only select fields, other field types will stop here
-			if (empty($field['TCEforms']['config']['type']) || $field['TCEforms']['config']['type'] != 'select') {
+			if (empty($field['TCEforms']['config']['type']) || $field['TCEforms']['config']['type'] != 'select' || $field['TCEforms']['config']['renderMode'] === 'tree') {
 				continue;
 			}
 			// Getting the selector box items from system
