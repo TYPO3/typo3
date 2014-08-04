@@ -109,10 +109,11 @@ class TestSetup extends Action\AbstractAction {
 			$message->setMessage('Given address is not a valid email address.');
 		} else {
 			$recipient = $this->postValues['values']['testEmailRecipient'];
+			/** @var $mailMessage \TYPO3\CMS\Core\Mail\MailMessage */
 			$mailMessage = $this->objectManager->get('TYPO3\\CMS\\Core\\Mail\\MailMessage');
 			$mailMessage
 				->addTo($recipient)
-				->addFrom($this->getSenderEmailAddress(), 'TYPO3 CMS install tool')
+				->addFrom($this->getSenderEmailAddress(), $this->getSenderEmailName())
 				->setSubject('Test TYPO3 CMS mail delivery')
 				->setBody('<html><body>html test content</body></html>', 'text/html')
 				->addPart('TEST CONTENT')
@@ -135,6 +136,19 @@ class TestSetup extends Action\AbstractAction {
 		return !empty($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'])
 			? $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress']
 			: 'no-reply@example.com';
+	}
+
+	/**
+	 * Gets sender name from configuration
+	 * ['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName']
+	 * If this setting is empty, it falls back to a default string.
+	 *
+	 * @return string
+	 */
+	protected function getSenderEmailName() {
+		return !empty($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName'])
+			? $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName']
+			: 'TYPO3 CMS install tool';
 	}
 
 	/**
