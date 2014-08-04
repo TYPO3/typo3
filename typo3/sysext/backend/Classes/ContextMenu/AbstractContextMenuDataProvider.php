@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Backend\ContextMenu;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * Abstract Context Menu Data Provider
@@ -182,6 +183,9 @@ abstract class AbstractContextMenuDataProvider {
 					$action->setType('action');
 					$action->setCallbackAction($actionConfiguration['callbackAction']);
 					if (is_array($actionConfiguration['customAttributes.'])) {
+						if (!empty($actionConfiguration['customAttributes.']['contentUrl'])) {
+							$actionConfiguration['customAttributes.']['contentUrl'] = $this->replaceModuleTokenInContentUrl($actionConfiguration['customAttributes.']['contentUrl']);
+						}
 						$action->setCustomAttributes($actionConfiguration['customAttributes.']);
 					}
 				}
@@ -198,4 +202,20 @@ abstract class AbstractContextMenuDataProvider {
 		return $actionCollection;
 	}
 
+	/**
+	 * Add the CSRF token to the module URL if a "M" parameter is found
+	 *
+	 * @param string $contentUrl
+	 * @return string
+	 */
+	protected function replaceModuleTokenInContentUrl($contentUrl) {
+		$parsedUrl = parse_url($contentUrl);
+		parse_str($parsedUrl['query'], $urlParameters);
+		if (isset($urlParameters['M'])) {
+			$moduleName = $urlParameters['M'];
+			unset($urlParameters['M']);
+			$contentUrl = BackendUtility::getModuleUrl($moduleName, $urlParameters);
+		}
+		return $contentUrl;
+	}
 }
