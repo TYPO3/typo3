@@ -172,11 +172,14 @@ class Indexer {
 	protected function processChangedAndNewFiles() {
 		foreach ($this->filesToUpdate AS $identifier => $data) {
 			if ($data == NULL) {
+				// search for files with same content hash in indexed storage
 				$fileHash = $this->storage->hashFileByIdentifier($identifier, 'sha1');
 				$files = $this->getFileIndexRepository()->findByContentHash($fileHash);
-				if (count($files) > 0) {
+				$fileObject = NULL;
+				if (!empty($files)) {
 					foreach ($files as $fileIndexEntry) {
-						if ($fileIndexEntry['missing']) {
+						// check if file is missing then we assume it's moved/renamed
+						if (!$this->storage->hasFile($fileIndexEntry['identifier'])) {
 							$fileObject = $this->getResourceFactory()->getFileObject($fileIndexEntry['uid'], $fileIndexEntry);
 							$fileObject->updateProperties(array(
 								'identifier' => $identifier
@@ -186,8 +189,9 @@ class Indexer {
 							break;
 						}
 					}
-				} else {
-					// index new file
+				}
+				// create new index when no missing file with same content hash is found
+				if ($fileObject === NULL) {
 					$fileObject = $this->createIndexEntry($identifier);
 					$this->identifiedFileUids[] = $fileObject->getUid();
 				}
