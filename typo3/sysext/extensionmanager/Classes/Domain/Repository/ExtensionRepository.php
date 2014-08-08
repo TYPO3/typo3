@@ -26,6 +26,15 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	const TABLE_NAME = 'tx_extensionmanager_domain_model_extension';
 
 	/**
+	 * Oracle has a limit of 1000 values in an IN clause. Set the size of a chunk
+	 * being updated to 500 to make sure it does not collide with a limit in any
+	 * other DBMS.
+	 *
+	 * @var integer
+	 */
+	const CHUNK_SIZE = 500;
+
+	/**
 	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
 	protected $databaseConnection;
@@ -288,13 +297,18 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	protected function markExtensionWithMaximumVersionAsCurrent($repositoryUid) {
 		$uidsOfCurrentVersion = $this->fetchMaximalVersionsForAllExtensions($repositoryUid);
 
-		$this->databaseConnection->exec_UPDATEquery(
-			self::TABLE_NAME,
-			'uid IN (' . implode(',', $uidsOfCurrentVersion) . ')',
-			array(
-				'current_version' => 1,
-			)
-		);
+		// some DBMS limit the amount of expressions, apply the update in chunks
+		$chunks = array_chunk($uidsOfCurrentVersion, self::CHUNK_SIZE);
+		$chunkCount = count($chunks);
+		for ($i = 0; $i < $chunkCount; ++$i) {
+			$this->databaseConnection->exec_UPDATEquery(
+				self::TABLE_NAME,
+				'uid IN (' . implode(',', $chunks[$i]) . ')',
+				array(
+					'current_version' => 1,
+				)
+			);
+		}
 	}
 
 	/**
