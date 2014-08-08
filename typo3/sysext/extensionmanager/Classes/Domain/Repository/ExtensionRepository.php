@@ -313,26 +313,27 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 
 	/**
 	 * Fetches the UIDs of all maximal versions for all extensions.
-	 * This is done by doing a subselect in the WHERE clause to get all
-	 * max versions and then the UID of that record in the outer select.
+	 * This is done by doing a LEFT JOIN to itself ("a" and "b") and comparing
+	 * both integer_version fields.
 	 *
 	 * @param int $repositoryUid
 	 * @return array
 	 */
 	protected function fetchMaximalVersionsForAllExtensions($repositoryUid) {
-		$extensionUids = $this->databaseConnection->exec_SELECTgetRows(
-			'a.uid AS uid',
-			self::TABLE_NAME . ' a',
-			'integer_version=(' .
-				$this->databaseConnection->SELECTquery(
-					'MAX(integer_version)',
-					self::TABLE_NAME . ' b',
-					'b.repository=' . (int)$repositoryUid . ' AND a.extension_key=b.extension_key'
-				) .
-			') AND repository=' . (int)$repositoryUid,
-			'', '', '', 'uid'
+		$queryResult = $this->databaseConnection->sql_query(
+			'SELECT a.uid AS uid ' .
+			'FROM ' . self::TABLE_NAME . ' a ' .
+			'LEFT JOIN ' . self::TABLE_NAME . ' b ON a.repository = b.repository AND a.extension_key = b.extension_key AND a.integer_version < b.integer_version ' .
+			'WHERE a.repository = ' . (int)$repositoryUid . ' AND b.extension_key IS NULL ' .
+			'ORDER BY a.uid'
 		);
-		return array_keys($extensionUids);
+
+		$extensionUids = array();
+		while ($row = $this->databaseConnection->sql_fetch_assoc($queryResult)) {
+			$extensionUids[] = $row['uid'];
+		}
+		$this->databaseConnection->sql_free_result($queryResult);
+		return $extensionUids;
 	}
 
 	/**
