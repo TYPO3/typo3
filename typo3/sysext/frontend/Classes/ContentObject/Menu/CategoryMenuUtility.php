@@ -53,7 +53,7 @@ class CategoryMenuUtility {
 		// Get the pages for each selected category
 		$selectedCategories = GeneralUtility::intExplode(',', $selectedCategories, TRUE);
 		foreach ($selectedCategories as $aCategory) {
-			$collection = \TYPO3\CMS\Core\Category\Collection\CategoryCollection::load(
+			$collection = \TYPO3\CMS\Frontend\Category\Collection\CategoryCollection::load(
 				$aCategory,
 				TRUE,
 				'pages',
