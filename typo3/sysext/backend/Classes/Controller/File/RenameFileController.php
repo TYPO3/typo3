@@ -154,7 +154,7 @@ class RenameFileController {
 				<input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_rename.php.submit', TRUE) . '" />
 				<input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.cancel', TRUE) . '" onclick="backToList(); return false;" />
 				<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
-				'. \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction') . '
+				' . \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction') . '
 			</div>
 		';
 		$code .= '</form>';

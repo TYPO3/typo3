@@ -158,7 +158,7 @@ class EditFileController {
 					<textarea rows="30" name="file[editfile][0][data]" wrap="off"' . $this->doc->formWidth(48, TRUE, 'width:98%;height:80%') . ' class="fixed-font enable-tab">' . GeneralUtility::formatForTextarea($fileContent) . '</textarea>
 					<input type="hidden" name="file[editfile][0][target]" value="' . $this->fileObject->getUid() . '" />
 					<input type="hidden" name="redirect" value="' . htmlspecialchars($hValue) . '" />
-					'. \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction') . '
+					' . \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction') . '
 				</div>
 				<br />';
 			// Make shortcut:

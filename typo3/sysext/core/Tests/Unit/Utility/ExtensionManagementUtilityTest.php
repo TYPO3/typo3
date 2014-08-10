@@ -78,9 +78,9 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 			eval(
 				'namespace ' . __NAMESPACE__ . ';' .
 				'class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Utility\\ExtensionManagementUtility {' .
-				'  static public function setCacheManager(\TYPO3\CMS\Core\Cache\CacheManager $cacheManager = NULL) {'.
-				'    static::$cacheManager = $cacheManager;'.
-				'  }'.
+				'  static public function setCacheManager(\TYPO3\CMS\Core\Cache\CacheManager $cacheManager = NULL) {' .
+				'    static::$cacheManager = $cacheManager;' .
+				'  }' .
 				'  public static function getPackageManager() {' .
 				'    return static::$packageManager;' .
 				'  }' .
@@ -1247,7 +1247,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		ExtensionManagementUtility::clearExtensionKeyMap();
 		$className = uniqid('ExtensionManagementUtility');
 		eval(
-			'namespace ' . __NAMESPACE__ .';' .
+			'namespace ' . __NAMESPACE__ . ';' .
 			'class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Utility\\ExtensionManagementUtility {' .
 			'  public static function isLoaded() {' .
 			'    return TRUE;' .

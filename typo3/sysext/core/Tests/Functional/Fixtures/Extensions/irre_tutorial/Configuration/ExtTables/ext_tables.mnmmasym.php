@@ -18,8 +18,8 @@ $TCA['tx_irretutorial_mnmmasym_hotel'] = array(
 		'enablecolumns' => array(
 			'disabled' => 'hidden',
 		),
-		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'Configuration/Tca/tca.mnmmasym.php',
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY).'Resources/Public/Icons/icon_tx_irretutorial_hotel.gif',
+		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/Tca/tca.mnmmasym.php',
+		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/icon_tx_irretutorial_hotel.gif',
 		'versioningWS' => 2,
 		'origUid' => 't3_origuid',
 		'dividers2tabs' => TRUE,
@@ -47,8 +47,8 @@ $TCA['tx_irretutorial_mnmmasym_offer'] = array(
 		'enablecolumns' => array(
 			'disabled' => 'hidden',
 		),
-		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'Configuration/Tca/tca.mnmmasym.php',
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY).'Resources/Public/Icons/icon_tx_irretutorial_offer.gif',
+		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/Tca/tca.mnmmasym.php',
+		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/icon_tx_irretutorial_offer.gif',
 		'versioningWS' => 2,
 		'origUid' => 't3_origuid',
 		'dividers2tabs' => TRUE,
@@ -76,8 +76,8 @@ $TCA['tx_irretutorial_mnmmasym_price'] = array(
 		'enablecolumns' => array(
 			'disabled' => 'hidden',
 		),
-		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'Configuration/Tca/tca.mnmmasym.php',
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY).'Resources/Public/Icons/icon_tx_irretutorial_price.gif',
+		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/Tca/tca.mnmmasym.php',
+		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/icon_tx_irretutorial_price.gif',
 		'versioningWS' => 2,
 		'origUid' => 't3_origuid',
 		'dividers2tabs' => TRUE,

@@ -154,7 +154,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
 		$uid = (int)$fieldValues['uid'];
 		unset($fieldValues['uid']);
 
-		$updateSuccessful = $this->databaseHandle->exec_UPDATEquery($tableName, 'uid = '. $uid, $fieldValues);
+		$updateSuccessful = $this->databaseHandle->exec_UPDATEquery($tableName, 'uid = ' . $uid, $fieldValues);
 		$this->checkSqlErrors();
 
 		if (!$isRelation) {

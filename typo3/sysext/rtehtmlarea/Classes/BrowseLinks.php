@@ -568,7 +568,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			. ' value="' . htmlspecialchars(($this->curUrlInfo['act'] == 'url' ? $this->curUrlInfo['info'] : 'http://'))
 			. '" /> ' . '<input type="submit" value="' . $GLOBALS['LANG']->getLL('setLink', TRUE)
 			. '" onclick="if (/^[A-Za-z0-9_+]{1,8}:/.test(document.ltargetform.lurl.value)) { '
-			.' browse_links_setHref(document.ltargetform.lurl.value); } else { browse_links_setHref(\'http://\''
+			. ' browse_links_setHref(document.ltargetform.lurl.value); } else { browse_links_setHref(\'http://\''
 			. '+document.ltargetform.lurl.value); }; browse_links_setAdditionalValue(\'data-htmlarea-external\', \'1\');'
 			. 'return link_current();" /></td>
 								</tr>';

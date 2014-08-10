@@ -29,7 +29,7 @@ class BackendUtility {
 		/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
 		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
 			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing_text') .
-			' <abbr title="' . htmlspecialchars($file->getStorage()->getName() . ' :: '.$file->getIdentifier()) . '">' .
+			' <abbr title="' . htmlspecialchars($file->getStorage()->getName() . ' :: ' . $file->getIdentifier()) . '">' .
 			htmlspecialchars($file->getName()) . '</abbr>',
 			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing'),
 			\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR

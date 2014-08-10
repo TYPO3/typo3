@@ -39,7 +39,7 @@ class Files {
 	 * @return string
 	 */
 	static public function getNormalizedPath($path) {
-		return rtrim($path, '/') .'/';
+		return rtrim($path, '/') . '/';
 	}
 
 	/**

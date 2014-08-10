@@ -175,7 +175,7 @@ class FileUploadController {
 		$content .= '
 			<div id="c-submit">
 				<input type="hidden" name="redirect" value="' . $this->returnUrl . '" /><br />
-				'. \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction') . '
+				' . \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction') . '
 				<input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.submit', TRUE) . '" />
 			</div>
 		';

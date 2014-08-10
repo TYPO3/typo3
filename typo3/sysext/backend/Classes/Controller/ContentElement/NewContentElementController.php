@@ -215,7 +215,7 @@ class NewContentElementController {
 						// Onclick action for icon/title:
 						$aOnClick = 'document.getElementsByName(\'tempB\')[' . $cc . '].checked=1;' . $oC . 'return false;';
 					} else {
-						$aOnClick = "document.editForm.defValues.value=unescape('".rawurlencode($wInfo['params'])."');goToalt_doc();".(!$this->onClickEvent?"window.location.hash='#sel2';":'');
+						$aOnClick = "document.editForm.defValues.value=unescape('" . rawurlencode($wInfo['params']) . "');goToalt_doc();" . (!$this->onClickEvent?"window.location.hash='#sel2';":'');
 					}
 
 					$menuItems[$key]['content'] .=

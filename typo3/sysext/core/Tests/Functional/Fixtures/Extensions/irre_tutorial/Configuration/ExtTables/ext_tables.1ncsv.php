@@ -18,8 +18,8 @@ $TCA['tx_irretutorial_1ncsv_hotel'] = array(
 		'enablecolumns' => array(
 			'disabled' => 'hidden',
 		),
-		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'Configuration/Tca/tca.1ncsv.php',
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY).'Resources/Public/Icons/icon_tx_irretutorial_hotel.gif',
+		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/Tca/tca.1ncsv.php',
+		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/icon_tx_irretutorial_hotel.gif',
 		'versioningWS' => 2,
 		'origUid' => 't3_origuid',
 		'shadowColumnsForNewPlaceholders' => 'offers',
@@ -49,8 +49,8 @@ $TCA['tx_irretutorial_1ncsv_offer'] = array(
 		'enablecolumns' => array(
 			'disabled' => 'hidden',
 		),
-		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'Configuration/Tca/tca.1ncsv.php',
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY).'Resources/Public/Icons/icon_tx_irretutorial_offer.gif',
+		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/Tca/tca.1ncsv.php',
+		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/icon_tx_irretutorial_offer.gif',
 		'versioningWS' => 2,
 		'origUid' => 't3_origuid',
 		'shadowColumnsForNewPlaceholders' => 'prices',
@@ -80,8 +80,8 @@ $TCA['tx_irretutorial_1ncsv_price'] = array(
 		'enablecolumns' => array(
 			'disabled' => 'hidden',
 		),
-		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'Configuration/Tca/tca.1ncsv.php',
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY).'Resources/Public/Icons/icon_tx_irretutorial_price.gif',
+		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/Tca/tca.1ncsv.php',
+		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/icon_tx_irretutorial_price.gif',
 		'versioningWS' => 2,
 		'origUid' => 't3_origuid',
 		'dividers2tabs' => TRUE,

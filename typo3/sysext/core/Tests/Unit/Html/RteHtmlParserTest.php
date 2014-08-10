@@ -505,7 +505,7 @@ class RteHtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			),
 			'Double empty paragraph' => array(
 				'<p></p><p></p>',
-				'<p>&nbsp;</p>'. CRLF . '<p>&nbsp;</p>',
+				'<p>&nbsp;</p>' . CRLF . '<p>&nbsp;</p>',
 			),
 			'Triple empty paragraph' => array(
 				'<p></p><p></p><p></p>',

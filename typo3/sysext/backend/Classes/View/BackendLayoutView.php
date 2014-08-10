@@ -144,7 +144,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface {
 			// so there is no pid to get the backendLayout for and we have to get that first
 			if ($data['pid'] < 0) {
 				$existingElement = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-					'pid', $tableName, 'uid='  . abs($data['pid'])
+					'pid', $tableName, 'uid=' . abs($data['pid'])
 				);
 				if ($existingElement !== NULL) {
 					$pageId = $existingElement['pid'];

@@ -414,7 +414,7 @@ class Check {
 			$status = new Status\WarningStatus();
 			$status->setTitle('Fetching external URLs is not allowed');
 			$status->setMessage(
-				'Either enable PHP runtime setting "allow_url_fopen"' . LF .  'or enable curl by setting [SYS][curlUse] accordingly.'
+				'Either enable PHP runtime setting "allow_url_fopen"' . LF . 'or enable curl by setting [SYS][curlUse] accordingly.'
 			);
 		}
 		return $status;

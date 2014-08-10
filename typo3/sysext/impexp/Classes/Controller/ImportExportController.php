@@ -651,7 +651,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			}
 		}
 		if (count($inData['exclude'])) {
-			$excludedElements = '<em>' . implode(', ', array_keys($inData['exclude'])). '</em><hr/><label for="checkExclude">'
+			$excludedElements = '<em>' . implode(', ', array_keys($inData['exclude'])) . '</em><hr/><label for="checkExclude">'
 				. $this->lang->getLL('makeconfig_clearAllExclusions', TRUE)
 				. '</label> <input type="checkbox" name="tx_impexp[exclude]" id="checkExclude" value="1" />';
 		} else {

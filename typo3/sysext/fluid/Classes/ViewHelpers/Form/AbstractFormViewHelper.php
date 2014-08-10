@@ -73,7 +73,7 @@ abstract class AbstractFormViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\A
 		$name = $this->prefixFieldName($name) . '[__identity]';
 		$this->registerFieldNameForFormTokenGeneration($name);
 
-		return chr(10) . '<input type="hidden" name="'. $name . '" value="' . $identifier .'" />' . chr(10);
+		return chr(10) . '<input type="hidden" name="' . $name . '" value="' . $identifier . '" />' . chr(10);
 	}
 
 	/**

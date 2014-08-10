@@ -215,7 +215,7 @@ class FunctionalTestCaseBootstrapUtility {
 					1376745645
 				);
 			}
-			$destinationPath = $this->instancePath . '/typo3conf/ext/'. basename($absoluteExtensionPath);
+			$destinationPath = $this->instancePath . '/typo3conf/ext/' . basename($absoluteExtensionPath);
 			$success = symlink($absoluteExtensionPath, $destinationPath);
 			if (!$success) {
 				throw new Exception(
@@ -301,9 +301,9 @@ class FunctionalTestCaseBootstrapUtility {
 		}
 
 		// Base of final LocalConfiguration is core factory configuration
-		$finalConfigurationArray = require ORIGINAL_ROOT .'typo3/sysext/core/Configuration/FactoryConfiguration.php';
+		$finalConfigurationArray = require ORIGINAL_ROOT . 'typo3/sysext/core/Configuration/FactoryConfiguration.php';
 
-		$this->mergeRecursiveWithOverrule($finalConfigurationArray, require ORIGINAL_ROOT .'typo3/sysext/core/Build/Configuration/FunctionalTestsConfiguration.php');
+		$this->mergeRecursiveWithOverrule($finalConfigurationArray, require ORIGINAL_ROOT . 'typo3/sysext/core/Build/Configuration/FunctionalTestsConfiguration.php');
 		$this->mergeRecursiveWithOverrule($finalConfigurationArray, $configurationToMerge);
 		$finalConfigurationArray['DB'] = $originalConfigurationArray['DB'];
 		// Calculate and set new database name

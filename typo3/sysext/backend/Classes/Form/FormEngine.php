@@ -2151,7 +2151,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			// if there is an icon ($p[2]), icons should be shown, and, if only selected are visible, is it selected
 			if ($p[2] && !$suppressIcons && (!$onlySelectedIconShown || $sM)) {
 				list($selIconFile, $selIconInfo) = $this->getIcon($p[2]);
-				$iOnClick = $this->elName($PA['itemFormElName']) . '.selectedIndex=' . $c . '; '. $this->elName($PA['itemFormElName']);
+				$iOnClick = $this->elName($PA['itemFormElName']) . '.selectedIndex=' . $c . '; ' . $this->elName($PA['itemFormElName']);
 				$iOnClickOptions = $this->elName($PA['itemFormElName']) . '.options[' . $c . ']';
 				if (empty($selIconInfo)) {
 					$iOnClick .= '.className=' . $iOnClickOptions . '.className; ';
@@ -2574,7 +2574,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 				$this->multiSelectFilterCount++;
 				$jsSelectBoxFilterName = str_replace(' ', '', ucwords(str_replace('-', ' ', GeneralUtility::strtolower($multiSelectId))));
 				$this->additionalJS_post[] = '
-					var '. $jsSelectBoxFilterName . ' = new TCEForms.SelectBoxFilter("' . $multiSelectId . '");
+					var ' . $jsSelectBoxFilterName . ' = new TCEForms.SelectBoxFilter("' . $multiSelectId . '");
 				';
 			}
 

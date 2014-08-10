@@ -132,7 +132,7 @@ class Ter extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility {
 				$absolutePathToZipFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/' . $extensionKey . '-l10n-' . $language . '.zip');
 				$relativeLanguagePath = 'l10n' . '/' . $language . '/';
 				$absoluteLanguagePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(PATH_typo3conf . $relativeLanguagePath);
-				$absoluteExtensionLanguagePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(PATH_typo3conf . $relativeLanguagePath. $extensionKey . '/');
+				$absoluteExtensionLanguagePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(PATH_typo3conf . $relativeLanguagePath . $extensionKey . '/');
 				if (empty($absolutePathToZipFile) || empty($absoluteLanguagePath) || empty($absoluteExtensionLanguagePath)) {
 					throw new \TYPO3\CMS\Lang\Exception\Lang('Given path is invalid.', 1352565336);
 				}

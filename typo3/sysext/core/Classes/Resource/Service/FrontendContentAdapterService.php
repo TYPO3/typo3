@@ -108,8 +108,8 @@ class FrontendContentAdapterService {
 						$fileFieldContents['captions'][] = $fileProperties['description'];
 						$fileFieldContents['links'][] = $fileProperties['link'];
 						$fileFieldContents['alternativeTexts'][] = $fileProperties['alternative'];
-						$fileFieldContents[$migrateFieldName .  '_fileUids'][] = $file->getOriginalFile()->getUid();
-						$fileFieldContents[$migrateFieldName .  '_fileReferenceUids'][] = $file->getUid();
+						$fileFieldContents[$migrateFieldName . '_fileUids'][] = $file->getOriginalFile()->getUid();
+						$fileFieldContents[$migrateFieldName . '_fileReferenceUids'][] = $file->getUid();
 					}
 					foreach ($oldFieldNames as $oldFieldType => $oldFieldName) {
 						if ($oldFieldType === '__typeMatch') {

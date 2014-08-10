@@ -569,7 +569,7 @@ class Clipboard {
 			($setRedirect ? 'redirect=' . rawurlencode(GeneralUtility::linkThisScript(array('CB' => ''))) : '') .
 			'&vC=' . $GLOBALS['BE_USER']->veriCode() .
 			'&prErr=1&uPT=1' .
-			'&CB[paste]=' .  rawurlencode($table . '|' . $uid) .
+			'&CB[paste]=' . rawurlencode($table . '|' . $uid) .
 			'&CB[pad]=' . $this->current .
 			(is_array($update) ? GeneralUtility::implodeArrayForUrl('CB[update]', $update) : '') .
 			BackendUtility::getUrlToken('tceAction');

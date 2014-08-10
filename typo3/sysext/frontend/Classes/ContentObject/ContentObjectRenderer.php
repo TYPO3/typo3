@@ -5881,7 +5881,7 @@ class ContentObjectRenderer {
 						$url = $GLOBALS['TSFE']->absRefPrefix . $GLOBALS['TSFE']->config['mainScript'] . $initP;
 						$jumpurl = $scheme . $link_param;
 						$juHash = GeneralUtility::hmac($jumpurl, 'jumpurl');
-						$this->lastTypoLinkUrl = $url . '&jumpurl=' . rawurlencode($jumpurl) . '&juHash='. $juHash . $GLOBALS['TSFE']->getMethodUrlIdToken;
+						$this->lastTypoLinkUrl = $url . '&jumpurl=' . rawurlencode($jumpurl) . '&juHash=' . $juHash . $GLOBALS['TSFE']->getMethodUrlIdToken;
 					} else {
 						$this->lastTypoLinkUrl = $scheme . $link_param;
 					}
@@ -7736,8 +7736,8 @@ class ContentObjectRenderer {
 			}
 			// If move placeholder shall be considered, select via t3ver_move_id
 			if ($considerMovePlaceholders) {
-				$movePlaceholderComparison = $table . '.t3ver_state=' . VersionState::cast(VersionState::MOVE_PLACEHOLDER) .  ' AND ' . $table . '.t3ver_move_id' . $comparison;
-				$query .= ' AND (' . $table . '.uid' . $comparison . ' OR ' . $movePlaceholderComparison .')';
+				$movePlaceholderComparison = $table . '.t3ver_state=' . VersionState::cast(VersionState::MOVE_PLACEHOLDER) . ' AND ' . $table . '.t3ver_move_id' . $comparison;
+				$query .= ' AND (' . $table . '.uid' . $comparison . ' OR ' . $movePlaceholderComparison . ')';
 			} else {
 				$query .= ' AND ' . $table . '.uid' . $comparison;
 			}

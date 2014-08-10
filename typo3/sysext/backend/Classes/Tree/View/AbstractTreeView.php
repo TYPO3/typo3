@@ -415,7 +415,7 @@ abstract class AbstractTreeView {
 			$this->ids = $curIds;
 			// Set PM icon for root of mount:
 			$cmd = $this->bank . '_' . ($isOpen ? '0_' : '1_') . $uid . '_' . $this->treeName;
-			$icon = IconUtility::getSpriteIcon('treeline-'. ($isOpen ? 'minus' : 'plus') . 'only');
+			$icon = IconUtility::getSpriteIcon('treeline-' . ($isOpen ? 'minus' : 'plus') . 'only');
 
 			$firstHtml = $this->PM_ATagWrap($icon, $cmd);
 			// Preparing rootRec for the mount

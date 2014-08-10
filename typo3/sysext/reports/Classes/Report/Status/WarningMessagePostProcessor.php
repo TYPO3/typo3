@@ -46,7 +46,7 @@ class WarningMessagePostProcessor {
 				);
 				$warningMessages['tx_reports_status_notification'] = sprintf(
 					$GLOBALS['LANG']->getLL('status_problemNotification'),
-					'<a href="javascript:top.goToModule(\'' . $reportModuleIdentifier . '\', 1, \'&' . implode('&', $reportModuleParameters) .  '\');">', '</a>'
+					'<a href="javascript:top.goToModule(\'' . $reportModuleIdentifier . '\', 1, \'&' . implode('&', $reportModuleParameters) . '\');">', '</a>'
 				);
 			}
 		}

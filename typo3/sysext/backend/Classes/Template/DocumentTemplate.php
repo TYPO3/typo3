@@ -576,7 +576,7 @@ function jumpToUrl(URL) {
 			$iconImgTag = $this->wrapClickMenuOnIcon($iconImgTag, 'sys_file_metadata', $metaData['uid']);
 		}
 
-		return '<span class="typo3-moduleHeader">' . $iconImgTag .  $tWrap[0] . htmlspecialchars(GeneralUtility::fixed_lgd_cs($resource->getName(), 45)) .  $tWrap[1] . '</span>';
+		return '<span class="typo3-moduleHeader">' . $iconImgTag . $tWrap[0] . htmlspecialchars(GeneralUtility::fixed_lgd_cs($resource->getName(), 45)) . $tWrap[1] . '</span>';
 	}
 
 	/**
