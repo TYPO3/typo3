@@ -5505,7 +5505,10 @@ class ContentObjectRenderer {
 		}
 		$retVal = '';
 		$sections = explode('//', $string);
-		while (!$retVal and list($secKey, $secVal) = each($sections)) {
+		foreach ($sections as $secKey => $secVal) {
+			if ($retVal) {
+				break;
+			}
 			$parts = explode(':', $secVal, 2);
 			$type = strtolower(trim($parts[0]));
 			$typesWithOutParameters = array('level', 'date', 'current');

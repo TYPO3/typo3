@@ -793,7 +793,7 @@ class PackageManager implements \TYPO3\Flow\Package\PackageManagerInterface {
 		} else {
 			$jsonPathsAndFilenames = Files::readDirectoryRecursively($packagePath, '.json');
 			asort($jsonPathsAndFilenames);
-			while (list($unusedKey, $jsonPathAndFilename) = each($jsonPathsAndFilenames)) {
+			foreach ($jsonPathsAndFilenames as $jsonPathAndFilename) {
 				if (basename($jsonPathAndFilename) === 'composer.json') {
 					$manifestPath = dirname($jsonPathAndFilename) . '/';
 					$manifestPaths[] = $manifestPath;
