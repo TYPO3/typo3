@@ -2251,7 +2251,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 			$out .= $this->inlineJavascriptWrap[0] . '
 				Ext.ns("TYPO3");
-				Ext.BLANK_IMAGE_URL = "' . htmlspecialchars(GeneralUtility::locationHeaderUrl(($this->backPath . 'gfx/clear.gif'))) . '";' . LF
+				Ext.BLANK_IMAGE_URL = "' . htmlspecialchars(GeneralUtility::locationHeaderUrl(($this->backPath . 'gfx/clear.gif'))) . '";
+				Ext.SSL_SECURE_URL = "' . htmlspecialchars(GeneralUtility::locationHeaderUrl(($this->backPath . 'gfx/clear.gif'))) . '";' . LF
 				. $inlineSettings
 				. 'Ext.onReady(function() {'
 					. ($this->enableExtJSQuickTips ? 'Ext.QuickTips.init();' . LF : '')
