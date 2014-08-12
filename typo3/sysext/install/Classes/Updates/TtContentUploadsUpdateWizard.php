@@ -260,7 +260,7 @@ class TtContentUploadsUpdateWizard extends AbstractUpdate {
 		$this->quoteIdentifiers($mapping);
 
 		$where = sprintf(
-			'WHERE %s <> \'\' AND CAST(CAST(%s AS DECIMAL) AS CHAR) <> %s OR (%s = \'uploads\' AND %s != \'\')',
+			'WHERE %s <> \'\' AND CAST(CAST(%s AS DECIMAL) AS CHAR) <> CAST(%s AS CHAR) OR (%s = \'uploads\' AND %s != \'\')',
 			$mapping['mapFieldNames']['media'],
 			$mapping['mapFieldNames']['media'],
 			$mapping['mapFieldNames']['media'],
