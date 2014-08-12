@@ -228,7 +228,7 @@ class TceformsUpdateWizard extends AbstractUpdate {
 			: '';
 		$where = $fieldToMigrate . ' IS NOT NULL'
 			. ' AND ' . $fieldToMigrate . ' != \'\''
-			. ' AND CAST(CAST(' . $fieldToMigrate . ' AS DECIMAL) AS CHAR) <> ' . $fieldToMigrate
+			. ' AND CAST(CAST(' . $fieldToMigrate . ' AS DECIMAL) AS CHAR) <> CAST(' . $fieldToMigrate . ' AS CHAR)'
 			. $deletedCheck;
 		$result = $this->database->exec_SELECTgetRows($fields, $table, $where, '', '', $limit);
 		if ($result === NULL) {
