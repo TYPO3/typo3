@@ -62,4 +62,14 @@ class DebuggerUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$arguments->expects($this->never())->method('rewind');
 		$this->debugger->var_dump($arguments, NULL, 8, TRUE, FALSE, TRUE);
 	}
+
+	/**
+	 * @test
+	 */
+	public function varDumpShowsPropertiesOfStdClassObjects() {
+		$testObject = new \stdClass();
+		$testObject->foo = 'bar';
+		$result = $this->debugger->var_dump($testObject, NULL, 8, TRUE, FALSE, TRUE);
+		$this->assertRegExp('/foo.*bar/', $result);
+	}
 }

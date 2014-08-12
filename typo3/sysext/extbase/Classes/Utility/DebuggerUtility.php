@@ -311,8 +311,13 @@ class DebuggerUtility {
 			if (!$plainText) {
 				$dump .= '<a name="' . spl_object_hash($object) . '" id="' . spl_object_hash($object) . '"></a>';
 			}
-			$classReflection = new \ReflectionClass(get_class($object));
-			$properties = $classReflection->getProperties();
+			if (get_class($object) === 'stdClass') {
+				$objReflection = new \ReflectionObject($object);
+				$properties = $objReflection->getProperties();
+			} else {
+				$classReflection = new \ReflectionClass(get_class($object));
+				$properties = $classReflection->getProperties();
+			}
 			foreach ($properties as $property) {
 				if (self::isBlacklisted($property)) {
 					continue;
