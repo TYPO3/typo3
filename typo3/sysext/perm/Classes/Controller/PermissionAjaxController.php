@@ -15,61 +15,49 @@ namespace TYPO3\CMS\Perm\Controller;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This class extends the permissions module in the TYPO3 Backend to provide
  * convenient methods of editing of page permissions (including page ownership
  * (user and group)) via new AjaxRequestHandler facility
- *
- * @author Andreas Kundoch <typo3@mehrwert.de>
- * @license GPL
- * @since TYPO3_4-2
  */
 class PermissionAjaxController {
 
-	// The local configuration array
+	/**
+	 * The local configuration array
+	 *
+	 * @var array
+	 */
 	protected $conf = array();
 
-	// TYPO3 Back Path
-	protected $backPath = '../../../';
-
-	/********************************************
-	 *
-	 * Init method for this class
-	 *
-	 ********************************************/
 	/**
 	 * The constructor of this class
 	 */
 	public function __construct() {
 		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_mod_web_perm.xlf');
 		// Configuration, variable assignment
-		$this->conf['page'] = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('page');
-		$this->conf['who'] = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('who');
-		$this->conf['mode'] = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('mode');
-		$this->conf['bits'] = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('bits');
-		$this->conf['permissions'] = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('permissions');
-		$this->conf['action'] = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('action');
-		$this->conf['ownerUid'] = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('ownerUid');
-		$this->conf['username'] = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('username');
-		$this->conf['groupUid'] = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('groupUid');
-		$this->conf['groupname'] = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('groupname');
-		$this->conf['editLockState'] = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('editLockState');
+		$this->conf['page'] = GeneralUtility::_POST('page');
+		$this->conf['who'] = GeneralUtility::_POST('who');
+		$this->conf['mode'] = GeneralUtility::_POST('mode');
+		$this->conf['bits'] = (int)GeneralUtility::_POST('bits');
+		$this->conf['permissions'] = (int)GeneralUtility::_POST('permissions');
+		$this->conf['action'] = GeneralUtility::_POST('action');
+		$this->conf['ownerUid'] = (int)GeneralUtility::_POST('ownerUid');
+		$this->conf['username'] = GeneralUtility::_POST('username');
+		$this->conf['groupUid'] = (int)GeneralUtility::_POST('groupUid');
+		$this->conf['groupname'] = GeneralUtility::_POST('groupname');
+		$this->conf['editLockState'] = (int)GeneralUtility::_POST('editLockState');
 		// User: Replace some parts of the posted values
-		$this->conf['new_owner_uid'] = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('newOwnerUid');
+		$this->conf['new_owner_uid'] = (int)GeneralUtility::_POST('newOwnerUid');
 		$temp_owner_data = BackendUtility::getUserNames('username, uid', ' AND uid = ' . $this->conf['new_owner_uid']);
 		$this->conf['new_owner_username'] = htmlspecialchars($temp_owner_data[$this->conf['new_owner_uid']]['username']);
 		// Group: Replace some parts of the posted values
-		$this->conf['new_group_uid'] = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('newGroupUid');
+		$this->conf['new_group_uid'] = (int)GeneralUtility::_POST('newGroupUid');
 		$temp_group_data = BackendUtility::getGroupNames('title,uid', ' AND uid = ' . $this->conf['new_group_uid']);
 		$this->conf['new_group_username'] = htmlspecialchars($temp_group_data[$this->conf['new_group_uid']]['title']);
 	}
 
-	/********************************************
-	 *
-	 * Main dispatcher method
-	 *
-	 ********************************************/
 	/**
 	 * The main dispatcher function. Collect data and prepare HTML output.
 	 *
@@ -77,7 +65,7 @@ class PermissionAjaxController {
 	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj object of type AjaxRequestHandler
 	 * @return void
 	 */
-	public function dispatch($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj = NULL) {
+	public function dispatch($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj = NULL) {
 		$content = '';
 		// Basic test for required value
 		if ($this->conf['page'] > 0) {
@@ -129,7 +117,7 @@ class PermissionAjaxController {
 					$content = $this->renderToggleEditLock($this->conf['page'], $data['pages'][$this->conf['page']]['editlock']);
 					break;
 				default:
-					if ($this->conf['mode'] == 'delete') {
+					if ($this->conf['mode'] === 'delete') {
 						$this->conf['permissions'] = (int)($this->conf['permissions'] - $this->conf['bits']);
 					} else {
 						$this->conf['permissions'] = (int)($this->conf['permissions'] + $this->conf['bits']);
@@ -148,11 +136,6 @@ class PermissionAjaxController {
 		$ajaxObj->addContent($this->conf['page'] . '_' . $this->conf['who'], $content);
 	}
 
-	/********************************************
-	 *
-	 * Helpers for this script
-	 *
-	 ********************************************/
 	/**
 	 * Generate the user selector element
 	 *
@@ -179,10 +162,9 @@ class PermissionAjaxController {
 		$elementId = 'o_' . $page;
 		$options = '<option value="0"></option>' . $options;
 		$selector = '<select name="new_page_owner" id="new_page_owner">' . $options . '</select>';
-		$saveButton = '<a onclick="WebPermissions.changeOwner(' . $page . ', ' . $ownerUid . ', \'' . $elementId . '\');" title="Change owner">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-save') . '</a>';
-		$cancelButton = '<a onclick="WebPermissions.restoreOwner(' . $page . ', ' . $ownerUid . ', \'' . ($username == '' ? '<span class=not_set>[not set]</span>' : htmlspecialchars($username)) . '\', \'' . $elementId . '\');" title="Cancel">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close') . '</a>';
-		$ret = $selector . $saveButton . $cancelButton;
-		return $ret;
+		$saveButton = '<a class="saveowner" data-page="' . $page . '" data-owner="' . $ownerUid . '" data-element-id="' . $elementId . '" title="Change owner">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-save') . '</a>';
+		$cancelButton = '<a class="restoreowner" data-page="' . $page . '"  data-owner="' . $ownerUid . '" data-element-id="' . $elementId . '"' . (!empty($username) ? ' data-username="' . htmlspecialchars($username) . '"' : '') . ' title="Cancel">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close') . '</a>';
+		return '<span id="' . $elementId . '">' . $selector . $saveButton . $cancelButton . '</span>';
 	}
 
 	/**
@@ -222,10 +204,9 @@ class PermissionAjaxController {
 		$elementId = 'g_' . $page;
 		$options = '<option value="0"></option>' . $options;
 		$selector = '<select name="new_page_group" id="new_page_group">' . $options . '</select>';
-		$saveButton = '<a onclick="WebPermissions.changeGroup(' . $page . ', ' . $groupUid . ', \'' . $elementId . '\');" title="Change group">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-save') . '</a>';
-		$cancelButton = '<a onclick="WebPermissions.restoreGroup(' . $page . ', ' . $groupUid . ', \'' . ($groupname == '' ? '<span class=not_set>[not set]</span>' : htmlspecialchars($groupname)) . '\', \'' . $elementId . '\');" title="Cancel">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close') . '</a>';
-		$ret = $selector . $saveButton . $cancelButton;
-		return $ret;
+		$saveButton = '<a class="savegroup" data-page="' . $page . '" data-group="' . $groupUid . '" data-element-id="' . $elementId . '" title="Change group">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-save') . '</a>';
+		$cancelButton = '<a class="restoregroup" data-page="' . $page . '" data-group="' . $groupUid . '" data-element-id="' . $elementId . '"' . (!empty($groupname) ? ' data-groupname="' . htmlspecialchars($groupname) . '"' : '') . ' title="Cancel">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close') . '</a>';
+		return '<span id="' . $elementId . '">' . $selector . $saveButton . $cancelButton . '</span>';
 	}
 
 	/**
@@ -239,8 +220,7 @@ class PermissionAjaxController {
 	 */
 	static public function renderOwnername($page, $ownerUid, $username, $validUser = TRUE) {
 		$elementId = 'o_' . $page;
-		$ret = '<span id="' . $elementId . '"><a class="ug_selector" onclick="WebPermissions.showChangeOwnerSelector(' . $page . ', ' . $ownerUid . ', \'' . $elementId . '\', \'' . htmlspecialchars($username) . '\');">' . ($validUser ? ($username == '' ? '<span class=not_set>[' . $GLOBALS['LANG']->getLL('notSet') . ']</span>' : htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($username, 20))) : '<span class=not_set title="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($username, 20)) . '">[' . $GLOBALS['LANG']->getLL('deleted') . ']</span>') . '</a></span>';
-		return $ret;
+		return '<span id="' . $elementId . '"><a class="ug_selector changeowner" data-page="' . $page . '" data-owner="' . $ownerUid . '" data-username="' . htmlspecialchars($username) . '">' . ($validUser ? ($username == '' ? '<span class=not_set>[' . $GLOBALS['LANG']->getLL('notSet') . ']</span>' : htmlspecialchars(GeneralUtility::fixed_lgd_cs($username, 20))) : '<span class=not_set title="' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($username, 20)) . '">[' . $GLOBALS['LANG']->getLL('deleted') . ']</span>') . '</a></span>';
 	}
 
 	/**
@@ -254,8 +234,7 @@ class PermissionAjaxController {
 	 */
 	static public function renderGroupname($page, $groupUid, $groupname, $validGroup = TRUE) {
 		$elementId = 'g_' . $page;
-		$ret = '<span id="' . $elementId . '"><a class="ug_selector" onclick="WebPermissions.showChangeGroupSelector(' . $page . ', ' . $groupUid . ', \'' . $elementId . '\', \'' . htmlspecialchars($groupname) . '\');">' . ($validGroup ? ($groupname == '' ? '<span class=not_set>[' . $GLOBALS['LANG']->getLL('notSet') . ']</span>' : htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($groupname, 20))) : '<span class=not_set title="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($groupname, 20)) . '">[' . $GLOBALS['LANG']->getLL('deleted') . ']</span>') . '</a></span>';
-		return $ret;
+		return '<span id="' . $elementId . '"><a class="ug_selector changegroup" data-page="' . $page . '" data-group="' . $groupUid . '" data-groupname="' . htmlspecialchars($groupname) . '">' . ($validGroup ? ($groupname == '' ? '<span class=not_set>[' . $GLOBALS['LANG']->getLL('notSet') . ']</span>' : htmlspecialchars(GeneralUtility::fixed_lgd_cs($groupname, 20))) : '<span class=not_set title="' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($groupname, 20)) . '">[' . $GLOBALS['LANG']->getLL('deleted') . ']</span>') . '</a></span>';
 	}
 
 	/**
@@ -267,9 +246,9 @@ class PermissionAjaxController {
 	 */
 	protected function renderToggleEditLock($page, $editLockState) {
 		if ($editLockState === 1) {
-			$ret = '<a class="editlock" onclick="WebPermissions.toggleEditLock(' . $page . ', 1);" title="The page and all content is locked for editing by all non-Admin users.">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-warning-lock') . '</a>';
+			$ret = '<span id="el_' . $page . '"><a class="editlock" data-page="' . (int)$page . '" data-lockstate="1" title="The page and all content is locked for editing by all non-Admin users.">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-warning-lock') . '</a></span>';
 		} else {
-			$ret = '<a class="editlock" onclick="WebPermissions.toggleEditLock(' . $page . ', 0);" title="Enable the &raquo;Admin-only&laquo; edit lock for this page">[+]</a>';
+			$ret = '<span id="el_' . $page . '"><a class="editlock" data-page="' . (int)$page . '" data-lockstate="0" title="Enable the &raquo;Admin-only&laquo; edit lock for this page">[+]</a></span>';
 		}
 		return $ret;
 	}
@@ -288,16 +267,24 @@ class PermissionAjaxController {
 		foreach ($permissions as $permission) {
 			if ($int & $permission) {
 				$str .= \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-permission-granted', array(
-					'tag' => 'a',
 					'title' => $GLOBALS['LANG']->getLL($permission, TRUE),
-					'onclick' => 'WebPermissions.setPermissions(' . $pageId . ', ' . $permission . ', \'delete\', \'' . $who . '\', ' . $int . ');',
+					'class' => 'change-permission',
+					'data-page' => $pageId,
+					'data-permissions' => $int,
+					'data-mode' => 'delete',
+					'data-who' => $who,
+					'data-bits' => $permission,
 					'style' => 'cursor:pointer'
 				));
 			} else {
 				$str .= \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-permission-denied', array(
-					'tag' => 'a',
 					'title' => $GLOBALS['LANG']->getLL($permission, TRUE),
-					'onclick' => 'WebPermissions.setPermissions(' . $pageId . ', ' . $permission . ', \'add\', \'' . $who . '\', ' . $int . ');',
+					'class' => 'change-permission',
+					'data-page' => $pageId,
+					'data-permissions' => $int,
+					'data-mode' => 'add',
+					'data-who' => $who,
+					'data-bits' => $permission,
 					'style' => 'cursor:pointer'
 				));
 			}

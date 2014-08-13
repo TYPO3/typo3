@@ -41,7 +41,6 @@ class PermissionModuleController {
 
 	/**
 	 * Module config
-	 * Internal static
 	 *
 	 * @var array
 	 */
@@ -88,27 +87,6 @@ class PermissionModuleController {
 	 * @var array
 	 */
 	public $pageinfo;
-
-	/**
-	 * Background color 1
-	 *
-	 * @var string
-	 */
-	public $color;
-
-	/**
-	 * Background color 2
-	 *
-	 * @var string
-	 */
-	public $color2;
-
-	/**
-	 * Background color 3
-	 *
-	 * @var string
-	 */
-	public $color3;
 
 	/**
 	 * Set internally if the current user either OWNS the page OR is admin user!
@@ -174,10 +152,11 @@ class PermissionModuleController {
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:perm/Resources/Private/Templates/perm.html');
 		$this->doc->form = '<form action="' . $GLOBALS['BACK_PATH'] . 'tce_db.php" method="post" name="editform">';
-		$this->doc->loadJavascriptLib('js/jsfunc.updateform.js');
-		$this->doc->getPageRenderer()->loadPrototype();
-		$this->doc->loadJavascriptLib(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('perm') . 'mod1/perm.js');
+
 		$this->doc->addStyleSheet('module', 'sysext/perm/Resources/Public/Styles/styles.css');
+		$this->doc->getPageRenderer()->loadJquery();
+		$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Perm/Permissions');
+
 		// Setting up the context sensitive menu:
 		$this->doc->getContextMenuCode();
 		// Set up menus:
@@ -225,9 +204,11 @@ class PermissionModuleController {
 			// If $this->edit then these functions are called in the end of the page...
 			if ($this->edit) {
 				$this->doc->postCode .= $this->doc->wrapScriptTags('
-					setCheck("check[perms_user]", "data[pages][' . $this->id . '][perms_user]");
-					setCheck("check[perms_group]", "data[pages][' . $this->id . '][perms_group]");
-					setCheck("check[perms_everybody]", "data[pages][' . $this->id . '][perms_everybody]");
+					require(["jquery", "TYPO3/CMS/Perm/Permissions"], function($, Permissions) {
+						Permissions.setCheck("check[perms_user]", "data[pages][' . $this->id . '][perms_user]");
+						Permissions.setCheck("check[perms_group]", "data[pages][' . $this->id . '][perms_group]");
+						Permissions.setCheck("check[perms_everybody]", "data[pages][' . $this->id . '][perms_everybody]");
+					});
 				');
 			}
 
@@ -246,7 +227,6 @@ class PermissionModuleController {
 			}
 
 			$docHeaderButtons = $this->getButtons();
-			$markers['CSH'] = '';
 			$markers['FUNC_MENU'] = BackendUtility::getFuncMenu($this->id, 'SET[mode]', $this->MOD_SETTINGS['mode'], $this->MOD_MENU['mode']);
 			$markers['CONTENT'] = $this->content;
 
@@ -266,8 +246,7 @@ class PermissionModuleController {
 	 * @return void
 	 */
 	public function printContent() {
-		$this->content = $this->doc->insertStylesAndJS($this->content);
-		echo $this->content;
+		echo $this->doc->insertStylesAndJS($this->content);
 	}
 
 	/**
@@ -277,11 +256,12 @@ class PermissionModuleController {
 	 */
 	protected function getButtons() {
 		$buttons = array(
-			'view' => '',
+			'view' => '<a href="#" onclick="' . htmlspecialchars(
+				BackendUtility::viewonclick($this->pageinfo['uid'], $GLOBALS['BACK_PATH'], BackendUtility::BEgetRootLine($this->pageinfo['uid']))
+			) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-view') . '</a>',
 			'shortcut' => ''
 		);
-		// View page
-		$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewonclick($this->pageinfo['uid'], $GLOBALS['BACK_PATH'], BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-view') . '</a>';
+
 		// Shortcut
 		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
@@ -407,7 +387,7 @@ class PermissionModuleController {
 			<input type="hidden" name="data[pages][' . $this->id . '][perms_group]" value="' . $this->pageinfo['perms_group'] . '" />
 			<input type="hidden" name="data[pages][' . $this->id . '][perms_everybody]" value="' . $this->pageinfo['perms_everybody'] . '" />
 			' . $this->getRecursiveSelect($this->id, $this->perms_clause) . '
-			<input type="submit" name="submit" value="' . $GLOBALS['LANG']->getLL('Save', TRUE) . '" />' . '<input type="submit" value="' . $GLOBALS['LANG']->getLL('Abort', TRUE) . '" onclick="' . htmlspecialchars(('jumpToUrl(' . GeneralUtility::quoteJSvalue((BackendUtility::getModuleUrl('system_perm') . '&id=' . $this->id), TRUE) . '); return false;')) . '" />
+			<input type="submit" name="submit" value="' . $GLOBALS['LANG']->getLL('Save', TRUE) . '" />' . '<input type="submit" value="' . $GLOBALS['LANG']->getLL('Abort', TRUE) . '" onclick="' . htmlspecialchars(('TYPO3.Permissions.jumpToUrl(' . GeneralUtility::quoteJSvalue((BackendUtility::getModuleUrl('system_perm') . '&id=' . $this->id), TRUE) . '); return false;')) . '" />
 			<input type="hidden" name="redirect" value="' . htmlspecialchars((BackendUtility::getModuleUrl('system_perm') . '&mode=' . $this->MOD_SETTINGS['mode'] . '&depth=' . $this->MOD_SETTINGS['depth'] . '&id=' . (int)$this->return_id . '&lastEdited=' . $this->id)) . '" />
 			' . \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction');
 
@@ -496,19 +476,15 @@ class PermissionModuleController {
 			$cells = array();
 			$pageId = $data['row']['uid'];
 
-			// Background colors:
-			$bgCol = $this->lastEdited == $pageId ? ' class="bgColor-20"' : '';
-			$lE_bgCol = $bgCol;
-
 			// User/Group names:
 			$userName = $beUserArray[$data['row']['perms_userid']] ?
 					$beUserArray[$data['row']['perms_userid']]['username'] :
 					($data['row']['perms_userid'] ? $data['row']['perms_userid'] : '');
 
 			if ($data['row']['perms_userid'] && !$beUserArray[$data['row']['perms_userid']]) {
-				$userName = \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderOwnername($pageId, $data['row']['perms_userid'], htmlspecialchars(GeneralUtility::fixed_lgd_cs($userName, 20)), FALSE);
+				$userName = PermissionAjaxController::renderOwnername($pageId, $data['row']['perms_userid'], htmlspecialchars(GeneralUtility::fixed_lgd_cs($userName, 20)), FALSE);
 			} else {
-				$userName = \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderOwnername($pageId, $data['row']['perms_userid'], htmlspecialchars(GeneralUtility::fixed_lgd_cs($userName, 20)));
+				$userName = PermissionAjaxController::renderOwnername($pageId, $data['row']['perms_userid'], htmlspecialchars(GeneralUtility::fixed_lgd_cs($userName, 20)));
 			}
 
 			$groupName = $beGroupArray[$data['row']['perms_groupid']] ?
@@ -516,9 +492,9 @@ class PermissionModuleController {
 					($data['row']['perms_groupid'] ? $data['row']['perms_groupid'] : '');
 
 			if ($data['row']['perms_groupid'] && !$beGroupArray[$data['row']['perms_groupid']]) {
-				$groupName = \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderGroupname($pageId, $data['row']['perms_groupid'], htmlspecialchars(GeneralUtility::fixed_lgd_cs($groupName, 20)), FALSE);
+				$groupName = PermissionAjaxController::renderGroupname($pageId, $data['row']['perms_groupid'], htmlspecialchars(GeneralUtility::fixed_lgd_cs($groupName, 20)), FALSE);
 			} else {
-				$groupName = \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderGroupname($pageId, $data['row']['perms_groupid'], htmlspecialchars(GeneralUtility::fixed_lgd_cs($groupName, 20)));
+				$groupName = PermissionAjaxController::renderGroupname($pageId, $data['row']['perms_groupid'], htmlspecialchars(GeneralUtility::fixed_lgd_cs($groupName, 20)));
 			}
 
 			// Seeing if editing of permissions are allowed for that page:
@@ -526,23 +502,24 @@ class PermissionModuleController {
 
 			// First column:
 			$cellAttrib = $data['row']['_CSSCLASS'] ? ' class="' . $data['row']['_CSSCLASS'] . '"' : '';
-			$cells[] = '<td align="left" nowrap="nowrap"' . ($cellAttrib ? $cellAttrib : $bgCol) . '>' .
+			$cells[] = '<td align="left" nowrap="nowrap"' . ($cellAttrib ? $cellAttrib : '') . '>' .
 					$data['HTML'] . htmlspecialchars(GeneralUtility::fixed_lgd_cs($data['row']['title'], $tLen)) . '</td>';
 
 			// "Edit permissions" -icon
 			if ($editPermsAllowed && $pageId) {
 				$aHref = BackendUtility::getModuleUrl('system_perm') . '&mode=' . $this->MOD_SETTINGS['mode'] . '&depth=' . $this->MOD_SETTINGS['depth'] . '&id=' . ($data['row']['_ORIG_uid'] ? $data['row']['_ORIG_uid'] : $pageId) . '&return_id=' . $this->id . '&edit=1';
-				$cells[] = '<td' . $bgCol . '><a href="' . htmlspecialchars($aHref) . '" title="' . $GLOBALS['LANG']->getLL('ch_permissions', TRUE) . '">' .
-						IconUtility::getSpriteIcon('actions-document-open') . '</a></td>';
+				$cells[] = '<td><a href="' . htmlspecialchars($aHref) . '" title="' . $GLOBALS['LANG']->getLL('ch_permissions', TRUE) . '">' .
+					IconUtility::getSpriteIcon('actions-document-open') . '</a></td>';
 			} else {
-				$cells[] = '<td' . $bgCol . '></td>';
+				$cells[] = '<td></td>';
 			}
 
 			$cells[] = '
-				<td' . $bgCol . ' nowrap="nowrap">' . ($pageId ? \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderPermissions($data['row']['perms_user'], $pageId, 'user') . ' ' . $userName : '') . '</td>
-				<td' . $bgCol . ' nowrap="nowrap">' . ($pageId ? \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderPermissions($data['row']['perms_group'], $pageId, 'group') . ' ' . $groupName : '') . '</td>
-				<td' . $bgCol . ' nowrap="nowrap">' . ($pageId ? ' ' . \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderPermissions($data['row']['perms_everybody'], $pageId, 'everybody') : '') . '</td>
-				<td' . $bgCol . ' nowrap="nowrap">' . ($data['row']['editlock'] ? '<span id="el_' . $pageId . '" class="editlock"><a class="editlock" onclick="WebPermissions.toggleEditLock(\'' . $pageId . '\', \'1\');" title="' . $GLOBALS['LANG']->getLL('EditLock_descr', TRUE) . '">' . IconUtility::getSpriteIcon('status-warning-lock') . '</a></span>' : ($pageId === 0 ? '' : '<span id="el_' . $pageId . '" class="editlock"><a class="editlock" onclick="WebPermissions.toggleEditLock(\'' . $pageId . '\', \'0\');" title="Enable the &raquo;Admin-only&laquo; edit lock for this page">[+]</a></span>')) . '</td>
+				<td nowrap="nowrap">' . ($pageId ? PermissionAjaxController::renderPermissions($data['row']['perms_user'], $pageId, 'user') . ' ' . $userName : '') . '</td>
+				<td nowrap="nowrap">' . ($pageId ? PermissionAjaxController::renderPermissions($data['row']['perms_group'], $pageId, 'group') . ' ' . $groupName : '') . '</td>
+				<td nowrap="nowrap">' . ($pageId ? ' ' . PermissionAjaxController::renderPermissions($data['row']['perms_everybody'], $pageId, 'everybody') : '') . '</td>
+				<td nowrap="nowrap">' . (
+					$data['row']['editlock'] ? '<span id="el_' . $pageId . '"><a class="editlock" data-page="' . (int)$pageId . '" data-lockstate="1" title="' . $GLOBALS['LANG']->getLL('EditLock_descr', TRUE) . '">' . IconUtility::getSpriteIcon('status-warning-lock') . '</a></span>' : ($pageId === 0 ? '' : '<span id="el_' . $pageId . '"><a class="editlock" data-page="' . (int)$pageId . '" data-lockstate="0" title="Enable the &raquo;Admin-only&laquo; edit lock for this page">[+]</a></span>')) . '</td>
 			';
 
 			// Compile table row:
@@ -595,7 +572,7 @@ class PermissionModuleController {
 	 * @return string HTML checkbox
 	 */
 	public function printCheckBox($checkName, $num) {
-		$onclick = 'checkChange(\'check[' . $checkName . ']\', \'data[pages][' . $GLOBALS['SOBE']->id . '][' . $checkName . ']\')';
+		$onclick = 'TYPO3.Permissions.checkChange(\'check[' . $checkName . ']\', \'data[pages][' . $GLOBALS['SOBE']->id . '][' . $checkName . ']\')';
 		return '<input type="checkbox" name="check[' . $checkName . '][' . $num . ']" onclick="' . htmlspecialchars($onclick) . '" /><br />';
 	}
 
