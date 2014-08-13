@@ -693,15 +693,15 @@ class Check {
 	 */
 	protected function checkSuhosinExecutorIncludeWhiteListContainsPhar() {
 		if ($this->isSuhosinLoaded()) {
-			$currentWhiteListArray = $this->trimExplode(' ', ini_get('suhosin.executor.include.whitelist'));
-			if (!in_array('phar', $currentWhiteListArray)) {
+			$whitelist = (string)ini_get('suhosin.executor.include.whitelist');
+			if (strpos($whitelist, 'phar') === FALSE) {
 				$status = new Status\NoticeStatus();
 				$status->setTitle('PHP suhosin.executor.include.whitelist does not contain phar');
 				$status->setMessage(
-					'suhosin.executor.include.whitelist= ' . implode(' ', $currentWhiteListArray) . LF .
+					'suhosin.executor.include.whitelist= ' . $whitelist . LF .
 					'"phar" is currently not a hard requirement of TYPO3 CMS but is nice to have and a possible' .
 					' requirement in future versions. A useful setting is:' . LF .
-					'suhosin.executor.include.whitelist=phar vfs'
+					'suhosin.executor.include.whitelist=phar,vfs'
 				);
 			} else {
 				$status = new Status\OkStatus();
@@ -712,7 +712,7 @@ class Check {
 			$status->setTitle('Suhosin not loaded');
 			$status->setMessage(
 				'If enabling suhosin, a useful setting is:' . LF .
-				'suhosin.executor.include.whitelist=phar vfs'
+				'suhosin.executor.include.whitelist=phar,vfs'
 			);
 		}
 		return $status;
@@ -725,16 +725,16 @@ class Check {
 	 */
 	protected function checkSuhosinExecutorIncludeWhiteListContainsVfs() {
 		if ($this->isSuhosinLoaded()) {
-			$currentWhiteListArray = $this->trimExplode(' ', ini_get('suhosin.executor.include.whitelist'));
-			if (!in_array('vfs', $currentWhiteListArray)) {
+			$whitelist = (string)ini_get('suhosin.executor.include.whitelist');
+			if (strpos($whitelist, 'vfs') === FALSE) {
 				$status = new Status\WarningStatus();
 				$status->setTitle('PHP suhosin.executor.include.whitelist does not contain vfs');
 				$status->setMessage(
-					'suhosin.executor.include.whitelist= ' . implode(' ', $currentWhiteListArray) . LF .
+					'suhosin.executor.include.whitelist= ' . $whitelist . LF .
 					'"vfs" is currently not a hard requirement of TYPO3 CMS but tons of unit tests rely on it.' .
 					' Furthermore, vfs will likely be a base for an additional compatibility layer in the future.' .
 					' A useful setting is:' . LF .
-					'suhosin.executor.include.whitelist=phar vfs'
+					'suhosin.executor.include.whitelist=phar,vfs'
 				);
 			} else {
 				$status = new Status\OkStatus();
@@ -745,7 +745,7 @@ class Check {
 			$status->setTitle('Suhosin not loaded');
 			$status->setMessage(
 				'If enabling suhosin, a useful setting is:' . LF .
-				'suhosin.executor.include.whitelist=phar vfs'
+				'suhosin.executor.include.whitelist=phar,vfs'
 			);
 		}
 		return $status;
