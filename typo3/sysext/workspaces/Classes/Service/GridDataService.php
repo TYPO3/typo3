@@ -206,8 +206,8 @@ class GridDataService {
 				}
 			}
 			// Suggested slot method:
-			// methodName(\TYPO3\CMS\Workspaces\Service\GridDataService $gridData, array &$dataArray, array $versions)
-			$this->emitSignal(self::SIGNAL_GenerateDataArray_BeforeCaching, $this->dataArray, $versions);
+			// methodName(\TYPO3\CMS\Workspaces\Service\GridDataService $gridData, array $dataArray, array $versions)
+			list($this->dataArray, $versions) = $this->emitSignal(self::SIGNAL_GenerateDataArray_BeforeCaching, $this->dataArray, $versions);
 			// Enrich elements after everything has been processed:
 			foreach ($this->dataArray as &$element) {
 				$identifier = $element['table'] . ':' . $element['t3ver_oid'];
@@ -219,8 +219,8 @@ class GridDataService {
 			$this->setDataArrayIntoCache($versions, $filterTxt);
 		}
 		// Suggested slot method:
-		// methodName(\TYPO3\CMS\Workspaces\Service\GridDataService $gridData, array &$dataArray, array $versions)
-		$this->emitSignal(self::SIGNAL_GenerateDataArray_PostProcesss, $this->dataArray, $versions);
+		// methodName(\TYPO3\CMS\Workspaces\Service\GridDataService $gridData, array $dataArray, array $versions)
+		list($this->dataArray, $versions) = $this->emitSignal(self::SIGNAL_GenerateDataArray_PostProcesss, $this->dataArray, $versions);
 		$this->sortDataArray();
 		$this->resolveDataArrayDependencies();
 	}
@@ -269,8 +269,8 @@ class GridDataService {
 		}
 
 		// Suggested slot method:
-		// methodName(\TYPO3\CMS\Workspaces\Service\GridDataService $gridData, array &$dataArray, $start, $limit)
-		$this->emitSignal(self::SIGNAL_GetDataArray_PostProcesss, $this->dataArray, $start, $limit);
+		// methodName(\TYPO3\CMS\Workspaces\Service\GridDataService $gridData, array $dataArray, $start, $limit, array $dataArrayPart)
+		list($this->dataArray, $start, $limit, $dataArrayPart) = $this->emitSignal(self::SIGNAL_GetDataArray_PostProcesss, $this->dataArray, $start, $limit, $dataArrayPart);
 		return $dataArrayPart;
 	}
 
@@ -366,8 +366,8 @@ class GridDataService {
 			GeneralUtility::sysLog('Try to sort "' . $this->sort . '" in "TYPO3\\CMS\\Workspaces\\Service\\GridDataService::sortDataArray" but $this->dataArray is empty! This might be the Bug #26422 which could not reproduced yet.', 3);
 		}
 		// Suggested slot method:
-		// methodName(\TYPO3\CMS\Workspaces\Service\GridDataService $gridData, array &$dataArray, $sortColumn, $sortDirection)
-		$this->emitSignal(self::SIGNAL_SortDataArray_PostProcesss, $this->dataArray, $this->sort, $this->sortDir);
+		// methodName(\TYPO3\CMS\Workspaces\Service\GridDataService $gridData, array $dataArray, $sortColumn, $sortDirection)
+		list($this->dataArray, $this->sort, $this->sortDir) = $this->emitSignal(self::SIGNAL_SortDataArray_PostProcesss, $this->dataArray, $this->sort, $this->sortDir);
 	}
 
 	/**
@@ -595,12 +595,13 @@ class GridDataService {
 	 * Emits a signal to be handled by any registered slots.
 	 *
 	 * @param string $signalName Name of the signal
-	 * @return void
+	 * @return array
 	 */
 	protected function emitSignal($signalName) {
 		// Arguments are always ($this, [method argument], [method argument], ...)
 		$signalArguments = array_merge(array($this), array_slice(func_get_args(), 1));
-		$this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Workspaces\Service\GridDataService::class, $signalName, $signalArguments);
+		$slotReturn = $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Workspaces\Service\GridDataService::class, $signalName, $signalArguments);
+		return array_slice($slotReturn, 1);
 	}
 
 	/**
