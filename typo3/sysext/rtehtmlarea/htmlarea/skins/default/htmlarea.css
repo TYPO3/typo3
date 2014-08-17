@@ -98,13 +98,6 @@
 	padding: 0;
 	margin: 1px 0 1px 2px;
 }
-.htmlarea .toolbar .buttonHover {
-	background-color: #deecfd;
-	border-color: #e4e0db #999999 #999999 #e4e0db;
-	border-style: solid;
-	border-width: 1px;
-	opacity: 1.00;
-}
 .htmlarea .toolbar .buttonActive,
 .htmlarea .toolbar .buttonPressed,
 .htmlarea-context-menu .buttonActive {

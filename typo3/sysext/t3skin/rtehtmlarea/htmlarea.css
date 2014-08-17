@@ -36,10 +36,7 @@
 }
 /* Selectors for the editor toolbar */
 .htmlarea .toolbar {
-	background-color: #f3f3f3;
 	cursor: default;
-	border: 1px solid #c7c7c7;
-	border-bottom: 0;
 	margin: 0;
 	padding: 2px;
 	font-family: Verdana, Helvetica, Geneva, Arial, sans-serif;
@@ -52,7 +49,7 @@
 }
 .htmlarea .toolbar .x-form-item {
 	float: left;
-	margin:0;
+	margin: 0 0.5em 0 0;
 }
 .htmlarea .toolbar .x-form-item-label {
 	vertical-align:middle;
@@ -97,10 +94,6 @@
 	margin: 1px 0 1px 2px;
 }
 .htmlarea .toolbar .buttonHover {
-	border-style: solid;
-	border-width: 1px;
-	border-color: white #C5C5D5 #C5C5D5 white;
-	background-color: #E0E0E9;
 	opacity: 1.00;
 }
 .htmlarea .toolbar .buttonActive,
@@ -171,6 +164,7 @@
 	border-bottom: none;
 	margin:0;padding:0;
 }
+
 .htmlarea .noStatusBar {
 	border-bottom:1px solid #A2AAB8;
 }
