@@ -79,6 +79,13 @@ class SplitStorage extends AbstractStorage
             if (MathUtility::canBeInterpretedAsInteger($keyId)) {
                 $this->databaseConnection->exec_DELETEquery('tx_rsaauth_keys', 'uid=' . $keyId);
                 unset($_SESSION['tx_rsaauth_key']);
+                if (empty($_SESSION)) {
+                    $sessionName = session_name();
+                    $sessionCookie = session_get_cookie_params();
+                    session_destroy();
+                    // By using setcookie with the second parameter set to false we actually delete the cookie
+                    setcookie($sessionName, false, $sessionCookie['lifetime'], $sessionCookie['path'], $sessionCookie['domain'], $sessionCookie['secure']);
+                }
             }
         } else {
             // Add key
