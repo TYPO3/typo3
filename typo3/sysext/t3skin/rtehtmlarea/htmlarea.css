@@ -36,10 +36,7 @@
 }
 /* Selectors for the editor toolbar */
 .htmlarea .toolbar {
-	background-color: #f3f3f3;
 	cursor: default;
-	border: 1px solid #c7c7c7;
-	border-bottom: 0;
 	margin: 0;
 	padding: 2px;
 	font-family: Verdana, Helvetica, Geneva, Arial, sans-serif;
@@ -53,7 +50,7 @@
 .htmlarea .toolbar .x-form-item {
 	float: left;
 	height: 26px;
-	margin: 0 2px;
+	margin: 0 0.5em 0 0;
 }
 .htmlarea .toolbar .x-form-item-label {
 	background-color:transparent;
@@ -113,10 +110,6 @@ body.ext-ie6 .htmlarea .toolbar .x-btn-text {
 /* fixing button background-color and border-color in IE6 */
 body.ext-ie6 .htmlarea .toolbar .buttonHover,
 .htmlarea .toolbar .buttonHover {
-	border-style: solid;
-	border-width: 1px;
-	border-color: white #C5C5D5 #C5C5D5 white;
-	background-color: #E0E0E9;
 	opacity: 1.00;
 }
 /* fixing button background-color and border-color in IE6 */
