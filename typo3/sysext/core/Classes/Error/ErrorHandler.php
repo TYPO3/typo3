@@ -183,7 +183,7 @@ class ErrorHandler implements \TYPO3\CMS\Core\Error\ErrorHandlerInterface {
 				'error' => $severity,
 				'details_nr' => 0,
 				'details' => $logMessage,
-				'IP' => GeneralUtility::getIndpEnv('REMOTE_ADDR'),
+				'IP' => (string)GeneralUtility::getIndpEnv('REMOTE_ADDR'),
 				'tstamp' => $GLOBALS['EXEC_TIME'],
 				'workspace' => $workspace
 			);
