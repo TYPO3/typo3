@@ -69,7 +69,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 	public $extPageInTreeInfo = array();
 
 	/**
-	 * General flag which is set if the adminpanel should be displayed at all.
+	 * General flag which is set if the adminpanel is enabled at all.
 	 *
 	 * @var boolean
 	 */
@@ -142,8 +142,11 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 	 * @return boolean Whether frontend editing is active
 	 */
 	public function isFrontendEditingActive() {
-		return $this->extAdmEnabled
-			&& ($this->adminPanel->isAdminModuleEnabled('edit') || $GLOBALS['TSFE']->displayEditIcons == 1);
+		return $this->extAdmEnabled && (
+			$this->adminPanel->isAdminModuleEnabled('edit') ||
+			$GLOBALS['TSFE']->displayEditIcons == 1 ||
+			$GLOBALS['TSFE']->displayFieldEditIcons == 1
+		);
 	}
 
 	/**
