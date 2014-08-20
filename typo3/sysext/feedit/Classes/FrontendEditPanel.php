@@ -236,7 +236,8 @@ class FrontendEditPanel {
 	}
 
 	/**
-	 * Creates a link to a script (eg. typo3/alt_doc.php or typo3/db_new.php) which either opens in the current frame OR in a pop-up window.
+	 * Creates a link to a script (eg. typo3/alt_doc.php or typo3/db_new.php)
+	 * which either opens in the current frame OR in a pop-up window.
 	 *
 	 * @param string $string The string to wrap in a link, typ. and image used as button in the edit panel.
 	 * @param string $url The URL of the link. Should be absolute if supposed to work with <base> path set.
@@ -244,8 +245,15 @@ class FrontendEditPanel {
 	 * @see editPanelLinkWrap()
 	 */
 	protected function editPanelLinkWrap_doWrap($string, $url) {
-		$onclick = 'vHWin=window.open(' . GeneralUtility::quoteJSvalue($url . '&returnUrl=close.html') . ',\'FEquickEditWindow\',\'width=690,height=500,status=0,menubar=0,scrollbars=1,resizable=1\');vHWin.focus();return false;';
-		return '<a href="#" onclick="' . htmlspecialchars($onclick) . '" class="frontEndEditIconLinks">' . $string . '</a>';
+		// Open in the current frame?
+		if ($GLOBALS['BE_USER']->adminPanel->extGetFeAdminValue('edit', 'editNoPopup')) {
+			$href = htmlspecialchars($url . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')));
+			return '<a href="' . $href . '" class="frontEndEditIconLinks">' . $string . '</a>';
+		} else {
+			$onclick = 'vHWin=window.open(' . GeneralUtility::quoteJSvalue($url . '&returnUrl=close.html') .
+				',\'FEquickEditWindow\',\'width=690,height=500,status=0,menubar=0,scrollbars=1,resizable=1\');vHWin.focus();return false;';
+			return '<a href="#" onclick="' . htmlspecialchars($onclick) . '" class="frontEndEditIconLinks">' . $string . '</a>';
+		}
 	}
 
 	/**

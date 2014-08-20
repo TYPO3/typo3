@@ -161,14 +161,19 @@ class AdminPanelView {
 		if (!$this->isAdminModuleEnabled($sectionName)) {
 			return NULL;
 		}
-		// Exceptions where the values can be overridden from backend:
+
+		// Exceptions where the values can be overridden (forced) from backend:
 		// deprecated
-		if ($sectionName . '_' . $val === 'edit_displayIcons' && $GLOBALS['BE_USER']->extAdminConfig['module.']['edit.']['forceDisplayIcons']) {
+		if (
+			$sectionName === 'edit' && (
+				$val === 'displayIcons' && $GLOBALS['BE_USER']->extAdminConfig['module.']['edit.']['forceDisplayIcons'] ||
+				$val === 'displayFieldIcons' && $GLOBALS['BE_USER']->extAdminConfig['module.']['edit.']['forceDisplayFieldIcons'] ||
+				$val === 'editNoPopup' && $GLOBALS['BE_USER']->extAdminConfig['module.']['edit.']['forceNoPopup']
+			)
+		) {
 			return TRUE;
 		}
-		if ($sectionName . '_' . $val === 'edit_displayFieldIcons' && $GLOBALS['BE_USER']->extAdminConfig['module.']['edit.']['forceDisplayFieldIcons']) {
-			return TRUE;
-		}
+
 		// Override all settings with user TSconfig
 		if ($val && isset($GLOBALS['BE_USER']->extAdminConfig['override.'][$sectionName . '.'][$val])) {
 			return $GLOBALS['BE_USER']->extAdminConfig['override.'][$sectionName . '.'][$val];
@@ -176,13 +181,16 @@ class AdminPanelView {
 		if (isset($GLOBALS['BE_USER']->extAdminConfig['override.'][$sectionName])) {
 			return $GLOBALS['BE_USER']->extAdminConfig['override.'][$sectionName];
 		}
-		$retVal = $val ? $GLOBALS['BE_USER']->uc['TSFE_adminConfig'][$sectionName . '_' . $val] : 1;
+
+		$returnValue = $val ? $GLOBALS['BE_USER']->uc['TSFE_adminConfig'][$sectionName . '_' . $val] : 1;
+
+		// Exception for preview
 		if ($sectionName === 'preview' && $this->ext_forcePreview) {
-			return !$val ? TRUE : $retVal;
+			return !$val ? TRUE : $returnValue;
 		}
 
 		// See if the menu is expanded!
-		return $this->isAdminModuleOpen($sectionName) ? $retVal : NULL;
+		return $this->isAdminModuleOpen($sectionName) ? $returnValue : NULL;
 	}
 
 	/**
