@@ -7576,7 +7576,8 @@ class ContentObjectRenderer {
 			'join',
 			'leftjoin',
 			'rightjoin',
-			'recursive'
+			'recursive',
+			'where'
 		);
 		foreach ($properties as $property) {
 			$conf[$property] = isset($conf[$property . '.']) ? trim($this->stdWrap($conf[$property], $conf[$property . '.'])) : trim($conf[$property]);
