@@ -451,7 +451,7 @@ class SqlParser {
 			// Finding what is after the table definition - table type in MySQL
 			if ($delim == ')') {
 				if ($this->nextPart($parseString, '^((ENGINE|TYPE)[[:space:]]*=)')) {
-					$result['tableType'] = $parseString;
+					$result['engine'] = $parseString;
 					$parseString = '';
 				}
 			} else {
@@ -1633,7 +1633,7 @@ class SqlParser {
 		$query = 'CREATE TABLE ' . $components['TABLE'] . ' (
 			' . implode(',
 			', $fieldsKeys) . '
-			)' . ($components['tableType'] ? ' ENGINE=' . $components['tableType'] : '');
+			)' . ($components['engine'] ? ' ENGINE=' . $components['engine'] : '');
 		return $query;
 	}
 
