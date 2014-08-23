@@ -73,11 +73,11 @@ class StyleguideController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 * FlashMessages
 	 */
 	public function flashMessagesAction() {
-		$this->flashMessageContainer->add($this->getLoremIpsum(), 'Title for Info message', FlashMessage::INFO, TRUE);
-		$this->flashMessageContainer->add($this->getLoremIpsum(), 'Title for Info message', FlashMessage::NOTICE, TRUE);
-		$this->flashMessageContainer->add($this->getLoremIpsum(), 'Title for Info message', FlashMessage::ERROR, TRUE);
-		$this->flashMessageContainer->add($this->getLoremIpsum(), 'Title for Info message', FlashMessage::OK, TRUE);
-		$this->flashMessageContainer->add($this->getLoremIpsum(), 'Title for Info message', FlashMessage::WARNING, TRUE);
+		$this->addFlashMessage($this->getLoremIpsum(), 'Info - Title for Info message', FlashMessage::INFO, TRUE);
+		$this->addFlashMessage($this->getLoremIpsum(), 'Notice - Title for Info message', FlashMessage::NOTICE, TRUE);
+		$this->addFlashMessage($this->getLoremIpsum(), 'Error - Title for Info message', FlashMessage::ERROR, TRUE);
+		$this->addFlashMessage($this->getLoremIpsum(), 'Ok - Title for Info message', FlashMessage::OK, TRUE);
+		$this->addFlashMessage($this->getLoremIpsum(), 'Warning - Title for Info message', FlashMessage::WARNING, TRUE);
 	}
 
 	/**
