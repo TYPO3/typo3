@@ -2265,11 +2265,13 @@ class tx_cms_layout extends recordList {
 	 * @return void
 	 */
 	protected function generateTtContentDataArray(array $rowArray) {
-		$this->tt_contentData = array(
-			'nextThree' => array(),
-			'next' => array(),
-			'prev' => array(),
-		);
+		if (empty($this->tt_contentData)) {
+			$this->tt_contentData = array(
+				'nextThree' => array(),
+				'next' => array(),
+				'prev' => array(),
+			);
+		}
 		foreach ($rowArray as $key => $value) {
 			// Create the list of the next three ids (for editing links...)
 			for ($i = 0; $i < $this->nextThree; $i++) {
