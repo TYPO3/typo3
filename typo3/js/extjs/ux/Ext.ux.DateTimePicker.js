@@ -195,7 +195,11 @@ Ext.ux.DateTimePicker = Ext.extend(Ext.DatePicker, {
 		}
 
 		this.formPanel = new Ext.form.FormPanel({
-			layout: 'column',
+			layout: 'table',
+			layoutConfig: {
+				// The total column count must be specified here
+				columns: 3
+			},
 			renderTo: this.el.child("td.x-date-bottom", true),
 			baseCls: 'x-plain',
 			hideBorders: true,
