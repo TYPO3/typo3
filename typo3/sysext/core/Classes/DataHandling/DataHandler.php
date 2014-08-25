@@ -3089,13 +3089,15 @@ class DataHandler {
 	 * @param array $overrideValues Associative array with field/value pairs to override directly. Notice; Fields must exist in the table record and NOT be among excluded fields!
 	 * @param string $excludeFields Commalist of fields to exclude from the copy process (might get default values)
 	 * @param integer $language Language ID (from sys_language table)
-	 * @return integer ID of new record, if any
-	 * @todo Define visibility
+	 * @return NULL|int ID of new record, if any
 	 */
 	public function copyRecord($table, $uid, $destPid, $first = 0, $overrideValues = array(), $excludeFields = '', $language = 0) {
 		$uid = ($origUid = (int)$uid);
+		if (empty($GLOBALS['TCA'][$table]) || $uid === 0) {
+			return NULL;
+		}
 		// Only copy if the table is defined in $GLOBALS['TCA'], a uid is given and the record wasn't copied before:
-		if ($GLOBALS['TCA'][$table] && $uid && !$this->isRecordCopied($table, $uid)) {
+		if (!$this->isRecordCopied($table, $uid)) {
 			// This checks if the record can be selected which is all that a copy action requires.
 			if ($this->doesRecordExist($table, $uid, 'show')) {
 				// Check if table is allowed on destination page
@@ -3199,6 +3201,8 @@ class DataHandler {
 			} else {
 				$this->log($table, $uid, 3, 0, 1, 'Attempt to copy record without permission');
 			}
+		} elseif (!empty($overrideValues)) {
+			$this->log($table, $uid, 5, 0, 1, 'Repeated attemp to copy record "' . $table . ':' . $uid . '" with override values');
 		}
 	}
 
@@ -3270,12 +3274,33 @@ class DataHandler {
 			foreach ($copyTablesArray as $table) {
 				// All records under the page is copied.
 				if ($table && is_array($GLOBALS['TCA'][$table]) && $table != 'pages') {
-					$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, 'pid=' . (int)$uid . $this->deleteClause($table), '', $GLOBALS['TCA'][$table]['ctrl']['sortby'] ? $GLOBALS['TCA'][$table]['ctrl']['sortby'] . ' DESC' : '');
-					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres)) {
+					$fields = 'uid';
+					$languageField = NULL;
+					$transOrigPointerField = NULL;
+					if (BackendUtility::isTableLocalizable($table)) {
+						$languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
+						$transOrigPointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
+						$fields .= ',' . $languageField . ',' . $transOrigPointerField;
+					}
+					$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+						$fields,
+						$table,
+						'pid=' . (int)$uid . $this->deleteClause($table),
+						'',
+						(!empty($GLOBALS['TCA'][$table]['ctrl']['sortby']) ? $GLOBALS['TCA'][$table]['ctrl']['sortby'] . ' DESC' : ''),
+						'',
+						'uid'
+					);
+					foreach ($rows as $row) {
+						// Skip localized records that will be processed in
+						// copyL10nOverlayRecords() on copying the default language record
+						$transOrigPointer = $row[$transOrigPointerField];
+						if ($row[$languageField] > 0 && $transOrigPointer > 0 && isset($rows[$transOrigPointer])) {
+							continue;
+						}
 						// Copying each of the underlying records...
 						$this->copyRecord($table, $row['uid'], $theNewRootID);
 					}
-					$GLOBALS['TYPO3_DB']->sql_free_result($mres);
 				}
 			}
 			return $theNewRootID;
