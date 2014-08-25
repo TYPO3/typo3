@@ -3338,7 +3338,13 @@ class DataHandler {
 	public function copyRecord($table, $uid, $destPid, $first = FALSE, $overrideValues = array(), $excludeFields = '', $language = 0, $ignoreLocalization = FALSE) {
 		$uid = ($origUid = (int)$uid);
 		// Only copy if the table is defined in $GLOBALS['TCA'], a uid is given and the record wasn't copied before:
-		if (!$GLOBALS['TCA'][$table] || !$uid || $this->isRecordCopied($table, $uid)) {
+		if (empty($GLOBALS['TCA'][$table]) || $uid === 0) {
+			return NULL;
+		}
+		if ($this->isRecordCopied($table, $uid)) {
+			if (!empty($overrideValues)) {
+				$this->log($table, $uid, 5, 0, 1, 'Repeated attempt to copy record "' . $table . ':' . $uid . '" with override values');
+			}
 			return NULL;
 		}
 
@@ -3532,12 +3538,33 @@ class DataHandler {
 			foreach ($copyTablesArray as $table) {
 				// All records under the page is copied.
 				if ($table && is_array($GLOBALS['TCA'][$table]) && $table != 'pages') {
-					$mres = $this->databaseConnection->exec_SELECTquery('uid', $table, 'pid=' . (int)$uid . $this->deleteClause($table), '', $GLOBALS['TCA'][$table]['ctrl']['sortby'] ? $GLOBALS['TCA'][$table]['ctrl']['sortby'] . ' DESC' : '');
-					while ($row = $this->databaseConnection->sql_fetch_assoc($mres)) {
+					$fields = 'uid';
+					$languageField = NULL;
+					$transOrigPointerField = NULL;
+					if (BackendUtility::isTableLocalizable($table)) {
+						$languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
+						$transOrigPointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
+						$fields .= ',' . $languageField . ',' . $transOrigPointerField;
+					}
+					$rows = $this->databaseConnection->exec_SELECTgetRows(
+						$fields,
+						$table,
+						'pid=' . (int)$uid . $this->deleteClause($table),
+						'',
+						(!empty($GLOBALS['TCA'][$table]['ctrl']['sortby']) ? $GLOBALS['TCA'][$table]['ctrl']['sortby'] . ' DESC' : ''),
+						'',
+						'uid'
+					);
+					foreach ($rows as $row) {
+						// Skip localized records that will be processed in
+						// copyL10nOverlayRecords() on copying the default language record
+						$transOrigPointer = $row[$transOrigPointerField];
+						if ($row[$languageField] > 0 && $transOrigPointer > 0 && isset($rows[$transOrigPointer])) {
+							continue;
+						}
 						// Copying each of the underlying records...
 						$this->copyRecord($table, $row['uid'], $theNewRootID);
 					}
-					$this->databaseConnection->sql_free_result($mres);
 				}
 			}
 			$this->processRemapStack();
