@@ -159,8 +159,8 @@ abstract class Enumeration implements TypeInterface {
 	 * @param boolean $include_default
 	 * @return array
 	 */
-	public function getConstants($include_default = FALSE) {
-		$enumConstants = static::$enumConstants[get_class($this)];
+	static public function getConstants($include_default = FALSE) {
+		$enumConstants = static::$enumConstants[get_called_class()];
 		if (!$include_default) {
 			unset($enumConstants['__default']);
 		}
