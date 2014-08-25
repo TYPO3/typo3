@@ -289,7 +289,7 @@ class Indexer {
 							// Alternative title for indexing
 							$this->conf['metaCharset'] = $pObj->metaCharset;
 							// Character set of content (will be converted to utf-8 during indexing)
-							$this->conf['mtime'] = $pObj->register['SYS_LASTCHANGED'];
+							$this->conf['mtime'] = isset($pObj->register['SYS_LASTCHANGED']) ? $pObj->register['SYS_LASTCHANGED'] : $pObj->page['SYS_LASTCHANGED'];
 							// Most recent modification time (seconds) of the content on the page. Used to evaluate whether it should be re-indexed.
 							// Configuration of behavior:
 							$this->conf['index_externals'] = $pObj->config['config']['index_externals'];
@@ -1456,7 +1456,7 @@ class Indexer {
 			// TYPO3 page
 			'item_title' => $this->contentParts['title'],
 			'item_description' => $this->bodyDescription($this->contentParts),
-			'item_mtime' => $this->conf['mtime'],
+			'item_mtime' => (int) $this->conf['mtime'],
 			'item_size' => strlen($this->conf['content']),
 			'tstamp' => $GLOBALS['EXEC_TIME'],
 			'crdate' => $GLOBALS['EXEC_TIME'],
