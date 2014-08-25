@@ -37,7 +37,7 @@ class ValidatorTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
 		$additionalFields = array();
 		if (empty($taskInfo['configuration'])) {
 			if ($schedulerModule->CMD == 'add') {
-				$taskInfo['configuration'] = '';
+				$taskInfo['configuration'] = "mod.tx_linkvalidator {\n}";
 			} elseif ($schedulerModule->CMD == 'edit') {
 				$taskInfo['configuration'] = $task->getConfiguration();
 			} else {
@@ -121,7 +121,7 @@ class ValidatorTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
 			'label' => $label
 		);
 		$fieldId = 'task_configuration';
-		$fieldCode = '<textarea  name="tx_scheduler[linkvalidator][configuration]" id="' . $fieldId . '" >' .
+		$fieldCode = '<textarea  name="tx_scheduler[linkvalidator][configuration]" id="' . $fieldId . '" class="wide">' .
 					htmlspecialchars($taskInfo['configuration']) . '</textarea>';
 		$label = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.conf');
 		$label = BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
