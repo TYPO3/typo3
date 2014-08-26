@@ -861,7 +861,7 @@ class ClickMenu {
 			}
 			// Rename
 			if (!in_array('rename', $this->disabledItems) && !$isStorageRoot) {
-				$menuItems['rename'] = $this->FILE_launch($identifier, 'file_rename.php', 'rename', 'rename.gif');
+				$menuItems['rename'] = $this->FILE_launch($identifier, 'file_rename', 'rename', 'rename.gif');
 			}
 			// Upload
 			if (!in_array('upload', $this->disabledItems) && $folder && $isOnline) {
