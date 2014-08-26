@@ -969,7 +969,7 @@ class ClickMenu {
 	 * @todo Define visibility
 	 */
 	public function FILE_upload($path) {
-		$script = 'file_upload.php';
+		$script = 'file_upload';
 		$type = 'upload';
 		$image = 'upload.gif';
 		return $this->FILE_launch($path, $script, $type, $image, TRUE);
