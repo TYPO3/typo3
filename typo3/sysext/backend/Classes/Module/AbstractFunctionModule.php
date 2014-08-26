@@ -46,8 +46,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
  * 'web_info',
- * 'tx_cms_webinfo_page',
- * \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'web_info/class.tx_cms_webinfo.php',
+ * 'TYPO3\\CMS\\Frontend\\Controller\\PageInformationController',
+ * NULL,
  * 'LLL:EXT:cms/locallang_tca.xlf:mod_tx_cms_webinfo_page'
  * );
  *
@@ -62,7 +62,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
  * 'web_func',
  * 'TYPO3\\CMS\\WizardCrpages\\Controller\\CreatePagesWizardModuleFunctionController',
- * \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Classes/Controller/CreatePagesWizardModuleFunctionController.php',
+ * NULL,
  * 'LLL:EXT:wizard_crpages/locallang.xlf:wiz_crMany',
  * 'wiz'
  * );
@@ -261,10 +261,11 @@ abstract class AbstractFunctionModule {
 
 	/**
 	 * Dummy function - but is used to set up additional menu items for this submodule.
-	 * For an example see the extension 'cms' where the 'web_info' submodule is defined in cms/web_info/class.tx_cms_webinfo.php, tx_cms_webinfo_page::modMenu()
+	 * For an example see the extension 'cms' where the 'web_info' submodule is defined
+	 * in cms/web_info/class.tx_cms_webinfo.php, \TYPO3\CMS\\Frontend\Controller\PageInformationController::modMenu()
 	 *
 	 * @return array A MOD_MENU array which will be merged together with the one from the parent object
-	 * @see init(), tx_cms_webinfo_page::modMenu()
+	 * @see init(), \TYPO3\CMS\Frontend\Controller\PageInformationController::modMenu()
 	 * @todo Define visibility
 	 */
 	public function modMenu() {
