@@ -505,6 +505,34 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	}
 
 	/**
+	 * Returns the most important properties of the link validator task as a
+	 * comma seperated string that will be displayed in the scheduler module.
+	 *
+	 * @return string
+	 */
+	public function getAdditionalInformation() {
+		$additionalInformation = array();
+
+		$page = (int)$this->getPage();
+		$pageLabel = $page;
+		if ($page !== 0) {
+			$pageData = BackendUtility::getRecord('pages', $page);
+			if (!empty($pageData)) {
+				$pageTitle = BackendUtility::getRecordTitle('pages', $pageData);
+				$pageLabel = $pageTitle . ' (' . $page . ')';
+			}
+		}
+		$additionalInformation[] = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.page') . ': ' . $pageLabel;
+
+		$depth = (int)$this->getDepth();
+		$additionalInformation[] = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.depth') . ': ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_' . ($depth === 999 ? 'infi' : $depth));
+
+		$additionalInformation[] = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.email') . ': ' . $this->getEmail();
+
+		return implode(', ', $additionalInformation);
+	}
+
+	/**
 	 * Simulate cli call with setting the required options to the $_SERVER['argv']
 	 *
 	 * @return void
