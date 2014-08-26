@@ -1447,7 +1447,7 @@ class SqlParser {
 
 	/**
 	 * Trimming SQL as preparation for parsing.
-	 * ";" in the end is stripped of.
+	 * ";" in the end is stripped off.
 	 * White space is trimmed away around the value
 	 * A single space-char is added in the end
 	 *
