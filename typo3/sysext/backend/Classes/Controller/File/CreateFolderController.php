@@ -124,7 +124,7 @@ class CreateFolderController {
 			function reload(a) {	//
 				if (!changed || (changed && confirm(' . GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.redraw')) . '))) {
 					var params = "&target="+encodeURIComponent(path)+"&number="+a+"&returnUrl=' . rawurlencode($this->returnUrl) . '";
-					window.location.href = "file_newfolder.php?"+params;
+					window.location.href = "' . BackendUtility::getModuleUrl('file_newfolder') . '"+params;
 				}
 			}
 			function backToList() {	//

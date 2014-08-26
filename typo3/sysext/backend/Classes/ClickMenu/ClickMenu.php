@@ -869,7 +869,7 @@ class ClickMenu {
 			}
 			// New
 			if (!in_array('new', $this->disabledItems) && $folder && $isOnline) {
-				$menuItems['new'] = $this->FILE_launch($identifier, 'file_newfolder.php', 'new', 'new_file.gif');
+				$menuItems['new'] = $this->FILE_launch($identifier, 'file_newfolder', 'new', 'new_file.gif');
 			}
 			// Info
 			if (!in_array('info', $this->disabledItems)) {

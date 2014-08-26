@@ -447,7 +447,14 @@ class FileListController {
 		if ($this->folderObject && $this->folderObject->checkActionPermission('write')
 			&& ($this->folderObject->getStorage()->checkUserActionPermission('add', 'File') || $this->folderObject->checkActionPermission('add'))
 		) {
-			$buttons['new'] = '<a href="' . $GLOBALS['BACK_PATH'] . 'file_newfolder.php?target=' . rawurlencode($this->folderObject->getCombinedIdentifier()) . '&amp;returnUrl=' . rawurlencode($this->filelist->listURL()) . '" title="' . $GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.new', TRUE)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new') . '</a>';
+			$buttons['new'] = '<a href="' . htmlspecialchars($GLOBALS['BACK_PATH']
+				. BackendUtility::getModuleUrl(
+					'file_newfolder',
+					array(
+						'target' => $this->folderObject->getCombinedIdentifier(),
+						'returnUrl' => $this->filelist->listURL(),
+					)
+				)) . '" title="' . $GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.new', TRUE)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new') . '</a>';
 		}
 		return $buttons;
 	}
