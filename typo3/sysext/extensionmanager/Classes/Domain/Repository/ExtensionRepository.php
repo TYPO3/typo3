@@ -148,29 +148,25 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 		$quotedSearchString = $this->databaseConnection->escapeStrForLike($this->databaseConnection->quoteStr($searchString, 'tx_extensionmanager_domain_model_extension'), 'tx_extensionmanager_domain_model_extension');
 		$quotedSearchStringForLike = '\'%' . $quotedSearchString . '%\'';
 		$quotedSearchString = '\'' . $quotedSearchString . '\'';
-		$select = 'tx_extensionmanager_domain_model_extension.*,
-			(
-				(extension_key like ' . $quotedSearchString . ') * 8 +
-				(extension_key like ' . $quotedSearchStringForLike . ') * 4 +
-				(title like ' . $quotedSearchStringForLike . ') * 2 +
-				(author_name like ' . $quotedSearchStringForLike . ')
-			) as position';
-		$from = 'tx_extensionmanager_domain_model_extension';
+		$select =
+			self::TABLE_NAME . '.*, ' .
+			'CASE ' .
+				'WHEN extension_key = ' . $quotedSearchString . ' THEN 16 ' .
+				'WHEN extension_key LIKE ' . $quotedSearchStringForLike . ' THEN 8 ' .
+				'WHEN title LIKE ' . $quotedSearchStringForLike . ' THEN 4 ' .
+				'WHEN description LIKE ' . $quotedSearchStringForLike . ' THEN 2 ' .
+				'WHEN author_name LIKE ' . $quotedSearchStringForLike . ' THEN 1 ' .
+			'END AS position';
 		$where = '(
-					extension_key = ' . $quotedSearchString . '
-					OR
-					extension_key LIKE ' . $quotedSearchStringForLike . '
-					OR
-					title LIKE ' . $quotedSearchStringForLike . '
-					OR
-					description LIKE ' . $quotedSearchStringForLike . '
-					OR
+					extension_key = ' . $quotedSearchString . ' OR
+					extension_key LIKE ' . $quotedSearchStringForLike . ' OR
+					title LIKE ' . $quotedSearchStringForLike . ' OR
+					description LIKE ' . $quotedSearchStringForLike . ' OR
 					author_name LIKE ' . $quotedSearchStringForLike . '
 				)
-				AND current_version=1 AND review_state >= 0
-				HAVING position > 0';
-		$order = 'position desc';
-		$result = $this->databaseConnection->exec_SELECTgetRows($select, $from, $where, '', $order);
+				AND current_version = 1 AND review_state >= 0';
+		$order = 'position DESC';
+		$result = $this->databaseConnection->exec_SELECTgetRows($select, self::TABLE_NAME, $where, '', $order);
 		return $this->dataMapper->map('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Extension', $result);
 	}
 
