@@ -99,6 +99,12 @@ class NewContentElementController {
 	 * @return void
 	 */
 	public function init() {
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xlf');
+		$LOCAL_LANG_orig = $GLOBALS['LOCAL_LANG'];
+		$GLOBALS['LANG']->includeLLFile('EXT:cms/layout/locallang_db_new_content_el.xlf');
+		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($LOCAL_LANG_orig, $GLOBALS['LOCAL_LANG']);
+		$GLOBALS['LOCAL_LANG'] = $LOCAL_LANG_orig;
+
 		// Setting internal vars:
 		$this->id = (int)GeneralUtility::_GP('id');
 		$this->sys_language = (int)GeneralUtility::_GP('sys_language_uid');

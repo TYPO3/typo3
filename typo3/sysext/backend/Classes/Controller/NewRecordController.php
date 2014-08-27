@@ -428,8 +428,8 @@ class NewRecordController {
 							$rowContent = '<div class="typo3-newRecord-treeline">' . $firstLevel . $newContentIcon . '&nbsp;<strong>' . $GLOBALS['LANG']->getLL('createNewContent') . '</strong></div>';
 							// If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's wizard instead:
 							$overrideExt = $this->web_list_modTSconfig['properties']['newContentWiz.']['overrideWithExtension'];
-							$pathToWizard = ExtensionManagementUtility::isLoaded($overrideExt) ? ExtensionManagementUtility::extRelPath($overrideExt) . 'mod1/db_new_content_el.php' : 'sysext/cms/layout/db_new_content_el.php';
-							$href = $pathToWizard . '?id=' . $this->id . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
+							$pathToWizard = ExtensionManagementUtility::isLoaded($overrideExt) ? ExtensionManagementUtility::extRelPath($overrideExt) . 'mod1/db_new_content_el.php?' : BackendUtility::getModuleUrl('new_content_element') . '&';
+							$href = $pathToWizard . 'id=' . $this->id . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
 							$rowContent .= '<div class="typo3-newRecord-treeline">' . $secondLevel . $newLink . '</div><div class="typo3-newRecord-treeline">' . $secondLevelLast . '<a href="' . htmlspecialchars($href) . '">' . $newContentIcon . htmlspecialchars($GLOBALS['LANG']->getLL('clickForWizard')) . '</a></div>';
 							// Half-line added:
 							$rowContent .= '<div class="typo3-newRecord-treeline">' . $halfLine . '</div>';

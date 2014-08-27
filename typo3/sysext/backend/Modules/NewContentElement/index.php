@@ -13,24 +13,6 @@
  */
 
 /**
- * New content elements wizard
- * (Part of the 'cms' extension)
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-unset($MCONF);
-require __DIR__ . '/conf.php';
-require $BACK_PATH . 'init.php';
-// Unset MCONF/MLANG since all we wanted was back path etc. for this particular script.
-unset($MCONF);
-unset($MLANG);
-// Merging locallang files/arrays:
-$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xlf');
-$LOCAL_LANG_orig = $LOCAL_LANG;
-$LANG->includeLLFile('EXT:cms/layout/locallang_db_new_content_el.xlf');
-\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($LOCAL_LANG_orig, $LOCAL_LANG);
-$LOCAL_LANG = $LOCAL_LANG_orig;
-/**
  * Local position map class
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
@@ -64,16 +46,11 @@ class ext_posMap extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 	 * @return string
 	 */
 	public function onClickInsertRecord($row, $vv, $moveUid, $pid, $sys_lang = 0) {
-		$table = 'tt_content';
 		$location = $this->backPath . 'alt_doc.php?edit[tt_content][' . (is_array($row) ? -$row['uid'] : $pid) . ']=new&defVals[tt_content][colPos]=' . $vv . '&defVals[tt_content][sys_language_uid]=' . $sys_lang . '&returnUrl=' . rawurlencode($GLOBALS['SOBE']->R_URI);
-		return 'window.location.href=\'' . $location . '\'+document.editForm.defValues.value; return false;';
+		return 'window.location.href=' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($location) . '+document.editForm.defValues.value; return false;';
 	}
 
 }
-
-\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
-	'The new element class is moved to an own module. Please use BackendUtility::getModuleUrl(\'new_content_element\') to link to db_new_content_el.php. This script will be removed with version 8.'
-);
 
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController::class);
 $SOBE->init();

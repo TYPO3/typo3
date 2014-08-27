@@ -924,17 +924,17 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 								// If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's create new content wizard instead:
 								$tmpTSc = BackendUtility::getModTSconfig($this->pageinfo['uid'], 'mod.web_list');
 								$tmpTSc = $tmpTSc['properties']['newContentWiz.']['overrideWithExtension'];
-								$wizardPath = ExtensionManagementUtility::isLoaded($tmpTSc)
-									? ExtensionManagementUtility::extRelPath($tmpTSc) . 'mod1/db_new_content_el.php'
-									: 'sysext/cms/layout/db_new_content_el.php';
-								$newContentWizScriptPath = $this->backPath . $wizardPath;
-								$onClick = htmlspecialchars('return jumpExt(\'' . $newContentWizScriptPath . '?id=' . $this->id . '\');');
-								$icon = '<a class="btn btn-success" href="#" onclick="' . $onClick . '" title="'
+								$newContentWizScriptPath = ExtensionManagementUtility::isLoaded($tmpTSc)
+									? $this->backPath . ExtensionManagementUtility::extRelPath($tmpTSc) . 'mod1/db_new_content_el.php?id=' . $this->id
+									: BackendUtility::getModuleUrl('new_content_element', array('id' => $this->id), $this->backPath);
+
+								$onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue($newContentWizScriptPath) . ');';
+								$icon = '<a class="btn btn-success" href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
 									. $GLOBALS['LANG']->getLL('new', TRUE) . '">' . $spriteIcon . '</a>';
 							} elseif ($table == 'pages' && $this->newWizards) {
-								$href = htmlspecialchars($this->backPath . 'db_new.php?id=' . $this->id
-									. '&pagesOnly=1&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')));
-								$icon = '<a class="btn success" href="' . $href . '" title="' . $GLOBALS['LANG']->getLL('new', TRUE) . '">'
+								$href = $this->backPath . 'db_new.php?id=' . $this->id
+									. '&pagesOnly=1&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
+								$icon = '<a class="btn success" href="' . htmlspecialchars($href) . '" title="' . $GLOBALS['LANG']->getLL('new', TRUE) . '">'
 									. $spriteIcon . '</a>';
 							} else {
 								$params = '&edit[' . $table . '][' . $this->id . ']=new';

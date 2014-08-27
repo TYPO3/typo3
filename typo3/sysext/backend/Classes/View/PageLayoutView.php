@@ -519,10 +519,10 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 							if (!$disableMoveAndNewButtons) {
 								// New content element:
 								if ($this->option_newWizard) {
-									$onClick = 'window.location.href=\'db_new_content_el.php?id=' . $row['pid']
+									$onClick = 'window.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('new_content_element') . '&id=' . $row['pid']
 										. '&sys_language_uid=' . $row['sys_language_uid'] . '&colPos=' . $row['colPos']
 										. '&uid_pid=' . -$row['uid'] .
-										'&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) . '\';';
+										'&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'))) . ';';
 								} else {
 									$params = '&edit[tt_content][' . -$row['uid'] . ']=new';
 									$onClick = BackendUtility::editOnClick($params, $this->backPath);
@@ -772,9 +772,10 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					$rowOut = '';
 					// If it turns out that there are not content elements in the column, then display a big button which links directly to the wizard script:
 					if ($this->doEdit && $this->option_showBigButtons && !(int)$key && $numberOfContentElementsInColumn == 0) {
-						$onClick = 'window.location.href=\'db_new_content_el.php?id=' . $id . '&colPos=' . (int)$key
+						$onClick = 'window.location.href='
+							. GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('new_content_element') . '&id=' . $id . '&colPos=' . (int)$key
 							. '&sys_language_uid=' . $lP . '&uid_pid=' . $id . '&returnUrl='
-							. rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) . '\';';
+							. rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'))) . ';';
 						$theNewButton = $this->getPageLayoutController()->doc->t3Button($onClick, $this->getLanguageService()->getLL('newPageContent'));
 						$theNewButton = '<img src="clear.gif" width="1" height="5" alt="" /><br />' . $theNewButton;
 					} else {
@@ -889,9 +890,10 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			}
 			if ($this->doEdit && $this->ext_function == 1) {
 				$bArray[3] = $this->getPageLayoutController()->doc->t3Button(
-					'window.location.href=\'db_new_content_el.php?id=' . $id
+					'window.location.href='
+						. GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('new_content_element') . '&id=' . $id
 						. '&sys_language_uid=' . $this->getPageLayoutController()->current_sys_language
-						. '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) . '\';',
+						. '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'))) . ';',
 					$this->getLanguageService()->getLL('newPageContent2')
 				);
 			}
@@ -1738,7 +1740,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 */
 	public function newContentElementOnClick($id, $colPos, $sys_language) {
 		if ($this->option_newWizard) {
-			$onClick = 'window.location.href=\'db_new_content_el.php?id=' . $id . '&colPos=' . $colPos
+			$onClick = 'window.location.href=\'' . BackendUtility::getModuleUrl('new_content_element') . '&id=' . $id . '&colPos=' . $colPos
 				. '&sys_language_uid=' . $sys_language . '&uid_pid=' . $id
 				. '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) . '\';';
 		} else {

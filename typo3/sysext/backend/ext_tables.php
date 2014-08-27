@@ -79,4 +79,28 @@ if (TYPO3_MODE === 'BE') {
 		'wizard_backend_layout',
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/Wizards/BackendLayoutWizard/'
 	);
+
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+		'web',
+		'layout',
+		'top',
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/Layout/',
+		array(
+			'script' => '_DISPATCH',
+			'access' => 'user,group',
+			'name' => 'web_layout',
+			'labels' => array(
+				'tabs_images' => array(
+					'tab' => '../../Resources/Public/Icons/module-page.png',
+				),
+				'll_ref' => 'LLL:EXT:cms/layout/locallang_mod.xlf',
+			),
+		)
+	);
+
+	// Register new content element module
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
+		'new_content_element',
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/NewContentElement/'
+	);
 }

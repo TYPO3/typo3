@@ -13,21 +13,6 @@
  */
 
 /**
- * Module: Web>Page
- *
- * This module lets you view a page in a more Content Management like style than the ordinary record-list
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-unset($MCONF);
-require __DIR__ . '/conf.php';
-require $BACK_PATH . 'init.php';
-$LANG->includeLLFile('EXT:cms/layout/locallang.xlf');
-
-$BE_USER->modAccess($MCONF, 1);
-// Will open up records locked by current user. It's assumed that the locking should end if this script is hit.
-\TYPO3\CMS\Backend\Utility\BackendUtility::lockRecords();
-/**
  * Local extension of position map class
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
@@ -104,10 +89,6 @@ class ext_posMap extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 	}
 
 }
-
-\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
-	'The page layout class is moved to an own module. Please use BackendUtility::getModuleUrl(\'web_layout\') to link to db_layout.php. This script will be removed with version TYPO3 CMS 8.'
-);
 
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\PageLayoutController::class);
 $SOBE->init();

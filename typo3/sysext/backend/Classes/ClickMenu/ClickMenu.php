@@ -622,7 +622,7 @@ class ClickMenu {
 	}
 
 	/**
-	 * Adding CM element for Create new wizard (either db_new.php or sysext/cms/layout/db_new_content_el.php or custom wizard)
+	 * Adding CM element for Create new wizard (either db_new.php or BackendUtility::getModuleUrl('new_content_element') or custom wizard)
 	 *
 	 * @param string $table Table name
 	 * @param int $uid UID for the current record.
@@ -634,8 +634,9 @@ class ClickMenu {
 		//  If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's create new content wizard instead:
 		$tmpTSc = BackendUtility::getModTSconfig($this->pageinfo['uid'], 'mod.web_list');
 		$tmpTSc = $tmpTSc['properties']['newContentWiz.']['overrideWithExtension'];
-		$newContentWizScriptPath = ExtensionManagementUtility::isLoaded($tmpTSc) ? ExtensionManagementUtility::extRelPath($tmpTSc) . 'mod1/db_new_content_el.php' : 'sysext/cms/layout/db_new_content_el.php';
-		$url = $table === 'pages' ? 'db_new.php?id=' . $uid . '&pagesOnly=1' : $newContentWizScriptPath . '?id=' . $rec['pid'] . '&sys_language_uid=' . (int)$rec['sys_language_uid'];
+
+		$newContentWizScriptPath = ExtensionManagementUtility::isLoaded($tmpTSc) ? ExtensionManagementUtility::extRelPath($tmpTSc) . 'mod1/db_new_content_el.php?' : BackendUtility::getModuleUrl('new_content_element') . '&';
+		$url = $table === 'pages' ? 'db_new.php?id=' . $uid . '&pagesOnly=1' : $newContentWizScriptPath . 'id=' . $rec['pid'] . '&sys_language_uid=' . (int)$rec['sys_language_uid'];
 		return $this->linkItem($this->languageService->makeEntities($this->languageService->getLL('CM_newWizard')), IconUtility::getSpriteIcon('actions-' . ($table === 'pages' ? 'page' : 'document') . '-new'), $this->urlRefForCM($url, 'returnUrl'), 0);
 	}
 

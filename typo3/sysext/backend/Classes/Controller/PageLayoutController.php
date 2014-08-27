@@ -247,6 +247,8 @@ class PageLayoutController {
 	 * @return void
 	 */
 	public function init() {
+		$GLOBALS['LANG']->includeLLFile('EXT:cms/layout/locallang.xlf');
+
 		// Setting module configuration / page select clause
 		$this->MCONF = $GLOBALS['MCONF'];
 		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
@@ -349,7 +351,7 @@ class PageLayoutController {
 		}
 		$this->MOD_MENU['function'] = BackendUtility::unsetMenuItems($this->modTSconfig['properties'], $this->MOD_MENU['function'], 'menu.function');
 		// Remove QuickEdit as option if page type is not...
-		if (!GeneralUtility::inList(($GLOBALS['TYPO3_CONF_VARS']['FE']['content_doktypes'] . ',6'), $this->pageinfo['doktype'])) {
+		if (!GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['FE']['content_doktypes'] . ',6', $this->pageinfo['doktype'])) {
 			unset($this->MOD_MENU['function'][0]);
 		}
 		// Setting alternative default label:
@@ -357,7 +359,7 @@ class PageLayoutController {
 			$this->MOD_MENU['language'][0] = $this->modTSconfig['properties']['defaultLanguageLabel'] ? $this->modSharedTSconfig['properties']['defaultLanguageLabel'] : $this->modSharedTSconfig['properties']['defaultLanguageLabel'];
 		}
 		// Clean up settings
-		$this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->MCONF['name']);
+		$this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), 'web_layout');
 		// For all elements to be shown in draft workspaces & to also show hidden elements by default if user hasn't disabled the option
 		if ($GLOBALS['BE_USER']->workspace != 0 || $this->MOD_SETTINGS['tt_content_showHidden'] !== '0') {
 			$this->MOD_SETTINGS['tt_content_showHidden'] = 1;
@@ -556,10 +558,13 @@ class PageLayoutController {
 				}
 			');
 			// Setting doc-header
-			$this->doc->form = '<form action="' . htmlspecialchars(('db_layout.php?id=' . $this->id . '&imagemode=' . $this->imagemode)) . '" method="post">';
+			$this->doc->form = '<form action="' . htmlspecialchars(
+				BackendUtility::getModuleUrl(
+					'web_layout', array('id' => $this->id, 'imagemode' =>  $this->imagemode)
+				)) . '" method="post">';
 			// Creating the top function menu:
-			$this->topFuncMenu = BackendUtility::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function'], 'db_layout.php', '');
-			$this->languageMenu = count($this->MOD_MENU['language']) > 1 ? $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.language', TRUE) . BackendUtility::getFuncMenu($this->id, 'SET[language]', $this->current_sys_language, $this->MOD_MENU['language'], 'db_layout.php', '') : '';
+			$this->topFuncMenu = BackendUtility::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function'], '', '');
+			$this->languageMenu = count($this->MOD_MENU['language']) > 1 ? $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.language', TRUE) . BackendUtility::getFuncMenu($this->id, 'SET[language]', $this->current_sys_language, $this->MOD_MENU['language'], '', '') : '';
 			// Find backend layout / coumns
 			$backendLayout = GeneralUtility::callUserFunction(\TYPO3\CMS\Backend\View\BackendLayoutView::class . '->getSelectedBackendLayout', $this->id, $this);
 			if (count($backendLayout['__colPosList'])) {
@@ -656,7 +661,7 @@ class PageLayoutController {
 		// Alternative template
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/db_layout_quickedit.html');
 		// Alternative form tag; Quick Edit submits its content to tce_db.php.
-		$this->doc->form = '<form action="' . htmlspecialchars(($GLOBALS['BACK_PATH'] . 'tce_db.php?&prErr=1&uPT=1')) . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '" name="editform" onsubmit="return TBE_EDITOR.checkSubmit(1);">';
+		$this->doc->form = '<form action="' . htmlspecialchars($GLOBALS['BACK_PATH'] . 'tce_db.php?&prErr=1&uPT=1') . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '" name="editform" onsubmit="return TBE_EDITOR.checkSubmit(1);">';
 		// Setting up the context sensitive menu:
 		$this->doc->getContextMenuCode();
 		// Set the edit_record value for internal use in this function:
@@ -759,7 +764,9 @@ class PageLayoutController {
 		// Return-url for JavaScript:
 		$retUrlStr = $this->returnUrl ? '+\'&returnUrl=\'+\'' . rawurlencode($this->returnUrl) . '\'' : '';
 		// Drawing the edit record selectbox
-		$this->editSelect = '<select name="edit_record" onchange="' . htmlspecialchars(('jumpToUrl(' . GeneralUtility::quoteJSvalue('db_layout.php?id=' . $this->id . '&edit_record=') . '+escape(this.options[this.selectedIndex].value)' . $retUrlStr . ',this);')) . '">' . implode('', $opt) . '</select>';
+		$this->editSelect = '<select name="edit_record" onchange="' . htmlspecialchars('jumpToUrl(' . GeneralUtility::quoteJSvalue(
+			BackendUtility::getModuleUrl('web_layout') . '&id=' . $this->id . '&edit_record='
+		) . '+escape(this.options[this.selectedIndex].value)' . $retUrlStr . ',this);') . '">' . implode('', $opt) . '</select>';
 		// Creating editing form:
 		if ($GLOBALS['BE_USER']->check('tables_modify', $this->eRParts[0]) && $edit_record && ($this->eRParts[0] !== 'pages' && $this->EDIT_CONTENT || $this->eRParts[0] === 'pages' && $this->CALC_PERMS & 1)) {
 			// Splitting uid parts for special features, if new:
@@ -826,7 +833,14 @@ class PageLayoutController {
 					<input type="hidden" name="_serialNumber" value="' . md5(microtime()) . '" />
 					<input type="hidden" name="_disableRTE" value="' . $tceforms->disableRTE . '" />
 					<input type="hidden" name="edit_record" value="' . $edit_record . '" />
-					<input type="hidden" name="redirect" value="' . htmlspecialchars(($uidVal == 'new' ? ExtensionManagementUtility::extRelPath('cms') . 'layout/db_layout.php?id=' . $this->id . '&new_unique_uid=' . $new_unique_uid . '&returnUrl=' . rawurlencode($this->returnUrl) : $this->R_URI)) . '" />
+					<input type="hidden" name="redirect" value="' . htmlspecialchars(($uidVal == 'new' ? BackendUtility::getModuleUrl(
+						'web_layout',
+						array(
+							'id' => $this->id,
+							'new_unique_uid' => $new_unique_uid,
+							'returnUrl' => $this->returnUrl
+						)
+					) : $this->R_URI)) . '" />
 					' . \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction');
 				// Add JavaScript as needed around the form:
 				$theCode = $tceforms->printNeededJSFunctions_top() . $theCode . $tceforms->printNeededJSFunctions();
@@ -851,14 +865,14 @@ class PageLayoutController {
 
 		$h_func_b = '<div class="checkbox">' .
 			'<label for="checkTt_content_showHidden">' .
-			BackendUtility::getFuncCheck($this->id, 'SET[tt_content_showHidden]', $this->MOD_SETTINGS['tt_content_showHidden'], 'db_layout.php', '', 'id="checkTt_content_showHidden"') .
+			BackendUtility::getFuncCheck($this->id, 'SET[tt_content_showHidden]', $this->MOD_SETTINGS['tt_content_showHidden'], '', '', 'id="checkTt_content_showHidden"') .
 			(!$q_count ? ('<span class="text-muted">' . $GLOBALS['LANG']->getLL('hiddenCE', TRUE) . '</span>') : $GLOBALS['LANG']->getLL('hiddenCE', TRUE) . ' (' . $q_count . ')') .
 			'</label>' .
 			'</div>';
 
 		$h_func_b .= '<div class="checkbox">' .
 			'<label for="checkShowPalettes">' .
-			BackendUtility::getFuncCheck($this->id, 'SET[showPalettes]', $this->MOD_SETTINGS['showPalettes'], 'db_layout.php', '', 'id="checkShowPalettes"') .
+			BackendUtility::getFuncCheck($this->id, 'SET[showPalettes]', $this->MOD_SETTINGS['showPalettes'], '', '', 'id="checkShowPalettes"') .
 			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPalettes', TRUE) .
 			'</label>' .
 			'</div>';
@@ -866,7 +880,7 @@ class PageLayoutController {
 		if (ExtensionManagementUtility::isLoaded('context_help')) {
 			$h_func_b .= '<div class="checkbox">' .
 				'<label for="checkShowDescriptions">' .
-				BackendUtility::getFuncCheck($this->id, 'SET[showDescriptions]', $this->MOD_SETTINGS['showDescriptions'], 'db_layout.php', '', 'id="checkShowDescriptions"') .
+				BackendUtility::getFuncCheck($this->id, 'SET[showDescriptions]', $this->MOD_SETTINGS['showDescriptions'], '', '', 'id="checkShowDescriptions"') .
 				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showDescriptions', TRUE) .
 				'</label>' .
 				'</div>';
@@ -874,7 +888,7 @@ class PageLayoutController {
 		if ($GLOBALS['BE_USER']->isRTE()) {
 			$h_func_b .= '<div class="checkbox">' .
 				'<label for="checkDisableRTE">' .
-				BackendUtility::getFuncCheck($this->id, 'SET[disableRTE]', $this->MOD_SETTINGS['disableRTE'], 'db_layout.php', '', 'id="checkDisableRTE"') .
+				BackendUtility::getFuncCheck($this->id, 'SET[disableRTE]', $this->MOD_SETTINGS['disableRTE'], '', '', 'id="checkDisableRTE"') .
 				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.disableRTE', TRUE) .
 				'</label>' .
 				'</div>';
@@ -920,7 +934,7 @@ class PageLayoutController {
 		$dblist->no_noWrap = 1;
 		$dblist->descrTable = $this->descrTable;
 		$this->pointer = MathUtility::forceIntegerInRange($this->pointer, 0, 100000);
-		$dblist->script = 'db_layout.php';
+		$dblist->script = BackendUtility::getModuleUrl('web_layout');
 		$dblist->showIcon = 0;
 		$dblist->setLMargin = 0;
 		$dblist->doEdit = $this->EDIT_CONTENT;
@@ -950,7 +964,7 @@ class PageLayoutController {
 
 				$h_func_b = '<div class="checkbox">' .
 					'<label for="checkTt_content_showHidden">' .
-					BackendUtility::getFuncCheck($this->id, 'SET[tt_content_showHidden]', $this->MOD_SETTINGS['tt_content_showHidden'], 'db_layout.php', '', 'id="checkTt_content_showHidden"') .
+					BackendUtility::getFuncCheck($this->id, 'SET[tt_content_showHidden]', $this->MOD_SETTINGS['tt_content_showHidden'], '', '', 'id="checkTt_content_showHidden"') .
 					(!$q_count ? ('<span class="text-muted">' . $GLOBALS['LANG']->getLL('hiddenCE') . '</span>') : $GLOBALS['LANG']->getLL('hiddenCE') . ' (' . $q_count . ')') .
 					'</label>' .
 					'</div>';
@@ -1002,7 +1016,7 @@ class PageLayoutController {
 				}
 			} else {
 				if (isset($this->MOD_SETTINGS) && isset($this->MOD_MENU)) {
-					$h_func = BackendUtility::getFuncMenu($this->id, 'SET[' . $table . ']', $this->MOD_SETTINGS[$table], $this->MOD_MENU[$table], 'db_layout.php', '');
+					$h_func = BackendUtility::getFuncMenu($this->id, 'SET[' . $table . ']', $this->MOD_SETTINGS[$table], $this->MOD_MENU[$table], '', '');
 				} else {
 					$h_func = '';
 				}
@@ -1112,12 +1126,12 @@ class PageLayoutController {
 		}
 		// Cache
 		if (!$this->modTSconfig['properties']['disableAdvanced']) {
-			$buttons['cache'] = '<a href="' . htmlspecialchars(('db_layout.php?id=' . $this->pageinfo['uid'] . '&clear_cache=1')) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.clear_cache', TRUE) . '">' . IconUtility::getSpriteIcon('actions-system-cache-clear') . '</a>';
+			$buttons['cache'] = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_layout', array('id' => $this->pageinfo['uid'], 'clear_cache' => '1'))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.clear_cache', TRUE) . '">' . IconUtility::getSpriteIcon('actions-system-cache-clear') . '</a>';
 		}
 		if (!$this->modTSconfig['properties']['disableIconToolbar']) {
 			// Move record
 			if (MathUtility::canBeInterpretedAsInteger($this->eRParts[1])) {
-				$buttons['move_record'] = '<a href="' . htmlspecialchars(($GLOBALS['BACK_PATH'] . 'move_el.php?table=' . $this->eRParts[0] . '&uid=' . $this->eRParts[1] . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')))) . '">' . IconUtility::getSpriteIcon(('actions-' . ($this->eRParts[0] == 'tt_content' ? 'document' : 'page') . '-move'), array('class' => 'c-inputButton', 'title' => $GLOBALS['LANG']->getLL(('move_' . ($this->eRParts[0] == 'tt_content' ? 'record' : 'page')), TRUE))) . '</a>';
+				$buttons['move_record'] = '<a href="' . htmlspecialchars($GLOBALS['BACK_PATH'] . 'move_el.php?table=' . $this->eRParts[0] . '&uid=' . $this->eRParts[1] . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'))) . '">' . IconUtility::getSpriteIcon(('actions-' . ($this->eRParts[0] == 'tt_content' ? 'document' : 'page') . '-move'), array('class' => 'c-inputButton', 'title' => $GLOBALS['LANG']->getLL(('move_' . ($this->eRParts[0] == 'tt_content' ? 'record' : 'page')), TRUE))) . '</a>';
 			}
 
 			// Edit page properties and page language overlay icons
@@ -1176,10 +1190,10 @@ class PageLayoutController {
 				// Save record and show page
 				$buttons['savedokshow'] = '<a href="#" onclick="' . htmlspecialchars('document.editform.redirect.value+=\'&popView=1\'; TBE_EDITOR.checkAndDoSubmit(1); return false;') . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-save-view') . '</a>';
 				// Close record
-				$buttons['closedok'] = '<a href="#" onclick="' . htmlspecialchars(('jumpToUrl(unescape(\'' . rawurlencode($this->closeUrl) . '\')); return false;')) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-close') . '</a>';
+				$buttons['closedok'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(unescape(\'' . rawurlencode($this->closeUrl) . '\')); return false;') . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-close') . '</a>';
 				// Delete record
 				if ($this->deleteButton) {
-					$buttons['deletedok'] = '<a href="#" onclick="' . htmlspecialchars(('return deleteRecord(\'' . $this->eRParts[0] . '\',\'' . $this->eRParts[1] . '\',\'' . GeneralUtility::getIndpEnv('SCRIPT_NAME') . '?id=' . $this->id . '\');')) . '" title="' . $GLOBALS['LANG']->getLL('deleteItem', TRUE) . '">' . IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
+					$buttons['deletedok'] = '<a href="#" onclick="' . htmlspecialchars('return deleteRecord(\'' . $this->eRParts[0] . '\',\'' . $this->eRParts[1] . '\',\'' . GeneralUtility::getIndpEnv('SCRIPT_NAME') . '?id=' . $this->id . '\');') . '" title="' . $GLOBALS['LANG']->getLL('deleteItem', TRUE) . '">' . IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
 				}
 				if ($this->undoButton) {
 					// Undo button
@@ -1197,7 +1211,7 @@ class PageLayoutController {
 									)
 								)
 							) . '; return false;') . '"
-						title="' . htmlspecialchars(sprintf($GLOBALS['LANG']->getLL('undoLastChange'), BackendUtility::calcAge(($GLOBALS['EXEC_TIME'] - $this->undoButtonR['tstamp']), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')))) . '">' . IconUtility::getSpriteIcon('actions-edit-undo') . '</a>';
+						title="' . htmlspecialchars(sprintf($GLOBALS['LANG']->getLL('undoLastChange'), BackendUtility::calcAge($GLOBALS['EXEC_TIME'] - $this->undoButtonR['tstamp'], $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')))) . '">' . IconUtility::getSpriteIcon('actions-edit-undo') . '</a>';
 					// History button
 					$buttons['history_record'] = '<a href="#"
 						onclick="' . htmlspecialchars('jumpToUrl(' .

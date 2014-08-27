@@ -597,7 +597,7 @@ class AdminPanelView {
 		//  If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's create new content wizard instead:
 		$tsConfig = BackendUtility::getModTSconfig($this->pageinfo['uid'], 'mod.web_list');
 		$tsConfig = $tsConfig['properties']['newContentWiz.']['overrideWithExtension'];
-		$newContentWizScriptPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($tsConfig) ? \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($tsConfig) . 'mod1/db_new_content_el.php' : TYPO3_mainDir . 'sysext/cms/layout/db_new_content_el.php';
+		$newContentWizScriptPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($tsConfig) ? \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($tsConfig) . 'mod1/db_new_content_el.php?' : TYPO3_mainDir . BackendUtility::getModuleUrl('new_content_element') . '&';
 		$perms = $GLOBALS['BE_USER']->calcPerms($GLOBALS['TSFE']->page);
 		$langAllowed = $GLOBALS['BE_USER']->checkLanguageAccess($GLOBALS['TSFE']->sys_language_uid);
 		$id = $GLOBALS['TSFE']->id;
@@ -611,7 +611,7 @@ class AdminPanelView {
 				$params = '&sys_language_uid=' . $GLOBALS['TSFE']->sys_language_uid;
 			}
 			$icon = IconUtility::getSpriteIcon('actions-document-new', array('title' => $this->extGetLL('edit_newContentElement', FALSE)));
-			$toolBar .= '<a href="' . htmlspecialchars(($newContentWizScriptPath . '?id=' . $id . $params . '&returnUrl=' . $returnUrl)) . '">' . $icon . '</a>';
+			$toolBar .= '<a href="' . htmlspecialchars(($newContentWizScriptPath . 'id=' . $id . $params . '&returnUrl=' . $returnUrl)) . '">' . $icon . '</a>';
 		}
 		if ($perms & 2) {
 			$icon = IconUtility::getSpriteIcon('actions-document-move', array('title' => $this->extGetLL('edit_move_page', FALSE)));
