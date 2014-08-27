@@ -41,12 +41,13 @@ class LoginFormHook {
 				'jsbn/prng4.js',
 				'jsbn/rng.js',
 				'jsbn/rsa.js',
-				'jsbn/base64.js',
-				'BackendLoginFormRsaEncryption.js'
+				'jsbn/base64.js'
 			);
 			foreach ($files as $file) {
 				$pageRenderer->addJsFile($javascriptPath . $file);
 			}
+
+			$pageRenderer->loadRequireJsModule('TYPO3/CMS/Rsaauth/BackendLoginFormRsaEncryption');
 
 			return '<form action="index.php" id="typo3-login-form" method="post" name="loginform">';
 		}

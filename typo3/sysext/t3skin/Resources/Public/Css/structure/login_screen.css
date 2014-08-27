@@ -58,9 +58,9 @@
 }
 
 #typo3-index-php .t3-login-field .t3-login-alert-capslock {
-	left: 307px;
+	left: 300px;
 	position: absolute;
-	top: 2px;
+	top: 5px;
 }
 
 #typo3-index-php .t3-login-field input {

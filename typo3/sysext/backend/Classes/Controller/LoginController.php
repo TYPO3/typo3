@@ -191,21 +191,28 @@ class LoginController {
 	 */
 	public function main() {
 		// Initialize template object:
-		$GLOBALS['TBE_TEMPLATE']->bodyTagAdditions = ' onload="startUp();"';
 		$GLOBALS['TBE_TEMPLATE']->moduleTemplate = $GLOBALS['TBE_TEMPLATE']->getHtmlTemplate('EXT:backend/Resources/Private/Templates/login.html');
 		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
 		$pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
-		$pageRenderer->loadExtJS();
-		$pageRenderer->loadPrototype();
-		$pageRenderer->loadScriptaculous();
 		$pageRenderer->loadJquery();
 		// support placeholders for IE9 and lower
 		$clientInfo = GeneralUtility::clientInfo();
 		if ($clientInfo['BROWSER'] == 'msie' && $clientInfo['VERSION'] <= 9) {
 			$pageRenderer->addJsLibrary('placeholders', 'contrib/placeholdersjs/placeholders.jquery.min.js');
 		}
-		// Set JavaScript for creating a MD5 hash of the password:
-		$GLOBALS['TBE_TEMPLATE']->JScode .= $this->getJScode();
+
+		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Login');
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginScriptHook'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginScriptHook'] as $function) {
+				$params = array();
+				$JSCode = GeneralUtility::callUserFunction($function, $params, $this);
+				if ($JSCode) {
+					$GLOBALS['TBE_TEMPLATE']->JScode .= $JSCode;
+					break;
+				}
+			}
+		}
+
 		// Checking, if we should make a redirect.
 		// Might set JavaScript in the header to close window.
 		$this->checkRedirect();
@@ -476,7 +483,7 @@ class LoginController {
 	 * Returns the login box image, whether the default or an image from the rotation folder.
 	 *
 	 * @return string HTML image tag.
-	 * @deprecated since 7, see Deprecation-60559-MakeLoginBoxImage.rst
+	 * @deprecated since 6.3, see Deprecation-60559-MakeLoginBoxImage.rst
 	 */
 	public function makeLoginBoxImage() {
 		GeneralUtility::logDeprecatedFunction();
@@ -560,7 +567,7 @@ class LoginController {
 		// The form defaults to 'no login'. This prevents plain
 		// text logins to the Backend. The 'sv' extension changes the form to
 		// use superchallenged method and rsaauth extension makes rsa authetication.
-		$form = '<form action="index.php" method="post" name="loginform" ' . 'onsubmit="alert(\'No authentication methods available. Please, ' . 'contact your TYPO3 administrator.\');return false">';
+		$form = '<form action="index.php" method="post" name="loginform" ' . 'onsubmit="alert(\'No authentication methods available. Please, contact your TYPO3 administrator.\');return false">';
 		// Call hooks. If they do not return anything, we fail to login
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginFormHook'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginFormHook'] as $function) {
@@ -572,7 +579,7 @@ class LoginController {
 				}
 			}
 		}
-		$output .= $form . '<input type="hidden" name="login_status" value="login" />' . '<input type="hidden" name="userident" value="" />' . '<input type="hidden" name="redirect_url" value="' . htmlspecialchars($this->redirectToURL) . '" />' . '<input type="hidden" name="loginRefresh" value="' . htmlspecialchars($this->loginRefresh) . '" />' . $this->interfaceSelector_hidden . $this->addFields_hidden;
+		$output .= $form . '<input type="hidden" name="login_status" value="login" />' . '<input type="hidden" id="t3-field-userident" name="userident" value="" />' . '<input type="hidden" name="redirect_url" value="' . htmlspecialchars($this->redirectToURL) . '" />' . '<input type="hidden" name="loginRefresh" value="' . htmlspecialchars($this->loginRefresh) . '" />' . $this->interfaceSelector_hidden . $this->addFields_hidden;
 		return $output;
 	}
 
@@ -581,88 +588,10 @@ class LoginController {
 	 *
 	 * @return string JavaScript code
 	 * @todo Define visibility
+	 * @deprecated since TYPO3 6.3, not in use anymore
 	 */
 	public function getJScode() {
-		$JSCode = '';
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginScriptHook'])) {
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginScriptHook'] as $function) {
-				$params = array();
-				$JSCode = GeneralUtility::callUserFunction($function, $params, $this);
-				if ($JSCode) {
-					break;
-				}
-			}
-		}
-		$JSCode .= $GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
-			function startUp() {
-					// If the login screen is shown in the login_frameset window for re-login, then try to get the username of the current/former login from opening windows main frame:
-				try {
-					if (parent.opener && parent.opener.TS && parent.opener.TS.username && document.loginform && document.loginform.username) {
-						document.loginform.username.value = parent.opener.TS.username;
-					}
-				}
-				catch(error) {
-					//continue
-				}
-
-					// Wait a few millisecons before calling checkFocus(). This might be necessary because some browsers need some time to auto-fill in the form fields
-				window.setTimeout("checkFocus()", 50);
-			}
-
-				// This moves focus to the right input field:
-			function checkFocus() {
-					// If for some reason there already is a username in the username form field, move focus to the password field:
-				if (document.loginform.username && document.loginform.username.value == "") {
-					document.loginform.username.focus();
-				} else if (document.loginform.p_field && document.loginform.p_field.type!="hidden") {
-					document.loginform.p_field.focus();
-				}
-			}
-
-				// This function shows a warning, if user has capslock enabled
-				// parameter showWarning: shows warning if TRUE and capslock active, otherwise only hides warning, if capslock gets inactive
-			function checkCapslock(e, showWarning) {
-				if (!isCapslock(e)) {
-					document.getElementById(\'t3-capslock\').style.display = \'none\';
-				} else if (showWarning) {
-					document.getElementById(\'t3-capslock\').style.display = \'block\';
-				}
-			}
-
-				// Checks weather capslock is enabled (returns TRUE if enabled, false otherwise)
-				// thanks to http://24ways.org/2007/capturing-caps-lock
-
-			function isCapslock(e) {
-				var ev = e ? e : window.event;
-				if (!ev) {
-					return;
-				}
-				var targ = ev.target ? ev.target : ev.srcElement;
-				// get key pressed
-				var which = -1;
-				if (ev.which) {
-					which = ev.which;
-				} else if (ev.keyCode) {
-					which = ev.keyCode;
-				}
-				// get shift status
-				var shift_status = false;
-				if (ev.shiftKey) {
-					shift_status = ev.shiftKey;
-				} else if (ev.modifiers) {
-					shift_status = !!(ev.modifiers & 4);
-				}
-				return (((which >= 65 && which <= 90) && !shift_status) ||
-					((which >= 97 && which <= 122) && shift_status));
-			}
-
-				// prevent opening the login form in the backend frameset
-			if (top.location.href != self.location.href) {
-				top.location.href = self.location.href;
-			}
-
-			');
-		return $JSCode;
+		GeneralUtility::logDeprecatedFunction();
 	}
 
 	/**
