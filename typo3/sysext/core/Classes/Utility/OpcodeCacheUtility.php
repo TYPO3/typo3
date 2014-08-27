@@ -41,6 +41,7 @@ class OpcodeCacheUtility {
 	 */
 	static protected function initialize() {
 		$apcVersion = phpversion('apc');
+		$xcVersion = phpversion('xcache');
 
 		static::$supportedCaches = array(
 			// The ZendOpcache aka OPcache since PHP 5.5
@@ -107,15 +108,26 @@ class OpcodeCacheUtility {
 			// http://xcache.lighttpd.net/
 			'XCache' => array(
 				'active' => extension_loaded('xcache'),
-				'version' => phpversion('xcache'),
+				'version' => $xcVersion,
 				'canReset' => TRUE, // xcache_clear_cache()
 				'canInvalidate' => FALSE,
 				'error' => FALSE,
-				'clearCallback' => function ($fileAbsPath) {
-					if (!ini_get('xcache.admin.enable_auth')) {
-						xcache_clear_cache(XC_TYPE_PHP);
-					}
-				}
+				// API changed with XCache 3.0.0
+				// http://xcache.lighttpd.net/wiki/XcacheApi?action=diff&version=23&old_version=22
+				'clearCallback' => (
+					$xcVersion && VersionNumberUtility::convertVersionNumberToInteger($xcVersion) < 3000000 ?
+						function ($fileAbsPath) {
+							if (!ini_get('xcache.admin.enable_auth')) {
+								xcache_clear_cache(XC_TYPE_PHP, 0);
+							}
+						}
+						:
+						function ($fileAbsPath) {
+							if (!ini_get('xcache.admin.enable_auth')) {
+								xcache_clear_cache(XC_TYPE_PHP);
+							}
+						}
+				)
 			),
 
 			// https://github.com/eaccelerator/eaccelerator
