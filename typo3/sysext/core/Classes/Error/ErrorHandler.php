@@ -72,7 +72,7 @@ class ErrorHandler implements \TYPO3\CMS\Core\Error\ErrorHandlerInterface {
 	 * @param string $errorMessage The error message
 	 * @param string $errorFile Name of the file the error occurred in
 	 * @param integer $errorLine Line number where the error occurred
-	 * @return void
+	 * @return bool
 	 * @throws \TYPO3\CMS\Core\Error\Exception with the data passed to this method if the error is registered as exceptionalError
 	 */
 	public function handleError($errorLevel, $errorMessage, $errorFile, $errorLine) {
@@ -146,18 +146,23 @@ class ErrorHandler implements \TYPO3\CMS\Core\Error\ErrorHandlerInterface {
 				} catch (\Exception $e) {
 				}
 			}
-			// Add error message to the flashmessageQueue
-			if (defined('TYPO3_ERRORHANDLER_MODE') && TYPO3_ERRORHANDLER_MODE == 'debug') {
-				$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $message, 'PHP ' . $errorLevels[$errorLevel], $severity);
-				/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-				$flashMessageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
-				/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
-				$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
-				$defaultFlashMessageQueue->enqueue($flashMessage);
+			if ($severity === 2) {
+				// Let the internal handler continue. This will stop the script
+				return FALSE;
+			} else {
+				// Add error message to the flashmessageQueue
+				if (defined('TYPO3_ERRORHANDLER_MODE') && TYPO3_ERRORHANDLER_MODE == 'debug') {
+					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $message, 'PHP ' . $errorLevels[$errorLevel], $severity);
+					/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+					$flashMessageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+					/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+					$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+					$defaultFlashMessageQueue->enqueue($flashMessage);
+				}
+				// Don't execute PHP internal error handler
+				return TRUE;
 			}
 		}
-		// Don't execute PHP internal error handler
-		return TRUE;
 	}
 
 	/**
