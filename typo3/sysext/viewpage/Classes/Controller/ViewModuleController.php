@@ -122,10 +122,15 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 * Get domain name for requested page id
 	 *
 	 * @param integer $pageId
-	 * @return boolean|string Domain name if there is one, FALSE if not
+	 * @return boolean|string  Domainname from first sys_domains-Record or from TCEMAIN.previewDomain, FALSE if neighter is configured
 	 */
 	protected function getDomainName($pageId) {
-		$domain = BackendUtility::firstDomainRecord(BackendUtility::BEgetRootLine($pageId));
+		$previewDomainConfig = $GLOBALS['BE_USER']->getTSConfig('TCEMAIN.previewDomain', BackendUtility::getPagesTSconfig($pageId));
+		if ($previewDomainConfig['value']) {
+			$domain = $previewDomainConfig['value'];
+		} else {
+			$domain = BackendUtility::firstDomainRecord(BackendUtility::BEgetRootLine($pageId));
+		}
 		return $domain;
 	}
 
