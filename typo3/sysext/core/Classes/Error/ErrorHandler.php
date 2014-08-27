@@ -138,24 +138,29 @@ class ErrorHandler implements ErrorHandlerInterface {
 				} catch (\Exception $e) {
 				}
 			}
-			// Add error message to the flashmessageQueue
-			if (defined('TYPO3_ERRORHANDLER_MODE') && TYPO3_ERRORHANDLER_MODE == 'debug') {
-				/** @var $flashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
-				$flashMessage = GeneralUtility::makeInstance(
-					'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
-					$message,
-					'PHP ' . $errorLevels[$errorLevel],
-					$severity
-				);
-				/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-				$flashMessageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
-				/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
-				$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
-				$defaultFlashMessageQueue->enqueue($flashMessage);
+			if ($severity === 2) {
+				// Let the internal handler continue. This will stop the script
+				return FALSE;
+			} else {
+				// Add error message to the flashmessageQueue
+				if (defined('TYPO3_ERRORHANDLER_MODE') && TYPO3_ERRORHANDLER_MODE == 'debug') {
+					/** @var $flashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
+					$flashMessage = GeneralUtility::makeInstance(
+						'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+						$message,
+						'PHP ' . $errorLevels[$errorLevel],
+						$severity
+					);
+					/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+					$flashMessageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+					/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+					$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+					$defaultFlashMessageQueue->enqueue($flashMessage);
+				}
+				// Don't execute PHP internal error handler
+				return TRUE;
 			}
 		}
-		// Don't execute PHP internal error handler
-		return TRUE;
 	}
 
 	/**
