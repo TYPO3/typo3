@@ -350,6 +350,7 @@ class PreparedStatement {
 		for ($i = 0; $i < $numberOfExtraParamArguments; $i++) {
 			$bindParamArguments[] = &$values[$i];
 		}
+
 		call_user_func_array(array($this->statement, 'bind_param'), $bindParamArguments);
 
 		$success = $this->statement->execute();
@@ -363,8 +364,10 @@ class PreparedStatement {
 			// Store the list of fields
 			if ($this->statement instanceof \mysqli_stmt) {
 				$result = $this->statement->result_metadata();
-				$fields = $result->fetch_fields();
-				$result->close();
+				if ($result instanceof \mysqli_result) {
+					$fields = $result->fetch_fields();
+					$result->close();
+				}
 			} else {
 				$fields = $this->statement->fetch_fields();
 			}
