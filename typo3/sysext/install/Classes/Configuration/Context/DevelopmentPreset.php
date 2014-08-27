@@ -38,7 +38,7 @@ class DevelopmentPreset extends Configuration\AbstractPreset {
 		'BE/debug' => TRUE,
 		'FE/debug' => TRUE,
 		'SYS/devIPmask' => '*',
-		'SYS/displayErrors' => TRUE,
+		'SYS/displayErrors' => 1,
 		'SYS/enableDeprecationLog' => 'file',
 		'SYS/sqlDebug' => 1,
 		'SYS/systemLogLevel' => 0,

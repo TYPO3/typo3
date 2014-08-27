@@ -582,25 +582,23 @@ class Bootstrap {
 	protected function configureExceptionHandling() {
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['errors']['exceptionHandler'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['productionExceptionHandler'];
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['errors']['exceptionalErrors'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['exceptionalErrors'];
+		$doesIpMatch = Utility\GeneralUtility::cmpIP(Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']);
+		$displayErrors = (int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['displayErrors'];
 		// Turn error logging on/off.
-		if (($displayErrors = (int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['displayErrors']) != '-1') {
+		if ($displayErrors !== -1) {
 			// Special value "2" enables this feature only if $GLOBALS['TYPO3_CONF_VARS'][SYS][devIPmask] matches
-			if ($displayErrors == 2) {
-				if (Utility\GeneralUtility::cmpIP(Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'])) {
-					$displayErrors = 1;
-				} else {
-					$displayErrors = 0;
-				}
+			if ($displayErrors === 2) {
+				$displayErrors = (int)$doesIpMatch;
 			}
-			if ($displayErrors == 0) {
+			if ($displayErrors === 0) {
 				$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['errors']['exceptionalErrors'] = 0;
 			}
-			if ($displayErrors == 1) {
+			if ($displayErrors === 1) {
 				$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['errors']['exceptionHandler'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['debugExceptionHandler'];
 				define('TYPO3_ERRORHANDLER_MODE', 'debug');
 			}
 			@ini_set('display_errors', $displayErrors);
-		} elseif (Utility\GeneralUtility::cmpIP(Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'])) {
+		} elseif ($doesIpMatch) {
 			// With displayErrors = -1 (default), turn on debugging if devIPmask matches:
 			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['errors']['exceptionHandler'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['debugExceptionHandler'];
 		}

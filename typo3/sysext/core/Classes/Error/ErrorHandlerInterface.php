@@ -39,7 +39,7 @@ interface ErrorHandlerInterface {
 	/**
 	 * Handles an error.
 	 * If the error is registered as exceptionalError it will by converted into an exception, to be handled
-	 * by the configured exceptionhandler. Additionall the error message is written to the configured logs.
+	 * by the configured exceptionhandler. Additionally the error message is written to the configured logs.
 	 * If TYPO3_MODE is 'BE' the error message is also added to the flashMessageQueue, in FE the error message
 	 * is displayed in the admin panel (as TsLog message)
 	 *
