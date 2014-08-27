@@ -3432,7 +3432,7 @@ class BackendUtility {
 	 * Returns first found domain record "domainName" (without trailing slash) if found in the input $rootLine
 	 *
 	 * @param array $rootLine Root line array
-	 * @return string Domain name, if found.
+	 * @return string|NULL Domain name or NULL
 	 */
 	static public function firstDomainRecord($rootLine) {
 		foreach ($rootLine as $row) {
@@ -3442,6 +3442,7 @@ class BackendUtility {
 				return rtrim($dRecord['domainName'], '/');
 			}
 		}
+		return NULL;
 	}
 
 	/**
