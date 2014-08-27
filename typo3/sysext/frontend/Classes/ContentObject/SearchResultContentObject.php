@@ -13,11 +13,13 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Search class used for the content object SEARCHRESULT
  * and searching in database tables, typ. "pages" and "tt_content"
  * Used to generate search queries for TypoScript.
- * The class is included from "class.tslib_pagegen.php" based on whether there has been detected content in the GPvar "sword"
+ * The class is included from "TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer"
+ * based on whether there has been detected content in the GPvar "sword"
  */
 class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
 	/**
