@@ -848,31 +848,31 @@ class ClickMenu {
 				);
 			}
 			// Edit
-			if (!in_array('edit', $this->disabledItems)) {
-				if (!$folder && !$isStorageRoot) {
+			if (!in_array('edit', $this->disabledItems) && $fileObject->checkActionPermission('write')) {
+				if (!$folder && !$isStorageRoot && $fileObject->isIndexed()) {
 					$metaData = $fileObject->_getMetaData();
 					$menuItems['edit2'] = $this->DB_edit('sys_file_metadata', $metaData['uid']);
 				}
-				if (!$folder && GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], $fileObject->getExtension())) {
+				if (!$folder && GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], $fileObject->getExtension()) && $fileObject->checkActionPermission('write')) {
 					$menuItems['edit'] = $this->FILE_launch($identifier, 'file_edit', 'editcontent', 'edit_file.gif');
 				} elseif ($isStorageRoot && $userMayEditStorage) {
 					$menuItems['edit'] = $this->DB_edit('sys_file_storage', $fileObject->getStorage()->getUid());
 				}
 			}
 			// Rename
-			if (!in_array('rename', $this->disabledItems) && !$isStorageRoot) {
+			if (!in_array('rename', $this->disabledItems) && !$isStorageRoot && $fileObject->checkActionPermission('rename')) {
 				$menuItems['rename'] = $this->FILE_launch($identifier, 'file_rename', 'rename', 'rename.gif');
 			}
 			// Upload
-			if (!in_array('upload', $this->disabledItems) && $folder && $isOnline) {
+			if (!in_array('upload', $this->disabledItems) && $folder && $isOnline && $fileObject->checkActionPermission('write')) {
 				$menuItems['upload'] = $this->FILE_upload($identifier);
 			}
 			// New
-			if (!in_array('new', $this->disabledItems) && $folder && $isOnline) {
+			if (!in_array('new', $this->disabledItems) && $folder && $isOnline && $fileObject->checkActionPermission('write')) {
 				$menuItems['new'] = $this->FILE_launch($identifier, 'file_newfolder', 'new', 'new_file.gif');
 			}
 			// Info
-			if (!in_array('info', $this->disabledItems)) {
+			if (!in_array('info', $this->disabledItems) && $fileObject->checkActionPermission('read')) {
 				if ($isStorageRoot && $userMayViewStorage) {
 					$menuItems['info'] = $this->DB_info('sys_file_storage', $fileObject->getStorage()->getUid());
 				} elseif (!$folder) {
@@ -881,16 +881,16 @@ class ClickMenu {
 			}
 			$menuItems[] = 'spacer';
 			// Copy:
-			if (!in_array('copy', $this->disabledItems) && !$isStorageRoot) {
+			if (!in_array('copy', $this->disabledItems) && !$isStorageRoot && $fileObject->checkActionPermission('read')) {
 				$menuItems['copy'] = $this->FILE_copycut($identifier, 'copy');
 			}
 			// Cut:
-			if (!in_array('cut', $this->disabledItems) && !$isStorageRoot) {
+			if (!in_array('cut', $this->disabledItems) && !$isStorageRoot && $fileObject->checkActionPermission('move')) {
 				$menuItems['cut'] = $this->FILE_copycut($identifier, 'cut');
 			}
 			// Paste:
 			$elFromAllTables = count($this->clipObj->elFromTable('_FILE'));
-			if (!in_array('paste', $this->disabledItems) && $elFromAllTables && $folder) {
+			if (!in_array('paste', $this->disabledItems) && $elFromAllTables && $folder && $fileObject->checkActionPermission('write')) {
 				$elArr = $this->clipObj->elFromTable('_FILE');
 				$selItem = reset($elArr);
 				$elInfo = array(
@@ -902,7 +902,7 @@ class ClickMenu {
 			}
 			$menuItems[] = 'spacer';
 			// Delete:
-			if (!in_array('delete', $this->disabledItems)) {
+			if (!in_array('delete', $this->disabledItems) && $fileObject->checkActionPermission('delete')) {
 				if ($isStorageRoot && $userMayEditStorage) {
 					$elInfo = array(GeneralUtility::fixed_lgd_cs($fileObject->getStorage()->getName(), $GLOBALS['BE_USER']->uc['titleLen']));
 					$menuItems['delete'] = $this->DB_delete('sys_file_storage', $fileObject->getStorage()->getUid(), $elInfo);

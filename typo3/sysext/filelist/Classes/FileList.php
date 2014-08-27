@@ -226,7 +226,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 				$otherMarkers['PAGE_ICON'] = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($otherMarkers['PAGE_ICON'], $folderObject->getCombinedIdentifier());
 			}
 			// Add paste button if clipboard is initialized
-			if ($this->clipObj instanceof \TYPO3\CMS\Backend\Clipboard\Clipboard) {
+			if ($this->clipObj instanceof \TYPO3\CMS\Backend\Clipboard\Clipboard && $folderObject->checkActionPermission('write')) {
 				$elFromTable = $this->clipObj->elFromTable('_FILE');
 				if (count($elFromTable)) {
 					$buttons['PASTE'] = '<a href="' . htmlspecialchars($this->clipObj->pasteUrl('_FILE', $this->folderObject->getCombinedIdentifier())) . '" onclick="return ' . htmlspecialchars($this->clipObj->confirmMsg('_FILE', $this->path, 'into', $elFromTable)) . '" title="' . $GLOBALS['LANG']->getLL('clip_paste', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-paste-after') . '</a>';
@@ -344,7 +344,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 					$cells = array();
 					$table = '_FILE';
 					$elFromTable = $this->clipObj->elFromTable($table);
-					if (count($elFromTable)) {
+					if (count($elFromTable) && $this->folderObject->checkActionPermission('write')) {
 						$cells[] = '<a href="' . htmlspecialchars($this->clipObj->pasteUrl('_FILE', $this->folderObject->getCombinedIdentifier())) . '" onclick="return ' . htmlspecialchars($this->clipObj->confirmMsg('_FILE', $this->path, 'into', $elFromTable)) . '" title="' . $GLOBALS['LANG']->getLL('clip_paste', 1) . '">' . IconUtility::getSpriteIcon('actions-document-paste-after') . '</a>';
 					}
 					if ($this->clipObj->current != 'normal' && $iOut) {
@@ -629,7 +629,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 							$theData[$field] = strtoupper($ext);
 							break;
 						case 'tstamp':
-							$theData[$field] = BackendUtility::date($fileObject->getProperty('modification_date'));
+							$theData[$field] = BackendUtility::date($fileObject->getModificationTime());
 							break;
 						case '_CLIPBOARD_':
 							$temp = '';
@@ -661,7 +661,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 								}
 							}
 
-							if (!empty($systemLanguages)) {
+							if (!empty($systemLanguages) && $fileObject->isIndexed() && $fileObject->checkActionPermission('write')) {
 								$metaDataRecord = $fileObject->_getMetaData();
 								$translations = $this->getTranslationsForMetaData($metaDataRecord);
 								$languageCode = '';
@@ -771,6 +771,9 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	 * @todo Define visibility
 	 */
 	public function makeClip($fileOrFolderObject) {
+		if (!$fileOrFolderObject->checkActionPermission('read')) {
+			return '';
+		}
 		$cells = array();
 		$fullIdentifier = $fileOrFolderObject->getCombinedIdentifier();
 		$md5 = GeneralUtility::shortmd5($fullIdentifier);
@@ -778,7 +781,12 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 		if ($this->clipObj->current == 'normal') {
 			$isSel = $this->clipObj->isSelected('_FILE', $md5);
 			$cells[] = '<a href="' . htmlspecialchars($this->clipObj->selUrlFile($fullIdentifier, 1, ($isSel == 'copy'))) . '">' . IconUtility::getSpriteIcon(('actions-edit-copy' . ($isSel == 'copy' ? '-release' : '')), array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.copy', TRUE))) . '</a>';
-			$cells[] = '<a href="' . htmlspecialchars($this->clipObj->selUrlFile($fullIdentifier, 0, ($isSel == 'cut'))) . '">' . IconUtility::getSpriteIcon(('actions-edit-cut' . ($isSel == 'cut' ? '-release' : '')), array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.cut', TRUE))) . '</a>';
+			// we can only cut if file can be moved
+			if ($fileOrFolderObject->checkActionPermission('move')) {
+				$cells[] = '<a href="' . htmlspecialchars($this->clipObj->selUrlFile($fullIdentifier, 0, ($isSel == 'cut'))) . '">' . IconUtility::getSpriteIcon(('actions-edit-cut' . ($isSel == 'cut' ? '-release' : '')), array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.cut', TRUE))) . '</a>';
+			} else {
+				$cells[] = IconUtility::getSpriteIcon('empty-empty');
+			}
 		} else {
 			// For numeric pads, add select checkboxes:
 			$n = '_FILE|' . $md5;
@@ -788,7 +796,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 		}
 		// Display PASTE button, if directory:
 		$elFromTable = $this->clipObj->elFromTable('_FILE');
-		if (is_a($fileOrFolderObject, 'TYPO3\\CMS\\Core\\Resource\\Folder') && count($elFromTable)) {
+		if (is_a($fileOrFolderObject, 'TYPO3\\CMS\\Core\\Resource\\Folder') && count($elFromTable) && $fileOrFolderObject->checkActionPermission('write')) {
 			$cells[] = '<a href="' . htmlspecialchars($this->clipObj->pasteUrl('_FILE', $fullIdentifier)) . '" onclick="return ' . htmlspecialchars($this->clipObj->confirmMsg('_FILE', $fullIdentifier, 'into', $elFromTable)) . '" title="' . $GLOBALS['LANG']->getLL('clip_pasteInto', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-paste-into') . '</a>';
 		}
 		// Compile items into a DIV-element:
