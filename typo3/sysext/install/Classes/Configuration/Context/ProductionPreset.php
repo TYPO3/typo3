@@ -38,7 +38,7 @@ class ProductionPreset extends Configuration\AbstractPreset {
 		'BE/debug' => FALSE,
 		'FE/debug' => FALSE,
 		'SYS/devIPmask' => '',
-		'SYS/displayErrors' => FALSE,
+		'SYS/displayErrors' => 0,
 		'SYS/enableDeprecationLog' => FALSE,
 		'SYS/sqlDebug' => 0,
 		'SYS/systemLogLevel' => 2,

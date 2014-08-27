@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @author Rupert Germann <rupi@gmx.li>
  */
-class ErrorHandler implements \TYPO3\CMS\Core\Error\ErrorHandlerInterface {
+class ErrorHandler implements ErrorHandlerInterface {
 
 	/**
 	 * Error levels which should result in an exception thrown.
@@ -56,7 +56,7 @@ class ErrorHandler implements \TYPO3\CMS\Core\Error\ErrorHandlerInterface {
 	/**
 	 * Handles an error.
 	 * If the error is registered as exceptionalError it will by converted into an exception, to be handled
-	 * by the configured exceptionhandler. Additionall the error message is written to the configured logs.
+	 * by the configured exceptionhandler. Additionally the error message is written to the configured logs.
 	 * If TYPO3_MODE is 'BE' the error message is also added to the flashMessageQueue, in FE the error message
 	 * is displayed in the admin panel (as TsLog message)
 	 *
@@ -65,11 +65,11 @@ class ErrorHandler implements \TYPO3\CMS\Core\Error\ErrorHandlerInterface {
 	 * @param string $errorFile Name of the file the error occurred in
 	 * @param int $errorLine Line number where the error occurred
 	 * @return bool
-	 * @throws \TYPO3\CMS\Core\Error\Exception with the data passed to this method if the error is registered as exceptionalError
+	 * @throws Exception with the data passed to this method if the error is registered as exceptionalError
 	 */
 	public function handleError($errorLevel, $errorMessage, $errorFile, $errorLine) {
 		// Don't do anything if error_reporting is disabled by an @ sign
-		if (error_reporting() == 0) {
+		if (error_reporting() === 0) {
 			return TRUE;
 		}
 		$errorLevels = array(
@@ -84,8 +84,8 @@ class ErrorHandler implements \TYPO3\CMS\Core\Error\ErrorHandlerInterface {
 		);
 		$message = 'PHP ' . $errorLevels[$errorLevel] . ': ' . $errorMessage . ' in ' . $errorFile . ' line ' . $errorLine;
 		if ($errorLevel & $this->exceptionalErrors) {
-				// handle error raised at early parse time
-				// autoloader not available & built-in classes not resolvable
+			// handle error raised at early parse time
+			// autoloader not available & built-in classes not resolvable
 			if (!class_exists('stdClass', FALSE)) {
 				$message = 'PHP ' . $errorLevels[$errorLevel] . ': ' . $errorMessage . ' in ' . basename($errorFile) .
 					'line ' . $errorLine;
@@ -98,7 +98,7 @@ class ErrorHandler implements \TYPO3\CMS\Core\Error\ErrorHandlerInterface {
 				require_once PATH_site . 'typo3/sysext/core/Classes/Exception.php';
 				require_once PATH_site . 'typo3/sysext/core/Classes/Error/Exception.php';
 			}
-			throw new \TYPO3\CMS\Core\Error\Exception($message, 1);
+			throw new Exception($message, 1);
 		} else {
 			switch ($errorLevel) {
 				case E_USER_ERROR:
@@ -140,6 +140,7 @@ class ErrorHandler implements \TYPO3\CMS\Core\Error\ErrorHandlerInterface {
 			}
 			// Add error message to the flashmessageQueue
 			if (defined('TYPO3_ERRORHANDLER_MODE') && TYPO3_ERRORHANDLER_MODE == 'debug') {
+				/** @var $flashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
 				$flashMessage = GeneralUtility::makeInstance(
 					'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
 					$message,
@@ -161,7 +162,7 @@ class ErrorHandler implements \TYPO3\CMS\Core\Error\ErrorHandlerInterface {
 	 * Writes an error in the sys_log table
 	 *
 	 * @param string $logMessage Default text that follows the message (in english!).
-	 * @param int $severity The eror level of the message (0 = OK, 1 = warning, 2 = error)
+	 * @param int $severity The error level of the message (0 = OK, 1 = warning, 2 = error)
 	 * @return void
 	 */
 	protected function writeLog($logMessage, $severity) {

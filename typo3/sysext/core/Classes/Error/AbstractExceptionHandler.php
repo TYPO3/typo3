@@ -111,7 +111,7 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, \T
 				'error' => 2,
 				'details_nr' => 0,
 				'details' => str_replace('%', '%%', $logMessage),
-				'IP' => GeneralUtility::getIndpEnv('REMOTE_ADDR'),
+				'IP' => (string)GeneralUtility::getIndpEnv('REMOTE_ADDR'),
 				'tstamp' => $GLOBALS['EXEC_TIME'],
 				'workspace' => $workspace
 			);
