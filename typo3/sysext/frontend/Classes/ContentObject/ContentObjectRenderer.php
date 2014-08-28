@@ -2071,11 +2071,11 @@ class ContentObjectRenderer {
 			if (!$isExecuted[$stdWrapName] && !$this->stopRendering[$this->stdWrapRecursionLevel]) {
 				$functionName = rtrim($stdWrapName, '.');
 				$functionProperties = $functionName . '.';
-				// If there is any code one the next level, check if it contains "official" stdWrap functions
+				// If there is any code on the next level, check if it contains "official" stdWrap functions
 				// if yes, execute them first - will make each function stdWrap aware
 				// so additional stdWrap calls within the functions can be removed, since the result will be the same
 				// exception: the recursive stdWrap function and cObject will still be using their own stdWrap call, since it modifies the content and not a property
-				if (count($conf[$functionProperties]) && !GeneralUtility::inList($stdWrapDisabledFunctionTypes, $functionType)) {
+				if ($functionName !== 'stdWrap' && !empty($conf[$functionProperties]) && !GeneralUtility::inList($stdWrapDisabledFunctionTypes, $functionType)) {
 					if (array_intersect_key($this->stdWrapOrder, $conf[$functionProperties])) {
 						$conf[$functionName] = $this->stdWrap($conf[$functionName], $conf[$functionProperties]);
 					}

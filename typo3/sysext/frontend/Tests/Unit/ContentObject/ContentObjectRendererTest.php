@@ -1037,6 +1037,51 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * @test
+	 */
+	public function recursiveStdWrapProperlyRendersBasicString() {
+		$stdWrapConfiguration = array(
+			'noTrimWrap' => '|| 123|',
+			'stdWrap.' => array(
+				'wrap' => '<b>|</b>'
+			)
+		);
+		$this->assertSame(
+			'<b>Test</b> 123',
+			$this->cObj->stdWrap('Test', $stdWrapConfiguration)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function recursiveStdWrapIsOnlyCalledOnce() {
+		$stdWrapConfiguration = array(
+			'append' => 'TEXT',
+			'append.' => array(
+				'data' => 'register:Counter'
+			),
+			'stdWrap.' => array(
+				'append' => 'LOAD_REGISTER',
+				'append.' => array(
+					'Counter.' => array(
+						'prioriCalc' => 'intval',
+						'cObject' => 'TEXT',
+						'cObject.' => array(
+							'data' => 'register:Counter',
+							'wrap' => '|+1',
+						)
+					)
+				)
+			)
+		);
+		$this->assertSame(
+			'Counter:1',
+			$this->cObj->stdWrap('Counter:', $stdWrapConfiguration)
+		);
+	}
+
+	/**
 	 * Data provider for the numberFormat test
 	 *
 	 * @return array multi-dimensional array with the second level like this:
