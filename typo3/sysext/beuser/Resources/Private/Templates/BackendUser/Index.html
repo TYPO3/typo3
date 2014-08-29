@@ -84,28 +84,32 @@
 			</f:be.widget.paginate>
 		</f:then>
 		<f:else>
-			<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">
-				<tr class="t3-row-header">
-					<td>&nbsp;</td>
-					<td>
-						<f:translate key="userName">Username</f:translate> /
-						<f:translate key="realName">Real name</f:translate>
-					</td>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
-					<td><f:translate key="lastLogin">Last login</f:translate></td>
-				</tr>
-				<f:for each="{backendUsers}" as="backendUser">
-					<f:render partial="BackendUser/IndexListRow" arguments="{demand: demand, backendUser: backendUser, dateFormat: dateFormat, timeFormat: timeFormat, returnUrl: returnUrl}" />
-				</f:for>
-				<f:comment>
-					Footer row: no officially defined style yet
-				</f:comment>
-				<tr>
-					<td colspan="6">
-						<f:count subject="{backendUsers}" /> <f:translate key="users">Users</f:translate>
-					</td>
-				</tr>
+			<table class="t3-table">
+				<thead>
+					<tr>
+						<th>&nbsp;</th>
+						<th>
+							<f:translate key="userName">Username</f:translate> /
+							<f:translate key="realName">Real name</f:translate>
+						</th>
+						<th>&nbsp;</th>
+						<th>&nbsp;</th>
+						<th><f:translate key="lastLogin">Last login</f:translate></th>
+					</tr>
+				</thead>
+				<tbody>
+					<f:for each="{backendUsers}" as="backendUser">
+						<f:render partial="BackendUser/IndexListRow" arguments="{demand: demand, backendUser: backendUser, dateFormat: dateFormat, timeFormat: timeFormat, returnUrl: returnUrl}" />
+					</f:for>
+					<f:comment>
+						Footer row: no officially defined style yet
+					</f:comment>
+					<tr>
+						<td colspan="6">
+							<f:count subject="{backendUsers}" /> <f:translate key="users">Users</f:translate>
+						</td>
+					</tr>
+				</tbody>
 			</table>
 		</f:else>
 	</f:if>
