@@ -1,5 +1,5 @@
 <?php
-$MLANG['default']['tabs_images']['tab'] = 'config.gif';
+$MLANG['default']['tabs_images']['tab'] = '../Resources/Public/Icons/module-config.gif';
 $MLANG['default']['ll_ref'] = 'LLL:EXT:lowlevel/config/locallang_mod.xlf';
 $MCONF['script'] = '_DISPATCH';
 $MCONF['access'] = 'admin';

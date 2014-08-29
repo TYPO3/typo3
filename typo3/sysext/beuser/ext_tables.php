@@ -13,7 +13,7 @@ if (TYPO3_MODE === 'BE') {
 		),
 		array(
 			'access' => 'admin',
-			'icon' => 'EXT:' . $_EXTKEY . '/ext_icon.gif',
+			'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module-beuser.gif',
 			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xlf'
 		)
 	);

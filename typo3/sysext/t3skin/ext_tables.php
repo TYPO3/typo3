@@ -3,13 +3,16 @@ defined('TYPO3_MODE') or die();
 
 if (TYPO3_MODE === 'BE' || TYPO3_MODE === 'FE' && isset($GLOBALS['BE_USER'])) {
 	global $TBE_STYLES;
+
 	// Register as a skin
 	$TBE_STYLES['skins'][$_EXTKEY] = array(
 		'name' => 't3skin'
 	);
+
 	// Support for other extensions to add own icons...
 	$presetSkinImgs = is_array($TBE_STYLES['skinImg']) ? $TBE_STYLES['skinImg'] : array();
 	$TBE_STYLES['skins'][$_EXTKEY]['stylesheetDirectories']['sprites'] = 'EXT:t3skin/stylesheets/sprites/';
+
 	/** Setting up backend styles and colors */
 	$TBE_STYLES['mainColors'] = array(
 		// Always use #xxxxxx color definitions!
@@ -64,18 +67,24 @@ if (TYPO3_MODE === 'BE' || TYPO3_MODE === 'FE' && isset($GLOBALS['BE_USER'])) {
 	$TBE_STYLES['borderschemes'][3] = array('', '', '', 'wrapperTable3');
 	$TBE_STYLES['borderschemes'][4] = array('', '', '', 'wrapperTable4');
 	$TBE_STYLES['borderschemes'][5] = array('', '', '', 'wrapperTable5');
+
 	// Setting the relative path to the extension in temp. variable:
 	$temp_eP = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY);
+
 	// Alternative dimensions for frameset sizes:
 	// Left menu frame width
 	$TBE_STYLES['dims']['leftMenuFrameW'] = 190;
+
 	// Top frame height
 	$TBE_STYLES['dims']['topFrameH'] = 42;
+
 	// Default navigation frame width
 	$TBE_STYLES['dims']['navFrameWidth'] = 280;
+
 	// Setting roll-over background color for click menus:
 	// Notice, this line uses the the 'scriptIDindex' feature to override another value in this array (namely $TBE_STYLES['mainColors']['bgColor5']), for a specific script "typo3/alt_clickmenu.php"
 	$TBE_STYLES['scriptIDindex']['typo3/alt_clickmenu.php']['mainColors']['bgColor5'] = '#dedede';
+
 	// Setting up auto detection of alternative icons:
 	$TBE_STYLES['skinImgAutoCfg'] = array(
 		'absDir' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'icons/',
@@ -85,8 +94,10 @@ if (TYPO3_MODE === 'BE' || TYPO3_MODE === 'FE' && isset($GLOBALS['BE_USER'])) {
 		'iconSizeWidth' => 16,
 		'iconSizeHeight' => 16
 	);
+
 	// Changing icon for filemounts, needs to be done here as overwriting the original icon would also change the filelist tree's root icon
 	$TCA['sys_filemounts']['ctrl']['iconfile'] = '_icon_ftp_2.gif';
+
 	// Adding flags to sys_language
 	$TCA['sys_language']['ctrl']['typeicon_column'] = 'flag';
 	$TCA['sys_language']['ctrl']['typeicon_classes'] = array(
@@ -347,45 +358,27 @@ if (TYPO3_MODE === 'BE' || TYPO3_MODE === 'FE' && isset($GLOBALS['BE_USER'])) {
 	foreach ($flagNames as $flagName) {
 		$TCA['sys_language']['columns']['flag']['config']['items'][] = array($flagName, $flagName, 'EXT:t3skin/images/flags/' . $flagName . '.png');
 	}
+
 	// Manual setting up of alternative icons. This is mainly for module icons which has a special prefix:
 	$TBE_STYLES['skinImg'] = array_merge($presetSkinImgs, array(
 		'gfx/ol/blank.gif' => array('clear.gif', 'width="18" height="16"'),
 		'MOD:web/website.gif' => array($temp_eP . 'icons/module_web.gif', 'width="24" height="24"'),
-		'MOD:web_layout/layout.gif' => array($temp_eP . 'icons/module_web_layout.gif', 'width="24" height="24"'),
-		'MOD:web_view/view.gif' => array($temp_eP . 'icons/module_web_view.png', 'width="24" height="24"'),
-		'MOD:web_list/list.gif' => array($temp_eP . 'icons/module_web_list.gif', 'width="24" height="24"'),
-		'MOD:web_info/info.gif' => array($temp_eP . 'icons/module_web_info.png', 'width="24" height="24"'),
-		'MOD:web_perm/perm.gif' => array($temp_eP . 'icons/module_web_perms.png', 'width="24" height="24"'),
-		'MOD:web_func/func.gif' => array($temp_eP . 'icons/module_web_func.png', 'width="24" height="24"'),
 		'MOD:web_ts/ts1.gif' => array($temp_eP . 'icons/module_web_ts.gif', 'width="24" height="24"'),
 		'MOD:web_modules/modules.gif' => array($temp_eP . 'icons/module_web_modules.gif', 'width="24" height="24"'),
 		'MOD:web_txversionM1/cm_icon.gif' => array($temp_eP . 'icons/module_web_version.gif', 'width="24" height="24"'),
 		'MOD:file/file.gif' => array($temp_eP . 'icons/module_file.gif', 'width="22" height="24"'),
-		'MOD:file_list/list.gif' => array($temp_eP . 'icons/module_file_list.gif', 'width="22" height="24"'),
 		'MOD:file_images/images.gif' => array($temp_eP . 'icons/module_file_images.gif', 'width="22" height="22"'),
 		'MOD:user/user.gif' => array($temp_eP . 'icons/module_user.gif', 'width="22" height="22"'),
-		'MOD:user_task/task.gif' => array($temp_eP . 'icons/module_user_taskcenter.gif', 'width="22" height="22"'),
-		'MOD:user_setup/setup.gif' => array($temp_eP . 'icons/module_user_setup.gif', 'width="22" height="22"'),
 		'MOD:user_doc/document.gif' => array($temp_eP . 'icons/module_doc.gif', 'width="22" height="22"'),
-		'MOD:user_ws/sys_workspace.gif' => array($temp_eP . 'icons/module_user_ws.gif', 'width="22" height="22"'),
 		'MOD:tools/tool.gif' => array($temp_eP . 'icons/module_tools.gif', 'width="25" height="24"'),
-		'MOD:tools_em/em.gif' => array($temp_eP . 'icons/module_tools_em.png', 'width="24" height="24"'),
-		'MOD:tools_em/install.gif' => array($temp_eP . 'icons/module_tools_em.gif', 'width="24" height="24"'),
 		'MOD:tools_txphpmyadmin/thirdparty_db.gif' => array($temp_eP . 'icons/module_tools_phpmyadmin.gif', 'width="24" height="24"'),
-		'MOD:tools_isearch/isearch.gif' => array($temp_eP . 'icons/module_tools_isearch.gif', 'width="24" height="24"'),
-		'MOD:system_dbint/db.gif' => array($temp_eP . 'icons/module_system_dbint.gif', 'width="25" height="24"'),
-		'MOD:system_beuser/beuser.gif' => array($temp_eP . 'icons/module_system_user.gif', 'width="24" height="24"'),
-		'MOD:system_install/install.gif' => array($temp_eP . 'icons/module_system_install.gif', 'width="24" height="24"'),
-		'MOD:system_config/config.gif' => array($temp_eP . 'icons/module_system_config.gif', 'width="24" height="24"'),
-		'MOD:system_log/log.gif' => array($temp_eP . 'icons/module_system_log.gif', 'width="24" height="24"'),
 		'MOD:help/help.gif' => array($temp_eP . 'icons/module_help.gif', 'width="23" height="24"'),
-		'MOD:help_about/info.gif' => array($temp_eP . 'icons/module_help_about.gif', 'width="25" height="24"'),
-		'MOD:help_aboutmodules/aboutmodules.gif' => array($temp_eP . 'icons/module_help_aboutmodules.gif', 'width="24" height="24"'),
-		'MOD:help_cshmanual/about.gif' => array($temp_eP . 'icons/module_help_cshmanual.gif', 'width="25" height="24"'),
 		'MOD:help_txtsconfighelpM1/moduleicon.gif' => array($temp_eP . 'icons/module_help_ts.gif', 'width="25" height="24"')
 	));
+
 	// Logo at login screen
 	$TBE_STYLES['logo_login'] = $temp_eP . 'images/login/typo3logo-white-greyback.gif';
+
 	// extJS theme
 	$TBE_STYLES['extJS']['theme'] = $temp_eP . 'extjs/xtheme-t3skin.css';
 	$GLOBALS['TBE_STYLES']['stylesheets']['admPanel'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('t3skin') . 'stylesheets/standalone/admin_panel.css';

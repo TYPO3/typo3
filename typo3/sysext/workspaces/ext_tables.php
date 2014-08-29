@@ -16,7 +16,7 @@ if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 		),
 		array(
 			'access' => 'user,group',
-			'icon' => 'EXT:workspaces/Resources/Public/Images/moduleicon.gif',
+			'icon' => 'EXT:workspaces/Resources/Public/Icons/module-workspaces.gif',
 			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xlf',
 			'navigationComponentId' => 'typo3-pagetree'
 		)
