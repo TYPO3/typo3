@@ -184,6 +184,15 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
 		unset($fieldValues['uid_local']);
 		unset($fieldValues['uid_foreign']);
 
+		if (!empty($fieldValues['tablenames'])) {
+			$where['tablenames'] = $fieldValues['tablenames'];
+			unset($fieldValues['tablenames']);
+		}
+		if (!empty($fieldValues['fieldname'])) {
+			$where['fieldname'] = $fieldValues['fieldname'];
+			unset($fieldValues['fieldname']);
+		}
+
 		$updateSuccessful = $this->databaseHandle->exec_UPDATEquery(
 			$tableName,
 			$this->resolveWhereStatement($where, $tableName),

@@ -711,13 +711,13 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	}
 
 	/**
-	 * Inserts mm-relation into a relation table
+	 * Updates mm-relation in a relation table
 	 *
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object The related object
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject The parent object
 	 * @param string $propertyName The name of the parent object's property where the related objects are stored in
 	 * @param integer $sortingPosition Defaults to NULL
-	 * @return integer The uid of the inserted row
+	 * @return bool TRUE if update was successfully
 	 */
 	protected function updateRelationInRelationTable(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, $sortingPosition = 0) {
 		$dataMap = $this->dataMapper->getDataMap(get_class($parentObject));
@@ -743,7 +743,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 *
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject The parent object
 	 * @param string $parentPropertyName The name of the parent object's property where the related objects are stored in
-	 * @return boolean
+	 * @return bool TRUE if delete was successfully
 	 */
 	protected function deleteAllRelationsFromRelationtable(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $parentPropertyName) {
 		$dataMap = $this->dataMapper->getDataMap(get_class($parentObject));

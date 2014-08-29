@@ -491,6 +491,37 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	}
 
 	/**
+	 * Test if adjusting existing mm relations do not relations with other objects
+	 *
+	 * @test
+	 */
+	public function adjustingMmRelationWithTablesnameAndFieldnameFieldDoNotTouchOtherRelations() {
+		/** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
+		$postRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\PostRepository');
+		/** @var \ExtbaseTeam\BlogExample\Domain\Model\Post $post */
+		$post = $postRepository->findByUid(1);
+		// Move category down
+		foreach ($post->getCategories() as $category) {
+			$post->removeCategory($category);
+			$post->addCategory($category);
+			break;
+		}
+		$postRepository->update($post);
+		$this->persistentManager->persistAll();
+
+		// re-fetch Post and Blog
+		$newBlogCategoryCount = $this->getDatabaseConnection()->exec_SELECTcountRows(
+			'uid_local',
+			'sys_category_record_mm',
+			'tablenames = "tx_blogexample_domain_model_blog"
+			AND fieldname = "categories"
+			AND uid_foreign = ' . $this->blog->getUid() . ''
+		);
+
+		$this->assertSame($this->blog->getCategories()->count(), $newBlogCategoryCount);
+	}
+
+	/**
 	 * Helper method for persisting blog
 	 */
 	protected function updateAndPersistBlog() {
