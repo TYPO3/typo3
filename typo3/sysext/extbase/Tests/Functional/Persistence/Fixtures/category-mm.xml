@@ -7,7 +7,7 @@
 		<tablenames>tx_blogexample_domain_model_post</tablenames>
 		<fieldname>categories</fieldname>
 		<sorting>1</sorting>
-		<sorting_foreign>2</sorting_foreign>
+		<sorting_foreign>1</sorting_foreign>
 	</sys_category_record_mm>
 	<sys_category_record_mm>
 		<uid_local>2</uid_local>
@@ -23,7 +23,7 @@
 		<tablenames>tx_blogexample_domain_model_post</tablenames>
 		<fieldname>categories</fieldname>
 		<sorting>1</sorting>
-		<sorting_foreign>2</sorting_foreign>
+		<sorting_foreign>3</sorting_foreign>
 	</sys_category_record_mm>
 
 	<!-- post 2 gets category 1 -->
@@ -44,5 +44,41 @@
 		<fieldname>categories</fieldname>
 		<sorting>1</sorting>
 		<sorting_foreign>2</sorting_foreign>
+	</sys_category_record_mm>
+
+	<!-- blog 1 gets categories 1,2,3 -->
+	<sys_category_record_mm>
+		<uid_local>1</uid_local>
+		<uid_foreign>1</uid_foreign>
+		<tablenames>tx_blogexample_domain_model_blog</tablenames>
+		<fieldname>categories</fieldname>
+		<sorting>1</sorting>
+		<sorting_foreign>1</sorting_foreign>
+	</sys_category_record_mm>
+	<sys_category_record_mm>
+		<uid_local>2</uid_local>
+		<uid_foreign>1</uid_foreign>
+		<tablenames>tx_blogexample_domain_model_blog</tablenames>
+		<fieldname>categories</fieldname>
+		<sorting>1</sorting>
+		<sorting_foreign>2</sorting_foreign>
+	</sys_category_record_mm>
+	<sys_category_record_mm>
+		<uid_local>4</uid_local>
+		<uid_foreign>1</uid_foreign>
+		<tablenames>tx_blogexample_domain_model_blog</tablenames>
+		<fieldname>categories</fieldname>
+		<sorting>1</sorting>
+		<sorting_foreign>3</sorting_foreign>
+	</sys_category_record_mm>
+
+	<!-- blog 2 gets category 2 -->
+	<sys_category_record_mm>
+		<uid_local>2</uid_local>
+		<uid_foreign>2</uid_foreign>
+		<tablenames>tx_blogexample_domain_model_blog</tablenames>
+		<fieldname>categories</fieldname>
+		<sorting>1</sorting>
+		<sorting_foreign>1</sorting_foreign>
 	</sys_category_record_mm>
 </dataset>
