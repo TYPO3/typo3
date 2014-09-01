@@ -158,7 +158,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 		} else {
 			$absoluteBasePath = $configuration['basePath'];
 		}
-		$this->canonicalizeAndCheckFilePath($absoluteBasePath);
+		$absoluteBasePath = $this->canonicalizeAndCheckFilePath($absoluteBasePath);
 		$absoluteBasePath = rtrim($absoluteBasePath, '/') . '/';
 		if (!is_dir($absoluteBasePath)) {
 			throw new \TYPO3\CMS\Core\Resource\Exception\InvalidConfigurationException(
