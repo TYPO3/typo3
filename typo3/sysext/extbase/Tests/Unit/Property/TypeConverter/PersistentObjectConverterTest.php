@@ -62,7 +62,7 @@ class PersistentObjectConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function checkMetadata() {
-		$this->assertEquals(array('string', 'array'), $this->converter->getSupportedSourceTypes(), 'Source types do not match');
+		$this->assertEquals(array('integer', 'string', 'array'), $this->converter->getSupportedSourceTypes(), 'Source types do not match');
 		$this->assertEquals('object', $this->converter->getSupportedTargetType(), 'Target type does not match');
 		$this->assertEquals(1, $this->converter->getPriority(), 'Priority does not match');
 	}
