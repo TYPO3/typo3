@@ -49,7 +49,7 @@ class PersistentObjectConverter extends ObjectConverter {
 	/**
 	 * @var array
 	 */
-	protected $sourceTypes = array('string', 'array');
+	protected $sourceTypes = array('integer', 'string', 'array');
 
 	/**
 	 * @var string
@@ -85,7 +85,7 @@ class PersistentObjectConverter extends ObjectConverter {
 	 * @return array
 	 */
 	public function getSourceChildPropertiesToBeConverted($source) {
-		if (is_string($source)) {
+		if (is_string($source) || is_int($source)) {
 			return array();
 		}
 		if (isset($source['__identity'])) {
@@ -139,13 +139,13 @@ class PersistentObjectConverter extends ObjectConverter {
 				unset($source['__identity']);
 			}
 			$object = $this->handleArrayData($source, $targetType, $convertedChildProperties, $configuration);
-		} elseif (is_string($source)) {
-			if ($source === '' || $source === '0') {
+		} elseif (is_string($source) || is_int($source)) {
+			if (empty($source)) {
 				return NULL;
 			}
 			$object = $this->fetchObjectFromPersistence($source, $targetType);
 		} else {
-			throw new \InvalidArgumentException('Only strings and arrays are accepted.', 1305630314);
+			throw new \InvalidArgumentException('Only integers, strings and arrays are accepted.', 1305630314);
 		}
 		foreach ($convertedChildProperties as $propertyName => $propertyValue) {
 			$result = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($object, $propertyName, $propertyValue);
