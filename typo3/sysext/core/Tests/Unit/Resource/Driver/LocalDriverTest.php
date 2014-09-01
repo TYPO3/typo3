@@ -128,6 +128,37 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	/**
 	 * @test
 	 */
+	public function calculatedBasePathRelativeIsSane() {
+		$fixture = $this->createDriverFixture();
+
+		// This would cause problems if you fill "/fileadmin/" into the base path field of a sys_file_storage record and select "relative" as path type
+		$relativeDriverConfiguration = array(
+			'pathType' => 'relative',
+			'basePath' => '/typo3temp/',
+		);
+		$basePath = $fixture->_call('calculateBasePath', $relativeDriverConfiguration);
+
+		$this->assertNotContains('//', $basePath);
+	}
+
+	/**
+	 * @test
+	 */
+	public function calculatedBasePathAbsoluteIsSane() {
+		$fixture = $this->createDriverFixture();
+
+		// This test checks if "/../" are properly filtered out (i.e. from "Base path" field of sys_file_storage)
+		$relativeDriverConfiguration = array(
+			'basePath' => PATH_site . 'typo3temp/../typo3temp/',
+		);
+		$basePath = $fixture->_call('calculateBasePath', $relativeDriverConfiguration);
+
+		$this->assertNotContains('/../', $basePath);
+	}
+
+	/**
+	 * @test
+	 */
 	public function createFolderRecursiveSanitizesFilename() {
 		/** @var \TYPO3\CMS\Core\Resource\Driver\LocalDriver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $driver */
 		$driver = $this->createDriverFixture(array(), array('sanitizeFilename'));
