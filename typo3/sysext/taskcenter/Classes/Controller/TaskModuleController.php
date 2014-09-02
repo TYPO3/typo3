@@ -39,7 +39,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('taskcenter') . 'res/mod_template.html');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
-		$this->doc->getPageRenderer()->loadScriptaculous('effects,dragdrop');
+		$this->doc->getPageRenderer()->loadJquery();
 		$this->doc->addStyleSheet('tx_taskcenter', '../' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('taskcenter') . 'res/mod_styles.css');
 	}
 
@@ -182,7 +182,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$count = 0;
 		// Change the sorting of items to the user's one
 		if ($mainMenu) {
-			$this->doc->getPageRenderer()->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('taskcenter') . 'res/tasklist.js');
+			$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Taskcenter/Taskcenter');
 			$userSorting = unserialize($GLOBALS['BE_USER']->uc['taskcenter']['sorting']);
 			if (is_array($userSorting)) {
 				$newSorting = array();
@@ -356,15 +356,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return string Code that inserts the iframe (HTML)
 	 */
 	public function urlInIframe($url, $max = 0) {
-		$this->doc->JScodeArray[] = 'function resizeIframe(frame,max) {
-			var parent = $("typo3-docbody");
-			var parentHeight = $(parent).getHeight() - 0;
-			var parentWidth = $(parent).getWidth() - $("taskcenter-menu").getWidth() - 50;
-			$("list_frame").setStyle({height: parentHeight+"px", width: parentWidth+"px"});
-
-		}
-		Event.observe(window, "resize", resizeIframe, false);';
-		return '<iframe onload="resizeIframe(this,' . $max . ');" scrolling="auto"  width="100%" src="' . $url . '" name="list_frame" id="list_frame" frameborder="no" style="margin-top:-51px;border: none;"></iframe>';
+		return '<iframe scrolling="auto"  width="100%" src="' . $url . '" name="list_frame" id="list_frame" frameborder="no"></iframe>';
 	}
 
 	/**

@@ -12,6 +12,14 @@ if (TYPO3_MODE === 'BE') {
 		'top',
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'task/'
 	);
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler('Taskcenter::saveCollapseState', 'TYPO3\\CMS\\Taskcenter\\TaskStatus->saveCollapseState');
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler('Taskcenter::saveSortingState', 'TYPO3\\CMS\\Taskcenter\\TaskStatus->saveSortingState');
+
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
+		'Taskcenter::saveCollapseState',
+		'TYPO3\\CMS\\Taskcenter\\TaskStatus->saveCollapseState'
+	);
+
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
+		'Taskcenter::saveSortingState',
+		'TYPO3\\CMS\\Taskcenter\\TaskStatus->saveSortingState'
+	);
 }

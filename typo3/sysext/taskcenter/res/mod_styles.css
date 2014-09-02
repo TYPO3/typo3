@@ -247,3 +247,8 @@ body#ext-taskcenter-task-index-php h3 {
 	margin-left: 150px;
 	width: 215px;
 }
+
+#list_frame {
+	margin-top: -51px;
+	border: none;
+}
