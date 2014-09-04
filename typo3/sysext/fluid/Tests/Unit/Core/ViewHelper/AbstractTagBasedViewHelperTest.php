@@ -67,6 +67,21 @@ class AbstractTagBasedViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	/**
 	 * @test
 	 */
+	public function dataAttributesAreRenderedCorrectly() {
+		$mockTagBuilder = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder', array('addAttribute'), array(), '', FALSE);
+		$mockTagBuilder->expects($this->at(0))->method('addAttribute')->with('data-foo', 'bar');
+		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('data-baz', 'foos');
+		$this->viewHelper->_set('tag', $mockTagBuilder);
+
+		$arguments = array('data' => array('foo' => 'bar', 'baz' => 'foos'));
+		$this->viewHelper->setArguments($arguments);
+		$this->viewHelper->initializeArguments();
+		$this->viewHelper->initialize();
+	}
+
+	/**
+	 * @test
+	 */
 	public function standardTagAttributesAreRegistered() {
 		$mockTagBuilder = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder', array('addAttribute'), array(), '', FALSE);
 		$mockTagBuilder->expects($this->at(0))->method('addAttribute')->with('class', 'classAttribute');
