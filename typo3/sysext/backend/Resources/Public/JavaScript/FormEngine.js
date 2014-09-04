@@ -66,6 +66,8 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 	 * @param exclusiveValues if the select field has exclusive options that are not combine-able
 	 */
 	FormEngine.setSelectOptionFromExternalSource = setFormValueFromBrowseWin = function(fieldName, value, label, title, exclusiveValues) {
+		exclusiveValues = String(exclusiveValues);
+
 		var $originalFieldEl = $fieldEl = FormEngine.getFieldElement(fieldName)
 				,isMultiple = false
 				,isList = false;
