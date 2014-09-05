@@ -29,9 +29,14 @@ namespace TYPO3\CMS\Core;
 class Registry implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @var 	array
+	 * @var array
 	 */
 	protected $entries = array();
+
+	/**
+	 * @var array
+	 */
+	protected $loadedNamespaces = array();
 
 	/**
 	 * Returns a persistent entry.
@@ -43,7 +48,8 @@ class Registry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @throws \InvalidArgumentException Throws an exception if the given namespace is not valid
 	 */
 	public function get($namespace, $key, $defaultValue = NULL) {
-		if (!isset($this->entries[$namespace])) {
+		$this->validateNamespace($namespace);
+		if (!$this->isNamespaceLoaded($namespace)) {
 			$this->loadEntriesByNamespace($namespace);
 		}
 		return isset($this->entries[$namespace][$key]) ? $this->entries[$namespace][$key] : $defaultValue;
@@ -68,6 +74,9 @@ class Registry implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function set($namespace, $key, $value) {
 		$this->validateNamespace($namespace);
+		if (!$this->isNamespaceLoaded($namespace)) {
+			$this->loadEntriesByNamespace($namespace);
+		}
 		$serializedValue = serialize($value);
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'sys_registry', 'entry_namespace = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($namespace, 'sys_registry') . ' AND entry_key = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($key, 'sys_registry'));
 		if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) < 1) {
@@ -112,6 +121,17 @@ class Registry implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
+	 * check if the given namespace is loaded
+	 *
+	 * @param string $namespace Namespace. extension key for extensions or 'core' for core registry entries
+	 *
+	 * @return bool
+	 */
+	protected function isNamespaceLoaded($namespace) {
+		return isset($this->loadedNamespaces[$namespace]);
+	}
+
+	/**
 	 * Loads all entries of the given namespace into the internal $entries cache.
 	 *
 	 * @param string $namespace Namespace. extension key for extensions or 'core' for core registry entries
@@ -125,6 +145,7 @@ class Registry implements \TYPO3\CMS\Core\SingletonInterface {
 			$key = $storedEntry['entry_key'];
 			$this->entries[$namespace][$key] = unserialize($storedEntry['entry_value']);
 		}
+		$this->loadedNamespaces[$namespace] = TRUE;
 	}
 
 	/**

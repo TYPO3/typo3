@@ -110,10 +110,11 @@ class RegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function setAllowsValidNamespaces() {
-		$this->registry->set('tx_thisIsValid', 'someKey', 'someValue');
-		$this->registry->set('thisIsValid', 'someKey', 'someValue');
-		$this->registry->set('user_soIsThis', 'someKey', 'someValue');
-		$this->registry->set('core', 'someKey', 'someValue');
+		$registry = $this->getMock('TYPO3\\CMS\\Core\\Registry', array('loadEntriesByNamespace'));
+		$registry->set('tx_thisIsValid', 'someKey', 'someValue');
+		$registry->set('thisIsValid', 'someKey', 'someValue');
+		$registry->set('user_soIsThis', 'someKey', 'someValue');
+		$registry->set('core', 'someKey', 'someValue');
 	}
 
 	/**
@@ -125,7 +126,8 @@ class RegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'entry_key' => 'someKey',
 			'entry_value' => serialize('someValue')
 		));
-		$this->registry->set('tx_phpunit', 'someKey', 'someValue');
+		$registry = $this->getMock('TYPO3\\CMS\\Core\\Registry', array('loadEntriesByNamespace'));
+		$registry->set('tx_phpunit', 'someKey', 'someValue');
 	}
 
 	/**
@@ -138,17 +140,8 @@ class RegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'entry_value' => serialize('someValue')
 		));
 		$GLOBALS['TYPO3_DB']->expects($this->never())->method('exec_INSERTquery');
-		$this->registry->set('tx_phpunit', 'someKey', 'someValue');
-	}
-
-	/**
-	 * @test
-	 */
-	public function setStoresValueInTheInternalEntriesCache() {
 		$registry = $this->getMock('TYPO3\\CMS\\Core\\Registry', array('loadEntriesByNamespace'));
-		$registry->expects($this->never())->method('loadEntriesByNamespace');
 		$registry->set('tx_phpunit', 'someKey', 'someValue');
-		$this->assertEquals('someValue', $registry->get('tx_phpunit', 'someKey'), 'The actual data did not match the expected data.');
 	}
 
 	/**
