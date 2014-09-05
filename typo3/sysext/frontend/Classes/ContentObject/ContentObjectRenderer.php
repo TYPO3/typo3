@@ -1561,7 +1561,7 @@ class ContentObjectRenderer {
 	 */
 	public function fileResource($fName, $addParams = 'alt="" title=""') {
 		$incFile = $GLOBALS['TSFE']->tmpl->getFileName($fName);
-		if ($incFile) {
+		if ($incFile && file_exists($incFile)) {
 			$fileinfo = GeneralUtility::split_fileref($incFile);
 			if (GeneralUtility::inList('jpg,gif,jpeg,png', $fileinfo['fileext'])) {
 				$imgFile = $incFile;
