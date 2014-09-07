@@ -87,4 +87,3 @@ $TCA['tx_irretutorial_mnattr_offer'] = array(
 		'fe_admin_fieldList' => 'sys_language_uid, l18n_parent, l18n_diffsource, hidden, title, hotels',
 	)
 );
-?>

@@ -54,4 +54,3 @@ class TruncateSysFileProcessedFileTable extends AbstractUpdate {
 	}
 
 }
-?>

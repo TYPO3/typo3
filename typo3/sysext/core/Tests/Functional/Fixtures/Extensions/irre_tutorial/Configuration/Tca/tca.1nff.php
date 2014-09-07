@@ -289,4 +289,3 @@ $TCA['tx_irretutorial_1nff_price'] = array(
 		'1' => Array('showitem' => '')
 	)
 );
-?>

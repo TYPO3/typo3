@@ -134,4 +134,3 @@ class Comment extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 			$this->content . chr(10);
 	}
 }
-?>

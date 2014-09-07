@@ -204,4 +204,3 @@ class Wizard extends OpenidService {
 		echo $view->render();
 	}
 }
-?>

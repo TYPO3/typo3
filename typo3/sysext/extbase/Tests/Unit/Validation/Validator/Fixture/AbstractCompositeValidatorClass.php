@@ -49,4 +49,3 @@ class AbstractCompositeValidatorClass extends \TYPO3\CMS\Extbase\Validation\Vali
 
 
 }
-?>

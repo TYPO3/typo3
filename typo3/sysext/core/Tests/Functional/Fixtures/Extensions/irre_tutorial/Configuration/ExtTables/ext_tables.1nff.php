@@ -95,4 +95,3 @@ $TCA['tx_irretutorial_1nff_price'] = array(
 		'fe_admin_fieldList' => 'sys_language_uid, l18n_parent, l18n_diffsource, hidden, parentid, title, price',
 	)
 );
-?>

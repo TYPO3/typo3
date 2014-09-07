@@ -180,4 +180,3 @@ $TCA['tx_irretutorial_mnsym_hotel_rel'] = array(
 		'1' => Array('showitem' => '')
 	)
 );
-?>

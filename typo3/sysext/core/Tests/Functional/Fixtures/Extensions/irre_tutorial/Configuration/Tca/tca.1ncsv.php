@@ -255,4 +255,3 @@ $TCA['tx_irretutorial_1ncsv_price'] = array(
 		'1' => Array('showitem' => '')
 	)
 );
-?>

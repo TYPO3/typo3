@@ -372,4 +372,3 @@ $TCA['tx_irretutorial_mnasym_price'] = array(
 		'1' => Array('showitem' => '')
 	)
 );
-?>

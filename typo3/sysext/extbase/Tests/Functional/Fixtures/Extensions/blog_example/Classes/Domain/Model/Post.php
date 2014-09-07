@@ -361,4 +361,3 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 			implode(', ', $this->tags->toArray());
 	}
 }
-?>

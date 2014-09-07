@@ -171,4 +171,3 @@ $TCA['tx_blogexample_domain_model_post'] = array(
 	)
 );
 
-?>

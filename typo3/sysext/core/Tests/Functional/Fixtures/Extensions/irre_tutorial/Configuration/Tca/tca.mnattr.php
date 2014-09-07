@@ -289,4 +289,3 @@ $TCA['tx_irretutorial_mnattr_offer'] = array(
 		'1' => Array('showitem' => '')
 	)
 );
-?>

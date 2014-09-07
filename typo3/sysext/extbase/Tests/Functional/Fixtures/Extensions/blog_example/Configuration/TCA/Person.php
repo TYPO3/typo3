@@ -53,4 +53,3 @@ $TCA['tx_blogexample_domain_model_person'] = array(
 	)
 );
 
-?>

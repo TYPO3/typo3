@@ -58,4 +58,3 @@ $TCA['tx_irretutorial_mnsym_hotel_rel'] = array(
 		'fe_admin_fieldList' => 'sys_language_uid, l18n_parent, l18n_diffsource, hidden, hotelid, branchid',
 	)
 );
-?>

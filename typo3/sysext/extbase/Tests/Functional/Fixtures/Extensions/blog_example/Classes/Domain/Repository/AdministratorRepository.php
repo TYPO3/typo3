@@ -19,4 +19,3 @@ namespace ExtbaseTeam\BlogExample\Domain\Repository;
 class AdministratorRepository extends \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository {
 
 }
-?>

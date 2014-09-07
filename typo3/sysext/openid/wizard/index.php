@@ -17,4 +17,3 @@ $wizard = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 	'TYPO3\\CMS\\Openid\\Wizard'
 );
 $wizard->main();
-?>

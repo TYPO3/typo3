@@ -20,4 +20,3 @@ namespace ExtbaseTeam\BlogExample\Domain\Model;
 class Administrator extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser {
 
 }
-?>

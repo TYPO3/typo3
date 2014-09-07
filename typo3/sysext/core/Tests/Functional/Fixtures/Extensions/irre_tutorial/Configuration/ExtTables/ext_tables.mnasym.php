@@ -118,4 +118,3 @@ $TCA['tx_irretutorial_mnasym_price'] = array(
 		'fe_admin_fieldList' => 'hidden, title, parentid, price',
 	)
 );
-?>

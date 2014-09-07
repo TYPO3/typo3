@@ -13,4 +13,3 @@ require(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY)) .
 require(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY)) . 'Configuration/ExtTables/ext_tables.mnattr.php';
 require(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY)) . 'Configuration/ExtTables/ext_tables.1ncsv.php';
 
-?>

@@ -118,4 +118,3 @@ if (is_array($TCA['fe_users']['columns']['tx_extbase_type'])) {
 
 // Categorize Post records
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable($_EXTKEY, 'tx_blogexample_domain_model_post');
-?>
