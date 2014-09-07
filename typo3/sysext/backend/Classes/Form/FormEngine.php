@@ -4756,6 +4756,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 * @todo Define visibility
 	 */
 	public function getIcon($icon) {
+		$selIconInfo = FALSE;
 		if (substr($icon, 0, 4) == 'EXT:') {
 			$file = GeneralUtility::getFileAbsFileName($icon);
 			if ($file) {
@@ -4764,18 +4765,23 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 				$selIconInfo = @getimagesize((PATH_site . $file));
 			} else {
 				$selIconFile = '';
-				$selIconInfo = FALSE;
 			}
 		} elseif (substr($icon, 0, 3) == '../') {
 			$selIconFile = $this->backPath . GeneralUtility::resolveBackPath($icon);
-			$selIconInfo = @getimagesize((PATH_site . GeneralUtility::resolveBackPath(substr($icon, 3))));
+			if (file_exists(PATH_site . GeneralUtility::resolveBackPath(substr($icon, 3)))) {
+				$selIconInfo = getimagesize((PATH_site . GeneralUtility::resolveBackPath(substr($icon, 3))));
+			}
 		} elseif (substr($icon, 0, 4) == 'ext/' || substr($icon, 0, 7) == 'sysext/') {
 			$selIconFile = $this->backPath . $icon;
-			$selIconInfo = @getimagesize((PATH_typo3 . $icon));
+			if (file_exists(PATH_typo3 . $icon)) {
+				$selIconInfo = getimagesize(PATH_typo3 . $icon);
+			}
 		} else {
 			$selIconFile = IconUtility::skinImg($this->backPath, 'gfx/' . $icon, '', 1);
 			$iconPath = substr($selIconFile, strlen($this->backPath));
-			$selIconInfo = @getimagesize((PATH_typo3 . $iconPath));
+			if (file_exists(PATH_typo3 . $iconPath)) {
+				$selIconInfo = getimagesize(PATH_typo3 . $iconPath);
+			}
 		}
 		if ($selIconInfo === FALSE) {
 			// Unset to empty string if icon is not available
@@ -4794,7 +4800,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 */
 	protected function getIconHtml($icon, $alt = '', $title = '') {
 		$iconArray = $this->getIcon($icon);
-		if (is_file(GeneralUtility::resolveBackPath(PATH_typo3 . PATH_typo3_mod . $iconArray[0]))) {
+		if (!empty($iconArray[0]) && is_file(GeneralUtility::resolveBackPath(PATH_typo3 . PATH_typo3_mod . $iconArray[0]))) {
 			return '<img src="' . $iconArray[0] . '" alt="' . $alt . '" ' . ($title ? 'title="' . $title . '"' : '') . ' />';
 		} else {
 			return IconUtility::getSpriteIcon($icon, array('alt' => $alt, 'title' => $title));
