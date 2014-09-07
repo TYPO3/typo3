@@ -46,28 +46,9 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 	protected $pagesTsConfig = array();
 
 	/**
-	 * Adds menu items... but I think this is not used at all. Looks very much like some testing code. If anyone cares to check it we can remove it some day...
-	 *
-	 * @return array
-	 * @ignore
-	 * @todo Define visibility
-	 */
-	public function modMenu() {
-		global $LANG;
-		$modMenuAdd = array(
-			'cr_333' => array(
-				'0' => 'nul',
-				'1' => 'et'
-			)
-		);
-		return $modMenuAdd;
-	}
-
-	/**
 	 * Main function creating the content for the module.
 	 *
 	 * @return string HTML content for the module, actually a "section" made through the parent object in $this->pObj
-	 * @todo Define visibility
 	 */
 	public function main() {
 		$GLOBALS['LANG']->includeLLFile('EXT:wizard_crpages/locallang.xlf');
@@ -82,7 +63,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 		$m_perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(8);
 		$pRec = BackendUtility::getRecord('pages', $this->pObj->id, 'uid', ' AND ' . $m_perms_clause);
 		$sys_pages = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
-		$menuItems = $sys_pages->getMenu($this->pObj->id, '*', 'sorting', '', 0);
+		$menuItems = $sys_pages->getMenu($this->pObj->id, '*', 'sorting', '', FALSE);
 		if (is_array($pRec)) {
 			$data = GeneralUtility::_GP('data');
 			if (is_array($data['pages'])) {
@@ -112,7 +93,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 						$previousIdentifier = $identifier;
 					}
 				}
-				if (count($data['pages'])) {
+				if (!empty($data['pages'])) {
 					reset($data);
 					$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 					$tce->stripslashes_values = 0;
@@ -152,24 +133,15 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 				<input type="checkbox" name="hidePages" id="hidePages" value="1" /> <label for="hidePages">' . $GLOBALS['LANG']->getLL('wiz_newPages_hidePages') . '</label><br />
 				<input type="checkbox" name="hidePagesInMenus" id="hidePagesInMenus" value="1" /> <label for="hidePagesInMenus">' . $GLOBALS['LANG']->getLL('wiz_newPages_hidePagesInMenus') . '</label><br /><br />
 				<input type="submit" name="create" value="' . $GLOBALS['LANG']->getLL('wiz_newPages_lCreate') . '" />&nbsp;<input type="reset" value="' . $GLOBALS['LANG']->getLL('wiz_newPages_lReset') . '" /><br />';
-				// Add ExtJS inline code
-				$extCode = '
-					var tpl = "' . addslashes(str_replace(array(LF, TAB), array('', ''), $this->getFormLine('#'))) . '", i, line, div, bg, label;
-					var lineCounter = 9;
-					Ext.get("createNewFormFields").on("click", function() {
-						div = Ext.get("formFieldContainerBody");
-						for (i = 0; i < 5; i++) {
-							label = lineCounter + i + 1;
-							line = String.format(tpl, (lineCounter + i), label);
-							div.insertHtml("beforeEnd", line);
-						}
-						lineCounter += 5;
-					});
-				';
+
 				/** @var \TYPO3\CMS\Core\Page\PageRenderer */
 				$pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
-				$pageRenderer->loadExtJS();
-				$pageRenderer->addExtOnReadyCode($extCode);
+				$pageRenderer->loadJquery();
+				$pageRenderer->loadRequireJsModule('TYPO3/CMS/WizardCrpages/WizardCreatePages');
+				// Add inline code
+				$inlineJavaScriptCode = 'var tpl = "' . addslashes(str_replace(array(LF, TAB), array('', ''), $this->getFormLine('#'))) . '", i, line, div, bg, label;';
+				$pageRenderer->addJsInlineCode('wizard_crpages', $inlineJavaScriptCode);
+
 				$pageRenderer->addCssInlineBlock('TYPO3\CMS\WizardCrpages\Controller\CreatePagesWizardModuleFunctionController', '
 				#formFieldContainer {float: left; margin: 0 0 10px 0;}
 				.clearLeft {clear: left;}
@@ -183,7 +155,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 		// CSH
 		$theCode .= BackendUtility::cshItem('_MOD_web_func', 'tx_wizardcrpages', $GLOBALS['BACK_PATH'], '<br />|');
 		$out = $this->pObj->doc->header($GLOBALS['LANG']->getLL('wiz_crMany'));
-		$out .= $this->pObj->doc->section('', $theCode, 0, 1);
+		$out .= $this->pObj->doc->section('', $theCode, FALSE, TRUE);
 		return $out;
 	}
 
@@ -198,7 +170,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 		if (is_numeric($index)) {
 			$label = $index + 1;
 		} else {
-			// used as template for ExtJS
+			// used as template for JavaScript
 			$index = '{0}';
 			$label = '{1}';
 		}
@@ -210,7 +182,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 		$content .= is_object($this->loremIpsumObject) ? '<a href="#" onclick="' . htmlspecialchars($this->loremIpsumObject->getHeaderTitleJS(('document.forms[0][\'data[pages][NEW' . $index . '][title]\'].value'), 'title')) . '">' . $this->loremIpsumObject->getIcon('', $this->pObj->doc->backPath) . '</a>' : '';
 		// type selector
 		$content .= '<span>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.type') . '</span>';
-		$content .= '<select onchange="this.style.backgroundImage=this.options[this.selectedIndex].style.backgroundImage;if (this.options[this.selectedIndex].value==\'--div--\') {this.selectedIndex=1;}" ';
+		$content .= '<select id="type-select"';
 		$content .= 'class="select icon-select" name="data[pages][NEW' . $index . '][doktype]" style="background: url(&quot;' . $backPath . 'sysext/t3skin/icons/gfx/i/pages.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); padding: 1px 1px 1px 24px;">';
 		// dokType
 		$types = $GLOBALS['PAGES_TYPES'];
