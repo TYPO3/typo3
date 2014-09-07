@@ -1529,7 +1529,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			$buttons['reload'] = '<a href="' . $GLOBALS['MCONF']['_'] . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.reload', TRUE) . '">' . IconUtility::getSpriteIcon('actions-system-refresh') . '</a>';
 			if ($this->MOD_SETTINGS['function'] === 'scheduler' && count(self::getRegisteredClasses())) {
 				$link = $GLOBALS['MCONF']['_'] . '&CMD=add';
-				$image = '<img ' . IconUtility::skinImg($this->backPath, 'gfx/new_el.gif') . ' alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:new', TRUE) . '" />';
+				$image = IconUtility::getSpriteIcon('actions-document-new', array('alt' => $GLOBALS['LANG']->getLL('action.add')));
 				$buttons['addtask'] = '<a href="' . htmlspecialchars($link) . '" ' . 'title="' . $GLOBALS['LANG']->getLL('action.add') . '">' . $image . '</a>';
 			}
 		}
