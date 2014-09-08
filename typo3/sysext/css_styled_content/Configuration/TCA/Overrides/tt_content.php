@@ -4,9 +4,16 @@ defined('TYPO3_MODE') or die();
 // Add flexform
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue('*', 'FILE:EXT:css_styled_content/flexform_ds.xml', 'table');
 
-$GLOBALS['TCA']['tt_content']['types']['table']['showitem'] = 'CType;;4;;1-1-1, hidden, header;;3;;2-2-2, linkToTop;;;;4-4-4,
-			--div--;LLL:EXT:cms/locallang_ttc.xlf:CType.I.5, layout;;10;;3-3-3, cols, bodytext;;9;nowrap:wizards[table], pi_flexform,
-			--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.access, starttime, endtime, fe_group';
+$GLOBALS['TCA']['tt_content']['types']['table']['showitem'] = '--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.general;general,
+					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.header;header,
+				--div--;LLL:EXT:cms/locallang_ttc.xlf:CType.I.5, layout;;10;;3-3-3, cols, bodytext;;9;nowrap:wizards[table], pi_flexform,
+				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.appearance,
+					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.frames;frames,
+					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.table_layout;tablelayout,
+				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,
+					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.visibility;visibility,
+					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.access;access,
+				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.extended';
 
 $GLOBALS['TCA']['tt_content']['columns']['section_frame']['config']['items'][0] = array(
 	'LLL:EXT:css_styled_content/locallang_db.xlf:tt_content.tx_cssstyledcontent_section_frame.I.0', '0'
