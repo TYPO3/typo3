@@ -109,12 +109,6 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	 * @var array
 	 * @todo Define visibility
 	 */
-	public $be_user_Array = array();
-
-	/**
-	 * @var array
-	 * @todo Define visibility
-	 */
 	public $stageIndex = array();
 
 	/**

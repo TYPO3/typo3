@@ -27,11 +27,6 @@ class InfoModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * @todo Define visibility
 	 */
-	public $be_user_Array;
-
-	/**
-	 * @todo Define visibility
-	 */
 	public $CALC_PERMS;
 
 	/**
