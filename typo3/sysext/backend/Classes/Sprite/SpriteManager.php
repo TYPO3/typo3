@@ -93,8 +93,10 @@ class SpriteManager {
 		$handler->generate();
 		// Get all icons registered from skins, merge with core icon list
 		$availableSkinIcons = (array) $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'];
-		foreach ($GLOBALS['TBE_STYLES']['skins'] as $skinData) {
-			$availableSkinIcons = array_merge($availableSkinIcons, (array) $skinData['availableSpriteIcons']);
+		if (isset($GLOBALS['TBE_STYLES']['skins']) && is_array($GLOBALS['TBE_STYLES']['skins'])) {
+			foreach ($GLOBALS['TBE_STYLES']['skins'] as $skinData) {
+				$availableSkinIcons = array_merge($availableSkinIcons, (array)$skinData['availableSpriteIcons']);
+			}
 		}
 		// Merge icon names provided by the skin, with
 		// registered "complete sprites" and the handler class
