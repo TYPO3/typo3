@@ -2085,21 +2085,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			if (is_array($this->conf['flagRendering.'])) {
 				$this->cObj->setCurrentVal($row['sys_language_uid']);
 				return $this->cObj->cObjGetSingle($this->conf['flagRendering'], $this->conf['flagRendering.']);
-			} else {
-				// ... otherwise, get flag from sys_language record:
-				// Get sys_language record
-				$rowDat = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_language', 'uid=' . (int)$row['sys_language_uid'] . ' ' . $this->cObj->enableFields('sys_language'));
-				// Flag code:
-				$flag = $rowDat['flag'];
-				if ($flag) {
-					// FIXME not all flags from typo3/gfx/flags are available in media/flags/
-					$file = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix(PATH_tslib) . 'media/flags/flag_' . $flag;
-					$imgInfo = @getimagesize((PATH_site . $file));
-					if (is_array($imgInfo)) {
-						$output = '<img src="' . $file . '" ' . $imgInfo[3] . ' title="' . htmlspecialchars($rowDat['title']) . '" alt="' . htmlspecialchars($rowDat['title']) . '" />';
-						return $output;
-					}
-				}
 			}
 		}
 		return '&nbsp;';

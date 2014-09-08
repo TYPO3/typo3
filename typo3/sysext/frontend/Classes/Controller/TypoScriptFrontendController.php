@@ -1048,7 +1048,7 @@ class TypoScriptFrontendController {
 	public function getPageRenderer() {
 		if (!isset($this->pageRenderer)) {
 			$this->pageRenderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
-			$this->pageRenderer->setTemplateFile(PATH_tslib . 'templates/tslib_page_frontend.html');
+			$this->pageRenderer->setTemplateFile('EXT:frontend/Resources/Private/Templates/MainPage.html');
 			$this->pageRenderer->setBackPath(TYPO3_mainDir);
 		}
 		return $this->pageRenderer;

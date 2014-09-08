@@ -178,7 +178,6 @@ mod.wizards.newContentElement {
 
 ');
 
-$TYPO3_CONF_VARS['FE']['eID_include']['tx_cms_showpic'] = 'EXT:cms/tslib/showpic.php';
 
 if ((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 	$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['compat_version']['cms'] = array(
@@ -193,12 +192,6 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapC
 $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'][] = 'TYPO3\\CMS\\Frontend\\Hooks\\TreelistCacheUpdateHooks';
 $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'][] = 'TYPO3\\CMS\\Frontend\\Hooks\\TreelistCacheUpdateHooks';
 
-if (TYPO3_MODE === 'FE') {
-	// Register the core media wizard provider
-	\TYPO3\CMS\Frontend\MediaWizard\MediaWizardProviderManager::registerMediaWizardProvider('TYPO3\\CMS\\Frontend\\MediaWizard\\MediaWizardProvider');
-	// Register eID provider for ExtDirect for the frontend
-	$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['ExtDirect'] = PATH_tslib . 'extdirecteid.php';
-}
 // Register search keys
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch']['page'] = 'pages';
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch']['content'] = 'tt_content';

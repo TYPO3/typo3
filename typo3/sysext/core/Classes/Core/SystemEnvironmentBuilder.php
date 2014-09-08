@@ -167,9 +167,6 @@ class SystemEnvironmentBuilder {
 		// Absolute path to the typo3conf directory with trailing slash
 		// Example "/var/www/instance-name/htdocs/typo3conf/"
 		define('PATH_typo3conf', PATH_site . 'typo3conf/');
-		// Absolute path to the tslib directory with trailing slash
-		// Example "/var/www/instance-name/htdocs/typo3/sysext/cms/tslib/"
-		define('PATH_tslib', PATH_typo3 . 'sysext/cms/tslib/');
 	}
 
 	/**
@@ -181,8 +178,8 @@ class SystemEnvironmentBuilder {
 		if (!is_file(PATH_thisScript)) {
 			die('Unable to determine path to entry script.');
 		}
-		if (!is_dir(PATH_tslib)) {
-			die('Calculated absolute path to tslib directory does not exist.');
+		if (!is_dir(PATH_typo3 . 'sysext')) {
+			die('Calculated absolute path to typo3/sysext directory does not exist.');
 		}
 	}
 
