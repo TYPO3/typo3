@@ -19,7 +19,10 @@
  */
 require __DIR__ . '/init.php';
 
-\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('The history of a record was moved to a separate module. Please use BackendUtility::getModuleUrl() to link to this script. This script will be removed two versions after 6.2.');
+\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
+	'The history of a record was moved to a separate module. Please use BackendUtility::getModuleUrl(\'record_history\') to link to this script.
+	This script will be removed two versions after 6.2.'
+);
 
 $elementHistoryController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\ContentElement\\ElementHistoryController');
 $elementHistoryController->main();
