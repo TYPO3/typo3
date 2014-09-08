@@ -71,17 +71,20 @@ class WebFunctionWizardsBaseController extends \TYPO3\CMS\Backend\Module\Abstrac
 	 * @todo Define visibility
 	 */
 	public function main() {
-		global $SOBE, $LANG;
-		$menu = $LANG->getLL('wiz_lWizards', TRUE) . ': ' . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu(
+		$menu = \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu(
 			$this->pObj->id,
 			'SET[wiz]',
 			$this->pObj->MOD_SETTINGS['wiz'],
 			$this->pObj->MOD_MENU['wiz']
 		);
-		$theOutput .= $this->pObj->doc->section('', '<span class="nobr">' . $menu . '</span>');
+
 		$content = '';
-		$content .= $theOutput;
-		$content .= $this->pObj->doc->spacer(20);
+		if (!empty($menu)) {
+			$menu = $GLOBALS['LANG']->getLL('wiz_lWizards', TRUE) . ': ' . $menu;
+			$content = $this->pObj->doc->section('', '<span class="nobr">' . $menu . '</span>');
+			$content .= $this->pObj->doc->spacer(20);
+		}
+
 		$content .= $this->extObjContent();
 		return $content;
 	}
