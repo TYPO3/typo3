@@ -1249,6 +1249,11 @@ tt_content.uploads {
 						fileTarget.override.override.field = target
 						removePrependedNumbers = 1
 
+						title {
+							data = file:current:alternative
+							htmlSpecialChars = 1
+						}
+
 						/*
 						jumpurl = {$styles.content.uploads.jumpurl}
 						jumpurl {
@@ -1285,7 +1290,7 @@ tt_content.uploads {
 			# filename
 			20 = TEXT
 			20 {
-				data = file:current:name
+				data = file:current:title // file:current:name
 				htmlSpecialChars = 1
 				required = 1
 
