@@ -48,11 +48,12 @@ Module menu
 }
 
 #typo3-menu li span.submodule-icon {
+	position: absolute;
+}
+
+#typo3-menu li span.submodule-label {
 	display: block;
-	float: left;
-	vertical-align: top;
-	width: 20px;
-	margin-right: 6px;
+	margin-left: 26px;
 }
 
 #typo3-menu li ul {
@@ -67,7 +68,6 @@ Module menu
 	display: block;
 	margin-bottom: 1px;
 	padding: 3px 0 3px 24px;
-	white-space: nowrap;
 }
 
 #typo3-menu li ul li a:hover,
