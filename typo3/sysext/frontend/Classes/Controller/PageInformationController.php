@@ -37,11 +37,6 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
 				2 => $LANG->sL('LLL:EXT:cms/web_info/locallang.xlf:pages_2'),
 				1 => $LANG->sL('LLL:EXT:cms/web_info/locallang.xlf:pages_1')
 			),
-			'stat_type' => array(
-				0 => $LANG->sL('LLL:EXT:cms/web_info/locallang.xlf:stat_type_0'),
-				1 => $LANG->sL('LLL:EXT:cms/web_info/locallang.xlf:stat_type_1'),
-				2 => $LANG->sL('LLL:EXT:cms/web_info/locallang.xlf:stat_type_2')
-			),
 			'depth' => array(
 				0 => $LANG->getLL('depth_0'),
 				1 => $LANG->getLL('depth_1'),
