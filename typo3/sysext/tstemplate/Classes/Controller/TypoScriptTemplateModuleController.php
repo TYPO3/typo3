@@ -68,6 +68,16 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 	public $modMenu_setDefaultList = '';
 
 	/**
+	 * @var array
+	 */
+	public $pageinfo = array();
+
+	/**
+	 * @var bool
+	 */
+	public $access = FALSE;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
@@ -123,7 +133,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 		// Access check...
 		// The page will show only if there is a valid page and if this page may be viewed by the user
 		$this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
-		$this->access = is_array($this->pageinfo) ? 1 : 0;
+		$this->access = is_array($this->pageinfo);
 		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:tstemplate/Resources/Private/Templates/tstemplate.html');
