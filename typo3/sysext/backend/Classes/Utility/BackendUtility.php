@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
@@ -1561,8 +1562,8 @@ class BackendUtility {
 		}
 
 		$fileReferences = array();
-		/** @var $relationHandler \TYPO3\CMS\Core\Database\RelationHandler */
-		$relationHandler = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
+		/** @var $relationHandler RelationHandler */
+		$relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
 		if ($workspaceId !== NULL) {
 			$relationHandler->setWorkspaceId($workspaceId);
 		}
@@ -2168,8 +2169,8 @@ class BackendUtility {
 							}
 							$MMfield = join(',', $MMfields);
 						}
-						/** @var $dbGroup \TYPO3\CMS\Core\Database\RelationHandler */
-						$dbGroup = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
+						/** @var $dbGroup RelationHandler */
+						$dbGroup = GeneralUtility::makeInstance(RelationHandler::class);
 						$dbGroup->start($value, $theColConf['foreign_table'], $theColConf['MM'], $uid, $table, $theColConf);
 						$selectUids = $dbGroup->tableArray[$theColConf['foreign_table']];
 						if (is_array($selectUids) && count($selectUids) > 0) {
@@ -2179,7 +2180,7 @@ class BackendUtility {
 								// Keep sorting of $selectUids
 								$mmlA[array_search($MMrow['uid'], $selectUids)] = $noRecordLookup ?
 									$MMrow['uid'] :
-									self::getRecordTitle($theColConf['foreign_table'], $MMrow, FALSE, $forceResult);
+									static::getRecordTitle($theColConf['foreign_table'], $MMrow, FALSE, $forceResult);
 							}
 							$db->sql_free_result($MMres);
 							if (!empty($mmlA)) {
@@ -2244,23 +2245,69 @@ class BackendUtility {
 			case 'group':
 				// resolve the titles for DB records
 				if ($theColConf['internal_type'] === 'db') {
-					$finalValues = array();
-					$relationTableName = $theColConf['allowed'];
-					$explodedValues = GeneralUtility::trimExplode(',', $value, TRUE);
-
-					foreach ($explodedValues as $explodedValue) {
-
-						if (MathUtility::canBeInterpretedAsInteger($explodedValue)) {
-							$relationTableNameForField = $relationTableName;
+					if ($theColConf['MM']) {
+						if ($uid) {
+							// Display the title of MM related records in lists
+							if ($noRecordLookup) {
+								$MMfield = $theColConf['foreign_table'] . '.uid';
+							} else {
+								$MMfields = array($theColConf['foreign_table'] . '.' . $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label']);
+								$altLabelFields = explode(',', $GLOBALS['TCA'][$theColConf['foreign_table']]['ctrl']['label_alt']);
+								foreach ($altLabelFields as $f) {
+									$f = trim($f);
+									if ($f !== '') {
+										$MMfields[] = $theColConf['foreign_table'] . '.' . $f;
+									}
+								}
+								$MMfield = join(',', $MMfields);
+							}
+							/** @var $dbGroup RelationHandler */
+							$dbGroup = GeneralUtility::makeInstance(RelationHandler::class);
+							$dbGroup->start($value, $theColConf['foreign_table'], $theColConf['MM'], $uid, $table, $theColConf);
+							$selectUids = $dbGroup->tableArray[$theColConf['foreign_table']];
+							if (!empty($selectUids) && is_array($selectUids)) {
+								$MMres = $db->exec_SELECTquery(
+									'uid, ' . $MMfield,
+									$theColConf['foreign_table'],
+									'uid IN (' . implode(',', $selectUids) . ')' . static::deleteClause($theColConf['foreign_table'])
+								);
+								$mmlA = array();
+								while ($MMrow = $db->sql_fetch_assoc($MMres)) {
+									// Keep sorting of $selectUids
+									$mmlA[array_search($MMrow['uid'], $selectUids)] = $noRecordLookup
+										? $MMrow['uid']
+										: static::getRecordTitle($theColConf['foreign_table'], $MMrow, FALSE, $forceResult);
+								}
+								$db->sql_free_result($MMres);
+								if (!empty($mmlA)) {
+									ksort($mmlA);
+									$l = implode('; ', $mmlA);
+								} else {
+									$l = 'N/A';
+								}
+							} else {
+								$l = 'N/A';
+							}
 						} else {
-							list($relationTableNameForField, $explodedValue) = self::splitTable_Uid($explodedValue);
+							$l = 'N/A';
 						}
+					} else {
+						$finalValues = array();
+						$relationTableName = $theColConf['allowed'];
+						$explodedValues = GeneralUtility::trimExplode(',', $value, TRUE);
 
-						$relationRecord = static::getRecordWSOL($relationTableNameForField, $explodedValue);
-						$finalValues[] = static::getRecordTitle($relationTableNameForField, $relationRecord);
+						foreach ($explodedValues as $explodedValue) {
+							if (MathUtility::canBeInterpretedAsInteger($explodedValue)) {
+								$relationTableNameForField = $relationTableName;
+							} else {
+								list($relationTableNameForField, $explodedValue) = self::splitTable_Uid($explodedValue);
+							}
+
+							$relationRecord = static::getRecordWSOL($relationTableNameForField, $explodedValue);
+							$finalValues[] = static::getRecordTitle($relationTableNameForField, $relationRecord);
+						}
+						$l = implode(', ', $finalValues);
 					}
-
-					$l = implode(', ', $finalValues);
 				} else {
 					$l = implode(', ', GeneralUtility::trimExplode(',', $value, TRUE));
 				}
