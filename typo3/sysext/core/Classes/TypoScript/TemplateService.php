@@ -57,12 +57,6 @@ class TemplateService {
 	 */
 	public $backend_info = 0;
 
-	// Set from the backend - used to set an absolute path (PATH_site) so that relative resources are properly found with getFileName()
-	/**
-	 * @todo Define visibility
-	 */
-	public $getFileName_backPath = '';
-
 	// Externally set breakpoints (used by Backend Modules)
 	/**
 	 * @todo Define visibility
@@ -331,7 +325,6 @@ class TemplateService {
 		$this->whereClause .= 'AND (starttime<=' . $GLOBALS['SIM_ACCESS_TIME'] . ') AND (endtime=0 OR endtime>' . $GLOBALS['SIM_ACCESS_TIME'] . ')';
 		// Sets the paths from where TypoScript resources are allowed to be used:
 		$this->allowedPaths = array(
-			'media/',
 			$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'],
 			// fileadmin/ path
 			'uploads/',
@@ -1076,20 +1069,17 @@ class TemplateService {
 	 *
 	 * @param array $setupArray TypoScript array
 	 * @param string $prefix Prefix to the object path. Used for recursive calls to this function.
-	 * @param boolean $resourceFlag If set, then the constant value will be resolved as a TypoScript "resource" data type. Also used internally during recursive calls so that all subproperties for properties named "file." will be resolved as resources.
 	 * @return void
 	 * @see generateConfig()
 	 * @todo Define visibility
 	 */
-	public function flattenSetup($setupArray, $prefix, $resourceFlag) {
+	public function flattenSetup($setupArray, $prefix) {
 		if (is_array($setupArray)) {
 			foreach ($setupArray as $key => $val) {
 				if ($prefix || substr($key, 0, 16) != 'TSConstantEditor') {
 					// We don't want 'TSConstantEditor' in the flattend setup on the first level (190201)
 					if (is_array($val)) {
-						$this->flattenSetup($val, $prefix . $key, $key == 'file.');
-					} elseif ($resourceFlag) {
-						$this->flatSetup[$prefix . $key] = $this->getFileName($val);
+						$this->flattenSetup($val, $prefix . $key);
 					} else {
 						$this->flatSetup[$prefix . $key] = $val;
 					}
@@ -1211,18 +1201,16 @@ class TemplateService {
 	}
 
 	/**
-	 * Returns the reference to a 'resource' in TypoScript.
-	 * This could be from the filesystem if '/' is found in the value $fileFromSetup, else from the resource-list
+	 * Returns the reference used for the frontend inclusion, checks against allowed paths for inclusion.
 	 *
 	 * @param string $fileFromSetup TypoScript "resource" data type value.
-	 * @return string Resulting filename, if any.
-	 * @todo Define visibility
+	 * @return string Resulting filename, is either a full absolute URL or a relative path
 	 */
 	public function getFileName($fileFromSetup) {
 		$file = trim($fileFromSetup);
 		if (!$file) {
 			return;
-		} elseif (strstr($file, '../')) {
+		} elseif (strpos($file, '../') !== FALSE) {
 			if ($this->tt_track) {
 				$GLOBALS['TT']->setTSlogMessage('File path "' . $file . '" contained illegal string "../"!', 3);
 			}
@@ -1233,51 +1221,34 @@ class TemplateService {
 		if (isset($this->fileCache[$hash])) {
 			return $this->fileCache[$hash];
 		}
-		if (substr($file, 0, 4) === 'EXT:') {
-			$newFile = '';
-			list($extKey, $script) = explode('/', substr($file, 4), 2);
-			if ($extKey && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey)) {
-				$extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extKey);
-				$newFile = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($extPath) . $script;
-			}
-			if (!@file_exists((PATH_site . $newFile))) {
-				if ($this->tt_track) {
-					$GLOBALS['TT']->setTSlogMessage('Extension media file "' . $newFile . '" was not found!', 3);
-				}
-				return;
-			} else {
-				$file = $newFile;
-			}
-		}
-		if (parse_url($file) !== FALSE) {
+
+		// if this is an URL, it can be returned directly
+		$urlScheme = parse_url($file, PHP_URL_SCHEME);
+		if ($urlScheme === 'https' || $urlScheme === 'http') {
 			return $file;
 		}
-		// Find
-		if (strpos($file, '/') !== FALSE) {
-			// If the file is in the media/ folder but it doesn't exist,
-			// it is assumed that it's in the tslib folder
-			if (GeneralUtility::isFirstPartOfStr($file, 'media/') && !file_exists(($this->getFileName_backPath . $file))) {
-				$file = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('cms') . 'tslib/' . $file;
+
+		// this call also resolves EXT:myext/ files
+		$file = GeneralUtility::getFileAbsFileName($file);
+		if (!$file) {
+			if ($this->tt_track) {
+				$GLOBALS['TT']->setTSlogMessage('File "' . $fileFromSetup . '" was not found!', 3);
 			}
-			if (file_exists($this->getFileName_backPath . $file)) {
-				$outFile = $file;
-				$fileInfo = GeneralUtility::split_fileref($outFile);
-				$OK = 0;
-				foreach ($this->allowedPaths as $val) {
-					if (substr($fileInfo['path'], 0, strlen($val)) == $val) {
-						$OK = 1;
-						break;
-					}
-				}
-				if ($OK) {
-					$this->fileCache[$hash] = $outFile;
-					return $outFile;
-				} elseif ($this->tt_track) {
-					$GLOBALS['TT']->setTSlogMessage('"' . $file . '" was not located in the allowed paths: (' . implode(',', $this->allowedPaths) . ')', 3);
-				}
-			} elseif ($this->tt_track) {
-				$GLOBALS['TT']->setTSlogMessage('"' . $this->getFileName_backPath . $file . '" is not a file (non-uploads/.. resource, did not exist).', 3);
+			return;
+		}
+
+		$file = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($file);
+
+		// Check if the found file is in the allowed paths
+		foreach ($this->allowedPaths as $val) {
+			if (GeneralUtility::isFirstPartOfStr($file, $val)) {
+				$this->fileCache[$hash] = $file;
+				return $file;
 			}
+		}
+
+		if ($this->tt_track) {
+			$GLOBALS['TT']->setTSlogMessage('"' . $file . '" was not located in the allowed paths: (' . implode(',', $this->allowedPaths) . ')', 3);
 		}
 	}
 
@@ -1316,19 +1287,20 @@ class TemplateService {
 	}
 
 	/**
-	 * Reads the fileContent of $fName and returns it.
-	 * Similar to GeneralUtility::getUrl()
+	 * Reads the fileContent of $fileName and returns it.
+	 * Similar to GeneralUtility::getUrl() but with an additional check if the path is allowed
 	 *
-	 * @param string $fName Absolute filepath to record
-	 * @return string The content returned
+	 * @param string $fileName Absolute filepath to record
+	 * @return NULL|string The content returned
 	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::fileResource(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::MULTIMEDIA(), GeneralUtility::getUrl()
 	 * @todo Define visibility
 	 */
-	public function fileContent($fName) {
-		$incFile = $this->getFileName($fName);
-		if ($incFile) {
-			return @file_get_contents($incFile);
+	public function fileContent($fileName) {
+		$fileName = $this->getFileName($fileName);
+		if ($fileName) {
+			return GeneralUtility::getUrl($fileName);
 		}
+		return NULL;
 	}
 
 	/**

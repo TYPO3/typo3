@@ -134,11 +134,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	/**
 	 * @todo Define visibility
 	 */
-	public $resourceCheck = 0;
-
-	/**
-	 * @todo Define visibility
-	 */
 	public $ext_lineNumberOffset = 0;
 
 	/**
@@ -208,39 +203,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 */
 	protected $lnToScript = NULL;
 
-	/**
-	 * This flattens a hierarchical setuparray to $this->flatSetup
-	 * The original function fetched the resource-file if any ('file.'). This functions doesn't.
-	 *
-	 * @param 	[type]		$setupArray: ...
-	 * @param 	[type]		$prefix: ...
-	 * @param 	[type]		$resourceFlag: ...
-	 * @return 	[type]		...
-	 * @todo Define visibility
-	 */
-	public function flattenSetup($setupArray, $prefix, $resourceFlag) {
-		if (is_array($setupArray)) {
-			// Setting absolute prefixed path for relative resources.
-			$this->getFileName_backPath = PATH_site;
-			foreach ($setupArray as $key => $val) {
-				// We don't want 'TSConstantEditor' in the flattend setup.
-				if ($prefix || substr($key, 0, 16) != 'TSConstantEditor') {
-					if (is_array($val)) {
-						$this->flattenSetup($val, $prefix . $key, $key == 'file.');
-					} elseif ($resourceFlag && $this->resourceCheck) {
-						$this->flatSetup[$prefix . $key] = $this->getFileName($val);
-						if ($this->removeFromGetFilePath && substr($this->flatSetup[$prefix . $key], 0, strlen($this->removeFromGetFilePath)) == $this->removeFromGetFilePath) {
-							$this->flatSetup[$prefix . $key] = substr($this->flatSetup[$prefix . $key], strlen($this->removeFromGetFilePath));
-						}
-					} else {
-						$this->flatSetup[$prefix . $key] = $val;
-					}
-				}
-			}
-		}
-	}
-
-	/**
+	/*
 	 * [Describe function...]
 	 *
 	 * @param 	[type]		$all: ...

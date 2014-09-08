@@ -293,8 +293,6 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 		$tmpl->ext_regLinenumbers = TRUE;
 		$tmpl->ext_regComments = $this->pObj->MOD_SETTINGS['ts_browser_showComments'];
 		$tmpl->bType = $bType;
-		$tmpl->resourceCheck = 1;
-		$tmpl->removeFromGetFilePath = PATH_site;
 		if ($this->pObj->MOD_SETTINGS['ts_browser_type'] == 'const') {
 			$tmpl->ext_constants_BRP = (int)GeneralUtility::_GP('breakPointLN');
 		} else {

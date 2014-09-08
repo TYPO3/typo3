@@ -106,8 +106,6 @@ class CodeCompletion {
 		$tsParser->linkObjects = TRUE;
 		$tsParser->ext_regLinenumbers = FALSE;
 		$tsParser->bType = $bType;
-		$tsParser->resourceCheck = 1;
-		$tsParser->removeFromGetFilePath = PATH_site;
 		$tsParser->generateConfig();
 		$result = $this->treeWalkCleanup($tsParser->setup);
 		return $result;

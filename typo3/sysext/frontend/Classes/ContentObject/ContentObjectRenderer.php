@@ -6869,7 +6869,6 @@ class ContentObjectRenderer {
 	 * @param array $conf TypoScript properties for this function
 	 * @param string $text The text string to write onto the GIFBUILDER file
 	 * @return array The modified $gifbuilderConf array
-	 * @see media/scripts/postit.inc
 	 * @todo Define visibility
 	 */
 	public function gifBuilderTextBox($gifbuilderConf, $conf, $text) {
