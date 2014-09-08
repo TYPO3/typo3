@@ -51,3 +51,12 @@ body#ext-reports-mod-index-php {
 	float: left;
 }
 
+.tx_sv_reportlist .typo3-message {
+	padding: 12px !important;
+	padding-left: 36px !important;
+	border: none;
+}
+
+.tx_sv_reportlist p.service-header {
+	margin-top: 0px;
+}

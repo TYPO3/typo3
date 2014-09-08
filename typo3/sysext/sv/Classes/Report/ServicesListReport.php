@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Sv\Report;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * This class provides a report displaying a list of all installed services
  * Code inspired by EXT:dam/lib/class.tx_dam_svlist.php by René Fritz
@@ -57,7 +58,7 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface {
 	 * @return string The help content for this module.
 	 */
 	protected function renderHelp() {
-		$help = '<p class="help">' . $GLOBALS['LANG']->getLL('report_explanation') . '</p>';
+		$help = '<p class="lead">' . $GLOBALS['LANG']->getLL('report_explanation') . '</p>';
 		$help .= '<p class="help">' . $GLOBALS['LANG']->getLL('externals_explanation') . '</p><br />';
 		return $help;
 	}
@@ -84,10 +85,10 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface {
 	 * @return string Service list as HTML for one service type
 	 */
 	protected function renderServiceTypeList($serviceType, $services) {
-		$header = '<h4>' . sprintf($GLOBALS['LANG']->getLL('service_type'), $serviceType) . '</h4>';
+		$header = '<h3 class="divider">' . sprintf($GLOBALS['LANG']->getLL('service_type'), $serviceType) . '</h3>';
 		$serviceList = '
-		<table cellspacing="1" cellpadding="2" border="0" class="tx_sv_reportlist services">
-			<tr class="t3-row-header">
+		<table class="t3-table tx_sv_reportlist">
+			<thead><tr class="t3-row-header">
 				<td style="width: 35%">' . $GLOBALS['LANG']->getLL('service') . '</td>
 				<td>' . $GLOBALS['LANG']->getLL('priority') . '</td>
 				<td>' . $GLOBALS['LANG']->getLL('quality') . '</td>
@@ -95,11 +96,12 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface {
 				<td>' . $GLOBALS['LANG']->getLL('os') . '</td>
 				<td>' . $GLOBALS['LANG']->getLL('externals') . '</td>
 				<td>' . $GLOBALS['LANG']->getLL('available') . '</td>
-			</tr>';
+			</tr></thead><tbody>';
 		foreach ($services as $serviceKey => $serviceInformation) {
 			$serviceList .= $this->renderServiceRow($serviceKey, $serviceInformation);
 		}
 		$serviceList .= '
+		</tbody>
 		</table>
 		';
 		return $header . $serviceList;
@@ -154,12 +156,12 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface {
 	 */
 	protected function renderExecutablesSearchPathList() {
 		$searchPaths = \TYPO3\CMS\Core\Utility\CommandUtility::getPaths(TRUE);
-		$content = '<br /><h3 class="divider">' . $GLOBALS['LANG']->getLL('search_paths') . '</h3>';
+		$content = '<h3 class="divider">' . $GLOBALS['LANG']->getLL('search_paths') . '</h3>';
 		if (count($searchPaths) == 0) {
 			$content .= '<p>' . $GLOBALS['LANG']->getLL('no_search_paths') . '</p>';
 		} else {
 			$content .= '
-			<table cellspacing="1" cellpadding="2" border="0" class="tx_sv_reportlist paths">
+			<table class="t3-table tx_sv_reportlist">
 				<thead>
 					<tr class="t3-row-header">
 						<td>' . $GLOBALS['LANG']->getLL('path') . '</td>
