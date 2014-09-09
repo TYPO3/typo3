@@ -27,11 +27,6 @@ class InfoModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * @todo Define visibility
 	 */
-	public $CALC_PERMS;
-
-	/**
-	 * @todo Define visibility
-	 */
 	public $pageinfo;
 
 	/**
@@ -61,7 +56,6 @@ class InfoModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
 		$access = is_array($this->pageinfo);
 		if ($this->id && $access || $GLOBALS['BE_USER']->user['admin'] && !$this->id) {
-			$this->CALC_PERMS = $GLOBALS['BE_USER']->calcPerms($this->pageinfo);
 			if ($GLOBALS['BE_USER']->user['admin'] && !$this->id) {
 				$this->pageinfo = array('title' => '[root-level]', 'uid' => 0, 'pid' => 0);
 			}
