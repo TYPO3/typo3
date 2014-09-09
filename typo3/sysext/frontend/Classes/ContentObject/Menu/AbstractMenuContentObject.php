@@ -1022,6 +1022,11 @@ class AbstractMenuContentObject {
 				// The page record of "index".
 				$recArr['index'] = $this->sys_page->getPage($recArr['up']['pid']);
 			}
+			// check if certain pages should be excluded
+			$additionalWhere .= ($this->conf['includeNotInMenu'] ? '' : ' AND pages.nav_hide=0') . $this->getDoktypeExcludeWhere();
+			if ($this->conf['special.']['excludeNoSearchPages']) {
+				$additionalWhere .= ' AND pages.no_search=0';
+			}
 			// prev / next is found
 			$prevnext_menu = $this->removeInaccessiblePages($this->sys_page->getMenu($value_rec['pid'], '*', $sortingField, $additionalWhere));
 			$lastKey = 0;
