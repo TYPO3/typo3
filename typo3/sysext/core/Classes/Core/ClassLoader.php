@@ -28,6 +28,11 @@ class ClassLoader {
 	const VALID_CLASSNAME_PATTERN = '/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9\\\\_\x7f-\xff]*$/';
 
 	/**
+	 * @var ApplicationContext
+	 */
+	protected $context;
+
+	/**
 	 * @var ClassAliasMap
 	 */
 	protected $classAliasMap;
@@ -93,6 +98,7 @@ class ClassLoader {
 	 * @param ApplicationContext $context
 	 */
 	public function __construct(ApplicationContext $context) {
+		$this->context = $context;
 		$this->classesCache = new Cache\Frontend\StringFrontend('cache_classes', new Cache\Backend\TransientMemoryBackend($context));
 	}
 
@@ -241,8 +247,10 @@ class ClassLoader {
 					$this->isEarlyCache ? array('early') : array()
 				);
 			} elseif (!$this->isEarlyCache) {
-				// Cache that the class is unknown
-				$this->classesCache->set($cacheEntryIdentifier, '');
+				if ($this->context->isProduction()) {
+					// Cache that the class is unknown
+					$this->classesCache->set($cacheEntryIdentifier, '');
+				}
 			}
 		}
 
