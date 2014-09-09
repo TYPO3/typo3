@@ -5717,6 +5717,151 @@ class ContentObjectRenderer {
 	 * Link functions (typolink)
 	 *
 	 ***********************************************/
+
+	/**
+	 * called from the typoLink() function
+	 *
+	 * does the magic to split the full "typolink" string like "15,13 _blank myclass &more=1"
+	 * into separate parts
+	 *
+	 * @param string $linkText The string (text) to link
+	 * @param string $mixedLinkParameter destination data like "15,13 _blank myclass &more=1" used to create the link
+	 * @param array $configuration TypoScript configuration
+	 * @return array | string
+	 * @see typoLink()
+	 */
+	protected function resolveMixedLinkParameter($linkText, $mixedLinkParameter, &$configuration = array()) {
+		$linkParameter = NULL;
+
+		// Link parameter value = first part
+		$linkParameterParts = GeneralUtility::unQuoteFilenames($mixedLinkParameter, TRUE);
+
+		// Check for link-handler keyword:
+		list($linkHandlerKeyword, $linkHandlerValue) = explode(':', trim($linkParameterParts[0]), 2);
+		if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][$linkHandlerKeyword] && (string)$linkHandlerValue !== '') {
+			$linkHandlerObj = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][$linkHandlerKeyword]);
+			if (method_exists($linkHandlerObj, 'main')) {
+				return $linkHandlerObj->main($linkText, $configuration, $linkHandlerKeyword, $linkHandlerValue, $linkParameterParts, $this);
+			}
+		}
+
+		// Resolve FAL-api "file:UID-of-sys_file-record" and "file:combined-identifier"
+		if ($linkHandlerKeyword === 'file') {
+			try {
+				$fileOrFolderObject = $this->getResourceFactory()->retrieveFileOrFolderObject($linkHandlerValue);
+				// Link to a folder or file
+				if ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\ResourceInterface) {
+					$linkParameter = $fileOrFolderObject->getPublicUrl();
+				} else {
+					$linkParameter = NULL;
+				}
+			} catch (\RuntimeException $e) {
+				// Element wasn't found
+				$linkParameter = NULL;
+			} catch (\TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException $e) {
+				// Resource was not found
+				return $linkText;
+			}
+		} else {
+			$linkParameter = trim($linkParameterParts[0]);
+		}
+
+		// Target value = second Part (overriding the default target)
+		$linkTarget = trim($linkParameterParts[1]);
+		// The '-' character means 'no target'. Necessary in order to
+		// specify a class as third parameter without setting the target!
+		if ($linkTarget == '-') {
+			$linkTarget = '';
+		}
+
+		// Link class
+		$linkClass = trim($linkParameterParts[2]);
+
+		// The '-' character means 'no class'. Necessary in order to specify a
+		// title as fourth parameter without setting the target or class!
+		if ($linkClass == '-') {
+			$linkClass = '';
+		}
+
+		// Title value
+		$forceTitle = trim($linkParameterParts[3]);
+		// The '-' character means 'no title'. Necessary in order to specify
+		// further parameters without setting the title!
+		if ($forceTitle == '-') {
+			$forceTitle = '';
+		}
+
+		// additional parameters that need to be set
+		if (isset($linkParameterParts[4]) && trim($linkParameterParts[4]) !== "") {
+			$forceParams = trim($linkParameterParts[4]);
+			// params value
+			$configuration['additionalParams'] .= $forceParams[0] == '&' ? $forceParams : '&' . $forceParams;
+		}
+
+		return array(
+			'href'   => $linkParameter,
+			'target' => $linkTarget,
+			'class'  => $linkClass,
+			'title'  => $forceTitle
+		);
+	}
+
+	/**
+	 * part of the typolink construction functionality, called by typoLink()
+	 *
+	 * tries to get the type of the link from the link parameter
+	 * could be
+	 *  - "mailto" an email address
+	 *  - "url" external URL
+	 *  - "file" a local file (checked AFTER getPublicUrl() is called)
+	 *  - "page" a page (integer or alias)
+	 *
+	 * @param string $linkParameter could be "fileadmin/myfile.jpg" or "info@typo3.org" or "13" or "http://www.typo3.org"
+	 * @return string the keyword
+	 * @see typoLink()
+	 */
+	protected function detectLinkTypeFromLinkParameter($linkParameter) {
+		// Parse URL:
+		$linkParts = parse_url($linkParameter);
+		// Detecting kind of link:
+		// If it's a mail address:
+		if (strpos($linkParameter, '@') > 0 && (!$linkParts['scheme'] || $linkParts['scheme'] == 'mailto')) {
+			return 'mailto';
+		}
+
+		$isLocalFile = 0;
+		$fileChar = intval(strpos($linkParameter, '/'));
+		$urlChar = intval(strpos($linkParameter, '.'));
+
+		// Firsts, test if $linkParameter is numeric and page with such id exists. If yes, do not attempt to link to file
+		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($linkParameter) || count($GLOBALS['TSFE']->sys_page->getPage_noCheck($linkParameter)) == 0) {
+			// Detects if a file is found in site-root and if so it will be treated like a normal file.
+			list($rootFileDat) = explode('?', rawurldecode($linkParameter));
+			$containsSlash = (strpos($rootFileDat, '/') !== FALSE);
+			$rFD_fI = pathinfo($rootFileDat);
+			if (trim($rootFileDat) && !$containsSlash && (@is_file((PATH_site . $rootFileDat)) || GeneralUtility::inList('php,html,htm', strtolower($rFD_fI['extension'])))) {
+				$isLocalFile = 1;
+			} elseif ($containsSlash) {
+				// Adding this so realurl directories are linked right (non-existing).
+				$isLocalFile = 2;
+			}
+		}
+
+		// url (external): If doubleSlash or if a '.' comes before a '/'.
+		if ($linkParts['scheme'] || $isLocalFile != 1 && $urlChar && (!$containsSlash || $urlChar < $fileChar)) {
+			return 'url';
+
+		// file (internal)
+		} elseif ($containsSlash || $isLocalFile) {
+			return 'file';
+
+		// Integer or alias (alias is without slashes or periods or commas, that is
+		// 'nospace,alphanum_x,lower,unique' according to definition in $GLOBALS['TCA']!)
+		} else {
+			return 'page';
+		}
+	}
+
 	/**
 	 * Implements the "typolink" property of stdWrap (and others)
 	 * Basically the input string, $linktext, is (typically) wrapped in a <a>-tag linking to some page, email address, file or URL based on a parameter defined by the configuration array $conf.
@@ -5730,76 +5875,32 @@ class ContentObjectRenderer {
 	 * @param array $conf TypoScript configuration (see link below)
 	 * @return string A link-wrapped string.
 	 * @see stdWrap(), \TYPO3\CMS\Frontend\Plugin\AbstractPlugin::pi_linkTP()
-	 * @todo Define visibility
 	 */
 	public function typoLink($linktxt, $conf) {
 		$LD = array();
 		$finalTagParts = array();
 		$finalTagParts['aTagParams'] = $this->getATagParams($conf);
-		$link_param = isset($conf['parameter.']) ? trim($this->stdWrap($conf['parameter'], $conf['parameter.'])) : trim($conf['parameter']);
-		$sectionMark = isset($conf['section.']) ? trim($this->stdWrap($conf['section'], $conf['section.'])) : trim($conf['section']);
-		$sectionMark = $sectionMark ? (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($sectionMark) ? '#c' : '#') . $sectionMark : '';
+		$linkParameter = isset($conf['parameter.']) ? trim($this->stdWrap($conf['parameter'], $conf['parameter.'])) : trim($conf['parameter']);
 		$initP = '?id=' . $GLOBALS['TSFE']->id . '&type=' . $GLOBALS['TSFE']->type;
 		$this->lastTypoLinkUrl = '';
 		$this->lastTypoLinkTarget = '';
-		if ($link_param) {
-			$enableLinksAcrossDomains = $GLOBALS['TSFE']->config['config']['typolinkEnableLinksAcrossDomains'];
-			$link_paramA = GeneralUtility::unQuoteFilenames($link_param, TRUE);
-			// Check for link-handler keyword:
-			list($linkHandlerKeyword, $linkHandlerValue) = explode(':', trim($link_paramA[0]), 2);
-			if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][$linkHandlerKeyword] && (string)$linkHandlerValue !== '') {
-				$linkHandlerObj = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][$linkHandlerKeyword]);
-				if (method_exists($linkHandlerObj, 'main')) {
-					return $linkHandlerObj->main($linktxt, $conf, $linkHandlerKeyword, $linkHandlerValue, $link_param, $this);
-				}
-			}
-			// Resolve FAL-api "file:UID-of-sys_file-record" and "file:combined-identifier"
-			if ($linkHandlerKeyword === 'file') {
-				try {
-					$fileOrFolderObject = $this->getResourceFactory()->retrieveFileOrFolderObject($linkHandlerValue);
-					// Link to a folder or file
-					if ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\ResourceInterface) {
-						$link_paramA[0] = $fileOrFolderObject->getPublicUrl();
-					} else {
-						$link_paramA[0] = NULL;
-					}
-				} catch (\RuntimeException $e) {
-					// Element wasn't found
-					$link_paramA[0] = NULL;
-				} catch (\TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException $e) {
-					// Resource was not found
-					return $linktxt;
-				}
-			}
-			// Link parameter value
-			$link_param = trim($link_paramA[0]);
-			// Link class
-			$linkClass = trim($link_paramA[2]);
-			if ($linkClass == '-') {
-				// The '-' character means 'no class'. Necessary in order to specify a title as fourth parameter without setting the target or class!
-				$linkClass = '';
-			}
-			// Target value
-			$forceTarget = trim($link_paramA[1]);
-			if ($forceTarget == '-') {
-				// The '-' character means 'no target'. Necessary in order to specify a class as third parameter without setting the target!
-				$forceTarget = '';
-			}
-			// Title value
-			$forceTitle = trim($link_paramA[3]);
-			if ($forceTitle == '-') {
-				// The '-' character means 'no title'. Necessary in order to specify further parameters without setting the title!
-				$forceTitle = '';
-			}
-			if (isset($link_paramA[4]) && strlen(trim($link_paramA[4])) > 0) {
-				$forceParams = trim($link_paramA[4]);
-				// params value
-				$conf['additionalParams'] .= $forceParams[0] == '&' ? $forceParams : '&' . $forceParams;
-			}
+
+		$resolvedLinkParameters = $this->resolveMixedLinkParameter($linktxt, $linkParameter, $conf);
+		// check if the link handler hook has resolved the link completely already
+		if (!is_array($resolvedLinkParameters)) {
+			return $resolvedLinkParameters;
+		} else {
+			$linkParameter = $resolvedLinkParameters['href'];
+			$forceTarget = $resolvedLinkParameters['target'];
+			$linkClass = $resolvedLinkParameters['class'];
+			$forceTitle = $resolvedLinkParameters['title'];
+		}
+
+		if ($linkParameter) {
+
 			// Check, if the target is coded as a JS open window link:
 			$JSwindowParts = array();
 			$JSwindowParams = '';
-			$onClick = '';
 			if ($forceTarget && preg_match('/^([0-9]+)x([0-9]+)(:(.*)|.*)$/', $forceTarget, $JSwindowParts)) {
 				// Take all pre-configured and inserted parameters and compile parameter list, including width+height:
 				$JSwindow_tempParamsArr = GeneralUtility::trimExplode(',', strtolower($conf['JSwindow_params'] . ',' . $JSwindowParts[4]), TRUE);
@@ -5816,6 +5917,7 @@ class ContentObjectRenderer {
 				// Resetting the target since we will use onClick.
 				$forceTarget = '';
 			}
+
 			// Internal target:
 			if ($GLOBALS['TSFE']->dtdAllowsFrames) {
 				$target = isset($conf['target']) ? $conf['target'] : $GLOBALS['TSFE']->intTarget;
@@ -5825,39 +5927,26 @@ class ContentObjectRenderer {
 			if ($conf['target.']) {
 				$target = $this->stdWrap($target, $conf['target.']);
 			}
+
 			// Title tag
 			$title = $conf['title'];
 			if ($conf['title.']) {
 				$title = $this->stdWrap($title, $conf['title.']);
 			}
-			// Parse URL:
-			$pU = parse_url($link_param);
-			// Detecting kind of link:
-			// If it's a mail address:
-			if (strstr($link_param, '@') && (!$pU['scheme'] || $pU['scheme'] == 'mailto')) {
-				$link_param = preg_replace('/^mailto:/i', '', $link_param);
-				list($this->lastTypoLinkUrl, $linktxt) = $this->getMailTo($link_param, $linktxt, $initP);
-				$finalTagParts['url'] = $this->lastTypoLinkUrl;
-				$finalTagParts['TYPE'] = 'mailto';
-			} else {
-				$isLocalFile = 0;
-				$fileChar = (int)strpos($link_param, '/');
-				$urlChar = (int)strpos($link_param, '.');
-				// Firsts, test if $link_param is numeric and page with such id exists. If yes, do not attempt to link to file
-				if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($link_param) || count($GLOBALS['TSFE']->sys_page->getPage_noCheck($link_param)) == 0) {
-					// Detects if a file is found in site-root and if so it will be treated like a normal file.
-					list($rootFileDat) = explode('?', rawurldecode($link_param));
-					$containsSlash = strstr($rootFileDat, '/');
-					$rFD_fI = pathinfo($rootFileDat);
-					if (trim($rootFileDat) && !$containsSlash && (@is_file((PATH_site . $rootFileDat)) || GeneralUtility::inList('php,html,htm', strtolower($rFD_fI['extension'])))) {
-						$isLocalFile = 1;
-					} elseif ($containsSlash) {
-						// Adding this so realurl directories are linked right (non-existing).
-						$isLocalFile = 2;
-					}
-				}
-				if ($pU['scheme'] || $isLocalFile != 1 && $urlChar && (!$containsSlash || $urlChar < $fileChar)) {
-					// url (external): If doubleSlash or if a '.' comes before a '/'.
+
+
+			// Detecting kind of link
+			$linkType = $this->detectLinkTypeFromLinkParameter($linkParameter);
+			switch ($linkType) {
+				// If it's a mail address
+				case 'mailto':
+					$linkParameter = preg_replace('/^mailto:/i', '', $linkParameter);
+					list($this->lastTypoLinkUrl, $linktxt) = $this->getMailTo($linkParameter, $linktxt, $initP);
+					$finalTagParts['url'] = $this->lastTypoLinkUrl;
+				break;
+
+				// url (external): If doubleSlash or if a '.' comes before a '/'.
+				case 'url':
 					if ($GLOBALS['TSFE']->dtdAllowsFrames) {
 						$target = isset($conf['extTarget']) ? $conf['extTarget'] : $GLOBALS['TSFE']->extTarget;
 					} else {
@@ -5870,44 +5959,51 @@ class ContentObjectRenderer {
 						$target = $forceTarget;
 					}
 					if ($linktxt == '') {
-						$linktxt = $link_param;
+						$linktxt = $linkParameter;
 					}
-					if (!$pU['scheme']) {
+					// Parse URL:
+					$urlParts = parse_url($linkParameter);
+					if (!$urlParts['scheme']) {
 						$scheme = 'http://';
 					} else {
 						$scheme = '';
 					}
+
 					if ($GLOBALS['TSFE']->config['config']['jumpurl_enable']) {
 						$url = $GLOBALS['TSFE']->absRefPrefix . $GLOBALS['TSFE']->config['mainScript'] . $initP;
-						$jumpurl = $scheme . $link_param;
+						$jumpurl = $scheme . $linkParameter;
 						$juHash = GeneralUtility::hmac($jumpurl, 'jumpurl');
 						$this->lastTypoLinkUrl = $url . '&jumpurl=' . rawurlencode($jumpurl) . '&juHash=' . $juHash . $GLOBALS['TSFE']->getMethodUrlIdToken;
 					} else {
-						$this->lastTypoLinkUrl = $scheme . $link_param;
+						$this->lastTypoLinkUrl = $scheme . $linkParameter;
 					}
 					$this->lastTypoLinkTarget = $target;
 					$finalTagParts['url'] = $this->lastTypoLinkUrl;
 					$finalTagParts['targetParams'] = $target ? ' target="' . $target . '"' : '';
-					$finalTagParts['TYPE'] = 'url';
-					$finalTagParts['aTagParams'] .= $this->extLinkATagParams($finalTagParts['url'], $finalTagParts['TYPE']);
-				} elseif ($containsSlash || $isLocalFile) {
-					// file (internal)
-					$splitLinkParam = explode('?', $link_param);
-					if (file_exists(rawurldecode($splitLinkParam[0])) || $isLocalFile) {
+					$finalTagParts['aTagParams'] .= $this->extLinkATagParams($finalTagParts['url'], $linkType);
+				break;
+
+				// file (internal)
+				case 'file':
+
+					$splitLinkParam = explode('?', $linkParameter);
+
+					// check if the file exists or if a / is contained (same check as in detectLinkType)
+					if (file_exists(rawurldecode($splitLinkParam[0])) || strpos($linkParameter, '/') !== FALSE) {
 						if ($linktxt == '') {
-							$linktxt = rawurldecode($link_param);
+							$linktxt = rawurldecode($linkParameter);
 						}
 						if ($GLOBALS['TSFE']->config['config']['jumpurl_enable'] || $conf['jumpurl']) {
-							$theFileEnc = str_replace('%2F', '/', rawurlencode(rawurldecode($link_param)));
-							$url = $GLOBALS['TSFE']->absRefPrefix . $GLOBALS['TSFE']->config['mainScript'] . $initP . '&jumpurl=' . rawurlencode($link_param);
+							$theFileEnc = str_replace('%2F', '/', rawurlencode(rawurldecode($linkParameter)));
+							$url = $GLOBALS['TSFE']->absRefPrefix . $GLOBALS['TSFE']->config['mainScript'] . $initP . '&jumpurl=' . rawurlencode($linkParameter);
 							if ($conf['jumpurl.']['secure']) {
 								$url .= $this->locDataJU($theFileEnc, $conf['jumpurl.']['secure.']);
 							} else {
-								$url .= '&juHash=' . GeneralUtility::hmac($link_param, 'jumpurl');
+								$url .= '&juHash=' . GeneralUtility::hmac($linkParameter, 'jumpurl');
 							}
 							$this->lastTypoLinkUrl =  $url . $GLOBALS['TSFE']->getMethodUrlIdToken;
 						} else {
-							$this->lastTypoLinkUrl = $GLOBALS['TSFE']->absRefPrefix . $link_param;
+							$this->lastTypoLinkUrl = $GLOBALS['TSFE']->absRefPrefix . $linkParameter;
 						}
 						$this->lastTypoLinkUrl = $this->forceAbsoluteUrl($this->lastTypoLinkUrl, $conf);
 						$target = isset($conf['fileTarget']) ? $conf['fileTarget'] : $GLOBALS['TSFE']->fileTarget;
@@ -5920,28 +6016,35 @@ class ContentObjectRenderer {
 						$this->lastTypoLinkTarget = $target;
 						$finalTagParts['url'] = $this->lastTypoLinkUrl;
 						$finalTagParts['targetParams'] = $target ? ' target="' . $target . '"' : '';
-						$finalTagParts['TYPE'] = 'file';
-						$finalTagParts['aTagParams'] .= $this->extLinkATagParams($finalTagParts['url'], $finalTagParts['TYPE']);
+						$finalTagParts['aTagParams'] .= $this->extLinkATagParams($finalTagParts['url'], $linkType);
 					} else {
 						$GLOBALS['TT']->setTSlogMessage('typolink(): File \'' . $splitLinkParam[0] . '\' did not exist, so \'' . $linktxt . '\' was not linked.', 1);
 						return $linktxt;
 					}
-				} else {
-					// Integer or alias (alias is without slashes or periods or commas, that is
-					// 'nospace,alphanum_x,lower,unique' according to definition in $GLOBALS['TCA']!)
+				break;
+
+				// Integer or alias (alias is without slashes or periods or commas, that is
+				// 'nospace,alphanum_x,lower,unique' according to definition in $GLOBALS['TCA']!)
+				case 'page':
+					$enableLinksAcrossDomains = $GLOBALS['TSFE']->config['config']['typolinkEnableLinksAcrossDomains'];
+
 					if ($conf['no_cache.']) {
 						$conf['no_cache'] = $this->stdWrap($conf['no_cache'], $conf['no_cache.']);
 					}
 					// Splitting the parameter by ',' and if the array counts more than 1 element it's a id/type/parameters triplet
-					$pairParts = GeneralUtility::trimExplode(',', $link_param, TRUE);
-					$link_param = $pairParts[0];
-					$link_params_parts = explode('#', $link_param);
+					$pairParts = GeneralUtility::trimExplode(',', $linkParameter, TRUE);
+					$linkParameter = $pairParts[0];
+					$link_params_parts = explode('#', $linkParameter);
 					// Link-data del
-					$link_param = trim($link_params_parts[0]);
+					$linkParameter = trim($link_params_parts[0]);
 					// If no id or alias is given
-					if ($link_param === '') {
-						$link_param = $GLOBALS['TSFE']->id;
+					if ($linkParameter === '') {
+						$linkParameter = $GLOBALS['TSFE']->id;
 					}
+
+					$sectionMark = isset($conf['section.']) ? trim($this->stdWrap($conf['section'], $conf['section.'])) : trim($conf['section']);
+					$sectionMark = $sectionMark ? (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($sectionMark) ? '#c' : '#') . $sectionMark : '';
+
 					if ($link_params_parts[1] && !$sectionMark) {
 						$sectionMark = trim($link_params_parts[1]);
 						$sectionMark = (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($sectionMark) ? '#c' : '#') . $sectionMark;
@@ -5952,8 +6055,8 @@ class ContentObjectRenderer {
 						$conf['additionalParams'] .= isset($pairParts[2]) ? $pairParts[2] : '';
 					}
 					// Checking if the id-parameter is an alias.
-					if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($link_param)) {
-						$link_param = $GLOBALS['TSFE']->sys_page->getPageIdFromAlias($link_param);
+					if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($linkParameter)) {
+						$linkParameter = $GLOBALS['TSFE']->sys_page->getPageIdFromAlias($linkParameter);
 					}
 					// Link to page even if access is missing?
 					if (strlen($conf['linkAccessRestrictedPages'])) {
@@ -5962,7 +6065,7 @@ class ContentObjectRenderer {
 						$disableGroupAccessCheck = $GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages'] ? TRUE : FALSE;
 					}
 					// Looking up the page record to verify its existence:
-					$page = $GLOBALS['TSFE']->sys_page->getPage($link_param, $disableGroupAccessCheck);
+					$page = $GLOBALS['TSFE']->sys_page->getPage($linkParameter, $disableGroupAccessCheck);
 					if (count($page)) {
 						// MointPoints, look for closest MPvar:
 						$MPvarAcc = array();
@@ -6137,17 +6240,20 @@ class ContentObjectRenderer {
 						// Rendering the tag.
 						$finalTagParts['url'] = $this->lastTypoLinkUrl;
 						$finalTagParts['targetParams'] = $targetPart;
-						$finalTagParts['TYPE'] = 'page';
 					} else {
-						$GLOBALS['TT']->setTSlogMessage('typolink(): Page id \'' . $link_param . '\' was not found, so \'' . $linktxt . '\' was not linked.', 1);
+						$GLOBALS['TT']->setTSlogMessage('typolink(): Page id \'' . $linkParameter . '\' was not found, so \'' . $linktxt . '\' was not linked.', 1);
 						return $linktxt;
 					}
-				}
+				break;
 			}
+
+			$finalTagParts['TYPE'] = $linkType;
 			$this->lastTypoLinkLD = $LD;
+
 			if ($forceTitle) {
 				$title = $forceTitle;
 			}
+
 			if ($JSwindowParams) {
 				// Create TARGET-attribute only if the right doctype is used
 				if (!GeneralUtility::inList('xhtml_strict,xhtml_11,xhtml_2', $GLOBALS['TSFE']->xhtmlDoctype)) {
@@ -6156,31 +6262,35 @@ class ContentObjectRenderer {
 					$target = '';
 				}
 				$onClick = 'vHWin=window.open(' . GeneralUtility::quoteJSvalue($GLOBALS['TSFE']->baseUrlWrap($finalTagParts['url']), TRUE) . ',\'FEopenLink\',' . GeneralUtility::quoteJSvalue($JSwindowParams) . ');vHWin.focus();return false;';
-				$res = '<a href="' . htmlspecialchars($finalTagParts['url']) . '"' . $target . ' onclick="' . htmlspecialchars($onClick) . '"' . ($title ? ' title="' . $title . '"' : '') . ($linkClass ? ' class="' . $linkClass . '"' : '') . $finalTagParts['aTagParams'] . '>';
+				$finalAnchorTag = '<a href="' . htmlspecialchars($finalTagParts['url']) . '"' . $target . ' onclick="' . htmlspecialchars($onClick) . '"' . ($title ? ' title="' . $title . '"' : '') . ($linkClass ? ' class="' . $linkClass . '"' : '') . $finalTagParts['aTagParams'] . '>';
 			} else {
-				if ($GLOBALS['TSFE']->spamProtectEmailAddresses === 'ascii' && $finalTagParts['TYPE'] === 'mailto') {
-					$res = '<a href="' . $finalTagParts['url'] . '"' . ($title ? ' title="' . $title . '"' : '') . $finalTagParts['targetParams'] . ($linkClass ? ' class="' . $linkClass . '"' : '') . $finalTagParts['aTagParams'] . '>';
+				if ($GLOBALS['TSFE']->spamProtectEmailAddresses === 'ascii' && $linkType === 'mailto') {
+					$finalAnchorTag = '<a href="' . $finalTagParts['url'] . '"';
 				} else {
-					$res = '<a href="' . htmlspecialchars($finalTagParts['url']) . '"' . ($title ? ' title="' . $title . '"' : '') . $finalTagParts['targetParams'] . ($linkClass ? ' class="' . $linkClass . '"' : '') . $finalTagParts['aTagParams'] . '>';
+					$finalAnchorTag = '<a href="' . htmlspecialchars($finalTagParts['url']) . '"';
 				}
+				$finalAnchorTag .= ($title ? ' title="' . $title . '"' : '') . $finalTagParts['targetParams'] . ($linkClass ? ' class="' . $linkClass . '"' : '') . $finalTagParts['aTagParams'] . '>';
 			}
+
 			// Call user function:
 			if ($conf['userFunc']) {
-				$finalTagParts['TAG'] = $res;
-				$res = $this->callUserFunction($conf['userFunc'], $conf['userFunc.'], $finalTagParts);
+				$finalTagParts['TAG'] = $finalAnchorTag;
+				$finalAnchorTag = $this->callUserFunction($conf['userFunc'], $conf['userFunc.'], $finalTagParts);
 			}
+
 			// Hook: Call post processing function for link rendering:
 			if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typoLink_PostProc']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typoLink_PostProc'])) {
 				$_params = array(
 					'conf' => &$conf,
 					'linktxt' => &$linktxt,
-					'finalTag' => &$res,
+					'finalTag' => &$finalAnchorTag,
 					'finalTagParts' => &$finalTagParts
 				);
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typoLink_PostProc'] as $_funcRef) {
 					GeneralUtility::callUserFunction($_funcRef, $_params, $this);
 				}
 			}
+
 			// If flag "returnLastTypoLinkUrl" set, then just return the latest URL made:
 			if ($conf['returnLast']) {
 				switch ($conf['returnLast']) {
@@ -6192,11 +6302,13 @@ class ContentObjectRenderer {
 						break;
 				}
 			}
+
 			$wrap = isset($conf['wrap.']) ? $this->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
+
 			if ($conf['ATagBeforeWrap']) {
-				return $res . $this->wrap($linktxt, $wrap) . '</a>';
+				return $finalAnchorTag . $this->wrap($linktxt, $wrap) . '</a>';
 			} else {
-				return $this->wrap($res . $linktxt . '</a>', $wrap);
+				return $this->wrap($finalAnchorTag . $linktxt . '</a>', $wrap);
 			}
 		} else {
 			return $linktxt;
