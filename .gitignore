@@ -27,3 +27,5 @@ bin/*
 nbproject
 Packages/*
 typo3temp/*
+typo3conf/*
+composer.lock
