@@ -15,9 +15,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Configuration\TypoScript\ConditionMatchi
  */
 
 /**
- * Testcase for class \TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher.
- *
- * @author 	Oliver Hader <oliver@typo3.org>
+ * Test case
  */
 class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
@@ -706,4 +704,19 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertTrue($this->matchCondition->match('[globalString = ' . $this->testGlobalNamespace . '|second|third = testThird]'));
 	}
 
+	/**
+	 * @test
+	 * @expectedException \TYPO3\CMS\Core\Configuration\TypoScript\Exception\InvalidTypoScriptConditionException
+	 */
+	public function matchThrowsExceptionIfConditionClassDoesNotInheritFromAbstractCondition() {
+		$this->matchCondition->match('[stdClass = foo]');
+	}
+
+	/**
+	 * @test
+	 * @expectedException \TYPO3\CMS\Frontend\Tests\Unit\Configuration\TypoScript\ConditionMatching\Fixtures\TestConditionException
+	 */
+	public function matchCallsTestConditionAndHandsOverParameters() {
+		$this->matchCondition->match('[TYPO3\\CMS\\Frontend\\Tests\\Unit\\Configuration\\TypoScript\\ConditionMatching\\Fixtures\\TestCondition = 7, != 6]');
+	}
 }

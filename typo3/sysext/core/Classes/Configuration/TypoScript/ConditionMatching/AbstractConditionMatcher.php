@@ -210,6 +210,7 @@ abstract class AbstractConditionMatcher {
 						return TRUE;
 					}
 				}
+				return FALSE;
 				break;
 			case 'browser':
 				$values = GeneralUtility::trimExplode(',', $value, TRUE);
@@ -226,6 +227,7 @@ abstract class AbstractConditionMatcher {
 						return TRUE;
 					}
 				}
+				return FALSE;
 				break;
 			case 'version':
 				$values = GeneralUtility::trimExplode(',', $value, TRUE);
@@ -252,6 +254,7 @@ abstract class AbstractConditionMatcher {
 						return TRUE;
 					}
 				}
+				return FALSE;
 				break;
 			case 'system':
 				$values = GeneralUtility::trimExplode(',', $value, TRUE);
@@ -263,6 +266,7 @@ abstract class AbstractConditionMatcher {
 						return TRUE;
 					}
 				}
+				return FALSE;
 				break;
 			case 'device':
 				if (!isset($this->deviceInfo)) {
@@ -274,11 +278,14 @@ abstract class AbstractConditionMatcher {
 						return TRUE;
 					}
 				}
+				return FALSE;
 				break;
 			case 'useragent':
 				$test = trim($value);
 				if ($test !== '') {
 					return $this->searchStringWildcard((string)$browserInfo['useragent'], $test);
+				} else {
+					return FALSE;
 				}
 				break;
 			case 'language':
@@ -296,20 +303,17 @@ abstract class AbstractConditionMatcher {
 						return TRUE;
 					}
 				}
+				return FALSE;
 				break;
 			case 'IP':
 				if ($value === 'devIP') {
 					$value = trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']);
 				}
 
-				if (GeneralUtility::cmpIP(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $value)) {
-					return TRUE;
-				}
+				return (bool) GeneralUtility::cmpIP(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $value);
 				break;
 			case 'hostname':
-				if (GeneralUtility::cmpFQDN(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $value)) {
-					return TRUE;
-				}
+				return (bool) GeneralUtility::cmpFQDN(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $value);
 				break;
 			case 'hour':
 
@@ -360,6 +364,7 @@ abstract class AbstractConditionMatcher {
 						return TRUE;
 					}
 				}
+				return FALSE;
 				break;
 			case 'compatVersion':
 				return GeneralUtility::compat_version($value);
@@ -375,6 +380,7 @@ abstract class AbstractConditionMatcher {
 				} elseif ($value === '') {
 					return TRUE;
 				}
+				return FALSE;
 				break;
 			case 'page':
 				if ($keyParts[1]) {
@@ -384,6 +390,7 @@ abstract class AbstractConditionMatcher {
 						return TRUE;
 					}
 				}
+				return FALSE;
 				break;
 			case 'globalVar':
 				$values = GeneralUtility::trimExplode(',', $value, TRUE);
@@ -396,6 +403,7 @@ abstract class AbstractConditionMatcher {
 						return TRUE;
 					}
 				}
+				return FALSE;
 				break;
 			case 'globalString':
 				$values = GeneralUtility::trimExplode(',', $value, TRUE);
@@ -408,6 +416,7 @@ abstract class AbstractConditionMatcher {
 						return TRUE;
 					}
 				}
+				return FALSE;
 				break;
 			case 'userFunc':
 				$matches = array();
@@ -417,6 +426,7 @@ abstract class AbstractConditionMatcher {
 				if (function_exists($funcName) && call_user_func_array($funcName, $funcValues)) {
 					return TRUE;
 				}
+				return FALSE;
 				break;
 		}
 		return NULL;

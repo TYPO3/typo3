@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Matching TypoScript conditions for frontend disposal.
  *
@@ -29,9 +32,10 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 * @param string $string The condition to match against its criterias.
 	 * @return boolean Whether the condition matched
 	 * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::parse()
+	 * @throws \TYPO3\CMS\Core\Configuration\TypoScript\Exception\InvalidTypoScriptConditionException
 	 */
 	protected function evaluateCondition($string) {
-		list($key, $value) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('=', $string, FALSE, 2);
+		list($key, $value) = GeneralUtility::trimExplode('=', $string, FALSE, 2);
 		$result = parent::evaluateConditionCommon($key, $value);
 		if (is_bool($result)) {
 			return $result;
@@ -41,16 +45,16 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 					$groupList = $this->getGroupList();
 					// '0,-1' is the default usergroups when not logged in!
 					if ($groupList != '0,-1') {
-						$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
+						$values = GeneralUtility::trimExplode(',', $value, TRUE);
 						foreach ($values as $test) {
-							if ($test == '*' || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($groupList, $test)) {
+							if ($test == '*' || GeneralUtility::inList($groupList, $test)) {
 								return TRUE;
 							}
 						}
 					}
 					break;
 				case 'treeLevel':
-					$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
+					$values = GeneralUtility::trimExplode(',', $value, TRUE);
 					$treeLevel = count($this->rootline) - 1;
 					foreach ($values as $test) {
 						if ($test == $treeLevel) {
@@ -61,7 +65,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 				case 'PIDupinRootline':
 
 				case 'PIDinRootline':
-					$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
+					$values = GeneralUtility::trimExplode(',', $value, TRUE);
 					if ($key == 'PIDinRootline' || !in_array($this->pageId, $values)) {
 						foreach ($values as $test) {
 							foreach ($this->rootline as $rl_dat) {
@@ -72,6 +76,26 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 						}
 					}
 					break;
+				default:
+					list($conditionClassName, $conditionParameters) = GeneralUtility::trimExplode(' ', $string, FALSE, 2);
+
+					// Check if the condition class name is a valid class
+					// This is necessary to not stop here for the conditions ELSE and GLOBAL
+					if (class_exists($conditionClassName)) {
+						// Use like this: [MyCompany\MyPackage\ConditionMatcher\MyOwnConditionMatcher = myvalue]
+						/** @var \TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractCondition $conditionObject */
+						$conditionObject = GeneralUtility::makeInstance($conditionClassName);
+						if (($conditionObject instanceof \TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractCondition) === FALSE) {
+							throw new \TYPO3\CMS\Core\Configuration\TypoScript\Exception\InvalidTypoScriptConditionException(
+								'"' . $key . '" is not a valid TypoScript Condition object.',
+								1410286153
+							);
+						}
+
+						$conditionParameters = $this->parseUserFuncArguments($conditionParameters);
+						$conditionObject->setConditionMatcherInstance($this);
+						return $conditionObject->matchCondition($conditionParameters);
+					}
 			}
 		}
 		return FALSE;

@@ -133,7 +133,7 @@ class AbstractConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 		$method->setAccessible(TRUE);
 
-		$this->assertNull(
+		$this->assertFalse(
 			$method->invokeArgs($abstractConditionMatcherMock, array('applicationContext', $notMatchingApplicationContextCondition))
 		);
 	}
@@ -171,22 +171,22 @@ class AbstractConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'IP does not match' => array(
 				'127.0.0.1',
 				'127.0.0.2',
-				NULL
+				FALSE
 			),
 			'ipv4 subnet does not match' => array(
 				'127.0.0.1/8',
 				'126.0.0.1',
-				NULL
+				FALSE
 			),
 			'ipv6 subnet does not match' => array(
 				'::1/127',
 				'::2',
-				NULL
+				FALSE
 			),
 			'List of addresses does not match' => array(
 				'127.0.0.1, ::1',
 				'::2',
-				NULL
+				FALSE
 			),
 		);
 	}
