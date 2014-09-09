@@ -103,6 +103,8 @@ class FlexElement extends AbstractFormElement {
 				$tabsToTraverse = array($sheet);
 			}
 
+			$this->getControllerDocumentTemplate()->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/FormEngineFlexForm');
+
 			/** @var $elementConditionMatcher \TYPO3\CMS\Backend\Form\ElementConditionMatcher */
 			$elementConditionMatcher = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\ElementConditionMatcher::class);
 
@@ -172,7 +174,7 @@ class FlexElement extends AbstractFormElement {
 						}
 						// Render flexform:
 						$tRows = $this->getSingleField_typeFlex_draw($dataStruct['ROOT']['el'], $editData['data'][$sheet][$lang], $table, $field, $row, $additionalInformation, '[data][' . $sheet . '][' . $lang . ']');
-						$sheetContent = '<div class="typo3-TCEforms-flexForm">' . $tRows . '</div>';
+						$sheetContent = '<div class="typo3-TCEforms-flexForm t3-form-flexform">' . $tRows . '</div>';
 						// Pop the sheet level tab from DynNestedStack
 						if (is_array($dataStructArray['sheets'])) {
 							$this->formEngine->popFromDynNestedStack('tab', $tabIdentString . '-' . (count($tabParts) + 1));
@@ -296,7 +298,7 @@ class FlexElement extends AbstractFormElement {
 								$onClickInsert = 'var ' . $var . ' = "' . 'idx"+(new Date()).getTime();'
 									// Do not replace $isTagPrefix in setActionStatus() because it needs section id!
 									. 'new Insertion.Bottom($("' . $idTagPrefix . '"), ' . json_encode($newElementTemplate)
-									. '.' . $replace . '); setActionStatus("' . $idTagPrefix . '");'
+									. '.' . $replace . '); TYPO3.jQuery("#' . $idTagPrefix . '").t3FormEngineFlexFormElement();'
 									. 'eval(unescape("' . rawurlencode(implode(';', $this->formEngine->additionalJS_post)) . '").' . $replace . ');'
 									. 'TBE_EDITOR.addActionChecks("submit", unescape("'
 									. rawurlencode(implode(';', $this->formEngine->additionalJS_submit)) . '").' . $replace . ');'
@@ -318,28 +320,32 @@ class FlexElement extends AbstractFormElement {
 							}
 							// Reverting internal variables we don't want to change:
 							$this->formEngine->requiredElements = $TEMP_requiredElements;
-							// Adding the sections:
+							// Adding the sections
+
+							// add the "toggle all" button for the sections
 							$toggleAll = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.toggleall', TRUE);
 							$output .= '
-							<div class="t3-form-field-toggle-flexsection">
-								<a href="#" onclick="flexFormToggleSubs(\'' . htmlspecialchars($idTagPrefix) . '\'); return false;">'
-								. IconUtility::getSpriteIcon('actions-move-right', array('title' => $toggleAll)) . $toggleAll . '
-								</a>
+							<div class="t3-form-field-toggle-flexsection t3-form-flexsection-toggle">
+								<a href="#">'. IconUtility::getSpriteIcon('actions-move-right', array('title' => $toggleAll)) . $toggleAll . '</a>
 							</div>
+							<div id="' . $idTagPrefix . '" class="t3-form-field-container-flexsection t3-flex-container" data-t3-flex-allow-restructure="' . ($mayRestructureFlexforms ? 1 : 0) . '">' . implode('', $tRows) . '</div>';
 
-							<div id="' . $idTagPrefix . '" class="t3-form-field-container-flexsection">' . implode('', $tRows) . '</div>';
-							$output .= $mayRestructureFlexforms ? '<div class="t3-form-field-add-flexsection"><strong>'
-								. $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.addnew', TRUE)
-								. ':</strong> ' . implode(' | ', $newElementsLinks) . '</div>' : '';
+							// add the "new" link
+							if ($mayRestructureFlexforms) {
+								$output .= '<div class="t3-form-field-add-flexsection"><strong>'
+										. $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.addnew', TRUE)
+										. ':</strong> ' . implode(' | ', $newElementsLinks) . '</div>';
+							}
+
+							$output = '<div class="t3-form-field-container t3-form-flex">' . $output . '</div>';
 						} else {
-							// It is a container
-							$toggleIcon_open = IconUtility::getSpriteIcon('actions-move-down');
-							$toggleIcon_close = IconUtility::getSpriteIcon('actions-move-right');
-							// Create on-click actions.
-							$onClickRemove = 'if (confirm("Are you sure?")){/*###REMOVE###*/;$("' . $idTagPrefix
-								. '").hide();setActionStatus("' . $idPrefix . '");} return false;';
-							$onClickToggle = 'flexFormToggle("' . $idTagPrefix . '"); return false;';
-							$onMove = 'flexFormSortable("' . $idPrefix . '")';
+							// It is a container of a single section
+							$toggleIconOpenState  =  ($toggleClosed ? 'display: none;' : '');
+							$toggleIconCloseState = (!$toggleClosed ? 'display: none;' : '');
+
+							$toggleIcons = IconUtility::getSpriteIcon('actions-move-down', array('class' => 't3-flex-control-toggle-icon-open', 'style' => $toggleIconOpenState));
+							$toggleIcons .= IconUtility::getSpriteIcon('actions-move-right', array('class' => 't3-flex-control-toggle-icon-close', 'style' => $toggleIconCloseState));
+
 							// Notice: Creating "new" elements after others seemed to be too difficult to do
 							// and since moving new elements created in the bottom is now so easy
 							// with drag'n'drop I didn't see the need.
@@ -351,21 +357,20 @@ class FlexElement extends AbstractFormElement {
 							// be possible to move as a sortable. But this way a new sortable is initialized every time
 							// someone tries to move and it will always work.
 							$ctrlHeader = '
-								<table class="t3-form-field-header-flexsection" onmousedown="' . ($mayRestructureFlexforms ? htmlspecialchars($onMove) : '') . '">
-								<tr>
-									<td>
-										<a href="#" onclick="' . htmlspecialchars($onClickToggle) . '" id="' . $idTagPrefix . '-toggle">
-											' . ($toggleClosed ? $toggleIcon_close : $toggleIcon_open) . '
-										</a>
-										<strong>' . $theTitle . '</strong> <em><span id="' . $idTagPrefix . '-preview"></span></em>
-									</td>
-									<td align="right">'
-								. ($mayRestructureFlexforms ? IconUtility::getSpriteIcon('actions-move-move', array('title' => 'Drag to Move')) : '')
-								. ($mayRestructureFlexforms ? '<a href="#" onclick="' . htmlspecialchars($onClickRemove) . '">'
-									. IconUtility::getSpriteIcon('actions-edit-delete', array('title' => 'Delete')) : '')
-								. '</td>
-									</tr>
-								</table>';
+								<div class="pull-left">
+									<a href="#" class="t3-flex-control-toggle-button">' . $toggleIcons . '</a>
+									<span class="t3-record-title">' . $theTitle . '</span>
+								</div>';
+
+							if ($mayRestructureFlexforms) {
+								$ctrlHeader .= '<div class="pull-right">'
+									. IconUtility::getSpriteIcon('actions-move-move', array('title' => 'Drag to Move'))
+									. IconUtility::getSpriteIcon('actions-edit-delete', array('title' => 'Delete', 'class' => 't3-delete'))
+									. '</div>';
+							}
+
+							$ctrlHeader = '<div class="t3-form-field-header-flexsection t3-flex-section-header">' . $ctrlHeader . '</div>';
+
 							$s = GeneralUtility::revExplode('[]', $formPrefix, 2);
 							$actionFieldName = '_ACTION_FLEX_FORM' . $PA['itemFormElName'] . $s[0] . '][_ACTION][' . $s[1];
 							// Push the container to DynNestedStack as it may be toggled
@@ -376,14 +381,14 @@ class FlexElement extends AbstractFormElement {
 								$editData[$key]['el'], $table, $field, $row, $PA,
 								($formPrefix . '[' . $key . '][el]'), ($level + 1), $idTagPrefix);
 							$output .= '
-								<div id="' . $idTagPrefix . '" class="t3-form-field-container-flexsections">
-									<input id="' . $idTagPrefix . '-action" type="hidden" name="' . htmlspecialchars($actionFieldName) . '" value=""/>
+								<div id="' . $idTagPrefix . '" class="t3-form-field-container-flexsections t3-flex-section">
+									<input class="t3-flex-control t3-flex-control-action" type="hidden" name="' . htmlspecialchars($actionFieldName) . '" value=""/>
 
 									' . $ctrlHeader . '
-									<div class="t3-form-field-record-flexsection" id="' . $idTagPrefix . '-content"'
+									<div class="t3-form-field-record-flexsection t3-flex-section-content"'
 								. ($toggleClosed ? ' style="display:none;"' : '') . '>' . $singleField_typeFlex_draw . '
 									</div>
-									<input id="' . $idTagPrefix . '-toggleClosed" type="hidden" name="'
+									<input class="t3-flex-control t3-flex-control-toggle" id="' . $idTagPrefix . '-toggleClosed" type="hidden" name="'
 								. htmlspecialchars('data[' . $table . '][' . $row['uid'] . '][' . $field . ']' . $formPrefix . '[_TOGGLE]')
 								. '" value="' . ($toggleClosed ? 1 : 0) . '" />
 								</div>';

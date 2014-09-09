@@ -2170,7 +2170,8 @@ class DataHandler {
 				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($currentValueArray, $arrValue);
 				$xmlValue = $this->checkValue_flexArray2Xml($currentValueArray, TRUE);
 			}
-			// Action commands (sorting order and removals of elements)
+			// Action commands (sorting order and removals of elements) for flexform sections,
+			// see FormEngine for the use of this GP parameter
 			$actionCMDs = GeneralUtility::_GP('_ACTION_FLEX_FORMdata');
 			if (is_array($actionCMDs[$table][$id][$field]['data'])) {
 				$arrValue = GeneralUtility::xml2array($xmlValue);
@@ -2203,12 +2204,13 @@ class DataHandler {
 
 	/**
 	 * Actions for flex form element (move, delete)
+	 * allows to remove and move flexform sections
 	 *
 	 * @param array &$valueArrayToRemoveFrom by reference
 	 * @param array $deleteCMDS
 	 * @return void
 	 */
-	public function _ACTION_FLEX_FORMdata(&$valueArray, $actionCMDs) {
+	protected function _ACTION_FLEX_FORMdata(&$valueArray, $actionCMDs) {
 		if (is_array($valueArray) && is_array($actionCMDs)) {
 			foreach ($actionCMDs as $key => $value) {
 				if ($key == '_ACTION') {

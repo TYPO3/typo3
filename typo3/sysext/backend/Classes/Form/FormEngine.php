@@ -3994,72 +3994,10 @@ class FormEngine {
 					$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.tceforms_selectboxfilter.js');
 				}
 			}
-			// Toggle icons:
-			$toggleIcon_open = IconUtility::getSpriteIcon('actions-move-down', array('title' => 'Open'));
-			$toggleIcon_close = IconUtility::getSpriteIcon('actions-move-right', array('title' => 'Close'));
 			$out .= '
 			function getOuterHTML(idTagPrefix) {	// Function getting the outerHTML of an element with id
 				var str=($(idTagPrefix).inspect()+$(idTagPrefix).innerHTML+"</"+$(idTagPrefix).tagName.toLowerCase()+">");
 				return str;
-			}
-			function flexFormToggle(id) {	// Toggling flexform elements on/off:
-				Element.toggle(""+id+"-content");
-
-				if (Element.visible(id+"-content")) {
-					$(id+"-toggle").update(\'' . $toggleIcon_open . '\');
-					$(id+"-toggleClosed").value = 0;
-				} else {
-					$(id+"-toggle").update(\'' . $toggleIcon_close . '\');
-					$(id+"-toggleClosed").value = 1;
-				}
-
-				var previewContent = "";
-				var children = $(id+"-content").getElementsByTagName("input");
-				for (var i = 0, length = children.length; i < length; i++) {
-					if (children[i].type=="text" && children[i].value)	previewContent+= (previewContent?" / ":"")+children[i].value;
-				}
-				if (previewContent.length>80) {
-					previewContent = previewContent.substring(0,67)+"...";
-				}
-				$(id+"-preview").update(previewContent);
-			}
-			function flexFormToggleSubs(id) {	// Toggling sub flexform elements on/off:
-				var descendants = $(id).immediateDescendants();
-				var isOpen=0;
-				var isClosed=0;
-					// Traverse and find how many are open or closed:
-				for (var i = 0, length = descendants.length; i < length; i++) {
-					if (descendants[i].id) {
-						if (Element.visible(descendants[i].id+"-content"))	{isOpen++;} else {isClosed++;}
-					}
-				}
-
-					// Traverse and toggle
-				for (var i = 0, length = descendants.length; i < length; i++) {
-					if (descendants[i].id) {
-						if (isOpen!=0 && isClosed!=0) {
-							if (Element.visible(descendants[i].id+"-content"))	{flexFormToggle(descendants[i].id);}
-						} else {
-							flexFormToggle(descendants[i].id);
-						}
-					}
-				}
-			}
-			function flexFormSortable(id) {	// Create sortables for flexform sections
-				Position.includeScrollOffsets = true;
- 				Sortable.create(id, {tag:\'div\',constraint: false, onChange:function(){
-					setActionStatus(id);
-				} });
-			}
-			function setActionStatus(id) {	// Updates the "action"-status for a section. This is used to move and delete elements.
-				var descendants = $(id).immediateDescendants();
-
-					// Traverse and find how many are open or closed:
-				for (var i = 0, length = descendants.length; i < length; i++) {
-					if (descendants[i].id) {
-						$(descendants[i].id+"-action").value = descendants[i].visible() ? i : "DELETE";
-					}
-				}
 			}
 
 			TBE_EDITOR.images.req.src = "' . IconUtility::skinImg($this->backPath, 'gfx/required_h.gif', '', 1) . '";

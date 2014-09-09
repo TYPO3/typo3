@@ -8516,6 +8516,14 @@ TCEforms Inline-Relational-Record-Editing
 /* - - - - - - - - - - - - - - - - - - - - -
 TCEforms Sections
 - - - - - - - - - - - - - - - - - - - - - */
+.t3-flex-section-header .t3-record-title {
+  font-weight: bold;
+}
+.t3-flex-section {
+  clear: both;
+  margin: 5px 0;
+}
+.t3-flex-section-header,
 .t3-form-field-container-flexsection {
   padding-left: 20px;
 }
@@ -8534,16 +8542,29 @@ TCEforms Sections
   border-top: 1px solid #cdcdcd;
   padding: 10px 5px 5px 20px;
 }
+.t3-form-flex,
 .t3-form-field-container-flexsections {
   background: #dadada;
   margin: 5px 0;
+  clear: both;
 }
+.t3-flex-section-content,
 .t3-form-field-record-flexsection {
   background: #eee;
   padding: 5px 0;
 }
+.t3-flex-section-content > div,
 .t3-form-field-record-flexsection > div {
   margin: 0 10px;
+}
+.t3-flex-section-header-preview {
+  font-style: italic;
+  width: 100px;
+  display: inline-block;
+  padding-left: 10px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 /* preview image in sys_file records */
 img.t3-tceforms-sysfile-imagepreview {
