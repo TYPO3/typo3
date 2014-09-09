@@ -275,6 +275,99 @@ class ClickMenu {
 					$menuItems['pasteafter'] = $this->DB_paste($table, -$uid, 'after', $elInfo);
 				}
 			}
+			$subname = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('subname');
+			$localItems = array();
+			if (!$this->cmLevel && !in_array('moreoptions', $this->disabledItems, TRUE)) {
+				// Creating menu items here:
+				if ($this->editOK) {
+					$localItems[] = 'spacer';
+					$localItems['moreoptions'] = $this->linkItem(
+						$this->label('more'),
+						$this->excludeIcon(''),
+						'top.loadTopMenu(\'' . \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript() . '&cmLevel=1&subname=moreoptions\');return false;',
+						FALSE,
+						TRUE
+					);
+					$menuItemHideUnhideAllowed = FALSE;
+					$hiddenField = '';
+					// Check if column for disabled is defined
+					if (isset($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'])) {
+						$hiddenField = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'];
+						if (
+							$hiddenField !== '' && !empty($GLOBALS['TCA'][$table]['columns'][$hiddenField]['exclude']
+							&& $GLOBALS['BE_USER']->check('non_exclude_fields', $table . ':' . $hiddenField))
+						) {
+							$menuItemHideUnhideAllowed = TRUE;
+						}
+					}
+					if ($menuItemHideUnhideAllowed && !in_array('hide', $this->disabledItems, TRUE)) {
+						$localItems['hide'] = $this->DB_hideUnhide($table, $this->rec, $hiddenField);
+					}
+					$anyEnableColumnsFieldAllowed = FALSE;
+					// Check if columns are defined
+					if (isset($GLOBALS['TCA'][$table]['ctrl']['enablecolumns'])) {
+						$columnsToCheck = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns'];
+						if ($table === 'pages' && !empty($columnsToCheck)) {
+							$columnsToCheck[] = 'extendToSubpages';
+						}
+						foreach ($columnsToCheck as $currentColumn) {
+							if (
+								!empty($GLOBALS['TCA'][$table]['columns'][$currentColumn]['exclude'])
+								&& $GLOBALS['BE_USER']->check('non_exclude_fields', $table . ':' . $currentColumn)
+							) {
+								$anyEnableColumnsFieldAllowed = TRUE;
+							}
+						}
+					}
+					if ($anyEnableColumnsFieldAllowed && !in_array('edit_access', $this->disabledItems, TRUE)) {
+						$localItems['edit_access'] = $this->DB_editAccess($table, $uid);
+					}
+					if ($table === 'pages' && $this->editPageIconSet && !in_array('edit_pageproperties', $this->disabledItems, TRUE)) {
+						$localItems['edit_pageproperties'] = $this->DB_editPageProperties($uid);
+					}
+				}
+				// Find delete element among the input menu items and insert the local items just before that:
+				$c = 0;
+				$deleteFound = FALSE;
+				foreach ($menuItems as $key => $value) {
+					$c++;
+					if ($key === 'delete') {
+						$deleteFound = TRUE;
+						break;
+					}
+				}
+				if ($deleteFound) {
+					// .. subtract two... (delete item + its spacer element...)
+					$c -= 2;
+					// and insert the items just before the delete element.
+					array_splice($menuItems, $c, 0, $localItems);
+				} else {
+					$menuItems = array_merge($menuItems, $localItems);
+				}
+			} elseif ($subname === 'moreoptions') {
+				// If the page can be edited, then show this:
+				if ($this->editOK) {
+					if (($table === 'pages' || $table === 'tt_content') && !in_array('move_wizard', $this->disabledItems, TRUE)) {
+						$localItems['move_wizard'] = $this->DB_moveWizard($table, $uid, $this->rec);
+					}
+					if (($table === 'pages' || $table === 'tt_content') && !in_array('new_wizard', $this->disabledItems, TRUE)) {
+						$localItems['new_wizard'] = $this->DB_newWizard($table, $uid, $this->rec);
+					}
+					if ($table === 'pages' && !in_array('perms', $this->disabledItems, TRUE) && $GLOBALS['BE_USER']->check('modules', 'web_perm')) {
+						$localItems['perms'] = $this->DB_perms($table, $uid, $this->rec);
+					}
+					if (!in_array('db_list', $this->disabledItems, TRUE) && $GLOBALS['BE_USER']->check('modules', 'web_list')) {
+						$localItems['db_list'] = $this->DB_db_list($table, $uid, $this->rec);
+					}
+				}
+				// Temporary mount point item:
+				if ($table === 'pages') {
+					$localItems['temp_mount_point'] = $this->DB_tempMountPoint($uid);
+				}
+				// Merge the locally created items into the current menu items passed to this function.
+				$menuItems = array_merge($menuItems, $localItems);
+			}
+
 			// Delete:
 			$elInfo = array(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $this->rec), $GLOBALS['BE_USER']->uc['titleLen']));
 			if (!in_array('delete', $this->disabledItems) && !$root && !$DBmount && $GLOBALS['BE_USER']->isPSet($lCP, $table, 'delete')) {

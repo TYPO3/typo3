@@ -69,7 +69,6 @@
 		"typo3/cms-documentation": "self.version",
 		"typo3/cms-extbase": "self.version",
 		"typo3/cms-extensionmanager": "self.version",
-		"typo3/cms-extra-page-cm-options": "self.version",
 		"typo3/cms-feedit": "self.version",
 		"typo3/cms-felogin": "self.version",
 		"typo3/cms-filelist": "self.version",
