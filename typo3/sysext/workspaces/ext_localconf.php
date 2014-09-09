@@ -1,11 +1,6 @@
 <?php
 defined('TYPO3_MODE') or die();
 
-if (TYPO3_MODE === 'BE') {
-	$workspaceSelectorToolbarItemClassPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('workspaces', 'Classes/ExtDirect/WorkspaceSelectorToolbarItem.php');
-	$GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'][] = $workspaceSelectorToolbarItemClassPath;
-}
-
 // Register the autopublishing task
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['TYPO3\\CMS\\Workspaces\\Task\\AutoPublishTask'] = array(
 	'extension' => $_EXTKEY,
@@ -33,6 +28,8 @@ if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations
 }
 
 if (TYPO3_MODE === 'BE') {
+	$GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'][] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Resources/PHP/RegisterToolbarItem.php';
+
 	// If publishing/swapping dependent parent-child references, consider all parents and children
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig('options.workspaces.considerReferences = 1');
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/tree/pagetree/class.t3lib_tree_pagetree_dataprovider.php']['postProcessCollections'][] = 'TYPO3\\CMS\\Workspaces\\ExtDirect\\PagetreeCollectionsProcessor';
