@@ -1,0 +1,118 @@
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+/* - - - - - - - - - - - - - - - - - - - - -
+Module menu
+- - - - - - - - - - - - - - - - - - - - - */
+
+#typo3-module-menu {
+	background: #dddddd;
+}
+
+/**
+ * Shadow on the right side of the module menu.
+ */
+#typo3-module-menu,
+#typo3-menu li.menuSection li a:hover {
+	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA9JREFUeNpi3LFjB0CAAQAEWAIqGE4BVwAAAABJRU5ErkJggg==");
+	background-position: right;
+	background-repeat: repeat-y;
+}
+
+#typo3-module-menu .x-panel-body {
+	background-color: transparent;
+}
+
+#typo3-menu,
+#typo3-menu ul {
+	list-style: none;
+	padding-left: 0;
+}
+
+#typo3-menu a {
+	color: #1e2121;
+	outline: 0;
+}
+
+#typo3-menu > li {
+	border-bottom: 1px solid #c7c7c7;
+	border-bottom-right-radius: 3px;
+}
+
+#typo3-menu > li:last-child {
+	border-bottom: none;
+}
+
+/* hovered menu item */
+#typo3-menu li.menuSection li a:hover,
+#typo3-menu li.highlighted a {
+	border-top: 1px solid #b8b8b8;
+	border-bottom: 1px solid #b8b8b8;
+}
+
+#typo3-menu li.menuSection li a:hover {
+	background-color: #e8e8e8;
+}
+
+/* active menu item */
+#typo3-menu li.highlighted {
+	font-weight: bold;
+}
+
+#typo3-menu li.highlighted a,
+#typo3-menu li.menuSection li.highlighted a:hover,
+.no-boxshadow #typo3-menu li.menuSection li.highlighted a:hover {
+	background-color: #ebebeb;
+	background-image: none;
+	box-shadow: none;
+}
+
+#typo3-menu li div.modgroup {
+	color: #252524;
+	cursor: pointer;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+#typo3-menu li div.collapsed {
+	background-image: url('../../../../images/arrows/module-menu-left-gray.png');
+	background-position: right 23px top 7px;
+	background-repeat: no-repeat;
+}
+
+#typo3-menu li div.expanded {
+	background-image: url('../../../../images/arrows/module-menu-down-gray.png');
+	background-position: right 22px top 9px;
+	background-repeat: no-repeat;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+	.backgroundsize #typo3-menu li div.collapsed {
+		background-image: url('../../../../images/arrows/module-menu-left-gray@2x.png');
+		background-size: 6px 7px;
+	}
+	.backgroundsize #typo3-menu li div.expanded {
+		background-image: url('../../../../images/arrows/module-menu-down-gray@2x.png');
+		background-size: 7px 6px;
+	}
+}
+
+#typo3-menu li ul li {
+	cursor: pointer;
+	font-weight: normal;
+	line-height: 15px;
+}
+
+#typo3-menu li ul li a {
+	text-decoration: none;
+}

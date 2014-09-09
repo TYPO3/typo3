@@ -1,0 +1,215 @@
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+/* - - - - - - - - - - - - - - - - - - - - -
+TYPO3 styles for basic elements
+- - - - - - - - - - - - - - - - - - - - - */
+
+h1,
+h2,
+h3,
+h4 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+/* Occasionally used, eg. in About Modules: */
+h1 {
+	font-family: Share, Verdana, Arial, Helvetica, sans-serif;
+	font-variant: normal;
+	font-weight: normal;
+}
+
+/* Lists */
+
+ul {
+	list-style-type: disc;
+}
+
+ol {
+	list-style-type: decimal;
+}
+
+ul.list-unstyled,
+ol.list-unstyled {
+	list-style-type: none;
+}
+
+tr:hover a {
+	text-decoration: underline;
+}
+
+tr:hover .t3-page-ce a,
+tr:hover .x-tree a {
+	text-decoration: none;
+}
+
+a.t3-link {
+	text-decoration: underline;
+}
+
+/* horizontal ruler */
+hr, div.hr {
+	background: none;
+	border: none;
+	height: 1px;
+}
+
+img {
+	border: 0px;
+}
+
+em {
+	font-style: italic;
+}
+
+
+/* - - - - - - - - - - - - - - - - - - - - -
+Background color classes
+- - - - - - - - - - - - - - - - - - - - - */
+
+.bgColor-20 {
+	background-color: #e3dfdb;
+}
+
+.bgColor2 {
+	background-color: #585858;
+	color: #ffffff;
+}
+
+.bgColor3 {
+	background-color: #f6f2e6;
+}
+
+.bgColor3-20 {
+	background-color: #f7f7f7;
+}
+
+.bgColor4 {
+	background-color: #f1f1f1;
+	color: #212424;
+}
+
+.bgColor4-20 {
+	background-color: #f8f9fa;
+}
+
+.bgColor5 {
+	background-color: #9b9b9b;
+}
+
+.bgColor6 {
+	background-color: #f7f7f7;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
+Various classes
+- - - - - - - - - - - - - - - - - - - - - */
+
+.section {
+	margin-bottom: 15px;
+}
+
+.nobr {
+	white-space: nowrap;
+}
+
+.diff-r {
+	color: red;
+}
+
+.diff-g {
+	color: green;
+}
+
+div.diff-r {
+	background-color: red;
+	color: black;
+}
+
+div.diff-g {
+	background-color: green;
+	color: black;
+}
+
+/** .uppercase is kept for backwards-compatibility, use .divider */
+.divider,
+.uppercase {
+	border-bottom: 1px solid #cdcdcd;
+}
+
+/** used in the admin tools => DB check **/
+.t3-overview-list dt {
+	font-weight: bold;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
+Dimmed span tag color (disabled)
+- - - - - - - - - - - - - - - - - - - - - */
+
+.typo3-dimmed {
+	color: #666;
+}
+
+.c-na {
+	color: #666;
+	font-style: italic;
+}
+
+.not-found a {
+	color: #cccccc;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
+Red span tag color (warning, notice)
+- - - - - - - - - - - - - - - - - - - - - */
+
+.typo3-red {
+	color: red;
+}
+
+.typo3-red-background {
+	background-color: red;
+}
+
+table.warningbox {
+	border: solid 2px black;
+	background-color: yellow;
+	margin: 20px 0px 20px 0px;
+}
+
+table.warningbox td {
+	padding: 20px 20px 20px 20px;
+	font-weight: bold;
+}
+
+table.warningbox td a {
+	text-decoration: underline;
+}
+
+div.warningbox {
+	border: solid 2px black;
+	background-color: yellow;
+	font-weight: bold;
+	margin: 10px 0px 10px 0px;
+	padding: 10px;
+}
+
+span.warningboxheader {
+	margin-left: 5px;
+}
+
+
+/* all buttons have the "click" mouse cursor */
+.t3-btn {
+	cursor: pointer;
+}

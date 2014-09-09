@@ -1,0 +1,184 @@
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+// Prefix for composer require-dev libraries
+@composer-package-directory-prefix: "../../../../../../Packages/Libraries";
+
+// Core variables and mixins
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/variables.less";
+@import "bootstrap/variables.less";
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/mixins.less";
+
+// Reset and dependencies
+// @import "@{composer-package-directory-prefix}/twbs/bootstrap/less/normalize.less";
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/print.less";
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/glyphicons.less";
+
+// Core CSS
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/scaffolding.less";
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/type.less";
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/code.less";
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/grid.less";
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/tables.less";
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/forms.less";
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/buttons.less";
+
+// Components
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/component-animations.less";
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/dropdowns.less";
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/button-groups.less";
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/input-groups.less";
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/navs.less";
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/navbar.less";
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/breadcrumbs.less";
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/pagination.less";
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/pager.less";
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/labels.less";
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/badges.less";
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/jumbotron.less";
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/thumbnails.less";
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/alerts.less";
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/progress-bars.less";
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/media.less";
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/list-group.less";
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/panels.less";
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/responsive-embed.less";
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/wells.less";
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/close.less";
+
+// Components w/ JavaScript
+// @import "@{composer-package-directory-prefix}/twbs/bootstrap/less/modals.less";
+// @import "@{composer-package-directory-prefix}/twbs/bootstrap/less/tooltip.less";
+// @import "@{composer-package-directory-prefix}/twbs/bootstrap/less/popovers.less";
+// @import "@{composer-package-directory-prefix}/twbs/bootstrap/less/carousel.less";
+
+// Utility classes
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/utilities.less";
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/responsive-utilities.less";
+
+/*!
+ *  Font Awesome 4.2.0 by @davegandy - http://fontawesome.io - @fontawesome
+ *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
+ */
+
+@import "@{composer-package-directory-prefix}/fortawesome/font-awesome/less/variables.less";
+// Override
+@import "font-awesome/variables.less";
+@import "@{composer-package-directory-prefix}/fortawesome/font-awesome/less/mixins.less";
+@import "@{composer-package-directory-prefix}/fortawesome/font-awesome/less/path.less";
+@import "@{composer-package-directory-prefix}/fortawesome/font-awesome/less/core.less";
+@import "@{composer-package-directory-prefix}/fortawesome/font-awesome/less/larger.less";
+@import "@{composer-package-directory-prefix}/fortawesome/font-awesome/less/fixed-width.less";
+@import "@{composer-package-directory-prefix}/fortawesome/font-awesome/less/list.less";
+@import "@{composer-package-directory-prefix}/fortawesome/font-awesome/less/bordered-pulled.less";
+@import "@{composer-package-directory-prefix}/fortawesome/font-awesome/less/spinning.less";
+@import "@{composer-package-directory-prefix}/fortawesome/font-awesome/less/rotated-flipped.less";
+@import "@{composer-package-directory-prefix}/fortawesome/font-awesome/less/stacked.less";
+@import "@{composer-package-directory-prefix}/fortawesome/font-awesome/less/icons.less";
+
+/*!
+ * TYPO3
+ */
+
+@import "TYPO3/structure/_element_button_back.less";
+@import "TYPO3/structure/_element_clipboard.less";
+@import "TYPO3/structure/_element_csh.less";
+@import "TYPO3/structure/_element_csm.less";
+@import "TYPO3/structure/_element_docheader.less";
+@import "TYPO3/structure/_element_history.less";
+@import "TYPO3/structure/_element_infopopup.less";
+@import "TYPO3/structure/_element_message.less";
+@import "TYPO3/structure/_element_move_element.less";
+@import "TYPO3/structure/_element_pagetree.less";
+@import "TYPO3/structure/_element_recent_edited.less";
+@import "TYPO3/structure/_element_rte.less";
+@import "TYPO3/structure/_element_spinner.less";
+@import "TYPO3/structure/_element_tab.less";
+@import "TYPO3/structure/_element_table.less";
+@import "TYPO3/structure/_element_tceforms.less";
+@import "TYPO3/structure/_element_tree.less";
+@import "TYPO3/structure/_element_version.less";
+@import "TYPO3/structure/_element_wizard.less";
+@import "TYPO3/structure/_login_screen.less";
+@import "TYPO3/structure/_main_body.less";
+@import "TYPO3/structure/_main_content.less";
+@import "TYPO3/structure/_main_decorations.less";
+@import "TYPO3/structure/_main_form.less";
+@import "TYPO3/structure/_main_scaffolding.less";
+@import "TYPO3/structure/_module_file_list.less";
+@import "TYPO3/structure/_module_help_about.less";
+@import "TYPO3/structure/_module_help_about_module.less";
+@import "TYPO3/structure/_module_menu.less";
+@import "TYPO3/structure/_module_user_settings.less";
+@import "TYPO3/structure/_module_user_taskcenter.less";
+@import "TYPO3/structure/_module_user_ws.less";
+@import "TYPO3/structure/_module_web_list.less";
+@import "TYPO3/structure/_module_web_list_sysnote.less";
+@import "TYPO3/structure/_module_web_new_element.less";
+@import "TYPO3/structure/_module_web_page.less";
+@import "TYPO3/structure/_module_web_permissions.less";
+@import "TYPO3/structure/_module_web_template.less";
+@import "TYPO3/structure/_toolbar.less";
+@import "TYPO3/structure/_toolbar_caching.less";
+@import "TYPO3/structure/_toolbar_logout.less";
+@import "TYPO3/structure/_toolbar_shortcut.less";
+@import "TYPO3/structure/_toolbar_username.less";
+@import "TYPO3/structure/_toolbar_workspace.less";
+@import "TYPO3/structure/_topbar.less";
+
+@import "TYPO3/visual/_debug_panel.less";
+@import "TYPO3/visual/_element_button_back.less";
+@import "TYPO3/visual/_element_clipboard.less";
+@import "TYPO3/visual/_element_csh.less";
+@import "TYPO3/visual/_element_csm.less";
+@import "TYPO3/visual/_element_docheader.less";
+@import "TYPO3/visual/_element_extjs_icons.less";
+@import "TYPO3/visual/_element_history.less";
+@import "TYPO3/visual/_element_message.less";
+@import "TYPO3/visual/_element_pagetree.less";
+@import "TYPO3/visual/_element_recent_edited.less";
+@import "TYPO3/visual/_element_rte.less";
+@import "TYPO3/visual/_element_spinner.less";
+@import "TYPO3/visual/_element_tab.less";
+@import "TYPO3/visual/_element_table.less";
+@import "TYPO3/visual/_element_tceforms.less";
+@import "TYPO3/visual/_element_tree.less";
+@import "TYPO3/visual/_element_typoscript.less";
+@import "TYPO3/visual/_element_version.less";
+@import "TYPO3/visual/_element_wizard.less";
+@import "TYPO3/visual/_fonts.less";
+@import "TYPO3/visual/_login_screen.less";
+@import "TYPO3/visual/_main_content.less";
+@import "TYPO3/visual/_main_decorations.less";
+@import "TYPO3/visual/_main_form.less";
+@import "TYPO3/visual/_misc_loading.less";
+@import "TYPO3/visual/_module_file_list.less";
+@import "TYPO3/visual/_module_file_upload.less";
+@import "TYPO3/visual/_module_help_about.less";
+@import "TYPO3/visual/_module_help_about_module.less";
+@import "TYPO3/visual/_module_menu.less";
+@import "TYPO3/visual/_module_web_info.less";
+@import "TYPO3/visual/_module_web_list.less";
+@import "TYPO3/visual/_module_web_list_sysnote.less";
+@import "TYPO3/visual/_module_web_new_element.less";
+@import "TYPO3/visual/_module_web_page.less";
+@import "TYPO3/visual/_module_web_permissions.less";
+@import "TYPO3/visual/_module_web_template.less";
+@import "TYPO3/visual/_toolbar.less";
+@import "TYPO3/visual/_toolbar_caching.less";
+@import "TYPO3/visual/_toolbar_livesearch.less";
+@import "TYPO3/visual/_toolbar_logout.less";
+@import "TYPO3/visual/_toolbar_shortcut.less";
+@import "TYPO3/visual/_toolbar_username.less";
+@import "TYPO3/visual/_toolbar_workspace.less";
+@import "TYPO3/visual/_topbar.less";

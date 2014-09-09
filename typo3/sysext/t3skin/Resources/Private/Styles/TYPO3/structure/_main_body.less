@@ -1,0 +1,65 @@
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+/* - - - - - - - - - - - - - - - - - - - - -
+body tags
+- - - - - - - - - - - - - - - - - - - - - */
+
+/* - - - - - - - - - - - - - - - - - - - - -
+specific wrappers
+
+The "template" class is usually instantiated as either
+bicDoc, mediumDoc, smallDoc or noDoc.
+Each of these will result in the whole page content between the bodytags being
+wrapped in a DIV-section with a class.
+The class name will be "typo3-[classname]"
+In particular we set the width of these wrapper-sections:
+- - - - - - - - - - - - - - - - - - - - - */
+
+div.typo3-bigDoc,
+div.typo3-noDoc {
+	margin-left: 10px;
+	margin-top: 5px;
+	width: 740px;
+}
+
+div.typo3-noDoc h2 {
+	width: 740px;
+}
+
+div.typo3-mediumDoc {
+	width: 470px;
+}
+
+div.typo3-smallDoc {
+	width: 350px;
+}
+
+div.typo3-fullDoc {
+	height: 100%;
+	width: 100%;
+}
+
+div#typo3-docbody {
+	bottom: 0;
+	overflow: auto;
+	position: absolute;
+	top: 49px;
+	width: 100%;
+	z-index: 2;
+}
+
+div#typo3-inner-docbody {
+	padding: 24px;
+	margin-top: 0;
+}

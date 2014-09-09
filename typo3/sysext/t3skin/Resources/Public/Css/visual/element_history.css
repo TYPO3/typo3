@@ -1,8 +1,0 @@
-/* - - - - - - - - - - - - - - - - - - - - -
-History / Undo
-- - - - - - - - - - - - - - - - - - - - - */
-
-table#typo3-history tr.c-head td,
-table#typo3-history-item tr.c-head td {
-	font-weight: bold;
-}

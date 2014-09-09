@@ -1,0 +1,551 @@
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+/* - - - - - - - - - - - - - - - - - - - - -
+TCEforms
+- - - - - - - - - - - - - - - - - - - - - */
+
+table#typo3-altdoc-header input,
+.c-inputButton {
+	background: none;
+	border: 0;
+}
+
+.checkbox,
+.checkbox:hover {
+	background: #efeff4;
+	border: 0;
+}
+
+.t3-tceforms-input-wrapper,
+.t3-tceforms-input-wrapper-hover,
+.t3-tceforms-input-wrapper-datetime,
+.t3-tceforms-input-wrapper-datetime-hover {
+	display: block;
+	float: left;
+	position: relative;
+}
+
+.t3-tceforms-widget-null-wrapper {
+	display: inline-block;
+	float: right;
+	position: relative;
+	width: 20px;
+	max-width: 20px;
+}
+
+.t3-tceforms-widget-null-wrapper input {
+	margin-left: 2px;
+	margin-top: 42%;
+}
+
+
+.t3-tceforms-input-wrapper .t3-tceforms-input-clearer,
+.t3-tceforms-input-wrapper-hover .t3-tceforms-input-clearer {
+	position: absolute;
+	right: 10px;
+	top: 5px;
+	z-index: 1000;
+	cursor: pointer;
+}
+
+.t3-tceforms-input-wrapper-datetime .t3-tceforms-input-clearer,
+.t3-tceforms-input-wrapper-datetime-hover .t3-tceforms-input-clearer {
+	position: absolute;
+	right: 27px;
+	top: 5px;
+	z-index: 1000;
+	cursor: pointer;
+}
+.t3-tceforms-input-wrapper-datetime .t3-icon-edit-pick-date,
+.t3-tceforms-input-wrapper-datetime-hover .t3-icon-edit-pick-date {
+	top: -4px;
+}
+.t3-tceforms-input-wrapper .tceforms-textfield,
+.t3-tceforms-input-wrapper-hover .tceforms-textfield,
+.t3-tceforms-input-wrapper .tceforms-datetimefield,
+.t3-tceforms-input-wrapper-hover .tceforms-datetimefield,
+.t3-tceforms-input-wrapper-datetime .tceforms-textfield,
+.t3-tceforms-input-wrapper-datetime-hover .tceforms-textfield,
+.t3-tceforms-input-wrapper-datetime .tceforms-datetimefield,
+.t3-tceforms-input-wrapper-datetime-hover .tceforms-datetimefield {
+	position: relative;
+	z-index: 2000;
+	padding-right: 30px!important;
+}
+
+.t3-tceforms-input-wrapper-hover .t3-tceforms-input-clearer,
+.t3-tceforms-input-wrapper-datetime-hover .t3-tceforms-input-clearer {
+	z-index: 3700;
+}
+
+.typo3-TCEforms table#typo3-altdoc-header input:hover,
+.c-inputButton:hover {
+	background: none;
+	border: 0;
+}
+
+.typo3-TCEforms .typo3-TCEforms-recHeader {
+	color: #555555;
+	font-weight: bold;
+}
+
+.typo3-TCEforms .typo3-TCEforms-recHeaderRow {
+	background: #fff;
+	text-align: right;
+}
+
+.typo3-TCEforms span.typo3-TCEforms-newToken {
+	color: #990000;
+	font-weight: bold;
+}
+
+.typo3-TCEforms span.typo3-TCEforms-helpText {
+	background: transparent;
+	color: #fff;
+}
+
+table.typo3-TCEforms-select-checkbox {
+	background-color: #ffffff;
+	border: 1px solid #aaa;
+}
+
+.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-header td {
+	background-color: #fff;
+	font-weight: bold;
+}
+
+.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr:nth-child(2n) {
+	background-color: #f7f7f7;
+}
+
+.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-selectedItem {
+	background-color: #d8ecd0;
+}
+
+.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-invalidItem {
+	color: #dddddd;
+}
+
+.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr:hover {
+	background-color: #dedede;
+}
+
+.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-selectedItem:hover {
+	background-color: #abd99a;
+}
+
+.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-invalidItem:hover {
+	background-color: transparent;
+}
+
+.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr td.c-labelCell {
+	white-space: nowrap;
+}
+
+.typo3-TCEforms optgroup.c-divider,
+select option.c-divider {
+	background-color: #eee;
+	border-top: 1px solid #666;
+	color: #666;
+	font-style: italic;
+	text-transform: uppercase;
+}
+
+.typo3-TCEforms optgroup option {
+	background-color: white;
+	border-bottom: none;
+	color: black;
+	font-style: normal;
+	text-indent: 0px;
+	text-transform: none;
+}
+
+.typo3-TCEforms div.typo3-TCEforms-originalLanguageValue {
+	background-color: #dadada;
+	border: 1px solid #c0c0c0;
+}
+
+.typo3-TCEforms div.typo3-TCEforms-diffBox {
+	background-color: white;
+	border: 1px solid black;
+}
+
+.typo3-TCEforms div.typo3-TCEforms-diffBox-header {
+	background-color: red;
+	font-weight: bold;
+}
+
+.typo3-TCEforms div.typo3-dyntabmenu-divs {
+	border-bottom: 0;
+}
+
+/* Default. Always used on main-palettes in the bottom of the forms */
+.typo3-TCEforms .class-main1,
+.typo3-TCEforms .class-main11,
+.typo3-TCEforms .class-main21,
+.typo3-TCEforms .class-main31,
+.typo3-TCEforms .class-main41,
+.typo3-TCEforms .class-main51 {
+}
+
+.typo3-TCEforms .class-main2 td,
+.typo3-TCEforms .class-main12 td,
+.typo3-TCEforms .class-main22 td,
+.typo3-TCEforms .class-main32 td,
+.typo3-TCEforms .class-main42 td,
+.typo3-TCEforms .class-main52 td {
+	border-top: 1px solid #c0c0c0;
+}
+
+.typo3-TCEforms .class-main1 .typo3-TCEforms-checkboxArray td,
+.typo3-TCEforms .class-main11 .typo3-TCEforms-checkboxArray td,
+.typo3-TCEforms .class-main21 .typo3-TCEforms-checkboxArray td,
+.typo3-TCEforms .class-main31 .typo3-TCEforms-checkboxArray td,
+.typo3-TCEforms .class-main41 .typo3-TCEforms-checkboxArray td,
+.typo3-TCEforms .class-main51 .typo3-TCEforms-checkboxArray td {
+	padding-right: 5px;
+}
+
+.typo3-TCEforms tr.class-main2:first-child td,
+.typo3-TCEforms tr.class-main12:first-child td,
+.typo3-TCEforms tr.class-main22:first-child td,
+.typo3-TCEforms tr.class-main32:first-child td,
+.typo3-TCEforms tr.class-main42:first-child td,
+.typo3-TCEforms tr.class-main52:first-child td {
+	border-top: 0;
+}
+
+.typo3-TCEforms .class-main2,
+.typo3-TCEforms .class-main12,
+.typo3-TCEforms .class-main22,
+.typo3-TCEforms .class-main32,
+.typo3-TCEforms .class-main42,
+.typo3-TCEforms .class-main52 {
+}
+
+
+
+
+.typo3-TCEforms table.wrapperAttention .class-main2,
+.typo3-TCEforms table.wrapperAttention .class-main12,
+.typo3-TCEforms table.wrapperAttention .class-main22,
+.typo3-TCEforms table.wrapperAttention .class-main32,
+.typo3-TCEforms table.wrapperAttention .class-main42,
+.typo3-TCEforms table.wrapperAttention .class-main52 {
+
+}
+
+
+.typo3-TCEforms .class-main4,
+.typo3-TCEforms .class-main14,
+.typo3-TCEforms .class-main24,
+.typo3-TCEforms .class-main34,
+.typo3-TCEforms .class-main44,
+.typo3-TCEforms .class-main54 {
+	color: #000000;
+}
+
+.typo3-TCEforms .class-main5,
+.typo3-TCEforms .class-main15,
+.typo3-TCEforms .class-main25,
+.typo3-TCEforms .class-main35,
+.typo3-TCEforms .class-main45,
+.typo3-TCEforms .class-main55 {
+	color: #3c3c44;
+}
+
+.typo3-TCEforms .wrapperTable,
+.typo3-TCEforms .wrapperTable1,
+.typo3-TCEforms .wrapperTable2,
+.typo3-TCEforms .wrapperTable3,
+.typo3-TCEforms .wrapperTable4,
+.typo3-TCEforms .wrapperTable5 {
+	border: 1px solid #c0c0c0;
+}
+
+.typo3-TCEforms .wrapperTable1 {
+	border-top: 1px solid #c0c0c0;
+}
+
+.typo3-TCEforms .typo3-dyntabmenu-divs .wrapperTable,
+.typo3-TCEforms .typo3-dyntabmenu-divs .wrapperTable1,
+.typo3-TCEforms .typo3-dyntabmenu-divs .wrapperTable2,
+.typo3-TCEforms .typo3-dyntabmenu-divs .wrapperTable3,
+.typo3-TCEforms .typo3-dyntabmenu-divs .wrapperTable4,
+.typo3-TCEforms .typo3-dyntabmenu-divs .wrapperTable5 {
+	border: none;
+	border-bottom: 1px solid #c0c0c0;
+}
+
+.typo3-TCEforms table.wrapperAttention .wrapperTable,
+.typo3-TCEforms table.wrapperAttention .wrapperTable1,
+.typo3-TCEforms table.wrapperAttention .wrapperTable2,
+.typo3-TCEforms table.wrapperAttention .wrapperTable3,
+.typo3-TCEforms table.wrapperAttention .wrapperTable4,
+.typo3-TCEforms table.wrapperAttention .wrapperTable5 {
+}
+
+.t3-form-palette-fieldset {
+	border:none;
+}
+
+.typo3-TCEforms div.imagethumbs .nobr {
+	background-color: #CCC;
+}
+
+.typo3-TCEforms span.filetypes {
+	font-size: 0.8em;
+}
+
+input.typo3-TCEforms-suggest-search {
+	background-image: url('../../../../icons/gfx/zoom.gif');
+	background-position: 2px center;
+	background-repeat: no-repeat;
+}
+
+div.typo3-TCEforms-suggest-choices {
+	background-color: white;
+	border: 1px solid #888;
+}
+
+div.typo3-TCEforms-suggest-choices ul {
+	list-style-type: none;
+}
+
+div.typo3-TCEforms-suggest-choices li.selected {
+	background-color: #ffb !important;
+}
+
+div.typo3-TCEforms-suggest-choices li {
+	cursor: pointer;
+	background-color: #efeff4;
+	background-repeat: no-repeat;
+	background-position: 4px center;
+	list-style-type: none;
+}
+
+div.typo3-TCEforms-suggest-choices li.pages {
+	background-color: #fcc;
+}
+
+div.typo3-TCEforms-suggest-choices span.suggest-uid {
+	font-size: 0.9em;
+}
+
+div.typo3-TCEforms-suggest-choices span.suggest-path {
+	font-size: 0.9em;
+}
+
+div.typo3-TCEforms-suggest-choices span.suggest-path abbr {
+	border-bottom: none;
+}
+
+div.typo3-TCEforms-suggest-choises a {
+	cursor: pointer;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
+TCEforms Flexforms
+- - - - - - - - - - - - - - - - - - - - - */
+.t3-form-field-container-flex {
+}
+
+.t3-form-field-label-flex {
+	border-top: 1px solid #c0c0c0;
+}
+
+div.t3-form-field-container:first-child .t3-form-field-label-flex {
+	border-top: 0;
+}
+
+/** no separate background for dyntabs in flexforms **/
+.typo3-TCEforms .wrapperTable div.typo3-dyntabmenu-tabs ,
+.typo3-TCEforms .wrapperTable1 div.typo3-dyntabmenu-tabs,
+.typo3-TCEforms .wrapperTable2 div.typo3-dyntabmenu-tabs,
+.typo3-TCEforms .wrapperTable3 div.typo3-dyntabmenu-tabs,
+.typo3-TCEforms .wrapperTable4 div.typo3-dyntabmenu-tabs,
+.typo3-TCEforms .wrapperTable5 div.typo3-dyntabmenu-tabs {
+	background: transparent;
+}
+
+/** tabs inside the table => flexforms */
+.typo3-TCEforms .wrapperTable .typo3-dyntabmenu-divs,
+.typo3-TCEforms .wrapperTable1 .typo3-dyntabmenu-divs,
+.typo3-TCEforms .wrapperTable2 .typo3-dyntabmenu-divs,
+.typo3-TCEforms .wrapperTable3 .typo3-dyntabmenu-divs,
+.typo3-TCEforms .wrapperTable4 .typo3-dyntabmenu-divs,
+.typo3-TCEforms .wrapperTable5 .typo3-dyntabmenu-divs {
+	border: 1px solid #c0c0c0;
+}
+
+
+/* - - - - - - - - - - - - - - - - - - - - -
+TCEforms Inline-Relational-Record-Editing
+- - - - - - - - - - - - - - - - - - - - - */
+.t3-form-field-container-inline {
+	border: 1px solid #aaaaaa;
+	background-color: #f9f9f9;
+}
+
+.t3-form-field-header-inline {
+	background-color: #E0E0E0;
+	cursor: pointer;
+}
+.t3-form-field-header-inline:hover {
+	background-color: #cccccc;
+}
+
+.t3-form-header-inline-loadingbar {
+	border-top: 1px solid #aaaaaa;
+}
+
+.t3-form-field-container-inline-hidden,
+.t3-form-field-container-inline-placeHolder {
+	opacity:0.3;
+}
+
+.t3-form-field-header-inline table {
+    vertical-align:top;
+}
+
+.t3-form-field-header-inline-thumbnail-image {
+    border: none;
+}
+
+.t3-form-field-record-inline {
+	border-top: 1px solid #aaaaaa;
+}
+
+.t3-form-field-record-inline .typo3-message {
+	margin-bottom: 1.5em;
+}
+
+.typo3-TCEforms .t3-form-field-container-inline .wrapperTable,
+.typo3-TCEforms .t3-form-field-container-inline .wrapperTable1,
+.typo3-TCEforms .t3-form-field-container-inline .wrapperTable2,
+.typo3-TCEforms .t3-form-field-container-inline .wrapperTable3,
+.typo3-TCEforms .t3-form-field-container-inline .wrapperTable4,
+.typo3-TCEforms .t3-form-field-container-inline .wrapperTable5 {
+	border: 0;
+}
+
+.t3-form-field-header-inline td.t3-form-field-header-inline-summary dl dt {
+	font-weight: bold;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
+TCEforms Sections
+- - - - - - - - - - - - - - - - - - - - - */
+
+.typo3-TCEforms-flexForm .bgColor4,
+.typo3-TCEforms-flexForm .bgColor5 {
+	background: none;
+	display: inline-block;
+}
+
+.t3-form-field-label-flexsection {
+	border-top: 1px solid #cdcdcd;
+}
+
+.t3-form-field-container-flexsections {
+	background: #dadada;
+}
+
+.t3-form-field-record-flexsection {
+	background: #eee;
+}
+
+.t3-form-field-add-flexsection {
+	border-top: 1px solid #cdcdcd;
+}
+
+
+.typo3-TCEforms-select-selectedItemWithBackgroundImage {
+	background-color:#fff;
+	background-position: 0% 50%;
+	background-repeat:no-repeat;
+	padding:1px 1px 1px 24px;
+}
+
+.ext-webkit .typo3-TCEforms-select-selectedItemWithBackgroundImage {
+	text-indent: 20px;
+	background-position-x: 6px;
+}
+.ext-webkit .typo3-TCEforms-select-selectedItemWithBackgroundImage optgroup option {
+	text-indent: 20px;
+}
+.ext-chrome:not(.ext-mac) .typo3-TCEforms-select-selectedItemWithBackgroundImage {
+	text-indent: 0px;
+	background-position-x: 5px;
+}
+
+.t3-tceforms-fieldReadOnly {
+	background-color: #fefefe;
+	border: 1px solid #7c7c7c;
+	border-radius: 2px;
+	pointer-events: none;
+	cursor: default;
+	opacity: 0.5;
+	filter: ~"alpha(opacity=@50)";
+	box-shadow: none;
+}
+
+.t3-tceforms-fieldReadOnly span.t3-icon {
+    position: absolute;
+    right: 3px;
+    top: 4px;
+}
+
+.t3-form-field-item {
+	position: relative;
+	border: 1px solid transparent;
+	padding: 7px 0;
+}
+
+.t3-tceforms-widget-null-wrapper + .t3-form-field-item {
+	display: inline-block;
+}
+
+.t3-form-field-item.disabled {
+	border: 1px dotted #696362;
+}
+
+.t3-form-field-disable,
+.t3-form-field-item.disabled .t3-form-field-item.disabled .t3-form-field-disable {
+	display: none;
+}
+.t3-form-field-item.disabled .t3-form-field-disable {
+	z-index: 8000;
+	background: #f4f4f4;
+	display: block;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+
+	opacity: 0.5;
+	filter: alpha(opacity=50);
+}
+
+.t3-form-palette-field-label {
+	text-indent: 2px;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
+TCEforms Tree
+- - - - - - - - - - - - - - - - - - - - - */
+.t3-form-field-item .x-tree input.x-tree-node-cb {
+	height: auto;
+	margin: 0 0 0 1px;
+	vertical-align: middle;
+}

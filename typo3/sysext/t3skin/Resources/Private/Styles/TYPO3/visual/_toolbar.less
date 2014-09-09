@@ -1,0 +1,48 @@
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+/* - - - - - - - - - - - - - - - - - - - - -
+Toolbar inside the Topbar
+- - - - - - - - - - - - - - - - - - - - - */
+
+#typo3-toolbar {
+	list-style: none;
+}
+
+.toolbar-item {
+	text-align: center;
+}
+
+#typo3-toolbar .separator {
+	border-right: 1px solid #000;
+	box-shadow: 1px 0 #585858;
+}
+
+.toolbar-item-active {
+	background-image: url('../../../../icons/gfx/toolbar_item_active_bg.png');
+	height: 25px;
+}
+
+.toolbar-item-menu {
+	background-color: #f9f9f9;
+	border: 1px solid #abb2bc;
+	border-top: none;
+	list-style: none;
+}
+
+#typo3-toolbar * li:hover,
+tr.shortcut:hover,
+tr.recentdoc:hover,
+tr.opendoc:hover {
+	background: #eee;
+}

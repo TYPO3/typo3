@@ -1,8 +1,0 @@
-/* - - - - - - - - - - - - - - - - - - - - -
-Information popup, show_item.php
-- - - - - - - - - - - - - - - - - - - - - */
-
-body#typo3-show-item-php {
-	padding: 12px 24px;
-	height: auto;
-}
