@@ -269,7 +269,8 @@ class FunctionalTestCaseBootstrapUtility {
 		$databaseUsername = getenv('typo3DatabaseUsername');
 		$databasePassword = getenv('typo3DatabasePassword');
 		$databasePort = getenv('typo3DatabasePort');
-		if ($databaseName || $databaseHost || $databaseUsername || $databasePassword || $databasePort) {
+		$databaseSocket = getenv('typo3DatabaseSocket');
+		if ($databaseName || $databaseHost || $databaseUsername || $databasePassword || $databasePort || $databaseSocket) {
 			// Try to get database credentials from environment variables first
 			$originalConfigurationArray = array(
 				'DB' => array(),
@@ -288,6 +289,9 @@ class FunctionalTestCaseBootstrapUtility {
 			}
 			if ($databasePort) {
 				$originalConfigurationArray['DB']['port'] = $databasePort;
+			}
+			if ($databaseSocket) {
+				$originalConfigurationArray['DB']['socket'] = $databaseSocket;
 			}
 		} elseif (file_exists(ORIGINAL_ROOT . 'typo3conf/LocalConfiguration.php')) {
 			// See if a LocalConfiguration file exists in "parent" instance to get db credentials from
