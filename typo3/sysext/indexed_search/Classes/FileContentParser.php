@@ -737,10 +737,9 @@ class FileContentParser {
 	 * @return string Relative file reference, resolvable by \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName()
 	 */
 	public function getIcon($extension) {
-		if ($extension == 'htm') {
+		if ($extension === 'htm') {
 			$extension = 'html';
-		}
-		if ($extension == 'jpeg') {
+		} elseif ($extension === 'jpeg') {
 			$extension = 'jpg';
 		}
 		return 'EXT:indexed_search/pi/res/' . $extension . '.gif';

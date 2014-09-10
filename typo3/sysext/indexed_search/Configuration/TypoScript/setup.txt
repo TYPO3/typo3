@@ -1,5 +1,5 @@
-config.index_enable = 0
-config.index_externals = 0
+config.index_enable = 1
+config.index_externals = 1
 config.index_metatags = 1
 
  # Plugin configuration

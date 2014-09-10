@@ -1,0 +1,124 @@
+<f:layout name="Administration"/>
+
+<f:section name="Content">
+	<p class="lead"><f:translate key="administration.index.description" /></p>
+
+	<div class="row">
+		<div class="col-md-6">
+			<h4><f:translate key="administration.statistics.header" /></h4>
+			<table class="t3-table">
+				<thead>
+					<tr>
+						<th><f:translate key="administration.statistics.name" /></th>
+						<th><f:translate key="administration.statistics.count" /></th>
+					</tr>
+				</thead>
+				<tbody>
+					<f:for each="{records}" as="count" key="name">
+						<tr>
+							<td>{name}</td>
+							<td>{count}</td>
+						</tr>
+					</f:for>
+				</tbody>
+			</table>
+		</div>
+		<div class="col-md-6">
+			<h4><f:translate key="administration.statistics.headerTypes" /></h4>
+			<table class="t3-table">
+				<thead>
+					<tr>
+						<th><f:translate key="administration.statistics.name" /></th>
+						<th><f:translate key="administration.statistics.count" /></th>
+					</tr>
+				</thead>
+				<tbody>
+					<f:for each="{phash}" as="data">
+						<tr>
+							<td>{data.name} ({data.type})</td>
+							<td>{data.count} / {data.uniqueCount}</td>
+						</tr>
+					</f:for>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<h3>
+		<f:translate key="administration.statistics.mostSearched.title"/>
+	</h3>
+	<p>
+		<f:translate key="administration.statistics.mostSearched.description"/>
+	</p>
+	<f:if condition="{pageUid}">
+		<f:then>
+			<f:if condition="{all}">
+				<f:then>
+					<div class="row">
+						<div class="col-md-4">
+							<f:render section="statistic" arguments="{statistic:all,title:'all'}"/>
+						</div>
+						<div class="col-md-4">
+							<f:render section="statistic" arguments="{statistic:last24hours,title:'last24hours'}"/>
+						</div>
+						<div class="col-md-4">
+							<f:render section="statistic" arguments="{statistic:last30days,title:'last30days'}"/>
+						</div>
+					</div>
+				</f:then>
+				<f:else>
+					<div class="typo3-message message-notice">
+						<div class="message-body">
+							<f:translate key="administration.statistics.noResultForPage"/>
+						</div>
+					</div>
+				</f:else>
+			</f:if>
+
+		</f:then>
+		<f:else>
+			<div class="typo3-message message-information">
+				<div class="message-body">
+					<f:translate key="administration.statistics.selectPage"/>
+				</div>
+			</div>
+		</f:else>
+	</f:if>
+</f:section>
+
+<f:section name="statistic">
+	<h4>
+		<f:translate key="administration.statistics.mostSearched.{title}"/>
+	</h4>
+	<f:if condition="{statistic}">
+		<f:then>
+			<table class="t3-table">
+				<thead>
+					<tr>
+						<th class="nowrap">&nbsp;</th>
+						<th><f:translate key="administration.statistics.mostSearched."/></th>
+						<th><f:translate key="administration.statistics.count"/></th>
+					</tr>
+				</thead>
+				<tbody>
+					<f:for each="{statistic}" as="line" iteration="i">
+						<tr>
+							<td class="nowrap"><strong>{i.cycle}.</strong></td>
+							<td>{line.word}</td>
+							<td>{line.c}</td>
+						</tr>
+					</f:for>
+				</tbody>
+			</table>
+		</f:then>
+		<f:else>
+			<div class="typo3-message message-notice">
+				<div class="message-body">
+					<f:translate key="administration.statistics.noResult"/>
+				</div>
+			</div>
+		</f:else>
+	</f:if>
+</f:section>
+
+<f:section name="Buttons"></f:section>

@@ -1,0 +1,24 @@
+<f:be.container>
+	<div class="typo3-fullDoc">
+		<div id="typo3-docheader">
+			<div class="typo3-docheader-functions">
+				<f:be.menus.actionMenu>
+					<f:be.menus.actionMenuItem label="{f:translate(key: 'administration.menu.general')}" controller="Administration" action="index" />
+					<f:be.menus.actionMenuItem label="{f:translate(key: 'administration.menu.pages')}" controller="Administration" action="pages" />
+					<f:be.menus.actionMenuItem label="{f:translate(key: 'administration.menu.externalDocuments')}" controller="Administration" action="externalDocuments" />
+					<f:be.menus.actionMenuItem label="{f:translate(key: 'administration.menu.statistic')}" controller="Administration" action="statistic" />
+				</f:be.menus.actionMenu>
+			</div>
+			<div class="typo3-docheader-buttons">
+				<f:render section="Buttons" />
+			</div>
+		</div>
+
+		<div id="typo3-docbody">
+			<div id="typo3-inner-docbody">
+				<h1>Indexing Engine Statistics</h1>
+				<f:render section="Content" />
+			</div>
+		</div>
+	</div>
+</f:be.container>

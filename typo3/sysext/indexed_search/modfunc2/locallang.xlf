@@ -27,6 +27,12 @@
 			<trans-unit id="allpages" xml:space="preserve">
 				<source>Statistics for all pages. Select a page with indexed search form to see several statistics</source>
 			</trans-unit>
+			<trans-unit id="word" xml:space="preserve">
+				<source>Word</source>
+			</trans-unit>
+			<trans-unit id="count" xml:space="preserve">
+				<source>Count</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

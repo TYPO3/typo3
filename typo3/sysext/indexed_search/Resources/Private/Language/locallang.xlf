@@ -267,6 +267,208 @@ All search words are converted to lowercase.
 			<trans-unit id="displayResults" xml:space="preserve">
 				<source><![CDATA[Displaying results <strong>%1$s to %2$s</strong> out of <strong>%3$s</strong>]]></source>
 			</trans-unit>
+			<trans-unit id="administration.menu.general" xml:space="preserve">
+				<source>General statistics</source>
+			</trans-unit>
+			<trans-unit id="administration.menu.pages" xml:space="preserve">
+				<source>List: Pages</source>
+			</trans-unit>
+			<trans-unit id="administration.menu.externalDocuments" xml:space="preserve">
+				<source>List: External documents</source>
+			</trans-unit>
+			<trans-unit id="administration.menu.searchStatistic" xml:space="preserve">
+				<source>Search statistic</source>
+			</trans-unit>
+			<trans-unit id="administration.menu.statistic" xml:space="preserve">
+				<source>Detailed statistic</source>
+			</trans-unit>
+			<trans-unit id="administration.index.description" xml:space="preserve">
+				<source>General statics</source>
+			</trans-unit>
+			<trans-unit id="administration.statistics.header" xml:space="preserve">
+				<source>Statistics</source>
+			</trans-unit>
+			<trans-unit id="administration.statistics.name" xml:space="preserve">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="administration.statistics.count" xml:space="preserve">
+				<source>Count</source>
+			</trans-unit>
+			<trans-unit id="administration.statistics.headerTypes" xml:space="preserve">
+				<source>Hash Header Types</source>
+			</trans-unit>
+			<trans-unit id="administration.statistics.word" xml:space="preserve">
+				<source>Word</source>
+			</trans-unit>
+			<trans-unit id="administration.statistics.mostSearched.title" xml:space="preserve">
+				<source>List of most searched words</source>
+			</trans-unit>
+			<trans-unit id="administration.statistics.mostSearched.description" xml:space="preserve">
+				<source>Statistics for all pages. Select a page with indexed search form to see several statistics.</source>
+			</trans-unit>
+			<trans-unit id="administration.statistics.mostSearched.all" xml:space="preserve">
+				<source>All</source>
+			</trans-unit>
+			<trans-unit id="administration.statistics.mostSearched.last30days" xml:space="preserve">
+				<source>Last 30 days</source>
+			</trans-unit>
+			<trans-unit id="administration.statistics.mostSearched.last24hours" xml:space="preserve">
+				<source>Last 24 hours</source>
+			</trans-unit>
+			<trans-unit id="administration.statistics.noResult" xml:space="preserve">
+				<source>No result found</source>
+			</trans-unit>
+			<trans-unit id="administration.statistics.noResultForPage" xml:space="preserve">
+				<source>No result for the selected page found.</source>
+			</trans-unit>
+			<trans-unit id="administration.statistics.selectPage" xml:space="preserve">
+				<source>Please select a page in the page tree.</source>
+			</trans-unit>
+			<trans-unit id="administration.external.title" xml:space="preserve">
+				<source>External documents</source>
+			</trans-unit>
+			<trans-unit id="field.fileName" xml:space="preserve">
+				<source>Filename</source>
+			</trans-unit>
+			<trans-unit id="field.fileSize" xml:space="preserve">
+				<source>Filesize</source>
+			</trans-unit>
+			<trans-unit id="field.wordCount" xml:space="preserve">
+				<source>Word count</source>
+			</trans-unit>
+			<trans-unit id="field.words" xml:space="preserve">
+				<source>Words</source>
+			</trans-unit>
+			<trans-unit id="field.mtime" xml:space="preserve">
+				<source>Modification time</source>
+			</trans-unit>
+			<trans-unit id="field.indexed" xml:space="preserve">
+				<source>Indexed</source>
+			</trans-unit>
+			<trans-unit id="field.updated" xml:space="preserve">
+				<source>Updated</source>
+			</trans-unit>
+			<trans-unit id="field.parseTime" xml:space="preserve">
+				<source>Parsetime</source>
+			</trans-unit>
+			<trans-unit id="field.groups" xml:space="preserve">
+				<source>#sec/gr/full</source>
+			</trans-unit>
+			<trans-unit id="field.sub" xml:space="preserve">
+				<source>Sub</source>
+			</trans-unit>
+			<trans-unit id="field.cHash" xml:space="preserve">
+				<source>Chash</source>
+			</trans-unit>
+			<trans-unit id="field.count" xml:space="preserve">
+				<source>Count</source>
+			</trans-unit>
+			<trans-unit id="field.first" xml:space="preserve">
+				<source>First</source>
+			</trans-unit>
+			<trans-unit id="field.pHash" xml:space="preserve">
+				<source>PageHash</source>
+			</trans-unit>
+			<trans-unit id="field.path" xml:space="preserve">
+				<source>Path</source>
+			</trans-unit>
+			<trans-unit id="field.id" xml:space="preserve">
+				<source>Page Id</source>
+			</trans-unit>
+			<trans-unit id="field.uniqueId" xml:space="preserve">
+				<source>Unique Id</source>
+			</trans-unit>
+			<trans-unit id="field.type" xml:space="preserve">
+				<source>Type</source>
+			</trans-unit>
+			<trans-unit id="field.title" xml:space="preserve">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="field.language" xml:space="preserve">
+				<source>Language</source>
+			</trans-unit>
+			<trans-unit id="field.frequency" xml:space="preserve">
+				<source>Frequency</source>
+			</trans-unit>
+			<trans-unit id="field.flag" xml:space="preserve">
+				<source>Flag</source>
+			</trans-unit>
+			<trans-unit id="field.metaphone" xml:space="preserve">
+				<source>Metaphone</source>
+			</trans-unit>
+			<trans-unit id="field.content" xml:space="preserve">
+				<source>Content</source>
+			</trans-unit>
+			<trans-unit id="administration.notIndexed" xml:space="preserve">
+				<source>Not indexed?</source>
+			</trans-unit>
+
+			<trans-unit id="administration.document.description" xml:space="preserve">
+				<source>Details for a single result row</source>
+			</trans-unit>
+			<trans-unit id="administration.document.words" xml:space="preserve">
+				<source>All words found on page</source>
+			</trans-unit>
+			<trans-unit id="administration.document.topCount" xml:space="preserve">
+				<source>Words by top count</source>
+			</trans-unit>
+			<trans-unit id="administration.document.topFrequency" xml:space="preserve">
+				<source>Words by frequency</source>
+			</trans-unit>
+			<trans-unit id="administration.stopWords" xml:space="preserve">
+				<source>Stopwords</source>
+			</trans-unit>
+			<trans-unit id="administration.stopWords.save" xml:space="preserve">
+				<source>Save stopwords</source>
+			</trans-unit>
+			<trans-unit id="administration.keywords" xml:space="preserve">
+				<source>Page keywords</source>
+			</trans-unit>
+			<trans-unit id="administration.keywords.current" xml:space="preserve">
+				<source>Current page keywords</source>
+			</trans-unit>
+			<trans-unit id="administration.stopWordsKeywords.save" xml:space="preserve">
+				<source>Save keywords and stop words</source>
+			</trans-unit>
+			<trans-unit id="administration.word.description" xml:space="preserve">
+				<source>Detail view of a single word</source>
+			</trans-unit>
+			<trans-unit id="administration.linkBack" xml:space="preserve">
+				<source>Back</source>
+			</trans-unit>
+			<trans-unit id="administration.statistics.sectionRecords" xml:space="preserve">
+				<source>Section records for this phash</source>
+			</trans-unit>
+			<trans-unit id="administration.statistics.debug" xml:space="preserve">
+				<source>Debug</source>
+			</trans-unit>
+			<trans-unit id="administration.statistics.lexer" xml:space="preserve">
+				<source>Lexer</source>
+			</trans-unit>
+			<trans-unit id="administration.statistics.metaphone" xml:space="preserve">
+				<source>Metaphone</source>
+			</trans-unit>
+			<trans-unit id="administration.statistics.view.overview" xml:space="preserve">
+				<source>Overview</source>
+			</trans-unit>
+			<trans-unit id="administration.statistics.view.content" xml:space="preserve">
+				<source>Words and content</source>
+			</trans-unit>
+			<trans-unit id="administration.phash.tableHeader" xml:space="preserve">
+				<source>Phash row content</source>
+			</trans-unit>
+			<trans-unit id="administration.removeEntry" xml:space="preserve">
+				<source>Remove entry</source>
+			</trans-unit>
+			<trans-unit id="administration.removeAllEntries" xml:space="preserve">
+				<source>Remove all listed entries</source>
+			</trans-unit>
+			<trans-unit id="administration.back" xml:space="preserve">
+				<source>Back</source>
+			</trans-unit>
+			<trans-unit id="administration.noPageSelected" xml:space="preserve">
+				<source>Please select a page from the page tree.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

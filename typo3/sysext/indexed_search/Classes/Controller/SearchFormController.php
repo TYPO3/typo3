@@ -29,7 +29,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	public $prefixId = 'tx_indexedsearch';
 
 	// Same as class name
-	public $scriptRelPath = 'pi/class.tx_indexedsearch.php';
+	public $scriptRelPath = 'Classes/Controller/SearchFormController.php';
 
 	// Path to this script relative to the extension dir.
 	public $extKey = 'indexed_search';

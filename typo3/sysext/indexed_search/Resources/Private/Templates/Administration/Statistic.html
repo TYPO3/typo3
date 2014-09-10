@@ -1,0 +1,125 @@
+{namespace is=TYPO3\CMS\IndexedSearch\ViewHelpers}
+
+<f:layout name="Administration"/>
+
+<f:section name="Content">
+	<f:if condition="{tree}">
+		<f:then>
+			<f:form name="statistic" action="statistic" class="form-horizontal" arguments="{id:pageUid}">
+				<div class="form-group">
+					<div class="col-sm-12">
+						<f:form.select name="mode" options="{
+							overview:'{f:translate(key:\'administration.statistics.view.overview\')}',
+							content:'{f:translate(key:\'administration.statistics.view.content\')}'
+							}" value="{mode}" additionalAttributes="{onchange:'this.form.submit();'}"/>
+						<f:form.select name="depth" options="{levelTranslations}" value="{depth}" additionalAttributes="{onchange:'this.form.submit();'}"/>
+					</div>
+				</div>
+			</f:form>
+			<table class="t3-table">
+				<thead>
+					<tr>
+						<th></th>
+						<th>
+							<f:be.buttons.icon title="{f:translate(key:'administration.removeAllEntries')}" icon="actions-edit-delete" uri="{f:uri.action(action:'deleteIndexedItem',arguments:'{id:\'ALL\',depth:depth,mode:mode}')}"/>
+						</th>
+						<th>
+							<f:translate key="field.fileName"/>
+						</th>
+						<f:switch expression="{mode}">
+							<f:case value="content">
+								<th>
+									<f:translate key="field.content" />
+								</th>
+								<th>
+									<f:translate key="field.words" />
+								</th>
+							</f:case>
+							<f:case default="TRUE">
+								<th>
+									<f:translate key="field.wordCount"/>
+								</th>
+								<th>
+									<f:translate key="field.fileSize"/>
+								</th>
+								<th>
+									<f:translate key="field.indexed"/>
+								</th>
+							</f:case>
+						</f:switch>
+					</tr>
+				</thead>
+				<tbody>
+					<f:for each="{tree}" as="line">
+						<f:if condition="{line.lines}">
+							<f:then>
+								<f:for each="{line.lines}" as="l" iteration="i">
+									<tr>
+										<f:then>
+											<td class="nowrap">
+												{line.HTML -> f:format.raw()}
+												<f:if condition="{i.index} == 0"> {line.row.title}</f:if>
+											</td>
+											<td>
+												<f:be.buttons.icon  title="{f:translate(key:'administration.removeEntry')}" icon="actions-edit-delete" uri="{f:uri.action(action:'deleteIndexedItem',arguments:'{id:l.phash,depth:depth,mode:mode}')}"/>
+											</td>
+											<td>
+												<f:image src="{l.icon}"/>
+												<f:link.action action="statisticDetails" arguments="{pageHash:l.phash}">{l.item_title}</f:link.action>
+											</td>
+											<f:switch expression="{mode}">
+												<f:case value="content">
+													<td>
+														{l.fulltextData.fulltextdata}
+													</td>
+													<td>
+														<f:for each="{l.allWords}" as="w">
+															{w}
+														</f:for>
+														<br><br>
+														<em>{f:translate(key:'administration.statistics.count')}: {f:count(subject:l.allWords)}</em>
+													</td>
+												</f:case>
+												<f:case default="TRUE">
+													<td>{l.wordCount}</td>
+													<td>
+														<f:format.bytes decimals="1">{l.item_size}</f:format.bytes>
+													</td>
+													<td>
+														<is:format.dateTime>{l.tstamp}</is:format.dateTime>
+													</td>
+												</f:case>
+											</f:switch>
+										</f:then>
+									</tr>
+								</f:for>
+							</f:then>
+							<f:else>
+								<tr>
+									<td class="nowrap">{line.HTML -> f:format.raw()} {line.row.title}</td>
+									<f:switch expression="{mode}">
+										<f:case value="content">
+											<td colspan="5">
+												<f:translate key="administration.notIndexed" />
+											</td>
+										</f:case>
+										<f:case default="TRUE">
+											<td colspan="5">
+												<f:translate key="administration.notIndexed"/>
+											</td>
+										</f:case>
+									</f:switch>
+								</tr>
+							</f:else>
+						</f:if>
+					</f:for>
+					</tbody>
+			</table>
+		</f:then>
+		<f:else>
+			<h2><f:translate key="administration.noPageSelected"/></h2>
+		</f:else>
+	</f:if>
+</f:section>
+
+<f:section name="Buttons"></f:section>
