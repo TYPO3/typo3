@@ -1373,11 +1373,13 @@ class ResourceStorage implements ResourceStorageInterface {
 			} else {
 				$fileObject = $this->getFileFactory()->getFileObjectByStorageAndIdentifier($this->getUid(), $identifier);
 			}
-			$key = $fileObject->getName();
-			while (isset($items[$key])) {
-				$key .= 'z';
+			if ($fileObject instanceof FileInterface) {
+				$key = $fileObject->getName();
+				while (isset($items[$key])) {
+					$key .= 'z';
+				}
+				$items[$key] = $fileObject;
 			}
-			$items[$key] = $fileObject;
 		}
 		uksort($items, 'strnatcasecmp');
 

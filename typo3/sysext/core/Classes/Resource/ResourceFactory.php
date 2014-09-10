@@ -395,7 +395,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 	 *
 	 * @param int $storageUid
 	 * @param string $fileIdentifier
-	 * @return File|ProcessedFile
+	 * @return NULL|File|ProcessedFile
 	 */
 	public function getFileObjectByStorageAndIdentifier($storageUid, &$fileIdentifier) {
 		$storage = $this->getStorageObject($storageUid, array(), $fileIdentifier);
