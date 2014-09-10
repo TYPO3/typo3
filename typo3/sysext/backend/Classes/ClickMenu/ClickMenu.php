@@ -294,8 +294,8 @@ class ClickMenu {
 					if (isset($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'])) {
 						$hiddenField = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'];
 						if (
-							$hiddenField !== '' && !empty($GLOBALS['TCA'][$table]['columns'][$hiddenField]['exclude']
-							&& $GLOBALS['BE_USER']->check('non_exclude_fields', $table . ':' . $hiddenField))
+							$hiddenField !== '' && !empty($GLOBALS['TCA'][$table]['columns'][$hiddenField]['exclude'])
+							&& $GLOBALS['BE_USER']->check('non_exclude_fields', $table . ':' . $hiddenField)
 						) {
 							$menuItemHideUnhideAllowed = TRUE;
 						}
