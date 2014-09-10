@@ -13,11 +13,16 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 
 /**
  * Test case
+ * @firsttest test for reflection
+ * @anothertest second test for reflection
+ * @anothertest second test for reflection with second value
  */
-class ReflectionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class ReflectionServiceTest extends UnitTestCase {
 
 	/**
 	 * @param array $foo The foo parameter
@@ -29,8 +34,31 @@ class ReflectionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function getClassTagsValues() {
+		$service = new ReflectionService();
+		$classValues = $service->getClassTagsValues(get_class($this));
+		$this->assertEquals(array(
+			'firsttest' => array('test for reflection'),
+			'anothertest' => array('second test for reflection', 'second test for reflection with second value')
+		), $classValues);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getClassTagValues() {
+		$service = new ReflectionService();
+		$classValues = $service->getClassTagValues(get_class($this), 'firsttest');
+		$this->assertEquals(array(
+			'test for reflection',
+		), $classValues);
+	}
+
+	/**
+	 * @test
+	 */
 	public function hasMethod() {
-		$service = new \TYPO3\CMS\Extbase\Reflection\ReflectionService();
+		$service = new ReflectionService();
 		$this->assertTrue($service->hasMethod(get_class($this), 'fixtureMethodForMethodTagsValues'));
 		$this->assertFalse($service->hasMethod(get_class($this), 'notExistentMethod'));
 	}
@@ -39,7 +67,7 @@ class ReflectionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getMethodTagsValues() {
-		$service = new \TYPO3\CMS\Extbase\Reflection\ReflectionService();
+		$service = new ReflectionService();
 		$tagsValues = $service->getMethodTagsValues(get_class($this), 'fixtureMethodForMethodTagsValues');
 		$this->assertEquals(array(
 			'param' => array('array $foo The foo parameter'),
@@ -51,7 +79,7 @@ class ReflectionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getMethodParameters() {
-		$service = new \TYPO3\CMS\Extbase\Reflection\ReflectionService();
+		$service = new ReflectionService();
 		$parameters = $service->getMethodParameters(get_class($this), 'fixtureMethodForMethodTagsValues');
 		$this->assertEquals(array(
 			'foo' => array(

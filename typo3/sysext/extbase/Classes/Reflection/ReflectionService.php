@@ -192,6 +192,39 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
+	 * Returns all tags and their values the specified class is tagged with
+	 *
+	 * @param string $className Name of the class
+	 * @return array An array of tags and their values or an empty array if no tags were found
+	 */
+	public function getClassTagsValues($className) {
+		if (!isset($this->reflectedClassNames[$className])) {
+			$this->reflectClass($className);
+		}
+		if (!isset($this->classTagsValues[$className])) {
+			return array();
+		}
+		return isset($this->classTagsValues[$className]) ? $this->classTagsValues[$className] : array();
+	}
+
+	/**
+	 * Returns the values of the specified class tag
+	 *
+	 * @param string $className Name of the class containing the property
+	 * @param string $tag Tag to return the values of
+	 * @return array An array of values or an empty array if the tag was not found
+	 */
+	public function getClassTagValues($className, $tag) {
+		if (!isset($this->reflectedClassNames[$className])) {
+			$this->reflectClass($className);
+		}
+		if (!isset($this->classTagsValues[$className])) {
+			return array();
+		}
+		return isset($this->classTagsValues[$className][$tag]) ? $this->classTagsValues[$className][$tag] : array();
+	}
+
+	/**
 	 * Returns the names of all properties of the specified class
 	 *
 	 * @param string $className Name of the class to return the property names of
@@ -225,7 +258,6 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $className Name of the class containing the method
 	 * @param string $methodName Name of the method
 	 * @return boolean
-	 * @api
 	 */
 	public function hasMethod($className, $methodName) {
 		try {
@@ -303,7 +335,6 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $propertyName Name of the tagged property
 	 * @param string $tag Tag to return the values of
 	 * @return array An array of values or an empty array if the tag was not found
-	 * @api
 	 */
 	public function getPropertyTagValues($className, $propertyName, $tag) {
 		if (!isset($this->reflectedClassNames[$className])) {
@@ -321,7 +352,6 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $className Name of the class
 	 * @return boolean If the class is reflected by this service
-	 * @api
 	 */
 	public function isClassReflected($className) {
 		return isset($this->reflectedClassNames[$className]);
@@ -333,7 +363,6 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $className Name of the class
 	 * @param string $tag Tag to check for
 	 * @return boolean TRUE if the class is tagged with $tag, otherwise FALSE
-	 * @api
 	 */
 	public function isClassTaggedWith($className, $tag) {
 		if ($this->initialized === FALSE) {
@@ -355,7 +384,6 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $propertyName Name of the property
 	 * @param string $tag Tag to check for
 	 * @return boolean TRUE if the class property is tagged with $tag, otherwise FALSE
-	 * @api
 	 */
 	public function isPropertyTaggedWith($className, $propertyName, $tag) {
 		if (!isset($this->reflectedClassNames[$className])) {
