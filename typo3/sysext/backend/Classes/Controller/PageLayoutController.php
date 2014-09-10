@@ -540,7 +540,7 @@ class PageLayoutController {
 			// Removing duplicates, if any
 			$this->colPosList = array_unique(GeneralUtility::intExplode(',', $this->colPosList));
 			// Accessible columns
-			if (trim($this->modSharedTSconfig['properties']['colPos_list']) !== '') {
+			if (isset($this->modSharedTSconfig['properties']['colPos_list']) && trim($this->modSharedTSconfig['properties']['colPos_list']) !== '') {
 				$this->activeColPosList = array_unique(GeneralUtility::intExplode(',', trim($this->modSharedTSconfig['properties']['colPos_list'])));
 				// Match with the list which is present in the colPosList for the current page
 				if (!empty($this->colPosList) && !empty($this->activeColPosList)) {
@@ -549,8 +549,10 @@ class PageLayoutController {
 						$this->colPosList
 					));
 				}
-				$this->activeColPosList = implode(',', $this->activeColPosList);
+			} else {
+				$this->activeColPosList = $this->colPosList;
 			}
+			$this->activeColPosList = implode(',', $this->activeColPosList);
 			$this->colPosList = implode(',', $this->colPosList);
 
 			// Page title
