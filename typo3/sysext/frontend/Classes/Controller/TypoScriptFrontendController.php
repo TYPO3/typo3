@@ -2308,6 +2308,7 @@ class TypoScriptFrontendController {
 	 */
 	public function initTemplate() {
 		$this->tmpl = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\TemplateService');
+		$this->tmpl->setVerbose((bool)$this->beUserLogin);
 		$this->tmpl->init();
 		$this->tmpl->tt_track = (bool)$this->beUserLogin;
 	}

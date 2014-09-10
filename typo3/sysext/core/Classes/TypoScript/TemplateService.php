@@ -27,6 +27,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class TemplateService {
 
 	// Debugging, analysis:
+	/**
+	 * option to enable logging, time-tracking (FE-only)
+	 * usually, this is only done when
+	 *  - in FE a BE_USER is logged-in
+	 *  - in BE when the BE_USER needs information about the template (TypoScript module)
+	 * @var bool
+	 */
+	protected $verbose = FALSE;
+
 	// If set, the global tt-timeobject is used to log the performance.
 	/**
 	 * @todo Define visibility
@@ -301,6 +310,14 @@ class TemplateService {
 	 */
 	public function setProcessExtensionStatics($processExtensionStatics) {
 		$this->processExtensionStatics = (bool) $processExtensionStatics;
+	}
+
+	/**
+	 * sets the verbose parameter
+	 * @param bool $verbose
+	 */
+	public function setVerbose($verbose) {
+		$this->verbose = (bool)$verbose;
 	}
 
 	/**
@@ -940,19 +957,24 @@ class TemplateService {
 		if ($this->tt_track) {
 			$GLOBALS['TT']->pull();
 		}
+
 		// Searching for possible unsubstituted constants left (only for information)
-		if (strstr($all, '{$')) {
-			$theConstList = array();
-			$findConst = explode('{$', $all);
-			array_shift($findConst);
-			foreach ($findConst as $constVal) {
-				$constLen = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(strcspn($constVal, '}'), 0, 50);
-				$theConstList[] = '{$' . substr($constVal, 0, ($constLen + 1));
+		if ($this->verbose) {
+			if (strstr($all, '{$')) {
+				$theConstList = array();
+				$findConst = explode('{$', $all);
+				array_shift($findConst);
+				foreach ($findConst as $constVal) {
+					$constLen = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(strcspn($constVal, '}'), 0, 50);
+					$theConstList[] = '{$' . substr($constVal, 0, ($constLen + 1));
+				}
+				if ($this->tt_track) {
+					$GLOBALS['TT']->setTSlogMessage(implode(', ', $theConstList) . ': Constants may remain un-substituted!!', 2);
+				}
 			}
-			if ($this->tt_track) {
-				$GLOBALS['TT']->setTSlogMessage(implode(', ', $theConstList) . ': Constants may remain un-substituted!!', 2);
-			}
+
 		}
+
 		// Logging the textual size of the TypoScript Setup field text with all constants substituted:
 		if ($this->tt_track) {
 			$GLOBALS['TT']->setTSlogMessage('TypoScript template size as textfile: ' . strlen($all) . ' bytes');
