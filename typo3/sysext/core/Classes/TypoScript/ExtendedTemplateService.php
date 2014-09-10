@@ -157,7 +157,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	public $ext_noPMicons = 0;
 
 	/**
-	 * @todo Define visibility
+	 * @deprecated since CMS 7.0, will be removed in CMS 8
 	 */
 	public $ext_noSpecialCharsOnLabels = 0;
 
@@ -430,9 +430,9 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 					}
 					// The value has matched the search string
 					if ($this->tsbrowser_searchKeys[$depth] & 2) {
-						$HTML .= '&nbsp;=&nbsp;<strong><font color="red">' . $this->makeHtmlspecialchars($theValue) . '</font></strong>';
+						$HTML .= '&nbsp;=&nbsp;<strong style="color: red;">' . htmlspecialchars($theValue) . '</strong>';
 					} else {
-						$HTML .= '&nbsp;=&nbsp;<strong>' . $this->makeHtmlspecialchars($theValue) . '</strong>';
+						$HTML .= '&nbsp;=&nbsp;<strong>' . htmlspecialchars($theValue) . '</strong>';
 					}
 					if ($this->ext_regComments && isset($arr[$key . '..'])) {
 						$comment = $arr[$key . '..'];
@@ -445,7 +445,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 							// Replace leading # (just if it exists) and add it again. Result: Every comment should be prefixed by a '#'.
 							$comment = preg_replace('/^[#\\*\\s]+/', '# ', $comment);
 							// Masking HTML Tags: Replace < with &lt; and > with &gt;
-							$comment = $this->makeHtmlspecialchars($comment);
+							$comment = htmlspecialchars($comment);
 							$HTML .= ' <span class="comment">' . trim($comment) . '</span>';
 						}
 					}
@@ -505,8 +505,10 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 * @param 	[type]		$theValue: ...
 	 * @return 	[type]		...
 	 * @todo Define visibility
+	 * @deprecated since CMS 7.0, will be removed in CMS 8  - use htmlspecialchars() directly
 	 */
 	public function makeHtmlspecialchars($theValue) {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->ext_noSpecialCharsOnLabels ? $theValue : htmlspecialchars($theValue);
 	}
 
