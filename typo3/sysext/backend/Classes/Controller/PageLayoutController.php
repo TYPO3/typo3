@@ -543,14 +543,13 @@ class PageLayoutController {
 			if (trim($this->modSharedTSconfig['properties']['colPos_list']) !== '') {
 				$this->activeColPosList = array_unique(GeneralUtility::intExplode(',', trim($this->modSharedTSconfig['properties']['colPos_list'])));
 				// Match with the list which is present in the colPosList for the current page
-				if (!empty($this->colPosList) && !empty($this->colActivePosList)) {
-					$this->activeColPosList = implode(',', array_unique(array_intersect(
+				if (!empty($this->colPosList) && !empty($this->activeColPosList)) {
+					$this->activeColPosList = array_unique(array_intersect(
 						$this->activeColPosList,
 						$this->colPosList
-					)));
+					));
 				}
-			} else {
-				$this->activeColPosList = implode(',', $this->colPosList);
+				$this->activeColPosList = implode(',', $this->activeColPosList);
 			}
 			$this->colPosList = implode(',', $this->colPosList);
 
