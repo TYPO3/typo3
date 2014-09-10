@@ -505,17 +505,29 @@ class Check {
 	protected function checkXdebugMaxNestingLevel() {
 		if (extension_loaded('xdebug')) {
 			$recommendedMaxNestingLevel = 400;
+			$errorThreshold = 250;
 			$currentMaxNestingLevel = ini_get('xdebug.max_nesting_level');
-			if ($currentMaxNestingLevel < $recommendedMaxNestingLevel) {
+			if ($currentMaxNestingLevel < $errorThreshold) {
 				$status = new Status\ErrorStatus();
-				$status->setTitle('PHP xdebug.max_nesting_level too low');
+				$status->setTitle('PHP xdebug.max_nesting_level is critically low');
 				$status->setMessage(
 					'xdebug.max_nesting_level=' . $currentMaxNestingLevel . LF .
 					'This setting controls the maximum number of nested function calls to protect against' .
 					' infinite recursion. The current value is too low for TYPO3 CMS and must' .
-					' be either raised or xdebug unloaded. A value of ' . $recommendedMaxNestingLevel .
+					' be either raised or xdebug has to be unloaded. A value of ' . $recommendedMaxNestingLevel .
 					' is recommended. Warning: Expect fatal PHP errors in central parts of the CMS' .
 					' if the value is not raised significantly to:' . LF .
+					'xdebug.max_nesting_level=' . $recommendedMaxNestingLevel
+				);
+			} elseif ($currentMaxNestingLevel < $recommendedMaxNestingLevel) {
+				$status = new Status\WarningStatus();
+				$status->setTitle('PHP xdebug.max_nesting_level is low');
+				$status->setMessage(
+					'xdebug.max_nesting_level=' . $currentMaxNestingLevel . LF .
+					'This setting controls the maximum number of nested function calls to protect against' .
+					' infinite recursion. The current value is high enough for the TYPO3 CMS core to work' .
+					' fine, but still some extensions could raise fatal PHP errors if the setting is not' .
+					' raised further. A value of ' . $recommendedMaxNestingLevel . ' is recommended.' . LF .
 					'xdebug.max_nesting_level=' . $recommendedMaxNestingLevel
 				);
 			} else {
