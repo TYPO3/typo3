@@ -11,35 +11,14 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-/* - - - - - - - - - - - - - - - - - - - - -
-Table
-- - - - - - - - - - - - - - - - - - - - - */
-
-th,
-td {
-	vertical-align: top;
-}
-
-/** @deprecated styles */
-.t3-col-header,
-.t3-row-header,
-.tableheader td,
-table.t3-table-info td {
-	padding: 6px;
-}
-
-.t3-row-header span.t3-icon {
-	margin-right: 3px;
-}
-
 /** used in the admin tools => DB check **/
 .t3-overview-list dt {
 	padding: 0px 0px 2px 20px;
-}
 
-.t3-overview-list dt img {
-	vertical-align: middle;
-	margin-right: 5px;
+	img {
+		vertical-align: middle;
+		margin-right: 5px;
+	}
 }
 
 .t3-overview-list dd {
@@ -67,25 +46,58 @@ table.t3-table-info td {
  *   </tbody>
  * </table>
  */
+
+.table {
+	border-right: 1px solid @table-border-color;
+	border-bottom: 1px solid @table-border-color;
+	border-left: 1px solid @table-border-color;
+
+	> thead,
+	> tbody {
+		tr {
+			th:first-child,
+			th:last-child,
+			td:first-child,
+			td:last-child {
+				padding-left: 12px;
+			}
+		}
+	}
+
+	> thead {
+		> tr {
+			> th,
+			> td {
+				background-color: #666;
+				color: #fff;
+				font-weight: normal;
+				min-height: 16px;
+
+				a,
+				a {
+					color: #fff;
+					text-decoration: underline;
+				}
+			}
+		}
+	}
+
+	> tbody {
+		> tr:hover {
+			> td {
+				transition: background-color 100ms linear;
+
+				a {
+					text-decoration: underline;
+				}
+			}
+		}
+	}
+}
+
+// TYPO3 standard <table class="t3-table">
 table.t3-table {
-	width: 100%;
-	border: none;
-	margin-bottom: 1.5em;
-}
-
-table.t3-table th,
-table.t3-table td {
-	padding: 6px;
-	/** Height of sprite icon */
-	min-height: 16px;
-	text-align: left;
-}
-
-table.t3-table tr th:first-child,
-table.t3-table tr td:first-child {
-	padding-left: 12px;
-}
-table.t3-table tr th:last-child,
-table.t3-table tr td:last-child {
-	padding-right: 12px;
+	.table;
+	.table-striped;
+	.table-hover;
 }

@@ -7159,6 +7159,43 @@ button.close {
  *
  * The TYPO3 project - inspiring people to share!
  */
+.t3-row-header {
+  background-color: #666;
+  color: #fff;
+}
+.t3-row-header a,
+.t3-row-header a:hover {
+  color: #fff;
+}
+.t3-col-header {
+  background-color: #585858;
+  color: #fff;
+}
+table.t3-table-info {
+  background: #ffffff;
+  border: 1px solid #cccccc;
+}
+.t3-col-header,
+.t3-row-header,
+.tableheader td,
+table.t3-table-info td {
+  padding: 6px;
+}
+.t3-row-header span.t3-icon {
+  margin-right: 3px;
+}
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
 #typo3-messages {
   margin-bottom: 10px;
 }
@@ -7275,6 +7312,160 @@ button.close {
 }
 .message-error a {
   color: #aa0225;
+}
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+/** used in the admin tools => DB check **/
+.t3-overview-list dt {
+  padding: 0px 0px 2px 20px;
+}
+.t3-overview-list dt img {
+  vertical-align: middle;
+  margin-right: 5px;
+}
+.t3-overview-list dd {
+  margin: 2px 0 15px 20px;
+  padding-left: 22px;
+}
+/**
+ * Common style for tables
+ *
+ * <table class="t3-table>
+ *   <thead>
+ *     <tr>
+ *       <th>...</th>
+ *       <th>...</th>
+ *     </tr>
+ *   </thead>
+ *   <tbody>
+ *     <tr>
+ *       <td>
+ *         <span class="t3-icon t3-icon-treeline t3-icon-treeline-join t3-icon-join">&nbsp;</span>
+ *       </td>
+ *       <td>...</td>
+ *     </tr>
+ *   </tbody>
+ * </table>
+ */
+.table {
+  border-right: 1px solid #dddddd;
+  border-bottom: 1px solid #dddddd;
+  border-left: 1px solid #dddddd;
+}
+.table > thead tr th:first-child,
+.table > tbody tr th:first-child,
+.table > thead tr th:last-child,
+.table > tbody tr th:last-child,
+.table > thead tr td:first-child,
+.table > tbody tr td:first-child,
+.table > thead tr td:last-child,
+.table > tbody tr td:last-child {
+  padding-left: 12px;
+}
+.table > thead > tr > th,
+.table > thead > tr > td {
+  background-color: #666;
+  color: #fff;
+  font-weight: normal;
+  min-height: 16px;
+}
+.table > thead > tr > th a,
+.table > thead > tr > td a,
+.table > thead > tr > th a,
+.table > thead > tr > td a {
+  color: #fff;
+  text-decoration: underline;
+}
+.table > tbody > tr:hover > td {
+  transition: background-color 100ms linear;
+}
+.table > tbody > tr:hover > td a {
+  text-decoration: underline;
+}
+table.t3-table {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 18px;
+  border-right: 1px solid #dddddd;
+  border-bottom: 1px solid #dddddd;
+  border-left: 1px solid #dddddd;
+}
+table.t3-table > thead > tr > th,
+table.t3-table > tbody > tr > th,
+table.t3-table > tfoot > tr > th,
+table.t3-table > thead > tr > td,
+table.t3-table > tbody > tr > td,
+table.t3-table > tfoot > tr > td {
+  padding: 6px;
+  line-height: 1.5;
+  vertical-align: top;
+  border-top: 1px solid #dddddd;
+}
+table.t3-table > thead > tr > th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #dddddd;
+}
+table.t3-table > caption + thead > tr:first-child > th,
+table.t3-table > colgroup + thead > tr:first-child > th,
+table.t3-table > thead:first-child > tr:first-child > th,
+table.t3-table > caption + thead > tr:first-child > td,
+table.t3-table > colgroup + thead > tr:first-child > td,
+table.t3-table > thead:first-child > tr:first-child > td {
+  border-top: 0;
+}
+table.t3-table > tbody + tbody {
+  border-top: 2px solid #dddddd;
+}
+table.t3-table .table {
+  background-color: #ffffff;
+}
+table.t3-table > thead tr th:first-child,
+table.t3-table > tbody tr th:first-child,
+table.t3-table > thead tr th:last-child,
+table.t3-table > tbody tr th:last-child,
+table.t3-table > thead tr td:first-child,
+table.t3-table > tbody tr td:first-child,
+table.t3-table > thead tr td:last-child,
+table.t3-table > tbody tr td:last-child {
+  padding-left: 12px;
+}
+table.t3-table > thead > tr > th,
+table.t3-table > thead > tr > td {
+  background-color: #666;
+  color: #fff;
+  font-weight: normal;
+  min-height: 16px;
+}
+table.t3-table > thead > tr > th a,
+table.t3-table > thead > tr > td a,
+table.t3-table > thead > tr > th a,
+table.t3-table > thead > tr > td a {
+  color: #fff;
+  text-decoration: underline;
+}
+table.t3-table > tbody > tr:hover > td {
+  transition: background-color 100ms linear;
+}
+table.t3-table > tbody > tr:hover > td a {
+  text-decoration: underline;
+}
+table.t3-table > tbody > tr:nth-child(odd) > td,
+table.t3-table > tbody > tr:nth-child(odd) > th {
+  background-color: #f7f7f7;
+}
+table.t3-table > tbody > tr:hover > td,
+table.t3-table > tbody > tr:hover > th {
+  background-color: #dedede;
 }
 /**
  * This file is part of the TYPO3 CMS project.
@@ -8116,87 +8307,6 @@ div.typo3-dyntabmenu-divs-foldout div.tab a,
 div.typo3-dyntabmenu-divs-foldout div.tabact a {
   display: block;
   padding: 2px 2px 2px 18px;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Table
-- - - - - - - - - - - - - - - - - - - - - */
-th,
-td {
-  vertical-align: top;
-}
-/** @deprecated styles */
-.t3-col-header,
-.t3-row-header,
-.tableheader td,
-table.t3-table-info td {
-  padding: 6px;
-}
-.t3-row-header span.t3-icon {
-  margin-right: 3px;
-}
-/** used in the admin tools => DB check **/
-.t3-overview-list dt {
-  padding: 0px 0px 2px 20px;
-}
-.t3-overview-list dt img {
-  vertical-align: middle;
-  margin-right: 5px;
-}
-.t3-overview-list dd {
-  margin: 2px 0 15px 20px;
-  padding-left: 22px;
-}
-/**
- * Common style for tables
- *
- * <table class="t3-table>
- *   <thead>
- *     <tr>
- *       <th>...</th>
- *       <th>...</th>
- *     </tr>
- *   </thead>
- *   <tbody>
- *     <tr>
- *       <td>
- *         <span class="t3-icon t3-icon-treeline t3-icon-treeline-join t3-icon-join">&nbsp;</span>
- *       </td>
- *       <td>...</td>
- *     </tr>
- *   </tbody>
- * </table>
- */
-table.t3-table {
-  width: 100%;
-  border: none;
-  margin-bottom: 1.5em;
-}
-table.t3-table th,
-table.t3-table td {
-  padding: 6px;
-  /** Height of sprite icon */
-  min-height: 16px;
-  text-align: left;
-}
-table.t3-table tr th:first-child,
-table.t3-table tr td:first-child {
-  padding-left: 12px;
-}
-table.t3-table tr th:last-child,
-table.t3-table tr td:last-child {
-  padding-right: 12px;
 }
 /**
  * This file is part of the TYPO3 CMS project.
@@ -11163,70 +11273,6 @@ div.typo3-dyntabmenu-divs-foldout div.tab a,
 div.typo3-dyntabmenu-divs-foldout div.tabact a {
   text-decoration: none;
   color: #000;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Table
-- - - - - - - - - - - - - - - - - - - - - */
-/** @deprecated styles */
-.t3-row-header {
-  background-color: #666;
-  color: #fff;
-}
-.t3-row-header a,
-.t3-row-header a:hover {
-  color: #fff;
-}
-.t3-col-header {
-  background-color: #585858;
-  color: #fff;
-}
-/** used for any table where a table is used for displaying information (and thus, there is air to breathe) **/
-table.t3-table-info {
-  background: #ffffff;
-  border: 1px solid #cccccc;
-}
-/**
- * Common style for tables
- */
-table.t3-table {
-  border: 1px solid #d7d7d7;
-}
-/** Allow <thead><td> only for edge cases - please use <thead><th> */
-table.t3-table thead th,
-table.t3-table thead td {
-  background-color: #666;
-  color: #fff;
-  font-weight: normal;
-}
-table.t3-table thead th a,
-table.t3-table thead td a {
-  color: #fff;
-  text-decoration: underline;
-}
-table.t3-table tbody tr:nth-child(odd) td {
-  background-color: #f7f7f7;
-}
-table.t3-table tbody tr:nth-child(even) td {
-  background-color: #fff;
-}
-table.t3-table tbody tr:hover td {
-  background-color: #efefef;
-  transition: background-color 100ms linear;
-}
-table.t3-table tbody td a {
-  text-decoration: underline;
 }
 /**
  * This file is part of the TYPO3 CMS project.
