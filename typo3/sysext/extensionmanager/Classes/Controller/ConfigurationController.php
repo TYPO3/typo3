@@ -45,25 +45,23 @@ class ConfigurationController extends AbstractController {
 	 * @return void
 	 */
 	public function showConfigurationFormAction(array $extension) {
-		if (!array_key_exists('key', $extension)) {
-			throw new ExtensionManagerException(
-				'Extension key not found.',
-				1359206803
-			);
+		if (!isset($extension['key'])) {
+			throw new ExtensionManagerException('Extension key not found.', 1359206803);
 		}
-		$configuration = $this->configurationItemRepository->findByExtensionKey($extension['key']);
+		$extKey = $extension['key'];
+		$configuration = $this->configurationItemRepository->findByExtensionKey($extKey);
 		if ($configuration) {
 			$this->view
 				->assign('configuration', $configuration)
 				->assign('extension', $extension);
 		} else {
 			/** @var Extension $extension */
-			$extension = $this->extensionRepository->findOneByCurrentVersionByExtensionKey($extension['key']);
+			$extension = $this->extensionRepository->findOneByCurrentVersionByExtensionKey($extKey);
 			// Extension has no configuration and is a distribution
 			if ($extension->getCategory() === Extension::DISTRIBUTION_CATEGORY) {
 				$this->redirect('welcome', 'Distribution', NULL, array('extension' => $extension->getUid()));
 			}
-			throw new ExtensionManagerException('The extension ' . htmlspecialchars($extension['key']) . ' has no configuration.');
+			throw new ExtensionManagerException('The extension ' . $extKey . ' has no configuration.');
 		}
 	}
 
