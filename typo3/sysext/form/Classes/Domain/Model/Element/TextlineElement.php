@@ -40,7 +40,8 @@ class TextlineElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractEleme
 		'tabindex' => '',
 		'title' => '',
 		'type' => 'text',
-		'value' => ''
+		'value' => '',
+		'placeholder' => '',
 	);
 
 	/**
