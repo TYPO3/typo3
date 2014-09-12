@@ -407,7 +407,6 @@ class TypoScriptFrontendController {
 	 * JSincludeFormupdate:	<script type="text/javascript" src="typo3/js/jsfunc.updateform.js"></script>
 	 * JSMenuCode, JSMenuCode_menu: JavaScript for the JavaScript menu
 	 * JSCode: reserved
-	 * JSImgCode: reserved
 	 *
 	 * used to accumulate additional HTML-code for the header-section,
 	 * <head>...</head>. Insert either associative keys (like

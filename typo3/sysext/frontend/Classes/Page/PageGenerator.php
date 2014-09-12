@@ -762,11 +762,9 @@ class PageGenerator {
 		}
 
 		unset($GLOBALS['TSFE']->additionalHeaderData['JSCode']);
-		unset($GLOBALS['TSFE']->additionalHeaderData['JSImgCode']);
 		if (is_array($GLOBALS['TSFE']->config['INTincScript'])) {
-			// Storing the JSCode and JSImgCode vars...
 			$GLOBALS['TSFE']->additionalHeaderData['JSCode'] = $GLOBALS['TSFE']->JSCode;
-			$GLOBALS['TSFE']->additionalHeaderData['JSImgCode'] = $GLOBALS['TSFE']->JSImgCode;
+			// Storing the JSCode vars...
 			$GLOBALS['TSFE']->config['INTincScript_ext']['divKey'] = $GLOBALS['TSFE']->uniqueHash();
 			$GLOBALS['TSFE']->config['INTincScript_ext']['additionalHeaderData'] = $GLOBALS['TSFE']->additionalHeaderData;
 			// Storing the header-data array
