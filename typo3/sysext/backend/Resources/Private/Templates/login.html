@@ -73,8 +73,8 @@
 <!-- ###LOGIN_ERROR### end -->
 
 <div id="t3-login-form-fields" class="###CSS_OPENIDCLASS###">
-	<div class="t3-login-field" id="t3-login-username-section">
-		<input type="text" id="t3-username" name="username" value="###VALUE_USERNAME###" placeholder="###LABEL_USERNAME###" class="t3-username" autofocus="autofocus" />
+	<div class="form-group t3-login-field" id="t3-login-username-section">
+		<input type="text" id="t3-username" name="username" value="###VALUE_USERNAME###" placeholder="###LABEL_USERNAME###" class="form-control t3-username input-lg" autofocus="autofocus" />
 
 		<div class="t3-login-clearInputField">
 			<a id="t3-username-clearIcon" style="display: none;">
@@ -85,8 +85,10 @@
 			<img src="sysext/t3skin/icons/login_capslock.gif" alt="###ERROR_CAPSLOCK###" title="###ERROR_CAPSLOCK###" />
 		</div>
 	</div>
-	<div class="t3-login-password t3-login-field" id="t3-login-password-section">
-		<input type="password" id="t3-password" name="p_field" value="###VALUE_PASSWORD###" placeholder="###LABEL_PASSWORD###" class="t3-password" />
+
+	<div class="form-group t3-login-password t3-login-field" id="t3-login-password-section">
+		<input type="password" id="t3-password" name="p_field" value="###VALUE_PASSWORD###" placeholder="###LABEL_PASSWORD###" class="form-control t3-password input-lg" />
+
 		<div class="t3-login-clearInputField">
 			<a id="t3-password-clearIcon" style="display: none;">
 				<img src="sysext/t3skin/icons/common-input-clear.png" alt="###CLEAR###" title="###CLEAR###" />
@@ -96,8 +98,9 @@
 			<img src="sysext/t3skin/icons/login_capslock.gif" alt="###ERROR_CAPSLOCK###" title="###ERROR_CAPSLOCK###" />
 		</div>
 	</div>
-	<div class="t3-login-field" id="t3-login-openid_url-section" style="display: none">
-		<input type="text" id="openid_url" name="openid_url" value="###VALUE_OPENID_URL###" placeholder="###LABEL_OPENID###" class="t3-openidurl" />
+
+	<div class="form-group t3-login-field" id="t3-login-openid_url-section" style="display: none">
+		<input type="text" id="openid_url" name="openid_url" value="###VALUE_OPENID_URL###" placeholder="###LABEL_OPENID###" class="form-control t3-openidurl" />
 
 		<div class="t3-login-clearInputField">
 			<a id="openid_url-clearIcon" style="display: none;">
@@ -105,7 +108,8 @@
 			</a>
 		</div>
 	</div>
-	<div class="t3-login-field clearfix">
+
+	<div class="form-group t3-login-field clearfix">
 		<!-- ###INTERFACE_SELECTOR### begin -->
 		<div class="t3-login-interface" id="t3-login-interface-section">
 			###VALUE_INTERFACE###
@@ -116,13 +120,14 @@
 			<img src="sysext/t3skin/icons/logo-openid.png" alt="OpenID" title="OpenID" />
 		</div>
 
-		<input type="submit" name="commandLI" id="t3-login-submit" value="###VALUE_SUBMIT###" class="t3-login-submit" />
+		<input type="submit" name="commandLI" id="t3-login-submit" value="###VALUE_SUBMIT###" class="form-control pull-right t3-login-submit" />
 	</div>
 
 	<div class="t3-login-form-footer">
 		<div id="t3-login-form-footer-default">
 			<a id="t3-login-switchToOpenId" class="switchToOpenId">###LABEL_SWITCHOPENID###</a>
 		</div>
+
 		<div id="t3-login-form-footer-openId" style="display: none">
 			<a href="http://openid.net/" id="t3-login-whatIsOpenId" target="_blank" class="switchToOpenId">###LABEL_WHATISOPENID###</a>
 			&#124;

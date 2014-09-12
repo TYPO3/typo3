@@ -8896,28 +8896,22 @@ body#typo3-wizard-colorpicker-php p.c-head {
   float: left;
   padding: 3px 5px 0 0;
 }
-#typo3-index-php .t3-login-field {
+#typo3-index-php .t3-login-field,
+#typo3-index-php .t3-login-submit {
   margin: 0 0 6px;
-  padding: 0;
+  /** For clearable */
   position: relative;
-  width: 100%;
 }
 #typo3-index-php .t3-login-field .t3-login-clearInputField {
   cursor: pointer;
   position: absolute;
-  top: 8px;
+  top: 11px;
   right: 11px;
 }
 #typo3-index-php .t3-login-field .t3-login-alert-capslock {
   left: 300px;
   position: absolute;
   top: 5px;
-}
-#typo3-index-php .t3-login-field input {
-  line-height: 16px;
-  margin: 0;
-  padding: 9px 25px 9px 10px;
-  width: 350px;
 }
 #typo3-index-php #t3-login-interface-section {
   float: left;
@@ -8933,8 +8927,6 @@ body#typo3-wizard-colorpicker-php p.c-head {
   display: none;
 }
 #typo3-index-php .t3-login-field input.t3-login-submit {
-  display: block;
-  float: right;
   width: auto;
   height: 28px;
   padding: 0 50px;
