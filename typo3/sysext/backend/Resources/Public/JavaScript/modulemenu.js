@@ -32,7 +32,7 @@ TYPO3.ModuleMenu.App = {
 		var me = this;
 
 		// load the start module
-		if (top.startInModule && top.startInModule[0] && top.startInModule[0].length > 0) {
+		if (top.startInModule && top.startInModule[0] && jQuery('#' + top.startInModule[0]).length > 0) {
 			me.showModule(top.startInModule[0]);
 		} else {
 			// fetch first module
