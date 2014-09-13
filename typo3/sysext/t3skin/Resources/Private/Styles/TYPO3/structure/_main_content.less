@@ -16,7 +16,8 @@ TYPO3 styles for basic elements
 - - - - - - - - - - - - - - - - - - - - - */
 
 h1 {
-	margin: 0 0 30px 0;
+	margin-top: 0;
+	margin-bottom: ceil((@font-size-base * 1.8));
 }
 
 h2 {
@@ -27,16 +28,10 @@ h3 {
 	margin: 24px 0 12px 0;
 }
 
-h4 {
-	margin: 12px 0 12px 0;
-}
-
-p,
 ul,
 ol,
-dl,
 blockquote {
-	margin-bottom: 1.25em;
+	margin-bottom: (@line-height-computed / 2);
 }
 
 /* Lists */
@@ -46,18 +41,12 @@ ol {
 	padding-left: 3em;
 }
 
-ul.list-unstyled,
-ol.list-unstyled {
-	padding-left: 0;
-}
-
 /* Preformatted text - not used so much in TYPO3 */
 pre {
 	margin: 0px;
 }
 
 /* horizontal ruler */
-hr,
 div.hr {
 	height: 1px;
 }
