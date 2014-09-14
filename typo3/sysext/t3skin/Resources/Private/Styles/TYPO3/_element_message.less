@@ -11,80 +11,98 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-/* - - - - - - - - - - - - - - - - - - - - -
-Flash Messages
-- - - - - - - - - - - - - - - - - - - - - */
+#typo3-messages {
+	margin-bottom: 10px;
+}
 
 .typo3-message {
-	border: 1px solid;
+	.alert;
+
 	background-position: 10px 12px;
 	background-repeat: no-repeat;
+	padding: 12px 12px 12px 36px;
+
+	.message-header {
+		font-weight: bold;
+		margin-bottom: floor(@line-height-computed / 2);
+	}
+
+	ul,
+	ol {
+		padding-left: 16px;
+	}
+
+	.message-header {
+		display: block;
+	}
+
+	.t3-icon-actions-message-close {
+		cursor: pointer;
+		float: right;
+	}
+
+	li {
+		margin-bottom: 10px;
+		list-style: disc;
+	}
+
+	a {
+		text-decoration: underline;
+
+	}
 }
 
-.typo3-message a {
-	text-decoration: underline;
-}
-
-.typo3-message li {
-	margin-bottom: 10px;
-    list-style: disc;
-}
-
-.typo3-message .message-header {
-	font-weight: bold;
-}
 
 .message-notice {
+	// Nothing to inherit from Bootstrap - there is no alert-notice
+
 	color: #777;
 	background-color: #f6f7fa;
 	background-image: url('../../../../icons/gfx/notice.png');
 	border-color: #c2cbcf;
-}
 
-.message-notice a {
-	color: #777;
+	a {
+		color: #777;
+	}
 }
 
 .message-information {
-	color: #4c73a1;
-	background-color: #eaf7ff;
-	background-image: url('../../../../icons/gfx/information.png');
-	border-color: #c5dbe6;
-}
+	.alert-info;
 
-.message-information a {
-	color: #4c73a1;
+	background-image: url('../../../../icons/gfx/information.png');
+
+	a {
+		color: #4c73a1;
+	}
 }
 
 .message-ok {
-	color: #3b7826;
-	background-color: #cdeaca;
-	background-image: url('../../../../icons/gfx/ok.png');
-	border-color: #58b548;
-}
+	.alert-success;
 
-.message-ok a {
-	color: #3b7826;
+	background-image: url('../../../../icons/gfx/ok.png');
+
+	a {
+		color: #3b7826;
+	}
 }
 
 .message-warning {
-	color: #9e7d4a;
-	background-color:#fbf6de;
-	background-image: url("../../../../icons/gfx/warning.png");
-	border-color: #b1905c;
-}
+	.alert-warning;
 
-.message-warning a {
-	color: #9e7d4a;
+	background-image: url("../../../../icons/gfx/warning.png");
+
+	a {
+		color: #9e7d4a;
+	}
 }
 
 .message-error {
-	color: #aa0225;
-	background-color: #f6d3cf;
+	.alert-danger;
+
 	background-image: url('../../../../icons/gfx/error.png');
-	border-color: #d66c68;
+
+	a {
+		color: #aa0225;
+	}
 }
 
-.message-error a {
-	color: #aa0225;
-}
