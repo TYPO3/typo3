@@ -128,11 +128,11 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 					$tableData[] = $this->getFormLine($a);
 				}
 				$lines[] = '<table id="formFieldContainer" class="t3-table"><tbody id="formFieldContainerBody">' . implode(LF, $tableData) . '</tbody></table>';
-				$theCode .= '<h4>' . $GLOBALS['LANG']->getLL('wiz_newPages') . ':</h4>' . implode('', $lines) . '<br class="clearLeft" />' . '<input type="button" id="createNewFormFields" value="' . $GLOBALS['LANG']->getLL('wiz_newPages_addMoreLines') . '" />' . '<br /><br />
-				<input type="checkbox" name="createInListEnd" id="createInListEnd" value="1" /> <label for="createInListEnd">' . $GLOBALS['LANG']->getLL('wiz_newPages_listEnd') . '</label><br />
-				<input type="checkbox" name="hidePages" id="hidePages" value="1" /> <label for="hidePages">' . $GLOBALS['LANG']->getLL('wiz_newPages_hidePages') . '</label><br />
-				<input type="checkbox" name="hidePagesInMenus" id="hidePagesInMenus" value="1" /> <label for="hidePagesInMenus">' . $GLOBALS['LANG']->getLL('wiz_newPages_hidePagesInMenus') . '</label><br /><br />
-				<input type="submit" name="create" value="' . $GLOBALS['LANG']->getLL('wiz_newPages_lCreate') . '" />&nbsp;<input type="reset" value="' . $GLOBALS['LANG']->getLL('wiz_newPages_lReset') . '" /><br />';
+				$theCode .= '<h4>' . $GLOBALS['LANG']->getLL('wiz_newPages') . ':</h4>' . implode('', $lines) . '<br class="clearLeft" />' . '<input type="button" id="createNewFormFields" value="' . $GLOBALS['LANG']->getLL('wiz_newPages_addMoreLines') . '" />' . '<br /><br />';
+				$theCode .= '<div class="checkbox"><label for="createInListEnd"><input type="checkbox" name="createInListEnd" id="createInListEnd" value="1" />' . $GLOBALS['LANG']->getLL('wiz_newPages_listEnd') . '</label></div>';
+				$theCode .= '<div class="checkbox"><label for="hidePages"><input type="checkbox" name="hidePages" id="hidePages" value="1" />' . $GLOBALS['LANG']->getLL('wiz_newPages_hidePages') . '</label></div>';
+				$theCode .= '<div class="checkbox"><label for="hidePagesInMenus"><input type="checkbox" name="hidePagesInMenus" id="hidePagesInMenus" value="1" />' . $GLOBALS['LANG']->getLL('wiz_newPages_hidePagesInMenus') . '</label></div>';
+				$theCode .= '<input type="submit" name="create" value="' . $GLOBALS['LANG']->getLL('wiz_newPages_lCreate') . '" />&nbsp;<input type="reset" value="' . $GLOBALS['LANG']->getLL('wiz_newPages_lReset') . '" /><br />';
 
 				/** @var \TYPO3\CMS\Core\Page\PageRenderer */
 				$pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
