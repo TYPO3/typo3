@@ -152,7 +152,7 @@ return array(
 			)
 		),
 		'title' => array(
-			'l10n_mode' => 'prefixLangTitle',
+			'l10n_mode' => 'mergeIfNotBlank',
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.title',
 			'config' => array(
@@ -165,6 +165,7 @@ return array(
 			)
 		),
 		'link' => array(
+			'l10n_mode' => 'mergeIfNotBlank',
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.link',
 			'config' => array(
@@ -190,7 +191,7 @@ return array(
 		),
 		'description' => array(
 			// This is used for captions in the frontend
-			'l10n_mode' => 'prefixLangTitle',
+			'l10n_mode' => 'mergeIfNotBlank',
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.description',
 			'config' => array(
@@ -204,7 +205,7 @@ return array(
 			)
 		),
 		'alternative' => array(
-			'l10n_mode' => 'prefixLangTitle',
+			'l10n_mode' => 'mergeIfNotBlank',
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.alternative',
 			'config' => array(
