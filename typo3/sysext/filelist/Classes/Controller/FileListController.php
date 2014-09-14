@@ -347,15 +347,30 @@ class FileListController {
 				';
 				// Add "display bigControlPanel" checkbox:
 				if ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableDisplayBigControlPanel') === 'selectable') {
-					$pageContent .= BackendUtility::getFuncCheck($this->id, 'SET[bigControlPanel]', $this->MOD_SETTINGS['bigControlPanel'], '', '', 'id="bigControlPanel"') . '<label for="bigControlPanel"> ' . $GLOBALS['LANG']->getLL('bigControlPanel', TRUE) . '</label><br />';
+					$pageContent .= '<div class="checkbox">' .
+						'<label for="bigControlPanel">' .
+							BackendUtility::getFuncCheck($this->id, 'SET[bigControlPanel]', $this->MOD_SETTINGS['bigControlPanel'], '', '', 'id="bigControlPanel"') .
+							$GLOBALS['LANG']->getLL('bigControlPanel', TRUE) .
+						'</label>' .
+					'</div>';
 				}
 				// Add "display thumbnails" checkbox:
 				if ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableDisplayThumbnails') === 'selectable') {
-					$pageContent .= BackendUtility::getFuncCheck($this->id, 'SET[displayThumbs]', $this->MOD_SETTINGS['displayThumbs'], '', '', 'id="checkDisplayThumbs"') . ' <label for="checkDisplayThumbs">' . $GLOBALS['LANG']->getLL('displayThumbs', TRUE) . '</label><br />';
+					$pageContent .= '<div class="checkbox">' .
+						'<label for="checkDisplayThumbs">' .
+							BackendUtility::getFuncCheck($this->id, 'SET[displayThumbs]', $this->MOD_SETTINGS['displayThumbs'], '', '', 'id="checkDisplayThumbs"') .
+							$GLOBALS['LANG']->getLL('displayThumbs', TRUE) .
+						'</label>' .
+					'</div>';
 				}
 				// Add "clipboard" checkbox:
 				if ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableClipBoard') === 'selectable') {
-					$pageContent .= BackendUtility::getFuncCheck($this->id, 'SET[clipBoard]', $this->MOD_SETTINGS['clipBoard'], '', '', 'id="checkClipBoard"') . ' <label for="checkClipBoard">' . $GLOBALS['LANG']->getLL('clipBoard', TRUE) . '</label>';
+					$pageContent .= '<div class="checkbox">' .
+						'<label for="checkClipBoard">' .
+							BackendUtility::getFuncCheck($this->id, 'SET[clipBoard]', $this->MOD_SETTINGS['clipBoard'], '', '', 'id="checkClipBoard"') .
+							$GLOBALS['LANG']->getLL('clipBoard', TRUE) .
+						'</label>' .
+					'</div>';
 				}
 				$pageContent .= '
 					</div>

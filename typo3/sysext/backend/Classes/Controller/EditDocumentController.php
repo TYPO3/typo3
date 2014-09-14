@@ -1094,9 +1094,13 @@ class EditDocumentController {
 	public function functionMenus() {
 		if ($GLOBALS['BE_USER']->getTSConfigVal('options.enableShowPalettes')) {
 			// Show palettes:
-			return '
-				<!-- Function menu (checkbox for showing all palettes): -->
-				<br />' . BackendUtility::getFuncCheck('', 'SET[showPalettes]', $this->MOD_SETTINGS['showPalettes'], 'alt_doc.php', (GeneralUtility::implodeArrayForUrl('', array_merge($this->R_URL_getvars, array('SET' => ''))) . BackendUtility::getUrlToken('editRecord')), 'id="checkShowPalettes"') . '<label for="checkShowPalettes">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPalettes', TRUE) . '</label>';
+
+			return '<div class="checkbox">' .
+				'<label for="checkShowPalettes">' .
+					BackendUtility::getFuncCheck('', 'SET[showPalettes]', $this->MOD_SETTINGS['showPalettes'], 'alt_doc.php', (GeneralUtility::implodeArrayForUrl('', array_merge($this->R_URL_getvars, array('SET' => ''))) . BackendUtility::getUrlToken('editRecord')), 'id="checkShowPalettes"') .
+					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPalettes', TRUE) .
+				'</label>'.
+			'</div>';
 		} else {
 			return '';
 		}
