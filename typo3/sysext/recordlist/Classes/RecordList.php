@@ -226,6 +226,7 @@ class RecordList {
 		// Loading current page record and checking access:
 		$this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
 		$access = is_array($this->pageinfo) ? 1 : 0;
+
 		// Apply predefined values for hidden checkboxes
 		// Set predefined value for DisplayBigControlPanel:
 		if ($this->modTSconfig['properties']['enableDisplayBigControlPanel'] === 'activated') {
@@ -245,6 +246,7 @@ class RecordList {
 		} elseif ($this->modTSconfig['properties']['enableLocalizationView'] === 'deactivated') {
 			$this->MOD_SETTINGS['localization'] = FALSE;
 		}
+
 		// Initialize the dblist object:
 		/** @var $dblist \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList */
 		$dblist = GeneralUtility::makeInstance('TYPO3\\CMS\\Recordlist\\RecordList\\DatabaseRecordList');
@@ -401,23 +403,39 @@ class RecordList {
 					-->
 					<div id="typo3-listOptions">
 						<form action="" method="post">';
+
 			// Add "display bigControlPanel" checkbox:
 			if ($this->modTSconfig['properties']['enableDisplayBigControlPanel'] === 'selectable') {
-				$this->body .= BackendUtility::getFuncCheck($this->id, 'SET[bigControlPanel]', $this->MOD_SETTINGS['bigControlPanel'], '', $this->table ? '&table=' . $this->table : '', 'id="checkLargeControl"');
-				$this->body .= '<label for="checkLargeControl">' . BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', $GLOBALS['LANG']->getLL('largeControl', TRUE)) . '</label><br />';
+				$this->body .= '<div class="checkbox">' .
+					'<label for="checkLargeControl">' .
+					BackendUtility::getFuncCheck($this->id, 'SET[bigControlPanel]', $this->MOD_SETTINGS['bigControlPanel'], '', $this->table ? '&table=' . $this->table : '', 'id="checkLargeControl"') .
+					BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', $GLOBALS['LANG']->getLL('largeControl', TRUE)) .
+					'</label>' .
+					'</div>';
 			}
+
 			// Add "clipboard" checkbox:
 			if ($this->modTSconfig['properties']['enableClipBoard'] === 'selectable') {
 				if ($dblist->showClipboard) {
-					$this->body .= BackendUtility::getFuncCheck($this->id, 'SET[clipBoard]', $this->MOD_SETTINGS['clipBoard'], '', $this->table ? '&table=' . $this->table : '', 'id="checkShowClipBoard"');
-					$this->body .= '<label for="checkShowClipBoard">' . BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', $GLOBALS['LANG']->getLL('showClipBoard', TRUE)) . '</label><br />';
+					$this->body .= '<div class="checkbox">' .
+						'<label for="checkShowClipBoard">' .
+						BackendUtility::getFuncCheck($this->id, 'SET[clipBoard]', $this->MOD_SETTINGS['clipBoard'], '', $this->table ? '&table=' . $this->table : '', 'id="checkShowClipBoard"') .
+						BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', $GLOBALS['LANG']->getLL('showClipBoard', TRUE)) .
+						'</label>' .
+						'</div>';
 				}
 			}
+
 			// Add "localization view" checkbox:
 			if ($this->modTSconfig['properties']['enableLocalizationView'] === 'selectable') {
-				$this->body .= BackendUtility::getFuncCheck($this->id, 'SET[localization]', $this->MOD_SETTINGS['localization'], '', $this->table ? '&table=' . $this->table : '', 'id="checkLocalization"');
-				$this->body .= '<label for="checkLocalization">' . BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', $GLOBALS['LANG']->getLL('localization', TRUE)) . '</label><br />';
+				$this->body .= '<div class="checkbox">' .
+					'<label for="checkLocalization">' .
+					BackendUtility::getFuncCheck($this->id, 'SET[localization]', $this->MOD_SETTINGS['localization'], '', $this->table ? '&table=' . $this->table : '', 'id="checkLocalization"') .
+					BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', $GLOBALS['LANG']->getLL('localization', TRUE)) .
+					'</label>' .
+					'</div>';
 			}
+
 			$this->body .= '
 						</form>
 					</div>';

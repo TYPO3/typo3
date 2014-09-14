@@ -130,9 +130,23 @@ class ConfigurationView {
 						<label for="search_field">' . $GLOBALS['LANG']->getLL('enterSearchPhrase', TRUE) . '</label>
 						<input type="text" id="search_field" name="search_field" value="' . htmlspecialchars($search_field) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' />
 						<input type="submit" name="search" id="search" value="' . $GLOBALS['LANG']->getLL('search', TRUE) . '" />';
-		$this->content .= BackendUtility::getFuncCheck(0, 'SET[regexsearch]', $this->MOD_SETTINGS['regexsearch'], '', '', 'id="checkRegexsearch"') . '<label for="checkRegexsearch">' . $GLOBALS['LANG']->getLL('useRegExp', TRUE) . '</label>';
-		$this->content .= BackendUtility::getFuncCheck(0, 'SET[fixedLgd]', $this->MOD_SETTINGS['fixedLgd'], '', '', 'id="checkFixedLgd"') . '<label for="checkFixedLgd">' . $GLOBALS['LANG']->getLL('cropLines', TRUE) . '</label>
-						</div>';
+
+		$this->content .= '<div class="checkbox">' .
+			'<label for="checkRegexsearch">' .
+				BackendUtility::getFuncCheck(0, 'SET[regexsearch]', $this->MOD_SETTINGS['regexsearch'], '', '', 'id="checkRegexsearch"') .
+				$GLOBALS['LANG']->getLL('useRegExp', TRUE) .
+			'</label>' .
+			'</div>';
+
+		$this->content .= '<div class="checkbox">' .
+			'<label for="checkFixedLgd">' .
+			BackendUtility::getFuncCheck(0, 'SET[fixedLgd]', $this->MOD_SETTINGS['fixedLgd'], '', '', 'id="checkFixedLgd"') .
+			$GLOBALS['LANG']->getLL('cropLines', TRUE) .
+			'</label>' .
+			'</div>';
+
+		$this->content .= '</div>';
+
 		$this->content .= $this->doc->spacer(5);
 		switch ($this->MOD_SETTINGS['function']) {
 			case 0:

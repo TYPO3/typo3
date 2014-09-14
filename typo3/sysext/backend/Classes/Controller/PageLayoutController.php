@@ -821,13 +821,36 @@ class PageLayoutController {
 		}
 		// Bottom controls (function menus):
 		$q_count = $this->getNumberOfHiddenElements();
-		$h_func_b = BackendUtility::getFuncCheck($this->id, 'SET[tt_content_showHidden]', $this->MOD_SETTINGS['tt_content_showHidden'], 'db_layout.php', '', 'id="checkTt_content_showHidden"') . '<label for="checkTt_content_showHidden">' . (!$q_count ? $GLOBALS['TBE_TEMPLATE']->dfw($GLOBALS['LANG']->getLL('hiddenCE', TRUE)) : $GLOBALS['LANG']->getLL('hiddenCE', TRUE) . ' (' . $q_count . ')') . '</label>';
-		$h_func_b .= '<br />' . BackendUtility::getFuncCheck($this->id, 'SET[showPalettes]', $this->MOD_SETTINGS['showPalettes'], 'db_layout.php', '', 'id="checkShowPalettes"') . '<label for="checkShowPalettes">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPalettes', TRUE) . '</label>';
+
+		$h_func_b = '<div class="checkbox">' .
+			'<label for="checkTt_content_showHidden">' .
+			BackendUtility::getFuncCheck($this->id, 'SET[tt_content_showHidden]', $this->MOD_SETTINGS['tt_content_showHidden'], 'db_layout.php', '', 'id="checkTt_content_showHidden"') .
+			(!$q_count ? $GLOBALS['TBE_TEMPLATE']->dfw($GLOBALS['LANG']->getLL('hiddenCE', TRUE)) : $GLOBALS['LANG']->getLL('hiddenCE', TRUE) . ' (' . $q_count . ')') .
+			'</label>' .
+			'</div>';
+
+		$h_func_b .= '<div class="checkbox">' .
+			'<label for="checkShowPalettes">' .
+			BackendUtility::getFuncCheck($this->id, 'SET[showPalettes]', $this->MOD_SETTINGS['showPalettes'], 'db_layout.php', '', 'id="checkShowPalettes"') .
+			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPalettes', TRUE) .
+			'</label>' .
+			'</div>';
+
 		if (ExtensionManagementUtility::isLoaded('context_help')) {
-			$h_func_b .= '<br />' . BackendUtility::getFuncCheck($this->id, 'SET[showDescriptions]', $this->MOD_SETTINGS['showDescriptions'], 'db_layout.php', '', 'id="checkShowDescriptions"') . '<label for="checkShowDescriptions">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showDescriptions', TRUE) . '</label>';
+			$h_func_b .= '<div class="checkbox">' .
+				'<label for="checkShowDescriptions">' .
+				BackendUtility::getFuncCheck($this->id, 'SET[showDescriptions]', $this->MOD_SETTINGS['showDescriptions'], 'db_layout.php', '', 'id="checkShowDescriptions"') .
+				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showDescriptions', TRUE) .
+				'</label>' .
+				'</div>';
 		}
 		if ($GLOBALS['BE_USER']->isRTE()) {
-			$h_func_b .= '<br />' . BackendUtility::getFuncCheck($this->id, 'SET[disableRTE]', $this->MOD_SETTINGS['disableRTE'], 'db_layout.php', '', 'id="checkDisableRTE"') . '<label for="checkDisableRTE">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.disableRTE', TRUE) . '</label>';
+			$h_func_b .= '<div class="checkbox">' .
+				'<label for="checkDisableRTE">' .
+				BackendUtility::getFuncCheck($this->id, 'SET[disableRTE]', $this->MOD_SETTINGS['disableRTE'], 'db_layout.php', '', 'id="checkDisableRTE"') .
+				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.disableRTE', TRUE) .
+				'</label>' .
+				'</div>';
 		}
 		// Add the function menus to bottom:
 		$content .= $this->doc->section('', $h_func_b, 0, 0);
@@ -898,7 +921,14 @@ class PageLayoutController {
 		foreach ($dblist->activeTables as $table => $value) {
 			if (!isset($dblist->externalTables[$table])) {
 				$q_count = $this->getNumberOfHiddenElements();
-				$h_func_b = BackendUtility::getFuncCheck($this->id, 'SET[tt_content_showHidden]', $this->MOD_SETTINGS['tt_content_showHidden'], 'db_layout.php', '', 'id="checkTt_content_showHidden"') . '<label for="checkTt_content_showHidden">' . (!$q_count ? $GLOBALS['TBE_TEMPLATE']->dfw($GLOBALS['LANG']->getLL('hiddenCE')) : $GLOBALS['LANG']->getLL('hiddenCE') . ' (' . $q_count . ')') . '</label>';
+
+				$h_func_b = '<div class="checkbox">' .
+					'<label for="checkTt_content_showHidden">' .
+					BackendUtility::getFuncCheck($this->id, 'SET[tt_content_showHidden]', $this->MOD_SETTINGS['tt_content_showHidden'], 'db_layout.php', '', 'id="checkTt_content_showHidden"') .
+					(!$q_count ? $GLOBALS['TBE_TEMPLATE']->dfw($GLOBALS['LANG']->getLL('hiddenCE')) : $GLOBALS['LANG']->getLL('hiddenCE') . ' (' . $q_count . ')') .
+					'</label>' .
+					'</div>';
+
 				// Boolean: Display up/down arrows and edit icons for tt_content records
 				$dblist->tt_contentConfig['showCommands'] = 1;
 				// Boolean: Display info-marks or not
