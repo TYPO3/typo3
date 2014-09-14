@@ -670,6 +670,12 @@ ul.x-tab-strip-bottom{
 	border-color:#A2AAB8;
 }
 
+.x-form-field {
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
+}
+
 .x-form-text, textarea.x-form-field{
 	background-color:#fff;
 	background-image: none;
