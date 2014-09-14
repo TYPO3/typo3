@@ -70,6 +70,12 @@ class StyleguideController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	}
 
 	/**
+	/**
+	 * Icons
+	 */
+	public function iconsAction() {
+	}
+
 	 * FlashMessages
 	 */
 	public function flashMessagesAction() {

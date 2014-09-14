@@ -12,6 +12,9 @@
 			<trans-unit id="index" xml:space="preserve">
 				<source>Index</source>
 			</trans-unit>
+			<trans-unit id="icons" xml:space="preserve">
+				<source>Icons</source>
+			</trans-unit>
 			<trans-unit id="forms" xml:space="preserve">
 				<source>Forms</source>
 			</trans-unit>
