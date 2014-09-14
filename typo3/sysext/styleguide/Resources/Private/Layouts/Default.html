@@ -3,7 +3,6 @@
 <f:be.container
 	includeCssFiles="{
 		1: '{f:uri.resource(path:\'Css/styles.css\')}'
-		0: '{f:uri.resource(path:\'Css/cms-override.css\')}'
 	}"
 >
 	<div class="typo3-fullDoc">
@@ -14,6 +13,7 @@
 					<f:be.menus.actionMenu>
 						<f:be.menus.actionMenuItem label="{f:translate(key: 'index')}" controller="Styleguide" action="index" />
 						<f:be.menus.actionMenuItem label="{f:translate(key: 'typography')}" controller="Styleguide" action="typography" />
+						<f:be.menus.actionMenuItem label="{f:translate(key: 'bootstrap')}" controller="Styleguide" action="bootstrap" />
 						<f:be.menus.actionMenuItem label="{f:translate(key: 'trees')}" controller="Styleguide" action="trees" />
 						<f:be.menus.actionMenuItem label="{f:translate(key: 'tables')}" controller="Styleguide" action="tables" />
 						<f:be.menus.actionMenuItem label="{f:translate(key: 'forms')}" controller="Styleguide" action="forms" />

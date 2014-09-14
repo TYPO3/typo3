@@ -70,6 +70,11 @@ class StyleguideController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	}
 
 	/**
+	 * Bootstrap
+	 */
+	public function bootstrapAction() {
+	}
+
 	/**
 	 * Icons
 	 */
@@ -90,7 +95,6 @@ class StyleguideController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 * Helpers
 	 */
 	public function helpersAction() {
-
 	}
 
 	/**
@@ -103,5 +107,3 @@ class StyleguideController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	}
 
 }
-
-?>

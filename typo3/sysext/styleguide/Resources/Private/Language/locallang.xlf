@@ -27,6 +27,9 @@
 			<trans-unit id="buttons" xml:space="preserve">
 				<source>Buttons</source>
 			</trans-unit>
+			<trans-unit id="bootstrap" xml:space="preserve">
+				<source>Bootstrap</source>
+			</trans-unit>
 			<trans-unit id="tables" xml:space="preserve">
 				<source>Tables</source>
 			</trans-unit>

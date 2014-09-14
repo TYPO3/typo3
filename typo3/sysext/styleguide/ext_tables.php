@@ -11,7 +11,7 @@ if (TYPO3_MODE === 'BE') {
 		'styleguide',
 		'',
 		array(
-			'Styleguide' => 'index, typography, trees, tables, buttons, forms, flashMessages, helpers, icons'
+			'Styleguide' => 'index, typography, trees, tables, buttons, forms, flashMessages, bootstrap, helpers, icons'
 		),
 		array(
 			'access' => 'user,group',
