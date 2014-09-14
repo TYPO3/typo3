@@ -70,7 +70,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 	 */
 	public function main() {
 		$menu = BackendUtility::getFuncMenu($this->pObj->id, 'SET[tsconf_parts]', $this->pObj->MOD_SETTINGS['tsconf_parts'], $this->pObj->MOD_MENU['tsconf_parts']);
-		$menu .= '<br /><label for="checkTsconf_alphaSort">' . $GLOBALS['LANG']->getLL('sort_alphabetic', TRUE) . '</label> ' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[tsconf_alphaSort]', $this->pObj->MOD_SETTINGS['tsconf_alphaSort'], '', '', 'id="checkTsconf_alphaSort"');
+		$menu .= '<div class="checkbox"><label for="checkTsconf_alphaSort">' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[tsconf_alphaSort]', $this->pObj->MOD_SETTINGS['tsconf_alphaSort'], '', '', 'id="checkTsconf_alphaSort"') . $GLOBALS['LANG']->getLL('sort_alphabetic', TRUE) . '</label></div>';
 		$menu .= '<br /><br />';
 		$theOutput = $this->pObj->doc->header($GLOBALS['LANG']->getLL('tsconf_title'));
 

@@ -1386,9 +1386,11 @@ class QueryGenerator {
 			if (in_array('order', $enableArr) && !$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableOrderBy']) {
 				$orderByArr = explode(',', $this->extFieldLists['queryOrder']);
 				$orderBy = '';
-				$orderBy .= $this->mkTypeSelect('SET[queryOrder]', $orderByArr[0], '') . '&nbsp;' . BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[queryOrderDesc]', $modSettings['queryOrderDesc'], '', '', 'id="checkQueryOrderDesc"') . '&nbsp;<label for="checkQueryOrderDesc">Descending</label>';
+				$orderBy .= $this->mkTypeSelect('SET[queryOrder]', $orderByArr[0], '') . '&nbsp;'
+					. '<div class="checkbox"><label for="checkQueryOrderDesc">' . BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[queryOrderDesc]', $modSettings['queryOrderDesc'], '', '', 'id="checkQueryOrderDesc"') . 'Descending</label></div>';
 				if ($orderByArr[0]) {
-					$orderBy .= '<BR>' . $this->mkTypeSelect('SET[queryOrder2]', $orderByArr[1], '') . '&nbsp;' . BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[queryOrder2Desc]', $modSettings['queryOrder2Desc'], '', '', 'id="checkQueryOrder2Desc"') . '&nbsp;<label for="checkQueryOrder2Desc">Descending</label>';
+					$orderBy .= '<BR>' . $this->mkTypeSelect('SET[queryOrder2]', $orderByArr[1], '') . '&nbsp;'
+					. '<div class="checkbox"><label for="checkQueryOrder2Desc">' . BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[queryOrder2Desc]', $modSettings['queryOrder2Desc'], '', '', 'id="checkQueryOrder2Desc"') . 'Descending</label></div>';
 				}
 				$out .= '<tr>
 					<td' . $TDparams . '><strong>Order By:</strong></td>

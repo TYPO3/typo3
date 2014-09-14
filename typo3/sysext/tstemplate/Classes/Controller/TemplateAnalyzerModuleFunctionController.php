@@ -138,7 +138,27 @@ class TemplateAnalyzerModuleFunctionController extends \TYPO3\CMS\Backend\Module
 		// Output options
 		$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('displayOptions', TRUE), '', FALSE, TRUE);
 		$addParams = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('template') ? '&template=' . \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('template') : '';
-		$theOutput .= '<div class="tst-analyzer-options">' . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_analyzer_checkLinenum]', $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'], '', $addParams, 'id="checkTs_analyzer_checkLinenum"') . '<label for="checkTs_analyzer_checkLinenum">' . $GLOBALS['LANG']->getLL('lineNumbers', TRUE) . '</label> ' . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_analyzer_checkSyntax]', $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'], '', $addParams, 'id="checkTs_analyzer_checkSyntax"') . '<label for="checkTs_analyzer_checkSyntax">' . $GLOBALS['LANG']->getLL('syntaxHighlight', TRUE) . '</label> ' . (!$this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'] ? \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_analyzer_checkComments]', $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'], '', $addParams, 'id="checkTs_analyzer_checkComments"') . '<label for="checkTs_analyzer_checkComments">' . $GLOBALS['LANG']->getLL('comments', TRUE) . '</label> ' . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_analyzer_checkCrop]', $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'], '', $addParams, 'id="checkTs_analyzer_checkCrop"') . '<label for="checkTs_analyzer_checkCrop">' . $GLOBALS['LANG']->getLL('cropLines', TRUE) . '</label> ' : '') . '</div>';
+		$theOutput .= '<div class="tst-analyzer-options">' .
+			'<div class="checkbox"><label for="checkTs_analyzer_checkLinenum">' .
+				\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_analyzer_checkLinenum]', $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'], '', $addParams, 'id="checkTs_analyzer_checkLinenum"') .
+				$GLOBALS['LANG']->getLL('lineNumbers', TRUE) .
+			'</label></div>' .
+			'<div class="checkbox"><label for="checkTs_analyzer_checkSyntax">' .
+				\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_analyzer_checkSyntax]', $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'], '', $addParams, 'id="checkTs_analyzer_checkSyntax"') .
+				$GLOBALS['LANG']->getLL('syntaxHighlight', TRUE) . '</label> ' .
+			'</label></div>';
+		if (!$this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax']) {
+			$theOutput .=
+				'<div class="checkbox"><label for="checkTs_analyzer_checkComments">' .
+					\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_analyzer_checkComments]', $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'], '', $addParams, 'id="checkTs_analyzer_checkComments"') .
+					$GLOBALS['LANG']->getLL('comments', TRUE) .
+				'</label></div>' .
+				'<div class="checkbox"><label for="checkTs_analyzer_checkCrop">' .
+					\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_analyzer_checkCrop]', $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'], '', $addParams, 'id="checkTs_analyzer_checkCrop"') .
+					$GLOBALS['LANG']->getLL('cropLines', TRUE) .
+				'</label></div>';
+		}
+		$theOutput .=  '</div>';
 		$theOutput .= $this->pObj->doc->spacer(25);
 		// Output Constants
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GET('template')) {

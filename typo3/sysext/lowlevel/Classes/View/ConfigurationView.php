@@ -140,7 +140,7 @@ class ConfigurationView {
 
 		$this->content .= '<div class="checkbox">' .
 			'<label for="checkFixedLgd">' .
-			BackendUtility::getFuncCheck(0, 'SET[fixedLgd]', $this->MOD_SETTINGS['fixedLgd'], '', '', 'id="checkFixedLgd"') .
+				BackendUtility::getFuncCheck(0, 'SET[fixedLgd]', $this->MOD_SETTINGS['fixedLgd'], '', '', 'id="checkFixedLgd"') .
 			$GLOBALS['LANG']->getLL('cropLines', TRUE) .
 			'</label>' .
 			'</div>';

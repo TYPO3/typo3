@@ -158,12 +158,9 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 				TABLE#typo3-objectBrowser A { text-decoration: none; }
 				TABLE#typo3-objectBrowser .comment { color: maroon; font-weight: bold; }
 				.ts-typoscript { width: 100%; }
-				.tsob-menu label, .tsob-menu-row2 label, .tsob-conditions label { padding: 0 5px 0 0; vertical-align: text-top;}
 				.tsob-menu-row2 {margin-top: 10px;}
-				.tsob-conditions {padding: 1px 2px;}
 				.tsob-search-submit {margin-left: 3px; margin-right: 3px;}
 				.tst-analyzer-options { margin:5px 0; }
-				.tst-analyzer-options label {padding-left:5px; vertical-align:text-top; }
 			';
 			// Setting up the context sensitive menu:
 			$this->doc->getContextMenuCode();

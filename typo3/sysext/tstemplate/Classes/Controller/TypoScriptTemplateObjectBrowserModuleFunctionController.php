@@ -372,8 +372,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 			$menu .= '<label for="search_field">' . $GLOBALS['LANG']->getLL('search') . '</label>';
 			$menu .= '<input type="Text" name="search_field" id="search_field" value="' . htmlspecialchars($POST['search_field']) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . '/>';
 			$menu .= '<input type="Submit" name="search" class="tsob-search-submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:search') . '" />';
-			$menu .= BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_regexsearch]', $this->pObj->MOD_SETTINGS['ts_browser_regexsearch'], '', '', 'id="checkTs_browser_regexsearch"');
-			$menu .= '<label for="checkTs_browser_regexsearch">' . $GLOBALS['LANG']->getLL('regExp') . '</label>';
+			$menu .= '<div class="checkbox"><label for="checkTs_browser_regexsearch">' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_regexsearch]', $this->pObj->MOD_SETTINGS['ts_browser_regexsearch'], '', '', 'id="checkTs_browser_regexsearch"') . $GLOBALS['LANG']->getLL('regExp') . '</label></div>';
 			$menu .= '</div>';
 			$theOutput .= $this->pObj->doc->section('', '<nobr>' . $menu . '</nobr>');
 			$theKey = $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType];
@@ -427,12 +426,12 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 </table>';
 			// second row options
 			$menu = '<div class="tsob-menu-row2">';
-			$menu .= BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_showComments]', $this->pObj->MOD_SETTINGS['ts_browser_showComments'], '', '', 'id="checkTs_browser_showComments"');
-			$menu .= '<label for="checkTs_browser_showComments">' . $GLOBALS['LANG']->getLL('displayComments') . '</label>';
-			$menu .= BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_alphaSort]', $this->pObj->MOD_SETTINGS['ts_browser_alphaSort'], '', '', 'id="checkTs_browser_alphaSort"');
-			$menu .= '<label for="checkTs_browser_alphaSort">' . $GLOBALS['LANG']->getLL('sortAlphabetically') . '</label>';
-			$menu .= BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_fixedLgd]', $this->pObj->MOD_SETTINGS['ts_browser_fixedLgd'], '', '', 'id="checkTs_browser_fixedLgd"');
-			$menu .= '<label for="checkTs_browser_fixedLgd">' . $GLOBALS['LANG']->getLL('cropLines') . '</label>';
+			$menu .= '<div class="checkbox"><label for="checkTs_browser_showComments">' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_showComments]', $this->pObj->MOD_SETTINGS['ts_browser_showComments'], '', '', 'id="checkTs_browser_showComments"');
+			$menu .= $GLOBALS['LANG']->getLL('displayComments') . '</label></div>';
+			$menu .= '<div class="checkbox"><label for="checkTs_browser_alphaSort">' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_alphaSort]', $this->pObj->MOD_SETTINGS['ts_browser_alphaSort'], '', '', 'id="checkTs_browser_alphaSort"');
+			$menu .= $GLOBALS['LANG']->getLL('sortAlphabetically') . '</label></div>';
+			$menu .= '<div class="checkbox"><label for="checkTs_browser_fixedLgd">' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_fixedLgd]', $this->pObj->MOD_SETTINGS['ts_browser_fixedLgd'], '', '', 'id="checkTs_browser_fixedLgd"');
+			$menu .= $GLOBALS['LANG']->getLL('cropLines') . '</label></div>';
 			if ($bType == 'setup' && !$this->pObj->MOD_SETTINGS['ts_browser_fixedLgd']) {
 				$menu .= '<br /><br /><label>' . $GLOBALS['LANG']->getLL('displayConstants') . '</label>';
 				$menu .= BackendUtility::getFuncMenu($this->pObj->id, 'SET[ts_browser_const]', $this->pObj->MOD_SETTINGS['ts_browser_const'], $this->pObj->MOD_MENU['ts_browser_const']);
@@ -444,10 +443,11 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('conditions'), '', 0, 1);
 				$out = '';
 				foreach ($tmpl->sections as $key => $val) {
-					$out .= '<div class="tsob-conditions"><input class="checkbox" type="checkbox" name="conditions[' . $key . ']" id="check' . $key . '" value="' . htmlspecialchars($val) . '"' . ($this->pObj->MOD_SETTINGS['tsbrowser_conditions'][$key] ? ' checked' : '') . ' />';
-					$out .= '<label for="check' . $key . '">' . $tmpl->substituteCMarkers(htmlspecialchars($val)) . '</label></div>';
+					$out .= '<div class="checkbox"><label for="check' . $key . '">';
+					$out .= '<input class="checkbox" type="checkbox" name="conditions[' . $key . ']" id="check' . $key . '" value="' . htmlspecialchars($val) . '"' . ($this->pObj->MOD_SETTINGS['tsbrowser_conditions'][$key] ? ' checked' : '') . ' />' . $tmpl->substituteCMarkers(htmlspecialchars($val));
+					$out .= '</label></div>';
 				}
-				$theOutput .=  '<div class="tsob-menu-row2">' . $out . '</div><input type="Submit" name="Submit" value="' . $GLOBALS['LANG']->getLL('setConditions') . '" />';
+				$theOutput .=  '<div class="tsob-menu-row2">' . $out . '</div><input type="submit" name="Submit" value="' . $GLOBALS['LANG']->getLL('setConditions') . '" />';
 			}
 			// Ending section:
 			$theOutput .= $this->pObj->doc->sectionEnd();

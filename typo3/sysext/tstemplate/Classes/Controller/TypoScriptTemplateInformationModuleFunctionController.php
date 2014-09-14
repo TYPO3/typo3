@@ -336,8 +336,8 @@ class TypoScriptTemplateInformationModuleFunctionController extends \TYPO3\CMS\B
 				$outCode = '<textarea name="data[constants]" rows="' . $numberOfRows . '" wrap="off" class="fixed-font enable-tab"' . $this->pObj->doc->formWidth(48, TRUE, 'width:98%;height:70%') . ' class="fixed-font">' . GeneralUtility::formatForTextarea($tplRow['constants']) . '</textarea>';
 				$outCode .= '<input type="Hidden" name="e[constants]" value="1">';
 				// Display "Include TypoScript file content?" checkbox
-				$outCode .= BackendUtility::getFuncCheck($this->pObj->id, 'SET[includeTypoScriptFileContent]', $this->pObj->MOD_SETTINGS['includeTypoScriptFileContent'], '', '&e[constants]=1', 'id="checkIncludeTypoScriptFileContent"');
-				$outCode .= '<label for="checkIncludeTypoScriptFileContent">' . $GLOBALS['LANG']->getLL('includeTypoScriptFileContent') . '</label><br />';
+				$outCode .= '<div class="checkbox"><label for="checkIncludeTypoScriptFileContent">' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[includeTypoScriptFileContent]', $this->pObj->MOD_SETTINGS['includeTypoScriptFileContent'], '', '&e[constants]=1', 'id="checkIncludeTypoScriptFileContent"');
+				$outCode .= $GLOBALS['LANG']->getLL('includeTypoScriptFileContent') . '</label></div><br />';
 				$theOutput .= $this->pObj->doc->spacer(15);
 				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('constants'), '', TRUE);
 				$theOutput .= $this->pObj->doc->sectionEnd() . $outCode;
@@ -367,8 +367,8 @@ class TypoScriptTemplateInformationModuleFunctionController extends \TYPO3\CMS\B
 				$outCode = '<textarea name="data[config]" rows="' . $numberOfRows . '" wrap="off" class="fixed-font enable-tab"' . $this->pObj->doc->formWidth(48, TRUE, 'width:98%;height:70%') . ' class="fixed-font">' . GeneralUtility::formatForTextarea($tplRow['config']) . '</textarea>';
 				$outCode .= '<input type="Hidden" name="e[config]" value="1">';
 				// Display "Include TypoScript file content?" checkbox
-				$outCode .= BackendUtility::getFuncCheck($this->pObj->id, 'SET[includeTypoScriptFileContent]', $this->pObj->MOD_SETTINGS['includeTypoScriptFileContent'], '', '&e[config]=1', 'id="checkIncludeTypoScriptFileContent"');
-				$outCode .= '<label for="checkIncludeTypoScriptFileContent">' . $GLOBALS['LANG']->getLL('includeTypoScriptFileContent') . '</label><br />';
+				$outCode .= '<div class="checkbox"><label for="checkIncludeTypoScriptFileContent">' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[includeTypoScriptFileContent]', $this->pObj->MOD_SETTINGS['includeTypoScriptFileContent'], '', '&e[config]=1', 'id="checkIncludeTypoScriptFileContent"');
+				$outCode .= $GLOBALS['LANG']->getLL('includeTypoScriptFileContent') . '</label></div><br />';
 				$theOutput .= $this->pObj->doc->spacer(15);
 				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('setup'), '', TRUE);
 				$theOutput .= $this->pObj->doc->sectionEnd() . $outCode;
