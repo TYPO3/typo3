@@ -347,8 +347,8 @@ class Query implements QueryInterface {
 	}
 
 	/**
-	 * Performs a logical conjunction of the given constraints. The method takes one or more contraints and concatenates them with a boolean AND.
-	 * It also scepts a single array of constraints to be concatenated.
+	 * Performs a logical conjunction of the given constraints. The method takes one or more constraints and concatenates them with a boolean AND.
+	 * It also accepts a single array of constraints to be concatenated.
 	 *
 	 * @param mixed $constraint1 The first of multiple constraints or an array of constraints.
 	 * @throws Exception\InvalidNumberOfConstraintsException
