@@ -94,12 +94,6 @@ if (TYPO3_MODE === 'BE') {
 				'label' => 'LLL:EXT:setup/mod/locallang.xlf:recursiveDelete',
 				'csh' => 'recursiveDelete'
 			),
-			'simulate' => array(
-				'type' => 'select',
-				'itemsProcFunc' => 'TYPO3\\CMS\\Setup\\Controller\\SetupModuleController->renderSimulateUserSelect',
-				'label' => 'LLL:EXT:setup/mod/locallang.xlf:simulate',
-				'csh' => 'simuser'
-			),
 			'resetConfiguration' => array(
 				'type' => 'button',
 				'label' => 'LLL:EXT:setup/mod/locallang.xlf:resetConfiguration',
@@ -145,6 +139,6 @@ if (TYPO3_MODE === 'BE') {
 		'showitem' => '--div--;LLL:EXT:setup/mod/locallang.xlf:personal_data,realName,email,emailMeAtLogin,password,password2,lang,
 				--div--;LLL:EXT:setup/mod/locallang.xlf:opening,startModule,thumbnailsByDefault,titleLen,
 				--div--;LLL:EXT:setup/mod/locallang.xlf:editFunctionsTab,edit_RTE,edit_docModuleUpload,showHiddenFilesAndFolders,resizeTextareas,resizeTextareas_Flexible,resizeTextareas_MaxHeight,copyLevels,recursiveDelete,resetConfiguration,clearSessionVars,
-				--div--;LLL:EXT:setup/mod/locallang.xlf:adminFunctions,simulate,debugInWindow'
+				--div--;LLL:EXT:setup/mod/locallang.xlf:adminFunctions,debugInWindow'
 	);
 }

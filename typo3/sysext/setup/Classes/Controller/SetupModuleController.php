@@ -105,6 +105,16 @@ class SetupModuleController {
 	 */
 	protected $formProtection;
 
+	/**
+	 * @var string
+	 */
+	protected $simulateSelector = '';
+
+	/**
+	 * @var string
+	 */
+	protected $simUser = '';
+
 	/******************************
 	 *
 	 * Saving data
@@ -364,8 +374,13 @@ class SetupModuleController {
 			}
 			$this->content .= $flashMessage->render();
 		}
+
+		// Render user switch
+		$this->content .= $this->renderSimulateUserSelectAndLabel();
+
 		// Render the menu items
 		$menuItems = $this->renderUserSetup();
+
 		$this->content .= $this->doc->getDynTabMenu($menuItems, 'user-setup', FALSE, FALSE, 1, FALSE, 1, $this->dividers2tabs);
 		$formToken = $this->formProtection->generateToken('BE user setup', 'edit');
 		$this->content .= $this->doc->section('', '<input type="hidden" name="simUser" value="' . $this->simUser . '" />
@@ -419,6 +434,7 @@ class SetupModuleController {
 	 * Render module
 	 *
 	 ******************************/
+
 	/**
 	 * renders the data for all tabs in the user setup and returns
 	 * everything that is needed with tabs and dyntab menu
@@ -671,12 +687,21 @@ class SetupModuleController {
 	}
 
 	/**
-	 * Returns a select with simulate users
+	 * Render simulate user select and label
 	 *
-	 * @return string Complete select as HTML string
+	 * @return string
 	 */
-	public function renderSimulateUserSelect($params, $pObj) {
-		return $pObj->simulateSelector;
+	protected function renderSimulateUserSelectAndLabel() {
+		if ($this->simulateSelector === '') {
+			return '';
+		}
+
+		return '<p>' .
+			'<label for="field_simulate" style="margin-right: 20px;">' .
+			$GLOBALS['LANG']->sL('LLL:EXT:setup/mod/locallang.xlf:simulate') .
+			'</label>' .
+			$this->simulateSelector .
+			'</p>';
 	}
 
 	/**
