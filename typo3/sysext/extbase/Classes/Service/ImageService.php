@@ -65,13 +65,18 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @api
 	 */
 	public function getImageUri(FileInterface $image) {
-		if ($this->environmentService->isEnvironmentInFrontendMode()) {
+		$imageUrl = $image->getPublicUrl();
+
+		// no prefix in case of an already fully qualified URL (having a schema)
+		if (strpos($imageUrl, '://')) {
+			$uriPrefix = '';
+		} elseif ($this->environmentService->isEnvironmentInFrontendMode()) {
 			$uriPrefix = $GLOBALS['TSFE']->absRefPrefix;
 		} else {
 			$uriPrefix = '../';
 		}
 
-		return $uriPrefix . $image->getPublicUrl();
+		return $uriPrefix . $imageUrl;
 	}
 
 	/**
