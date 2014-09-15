@@ -18,8 +18,6 @@
  * @author René Fritz <r.fritz@colorcube.de>
  */
 
-// Set error reporting
-error_reporting(E_ALL & ~(E_STRICT | E_NOTICE | E_DEPRECATED));
 require __DIR__ . '/init.php';
 
 // Make instance:
