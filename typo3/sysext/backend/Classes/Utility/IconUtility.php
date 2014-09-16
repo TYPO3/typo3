@@ -577,7 +577,7 @@ class IconUtility {
 	 * and the correct background-position to show the necessary icon.
 	 *
 	 * If no options or overlays are given, the icon will be cached in
-	 * $priteIconCache.
+	 * $spriteIconCache.
 	 *
 	 * @param string $iconName The name of the icon to fetch
 	 * @param array $options An associative array with additional options and attributes for the tag. by default, the key is the name of the attribute, and the value is the parameter string that is set. However, there are some additional special reserved keywords that can be used as keys: "html" (which is the HTML that will be inside the icon HTML tag), "tagName" (which is an alternative tagName than "span"), and "class" (additional class names that will be merged with the sprite icon CSS classes)
