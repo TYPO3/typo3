@@ -4770,18 +4770,18 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			}
 		} elseif (substr($icon, 0, 3) == '../') {
 			$selIconFile = $this->backPath . GeneralUtility::resolveBackPath($icon);
-			if (file_exists(PATH_site . GeneralUtility::resolveBackPath(substr($icon, 3)))) {
+			if (is_file(PATH_site . GeneralUtility::resolveBackPath(substr($icon, 3)))) {
 				$selIconInfo = getimagesize((PATH_site . GeneralUtility::resolveBackPath(substr($icon, 3))));
 			}
 		} elseif (substr($icon, 0, 4) == 'ext/' || substr($icon, 0, 7) == 'sysext/') {
 			$selIconFile = $this->backPath . $icon;
-			if (file_exists(PATH_typo3 . $icon)) {
+			if (is_file(PATH_typo3 . $icon)) {
 				$selIconInfo = getimagesize(PATH_typo3 . $icon);
 			}
 		} else {
 			$selIconFile = IconUtility::skinImg($this->backPath, 'gfx/' . $icon, '', 1);
 			$iconPath = substr($selIconFile, strlen($this->backPath));
-			if (file_exists(PATH_typo3 . $iconPath)) {
+			if (is_file(PATH_typo3 . $iconPath)) {
 				$selIconInfo = getimagesize(PATH_typo3 . $iconPath);
 			}
 		}
