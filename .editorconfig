@@ -1,0 +1,33 @@
+# EditorConfig is awesome: http://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+charset = utf-8
+
+# Get rid of whitespace to avoid diffs with a bunch of EOL changes
+trim_trailing_whitespace = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+end_of_line = lf
+insert_final_newline = true
+
+# JS-Files
+[*.js]
+indent_style = tab
+indent_size = 4
+
+# PHP-Files
+[*.php]
+indent_style = tab
+indent_size = 4
+
+# MD-Files
+[*.md]
+indent_style = space
+indent_size = 4
+
+# package.json or .travis.yml
+[{package.json,.travis.yml}]
+indent_style = space
+indent_size = 2
