@@ -52,12 +52,6 @@
 .typo3-documentation-list td.icons {
   width: 40px; }
 
-.typo3-documentation-list .icons a {
-  display: none; }
-
-.typo3-documentation-list tr:hover .icons a {
-  display: inline; }
-
 .typo3-documentation-list td.actions {
   width: 140px; }
   .typo3-documentation-list td.actions a {
