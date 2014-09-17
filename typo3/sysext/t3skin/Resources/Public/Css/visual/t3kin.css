@@ -8396,6 +8396,9 @@ table.wrapperTable tr.class-main2 td.palette-header,
 table.wrapperTable1 .class-main12 td.palette-header {
   padding-left: 10px;
 }
+.typo3-TCEforms .palette-header h3 {
+  margin-top: 10px;
+}
 .typo3-TCEforms .bgColor2,
 .typo3-TCEforms tr.bgColor2 td {
   padding-bottom: 5px;
@@ -8478,9 +8481,11 @@ select option.c-divider {
 .typo3-TCEforms td.formField-field {
   display: block;
   position: relative;
+  vertical-align: top;
+}
+div.typo3-TCEforms div.c-tablayer table > tbody > tr > td > table.wrapperTable > tbody > tr > td {
   padding-left: 10px;
   padding-right: 10px;
-  vertical-align: top;
 }
 .typo3-TCEforms .formField,
 .typo3-TCEforms .formField1,
@@ -11294,8 +11299,8 @@ table#typo3-altdoc-header input,
   background: none;
   border: 0;
 }
-.checkbox,
-.checkbox:hover {
+.typo3-TCEforms .checkbox,
+.typo3-TCEforms .checkbox:hover {
   background: #efeff4;
   border: 0;
 }
