@@ -949,13 +949,13 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Search for a metaphone word
 	 *
 	 * @param string $sWord Word to search for
-	 * @return pointer SQL result pointer
+	 * @return \mysqli_result SQL result pointer
 	 * @todo Define visibility
 	 */
 	public function searchMetaphone($sWord) {
 		$wSel = 'IW.metaphone=' . $sWord;
 		$this->wSelClauses[] = $wSel;
-		$res = $this->execPHashListQuery($wSel, ' AND is_stopword=0');
+		return $this->execPHashListQuery($wSel, ' AND is_stopword=0');
 	}
 
 	/**
