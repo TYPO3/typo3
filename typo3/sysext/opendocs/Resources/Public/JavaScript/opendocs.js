@@ -34,6 +34,7 @@ var OpenDocs = Class.create({
 
 			Event.observe($$('#tx-opendocs-menu .toolbar-item')[0], 'click', this.toggleMenu);
 			this.menu = $$('#tx-opendocs-menu .toolbar-item-menu')[0];
+			this.updateNumberOfDocs(-1, true);
 		}, this);
 	},
 
@@ -93,8 +94,9 @@ var OpenDocs = Class.create({
 		if (num < 0) {
 			num = $$('#tx-opendocs-menu tr.opendoc').length;
 		}
-
-		$('tx-opendocs-counter').writeAttribute('value', num);
+		var counter = $('tx-opendocs-counter');
+		counter.update(num);
+		counter.toggle(num > 0);
 	},
 
 	/**
