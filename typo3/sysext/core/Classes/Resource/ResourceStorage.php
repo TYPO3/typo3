@@ -831,23 +831,20 @@ class ResourceStorage implements ResourceStorageInterface {
 	}
 
 	/**
-	 * Checks if a file has the permission to be uploaded to a Folder/Storage.
+	 * Checks if a file/user has the permission to be written to a Folder/Storage.
 	 * If not, throws an exception.
 	 *
-	 * @param string $localFilePath the temporary file name from $_FILES['file1']['tmp_name']
-	 * @param Folder $targetFolder
-	 * @param string $targetFileName the destination file name $_FILES['file1']['name']
+	 * @param Folder $targetFolder The target folder where the file should be written
+	 * @param string $targetFileName The file name which should be written into the storage
 	 * @return void
 	 *
 	 * @throws Exception\InsufficientFolderWritePermissionsException
-	 * @throws Exception\UploadException
 	 * @throws Exception\IllegalFileExtensionException
-	 * @throws Exception\UploadSizeException
 	 * @throws Exception\InsufficientUserPermissionsException
 	 */
-	protected function assureFileAddPermissions($localFilePath, $targetFolder, $targetFileName) {
+	protected function assureFileAddPermissions($targetFolder, $targetFileName) {
 		// Check for a valid file extension
-		if (!$this->checkFileExtensionPermission($targetFileName) || ($localFilePath && !$this->checkFileExtensionPermission($localFilePath))) {
+		if (!$this->checkFileExtensionPermission($targetFileName)) {
 			throw new Exception\IllegalFileExtensionException('Extension of file name is not allowed in "' . $targetFileName . '"!', 1322120271);
 		}
 		// Makes sure the user is allowed to upload
@@ -865,7 +862,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * If not, throws an exception.
 	 *
 	 * @param string $localFilePath the temporary file name from $_FILES['file1']['tmp_name']
-	 * @param Folder $targetFolder
+	 * @param Folder $targetFolder The target folder where the file should be uploaded
 	 * @param string $targetFileName the destination file name $_FILES['file1']['name']
 	 * @param int $uploadedFileSize
 	 * @return void
@@ -887,7 +884,7 @@ class ResourceStorage implements ResourceStorageInterface {
 			unlink($localFilePath);
 			throw new Exception\UploadSizeException('The uploaded file exceeds the size-limit of ' . $maxUploadFileSize . ' bytes', 1322110041);
 		}
-		$this->assureFileAddPermissions($localFilePath, $targetFolder, $targetFileName);
+		$this->assureFileAddPermissions($targetFolder, $targetFileName);
 	}
 
 	/**
@@ -1064,9 +1061,9 @@ class ResourceStorage implements ResourceStorageInterface {
 	/**
 	 * Moves a file from the local filesystem to this storage.
 	 *
-	 * @param string $localFilePath The file on the server's hard disk to add.
-	 * @param Folder $targetFolder The target path, without the fileName
-	 * @param string $targetFileName The fileName. If not set, the local file name is used.
+	 * @param string $localFilePath The file on the server's hard disk to add
+	 * @param Folder $targetFolder The target folder where the file should be added
+	 * @param string $targetFileName The name of the file to be add, If not set, the local file name is used
 	 * @param string $conflictMode possible value are 'cancel', 'replace', 'changeName'
 	 *
 	 * @throws \InvalidArgumentException
@@ -1078,9 +1075,10 @@ class ResourceStorage implements ResourceStorageInterface {
 		if (!file_exists($localFilePath)) {
 			throw new \InvalidArgumentException('File "' . $localFilePath . '" does not exist.', 1319552745);
 		}
-		$this->assureFileAddPermissions($localFilePath, $targetFolder, $targetFileName);
 		$targetFolder = $targetFolder ?: $this->getDefaultFolder();
 		$targetFileName = $this->driver->sanitizeFileName($targetFileName ?: PathUtility::basename($localFilePath));
+
+		$this->assureFileAddPermissions($targetFolder, $targetFileName);
 
 		// We do not care whether the file exists yet because $targetFileName may be changed by an
 		// external slot and only then we should check how to proceed according to $conflictMode
@@ -1503,15 +1501,15 @@ class ResourceStorage implements ResourceStorageInterface {
 	 *
 	 * previously in \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::func_newfile()
 	 *
-	 * @param string $fileName
-	 * @param Folder $targetFolderObject
+	 * @param string $fileName The name of the file to be created
+	 * @param Folder $targetFolderObject The target folder where the file should be created
 	 *
 	 * @throws Exception\IllegalFileExtensionException
 	 * @throws Exception\InsufficientFolderWritePermissionsException
 	 * @return FileInterface The file object
 	 */
 	public function createFile($fileName, Folder $targetFolderObject) {
-		$this->assureFileAddPermissions('', $targetFolderObject, $fileName);
+		$this->assureFileAddPermissions($targetFolderObject, $fileName);
 		$newFileIdentifier = $this->driver->createFile($fileName, $targetFolderObject->getIdentifier());
 		$this->emitPostFileCreateSignal($newFileIdentifier, $targetFolderObject);
 		return ResourceFactory::getInstance()->getFileObjectByStorageAndIdentifier($this->getUid(), $newFileIdentifier);
