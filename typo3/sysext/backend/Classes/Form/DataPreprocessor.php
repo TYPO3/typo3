@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Lang\LanguageService;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
  * Class for getting and transforming data for display in backend forms (TCEforms)
@@ -181,6 +182,8 @@ class DataPreprocessor {
 				}
 			}
 		}
+
+		$this->emitFetchRecordPostProcessingSignal();
 	}
 
 	/**
@@ -930,6 +933,24 @@ class DataPreprocessor {
 	 */
 	protected function getLanguageService() {
 		return $GLOBALS['LANG'];
+	}
+
+	/**
+	 * This method is called at the very end of fetchRecord(). It emits a signal
+	 * that can be used to e.g. manipulate the regTableItems_data array to display
+	 * that manipulated data in TCEForms.
+	 *
+	 * @return void
+	 */
+	protected function emitFetchRecordPostProcessingSignal() {
+		$this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Backend\Form\DataPreprocessor::class, 'fetchRecordPostProcessing', array($this));
+	}
+
+	/**
+	 * @return Dispatcher
+	 */
+	protected function getSignalSlotDispatcher() {
+		return GeneralUtility::makeInstance(Dispatcher::class);
 	}
 
 }
