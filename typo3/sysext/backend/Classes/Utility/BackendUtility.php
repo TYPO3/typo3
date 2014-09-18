@@ -4132,6 +4132,17 @@ class BackendUtility {
 				}
 			}
 		}
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['countVersionsOfRecordsOnPage'])) {
+			$reference = NULL;
+			$parameters = array(
+				'workspace' => 'workspace',
+				'pageId' => $pageId,
+				'versions' => &$output,
+			);
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['countVersionsOfRecordsOnPage'] as $hookFunction) {
+				GeneralUtility::callUserFunction($hookFunction, $parameters, $reference);
+			}
+		}
 		return $output;
 	}
 
