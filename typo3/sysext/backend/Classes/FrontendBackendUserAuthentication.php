@@ -188,7 +188,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 			}
 		}
 		// Check SSL (https)
-		if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] !== 3) {
+		if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] && (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] !== 3) {
 			if (!GeneralUtility::getIndpEnv('TYPO3_SSL')) {
 				return FALSE;
 			}

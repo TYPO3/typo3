@@ -847,7 +847,7 @@ abstract class AbstractUserAuthentication {
 			if ($this->writeDevLog && !$activeLogin) {
 				GeneralUtility::devLog('User ' . $tempuser[$this->username_column] . ' authenticated from ' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . ' (' . GeneralUtility::getIndpEnv('REMOTE_HOST') . ')', 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication', -1);
 			}
-			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] == 3 && $this->user_table == 'be_users') {
+			if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] === 3 && $this->user_table === 'be_users') {
 				$requestStr = substr(GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT'), strlen(GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir));
 				$backendScript = \TYPO3\CMS\Backend\Utility\BackendUtility::getBackendScript();
 				if ($requestStr == $backendScript && GeneralUtility::getIndpEnv('TYPO3_SSL')) {
