@@ -914,9 +914,14 @@ class AbstractMenuContentObject {
 	 * @return array
 	 */
 	protected function removeInaccessiblePages(array $pages) {
-		return array_filter($pages, function($page) {
-			return $this->filterMenuPages($page, $this->getBannedUids(), $page['doktype'] === PageRepository::DOKTYPE_SPACER);
-		});
+		$banned = $this->getBannedUids();
+		$filteredPages = array();
+		foreach ($pages as $aPage) {
+			if ($this->filterMenuPages($aPage, $banned, $aPage['doktype'] === PageRepository::DOKTYPE_SPACER)) {
+				$filteredPages[] = $aPage;
+			}
+		}
+		return $filteredPages;
 	}
 
 	/**
