@@ -2813,7 +2813,8 @@ Connection: close
 				$currentPath = substr($currentPath, 0, $separatorPosition);
 			} while (!is_dir($currentPath) && $separatorPosition !== FALSE);
 			$result = @mkdir($fullDirectoryPath, $permissionMask, TRUE);
-			if (!$result) {
+			// Check existence of directory again to avoid race condition. Directory could have get created by another process between previous is_dir() and mkdir()
+			if (!$result && !@is_dir($fullDirectoryPath)) {
 				throw new \RuntimeException('Could not create directory "' . $fullDirectoryPath . '"!', 1170251401);
 			}
 		}
