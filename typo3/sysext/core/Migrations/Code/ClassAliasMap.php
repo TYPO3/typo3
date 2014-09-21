@@ -111,7 +111,6 @@ return array(
 	't3lib_mail_Message' => 'TYPO3\\CMS\\Core\\Mail\\MailMessage',
 	't3lib_mail_MboxTransport' => 'TYPO3\\CMS\\Core\\Mail\\MboxTransport',
 	't3lib_mail_Rfc822AddressesParser' => 'TYPO3\\CMS\\Core\\Mail\\Rfc822AddressesParser',
-	't3lib_mail_SwiftMailerAdapter' => 'TYPO3\\CMS\\Core\\Mail\\SwiftMailerAdapter',
 	't3lib_message_AbstractMessage' => 'TYPO3\\CMS\\Core\\Messaging\\AbstractMessage',
 	't3lib_message_AbstractStandaloneMessage' => 'TYPO3\\CMS\\Core\\Messaging\\AbstractStandaloneMessage',
 	't3lib_message_ErrorpageMessage' => 'TYPO3\\CMS\\Core\\Messaging\\ErrorpageMessage',

@@ -4600,51 +4600,6 @@ class TypoScriptFrontendController {
 	}
 
 	/**
-	 * Substitute function for the PHP mail() function.
-	 * It will encode the email with the setting of TS 'config.notification_email_encoding' (base64 or none)
-	 * It will also find all links to http:// in the text and substitute with a shorter link using the redirect feature which stores the long link in the database. Depends on configuration in TS 'config.notification_email_urlmode'
-	 *
-	 * @param string $email recipient email address (or list of)
-	 * @param string $subject The subject
-	 * @param string $message The message
-	 * @param string $headers The headers (string with lines)
-	 * @return void
-	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::plainMailEncoded()
-	 * @todo Define visibility
-	 * @deprecated since 6.1, will be removed two versions later - Use \TYPO3\CMS\Core\Mail\Mailer instead
-	 */
-	public function plainMailEncoded($email, $subject, $message, $headers = '') {
-		GeneralUtility::logDeprecatedFunction();
-		// '76', 'all', ''
-		$urlmode = $this->config['config']['notification_email_urlmode'];
-		if ($urlmode) {
-			$message = GeneralUtility::substUrlsInPlainText($message, $urlmode);
-		}
-		$encoding = $this->config['config']['notification_email_encoding'] ?: '';
-		$charset = $this->renderCharset;
-		$convCharset = FALSE;
-		// do we need to convert mail data?
-		// Respect config.notification_email_charset if it was set
-		if ($this->config['config']['notification_email_charset']) {
-			$charset = $this->csConvObj->parse_charset($this->config['config']['notification_email_charset']);
-			if ($charset != $this->renderCharset) {
-				$convCharset = TRUE;
-			}
-		} elseif ($this->metaCharset != $this->renderCharset) {
-			// Use metaCharset for mail if different from renderCharset
-			$charset = $this->metaCharset;
-			$convCharset = TRUE;
-		}
-		if ($convCharset) {
-			$email = $this->csConvObj->conv($email, $this->renderCharset, $charset);
-			$subject = $this->csConvObj->conv($subject, $this->renderCharset, $charset);
-			$message = $this->csConvObj->conv($message, $this->renderCharset, $charset);
-			$headers = $this->csConvObj->conv($headers, $this->renderCharset, $charset);
-		}
-		GeneralUtility::plainMailEncoded($email, $subject, $message, $headers, $encoding, $charset);
-	}
-
-	/**
 	 * Returns a unique id to be used as a XML ID (in HTML / XHTML mode)
 	 *
 	 * @param string $desired The desired id. If already used it is suffixed with a number

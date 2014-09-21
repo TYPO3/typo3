@@ -35,54 +35,6 @@ class MailUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		parent::tearDown();
 	}
 
-	//////////////////////////
-	// Tests concerning mail
-	//////////////////////////
-	/**
-	 * @test
-	 */
-	public function mailCallsHook() {
-		$this->doMailCallsHook();
-	}
-
-	/**
-	 * @test
-	 */
-	public function mailCallsHookWithDefaultMailFrom() {
-		$this->doMailCallsHook('no-reply@localhost', 'TYPO3 Mailer');
-	}
-
-	/**
-	 * Method called from tests mailCallsHook() and mailCallsHookWithDefaultMailFrom().
-	 */
-	protected function doMailCallsHook($fromAddress = '', $fromName = '') {
-		// Backup configuration
-		$mailConfigurationBackup = $GLOBALS['TYPO3_CONF_VARS']['MAIL'];
-		$GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'] = $fromAddress;
-		$GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName'] = $fromName;
-		$to = 'john@example.com';
-		$subject = 'Good news everybody!';
-		$messageBody = 'The hooks works!';
-		$additionalHeaders = 'Reply-to: jane@example.com';
-		$additionalParameters = '-f postmaster@example.com';
-		$fakeThis = FALSE;
-		$additionalHeadersExpected = $additionalHeaders;
-		if ($fromAddress !== '' && $fromName !== '') {
-			$additionalHeadersExpected .= LF . sprintf('From: "%s" <%s>', $fromName, $fromAddress);
-		}
-		$mockMailer = $this->getMock('TYPO3\\CMS\\Core\\Mail\\MailerAdapterInterface', array('mail'));
-		$mockClassName = get_class($mockMailer);
-		\TYPO3\CMS\Core\Utility\GeneralUtility::addInstance($mockClassName, $mockMailer);
-		$mockMailer->expects($this->once())
-			->method('mail')
-			->with($to, $subject, $messageBody, $additionalHeadersExpected, $additionalParameters, $fakeThis)
-			->will($this->returnValue(TRUE));
-		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/utility/class.t3lib_utility_mail.php']['substituteMailDelivery'] = array($mockClassName);
-		\TYPO3\CMS\Core\Utility\MailUtility::mail($to, $subject, $messageBody, $additionalHeaders, $additionalParameters);
-		// Restore configuration
-		$GLOBALS['TYPO3_CONF_VARS']['MAIL'] = $mailConfigurationBackup;
-	}
-
 	/**
 	 * @test
 	 */

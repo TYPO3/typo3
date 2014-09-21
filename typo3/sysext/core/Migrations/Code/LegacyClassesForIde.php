@@ -1214,11 +1214,6 @@ class t3lib_mail_Rfc822AddressesParser extends \TYPO3\CMS\Core\Mail\Rfc822Addres
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class t3lib_mail_SwiftMailerAdapter extends \TYPO3\CMS\Core\Mail\SwiftMailerAdapter {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
 abstract class t3lib_message_AbstractMessage extends \TYPO3\CMS\Core\Messaging\AbstractMessage {}
 
 /**
