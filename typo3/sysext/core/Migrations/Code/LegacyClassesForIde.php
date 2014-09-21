@@ -434,21 +434,6 @@ class frontendDoc extends \TYPO3\CMS\Backend\Template\FrontendDocumentTemplate {
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class mediumDoc extends \TYPO3\CMS\Backend\Template\MediumDocumentTemplate {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class smallDoc extends \TYPO3\CMS\Backend\Template\SmallDocumentTemplate {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class noDoc extends \TYPO3\CMS\Backend\Template\StandardDocumentTemplate {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
 interface backend_cacheActionsHook extends \TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookInterface {}
 
 /**
