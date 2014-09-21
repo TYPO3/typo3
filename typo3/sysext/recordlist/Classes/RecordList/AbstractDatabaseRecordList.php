@@ -477,7 +477,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 					</tr>
 					<tr>
 						<td><label for="showLimit">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showRecords', TRUE) . ':</label></td>
-						<td colspan="3"><input type="text" name="showLimit" id="showLimit" value="' . htmlspecialchars(($this->showLimit ? $this->showLimit : '')) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' /></td>
+						<td colspan="3"><input type="number" name="showLimit" id="showLimit" value="' . htmlspecialchars(($this->showLimit ? $this->showLimit : '')) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(5) . ' /></td>
 					</tr>
 				</table>
 			' . $formElements[1] . '</div>';
