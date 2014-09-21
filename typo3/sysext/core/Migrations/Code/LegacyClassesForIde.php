@@ -2799,11 +2799,6 @@ class Tx_Extbase_Service_FlexFormService extends \TYPO3\CMS\Extbase\Service\Flex
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class Tx_Extbase_Service_TypeHandlingService extends \TYPO3\CMS\Extbase\Service\TypeHandlingService {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
 class Tx_Extbase_Service_TypoScriptService extends \TYPO3\CMS\Extbase\Service\TypoScriptService {}
 
 /**

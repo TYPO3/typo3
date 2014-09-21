@@ -83,7 +83,6 @@ class DataMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 		/** @var AccessibleObjectInterface|\TYPO3\CMS\Extbase\Reflection\ClassSchema $classSchema */
 		$classSchema = $this->getAccessibleMock('TYPO3\CMS\Extbase\Reflection\ClassSchema', array('dummy'), array($classNameWithNS));
-		$classSchema->_set('typeHandlingService', new \TYPO3\CMS\Extbase\Service\TypeHandlingService());
 		$classSchema->addProperty('pid', 'integer');
 		$classSchema->addProperty('uid', 'integer');
 		$classSchema->addProperty('firstProperty', 'string');
@@ -174,11 +173,9 @@ class DataMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		eval('namespace ' . __NAMESPACE__ . '; class ' . $className2 . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity { }');
 		$child = new $className2WithNS();
 		$classSchema2 = $this->getAccessibleMock('TYPO3\CMS\Extbase\Reflection\ClassSchema', array('dummy'), array($className2WithNS));
-		$classSchema2->_set('typeHandlingService', new \TYPO3\CMS\Extbase\Service\TypeHandlingService());
 
 		/** @var \TYPO3\CMS\Extbase\Reflection\ClassSchema|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject $classSchema1 */
 		$classSchema1 = $this->getAccessibleMock('TYPO3\CMS\Extbase\Reflection\ClassSchema', array('dummy'), array($classNameWithNS));
-		$classSchema1->_set('typeHandlingService', new \TYPO3\CMS\Extbase\Service\TypeHandlingService());
 		$classSchema1->addProperty('relationProperty', $className2WithNS);
 		$identifier = 1;
 

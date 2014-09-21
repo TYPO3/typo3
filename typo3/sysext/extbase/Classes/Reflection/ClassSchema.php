@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Extbase\Reflection;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
+
 /**
  * A class schema
  *
@@ -69,12 +72,6 @@ class ClassSchema {
 	protected $identityProperties = array();
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Service\TypeHandlingService
-	 * @inject
-	 */
-	protected $typeHandlingService;
-
-	/**
 	 * Constructs this class schema
 	 *
 	 * @param string $className Name of the class this schema is referring to
@@ -102,7 +99,7 @@ class ClassSchema {
 	 * @return void
 	 */
 	public function addProperty($name, $type, $lazy = FALSE, $cascade = '') {
-		$type = $this->typeHandlingService->parseType($type);
+		$type = TypeHandlingUtility::parseType($type);
 		$this->properties[$name] = array(
 			'type' => $type['type'],
 			'elementType' => $type['elementType'],

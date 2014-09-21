@@ -268,7 +268,6 @@ return array(
 	'Tx_Extbase_Service_CacheService' => 'TYPO3\\CMS\\Extbase\\Service\\CacheService',
 	'Tx_Extbase_Service_ExtensionService' => 'TYPO3\\CMS\\Extbase\\Service\\ExtensionService',
 	'Tx_Extbase_Service_FlexFormService' => 'TYPO3\\CMS\\Extbase\\Service\\FlexFormService',
-	'Tx_Extbase_Service_TypeHandlingService' => 'TYPO3\\CMS\\Extbase\\Service\\TypeHandlingService',
 	'Tx_Extbase_Service_TypoScriptService' => 'TYPO3\\CMS\\Extbase\\Service\\TypoScriptService',
 	'Tx_Extbase_SignalSlot_Dispatcher' => 'TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher',
 	'Tx_Extbase_SignalSlot_Exception_InvalidSlotException' => 'TYPO3\\CMS\\Extbase\\SignalSlot\\Exception\\InvalidSlotException',

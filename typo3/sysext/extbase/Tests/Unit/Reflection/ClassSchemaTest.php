@@ -36,7 +36,6 @@ class ClassSchemaTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		/** @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject $objectManager */
 		$objectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		$mockClassSchema = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Reflection\\ClassSchema', array('dummy'), array('Foo\\Bar\\Domain\\Model\\' . $className));
-		$mockClassSchema->_set('typeHandlingService', $this->getMock('TYPO3\\CMS\\Extbase\\Service\\TypeHandlingService'));
 		$objectManager->expects($this->once())->method('get')->will($this->returnValue($mockClassSchema));
 
 		/** @var \TYPO3\CMS\Extbase\Reflection\ReflectionService $service */
@@ -61,7 +60,6 @@ class ClassSchemaTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		/** @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject $objectManager */
 		$objectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		$mockClassSchema = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Reflection\\ClassSchema', array('dummy'), array('Foo_Bar_Domain_Model_' . $className));
-		$mockClassSchema->_set('typeHandlingService', $this->getMock('TYPO3\\CMS\\Extbase\\Service\\TypeHandlingService'));
 		$objectManager->expects($this->once())->method('get')->will($this->returnValue($mockClassSchema));
 
 		$service = $this->getAccessibleMock('TYPO3\CMS\Extbase\Reflection\ReflectionService', array('dummy'));
