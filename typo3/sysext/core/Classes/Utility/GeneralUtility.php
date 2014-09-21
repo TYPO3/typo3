@@ -4084,23 +4084,6 @@ Connection: close
 	}
 
 	/**
-	 * Loads the $GLOBALS['TCA'] (Table Configuration Array) for the $table
-	 *
-	 * Requirements:
-	 * 1) must be configured table (the ctrl-section configured),
-	 * 2) columns must not be an array (which it is always if whole table loaded), and
-	 * 3) there is a value for dynamicConfigFile (filename in typo3conf)
-	 *
-	 * @param string $table Table name for which to load the full TCA array part into $GLOBALS['TCA']
-	 * @return void
-	 * @deprecated since 6.1, will be removed two versions later
-	 */
-	static public function loadTCA($table) {
-		// This method is obsolete, full TCA is always loaded in all context except eID
-		static::logDeprecatedFunction();
-	}
-
-	/**
 	 * Looks for a sheet-definition in the input data structure array. If found it will return the data structure for the sheet given as $sheet (if found).
 	 * If the sheet definition is in an external file that file is parsed and the data structure inside of that is returned.
 	 *

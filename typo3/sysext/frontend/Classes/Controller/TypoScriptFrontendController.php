@@ -2640,45 +2640,6 @@ class TypoScriptFrontendController {
 	 *******************************************/
 
 	/**
-	 * Get the compressed $GLOBALS['TCA'] array for use in the front-end
-	 * A compressed $GLOBALS['TCA'] array holds only the ctrl- and feInterface-part for each table.
-	 * But the column-definitions are omitted in order to save some memory and be more efficient.
-	 * Operates on the global variable, $TCA
-	 *
-	 * @return void
-	 * @deprecated since 6,1, will be removed in two versions.
-	 */
-	public function getCompressedTCarray() {
-		// Full TCA is always loaded during bootstrap in FE, this method is obsolete.
-		GeneralUtility::logDeprecatedFunction();
-	}
-
-	/**
-	 * Includes TCA definitions from loaded extensions (ext_tables.php files).
-	 * Normally in the frontend only a part of the global $TCA array is loaded,
-	 * namely the "ctrl" part. Thus it doesn't take up too much memory. To load
-	 * full TCA for the table, use GeneralUtility::loadTCA($tableName)
-	 * after calling this function.
-	 *
-	 * @param integer $TCAloaded Probably, keep hands of this value. Just don't set it.
-	 * @return void
-	 * @see getCompressedTCarray()
-	 * @deprecated since 6.1, will be removed in two versions. Obsolete in regular frontend, eid scripts should use \TYPO3\CMS\Frontend\Utility\EidUtility::initTCA()
-	 */
-	public function includeTCA($TCAloaded = 1) {
-		// Full TCA is always loaded during bootstrap in FE, this method is obsolete.
-		GeneralUtility::logDeprecatedFunction();
-
-		// Compatibility layer:
-		// The if below is NOT true in usual frontend (non eid) context, TCA is loaded by bootstrap.
-		// If an eid script calls this method to load TCA, use
-		// \TYPO3\CMS\Frontend\Utility\EidUtility::initTCA() instead.
-		if (!isset($GLOBALS['TCA']['pages'])) {
-			\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadCachedTca();
-		}
-	}
-
-	/**
 	 * Setting the language key that will be used by the current page.
 	 * In this function it should be checked, 1) that this language exists, 2) that a page_overlay_record exists, .. and if not the default language, 0 (zero), should be set.
 	 *
