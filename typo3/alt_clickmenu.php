@@ -28,14 +28,5 @@
 require __DIR__ . '/init.php';
 
 $clickMenuController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\ClickMenuController');
-
-/**
- * Include files for extra click menu options
- * @deprecated since 6.1, will be removed 2 versions later
- */
-foreach ($SOBE->include_once as $INC_FILE) {
-	include_once $INC_FILE;
-}
-
 $clickMenuController->main();
 $clickMenuController->printContent();

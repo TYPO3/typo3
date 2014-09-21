@@ -56,13 +56,6 @@ class ClickMenuController {
 	 */
 	public $doc;
 
-	/**
-	 * Files to include_once() - set in init() function
-	 *
-	 * @deprecated since 6.1, will be removed 2 versions later
-	 */
-	public $include_once = array();
-
 	// Internal array of classes for extending the clickmenu
 	/**
 	 * @todo Define visibility
@@ -100,18 +93,7 @@ class ClickMenuController {
 		}
 		// Setting internal array of classes for extending the clickmenu:
 		$this->extClassArray = $GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses'];
-		// Traversing that array and setting files for inclusion:
-		// @deprecated since 6.1, will be removed 2 versions later
-		if (is_array($this->extClassArray)) {
-			foreach ($this->extClassArray as $extClassConf) {
-				if (isset($extClassConf['path'])) {
-					GeneralUtility::deprecationLog(
-						'$GLOBALS[\'TBE_MODULES_EXT\'][\'xMOD_alt_clickmenu\'][\'extendCMclasses\'][\'path\'] option is not needed anymore. The autoloader takes care of loading the class.'
-					);
-					$this->include_once[] = $extClassConf['path'];
-				}
-			}
-		}
+
 		// Initialize template object
 		if (!$this->ajax) {
 			$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
