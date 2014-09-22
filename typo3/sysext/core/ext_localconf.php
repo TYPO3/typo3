@@ -29,3 +29,8 @@ $signalSlotDispatcher->connect(
 unset($signalSlotDispatcher);
 
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['dumpFile'] = 'EXT:core/Resources/PHP/FileDumpEID.php';
+
+/** @var \TYPO3\CMS\Core\Resource\Rendering\RendererRegistry $rendererRegistry */
+$rendererRegistry = \TYPO3\CMS\Core\Resource\Rendering\RendererRegistry::getInstance();
+$rendererRegistry->registerRendererClass('TYPO3\\CMS\\Core\\Resource\\Rendering\\AudioTagRenderer');
+$rendererRegistry->registerRendererClass('TYPO3\\CMS\\Core\\Resource\\Rendering\\VideoTagRenderer');
