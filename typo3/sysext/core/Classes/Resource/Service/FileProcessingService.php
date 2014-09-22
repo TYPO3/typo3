@@ -101,14 +101,8 @@ class FileProcessingService {
 	 *
 	 * @param Resource\ProcessedFile $processedFile
 	 * @param Resource\ResourceStorage $targetStorage The storage to put the processed file into
-	 *
-	 * @throws \RuntimeException
 	 */
 	protected function process(Resource\ProcessedFile $processedFile, Resource\ResourceStorage $targetStorage) {
-		$targetFolder = $targetStorage->getProcessingFolder();
-		if (!is_object($targetFolder)) {
-			throw new \RuntimeException('Could not get processing folder for storage ' . $this->storage->getName(), 1350514301);
-		}
 
 		// We only have to trigger the file processing if the file either is new, does not exist or the
 		// original file has changed since the last processing run (the last case has to trigger a reprocessing

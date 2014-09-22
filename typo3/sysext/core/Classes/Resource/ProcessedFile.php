@@ -113,7 +113,7 @@ class ProcessedFile extends AbstractFile {
 	 */
 	public function __construct(File $originalFile, $taskType, array $processingConfiguration, array $databaseRow = NULL) {
 		$this->originalFile = $originalFile;
-		$this->storage = $originalFile->getStorage();
+		$this->storage = $originalFile->getStorage()->getProcessingFolder()->getStorage();
 		$this->taskType = $taskType;
 		$this->processingConfiguration = $processingConfiguration;
 		if (is_array($databaseRow)) {
@@ -177,8 +177,8 @@ class ProcessedFile extends AbstractFile {
 		if ($this->identifier === NULL) {
 			throw new \RuntimeException('Cannot update original file!', 1350582054);
 		}
-		// @todo this should be more generic (in fact it only works for local file paths)
-		$addedFile = $this->storage->updateProcessedFile($filePath, $this);
+		$processingFolder = $this->originalFile->getStorage()->getProcessingFolder();
+		$addedFile = $this->storage->updateProcessedFile($filePath, $this, $processingFolder);
 
 		// Update some related properties
 		$this->identifier = $addedFile->getIdentifier();
@@ -454,7 +454,7 @@ class ProcessedFile extends AbstractFile {
 		}
 
 		// hash does not match
-		if (array_key_exists('checksum', $this->properties) && $this->calculateChecksum() !== $this->properties['checksum'])  {
+		if (array_key_exists('checksum', $this->properties) && $this->calculateChecksum() !== $this->properties['checksum']) {
 			$fileMustBeRecreated = TRUE;
 		}
 

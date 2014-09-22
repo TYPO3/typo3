@@ -426,6 +426,9 @@
 			<trans-unit id="sys_file_storage.processingfolder" xml:space="preserve">
 				<source>Folder for manipulated and temporary images etc.</source>
 			</trans-unit>
+			<trans-unit id="sys_file_storage.processingfolder.placeholder" xml:space="preserve">
+				<source>_processed_ or 1:/processed_files_storage_x</source>
+			</trans-unit>
 			<trans-unit id="sys_file_storage.driver" xml:space="preserve">
 				<source>Driver</source>
 			</trans-unit>

@@ -87,7 +87,7 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.processingfolder',
 			'config' => array(
 				'type' => 'input',
-				'placeholder' => \TYPO3\CMS\Core\Resource\ResourceStorage::DEFAULT_ProcessingFolder,
+				'placeholder' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.processingfolder.placeholder',
 				'size' => '20'
 			)
 		),

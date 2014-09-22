@@ -17,11 +17,17 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\Folder;
 
 /**
  * Testcase for the ProcessedFile class of the TYPO3 FAL
  */
 class ProcessedFileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+
+	/**
+	 * @var \PHPUnit_Framework_MockObject_MockObject|Folder
+	 */
+	protected $folderMock;
 
 	/**
 	 * @var \PHPUnit_Framework_MockObject_MockObject|ResourceStorage
@@ -39,6 +45,11 @@ class ProcessedFileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected function setUp() {
 		$this->storageMock = $this->getMock(ResourceStorage::class, array(), array(), '', FALSE);
 		$this->storageMock->expects($this->any())->method('getUid')->will($this->returnValue(5));
+
+		$this->folderMock = $this->getMock(Folder::class, array(), array(), '', FALSE);
+		$this->folderMock->expects($this->any())->method('getStorage')->willReturn($this->storageMock);
+
+		$this->storageMock->expects($this->any())->method('getProcessingFolder')->willReturn($this->folderMock);
 
 		$this->databaseRow = array(
 			'uid' => '1234567',
