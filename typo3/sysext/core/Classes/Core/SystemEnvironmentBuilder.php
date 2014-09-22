@@ -378,7 +378,7 @@ class SystemEnvironmentBuilder {
 		// Find out if path is relative or not
 		$isRelativePath = FALSE;
 		if (TYPO3_OS === 'WIN') {
-			if (!preg_match('/^([A-Z]:)?\\\\/', $scriptPath)) {
+			if (!preg_match('/^([a-zA-Z]:)?\\\\/', $scriptPath)) {
 				$isRelativePath = TRUE;
 			}
 		} else {
