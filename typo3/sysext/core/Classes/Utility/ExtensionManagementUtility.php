@@ -1854,19 +1854,6 @@ tt_content.' . $key . $prefix . ' {
 	}
 
 	/**
-	 * Returns TRUE if configuration files in typo3conf/ are writable
-	 *
-	 * @return boolean TRUE if at least one configuration file in typo3conf/ is writable
-	 * @internal
-	 * @deprecated since 6.1, will be removed in two versions
-	 */
-	static public function isLocalconfWritable() {
-		GeneralUtility::logDeprecatedFunction();
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')
-			->canWriteConfiguration();
-	}
-
-	/**
 	 * Remove cache files from php code cache, grouped by 'system'
 	 *
 	 * This removes the following cache entries:
