@@ -22,7 +22,7 @@ namespace TYPO3\CMS\Core\Resource;
 class StorageRepository extends AbstractRepository {
 
 	/**
-	 * @var null|array‚
+	 * @var NULL|array‚
 	 */
 	protected static $storageRowCache = NULL;
 
@@ -68,12 +68,12 @@ class StorageRepository extends AbstractRepository {
 	/**
 	 * @param integer $uid
 	 *
-	 * @return null|ResourceStorage
+	 * @return NULL|ResourceStorage
 	 */
 	public function findByUid($uid) {
 		$this->initializeLocalCache();
 		if (isset(self::$storageRowCache[$uid])) {
-			return  $this->factory->getStorageObject($uid, self::$storageRowCache[$uid]);
+			return $this->factory->getStorageObject($uid, self::$storageRowCache[$uid]);
 		}
 		return NULL;
 	}

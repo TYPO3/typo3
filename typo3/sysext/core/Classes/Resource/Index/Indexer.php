@@ -143,7 +143,7 @@ class Indexer {
 	protected function detectChangedFilesInStorage(array $fileIdentifierArray) {
 		foreach ($fileIdentifierArray as $fileIdentifier) {
 			// skip processed files
-			if (strpos($fileIdentifier, $this->storage->getProcessingFolder()->getIdentifier()) === 0) {
+			if ($this->storage->isWithinProcessingFolder($fileIdentifier)) {
 				continue;
 			}
 			// Get the modification time for file-identifier from the storage

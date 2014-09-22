@@ -41,7 +41,9 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 			'TYPO3\\CMS\\Core\\Resource\\FileRepository',
 			$this->getMock('TYPO3\\CMS\\Core\\Resource\\FileRepository')
 		);
-		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\Core\\Database\\DatabaseConnection');
+		$databaseMock = $this->getMock('TYPO3\\CMS\Core\\Database\\DatabaseConnection');
+		$databaseMock->expects($this->any())->method('exec_SELECTgetRows')->with('*', 'sys_file_storage', '1=1', '', 'name', '', 'uid')->willReturn(array());
+		$GLOBALS['TYPO3_DB'] = $databaseMock;
 	}
 
 	public function tearDown() {
