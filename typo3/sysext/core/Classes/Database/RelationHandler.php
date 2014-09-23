@@ -358,23 +358,6 @@ class RelationHandler {
 	}
 
 	/**
-	 * Magic setter method.
-	 * Used for compatibility with changed attribute visibility
-	 *
-	 * @param string $name name of the attribute
-	 * @param mixed $value value to set the attribute to
-	 * @deprecated since 6.1, only required as compatibility layer for renamed attribute $fromTC
-	 */
-	public function __set($name, $value) {
-		if($name === 'fromTC') {
-			GeneralUtility::deprecationLog(
-				'$fromTC is protected since TYPO3 6.1. Use setFetchAllFields() instead!'
-			);
-			$this->setFetchAllFields(!$value);
-		}
-	}
-
-	/**
 	 * Sets $fetchAllFields
 	 *
 	 * @param boolean $allFields enables fetching of all fields in getFromDB()
