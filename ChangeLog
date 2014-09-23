@@ -1,3 +1,10 @@
+2014-09-23  95c2cc4                  [RELEASE] Release of TYPO3 4.5.36 (TYPO3 Release Team)
+2014-09-20  ad8c5c4  #37946          [BUGFIX] Check if TER dump exists before modify time check (Jigal van Hemert)
+2014-09-20  b2597fd  #55457          [BUGFIX] RTE on first new IRRE record keeps loading in IE (Stanislas Rolland)
+2014-08-23  3f3c45e  #60199          [BUGFIX] Collect correct information on elements in page (Jigal van Hemert)
+2014-07-08  cd486c4                  [TASK] Set TYPO3 version to 4.5.36-dev (TYPO3 Release Team)
+
+
 2014-07-08  6ca633d                  [RELEASE] Release of TYPO3 4.5.35 (TYPO3 Release Team)
 2014-07-08  ebdd15e  #48939,#49055   [BUGFIX] Movements pollute colPos value of content elements (Nicole Cordes)
 2014-06-29  021526a                  [TASK] Improve travis notifications to channels (Helmut Hummel)
