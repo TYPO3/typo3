@@ -907,7 +907,10 @@ class RelationHandler {
 				$row = array();
 				// Fetch the current (not overwritten) relation record if we should handle symmetric relations
 				if ($symmetric_field || $considerWorkspaces) {
-					$row = BackendUtility::getRecord($table, $uid, $fields, '', FALSE);
+					$row = BackendUtility::getRecord($table, $uid, $fields, '', TRUE);
+					if (empty($row)) {
+						continue;
+					}
 				}
 				$isOnSymmetricSide = FALSE;
 				if ($symmetric_field) {

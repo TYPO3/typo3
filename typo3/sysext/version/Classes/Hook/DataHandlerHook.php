@@ -856,6 +856,12 @@ class DataHandlerHook {
 												}
 											}
 										}
+										// Take care of relations in each field (e.g. IRRE):
+										if (is_array($GLOBALS['TCA'][$table]['columns'])) {
+											foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $fieldConf) {
+												$this->version_swap_processFields($table, $field, $fieldConf['config'], $curVersion, $swapVersion, $tcemainObj);
+											}
+										}
 										unset($swapVersion['uid']);
 										// Modify online version to become offline:
 										unset($curVersion['uid']);
@@ -1005,6 +1011,86 @@ class DataHandlerHook {
 			}
 		}
 		$dbAnalysis->writeForeignField($configuration, $parentId);
+	}
+
+	/**
+	 * Processes fields of a record for the publishing/swapping process.
+	 * Basically this takes care of IRRE (type "inline") child references.
+	 *
+	 * @param string $tableName Table name
+	 * @param string $fieldName: Field name
+	 * @param array $configuration TCA field configuration
+	 * @param array $liveData: Live record data
+	 * @param array $versionData: Version record data
+	 * @param DataHandler $dataHandler Calling data-handler object
+	 * @return void
+	 */
+	protected function version_swap_processFields($tableName, $fieldName, array $configuration, array $liveData, array $versionData, DataHandler $dataHandler) {
+		$inlineType = $dataHandler->getInlineFieldType($configuration);
+		if ($inlineType !== 'field') {
+			return;
+		}
+		$foreignTable = $configuration['foreign_table'];
+		// Read relations that point to the current record (e.g. live record):
+		$liveRelations = $this->createRelationHandlerInstance();
+		$liveRelations->setWorkspaceId(0);
+		$liveRelations->start('', $foreignTable, '', $liveData['uid'], $tableName, $configuration);
+		// Read relations that point to the record to be swapped with e.g. draft record):
+		$versionRelations = $this->createRelationHandlerInstance();
+		$versionRelations->setUseLiveReferenceIds(FALSE);
+		$versionRelations->start('', $foreignTable, '', $versionData['uid'], $tableName, $configuration);
+		// Update relations for both (workspace/versioning) sites:
+		if (count($liveRelations->itemArray)) {
+			$dataHandler->addRemapAction(
+					$tableName, $liveData['uid'],
+					array($this, 'updateInlineForeignFieldSorting'),
+					array($tableName, $liveData['uid'], $foreignTable, $liveRelations->tableArray[$foreignTable], $configuration, $dataHandler->BE_USER->workspace)
+			);
+		}
+		if (count($versionRelations->itemArray)) {
+			$dataHandler->addRemapAction(
+					$tableName, $liveData['uid'],
+					array($this, 'updateInlineForeignFieldSorting'),
+					array($tableName, $liveData['uid'], $foreignTable, $versionRelations->tableArray[$foreignTable], $configuration, 0)
+			);
+		}
+	}
+
+	/**
+	 * Updates foreign field sorting values of versioned and live
+	 * parents after(!) the whole structure has been published.
+	 *
+	 * This method is used as callback function in
+	 * DataHandlerHook::version_swap_procBasedOnFieldType().
+	 * Sorting fields ("sortby") are not modified during the
+	 * workspace publishing/swapping process directly.
+	 *
+	 * @param string $parentTableName
+	 * @param string $parentId
+	 * @param string $foreignTableName
+	 * @param int[] $foreignIds
+	 * @param array $configuration
+	 * @param int $targetWorkspaceId
+	 * @return void
+	 * @internal
+	 */
+	public function updateInlineForeignFieldSorting($parentTableName, $parentId, $foreignTableName, $foreignIds, array $configuration, $targetWorkspaceId) {
+		$remappedIds = array();
+		// Use remapped ids (live id <-> version id)
+		foreach ($foreignIds as $foreignId) {
+			if (!empty($this->remappedIds[$foreignTableName][$foreignId])) {
+				$remappedIds[] = $this->remappedIds[$foreignTableName][$foreignId];
+			} else {
+				$remappedIds[] = $foreignId;
+			}
+		}
+
+		$relationHandler = $this->createRelationHandlerInstance();
+		$relationHandler->setWorkspaceId($targetWorkspaceId);
+		$relationHandler->setUseLiveReferenceIds(FALSE);
+		$relationHandler->start(implode(',', $remappedIds), $foreignTableName);
+		$relationHandler->processDeletePlaceholder();
+		$relationHandler->writeForeignField($configuration, $parentId);
 	}
 
 	/**
