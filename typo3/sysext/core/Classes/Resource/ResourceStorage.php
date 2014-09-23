@@ -834,7 +834,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * Checks if a file has the permission to be uploaded to a Folder/Storage.
 	 * If not, throws an exception.
 	 *
-	 * @param string $localFilePath the temporary file name from $_FILES['file1']['tmp_name']
+	 * @param string $localFilePath DEPRECATED the temporary file name from $_FILES['file1']['tmp_name']
 	 * @param Folder $targetFolder
 	 * @param string $targetFileName the destination file name $_FILES['file1']['name']
 	 * @return void
@@ -847,7 +847,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 */
 	protected function assureFileAddPermissions($localFilePath, $targetFolder, $targetFileName) {
 		// Check for a valid file extension
-		if (!$this->checkFileExtensionPermission($targetFileName) || ($localFilePath && !$this->checkFileExtensionPermission($localFilePath))) {
+		if (!$this->checkFileExtensionPermission($targetFileName)) {
 			throw new Exception\IllegalFileExtensionException('Extension of file name is not allowed in "' . $targetFileName . '"!', 1322120271);
 		}
 		// Makes sure the user is allowed to upload
@@ -887,7 +887,7 @@ class ResourceStorage implements ResourceStorageInterface {
 			unlink($localFilePath);
 			throw new Exception\UploadSizeException('The uploaded file exceeds the size-limit of ' . $maxUploadFileSize . ' bytes', 1322110041);
 		}
-		$this->assureFileAddPermissions($localFilePath, $targetFolder, $targetFileName);
+		$this->assureFileAddPermissions('', $targetFolder, $targetFileName);
 	}
 
 	/**
@@ -1078,9 +1078,9 @@ class ResourceStorage implements ResourceStorageInterface {
 		if (!file_exists($localFilePath)) {
 			throw new \InvalidArgumentException('File "' . $localFilePath . '" does not exist.', 1319552745);
 		}
-		$this->assureFileAddPermissions($localFilePath, $targetFolder, $targetFileName);
 		$targetFolder = $targetFolder ?: $this->getDefaultFolder();
 		$targetFileName = $this->driver->sanitizeFileName($targetFileName ?: PathUtility::basename($localFilePath));
+		$this->assureFileAddPermissions('', $targetFolder, $targetFileName);
 
 		// We do not care whether the file exists yet because $targetFileName may be changed by an
 		// external slot and only then we should check how to proceed according to $conflictMode
