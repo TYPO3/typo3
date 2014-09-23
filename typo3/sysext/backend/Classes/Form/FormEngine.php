@@ -6405,23 +6405,6 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	}
 
 	/**
-	 * Returns TRUE, if the evaluation of the required-field code is OK.
-	 *
-	 * @param string $displayCond The required-field code
-	 * @param array $row The record to evaluate
-	 * @param string $ffValueKey FlexForm value key, eg. vDEF
-	 * @return boolean
-	 * @todo Define visibility
-	 * @deprecated since TYPO3 6.1, will be removed 2 versions later - Use \TYPO3\CMS\Backend\Form\ElementConditionMatcher instead
-	 */
-	public function isDisplayCondition($displayCond, $row, $ffValueKey = '') {
-		GeneralUtility::logDeprecatedFunction();
-		/** @var $elementConditionMatcher \TYPO3\CMS\Backend\Form\ElementConditionMatcher */
-		$elementConditionMatcher = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\ElementConditionMatcher');
-		return $elementConditionMatcher->match($displayCond, $row, $ffValueKey);
-	}
-
-	/**
 	 * Return TSCpid (cached)
 	 * Using BackendUtility::getTSCpid()
 	 *
