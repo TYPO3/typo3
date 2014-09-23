@@ -124,4 +124,47 @@ class FlashMessageQueueTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertNull($frontendUser->getSessionData('core.template.flashMessages'));
 	}
 
+
+	/**
+	 * @test
+	 */
+	public function messagesCanBeFilteredBySeverity() {
+		$messages = array (
+			0 => new \TYPO3\CMS\Core\Messaging\FlashMessage('This is a test message', 1, \TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE),
+			1 => new \TYPO3\CMS\Core\Messaging\FlashMessage('This is another test message', 2, \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING)
+		);
+		$this->flashMessageQueue->enqueue($messages[0]);
+		$this->flashMessageQueue->enqueue($messages[1]);
+
+		$filteredFlashMessages = $this->flashMessageQueue->getAllMessages(\TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE);
+
+		$this->assertEquals(count($filteredFlashMessages), 1);
+
+		reset($filteredFlashMessages);
+		$flashMessage = current($filteredFlashMessages);
+		$this->assertEquals($messages[0], $flashMessage);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getMessagesAndFlushCanAlsoFilterBySeverity() {
+		$messages = array (
+			0 => new \TYPO3\CMS\Core\Messaging\FlashMessage('This is a test message', 1, \TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE),
+			1 => new \TYPO3\CMS\Core\Messaging\FlashMessage('This is another test message', 2, \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING)
+		);
+		$this->flashMessageQueue->enqueue($messages[0]);
+		$this->flashMessageQueue->enqueue($messages[1]);
+
+		$filteredFlashMessages = $this->flashMessageQueue->getAllMessagesAndFlush(\TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE);
+
+		$this->assertEquals(count($filteredFlashMessages), 1);
+
+		reset($filteredFlashMessages);
+		$flashMessage = current($filteredFlashMessages);
+		$this->assertEquals($messages[0], $flashMessage);
+
+		$this->assertEquals(array(), $this->flashMessageQueue->getAllMessages(\TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE));
+		$this->assertEquals(array($messages[1]), array_values($this->flashMessageQueue->getAllMessages()));
+	}
 }

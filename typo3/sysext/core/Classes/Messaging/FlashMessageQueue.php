@@ -88,12 +88,23 @@ class FlashMessageQueue extends \SplQueue {
 	/**
 	 * Returns all messages from the current PHP session and from the current request.
 	 *
+	 * @param int $severity Optional severity, must be one of \TYPO3\CMS\Core\Messaging\AbstractMessage constants
 	 * @return FlashMessage[]
 	 */
-	public function getAllMessages() {
+	public function getAllMessages($severity = NULL) {
 		// Get messages from user session
 		$queuedFlashMessagesFromSession = $this->getFlashMessagesFromSession();
 		$queuedFlashMessages = array_merge($queuedFlashMessagesFromSession, $this->toArray());
+		if ($severity !== NULL) {
+			$filteredFlashMessages = array();
+			foreach ($queuedFlashMessages as $message) {
+				if ($message->getSeverity() === $severity) {
+					$filteredFlashMessages[] = $message;
+				}
+			}
+			return $filteredFlashMessages;
+		}
+
 		return $queuedFlashMessages;
 	}
 
@@ -102,14 +113,15 @@ class FlashMessageQueue extends \SplQueue {
 	 * After fetching the messages the internal queue and the message queue in the session
 	 * will be emptied.
 	 *
+	 * @param int $severity Optional severity, must be one of \TYPO3\CMS\Core\Messaging\AbstractMessage constants
 	 * @return FlashMessage[]
 	 */
-	public function getAllMessagesAndFlush() {
-		$queuedFlashMessages = $this->getAllMessages();
+	public function getAllMessagesAndFlush($severity = NULL) {
+		$queuedFlashMessages = $this->getAllMessages($severity);
 		// Reset messages in user session
-		$this->removeAllFlashMessagesFromSession();
+		$this->removeAllFlashMessagesFromSession($severity);
 		// Reset internal messages
-		$this->clear();
+		$this->clear($severity);
 		return $queuedFlashMessages;
 	}
 
@@ -119,17 +131,28 @@ class FlashMessageQueue extends \SplQueue {
 	 * @param FlashMessage[] $flashMessages
 	 * @return void
 	 */
-	protected function storeFlashMessagesInSession(array $flashMessages) {
+	protected function storeFlashMessagesInSession(array $flashMessages = NULL) {
 		$this->getUserByContext()->setAndSaveSessionData($this->identifier, $flashMessages);
 	}
 
 	/**
 	 * Removes all flash messages from the session
 	 *
+	 * @param int $severity Optional severity, must be one of \TYPO3\CMS\Core\Messaging\AbstractMessage constants
 	 * @return void
 	 */
-	protected function removeAllFlashMessagesFromSession() {
-		$this->getUserByContext()->setAndSaveSessionData($this->identifier, NULL);
+	protected function removeAllFlashMessagesFromSession($severity = NULL) {
+		if ($severity === NULL) {
+			$this->storeFlashMessagesInSession(NULL);
+		} else {
+			$messages = $this->getFlashMessagesFromSession();
+			foreach ($messages as $index => $message) {
+				if ($message->getSeverity() === $severity) {
+					unset($messages[$index]);
+				}
+			}
+			$this->storeFlashMessagesInSession($messages);
+		}
 	}
 
 	/**
@@ -193,12 +216,29 @@ class FlashMessageQueue extends \SplQueue {
 	/**
 	 * Removes all items from the queue
 	 *
+	 * @param int $severity Optional severity, must be one of \TYPO3\CMS\Core\Messaging\AbstractMessage constants
 	 * @return void
 	 */
-	public function clear() {
+	public function clear($severity = NULL) {
 		$this->rewind();
-		while (!$this->isEmpty()) {
-			parent::dequeue();
+		if ($severity === NULL) {
+			while (!$this->isEmpty()) {
+				parent::dequeue();
+			}
+		} else {
+			$keysToRemove = array();
+			while ($cur = $this->current()) {
+				if ($cur->getSeverity() === $severity) {
+					$keysToRemove[] = $this->key();
+				}
+				$this->next();
+			}
+			// keys are renumbered when unsetting elements
+			// so unset them from last to first
+			$keysToRemove = array_reverse($keysToRemove);
+			foreach ($keysToRemove as $key) {
+				$this->offsetUnset($key);
+			}
 		}
 	}
 
