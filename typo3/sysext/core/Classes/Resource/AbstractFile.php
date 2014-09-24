@@ -99,12 +99,6 @@ abstract class AbstractFile implements FileInterface {
 	 */
 	const FILETYPE_APPLICATION = 5;
 
-	/**
-	 * Any kind of software, often known as "application"
-	 * @deprecated since 6.1, will be removed in 6.3. Use rather FILETYPE_APPLICATION which matches the Iana standard.
-	 */
-	const FILETYPE_SOFTWARE = 5;
-
 	/******************
 	 * VARIOUS FILE PROPERTY GETTERS
 	 ******************/
