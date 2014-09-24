@@ -767,18 +767,6 @@ class GeneralUtility {
 	}
 
 	/**
-	 * Returns an integer from a three part version number, eg '4.12.3' -> 4012003
-	 *
-	 * @param string $verNumberStr Version number on format x.x.x
-	 * @return integer Integer version of version number (where each part can count to 999)
-	 * @deprecated Use VersionNumberUtility::convertVersionNumberToInteger instead, will be removed after 6.2
-	 */
-	static public function int_from_ver($verNumberStr) {
-		self::logDeprecatedFunction();
-		return VersionNumberUtility::convertVersionNumberToInteger($verNumberStr);
-	}
-
-	/**
 	 * Returns TRUE if the current TYPO3 version (or compatibility version) is compatible to the input version
 	 * Notice that this function compares branches, not versions (4.0.1 would be > 4.0.0 although they use the same compat_version)
 	 *
