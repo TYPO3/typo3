@@ -46,18 +46,6 @@ class EidUtility {
 	}
 
 	/**
-	 * Connecting to database. If the function fails, last error message
-	 * can be retrieved using $GLOBALS['TYPO3_DB']->sql_error().
-	 *
-	 * @return boolean TRUE if connection was successful
-	 * @deprecated since 6.1, database will connect itself if needed. Will be removed two versions later
-	 */
-	static public function connectDB() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		return TRUE;
-	}
-
-	/**
 	 * Initializes $GLOBALS['LANG'] for use in eID scripts.
 	 *
 	 * @param string $language TYPO3 language code
