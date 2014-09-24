@@ -32,9 +32,6 @@ plugin.tx_irretutorial {
 			}
 		}
 	}
-	features {
-		rewrittenPropertyMapper = 1
-	}
 }
 
 plugin.tx_irretutorial._CSS_DEFAULT_STYLE (
