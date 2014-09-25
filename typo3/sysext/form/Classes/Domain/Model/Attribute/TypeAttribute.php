@@ -28,6 +28,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Attribute;
  * Attribute 'type'
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
+ * @author Julian Stock <julian@julianstock.de>
  */
 class TypeAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttribute {
 
@@ -44,7 +45,11 @@ class TypeAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttri
 		'file',
 		'hidden',
 		'image',
-		'button'
+		'button',
+		'number',
+		'email',
+		'range',
+		'url'
 	);
 
 	/**
