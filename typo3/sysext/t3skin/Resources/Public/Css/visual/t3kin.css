@@ -9327,9 +9327,8 @@ div.hr {
   height: 1px;
 }
 /** .uppercase is kept for backwards-compatibility, use .divider */
-.divider,
-.uppercase {
-  padding-bottom: 6px;
+.divider {
+  padding-bottom: 12px;
 }
 a span {
   cursor: pointer;
@@ -12359,11 +12358,6 @@ div.diff-r {
 div.diff-g {
   background-color: green;
   color: black;
-}
-/** .uppercase is kept for backwards-compatibility, use .divider */
-.divider,
-.uppercase {
-  border-bottom: 1px solid #cdcdcd;
 }
 /** used in the admin tools => DB check **/
 .t3-overview-list dt {
