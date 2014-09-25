@@ -26,6 +26,7 @@
  * Attribute 'type'
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
+ * @author Julian Stock <julian@julianstock.de>
  * @package TYPO3
  * @subpackage form
  */
@@ -43,7 +44,11 @@ class tx_form_Domain_Model_Attributes_Type extends tx_form_Domain_Model_Attribut
 		'file',
 		'hidden',
 		'image',
-		'button'
+		'button',
+		'number',
+		'email',
+		'range',
+		'url'
 	);
 
 	/**
