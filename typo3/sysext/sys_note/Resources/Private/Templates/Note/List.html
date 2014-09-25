@@ -4,6 +4,7 @@
 
 <f:section name="Content">
 	<f:if condition="{notes}">
+		<h2><f:translate key="internal_note" /></h2>
 
 		<div id="typo3-dblist-sysnotes">
 			<f:for each="{notes}" as="note">
@@ -27,6 +28,7 @@
 						</f:if>
 
 						<div class="right icons">
+							<f:be.buttons.icon uri="{notes:deleteLink(id:note.uid)}" icon="actions-edit-delete" additionalAttributes="{onClick: 'return confirm(\'{f:translate(key: \'LLL:EXT:lang/locallang_alt_doc.xlf:deleteWarning\')}\');'}" />
 							<f:be.buttons.icon uri="{notes:editLink(id:note.uid)}" icon="actions-document-open" />
 						</div>
 					</div>

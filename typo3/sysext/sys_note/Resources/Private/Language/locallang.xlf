@@ -3,6 +3,9 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="sys_note">
 		<header/>
 		<body>
+			<trans-unit id="internal_note" xml:space="preserve">
+				<source>Internal notes</source>
+			</trans-unit>
 			<trans-unit id="author" xml:space="preserve">
 				<source>Author:</source>
 			</trans-unit>
