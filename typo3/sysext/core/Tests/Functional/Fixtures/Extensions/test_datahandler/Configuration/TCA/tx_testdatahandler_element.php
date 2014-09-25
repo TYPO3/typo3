@@ -74,8 +74,8 @@ return array(
 	),
 	'types' => array(
 		'0' => Array('showitem' =>
-			'--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tabs.general, title;;;;2-2-2,' .
-			'--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tabs.visibility, sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1'
+			'--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tabs.general, title,' .
+			'--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xml:tabs.visibility, sys_language_uid, l10n_parent, l10n_diffsource, hidden;;1'
 		)
 	),
 	'palettes' => array(

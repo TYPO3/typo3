@@ -276,9 +276,9 @@ return array(
 	),
 	'types' => array(
 		'0' => array('showitem' => '
-			disable,username;;;;1-1-1, password, usergroup, lastlogin;;;;1-1-1,
-			--div--;LLL:EXT:cms/locallang_tca.xlf:fe_users.tabs.personelData, company;;1;;1-1-1, name;;2;;2-2-2, address, zip, city, country, telephone, fax, email, www, image;;;;2-2-2,
-			--div--;LLL:EXT:cms/locallang_tca.xlf:fe_users.tabs.options, lockToDomain;;;;1-1-1, TSconfig;;;;2-2-2,
+			disable,username, password, usergroup, lastlogin,
+			--div--;LLL:EXT:cms/locallang_tca.xlf:fe_users.tabs.personelData, company;;1, name;;2, address, zip, city, country, telephone, fax, email, www, image,
+			--div--;LLL:EXT:cms/locallang_tca.xlf:fe_users.tabs.options, lockToDomain, TSconfig,
 			--div--;LLL:EXT:cms/locallang_tca.xlf:fe_users.tabs.access, starttime, endtime,
 			--div--;LLL:EXT:cms/locallang_tca.xlf:fe_users.tabs.extended
 

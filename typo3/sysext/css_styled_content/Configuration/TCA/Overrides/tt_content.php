@@ -6,7 +6,7 @@ defined('TYPO3_MODE') or die();
 
 $GLOBALS['TCA']['tt_content']['types']['table']['showitem'] = '--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.general;general,
 					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.header;header,
-				--div--;LLL:EXT:cms/locallang_ttc.xlf:CType.I.5, layout;;10;;3-3-3, cols, bodytext;;9;nowrap:wizards[table], pi_flexform,
+				--div--;LLL:EXT:cms/locallang_ttc.xlf:CType.I.5, layout;;10, cols, bodytext;;9;nowrap:wizards[table], pi_flexform,
 				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.appearance,
 					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.frames;frames,
 					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.table_layout;tablelayout,

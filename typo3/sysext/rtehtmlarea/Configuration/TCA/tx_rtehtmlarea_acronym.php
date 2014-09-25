@@ -123,7 +123,7 @@ return array(
 		)
 	),
 	'types' => array(
-		'0' => array('showitem' => 'hidden;;1;;1-1-1, sys_language_uid, type, term, acronym, static_lang_isocode')
+		'0' => array('showitem' => 'hidden;;1, sys_language_uid, type, term, acronym, static_lang_isocode')
 	),
 	'palettes' => array(
 		'1' => array('showitem' => 'starttime, endtime')

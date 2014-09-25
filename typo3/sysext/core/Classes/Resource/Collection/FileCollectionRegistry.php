@@ -83,7 +83,7 @@ class FileCollectionRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	public function addTypeToTCA($type, $label, $availableFields, array $additionalColumns = array()) {
 
 		$GLOBALS['TCA']['sys_file_collection']['types'][$type] = array(
-			'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, title;;1, type, ' . $availableFields
+			'showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, title;;1, type, ' . $availableFields
 		);
 
 		// search for existing type when found override label

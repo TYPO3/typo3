@@ -67,6 +67,6 @@ return array(
 		)
 	),
 	'types' => array(
-		'1' => array('showitem' => 'hidden;;;;1-1-1,title;;;;2-2-2,static_lang_isocode,flag')
+		'1' => array('showitem' => 'hidden,title,static_lang_isocode,flag')
 	)
 );

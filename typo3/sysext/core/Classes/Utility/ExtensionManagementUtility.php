@@ -571,10 +571,10 @@ class ExtensionManagementUtility {
 	 * The insertion position can be defined accordant before of after existing list items.
 	 *
 	 * Example:
-	 * + list: 'field_a, field_b;;;;2-2-2, field_c;;;;3-3-3'
-	 * + insertionList: 'field_d, field_e;;;4-4-4'
+	 * + list: 'field_a, field_b, field_c'
+	 * + insertionList: 'field_d, field_e'
 	 * + insertionPosition: 'after:field_b'
-	 * -> 'field_a, field_b;;;;2-2-2, field_d, field_e;;;4-4-4, field_c;;;;3-3-3'
+	 * -> 'field_a, field_b, field_d, field_e, field_c'
 	 *
 	 * $insertPosition may contain ; and - characters: after:--palette--;;title
 	 *
@@ -632,8 +632,8 @@ class ExtensionManagementUtility {
 	 * and returns a duplicate-free variant of that insertion list.
 	 *
 	 * Example:
-	 * + list: 'field_a, field_b;;;;2-2-2, field_c;;;;3-3-3'
-	 * + insertion: 'field_b, field_d, field_c;;;4-4-4'
+	 * + list: 'field_a, field_b, field_c'
+	 * + insertion: 'field_b, field_d, field_c'
 	 * -> new insertion: 'field_d'
 	 *
 	 * Duplicate values in $insertionList are removed.

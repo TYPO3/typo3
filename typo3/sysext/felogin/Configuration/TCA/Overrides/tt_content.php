@@ -22,7 +22,7 @@ defined('TYPO3_MODE') or die();
 $GLOBALS['TCA']['tt_content']['types']['login']['showitem'] =
 	'--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.general;general,'
 	. '--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.header;header,'
-	. '--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.plugin,pi_flexform;;;;1-1-1,'
+	. '--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.plugin,pi_flexform,'
 	. '--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,'
 	. '--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.visibility;visibility,'
 	. '--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.access;access,'

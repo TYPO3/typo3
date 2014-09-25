@@ -236,12 +236,12 @@ return array(
 		)
 	),
 	'types' => array(
-		'0' => array('showitem' => 'title;;1;;2-2-2, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type;;;;3-3-3'),
-		'1' => array('showitem' => 'title;;1;;2-2-2, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type;;;;3-3-3, table2index;;;;3-3-3, alternative_source_pid, fieldlist, get_params, chashcalc,recordsbatch,records_indexonchange'),
-		'2' => array('showitem' => 'title;;1;;2-2-2, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type;;;;3-3-3, filepath;;;;3-3-3, extensions, depth'),
-		'3' => array('showitem' => 'title;;1;;2-2-2, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type;;;;3-3-3, externalUrl;;;;3-3-3, depth, url_deny'),
-		'4' => array('showitem' => 'title;;1;;2-2-2, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type;;;;3-3-3, alternative_source_pid;LLL:EXT:indexed_search/locallang_db.xlf:index_config.rootpage;;;3-3-3, depth'),
-		'5' => array('showitem' => 'title;;;;2-2-2, description, type;;;;3-3-3, indexcfgs;;;;3-3-3')
+		'0' => array('showitem' => 'title;;1, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type'),
+		'1' => array('showitem' => 'title;;1, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type, table2index, alternative_source_pid, fieldlist, get_params, chashcalc,recordsbatch,records_indexonchange'),
+		'2' => array('showitem' => 'title;;1, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type, filepath, extensions, depth'),
+		'3' => array('showitem' => 'title;;1, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type, externalUrl, depth, url_deny'),
+		'4' => array('showitem' => 'title;;1, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type, alternative_source_pid;LLL:EXT:indexed_search/locallang_db.xlf:index_config.rootpage, depth'),
+		'5' => array('showitem' => 'title, description, type, indexcfgs')
 	),
 	'palettes' => array(
 		'1' => array('showitem' => 'starttime,hidden')

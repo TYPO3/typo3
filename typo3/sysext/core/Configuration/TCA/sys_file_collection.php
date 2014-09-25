@@ -177,10 +177,10 @@ return array(
 		)
 	),
 	'types' => array(
-		'0' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, title;;1, type, files'),
-		'static' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, title;;1, type, files'),
-		'folder' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, title;;1, type, storage, folder'),
-		'category' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, title;;1, type, category')
+		'0' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, title;;1, type, files'),
+		'static' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, title;;1, type, files'),
+		'folder' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, title;;1, type, storage, folder'),
+		'category' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, title;;1, type, category')
 	),
 	'palettes' => array(
 		'1' => array('showitem' => 'hidden, starttime, endtime')

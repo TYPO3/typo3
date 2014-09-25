@@ -13,44 +13,6 @@ if (TYPO3_MODE === 'BE' || TYPO3_MODE === 'FE' && isset($GLOBALS['BE_USER'])) {
 	$presetSkinImgs = is_array($TBE_STYLES['skinImg']) ? $TBE_STYLES['skinImg'] : array();
 	$TBE_STYLES['skins'][$_EXTKEY]['stylesheetDirectories']['sprites'] = 'EXT:t3skin/stylesheets/sprites/';
 
-	/** Setting up backend styles and colors */
-	$TBE_STYLES['colorschemes'][0] = '-|class-main1,-|class-main2,-|class-main3,-|class-main4,-|class-main5';
-	$TBE_STYLES['colorschemes'][1] = '-|class-main11,-|class-main12,-|class-main13,-|class-main14,-|class-main15';
-	$TBE_STYLES['colorschemes'][2] = '-|class-main21,-|class-main22,-|class-main23,-|class-main24,-|class-main25';
-	$TBE_STYLES['colorschemes'][3] = '-|class-main31,-|class-main32,-|class-main33,-|class-main34,-|class-main35';
-	$TBE_STYLES['colorschemes'][4] = '-|class-main41,-|class-main42,-|class-main43,-|class-main44,-|class-main45';
-	$TBE_STYLES['colorschemes'][5] = '-|class-main51,-|class-main52,-|class-main53,-|class-main54,-|class-main55';
-	$TBE_STYLES['styleschemes'][0]['all'] = 'CLASS: formField';
-	$TBE_STYLES['styleschemes'][1]['all'] = 'CLASS: formField1';
-	$TBE_STYLES['styleschemes'][2]['all'] = 'CLASS: formField2';
-	$TBE_STYLES['styleschemes'][3]['all'] = 'CLASS: formField3';
-	$TBE_STYLES['styleschemes'][4]['all'] = 'CLASS: formField4';
-	$TBE_STYLES['styleschemes'][5]['all'] = 'CLASS: formField5';
-	$TBE_STYLES['styleschemes'][0]['check'] = 'CLASS: checkbox';
-	$TBE_STYLES['styleschemes'][1]['check'] = 'CLASS: checkbox';
-	$TBE_STYLES['styleschemes'][2]['check'] = 'CLASS: checkbox';
-	$TBE_STYLES['styleschemes'][3]['check'] = 'CLASS: checkbox';
-	$TBE_STYLES['styleschemes'][4]['check'] = 'CLASS: checkbox';
-	$TBE_STYLES['styleschemes'][5]['check'] = 'CLASS: checkbox';
-	$TBE_STYLES['styleschemes'][0]['radio'] = 'CLASS: radio';
-	$TBE_STYLES['styleschemes'][1]['radio'] = 'CLASS: radio';
-	$TBE_STYLES['styleschemes'][2]['radio'] = 'CLASS: radio';
-	$TBE_STYLES['styleschemes'][3]['radio'] = 'CLASS: radio';
-	$TBE_STYLES['styleschemes'][4]['radio'] = 'CLASS: radio';
-	$TBE_STYLES['styleschemes'][5]['radio'] = 'CLASS: radio';
-	$TBE_STYLES['styleschemes'][0]['select'] = 'CLASS: select';
-	$TBE_STYLES['styleschemes'][1]['select'] = 'CLASS: select';
-	$TBE_STYLES['styleschemes'][2]['select'] = 'CLASS: select';
-	$TBE_STYLES['styleschemes'][3]['select'] = 'CLASS: select';
-	$TBE_STYLES['styleschemes'][4]['select'] = 'CLASS: select';
-	$TBE_STYLES['styleschemes'][5]['select'] = 'CLASS: select';
-	$TBE_STYLES['borderschemes'][0] = array('', '', '', 'wrapperTable');
-	$TBE_STYLES['borderschemes'][1] = array('', '', '', 'wrapperTable1');
-	$TBE_STYLES['borderschemes'][2] = array('', '', '', 'wrapperTable2');
-	$TBE_STYLES['borderschemes'][3] = array('', '', '', 'wrapperTable3');
-	$TBE_STYLES['borderschemes'][4] = array('', '', '', 'wrapperTable4');
-	$TBE_STYLES['borderschemes'][5] = array('', '', '', 'wrapperTable5');
-
 	// Setting the relative path to the extension in temp. variable:
 	$temp_eP = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY);
 

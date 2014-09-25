@@ -20,25 +20,25 @@ if (!\TYPO3\CMS\Core\Utility\GeneralUtility::compat_version('4.2')) {
 	// Set the doktype 1 ("Standard") to show less fields
 	$GLOBALS['TCA']['pages']['types'][1] = array(
 		// standard
-		'showitem' => 'doktype;;2;;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle,
+		'showitem' => 'doktype;;2, hidden, nav_hide, title;;3, subtitle,
 			--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.access,
 				starttime, endtime, fe_group, extendToSubpages,
 			--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.options,
-				TSconfig;;6;nowrap;4-4-4, storage_pid;;7, l18n_cfg, backend_layout;;8,
+				TSconfig;;6;nowrap, storage_pid;;7, l18n_cfg, backend_layout;;8,
 			--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.extended,
 	'
 	);
 	// Add doktype 2 ("Advanced")
 	$GLOBALS['TCA']['pages']['types'][2] = array(
-		'showitem' => 'doktype;;2;;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle, nav_title,
+		'showitem' => 'doktype;;2, hidden, nav_hide, title;;3, subtitle, nav_title,
 			--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.metadata,
-				abstract;;5;;3-3-3, keywords, description,
+				abstract;;5, keywords, description,
 			--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.files,
 				media,
 			--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.access,
 				starttime, endtime, fe_login_mode, fe_group, extendToSubpages,
 			--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.options,
-				TSconfig;;6;nowrap;6-6-6, storage_pid;;7, l18n_cfg, module, content_from_pid, backend_layout;;8,
+				TSconfig;;6;nowrap, storage_pid;;7, l18n_cfg, module, content_from_pid, backend_layout;;8,
 			--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.extended,
 	'
 	);

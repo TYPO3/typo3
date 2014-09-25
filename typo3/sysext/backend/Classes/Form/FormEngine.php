@@ -64,8 +64,8 @@ class FormEngine {
 	public $paletteMargin = 1;
 
 	/**
-	 * @todo Define visibility
 	 * @var string
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public $defStyle = '';
 
@@ -442,48 +442,48 @@ class FormEngine {
 	/**
 	 * Contains current color scheme
 	 *
-	 * @todo Define visibility
 	 * @var array
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public $colorScheme = array();
 
 	/**
 	 * Contains current class scheme
 	 *
-	 * @todo Define visibility
 	 * @var array
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public $classScheme = array();
 
 	/**
 	 * Contains the default color scheme
 	 *
-	 * @todo Define visibility
 	 * @var array
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public $defColorScheme = array();
 
 	/**
 	 * Contains the default class scheme
 	 *
-	 * @todo Define visibility
 	 * @var array
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public $defClassScheme = array();
 
 	/**
 	 * Contains field style values
 	 *
-	 * @todo Define visibility
 	 * @var array|NULL
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public $fieldStyle = NULL;
 
 	/**
 	 * Contains border style values
 	 *
-	 * @todo Define visibility
 	 * @var array|NULL
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public $borderStyle = NULL;
 
@@ -735,13 +735,6 @@ class FormEngine {
 			$this->RTEenabled_notReasons = implode(LF, $this->getBackendUserAuthentication()->RTE_errors);
 			$this->commentMessages[] = 'RTE NOT ENABLED IN SYSTEM due to:' . LF . $this->RTEenabled_notReasons;
 		}
-		// Default color+class scheme
-		$this->defColorScheme = array();
-		// Override / Setting defaults from TBE_STYLES array
-		$this->resetSchemes();
-		// Setting the current colorScheme to default.
-		$this->defColorScheme = $this->colorScheme;
-		$this->defClassScheme = $this->classScheme;
 		// Define whitelist that allows TCA field configuration to be overridden by TSconfig, @see overrideFieldConf():
 		$this->allowOverrideMatrix = array(
 			'input' => array('size', 'max', 'readOnly'),
@@ -906,35 +899,22 @@ class FormEngine {
 					$cc = 0;
 					foreach ($fields as $fieldInfo) {
 						// Exploding subparts of the field configuration:
-						$parts = explode(';', $fieldInfo);
-						// Getting the style information out:
-						$color_style_parts = GeneralUtility::trimExplode('-', $parts[4]);
-						if ($color_style_parts[0] !== '') {
-							$this->setColorScheme($GLOBALS['TBE_STYLES']['colorschemes'][(int)$color_style_parts[0]]);
-						}
-						if ($color_style_parts[1] !== '') {
-							$this->fieldStyle = $GLOBALS['TBE_STYLES']['styleschemes'][(int)$color_style_parts[1]];
-							if (!isset($this->fieldStyle)) {
-								$this->fieldStyle = $GLOBALS['TBE_STYLES']['styleschemes'][0];
-							}
-						}
-						if ($color_style_parts[2] !== '') {
-							$this->wrapBorder($out_array[$out_sheet], $out_pointer);
-							$this->borderStyle = $GLOBALS['TBE_STYLES']['borderschemes'][(int)$color_style_parts[2]];
-							if (!isset($this->borderStyle)) {
-								$this->borderStyle = $GLOBALS['TBE_STYLES']['borderschemes'][0];
-							}
-						}
+						// this is documented as this:
+						// fieldname;fieldlabel;paletteidorlinebreaktodisplay;extradata;colorscheme
+						// fieldname can also be "--div--" or "--palette--"
+						// the last option colorscheme was dropped with TYPO3 CMS 7
+
+						list($theField, $fieldLabel, $additionalPalette, $extraFieldProcessingData)  = explode(';', $fieldInfo);
+
 						// Render the field:
-						$theField = $parts[0];
 						if (!in_array($theField, $excludeElements)) {
 							if ($GLOBALS['TCA'][$table]['columns'][$theField]) {
 								$sFieldPal = '';
-								if ($parts[2] && !isset($this->palettesRendered[$this->renderDepth][$table][$parts[2]])) {
-									$sFieldPal = $this->getPaletteFields($table, $row, $parts[2]);
-									$this->palettesRendered[$this->renderDepth][$table][$parts[2]] = 1;
+								if ($additionalPalette && !isset($this->palettesRendered[$this->renderDepth][$table][$additionalPalette])) {
+									$sFieldPal = $this->getPaletteFields($table, $row, $additionalPalette);
+									$this->palettesRendered[$this->renderDepth][$table][$additionalPalette] = 1;
 								}
-								$sField = $this->getSingleField($table, $theField, $row, $parts[1], 0, $parts[3], $parts[2]);
+								$sField = $this->getSingleField($table, $theField, $row, $fieldLabel, 0, $extraFieldProcessingData, $additionalPalette);
 								if ($sField) {
 									$sField .= $sFieldPal;
 								}
@@ -951,27 +931,27 @@ class FormEngine {
 										// Remember on which sheet we're currently working:
 										$this->pushToDynNestedStack('tab', $tabIdentStringMD5 . '-' . ($out_sheet + 1));
 										$out_array[$out_sheet] = array();
-										$out_array_meta[$out_sheet]['title'] = $this->sL($parts[1]);
+										$out_array_meta[$out_sheet]['title'] = $this->sL($fieldLabel);
 										// Register newline for Tab
-										$out_array_meta[$out_sheet]['newline'] = $parts[2] == 'newline';
+										$out_array_meta[$out_sheet]['newline'] = $additionalPalette == 'newline';
 									}
 								} else {
 									// Setting alternative title for "General" tab if "--div--" is the very first element.
-									$out_array_meta[$out_sheet]['title'] = $this->sL($parts[1]);
+									$out_array_meta[$out_sheet]['title'] = $this->sL($fieldLabel);
 									// Only add the first tab to the dynNestedStack if there are more tabs:
 									if ($tabIdentString && strpos($itemList, '--div--', strlen($fieldInfo))) {
 										$this->pushToDynNestedStack('tab', $tabIdentStringMD5 . '-1');
 									}
 								}
 							} elseif ($theField == '--palette--') {
-								if ($parts[2] && !isset($this->palettesRendered[$this->renderDepth][$table][$parts[2]])) {
+								if ($additionalPalette && !isset($this->palettesRendered[$this->renderDepth][$table][$additionalPalette])) {
 									// Render a 'header' if not collapsed
-									if ($GLOBALS['TCA'][$table]['palettes'][$parts[2]]['canNotCollapse'] && $parts[1]) {
-										$out_array[$out_sheet][$out_pointer] .= $this->getPaletteFields($table, $row, $parts[2], $this->sL($parts[1]));
+									if ($GLOBALS['TCA'][$table]['palettes'][$additionalPalette]['canNotCollapse'] && $fieldLabel) {
+										$out_array[$out_sheet][$out_pointer] .= $this->getPaletteFields($table, $row, $additionalPalette, $this->sL($fieldLabel));
 									} else {
-										$out_array[$out_sheet][$out_pointer] .= $this->getPaletteFields($table, $row, $parts[2], '', '', $this->sL($parts[1]));
+										$out_array[$out_sheet][$out_pointer] .= $this->getPaletteFields($table, $row, $additionalPalette, '', '', $this->sL($fieldLabel));
 									}
-									$this->palettesRendered[$this->renderDepth][$table][$parts[2]] = 1;
+									$this->palettesRendered[$this->renderDepth][$table][$additionalPalette] = 1;
 								}
 							}
 						}
@@ -988,8 +968,6 @@ class FormEngine {
 		}
 		// Wrapping a border around it all:
 		$this->wrapBorder($out_array[$out_sheet], $out_pointer);
-		// Resetting styles:
-		$this->resetSchemes();
 		// Rendering Main palettes, if any
 		$mParr = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['mainpalette']);
 		$i = 0;
@@ -3199,8 +3177,8 @@ class FormEngine {
 			$widthInPixels += $this->form_additionalTextareaStyleWidth;
 		}
 
-		$fieldWidthAndStyle['style'] = 'width: ' . $widthInPixels . 'px; ' . $this->defStyle . $this->formElStyle($textarea ? 'text' : 'input');
-		$fieldWidthAndStyle['class'] = $this->formElClass($textarea ? 'text' : 'input');
+		$fieldWidthAndStyle['style'] = 'width: ' . $widthInPixels . 'px; ';
+		$fieldWidthAndStyle['class'] = 'class="formfield-' . ($textarea ? 'text' : 'input');
 		return $fieldWidthAndStyle;
 	}
 
@@ -3210,9 +3188,10 @@ class FormEngine {
 	 * @param string $type Field type (eg. "check", "radio", "select")
 	 * @return string CSS attributes
 	 * @see formElStyleClassValue()
-	 * @todo Define visibility
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public function formElStyle($type) {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->formElStyleClassValue($type);
 	}
 
@@ -3222,7 +3201,7 @@ class FormEngine {
 	 * @param string $type Field type (eg. "check", "radio", "select")
 	 * @return string CSS attributes
 	 * @see formElStyleClassValue()
-	 * @todo Define visibility
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public function formElClass($type) {
 		return $this->formElStyleClassValue($type, TRUE);
@@ -3234,9 +3213,10 @@ class FormEngine {
 	 * @param string $type Field type (eg. "check", "radio", "select")
 	 * @param boolean $class If set, will return value only if prefixed with CLASS, otherwise must not be prefixed "CLASS
 	 * @return string CSS attributes
-	 * @todo Define visibility
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public function formElStyleClassValue($type, $class = FALSE) {
+		GeneralUtility::logDeprecatedFunction();
 		// Get value according to field:
 		if (isset($this->fieldStyle[$type])) {
 			$style = trim($this->fieldStyle[$type]);
@@ -3261,13 +3241,8 @@ class FormEngine {
 	 * @todo Define visibility
 	 */
 	public function insertDefStyle($type, $additionalClass = '') {
-		$out = '';
-		$style = trim($this->defStyle . $this->formElStyle($type));
-		$out .= $style ? ' style="' . htmlspecialchars($style) . '"' : '';
-		$class = $this->formElClass($type);
-		$classAttributeValue = join(' ', array_filter(array($class, $additionalClass)));
-		$out .= $classAttributeValue ? ' class="' . htmlspecialchars($classAttributeValue) . '"' : '';
-		return $out;
+		$cssClasses = trim('t3-formengine-field-' . $type . ' ' . $additionalClass);
+		return 'class="' . htmlspecialchars($cssClasses) . '"';
 	}
 
 	/**
@@ -3726,7 +3701,7 @@ class FormEngine {
 	 */
 	public function intoTemplate($inArr, $altTemplate = '') {
 		// Put into template_
-		$fieldTemplateParts = explode('###FIELD_', $this->rplColorScheme($altTemplate ? $altTemplate : $this->fieldTemplate));
+		$fieldTemplateParts = explode('###FIELD_', $altTemplate ?: $this->fieldTemplate);
 		$out = current($fieldTemplateParts);
 		foreach ($fieldTemplateParts as $part) {
 			list($key, $val) = explode('###', $part, 2);
@@ -3871,14 +3846,8 @@ class FormEngine {
 	 */
 	public function wrapBorder(&$out_array, &$out_pointer) {
 		if ($this->sectionWrap && $out_array[$out_pointer]) {
-			$tableAttribs = '';
-			$tableAttribs .= $this->borderStyle[0] ? ' style="' . htmlspecialchars($this->borderStyle[0]) . '"' : '';
-			$tableAttribs .= $this->borderStyle[2] ? ' background="' . htmlspecialchars(($this->backPath . $this->borderStyle[2])) . '"' : '';
-			$tableAttribs .= $this->borderStyle[3] ? ' class="' . htmlspecialchars($this->borderStyle[3]) . '"' : '';
-			if ($tableAttribs) {
-				$tableAttribs = 'border="0" cellspacing="0" cellpadding="0" width="100%"' . $tableAttribs;
-				$out_array[$out_pointer] = str_replace('###CONTENT###', $out_array[$out_pointer], str_replace('###TABLE_ATTRIBS###', $tableAttribs, $this->sectionWrap));
-			}
+			$tableAttribs = 'border="0" cellspacing="0" cellpadding="0" width="100%" class="table table-border"';
+			$out_array[$out_pointer] = str_replace('###CONTENT###', $out_array[$out_pointer], str_replace('###TABLE_ATTRIBS###', $tableAttribs, $this->sectionWrap));
 			$out_pointer++;
 		}
 	}
@@ -3888,9 +3857,10 @@ class FormEngine {
 	 *
 	 * @param string $inTemplate Template string with markers to be substituted.
 	 * @return string
-	 * @todo Define visibility
+	 * @deprecated since TYPO3 CMS 7, will be removed with CMS 8
 	 */
 	public function rplColorScheme($inTemplate) {
+		GeneralUtility::logDeprecatedFunction();
 		return str_replace(
 			array(
 				// Colors:
@@ -3935,22 +3905,9 @@ class FormEngine {
 	 * @todo Define visibility
 	 */
 	public function printPalette($palArr) {
-		$fieldAttributes = ($labelAttributes = '');
-		// Init color/class attributes:
-		if ($this->colorScheme[2]) {
-			$labelAttributes .= ' bgcolor="' . $this->colorScheme[2] . '"';
-		}
-		if ($this->classScheme[2]) {
-			$labelAttributes .= ' class="t3-form-palette-field-label ' . $this->classScheme[2] . '"';
-		} else {
-			$labelAttributes .= ' class="t3-form-palette-field-label"';
-		}
-		if ($this->colorScheme[4]) {
-			$fieldAttributes .= ' style="color: ' . $this->colorScheme[4] . '"';
-		}
-		if ($this->classScheme[4]) {
-			$fieldAttributes .= ' class="t3-form-palette-field ' . $this->classScheme[4] . '"';
-		}
+		$fieldAttributes = ' class="t3-form-palette-field"';
+		$labelAttributes = ' class="t3-form-palette-field-label"';
+
 		$row = 0;
 		$iRow = array();
 		$lastLineWasLinebreak = FALSE;
@@ -4000,9 +3957,10 @@ class FormEngine {
 	 *
 	 * @param string $scheme A color scheme string.
 	 * @return void
-	 * @todo Define visibility
+	 * @deprecated since TYPO3 CMS 7, will be removed with CMS 8
 	 */
 	public function setColorScheme($scheme) {
+		GeneralUtility::logDeprecatedFunction();
 		$this->colorScheme = $this->defColorScheme;
 		$this->classScheme = $this->defClassScheme;
 		$parts = GeneralUtility::trimExplode(',', $scheme);
@@ -4030,9 +3988,10 @@ class FormEngine {
 	 * Reset color schemes.
 	 *
 	 * @return void
-	 * @todo Define visibility
+	 * @deprecated since TYPO3 CMS 7, will be removed with CMS 8
 	 */
 	public function resetSchemes() {
+		GeneralUtility::logDeprecatedFunction();
 		$this->setColorScheme($GLOBALS['TBE_STYLES']['colorschemes'][0]);
 		$this->fieldStyle = $GLOBALS['TBE_STYLES']['styleschemes'][0];
 		$this->borderStyle = $GLOBALS['TBE_STYLES']['borderschemes'][0];
@@ -4042,9 +4001,10 @@ class FormEngine {
 	 * Store current color scheme
 	 *
 	 * @return void
-	 * @todo Define visibility
+	 * @deprecated since TYPO3 CMS 7, will be removed with CMS 8
 	 */
 	public function storeSchemes() {
+		GeneralUtility::logDeprecatedFunction();
 		$this->savedSchemes['classScheme'] = $this->classScheme;
 		$this->savedSchemes['colorScheme'] = $this->colorScheme;
 		$this->savedSchemes['fieldStyle'] = $this->fieldStyle;
@@ -4055,9 +4015,10 @@ class FormEngine {
 	 * Restore the saved color scheme
 	 *
 	 * @return void
-	 * @todo Define visibility
+	 * @deprecated since TYPO3 CMS 7, will be removed with CMS 8
 	 */
 	public function restoreSchemes() {
+		GeneralUtility::logDeprecatedFunction();
 		$this->classScheme = $this->savedSchemes['classScheme'];
 		$this->colorScheme = $this->savedSchemes['colorScheme'];
 		$this->fieldStyle = $this->savedSchemes['fieldStyle'];

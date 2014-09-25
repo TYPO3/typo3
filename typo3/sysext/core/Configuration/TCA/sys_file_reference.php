@@ -262,7 +262,7 @@ return array(
 		// Used for everything that is an image (because it has a link and a alternative text)
 		'imageoverlayPalette' => array(
 			'showitem' => '
-				title,alternative;;;;3-3-3,--linebreak--,
+				title,alternative,--linebreak--,
 				link,description
 				',
 			'canNotCollapse' => TRUE

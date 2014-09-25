@@ -163,7 +163,7 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
 		$this->testSubject->addTypeToTCA($type, $label, 'something');
 
 		// check type
-		$this->assertEquals('sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, title;;1, type, something', $GLOBALS['TCA']['sys_file_collection']['types']['my_type']['showitem']);
+		$this->assertEquals('sys_language_uid, l10n_parent, l10n_diffsource, title;;1, type, something', $GLOBALS['TCA']['sys_file_collection']['types']['my_type']['showitem']);
 
 		$indexOfNewType = count($GLOBALS['TCA']['sys_file_collection']['columns']['type']['config']['items']) - 1;
 

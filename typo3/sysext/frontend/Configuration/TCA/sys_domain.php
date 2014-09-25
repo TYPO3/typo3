@@ -82,7 +82,7 @@ return array(
 		)
 	),
 	'types' => array(
-		'1' => array('showitem' => 'hidden;;;;1-1-1,domainName;;1;;3-3-3,prepend_params,forced;;;;4-4-4')
+		'1' => array('showitem' => 'hidden, domainName;;1, prepend_params, forced')
 	),
 	'palettes' => array(
 		'1' => array('showitem' => 'redirectTo, redirectHttpStatusCode')

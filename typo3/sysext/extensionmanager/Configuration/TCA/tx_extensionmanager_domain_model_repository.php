@@ -64,7 +64,7 @@ return array(
 		),
 	),
 	'types' => array(
-		'0' => array('showitem' => 'title;;;;1-1-1, description;;;;1-1-1, wsdl_url, mirror_list_url, last_update, extension_count'),
+		'0' => array('showitem' => 'title, description, wsdl_url, mirror_list_url, last_update, extension_count'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),

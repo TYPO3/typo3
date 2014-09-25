@@ -148,7 +148,7 @@ return array(
 		),
 	),
 	'types' => array(
-		'0' => array('showitem' => 'extensionkey;;;;1-1-1, version, integer_version, title;;;;2-2-2, description;;;;3-3-3, state, category, last_updated, update_comment, author_name, author_email, review_state, md5hash, serialized_dependencies')
+		'0' => array('showitem' => 'extensionkey, version, integer_version, title, description, state, category, last_updated, update_comment, author_name, author_email, review_state, md5hash, serialized_dependencies')
 	),
 	'palettes' => array(
 		'1' => array('showitem' => '')

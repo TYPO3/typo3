@@ -8686,8 +8686,7 @@ img.t3-TCEforms-contentchangedPaletteImg {
   padding-top: 5px;
   padding-bottom: 20px;
 }
-table.wrapperTable tr.class-main2 td.palette-header,
-table.wrapperTable1 .class-main12 td.palette-header {
+td.palette-header {
   padding-left: 10px;
 }
 .typo3-TCEforms .palette-header h3 {
@@ -8752,30 +8751,6 @@ select option.c-divider {
   position: relative;
   z-index: 3500;
 }
-.typo3-TCEforms .class-main1 > td,
-.typo3-TCEforms .class-main11 > td,
-.typo3-TCEforms .class-main21 > td,
-.typo3-TCEforms .class-main31 > td,
-.typo3-TCEforms .class-main41 > td,
-.typo3-TCEforms .class-main51 > td {
-  padding: 2px 0px 2px 0px;
-}
-.typo3-TCEforms .class-main2 > td,
-.typo3-TCEforms .class-main12 > td,
-.typo3-TCEforms .class-main22 > td,
-.typo3-TCEforms .class-main32 > td,
-.typo3-TCEforms .class-main42 > td,
-.typo3-TCEforms .class-main52 > td {
-  padding: 6px 0px 2px 0px;
-}
-.typo3-TCEforms .class-main3,
-.typo3-TCEforms .class-main13,
-.typo3-TCEforms .class-main23,
-.typo3-TCEforms .class-main33,
-.typo3-TCEforms .class-main43,
-.typo3-TCEforms .class-main53 {
-  padding: 2px 0px 2px 0px;
-}
 .typo3-TCEforms td.formField-header,
 .typo3-TCEforms td.palette-header,
 .typo3-TCEforms td.formField-field {
@@ -8786,31 +8761,6 @@ select option.c-divider {
 div.typo3-TCEforms div.c-tablayer table > tbody > tr > td > table.wrapperTable > tbody > tr > td {
   padding-left: 10px;
   padding-right: 10px;
-}
-.typo3-TCEforms .formField,
-.typo3-TCEforms .formField1,
-.typo3-TCEforms .formField2,
-.typo3-TCEforms .formField3,
-.typo3-TCEforms .formField4,
-.typo3-TCEforms .formField5 {
-  vertical-align: middle;
-  position: relative;
-}
-.typo3-TCEforms .formField:focus,
-.typo3-TCEforms .formField1:focus,
-.typo3-TCEforms .formField2:focus,
-.typo3-TCEforms .formField3:focus,
-.typo3-TCEforms .formField4:focus,
-.typo3-TCEforms .formField5:focus {
-  z-index: 3500;
-}
-.typo3-TCEforms .wrapperTable,
-.typo3-TCEforms .wrapperTable1,
-.typo3-TCEforms .wrapperTable2,
-.typo3-TCEforms .wrapperTable3,
-.typo3-TCEforms .wrapperTable4,
-.typo3-TCEforms .wrapperTable5 {
-  padding: 5px 0 5px 0;
 }
 .t3-form-field-group-file tr:last-child td {
   vertical-align: top;
@@ -8955,12 +8905,7 @@ input.typo3-TCEforms-suggest-search {
 TCEforms Flexforms
 - - - - - - - - - - - - - - - - - - - - - */
 /** tabs inside the table => flexforms */
-.typo3-TCEforms .wrapperTable .typo3-dyntabmenu-divs,
-.typo3-TCEforms .wrapperTable1 .typo3-dyntabmenu-divs,
-.typo3-TCEforms .wrapperTable2 .typo3-dyntabmenu-divs,
-.typo3-TCEforms .wrapperTable3 .typo3-dyntabmenu-divs,
-.typo3-TCEforms .wrapperTable4 .typo3-dyntabmenu-divs,
-.typo3-TCEforms .wrapperTable5 .typo3-dyntabmenu-divs {
+.typo3-TCEforms .typo3-dyntabmenu-divs {
   margin-right: 20px;
   margin-bottom: 10px;
 }
@@ -9133,8 +9078,7 @@ img.t3-tceforms-sysfile-imagepreview {
 * html div#typo3-docbody .typo3-TCEforms {
   margin-top: 20px;
 }
-.typo3-TCEforms .formField-field img[src*="clear.gif"],
-.typo3-TCEforms .t3-form-palette-field img[src*="clear.gif"] {
+.t3-form-palette-field img[src*="clear.gif"] {
   z-index: 0;
 }
 /* - - - - - - - - - - - - - - - - - - - - -
@@ -9276,63 +9220,10 @@ select option.c-divider {
   font-weight: bold;
 }
 /* Default. Always used on main-palettes in the bottom of the forms */
-.typo3-TCEforms .class-main2 td,
-.typo3-TCEforms .class-main12 td,
-.typo3-TCEforms .class-main22 td,
-.typo3-TCEforms .class-main32 td,
-.typo3-TCEforms .class-main42 td,
-.typo3-TCEforms .class-main52 td {
-  border-top: 1px solid #c0c0c0;
-}
-.typo3-TCEforms .class-main1 .typo3-TCEforms-checkboxArray td,
-.typo3-TCEforms .class-main11 .typo3-TCEforms-checkboxArray td,
-.typo3-TCEforms .class-main21 .typo3-TCEforms-checkboxArray td,
-.typo3-TCEforms .class-main31 .typo3-TCEforms-checkboxArray td,
-.typo3-TCEforms .class-main41 .typo3-TCEforms-checkboxArray td,
-.typo3-TCEforms .class-main51 .typo3-TCEforms-checkboxArray td {
+.typo3-TCEforms .typo3-TCEforms-checkboxArray td {
   padding-right: 5px;
 }
-.typo3-TCEforms tr.class-main2:first-child td,
-.typo3-TCEforms tr.class-main12:first-child td,
-.typo3-TCEforms tr.class-main22:first-child td,
-.typo3-TCEforms tr.class-main32:first-child td,
-.typo3-TCEforms tr.class-main42:first-child td,
-.typo3-TCEforms tr.class-main52:first-child td {
-  border-top: 0;
-}
-.typo3-TCEforms .class-main4,
-.typo3-TCEforms .class-main14,
-.typo3-TCEforms .class-main24,
-.typo3-TCEforms .class-main34,
-.typo3-TCEforms .class-main44,
-.typo3-TCEforms .class-main54 {
-  color: #000000;
-}
-.typo3-TCEforms .class-main5,
-.typo3-TCEforms .class-main15,
-.typo3-TCEforms .class-main25,
-.typo3-TCEforms .class-main35,
-.typo3-TCEforms .class-main45,
-.typo3-TCEforms .class-main55 {
-  color: #3c3c44;
-}
-.typo3-TCEforms .wrapperTable,
-.typo3-TCEforms .wrapperTable1,
-.typo3-TCEforms .wrapperTable2,
-.typo3-TCEforms .wrapperTable3,
-.typo3-TCEforms .wrapperTable4,
-.typo3-TCEforms .wrapperTable5 {
-  border: 1px solid #c0c0c0;
-}
-.typo3-TCEforms .wrapperTable1 {
-  border-top: 1px solid #c0c0c0;
-}
-.typo3-TCEforms .typo3-dyntabmenu-divs .wrapperTable,
-.typo3-TCEforms .typo3-dyntabmenu-divs .wrapperTable1,
-.typo3-TCEforms .typo3-dyntabmenu-divs .wrapperTable2,
-.typo3-TCEforms .typo3-dyntabmenu-divs .wrapperTable3,
-.typo3-TCEforms .typo3-dyntabmenu-divs .wrapperTable4,
-.typo3-TCEforms .typo3-dyntabmenu-divs .wrapperTable5 {
+.typo3-TCEforms .typo3-dyntabmenu-divs table {
   border: none;
   border-bottom: 1px solid #c0c0c0;
 }

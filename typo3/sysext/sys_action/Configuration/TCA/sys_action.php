@@ -165,11 +165,11 @@ return array(
 		)
 	),
 	'types' => array(
-		'0' => array('showitem' => 'hidden;;;;1-1-1,type,title;;;;2-2-2,description;;;;3-3-3,assign_to_groups,'),
-		'1' => array('showitem' => 'hidden;;;;1-1-1,type,title;;;;2-2-2,description;;;;3-3-3,assign_to_groups,--div--,t1_userprefix;;;;5-5-5,t1_copy_of_user,t1_allowed_groups,t1_create_user_dir'),
-		'2' => array('showitem' => 'hidden;;;;1-1-1,type,title;;;;2-2-2,description;;;;3-3-3,assign_to_groups,--div--,'),
-		'3' => array('showitem' => 'hidden;;;;1-1-1,type,title;;;;2-2-2,description;;;;3-3-3,assign_to_groups,--div--,t3_listPid;;;;5-5-5,t3_tables;'),
-		'4' => array('showitem' => 'hidden;;;;1-1-1,type,title;;;;2-2-2,description;;;;3-3-3,assign_to_groups,--div--,t4_recordsToEdit;;;;5-5-5'),
-		'5' => array('showitem' => 'hidden;;;;1-1-1,type,title;;;;2-2-2,description;;;;3-3-3,assign_to_groups,--div--,t3_listPid;Where to create records:;;;5-5-5,t3_tables;Create records in table:')
+		'0' => array('showitem' => 'hidden,type,title,description,assign_to_groups,'),
+		'1' => array('showitem' => 'hidden,type,title,description,assign_to_groups,--div--,t1_userprefix,t1_copy_of_user,t1_allowed_groups,t1_create_user_dir'),
+		'2' => array('showitem' => 'hidden,type,title,description,assign_to_groups,--div--,'),
+		'3' => array('showitem' => 'hidden,type,title,description,assign_to_groups,--div--,t3_listPid,t3_tables;'),
+		'4' => array('showitem' => 'hidden,type,title,description,assign_to_groups,--div--,t4_recordsToEdit'),
+		'5' => array('showitem' => 'hidden,type,title,description,assign_to_groups,--div--,t3_listPid;Where to create records,t3_tables;Create records in table:')
 	)
 );

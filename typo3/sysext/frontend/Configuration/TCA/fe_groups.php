@@ -84,8 +84,8 @@ return array(
 	),
 	'types' => array(
 		'0' => array('showitem' => '
-			hidden;;;;1-1-1,title;;;;2-2-2,description,subgroup;;;;3-3-3,
-			--div--;LLL:EXT:cms/locallang_tca.xlf:fe_groups.tabs.options, lockToDomain;;;;1-1-1, TSconfig;;;;2-2-2,
+			hidden,title,description,subgroup,
+			--div--;LLL:EXT:cms/locallang_tca.xlf:fe_groups.tabs.options, lockToDomain, TSconfig,
 			--div--;LLL:EXT:cms/locallang_tca.xlf:fe_groups.tabs.extended
 		')
 	)

@@ -18,7 +18,7 @@ $GLOBALS['TCA']['tt_content']['types']['mailform']['showitem'] = '
 	--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.general;general,
 	--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.header;header,
 	--div--;LLL:EXT:cms/locallang_ttc.xlf:CType.I.8,
-		bodytext;LLL:EXT:cms/locallang_ttc.xlf:bodytext.ALT.mailform;;nowrap:wizards[forms];3-3-3,
+		bodytext;LLL:EXT:cms/locallang_ttc.xlf:bodytext.ALT.mailform;;nowrap:wizards[forms],
 	--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.appearance,
 		--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.frames;frames,
 	--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,

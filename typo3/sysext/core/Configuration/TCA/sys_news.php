@@ -88,7 +88,7 @@ return array(
 	),
 	'types' => array(
 		'1' => array('showitem' => '
-			hidden, title, content;;9;richtext:rte_transform[flag=rte_enabled|mode=ts_css];3-3-3,
+			hidden, title, content;;9;richtext:rte_transform[flag=rte_enabled|mode=ts_css],
 			--div--;LLL:EXT:lang/locallang_tca.xlf:sys_news.tabs.access, starttime, endtime')
 	)
 );
