@@ -1846,7 +1846,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 				$cBID = $PA['itemFormElID'] . '_' . $c;
 				$item .= ($c > 0 ? '<br />' : '') . '<input type="checkbox"' . $this->insertDefStyle('check')
 					. ' value="1" name="' . $cBName . '"' . $cBP . $PA['onFocus'] . $disabled . ' id="' . $cBID . '" />'
-					. $this->wrapLabels('<label for="' . $cBID . '">' . htmlspecialchars($p[0]) . '</label>');
+					. '<label for="' . $cBID . '">' . htmlspecialchars($p[0]) . '</label>';
 			}
 		}
 		if (!$disabled) {
@@ -4337,9 +4337,9 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 		}
 		if ($imagesOnly) {
 			$rightbox = '';
-			$thumbnails = '<div class="imagethumbs">' . $this->wrapLabels($params['thumbnails']) . '</div>';
+			$thumbnails = '<div class="imagethumbs">' . $params['thumbnails'] . '</div>';
 		} else {
-			$rightbox = $this->wrapLabels($params['thumbnails']);
+			$rightbox = $params['thumbnails'];
 			$thumbnails = '';
 		}
 		// Hook: dbFileIcons_postProcess (requested by FAL-team for use with the "fal" extension)
@@ -4365,15 +4365,15 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 		$str = '<table border="0" cellpadding="0" cellspacing="0" width="1" class="t3-form-field-group-file">
 			' . ($params['headers'] ? '
 				<tr>
-					<td>' . $this->wrapLabels($params['headers']['selector']) . '</td>
+					<td>' . $params['headers']['selector'] . '</td>
 					<td></td>
 					<td></td>
-					<td>' . ($params['thumbnails'] ? $this->wrapLabels($params['headers']['items']) : '') . '</td>
+					<td>' . ($params['thumbnails'] ? $params['headers']['items'] : '') . '</td>
 				</tr>' : '') . '
 			<tr>
 				<td>' . $selector . $thumbnails;
 		if (!$params['noList'] && $params['info'] !== '') {
-			$str .= '<span class="filetypes">' . $this->wrapLabels($params['info']) . '</span>';
+			$str .= '<span class="filetypes">' . $params['info'] . '</span>';
 		}
 		$str .= '</td>
 					<td class="icons">' . implode('<br />', $icons['L']) . '</td>
@@ -5585,18 +5585,6 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 */
 	public function addUserTemplateMarkers($marker, $table, $field, $row, &$PA) {
 		return $marker;
-	}
-
-	/**
-	 * Wrapping labels
-	 * Currently not implemented - just returns input value.
-	 *
-	 * @param string $str Input string.
-	 * @return string Output string.
-	 * @todo Define visibility
-	 */
-	public function wrapLabels($str) {
-		return $str;
 	}
 
 	/**
