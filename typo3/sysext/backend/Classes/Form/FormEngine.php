@@ -1822,7 +1822,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 				$cBID = $PA['itemFormElID'] . '_' . $c;
 				$item .= '<td nowrap="nowrap">' . '<input type="checkbox"' . $this->insertDefStyle('check')
 					. ' value="1" name="' . $cBName . '"' . $cBP . $disabled . ' id="' . $cBID . '" />'
-					. $this->wrapLabels(('<label for="' . $cBID . '">' . htmlspecialchars($p[0]) . '</label>&nbsp;'))
+					. '<label for="' . $cBID . '">' . htmlspecialchars($p[0]) . '</label>&nbsp;'
 					. '</td>';
 				if ($c % $cols + 1 == $cols) {
 					$item .= '</tr>';
