@@ -1486,7 +1486,22 @@ class InlineElement {
 				} elseif ($localizationMode == 'select') {
 					$transOrigRec = $this->getRecord(0, $transOrigTable, $transOrigPointer);
 					$pid = $transOrigRec['pid'];
-					$recordsOriginal = $this->getRelatedRecordsArray($pid, $foreignTable, $transOrigRec[$field]);
+					$fieldValue = $transOrigRec[$field];
+
+					// Checks if it is a flexform field
+					if ($GLOBALS['TCA'][$table]['columns'][$field]['config']['type'] === 'flex') {
+						$flexFormParts = $this->extractFlexFormParts($PA['itemFormElName']);
+						$flexData = GeneralUtility::xml2array($fieldValue);
+						/** @var  $flexFormTools  \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools */
+						$flexFormTools = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
+						$flexFormFieldValue = $flexFormTools->getArrayValueByPath($flexFormParts, $flexData);
+
+						if ($flexFormFieldValue !== NULL) {
+							$fieldValue = $flexFormFieldValue;
+						}
+					}
+
+					$recordsOriginal = $this->getRelatedRecordsArray($pid, $foreignTable, $fieldValue);
 				}
 			}
 		}
@@ -2614,5 +2629,4 @@ class InlineElement {
 
 		return $flexFormParts;
 	}
-
 }
