@@ -487,17 +487,25 @@ class ClassLoader {
 
 		// Take a look again, after lock is acquired
 		if (!$this->loadPackageNamespacesFromCache()) {
-			foreach ($this->packages as $package) {
-				$this->buildPackageNamespaceAndClassesPath($package);
+			try {
+				foreach ($this->packages as $package) {
+					$this->buildPackageNamespaceAndClassesPath($package);
+				}
+				$this->sortPackageNamespaces();
+				$this->savePackageNamespacesAndClassesPathsToCache();
+				// The class alias map has to be rebuilt first, because ext_autoload files can contain
+				// old class names that need established class aliases.
+				$classNameToAliasMapping = $this->classAliasMap->setPackages($this->packages)->buildMappingAndInitializeEarlyInstanceMapping();
+				$this->loadClassFilesFromAutoloadRegistryIntoRuntimeClassInformationCache($this->packages);
+				$this->classAliasMap->buildMappingFiles($classNameToAliasMapping);
+				$this->transferRuntimeClassInformationCacheEntriesToClassesCache();
+			} catch (\Exception $e) {
+				// Catching all Exceptions, as we don't know where in the process the class cache building breaks we
+				// need to clear our cache and also release our lock before we throw the Exception again to the user.
+				$this->clearClassesCache();
+				$this->releaseLock($didLock);
+				throw $e;
 			}
-			$this->sortPackageNamespaces();
-			$this->savePackageNamespacesAndClassesPathsToCache();
-			// The class alias map has to be rebuilt first, because ext_autoload files can contain
-			// old class names that need established class aliases.
-			$classNameToAliasMapping = $this->classAliasMap->setPackages($this->packages)->buildMappingAndInitializeEarlyInstanceMapping();
-			$this->loadClassFilesFromAutoloadRegistryIntoRuntimeClassInformationCache($this->packages);
-			$this->classAliasMap->buildMappingFiles($classNameToAliasMapping);
-			$this->transferRuntimeClassInformationCacheEntriesToClassesCache();
 		}
 
 		$this->releaseLock($didLock);
@@ -622,6 +630,16 @@ class ClassLoader {
 				'return ' . var_export(array($this->packageNamespaces, $this->packageClassesPaths), TRUE) . ';'
 			);
 		}
+	}
+
+	/**
+	 * Cleares the complete cache for class loader.
+	 *
+	 * @return void
+	 */
+	protected function clearClassesCache() {
+		$this->coreCache->flush();
+		$this->classesCache->flush();
 	}
 
 	/**
