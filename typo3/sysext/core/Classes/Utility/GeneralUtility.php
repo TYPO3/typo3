@@ -4284,6 +4284,12 @@ Connection: close
 	 * You can also pass arguments for a constructor:
 	 * \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('myClass', $arg1, $arg2, ..., $argN)
 	 *
+	 * You may want to use \TYPO3\CMS\Extbase\Object\ObjectManager::get() if you
+	 * want TYPO3 to take care about injecting dependencies of the class to be
+	 * created. Therefore create an instance of ObjectManager via
+	 * GeneralUtility::makeInstance() first and call its get() method to get
+	 * the instance of a specific class.
+	 *
 	 * @throws \InvalidArgumentException if classname is an empty string
 	 * @param string $className name of the class to instantiate, must not be empty
 	 * @return object the created instance
