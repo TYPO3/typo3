@@ -394,8 +394,8 @@ return array(
 			'exclude' => 1,
 			'config' => array(
 				'type' => 'input',
-				'size' => '50',
-				'max' => '256',
+				'size' => 50,
+				'max' => 1024,
 				'eval' => 'trim',
 				'wizards' => array(
 					'_PADDING' => 2,
