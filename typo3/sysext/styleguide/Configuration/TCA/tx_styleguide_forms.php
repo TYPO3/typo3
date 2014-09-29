@@ -76,7 +76,7 @@ return array(
 			'label' => '2 Max is set to 4',
 			'config' => array(
 				'type' => 'input',
-				'max' => '4',
+				'max' => 4,
 			),
 		),
 		'input_3' => array(
@@ -248,8 +248,8 @@ return array(
 			'label' => '26 Readonly datetime size 12',
 			'config' => array(
 				'type' => 'input',
-				'readOnly' => '1',
-				'size' => '12',
+				'readOnly' => 1,
+				'size' => 12,
 				'eval' => 'datetime',
 				'default' => 0,
 			),
@@ -286,7 +286,7 @@ return array(
 			"config" => Array (
 				"type" => "input",
 				'wizards' => array(
-					'link' => Array(
+					'link' => array(
 						'type' => 'popup',
 						'title' => 'Link',
 						'icon' => 'link_popup.gif',
@@ -422,6 +422,125 @@ return array(
 		 */
 
 
+		'checkbox_1' => array(
+			'label' => '1 Single',
+			'config' => array(
+				'type' => 'check',
+			)
+		),
+		'checkbox_2' => array(
+			'label' => '2 Single default=1',
+			'config' => array(
+				'type' => 'check',
+				'default' => 1,
+			)
+		),
+		'checkbox_3' => array(
+			'label' => '3 One checkbox with label',
+			'config' => array(
+				'type' => 'check',
+				'items' => array(
+					array('foo', ''),
+				),
+			)
+		),
+		'checkbox_4' => array(
+			'label' => '4 One checkbox with label, pre-selected',
+			'config' => array(
+				'type' => 'check',
+				'items' => array(
+					array('foo', ''),
+				),
+				'default' => 1
+			)
+		),
+		'checkbox_5' => array(
+			'label' => '5 Three checkboxes with labels',
+			'config' => array(
+				'type' => 'check',
+				'items' => array(
+					array('foo', ''),
+					array('bar', ''),
+					array('foobar', ''),
+				),
+			),
+		),
+		'checkbox_6' => array(
+			'label' => '6 Four checkboxes with labels, 1 and 3 pre-selected',
+			'config' => array(
+				'type' => 'check',
+				'items' => array(
+					array('foo', ''),
+					array('bar', ''),
+					array('foobar', ''),
+					array('foobar', ''),
+				),
+				'default' => 5,
+			),
+		),
+		'checkbox_7' => array(
+			'label' => '7 Seven checkboxes with labels, 4 cols',
+			'config' => array(
+				'type' => 'check',
+				'items' => array(
+					array('foo1', ''),
+					array('foo2', ''),
+					array('foo3', ''),
+					array('foo4', ''),
+					array('foo5', ''),
+					array('foo6', ''),
+					array('foo7', ''),
+				),
+				'cols' => '4',
+			),
+		),
+		'checkbox_8' => array(
+			'label' => '8 showIfRTE (?)',
+			'config' => array(
+				'type' => 'check',
+				'items' => array(
+					array('foo', ''),
+				),
+				'showIfRTE' => 1,
+			),
+		),
+		/**
+		 * @TODO Add a itemsProcFunc
+		'checkbox_9' => array(
+			'label' => '9 itemsProcFunc',
+			'config' => array(
+				'type' => 'check',
+				'items' => array(
+					array('foo', ''),
+					array('bar', ''),
+				),
+				'itemsProcFunc' => '',
+			),
+		),
+		 */
+		'checkbox_10' => array(
+			'label' => '10 eval maximumRecordsChecked = 1 - table wide',
+			'config' => array(
+				'type' => 'check',
+				'eval' => 'maximumRecordsChecked',
+				'validation' => array(
+					'maximumRecordsChecked' => 1,
+				),
+			),
+		),
+		'checkbox_11' => array(
+			'label' => '11 eval maximumRecordsCheckedInPid = 1 - for this PID',
+			'config' => array(
+				'type' => 'check',
+				'eval' => 'maximumRecordsCheckedInPid',
+				'validation' => array(
+					'maximumRecordsCheckedInPid' => 1,
+				),
+			),
+		),
+
+
+
 	),
 
 	'interface' => array(
@@ -432,6 +551,8 @@ return array(
 			input_31,
 			text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9, text_10,
 			text_11, text_12, text_13,
+			checkbox_1, checkbox_2, checkbox_3, checkbox_4, checkbox_5, checkbox_6, checkbox_7, checkbox_8, checkbox_9, checkbox_10,
+			checkbox_11,
 			',
 	),
 
@@ -443,8 +564,11 @@ return array(
 					input_27, input_10, input_11, input_12, input_13, input_14, input_15, input_16, input_17, input_18,
 					input_19, input_20, input_21, input_22, input_23, input_24, input_25, input_26, input_30, input_31,
 				--div--;Text,
-					text_1, text_28, text_29, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9,
-					text_27, text_10, text_11, text_12, text_13,
+					text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9,
+					text_10, text_11, text_12, text_13,
+				--div--;Check,
+					checkbox_1, checkbox_2, checkbox_3, checkbox_4, checkbox_5, checkbox_6, checkbox_7, checkbox_8, checkbox_9,
+					checkbox_10, checkbox_11,
 				--div--;Access,
 					--palette--;Visibility;visibility,
 					--palette--;Access;access

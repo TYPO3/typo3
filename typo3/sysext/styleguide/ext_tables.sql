@@ -72,6 +72,18 @@ CREATE TABLE tx_styleguide_forms (
 	text_12 text,
 	text_13 text,
 
+	checkbox_1 int(11) DEFAULT '0' NOT NULL,
+	checkbox_2 int(11) DEFAULT '0' NOT NULL,
+	checkbox_3 int(11) DEFAULT '0' NOT NULL,
+	checkbox_4 int(11) DEFAULT '0' NOT NULL,
+	checkbox_5 int(11) DEFAULT '0' NOT NULL,
+	checkbox_6 int(11) DEFAULT '0' NOT NULL,
+	checkbox_7 int(11) DEFAULT '0' NOT NULL,
+	checkbox_8 int(11) DEFAULT '0' NOT NULL,
+	checkbox_9 int(11) DEFAULT '0' NOT NULL,
+	checkbox_10 int(11) DEFAULT '0' NOT NULL,
+	checkbox_11 int(11) DEFAULT '0' NOT NULL,
+
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
