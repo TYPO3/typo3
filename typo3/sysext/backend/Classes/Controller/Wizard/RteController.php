@@ -30,32 +30,31 @@ class RteController {
 	 * document template object
 	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 * @todo Define visibility
 	 */
 	public $doc;
 
 	// Content accumulation for the module.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $content;
 
 	// Internal, static: GPvars
 	// Wizard parameters, coming from TCEforms linking to the wizard.
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $P;
 
 	// If set, launch a new window with the current records pid.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $popView;
 
 	// Set to the URL of this script including variables which is needed to re-display the form. See main()
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $R_URI;
 

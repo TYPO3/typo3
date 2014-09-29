@@ -22,14 +22,12 @@ namespace TYPO3\CMS\Lowlevel;
 class MissingFilesCommand extends CleanerCommand {
 
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $checkRefIndex = TRUE;
 
 	/**
 	 * Constructor
-	 *
-	 * @todo Define visibility
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -62,7 +60,6 @@ This will show you missing files in the TYPO3 system and only report back if err
 	 * change the value of a reference (or remove it)
 	 *
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function main() {
 		global $TYPO3_DB;
@@ -107,7 +104,6 @@ This will show you missing files in the TYPO3 system and only report back if err
 	 *
 	 * @param array $resultArray Result array from main() function
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main_autoFix($resultArray) {
 		foreach ($resultArray['managedFilesMissing'] as $key => $value) {

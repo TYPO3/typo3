@@ -31,9 +31,6 @@ use TYPO3\CMS\Frontend\Imaging\GifBuilder;
  */
 class ContentObjectRenderer {
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $align = array(
 		'center',
 		'right',
@@ -44,7 +41,6 @@ class ContentObjectRenderer {
 	 * stdWrap functions in their correct order
 	 *
 	 * @see stdWrap()
-	 * @todo Define visibility
 	 */
 	public $stdWrapOrder = array(
 		'stdWrapPreProcess' => 'hook',
@@ -264,7 +260,6 @@ class ContentObjectRenderer {
 	 * Holds ImageMagick parameters and extensions used for compression
 	 *
 	 * @see IMGTEXT()
-	 * @todo Define visibility
 	 */
 	public $image_compression = array(
 		10 => array(
@@ -361,7 +356,6 @@ class ContentObjectRenderer {
 	 * ImageMagick parameters for image effects
 	 *
 	 * @see IMGTEXT()
-	 * @todo Define visibility
 	 */
 	public $image_effects = array(
 		1 => '-rotate 90',
@@ -382,117 +376,62 @@ class ContentObjectRenderer {
 	 * The function stdWrap has TypoScript properties that fetch field-data from this array.
 	 *
 	 * @see init()
-	 * @todo Define visibility
 	 */
 	public $data = array();
 
 	protected $table = '';
 
 	// Used for backup...
-	/**
-	 * @todo Define visibility
-	 */
 	public $oldData = array();
 
 	// If this is set with an array before stdWrap, it's used instead of $this->data in the data-property in stdWrap
-	/**
-	 * @todo Define visibility
-	 */
 	public $alternativeData = '';
 
 	// Used by the parseFunc function and is loaded with tag-parameters when parsing tags.
-	/**
-	 * @todo Define visibility
-	 */
 	public $parameters = array();
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $currentValKey = 'currentValue_kidjls9dksoje';
 
 	// This is set to the [table]:[uid] of the record delivered in the $data-array, if the cObjects CONTENT or RECORD is in operation.
 	// Note that $GLOBALS['TSFE']->currentRecord is set to an equal value but always indicating the latest record rendered.
-	/**
-	 * @todo Define visibility
-	 */
 	public $currentRecord = '';
 
 	// Set in cObj->RECORDS and cObj->CONTENT to the current number of records selected in a query.
-	/**
-	 * @todo Define visibility
-	 */
 	public $currentRecordTotal = 0;
 
 	// Incremented in cObj->RECORDS and cObj->CONTENT before each record rendering.
-	/**
-	 * @todo Define visibility
-	 */
 	public $currentRecordNumber = 0;
 
 	// Incremented in parent cObj->RECORDS and cObj->CONTENT before each record rendering.
-	/**
-	 * @todo Define visibility
-	 */
 	public $parentRecordNumber = 0;
 
 	// If the ContentObjectRender was started from CONTENT, RECORD or SEARCHRESULT cObject's this array has two keys, 'data' and 'currentRecord' which indicates the record and data for the parent cObj.
-	/**
-	 * @todo Define visibility
-	 */
 	public $parentRecord = array();
 
 	// This may be set as a reference to the calling object of eg. cObjGetSingle. Anyway, just use it as you like. It's used in productsLib.inc for example.
-	/**
-	 * @todo Define visibility
-	 */
 	public $regObj;
 
 	// internal
 	// Is set to 1 if the instance of this cObj is executed from a *_INT plugin (see pagegen, bottom of document)
-	/**
-	 * @todo Define visibility
-	 */
 	public $INT_include = 0;
 
 	// This is used by checkPid, that checks if pages are accessible. The $checkPid_cache['page_uid'] is set TRUE or FALSE upon this check featuring a caching function for the next request.
-	/**
-	 * @todo Define visibility
-	 */
 	public $checkPid_cache = array();
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $checkPid_badDoktypeList = '255';
 
 	// This will be set by typoLink() to the url of the most recent link created.
-	/**
-	 * @todo Define visibility
-	 */
 	public $lastTypoLinkUrl = '';
 
 	// DO. link target.
-	/**
-	 * @todo Define visibility
-	 */
 	public $lastTypoLinkTarget = '';
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $lastTypoLinkLD = array();
 
 	// Caching substituteMarkerArrayCached function
-	/**
-	 * @todo Define visibility
-	 */
 	public $substMarkerCache = array();
 
 	// array that registers rendered content elements (or any table) to make sure they are not rendered recursively!
-	/**
-	 * @todo Define visibility
-	 */
 	public $recordRegister = array();
 
 	// Containing hooks for userdefined cObjects
@@ -502,9 +441,6 @@ class ContentObjectRenderer {
 	 */
 	protected $cObjHookObjectsRegistry = array();
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $cObjHookObjectsArr = array();
 
 	// Containing hook objects for stdWrap
@@ -560,7 +496,6 @@ class ContentObjectRenderer {
 	 * @param array $data The record data that is rendered.
 	 * @param string $table The table that the data record is from.
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function start($data, $table = '') {
 		global $TYPO3_CONF_VARS;
@@ -636,7 +571,6 @@ class ContentObjectRenderer {
 	 * @param string $currentRecord This is set to the [table]:[uid] of the record delivered in the $data-array, if the cObjects CONTENT or RECORD is in operation. Note that $GLOBALS['TSFE']->currentRecord is set to an equal value but always indicating the latest record rendered.
 	 * @return void
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function setParent($data, $currentRecord) {
 		$this->parentRecord = array(
@@ -657,7 +591,6 @@ class ContentObjectRenderer {
 	 * The TSref will tell if functions are setting this value before calling some other object so that you know if it holds any special information.
 	 *
 	 * @return mixed The "current" value
-	 * @todo Define visibility
 	 */
 	public function getCurrentVal() {
 		return $this->data[$this->currentValKey];
@@ -669,7 +602,6 @@ class ContentObjectRenderer {
 	 * @param mixed $value The variable that you want to set as "current
 	 * @return void
 	 * @see getCurrentVal()
-	 * @todo Define visibility
 	 */
 	public function setCurrentVal($value) {
 		$this->data[$this->currentValKey] = $value;
@@ -683,7 +615,6 @@ class ContentObjectRenderer {
 	 * @param string $addKey A prefix for the debugging information
 	 * @return string Rendered output from the cObjects in the array.
 	 * @see cObjGetSingle()
-	 * @todo Define visibility
 	 */
 	public function cObjGet($setup, $addKey = '') {
 		if (is_array($setup)) {
@@ -708,7 +639,6 @@ class ContentObjectRenderer {
 	 * @param string $TSkey A string label used for the internal debugging tracking.
 	 * @return string cObject output
 	 * @throws \UnexpectedValueException
-	 * @todo Define visibility
 	 */
 	public function cObjGetSingle($name, $conf, $TSkey = '__') {
 		global $TYPO3_CONF_VARS;
@@ -802,7 +732,6 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
-	 * @todo Define visibility
 	 */
 	public function FLOWPLAYER($conf) {
 		return $this->getContentObject('FLOWPLAYER')->render($conf);
@@ -813,7 +742,6 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
-	 * @todo Define visibility
 	 */
 	public function TEXT($conf) {
 		return $this->getContentObject('TEXT')->render($conf);
@@ -824,7 +752,6 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
-	 * @todo Define visibility
 	 */
 	public function CLEARGIF($conf) {
 		return $this->getContentObject('CLEARGIF')->render($conf);
@@ -836,7 +763,6 @@ class ContentObjectRenderer {
 	 * @param array $conf Array of TypoScript properties
 	 * @param string $ext If "INT" then the cObject is a "COBJ_ARRAY_INT" (non-cached), otherwise just "COBJ_ARRAY" (cached)
 	 * @return string Output
-	 * @todo Define visibility
 	 */
 	public function COBJ_ARRAY($conf, $ext = '') {
 		if ($ext === 'INT') {
@@ -852,7 +778,6 @@ class ContentObjectRenderer {
 	 * @param array $conf Array of TypoScript properties
 	 * @param string $ext If "INT" then the cObject is a "USER_INT" (non-cached), otherwise just "USER" (cached)
 	 * @return string Output
-	 * @todo Define visibility
 	 */
 	public function USER($conf, $ext = '') {
 		if ($ext === 'INT') {
@@ -902,7 +827,6 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
-	 * @todo Define visibility
 	 */
 	public function FILE($conf) {
 		return $this->getContentObject('FILE')->render($conf);
@@ -913,7 +837,6 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
-	 * @todo Define visibility
 	 */
 	public function FILES($conf) {
 		return $this->getContentObject('FILES')->render($conf);
@@ -925,7 +848,6 @@ class ContentObjectRenderer {
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
 	 * @see cImage()
-	 * @todo Define visibility
 	 */
 	public function IMAGE($conf) {
 		return $this->getContentObject('IMAGE')->render($conf);
@@ -937,7 +859,6 @@ class ContentObjectRenderer {
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
 	 * @see getImgResource()
-	 * @todo Define visibility
 	 */
 	public function IMG_RESOURCE($conf) {
 		return $this->getContentObject('IMG_RESOURCE')->render($conf);
@@ -948,7 +869,6 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
-	 * @todo Define visibility
 	 */
 	public function IMGTEXT($conf) {
 		return $this->getContentObject('IMGTEXT')->render($conf);
@@ -959,7 +879,6 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
-	 * @todo Define visibility
 	 */
 	public function CONTENT($conf) {
 		return $this->getContentObject('CONTENT')->render($conf);
@@ -970,7 +889,6 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
-	 * @todo Define visibility
 	 */
 	public function RECORDS($conf) {
 		return $this->getContentObject('RECORDS')->render($conf);
@@ -981,7 +899,6 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
-	 * @todo Define visibility
 	 */
 	public function HMENU($conf) {
 		return $this->getContentObject('HMENU')->render($conf);
@@ -992,7 +909,6 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
-	 * @todo Define visibility
 	 */
 	public function CTABLE($conf) {
 		return $this->getContentObject('CTABLE')->render($conf);
@@ -1003,7 +919,6 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
-	 * @todo Define visibility
 	 */
 	public function OTABLE($conf) {
 		return $this->getContentObject('OTABLE')->render($conf);
@@ -1014,7 +929,6 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
-	 * @todo Define visibility
 	 */
 	public function COLUMNS($conf) {
 		return $this->getContentObject('COLUMNS')->render($conf);
@@ -1025,7 +939,6 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
-	 * @todo Define visibility
 	 */
 	public function HRULER($conf) {
 		return $this->getContentObject('HRULER')->render($conf);
@@ -1036,7 +949,6 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
-	 * @todo Define visibility
 	 */
 	public function CASEFUNC($conf) {
 		return $this->getContentObject('CASE')->render($conf);
@@ -1049,7 +961,6 @@ class ContentObjectRenderer {
 	 * @param array $conf Array of TypoScript properties
 	 * @param string $name If "RESTORE_REGISTER" then the cObject rendered is "RESTORE_REGISTER", otherwise "LOAD_REGISTER
 	 * @return string Empty string (the cObject only sets internal data!)
-	 * @todo Define visibility
 	 */
 	public function LOAD_REGISTER($conf, $name) {
 		if ($name === 'RESTORE_REGISTER') {
@@ -1065,7 +976,6 @@ class ContentObjectRenderer {
 	 * @param array $conf Array of TypoScript properties
 	 * @param array $formData Alternative formdata overriding whatever comes from TypoScript
 	 * @return string Output
-	 * @todo Define visibility
 	 */
 	public function FORM($conf, $formData = '') {
 		return $this->getContentObject('FORM')->render($conf, $formData);
@@ -1076,7 +986,6 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
-	 * @todo Define visibility
 	 */
 	public function SEARCHRESULT($conf) {
 		return $this->getContentObject('SEARCHRESULT')->render($conf);
@@ -1088,7 +997,6 @@ class ContentObjectRenderer {
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
 	 * @see substituteMarkerArrayCached()
-	 * @todo Define visibility
 	 */
 	public function TEMPLATE($conf) {
 		return $this->getContentObject('TEMPLATE')->render($conf);
@@ -1111,7 +1019,6 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
-	 * @todo Define visibility
 	 */
 	public function MULTIMEDIA($conf) {
 		return $this->getContentObject('MULTIMEDIA')->render($conf);
@@ -1214,7 +1121,6 @@ class ContentObjectRenderer {
 	 * @param array $pidConf stdWrap array for the list
 	 * @return string A list of PIDs
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function getSlidePids($pidList, $pidConf) {
 		$pidList = isset($pidConf) ? trim($this->stdWrap($pidList, $pidConf)) : trim($pidList);
@@ -1246,7 +1152,6 @@ class ContentObjectRenderer {
 	 * @param string $defaultVal The current default value
 	 * @return string The default value, either from INPUT var or the current default, based on whether caching is enabled or not.
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function getFieldDefaultValue($noValueInsert, $fieldName, $defaultVal) {
 		if (!$GLOBALS['TSFE']->no_cache || !isset($_POST[$fieldName]) && !isset($_GET[$fieldName]) || $noValueInsert) {
@@ -1266,7 +1171,6 @@ class ContentObjectRenderer {
 	 * @return string <img> tag, (possibly wrapped in links and other HTML) if any image found.
 	 * @access private
 	 * @see IMAGE()
-	 * @todo Define visibility
 	 */
 	public function cImage($file, $conf) {
 		$info = $this->getImgResource($file, $conf['file.']);
@@ -1325,7 +1229,6 @@ class ContentObjectRenderer {
 	 *
 	 * @param string $borderAttr The border attribute
 	 * @return string The border attribute
-	 * @todo Define visibility
 	 */
 	public function getBorderAttr($borderAttr) {
 		if (!GeneralUtility::inList('xhtml_strict,xhtml_11,xhtml_2', $GLOBALS['TSFE']->xhtmlDoctype) && $GLOBALS['TSFE']->config['config']['doctype'] != 'html5' && !$GLOBALS['TSFE']->config['config']['disableImgBorderAttr']) {
@@ -1448,7 +1351,6 @@ class ContentObjectRenderer {
 	 * @param array $conf TypoScript properties for the "imageLinkWrap" function
 	 * @return string The input string, $string, wrapped as configured.
 	 * @see cImage()
-	 * @todo Define visibility
 	 */
 	public function imageLinkWrap($string, $imageFile, $conf) {
 		$a1 = '';
@@ -1555,7 +1457,6 @@ class ContentObjectRenderer {
 	 * @param string $addParams Additional parameters (attributes). Default is empty alt and title tags.
 	 * @return string If jpg,gif,jpeg,png: returns image_tag with picture in. If html,txt: returns content string
 	 * @see FILE()
-	 * @todo Define visibility
 	 */
 	public function fileResource($fName, $addParams = 'alt="" title=""') {
 		$incFile = $GLOBALS['TSFE']->tmpl->getFileName($fName);
@@ -1579,7 +1480,6 @@ class ContentObjectRenderer {
 	 * @param integer $tstamp Unix timestamp (number of seconds since 1970)
 	 * @return void
 	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::setSysLastChanged()
-	 * @todo Define visibility
 	 */
 	public function lastChanged($tstamp) {
 		$tstamp = (int)$tstamp;
@@ -1596,7 +1496,6 @@ class ContentObjectRenderer {
 	 * @param string $wrap A string where the first two parts separated by "|" (vertical line) will be wrapped around the input string
 	 * @return string Wrapped output string
 	 * @see wrap(), cImage(), FILE()
-	 * @todo Define visibility
 	 */
 	public function linkWrap($content, $wrap) {
 		$wrapArr = explode('|', $wrap);
@@ -1616,7 +1515,6 @@ class ContentObjectRenderer {
 	 * @param boolean $longDesc If set, the longdesc attribute will be generated - must only be used for img elements!
 	 * @return string Parameter string containing alt and title parameters (if any)
 	 * @see IMGTEXT(), FILE(), FORM(), cImage(), filelink()
-	 * @todo Define visibility
 	 */
 	public function getAltParam($conf, $longDesc = TRUE) {
 		$altText = isset($conf['altText.']) ? trim($this->stdWrap($conf['altText'], $conf['altText.'])) : trim($conf['altText']);
@@ -1650,7 +1548,6 @@ class ContentObjectRenderer {
 	 * @param string $name Input string
 	 * @return string the cleaned string
 	 * @see FORM()
-	 * @todo Define visibility
 	 */
 	public function cleanFormName($name) {
 		// Turn data[x][y] into data:x:y:
@@ -1667,7 +1564,6 @@ class ContentObjectRenderer {
 	 * @param boolean $addGlobal If set, will add the global config.ATagParams to the link
 	 * @return string String containing the parameters to the A tag (if non empty, with a leading space)
 	 * @see IMGTEXT(), filelink(), makelinks(), typolink()
-	 * @todo Define visibility
 	 */
 	public function getATagParams($conf, $addGlobal = 1) {
 		$aTagParams = '';
@@ -1706,7 +1602,6 @@ class ContentObjectRenderer {
 	 * @param string $URL URL of the website
 	 * @param string $TYPE
 	 * @return string The additional tag properties
-	 * @todo Define visibility
 	 */
 	public function extLinkATagParams($URL, $TYPE) {
 		$out = '';
@@ -3511,7 +3406,6 @@ class ContentObjectRenderer {
 	 * @return integer The number of rows found by the select (FALSE on error)
 	 * @access private
 	 * @see stdWrap()
-	 * @todo Define visibility
 	 */
 	public function numRows($conf) {
 		$result = FALSE;
@@ -3534,7 +3428,6 @@ class ContentObjectRenderer {
 	 * @param string $listNum Index-number. You can place the word "last" in it and it will be substituted with the pointer to the last value. You can use math operators like "+-/*" (passed to calc())
 	 * @param string $char Either a string used to explode the content string or an integer value which will then be changed into a character, eg. "10" for a linebreak char.
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function listNum($content, $listNum, $char) {
 		$char = $char ?: ',';
@@ -3558,7 +3451,6 @@ class ContentObjectRenderer {
 	 * @param array $conf TypoScript properties defining what to compare
 	 * @return boolean
 	 * @see HMENU(), CASEFUNC(), IMAGE(), COLUMN(), stdWrap(), _parseFunc()
-	 * @todo Define visibility
 	 */
 	public function checkIf($conf) {
 		if (!is_array($conf)) {
@@ -3633,7 +3525,6 @@ class ContentObjectRenderer {
 	 * @return string Comma list of files.
 	 * @access private
 	 * @see stdWrap()
-	 * @todo Define visibility
 	 */
 	public function filelist($data) {
 		$data = trim($data);
@@ -3722,7 +3613,6 @@ class ContentObjectRenderer {
 	 * @return string The directory path if it existed as was valid to access.
 	 * @access private
 	 * @see filelist()
-	 * @todo Define visibility
 	 */
 	public function clean_directory($theDir) {
 		// proceeds if no '//', '..' or '\' is in the $theFile
@@ -3744,7 +3634,6 @@ class ContentObjectRenderer {
 	 * @param array $conf TypoScript properties for the parser. See link.
 	 * @return string Return value.
 	 * @see stdWrap(), \TYPO3\CMS\Core\Html\HtmlParser::HTMLparserConfig(), \TYPO3\CMS\Core\Html\HtmlParser::HTMLcleaner()
-	 * @todo Define visibility
 	 */
 	public function HTMLparser_TSbridge($theValue, $conf) {
 		$htmlParser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
@@ -3759,7 +3648,6 @@ class ContentObjectRenderer {
 	 * @param string $wrap The wrap string, eg. "<strong></strong>" or more likely here '<a href="index.php?id={TSFE:id}"> | </a>' which will wrap the input string in a <a> tag linking to the current page.
 	 * @return string Output string wrapped in the wrapping value.
 	 * @see insertData(), stdWrap()
-	 * @todo Define visibility
 	 */
 	public function dataWrap($content, $wrap) {
 		return $this->wrap($content, $this->insertData($wrap));
@@ -3772,7 +3660,6 @@ class ContentObjectRenderer {
 	 * @param string $str Input value
 	 * @return string Processed input value
 	 * @see getData(), stdWrap(), dataWrap()
-	 * @todo Define visibility
 	 */
 	public function insertData($str) {
 		$inside = 0;
@@ -3803,7 +3690,6 @@ class ContentObjectRenderer {
 	 * @param string $content The content to wrap the comment around.
 	 * @return string Processed input value
 	 * @see stdWrap()
-	 * @todo Define visibility
 	 */
 	public function prefixComment($str, $conf, $content) {
 		$parts = explode('|', $str);
@@ -3819,7 +3705,6 @@ class ContentObjectRenderer {
 	 * @return string The processed input value.
 	 * @access private
 	 * @see stdWrap()
-	 * @todo Define visibility
 	 */
 	public function substring($content, $options) {
 		$options = GeneralUtility::intExplode(',', $options . ',');
@@ -3838,7 +3723,6 @@ class ContentObjectRenderer {
 	 * @return string The processed input value.
 	 * @access private
 	 * @see stdWrap()
-	 * @todo Define visibility
 	 */
 	public function crop($content, $options) {
 		$options = explode('|', $options);
@@ -3878,7 +3762,6 @@ class ContentObjectRenderer {
 	 * @return string The processed input value.
 	 * @access private
 	 * @see stdWrap()
-	 * @todo Define visibility
 	 */
 	public function cropHTML($content, $options) {
 		$options = explode('|', $options);
@@ -4017,7 +3900,6 @@ class ContentObjectRenderer {
 	 * @return string Return string
 	 * @author Thomas Bley (all from moregroupware cvs code / readmessage.inc.php, published under gpl by Thomas)
 	 * @author Kasper Skårhøj
-	 * @todo Define visibility
 	 */
 	public function removeBadHTML($text, $conf) {
 		// Copyright 2002-2003 Thomas Bley
@@ -4057,7 +3939,6 @@ class ContentObjectRenderer {
 	 * @return string The processed output value
 	 * @access private
 	 * @see stdWrap()
-	 * @todo Define visibility
 	 */
 	public function textStyle($theValue, $conf) {
 		$conf['face.'][1] = 'Times New Roman';
@@ -4137,7 +4018,6 @@ class ContentObjectRenderer {
 	 * @return string The processed output value
 	 * @access private
 	 * @see stdWrap()
-	 * @todo Define visibility
 	 */
 	public function tableStyle($theValue, $conf) {
 		$conf['color.'][240] = 'black';
@@ -4180,7 +4060,6 @@ class ContentObjectRenderer {
 	 * @param array $conf The TypoScript configuration properties
 	 * @return string The modified string
 	 * @todo Make it XHTML compatible. Will not present "/>" endings of tags right now. Further getting the tagname might fail if it is not separated by a normal space from the attributes.
-	 * @todo Define visibility
 	 */
 	public function addParams($content, $conf) {
 		// For XHTML compliance.
@@ -4227,7 +4106,6 @@ class ContentObjectRenderer {
 	 * @return string The link to the file possibly with icons, thumbnails, size in bytes shown etc.
 	 * @access private
 	 * @see stdWrap()
-	 * @todo Define visibility
 	 */
 	public function filelink($theValue, $conf) {
 		$conf['path'] = isset($conf['path.']) ? $this->stdWrap($conf['path'], $conf['path.']) : $conf['path'];
@@ -4359,7 +4237,6 @@ class ContentObjectRenderer {
 	 * @return string URL parameters like "&juSecure=1.....
 	 * @access private
 	 * @see filelink()
-	 * @todo Define visibility
 	 */
 	public function locDataJU($jumpUrl, $conf) {
 		$fI = pathinfo($jumpUrl);
@@ -4393,7 +4270,6 @@ class ContentObjectRenderer {
 	 * @param string $val The string to evaluate. Example: "3+4*10/5" will generate "35". Only integer numbers can be used.
 	 * @return integer The result (might be a float if you did a division of the numbers).
 	 * @see \TYPO3\CMS\Core\Utility\MathUtility::calculateWithPriorityToAdditionAndSubtraction()
-	 * @todo Define visibility
 	 */
 	public function calc($val) {
 		$parts = GeneralUtility::splitCalc($val, '+-*/');
@@ -4432,7 +4308,6 @@ class ContentObjectRenderer {
 	 * @param string $string The string with parts in (where each part is evaluated by ->calc())
 	 * @return array And array with evaluated values.
 	 * @see calc(), \TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject::makeGifs()
-	 * @todo Define visibility
 	 */
 	public function calcIntExplode($delim, $string) {
 		$temp = explode($delim, $string);
@@ -4452,7 +4327,6 @@ class ContentObjectRenderer {
 	 * @return string Compiled result
 	 * @access private
 	 * @see stdWrap(), t3lib_menu::procesItemStates()
-	 * @todo Define visibility
 	 */
 	public function splitObj($value, $conf) {
 		$conf['token'] = isset($conf['token.']) ? $this->stdWrap($conf['token'], $conf['token.']) : $conf['token'];
@@ -4625,7 +4499,6 @@ class ContentObjectRenderer {
 	 * @param float $content Value to process
 	 * @param array $conf TypoScript Configuration for numberFormat
 	 * @return string The formated number
-	 * @todo Define visibility
 	 */
 	public function numberFormat($content, $conf) {
 		$decimals = isset($conf['decimals.']) ? $this->stdWrap($conf['decimals'], $conf['decimals.']) : $conf['decimals'];
@@ -4653,7 +4526,6 @@ class ContentObjectRenderer {
 	 * @param string $ref Reference to get configuration from. Eg. "< lib.parseFunc" which means that the configuration of the object path "lib.parseFunc" will be retrieved and MERGED with what is in $conf!
 	 * @return string The processed value
 	 * @see _parseFunc()
-	 * @todo Define visibility
 	 */
 	public function parseFunc($theValue, $conf, $ref = '') {
 		// Fetch / merge reference, if any
@@ -4755,7 +4627,6 @@ class ContentObjectRenderer {
 	 * @return string The processed value
 	 * @access private
 	 * @see parseFunc()
-	 * @todo Define visibility
 	 */
 	public function _parseFunc($theValue, $conf) {
 		if (!empty($conf['if.']) && !$this->checkIf($conf['if.'])) {
@@ -4976,7 +4847,6 @@ class ContentObjectRenderer {
 	 * @param array $conf TypoScript options
 	 * @return string The processed input value being returned; Splitted lines imploded by LF again.
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function encaps_lineSplit($theValue, $conf) {
 		$lParts = explode(LF, $theValue);
@@ -5080,7 +4950,6 @@ class ContentObjectRenderer {
 	 * @param array $conf Configuration for makeLinks, see link
 	 * @return string The processed input string, being returned.
 	 * @see _parseFunc()
-	 * @todo Define visibility
 	 */
 	public function http_makelinks($data, $conf) {
 		$aTagParams = $this->getATagParams($conf);
@@ -5152,7 +5021,6 @@ class ContentObjectRenderer {
 	 * @param array $conf Configuration for makeLinks, see link
 	 * @return string The processed input string, being returned.
 	 * @see _parseFunc()
-	 * @todo Define visibility
 	 */
 	public function mailto_makelinks($data, $conf) {
 		// http-split
@@ -5357,7 +5225,6 @@ class ContentObjectRenderer {
 	 *
 	 * @param string $field The fieldname, eg. "title" or "navtitle // title" (in the latter case the value of $this->data[navtitle] is returned if not blank, otherwise $this->data[title] will be)
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function getFieldVal($field) {
 		if (!strstr($field, '//')) {
@@ -5379,7 +5246,6 @@ class ContentObjectRenderer {
 	 * @param NULL|array $fieldArray Alternative field array; If you set this to an array this variable will be used to look up values for the "field" key. Otherwise the current page record in $GLOBALS['TSFE']->page is used.
 	 * @return string The value fetched
 	 * @see getFieldVal()
-	 * @todo Define visibility
 	 */
 	public function getData($string, $fieldArray = NULL) {
 		if (!is_array($fieldArray)) {
@@ -5606,7 +5472,6 @@ class ContentObjectRenderer {
 	 * @return string The value from the field of the rootline.
 	 * @access private
 	 * @see getData()
-	 * @todo Define visibility
 	 */
 	public function rootLineValue($key, $field, $slideBack = 0, $altRootLine = '') {
 		$rootLine = is_array($altRootLine) ? $altRootLine : $GLOBALS['TSFE']->tmpl->rootLine;
@@ -5630,7 +5495,6 @@ class ContentObjectRenderer {
 	 * @param array $source Alternative array than $GLOBAL to get variables from.
 	 * @return mixed Whatever value. If none, then blank string.
 	 * @see getData()
-	 * @todo Define visibility
 	 */
 	public function getGlobal($keyString, $source = NULL) {
 		$keys = explode('|', $keyString);
@@ -5663,7 +5527,6 @@ class ContentObjectRenderer {
 	 * @return integer The processed integer key value.
 	 * @access private
 	 * @see getData()
-	 * @todo Define visibility
 	 */
 	public function getKey($key, $arr) {
 		$key = (int)$key;
@@ -5686,7 +5549,6 @@ class ContentObjectRenderer {
 	 * @param array $conf TS-configuration array, see TSref for details
 	 * @return string String of translated values, separated by $delimiter. If no matches were found, the input value is simply returned.
 	 * @todo It would be nice it this function basically looked up any type of value, db-relations etc.
-	 * @todo Define visibility
 	 */
 	public function TCAlookup($inputValue, $conf) {
 		$table = $conf['table'];
@@ -6358,7 +6220,6 @@ class ContentObjectRenderer {
 	 * @param array $conf TypoScript properties for "typolink
 	 * @return string The URL of the link-tag that typolink() would by itself return
 	 * @see typoLink()
-	 * @todo Define visibility
 	 */
 	public function typoLink_URL($conf) {
 		$this->typolink('|', $conf);
@@ -6377,7 +6238,6 @@ class ContentObjectRenderer {
 	 * @param string $target Specific target set, if any. (Default is using the current)
 	 * @return string The wrapped $label-text string
 	 * @see getTypoLink_URL()
-	 * @todo Define visibility
 	 */
 	public function getTypoLink($label, $params, $urlParameters = array(), $target = '') {
 		$conf = array();
@@ -6406,7 +6266,6 @@ class ContentObjectRenderer {
 	 * @param string $target Specific target set, if any. (Default is using the current)
 	 * @return string The URL
 	 * @see getTypoLink()
-	 * @todo Define visibility
 	 */
 	public function getTypoLink_URL($params, $urlParameters = array(), $target = '') {
 		$this->getTypoLink('', $params, $urlParameters, $target);
@@ -6419,7 +6278,6 @@ class ContentObjectRenderer {
 	 * @param array $conf "typolink" TypoScript properties
 	 * @return array An array with two values in key 0+1, each value being the start and close <a>-tag of the typolink properties being inputted in $conf
 	 * @see typolink()
-	 * @todo Define visibility
 	 */
 	public function typolinkWrap($conf) {
 		$k = md5(microtime());
@@ -6433,7 +6291,6 @@ class ContentObjectRenderer {
 	 * @param integer $id An alternative ID to the current id ($GLOBALS['TSFE']->id)
 	 * @return string The URL
 	 * @see getTypoLink_URL()
-	 * @todo Define visibility
 	 */
 	public function currentPageUrl($urlParameters = array(), $id = 0) {
 		return $this->getTypoLink_URL($id ? $id : $GLOBALS['TSFE']->id, $urlParameters, $GLOBALS['TSFE']->sPre);
@@ -6447,7 +6304,6 @@ class ContentObjectRenderer {
 	 * @param boolean $raw If TRUE, the MPvalue is returned raw. Normally it is encoded as &MP=... variable
 	 * @return string MP value, prefixed with &MP= (depending on $raw)
 	 * @see typolink()
-	 * @todo Define visibility
 	 */
 	public function getClosestMPvalueForPage($pageId, $raw = FALSE) {
 		// MountPoints:
@@ -6502,7 +6358,6 @@ class ContentObjectRenderer {
 	 * @param string $linktxt Link text, default will be the email address.
 	 * @param string $initP Initial link parameters, only used if Jumpurl functionality is enabled. Example: ?id=5&type=0
 	 * @return string Returns a numerical array with two elements: 1) $mailToUrl, string ready to be inserted into the href attribute of the <a> tag, b) $linktxt: The string between starting and ending <a> tag.
-	 * @todo Define visibility
 	 */
 	public function getMailTo($mailAddress, $linktxt, $initP = '?') {
 		if ((string)$linktxt === '') {
@@ -6597,7 +6452,6 @@ class ContentObjectRenderer {
 	 * @param string $char The char used to split the wrapping value, default is "|
 	 * @return string Wrapped input string
 	 * @see noTrimWrap()
-	 * @todo Define visibility
 	 */
 	public function wrap($content, $wrap, $char = '|') {
 		if ($wrap) {
@@ -6617,7 +6471,6 @@ class ContentObjectRenderer {
 	 * @param string $char The char used to split the wrapping value, default is "|"
 	 * @return string Wrapped input string, eg. " <strong> HELLO WORD </strong>
 	 * @see wrap()
-	 * @todo Define visibility
 	 */
 	public function noTrimWrap($content, $wrap, $char = '|') {
 		if ($wrap) {
@@ -6635,7 +6488,6 @@ class ContentObjectRenderer {
 	 * @param string $wrap A value like "10 | 20" where the first part denotes the space BEFORE and the second part denotes the space AFTER (in pixels)
 	 * @param array $conf Configuration from TypoScript
 	 * @return string Wrapped string
-	 * @todo Define visibility
 	 */
 	public function wrapSpace($content, $wrap, array $conf = NULL) {
 		if (trim($wrap)) {
@@ -6670,7 +6522,6 @@ class ContentObjectRenderer {
 	 * @param string $content The content string to pass the function
 	 * @return string The return content from the function call. Should probably be a string.
 	 * @see USER(), stdWrap(), typoLink(), _parseFunc()
-	 * @todo Define visibility
 	 */
 	public function callUserFunction($funcName, $conf, $content) {
 		// Split parts
@@ -6712,7 +6563,6 @@ class ContentObjectRenderer {
 	 *
 	 * @param string $params Text which the parameters
 	 * @return array array with the parameters as key/value pairs
-	 * @todo Define visibility
 	 */
 	public function processParams($params) {
 		$paramArr = array();
@@ -6732,7 +6582,6 @@ class ContentObjectRenderer {
 	 *
 	 * @param string $content String of keywords
 	 * @return string Cleaned up string, keywords will be separated by a comma only.
-	 * @todo Define visibility
 	 */
 	public function keywords($content) {
 		$listArr = preg_split('/[,;' . LF . ']/', $content);
@@ -6749,7 +6598,6 @@ class ContentObjectRenderer {
 	 * @param string $case The direction; either "upper" or "lower
 	 * @return string
 	 * @see HTMLcaseshift()
-	 * @todo Define visibility
 	 */
 	public function caseshift($theValue, $case) {
 		$case = strtolower($case);
@@ -6780,7 +6628,6 @@ class ContentObjectRenderer {
 	 * @param string $case The direction; either "upper" or "lower
 	 * @return string
 	 * @see caseshift()
-	 * @todo Define visibility
 	 */
 	public function HTMLcaseshift($theValue, $case) {
 		$inside = 0;
@@ -6808,7 +6655,6 @@ class ContentObjectRenderer {
 	 * @param integer $seconds Seconds to return age for. Example: "70" => "1 min", "3601" => "1 hrs
 	 * @param string $labels The labels of the individual units. Defaults to : ' min| hrs| days| yrs'
 	 * @return string The formatted string
-	 * @todo Define visibility
 	 */
 	public function calcAge($seconds, $labels) {
 		if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($labels)) {
@@ -6904,7 +6750,6 @@ class ContentObjectRenderer {
 	 * @param string $url Input URL
 	 * @param string $params URL parameters
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function URLqMark($url, $params) {
 		if ($params && !strstr($url, '?')) {
@@ -6921,7 +6766,6 @@ class ContentObjectRenderer {
 	 * @param string $propList List of properties to clear both value/properties for. Eg. "myprop,another_property
 	 * @return array The TypoScript array
 	 * @see gifBuilderTextBox()
-	 * @todo Define visibility
 	 */
 	public function clearTSProperties($TSArr, $propList) {
 		$list = explode(',', $propList);
@@ -6941,7 +6785,6 @@ class ContentObjectRenderer {
 	 * @param string $prop The property name: If this value is a reference (eg. " < plugins.tx_something") then the reference will be retrieved and inserted at that position (into the properties only, not the value...) AND overlaid with the old properties if any.
 	 * @return array The modified TypoScript array
 	 * @see user_plaintext::typolist(),user_plaintext::typohead()
-	 * @todo Define visibility
 	 */
 	public function mergeTSRef($confArr, $prop) {
 		if ($confArr[$prop][0] === '<') {
@@ -6966,7 +6809,6 @@ class ContentObjectRenderer {
 	 * @return array The resulting array
 	 * @see mergeTSRef(), tx_tstemplatestyler_modfunc1::joinTSarrays()
 	 * @deprecated since 6.2, will be removed in two versions, use array_replace_recursive() instead
-	 * @todo Define visibility
 	 */
 	public function joinTSarrays($conf, $old_conf) {
 		GeneralUtility::logDeprecatedFunction();
@@ -6980,7 +6822,6 @@ class ContentObjectRenderer {
 	 * @param array $conf TypoScript properties for this function
 	 * @param string $text The text string to write onto the GIFBUILDER file
 	 * @return array The modified $gifbuilderConf array
-	 * @todo Define visibility
 	 */
 	public function gifBuilderTextBox($gifbuilderConf, $conf, $text) {
 		$chars = (int)$conf['chars'] ?: 20;
@@ -7031,7 +6872,6 @@ class ContentObjectRenderer {
 	 * @return array array with lines.
 	 * @access private
 	 * @see gifBuilderTextBox()
-	 * @todo Define visibility
 	 */
 	public function linebreaks($string, $chars, $maxLines = 0) {
 		$lines = explode(LF, $string);
@@ -7063,7 +6903,6 @@ class ContentObjectRenderer {
 	 * @return string
 	 * @access private
 	 * @see user_feAdmin::displayCreateScreen()
-	 * @todo Define visibility
 	 */
 	public function getUpdateJS($dataArray, $formName, $arrPrefix, $fieldList) {
 		$JSPart = '';
@@ -7151,7 +6990,6 @@ class ContentObjectRenderer {
 	 * @param boolean $doExec If set, the query is executed. IT'S HIGHLY RECOMMENDED TO USE THIS FLAG to execute the query directly!!!
 	 * @return string The query, ready to execute unless $doExec was TRUE in which case the return value is FALSE.
 	 * @see DBgetUpdate(), DBgetInsert(), user_feAdmin
-	 * @todo Define visibility
 	 */
 	public function DBgetDelete($table, $uid, $doExec = FALSE) {
 		if ((int)$uid) {
@@ -7191,7 +7029,6 @@ class ContentObjectRenderer {
 	 * @param boolean $doExec If set, the query is executed. IT'S HIGHLY RECOMMENDED TO USE THIS FLAG to execute the query directly!!!
 	 * @return string The query, ready to execute unless $doExec was TRUE in which case the return value is FALSE.
 	 * @see DBgetInsert(), DBgetDelete(), user_feAdmin
-	 * @todo Define visibility
 	 */
 	public function DBgetUpdate($table, $uid, $dataArr, $fieldList, $doExec = FALSE) {
 		// uid can never be set
@@ -7231,7 +7068,6 @@ class ContentObjectRenderer {
 	 * @param boolean $doExec If set, the query is executed. IT'S HIGHLY RECOMMENDED TO USE THIS FLAG to execute the query directly!!!
 	 * @return string The query, ready to execute unless $doExec was TRUE in which case the return value is FALSE.
 	 * @see DBgetUpdate(), DBgetDelete(), user_feAdmin
-	 * @todo Define visibility
 	 */
 	public function DBgetInsert($table, $pid, $dataArr, $fieldList, $doExec = FALSE) {
 		$extraList = 'pid';
@@ -7291,7 +7127,6 @@ class ContentObjectRenderer {
 	 * @param boolean $feEditSelf TRUE, if the fe_user may edit his own fe_user record.
 	 * @return boolean
 	 * @see user_feAdmin
-	 * @todo Define visibility
 	 */
 	public function DBmayFEUserEdit($table, $row, $feUserRow, $allowedGroups = '', $feEditSelf = 0) {
 		$groupList = $allowedGroups ? implode(',', array_intersect(GeneralUtility::trimExplode(',', $feUserRow['usergroup'], TRUE), GeneralUtility::trimExplode(',', $allowedGroups, TRUE))) : $feUserRow['usergroup'];
@@ -7333,7 +7168,6 @@ class ContentObjectRenderer {
 	 * @param boolean $feEditSelf TRUE, if the fe_user may edit his own fe_user record.
 	 * @return string The where clause part. ALWAYS returns a string. If no access at all, then " AND 1=0
 	 * @see DBmayFEUserEdit(), user_feAdmin::displayEditScreen()
-	 * @todo Define visibility
 	 */
 	public function DBmayFEUserEditSelect($table, $feUserRow, $allowedGroups = '', $feEditSelf = 0) {
 		// Returns where-definition that selects user-editable records.
@@ -7586,7 +7420,6 @@ class ContentObjectRenderer {
 	 * @param string $limit Optional LIMIT value ([begin,]max), if none, supply blank string.
 	 * @return pointer		SQL result pointer
 	 * @see mm_query_uidList()
-	 * @todo Define visibility
 	 */
 	public function exec_mm_query($select, $local_table, $mm_table, $foreign_table, $whereClause = '', $groupBy = '', $orderBy = '', $limit = '') {
 		return $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $local_table . ',' . $mm_table . ($foreign_table ? ',' . $foreign_table : ''), $local_table . '.uid=' . $mm_table . '.uid_local' . ($foreign_table ? ' AND ' . $foreign_table . '.uid=' . $mm_table . '.uid_foreign' : '') . $whereClause, $groupBy, $orderBy, $limit);
@@ -7606,7 +7439,6 @@ class ContentObjectRenderer {
 	 * @param string $limit Optional LIMIT value ([begin,]max), if none, supply blank string.
 	 * @return pointer		SQL result pointer
 	 * @see mm_query()
-	 * @todo Define visibility
 	 */
 	public function exec_mm_query_uidList($select, $local_table_uidlist, $mm_table, $foreign_table = '', $whereClause = '', $groupBy = '', $orderBy = '', $limit = '') {
 		return $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $mm_table . ($foreign_table ? ',' . $foreign_table : ''), $mm_table . '.uid_local IN (' . $local_table_uidlist . ')' . ($foreign_table ? ' AND ' . $foreign_table . '.uid=' . $mm_table . '.uid_foreign' : '') . $whereClause, $groupBy, $orderBy, $limit);
@@ -7620,7 +7452,6 @@ class ContentObjectRenderer {
 	 * @param string $searchFieldList The fields to search in
 	 * @param string $searchTable The table name you search in (recommended for DBAL compliance. Will be prepended field names as well)
 	 * @return string The WHERE clause.
-	 * @todo Define visibility
 	 */
 	public function searchWhere($sw, $searchFieldList, $searchTable = '') {
 		global $TYPO3_DB;
@@ -7654,7 +7485,6 @@ class ContentObjectRenderer {
 	 * @param array $conf The TypoScript configuration properties
 	 * @return mixed A SQL result pointer
 	 * @see getQuery()
-	 * @todo Define visibility
 	 */
 	public function exec_getQuery($table, $conf) {
 		$queryParts = $this->getQuery($table, $conf, TRUE);
@@ -7671,7 +7501,6 @@ class ContentObjectRenderer {
 	 * @return mixed A SELECT query if $returnQueryArray is FALSE, otherwise the SELECT query in an array as parts.
 	 * @access private
 	 * @see CONTENT(), numRows()
-	 * @todo Define visibility
 	 */
 	public function getQuery($table, $conf, $returnQueryArray = FALSE) {
 		// Resolve stdWrap in these properties first
@@ -7820,7 +7649,6 @@ class ContentObjectRenderer {
 	 * @return mixed A WHERE clause based on the relevant parts of the TypoScript properties for a "select" function in TypoScript, see link. If $returnQueryArray is FALSE the where clause is returned as a string with WHERE, GROUP BY and ORDER BY parts, otherwise as an array with these parts.
 	 * @access private
 	 * @see getQuery()
-	 * @todo Define visibility
 	 */
 	public function getWhere($table, $conf, $returnQueryArray = FALSE) {
 		// Init:
@@ -7983,7 +7811,6 @@ class ContentObjectRenderer {
 	 * @return array Returns the array of remaining page UID numbers
 	 * @access private
 	 * @see getWhere(),checkPid()
-	 * @todo Define visibility
 	 */
 	public function checkPidArray($listArr) {
 		$outArr = array();
@@ -8008,7 +7835,6 @@ class ContentObjectRenderer {
 	 * @return boolean TRUE if OK
 	 * @access private
 	 * @see getWhere(), checkPidArray()
-	 * @todo Define visibility
 	 */
 	public function checkPid($uid) {
 		$uid = (int)$uid;
@@ -8028,7 +7854,6 @@ class ContentObjectRenderer {
 	 * @return array List of values to replace markers with
 	 * @access private
 	 * @see getQuery()
-	 * @todo Define visibility
 	 */
 	public function getQueryMarkers($table, $conf) {
 		// Parse markers and prepare their values
@@ -8105,7 +7930,6 @@ class ContentObjectRenderer {
 	 * @param string $currentRecord The "table:uid" of the record being shown. If empty string then $this->currentRecord is used. For new records (set by $conf['newRecordFromTable']) it's auto-generated to "[tablename]:NEW
 	 * @param array $dataArr Alternative data array to use. Default is $this->data
 	 * @return string The input content string with the editPanel appended. This function returns only an edit panel appended to the content string if a backend user is logged in (and has the correct permissions). Otherwise the content string is directly returned.
-	 * @todo Define visibility
 	 */
 	public function editPanel($content, $conf, $currentRecord = '', $dataArr = array()) {
 		if ($GLOBALS['TSFE']->beUserLogin && $GLOBALS['BE_USER']->frontendEdit instanceof \TYPO3\CMS\Core\FrontendEditing\FrontendEditingController) {
@@ -8132,7 +7956,6 @@ class ContentObjectRenderer {
 	 * @param array $dataArr Alternative data array to use. Default is $this->data
 	 * @param string $addUrlParamStr Additional URL parameters for the link pointing to alt_doc.php
 	 * @return string The input content string, possibly with edit icons added (not necessarily in the end but just after the last string of normal content.
-	 * @todo Define visibility
 	 */
 	public function editIcons($content, $params, array $conf = array(), $currentRecord = '', $dataArr = array(), $addUrlParamStr = '') {
 		if ($GLOBALS['TSFE']->beUserLogin && $GLOBALS['BE_USER']->frontendEdit instanceof \TYPO3\CMS\Core\FrontendEditing\FrontendEditingController) {
@@ -8156,7 +7979,6 @@ class ContentObjectRenderer {
 	 * @return boolean
 	 * @access private
 	 * @see editPanelPreviewBorder()
-	 * @todo Define visibility
 	 */
 	public function isDisabled($table, $row) {
 		if ($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] && $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled']] || $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['fe_group'] && $GLOBALS['TSFE']->simUserGroup && $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['fe_group']] == $GLOBALS['TSFE']->simUserGroup || $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['starttime'] && $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['starttime']] > $GLOBALS['EXEC_TIME'] || $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime'] && $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime']] && $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime']] < $GLOBALS['EXEC_TIME']) {

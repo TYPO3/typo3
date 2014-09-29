@@ -29,7 +29,6 @@ class TemplateAnalyzerModuleFunctionController extends \TYPO3\CMS\Backend\Module
 	 * @param object $pObj
 	 * @param array $conf
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function init(&$pObj, $conf) {
 		parent::init($pObj, $conf);
@@ -41,7 +40,6 @@ class TemplateAnalyzerModuleFunctionController extends \TYPO3\CMS\Backend\Module
 	 * Mod menu
 	 *
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function modMenu() {
 		return array(
@@ -60,7 +58,6 @@ class TemplateAnalyzerModuleFunctionController extends \TYPO3\CMS\Backend\Module
 	 * @param integer $pageId
 	 * @param integer $template_uid
 	 * @return integer
-	 * @todo Define visibility
 	 */
 	public function initialize_editor($pageId, $template_uid = 0) {
 		// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
@@ -85,7 +82,6 @@ class TemplateAnalyzerModuleFunctionController extends \TYPO3\CMS\Backend\Module
 	 * Main
 	 *
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function main() {
 		$theOutput = '';

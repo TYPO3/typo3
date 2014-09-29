@@ -26,146 +26,76 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $prefixId = 'tx_indexedsearch';
 
 	// Same as class name
-	/**
-	 * @todo Define visibility
-	 */
 	public $scriptRelPath = 'pi/class.tx_indexedsearch.php';
 
 	// Path to this script relative to the extension dir.
-	/**
-	 * @todo Define visibility
-	 */
 	public $extKey = 'indexed_search';
 
 	// The extension key.
-	/**
-	 * @todo Define visibility
-	 */
 	public $join_pages = 0;
 
 	// See document for info about this flag...
-	/**
-	 * @todo Define visibility
-	 */
 	public $defaultResultNumber = 10;
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $operator_translate_table = array(array('+', 'AND'), array('|', 'OR'), array('-', 'AND NOT'));
 
 	// Internal variable
-	/**
-	 * @todo Define visibility
-	 */
 	public $wholeSiteIdList = 0;
 
 	// Root-page PIDs to search in (rl0 field where clause, see initialize() function)
 	// Internals:
-	/**
-	 * @todo Define visibility
-	 */
 	public $sWArr = array();
 
 	// Search Words and operators
-	/**
-	 * @todo Define visibility
-	 */
 	public $optValues = array();
 
 	// Selector box values for search configuration form
-	/**
-	 * @todo Define visibility
-	 */
 	public $firstRow = array();
 
 	// Will hold the first row in result - used to calculate relative hit-ratings.
-	/**
-	 * @todo Define visibility
-	 */
 	public $cache_path = array();
 
 	// Caching of page path
-	/**
-	 * @todo Define visibility
-	 */
 	public $cache_rl = array();
 
 	// Caching of root line data
-	/**
-	 * @todo Define visibility
-	 */
 	public $fe_groups_required = array();
 
 	// Required fe_groups memberships for display of a result.
-	/**
-	 * @todo Define visibility
-	 */
 	public $domain_records = array();
 
 	// Select clauses for individual words
-	/**
-	 * @todo Define visibility
-	 */
 	public $wSelClauses = array();
 
 	// Domain records (?)
-	/**
-	 * @todo Define visibility
-	 */
 	public $resultSections = array();
 
 	// Page tree sections for search result.
-	/**
-	 * @todo Define visibility
-	 */
 	public $external_parsers = array();
 
 	// External parser objects
-	/**
-	 * @todo Define visibility
-	 */
 	public $iconFileNameCache = array();
 
 	// Storage of icons....
-	/**
-	 * @todo Define visibility
-	 */
 	public $templateCode;
 
 	// Will hold the content of $conf['templateFile']
-	/**
-	 * @todo Define visibility
-	 */
 	public $hiddenFieldList = 'ext, type, defOp, media, order, group, lang, desc, results';
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $indexerConfig = array();
 
 	// Indexer configuration, coming from $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search']
-	/**
-	 * @todo Define visibility
-	 */
 	public $enableMetaphoneSearch = FALSE;
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $storeMetaphoneInfoAsWords;
 
 	/**
 	 * Lexer object
 	 *
 	 * @var \TYPO3\CMS\IndexedSearch\Lexer
-	 * @todo Define visibility
 	 */
 	public $lexerObj;
 
@@ -177,7 +107,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @param 	string		Content input, ignore (just put blank string)
 	 * @param 	array		TypoScript configuration of the plugin!
 	 * @return 	string		HTML code for the search form / result display.
-	 * @todo Define visibility
 	 */
 	public function main($content, $conf) {
 		// Initialize:
@@ -200,7 +129,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Initialize internal variables, especially selector box values for the search form and search words
 	 *
 	 * @return 	void
-	 * @todo Define visibility
 	 */
 	public function initialize() {
 		global $TYPO3_CONF_VARS;
@@ -412,7 +340,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @param 	boolean		If TRUE, the default operator will be OR, not AND
 	 * @return 	array		Returns array with search words if any found
-	 * @todo Define visibility
 	 */
 	public function getSearchWords($defOp) {
 		// Shorten search-word string to max 200 bytes (does NOT take multibyte charsets into account - but never mind, shortening the string here is only a run-away feature!)
@@ -446,7 +373,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @param 	array		Search word array
 	 * @return 	array		Search word array, processed through lexer
-	 * @todo Define visibility
 	 */
 	public function procSearchWordsByLexer($SWArr) {
 		// Init output variable:
@@ -479,7 +405,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @param 	array		Search words in array, see ->getSearchWords() for details
 	 * @return 	string		HTML for result display.
-	 * @todo Define visibility
 	 */
 	public function doSearch($sWArr) {
 		// Find free index uid:
@@ -529,7 +454,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @param array $searchWordArray Search word array
 	 * @param integer Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
 	 * @return array False if no result, otherwise an array with keys for first row, result rows and total number of results found.
-	 * @todo Define visibility
 	 */
 	public function getResultRows($searchWordArray, $freeIndexUid = -1) {
 		// Getting SQL result pointer. This fetches ALL results (1,000,000 if found)
@@ -636,7 +560,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @param 	array		Search words
 	 * @param 	integer		Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
 	 * @return 	pointer
-	 * @todo Define visibility
 	 */
 	public function getResultRows_SQLpointer($sWArr, $freeIndexUid = -1) {
 		// This SEARCHES for the searchwords in $sWArr AND returns a COMPLETE list of phash-integers of the matches.
@@ -660,7 +583,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @param 	array		Array with result rows, count, first row.
 	 * @param 	integer		Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
 	 * @return 	string		HTML content to display result.
-	 * @todo Define visibility
 	 */
 	public function getDisplayResults($sWArr, $resData, $freeIndexUid = -1) {
 		// Perform display of result rows array:
@@ -705,7 +627,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @param 	array		Result rows
 	 * @param 	integer		Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
 	 * @return 	string		HTML
-	 * @todo Define visibility
 	 */
 	public function compileResult($resultRows, $freeIndexUid = -1) {
 		$content = '';
@@ -796,7 +717,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @param 	array		Search word array
 	 * @return 	string		List of integers
-	 * @todo Define visibility
 	 */
 	public function getPhashList($sWArr) {
 		// Initialize variables:
@@ -887,7 +807,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @param 	string		WHERE clause selecting the word from phash
 	 * @param 	string		Additional AND clause in the end of the query.
 	 * @return 	pointer		SQL result pointer
-	 * @todo Define visibility
 	 */
 	public function execPHashListQuery($wordSel, $plusQ = '') {
 		return $GLOBALS['TYPO3_DB']->exec_SELECTquery('IR.phash', 'index_words IW,
@@ -905,7 +824,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @param string $sWord Word to search for
 	 * @param integer $mode Bit-field which can contain WILDCARD_LEFT and/or WILDCARD_RIGHT
 	 * @return pointer SQL result pointer
-	 * @todo Define visibility
 	 */
 	public function searchWord($sWord, $mode) {
 		$wildcard_left = $mode & self::WILDCARD_LEFT ? '%' : '';
@@ -921,7 +839,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @param string $sWord Word to search for
 	 * @return pointer SQL result pointer
-	 * @todo Define visibility
 	 */
 	public function searchDistinct($sWord) {
 		$wSel = 'IW.wid=' . \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::md5inthash($sWord);
@@ -935,7 +852,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @param string $sSentence Sentence to search for
 	 * @return pointer SQL result pointer
-	 * @todo Define visibility
 	 */
 	public function searchSentence($sSentence) {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('ISEC.phash', 'index_section ISEC, index_fulltext IFT', 'IFT.fulltextdata LIKE \'%' . $GLOBALS['TYPO3_DB']->quoteStr($sSentence, 'index_fulltext') . '%\' AND
@@ -950,7 +866,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @param string $sWord Word to search for
 	 * @return \mysqli_result SQL result pointer
-	 * @todo Define visibility
 	 */
 	public function searchMetaphone($sWord) {
 		$wSel = 'IW.metaphone=' . $sWord;
@@ -962,7 +877,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Returns AND statement for selection of section in database. (rootlevel 0-2 + page_id)
 	 *
 	 * @return 	string		AND clause for selection of section in database.
-	 * @todo Define visibility
 	 */
 	public function sectionTableWhere() {
 		$out = $this->wholeSiteIdList < 0 ? '' : ' AND ISEC.rl0 IN (' . $this->wholeSiteIdList . ')';
@@ -1010,7 +924,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Returns AND statement for selection of media type
 	 *
 	 * @return 	string		AND statement for selection of media type
-	 * @todo Define visibility
 	 */
 	public function mediaTypeWhere() {
 		switch ((string) $this->piVars['media']) {
@@ -1036,7 +949,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Returns AND statement for selection of langauge
 	 *
 	 * @return 	string		AND statement for selection of langauge
-	 * @todo Define visibility
 	 */
 	public function languageWhere() {
 		if ($this->piVars['lang'] >= 0) {
@@ -1050,7 +962,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @param 	integer		Free Index UID value to limit search to.
 	 * @return 	string		WHERE SQL clause part.
-	 * @todo Define visibility
 	 */
 	public function freeIndexUidWhere($freeIndexUid) {
 		if ($freeIndexUid >= 0) {
@@ -1091,7 +1002,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @param 	string		List of phash integers which match the search.
 	 * @param 	integer		Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
 	 * @return 	pointer		Query result pointer
-	 * @todo Define visibility
 	 */
 	public function execFinalQuery($list, $freeIndexUid = -1) {
 		// Setting up methods of filtering results based on page types, access, etc.
@@ -1194,7 +1104,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @param 	array		Result row array.
 	 * @return 	boolean		Returns TRUE if resume can safely be shown
-	 * @todo Define visibility
 	 */
 	public function checkResume($row) {
 		// If the record is indexed by an indexing configuration, just show it.
@@ -1246,7 +1155,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @param 	array		Result row array
 	 * @return 	boolean		Returns TRUE if record is still available
-	 * @todo Define visibility
 	 */
 	public function checkExistance($row) {
 		$recordExists = TRUE;
@@ -1265,7 +1173,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @param 	boolean		If TRUE, inverse the order which is defined by piVars['desc']
 	 * @return 	string		" DESC" or
-	 * @todo Define visibility
 	 */
 	public function isDescending($inverse = FALSE) {
 		$desc = $this->piVars['desc'];
@@ -1282,7 +1189,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @param 	integer		Number of hits
 	 * @param 	integer		Milliseconds the search took
 	 * @return 	void
-	 * @todo Define visibility
 	 */
 	public function writeSearchStat($sWArr, $count, $pt) {
 		$insertFields = array(
@@ -1324,7 +1230,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @param 	array		Value/Labels pairs for search form selector boxes.
 	 * @return 	string		Search form HTML
-	 * @todo Define visibility
 	 */
 	public function makeSearchForm($optValues) {
 		$html = $this->cObj->getSubpart($this->templateCode, '###SEARCH_FORM###');
@@ -1453,7 +1358,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @param 	string		Current value
 	 * @param 	array		Array with the options as key=>value pairs
 	 * @return 	string		<options> imploded.
-	 * @todo Define visibility
 	 */
 	public function renderSelectBoxValues($value, $optValues) {
 		if (is_array($optValues)) {
@@ -1474,7 +1378,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Print the searching rules
 	 *
 	 * @return 	string		Rules for the search
-	 * @todo Define visibility
 	 */
 	public function printRules() {
 		if ($this->conf['show.']['rules']) {
@@ -1490,7 +1393,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Returns the anchor-links to the sections inside the displayed result rows.
 	 *
 	 * @return 	string
-	 * @todo Define visibility
 	 */
 	public function printResultSectionLinks() {
 		if (count($this->resultSections)) {
@@ -1517,7 +1419,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @param 	string		Section title with linked wrapped around
 	 * @param 	integer		Number of results in section
 	 * @return 	string		HTML output
-	 * @todo Define visibility
 	 */
 	public function makeSectionHeader($id, $sectionTitleLinked, $countResultRows) {
 		$html = $this->cObj->getSubpart($this->templateCode, '###SECTION_HEADER###');
@@ -1535,7 +1436,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @param 	array		Search result row
 	 * @param 	integer		1=Display only header (for sub-rows!), 2=nothing at all
 	 * @return 	string		HTML code
-	 * @todo Define visibility
 	 */
 	public function printResultRow($row, $headerOnly = 0) {
 		// Get template content:
@@ -1590,7 +1490,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @param string $addPart String appended after section "displaying results...
 	 * @param string $freeIndexUid List of integers pointing to free indexing configurations to search. -1 represents no filtering, 0 represents TYPO3 pages only, any number above zero is a uid of an indexing configuration!
 	 * @return string HTML output
-	 * @todo Define visibility
 	 */
 	public function pi_list_browseresults($showResultCount = TRUE, $addString = '', $addPart = '', $freeIndexUid = -1) {
 		// Initializing variables:
@@ -1667,7 +1566,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @param 	array		Result row
 	 * @param 	boolean		If set, display only header of result (for sub-results)
 	 * @return 	array		Array with data to insert in result row template
-	 * @todo Define visibility
 	 */
 	public function prepareResultRowTemplateData($row, $headerOnly) {
 		// Initialize:
@@ -1724,7 +1622,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @param 	array		Array of search words
 	 * @return 	string		HTML telling what is searched for.
-	 * @todo Define visibility
 	 */
 	public function tellUsWhatIsSeachedFor($sWArr) {
 		// Init:
@@ -1757,7 +1654,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @param 	string		search word to wrap (in local charset!)
 	 * @return 	string		Search word wrapped in <span> tag.
-	 * @todo Define visibility
 	 */
 	public function wrapSW($str) {
 		return '"<span' . $this->pi_classParam('sw') . '>' . htmlspecialchars($str) . '</span>"';
@@ -1770,7 +1666,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @param 	string		Current value
 	 * @param 	array		Array of options in the selector box (value => label pairs)
 	 * @return 	string		HTML of selector box
-	 * @todo Define visibility
 	 */
 	public function renderSelectBox($name, $value, $optValues) {
 		if (is_array($optValues)) {
@@ -1795,7 +1690,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @param 	integer		Pointer value
 	 * @param 	string		List of integers pointing to free indexing configurations to search. -1 represents no filtering, 0 represents TYPO3 pages only, any number above zero is a uid of an indexing configuration!
 	 * @return 	string		Input string wrapped in <a> tag with onclick event attribute set.
-	 * @todo Define visibility
 	 */
 	public function makePointerSelector_link($str, $p, $freeIndexUid) {
 		$onclick = 'document.getElementById(\'' . $this->prefixId . '_pointer\').value=\'' . $p . '\';' . 'document.getElementById(\'' . $this->prefixId . '_freeIndexUid\').value=\'' . rawurlencode($freeIndexUid) . '\';' . 'document.getElementById(\'' . $this->prefixId . '\').submit();return false;';
@@ -1809,7 +1703,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @param 	string		Title attribute value in icon.
 	 * @param 	array		TypoScript configuration specifically for search result.
 	 * @return 	string		<img> tag for icon
-	 * @todo Define visibility
 	 */
 	public function makeItemTypeIcon($it, $alt = '', $specRowConf) {
 		// Build compound key if item type is 0, iconRendering is not used
@@ -1853,7 +1746,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @param 	array		Result row array
 	 * @return 	string		String showing ranking value
-	 * @todo Define visibility
 	 */
 	public function makeRating($row) {
 		switch ((string) $this->piVars['order']) {
@@ -1903,7 +1795,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @param 	boolean		If noMarkup is FALSE, then the index_fulltext table is used to select the content of the page, split it with regex to display the search words in the text.
 	 * @param 	integer		String length
 	 * @return 	string		HTML string		...
-	 * @todo Define visibility
 	 */
 	public function makeDescription($row, $noMarkup = 0, $lgd = 180) {
 		if ($row['show_resume']) {
@@ -1939,7 +1830,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @param 	string		Text in which to find and mark up search words. This text is assumed to be UTF-8 like the search words internally is.
 	 * @return 	string		Processed content.
-	 * @todo Define visibility
 	 */
 	public function markupSWpartsOfString($str) {
 		// Init:
@@ -2009,7 +1899,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @param 	array		Result row
 	 * @return 	string		Title from row
-	 * @todo Define visibility
 	 */
 	public function makeTitle($row) {
 		$add = '';
@@ -2032,7 +1921,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @param 	array		Result row
 	 * @param 	array		Template array to modify
 	 * @return 	array		Modified template array
-	 * @todo Define visibility
 	 */
 	public function makeInfo($row, $tmplArray) {
 		$tmplArray['size'] = GeneralUtility::formatSize($row['item_size']);
@@ -2064,7 +1952,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @param 	array		Result row
 	 * @return 	array		Configuration array
-	 * @todo Define visibility
 	 */
 	public function getSpecialConfigForRow($row) {
 		$pathId = $row['data_page_id'] ?: $row['page_id'];
@@ -2088,7 +1975,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @param 	array		Result row
 	 * @return 	string		HTML code for result row.
-	 * @todo Define visibility
 	 */
 	public function makeLanguageIndication($row) {
 		// If search result is a TYPO3 page:
@@ -2108,7 +1994,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @param 	integer		Page id for which to find answer
 	 * @return 	string		<img> tag if access is limited.
-	 * @todo Define visibility
 	 */
 	public function makeAccessIndication($id) {
 		if (is_array($this->fe_groups_required[$id]) && count($this->fe_groups_required[$id])) {
@@ -2124,7 +2009,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @param 	array		Result row
 	 * @param 	array		Additional parameters for marking up seach words
 	 * @return 	string		<A> tag wrapped title string.
-	 * @todo Define visibility
 	 */
 	public function linkPage($id, $str, $row = array(), $markUpSwParams = array()) {
 		// Parameters for link:
@@ -2171,7 +2055,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @param 	integer		Page ID
 	 * @param 	string		MP variable content.
 	 * @return 	string		Root line for result.
-	 * @todo Define visibility
 	 */
 	public function getRootLine($id, $pathMP = '') {
 		$identStr = $id . '|' . $pathMP;
@@ -2186,7 +2069,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @param 	integer		Page id
 	 * @return 	string		Domain name
-	 * @todo Define visibility
 	 */
 	public function getFirstSysDomainRecordForPage($id) {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('domainName', 'sys_domain', 'pid=' . (int)$id . $this->cObj->enableFields('sys_domain'), '', 'sorting');
@@ -2200,7 +2082,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @param 	integer		Page ID
 	 * @param 	string		MP variable content
 	 * @return 	string		Path
-	 * @todo Define visibility
 	 */
 	public function getPathFromPageId($id, $pathMP = '') {
 		$identStr = $id . '|' . $pathMP;
@@ -2246,7 +2127,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @param 	integer		Page ID for which to return menu
 	 * @return 	array		Menu items (for making the section selector box)
-	 * @todo Define visibility
 	 */
 	public function getMenu($id) {
 		if ($this->conf['show.']['LxALLtypes']) {
@@ -2267,7 +2147,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @param 	string		Item type
 	 * @return 	boolean		TRUE if multipage capable
-	 * @todo Define visibility
 	 */
 	public function multiplePagesType($item_type) {
 		return is_object($this->external_parsers[$item_type]) && $this->external_parsers[$item_type]->isMultiplePageExtension($item_type);
@@ -2278,7 +2157,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @param 	string		String to convert (utf-8)
 	 * @return 	string		Converted string (backend charset if different from utf-8)
-	 * @todo Define visibility
 	 */
 	public function utf8_to_currentCharset($str) {
 		return $GLOBALS['TSFE']->csConv($str, 'utf-8');
@@ -2289,7 +2167,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @param 	string		Name of the function you want to call / hook key
 	 * @return 	object		Hook object, if any. Otherwise NULL.
-	 * @todo Define visibility
 	 */
 	public function hookRequest($functionName) {
 		global $TYPO3_CONF_VARS;

@@ -23,8 +23,6 @@ class DeletedRecordsCommand extends CleanerCommand {
 
 	/**
 	 * Constructor
-	 *
-	 * @todo Define visibility
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -47,7 +45,6 @@ Although deleted records are not errors to be repaired, this tool allows you to 
 	 * VERY CPU and memory intensive since it will look up the whole page tree!
 	 *
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function main() {
 		global $TYPO3_DB;
@@ -72,7 +69,6 @@ Although deleted records are not errors to be repaired, this tool allows you to 
 	 *
 	 * @param array $resultArray Result array from main() function
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main_autoFix($resultArray) {
 		// Putting "tx_templavoila_datastructure" table in the bottom:

@@ -504,7 +504,6 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 * @param string $alt Title attribute value in icon.
 	 * @param array $specRowConf TypoScript configuration specifically for search result.
 	 * @return string <img> tag for icon
-	 * @todo Define visibility
 	 */
 	public function makeItemTypeIcon($imageType, $alt, $specRowConf) {
 		// Build compound key if item type is 0, iconRendering is not used

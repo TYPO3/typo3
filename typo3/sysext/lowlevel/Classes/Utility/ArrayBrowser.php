@@ -24,49 +24,49 @@ namespace TYPO3\CMS\Lowlevel\Utility;
 class ArrayBrowser {
 
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $expAll = FALSE;
 
 	// If set, will expand all (depthKeys is obsolete then) (and no links are applied)
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $dontLinkVar = FALSE;
 
 	// If set, the variable keys are not linked.
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $depthKeys = array();
 
 	// Array defining which keys to expand. Typically set from outside from some session variable - otherwise the array will collapse.
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $searchKeys = array();
 
 	// After calling the getSearchKeys function this array is populated with the key-positions in the array which contains values matching the search.
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $fixedLgd = 1;
 
 	// If set, the values are truncated with "..." appended if longer than a certain length.
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $regexMode = 0;
 
 	// If set, search for string with regex, otherwise stristr()
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $searchKeysToo = FALSE;
 
 	// If set, array keys are subject to the search too.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $varName = '';
 
@@ -81,7 +81,6 @@ class ArrayBrowser {
 	 * @param string $depthData Depth-data - basically a prefix for the icons. For calling this function from outside, let it stay blank.
 	 * @return string HTML for the tree
 	 * @see SC_mod_tools_config_index::main()
-	 * @todo Define visibility
 	 */
 	public function tree($arr, $depth_in, $depthData) {
 		$HTML = '';
@@ -138,7 +137,6 @@ class ArrayBrowser {
 	 * @param string $theValue The title string
 	 * @param string $depth Depth path
 	 * @return string Title string, htmlspecialchars()'ed
-	 * @todo Define visibility
 	 */
 	public function wrapValue($theValue, $depth) {
 		$wrappedValue = '';
@@ -155,7 +153,6 @@ class ArrayBrowser {
 	 * @param string $depth Depth path
 	 * @param string $theValue The value for the array entry.
 	 * @return string Title string, htmlspecialchars()'ed
-	 * @todo Define visibility
 	 */
 	public function wrapArrayKey($label, $depth, $theValue) {
 		// Protect label:
@@ -177,7 +174,6 @@ class ArrayBrowser {
 	 * @param string $searchString The string to search for
 	 * @param array $keyArray Key array, for first call pass empty array
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function getSearchKeys($keyArr, $depth_in, $searchString, $keyArray) {
 		$c = count($keyArr);
@@ -213,7 +209,6 @@ class ArrayBrowser {
 	 * @param string $string String to process
 	 * @param integer $chars Max number of chars
 	 * @return string Processed string
-	 * @todo Define visibility
 	 */
 	public function fixed_lgd($string, $chars) {
 		if ($chars >= 4) {
@@ -231,7 +226,6 @@ class ArrayBrowser {
 	 * @param array $settings Input depth_key array
 	 * @return array Output depth_key array with entries added/removed based on $arr
 	 * @see SC_mod_tools_config_index::main()
-	 * @todo Define visibility
 	 */
 	public function depthKeys($arr, $settings) {
 		$tsbrArray = array();

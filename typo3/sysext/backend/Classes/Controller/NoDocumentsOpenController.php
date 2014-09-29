@@ -26,7 +26,7 @@ class NoDocumentsOpenController {
 	// Internal:
 	// Content accumulation
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $content;
 
@@ -34,7 +34,6 @@ class NoDocumentsOpenController {
 	 * Document template object
 	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 * @todo Define visibility
 	 */
 	public $doc;
 
@@ -42,7 +41,6 @@ class NoDocumentsOpenController {
 	 * Object for backend modules.
 	 *
 	 * @var \TYPO3\CMS\Backend\Module\ModuleLoader
-	 * @todo Define visibility
 	 */
 	public $loadModules;
 

@@ -33,7 +33,6 @@ class moveElementLocalPageTree extends \TYPO3\CMS\Backend\Tree\View\PageTreeView
 	 * @param string $icon Icon image
 	 * @param array $row Item row
 	 * @return string Wrapping icon image.
-	 * @todo Define visibility
 	 */
 	public function wrapIcon($icon, $row) {
 		return $this->addTagAttributes($icon, ' title="id=' . htmlspecialchars($row['uid']) . '"');
@@ -49,7 +48,7 @@ class moveElementLocalPageTree extends \TYPO3\CMS\Backend\Tree\View\PageTreeView
 class ext_posMap_pages extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $l_insertNewPageHere = 'movePageToHere';
 
@@ -66,7 +65,6 @@ class ext_posMap_pages extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 	 * @param integer $pid The pid.
 	 * @param integer $newPagePID New page id.
 	 * @return string Onclick attribute content
-	 * @todo Define visibility
 	 */
 	public function onClickEvent($pid, $newPagePID) {
 		return 'window.location.href=\'tce_db.php?cmd[pages][' . $GLOBALS['SOBE']->moveUid . '][' . $this->moveOrCopy . ']=' . $pid . '&redirect=' . rawurlencode($this->R_URI) . '&prErr=1&uPT=1&vC=' . $GLOBALS['BE_USER']->veriCode() . \TYPO3\CMS\Backend\Utility\BackendUtility::getUrlToken('tceAction') . '\';return false;';
@@ -78,7 +76,6 @@ class ext_posMap_pages extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 	 * @param string $str Page title.
 	 * @param array $rec Page record (?)
 	 * @return string Wrapped title.
-	 * @todo Define visibility
 	 */
 	public function linkPageTitle($str, $rec) {
 		$url = \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('uid' => (int)$rec['uid'], 'moveUid' => $GLOBALS['SOBE']->moveUid));
@@ -92,7 +89,6 @@ class ext_posMap_pages extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 	 * @param array $dat Information array with record array inside.
 	 * @param integer $id The current id.
 	 * @return string The title string.
-	 * @todo Define visibility
 	 */
 	public function boldTitle($t_code, $dat, $id) {
 		return parent::boldTitle($t_code, $dat, $GLOBALS['SOBE']->moveUid);
@@ -108,7 +104,7 @@ class ext_posMap_pages extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 class ext_posMap_tt_content extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $dontPrintPageInsertIcons = 1;
 
@@ -125,7 +121,6 @@ class ext_posMap_tt_content extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap
 	 * @param string $str Page title.
 	 * @param array $rec Page record (?)
 	 * @return string Wrapped title.
-	 * @todo Define visibility
 	 */
 	public function linkPageTitle($str, $rec) {
 		$url = \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('uid' => (int)$rec['uid'], 'moveUid' => $GLOBALS['SOBE']->moveUid));
@@ -138,7 +133,6 @@ class ext_posMap_tt_content extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap
 	 * @param string $str The title value.
 	 * @param array $row The record row.
 	 * @return string Wrapped title string.
-	 * @todo Define visibility
 	 */
 	public function wrapRecordTitle($str, $row) {
 		if ($GLOBALS['SOBE']->moveUid == $row['uid']) {

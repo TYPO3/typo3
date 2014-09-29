@@ -35,7 +35,6 @@ class TranslationConfigurationProvider {
 	 * @param integer $page_id Page id (only used to get TSconfig configuration setting flag and label for default language)
 	 * @param string $backPath Backpath for flags
 	 * @return array Array with languages (title, uid, flagIcon)
-	 * @todo Define visibility
 	 */
 	public function getSystemLanguages($page_id = 0, $backPath = '') {
 		$modSharedTSconfig = BackendUtility::getModTSconfig($page_id, 'mod.SHARED');
@@ -84,7 +83,6 @@ class TranslationConfigurationProvider {
 	 * @param array $row The record to be translated
 	 * @param array $selFieldList Select fields for the query which fetches the translations of the current record
 	 * @return array Array with information. Errors will return string with message.
-	 * @todo Define visibility
 	 */
 	public function translationInfo($table, $uid, $sys_language_uid = 0, $row = NULL, $selFieldList = '') {
 		if ($GLOBALS['TCA'][$table] && $uid) {
@@ -138,7 +136,6 @@ class TranslationConfigurationProvider {
 	 *
 	 * @param string $table The table name
 	 * @return boolean
-	 * @todo Define visibility
 	 */
 	public function getTranslationTable($table) {
 		return $this->isTranslationInOwnTable($table) ? $table : $this->foreignTranslationTable($table);
@@ -149,7 +146,6 @@ class TranslationConfigurationProvider {
 	 *
 	 * @param string $table The table name
 	 * @return boolean
-	 * @todo Define visibility
 	 */
 	public function isTranslationInOwnTable($table) {
 		return $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] && !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'];
@@ -160,7 +156,6 @@ class TranslationConfigurationProvider {
 	 *
 	 * @param string $table The table name
 	 * @return string Translation foreign table
-	 * @todo Define visibility
 	 */
 	public function foreignTranslationTable($table) {
 		$trTable = $GLOBALS['TCA'][$table]['ctrl']['transForeignTable'];

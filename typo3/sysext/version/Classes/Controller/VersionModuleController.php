@@ -29,7 +29,6 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	 * Module configuration
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $MCONF = array();
 
@@ -37,7 +36,6 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	 * Module menu items
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $MOD_MENU = array();
 
@@ -45,7 +43,6 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	 * Module session settings
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $MOD_SETTINGS = array();
 
@@ -53,13 +50,11 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	 * document template object
 	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 * @todo Define visibility
 	 */
 	public $doc;
 
 	/**
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $content;
 
@@ -67,25 +62,21 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	 * Accumulated content
 	 *
 	 * @var int
-	 * @todo Define visibility
 	 */
 	public $showWorkspaceCol = 0;
 
 	/**
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $formatWorkspace_cache = array();
 
 	/**
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $formatCount_cache = array();
 
 	/**
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $targets = array();
 
@@ -93,7 +84,6 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	 * Accumulation of online targets.
 	 *
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $pageModule = '';
 
@@ -101,19 +91,16 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	 * Name of page module
 	 *
 	 * @var bool
-	 * @todo Define visibility
 	 */
 	public $publishAccess = FALSE;
 
 	/**
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $stageIndex = array();
 
 	/**
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $recIndex = array();
 
@@ -128,7 +115,6 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	 * Initialize menu configuration
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function menuConfig() {
 		// CLEANSE SETTINGS
@@ -139,7 +125,6 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	 * Main function of the module. Write the content to $this->content
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		// Template markers
@@ -288,7 +273,6 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	 * Management of versions for record
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function versioningMgm() {
 		// Diffing:
@@ -420,7 +404,6 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	 * @param integer $pid UID of page record for which to look up sub-elements following that version
 	 * @param integer $c Counter, do not set (limits to 100 levels)
 	 * @return string Table with content if any
-	 * @todo Define visibility
 	 */
 	public function pageSubContent($pid, $c = 0) {
 		$tableNames = GeneralUtility::removeArrayEntryByValue(array_keys($GLOBALS['TCA']), 'pages');
@@ -470,7 +453,6 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	 * @param string $table Table name
 	 * @param integer $uid Record uid
 	 * @return integer Number of versions for record, FALSE if none.
-	 * @todo Define visibility
 	 */
 	public function lookForOwnVersions($table, $uid) {
 		$versions = BackendUtility::selectVersionsOfRecord($table, $uid, 'uid');
@@ -486,7 +468,6 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	 * @param string $table Table name
 	 * @param array $row Record for which administrative links are generated.
 	 * @return string HTML link tags.
-	 * @todo Define visibility
 	 */
 	public function adminLinks($table, $row) {
 		// Edit link:

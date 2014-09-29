@@ -28,37 +28,37 @@ class NewContentElementController {
 	// Internal, static (from GPvars):
 	// Page id
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $id;
 
 	// Sys language
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $sys_language = 0;
 
 	// Return URL.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $R_URI = '';
 
 	// If set, the content is destined for a specific column.
 	/**
-	 * @todo Define visibility
+	 * @var int|null
 	 */
 	public $colPos;
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $uid_pid;
 
 	// Internal, static:
 	// Module TSconfig.
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $modTSconfig = array();
 
@@ -66,32 +66,31 @@ class NewContentElementController {
 	 * Internal backend template object
 	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 * @todo Define visibility
 	 */
 	public $doc;
 
 	// Internal, dynamic:
 	// Includes a list of files to include between init() and main() - see init()
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $include_once = array();
 
 	// Used to accumulate the content of the module.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $content;
 
 	// Access boolean.
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $access;
 
 	// config of the wizard
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $config;
 
@@ -99,7 +98,6 @@ class NewContentElementController {
 	 * Constructor, initializing internal variables.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function init() {
 		// Setting class files to include:
@@ -134,7 +132,6 @@ class NewContentElementController {
 	 * Creating the module output.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		if ($this->id && $this->access) {
@@ -292,7 +289,6 @@ class NewContentElementController {
 	 * Print out the accumulated content:
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		echo $this->content;
@@ -326,7 +322,6 @@ class NewContentElementController {
 	 * Returns the content of wizardArray() function...
 	 *
 	 * @return array Returns the content of wizardArray() function...
-	 * @todo Define visibility
 	 */
 	public function getWizardItems() {
 		return $this->wizardArray();
@@ -337,7 +332,6 @@ class NewContentElementController {
 	 * For the plugin section there is support for adding elements there from a global variable.
 	 *
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function wizardArray() {
 		if (is_array($this->config)) {
@@ -381,7 +375,6 @@ class NewContentElementController {
 	/**
 	 * @param mixed $wizardElements
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function wizard_appendWizards($wizardElements) {
 		if (!is_array($wizardElements)) {
@@ -408,7 +401,6 @@ class NewContentElementController {
 	 * @param string Not used
 	 * @param array $itemConf
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function wizard_getItem($groupKey, $itemKey, $itemConf) {
 		$itemConf['title'] = $GLOBALS['LANG']->sL($itemConf['title']);
@@ -422,7 +414,6 @@ class NewContentElementController {
 	 * @param string Not used
 	 * @param array $wizardGroup
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function wizard_getGroupHeader($groupKey, $wizardGroup) {
 		return array(
@@ -436,7 +427,6 @@ class NewContentElementController {
 	 *
 	 * @param array $wizardItems Wizard items, passed by reference
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function removeInvalidElements(&$wizardItems) {
 		// Get TCEFORM from TSconfig of current page

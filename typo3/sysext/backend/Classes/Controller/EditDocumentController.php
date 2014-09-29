@@ -34,151 +34,82 @@ class EditDocumentController {
 	// GPvar "edit": Is an array looking approx like [tablename][list-of-ids]=command, eg.
 	// "&edit[pages][123]=edit". See \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick(). Value can be seen modified
 	// internally (converting NEW keyword to id, workspace/versioning etc).
-	/**
-	 * @todo Define visibility
-	 */
 	public $editconf;
 
 	// Commalist of fieldnames to edit. The point is IF you specify this list, only those
 	// fields will be rendered in the form. Otherwise all (available) fields in the record
 	// is shown according to the types configuration in $GLOBALS['TCA']
-	/**
-	 * @todo Define visibility
-	 */
 	public $columnsOnly;
 
 	// Default values for fields (array with tablenames, fields etc. as keys).
 	// Can be seen modified internally.
-	/**
-	 * @todo Define visibility
-	 */
 	public $defVals;
 
 	// Array of values to force being set (as hidden fields). Will be set as $this->defVals
 	// IF defVals does not exist.
-	/**
-	 * @todo Define visibility
-	 */
 	public $overrideVals;
 
 	// If set, this value will be set in $this->retUrl (which is used quite many places
 	// as the return URL). If not set, "dummy.php" will be set in $this->retUrl
-	/**
-	 * @todo Define visibility
-	 */
 	public $returnUrl;
 
 	// Close-document command. Not really sure of all options...
-	/**
-	 * @todo Define visibility
-	 */
 	public $closeDoc;
 
 	// Quite simply, if this variable is set, then the processing of incoming data will be performed
 	// - as if a save-button is pressed. Used in the forms as a hidden field which can be set through
 	// JavaScript if the form is somehow submitted by JavaScript).
-	/**
-	 * @todo Define visibility
-	 */
 	public $doSave;
 
 	// GPvar (for processing only) : The data array from which the data comes...
-	/**
-	 * @todo Define visibility
-	 */
 	public $data;
 
 	// GPvar (for processing only) : ?
-	/**
-	 * @todo Define visibility
-	 */
 	public $mirror;
 
 	// GPvar (for processing only) : Clear-cache cmd.
-	/**
-	 * @todo Define visibility
-	 */
 	public $cacheCmd;
 
 	// GPvar (for processing only) : Redirect (not used???)
-	/**
-	 * @todo Define visibility
-	 */
 	public $redirect;
 
 	// GPvar (for processing only) : Boolean: If set, then the GET var "&id=" will be added to the
 	// retUrl string so that the NEW id of something is returned to the script calling the form.
-	/**
-	 * @todo Define visibility
-	 */
 	public $returnNewPageId;
 
 	// GPvar (for processing only) : Verification code, internal stuff.
-	/**
-	 * @todo Define visibility
-	 */
 	public $vC;
 
 	// GPvar : update BE_USER->uc
-	/**
-	 * @todo Define visibility
-	 */
 	public $uc;
 
 	// GPvar (module) : ID for displaying the page in the frontend (used for SAVE/VIEW operations)
-	/**
-	 * @todo Define visibility
-	 */
 	public $popViewId;
 
 	// GPvar (module) : Additional GET vars for the link, eg. "&L=xxx"
-	/**
-	 * @todo Define visibility
-	 */
 	public $popViewId_addParams;
 
 	// GPvar (module) : Alternative URL for viewing the frontend pages.
-	/**
-	 * @todo Define visibility
-	 */
 	public $viewUrl;
 
 	// If this is pointing to a page id it will automatically load all content elements
 	// (NORMAL column/default language) from that page into the form!
-	/**
-	 * @todo Define visibility
-	 */
 	public $editRegularContentFromId;
 
 	// Alternative title for the document handler.
-	/**
-	 * @todo Define visibility
-	 */
 	public $recTitle;
 
 	// Disable help... ?
-	/**
-	 * @todo Define visibility
-	 */
 	public $disHelp;
 
 	// If set, then no SAVE/VIEW button is printed
-	/**
-	 * @todo Define visibility
-	 */
 	public $noView;
 
 	// If set, the $this->editconf array is returned to the calling script
 	// (used by wizard_add.php for instance)
-	/**
-	 * @todo Define visibility
-	 */
 	public $returnEditConf;
 
 	// GP var, localization mode for TCEforms (eg. "text")
-	/**
-	 * @todo Define visibility
-	 */
 	public $localizationMode;
 
 	/**
@@ -193,155 +124,90 @@ class EditDocumentController {
 	 * document template object
 	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 * @todo Define visibility
 	 */
 	public $doc;
 
 	// a static HTML template, usually in templates/alt_doc.html
-	/**
-	 * @todo Define visibility
-	 */
 	public $template;
 
 	// Content accumulation
-	/**
-	 * @todo Define visibility
-	 */
 	public $content;
 
 	// Return URL script, processed. This contains the script (if any) that we should
 	// RETURN TO from the alt_doc.php script IF we press the close button. Thus this
 	// variable is normally passed along from the calling script so we can properly return if needed.
-	/**
-	 * @todo Define visibility
-	 */
 	public $retUrl;
 
 	// Contains the parts of the REQUEST_URI (current url). By parts we mean the result of resolving
 	// REQUEST_URI (current url) by the parse_url() function. The result is an array where eg. "path"
 	// is the script path and "query" is the parameters...
-	/**
-	 * @todo Define visibility
-	 */
 	public $R_URL_parts;
 
 	// Contains the current GET vars array; More specifically this array is the foundation for creating
 	// the R_URI internal var (which becomes the "url of this script" to which we submit the forms etc.)
-	/**
-	 * @todo Define visibility
-	 */
 	public $R_URL_getvars;
 
 	// Set to the URL of this script including variables which is needed to re-display the form. See main()
-	/**
-	 * @todo Define visibility
-	 */
 	public $R_URI;
 
 	// Is loaded with the "title" of the currently "open document" - this is used in the
 	// Document Selector box. (see makeDocSel())
-	/**
-	 * @todo Define visibility
-	 */
 	public $storeTitle;
 
 	// Contains an array with key/value pairs of GET parameters needed to reach the
 	// current document displayed - used in the Document Selector box. (see compileStoreDat())
-	/**
-	 * @todo Define visibility
-	 */
 	public $storeArray;
 
 	// Contains storeArray, but imploded into a GET parameter string (see compileStoreDat())
-	/**
-	 * @todo Define visibility
-	 */
 	public $storeUrl;
 
 	// Hashed value of storeURL (see compileStoreDat())
-	/**
-	 * @todo Define visibility
-	 */
 	public $storeUrlMd5;
 
 	// Module session data
-	/**
-	 * @todo Define visibility
-	 */
 	public $docDat;
 
 	// An array of the "open documents" - keys are md5 hashes (see $storeUrlMd5) identifying
 	// the various documents on the GET parameter list needed to open it. The values are
 	// arrays with 0,1,2 keys with information about the document (see compileStoreDat()).
 	// The docHandler variable is stored in the $docDat session data, key "0".
-	/**
-	 * @todo Define visibility
-	 */
 	public $docHandler;
 
 	// Internal: Related to the form rendering:
 	// Array of the elements to create edit forms for.
-	/**
-	 * @todo Define visibility
-	 */
 	public $elementsData;
 
 	// Pointer to the first element in $elementsData
-	/**
-	 * @todo Define visibility
-	 */
 	public $firstEl;
 
 	// Counter, used to count the number of errors (when users do not have edit permissions)
-	/**
-	 * @todo Define visibility
-	 */
 	public $errorC;
 
 	// Counter, used to count the number of new record forms displayed
-	/**
-	 * @todo Define visibility
-	 */
 	public $newC;
 
 	// Is set to the pid value of the last shown record - thus indicating which page to
 	// show when clicking the SAVE/VIEW button
-	/**
-	 * @todo Define visibility
-	 */
 	public $viewId;
 
 	// Is set to additional parameters (like "&L=xxx") if the record supports it.
-	/**
-	 * @todo Define visibility
-	 */
 	public $viewId_addParams;
 
 	// Module TSconfig, loaded from main() based on the page id value of viewId
-	/**
-	 * @todo Define visibility
-	 */
 	public $modTSconfig;
 
 	/**
 	 * instance of TCEforms class
 	 *
 	 * @var \TYPO3\CMS\Backend\Form\FormEngine
-	 * @todo Define visibility
 	 */
 	public $tceforms;
 
 	// Contains the root-line path of the currently edited record(s) - for display.
-	/**
-	 * @todo Define visibility
-	 */
 	public $generalPathOfForm;
 
 	// Internal, dynamic:
 	// Used internally to disable the storage of the document reference (eg. new records)
-	/**
-	 * @todo Define visibility
-	 */
 	public $dontStoreDocumentRef;
 
 	/**
@@ -748,7 +614,6 @@ class EditDocumentController {
 	 * Creates the editing form with TCEforms, based on the input from GPvars.
 	 *
 	 * @return string HTML form elements wrapped in tables
-	 * @todo Define visibility
 	 */
 	public function makeEditForm() {
 		// Initialize variables:
@@ -1031,7 +896,6 @@ class EditDocumentController {
 	 * - multiple records are too confusing
 	 *
 	 * @return string The HTML
-	 * @todo Define visibility
 	 */
 	public function langSelector() {
 		$langSelector = '';
@@ -1045,7 +909,6 @@ class EditDocumentController {
 	 * Compiles the extra form headers if the tceforms
 	 *
 	 * @return string The HTML
-	 * @todo Define visibility
 	 */
 	public function extraFormHeaders() {
 		$extraTemplate = '';
@@ -1061,7 +924,6 @@ class EditDocumentController {
 	 *
 	 * @param string $editForm HTML form.
 	 * @return string Composite HTML
-	 * @todo Define visibility
 	 */
 	public function compileForm($editForm) {
 		$formContent = '
@@ -1089,7 +951,6 @@ class EditDocumentController {
 	 * Create the checkbox buttons in the bottom of the pages.
 	 *
 	 * @return string HTML for function menus.
-	 * @todo Define visibility
 	 */
 	public function functionMenus() {
 		if ($GLOBALS['BE_USER']->getTSConfigVal('options.enableShowPalettes')) {
@@ -1110,7 +971,6 @@ class EditDocumentController {
 	 * Create shortcut icon
 	 *
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function shortCutLink() {
 		if ($this->returnUrl == 'close.html' || !$GLOBALS['BE_USER']->mayMakeShortcut()) {
@@ -1123,7 +983,6 @@ class EditDocumentController {
 	 * Creates open-in-window link
 	 *
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function openInNewWindowLink() {
 		if ($this->returnUrl == 'close.html') {
@@ -1137,7 +996,6 @@ class EditDocumentController {
 	 * Reads comment messages from TCEforms and prints them in a HTML comment in the bottom of the page.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function tceformMessages() {
 		if (count($this->tceforms->commentMessages)) {
@@ -1163,7 +1021,6 @@ class EditDocumentController {
 	 * @param integer $uid Uid for which to create a new language
 	 * @param integer $pid Pid of the record
 	 * @return string <select> HTML element (if there were items for the box anyways...)
-	 * @todo Define visibility
 	 */
 	public function languageSwitch($table, $uid, $pid = NULL) {
 		$content = '';
@@ -1239,7 +1096,6 @@ class EditDocumentController {
 	 *
 	 * @param string $justLocalized String passed by GET &justLocalized=
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function localizationRedirect($justLocalized) {
 		list($table, $orig_uid, $language) = explode(':', $justLocalized);
@@ -1260,7 +1116,6 @@ class EditDocumentController {
 	 *
 	 * @param integer $id Page id: If zero, the query will select all sys_language records from root level which are NOT hidden. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
 	 * @return array Language records including faked record for default language
-	 * @todo Define visibility
 	 */
 	public function getLanguages($id) {
 		$modSharedTSconfig = BackendUtility::getModTSconfig($id, 'mod.SHARED');
@@ -1301,7 +1156,6 @@ class EditDocumentController {
 	 *
 	 * @param array $mapArray Mapping between old and new ids if auto-versioning has been performed.
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function fixWSversioningInEditConf($mapArray = FALSE) {
 		// Traverse the editConf array
@@ -1348,7 +1202,6 @@ class EditDocumentController {
 	 * @param string $table Table name
 	 * @param integer $theUid Record UID
 	 * @return array Returns record to edit, FALSE if none
-	 * @todo Define visibility
 	 */
 	public function getRecordForEdit($table, $theUid) {
 		// Fetch requested record:
@@ -1386,7 +1239,6 @@ class EditDocumentController {
 	 * Function, which populates the internal editconf array with editing commands for all tt_content elements from the normal column in normal language from the page pointed to by $this->editRegularContentFromId
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function editRegularContentFromId() {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'tt_content', 'pid=' . (int)$this->editRegularContentFromId . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content') . ' AND colPos=0 AND sys_language_uid=0', '', 'sorting');
@@ -1405,7 +1257,6 @@ class EditDocumentController {
 	 *
 	 * @return void
 	 * @see makeDocSel()
-	 * @todo Define visibility
 	 */
 	public function compileStoreDat() {
 		$this->storeArray = GeneralUtility::compileSelectedGetVarsFromArray('edit,defVals,overrideVals,columnsOnly,disHelp,noView,editRegularContentFromId,workspace', $this->R_URL_getvars);
@@ -1419,7 +1270,6 @@ class EditDocumentController {
 	 * @param string $table The table for which the configuration may be specific
 	 * @param string $key The option for look for. Default is checking if the saveDocNew button should be displayed.
 	 * @return string Return value fetched from USER TSconfig
-	 * @todo Define visibility
 	 */
 	public function getNewIconMode($table, $key = 'saveDocNew') {
 		$TSconfig = $GLOBALS['BE_USER']->getTSConfig('options.' . $key);
@@ -1432,7 +1282,6 @@ class EditDocumentController {
 	 *
 	 * @param integer $code Close code: 0/1 will redirect to $this->retUrl, 3 will clear the docHandler (thus closing all documents) and otehr values will call setDocument with ->retUrl
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function closeDocument($code = 0) {
 		// If current document is found in docHandler,
@@ -1477,7 +1326,6 @@ class EditDocumentController {
 	 * @param string $currentDocFromHandlerMD5 Pointer to the document in the docHandler array
 	 * @param string $retUrl Alternative/Default retUrl
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function setDocument($currentDocFromHandlerMD5 = '', $retUrl = 'alt_doc_nodoc.php') {
 		if ($retUrl === 'alt_doc_nodoc.php') {

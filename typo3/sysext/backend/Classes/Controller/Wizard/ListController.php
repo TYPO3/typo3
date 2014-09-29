@@ -27,26 +27,26 @@ class ListController {
 	// Internal, static:
 	// PID
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $pid;
 
 	// Internal, static: GPvars
 	// Wizard parameters, coming from TCEforms linking to the wizard.
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $P;
 
 	// Table to show, if none, then all tables are listed in list module.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $table;
 
 	// Page id to list.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $id;
 

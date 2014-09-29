@@ -34,7 +34,6 @@ class LocalPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 * @param string $title Title to wrap
 	 * @param mixed $v (See parent class)
 	 * @return string Wrapped title
-	 * @todo Define visibility
 	 */
 	public function wrapTitle($title, $v) {
 		$title = trim($title) === '' ? '<em>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', TRUE) . ']</em>' : htmlspecialchars($title);
@@ -48,7 +47,6 @@ class LocalPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 * @param mixed $cmd (See parent class)
 	 * @param mixed $bMark (See parent class)
 	 * @return string Icon HTML
-	 * @todo Define visibility
 	 */
 	public function PM_ATagWrap($icon, $cmd, $bMark = '') {
 		return $icon;
@@ -60,7 +58,6 @@ class LocalPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 * @param string $icon Icon HTML
 	 * @param array $row Record row (page)
 	 * @return string Icon HTML
-	 * @todo Define visibility
 	 */
 	public function wrapIcon($icon, $row) {
 		return $icon;
@@ -70,7 +67,6 @@ class LocalPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 * Select permissions
 	 *
 	 * @return string SQL where clause
-	 * @todo Define visibility
 	 */
 	public function permsC() {
 		return $this->BE_USER->getPagePermsClause(1);
@@ -82,7 +78,6 @@ class LocalPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 * @param integer $pid PID value
 	 * @param string $clause Additional where clause
 	 * @return array Array of tree elements
-	 * @todo Define visibility
 	 */
 	public function ext_tree($pid, $clause = '') {
 		// Initialize:

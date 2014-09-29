@@ -30,110 +30,61 @@ class ClickMenu {
 
 	// Internal, static: GPvar:
 	// Defines if the click menu is first level or second. Second means the click menu is triggered from another menu.
-	/**
-	 * @todo Define visibility
-	 */
 	public $cmLevel = 0;
 
 	// Clipboard array (submitted by eg. pressing the paste button)
-	/**
-	 * @todo Define visibility
-	 */
 	public $CB;
 
 	// Internal, static:
 	// Backpath for scripts/images.
-	/**
-	 * @todo Define visibility
-	 */
 	public $backPath = '';
 
 	// BackPath place holder: We need different backPath set whether the clickmenu is written back to a frame which is not in typo3/ dir or if the clickmenu is shown in the top frame (no backpath)
-	/**
-	 * @todo Define visibility
-	 */
 	public $PH_backPath = '###BACK_PATH###';
 
 	// If set, the calling document should be in the listframe of a frameset.
-	/**
-	 * @todo Define visibility
-	 */
 	public $listFrame = 0;
 
 	// If set, the menu is about database records, not files. (set if part 2 [1] of the item-var is NOT blank)
-	/**
-	 * @todo Define visibility
-	 */
 	public $isDBmenu = 0;
 
 	// If TRUE, the "content" frame is always used for reference (when condensed mode is enabled)
-	/**
-	 * @todo Define visibility
-	 */
 	public $alwaysContentFrame = 0;
 
 	// Stores the parts of the input $item string, splitted by "|":
 	// [0] = table/file, [1] = uid/blank, [2] = flag: If set, listFrame,
 	// If "2" then "content frame" is forced  [3] = ("+" prefix = disable
 	// all by default, enable these. Default is to disable) Items key list
-	/**
-	 * @todo Define visibility
-	 */
 	public $iParts = array();
 
 	// Contains list of keywords of items to disable in the menu
-	/**
-	 * @todo Define visibility
-	 */
 	public $disabledItems = array();
 
 	// If TRUE, Show icons on the left.
-	/**
-	 * @todo Define visibility
-	 */
 	public $leftIcons = 0;
 
 	// Array of classes to be used for user processing of the menu content. This is for the API of adding items to the menu from outside.
-	/**
-	 * @todo Define visibility
-	 */
 	public $extClassArray = array();
 
 	// Enable/disable ajax behavior
-	/**
-	 * @todo Define visibility
-	 */
 	public $ajax = 0;
 
 	// Internal, dynamic:
 	// Counter for elements in the menu. Used to number the name / id of the mouse-over icon.
-	/**
-	 * @todo Define visibility
-	 */
 	public $elCount = 0;
 
 	// Set, when edit icon is drawn.
-	/**
-	 * @todo Define visibility
-	 */
 	public $editPageIconSet = 0;
 
 	// Set to TRUE, if editing of the element is OK.
-	/**
-	 * @todo Define visibility
-	 */
 	public $editOK = 0;
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $rec = array();
 
 	/**
 	 * Initialize click menu
 	 *
 	 * @return string The clickmenu HTML content
-	 * @todo Define visibility
 	 */
 	public function init() {
 		// Setting GPvars:
@@ -195,7 +146,6 @@ class ClickMenu {
 	 * @param string $table Table name
 	 * @param integer $uid UID for the current record.
 	 * @return string HTML content
-	 * @todo Define visibility
 	 */
 	public function printDBClickMenu($table, $uid) {
 		$uid = (int)$uid;
@@ -395,7 +345,6 @@ class ClickMenu {
 	 * @param string $table Table name
 	 * @param integer $uid UID for the current record.
 	 * @return string HTML content
-	 * @todo Define visibility
 	 */
 	public function printNewDBLevel($table, $uid) {
 		$uid = (int)$uid;
@@ -428,7 +377,6 @@ class ClickMenu {
 	 *
 	 * @param array $menuItems Array for manipulation.
 	 * @return array Processed $menuItems array
-	 * @todo Define visibility
 	 */
 	public function externalProcessingOfDBMenuItems($menuItems) {
 		return $menuItems;
@@ -441,7 +389,6 @@ class ClickMenu {
 	 * @param string $table Table name
 	 * @param integer $uid UID for the current record.
 	 * @return array Processed $menuItems array
-	 * @todo Define visibility
 	 */
 	public function processingByExtClassArray($menuItems, $table, $uid) {
 		if (is_array($this->extClassArray)) {
@@ -461,7 +408,6 @@ class ClickMenu {
 	 * @param boolean $hideCM If set, the "hideCM()" will be called
 	 * @param string $overrideLoc If set, gives alternative location to load in (for example top frame or somewhere else)
 	 * @return string JavaScript for an onClick event.
-	 * @todo Define visibility
 	 */
 	public function urlRefForCM($url, $retUrl = '', $hideCM = 1, $overrideLoc = '') {
 		$loc = 'top.content.list_frame';
@@ -477,7 +423,6 @@ class ClickMenu {
 	 * @param string $type Type: "copy" or "cut
 	 * @return array Item array, element in $menuItems
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function DB_copycut($table, $uid, $type) {
 		if ($this->clipObj->current == 'normal') {
@@ -501,7 +446,6 @@ class ClickMenu {
 	 * @return array Item array, element in $menuItems
 	 * @see \TYPO3\CMS\Backend\Clipboard\Clipboard::pasteUrl()
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function DB_paste($table, $uid, $type, $elInfo) {
 		$editOnClick = '';
@@ -522,7 +466,6 @@ class ClickMenu {
 	 * @param integer $uid UID for the current record.
 	 * @return array Item array, element in $menuItems
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function DB_info($table, $uid) {
 		return $this->linkItem($this->label('info'), $this->excludeIcon(IconUtility::getSpriteIcon('actions-document-info')), 'top.launchView(\'' . $table . '\', \'' . $uid . '\'); return hideCM();');
@@ -535,7 +478,6 @@ class ClickMenu {
 	 * @param integer $uid UID for the current record.
 	 * @return array Item array, element in $menuItems
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function DB_history($table, $uid) {
 		$url = BackendUtility::getModuleUrl('record_history', array('element' => $table . ':' . $uid));
@@ -550,7 +492,6 @@ class ClickMenu {
 	 * @param array $rec The "pages" record with "perms_*" fields inside.
 	 * @return array Item array, element in $menuItems
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function DB_perms($table, $uid, $rec) {
 		if (!ExtensionManagementUtility::isLoaded('perm')) {
@@ -568,7 +509,6 @@ class ClickMenu {
 	 * @param array $rec Record of the element (needs "pid" field if not pages-record)
 	 * @return array Item array, element in $menuItems
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function DB_db_list($table, $uid, $rec) {
 		$urlParams = array();
@@ -586,7 +526,6 @@ class ClickMenu {
 	 * @param array $rec Record. Needed for tt-content elements which will have the sys_language_uid sent
 	 * @return array Item array, element in $menuItems
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function DB_moveWizard($table, $uid, $rec) {
 		// Hardcoded field for tt_content elements.
@@ -602,7 +541,6 @@ class ClickMenu {
 	 * @param array $rec Record.
 	 * @return array Item array, element in $menuItems
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function DB_newWizard($table, $uid, $rec) {
 		//  If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's create new content wizard instead:
@@ -620,7 +558,6 @@ class ClickMenu {
 	 * @param integer $uid UID for the current record.
 	 * @return array Item array, element in $menuItems
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function DB_editAccess($table, $uid) {
 		$addParam = '&columnsOnly=' . rawurlencode((implode(',', $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']) . ($table == 'pages' ? ',extendToSubpages' : '')));
@@ -634,7 +571,6 @@ class ClickMenu {
 	 * @param integer $uid page uid to edit (PID)
 	 * @return array Item array, element in $menuItems
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function DB_editPageProperties($uid) {
 		$url = 'alt_doc.php?edit[pages][' . $uid . ']=edit';
@@ -648,7 +584,6 @@ class ClickMenu {
 	 * @param integer $uid UID for the current record.
 	 * @return array Item array, element in $menuItems
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function DB_edit($table, $uid) {
 		// If another module was specified, replace the default Page module with the new one
@@ -680,7 +615,6 @@ class ClickMenu {
 	 * @param integer $uid UID for the current record.
 	 * @return array Item array, element in $menuItems
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function DB_new($table, $uid) {
 		$editOnClick = '';
@@ -697,7 +631,6 @@ class ClickMenu {
 	 * @param array $elInfo Label for including in the confirmation message, EXT:lang/locallang_core.xlf:mess.delete
 	 * @return array Item array, element in $menuItems
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function DB_delete($table, $uid, $elInfo) {
 		$editOnClick = '';
@@ -718,7 +651,6 @@ class ClickMenu {
 	 * @param string $anchor Anchor, if any
 	 * @return array Item array, element in $menuItems
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function DB_view($id, $anchor = '') {
 		return $this->linkItem($this->label('view'), $this->excludeIcon(IconUtility::getSpriteIcon('actions-document-view')), BackendUtility::viewOnClick($id, $this->PH_backPath, BackendUtility::BEgetRootLine($id), $anchor) . 'return hideCM();');
@@ -730,7 +662,6 @@ class ClickMenu {
 	 * @param integer $page_id Page uid (PID)
 	 * @return array Item array, element in $menuItems
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function DB_tempMountPoint($page_id) {
 		return $this->linkItem($this->label('tempMountPoint'), $this->excludeIcon(IconUtility::getSpriteIcon('apps-pagetree-page-mountpoint')), 'if (top.content.nav_frame) {
@@ -761,7 +692,6 @@ class ClickMenu {
 	 * @param string $hideField Name of the hide field
 	 * @return array Item array, element in $menuItems
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function DB_hideUnhide($table, $rec, $hideField) {
 		return $this->DB_changeFlag($table, $rec, $hideField, $this->label(($rec[$hideField] ? 'un' : '') . 'hide'), 'hide');
@@ -777,7 +707,6 @@ class ClickMenu {
 	 * @param string $name Name of the item used for icons and labels
 	 * @param string $iconRelPath Icon path relative to typo3/ folder
 	 * @return array Item array, element in $menuItems
-	 * @todo Define visibility
 	 */
 	public function DB_changeFlag($table, $rec, $flagField, $title, $name, $iconRelPath = 'gfx/') {
 		$uid = $rec['_ORIG_uid'] ?: $rec['uid'];
@@ -798,7 +727,6 @@ class ClickMenu {
 	 * @param string $combinedIdentifier The combined identifier
 	 * @return string HTML content
 	 * @see \TYPO3\CMS\Core\Resource\ResourceFactory::retrieveFileOrFolderObject()
-	 * @todo Define visibility
 	 */
 	public function printFileClickMenu($combinedIdentifier) {
 		$menuItems = array();
@@ -924,7 +852,6 @@ class ClickMenu {
 	 *
 	 * @param array $menuItems Array for manipulation.
 	 * @return array Processed $menuItems array
-	 * @todo Define visibility
 	 */
 	public function externalProcessingOfFileMenuItems($menuItems) {
 		return $menuItems;
@@ -940,7 +867,6 @@ class ClickMenu {
 	 * @param boolean $noReturnUrl If set, the return URL parameter will not be set in the link
 	 * @return array Item array, element in $menuItems
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function FILE_launch($path, $moduleName, $type, $image, $noReturnUrl = FALSE) {
 		$loc = 'top.content.list_frame';
@@ -966,7 +892,6 @@ class ClickMenu {
 	 * @param string $path Path to the file/directory (target)
 	 * @return array Item array, element in $menuItems
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function FILE_upload($path) {
 		$script = 'file_upload';
@@ -982,7 +907,6 @@ class ClickMenu {
 	 * @param string $type Type: "copy" or "cut
 	 * @return array Item array, element in $menuItems
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function FILE_copycut($path, $type) {
 		// Pseudo table name for use in the clipboard.
@@ -1004,7 +928,6 @@ class ClickMenu {
 	 * @param string $path Path to the file/directory (target)
 	 * @return array Item array, element in $menuItems
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function FILE_delete($path) {
 		$editOnClick = '';
@@ -1026,7 +949,6 @@ class ClickMenu {
 	 * @param array $elInfo Various values for the labels.
 	 * @return array Item array, element in $menuItems
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function FILE_paste($path, $target, $elInfo) {
 		$editOnClick = '';
@@ -1062,7 +984,6 @@ class ClickMenu {
 	 * @param integer $srcId UID for the current record.
 	 * @param integer $dstId Destination ID
 	 * @return string HTML content
-	 * @todo Define visibility
 	 */
 	public function printDragDropClickMenu($table, $srcId, $dstId) {
 		$menuItems = array();
@@ -1098,7 +1019,6 @@ class ClickMenu {
 	 *
 	 * @param array $menuItems Array for manipulation.
 	 * @return array Processed $menuItems array
-	 * @todo Define visibility
 	 */
 	public function externalProcessingOfDragDropMenuItems($menuItems) {
 		return $menuItems;
@@ -1113,7 +1033,6 @@ class ClickMenu {
 	 * @param string $into Parameter code: either "into" or "after
 	 * @return array Item array, element in $menuItems
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function dragDrop_copymovepage($srcUid, $dstUid, $action, $into) {
 		$negativeSign = $into == 'into' ? '' : '-';
@@ -1131,7 +1050,6 @@ class ClickMenu {
 	 * @param string $action Action code: either "move" or "copy
 	 * @return array Item array, element in $menuItems
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function dragDrop_copymovefolder($srcPath, $dstPath, $action) {
 		$editOnClick = '';
@@ -1151,7 +1069,6 @@ class ClickMenu {
 	 * @param array $menuItems Array
 	 * @param string $item HTML code for the element which was clicked - shown in the end of the horizontal menu in topframe after the close-button.
 	 * @return string HTML code
-	 * @todo Define visibility
 	 */
 	public function printItems($menuItems, $item) {
 		$out = '';
@@ -1170,7 +1087,6 @@ class ClickMenu {
 	 *
 	 * @param array $menuItems The $menuItems array to print
 	 * @return string The JavaScript section which will print the content of the CM to the div-layer in the target frame.
-	 * @todo Define visibility
 	 */
 	public function printLayerJScode($menuItems) {
 		$script = '';
@@ -1212,7 +1128,6 @@ class ClickMenu {
 	 *
 	 * @param string $str HTML content to wrap in table.
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function wrapColorTableCM($str) {
 		return '<div class="typo3-CSM-wrapperCM">
@@ -1225,7 +1140,6 @@ class ClickMenu {
 	 *
 	 * @param array $menuItems Array
 	 * @return array Array of menu items for top frame.
-	 * @todo Define visibility
 	 */
 	public function menuItemsForTopFrame($menuItems) {
 		$out = array();
@@ -1248,7 +1162,6 @@ class ClickMenu {
 	 *
 	 * @param array $menuItems Array
 	 * @return array array for implosion in the CM div-layers table.
-	 * @todo Define visibility
 	 */
 	public function menuItemsForClickMenu($menuItems) {
 		$out = array();
@@ -1286,7 +1199,6 @@ class ClickMenu {
 	 * @param array $newMenuItems Menu items array to insert
 	 * @param string $position Position command string. Has this syntax: [cmd]:[menu entry key],[cmd].... cmd can be "after", "before" or "top" (or blank/"bottom" which is default). If "after"/"before" then menu items will be inserted after/before the existing entry with [menu entry key] if found. "after-spacer" and "before-spacer" do the same, but inserts before or after an item and a spacer. If not found, the bottom of list. If "top" the items are inserted in the top of the list.
 	 * @return array Menu items array, processed.
-	 * @todo Define visibility
 	 */
 	public function addMenuItems($menuItems, $newMenuItems, $position = '') {
 		if (is_array($newMenuItems)) {
@@ -1363,7 +1275,6 @@ class ClickMenu {
 	 * @param boolean $onlyCM ==1 and the element will NOT appear in clickmenus in the topframe (unless clickmenu is totally unavailable)! ==2 and the item will NEVER appear in top frame. (This is mostly for "less important" options since the top frame is not capable of holding so many elements horizontally)
 	 * @param boolean $dontHide If set, the clickmenu layer will not hide itself onclick - used for secondary menus to appear...
 	 * @return array $menuItem entry with 6 numerical entries: [0] is the HTML for display of the element with link and icon an mouseover etc., [1]-[5] is simply the input params passed through!
-	 * @todo Define visibility
 	 */
 	public function linkItem($str, $icon, $onClick, $onlyCM = 0, $dontHide = 0) {
 		$this->elCount++;
@@ -1388,7 +1299,6 @@ class ClickMenu {
 	 *
 	 * @param string $iconCode The icon-image tag
 	 * @return string The icon-image tag prefixed with space char IF the icon should be printed at all due to user settings
-	 * @todo Define visibility
 	 */
 	public function excludeIcon($iconCode) {
 		return $GLOBALS['BE_USER']->uc['noMenuMode'] && $GLOBALS['BE_USER']->uc['noMenuMode'] !== 'icons' ? '' : ' ' . $iconCode;
@@ -1399,7 +1309,6 @@ class ClickMenu {
 	 *
 	 * @param array $menuItems Menu items array
 	 * @return array Menu items array, processed.
-	 * @todo Define visibility
 	 */
 	public function enableDisableItems($menuItems) {
 		if ($this->iParts[3]) {
@@ -1437,7 +1346,6 @@ class ClickMenu {
 	 *
 	 * @param array $menuItems Menu items array
 	 * @return array Menu items array, processed.
-	 * @todo Define visibility
 	 */
 	public function cleanUpSpacers($menuItems) {
 		// Remove doubles:
@@ -1475,7 +1383,6 @@ class ClickMenu {
 	 *
 	 * @param string $label The "cm."-suffix to get.
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function label($label) {
 		return $GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.' . $label, TRUE));
@@ -1485,7 +1392,6 @@ class ClickMenu {
 	 * Returns TRUE if there should be writing to the div-layers (commands sent to clipboard MUST NOT write to div-layers)
 	 *
 	 * @return boolean
-	 * @todo Define visibility
 	 */
 	public function isCMlayers() {
 		return !$this->CB;
@@ -1496,7 +1402,6 @@ class ClickMenu {
 	 *
 	 * @param string $str Input string, probably a JavaScript document reference
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function frameLocation($str) {
 		return $str . '.location';

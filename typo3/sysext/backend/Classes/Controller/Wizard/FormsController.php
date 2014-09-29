@@ -114,19 +114,18 @@ class FormsController {
 	 * document template object
 	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 * @todo Define visibility
 	 */
 	public $doc;
 
 	// Content accumulation for the module.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $content;
 
 	// Used to numerate attachments automatically.
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $attachmentCounter = 0;
 
@@ -135,26 +134,26 @@ class FormsController {
 	// the original linebased kind. This variable still needs binding to the wizard parameters
 	// - but support is ready!
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $xmlStorage = 0;
 
 	// Internal, static: GPvars
 	// Wizard parameters, coming from TCEforms linking to the wizard.
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $P;
 
 	// The array which is constantly submitted by the multidimensional form of this wizard.
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $FORMCFG;
 
 	// Indicates if the form is of a dedicated type, like "formtype_mail" (for tt_content element "Form")
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $special;
 
@@ -215,7 +214,6 @@ class FormsController {
 	 * Outputting the accumulated content to screen
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		echo $this->content;
@@ -256,7 +254,6 @@ class FormsController {
 	 * Draws the form wizard content
 	 *
 	 * @return string HTML content for the form.
-	 * @todo Define visibility
 	 */
 	public function formsWizard() {
 		if (!$this->checkEditAccess($this->P['table'], $this->P['uid'])) {
@@ -288,7 +285,6 @@ class FormsController {
 	 * @param array $row Current parent record row (passed by value!)
 	 * @return array Configuration Array
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function getConfigCode(&$row) {
 		// If some data has been submitted, then construct
@@ -350,7 +346,6 @@ class FormsController {
 	 * @param array $row Current parent record array
 	 * @return string HTML for the form wizard
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function getFormHTML($formCfgArray, $row) {
 		// Initialize variables:
@@ -575,7 +570,6 @@ class FormsController {
 	 *
 	 * @return void
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function changeFunc() {
 		if ($this->FORMCFG['row_remove']) {
@@ -634,7 +628,6 @@ class FormsController {
 	 * @param array $cfgArr Array of form configuration (follows the input structure from the form wizard POST form)
 	 * @return string The array converted into a string with line-based configuration.
 	 * @see cfgString2CfgArray()
-	 * @todo Define visibility
 	 */
 	public function cfgArray2CfgString($cfgArr) {
 		// Initialize:
@@ -743,7 +736,6 @@ class FormsController {
 	 * @param string $cfgStr Configuration code
 	 * @return array Configuration array
 	 * @see cfgArray2CfgString()
-	 * @todo Define visibility
 	 */
 	public function cfgString2CfgArray($cfgStr) {
 		// Traverse the number of form elements:
@@ -831,7 +823,6 @@ class FormsController {
 	 * @param array $tArr Single dim array
 	 * @return array Processed array
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function cleanT($tArr) {
 		for ($a = count($tArr); $a > 0; $a--) {
@@ -850,7 +841,6 @@ class FormsController {
 	 * @param array $fArr Array of label/HTML pairs.
 	 * @return string HTML table
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function formatCells($fArr) {
 		// Traverse the elements in $fArr and wrap them in table cells:

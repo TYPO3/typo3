@@ -30,7 +30,7 @@ class ElementBrowserController {
 	 * "wizard" will allow you to browse for links (like "rte") which are passed back to TCEforms (see main_rte(1))
 	 *
 	 * @see main()
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $mode;
 
@@ -40,7 +40,6 @@ class ElementBrowserController {
 	 * Not the most nice solution but introduced since we don't have another general way to return class-instances or registry for now
 	 *
 	 * @var \TYPO3\CMS\Recordlist\Browser\ElementBrowser
-	 * @todo Define visibility
 	 */
 	public $browser;
 
@@ -48,7 +47,6 @@ class ElementBrowserController {
 	 * Document template object
 	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 * @todo Define visibility
 	 */
 	public $doc;
 

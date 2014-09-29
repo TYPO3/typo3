@@ -29,33 +29,32 @@ class FileUploadController {
 	 * Document template object
 	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 * @todo Define visibility
 	 */
 	public $doc;
 
 	// Name of the filemount
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $title;
 
 	// Internal, static (GPVar):
 	// Set with the target path inputted in &target
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $target;
 
 	// Return URL of list module.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $returnUrl;
 
 	// Internal, dynamic:
 	// Accumulating content
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $content;
 
@@ -147,7 +146,6 @@ class FileUploadController {
 	 * This function renders the upload form
 	 *
 	 * @return 	string	the HTML form as a string, ready for outputting
-	 * @todo Define visibility
 	 */
 	public function renderUploadForm() {
 		// Make checkbox for "overwrite"

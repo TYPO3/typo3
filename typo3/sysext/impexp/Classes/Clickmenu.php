@@ -30,7 +30,6 @@ class Clickmenu {
 	 * @param integer $uid Uid of the record
 	 * @return array Menu item array, returned after modification
 	 * @todo Skinning for icons...
-	 * @todo Define visibility
 	 */
 	public function main(&$backRef, $menuItems, $table, $uid) {
 		$localItems = array();
@@ -72,7 +71,6 @@ class Clickmenu {
 	 * Include local lang file and return $LOCAL_LANG array loaded.
 	 *
 	 * @return array Local lang array
-	 * @todo Define visibility
 	 */
 	public function includeLL() {
 		global $LANG;

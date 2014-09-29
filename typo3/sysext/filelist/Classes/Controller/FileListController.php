@@ -27,24 +27,16 @@ class FileListController {
 	/**
 	 * Module configuration
 	 *
-	 * @todo Define visibility
 	 */
 	public $MCONF = array();
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $MOD_MENU = array();
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $MOD_SETTINGS = array();
 
 	/**
 	 * Accumulated HTML output
 	 *
-	 * @todo Define visibility
 	 */
 	public $content;
 
@@ -52,14 +44,12 @@ class FileListController {
 	 * Document template object
 	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 * @todo Define visibility
 	 */
 	public $doc;
 
 	/**
 	 * "id" -> the path to list.
 	 *
-	 * @todo Define visibility
 	 */
 	public $id;
 
@@ -76,32 +66,23 @@ class FileListController {
 	/**
 	 * Pointer to listing
 	 *
-	 * @todo Define visibility
 	 */
 	public $pointer;
 
 	/**
 	 * "Table"
 	 *
-	 * @todo Define visibility
 	 */
 	public $table;
 
 	/**
 	 * Thumbnail mode.
 	 *
-	 * @todo Define visibility
 	 */
 	public $imagemode;
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $cmd;
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $overwriteExistingFiles;
 
 	/**
@@ -125,7 +106,6 @@ class FileListController {
 	 * Incoming GET vars include id, pointer, table, imagemode
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function init() {
 		// Setting GPvars:
@@ -192,7 +172,6 @@ class FileListController {
 	 * Setting the menu/session variables
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function menuConfig() {
 		// MENU-ITEMS:
@@ -218,7 +197,6 @@ class FileListController {
 	 * Main function, creating the listing
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		// Initialize the template object
@@ -429,7 +407,6 @@ class FileListController {
 	 * Outputting the accumulated content to screen
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		echo $this->content;
@@ -439,7 +416,6 @@ class FileListController {
 	 * Create the panel of buttons for submitting the form or otherwise perform operations.
 	 *
 	 * @return array All available buttons as an assoc. array
-	 * @todo Define visibility
 	 */
 	public function getButtons() {
 		$buttons = array(

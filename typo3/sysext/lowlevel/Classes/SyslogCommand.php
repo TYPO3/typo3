@@ -23,8 +23,6 @@ class SyslogCommand extends CleanerCommand {
 
 	/**
 	 * Constructor
-	 *
-	 * @todo Define visibility
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -39,7 +37,6 @@ Showing last 25 hour entries from the syslog. More features pending. This is the
 	 * Find syslog
 	 *
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function main() {
 		global $TYPO3_DB;
@@ -69,7 +66,6 @@ Showing last 25 hour entries from the syslog. More features pending. This is the
 	 *
 	 * @param array Result array from main() function
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main_autoFix($resultArray) {
 

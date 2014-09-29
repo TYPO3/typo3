@@ -27,13 +27,12 @@ class FileSystemNavigationFrameController {
 	// Internal, dynamic:
 	// Content accumulates in this variable.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $content;
 
 	/**
 	 * @var \TYPO3\CMS\Filelist\FileListFolderTree $foldertree the folder tree object
-	 * @todo Define visibility
 	 */
 	public $foldertree;
 
@@ -41,18 +40,17 @@ class FileSystemNavigationFrameController {
 	 * document template object
 	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 * @todo Define visibility
 	 */
 	public $doc;
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $backPath;
 
 	// Internal, static: GPvar:
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $currentSubScript;
 

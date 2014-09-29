@@ -24,37 +24,21 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  */
 class DatabaseIntegrityView {
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $MCONF = array();
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $MOD_MENU = array();
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $MOD_SETTINGS = array();
 
 	/**
 	 * Document template object
 	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 * @todo Define visibility
 	 */
 	public $doc;
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $content;
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $menu;
 
 	protected $formName = 'queryform';
@@ -71,7 +55,6 @@ class DatabaseIntegrityView {
 	 * Initialization
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function init() {
 		global $LANG, $BACK_PATH;
@@ -98,7 +81,6 @@ class DatabaseIntegrityView {
 	 * Configure menu
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function menuConfig() {
 		global $LANG;
@@ -187,7 +169,6 @@ class DatabaseIntegrityView {
 	 * Main
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		// Content creation
@@ -227,7 +208,6 @@ class DatabaseIntegrityView {
 	 * Print content
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		echo $this->content;
@@ -294,7 +274,6 @@ class DatabaseIntegrityView {
 	 * Check and update reference index!
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function func_refindex() {
 		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('manageRefIndex', TRUE));
@@ -332,7 +311,6 @@ class DatabaseIntegrityView {
 	 * Search (Full / Advanced)
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function func_search() {
 		global $LANG;
@@ -371,7 +349,6 @@ class DatabaseIntegrityView {
 	 * Records overview
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function func_records() {
 		/** @var $admin \TYPO3\CMS\Core\Integrity\DatabaseIntegrityCheck */
@@ -473,7 +450,6 @@ class DatabaseIntegrityView {
 	 * Show list references
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function func_relations() {
 		global $LANG, $BACK_PATH;

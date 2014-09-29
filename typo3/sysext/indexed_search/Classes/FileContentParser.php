@@ -28,31 +28,16 @@ namespace TYPO3\CMS\IndexedSearch;
 class FileContentParser {
 
 	// This value is also overridden from config.
-	/**
-	 * @todo Define visibility
-	 */
 	public $pdf_mode = -20;
 
 	// zero: whole PDF file is indexed in one. positive value: Indicates number of pages at a time, eg. "5" would means 1-5,6-10,.... Negative integer would indicate (abs value) number of groups. Eg "3" groups of 10 pages would be 1-4,5-8,9-10
 	// This array is configured in initialization:
-	/**
-	 * @todo Define visibility
-	 */
 	public $app = array();
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $ext2itemtype_map = array();
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $supportedExtensions = array();
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $pObj;
 
 	// Reference to parent object (indexer class)
@@ -72,7 +57,6 @@ class FileContentParser {
 	 *
 	 * @param 	string		File extension
 	 * @return 	boolean		Returns TRUE if extension is supported/enabled, otherwise FALSE.
-	 * @todo Define visibility
 	 */
 	public function initParser($extension) {
 		// Then read indexer-config and set if appropriate:
@@ -232,7 +216,6 @@ class FileContentParser {
 	 *
 	 * @param 	string		File extension to initialize for.
 	 * @return 	boolean		Returns TRUE if the extension is supported and enabled, otherwise FALSE.
-	 * @todo Define visibility
 	 */
 	public function softInit($extension) {
 		switch ($extension) {
@@ -286,7 +269,6 @@ class FileContentParser {
 	 *
 	 * @param 	string		File extension
 	 * @return 	string		String with label value of entry in media type search selector box (frontend plugin).
-	 * @todo Define visibility
 	 */
 	public function searchTypeMediaTitle($extension) {
 		// Read indexer-config
@@ -404,7 +386,6 @@ class FileContentParser {
 	 *
 	 * @param 	string		Extension / item_type string
 	 * @return 	boolean		Return TRUE if multi-page
-	 * @todo Define visibility
 	 */
 	public function isMultiplePageExtension($extension) {
 		// Switch on file extension:
@@ -438,7 +419,6 @@ class FileContentParser {
 	 * @param string $absFile Absolute filename of file (must exist and be validated OK before calling function)
 	 * @param string $cPKey Pointer to section (zero for all other than PDF which will have an indication of pages into which the document should be split.)
 	 * @return array Standard content array (title, description, keywords, body keys)
-	 * @todo Define visibility
 	 */
 	public function readFileContent($ext, $absFile, $cPKey) {
 		unset($contentArr);
@@ -681,7 +661,6 @@ class FileContentParser {
 	 * @param string $ext File extension
 	 * @param string $absFile Absolute filename (must exist and be validated OK before calling function)
 	 * @return array Array of pointers to sections that the document should be divided into
-	 * @todo Define visibility
 	 */
 	public function fileContentParts($ext, $absFile) {
 		$cParts = array(0);
@@ -722,7 +701,6 @@ class FileContentParser {
 	 * @return 	array		Result array
 	 * @access private
 	 * @see fileContentParts()
-	 * @todo Define visibility
 	 */
 	public function splitPdfInfo($pdfInfoArray) {
 		$res = array();
@@ -742,7 +720,6 @@ class FileContentParser {
 	 *
 	 * @param 	string		String to clean up
 	 * @return 	string		String
-	 * @todo Define visibility
 	 */
 	public function removeEndJunk($string) {
 		return trim(preg_replace('/[' . LF . chr(12) . ']*$/', '', $string));
@@ -758,7 +735,6 @@ class FileContentParser {
 	 *
 	 * @param 	string		File extension, lowercase.
 	 * @return 	string		Relative file reference, resolvable by \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName()
-	 * @todo Define visibility
 	 */
 	public function getIcon($extension) {
 		if ($extension == 'htm') {

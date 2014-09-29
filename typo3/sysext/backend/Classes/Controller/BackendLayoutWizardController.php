@@ -27,7 +27,7 @@ class BackendLayoutWizardController {
 	// GET vars:
 	// Wizard parameters, coming from TCEforms linking to the wizard.
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $P;
 
@@ -35,13 +35,12 @@ class BackendLayoutWizardController {
 	 * Document template object
 	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 * @todo Define visibility
 	 */
 	public $doc;
 
 	// Accumulated content.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $content;
 

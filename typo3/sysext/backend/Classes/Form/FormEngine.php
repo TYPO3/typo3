@@ -40,25 +40,21 @@ use TYPO3\CMS\Lang\LanguageService;
 class FormEngine {
 
 	/**
-	 * @todo Define visibility
 	 * @var array
 	 */
 	public $palFieldArr = array();
 
 	/**
-	 * @todo Define visibility
 	 * @var bool
 	 */
 	public $disableWizards = FALSE;
 
 	/**
-	 * @todo Define visibility
 	 * @var bool
 	 */
 	public $isPalettedoc = FALSE;
 
 	/**
-	 * @todo Define visibility
 	 * @var int
 	 */
 	public $paletteMargin = 1;
@@ -70,25 +66,21 @@ class FormEngine {
 	public $defStyle = '';
 
 	/**
-	 * @todo Define visibility
 	 * @var array
 	 */
 	public $cachedTSconfig = array();
 
 	/**
-	 * @todo Define visibility
 	 * @var array
 	 */
 	public $cachedTSconfig_fieldLevel = array();
 
 	/**
-	 * @todo Define visibility
 	 * @var array
 	 */
 	public $cachedLanguageFlag = array();
 
 	/**
-	 * @todo Define visibility
 	 * @var array|NULL
 	 */
 	public $cachedAdditionalPreviewLanguages = NULL;
@@ -102,37 +94,31 @@ class FormEngine {
 	protected $cache_getTSCpid = array();
 
 	/**
-	 * @todo Define visibility
 	 * @var array
 	 */
 	public $transformedRow = array();
 
 	/**
-	 * @todo Define visibility
 	 * @var string
 	 */
 	public $extJSCODE = '';
 
 	/**
-	 * @todo Define visibility
 	 * @var array
 	 */
 	public $printNeededJS = array();
 
 	/**
-	 * @todo Define visibility
 	 * @var array
 	 */
 	public $hiddenFieldAccum = array();
 
 	/**
-	 * @todo Define visibility
 	 * @var string
 	 */
 	public $TBE_EDITOR_fieldChanged_func = '';
 
 	/**
-	 * @todo Define visibility
 	 * @var bool
 	 */
 	public $loadMD5_JS = TRUE;
@@ -140,7 +126,6 @@ class FormEngine {
 	/**
 	 * Array where records in the default language is stored. (processed by transferdata)
 	 *
-	 * @todo Define visibility
 	 * @var array
 	 */
 	public $defaultLanguageData = array();
@@ -148,13 +133,11 @@ class FormEngine {
 	/**
 	 * Array where records in the default language is stored (raw without any processing. used for making diff)
 	 *
-	 * @todo Define visibility
 	 * @var array
 	 */
 	public $defaultLanguageData_diff = array();
 
 	/**
-	 * @todo Define visibility
 	 * @var array
 	 */
 	public $additionalPreviewLanguageData = array();
@@ -164,7 +147,6 @@ class FormEngine {
 	 * Set this to the 'backPath' pointing back to the typo3 admin directory
 	 * from the script where this form is displayed.
 	 *
-	 * @todo Define visibility
 	 * @var string
 	 */
 	public $backPath = '';
@@ -172,7 +154,6 @@ class FormEngine {
 	/**
 	 * Alternative return URL path (default is \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript())
 	 *
-	 * @todo Define visibility
 	 * @var string
 	 */
 	public $returnUrl = '';
@@ -182,7 +163,6 @@ class FormEngine {
 	 * is submitted with a *save* button. This way the recipient script can determine that
 	 * the form was submitted for save and not "close" for example.
 	 *
-	 * @todo Define visibility
 	 * @var string
 	 */
 	public $doSaveFieldName = '';
@@ -191,7 +171,6 @@ class FormEngine {
 	 * Can be set TRUE/FALSE to whether palettes (secondary options) are in the topframe or in form.
 	 * TRUE means they are NOT IN-form. So a collapsed palette is one, which is shown in the top frame, not in the page.
 	 *
-	 * @todo Define visibility
 	 * @var bool
 	 */
 	public $palettesCollapsed = FALSE;
@@ -199,7 +178,6 @@ class FormEngine {
 	/**
 	 * If set, the RTE is disabled (from form display, eg. by checkbox in the bottom of the page!)
 	 *
-	 * @todo Define visibility
 	 * @var bool
 	 */
 	public $disableRTE = FALSE;
@@ -207,7 +185,6 @@ class FormEngine {
 	/**
 	 * If FALSE, then all CSH will be disabled, regardless of settings in $this->edit_showFieldHelp
 	 *
-	 * @todo Define visibility
 	 * @var bool
 	 */
 	public $globalShowHelp = TRUE;
@@ -215,7 +192,6 @@ class FormEngine {
 	/**
 	 * If this evaluates to TRUE, the forms are rendering only localization relevant fields of the records.
 	 *
-	 * @todo Define visibility
 	 * @var string
 	 */
 	public $localizationMode = '';
@@ -225,7 +201,6 @@ class FormEngine {
 	 * 'bodytext,image', would make first the 'bodytext' field, then the 'image' field (if set for display)...
 	 * and then the rest in the old order.
 	 *
-	 * @todo Define visibility
 	 * @var string
 	 */
 	public $fieldOrder = '';
@@ -233,7 +208,6 @@ class FormEngine {
 	/**
 	 * If set to FALSE, palettes will NEVER be rendered.
 	 *
-	 * @todo Define visibility
 	 * @var bool
 	 */
 	public $doPrintPalette = TRUE;
@@ -243,20 +217,17 @@ class FormEngine {
 	 * Then the element browser will offer a link to paste in records from clipboard.
 	 *
 	 * @var \TYPO3\CMS\Backend\Clipboard\Clipboard|NULL
-	 * @todo Define visibility
 	 */
 	public $clipObj = NULL;
 
 	/**
 	 * Enable click menu on reference icons.
 	 *
-	 * @todo Define visibility
 	 * @var bool
 	 */
 	public $enableClickMenu = FALSE;
 
 	/**
-	 * @todo Define visibility
 	 * @var bool
 	 */
 	public $enableTabMenu = FALSE;
@@ -264,7 +235,6 @@ class FormEngine {
 	/**
 	 * When enabled all fields are rendered non-editable
 	 *
-	 * @todo Define visibility
 	 * @var bool
 	 */
 	public $renderReadonly = FALSE;
@@ -273,7 +243,6 @@ class FormEngine {
 	 * Form field width compensation: Factor of "size=12" to "style="width: 12*9.58px"
 	 * for form field widths of style-aware browsers
 	 *
-	 * @todo Define visibility
 	 * @var float
 	 */
 	public $form_rowsToStylewidth = 9.58;
@@ -288,7 +257,6 @@ class FormEngine {
 	/**
 	 * Form field width compensation: Compensation for large documents, doc-tab (editing)
 	 *
-	 * @todo Define visibility
 	 * @var float
 	 */
 	public $form_largeComp = 1.33;
@@ -297,7 +265,6 @@ class FormEngine {
 	 * The number of chars expected per row when the height of a text area field is
 	 * automatically calculated based on the number of characters found in the field content.
 	 *
-	 * @todo Define visibility
 	 * @var int
 	 */
 	public $charsPerRow = 40;
@@ -305,14 +272,12 @@ class FormEngine {
 	/**
 	 * The maximum abstract value for textareas
 	 *
-	 * @todo Define visibility
 	 * @var int
 	 */
 	public $maxTextareaWidth = 48;
 
 	/**
 	 * The maximum abstract value for input fields
-	 * @todo Define visibility
 	 *
 	 * @var int
 	 */
@@ -321,7 +286,6 @@ class FormEngine {
 	/**
 	 * Default style for the selector boxes used for multiple items in "select" and "group" types.
 	 *
-	 * @todo Define visibility
 	 * @var string
 	 */
 	public $defaultMultipleSelectorStyle = 'width:310px;';
@@ -329,7 +293,6 @@ class FormEngine {
 	// INTERNAL, static
 	/**
 	 * The string to prepend formfield names with.
-	 * @todo Define visibility
 	 *
 	 * @var string
 	 */
@@ -338,7 +301,6 @@ class FormEngine {
 	/**
 	 * The string to prepend commands for tcemain::process_cmdmap with
 	 *
-	 * @todo Define visibility
 	 * @var string
 	 */
 	public $prependCmdFieldNames = 'cmd';
@@ -346,7 +308,6 @@ class FormEngine {
 	/**
 	 * The string to prepend FILE form field names with
 	 *
-	 * @todo Define visibility
 	 * @var string
 	 */
 	public $prependFormFieldNames_file = 'data_files';
@@ -361,7 +322,6 @@ class FormEngine {
 	/**
 	 * The name attribute of the form
 	 *
-	 * @todo Define visibility
 	 * @var string
 	 */
 	public $formName = 'editform';
@@ -369,7 +329,6 @@ class FormEngine {
 	/**
 	 * Whitelist that allows TCA field configuration to be overridden by TSconfig
 	 *
-	 * @todo Define visibility
 	 * @see overrideFieldConf()
 	 * @var array
 	 */
@@ -379,7 +338,6 @@ class FormEngine {
 	/**
 	 * Set by readPerms()  (caching)
 	 *
-	 * @todo Define visibility
 	 * @var string
 	 */
 	public $perms_clause = '';
@@ -387,7 +345,6 @@ class FormEngine {
 	/**
 	 * Set by readPerms()  (caching-flag)
 	 *
-	 * @todo Define visibility
 	 * @var bool
 	 */
 	public $perms_clause_set = FALSE;
@@ -396,7 +353,6 @@ class FormEngine {
 	 * Used to indicate the mode of CSH (Context Sensitive Help),
 	 * whether it should be icons-only ('icon') or not at all (blank).
 	 *
-	 * @todo Define visibility
 	 * @var bool
 	 */
 	public $edit_showFieldHelp = FALSE;
@@ -409,7 +365,6 @@ class FormEngine {
 	/**
 	 * Loaded with info about the browser when class is instantiated
 	 *
-	 * @todo Define visibility
 	 * @var array
 	 */
 	public $clientInfo = array();
@@ -417,7 +372,6 @@ class FormEngine {
 	/**
 	 * TRUE, if RTE is possible for the current user (based on result from BE_USER->isRTE())
 	 *
-	 * @todo Define visibility
 	 * @var bool
 	 */
 	public $RTEenabled = FALSE;
@@ -425,7 +379,6 @@ class FormEngine {
 	/**
 	 * If $this->RTEenabled was FALSE, you can find the reasons listed in this array
 	 * which is filled with reasons why the RTE could not be loaded)
-	 * @todo Define visibility
 	 *
 	 * @var string
 	 */
@@ -434,7 +387,6 @@ class FormEngine {
 	/**
 	 * Counter that is incremented before an RTE is created. Can be used for unique ids etc.
 	 *
-	 * @todo Define visibility
 	 * @var int
 	 */
 	public $RTEcounter = 0;
@@ -490,7 +442,6 @@ class FormEngine {
 	/**
 	 * An accumulation of messages from the class
 	 *
-	 * @todo Define visibility
 	 * @var array
 	 */
 	public $commentMessages = array();
@@ -499,7 +450,6 @@ class FormEngine {
 	/**
 	 * Total wrapping for the table rows
 	 *
-	 * @todo Define visibility
 	 * @var string
 	 */
 	public $totalWrap = '<hr />|<hr />';
@@ -507,7 +457,6 @@ class FormEngine {
 	/**
 	 * Field template
 	 *
-	 * @todo Define visibility
 	 * @var string
 	 */
 	public $fieldTemplate = '<strong>###FIELD_NAME###</strong><br />###FIELD_ITEM###<hr />';
@@ -522,7 +471,6 @@ class FormEngine {
 	/**
 	 * Wrapping template code for a section
 	 *
-	 * @todo Define visibility
 	 * @var string
 	 */
 	public $sectionWrap = '';
@@ -530,7 +478,6 @@ class FormEngine {
 	/**
 	 * Template for palette headers
 	 *
-	 * @todo Define visibility
 	 * @var string
 	 */
 	public $palFieldTemplateHeader = '';
@@ -538,7 +485,6 @@ class FormEngine {
 	/**
 	 * Template for palettes
 	 *
-	 * @todo Define visibility
 	 * @var string
 	 */
 	public $palFieldTemplate = '';
@@ -547,7 +493,6 @@ class FormEngine {
 	/**
 	 * Set to the fields NOT to display, if any
 	 *
-	 * @todo Define visibility
 	 * @var array|NULL
 	 */
 	public $excludeElements = NULL;
@@ -556,7 +501,6 @@ class FormEngine {
 	 * During rendering of forms this will keep track of which palettes
 	 * has already been rendered (so they are not rendered twice by mistake)
 	 *
-	 * @todo Define visibility
 	 * @var array
 	 */
 	public $palettesRendered = array();
@@ -567,7 +511,6 @@ class FormEngine {
 	 * since the main form has to submit the values.
 	 * The top frame actually just sets the value in the main form!
 	 *
-	 * @todo Define visibility
 	 * @var array
 	 */
 	public $hiddenFieldListArr = array();
@@ -576,7 +519,6 @@ class FormEngine {
 	 * Used to register input-field names, which are required. (Done during rendering of the fields).
 	 * This information is then used later when the JavaScript is made.
 	 *
-	 * @todo Define visibility
 	 * @var array
 	 */
 	public $requiredFields = array();
@@ -586,7 +528,6 @@ class FormEngine {
 	 * (e.g. like a date/time must be positive integer)
 	 * The information of this array is merged with $this->requiredFields later.
 	 *
-	 * @todo Define visibility
 	 * @var array
 	 */
 	public $requiredAdditional = array();
@@ -595,7 +536,6 @@ class FormEngine {
 	 * Used to register the min and max number of elements
 	 * for selector boxes where that apply (in the "group" type for instance)
 	 *
-	 * @todo Define visibility
 	 * @var array
 	 */
 	public $requiredElements = array();
@@ -603,7 +543,6 @@ class FormEngine {
 	/**
 	 * Used to determine where $requiredFields or $requiredElements are nested (in Tabs or IRRE)
 	 *
-	 * @todo Define visibility
 	 * @var array
 	 */
 	public $requiredNested = array();
@@ -611,7 +550,6 @@ class FormEngine {
 	/**
 	 * Keeps track of the rendering depth of nested records
 	 *
-	 * @todo Define visibility
 	 * @var int
 	 */
 	public $renderDepth = 0;
@@ -619,14 +557,12 @@ class FormEngine {
 	/**
 	 * Color scheme buffer
 	 *
-	 * @todo Define visibility
 	 * @var array
 	 */
 	public $savedSchemes = array();
 
 	/**
 	 * holds the path an element is nested in (e.g. required for RTEhtmlarea)
-	 * @todo Define visibility
 	 *
 	 * @var array
 	 */
@@ -636,7 +572,6 @@ class FormEngine {
 	/**
 	 * Additional HTML code, printed before the form
 	 *
-	 * @todo Define visibility
 	 * @var array
 	 */
 	public $additionalCode_pre = array();
@@ -644,7 +579,6 @@ class FormEngine {
 	/**
 	 * Additional JavaScript, printed before the form
 	 *
-	 * @todo Define visibility
 	 * @var array
 	 */
 	public $additionalJS_pre = array();
@@ -652,7 +586,6 @@ class FormEngine {
 	/**
 	 * Additional JavaScript printed after the form
 	 *
-	 * @todo Define visibility
 	 * @var array
 	 */
 	public $additionalJS_post = array();
@@ -661,7 +594,6 @@ class FormEngine {
 	 * Additional JavaScript executed on submit; If you set "OK" variable it will raise an error
 	 * about RTEs not being loaded and offer to block further submission.
 	 *
-	 * @todo Define visibility
 	 * @var array
 	 */
 	public $additionalJS_submit = array();
@@ -670,21 +602,18 @@ class FormEngine {
 	 * Additional JavaScript executed when section element is deleted.
 	 * This is necessary, for example, to correctly clean up HTMLArea RTE (bug #8232)
 	 *
-	 * @todo Define visibility
 	 * @var array
 	 */
 	public $additionalJS_delete = array();
 
 	/**
 	 * @var \TYPO3\CMS\Backend\Form\Element\InlineElement
-	 * @todo Define visibility
 	 */
 	public $inline;
 
 	/**
 	 * Array containing hook class instances called once for a form
 	 *
-	 * @todo Define visibility
 	 * @var array
 	 */
 	public $hookObjectsMainFields = array();
@@ -692,7 +621,6 @@ class FormEngine {
 	/**
 	 * Array containing hook class instances called for each field
 	 *
-	 * @todo Define visibility
 	 * @var array
 	 */
 	public $hookObjectsSingleField = array();
@@ -700,7 +628,6 @@ class FormEngine {
 	/**
 	 * Rows getting inserted into the alt_doc headers (when called from alt_doc.php)
 	 *
-	 * @todo Define visibility
 	 * @var array
 	 */
 	public $extraFormHeaders = array();
@@ -726,7 +653,6 @@ class FormEngine {
 	/**
 	 * Constructor function, setting internal variables, loading the styles used.
 	 *
-	 * @todo Define visibility
 	 */
 	public function __construct() {
 		$this->clientInfo = GeneralUtility::clientInfo();
@@ -772,7 +698,6 @@ class FormEngine {
 	 * Initialize various internal variables.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function initDefaultBEmode() {
 		$this->prependFormFieldNames = 'data';
@@ -799,7 +724,6 @@ class FormEngine {
 	 * @param string $theFieldToReturn The field name to return the TCEform element for.
 	 * @return string HTML output
 	 * @see getMainFields()
-	 * @todo Define visibility
 	 */
 	public function getSoloField($table, $row, $theFieldToReturn) {
 		if (!isset($GLOBALS['TCA'][$table])) {
@@ -838,7 +762,6 @@ class FormEngine {
 	 * @param array $overruleTypesArray Overrule types array. Can be used to override the showitem etc. configuration for the TCA types of the table. Can contain all settings which are possible in the TCA 'types' section. See e.g. $TCA['tt_content']['types'].
 	 * @return string HTML output
 	 * @see getSoloField()
-	 * @todo Define visibility
 	 */
 	public function getMainFields($table, array $row, $depth = 0, array $overruleTypesArray = array()) {
 		$this->renderDepth = $depth;
@@ -1038,7 +961,6 @@ class FormEngine {
 	 * @param array $row The record array.
 	 * @param string $list Commalist of fields from the table. These will be shown in the specified order in a form.
 	 * @return string TCEform elements in a string.
-	 * @todo Define visibility
 	 */
 	public function getListedFields($table, $row, $list) {
 		if ($this->edit_showFieldHelp || $this->doLoadTableDescr($table)) {
@@ -1076,7 +998,6 @@ class FormEngine {
 	 * @param string $itemList Optional alternative list of fields for the palette
 	 * @param string $collapsedHeader Optional Link text for activating a palette (when palettes does not have another form element to belong to).
 	 * @return string HTML code.
-	 * @todo Define visibility
 	 */
 	public function getPaletteFields($table, $row, $palette, $header = '', $itemList = '', $collapsedHeader = NULL) {
 		if (!$this->doPrintPalette) {
@@ -1122,7 +1043,6 @@ class FormEngine {
 	 * @param string $extra The "extra" options from "Part 4" of the field configurations found in the "types" "showitem" list. Typically parsed by $this->getSpecConfFromString() in order to get the options as an associative array.
 	 * @param integer $pal The palette pointer.
 	 * @return mixed String (normal) or array (palettes)
-	 * @todo Define visibility
 	 */
 	public function getSingleField($table, $field, $row, $altName = '', $palette = FALSE, $extra = '', $pal = 0) {
 		// Hook: getSingleField_preProcess
@@ -1336,7 +1256,6 @@ class FormEngine {
 	 * @return string Returns the item as HTML code to insert
 	 * @access private
 	 * @see getSingleField(), getSingleField_typeFlex_draw()
-	 * @todo Define visibility
 	 */
 	public function getSingleField_SW($table, $field, $row, &$PA) {
 		$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ?: $PA['fieldConf']['config']['type'];
@@ -1386,7 +1305,6 @@ class FormEngine {
 	 * @param array $row The record data array where the value(s) for the field can be found
 	 * @param array $PA An array with additional configuration options.
 	 * @return string The HTML code for the TCEform field
-	 * @todo Define visibility
 	 * @deprecated since 7.0 - will be removed two versions later; Use \TYPO3\CMS\Backend\Form\Element\InputElement
 	 */
 	public function getSingleField_typeInput($table, $field, $row, &$PA) {
@@ -1460,7 +1378,6 @@ class FormEngine {
 	 * @param array $row The record data array where the value(s) for the field can be found
 	 * @param array $PA An array with additional configuration options.
 	 * @return string The HTML code for the TCEform field
-	 * @todo Define visibility
 	 * @deprecated since 7.0 - will be removed two versions later; Use \TYPO3\CMS\Backend\Form\Element\TextElement
 	 */
 	public function getSingleField_typeText($table, $field, $row, &$PA) {
@@ -1478,7 +1395,6 @@ class FormEngine {
 	 * @param array $row The record data array where the value(s) for the field can be found
 	 * @param array $PA An array with additional configuration options.
 	 * @return string The HTML code for the TCEform field
-	 * @todo Define visibility
 	 * @deprecated since 7.0 - will be removed two versions later; Use \TYPO3\CMS\Backend\Form\Element\CheckboxElement
 	 */
 	public function getSingleField_typeCheck($table, $field, $row, &$PA) {
@@ -1496,7 +1412,6 @@ class FormEngine {
 	 * @param array $row The record data array where the value(s) for the field can be found
 	 * @param array $PA An array with additional configuration options.
 	 * @return string The HTML code for the TCEform field
-	 * @todo Define visibility
 	 * @deprecated since 7.0 - will be removed two versions later; Use \TYPO3\CMS\Backend\Form\Element\RadioElement
 	 */
 	public function getSingleField_typeRadio($table, $field, $row, &$PA) {
@@ -1515,7 +1430,6 @@ class FormEngine {
 	 * @param array $row The record data array where the value(s) for the field can be found
 	 * @param array $PA An array with additional configuration options.
 	 * @return string The HTML code for the TCEform field
-	 * @todo Define visibility
 	 * @deprecated since 7.0 - will be removed two versions later; Use \TYPO3\CMS\Backend\Form\Element\SelectElement
 	 */
 	public function getSingleField_typeSelect($table, $field, $row, &$PA) {
@@ -1533,7 +1447,6 @@ class FormEngine {
 	 * @param array $row The record data array where the value(s) for the field can be found
 	 * @param array $PA An array with additional configuration options.
 	 * @return string The HTML code for the TCEform field
-	 * @todo Define visibility
 	 * @deprecated since 7.0 - will be removed two versions later; Use \TYPO3\CMS\Backend\Form\Element\GroupElement
 	 */
 	public function getSingleField_typeGroup($table, $field, $row, &$PA) {
@@ -1551,7 +1464,6 @@ class FormEngine {
 	 * @param array $row The record data array where the value(s) for the field can be found
 	 * @param array $PA An array with additional configuration options.
 	 * @return string The HTML code for the TCEform field
-	 * @todo Define visibility
 	 * @deprecated since 7.0 - will be removed two versions later; Use \TYPO3\CMS\Backend\Form\Element\NoneElement
 	 */
 	public function getSingleField_typeNone($table, $field, $row, &$PA) {
@@ -1567,7 +1479,6 @@ class FormEngine {
 	 * @param string $itemValue The value to display
 	 * @return string The HTML code for the display
 	 * @see getSingleField_typeNone();
-	 * @todo Define visibility
 	 */
 	public function getSingleField_typeNone_render($config, $itemValue) {
 		if ($config['format']) {
@@ -1622,7 +1533,6 @@ class FormEngine {
 	 * @param array $row The record data array where the value(s) for the field can be found
 	 * @param array $PA An array with additional configuration options.
 	 * @return string The HTML code for the TCEform field
-	 * @todo Define visibility
 	 * @deprecated since 7.0 - will be removed two versions later; Use \TYPO3\CMS\Backend\Form\Element\FlexElement
 	 */
 	public function getSingleField_typeFlex($table, $field, $row, &$PA) {
@@ -1639,7 +1549,6 @@ class FormEngine {
 	 * @param array $selectedLanguage
 	 * @param boolean $multi
 	 * @return string HTML for menu
-	 * @todo Define visibility
 	 */
 	public function getSingleField_typeFlex_langMenu($languages, $elName, $selectedLanguage, $multi = TRUE) {
 		$opt = array();
@@ -1662,7 +1571,6 @@ class FormEngine {
 	 * @param string $elName Form element name of the field containing the sheet pointer
 	 * @param string $sheetKey Current sheet key
 	 * @return string HTML for menu
-	 * @todo Define visibility
 	 */
 	public function getSingleField_typeFlex_sheetMenu($sArr, $elName, $sheetKey) {
 		$tCells = array();
@@ -1691,7 +1599,6 @@ class FormEngine {
 	 * @param array $row The record data array where the value(s) for the field can be found
 	 * @param array $PA An array with additional configuration options.
 	 * @return string The HTML code for the TCEform field
-	 * @todo Define visibility
 	 * @deprecated since 7.0 - will be removed two versions later; Use \TYPO3\CMS\Backend\Form\Element\UnknownElement
 	 */
 	public function getSingleField_typeUnknown($table, $field, $row, &$PA) {
@@ -1709,7 +1616,6 @@ class FormEngine {
 	 * @param array $PA An array with additional configuration options.
 	 * @return string The HTML code for the TCEform field
 	 * @deprecated since 7.0 - will be removed two versions later; Use \TYPO3\CMS\Backend\Form\Element\UserElement
-	 * @todo Define visibility
 	 */
 	public function getSingleField_typeUser($table, $field, $row, &$PA) {
 		GeneralUtility::logDeprecatedFunction();
@@ -1729,7 +1635,6 @@ class FormEngine {
 	 * @param array $config Configuration for the display
 	 * @param string $itemValue The value to display
 	 * @return string Formatted Field content
-	 * @todo Define visibility
 	 */
 	public function formatValue($config, $itemValue) {
 		$format = trim($config['format']);
@@ -1828,7 +1733,6 @@ class FormEngine {
 	 * @param array $row The row from the table, should contain at least the "type" field, if applicable.
 	 * @return string Return the "type" value for this record, ready to pick a "types" configuration from the $GLOBALS['TCA'] array.
 	 * @throws \RuntimeException
-	 * @todo Define visibility
 	 */
 	public function getRTypeNum($table, $row) {
 		$typeNum = 0;
@@ -1882,7 +1786,6 @@ class FormEngine {
 	 * @param array $fields A [types][showitem] list of fields, exploded by ",
 	 * @return array Returns rearranged version (keys are changed around as well.)
 	 * @see getMainFields()
-	 * @todo Define visibility
 	 */
 	public function rearrange($fields) {
 		$fO = array_flip(GeneralUtility::trimExplode(',', $this->fieldOrder, TRUE));
@@ -1910,7 +1813,6 @@ class FormEngine {
 	 * @param string $typeNum A "type" pointer value, probably the one calculated based on the record array.
 	 * @return array Array with fieldnames as values. The fieldnames are those which should NOT be displayed "anyways
 	 * @see getMainFields()
-	 * @todo Define visibility
 	 */
 	public function getExcludeElements($table, $row, $typeNum) {
 		// Init:
@@ -1950,7 +1852,6 @@ class FormEngine {
 	 * @param string $typeNum A "type" pointer value, probably the one calculated based on the record array.
 	 * @return array An array containing two values: 1) Another array containing field names to add and 2) the subtype value field.
 	 * @see getMainFields()
-	 * @todo Define visibility
 	 */
 	public function getFieldsToAdd($table, $row, $typeNum) {
 		// Init:
@@ -1975,7 +1876,6 @@ class FormEngine {
 	 * @param string $table The table name, if we want to consider it's palettes when positioning the new elements
 	 * @return array Return the modified $fields array.
 	 * @see getMainFields(),getFieldsToAdd()
-	 * @todo Define visibility
 	 */
 	public function mergeFieldsWithAddedFields($fields, $fieldsToAdd, $table = '') {
 		if (count($fieldsToAdd[0])) {
@@ -2022,7 +1922,6 @@ class FormEngine {
 	 * @param string $field Optionally you can specify the field name as well. In that case the TSconfig for the field is returned.
 	 * @return mixed The TSconfig values (probably in an array)
 	 * @see BackendUtility::getTCEFORM_TSconfig()
-	 * @todo Define visibility
 	 */
 	public function setTSconfig($table, $row, $field = '') {
 		$mainKey = $table . ':' . $row['uid'];
@@ -2045,7 +1944,6 @@ class FormEngine {
 	 * @param array $fieldConfig $GLOBALS['TCA'] field configuration
 	 * @param array $TSconfig TSconfig
 	 * @return array Changed TCA field configuration
-	 * @todo Define visibility
 	 */
 	public function overrideFieldConf($fieldConfig, $TSconfig) {
 		if (is_array($TSconfig)) {
@@ -2076,7 +1974,6 @@ class FormEngine {
 	 * @param string $field Specify the field name.
 	 * @return array|NULL
 	 * @see getSpecConfFromString(), BackendUtility::getTCAtypes()
-	 * @todo Define visibility
 	 * @deprecated since 6.3 - will be removed two versions later; unused in Core
 	 */
 	public function getSpecConfForField($table, $row, $field) {
@@ -2102,7 +1999,6 @@ class FormEngine {
 	 * @param string $defaultExtras The ['defaultExtras'] value from field configuration
 	 * @return array An array with the special options in.
 	 * @see getSpecConfForField(), BackendUtility::getSpecConfParts()
-	 * @todo Define visibility
 	 */
 	public function getSpecConfFromString($extraString, $defaultExtras) {
 		return BackendUtility::getSpecConfParts($extraString, $defaultExtras);
@@ -2160,7 +2056,6 @@ class FormEngine {
 	 * @param string $table Table name of the record being edited
 	 * @param array $rec Record array of the record being edited
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function registerDefaultLanguageData($table, $rec) {
 		// Add default language:
@@ -2204,7 +2099,6 @@ class FormEngine {
 	 * @param string $field Field name represented by $item
 	 * @param array $fieldConf Content of $PA['fieldConf']
 	 * @return string Unprocessed field value merged with default language data if needed
-	 * @todo Define visibility
 	 */
 	public function getLanguageOverlayRawValue($table, $row, $field, $fieldConf) {
 		$value = $row[$field];
@@ -2230,7 +2124,6 @@ class FormEngine {
 	 * @param string $item HTML of the form field. This is what we add the content to.
 	 * @return string Item string returned again, possibly with the original value added to.
 	 * @see getSingleField(), registerDefaultLanguageData()
-	 * @todo Define visibility
 	 */
 	public function renderDefaultLanguageContent($table, $field, $row, $item) {
 		if (is_array($this->defaultLanguageData[$table . ':' . $row['uid']])) {
@@ -2269,7 +2162,6 @@ class FormEngine {
 	 * @param string  $item HTML of the form field. This is what we add the content to.
 	 * @return string Item string returned again, possibly with the original value added to.
 	 * @see getSingleField(), registerDefaultLanguageData()
-	 * @todo Define visibility
 	 */
 	public function renderDefaultLanguageDiff($table, $field, $row, $item) {
 		if (is_array($this->defaultLanguageData_diff[$table . ':' . $row['uid']])) {
@@ -2302,7 +2194,6 @@ class FormEngine {
 	 * @param string $vDEFkey HTML of the form field. This is what we add the content to.
 	 * @return string Item string returned again, possibly with the original value added to.
 	 * @see getSingleField(), registerDefaultLanguageData()
-	 * @todo Define visibility
 	 */
 	public function renderVDEFDiff($vArray, $vDEFkey) {
 		$item = NULL;
@@ -2340,7 +2231,6 @@ class FormEngine {
 	 * @param array $config (optional) The TCA field config
 	 * @return string The form fields for the selection.
 	 * @throws \UnexpectedValueException
-	 * @todo Define visibility
 	 */
 	public function dbFileIcons($fName, $mode, $allowed, $itemArray, $selector = '', $params = array(), $onFocus = '', $table = '', $field = '', $uid = '', $config = array()) {
 		$disabled = '';
@@ -2572,7 +2462,6 @@ class FormEngine {
 	 * @param string $allowed Allowed elements, Eg "pages,tt_content", "gif,jpg,jpeg,png
 	 * @param string $mode Mode of relations: "db" or "file
 	 * @return array Array of elements in values (keys are insignificant), if none found, empty array.
-	 * @todo Define visibility
 	 */
 	public function getClipboardElements($allowed, $mode) {
 		$output = array();
@@ -2626,7 +2515,6 @@ class FormEngine {
 	 * @param string $table Table name (eg. "pages" or "tt_content") OR the absolute path to the file
 	 * @param integer $uid The uid of the record OR if file, just blank value.
 	 * @return string HTML
-	 * @todo Define visibility
 	 */
 	public function getClickMenu($str, $table, $uid = 0) {
 		if ($this->enableClickMenu) {
@@ -2649,7 +2537,6 @@ class FormEngine {
 	 * @param array $specConf Special configuration if available.
 	 * @param boolean $RTE Whether the RTE could have been loaded.
 	 * @return string The new item value.
-	 * @todo Define visibility
 	 */
 	public function renderWizards($itemKinds, $wizConf, $table, $row, $field, &$PA, $itemName, $specConf, $RTE = FALSE) {
 		// Init:
@@ -2935,7 +2822,6 @@ class FormEngine {
 	 *
 	 * @param string $icon Icon reference
 	 * @return array Array with two values; the icon file reference (relative to PATH_typo3 minus backPath), the icon file information array (getimagesize())
-	 * @todo Define visibility
 	 */
 	public function getIcon($icon) {
 		$selIconInfo = FALSE;
@@ -2995,7 +2881,6 @@ class FormEngine {
 	 *
 	 * @param string $iconString Icon string for option item
 	 * @return string Style attribute content, if any
-	 * @todo Define visibility
 	 */
 	public function optionTagStyle($iconString) {
 		if (!$iconString) {
@@ -3025,7 +2910,6 @@ class FormEngine {
 	 *
 	 * @param string $iconString Icon string for option item
 	 * @return string Style attribute content, if any
-	 * @todo Define visibility
 	 */
 	public function optgroupTagStyle($iconString) {
 		if (!$iconString) {
@@ -3051,7 +2935,6 @@ class FormEngine {
 	 *
 	 * @param array $itemFormElValue Values in an array
 	 * @return array Input string exploded with comma and for each value only the label part is set in the array. Keys are numeric
-	 * @todo Define visibility
 	 */
 	public function extractValuesOnlyFromValueLabelList($itemFormElValue) {
 		// Get values of selected items:
@@ -3073,7 +2956,6 @@ class FormEngine {
 	 * @param integer $palette The record array
 	 * @param mixed $retFunc Not used
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function wrapOpenPalette($header, $table, $row, $palette, $retFunc) {
 		$id = 'TCEFORMS_' . $table . '_' . $palette . '_' . $row['uid'];
@@ -3090,7 +2972,6 @@ class FormEngine {
 	 * @param string $palette The record array
 	 * @param boolean $collapsed TRUE if collapsed
 	 * @return boolean Is collapsed
-	 * @todo Define visibility
 	 */
 	public function wrapPaletteField($code, $table, $row, $palette, $collapsed) {
 		$display = $collapsed ? 'none' : 'block';
@@ -3104,7 +2985,6 @@ class FormEngine {
 	 *
 	 * @param string $itemName Form element name
 	 * @return string Form element reference (JS)
-	 * @todo Define visibility
 	 */
 	public function elName($itemName) {
 		return 'document.' . $this->formName . '[\'' . $itemName . '\']';
@@ -3114,7 +2994,6 @@ class FormEngine {
 	 * Returns the "returnUrl" of the form. Can be set externally or will be taken from "GeneralUtility::linkThisScript()"
 	 *
 	 * @return string Return URL of current script
-	 * @todo Define visibility
 	 */
 	public function thisReturnUrl() {
 		return $this->returnUrl ? $this->returnUrl : GeneralUtility::linkThisScript();
@@ -3128,7 +3007,6 @@ class FormEngine {
 	 * @param string $field Field name
 	 * @param array $row The row
 	 * @return string The hidden-field <input> tag.
-	 * @todo Define visibility
 	 */
 	public function getSingleHiddenField($table, $field, $row) {
 		$item = '';
@@ -3147,7 +3025,6 @@ class FormEngine {
 	 * @param integer $size The abstract size value (1-48)
 	 * @param boolean $textarea If this is for a text area.
 	 * @return string Either a "style" attribute string or "cols"/"size" attribute string.
-	 * @todo Define visibility
 	 */
 	public function formWidth($size = 48, $textarea = FALSE) {
 		$fieldWidthAndStyle = $this->formWidthAsArray($size, $textarea);
@@ -3239,7 +3116,6 @@ class FormEngine {
 	 * @param string $type Field type (eg. "check", "radio", "select")
 	 * @param string $additionalClass Additional class(es) to be added
 	 * @return string CSS attributes
-	 * @todo Define visibility
 	 */
 	public function insertDefStyle($type, $additionalClass = '') {
 		$cssClasses = trim('t3-formengine-field-' . $type . ' ' . $additionalClass);
@@ -3253,7 +3129,6 @@ class FormEngine {
 	 * @param string $idString ID string for the tab menu
 	 * @param integer $dividersToTabsBehaviour If set to '1' empty tabs will be removed, If set to '2' empty tabs will be disabled
 	 * @return string HTML for the menu
-	 * @todo Define visibility
 	 */
 	public function getDynTabMenu($parts, $idString, $dividersToTabsBehaviour = 1) {
 		$docTemplate = $this->getDocumentTemplate();
@@ -3283,7 +3158,6 @@ class FormEngine {
 	 *
 	 * @param array $fieldValue The "columns" array for the field (from TCA)
 	 * @return array An array of arrays with three elements; label, value, icon
-	 * @todo Define visibility
 	 */
 	public function initItemArray($fieldValue) {
 		$items = array();
@@ -3301,7 +3175,6 @@ class FormEngine {
 	 * @param array $items The existing item array
 	 * @param array $iArray An array of items to add. NOTICE: The keys are mapped to values, and the values and mapped to be labels. No possibility of adding an icon.
 	 * @return array The updated $item array
-	 * @todo Define visibility
 	 */
 	public function addItems($items, $iArray) {
 		if (is_array($iArray)) {
@@ -3322,7 +3195,6 @@ class FormEngine {
 	 * @param array $row Record row
 	 * @param string $field Field name
 	 * @return array The modified $items array
-	 * @todo Define visibility
 	 */
 	public function procItems($items, $iArray, $config, $table, $row, $field) {
 		$params = array();
@@ -3371,7 +3243,6 @@ class FormEngine {
 	 * @param array $TSconfig TSconfig for the table/row
 	 * @param string $field The fieldname
 	 * @return array The $items array modified.
-	 * @todo Define visibility
 	 */
 	public function addSelectOptionsToItemArray($items, $fieldValue, $TSconfig, $field) {
 		// Values from foreign tables:
@@ -3589,7 +3460,6 @@ class FormEngine {
 	 * @return string The rawurlencoded 2-part string to transfer to interface
 	 * @access private
 	 * @see addSelectOptionsToItemArray()
-	 * @todo Define visibility
 	 */
 	public function addSelectOptionsToItemArray_makeModuleData($value) {
 		$label = '';
@@ -3613,7 +3483,6 @@ class FormEngine {
 	 * @param boolean $pFFlag If set, then we are fetching the 'neg_' foreign tables.
 	 * @return array The $items array modified.
 	 * @see addSelectOptionsToItemArray(), BackendUtility::exec_foreign_table_where_query()
-	 * @todo Define visibility
 	 */
 	public function foreignTable($items, $fieldValue, $TSconfig, $field, $pFFlag = FALSE) {
 		// Init:
@@ -3678,7 +3547,6 @@ class FormEngine {
 	 * Backend
 	 *
 	 * @return 	void
-	 * @todo Define visibility
 	 */
 	public function setNewBEDesign() {
 		$template = GeneralUtility::getUrl(PATH_typo3 . $this->templateFile);
@@ -3698,7 +3566,6 @@ class FormEngine {
 	 * @param array $inArr Array with key/value pairs to insert in the template.
 	 * @param string $altTemplate Alternative template to use instead of the default.
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function intoTemplate($inArr, $altTemplate = '') {
 		// Put into template_
@@ -3722,7 +3589,6 @@ class FormEngine {
 	 * @param array $PA An array with additional configuration options.
 	 * @return array Marker array for template output
 	 * @see function intoTemplate()
-	 * @todo Define visibility
 	 */
 	public function addUserTemplateMarkers($marker, $table, $field, $row, &$PA) {
 		return $marker;
@@ -3736,7 +3602,6 @@ class FormEngine {
 	 * @param array $rec The record
 	 * @param string $table The table name
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function wrapTotal($c, $rec, $table) {
 		$parts = $this->replaceTableWrap(explode('|', $this->totalWrap, 2), $rec, $table);
@@ -3762,7 +3627,6 @@ class FormEngine {
 	 * @param array $rec The record
 	 * @param string $table The table name
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function replaceTableWrap($arr, $rec, $table) {
 		// Make "new"-label
@@ -3843,7 +3707,6 @@ class FormEngine {
 	 * @param array $out_array The array with form elements stored in (passed by reference and changed!)
 	 * @param integer $out_pointer The pointer to the entry in the $out_array  (passed by reference and incremented!)
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function wrapBorder(&$out_array, &$out_pointer) {
 		if ($this->sectionWrap && $out_array[$out_pointer]) {
@@ -3892,7 +3755,6 @@ class FormEngine {
 	 * Currently not implemented and returns only blank value.
 	 *
 	 * @return string Empty string
-	 * @todo Define visibility
 	 */
 	public function getDivider() {
 		return '';
@@ -3903,7 +3765,6 @@ class FormEngine {
 	 *
 	 * @param array $palArr The palette array to print
 	 * @return string HTML output
-	 * @todo Define visibility
 	 */
 	public function printPalette($palArr) {
 		$fieldAttributes = ' class="t3-form-palette-field"';
@@ -4035,7 +3896,6 @@ class FormEngine {
 	 * JavaScript code added BEFORE the form is drawn:
 	 *
 	 * @return string A <script></script> section with JavaScript.
-	 * @todo Define visibility
 	 */
 	public function JStop() {
 		$out = '';
@@ -4087,7 +3947,6 @@ class FormEngine {
 	 * @param string $formname The identification of the form on the page.
 	 * @param boolean $update Just extend/update existing settings, e.g. for AJAX call
 	 * @return string A section with JavaScript - if $update is FALSE, embedded in <script></script>
-	 * @todo Define visibility
 	 */
 	public function JSbottom($formname = 'forms[0]', $update = FALSE) {
 		$jsFile = array();
@@ -4328,7 +4187,6 @@ class FormEngine {
 	 * so the JS module can access these values
 	 *
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function printNeededJSFunctions() {
 		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
@@ -4350,7 +4208,6 @@ class FormEngine {
 	 * Returns necessary JavaScript for the top
 	 *
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function printNeededJSFunctions_top() {
 		return $this->JStop($this->formName);
@@ -4388,7 +4245,6 @@ class FormEngine {
 	 * @param string $table Database Tablename
 	 * @param integer $pid PID value (positive / negative)
 	 * @return array|NULL "default" row.
-	 * @todo Define visibility
 	 * @deprecated since 6.3 - will be removed two versions later; not used anymore in Core
 	 */
 	public function getDefaultRecord($table, $pid = 0) {
@@ -4438,7 +4294,6 @@ class FormEngine {
 	 * @param array $rec Record array
 	 * @return string The record path.
 	 * @see BackendUtility::getRecordPath()
-	 * @todo Define visibility
 	 */
 	public function getRecordPath($table, $rec) {
 		BackendUtility::fixVersioningPid($table, $rec);
@@ -4454,7 +4309,6 @@ class FormEngine {
 	 * Returns cached string, so you can call this function as much as you like without performance loss.
 	 *
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function readPerms() {
 		if (!$this->perms_clause_set) {
@@ -4469,7 +4323,6 @@ class FormEngine {
 	 *
 	 * @param string $str Language label reference, eg. 'LLL:EXT:lang/locallang_core.xlf:labels.blablabla'
 	 * @return string The value of the label, fetched for the current backend language.
-	 * @todo Define visibility
 	 */
 	public function sL($str) {
 		return $this->getLanguageService()->sL($str);
@@ -4483,7 +4336,6 @@ class FormEngine {
 	 *
 	 * @param string $str The label key
 	 * @return string The value of the label, fetched for the current backend language.
-	 * @todo Define visibility
 	 */
 	public function getLL($str) {
 		$content = '';
@@ -4504,7 +4356,6 @@ class FormEngine {
 	 * @param string $table The table name
 	 * @param integer $palette The palette pointer/number
 	 * @return boolean
-	 * @todo Define visibility
 	 */
 	public function isPalettesCollapsed($table, $palette) {
 		if (is_array($GLOBALS['TCA'][$table]['palettes'][$palette]) && $GLOBALS['TCA'][$table]['palettes'][$palette]['isHiddenPalette']) {
@@ -4528,7 +4379,6 @@ class FormEngine {
 	 * @param string $pid PID value
 	 * @return array Array of two integers; first is the real PID of a record, second is the PID value for TSconfig.
 	 * @see BackendUtility::getTSCpid()
-	 * @todo Define visibility
 	 */
 	public function getTSCpid($table, $uid, $pid) {
 		$key = $table . ':' . $uid . ':' . $pid;
@@ -4543,7 +4393,6 @@ class FormEngine {
 	 *
 	 * @param string $table Table for which to check
 	 * @return boolean
-	 * @todo Define visibility
 	 */
 	public function doLoadTableDescr($table) {
 		return $GLOBALS['TCA'][$table]['interface']['always_description'];
@@ -4555,7 +4404,6 @@ class FormEngine {
 	 * @param boolean $onlyIsoCoded If set, only languages which are paired with a static_info_table / static_language record will be returned.
 	 * @param boolean $setDefault If set, an array entry for a default language is set.
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function getAvailableLanguages($onlyIsoCoded = TRUE, $setDefault = TRUE) {
 		$isL = ExtensionManagementUtility::isLoaded('static_info_tables');
@@ -4594,7 +4442,6 @@ class FormEngine {
 	 * @param array $row Record
 	 * @param string $sys_language_uid Sys language uid OR ISO language code prefixed with "v", eg. "vDA
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function getLanguageIcon($table, $row, $sys_language_uid) {
 		$mainKey = $table . ':' . $row['uid'];
@@ -4648,7 +4495,6 @@ class FormEngine {
 	 * @param array $config Configuration for field.
 	 * @param string $field Name of field.
 	 * @return string HTML formatted output
-	 * @todo Define visibility
 	 */
 	public function previewFieldValue($value, $config, $field = '') {
 		if ($config['config']['type'] === 'group' && ($config['config']['internal_type'] === 'file' || $config['config']['internal_type'] === 'file_reference')) {
@@ -4687,7 +4533,6 @@ class FormEngine {
 	 * Generates and return information about which languages the current user should see in preview, configured by options.additionalPreviewLanguages
 	 *
 	 * @return array Array of additional languages to preview
-	 * @todo Define visibility
 	 */
 	public function getAdditionalPreviewLanguages() {
 		if (!isset($this->cachedAdditionalPreviewLanguages)) {
@@ -4718,7 +4563,6 @@ class FormEngine {
 	 * @param string $type Type of the level, e.g. "tab" or "inline
 	 * @param string $ident Identifier of the level
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function pushToDynNestedStack($type, $ident) {
 		$this->dynNestedStack[] = array($type, $ident);
@@ -4732,7 +4576,6 @@ class FormEngine {
 	 * @param string $type Type of the level, e.g. "tab" or "inline
 	 * @param string $ident Identifier of the level
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function popFromDynNestedStack($type = NULL, $ident = NULL) {
 		if ($type != NULL && $ident != NULL) {
@@ -4752,7 +4595,6 @@ class FormEngine {
 	 * @param boolean $json Return a JSON string instead of an array - default: FALSE
 	 * @param boolean $skipFirst Skip the first element in the dynNestedStack - default: FALSE
 	 * @return mixed Returns an associative array by default. If $json is TRUE, it will be returned as JSON string.
-	 * @todo Define visibility
 	 */
 	public function getDynNestedStack($json = FALSE, $skipFirst = FALSE) {
 		$result = $this->dynNestedStack;

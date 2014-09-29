@@ -35,74 +35,74 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	// External, static: Flags of various kinds:
 	// If TRUE, users/groups are shown in the page info box.
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $pI_showUser = 0;
 
 	// The number of successive records to edit when showing content elements.
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $nextThree = 3;
 
 	// If TRUE, disables the edit-column icon for tt_content elements
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $pages_noEditColumns = 0;
 
 	// If TRUE, shows big buttons for editing page properties, moving, creating elements etc. in the columns view.
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $option_showBigButtons = 1;
 
 	// If TRUE, new-wizards are linked to rather than the regular new-element list.
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $option_newWizard = 1;
 
 	// If set to "1", will link a big button to content element wizard.
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $ext_function = 0;
 
 	// If TRUE, elements will have edit icons (probably this is whether the user has permission to edit the page content). Set externally.
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $doEdit = 1;
 
 	// Age prefixes for displaying times. May be set externally to localized values.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $agePrefixes = ' min| hrs| days| yrs| min| hour| day| year';
 
 	// Array of tables to be listed by the Web > Page module in addition to the default tables.
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $externalTables = array();
 
 	// "Pseudo" Description -table name
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $descrTable;
 
 	// If set TRUE, the language mode of tt_content elements will be rendered with hard binding between
 	// default language content elements and their translations!
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $defLangBinding = FALSE;
 
 	// External, static: Configuration of tt_content element display:
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $tt_contentConfig = array(
 		'showInfo' => 1,
@@ -129,12 +129,12 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 
 	// Contains icon/title of pages which are listed in the tables menu (see getTableMenu() function )
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $activeTables = array();
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $tt_contentData = array(
 		'nextThree' => array(),
@@ -144,13 +144,13 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 
 	// Used to store labels for CTypes for tt_content elements
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $CType_labels = array();
 
 	// Used to store labels for the various fields in tt_content elements
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $itemLabels = array();
 
@@ -189,7 +189,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @param string $table Table name
 	 * @param integer $id Current page id
 	 * @return string HTML for listing.
-	 * @todo Define visibility
 	 */
 	public function getTable($table, $id) {
 		if (isset($this->externalTables[$table])) {
@@ -215,7 +214,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @param integer $id Page id
 	 * @param string $table Name of the table
 	 * @return string HTML for the listing
-	 * @todo Define visibility
 	 */
 	public function getExternalTables($id, $table) {
 		$type = $this->getPageLayoutController()->MOD_SETTINGS[$table];
@@ -239,7 +237,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 *
 	 * @param integer $id Page id
 	 * @return string HTML for the listing
-	 * @todo Define visibility
 	 */
 	public function getTable_pages($id) {
 		// Initializing:
@@ -393,7 +390,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 *
 	 * @param integer $id Page id
 	 * @return string HTML for the listing
-	 * @todo Define visibility
 	 */
 	public function getTable_tt_content($id) {
 		$this->initializeLanguages();
@@ -934,7 +930,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @param boolean $icon If TRUE, icon is shown
 	 * @param string $addWhere Additional WHERE-clauses.
 	 * @return string HTML table
-	 * @todo Define visibility
 	 */
 	public function makeOrdinaryList($table, $id, $fList, $icon = FALSE, $addWhere = '') {
 		// Initialize
@@ -1026,7 +1021,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @param array $out Array to which the data is added
 	 * @return array $out array returned after processing.
 	 * @see makeOrdinaryList()
-	 * @todo Define visibility
 	 */
 	public function dataFields($fieldArr, $table, $row, $out = array()) {
 		// Check table validity
@@ -1086,7 +1080,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @param array $out Array to which the headers are added.
 	 * @return array $out returned after addition of the header fields.
 	 * @see makeOrdinaryList()
-	 * @todo Define visibility
 	 */
 	public function headerFields($fieldArr, $table, $out = array()) {
 		foreach ($fieldArr as $fieldName) {
@@ -1137,7 +1130,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @param string $treeIcons Prefixed icon code.
 	 * @param integer $depth Depth (decreasing)
 	 * @return array $theRows, but with added rows.
-	 * @todo Define visibility
 	 */
 	public function pages_getTree($theRows, $pid, $qWhere, $treeIcons, $depth) {
 		$depth--;
@@ -1179,7 +1171,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @param array $row Record array
 	 * @param array $fieldArr Field list
 	 * @return string HTML for the item
-	 * @todo Define visibility
 	 */
 	public function pages_drawItem($row, $fieldArr) {
 		// Initialization
@@ -1245,7 +1236,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @param string $newParams New element params (Syntax: &edit[...] for alt_doc.php) OBSOLETE
 	 * @param array|NULL $pasteParams Paste element params (i.e. array(colPos => 1, sys_language_uid => 2))
 	 * @return string HTML table
-	 * @todo Define visibility
 	 */
 	public function tt_content_drawColHeader($colName, $editParams, $newParams, array $pasteParams = NULL) {
 		$iconsArr = array();
@@ -1315,7 +1305,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @param boolean $langMode If set, we are in language mode and flags will be shown for languages
 	 * @param boolean $dragDropEnabled If set the move button must be hidden
 	 * @return string HTML table with the record header.
-	 * @todo Define visibility
 	 */
 	public function tt_content_drawHeader($row, $space = 0, $disableMoveAndNewButtons = FALSE, $langMode = FALSE, $dragDropEnabled = FALSE) {
 		$out = '';
@@ -1433,7 +1422,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @param boolean $isRTE Set if the RTE link can be created.
 	 * @return string HTML
 	 * @throws \UnexpectedValueException
-	 * @todo Define visibility
 	 */
 	public function tt_content_drawItem($row, $isRTE = FALSE) {
 		$out = '';
@@ -1635,7 +1623,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @param integer $id Page pid
 	 * @param integer $lP Sys language UID
 	 * @return array Modified $defLanguageCount
-	 * @todo Define visibility
 	 */
 	public function getNonTranslatedTTcontentUids($defLanguageCount, $id, $lP) {
 		if ($lP && count($defLanguageCount)) {
@@ -1662,7 +1649,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @param array $defLanguageCount Numeric array with uids of tt_content elements in the default language
 	 * @param integer $lP Sys language UID
 	 * @return string "Copy languages" button, if available.
-	 * @todo Define visibility
 	 */
 	public function newLanguageButton($defLanguageCount, $lP) {
 		if (!$this->doEdit || count($defLanguageCount) === 0 || !$lP) {
@@ -1690,7 +1676,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @param integer $sys_language Preset: Sys langauge value
 	 * @return string String for onclick attribute.
 	 * @see getTable_tt_content()
-	 * @todo Define visibility
 	 */
 	public function newContentElementOnClick($id, $colPos, $sys_language) {
 		if ($this->option_newWizard) {
@@ -1712,7 +1697,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @param array $row The row.
 	 * @return string If the whole thing was editable ($this->doEdit) $str is return with link around. Otherwise just $str.
 	 * @see getTable_tt_content()
-	 * @todo Define visibility
 	 */
 	public function linkEditContent($str, $row) {
 		$addButton = '';
@@ -1731,7 +1715,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 *
 	 * @param array $row The row of tt_content element
 	 * @return string Button to click if you want to edit in RTE wizard.
-	 * @todo Define visibility
 	 */
 	public function linkRTEbutton($row) {
 		$params = array();
@@ -1755,7 +1738,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @param integer $id Page id for which to create a new language (pages_language_overlay record)
 	 * @return string <select> HTML element (if there were items for the box anyways...)
 	 * @see getTable_tt_content()
-	 * @todo Define visibility
 	 */
 	public function languageSelector($id) {
 		if ($this->getBackendUser()->check('tables_modify', 'pages_language_overlay')) {
@@ -1822,7 +1804,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @param boolean|\mysqli_result|object $result MySQLi result object / DBAL object
 	 * @param string $table Table name defaulting to tt_content
 	 * @return array The selected rows returned in this array.
-	 * @todo Define visibility
 	 */
 	public function getResult($result, $table = 'tt_content') {
 		$output = array();
@@ -1913,7 +1894,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @param string $table Table name
 	 * @param integer $pid Page id
 	 * @return integer Number of records.
-	 * @todo Define visibility
 	 */
 	public function numberOfRecords($table, $pid) {
 		$count = 0;
@@ -1929,7 +1909,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 *
 	 * @param string $input Input string
 	 * @return string Output string
-	 * @todo Define visibility
 	 */
 	public function renderText($input) {
 		$input = strip_tags($input);
@@ -1943,7 +1922,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @param string $table Table name
 	 * @param array $row Record array
 	 * @return string HTML for the icon
-	 * @todo Define visibility
 	 */
 	public function getIcon($table, $row) {
 		// Initialization
@@ -1966,7 +1944,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @param array $row Record from which to take values for processing.
 	 * @param array $info Array to which the processed values are added.
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function getProcessedValue($table, $fieldList, array $row, array &$info) {
 		// Splitting values from $fieldList
@@ -1986,7 +1963,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @param string $table Tablename of table to test
 	 * @param array $row Record row.
 	 * @return boolean Returns TRUE, if disabled.
-	 * @todo Define visibility
 	 */
 	public function isDisabled($table, $row) {
 		$enableCols = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns'];
@@ -2025,7 +2001,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 *
 	 * @param string $label Label key from LOCAL_LANG
 	 * @return string IMG tag for icon.
-	 * @todo Define visibility
 	 */
 	public function noEditIcon($label = 'noEditItems') {
 		return IconUtility::getSpriteIcon(
@@ -2072,7 +2047,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @param array $row Record row (needed, if there are RTE dependencies based on other fields in the record)
 	 * @param string $field Field name
 	 * @return boolean Returns TRUE if the rich text editor would be enabled/available for the field name specified.
-	 * @todo Define visibility
 	 */
 	public function isRTEforField($table, $row, $field) {
 		$specConf = $this->getSpecConfForField($table, $row, $field);
@@ -2108,7 +2082,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @return array Spec. conf (if available)
 	 * @access private
 	 * @see isRTEforField()
-	 * @todo Define visibility
 	 */
 	public function getSpecConfForField($table, $row, $field) {
 		// Get types-configuration for the record:
@@ -2137,7 +2110,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 *
 	 * @param integer $id Page id from which we are listing records (the function will look up if there are records on the page)
 	 * @return string HTML output.
-	 * @todo Define visibility
 	 */
 	public function getTableMenu($id) {
 		// Initialize:

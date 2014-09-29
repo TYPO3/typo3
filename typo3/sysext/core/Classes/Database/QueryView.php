@@ -26,24 +26,12 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  */
 class QueryView {
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $storeList = 'search_query_smallparts,search_result_labels,labels_noprefix,show_deleted,queryConfig,queryTable,queryFields,queryLimit,queryOrder,queryOrderDesc,queryOrder2,queryOrder2Desc,queryGroup,search_query_makeQuery';
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $downloadScript = 'index.php';
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $formW = 48;
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $noDownloadB = 0;
 
 	protected $formName = '';
@@ -59,7 +47,6 @@ class QueryView {
 	 * [Describe function...]
 	 *
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function form() {
 		$out = '
@@ -73,7 +60,6 @@ class QueryView {
 	 * [Describe function...]
 	 *
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function makeStoreControl() {
 		// Load/Save
@@ -108,7 +94,6 @@ class QueryView {
 	 * [Describe function...]
 	 *
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function initStoreArray() {
 		$storeArray = array(
@@ -127,7 +112,6 @@ class QueryView {
 	 * @param array $storeQueryConfigs
 	 * @param array $storeArray
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function cleanStoreQueryConfigs($storeQueryConfigs, $storeArray) {
 		if (is_array($storeQueryConfigs)) {
@@ -146,7 +130,6 @@ class QueryView {
 	 * @param array $storeQueryConfigs
 	 * @param integer $index
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function addToStoreQueryConfigs($storeQueryConfigs, $index) {
 		$keyArr = explode(',', $this->storeList);
@@ -162,7 +145,6 @@ class QueryView {
 	 *
 	 * @param integer $uid
 	 * @return integer
-	 * @todo Define visibility
 	 */
 	public function saveQueryInAction($uid) {
 		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('sys_action')) {
@@ -207,7 +189,6 @@ class QueryView {
 	 * @param integer $storeIndex
 	 * @param array $writeArray
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function loadStoreQueryConfigs($storeQueryConfigs, $storeIndex, $writeArray) {
 		if ($storeQueryConfigs[$storeIndex]) {
@@ -223,7 +204,6 @@ class QueryView {
 	 * [Describe function...]
 	 *
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function procesStoreControl() {
 		$storeArray = $this->initStoreArray();
@@ -300,7 +280,6 @@ class QueryView {
 	 * [Describe function...]
 	 *
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function queryMaker() {
 		$output = '';
@@ -364,7 +343,6 @@ class QueryView {
 	 * @param pointer $res
 	 * @param string $table
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function getQueryResultCode($mQ, $res, $table) {
 		$out = '';
@@ -447,7 +425,6 @@ class QueryView {
 	 * @param array $conf
 	 * @param string $table
 	 * @return string A single line of CSV
-	 * @todo Define visibility
 	 */
 	public function csvValues($row, $delim = ',', $quote = '"', $conf = array(), $table = '') {
 		$valueArray = $row;
@@ -464,7 +441,6 @@ class QueryView {
 	 *
 	 * @param string $str
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function tableWrap($str) {
 		return '<table border="0" cellpadding="10" cellspacing="0" class="bgColor4"><tr><td nowrap><pre>' . $str . '</pre></td></tr></table>';
@@ -474,7 +450,6 @@ class QueryView {
 	 * [Describe function...]
 	 *
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function search() {
 		$SET = $GLOBALS['SOBE']->MOD_SETTINGS;
@@ -524,7 +499,6 @@ class QueryView {
 	 * @param array $conf
 	 * @param string $table
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function resultRowDisplay($row, $conf, $table) {
 		static $even = FALSE;
@@ -583,7 +557,6 @@ class QueryView {
 	 * @param array $conf Not used
 	 * @param string $splitString
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function getProcessedValueExtra($table, $fN, $fV, $conf, $splitString) {
 		// Analysing the fields in the table.
@@ -705,7 +678,6 @@ class QueryView {
 	 * @param integer $begin
 	 * @param string $perms_clause
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function getTreeList($id, $depth, $begin = 0, $perms_clause) {
 		$depth = (int)$depth;
@@ -743,7 +715,6 @@ class QueryView {
 	 * @param string $table
 	 * @param string $splitString
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function makeValueList($fN, $fV, $conf, $table, $splitString) {
 		$fieldSetup = $conf;
@@ -952,7 +923,6 @@ class QueryView {
 	 * @param array $conf Table TCA
 	 * @param string $table Table name
 	 * @return string HTML of table header
-	 * @todo Define visibility
 	 */
 	public function resultRowTitles($row, $conf, $table) {
 		$SET = $GLOBALS['SOBE']->MOD_SETTINGS;
@@ -985,7 +955,6 @@ class QueryView {
 	 * @param array $conf
 	 * @param mixed $table Not used
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function csvRowTitles($row, $conf, $table) {
 		$out = '';

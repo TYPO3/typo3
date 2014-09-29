@@ -22,14 +22,12 @@ namespace TYPO3\CMS\Lowlevel;
 class RteImagesCommand extends CleanerCommand {
 
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $checkRefIndex = TRUE;
 
 	/**
 	 * Constructor
-	 *
-	 * @todo Define visibility
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -62,7 +60,6 @@ Reports problems with RTE images';
 	 * change the value of a reference (we could copy the files) or remove reference
 	 *
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function main() {
 		global $TYPO3_DB;
@@ -140,7 +137,6 @@ Reports problems with RTE images';
 	 *
 	 * @param array $resultArray Result array from main() function
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main_autoFix($resultArray) {
 		$limitTo = $this->cli_args['--AUTOFIX'][0];
@@ -236,7 +232,6 @@ Reports problems with RTE images';
 	 * Returns file processing object, initialized only once.
 	 *
 	 * @return object File processor object
-	 * @todo Define visibility
 	 */
 	public function getFileProcObj() {
 		if (!is_object($this->fileProcObj)) {

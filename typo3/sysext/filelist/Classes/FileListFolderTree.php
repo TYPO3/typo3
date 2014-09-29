@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Filelist;
 class FileListFolderTree extends \TYPO3\CMS\Backend\Tree\View\FolderTreeView {
 
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $ext_IconMode;
 
@@ -34,7 +34,6 @@ class FileListFolderTree extends \TYPO3\CMS\Backend\Tree\View\FolderTreeView {
 	 * @param string $theFolderIcon Icon IMG code
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject the folder object
 	 * @return string folder icon
-	 * @todo Define visibility
 	 */
 	public function wrapIcon($theFolderIcon, \TYPO3\CMS\Core\Resource\Folder $folderObject) {
 		$theFolderIcon = parent::wrapIcon($theFolderIcon, $folderObject);
@@ -50,7 +49,6 @@ class FileListFolderTree extends \TYPO3\CMS\Backend\Tree\View\FolderTreeView {
 	 * @param integer $bank Bank pointer (which mount point number)
 	 * @return string
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function wrapTitle($title, \TYPO3\CMS\Core\Resource\Folder $folderObject, $bank = 0) {
 		$theFolderTitle = parent::wrapTitle($title, $folderObject, $bank);

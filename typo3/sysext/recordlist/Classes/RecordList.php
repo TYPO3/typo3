@@ -28,120 +28,67 @@ class RecordList {
 	// Page Id for which to make the listing
 	/**
 	 * @var integer
-	 * @todo Define visibility
 	 */
 	public $id;
 
 	// Pointer - for browsing list of records.
-	/**
-	 * @todo Define visibility
-	 */
 	public $pointer;
 
 	// Thumbnails or not
-	/**
-	 * @todo Define visibility
-	 */
 	public $imagemode;
 
 	// Which table to make extended listing for
-	/**
-	 * @todo Define visibility
-	 */
 	public $table;
 
 	// Search-fields
-	/**
-	 * @todo Define visibility
-	 */
 	public $search_field;
 
 	// Search-levels
-	/**
-	 * @todo Define visibility
-	 */
 	public $search_levels;
 
 	// Show-limit
-	/**
-	 * @todo Define visibility
-	 */
 	public $showLimit;
 
 	// Return URL
-	/**
-	 * @todo Define visibility
-	 */
 	public $returnUrl;
 
 	// Clear-cache flag - if set, clears page cache for current id.
-	/**
-	 * @todo Define visibility
-	 */
 	public $clear_cache;
 
 	// Command: Eg. "delete" or "setCB" (for TCEmain / clipboard operations)
-	/**
-	 * @todo Define visibility
-	 */
 	public $cmd;
 
 	// Table on which the cmd-action is performed.
-	/**
-	 * @todo Define visibility
-	 */
 	public $cmd_table;
 
 	// Internal, static:
 	// Page select perms clause
-	/**
-	 * @todo Define visibility
-	 */
 	public $perms_clause;
 
 	// Module TSconfig
-	/**
-	 * @todo Define visibility
-	 */
 	public $modTSconfig;
 
 	// Current ids page record
-	/**
-	 * @todo Define visibility
-	 */
 	public $pageinfo;
 
 	/**
 	 * Document template object
 	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 * @todo Define visibility
 	 */
 	public $doc;
 
 	// Module configuration
-	/**
-	 * @todo Define visibility
-	 */
 	public $MCONF = array();
 
 	// Menu configuration
-	/**
-	 * @todo Define visibility
-	 */
 	public $MOD_MENU = array();
 
 	// Module settings (session variable)
-	/**
-	 * @todo Define visibility
-	 */
 	public $MOD_SETTINGS = array();
 
 	// Internal, dynamic:
 	// Module output accumulation
-	/**
-	 * @todo Define visibility
-	 */
 	public $content;
 
 	/**
@@ -156,7 +103,6 @@ class RecordList {
 	 * Initializing the module
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function init() {
 		// Setting module configuration / page select clause
@@ -182,7 +128,6 @@ class RecordList {
 	 * Initialize function menu array
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function menuConfig() {
 		// MENU-ITEMS:
@@ -201,7 +146,6 @@ class RecordList {
 	 * Clears page cache for the current id, $this->id
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function clearCache() {
 		if ($this->clear_cache) {
@@ -216,7 +160,6 @@ class RecordList {
 	 * Main function, starting the rendering of the list.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		// Start document template object:
@@ -477,7 +420,6 @@ class RecordList {
 	 * Outputting the accumulated content to screen
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		echo $this->content;

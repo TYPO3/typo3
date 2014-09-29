@@ -30,19 +30,16 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 
 	/**
 	 * @var string
-	 * @todo define visibility
 	 */
 	public $perms_clause;
 
 	/**
 	 * @var string
-	 * @todo define visibility
 	 */
 	public $backPath;
 
 	/**
 	 * @var array
-	 * @todo define visibility
 	 */
 	public $fieldArray;
 

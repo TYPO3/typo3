@@ -74,7 +74,6 @@ class ElementInformationController {
 	 * (if type="db")
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $pageinfo;
 
@@ -360,7 +359,7 @@ class ElementInformationController {
 		return '<table class="t3-table">' . implode('', $tableRows) . '</table>';
 	}
 
-	/*
+	/**
 	 * Render references section (references from and references to current record)
 	 *
 	 * @return string

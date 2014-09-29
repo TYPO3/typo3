@@ -22,49 +22,45 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * Core functions for cleaning and analysing
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
 class CleanerCommand extends \TYPO3\CMS\Core\Controller\CommandLineController {
 
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $genTree_traverseDeleted = TRUE;
 
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $genTree_traverseVersions = TRUE;
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $label_infoString = 'The list of records is organized as [table]:[uid]:[field]:[flexpointer]:[softref_key]';
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $pagetreePlugins = array();
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $cleanerModules = array();
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $performanceStatistics = array();
 
+	/**
+	 * @var array
+	 */
 	protected $workspaceIndex = array();
 
 	/**
 	 * Constructor
-	 *
-	 * @todo Define visibility
 	 */
 	public function __construct() {
 		// Running parent class constructor
@@ -106,7 +102,6 @@ This will show you missing files in the TYPO3 system and only report back if err
 	 *
 	 * @param array $argv Command line arguments
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function cli_main($argv) {
 
@@ -165,7 +160,6 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 	 * Checks reference index
 	 *
 	 * @return boolean TRUE if reference index was OK (either OK, updated or ignored)
-	 * @todo Define visibility
 	 */
 	public function cli_referenceIndexCheck() {
 		// Reference index option:
@@ -201,7 +195,6 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 	/**
 	 * @param string $matchString
 	 * @return string If string, it's the reason for not executing. Returning FALSE means it should execute.
-	 * @todo Define visibility
 	 */
 	public function cli_noExecutionCheck($matchString) {
 		// Check for filter:
@@ -228,7 +221,6 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 	 * @param string $header Name of the test (eg. function name)
 	 * @param array $res Result array from an analyze function
 	 * @return void Outputs with echo - capture content with output buffer if needed.
-	 * @todo Define visibility
 	 */
 	public function cli_printInfo($header, $res) {
 		$detailLevel = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->cli_isArg('-v') ? $this->cli_argValue('-v') : 1, 0, 3);
@@ -291,7 +283,6 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 	 * @param boolean $echoLevel If >0, will echo information about the traversal process.
 	 * @param string $callBack Call back function (from this class or subclass)
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function genTree($rootID, $depth = 1000, $echoLevel = 0, $callBack = '') {
 		$pt = GeneralUtility::milliseconds();
@@ -368,7 +359,6 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 	 * @return void
 	 * @access private
 	 * @todo $versionSwapmode needs to be cleaned up, since page and branch version (0, 1) does not exist anymore
-	 * @todo Define visibility
 	 */
 	public function genTree_traverse($rootID, $depth, $echoLevel = 0, $callBack = '', $versionSwapmode = '', $rootIsVersion = 0, $accumulatedPath = '') {
 		// Register page:
@@ -558,7 +548,6 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 	 *
 	 * @param array $rec Input record from sys_refindex
 	 * @return string String identifying the main record of the reference
-	 * @todo Define visibility
 	 */
 	public function infoStr($rec) {
 		return $rec['tablename'] . ':' . $rec['recuid'] . ':' . $rec['field'] . ':' . $rec['flexpointer'] . ':' . $rec['softref_key'] . ($rec['deleted'] ? ' (DELETED)' : '');

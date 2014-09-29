@@ -29,7 +29,6 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 	 *
 	 * @return void
 	 * @see AbstractMenuContentObject::procesItemStates(), makeGifs()
-	 * @todo Define visibility
 	 */
 	public function generate() {
 		$splitCount = count($this->menuArr);
@@ -73,7 +72,6 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 	 * @return void
 	 * @access private
 	 * @see generate()
-	 * @todo Define visibility
 	 */
 	public function makeGifs($conf, $resKey) {
 		$isGD = $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'];
@@ -277,7 +275,6 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 	 * @return array Array with keys "H" and "W" which are in themselves arrays with the heights and widths of menu items inside. This can be used to find the max/min size of the menu items.
 	 * @access private
 	 * @see makeGifs()
-	 * @todo Define visibility
 	 */
 	public function findLargestDims($conf, $items, $Hobjs, $Wobjs, $minDim, $maxDim) {
 		$totalWH = array(
@@ -359,7 +356,6 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 	 * During the execution of this function many internal methods prefixed "extProc_" from this class is called and many of these are for now dummy functions. But they can be used for processing as they are used by the GMENU_LAYERS
 	 *
 	 * @return string The HTML for the menu (returns result through $this->extProc_finish(); )
-	 * @todo Define visibility
 	 */
 	public function writeMenu() {
 		if (is_array($this->menuArr) && is_array($this->result) && count($this->result) && is_array($this->result['NO'])) {
@@ -473,7 +469,6 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 	 * @return void
 	 * @access private
 	 * @see writeMenu()
-	 * @todo Define visibility
 	 */
 	public function extProc_init() {
 
@@ -486,7 +481,6 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 	 * @return void
 	 * @access private
 	 * @see writeMenu()
-	 * @todo Define visibility
 	 */
 	public function extProc_RO($key) {
 
@@ -499,7 +493,6 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 	 * @return void
 	 * @access private
 	 * @see writeMenu()
-	 * @todo Define visibility
 	 */
 	public function extProc_beforeLinking($key) {
 
@@ -514,7 +507,6 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 	 * @return void
 	 * @access private
 	 * @see writeMenu(), AbstractMenuContentObject::subMenu()
-	 * @todo Define visibility
 	 */
 	public function extProc_afterLinking($key) {
 		// Add part to the accumulated result + fetch submenus
@@ -533,7 +525,6 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 	 * @return string The modified version of $item, going back into $this->I['theItem']
 	 * @access private
 	 * @see writeMenu()
-	 * @todo Define visibility
 	 */
 	public function extProc_beforeAllWrap($item, $key) {
 		return $item;
@@ -545,7 +536,6 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 	 * @return string The total menu content should be returned by this function
 	 * @access private
 	 * @see writeMenu()
-	 * @todo Define visibility
 	 */
 	public function extProc_finish() {
 		// stdWrap:

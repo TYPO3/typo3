@@ -33,25 +33,25 @@ class ModuleLoader {
 
 	// After the init() function this array will contain the structure of available modules for the backend user.
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $modules = array();
 
 	// Array with paths pointing to the location of modules from extensions
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $absPathArray = array();
 
 	// This array will hold the elements that should go into the select-list of modules for groups...
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $modListGroup = array();
 
 	// This array will hold the elements that should go into the select-list of modules for users...
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $modListUser = array();
 
@@ -59,13 +59,12 @@ class ModuleLoader {
 	 * The backend user for use internally
 	 *
 	 * @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-	 * @todo Define visibility
 	 */
 	public $BE_USER;
 
 	// If set TRUE, workspace "permissions" will be observed so non-allowed modules will not be included in the array of modules.
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $observeWorkspaces = FALSE;
 
@@ -84,7 +83,6 @@ class ModuleLoader {
 	 * @param array $modulesArray Should be the global var $TBE_MODULES, $BE_USER can optionally be set to an alternative Backend user object than the global var $BE_USER (which is the currently logged in user)
 	 * @param object $BE_USER Optional backend user object to use. If not set, the global BE_USER object is used.
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function load($modulesArray, $BE_USER = '') {
 		// Setting the backend user for use internally
@@ -199,7 +197,6 @@ class ModuleLoader {
 	 *
 	 * @param string $name Module name
 	 * @return string If found, the relative path from PATH_site
-	 * @todo Define visibility
 	 */
 	public function checkExtensionModule($name) {
 		if (isset($this->absPathArray[$name])) {
@@ -217,7 +214,6 @@ class ModuleLoader {
 	 * @param string $name Module name
 	 * @param string $fullpath Absolute path to module
 	 * @return mixed See description of function
-	 * @todo Define visibility
 	 */
 	public function checkMod($name, $fullpath) {
 		if ($name == 'user_ws' && !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version')) {
@@ -394,7 +390,6 @@ class ModuleLoader {
 	 * @param string $name Module name
 	 * @param array $MCONF MCONF array (module configuration array) from the modules conf.php file (contains settings about what access level the module has)
 	 * @return boolean TRUE if access is granted for $this->BE_USER
-	 * @todo Define visibility
 	 */
 	public function checkModAccess($name, $MCONF) {
 		if ($MCONF['access']) {
@@ -429,7 +424,6 @@ class ModuleLoader {
 	 * @param string $name Module name
 	 * @param array $MCONF MCONF array (module configuration array) from the modules conf.php file (contains settings about workspace restrictions)
 	 * @return boolean TRUE if access is granted for $this->BE_USER
-	 * @todo Define visibility
 	 */
 	public function checkModWorkspace($name, $MCONF) {
 		if ($this->observeWorkspaces) {
@@ -454,7 +448,6 @@ class ModuleLoader {
 	 *
 	 * @param array $arr ModuleArray ($TBE_MODULES)
 	 * @return array Output structure with available modules
-	 * @todo Define visibility
 	 */
 	public function parseModulesArray($arr) {
 		$theMods = array();
@@ -485,7 +478,6 @@ class ModuleLoader {
 	 *
 	 * @param string $str String to clean up
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function cleanName($str) {
 		return preg_replace('/[^a-z0-9]/i', '', $str);
@@ -497,7 +489,6 @@ class ModuleLoader {
 	 * @param string $baseDir Base directory
 	 * @param string $destDir Destination directory
 	 * @return string The relative path of destination compared to base.
-	 * @todo Define visibility
 	 */
 	public function getRelativePath($baseDir, $destDir) {
 		// A special case , the dirs are equals

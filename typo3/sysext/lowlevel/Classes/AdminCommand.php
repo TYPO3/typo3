@@ -13,11 +13,7 @@ namespace TYPO3\CMS\Lowlevel;
  *
  * The TYPO3 project - inspiring people to share!
  */
-/**
- * Core functions for admin
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
+
 /**
  * Core functions for administration
  *
@@ -26,7 +22,7 @@ namespace TYPO3\CMS\Lowlevel;
 class AdminCommand extends \TYPO3\CMS\Core\Controller\CommandLineController {
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $adminModules = array(
 		'setBElock' => 'Set the Backend Lock',
@@ -36,8 +32,6 @@ class AdminCommand extends \TYPO3\CMS\Core\Controller\CommandLineController {
 
 	/**
 	 * Constructor
-	 *
-	 * @todo Define visibility
 	 */
 	public function __construct() {
 		// Running parent class constructor
@@ -65,7 +59,6 @@ class AdminCommand extends \TYPO3\CMS\Core\Controller\CommandLineController {
 	 *
 	 * @param array $argv Command line arguments
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function cli_main($argv) {
 		// Force user to admin state and set workspace to "Live":

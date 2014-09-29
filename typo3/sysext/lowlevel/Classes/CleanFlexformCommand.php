@@ -23,8 +23,6 @@ class CleanFlexformCommand extends CleanerCommand {
 
 	/**
 	 * Constructor
-	 *
-	 * @todo Define visibility
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -47,7 +45,6 @@ Cleaning XML for FlexForm fields.
 	 * VERY CPU and memory intensive since it will look up the whole page tree!
 	 *
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function main() {
 		global $TYPO3_DB;
@@ -78,7 +75,6 @@ Cleaning XML for FlexForm fields.
 	 * @param string $versionSwapmode Version swap mode on that level (see calling function
 	 * @param integer $rootIsVersion Is root version (see calling function
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main_parseTreeCallBack($tableName, $uid, $echoLevel, $versionSwapmode, $rootIsVersion) {
 		foreach ($GLOBALS['TCA'][$tableName]['columns'] as $colName => $config) {
@@ -114,7 +110,6 @@ Cleaning XML for FlexForm fields.
 	 *
 	 * @param array $resultArray Result array from main() function
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main_autoFix($resultArray) {
 		foreach ($resultArray['dirty'] as $fieldID) {

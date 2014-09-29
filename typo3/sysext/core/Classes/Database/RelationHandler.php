@@ -37,7 +37,6 @@ class RelationHandler {
 
 	/**
 	 * If set, values that are not ids in tables are normally discarded. By this options they will be preserved.
-	 * @todo Define visibility
 	 */
 	public $registerNonTableValues = 0;
 
@@ -46,7 +45,6 @@ class RelationHandler {
 	 * Should ONLY contain proper table names.
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $tableArray = array();
 
@@ -54,7 +52,6 @@ class RelationHandler {
 	 * Contains items in an numeric array (table/id for each). Tablenames here might be "_NO_TABLE"
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $itemArray = array();
 
@@ -62,13 +59,11 @@ class RelationHandler {
 	 * Array for NON-table elements
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $nonTableArray = array();
 
 	/**
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $additionalWhere = array();
 
@@ -76,13 +71,11 @@ class RelationHandler {
 	 * Deleted-column is added to additionalWhere... if this is set...
 	 *
 	 * @var boolean
-	 * @todo Define visibility
 	 */
 	public $checkIfDeleted = TRUE;
 
 	/**
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $dbPaths = array();
 
@@ -90,7 +83,6 @@ class RelationHandler {
 	 * Will contain the first table name in the $tablelist (for positive ids)
 	 *
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $firstTable = '';
 
@@ -98,7 +90,6 @@ class RelationHandler {
 	 * Will contain the second table name in the $tablelist (for negative ids)
 	 *
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $secondTable = '';
 
@@ -107,7 +98,6 @@ class RelationHandler {
 	 * is inserted as tablename - this means you display a foreign relation "from the opposite side"
 	 *
 	 * @var boolean
-	 * @todo Define visibility
 	 */
 	public $MM_is_foreign = FALSE;
 
@@ -115,7 +105,6 @@ class RelationHandler {
 	 * Field name at the "local" side of the MM relation
 	 *
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $MM_oppositeField = '';
 
@@ -123,7 +112,6 @@ class RelationHandler {
 	 * Only set if MM_is_foreign is set
 	 *
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $MM_oppositeTable = '';
 
@@ -131,14 +119,12 @@ class RelationHandler {
 	 * Only set if MM_is_foreign is set
 	 *
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $MM_oppositeFieldConf = '';
 
 	/**
 	 * Is empty by default; if MM_is_foreign is set and there is more than one table
 	 * allowed (on the "local" side), then it contains the first table (as a fallback)
-	 * @todo Define visibility
 	 * @var string
 	 */
 	public $MM_isMultiTableRelationship = '';
@@ -147,7 +133,6 @@ class RelationHandler {
 	 * Current table => Only needed for reverse relations
 	 *
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $currentTable;
 
@@ -156,7 +141,6 @@ class RelationHandler {
 	 * (so do not use the $useDeleteClause on \TYPO3\CMS\Backend\Utility\BackendUtility)
 	 *
 	 * @var boolean
-	 * @todo Define visibility
 	 */
 	public $undeleteRecord;
 
@@ -165,7 +149,6 @@ class RelationHandler {
 	 * and will be written into MM table if $MM_insert_fields is not set
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $MM_match_fields = array();
 
@@ -173,7 +156,6 @@ class RelationHandler {
 	 * This is set to TRUE if the MM table has a UID field.
 	 *
 	 * @var boolean
-	 * @todo Define visibility
 	 */
 	public $MM_hasUidField;
 
@@ -181,7 +163,6 @@ class RelationHandler {
 	 * Array of fields and value pairs used for insert in MM table
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $MM_insert_fields = array();
 
@@ -189,7 +170,6 @@ class RelationHandler {
 	 * Extra MM table where
 	 *
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $MM_table_where = '';
 
@@ -272,7 +252,6 @@ class RelationHandler {
 	 * @param string $currentTable Current table name
 	 * @param array $conf TCA configuration for current field
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function start($itemlist, $tablelist, $MMtable = '', $MMuid = 0, $currentTable = '', $conf = array()) {
 		$conf = (array)$conf;
@@ -396,7 +375,6 @@ class RelationHandler {
 	 * @param string $itemlist Item list
 	 * @param array $configuration Parent field configuration
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function readList($itemlist, array $configuration) {
 		if ((string) trim($itemlist) != '') {
@@ -476,7 +454,6 @@ class RelationHandler {
 	 *
 	 * @param string $sortby The default_sortby field/command (e.g. 'price DESC')
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function sortList($sortby) {
 		// Sort directly without fetching addional data
@@ -511,7 +488,6 @@ class RelationHandler {
 	 * @param string $tableName MM Tablename
 	 * @param integer $uid Local UID
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function readMM($tableName, $uid) {
 		$key = 0;
@@ -574,7 +550,6 @@ class RelationHandler {
 	 * @param integer $uid Local UID
 	 * @param boolean $prependTableName If set, then table names will always be written.
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function writeMM($MM_tableName, $uid, $prependTableName = FALSE) {
 		// In case of a reverse relation
@@ -727,7 +702,6 @@ class RelationHandler {
 	 * @param integer $newUid Local, new UID
 	 * @param boolean $prependTableName If set, then table names will always be written.
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function remapMM($MM_tableName, $uid, $newUid, $prependTableName = FALSE) {
 		// In case of a reverse relation
@@ -767,7 +741,6 @@ class RelationHandler {
 	 * @param integer $uid The uid of the parent record (this value is also on the foreign_table in the foreign_field)
 	 * @param array $conf TCA configuration for current field
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function readForeignField($uid, $conf) {
 		if ($this->useLiveParentIds) {
@@ -855,7 +828,6 @@ class RelationHandler {
 	 * @param integer $updateToUid If this is larger than zero it will be used as foreign UID instead of the given $parentUid (on Copy)
 	 * @param boolean $skipSorting Do not update the sorting columns, this could happen for imported values
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function writeForeignField($conf, $parentUid, $updateToUid = 0, $skipSorting = FALSE) {
 		if ($this->useLiveParentIds) {
@@ -964,7 +936,6 @@ class RelationHandler {
 	 *
 	 * @param boolean $prependTableName If set, then table names will ALWAYS be prepended (unless its a _NO_TABLE value)
 	 * @return array A numeric array.
-	 * @todo Define visibility
 	 */
 	public function getValueArray($prependTableName = FALSE) {
 		// INIT:
@@ -990,7 +961,6 @@ class RelationHandler {
 	 * @param string $fTable Foreign table (the one used for positive numbers)
 	 * @param string $nfTable Negative foreign table
 	 * @return array The array with ID integer values, converted to positive for those where the table name was set but did NOT match the positive foreign table.
-	 * @todo Define visibility
 	 */
 	public function convertPosNeg($valueArray, $fTable, $nfTable) {
 		if (is_array($valueArray) && $fTable) {
@@ -1016,7 +986,6 @@ class RelationHandler {
 	 * since only uid,pid and a few other fields are selected.
 	 *
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function getFromDB() {
 		// Traverses the tables listed:
@@ -1056,7 +1025,6 @@ class RelationHandler {
 	 * Prepare items from itemArray to be transferred to the TCEforms interface (as a comma list)
 	 *
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function readyForInterface() {
 		if (!is_array($this->itemArray)) {
@@ -1081,7 +1049,6 @@ class RelationHandler {
 	 *
 	 * @param boolean $returnAsArray Whether to put the count value in an array
 	 * @return mixed The plain count as integer or the same inside an array
-	 * @todo Define visibility
 	 */
 	public function countItems($returnAsArray = TRUE) {
 		$count = count($this->itemArray);
@@ -1099,7 +1066,6 @@ class RelationHandler {
 	 * @param string $table Table name
 	 * @param integer $id Record UID
 	 * @return array Information concerning modifications delivered by \TYPO3\CMS\Core\Database\ReferenceIndex::updateRefIndexTable()
-	 * @todo Define visibility
 	 */
 	public function updateRefIndex($table, $id) {
 		$statisticsArray = array();
@@ -1289,7 +1255,6 @@ class RelationHandler {
 	 * @param array $parentConf The TCA configuration of the parent field embedding the child records
 	 * @param array $childRec The record row of the child record
 	 * @return boolean Returns TRUE if looking from the symmetric ("other") side to the relation.
-	 * @todo Define visibility
 	 */
 	static public function isOnSymmetricSide($parentUid, $parentConf, $childRec) {
 		return MathUtility::canBeInterpretedAsInteger($childRec['uid'])

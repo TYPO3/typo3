@@ -26,40 +26,22 @@ class ClickMenuController {
 
 	// Internal, static: GPvar:
 	// Back path.
-	/**
-	 * @todo Define visibility
-	 */
 	public $backPath;
 
 	// Definition of which item the click menu should be made for.
-	/**
-	 * @todo Define visibility
-	 */
 	public $item;
 
 	// Defines the name of the document object for which to reload the URL.
-	/**
-	 * @todo Define visibility
-	 */
 	public $reloadListFrame;
 
 	// Internal:
 	// Content accumulation
-	/**
-	 * @todo Define visibility
-	 */
 	public $content = '';
 
 	// Template object
-	/**
-	 * @todo Define visibility
-	 */
 	public $doc;
 
 	// Internal array of classes for extending the clickmenu
-	/**
-	 * @todo Define visibility
-	 */
 	public $extClassArray = array();
 
 	/**

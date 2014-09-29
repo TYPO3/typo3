@@ -30,86 +30,48 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 class AbstractMenuContentObject {
 
 	// tells you which menu-number this is. This is important when getting data from the setup
-	/**
-	 * @todo Define visibility
-	 */
 	public $menuNumber = 1;
 
 	// 0 = rootFolder
-	/**
-	 * @todo Define visibility
-	 */
 	public $entryLevel = 0;
 
 	// The doktype-number that defines a spacer
-	/**
-	 * @todo Define visibility
-	 */
 	public $spacerIDList = '199';
 
 	// Doktypes that define which should not be included in a menu
-	/**
-	 * @todo Define visibility
-	 */
 	public $doktypeExcludeList = '6';
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $alwaysActivePIDlist = array();
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $imgNamePrefix = 'img';
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $imgNameNotRandom = 0;
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $debug = 0;
 
 	/**
 	 * Loaded with the parent cObj-object when a new HMENU is made
 	 *
 	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
-	 * @todo Define visibility
 	 */
 	public $parent_cObj;
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $GMENU_fixKey = 'gmenu';
 
 	// accumulation of mount point data
-	/**
-	 * @todo Define visibility
-	 */
 	public $MP_array = array();
 
 	// internal
 	// HMENU configuration
-	/**
-	 * @todo Define visibility
-	 */
 	public $conf = array();
 
 	// xMENU configuration (TMENU, GMENU etc)
-	/**
-	 * @todo Define visibility
-	 */
 	public $mconf = array();
 
 	/**
 	 * template-object
 	 *
 	 * @var \TYPO3\CMS\Core\TypoScript\TemplateService
-	 * @todo Define visibility
 	 */
 	public $tmpl;
 
@@ -117,91 +79,45 @@ class AbstractMenuContentObject {
 	 * sys_page-object, pagefunctions
 	 *
 	 * @var \TYPO3\CMS\Frontend\Page\PageRepository
-	 * @todo Define visibility
 	 */
 	public $sys_page;
 
 	// The base page-id of the menu.
-	/**
-	 * @todo Define visibility
-	 */
 	public $id;
 
 	// Holds the page uid of the NEXT page in the root line from the page pointed to by entryLevel;
 	// Used to expand the menu automatically if in a certain root line.
-	/**
-	 * @todo Define visibility
-	 */
 	public $nextActive;
 
 	// The array of menuItems which is built
-	/**
-	 * @todo Define visibility
-	 */
 	public $menuArr;
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $hash;
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $result = array();
 
 	// Array: Is filled with an array of page uid numbers + RL parameters which are in the current
 	// root line (used to evaluate whether a menu item is in active state)
-	/**
-	 * @todo Define visibility
-	 */
 	public $rL_uidRegister = '';
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $INPfixMD5;
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $I;
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $WMresult;
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $WMfreezePrefix;
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $WMmenuItems;
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $WMsubmenuObjSuffixes;
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $WMextraScript;
 
 	// Can be set to contain menu item arrays for sub-levels.
-	/**
-	 * @todo Define visibility
-	 */
 	public $alternativeMenuTempArray = '';
 
 	// Will be 'id' in XHTML-mode
-	/**
-	 * @todo Define visibility
-	 */
 	public $nameAttribute = 'name';
 
 	/**
@@ -223,7 +139,6 @@ class AbstractMenuContentObject {
 	 * @param string $objSuffix Submenu Object suffix. This offers submenus a way to use alternative configuration for specific positions in the menu; By default "1 = TMENU" would use "1." for the TMENU configuration, but if this string is set to eg. "a" then "1a." would be used for configuration instead (while "1 = " is still used for the overall object definition of "TMENU")
 	 * @return boolean Returns TRUE on success
 	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::HMENU()
-	 * @todo Define visibility
 	 */
 	public function start(&$tmpl, &$sys_page, $id, $conf, $menuNumber, $objSuffix = '') {
 		// Init:
@@ -365,7 +280,6 @@ class AbstractMenuContentObject {
 	 * Based on a hash of this array and some other variables the $this->result variable will be loaded either from cache OR by calling the generate() method of the class to create the menu for real.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function makeMenu() {
 		if ($this->id) {
@@ -953,7 +867,6 @@ class AbstractMenuContentObject {
 	 * @param array $banUidArray Array of page uids which are to be excluded
 	 * @param boolean $spacer If set, then the page is a spacer.
 	 * @return boolean Returns TRUE if the page can be safely included.
-	 * @todo Define visibility
 	 */
 	public function filterMenuPages(&$data, $banUidArray, $spacer) {
 		$includePage = TRUE;
@@ -1023,7 +936,6 @@ class AbstractMenuContentObject {
 	 * @param integer $splitCount Number of menu items in the menu
 	 * @return array An array with two keys: array($NOconf,$ROconf) - where $NOconf contains the resolved configuration for each item when NOT rolled-over and $ROconf contains the ditto for the mouseover state (if any)
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function procesItemStates($splitCount) {
 		// Prepare normal settings
@@ -1275,7 +1187,6 @@ class AbstractMenuContentObject {
 	 * @param integer $typeOverride Alternative type
 	 * @return array Returns an array with A-tag attributes as key/value pairs (HREF, TARGET and onClick)
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function link($key, $altTarget = '', $typeOverride = '') {
 		// Mount points:
@@ -1429,7 +1340,6 @@ class AbstractMenuContentObject {
 	 * @param string $mainTarget Main target value
 	 * @param string $typeOverride Type number override if any
 	 * @return void ($LD passed by reference might be changed.)
-	 * @todo Define visibility
 	 */
 	public function changeLinksForAccessRestrictedPages(&$LD, $page, $mainTarget, $typeOverride) {
 		// If access restricted pages should be shown in menus, change the link of such pages to link to a redirection page:
@@ -1457,7 +1367,6 @@ class AbstractMenuContentObject {
 	 * @param string $objSuffix Object prefix, see ->start()
 	 * @return string HTML content of the submenu
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function subMenu($uid, $objSuffix = '') {
 		// Setting alternative menu item array if _SUB_MENU has been defined in the current ->menuArr
@@ -1513,7 +1422,6 @@ class AbstractMenuContentObject {
 	 * @return boolean TRUE if page with $uid is active
 	 * @access private
 	 * @see subMenu()
-	 * @todo Define visibility
 	 */
 	public function isNext($uid, $MPvar = '') {
 		// Check for always active PIDs:
@@ -1533,7 +1441,6 @@ class AbstractMenuContentObject {
 	 * @param string $MPvar MPvar for the current position of item.
 	 * @return boolean TRUE if page with $uid is active
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function isActive($uid, $MPvar = '') {
 		// Check for always active PIDs:
@@ -1553,7 +1460,6 @@ class AbstractMenuContentObject {
 	 * @param string $MPvar MPvar for the current position of item.
 	 * @return boolean TRUE if page $uid = $GLOBALS['TSFE']->id
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function isCurrent($uid, $MPvar = '') {
 		$testUid = $uid . ($MPvar ? ':' . $MPvar : '');
@@ -1569,7 +1475,6 @@ class AbstractMenuContentObject {
 	 * @param integer $uid Page uid for which to search for a submenu
 	 * @return boolean Returns TRUE if there was a submenu with items found
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function isSubMenu($uid) {
 		// Looking for a mount-pid for this UID since if that
@@ -1620,7 +1525,6 @@ class AbstractMenuContentObject {
 	 * @return boolean True (integer!=0) if match, otherwise FALSE (=0, zero)
 	 * @access private
 	 * @see procesItemStates()
-	 * @todo Define visibility
 	 */
 	public function isItemState($kind, $key) {
 		$natVal = 0;
@@ -1663,7 +1567,6 @@ class AbstractMenuContentObject {
 	 * @param string $title Menu item title.
 	 * @return array Returns an array with keys "code" ("accesskey" attribute for the img-tag) and "alt" (text-addition to the "alt" attribute) if an access key was defined. Otherwise array was empty
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function accessKey($title) {
 		// The global array ACCESSKEY is used to globally control if letters are already used!!
@@ -1691,7 +1594,6 @@ class AbstractMenuContentObject {
 	 * @param mixed $passVar A variable to pass to the user function and which should be returned again from the user function. The idea is that the user function modifies this variable according to what you want to achieve and then returns it. For "itemArrayProcFunc" this variable is $this->menuArr, for "IProcFunc" it is $this->I
 	 * @return mixed The processed $passVar
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function userProcess($mConfKey, $passVar) {
 		if ($this->mconf[$mConfKey]) {
@@ -1707,7 +1609,6 @@ class AbstractMenuContentObject {
 	 *
 	 * @return void
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function setATagParts() {
 		$params = trim($this->I['val']['ATagParams']) . $this->I['accessKey']['code'];
@@ -1723,7 +1624,6 @@ class AbstractMenuContentObject {
 	 * @param string $nav_title The current value of the navigation title
 	 * @return string Returns the navigation title if it is NOT blank, otherwise the page title.
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function getPageTitle($title, $nav_title) {
 		return trim($nav_title) !== '' ? $nav_title : $title;
@@ -1735,7 +1635,6 @@ class AbstractMenuContentObject {
 	 * @param integer $key Pointer to element in ->menuArr
 	 * @return string MP vars for element.
 	 * @see link()
-	 * @todo Define visibility
 	 */
 	public function getMPvar($key) {
 		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids']) {
@@ -1754,7 +1653,6 @@ class AbstractMenuContentObject {
 	 *
 	 * @return string where clause part.
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function getDoktypeExcludeWhere() {
 		return $this->doktypeExcludeList ? ' AND pages.doktype NOT IN (' . $this->doktypeExcludeList . ')' : '';
@@ -1765,7 +1663,6 @@ class AbstractMenuContentObject {
 	 *
 	 * @return array Array of banned UIDs
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function getBannedUids() {
 		$excludeUidList = isset($this->conf['excludeUidList.'])
@@ -1791,7 +1688,6 @@ class AbstractMenuContentObject {
 	 * @param string $addParams Parameters to add to URL
 	 * @param array $typeOverride "type" value
 	 * @return array See linkData
-	 * @todo Define visibility
 	 */
 	public function menuTypoLink($page, $oTarget, $no_cache, $script, $overrideArray = '', $addParams = '', $typeOverride = '') {
 		$conf = array(

@@ -65,48 +65,48 @@ class ModuleSettings {
 	 * If type is set 'ses' then the module data will be stored into the session and will be lost with logout.
 	 * Type 'perm' will store the data permanently.
 	 *
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $type = 'perm';
 
 	/**
 	 * prefix of MOD_SETTING array keys that should be stored
 	 *
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $prefix = '';
 
 	/**
 	 * Names of keys of the MOD_SETTING array which should be stored
 	 *
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $storeList = array();
 
 	/**
 	 * The stored settings array
 	 *
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $storedSettings = array();
 
 	/**
 	 * Message from the last storage command
 	 *
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $msg = '';
 
 	/**
 	 * Name of the form. Needed for JS
 	 *
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $formName = 'storeControl';
 
 	// Write messages into the devlog?
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $writeDevLog = 0;
 
@@ -121,7 +121,6 @@ class ModuleSettings {
 	 * @param string $prefix Prefix of MOD_SETTING array keys that should be stored
 	 * @param array $storeList Additional names of keys of the MOD_SETTING array which should be stored (array or comma list)
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function init($prefix = '', $storeList = '') {
 		$this->prefix = $prefix;
@@ -141,7 +140,6 @@ class ModuleSettings {
 	 *
 	 * @param string $type Default is 'ses'
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function setSessionType($type = 'ses') {
 		$this->type = $type;
@@ -157,7 +155,6 @@ class ModuleSettings {
 	 *
 	 * @param mixed $storeList Array or string (,) - set additional names of keys of the MOD_SETTING array which should be stored
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function setStoreList($storeList) {
 		$this->storeList = is_array($storeList) ? $storeList : GeneralUtility::trimExplode(',', $storeList, TRUE);
@@ -171,7 +168,6 @@ class ModuleSettings {
 	 *
 	 * @param mixed Array or string (,) - add names of keys of the MOD_SETTING array which should be stored
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function addToStoreList($storeList) {
 		$storeList = is_array($storeList) ? $storeList : GeneralUtility::trimExplode(',', $storeList, TRUE);
@@ -186,7 +182,6 @@ class ModuleSettings {
 	 *
 	 * @param string $prefix Prefix of MOD_SETTING array keys that should be stored
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function addToStoreListFromPrefix($prefix = '') {
 		$prefix = $prefix ? $prefix : $this->prefix;
@@ -211,7 +206,6 @@ class ModuleSettings {
 	 * Get the stored settings from MOD_SETTINGS and set them in $this->storedSettings
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function initStorage() {
 		$storedSettings = unserialize($GLOBALS['SOBE']->MOD_SETTINGS[$this->prefix . '_storedSettings']);
@@ -223,7 +217,6 @@ class ModuleSettings {
 	 *
 	 * @param array $storedSettings The stored settings
 	 * @return array Cleaned up stored settings
-	 * @todo Define visibility
 	 */
 	public function cleanupStorageArray($storedSettings) {
 		$storedSettings = is_array($storedSettings) ? $storedSettings : array();
@@ -248,7 +241,6 @@ class ModuleSettings {
 	 *
 	 * @param array $data Should work with data from _GP('storeControl'). This is ['title']: Title for the entry. ['desc']: A description text. Currently not used by this class
 	 * @return array Entry for the stored settings array
-	 * @todo Define visibility
 	 */
 	public function compileEntry($data) {
 		$storageData = array();
@@ -272,7 +264,6 @@ class ModuleSettings {
 	 * @param mixed $storeIndex The entry key
 	 * @param array $writeArray Preset data array. Will be overwritten by copied values.
 	 * @return array Data array
-	 * @todo Define visibility
 	 */
 	public function getStoredData($storeIndex, $writeArray = array()) {
 		if ($this->storedSettings[$storeIndex]) {
@@ -288,7 +279,6 @@ class ModuleSettings {
 	 *
 	 * @param string $mconfName Name of the module to store the settings for. Default: $GLOBALS['SOBE']->MCONF['name'] (current module)
 	 * @return string Storage message. Also set in $this->msg
-	 * @todo Define visibility
 	 */
 	public function processStoreControl($mconfName = '') {
 		$this->initStorage();
@@ -341,7 +331,6 @@ class ModuleSettings {
 	 * @param array $writeArray Array of settings which should be overwrite current MOD_SETTINGS
 	 * @param string $mconfName Name of the module to store the settings for. Default: $GLOBALS['SOBE']->MCONF['name'] (current module)
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function writeStoredSetting($writeArray = array(), $mconfName = '') {
 		// Making sure, index 0 is not set
@@ -365,7 +354,6 @@ class ModuleSettings {
 	 * @param string $showElements List of elemetns which should be shown: load,remove,save
 	 * @param boolean $useOwnForm If set the box is wrapped with own form tag
 	 * @return string HTML code
-	 * @todo Define visibility
 	 */
 	public function getStoreControl($showElements = 'load,remove,save', $useOwnForm = TRUE) {
 		$showElements = GeneralUtility::trimExplode(',', $showElements, TRUE);
@@ -444,7 +432,6 @@ class ModuleSettings {
 	 *
 	 * @param array $storageData Entry for the stored settings array
 	 * @return array Entry for the stored settings array
-	 * @todo Define visibility
 	 */
 	public function processEntry($storageArr) {
 		return $storageArr;

@@ -30,7 +30,6 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 	 * @param object $pObj
 	 * @param array $conf
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function init(&$pObj, $conf) {
 		parent::init($pObj, $conf);
@@ -42,7 +41,6 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 	 * Mod menu
 	 *
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function modMenu() {
 		$GLOBALS['LANG']->includeLLFile('EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf');
@@ -94,7 +92,6 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 	 * @param string $parentType
 	 * @param string $parentValue
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function verify_TSobjects($propertyArray, $parentType, $parentValue) {
 		$TSobjTable = array(
@@ -161,7 +158,6 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 	 * @param integer $pageId
 	 * @param integer $template_uid
 	 * @return integer
-	 * @todo Define visibility
 	 */
 	public function initialize_editor($pageId, $template_uid = 0) {
 		// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
@@ -188,7 +184,6 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 	 * Main
 	 *
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function main() {
 		global $BACK_PATH;

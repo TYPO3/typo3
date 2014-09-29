@@ -24,34 +24,19 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 class FlexFormTools {
 
 	// If set, the charset of data XML is converted to system charset.
-	/**
-	 * @todo Define visibility
-	 */
 	public $convertCharset = FALSE;
 
 	// If set, section indexes are re-numbered before processing
-	/**
-	 * @todo Define visibility
-	 */
 	public $reNumberIndexesOfSectionData = FALSE;
 
 	// Contains data structure when traversing flexform
-	/**
-	 * @todo Define visibility
-	 */
 	public $traverseFlexFormXMLData_DS = array();
 
 	// Contains data array when traversing flexform
-	/**
-	 * @todo Define visibility
-	 */
 	public $traverseFlexFormXMLData_Data = array();
 
 	// Options for array2xml() for flexform.
 	// This will map the weird keys from the internal array to tags that could potentially be checked with a DTD/schema
-	/**
-	 * @todo Define visibility
-	 */
 	public $flexArray2Xml_options = array(
 		'parentTagMap' => array(
 			'data' => 'sheet',
@@ -69,14 +54,10 @@ class FlexFormTools {
 	/**
 	 * Reference to object called
 	 *
-	 * @todo Define visibility
 	 */
 	public $callBackObj = NULL;
 
 	// Used for accumulation of clean XML
-	/**
-	 * @todo Define visibility
-	 */
 	public $cleanFlexFormXML = array();
 
 	/**
@@ -88,7 +69,6 @@ class FlexFormTools {
 	 * @param object $callBackObj Object (passed by reference) in which the call back function is located
 	 * @param string $callBackMethod_value Method name of call back function in object for values
 	 * @return boolean If TRUE, error happened (error string returned)
-	 * @todo Define visibility
 	 */
 	public function traverseFlexFormXMLData($table, $field, $row, $callBackObj, $callBackMethod_value) {
 		if (!is_array($GLOBALS['TCA'][$table]) || !is_array($GLOBALS['TCA'][$table]['columns'][$field])) {
@@ -178,7 +158,6 @@ class FlexFormTools {
 	 * @param array $PA Additional parameters passed.
 	 * @param string $path Telling the "path" to the element in the flexform XML
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function traverseFlexFormXMLData_recurse($dataStruct, $editData, &$PA, $path = '') {
 		if (is_array($dataStruct)) {
@@ -233,7 +212,6 @@ class FlexFormTools {
 	 * Returns an array of available languages to use for FlexForm operations
 	 *
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function getAvailableLanguages() {
 		$isL = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables');
@@ -275,7 +253,6 @@ class FlexFormTools {
 	 * @param string $field Field name of the flex form field in which the XML is found that should be cleaned.
 	 * @param array $row The record
 	 * @return string Clean XML from FlexForm field
-	 * @todo Define visibility
 	 */
 	public function cleanFlexFormXML($table, $field, $row) {
 		// New structure:
@@ -297,7 +274,6 @@ class FlexFormTools {
 	 * @param string $path Path of value in DS structure
 	 * @param object $pObj Object reference to caller
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function cleanFlexFormXML_callBackFunction($dsArr, $data, $PA, $path, $pObj) {
 		// Just setting value in our own result array, basically replicating the structure:
@@ -322,7 +298,6 @@ class FlexFormTools {
 	 * @param string $pathArray The path pointing to the value field, eg. test/2/title to access $array['test'][2]['title']
 	 * @param array $array Array to get value from. Passed by reference so the value returned can be used to change the value in the array!
 	 * @return mixed Value returned
-	 * @todo Define visibility
 	 */
 	public function &getArrayValueByPath($pathArray, &$array) {
 		if (!is_array($pathArray)) {
@@ -351,7 +326,6 @@ class FlexFormTools {
 	 * @param array $array Array to set value in. Passed by reference so the value returned can be used to change the value in the array!
 	 * @param mixed $value Value to set
 	 * @return mixed Value returned
-	 * @todo Define visibility
 	 */
 	public function setArrayValueByPath($pathArray, &$array, $value) {
 		if (isset($value)) {
@@ -381,7 +355,6 @@ class FlexFormTools {
 	 * @param array $array Array to output in <T3FlexForms> XML
 	 * @param boolean $addPrologue If set, the XML prologue is returned as well.
 	 * @return string XML content.
-	 * @todo Define visibility
 	 */
 	public function flexArray2Xml($array, $addPrologue = FALSE) {
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['flexformForceCDATA']) {

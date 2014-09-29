@@ -27,12 +27,12 @@ class PageTreeNavigationController {
 
 	// Internal:
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $content;
 
 	/**
-	 * @todo Define visibility
+	 * @var \TYPO3\CMS\Backend\View\PageTreeView
 	 */
 	public $pagetree;
 
@@ -40,46 +40,49 @@ class PageTreeNavigationController {
 	 * document template object
 	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 * @todo Define visibility
 	 */
 	public $doc;
 
-	// Temporary mount point (record), if any
 	/**
-	 * @todo Define visibility
+	 * Temporary mount point (record), if any
+	 *
+	 * @var int
 	 */
 	public $active_tempMountPoint = 0;
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $backPath;
 
 	// Internal, static: GPvar:
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $currentSubScript;
 
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $cMR;
 
-	// If not '' (blank) then it will clear (0) or set (>0) Temporary DB mount.
 	/**
-	 * @todo Define visibility
+	 * If not '' (blank) then it will clear (0) or set (>0) Temporary DB mount.
+	 *
+	 * @var string
 	 */
 	public $setTempDBmount;
 
 	/**
-	 * @todo Define visibility
+	 * @var string
+	 * @deprecated since version 7; unused
 	 */
 	public $template;
 
-	// Depends on userTS-setting
 	/**
-	 * @todo Define visibility
+	 * Depends on userTS-setting
+	 *
+	 * @var bool
 	 */
 	public $hasFilterBox;
 
@@ -102,7 +105,7 @@ class PageTreeNavigationController {
 		// Setting backPath
 		$this->backPath = $GLOBALS['BACK_PATH'];
 		// Setting GPvars:
-		$this->cMR = GeneralUtility::_GP('cMR');
+		$this->cMR = (bool)GeneralUtility::_GP('cMR');
 		$this->currentSubScript = GeneralUtility::_GP('currentSubScript');
 		$this->setTempDBmount = GeneralUtility::_GP('setTempDBmount');
 		// look for User setting
@@ -288,7 +291,6 @@ class PageTreeNavigationController {
 	 * Getting temporary DB mount
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function initializeTemporaryDBmount() {
 		// Set/Cancel Temporary DB Mount:
@@ -320,7 +322,6 @@ class PageTreeNavigationController {
 	 *
 	 * @param integer $pageId The page id to set as DB mount
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function settingTemporaryMountPoint($pageId) {
 		$GLOBALS['BE_USER']->setAndSaveSessionData('pageTree_temporaryMountPoint', (int)$pageId);

@@ -27,20 +27,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService {
 
 	// This string is used to indicate the point in a template from where the editable constants are listed. Any vars before this point (if it exists though) is regarded as default values.
-	/**
-	 * @todo Define visibility
-	 */
 	public $edit_divider = '###MOD_TS:EDITABLE_CONSTANTS###';
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $HTMLcolorList = 'aqua,beige,black,blue,brown,fuchsia,gold,gray,green,lime,maroon,navy,olive,orange,purple,red,silver,tan,teal,turquoise,yellow,white';
 
 	// internal
-	/**
-	 * @todo Define visibility
-	 */
 	public $categories = array(
 		'basic' => array(),
 		// Constants of superior importance for the template-layout. This is dimensions, imagefiles and enabling of various features. The most basic constants, which you would almost always want to configure.
@@ -63,9 +54,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	protected $categoryLabels = array();
 
 	// This will be filled with the available categories of the current template.
-	/**
-	 * @todo Define visibility
-	 */
 	public $subCategories = array(
 		// Standard categories:
 		'enable' => array('Enable features', 'a'),
@@ -94,108 +82,53 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 		'chtml' => array('Content: \'HTML\'', 'mq')
 	);
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $backend_info = 1;
 
 	// Tsconstanteditor
-	/**
-	 * @todo Define visibility
-	 */
 	public $ext_inBrace = 0;
 
 	// Tsbrowser
-	/**
-	 * @todo Define visibility
-	 */
 	public $tsbrowser_searchKeys = array();
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $tsbrowser_depthKeys = array();
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $constantMode = '';
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $regexMode = '';
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $fixedLgd = '';
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $ext_lineNumberOffset = 0;
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $ext_localGfxPrefix = '';
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $ext_localWebGfxPrefix = '';
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $ext_expandAllNotes = 0;
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $ext_noPMicons = 0;
 
 	/**
 	 * @deprecated since CMS 7.0, will be removed in CMS 8
+	 *
+	 * @var int
 	 */
 	public $ext_noSpecialCharsOnLabels = 0;
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $ext_listOfTemplatesArr = array();
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $ext_lineNumberOffset_mode = '';
 
 	// Dont change...
-	/**
-	 * @todo Define visibility
-	 */
 	public $ext_dontCheckIssetValues = 0;
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $ext_printAll = 0;
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $ext_CEformName = 'forms[0]';
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $doNotSortCategoriesBeforeMakingForm = FALSE;
 
 	// Ts analyzer
-	/**
-	 * @todo Define visibility
-	 */
 	public $templateTitles = array();
 
 	/**
@@ -208,7 +141,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 *
 	 * @param 	[type]		$all: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function substituteConstants($all) {
 		$this->Cmarker = substr(md5(uniqid('')), 0, 6);
@@ -221,7 +153,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 * @param array $matches Regular expression matches
 	 * @return string Replacement
 	 * @see substituteConstants()
-	 * @todo Define visibility
 	 */
 	public function substituteConstantsCallBack($matches) {
 		switch ($this->constantMode) {
@@ -245,7 +176,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 *
 	 * @param 	[type]		$all: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function substituteCMarkers($all) {
 		switch ($this->constantMode) {
@@ -267,7 +197,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 * In particular comments in the code are registered and the edit_divider is taken into account.
 	 *
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function generateConfig_constants() {
 		// These vars are also set lateron...
@@ -310,7 +239,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 * @param 	[type]		$theSetup: ...
 	 * @param 	[type]		$theKey: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_getSetup($theSetup, $theKey) {
 		$parts = explode('.', $theKey, 2);
@@ -339,7 +267,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 * @param 	[type]		$parentValue: ...
 	 * @param boolean $alphaSort sorts the array keys / tree by alphabet when set to 1
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_getObjTree($arr, $depth_in, $depthData, $parentType = '', $parentValue = '', $alphaSort = '0') {
 		$HTML = '';
@@ -468,7 +395,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 *
 	 * @param array $lnArr Array with linenumbers (might have some extra symbols, for example for unsetting) to be processed
 	 * @return array The same array where each entry has been prepended by the template title if available
-	 * @todo Define visibility
 	 */
 	public function lineNumberToScript(array $lnArr) {
 		// On the first call, construct the lnToScript array.
@@ -504,7 +430,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 *
 	 * @param 	[type]		$theValue: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 * @deprecated since CMS 7.0, will be removed in CMS 8  - use htmlspecialchars() directly
 	 */
 	public function makeHtmlspecialchars($theValue) {
@@ -520,7 +445,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 * @param 	[type]		$searchString: ...
 	 * @param 	[type]		$keyArray: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_getSearchKeys($arr, $depth_in, $searchString, $keyArray) {
 		$keyArr = array();
@@ -580,7 +504,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 *
 	 * @param 	[type]		$pid: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_getRootlineNumber($pid) {
 		if ($pid && is_array($GLOBALS['rootLine'])) {
@@ -600,7 +523,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 * @param 	[type]		$keyArray: ...
 	 * @param 	[type]		$first: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_getTemplateHierarchyArr($arr, $depthData, $keyArray, $first = 0) {
 		$keyArr = array();
@@ -699,7 +621,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 *
 	 * @return string
 	 *
-	 * @todo Define visibility
 	 */
 	public function ext_outputTS(
 		array $config, $lineNumbers = FALSE, $comments = FALSE, $crop = FALSE, $syntaxHL = FALSE, $syntaxHLBlockmode = 0
@@ -726,7 +647,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 * @param 	[type]		$string: ...
 	 * @param 	[type]		$chars: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_fixed_lgd($string, $chars) {
 		if ($chars >= 4) {
@@ -747,7 +667,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 * @param integer $lineNumber Line Number
 	 * @param 	[type]		$str: ...
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function ext_lnBreakPointWrap($lineNumber, $str) {
 		return '<a href="#" id="line-' . $lineNumber . '" onClick="return brPoint(' . $lineNumber . ',' . ($this->ext_lineNumberOffset_mode == 'setup' ? 1 : 0) . ');">' . $str . '</a>';
@@ -761,7 +680,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 * @param 	[type]		$comments: ...
 	 * @param 	[type]		$crop: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_formatTS($input, $ln, $comments = 1, $crop = 0) {
 		$cArr = explode(LF, $input);
@@ -798,7 +716,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 * @param 	[type]		$id: ...
 	 * @param 	[type]		$template_uid: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_getFirstTemplate($id, $template_uid = 0) {
 		// Query is taken from the runThroughTemplates($theRootLine) function in the parent class.
@@ -820,7 +737,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 *
 	 * @param 	[type]		$id: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_getAllTemplates($id) {
 		// Query is taken from the runThroughTemplates($theRootLine) function in the parent class.
@@ -845,7 +761,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 *
 	 * @param 	[type]		$default: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_compareFlatSetups($default) {
 		$editableComments = array();
@@ -924,7 +839,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 *
 	 * @param 	[type]		$editConstArray: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_categorizeEditableConstants($editConstArray) {
 		// Runs through the available constants and fills the $this->categories array with pointers and priority-info
@@ -947,7 +861,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 * [Describe function...]
 	 *
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_getCategoryLabelArray() {
 		// Returns array used for labels in the menu.
@@ -965,7 +878,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 *
 	 * @param 	[type]		$type: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_getTypeData($type) {
 		$retArr = array();
@@ -1007,7 +919,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 *
 	 * @param 	[type]		$category: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_getTSCE_config($category) {
 		$catConf = $this->setup['constants']['TSConstantEditor.'][$category . '.'];
@@ -1046,7 +957,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 *
 	 * @param 	[type]		$key: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_getKeyImage($key) {
 		return '<img src="' . $this->ext_localWebGfxPrefix . 'gfx/' . $key . '.gif" align="top" hspace=2>';
@@ -1057,7 +967,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 *
 	 * @param 	[type]		$imgConf: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_getTSCE_config_image($imgConf) {
 		if (substr($imgConf, 0, 4) == 'gfx/') {
@@ -1079,7 +988,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 *
 	 * @param 	[type]		$params: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_fNandV($params) {
 		$fN = 'data[' . $params['name'] . ']';
@@ -1098,7 +1006,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 * @param 	[type]		$theConstants: ...
 	 * @param 	[type]		$category: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_printFields($theConstants, $category) {
 		reset($theConstants);
@@ -1311,7 +1218,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	/**
 	 * @param 	[type]		$constants: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_regObjectPositions($constants) {
 		// This runs through the lines of the constants-field of the active template and registers the constants-names
@@ -1328,7 +1234,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 *
 	 * @param 	[type]		$pre: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_regObjects($pre) {
 		// Works with regObjectPositions. "expands" the names of the TypoScript objects
@@ -1375,7 +1280,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 * @param 	[type]		$key: ...
 	 * @param 	[type]		$var: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_putValueInConf($key, $var) {
 		// Puts the value $var to the TypoScript value $key in the current lines of the templates.
@@ -1399,7 +1303,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 *
 	 * @param 	[type]		$key: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_removeValueInConf($key) {
 		// Removes the value in the configuration
@@ -1416,7 +1319,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 * @param 	[type]		$arr: ...
 	 * @param 	[type]		$settings: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_depthKeys($arr, $settings) {
 		$tsbrArray = array();
@@ -1450,7 +1352,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 * @param 	[type]		$theConstants: ...
 	 * @param 	[type]		$tplRow: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_procesInput($http_post_vars, $http_post_files, $theConstants, $tplRow) {
 		$data = $http_post_vars['data'];
@@ -1563,7 +1464,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 * @param 	[type]		$id: ...
 	 * @param 	[type]		$perms_clause: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_prevPageWithTemplate($id, $perms_clause) {
 		$rootLine = BackendUtility::BEgetRootLine($id, $perms_clause ? ' AND ' . $perms_clause : '');

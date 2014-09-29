@@ -25,7 +25,6 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var array $extConf Settings from the extension manager
-	 * @todo Define visibility
 	 */
 	public $extConf = array();
 

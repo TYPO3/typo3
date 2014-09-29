@@ -27,39 +27,39 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class NewRecordController {
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $pageinfo;
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $pidInfo;
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $newPagesInto;
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $newContentInto;
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $newPagesAfter;
 
 	/**
 	 * Determines, whether "Select Position" for new page should be shown
 	 *
-	 * @var boolean $newPagesSelectPosition
+	 * @var bool
 	 */
 	protected $newPagesSelectPosition = TRUE;
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $web_list_modTSconfig;
 
@@ -74,53 +74,53 @@ class NewRecordController {
 	public $deniedNewTables;
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $web_list_modTSconfig_pid;
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $allowedNewTables_pid;
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $deniedNewTables_pid;
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $code;
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $R_URI;
 
 	// Internal, static: GPvar
 	// see init()
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $id;
 
 	// Return url.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $returnUrl;
 
 	// pagesOnly flag.
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $pagesOnly;
 
 	// Internal
 	// see init()
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $perms_clause;
 
@@ -128,18 +128,17 @@ class NewRecordController {
 	 * Document template object
 	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 * @todo Define visibility
 	 */
 	public $doc;
 
 	// Accumulated HTML output
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $content;
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $tRows;
 
@@ -309,7 +308,6 @@ class NewRecordController {
 	 * Creates the position map for pages wizard
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function pagesOnly() {
 		$numberOfPages = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'pages', '1=1' . BackendUtility::deleteClause('pages'));
@@ -335,7 +333,6 @@ class NewRecordController {
 	 * Create a regular new element (pages and records)
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function regularNew() {
 		$doNotShowFullDescr = FALSE;
@@ -542,7 +539,6 @@ class NewRecordController {
 	 * @param string $a First array element for compare
 	 * @param string $b First array element for compare
 	 * @return integer -1 for lower, 0 for equal, 1 for greater
-	 * @todo Define visibility
 	 */
 	public function sortNewRecordsByConfig($a, $b) {
 		if (count($this->newRecordSortList)) {
@@ -584,7 +580,6 @@ class NewRecordController {
 	 * @param integer $pid PID value for the "&edit['.$table.']['.$pid.']=new" command (positive/negative)
 	 * @param boolean $addContentTable If $addContentTable is set, then a new tt_content record is created together with pages
 	 * @return string The link.
-	 * @todo Define visibility
 	 */
 	public function linkWrap($linkText, $table, $pid, $addContentTable = FALSE) {
 		$parameters = '&edit[' . $table . '][' . $pid . ']=new';
@@ -603,7 +598,6 @@ class NewRecordController {
 	 * @param array $pid_row Record for parent page.
 	 * @param string $checkTable Table name to check
 	 * @return boolean Returns TRUE if the tablename $checkTable is allowed to be created on the page with record $pid_row
-	 * @todo Define visibility
 	 */
 	public function isTableAllowedForThisPage($pid_row, $checkTable) {
 		if (!is_array($pid_row)) {
@@ -640,7 +634,6 @@ class NewRecordController {
 	 * @param array $allowedNewTables Array of new tables that are allowed.
 	 * @param array $deniedNewTables Array of new tables that are not allowed.
 	 * @return boolean Returns TRUE if a link for creating new records should be displayed for $table
-	 * @todo Define visibility
 	 */
 	public function showNewRecLink($table, array $allowedNewTables = array(), array $deniedNewTables = array()) {
 

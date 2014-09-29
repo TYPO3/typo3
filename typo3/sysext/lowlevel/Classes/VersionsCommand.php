@@ -26,8 +26,6 @@ class VersionsCommand extends CleanerCommand {
 
 	/**
 	 * Constructor
-	 *
-	 * @todo Define visibility
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -54,7 +52,6 @@ Automatic Repair:
 	 * VERY CPU and memory intensive since it will look up the whole page tree!
 	 *
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function main() {
 		global $TYPO3_DB;
@@ -166,7 +163,6 @@ Automatic Repair:
 	 *
 	 * @param array $resultArray Result array from main() function
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main_autoFix($resultArray) {
 		$kk = $this->cli_isArg('--flush-live') ? 'versions_liveWS' : 'versions_published';

@@ -43,21 +43,18 @@ class TypoScriptFrontendController {
 	/**
 	 * The page id (int)
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $id = '';
 
 	/**
 	 * The type (read-only)
 	 * @var int
-	 * @todo Define visibility
 	 */
 	public $type = '';
 
 	/**
 	 * The submitted cHash
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $cHash = '';
 
@@ -65,14 +62,12 @@ class TypoScriptFrontendController {
 	 * Page will not be cached. Write only TRUE. Never clear value (some other
 	 * code might have reasons to set it TRUE).
 	 * @var bool
-	 * @todo Define visibility
 	 */
 	public $no_cache = FALSE;
 
 	/**
 	 * The rootLine (all the way to tree root, not only the current site!)
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $rootLine = '';
 
@@ -86,7 +81,6 @@ class TypoScriptFrontendController {
 	 * This will normally point to the same value as id, but can be changed to
 	 * point to another page from which content will then be displayed instead.
 	 * @var int
-	 * @todo Define visibility
 	 */
 	public $contentPid = 0;
 
@@ -112,46 +106,39 @@ class TypoScriptFrontendController {
 	 * sys_page-object, pagefunctions
 	 *
 	 * @var PageRepository
-	 * @todo Define visibility
 	 */
 	public $sys_page = '';
 
 	/**
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $jumpurl = '';
 
 	/**
 	 * Is set to 1 if a pageNotFound handler could have been called.
 	 * @var int
-	 * @todo Define visibility
 	 */
 	public $pageNotFound = 0;
 
 	/**
 	 * Domain start page
 	 * @var int
-	 * @todo Define visibility
 	 */
 	public $domainStartPage = 0;
 
 	/**
 	 * Array containing a history of why a requested page was not accessible.
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $pageAccessFailureHistory = array();
 
 	/**
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $MP = '';
 
 	/**
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $RDCT = '';
 
@@ -160,7 +147,6 @@ class TypoScriptFrontendController {
 	 * and later perform some external cache management, like clearing only a part
 	 * of the cache of a page...
 	 * @var int
-	 * @todo Define visibility
 	 */
 	public $page_cache_reg1 = 0;
 
@@ -169,7 +155,6 @@ class TypoScriptFrontendController {
 	 * Typically "index.php" but by rewrite rules it could be something else! Used
 	 * for Speaking Urls / Simulate Static Documents.
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $siteScript = '';
 
@@ -177,7 +162,6 @@ class TypoScriptFrontendController {
 	 * The frontend user
 	 *
 	 * @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication
-	 * @todo Define visibility
 	 */
 	public $fe_user = '';
 
@@ -186,7 +170,6 @@ class TypoScriptFrontendController {
 	 * a user really IS logged in. The group-list may show other groups (like added
 	 * by IP filter or so) even though there is no user.
 	 * @var bool
-	 * @todo Define visibility
 	 */
 	public $loginUser = FALSE;
 
@@ -195,7 +178,6 @@ class TypoScriptFrontendController {
 	 * group, but other groups may be added by other means than a user being logged
 	 * in though...
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $gr_list = '';
 
@@ -208,28 +190,24 @@ class TypoScriptFrontendController {
 	/**
 	 * Integer, that indicates which workspace is being previewed.
 	 * @var int
-	 * @todo Define visibility
 	 */
 	public $workspacePreview = 0;
 
 	/**
 	 * Shows whether logins are allowed in branch
 	 * @var bool
-	 * @todo Define visibility
 	 */
 	public $loginAllowedInBranch = TRUE;
 
 	/**
 	 * Shows specific mode (all or groups)
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $loginAllowedInBranch_mode = '';
 
 	/**
 	 * Set to backend user ID to initialize when keyword-based preview is used
 	 * @var int
-	 * @todo Define visibility
 	 */
 	public $ADMCMD_preview_BEUSER_uid = 0;
 
@@ -241,7 +219,6 @@ class TypoScriptFrontendController {
 	 * page. A value of 1 means ordinary preview, 2 means preview of a non-live
 	 * workspace
 	 * @var int
-	 * @todo Define visibility
 	 */
 	public $fePreview = 0;
 
@@ -249,7 +226,6 @@ class TypoScriptFrontendController {
 	 * Flag indicating that hidden pages should be shown, selected and so on. This
 	 * goes for almost all selection of pages!
 	 * @var bool
-	 * @todo Define visibility
 	 */
 	public $showHiddenPage = FALSE;
 
@@ -258,14 +234,12 @@ class TypoScriptFrontendController {
 	 * sys_template, pages_language_overlay and even fe_groups in addition to all
 	 * other regular content. So in effect, this includes everything except pages.
 	 * @var bool
-	 * @todo Define visibility
 	 */
 	public $showHiddenRecords = FALSE;
 
 	/**
 	 * Value that contains the simulated usergroup if any
 	 * @var int
-	 * @todo Define visibility
 	 */
 	public $simUserGroup = 0;
 
@@ -291,7 +265,6 @@ class TypoScriptFrontendController {
 	 * The TypoScript template object. Used to parse the TypoScript template
 	 *
 	 * @var \TYPO3\CMS\Core\TypoScript\TemplateService
-	 * @todo Define visibility
 	 */
 	public $tmpl = NULL;
 
@@ -299,7 +272,6 @@ class TypoScriptFrontendController {
 	 * Is set to the time-to-live time of cached pages. If FALSE, default is
 	 * 60*60*24, which is 24 hours.
 	 * @var bool|int
-	 * @todo Define visibility
 	 */
 	public $cacheTimeOutDefault = FALSE;
 
@@ -307,21 +279,18 @@ class TypoScriptFrontendController {
 	 * Set internally if cached content is fetched from the database
 	 * @var bool
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public $cacheContentFlag = FALSE;
 
 	/**
 	 * Set to the expire time of cached content
 	 * @var int
-	 * @todo Define visibility
 	 */
 	public $cacheExpires = 0;
 
 	/**
 	 * Set if cache headers allowing caching are sent.
 	 * @var bool
-	 * @todo Define visibility
 	 */
 	public $isClientCachable = FALSE;
 
@@ -330,14 +299,12 @@ class TypoScriptFrontendController {
 	 * the template. If $this->all is empty it's because the template-data is not
 	 * cached, which it must be.
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $all = array();
 
 	/**
 	 * Toplevel - objArrayName, eg 'page'
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $sPre = '';
 
@@ -345,7 +312,6 @@ class TypoScriptFrontendController {
 	 * TypoScript configuration of the page-object pointed to by sPre.
 	 * $this->tmpl->setup[$this->sPre.'.']
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $pSetup = '';
 
@@ -353,7 +319,6 @@ class TypoScriptFrontendController {
 	 * This hash is unique to the template, the $this->id and $this->type vars and
 	 * the gr_list (list of groups). Used to get and later store the cached data
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $newHash = '';
 
@@ -363,7 +328,6 @@ class TypoScriptFrontendController {
 	 * with the string, '&ftu=[token...]' which enables GET-method usertracking as
 	 * opposed to cookie based
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $getMethodUrlIdToken = '';
 
@@ -373,7 +337,6 @@ class TypoScriptFrontendController {
 	 * This is done in order to make sure that php-code from pagegen does not falsely
 	 * clear the no_cache flag.
 	 * @var bool
-	 * @todo Define visibility
 	 */
 	public $no_cacheBeforePageGen = FALSE;
 
@@ -381,28 +344,24 @@ class TypoScriptFrontendController {
 	 * This flag indicates if temporary content went into the cache during
 	 * page-generation.
 	 * @var mixed
-	 * @todo Define visibility
 	 */
 	public $tempContent = FALSE;
 
 	/**
 	 * Passed to TypoScript template class and tells it to force template rendering
 	 * @var bool
-	 * @todo Define visibility
 	 */
 	public $forceTemplateParsing = FALSE;
 
 	/**
 	 * The array which cHash_calc is based on, see ->makeCacheHash().
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $cHash_array = array();
 
 	/**
 	 * May be set to the pagesTSconfig
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $pagesTSconfig = '';
 
@@ -425,7 +384,6 @@ class TypoScriptFrontendController {
 	 * (like additionalHeaderData[] = '...')
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $additionalHeaderData = array();
 
@@ -440,7 +398,6 @@ class TypoScriptFrontendController {
 	 * additionalHeaderData. Reserved keys at 'openPic' and 'mouseOver'
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $additionalJavaScript = array();
 
@@ -448,7 +405,6 @@ class TypoScriptFrontendController {
 	 * Used to accumulate additional Style code. Works like additionalHeaderData.
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $additionalCSS = array();
 
@@ -458,7 +414,6 @@ class TypoScriptFrontendController {
 	 * applications on a page can set handlers for onload, onmouseover and onmouseup
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $JSeventFuncCalls = array(
 		'onmousemove' => array(),
@@ -473,7 +428,6 @@ class TypoScriptFrontendController {
 	/**
 	 * Used to accumulate DHTML-layers.
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $divSection = '';
 
@@ -481,7 +435,6 @@ class TypoScriptFrontendController {
 	 * Default bodytag, if nothing else is set. This can be overridden by
 	 * applications like TemplaVoila.
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $defaultBodyTag = '<body>';
 
@@ -491,28 +444,24 @@ class TypoScriptFrontendController {
 	/**
 	 * Debug flag, may output special debug html-code.
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $debug = '';
 
 	/**
 	 * Default internal target
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $intTarget = '';
 
 	/**
 	 * Default external target
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $extTarget = '';
 
 	/**
 	 * Default file link target
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $fileTarget = '';
 
@@ -520,21 +469,18 @@ class TypoScriptFrontendController {
 	 * Keys are page ids and values are default &MP (mount point) values to set
 	 * when using the linking features...)
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $MP_defaults = array();
 
 	/**
 	 * If set, typolink() function encrypts email addresses. Is set in pagegen-class.
 	 * @var string|int
-	 * @todo Define visibility
 	 */
 	public $spamProtectEmailAddresses = 0;
 
 	/**
 	 * Absolute Reference prefix
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $absRefPrefix = '';
 
@@ -551,21 +497,18 @@ class TypoScriptFrontendController {
 	/**
 	 * Factor for form-field widths compensation
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $compensateFieldWidth = '';
 
 	/**
 	 * Lock file path
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $lockFilePath = '';
 
 	/**
 	 * <A>-tag parameters
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $ATagParams = '';
 
@@ -574,7 +517,6 @@ class TypoScriptFrontendController {
 	 * used to mark up the found search words on a page when jumped to from a link
 	 * in a search-result.
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $sWordRegEx = '';
 
@@ -582,7 +524,6 @@ class TypoScriptFrontendController {
 	 * Is set to the incoming array sword_list in case of a page-view jumped to from
 	 * a search-result.
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $sWordList = '';
 
@@ -591,7 +532,6 @@ class TypoScriptFrontendController {
 	 * Based on configuration in TypoScript where you defined which GET_VARS you
 	 * would like to pass on.
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $linkVars = '';
 
@@ -600,7 +540,6 @@ class TypoScriptFrontendController {
 	 * included in the cHash calculation. These vars should otherwise be detected
 	 * and involved in caching, eg. through a condition in TypoScript.
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $excludeCHashVars = '';
 
@@ -608,7 +547,6 @@ class TypoScriptFrontendController {
 	 * If set, edit icons are rendered aside content records. Must be set only if
 	 * the ->beUserLogin flag is set and set_no_cache() must be called as well.
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $displayEditIcons = '';
 
@@ -617,7 +555,6 @@ class TypoScriptFrontendController {
 	 * set only if the ->beUserLogin flag is set and set_no_cache() must be called as
 	 * well.
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $displayFieldEditIcons = '';
 
@@ -627,14 +564,12 @@ class TypoScriptFrontendController {
 	 * (master language) - but not necessarily the content which could be falling
 	 * back to default (see sys_language_content)
 	 * @var int
-	 * @todo Define visibility
 	 */
 	public $sys_language_uid = 0;
 
 	/**
 	 * Site language mode for content fall back.
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $sys_language_mode = '';
 
@@ -642,7 +577,6 @@ class TypoScriptFrontendController {
 	 * Site content selection uid (can be different from sys_language_uid if content
 	 * is to be selected from a fall-back language. Depends on sys_language_mode)
 	 * @var int
-	 * @todo Define visibility
 	 */
 	public $sys_language_content = 0;
 
@@ -651,7 +585,6 @@ class TypoScriptFrontendController {
 	 * records selected will try to look for a translation pointing to their uid. (If
 	 * configured in [ctrl][languageField] / [ctrl][transOrigP...]
 	 * @var int
-	 * @todo Define visibility
 	 */
 	public $sys_language_contentOL = 0;
 
@@ -660,7 +593,6 @@ class TypoScriptFrontendController {
 	 * by the sys_language record representing the sys_language_uid. (Requires the
 	 * extension "static_info_tables")
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $sys_language_isocode = '';
 
@@ -670,13 +602,11 @@ class TypoScriptFrontendController {
 	 * 'Global' Storage for various applications. Keys should be 'tx_'.extKey for
 	 * extensions.
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $applicationData = array();
 
 	/**
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $register = array();
 
@@ -684,7 +614,6 @@ class TypoScriptFrontendController {
 	 * Stack used for storing array and retrieving register arrays (see
 	 * LOAD_REGISTER and RESTORE_REGISTER)
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $registerStack = array();
 
@@ -692,7 +621,6 @@ class TypoScriptFrontendController {
 	 * Checking that the function is not called eternally. This is done by
 	 * interrupting at a depth of 50
 	 * @var int
-	 * @todo Define visibility
 	 */
 	public $cObjectDepthCounter = 50;
 
@@ -700,7 +628,6 @@ class TypoScriptFrontendController {
 	 * Used by cObj->RECORDS and cObj->CONTENT to ensure the a records is NOT
 	 * rendered twice through it!
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $recordRegister = array();
 
@@ -710,7 +637,6 @@ class TypoScriptFrontendController {
 	 * record delivered in the $data-array of the ContentObjectRenderer instance, if
 	 * the cObjects CONTENT or RECORD created that instance
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $currentRecord = '';
 
@@ -718,7 +644,6 @@ class TypoScriptFrontendController {
 	 * Used by class \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject
 	 * to keep track of access-keys.
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $accessKey = array();
 
@@ -726,7 +651,6 @@ class TypoScriptFrontendController {
 	 * Numerical array where image filenames are added if they are referenced in the
 	 * rendered document. This includes only TYPO3 generated/inserted images.
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $imagesOnPage = array();
 
@@ -735,7 +659,6 @@ class TypoScriptFrontendController {
 	 * most recent rendered image. The information is used in
 	 * ContentObjectRenderer->IMGTEXT
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $lastImageInfo = array();
 
@@ -743,13 +666,11 @@ class TypoScriptFrontendController {
 	 * Used to generate page-unique keys. Point is that uniqid() functions is very
 	 * slow, so a unikey key is made based on this, see function uniqueHash()
 	 * @var int
-	 * @todo Define visibility
 	 */
 	public $uniqueCounter = 0;
 
 	/**
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $uniqueString = '';
 
@@ -757,7 +678,6 @@ class TypoScriptFrontendController {
 	 * This value will be used as the title for the page in the indexer (if
 	 * indexing happens)
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $indexedDocTitle = '';
 
@@ -765,14 +685,12 @@ class TypoScriptFrontendController {
 	 * Alternative page title (normally the title of the page record). Can be set
 	 * from applications you make.
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $altPageTitle = '';
 
 	/**
 	 * The base URL set for the page header.
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $baseUrl = '';
 
@@ -780,7 +698,6 @@ class TypoScriptFrontendController {
 	 * The proper anchor prefix needed when using speaking urls. (only set if
 	 * baseUrl is set)
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $anchorPrefix = '';
 
@@ -794,7 +711,6 @@ class TypoScriptFrontendController {
 	 * Page content render object
 	 *
 	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
-	 * @todo Define visibility
 	 */
 	public $cObj = '';
 
@@ -811,13 +727,11 @@ class TypoScriptFrontendController {
 	/**
 	 * Set to the browser: net / msie if 4+ browsers
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $clientInfo = '';
 
 	/**
 	 * @var int
-	 * @todo Define visibility
 	 */
 	public $scriptParseTime = 0;
 
@@ -826,21 +740,18 @@ class TypoScriptFrontendController {
 	 * charset conversion class. May be used by any application.
 	 *
 	 * @var \TYPO3\CMS\Core\Charset\CharsetConverter
-	 * @todo Define visibility
 	 */
 	public $csConvObj;
 
 	/**
 	 * The default charset used in the frontend if nothing else is set.
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $defaultCharSet = 'utf-8';
 
 	/**
 	 * Internal charset of the frontend during rendering. (Default: UTF-8)
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $renderCharset = '';
 
@@ -849,14 +760,12 @@ class TypoScriptFrontendController {
 	 * header, meta tag etc. If different from $renderCharset a conversion
 	 * happens before output to browser. Defaults to ->renderCharset if not set.
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $metaCharset = '';
 
 	/**
 	 * Assumed charset of locale strings.
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $localeCharset = '';
 
@@ -865,19 +774,16 @@ class TypoScriptFrontendController {
 	/**
 	 * Set to the system language key (used on the site)
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $lang = '';
 
 	/**
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $LL_labels_cache = array();
 
 	/**
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $LL_files_cache = array();
 
@@ -894,7 +800,6 @@ class TypoScriptFrontendController {
 	 * Locking object for accessing "cache_pagesection"
 	 *
 	 * @var \TYPO3\CMS\Core\Locking\Locker
-	 * @todo Define visibility
 	 */
 	public $pagesection_lockObj;
 
@@ -902,7 +807,6 @@ class TypoScriptFrontendController {
 	 * Locking object for accessing "cache_pages"
 	 *
 	 * @var \TYPO3\CMS\Core\Locking\Locker
-	 * @todo Define visibility
 	 */
 	public $pages_lockObj;
 
@@ -951,7 +855,6 @@ class TypoScriptFrontendController {
 	 * @param string $MP The value of \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('MP')
 	 * @param string $RDCT The value of \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('RDCT')
 	 * @see index_ts.php
-	 * @todo Define visibility
 	 */
 	public function __construct($TYPO3_CONF_VARS, $id, $type, $no_cache = '', $cHash = '', $jumpurl = '', $MP = '', $RDCT = '') {
 		// Setting some variables:
@@ -1143,7 +1046,6 @@ class TypoScriptFrontendController {
 	 * Sets ->loginUser and ->gr_list based on front-end user status.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function initUserGroups() {
 		// This affects the hidden-flag selecting the fe_groups for the user!
@@ -1185,7 +1087,6 @@ class TypoScriptFrontendController {
 	 * Checking if a user is logged in or a group constellation different from "0,-1"
 	 *
 	 * @return boolean TRUE if either a login user is found (array fe_user->user) OR if the gr_list is set to something else than '0,-1' (could be done even without a user being logged in!)
-	 * @todo Define visibility
 	 */
 	public function isUserOrGroupSet() {
 		return is_array($this->fe_user->user) || $this->gr_list !== '0,-1';
@@ -1454,7 +1355,6 @@ class TypoScriptFrontendController {
 	 * @throws \TYPO3\CMS\Core\Error\Http\ServiceUnavailableException
 	 * @return void
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function fetch_the_id() {
 		$GLOBALS['TT']->push('fetch_the_id initialize/', '');
@@ -1568,7 +1468,6 @@ class TypoScriptFrontendController {
 	 * @throws PageNotFoundException
 	 * @return void
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function getPageAndRootline() {
 		$this->page = $this->sys_page->getPage($this->id);
@@ -1692,7 +1591,6 @@ class TypoScriptFrontendController {
 	 * @return mixed Returns the page record of the page that the shortcut pointed to.
 	 * @access private
 	 * @see getPageAndRootline()
-	 * @todo Define visibility
 	 */
 	public function getPageShortcut($SC, $mode, $thisUid, $itera = 20, $pageLog = array()) {
 		$idArray = GeneralUtility::intExplode(',', $SC);
@@ -1756,7 +1654,6 @@ class TypoScriptFrontendController {
 	 *
 	 * @return boolean
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function checkRootlineForIncludeSection() {
 		$c = count($this->rootLine);
@@ -1800,7 +1697,6 @@ class TypoScriptFrontendController {
 	 * @param boolean $bypassGroupCheck Bypass group-check
 	 * @return boolean TRUE, if record is viewable.
 	 * @see TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer::getTreeList(), checkPagerecordForIncludeSection()
-	 * @todo Define visibility
 	 */
 	public function checkEnableFields($row, $bypassGroupCheck = FALSE) {
 		if (isset($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_checkEnableFields']) && is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_checkEnableFields'])) {
@@ -1825,7 +1721,6 @@ class TypoScriptFrontendController {
 	 * @param mixed $groupList List of group id's (comma list or array). Default is $this->gr_list
 	 * @return boolean TRUE, if group access is granted.
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function checkPageGroupAccess($row, $groupList = NULL) {
 		if (is_null($groupList)) {
@@ -1845,7 +1740,6 @@ class TypoScriptFrontendController {
 	 * @return boolean Returns TRUE if either extendToSubpages is not checked or if the enableFields does not disable the page record.
 	 * @access private
 	 * @see checkEnableFields(), TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer::getTreeList(), checkRootlineForIncludeSection()
-	 * @todo Define visibility
 	 */
 	public function checkPagerecordForIncludeSection($row) {
 		return !$row['extendToSubpages'] || $this->checkEnableFields($row) ? 1 : 0;
@@ -1855,7 +1749,6 @@ class TypoScriptFrontendController {
 	 * Checks if logins are allowed in the current branch of the page tree. Traverses the full root line and returns TRUE if logins are OK, otherwise FALSE (and then the login user must be unset!)
 	 *
 	 * @return boolean returns TRUE if logins are OK, otherwise FALSE (and then the login user must be unset!)
-	 * @todo Define visibility
 	 */
 	public function checkIfLoginAllowedInBranch() {
 		// Initialize:
@@ -1884,7 +1777,6 @@ class TypoScriptFrontendController {
 	 * Analysing $this->pageAccessFailureHistory into a summary array telling which features disabled display and on which pages and conditions. That data can be used inside a page-not-found handler
 	 *
 	 * @return array Summary of why page access was not allowed.
-	 * @todo Define visibility
 	 */
 	public function getPageAccessFailureReasons() {
 		$output = array();
@@ -1919,7 +1811,6 @@ class TypoScriptFrontendController {
 	 *
 	 * @return void
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function setIDfromArgV() {
 		if (!$this->id) {
@@ -1936,7 +1827,6 @@ class TypoScriptFrontendController {
 	 * @param integer $domainStartPage Page uid of the page where the found domain record is (pid of the domain record)
 	 * @return void
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function getPageAndRootlineWithDomain($domainStartPage) {
 		$this->getPageAndRootline();
@@ -1964,7 +1854,6 @@ class TypoScriptFrontendController {
 	 *
 	 * @return void
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function setSysPageWhereClause() {
 		$this->sys_page->where_hid_del .= ' AND pages.doktype<200';
@@ -1977,7 +1866,6 @@ class TypoScriptFrontendController {
 	 * @param boolean $recursive If set, it looks "recursively" meaning that a domain like "123.456.typo3.com" would find a domain record like "typo3.com" if "123.456.typo3.com" or "456.typo3.com" did not exist.
 	 * @return integer Returns the page id of the page where the domain record was found.
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function findDomainRecord($recursive = FALSE) {
 		if ($recursive) {
@@ -2015,7 +1903,6 @@ class TypoScriptFrontendController {
 	 * @param string $reason Reason text
 	 * @param string $header HTTP header to send
 	 * @return void Function exits.
-	 * @todo Define visibility
 	 */
 	public function pageNotFoundAndExit($reason = '', $header = '') {
 		$header = $header ?: $this->TYPO3_CONF_VARS['FE']['pageNotFound_handling_statheader'];
@@ -2028,7 +1915,6 @@ class TypoScriptFrontendController {
 	 * and devIPMask must not match the current visitor's IP address.
 	 *
 	 * @return boolean TRUE/FALSE whether the pageUnavailable_handler should be used.
-	 * @todo Define visibility
 	 */
 	public function checkPageUnavailableHandler() {
 		if (
@@ -2052,7 +1938,6 @@ class TypoScriptFrontendController {
 	 * @param string $header If set, this is passed directly to the PHP function, header()
 	 * @param string $reason If set, error messages will also mention this as the reason for the page-not-found.
 	 * @return void (The function exits!)
-	 * @todo Define visibility
 	 */
 	public function pageUnavailableHandler($code, $header, $reason) {
 		$this->pageErrorHandler($code, $header, $reason);
@@ -2065,7 +1950,6 @@ class TypoScriptFrontendController {
 	 * @param string $header If set, this is passed directly to the PHP function, header()
 	 * @param string $reason If set, error messages will also mention this as the reason for the page-not-found.
 	 * @return void (The function exits!)
-	 * @todo Define visibility
 	 */
 	public function pageNotFoundHandler($code, $header = '', $reason = '') {
 		$this->pageErrorHandler($code, $header, $reason);
@@ -2080,7 +1964,6 @@ class TypoScriptFrontendController {
 	 * @param string $reason If set, error messages will also mention this as the reason for the page-not-found.
 	 * @throws \RuntimeException
 	 * @return void (The function exits!)
-	 * @todo Define visibility
 	 */
 	public function pageErrorHandler($code, $header = '', $reason = '') {
 		// Issue header in any case:
@@ -2215,7 +2098,6 @@ class TypoScriptFrontendController {
 	 *
 	 * @return void
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function checkAndSetAlias() {
 		if ($this->id && !\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->id)) {
@@ -2233,7 +2115,6 @@ class TypoScriptFrontendController {
 	 *
 	 * @param array $GET_VARS Array of key/value pairs that will be merged into the current GET-vars. (Non-escaped values)
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function mergingWithGetVars($GET_VARS) {
 		if (is_array($GET_VARS)) {
@@ -2310,7 +2191,6 @@ class TypoScriptFrontendController {
 	 *
 	 * @return void
 	 * @see makeCacheHash(), \TYPO3\CMS\Frontend\Plugin\AbstractPlugin::pi_cHashCheck()
-	 * @todo Define visibility
 	 */
 	public function reqCHash() {
 		if (!$this->cHash) {
@@ -2435,7 +2315,6 @@ class TypoScriptFrontendController {
 	 * Returning the cached version of page with hash = newHash
 	 *
 	 * @return array Cached row, if any. Otherwise void.
-	 * @todo Define visibility
 	 */
 	public function getFromCache_queryRow() {
 		$GLOBALS['TT']->push('Cache Query', '');
@@ -2450,7 +2329,6 @@ class TypoScriptFrontendController {
 	 * Also, a backend user MUST be logged in for the shift-reload to be detected due to DoS-attack-security reasons.
 	 *
 	 * @return boolean If shift-reload in client browser has been clicked, disable getting cached page (and regenerate it).
-	 * @todo Define visibility
 	 */
 	public function headerNoCache() {
 		$disableAcquireCacheData = FALSE;
@@ -2477,7 +2355,6 @@ class TypoScriptFrontendController {
 	 * @return string MD5 hash of serialized hash base from createHashBase()
 	 * @access private
 	 * @see getFromCache(), getLockHash()
-	 * @todo Define visibility
 	 */
 	public function getHash() {
 		return md5($this->createHashBase(FALSE));
@@ -2490,7 +2367,6 @@ class TypoScriptFrontendController {
 	 * @return string MD5 hash
 	 * @access private
 	 * @see getFromCache(), getHash()
-	 * @todo Define visibility
 	 */
 	public function getLockHash() {
 		$lockHash = $this->createHashBase(TRUE);
@@ -2860,7 +2736,6 @@ class TypoScriptFrontendController {
 	 * @return void
 	 * @access private
 	 * @see checkDataSubmission()
-	 * @todo Define visibility
 	 */
 	public function locDataCheck($locationData) {
 		$locData = explode(':', $locationData);
@@ -2931,7 +2806,6 @@ class TypoScriptFrontendController {
 	 *
 	 * @param string $bodytext The content of the related bodytext field
 	 * @return string The value of the recipient_copy field, or an empty string
-	 * @todo Define visibility
 	 */
 	public function extractRecipientCopy($bodytext) {
 		$recipient_copy = '';
@@ -3190,7 +3064,6 @@ class TypoScriptFrontendController {
 	 * The temporary cache will expire after a few seconds (typ. 30) or will be cleared by the rendered page, which will also clear and rewrite the cache.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function tempPageCacheContent() {
 		$this->tempContent = FALSE;
@@ -3246,7 +3119,6 @@ class TypoScriptFrontendController {
 	 * Set cache content to $this->content
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function realPageCacheContent() {
 		// seconds until a cached page is too old
@@ -3284,7 +3156,6 @@ class TypoScriptFrontendController {
 	 * @param integer $expirationTstamp Expiration timestamp
 	 * @return void
 	 * @see realPageCacheContent(), tempPageCacheContent()
-	 * @todo Define visibility
 	 */
 	public function setPageCacheContent($content, $data, $expirationTstamp) {
 		$cacheData = array(
@@ -3314,7 +3185,6 @@ class TypoScriptFrontendController {
 	 * Clears cache content (for $this->newHash)
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function clearPageCacheContent() {
 		$this->pageCache->remove($this->newHash);
@@ -3325,7 +3195,6 @@ class TypoScriptFrontendController {
 	 *
 	 * @param string $pidList A list of INTEGER numbers which points to page uids for which to clear entries in the cache_pages cache (page content cache)
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function clearPageCacheContent_pidList($pidList) {
 		$pageIds = GeneralUtility::trimExplode(',', $pidList);
@@ -3340,7 +3209,6 @@ class TypoScriptFrontendController {
 	 *
 	 * @return void
 	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::lastChanged()
-	 * @todo Define visibility
 	 */
 	public function setSysLastChanged() {
 		if ($this->page['SYS_LASTCHANGED'] < (int)$this->register['SYS_LASTCHANGED']) {
@@ -3356,7 +3224,6 @@ class TypoScriptFrontendController {
 	 * @param string $key String to identify the lock in the system
 	 * @return boolean Returns TRUE if the lock could be obtained, FALSE otherwise (= process had to wait for existing lock to be released)
 	 * @see releasePageGenerationLock()
-	 * @todo Define visibility
 	 */
 	public function acquirePageGenerationLock(&$lockObj, $key) {
 		if ($this->no_cache || $this->headerNoCache()) {
@@ -3391,7 +3258,6 @@ class TypoScriptFrontendController {
 	 * @param \TYPO3\CMS\Core\Locking\Locker $lockObj Reference to a locking object
 	 * @return boolean Returns TRUE on success, FALSE otherwise
 	 * @see acquirePageGenerationLock()
-	 * @todo Define visibility
 	 */
 	public function releasePageGenerationLock(&$lockObj) {
 		$success = FALSE;
@@ -3662,7 +3528,6 @@ class TypoScriptFrontendController {
 	 * Loads the JavaScript code for INTincScript
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function INTincScript_loadJSCode() {
 		// Add javascript
@@ -3710,7 +3575,6 @@ class TypoScriptFrontendController {
 	 * Returns the mode of XHTML cleaning
 	 *
 	 * @return string Keyword: "all", "cached" or "output
-	 * @todo Define visibility
 	 */
 	public function doXHTML_cleaning() {
 		return $this->config['config']['xhtml_cleaning'];
@@ -3720,7 +3584,6 @@ class TypoScriptFrontendController {
 	 * Returns the mode of Local Anchor prefixing
 	 *
 	 * @return string Keyword: "all", "cached" or "output
-	 * @todo Define visibility
 	 */
 	public function doLocalAnchorFix() {
 		return isset($this->config['config']['prefixLocalAnchors']) ? $this->config['config']['prefixLocalAnchors'] : NULL;
@@ -3822,7 +3685,6 @@ class TypoScriptFrontendController {
 	 *
 	 * @return void
 	 * @co-author Ole Tange, Forbrugernes Hus, Denmark
-	 * @todo Define visibility
 	 */
 	public function sendCacheHeaders() {
 		// Getting status whether we can send cache control headers for proxy caching:
@@ -3875,7 +3737,6 @@ class TypoScriptFrontendController {
 	 * There can be no logged in user because user sessions are based on a cookie and thereby does not offer client caching a chance to know if the user is logged in. Actually, there will be a reverse problem here; If a page will somehow change when a user is logged in he may not see it correctly if the non-login version sent a cache-header! So do NOT use cache headers in page sections where user logins change the page content. (unless using such as realurl to apply a prefix in case of login sections)
 	 *
 	 * @return boolean
-	 * @todo Define visibility
 	 */
 	public function isStaticCacheble() {
 		$doCache = !$this->no_cache && !$this->isINTincScript() && !$this->isUserOrGroupSet();
@@ -3886,7 +3747,6 @@ class TypoScriptFrontendController {
 	 * Substitute various tokens in content. This should happen only if the content is not cached by proxies or client browsers.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function contentStrReplace() {
 		$search = array();
@@ -4009,7 +3869,6 @@ class TypoScriptFrontendController {
 	 * Sends HTTP headers for temporary content. These headers prevent search engines from caching temporary content and asks them to revisit this page again.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function addTempContentHttpHeaders() {
 		header('HTTP/1.0 503 Service unavailable');
@@ -4033,7 +3892,6 @@ class TypoScriptFrontendController {
 	 * @param integer $end End of range
 	 * @param integer $offset Offset
 	 * @return string encoded/decoded version of character
-	 * @todo Define visibility
 	 */
 	public function encryptCharcode($n, $start, $end, $offset) {
 		$n = $n + $offset;
@@ -4051,7 +3909,6 @@ class TypoScriptFrontendController {
 	 * @param string $string Input string to en/decode: "mailto:blabla@bla.com
 	 * @param boolean $back If set, the process is reversed, effectively decoding, not encoding.
 	 * @return string encoded/decoded version of $string
-	 * @todo Define visibility
 	 */
 	public function encryptEmail($string, $back = FALSE) {
 		$out = '';
@@ -4091,7 +3948,6 @@ class TypoScriptFrontendController {
 	 * @param string $string Input string to en/decode
 	 * @param boolean $decode If set, string is decoded, not encoded.
 	 * @return string encoded/decoded version of $string
-	 * @todo Define visibility
 	 */
 	public function codeString($string, $decode = FALSE) {
 		if ($decode) {
@@ -4142,7 +3998,6 @@ class TypoScriptFrontendController {
 	 * @param string $incFile Relative path to php file
 	 * @return boolean Returns TRUE if $GLOBALS['TYPO3_CONF_VARS']['FE']['noPHPscriptInclude'] is not set OR if the file requested for inclusion is found in one of the allowed paths.
 	 * @see \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::includeMakeMenu()
-	 * @todo Define visibility
 	 */
 	public function checkFileInclude($incFile) {
 		return !$this->TYPO3_CONF_VARS['FE']['noPHPscriptInclude'] || substr($incFile, 0, 4 + strlen(TYPO3_mainDir)) == TYPO3_mainDir . 'ext/' || substr($incFile, 0, 7 + strlen(TYPO3_mainDir)) == TYPO3_mainDir . 'sysext/' || substr($incFile, 0, 14) == 'typo3conf/ext/';
@@ -4208,7 +4063,6 @@ class TypoScriptFrontendController {
 	 *
 	 * @param string $url Input URL, relative or absolute
 	 * @return string Processed input value.
-	 * @todo Define visibility
 	 */
 	public function baseUrlWrap($url) {
 		if ($this->baseUrl) {
@@ -4229,7 +4083,6 @@ class TypoScriptFrontendController {
 	 * @param string $typoScriptProperty Deprecated object or property
 	 * @param string $explanation Message or additional information
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function logDeprecatedTyposcript($typoScriptProperty, $explanation = '') {
 		$explanationText = strlen($explanation) ? ' - ' . $explanation : '';
@@ -4243,7 +4096,6 @@ class TypoScriptFrontendController {
 	 * @param string $hash The hash string identifying the cache_md5params record for which to update the "tstamp" field to the current time.
 	 * @return void
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function updateMD5paramsRecord($hash) {
 		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('cache_md5params', 'md5hash=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($hash, 'cache_md5params'), array('tstamp' => $GLOBALS['EXEC_TIME']));
@@ -4258,7 +4110,6 @@ class TypoScriptFrontendController {
 	 * @param string $content The page content to clean up. Will be written to a temporary file which "tidy" is then asked to clean up. File content is read back and returned.
 	 * @return string Returns the
 	 * @deprecated tidy and its options were deprecated with TYPO3 CMS 6.2, this function will be removed two versions later. If you need tidy, use the extension "tidy" from TER.
-	 * @todo Define visibility
 	 */
 	public function tidyHTML($content) {
 		GeneralUtility::logDeprecatedFunction();
@@ -4293,7 +4144,6 @@ class TypoScriptFrontendController {
 	 * Substitutes all occurencies of <a href="#"... in $this->content with <a href="[path-to-url]#"...
 	 *
 	 * @return void Works directly on $this->content
-	 * @todo Define visibility
 	 */
 	public function prefixLocalAnchorsWithScript() {
 		$scriptPath = $GLOBALS['TSFE']->absRefPrefix . substr(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), strlen(GeneralUtility::getIndpEnv('TYPO3_SITE_URL')));
@@ -4324,7 +4174,6 @@ class TypoScriptFrontendController {
 	 *
 	 * @param boolean $returnTitle If set, returns title of current workspace being previewed
 	 * @return mixed If $returnTitle is set, returns string (title), otherwise workspace integer for which workspace is being preview. False if none.
-	 * @todo Define visibility
 	 */
 	public function whichWorkspace($returnTitle = FALSE) {
 		if ($this->doWorkspacePreview()) {
@@ -4376,7 +4225,6 @@ class TypoScriptFrontendController {
 	 * Traverses the ->rootLine and returns an array with the first occurrance of storage pid and siteroot pid
 	 *
 	 * @return array Array with keys '_STORAGE_PID' and '_SITEROOT' set to the first occurances found.
-	 * @todo Define visibility
 	 */
 	public function getStorageSiterootPids() {
 		$res = array();
@@ -4398,7 +4246,6 @@ class TypoScriptFrontendController {
 	 * Returns the pages TSconfig array based on the currect ->rootLine
 	 *
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function getPagesTSconfig() {
 		if (!is_array($this->pagesTSconfig)) {
@@ -4432,7 +4279,6 @@ class TypoScriptFrontendController {
 	 * @param string $content is the content if you want any
 	 * @return void
 	 * @see \TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject::writeMenu(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::imageLinkWrap()
-	 * @todo Define visibility
 	 */
 	public function setJS($key, $content = '') {
 		if ($key) {
@@ -4470,7 +4316,6 @@ class TypoScriptFrontendController {
 	 * @param string $content Is the content if you want any
 	 * @return void
 	 * @see setJS()
-	 * @todo Define visibility
 	 */
 	public function setCSS($key, $content) {
 		if ($key) {
@@ -4484,7 +4329,6 @@ class TypoScriptFrontendController {
 	 *
 	 * @param string $str Some string to include in what is hashed. Not significant at all.
 	 * @return string MD5 hash of ->uniqueString, input string and uniqueCounter
-	 * @todo Define visibility
 	 */
 	public function uniqueHash($str = '') {
 		return md5($this->uniqueString . '_' . $str . $this->uniqueCounter++);
@@ -4496,7 +4340,6 @@ class TypoScriptFrontendController {
 	 * @param string $reason An optional reason to be written to the syslog.
 	 * @param boolean $internal Whether the call is done from core itself (should only be used by core).
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function set_no_cache($reason = '', $internal = FALSE) {
 		if ($internal && isset($GLOBALS['BE_USER'])) {
@@ -4546,7 +4389,6 @@ class TypoScriptFrontendController {
 	 *
 	 * @param integer $seconds Cache-timeout in seconds
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function set_cache_timeout_default($seconds) {
 		$this->cacheTimeOutDefault = (int)$seconds;
@@ -4556,7 +4398,6 @@ class TypoScriptFrontendController {
 	 * Get the cache timeout for the current page.
 	 *
 	 * @return integer The cache timeout for the current page.
-	 * @todo Define visibility
 	 */
 	public function get_cache_timeout() {
 		/** @var $runtimeCache \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend */
@@ -4629,7 +4470,6 @@ class TypoScriptFrontendController {
 	 *
 	 * @param string $input Key string. Accepts the "LLL:" prefix.
 	 * @return string Label value, if any.
-	 * @todo Define visibility
 	 */
 	public function sL($input) {
 		if (substr($input, 0, 4) !== 'LLL:') {
@@ -4660,7 +4500,6 @@ class TypoScriptFrontendController {
 	 *
 	 * @param string $fileRef Reference to a relative filename to include.
 	 * @return array Returns the $LOCAL_LANG array found in the file. If no array found, returns empty array.
-	 * @todo Define visibility
 	 */
 	public function readLLfile($fileRef) {
 		if ($this->lang !== 'default') {
@@ -4696,7 +4535,6 @@ class TypoScriptFrontendController {
 	 * @param string $index Local_lang key for which to return label (language is determined by $this->lang)
 	 * @param array $LOCAL_LANG The locallang array in which to search
 	 * @return string Label value of $index key.
-	 * @todo Define visibility
 	 */
 	public function getLLL($index, $LOCAL_LANG) {
 		if (isset($LOCAL_LANG[$this->lang][$index][0]['target'])) {
@@ -4711,7 +4549,6 @@ class TypoScriptFrontendController {
 	 * Initializing the getLL variables needed.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function initLLvars() {
 		// Init languageDependencies list
@@ -4750,7 +4587,6 @@ class TypoScriptFrontendController {
 	 * @param string $from Optional "from" charset.
 	 * @return string Output string, converted if needed.
 	 * @see \TYPO3\CMS\Core\Charset\CharsetConverter
-	 * @todo Define visibility
 	 */
 	public function csConv($str, $from = '') {
 		if ($from) {
@@ -4767,7 +4603,6 @@ class TypoScriptFrontendController {
 	 * @param string $content Content to be converted.
 	 * @param string $label Label (just for fun, no function)
 	 * @return string Converted content string.
-	 * @todo Define visibility
 	 */
 	public function convOutputCharset($content, $label = '') {
 		if ($this->renderCharset != $this->metaCharset) {

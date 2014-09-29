@@ -94,7 +94,6 @@ class PageBrowsingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 	 * @param integer $p currentPage value
 	 * @param string $freeIndexUid List of integers pointing to free indexing configurations to search. -1 represents no filtering, 0 represents TYPO3 pages only, any number above zero is a uid of an indexing configuration!
 	 * @return string Input string wrapped in <a> tag with onclick event attribute set.
-	 * @todo Define visibility
 	 */
 	public function makecurrentPageSelector_link($str, $p, $freeIndexUid) {
 		$onclick = 'document.getElementById(\'' . $this->prefixId . '_pointer\').value=\'' . $p . '\';';

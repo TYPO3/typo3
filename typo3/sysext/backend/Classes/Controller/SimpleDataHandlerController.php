@@ -31,74 +31,74 @@ class SimpleDataHandlerController {
 	// Internal, static: GPvar
 	// Array. Accepts options to be set in TCE object. Currently it supports "reverseOrder" (boolean).
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $flags;
 
 	// Data array on the form [tablename][uid][fieldname] = value
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $data;
 
 	// Command array on the form [tablename][uid][command] = value. This array may get additional data set internally based on clipboard commands send in CB var!
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $cmd;
 
 	// Array passed to ->setMirror.
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $mirror;
 
 	// Cache command sent to ->clear_cacheCmd
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $cacheCmd;
 
 	// Redirect URL. Script will redirect to this location after performing operations (unless errors has occurred)
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $redirect;
 
 	// Boolean. If set, errors will be printed on screen instead of redirection. Should always be used, otherwise you will see no errors if they happen.
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $prErr;
 
 	// Clipboard command array. May trigger changes in "cmd"
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $CB;
 
 	// Verification code
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $vC;
 
 	// Boolean. Update Page Tree Trigger. If set and the manipulated records are pages then the update page tree signal will be set.
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $uPT;
 
 	// String, general comment (for raising stages of workspace versions)
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $generalComment;
 
 	// Internal, dynamic:
 	// Files to include after init() function is called:
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $include_once = array();
 
@@ -106,7 +106,6 @@ class SimpleDataHandlerController {
 	 * TYPO3 Core Engine
 	 *
 	 * @var \TYPO3\CMS\Core\DataHandling\DataHandler
-	 * @todo Define visibility
 	 */
 	public $tce;
 
@@ -122,7 +121,6 @@ class SimpleDataHandlerController {
 	 * Initialization of the class
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function init() {
 		// GPvars:
@@ -168,7 +166,6 @@ class SimpleDataHandlerController {
 	 * Clipboard pasting and deleting.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function initClipboard() {
 		if (is_array($this->CB)) {
@@ -193,7 +190,6 @@ class SimpleDataHandlerController {
 	 * Executing the posted actions ...
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		// LOAD TCEmain with data and cmd arrays:
@@ -228,7 +224,6 @@ class SimpleDataHandlerController {
 	 * Might also display error messages directly, if any.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function finish() {
 		// Prints errors, if...

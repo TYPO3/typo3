@@ -35,7 +35,6 @@ class newRecordLocalPageTree extends \TYPO3\CMS\Backend\Tree\View\PageTreeView {
 	 * @param string $icon Icon image
 	 * @param array $row Item row
 	 * @return string Wrapping icon image.
-	 * @todo Define visibility
 	 */
 	public function wrapIcon($icon, $row) {
 		return $this->addTagAttributes($icon, ' title="id=' . htmlspecialchars($row['uid']) . '"');
@@ -47,7 +46,6 @@ class newRecordLocalPageTree extends \TYPO3\CMS\Backend\Tree\View\PageTreeView {
 	 *
 	 * @param integer $id The ID (page id) of the element
 	 * @return boolean Returns TRUE if the IDs matches
-	 * @todo Define visibility
 	 */
 	public function expandNext($id) {
 		return $id == $GLOBALS['SOBE']->id ? 1 : 0;

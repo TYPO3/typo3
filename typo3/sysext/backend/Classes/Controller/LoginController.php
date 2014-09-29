@@ -32,27 +32,15 @@ class LoginController {
 
 	// Internal, GPvars:
 	// GPvar: redirect_url; The URL to redirect to after login.
-	/**
-	 * @todo Define visibility
-	 */
 	public $redirect_url;
 
 	// GPvar: Defines which interface to load (from interface selector)
-	/**
-	 * @todo Define visibility
-	 */
 	public $GPinterface;
 
 	// GPvar: preset username
-	/**
-	 * @todo Define visibility
-	 */
 	public $u;
 
 	// GPvar: preset password
-	/**
-	 * @todo Define visibility
-	 */
 	public $p;
 
 	/**
@@ -61,67 +49,37 @@ class LoginController {
 	protected $openIdUrl;
 
 	// GPvar: If "L" is "OUT", then any logged in used is logged out. If redirect_url is given, we redirect to it
-	/**
-	 * @todo Define visibility
-	 */
 	public $L;
 
 	// Login-refresh boolean; The backend will call this script with this value set when the login is close to being expired and the form needs to be redrawn.
-	/**
-	 * @todo Define visibility
-	 */
 	public $loginRefresh;
 
 	// Value of forms submit button for login.
-	/**
-	 * @todo Define visibility
-	 */
 	public $commandLI;
 
 	// Internal, static:
 	// Set to the redirect URL of the form (may be redirect_url or "backend.php")
-	/**
-	 * @todo Define visibility
-	 */
 	public $redirectToURL;
 
 	// Internal, dynamic:
 	// Content accumulation
-	/**
-	 * @todo Define visibility
-	 */
 	public $content;
 
 	// A selector box for selecting value for "interface" may be rendered into this variable
-	/**
-	 * @todo Define visibility
-	 */
 	public $interfaceSelector;
 
 	// A selector box for selecting value for "interface" may be rendered into this variable
 	// this will have an onchange action which will redirect the user to the selected interface right away
-	/**
-	 * @todo Define visibility
-	 */
 	public $interfaceSelector_jump;
 
 	// A hidden field, if the interface is not set.
-	/**
-	 * @todo Define visibility
-	 */
 	public $interfaceSelector_hidden;
 
 	// Additional hidden fields to be placed at the login form
-	/**
-	 * @todo Define visibility
-	 */
 	public $addFields_hidden = '';
 
 	// sets the level of security. *'normal' = clear-text. 'challenged' = hashed
 	// password/username from form in $formfield_uident. 'superchallenged' = hashed password hashed again with username.
-	/**
-	 * @todo Define visibility
-	 */
 	public $loginSecurityLevel = 'superchallenged';
 
 	/**
@@ -140,7 +98,6 @@ class LoginController {
 	 * Initialize the login box. Will also react on a &L=OUT flag and exit.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function init() {
 		// We need a PHP session session for most login levels
@@ -187,7 +144,6 @@ class LoginController {
 	 * Main function - creating the login/logout form
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		// Initialize template object:
@@ -240,7 +196,6 @@ class LoginController {
 	 * Outputting the accumulated content to screen
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		echo $this->content;
@@ -256,7 +211,6 @@ class LoginController {
 	 * This is drawn when NO login exists.
 	 *
 	 * @return string HTML output
-	 * @todo Define visibility
 	 */
 	public function makeLoginForm() {
 		$content = HtmlParser::getSubpart($GLOBALS['TBE_TEMPLATE']->moduleTemplate, '###LOGIN_FORM###');
@@ -289,7 +243,6 @@ class LoginController {
 	 * This is drawn if a user login already exists.
 	 *
 	 * @return string HTML output
-	 * @todo Define visibility
 	 */
 	public function makeLogoutForm() {
 		$content = HtmlParser::getSubpart($GLOBALS['TBE_TEMPLATE']->moduleTemplate, '###LOGOUT_FORM###');
@@ -313,7 +266,6 @@ class LoginController {
 	 *
 	 * @param string $content HTML content for the login form
 	 * @return string The HTML for the page.
-	 * @todo Define visibility
 	 */
 	public function wrapLoginForm($content) {
 		$mainContent = HtmlParser::getSubpart($GLOBALS['TBE_TEMPLATE']->moduleTemplate, '###PAGE###');
@@ -370,7 +322,6 @@ class LoginController {
 	 * Checking, if we should perform some sort of redirection OR closing of windows.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function checkRedirect() {
 		// Do redirect:
@@ -435,7 +386,6 @@ class LoginController {
 	 * Making interface selector:
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function makeInterfaceSelectorBox() {
 		// Reset variables:
@@ -493,7 +443,6 @@ class LoginController {
 	 *
 	 * @return string HTML content
 	 * @credits Idea by Jan-Hendrik Heuing
-	 * @todo Define visibility
 	 */
 	public function makeLoginNews() {
 		$newsContent = '';
@@ -557,7 +506,6 @@ class LoginController {
 	 * Returns the form tag
 	 *
 	 * @return string Opening form tag string
-	 * @todo Define visibility
 	 */
 	public function startForm() {
 		$output = '';
@@ -584,7 +532,6 @@ class LoginController {
 	 * Creates JavaScript for the login form
 	 *
 	 * @return string JavaScript code
-	 * @todo Define visibility
 	 * @deprecated since TYPO3 6.3, not in use anymore
 	 */
 	public function getJScode() {

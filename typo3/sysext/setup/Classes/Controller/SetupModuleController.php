@@ -32,50 +32,30 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class SetupModuleController {
 
 	// Internal variables:
-	/**
-	 * @todo Define visibility
-	 */
 	public $MCONF = array();
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $MOD_MENU = array();
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $MOD_SETTINGS = array();
 
 	/**
 	 * document template object
 	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 * @todo Define visibility
 	 */
 	public $doc;
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $content;
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $overrideConf;
 
 	/**
 	 * backend user object, set during simulate-user operation
 	 *
 	 * @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-	 * @todo Define visibility
 	 */
 	public $OLD_BE_USER;
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $languageUpdate;
 
 	protected $pagetreeNeedsRefresh = FALSE;
@@ -266,7 +246,6 @@ class SetupModuleController {
 	 * Initializes the module for display of the settings form.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function init() {
 		$GLOBALS['LANG']->includeLLFile('EXT:setup/mod/locallang.xlf');
@@ -320,7 +299,6 @@ class SetupModuleController {
 	 * Generate the main settings formular:
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		global $LANG;
@@ -404,7 +382,6 @@ class SetupModuleController {
 	 * Prints the content / ends page
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		echo $this->content;

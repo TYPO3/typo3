@@ -27,7 +27,6 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
 	 * Returns the menu array
 	 *
 	 * @return 	array
-	 * @todo Define visibility
 	 */
 	public function modMenu() {
 		global $LANG;
@@ -51,7 +50,6 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
 	 * MAIN function for page information display
 	 *
 	 * @return string Output HTML for the module.
-	 * @todo Define visibility
 	 */
 	public function main() {
 		global $BACK_PATH, $LANG, $SOBE;

@@ -29,19 +29,19 @@ class ColorpickerController {
 	// GET vars:
 	// Wizard parameters, coming from TCEforms linking to the wizard.
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $P;
 
 	// Value of the current color picked.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $colorValue;
 
 	// Serialized functions for changing the field... Necessary to call when the value is transferred to the TCEform since the form might need to do internal processing. Otherwise the value is simply not be saved.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $fieldChangeFunc;
 
@@ -49,43 +49,43 @@ class ColorpickerController {
 
 	// Form name (from opener script)
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $fieldName;
 
 	// Field name (from opener script)
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $formName;
 
 	// ID of element in opener script for which to set color.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $md5ID;
 
 	// Internal: If FALSE, a frameset is rendered, if TRUE the content of the picker script.
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $showPicker;
 
 	// Static:
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $HTMLcolorList = 'aqua,black,blue,fuchsia,gray,green,lime,maroon,navy,olive,purple,red,silver,teal,yellow,white';
 
 	// Internal:
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $pickerImage = '';
 
 	// Error message if image not found.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $imageError = '';
 
@@ -93,13 +93,12 @@ class ColorpickerController {
 	 * Document template object
 	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 * @todo Define visibility
 	 */
 	public $doc;
 
 	// Accumulated content.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $content;
 
@@ -236,7 +235,6 @@ class ColorpickerController {
 	 * Returnes the sourcecode to the browser
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		$this->content .= $this->doc->endPage();
@@ -250,7 +248,6 @@ class ColorpickerController {
 	 * If Peter wouldn't have been I would've gone insane...
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function frameSet() {
 		// Set doktype:
@@ -295,7 +292,6 @@ class ColorpickerController {
 	 * Creates a color matrix table
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function colorMatrix() {
 		$steps = 51;
@@ -334,7 +330,6 @@ class ColorpickerController {
 	 * Creates a selector box with all HTML color names.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function colorList() {
 		// Initialize variables:
@@ -360,7 +355,6 @@ class ColorpickerController {
 	 * Creates a color image selector
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function colorImage() {
 		// Handling color-picker image if any:
@@ -391,7 +385,6 @@ class ColorpickerController {
 	 * @param integer $y Y-Coordinate of the pixel that should be checked
 	 * @return string HEX RGB value for color
 	 * @see colorImage()
-	 * @todo Define visibility
 	 */
 	public function getIndex($im, $x, $y) {
 		$rgb = ImageColorAt($im, $x, $y);

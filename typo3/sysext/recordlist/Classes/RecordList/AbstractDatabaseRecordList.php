@@ -28,173 +28,89 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 
 	// External, static:
 	// Specify a list of tables which are the only ones allowed to be displayed.
-	/**
-	 * @todo Define visibility
-	 */
 	public $tableList = '';
 
 	// Return URL
-	/**
-	 * @todo Define visibility
-	 */
 	public $returnUrl = '';
 
 	// Boolean. Thumbnails on records containing files (pictures)
-	/**
-	 * @todo Define visibility
-	 */
 	public $thumbs = 0;
 
 	// default Max items shown per table in "multi-table mode", may be overridden by tables.php
-	/**
-	 * @todo Define visibility
-	 */
 	public $itemsLimitPerTable = 20;
 
 	// default Max items shown per table in "single-table mode", may be overridden by tables.php
-	/**
-	 * @todo Define visibility
-	 */
 	public $itemsLimitSingleTable = 100;
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $widthGif = '<img src="clear.gif" width="1" height="4" hspace="160" alt="" />';
 
 	// Current script name
-	/**
-	 * @todo Define visibility
-	 */
 	public $script = 'index.php';
 
 	// Indicates if all available fields for a user should be selected or not.
-	/**
-	 * @todo Define visibility
-	 */
 	public $allFields = 0;
 
 	// Whether to show localization view or not.
-	/**
-	 * @todo Define visibility
-	 */
 	public $localizationView = FALSE;
 
 	// Internal, static: GPvar:
 	// If set, csvList is outputted.
-	/**
-	 * @todo Define visibility
-	 */
 	public $csvOutput = FALSE;
 
 	// Field, to sort list by
-	/**
-	 * @todo Define visibility
-	 */
 	public $sortField;
 
 	// Field, indicating to sort in reverse order.
-	/**
-	 * @todo Define visibility
-	 */
 	public $sortRev;
 
 	// Array, containing which fields to display in extended mode
-	/**
-	 * @todo Define visibility
-	 */
 	public $displayFields;
 
 	// String, can contain the field name from a table which must have duplicate values marked.
-	/**
-	 * @todo Define visibility
-	 */
 	public $duplicateField;
 
 	// Internal, static:
 	// Page id
-	/**
-	 * @todo Define visibility
-	 */
 	public $id;
 
 	// Tablename if single-table mode
-	/**
-	 * @todo Define visibility
-	 */
 	public $table = '';
 
 	// If TRUE, records are listed only if a specific table is selected.
-	/**
-	 * @todo Define visibility
-	 */
 	public $listOnlyInSingleTableMode = FALSE;
 
 	// Pointer for browsing list
-	/**
-	 * @todo Define visibility
-	 */
 	public $firstElementNumber = 0;
 
 	// Search string
-	/**
-	 * @todo Define visibility
-	 */
 	public $searchString = '';
 
 	// Levels to search down.
-	/**
-	 * @todo Define visibility
-	 */
 	public $searchLevels = '';
 
 	// Number of records to show
-	/**
-	 * @todo Define visibility
-	 */
 	public $showLimit = 0;
 
 	// Query part for either a list of ids "pid IN (1,2,3)" or a single id "pid = 123" from
 	// which to select/search etc. (when search-levels are set high). See start()
-	/**
-	 * @todo Define visibility
-	 */
 	public $pidSelect = '';
 
 	// Page select permissions
-	/**
-	 * @todo Define visibility
-	 */
 	public $perms_clause = '';
 
 	// Some permissions...
-	/**
-	 * @todo Define visibility
-	 */
 	public $calcPerms = 0;
 
 	// Mode for what happens when a user clicks the title of a record.
-	/**
-	 * @todo Define visibility
-	 */
 	public $clickTitleMode = '';
 
 	// Shared module configuration, used by localization features
-	/**
-	 * @todo Define visibility
-	 */
 	public $modSharedTSconfig = array();
 
 	// Loaded with page record with version overlay if any.
-	/**
-	 * @todo Define visibility
-	 */
 	public $pageRecord = array();
 
 	// Tables which should not get listed
-	/**
-	 * @todo Define visibility
-	 */
 	public $hideTables = '';
 
 	/**
@@ -205,76 +121,40 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	public $hideTranslations = '';
 
 	//TSconfig which overwrites TCA-Settings
-	/**
-	 * @todo Define visibility
-	 */
 	public $tableTSconfigOverTCA = array();
 
 	// Array of collapsed / uncollapsed tables in multi table view
-	/**
-	 * @todo Define visibility
-	 */
 	public $tablesCollapsed = array();
 
 	// Internal, dynamic:
 	// JavaScript code accumulation
-	/**
-	 * @todo Define visibility
-	 */
 	public $JScode = '';
 
 	// HTML output
-	/**
-	 * @todo Define visibility
-	 */
 	public $HTMLcode = '';
 
 	// "LIMIT " in SQL...
-	/**
-	 * @todo Define visibility
-	 */
 	public $iLimit = 0;
 
 	// Counting the elements no matter what...
-	/**
-	 * @todo Define visibility
-	 */
 	public $eCounter = 0;
 
 	// Set to the total number of items for a table when selecting.
-	/**
-	 * @todo Define visibility
-	 */
 	public $totalItems = '';
 
 	// Cache for record path
-	/**
-	 * @todo Define visibility
-	 */
 	public $recPath_cache = array();
 
 	// Fields to display for the current table
-	/**
-	 * @todo Define visibility
-	 */
 	public $setFields = array();
 
 	// Used for tracking next/prev uids
-	/**
-	 * @todo Define visibility
-	 */
 	public $currentTable = array();
 
 	// Used for tracking duplicate values of fields
-	/**
-	 * @todo Define visibility
-	 */
 	public $duplicateStack = array();
 
 	// module configuratio
-	/**
-	 * @todo Define visibility
-	 */
 	public $modTSconfig;
 
 	/**
@@ -293,7 +173,6 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 * @param integer $levels Number of levels to search down the page tree
 	 * @param integer $showLimit Limit of records to be listed.
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function start($id, $table, $pointer, $search = '', $levels = '', $showLimit = 0) {
 		// Setting internal variables:
@@ -375,7 +254,6 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 * Finishes off with a stopper-gif
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function generateList() {
 		// Set page record in header
@@ -446,7 +324,6 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 *
 	 * @param boolean $formFields If TRUE, the search box is wrapped in its own form-tags
 	 * @return string HTML for the search box
-	 * @todo Define visibility
 	 */
 	public function getSearchBox($formFields = 1) {
 		// Setting form-elements, if applicable:
@@ -486,7 +363,6 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 * Sets the internal variable $this->setFields
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function setDispFields() {
 		// Getting from session:
@@ -509,7 +385,6 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 * @param string $table Table (record is from)
 	 * @param string $field Field name for which thumbnail are to be rendered.
 	 * @return string HTML for thumbnails, if any.
-	 * @todo Define visibility
 	 */
 	public function thumbCode($row, $table, $field) {
 		return BackendUtility::thumbCode($row, $table, $field, $this->backPath);
@@ -523,7 +398,6 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 * @param string $addWhere Additional part for where clause
 	 * @param string $fieldList Field list to select, * for all (for "SELECT [fieldlist] FROM ...")
 	 * @return array Returns query array
-	 * @todo Define visibility
 	 */
 	public function makeQueryArray($table, $id, $addWhere = '', $fieldList = '*') {
 		$hookObjectsArr = array();
@@ -583,7 +457,6 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 * @param array $queryParts Query array
 	 * @return void
 	 * @see makeQueryArray()
-	 * @todo Define visibility
 	 */
 	public function setTotalItems($queryParts) {
 		$this->totalItems = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', $queryParts['FROM'], $queryParts['WHERE']);
@@ -596,7 +469,6 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 * @param string $table Table, in which the fields are being searched.
 	 * @param integer $currentPid Page id for the possible search limit. -1 only if called from an old XCLASS.
 	 * @return string Returns part of WHERE-clause for searching, if applicable.
-	 * @todo Define visibility
 	 */
 	public function makeSearchString($table, $currentPid = -1) {
 		$result = '';
@@ -698,7 +570,6 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 * @param string $table Table name
 	 * @param string $code Table label
 	 * @return string The linked table label
-	 * @todo Define visibility
 	 */
 	public function linkWrapTable($table, $code) {
 		if ($this->table != $table) {
@@ -716,7 +587,6 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 * @param string $code Item title (not htmlspecialchars()'ed yet)
 	 * @param array $row Item row
 	 * @return string The item title. Ready for HTML output (is htmlspecialchars()'ed)
-	 * @todo Define visibility
 	 */
 	public function linkWrapItems($table, $uid, $code, $row) {
 		$origCode = $code;
@@ -774,7 +644,6 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 * @param string $code code to wrap
 	 * @param string $testString String which is tested for being a URL or email and which will be used for the link if so.
 	 * @return string Link-Wrapped $code value, if $testString was URL or email.
-	 * @todo Define visibility
 	 */
 	public function linkUrlMail($code, $testString) {
 		// Check for URL:
@@ -799,7 +668,6 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 * @param string $table Tablename to display. Enter "-1" for the current table.
 	 * @param string $exclList Commalist of fields NOT to include ("sortField", "sortRev" or "firstElementNumber")
 	 * @return string URL
-	 * @todo Define visibility
 	 */
 	public function listURL($altId = '', $table = -1, $exclList = '') {
 		$urlParameters = array();
@@ -847,7 +715,6 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 * Returns "requestUri" - which is basically listURL
 	 *
 	 * @return string Content of ->listURL()
-	 * @todo Define visibility
 	 */
 	public function requestUri() {
 		return $this->listURL();
@@ -860,7 +727,6 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 * @param boolean $dontCheckUser If set, users access to the field (non-exclude-fields) is NOT checked.
 	 * @param boolean $addDateFields If set, also adds crdate and tstamp fields (note: they will also be added if user is admin or dontCheckUser is set)
 	 * @return array Array, where values are fieldnames to include in query
-	 * @todo Define visibility
 	 */
 	public function makeFieldList($table, $dontCheckUser = 0, $addDateFields = 0) {
 		// Init fieldlist array:
@@ -916,7 +782,6 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 * @param integer $depth Depth to go down.
 	 * @param string $perms_clause Select clause
 	 * @return \TYPO3\CMS\Backend\Tree\View\PageTreeView instance with created list of ids.
-	 * @todo Define visibility
 	 * @deprecated Deprecated since 6.2, will be removed 2 versions later
 	 */
 	public function getTreeObject($id, $depth, $perms_clause) {
@@ -968,7 +833,6 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 *
 	 * @param string $justLocalized String with table, orig uid and language separated by ":
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function localizationRedirect($justLocalized) {
 		list($table, $orig_uid, $language) = explode(':', $justLocalized);

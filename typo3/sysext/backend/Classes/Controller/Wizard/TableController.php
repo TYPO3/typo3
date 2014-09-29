@@ -31,19 +31,18 @@ class TableController {
 	 * document template object
 	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 * @todo Define visibility
 	 */
 	public $doc;
 
 	// Content accumulation for the module.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $content;
 
 	// TRUE, then <input> fields are shown, not textareas.
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $inputStyle = 0;
 
@@ -52,46 +51,46 @@ class TableController {
 	// instead of the original linebased kind. This variable still needs binding
 	// to the wizard parameters - but support is ready!
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $xmlStorage = 0;
 
 	// Number of new rows to add in bottom of wizard
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $numNewRows = 1;
 
 	// Name of field in parent record which MAY contain the number of columns for the table
 	// - here hardcoded to the value of tt_content. Should be set by TCEform parameters (from P)
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $colsFieldName = 'cols';
 
 	// Internal, static: GPvars
 	// Wizard parameters, coming from TCEforms linking to the wizard.
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $P;
 
 	// The array which is constantly submitted by the multidimensional form of this wizard.
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $TABLECFG;
 
 	// Table parsing
 	// quoting of table cells
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $tableParsing_quote;
 
 	// delimiter between table cells
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $tableParsing_delimiter;
 
@@ -156,7 +155,6 @@ class TableController {
 	 * Outputting the accumulated content to screen
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		echo $this->content;
@@ -197,7 +195,6 @@ class TableController {
 	 * Draws the table wizard content
 	 *
 	 * @return string HTML content for the form.
-	 * @todo Define visibility
 	 */
 	public function tableWizard() {
 		if (!$this->checkEditAccess($this->P['table'], $this->P['uid'])) {
@@ -229,7 +226,6 @@ class TableController {
 	 * @param array $row Current parent record row
 	 * @return array Table config code in an array
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function getConfigCode($row) {
 		// Get delimiter settings
@@ -290,7 +286,6 @@ class TableController {
 	 * @param array $row Current parent record array
 	 * @return string HTML for the table wizard
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function getTableHTML($cfgArr, $row) {
 		// Traverse the rows:
@@ -406,7 +401,6 @@ class TableController {
 	 *
 	 * @return void
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function changeFunc() {
 		if ($this->TABLECFG['col_remove']) {
@@ -528,7 +522,6 @@ class TableController {
 	 * @param array $cfgArr Array of table configuration (follows the input structure from the table wizard POST form)
 	 * @return string The array converted into a string with line-based configuration.
 	 * @see cfgString2CfgArray()
-	 * @todo Define visibility
 	 */
 	public function cfgArray2CfgString($cfgArr) {
 		// Initialize:
@@ -554,7 +547,6 @@ class TableController {
 	 * @param integer $cols Default number of columns
 	 * @return array Configuration array
 	 * @see cfgArray2CfgString()
-	 * @todo Define visibility
 	 */
 	public function cfgString2CfgArray($cfgStr, $cols) {
 		// Explode lines in the configuration code - each line is a table row.

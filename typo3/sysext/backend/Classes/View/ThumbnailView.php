@@ -32,66 +32,62 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 class ThumbnailView {
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $include_once = array();
 
-	// The output directory of temporary files in PATH_site
 	/**
-	 * @todo Define visibility
+	 * The output directory of temporary files in PATH_site
+	 *
+	 * @var string
 	 */
 	public $outdir = 'typo3temp/';
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $output = '';
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $sizeDefault = '64x64';
 
-	// Coming from $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
 	/**
-	 * @todo Define visibility
+	 * Coming from $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
+	 *
+	 * @var string
 	 */
 	public $imageList;
 
 	/**
 	 * will hold the file Object
 	 *
-	 * @var \TYPO3\CMS\Core\Resource\File $input
-	 * @todo Define visibility
+	 * @var \TYPO3\CMS\Core\Resource\File
 	 */
 	public $image;
 
-	// Internal, static: GPvar:
-	// Holds the input filename (GET: file)
 	/**
-	 * @todo Define visibility
-	 */
-	public $file;
-
-	// Holds the input size (GET: size)
-	/**
-	 * @todo Define visibility
+	 * Holds the input size (GET: size)
+	 *
+	 * @var string
 	 */
 	public $size;
 
-	// Last modification time of the supplied file
 	/**
-	 * @todo Define visibility
+	 * Last modification time of the supplied file
+	 *
+	 * @var int
 	 */
 	public $mTime = 0;
 
 	/**
 	 * Initialize; reading parameters with GPvar and checking file path
-	 * Results in internal var, $this->file, being set to the file object
-	 * which should be used to make a thumbnail.
 	 *
-	 * @return 	void
-	 * @todo Define visibility
+	 * @return void
+	 * @throws \InvalidArgumentException
+	 * @throws \RuntimeException
+	 * @throws \TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException
 	 */
 	public function init() {
 		// Setting GPvars:
@@ -178,7 +174,6 @@ class ThumbnailView {
 	 * Will exit before return if all is well.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		// Clean output buffer to ensure no extraneous output exists
@@ -263,7 +258,6 @@ class ThumbnailView {
 	 * @param string $l2 Text line 2
 	 * @param string $l3 Text line 3
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function errorGif($l1, $l2, $l3) {
 		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) {
@@ -313,7 +307,6 @@ class ThumbnailView {
 	 *
 	 * @param string $font The filepath to the font file (absolute, probably)
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function fontGif($font) {
 		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) {

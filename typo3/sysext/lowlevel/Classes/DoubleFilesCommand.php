@@ -22,14 +22,12 @@ namespace TYPO3\CMS\Lowlevel;
 class DoubleFilesCommand extends CleanerCommand {
 
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $checkRefIndex = TRUE;
 
 	/**
 	 * Constructor
-	 *
-	 * @todo Define visibility
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -61,7 +59,6 @@ This will check the system for double files relations.';
 	 * change the value of a reference (we could copy the file) or remove reference
 	 *
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function main() {
 		global $TYPO3_DB;
@@ -133,7 +130,6 @@ This will check the system for double files relations.';
 	 *
 	 * @param array $resultArray Result array from main() function
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main_autoFix($resultArray) {
 		foreach ($resultArray['multipleReferencesList'] as $key => $value) {

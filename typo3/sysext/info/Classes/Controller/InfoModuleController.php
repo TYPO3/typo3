@@ -24,16 +24,12 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  */
 class InfoModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $pageinfo;
 
 	/**
 	 * Document Template Object
 	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 * @todo Define visibility
 	 */
 	public $doc;
 

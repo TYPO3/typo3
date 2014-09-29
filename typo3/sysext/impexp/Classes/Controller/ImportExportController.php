@@ -38,7 +38,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Array containing the current page.
 	 *
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $pageinfo;
 
@@ -84,8 +84,9 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Main module function
 	 *
+	 * @throws \BadFunctionCallException
+	 * @throws \InvalidArgumentException
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		$this->lang->includeLLFile('EXT:impexp/app/locallang.xlf');
@@ -140,7 +141,6 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * Print the content
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		echo $this->content;
@@ -185,10 +185,13 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 	/**
 	 * Export part of module
+	 * Setting content in $this->content
 	 *
 	 * @param array $inData Content of POST VAR tx_impexp[]..
-	 * @return void Setting content in $this->content
-	 * @todo Define visibility
+	 * @throws \InvalidArgumentException
+	 * @throws \RuntimeException
+	 * @throws \TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException
+	 * @return void
 	 */
 	public function exportData($inData) {
 		// BUILDING EXPORT DATA:
@@ -452,7 +455,6 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @param array $tables Array of table names to select from
 	 * @param integer $maxNumber Max amount of records to select
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function addRecordsForPid($k, $tables, $maxNumber) {
 		if (!is_array($tables)) {
@@ -479,7 +481,6 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @param integer $pid Page ID to select from
 	 * @param integer $limit Max number of records to select
 	 * @return \mysqli_result|object Database resource
-	 * @todo Define visibility
 	 */
 	public function exec_listQueryPid($table, $pid, $limit) {
 		$db = $this->getDatabaseConnection();
@@ -508,7 +509,6 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @param array $inData Form configurat data
 	 * @param array $row Table row accumulation variable. This is filled with table rows.
 	 * @return void Sets content in $this->content
-	 * @todo Define visibility
 	 */
 	public function makeConfigurationForm($inData, &$row) {
 		$nameSuggestion = '';
@@ -678,11 +678,11 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 	/**
 	 * Create advanced options form
+	 * Sets content in $this->content
 	 *
 	 * @param array $inData Form configurat data
 	 * @param array $row Table row accumulation variable. This is filled with table rows.
-	 * @return void Sets content in $this->content
-	 * @todo Define visibility
+	 * @return void
 	 */
 	public function makeAdvancedOptionsForm($inData, &$row) {
 		// Soft references
@@ -740,7 +740,6 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @param array $inData Form configurat data
 	 * @param array $row Table row accumulation variable. This is filled with table rows.
 	 * @return void Sets content in $this->content
-	 * @todo Define visibility
 	 */
 	public function makeSaveForm($inData, &$row) {
 		// Presets:
@@ -864,8 +863,10 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * Import part of module
 	 *
 	 * @param array $inData Content of POST VAR tx_impexp[]..
+	 * @throws \BadFunctionCallException
+	 * @throws \InvalidArgumentException
+	 * @throws \RuntimeException
 	 * @return void Setting content in $this->content
-	 * @todo Define visibility
 	 */
 	public function importData($inData) {
 		$access = is_array($this->pageinfo) ? 1 : 0;
@@ -1147,7 +1148,6 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @param array $inData In data array, passed by reference!
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function processPresets(&$inData) {
 		$presetData = GeneralUtility::_GP('preset');
@@ -1244,7 +1244,6 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @param integer $uid Preset record
 	 * @return array Preset record, if any (otherwise FALSE)
-	 * @todo Define visibility
 	 */
 	public function getPreset($uid) {
 		return $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'tx_impexp_presets', 'uid=' . (int)$uid);
@@ -1282,6 +1281,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * Returns a \TYPO3\CMS\Core\Resource\Folder object for saving export files
 	 * to the server and is also used for uploading import files.
 	 *
+	 * @throws \InvalidArgumentException
 	 * @return NULL|\TYPO3\CMS\Core\Resource\Folder
 	 */
 	protected function getDefaultImportExportFolder() {
@@ -1305,12 +1305,12 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	}
 
 
-
 	/**
 	 * Check if a file has been uploaded
 	 *
+	 * @throws \InvalidArgumentException
+	 * @throws \UnexpectedValueException
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function checkUpload() {
 		$file = GeneralUtility::_GP('file');
@@ -1346,7 +1346,6 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @param string $value Current value
 	 * @param array $optValues Options to display (key/value pairs)
 	 * @return string HTML select element
-	 * @todo Define visibility
 	 */
 	public function renderSelectBox($prefix, $value, $optValues) {
 		$opt = array();
@@ -1372,7 +1371,6 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @param array $value The current values selected
 	 * @param string $excludeList Table names (and the string "_ALL") to exclude. Comma list
 	 * @return string HTML select element
-	 * @todo Define visibility
 	 */
 	public function tableSelector($prefix, $value, $excludeList = '') {
 		$optValues = array();
@@ -1404,7 +1402,6 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @param string $prefix Form element name prefix
 	 * @param array $value The current values selected
 	 * @return string HTML select element
-	 * @todo Define visibility
 	 */
 	public function extensionSelector($prefix, $value) {
 		$loadedExtensions = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray();
@@ -1430,7 +1427,6 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @param array $exclude Exclude array from import/export object.
 	 * @return string AND where clause part to filter out page uids.
-	 * @todo Define visibility
 	 */
 	public function filterPageIds($exclude) {
 		// Get keys:
@@ -1474,6 +1470,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Gets thumbnail files.
 	 *
+	 * @throws \InvalidArgumentException
 	 * @return array|\TYPO3\CMS\Core\Resource\File[]
 	 */
 	protected function getThumbnailFiles() {
@@ -1496,6 +1493,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Gets all export files.
 	 *
+	 * @throws \InvalidArgumentException
 	 * @return array|\TYPO3\CMS\Core\Resource\File[]
 	 */
 	protected function getExportFiles() {
@@ -1535,6 +1533,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * Internal function to retrieve the indexer service,
 	 * if it does not exist, an instance will be created
 	 *
+	 * @throws \InvalidArgumentException
 	 * @return \TYPO3\CMS\Core\Resource\Service\IndexerService
 	 */
 	protected function getIndexerService() {

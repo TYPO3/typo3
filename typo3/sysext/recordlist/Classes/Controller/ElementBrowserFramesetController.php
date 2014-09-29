@@ -23,9 +23,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ElementBrowserFramesetController {
 
-	// Internal, dynamic
 	/**
-	 * @todo Define visibility
+	 * Internal, dynamic
+	 *
+	 * @var string
 	 */
 	public $content;
 

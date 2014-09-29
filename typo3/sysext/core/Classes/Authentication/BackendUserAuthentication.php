@@ -32,21 +32,18 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	/**
 	 * Should be set to the usergroup-column (id-list) in the user-record
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $usergroup_column = 'usergroup';
 
 	/**
 	 * The name of the group-table
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $usergroup_table = 'be_groups';
 
 	/**
 	 * holds lists of eg. tables, fields and other values related to the permission-system. See fetchGroupData
 	 * @var array
-	 * @todo Define visibility
 	 * @internal
 	 */
 	public $groupData = array(
@@ -56,21 +53,18 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	/**
 	 * This array will hold the groups that the user is a member of
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $userGroups = array();
 
 	/**
 	 * This array holds the uid's of the groups in the listed order
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $userGroupsUID = array();
 
 	/**
 	 * This is $this->userGroupsUID imploded to a comma list... Will correspond to the 'usergroup_cached_list'
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $groupList = '';
 
@@ -81,14 +75,12 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * 0 is online
 	 * >0 is custom workspaces
 	 * @var int
-	 * @todo Define visibility
 	 */
 	public $workspace = -99;
 
 	/**
 	 * Custom workspace record if any
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $workspaceRec = array();
 
@@ -97,7 +89,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * DON NOT USE THIS EXTERNALLY!
 	 * Use $this->groupData instead
 	 * @var array
-	 * @todo Define visibility
 	 * @internal
 	 */
 	public $dataLists = array(
@@ -118,77 +109,66 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	/**
 	 * For debugging/display of order in which subgroups are included.
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $includeHierarchy = array();
 
 	/**
 	 * List of group_id's in the order they are processed.
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $includeGroupArray = array();
 
 	/**
 	 * Set to 'WIN', if windows
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $OS = '';
 
 	/**
 	 * Used to accumulate the TSconfig data of the user
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $TSdataArray = array();
 
 	/**
 	 * Contains the non-parsed user TSconfig
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $userTS_text = '';
 
 	/**
 	 * Contains the parsed user TSconfig
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $userTS = array();
 
 	/**
 	 * Set internally if the user TSconfig was parsed and needs to be cached.
 	 * @var bool
-	 * @todo Define visibility
 	 */
 	public $userTSUpdated = FALSE;
 
 	/**
 	 * Set this from outside if you want the user TSconfig to ALWAYS be parsed and not fetched from cache.
 	 * @var bool
-	 * @todo Define visibility
 	 */
 	public $userTS_dontGetCached = FALSE;
 
 	/**
 	 * RTE availability errors collected.
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $RTE_errors = array();
 
 	/**
 	 * Contains last error message
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $errorMsg = '';
 
 	/**
 	 * Cache for checkWorkspaceCurrent()
 	 * @var array|NULL
-	 * @todo Define visibility
 	 */
 	public $checkWorkspaceCurrent_cache = NULL;
 
@@ -205,47 +185,40 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	/**
 	 * Table to use for session data
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $session_table = 'be_sessions';
 
 	/**
 	 * Table in database with user data
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $user_table = 'be_users';
 
 	/**
 	 * Column for login-name
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $username_column = 'username';
 
 	/**
 	 * Column for password
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $userident_column = 'password';
 
 	/**
 	 * Column for user-id
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $userid_column = 'uid';
 
 	/**
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $lastLogin_column = 'lastlogin';
 
 	/**
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $enablecolumns = array(
 		'rootLevel' => 1,
@@ -258,42 +231,36 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	/**
 	 * Form field with login-name
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $formfield_uname = 'username';
 
 	/**
 	 * Form field with password
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $formfield_uident = 'userident';
 
 	/**
 	 * Form field with a unique value which is used to encrypt the password and username
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $formfield_chalvalue = 'challenge';
 
 	/**
 	 * Form field with status: *'login', 'logout'
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $formfield_status = 'login_status';
 
 	/**
 	 * Decides if the writelog() function is called at login and logout
 	 * @var bool
-	 * @todo Define visibility
 	 */
 	public $writeStdLog = TRUE;
 
 	/**
 	 * If the writelog() functions is called if a login-attempt has be tried without success
 	 * @var bool
-	 * @todo Define visibility
 	 */
 	public $writeAttemptLog = TRUE;
 
@@ -302,13 +269,11 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * if FALSE/<0 : no timeout.
 	 * if string: The string is field name from the user table where the timeout can be found.
 	 * @var string|int
-	 * @todo Define visibility
 	 */
 	public $auth_timeout_field = 6000;
 
 	/**
 	 * @var bool
-	 * @todo Define visibility
 	 */
 	public $challengeStoredInCookie = TRUE;
 
@@ -320,7 +285,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	/**
 	 * User Config
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $uc;
 
@@ -332,7 +296,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * moduleData
 	 * moduleSessionID
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $uc_default = array(
 		'interfaceSetup' => '',
@@ -371,7 +334,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * Basically this function evaluates if the ->user[admin] field has bit 0 set. If so, user is admin.
 	 *
 	 * @return boolean
-	 * @todo Define visibility
 	 */
 	public function isAdmin() {
 		return is_array($this->user) && ($this->user['admin'] & 1) == 1;
@@ -384,7 +346,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 *
 	 * @param integer $groupId Group ID to look for in $this->groupList
 	 * @return boolean
-	 * @todo Define visibility
 	 */
 	public function isMemberOfGroup($groupId) {
 		$groupId = (int)$groupId;
@@ -408,7 +369,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @param array $row Is the pagerow for which the permissions is checked
 	 * @param integer $perms Is the binary representation of the permission we are going to check. Every bit in this number represents a permission that must be set. See function explanation.
 	 * @return boolean
-	 * @todo Define visibility
 	 */
 	public function doesUserHaveAccess($row, $perms) {
 		$userPerms = $this->calcPerms($row);
@@ -430,7 +390,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @param bool|int $exitOnError If set, then the function will exit with an error message.
 	 * @throws \RuntimeException
 	 * @return int|NULL The page UID of a page in the rootline that matched a mount point
-	 * @todo Define visibility
 	 */
 	public function isInWebMount($id, $readPerms = '', $exitOnError = 0) {
 		if (!$GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts'] || $this->isAdmin()) {
@@ -467,7 +426,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @param boolean $exitOnError If set, an array will issue an error message and exit.
 	 * @throws \RuntimeException
 	 * @return boolean Will return TRUE if $MCONF['access'] is not set at all, if the BE_USER is admin or if the module is enabled in the be_users/be_groups records of the user (specifically enabled). Will return FALSE if the module name is not even found in $TBE_MODULES
-	 * @todo Define visibility
 	 */
 	public function modAccess($conf, $exitOnError) {
 		if (!BackendUtility::isModuleSetInTBE_MODULES($conf['name'])) {
@@ -519,7 +477,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 *
 	 * @param integer $perms Permission mask to use, see function description
 	 * @return string Part of where clause. Prefix " AND " to this.
-	 * @todo Define visibility
 	 */
 	public function getPagePermsClause($perms) {
 		if (is_array($this->user)) {
@@ -560,7 +517,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 *
 	 * @param array $row Input page row with all perms_* fields available.
 	 * @return integer Bitwise representation of the users permissions in relation to input page row, $row
-	 * @todo Define visibility
 	 */
 	public function calcPerms($row) {
 		// Return 31 for admin users.
@@ -606,7 +562,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * The reasons for a FALSE return can be found in $this->RTE_errors
 	 *
 	 * @return boolean
-	 * @todo Define visibility
 	 */
 	public function isRTE() {
 		// Start:
@@ -638,7 +593,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @param string $type The type value; "webmounts", "filemounts", "pagetypes_select", "tables_select", "tables_modify", "non_exclude_fields", "modules
 	 * @param string $value String to search for in the groupData-list
 	 * @return boolean TRUE if permission is granted (that is, the value was found in the groupData list - or the BE_USER is "admin")
-	 * @todo Define visibility
 	 */
 	public function check($type, $value) {
 		if (isset($this->groupData[$type])) {
@@ -657,7 +611,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @param string $value Value to evaluation (single value, must not contain any of the chars ":,|")
 	 * @param string $authMode Auth mode keyword (explicitAllow, explicitDeny, individual)
 	 * @return boolean Whether access is granted or not
-	 * @todo Define visibility
 	 */
 	public function checkAuthMode($table, $field, $value, $authMode) {
 		// Admin users can do anything:
@@ -720,7 +673,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 *
 	 * @param integer $langValue Language value to evaluate
 	 * @return boolean Returns TRUE if the language value is allowed, otherwise FALSE.
-	 * @todo Define visibility
 	 */
 	public function checkLanguageAccess($langValue) {
 		// The users language list must be non-blank - otherwise all languages are allowed.
@@ -740,7 +692,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @param string $table The table
 	 * @param array $record The current record
 	 * @return boolean
-	 * @todo Define visibility
 	 */
 	public function checkFullLanguagesAccess($table, $record) {
 		$recordLocalizationAccess = $this->checkLanguageAccess(0);
@@ -782,7 +733,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @param boolean $deletedRecord Set, if testing a deleted record array.
 	 * @param boolean $checkFullLanguageAccess Set, whenever access to all translations of the record is required
 	 * @return boolean TRUE if OK, otherwise FALSE
-	 * @todo Define visibility
 	 */
 	public function recordEditAccessInternals($table, $idOrRow, $newRecord = FALSE, $deletedRecord = FALSE, $checkFullLanguageAccess = FALSE) {
 		if (!isset($GLOBALS['TCA'][$table])) {
@@ -920,7 +870,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * Returns TRUE if the BE_USER is allowed to *create* shortcuts in the backend modules
 	 *
 	 * @return boolean
-	 * @todo Define visibility
 	 */
 	public function mayMakeShortcut() {
 		return $this->getTSConfigVal('options.enableBookmarks')
@@ -937,7 +886,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @param string $table Table of record
 	 * @param array $recData Integer (record uid) or array where fields are at least: pid, t3ver_wsid, t3ver_stage (if versioningWS is set)
 	 * @return string String error code, telling the failure state. FALSE=All ok
-	 * @todo Define visibility
 	 */
 	public function workspaceCannotEditRecord($table, $recData) {
 		// Only test offline spaces:
@@ -995,7 +943,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @param array $recData Integer (record uid) or array where fields are at least: pid, t3ver_wsid, t3ver_stage (if versioningWS is set)
 	 * @return string String error code, telling the failure state. FALSE=All ok
 	 * @see workspaceCannotEditRecord()
-	 * @todo Define visibility
 	 */
 	public function workspaceCannotEditOfflineVersion($table, $recData) {
 		if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
@@ -1026,7 +973,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @param integer $pid PID value to check for. OBSOLETE!
 	 * @param string $table Table name
 	 * @return mixed Returns FALSE if a live record cannot be created and must be versionized in order to do so. 2 means a) Workspace is "Live" or workspace allows "live edit" of records from non-versionized tables (and the $table is not versionizable). 1 and -1 means the pid is inside a versionized branch where -1 means that the branch-point did NOT allow a new record according to its state.
-	 * @todo Define visibility
 	 */
 	public function workspaceAllowLiveRecordsInPID($pid, $table) {
 		// Always for Live workspace AND if live-edit is enabled
@@ -1050,7 +996,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @param integer $pid Page id. This value must be the _ORIG_uid if available: So when you have pages versionized as "page" or "element" you must supply the id of the page version in the workspace!
 	 * @param string $table Table name
 	 * @return boolean TRUE if OK.
-	 * @todo Define visibility
 	 */
 	public function workspaceCreateNewRecord($pid, $table) {
 		if ($res = $this->workspaceAllowLiveRecordsInPID($pid, $table)) {
@@ -1073,7 +1018,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @param integer $id UID of record
 	 * @param integer $recpid PID of record
 	 * @return boolean TRUE if ok.
-	 * @todo Define visibility
 	 */
 	public function workspaceAllowAutoCreation($table, $id, $recpid) {
 		// Auto-creation of version: In offline workspace, test if versioning is
@@ -1100,7 +1044,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 *
 	 * @param integer $stage Stage id from an element: -1,0 = editing, 1 = reviewer, >1 = owner
 	 * @return boolean TRUE if user is allowed access
-	 * @todo Define visibility
 	 */
 	public function workspaceCheckStageForCurrent($stage) {
 		// Always allow for admins
@@ -1165,7 +1108,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 *
 	 * @param integer $wsid Workspace UID; 0,1+
 	 * @return boolean Returns TRUE if the user has access to publish content from the workspace ID given.
-	 * @todo Define visibility
 	 */
 	public function workspacePublishAccess($wsid) {
 		if ($this->isAdmin()) {
@@ -1196,7 +1138,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * Workspace swap-mode access?
 	 *
 	 * @return boolean Returns TRUE if records can be swapped in the current workspace, otherwise FALSE
-	 * @todo Define visibility
 	 */
 	public function workspaceSwapAccess() {
 		if ($this->workspace > 0 && (int)$this->workspaceRec['swap_modes'] === 2) {
@@ -1213,7 +1154,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @param string $objectString Pointer to an "object" in the TypoScript array, fx. 'options.dontMountAdminMounts'
 	 * @param array|string $config Optional TSconfig array: If array, then this is used and not $this->userTS. If not array, $this->userTS is used.
 	 * @return array An array with two keys, "value" and "properties" where "value" is a string with the value of the object string and "properties" is an array with the properties of the object string.
-	 * @todo Define visibility
 	 */
 	public function getTSConfig($objectString, $config = '') {
 		if (!is_array($config)) {
@@ -1243,7 +1183,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @param string $objectString Object string, eg. "somestring.someproperty.somesubproperty
 	 * @return string The value for that object string (object path)
 	 * @see 	getTSConfig()
-	 * @todo Define visibility
 	 */
 	public function getTSConfigVal($objectString) {
 		$TSConf = $this->getTSConfig($objectString);
@@ -1256,7 +1195,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @param string $objectString Object string, eg. "somestring.someproperty.somesubproperty
 	 * @return array The properties for that object string (object path) - if any
 	 * @see 	getTSConfig()
-	 * @todo Define visibility
 	 */
 	public function getTSConfigProp($objectString) {
 		$TSConf = $this->getTSConfig($objectString);
@@ -1270,7 +1208,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 *         it is STILL coming out as a webmount. This is not checked due to performance.
 	 *
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function returnWebmounts() {
 		return (string) $this->groupData['webmounts'] != '' ? explode(',', $this->groupData['webmounts']) : array();
@@ -1288,7 +1225,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 *
 	 * @param integer $bitmask Bitmask
 	 * @return boolean TRUE if the confirmation should be shown
-	 * @todo Define visibility
 	 */
 	public function jsConfirmation($bitmask) {
 		$alertPopup = $this->getTSConfig('options.alertPopups');
@@ -1311,7 +1247,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @return void
 	 * @access private
 	 * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
-	 * @todo Define visibility
 	 */
 	public function fetchGroupData() {
 		if ($this->user['uid']) {
@@ -1443,7 +1378,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @param string $idList List of already processed be_groups-uids so the function will not fall into a eternal recursion.
 	 * @return void
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function fetchGroups($grList, $idList = '') {
 		// Fetching records of the groups in $grList (which are not blocked by lockedToDomain either):
@@ -1529,7 +1463,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @param string $cList The newly compiled group-list which must be compared with the current list in the user record and possibly stored if a difference is detected.
 	 * @return void
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function setCachedList($cList) {
 		if ((string) $cList != (string) $this->user['usergroup_cached_list']) {
@@ -1932,7 +1865,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 *
 	 * @param string $str The text to wrap in comment prefixes and delimiters.
 	 * @return string TypoScript comment with the string text inside.
-	 * @todo Define visibility
 	 */
 	public function addTScomment($str) {
 		$delimiter = '# ***********************************************';
@@ -1951,7 +1883,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 *
 	 * @return void
 	 * @see fetchGroupData()
-	 * @todo Define visibility
 	 */
 	public function workspaceInit() {
 		// Initializing workspace by evaluating and setting the workspace, possibly updating it in the user record!
@@ -1999,7 +1930,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @param mixed $wsRec If integer, workspace record is looked up, if array it is seen as a Workspace record with at least uid, title, members and adminusers columns. Can be faked for workspaces uid 0 and -1 (online and offline)
 	 * @param string $fields List of fields to select. Default fields are: uid,title,adminusers,members,reviewers,publish_access,stagechg_notification
 	 * @return array Output will also show how access was granted. Admin users will have a true output regardless of input.
-	 * @todo Define visibility
 	 */
 	public function checkWorkspace($wsRec, $fields = 'uid,title,adminusers,members,reviewers,publish_access,stagechg_notification') {
 		$retVal = FALSE;
@@ -2074,7 +2004,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 *
 	 * @return array See checkWorkspace()
 	 * @see checkWorkspace()
-	 * @todo Define visibility
 	 */
 	public function checkWorkspaceCurrent() {
 		if (!isset($this->checkWorkspaceCurrent_cache)) {
@@ -2088,7 +2017,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 *
 	 * @param integer $workspaceId ID of workspace to set for backend user. If not valid the default workspace for BE user is found and set.
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function setWorkspace($workspaceId) {
 		// Check workspace validity and if not found, revert to default workspace.
@@ -2139,7 +2067,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 *
 	 * @param boolean $previewState State of user preview.
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function setWorkspacePreview($previewState) {
 		$this->user['workspace_preview'] = $previewState;
@@ -2152,7 +2079,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * Live workspace
 	 *
 	 * @return integer Default workspace id. If no workspace is available it will be "-99
-	 * @todo Define visibility
 	 */
 	public function getDefaultWorkspace() {
 		$defaultWorkspace = -99;
@@ -2192,7 +2118,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @param string $NEWid Special field used by tce_main.php. NEWid string of newly created records.
 	 * @param integer $userId Alternative Backend User ID (used for logging login actions where this is not yet known).
 	 * @return integer Log entry ID.
-	 * @todo Define visibility
 	 */
 	public function writelog($type, $action, $error, $details_nr, $details, $data, $tablename = '', $recuid = '', $recpid = '', $event_pid = -1, $NEWid = '', $userId = 0) {
 		if (!$userId && isset($this->user['uid'])) {
@@ -2226,7 +2151,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @param string $extKey Option extension key / module name
 	 * @param integer $error Error level. 0 = message, 1 = error (user problem), 2 = System Error (which should not happen), 3 = security notice (admin)
 	 * @return integer Log entry UID
-	 * @todo Define visibility
 	 */
 	public function simplelog($message, $extKey = '', $error = 0) {
 		return $this->writelog(4, 0, $error, 0, ($extKey ? '[' . $extKey . '] ' : '') . $message, array());
@@ -2243,7 +2167,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @param integer $max Max allowed failures before a warning mail is sent
 	 * @return void
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function checkLogFailures($email, $secondsBack = 3600, $max = 3) {
 		if ($email) {
@@ -2305,7 +2228,6 @@ This is a dump of the failures:
 	 * then make an IP comparison with REMOTE_ADDR and return the outcome (TRUE/FALSE)
 	 *
 	 * @return boolean TRUE, if IP address validates OK (or no check is done at all)
-	 * @todo Define visibility
 	 */
 	public function checkLockToIP() {
 		$out = 1;
@@ -2328,7 +2250,6 @@ This is a dump of the failures:
 	 *
 	 * @throws \RuntimeException
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function backendCheckLogin() {
 		if (empty($this->user['uid'])) {
@@ -2359,7 +2280,6 @@ This is a dump of the failures:
 	 * If the backend script is in CLI mode, it will try to load a backend user named by the CLI module name (in lowercase)
 	 *
 	 * @return boolean Returns TRUE if a CLI user was loaded, otherwise FALSE!
-	 * @todo Define visibility
 	 */
 	public function checkCLIuser() {
 		// First, check if cliMode is enabled:
@@ -2397,7 +2317,6 @@ This is a dump of the failures:
 	 *
 	 * @return void
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function backendSetUC() {
 		// UC - user configuration is a serialized array inside the user object
@@ -2444,7 +2363,6 @@ This is a dump of the failures:
 	 *
 	 * @return void
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function overrideUC() {
 		$this->uc = array_merge((array) $this->uc, (array) $this->getTSConfigProp('setup.override'));
@@ -2455,7 +2373,6 @@ This is a dump of the failures:
 	 *
 	 * @return void
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function resetUC() {
 		$this->user['uc'] = '';

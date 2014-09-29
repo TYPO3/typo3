@@ -34,37 +34,21 @@ class ConfigurationView {
 	 */
 	protected $flashMessageQueue;
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $MCONF = array();
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $MOD_MENU = array();
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $MOD_SETTINGS = array();
 
 	/**
 	 * Document template object
 	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 * @todo Define visibility
 	 */
 	public $doc;
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $include_once = array();
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $content;
 
 	/**
@@ -80,7 +64,6 @@ class ConfigurationView {
 	 * Initialization
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function init() {
 		global $BACK_PATH;
@@ -96,7 +79,6 @@ class ConfigurationView {
 	 * Menu Configuration
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function menuConfig() {
 		global $TYPO3_CONF_VARS;
@@ -128,7 +110,6 @@ class ConfigurationView {
 	 * [Describe function...]
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		$arrayBrowser = GeneralUtility::makeInstance('TYPO3\\CMS\\Lowlevel\\Utility\\ArrayBrowser');
@@ -296,7 +277,6 @@ class ConfigurationView {
 	 * Print output to browser
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		echo $this->content;

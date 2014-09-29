@@ -27,37 +27,37 @@ class MoveElementController {
 
 	// Internal, static (eg. from GPvars):
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $sys_language = 0;
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $page_id;
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $table;
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $R_URI;
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $input_moveUid;
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $moveUid;
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $makeCopy;
 
@@ -65,20 +65,19 @@ class MoveElementController {
 	 * Document template object
 	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 * @todo Define visibility
 	 */
 	public $doc;
 
 	// Pages-select clause
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $perms_clause;
 
 	// Internal, dynamic:
 	// Content for module accumulated here.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $content;
 
@@ -95,7 +94,6 @@ class MoveElementController {
 	 * Constructor, initializing internal variables.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function init() {
 		// Setting internal vars:
@@ -122,7 +120,6 @@ class MoveElementController {
 	 * Creating the module output.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		if ($this->page_id) {
@@ -232,7 +229,6 @@ class MoveElementController {
 	 * Print out the accumulated content:
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		echo $this->content;

@@ -150,7 +150,6 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * SQL parser
 	 *
 	 * @var \TYPO3\CMS\Core\Database\SqlParser
-	 * @todo Define visibility
 	 */
 	public $SQLparser;
 

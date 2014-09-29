@@ -22,14 +22,12 @@ namespace TYPO3\CMS\Lowlevel;
 class LostFilesCommand extends CleanerCommand {
 
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $checkRefIndex = TRUE;
 
 	/**
 	 * Constructor
-	 *
-	 * @todo Define visibility
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -66,7 +64,6 @@ Will report lost files.';
 	 * TODO: Add parameter to include RTEmagic images
 	 *
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function main() {
 		global $TYPO3_DB;
@@ -144,7 +141,6 @@ Will report lost files.';
 	 *
 	 * @param array $resultArray Result array from main() function
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main_autoFix($resultArray) {
 		foreach ($resultArray['lostFiles'] as $key => $value) {

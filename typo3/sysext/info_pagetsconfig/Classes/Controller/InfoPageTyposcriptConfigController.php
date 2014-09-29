@@ -34,7 +34,6 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 	 * Function menu initialization
 	 *
 	 * @return array Menu array
-	 * @todo Define visibility
 	 */
 	public function modMenu() {
 		$modMenuAdd = array(

@@ -25,7 +25,6 @@ class TestTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 * An email address to be used during the process
 	 *
 	 * @var string $email
-	 * @todo Define visibility
 	 */
 	public $email;
 

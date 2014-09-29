@@ -25,9 +25,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  */
 class QueryGenerator {
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $lang = array(
 		'OR' => 'or',
 		'AND' => 'and',
@@ -87,9 +84,6 @@ class QueryGenerator {
 		)
 	);
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $compSQL = array(
 		// Type = text	offset = 0
 		'0' => '#FIELD# LIKE \'%#VALUE#%\'',
@@ -145,9 +139,6 @@ class QueryGenerator {
 		'163' => '(#FIELD# & #VALUE#)=0'
 	);
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $comp_offsets = array(
 		'text' => 0,
 		'number' => 1,
@@ -160,59 +151,29 @@ class QueryGenerator {
 		'binary' => 5
 	);
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $noWrap = ' nowrap';
 
 	// Form data name prefix
-	/**
-	 * @todo Define visibility
-	 */
 	public $name;
 
 	// Table for the query
-	/**
-	 * @todo Define visibility
-	 */
 	public $table;
 
 	// Field list
-	/**
-	 * @todo Define visibility
-	 */
 	public $fieldList;
 
 	// Array of the fields possible
-	/**
-	 * @todo Define visibility
-	 */
 	public $fields = array();
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $extFieldLists = array();
 
 	// The query config
-	/**
-	 * @todo Define visibility
-	 */
 	public $queryConfig = array();
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $enablePrefix = 0;
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $enableQueryParts = 0;
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $extJSCODE = '';
 
 	protected $formName = '';
@@ -221,7 +182,6 @@ class QueryGenerator {
 	 * Make a list of fields for current table
 	 *
 	 * @return string Separated list of fields
-	 * @todo Define visibility
 	 */
 	public function makeFieldList() {
 		$fieldListArr = array();
@@ -255,7 +215,6 @@ class QueryGenerator {
 	 * @param 	[type]		$table: ...
 	 * @param 	[type]		$fieldList: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function init($name, $table, $fieldList = '') {
 		// Analysing the fields in the table.
@@ -390,7 +349,6 @@ class QueryGenerator {
 	 * @param 	[type]		$list: ...
 	 * @param 	[type]		$force: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function setAndCleanUpExternalLists($name, $list, $force = '') {
 		$fields = array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $list . ',' . $force, TRUE));
@@ -408,7 +366,6 @@ class QueryGenerator {
 	 *
 	 * @param 	[type]		$qC: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function procesData($qC = '') {
 		$this->queryConfig = $qC;
@@ -512,7 +469,6 @@ class QueryGenerator {
 	 *
 	 * @param 	[type]		$queryConfig: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function cleanUpQueryConfig($queryConfig) {
 		// Since we dont traverse the array using numeric keys in the upcoming whileloop make sure it's fresh and clean before displaying
@@ -569,7 +525,6 @@ class QueryGenerator {
 	 * @param 	[type]		$queryConfig: ...
 	 * @param 	[type]		$parent: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function getFormElements($subLevel = 0, $queryConfig = '', $parent = '') {
 		$codeArr = array();
@@ -731,7 +686,6 @@ class QueryGenerator {
 	 * @param 	[type]		$l: ...
 	 * @param 	[type]		$table: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function makeOptionList($fN, $conf, $table) {
 		$out = '';
@@ -942,7 +896,6 @@ class QueryGenerator {
 	 * @param 	[type]		$codeArr: ...
 	 * @param 	[type]		$l: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function printCodeArray($codeArr, $l = 0) {
 		$line = '';
@@ -968,7 +921,6 @@ class QueryGenerator {
 	 *
 	 * @param 	[type]		$str: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function formatQ($str) {
 		return '<font size="1" face="verdana" color="maroon"><i>' . htmlspecialchars($str) . '</i></font>';
@@ -982,7 +934,6 @@ class QueryGenerator {
 	 * @param 	[type]		$draw: ...
 	 * @param 	[type]		$submit: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function mkOperatorSelect($name, $op, $draw, $submit) {
 		if ($draw) {
@@ -1005,7 +956,6 @@ class QueryGenerator {
 	 * @param 	[type]		$fieldName: ...
 	 * @param 	[type]		$prepend: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function mkTypeSelect($name, $fieldName, $prepend = 'FIELD_') {
 		$out = '<select name="' . $name . '" onChange="submit();">';
@@ -1026,7 +976,6 @@ class QueryGenerator {
 	 *
 	 * @param 	[type]		$fieldName: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function verifyType($fieldName) {
 		$first = '';
@@ -1047,7 +996,6 @@ class QueryGenerator {
 	 * @param 	[type]		$comparison: ...
 	 * @param 	[type]		$neg: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function verifyComparison($comparison, $neg) {
 		$compOffSet = $comparison >> 5;
@@ -1069,7 +1017,6 @@ class QueryGenerator {
 	 * @param 	[type]		$name: ...
 	 * @param 	[type]		$fieldName: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function mkFieldToInputSelect($name, $fieldName) {
 		$out = '<input type="Text" value="' . htmlspecialchars($fieldName) . '" name="' . $name . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth() . '>' . $this->updateIcon();
@@ -1092,7 +1039,6 @@ class QueryGenerator {
 	 * @param 	[type]		$name: ...
 	 * @param 	[type]		$cur: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function mkTableSelect($name, $cur) {
 		$out = '<select name="' . $name . '" onChange="submit();">';
@@ -1113,7 +1059,6 @@ class QueryGenerator {
 	 * @param 	[type]		$comparison: ...
 	 * @param 	[type]		$neg: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function mkCompSelect($name, $comparison, $neg) {
 		$compOffSet = $comparison >> 5;
@@ -1132,7 +1077,6 @@ class QueryGenerator {
 	 *
 	 * @param 	[type]		$arr: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function getSubscript($arr) {
 		while (is_array($arr)) {
@@ -1148,7 +1092,6 @@ class QueryGenerator {
 	 * [Describe function...]
 	 *
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function initUserDef() {
 
@@ -1158,7 +1101,6 @@ class QueryGenerator {
 	 * [Describe function...]
 	 *
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function userDef() {
 
@@ -1169,7 +1111,6 @@ class QueryGenerator {
 	 *
 	 * @param 	[type]		$queryConfig: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function userDefCleanUp($queryConfig) {
 		return $queryConfig;
@@ -1181,7 +1122,6 @@ class QueryGenerator {
 	 * @param 	[type]		$queryConfig: ...
 	 * @param 	[type]		$pad: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function getQuery($queryConfig, $pad = '') {
 		$qs = '';
@@ -1210,7 +1150,6 @@ class QueryGenerator {
 	 * @param 	[type]		$conf: ...
 	 * @param 	[type]		$first: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function getQuerySingle($conf, $first) {
 		$qs = '';
@@ -1253,7 +1192,6 @@ class QueryGenerator {
 	 * @param 	[type]		$conf: ...
 	 * @param 	[type]		$suffix: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function cleanInputVal($conf, $suffix = '') {
 		if ($conf['comparison'] >> 5 == 0 || ($conf['comparison'] == 32 || $conf['comparison'] == 33 || $conf['comparison'] == 64 || $conf['comparison'] == 65 || $conf['comparison'] == 66 || $conf['comparison'] == 67 || $conf['comparison'] == 96 || $conf['comparison'] == 97)) {
@@ -1281,7 +1219,6 @@ class QueryGenerator {
 	 *
 	 * @param 	[type]		$qcArr: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function getUserDefQuery($qcArr) {
 
@@ -1291,7 +1228,6 @@ class QueryGenerator {
 	 * [Describe function...]
 	 *
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function updateIcon() {
 		return '<input type="image" border="0" ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/refresh_n.gif', 'width="14" height="14"') . ' title="Update" name="just_update">';
@@ -1301,7 +1237,6 @@ class QueryGenerator {
 	 * [Describe function...]
 	 *
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function getLabelCol() {
 		return $GLOBALS['TCA'][$this->table]['ctrl']['label'];
@@ -1313,7 +1248,6 @@ class QueryGenerator {
 	 * @param 	[type]		$modSettings: ...
 	 * @param 	[type]		$enableList: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function makeSelectorTable($modSettings, $enableList = 'table,fields,query,group,order,limit') {
 		$enableArr = explode(',', $enableList);
@@ -1436,7 +1370,6 @@ class QueryGenerator {
 	 * @param 	[type]		$begin: ...
 	 * @param 	[type]		$perms_clause: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function getTreeList($id, $depth, $begin = 0, $perms_clause) {
 		$depth = (int)$depth;
@@ -1471,7 +1404,6 @@ class QueryGenerator {
 	 * @param 	[type]		$qString: ...
 	 * @param 	[type]		$fN: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function getSelectQuery($qString = '', $fN = '') {
 		if (!$qString) {
@@ -1507,7 +1439,6 @@ class QueryGenerator {
 	 *
 	 * @param string $formname
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function JSbottom($formname) {
 		$out = '';

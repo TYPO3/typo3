@@ -30,82 +30,43 @@ class PageLayoutController {
 
 	// Internal, GPvars:
 	// Page Id for which to make the listing
-	/**
-	 * @todo Define visibility
-	 */
 	public $id;
 
 	// Pointer - for browsing list of records.
-	/**
-	 * @todo Define visibility
-	 */
 	public $pointer;
 
 	// Thumbnails or not
-	/**
-	 * @todo Define visibility
-	 */
 	public $imagemode;
 
 	// Search-fields
-	/**
-	 * @todo Define visibility
-	 */
 	public $search_field;
 
 	// Search-levels
-	/**
-	 * @todo Define visibility
-	 */
 	public $search_levels;
 
 	// Show-limit
-	/**
-	 * @todo Define visibility
-	 */
 	public $showLimit;
 
 	// Return URL
-	/**
-	 * @todo Define visibility
-	 */
 	public $returnUrl;
 
 	// Clear-cache flag - if set, clears page cache for current id.
-	/**
-	 * @todo Define visibility
-	 */
 	public $clear_cache;
 
 	// PopView id - for opening a window with the page
-	/**
-	 * @todo Define visibility
-	 */
 	public $popView;
 
 	// QuickEdit: Variable, that tells quick edit what to show/edit etc. Format is [tablename]:[uid] with some exceptional values for both parameters (with special meanings).
-	/**
-	 * @todo Define visibility
-	 */
 	public $edit_record;
 
 	// QuickEdit: If set, this variable tells quick edit that the last edited record had this value as UID and we should look up the new, real uid value in sys_log.
-	/**
-	 * @todo Define visibility
-	 */
 	public $new_unique_uid;
 
 	// Internal, static:
 	// Page select perms clause
-	/**
-	 * @todo Define visibility
-	 */
 	public $perms_clause;
 
 	// Module TSconfig
-	/**
-	 * @todo Define visibility
-	 */
 	public $modTSconfig;
 
 	/**
@@ -116,102 +77,56 @@ class PageLayoutController {
 	public $modSharedTSconfig;
 
 	// Current ids page record
-	/**
-	 * @todo Define visibility
-	 */
 	public $pageinfo;
 
 	/**
 	 * Document template object
 	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 * @todo Define visibility
 	 */
 	public $doc;
 
 	// Back path of the module
-	/**
-	 * @todo Define visibility
-	 */
 	public $backPath;
 
 	// "Pseudo" Description -table name
-	/**
-	 * @todo Define visibility
-	 */
 	public $descrTable;
 
 	// List of column-integers to edit. Is set from TSconfig, default is "1,0,2,3"
-	/**
-	 * @todo Define visibility
-	 */
 	public $colPosList;
 
 	// Flag: If content can be edited or not.
-	/**
-	 * @todo Define visibility
-	 */
 	public $EDIT_CONTENT;
 
 	// Users permissions integer for this page.
-	/**
-	 * @todo Define visibility
-	 */
 	public $CALC_PERMS;
 
 	// Currently selected language for editing content elements
-	/**
-	 * @todo Define visibility
-	 */
 	public $current_sys_language;
 
 	// Module configuration
-	/**
-	 * @todo Define visibility
-	 */
 	public $MCONF = array();
 
 	// Menu configuration
-	/**
-	 * @todo Define visibility
-	 */
 	public $MOD_MENU = array();
 
 	// Module settings (session variable)
-	/**
-	 * @todo Define visibility
-	 */
 	public $MOD_SETTINGS = array();
 
 	// Array, where files to include is accumulated in the init() function
-	/**
-	 * @todo Define visibility
-	 */
 	public $include_once = array();
 
 	// Array of tables to be listed by the Web > Page module in addition to the default tables
-	/**
-	 * @todo Define visibility
-	 */
 	public $externalTables = array();
 
 	// Internal, dynamic:
 	// Module output accumulation
-	/**
-	 * @todo Define visibility
-	 */
 	public $content;
 
 	// Function menu temporary storage
-	/**
-	 * @todo Define visibility
-	 */
 	public $topFuncMenu;
 
 	// Temporary storage for page edit icon
-	/**
-	 * @todo Define visibility
-	 */
 	public $editIcon;
 
 	/**
@@ -231,7 +146,6 @@ class PageLayoutController {
 	 * Initializing the module
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function init() {
 		// Setting module configuration / page select clause
@@ -268,7 +182,6 @@ class PageLayoutController {
 	 * Initialize menu array
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function menuConfig() {
 		// MENU-ITEMS:
@@ -344,7 +257,6 @@ class PageLayoutController {
 	 * Clears page cache for the current id, $this->id
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function clearCache() {
 		if ($this->clear_cache) {
@@ -417,7 +329,6 @@ class PageLayoutController {
 	 * Creates some general objects and calls other functions for the main rendering of module content.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		// Access check...
@@ -628,7 +539,6 @@ class PageLayoutController {
 	 * Rendering the quick-edit view.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function renderQuickEdit() {
 		// Alternative template
@@ -887,7 +797,6 @@ class PageLayoutController {
 	 * Rendering all other listings than QuickEdit
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function renderListContent() {
 		// Initialize list object (see "class.db_layout.inc"):
@@ -1045,7 +954,6 @@ class PageLayoutController {
 	 * Print accumulated content of module
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		echo $this->content;
@@ -1207,7 +1115,6 @@ class PageLayoutController {
 	 * on the current page (for the current sys_language)
 	 *
 	 * @return int
-	 * @todo Define visibility
 	 */
 	public function getNumberOfHiddenElements() {
 		return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
@@ -1223,7 +1130,6 @@ class PageLayoutController {
 	 *
 	 * @param array $params Parameters array, merged with global GET vars.
 	 * @return string URL
-	 * @todo Define visibility
 	 */
 	public function local_linkThisScript($params) {
 		$params['popView'] = '';
@@ -1236,7 +1142,6 @@ class PageLayoutController {
 	 *
 	 * @param integer $id Page id: If zero, the query will select all sys_language records from root level which are NOT hidden. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
 	 * @return string Return query string.
-	 * @todo Define visibility
 	 */
 	public function exec_languageQuery($id) {
 		if ($id) {

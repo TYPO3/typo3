@@ -257,7 +257,6 @@ class DataHandler {
 	 * Contains mapping of auto-versionized records.
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $autoVersionIdMap = array();
 
@@ -265,7 +264,6 @@ class DataHandler {
 	 * When new elements are created, this array contains a map between their "NEW..." string IDs and the eventual UID they got when stored in database
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $substNEWwithIDs = array();
 
@@ -273,7 +271,6 @@ class DataHandler {
 	 * Like $substNEWwithIDs, but where each old "NEW..." id is mapped to the table it was from.
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $substNEWwithIDs_table = array();
 
@@ -281,7 +278,6 @@ class DataHandler {
 	 * Holds the tables and there the ids of newly created child records from IRRE
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $newRelatedIDs = array();
 
@@ -289,7 +285,6 @@ class DataHandler {
 	 * This array is the sum of all copying operations in this class. May be READ from outside, thus partly public.
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $copyMappingArray_merged = array();
 
@@ -297,7 +292,6 @@ class DataHandler {
 	 * A map between input file name and final destination for files being attached to records.
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $copiedFileMap = array();
 
@@ -305,7 +299,6 @@ class DataHandler {
 	 * Contains [table][id][field] of fiels where RTEmagic images was copied. Holds old filename as key and new filename as value.
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $RTEmagic_copyIndex = array();
 
@@ -313,7 +306,6 @@ class DataHandler {
 	 * Errors are collected in this variable.
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $errorLog = array();
 
@@ -328,7 +320,6 @@ class DataHandler {
 	 * The user-object the script uses. If not set from outside, this is set to the current global $BE_USER.
 	 *
 	 * @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-	 * @todo Define visibility
 	 */
 	public $BE_USER;
 
@@ -336,7 +327,6 @@ class DataHandler {
 	 * Will be set to uid of be_user executing this script
 	 *
 	 * @var integer
-	 * @todo Define visibility
 	 */
 	public $userid;
 
@@ -344,7 +334,6 @@ class DataHandler {
 	 * Will be set to username of be_user executing this script
 	 *
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $username;
 
@@ -352,7 +341,6 @@ class DataHandler {
 	 * Will be set if user is admin
 	 *
 	 * @var boolean
-	 * @todo Define visibility
 	 */
 	public $admin;
 
@@ -360,7 +348,6 @@ class DataHandler {
 	 * Can be overridden from $GLOBALS['TYPO3_CONF_VARS']
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $defaultPermissions = array(
 		'user' => 'show,edit,delete,new,editcontent',
@@ -372,7 +359,6 @@ class DataHandler {
 	 * The list of <table>-<fields> that cannot be edited by user.This is compiled from TCA/exclude-flag combined with non_exclude_fields for the user.
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $exclude_array;
 
@@ -388,7 +374,6 @@ class DataHandler {
 	 * Set with incoming data array
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $datamap = array();
 
@@ -396,7 +381,6 @@ class DataHandler {
 	 * Set with incoming cmd array
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $cmdmap = array();
 
@@ -405,7 +389,6 @@ class DataHandler {
 	 * Permission mapping
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $pMap = array(
 		'show' => 1,
@@ -423,7 +406,6 @@ class DataHandler {
 	 * Integer: The interval between sorting numbers used with tables with a 'sorting' field defined. Min 1
 	 *
 	 * @var integer
-	 * @todo Define visibility
 	 */
 	public $sortIntervals = 256;
 
@@ -432,7 +414,6 @@ class DataHandler {
 	 * Used by function checkRecordUpdateAccess() to store whether a record is updateable or not.
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $recUpdateAccessCache = array();
 
@@ -440,7 +421,6 @@ class DataHandler {
 	 * User by function checkRecordInsertAccess() to store whether a record can be inserted on a page id
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $recInsertAccessCache = array();
 
@@ -448,7 +428,6 @@ class DataHandler {
 	 * Caching array for check of whether records are in a webmount
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $isRecordInWebMount_Cache = array();
 
@@ -456,7 +435,6 @@ class DataHandler {
 	 * Caching array for page ids in webmounts
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $isInWebMount_Cache = array();
 
@@ -464,7 +442,6 @@ class DataHandler {
 	 * Caching for collecting TSconfig for page ids
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $cachedTSconfig = array();
 
@@ -472,7 +449,6 @@ class DataHandler {
 	 * Used for caching page records in pageInfo()
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $pageCache = array();
 
@@ -480,7 +456,6 @@ class DataHandler {
 	 * Array caching workspace access for BE_USER
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $checkWorkspaceCache = array();
 
@@ -489,7 +464,6 @@ class DataHandler {
 	 * For accumulation of MM relations that must be written after new records are created.
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $dbAnalysisStore = array();
 
@@ -497,7 +471,6 @@ class DataHandler {
 	 * For accumulation of files which must be deleted after processing of all input content
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $removeFilesStore = array();
 
@@ -505,7 +478,6 @@ class DataHandler {
 	 * Uploaded files, set by process_uploads()
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $uploadedFileArray = array();
 
@@ -513,7 +485,6 @@ class DataHandler {
 	 * Used for tracking references that might need correction after operations
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $registerDBList = array();
 
@@ -521,7 +492,6 @@ class DataHandler {
 	 * Used for tracking references that might need correction in pid field after operations (e.g. IRRE)
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $registerDBPids = array();
 
@@ -541,7 +511,6 @@ class DataHandler {
 	 * Array used for remapping uids and values at the end of process_datamap
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $remapStack = array();
 
@@ -550,7 +519,6 @@ class DataHandler {
 	 * (e.g. $remapStackRecords[<table>][<uid>] = <index in $remapStack>)
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $remapStackRecords = array();
 
@@ -579,7 +547,6 @@ class DataHandler {
 	 * Array used for additional calls to $this->updateRefIndex
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $updateRefIndexStack = array();
 
@@ -588,7 +555,6 @@ class DataHandler {
 	 * This variable is set by \TYPO3\CMS\Impext\ImportExport
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $callFromImpExp = FALSE;
 
@@ -596,7 +562,6 @@ class DataHandler {
 	 * Array for new flexform index mapping
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $newIndexMap = array();
 
@@ -606,7 +571,6 @@ class DataHandler {
 	 * For "singleton" file-manipulation object
 	 *
 	 * @var \TYPO3\CMS\Core\Utility\File\BasicFileUtility
-	 * @todo Define visibility
 	 */
 	public $fileFunc;
 
@@ -614,7 +578,6 @@ class DataHandler {
 	 * Set to "currentRecord" during checking of values.
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $checkValue_currentRecord = array();
 
@@ -622,7 +585,6 @@ class DataHandler {
 	 * A signal flag used to tell file processing that autoversioning has happend and hence certain action should be applied.
 	 *
 	 * @var boolean
-	 * @todo Define visibility
 	 */
 	public $autoVersioningUpdate = FALSE;
 
@@ -718,7 +680,6 @@ class DataHandler {
 	 *
 	 * @param array $mirror This array has the syntax $mirror[table_name][uid] = [list of uids to copy data-value TO!]
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function setMirror($mirror) {
 		if (is_array($mirror)) {
@@ -742,7 +703,6 @@ class DataHandler {
 	 *
 	 * @param array $userTS User TSconfig array
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function setDefaultsFromUserTS($userTS) {
 		if (is_array($userTS)) {
@@ -765,7 +725,6 @@ class DataHandler {
 	 *
 	 * @param array $postFiles $_FILES array
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function process_uploads($postFiles) {
 		if (is_array($postFiles)) {
@@ -799,7 +758,6 @@ class DataHandler {
 	 * @return void
 	 * @access private
 	 * @see process_uploads()
-	 * @todo Define visibility
 	 */
 	public function process_uploads_traverseArray(&$outputArr, $inputArr, $keyToSet) {
 		if (is_array($inputArr)) {
@@ -829,7 +787,6 @@ class DataHandler {
 	 * @param string $id (reference) The record uid currently processing data for, [integer] or [string] (like 'NEW...')
 	 * @param array $fieldArray (reference) The field array of a record
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function hook_processDatamap_afterDatabaseOperations(&$hookObjectsArr, &$status, &$table, &$id, &$fieldArray) {
 		// Process hook directly:
@@ -1252,7 +1209,6 @@ class DataHandler {
 	 * @param string $table Table name
 	 * @param integer $id Record uid
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function placeholderShadowing($table, $id) {
 		if ($liveRec = BackendUtility::getLiveVersionOfRecord($table, $id, '*')) {
@@ -1307,7 +1263,6 @@ class DataHandler {
 	 * @param string $status Is 'new' or 'update'
 	 * @param integer $tscPID TSconfig PID
 	 * @return array Field Array
-	 * @todo Define visibility
 	 */
 	public function fillInFieldArray($table, $id, $fieldArray, $incomingFieldArray, $realPid, $status, $tscPID) {
 		// Initialize:
@@ -1515,7 +1470,6 @@ class DataHandler {
 	 * @param integer $realPid The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted. If $realPid is -1 it means that a new version of the record is being inserted.
 	 * @param integer $tscPID tscPID
 	 * @return array Returns the evaluated $value as key "value" in this array. Can be checked with isset($res['value']) ...
-	 * @todo Define visibility
 	 */
 	public function checkValue($table, $field, $value, $id, $status, $realPid, $tscPID) {
 		// Result array
@@ -1570,7 +1524,6 @@ class DataHandler {
 	 * @param [type] $tscPID
 	 * @param array $additionalData Additional data to be forwarded to sub-processors
 	 * @return array Returns the evaluated $value as key "value" in this array.
-	 * @todo Define visibility
 	 */
 	public function checkValue_SW($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $field, $uploadedFiles, $tscPID, array $additionalData = NULL) {
 		// Convert to NULL value if defined in TCA
@@ -1627,7 +1580,6 @@ class DataHandler {
 	 * @param array $PP Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
 	 * @param string $field Field name
 	 * @return array Modified $res array
-	 * @todo Define visibility
 	 */
 	public function checkValue_text($res, $value, $tcaFieldConf, $PP, $field = '') {
 		$evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], TRUE);
@@ -1644,7 +1596,6 @@ class DataHandler {
 	 * @param array $PP Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
 	 * @param string $field Field name
 	 * @return array Modified $res array
-	 * @todo Define visibility
 	 */
 	public function checkValue_input($res, $value, $tcaFieldConf, $PP, $field = '') {
 		list($table, $id, $curValue, $status, $realPid, $recFID) = $PP;
@@ -1704,7 +1655,6 @@ class DataHandler {
 	 * @param array $PP Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
 	 * @param string $field Field name
 	 * @return array Modified $res array
-	 * @todo Define visibility
 	 */
 	public function checkValue_check($res, $value, $tcaFieldConf, $PP, $field = '') {
 		list($table, $id, $curValue, $status, $realPid, $recFID) = $PP;
@@ -1751,7 +1701,6 @@ class DataHandler {
 	 * @param array $tcaFieldConf Field configuration from TCA
 	 * @param array $PP Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
 	 * @return array Modified $res array
-	 * @todo Define visibility
 	 */
 	public function checkValue_radio($res, $value, $tcaFieldConf, $PP) {
 		list($table, $id, $curValue, $status, $realPid, $recFID) = $PP;
@@ -1776,7 +1725,6 @@ class DataHandler {
 	 * @param array $uploadedFiles
 	 * @param string $field Field name
 	 * @return array Modified $res array
-	 * @todo Define visibility
 	 */
 	public function checkValue_group_select($res, $value, $tcaFieldConf, $PP, $uploadedFiles, $field) {
 		list($table, $id, $curValue, $status, $realPid, $recFID) = $PP;
@@ -1899,7 +1847,6 @@ class DataHandler {
 	 * @param string $recFID Field identifier ([table:uid:field:....more for flexforms?]
 	 * @return array Modified value array
 	 * @see checkValue_group_select()
-	 * @todo Define visibility
 	 */
 	public function checkValue_group_select_file($valueArray, $tcaFieldConf, $curValue, $uploadedFileArray, $status, $table, $id, $recFID) {
 		// If file handling should NOT be bypassed, do processing:
@@ -2178,7 +2125,6 @@ class DataHandler {
 	 * @param array $uploadedFiles Uploaded files for the field
 	 * @param string $field Field name
 	 * @return array Modified $res array
-	 * @todo Define visibility
 	 */
 	public function checkValue_flex($res, $value, $tcaFieldConf, $PP, $uploadedFiles, $field) {
 		list($table, $id, $curValue, $status, $realPid, $recFID) = $PP;
@@ -2247,7 +2193,6 @@ class DataHandler {
 	 * @param array $array Array with FlexForm data
 	 * @param boolean $addPrologue If set, the XML prologue is returned as well.
 	 * @return string Input array converted to XML
-	 * @todo Define visibility
 	 */
 	public function checkValue_flexArray2Xml($array, $addPrologue = FALSE) {
 		/** @var $flexObj \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools */
@@ -2261,7 +2206,6 @@ class DataHandler {
 	 * @param array &$valueArrayToRemoveFrom by reference
 	 * @param array $deleteCMDS
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function _ACTION_FLEX_FORMdata(&$valueArray, $actionCMDs) {
 		if (is_array($valueArray) && is_array($actionCMDs)) {
@@ -2301,7 +2245,6 @@ class DataHandler {
 	 * @param string $field Field name
 	 * @param array $additionalData Additional data to be forwarded to sub-processors
 	 * @return array Modified $res array
-	 * @todo Define visibility
 	 */
 	public function checkValue_inline($res, $value, $tcaFieldConf, $PP, $field, array $additionalData = NULL) {
 		list($table, $id, $curValue, $status, $realPid, $recFID) = $PP;
@@ -2340,7 +2283,6 @@ class DataHandler {
 	 * @param array $tcaFieldConf Field configuration from TCA
 	 * @param array $valueArray Current value array of items
 	 * @return array The truncated value array of items
-	 * @todo Define visibility
 	 */
 	public function checkValue_checkMax($tcaFieldConf, $valueArray) {
 		// BTW, checking for min and max items here does NOT make any sense when MM is used because the above function calls will just return an array with a single item (the count) if MM is used... Why didn't I perform the check before? Probably because we could not evaluate the validity of record uids etc... Hmm...
@@ -2377,7 +2319,6 @@ class DataHandler {
 	 * @param integer $id UID to filter out in the lookup (the record itself...)
 	 * @param integer $newPid If set, the value will be unique for this PID
 	 * @return string Modified value (if not-unique). Will be the value appended with a number (until 100, then the function just breaks).
-	 * @todo Define visibility
 	 */
 	public function getUnique($table, $field, $value, $id, $newPid = 0) {
 		// Initialize:
@@ -2439,7 +2380,6 @@ class DataHandler {
 	 * @param array $evalArray Array of evaluations to traverse.
 	 * @param string $is_in The "is_in" value of the field configuration from TCA
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function checkValue_text_Eval($value, $evalArray, $is_in) {
 		$res = array();
@@ -2475,7 +2415,6 @@ class DataHandler {
 	 * @param array $evalArray Array of evaluations to traverse.
 	 * @param string $is_in Is-in string for 'is_in' evaluation
 	 * @return array Modified $value in key 'value' or empty array
-	 * @todo Define visibility
 	 */
 	public function checkValue_input_Eval($value, $evalArray, $is_in) {
 		$res = array();
@@ -2591,7 +2530,6 @@ class DataHandler {
 	 * @param string $currentTable Table name, needs to be passed to \TYPO3\CMS\Core\Database\RelationHandler
 	 * @param string $currentField field name, needs to be set for writing to sys_history
 	 * @return array Modified value array
-	 * @todo Define visibility
 	 */
 	public function checkValue_group_select_processDBdata($valueArray, $tcaFieldConf, $id, $status, $type, $currentTable, $currentField) {
 		$tables = $type == 'group' ? $tcaFieldConf['allowed'] : $tcaFieldConf['foreign_table'] . ',' . $tcaFieldConf['neg_foreign_table'];
@@ -2636,7 +2574,6 @@ class DataHandler {
 	 *
 	 * @param string $value Input string, comma separated values. For each part it will also be detected if a '|' is found and the first part will then be used if that is the case. Further the value will be rawurldecoded.
 	 * @return array The value array.
-	 * @todo Define visibility
 	 */
 	public function checkValue_group_select_explodeSelectGroupValue($value) {
 		$valueArray = GeneralUtility::trimExplode(',', $value, TRUE);
@@ -2661,7 +2598,6 @@ class DataHandler {
 	 * @param string $callBackFunc Optional call back function, see checkValue_flex_procInData_travDS()  DEPRICATED, use \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools instead for traversal!
 	 * @return array The modified 'data' part.
 	 * @see checkValue_flex_procInData_travDS()
-	 * @todo Define visibility
 	 */
 	public function checkValue_flex_procInData($dataPart, $dataPart_current, $uploadedFiles, $dataStructArray, $pParams, $callBackFunc = '') {
 		if (is_array($dataPart)) {
@@ -2690,7 +2626,6 @@ class DataHandler {
 	 * @param string $structurePath
 	 * @return void
 	 * @see checkValue_flex_procInData()
-	 * @todo Define visibility
 	 */
 	public function checkValue_flex_procInData_travDS(&$dataValues, $dataValues_current, $uploadedFiles, $DSelements, $pParams, $callBackFunc, $structurePath) {
 		if (is_array($DSelements)) {
@@ -3017,7 +2952,6 @@ class DataHandler {
 	 * @param string $excludeFields Commalist of fields to exclude from the copy process (might get default values)
 	 * @param integer $language Language ID (from sys_language table)
 	 * @return integer ID of new record, if any
-	 * @todo Define visibility
 	 */
 	public function copyRecord($table, $uid, $destPid, $first = 0, $overrideValues = array(), $excludeFields = '', $language = 0) {
 		$uid = ($origUid = (int)$uid);
@@ -3131,7 +3065,6 @@ class DataHandler {
 	 * @param integer $uid Page UID to copy
 	 * @param integer $destPid Destination PID: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function copyPages($uid, $destPid) {
 		// Initialize:
@@ -3182,7 +3115,6 @@ class DataHandler {
 	 * @param array $copyTablesArray Table on pages to copy along with the page.
 	 * @param boolean $first Is a flag set, if the record copied is NOT a 'slave' to another record copied. That is, if this record was asked to be copied in the cmd-array
 	 * @return integer The id of the new page, if applicable.
-	 * @todo Define visibility
 	 */
 	public function copySpecificPage($uid, $destPid, $copyTablesArray, $first = 0) {
 		// Copy the page itself:
@@ -3219,7 +3151,6 @@ class DataHandler {
 	 * @param array $overrideArray Override array - must NOT contain any fields not in the table!
 	 * @return array $workspaceOptions Options to be forwarded if actions happen on a workspace currently
 	 * @return integer Returns the new ID of the record (if applicable)
-	 * @todo Define visibility
 	 */
 	public function copyRecord_raw($table, $uid, $pid, $overrideArray = array(), array $workspaceOptions = array()) {
 		$uid = (int)$uid;
@@ -3282,7 +3213,6 @@ class DataHandler {
 	 * @param array $fieldArray Field array to insert as a record
 	 * @param integer $realPid The value of PID field.  -1 is indication that we are creating a new version!
 	 * @return integer Returns the new ID of the record (if applicable)
-	 * @todo Define visibility
 	 */
 	public function insertNewCopyVersion($table, $fieldArray, $realPid) {
 		$id = uniqid('NEW');
@@ -3334,7 +3264,6 @@ class DataHandler {
 	 * @return array $workspaceOptions Options to be forwarded if actions happen on a workspace currently
 	 * @access private
 	 * @see copyRecord()
-	 * @todo Define visibility
 	 */
 	public function copyRecord_procBasedOnFieldType($table, $uid, $field, $value, $row, $conf, $realDestPid, $language = 0, array $workspaceOptions = array()) {
 		// Process references and files, currently that means only the files, prepending absolute paths (so the TCEmain engine will detect the file as new and one that should be made into a copy)
@@ -3477,7 +3406,6 @@ class DataHandler {
 	 * @param string $dataValue_ext2 Not used.
 	 * @return array Result array with key "value" containing the value of the processing.
 	 * @see copyRecord(), checkValue_flex_procInData_travDS()
-	 * @todo Define visibility
 	 */
 	public function copyRecord_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2) {
 		// Extract parameters:
@@ -3503,7 +3431,6 @@ class DataHandler {
 	 * @param string $value Field value (eg. list of files)
 	 * @return string The (possibly modified) value
 	 * @see copyRecord(), copyRecord_flexFormCallBack()
-	 * @todo Define visibility
 	 */
 	public function copyRecord_procFilesRefs($conf, $uid, $value) {
 		// Prepend absolute paths to files:
@@ -3549,7 +3476,6 @@ class DataHandler {
 	 * @param string $table Table name
 	 * @param integer $theNewSQLID Record UID
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function copyRecord_fixRTEmagicImages($table, $theNewSQLID) {
 		// Creating fileFunc object.
@@ -3622,7 +3548,6 @@ class DataHandler {
 	 * @param array $overrideValues
 	 * @param string $excludeFields
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function copyL10nOverlayRecords($table, $uid, $destPid, $first = 0, $overrideValues = array(), $excludeFields = '') {
 		// There's no need to perform this for page-records or for tables that are not localizeable
@@ -3674,7 +3599,6 @@ class DataHandler {
 	 * @param integer $uid Record uid to move
 	 * @param integer $destPid Position to move to: $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function moveRecord($table, $uid, $destPid) {
 		if ($GLOBALS['TCA'][$table]) {
@@ -3750,7 +3674,6 @@ class DataHandler {
 	 * @param integer $destPid Position to move to: $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
 	 * @return void
 	 * @see moveRecord()
-	 * @todo Define visibility
 	 */
 	public function moveRecord_raw($table, $uid, $destPid) {
 		$sortRow = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
@@ -3894,7 +3817,6 @@ class DataHandler {
 	 * @param string $uid Record UID
 	 * @param string $destPid Position to move to
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function moveRecord_procFields($table, $uid, $destPid) {
 		$conf = $GLOBALS['TCA'][$table]['columns'];
@@ -3916,7 +3838,6 @@ class DataHandler {
 	 * @param string $value Record field value
 	 * @param array $conf TCA configuration of current field
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function moveRecord_procBasedOnFieldType($table, $uid, $destPid, $field, $value, $conf) {
 		$moveTable = '';
@@ -3956,7 +3877,6 @@ class DataHandler {
 	 * @param string $destPid Position to move to
 	 * @param string $originalRecordDestinationPid Position to move the original record to
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function moveL10nOverlayRecords($table, $uid, $destPid, $originalRecordDestinationPid) {
 		// There's no need to perform this for page-records or not localizeable tables
@@ -4001,7 +3921,6 @@ class DataHandler {
 	 * @param integer $uid Record uid (to be localized)
 	 * @param integer $language Language ID (from sys_language table)
 	 * @return mixed The uid (integer) of the new translated record or FALSE (boolean) if something went wrong
-	 * @todo Define visibility
 	 */
 	public function localize($table, $uid, $language) {
 		$newId = FALSE;
@@ -4216,7 +4135,6 @@ class DataHandler {
 	 * @param string $table Table name
 	 * @param integer $id Record UID
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function deleteAction($table, $id) {
 		$recordToDelete = BackendUtility::getRecord($table, $id);
@@ -4246,7 +4164,6 @@ class DataHandler {
 	 * @param boolean $noRecordCheck Flag: If $noRecordCheck is set, then the function does not check permission to delete record
 	 * @param boolean $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function deleteEl($table, $uid, $noRecordCheck = FALSE, $forceHardDelete = FALSE) {
 		if ($table == 'pages') {
@@ -4264,7 +4181,6 @@ class DataHandler {
 	 * @param integer $uid Record UID
 	 * @param boolean $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function deleteVersionsForRecord($table, $uid, $forceHardDelete) {
 		$versions = BackendUtility::selectVersionsOfRecord($table, $uid, 'uid,pid', $this->BE_USER->workspace);
@@ -4287,7 +4203,6 @@ class DataHandler {
 	 * @param string $table Table name
 	 * @param integer $uid Record UID
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function undeleteRecord($table, $uid) {
 		if ($this->isRecordUndeletable($table, $uid)) {
@@ -4307,7 +4222,6 @@ class DataHandler {
 	 * @param boolean $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
 	 * @param boolean $undeleteRecord If TRUE, the "deleted" flag is set to 0 again and thus, the item is undeleted.
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function deleteRecord($table, $uid, $noRecordCheck = FALSE, $forceHardDelete = FALSE, $undeleteRecord = FALSE) {
 		// Checking if there is anything else disallowing deleting the record by checking if editing is allowed
@@ -4417,7 +4331,6 @@ class DataHandler {
 	 * @param $structurePath Not used
 	 * @param $pObj Not used
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function deleteRecord_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath, $pObj) {
 		// Use reference index object to find files in fields:
@@ -4442,7 +4355,6 @@ class DataHandler {
 	 * @param boolean $force If TRUE, pages are not checked for permission.
 	 * @param boolean $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function deletePages($uid, $force = FALSE, $forceHardDelete = FALSE) {
 		// Getting list of pages to delete:
@@ -4471,7 +4383,6 @@ class DataHandler {
 	 * @return void
 	 * @access private
 	 * @see deletePages()
-	 * @todo Define visibility
 	 */
 	public function deleteSpecificPage($uid, $forceHardDelete = FALSE) {
 		$uid = (int)$uid;
@@ -4539,7 +4450,6 @@ class DataHandler {
 	 *
 	 * @param integer $uid Page id
 	 * @return mixed If array: List of page uids to traverse and delete (means OK), if string: error code.
-	 * @todo Define visibility
 	 */
 	public function canDeletePage($uid) {
 		// If we may at all delete this page
@@ -4592,7 +4502,6 @@ class DataHandler {
 	 * @param string $table Record Table
 	 * @param integer $id Record UID
 	 * @return string Returns a string IF there is an error (error string explaining). FALSE means record can be deleted
-	 * @todo Define visibility
 	 */
 	public function cannotDeleteRecord($table, $id) {
 		if ($table === 'pages') {
@@ -4637,7 +4546,6 @@ class DataHandler {
 	 * @param boolean $undeleteRecord If a record should be undeleted (e.g. from history/undo)
 	 * @return void
 	 * @see 	 deleteRecord()
-	 * @todo Define visibility
 	 */
 	public function deleteRecord_procFields($table, $uid, $undeleteRecord = FALSE) {
 		$conf = $GLOBALS['TCA'][$table]['columns'];
@@ -4659,7 +4567,6 @@ class DataHandler {
 	 * @param boolean $undeleteRecord If a record should be undeleted (e.g. from history/undo)
 	 * @return void
 	 * @see 	 deleteRecord()
-	 * @todo Define visibility
 	 */
 	public function deleteRecord_procBasedOnFieldType($table, $uid, $field, $value, $conf, $undeleteRecord = FALSE) {
 		if ($conf['type'] == 'inline') {
@@ -4707,7 +4614,6 @@ class DataHandler {
 	 * @param string $table Record Table
 	 * @param string $uid Record UID
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function deleteL10nOverlayRecords($table, $uid) {
 		// Check whether table can be localized or has a different table defined to store localizations:
@@ -4749,7 +4655,6 @@ class DataHandler {
 	 * @param boolean $delete If TRUE, the version is created to delete the record.
 	 * @return integer Returns the id of the new version (if any)
 	 * @see copyRecord()
-	 * @todo Define visibility
 	 */
 	public function versionizeRecord($table, $id, $label, $delete = FALSE) {
 		$id = (int)$id;
@@ -4839,7 +4744,6 @@ class DataHandler {
 	 * @param integer $swapWith Swap record (about to go online)
 	 * @return void
 	 * @see version_swap()
-	 * @todo Define visibility
 	 */
 	public function version_remapMMForVersionSwap($table, $id, $swapWith) {
 		// Actually, selecting the records fully is only need if flexforms are found inside... This could be optimized ...
@@ -4895,7 +4799,6 @@ class DataHandler {
 	 * @param string $path Path in flexforms
 	 * @return array Result array with key "value" containing the value of the processing.
 	 * @see version_remapMMForVersionSwap(), checkValue_flex_procInData_travDS()
-	 * @todo Define visibility
 	 */
 	public function version_remapMMForVersionSwap_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2, $path) {
 		// Extract parameters:
@@ -4921,7 +4824,6 @@ class DataHandler {
 	 * @param integer $swapWith Swap record (about to go online)
 	 * @return void
 	 * @see version_remapMMForVersionSwap()
-	 * @todo Define visibility
 	 */
 	public function version_remapMMForVersionSwap_execSwap($table, $id, $swapWith) {
 		if (is_array($this->version_remapMMForVersionSwap_reg[$id])) {
@@ -4969,7 +4871,6 @@ class DataHandler {
 	 * Processes the fields with references as registered during the copy process. This includes all FlexForm fields which had references.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function remapListedDBRecords() {
 		if (count($this->registerDBList)) {
@@ -5033,7 +4934,6 @@ class DataHandler {
 	 * @param string $dataValue_ext2 Not used
 	 * @return array Array where the "value" key carries the value.
 	 * @see checkValue_flex_procInData_travDS(), remapListedDBRecords()
-	 * @todo Define visibility
 	 */
 	public function remapListedDBRecords_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2) {
 		// Extract parameters:
@@ -5058,7 +4958,6 @@ class DataHandler {
 	 * @param string $table Table name
 	 * @return array Returns array of items ready to implode for field content.
 	 * @see remapListedDBRecords()
-	 * @todo Define visibility
 	 */
 	public function remapListedDBRecords_procDBRefs($conf, $value, $MM_localUid, $table) {
 		// Initialize variables
@@ -5127,7 +5026,6 @@ class DataHandler {
 	 * @param integer $uid The uid of the ORIGINAL record
 	 * @param string $table Table name
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function remapListedDBRecords_procInline($conf, $value, $uid, $table) {
 		$theUidToUpdate = $this->copyMappingArray_merged[$table][$uid];
@@ -5178,7 +5076,6 @@ class DataHandler {
 	 * The remapStack takes care about the correct mapping of new and old uids in case of relational data.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function processRemapStack() {
 		// Processes the remap stack:
@@ -5391,7 +5288,6 @@ class DataHandler {
 	 * @param array $incomingFieldArray Reference to the incominfFieldArray of process_datamap
 	 * @param array $registerDBList Reference to the $registerDBList array that was created/updated by versionizing calls to TCEmain in process_datamap.
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function getVersionizedIncomingFieldArray($table, $id, &$incomingFieldArray, &$registerDBList) {
 		if (is_array($registerDBList[$table][$id])) {
@@ -5426,7 +5322,6 @@ class DataHandler {
 	 *
 	 * @param string $table Table name
 	 * @return boolean Returns TRUE if the user has general access to modify the $table
-	 * @todo Define visibility
 	 */
 	public function checkModifyAccessList($table) {
 		$res = $this->admin || !$this->tableAdminOnly($table) && GeneralUtility::inList($this->BE_USER->groupData['tables_modify'], $table);
@@ -5444,7 +5339,6 @@ class DataHandler {
 	 * @param string $table Table name
 	 * @param integer $id UID of record
 	 * @return boolean Returns TRUE if OK. Cached results.
-	 * @todo Define visibility
 	 */
 	public function isRecordInWebMount($table, $id) {
 		if (!isset($this->isRecordInWebMount_Cache[($table . ':' . $id)])) {
@@ -5459,7 +5353,6 @@ class DataHandler {
 	 *
 	 * @param integer $pid Page ID to check
 	 * @return boolean TRUE if OK. Cached results.
-	 * @todo Define visibility
 	 */
 	public function isInWebMount($pid) {
 		if (!isset($this->isInWebMount_Cache[$pid])) {
@@ -5476,7 +5369,6 @@ class DataHandler {
 	 * @param array $data Record data
 	 * @param array $hookObjectsArr Hook objects
 	 * @return boolean Returns TRUE if the user may update the record given by $table and $id
-	 * @todo Define visibility
 	 */
 	public function checkRecordUpdateAccess($table, $id, $data = FALSE, &$hookObjectsArr = FALSE) {
 		$res = NULL;
@@ -5513,7 +5405,6 @@ class DataHandler {
 	 * @param int $pid Integer PID
 	 * @param int $action For logging: Action number.
 	 * @return bool Returns TRUE if the user may insert a record from table $insertTable on page $pid
-	 * @todo Define visibility
 	 */
 	public function checkRecordInsertAccess($insertTable, $pid, $action = 1) {
 		$pid = (int)$pid;
@@ -5551,7 +5442,6 @@ class DataHandler {
 	 * @param integer $page_uid Page id for which to check, including 0 (zero) if checking for page tree root.
 	 * @param string $checkTable Table name to check
 	 * @return bool TRUE if OK
-	 * @todo Define visibility
 	 */
 	public function isTableAllowedForThisPage($page_uid, $checkTable) {
 		$page_uid = (int)$page_uid;
@@ -5590,7 +5480,6 @@ class DataHandler {
 	 * @return bool Returns TRUE if the record given by $table, $id and $perms can be selected
 	 *
 	 * @throws \RuntimeException
-	 * @todo Define visibility
 	 */
 	public function doesRecordExist($table, $id, $perms) {
 		$id = (int)$id;
@@ -5654,7 +5543,6 @@ class DataHandler {
 	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object (from exec_SELECTquery())
 	 * @access private
 	 * @see doesRecordExist()
-	 * @todo Define visibility
 	 */
 	public function doesRecordExist_pageLookUp($id, $perms) {
 		return $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'uid=' . (int)$id . $this->deleteClause('pages') . ($perms && !$this->admin ? ' AND ' . $this->BE_USER->getPagePermsClause($perms) : '') . (!$this->admin && $GLOBALS['TCA']['pages']['ctrl']['editlock'] && $perms & 2 + 4 + 16 ? ' AND ' . $GLOBALS['TCA']['pages']['ctrl']['editlock'] . '=0' : ''));
@@ -5672,7 +5560,6 @@ class DataHandler {
 	 * @param integer $perms Perms integer to check each page record for.
 	 * @param boolean $recurse Recursion flag: If set, it will go out through the branch.
 	 * @return string List of integers in branch
-	 * @todo Define visibility
 	 */
 	public function doesBranchExist($inList, $pid, $perms, $recurse) {
 		$pid = (int)$pid;
@@ -5705,7 +5592,6 @@ class DataHandler {
 	 *
 	 * @param string $table Table name
 	 * @return boolean TRUE, if readonly
-	 * @todo Define visibility
 	 */
 	public function tableReadOnly($table) {
 		// Returns TRUE if table is readonly
@@ -5717,7 +5603,6 @@ class DataHandler {
 	 *
 	 * @param string $table Table name
 	 * @return boolean TRUE, if readonly
-	 * @todo Define visibility
 	 */
 	public function tableAdminOnly($table) {
 		// Returns TRUE if table is admin-only
@@ -5731,7 +5616,6 @@ class DataHandler {
 	 * @param integer $dest Destination Page ID to test
 	 * @param integer $id Page ID to test for presence inside Destination
 	 * @return boolean Returns FALSE if ID is inside destination (including equal to)
-	 * @todo Define visibility
 	 */
 	public function destNotInsideSelf($dest, $id) {
 		$loopCheck = 100;
@@ -5763,7 +5647,6 @@ class DataHandler {
 	 * Will also generate this list for admin-users so they must be check for before calling the function
 	 *
 	 * @return array Array of [table]-[field] pairs to exclude from editing.
-	 * @todo Define visibility
 	 */
 	public function getExcludeListArray() {
 		$list = array();
@@ -5785,7 +5668,6 @@ class DataHandler {
 	 * @param integer $page_uid Page ID
 	 * @param integer $doktype Page doktype
 	 * @return array Returns a list of the tables that are 'present' on the page but not allowed with the page_uid/doktype
-	 * @todo Define visibility
 	 */
 	public function doesPageHaveUnallowedTables($page_uid, $doktype) {
 		$page_uid = (int)$page_uid;
@@ -5825,7 +5707,6 @@ class DataHandler {
 	 * @param integer $id Page uid
 	 * @param string $field Field name for which to return value
 	 * @return string Value of the field. Result is cached in $this->pageCache[$id][$field] and returned from there next time!
-	 * @todo Define visibility
 	 */
 	public function pageInfo($id, $field) {
 		if (!isset($this->pageCache[$id])) {
@@ -5871,7 +5752,6 @@ class DataHandler {
 	 * @param integer $id Uid of record
 	 * @param boolean $noWSOL If set, no workspace overlay is performed
 	 * @return array Properties of record
-	 * @todo Define visibility
 	 */
 	public function getRecordProperties($table, $id, $noWSOL = FALSE) {
 		$row = $table == 'pages' && !$id ? array('title' => '[root-level]', 'uid' => 0, 'pid' => 0) : $this->recordInfo($table, $id, '*');
@@ -5887,7 +5767,6 @@ class DataHandler {
 	 * @param string $table Table name
 	 * @param array $row Input row
 	 * @return array Output array
-	 * @todo Define visibility
 	 */
 	public function getRecordPropertiesFromRow($table, $row) {
 		if ($GLOBALS['TCA'][$table]) {
@@ -5908,7 +5787,6 @@ class DataHandler {
 	 * @param integer $uid
 	 * @param integer $pid
 	 * @return integer
-	 * @todo Define visibility
 	 */
 	public function eventPid($table, $uid, $pid) {
 		return $table == 'pages' ? $uid : $pid;
@@ -5927,7 +5805,6 @@ class DataHandler {
 	 * @param integer $id Record uid
 	 * @param array $fieldArray Array of field=>value pairs to insert. FIELDS MUST MATCH the database FIELDS. No check is done.
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function updateDB($table, $id, $fieldArray) {
 		if (is_array($fieldArray) && is_array($GLOBALS['TCA'][$table]) && (int)$id) {
@@ -5973,7 +5850,6 @@ class DataHandler {
 	 * @param integer $suggestedUid Suggested UID value for the inserted record. See the array $this->suggestedInsertUids; Admin-only feature
 	 * @param boolean $dontSetNewIdIndex If TRUE, the ->substNEWwithIDs array is not updated. Only useful in very rare circumstances!
 	 * @return integer Returns ID on success.
-	 * @todo Define visibility
 	 */
 	public function insertDB($table, $id, $fieldArray, $newVersion = FALSE, $suggestedUid = 0, $dontSetNewIdIndex = FALSE) {
 		if (is_array($fieldArray) && is_array($GLOBALS['TCA'][$table]) && isset($fieldArray['pid'])) {
@@ -6039,7 +5915,6 @@ class DataHandler {
 	 * @param string $action Action, for logging only.
 	 * @return array Selected row
 	 * @see insertDB(), updateDB()
-	 * @todo Define visibility
 	 */
 	public function checkStoredRecord($table, $id, $fieldArray, $action) {
 		$id = (int)$id;
@@ -6073,7 +5948,6 @@ class DataHandler {
 	 * @param integer $id Record ID
 	 * @param integer $logId Log entry ID, important for linking between log and history views
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function setHistory($table, $id, $logId) {
 		if (isset($this->historyRecords[$table . ':' . $id]) && (int)$logId > 0) {
@@ -6095,7 +5969,6 @@ class DataHandler {
 	 * @param string $table Table name
 	 * @param integer $id Record UID
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function updateRefIndex($table, $id) {
 		/** @var $refIndexObj \TYPO3\CMS\Core\Database\ReferenceIndex */
@@ -6119,7 +5992,6 @@ class DataHandler {
 	 * @param integer $uid Uid of record to find sorting number for. May be zero in case of new.
 	 * @param integer $pid Positioning PID, either >=0 (pointing to page in which case we find sorting number for first record in page) or <0 (pointing to record in which case to find next sorting number after this record)
 	 * @return mixed Returns integer if PID is >=0, otherwise an array with PID and sorting number. Possibly FALSE in case of error.
-	 * @todo Define visibility
 	 */
 	public function getSortNumber($table, $uid, $pid) {
 		if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['sortby']) {
@@ -6210,7 +6082,6 @@ class DataHandler {
 	 * @return integer If $return_SortNumber_After_This_Uid is set, will contain usable sorting number after that record if found (otherwise 0)
 	 * @access private
 	 * @see getSortNumber()
-	 * @todo Define visibility
 	 */
 	public function resorting($table, $pid, $sortRow, $return_SortNumber_After_This_Uid) {
 		if ($GLOBALS['TCA'][$table] && $sortRow && $GLOBALS['TCA'][$table]['ctrl']['sortby'] == $sortRow) {
@@ -6286,7 +6157,6 @@ class DataHandler {
 	 * @param array $fieldArray Field Array, returned with modifications
 	 * @param array $TSConfig_p TSconfig properties
 	 * @return array Modified Field Array
-	 * @todo Define visibility
 	 */
 	public function setTSconfigPermissions($fieldArray, $TSConfig_p) {
 		if ((string)$TSConfig_p['userid'] !== '') {
@@ -6313,7 +6183,6 @@ class DataHandler {
 	 *
 	 * @param string $table Table name for which to set default values.
 	 * @return array Array with default values.
-	 * @todo Define visibility
 	 */
 	public function newFieldArray($table) {
 		$fieldArray = array();
@@ -6343,7 +6212,6 @@ class DataHandler {
 	 * @param string $table Table name
 	 * @param array $incomingFieldArray Incoming array (passed by reference)
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function addDefaultPermittedLanguageIfNotSet($table, &$incomingFieldArray) {
 		// Checking languages:
@@ -6367,7 +6235,6 @@ class DataHandler {
 	 * @param string $table Table name
 	 * @param array $data Data array with fields from table. These will be overlaid with values in $this->overrideValues[$table]
 	 * @return array Data array, processed.
-	 * @todo Define visibility
 	 */
 	public function overrideFieldArray($table, $data) {
 		if (is_array($this->overrideValues[$table])) {
@@ -6384,7 +6251,6 @@ class DataHandler {
 	 * @param integer $id Record uid
 	 * @param array $fieldArray Array of field=>value pairs intended to be inserted into the database. All keys with values matching exactly the current value will be unset!
 	 * @return array Returns $fieldArray. If the returned array is empty, then the record should not be updated!
-	 * @todo Define visibility
 	 */
 	public function compareFieldArrayWithCurrentAndUnset($table, $id, $fieldArray) {
 		// Fetch the original record:
@@ -6469,7 +6335,6 @@ class DataHandler {
 	 * @param string $string List of pMap strings
 	 * @return integer Integer mask
 	 * @see setTSconfigPermissions(), newFieldArray()
-	 * @todo Define visibility
 	 */
 	public function assemblePermissions($string) {
 		$keyArr = GeneralUtility::trimExplode(',', $string, TRUE);
@@ -6487,7 +6352,6 @@ class DataHandler {
 	 *
 	 * @param string $input Input string
 	 * @return string Output string with any comma in the end removed, if any.
-	 * @todo Define visibility
 	 */
 	public function rmComma($input) {
 		return rtrim($input, ',');
@@ -6498,7 +6362,6 @@ class DataHandler {
 	 *
 	 * @param string $input Input string
 	 * @return string Output string
-	 * @todo Define visibility
 	 */
 	public function convNumEntityToByteValue($input) {
 		$token = md5(microtime());
@@ -6520,7 +6383,6 @@ class DataHandler {
 	 *
 	 * @param string $folder Upload folder name, relative to PATH_site
 	 * @return string Input string prefixed with PATH_site
-	 * @todo Define visibility
 	 */
 	public function destPathFromUploadFolder($folder) {
 		return PATH_site . $folder;
@@ -6542,7 +6404,6 @@ class DataHandler {
 	 *
 	 * @param string $table Table name
 	 * @return string Delete clause
-	 * @todo Define visibility
 	 */
 	public function deleteClause($table) {
 		// Returns the proper delete-clause if any for a table from TCA
@@ -6558,7 +6419,6 @@ class DataHandler {
 	 *
 	 * @param integer $tscPID Page id (PID) from which to get configuration.
 	 * @return array TSconfig array, if any
-	 * @todo Define visibility
 	 */
 	public function getTCEMAIN_TSconfig($tscPID) {
 		if (!isset($this->cachedTSconfig[$tscPID])) {
@@ -6574,7 +6434,6 @@ class DataHandler {
 	 * @param array $TSconfig TSconfig for page
 	 * @return array TSconfig merged
 	 * @see getTCEMAIN_TSconfig()
-	 * @todo Define visibility
 	 */
 	public function getTableEntries($table, $TSconfig) {
 		$tA = is_array($TSconfig['table.'][$table . '.']) ? $TSconfig['table.'][$table . '.'] : array();
@@ -6589,7 +6448,6 @@ class DataHandler {
 	 * @param string $table Table name
 	 * @param integer $uid Record uid
 	 * @return integer PID value (unless the record did not exist in which case FALSE)
-	 * @todo Define visibility
 	 */
 	public function getPID($table, $uid) {
 		$res_tmp = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid', $table, 'uid=' . (int)$uid);
@@ -6603,7 +6461,6 @@ class DataHandler {
 	 * This will save MM relations for new records but is executed after records are created because we need to know the ID of them
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function dbAnalysisStoreExec() {
 		foreach ($this->dbAnalysisStore as $action) {
@@ -6618,7 +6475,6 @@ class DataHandler {
 	 * Removing files registered for removal before exit
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function removeRegisteredFiles() {
 		foreach ($this->removeFilesStore as $file) {
@@ -6635,7 +6491,6 @@ class DataHandler {
 	 * @param integer $counter Number of levels to go down.
 	 * @param integer $rootID ID of root point for new copied branch: The idea seems to be that a copy is not made of the already new page!
 	 * @return array Return array.
-	 * @todo Define visibility
 	 */
 	public function int_pageTreeInfo($CPtable, $pid, $counter, $rootID) {
 		if ($counter) {
@@ -6659,7 +6514,6 @@ class DataHandler {
 	 * List of all tables (those administrators has access to = array_keys of $GLOBALS['TCA'])
 	 *
 	 * @return array Array of all TCA table names
-	 * @todo Define visibility
 	 */
 	public function compileAdminTables() {
 		return array_keys($GLOBALS['TCA']);
@@ -6671,7 +6525,6 @@ class DataHandler {
 	 * @param string $table Table name
 	 * @param integer $uid Record UID
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function fixUniqueInPid($table, $uid) {
 		if ($GLOBALS['TCA'][$table]) {
@@ -6705,7 +6558,6 @@ class DataHandler {
 	 * @param boolean $update If set, updates the record
 	 * @param array $newData Input array. If fields are already specified AND $update is not set, values are not set in output array.
 	 * @return array Output array (For when the copying operation needs to get the information instead of updating the info)
-	 * @todo Define visibility
 	 */
 	public function fixCopyAfterDuplFields($table, $uid, $prevUid, $update, $newData = array()) {
 		if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields']) {
@@ -6728,7 +6580,6 @@ class DataHandler {
 	 *
 	 * @param string $table Table name
 	 * @return array Array of fieldnames that are either "group" or "file" types.
-	 * @todo Define visibility
 	 */
 	public function extFileFields($table) {
 		$listArr = array();
@@ -6747,7 +6598,6 @@ class DataHandler {
 	 *
 	 * @param array $conf Config array for TCA/columns field
 	 * @return boolean TRUE if DB reference field (group/db or select with foreign-table)
-	 * @todo Define visibility
 	 */
 	public function isReferenceField($conf) {
 		return $conf['type'] == 'group' && $conf['internal_type'] == 'db' || $conf['type'] == 'select' && $conf['foreign_table'];
@@ -6759,7 +6609,6 @@ class DataHandler {
 	 *
 	 * @param array $conf Config array for TCA/columns field
 	 * @return mixed string Inline subtype (field|mm|list), boolean: FALSE
-	 * @todo Define visibility
 	 */
 	public function getInlineFieldType($conf) {
 		if ($conf['type'] !== 'inline' || !$conf['foreign_table']) {
@@ -6787,7 +6636,6 @@ class DataHandler {
 	 * @param integer $count Counter (number of recursions)
 	 * @param string $prevTitle Previous title we checked for (in previous recursion)
 	 * @return string The field value, possibly appended with a "copy label
-	 * @todo Define visibility
 	 */
 	public function getCopyHeader($table, $pid, $field, $value, $count, $prevTitle = '') {
 		// Set title value to check for:
@@ -6813,7 +6661,6 @@ class DataHandler {
 	 * @param string $table Table name
 	 * @return string Label to append, containing "%s" for the number
 	 * @see getCopyHeader()
-	 * @todo Define visibility
 	 */
 	public function prependLabel($table) {
 		if (is_object($GLOBALS['LANG'])) {
@@ -6830,7 +6677,6 @@ class DataHandler {
 	 * @param string $table Table name
 	 * @param integer $pid "Destination pid" : If the value is >= 0 it's just returned directly (through (int)though) but if the value is <0 then the method looks up the record with the uid equal to abs($pid) (positive number) and returns the PID of that record! The idea is that negative numbers point to the record AFTER WHICH the position is supposed to be!
 	 * @return integer
-	 * @todo Define visibility
 	 */
 	public function resolvePid($table, $pid) {
 		$pid = (int)$pid;
@@ -6856,7 +6702,6 @@ class DataHandler {
 	 * @param string $table Table name
 	 * @param string $value The value to fix
 	 * @return string Clean name
-	 * @todo Define visibility
 	 */
 	public function clearPrefixFromValue($table, $value) {
 		$regex = '/' . sprintf(quotemeta($this->prependLabel($table)), '[0-9]*') . '$/';
@@ -6871,7 +6716,6 @@ class DataHandler {
 	 * @param string $filelist List of files to work on from field
 	 * @param string $func Function, eg. "deleteAll" which will delete all files listed.
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function extFileFunctions($table, $field, $filelist, $func) {
 		$uploadFolder = $GLOBALS['TCA'][$table]['columns'][$field]['config']['uploadfolder'];
@@ -6900,7 +6744,6 @@ class DataHandler {
 	 *
 	 * @param string $inList List of page integers
 	 * @return boolean Return TRUE, if permission granted
-	 * @todo Define visibility
 	 */
 	public function noRecordsFromUnallowedTables($inList) {
 		$inList = trim($this->rmComma(trim($inList)));
@@ -6921,7 +6764,6 @@ class DataHandler {
 	 * @param string $table The tablename of the record
 	 * @param integer $uid The uid of the record
 	 * @return boolean Returns TRUE if the record is copied or is the result of a copy action
-	 * @todo Define visibility
 	 */
 	public function isRecordCopied($table, $uid) {
 		// If the record was copied:
@@ -7226,7 +7068,6 @@ class DataHandler {
 	 * @param integer $event_pid The page_uid (pid) where the event occurred. Used to select log-content for specific pages.
 	 * @param string $NEWid NEW id for new records
 	 * @return integer Log entry UID (0 if no log entry was written or logging is disabled)
-	 * @todo Define visibility
 	 */
 	public function log($table, $recuid, $action, $recpid, $error, $details, $details_nr = -1, $data = array(), $event_pid = -1, $NEWid = '') {
 		if (!$this->enableLogging) {
@@ -7254,7 +7095,6 @@ class DataHandler {
 	 * @param integer $error Error code, see log()
 	 * @return integer Log entry UID
 	 * @see log()
-	 * @todo Define visibility
 	 */
 	public function newlog($message, $error = 0) {
 		return $this->log('', 0, 0, 0, $error, '[newlog()] ' . $message, -1);
@@ -7270,7 +7110,6 @@ class DataHandler {
 	 * @param integer $error Error code, see log()
 	 * @return integer Log entry UID
 	 * @see log()
-	 * @todo Define visibility
 	 */
 	public function newlog2($message, $table, $uid, $pid = FALSE, $error = 0) {
 		if ($pid === FALSE) {
@@ -7285,7 +7124,6 @@ class DataHandler {
 	 *
 	 * @param string $redirect Redirect URL (for creating link in message)
 	 * @return void (Will exit on error)
-	 * @todo Define visibility
 	 */
 	public function printLogErrorMessages($redirect) {
 		$res_log = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_log', 'type=1 AND userid=' . (int)$this->BE_USER->user['uid'] . ' AND tstamp=' . (int)$GLOBALS['EXEC_TIME'] . '	AND error<>0');
@@ -7311,7 +7149,6 @@ class DataHandler {
 	 * Clears page cache. Takes into account file cache.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 * @deprecated since TYPO3 CMS 6.2, remove two versions later. The DataHandler clearPageCache method is deprecated, use the cache manager directly.
 	 */
 	public function internal_clearPageCache() {
@@ -7327,7 +7164,6 @@ class DataHandler {
 	 * @param stringb$table	Table name
 	 * @param array $fieldArray	Field array to check
 	 * @return array Updated field array
-	 * @todo Define visibility
 	 */
 	public function insertUpdateDB_preprocessBasedOnFieldType($table, $fieldArray) {
 		$result = $fieldArray;

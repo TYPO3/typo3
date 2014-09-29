@@ -29,20 +29,19 @@ class RenameFileController {
 	 * Document template object
 	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 * @todo Define visibility
 	 */
 	public $doc;
 
 	// Name of the filemount
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $title;
 
 	// Internal, static (GPVar):
 	// Set with the target path inputted in &target
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $target;
 
@@ -55,14 +54,14 @@ class RenameFileController {
 
 	// Return URL of list module.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $returnUrl;
 
 	// Internal, dynamic:
 	// Accumulating content
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $content;
 

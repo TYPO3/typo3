@@ -23,15 +23,9 @@ class SqlParser {
 
 	// Parser:
 	// Parsing error string
-	/**
-	 * @todo Define visibility
-	 */
 	public $parse_error = '';
 
 	// Last stop keyword used.
-	/**
-	 * @todo Define visibility
-	 */
 	public $lastStopKeyWord = '';
 
 	/**

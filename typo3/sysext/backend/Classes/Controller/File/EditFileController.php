@@ -26,41 +26,25 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class EditFileController {
 
 	// Module content accumulated.
-	/**
-	 * @todo Define visibility
-	 */
 	public $content;
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $title;
 
 	/**
 	 * Document template object
 	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 * @todo Define visibility
 	 */
 	public $doc;
 
 	// Internal, static: GPvar
 	// Original input target
-	/**
-	 * @todo Define visibility
-	 */
 	public $origTarget;
 
 	// The original target, but validated.
-	/**
-	 * @todo Define visibility
-	 */
 	public $target;
 
 	// Return URL of list module.
-	/**
-	 * @todo Define visibility
-	 */
 	public $returnUrl;
 
 	/**
@@ -215,7 +199,6 @@ class EditFileController {
 	 * Builds the buttons for the docheader and returns them as an array
 	 *
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function getButtons() {
 		$buttons = array();

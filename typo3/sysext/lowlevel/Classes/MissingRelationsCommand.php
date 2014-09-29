@@ -22,14 +22,12 @@ namespace TYPO3\CMS\Lowlevel;
 class MissingRelationsCommand extends CleanerCommand {
 
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $checkRefIndex = TRUE;
 
 	/**
 	 * Constructor
-	 *
-	 * @todo Define visibility
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -64,7 +62,6 @@ Reports missing relations';
 	 * change the value of a reference (or remove it) [Only for managed relations!]
 	 *
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function main() {
 		global $TYPO3_DB;
@@ -132,7 +129,6 @@ Reports missing relations';
 	 *
 	 * @param array $resultArray Result array from main() function
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main_autoFix($resultArray) {
 		$trav = array('offlineVersionRecords_m', 'nonExistingRecords_m');

@@ -16,8 +16,6 @@ class localPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 
 	/**
 	 * Constructor. Just calling init()
-	 *
-	 * @todo Define visibility
 	 */
 	public function __construct() {
 		$this->determineScriptUrl();
@@ -32,7 +30,6 @@ class localPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 * @param array $v The record
 	 * @param boolean $ext_pArrPages (Ignore)
 	 * @return string Wrapping title string.
-	 * @todo Define visibility
 	 */
 	public function wrapTitle($title, $v, $ext_pArrPages = '') {
 		if ($this->ext_isLinkable($v['doktype'], $v['uid'])) {
@@ -48,7 +45,6 @@ class localPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 *
 	 * @param array $treeArr Tree array
 	 * @return string HTML output.
-	 * @todo Define visibility
 	 */
 	public function printTree($treeArr = '') {
 		$titleLen = (int)$GLOBALS['BE_USER']->uc['titleLen'];
@@ -91,7 +87,6 @@ class localPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 * @param integer $doktype Doktype value to test
 	 * @param integer $uid uid to test.
 	 * @return boolean
-	 * @todo Define visibility
 	 */
 	public function ext_isLinkable($doktype, $uid) {
 		if ($uid && $doktype < 199) {
@@ -106,7 +101,6 @@ class localPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 * @param string $cmd Command for 'PM' get var
 	 * @param boolean $bMark If set, the link will have a anchor point (=$bMark) and a name attribute (=$bMark)
 	 * @return string Link-wrapped input string
-	 * @todo Define visibility
 	 */
 	public function PM_ATagWrap($icon, $cmd, $bMark = '') {
 		$name = '';
@@ -124,7 +118,6 @@ class localPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 * @param string $icon The image tag for the icon
 	 * @param array $row The row for the current element
 	 * @return string The processed icon input value.
-	 * @todo Define visibility
 	 */
 	public function wrapIcon($icon, $row) {
 		$content = $this->addTagAttributes($icon, ' title="id=' . $row['uid'] . '"');
@@ -149,7 +142,6 @@ class TBE_PageTree extends localPageTree {
 	 * @param integer $doktype Doktype value to test
 	 * @param integer $uid uid to test.
 	 * @return boolean
-	 * @todo Define visibility
 	 */
 	public function ext_isLinkable($doktype, $uid) {
 		return TRUE;
@@ -162,7 +154,6 @@ class TBE_PageTree extends localPageTree {
 	 * @param array $v The record
 	 * @param boolean $ext_pArrPages If set, pages clicked will return immediately, otherwise reload page.
 	 * @return string Wrapping title string.
-	 * @todo Define visibility
 	 */
 	public function wrapTitle($title, $v, $ext_pArrPages) {
 		if ($ext_pArrPages) {
@@ -186,14 +177,12 @@ class TBE_PageTree extends localPageTree {
 class localFolderTree extends \TYPO3\CMS\Backend\Tree\View\FolderTreeView {
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $ext_IconMode = 1;
 
 	/**
 	 * Initializes the script path
-	 *
-	 * @todo Define visibility
 	 */
 	public function __construct() {
 		$this->determineScriptUrl();
@@ -206,7 +195,6 @@ class localFolderTree extends \TYPO3\CMS\Backend\Tree\View\FolderTreeView {
 	 * @param string $title Title, ready for output.
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject The "record
 	 * @return string Wrapping title string.
-	 * @todo Define visibility
 	 */
 	public function wrapTitle($title, \TYPO3\CMS\Core\Resource\Folder $folderObject) {
 		if ($this->ext_isLinkable($folderObject)) {
@@ -222,7 +210,6 @@ class localFolderTree extends \TYPO3\CMS\Backend\Tree\View\FolderTreeView {
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject Object with information about the folder element. Contains keys like title, uid, path, _title
 	 * @return boolean TRUE is returned if the path is found in the web-part of the server and is NOT a recycler or temp folder
-	 * @todo Define visibility
 	 */
 	public function ext_isLinkable(\TYPO3\CMS\Core\Resource\Folder $folderObject) {
 		if (strstr($folderObject->getIdentifier(), '_recycler_') || strstr($folderObject->getIdentifier(), '_temp_')) {
@@ -240,7 +227,6 @@ class localFolderTree extends \TYPO3\CMS\Backend\Tree\View\FolderTreeView {
 	 * @param boolean $bMark If set, the link will have a anchor point (=$bMark) and a name attribute (=$bMark)
 	 * @return string Link-wrapped input string
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function PM_ATagWrap($icon, $cmd, $bMark = '') {
 		$name = $anchor = '';
@@ -261,9 +247,10 @@ class localFolderTree extends \TYPO3\CMS\Backend\Tree\View\FolderTreeView {
  */
 class TBE_FolderTree extends localFolderTree {
 
-	// If file-drag mode is set, temp and recycler folders are filtered out.
 	/**
-	 * @todo Define visibility
+	 * If file-drag mode is set, temp and recycler folders are filtered out.
+	 *
+	 * @var int
 	 */
 	public $ext_noTempRecyclerDirs = 0;
 
@@ -272,7 +259,6 @@ class TBE_FolderTree extends localFolderTree {
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject object with information about the folder element. Contains keys like title, uid, path, _title
 	 * @return boolean TRUE is returned if the path is NOT a recycler or temp folder AND if ->ext_noTempRecyclerDirs is not set.
-	 * @todo Define visibility
 	 */
 	public function ext_isLinkable($folderObject) {
 		if ($this->ext_noTempRecyclerDirs && (substr($folderObject->getIdentifier(), -7) == '_temp_/' || substr($folderObject->getIdentifier(), -11) == '_recycler_/')) {
@@ -288,7 +274,6 @@ class TBE_FolderTree extends localFolderTree {
 	 * @param string $title Title, ready for output.
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject The folderObject 'record'
 	 * @return string Wrapping title string.
-	 * @todo Define visibility
 	 */
 	public function wrapTitle($title, $folderObject) {
 		if ($this->ext_isLinkable($folderObject)) {

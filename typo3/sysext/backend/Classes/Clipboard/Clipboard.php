@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 class Clipboard {
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $numberTabs = 3;
 
@@ -53,33 +53,33 @@ class Clipboard {
 	 * The virtual tablename '_FILE' will always indicate files/folders. When checking for elements from eg. 'all tables'
 	 * (by using an empty string) '_FILE' entries are excluded (so in effect only DB elements are counted)
 	 *
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $clipData = array();
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $changed = 0;
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $current = '';
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $backPath = '';
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $lockToNormal = 0;
 
 	// If set, clipboard is displaying files.
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $fileMode = 0;
 
@@ -92,7 +92,6 @@ class Clipboard {
 	 * Initialize the clipboard from the be_user session
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function initializeClipboard() {
 		$this->backPath = $GLOBALS['BACK_PATH'];
@@ -119,7 +118,6 @@ class Clipboard {
 	 * This is used by the clickmenu since it only allows operation on single elements at a time (that is the "normal" pad)
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function lockToNormal() {
 		$this->lockToNormal = 1;
@@ -137,7 +135,6 @@ class Clipboard {
 	 *
 	 * @param array $cmd Array of actions, see function description
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function setCmd($cmd) {
 		if (is_array($cmd['el'])) {
@@ -184,7 +181,6 @@ class Clipboard {
 	 *
 	 * @param string $padIdent Key in the array $this->clipData
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function setCurrentPad($padIdent) {
 		// Change clipboard pad (if not locked to normal)
@@ -205,7 +201,6 @@ class Clipboard {
 	 * The function will check if the internal flag ->changed has been set and if so, save the clipboard. Else not.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function endClipboard() {
 		if ($this->changed) {
@@ -221,7 +216,6 @@ class Clipboard {
 	 * @param string $table The 'table which is allowed'. Must be set.
 	 * @param boolean $removeDeselected Can be set in order to remove entries which are marked for deselection.
 	 * @return array Processed input $CBarr
-	 * @todo Define visibility
 	 */
 	public function cleanUpCBC($CBarr, $table, $removeDeselected = 0) {
 		if (is_array($CBarr)) {
@@ -244,7 +238,6 @@ class Clipboard {
 	 * Prints the clipboard
 	 *
 	 * @return string HTML output
-	 * @todo Define visibility
 	 */
 	public function printClipboard() {
 		$out = array();
@@ -342,7 +335,6 @@ class Clipboard {
 	 * @access private
 	 * @param string $pad Pad reference
 	 * @return array Array with table rows for the clipboard.
-	 * @todo Define visibility
 	 */
 	public function printContentFromTab($pad) {
 		$lines = array();
@@ -433,7 +425,6 @@ class Clipboard {
 	 * @param string $bgColClass Class for the background color of a column
 	 * @param string $pad Pad reference
 	 * @return string HTML table rows
-	 * @todo Define visibility
 	 */
 	public function getLocalizations($table, $parentRec, $bgColClass, $pad) {
 		$lines = array();
@@ -474,7 +465,6 @@ class Clipboard {
 	 * @param string $str String (already htmlspecialchars()'ed)
 	 * @param string $pad Pad reference
 	 * @return string HTML output (htmlspecialchar'ed content inside of tags.)
-	 * @todo Define visibility
 	 */
 	public function padTitleWrap($str, $pad) {
 		$el = count($this->elFromTable($this->fileMode ? '_FILE' : '', $pad));
@@ -492,7 +482,6 @@ class Clipboard {
 	 * @param mixed $rec If array, a record is expected. If string, its a path
 	 * @param string $table Table name
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function linkItemText($str, $rec, $table = '') {
 		if (is_array($rec) && $table) {
@@ -522,7 +511,6 @@ class Clipboard {
 	 * @param boolean $deselect If set, the link will deselect, otherwise select.
 	 * @param array $baseArray The base array of GET vars to be sent in addition. Notice that current GET vars WILL automatically be included.
 	 * @return string URL linking to the current script but with the CB array set to select the element with table/uid
-	 * @todo Define visibility
 	 */
 	public function selUrlDB($table, $uid, $copy = 0, $deselect = 0, $baseArray = array()) {
 		$CB = array('el' => array(rawurlencode($table . '|' . $uid) => $deselect ? 0 : 1));
@@ -541,7 +529,6 @@ class Clipboard {
 	 * @param boolean $deselect If set, the link will deselect, otherwise select.
 	 * @param array $baseArray The base array of GET vars to be sent in addition. Notice that current GET vars WILL automatically be included.
 	 * @return string URL linking to the current script but with the CB array set to select the path
-	 * @todo Define visibility
 	 */
 	public function selUrlFile($path, $copy = 0, $deselect = 0, $baseArray = array()) {
 		$CB = array('el' => array(rawurlencode('_FILE|' . GeneralUtility::shortmd5($path)) => $deselect ? '' : $path));
@@ -562,7 +549,6 @@ class Clipboard {
 	 * @param boolean $setRedirect If set, then the redirect URL will point back to the current script, but with CB reset.
 	 * @param array|NULL $update Additional key/value pairs which should get set in the moved/copied record (via DataHandler)
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function pasteUrl($table, $uid, $setRedirect = TRUE, array $update = NULL) {
 		$rU = $this->backPath . ($table == '_FILE' ? 'tce_file.php' : 'tce_db.php') . '?' .
@@ -582,7 +568,6 @@ class Clipboard {
 	 * @param boolean $setRedirect If set, then the redirect URL will point back to the current script, but with CB reset.
 	 * @param boolean $file If set, then the URL will link to the tce_file.php script in the typo3/ dir.
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function deleteUrl($setRedirect = 1, $file = 0) {
 		$rU = $this->backPath . ($file ? 'tce_file.php' : 'tce_db.php') . '?' . ($setRedirect ? 'redirect=' . rawurlencode(GeneralUtility::linkThisScript(array('CB' => ''))) : '') . '&vC=' . $GLOBALS['BE_USER']->veriCode() . '&prErr=1&uPT=1' . '&CB[delete]=1' . '&CB[pad]=' . $this->current . BackendUtility::getUrlToken('tceAction');
@@ -595,7 +580,6 @@ class Clipboard {
 	 * Links to alt_doc.php
 	 *
 	 * @return string The URL to alt_doc.php with parameters.
-	 * @todo Define visibility
 	 */
 	public function editUrl() {
 		// All records
@@ -616,7 +600,6 @@ class Clipboard {
 	 * @param string $table Tablename
 	 * @param string $uid Uid integer/shortmd5 hash
 	 * @return string URL
-	 * @todo Define visibility
 	 */
 	public function removeUrl($table, $uid) {
 		return GeneralUtility::linkThisScript(array('CB' => array('remove' => $table . '|' . $uid)));
@@ -631,7 +614,6 @@ class Clipboard {
 	 * @param array $clElements Array of selected elements
 	 * @param string $columnLabel Name of the content column
 	 * @return string JavaScript "confirm" message
-	 * @todo Define visibility
 	 */
 	public function confirmMsg($table, $rec, $type, $clElements, $columnLabel = '') {
 		if ($GLOBALS['BE_USER']->jsConfirmation(2)) {
@@ -676,7 +658,6 @@ class Clipboard {
 	 * @param string $key Label Key
 	 * @param string $Akey Alternative key to "labels
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function clLabel($key, $Akey = 'labels') {
 		return htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:' . $Akey . '.' . $key));
@@ -725,7 +706,6 @@ class Clipboard {
 	 *
 	 * @param string $el Key of element in ->clipData array
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function removeElement($el) {
 		unset($this->clipData[$this->current]['el'][$el]);
@@ -738,7 +718,6 @@ class Clipboard {
 	 *
 	 * @access private
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function saveClipboard() {
 		$GLOBALS['BE_USER']->pushModuleData('clipboard', $this->clipData);
@@ -748,7 +727,6 @@ class Clipboard {
 	 * Returns the current mode, 'copy' or 'cut'
 	 *
 	 * @return string "copy" or "cut
-	 * @todo Define visibility
 	 */
 	public function currentMode() {
 		return $this->clipData[$this->current]['mode'] == 'copy' ? 'copy' : 'cut';
@@ -759,7 +737,6 @@ class Clipboard {
 	 * and unsets elements which does not exist anymore or are disabled.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function cleanCurrent() {
 		if (is_array($this->clipData[$this->current]['el'])) {
@@ -793,7 +770,6 @@ class Clipboard {
 	 * @param string $matchTable Table to match/count for.
 	 * @param string $pad Can optionally be used to set another pad than the current.
 	 * @return array Array with keys from the CB.
-	 * @todo Define visibility
 	 */
 	public function elFromTable($matchTable = '', $pad = '') {
 		$pad = $pad ? $pad : $this->current;
@@ -824,7 +800,6 @@ class Clipboard {
 	 * @param string $table Table name, (_FILE for files...)
 	 * @param integer $uid Element uid (path for files)
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function isSelected($table, $uid) {
 		$k = $table . '|' . $uid;
@@ -839,7 +814,6 @@ class Clipboard {
 	 * @param string $table Table name
 	 * @param integer $uid Element uid
 	 * @return array Element record with extra field _RECORD_TITLE set to the title of the record
-	 * @todo Define visibility
 	 */
 	public function getSelectedRecord($table = '', $uid = '') {
 		if (!$table && !$uid) {
@@ -858,7 +832,6 @@ class Clipboard {
 	 * Reports if the current pad has elements (does not check file/DB type OR if file/DBrecord exists or not. Only counting array)
 	 *
 	 * @return boolean TRUE if elements exist.
-	 * @todo Define visibility
 	 */
 	public function isElements() {
 		return is_array($this->clipData[$this->current]['el']) && count($this->clipData[$this->current]['el']);
@@ -886,7 +859,6 @@ class Clipboard {
 	 * @param array $CMD Command-array
 	 * @param NULL|array If additional values should get set in the copied/moved record this will be an array containing key=>value pairs
 	 * @return array Modified Command-array
-	 * @todo Define visibility
 	 */
 	public function makePasteCmdArray($ref, $CMD, array $update = NULL) {
 		list($pTable, $pUid) = explode('|', $ref);
@@ -927,7 +899,6 @@ class Clipboard {
 	 *
 	 * @param array $CMD Command-array
 	 * @return array Modified Command-array
-	 * @todo Define visibility
 	 */
 	public function makeDeleteCmdArray($CMD) {
 		// all records
@@ -956,7 +927,6 @@ class Clipboard {
 	 * @param string $ref Reference to element (splitted by "|")
 	 * @param array $FILE Command-array
 	 * @return array Modified Command-array
-	 * @todo Define visibility
 	 */
 	public function makePasteCmdArray_file($ref, $FILE) {
 		list($pTable, $pUid) = explode('|', $ref);
@@ -978,7 +948,6 @@ class Clipboard {
 	 *
 	 * @param array $FILE Command-array
 	 * @return array Modified Command-array
-	 * @todo Define visibility
 	 */
 	public function makeDeleteCmdArray_file($FILE) {
 		$elements = $this->elFromTable('_FILE');

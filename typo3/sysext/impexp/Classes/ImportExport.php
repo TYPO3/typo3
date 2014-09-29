@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
-/*
+/**
  * EXAMPLE for using the impexp-class for exporting stuff:
  *
  * Create and initialize:
@@ -61,7 +61,6 @@ class ImportExport {
 	 * If set, static relations (not exported) will be shown in overview as well
 	 *
 	 * @var bool
-	 * @todo Define visibility
 	 */
 	public $showStaticRelations = FALSE;
 
@@ -69,7 +68,6 @@ class ImportExport {
 	 * Name of the "fileadmin" folder where files for export/import should be located
 	 *
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $fileadminFolderName = '';
 
@@ -77,7 +75,6 @@ class ImportExport {
 	 * Whether "import" or "export" mode of object. Set through init() function
 	 *
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $mode = '';
 
@@ -85,7 +82,6 @@ class ImportExport {
 	 * Updates all records that has same UID instead of creating new!
 	 *
 	 * @var bool
-	 * @todo Define visibility
 	 */
 	public $update = FALSE;
 
@@ -93,7 +89,6 @@ class ImportExport {
 	 * Is set by importData() when an import has been done.
 	 *
 	 * @var bool
-	 * @todo Define visibility
 	 */
 	public $doesImport = FALSE;
 
@@ -103,7 +98,6 @@ class ImportExport {
 	 * import/export memory to validate if import is possible
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $display_import_pid_record = array();
 
@@ -112,7 +106,6 @@ class ImportExport {
 	 * to create with the same UIDs as in the import file. Admin-only feature.
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $suggestedInsertUids = array();
 
@@ -120,7 +113,6 @@ class ImportExport {
 	 * Setting import modes during update state: as_new, exclude, force_uid
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $import_mode = array();
 
@@ -128,7 +120,6 @@ class ImportExport {
 	 * If set, PID correct is ignored globally
 	 *
 	 * @var bool
-	 * @todo Define visibility
 	 */
 	public $global_ignore_pid = FALSE;
 
@@ -136,7 +127,6 @@ class ImportExport {
 	 * If set, all UID values are forced! (update or import)
 	 *
 	 * @var bool
-	 * @todo Define visibility
 	 */
 	public $force_all_UIDS = FALSE;
 
@@ -144,7 +134,6 @@ class ImportExport {
 	 * If set, a diff-view column is added to the overview.
 	 *
 	 * @var bool
-	 * @todo Define visibility
 	 */
 	public $showDiff = FALSE;
 
@@ -152,7 +141,6 @@ class ImportExport {
 	 * If set, and if the user is admin, allow the writing of PHP scripts to fileadmin/ area.
 	 *
 	 * @var bool
-	 * @todo Define visibility
 	 */
 	public $allowPHPScripts = FALSE;
 
@@ -160,7 +148,6 @@ class ImportExport {
 	 * Disable logging when importing
 	 *
 	 * @var bool
-	 * @todo Define visibility
 	 */
 	public $enableLogging = FALSE;
 
@@ -168,7 +155,6 @@ class ImportExport {
 	 * Array of values to substitute in editable softreferences.
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $softrefInputValues = array();
 
@@ -176,7 +162,6 @@ class ImportExport {
 	 * Mapping between the fileID from import memory and the final filenames they are written to.
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $fileIDMap = array();
 
@@ -184,7 +169,6 @@ class ImportExport {
 	 * 1MB max file size
 	 *
 	 * @var int
-	 * @todo Define visibility
 	 */
 	public $maxFileSize = 1000000;
 
@@ -192,7 +176,6 @@ class ImportExport {
 	 * 1MB max record size
 	 *
 	 * @var int
-	 * @todo Define visibility
 	 */
 	public $maxRecordSize = 1000000;
 
@@ -200,7 +183,6 @@ class ImportExport {
 	 * 10MB max export size
 	 *
 	 * @var int
-	 * @todo Define visibility
 	 */
 	public $maxExportSize = 10000000;
 
@@ -209,7 +191,6 @@ class ImportExport {
 	 * into export if found as relations. '_ALL' will allow all tables.
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $relOnlyTables = array();
 
@@ -218,7 +199,6 @@ class ImportExport {
 	 * (Where relations should be mapped to same UIDs in target system).
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $relStaticTables = array();
 
@@ -226,7 +206,6 @@ class ImportExport {
 	 * Exclude map. Keys are table:uid  pairs and if set, records are not added to the export.
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $excludeMap = array();
 
@@ -234,7 +213,6 @@ class ImportExport {
 	 * Soft Reference Token ID modes.
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $softrefCfg = array();
 
@@ -242,7 +220,6 @@ class ImportExport {
 	 * Listing extension dependencies.
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $extensionDependencies = array();
 
@@ -250,7 +227,6 @@ class ImportExport {
 	 * Set  by user: If set, compression in t3d files is disabled
 	 *
 	 * @var bool
-	 * @todo Define visibility
 	 */
 	public $dontCompress = FALSE;
 
@@ -258,7 +234,6 @@ class ImportExport {
 	 * If set, HTML file resources are included.
 	 *
 	 * @var bool
-	 * @todo Define visibility
 	 */
 	public $includeExtFileResources = FALSE;
 
@@ -266,7 +241,6 @@ class ImportExport {
 	 * Files with external media (HTML/css style references inside)
 	 *
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $extFileResourceExtensions = 'html,htm,css';
 
@@ -274,7 +248,6 @@ class ImportExport {
 	 * After records are written this array is filled with [table][original_uid] = [new_uid]
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $import_mapId = array();
 
@@ -284,7 +257,6 @@ class ImportExport {
 	 * With the array keys the new ids can be looked up inside tcemain
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $import_newId = array();
 
@@ -292,7 +264,6 @@ class ImportExport {
 	 * Page id map for page tree (import)
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $import_newId_pids = array();
 
@@ -300,7 +271,6 @@ class ImportExport {
 	 * Internal data accumulation for writing records during import
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $import_data = array();
 
@@ -308,7 +278,6 @@ class ImportExport {
 	 * Error log.
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $errorLog = array();
 
@@ -316,7 +285,6 @@ class ImportExport {
 	 * Cache for record paths
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $cache_getRecordPath = array();
 
@@ -324,7 +292,6 @@ class ImportExport {
 	 * Cache of checkPID values.
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $checkPID_cache = array();
 
@@ -340,7 +307,6 @@ class ImportExport {
 	 * Internal import/export memory
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $dat = array();
 
@@ -492,7 +458,6 @@ class ImportExport {
 	 * Set header basics
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function setHeaderBasics() {
 		// Initializing:
@@ -523,7 +488,6 @@ class ImportExport {
 	 *
 	 * @param string $charset Charset for the content in the export. During import the character set will be converted if the target system uses another charset.
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function setCharset($charset) {
 		$this->dat['header']['charset'] = $charset;
@@ -539,7 +503,6 @@ class ImportExport {
 	 * @param string $packager_name Real name of the packager
 	 * @param string $packager_email Email of the packager
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function setMetaData($title, $description, $notes, $packager_username, $packager_name, $packager_email) {
 		$this->dat['header']['meta'] = array(
@@ -570,7 +533,6 @@ class ImportExport {
 	 *
 	 * @param string $imgFilepath Filename reference, gif, jpg, png. Absolute path.
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function addThumbnail($imgFilepath) {
 		if (@is_file($imgFilepath)) {
@@ -597,7 +559,6 @@ class ImportExport {
 	 *
 	 * @param array $idH Hierarchy of ids, the page tree: array([uid] => array("uid" => [uid], "subrow" => array(.....)), [uid] => ....)
 	 * @return array The hierarchical page tree converted to a one-dimensional list of pages
-	 * @todo Define visibility
 	 */
 	public function setPageTree($idH) {
 		$this->dat['header']['pagetree'] = $this->unsetExcludedSections($idH);
@@ -611,7 +572,6 @@ class ImportExport {
 	 * @return array Modified input array
 	 * @access private
 	 * @see setPageTree()
-	 * @todo Define visibility
 	 */
 	public function unsetExcludedSections($idH) {
 		if (is_array($idH)) {
@@ -633,7 +593,6 @@ class ImportExport {
 	 * @param array $a Accumulation array of pages (internal, don't set from outside)
 	 * @return array Array with uid-uid pairs for all pages in the page tree.
 	 * @see flatInversePageTree_pid()
-	 * @todo Define visibility
 	 */
 	public function flatInversePageTree($idH, $a = array()) {
 		if (is_array($idH)) {
@@ -656,7 +615,6 @@ class ImportExport {
 	 * @param integer $pid PID value (internal)
 	 * @return array Array with uid-pid pairs for all pages in the page tree.
 	 * @see flatInversePageTree()
-	 * @todo Define visibility
 	 */
 	public function flatInversePageTree_pid($idH, $a = array(), $pid = -1) {
 		if (is_array($idH)) {
@@ -710,7 +668,6 @@ class ImportExport {
 	 * @param array $row Record row.
 	 * @param integer $relationLevel (Internal) if the record is added as a relation, this is set to the "level" it was on.
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function export_addRecord($table, $row, $relationLevel = 0) {
 		BackendUtility::workspaceOL($table, $row);
@@ -807,7 +764,6 @@ class ImportExport {
 	 * @param integer $relationLevel Recursion level
 	 * @return array overview of relations found and added: Keys [table]:[uid], values array with table and id
 	 * @see export_addFilesFromRelations()
-	 * @todo Define visibility
 	 */
 	public function export_addDBRelations($relationLevel = 0) {
 		// Traverse all "rels" registered for "records"
@@ -905,7 +861,6 @@ class ImportExport {
 	 * @param string $tokenID Softref Token ID, if applicable.
 	 * @return void
 	 * @see export_addDBRelations()
-	 * @todo Define visibility
 	 */
 	public function export_addDBRelations_registerRelation($fI, &$addR, $tokenID = '') {
 		$rId = $fI['table'] . ':' . $fI['id'];
@@ -926,7 +881,6 @@ class ImportExport {
 	 *
 	 * @return void
 	 * @see export_addDBRelations()
-	 * @todo Define visibility
 	 */
 	public function export_addFilesFromRelations() {
 		// Traverse all "rels" registered for "records"
@@ -1099,7 +1053,6 @@ class ImportExport {
 	 * @param string $recordRef If the file is related to a record, this is the id on the form [table]:[id]. Information purposes only.
 	 * @param string $fieldname If the file is related to a record, this is the field name it was related to. Information purposes only.
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function export_addFile($fI, $recordRef = '', $fieldname = '') {
 		if (!@is_file($fI['ID_absFile'])) {
@@ -1258,7 +1211,6 @@ class ImportExport {
 	 *
 	 * @param array $dbrels 2-dim Array of database relations organized by table key
 	 * @return array 1-dim array where entries are table:uid and keys are array with table/id
-	 * @todo Define visibility
 	 */
 	public function flatDBrels($dbrels) {
 		$list = array();
@@ -1284,7 +1236,6 @@ class ImportExport {
 	 *
 	 * @param array $dbrels 2-dim Array of database relations organized by table key
 	 * @return array 1-dim array where entries are arrays with properties of the soft link found and keys are a unique combination of field, spKey, structure path if applicable and token ID
-	 * @todo Define visibility
 	 */
 	public function flatSoftRefs($dbrels) {
 		$list = array();
@@ -1361,7 +1312,6 @@ class ImportExport {
 	 *
 	 * @param string $type Type of output; "xml" gives xml, otherwise serialized array, possibly compressed.
 	 * @return string The output file stream
-	 * @todo Define visibility
 	 */
 	public function compileMemoryToFileContent($type = '') {
 		if ($type == 'xml') {
@@ -1385,7 +1335,6 @@ class ImportExport {
 	 * Creates XML string from input array
 	 *
 	 * @return string XML content
-	 * @todo Define visibility
 	 */
 	public function createXML() {
 		// Options:
@@ -1482,7 +1431,6 @@ class ImportExport {
 	 * Returns TRUE if the output should be compressed.
 	 *
 	 * @return boolean TRUE if compression is possible AND requested.
-	 * @todo Define visibility
 	 */
 	public function doOutputCompress() {
 		return $this->compress && !$this->dontCompress;
@@ -1494,7 +1442,6 @@ class ImportExport {
 	 * @param array $data Data to store in part
 	 * @param boolean $compress Compress file?
 	 * @return string Content stream.
-	 * @todo Define visibility
 	 */
 	public function addFilePart($data, $compress = FALSE) {
 		if ($compress) {
@@ -1888,7 +1835,6 @@ class ImportExport {
 	 * @param integer $pid PID in which to import. If the operation is an update operation, the root of the page tree inside will be moved to this PID unless it is the same as the root page from the import
 	 * @return void
 	 * @see writeRecords_records()
-	 * @todo Define visibility
 	 */
 	public function writeRecords_pages($pid) {
 		// First, write page structure if any:
@@ -1944,7 +1890,6 @@ class ImportExport {
 	 * @return void
 	 * @access private
 	 * @see writeRecords_pages(), writeRecords_records_order()
-	 * @todo Define visibility
 	 */
 	public function writeRecords_pages_order($pid) {
 		$cmd_data = array();
@@ -1984,7 +1929,6 @@ class ImportExport {
 	 * @param integer $pid Page id in which to import
 	 * @return void
 	 * @see writeRecords_pages()
-	 * @todo Define visibility
 	 */
 	public function writeRecords_records($pid) {
 		// Write the rest of the records
@@ -2037,7 +1981,6 @@ class ImportExport {
 	 * @return void
 	 * @access private
 	 * @see writeRecords_records(), writeRecords_pages_order()
-	 * @todo Define visibility
 	 */
 	public function writeRecords_records_order($mainPid) {
 		$cmd_data = array();
@@ -2092,7 +2035,6 @@ class ImportExport {
 	 * @param integer $pid Page id
 	 * @return void
 	 * @see writeRecords()
-	 * @todo Define visibility
 	 */
 	public function addSingle($table, $uid, $pid) {
 		if ($this->import_mode[$table . ':' . $uid] === 'exclude') {
@@ -2187,7 +2129,6 @@ class ImportExport {
 	 * @param array $substNEWwithIDs From tcemain to be merged into internal mapping variable in this object
 	 * @return void
 	 * @see writeRecords()
-	 * @todo Define visibility
 	 */
 	public function addToMapId($substNEWwithIDs) {
 		foreach ($this->import_data as $table => $recs) {
@@ -2214,7 +2155,6 @@ class ImportExport {
 	 * Returns a new $TCE object
 	 *
 	 * @return object $TCE object
-	 * @todo Define visibility
 	 */
 	public function getNewTCE() {
 		$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
@@ -2230,7 +2170,6 @@ class ImportExport {
 	 * Cleaning up all the temporary files stored in typo3temp/ folder
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function unlinkTempFiles() {
 		foreach ($this->unlinkFiles as $fileName) {
@@ -2258,7 +2197,6 @@ class ImportExport {
 	 *
 	 * @return void
 	 * @see setFlexFormRelations()
-	 * @todo Define visibility
 	 */
 	public function setRelations() {
 		$updateData = array();
@@ -2389,7 +2327,6 @@ class ImportExport {
 	 * @param array $itemArray Array of item sets (table/uid) from a dbAnalysis object
 	 * @param array $itemConfig Array of TCA config of the field the relation to be set on
 	 * @return array Array with values [table]_[uid] or [uid] for field of type group / internal_type file_reference. These values have the regular tcemain-input group/select type which means they will automatically be processed into a uid-list or MM relations.
-	 * @todo Define visibility
 	 */
 	public function setRelations_db($itemArray, $itemConfig) {
 		$valArray = array();
@@ -2419,7 +2356,6 @@ class ImportExport {
 	 *
 	 * @param array $fI File information with three keys: "filename" = filename without path, "ID_absFile" = absolute filepath to the file (including the filename), "ID" = md5 hash of "ID_absFile
 	 * @return string|NULL Absolute filename of the temporary filename of the file. In ->alternativeFileName the original name is set.
-	 * @todo Define visibility
 	 */
 	public function import_addFileNameToBeCopied($fI) {
 		if (is_array($this->dat['files'][$fI['ID']])) {
@@ -2460,7 +2396,6 @@ class ImportExport {
 	 *
 	 * @return void
 	 * @see setRelations()
-	 * @todo Define visibility
 	 */
 	public function setFlexFormRelations() {
 		$updateData = array();
@@ -2542,7 +2477,6 @@ class ImportExport {
 	 * @param string $path Path of where the data structure of the element is found
 	 * @return array Array where the "value" key carries the value.
 	 * @see setFlexFormRelations()
-	 * @todo Define visibility
 	 */
 	public function remapListedDBRecords_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2, $path) {
 		// Extract parameters:
@@ -2573,7 +2507,6 @@ class ImportExport {
 	 * Processing of soft references
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function processSoftReferences() {
 		// Initialize:
@@ -2655,7 +2588,6 @@ class ImportExport {
 	 * @param string $path Path of where the data structure where the element is found
 	 * @return array Array where the "value" key carries the value.
 	 * @see setFlexFormRelations()
-	 * @todo Define visibility
 	 */
 	public function processSoftReferences_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2, $path) {
 		// Extract parameters:
@@ -2689,7 +2621,6 @@ class ImportExport {
 	 * @param string $table Table for which the processing occurs
 	 * @param string $uid UID of record from table
 	 * @return string The input content with tokens substituted according to entries in softRefCfgs
-	 * @todo Define visibility
 	 */
 	public function processSoftReferences_substTokens($tokenizedContent, $softRefCfgs, $table, $uid) {
 		// traverse each softref type for this field:
@@ -2747,7 +2678,6 @@ class ImportExport {
 	 * @param string $table Table for which the processing occurs
 	 * @param string $uid UID of record from table
 	 * @return string New relative filename (value to insert instead of the softref token)
-	 * @todo Define visibility
 	 */
 	public function processSoftReferences_saveFile($relFileName, $cfg, $table, $uid) {
 		if ($fileHeaderInfo = $this->dat['header']['files'][$cfg['file_ID']]) {
@@ -2823,7 +2753,6 @@ class ImportExport {
 	 * @param string $table Table for which the processing occurs
 	 * @param string $uid UID of record from table
 	 * @return string|NULL New relative filename, if any
-	 * @todo Define visibility
 	 */
 	public function processSoftReferences_saveFile_createRelFile($origDirPrefix, $fileName, $fileID, $table, $uid) {
 		// If the fileID map contains an entry for this fileID then just return the relative filename of that entry;
@@ -2921,7 +2850,6 @@ class ImportExport {
 	 * @param string $fileID File ID from import memory
 	 * @param boolean $bypassMountCheck Bypasses the checking against filemounts - only for RTE files!
 	 * @return boolean Returns TRUE if it went well. Notice that the content of the file is read again, and md5 from import memory is validated.
-	 * @todo Define visibility
 	 */
 	public function writeFileVerify($fileName, $fileID, $bypassMountCheck = FALSE) {
 		$fileProcObj = $this->getFileProcObj();
@@ -3107,7 +3035,6 @@ class ImportExport {
 	 *
 	 * @param string $dirPrefix Directory to create. Having a trailing slash. Must be in fileadmin/. Relative to PATH_site
 	 * @return boolean TRUE, if directory exists (was created)
-	 * @todo Define visibility
 	 */
 	public function checkOrCreateDir($dirPrefix) {
 		// Split dir path and remove first directory (which should be "fileadmin")
@@ -3141,7 +3068,6 @@ class ImportExport {
 	 * @param string $dirPrefix Path relative to PATH_site
 	 * @param boolean $noAlternative If set, Do not look for alternative path! Just return FALSE
 	 * @return string|bool If a path is available that will be returned, otherwise FALSE.
-	 * @todo Define visibility
 	 */
 	public function verifyFolderAccess($dirPrefix, $noAlternative = FALSE) {
 		$fileProcObj = $this->getFileProcObj();
@@ -3178,7 +3104,6 @@ class ImportExport {
 	 * @param string $filename Filename, absolute
 	 * @param boolean $all If set, all information is loaded (header, records and files). Otherwise the default is to read only the header information
 	 * @return boolean TRUE if the operation went well
-	 * @todo Define visibility
 	 */
 	public function loadFile($filename, $all = FALSE) {
 		if (!@is_file($filename)) {
@@ -3242,7 +3167,6 @@ class ImportExport {
 	 * @return string|NULL Data string or NULL in case of an error
 	 * @access private
 	 * @see loadFile()
-	 * @todo Define visibility
 	 */
 	public function getNextFilePart($fd, $unserialize = FALSE, $name = '') {
 		$initStrLen = 32 + 1 + 1 + 1 + 10 + 1;
@@ -3284,7 +3208,6 @@ class ImportExport {
 	 *
 	 * @param string $filecontent File content
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function loadContent($filecontent) {
 		$pointer = 0;
@@ -3302,7 +3225,6 @@ class ImportExport {
 	 * @param bool $unserialize If set, the returned content is unserialized into an array, otherwise you get the raw string
 	 * @param string $name For error messages this indicates the section of the problem.
 	 * @return string|NULL Data string
-	 * @todo Define visibility
 	 */
 	public function getNextContentPart($filecontent, &$pointer, $unserialize = FALSE, $name = '') {
 		$initStrLen = 32 + 1 + 1 + 1 + 10 + 1;
@@ -3335,7 +3257,6 @@ class ImportExport {
 	 * Setting up the object based on the recently loaded ->dat array
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function loadInit() {
 		$this->relStaticTables = (array) $this->dat['header']['relStaticTables'];
@@ -3357,7 +3278,6 @@ class ImportExport {
 	 *
 	 * @return void
 	 * @see loadInit()
-	 * @todo Define visibility
 	 */
 	public function fixCharsets() {
 		global $LANG;
@@ -3391,7 +3311,6 @@ class ImportExport {
 	 * Displays an overview of the header-content.
 	 *
 	 * @return string HTML content
-	 * @todo Define visibility
 	 */
 	public function displayContentOverview() {
 		global $LANG;
@@ -3490,7 +3409,6 @@ class ImportExport {
 	 * @param array $lines Output lines array (is passed by reference and modified)
 	 * @param string $preCode Pre-HTML code
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function traversePageTree($pT, &$lines, $preCode = '') {
 		foreach ($pT as $k => $v) {
@@ -3520,7 +3438,6 @@ class ImportExport {
 	 * @param array $pT Page tree array with uid/subrow (from ->dat[header][pagetree]
 	 * @param array $lines Output lines array (is passed by reference and modified)
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function traversePageRecords($pT, &$lines) {
 		foreach ($pT as $k => $rHeader) {
@@ -3545,7 +3462,6 @@ class ImportExport {
 	 * @param array $pT Page tree array with uid/subrow (from ->dat[header][pagetree]
 	 * @param array $lines Output lines array (is passed by reference and modified)
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function traverseAllRecords($pT, &$lines) {
 		foreach ($pT as $t => $recUidArr) {
@@ -3573,7 +3489,6 @@ class ImportExport {
 	 * @param string $preCode Pre-HTML code
 	 * @param boolean $checkImportInPidRecord If you want import validation, you can set this so it checks if the import can take place on the specified page.
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function singleRecordLines($table, $uid, &$lines, $preCode, $checkImportInPidRecord = FALSE) {
 		global $LANG;
@@ -3738,7 +3653,6 @@ class ImportExport {
 	 * @return void
 	 * @access private
 	 * @see singleRecordLines()
-	 * @todo Define visibility
 	 */
 	public function addRelations($rels, &$lines, $preCode, $recurCheck = array(), $htmlColorClass = '') {
 		foreach ($rels as $dat) {
@@ -3800,7 +3714,6 @@ class ImportExport {
 	 * @return void
 	 * @access private
 	 * @see singleRecordLines()
-	 * @todo Define visibility
 	 */
 	public function addFiles($rels, &$lines, $preCode, $htmlColorClass = '', $tokenID = '') {
 		foreach ($rels as $ID) {
@@ -3906,7 +3819,6 @@ class ImportExport {
 	 * @param string $checkTable Table name to check
 	 * @param integer $doktype doktype value.
 	 * @return boolean TRUE if OK
-	 * @todo Define visibility
 	 */
 	public function checkDokType($checkTable, $doktype) {
 		global $PAGES_TYPES;
@@ -3924,7 +3836,6 @@ class ImportExport {
 	 *
 	 * @param array $r Configuration for element
 	 * @return string HTML
-	 * @todo Define visibility
 	 */
 	public function renderControls($r) {
 		global $LANG;
@@ -3954,7 +3865,6 @@ class ImportExport {
 	 *
 	 * @param array $cfg Softref configuration array. An export box is shown only if a substitution scheme is found for the soft reference.
 	 * @return string Selector box HTML
-	 * @todo Define visibility
 	 */
 	public function softrefSelector($cfg) {
 		global $LANG;
@@ -4008,7 +3918,6 @@ class ImportExport {
 	 *
 	 * @param string $table Table name
 	 * @return boolean TRUE, if table is marked static
-	 * @todo Define visibility
 	 */
 	public function isTableStatic($table) {
 		if (is_array($GLOBALS['TCA'][$table])) {
@@ -4022,7 +3931,6 @@ class ImportExport {
 	 *
 	 * @param string $table Table name
 	 * @return boolean TRUE, if table is marked static
-	 * @todo Define visibility
 	 */
 	public function inclRelation($table) {
 		return is_array($GLOBALS['TCA'][$table])
@@ -4036,7 +3944,6 @@ class ImportExport {
 	 * @param string $table Table name
 	 * @param integer $uid UID value
 	 * @return boolean TRUE, if table is marked static
-	 * @todo Define visibility
 	 */
 	public function isExcluded($table, $uid) {
 		return (bool)$this->excludeMap[$table . ':' . $uid];
@@ -4047,7 +3954,6 @@ class ImportExport {
 	 *
 	 * @param string $tokenID Token ID for soft reference
 	 * @return boolean TRUE if softreference media should be included
-	 * @todo Define visibility
 	 */
 	public function includeSoftref($tokenID) {
 		return $tokenID && !GeneralUtility::inList('exclude,editable', $this->softrefCfg[$tokenID]['mode']);
@@ -4058,7 +3964,6 @@ class ImportExport {
 	 *
 	 * @param integer $pid Page ID to check
 	 * @return boolean TRUE if OK
-	 * @todo Define visibility
 	 */
 	public function checkPID($pid) {
 		if (!isset($this->checkPID_cache[$pid])) {
@@ -4073,7 +3978,6 @@ class ImportExport {
 	 * @param string $table Table name
 	 * @param integer $uid Uid or record
 	 * @return boolean TRUE if the position of the record should be updated to match the one in the import structure
-	 * @todo Define visibility
 	 */
 	public function dontIgnorePid($table, $uid) {
 		return $this->import_mode[$table . ':' . $uid] !== 'ignore_pid' && (!$this->global_ignore_pid || $this->import_mode[$table . ':' . $uid] === 'respect_pid');
@@ -4086,7 +3990,6 @@ class ImportExport {
 	 * @param integer $uid UID of record
 	 * @param string $fields Field list to select. Default is "uid,pid
 	 * @return array Result of \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord() which means the record if found, otherwise FALSE
-	 * @todo Define visibility
 	 */
 	public function doesRecordExist($table, $uid, $fields = '') {
 		return BackendUtility::getRecord($table, $uid, $fields ? $fields : 'uid,pid');
@@ -4097,7 +4000,6 @@ class ImportExport {
 	 *
 	 * @param integer $pid Record PID to check
 	 * @return string The path for the input PID
-	 * @todo Define visibility
 	 */
 	public function getRecordPath($pid) {
 		if (!isset($this->cache_getRecordPath[$pid])) {
@@ -4114,7 +4016,6 @@ class ImportExport {
 	 * @param string $value Current value
 	 * @param array $optValues Options to display (key/value pairs)
 	 * @return string HTML select element
-	 * @todo Define visibility
 	 */
 	public function renderSelectBox($prefix, $value, $optValues) {
 		$opt = array();
@@ -4141,7 +4042,6 @@ class ImportExport {
 	 * @param string $table The table name of the record
 	 * @param boolean $inverseDiff Inverse the diff view (switch red/green, needed for pre-update difference view)
 	 * @return string HTML
-	 * @todo Define visibility
 	 */
 	public function compareRecords($databaseRecord, $importRecord, $table, $inverseDiff = FALSE) {
 		global $LANG;
@@ -4193,7 +4093,6 @@ class ImportExport {
 	 *
 	 * @param string $string RTE copy filename, eg. "RTEmagicC_user_pm_icon_01.gif.gif
 	 * @return string|NULL RTE original filename, eg. "RTEmagicP_user_pm_icon_01.gif". If the input filename was NOT prefixed RTEmagicC_ as RTE images would be, NULL is returned!
-	 * @todo Define visibility
 	 */
 	public function getRTEoriginalFilename($string) {
 		// If "magic image":
@@ -4211,7 +4110,6 @@ class ImportExport {
 	 * Returns file processing object, initialized only once.
 	 *
 	 * @return object File processor object
-	 * @todo Define visibility
 	 */
 	public function getFileProcObj() {
 		if ($this->fileProcObj === NULL) {
@@ -4246,7 +4144,6 @@ class ImportExport {
 	 *
 	 * @param string $msg Error message
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function error($msg) {
 		$this->errorLog[] = $msg;
@@ -4256,7 +4153,6 @@ class ImportExport {
 	 * Returns a table with the error-messages.
 	 *
 	 * @return string HTML print of error log
-	 * @todo Define visibility
 	 */
 	public function printErrorLog() {
 		return count($this->errorLog) ? \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($this->errorLog) : '';

@@ -133,7 +133,6 @@ abstract class AbstractFunctionModule {
 	 *
 	 * @var \TYPO3\CMS\Backend\Module\BaseScriptClass
 	 * @see init()
-	 * @todo Define visibility
 	 */
 	public $pObj;
 
@@ -141,7 +140,7 @@ abstract class AbstractFunctionModule {
 	 * Set to the directory name of this class file.
 	 *
 	 * @see init()
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $thisPath = '';
 
@@ -149,7 +148,7 @@ abstract class AbstractFunctionModule {
 	 * Can be hardcoded to the name of a locallang.php file (from the same directory as the class file) to use/load
 	 *
 	 * @see incLocalLang()
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $localLangFile = 'locallang.php';
 
@@ -157,7 +156,7 @@ abstract class AbstractFunctionModule {
 	 * Contains module configuration parts from TBE_MODULES_EXT if found
 	 *
 	 * @see handleExternalFunctionValue()
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $extClassConf;
 
@@ -167,7 +166,7 @@ abstract class AbstractFunctionModule {
 	 * The extension 'func_wizards' has this description: 'Adds the 'Wizards' item to the function menu in Web>Func. This is just a framework for wizard extensions.' - so as you can see it is designed to allow further connectivity - 'level 2'
 	 *
 	 * @see handleExternalFunctionValue(), \TYPO3\CMS\FuncWizards\Controller\WebFunctionWizardsBaseController
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $function_key = '';
 
@@ -180,7 +179,6 @@ abstract class AbstractFunctionModule {
 	 * @param array $conf The configuration set for this module - from global array TBE_MODULES_EXT
 	 * @return void
 	 * @see \TYPO3\CMS\Backend\Module\BaseScriptClass::checkExtObj()
-	 * @todo Define visibility
 	 */
 	public function init(&$pObj, $conf) {
 		$this->pObj = $pObj;
@@ -202,7 +200,6 @@ abstract class AbstractFunctionModule {
 	 * @return void
 	 * @see $function_key, \TYPO3\CMS\FuncWizards\Controller\WebFunctionWizardsBaseController::init()
 	 * @deprecated since 6.2. Instead of this include_once array, extensions should use auto-loading
-	 * @todo Define visibility
 	 */
 	public function handleExternalFunctionValue() {
 		// Must clean first to make sure the correct key is set...
@@ -219,7 +216,6 @@ abstract class AbstractFunctionModule {
 	 * Including any locallang file configured and merging its content over the current global LOCAL_LANG array (which is EXPECTED to exist!!!)
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function incLocalLang() {
 		if ($this->localLangFile && (@is_file(($this->thisPath . '/' . $this->localLangFile)) || @is_file(($this->thisPath . '/' . substr($this->localLangFile, 0, -4) . '.xml')) || @is_file(($this->thisPath . '/' . substr($this->localLangFile, 0, -4) . '.xlf')))) {
@@ -236,7 +232,6 @@ abstract class AbstractFunctionModule {
 	 *
 	 * @return void
 	 * @see \TYPO3\CMS\Backend\Module\BaseScriptClass::checkExtObj()
-	 * @todo Define visibility
 	 */
 	public function checkExtObj() {
 		if (is_array($this->extClassConf) && $this->extClassConf['name']) {
@@ -251,7 +246,6 @@ abstract class AbstractFunctionModule {
 	 * Calls the main function inside ANOTHER sub-submodule which might exist.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function extObjContent() {
 		if (is_object($this->extObj)) {
@@ -266,7 +260,6 @@ abstract class AbstractFunctionModule {
 	 *
 	 * @return array A MOD_MENU array which will be merged together with the one from the parent object
 	 * @see init(), \TYPO3\CMS\Frontend\Controller\PageInformationController::modMenu()
-	 * @todo Define visibility
 	 */
 	public function modMenu() {
 		return array();

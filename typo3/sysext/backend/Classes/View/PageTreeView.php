@@ -47,14 +47,12 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 
 	// Indicates, whether the ajax call was successful, i.e. the requested page has been found
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $ajaxStatus = FALSE;
 
 	/**
 	 * Calls init functions
-	 *
-	 * @todo Define visibility
 	 */
 	public function __construct() {
 		$this->init();
@@ -66,7 +64,6 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 * @param string $thePageIcon Icon IMG code
 	 * @param array $row Data row for element.
 	 * @return string Page icon
-	 * @todo Define visibility
 	 */
 	public function wrapIcon($thePageIcon, &$row) {
 		// If the record is locked, present a warning sign.

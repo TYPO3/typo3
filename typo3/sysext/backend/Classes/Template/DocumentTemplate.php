@@ -41,40 +41,37 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class DocumentTemplate {
 
 	// Vars you typically might want to/should set from outside after making instance of this class:
-	// 'backPath' pointing back to the PATH_typo3
 	/**
-	 * @todo Define visibility
+	 * 'backPath' pointing back to the PATH_typo3
+	 *
+	 * @var string
 	 */
 	public $backPath = '';
 
-	// This can be set to the HTML-code for a formtag. Useful when you need a form to span the whole page; Inserted exactly after the body-tag.
 	/**
-	 * @todo Define visibility
+	 * This can be set to the HTML-code for a formtag.
+	 * Useful when you need a form to span the whole page; Inserted exactly after the body-tag.
+	 *
+	 * @var string
 	 */
 	public $form = '';
 
 	/**
-	 * Similar to $JScode (see below) but used as an associative array to prevent double inclusion of JS code. This is used to include certain external Javascript libraries before the inline JS code. <script>-Tags are not wrapped around automatically
+	 * Similar to $JScode (see below) but used as an associative array to prevent double inclusion of JS code.
+	 * This is used to include certain external Javascript libraries before the inline JS code.
+	 * <script>-Tags are not wrapped around automatically
+	 *
 	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use pageRenderer directly
 	 */
 	public $JScodeLibArray = array();
 
 	// Additional header code (eg. a JavaScript section) could be accommulated in this var. It will be directly outputted in the header.
-	/**
-	 * @todo Define visibility
-	 */
 	public $JScode = '';
 
 	// Additional header code for ExtJS. It will be included in document header and inserted in a Ext.onReady(function()
-	/**
-	 * @todo Define visibility
-	 */
 	public $extJScode = '';
 
 	// Similar to $JScode but for use as array with associative keys to prevent double inclusion of JS code. a <script> tag is automatically wrapped around.
-	/**
-	 * @todo Define visibility
-	 */
 	public $JScodeArray = array('jumpToUrl' => '
 function jumpToUrl(URL) {
 	window.location.href = URL;
@@ -83,9 +80,6 @@ function jumpToUrl(URL) {
 	');
 
 	// Additional 'page-end' code could be accumulated in this var. It will be outputted at the end of page before </body> and some other internal page-end code.
-	/**
-	 * @todo Define visibility
-	 */
 	public $postCode = '';
 
 	/**
@@ -95,9 +89,6 @@ function jumpToUrl(URL) {
 	public $docType = '';
 
 	// HTML template with markers for module
-	/**
-	 * @todo Define visibility
-	 */
 	public $moduleTemplate = '';
 
 	// the base file (not overlaid by TBE_STYLES) for the current module, useful for hooks when finding out which modules is rendered currently
@@ -105,25 +96,17 @@ function jumpToUrl(URL) {
 
 	// Other vars you can change, but less frequently used:
 	// Script ID.
-	/**
-	 * @todo Define visibility
-	 */
 	public $scriptID = '';
 
 	// Id which can be set for the body tag. Default value is based on script ID
-	/**
-	 * @todo Define visibility
-	 */
 	public $bodyTagId = '';
 
 	// You can add additional attributes to the body-tag through this variable.
-	/**
-	 * @todo Define visibility
-	 */
 	public $bodyTagAdditions = '';
 
 	/**
 	 * Additional CSS styles which will be added to the <style> section in the header
+	 *
 	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the pageRenderer property for adding CSS styles
 	 */
 	public $inDocStyles = '';
@@ -131,56 +114,57 @@ function jumpToUrl(URL) {
 	/**
 	 * Additional CSS styles which will be added to the <style> section in the header
 	 * used as array with associative keys to prevent double inclusion of CSS code
+	 *
 	 * @var array
 	 */
 	public $inDocStylesArray = array();
 
 	// Compensation for large documents (used in \TYPO3\CMS\Backend\Form\FormEngine)
-	/**
-	 * @todo Define visibility
-	 */
 	public $form_largeComp = 1.33;
 
 	// If set, then a JavaScript section will be outputted in the bottom of page which will try and update the top.busy session expiry object.
-	/**
-	 * @todo Define visibility
-	 */
 	public $endJS = 1;
 
 	// TYPO3 Colorscheme.
 	// If you want to change this, please do so through a skin using the global var $GLOBALS['TBE_STYLES']
-	// Light background color
 	/**
+	 * Light background color
+	 *
 	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public $bgColor = '#F7F3EF';
 
-	// Steel-blue
 	/**
+	 * Steel-blue
+	 *
 	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public $bgColor2 = '#9BA1A8';
 
-	// dok.color
 	/**
+	 * dok.color
+	 *
 	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public $bgColor3 = '#F6F2E6';
 
-	// light tablerow background, brownish
 	/**
+	 * light tablerow background, brownish
+	 *
 	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public $bgColor4 = '#D9D5C9';
 
-	// light tablerow background, greenish
 	/**
+	 * light tablerow background, greenish
+	 *
 	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public $bgColor5 = '#ABBBB4';
 
-	// light tablerow background, yellowish, for section headers. Light.
 	/**
+	 * light tablerow background, yellowish, for section headers. Light.
+	 *
 	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public $bgColor6 = '#E7DBA8';
@@ -190,32 +174,38 @@ function jumpToUrl(URL) {
 	 */
 	public $hoverColor = '#254D7B';
 
-	// Filename of stylesheet (relative to PATH_typo3)
 	/**
-	 * @todo Define visibility
+	 * Filename of stylesheet (relative to PATH_typo3)
+	 *
+	 * @var string
 	 */
 	public $styleSheetFile = '';
 
-	// Filename of stylesheet #2 - linked to right after the $this->styleSheetFile script (relative to PATH_typo3)
 	/**
-	 * @todo Define visibility
+	 * Filename of stylesheet #2 - linked to right after the $this->styleSheetFile script (relative to PATH_typo3)
+	 *
+	 * @var string
 	 */
 	public $styleSheetFile2 = '';
 
-	// Filename of a post-stylesheet - included right after all inline styles.
 	/**
-	 * @todo Define visibility
+	 * Filename of a post-stylesheet - included right after all inline styles.
+	 *
+	 * @var string
 	 */
 	public $styleSheetFile_post = '';
 
-	// Background image of page (relative to PATH_typo3)
 	/**
-	 * @todo Define visibility
+	 * Background image of page (relative to PATH_typo3)
+	 *
+	 * @var string
 	 */
 	public $backGroundImage = '';
 
 	/**
 	 * Inline css styling set from TBE_STYLES array
+	 *
+	 * @var string
 	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use inDocStylesArray['TBEstyle']
 	 */
 	public $inDocStyles_TBEstyle = '';
@@ -235,14 +225,22 @@ function jumpToUrl(URL) {
 	protected $xUaCompatibilityVersion = 'IE=10';
 
 	// Skinning
-	// stylesheets from core
+	/**
+	 * stylesheets from core
+	 *
+	 * @var array
+	 */
 	protected $stylesheetsCore = array(
 		'structure' => 'sysext/backend/Resources/Public/Css/structure/',
 		'visual' => 'sysext/backend/Resources/Public/Css/visual/',
 		'generatedSprites' => '../typo3temp/sprites/'
 	);
 
-	// Include these CSS directories from skins by default
+	/**
+	 * Include these CSS directories from skins by default
+	 *
+	 * @var array
+	 */
 	protected $stylesheetsSkins = array(
 		'structure' => 'Resources/Public/Css/structure/',
 		'visual' => 'Resources/Public/Css/visual/'
@@ -266,42 +264,49 @@ function jumpToUrl(URL) {
 	);
 
 	// DEV:
-	// Will output the parsetime of the scripts in milliseconds (for admin-users). Set this to FALSE when releasing TYPO3. Only for dev.
 	/**
-	 * @todo Define visibility
+	 * Will output the parsetime of the scripts in milliseconds (for admin-users).
+	 * Set this to FALSE when releasing TYPO3. Only for dev.
+	 *
+	 * @var bool
 	 */
-	public $parseTimeFlag = 0;
+	public $parseTimeFlag = FALSE;
 
 	/**
 	 * internal character set, nowadays utf-8 for everything
+	 *
+	 * @var string
 	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8, as it is always utf-8
 	 */
 	protected $charset = 'utf-8';
 
-	// Internal: Indicates if a <div>-output section is open
 	/**
-	 * @todo Define visibility
+	 * Indicates if a <div>-output section is open
+	 *
+	 * @var int
+	 * @internal
 	 */
 	public $sectionFlag = 0;
 
-	// (Default) Class for wrapping <DIV>-tag of page. Is set in class extensions.
 	/**
-	 * @todo Define visibility
+	 * (Default) Class for wrapping <DIV>-tag of page. Is set in class extensions.
+	 *
+	 * @var string
 	 */
 	public $divClass = '';
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $pageHeaderBlock = '';
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $endOfPageJsBlock = '';
 
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $hasDocheader = TRUE;
 
@@ -310,9 +315,16 @@ function jumpToUrl(URL) {
 	 */
 	protected $pageRenderer;
 
-	// Alternative template file
+	/**
+	 * Alternative template file
+	 *
+	 * @var string
+	 */
 	protected $pageHeaderFooterTemplateFile = '';
 
+	/**
+	 * @var bool
+	 */
 	protected $extDirectStateProvider = FALSE;
 
 	/**
@@ -326,6 +338,7 @@ function jumpToUrl(URL) {
 	const STATUS_ICON_WARNING = 2;
 	const STATUS_ICON_NOTIFICATION = 1;
 	const STATUS_ICON_OK = -1;
+
 	/**
 	 * Constructor
 	 * Imports relevant parts from global $GLOBALS['TBE_STYLES'] (colorscheme)
@@ -439,7 +452,6 @@ function jumpToUrl(URL) {
 	 * @param string $enDisItems Enable / Disable click menu items. Example: "+new,view" will display ONLY these two items (and any spacers in between), "new,view" will display all BUT these two items.
 	 * @param boolean $returnOnClick If set, will return only the onclick JavaScript, not the whole link.
 	 * @return string The link-wrapped input string.
-	 * @todo Define visibility
 	 */
 	public function wrapClickMenuOnIcon($str, $table, $uid = 0, $listFr = TRUE, $addParams = '', $enDisItems = '', $returnOnClick = FALSE) {
 		$backPath = rawurlencode($this->backPath) . '|' . GeneralUtility::shortMD5(($this->backPath . '|' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']));
@@ -457,7 +469,6 @@ function jumpToUrl(URL) {
 	 * @param string $backPath The current "BACK_PATH" (the back relative to the typo3/ directory)
 	 * @param string $addParams Additional parameters for the image tag(s)
 	 * @return string HTML string with linked icon(s)
-	 * @todo Define visibility
 	 */
 	public function viewPageIcon($id, $backPath, $addParams = 'hspace="3"') {
 		// If access to Web>List for user, then link to that module.
@@ -478,7 +489,6 @@ function jumpToUrl(URL) {
 	 * @param string $redirectUrl Redirect URL if any other that \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') is wished
 	 * @return string URL to tce_db.php + parameters (backpath is taken from $this->backPath)
 	 * @see \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick()
-	 * @todo Define visibility
 	 */
 	public function issueCommand($params, $redirectUrl = '') {
 		$redirectUrl = $redirectUrl ? $redirectUrl : GeneralUtility::getIndpEnv('REQUEST_URI');
@@ -492,7 +502,6 @@ function jumpToUrl(URL) {
 	 *
 	 * @return boolean
 	 * @deprecated since TYPO3 4.7, will be removed in TYPO3 6.1 - This function makes no sense anymore
-	 * @todo Define visibility
 	 */
 	public function isCMlayers() {
 		GeneralUtility::logDeprecatedFunction();
@@ -512,7 +521,6 @@ function jumpToUrl(URL) {
 	 * @param array $tWrap is an array with indexes 0 and 1 each representing HTML-tags (start/end) which will wrap the title
 	 * @param bool $enableClickMenu If TRUE, render click menu code around icon image
 	 * @return string HTML content
-	 * @todo Define visibility
 	 */
 	public function getHeader($table, $row, $path, $noViewPageIcon = FALSE, $tWrap = array('', ''), $enableClickMenu = TRUE) {
 		$viewPage = '';
@@ -581,7 +589,6 @@ function jumpToUrl(URL) {
 	 * @param string $modName Module name string
 	 * @param string $motherModName Is used to enter the "parent module name" if the module is a submodule under eg. Web>* or File>*. You can also set this value to "1" in which case the currentLoadedModule is sent to the shortcut script (so - not a fixed value!) - that is used in file_edit and wizard_rte modules where those are really running as a part of another module.
 	 * @return string HTML content
-	 * @todo Define visibility
 	 */
 	public function makeShortcutIcon($gvList, $setList, $modName, $motherModName = '') {
 		$backPath = $this->backPath;
@@ -612,7 +619,6 @@ function jumpToUrl(URL) {
 	 * @return string
 	 * @access private
 	 * @see makeShortcutIcon()
-	 * @todo Define visibility
 	 */
 	public function makeShortcutUrl($gvList, $setList) {
 		$GET = GeneralUtility::_GET();
@@ -630,7 +636,6 @@ function jumpToUrl(URL) {
 	 * @param boolean $textarea A flag you can set for textareas - DEPRECATED as there is no difference any more between the two
 	 * @param string $styleOverride A string which will be returned as attribute-value for style="" instead of the calculated width (if CSS is enabled)
 	 * @return string Tag attributes for an <input> tag (regarding width)
-	 * @todo Define visibility
 	 */
 	public function formWidth($size = 48, $textarea = FALSE, $styleOverride = '') {
 		return ' style="' . ($styleOverride ?: 'width:' . ceil($size * 9.58) . 'px;') . '"';
@@ -649,7 +654,6 @@ function jumpToUrl(URL) {
 	 * @return string Tag attributes for an <input> tag (regarding width)
 	 * @see formWidth()
 	 * @deprecated since TYPO3 CMS 6.2, remove two versions later, as this is function is not needed anymore, use formWidth()
-	 * @todo Define visibility
 	 */
 	public function formWidthText($size = 48, $styleOverride = '', $wrap = '') {
 		GeneralUtility::logDeprecatedFunction();
@@ -663,7 +667,6 @@ function jumpToUrl(URL) {
 	 * @param string $thisLocation URL to "this location" / current script
 	 * @return string Urls are returned as JavaScript variables T3_RETURN_URL and T3_THIS_LOCATION
 	 * @see typo3/db_list.php
-	 * @todo Define visibility
 	 */
 	public function redirectUrls($thisLocation = '') {
 		$thisLocation = $thisLocation ? $thisLocation : GeneralUtility::linkThisScript(array(
@@ -707,7 +710,6 @@ function jumpToUrl(URL) {
 	 * Automatically outputted in page end
 	 *
 	 * @return string HTML formated with <p>-tags
-	 * @todo Define visibility
 	 */
 	public function parseTime() {
 		if ($this->parseTimeFlag && $GLOBALS['BE_USER']->isAdmin()) {
@@ -740,7 +742,6 @@ function jumpToUrl(URL) {
 	 * @param boolean $includeCsh flag for including CSH
 	 * @return string Returns the whole header section of a HTML-document based on settings in internal variables (like styles, javascript code, charset, generator and docType)
 	 * @see endPage()
-	 * @todo Define visibility
 	 */
 	public function startPage($title, $includeCsh = TRUE) {
 		// hook pre start page
@@ -858,7 +859,6 @@ function jumpToUrl(URL) {
 	 *
 	 * @return string The HTML end of a page
 	 * @see startPage()
-	 * @todo Define visibility
 	 */
 	public function endPage() {
 		$str = $this->sectionEnd() . $this->postCode . $this->endPageJS() . $this->wrapScriptTags(BackendUtility::getUpdateSignalCode()) . $this->parseTime() . ($this->form ? '
@@ -903,7 +903,6 @@ function jumpToUrl(URL) {
 	 *
 	 * @param string $text The text string for the header
 	 * @return string HTML content
-	 * @todo Define visibility
 	 */
 	public function header($text) {
 		$str = '
@@ -925,7 +924,6 @@ function jumpToUrl(URL) {
 	 * @param boolean $allowHTMLinHeader If set, HTML tags are allowed in $label (otherwise this value is by default htmlspecialchars()'ed)
 	 * @return string HTML content
 	 * @see icons(), sectionHeader()
-	 * @todo Define visibility
 	 */
 	public function section($label, $text, $nostrtoupper = FALSE, $sH = FALSE, $type = 0, $allowHTMLinHeader = FALSE) {
 		$str = '';
@@ -950,7 +948,6 @@ function jumpToUrl(URL) {
 	 *
 	 * @param integer $dist The margin-top/-bottom of the <hr> ruler.
 	 * @return string HTML content
-	 * @todo Define visibility
 	 */
 	public function divider($dist) {
 		$dist = (int)$dist;
@@ -967,7 +964,6 @@ function jumpToUrl(URL) {
 	 *
 	 * @param integer $dist Padding-top for the div-section (should be margin-top but konqueror (3.1) doesn't like it :-(
 	 * @return string HTML content
-	 * @todo Define visibility
 	 */
 	public function spacer($dist) {
 		if ($dist > 0) {
@@ -987,7 +983,6 @@ function jumpToUrl(URL) {
 	 * @param boolean $sH If set, <h3> is used, otherwise <h4>
 	 * @param string $addAttrib Additional attributes to h-tag, eg. ' class=""'
 	 * @return string HTML content
-	 * @todo Define visibility
 	 */
 	public function sectionHeader($label, $sH = FALSE, $addAttrib = '') {
 		$tag = $sH ? 'h2' : 'h3';
@@ -1008,7 +1003,6 @@ function jumpToUrl(URL) {
 	 * You can call this function even if a section is already begun since the function will only return something if the sectionFlag is not already set!
 	 *
 	 * @return string HTML content
-	 * @todo Define visibility
 	 */
 	public function sectionBegin() {
 		if (!$this->sectionFlag) {
@@ -1032,7 +1026,6 @@ function jumpToUrl(URL) {
 	 * See sectionBegin() also.
 	 *
 	 * @return string HTML content
-	 * @todo Define visibility
 	 */
 	public function sectionEnd() {
 		if ($this->sectionFlag) {
@@ -1053,7 +1046,6 @@ function jumpToUrl(URL) {
 	 * Further a JavaScript section is outputted which will update the top.busy session-expiry object (unless $this->endJS is set to FALSE)
 	 *
 	 * @return string HTML content (<script> tag section)
-	 * @todo Define visibility
 	 */
 	public function endPageJS() {
 		return $this->endJS ? $this->wrapScriptTags('
@@ -1068,7 +1060,6 @@ function jumpToUrl(URL) {
 	 * You can add to the bodyTag by $this->bodyTagAdditions
 	 *
 	 * @return string HTML body tag
-	 * @todo Define visibility
 	 */
 	public function docBodyTagBegin() {
 		return '<body ' . trim(($this->bodyTagAdditions . ($this->bodyTagId ? ' id="' . $this->bodyTagId . '"' : ''))) . '>';
@@ -1078,7 +1069,6 @@ function jumpToUrl(URL) {
 	 * Outputting document style
 	 *
 	 * @return string HTML style section/link tags
-	 * @todo Define visibility
 	 */
 	public function docStyle() {
 		// Request background image:
@@ -1111,7 +1101,6 @@ function jumpToUrl(URL) {
 	 * @param string $title value for the title attribute of the link element
 	 * @param string $relation value for the rel attribute of the link element
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function addStyleSheet($key, $href, $title = '', $relation = 'stylesheet') {
 		if (strpos($href, '://') !== FALSE || $href[0] === '/') {
@@ -1127,7 +1116,6 @@ function jumpToUrl(URL) {
 	 *
 	 * @param string $path directory to add
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function addStyleSheetDirectory($path) {
 		// Calculation needed, when TYPO3 source is used via a symlink
@@ -1148,7 +1136,6 @@ function jumpToUrl(URL) {
 	 *
 	 * @param string $content style-content to insert.
 	 * @return string content with inserted styles
-	 * @todo Define visibility
 	 */
 	public function insertStylesAndJS($content) {
 		$styles = LF . implode(LF, $this->inDocStylesArray);
@@ -1204,7 +1191,6 @@ function jumpToUrl(URL) {
 	 * Returns generator meta tag
 	 *
 	 * @return string <meta> tag with name "generator
-	 * @todo Define visibility
 	 */
 	public function generator() {
 		$str = 'TYPO3 ' . TYPO3_branch . ', ' . TYPO3_URL_GENERAL . ', &#169; Kasper Sk&#229;rh&#248;j ' . TYPO3_copyright_year . ', extensions are copyright of their respective owners.';
@@ -1239,7 +1225,6 @@ function jumpToUrl(URL) {
 	 * @param integer $type See description
 	 * @param string $styleAttribValue Value for style attribute
 	 * @return string HTML image tag (if applicable)
-	 * @todo Define visibility
 	 */
 	public function icons($type, $styleAttribValue = '') {
 		switch ($type) {
@@ -1269,7 +1254,6 @@ function jumpToUrl(URL) {
 	 * @param string $onClick The value of the onclick attribute of the input tag (submit type)
 	 * @param string $label The label for the button (which will be htmlspecialchar'ed)
 	 * @return string A <input> tag of the type "submit
-	 * @todo Define visibility
 	 */
 	public function t3Button($onClick, $label) {
 		$button = '<input type="submit" onclick="' . htmlspecialchars($onClick) . '; return false;" value="' . htmlspecialchars($label) . '" />';
@@ -1281,7 +1265,6 @@ function jumpToUrl(URL) {
 	 *
 	 * @param string $string Input string
 	 * @return string Output string
-	 * @todo Define visibility
 	 */
 	public function dfw($string) {
 		return '<span class="typo3-dimmed">' . $string . '</span>';
@@ -1292,7 +1275,6 @@ function jumpToUrl(URL) {
 	 *
 	 * @param string $string Input string
 	 * @return string Output string
-	 * @todo Define visibility
 	 */
 	public function rfw($string) {
 		return '<span class="typo3-red">' . $string . '</span>';
@@ -1303,7 +1285,6 @@ function jumpToUrl(URL) {
 	 *
 	 * @param string $string Input string
 	 * @return string Output string
-	 * @todo Define visibility
 	 */
 	public function wrapInCData($string) {
 		$string = '/*<![CDATA[*/' . $string . '/*]]>*/';
@@ -1318,7 +1299,6 @@ function jumpToUrl(URL) {
 	 * @param string $string Input string
 	 * @param boolean $linebreak Wrap script element in linebreaks? Default is TRUE.
 	 * @return string Output string
-	 * @todo Define visibility
 	 */
 	public function wrapScriptTags($string, $linebreak = TRUE) {
 		if (trim($string)) {
@@ -1342,23 +1322,14 @@ function jumpToUrl(URL) {
 
 	// These vars defines the layout for the table produced by the table() function.
 	// You can override these values from outside if you like.
-	/**
-	 * @todo Define visibility
-	 */
 	public $tableLayout = array(
 		'defRow' => array(
 			'defCol' => array('<td valign="top">', '</td>')
 		)
 	);
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $table_TR = '<tr>';
 
-	/**
-	 * @todo Define visibility
-	 */
 	public $table_TABLE = '<table border="0" cellspacing="0" cellpadding="0" class="typo3-dblist" id="typo3-tmpltable">';
 
 	/**
@@ -1368,7 +1339,6 @@ function jumpToUrl(URL) {
 	 * @param array $layout If set, then this provides an alternative layout array instead of $this->tableLayout
 	 * @return string The HTML table.
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function table($data, $layout = NULL) {
 		$result = '';
@@ -1445,7 +1415,6 @@ function jumpToUrl(URL) {
 	 * @param string $content Content cell content (left)
 	 * @param string $menu Menu cell content (right)
 	 * @return string HTML output
-	 * @todo Define visibility
 	 */
 	public function funcMenu($content, $menu) {
 		return '
@@ -1463,7 +1432,6 @@ function jumpToUrl(URL) {
 	 *
 	 * @param string $lib: Library name. Call it with the full path like "contrib/prototype/prototype.js" to load it
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function loadJavascriptLib($lib) {
 		$this->pageRenderer->addJsFile($this->backPath . $lib);
@@ -1473,7 +1441,6 @@ function jumpToUrl(URL) {
 	 * Includes the necessary Javascript function for the clickmenu (context sensitive menus) in the document
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function getContextMenuCode() {
 		$this->pageRenderer->loadPrototype();
@@ -1489,7 +1456,6 @@ function jumpToUrl(URL) {
 	 *
 	 * @param string $table indicator of which table the drag and drop function should work on (pages or folders)
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function getDragDropCode($table) {
 		$this->pageRenderer->loadPrototype();
@@ -1527,7 +1493,6 @@ function jumpToUrl(URL) {
 	 * @param string $script is the script to send the &id to, if empty it's automatically found
 	 * @param string $addparams is additional parameters to pass to the script.
 	 * @return string HTML code for tab menu
-	 * @todo Define visibility
 	 */
 	public function getTabMenu($mainParams, $elementName, $currentValue, $menuItems, $script = '', $addparams = '') {
 		$content = '';
@@ -1556,7 +1521,6 @@ function jumpToUrl(URL) {
 	 * @param array $menuItems Menu items for tabs
 	 * @return string Table HTML
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function getTabMenuRaw($menuItems) {
 		$content = '';
@@ -1712,7 +1676,6 @@ function jumpToUrl(URL) {
 	 *
 	 * @param string $identString Identification string. This should be unique for every instance of a dynamic menu!
 	 * @return string The id with a short MD5 of $identString and prefixed "DTM-", like "DTM-2e8791854a
-	 * @todo Define visibility
 	 */
 	public function getDynTabMenuId($identString) {
 		$id = 'DTM-' . GeneralUtility::shortMD5($identString);
@@ -1743,7 +1706,6 @@ function jumpToUrl(URL) {
 	 *
 	 * @param string $filename tmpl name, usually in the typo3/template/ directory
 	 * @return string HTML of template
-	 * @todo Define visibility
 	 */
 	public function getHtmlTemplate($filename) {
 		// setting the name of the original HTML template

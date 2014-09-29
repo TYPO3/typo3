@@ -46,47 +46,46 @@ class ElementBrowser {
 	/**
 	 * the script to link to
 	 *
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $thisScript;
 
 	/**
 	 * RTE specific TSconfig
 	 *
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $thisConfig;
 
 	/**
 	 * Target (RTE specific)
 	 *
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $setTarget;
 
 	/**
 	 * CSS Class (RTE specific)
 	 *
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $setClass;
 
 	/**
 	 * title (RTE specific)
 	 *
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $setTitle;
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $setParams;
 
 	/**
 	 * Backend template object
 	 *
-	 * @todo Define visibility
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 */
 	public $doc;
@@ -94,7 +93,7 @@ class ElementBrowser {
 	/**
 	 * Holds information about files
 	 *
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $elements = array();
 
@@ -107,7 +106,6 @@ class ElementBrowser {
 	 * "wizard" will allow you to browse for links (like "rte") which are passed back to TCEforms (see main_rte(1))
 	 *
 	 * @see main()
-	 * @todo Define visibility
 	 * @var string
 	 */
 	public $mode;
@@ -118,7 +116,7 @@ class ElementBrowser {
 	 * These are only important with the link selector function and in that case they switch
 	 * between the various menu options.
 	 *
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $act;
 
@@ -127,7 +125,7 @@ class ElementBrowser {
 	 * value will contain that value (the ID of the expanded page). If the value is NOT set,
 	 * then it will be restored from the module session data (see main(), mode="db")
 	 *
-	 * @todo Define visibility
+	 * @var NULL|int
 	 */
 	public $expandPage;
 
@@ -137,7 +135,6 @@ class ElementBrowser {
 	 * value is NOT set, then it will be restored from the module session data (see main(),
 	 * mode="file"/"filedrag"). Example value: "/www/htdocs/typo3/32/3dsplm/fileadmin/css/"
 	 *
-	 * @todo Define visibility
 	 * @var string
 	 */
 	public $expandFolder;
@@ -153,7 +150,6 @@ class ElementBrowser {
 	 * TYPO3 Element Browser, wizard mode parameters. There is a heap of parameters there,
 	 * better debug() them out if you need something... :-)
 	 *
-	 * @todo Define visibility
 	 * @var array
 	 */
 	public $P;
@@ -178,7 +174,6 @@ class ElementBrowser {
 	 * $formFieldName = $pArr[0];
 	 * $allowedTablesOrFileTypes = $pArr[3];
 	 *
-	 * @todo Define visibility
 	 * @var string
 	 */
 	public $bparams;
@@ -187,7 +182,6 @@ class ElementBrowser {
 	 * Used with the Rich Text Editor.
 	 * Example value: "tt_content:NEW3fba58c969f5c:bodytext:23:text:23:"
 	 *
-	 * @todo Define visibility
 	 * @var string
 	 */
 	public $RTEtsConfigParams;
@@ -195,14 +189,14 @@ class ElementBrowser {
 	/**
 	 * Plus/Minus icon value. Used by the tree class to open/close notes on the trees.
 	 *
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $PM;
 
 	/**
 	 * Pointer, used when browsing a long list of records etc.
 	 *
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $pointer;
 
@@ -211,7 +205,6 @@ class ElementBrowser {
 	 * in the RTE/TCEform field. This consists of "href", "target" and "title" keys.
 	 * This information is passed around in links.
 	 *
-	 * @todo Define visibility
 	 * @var array
 	 */
 	public $curUrlArray;
@@ -221,13 +214,13 @@ class ElementBrowser {
 	 * This is splitted into pageid, content element id, label value etc.
 	 * This is used for the internal processing of that information.
 	 *
-	 * @todo Define visibility
 	 * @var array
 	 */
 	public $curUrlInfo;
 
 	/**
 	 * array which holds hook objects (initialised in init())
+	 *
 	 * @var \TYPO3\CMS\Core\ElementBrowser\ElementBrowserHookInterface[]
 	 */
 	protected $hookObjects = array();
@@ -263,7 +256,6 @@ class ElementBrowser {
 	 * Initializes a lot of variables, setting JavaScript functions in header etc.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 * @throws \UnexpectedValueException
 	 */
 	public function init() {
@@ -475,7 +467,6 @@ class ElementBrowser {
 	 * Generate JS code to be used on the link insert/modify dialogue
 	 *
 	 * @return string the generated JS code
-	 * @todo Define visibility
 	 */
 	public function getJsCode() {
 		// Rich Text Editor specific configuration:
@@ -802,7 +793,6 @@ class ElementBrowser {
 	 *
 	 * @param array $data Session data array
 	 * @return array Session data and boolean which indicates that data needs to be stored in session because it's changed
-	 * @todo Define visibility
 	 */
 	public function processSessionData($data) {
 		$store = FALSE;
@@ -1431,7 +1421,6 @@ class ElementBrowser {
 	 * TYPO3 Element Browser: Showing a folder tree, allowing you to browse for files.
 	 *
 	 * @return string HTML content for the module
-	 * @todo Define visibility
 	 */
 	public function main_file() {
 		// include JS files and set prefs for foldertree
@@ -1562,7 +1551,6 @@ class ElementBrowser {
 	 * TYPO3 Element Browser: Showing a folder tree, allowing you to browse for folders.
 	 *
 	 * @return string HTML content for the module
-	 * @todo Define visibility
 	 */
 	public function main_folder() {
 		// include JS files
@@ -1627,7 +1615,6 @@ class ElementBrowser {
 	 * For RTE: This displays all content elements on a page and lets you create a link to the element.
 	 *
 	 * @return string HTML output. Returns content only if the ->expandPage value is set (pointing to a page uid to show tt_content records from ...)
-	 * @todo Define visibility
 	 */
 	public function expandPage() {
 		$out = '';
@@ -1703,7 +1690,6 @@ class ElementBrowser {
 	 *
 	 * @param string $tables Comma separated list of tables. Set to "*" if you want all tables.
 	 * @return string HTML output.
-	 * @todo Define visibility
 	 */
 	public function TBE_expandPage($tables) {
 		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->expandPage)
@@ -1797,7 +1783,6 @@ class ElementBrowser {
 	 *
 	 * @param Folder $folder Folder
 	 * @return string HTML output
-	 * @todo Define visibility
 	 */
 	public function TBE_expandSubFolders(Folder $folder) {
 		$content = '';
@@ -1819,7 +1804,6 @@ class ElementBrowser {
 	 * @param Folder $folder The folder path to expand
 	 * @param string $extensionList List of file extensions to show
 	 * @return string HTML output
-	 * @todo Define visibility
 	 */
 	public function expandFolder(Folder $folder, $extensionList = '') {
 		if (!$folder->checkActionPermission('read')) {
@@ -1907,7 +1891,6 @@ class ElementBrowser {
 	 * @param string $extensionList List of fileextensions to show
 	 * @param boolean $noThumbs Whether to show thumbnails or not. If set, no thumbnails are shown.
 	 * @return string HTML output
-	 * @todo Define visibility
 	 */
 	public function TBE_expandFolder(Folder $folder, $extensionList = '', $noThumbs = FALSE) {
 		if (!$folder->checkActionPermission('read')) {
@@ -2071,7 +2054,6 @@ class ElementBrowser {
 	 *
 	 * @param Folder $baseFolder
 	 * @return string HTML output
-	 * @todo Define visibility
 	 */
 	public function folderList(Folder $baseFolder) {
 		$content = '';
@@ -2163,7 +2145,6 @@ class ElementBrowser {
 	 * @param Folder $folder The folder path to expand
 	 * @param string $extensionList List of file extensions to show
 	 * @return string HTML output
-	 * @todo Define visibility
 	 */
 	public function TBE_dragNDrop(Folder $folder, $extensionList = '') {
 		if (!$folder) {
@@ -2296,7 +2277,6 @@ class ElementBrowser {
 	 *
 	 * @param string $str The string to print in the header. The value is htmlspecialchars()'ed before output.
 	 * @return string The header HTML (wrapped in a table)
-	 * @todo Define visibility
 	 */
 	public function barheader($str) {
 		return '
@@ -2311,7 +2291,6 @@ class ElementBrowser {
 	 * @param string $in_msg Input message to show (will be htmlspecialchars()'ed inside of this function)
 	 * @param string $icon Icon filename body from gfx/ (default is "icon_note") - meant to allow change to warning type icons...
 	 * @return string HTML for the message (wrapped in a table).
-	 * @todo Define visibility
 	 */
 	public function getMsgBox($in_msg, $icon = 'icon_note') {
 		$msg = '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/' . $icon . '.gif'), 'width="18" height="16"')
@@ -2335,7 +2314,6 @@ class ElementBrowser {
 	 *
 	 * @param string $str URL value. The value is htmlspecialchars()'ed before output.
 	 * @return string HTML content, wrapped in a table.
-	 * @todo Define visibility
 	 */
 	public function printCurrentUrl($str) {
 		// Output the folder or file identifier, when working with files
@@ -2369,7 +2347,6 @@ class ElementBrowser {
 	 * @param string $href HREF value tp analyse
 	 * @param string $siteUrl The URL of the current website (frontend)
 	 * @return array Array with URL information stored in assoc. keys: value, act (page, file, spec, mail), pageid, cElement, info
-	 * @todo Define visibility
 	 */
 	public function parseCurUrl($href, $siteUrl) {
 		$href = trim($href);
@@ -2476,7 +2453,6 @@ class ElementBrowser {
 	 *
 	 * @param Folder $folderObject Absolute filepath on server to which to upload.
 	 * @return string HTML for an upload form.
-	 * @todo Define visibility
 	 */
 	public function uploadForm(Folder $folderObject) {
 		if (!$folderObject->checkActionPermission('write')) {
@@ -2544,7 +2520,6 @@ class ElementBrowser {
 	 *
 	 * @param Folder $folderObject Absolute filepath on server in which to create the new folder.
 	 * @return string HTML for the create folder form.
-	 * @todo Define visibility
 	 */
 	public function createFolder(Folder $folderObject) {
 		if (!$folderObject->checkActionPermission('write')) {
@@ -2601,7 +2576,6 @@ class ElementBrowser {
 	 *
 	 * @param integer $filesCount Number of files currently displayed
 	 * @return string HTML data required for a bulk selection of files - if $filesCount is 0, nothing is returned
-	 * @todo Define visibility
 	 */
 	public function getBulkSelector($filesCount) {
 		if (!$filesCount) {

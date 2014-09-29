@@ -120,7 +120,6 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 * Set to the page record (see writeTop())
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $pageRow = array();
 
@@ -135,7 +134,6 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 * If set, the listing is returned as CSV instead.
 	 *
 	 * @var bool
-	 * @todo Define visibility
 	 */
 	public $csvOutput = FALSE;
 
@@ -143,7 +141,6 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 * Clipboard object
 	 *
 	 * @var \TYPO3\CMS\Backend\Clipboard\Clipboard
-	 * @todo Define visibility
 	 */
 	public $clipObj;
 
@@ -151,7 +148,6 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 * Tracking names of elements (for clipboard use)
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $CBnames = array();
 
@@ -159,7 +155,6 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 * Used to track which elements has duplicates and how many
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $duplicateStack = array();
 
@@ -174,7 +169,6 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 * Translations of the current record
 	 *
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $translations;
 
@@ -183,7 +177,6 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 * record
 	 *
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $selFieldList;
 
@@ -323,7 +316,6 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 * @param string $rowList List of fields to show in the listing. Pseudo fields will be added including the record header.
 	 * @throws \UnexpectedValueException
 	 * @return string HTML table with the listing for the record.
-	 * @todo Define visibility
 	 */
 	public function getTable($table, $id, $rowList) {
 		// Init
@@ -699,7 +691,6 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 * @return string Table row for the element
 	 * @access private
 	 * @see getTable()
-	 * @todo Define visibility
 	 */
 	public function renderListRow($table, $row, $cc, $titleCol, $thumbsCol, $indent = 0) {
 		$iOut = '';
@@ -859,7 +850,6 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 * @return string Header table row
 	 * @access private
 	 * @see getTable()
-	 * @todo Define visibility
 	 */
 	public function renderListHeader($table, $currentIdList) {
 		// Init:
@@ -1170,7 +1160,6 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 * @param array $row The record for which to make the control panel.
 	 * @throws \UnexpectedValueException
 	 * @return string HTML table with the control panel (unless disabled)
-	 * @todo Define visibility
 	 */
 	public function makeControl($table, $row) {
 		if ($this->dontShowClipControlPanels) {
@@ -1434,7 +1423,6 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 * @param array $row The record for which to make the clipboard panel.
 	 * @throws \UnexpectedValueException
 	 * @return string HTML table with the clipboard panel (unless disabled)
-	 * @todo Define visibility
 	 */
 	public function makeClip($table, $row) {
 		// Return blank, if disabled:
@@ -1549,7 +1537,6 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 * @param string $table The table
 	 * @param array $row The record for which to make the localization panel.
 	 * @return array Array with key 0/1 with content for column 1 and 2
-	 * @todo Define visibility
 	 */
 	public function makeLocalizationPanel($table, $row) {
 		$out = array(
@@ -1596,7 +1583,6 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 * @param string $table Table name
 	 * @param bool $formFields If TRUE, form-fields will be wrapped around the table.
 	 * @return string HTML table with the selector box (name: displayFields['.$table.'][])
-	 * @todo Define visibility
 	 */
 	public function fieldSelectBox($table, $formFields = TRUE) {
 		// Init:
@@ -1665,7 +1651,6 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 * @param string $cmd Clipboard command (eg. "setCB" or "delete")
 	 * @param string $warning Warning text, if any ("delete" uses this for confirmation)
 	 * @return string <a> tag wrapped link.
-	 * @todo Define visibility
 	 */
 	public function linkClipboardHeaderIcon($string, $table, $cmd, $warning = '') {
 		$onClickEvent = 'document.dblistForm.cmd.value=\'' . $cmd . '\';document.dblistForm.cmd_table.value=\''
@@ -1680,7 +1665,6 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 * Returns TRUE if a numeric clipboard pad is selected/active
 	 *
 	 * @return bool
-	 * @todo Define visibility
 	 */
 	public function clipNumPane() {
 		return in_Array('_CLIPBOARD_', $this->fieldArray) && $this->clipObj->current != 'normal';
@@ -1695,7 +1679,6 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 * @param string $field The fieldname represented by the title ($code)
 	 * @param string $table Table name
 	 * @return string Linked $code variable
-	 * @todo Define visibility
 	 */
 	public function addSortLink($code, $field, $table) {
 		// Certain circumstances just return string right away (no links):
@@ -1723,7 +1706,6 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 *
 	 * @param int $pid The page id for which to get the path
 	 * @return string The path.
-	 * @todo Define visibility
 	 */
 	public function recPath($pid) {
 		if (!isset($this->recPath_cache[$pid])) {
@@ -1738,7 +1720,6 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 * @param string $table Table name
 	 * @return bool Returns TRUE if a link for creating new records should be displayed for $table
 	 * @see SC_db_new::showNewRecLink
-	 * @todo Define visibility
 	 */
 	public function showNewRecLink($table) {
 		// No deny/allow tables are set:
@@ -1755,7 +1736,6 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 * Uses REQUEST_URI as value.
 	 *
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function makeReturnUrl() {
 		return '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
@@ -1823,7 +1803,6 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 *
 	 * @param array $csvRow Array with values to be listed.
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function setCsvRow($csvRow) {
 		$this->csvLines[] = GeneralUtility::csvValues($csvRow);
@@ -1835,7 +1814,6 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 *
 	 * @param string $prefix Filename prefix:
 	 * @return void EXITS php execution!
-	 * @todo Define visibility
 	 */
 	public function outputCSV($prefix) {
 		// Setting filename:

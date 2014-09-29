@@ -50,7 +50,6 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 	 * @param string $data The data/information to be shown (e.g. 'Template for my site')
 	 * @param string $field The field/variable to be sent on clicking the edit icon (e.g. 'title', 'sitetitle')
 	 * @return string A row for a HTML table
-	 * @todo Define visibility
 	 */
 	public function tableRow($label, $data, $field) {
 		$lang = $this->getLanguageService();
@@ -76,7 +75,6 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 	 * @param integer $pageId The uid of the current page
 	 * @param integer $template_uid: The uid of the template record to be rendered (only if more than one template on the current page)
 	 * @return boolean Returns TRUE if a template record was found, otherwise FALSE
-	 * @todo Define visibility
 	 */
 	public function initialize_editor($pageId, $template_uid = 0) {
 		// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
@@ -99,7 +97,6 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 	 *
 	 * @param array $tplRow Template row
 	 * @return array Preprocessed template row
-	 * @todo Define visibility
 	 */
 	public function processTemplateRowAfterLoading(array $tplRow) {
 		if ($this->pObj->MOD_SETTINGS['includeTypoScriptFileContent']) {
@@ -116,7 +113,6 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 	 *
 	 * @param array $tplRow Template row
 	 * @return array Preprocessed template row
-	 * @todo Define visibility
 	 */
 	public function processTemplateRowBeforeSaving(array $tplRow) {
 		if ($this->pObj->MOD_SETTINGS['includeTypoScriptFileContent']) {

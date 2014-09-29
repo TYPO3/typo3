@@ -22,7 +22,7 @@ namespace TYPO3\CMS\Backend\Controller;
 class DummyController {
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $content;
 

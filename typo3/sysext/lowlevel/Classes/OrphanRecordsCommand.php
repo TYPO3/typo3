@@ -23,8 +23,6 @@ class OrphanRecordsCommand extends CleanerCommand {
 
 	/**
 	 * Constructor
-	 *
-	 * @todo Define visibility
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -56,7 +54,6 @@ Will report orphan uids from TCA tables.';
 	 * VERY CPU and memory intensive since it will look up the whole page tree!
 	 *
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function main() {
 		global $TYPO3_DB;
@@ -104,7 +101,6 @@ Will report orphan uids from TCA tables.';
 	 *
 	 * @param array $resultArray Result array from main() function
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main_autoFix($resultArray) {
 		// Putting "pages" table in the bottom:
