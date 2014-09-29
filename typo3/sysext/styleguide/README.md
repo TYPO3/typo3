@@ -33,6 +33,7 @@ Styleguide extension currently brings own css definitions that need to be integr
 Disclaimer: This styleguide does not look perfect - besides documentation the guide should also point out missing concepts and styles.
 Therefore every imperfect style also is a todo for us. The solution should be included in the TYPO3 CMS core.
 
-Maintained by <a href="https://twitter.com/7elix" target="_blank">Felix Kopp</a>, Active Contributor for TYPO3 CMS.
+Maintained by Styleguide Team - Questions? Contact <a href="https://twitter.com/7elix" target="_blank">Felix Kopp</a>, Active Contributor for TYPO3 CMS.
+
 This guide is highly inspired by Bootstrap and Zurb Foundation.
 
