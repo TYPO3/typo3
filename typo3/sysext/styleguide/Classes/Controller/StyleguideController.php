@@ -64,6 +64,12 @@ class StyleguideController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	}
 
 	/**
+	 * TCA
+	 */
+	public function tcaAction() {
+	}
+
+	/**
 	 * Icons
 	 */
 	public function iconsAction() {

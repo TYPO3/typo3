@@ -1,0 +1,26 @@
+{namespace sg = TYPO3\CMS\Styleguide\ViewHelpers}
+
+<f:layout name="Default"/>
+
+<f:section name="iconButtons">
+</f:section>
+
+<f:section name="headline">
+	TCA / Records
+</f:section>
+
+<f:section name="content">
+
+	<h2>Create new record</h2>
+
+	<a href="#" onclick="window.location.href='alt_doc.php?returnUrl='+T3_THIS_LOCATION+'&edit[tx_styleguide_forms][0]=new'; return false;" class="btn btn-default">
+		<span class="t3-icon t3-icon-tcarecords t3-icon-tcarecords-tx_styleguide_forms t3-icon-tx_styleguide_forms-default">&nbsp;</span>
+		Form engine tests
+	</a>
+
+	<hr />
+
+	<p><f:link.action action="bootstrap">Previous page &laquo;Bootstrap&raquo;</f:link.action> /
+		<f:link.action action="trees">Next page &laquo;Trees&raquo;</f:link.action></p>
+
+</f:section>

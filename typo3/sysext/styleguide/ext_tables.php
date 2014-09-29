@@ -11,7 +11,7 @@ if (TYPO3_MODE === 'BE') {
 		'styleguide',
 		'',
 		array(
-			'Styleguide' => 'index, typography, trees, tables, buttons, forms, flashMessages, bootstrap, helpers, icons'
+			'Styleguide' => 'index, typography, trees, tables, buttons, forms, flashMessages, tca, bootstrap, helpers, icons'
 		),
 		array(
 			'access' => 'user,group',
@@ -19,6 +19,7 @@ if (TYPO3_MODE === 'BE') {
 			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_styleguide.xlf',
 		)
 	);
+
 
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_styleguide_forms');
 }
