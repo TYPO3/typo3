@@ -55,6 +55,8 @@ CREATE TABLE tx_styleguide_forms (
 	input_27 tinytext NOT NULL,
 	input_28 tinytext NOT NULL,
 	input_29 tinytext NULL,
+	input_30 tinytext NOT NULL,
+	input_31 tinytext NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)

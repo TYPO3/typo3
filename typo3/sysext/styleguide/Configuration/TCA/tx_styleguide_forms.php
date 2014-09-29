@@ -26,14 +26,6 @@ return array(
 		'dividers2tabs' => 1,
 	),
 
-	'interface' => array(
-		'showRecordFieldList' => 'hidden,starttime,endtime,
-			input_1, input_2, input_3, input_4, input_5, input_6, input_7, input_8, input_9, input_10,
-			input_11, input_12, input_13, input_14, input_15, input_16, input_17, input_18, input_19, input_20,
-			input_21, input_22, input_23, input_24, input_25, input_26, input_27, input_28, input_29,
-			',
-	),
-
 	'columns' => array(
 		'hidden' => array (
 			'config' => array(
@@ -215,7 +207,7 @@ return array(
 			),
 		),
 		/**
-		 * @TODO
+		 * @TODO Add evaluation with a userfunc
 		'input_21' => array(
 			'label' => 'Eval tx_*',
 			'config' => array(
@@ -289,6 +281,48 @@ return array(
 				'mode' => 'useOrOverridePlaceholder',
 			),
 		),
+		"input_30" => array(
+			"label" => "30 Link wizard, no _PADDING",
+			"config" => Array (
+				"type" => "input",
+				'wizards' => array(
+					'link' => Array(
+						'type' => 'popup',
+						'title' => 'Link',
+						'icon' => 'link_popup.gif',
+						'script' => 'browse_links.php?mode=wizard',
+						'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
+					),
+				),
+			),
+		),
+		"input_31" => array(
+			"label" => "31 Color picker wizard, _PADDING 6",
+			"config" => array(
+				"type" => "input",
+				'wizards' => array(
+					'_PADDING' => 6,
+					'colorpicker' => array(
+						'type' => 'colorbox',
+						'title' => 'Color picker',
+						'icon' => 'link_popup.gif',
+						'script' => 'wizard_colorpicker.php',
+						'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
+					),
+				),
+			),
+		),
+
+
+	),
+
+	'interface' => array(
+		'showRecordFieldList' => 'hidden,starttime,endtime,
+			input_1, input_2, input_3, input_4, input_5, input_6, input_7, input_8, input_9, input_10,
+			input_11, input_12, input_13, input_14, input_15, input_16, input_17, input_18, input_19, input_20,
+			input_21, input_22, input_23, input_24, input_25, input_26, input_27, input_28, input_29, input_30,
+			input_31,
+			',
 	),
 
 	'types' => array(
@@ -297,7 +331,7 @@ return array(
 				--div--;Input,
 					input_1, input_28, input_29, input_2, input_3, input_4, input_5, input_6, input_7, input_8, input_9,
 					input_27, input_10, input_11, input_12, input_13, input_14, input_15, input_16, input_17, input_18,
-					input_19, input_20, input_21, input_22, input_23, input_24, input_25, input_26,
+					input_19, input_20, input_21, input_22, input_23, input_24, input_25, input_26, input_30, input_31,
 				--div--;Access,
 					--palette--;Visibility;visibility,
 					--palette--;Access;access
