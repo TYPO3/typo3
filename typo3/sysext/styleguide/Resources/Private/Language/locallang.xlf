@@ -21,6 +21,9 @@
 			<trans-unit id="typography" xml:space="preserve">
 				<source>Typography</source>
 			</trans-unit>
+			<trans-unit id="tca" xml:space="preserve">
+				<source>TCA / Records</source>
+			</trans-unit>
 			<trans-unit id="trees" xml:space="preserve">
 				<source>Trees</source>
 			</trans-unit>
