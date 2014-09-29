@@ -87,49 +87,49 @@ return array(
 			),
 		),
 		'input_4' => array(
-			'label' => '4 Eval alpha',
+			'label' => '4 eval alpha',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'alpha',
 			),
 		),
 		'input_5' => array(
-			'label' => '5 Eval alphanum',
+			'label' => '5 eval alphanum',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'alphanum',
 			),
 		),
 		'input_6' => array(
-			'label' => '6 Eval date',
+			'label' => '6 eval date',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'date',
 			),
 		),
 		'input_7' => array(
-			'label' => '7 Eval datetime',
+			'label' => '7 eval datetime',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'datetime',
 			),
 		),
 		'input_8' => array(
-			'label' => '8 Eval double2',
+			'label' => '8 eval double2',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'double2',
 			),
 		),
 		'input_9' => array(
-			'label' => '9 Eval int',
+			'label' => '9 eval int',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'int',
 			),
 		),
 		'input_10' => array(
-			'label' => '10 Eval is_in abc123',
+			'label' => '10 eval is_in abc123',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'is_in',
@@ -137,70 +137,70 @@ return array(
 			),
 		),
 		'input_11' => array(
-			'label' => '11 Eval lower',
+			'label' => '11 eval lower',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'lower',
 			),
 		),
 		'input_12' => array(
-			'label' => '12 Eval md5',
+			'label' => '12 eval md5',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'md5',
 			),
 		),
 		'input_13' => array(
-			'label' => '13 Eval nospace',
+			'label' => '13 eval nospace',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'nospace',
 			),
 		),
 		'input_14' => array(
-			'label' => '14 Eval null',
+			'label' => '14 eval null',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'null',
 			),
 		),
 		'input_15' => array(
-			'label' => '15 Eval num',
+			'label' => '15 eval num',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'num',
 			),
 		),
 		'input_16' => array(
-			'label' => '16 Eval password',
+			'label' => '16 eval password',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'password',
 			),
 		),
 		'input_17' => array(
-			'label' => '17 Eval required',
+			'label' => '17 eval required',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'required',
 			),
 		),
 		'input_18' => array(
-			'label' => '18 Eval time',
+			'label' => '18 eval time',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'time',
 			),
 		),
 		'input_19' => array(
-			'label' => '19 Eval timesec',
+			'label' => '19 eval timesec',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'timesec',
 			),
 		),
 		'input_20' => array(
-			'label' => '20 Eval trim',
+			'label' => '20 eval trim',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'trim',
@@ -209,7 +209,7 @@ return array(
 		/**
 		 * @TODO Add evaluation with a userfunc
 		'input_21' => array(
-			'label' => 'Eval tx_*',
+			'label' => 'eval tx_*',
 			'config' => array(
 				'type' => 'input',
 				'eval' => '',
@@ -217,28 +217,28 @@ return array(
 		),
 		 */
 		'input_22' => array(
-			'label' => '22 Eval unique',
+			'label' => '22 eval unique',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'unique',
 			),
 		),
 		'input_23' => array(
-			'label' => '23 Eval uniqueInPid',
+			'label' => '23 eval uniqueInPid',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'uniqueInPid',
 			),
 		),
 		'input_24' => array(
-			'label' => '24 Eval upper',
+			'label' => '24 eval upper',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'upper',
 			),
 		),
 		'input_25' => array(
-			'label' => '25 Eval year',
+			'label' => '25 eval year',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'year',
@@ -255,7 +255,7 @@ return array(
 			),
 		),
 		'input_27' => array(
-			'label' => '27 Eval int range 2 to 7',
+			'label' => '27 eval int range 2 to 7',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'int',
@@ -273,7 +273,7 @@ return array(
 			),
 		),
 		'input_29' => array(
-			'label' => '29 Placeholder value from input_1 with mode',
+			'label' => '29 Placeholder value from input_1 with mode useOrOverridePlaceholder',
 			'config' => array(
 				'type' => 'input',
 				'placeholder' => '__row|input_1',
@@ -314,6 +314,114 @@ return array(
 		),
 
 
+		'text_1' => array(
+			'label' => '1 no cols, no rows',
+			'config' => array(
+				'type' => 'text',
+			),
+		),
+		'text_2' => array(
+			'label' => '2 cols=20',
+			'config' => array(
+				'type' => 'text',
+				'cols' => 20,
+			),
+		),
+		'text_3' => array(
+			'label' => '3 rows=2',
+			'config' => array(
+				'type' => 'text',
+				'rows' => 2,
+			),
+		),
+		'text_4' => array(
+			'label' => '4 cols=20, rows=2',
+			'config' => array(
+				'type' => 'text',
+				'cols' => 20,
+				'rows' => 2,
+			),
+		),
+		'text_5' => array(
+			'label' => '5 wrap=off with default',
+			'config' => array(
+				'type' => 'text',
+				'wrap' => 'off',
+				'default' => 'This textbox has wrap set to "off", so these long paragraphs should appear in one line: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean non luctus elit. In sed nunc velit. Donec gravida eros sollicitudin ligula mollis id eleifend mauris laoreet. Donec turpis magna, pulvinar id pretium eu, blandit et nisi. Nulla facilisi. Vivamus pharetra orci sed nunc auctor condimentum. Aenean volutpat posuere scelerisque. Nullam sed dolor justo. Pellentesque id tellus nunc, id sodales diam. Sed rhoncus risus a enim lacinia tincidunt. Aliquam ut neque augue.',
+			),
+		),
+		'text_6' => array(
+			'label' => '6 wrap=virtual with default',
+			'config' => array(
+				'type' => 'text',
+				'wrap' => 'virtual',
+				'default' => 'This textbox has wrap set to "virtual", so these long paragraphs should appear in multiple lines (wrapped at the end of the textbox): Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean non luctus elit. In sed nunc velit. Donec gravida eros sollicitudin ligula mollis id eleifend mauris laoreet. Donec turpis magna, pulvinar id pretium eu, blandit et nisi. Nulla facilisi. Vivamus pharetra orci sed nunc auctor condimentum. Aenean volutpat posuere scelerisque. Nullam sed dolor justo. Pellentesque id tellus nunc, id sodales diam. Sed rhoncus risus a enim lacinia tincidunt. Aliquam ut neque augue.',
+			),
+		),
+		'text_7' => array(
+			'label' => '7 eval required',
+			'config' => array(
+				'type' => 'text',
+				'eval' => 'required',
+			),
+		),
+		'text_8' => array(
+			'label' => '8 eval trim',
+			'config' => array(
+				'type' => 'text',
+				'eval' => 'trim',
+			),
+		),
+		/**
+		 * @TODO: Add evaluation with a userfunc
+		'text_9' => array(
+			'label' => '9 eval userfunc',
+			'config' => array(
+				'type' => 'text',
+				'eval' => 'trim',
+				// 'is_in' => 'abc123',
+			),
+		),
+		 */
+		'text_10' => array(
+			'label' => '10 readOnly',
+			'config' => array(
+				'type' => 'text',
+				'readOnly' => 1,
+			),
+		),
+		/**
+		 * @TODO: This throws a warning
+		'text_11' => array(
+			'label' => '10 readOnly with format datetime',
+			'config' => array(
+				'type' => 'text',
+				'readOnly' => 1,
+				'format' => 'datetime',
+			),
+		),
+		 */
+		'text_12' => array(
+			'label' => '12 placeholder value from input_1',
+			'config' => array(
+				'type' => 'text',
+				'placeholder' => '__row|input_1',
+			),
+		),
+		'text_13' => array(
+			'label' => '13 placeholder value from input_1 with mode useOrOverridePlaceholder',
+			'config' => array(
+				'type' => 'text',
+				'placeholder' => '__row|input_1',
+				'eval' => 'null',
+				'mode' => 'useOrOverridePlaceholder',
+			),
+		),
+		/**
+		 * @TODO: Add type text wizards
+		 */
+
+
 	),
 
 	'interface' => array(
@@ -322,6 +430,8 @@ return array(
 			input_11, input_12, input_13, input_14, input_15, input_16, input_17, input_18, input_19, input_20,
 			input_21, input_22, input_23, input_24, input_25, input_26, input_27, input_28, input_29, input_30,
 			input_31,
+			text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9, text_10,
+			text_11, text_12, text_13,
 			',
 	),
 
@@ -332,6 +442,9 @@ return array(
 					input_1, input_28, input_29, input_2, input_3, input_4, input_5, input_6, input_7, input_8, input_9,
 					input_27, input_10, input_11, input_12, input_13, input_14, input_15, input_16, input_17, input_18,
 					input_19, input_20, input_21, input_22, input_23, input_24, input_25, input_26, input_30, input_31,
+				--div--;Text,
+					text_1, text_28, text_29, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9,
+					text_27, text_10, text_11, text_12, text_13,
 				--div--;Access,
 					--palette--;Visibility;visibility,
 					--palette--;Access;access
