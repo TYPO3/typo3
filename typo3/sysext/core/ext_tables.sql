@@ -426,7 +426,7 @@ CREATE TABLE sys_file_reference (
 	title tinytext,
 	description text,
 	alternative tinytext,
-	link tinytext,
+	link varchar(1024) DEFAULT '' NOT NULL,
 	downloadname tinytext,
 
 	PRIMARY KEY (uid),

@@ -171,6 +171,7 @@ return array(
 			'config' => array(
 				'type' => 'input',
 				'size' => '20',
+				'max' => 1024,
 				'wizards' => array(
 					'_PADDING' => 2,
 					'link' => array(
