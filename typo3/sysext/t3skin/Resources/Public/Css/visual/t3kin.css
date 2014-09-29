@@ -7233,6 +7233,123 @@ Background color classes
 .bgColor6 {
   background-color: #f7f7f7;
 }
+#typo3-messages {
+  margin-bottom: 10px;
+}
+.typo3-message {
+  padding: 15px;
+  margin-bottom: 18px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  background-position: 10px 12px;
+  background-repeat: no-repeat;
+  padding: 12px 12px 12px 36px;
+}
+.typo3-message h4 {
+  margin-top: 0;
+  color: inherit;
+}
+.typo3-message .alert-link {
+  font-weight: bold;
+}
+.typo3-message > p,
+.typo3-message > ul {
+  margin-bottom: 0;
+}
+.typo3-message > p + p {
+  margin-top: 5px;
+}
+.typo3-message .message-header {
+  font-weight: bold;
+  margin-bottom: 9px;
+}
+.typo3-message ul,
+.typo3-message ol {
+  padding-left: 16px;
+}
+.typo3-message .message-header {
+  display: block;
+}
+.typo3-message .t3-icon-actions-message-close {
+  cursor: pointer;
+  float: right;
+}
+.typo3-message li {
+  margin-bottom: 10px;
+  list-style: disc;
+}
+.typo3-message a {
+  text-decoration: underline;
+}
+.message-notice {
+  color: #777;
+  background-color: #f6f7fa;
+  background-image: url('../../../../icons/gfx/notice.png');
+  border-color: #c2cbcf;
+}
+.message-notice a {
+  color: #777;
+}
+.message-information {
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+  color: #4c73a1;
+  background-image: url('../../../../icons/gfx/information.png');
+}
+.message-information hr {
+  border-top-color: #a6e1ec;
+}
+.message-information .alert-link {
+  color: #3c5a7e;
+}
+.message-information a {
+  color: #4c73a1;
+}
+.message-ok {
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+  color: #3b7826;
+  background-image: url('../../../../icons/gfx/ok.png');
+}
+.message-ok hr {
+  border-top-color: #c9e2b3;
+}
+.message-ok .alert-link {
+  color: #28511a;
+}
+.message-ok a {
+  color: #3b7826;
+}
+.message-warning {
+  background-color: #fcf8e3;
+  border-color: #faebcc;
+  color: #9e7d4a;
+  background-image: url("../../../../icons/gfx/warning.png");
+}
+.message-warning hr {
+  border-top-color: #f7e1b5;
+}
+.message-warning .alert-link {
+  color: #7b623a;
+}
+.message-warning a {
+  color: #9e7d4a;
+}
+.message-error {
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  color: #aa0225;
+  background-image: url('../../../../icons/gfx/error.png');
+}
+.message-error hr {
+  border-top-color: #e4b9c0;
+}
+.message-error .alert-link {
+  color: #78011a;
+}
+.message-error a {
+  color: #aa0225;
+}
 /**
  * This file is part of the TYPO3 CMS project.
  *
@@ -7723,122 +7840,10 @@ table#typo3-history-item img {
  *
  * The TYPO3 project - inspiring people to share!
  */
-#typo3-messages {
-  margin-bottom: 10px;
-}
-.typo3-message {
-  padding: 15px;
-  margin-bottom: 18px;
-  border: 1px solid transparent;
-  border-radius: 2px;
-  background-position: 10px 12px;
-  background-repeat: no-repeat;
-  padding: 12px 12px 12px 36px;
-}
-.typo3-message h4 {
-  margin-top: 0;
-  color: inherit;
-}
-.typo3-message .alert-link {
-  font-weight: bold;
-}
-.typo3-message > p,
-.typo3-message > ul {
-  margin-bottom: 0;
-}
-.typo3-message > p + p {
-  margin-top: 5px;
-}
-.typo3-message .message-header {
-  font-weight: bold;
-  margin-bottom: 9px;
-}
-.typo3-message ul,
-.typo3-message ol {
-  padding-left: 16px;
-}
-.typo3-message .message-header {
-  display: block;
-}
-.typo3-message .t3-icon-actions-message-close {
-  cursor: pointer;
-  float: right;
-}
-.typo3-message li {
-  margin-bottom: 10px;
-  list-style: disc;
-}
-.typo3-message a {
-  text-decoration: underline;
-}
-.message-notice {
-  color: #777;
+.alert-notice {
   background-color: #f6f7fa;
-  background-image: url('../../../../icons/gfx/notice.png');
-  border-color: #c2cbcf;
-}
-.message-notice a {
+  border-color: #eef;
   color: #777;
-}
-.message-information {
-  background-color: #d9edf7;
-  border-color: #bce8f1;
-  color: #4c73a1;
-  background-image: url('../../../../icons/gfx/information.png');
-}
-.message-information hr {
-  border-top-color: #a6e1ec;
-}
-.message-information .alert-link {
-  color: #3c5a7e;
-}
-.message-information a {
-  color: #4c73a1;
-}
-.message-ok {
-  background-color: #dff0d8;
-  border-color: #d6e9c6;
-  color: #3b7826;
-  background-image: url('../../../../icons/gfx/ok.png');
-}
-.message-ok hr {
-  border-top-color: #c9e2b3;
-}
-.message-ok .alert-link {
-  color: #28511a;
-}
-.message-ok a {
-  color: #3b7826;
-}
-.message-warning {
-  background-color: #fcf8e3;
-  border-color: #faebcc;
-  color: #9e7d4a;
-  background-image: url("../../../../icons/gfx/warning.png");
-}
-.message-warning hr {
-  border-top-color: #f7e1b5;
-}
-.message-warning .alert-link {
-  color: #7b623a;
-}
-.message-warning a {
-  color: #9e7d4a;
-}
-.message-error {
-  background-color: #f2dede;
-  border-color: #ebccd1;
-  color: #aa0225;
-  background-image: url('../../../../icons/gfx/error.png');
-}
-.message-error hr {
-  border-top-color: #e4b9c0;
-}
-.message-error .alert-link {
-  color: #78011a;
-}
-.message-error a {
-  color: #aa0225;
 }
 /**
  * This file is part of the TYPO3 CMS project.

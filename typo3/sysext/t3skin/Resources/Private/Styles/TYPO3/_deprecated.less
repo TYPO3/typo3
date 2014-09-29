@@ -106,3 +106,100 @@ Background color classes
 .bgColor6 {
 	background-color: #f7f7f7;
 }
+
+
+#typo3-messages {
+  margin-bottom: 10px;
+}
+
+.typo3-message {
+  .alert;
+
+  background-position: 10px 12px;
+  background-repeat: no-repeat;
+  padding: 12px 12px 12px 36px;
+
+  .message-header {
+    font-weight: bold;
+    margin-bottom: floor(@line-height-computed / 2);
+  }
+
+  ul,
+  ol {
+    padding-left: 16px;
+  }
+
+  .message-header {
+    display: block;
+  }
+
+  .t3-icon-actions-message-close {
+    cursor: pointer;
+    float: right;
+  }
+
+  li {
+    margin-bottom: 10px;
+    list-style: disc;
+  }
+
+  a {
+    text-decoration: underline;
+
+  }
+}
+
+
+.message-notice {
+  // Nothing to inherit from Bootstrap - there is no alert-notice
+
+  color: #777;
+  background-color: #f6f7fa;
+  background-image: url('../../../../icons/gfx/notice.png');
+  border-color: #c2cbcf;
+
+  a {
+    color: #777;
+  }
+}
+
+.message-information {
+  .alert-info;
+
+  background-image: url('../../../../icons/gfx/information.png');
+
+  a {
+    color: #4c73a1;
+  }
+}
+
+.message-ok {
+  .alert-success;
+
+  background-image: url('../../../../icons/gfx/ok.png');
+
+  a {
+    color: #3b7826;
+  }
+}
+
+.message-warning {
+  .alert-warning;
+
+  background-image: url("../../../../icons/gfx/warning.png");
+
+  a {
+    color: #9e7d4a;
+  }
+}
+
+.message-error {
+  .alert-danger;
+
+  background-image: url('../../../../icons/gfx/error.png');
+
+  a {
+    color: #aa0225;
+  }
+}
+

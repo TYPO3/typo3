@@ -300,7 +300,7 @@ class DatabaseIntegrityView {
 
 		$content .= '<h3>' . $GLOBALS['LANG']->getLL('checkScript_update_description') . '</h3>';
 		$content .= '<p><code>php ' . PATH_typo3 . 'cli_dispatch.phpsh lowlevel_refindex -e</code></p>';
-		$content .= '<div class="typo3-message message-information"><div class="message-body">' . $GLOBALS['LANG']->getLL('checkScript_information') . '</div></div>';
+		$content .= '<div class="alert alert-info"><div class="message-body">' . $GLOBALS['LANG']->getLL('checkScript_information') . '</div></div>';
 
 		$content .= '<p>' . $GLOBALS['LANG']->getLL('checkScript_moreDetails') . '<br />';
 		$content .= '<a href="' . $GLOBALS['BACK_PATH'] . 'sysext/lowlevel/HOWTO_clean_up_TYPO3_installations.txt" target="_new">' . PATH_typo3 . 'sysext/lowlevel/HOWTO_clean_up_TYPO3_installations.txt</a></p>';

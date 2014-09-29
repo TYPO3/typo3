@@ -116,7 +116,7 @@ class Status implements \TYPO3\CMS\Reports\ReportInterface {
 		// TODO refactor into separate methods, status list and single status
 		$content = '';
 		$template = '
-		<div class="typo3-message message-###CLASS###">
+		<div class="alert alert-###CLASS###">
 			<div class="header-container">
 				<div class="message-header message-left">###HEADER###</div>
 				<div class="message-header message-right">###STATUS###</div>
@@ -129,10 +129,10 @@ class Status implements \TYPO3\CMS\Reports\ReportInterface {
 			$id = str_replace(' ', '-', $provider);
 			$classes = array(
 				\TYPO3\CMS\Reports\Status::NOTICE => 'notice',
-				\TYPO3\CMS\Reports\Status::INFO => 'information',
-				\TYPO3\CMS\Reports\Status::OK => 'ok',
+				\TYPO3\CMS\Reports\Status::INFO => 'info',
+				\TYPO3\CMS\Reports\Status::OK => 'success',
 				\TYPO3\CMS\Reports\Status::WARNING => 'warning',
-				\TYPO3\CMS\Reports\Status::ERROR => 'error'
+				\TYPO3\CMS\Reports\Status::ERROR => 'danger'
 			);
 			$icon[\TYPO3\CMS\Reports\Status::WARNING] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-warning');
 			$icon[\TYPO3\CMS\Reports\Status::ERROR] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-error');

@@ -125,12 +125,12 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface {
 		$serviceSubtypes = $serviceInformation['serviceSubTypes'] ? implode(', ', $serviceInformation['serviceSubTypes']) : '-';
 		$serviceOperatingSystem = $serviceInformation['os'] ?: $GLOBALS['LANG']->getLL('any');
 		$serviceRequiredExecutables = $serviceInformation['exec'] ?: '-';
-		$serviceAvailabilityClass = 'typo3-message message-error';
+		$serviceAvailabilityClass = 'alert alert-danger';
 		$serviceAvailable = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:no');
 		try {
 			$serviceDetails = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::findServiceByKey($serviceKey);
 			if ($serviceDetails['available']) {
-				$serviceAvailabilityClass = 'typo3-message message-ok';
+				$serviceAvailabilityClass = 'alert alert-success';
 				$serviceAvailable = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:yes');
 			}
 		} catch (\TYPO3\CMS\Core\Exception $e) {
@@ -170,10 +170,10 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface {
 				</thead>
 				<tbody>';
 			foreach ($searchPaths as $path => $isValid) {
-				$pathAccessibleClass = 'typo3-message message-error';
+				$pathAccessibleClass = 'alert alert-danger';
 				$pathAccessible = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:no');
 				if ($isValid) {
-					$pathAccessibleClass = 'typo3-message message-ok';
+					$pathAccessibleClass = 'alert alert-success';
 					$pathAccessible = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:yes');
 				}
 				$content .= '

@@ -32,10 +32,10 @@ class FlashMessage extends \TYPO3\CMS\Core\Messaging\AbstractMessage {
 	 */
 	protected $classes = array(
 		self::NOTICE => 'notice',
-		self::INFO => 'information',
-		self::OK => 'ok',
+		self::INFO => 'info',
+		self::OK => 'success',
 		self::WARNING => 'warning',
-		self::ERROR => 'error'
+		self::ERROR => 'danger'
 	);
 
 	/**
@@ -79,7 +79,7 @@ class FlashMessage extends \TYPO3\CMS\Core\Messaging\AbstractMessage {
 	 * @return string The message severity class name
 	 */
 	public function getClass() {
-		return 'message-' . $this->classes[$this->severity];
+		return 'alert-' . $this->classes[$this->severity];
 	}
 
 	/**
@@ -90,9 +90,9 @@ class FlashMessage extends \TYPO3\CMS\Core\Messaging\AbstractMessage {
 	public function render() {
 		$title = '';
 		if (!empty($this->title)) {
-			$title = '<div class="message-header">' . $this->title . '</div>';
+			$title = '<h4>' . $this->title . '</h4>';
 		}
-		$message = '<div class="typo3-message ' . $this->getClass() . '">' . $title . '<div class="message-body">' . $this->message . '</div>' . '</div>';
+		$message = '<div class="alert ' . $this->getClass() . '">' . $title . '<div class="alert-body">' . $this->message . '</div>' . '</div>';
 		return $message;
 	}
 
