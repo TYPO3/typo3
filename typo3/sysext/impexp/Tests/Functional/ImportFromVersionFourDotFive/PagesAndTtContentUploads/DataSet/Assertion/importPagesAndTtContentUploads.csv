@@ -10,8 +10,8 @@
 ,2,0,1,2,"/user_upload/_imported/typo3_image3.jpg","6fe0d531fb52945d0b943b54aa20116e5533284a","d62c2c9935d7b7e4f3ed493282bf8287abd80f93","jpg","image/jpeg","typo3_image3.jpg","e873c1e2ffd0f191e183a1057de3eef4d62e782d","5565"
 "sys_file_reference"
 ,"uid","pid","uid_local","uid_foreign","tablenames","fieldname","table_local","title","description","alternative","link"
-,1,1,1,1,"tt_content","media","sys_file",\NULL,"Description text one",\NULL,\NULL
-,2,1,2,1,"tt_content","media","sys_file",\NULL,"Description text two",\NULL,\NULL
+,1,1,1,1,"tt_content","media","sys_file",\NULL,"Description text one",\NULL,""
+,2,1,2,1,"tt_content","media","sys_file",\NULL,"Description text two",\NULL,""
 "sys_file_metadata"
 ,"uid","pid","file","title","width","height","description","alternative","sys_language_uid","l10n_parent"
 ,1,0,1,\NULL,400,300,\NULL,\NULL,0,0
