@@ -72,7 +72,7 @@
 					<uid>1</uid>
 					<pid>1</pid>
 					<title>1</title>
-					<size>292</size>
+					<size>297</size>
 					<relations index="rels" type="array">
 						<element index="sys_file:1" type="array">
 							<id>1</id>
@@ -311,7 +311,7 @@
 				<field index="title" type="NULL"></field>
 				<field index="description" type="NULL"></field>
 				<field index="alternative" type="NULL"></field>
-				<field index="link" type="NULL"></field>
+				<field index="link"></field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="uid_local" type="array">
