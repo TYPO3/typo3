@@ -9181,6 +9181,7 @@ body#typo3-wizard-colorpicker-php p.c-head {
   clear: both;
 }
 #typo3-index-php #t3-login-news-outer #t3-login-news .t3-login-news-item {
+  margin-top: 0;
   padding-top: 20px;
 }
 #typo3-index-php #t3-login-news-outer #t3-login-news dd {
