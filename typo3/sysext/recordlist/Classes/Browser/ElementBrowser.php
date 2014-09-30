@@ -1619,7 +1619,7 @@ class ElementBrowser {
 								. '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/ol/join'
 									. ($skey + 3 > count($split) ? 'bottom' : '') . '.gif'), 'width="18" height="16"')
 									. ' alt="" />' . '<a href="#" onclick="return link_typo3Page(' . GeneralUtility::quoteJSvalue($expPageId)
-									. ',' . GeneralUtility::quoteJSvalue('#' . $sval) . ');">' . htmlspecialchars((' <A> ' . $sval))
+									. ',' . GeneralUtility::quoteJSvalue('#' . $sval) . ';">' . htmlspecialchars((' <A> ' . $sval))
 									. '</a><br />';
 						}
 					}
