@@ -1445,7 +1445,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			$html = $this->cObj->substituteSubpart($html, '###SEARCH_FORM_EXTENDED###', '');
 		}
 		if ($this->conf['show.']['advancedSearchLink']) {
-			$linkToOtherMode = $this->piVars['ext'] ? $this->pi_getPageLink($GLOBALS['TSFE']->id, $GLOBALS['TSFE']->sPre, array($this->prefixId . '[ext]' => 0)) : $this->pi_getPageLink($GLOBALS['TSFE']->id, $GLOBALS['TSFE']->sPre);
+			$linkToOtherMode = $this->piVars['ext'] ? $this->pi_getPageLink($GLOBALS['TSFE']->id, $GLOBALS['TSFE']->sPre) : $this->pi_getPageLink($GLOBALS['TSFE']->id, $GLOBALS['TSFE']->sPre, array($this->prefixId . '[ext]' => 1));
 			$markerArray['###LINKTOOTHERMODE###'] = '<a href="' . htmlspecialchars($linkToOtherMode) . '">' . $this->pi_getLL(($this->piVars['ext'] ? 'link_regularSearch' : 'link_advancedSearch'), '', 1) . '</a>';
 		} else {
 			$markerArray['###LINKTOOTHERMODE###'] = '';
