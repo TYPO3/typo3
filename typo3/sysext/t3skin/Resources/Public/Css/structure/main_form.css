@@ -34,7 +34,7 @@ label {
 .radio,
 .checkbox:hover {
 	height: 13px;
-	margin-right: 5px;
+	margin: 2px 5px 0 0;
 	vertical-align: middle;
 	width: 13px;
 }
