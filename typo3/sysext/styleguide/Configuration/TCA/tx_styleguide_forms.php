@@ -921,7 +921,7 @@ return array(
 				'items' => array(
 					array('foo 1', 1),
 					array('foo 2', 2),
-					array('foo 3', 3)
+					array('foo 3', 3),
 				),
 				'itemListStyle' => 'width:250px;background-color:#ffcccc;',
 				'selectedListStyle' => 'width:250px;background-color:#ccffcc;',
@@ -936,7 +936,7 @@ return array(
 				'items' => array(
 					array('item 1', 1),
 					array('item 2', 2),
-					array('item 3', 3)
+					array('item 3', 3),
 				),
 				'renderMode' => 'checkbox',
 				'maxitems' => 2,
@@ -949,7 +949,7 @@ return array(
 				'items' => array(
 					array('foo 1', 1, '', 'optional description'), // @TODO: In contrast to "items" documentation, description seems not to have an effect for renderMode=checkbox
 					array('foo 2', 2, 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms.png', 'other description'),
-					array('foo 3', 3, '', '')
+					array('foo 3', 3, '', ''),
 				),
 				'renderMode' => 'checkbox',
 				'maxitems' => 2,
@@ -962,7 +962,7 @@ return array(
 				'items' => array(
 					array('foo 1', 1),
 					array('foo 2', 2),
-					array('foo 3', 4)
+					array('foo 3', 4),
 				),
 				'renderMode' => 'singlebox',
 				'maxitems' => 2,
@@ -1005,6 +1005,95 @@ return array(
 				),
 			),
 		),
+		'select_27' => array(
+			'label' => '27 enableMultiSelectFilterTextfield',
+			'config' => array(
+			'type' => 'select',
+				'items' => array(
+					array('foo 1', 1),
+					array('foo 2', 2),
+					array('foo 3', 4),
+					array('bar', 4),
+				),
+				'size' => 5,
+				'minitems' => 0,
+				'maxitems' => 999,
+				'enableMultiSelectFilterTextfield' => TRUE,
+			),
+		),
+		'select_28' => array(
+			'label' => '27 enableMultiSelectFilterTextfield, multiSelectFilterItems',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('foo 1', 1),
+					array('foo 2', 2),
+					array('foo 3', 4),
+					array('bar', 4),
+				),
+				'size' => 5,
+				'minitems' => 0,
+				'maxitems' => 999,
+				'enableMultiSelectFilterTextfield' => TRUE,
+				'multiSelectFilterItems' => array(
+					array('', ''),
+					array('foo', 'foo'),
+					array('bar', 'bar'),
+				),
+			),
+		),
+		'select_29' => array(
+			'label' => '27 wizards',
+			'config' => array(
+				'type' => 'select',
+				'foreign_table' => 'tx_styleguide_forms_staticdata',
+				'rootLevel' => 1,
+				'size' => 5,
+				'autoSizeMax' => 20,
+				'minitems' => 0,
+				'maxitems' => 999,
+				'wizards' => array(
+					'_PADDING' => 1, // @TODO: Has no sane effect
+					'_VERTICAL' => 1,
+					'edit' => array(
+						'type' => 'popup',
+						'title' => 'edit',
+						'module' => array(
+							'name' => 'wizard_edit',
+						),
+						'icon' => 'edit2.gif',
+						'popup_onlyOpenIfSelected' => 1,
+						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
+					),
+					'add' => array(
+						'type' => 'script',
+						'title' => 'add',
+						'icon' => 'add.gif',
+						'module' => array(
+							'name' => 'wizard_add',
+						),
+						'params' => array(
+							'table' => 'tx_styleguide_forms_staticdata',
+							'pid' => '0',
+							'setValue' => 'prepend',
+						),
+					),
+					'list' => array(
+						'type' => 'script',
+						'title' => 'list',
+						'icon' => 'list.gif',
+						'module' => array(
+							'name' => 'wizard_list',
+						),
+						'params' => array(
+							'table' => 'tx_styleguide_forms_staticdata',
+							'pid' => '0',
+						),
+					),
+				),
+			),
+		),
+
 
 	),
 
@@ -1021,7 +1110,7 @@ return array(
 			radio_1, radio_2, radio_3, radio_4, radio_5,
 			select_1, select_2, select_3, select_4, select_5, select_6, select_7, select_8, select_9, select_10,
 			select_11, select_12, select_13, select_14, select_15, select_16, select_17, select_18, select_19, select_20,
-			select_21, select_22, select_23, select_24, select_25, select_26, select_27, select_28, select_29, select_30,
+			select_21, select_22, select_23, select_24, select_25, select_26, select_27, select_28, select_29,
 			',
 	),
 
@@ -1044,7 +1133,7 @@ return array(
 				--div--;Select,
 					select_1, select_2, select_3, select_4, select_5, select_6, select_7, select_8, select_9, select_10,
 					select_11, select_12, select_13, select_14, select_15, select_16, select_17, select_18, select_19, select_20,
-					select_21, select_22, select_23, select_24, select_25, select_26, select_27, select_28, select_29, select_30,
+					select_21, select_22, select_23, select_24, select_25, select_26, select_27, select_28, select_29,
 				--div--;Access,
 					--palette--;Visibility;visibility,
 					--palette--;Access;access
