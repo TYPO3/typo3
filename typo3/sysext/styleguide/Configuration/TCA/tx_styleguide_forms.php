@@ -282,8 +282,8 @@ return array(
 			),
 		),
 		'input_30' => array(
-			"label" => '30 Link wizard, no _PADDING',
-			'config' => Array (
+			'label' => '30 Link wizard, no _PADDING',
+			'config' => array(
 				'type' => 'input',
 				'wizards' => array(
 					'link' => array(
@@ -319,6 +319,8 @@ return array(
 				),
 			),
 		),
+
+
 		'text_1' => array(
 			'label' => '1 no cols, no rows',
 			'config' => array(
