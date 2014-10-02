@@ -1,0 +1,33 @@
+{namespace sg = TYPO3\CMS\Styleguide\ViewHelpers}
+
+<f:layout name="Default"/>
+
+<f:section name="iconButtons">
+</f:section>
+
+<f:section name="headline">
+	<f:translate key="tab" />
+</f:section>
+
+<f:section name="content">
+	<h2>Tab based on DocumentTemplate DynTab</h2>
+
+	<f:format.raw>{tabs}</f:format.raw>
+
+	<div class="example code">
+		<span class="tag-border">&lt;</span><span class="tag-name">ul</span> <span class="tag-attribute">class</span>="<span class="tag-attribute-value">nav nav-tabs</span>" <span class="tag-name">role</span>="<span class="tag-attribute-value">tablist</span>"<span class="tag-border">&gt;</span><br />
+		&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag-border">&lt;</span><span class="tag-name">li</span> <span class="tag-attribute">class</span>="<span class="tag-attribute-value">active</span>" <span class="tag-attribute">id</span>="DTM-67217d8b40-1-MENU"><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag-border">&lt;</span>a <span class="tag-attribute">href</span>="#" <span class="tag-attribute">onclick</span>="DTM_activate(&quot;DTM-67217d8b40&quot;,&quot;1&quot;, 0); return false;"><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;First label<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag-border">&lt;</span><span class="tag-name">img</span> <span class="tag-attribute">name</span>="DTM-67217d8b40-1-REQ" src="gfx/clear.gif" <span class="tag-attribute">class</span>="t3-TCEforms-reqTabImg" <span class="tag-attribute">alt</span>="" /<span class="tag-border">&gt;</span><br />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag-border">&lt;</span>/<span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
+		&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag-border">&lt;</span>/li<span class="tag-border">&gt;</span><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag-border">&lt;</span><span class="tag-name">li</span> <span class="tag-attribute">id</span>="DTM-67217d8b40-2-MENU"><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag-border">&lt;</span>a <span class="tag-attribute">href</span>="#" <span class="tag-attribute">onclick</span>="DTM_activate(&quot;DTM-67217d8b40&quot;,&quot;2&quot;, 0); return false;"<span class="tag-border">&gt;</span><br />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Second label<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag-border">&lt;</span><span class="tag-name">img</span> <span class="tag-attribute">name</span>="DTM-67217d8b40-2-REQ" <span class="tag-attribute">src</span>="gfx/clear.gif" <span class="tag-attribute">class</span>="t3-TCEforms-reqTabImg" <span class="tag-attribute">alt</span>="" /<span class="tag-border">&gt;</span><br />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag-border">&lt;</span>/<span class="tag-name">a</span><span class="tag-border">&gt;</span><br />
+		&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag-border">&lt;</span>/<span class="tag-name">li</span><span class="tag-border">&gt;</span><br>
+		<span class="tag-border">&lt;</span>/<span class="tag-name">ul</span><span class="tag-border">&gt;</span><br>
+	</div>
+</f:section>

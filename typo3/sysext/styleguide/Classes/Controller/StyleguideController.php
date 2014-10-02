@@ -94,6 +94,33 @@ class StyleguideController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	}
 
 	/**
+	 * Tabs
+	 */
+	public function tabAction() {
+		/** @var \TYPO3\CMS\Backend\Template\DocumentTemplate */
+		$doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+
+		$menuItems = array(
+			0 => array(
+				'label' => 'First label',
+				'content' => 'First content'
+			),
+			1 => array(
+				'label' => 'Second label',
+				'content' => 'Second content'
+			),
+			2 => array(
+				'label' => 'Third label',
+				'content' => 'Third content'
+			)
+		);
+		$tabs = $doc->getDynTabMenu($menuItems, 'ident');
+
+		$this->view->assign('tabs', $tabs);
+
+	}
+
+	/**
 	 * Lorem ipsum test with fixed length
 	 *
 	 * @return string
