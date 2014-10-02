@@ -1,3 +1,14 @@
+CREATE TABLE tx_styleguide_forms_staticdata (
+	uid int(11) NOT NULL auto_increment,
+	pid int(11) DEFAULT '0' NOT NULL,
+
+	value_1 tinytext NOT NULL,
+
+	PRIMARY KEY (uid),
+	KEY parent (pid)
+);
+
+
 CREATE TABLE tx_styleguide_forms (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
@@ -89,6 +100,37 @@ CREATE TABLE tx_styleguide_forms (
 	radio_3 int(11) DEFAULT '0' NOT NULL,
 	radio_4 tinytext NOT NULL,
 	radio_5 int(11) DEFAULT '0' NOT NULL,
+
+	select_1 tinytext NOT NULL,
+	select_2 tinytext NOT NULL,
+	select_3 tinytext NOT NULL,
+	select_4 tinytext NOT NULL,
+	select_5 tinytext NOT NULL,
+	select_6 tinytext NOT NULL,
+	select_7 tinytext NOT NULL,
+	select_8 tinytext NOT NULL,
+	select_9 tinytext NOT NULL,
+	select_10 tinytext NOT NULL,
+	select_11 tinytext NOT NULL,
+	select_12 tinytext NOT NULL,
+	select_13 tinytext NOT NULL,
+	select_14 tinytext NOT NULL,
+	select_15 tinytext NOT NULL,
+	select_16 tinytext NOT NULL,
+	select_17 tinytext NOT NULL,
+	select_18 tinytext NOT NULL,
+	select_19 tinytext NOT NULL,
+	select_20 tinytext NOT NULL,
+	select_21 tinytext NOT NULL,
+	select_22 tinytext NOT NULL,
+	select_23 tinytext NOT NULL,
+	select_24 tinytext NOT NULL,
+	select_25 tinytext NOT NULL,
+	select_26 tinytext NOT NULL,
+	select_27 tinytext NOT NULL,
+	select_28 tinytext NOT NULL,
+	select_29 tinytext NOT NULL,
+	select_30 tinytext NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)

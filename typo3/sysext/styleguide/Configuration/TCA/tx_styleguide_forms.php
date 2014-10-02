@@ -472,7 +472,7 @@ return array(
 				'items' => array(
 					array('foo', ''),
 					array(
-						'foo and this here is very long text that maybe does not really fit into the form in one line. Ok let us add even more text to see how this looks like if wrapped. Is this enough now?',
+						'foo and this here is very long text that maybe does not really fit into the form in one line. Ok let us add even more text to see how this looks like if wrapped. Is this enough now? No? Then let us add some even more useless text here!',
 						''
 					),
 					array('foobar', ''),
@@ -560,7 +560,7 @@ return array(
 				'type' => 'radio',
 				'items' => array(
 					array(
-						'foo and this here is very long text that maybe does not really fit into the form in one line. Ok let us add even more text to see how this looks like if wrapped. Is this enough now?',
+						'foo and this here is very long text that maybe does not really fit into the form in one line. Ok let us add even more text to see how this looks like if wrapped. Is this enough now? No? Then let us add some even more useless text here!',
 						1
 					),
 					array('bar', 2),
@@ -619,6 +619,294 @@ return array(
 		 */
 
 
+		'select_1' => array(
+			'label' => '1 Two items, one with really long text',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('foo and this here is very long text that maybe does not really fit into the form in one line. Ok let us add even more text to see how this looks like if wrapped. Is this enough now? No? Then let us add some even more useless text here!', 1),
+					array('bar', 'bar'),
+				),
+			),
+		),
+		/**
+		 * @TODO Add a itemsProcFunc
+		'select_2' => array(
+			'label' => '2 itemsProcFunc',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('foo', 1),
+					array('bar', 'bar'),
+				),
+				'itemsProcFunc' => '',
+			),
+		),
+		 */
+		'select_3' => array(
+			'label' => '3 Three items, second pre-selected, size=2',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('foo1', 1),
+					array('foo2', 2),
+					array('foo3', 4),
+				),
+				'default' => 2,
+			),
+		),
+		'select_4' => array(
+			'label' => '4 Static values, dividers, merged with entries from staticdata table containing word "foo"',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('Static values', '--div--'),
+					array('static -2', -2),
+					array('static -1', -1),
+					array('DB values', '--div--'),
+				),
+				'foreign_table' => 'tx_styleguide_forms_staticdata',
+				'foreign_table_where' => 'AND tx_styleguide_forms_staticdata.value_1 LIKE \'%foo%\' ORDER BY uid',
+				'rootLevel' => 1, // @TODO: docu of rootLevel says, foreign_table_where is *ignored*, which is NOT true.
+				'foreign_table_prefix' => 'A prefix: ',
+			),
+		),
+		'select_5' => array(
+			'label' => '5 Items with icons',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('Icon using EXT:', 'foo', 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms.png'),
+					array('Icon from typo3/gfx', 'es', 'flags/es.gif'), // @TODO: docu says typo3/sysext/t3skin/icons/gfx/, but in fact it is typo3/gfx.
+				),
+			),
+		),
+		'select_6' => array(
+			'label' => '6 Items with icons, iconsInOptionTags',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('Icon using EXT:', 'foo', 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms.png'),
+					array('Icon from typo3/gfx', 'es', 'flags/es.gif'),
+				),
+				'iconsInOptionTags' => TRUE,
+			),
+		),
+		'select_7' => array(
+			'label' => '7 Items with icons, iconsInOptionTags, noIconsBelowSelect',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('Icon using EXT:', 'foo', 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms.png'),
+					array('Icon from typo3/gfx', 'es', 'flags/es.gif'),
+				),
+				'iconsInOptionTags' => TRUE,
+				'noIconsBelowSelect' => TRUE,
+			),
+		),
+		'select_8' => array(
+			'label' => '8 Items with icons, selicon_cols set to 3',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('foo1', 'es', 'flags/es.gif'),
+					array('foo2', 'fr', 'flags/fr.gif'),
+					array('foo3', 'de', 'flags/de.gif'),
+					array('foo4', 'us', 'flags/us.gif'),
+					array('foo5', 'gr', 'flags/gr.gif'),
+				),
+				'selicon_cols' => 3,
+			),
+		),
+		'select_9' => array(
+			'label' => '9 fileFolder Icons from EXT:styleguide/Resources/Public/Icons and a dummy first entry, iconsInOptionTags, two columns',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('', 0),
+				),
+				'fileFolder' => 'EXT:styleguide/Resources/Public/Icons',
+				'fileFolder_extList' => 'png',
+				'fileFolder_recursions' => 1,
+				'iconsInOptionTags' => TRUE,
+				'selicon_cols' => 2,
+			),
+		),
+		'select_10' => array(
+			'label' => '10 three options, size=6',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('foo1', 1),
+					array('foo2', 2),
+					array('a divider', '--div--'),
+					array('foo3', 3),
+				),
+				'size' => 6,
+			),
+		),
+		'select_11' => array(
+			'label' => '11 two options, size=2',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('foo1', 1),
+					array('foo2', 2),
+				),
+				'size' => 2,
+			),
+		),
+		'select_12' => array(
+			'label' => '12 multiple, maxitems=5, minitems=2, autoSizeMax=4, size=3',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('foo1', 1),
+					array('foo2', 2),
+					array('a divider', '--div--'),
+					array('foo3', 3),
+					array('foo4', 4),
+					array('foo5', 5),
+					array('foo6', 6),
+				),
+				'size' => 3,
+				'autoSizeMax' => 5,
+				'maxitems' => 5,
+				'minitems' => 2,
+				'multiple' => TRUE, // @TODO: multiple does not seem to have any effect at all? Can be commented without change.
+			),
+		),
+		'select_13' => array(
+			'label' => '13 multiple, exclusiveKeys for 1 and 2',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('exclusive', '--div--'),
+					array('foo 1', 1),
+					array('foo 2', 2),
+					array('multiple', '--div--'),
+					array('foo 3', 3),
+					array('foo 4', 4),
+					array('foo 5', 5),
+					array('foo 6', 6),
+				),
+				'multiple' => TRUE, // @TODO: multiple does not seem to have any effect at all?! Can be commented without change.
+				'size' => 5,
+				'maxitems' => 20,
+				'exclusiveKeys' => '1,2',
+			),
+		),
+		'select_14' => array(
+			'label' => '14 special tables, 12 icons in a row',
+			'config' => array(
+				'type' => 'select',
+				'special' => 'tables',
+				'selicon_cols' => 15,
+				'iconsInOptionTags' => TRUE, // @TODO: Has no effect - intended?
+			),
+		),
+		'select_15' => array(
+			'label' => '15 special=tables, suppress_icons=1',
+			'config' => array(
+				'type' => 'select',
+				'special' => 'tables',
+				'suppress_icons' => '1',
+			),
+		),
+		'select_16' => array(
+			'label' => '16 special=pagetypes',
+			'config' => array(
+				'type' => 'select',
+				'special' => 'pagetypes',
+			),
+		),
+		'select_17' => array(
+			'label' => '17 special=exclude',
+			'config' => array(
+				'type' => 'select',
+				'special' => 'exclude',
+				'size' => 10,
+			),
+		),
+		'select_18' => array(
+			'label' => '18 special=modListGroup',
+			'config' => array(
+				'type' => 'select',
+				'special' => 'modListGroup',
+			),
+		),
+		'select_19' => array(
+			'label' => '19 special=modListUser',
+			'config' => array(
+				'type' => 'select',
+				'special' => 'modListUser',
+			),
+		),
+		'select_20' => array(
+			'label' => '20 special=languages',
+			'config' => array(
+				'type' => 'select',
+				'special' => 'languages',
+				'size' => 5,
+			),
+		),
+		'select_21' => array(
+			'label' => '21 itemListStyle: green, 250 width and selectedListStyle: red, width 350',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('foo 1', 1),
+					array('foo 2', 2),
+					array('foo 3', 3)
+				),
+				'itemListStyle' => 'width:250px;background-color:#ffcccc;',
+				'selectedListStyle' => 'width:250px;background-color:#ccffcc;',
+				'size' => 2,
+				'maxitems' => 2,
+			),
+		),
+		'select_22' => array(
+			'label' => '22 renderMode=checkbox',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('item 1', 1),
+					array('item 2', 2),
+					array('item 3', 3)
+				),
+				'renderMode' => 'checkbox',
+				'maxitems' => 2,
+			),
+		),
+		'select_23' => array(
+			'label' => '22 renderMode=checkbox with icons and description',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('foo 1', 1, '', 'optional description'), // @TODO: In contrast to "items" documentation, description seems not to have an effect for renderMode=checkbox
+					array('foo 2', 2, 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms.png', 'other description'),
+					array('foo 3', 3, '', '')
+				),
+				'renderMode' => 'checkbox',
+				'maxitems' => 2,
+			),
+		),
+		'select_24' => array(
+			'exclude' => 0,
+			'label' => '24 renderMode=singlebox',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('foo 1', 1),
+					array('foo 2', 2),
+					array('foo 3', 4)
+				),
+				'renderMode' => 'singlebox',
+				'maxitems' => 2,
+			),
+		),
+
+
 	),
 
 	'interface' => array(
@@ -632,6 +920,9 @@ return array(
 			checkbox_1, checkbox_2, checkbox_3, checkbox_4, checkbox_5, checkbox_6, checkbox_7, checkbox_8, checkbox_9, checkbox_10,
 			checkbox_11,
 			radio_1, radio_2, radio_3, radio_4, radio_5,
+			select_1, select_2, select_3, select_4, select_5, select_6, select_7, select_8, select_9, select_10,
+			select_11, select_12, select_13, select_14, select_15, select_16, select_17, select_18, select_19, select_20,
+			select_21, select_22, select_23, select_24, select_25, select_26, select_27, select_28, select_29, select_30,
 			',
 	),
 
@@ -650,6 +941,10 @@ return array(
 					checkbox_10, checkbox_11,
 				--div--;Radio,
 					radio_1, radio_2, radio_3, radio_4, radio_5,
+				--div--;Select,
+					select_1, select_2, select_3, select_4, select_5, select_6, select_7, select_8, select_9, select_10,
+					select_11, select_12, select_13, select_14, select_15, select_16, select_17, select_18, select_19, select_20,
+					select_21, select_22, select_23, select_24, select_25, select_26, select_27, select_28, select_29, select_30,
 				--div--;Access,
 					--palette--;Visibility;visibility,
 					--palette--;Access;access
