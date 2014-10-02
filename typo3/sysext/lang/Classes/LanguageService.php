@@ -202,7 +202,7 @@ class LanguageService {
 	}
 
 	/**
-	 * Returns the label with key $index form the globally loaded $LOCAL_LANG array.
+	 * Returns the label with key $index from the globally loaded $LOCAL_LANG array.
 	 * Mostly used from modules with only one LOCAL_LANG file loaded into the global space.
 	 *
 	 * @param string $index Label key
@@ -210,21 +210,11 @@ class LanguageService {
 	 * @return string
 	 */
 	public function getLL($index, $hsc = FALSE) {
-			// Get Local Language
-		if (isset($GLOBALS['LOCAL_LANG'][$this->lang][$index][0]['target'])) {
-			$output = $GLOBALS['LOCAL_LANG'][$this->lang][$index][0]['target'];
-		} else {
-			$output = $GLOBALS['LOCAL_LANG']['default'][$index][0]['target'];
-		}
-		if ($hsc) {
-			$output = htmlspecialchars($output);
-		}
-		return $output . $this->debugLL($index);
+		return $this->getLLL($index, $GLOBALS['LOCAL_LANG'], $hsc);
 	}
 
 	/**
-	 * Works like ->getLL() but takes the $LOCAL_LANG array
-	 * used as the second argument instead of using the global array.
+	 * Returns the label with key $index from the $LOCAL_LANG array used as the second argument
 	 *
 	 * @param string $index Label key
 	 * @param array $localLanguage $LOCAL_LANG array to get label key from
@@ -232,16 +222,18 @@ class LanguageService {
 	 * @return string
 	 */
 	public function getLLL($index, $localLanguage, $hsc = FALSE) {
-			// Get Local Language. Special handling for all extensions that
-			// read PHP LL files and pass arrays here directly.
-		$value = is_string($localLanguage[$this->lang][$index]) ?
-			$localLanguage[$this->lang][$index] :
-			$localLanguage[$this->lang][$index][0]['target'];
-			// Fallback to default language
-		if (trim($value) === '') {
-			$value = is_string($localLanguage['default'][$index]) ?
-				$localLanguage['default'][$index] :
-				$localLanguage['default'][$index][0]['target'];
+		// Get Local Language. Special handling for all extensions that
+		// read PHP LL files and pass arrays here directly.
+		if (isset($localLanguage[$this->lang][$index])) {
+			$value = is_string($localLanguage[$this->lang][$index])
+				? $localLanguage[$this->lang][$index]
+				: $localLanguage[$this->lang][$index][0]['target'];
+		} elseif (isset($localLanguage['default'][$index])) {
+			$value = is_string($localLanguage['default'][$index])
+				? $localLanguage['default'][$index]
+				: $localLanguage['default'][$index][0]['target'];
+		} else {
+			$value = '';
 		}
 		if ($hsc) {
 			$value = htmlspecialchars($value);
