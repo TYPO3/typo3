@@ -10,8 +10,6 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-/* Row-Header */
-/* Active row */
 /* "Notice" before #f6f7fa */
 /* "Ok" */
 /* "Error" */
@@ -849,7 +847,7 @@ h6 .small,
 .h6 .small {
   font-weight: normal;
   line-height: 1;
-  color: #cdcdcd;
+  color: #d7d7d7;
 }
 h1,
 .h1,
@@ -972,7 +970,7 @@ mark,
   text-transform: capitalize;
 }
 .text-muted {
-  color: #cdcdcd;
+  color: #d7d7d7;
 }
 .text-primary {
   color: #32a0ff;
@@ -1038,7 +1036,7 @@ a.bg-danger:hover {
 .page-header {
   padding-bottom: 8px;
   margin: 36px 0 18px;
-  border-bottom: 1px solid #f7f7f7;
+  border-bottom: 1px solid #f5f5f5;
 }
 ul,
 ol {
@@ -1096,7 +1094,7 @@ dd {
 abbr[title],
 abbr[data-original-title] {
   cursor: help;
-  border-bottom: 1px dotted #cdcdcd;
+  border-bottom: 1px dotted #d7d7d7;
 }
 .initialism {
   font-size: 90%;
@@ -1106,7 +1104,7 @@ blockquote {
   padding: 9px 18px;
   margin: 0 0 18px;
   font-size: 15px;
-  border-left: 5px solid #f7f7f7;
+  border-left: 5px solid #f5f5f5;
 }
 blockquote p:last-child,
 blockquote ul:last-child,
@@ -1119,7 +1117,7 @@ blockquote .small {
   display: block;
   font-size: 80%;
   line-height: 1.5;
-  color: #cdcdcd;
+  color: #d7d7d7;
 }
 blockquote footer:before,
 blockquote small:before,
@@ -1130,7 +1128,7 @@ blockquote .small:before {
 blockquote.pull-right {
   padding-right: 15px;
   padding-left: 0;
-  border-right: 5px solid #f7f7f7;
+  border-right: 5px solid #f5f5f5;
   border-left: 0;
   text-align: right;
 }
@@ -1193,7 +1191,7 @@ pre {
   line-height: 1.5;
   word-break: break-all;
   word-wrap: break-word;
-  color: #333333;
+  color: #5a5a5a;
   background-color: #f5f5f5;
   border: 1px solid #cccccc;
   border-radius: 4px;
@@ -2124,7 +2122,7 @@ legend {
   margin-bottom: 18px;
   font-size: 18px;
   line-height: inherit;
-  color: #333333;
+  color: #5a5a5a;
   border: 0;
   border-bottom: 1px solid #e5e5e5;
 }
@@ -2168,7 +2166,7 @@ output {
   padding-top: 7px;
   font-size: 12px;
   line-height: 1.5;
-  color: #666666;
+  color: #737373;
 }
 .form-control {
   display: block;
@@ -2177,7 +2175,7 @@ output {
   padding: 6px 6px;
   font-size: 12px;
   line-height: 1.5;
-  color: #666666;
+  color: #737373;
   background-color: #fefefe;
   background-image: none;
   border: 1px solid #7c7c7c;
@@ -2195,20 +2193,20 @@ output {
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
 }
 .form-control::-moz-placeholder {
-  color: #cdcdcd;
+  color: #d7d7d7;
   opacity: 1;
 }
 .form-control:-ms-input-placeholder {
-  color: #cdcdcd;
+  color: #d7d7d7;
 }
 .form-control::-webkit-input-placeholder {
-  color: #cdcdcd;
+  color: #d7d7d7;
 }
 .form-control[disabled],
 .form-control[readonly],
 fieldset[disabled] .form-control {
   cursor: not-allowed;
-  background-color: #f7f7f7;
+  background-color: #f5f5f5;
   opacity: 1;
 }
 textarea.form-control {
@@ -2864,7 +2862,7 @@ fieldset[disabled] .btn-link {
 fieldset[disabled] .btn-link:hover,
 .btn-link[disabled]:focus,
 fieldset[disabled] .btn-link:focus {
-  color: #cdcdcd;
+  color: #d7d7d7;
   text-decoration: none;
 }
 .btn-lg,
@@ -2982,13 +2980,13 @@ tbody.collapse.in {
   clear: both;
   font-weight: normal;
   line-height: 1.5;
-  color: #333333;
+  color: #5a5a5a;
   white-space: nowrap;
 }
 .dropdown-menu > li > a:hover,
 .dropdown-menu > li > a:focus {
   text-decoration: none;
-  color: #262626;
+  color: #4d4d4d;
   background-color: #f5f5f5;
 }
 .dropdown-menu > .active > a,
@@ -3002,7 +3000,7 @@ tbody.collapse.in {
 .dropdown-menu > .disabled > a,
 .dropdown-menu > .disabled > a:hover,
 .dropdown-menu > .disabled > a:focus {
-  color: #cdcdcd;
+  color: #d7d7d7;
 }
 .dropdown-menu > .disabled > a:hover,
 .dropdown-menu > .disabled > a:focus {
@@ -3031,7 +3029,7 @@ tbody.collapse.in {
   padding: 3px 20px;
   font-size: 11px;
   line-height: 1.5;
-  color: #cdcdcd;
+  color: #d7d7d7;
   white-space: nowrap;
 }
 .dropdown-backdrop {
@@ -3323,9 +3321,9 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   font-size: 12px;
   font-weight: normal;
   line-height: 1;
-  color: #666666;
+  color: #737373;
   text-align: center;
-  background-color: #f7f7f7;
+  background-color: #f5f5f5;
   border: 1px solid #7c7c7c;
   border-radius: 4px;
 }
@@ -3405,19 +3403,19 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav > li > a {
   position: relative;
   display: block;
-  padding: 10px 15px;
+  padding: 6px 12px;
 }
 .nav > li > a:hover,
 .nav > li > a:focus {
   text-decoration: none;
-  background-color: #f7f7f7;
+  background-color: #f5f5f5;
 }
 .nav > li.disabled > a {
-  color: #cdcdcd;
+  color: #d7d7d7;
 }
 .nav > li.disabled > a:hover,
 .nav > li.disabled > a:focus {
-  color: #cdcdcd;
+  color: #5a5a5a;
   text-decoration: none;
   background-color: transparent;
   cursor: not-allowed;
@@ -3425,7 +3423,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav .open > a,
 .nav .open > a:hover,
 .nav .open > a:focus {
-  background-color: #f7f7f7;
+  background-color: #f5f5f5;
   border-color: #212424;
 }
 .nav .nav-divider {
@@ -3438,7 +3436,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   max-width: none;
 }
 .nav-tabs {
-  border-bottom: 1px solid #dddddd;
+  border-bottom: 1px solid #d7d7d7;
 }
 .nav-tabs > li {
   float: left;
@@ -3451,12 +3449,12 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   border-radius: 4px 4px 0 0;
 }
 .nav-tabs > li > a:hover {
-  border-color: #f7f7f7 #f7f7f7 #dddddd;
+  border-color: #d7d7d7 #d7d7d7 #d7d7d7;
 }
 .nav-tabs > li.active > a,
 .nav-tabs > li.active > a:hover,
 .nav-tabs > li.active > a:focus {
-  color: #666666;
+  color: #000000;
   background-color: #ffffff;
   border: 1px solid #dddddd;
   border-bottom-color: transparent;
@@ -4009,7 +4007,7 @@ fieldset[disabled] .navbar-default .btn-link:focus {
   border-color: #080808;
 }
 .navbar-inverse .navbar-brand {
-  color: #cdcdcd;
+  color: #d7d7d7;
 }
 .navbar-inverse .navbar-brand:hover,
 .navbar-inverse .navbar-brand:focus {
@@ -4017,10 +4015,10 @@ fieldset[disabled] .navbar-default .btn-link:focus {
   background-color: transparent;
 }
 .navbar-inverse .navbar-text {
-  color: #cdcdcd;
+  color: #d7d7d7;
 }
 .navbar-inverse .navbar-nav > li > a {
-  color: #cdcdcd;
+  color: #d7d7d7;
 }
 .navbar-inverse .navbar-nav > li > a:hover,
 .navbar-inverse .navbar-nav > li > a:focus {
@@ -4067,7 +4065,7 @@ fieldset[disabled] .navbar-default .btn-link:focus {
     background-color: #080808;
   }
   .navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
-    color: #cdcdcd;
+    color: #d7d7d7;
   }
   .navbar-inverse .navbar-nav .open .dropdown-menu > li > a:hover,
   .navbar-inverse .navbar-nav .open .dropdown-menu > li > a:focus {
@@ -4088,13 +4086,13 @@ fieldset[disabled] .navbar-default .btn-link:focus {
   }
 }
 .navbar-inverse .navbar-link {
-  color: #cdcdcd;
+  color: #d7d7d7;
 }
 .navbar-inverse .navbar-link:hover {
   color: #ffffff;
 }
 .navbar-inverse .btn-link {
-  color: #cdcdcd;
+  color: #d7d7d7;
 }
 .navbar-inverse .btn-link:hover,
 .navbar-inverse .btn-link:focus {
@@ -4122,7 +4120,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   color: #cccccc;
 }
 .breadcrumb > .active {
-  color: #cdcdcd;
+  color: #d7d7d7;
 }
 .pagination {
   display: inline-block;
@@ -4161,7 +4159,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .pagination > li > a:focus,
 .pagination > li > span:focus {
   color: #000000;
-  background-color: #f7f7f7;
+  background-color: #f5f5f5;
   border-color: #dddddd;
 }
 .pagination > .active > a,
@@ -4182,7 +4180,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .pagination > .disabled > a,
 .pagination > .disabled > a:hover,
 .pagination > .disabled > a:focus {
-  color: #cdcdcd;
+  color: #d7d7d7;
   background-color: #ffffff;
   border-color: #dddddd;
   cursor: not-allowed;
@@ -4237,7 +4235,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .pager li > a:hover,
 .pager li > a:focus {
   text-decoration: none;
-  background-color: #f7f7f7;
+  background-color: #f5f5f5;
 }
 .pager .next > a,
 .pager .next > span {
@@ -4251,7 +4249,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .pager .disabled > a:hover,
 .pager .disabled > a:focus,
 .pager .disabled > span {
-  color: #cdcdcd;
+  color: #d7d7d7;
   background-color: #ffffff;
   cursor: not-allowed;
 }
@@ -4281,11 +4279,11 @@ a.label:focus {
   top: -1px;
 }
 .label-default {
-  background-color: #cdcdcd;
+  background-color: #d7d7d7;
 }
 .label-default[href]:hover,
 .label-default[href]:focus {
-  background-color: #b4b4b4;
+  background-color: #bebebe;
 }
 .label-primary {
   background-color: #32a0ff;
@@ -4333,7 +4331,7 @@ a.label:focus {
   vertical-align: baseline;
   white-space: nowrap;
   text-align: center;
-  background-color: #666666;
+  background-color: #737373;
   border-radius: 10px;
 }
 .badge:empty {
@@ -4365,7 +4363,7 @@ a.list-group-item.active > .badge,
   padding: 30px;
   margin-bottom: 30px;
   color: inherit;
-  background-color: #f7f7f7;
+  background-color: #f5f5f5;
 }
 .jumbotron h1,
 .jumbotron .h1 {
@@ -4377,7 +4375,7 @@ a.list-group-item.active > .badge,
   font-weight: 200;
 }
 .jumbotron > hr {
-  border-top-color: #dedede;
+  border-top-color: #dcdcdc;
 }
 .container .jumbotron {
   border-radius: 6px;
@@ -4558,7 +4556,7 @@ a.thumbnail.active {
   min-width: 30px;
 }
 .progress-bar[aria-valuenow="0"] {
-  color: #cdcdcd;
+  color: #d7d7d7;
   min-width: 30px;
   background-color: transparent;
   background-image: none;
@@ -4666,8 +4664,8 @@ a.list-group-item:focus {
 .list-group-item.disabled,
 .list-group-item.disabled:hover,
 .list-group-item.disabled:focus {
-  background-color: #f7f7f7;
-  color: #cdcdcd;
+  background-color: #f5f5f5;
+  color: #d7d7d7;
 }
 .list-group-item.disabled .list-group-item-heading,
 .list-group-item.disabled:hover .list-group-item-heading,
@@ -4677,7 +4675,7 @@ a.list-group-item:focus {
 .list-group-item.disabled .list-group-item-text,
 .list-group-item.disabled:hover .list-group-item-text,
 .list-group-item.disabled:focus .list-group-item-text {
-  color: #cdcdcd;
+  color: #d7d7d7;
 }
 .list-group-item.active,
 .list-group-item.active:hover,
@@ -5003,7 +5001,7 @@ a.list-group-item-danger.active:focus {
   border-color: #dddddd;
 }
 .panel-default > .panel-heading {
-  color: #333333;
+  color: #5a5a5a;
   background-color: #f5f5f5;
   border-color: #dddddd;
 }
@@ -5012,7 +5010,7 @@ a.list-group-item-danger.active:focus {
 }
 .panel-default > .panel-heading .badge {
   color: #f5f5f5;
-  background-color: #333333;
+  background-color: #5a5a5a;
 }
 .panel-default > .panel-footer + .panel-collapse > .panel-body {
   border-bottom-color: #dddddd;
@@ -7480,6 +7478,77 @@ table.t3-table > tbody > tr:hover > th {
  * The TYPO3 project - inspiring people to share!
  */
 /* - - - - - - - - - - - - - - - - - - - - -
+Tab menu
+- - - - - - - - - - - - - - - - - - - - - */
+.nav-tabs {
+  background-color: #d7d7d7;
+}
+div.typo3-dyntabmenu-divs {
+  padding: 18px;
+  margin-bottom: 1em;
+  border-right: 1px solid #d7d7d7;
+  border-bottom: 1px solid #d7d7d7;
+  border-left: 1px solid #d7d7d7;
+}
+div.typo3-dyntabmenu-divs p.c-descr {
+  background: #e7dba8;
+  font-style: italic;
+}
+/* Foldout tabs */
+div.typo3-dyntabmenu-divs-foldout div.c-tablayer {
+  margin-left: 20px;
+}
+div.typo3-dyntabmenu-divs-foldout div.tab,
+div.typo3-dyntabmenu-divs-foldout div.tabact,
+div.typo3-dyntabmenu-divs-foldout div.disabled {
+  border: solid black 1px;
+  border-radius: 3px;
+}
+div.typo3-dyntabmenu-divs-foldout div.tab {
+  background: #c4d4cd;
+  background-image: url('../../../../icons/gfx/ol/plusbullet.gif');
+  background-repeat: no-repeat;
+}
+div.typo3-dyntabmenu-divs-foldout div.tab:hover {
+  background: #f6eab7;
+  background-image: url('../../../../icons/gfx/ol/arrowbullet.gif');
+  background-repeat: no-repeat;
+}
+div.typo3-dyntabmenu-divs-foldout div.tabact {
+  background: #e7dba8;
+  background-image: url('../../../../icons/gfx/ol/minusbullet.gif');
+  background-repeat: no-repeat;
+}
+div.typo3-dyntabmenu-divs-foldout div.tabact:hover {
+  background: #f6eab7;
+  background-image: url('../../../../icons/gfx/ol/arrowbullet.gif');
+  background-repeat: no-repeat;
+}
+div.typo3-dyntabmenu-divs-foldout div.disabled {
+  background: #ccc;
+  color: #999;
+}
+div.typo3-dyntabmenu-divs-foldout div.disabled:hover {
+  background: #f6eab7;
+  color: #999;
+}
+.c-tablayer {
+  margin: 0;
+  padding: 0;
+}
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+/* - - - - - - - - - - - - - - - - - - - - -
 Go back A-tags
 - - - - - - - - - - - - - - - - - - - - - */
 a.typo3-goBack img {
@@ -8215,98 +8284,6 @@ span.spinner {
   display: inline-block;
   height: 16px;
   width: 16px;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Tab menu
-- - - - - - - - - - - - - - - - - - - - - */
-table#typo3-tabmenu {
-  margin-top: 5px;
-}
-table#typo3-tabmenu tr {
-  height: 1.5em;
-}
-table#typo3-tabmenu td.tab {
-  padding: 0;
-}
-table#typo3-tabmenu td.disabled {
-  padding: 5px 10px 5px 10px;
-}
-table#typo3-tabmenu td a {
-  display: block;
-  margin-top: 1px;
-  padding: 5px 10px 5px 10px;
-  margin-right: 1px;
-}
-table#typo3-tabmenu td.tabact a {
-  padding-left: 10px;
-  padding-right: 10px;
-}
-/* - - - - - - - - - - - - - - - - - - - - -
-Dynamic Tab menu
-- - - - - - - - - - - - - - - - - - - - - */
-div.typo3-dyntabmenu-divs {
-  padding: 0;
-}
-div.typo3-dyntabmenu-tabs,
-div.typo3-dyntabmenu-divs p.c-descr {
-  margin: 0;
-  padding: 0;
-}
-table.typo3-dyntabmenu tr {
-  height: 1.5em;
-}
-table.typo3-dyntabmenu td {
-  padding: 0;
-}
-table.typo3-dyntabmenu td.disabled {
-  padding: 5px 10px 5px 10px;
-}
-table.typo3-dyntabmenu td a {
-  display: block;
-  padding: 5px 10px 5px 10px;
-  margin-right: 1px;
-  position: relative;
-  top: 1px;
-}
-table.typo3-dyntabmenu td.tabact a,
-table#typo3-tabmenu td.tabact a {
-  margin-top: 0px;
-}
-table.typo3-dyntabmenu td.tab:hover a,
-table#typo3-tabmenu td.tab:hover a {
-  margin-top: 0px;
-}
-div.typo3-dyntabmenu-divs-foldout div.c-tablayer {
-  margin-left: 20px;
-}
-.c-tablayer {
-  margin: 0;
-  padding: 0;
-}
-div.typo3-dyntabmenu-divs-foldout div.tab,
-div.typo3-dyntabmenu-divs-foldout div.tabact,
-div.typo3-dyntabmenu-divs-foldout div.disabled {
-  margin-top: 5px;
-}
-div.typo3-dyntabmenu-divs-foldout div.disabled {
-  padding: 2px 2px 2px 18px;
-}
-div.typo3-dyntabmenu-divs-foldout div.tab a,
-div.typo3-dyntabmenu-divs-foldout div.tabact a {
-  display: block;
-  padding: 2px 2px 2px 18px;
 }
 /**
  * This file is part of the TYPO3 CMS project.
@@ -11192,119 +11169,6 @@ span.spinner {
  * The TYPO3 project - inspiring people to share!
  */
 /* - - - - - - - - - - - - - - - - - - - - -
-Tab menu
-- - - - - - - - - - - - - - - - - - - - - */
-table.typo3-dyntabmenu td a,
-table.typo3-dyntabmenu td.disabled,
-table#typo3-tabmenu td.tab,
-table#typo3-tabmenu td.tabact,
-table#typo3-tabmenu td.disabled {
-  background: #dadada;
-  border: 1px solid #adadad;
-  border-bottom: none;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  color: #606060;
-}
-table.typo3-dyntabmenu td.tabact a,
-table.typo3-dyntabmenu td.tab:hover a,
-table#typo3-tabmenu td.tabact,
-table#typo3-tabmenu td.tab:hover,
-table#typo3-tabmenu td.tabact:hover {
-  background: #ffffff;
-  color: #000;
-}
-table.typo3-dyntabmenu td.tab:hover a,
-table#typo3-tabmenu td.tab:hover {
-  background-color: #eeeeee;
-  border-color: #adadad;
-  color: #606060;
-}
-table.typo3-dyntabmenu td.disabled {
-  background: #e8e8e8;
-  border: 1px solid #d6d6d6;
-  color: #b7b7b7;
-  cursor: default;
-}
-table.typo3-dyntabmenu td a {
-  border-bottom: 1px solid #ffffff;
-}
-table.typo3-dyntabmenu td.tab a {
-  border-bottom: 1px solid #c0c0c0;
-}
-table.typo3-dyntabmenu td a,
-table#typo3-tabmenu td a {
-  color: #666;
-  text-decoration: none;
-}
-table.typo3-dyntabmenu td a:active,
-table#typo3-tabmenu td a {
-  outline: none;
-}
-div.typo3-dyntabmenu-divs {
-  background-color: #ececec;
-  background-image: url('../../../../images/backgrounds/tab.png');
-  background-image: linear-gradient(center top, #ffffff 0px, #ececec 100px);
-  background-repeat: repeat-x;
-  border: 1px solid #adadad;
-}
-div.typo3-dyntabmenu-divs p.c-descr {
-  background: #e7dba8;
-  font-style: italic;
-}
-/* Foldout tabs */
-div.typo3-dyntabmenu-divs-foldout div.tab,
-div.typo3-dyntabmenu-divs-foldout div.tabact,
-div.typo3-dyntabmenu-divs-foldout div.disabled {
-  border: solid black 1px;
-  border-radius: 3px;
-}
-div.typo3-dyntabmenu-divs-foldout div.tab {
-  background: #c4d4cd;
-  background-image: url('../../../../icons/gfx/ol/plusbullet.gif');
-  background-repeat: no-repeat;
-}
-div.typo3-dyntabmenu-divs-foldout div.tab:hover {
-  background: #f6eab7;
-  background-image: url('../../../../icons/gfx/ol/arrowbullet.gif');
-  background-repeat: no-repeat;
-}
-div.typo3-dyntabmenu-divs-foldout div.tabact {
-  background: #e7dba8;
-  background-image: url('../../../../icons/gfx/ol/minusbullet.gif');
-  background-repeat: no-repeat;
-}
-div.typo3-dyntabmenu-divs-foldout div.tabact:hover {
-  background: #f6eab7;
-  background-image: url('../../../../icons/gfx/ol/arrowbullet.gif');
-  background-repeat: no-repeat;
-}
-div.typo3-dyntabmenu-divs-foldout div.disabled {
-  background: #ccc;
-  color: #999;
-}
-div.typo3-dyntabmenu-divs-foldout div.disabled:hover {
-  background: #f6eab7;
-  color: #999;
-}
-div.typo3-dyntabmenu-divs-foldout div.tab a,
-div.typo3-dyntabmenu-divs-foldout div.tabact a {
-  text-decoration: none;
-  color: #000;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
 TCEforms
 - - - - - - - - - - - - - - - - - - - - - */
 table#typo3-altdoc-header input,
@@ -11449,9 +11313,6 @@ select option.c-divider {
 .typo3-TCEforms div.typo3-TCEforms-diffBox-header {
   background-color: red;
   font-weight: bold;
-}
-.typo3-TCEforms div.typo3-dyntabmenu-divs {
-  border-bottom: 0;
 }
 /* Default. Always used on main-palettes in the bottom of the forms */
 .typo3-TCEforms .class-main2 td,

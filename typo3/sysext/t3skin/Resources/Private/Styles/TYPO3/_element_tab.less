@@ -1,0 +1,86 @@
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+/* - - - - - - - - - - - - - - - - - - - - -
+Tab menu
+- - - - - - - - - - - - - - - - - - - - - */
+
+.nav-tabs {
+	background-color: @gray-light;
+}
+
+
+div.typo3-dyntabmenu-divs {
+	padding: @line-height-computed;
+	margin-bottom: 1em;
+
+	border-right: 1px solid @gray-light;
+	border-bottom: 1px solid @gray-light;
+	border-left: 1px solid @gray-light;
+
+	p.c-descr {
+		background: #e7dba8;
+		font-style: italic;
+	}
+}
+
+/* Foldout tabs */
+div.typo3-dyntabmenu-divs-foldout div.c-tablayer {
+	margin-left: 20px;
+}
+
+div.typo3-dyntabmenu-divs-foldout div.tab,
+div.typo3-dyntabmenu-divs-foldout div.tabact,
+div.typo3-dyntabmenu-divs-foldout div.disabled {
+	border: solid black 1px;
+	border-radius: 3px;
+}
+
+div.typo3-dyntabmenu-divs-foldout div.tab {
+	background: #c4d4cd;
+	background-image: url('../../../../icons/gfx/ol/plusbullet.gif');
+	background-repeat: no-repeat;
+}
+
+div.typo3-dyntabmenu-divs-foldout div.tab:hover {
+	background: #f6eab7;
+	background-image: url('../../../../icons/gfx/ol/arrowbullet.gif');
+	background-repeat: no-repeat;
+}
+
+div.typo3-dyntabmenu-divs-foldout div.tabact {
+	background: #e7dba8;
+	background-image: url('../../../../icons/gfx/ol/minusbullet.gif');
+	background-repeat: no-repeat;
+}
+
+div.typo3-dyntabmenu-divs-foldout div.tabact:hover {
+	background: #f6eab7;
+	background-image: url('../../../../icons/gfx/ol/arrowbullet.gif');
+	background-repeat: no-repeat;
+}
+
+div.typo3-dyntabmenu-divs-foldout div.disabled {
+	background: #ccc;
+	color: #999;
+}
+
+div.typo3-dyntabmenu-divs-foldout div.disabled:hover {
+	background: #f6eab7;
+	color: #999;
+}
+
+.c-tablayer {
+	margin: 0;
+	padding: 0;
+}

@@ -7,11 +7,11 @@
 //
 //## Gray and brand colors for use across Bootstrap.
 
-@gray-darker:            #222;
-@gray-dark:              #333;
-@gray:                   #666; /* Row-Header */
-@gray-light:             #cdcdcd; /* Active row */
-@gray-lighter:           #f7f7f7;
+@gray-darker:            rgb(30, 30, 30);
+@gray-dark:              rgb(90, 90, 90);
+@gray:                   rgb(115, 115, 115);
+@gray-light:             rgb(215, 215, 215);
+@gray-lighter:           rgb(245, 245, 245);
 
 @brand-primary:          rgb(50, 160, 255); /* "Notice" before #f6f7fa */
 @brand-success:          #cdeaca; /* "Ok" */
@@ -397,21 +397,21 @@
 //##
 
 //=== Shared nav styles
-@nav-link-padding:                          10px 15px;
+@nav-link-padding:                          6px 12px;
 @nav-link-hover-bg:                         @gray-lighter;
 
 @nav-disabled-link-color:                   @gray-light;
-@nav-disabled-link-hover-color:             @gray-light;
+@nav-disabled-link-hover-color:             @gray-dark;
 
 @nav-open-link-hover-color:                 #fff;
 
 //== Tabs
-@nav-tabs-border-color:                     #ddd;
+@nav-tabs-border-color:                     @gray-light;
 
-@nav-tabs-link-hover-border-color:          @gray-lighter;
+@nav-tabs-link-hover-border-color:          @gray-light;
 
 @nav-tabs-active-link-hover-bg:             @body-bg;
-@nav-tabs-active-link-hover-color:          @gray;
+@nav-tabs-active-link-hover-color:          #000;
 @nav-tabs-active-link-hover-border-color:   #ddd;
 
 @nav-tabs-justified-link-border-color:            #ddd;

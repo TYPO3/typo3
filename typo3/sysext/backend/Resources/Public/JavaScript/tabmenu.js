@@ -44,11 +44,11 @@ function DTM_activate(idBase,index,doToogle) {
 			top.DTM_currentTabs[idBase] = -1;
 		} else {
 			document.getElementById(idBase+'-'+index+'-DIV').style.display = 'block';
-			document.getElementById(idBase+'-'+index+'-MENU').attributes.getNamedItem('class').nodeValue = 'tabact';
+			document.getElementById(idBase+'-'+index+'-MENU').attributes.getNamedItem('class').nodeValue = 'active';
 			top.DTM_currentTabs[idBase] = index;
 		}
 	}
-	document.getElementById(idBase+'-'+index+'-MENU').attributes.getNamedItem('class').nodeValue = 'tabact';
+	document.getElementById(idBase+'-'+index+'-MENU').attributes.getNamedItem('class').nodeValue = 'active';
 }
 function DTM_toggle(idBase,index,isInit) {
 		// Showing one:
@@ -62,7 +62,7 @@ function DTM_toggle(idBase,index,isInit) {
 		} else {
 			document.getElementById(idBase+'-'+index+'-DIV').style.display = 'block';
 			if (isInit) {
-				document.getElementById(idBase+'-'+index+'-MENU').attributes.getNamedItem('class').nodeValue = 'tabact';
+				document.getElementById(idBase+'-'+index+'-MENU').attributes.getNamedItem('class').nodeValue = 'active';
 			}
 			top.DTM_currentTabs[idBase+'-'+index] = 1;
 		}

@@ -1689,7 +1689,7 @@ function jumpToUrl(URL) {
 	 * @param string $identString Identification string. This should be unique for every instance of a dynamic menu!
 	 * @param integer $toggle If "1", then enabling one tab does not hide the others - they simply toggles each sheet on/off. This makes most sense together with the $foldout option. If "-1" then it acts normally where only one tab can be active at a time BUT you can click a tab and it will close so you have no active tabs.
 	 * @param boolean $foldout If set, the tabs are rendered as headers instead over each sheet. Effectively this means there is no tab menu, but rather a foldout/foldin menu. Make sure to set $toggle as well for this option.
-	 * @param boolean $noWrap If set, tab table cells are not allowed to wrap their content
+	 * @param boolean $noWrap Deprecated - delivered by CSS
 	 * @param boolean $fullWidth If set, the tabs will span the full width of their position
 	 * @param integer $defaultTabIndex Default tab to open (for toggle <=0). Value corresponds to integer-array index + 1 (index zero is "1", index "1" is 2 etc.). A value of zero (or something non-existing) will result in no default tab open.
 	 * @param integer $dividers2tabs If set to '1' empty tabs will be remove, If set to '2' empty tabs will be disabled
@@ -1705,7 +1705,7 @@ function jumpToUrl(URL) {
 			$divs = array();
 			$JSinit = array();
 			$id = $this->getDynTabMenuId($identString);
-			$noWrap = $noWrap ? ' nowrap="nowrap"' : '';
+
 			// Traverse menu items
 			$c = 0;
 			$tabRows = 0;
@@ -1721,9 +1721,9 @@ function jumpToUrl(URL) {
 					$options[$tabRows] = array();
 				}
 				if ($toggle == 1) {
-					$onclick = 'this.blur(); DTM_toggle("' . $id . '","' . $index . '"); return false;';
+					$onclick = 'DTM_toggle("' . $id . '","' . $index . '"); return false;';
 				} else {
-					$onclick = 'this.blur(); DTM_activate("' . $id . '","' . $index . '", ' . ($toggle < 0 ? 1 : 0) . '); return false;';
+					$onclick = 'DTM_activate("' . $id . '","' . $index . '", ' . ($toggle < 0 ? 1 : 0) . '); return false;';
 				}
 				$isEmpty = trim($def['content']) === '' && trim($def['icon']) === '';
 				// "Removes" empty tabs
@@ -1734,12 +1734,12 @@ function jumpToUrl(URL) {
 				if (!$foldout) {
 					// Create TAB cell:
 					$options[$tabRows][] = '
-							<td class="' . ($isEmpty ? 'disabled' : 'tab') . '" id="' . $id . '-' . $index . '-MENU"' . $noWrap . '>' . ($isEmpty ? '' : '<a href="#" onclick="' . htmlspecialchars($onclick) . '"' . ($def['linkTitle'] ? ' title="' . htmlspecialchars($def['linkTitle']) . '"' : '') . '>') . $def['icon'] . ($def['label'] ? htmlspecialchars($def['label']) : '&nbsp;') . $requiredIcon . $this->icons($def['stateIcon'], 'margin-left: 10px;') . ($isEmpty ? '' : '</a>') . '</td>';
+							<li class="' . ($isEmpty ? 'disabled' : '') . '" id="' . $id . '-' . $index . '-MENU">' . ($isEmpty ? '' : '<a href="#" onclick="' . htmlspecialchars($onclick) . '"' . ($def['linkTitle'] ? ' title="' . htmlspecialchars($def['linkTitle']) . '"' : '') . '>') . $def['icon'] . ($def['label'] ? htmlspecialchars($def['label']) : '&nbsp;') . $requiredIcon . $this->icons($def['stateIcon'], 'margin-left: 10px;') . ($isEmpty ? '' : '</a>') . '</li>';
 					$titleLenCount += strlen($def['label']);
 				} else {
 					// Create DIV layer for content:
 					$divs[] = '
-						<div class="' . ($isEmpty ? 'disabled' : 'tab') . '" id="' . $id . '-' . $index . '-MENU">' . ($isEmpty ? '' : '<a href="#" onclick="' . htmlspecialchars($onclick) . '"' . ($def['linkTitle'] ? ' title="' . htmlspecialchars($def['linkTitle']) . '"' : '') . '>') . $def['icon'] . ($def['label'] ? htmlspecialchars($def['label']) : '&nbsp;') . $requiredIcon . ($isEmpty ? '' : '</a>') . '</div>';
+						<div class="' . ($isEmpty ? 'disabled' : '') . '" id="' . $id . '-' . $index . '-MENU">' . ($isEmpty ? '' : '<a href="#" onclick="' . htmlspecialchars($onclick) . '"' . ($def['linkTitle'] ? ' title="' . htmlspecialchars($def['linkTitle']) . '"' : '') . '>') . $def['icon'] . ($def['label'] ? htmlspecialchars($def['label']) : '&nbsp;') . $requiredIcon . ($isEmpty ? '' : '</a>') . '</div>';
 				}
 				// Create DIV layer for content:
 				$divs[] = '
@@ -1765,11 +1765,9 @@ function jumpToUrl(URL) {
 						$tabContent .= '
 
 					<!-- Tab menu -->
-					<table cellpadding="0" cellspacing="0" border="0"' . ($fullWidth ? ' width="100%"' : '') . ' class="typo3-dyntabmenu">
-						<tr>
-								' . implode('', $options[$a]) . '
-						</tr>
-					</table>';
+					<ul class="nav nav-tabs" role="tablist">
+						' . implode('', $options[$a]) . '
+					</ul>';
 					}
 					$content .= '<div class="typo3-dyntabmenu-tabs">' . $tabContent . '</div>';
 				}
