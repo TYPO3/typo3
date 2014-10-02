@@ -320,7 +320,6 @@ return array(
 			),
 		),
 		'input_32' => array(
-			'exclude' => 0,
 			'label' => '32 Slider wizard, Step 10, Width 200',
 			'config' => array(
 				'type' => 'input',
@@ -328,20 +327,19 @@ return array(
 				'eval' => 'trim,int',
 				'range' => array(
 					'lower' => -90,
-					'upper' => 90
+					'upper' => 90,
 				),
 				'default' => 0,
 				'wizards' => array(
 					'angle' => array(
 						'type' => 'slider',
 						'step' => 10,
-						'width' => 200
-					)
-				)
-			)
+						'width' => 200,
+					),
+				),
+			),
 		),
 		'input_33' => array(
-			'exclude' => 0,
 			'label' => '33 userFunc wizard',
 			'config' => array(
 				'type' => 'input',
@@ -352,14 +350,13 @@ return array(
 						'type' => 'userFunc',
 						'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\UserFunctions->userFuncInputWizard',
 						'params' => array(
-							'color' => 'green'
-						)
-					)
-				)
-			)
+							'color' => 'green',
+						),
+					),
+				),
+			),
 		),
 		'input_34' => array(
-			'exclude' => 0,
 			'label' => '34 select wizard',
 			'config' => array(
 				'type' => 'input',
@@ -374,10 +371,10 @@ return array(
 							array('summer', 'Summer'),
 							array('autumn', 'Autumn'),
 							array('winter', 'Winter'),
-						)
-					)
-				)
-			)
+						),
+					),
+				),
+			),
 		),
 
 
@@ -959,7 +956,6 @@ return array(
 			),
 		),
 		'select_24' => array(
-			'exclude' => 0,
 			'label' => '24 renderMode=singlebox',
 			'config' => array(
 				'type' => 'select',
