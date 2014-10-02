@@ -80,11 +80,11 @@ class StyleguideController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 * FlashMessages
 	 */
 	public function flashMessagesAction() {
-		$this->addFlashMessage($this->getLoremIpsum(), 'Info - Title for Info message', FlashMessage::INFO, TRUE);
-		$this->addFlashMessage($this->getLoremIpsum(), 'Notice - Title for Notice message', FlashMessage::NOTICE, TRUE);
-		$this->addFlashMessage($this->getLoremIpsum(), 'Error - Title for Error message', FlashMessage::ERROR, TRUE);
-		$this->addFlashMessage($this->getLoremIpsum(), 'Ok - Title for OK message', FlashMessage::OK, TRUE);
-		$this->addFlashMessage($this->getLoremIpsum(), 'Warning - Title for Warning message', FlashMessage::WARNING, TRUE);
+		$this->addFlashMessage(KauderwelschUtility::getLoremIpsum(), 'Info - Title for Info message', FlashMessage::INFO, TRUE);
+		$this->addFlashMessage(KauderwelschUtility::getLoremIpsum(), 'Notice - Title for Notice message', FlashMessage::NOTICE, TRUE);
+		$this->addFlashMessage(KauderwelschUtility::getLoremIpsum(), 'Error - Title for Error message', FlashMessage::ERROR, TRUE);
+		$this->addFlashMessage(KauderwelschUtility::getLoremIpsum(), 'Ok - Title for OK message', FlashMessage::OK, TRUE);
+		$this->addFlashMessage(KauderwelschUtility::getLoremIpsum(), 'Warning - Title for Warning message', FlashMessage::WARNING, TRUE);
 	}
 
 	/**
