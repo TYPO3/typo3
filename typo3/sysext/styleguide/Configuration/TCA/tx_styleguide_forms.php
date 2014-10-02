@@ -319,6 +319,66 @@ return array(
 				),
 			),
 		),
+		'input_32' => array(
+			'exclude' => 0,
+			'label' => '32 Slider wizard, Step 10, Width 200',
+			'config' => array(
+				'type' => 'input',
+				'size' => 5,
+				'eval' => 'trim,int',
+				'range' => array(
+					'lower' => -90,
+					'upper' => 90
+				),
+				'default' => 0,
+				'wizards' => array(
+					'angle' => array(
+						'type' => 'slider',
+						'step' => 10,
+						'width' => 200
+					)
+				)
+			)
+		),
+		'input_33' => array(
+			'exclude' => 0,
+			'label' => '33 userFunc wizard',
+			'config' => array(
+				'type' => 'input',
+				'size' => 10,
+				'eval' => 'int',
+				'wizards' => array(
+					'userFuncInputWizard' => array(
+						'type' => 'userFunc',
+						'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\UserFunctions->userFuncInputWizard',
+						'params' => array(
+							'color' => 'green'
+						)
+					)
+				)
+			)
+		),
+		'input_34' => array(
+			'exclude' => 0,
+			'label' => '34 select wizard',
+			'config' => array(
+				'type' => 'input',
+				'size' => 20,
+				'eval' => 'trim',
+				'wizards' => array(
+					'season_picker' => array(
+						'type' => 'select',
+						'mode' => '',
+						'items' => array(
+							array('spring', 'Spring'),
+							array('summer', 'Summer'),
+							array('autumn', 'Autumn'),
+							array('winter', 'Winter'),
+						)
+					)
+				)
+			)
+		),
 		'text_1' => array(
 			'label' => '1 no cols, no rows',
 			'config' => array(
@@ -631,7 +691,7 @@ return array(
 			input_1, input_2, input_3, input_4, input_5, input_6, input_7, input_8, input_9, input_10,
 			input_11, input_12, input_13, input_14, input_15, input_16, input_17, input_18, input_19, input_20,
 			input_21, input_22, input_23, input_24, input_25, input_26, input_27, input_28, input_29, input_30,
-			input_31,
+			input_31, input_32, input_33, input_34,
 			text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9, text_10,
 			text_11, text_12, text_13,
 			checkbox_1, checkbox_2, checkbox_3, checkbox_4, checkbox_5, checkbox_6, checkbox_7, checkbox_8, checkbox_9, checkbox_10,
@@ -647,6 +707,7 @@ return array(
 					input_1, input_28, input_29, input_2, input_3, input_4, input_5, input_6, input_7, input_8, input_9,
 					input_27, input_10, input_11, input_12, input_13, input_14, input_15, input_16, input_17, input_18,
 					input_19, input_20, input_21, input_22, input_23, input_24, input_25, input_26, input_30, input_31,
+					input_32, input_33, input_34,
 				--div--;Text,
 					text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9,
 					text_10, text_11, text_12, text_13,
