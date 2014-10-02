@@ -281,39 +281,44 @@ return array(
 				'mode' => 'useOrOverridePlaceholder',
 			),
 		),
-		"input_30" => array(
-			"label" => "30 Link wizard, no _PADDING",
-			"config" => Array (
-				"type" => "input",
+		'input_30' => array(
+			"label" => '30 Link wizard, no _PADDING',
+			'config' => Array (
+				'type' => 'input',
 				'wizards' => array(
 					'link' => array(
 						'type' => 'popup',
 						'title' => 'Link',
 						'icon' => 'link_popup.gif',
-						'script' => 'browse_links.php?mode=wizard',
+						'module' => array(
+							'name' => 'wizard_element_browser',
+							'urlParameters' => array(
+								'mode' => 'wizard',
+							),
+						),
 						'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
 					),
 				),
 			),
 		),
-		"input_31" => array(
-			"label" => "31 Color picker wizard, _PADDING 6",
-			"config" => array(
-				"type" => "input",
+		'input_31' => array(
+			'label' => '31 Color picker wizard, _PADDING 6',
+			'config' => array(
+				'type' => 'input',
 				'wizards' => array(
 					'_PADDING' => 6,
 					'colorpicker' => array(
 						'type' => 'colorbox',
 						'title' => 'Color picker',
 						'icon' => 'link_popup.gif',
-						'script' => 'wizard_colorpicker.php',
+						'module' => array(
+							'name' => 'wizard_colorpicker',
+						),
 						'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
 					),
 				),
 			),
 		),
-
-
 		'text_1' => array(
 			'label' => '1 no cols, no rows',
 			'config' => array(
