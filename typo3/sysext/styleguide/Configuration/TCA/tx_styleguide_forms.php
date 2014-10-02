@@ -1058,7 +1058,7 @@ return array(
 					'edit' => array(
 						'type' => 'popup',
 						'title' => 'edit',
-						'module' => array(
+						'module' => array( // @TODO: TCA documenation is not up to date at least in "Adding wizards" section of type=select here
 							'name' => 'wizard_edit',
 						),
 						'icon' => 'edit2.gif',
