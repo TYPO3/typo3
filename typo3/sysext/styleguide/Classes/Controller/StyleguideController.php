@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Styleguide\Controller;
  */
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Styleguide\Utility\KauderwelschUtility;
 
 /**
  * Backend module for Styleguide
