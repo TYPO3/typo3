@@ -13,25 +13,12 @@ namespace TYPO3\CMS\Backend\Form\Element;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Generation of TCEform elements of the type "user"
  */
-class UserElement {
-
-	/**
-	 * @var \TYPO3\CMS\Backend\Form\FormEngine
-	 */
-	protected $formEngine;
-
-	/**
-	 * Constructor function, setting the FormEngine
-	 *
-	 * @param \TYPO3\CMS\Backend\Form\FormEngine $formEngine
-	 */
-	public function __construct(\TYPO3\CMS\Backend\Form\FormEngine $formEngine) {
-		$this->formEngine = $formEngine;
-	}
+class UserElement extends AbstractFormElement {
 
 	/**
 	 * User defined field type
@@ -46,8 +33,10 @@ class UserElement {
 		$additionalInformation['table'] = $table;
 		$additionalInformation['field'] = $field;
 		$additionalInformation['row'] = $row;
-		$additionalInformation['parameters'] = isset($additionalInformation['fieldConf']['config']['parameters']) ? $additionalInformation['fieldConf']['config']['parameters'] : array();
+		$additionalInformation['parameters'] = isset($additionalInformation['fieldConf']['config']['parameters'])
+			? $additionalInformation['fieldConf']['config']['parameters']
+			: array();
 		$additionalInformation['pObj'] = &$this;
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($additionalInformation['fieldConf']['config']['userFunc'], $additionalInformation, $this);
+		return GeneralUtility::callUserFunction($additionalInformation['fieldConf']['config']['userFunc'], $additionalInformation, $this);
 	}
 }

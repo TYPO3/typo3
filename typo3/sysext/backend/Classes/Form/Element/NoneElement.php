@@ -17,21 +17,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 /**
  * Generation of TCEform elements where no rendering could be found
  */
-class NoneElement {
-
-	/**
-	 * @var \TYPO3\CMS\Backend\Form\FormEngine
-	 */
-	protected $formEngine;
-
-	/**
-	 * Constructor function, setting the FormEngine
-	 *
-	 * @param \TYPO3\CMS\Backend\Form\FormEngine $formEngine
-	 */
-	public function __construct(\TYPO3\CMS\Backend\Form\FormEngine $formEngine) {
-		$this->formEngine = $formEngine;
-	}
+class NoneElement extends AbstractFormElement {
 
 	/**
 	 * This will render a non-editable display of the content of the field.

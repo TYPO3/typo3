@@ -17,21 +17,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 /**
  * Generation of TCEform elements of the type "radio"
  */
-class RadioElement {
-
-	/**
-	 * @var \TYPO3\CMS\Backend\Form\FormEngine
-	 */
-	protected $formEngine;
-
-	/**
-	 * Constructor function, setting the FormEngine
-	 *
-	 * @param \TYPO3\CMS\Backend\Form\FormEngine $formEngine
-	 */
-	public function __construct(\TYPO3\CMS\Backend\Form\FormEngine $formEngine) {
-		$this->formEngine = $formEngine;
-	}
+class RadioElement extends AbstractFormElement {
 
 	/**
 	 * This will render a series of radio buttons.

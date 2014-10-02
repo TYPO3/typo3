@@ -21,21 +21,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * Generation of TCEform elements of the type "input"
  */
-class InputElement {
-
-	/**
-	 * @var \TYPO3\CMS\Backend\Form\FormEngine
-	 */
-	protected $formEngine;
-
-	/**
-	 * Constructor function, setting the FormEngine
-	 *
-	 * @param \TYPO3\CMS\Backend\Form\FormEngine $formEngine
-	 */
-	public function __construct(\TYPO3\CMS\Backend\Form\FormEngine $formEngine) {
-		$this->formEngine = $formEngine;
-	}
+class InputElement extends AbstractFormElement {
 
 	/**
 	 * This will render a single-line input form field, possibly with various control/validation features

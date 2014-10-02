@@ -17,21 +17,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 /**
  * Generation of TCEform elements of where the type is unknown
  */
-class UnknownElement {
-
-	/**
-	 * @var \TYPO3\CMS\Backend\Form\FormEngine
-	 */
-	protected $formEngine;
-
-	/**
-	 * Constructor function, setting the FormEngine
-	 *
-	 * @param \TYPO3\CMS\Backend\Form\FormEngine $formEngine
-	 */
-	public function __construct(\TYPO3\CMS\Backend\Form\FormEngine $formEngine) {
-		$this->formEngine = $formEngine;
-	}
+class UnknownElement extends AbstractFormElement {
 
 	/**
 	 * Handler for unknown types.
@@ -43,7 +29,7 @@ class UnknownElement {
 	 * @return string The HTML code for the TCEform field
 	 */
 	public function render($table, $field, $row, &$additionalInformation) {
-		$item = 'Unknown type: ' . $additionalInformation['fieldConf']['config']['form_type'] . '<br />';
-		return $item;
+		return 'Unknown type: ' . $additionalInformation['fieldConf']['config']['form_type'] . '<br />';
+
 	}
 }

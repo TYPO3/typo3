@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -26,21 +25,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * Generation of TCEform elements of the type "group"
  */
-class GroupElement {
-
-	/**
-	 * @var \TYPO3\CMS\Backend\Form\FormEngine
-	 */
-	protected $formEngine;
-
-	/**
-	 * Constructor function, setting the FormEngine
-	 *
-	 * @param \TYPO3\CMS\Backend\Form\FormEngine $formEngine
-	 */
-	public function __construct(\TYPO3\CMS\Backend\Form\FormEngine $formEngine) {
-		$this->formEngine = $formEngine;
-	}
+class GroupElement extends AbstractFormElement {
 
 	/**
 	 * This will render a selectorbox into which elements from either
@@ -93,7 +78,7 @@ class GroupElement {
 		switch ((string) $config['internal_type']) {
 			case 'file_reference':
 				$config['uploadfolder'] = '';
-			// Fall through
+				// Fall through
 			case 'file':
 				// Creating string showing allowed types:
 				$tempFT = GeneralUtility::trimExplode(',', $allowed, TRUE);
@@ -302,12 +287,5 @@ class GroupElement {
 			$item = $this->formEngine->renderWizards(array($item, $altItem), $config['wizards'], $table, $row, $field, $additionalInformation, $additionalInformation['itemFormElName'], $specConf);
 		}
 		return $item;
-	}
-
-	/**
-	 * @return BackendUserAuthentication
-	 */
-	protected function getBackendUserAuthentication() {
-		return $GLOBALS['BE_USER'];
 	}
 }

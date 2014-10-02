@@ -14,32 +14,14 @@ namespace TYPO3\CMS\Backend\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Generation of TCEform elements of the type "flexform"
  */
-class FlexElement {
-
-	/**
-	 * @var \TYPO3\CMS\Backend\Form\FormEngine
-	 */
-	protected $formEngine;
-
-	/**
-	 * Constructor function, setting the FormEngine
-	 *
-	 * @param \TYPO3\CMS\Backend\Form\FormEngine $formEngine
-	 */
-	public function __construct(\TYPO3\CMS\Backend\Form\FormEngine $formEngine) {
-		$this->formEngine = $formEngine;
-	}
+class FlexElement extends AbstractFormElement {
 
 	/**
 	 * Handler for Flex Forms
@@ -349,8 +331,7 @@ class FlexElement {
 							$toggleAll = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.toggleall', TRUE);
 							$output .= '
 							<div class="t3-form-field-toggle-flexsection">
-								<a href="#" onclick="' . htmlspecialchars(('flexFormToggleSubs("' . $idTagPrefix
-									. '"); return false;')) . '">'
+								<a href="#" onclick="flexFormToggleSubs(\'' . htmlspecialchars($idTagPrefix) . '\'); return false;">'
 								. IconUtility::getSpriteIcon('actions-move-right', array('title' => $toggleAll)) . $toggleAll . '
 								</a>
 							</div>
@@ -532,43 +513,4 @@ class FlexElement {
 		}
 		return $output;
 	}
-
-	/**
-	 * @return LanguageService
-	 */
-	protected function getLanguageService() {
-		return $GLOBALS['LANG'];
-	}
-
-	/**
-	 * @return BackendUserAuthentication
-	 */
-	protected function getBackendUserAuthentication() {
-		return $GLOBALS['BE_USER'];
-	}
-
-	/**
-	 * @return DatabaseConnection
-	 */
-	protected function getDatabaseConnection() {
-		return $GLOBALS['TYPO3_DB'];
-	}
-
-	/**
-	 * @return DocumentTemplate
-	 */
-	protected function getDocumentTemplate() {
-		return $GLOBALS['TBE_TEMPLATE'];
-	}
-
-	/**
-	 * @return DocumentTemplate
-	 */
-	protected function getControllerDocumentTemplate() {
-		// $GLOBALS['SOBE'] might be any kind of PHP class (controller most of the times)
-		// These classes do not inherit from any common class, but they all seem to have a "doc" member
-		return $GLOBALS['SOBE']->doc;
-	}
-
-
 }

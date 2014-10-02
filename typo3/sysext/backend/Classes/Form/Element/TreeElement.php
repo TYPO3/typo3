@@ -22,23 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @author Steffen Ritter <info@steffen-ritter.net>
  * @author Steffen Kamper <steffen@typo3.org>
  */
-class TreeElement {
-
-	/**
-	 * Stores a reference to the original tceForms object
-	 *
-	 * @var \TYPO3\CMS\Backend\Form\FormEngine
-	 */
-	protected $tceForms = NULL;
-
-	/**
-	 * Constructor which sets the tceForms.
-	 *
-	 * @param \TYPO3\CMS\Backend\Form\FormEngine $tceForms
-	 */
-	public function __construct(\TYPO3\CMS\Backend\Form\FormEngine &$tceForms) {
-		$this->tceForms = $tceForms;
-	}
+class TreeElement extends AbstractFormElement {
 
 	/**
 	 * renders the tree as replacement for the selector
@@ -191,7 +175,7 @@ class TreeElement {
 				tcaExclusiveKeys: "' . ($PA['fieldConf']['config']['exclusiveKeys'] ? $PA['fieldConf']['config']['exclusiveKeys'] : '') . '",
 				ucId: "' . md5(($table . '|' . $field)) . '",
 				selModel: TYPO3.Components.Tree.EmptySelectionModel,
-				disabled: ' . ($PA['fieldConf']['config']['readOnly'] || $this->tceForms->renderReadonly ? 'true' : 'false') . '
+				disabled: ' . ($PA['fieldConf']['config']['readOnly'] || $this->formEngine->renderReadonly ? 'true' : 'false') . '
 			});' . LF .
 				($autoSizeMax
 					? 'tree' . $id . '.bodyStyle = "max-height: ' . $autoSizeMax . 'px;min-height: ' . $height . 'px;";'
@@ -211,4 +195,17 @@ class TreeElement {
 		return $formField;
 	}
 
+	/**
+	 * Dummy handler
+	 *
+	 * @param string $table The table name of the record
+	 * @param string $field The field name which this element is supposed to edit
+	 * @param array $row The record data array where the value(s) for the field can be found
+	 * @param array $additionalInformation An array with additional configuration options.
+	 * @return string The HTML code for the TCEform field
+	 */
+	public function render($table, $field, $row, &$additionalInformation) {
+		// deliberately empty as this class is not used the same way
+		return '';
+	}
 }

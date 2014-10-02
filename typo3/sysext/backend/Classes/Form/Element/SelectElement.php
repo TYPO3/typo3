@@ -23,21 +23,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 /**
  * Generation of TCEform elements of the type "select"
  */
-class SelectElement {
-
-	/**
-	 * @var \TYPO3\CMS\Backend\Form\FormEngine
-	 */
-	protected $formEngine;
-
-	/**
-	 * Constructor function, setting the FormEngine
-	 *
-	 * @param \TYPO3\CMS\Backend\Form\FormEngine $formEngine
-	 */
-	public function __construct(\TYPO3\CMS\Backend\Form\FormEngine $formEngine) {
-		$this->formEngine = $formEngine;
-	}
+class SelectElement extends AbstractFormElement {
 
 	/**
 	 * This will render a selector box element, or possibly a special construction with two selector boxes.
@@ -641,7 +627,7 @@ class SelectElement {
 			$tableHead = '<thead>
 					<tr class="c-header-checkbox-controls t3-row-header">
 						<td class="c-checkbox">
-						<input type="checkbox" class="checkbox" onclick="if (checked) {' . htmlspecialchars(implode('', $setAll) . '} else {' . implode('', $unSetAll) . '}') . '">
+						<input type="checkbox" class="checkbox" onclick="if (checked) {' . htmlspecialchars(implode('', $setAll) . '} else {' . implode('', $unSetAll)) . '}">
 						</td>
 						<td colspan="2">
 						</td>
@@ -758,12 +744,5 @@ class SelectElement {
 			</table>
 				';
 		return $item;
-	}
-
-	/**
-	 * @return BackendUserAuthentication
-	 */
-	protected function getBackendUserAuthentication() {
-		return $GLOBALS['BE_USER'];
 	}
 }

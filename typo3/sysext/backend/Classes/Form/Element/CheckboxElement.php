@@ -17,21 +17,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 /**
  * Generation of TCEform elements of the type "check"
  */
-class CheckboxElement {
-
-	/**
-	 * @var \TYPO3\CMS\Backend\Form\FormEngine
-	 */
-	protected $formEngine;
-
-	/**
-	 * Constructor function, setting the FormEngine
-	 *
-	 * @param \TYPO3\CMS\Backend\Form\FormEngine $formEngine
-	 */
-	public function __construct(\TYPO3\CMS\Backend\Form\FormEngine $formEngine) {
-		$this->formEngine = $formEngine;
-	}
+class CheckboxElement extends AbstractFormElement {
 
 	/**
 	 * This will render a checkbox OR an array of checkboxes
@@ -70,8 +56,8 @@ class CheckboxElement {
 				$cBP = $this->checkBoxParams($additionalInformation['itemFormElName'], $thisValue, $c, count($selItems), implode('', $additionalInformation['fieldChangeFunc']));
 				$cBName = $additionalInformation['itemFormElName'] . '_' . $c;
 				$cBID = $additionalInformation['itemFormElID'] . '_' . $c;
-				$item .= '<td nowrap="nowrap">' . '<input type="checkbox"' . $this->formEngine->insertDefStyle('check')
-					. ' value="1" name="' . $cBName . '"' . $cBP . $disabled . ' id="' . $cBID . '" />'
+				$item .= '<td nowrap="nowrap">' . '<input type="checkbox" ' . $this->formEngine->insertDefStyle('check')
+					. 'value="1" name="' . $cBName . '" ' . $cBP . $disabled . 'id="' . $cBID . '" />'
 					. '<label for="' . $cBID . '">' . htmlspecialchars($p[0]) . '</label>&nbsp;'
 					. '</td>';
 				if ($c % $cols + 1 == $cols) {

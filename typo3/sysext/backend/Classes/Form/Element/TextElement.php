@@ -18,26 +18,11 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Html\RteHtmlParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 
 /**
  * Generation of TCEform elements of the type "text"
  */
-class TextElement {
-
-	/**
-	 * @var \TYPO3\CMS\Backend\Form\FormEngine
-	 */
-	protected $formEngine;
-
-	/**
-	 * Constructor function, setting the FormEngine
-	 *
-	 * @param \TYPO3\CMS\Backend\Form\FormEngine $formEngine
-	 */
-	public function __construct(\TYPO3\CMS\Backend\Form\FormEngine $formEngine) {
-		$this->formEngine = $formEngine;
-	}
+class TextElement extends AbstractFormElement {
 
 	/**
 	 * This will render a <textarea> OR RTE area form field,
@@ -201,12 +186,5 @@ class TextElement {
 			$wTags .= ' cols="' . $size . '"';
 		}
 		return $wTags;
-	}
-
-	/**
-	 * @return BackendUserAuthentication
-	 */
-	protected function getBackendUserAuthentication() {
-		return $GLOBALS['BE_USER'];
 	}
 }
