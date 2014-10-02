@@ -968,7 +968,43 @@ return array(
 				'maxitems' => 2,
 			),
 		),
-
+		'select_25' => array(
+			'label' => '25 renderMode=tree of pages',
+			'config' => array(
+				'type' => 'select',
+				'foreign_table' => 'pages',
+				'size' => 20,
+				'maxitems' => 4, // @TODO: *must* be set, otherwise invalid upon checking first item?!
+				'renderMode' => 'tree',
+				'treeConfig' => array(
+					'expandAll' => true,
+					'parentField' => 'pid',
+					'appearance' => array(
+						'showHeader' => TRUE,
+					),
+				),
+			),
+		),
+		'select_26' => array(
+			'label' => '26 renderMode=tree of pages showHeader=FALSE, nonSelectableLevels=0,1, allowRecursiveMode=TRUE, width=400',
+			'config' => array(
+				'type' => 'select',
+				'foreign_table' => 'pages',
+				'maxitems' => 4, // @TODO: *must* be set, otherwise invalid upon checking first item?!
+				'size' => 10,
+				'renderMode' => 'tree',
+				'treeConfig' => array(
+					'expandAll' => true,
+					'parentField' => 'pid',
+					'appearance' => array(
+						'showHeader' => FALSE,
+						'nonSelectableLevels' => '0,1',
+						'allowRecursiveMode' => TRUE, // @TODO: No effect?
+						'width' => 400,
+					),
+				),
+			),
+		),
 
 	),
 
