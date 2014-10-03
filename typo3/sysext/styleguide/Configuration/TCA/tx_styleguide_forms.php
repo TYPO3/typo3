@@ -943,7 +943,7 @@ return array(
 			),
 		),
 		'select_23' => array(
-			'label' => '22 renderMode=checkbox with icons and description',
+			'label' => '23 renderMode=checkbox with icons and description',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
@@ -1058,7 +1058,7 @@ return array(
 					'edit' => array(
 						'type' => 'popup',
 						'title' => 'edit',
-						'module' => array( // @TODO: TCA documenation is not up to date at least in "Adding wizards" section of type=select here
+						'module' => array( // @TODO: TCA documentation is not up to date at least in "Adding wizards" section of type=select here
 							'name' => 'wizard_edit',
 						),
 						'icon' => 'edit2.gif',
@@ -1095,6 +1095,145 @@ return array(
 		),
 
 
+		'group_1' => array(
+			'label' => '1 internal_type=db, two tables allowed',
+			'config' => array (
+				'type' => 'group',
+				'internal_type' => 'db',
+				'allowed' => 'be_users,be_groups',
+			),
+		),
+		'group_2' => array(
+			'label' => '2 internal_type=db, two tables allowed, show thumbs',
+			'config' => array (
+				'type' => 'group',
+				'internal_type' => 'db',
+				'allowed' => 'be_users,be_groups',
+				'show_thumbs' => TRUE,
+			),
+		),
+		'group_3' => array(
+			'label' => '3 internal_type=db, suggest wizard, disable_controls=browser',
+			'config' => array (
+				'type' => 'group',
+				'internal_type' => 'db',
+				'allowed' => 'tx_styleguide_forms_staticdata',
+				'disable_controls' => 'browser',
+				'wizards' => array(
+					'suggest' => array(
+						'type' => 'suggest',
+					),
+				),
+			),
+		),
+		'group_4' => array(
+			'label' => '4 internal_type=db, show_thumbs, maxitems=1, size=1, suggest wizard',
+			'config' => array (
+				'type' => 'group',
+				'internal_type' => 'db',
+				'allowed' => 'tx_styleguide_forms_staticdata',
+				'show_thumbs' => TRUE,
+				'size' => 1,
+				'maxitems' => 1,
+				'wizards' => array(
+					'suggest' => array(
+						'type' => 'suggest',
+					),
+				),
+			),
+		),
+		'group_5' => array(
+			'label' => '5 internal_type=file, lots of file types allowed, show thumbs',
+			'config' => array (
+				'type' => 'group',
+				'internal_type' => 'file',
+				'allowed' => 'jpg, jpeg, png, gif',
+				'show_thumbs' => TRUE,
+				'size' => 3,
+				'uploadfolder' => 'uploads/pics/',
+				'disable_controls' => 'upload', // @TODO: Documented feature has no effect since upload field in form is not shown anymore (since fal?)
+				'max_size' => 2000,
+			),
+		),
+		'group_6' => array(
+			'label' => '6 internal_type=file, delete control disabled, no thumbs',
+			'config' => array (
+				'type' => 'group',
+				'internal_type' => 'file',
+				'allowed' => 'jpg',
+				'size' => 3,
+				'uploadfolder' => 'uploads/pics/',
+				'disable_controls' => 'delete',
+			),
+		),
+		'group_7' => array(
+			'label' => '7 internal_type=file, size=1',
+			'config' => array (
+				'type' => 'group',
+				'internal_type' => 'file',
+				'allowed' => 'jpg',
+				'size' => 1,
+				'uploadfolder' => 'uploads/pics/',
+			),
+		),
+		'group_8' => array(
+			'label' => '8 internal_type=file, selectedListStyles set',
+			'config' => array (
+				'type' => 'group',
+				'internal_type' => 'file',
+				'allowed' => 'jpg',
+				'uploadfolder' => 'uploads/pics/',
+				'selectedListStyle' => 'width:400px;background-color:#ccffcc;',
+			),
+		),
+		'group_9' => array(
+			'label' => '9 internal_type=file, maxitems=2',
+			'config' => array (
+				'type' => 'group',
+				'internal_type' => 'file',
+				'allowed' => 'jpg',
+				'uploadfolder' => 'uploads/pics/',
+				'maxitems' => 2, // @TODO: Warning sign is missing if too many entries are added
+			),
+		),
+		'group_10' => array(
+			'label' => '10 internal_type=file, maxitems=2',
+			'config' => array (
+				'type' => 'group',
+				'internal_type' => 'file',
+				'allowed' => 'jpg',
+				'uploadfolder' => 'uploads/pics/',
+				'maxitems' => 2, // @TODO: Warning sign is missing if too many entries are added
+			),
+		),
+		'group_11' => array(
+			'label' => '11 group FAL field',
+			'config' => array(
+				'type' => 'group',
+				'internal_type' => 'db',
+				'allowed' => 'sys_file',
+				'MM' => 'sys_file_reference',
+				'MM_match_fields' => array(
+					'fieldname' => 'image_fal_group',
+				),
+				'prepend_tname' => TRUE,
+				'appearance' => array(
+					'elementBrowserAllowed' => 'jpg, png, gif',
+					'elementBrowserType' => 'file',
+				),
+				'max_size' => 2000,
+				'show_thumbs' => TRUE,
+				'size' => '3',
+				'maxitems' => 200,
+				'minitems' => 0,
+				'autoSizeMax' => 40,
+			),
+		),
+		/**
+		 * @TODO: Add some more wizards for group and select, especially play with _ parameters like _POSITION and _VERTICAL
+		 */
+
+
 	),
 
 	'interface' => array(
@@ -1111,6 +1250,8 @@ return array(
 			select_1, select_2, select_3, select_4, select_5, select_6, select_7, select_8, select_9, select_10,
 			select_11, select_12, select_13, select_14, select_15, select_16, select_17, select_18, select_19, select_20,
 			select_21, select_22, select_23, select_24, select_25, select_26, select_27, select_28, select_29,
+			group_1, group_2, group_3, group_4, group_5, group_6, group_7, group_8, group_9, group_10,
+			group_11,
 			',
 	),
 
@@ -1134,6 +1275,9 @@ return array(
 					select_1, select_2, select_3, select_4, select_5, select_6, select_7, select_8, select_9, select_10,
 					select_11, select_12, select_13, select_14, select_15, select_16, select_17, select_18, select_19, select_20,
 					select_21, select_22, select_23, select_24, select_25, select_26, select_27, select_28, select_29,
+				--div--;Group,
+					group_1, group_2, group_3, group_4, group_5, group_6, group_7, group_8, group_9, group_10,
+					group_11,
 				--div--;Access,
 					--palette--;Visibility;visibility,
 					--palette--;Access;access

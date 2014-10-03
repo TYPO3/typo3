@@ -134,6 +134,18 @@ CREATE TABLE tx_styleguide_forms (
 	select_28 tinytext NOT NULL,
 	select_29 tinytext NOT NULL,
 
+	group_1 tinytext NOT NULL,
+	group_2 tinytext NOT NULL,
+	group_3 tinytext NOT NULL,
+	group_4 tinytext NOT NULL,
+	group_5 tinytext NOT NULL,
+	group_6 tinytext NOT NULL,
+	group_7 tinytext NOT NULL,
+	group_8 tinytext NOT NULL,
+	group_9 tinytext NOT NULL,
+	group_10 tinytext NOT NULL,
+	group_11 tinytext NOT NULL,
+
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
