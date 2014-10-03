@@ -39,7 +39,7 @@ class PagePathViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackend
 	 * Renders the current page path
 	 *
 	 * @return string the rendered page path
-	 * @see template::getPagePath() Note: can't call this method as it's protected!
+	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::getPagePath() Note: can't call this method as it's protected!
 	 */
 	public function render() {
 		$id = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');

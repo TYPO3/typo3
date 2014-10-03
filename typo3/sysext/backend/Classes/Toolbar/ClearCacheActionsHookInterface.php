@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Backend\Toolbar;
  * The TYPO3 project - inspiring people to share!
  */
 /**
- * Interface for classes which hook into ClearCacheMenu and manipulate CacheMenuItems array
+ * Interface for classes which hook into \TYPO3\CMS\Backend\Toolbar\ClearCacheToolbarItem and manipulate CacheMenuItems array
  *
  * @author Steffen Kamper <info@sk-typo3.de>
  */

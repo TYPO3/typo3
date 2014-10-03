@@ -42,7 +42,7 @@ class PageInfoViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackend
 	 * Render javascript in header
 	 *
 	 * @return string the rendered page info icon
-	 * @see template::getPageInfo() Note: can't call this method as it's protected!
+	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::getPageInfo() Note: can't call this method as it's protected!
 	 */
 	public function render() {
 		$doc = $this->getDocInstance();

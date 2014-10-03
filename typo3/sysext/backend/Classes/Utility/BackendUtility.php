@@ -2575,8 +2575,9 @@ class BackendUtility {
 	 * @param string $params Parameters sent along to alt_doc.php. This requires a much more details description which you must seek in Inside TYPO3s documentation of the alt_doc.php API. And example could be '&edit[pages][123] = edit' which will show edit form for page record 123.
 	 * @param string $backPath Must point back to the TYPO3_mainDir directory (where alt_doc.php is)
 	 * @param string $requestUri An optional returnUrl you can set - automatically set to REQUEST_URI.
+	 *
 	 * @return string
-	 * @see template::issueCommand()
+	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::issueCommand()
 	 */
 	static public function editOnClick($params, $backPath = '', $requestUri = '') {
 		$retUrl = 'returnUrl=' . ($requestUri == -1 ? '\'+T3_THIS_LOCATION+\'' : rawurlencode(($requestUri ? $requestUri : GeneralUtility::getIndpEnv('REQUEST_URI'))));

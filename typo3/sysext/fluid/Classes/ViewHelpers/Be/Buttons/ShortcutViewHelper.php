@@ -50,9 +50,10 @@ class ShortcutViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackend
 	 * Renders a shortcut button as known from the TYPO3 backend
 	 *
 	 * @param array $getVars list of GET variables to store. By default the current id, module and all module arguments will be stored
-	 * @param array $setVars list of SET[] variables to store. See template::makeShortcutIcon(). Normally won't be used by Extbase modules
+	 * @param array $setVars list of SET[] variables to store. See \TYPO3\CMS\Backend\Template\DocumentTemplate::makeShortcutIcon(). Normally won't be used by Extbase modules
+	 *
 	 * @return string the rendered shortcut button
-	 * @see template::makeShortcutIcon()
+	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::makeShortcutIcon()
 	 */
 	public function render(array $getVars = array(), array $setVars = array()) {
 		$enableBookmarks = $GLOBALS['BE_USER']->getTSConfigVal('options.enableBookmarks');

@@ -1719,7 +1719,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 *
 	 * @param string $table Table name
 	 * @return bool Returns TRUE if a link for creating new records should be displayed for $table
-	 * @see SC_db_new::showNewRecLink
+	 * @see \TYPO3\CMS\Backend\Controller\NewRecordController::showNewRecLink
 	 */
 	public function showNewRecLink($table) {
 		// No deny/allow tables are set:

@@ -1082,12 +1082,13 @@ class InlineElement {
 
 	/**
 	 * Construct runtime environment for Inline Relational Record Editing.
-	 * - creates an anoymous SC_alt_doc in $GLOBALS['SOBE']
+	 * - creates an anoymous \TYPO3\CMS\Backend\Controller\EditDocumentController in $GLOBALS['SOBE']
 	 * - creates a \TYPO3\CMS\Backend\Form\FormEngine in $GLOBALS['SOBE']->tceforms
 	 * - sets ourself as reference to $GLOBALS['SOBE']->tceforms->inline
 	 * - sets $GLOBALS['SOBE']->tceforms->RTEcounter to the current situation on client-side
 	 *
 	 * @param array &$ajaxArguments The arguments to be processed by the AJAX request
+	 *
 	 * @return void
 	 */
 	protected function processAjaxRequestConstruct(&$ajaxArguments) {
