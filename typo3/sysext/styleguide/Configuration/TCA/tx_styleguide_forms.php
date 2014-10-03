@@ -1234,6 +1234,54 @@ return array(
 		 */
 
 
+		'none_1' => array(
+			'label' => '1 pass_content=1',
+			'config' => array(
+				'type' => 'none',
+				'pass_content' => 1,
+			),
+		),
+		'none_2' => array(
+			'label' => '2 pass_content=0',
+			'config' => array(
+				'type' => 'none',
+				'pass_content' => 0,
+			),
+		),
+		'none_3' => array(
+			'label' => '3 rows=2',
+			'config' => array(
+				'type' => 'none',
+				'rows' => 2,
+			),
+		),
+		'none_4' => array(
+			'label' => '4 cols=2',
+			'config' => array(
+				'type' => 'none',
+				'cols' => 2,
+			),
+		),
+		'none_5' => array(
+			'label' => '5 rows=2, fixedRows=2',
+			'config' => array(
+				'type' => 'none',
+				'rows' => 2,
+				'fixedRows' => 2,
+			),
+		),
+		'none_6' => array(
+			'label' => '6 size=6',
+			'config' => array(
+				'type' => 'none',
+				'size' => 6,
+			),
+		),
+		/**
+		 * @TODO: Add a default record to adt.sql to show all the format options of type=none
+		 */
+
+
 	),
 
 	'interface' => array(
@@ -1252,6 +1300,7 @@ return array(
 			select_21, select_22, select_23, select_24, select_25, select_26, select_27, select_28, select_29,
 			group_1, group_2, group_3, group_4, group_5, group_6, group_7, group_8, group_9, group_10,
 			group_11,
+			none_1, none_2, none_3, none_4, none_5, none_6,
 			',
 	),
 
@@ -1278,6 +1327,8 @@ return array(
 				--div--;Group,
 					group_1, group_2, group_3, group_4, group_5, group_6, group_7, group_8, group_9, group_10,
 					group_11,
+				--div--;None,
+					none_1, none_2, none_3, none_4, none_5, none_6,
 				--div--;Access,
 					--palette--;Visibility;visibility,
 					--palette--;Access;access
