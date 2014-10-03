@@ -1282,6 +1282,14 @@ return array(
 		 */
 
 
+		'passthrough_1' => array(
+			'label' => '1 this should NOT be shown',
+			'config' => array(
+				'type' => 'passthrough',
+			),
+		),
+
+
 	),
 
 	'interface' => array(
@@ -1301,6 +1309,7 @@ return array(
 			group_1, group_2, group_3, group_4, group_5, group_6, group_7, group_8, group_9, group_10,
 			group_11,
 			none_1, none_2, none_3, none_4, none_5, none_6,
+			passthrough_1,
 			',
 	),
 
@@ -1327,6 +1336,8 @@ return array(
 				--div--;Group,
 					group_1, group_2, group_3, group_4, group_5, group_6, group_7, group_8, group_9, group_10,
 					group_11,
+				--div--;Passthrough,
+					passthrough_1,
 				--div--;None,
 					none_1, none_2, none_3, none_4, none_5, none_6,
 				--div--;Access,
