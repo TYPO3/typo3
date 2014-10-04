@@ -28,8 +28,7 @@ if (TYPO3_MODE === 'BE' || TYPO3_MODE === 'FE' && isset($GLOBALS['BE_USER'])) {
 		// light tablerow background, greenish
 		'bgColor6' => '#E6E9EB',
 		// light tablerow background, yellowish, for section headers. Light.
-		'hoverColor' => '#FF0000',
-		'navFrameHL' => '#F8F9FB'
+		'hoverColor' => '#FF0000'
 	);
 	$TBE_STYLES['colorschemes'][0] = '-|class-main1,-|class-main2,-|class-main3,-|class-main4,-|class-main5';
 	$TBE_STYLES['colorschemes'][1] = '-|class-main11,-|class-main12,-|class-main13,-|class-main14,-|class-main15';

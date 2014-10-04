@@ -11760,12 +11760,6 @@ table#typo3-tree a {
 body#typo3-alt-db-navframe-php div.c-notice {
   border: 1px solid black;
 }
-.navFrameHL {
-  background-color: #d7dbe2;
-}
-.navFrameHL a {
-  font-weight: bold;
-}
 table#typo3-tree tr:hover {
   background-color: #d7dbe2;
 }

@@ -1146,8 +1146,7 @@ function jumpToUrl(URL) {
 	 * @todo Define visibility
 	 */
 	public function docBodyTagBegin() {
-		$bodyContent = 'body onclick="if (top.menuReset) top.menuReset();" ' . trim(($this->bodyTagAdditions . ($this->bodyTagId ? ' id="' . $this->bodyTagId . '"' : '')));
-		return '<' . trim($bodyContent) . '>';
+		return '<body ' . trim(($this->bodyTagAdditions . ($this->bodyTagId ? ' id="' . $this->bodyTagId . '"' : ''))) . '>';
 	}
 
 	/**
