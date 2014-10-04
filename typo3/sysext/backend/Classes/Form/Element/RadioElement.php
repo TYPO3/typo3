@@ -35,22 +35,29 @@ class RadioElement extends AbstractFormElement {
 		if ($this->formEngine->renderReadonly || $config['readOnly']) {
 			$disabled = ' disabled="disabled"';
 		}
-		// Get items for the array:
-		$selItems = $this->formEngine->initItemArray($additionalInformation['fieldConf']);
+
+		// Get items for the array
+		$selectedItems = $this->formEngine->initItemArray($additionalInformation['fieldConf']);
 		if ($config['itemsProcFunc']) {
-			$selItems = $this->formEngine->procItems($selItems, $additionalInformation['fieldTSConfig']['itemsProcFunc.'], $config, $table, $row, $field);
+			$selectedItems = $this->formEngine->procItems(
+				$selectedItems,
+				$additionalInformation['fieldTSConfig']['itemsProcFunc.'],
+				$config,
+				$table,
+				$row,
+				$field
+			);
 		}
-		// Traverse the items, making the form elements:
-		$selItemsCount = count($selItems);
-		for ($c = 0; $c < $selItemsCount; $c++) {
-			$p = $selItems[$c];
-			$rID = $additionalInformation['itemFormElID'] . '_' . $c;
-			$rOnClick = implode('', $additionalInformation['fieldChangeFunc']);
-			$rChecked = (string)$p[1] === (string)$additionalInformation['itemFormElValue'] ? ' checked="checked"' : '';
+
+		// Traverse the items, making the form elements
+		foreach ($selectedItems as $checkbox => $selectedItem) {
+			$radioId = $additionalInformation['itemFormElID'] . '_' . $checkbox;
+			$radioOnClick = implode('', $additionalInformation['fieldChangeFunc']);
+			$radioChecked = (string)$selectedItem[1] === (string)$additionalInformation['itemFormElValue'] ? ' checked="checked"' : '';
 			$item .= '<input type="radio"' . $this->formEngine->insertDefStyle('radio') . ' name="' . $additionalInformation['itemFormElName']
-				. '" value="' . htmlspecialchars($p[1]) . '" onclick="' . htmlspecialchars($rOnClick) . '"' . $rChecked
-				. $additionalInformation['onFocus'] . $disabled . ' id="' . $rID . '" />
-					<label for="' . $rID . '">' . htmlspecialchars($p[0]) . '</label>
+				. '" value="' . htmlspecialchars($selectedItem[1]) . '" onclick="' . htmlspecialchars($radioOnClick) . '"' . $radioChecked
+				. $additionalInformation['onFocus'] . $disabled . ' id="' . $radioId . '" />
+					<label for="' . $radioId . '">' . htmlspecialchars($selectedItem[0]) . '</label>
 					<br />';
 		}
 		return $item;
