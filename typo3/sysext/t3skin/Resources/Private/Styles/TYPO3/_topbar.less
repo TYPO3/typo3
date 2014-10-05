@@ -1,0 +1,469 @@
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+/* - - - - - - - - - - - - - - - - - - - - -
+Topbar
+- - - - - - - - - - - - - - - - - - - - - */
+
+#typo3-topbar {
+	z-index: 200;
+
+	div {
+		overflow: visible !important;
+	}
+
+	#typo3-top-container {
+		background-color: #3f3f3f;
+		background-image: url('../../../../images/backgrounds/topbar.png');
+		background-image: linear-gradient(center top , #494949 0%, #373737 91%, #343434 92%, #2A2A2A 100%);
+		background-repeat: repeat-x;
+
+		height: 100%;
+		padding: 0 24px;
+
+		#typo3-logo {
+			margin: 8px 0 0 0;
+			padding: 1px 0 0 0;
+			width: 159px;
+		}
+
+		.typo3-top-toolbar {
+			margin-top: 6px;
+			padding-right: 24px;
+			position: absolute;
+			right: 0px;
+
+			.separator {
+				border-right: 1px solid #000;
+				box-shadow: 1px 0 #585858;
+			}
+
+			#typo3-toolbar {
+				list-style: none;
+				display: inline;
+				margin: 0px;
+				padding: 0px;
+
+				div {
+					overflow: visible !important;
+				}
+
+				span.spinner {
+					background-image: url('../../../../images/spinner/3f3f3f.gif');
+				}
+
+				>li {
+					display: inline;
+					float: left;
+				}
+
+				li {
+					padding-top: 3px;
+					position: relative;
+					padding-bottom: 2px;
+				}
+
+				.separator {
+					padding-right: 12px;
+					margin-right: 13px;
+
+					.toolbar-item-menu {
+						right: 12px;
+					}
+				}
+
+				.toolbar-item {
+					display: block;
+					padding-bottom: 4px;
+					padding-top: 2px;
+					text-align: center;
+				}
+
+				.toolbar-item-active {
+					background-image: url('../../../../icons/gfx/toolbar_item_active_bg.png');
+					height: 25px;
+				}
+
+				.toolbar-item-menu {
+					background-color: #f9f9f9;
+					border: 1px solid #abb2bc;
+					border-top: none;
+					list-style: none;
+					position: absolute;
+					top: 28px;
+					z-index: 100;
+					right: 0;
+					margin: 0;
+					padding: 2px 0 0;
+					width: 180px;
+
+					li {
+						padding-top: 0;
+						padding-bottom: 0;
+
+						a {
+							float: none;
+							min-height: 19px;
+							padding-left: 2px;
+							padding-top: 1px;
+							vertical-align: middle;
+							display: block;
+							padding-bottom: 2px;
+							padding-left: 3px;
+							vertical-align: middle;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+#typo3-toolbar * li:hover,
+tr.shortcut:hover,
+tr.recentdoc:hover,
+tr.opendoc:hover {
+	background: #eee;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
+Clear cache
+- - - - - - - - - - - - - - - - - - - - - */
+
+#clear-cache-actions-menu {
+	width: 30px;
+
+	li {
+		text-align: left;
+
+		img {
+			float: left;
+			padding-right: 6px;
+		}
+		a {
+			text-decoration: none;
+
+			span.t3-icon {
+				vertical-align: middle;
+			}
+		}
+	}
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
+Shortcuts menu
+- - - - - - - - - - - - - - - - - - - - - */
+
+#shortcut-menu {
+	width: 30px;
+
+	.toolbar-item-menu {
+		margin: 0px;
+		padding: 2px 0px 0px;
+		position: absolute;
+		width: 220px;
+	}
+
+	.shortcut-list {
+		width: 100%;
+
+		tr.shortcut.first-row td {
+			background-image: url('../../../../icons/gfx/shortcutgroups-bg.png');
+			background-repeat: repeat-x;
+			padding-top: 4px;
+		}
+
+		tr.shortcut td {
+			line-height: 16px;
+			padding: 2px 1px;
+		}
+
+	}
+}
+
+
+#shortcut-menu .shortcut-list tr.shortcut-group td.shortcut-group-icon,
+#shortcut-menu .shortcut-list tr.shortcut td.shortcut-icon,
+#shortcut-menu .shortcut-list td.shortcut-edit,
+#shortcut-menu .shortcut-list td.shortcut-delete {
+	text-align: center;
+}
+
+#shortcut-menu .shortcut-list tr.shortcut td.shortcut-label a,
+#shortcut-menu .shortcut-list tr.shortcut td.shortcut-edit img,
+#shortcut-menu .shortcut-list tr.shortcut td.shortcut-delete img {
+	cursor: pointer;
+}
+
+#shortcut-menu .shortcut-list .shortcut-group td {
+	background-color: #dbdbdb;
+	border-bottom: 1px solid #a5a5a5;
+	border-top: 1px solid #a5a5a5;
+}
+
+
+#shortcut-menu .shortcut-list tr.shortcut-group td.shortcut-group-icon,
+#shortcut-menu .shortcut-list tr.shortcut td.shortcut-icon,
+#shortcut-menu .shortcut-list td.shortcut-edit,
+#shortcut-menu .shortcut-list td.shortcut-delete {
+	vertical-align: top;
+	width: 18px;
+}
+
+#shortcut-menu .shortcut-list tr.shortcut td.shortcut-label a {
+	display: block;
+}
+
+#shortcut-menu .shortcut-list tr.shortcut td.shortcut-edit img,
+#shortcut-menu .shortcut-list tr.shortcut td.shortcut-delete img {
+	display: none;
+}
+
+#shortcut-menu .shortcut-list tr.shortcut:hover td.shortcut-edit img,
+#shortcut-menu .shortcut-list tr.shortcut:hover td.shortcut-delete img {
+	display: inline;
+}
+
+#shortcut-menu .shortcut-list tr.shortcut-group td.shortcut-group-icon,
+#shortcut-menu .shortcut-list tr.shortcut td.shortcut-icon {
+	padding-left: 7px;
+	vertical-align: top;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
+Username inside the toolbar
+- - - - - - - - - - - - - - - - - - - - - */
+
+#username {
+	color: #ffffff;
+	font-weight: bold;
+	margin-right: 12px;
+
+	a {
+		color: #ffffff;
+		font-weight: bold;
+		font-size: 11px;
+		text-decoration: none;
+		line-height: 18px;
+
+		span.t3-icon {
+			vertical-align: top;
+			margin-top: 1px;
+		}
+	}
+
+	img {
+		padding-right: 4px;
+	}
+
+
+	&.su-user {
+		a {
+			color: #eb6e5a;
+		}
+
+	}
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
+Logon / Logout
+- - - - - - - - - - - - - - - - - - - - - */
+
+#login-info p {
+	padding-bottom: 30px;
+	padding-top: 5px;
+}
+
+#logout-button {
+	padding-top: 1px;
+	padding-bottom: 2px;
+
+	input {
+		height: 20px;
+		padding: 0 0 2px 0;
+		background: #494949;
+		border: 1px solid #636363;
+		color: #fff;
+		cursor: pointer;
+		text-align: center;
+		padding: 0 5px;
+		padding-top: 1px;
+	}
+
+	input:hover {
+		background-color: #c8c8c8;
+		background-image: url('../../../../images/backgrounds/button-hover.png');
+		background-image: linear-gradient(center top, #f6f6f6 10%, #c8c8c8 90%);
+		border: 1px solid #737f91;
+		color: #000;
+	}
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
+Workspace Selector
+- - - - - - - - - - - - - - - - - - - - - */
+#workspace-selector-menu  {
+	width: 30px;
+
+	ul {
+		position: static;
+		list-style: none;
+		margin: 0px;
+		padding: 2px 0px 0px;
+		width: 180px;
+
+		li {
+			text-align: left;
+			float: none;
+			min-height: 19px;
+			vertical-align: middle;
+
+			span.t3-icon {
+				float: left;
+				margin-top: 0;
+				margin-right: 2px;
+			}
+
+			a {
+				text-decoration: none;
+				display: block;
+				padding-bottom: 2px;
+				padding-left: 3px;
+				vertical-align: middle;
+			}
+
+			img {
+				float: left;
+				position: relative;
+				margin-right: 2px;
+			}
+		}
+
+		li.divider {
+			border: 0;
+			background-image: url('../../../../icons/gfx/shortcutgroups-bg.png');
+			background-repeat: repeat-x;
+			min-height: 10px;
+			padding-right: 0;
+			padding-top: 4px;
+
+			&:hover {
+				background-color: transparent;
+			}
+		}
+
+	}
+
+	.items {
+		list-style: none;
+		background-color: #f9f9f9;
+		overflow-y: auto;
+		max-height: 300px;
+	}
+}
+
+body.typo3-in-workspace #typo3-top-container {
+	background: none;
+}
+
+body.typo3-in-workspace #typo3-topbar .x-panel-bwrap {
+	background: url('../../../../images/backgrounds/topbar-in-workspace-background-left.png') no-repeat;
+}
+
+body.typo3-in-workspace #typo3-topbar .x-panel-body {
+	background: url('../../../../images/backgrounds/topbar-in-workspace-background-right.png') no-repeat right 0;
+}
+
+body.typo3-in-workspace #typo3-topbar {
+	background: url('../../../../images/backgrounds/topbar-in-workspace-background.gif');
+}
+
+body.typo3-in-workspace #typo3-topbar #username {
+	text-shadow: 0 0 5px #000000;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
+Live Search
+- - - - - - - - - - - - - - - - - - - - - */
+
+#typo3-toolbar #live-search-menu {
+	padding-top: 4px;
+}
+
+.live-search-results .t3-icon-toolbar-menu-search {
+	position: absolute;
+	z-index: 3000;
+	top: 3px;
+	margin: 3px;
+}
+
+.t3-icon-input-clear {
+	cursor: pointer;
+	position: absolute;
+	top: 0px;
+	right: 20px;
+}
+
+#live-search-box {
+	padding-left: 20px;
+	width: 180px;
+	border: none;
+}
+
+.live-search-list {
+	background-color: white;
+	border: none;
+
+	.x-combo-list {
+		background-color: white;
+	}
+
+	.search-item-type {
+		border-right: 1px solid #ddd;
+		padding: 2px 5px 2px 0;
+	}
+
+	.search-item-content {
+		padding: 0 8px;
+
+		.search-item-title {
+			padding: 2px;
+			border: none !important;
+		}
+	}
+
+	.x-combo-list-inner {
+		padding-bottom: 5px;
+	}
+
+	.x-combo-list-hd {
+		background: none;
+		border: none;
+		margin-left: 110px;
+		color: #ddd;
+	}
+
+}
+
+.search-list-help-content {
+	margin: 5px;
+	height: 100%;
+	padding: 0.6em 0.6em 0.6em 2.6em;
+	background-repeat: no-repeat;
+	background-position: 0.5em 0.7em;
+	border: 1px solid;
+	color: #000000;
+
+	background-color: #ddeef9;
+	border-color: #8aafc4;
+}

@@ -18,33 +18,39 @@ Clipboard
 table#typo3-clipboard {
 	background-color: #efeff4;
 	border: 1px solid #a2aab8;
-}
+	margin-top: 10px;
 
-table#typo3-clipboard tr.bgColor2 {
-	background-color: #efeff4;
-}
+	tr {
+		.typo3-clipboard-head {
+			background-color: #ccc;
+			background-image: url('../../../../backgrounds/list_sep.gif');
+			background-repeat: repeat-x;
+			border-bottom: 1px solid #a2aab8;
+			border-top: 1px solid #fefefe;
+		}
+	}
 
-table#typo3-clipboard tr.bgColor2 td {
-	background-color: #585858;
-	color: #fff;
-}
+	tr.bgColor2 {
+		background-color: #efeff4;
 
-table#typo3-clipboard tr.typo3-clipboard-head {
-	background-color: #efeff4;
-	background-image: url('../../../../backgrounds/list_sep.gif');
-	background-repeat: repeat-x;
-	border-bottom: 1px solid #a2aab8;
-	border-top: 1px solid #fefefe;
-}
+		td {
+			background-color: #585858;
+			color: #fff;
+		}
+	}
 
-table#typo3-clipboard tr.bgColor5 td {
-	background-color: #f8f9fa;
-}
+	tr.bgColor5 {
+		td {
+			background-color: #f8f9fa;
 
-table#typo3-clipboard tr.bgColor5 td a {
-	text-decoration: none;
-}
+			a {
+				text-decoration: none;
+			}
 
-tr.typo3-clipboard-head {
-	background-color: #ccc;
+			img {
+				vertical-align: middle;
+			}
+		}
+	}
+
 }

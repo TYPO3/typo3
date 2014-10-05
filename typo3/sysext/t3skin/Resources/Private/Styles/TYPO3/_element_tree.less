@@ -1,0 +1,304 @@
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+/* - - - - - - - - - - - - - - - - - - - - -
+Trees
+- - - - - - - - - - - - - - - - - - - - - */
+
+table#typo3-tree {
+	margin: 10px 0 20px 10px;
+	width: 95%;
+	vertical-align: middle;
+
+	tr {
+		td {
+			padding: 0px;
+
+			img {
+				vertical-align: middle;
+			}
+
+			img.c-recIcon {
+				margin-right: 1px;
+			}
+
+		}
+	}
+
+	a {
+		text-decoration: none;
+	}
+
+}
+
+p.c-refresh img {
+	margin-right: 7px;
+	vertical-align: middle;
+}
+
+#typo3-pagetree #typo3-docheader div.buttonsright,
+#typo3-alt-file-navframe-php #typo3-docheader div.buttonsright {
+	margin-right: 3px;
+}
+
+body#typo3-alt-db-navframe-php div.c-notice {
+	border: 1px solid black;
+	margin-top: 5px;
+	margin-bottom: 10px;
+	padding: 5px 5px 5px 5px;
+	width: 95%;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
+Configuration trees, used in Admin Tools => Configuration
+- - - - - - - - - - - - - - - - - - - - - */
+
+table.t3-tree-config {
+	background: #ececec;
+	background-image: linear-gradient(center top, #ffffff 0px, #ececec 100px);
+	border: 1px solid #adadad;
+	min-width: 500px;
+
+	.t3-tree-config-header {
+		text-align: left;
+	}
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
+AJAX Page Tree
+- - - - - - - - - - - - - - - - - - - - - */
+
+body#typo3-pagetree,
+body#typo3-alt-file-navframe-php {
+	margin: 0;
+	padding: 0;
+}
+
+body#typo3-pagetree #typo3-inner-docbody,
+body#typo3-alt-file-navframe-php #typo3-inner-docbody {
+	padding: 0 0 10px 0;
+}
+
+ul.tree {
+	line-height: 12px;
+	list-style: none;
+	padding-left: 0;
+	clear: both;
+	margin: 16px 0 0 10px;
+	padding: 0;
+
+	a {
+		text-decoration: none;
+	}
+
+	a.pm {
+		cursor: pointer;
+	}
+
+	div.treeLinkItem {
+		display: block;
+		min-height: 16px;
+		padding-right: 2px;
+	}
+
+	ul {
+		padding: 0;
+		margin: 0;
+		padding-left: 19px;
+		list-style: none;
+
+		li {
+			padding: 0;
+			margin: 0;
+			white-space: nowrap;
+			list-style: none;
+		}
+
+		li.active  {
+			div.treeLinkItem {
+				background-color: #fff;
+				border-color: #d7d7d7;
+				border-width: 1px 0 1px 1px;
+				border-style: solid;
+			}
+
+			li div.treeLinkItem {
+				margin: 0;
+				background-color: transparent;
+				border-width: 0;
+
+			}
+		}
+
+		li.expanded {
+			ul {
+				background: transparent url('../../../../icons/gfx/ol/line.gif') left top repeat-y;
+			}
+		}
+	}
+}
+
+
+
+ul.tree ul li.last > ul {
+	background: none;
+}
+
+
+ul.tree li.active span a,
+ul.tree ul li.active span a {
+	font-weight: bold;
+}
+
+ul.tree li.active ul span a,
+ul.tree ul li.active ul span a {
+	font-weight: normal;
+}
+
+ul #pages0_0 > ul {
+	padding-left: 0;
+}
+
+/* active tree items, we have to work against the border: 1px here,
+   otherwise tree elements would take too much space */
+ul.tree li.active div.treeLinkItem {
+	margin: -1px 0 -1px -1px;
+}
+
+span.dragIcon {
+	display: inline-block;
+	height: 16px;
+}
+
+ul.tree div.treeLinkItem span.dragId,
+ul.tree div.treeLinkItem span.dragTitle,
+ul.tree div.treeLinkItem img {
+	vertical-align: middle;
+}
+
+ul.tree div.treeLinkItem span.dragIcon {
+	vertical-align: top;
+}
+#dragIcon {
+	position: absolute;
+	visibility: hidden;
+	z-index: 20;
+}
+
+#treeFilterBox {
+	background-color: #dadada;
+	background-image: url('../../../../icons/gfx/filter_bg.gif');
+	background-repeat: no-repeat;
+	background-position: 0 -2px;
+	display: none;
+	height: 25px;
+	position: absolute;
+	top: 49px;
+	left: 0;
+	right: 0;
+	width: auto;
+	z-index: 3;
+}
+
+#searchBubble {
+	padding-left: 10px;
+}
+
+#treeFilter {
+	margin: 6px 0 0 17px !important;
+	height: 16px;
+	width: 160px;
+}
+
+#treeFilterReset {
+	border: 0;
+	cursor: pointer;
+	left: 192px;
+	position: absolute;
+	top: 5px;
+	visibility: hidden;
+}
+
+#typo3-pagetree #typo3-docheader img,
+#typo3-alt-file-navframe-php #typo3-docheader img {
+	margin: 2px;
+}
+
+/* Sprite icons for tree lines. Single lines need 6px padding. Can also be used directly inside .t3-table */
+
+.t3-icon-treeline {
+	display: block;
+	float: left;
+	margin-top: -6px;
+	margin-bottom: -6px;
+	padding: 0;
+	height: 30px;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
+Tree
+- - - - - - - - - - - - - - - - - - - - - */
+
+body#typo3-pagetree,
+body#typo3-alt-file-navframe-php {
+	background: #ebebeb;
+}
+
+#typo3-alt-file-navframe-php #typo3-docbody,
+#typo3-alt-file-navframe-php #typo3-docheader-row1,
+#typo3-alt-file-navframe-php #typo3-docheader-row2,
+.typo3-pagetree-indicatorBar-item,
+#typo3-pagetree-topPanelItems,
+#typo3-pagetree-topPanel .typo3-pagetree-topPanel-item,
+#typo3-pagetree-treeContainer,
+#typo3-pagetree .x-panel-tbar,
+#typo3-pagetree-deletionDropZone .x-panel-body {
+	background-position: right;
+	background-repeat: repeat-y;
+}
+
+#typo3-alt-file-navframe-php #typo3-docbody,
+#typo3-pagetree-treeContainer {
+	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA9JREFUeNpiun79OkCAAQAFFgKIFwyKvQAAAABJRU5ErkJggg==");
+}
+
+table#typo3-tree tr:hover {
+	background-color: #d7dbe2;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
+AJAX Page Tree
+- - - - - - - - - - - - - - - - - - - - - */
+
+#dragIcon {
+	filter: alpha(opacity=50);
+	opacity: 0.5;
+	white-space: nowrap;
+}
+
+#treeFilter {
+	background: transparent;
+	border: 0px;
+}
+
+#tree-toolbar-filter-item {
+	display: inline-block;
+	height: 22px;
+	width: 20px;
+}
+
+#tree-toolbar-filter-item.active {
+	background-image: url("../../../../icons/gfx/toolbar_item_active_bg.png")
+}

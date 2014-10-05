@@ -19,7 +19,85 @@ h1 {
 	font-family: Share, Verdana, Arial, Helvetica, sans-serif;
 	font-variant: normal;
 	font-weight: normal;
+	margin-top: 0;
+	margin-bottom: ceil((@font-size-base * 1.8));
 }
+
+h2 {
+	margin: 24px 0 12px 0;
+}
+
+h3 {
+	margin: 24px 0 12px 0;
+}
+
+ul,
+ol,
+blockquote {
+	margin-bottom: (@line-height-computed / 2);
+}
+
+/* Lists */
+
+ul,
+ol {
+	padding-left: 3em;
+}
+
+/* Preformatted text - not used so much in TYPO3 */
+pre {
+	margin: 0px;
+}
+
+/* horizontal ruler */
+div.hr {
+	height: 1px;
+}
+
+/** .uppercase is kept for backwards-compatibility, use .divider */
+.divider {
+	padding-bottom: 12px;
+}
+
+a span {
+	cursor: pointer;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
+Various classes
+- - - - - - - - - - - - - - - - - - - - - */
+
+div.diff-r {
+	padding: 3px 3px 3px 3px;
+}
+
+div.diff-g {
+	padding: 3px 3px 3px 3px;
+}
+
+img.absmiddle {
+	vertical-align: middle;
+}
+
+.smallCheckboxes {
+	height: 12px;
+	margin: 0px;
+	width: 12px;
+}
+
+.alignToInputText, .alignToInputText:hover {
+	margin-top: 5px;
+	margin-right: 2px;
+	vertical-align: top;
+}
+
+.nowrap {
+	white-space: nowrap;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
+TYPO3 styles for basic elements
+- - - - - - - - - - - - - - - - - - - - - */
 
 tr:hover a {
 	text-decoration: underline;
@@ -41,14 +119,9 @@ hr, div.hr {
 	height: 1px;
 }
 
-img {
-	border: 0px;
-}
-
 em {
 	font-style: italic;
 }
-
 
 /* - - - - - - - - - - - - - - - - - - - - -
 Background color classes
@@ -156,15 +229,15 @@ table.warningbox {
 	border: solid 2px black;
 	background-color: yellow;
 	margin: 20px 0px 20px 0px;
-}
 
-table.warningbox td {
-	padding: 20px 20px 20px 20px;
-	font-weight: bold;
-}
+	td {
+		padding: 20px 20px 20px 20px;
+		font-weight: bold;
 
-table.warningbox td a {
-	text-decoration: underline;
+		a {
+			text-decoration: underline;
+		}
+	}
 }
 
 div.warningbox {
@@ -178,7 +251,6 @@ div.warningbox {
 span.warningboxheader {
 	margin-left: 5px;
 }
-
 
 /* all buttons have the "click" mouse cursor */
 .t3-btn {

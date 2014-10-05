@@ -119,6 +119,7 @@ div.typo3-view-help img.c-inlineimg  {
 }
 
 /*** new help code ***/
+
 .t3-help-inline {
 	padding: 4px;
 }
@@ -231,4 +232,96 @@ div.t3-view-help img.c-inlineimg  {
 .x-tip.typo3-csh-tooltip .x-tip-tr,
 .x-tip.typo3-csh-tooltip .x-tip-cr {
 	padding-right: 8px;
+}
+
+
+/* - - - - - - - - - - - - - - - - - - - - -
+Context Sensitive Help (CSH)
+- - - - - - - - - - - - - - - - - - - - - */
+
+table.typo3-csh-inline {
+	background-color: #ffffc7;
+	border: 1px solid #cccccc;
+}
+
+.typo3-csh-inline {
+	box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+	line-height: 16px;
+}
+
+a.typo3-csh-link .typo3-csh-inline {
+	background-color: #ffffc7;
+	border: 1px solid #cccccc;
+	color: #000000;
+	font-weight: normal;
+}
+
+img.typo3-csh-icon {
+	cursor: help;
+}
+
+a.typo3-csh-link {
+	white-space: normal;
+}
+
+/** new CSH code **/
+table.t3-help-inline {
+	background-color: #ffffc7;
+	border: 1px solid #cccccc;
+}
+
+.t3-help-inline {
+	box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+	line-height: 16px;
+}
+
+a.t3-help-link .t3-help-inline {
+	background: #ffffc7;
+	color: #000000;
+	font-weight: normal;
+}
+
+p.t3-help-short.tipIsLinked {
+	cursor: pointer;
+}
+
+.t3-help-teaser,
+.t3-help-teaser label,
+.t3-help-teaser-icon {
+	cursor: help;
+}
+
+img.t3-help-icon {
+	cursor: help;
+}
+
+a.t3-help-link {
+	white-space: normal;
+}
+
+
+/*  EXT:cshmanual */
+div.typo3-view-help h1 {
+	background: none;
+	color: #000;
+	text-align: left;
+}
+
+
+div.typo3-view-help p {
+}
+
+div.typo3-view-help p.c-nav a {
+	background-color: transparent;
+}
+
+div.typo3-view-help div.c-toc {
+	background: none;
+	border: none;
+}
+
+div.typo3-view-help .manual-title a,
+div.typo3-view-help div.c-toc a,
+div.typo3-view-help p a {
+	text-decoration: underline;
 }

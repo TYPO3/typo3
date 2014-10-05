@@ -1,0 +1,80 @@
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+/* - - - - - - - - - - - - - - - - - - - - -
+DocHeader
+- - - - - - - - - - - - - - - - - - - - - */
+
+#typo3-docheader {
+	img,
+	input {
+		cursor: pointer;
+	}
+
+	.t3-icon {
+		margin-bottom: 3px;
+	}
+
+	.left {
+		.pull-left;
+
+		/** Extra margin 6px added to it-icon margin, doubled spacing = 12px */
+		.buttongroup {
+			margin-right: 6px;
+		}
+
+		select {
+			margin-right: 12px;
+		}
+		.t3-icon {
+			margin-right: 6px;
+		}
+
+	}
+
+	.right {
+		.pull-right;
+
+		.t3-icon {
+			margin-left: 6px;
+		}
+	}
+
+
+	.typo3-docheader-functions {
+		background-color: #585858;
+		color: #dadada;
+		height: 27px;
+		line-height: 27px;
+		padding: 0 24px;
+		overflow: hidden;
+
+		/* overwrite defaults from normalize.css */
+		select {
+			color: #000;
+		}
+
+		.typo3-docheader-pagePath {
+			font-weight: bold;
+		}
+	}
+
+	.typo3-docheader-buttons {
+		background-color: #dadada;
+		color: #000;
+		height: 22px;
+		padding: 3px 24px;
+		overflow: hidden;
+	}
+
+}

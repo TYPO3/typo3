@@ -16,20 +16,46 @@ Element Browser / RTE link selection
 - - - - - - - - - - - - - - - - - - - - - */
 
 #typo3-browse-links-php {
+	background: #ececec;
+	background-image: linear-gradient(center top, #ffffff 30px, #ececec 130px);
+	background-repeat: repeat-x;
 	width: 100%;
+
+	#typo3-tabmenu {
+		margin-top: 10px;
+	}
+
+	a {
+		text-decoration: none;
+	}
+
+	#typo3-messages {
+		margin: 0px;
+		padding: 10px;
+	}
 }
 
-#typo3-browse-links-php #typo3-tabmenu {
-	margin-top: 10px;
-}
 
 table#typo3-curUrl {
+	font-weight: bold;
 	margin-bottom: 2px;
 	width: 100%;
+
+	input {
+		margin-right: 5px;
+	}
 }
 
-table#typo3-RTElinkMenu tr td {
-	width: 15%;
+table#typo3-RTElinkMenu {
+	tr {
+		td {
+			font-weight: bold;
+			text-align: center;
+			white-space: nowrap;
+			width: 15%;
+		}
+	}
+
 }
 
 table#typo3-linkTarget {
@@ -53,23 +79,6 @@ table#typo3-crFolder tr td.c-hCell {
 	padding-top: 5px;
 }
 
-table#typo3-crFolder input {
-	margin-right: 5px;
-}
-
-table#typo3-uplFiles #c-override label {
-	display: block;
-	padding-left: 15px;
-	text-indent: -15px;
-}
-
-table#typo3-uplFiles #c-override input {
-	vertical-align: bottom;
-	position: relative;
-	top: -1px;
-	*overflow: hidden;
-}
-
 table#typo3-linkPages h3,
 table#typo3-linkFiles h3,
 table#typo3-EBrecords h3,
@@ -79,8 +88,24 @@ table#typo3-crFolder h3 {
 	padding: 0;
 }
 
-table#typo3-uplFiles #c-override {
-	padding: 5px 0;
+table#typo3-uplFiles {
+	#c-override {
+		padding: 5px 0;
+
+		label {
+			display: block;
+			padding-left: 15px;
+			text-indent: -15px;
+		}
+
+		input {
+			vertical-align: bottom;
+			position: relative;
+			top: -1px;
+			*overflow: hidden;
+		}
+	}
+
 }
 
 table#typo3-linkPages,
@@ -121,12 +146,44 @@ table#typo3-linkTarget {
 table#typo3-msgBox {
 	margin-top: 10px;
 	margin-bottom: 10px;
-}
 
-table#typo3-msgBox tr td {
-	padding: 10px 50px 10px 50px;
+	tr {
+		td {
+			padding: 10px 50px 10px 50px;
+		}
+	}
 }
 
 input.typo3-link-input {
 	width: 250px;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
+Element Browser / RTE link selection
+- - - - - - - - - - - - - - - - - - - - - */
+
+form#typo3-uplFilesForm,
+form#typo3-crFolderForm {
+	border-top: 1px solid #adadad;
+}
+
+table#typo3-linkPages tr td.c-wCell,
+table#typo3-linkFiles tr td.c-wCell,
+table#typo3-EBrecords tr td.c-wCell,
+table#typo3-EBfiles tr td.c-wCell {
+	white-space: nowrap;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
+RTE select image
+- - - - - - - - - - - - - - - - - - - - - */
+
+body#ext-rte-app-rte-select-image-php {
+	a {
+		text-decoration: none;
+	}
+
+	table tr td table tr.bgColor4 td a {
+		text-decoration: underline;
+	}
 }

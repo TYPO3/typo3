@@ -1,0 +1,539 @@
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+/* - - - - - - - - - - - - - - - - - - - - -
+Pagetree
+- - - - - - - - - - - - - - - - - - - - - */
+
+#typo3-pagetree {
+	height: 100%;
+
+	.x-panel-bwrap,
+	.x-panel-body {
+		height: 100%;
+	}
+
+	.x-panel-tbar {
+		padding: 0;
+		margin: 0;
+	}
+
+	span.t3-icon {
+		margin-bottom: 2px;
+	}
+
+	ul {
+		padding-left: 0;
+		list-style: none;
+	}
+
+	ul.x-tree-root-ct {
+		padding-top: 24px;
+		margin-bottom: 50px;
+	}
+
+	.typo3-pagetree-topPanel-button {
+		margin-right: 1px;
+		margin-top: 3px;
+		margin-bottom: -2px;
+		padding: 2px 3px 4px 3px;
+	}
+
+	.x-panel-tbar {
+		.x-toolbar {
+			padding-top: 2px;
+			height: 27px;
+		}
+	}
+
+	.x-toolbar {
+		background: none;
+		border: none;
+		padding: 0;
+	}
+
+	.x-toolbar-ct {
+		height: 20px;
+	}
+
+	.x-tree {
+		.x-panel-body {
+			background: none;
+		}
+	}
+
+	.x-tree-node {
+		.x-tree-node-el {
+			margin-right: 0;
+			border-top: 1px solid transparent;
+			border-bottom: 1px solid transparent;
+			border-left: 1px solid transparent;
+		}
+
+		.x-tree-node-over,
+		.x-tree-selected {
+			border-bottom: 1px solid #d7d7d7;
+			border-top: 1px solid #d7d7d7;
+			border-left: 1px solid #d7d7d7;
+		}
+
+		.x-tree-node-over {
+			background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAABCAYAAAAb4BS0AAAAGElEQVR42gENAPL/AMjIyEzIyMizyMjI/zhvCQelaHPPAAAAAElFTkSuQmCC");
+			background-position: right;
+			background-repeat: repeat-y;
+			background-color: #f2f2f2;
+			border-top-right-radius: 3px;
+			border-bottom-right-radius: 3px;
+		}
+
+		.x-tree-selected {
+			background-color: #fff;
+		}
+
+		.x-tree-selected.x-tree-node-over {
+			background-image: none;
+			border-radius: 0;
+		}
+
+	}
+
+	.x-tree-node-readableRootline {
+		padding: 10px 0 3px 10px;
+	}
+
+
+	.x-panel-tbar {
+		background-color: #585858;
+		border: none;
+	}
+
+	.x-unselectable,
+	.x-unselectable * {
+		/* restore behaviour from x-tree-node-el which gets overwritten by x-unselectable in default-css */
+		cursor: pointer;
+	}
+
+	.ver-element,
+	.ver-versions,
+	.ver-page {
+		background-color: #f7c898;
+	}
+
+	.x-tree-node-over.ver-element,
+	.x-tree-node-over.ver-versions,
+	.x-tree-node-over.ver-page,
+	.x-tree-selected.ver-element,
+	.x-tree-selected.ver-versions,
+	.x-tree-selected.ver-page {
+		background-color: #fee4c9;
+	}
+
+	.typo3-pagetree-filteringTree-highlight {
+		background-color: #f48e0c;
+		color: #FFF;
+		padding: 0;
+	}
+
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
+Drag and Drop
+- - - - - - - - - - - - - - - - - - - - - */
+
+.x-tree-lines .typo3-pagetree-node-notExpandable .x-tree-ec-icon {
+	visibility: hidden;
+}
+
+.x-tree-lines .typo3-pagetree-node-notExpandable ul .x-tree-ec-icon {
+	visibility: visible;
+}
+
+.typo3-pagetree-topPanel-item .x-toolbar {
+	padding: 0;
+}
+
+.x-tree-node a .typo3-pagetree-status,
+.x-dd-drag-ghost a .typo3-pagetree-status {
+	padding: 0;
+	margin: 0 3px 0 0;
+}
+
+.typo3-pagetree-tree-copy {
+	color: #666;
+	margin-top: 5px;
+}
+
+.x-dd-drag-ghost-pagetree-text {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.x-dd-drag-ghost-pagetree,
+.x-dd-drag-ghost {
+	padding-bottom: 5px;
+}
+
+.x-dd-drop-icon {
+	padding-top: 6px;
+}
+
+.x-dd-drag-ghost-pagetree span {
+	margin: 3px 3px 0 3px;
+}
+
+.x-dd-drag-ghost {
+	background-color: inherit;
+	border: none;
+	box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+
+	span {
+		margin: 0 1px 0 3px;
+	}
+}
+
+.x-dd-drop-nodrop {
+	background-color: #f6d3cf;
+	border: 1px solid #d66c68;
+}
+
+.typo3-pagetree-deletionDropZone-proxyOver,
+.x-tree-drop-ok-append,
+.x-tree-drop-ok-between,
+.x-tree-drop-ok-below,
+.x-tree-drop-ok-above {
+	background-color: #dce8f4;
+	border: 1px solid #9eb2c5;
+}
+
+.x-dd-drop-nodrop .x-dd-drop-icon {
+	background-image: url(../../../../images/icons/apps/pagetree-drag-place-denied.png);
+}
+
+.x-tree-drop-ok-append.typo3-pagetree-copy .x-dd-drop-icon {
+	background-image: url(../../../../images/icons/apps/pagetree-drag-new-inside.png);
+}
+
+.x-tree-drop-ok-below.typo3-pagetree-copy .x-dd-drop-icon {
+	background-image: url(../../../../images/icons/apps/pagetree-drag-copy-below.png);
+}
+
+.x-tree-drop-ok-above.typo3-pagetree-copy .x-dd-drop-icon {
+	background-image: url(../../../../images/icons/apps/pagetree-drag-copy-above.png);
+}
+
+.x-tree-drop-ok-between.typo3-pagetree-copy .x-dd-drop-icon {
+	background-image: url(../../../../images/icons/apps/pagetree-drag-new-between.png);
+}
+
+.x-tree-drop-ok-append .x-dd-drop-icon {
+	background-image: url(../../../../images/icons/apps/pagetree-drag-move-into.png);
+}
+
+.x-tree-drop-ok-between .x-dd-drop-icon {
+	background-image: url(../../../../images/icons/apps/pagetree-drag-move-between.png);
+}
+
+.x-tree-drop-ok-below .x-dd-drop-icon {
+	background-image: url(../../../../images/icons/apps/pagetree-drag-move-below.png);
+}
+
+.x-tree-drop-ok-above .x-dd-drop-icon {
+	background-image: url(../../../../images/icons/apps/pagetree-drag-move-above.png);
+}
+
+#typo3-pagetree .x-tree-node .x-tree-drag-insert-below,
+.x-tree-node div.x-tree-drag-insert-below,
+.x-tree-dd-underline .x-tree-node div.x-tree-drag-insert-below a {
+	border-bottom: 1px solid #9eb2c5;
+}
+
+#typo3-pagetree .x-tree-node .x-tree-drag-insert-above,
+.x-tree-node .x-tree-drag-insert-above,
+.x-tree-dd-underline .x-tree-node div.x-tree-drag-insert-above a {
+	border-top: 1px solid #9eb2c5;
+}
+
+.x-tree-node .x-tree-drag-append {
+	background: #d7e4f1;
+}
+
+.x-tree-node .x-tree-drag-append a span {
+	background-color: inherit;
+	border: none;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
+Top Panel
+- - - - - - - - - - - - - - - - - - - - - */
+
+.typo3-pagetree-topPanel-button {
+	background: none;
+	border: none;
+	margin: 1px 5px 0 0;
+	padding: 1px 2px;
+	height: 25px;
+
+	button {
+		height: 16px;
+		width: 16px;
+		border: none;
+	}
+}
+
+#typo3-pagetree-topPanel .x-btn-click,
+#typo3-pagetree-topPanel .x-btn-over {
+	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAWCAIAAACKUbHAAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAD9JREFUCB19wdERAUAARDEv23+FmsGZG38Sz0sfKoXEppDKyldyxBzzM1eObWYMM5Zr/ipEWRm9UXnr0OVxvQAaNAkk1SzJpgAAAABJRU5ErkJggg==");
+	*background-image: url("../../../../images/backgrounds/docheader-pagetree-button-hover.png");
+}
+
+#typo3-pagetree-topPanel .x-btn-pressed {
+	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAAWCAIAAABlk9r+AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADtJREFUCB0FwYENADAMw6Ap/79cPFhV7b333ltVDdWqWLkaxYABc7AL5nDj7gw0cMMxxCCrXLtTVmhV+SoifU9efLPxAAAAAElFTkSuQmCC");
+	*background-image: url("../../../../images/backgrounds/docheader-pagetree-button.png");
+}
+
+#typo3-pagetree-topPanel .x-btn-pressed,
+#typo3-pagetree-topPanel .x-btn-over,
+#typo3-pagetree-topPanel .x-btn-click {
+	border: none;
+	top: 0;
+	left: 0;
+	background-repeat: repeat-x;
+}
+
+#typo3-pagetree-topPanel button:focus {
+	outline: none;
+}
+
+#typo3-pagetree .typo3-pagetree-topPanel-item {
+	background-color: #dadada;
+	line-height: normal;
+}
+
+#typo3-pagetree-topPanel-filter {
+	border: 1px solid #aeaeae;
+	box-shadow: inset 0 1px 1px #aeaeae;
+}
+
+.typo3-pagetree-topPanel-filter-defaultText {
+	color: gray;
+}
+
+#typo3-pagetree .typo3-pagetree-topPanel-button {
+	border: none;
+	border-radius: 0;
+
+	button {
+		vertical-align: middle;
+	}
+}
+
+#typo3-pagetree-topPanel-defaultPanel {
+	color: #a2aab8;
+	line-height: 18px;
+}
+
+#typo3-pagetree-topPanel-item-newNode .x-btn-over {
+	background: inherit;
+}
+
+#typo3-pagetree-topPanel-item-newNode button {
+	cursor: move;
+}
+
+#typo3-pagetree-topPanel-button-refresh,
+#typo3-pagetree-topPanel-button-refresh.x-btn-over {
+	background: inherit;
+}
+
+#typo3-pagetree-topPanel {
+	.x-toolbar-left {
+		height: 20px;
+		padding-left: 12px;
+	}
+
+	.x-toolbar-right {
+		padding-right: 12px;
+	}
+}
+
+
+.typo3-pagetree-topPanel-item {
+	padding: 0 3px 0 3px;
+	height: 22px;
+}
+
+#typo3-pagetree-topPanel-filterWrap {
+	height: 22px;
+}
+
+#typo3-pagetree-topPanel-filter {
+	height: 15px;
+	width: 98% !important;
+	margin-top: 1px;
+	padding: 1px 0 1px 2px;
+}
+
+#typo3-pagetree-topPanel-filterWrap .t3-icon-input-clear {
+	right: 2px;
+}
+
+#typo3-pagetree-topPanel-defaultPanel {
+	padding-left: 6px;
+}
+
+#typo3-pagetree-topPanel-filterWrap .x-form-field-trigger-wrap {
+	width: 100% !important;
+	margin: 0 20px 0 0;
+}
+
+.typo3-pagetree-topPanel-item .x-form-trigger {
+	margin: 4px 0 0;
+	display: none;
+}
+
+.typo3-pagetree-topPanel-item .x-form-field-trigger-wrap:hover .x-form-trigger {
+	display: block;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
+Deletion Drop Zone
+- - - - - - - - - - - - - - - - - - - - - */
+
+#typo3-pagetree-deletionDropZone {
+	color: #FFF;
+	background-color: #585858;
+	box-shadow: inset 0 2px 5px #414141;
+
+	p {
+		padding: 5px;
+	}
+
+	#typo3-pagetree-deletionDropZone-text {
+		cursor: default;
+		font-size: .9em;
+		padding: 0 0 0 5px;
+		display: inline;
+	}
+}
+
+.typo3-pagetree-deletionDropZone-restore {
+	background-color: #d5d5d5;
+	background-image: url('../../../../images/backgrounds/button.png');
+	background-repeat: repeat-x;
+	background-image: linear-gradient(center top, #f6f6f6 10%, #d5d5d5 90%);
+	border: 1px solid #7c7c7c;
+	border-radius: 1px;
+	color: #434343;
+	cursor: pointer;
+	display: inline-block;
+	padding: 0px 6px;
+	margin-left: 24px;
+
+	&:hover {
+		background-color: #c8c8c8;
+		background-image: url('../../../../images/backgrounds/button-hover.png');
+		background-image: linear-gradient(center top, #f6f6f6 10%, #c8c8c8 90%);
+		background-position: bottom;
+		background-repeat: repeat-x;
+		border: 1px solid #737f91;
+		color: #1e1e1e;
+	}
+}
+
+.typo3-pagetree-deletionDropZone-restoreText {
+	display: inline-block;
+	padding: 4px 4px 4px 18px;
+	background: transparent url('../../../../images/spinner/d5d5d5.gif') no-repeat 0 3px;
+}
+
+.typo3-pagetree-deletionDropZone-proxyOver .x-dd-drop-icon {
+	background-image: url(../../../../images/icons/actions/edit-delete.png);
+}
+
+#typo3-pagetree .typo3-pagetree-deletionDropZone-activateProxyOver {
+	background-color: #644d2d;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
+Pagetree
+- - - - - - - - - - - - - - - - - - - - - */
+
+#typo3-pagetree-treeContainer,
+#typo3-pagetree-topPanelItems {
+	background-color: #ebebeb;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
+Tree Highlighting
+- - - - - - - - - - - - - - - - - - - - - */
+
+.x-tree-node-readableRootline {
+	font-style: italic;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
+Indicator Bar
+- - - - - - - - - - - - - - - - - - - - - */
+
+#typo3-pagetree-indicatorBar-temporaryMountPoint {
+	background-color: #eaf7ff;
+	border-bottom: 1px solid #c5dbe6;
+	color: #4c73a1;
+
+	p {
+		line-height: 13px;
+		padding: 10px 35px;
+	}
+}
+
+#typo3-pagetree-indicatorBar-filter {
+	background-color: #eaf7ff;
+	border-bottom: 1px solid #c5dbe6;
+	color: #4c73a1;
+
+	p {
+		padding: 10px 35px;
+	}
+}
+
+#typo3-pagetree-indicatorBar-indicatorTitle {
+	background-color: #ffec97;
+	font-weight: bold;
+
+	span {
+		margin-right: 10px;
+	}
+}
+
+.typo3-pagetree-indicatorBar-item {
+	.typo3-pagetree-indicatorBar-item-rightIcon {
+		cursor: pointer;
+	}
+
+	p {
+		margin-bottom: 0;
+		padding: 5px 10px;
+	}
+
+	.typo3-pagetree-indicatorBar-item-leftIcon {
+		left: 10px;
+		top: 9px;
+		position: absolute;
+	}
+
+	.typo3-pagetree-indicatorBar-item-rightIcon {
+		right: 10px;
+		top: 5px;
+		position: absolute;
+	}
+}

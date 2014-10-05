@@ -7194,370 +7194,19 @@ table.t3-table-info td {
  *
  * The TYPO3 project - inspiring people to share!
  */
-#typo3-messages {
-  margin-bottom: 10px;
-}
-.typo3-message {
-  padding: 15px;
-  margin-bottom: 18px;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  background-position: 10px 12px;
-  background-repeat: no-repeat;
-  padding: 12px 12px 12px 36px;
-}
-.typo3-message h4 {
-  margin-top: 0;
-  color: inherit;
-}
-.typo3-message .alert-link {
-  font-weight: bold;
-}
-.typo3-message > p,
-.typo3-message > ul {
-  margin-bottom: 0;
-}
-.typo3-message > p + p {
-  margin-top: 5px;
-}
-.typo3-message .message-header {
-  font-weight: bold;
-  margin-bottom: 9px;
-}
-.typo3-message ul,
-.typo3-message ol {
-  padding-left: 16px;
-}
-.typo3-message .message-header {
+/* - - - - - - - - - - - - - - - - - - - - -
+TYPO3 debug panel
+- - - - - - - - - - - - - - - - - - - - - */
+.typo3-debugPanel-dragDropArrowDown {
+  background-image: url('../../../../icons/gfx/arrowdown.png');
   display: block;
-}
-.typo3-message .t3-icon-actions-message-close {
-  cursor: pointer;
-  float: right;
-}
-.typo3-message li {
-  margin-bottom: 10px;
-  list-style: disc;
-}
-.typo3-message a {
-  text-decoration: underline;
-}
-.message-notice {
-  color: #777;
-  background-color: #f6f7fa;
-  background-image: url('../../../../icons/gfx/notice.png');
-  border-color: #c2cbcf;
-}
-.message-notice a {
-  color: #777;
-}
-.message-information {
-  background-color: #d9edf7;
-  border-color: #bce8f1;
-  color: #4c73a1;
-  background-image: url('../../../../icons/gfx/information.png');
-}
-.message-information hr {
-  border-top-color: #a6e1ec;
-}
-.message-information .alert-link {
-  color: #3c5a7e;
-}
-.message-information a {
-  color: #4c73a1;
-}
-.message-ok {
-  background-color: #dff0d8;
-  border-color: #d6e9c6;
-  color: #3b7826;
-  background-image: url('../../../../icons/gfx/ok.png');
-}
-.message-ok hr {
-  border-top-color: #c9e2b3;
-}
-.message-ok .alert-link {
-  color: #28511a;
-}
-.message-ok a {
-  color: #3b7826;
-}
-.message-warning {
-  background-color: #fcf8e3;
-  border-color: #faebcc;
-  color: #9e7d4a;
-  background-image: url("../../../../icons/gfx/warning.png");
-}
-.message-warning hr {
-  border-top-color: #f7e1b5;
-}
-.message-warning .alert-link {
-  color: #7b623a;
-}
-.message-warning a {
-  color: #9e7d4a;
-}
-.message-error {
-  background-color: #f2dede;
-  border-color: #ebccd1;
-  color: #aa0225;
-  background-image: url('../../../../icons/gfx/error.png');
-}
-.message-error hr {
-  border-top-color: #e4b9c0;
-}
-.message-error .alert-link {
-  color: #78011a;
-}
-.message-error a {
-  color: #aa0225;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/** used in the admin tools => DB check **/
-.t3-overview-list dt {
-  padding: 0px 0px 2px 20px;
-}
-.t3-overview-list dt img {
-  vertical-align: middle;
-  margin-right: 5px;
-}
-.t3-overview-list dd {
-  margin: 2px 0 15px 20px;
-  padding-left: 22px;
-}
-/**
- * Common style for tables
- *
- * <table class="t3-table>
- *   <thead>
- *     <tr>
- *       <th>...</th>
- *       <th>...</th>
- *     </tr>
- *   </thead>
- *   <tbody>
- *     <tr>
- *       <td>
- *         <span class="t3-icon t3-icon-treeline t3-icon-treeline-join t3-icon-join">&nbsp;</span>
- *       </td>
- *       <td>...</td>
- *     </tr>
- *   </tbody>
- * </table>
- */
-.table {
-  border-right: 1px solid #dddddd;
-  border-bottom: 1px solid #dddddd;
-  border-left: 1px solid #dddddd;
-}
-.table > thead tr th:first-child,
-.table > tbody tr th:first-child,
-.table > thead tr th:last-child,
-.table > tbody tr th:last-child,
-.table > thead tr td:first-child,
-.table > tbody tr td:first-child,
-.table > thead tr td:last-child,
-.table > tbody tr td:last-child {
-  padding-left: 12px;
-}
-.table > thead > tr > th,
-.table > thead > tr > td {
-  background-color: #666;
-  color: #fff;
-  font-weight: normal;
-  min-height: 16px;
-}
-.table > thead > tr > th a,
-.table > thead > tr > td a,
-.table > thead > tr > th a,
-.table > thead > tr > td a {
-  color: #fff;
-  text-decoration: underline;
-}
-.table > tbody > tr:hover > td {
-  transition: background-color 100ms linear;
-}
-.table > tbody > tr:hover > td a {
-  text-decoration: underline;
-}
-table.t3-table {
-  width: 100%;
-  max-width: 100%;
-  margin-bottom: 18px;
-  border-right: 1px solid #dddddd;
-  border-bottom: 1px solid #dddddd;
-  border-left: 1px solid #dddddd;
-}
-table.t3-table > thead > tr > th,
-table.t3-table > tbody > tr > th,
-table.t3-table > tfoot > tr > th,
-table.t3-table > thead > tr > td,
-table.t3-table > tbody > tr > td,
-table.t3-table > tfoot > tr > td {
-  padding: 6px;
-  line-height: 1.5;
-  vertical-align: top;
-  border-top: 1px solid #dddddd;
-}
-table.t3-table > thead > tr > th {
-  vertical-align: bottom;
-  border-bottom: 2px solid #dddddd;
-}
-table.t3-table > caption + thead > tr:first-child > th,
-table.t3-table > colgroup + thead > tr:first-child > th,
-table.t3-table > thead:first-child > tr:first-child > th,
-table.t3-table > caption + thead > tr:first-child > td,
-table.t3-table > colgroup + thead > tr:first-child > td,
-table.t3-table > thead:first-child > tr:first-child > td {
-  border-top: 0;
-}
-table.t3-table > tbody + tbody {
-  border-top: 2px solid #dddddd;
-}
-table.t3-table .table {
-  background-color: #ffffff;
-}
-table.t3-table > thead tr th:first-child,
-table.t3-table > tbody tr th:first-child,
-table.t3-table > thead tr th:last-child,
-table.t3-table > tbody tr th:last-child,
-table.t3-table > thead tr td:first-child,
-table.t3-table > tbody tr td:first-child,
-table.t3-table > thead tr td:last-child,
-table.t3-table > tbody tr td:last-child {
-  padding-left: 12px;
-}
-table.t3-table > thead > tr > th,
-table.t3-table > thead > tr > td {
-  background-color: #666;
-  color: #fff;
-  font-weight: normal;
-  min-height: 16px;
-}
-table.t3-table > thead > tr > th a,
-table.t3-table > thead > tr > td a,
-table.t3-table > thead > tr > th a,
-table.t3-table > thead > tr > td a {
-  color: #fff;
-  text-decoration: underline;
-}
-table.t3-table > tbody > tr:hover > td {
-  transition: background-color 100ms linear;
-}
-table.t3-table > tbody > tr:hover > td a {
-  text-decoration: underline;
-}
-table.t3-table > tbody > tr:nth-child(odd) > td,
-table.t3-table > tbody > tr:nth-child(odd) > th {
-  background-color: #f7f7f7;
-}
-table.t3-table > tbody > tr:hover > td,
-table.t3-table > tbody > tr:hover > th {
-  background-color: #dedede;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Tab menu
-- - - - - - - - - - - - - - - - - - - - - */
-.nav-tabs {
-  background-color: #d7d7d7;
-}
-div.typo3-dyntabmenu-divs {
-  padding: 18px;
-  margin-bottom: 1em;
-  border-right: 1px solid #d7d7d7;
-  border-bottom: 1px solid #d7d7d7;
-  border-left: 1px solid #d7d7d7;
-}
-div.typo3-dyntabmenu-divs p.c-descr {
-  background: #e7dba8;
-  font-style: italic;
-}
-/* Foldout tabs */
-div.typo3-dyntabmenu-divs-foldout div.c-tablayer {
-  margin-left: 20px;
-}
-div.typo3-dyntabmenu-divs-foldout div.tab,
-div.typo3-dyntabmenu-divs-foldout div.tabact,
-div.typo3-dyntabmenu-divs-foldout div.disabled {
-  border: solid black 1px;
-  border-radius: 3px;
-}
-div.typo3-dyntabmenu-divs-foldout div.tab {
-  background: #c4d4cd;
-  background-image: url('../../../../icons/gfx/ol/plusbullet.gif');
-  background-repeat: no-repeat;
-}
-div.typo3-dyntabmenu-divs-foldout div.tab:hover {
-  background: #f6eab7;
-  background-image: url('../../../../icons/gfx/ol/arrowbullet.gif');
-  background-repeat: no-repeat;
-}
-div.typo3-dyntabmenu-divs-foldout div.tabact {
-  background: #e7dba8;
-  background-image: url('../../../../icons/gfx/ol/minusbullet.gif');
-  background-repeat: no-repeat;
-}
-div.typo3-dyntabmenu-divs-foldout div.tabact:hover {
-  background: #f6eab7;
-  background-image: url('../../../../icons/gfx/ol/arrowbullet.gif');
-  background-repeat: no-repeat;
-}
-div.typo3-dyntabmenu-divs-foldout div.disabled {
-  background: #ccc;
-  color: #999;
-}
-div.typo3-dyntabmenu-divs-foldout div.disabled:hover {
-  background: #f6eab7;
-  color: #999;
-}
-.c-tablayer {
-  margin: 0;
-  padding: 0;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Go back A-tags
-- - - - - - - - - - - - - - - - - - - - - */
-a.typo3-goBack img {
-  margin-right: 5px;
-  vertical-align: middle;
-}
-span.typo3-moduleHeader img {
-  margin-right: 4px;
-  vertical-align: middle;
+  visibility: visible;
+  z-index: 20000;
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 0;
+  left: 0;
 }
 /**
  * This file is part of the TYPO3 CMS project.
@@ -7574,10 +7223,30 @@ span.typo3-moduleHeader img {
 /* - - - - - - - - - - - - - - - - - - - - -
 Clipboard
 - - - - - - - - - - - - - - - - - - - - - */
-table#typo3-clipboard,
-div#typo3-newRecordLink,
-table#typo3-dblist-search {
+table#typo3-clipboard {
+  background-color: #efeff4;
+  border: 1px solid #a2aab8;
   margin-top: 10px;
+}
+table#typo3-clipboard tr .typo3-clipboard-head {
+  background-color: #ccc;
+  background-image: url('../../../../backgrounds/list_sep.gif');
+  background-repeat: repeat-x;
+  border-bottom: 1px solid #a2aab8;
+  border-top: 1px solid #fefefe;
+}
+table#typo3-clipboard tr.bgColor2 {
+  background-color: #efeff4;
+}
+table#typo3-clipboard tr.bgColor2 td {
+  background-color: #585858;
+  color: #fff;
+}
+table#typo3-clipboard tr.bgColor5 td {
+  background-color: #f8f9fa;
+}
+table#typo3-clipboard tr.bgColor5 td a {
+  text-decoration: none;
 }
 table#typo3-clipboard tr.bgColor5 td img {
   vertical-align: middle;
@@ -7769,6 +7438,75 @@ div.t3-view-help img.c-inlineimg {
 .x-tip.typo3-csh-tooltip .x-tip-cr {
   padding-right: 8px;
 }
+/* - - - - - - - - - - - - - - - - - - - - -
+Context Sensitive Help (CSH)
+- - - - - - - - - - - - - - - - - - - - - */
+table.typo3-csh-inline {
+  background-color: #ffffc7;
+  border: 1px solid #cccccc;
+}
+.typo3-csh-inline {
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+  line-height: 16px;
+}
+a.typo3-csh-link .typo3-csh-inline {
+  background-color: #ffffc7;
+  border: 1px solid #cccccc;
+  color: #000000;
+  font-weight: normal;
+}
+img.typo3-csh-icon {
+  cursor: help;
+}
+a.typo3-csh-link {
+  white-space: normal;
+}
+/** new CSH code **/
+table.t3-help-inline {
+  background-color: #ffffc7;
+  border: 1px solid #cccccc;
+}
+.t3-help-inline {
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+  line-height: 16px;
+}
+a.t3-help-link .t3-help-inline {
+  background: #ffffc7;
+  color: #000000;
+  font-weight: normal;
+}
+p.t3-help-short.tipIsLinked {
+  cursor: pointer;
+}
+.t3-help-teaser,
+.t3-help-teaser label,
+.t3-help-teaser-icon {
+  cursor: help;
+}
+img.t3-help-icon {
+  cursor: help;
+}
+a.t3-help-link {
+  white-space: normal;
+}
+/*  EXT:cshmanual */
+div.typo3-view-help h1 {
+  background: none;
+  color: #000;
+  text-align: left;
+}
+div.typo3-view-help p.c-nav a {
+  background-color: transparent;
+}
+div.typo3-view-help div.c-toc {
+  background: none;
+  border: none;
+}
+div.typo3-view-help .manual-title a,
+div.typo3-view-help div.c-toc a,
+div.typo3-view-help p a {
+  text-decoration: underline;
+}
 /**
  * This file is part of the TYPO3 CMS project.
  *
@@ -7785,13 +7523,30 @@ div.t3-view-help img.c-inlineimg {
 Context Sensitive Menu / Layer (alt_clickmenu.php creates it)
 Notice: Rollover color is set by ->bgColor5 in the template object of alt_clickmenu.php
 - - - - - - - - - - - - - - - - - - - - - */
+.typo3-CSM-wrapperCM {
+  background: #fff;
+  border: #b6b6b6 1px solid;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+Context Sensitive Menu / Layer (alt_clickmenu.php creates it)
+Notice: Rollover color is set by ->bgColor5 in the template object of alt_clickmenu.php
+- - - - - - - - - - - - - - - - - - - - - */
 table.typo3-CSM tr.typo3-CSM-itemRow td {
   padding: 2px 6px;
+  /* the 1px image between every contextmenu group needs to be set to block, otherwise the border cell is way too high
+			   see https://developer.mozilla.org/en/Images,_Tables,_and_Mysterious_Gaps#Setting_images_to_be_blocks */
 }
-/* the 1px image between every contextmenu group needs to be set to block, otherwise the border cell is way too high
-   see https://developer.mozilla.org/en/Images,_Tables,_and_Mysterious_Gaps#Setting_images_to_be_blocks */
-table.typo3-CSM tr.bgColor2 td img {
+table.typo3-CSM tr.typo3-CSM-itemRow td img {
   display: block;
+}
+table.typo3-CSM td.typo3-CSM-item {
+  white-space: nowrap;
+}
+table.typo3-CSM tr.typo3-CSM-itemRow {
+  cursor: pointer;
+}
+table.typo3-CSM tr.bgColor2 {
+  background-color: #b6b6b6;
 }
 /* - - - - - - - - - - - - - - - - - - - - -
 special backend elements
@@ -7799,6 +7554,10 @@ special backend elements
 /* Context Sensitive Menu / Top frame (alt_clickmenu.php): */
 body#typo3-alt-clickmenu-php {
   margin-top: 10px;
+}
+/* Context Sensitive Menu / Top frame (alt_clickmenu.php): */
+#contentMenu0 {
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
 }
 div#contentMenu0 {
   position: absolute;
@@ -7820,51 +7579,58 @@ div#contentMenu1 {
  *
  * The TYPO3 project - inspiring people to share!
  */
-/**
- * Docheader
- */
-.typo3-docheader-functions {
-  color: #dadada;
-  height: 27px;
-  line-height: 27px;
-  padding: 0 24px;
-  overflow: hidden;
+/* - - - - - - - - - - - - - - - - - - - - -
+DocHeader
+- - - - - - - - - - - - - - - - - - - - - */
+#typo3-docheader img,
+#typo3-docheader input {
+  cursor: pointer;
 }
-/* overwrite defaults from normalise.css */
-.typo3-docheader-functions select {
-  color: #000;
-}
-.typo3-docheader-buttons {
-  color: #000;
-  height: 22px;
-  padding: 3px 24px;
-  overflow: hidden;
+#typo3-docheader .t3-icon {
+  margin-bottom: 3px;
 }
 #typo3-docheader .left {
   float: left !important;
   float: left;
+  /** Extra margin 6px added to it-icon margin, doubled spacing = 12px */
+}
+#typo3-docheader .left .buttongroup {
+  margin-right: 6px;
+}
+#typo3-docheader .left select {
+  margin-right: 12px;
+}
+#typo3-docheader .left .t3-icon {
+  margin-right: 6px;
 }
 #typo3-docheader .right {
   float: right !important;
   float: right;
 }
-/** Extra margin 6px added to it-icon margin, doubled spacing = 12px */
-#typo3-docheader .left .buttongroup {
-  float: left !important;
-  float: left;
-  margin-right: 6px;
-}
-#typo3-docheader .t3-icon {
-  margin-bottom: 3px;
-}
-#typo3-docheader .left .t3-icon {
-  margin-right: 6px;
-}
 #typo3-docheader .right .t3-icon {
   margin-left: 6px;
 }
-#typo3-docheader .left select {
-  margin-right: 12px;
+#typo3-docheader .typo3-docheader-functions {
+  background-color: #585858;
+  color: #dadada;
+  height: 27px;
+  line-height: 27px;
+  padding: 0 24px;
+  overflow: hidden;
+  /* overwrite defaults from normalize.css */
+}
+#typo3-docheader .typo3-docheader-functions select {
+  color: #000;
+}
+#typo3-docheader .typo3-docheader-functions .typo3-docheader-pagePath {
+  font-weight: bold;
+}
+#typo3-docheader .typo3-docheader-buttons {
+  background-color: #dadada;
+  color: #000;
+  height: 22px;
+  padding: 3px 24px;
+  overflow: hidden;
 }
 /**
  * This file is part of the TYPO3 CMS project.
@@ -7881,10 +7647,18 @@ div#contentMenu1 {
 /* - - - - - - - - - - - - - - - - - - - - -
 History / Undo
 - - - - - - - - - - - - - - - - - - - - - */
+table#typo3-history tr.c-head td,
+table#typo3-history-item tr.c-head td,
+table#typo3-history tr.c-head td,
+table#typo3-history-item tr.c-head td {
+  font-weight: bold;
+}
 table#typo3-history tr td,
 table#typo3-history-item tr td {
   vertical-align: top;
 }
+table#typo3-history img,
+table#typo3-history-item img,
 table#typo3-history img,
 table#typo3-history-item img {
   margin: 1px 1px 1px 1px;
@@ -7901,41 +7675,122 @@ table#typo3-history-item img {
  *
  * The TYPO3 project - inspiring people to share!
  */
-/* - - - - - - - - - - - - - - - - - - - - -
-Information popup, show_item.php
-- - - - - - - - - - - - - - - - - - - - - */
-body#typo3-show-item-php {
-  padding: 12px 24px;
-  height: auto;
+#typo3-messages {
+  margin-bottom: 10px;
 }
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Move Element
-- - - - - - - - - - - - - - - - - - - - - */
-table#typo3-ttContentList {
-  border: 1px solid #a2aab8;
-  background-color: #fff;
+.typo3-message {
+  padding: 15px;
+  margin-bottom: 18px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-position: 10px 12px;
+  background-repeat: no-repeat;
+  padding: 12px 12px 12px 36px;
 }
-body#typo3-move-el-php img {
-  vertical-align: middle;
+.typo3-message h4 {
+  margin-top: 0;
+  color: inherit;
 }
-body#typo3-move-el-php table#typo3-ttContentList img,
-body#typo3-move-el-php img#c-recIcon {
-  margin-right: 4px;
+.typo3-message .alert-link {
+  font-weight: bold;
 }
-body#typo3-move-el-php label.t3-label-valign-top {
-  vertical-align: top;
+.typo3-message > p,
+.typo3-message > ul {
+  margin-bottom: 0;
+}
+.typo3-message > p + p {
+  margin-top: 5px;
+}
+.typo3-message .message-header {
+  font-weight: bold;
+  margin-bottom: 9px;
+}
+.typo3-message ul,
+.typo3-message ol {
+  padding-left: 16px;
+}
+.typo3-message .message-header {
+  display: block;
+}
+.typo3-message .t3-icon-actions-message-close {
+  cursor: pointer;
+  float: right;
+}
+.typo3-message li {
+  margin-bottom: 10px;
+  list-style: disc;
+}
+.typo3-message a {
+  text-decoration: underline;
+}
+.message-notice {
+  color: #777;
+  background-color: #f6f7fa;
+  background-image: url('../../../../icons/gfx/notice.png');
+  border-color: #c2cbcf;
+}
+.message-notice a {
+  color: #777;
+}
+.message-information {
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+  color: #4c73a1;
+  background-image: url('../../../../icons/gfx/information.png');
+}
+.message-information hr {
+  border-top-color: #a6e1ec;
+}
+.message-information .alert-link {
+  color: #3c5a7e;
+}
+.message-information a {
+  color: #4c73a1;
+}
+.message-ok {
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+  color: #3b7826;
+  background-image: url('../../../../icons/gfx/ok.png');
+}
+.message-ok hr {
+  border-top-color: #c9e2b3;
+}
+.message-ok .alert-link {
+  color: #28511a;
+}
+.message-ok a {
+  color: #3b7826;
+}
+.message-warning {
+  background-color: #fcf8e3;
+  border-color: #faebcc;
+  color: #9e7d4a;
+  background-image: url("../../../../icons/gfx/warning.png");
+}
+.message-warning hr {
+  border-top-color: #f7e1b5;
+}
+.message-warning .alert-link {
+  color: #7b623a;
+}
+.message-warning a {
+  color: #9e7d4a;
+}
+.message-error {
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  color: #aa0225;
+  background-image: url('../../../../icons/gfx/error.png');
+}
+.message-error hr {
+  border-top-color: #e4b9c0;
+}
+.message-error .alert-link {
+  color: #78011a;
+}
+.message-error a {
+  color: #aa0225;
 }
 /**
  * This file is part of the TYPO3 CMS project.
@@ -7952,7 +7807,9 @@ body#typo3-move-el-php label.t3-label-valign-top {
 /* - - - - - - - - - - - - - - - - - - - - -
 Pagetree
 - - - - - - - - - - - - - - - - - - - - - */
-#typo3-pagetree,
+#typo3-pagetree {
+  height: 100%;
+}
 #typo3-pagetree .x-panel-bwrap,
 #typo3-pagetree .x-panel-body {
   height: 100%;
@@ -7961,31 +7818,8 @@ Pagetree
   padding: 0;
   margin: 0;
 }
-.x-tree-node .x-tree-node-el {
-  margin-right: 0;
-}
-.x-tree-node-readableRootline {
-  padding: 10px 0 3px 10px;
-}
-.x-tree-lines .typo3-pagetree-node-notExpandable .x-tree-ec-icon {
-  visibility: hidden;
-}
-.x-tree-lines .typo3-pagetree-node-notExpandable ul .x-tree-ec-icon {
-  visibility: visible;
-}
 #typo3-pagetree span.t3-icon {
   margin-bottom: 2px;
-}
-#typo3-pagetree .x-toolbar,
-.typo3-pagetree-topPanel-item .x-toolbar {
-  padding: 0;
-}
-#typo3-pagetree .x-panel-tbar .x-toolbar {
-  padding-top: 2px;
-  height: 27px;
-}
-#typo3-pagetree .x-toolbar-ct {
-  height: 20px;
 }
 #typo3-pagetree ul {
   padding-left: 0;
@@ -7995,17 +7829,103 @@ Pagetree
   padding-top: 24px;
   margin-bottom: 50px;
 }
+#typo3-pagetree .typo3-pagetree-topPanel-button {
+  margin-right: 1px;
+  margin-top: 3px;
+  margin-bottom: -2px;
+  padding: 2px 3px 4px 3px;
+}
+#typo3-pagetree .x-panel-tbar .x-toolbar {
+  padding-top: 2px;
+  height: 27px;
+}
+#typo3-pagetree .x-toolbar {
+  background: none;
+  border: none;
+  padding: 0;
+}
+#typo3-pagetree .x-toolbar-ct {
+  height: 20px;
+}
+#typo3-pagetree .x-tree .x-panel-body {
+  background: none;
+}
+#typo3-pagetree .x-tree-node .x-tree-node-el {
+  margin-right: 0;
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+  border-left: 1px solid transparent;
+}
+#typo3-pagetree .x-tree-node .x-tree-node-over,
+#typo3-pagetree .x-tree-node .x-tree-selected {
+  border-bottom: 1px solid #d7d7d7;
+  border-top: 1px solid #d7d7d7;
+  border-left: 1px solid #d7d7d7;
+}
+#typo3-pagetree .x-tree-node .x-tree-node-over {
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAABCAYAAAAb4BS0AAAAGElEQVR42gENAPL/AMjIyEzIyMizyMjI/zhvCQelaHPPAAAAAElFTkSuQmCC");
+  background-position: right;
+  background-repeat: repeat-y;
+  background-color: #f2f2f2;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+#typo3-pagetree .x-tree-node .x-tree-selected {
+  background-color: #fff;
+}
+#typo3-pagetree .x-tree-node .x-tree-selected.x-tree-node-over {
+  background-image: none;
+  border-radius: 0;
+}
+#typo3-pagetree .x-tree-node-readableRootline {
+  padding: 10px 0 3px 10px;
+}
+#typo3-pagetree .x-panel-tbar {
+  background-color: #585858;
+  border: none;
+}
+#typo3-pagetree .x-unselectable,
+#typo3-pagetree .x-unselectable * {
+  /* restore behaviour from x-tree-node-el which gets overwritten by x-unselectable in default-css */
+  cursor: pointer;
+}
+#typo3-pagetree .ver-element,
+#typo3-pagetree .ver-versions,
+#typo3-pagetree .ver-page {
+  background-color: #f7c898;
+}
+#typo3-pagetree .x-tree-node-over.ver-element,
+#typo3-pagetree .x-tree-node-over.ver-versions,
+#typo3-pagetree .x-tree-node-over.ver-page,
+#typo3-pagetree .x-tree-selected.ver-element,
+#typo3-pagetree .x-tree-selected.ver-versions,
+#typo3-pagetree .x-tree-selected.ver-page {
+  background-color: #fee4c9;
+}
+#typo3-pagetree .typo3-pagetree-filteringTree-highlight {
+  background-color: #f48e0c;
+  color: #FFF;
+  padding: 0;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+Drag and Drop
+- - - - - - - - - - - - - - - - - - - - - */
+.x-tree-lines .typo3-pagetree-node-notExpandable .x-tree-ec-icon {
+  visibility: hidden;
+}
+.x-tree-lines .typo3-pagetree-node-notExpandable ul .x-tree-ec-icon {
+  visibility: visible;
+}
+.typo3-pagetree-topPanel-item .x-toolbar {
+  padding: 0;
+}
 .x-tree-node a .typo3-pagetree-status,
 .x-dd-drag-ghost a .typo3-pagetree-status {
   padding: 0;
   margin: 0 3px 0 0;
 }
-/**
- *
- * section drag and drop
- *
- */
 .typo3-pagetree-tree-copy {
+  color: #666;
   margin-top: 5px;
 }
 .x-dd-drag-ghost-pagetree-text {
@@ -8019,25 +7939,79 @@ Pagetree
 .x-dd-drop-icon {
   padding-top: 6px;
 }
-.x-dd-drag-ghost span {
-  margin: 0 1px 0 3px;
-}
 .x-dd-drag-ghost-pagetree span {
   margin: 3px 3px 0 3px;
 }
-/**
- *
- * @section Top Panel
- *
- */
-#typo3-pagetree-topPanel .x-toolbar-left {
-  height: 20px;
-  padding-left: 12px;
+.x-dd-drag-ghost {
+  background-color: inherit;
+  border: none;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
 }
-#typo3-pagetree-topPanel .x-toolbar-right {
-  padding-right: 12px;
+.x-dd-drag-ghost span {
+  margin: 0 1px 0 3px;
 }
+.x-dd-drop-nodrop {
+  background-color: #f6d3cf;
+  border: 1px solid #d66c68;
+}
+.typo3-pagetree-deletionDropZone-proxyOver,
+.x-tree-drop-ok-append,
+.x-tree-drop-ok-between,
+.x-tree-drop-ok-below,
+.x-tree-drop-ok-above {
+  background-color: #dce8f4;
+  border: 1px solid #9eb2c5;
+}
+.x-dd-drop-nodrop .x-dd-drop-icon {
+  background-image: url(../../../../images/icons/apps/pagetree-drag-place-denied.png);
+}
+.x-tree-drop-ok-append.typo3-pagetree-copy .x-dd-drop-icon {
+  background-image: url(../../../../images/icons/apps/pagetree-drag-new-inside.png);
+}
+.x-tree-drop-ok-below.typo3-pagetree-copy .x-dd-drop-icon {
+  background-image: url(../../../../images/icons/apps/pagetree-drag-copy-below.png);
+}
+.x-tree-drop-ok-above.typo3-pagetree-copy .x-dd-drop-icon {
+  background-image: url(../../../../images/icons/apps/pagetree-drag-copy-above.png);
+}
+.x-tree-drop-ok-between.typo3-pagetree-copy .x-dd-drop-icon {
+  background-image: url(../../../../images/icons/apps/pagetree-drag-new-between.png);
+}
+.x-tree-drop-ok-append .x-dd-drop-icon {
+  background-image: url(../../../../images/icons/apps/pagetree-drag-move-into.png);
+}
+.x-tree-drop-ok-between .x-dd-drop-icon {
+  background-image: url(../../../../images/icons/apps/pagetree-drag-move-between.png);
+}
+.x-tree-drop-ok-below .x-dd-drop-icon {
+  background-image: url(../../../../images/icons/apps/pagetree-drag-move-below.png);
+}
+.x-tree-drop-ok-above .x-dd-drop-icon {
+  background-image: url(../../../../images/icons/apps/pagetree-drag-move-above.png);
+}
+#typo3-pagetree .x-tree-node .x-tree-drag-insert-below,
+.x-tree-node div.x-tree-drag-insert-below,
+.x-tree-dd-underline .x-tree-node div.x-tree-drag-insert-below a {
+  border-bottom: 1px solid #9eb2c5;
+}
+#typo3-pagetree .x-tree-node .x-tree-drag-insert-above,
+.x-tree-node .x-tree-drag-insert-above,
+.x-tree-dd-underline .x-tree-node div.x-tree-drag-insert-above a {
+  border-top: 1px solid #9eb2c5;
+}
+.x-tree-node .x-tree-drag-append {
+  background: #d7e4f1;
+}
+.x-tree-node .x-tree-drag-append a span {
+  background-color: inherit;
+  border: none;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+Top Panel
+- - - - - - - - - - - - - - - - - - - - - */
 .typo3-pagetree-topPanel-button {
+  background: none;
+  border: none;
   margin: 1px 5px 0 0;
   padding: 1px 2px;
   height: 25px;
@@ -8045,6 +8019,66 @@ Pagetree
 .typo3-pagetree-topPanel-button button {
   height: 16px;
   width: 16px;
+  border: none;
+}
+#typo3-pagetree-topPanel .x-btn-click,
+#typo3-pagetree-topPanel .x-btn-over {
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAWCAIAAACKUbHAAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAD9JREFUCB19wdERAUAARDEv23+FmsGZG38Sz0sfKoXEppDKyldyxBzzM1eObWYMM5Zr/ipEWRm9UXnr0OVxvQAaNAkk1SzJpgAAAABJRU5ErkJggg==");
+  *background-image: url("../../../../images/backgrounds/docheader-pagetree-button-hover.png");
+}
+#typo3-pagetree-topPanel .x-btn-pressed {
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAAWCAIAAABlk9r+AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADtJREFUCB0FwYENADAMw6Ap/79cPFhV7b333ltVDdWqWLkaxYABc7AL5nDj7gw0cMMxxCCrXLtTVmhV+SoifU9efLPxAAAAAElFTkSuQmCC");
+  *background-image: url("../../../../images/backgrounds/docheader-pagetree-button.png");
+}
+#typo3-pagetree-topPanel .x-btn-pressed,
+#typo3-pagetree-topPanel .x-btn-over,
+#typo3-pagetree-topPanel .x-btn-click {
+  border: none;
+  top: 0;
+  left: 0;
+  background-repeat: repeat-x;
+}
+#typo3-pagetree-topPanel button:focus {
+  outline: none;
+}
+#typo3-pagetree .typo3-pagetree-topPanel-item {
+  background-color: #dadada;
+  line-height: normal;
+}
+#typo3-pagetree-topPanel-filter {
+  border: 1px solid #aeaeae;
+  box-shadow: inset 0 1px 1px #aeaeae;
+}
+.typo3-pagetree-topPanel-filter-defaultText {
+  color: gray;
+}
+#typo3-pagetree .typo3-pagetree-topPanel-button {
+  border: none;
+  border-radius: 0;
+}
+#typo3-pagetree .typo3-pagetree-topPanel-button button {
+  vertical-align: middle;
+}
+#typo3-pagetree-topPanel-defaultPanel {
+  color: #a2aab8;
+  line-height: 18px;
+}
+#typo3-pagetree-topPanel-item-newNode .x-btn-over {
+  background: inherit;
+}
+#typo3-pagetree-topPanel-item-newNode button {
+  cursor: move;
+}
+#typo3-pagetree-topPanel-button-refresh,
+#typo3-pagetree-topPanel-button-refresh.x-btn-over {
+  background: inherit;
+}
+#typo3-pagetree-topPanel .x-toolbar-left {
+  height: 20px;
+  padding-left: 12px;
+}
+#typo3-pagetree-topPanel .x-toolbar-right {
+  padding-right: 12px;
 }
 .typo3-pagetree-topPanel-item {
   padding: 0 3px 0 3px;
@@ -8062,12 +8096,6 @@ Pagetree
 #typo3-pagetree-topPanel-filterWrap .t3-icon-input-clear {
   right: 2px;
 }
-#typo3-pagetree .typo3-pagetree-topPanel-button {
-  margin-right: 1px;
-  margin-top: 3px;
-  margin-bottom: -2px;
-  padding: 2px 3px 4px 3px;
-}
 #typo3-pagetree-topPanel-defaultPanel {
   padding-left: 6px;
 }
@@ -8082,21 +8110,102 @@ Pagetree
 .typo3-pagetree-topPanel-item .x-form-field-trigger-wrap:hover .x-form-trigger {
   display: block;
 }
-#typo3-pagetree .typo3-pagetree-filteringTree-highlight {
-  padding: 0;
+/* - - - - - - - - - - - - - - - - - - - - -
+Deletion Drop Zone
+- - - - - - - - - - - - - - - - - - - - - */
+#typo3-pagetree-deletionDropZone {
+  color: #FFF;
+  background-color: #585858;
+  box-shadow: inset 0 2px 5px #414141;
 }
-/**
- *
- * @section Indicator Bar
- *
- */
+#typo3-pagetree-deletionDropZone p {
+  padding: 5px;
+}
+#typo3-pagetree-deletionDropZone #typo3-pagetree-deletionDropZone-text {
+  cursor: default;
+  font-size: .9em;
+  padding: 0 0 0 5px;
+  display: inline;
+}
+.typo3-pagetree-deletionDropZone-restore {
+  background-color: #d5d5d5;
+  background-image: url('../../../../images/backgrounds/button.png');
+  background-repeat: repeat-x;
+  background-image: linear-gradient(center top, #f6f6f6 10%, #d5d5d5 90%);
+  border: 1px solid #7c7c7c;
+  border-radius: 1px;
+  color: #434343;
+  cursor: pointer;
+  display: inline-block;
+  padding: 0px 6px;
+  margin-left: 24px;
+}
+.typo3-pagetree-deletionDropZone-restore:hover {
+  background-color: #c8c8c8;
+  background-image: url('../../../../images/backgrounds/button-hover.png');
+  background-image: linear-gradient(center top, #f6f6f6 10%, #c8c8c8 90%);
+  background-position: bottom;
+  background-repeat: repeat-x;
+  border: 1px solid #737f91;
+  color: #1e1e1e;
+}
+.typo3-pagetree-deletionDropZone-restoreText {
+  display: inline-block;
+  padding: 4px 4px 4px 18px;
+  background: transparent url('../../../../images/spinner/d5d5d5.gif') no-repeat 0 3px;
+}
+.typo3-pagetree-deletionDropZone-proxyOver .x-dd-drop-icon {
+  background-image: url(../../../../images/icons/actions/edit-delete.png);
+}
+#typo3-pagetree .typo3-pagetree-deletionDropZone-activateProxyOver {
+  background-color: #644d2d;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+Pagetree
+- - - - - - - - - - - - - - - - - - - - - */
+#typo3-pagetree-treeContainer,
+#typo3-pagetree-topPanelItems {
+  background-color: #ebebeb;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+Tree Highlighting
+- - - - - - - - - - - - - - - - - - - - - */
+.x-tree-node-readableRootline {
+  font-style: italic;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+Indicator Bar
+- - - - - - - - - - - - - - - - - - - - - */
+#typo3-pagetree-indicatorBar-temporaryMountPoint {
+  background-color: #eaf7ff;
+  border-bottom: 1px solid #c5dbe6;
+  color: #4c73a1;
+}
+#typo3-pagetree-indicatorBar-temporaryMountPoint p {
+  line-height: 13px;
+  padding: 10px 35px;
+}
+#typo3-pagetree-indicatorBar-filter {
+  background-color: #eaf7ff;
+  border-bottom: 1px solid #c5dbe6;
+  color: #4c73a1;
+}
+#typo3-pagetree-indicatorBar-filter p {
+  padding: 10px 35px;
+}
+#typo3-pagetree-indicatorBar-indicatorTitle {
+  background-color: #ffec97;
+  font-weight: bold;
+}
+#typo3-pagetree-indicatorBar-indicatorTitle span {
+  margin-right: 10px;
+}
+.typo3-pagetree-indicatorBar-item .typo3-pagetree-indicatorBar-item-rightIcon {
+  cursor: pointer;
+}
 .typo3-pagetree-indicatorBar-item p {
   margin-bottom: 0;
   padding: 5px 10px;
-}
-#typo3-pagetree-indicatorBar-filter p,
-#typo3-pagetree-indicatorBar-temporaryMountPoint p {
-  padding: 10px 35px;
 }
 .typo3-pagetree-indicatorBar-item .typo3-pagetree-indicatorBar-item-leftIcon {
   left: 10px;
@@ -8107,60 +8216,6 @@ Pagetree
   right: 10px;
   top: 5px;
   position: absolute;
-}
-#typo3-pagetree-indicatorBar-indicatorTitle span {
-  margin-right: 10px;
-}
-/**
- *
- * @section Deletion Drop Zone
- *
- */
-#typo3-pagetree-deletionDropZone p {
-  padding: 5px;
-}
-#typo3-pagetree-deletionDropZone-text {
-  padding: 0 0 0 5px;
-  display: inline;
-}
-.typo3-pagetree-deletionDropZone-restore {
-  display: inline-block;
-  padding: 0px 6px;
-  margin-left: 24px;
-}
-.typo3-pagetree-deletionDropZone-restoreText {
-  display: inline-block;
-  padding: 4px 4px 4px 18px;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Document, listing recently edited records if no records were open
-(alt_doc_nodoc.php) - this is effectively the Doc module
-- - - - - - - - - - - - - - - - - - - - - */
-table.typo3-recent-edited {
-  width: 100%;
-}
-table.typo3-recent-edited img.c-recicon {
-  margin-right: 5px;
-  vertical-align: middle;
-}
-body#typo3-alt-doc-nodoc-php p img {
-  margin-left: 5px;
-  vertical-align: middle;
-}
-body#typo3-alt-doc-nodoc-php {
-  margin-left: 5px;
 }
 /**
  * This file is part of the TYPO3 CMS project.
@@ -8178,16 +8233,33 @@ body#typo3-alt-doc-nodoc-php {
 Element Browser / RTE link selection
 - - - - - - - - - - - - - - - - - - - - - */
 #typo3-browse-links-php {
+  background: #ececec;
+  background-image: linear-gradient(center top, #ffffff 30px, #ececec 130px);
+  background-repeat: repeat-x;
   width: 100%;
 }
 #typo3-browse-links-php #typo3-tabmenu {
   margin-top: 10px;
 }
+#typo3-browse-links-php a {
+  text-decoration: none;
+}
+#typo3-browse-links-php #typo3-messages {
+  margin: 0px;
+  padding: 10px;
+}
 table#typo3-curUrl {
+  font-weight: bold;
   margin-bottom: 2px;
   width: 100%;
 }
+table#typo3-curUrl input {
+  margin-right: 5px;
+}
 table#typo3-RTElinkMenu tr td {
+  font-weight: bold;
+  text-align: center;
+  white-space: nowrap;
   width: 15%;
 }
 table#typo3-linkTarget {
@@ -8207,8 +8279,16 @@ table#typo3-crFolder tr td.c-hCell {
   padding-bottom: 5px;
   padding-top: 5px;
 }
-table#typo3-crFolder input {
-  margin-right: 5px;
+table#typo3-linkPages h3,
+table#typo3-linkFiles h3,
+table#typo3-EBrecords h3,
+table#typo3-EBfiles h3,
+table#typo3-uplFiles h3,
+table#typo3-crFolder h3 {
+  padding: 0;
+}
+table#typo3-uplFiles #c-override {
+  padding: 5px 0;
 }
 table#typo3-uplFiles #c-override label {
   display: block;
@@ -8220,17 +8300,6 @@ table#typo3-uplFiles #c-override input {
   position: relative;
   top: -1px;
   *overflow: hidden;
-}
-table#typo3-linkPages h3,
-table#typo3-linkFiles h3,
-table#typo3-EBrecords h3,
-table#typo3-EBfiles h3,
-table#typo3-uplFiles h3,
-table#typo3-crFolder h3 {
-  padding: 0;
-}
-table#typo3-uplFiles #c-override {
-  padding: 5px 0;
 }
 table#typo3-EBfiles div#filelist {
   margin-left: 10px;
@@ -8265,6 +8334,28 @@ table#typo3-msgBox tr td {
 input.typo3-link-input {
   width: 250px;
 }
+/* - - - - - - - - - - - - - - - - - - - - -
+Element Browser / RTE link selection
+- - - - - - - - - - - - - - - - - - - - - */
+form#typo3-uplFilesForm,
+form#typo3-crFolderForm {
+  border-top: 1px solid #adadad;
+}
+table#typo3-linkPages tr td.c-wCell,
+table#typo3-linkFiles tr td.c-wCell,
+table#typo3-EBrecords tr td.c-wCell,
+table#typo3-EBfiles tr td.c-wCell {
+  white-space: nowrap;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+RTE select image
+- - - - - - - - - - - - - - - - - - - - - */
+body#ext-rte-app-rte-select-image-php a {
+  text-decoration: none;
+}
+body#ext-rte-app-rte-select-image-php table tr td table tr.bgColor4 td a {
+  text-decoration: underline;
+}
 /**
  * This file is part of the TYPO3 CMS project.
  *
@@ -8282,8 +8373,234 @@ Animated spinner icon
 - - - - - - - - - - - - - - - - - - - - - */
 span.spinner {
   display: inline-block;
-  height: 16px;
   width: 16px;
+  height: 16px;
+  background-image: url('../../../../images/spinner/f1f1f1.gif');
+}
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+/* - - - - - - - - - - - - - - - - - - - - -
+Tab menu
+- - - - - - - - - - - - - - - - - - - - - */
+.nav-tabs {
+  background-color: #d7d7d7;
+}
+div.typo3-dyntabmenu-divs {
+  padding: 18px;
+  margin-bottom: 1em;
+  border-right: 1px solid #d7d7d7;
+  border-bottom: 1px solid #d7d7d7;
+  border-left: 1px solid #d7d7d7;
+}
+div.typo3-dyntabmenu-divs p.c-descr {
+  background: #e7dba8;
+  font-style: italic;
+}
+/* Foldout tabs */
+div.typo3-dyntabmenu-divs-foldout div.c-tablayer {
+  margin-left: 20px;
+}
+div.typo3-dyntabmenu-divs-foldout div.tab,
+div.typo3-dyntabmenu-divs-foldout div.tabact,
+div.typo3-dyntabmenu-divs-foldout div.disabled {
+  border: solid black 1px;
+  border-radius: 3px;
+}
+div.typo3-dyntabmenu-divs-foldout div.tab {
+  background: #c4d4cd;
+  background-image: url('../../../../icons/gfx/ol/plusbullet.gif');
+  background-repeat: no-repeat;
+}
+div.typo3-dyntabmenu-divs-foldout div.tab:hover {
+  background: #f6eab7;
+  background-image: url('../../../../icons/gfx/ol/arrowbullet.gif');
+  background-repeat: no-repeat;
+}
+div.typo3-dyntabmenu-divs-foldout div.tabact {
+  background: #e7dba8;
+  background-image: url('../../../../icons/gfx/ol/minusbullet.gif');
+  background-repeat: no-repeat;
+}
+div.typo3-dyntabmenu-divs-foldout div.tabact:hover {
+  background: #f6eab7;
+  background-image: url('../../../../icons/gfx/ol/arrowbullet.gif');
+  background-repeat: no-repeat;
+}
+div.typo3-dyntabmenu-divs-foldout div.disabled {
+  background: #ccc;
+  color: #999;
+}
+div.typo3-dyntabmenu-divs-foldout div.disabled:hover {
+  background: #f6eab7;
+  color: #999;
+}
+.c-tablayer {
+  margin: 0;
+  padding: 0;
+}
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+/** used in the admin tools => DB check **/
+.t3-overview-list dt {
+  padding: 0px 0px 2px 20px;
+}
+.t3-overview-list dt img {
+  vertical-align: middle;
+  margin-right: 5px;
+}
+.t3-overview-list dd {
+  margin: 2px 0 15px 20px;
+  padding-left: 22px;
+}
+/**
+ * Common style for tables
+ *
+ * <table class="t3-table>
+ *   <thead>
+ *     <tr>
+ *       <th>...</th>
+ *       <th>...</th>
+ *     </tr>
+ *   </thead>
+ *   <tbody>
+ *     <tr>
+ *       <td>
+ *         <span class="t3-icon t3-icon-treeline t3-icon-treeline-join t3-icon-join">&nbsp;</span>
+ *       </td>
+ *       <td>...</td>
+ *     </tr>
+ *   </tbody>
+ * </table>
+ */
+.table {
+  border-right: 1px solid #dddddd;
+  border-bottom: 1px solid #dddddd;
+  border-left: 1px solid #dddddd;
+}
+.table > thead tr th:first-child,
+.table > tbody tr th:first-child,
+.table > thead tr th:last-child,
+.table > tbody tr th:last-child,
+.table > thead tr td:first-child,
+.table > tbody tr td:first-child,
+.table > thead tr td:last-child,
+.table > tbody tr td:last-child {
+  padding-left: 12px;
+}
+.table > thead > tr > th,
+.table > thead > tr > td {
+  background-color: #666;
+  color: #fff;
+  font-weight: normal;
+  min-height: 16px;
+}
+.table > thead > tr > th a,
+.table > thead > tr > td a,
+.table > thead > tr > th a,
+.table > thead > tr > td a {
+  color: #fff;
+  text-decoration: underline;
+}
+.table > tbody > tr:hover > td {
+  transition: background-color 100ms linear;
+}
+.table > tbody > tr:hover > td a {
+  text-decoration: underline;
+}
+table.t3-table {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 18px;
+  border-right: 1px solid #dddddd;
+  border-bottom: 1px solid #dddddd;
+  border-left: 1px solid #dddddd;
+}
+table.t3-table > thead > tr > th,
+table.t3-table > tbody > tr > th,
+table.t3-table > tfoot > tr > th,
+table.t3-table > thead > tr > td,
+table.t3-table > tbody > tr > td,
+table.t3-table > tfoot > tr > td {
+  padding: 6px;
+  line-height: 1.5;
+  vertical-align: top;
+  border-top: 1px solid #dddddd;
+}
+table.t3-table > thead > tr > th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #dddddd;
+}
+table.t3-table > caption + thead > tr:first-child > th,
+table.t3-table > colgroup + thead > tr:first-child > th,
+table.t3-table > thead:first-child > tr:first-child > th,
+table.t3-table > caption + thead > tr:first-child > td,
+table.t3-table > colgroup + thead > tr:first-child > td,
+table.t3-table > thead:first-child > tr:first-child > td {
+  border-top: 0;
+}
+table.t3-table > tbody + tbody {
+  border-top: 2px solid #dddddd;
+}
+table.t3-table .table {
+  background-color: #ffffff;
+}
+table.t3-table > thead tr th:first-child,
+table.t3-table > tbody tr th:first-child,
+table.t3-table > thead tr th:last-child,
+table.t3-table > tbody tr th:last-child,
+table.t3-table > thead tr td:first-child,
+table.t3-table > tbody tr td:first-child,
+table.t3-table > thead tr td:last-child,
+table.t3-table > tbody tr td:last-child {
+  padding-left: 12px;
+}
+table.t3-table > thead > tr > th,
+table.t3-table > thead > tr > td {
+  background-color: #666;
+  color: #fff;
+  font-weight: normal;
+  min-height: 16px;
+}
+table.t3-table > thead > tr > th a,
+table.t3-table > thead > tr > td a,
+table.t3-table > thead > tr > th a,
+table.t3-table > thead > tr > td a {
+  color: #fff;
+  text-decoration: underline;
+}
+table.t3-table > tbody > tr:hover > td {
+  transition: background-color 100ms linear;
+}
+table.t3-table > tbody > tr:hover > td a {
+  text-decoration: underline;
+}
+table.t3-table > tbody > tr:nth-child(odd) > td,
+table.t3-table > tbody > tr:nth-child(odd) > th {
+  background-color: #f7f7f7;
+}
+table.t3-table > tbody > tr:hover > td,
+table.t3-table > tbody > tr:hover > th {
+  background-color: #dedede;
 }
 /**
  * This file is part of the TYPO3 CMS project.
@@ -8386,6 +8703,12 @@ select option.c-divider {
   padding: 0px;
 }
 .typo3-TCEforms optgroup option {
+  background-color: white;
+  border-bottom: none;
+  color: black;
+  font-style: normal;
+  text-indent: 0px;
+  text-transform: none;
   margin: 0px;
   padding: 2px;
 }
@@ -8507,6 +8830,7 @@ div.typo3-TCEforms div.c-tablayer table > tbody > tr > td > table.wrapperTable >
   display: none;
 }
 .typo3-TCEforms div.imagethumbs .nobr {
+  background-color: #CCC;
   display: inline-block;
   width: 60px;
   height: 60px;
@@ -8532,6 +8856,7 @@ div.typo3-TCEforms div.c-tablayer table > tbody > tr > td > table.wrapperTable >
   display: none;
 }
 .typo3-TCEforms span.filetypes {
+  font-size: 0.8em;
   display: block;
   margin-top: 6px;
   white-space: normal;
@@ -8562,6 +8887,14 @@ div.typo3-TCEforms div.c-tablayer table > tbody > tr > td > table.wrapperTable >
   margin-left: 5px;
 }
 .t3-tceforms-fieldReadOnly {
+  background-color: #fefefe;
+  border: 1px solid #7c7c7c;
+  border-radius: 2px;
+  pointer-events: none;
+  cursor: default;
+  opacity: 0.5;
+  filter: alpha(opacity=@50);
+  box-shadow: none;
   /** Lock icon in right corner */
   padding: 3px 30px 3px 6px;
   margin: 0 0.5em 0.5em 0;
@@ -8583,6 +8916,8 @@ div.typo3-TCEforms-suggest-indicator {
   top: -18px;
 }
 div.typo3-TCEforms-suggest-choices {
+  background-color: white;
+  border: 1px solid #888;
   position: absolute;
   width: 250px;
   z-index: 4000;
@@ -8592,6 +8927,11 @@ div.typo3-TCEforms-suggest-choices ul {
   padding: 0;
 }
 div.typo3-TCEforms-suggest-choices li {
+  cursor: pointer;
+  background-color: #efeff4;
+  background-repeat: no-repeat;
+  background-position: 4px center;
+  list-style-type: none;
   display: block;
   margin: 0;
   padding: 4px 2px 4px 24px;
@@ -8603,6 +8943,7 @@ div.typo3-TCEforms-suggest-choices span.suggest-uid {
   margin-left: 0.3em;
 }
 div.typo3-TCEforms-suggest-choices span.suggest-path {
+  font-size: 0.9em;
   margin-top: 0.3em;
 }
 input.typo3-TCEforms-suggest-search {
@@ -8624,6 +8965,7 @@ TCEforms Flexforms
   margin-bottom: 10px;
 }
 .t3-form-field-label-flex {
+  border-top: 1px solid #c0c0c0;
   padding: 5px;
 }
 .t3-form-field-flex {
@@ -8636,6 +8978,8 @@ TCEforms Inline-Relational-Record-Editing
   margin: 6px 0px;
 }
 .t3-form-field-container-inline {
+  border: 1px solid #aaaaaa;
+  background-color: #f9f9f9;
   margin: 2px 0px;
 }
 .t3-form-field-header-inline > span {
@@ -8723,6 +9067,8 @@ TCEforms Inline-Relational-Record-Editing
   display: none !important;
 }
 .t3-form-field-header-inline {
+  background-color: #E0E0E0;
+  cursor: pointer;
   padding: 6px 16px;
   position: relative;
 }
@@ -8730,6 +9076,7 @@ TCEforms Inline-Relational-Record-Editing
   display: none;
 }
 .t3-form-field-record-inline {
+  border-top: 1px solid #aaaaaa;
   padding: 8px 8px;
   position: relative;
 }
@@ -8756,18 +9103,22 @@ TCEforms Sections
   height: 16px;
 }
 .t3-form-field-label-flexsection {
+  border-top: 1px solid #cdcdcd;
   padding: 5px 10px;
 }
 .t3-form-field-toggle-flexsection {
   padding: 5px 0 5px 20px;
 }
 .t3-form-field-add-flexsection {
+  border-top: 1px solid #cdcdcd;
   padding: 10px 5px 5px 20px;
 }
 .t3-form-field-container-flexsections {
+  background: #dadada;
   margin: 5px 0;
 }
 .t3-form-field-record-flexsection {
+  background: #eee;
   padding: 5px 0;
 }
 .t3-form-field-record-flexsection > div {
@@ -8785,6 +9136,354 @@ img.t3-tceforms-sysfile-imagepreview {
 .typo3-TCEforms .formField-field img[src*="clear.gif"],
 .typo3-TCEforms .t3-form-palette-field img[src*="clear.gif"] {
   z-index: 0;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+TCEforms
+- - - - - - - - - - - - - - - - - - - - - */
+table#typo3-altdoc-header input,
+.c-inputButton {
+  background: none;
+  border: 0;
+}
+.typo3-TCEforms .checkbox,
+.typo3-TCEforms .checkbox:hover {
+  background: #efeff4;
+  border: 0;
+}
+.t3-tceforms-input-wrapper,
+.t3-tceforms-input-wrapper-hover,
+.t3-tceforms-input-wrapper-datetime,
+.t3-tceforms-input-wrapper-datetime-hover {
+  display: block;
+  float: left;
+  position: relative;
+}
+.t3-tceforms-widget-null-wrapper {
+  display: inline-block;
+  float: right;
+  position: relative;
+  width: 20px;
+  max-width: 20px;
+}
+.t3-tceforms-widget-null-wrapper input {
+  margin-left: 2px;
+  margin-top: 42%;
+}
+.t3-tceforms-input-wrapper .t3-tceforms-input-clearer,
+.t3-tceforms-input-wrapper-hover .t3-tceforms-input-clearer {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  z-index: 1000;
+  cursor: pointer;
+}
+.t3-tceforms-input-wrapper-datetime .t3-tceforms-input-clearer,
+.t3-tceforms-input-wrapper-datetime-hover .t3-tceforms-input-clearer {
+  position: absolute;
+  right: 27px;
+  top: 5px;
+  z-index: 1000;
+  cursor: pointer;
+}
+.t3-tceforms-input-wrapper-datetime .t3-icon-edit-pick-date,
+.t3-tceforms-input-wrapper-datetime-hover .t3-icon-edit-pick-date {
+  top: -4px;
+}
+.t3-tceforms-input-wrapper .tceforms-textfield,
+.t3-tceforms-input-wrapper-hover .tceforms-textfield,
+.t3-tceforms-input-wrapper .tceforms-datetimefield,
+.t3-tceforms-input-wrapper-hover .tceforms-datetimefield,
+.t3-tceforms-input-wrapper-datetime .tceforms-textfield,
+.t3-tceforms-input-wrapper-datetime-hover .tceforms-textfield,
+.t3-tceforms-input-wrapper-datetime .tceforms-datetimefield,
+.t3-tceforms-input-wrapper-datetime-hover .tceforms-datetimefield {
+  position: relative;
+  z-index: 2000;
+  padding-right: 30px!important;
+}
+.t3-tceforms-input-wrapper-hover .t3-tceforms-input-clearer,
+.t3-tceforms-input-wrapper-datetime-hover .t3-tceforms-input-clearer {
+  z-index: 3700;
+}
+.typo3-TCEforms table#typo3-altdoc-header input:hover,
+.c-inputButton:hover {
+  background: none;
+  border: 0;
+}
+.typo3-TCEforms .typo3-TCEforms-recHeader {
+  color: #555555;
+  font-weight: bold;
+}
+.typo3-TCEforms .typo3-TCEforms-recHeaderRow {
+  background: #fff;
+  text-align: right;
+}
+.typo3-TCEforms span.typo3-TCEforms-newToken {
+  color: #990000;
+  font-weight: bold;
+}
+.typo3-TCEforms span.typo3-TCEforms-helpText {
+  background: transparent;
+  color: #fff;
+}
+table.typo3-TCEforms-select-checkbox {
+  background-color: #ffffff;
+  border: 1px solid #aaa;
+}
+.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-header td {
+  background-color: #fff;
+  font-weight: bold;
+}
+.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr:nth-child(2n) {
+  background-color: #f7f7f7;
+}
+.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-selectedItem {
+  background-color: #d8ecd0;
+}
+.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-invalidItem {
+  color: #dddddd;
+}
+.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr:hover {
+  background-color: #dedede;
+}
+.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-selectedItem:hover {
+  background-color: #abd99a;
+}
+.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-invalidItem:hover {
+  background-color: transparent;
+}
+.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr td.c-labelCell {
+  white-space: nowrap;
+}
+.typo3-TCEforms optgroup.c-divider,
+select option.c-divider {
+  background-color: #eee;
+  border-top: 1px solid #666;
+  color: #666;
+  font-style: italic;
+  text-transform: uppercase;
+}
+.typo3-TCEforms div.typo3-TCEforms-originalLanguageValue {
+  background-color: #dadada;
+  border: 1px solid #c0c0c0;
+}
+.typo3-TCEforms div.typo3-TCEforms-diffBox {
+  background-color: white;
+  border: 1px solid black;
+}
+.typo3-TCEforms div.typo3-TCEforms-diffBox-header {
+  background-color: red;
+  font-weight: bold;
+}
+/* Default. Always used on main-palettes in the bottom of the forms */
+.typo3-TCEforms .class-main2 td,
+.typo3-TCEforms .class-main12 td,
+.typo3-TCEforms .class-main22 td,
+.typo3-TCEforms .class-main32 td,
+.typo3-TCEforms .class-main42 td,
+.typo3-TCEforms .class-main52 td {
+  border-top: 1px solid #c0c0c0;
+}
+.typo3-TCEforms .class-main1 .typo3-TCEforms-checkboxArray td,
+.typo3-TCEforms .class-main11 .typo3-TCEforms-checkboxArray td,
+.typo3-TCEforms .class-main21 .typo3-TCEforms-checkboxArray td,
+.typo3-TCEforms .class-main31 .typo3-TCEforms-checkboxArray td,
+.typo3-TCEforms .class-main41 .typo3-TCEforms-checkboxArray td,
+.typo3-TCEforms .class-main51 .typo3-TCEforms-checkboxArray td {
+  padding-right: 5px;
+}
+.typo3-TCEforms tr.class-main2:first-child td,
+.typo3-TCEforms tr.class-main12:first-child td,
+.typo3-TCEforms tr.class-main22:first-child td,
+.typo3-TCEforms tr.class-main32:first-child td,
+.typo3-TCEforms tr.class-main42:first-child td,
+.typo3-TCEforms tr.class-main52:first-child td {
+  border-top: 0;
+}
+.typo3-TCEforms .class-main4,
+.typo3-TCEforms .class-main14,
+.typo3-TCEforms .class-main24,
+.typo3-TCEforms .class-main34,
+.typo3-TCEforms .class-main44,
+.typo3-TCEforms .class-main54 {
+  color: #000000;
+}
+.typo3-TCEforms .class-main5,
+.typo3-TCEforms .class-main15,
+.typo3-TCEforms .class-main25,
+.typo3-TCEforms .class-main35,
+.typo3-TCEforms .class-main45,
+.typo3-TCEforms .class-main55 {
+  color: #3c3c44;
+}
+.typo3-TCEforms .wrapperTable,
+.typo3-TCEforms .wrapperTable1,
+.typo3-TCEforms .wrapperTable2,
+.typo3-TCEforms .wrapperTable3,
+.typo3-TCEforms .wrapperTable4,
+.typo3-TCEforms .wrapperTable5 {
+  border: 1px solid #c0c0c0;
+}
+.typo3-TCEforms .wrapperTable1 {
+  border-top: 1px solid #c0c0c0;
+}
+.typo3-TCEforms .typo3-dyntabmenu-divs .wrapperTable,
+.typo3-TCEforms .typo3-dyntabmenu-divs .wrapperTable1,
+.typo3-TCEforms .typo3-dyntabmenu-divs .wrapperTable2,
+.typo3-TCEforms .typo3-dyntabmenu-divs .wrapperTable3,
+.typo3-TCEforms .typo3-dyntabmenu-divs .wrapperTable4,
+.typo3-TCEforms .typo3-dyntabmenu-divs .wrapperTable5 {
+  border: none;
+  border-bottom: 1px solid #c0c0c0;
+}
+.t3-form-palette-fieldset {
+  border: none;
+}
+input.typo3-TCEforms-suggest-search {
+  background-image: url('../../../../icons/gfx/zoom.gif');
+  background-position: 2px center;
+  background-repeat: no-repeat;
+}
+div.typo3-TCEforms-suggest-choices ul {
+  list-style-type: none;
+}
+div.typo3-TCEforms-suggest-choices li.selected {
+  background-color: #ffb !important;
+}
+div.typo3-TCEforms-suggest-choices li.pages {
+  background-color: #fcc;
+}
+div.typo3-TCEforms-suggest-choices span.suggest-uid {
+  font-size: 0.9em;
+}
+div.typo3-TCEforms-suggest-choices span.suggest-path abbr {
+  border-bottom: none;
+}
+div.typo3-TCEforms-suggest-choises a {
+  cursor: pointer;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+TCEforms Flexforms
+- - - - - - - - - - - - - - - - - - - - - */
+div.t3-form-field-container:first-child .t3-form-field-label-flex {
+  border-top: 0;
+}
+/** no separate background for dyntabs in flexforms **/
+.typo3-TCEforms .wrapperTable div.typo3-dyntabmenu-tabs,
+.typo3-TCEforms .wrapperTable1 div.typo3-dyntabmenu-tabs,
+.typo3-TCEforms .wrapperTable2 div.typo3-dyntabmenu-tabs,
+.typo3-TCEforms .wrapperTable3 div.typo3-dyntabmenu-tabs,
+.typo3-TCEforms .wrapperTable4 div.typo3-dyntabmenu-tabs,
+.typo3-TCEforms .wrapperTable5 div.typo3-dyntabmenu-tabs {
+  background: transparent;
+}
+/** tabs inside the table => flexforms */
+.typo3-TCEforms .wrapperTable .typo3-dyntabmenu-divs,
+.typo3-TCEforms .wrapperTable1 .typo3-dyntabmenu-divs,
+.typo3-TCEforms .wrapperTable2 .typo3-dyntabmenu-divs,
+.typo3-TCEforms .wrapperTable3 .typo3-dyntabmenu-divs,
+.typo3-TCEforms .wrapperTable4 .typo3-dyntabmenu-divs,
+.typo3-TCEforms .wrapperTable5 .typo3-dyntabmenu-divs {
+  border: 1px solid #c0c0c0;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+TCEforms Inline-Relational-Record-Editing
+- - - - - - - - - - - - - - - - - - - - - */
+.t3-form-field-header-inline:hover {
+  background-color: #cccccc;
+}
+.t3-form-header-inline-loadingbar {
+  border-top: 1px solid #aaaaaa;
+}
+.t3-form-field-container-inline-hidden,
+.t3-form-field-container-inline-placeHolder {
+  opacity: 0.3;
+}
+.t3-form-field-header-inline table {
+  vertical-align: top;
+}
+.t3-form-field-header-inline-thumbnail-image {
+  border: none;
+}
+.t3-form-field-record-inline .typo3-message {
+  margin-bottom: 1.5em;
+}
+.typo3-TCEforms .t3-form-field-container-inline .wrapperTable,
+.typo3-TCEforms .t3-form-field-container-inline .wrapperTable1,
+.typo3-TCEforms .t3-form-field-container-inline .wrapperTable2,
+.typo3-TCEforms .t3-form-field-container-inline .wrapperTable3,
+.typo3-TCEforms .t3-form-field-container-inline .wrapperTable4,
+.typo3-TCEforms .t3-form-field-container-inline .wrapperTable5 {
+  border: 0;
+}
+.t3-form-field-header-inline td.t3-form-field-header-inline-summary dl dt {
+  font-weight: bold;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+TCEforms Sections
+- - - - - - - - - - - - - - - - - - - - - */
+.typo3-TCEforms-flexForm .bgColor4,
+.typo3-TCEforms-flexForm .bgColor5 {
+  background: none;
+  display: inline-block;
+}
+.typo3-TCEforms-select-selectedItemWithBackgroundImage {
+  background-color: #fff;
+  background-position: 0% 50%;
+  background-repeat: no-repeat;
+  padding: 1px 1px 1px 24px;
+}
+.ext-webkit .typo3-TCEforms-select-selectedItemWithBackgroundImage {
+  text-indent: 20px;
+  background-position-x: 6px;
+}
+.ext-webkit .typo3-TCEforms-select-selectedItemWithBackgroundImage optgroup option {
+  text-indent: 20px;
+}
+.ext-chrome:not(.ext-mac) .typo3-TCEforms-select-selectedItemWithBackgroundImage {
+  text-indent: 0px;
+  background-position-x: 5px;
+}
+.t3-tceforms-fieldReadOnly span.t3-icon {
+  position: absolute;
+  right: 3px;
+  top: 4px;
+}
+.t3-form-field-item {
+  position: relative;
+  border: 1px solid transparent;
+  padding: 7px 0;
+}
+.t3-tceforms-widget-null-wrapper + .t3-form-field-item {
+  display: inline-block;
+}
+.t3-form-field-item.disabled {
+  border: 1px dotted #696362;
+}
+.t3-form-field-disable,
+.t3-form-field-item.disabled .t3-form-field-item.disabled .t3-form-field-disable {
+  display: none;
+}
+.t3-form-field-item.disabled .t3-form-field-disable {
+  z-index: 8000;
+  background: #f4f4f4;
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+}
+.t3-form-palette-field-label {
+  text-indent: 2px;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+TCEforms Tree
+- - - - - - - - - - - - - - - - - - - - - */
+.t3-form-field-item .x-tree input.x-tree-node-cb {
+  height: auto;
+  margin: 0 0 0 1px;
+  vertical-align: middle;
 }
 /**
  * This file is part of the TYPO3 CMS project.
@@ -8804,6 +9503,7 @@ Trees
 table#typo3-tree {
   margin: 10px 0 20px 10px;
   width: 95%;
+  vertical-align: middle;
 }
 table#typo3-tree tr td {
   padding: 0px;
@@ -8814,6 +9514,9 @@ table#typo3-tree tr td img {
 table#typo3-tree tr td img.c-recIcon {
   margin-right: 1px;
 }
+table#typo3-tree a {
+  text-decoration: none;
+}
 p.c-refresh img {
   margin-right: 7px;
   vertical-align: middle;
@@ -8823,6 +9526,7 @@ p.c-refresh img {
   margin-right: 3px;
 }
 body#typo3-alt-db-navframe-php div.c-notice {
+  border: 1px solid black;
   margin-top: 5px;
   margin-bottom: 10px;
   padding: 5px 5px 5px 5px;
@@ -8832,7 +9536,13 @@ body#typo3-alt-db-navframe-php div.c-notice {
 Configuration trees, used in Admin Tools => Configuration
 - - - - - - - - - - - - - - - - - - - - - */
 table.t3-tree-config {
+  background: #ececec;
+  background-image: linear-gradient(center top, #ffffff 0px, #ececec 100px);
+  border: 1px solid #adadad;
   min-width: 500px;
+}
+table.t3-tree-config .t3-tree-config-header {
+  text-align: left;
 }
 /* - - - - - - - - - - - - - - - - - - - - -
 AJAX Page Tree
@@ -8847,37 +9557,68 @@ body#typo3-alt-file-navframe-php #typo3-inner-docbody {
   padding: 0 0 10px 0;
 }
 ul.tree {
+  line-height: 12px;
+  list-style: none;
+  padding-left: 0;
   clear: both;
   margin: 16px 0 0 10px;
   padding: 0;
 }
-ul.tree ul {
-  padding: 0;
-  margin: 0;
+ul.tree a {
+  text-decoration: none;
 }
-ul.tree ul {
-  padding-left: 19px;
-}
-ul #pages0_0 > ul {
-  padding-left: 0;
-}
-ul.tree ul li {
-  padding: 0;
-  margin: 0;
+ul.tree a.pm {
+  cursor: pointer;
 }
 ul.tree div.treeLinkItem {
   display: block;
   min-height: 16px;
   padding-right: 2px;
 }
+ul.tree ul {
+  padding: 0;
+  margin: 0;
+  padding-left: 19px;
+  list-style: none;
+}
+ul.tree ul li {
+  padding: 0;
+  margin: 0;
+  white-space: nowrap;
+  list-style: none;
+}
+ul.tree ul li.active div.treeLinkItem {
+  background-color: #fff;
+  border-color: #d7d7d7;
+  border-width: 1px 0 1px 1px;
+  border-style: solid;
+}
+ul.tree ul li.active li div.treeLinkItem {
+  margin: 0;
+  background-color: transparent;
+  border-width: 0;
+}
+ul.tree ul li.expanded ul {
+  background: transparent url('../../../../icons/gfx/ol/line.gif') left top repeat-y;
+}
+ul.tree ul li.last > ul {
+  background: none;
+}
+ul.tree li.active span a,
+ul.tree ul li.active span a {
+  font-weight: bold;
+}
+ul.tree li.active ul span a,
+ul.tree ul li.active ul span a {
+  font-weight: normal;
+}
+ul #pages0_0 > ul {
+  padding-left: 0;
+}
 /* active tree items, we have to work against the border: 1px here,
    otherwise tree elements would take too much space */
 ul.tree li.active div.treeLinkItem {
   margin: -1px 0 -1px -1px;
-}
-/* subitems of active tree items - reset styling */
-ul.tree li.active li div.treeLinkItem {
-  margin: 0;
 }
 span.dragIcon {
   display: inline-block;
@@ -8897,6 +9638,10 @@ ul.tree div.treeLinkItem span.dragIcon {
   z-index: 20;
 }
 #treeFilterBox {
+  background-color: #dadada;
+  background-image: url('../../../../icons/gfx/filter_bg.gif');
+  background-repeat: no-repeat;
+  background-position: 0 -2px;
   display: none;
   height: 25px;
   position: absolute;
@@ -8915,6 +9660,8 @@ ul.tree div.treeLinkItem span.dragIcon {
   width: 160px;
 }
 #treeFilterReset {
+  border: 0;
+  cursor: pointer;
   left: 192px;
   position: absolute;
   top: 5px;
@@ -8934,6 +9681,1531 @@ ul.tree div.treeLinkItem span.dragIcon {
   height: 30px;
   white-space: nowrap;
   overflow: hidden;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+Tree
+- - - - - - - - - - - - - - - - - - - - - */
+body#typo3-pagetree,
+body#typo3-alt-file-navframe-php {
+  background: #ebebeb;
+}
+#typo3-alt-file-navframe-php #typo3-docbody,
+#typo3-alt-file-navframe-php #typo3-docheader-row1,
+#typo3-alt-file-navframe-php #typo3-docheader-row2,
+.typo3-pagetree-indicatorBar-item,
+#typo3-pagetree-topPanelItems,
+#typo3-pagetree-topPanel .typo3-pagetree-topPanel-item,
+#typo3-pagetree-treeContainer,
+#typo3-pagetree .x-panel-tbar,
+#typo3-pagetree-deletionDropZone .x-panel-body {
+  background-position: right;
+  background-repeat: repeat-y;
+}
+#typo3-alt-file-navframe-php #typo3-docbody,
+#typo3-pagetree-treeContainer {
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA9JREFUeNpiun79OkCAAQAFFgKIFwyKvQAAAABJRU5ErkJggg==");
+}
+table#typo3-tree tr:hover {
+  background-color: #d7dbe2;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+AJAX Page Tree
+- - - - - - - - - - - - - - - - - - - - - */
+#dragIcon {
+  filter: alpha(opacity=50);
+  opacity: 0.5;
+  white-space: nowrap;
+}
+#treeFilter {
+  background: transparent;
+  border: 0px;
+}
+#tree-toolbar-filter-item {
+  display: inline-block;
+  height: 22px;
+  width: 20px;
+}
+#tree-toolbar-filter-item.active {
+  background-image: url("../../../../icons/gfx/toolbar_item_active_bg.png");
+}
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+/* Include Share webfont */
+@font-face {
+  font-family: 'Share';
+  src: url('../../Fonts/share-bold-webfont.eot');
+  src: url('../../Fonts/share-bold-webfont.eot?#iefix') format('embedded-opentype'), url('../../Fonts/share-bold-webfont.woff') format('woff'), url('../../Fonts/share-bold-webfont.ttf') format('truetype'), url('../../Fonts/share-bold-webfont.svg#Share-BoldRegular') format('svg');
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Share';
+  src: url('../../Fonts/share-italic-webfont.eot');
+  src: url('../../Fonts/share-italic-webfont.eot?#iefix') format('embedded-opentype'), url('../../Fonts/share-italic-webfont.woff') format('woff'), url('../../Fonts/share-italic-webfont.ttf') format('truetype'), url('../../Fonts/share-italic-webfont.svg#Share-ItalicRegular') format('svg');
+  font-weight: normal;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Share';
+  src: url('../../Fonts/share-regular-webfont.eot');
+  src: url('../../Fonts/share-regular-webfont.eot?#iefix') format('embedded-opentype'), url('../../Fonts/share-regular-webfont.woff') format('woff'), url('../../Fonts/share-regular-webfont.ttf') format('truetype'), url('../../Fonts/share-regular-webfont.svg#Share-Regular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Share';
+  src: url('../../Fonts/share-bolditalic-webfont.eot');
+  src: url('../../Fonts/share-bolditalic-webfont.eot?#iefix') format('embedded-opentype'), url('../../Fonts/share-bolditalic-webfont.woff') format('woff'), url('../../Fonts/share-bolditalic-webfont.ttf') format('truetype'), url('../../Fonts/share-bolditalic-webfont.svg#Share-BoldItalicRegular') format('svg');
+  font-weight: bold;
+  font-style: italic;
+}
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+/* Login Screen
+ * Warning:
+ * DO NOT prevent the copyright notice from being shown!
+ * According to the GPL license an interactive application must show such a notice on start-up ('If the program is interactive, make it output a short notice... ' - see GPL.txt)
+ * Therefore preventing this notice from being properly shown is a violation of the license, regardless of whether you remove it or use the stylesheet to obstruct the display.
+ */
+#typo3-index-php #t3-login-news-outer #t3-login-news dt {
+  font-weight: bold;
+}
+#typo3-index-php #t3-login-news-outer #t3-login-news dd {
+  border: 0;
+}
+#typo3-index-php {
+  background-color: #494949;
+  background-image: url('../../../../images/backgrounds/gray-gradient.png');
+  background-repeat: repeat-x;
+  margin: 0;
+}
+#typo3-index-php #t3-login-form {
+  margin: 0 auto;
+  width: 430px;
+  padding: 10% 0 0 0;
+}
+#typo3-index-php #t3-login-form .t3-login-logo {
+  margin-bottom: 30px;
+}
+#typo3-index-php #t3-login-form-fields {
+  font-size: 11px;
+}
+#typo3-index-php .t3-icons {
+  float: left;
+  padding: 3px 5px 0 0;
+}
+#typo3-index-php .t3-headline {
+  background-color: #4f4f4f;
+  margin: 0;
+  width: auto;
+}
+#typo3-index-php .t3-headline .t3-login-news-headline {
+  padding: 0 0 0 40px;
+  vertical-align: middle;
+}
+#typo3-index-php .t3-headline h2 {
+  background: transparent url('../../../../icons/login-icon-key.png') no-repeat 12px 8px;
+  color: #fff;
+  font-size: 12px;
+  margin: 0;
+  padding: 5px 12px 5px 40px;
+  line-height: 24px;
+}
+#typo3-index-php #t3-login-interface-section {
+  float: left;
+}
+#typo3-index-php div#t3-login-image {
+  text-align: left;
+}
+#typo3-index-php input.t3-login-submit {
+  background-color: #ff8600;
+  background-image: url('../../../../images/login/login-submit-background.gif');
+  background-image: linear-gradient(center top, #fe9500 0%, #cf6610 100%);
+  background-repeat: repeat-x;
+  border-top: 1px solid #ffb955;
+  border-left: 1px solid #E69036;
+  text-shadow: 0px -1px 0px rgba(149, 81, 5, 0.6);
+  color: #fff;
+}
+#typo3-index-php .t3-login-error {
+  margin: 2px;
+  padding: 10px;
+}
+#typo3-index-php .t3-login-field .t3-login-alert-capslock {
+  left: 300px;
+  position: absolute;
+  top: 5px;
+}
+#typo3-index-php .t3-login-field .t3-login-clearInputField {
+  cursor: pointer;
+  position: absolute;
+  top: 11px;
+  right: 11px;
+}
+#typo3-index-php .t3-login-field input.t3-login-submit {
+  width: auto;
+  height: 28px;
+  padding: 0 50px;
+}
+#typo3-index-php input {
+  background: #fff;
+  border: none;
+  color: #606060;
+  font-size: 12px;
+}
+#typo3-index-php .t3-login-field,
+#typo3-index-php .t3-login-submit {
+  margin: 0 0 6px;
+  /** For clearable */
+  position: relative;
+}
+#typo3-index-php #t3-login-process h2 {
+  display: inline;
+  padding: 20px 0 20px 50px;
+  position: relative;
+  top: 45%;
+  vertical-align: middle;
+}
+#typo3-index-php #t3-login-openIdLogo {
+  position: absolute;
+}
+#typo3-index-php .t3-login-openid-disabled .t3-login-form-footer,
+#typo3-index-php .t3-login-openid-disabled #t3-login-openIdLogo {
+  display: none;
+}
+#typo3-index-php #t3-interfaceselector {
+  font-size: 11px;
+}
+#typo3-index-php #t3-interfaceselector option {
+  height: 19px;
+}
+#typo3-index-php .t3-login-box-body {
+  background-color: #c2c2c2;
+  background-image: linear-gradient(center top, #e2e2e2 0%, #c2c2c2 100%);
+  background-repeat: repeat-x;
+  padding: 25px 40px 20px 40px;
+}
+#typo3-index-php #t3-login-news-outer {
+  margin-top: 35px;
+}
+#typo3-index-php #t3-login-news-outer #t3-login-news {
+  margin-top: 0;
+  clear: both;
+}
+#typo3-index-php #t3-login-news-outer #t3-login-news dd {
+  clear: both;
+  margin-left: 0;
+  padding: 0;
+}
+#typo3-index-php #t3-login-news-outer #t3-login-news .t3-login-news-item {
+  margin-top: 0;
+  padding-top: 20px;
+}
+#typo3-index-php #t3-login-news-outer .t3-login-box-body {
+  padding-bottom: 14px;
+  padding-top: 0;
+}
+#typo3-index-php .shadow {
+  box-shadow: 0px 0px 18px rgba(0, 0, 0, 0.3);
+}
+#typo3-index-php div#t3-copyright-notice {
+  border-top: 1px solid #565655;
+  font-weight: normal;
+  font-size: 10px;
+  color: #797878;
+  padding-top: 12px;
+  margin-top: 30px;
+}
+#typo3-index-php div#t3-copyright-notice a {
+  color: #797878;
+  text-decoration: underline;
+}
+#typo3-index-php div#t3-copyright-notice a:hover {
+  color: #b0b0b0;
+}
+#typo3-index-php .t3-login-logout-form .t3-username-current {
+  float: left;
+  height: 21px;
+  vertical-align: middle;
+}
+#typo3-index-php .t3-login-logout-form .t3-username-current,
+#typo3-index-php .t3-login-logout-form div.t3-login-label {
+  color: #606060;
+  line-height: 21px;
+}
+#typo3-index-php #t3-meta-links {
+  color: #797878;
+  font-size: 10px;
+}
+#typo3-index-php #t3-meta-links a {
+  color: #797878;
+  text-decoration: underline;
+}
+#typo3-index-php #t3-meta-links a:hover {
+  color: #b0b0b0;
+}
+#typo3-index-php #t3-meta-links a.t3-login-link-donate {
+  font-weight: bold;
+}
+#t3-nocookies-ignore {
+  margin-top: 10px;
+}
+/**
+ * @section logout
+ */
+#typo3-index-php .t3-login-logout-form div.t3-login-label {
+  float: left;
+  padding-right: 10px;
+  width: 70px;
+}
+/**
+ * @section erros/warnings
+ */
+.t3-login-alert {
+  padding: 12px;
+  margin-bottom: 6px;
+}
+.t3-login-alert p {
+  font-size: 11px;
+  line-height: 15px;
+  margin: 10px 0 0 0;
+  padding: 0 10px 0 30px;
+}
+.t3-login-alert a {
+  text-decoration: underline;
+}
+.t3-login-alert h2 {
+  background: none;
+  font-size: 14px;
+  margin: 0;
+  padding: 0 10px 0 30px;
+  line-height: 16px;
+}
+/**
+ * @section box layout
+ */
+.t3-login-box-shadow {
+  height: 3px;
+}
+.t3-login-box-border-bottom {
+  height: 6px;
+}
+/* Login Screen
+ * Warning:
+ * DO NOT prevent the copyright notice from being shown!
+ * According to the GPL license an interactive application must show such a notice on start-up ('If the program is interactive, make it output a short notice... ' - see GPL.txt)
+ * Therefore preventing this notice from being properly shown is a violation of the license, regardless of whether you remove it or use the stylesheet to obstruct the display.
+ */
+#typo3-index-php #t3-login-process {
+  text-align: center;
+}
+#typo3-index-php #t3-login-process h2 {
+  background: url('../../../../icons/login-submit-progress.gif') no-repeat 10px center;
+  font-size: 11px !important;
+}
+#typo3-index-php .t3-headline .t3-login-news-headline {
+  background: transparent url('../../../../icons/login-icon-news.gif') no-repeat 10px center;
+  color: #fff;
+  font-size: 12px;
+  line-height: 3em;
+}
+#typo3-index-php .t3-login-form-footer {
+  text-align: right;
+}
+#typo3-index-php .t3-login-form-footer a {
+  cursor: pointer;
+}
+#typo3-index-php .t3-login-form-footer,
+#typo3-index-php .t3-login-form-footer a.switchToOpenId,
+#typo3-index-php dl#t3-login-news a {
+  color: #888;
+  font-size: 10px;
+}
+#typo3-index-php .t3-login-form-footer a.switchToOpenId,
+#typo3-index-php dl#t3-login-news a {
+  text-decoration: underline;
+}
+#typo3-index-php .t3-login-form-footer a.switchToOpenId:hover,
+#typo3-index-php dl#t3-login-news a:hover {
+  color: #333;
+}
+/**
+ * @section erros/warnings
+ */
+.t3-login-alert-error {
+  background: #f6d3cf;
+  border: 1px solid #d66c68;
+}
+.t3-login-alert-error h2 {
+  background: url('../../../../icons/login-alert-error.gif') no-repeat left 2px;
+  color: #be0027;
+}
+.t3-login-alert-error p,
+.t3-login-alert-error a {
+  color: #be0027;
+}
+#t3-nocookies-ignore {
+  padding-left: 30px;
+}
+.t3-login-alert-warning {
+  background: #fbf6de;
+  border: 1px solid #b1905c;
+}
+.t3-login-alert-warning h2 {
+  background: url('../../../../icons/login-alert-warning.gif') no-repeat left 2px;
+  color: #9e7d4a;
+}
+.t3-login-alert-warning p,
+.t3-login-alert-warning a {
+  color: #9e7d4a;
+}
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+/* - - - - - - - - - - - - - - - - - - - - -
+body tags
+- - - - - - - - - - - - - - - - - - - - - */
+/* - - - - - - - - - - - - - - - - - - - - -
+specific wrappers
+
+The "template" class is usually instantiated as either
+bicDoc, mediumDoc, smallDoc or noDoc.
+Each of these will result in the whole page content between the bodytags being
+wrapped in a DIV-section with a class.
+The class name will be "typo3-[classname]"
+In particular we set the width of these wrapper-sections:
+- - - - - - - - - - - - - - - - - - - - - */
+div.typo3-bigDoc,
+div.typo3-noDoc {
+  margin-left: 10px;
+  margin-top: 5px;
+  width: 740px;
+}
+div.typo3-noDoc h2 {
+  width: 740px;
+}
+div.typo3-mediumDoc {
+  width: 470px;
+}
+div.typo3-smallDoc {
+  width: 350px;
+}
+div.typo3-fullDoc {
+  height: 100%;
+  width: 100%;
+}
+div#typo3-docbody {
+  bottom: 0;
+  overflow: auto;
+  position: absolute;
+  top: 49px;
+  width: 100%;
+  z-index: 2;
+}
+div#typo3-inner-docbody {
+  padding: 24px;
+  margin-top: 0;
+}
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+/* - - - - - - - - - - - - - - - - - - - - -
+TYPO3 styles for basic elements
+- - - - - - - - - - - - - - - - - - - - - */
+h1 {
+  font-family: Share, Verdana, Arial, Helvetica, sans-serif;
+  font-variant: normal;
+  font-weight: normal;
+  margin-top: 0;
+  margin-bottom: 22px;
+}
+h2 {
+  margin: 24px 0 12px 0;
+}
+h3 {
+  margin: 24px 0 12px 0;
+}
+ul,
+ol,
+blockquote {
+  margin-bottom: 9px;
+}
+/* Lists */
+ul,
+ol {
+  padding-left: 3em;
+}
+/* Preformatted text - not used so much in TYPO3 */
+pre {
+  margin: 0px;
+}
+/* horizontal ruler */
+div.hr {
+  height: 1px;
+}
+/** .uppercase is kept for backwards-compatibility, use .divider */
+.divider {
+  padding-bottom: 12px;
+}
+a span {
+  cursor: pointer;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+Various classes
+- - - - - - - - - - - - - - - - - - - - - */
+div.diff-r {
+  padding: 3px 3px 3px 3px;
+}
+div.diff-g {
+  padding: 3px 3px 3px 3px;
+}
+img.absmiddle {
+  vertical-align: middle;
+}
+.smallCheckboxes {
+  height: 12px;
+  margin: 0px;
+  width: 12px;
+}
+.alignToInputText,
+.alignToInputText:hover {
+  margin-top: 5px;
+  margin-right: 2px;
+  vertical-align: top;
+}
+.nowrap {
+  white-space: nowrap;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+TYPO3 styles for basic elements
+- - - - - - - - - - - - - - - - - - - - - */
+tr:hover a {
+  text-decoration: underline;
+}
+tr:hover .t3-page-ce a,
+tr:hover .x-tree a {
+  text-decoration: none;
+}
+a.t3-link {
+  text-decoration: underline;
+}
+/* horizontal ruler */
+hr,
+div.hr {
+  background: none;
+  border: none;
+  height: 1px;
+}
+em {
+  font-style: italic;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+Background color classes
+- - - - - - - - - - - - - - - - - - - - - */
+.bgColor-20 {
+  background-color: #e3dfdb;
+}
+.bgColor2 {
+  background-color: #585858;
+  color: #ffffff;
+}
+.bgColor3 {
+  background-color: #f6f2e6;
+}
+.bgColor3-20 {
+  background-color: #f7f7f7;
+}
+.bgColor4 {
+  background-color: #f1f1f1;
+  color: #212424;
+}
+.bgColor4-20 {
+  background-color: #f8f9fa;
+}
+.bgColor5 {
+  background-color: #9b9b9b;
+}
+.bgColor6 {
+  background-color: #f7f7f7;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+Various classes
+- - - - - - - - - - - - - - - - - - - - - */
+.section {
+  margin-bottom: 15px;
+}
+.nobr {
+  white-space: nowrap;
+}
+.diff-r {
+  color: red;
+}
+.diff-g {
+  color: green;
+}
+div.diff-r {
+  background-color: red;
+  color: black;
+}
+div.diff-g {
+  background-color: green;
+  color: black;
+}
+/** used in the admin tools => DB check **/
+.t3-overview-list dt {
+  font-weight: bold;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+Dimmed span tag color (disabled)
+- - - - - - - - - - - - - - - - - - - - - */
+.typo3-dimmed {
+  color: #666;
+}
+.c-na {
+  color: #666;
+  font-style: italic;
+}
+.not-found a {
+  color: #cccccc;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+Red span tag color (warning, notice)
+- - - - - - - - - - - - - - - - - - - - - */
+.typo3-red {
+  color: red;
+}
+.typo3-red-background {
+  background-color: red;
+}
+table.warningbox {
+  border: solid 2px black;
+  background-color: yellow;
+  margin: 20px 0px 20px 0px;
+}
+table.warningbox td {
+  padding: 20px 20px 20px 20px;
+  font-weight: bold;
+}
+table.warningbox td a {
+  text-decoration: underline;
+}
+div.warningbox {
+  border: solid 2px black;
+  background-color: yellow;
+  font-weight: bold;
+  margin: 10px 0px 10px 0px;
+  padding: 10px;
+}
+span.warningboxheader {
+  margin-left: 5px;
+}
+/* all buttons have the "click" mouse cursor */
+.t3-btn {
+  cursor: pointer;
+}
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+/* - - - - - - - - - - - - - - - - - - - - -
+Form
+- - - - - - - - - - - - - - - - - - - - - */
+#typo3-docbody form {
+  margin-bottom: 1.25em;
+}
+.t3-button,
+textarea,
+button {
+  display: inline-block;
+  margin: 0 0.5em 0.5em 0;
+  padding: 3px 6px;
+  vertical-align: middle;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+Form
+- - - - - - - - - - - - - - - - - - - - - */
+input,
+textarea,
+button {
+  background-color: #fefefe;
+  border: 1px solid #7c7c7c;
+  border-radius: 2px;
+}
+input:focus,
+textarea:focus,
+button:focus {
+  border-color: #32a0ff;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075), 0 0 6px rgba(50, 160, 255, 0.6);
+  outline: 0;
+}
+textarea.fixed-font {
+  font-family: "Lucida Console", "Lucida Sans Typewriter", "Bitstream Vera Sans Mono", monospace;
+}
+.checkbox,
+.checkbox:hover,
+input[type="checkbox"] {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+Buttons
+- - - - - - - - - - - - - - - - - - - - - */
+.t3-button,
+button,
+input[type="submit"],
+input[type="reset"],
+input[type="button"] {
+  background-color: #E0E0E0;
+  background-image: none;
+  border: 1px solid #7c7c7c;
+  border-radius: 2px;
+  color: #434343;
+  cursor: pointer;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  text-decoration: none!important;
+}
+.t3-button:hover,
+button:hover,
+input[type="submit"]:hover,
+input[type="reset"]:hover,
+input[type="button"]:hover {
+  background-color: #cccccc;
+  text-decoration: none!important;
+}
+.t3-button span.t3-icon {
+  margin-top: -3px;
+  margin-right: 5px;
+}
+.t3-button.disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+.t3-button:active,
+button:active,
+input[type="submit"]:active,
+input[type="reset"]:active,
+input[type="button"]:active {
+  outline: 0;
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  position: relative;
+  top: 1px;
+}
+.t3-button.disabled,
+button[disabled="disabled"],
+input[type="submit"][disabled="disabled"],
+input[type="reset"][disabled="disabled"],
+input[type="button"][disabled="disabled"],
+input[type="submit"][disabled="disabled"]:hover,
+input[type="reset"][disabled="disabled"]:hover,
+input[type="button"][disabled="disabled"]:hover {
+  pointer-events: none;
+  cursor: default;
+  opacity: 0.5;
+  filter: alpha(opacity=@50);
+  box-shadow: none;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+Groups
+- - - - - - - - - - - - - - - - - - - - - */
+.t3-form-field-group {
+  margin-bottom: 1.5em;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+Go back A-tags
+- - - - - - - - - - - - - - - - - - - - - */
+a.typo3-goBack img {
+  margin-right: 5px;
+  vertical-align: middle;
+}
+span.typo3-moduleHeader img {
+  margin-right: 4px;
+  vertical-align: middle;
+}
+a.typo3-goBack {
+  font-weight: bold;
+}
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+/* - - - - - - - - - - - - - - - - - - - - -
+TYPO3 backend scaffolding
+- - - - - - - - - - - - - - - - - - - - - */
+body#typo3-backend-php {
+  margin: 0;
+  padding: 0;
+}
+#typo3-main-container {
+  clear: both;
+}
+#typo3-top {
+  margin-left: 160px;
+}
+iframe {
+  width: 100%;
+}
+#typo3-side-menu,
+iframe {
+  height: 100%;
+  overflow: auto;
+}
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+/* - - - - - - - - - - - - - - - - - - - - -
+Loadingbar and Animations
+- - - - - - - - - - - - - - - - - - - - - */
+.loadingbar {
+  background-color: #f9f9f9;
+  display: block;
+  position: relative;
+}
+.cssanimations .loadingbar {
+  height: 5px;
+}
+.no-cssanimations .loadingbar {
+  height: 24px;
+  background-image: url('../../../../images/spinner/ffffff.gif');
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+@keyframes fullexpand {
+  0% {
+    width: 0px;
+  }
+  100% {
+    width: 100%;
+  }
+}
+@-moz-keyframes fullexpand {
+  0% {
+    width: 0px;
+  }
+  100% {
+    width: 100%;
+  }
+}
+@-webkit-keyframes fullexpand {
+  0% {
+    width: 0px;
+  }
+  100% {
+    width: 100%;
+  }
+}
+@-o-keyframes fullexpand {
+  0% {
+    width: 0px;
+  }
+  100% {
+    width: 100%;
+  }
+}
+@-ms-keyframes fullexpand {
+  0% {
+    width: 0px;
+  }
+  100% {
+    width: 100%;
+  }
+}
+.cssanimations .loadingbar .expand {
+  width: 100%;
+  height: 5px;
+  background: #585858;
+  position: absolute;
+  animation: fullexpand 5s linear infinite;
+  -moz-animation: fullexpand 5s linear infinite;
+  -webkit-animation: fullexpand 5s linear infinite;
+  -o-animation: fullexpand 5s linear infinite;
+  -ms-animation: fullexpand 5s linear infinite;
+}
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+/* - - - - - - - - - - - - - - - - - - - - -
+Module menu
+- - - - - - - - - - - - - - - - - - - - - */
+#typo3-module-menu {
+  background: #dddddd;
+  left: 0;
+  top: 0;
+  position: absolute;
+  overflow: hidden;
+}
+#typo3-module-menu .x-panel-body {
+  background-color: transparent;
+}
+#typo3-menu {
+  margin-top: 18px;
+  padding-left: 0;
+  /* active menu item */
+}
+#typo3-menu a {
+  color: #1e2121;
+  outline: 0;
+}
+#typo3-menu ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  padding-left: 0;
+}
+#typo3-menu > li {
+  margin-bottom: 6px;
+  border-bottom: 1px solid #c7c7c7;
+  border-bottom-right-radius: 3px;
+}
+#typo3-menu > li:last-child {
+  border-bottom: none;
+}
+#typo3-menu li {
+  clear: both;
+  padding-bottom: 1px;
+}
+#typo3-menu li ul {
+  margin: 6px 0 6px 0;
+}
+#typo3-menu li ul li {
+  cursor: pointer;
+  font-weight: normal;
+  line-height: 15px;
+  min-height: 21px;
+}
+#typo3-menu li ul li a {
+  text-decoration: none;
+  display: block;
+  margin-bottom: 1px;
+  padding: 3px 0 3px 24px;
+}
+#typo3-menu li ul li a:hover,
+#typo3-menu li ul li.hover a,
+#typo3-menu li ul li.highlighted a {
+  margin-bottom: 1px;
+  padding-bottom: 2px;
+  padding-top: 2px;
+}
+#typo3-menu li span.submodule-icon {
+  position: absolute;
+}
+#typo3-menu li span.submodule-label {
+  display: block;
+  margin-left: 26px;
+}
+#typo3-menu li div {
+  overflow: hidden;
+  padding: 2px 0px 4px 16px;
+  vertical-align: middle;
+}
+#typo3-menu li a {
+  display: block;
+  padding-bottom: 1px;
+  margin-bottom: 0;
+}
+#typo3-menu li img {
+  vertical-align: baseline;
+  max-width: 16px;
+  max-height: 16px;
+}
+#typo3-menu li div.modgroup {
+  color: #252524;
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.9em;
+  padding-left: 24px;
+  margin-bottom: 3px;
+}
+#typo3-menu li.highlighted {
+  font-weight: bold;
+}
+#typo3-menu div.expanded,
+#typo3-menu div.collapsed {
+  margin-left: 0px;
+}
+#typo3-menu div.collapsed {
+  background-image: url('../../../../images/arrows/module-menu-left-gray.png');
+  background-position: right 23px top 7px;
+  background-repeat: no-repeat;
+}
+#typo3-menu div.expanded {
+  background-image: url('../../../../images/arrows/module-menu-down-gray.png');
+  background-position: right 22px top 9px;
+  background-repeat: no-repeat;
+}
+#typo3-menu #typo3-docheader {
+  min-width: 0;
+}
+/**
+ * Shadow on the right side of the module menu.
+ */
+#typo3-module-menu,
+#typo3-menu li.menuSection li a:hover {
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA9JREFUeNpi3LFjB0CAAQAEWAIqGE4BVwAAAABJRU5ErkJggg==");
+  background-position: right;
+  background-repeat: repeat-y;
+}
+/* hovered menu item */
+#typo3-menu li.menuSection li a:hover,
+#typo3-menu li.highlighted a {
+  border-top: 1px solid #b8b8b8;
+  border-bottom: 1px solid #b8b8b8;
+}
+#typo3-menu li.menuSection li a:hover {
+  background-color: #e8e8e8;
+}
+#typo3-menu li.highlighted a,
+#typo3-menu li.menuSection li.highlighted a:hover,
+.no-boxshadow #typo3-menu li.menuSection li.highlighted a:hover {
+  background-color: #ebebeb;
+  background-image: none;
+  box-shadow: none;
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .backgroundsize #typo3-menu li div.collapsed {
+    background-image: url('../../../../images/arrows/module-menu-left-gray@2x.png');
+    background-size: 6px 7px;
+  }
+  .backgroundsize #typo3-menu li div.expanded {
+    background-image: url('../../../../images/arrows/module-menu-down-gray@2x.png');
+    background-size: 7px 6px;
+  }
+}
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+/* - - - - - - - - - - - - - - - - - - - - -
+Topbar
+- - - - - - - - - - - - - - - - - - - - - */
+#typo3-topbar {
+  z-index: 200;
+}
+#typo3-topbar div {
+  overflow: visible !important;
+}
+#typo3-topbar #typo3-top-container {
+  background-color: #3f3f3f;
+  background-image: url('../../../../images/backgrounds/topbar.png');
+  background-image: linear-gradient(center top, #494949 0%, #373737 91%, #343434 92%, #2a2a2a 100%);
+  background-repeat: repeat-x;
+  height: 100%;
+  padding: 0 24px;
+}
+#typo3-topbar #typo3-top-container #typo3-logo {
+  margin: 8px 0 0 0;
+  padding: 1px 0 0 0;
+  width: 159px;
+}
+#typo3-topbar #typo3-top-container .typo3-top-toolbar {
+  margin-top: 6px;
+  padding-right: 24px;
+  position: absolute;
+  right: 0px;
+}
+#typo3-topbar #typo3-top-container .typo3-top-toolbar .separator {
+  border-right: 1px solid #000;
+  box-shadow: 1px 0 #585858;
+}
+#typo3-topbar #typo3-top-container .typo3-top-toolbar #typo3-toolbar {
+  list-style: none;
+  display: inline;
+  margin: 0px;
+  padding: 0px;
+}
+#typo3-topbar #typo3-top-container .typo3-top-toolbar #typo3-toolbar div {
+  overflow: visible !important;
+}
+#typo3-topbar #typo3-top-container .typo3-top-toolbar #typo3-toolbar span.spinner {
+  background-image: url('../../../../images/spinner/3f3f3f.gif');
+}
+#typo3-topbar #typo3-top-container .typo3-top-toolbar #typo3-toolbar > li {
+  display: inline;
+  float: left;
+}
+#typo3-topbar #typo3-top-container .typo3-top-toolbar #typo3-toolbar li {
+  padding-top: 3px;
+  position: relative;
+  padding-bottom: 2px;
+}
+#typo3-topbar #typo3-top-container .typo3-top-toolbar #typo3-toolbar .separator {
+  padding-right: 12px;
+  margin-right: 13px;
+}
+#typo3-topbar #typo3-top-container .typo3-top-toolbar #typo3-toolbar .separator .toolbar-item-menu {
+  right: 12px;
+}
+#typo3-topbar #typo3-top-container .typo3-top-toolbar #typo3-toolbar .toolbar-item {
+  display: block;
+  padding-bottom: 4px;
+  padding-top: 2px;
+  text-align: center;
+}
+#typo3-topbar #typo3-top-container .typo3-top-toolbar #typo3-toolbar .toolbar-item-active {
+  background-image: url('../../../../icons/gfx/toolbar_item_active_bg.png');
+  height: 25px;
+}
+#typo3-topbar #typo3-top-container .typo3-top-toolbar #typo3-toolbar .toolbar-item-menu {
+  background-color: #f9f9f9;
+  border: 1px solid #abb2bc;
+  border-top: none;
+  list-style: none;
+  position: absolute;
+  top: 28px;
+  z-index: 100;
+  right: 0;
+  margin: 0;
+  padding: 2px 0 0;
+  width: 180px;
+}
+#typo3-topbar #typo3-top-container .typo3-top-toolbar #typo3-toolbar .toolbar-item-menu li {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+#typo3-topbar #typo3-top-container .typo3-top-toolbar #typo3-toolbar .toolbar-item-menu li a {
+  float: none;
+  min-height: 19px;
+  padding-left: 2px;
+  padding-top: 1px;
+  display: block;
+  padding-bottom: 2px;
+  padding-left: 3px;
+  vertical-align: middle;
+}
+#typo3-toolbar * li:hover,
+tr.shortcut:hover,
+tr.recentdoc:hover,
+tr.opendoc:hover {
+  background: #eee;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+Clear cache
+- - - - - - - - - - - - - - - - - - - - - */
+#clear-cache-actions-menu {
+  width: 30px;
+}
+#clear-cache-actions-menu li {
+  text-align: left;
+}
+#clear-cache-actions-menu li img {
+  float: left;
+  padding-right: 6px;
+}
+#clear-cache-actions-menu li a {
+  text-decoration: none;
+}
+#clear-cache-actions-menu li a span.t3-icon {
+  vertical-align: middle;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+Shortcuts menu
+- - - - - - - - - - - - - - - - - - - - - */
+#shortcut-menu {
+  width: 30px;
+}
+#shortcut-menu .toolbar-item-menu {
+  margin: 0px;
+  padding: 2px 0px 0px;
+  position: absolute;
+  width: 220px;
+}
+#shortcut-menu .shortcut-list {
+  width: 100%;
+}
+#shortcut-menu .shortcut-list tr.shortcut.first-row td {
+  background-image: url('../../../../icons/gfx/shortcutgroups-bg.png');
+  background-repeat: repeat-x;
+  padding-top: 4px;
+}
+#shortcut-menu .shortcut-list tr.shortcut td {
+  line-height: 16px;
+  padding: 2px 1px;
+}
+#shortcut-menu .shortcut-list tr.shortcut-group td.shortcut-group-icon,
+#shortcut-menu .shortcut-list tr.shortcut td.shortcut-icon,
+#shortcut-menu .shortcut-list td.shortcut-edit,
+#shortcut-menu .shortcut-list td.shortcut-delete {
+  text-align: center;
+}
+#shortcut-menu .shortcut-list tr.shortcut td.shortcut-label a,
+#shortcut-menu .shortcut-list tr.shortcut td.shortcut-edit img,
+#shortcut-menu .shortcut-list tr.shortcut td.shortcut-delete img {
+  cursor: pointer;
+}
+#shortcut-menu .shortcut-list .shortcut-group td {
+  background-color: #dbdbdb;
+  border-bottom: 1px solid #a5a5a5;
+  border-top: 1px solid #a5a5a5;
+}
+#shortcut-menu .shortcut-list tr.shortcut-group td.shortcut-group-icon,
+#shortcut-menu .shortcut-list tr.shortcut td.shortcut-icon,
+#shortcut-menu .shortcut-list td.shortcut-edit,
+#shortcut-menu .shortcut-list td.shortcut-delete {
+  vertical-align: top;
+  width: 18px;
+}
+#shortcut-menu .shortcut-list tr.shortcut td.shortcut-label a {
+  display: block;
+}
+#shortcut-menu .shortcut-list tr.shortcut td.shortcut-edit img,
+#shortcut-menu .shortcut-list tr.shortcut td.shortcut-delete img {
+  display: none;
+}
+#shortcut-menu .shortcut-list tr.shortcut:hover td.shortcut-edit img,
+#shortcut-menu .shortcut-list tr.shortcut:hover td.shortcut-delete img {
+  display: inline;
+}
+#shortcut-menu .shortcut-list tr.shortcut-group td.shortcut-group-icon,
+#shortcut-menu .shortcut-list tr.shortcut td.shortcut-icon {
+  padding-left: 7px;
+  vertical-align: top;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+Username inside the toolbar
+- - - - - - - - - - - - - - - - - - - - - */
+#username {
+  color: #ffffff;
+  font-weight: bold;
+  margin-right: 12px;
+}
+#username a {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 11px;
+  text-decoration: none;
+  line-height: 18px;
+}
+#username a span.t3-icon {
+  vertical-align: top;
+  margin-top: 1px;
+}
+#username img {
+  padding-right: 4px;
+}
+#username.su-user a {
+  color: #eb6e5a;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+Logon / Logout
+- - - - - - - - - - - - - - - - - - - - - */
+#login-info p {
+  padding-bottom: 30px;
+  padding-top: 5px;
+}
+#logout-button {
+  padding-top: 1px;
+  padding-bottom: 2px;
+}
+#logout-button input {
+  height: 20px;
+  padding: 0 0 2px 0;
+  background: #494949;
+  border: 1px solid #636363;
+  color: #fff;
+  cursor: pointer;
+  text-align: center;
+  padding: 0 5px;
+  padding-top: 1px;
+}
+#logout-button input:hover {
+  background-color: #c8c8c8;
+  background-image: url('../../../../images/backgrounds/button-hover.png');
+  background-image: linear-gradient(center top, #f6f6f6 10%, #c8c8c8 90%);
+  border: 1px solid #737f91;
+  color: #000;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+Workspace Selector
+- - - - - - - - - - - - - - - - - - - - - */
+#workspace-selector-menu {
+  width: 30px;
+}
+#workspace-selector-menu ul {
+  position: static;
+  list-style: none;
+  margin: 0px;
+  padding: 2px 0px 0px;
+  width: 180px;
+}
+#workspace-selector-menu ul li {
+  text-align: left;
+  float: none;
+  min-height: 19px;
+  vertical-align: middle;
+}
+#workspace-selector-menu ul li span.t3-icon {
+  float: left;
+  margin-top: 0;
+  margin-right: 2px;
+}
+#workspace-selector-menu ul li a {
+  text-decoration: none;
+  display: block;
+  padding-bottom: 2px;
+  padding-left: 3px;
+  vertical-align: middle;
+}
+#workspace-selector-menu ul li img {
+  float: left;
+  position: relative;
+  margin-right: 2px;
+}
+#workspace-selector-menu ul li.divider {
+  border: 0;
+  background-image: url('../../../../icons/gfx/shortcutgroups-bg.png');
+  background-repeat: repeat-x;
+  min-height: 10px;
+  padding-right: 0;
+  padding-top: 4px;
+}
+#workspace-selector-menu ul li.divider:hover {
+  background-color: transparent;
+}
+#workspace-selector-menu .items {
+  list-style: none;
+  background-color: #f9f9f9;
+  overflow-y: auto;
+  max-height: 300px;
+}
+body.typo3-in-workspace #typo3-top-container {
+  background: none;
+}
+body.typo3-in-workspace #typo3-topbar .x-panel-bwrap {
+  background: url('../../../../images/backgrounds/topbar-in-workspace-background-left.png') no-repeat;
+}
+body.typo3-in-workspace #typo3-topbar .x-panel-body {
+  background: url('../../../../images/backgrounds/topbar-in-workspace-background-right.png') no-repeat right 0;
+}
+body.typo3-in-workspace #typo3-topbar {
+  background: url('../../../../images/backgrounds/topbar-in-workspace-background.gif');
+}
+body.typo3-in-workspace #typo3-topbar #username {
+  text-shadow: 0 0 5px #000000;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+Live Search
+- - - - - - - - - - - - - - - - - - - - - */
+#typo3-toolbar #live-search-menu {
+  padding-top: 4px;
+}
+.live-search-results .t3-icon-toolbar-menu-search {
+  position: absolute;
+  z-index: 3000;
+  top: 3px;
+  margin: 3px;
+}
+.t3-icon-input-clear {
+  cursor: pointer;
+  position: absolute;
+  top: 0px;
+  right: 20px;
+}
+#live-search-box {
+  padding-left: 20px;
+  width: 180px;
+  border: none;
+}
+.live-search-list {
+  background-color: white;
+  border: none;
+}
+.live-search-list .x-combo-list {
+  background-color: white;
+}
+.live-search-list .search-item-type {
+  border-right: 1px solid #ddd;
+  padding: 2px 5px 2px 0;
+}
+.live-search-list .search-item-content {
+  padding: 0 8px;
+}
+.live-search-list .search-item-content .search-item-title {
+  padding: 2px;
+  border: none !important;
+}
+.live-search-list .x-combo-list-inner {
+  padding-bottom: 5px;
+}
+.live-search-list .x-combo-list-hd {
+  background: none;
+  border: none;
+  margin-left: 110px;
+  color: #ddd;
+}
+.search-list-help-content {
+  margin: 5px;
+  height: 100%;
+  padding: 0.6em 0.6em 0.6em 2.6em;
+  background-repeat: no-repeat;
+  background-position: 0.5em 0.7em;
+  border: 1px solid;
+  color: #000000;
+  background-color: #ddeef9;
+  border-color: #8aafc4;
+}
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+/* - - - - - - - - - - - - - - - - - - - - -
+Information popup, show_item.php
+- - - - - - - - - - - - - - - - - - - - - */
+body#typo3-show-item-php {
+  padding: 12px 24px;
+  height: auto;
+}
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+/* - - - - - - - - - - - - - - - - - - - - -
+Move Element
+- - - - - - - - - - - - - - - - - - - - - */
+table#typo3-ttContentList {
+  border: 1px solid #a2aab8;
+  background-color: #fff;
+}
+body#typo3-move-el-php img {
+  vertical-align: middle;
+}
+body#typo3-move-el-php table#typo3-ttContentList img,
+body#typo3-move-el-php img#c-recIcon {
+  margin-right: 4px;
+}
+body#typo3-move-el-php label.t3-label-valign-top {
+  vertical-align: top;
+}
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+/* - - - - - - - - - - - - - - - - - - - - -
+Document, listing recently edited records if no records were open
+(alt_doc_nodoc.php) - this is effectively the Doc module
+- - - - - - - - - - - - - - - - - - - - - */
+table.typo3-recent-edited {
+  width: 100%;
+}
+table.typo3-recent-edited img.c-recicon {
+  margin-right: 5px;
+  vertical-align: middle;
+}
+body#typo3-alt-doc-nodoc-php p img {
+  margin-left: 5px;
+  vertical-align: middle;
+}
+body#typo3-alt-doc-nodoc-php {
+  margin-left: 5px;
 }
 /**
  * This file is part of the TYPO3 CMS project.
@@ -9050,304 +11322,6 @@ body#typo3-wizard-colorpicker-php p.c-head {
  *
  * The TYPO3 project - inspiring people to share!
  */
-/* Login Screen
- * Warning:
- * DO NOT prevent the copyright notice from being shown!
- * According to the GPL license an interactive application must show such a notice on start-up ('If the program is interactive, make it output a short notice... ' - see GPL.txt)
- * Therefore preventing this notice from being properly shown is a violation of the license, regardless of whether you remove it or use the stylesheet to obstruct the display.
- */
-#typo3-index-php {
-  margin: 0;
-}
-#typo3-index-php #t3-login-form {
-  margin: 0 auto;
-  width: 430px;
-  padding: 10% 0 0 0;
-}
-#typo3-index-php .t3-headline {
-  margin: 0;
-  width: auto;
-}
-#typo3-index-php .t3-headline h2 {
-  margin: 0;
-  padding: 5px 12px 5px 40px;
-  line-height: 24px;
-}
-#typo3-index-php #t3-login-process h2 {
-  display: inline;
-  padding: 20px 0 20px 50px;
-  position: relative;
-  top: 45%;
-  vertical-align: middle;
-}
-#typo3-index-php .t3-headline .t3-login-news-headline {
-  padding: 0 0 0 40px;
-  vertical-align: middle;
-}
-#typo3-index-php .t3-icons {
-  float: left;
-  padding: 3px 5px 0 0;
-}
-#typo3-index-php .t3-login-field,
-#typo3-index-php .t3-login-submit {
-  margin: 0 0 6px;
-  /** For clearable */
-  position: relative;
-}
-#typo3-index-php .t3-login-field .t3-login-clearInputField {
-  cursor: pointer;
-  position: absolute;
-  top: 11px;
-  right: 11px;
-}
-#typo3-index-php .t3-login-field .t3-login-alert-capslock {
-  left: 300px;
-  position: absolute;
-  top: 5px;
-}
-#typo3-index-php #t3-login-interface-section {
-  float: left;
-}
-#typo3-index-php #t3-interfaceselector option {
-  height: 19px;
-}
-#typo3-index-php #t3-login-openIdLogo {
-  position: absolute;
-}
-#typo3-index-php .t3-login-openid-disabled .t3-login-form-footer,
-#typo3-index-php .t3-login-openid-disabled #t3-login-openIdLogo {
-  display: none;
-}
-#typo3-index-php .t3-login-field input.t3-login-submit {
-  width: auto;
-  height: 28px;
-  padding: 0 50px;
-}
-#typo3-index-php .t3-login-error {
-  margin: 2px;
-  padding: 10px;
-}
-#t3-nocookies-ignore {
-  margin-top: 10px;
-}
-#typo3-index-php div#t3-copyright-notice {
-  padding-top: 12px;
-  margin-top: 30px;
-}
-#typo3-index-php .t3-login-logo {
-  margin-bottom: 30px;
-}
-#typo3-index-php #t3-meta-links {
-  margin-top: 15px;
-}
-/**
- * @section login news
- */
-#typo3-index-php #t3-login-news-outer {
-  margin-top: 35px;
-}
-#typo3-index-php #t3-login-news-outer .t3-login-box-body {
-  padding-bottom: 14px;
-  padding-top: 0;
-}
-#typo3-index-php #t3-login-news-outer #t3-login-news {
-  margin-top: 0;
-  clear: both;
-}
-#typo3-index-php #t3-login-news-outer #t3-login-news .t3-login-news-item {
-  margin-top: 0;
-  padding-top: 20px;
-}
-#typo3-index-php #t3-login-news-outer #t3-login-news dd {
-  clear: both;
-  margin-left: 0;
-  padding: 0;
-}
-/**
- * @section logout
- */
-#typo3-index-php .t3-login-logout-form .t3-username-current {
-  float: left;
-  height: 21px;
-  vertical-align: middle;
-}
-#typo3-index-php .t3-login-logout-form div.t3-login-label {
-  float: left;
-  padding-right: 10px;
-  width: 70px;
-}
-/**
- * @section erros/warnings
- */
-.t3-login-alert {
-  padding: 12px;
-  margin-bottom: 6px;
-}
-.t3-login-alert h2 {
-  margin: 0;
-  padding: 0 10px 0 30px;
-  line-height: 16px;
-}
-.t3-login-alert p {
-  margin: 10px 0 0 0;
-  padding: 0 10px 0 30px;
-}
-/**
- * @section box layout
- */
-.t3-login-box-body {
-  padding: 25px 40px 20px 40px;
-}
-.t3-login-box-shadow {
-  height: 3px;
-}
-.t3-login-box-border-bottom {
-  height: 6px;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-body tags
-- - - - - - - - - - - - - - - - - - - - - */
-/* - - - - - - - - - - - - - - - - - - - - -
-specific wrappers
-
-The "template" class is usually instantiated as either
-bicDoc, mediumDoc, smallDoc or noDoc.
-Each of these will result in the whole page content between the bodytags being
-wrapped in a DIV-section with a class.
-The class name will be "typo3-[classname]"
-In particular we set the width of these wrapper-sections:
-- - - - - - - - - - - - - - - - - - - - - */
-div.typo3-bigDoc,
-div.typo3-noDoc {
-  margin-left: 10px;
-  margin-top: 5px;
-  width: 740px;
-}
-div.typo3-noDoc h2 {
-  width: 740px;
-}
-div.typo3-mediumDoc {
-  width: 470px;
-}
-div.typo3-smallDoc {
-  width: 350px;
-}
-div.typo3-fullDoc {
-  height: 100%;
-  width: 100%;
-}
-div#typo3-docbody {
-  bottom: 0;
-  overflow: auto;
-  position: absolute;
-  top: 49px;
-  width: 100%;
-  z-index: 2;
-}
-div#typo3-inner-docbody {
-  padding: 24px;
-  margin-top: 0;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-TYPO3 styles for basic elements
-- - - - - - - - - - - - - - - - - - - - - */
-h1 {
-  margin-top: 0;
-  margin-bottom: 22px;
-}
-h2 {
-  margin: 24px 0 12px 0;
-}
-h3 {
-  margin: 24px 0 12px 0;
-}
-ul,
-ol,
-blockquote {
-  margin-bottom: 9px;
-}
-/* Lists */
-ul,
-ol {
-  padding-left: 3em;
-}
-/* Preformatted text - not used so much in TYPO3 */
-pre {
-  margin: 0px;
-}
-/* horizontal ruler */
-div.hr {
-  height: 1px;
-}
-/** .uppercase is kept for backwards-compatibility, use .divider */
-.divider {
-  padding-bottom: 12px;
-}
-a span {
-  cursor: pointer;
-}
-/* - - - - - - - - - - - - - - - - - - - - -
-Various classes
-- - - - - - - - - - - - - - - - - - - - - */
-div.diff-r {
-  padding: 3px 3px 3px 3px;
-}
-div.diff-g {
-  padding: 3px 3px 3px 3px;
-}
-img.absmiddle {
-  vertical-align: middle;
-}
-.smallCheckboxes {
-  height: 12px;
-  margin: 0px;
-  width: 12px;
-}
-.alignToInputText,
-.alignToInputText:hover {
-  margin-top: 5px;
-  margin-right: 2px;
-  vertical-align: top;
-}
-.nowrap {
-  white-space: nowrap;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
 /* - - - - - - - - - - - - - - - - - - - - -
 Decorations (shadows etc.)
 - - - - - - - - - - - - - - - - - - - - - */
@@ -9356,65 +11330,6 @@ Decorations (shadows etc.)
 }
 .shadow-box-top-428 {
   height: 4px;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Form
-- - - - - - - - - - - - - - - - - - - - - */
-#typo3-docbody form {
-  margin-bottom: 1.25em;
-}
-.t3-button,
-textarea,
-button {
-  display: inline-block;
-  margin: 0 0.5em 0.5em 0;
-  padding: 3px 6px;
-  vertical-align: middle;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-TYPO3 backend scaffolding
-- - - - - - - - - - - - - - - - - - - - - */
-body#typo3-backend-php {
-  margin: 0;
-  padding: 0;
-}
-#typo3-main-container {
-  clear: both;
-}
-#typo3-top {
-  margin-left: 160px;
-}
-iframe {
-  width: 100%;
-}
-#typo3-side-menu,
-iframe {
-  height: 100%;
-  overflow: auto;
 }
 /**
  * This file is part of the TYPO3 CMS project.
@@ -9543,93 +11458,6 @@ table#typo3-aboutmodules tr.c-subitem-row td .icon {
 }
 table#typo3-aboutmodules tr.c-subitem-row td.module-description {
   padding-right: 10px;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Module menu
-- - - - - - - - - - - - - - - - - - - - - */
-#typo3-module-menu {
-  left: 0;
-  top: 0;
-  position: absolute;
-  overflow: hidden;
-}
-#typo3-menu {
-  margin-top: 18px;
-}
-#typo3-menu ul {
-  padding: 0;
-  margin: 0;
-}
-#typo3-menu > li {
-  margin-bottom: 6px;
-}
-#typo3-menu li {
-  clear: both;
-  padding-bottom: 1px;
-}
-#typo3-menu li div.modgroup {
-  font-size: 0.9em;
-  padding-left: 24px;
-  margin-bottom: 3px;
-}
-#typo3-menu li a {
-  display: block;
-  padding-bottom: 1px;
-  margin-bottom: 0;
-}
-#typo3-menu li img {
-  vertical-align: baseline;
-  max-width: 16px;
-  max-height: 16px;
-}
-#typo3-menu li div {
-  overflow: hidden;
-  padding: 2px 0px 4px 16px;
-  vertical-align: middle;
-}
-#typo3-menu li span.submodule-icon {
-  position: absolute;
-}
-#typo3-menu li span.submodule-label {
-  display: block;
-  margin-left: 26px;
-}
-#typo3-menu li ul {
-  margin: 6px 0 6px 0;
-}
-#typo3-menu li ul li {
-  min-height: 21px;
-}
-#typo3-menu li ul li a {
-  display: block;
-  margin-bottom: 1px;
-  padding: 3px 0 3px 24px;
-}
-#typo3-menu li ul li a:hover,
-#typo3-menu li ul li.hover a,
-#typo3-menu li ul li.highlighted a {
-  margin-bottom: 1px;
-  padding-bottom: 2px;
-  padding-top: 2px;
-}
-#typo3-menu div.expanded,
-#typo3-menu div.collapsed {
-  margin-left: 0px;
-}
-#typo3-module-menu #typo3-docheader {
-  min-width: 0;
 }
 /**
  * This file is part of the TYPO3 CMS project.
@@ -10218,536 +12046,6 @@ div.tst-analyzer-options label {
  * The TYPO3 project - inspiring people to share!
  */
 /* - - - - - - - - - - - - - - - - - - - - -
-Toolbar inside the Topbar
-- - - - - - - - - - - - - - - - - - - - - */
-.typo3-top-toolbar {
-  margin-top: 6px;
-  padding-right: 24px;
-  position: absolute;
-  right: 0px;
-}
-#typo3-toolbar {
-  display: inline;
-  margin: 0px;
-  padding: 0px;
-}
-#typo3-toolbar li {
-  padding-top: 3px;
-  position: relative;
-  padding-bottom: 2px;
-}
-#typo3-toolbar > li {
-  display: inline;
-  float: left;
-}
-#typo3-toolbar * li {
-  display: list-item;
-}
-#typo3-toolbar .separator {
-  padding-right: 12px;
-  margin-right: 13px;
-}
-#typo3-toolbar div {
-  overflow: visible !important;
-}
-#typo3-toolbar span.spinner {
-  background-image: url('../../../../images/spinner/3f3f3f.gif');
-}
-.toolbar-item {
-  display: block;
-  padding-bottom: 4px;
-  padding-top: 2px;
-}
-.toolbar-item-menu {
-  position: absolute;
-  top: 28px;
-  z-index: 100;
-  right: 0;
-  margin: 0;
-  padding: 2px 0 0;
-  width: 180px;
-}
-.separator .toolbar-item-menu {
-  right: 12px;
-}
-#typo3-toolbar .toolbar-item-menu li {
-  padding-top: 0;
-  padding-bottom: 0;
-}
-ul.toolbar-item-menu li a {
-  float: none;
-  min-height: 19px;
-  padding-left: 2px;
-  padding-top: 1px;
-  vertical-align: middle;
-}
-ul.toolbar-item-menu li a {
-  display: block;
-  padding-bottom: 2px;
-  padding-left: 3px;
-  vertical-align: middle;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Clear-Cache menu inside the toolbar
-- - - - - - - - - - - - - - - - - - - - - */
-#clear-cache-actions-menu {
-  width: 30px;
-}
-#clear-cache-actions-menu li img {
-  float: left;
-  padding-right: 6px;
-}
-#clear-cache-actions-menu li a span.t3-icon {
-  vertical-align: middle;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Logout-Button
-- - - - - - - - - - - - - - - - - - - - - */
-#login-info p {
-  padding-bottom: 30px;
-  padding-top: 5px;
-}
-#logout-button input {
-  height: 20px;
-  padding: 0 0 2px 0;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Shortcuts menu in the toolbar
-- - - - - - - - - - - - - - - - - - - - - */
-#shortcut-menu {
-  width: 30px;
-}
-#shortcut-menu .toolbar-item-menu {
-  margin: 0px;
-  padding: 2px 0px 0px;
-  position: absolute;
-  width: 220px;
-}
-#shortcut-menu .shortcut-list {
-  width: 100%;
-}
-#shortcut-menu .shortcut-list tr.shortcut td {
-  padding: 2px 1px;
-}
-#shortcut-menu .shortcut-list tr.shortcut.first-row td {
-  padding-top: 4px;
-}
-#shortcut-menu .shortcut-list tr.shortcut-group td.shortcut-group-icon,
-#shortcut-menu .shortcut-list tr.shortcut td.shortcut-icon,
-#shortcut-menu .shortcut-list td.shortcut-edit,
-#shortcut-menu .shortcut-list td.shortcut-delete {
-  vertical-align: top;
-  width: 18px;
-}
-#shortcut-menu .shortcut-list tr.shortcut td.shortcut-label a {
-  display: block;
-}
-#shortcut-menu .shortcut-list tr.shortcut td.shortcut-edit img,
-#shortcut-menu .shortcut-list tr.shortcut td.shortcut-delete img {
-  display: none;
-}
-#shortcut-menu .shortcut-list tr.shortcut:hover td.shortcut-edit img,
-#shortcut-menu .shortcut-list tr.shortcut:hover td.shortcut-delete img {
-  display: inline;
-}
-#shortcut-menu .shortcut-list tr.shortcut-group td.shortcut-group-icon,
-#shortcut-menu .shortcut-list tr.shortcut td.shortcut-icon {
-  padding-left: 7px;
-  vertical-align: top;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Username inside the toolbar
-- - - - - - - - - - - - - - - - - - - - - */
-#username {
-  margin-right: 12px;
-}
-#username img {
-  padding-right: 4px;
-}
-#username a {
-  line-height: 18px;
-}
-#username a span.t3-icon {
-  vertical-align: top;
-  margin-top: 1px;
-}
-#typo3-toolbar #logout-button {
-  padding-top: 1px;
-  padding-bottom: 2px;
-}
-#typo3-toolbar #logout-button input {
-  padding-top: 1px;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Workspace Selector
-- - - - - - - - - - - - - - - - - - - - - */
-#workspace-selector-menu {
-  width: 30px;
-}
-#workspace-selector-menu ul {
-  margin: 0px;
-  padding: 2px 0px 0px;
-  position: absolute;
-  width: 180px;
-}
-#workspace-selector-menu li {
-  float: none;
-  min-height: 19px;
-  vertical-align: middle;
-}
-#workspace-selector-menu li img {
-  float: left;
-  position: relative;
-  margin-right: 2px;
-}
-#workspace-selector-menu li a {
-  display: block;
-  padding-bottom: 2px;
-  padding-left: 3px;
-  vertical-align: middle;
-}
-#workspace-selector-menu li.divider {
-  padding-top: 4px;
-}
-#workspace-selector-menu li span.t3-icon {
-  float: left;
-  margin-top: 0;
-  margin-right: 2px;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Topbar (whole upper area), containts Logo and toolbar
-- - - - - - - - - - - - - - - - - - - - - */
-#typo3-topbar {
-  z-index: 200;
-}
-#typo3-topbar div {
-  overflow: visible !important;
-}
-#typo3-top-container {
-  height: 100%;
-  padding: 0 24px;
-}
-#typo3-logo {
-  margin: 8px 0 0 0;
-  padding: 1px 0 0 0;
-  width: 159px;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-TYPO3 debug panel
-- - - - - - - - - - - - - - - - - - - - - */
-.typo3-debugPanel-dragDropArrowDown {
-  background-image: url('../../../../icons/gfx/arrowdown.png');
-  display: block;
-  visibility: visible;
-  z-index: 20000;
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  top: 0;
-  left: 0;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Go back A-tags
-- - - - - - - - - - - - - - - - - - - - - */
-a.typo3-goBack {
-  font-weight: bold;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Clipboard
-- - - - - - - - - - - - - - - - - - - - - */
-table#typo3-clipboard {
-  background-color: #efeff4;
-  border: 1px solid #a2aab8;
-}
-table#typo3-clipboard tr.bgColor2 {
-  background-color: #efeff4;
-}
-table#typo3-clipboard tr.bgColor2 td {
-  background-color: #585858;
-  color: #fff;
-}
-table#typo3-clipboard tr.typo3-clipboard-head {
-  background-color: #efeff4;
-  background-image: url('../../../../backgrounds/list_sep.gif');
-  background-repeat: repeat-x;
-  border-bottom: 1px solid #a2aab8;
-  border-top: 1px solid #fefefe;
-}
-table#typo3-clipboard tr.bgColor5 td {
-  background-color: #f8f9fa;
-}
-table#typo3-clipboard tr.bgColor5 td a {
-  text-decoration: none;
-}
-tr.typo3-clipboard-head {
-  background-color: #ccc;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Context Sensitive Help (CSH)
-- - - - - - - - - - - - - - - - - - - - - */
-table.typo3-csh-inline {
-  background-color: #ffffc7;
-  border: 1px solid #cccccc;
-}
-.typo3-csh-inline {
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
-  line-height: 16px;
-}
-a.typo3-csh-link .typo3-csh-inline {
-  background-color: #ffffc7;
-  border: 1px solid #cccccc;
-  color: #000000;
-  font-weight: normal;
-}
-img.typo3-csh-icon {
-  cursor: help;
-}
-a.typo3-csh-link {
-  white-space: normal;
-}
-/** new CSH code **/
-table.t3-help-inline {
-  background-color: #ffffc7;
-  border: 1px solid #cccccc;
-}
-.t3-help-inline {
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
-  line-height: 16px;
-}
-a.t3-help-link .t3-help-inline {
-  background: #ffffc7;
-  color: #000000;
-  font-weight: normal;
-}
-p.t3-help-short.tipIsLinked {
-  cursor: pointer;
-}
-.t3-help-teaser,
-.t3-help-teaser label,
-.t3-help-teaser-icon {
-  cursor: help;
-}
-img.t3-help-icon {
-  cursor: help;
-}
-a.t3-help-link {
-  white-space: normal;
-}
-/*  EXT:cshmanual */
-div.typo3-view-help h1 {
-  background: none;
-  color: #000;
-  text-align: left;
-}
-div.typo3-view-help p.c-nav a {
-  background-color: transparent;
-}
-div.typo3-view-help div.c-toc {
-  background: none;
-  border: none;
-}
-div.typo3-view-help .manual-title a,
-div.typo3-view-help div.c-toc a,
-div.typo3-view-help p a {
-  text-decoration: underline;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Context Sensitive Menu / Layer (alt_clickmenu.php creates it)
-Notice: Rollover color is set by ->bgColor5 in the template object of alt_clickmenu.php
-- - - - - - - - - - - - - - - - - - - - - */
-.typo3-CSM-wrapperCM {
-  background: #fff;
-  border: #b6b6b6 1px solid;
-}
-table.typo3-CSM td.typo3-CSM-item {
-  white-space: nowrap;
-}
-table.typo3-CSM tr.typo3-CSM-itemRow {
-  cursor: pointer;
-}
-table.typo3-CSM tr.bgColor2 {
-  background-color: #b6b6b6;
-}
-/* - - - - - - - - - - - - - - - - - - - - -
-special backend elements
-- - - - - - - - - - - - - - - - - - - - - */
-/* Context Sensitive Menu / Top frame (alt_clickmenu.php): */
-#contentMenu0 {
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/**
- * Docheader
- **/
-.typo3-docheader-pagePath {
-  font-weight: bold;
-}
-.typo3-docheader-functions {
-  background-color: #585858;
-}
-.typo3-docheader-buttons {
-  background-color: #dadada;
-}
-#typo3-docheader img,
-#typo3-docheader input {
-  cursor: pointer;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
 extJS icons
 - - - - - - - - - - - - - - - - - - - - - */
 .t3icon-ext-upload {
@@ -10772,944 +12070,11 @@ extJS icons
  * The TYPO3 project - inspiring people to share!
  */
 /* - - - - - - - - - - - - - - - - - - - - -
-History / Undo
-- - - - - - - - - - - - - - - - - - - - - */
-table#typo3-history tr.c-head td,
-table#typo3-history-item tr.c-head td {
-  font-weight: bold;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Pagetree
-- - - - - - - - - - - - - - - - - - - - - */
-#typo3-pagetree-treeContainer,
-#typo3-pagetree-topPanelItems {
-  background-color: #ebebeb;
-}
-#typo3-pagetree .x-tree .x-panel-body {
-  background: none;
-}
-#typo3-pagetree .x-tree-node .x-tree-node-el {
-  border-top: 1px solid transparent;
-  border-bottom: 1px solid transparent;
-  border-left: 1px solid transparent;
-}
-#typo3-pagetree .x-tree-node .x-tree-node-over,
-#typo3-pagetree .x-tree-node .x-tree-selected {
-  border-bottom: 1px solid #d7d7d7;
-  border-top: 1px solid #d7d7d7;
-  border-left: 1px solid #d7d7d7;
-}
-#typo3-pagetree .x-tree-node .x-tree-node-over {
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAABCAYAAAAb4BS0AAAAGElEQVR42gENAPL/AMjIyEzIyMizyMjI/zhvCQelaHPPAAAAAElFTkSuQmCC");
-  background-position: right;
-  background-repeat: repeat-y;
-  background-color: #f2f2f2;
-  border-top-right-radius: 3px;
-  border-bottom-right-radius: 3px;
-}
-#typo3-pagetree .x-tree-node .x-tree-selected {
-  background-color: #fff;
-}
-#typo3-pagetree .x-tree-node .x-tree-selected.x-tree-node-over {
-  background-image: none;
-  border-radius: 0;
-}
-#typo3-pagetree .x-panel-tbar {
-  background-color: #585858;
-  border: none;
-}
-#typo3-pagetree .x-unselectable,
-#typo3-pagetree .x-unselectable * {
-  /* restore behaviour from x-tree-node-el which gets overwritten by x-unselectable in default-css */
-  cursor: pointer;
-}
-/**
- *
- * @section drag and drop
- *
- */
-.typo3-pagetree-tree-copy {
-  color: #666;
-}
-.x-dd-drag-ghost {
-  background-color: inherit;
-  border: none;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
-}
-.x-dd-drop-nodrop {
-  background-color: #f6d3cf;
-  border: 1px solid #d66c68;
-}
-.typo3-pagetree-deletionDropZone-proxyOver,
-.x-tree-drop-ok-append,
-.x-tree-drop-ok-between,
-.x-tree-drop-ok-below,
-.x-tree-drop-ok-above {
-  background-color: #dce8f4;
-  border: 1px solid #9eb2c5;
-}
-.x-dd-drop-nodrop .x-dd-drop-icon {
-  background-image: url(../../../../images/icons/apps/pagetree-drag-place-denied.png);
-}
-.x-tree-drop-ok-append.typo3-pagetree-copy .x-dd-drop-icon {
-  background-image: url(../../../../images/icons/apps/pagetree-drag-new-inside.png);
-}
-.x-tree-drop-ok-below.typo3-pagetree-copy .x-dd-drop-icon {
-  background-image: url(../../../../images/icons/apps/pagetree-drag-copy-below.png);
-}
-.x-tree-drop-ok-above.typo3-pagetree-copy .x-dd-drop-icon {
-  background-image: url(../../../../images/icons/apps/pagetree-drag-copy-above.png);
-}
-.x-tree-drop-ok-between.typo3-pagetree-copy .x-dd-drop-icon {
-  background-image: url(../../../../images/icons/apps/pagetree-drag-new-between.png);
-}
-.x-tree-drop-ok-append .x-dd-drop-icon {
-  background-image: url(../../../../images/icons/apps/pagetree-drag-move-into.png);
-}
-.x-tree-drop-ok-between .x-dd-drop-icon {
-  background-image: url(../../../../images/icons/apps/pagetree-drag-move-between.png);
-}
-.x-tree-drop-ok-below .x-dd-drop-icon {
-  background-image: url(../../../../images/icons/apps/pagetree-drag-move-below.png);
-}
-.x-tree-drop-ok-above .x-dd-drop-icon {
-  background-image: url(../../../../images/icons/apps/pagetree-drag-move-above.png);
-}
-#typo3-pagetree .x-tree-node .x-tree-drag-insert-below,
-.x-tree-node div.x-tree-drag-insert-below,
-.x-tree-dd-underline .x-tree-node div.x-tree-drag-insert-below a {
-  border-bottom: 1px solid #9eb2c5;
-}
-#typo3-pagetree .x-tree-node .x-tree-drag-insert-above,
-.x-tree-node .x-tree-drag-insert-above,
-.x-tree-dd-underline .x-tree-node div.x-tree-drag-insert-above a {
-  border-top: 1px solid #9eb2c5;
-}
-.x-tree-node .x-tree-drag-append {
-  background: #d7e4f1;
-}
-.x-tree-node .x-tree-drag-append a span {
-  background-color: inherit;
-  border: none;
-}
-/**
- *
- * @section Top Panel
- *
- */
-#typo3-pagetree .x-toolbar {
-  background: none;
-  border: none;
-}
-.typo3-pagetree-topPanel-button {
-  background: none;
-  border: none;
-}
-#typo3-pagetree-topPanel .x-btn-click,
-#typo3-pagetree-topPanel .x-btn-over {
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAWCAIAAACKUbHAAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAD9JREFUCB19wdERAUAARDEv23+FmsGZG38Sz0sfKoXEppDKyldyxBzzM1eObWYMM5Zr/ipEWRm9UXnr0OVxvQAaNAkk1SzJpgAAAABJRU5ErkJggg==");
-  *background-image: url("../../../../images/backgrounds/docheader-pagetree-button-hover.png");
-}
-#typo3-pagetree-topPanel .x-btn-pressed {
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAAWCAIAAABlk9r+AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADtJREFUCB0FwYENADAMw6Ap/79cPFhV7b333ltVDdWqWLkaxYABc7AL5nDj7gw0cMMxxCCrXLtTVmhV+SoifU9efLPxAAAAAElFTkSuQmCC");
-  *background-image: url("../../../../images/backgrounds/docheader-pagetree-button.png");
-}
-#typo3-pagetree-topPanel .x-btn-pressed,
-#typo3-pagetree-topPanel .x-btn-over,
-#typo3-pagetree-topPanel .x-btn-click {
-  border: none;
-  top: 0;
-  left: 0;
-  background-repeat: repeat-x;
-}
-#typo3-pagetree-topPanel button:focus {
-  outline: none;
-}
-#typo3-pagetree-topPanel button::-moz-focus-inner {
-  border: 0;
-}
-.typo3-pagetree-topPanel-button button {
-  border: none;
-}
-#typo3-pagetree .typo3-pagetree-topPanel-item {
-  background-color: #dadada;
-  line-height: normal;
-}
-#typo3-pagetree-topPanel-filter {
-  border: 1px solid #aeaeae;
-  box-shadow: inset 0 1px 1px #aeaeae;
-}
-.typo3-pagetree-topPanel-filter-defaultText {
-  color: gray;
-}
-#typo3-pagetree .typo3-pagetree-topPanel-button {
-  border: none;
-  border-radius: 0;
-}
-#typo3-pagetree .typo3-pagetree-topPanel-button button {
-  vertical-align: middle;
-}
-#typo3-pagetree-topPanel-defaultPanel {
-  color: #a2aab8;
-  line-height: 18px;
-}
-#typo3-pagetree-topPanel-item-newNode .x-btn-over {
-  background: inherit;
-}
-#typo3-pagetree-topPanel-item-newNode button {
-  cursor: move;
-}
-#typo3-pagetree-topPanel-button-refresh,
-#typo3-pagetree-topPanel-button-refresh.x-btn-over {
-  background: inherit;
-}
-/**
- *
- * @section Tree Highlighting
- *
- */
-#typo3-pagetree .ver-element,
-#typo3-pagetree .ver-versions,
-#typo3-pagetree .ver-page {
-  background-color: #f7c898;
-}
-#typo3-pagetree .x-tree-node-over.ver-element,
-#typo3-pagetree .x-tree-node-over.ver-versions,
-#typo3-pagetree .x-tree-node-over.ver-page,
-#typo3-pagetree .x-tree-selected.ver-element,
-#typo3-pagetree .x-tree-selected.ver-versions,
-#typo3-pagetree .x-tree-selected.ver-page {
-  background-color: #fee4c9;
-}
-.x-tree-node-readableRootline {
-  font-style: italic;
-}
-#typo3-pagetree .typo3-pagetree-filteringTree-highlight {
-  background-color: #f48e0c;
-  color: #FFF;
-}
-/**
- *
- * @section Indicator Bar
- *
- */
-#typo3-pagetree-indicatorBar-temporaryMountPoint p {
-  line-height: 13px;
-}
-#typo3-pagetree-indicatorBar-temporaryMountPoint,
-#typo3-pagetree-indicatorBar-filter {
-  background-color: #eaf7ff;
-  border-bottom: 1px solid #c5dbe6;
-  color: #4c73a1;
-}
-.typo3-pagetree-indicatorBar-item .typo3-pagetree-indicatorBar-item-rightIcon {
-  cursor: pointer;
-}
-#typo3-pagetree-indicatorBar-indicatorTitle {
-  background-color: #ffec97;
-  font-weight: bold;
-}
-/**
- *
- * @section Deletion Drop Zone
- *
- */
-#typo3-pagetree-deletionDropZone {
-  color: #FFF;
-  background-color: #585858;
-  box-shadow: inset 0 2px 5px #414141;
-}
-#typo3-pagetree-deletionDropZone-text {
-  font-size: .9em;
-}
-.typo3-pagetree-deletionDropZone-restore {
-  background-color: #d5d5d5;
-  background-image: url('../../../../images/backgrounds/button.png');
-  background-repeat: repeat-x;
-  background-image: linear-gradient(center top, #f6f6f6 10%, #d5d5d5 90%);
-  border: 1px solid #7c7c7c;
-  border-radius: 1px;
-  color: #434343;
-  cursor: pointer;
-}
-.typo3-pagetree-deletionDropZone-restore:hover {
-  background-color: #c8c8c8;
-  background-image: url('../../../../images/backgrounds/button-hover.png');
-  background-image: linear-gradient(center top, #f6f6f6 10%, #c8c8c8 90%);
-  background-position: bottom;
-  background-repeat: repeat-x;
-  border: 1px solid #737f91;
-  color: #1e1e1e;
-}
-.typo3-pagetree-deletionDropZone-restoreText {
-  background: transparent url('../../../../images/spinner/d5d5d5.gif') no-repeat 0 3px;
-}
-.typo3-pagetree-deletionDropZone-proxyOver .x-dd-drop-icon {
-  background-image: url(../../../../images/icons/actions/edit-delete.png);
-}
-#typo3-pagetree .typo3-pagetree-deletionDropZone-activateProxyOver {
-  background-color: #644d2d;
-}
-#typo3-pagetree-deletionDropZone-text {
-  cursor: default;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
 Document, listing recently edited records if no records were open
 (alt_doc_nodoc.php) - this is effectively the Doc module
 - - - - - - - - - - - - - - - - - - - - - */
 table.typo3-recent-edited td {
   white-space: nowrap;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Element Browser / RTE link selection
-- - - - - - - - - - - - - - - - - - - - - */
-#typo3-browse-links-php {
-  background: #ececec;
-  background-image: linear-gradient(center top, #ffffff 30px, #ececec 130px);
-  background-repeat: repeat-x;
-}
-table#typo3-curUrl {
-  font-weight: bold;
-}
-table#typo3-RTElinkMenu tr td {
-  font-weight: bold;
-  text-align: center;
-  white-space: nowrap;
-}
-form#typo3-uplFilesForm,
-form#typo3-crFolderForm {
-  border-top: 1px solid #adadad;
-}
-table#typo3-linkPages tr td.c-wCell,
-table#typo3-linkFiles tr td.c-wCell,
-table#typo3-EBrecords tr td.c-wCell,
-table#typo3-EBfiles tr td.c-wCell {
-  white-space: nowrap;
-}
-body#typo3-browse-links-php a {
-  text-decoration: none;
-}
-body#typo3-browse-links-php #typo3-messages {
-  margin: 0px;
-  padding: 10px;
-}
-/* - - - - - - - - - - - - - - - - - - - - -
-RTE select image
-- - - - - - - - - - - - - - - - - - - - - */
-body#ext-rte-app-rte-select-image-php a {
-  text-decoration: none;
-}
-body#ext-rte-app-rte-select-image-php table tr td table tr.bgColor4 td a {
-  text-decoration: underline;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Animated spinner icon
-- - - - - - - - - - - - - - - - - - - - - */
-span.spinner {
-  background-image: url('../../../../images/spinner/f1f1f1.gif');
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-TCEforms
-- - - - - - - - - - - - - - - - - - - - - */
-table#typo3-altdoc-header input,
-.c-inputButton {
-  background: none;
-  border: 0;
-}
-.typo3-TCEforms .checkbox,
-.typo3-TCEforms .checkbox:hover {
-  background: #efeff4;
-  border: 0;
-}
-.t3-tceforms-input-wrapper,
-.t3-tceforms-input-wrapper-hover,
-.t3-tceforms-input-wrapper-datetime,
-.t3-tceforms-input-wrapper-datetime-hover {
-  display: block;
-  float: left;
-  position: relative;
-}
-.t3-tceforms-widget-null-wrapper {
-  display: inline-block;
-  float: right;
-  position: relative;
-  width: 20px;
-  max-width: 20px;
-}
-.t3-tceforms-widget-null-wrapper input {
-  margin-left: 2px;
-  margin-top: 42%;
-}
-.t3-tceforms-input-wrapper .t3-tceforms-input-clearer,
-.t3-tceforms-input-wrapper-hover .t3-tceforms-input-clearer {
-  position: absolute;
-  right: 10px;
-  top: 5px;
-  z-index: 1000;
-  cursor: pointer;
-}
-.t3-tceforms-input-wrapper-datetime .t3-tceforms-input-clearer,
-.t3-tceforms-input-wrapper-datetime-hover .t3-tceforms-input-clearer {
-  position: absolute;
-  right: 27px;
-  top: 5px;
-  z-index: 1000;
-  cursor: pointer;
-}
-.t3-tceforms-input-wrapper-datetime .t3-icon-edit-pick-date,
-.t3-tceforms-input-wrapper-datetime-hover .t3-icon-edit-pick-date {
-  top: -4px;
-}
-.t3-tceforms-input-wrapper .tceforms-textfield,
-.t3-tceforms-input-wrapper-hover .tceforms-textfield,
-.t3-tceforms-input-wrapper .tceforms-datetimefield,
-.t3-tceforms-input-wrapper-hover .tceforms-datetimefield,
-.t3-tceforms-input-wrapper-datetime .tceforms-textfield,
-.t3-tceforms-input-wrapper-datetime-hover .tceforms-textfield,
-.t3-tceforms-input-wrapper-datetime .tceforms-datetimefield,
-.t3-tceforms-input-wrapper-datetime-hover .tceforms-datetimefield {
-  position: relative;
-  z-index: 2000;
-  padding-right: 30px!important;
-}
-.t3-tceforms-input-wrapper-hover .t3-tceforms-input-clearer,
-.t3-tceforms-input-wrapper-datetime-hover .t3-tceforms-input-clearer {
-  z-index: 3700;
-}
-.typo3-TCEforms table#typo3-altdoc-header input:hover,
-.c-inputButton:hover {
-  background: none;
-  border: 0;
-}
-.typo3-TCEforms .typo3-TCEforms-recHeader {
-  color: #555555;
-  font-weight: bold;
-}
-.typo3-TCEforms .typo3-TCEforms-recHeaderRow {
-  background: #fff;
-  text-align: right;
-}
-.typo3-TCEforms span.typo3-TCEforms-newToken {
-  color: #990000;
-  font-weight: bold;
-}
-.typo3-TCEforms span.typo3-TCEforms-helpText {
-  background: transparent;
-  color: #fff;
-}
-table.typo3-TCEforms-select-checkbox {
-  background-color: #ffffff;
-  border: 1px solid #aaa;
-}
-.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-header td {
-  background-color: #fff;
-  font-weight: bold;
-}
-.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr:nth-child(2n) {
-  background-color: #f7f7f7;
-}
-.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-selectedItem {
-  background-color: #d8ecd0;
-}
-.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-invalidItem {
-  color: #dddddd;
-}
-.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr:hover {
-  background-color: #dedede;
-}
-.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-selectedItem:hover {
-  background-color: #abd99a;
-}
-.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-invalidItem:hover {
-  background-color: transparent;
-}
-.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr td.c-labelCell {
-  white-space: nowrap;
-}
-.typo3-TCEforms optgroup.c-divider,
-select option.c-divider {
-  background-color: #eee;
-  border-top: 1px solid #666;
-  color: #666;
-  font-style: italic;
-  text-transform: uppercase;
-}
-.typo3-TCEforms optgroup option {
-  background-color: white;
-  border-bottom: none;
-  color: black;
-  font-style: normal;
-  text-indent: 0px;
-  text-transform: none;
-}
-.typo3-TCEforms div.typo3-TCEforms-originalLanguageValue {
-  background-color: #dadada;
-  border: 1px solid #c0c0c0;
-}
-.typo3-TCEforms div.typo3-TCEforms-diffBox {
-  background-color: white;
-  border: 1px solid black;
-}
-.typo3-TCEforms div.typo3-TCEforms-diffBox-header {
-  background-color: red;
-  font-weight: bold;
-}
-/* Default. Always used on main-palettes in the bottom of the forms */
-.typo3-TCEforms .class-main2 td,
-.typo3-TCEforms .class-main12 td,
-.typo3-TCEforms .class-main22 td,
-.typo3-TCEforms .class-main32 td,
-.typo3-TCEforms .class-main42 td,
-.typo3-TCEforms .class-main52 td {
-  border-top: 1px solid #c0c0c0;
-}
-.typo3-TCEforms .class-main1 .typo3-TCEforms-checkboxArray td,
-.typo3-TCEforms .class-main11 .typo3-TCEforms-checkboxArray td,
-.typo3-TCEforms .class-main21 .typo3-TCEforms-checkboxArray td,
-.typo3-TCEforms .class-main31 .typo3-TCEforms-checkboxArray td,
-.typo3-TCEforms .class-main41 .typo3-TCEforms-checkboxArray td,
-.typo3-TCEforms .class-main51 .typo3-TCEforms-checkboxArray td {
-  padding-right: 5px;
-}
-.typo3-TCEforms tr.class-main2:first-child td,
-.typo3-TCEforms tr.class-main12:first-child td,
-.typo3-TCEforms tr.class-main22:first-child td,
-.typo3-TCEforms tr.class-main32:first-child td,
-.typo3-TCEforms tr.class-main42:first-child td,
-.typo3-TCEforms tr.class-main52:first-child td {
-  border-top: 0;
-}
-.typo3-TCEforms .class-main4,
-.typo3-TCEforms .class-main14,
-.typo3-TCEforms .class-main24,
-.typo3-TCEforms .class-main34,
-.typo3-TCEforms .class-main44,
-.typo3-TCEforms .class-main54 {
-  color: #000000;
-}
-.typo3-TCEforms .class-main5,
-.typo3-TCEforms .class-main15,
-.typo3-TCEforms .class-main25,
-.typo3-TCEforms .class-main35,
-.typo3-TCEforms .class-main45,
-.typo3-TCEforms .class-main55 {
-  color: #3c3c44;
-}
-.typo3-TCEforms .wrapperTable,
-.typo3-TCEforms .wrapperTable1,
-.typo3-TCEforms .wrapperTable2,
-.typo3-TCEforms .wrapperTable3,
-.typo3-TCEforms .wrapperTable4,
-.typo3-TCEforms .wrapperTable5 {
-  border: 1px solid #c0c0c0;
-}
-.typo3-TCEforms .wrapperTable1 {
-  border-top: 1px solid #c0c0c0;
-}
-.typo3-TCEforms .typo3-dyntabmenu-divs .wrapperTable,
-.typo3-TCEforms .typo3-dyntabmenu-divs .wrapperTable1,
-.typo3-TCEforms .typo3-dyntabmenu-divs .wrapperTable2,
-.typo3-TCEforms .typo3-dyntabmenu-divs .wrapperTable3,
-.typo3-TCEforms .typo3-dyntabmenu-divs .wrapperTable4,
-.typo3-TCEforms .typo3-dyntabmenu-divs .wrapperTable5 {
-  border: none;
-  border-bottom: 1px solid #c0c0c0;
-}
-.t3-form-palette-fieldset {
-  border: none;
-}
-.typo3-TCEforms div.imagethumbs .nobr {
-  background-color: #CCC;
-}
-.typo3-TCEforms span.filetypes {
-  font-size: 0.8em;
-}
-input.typo3-TCEforms-suggest-search {
-  background-image: url('../../../../icons/gfx/zoom.gif');
-  background-position: 2px center;
-  background-repeat: no-repeat;
-}
-div.typo3-TCEforms-suggest-choices {
-  background-color: white;
-  border: 1px solid #888;
-}
-div.typo3-TCEforms-suggest-choices ul {
-  list-style-type: none;
-}
-div.typo3-TCEforms-suggest-choices li.selected {
-  background-color: #ffb !important;
-}
-div.typo3-TCEforms-suggest-choices li {
-  cursor: pointer;
-  background-color: #efeff4;
-  background-repeat: no-repeat;
-  background-position: 4px center;
-  list-style-type: none;
-}
-div.typo3-TCEforms-suggest-choices li.pages {
-  background-color: #fcc;
-}
-div.typo3-TCEforms-suggest-choices span.suggest-uid {
-  font-size: 0.9em;
-}
-div.typo3-TCEforms-suggest-choices span.suggest-path {
-  font-size: 0.9em;
-}
-div.typo3-TCEforms-suggest-choices span.suggest-path abbr {
-  border-bottom: none;
-}
-div.typo3-TCEforms-suggest-choises a {
-  cursor: pointer;
-}
-/* - - - - - - - - - - - - - - - - - - - - -
-TCEforms Flexforms
-- - - - - - - - - - - - - - - - - - - - - */
-.t3-form-field-label-flex {
-  border-top: 1px solid #c0c0c0;
-}
-div.t3-form-field-container:first-child .t3-form-field-label-flex {
-  border-top: 0;
-}
-/** no separate background for dyntabs in flexforms **/
-.typo3-TCEforms .wrapperTable div.typo3-dyntabmenu-tabs,
-.typo3-TCEforms .wrapperTable1 div.typo3-dyntabmenu-tabs,
-.typo3-TCEforms .wrapperTable2 div.typo3-dyntabmenu-tabs,
-.typo3-TCEforms .wrapperTable3 div.typo3-dyntabmenu-tabs,
-.typo3-TCEforms .wrapperTable4 div.typo3-dyntabmenu-tabs,
-.typo3-TCEforms .wrapperTable5 div.typo3-dyntabmenu-tabs {
-  background: transparent;
-}
-/** tabs inside the table => flexforms */
-.typo3-TCEforms .wrapperTable .typo3-dyntabmenu-divs,
-.typo3-TCEforms .wrapperTable1 .typo3-dyntabmenu-divs,
-.typo3-TCEforms .wrapperTable2 .typo3-dyntabmenu-divs,
-.typo3-TCEforms .wrapperTable3 .typo3-dyntabmenu-divs,
-.typo3-TCEforms .wrapperTable4 .typo3-dyntabmenu-divs,
-.typo3-TCEforms .wrapperTable5 .typo3-dyntabmenu-divs {
-  border: 1px solid #c0c0c0;
-}
-/* - - - - - - - - - - - - - - - - - - - - -
-TCEforms Inline-Relational-Record-Editing
-- - - - - - - - - - - - - - - - - - - - - */
-.t3-form-field-container-inline {
-  border: 1px solid #aaaaaa;
-  background-color: #f9f9f9;
-}
-.t3-form-field-header-inline {
-  background-color: #E0E0E0;
-  cursor: pointer;
-}
-.t3-form-field-header-inline:hover {
-  background-color: #cccccc;
-}
-.t3-form-header-inline-loadingbar {
-  border-top: 1px solid #aaaaaa;
-}
-.t3-form-field-container-inline-hidden,
-.t3-form-field-container-inline-placeHolder {
-  opacity: 0.3;
-}
-.t3-form-field-header-inline table {
-  vertical-align: top;
-}
-.t3-form-field-header-inline-thumbnail-image {
-  border: none;
-}
-.t3-form-field-record-inline {
-  border-top: 1px solid #aaaaaa;
-}
-.t3-form-field-record-inline .typo3-message {
-  margin-bottom: 1.5em;
-}
-.typo3-TCEforms .t3-form-field-container-inline .wrapperTable,
-.typo3-TCEforms .t3-form-field-container-inline .wrapperTable1,
-.typo3-TCEforms .t3-form-field-container-inline .wrapperTable2,
-.typo3-TCEforms .t3-form-field-container-inline .wrapperTable3,
-.typo3-TCEforms .t3-form-field-container-inline .wrapperTable4,
-.typo3-TCEforms .t3-form-field-container-inline .wrapperTable5 {
-  border: 0;
-}
-.t3-form-field-header-inline td.t3-form-field-header-inline-summary dl dt {
-  font-weight: bold;
-}
-/* - - - - - - - - - - - - - - - - - - - - -
-TCEforms Sections
-- - - - - - - - - - - - - - - - - - - - - */
-.typo3-TCEforms-flexForm .bgColor4,
-.typo3-TCEforms-flexForm .bgColor5 {
-  background: none;
-  display: inline-block;
-}
-.t3-form-field-label-flexsection {
-  border-top: 1px solid #cdcdcd;
-}
-.t3-form-field-container-flexsections {
-  background: #dadada;
-}
-.t3-form-field-record-flexsection {
-  background: #eee;
-}
-.t3-form-field-add-flexsection {
-  border-top: 1px solid #cdcdcd;
-}
-.typo3-TCEforms-select-selectedItemWithBackgroundImage {
-  background-color: #fff;
-  background-position: 0% 50%;
-  background-repeat: no-repeat;
-  padding: 1px 1px 1px 24px;
-}
-.ext-webkit .typo3-TCEforms-select-selectedItemWithBackgroundImage {
-  text-indent: 20px;
-  background-position-x: 6px;
-}
-.ext-webkit .typo3-TCEforms-select-selectedItemWithBackgroundImage optgroup option {
-  text-indent: 20px;
-}
-.ext-chrome:not(.ext-mac) .typo3-TCEforms-select-selectedItemWithBackgroundImage {
-  text-indent: 0px;
-  background-position-x: 5px;
-}
-.t3-tceforms-fieldReadOnly {
-  background-color: #fefefe;
-  border: 1px solid #7c7c7c;
-  border-radius: 2px;
-  pointer-events: none;
-  cursor: default;
-  opacity: 0.5;
-  filter: alpha(opacity=@50);
-  box-shadow: none;
-}
-.t3-tceforms-fieldReadOnly span.t3-icon {
-  position: absolute;
-  right: 3px;
-  top: 4px;
-}
-.t3-form-field-item {
-  position: relative;
-  border: 1px solid transparent;
-  padding: 7px 0;
-}
-.t3-tceforms-widget-null-wrapper + .t3-form-field-item {
-  display: inline-block;
-}
-.t3-form-field-item.disabled {
-  border: 1px dotted #696362;
-}
-.t3-form-field-disable,
-.t3-form-field-item.disabled .t3-form-field-item.disabled .t3-form-field-disable {
-  display: none;
-}
-.t3-form-field-item.disabled .t3-form-field-disable {
-  z-index: 8000;
-  background: #f4f4f4;
-  display: block;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 0.5;
-  filter: alpha(opacity=50);
-}
-.t3-form-palette-field-label {
-  text-indent: 2px;
-}
-/* - - - - - - - - - - - - - - - - - - - - -
-TCEforms Tree
-- - - - - - - - - - - - - - - - - - - - - */
-.t3-form-field-item .x-tree input.x-tree-node-cb {
-  height: auto;
-  margin: 0 0 0 1px;
-  vertical-align: middle;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Tree
-- - - - - - - - - - - - - - - - - - - - - */
-body#typo3-pagetree,
-body#typo3-alt-file-navframe-php {
-  background: #ebebeb;
-}
-#typo3-alt-file-navframe-php #typo3-docbody,
-#typo3-alt-file-navframe-php #typo3-docheader-row1,
-#typo3-alt-file-navframe-php #typo3-docheader-row2,
-.typo3-pagetree-indicatorBar-item,
-#typo3-pagetree-topPanelItems,
-#typo3-pagetree-topPanel .typo3-pagetree-topPanel-item,
-#typo3-pagetree-treeContainer,
-#typo3-pagetree .x-panel-tbar,
-#typo3-pagetree-deletionDropZone .x-panel-body {
-  background-position: right;
-  background-repeat: repeat-y;
-}
-#typo3-alt-file-navframe-php #typo3-docbody,
-#typo3-pagetree-treeContainer {
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA9JREFUeNpiun79OkCAAQAFFgKIFwyKvQAAAABJRU5ErkJggg==");
-}
-table#typo3-tree a {
-  text-decoration: none;
-}
-body#typo3-alt-db-navframe-php div.c-notice {
-  border: 1px solid black;
-}
-table#typo3-tree tr:hover {
-  background-color: #d7dbe2;
-}
-/* - - - - - - - - - - - - - - - - - - - - -
-Configuration trees, used in Admin Tools => Configuration
-- - - - - - - - - - - - - - - - - - - - - */
-table.t3-tree-config {
-  background: #ececec;
-  background-image: linear-gradient(center top, #ffffff 0px, #ececec 100px);
-  border: 1px solid #adadad;
-}
-table.t3-tree-config .t3-tree-config-header {
-  text-align: left;
-}
-/* - - - - - - - - - - - - - - - - - - - - -
-AJAX Page Tree
-- - - - - - - - - - - - - - - - - - - - - */
-ul.tree {
-  line-height: 12px;
-  list-style: none;
-  padding-left: 0;
-}
-ul.tree a {
-  text-decoration: none;
-}
-ul.tree a.pm {
-  cursor: pointer;
-}
-ul.tree ul {
-  list-style: none;
-}
-ul.tree li {
-  white-space: nowrap;
-}
-ul.tree ul li {
-  list-style: none;
-}
-ul.tree ul li.expanded ul {
-  background: transparent url('../../../../icons/gfx/ol/line.gif') left top repeat-y;
-}
-ul.tree ul li.last > ul {
-  background: none;
-}
-/* active tree items */
-ul.tree li.active div.treeLinkItem {
-  background-color: #fff;
-  border-color: #d7d7d7;
-  border-width: 1px 0 1px 1px;
-  border-style: solid;
-}
-/* subitems of active tree items - reset styling */
-ul.tree li.active li div.treeLinkItem {
-  background-color: transparent;
-  border-width: 0;
-}
-ul.tree li.active span a,
-ul.tree ul li.active span a {
-  font-weight: bold;
-}
-ul.tree li.active ul span a,
-ul.tree ul li.active ul span a {
-  font-weight: normal;
-}
-#dragIcon {
-  filter: alpha(opacity=50);
-  opacity: 0.5;
-  white-space: nowrap;
-}
-#treeFilterBox {
-  background-color: #dadada;
-  background-image: url('../../../../icons/gfx/filter_bg.gif');
-  background-repeat: no-repeat;
-  background-position: 0 -2px;
-}
-#treeFilter {
-  background: transparent;
-  border: 0px;
-}
-#treeFilterReset {
-  border: 0;
-  cursor: pointer;
-}
-#tree-toolbar-filter-item {
-  display: inline-block;
-  height: 22px;
-  width: 20px;
-}
-#tree-toolbar-filter-item.active {
-  background-image: url("../../../../icons/gfx/toolbar_item_active_bg.png");
 }
 /**
  * This file is part of the TYPO3 CMS project.
@@ -11905,379 +12270,6 @@ body#typo3-wizard-colorpicker-php p.c-head {
  *
  * The TYPO3 project - inspiring people to share!
  */
-/* Include Share webfont */
-@font-face {
-  font-family: 'Share';
-  src: url('../../Fonts/share-bold-webfont.eot');
-  src: url('../../Fonts/share-bold-webfont.eot?#iefix') format('embedded-opentype'), url('../../Fonts/share-bold-webfont.woff') format('woff'), url('../../Fonts/share-bold-webfont.ttf') format('truetype'), url('../../Fonts/share-bold-webfont.svg#Share-BoldRegular') format('svg');
-  font-weight: bold;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Share';
-  src: url('../../Fonts/share-italic-webfont.eot');
-  src: url('../../Fonts/share-italic-webfont.eot?#iefix') format('embedded-opentype'), url('../../Fonts/share-italic-webfont.woff') format('woff'), url('../../Fonts/share-italic-webfont.ttf') format('truetype'), url('../../Fonts/share-italic-webfont.svg#Share-ItalicRegular') format('svg');
-  font-weight: normal;
-  font-style: italic;
-}
-@font-face {
-  font-family: 'Share';
-  src: url('../../Fonts/share-regular-webfont.eot');
-  src: url('../../Fonts/share-regular-webfont.eot?#iefix') format('embedded-opentype'), url('../../Fonts/share-regular-webfont.woff') format('woff'), url('../../Fonts/share-regular-webfont.ttf') format('truetype'), url('../../Fonts/share-regular-webfont.svg#Share-Regular') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Share';
-  src: url('../../Fonts/share-bolditalic-webfont.eot');
-  src: url('../../Fonts/share-bolditalic-webfont.eot?#iefix') format('embedded-opentype'), url('../../Fonts/share-bolditalic-webfont.woff') format('woff'), url('../../Fonts/share-bolditalic-webfont.ttf') format('truetype'), url('../../Fonts/share-bolditalic-webfont.svg#Share-BoldItalicRegular') format('svg');
-  font-weight: bold;
-  font-style: italic;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* Login Screen
- * Warning:
- * DO NOT prevent the copyright notice from being shown!
- * According to the GPL license an interactive application must show such a notice on start-up ('If the program is interactive, make it output a short notice... ' - see GPL.txt)
- * Therefore preventing this notice from being properly shown is a violation of the license, regardless of whether you remove it or use the stylesheet to obstruct the display.
- */
-#typo3-index-php {
-  background-color: #494949;
-  background-image: url('../../../../images/backgrounds/gray-gradient.png');
-  background-repeat: repeat-x;
-}
-#typo3-index-php .t3-headline {
-  background-color: #4f4f4f;
-}
-#typo3-index-php .t3-headline h2 {
-  background: transparent url('../../../../icons/login-icon-key.png') no-repeat 12px 8px;
-  color: #fff;
-  font-size: 12px;
-}
-#typo3-index-php #t3-login-process {
-  text-align: center;
-}
-#typo3-index-php #t3-login-process h2 {
-  background: url('../../../../icons/login-submit-progress.gif') no-repeat 10px center;
-  font-size: 11px !important;
-}
-#typo3-index-php .t3-headline .t3-login-news-headline {
-  background: transparent url('../../../../icons/login-icon-news.gif') no-repeat 10px center;
-  color: #fff;
-  font-size: 12px;
-  line-height: 3em;
-}
-#typo3-index-php .t3-login-field input {
-  background: #fff;
-  border: none;
-  color: #606060;
-  font-size: 12px;
-}
-#typo3-index-php #t3-login-form-fields {
-  font-size: 11px;
-}
-#typo3-index-php #t3-interfaceselector {
-  font-size: 11px;
-}
-#typo3-index-php .t3-login-form-footer {
-  text-align: right;
-}
-#typo3-index-php .t3-login-form-footer a {
-  cursor: pointer;
-}
-#typo3-index-php .t3-login-form-footer,
-#typo3-index-php .t3-login-form-footer a.switchToOpenId,
-#typo3-index-php dl#t3-login-news a {
-  color: #888;
-  font-size: 10px;
-}
-#typo3-index-php .t3-login-form-footer a.switchToOpenId,
-#typo3-index-php dl#t3-login-news a {
-  text-decoration: underline;
-}
-#typo3-index-php .t3-login-form-footer a.switchToOpenId:hover,
-#typo3-index-php dl#t3-login-news a:hover {
-  color: #333;
-}
-#typo3-index-php input.t3-login-submit {
-  background-color: #ff8600;
-  background-image: url('../../../../images/login/login-submit-background.gif');
-  background-image: linear-gradient(center top, #fe9500 0%, #cf6610 100%);
-  background-repeat: repeat-x;
-  border-top: 1px solid #ffb955;
-  border-left: 1px solid #E69036;
-  text-shadow: 0px -1px 0px rgba(149, 81, 5, 0.6);
-  color: #fff;
-}
-#typo3-index-php div#t3-copyright-notice {
-  border-top: 1px solid #565655;
-  font-weight: normal;
-  font-size: 10px;
-  color: #797878;
-}
-#typo3-index-php div#t3-copyright-notice a {
-  color: #797878;
-  text-decoration: underline;
-}
-#typo3-index-php div#t3-copyright-notice a:hover {
-  color: #b0b0b0;
-}
-#typo3-index-php div#t3-login-image {
-  text-align: left;
-}
-#typo3-index-php #t3-meta-links {
-  color: #797878;
-  font-size: 10px;
-}
-#typo3-index-php #t3-meta-links a {
-  color: #797878;
-  text-decoration: underline;
-}
-#typo3-index-php #t3-meta-links a.t3-login-link-donate {
-  font-weight: bold;
-}
-#typo3-index-php #t3-meta-links a:hover {
-  color: #b0b0b0;
-}
-/**
- * @section login news
- */
-#typo3-index-php .shadow {
-  box-shadow: 0px 0px 18px rgba(0, 0, 0, 0.3);
-}
-#typo3-index-php #t3-login-news-outer #t3-login-news dt {
-  font-weight: bold;
-}
-#typo3-index-php #t3-login-news-outer #t3-login-news dd {
-  border: 0;
-}
-/**
- * @section logout
- */
-#typo3-index-php .t3-login-logout-form .t3-username-current,
-#typo3-index-php .t3-login-logout-form div.t3-login-label {
-  color: #606060;
-  line-height: 21px;
-}
-/**
- * @section erros/warnings
- */
-.t3-login-alert h2 {
-  background: none;
-  font-size: 14px;
-}
-.t3-login-alert p {
-  font-size: 11px;
-  line-height: 15px;
-}
-.t3-login-alert a {
-  text-decoration: underline;
-}
-.t3-login-alert-error {
-  background: #f6d3cf;
-  border: 1px solid #d66c68;
-}
-.t3-login-alert-error h2 {
-  background: url('../../../../icons/login-alert-error.gif') no-repeat left 2px;
-  color: #be0027;
-}
-.t3-login-alert-error p,
-.t3-login-alert-error a {
-  color: #be0027;
-}
-#t3-nocookies-ignore {
-  padding-left: 30px;
-}
-.t3-login-alert-warning {
-  background: #fbf6de;
-  border: 1px solid #b1905c;
-}
-.t3-login-alert-warning h2 {
-  background: url('../../../../icons/login-alert-warning.gif') no-repeat left 2px;
-  color: #9e7d4a;
-}
-.t3-login-alert-warning p,
-.t3-login-alert-warning a {
-  color: #9e7d4a;
-}
-/**
- * @section box layout
- */
-.t3-login-box-body {
-  background-color: #c2c2c2;
-  background-image: linear-gradient(center top, #e2e2e2 0%, #c2c2c2 100%);
-  background-repeat: repeat-x;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-TYPO3 styles for basic elements
-- - - - - - - - - - - - - - - - - - - - - */
-h1 {
-  font-family: Share, Verdana, Arial, Helvetica, sans-serif;
-  font-variant: normal;
-  font-weight: normal;
-}
-tr:hover a {
-  text-decoration: underline;
-}
-tr:hover .t3-page-ce a,
-tr:hover .x-tree a {
-  text-decoration: none;
-}
-a.t3-link {
-  text-decoration: underline;
-}
-/* horizontal ruler */
-hr,
-div.hr {
-  background: none;
-  border: none;
-  height: 1px;
-}
-img {
-  border: 0px;
-}
-em {
-  font-style: italic;
-}
-/* - - - - - - - - - - - - - - - - - - - - -
-Background color classes
-- - - - - - - - - - - - - - - - - - - - - */
-.bgColor-20 {
-  background-color: #e3dfdb;
-}
-.bgColor2 {
-  background-color: #585858;
-  color: #ffffff;
-}
-.bgColor3 {
-  background-color: #f6f2e6;
-}
-.bgColor3-20 {
-  background-color: #f7f7f7;
-}
-.bgColor4 {
-  background-color: #f1f1f1;
-  color: #212424;
-}
-.bgColor4-20 {
-  background-color: #f8f9fa;
-}
-.bgColor5 {
-  background-color: #9b9b9b;
-}
-.bgColor6 {
-  background-color: #f7f7f7;
-}
-/* - - - - - - - - - - - - - - - - - - - - -
-Various classes
-- - - - - - - - - - - - - - - - - - - - - */
-.section {
-  margin-bottom: 15px;
-}
-.nobr {
-  white-space: nowrap;
-}
-.diff-r {
-  color: red;
-}
-.diff-g {
-  color: green;
-}
-div.diff-r {
-  background-color: red;
-  color: black;
-}
-div.diff-g {
-  background-color: green;
-  color: black;
-}
-/** used in the admin tools => DB check **/
-.t3-overview-list dt {
-  font-weight: bold;
-}
-/* - - - - - - - - - - - - - - - - - - - - -
-Dimmed span tag color (disabled)
-- - - - - - - - - - - - - - - - - - - - - */
-.typo3-dimmed {
-  color: #666;
-}
-.c-na {
-  color: #666;
-  font-style: italic;
-}
-.not-found a {
-  color: #cccccc;
-}
-/* - - - - - - - - - - - - - - - - - - - - -
-Red span tag color (warning, notice)
-- - - - - - - - - - - - - - - - - - - - - */
-.typo3-red {
-  color: red;
-}
-.typo3-red-background {
-  background-color: red;
-}
-table.warningbox {
-  border: solid 2px black;
-  background-color: yellow;
-  margin: 20px 0px 20px 0px;
-}
-table.warningbox td {
-  padding: 20px 20px 20px 20px;
-  font-weight: bold;
-}
-table.warningbox td a {
-  text-decoration: underline;
-}
-div.warningbox {
-  border: solid 2px black;
-  background-color: yellow;
-  font-weight: bold;
-  margin: 10px 0px 10px 0px;
-  padding: 10px;
-}
-span.warningboxheader {
-  margin-left: 5px;
-}
-/* all buttons have the "click" mouse cursor */
-.t3-btn {
-  cursor: pointer;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
 /* - - - - - - - - - - - - - - - - - - - - -
 Decorations (shadows etc.)
 - - - - - - - - - - - - - - - - - - - - - */
@@ -12290,193 +12282,6 @@ Decorations (shadows etc.)
   background-image: url('../../../../images/shadows/box-top-428.png');
   background-position: bottom center;
   background-repeat: no-repeat;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Form
-- - - - - - - - - - - - - - - - - - - - - */
-input,
-textarea,
-button {
-  background-color: #fefefe;
-  border: 1px solid #7c7c7c;
-  border-radius: 2px;
-}
-input:focus,
-textarea:focus,
-button:focus {
-  border-color: #32a0ff;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075), 0 0 6px rgba(50, 160, 255, 0.6);
-  outline: 0;
-}
-textarea.fixed-font {
-  font-family: "Lucida Console", "Lucida Sans Typewriter", "Bitstream Vera Sans Mono", monospace;
-}
-.checkbox,
-.checkbox:hover,
-input[type="checkbox"] {
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-/* - - - - - - - - - - - - - - - - - - - - -
-Buttons
-- - - - - - - - - - - - - - - - - - - - - */
-.t3-button,
-button,
-input[type="submit"],
-input[type="reset"],
-input[type="button"] {
-  background-color: #E0E0E0;
-  background-image: none;
-  border: 1px solid #7c7c7c;
-  border-radius: 2px;
-  color: #434343;
-  cursor: pointer;
-  white-space: nowrap;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  -o-user-select: none;
-  user-select: none;
-  text-decoration: none!important;
-}
-.t3-button:hover,
-button:hover,
-input[type="submit"]:hover,
-input[type="reset"]:hover,
-input[type="button"]:hover {
-  background-color: #cccccc;
-  text-decoration: none!important;
-}
-.t3-button span.t3-icon {
-  margin-top: -3px;
-  margin-right: 5px;
-}
-.t3-button.disabled {
-  cursor: default;
-  opacity: 0.5;
-}
-.t3-button:active,
-button:active,
-input[type="submit"]:active,
-input[type="reset"]:active,
-input[type="button"]:active {
-  outline: 0;
-  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  position: relative;
-  top: 1px;
-}
-.t3-button.disabled,
-button[disabled="disabled"],
-input[type="submit"][disabled="disabled"],
-input[type="reset"][disabled="disabled"],
-input[type="button"][disabled="disabled"],
-input[type="submit"][disabled="disabled"]:hover,
-input[type="reset"][disabled="disabled"]:hover,
-input[type="button"][disabled="disabled"]:hover {
-  pointer-events: none;
-  cursor: default;
-  opacity: 0.5;
-  filter: alpha(opacity=@50);
-  box-shadow: none;
-}
-/* - - - - - - - - - - - - - - - - - - - - -
-Groups
-- - - - - - - - - - - - - - - - - - - - - */
-.t3-form-field-group {
-  margin-bottom: 1.5em;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Loadingbar and Animations
-- - - - - - - - - - - - - - - - - - - - - */
-.loadingbar {
-  background-color: #f9f9f9;
-  display: block;
-  position: relative;
-}
-.cssanimations .loadingbar {
-  height: 5px;
-}
-.no-cssanimations .loadingbar {
-  height: 24px;
-  background-image: url('../../../../images/spinner/ffffff.gif');
-  background-repeat: no-repeat;
-  background-position: center center;
-}
-@keyframes fullexpand {
-  0% {
-    width: 0px;
-  }
-  100% {
-    width: 100%;
-  }
-}
-@-moz-keyframes fullexpand {
-  0% {
-    width: 0px;
-  }
-  100% {
-    width: 100%;
-  }
-}
-@-webkit-keyframes fullexpand {
-  0% {
-    width: 0px;
-  }
-  100% {
-    width: 100%;
-  }
-}
-@-o-keyframes fullexpand {
-  0% {
-    width: 0px;
-  }
-  100% {
-    width: 100%;
-  }
-}
-@-ms-keyframes fullexpand {
-  0% {
-    width: 0px;
-  }
-  100% {
-    width: 100%;
-  }
-}
-.cssanimations .loadingbar .expand {
-  width: 100%;
-  height: 5px;
-  background: #585858;
-  position: absolute;
-  animation: fullexpand 5s linear infinite;
-  -moz-animation: fullexpand 5s linear infinite;
-  -webkit-animation: fullexpand 5s linear infinite;
-  -o-animation: fullexpand 5s linear infinite;
-  -ms-animation: fullexpand 5s linear infinite;
 }
 /**
  * This file is part of the TYPO3 CMS project.
@@ -12689,106 +12494,6 @@ table#typo3-aboutmodules tr.c-subitem-row td .icon {
 }
 table#typo3-aboutmodules tr.c-subitem-row:hover td .icon {
   background-color: #e8e8e8;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Module menu
-- - - - - - - - - - - - - - - - - - - - - */
-#typo3-module-menu {
-  background: #dddddd;
-}
-/**
- * Shadow on the right side of the module menu.
- */
-#typo3-module-menu,
-#typo3-menu li.menuSection li a:hover {
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA9JREFUeNpi3LFjB0CAAQAEWAIqGE4BVwAAAABJRU5ErkJggg==");
-  background-position: right;
-  background-repeat: repeat-y;
-}
-#typo3-module-menu .x-panel-body {
-  background-color: transparent;
-}
-#typo3-menu,
-#typo3-menu ul {
-  list-style: none;
-  padding-left: 0;
-}
-#typo3-menu a {
-  color: #1e2121;
-  outline: 0;
-}
-#typo3-menu > li {
-  border-bottom: 1px solid #c7c7c7;
-  border-bottom-right-radius: 3px;
-}
-#typo3-menu > li:last-child {
-  border-bottom: none;
-}
-/* hovered menu item */
-#typo3-menu li.menuSection li a:hover,
-#typo3-menu li.highlighted a {
-  border-top: 1px solid #b8b8b8;
-  border-bottom: 1px solid #b8b8b8;
-}
-#typo3-menu li.menuSection li a:hover {
-  background-color: #e8e8e8;
-}
-/* active menu item */
-#typo3-menu li.highlighted {
-  font-weight: bold;
-}
-#typo3-menu li.highlighted a,
-#typo3-menu li.menuSection li.highlighted a:hover,
-.no-boxshadow #typo3-menu li.menuSection li.highlighted a:hover {
-  background-color: #ebebeb;
-  background-image: none;
-  box-shadow: none;
-}
-#typo3-menu li div.modgroup {
-  color: #252524;
-  cursor: pointer;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-#typo3-menu li div.collapsed {
-  background-image: url('../../../../images/arrows/module-menu-left-gray.png');
-  background-position: right 23px top 7px;
-  background-repeat: no-repeat;
-}
-#typo3-menu li div.expanded {
-  background-image: url('../../../../images/arrows/module-menu-down-gray.png');
-  background-position: right 22px top 9px;
-  background-repeat: no-repeat;
-}
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .backgroundsize #typo3-menu li div.collapsed {
-    background-image: url('../../../../images/arrows/module-menu-left-gray@2x.png');
-    background-size: 6px 7px;
-  }
-  .backgroundsize #typo3-menu li div.expanded {
-    background-image: url('../../../../images/arrows/module-menu-down-gray@2x.png');
-    background-size: 7px 6px;
-  }
-}
-#typo3-menu li ul li {
-  cursor: pointer;
-  font-weight: normal;
-  line-height: 15px;
-}
-#typo3-menu li ul li a {
-  text-decoration: none;
 }
 /**
  * This file is part of the TYPO3 CMS project.
@@ -13225,312 +12930,4 @@ Web > Template
 }
 dt.typo3-tstemplate-ceditor-label {
   font-weight: bold;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Toolbar inside the Topbar
-- - - - - - - - - - - - - - - - - - - - - */
-#typo3-toolbar {
-  list-style: none;
-}
-.toolbar-item {
-  text-align: center;
-}
-#typo3-toolbar .separator {
-  border-right: 1px solid #000;
-  box-shadow: 1px 0 #585858;
-}
-.toolbar-item-active {
-  background-image: url('../../../../icons/gfx/toolbar_item_active_bg.png');
-  height: 25px;
-}
-.toolbar-item-menu {
-  background-color: #f9f9f9;
-  border: 1px solid #abb2bc;
-  border-top: none;
-  list-style: none;
-}
-#typo3-toolbar * li:hover,
-tr.shortcut:hover,
-tr.recentdoc:hover,
-tr.opendoc:hover {
-  background: #eee;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Clear-Cache menu inside the toolbar
-- - - - - - - - - - - - - - - - - - - - - */
-#clear-cache-actions-menu li {
-  text-align: left;
-}
-#clear-cache-actions-menu li a {
-  text-decoration: none;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Backend  Live Search
-- - - - - - - - - - - - - - - - - - - - - */
-#typo3-toolbar #live-search-menu {
-  padding-top: 4px;
-}
-.live-search-results .t3-icon-toolbar-menu-search {
-  position: absolute;
-  z-index: 3000;
-  top: 3px;
-  margin: 3px;
-}
-.t3-icon-input-clear {
-  cursor: pointer;
-  position: absolute;
-  top: 0px;
-  right: 20px;
-}
-#live-search-box {
-  padding-left: 20px;
-  width: 180px;
-  border: none;
-}
-.live-search-list {
-  background-color: white;
-  border: none;
-}
-.live-search-list .x-combo-list {
-  background-color: white;
-}
-.live-search-list .x-combo-list-inner {
-  padding-bottom: 5px;
-}
-.live-search-list .x-combo-list-hd {
-  background: none;
-  border: none;
-  margin-left: 110px;
-  color: #ddd;
-}
-.search-list-help-content {
-  margin: 5px;
-  height: 100%;
-  padding: 0.6em 0.6em 0.6em 2.6em;
-  background-repeat: no-repeat;
-  background-position: 0.5em 0.7em;
-  border: 1px solid;
-  color: #000000;
-  background-color: #ddeef9;
-  border-color: #8aafc4;
-}
-.live-search-list .search-item-type {
-  border-right: 1px solid #ddd;
-  padding: 2px 5px 2px 0;
-}
-.live-search-list .search-item-content {
-  padding: 0 8px;
-}
-.live-search-list .search-item-content .search-item-title {
-  padding: 2px;
-  border: none !important;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Logout-Button
-- - - - - - - - - - - - - - - - - - - - - */
-#logout-button input {
-  background: #494949;
-  border: 1px solid #636363;
-  color: #fff;
-  cursor: pointer;
-  text-align: center;
-  padding: 0 5px;
-}
-#logout-button input:hover {
-  background-color: #c8c8c8;
-  background-image: url('../../../../images/backgrounds/button-hover.png');
-  background-image: linear-gradient(center top, #f6f6f6 10%, #c8c8c8 90%);
-  border: 1px solid #737f91;
-  color: #000;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Shortcuts menu in the toolbar
-- - - - - - - - - - - - - - - - - - - - - */
-#shortcut-menu .shortcut-list tr.shortcut td {
-  line-height: 16px;
-}
-#shortcut-menu .shortcut-list tr.shortcut.first-row td {
-  background-image: url('../../../../icons/gfx/shortcutgroups-bg.png');
-  background-repeat: repeat-x;
-}
-#shortcut-menu .shortcut-list tr.shortcut-group td.shortcut-group-icon,
-#shortcut-menu .shortcut-list tr.shortcut td.shortcut-icon,
-#shortcut-menu .shortcut-list td.shortcut-edit,
-#shortcut-menu .shortcut-list td.shortcut-delete {
-  text-align: center;
-}
-#shortcut-menu .shortcut-list tr.shortcut td.shortcut-label a,
-#shortcut-menu .shortcut-list tr.shortcut td.shortcut-edit img,
-#shortcut-menu .shortcut-list tr.shortcut td.shortcut-delete img {
-  cursor: pointer;
-}
-#shortcut-menu .shortcut-list .shortcut-group td {
-  background-color: #dbdbdb;
-  border-bottom: 1px solid #a5a5a5;
-  border-top: 1px solid #a5a5a5;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Username inside the toolbar
-- - - - - - - - - - - - - - - - - - - - - */
-#username {
-  color: #ffffff;
-  font-weight: bold;
-}
-#username a {
-  color: #ffffff;
-  font-weight: bold;
-  font-size: 11px;
-  text-decoration: none;
-}
-#username.su-user a {
-  color: #eb6e5a;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Workspace Selector
-- - - - - - - - - - - - - - - - - - - - - */
-#workspace-selector-menu ul {
-  position: static;
-  list-style: none;
-}
-#workspace-selector-menu .items {
-  list-style: none;
-  background-color: #f9f9f9;
-  overflow-y: auto;
-  max-height: 300px;
-}
-#workspace-selector-menu li {
-  text-align: left;
-}
-#workspace-selector-menu li a {
-  text-decoration: none;
-}
-#workspace-selector-menu li.divider {
-  border: 0;
-  background-image: url('../../../../icons/gfx/shortcutgroups-bg.png');
-  background-repeat: repeat-x;
-  min-height: 10px;
-  padding-right: 0;
-}
-#workspace-selector-menu li.divider:hover {
-  background-color: transparent;
-}
-body.typo3-in-workspace #typo3-top-container {
-  background: none;
-}
-body.typo3-in-workspace #typo3-topbar .x-panel-bwrap {
-  background: url('../../../../images/backgrounds/topbar-in-workspace-background-left.png') no-repeat;
-}
-body.typo3-in-workspace #typo3-topbar .x-panel-body {
-  background: url('../../../../images/backgrounds/topbar-in-workspace-background-right.png') no-repeat right 0;
-}
-body.typo3-in-workspace #typo3-topbar {
-  background: url('../../../../images/backgrounds/topbar-in-workspace-background.gif');
-}
-body.typo3-in-workspace #typo3-topbar #username {
-  text-shadow: 0 0 5px #000000;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Topbar (whole upper area), containts Logo and toolbar
-- - - - - - - - - - - - - - - - - - - - - */
-#typo3-top-container {
-  background-color: #3f3f3f;
-  background-image: url('../../../../images/backgrounds/topbar.png');
-  background-image: linear-gradient(center top, #494949 0%, #373737 91%, #343434 92%, #2a2a2a 100%);
-  background-repeat: repeat-x;
 }
