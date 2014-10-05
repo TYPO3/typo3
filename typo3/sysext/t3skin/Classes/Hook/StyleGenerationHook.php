@@ -18,6 +18,7 @@ namespace TYPO3\CMS\T3skin\Hook;
  * Hook for adding styles to backend page-generation in DocumentTemplate
  *
  * @author Stefan Neufeind <info [at] speedpartner.de>
+ * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
  */
 class StyleGenerationHook {
 

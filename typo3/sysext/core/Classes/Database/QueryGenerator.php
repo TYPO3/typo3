@@ -950,9 +950,8 @@ class QueryGenerator {
 			$indent = '<td style="vertical-align:top;"><img height="1" width="50"></td>';
 		}
 		$lf = $l * 30;
-		$bgColor = \TYPO3\CMS\Core\Utility\GeneralUtility::modifyHTMLColor($GLOBALS['TBE_TEMPLATE']->bgColor2, $lf, $lf, $lf);
 		foreach ($codeArr as $k => $v) {
-			$line .= '<tr>' . $indent . '<td bgcolor="' . $bgColor . '"' . $this->noWrap . '>' . $v['html'] . '</td></tr>';
+			$line .= '<tr>' . $indent . '<td class="bgColor2" ' . $this->noWrap . '>' . $v['html'] . '</td></tr>';
 			if ($this->enableQueryParts) {
 				$line .= '<tr>' . $indent . '<td>' . $this->formatQ($v['query']) . '</td></tr>';
 			}

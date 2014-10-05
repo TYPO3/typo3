@@ -132,8 +132,6 @@ class RteController {
 			$tceforms->initDefaultBEMode();
 			// SPECIAL: Disables all wizards - we are NOT going to need them.
 			$tceforms->disableWizards = 1;
-			// SPECIAL: Setting background color of the RTE to ordinary background
-			$tceforms->colorScheme[0] = $this->doc->bgColor;
 			// Initialize style for RTE object:
 			// Getting reference to the RTE object used to render the field!
 			$RTEobj = BackendUtility::RTEgetObj();

@@ -14,22 +14,6 @@ if (TYPO3_MODE === 'BE' || TYPO3_MODE === 'FE' && isset($GLOBALS['BE_USER'])) {
 	$TBE_STYLES['skins'][$_EXTKEY]['stylesheetDirectories']['sprites'] = 'EXT:t3skin/stylesheets/sprites/';
 
 	/** Setting up backend styles and colors */
-	$TBE_STYLES['mainColors'] = array(
-		// Always use #xxxxxx color definitions!
-		'bgColor' => '#FFFFFF',
-		// Light background color
-		'bgColor2' => '#FEFEFE',
-		// Steel-blue
-		'bgColor3' => '#F1F3F5',
-		// dok.color
-		'bgColor4' => '#E6E9EB',
-		// light tablerow background, brownish
-		'bgColor5' => '#F8F9FB',
-		// light tablerow background, greenish
-		'bgColor6' => '#E6E9EB',
-		// light tablerow background, yellowish, for section headers. Light.
-		'hoverColor' => '#FF0000'
-	);
 	$TBE_STYLES['colorschemes'][0] = '-|class-main1,-|class-main2,-|class-main3,-|class-main4,-|class-main5';
 	$TBE_STYLES['colorschemes'][1] = '-|class-main11,-|class-main12,-|class-main13,-|class-main14,-|class-main15';
 	$TBE_STYLES['colorschemes'][2] = '-|class-main21,-|class-main22,-|class-main23,-|class-main24,-|class-main25';
@@ -79,10 +63,6 @@ if (TYPO3_MODE === 'BE' || TYPO3_MODE === 'FE' && isset($GLOBALS['BE_USER'])) {
 
 	// Default navigation frame width
 	$TBE_STYLES['dims']['navFrameWidth'] = 280;
-
-	// Setting roll-over background color for click menus:
-	// Notice, this line uses the the 'scriptIDindex' feature to override another value in this array (namely $TBE_STYLES['mainColors']['bgColor5']), for a specific script "typo3/alt_clickmenu.php"
-	$TBE_STYLES['scriptIDindex']['typo3/alt_clickmenu.php']['mainColors']['bgColor5'] = '#dedede';
 
 	// Setting up auto detection of alternative icons:
 	$TBE_STYLES['skinImgAutoCfg'] = array(

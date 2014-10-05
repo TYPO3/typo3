@@ -150,42 +150,42 @@ function jumpToUrl(URL) {
 	// If you want to change this, please do so through a skin using the global var $GLOBALS['TBE_STYLES']
 	// Light background color
 	/**
-	 * @todo Define visibility
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public $bgColor = '#F7F3EF';
 
 	// Steel-blue
 	/**
-	 * @todo Define visibility
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public $bgColor2 = '#9BA1A8';
 
 	// dok.color
 	/**
-	 * @todo Define visibility
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public $bgColor3 = '#F6F2E6';
 
 	// light tablerow background, brownish
 	/**
-	 * @todo Define visibility
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public $bgColor4 = '#D9D5C9';
 
 	// light tablerow background, greenish
 	/**
-	 * @todo Define visibility
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public $bgColor5 = '#ABBBB4';
 
 	// light tablerow background, yellowish, for section headers. Light.
 	/**
-	 * @todo Define visibility
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public $bgColor6 = '#E7DBA8';
 
 	/**
-	 * @todo Define visibility
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public $hoverColor = '#254D7B';
 
@@ -350,31 +350,6 @@ function jumpToUrl(URL) {
 			\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($GLOBALS['TBE_STYLES'], $ovr);
 			// Have to unset - otherwise the second instantiation will do it again!
 			unset($GLOBALS['TBE_STYLES']['scriptIDindex'][$this->scriptID]);
-		}
-		// Color scheme:
-		if ($GLOBALS['TBE_STYLES']['mainColors']['bgColor']) {
-			$this->bgColor = $GLOBALS['TBE_STYLES']['mainColors']['bgColor'];
-		}
-		if ($GLOBALS['TBE_STYLES']['mainColors']['bgColor1']) {
-			$this->bgColor1 = $GLOBALS['TBE_STYLES']['mainColors']['bgColor1'];
-		}
-		if ($GLOBALS['TBE_STYLES']['mainColors']['bgColor2']) {
-			$this->bgColor2 = $GLOBALS['TBE_STYLES']['mainColors']['bgColor2'];
-		}
-		if ($GLOBALS['TBE_STYLES']['mainColors']['bgColor3']) {
-			$this->bgColor3 = $GLOBALS['TBE_STYLES']['mainColors']['bgColor3'];
-		}
-		if ($GLOBALS['TBE_STYLES']['mainColors']['bgColor4']) {
-			$this->bgColor4 = $GLOBALS['TBE_STYLES']['mainColors']['bgColor4'];
-		}
-		if ($GLOBALS['TBE_STYLES']['mainColors']['bgColor5']) {
-			$this->bgColor5 = $GLOBALS['TBE_STYLES']['mainColors']['bgColor5'];
-		}
-		if ($GLOBALS['TBE_STYLES']['mainColors']['bgColor6']) {
-			$this->bgColor6 = $GLOBALS['TBE_STYLES']['mainColors']['bgColor6'];
-		}
-		if ($GLOBALS['TBE_STYLES']['mainColors']['hoverColor']) {
-			$this->hoverColor = $GLOBALS['TBE_STYLES']['mainColors']['hoverColor'];
 		}
 		// Main Stylesheets:
 		if ($GLOBALS['TBE_STYLES']['stylesheet']) {

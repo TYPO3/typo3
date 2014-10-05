@@ -736,18 +736,6 @@ class FormEngine {
 			$this->commentMessages[] = 'RTE NOT ENABLED IN SYSTEM due to:' . LF . $this->RTEenabled_notReasons;
 		}
 		// Default color+class scheme
-		$docTemplate = $this->getControllerDocumentTemplate();
-		$this->defColorScheme = array(
-			$docTemplate->bgColor,
-			// Background for the field AND palette
-			GeneralUtility::modifyHTMLColorAll($docTemplate->bgColor, -20),
-			// Background for the field header
-			GeneralUtility::modifyHTMLColorAll($docTemplate->bgColor, -10),
-			// Background for the palette field header
-			'black',
-			// Field header font color
-			'#666666'
-		);
 		$this->defColorScheme = array();
 		// Override / Setting defaults from TBE_STYLES array
 		$this->resetSchemes();
