@@ -53,9 +53,9 @@ class DocumentTemplate {
 	 */
 	public $form = '';
 
-	// Similar to $JScode (see below) but used as an associative array to prevent double inclusion of JS code. This is used to include certain external Javascript libraries before the inline JS code. <script>-Tags are not wrapped around automatically
 	/**
-	 * @todo Define visibility
+	 * Similar to $JScode (see below) but used as an associative array to prevent double inclusion of JS code. This is used to include certain external Javascript libraries before the inline JS code. <script>-Tags are not wrapped around automatically
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use pageRenderer directly
 	 */
 	public $JScodeLibArray = array();
 
@@ -88,9 +88,9 @@ function jumpToUrl(URL) {
 	 */
 	public $postCode = '';
 
-	// Doc-type used in the header. Default is xhtml_trans. You can also set it to 'html_3', 'xhtml_strict' or 'xhtml_frames'.
 	/**
-	 * @todo Define visibility
+	 * Doc-type used in the header. Default is xhtml_trans. You can also set it to 'html_3', 'xhtml_strict' or 'xhtml_frames'.
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, as it is HTML5
 	 */
 	public $docType = '';
 
@@ -122,15 +122,16 @@ function jumpToUrl(URL) {
 	 */
 	public $bodyTagAdditions = '';
 
-	// Additional CSS styles which will be added to the <style> section in the header
 	/**
-	 * @todo Define visibility
+	 * Additional CSS styles which will be added to the <style> section in the header
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the pageRenderer property for adding CSS styles
 	 */
 	public $inDocStyles = '';
 
-	// Like $inDocStyles but for use as array with associative keys to prevent double inclusion of css code
 	/**
-	 * @todo Define visibility
+	 * Additional CSS styles which will be added to the <style> section in the header
+	 * used as array with associative keys to prevent double inclusion of CSS code
+	 * @var array
 	 */
 	public $inDocStylesArray = array();
 
@@ -213,9 +214,9 @@ function jumpToUrl(URL) {
 	 */
 	public $backGroundImage = '';
 
-	// Inline css styling set from TBE_STYLES array
 	/**
-	 * @todo Define visibility
+	 * Inline css styling set from TBE_STYLES array
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use inDocStylesArray['TBEstyle']
 	 */
 	public $inDocStyles_TBEstyle = '';
 
@@ -273,6 +274,7 @@ function jumpToUrl(URL) {
 
 	/**
 	 * internal character set, nowadays utf-8 for everything
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8, as it is always utf-8
 	 */
 	protected $charset = 'utf-8';
 
@@ -362,7 +364,7 @@ function jumpToUrl(URL) {
 			$this->styleSheetFile_post = $GLOBALS['TBE_STYLES']['styleSheetFile_post'];
 		}
 		if ($GLOBALS['TBE_STYLES']['inDocStyles_TBEstyle']) {
-			$this->inDocStyles_TBEstyle = $GLOBALS['TBE_STYLES']['inDocStyles_TBEstyle'];
+			$this->inDocStylesArray['TBEstyle'] = $GLOBALS['TBE_STYLES']['inDocStyles_TBEstyle'];
 		}
 		// include all stylesheets
 		foreach ($this->getSkinStylesheetDirectories() as $stylesheetDirectory) {
@@ -684,9 +686,10 @@ function jumpToUrl(URL) {
 	 * @param integer $tstamp UNIX timestamp, seconds since 1970
 	 * @param integer $type How much data to show: $type = 1: hhmm, $type = 10:	ddmmmyy
 	 * @return string Formatted timestamp
-	 * @todo Define visibility
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the corresponding methods in BackendUtility
 	 */
 	public function formatTime($tstamp, $type) {
+		GeneralUtility::logDeprecatedFunction();
 		$dateStr = '';
 		switch ($type) {
 			case 1:
@@ -760,73 +763,28 @@ function jumpToUrl(URL) {
 				$this->pageRenderer->setTemplateFile($file);
 			}
 		}
-		// Send HTTP header for selected charset. Added by Robert Lemke 23.10.2003
-		header('Content-Type:text/html;charset=' . $this->charset);
-		// Standard HTML tag
-		$htmlTag = '<html xmlns="http://www.w3.org/1999/xhtml">';
-		switch ($this->docType) {
-			case 'html_3':
-				$headerStart = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">';
-				$htmlTag = '<html>';
-				// Disable rendering of XHTML tags
-				$this->pageRenderer->setRenderXhtml(FALSE);
-				break;
-			case 'xhtml_strict':
-				$headerStart = '<!DOCTYPE html
-    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
-				break;
-			case 'xhtml_frames':
-				$headerStart = '<!DOCTYPE html
-    PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">';
-				break;
-			case 'xhtml_trans':
-				$headerStart = '<!DOCTYPE html
-    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
-				break;
-			case 'html5':
 
-			default:
-				// The fallthrough is intended as HTML5, as this is the default for the BE since TYPO3 4.5
-				$headerStart = '<!DOCTYPE html>' . LF;
-				$htmlTag = '<html>';
-				// Disable rendering of XHTML tags
-				$this->pageRenderer->setRenderXhtml(FALSE);
-		}
-		$this->pageRenderer->setHtmlTag($htmlTag);
+
+
+		// Disable rendering of XHTML tags
+		$this->pageRenderer->setRenderXhtml(FALSE);
+
+		$this->pageRenderer->setHtmlTag('<html>');
 		// This loads the tabulator-in-textarea feature. It automatically modifies
 		// every textarea which is found.
 		if (!$GLOBALS['BE_USER']->uc['disableTabInTextarea']) {
-			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tab.js');
+			$this->pageRenderer->addJsFile($this->backPath . 'sysext/backend/Resources/Public/JavaScript/tab.js');
 		}
 		// Include the JS for the Context Sensitive Help
 		if ($includeCsh) {
 			$this->loadCshJavascript();
 		}
-		// Get the browser info
-		$browserInfo = \TYPO3\CMS\Core\Utility\ClientUtility::getBrowserInfo(GeneralUtility::getIndpEnv('HTTP_USER_AGENT'));
-		// Set the XML prologue
-		$xmlPrologue = '<?xml version="1.0" encoding="' . $this->charset . '"?>';
-		// Set the XML stylesheet
-		$xmlStylesheet = '<?xml-stylesheet href="#internalStyle" type="text/css"?>';
-		// Add the XML prologue for XHTML doctypes
-		if (strpos($this->docType, 'xhtml') !== FALSE) {
-			// Put the XML prologue before or after the doctype declaration according to browser
-			if ($browserInfo['browser'] === 'msie' && $browserInfo['version'] < 7) {
-				$headerStart = $headerStart . LF . $xmlPrologue;
-			} else {
-				$headerStart = $xmlPrologue . LF . $headerStart;
-			}
-			// Add the xml stylesheet according to doctype
-			if ($this->docType !== 'xhtml_frames') {
-				$headerStart = $headerStart . LF . $xmlStylesheet;
-			}
-		}
+
+		$headerStart = '<!DOCTYPE html>';
 		$this->pageRenderer->setXmlPrologAndDocType($headerStart);
 		$this->pageRenderer->setHeadTag('<head>' . LF . '<!-- TYPO3 Script ID: ' . htmlspecialchars($this->scriptID) . ' -->');
-		$this->pageRenderer->setCharSet($this->charset);
+		header('Content-Type:text/html;charset=utf-8');
+		$this->pageRenderer->setCharSet('utf-8');
 		$this->pageRenderer->addMetaTag($this->generator());
 		$this->pageRenderer->addMetaTag('<meta name="robots" content="noindex,follow" />');
 		$this->pageRenderer->setFavIcon($this->getBackendFavicon());
@@ -862,6 +820,7 @@ function jumpToUrl(URL) {
 			$this->pageRenderer->addJsInlineCode($name, $code, FALSE);
 		}
 		if (count($this->JScodeLibArray)) {
+			GeneralUtility::deprecationLog('DocumentTemplate->JScodeLibArray is deprecated since TYPO3 CMS 7. Use the functionality within pageRenderer directly');
 			foreach ($this->JScodeLibArray as $library) {
 				$this->pageRenderer->addHeaderData($library);
 			}
@@ -883,19 +842,14 @@ function jumpToUrl(URL) {
 		}
 		// Construct page header.
 		$str = $this->pageRenderer->render(PageRenderer::PART_HEADER);
-		$this->JScodeLibArray = array();
 		$this->JScode = ($this->extJScode = '');
 		$this->JScodeArray = array();
 		$this->endOfPageJsBlock = $this->pageRenderer->render(PageRenderer::PART_FOOTER);
-		if ($this->docType == 'xhtml_frames') {
-			return $str;
-		} else {
-			$str .= $this->docBodyTagBegin() . ($this->divClass ? '
+		$str .= $this->docBodyTagBegin() . ($this->divClass ? '
 
 <!-- Wrapping DIV-section for whole page BEGIN -->
 <div class="' . $this->divClass . '">
 ' : '') . trim($this->form);
-		}
 		return $str;
 	}
 
@@ -916,12 +870,11 @@ function jumpToUrl(URL) {
 				header('Content-Encoding: None');
 			}
 		}
-		if ($this->docType !== 'xhtml_frames') {
-			$str .= ($this->divClass ? '
+		$str .= ($this->divClass ? '
 
 <!-- Wrapping DIV-section for whole page END -->
 </div>' : '') . $this->endOfPageJsBlock;
-		}
+
 		// Logging: Can't find better place to put it:
 		if (TYPO3_DLOG) {
 			GeneralUtility::devLog('END of BACKEND session', 'TYPO3\\CMS\\Backend\\Template\\DocumentTemplate', 0, array('_FLUSH' => TRUE));
@@ -1103,14 +1056,11 @@ function jumpToUrl(URL) {
 	 * @todo Define visibility
 	 */
 	public function endPageJS() {
-		return $this->endJS ? '
-	<script type="text/javascript">
-		  /*<![CDATA[*/
+		return $this->endJS ? $this->wrapScriptTags('
 		if (top.busy && top.busy.loginRefreshed) {
 			top.busy.loginRefreshed();
 		}
-		 /*]]>*/
-	</script>' : '';
+') : '';
 	}
 
 	/**
@@ -1135,16 +1085,11 @@ function jumpToUrl(URL) {
 		if ($this->backGroundImage) {
 			$this->inDocStylesArray[] = ' BODY { background-image: url(' . $this->backPath . $this->backGroundImage . '); }';
 		}
-		// Add inDoc styles variables as well:
-		$this->inDocStylesArray[] = $this->inDocStyles;
-		$this->inDocStylesArray[] = $this->inDocStyles_TBEstyle;
 		// Implode it all:
 		$inDocStyles = implode(LF, $this->inDocStylesArray);
 
 		// Reset styles so they won't be added again in insertStylesAndJS()
 		$this->inDocStylesArray = array();
-		$this->inDocStyles = '';
-		$this->inDocStyles_TBEstyle = '';
 
 		if ($this->styleSheetFile) {
 			$this->pageRenderer->addCssFile($this->backPath . $this->styleSheetFile);
@@ -1206,10 +1151,6 @@ function jumpToUrl(URL) {
 	 * @todo Define visibility
 	 */
 	public function insertStylesAndJS($content) {
-		// Insert accumulated CSS
-		if (!empty($this->inDocStyles)) {
-			$this->inDocStylesArray[] = $this->inDocStyles;
-		}
 		$styles = LF . implode(LF, $this->inDocStylesArray);
 		$content = str_replace('/*###POSTCSSMARKER###*/', $styles, $content);
 
@@ -1465,15 +1406,15 @@ function jumpToUrl(URL) {
 
 	/**
 	 * Constructs a table with content from the $arr1, $arr2 and $arr3.
-	 * Used in eg. ext/belog/mod/index.php - refer to that for examples
 	 *
 	 * @param array $arr1 Menu elements on first level
 	 * @param array $arr2 Secondary items
 	 * @param array $arr3 Third-level items
 	 * @return string HTML content, <table>...</table>
-	 * @todo Define visibility
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public function menuTable($arr1, $arr2 = array(), $arr3 = array()) {
+		GeneralUtility::logDeprecatedFunction();
 		$rows = max(array(count($arr1), count($arr2), count($arr3)));
 		$menu = '
 		<table border="0" cellpadding="0" cellspacing="0" id="typo3-tablemenu">';
