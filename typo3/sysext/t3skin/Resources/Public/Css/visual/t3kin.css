@@ -7590,11 +7590,11 @@ DocHeader
   margin-bottom: 3px;
 }
 #typo3-docheader .left {
-  float: left !important;
-  float: left;
   /** Extra margin 6px added to it-icon margin, doubled spacing = 12px */
 }
 #typo3-docheader .left .buttongroup {
+  float: left !important;
+  float: left;
   margin-right: 6px;
 }
 #typo3-docheader .left select {
@@ -9078,7 +9078,7 @@ img.t3-tceforms-sysfile-imagepreview {
 * html div#typo3-docbody .typo3-TCEforms {
   margin-top: 20px;
 }
-.t3-form-palette-field img[src*="clear.gif"] {
+.typo3-TCEforms img[src*="clear.gif"] {
   z-index: 0;
 }
 /* - - - - - - - - - - - - - - - - - - - - -
