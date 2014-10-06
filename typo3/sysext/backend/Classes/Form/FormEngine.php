@@ -3178,7 +3178,7 @@ class FormEngine {
 		}
 
 		$fieldWidthAndStyle['style'] = 'width: ' . $widthInPixels . 'px; ';
-		$fieldWidthAndStyle['class'] = 'class="formfield-' . ($textarea ? 'text' : 'input');
+		$fieldWidthAndStyle['class'] = 'formfield-' . ($textarea ? 'text' : 'input');
 		return $fieldWidthAndStyle;
 	}
 
@@ -3204,6 +3204,7 @@ class FormEngine {
 	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public function formElClass($type) {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->formElStyleClassValue($type, TRUE);
 	}
 
