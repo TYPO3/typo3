@@ -439,7 +439,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 			$menu .= '</div>';
 			$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('displayOptions'), '<nobr>' . $menu . '</nobr>', 0, 1);
 			// Conditions:
-			if (is_array($tmpl->sections)) {
+			if (is_array($tmpl->sections) && !empty($tmpl->sections)) {
 				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('conditions'), '', 0, 1);
 				$out = '';
 				foreach ($tmpl->sections as $key => $val) {
