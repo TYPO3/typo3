@@ -2,7 +2,7 @@ Charset Conversion Tables
 
 
 The files in this directory contains conversion tables from a number of charsets (corresponding to the filenames) to UNICODE.
-This is used by the TYPO3 class "t3lib_cs" which uses these tables when asked to convert a string from one charset to another.
+This is used by the TYPO3 class "\TYPO3\CMS\Core\Charset\CharsetConverter" which uses these tables when asked to convert a string from one charset to another.
 
 Conversion tables are reproduced from http://www.microsoft.com/globaldev/reference/cphome.mspx
 Found overview on this page: http://www.i18nguy.com/unicode/codepages.html
@@ -184,4 +184,3 @@ Note: this is a MS-specific superset of the real Big5
 koi8-r.tbl
 Cyrillic (Russian)
 http://www.unicode.org/Public/MAPPINGS/VENDORS/MISC/KOI8-R.TXT
-

@@ -64,7 +64,7 @@ The suggested order below assumes that you are interested in running all these t
 
 [base command] missing_relations -r --AUTOFIX
 	- Remove missing relations at this point.
-	- If you get an error like this; "t3lib_refindex::setReferenceValue(): ERROR: No reference record with hash="132ddb399c0b15593f0d95a58159439f" was found!" just run the test again until no errors occur. The reason is that another fixed reference in the same record and field changed the reference index hash. Running the test again will find the new hash string which will then work for you.
+	- If you get an error like this; "\TYPO3\CMS\Core\Database\ReferenceIndex::setReferenceValue(): ERROR: No reference record with hash="132ddb399c0b15593f0d95a58159439f" was found!" just run the test again until no errors occur. The reason is that another fixed reference in the same record and field changed the reference index hash. Running the test again will find the new hash string which will then work for you.
 
 [base command] cleanflexform -r --AUTOFIX
 	- After the "deleted" tool since we cannot clean-up deleted records and to make sure nothing unimportant is cleaned up

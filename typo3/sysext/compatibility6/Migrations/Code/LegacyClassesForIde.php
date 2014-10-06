@@ -15,9 +15,13 @@ class AjaxLogin extends \TYPO3\CMS\Backend\AjaxLoginHandler {}
 
 class clickMenu extends \TYPO3\CMS\Backend\ClickMenu\ClickMenu {}
 
+class t3lib_cli extends \TYPO3\CMS\Core\Controller\CommandLineController {}
+
 class t3lib_clipboard extends \TYPO3\CMS\Backend\Clipboard\Clipboard {}
 
 class t3lib_transl8tools extends \TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider {}
+
+class t3lib_TSparser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser {}
 
 class t3lib_TSparser_TSconfig extends \TYPO3\CMS\Backend\Configuration\TsConfigParser {}
 
@@ -262,3 +266,293 @@ class t3lib_extjs_ExtDirectRouter extends \TYPO3\CMS\Core\ExtDirect\ExtDirectRou
 class t3lib_extjs_ExtDirectApi extends \TYPO3\CMS\Core\ExtDirect\ExtDirectApi {}
 
 class t3lib_extjs_ExtDirectDebug extends \TYPO3\CMS\Core\ExtDirect\ExtDirectDebug {}
+
+class extDirect_DataProvider_ContextHelp extends \TYPO3\CMS\ContextHelp\ExtDirect\ContextHelpDataProvider {}
+
+abstract class t3lib_userAuth extends \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication {}
+
+class t3lib_beUserAuth extends \TYPO3\CMS\Core\Authentication\BackendUserAuthentication {}
+
+class t3lib_autoloader extends \TYPO3\CMS\Core\Core\ClassLoader {}
+
+abstract class t3lib_cache_backend_AbstractBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend {}
+
+class t3lib_cache_backend_ApcBackend extends \TYPO3\CMS\Core\Cache\Backend\ApcBackend {}
+
+interface t3lib_cache_backend_Backend extends \TYPO3\CMS\Core\Cache\Backend\BackendInterface {}
+
+class t3lib_cache_backend_FileBackend extends \TYPO3\CMS\Core\Cache\Backend\FileBackend {}
+
+class t3lib_cache_backend_MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\MemcachedBackend {}
+
+class t3lib_cache_backend_NullBackend extends \TYPO3\CMS\Core\Cache\Backend\NullBackend {}
+
+class t3lib_cache_backend_PdoBackend extends \TYPO3\CMS\Core\Cache\Backend\PdoBackend {}
+
+interface t3lib_cache_backend_PhpCapableBackend extends \TYPO3\CMS\Core\Cache\Backend\PhpCapableBackendInterface {}
+
+class t3lib_cache_backend_RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\RedisBackend {}
+
+class t3lib_cache_backend_TransientMemoryBackend extends \TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend {}
+
+class t3lib_cache_backend_DbBackend extends \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend {}
+
+class t3lib_cache extends \TYPO3\CMS\Core\Cache\Cache {}
+
+class t3lib_cache_Factory extends \TYPO3\CMS\Core\Cache\CacheFactory {}
+
+class t3lib_cache_Manager extends \TYPO3\CMS\Core\Cache\CacheManager {}
+
+class t3lib_cache_Exception extends \TYPO3\CMS\Core\Cache\Exception {}
+
+class t3lib_cache_exception_ClassAlreadyLoaded extends \TYPO3\CMS\Core\Cache\Exception\ClassAlreadyLoadedException {}
+
+class t3lib_cache_exception_DuplicateIdentifier extends \TYPO3\CMS\Core\Cache\Exception\DuplicateIdentifierException {}
+
+class t3lib_cache_exception_InvalidBackend extends \TYPO3\CMS\Core\Cache\Exception\InvalidBackendException {}
+
+class t3lib_cache_exception_InvalidCache extends \TYPO3\CMS\Core\Cache\Exception\InvalidCacheException {}
+
+class t3lib_cache_exception_InvalidData extends \TYPO3\CMS\Core\Cache\Exception\InvalidDataException {}
+
+class t3lib_cache_exception_NoSuchCache extends \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException {}
+
+abstract class t3lib_cache_frontend_AbstractFrontend extends \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend {}
+
+interface t3lib_cache_frontend_Frontend extends \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface {}
+
+class t3lib_cache_frontend_PhpFrontend extends \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend {}
+
+class t3lib_cache_frontend_StringFrontend extends \TYPO3\CMS\Core\Cache\Frontend\StringFrontend {}
+
+class t3lib_cache_frontend_VariableFrontend extends \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend {}
+
+class t3lib_cs extends \TYPO3\CMS\Core\Charset\CharsetConverter {}
+
+abstract class t3lib_collection_AbstractRecordCollection extends \TYPO3\CMS\Core\Collection\AbstractRecordCollection {}
+
+interface t3lib_collection_Collection extends \TYPO3\CMS\Core\Collection\CollectionInterface {}
+
+interface t3lib_collection_Editable extends \TYPO3\CMS\Core\Collection\EditableCollectionInterface {}
+
+interface t3lib_collection_Nameable extends \TYPO3\CMS\Core\Collection\NameableCollectionInterface {}
+
+interface t3lib_collection_Persistable extends \TYPO3\CMS\Core\Collection\PersistableCollectionInterface {}
+
+interface t3lib_collection_RecordCollection extends \TYPO3\CMS\Core\Collection\RecordCollectionInterface {}
+
+class t3lib_collection_RecordCollectionRepository extends \TYPO3\CMS\Core\Collection\RecordCollectionRepository {}
+
+interface t3lib_collection_Sortable extends \TYPO3\CMS\Core\Collection\SortableCollectionInterface {}
+
+class t3lib_collection_StaticRecordCollection extends \TYPO3\CMS\Core\Collection\StaticRecordCollection {}
+
+class t3lib_flexformtools extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools {}
+
+abstract class t3lib_matchCondition_abstract extends \TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher {}
+
+class t3lib_DB extends \TYPO3\CMS\Core\Database\DatabaseConnection {}
+
+interface t3lib_DB_postProcessQueryHook extends \TYPO3\CMS\Core\Database\PostProcessQueryHookInterface {}
+
+interface t3lib_DB_preProcessQueryHook extends \TYPO3\CMS\Core\Database\PreProcessQueryHookInterface {}
+
+class t3lib_PdoHelper extends \TYPO3\CMS\Core\Database\PdoHelper {}
+
+class t3lib_db_PreparedStatement extends \TYPO3\CMS\Core\Database\PreparedStatement {}
+
+class t3lib_queryGenerator extends \TYPO3\CMS\Core\Database\QueryGenerator {}
+
+class t3lib_fullsearch extends \TYPO3\CMS\Core\Database\QueryView {}
+
+class t3lib_refindex extends \TYPO3\CMS\Core\Database\ReferenceIndex {}
+
+class t3lib_loadDBGroup extends \TYPO3\CMS\Core\Database\RelationHandler {}
+
+class t3lib_softrefproc extends \TYPO3\CMS\Core\Database\SoftReferenceIndex {}
+
+class t3lib_sqlparser extends \TYPO3\CMS\Core\Database\SqlParser {}
+
+interface t3lib_extTables_PostProcessingHook extends \TYPO3\CMS\Core\Database\TableConfigurationPostProcessingHookInterface {}
+
+class t3lib_TCEmain extends \TYPO3\CMS\Core\DataHandling\DataHandler {}
+
+interface t3lib_TCEmain_checkModifyAccessListHook extends \TYPO3\CMS\Core\DataHandling\DataHandlerCheckModifyAccessListHookInterface {}
+
+interface t3lib_TCEmain_processUploadHook extends \TYPO3\CMS\Core\DataHandling\DataHandlerProcessUploadHookInterface {}
+
+interface t3lib_browseLinksHook extends \TYPO3\CMS\Core\ElementBrowser\ElementBrowserHookInterface {}
+
+class t3lib_codec_JavaScriptEncoder extends \TYPO3\CMS\Core\Encoder\JavaScriptEncoder {}
+
+abstract class t3lib_error_AbstractExceptionHandler extends \TYPO3\CMS\Core\Error\AbstractExceptionHandler {}
+
+class t3lib_error_DebugExceptionHandler extends \TYPO3\CMS\Core\Error\DebugExceptionHandler {}
+
+class t3lib_error_ErrorHandler extends \TYPO3\CMS\Core\Error\ErrorHandler {}
+
+interface t3lib_error_ErrorHandlerInterface extends \TYPO3\CMS\Core\Error\ErrorHandlerInterface {}
+
+class t3lib_error_Exception extends \TYPO3\CMS\Core\Error\Exception {}
+
+interface t3lib_error_ExceptionHandlerInterface extends \TYPO3\CMS\Core\Error\ExceptionHandlerInterface {}
+
+abstract class t3lib_error_http_AbstractClientErrorException extends \TYPO3\CMS\Core\Error\Http\AbstractClientErrorException {}
+
+abstract class t3lib_error_http_AbstractServerErrorException extends \TYPO3\CMS\Core\Error\Http\AbstractServerErrorException {}
+
+class t3lib_error_http_BadRequestException extends \TYPO3\CMS\Core\Error\Http\BadRequestException {}
+
+class t3lib_error_http_ForbiddenException extends \TYPO3\CMS\Core\Error\Http\ForbiddenException {}
+
+class t3lib_error_http_PageNotFoundException extends \TYPO3\CMS\Core\Error\Http\PageNotFoundException {}
+
+class t3lib_error_http_ServiceUnavailableException extends \TYPO3\CMS\Core\Error\Http\ServiceUnavailableException {}
+
+class t3lib_error_http_StatusException extends \TYPO3\CMS\Core\Error\Http\StatusException {}
+
+class t3lib_error_http_UnauthorizedException extends \TYPO3\CMS\Core\Error\Http\UnauthorizedException {}
+
+class t3lib_error_ProductionExceptionHandler extends \TYPO3\CMS\Core\Error\ProductionExceptionHandler {}
+
+class t3lib_exception extends \TYPO3\CMS\Core\Exception {}
+
+class t3lib_extMgm extends \TYPO3\CMS\Core\Utility\ExtensionManagementUtility {}
+
+abstract class t3lib_formprotection_Abstract extends \TYPO3\CMS\Core\FormProtection\AbstractFormProtection {}
+
+class t3lib_formprotection_BackendFormProtection extends \TYPO3\CMS\Core\FormProtection\BackendFormProtection {}
+
+class t3lib_formprotection_DisabledFormProtection extends \TYPO3\CMS\Core\FormProtection\DisabledFormProtection {}
+
+class t3lib_formprotection_InvalidTokenException extends \TYPO3\CMS\Core\FormProtection\Exception {}
+
+class t3lib_formprotection_Factory extends \TYPO3\CMS\Core\FormProtection\FormProtectionFactory {}
+
+class t3lib_formprotection_InstallToolFormProtection extends \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection {}
+
+class t3lib_frontendedit extends \TYPO3\CMS\Core\FrontendEditing\FrontendEditingController {}
+
+class t3lib_parsehtml extends \TYPO3\CMS\Core\Html\HtmlParser {}
+
+class t3lib_parsehtml_proc extends \TYPO3\CMS\Core\Html\RteHtmlParser {}
+
+class TYPO3AJAX extends \TYPO3\CMS\Core\Http\AjaxRequestHandler {}
+
+class t3lib_http_Request extends \TYPO3\CMS\Core\Http\HttpRequest {}
+
+class t3lib_http_observer_Download extends \TYPO3\CMS\Core\Http\Observer\Download {}
+
+class t3lib_stdGraphic extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {}
+
+class t3lib_admin extends \TYPO3\CMS\Core\Integrity\DatabaseIntegrityCheck {}
+
+class t3lib_l10n_exception_FileNotFound extends \TYPO3\CMS\Core\Localization\Exception\FileNotFoundException {}
+
+class t3lib_l10n_exception_InvalidParser extends \TYPO3\CMS\Core\Localization\Exception\InvalidParserException {}
+
+class t3lib_l10n_exception_InvalidXmlFile extends \TYPO3\CMS\Core\Localization\Exception\InvalidXmlFileException {}
+
+class t3lib_l10n_Store extends \TYPO3\CMS\Core\Localization\LanguageStore {}
+
+class t3lib_l10n_Locales extends \TYPO3\CMS\Core\Localization\Locales {}
+
+class t3lib_l10n_Factory extends \TYPO3\CMS\Core\Localization\LocalizationFactory {}
+
+abstract class t3lib_l10n_parser_AbstractXml extends \TYPO3\CMS\Core\Localization\Parser\AbstractXmlParser {}
+
+interface t3lib_l10n_parser extends \TYPO3\CMS\Core\Localization\Parser\LocalizationParserInterface {}
+
+class t3lib_l10n_parser_Llphp extends \TYPO3\CMS\Core\Localization\Parser\LocallangArrayParser {}
+
+class t3lib_l10n_parser_Llxml extends \TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser {}
+
+class t3lib_l10n_parser_Xliff extends \TYPO3\CMS\Core\Localization\Parser\XliffParser {}
+
+class t3lib_lock extends \TYPO3\CMS\Core\Locking\Locker {}
+
+class t3lib_mail_Mailer extends \TYPO3\CMS\Core\Mail\Mailer {}
+
+interface t3lib_mail_MailerAdapter extends \TYPO3\CMS\Core\Mail\MailerAdapterInterface {}
+
+class t3lib_mail_Message extends \TYPO3\CMS\Core\Mail\MailMessage {}
+
+class t3lib_mail_MboxTransport extends \TYPO3\CMS\Core\Mail\MboxTransport {}
+
+class t3lib_mail_Rfc822AddressesParser extends \TYPO3\CMS\Core\Mail\Rfc822AddressesParser {}
+
+abstract class t3lib_message_AbstractMessage extends \TYPO3\CMS\Core\Messaging\AbstractMessage {}
+
+abstract class t3lib_message_AbstractStandaloneMessage extends \TYPO3\CMS\Core\Messaging\AbstractStandaloneMessage {}
+
+class t3lib_message_ErrorpageMessage extends \TYPO3\CMS\Core\Messaging\ErrorpageMessage {}
+
+class t3lib_FlashMessage extends \TYPO3\CMS\Core\Messaging\FlashMessage {}
+
+class t3lib_FlashMessageQueue extends \TYPO3\CMS\Core\Messaging\FlashMessageQueue {}
+
+class t3lib_PageRenderer extends \TYPO3\CMS\Core\Page\PageRenderer {}
+
+class t3lib_Registry extends \TYPO3\CMS\Core\Registry {}
+
+class t3lib_Compressor extends \TYPO3\CMS\Core\Resource\ResourceCompressor {}
+
+abstract class t3lib_svbase extends \TYPO3\CMS\Core\Service\AbstractService {}
+
+interface t3lib_Singleton extends \TYPO3\CMS\Core\SingletonInterface {}
+
+class t3lib_TimeTrackNull extends \TYPO3\CMS\Core\TimeTracker\NullTimeTracker {}
+
+class t3lib_timeTrack extends \TYPO3\CMS\Core\TimeTracker\TimeTracker {}
+
+abstract class t3lib_tree_Tca_AbstractTcaTreeDataProvider extends \TYPO3\CMS\Core\Tree\TableConfiguration\AbstractTableConfigurationTreeDataProvider {}
+
+class t3lib_tree_Tca_DatabaseTreeDataProvider extends \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider {}
+
+class t3lib_tree_Tca_DatabaseNode extends \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeNode {}
+
+class t3lib_tree_Tca_ExtJsArrayRenderer extends \TYPO3\CMS\Core\Tree\TableConfiguration\ExtJsArrayTreeRenderer {}
+
+class t3lib_tree_Tca_TcaTree extends \TYPO3\CMS\Core\Tree\TableConfiguration\TableConfigurationTree {}
+
+class t3lib_tree_Tca_DataProviderFactory extends \TYPO3\CMS\Core\Tree\TableConfiguration\TreeDataProviderFactory {}
+
+class t3lib_tsStyleConfig extends \TYPO3\CMS\Core\TypoScript\ConfigurationForm {}
+
+class t3lib_tsparser_ext extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService {}
+
+class t3lib_TStemplate extends \TYPO3\CMS\Core\TypoScript\TemplateService {}
+
+class t3lib_utility_Array extends \TYPO3\CMS\Core\Utility\ArrayUtility {}
+
+class t3lib_utility_Client extends \TYPO3\CMS\Core\Utility\ClientUtility {}
+
+class t3lib_exec extends \TYPO3\CMS\Core\Utility\CommandUtility {}
+
+class t3lib_utility_Command extends \TYPO3\CMS\Core\Utility\CommandUtility {}
+
+class t3lib_utility_Debug extends \TYPO3\CMS\Core\Utility\DebugUtility {}
+
+class t3lib_diff extends \TYPO3\CMS\Core\Utility\DiffUtility {}
+
+class t3lib_basicFileFunctions extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility {}
+
+class t3lib_extFileFunctions extends \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility {}
+
+interface t3lib_extFileFunctions_processDataHook extends \TYPO3\CMS\Core\Utility\File\ExtendedFileUtilityProcessDataHookInterface {}
+
+class t3lib_div extends \TYPO3\CMS\Core\Utility\GeneralUtility {}
+
+class t3lib_utility_Http extends \TYPO3\CMS\Core\Utility\HttpUtility {}
+
+class t3lib_utility_Mail extends \TYPO3\CMS\Core\Utility\MailUtility {}
+
+class t3lib_utility_Math extends \TYPO3\CMS\Core\Utility\MathUtility {}
+
+class t3lib_utility_Monitor extends \TYPO3\CMS\Core\Utility\MonitorUtility {}
+
+class t3lib_utility_Path extends \TYPO3\CMS\Core\Utility\PathUtility {}
+
+class t3lib_utility_PhpOptions extends \TYPO3\CMS\Core\Utility\PhpOptionsUtility {}
+
+class t3lib_utility_VersionNumber extends \TYPO3\CMS\Core\Utility\VersionNumberUtility {}

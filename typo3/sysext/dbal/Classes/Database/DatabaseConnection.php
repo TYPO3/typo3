@@ -144,7 +144,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	/**
 	 * @var string
 	 */
-	protected $cacheIdentifier = 't3lib_db_fieldInfo';
+	protected $cacheIdentifier = 'DatabaseConnection_fieldInfo';
 
 	/**
 	 * SQL parser
@@ -250,7 +250,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * @return void
 	 */
 	public function clearCachedFieldInfo() {
-		$this->getFieldInfoCache()->flushByTag('t3lib_db');
+		$this->getFieldInfoCache()->flushByTag('DatabaseConnection');
 	}
 
 	/**
@@ -271,7 +271,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			$this->analyzeCachingTables();
 			$this->analyzeExtensionTables();
 			$completeFieldInformation = $this->getCompleteFieldInformation();
-			$phpCodeCache->set($this->cacheIdentifier, $this->getCacheableString($completeFieldInformation), array('t3lib_db'));
+			$phpCodeCache->set($this->cacheIdentifier, $this->getCacheableString($completeFieldInformation), array('DatabaseConnection'));
 		}
 	}
 

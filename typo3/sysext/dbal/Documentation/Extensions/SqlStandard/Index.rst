@@ -13,7 +13,7 @@ SQL standard
 ^^^^^^^^^^^^
 
 When the core of TYPO3 including a number of global extensions were
-converted to the database wrapper class, ``t3lib_db``, it was found that
+converted to the database wrapper class, ``DatabaseConnection``, it was found that
 the usage of SQL in TYPO3 was luckily quite simple and consistently
 using the same features. This made it fairly easy to convert the whole
 application into using the wrapper functions. But it also meant that
@@ -56,12 +56,12 @@ SQL calls
 
 The PHP API for MySQL contains a long list of functions. By the
 inspection of the TYPO3 core it was found that only quite few of these
-were used and subsequently only those has made it into the ``t3lib_db``
+were used and subsequently only those has made it into the ``DatabaseConnection``
 class (For instance ``mysql()`` was typically used to execute a query and
 subsequently the result was traversed by ``mysql_fetch_assoc()`` in 95%
 of the cases).
 
-The wrapper functions in the class ``t3lib_db`` are now the only
+The wrapper functions in the class ``DatabaseConnection`` are now the only
 functions that are "allowed" to be used for database connectivity and
 it is believed that these functions is sufficient for all TYPO3
 extension programmers. By defining such a limited set of functions we

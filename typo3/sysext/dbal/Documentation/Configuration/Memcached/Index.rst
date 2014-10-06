@@ -1,4 +1,4 @@
-﻿.. ==================================================
+.. ==================================================
 .. FOR YOUR INFORMATION
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
@@ -24,7 +24,7 @@ DBAL to be much more efficient. Caching may be configured within
 
 	$GLOBALS['TYPO3_CONF_VARS']['SYS']['useCachingFramework'] = 1;
 	$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['dbal'] = array(
-	    'backend' => 't3lib_cache_backend_MemcachedBackend',
+	    'backend' => 'TYPO3\\CMS\\Core\\Cache\\Backend\\MemcachedBackend',
 	    'options' => array(
 	        // port is mandatory!
 	        'servers' => array('localhost:11211', 'otherhost:11211', 'thirdhost:11211'),

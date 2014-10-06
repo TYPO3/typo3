@@ -109,7 +109,7 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
 	}
 
 	/**
-	 * Simulates executing commands by using t3lib_TCEmain.
+	 * Simulates executing commands by using DataHandler.
 	 *
 	 * @param array $elements The cmdmap to be delivered to DataHandler
 	 * @return \TYPO3\CMS\Core\DataHandling\DataHandler
