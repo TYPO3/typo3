@@ -36,7 +36,11 @@ class UserElement extends AbstractFormElement {
 		$additionalInformation['parameters'] = isset($additionalInformation['fieldConf']['config']['parameters'])
 			? $additionalInformation['fieldConf']['config']['parameters']
 			: array();
-		$additionalInformation['pObj'] = &$this;
-		return GeneralUtility::callUserFunction($additionalInformation['fieldConf']['config']['userFunc'], $additionalInformation, $this);
+		$additionalInformation['pObj'] = $this->formEngine;
+		return GeneralUtility::callUserFunction(
+			$additionalInformation['fieldConf']['config']['userFunc'],
+			$additionalInformation,
+			$this->formEngine
+		);
 	}
 }
