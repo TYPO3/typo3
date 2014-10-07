@@ -1176,7 +1176,7 @@ class ContentObjectRenderer {
 		if ($recursive === FALSE && is_string($flexData)) {
 			$flexData = GeneralUtility::xml2array($flexData, 'T3');
 		}
-		if (isset($flexData['data']['sDEF']['lDEF'])) {
+		if (is_array($flexData) && isset($flexData['data']['sDEF']['lDEF'])) {
 			$flexData = $flexData['data']['sDEF']['lDEF'];
 		}
 		if (!is_array($flexData)) {
