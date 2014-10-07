@@ -341,7 +341,7 @@ class PageRepository {
 		}
 		// If language UID is different from zero, do overlay:
 		if ($lUid) {
-			$fieldArr = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['pageOverlayFields']);
+			$fieldArr = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['pageOverlayFields'], TRUE);
 			if (is_array($pageInput)) {
 				// Was the whole record
 				$page_id = $pageInput['uid'];
