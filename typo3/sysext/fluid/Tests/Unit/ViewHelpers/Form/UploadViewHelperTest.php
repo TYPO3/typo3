@@ -70,4 +70,22 @@ class UploadViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 		$this->viewHelper->render();
 	}
 
+	/**
+	 * @test
+	 */
+	public function renderSetsAttributeNameAsArrayIfMultipleIsGiven() {
+		/** @var \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder $tagBuilder */
+		$tagBuilder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class);
+		$tagBuilder->addAttribute('multiple', 'multiple');
+		$this->viewHelper->_set('tag', $tagBuilder);
+		$arguments = array(
+			'name' => 'someName',
+			'multiple' => 'multiple'
+		);
+		$this->viewHelper->setArguments($arguments);
+		$this->viewHelper->initialize();
+		$result = $this->viewHelper->render();
+		$this->assertEquals('<input multiple="multiple" type="file" name="someName[]" />', $result);
+	}
+
 }
