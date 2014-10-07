@@ -28,6 +28,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 		'uid',
 		'title',
 		'doktype',
+		'mount_pid',
 		'php_tree_stop',
 		't3ver_id',
 		't3ver_state'

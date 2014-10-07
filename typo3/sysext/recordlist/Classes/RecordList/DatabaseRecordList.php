@@ -304,6 +304,8 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 			$selectFields[] = 'nav_hide';
 			$selectFields[] = 'doktype';
 			$selectFields[] = 'shortcut';
+			$selectFields[] = 'shortcut_mode';
+			$selectFields[] = 'mount_pid';
 		}
 		if (is_array($GLOBALS['TCA'][$table]['ctrl']['enablecolumns'])) {
 			$selectFields = array_merge($selectFields, $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']);

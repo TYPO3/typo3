@@ -1695,7 +1695,7 @@ class BackendUtility {
 				$label = self::getRecordPath((int)$row['mount_pid'], $perms_clause, 20);
 			} else {
 				$lRec = self::getRecordWSOL('pages', (int)$row['mount_pid'], 'title');
-				$label = $lRec['title'];
+				$label = $lRec['title'] . ' (id=' . $row['mount_pid'] . ')';
 			}
 			$parts[] = $GLOBALS['LANG']->sL($GLOBALS['TCA']['pages']['columns']['mount_pid']['label']) . ' ' . $label;
 			if ($row['mount_pid_ol']) {
