@@ -179,10 +179,14 @@ class SystemEnvironmentBuilder {
 	 */
 	static protected function checkMainPathsExist() {
 		if (!is_file(PATH_thisScript)) {
-			die('Unable to determine path to entry script.');
+			static::dieWithMessage('Unable to determine path to entry script.');
 		}
 		if (!is_dir(PATH_tslib)) {
-			die('Calculated absolute path to tslib directory does not exist.');
+			static::dieWithMessage('Calculated absolute path to tslib directory does not exist.' . LF . LF
+				. 'Something in the main file, folder and link structure is wrong and must be fixed! A typical document root contains a couple of symbolic links:' . LF
+				. '* A symlink "typo3_src" pointing to the TYPO3 CMS core.' . LF
+				. '* A symlink "typo3" - the backend entry point - pointing to "typo3_src/typo3"' . LF
+				. '* A symlink "index.php" - the frontend entry point - points to "typo3_src/index.php"');
 		}
 	}
 
@@ -455,7 +459,7 @@ class SystemEnvironmentBuilder {
 		} elseif (substr(TYPO3_MOD_PATH, 0, strlen('../typo3conf/')) === '../typo3conf/') {
 			$pathPartRelativeToDocumentRoot = substr(TYPO3_MOD_PATH, 3);
 		} else {
-			die('Unable to determine TYPO3 document root.');
+			static::dieWithMessage('Unable to determine TYPO3 document root.');
 		}
 		$entryScriptDirectory = self::getUnifiedDirectoryNameWithTrailingSlash(PATH_thisScript);
 		return substr($entryScriptDirectory, 0, -strlen($pathPartRelativeToDocumentRoot));
@@ -489,5 +493,15 @@ class SystemEnvironmentBuilder {
 			$directory = str_replace('\\', '/', $directory);
 		}
 		return $directory . '/';
+	}
+
+	/**
+	 * Echo out a text message and die
+	 *
+	 * @param string $message
+	 */
+	static protected function dieWithMessage($message) {
+		header('Content-type: text/plain');
+		die($message);
 	}
 }
