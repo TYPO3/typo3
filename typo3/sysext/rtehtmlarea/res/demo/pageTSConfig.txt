@@ -8,51 +8,51 @@
 	## Partial re-use of color scheme and frame scheme from CSS Styled Content extension
 RTE.classes {
 	align-left {
-		name = LLL:EXT:rtehtmlarea/htmlarea/locallang_tooltips.xml:justifyleft
+		name = LLL:EXT:rtehtmlarea/htmlarea/locallang_tooltips.xlf:justifyleft
 		value = text-align: left;
 	}
 	align-center {
-		name = LLL:EXT:rtehtmlarea/htmlarea/locallang_tooltips.xml:justifycenter
+		name = LLL:EXT:rtehtmlarea/htmlarea/locallang_tooltips.xlf:justifycenter
 		value = text-align: center;
 	}
 	align-right {
-		name = LLL:EXT:rtehtmlarea/htmlarea/locallang_tooltips.xml:justifyright
+		name = LLL:EXT:rtehtmlarea/htmlarea/locallang_tooltips.xlf:justifyright
 		value = text-align: right;
 	}
 	csc-frame-frame1 {
-		name = LLL:EXT:rtehtmlarea/res/contentcss/locallang.xml:frame-frame1
+		name = LLL:EXT:rtehtmlarea/res/contentcss/locallang.xlf:frame-frame1
 		value = background-color: #EDEBF1; border: 1px solid #333333;
 	}
 	csc-frame-frame2 {
-		name = LLL:EXT:rtehtmlarea/res/contentcss/locallang.xml:frame-frame2
+		name = LLL:EXT:rtehtmlarea/res/contentcss/locallang.xlf:frame-frame2
 		value = background-color: #F5FFAA; border: 1px solid #333333;
 	}
 	important {
-		name = LLL:EXT:rtehtmlarea/res/contentcss/locallang.xml:important
+		name = LLL:EXT:rtehtmlarea/res/contentcss/locallang.xlf:important
 		value = color: #8A0020;
 	}
 	name-of-person {
-		name = LLL:EXT:rtehtmlarea/res/contentcss/locallang.xml:name-of-person
+		name = LLL:EXT:rtehtmlarea/res/contentcss/locallang.xlf:name-of-person
 		value = color: #10007B;
 	}
 	detail {
-		name = LLL:EXT:rtehtmlarea/res/contentcss/locallang.xml:detail
+		name = LLL:EXT:rtehtmlarea/res/contentcss/locallang.xlf:detail
 		value = color: #186900;
 	}
 	component-items {
-		name = LLL:EXT:rtehtmlarea/res/contentcss/locallang.xml:component-items
+		name = LLL:EXT:rtehtmlarea/res/contentcss/locallang.xlf:component-items
 		value = color: #186900;
 	}
 	action-items {
-		name = LLL:EXT:rtehtmlarea/res/contentcss/locallang.xml:action-items
+		name = LLL:EXT:rtehtmlarea/res/contentcss/locallang.xlf:action-items
 		value = color: #8A0020;
 	}
 	component-items-ordered {
-		name = LLL:EXT:rtehtmlarea/res/contentcss/locallang.xml:component-items
+		name = LLL:EXT:rtehtmlarea/res/contentcss/locallang.xlf:component-items
 		value = color: #186900;
 	}
 	action-items-ordered {
-		name = LLL:EXT:rtehtmlarea/res/contentcss/locallang.xml:action-items
+		name = LLL:EXT:rtehtmlarea/res/contentcss/locallang.xlf:action-items
 		value = color: #8A0020;
 	}
 }
@@ -63,43 +63,43 @@ RTE.classesAnchor {
 		class = external-link
 		type = url
 		image = EXT:rtehtmlarea/res/accessibilityicons/img/external_link.gif
-		altText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xml:external_link_altText
-		titleText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xml:external_link_titleText
+		altText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xlf:external_link_altText
+		titleText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xlf:external_link_titleText
 	}
 	externalLinkInNewWindow {
 		class = external-link-new-window
 		type = url
 		image = EXT:rtehtmlarea/res/accessibilityicons/img/external_link_new_window.gif
-		altText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xml:external_link_new_window_altText
-		titleText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xml:external_link_new_window_titleText
+		altText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xlf:external_link_new_window_altText
+		titleText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xlf:external_link_new_window_titleText
 	}
 	internalLink {
 		class = internal-link
 		type = page
 		image = EXT:rtehtmlarea/res/accessibilityicons/img/internal_link.gif
-		altText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xml:internal_link_altText
-		titleText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xml:internal_link_titleText
+		altText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xlf:internal_link_altText
+		titleText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xlf:internal_link_titleText
 	}
 	internalLinkInNewWindow {
 		class = internal-link-new-window
 		type = page
 		image = EXT:rtehtmlarea/res/accessibilityicons/img/internal_link_new_window.gif
-		altText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xml:internal_link_new_window_altText
-		titleText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xml:internal_link_new_window_titleText
+		altText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xlf:internal_link_new_window_altText
+		titleText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xlf:internal_link_new_window_titleText
 	}
 	download {
 		class = download
 		type = file
 		image = EXT:rtehtmlarea/res/accessibilityicons/img/download.gif
-		altText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xml:download_altText
-		titleText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xml:download_titleText
+		altText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xlf:download_altText
+		titleText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xlf:download_titleText
 	}
 	mail {
 		class = mail
 		type = mail
 		image = EXT:rtehtmlarea/res/accessibilityicons/img/mail.gif
-		altText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xml:mail_altText
-		titleText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xml:mail_titleText
+		altText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xlf:mail_altText
+		titleText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xlf:mail_titleText
 	}
 }
 
