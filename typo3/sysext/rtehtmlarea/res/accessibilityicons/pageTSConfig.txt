@@ -8,27 +8,27 @@
 RTE.classesAnchor {
 	externalLink {
 		image = EXT:rtehtmlarea/res/accessibilityicons/img/external_link.gif
-		altText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xml:external_link_altText
+		altText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xlf:external_link_altText
 	}
 	externalLinkInNewWindow {
 		image = EXT:rtehtmlarea/res/accessibilityicons/img/external_link_new_window.gif
-		altText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xml:external_link_new_window_altText
+		altText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xlf:external_link_new_window_altText
 	}
 	internalLink {
 		image = EXT:rtehtmlarea/res/accessibilityicons/img/internal_link.gif
-		altText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xml:internal_link_altText
+		altText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xlf:internal_link_altText
 	}
 	internalLinkInNewWindow {
 		image = EXT:rtehtmlarea/res/accessibilityicons/img/internal_link_new_window.gif
-		altText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xml:internal_link_new_window_altText
+		altText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xlf:internal_link_new_window_altText
 	}
 	download {
 		image = EXT:rtehtmlarea/res/accessibilityicons/img/download.gif
-		altText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xml:download_altText
+		altText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xlf:download_altText
 	}
 	mail {
 		image = EXT:rtehtmlarea/res/accessibilityicons/img/mail.gif
-		altText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xml:mail_altText
+		altText = LLL:EXT:rtehtmlarea/res/accessibilityicons/locallang.xlf:mail_altText
 	}
 }
 
