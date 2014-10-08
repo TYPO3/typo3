@@ -348,7 +348,7 @@ return array(
 				'wizards' => array(
 					'userFuncInputWizard' => array(
 						'type' => 'userFunc',
-						'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\UserFunctions->userFuncInputWizard',
+						'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\Wizard->render',
 						'params' => array(
 							'color' => 'green',
 						),
@@ -1290,6 +1290,28 @@ return array(
 		),
 
 
+		'user_1' => array(
+			'label' => '1 parameter color used as border color',
+			'config' => array(
+				'type' => 'user',
+				'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\TypeUser->render',
+				'parameters' => array(
+					'color' => 'green',
+				),
+			),
+		),
+		'user_2' => array(
+			'label' => '2 noTableWrapping',
+			'config' => array(
+				'type' => 'user',
+				'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\TypeUser->render',
+				'parameters' => array(
+					'color' => 'green',
+				),
+				'noTableWrapping' => TRUE,
+			),
+		),
+
 	),
 
 	'interface' => array(
@@ -1310,6 +1332,7 @@ return array(
 			group_11,
 			none_1, none_2, none_3, none_4, none_5, none_6,
 			passthrough_1,
+			user_1, user_2,
 			',
 	),
 
@@ -1340,6 +1363,8 @@ return array(
 					passthrough_1,
 				--div--;None,
 					none_1, none_2, none_3, none_4, none_5, none_6,
+				--div--;User,
+					user_1, user_2,
 				--div--;Access,
 					--palette--;Visibility;visibility,
 					--palette--;Access;access
