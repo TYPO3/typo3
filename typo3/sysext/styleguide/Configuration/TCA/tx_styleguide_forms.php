@@ -1312,6 +1312,71 @@ return array(
 			),
 		),
 
+
+		'flex_1' => array(
+			'label' => '1 simple flex form',
+			'config' => array(
+				'type' => 'flex',
+				'ds' => array(
+					'default' => '
+						<T3DataStructure>
+							<ROOT>
+								<type>array</type>
+								<el>
+									<input_1>
+										<TCEforms>
+											<label>Some input field</label>
+											<config>
+												<type>input</type>
+												<size>23</size>
+											</config>
+										</TCEforms>
+									</input_1>
+								</el>
+							</ROOT>
+						</T3DataStructure>
+					',
+				),
+			),
+		),
+		'flex_2' => array(
+			'label' => '2 simple flex form with langDisable=1',
+			'config' => array(
+				'type' => 'flex',
+				'ds' => array(
+					'default' => '
+						<T3DataStructure>
+							<meta>
+								<langDisable>1</langDisable>
+							</meta>
+							<ROOT>
+								<type>array</type>
+								<el>
+									<input_1>
+										<TCEforms>
+											<label>Some input field</label>
+											<config>
+												<type>input</type>
+												<size>23</size>
+											</config>
+										</TCEforms>
+									</input_1>
+								</el>
+							</ROOT>
+						</T3DataStructure>
+					',
+				),
+			),
+		),
+		'flex_3' => array(
+			'label' => '3 complex flexform in an external file',
+			'config' => array(
+				'type' => 'flex',
+				'ds' => array(
+					'default' => 'FILE:EXT:styleguide/Configuration/Flexform/Flex_3.xml',
+				),
+			),
+		),
 	),
 
 	'interface' => array(
@@ -1333,6 +1398,7 @@ return array(
 			none_1, none_2, none_3, none_4, none_5, none_6,
 			passthrough_1,
 			user_1, user_2,
+			flex_1, flex_2, flex_3,
 			',
 	),
 
@@ -1365,6 +1431,8 @@ return array(
 					none_1, none_2, none_3, none_4, none_5, none_6,
 				--div--;User,
 					user_1, user_2,
+				--div--;Flex,
+					flex_1, flex_2, flex_3,
 				--div--;Access,
 					--palette--;Visibility;visibility,
 					--palette--;Access;access

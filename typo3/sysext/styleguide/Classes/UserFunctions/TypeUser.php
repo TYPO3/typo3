@@ -25,7 +25,7 @@ class TypeUser {
 	public function render(array $parameters, $parentObject) {
 		$html = array();
 		$html[] = '<div style="border: 1px dashed ' . $parameters['parameters']['color'] . '" >';
-		$html[] = '<h2>My own form field using a parameter</h2>';
+		$html[] = '<h2>Own form field using a parameter</h2>';
 		$html[] = '<input'
 			. ' type="input"'
 			. ' name="' . $parameters['itemFormElName'] . '"'
