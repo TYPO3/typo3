@@ -111,7 +111,7 @@ HTMLArea.SpellChecker = Ext.extend(HTMLArea.Plugin, {
 			bodyCssClass: 'spell-check',
 			border: false,
 			width: dimensions.width,
-			height: Ext.isIE ? dimensions.height - 50 : 'auto',
+			height: dimensions.height - 50,
 			iconCls: this.getButton(buttonId).iconCls,
 			listeners: {
 				afterrender: {
