@@ -7,86 +7,284 @@
 		<sGeneral>
 			<ROOT>
 				<TCEforms>
-					<sheetTitle>LLL:EXT:cms/locallang_ttc.xml:media.options</sheetTitle>
+					<sheetTitle>Standard elements</sheetTitle>
 				</TCEforms>
 				<type>array</type>
 				<el>
-					<mmType>
+					<input_1>
 						<TCEforms>
-							<onChange>reload</onChange>
-							<label>LLL:EXT:cms/locallang_ttc.xml:media.type</label>
+							<label>input_1 eval trim,required,date</label>
 							<config>
-								<type>select</type>
-								<items>
-									<numIndex index="0">
-										<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.type.video</numIndex>
-										<numIndex index="1">video</numIndex>
-									</numIndex>
-									<numIndex index="1">
-										<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.type.audio</numIndex>
-										<numIndex index="1">audio</numIndex>
-									</numIndex>
-								</items>
+								<type>input</type>
+								<size>20</size>
+								<!-- @TODO: required handling mostly broken: icon misplacement, required field not recognized, sheet icon missing on first sheet -->
+								<eval>trim,required,date</eval>
 							</config>
 						</TCEforms>
-					</mmType>
-					<mmUseHTML5>
+					</input_1>
+					<input_2>
 						<TCEforms>
-							<label>LLL:EXT:cms/locallang_ttc.xml:media.useHTML5</label>
-							<displayCond>FIELD:mmType:!=:audio</displayCond>
-							<onChange>reload</onChange>
+							<label>input_2 with select wizard</label>
+							<config>
+								<type>input</type>
+								<wizards>
+									<!-- @TODO: This picker is broken ... fix it and test all other wizards -->
+									<valuePicker>
+										<type>select</type>
+										<mode></mode>
+										<items>
+											<numIndex index="0">
+												<numIndex index="0">Foo</numIndex>
+												<numIndex index="1">foo</numIndex>
+											</numIndex>
+											<numIndex index="1">
+												<numIndex index="0">Bar</numIndex>
+												<numIndex index="1">bar</numIndex>
+											</numIndex>
+										</items>
+									</valuePicker>
+								</wizards>
+							</config>
+						</TCEforms>
+					</input_2>
+
+
+					<text_1>
+						<TCEforms>
+							<label>text_1 cols=20, rows=2, wrap=virtual, default text, required</label>
+							<config>
+								<type>text</type>
+								<wrap>virtual</wrap>
+								<default>This textbox has wrap set to "virtual", so these long paragraphs should appear in multiple lines (wrapped at the end of the textbox): Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean non luctus elit. In sed nunc velit. Donec gravida eros sollicitudin ligula mollis id eleifend mauris laoreet. Donec turpis magna, pulvinar id pretium eu, blandit et nisi. Nulla fac</default>
+								<cols>20</cols>
+								<rows>2</rows>
+								<!-- @TODO: eval required broken here?! -->
+								<eval>required</eval>
+							</config>
+						</TCEforms>
+					</text_1>
+
+
+					<check_1>
+						<TCEforms>
+							<label>check_1 3 items, cols=2, number 2 pre-selected</label>
 							<config>
 								<type>check</type>
-								<default>0</default>
+								<items>
+									<numIndex index="0">
+										<numIndex index="0">Foo</numIndex>
+									</numIndex>
+									<numIndex index="1">
+										<numIndex index="0">Bar</numIndex>
+									</numIndex>
+									<numIndex index="2">
+										<numIndex index="0">FooBar</numIndex>
+									</numIndex>
+								</items>
+								<default>2</default>
 							</config>
 						</TCEforms>
-					</mmUseHTML5>
-					<mmWidth>
+					</check_1>
+
+
+					<radio_1>
 						<TCEforms>
-							<label>LLL:EXT:cms/locallang_ttc.xml:media.width</label>
+							<label>radio_1 2 items, second pre-selected</label>
 							<config>
-								<type>input</type>
-								<size>8</size>
-								<max>5</max>
-								<eval>trim,num</eval>
+								<type>radio</type>
+								<items>
+									<numIndex index="0">
+										<numIndex index="0">Foo</numIndex>
+										<numIndex index="1">1</numIndex>
+									</numIndex>
+									<numIndex index="1">
+										<numIndex index="0">Bar</numIndex>
+										<numIndex index="1">2</numIndex>
+									</numIndex>
+								</items>
+								<!-- @TODO: default does not seem to work here?! -->
+								<default>2</default>
 							</config>
 						</TCEforms>
-					</mmWidth>
-					<mmHeight>
+					</radio_1>
+
+
+					<select_1>
 						<TCEforms>
-							<label>LLL:EXT:cms/locallang_ttc.xml:media.height</label>
-							<config>
-								<type>input</type>
-								<size>8</size>
-								<max>5</max>
-								<eval>trim,num</eval>
-							</config>
-						</TCEforms>
-					</mmHeight>
-					<mmRenderType>
-						<TCEforms>
-							<label>LLL:EXT:cms/locallang_ttc.xml:media.renderType</label>
-							<displayCond>FIELD:mmType:!=:audio</displayCond>
+							<label>select_1 items with icons, iconsInOptionTag</label>
 							<config>
 								<type>select</type>
 								<items>
 									<numIndex index="0">
-										<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.renderType.auto</numIndex>
-										<numIndex index="1">auto</numIndex>
+										<numIndex index="0">Icon using EXT:</numIndex>
+										<numIndex index="1">foo</numIndex>
+										<numIndex index="2">EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms.png</numIndex>
 									</numIndex>
 									<numIndex index="1">
-										<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.renderType.qt</numIndex>
-										<numIndex index="1">qt</numIndex>
-									</numIndex>
-									<numIndex index="2">
-										<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.renderType.embed</numIndex>
-										<numIndex index="1">embed</numIndex>
+										<numIndex index="0">Icon from typo3/gfx</numIndex>
+										<numIndex index="1">es</numIndex>
+										<!-- @TODO: This breaks if the tag content is in an own line ... trim() missing? Seems to be a general problem on numIndex fields! -->
+										<numIndex index="2">
+											flags/es.gif
+										</numIndex>
 									</numIndex>
 								</items>
-								<itemsProcFunc>TYPO3\CMS\Frontend\Hooks\MediaItemHooks->customMediaRenderTypes</itemsProcFunc>
+								<iconsInOptionTags>1</iconsInOptionTags>
 							</config>
 						</TCEforms>
-					</mmRenderType>
+					</select_1>
+					<select_2>
+						<TCEforms>
+							<label>select_2 renderMode=checkbox with icons, maxitems=1</label>
+							<config>
+								<type>select</type>
+								<items>
+									<numIndex index="0">
+										<numIndex index="0">foo 1</numIndex>
+										<numIndex index="1">1</numIndex>
+										<numIndex index="2"></numIndex>
+										<numIndex index="3">optional description</numIndex>
+									</numIndex>
+									<numIndex index="1">
+										<numIndex index="0">foo 2</numIndex>
+										<numIndex index="1">2</numIndex>
+										<numIndex index="2">EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms.png</numIndex>
+										<numIndex index="3">other description</numIndex>
+									</numIndex>
+								</items>
+								<renderMode>checkbox</renderMode>
+								<maxitems>1</maxitems>
+							</config>
+						</TCEforms>
+					</select_2>
+					<select_3>
+						<TCEforms>
+							<label>select_3 renderMode=tree</label>
+							<config>
+								<type>select</type>
+								<foreign_table>pages</foreign_table>
+								<size>20</size>
+								<maxitems>4</maxitems>
+								<renderMode>tree</renderMode>
+								<treeConfig>
+									<expandAll>1</expandAll>
+									<parentField>pid</parentField>
+									<appearance>
+										<showHeader>1</showHeader>
+									</appearance>
+								</treeConfig>
+							</config>
+						</TCEforms>
+					</select_3>
+					<select_4>
+						<TCEforms>
+							<label>select_4 multi, minitems 1, enableMultiSelectFilterTextfield, multiSelectFilterItems, wizards</label>
+							<config>
+								<type>select</type>
+								<foreign_table>tx_styleguide_forms_staticdata</foreign_table>
+								<rootLevel>1</rootLevel>
+								<size>5</size>
+								<autoSizeMax>5</autoSizeMax>
+								<minitems>1</minitems>
+								<maxitems>999</maxitems>
+								<enableMultiSelectFilterTextfield>1</enableMultiSelectFilterTextfield>
+								<multiSelectFilterItems>
+									<numIndex index="0">
+										<numIndex index="0"></numIndex>
+										<numIndex index="1"></numIndex>
+									</numIndex>
+									<numIndex index="1">
+										<numIndex index="0">foo</numIndex>
+										<numIndex index="1">foo</numIndex>
+									</numIndex>
+									<numIndex index="2">
+										<numIndex index="0">bar</numIndex>
+										<numIndex index="1">bar</numIndex>
+									</numIndex>
+								</multiSelectFilterItems>
+								<wizards>
+									<_PADDING>1</_PADDING>
+									<_VERTICAL>1</_VERTICAL>
+									<edit>
+										<!-- @TODO: popup closes immediatly?! -->
+										<type>popup</type>
+										<title>edit</title>
+										<module>
+											<name>wizard_edit</name>
+										</module>
+										<icon>edit2.gif</icon>
+										<popup_onlyOpenIfSelected>1</popup_onlyOpenIfSelected>
+										<JSopenParams>height=350,width=580,status=0,menubar=0,scrollbars=1</JSopenParams>
+									</edit>
+									<add>
+										<type>script</type>
+										<title>add</title>
+										<icon>add.gif</icon>
+										<module>
+											<name>wizard_add</name>
+										</module>
+										<params>
+											<table>tx_styleguide_forms_staticdata</table>
+											<pid>0</pid>
+											<setValue>prepend</setValue>
+										</params>
+									</add>
+									<list>
+										<type>script</type>
+										<title>liste</title>
+										<icon>list.gif</icon>
+										<module>
+											<name>wizard_list</name>
+										</module>
+										<params>
+											<table>tx_styleguide_forms_staticdata</table>
+											<pid>0</pid>
+										</params>
+									</list>
+								</wizards>
+							</config>
+						</TCEforms>
+					</select_4>
+
+
+					<group_1>
+						<TCEforms>
+							<label>group_1 internal_type=db, suggest wizard</label>
+							<config>
+								<type>group</type>
+								<internal_type>db</internal_type>
+								<allowed>tx_styleguide_forms_staticdata</allowed>
+								<wizards>
+									<suggest>
+										<type>suggest</type>
+									</suggest>
+								</wizards>
+							</config>
+						</TCEforms>
+					</group_1>
+					<group_2>
+						<TCEforms>
+							<label>group_2 internal_type=file</label>
+							<config>
+								<type>group</type>
+								<internal_type>file</internal_type>
+								<allowed>jpg</allowed>
+								<size>3</size>
+								<uploadfolder>uploads/pics</uploadfolder>
+							</config>
+						</TCEforms>
+					</group_2>
+				</el>
+			</ROOT>
+		</sGeneral>
+		<sVideo>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:cms/locallang_ttc.xml:media.tabVideo</sheetTitle>
+					<displayCond>FIELD:sGeneral.mmType:!=:audio</displayCond>
+				</TCEforms>
+				<type>array</type>
+				<el>
 					<mmMediaOptions>
 						<title>LLL:EXT:cms/locallang_ttc.xml:media.additionalOptions</title>
 						<type>array</type>
@@ -203,17 +401,6 @@
 							</mmMediaCustomParameterContainer>
 						</el>
 					</mmMediaOptions>
-				</el>
-			</ROOT>
-		</sGeneral>
-		<sVideo>
-			<ROOT>
-				<TCEforms>
-					<sheetTitle>LLL:EXT:cms/locallang_ttc.xml:media.tabVideo</sheetTitle>
-					<displayCond>FIELD:sGeneral.mmType:!=:audio</displayCond>
-				</TCEforms>
-				<type>array</type>
-				<el>
 					<mmFile>
 						<TCEforms>
 							<label>LLL:EXT:cms/locallang_ttc.xml:media.fallbackUrl</label>
