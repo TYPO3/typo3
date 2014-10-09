@@ -147,7 +147,7 @@ HTMLArea.SpellChecker = Ext.extend(HTMLArea.Plugin, {
 							xtype: 'hidden',
 							itemId: 'dictionary',
 							name: 'dictionary',
-							value: this.defaultDictionary ? this.defaultDictionary : this.contentISOLanguage
+							value: this.defaultDictionary ? this.defaultDictionary : this.contentISOLanguage.toLowerCase()
 						},{
 							xtype: 'hidden',
 							name: 'pspell_charset',
