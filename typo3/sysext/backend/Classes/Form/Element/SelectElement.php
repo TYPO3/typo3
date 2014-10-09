@@ -555,8 +555,8 @@ class SelectElement extends AbstractFormElement {
 						unset($itemArray[$p[1]]);
 					}
 					// Icon:
-					if ($p[2]) {
-						$selIcon = $p[2];
+					if (!empty($p[2])) {
+						$selIcon = $this->formEngine->getIconHtml($p[2]);
 					} else {
 						$selIcon = IconUtility::getSpriteIcon('empty-empty');
 					}
@@ -597,7 +597,7 @@ class SelectElement extends AbstractFormElement {
 						. ' name="' . htmlspecialchars(($PA['itemFormElName'] . '[' . $c . ']'))
 						. '" value="' . htmlspecialchars($p[1]) . '"' . $sM . ' onclick="' . htmlspecialchars($sOnChange)
 						. '"' . $PA['onFocus'] . ' /></td>
-							<td class="c-labelCell" onclick="' . htmlspecialchars($onClickCell) . '">' . $this->formEngine->getIconHtml($selIcon) . $label . '</td>
+							<td class="c-labelCell" onclick="' . htmlspecialchars($onClickCell) . '">' . $selIcon . $label . '</td>
 								<td class="c-descr" onclick="' . htmlspecialchars($onClickCell) . '">' . (empty($help) ? '' : $help) . '</td>
 						</tr>';
 					$c++;
