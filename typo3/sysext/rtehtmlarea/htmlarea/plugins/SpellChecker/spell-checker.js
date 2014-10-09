@@ -288,7 +288,9 @@ HTMLArea.SpellChecker = Ext.extend(HTMLArea.Plugin, {
 									fn: this.onSuggestionSelect,
 									scope: this
 								}
-							}
+							},
+							x: 7,
+							width: 160
 						}, this.configDefaults['combo'])
 					]
 				},{
@@ -318,7 +320,9 @@ HTMLArea.SpellChecker = Ext.extend(HTMLArea.Plugin, {
 									fn: this.onDictionarySelect,
 									scope: this
 								}
-							}
+							},
+							x: 7,
+							width: 160
 						}, this.configDefaults['combo']),
 						{
 							itemId: 'recheck',
