@@ -10,16 +10,21 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-
 /* - - - - - - - - - - - - - - - - - - - - -
-Help > About modules
+Web > Template
 - - - - - - - - - - - - - - - - - - - - - */
-
-table#typo3-aboutmodules tr.c-subitem-row td .icon {
-	background-color: #dddddd;
-	border: 1px solid #c7c7c7;
+#ext-tstemplate-ts-index-php dl.typo3-tstemplate-ceditor-constant dt {
+  display: inline;
+  font-weight: bold;
+  margin-right: 5px;
 }
-
-table#typo3-aboutmodules tr.c-subitem-row:hover td .icon {
-	background-color: rgb(232, 232, 232);
+#ext-tstemplate-ts-index-php dl.typo3-tstemplate-ceditor-constant dd div.typo3-tstemplate-ceditor-row {
+  margin-top: 2px;
+  padding: 3px;
+}
+#ext-tstemplate-ts-index-php dl.typo3-tstemplate-ceditor-constant dd div.typo3-tstemplate-ceditor-colorblock {
+  display: -moz-inline-box;
+  display: inline-block;
+  margin-left: 5px;
+  width: 50px;
 }

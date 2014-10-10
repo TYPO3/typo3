@@ -10,11 +10,13 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-
-/* - - - - - - - - - - - - - - - - - - - - -
-User > Task Center
-- - - - - - - - - - - - - - - - - - - - - */
-
-#ext-taskcenter-task-index-php {
-	height: 95%;
+.legend .pull-left {
+  margin-right: 0.5em;
+}
+a.ug_selector {
+  cursor: pointer;
+  text-decoration: underline;
+}
+a.ug_selector .not_set {
+  font-style: italic;
 }

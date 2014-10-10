@@ -970,7 +970,7 @@ mark,
   text-transform: capitalize;
 }
 .text-muted {
-  color: #d7d7d7;
+  color: #737373;
 }
 .text-primary {
   color: #32a0ff;
@@ -7186,6 +7186,56 @@ table.t3-table-info td {
 .t3-row-header span.t3-icon {
   margin-right: 3px;
 }
+.typo3-tstemplate-ceditor-control {
+  margin-right: 6px;
+  vertical-align: bottom;
+  cursor: pointer;
+}
+#ext-tstemplate-ts-index-php td.bgColor4 {
+  vertical-align: middle;
+  padding: 5px;
+}
+.typo3-dimmed {
+  color: #737373;
+}
+.typo3-red {
+  color: red;
+}
+.typo3-red-background {
+  background-color: red;
+}
+.nobr {
+  white-space: nowrap;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+Background color classes
+- - - - - - - - - - - - - - - - - - - - - */
+.bgColor-20 {
+  background-color: #e3dfdb;
+}
+.bgColor2 {
+  background-color: #585858;
+  color: #ffffff;
+}
+.bgColor3 {
+  background-color: #f6f2e6;
+}
+.bgColor3-20 {
+  background-color: #f7f7f7;
+}
+.bgColor4 {
+  background-color: #f1f1f1;
+  color: #212424;
+}
+.bgColor4-20 {
+  background-color: #f8f9fa;
+}
+.bgColor5 {
+  background-color: #9b9b9b;
+}
+.bgColor6 {
+  background-color: #f7f7f7;
+}
 /**
  * This file is part of the TYPO3 CMS project.
  *
@@ -8400,7 +8450,7 @@ Tab menu
   background-color: #d7d7d7;
 }
 div.typo3-dyntabmenu-divs {
-  padding: 18px;
+  padding: 27px 18px;
   margin-bottom: 1em;
   border-right: 1px solid #d7d7d7;
   border-bottom: 1px solid #d7d7d7;
@@ -10010,6 +10060,28 @@ div#typo3-docbody {
 div#typo3-inner-docbody {
   padding: 24px;
   margin-top: 0;
+  transition: border 0.2s ease;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+Information popup, show_item.php
+- - - - - - - - - - - - - - - - - - - - - */
+body#typo3-show-item-php {
+  padding: 12px 24px;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+Decorations (shadows etc.)
+- - - - - - - - - - - - - - - - - - - - - */
+.shadow-box-bottom-424 {
+  height: 3px;
+  background-image: url('../../../../images/shadows/box-bottom-424.png');
+  background-position: top center;
+  background-repeat: no-repeat;
+}
+.shadow-box-top-428 {
+  height: 4px;
+  background-image: url('../../../../images/shadows/box-top-428.png');
+  background-position: bottom center;
+  background-repeat: no-repeat;
 }
 /**
  * This file is part of the TYPO3 CMS project.
@@ -10114,42 +10186,10 @@ em {
   font-style: italic;
 }
 /* - - - - - - - - - - - - - - - - - - - - -
-Background color classes
-- - - - - - - - - - - - - - - - - - - - - */
-.bgColor-20 {
-  background-color: #e3dfdb;
-}
-.bgColor2 {
-  background-color: #585858;
-  color: #ffffff;
-}
-.bgColor3 {
-  background-color: #f6f2e6;
-}
-.bgColor3-20 {
-  background-color: #f7f7f7;
-}
-.bgColor4 {
-  background-color: #f1f1f1;
-  color: #212424;
-}
-.bgColor4-20 {
-  background-color: #f8f9fa;
-}
-.bgColor5 {
-  background-color: #9b9b9b;
-}
-.bgColor6 {
-  background-color: #f7f7f7;
-}
-/* - - - - - - - - - - - - - - - - - - - - -
 Various classes
 - - - - - - - - - - - - - - - - - - - - - */
 .section {
   margin-bottom: 15px;
-}
-.nobr {
-  white-space: nowrap;
 }
 .diff-r {
   color: red;
@@ -10172,9 +10212,6 @@ div.diff-g {
 /* - - - - - - - - - - - - - - - - - - - - -
 Dimmed span tag color (disabled)
 - - - - - - - - - - - - - - - - - - - - - */
-.typo3-dimmed {
-  color: #666;
-}
 .c-na {
   color: #666;
   font-style: italic;
@@ -10185,12 +10222,6 @@ Dimmed span tag color (disabled)
 /* - - - - - - - - - - - - - - - - - - - - -
 Red span tag color (warning, notice)
 - - - - - - - - - - - - - - - - - - - - - */
-.typo3-red {
-  color: red;
-}
-.typo3-red-background {
-  background-color: red;
-}
 table.warningbox {
   border: solid 2px black;
   background-color: yellow;
@@ -10970,11 +11001,101 @@ Live Search
  * The TYPO3 project - inspiring people to share!
  */
 /* - - - - - - - - - - - - - - - - - - - - -
-Information popup, show_item.php
+Sys notes
 - - - - - - - - - - - - - - - - - - - - - */
-body#typo3-show-item-php {
-  padding: 12px 24px;
-  height: auto;
+/* Should be added by sys_note only when necessary */
+#typo3-dblist-sysnotes {
+  margin-top: 15px;
+}
+#typo3-dblist-sysnotes .single-note {
+  margin-bottom: 12px;
+}
+#typo3-dblist-sysnotes .single-note .header {
+  min-height: 24px;
+  line-height: 24px;
+  background: #d7d7d7;
+  color: #000;
+  font-size: 0.9em;
+}
+#typo3-dblist-sysnotes .single-note .header span.typeicon {
+  width: 23px;
+  height: 24px;
+  margin-right: 7px;
+  display: block;
+  float: left;
+  cursor: pointer;
+  background: url(../../../../icons/ext/sys_note/icon-default.png) no-repeat top left;
+}
+#typo3-dblist-sysnotes .single-note .header .right.icons {
+  visibility: hidden;
+}
+#typo3-dblist-sysnotes .single-note .header .right {
+  float: right;
+  margin-top: -3px;
+  margin-right: 5px;
+}
+#typo3-dblist-sysnotes .single-note .header span {
+  color: #666;
+}
+#typo3-dblist-sysnotes .single-note .content {
+  padding: 12px;
+  background: #fffeed;
+  border: 1px solid #dadada;
+  border-top: none;
+  color: #666;
+}
+#typo3-dblist-sysnotes .single-note .content .title {
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+#typo3-dblist-sysnotes .single-note:hover .header {
+  background-color: #666;
+}
+#typo3-dblist-sysnotes .single-note:hover .header .right.icons {
+  visibility: visible;
+}
+#typo3-dblist-sysnotes .category-1 .header span.typeicon {
+  background-image: url(../../../../icons/ext/sys_note/icon-instruction.png);
+}
+#typo3-dblist-sysnotes .category-2 .header span.typeicon {
+  background-image: url(../../../../icons/ext/sys_note/icon-template.png);
+}
+#typo3-dblist-sysnotes .category-3 .header span.typeicon {
+  background-image: url(../../../../icons/ext/sys_note/icon-note.png);
+}
+#typo3-dblist-sysnotes .category-4 .header span.typeicon {
+  background-image: url(../../../../icons/ext/sys_note/icon-todo.png);
+}
+#typo3-dblist-sysnotes .single-note:hover .header,
+#typo3-dblist-sysnotes .single-note:hover .header span {
+  color: #d7d7d7;
+}
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+/* - - - - - - - - - - - - - - - - - - - - -
+-New Record Wizard
+- - - -- - - - - - - - - - - - - - - - - */
+/* Should be added by NewContentElementController only when necessary */
+.contentelement-wizard li {
+  margin-bottom: 10px;
+}
+.contentelement-wizard li .contentelement-wizard-item-input,
+.contentelement-wizard li .contentelement-wizard-item-icon {
+  float: left;
+  margin-right: 5px;
+}
+.contentelement-wizard li:last-child {
+  margin-bottom: 0px;
 }
 /**
  * This file is part of the TYPO3 CMS project.
@@ -11151,27 +11272,6 @@ body#typo3-wizard-colorpicker-php p.c-head {
  * The TYPO3 project - inspiring people to share!
  */
 /* - - - - - - - - - - - - - - - - - - - - -
-Decorations (shadows etc.)
-- - - - - - - - - - - - - - - - - - - - - */
-.shadow-box-bottom-424 {
-  height: 3px;
-}
-.shadow-box-top-428 {
-  height: 4px;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
 File > List
 - - - - - - - - - - - - - - - - - - - - - */
 table#typo3-filelist tr td div.typo3-clipCtrl {
@@ -11204,148 +11304,6 @@ body#typo3-file-newfolder-php div#c-submitFiles {
 body#typo3-file-edit-php div#c-submit,
 body#typo3-file-edit-php div#c-edit {
   margin-top: 10px;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Help > About
-- - - - - - - - - - - - - - - - - - - - - */
-#typo3-mod-help-about-index-php-outer {
-  margin: 15px auto;
-  width: 500px;
-}
-#typo3-mod-help-about-index-php-outer #donation-description {
-  padding-left: 60px;
-  margin: 10px 0;
-}
-#typo3-mod-help-about-index-php-outer .typo3-mod-help-about-index-php-inner {
-  margin: 10px auto 20px;
-  padding: 10px;
-}
-#typo3-mod-help-about-index-php-outer .typo3-mod-help-about-index-php-inner h2 {
-  margin-top: 0;
-}
-#typo3-mod-help-about-index-php-outer .typo3-mod-help-about-index-php-inner h3 {
-  margin-bottom: 10px;
-  margin-top: 10px;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Help > About modules
-- - - - - - - - - - - - - - - - - - - - - */
-/** following div#typo3-inner-docbody */
-.typo3-aboutmodules-inner-docbody {
-  width: 700px;
-}
-/** TYPO3 logo floating in introduction text */
-.typo3-aboutmodules-inner-docbody p a img {
-  margin-right: 8px;
-  margin-bottom: 2px;
-}
-table#typo3-aboutmodules tr td {
-  vertical-align: top;
-}
-table#typo3-aboutmodules tr.c-mainitem td {
-  padding-top: 12px;
-}
-table#typo3-aboutmodules tr.c-mainitem td img {
-  vertical-align: middle;
-}
-table#typo3-aboutmodules tr.c-subitem-row td {
-  padding: 0 12px 24px 0;
-}
-table#typo3-aboutmodules tr.c-subitem-row td .icon {
-  display: block;
-  text-align: center;
-  vertical-align: middle;
-  width: 50px;
-  height: 50px;
-  line-height: 50px;
-  border-radius: 1px;
-}
-table#typo3-aboutmodules tr.c-subitem-row td.module-description {
-  padding-right: 10px;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-User settings
-- - - - - - - - - - - - - - - - - - - - - */
-table.typo3-usersettings {
-  margin-top: 24px;
-}
-table.typo3-usersettings td {
-  width: 300px;
-  line-height: 20px;
-  padding-left: 12px;
-  padding-bottom: 12px;
-}
-table.typo3-usersettings td.td-label label {
-  width: 275px;
-}
-table.typo3-usersettings a.typo3-csh-link {
-  float: left;
-}
-table.typo3-usersettings img.csh-dummy {
-  float: left;
-  margin-right: 4px;
-  vertical-align: middle;
-}
-table.typo3-usersettings td.td-label-right {
-  padding-left: 30px;
-  width: 50px;
-}
-#ext-setup-mod-index-php #user-setup-wrapper {
-  float: left;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-User > Task Center
-- - - - - - - - - - - - - - - - - - - - - */
-#ext-taskcenter-task-index-php {
-  height: 95%;
 }
 /**
  * This file is part of the TYPO3 CMS project.
@@ -11565,101 +11523,6 @@ div#typo3-dblist-pagination span.bar {
  * The TYPO3 project - inspiring people to share!
  */
 /* - - - - - - - - - - - - - - - - - - - - -
-Sys notes
-- - - - - - - - - - - - - - - - - - - - - */
-#typo3-dblist-sysnotes {
-  margin-top: 15px;
-}
-#typo3-dblist-sysnotes .single-note {
-  margin-bottom: 12px;
-}
-#typo3-dblist-sysnotes .single-note .header {
-  min-height: 24px;
-  line-height: 24px;
-}
-#typo3-dblist-sysnotes .single-note .header span.typeicon {
-  width: 23px;
-  height: 24px;
-  margin-right: 7px;
-  display: block;
-  float: left;
-}
-#typo3-dblist-sysnotes .single-note .header .right.icons {
-  visibility: hidden;
-}
-#typo3-dblist-sysnotes .single-note:hover .header .right.icons {
-  visibility: visible;
-}
-#typo3-dblist-sysnotes .single-note .header span.typeicon {
-  cursor: pointer;
-}
-#typo3-dblist-sysnotes .single-note .header .right {
-  float: right;
-  margin-top: -3px;
-  margin-right: 5px;
-}
-#typo3-dblist-sysnotes .single-note .content {
-  border-top: none;
-  padding: 12px;
-}
-#typo3-dblist-sysnotes .single-note .content .title {
-  font-weight: bold;
-  margin-bottom: 6px;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
--New Record Wizard
-- - - - - - - - - - - - - - - - - - - - - */
-.contentelement-wizard {
-  margin: 10px;
-}
-.contentelement-wizard li {
-  margin-bottom: 10px;
-}
-.contentelement-wizard li:last-child {
-  margin-bottom: 0px;
-}
-.contentelement-wizard-item:before,
-.contentelement-wizard-item:after {
-  content: " ";
-  display: table;
-}
-.contentelement-wizard-item:after {
-  clear: both;
-}
-.contentelement-wizard-item-input,
-.contentelement-wizard-item-icon {
-  float: left;
-  margin-right: 5px;
-}
-.contentelement-wizard-item-icon a,
-.contentelement-wizard-item-icon img {
-  display: block;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
 Web > Page
 - - - - - - - - - - - - - - - - - - - - - */
 table.t3-gridTable,
@@ -11782,96 +11645,6 @@ tr:first-child td.t3-page-column.t3-gridCell .t3-page-colHeader {
  * The TYPO3 project - inspiring people to share!
  */
 /* - - - - - - - - - - - - - - - - - - - - -
-Web > Permissions
-- - - - - - - - - - - - - - - - - - - - - */
-a.perm-allowed,
-a.perm-denied,
-#perm-legend .perm-allowed,
-#perm-legend .perm-denied {
-  display: block;
-  float: left;
-  height: 10px;
-  padding: 2px;
-  width: 10px;
-}
-#perm-legend .perm-allowed,
-#perm-legend .perm-denied {
-  clear: left;
-}
-#perm-legend {
-  margin-top: 10px;
-}
-#permission-information img {
-  float: left;
-  padding-right: 10px;
-}
-#permission-information .text {
-  line-height: 12px;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Web > Template
-- - - - - - - - - - - - - - - - - - - - - */
-.typo3-tstemplate-ceditor-control {
-  margin-right: 3px;
-  vertical-align: bottom;
-}
-div.typo3-tstemplate-ceditor-row {
-  margin-top: 2px;
-  padding: 3px;
-}
-div.typo3-tstemplate-ceditor-colorblock {
-  display: -moz-inline-box;
-  display: inline-block;
-  margin-left: 5px;
-  width: 50px;
-}
-* html div.typo3-tstemplate-ceditor-colorblock {
-  display: inline;
-}
-/* IE 7 Fix */
-dl.typo3-tstemplate-ceditor-constant {
-  margin: 0px 0px 20px 10px;
-}
-dl.typo3-tstemplate-ceditor-constant dd {
-  margin-left: 0px;
-}
-dl.typo3-tstemplate-ceditor-constant dt {
-  display: inline;
-  margin-right: 5px;
-}
-#ext-tstemplate-ts-index-php td.bgColor4 {
-  vertical-align: middle;
-  padding: 5px;
-}
-div.tst-analyzer-options label {
-  margin-right: 10px;
-  vertical-align: middle;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
 extJS icons
 - - - - - - - - - - - - - - - - - - - - - */
 .t3icon-ext-upload {
@@ -11882,25 +11655,6 @@ extJS icons
 }
 .t3iconstyle-center {
   background-position: center center;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Document, listing recently edited records if no records were open
-(alt_doc_nodoc.php) - this is effectively the Doc module
-- - - - - - - - - - - - - - - - - - - - - */
-table.typo3-recent-edited td {
-  white-space: nowrap;
 }
 /**
  * This file is part of the TYPO3 CMS project.
@@ -12075,53 +11829,6 @@ table.ver-subtree tr.typo3-ver-noComp td {
  * The TYPO3 project - inspiring people to share!
  */
 /* - - - - - - - - - - - - - - - - - - - - -
-Wizards
-- - - - - - - - - - - - - - - - - - - - - */
-table#typo3-formwizard tr#typo3-formWizardHeader td {
-  font-weight: bold;
-  text-align: center;
-}
-body#typo3-wizard-colorpicker-php p.c-head {
-  font-weight: bold;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Decorations (shadows etc.)
-- - - - - - - - - - - - - - - - - - - - - */
-.shadow-box-bottom-424 {
-  background-image: url('../../../../images/shadows/box-bottom-424.png');
-  background-position: top center;
-  background-repeat: no-repeat;
-}
-.shadow-box-top-428 {
-  background-image: url('../../../../images/shadows/box-top-428.png');
-  background-position: bottom center;
-  background-repeat: no-repeat;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
 File > List
 - - - - - - - - - - - - - - - - - - - - - */
 table#typo3-filelist tr td div.typo3-clipCtrl,
@@ -12266,74 +11973,6 @@ File Upload Window
  * The TYPO3 project - inspiring people to share!
  */
 /* - - - - - - - - - - - - - - - - - - - - -
-Help > About
-- - - - - - - - - - - - - - - - - - - - - */
-#typo3-mod-help-about-index-php-outer {
-  text-align: center;
-}
-#typo3-mod-help-about-index-php-outer #donation-description {
-  background-image: url("../../../../images/general/donate_teaser.png");
-  background-repeat: no-repeat;
-}
-#typo3-mod-help-about-index-php-outer .donation-button {
-  overflow: auto;
-}
-#typo3-mod-help-about-index-php-outer .donation-button input {
-  float: right;
-}
-#typo3-mod-help-about-index-php-outer .typo3-mod-help-about-index-php-inner {
-  background: #ffffff;
-  border: 1px solid #adadad;
-  text-align: left;
-}
-#typo3-mod-help-about-index-php-outer .typo3-mod-help-about-index-php-inner h3 {
-  text-align: left;
-}
-#typo3-mod-help-about-index-php-outer .typo3-mod-help-about-index-php-inner p {
-  color: #555555;
-}
-#typo3-mod-help-about-index-php-outer .typo3-mod-help-about-index-php-inner a {
-  color: black;
-  text-decoration: underline;
-}
-#typo3-mod-help-about-index-php-outer .typo3-mod-help-about-index-php-inner a:hover {
-  text-decoration: none;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Help > About modules
-- - - - - - - - - - - - - - - - - - - - - */
-table#typo3-aboutmodules tr.c-subitem-row td .icon {
-  background-color: #dddddd;
-  border: 1px solid #c7c7c7;
-}
-table#typo3-aboutmodules tr.c-subitem-row:hover td .icon {
-  background-color: #e8e8e8;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
 Web > Info
 - - - - - - - - - - - - - - - - - - - - - */
 table.typo3-page-pages {
@@ -12430,81 +12069,6 @@ div#typo3-dblist-pagination {
 }
 div#typo3-dblist-pagination span.bar {
   border-left: 1px solid #5485c3;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Sys notes
-- - - - - - - - - - - - - - - - - - - - - */
-#typo3-dblist-sysnotes .single-note .header {
-  background: #d7d7d7;
-  color: #000;
-  font-size: 0.9em;
-}
-#typo3-dblist-sysnotes .single-note .header span {
-  color: #666;
-}
-#typo3-dblist-sysnotes .single-note .header span.typeicon {
-  background: url(../../../../icons/ext/sys_note/icon-default.png) no-repeat top left;
-}
-#typo3-dblist-sysnotes .single-note:hover .header {
-  background-color: #666;
-}
-#typo3-dblist-sysnotes .single-note:hover .header,
-#typo3-dblist-sysnotes .single-note:hover .header span {
-  color: #d7d7d7;
-}
-#typo3-dblist-sysnotes .category-1 .header span.typeicon {
-  background-image: url(../../../../icons/ext/sys_note/icon-instruction.png);
-}
-#typo3-dblist-sysnotes .category-2 .header span.typeicon {
-  background-image: url(../../../../icons/ext/sys_note/icon-template.png);
-}
-#typo3-dblist-sysnotes .category-3 .header span.typeicon {
-  background-image: url(../../../../icons/ext/sys_note/icon-note.png);
-}
-#typo3-dblist-sysnotes .category-4 .header span.typeicon {
-  background-image: url(../../../../icons/ext/sys_note/icon-todo.png);
-}
-#typo3-dblist-sysnotes .single-note .content {
-  background: #fffeed;
-  border: 1px solid #dadada;
-  border-top: none;
-  color: #666;
-}
-#typo3-dblist-sysnotes .single-note .content .title {
-  font-weight: bold;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-New Record Wizard
-- - - - - - - - - - - - - - - - - - - - - */
-body#typo3-db-new-php a {
-  text-decoration: none;
-}
-body#typo3-db-new-php img.c-helpImg {
-  text-align: right;
 }
 /**
  * This file is part of the TYPO3 CMS project.
@@ -12673,87 +12237,4 @@ td.t3-gridCell-restricted div.t3-row-header div {
 }
 .t3-page-ce:hover .t3-row-header {
   background-color: #666;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Web > Permissions
-- - - - - - - - - - - - - - - - - - - - - */
-a.perm-allowed,
-a.perm-denied,
-#perm-legend .perm-allowed,
-#perm-legend .perm-denied {
-  cursor: pointer;
-  font-size: 0px;
-  font-weight: bold;
-}
-a.perm-allowed:hover,
-a.perm-denied:hover {
-  background-color: #e3dfdb;
-}
-a.perm-allowed,
-#perm-legend .perm-allowed {
-  background: transparent url('../../../../icons/gfx/perm-allowed.gif') no-repeat scroll center;
-  color: green;
-}
-a.perm-denied,
-#perm-legend .perm-denied {
-  background: transparent url('../../../../icons/gfx/perm-denied.gif') no-repeat scroll center;
-  color: red;
-}
-.ug_selector,
-.ug_selector a {
-  cursor: pointer;
-  text-decoration: underline;
-}
-.not_set,
-.not_set a,
-.editlock,
-.editlock a {
-  color: #ccc;
-  cursor: pointer;
-  text-decoration: none;
-}
-.not_set:hover,
-.not_set a:hover,
-.editlock:hover,
-.editlock a:hover {
-  color: #000;
-  cursor: pointer;
-  text-decoration: none;
-}
-.not_set {
-  color: #000;
-  font-style: italic;
-}
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Web > Template
-- - - - - - - - - - - - - - - - - - - - - */
-.typo3-tstemplate-ceditor-control {
-  cursor: pointer;
-}
-dt.typo3-tstemplate-ceditor-label {
-  font-weight: bold;
 }

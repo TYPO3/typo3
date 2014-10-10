@@ -361,8 +361,8 @@ class FormsController {
 		$tRows[] = '
 			<tr class="bgColor2" id="typo3-formWizardHeader">
 				<td>&nbsp;</td>
-				<td>' . implode('</td>
-				<td>', $cells) . '</td>
+				<td><strong>' . implode('</strong></td>
+				<td><strong>', $cells) . '</strong></td>
 			</tr>';
 		// Traverse the number of form elements:
 		$k = 0;

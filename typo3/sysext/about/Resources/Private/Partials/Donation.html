@@ -1,18 +1,20 @@
-<div class="typo3-mod-help-about-index-php-inner">
+<div>
 	<h2>
 		<f:translate key="LLL:EXT:lang/locallang_mod_help_about.xlf:donation_header" />
 	</h2>
+
 	<p id="donation-description">
 		<f:translate
 			key="LLL:EXT:lang/locallang_mod_help_about.xlf:donation_message"
 			htmlEscape="0"
 		/>
 	</p>
-	<div class="donation-button">
-		<input
-			type="button"
-			value="{f:translate(key:'LLL:EXT:lang/locallang_mod_help_about.xlf:donation_button')}"
+
+	<p class="text-right">
+		<button
+			class="btn btn-large"
 			onclick="window.open('{TYPO3UrlDonate}');"
-		/>
-	</div>
+		><f:translate key="LLL:EXT:lang/locallang_mod_help_about.xlf:donation_button" /></button>
+	</p>
+
 </div>

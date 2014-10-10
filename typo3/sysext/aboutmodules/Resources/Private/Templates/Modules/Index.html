@@ -5,72 +5,62 @@
 		<f:translate key="LLL:EXT:lang/locallang_alt_intro.xlf:introtext" />
 	</h1>
 
-	{warningMessages -> f:format.raw()}
-
 	<p class="lead">
 		<f:translate key="LLL:EXT:lang/locallang_alt_intro.xlf:introtext2" />
 	</p>
 
-	<table border="0" cellpadding="0" cellspacing="0" id="typo3-aboutmodules">
-		<tbody>
-			<f:for each="{modules}" as="mainModule">
-				<tr class="c-mainitem">
-					<td colspan="3">
-						<h2>
-							{mainModule.label}
-						</h2>
-					</td>
-				</tr>
+	{warningMessages -> f:format.raw()}
 
-				<f:for each="{mainModule.subModules}" as="subModule" iteration="subModuleIterator">
-					<f:if condition="{subModuleIterator.isFirst}">
-						<tr class="c-first"><td colspan="3"></td></tr>
+	<f:for each="{modules}" as="mainModule">
+		<tr>
+			<td colspan="3">
+				<h2>
+					{mainModule.label}
+				</h2>
+			</td>
+		</tr>
+
+		<f:for each="{mainModule.subModules}" as="subModule" iteration="subModuleIterator">
+			<div class="media">
+				<a
+					href="#"
+					onclick="top.goToModule('{mainModule.name}_{subModule.name}'); return false;"
+					title="{subModule.shortDescription}"
+					class="pull-left"
+				>
+					<f:image src="{subModule.icon}" alt="{subModule.label}" class="t3-app-icon media-object"/>
+				</a>
+
+				<div class="media-body">
+					<strong>
+						<a
+							href="#"
+							onclick="top.goToModule('{mainModule.name}_{subModule.name}'); return false;"
+							title="{subModule.shortDescription}"
+						>{subModule.label}</a>
+					</strong><br>
+
+					<f:if condition="{subModule.shortDescription}">
+						<small class="text-muted">{subModule.shortDescription}</small><br>
 					</f:if>
 
-					<tr class="c-subitem-row">
-						<td>
-							<a
-								href="#"
-								onclick="top.goToModule('{mainModule.name}_{subModule.name}'); return false;"
-								title="{subModule.shortDescription}"
-								class="icon"
-							>
-								<f:image src="{subModule.icon}" alt="{subModule.label}" />
-							</a>
-						</td>
-						<td class="module-description">
-							<strong>
-								<a
-									href="#"
-									onclick="top.goToModule('{mainModule.name}_{subModule.name}'); return false;"
-									title="{subModule.shortDescription}"
-								>{subModule.label}</a>
-							</strong>
+					{subModule.longDescription -> f:format.raw()}
+				</div>
+			</div>
 
-							<br />
+		</f:for>
+	</f:for>
 
-							<f:if condition="{subModule.shortDescription}">
-								{subModule.shortDescription} /
-							</f:if>
-
-							{subModule.longDescription -> f:format.raw()}
-						</td>
-					</tr>
-				</f:for>
-
-				<f:if condition="{mainModule.subModules -> f:count()} > 0">
-					<tr class="c-endrow"><td colspan="3"></td></tr>
-				</f:if>
-			</f:for>
-		</tbody>
-	</table>
-
-	<p>
+	<p class="end-text text-info">
 		<em>
 			(<f:translate key="LLL:EXT:lang/locallang_alt_intro.xlf:endText" />)
 		</em>
 	</p>
 
-	<p>{copyRightNotice -> f:format.raw()}</p>
+	<p>
+		<small>
+			{copyRightNotice -> f:format.raw()}
+		</small>
+	</p>
 
 </f:section>

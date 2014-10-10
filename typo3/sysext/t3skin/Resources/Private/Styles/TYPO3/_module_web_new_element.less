@@ -12,17 +12,22 @@
  */
 
 /* - - - - - - - - - - - - - - - - - - - - -
-Decorations (shadows etc.)
-- - - - - - - - - - - - - - - - - - - - - */
+-New Record Wizard
+- - - -- - - - - - - - - - - - - - - - - */
 
-.shadow-box-bottom-424 {
-	background-image: url('../../../../images/shadows/box-bottom-424.png');
-	background-position: top center;
-	background-repeat: no-repeat;
-}
+/* Should be added by NewContentElementController only when necessary */
+.contentelement-wizard {
+	li {
+		margin-bottom: 10px;
 
-.shadow-box-top-428 {
-	background-image: url('../../../../images/shadows/box-top-428.png');
-	background-position: bottom center;
-	background-repeat: no-repeat;
+		.contentelement-wizard-item-input,
+		.contentelement-wizard-item-icon {
+			float: left;
+			margin-right: 5px;
+		}
+
+	}
+	li:last-child {
+		margin-bottom: 0px;
+	}
 }

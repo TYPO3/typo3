@@ -12,34 +12,32 @@
  */
 
 /* - - - - - - - - - - - - - - - - - - - - -
-Web > Permissions
+Help > About
 - - - - - - - - - - - - - - - - - - - - - */
 
-a.perm-allowed,
-a.perm-denied,
-#perm-legend .perm-allowed,
-#perm-legend .perm-denied {
-	display: block;
-	float: left;
-	height: 10px;
-	padding: 2px;
-	width: 10px;
-}
+#typo3-mod-help-about-index-php-outer {
+	margin: 15px auto;
+	width: 600px;
 
-#perm-legend .perm-allowed,
-#perm-legend .perm-denied {
-	clear: left;
-}
+	> div {
+		margin: 10px auto 20px;
+		padding: 1em;
+		border: 1px solid #adadad;
 
-#perm-legend {
-	margin-top: 10px;
-}
+		h2 {
+			margin-top: 0;
+		}
+	}
 
-#permission-information img {
-	float: left;
-	padding-right: 10px; ;
-}
+	#donation-description {
+		background-image: url("../Images/donate_teaser.png");
+		background-repeat: no-repeat;
+		padding-left: 60px;
+		margin: 10px 0;
+	}
 
-#permission-information .text {
-	line-height: 12px;
+	a {
+		color: black;
+		text-decoration: underline;
+	}
 }

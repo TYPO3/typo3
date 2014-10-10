@@ -10,15 +10,19 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-
 /* - - - - - - - - - - - - - - - - - - - - -
-Decorations (shadows etc.)
+Help > About modules
 - - - - - - - - - - - - - - - - - - - - - */
-
-.shadow-box-bottom-424 {
-	height: 3px;
+.typo3-aboutmodules-inner-docbody {
+  width: 700px;
 }
-
-.shadow-box-top-428 {
-	height: 4px;
+.typo3-aboutmodules-inner-docbody .t3-app-icon {
+  width: 16px;
+  height: 16px;
+}
+.typo3-aboutmodules-inner-docbody a {
+  text-decoration: underline;
+}
+.typo3-aboutmodules-inner-docbody .end-text {
+  padding-top: 3em;
 }

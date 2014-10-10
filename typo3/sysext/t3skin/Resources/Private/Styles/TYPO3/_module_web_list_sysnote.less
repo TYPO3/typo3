@@ -1,0 +1,109 @@
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+/* - - - - - - - - - - - - - - - - - - - - -
+Sys notes
+- - - - - - - - - - - - - - - - - - - - - */
+
+/* Should be added by sys_note only when necessary */
+#typo3-dblist-sysnotes {
+	margin-top: 15px;
+
+	.single-note {
+		margin-bottom: 12px;
+
+		.header {
+			min-height: 24px;
+			line-height: 24px;
+			background: #d7d7d7;
+			color: #000;
+			font-size: 0.9em;
+
+			span.typeicon {
+				width: 23px;
+				height: 24px;
+				margin-right: 7px;
+				display: block;
+				float: left;
+				cursor: pointer;
+				background: url(../../../../icons/ext/sys_note/icon-default.png) no-repeat top left;
+			}
+			.right.icons {
+				visibility: hidden;
+			}
+			.right {
+				float: right;
+				margin-top: -3px;
+				margin-right: 5px;
+			}
+			span {
+				color: #666;
+			}
+		}
+
+		.content {
+			border-top: none;
+			padding: 12px;
+			background: #fffeed;
+			border: 1px solid #dadada;
+			border-top: none;
+			color: #666;
+			.title {
+				font-weight: bold;
+				margin-bottom: 6px;
+				font-weight: bold;
+			}
+		}
+	}
+	.single-note:hover {
+		.header {
+			background-color: #666;
+			.right.icons {
+				visibility: visible;
+			}
+		}
+	}
+
+	.category-1 {
+		.header {
+			span.typeicon {
+				background-image: url(../../../../icons/ext/sys_note/icon-instruction.png);
+			}
+		}
+	}
+	.category-2 {
+		.header {
+			span.typeicon {
+				background-image: url(../../../../icons/ext/sys_note/icon-template.png);
+			}
+		}
+	}
+	.category-3 {
+		.header {
+			span.typeicon {
+				background-image: url(../../../../icons/ext/sys_note/icon-note.png);
+			}
+		}
+	}
+	.category-4 {
+		.header {
+			span.typeicon {
+				background-image: url(../../../../icons/ext/sys_note/icon-todo.png);
+			}
+		}
+	}
+}
+
+#typo3-dblist-sysnotes .single-note:hover .header, #typo3-dblist-sysnotes .single-note:hover .header span {
+	color: #d7d7d7;
+}

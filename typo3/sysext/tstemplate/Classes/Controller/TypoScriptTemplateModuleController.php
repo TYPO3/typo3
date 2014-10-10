@@ -107,9 +107,12 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 		// The page will show only if there is a valid page and if this page may be viewed by the user
 		$this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
 		$this->access = is_array($this->pageinfo);
+
+		/** @var \TYPO3\CMS\Backend\Template\DocumentTemplate doc */
 		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:tstemplate/Resources/Private/Templates/tstemplate.html');
+		$this->doc->addStyleSheet('module', 'sysext/tstemplate/Resources/Public/Styles/styles.css');
 
 		if ($this->id && $this->access) {
 			$urlParameters = array(

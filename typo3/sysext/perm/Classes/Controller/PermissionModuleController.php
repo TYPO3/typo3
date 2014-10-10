@@ -177,6 +177,7 @@ class PermissionModuleController {
 		$this->doc->loadJavascriptLib('js/jsfunc.updateform.js');
 		$this->doc->getPageRenderer()->loadPrototype();
 		$this->doc->loadJavascriptLib(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('perm') . 'mod1/perm.js');
+		$this->doc->addStyleSheet('module', 'sysext/perm/Resources/Public/Styles/styles.css');
 		// Setting up the context sensitive menu:
 		$this->doc->getContextMenuCode();
 		// Set up menus:
@@ -567,14 +568,18 @@ class PermissionModuleController {
 		$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('4', TRUE) . '</strong>: ' . $GLOBALS['LANG']->getLL('4_t', TRUE);
 		$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('8', TRUE) . '</strong>: ' . $GLOBALS['LANG']->getLL('8_t', TRUE);
 
-		$code = '<div id="permission-information">
+		$code = '
+			<div class="legend">
+				<div class="pull-left">
 					<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/legend.gif', 'width="86" height="75"') . ' alt="" />
-				<div class="text">' . $legendText . '</div></div>';
+				</div>
+				<small>' . $legendText . '</small>
+			</div>
+		';
 
-		$code .= '<div id="perm-legend">' . $GLOBALS['LANG']->getLL('def', TRUE);
-		$code .= '<br /><br />' . IconUtility::getSpriteIcon('status-status-permission-granted') . ': ' . $GLOBALS['LANG']->getLL('A_Granted', TRUE);
-		$code .= '<br />' . IconUtility::getSpriteIcon('status-status-permission-denied') . ': ' . $GLOBALS['LANG']->getLL('A_Denied', TRUE);
-		$code .= '</div>';
+		$code .= '<p>' . $GLOBALS['LANG']->getLL('def', TRUE) . '</p>';
+		$code .= '<p>' . IconUtility::getSpriteIcon('status-status-permission-granted') . $GLOBALS['LANG']->getLL('A_Granted', TRUE) . '<br>';
+		$code .= IconUtility::getSpriteIcon('status-status-permission-denied') . $GLOBALS['LANG']->getLL('A_Denied', TRUE) . '</p>';
 
 		// Adding section with legend code:
 		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Legend') . ':', $code, TRUE, TRUE);
