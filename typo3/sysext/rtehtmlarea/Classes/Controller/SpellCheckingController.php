@@ -467,8 +467,6 @@ var selectedDictionary = "' . $this->dictionary . '";
 						}
 					}
 				}
-				$fileContent = implode(LF, $fileContent);
-				file_put_contents($fileName, $fileContent);
 			}
 		}
 	}
