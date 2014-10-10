@@ -65,11 +65,12 @@ class CheckboxViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormF
 	 * Renders the checkbox.
 	 *
 	 * @param boolean $checked Specifies that the input element should be preselected
+	 * @param boolean $multiple Specifies whether this checkbox belongs to a multivalue (is part of a checkbox group)
 	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 * @return string
 	 * @api
 	 */
-	public function render($checked = NULL) {
+	public function render($checked = NULL, $multiple = NULL) {
 		$this->tag->addAttribute('type', 'checkbox');
 
 		$nameAttribute = $this->getName();
@@ -89,11 +90,10 @@ class CheckboxViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormF
 					$checked = in_array($valueAttribute, $propertyValue);
 				}
 				$nameAttribute .= '[]';
-			} elseif (($multiple = FALSE) === TRUE) {
-				// @todo: implement correct as in Flow.Fluid
+			} elseif ($multiple === TRUE) {
 				$nameAttribute .= '[]';
 			} elseif ($checked === NULL && $propertyValue !== NULL) {
-				$checked = (boolean) $propertyValue === (boolean) $valueAttribute;
+				$checked = (bool)$propertyValue === (bool)$valueAttribute;
 			}
 		}
 		$this->registerFieldNameForFormTokenGeneration($nameAttribute);
