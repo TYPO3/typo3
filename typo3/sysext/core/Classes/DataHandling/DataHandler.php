@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\DataHandling;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
@@ -2506,6 +2507,9 @@ class DataHandler {
 						$value = GeneralUtility::idnaEncode($value);
 					}
 					break;
+				case 'email':
+					$this->checkValue_input_ValidateEmail($value, $set);
+					break;
 				default:
 					$evalObj = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func] . ':&' . $func);
 					if (is_object($evalObj) && method_exists($evalObj, 'evaluateFieldValue')) {
@@ -2517,6 +2521,35 @@ class DataHandler {
 			$res['value'] = $value;
 		}
 		return $res;
+	}
+
+	/**
+	 * If $value is not a valid e-mail address,
+	 * $set will be set to false and a flash error
+	 * message will be added
+	 *
+	 * @param string $value Value to evaluate
+	 * @param bool $set TRUE if an update should be done
+	 * @throws \InvalidArgumentException
+	 * @throws \TYPO3\CMS\Core\Exception
+	 * @return void
+	 */
+	protected function checkValue_input_ValidateEmail($value, &$set) {
+		if (GeneralUtility::validEmail($value)) {
+			return;
+		}
+
+		$set = FALSE;
+		/** @var FlashMessage $message */
+		$message = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+			sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:error.invalidEmail'), $value),
+			'', // header is optional
+			FlashMessage::ERROR,
+			TRUE // whether message should be stored in session
+		);
+		/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+		$flashMessageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+		$flashMessageService->getMessageQueueByIdentifier()->enqueue($message);
 	}
 
 	/**
@@ -7130,7 +7163,7 @@ class DataHandler {
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_log)) {
 			$log_data = unserialize($row['log_data']);
 			$msg = $row['error'] . ': ' . sprintf($row['details'], $log_data[0], $log_data[1], $log_data[2], $log_data[3], $log_data[4]);
-			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', htmlspecialchars($msg), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR, TRUE);
+			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', htmlspecialchars($msg), '', FlashMessage::ERROR, TRUE);
 			/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
 			$flashMessageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
 			/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
