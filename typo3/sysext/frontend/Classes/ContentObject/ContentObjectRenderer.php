@@ -725,11 +725,9 @@ class ContentObjectRenderer {
 				$key = trim(substr($name, 1));
 				$cF = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
 				// $name and $conf is loaded with the referenced values.
-				$old_conf = $conf;
+				$confOverride = is_array($conf) ? $conf : array();
 				list($name, $conf) = $cF->getVal($key, $GLOBALS['TSFE']->tmpl->setup);
-				if (is_array($old_conf) && count($old_conf)) {
-					$conf = array_replace_recursive($conf, $old_conf);
-				}
+				$conf = array_replace_recursive(is_array($conf) ? $conf : array(), $confOverride);
 				// Getting the cObject
 				$GLOBALS['TT']->incStackPointer();
 				$content .= $this->cObjGetSingle($name, $conf, $key);
