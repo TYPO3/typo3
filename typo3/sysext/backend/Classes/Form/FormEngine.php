@@ -1483,7 +1483,7 @@ class FormEngine {
 	 */
 	public function getSingleField_typeCheck($table, $field, $row, &$PA) {
 		GeneralUtility::logDeprecatedFunction();
-		return $item = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\Element\\ChecboxElement', $this)
+		return $item = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\Element\\CheckboxElement', $this)
 			->render($table, $field, $row, $PA);
 	}
 
