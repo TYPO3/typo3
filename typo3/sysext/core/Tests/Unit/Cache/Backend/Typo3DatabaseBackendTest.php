@@ -355,22 +355,6 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function collectGarbageSelectsExpiredCacheEntries() {
-		/** @var \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend|\PHPUnit_Framework_MockObject_MockObject $backend */
-		$backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, array('dummy'), array('Testing'));
-		$this->setUpMockFrontendOfBackend($backend);
-
-		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', FALSE);
-		$GLOBALS['TYPO3_DB']
-			->expects($this->once())
-			->method('exec_SELECTquery')
-			->with('identifier', 'cf_Testing');
-		$backend->collectGarbage();
-	}
-
-	/**
-	 * @test
-	 */
 	public function collectGarbageDeletesTagsFromExpiredEntries() {
 		/** @var \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend|\PHPUnit_Framework_MockObject_MockObject $backend */
 		$backend = $this->getMock(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, array('dummy'), array('Testing'));
