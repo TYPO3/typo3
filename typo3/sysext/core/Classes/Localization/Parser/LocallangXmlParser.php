@@ -86,13 +86,14 @@ class LocallangXmlParser extends \TYPO3\CMS\Core\Localization\Parser\AbstractXml
 	/**
 	 * Parse the given language key tag
 	 *
-	 * @param SimpleXMLElement $bodyOfFileTag
+	 * @param \SimpleXMLElement $bodyOfFileTag
 	 * @param string $element
 	 * @return array
 	 */
 	protected function getParsedDataForElement(\SimpleXMLElement $bodyOfFileTag, $element) {
 		$parsedData = array();
-		if (count($bodyOfFileTag->children()) == 0) {
+		$children = $bodyOfFileTag->children();
+		if ($children->count() == 0) {
 			// Check for externally-referenced resource:
 			// <languageKey index="fr">EXT:yourext/path/to/localized/locallang.xml</languageKey>
 			$reference = sprintf('%s', $bodyOfFileTag);
@@ -100,7 +101,8 @@ class LocallangXmlParser extends \TYPO3\CMS\Core\Localization\Parser\AbstractXml
 				return $this->getParsedTargetData(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($reference));
 			}
 		}
-		foreach ($bodyOfFileTag->children() as $translationElement) {
+		/** @var \SimpleXMLElement $translationElement */
+		foreach ($children as $translationElement) {
 			if ($translationElement->getName() === 'label') {
 				// If restype would be set, it could be metadata from Gettext to XLIFF conversion (and we don't need this data)
 				$parsedData[(string) $translationElement['index']][0] = array(
