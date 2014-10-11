@@ -29,44 +29,44 @@ abstract class AbstractTreeView {
 	// EXTERNAL, static:
 	// If set, the first element in the tree is always expanded.
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $expandFirst = 0;
 
 	// If set, then ALL items will be expanded, regardless of stored settings.
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $expandAll = 0;
 
 	// Holds the current script to reload to.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $thisScript = '';
 
 	// Which HTML attribute to use: alt/title. See init().
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $titleAttrib = 'title';
 
 	// If TRUE, no context menu is rendered on icons. If set to "titlelink" the
 	// icon is linked as the title is.
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $ext_IconMode = FALSE;
 
 	// If set, the id of the mounts will be added to the internal ids array
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $addSelfId = 0;
 
 	// Used if the tree is made of records (not folders for ex.)
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $title = 'no title';
 
@@ -74,7 +74,7 @@ abstract class AbstractTreeView {
 	// This cannot be enabled by default because it will destroy many applications
 	// where another title attribute is in fact applied later.
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $showDefaultTitleAttribute = FALSE;
 
@@ -82,7 +82,7 @@ abstract class AbstractTreeView {
 	// highlighted in yellow. This might be too expensive in terms
 	// of processing power.
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $highlightPagesWithVersions = TRUE;
 
@@ -91,7 +91,6 @@ abstract class AbstractTreeView {
 	 * Done by default in init()
 	 *
 	 * @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-	 * @todo Define visibility
 	 */
 	public $BE_USER = '';
 
@@ -102,7 +101,7 @@ abstract class AbstractTreeView {
 	 * values are the ID of the root element (COULD be zero or anything else.
 	 * For pages that would be the uid of the page, zero for the pagetree root.)
 	 *
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $MOUNTS = '';
 
@@ -110,14 +109,14 @@ abstract class AbstractTreeView {
 	 * Database table to get the tree data from.
 	 * Leave blank if data comes from an array.
 	 *
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $table = '';
 
 	/**
 	 * Defines the field of $table which is the parent id field (like pid for table pages).
 	 *
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $parentField = 'pid';
 
@@ -126,7 +125,7 @@ abstract class AbstractTreeView {
 	 * Only makes sense when $this->table is set.
 	 *
 	 * @see init()
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $clause = '';
 
@@ -135,7 +134,7 @@ abstract class AbstractTreeView {
 	 * Only makes sense when $this->table is set.
 	 *
 	 * @see init()
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $orderByFields = '';
 
@@ -144,7 +143,7 @@ abstract class AbstractTreeView {
 	 * Make SURE that these fields names listed herein are actually possible to select from $this->table (if that variable is set to a TCA table name)
 	 *
 	 * @see addField()
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $fieldArray = array('uid', 'title');
 
@@ -152,7 +151,7 @@ abstract class AbstractTreeView {
 	 * List of other fields which are ALLOWED to set (here, based on the "pages" table!)
 	 *
 	 * @see addField()
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $defaultList = 'uid,pid,tstamp,sorting,deleted,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,crdate,cruser_id';
 
@@ -163,7 +162,7 @@ abstract class AbstractTreeView {
 	 * MUST NOT contain underscore chars.
 	 * etc.
 	 *
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $treeName = '';
 
@@ -173,28 +172,28 @@ abstract class AbstractTreeView {
 	 * Needs to be unique if multiple trees are on one HTML page.
 	 *
 	 * @see printTree()
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $domIdPrefix = 'row';
 
 	/**
 	 * Back path for icons
 	 *
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $backPath;
 
 	/**
 	 * Icon file path.
 	 *
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $iconPath = '';
 
 	/**
 	 * Icon file name for item icons.
 	 *
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $iconName = 'default.gif';
 
@@ -202,14 +201,14 @@ abstract class AbstractTreeView {
 	 * If TRUE, HTML code is also accumulated in ->tree array during rendering of the tree.
 	 * If 2, then also the icon prefix code (depthData) is stored
 	 *
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $makeHTML = 1;
 
 	/**
 	 * If TRUE, records as selected will be stored internally in the ->recs array
 	 *
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $setRecs = 0;
 
@@ -217,7 +216,7 @@ abstract class AbstractTreeView {
 	 * Sets the associative array key which identifies a new sublevel if arrays are used for trees.
 	 * This value has formerly been "subLevel" and "--sublevel--"
 	 *
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $subLevelID = '_SUB_LEVEL';
 
@@ -227,70 +226,70 @@ abstract class AbstractTreeView {
 	// For record trees:
 	// one-dim array of the uid's selected.
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $ids = array();
 
 	// The hierarchy of element uids
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $ids_hierarchy = array();
 
 	// The hierarchy of versioned element uids
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $orig_ids_hierarchy = array();
 
 	// Temporary, internal array
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $buffer_idH = array();
 
 	// For FOLDER trees:
 	// Special UIDs for folders (integer-hashes of paths)
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $specUIDmap = array();
 
 	// For arrays:
 	// Holds the input data array
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $data = FALSE;
 
 	// Holds an index with references to the data array.
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $dataLookup = FALSE;
 
 	// For both types
 	// Tree is accumulated in this variable
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $tree = array();
 
 	// Holds (session stored) information about which items in the tree are unfolded and which are not.
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $stored = array();
 
 	// Points to the current mountpoint key
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $bank = 0;
 
 	// Accumulates the displayed records.
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $recs = array();
 
@@ -319,7 +318,6 @@ abstract class AbstractTreeView {
 	 * @param string Record WHERE clause
 	 * @param string Record ORDER BY field
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function init($clause = '', $orderByFields = '') {
 		// Setting BE_USER by default
@@ -351,7 +349,6 @@ abstract class AbstractTreeView {
 	 *
 	 * @param string $treeName Default is the table name. Underscores are stripped.
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function setTreeName($treeName = '') {
 		$this->treeName = $treeName ?: $this->treeName;
@@ -365,7 +362,6 @@ abstract class AbstractTreeView {
 	 * @param string $field Field name to
 	 * @param boolean $noCheck If set, the fieldname will be set no matter what. Otherwise the field name must either be found as key in $GLOBALS['TCA'][$table]['columns'] or in the list ->defaultList
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function addField($field, $noCheck = 0) {
 		if ($noCheck || is_array($GLOBALS['TCA'][$this->table]['columns'][$field]) || GeneralUtility::inList($this->defaultList, $field)) {
@@ -377,7 +373,6 @@ abstract class AbstractTreeView {
 	 * Resets the tree, recs, ids, ids_hierarchy and orig_ids_hierarchy internal variables. Use it if you need it.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function reset() {
 		$this->tree = array();
@@ -397,7 +392,6 @@ abstract class AbstractTreeView {
 	 * Is based on the mounts found in the internal array ->MOUNTS (set in the constructor)
 	 *
 	 * @return string HTML code for the browsable tree
-	 * @todo Define visibility
 	 */
 	public function getBrowsableTree() {
 		// Get stored tree structure AND updating it if needed according to incoming PM GET var.
@@ -453,7 +447,6 @@ abstract class AbstractTreeView {
 	 *
 	 * @param array $treeArr "tree-array" - if blank string, the internal ->tree array is used.
 	 * @return string The HTML code for the tree
-	 * @todo Define visibility
 	 */
 	public function printTree($treeArr = '') {
 		$titleLen = (int)$this->BE_USER->uc['titleLen'];
@@ -501,7 +494,6 @@ abstract class AbstractTreeView {
 	 * @return string Image tag with the plus/minus icon.
 	 * @access private
 	 * @see \TYPO3\CMS\Backend\Tree\View\PageTreeView::PMicon()
-	 * @todo Define visibility
 	 */
 	public function PMicon($row, $a, $c, $nextCount, $exp) {
 		$PM = $nextCount ? ($exp ? 'minus' : 'plus') : 'join';
@@ -523,7 +515,6 @@ abstract class AbstractTreeView {
 	 * @param boolean $bMark If set, the link will have a anchor point (=$bMark) and a name attribute (=$bMark)
 	 * @return string Link-wrapped input string
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function PM_ATagWrap($icon, $cmd, $bMark = '') {
 		if ($this->thisScript) {
@@ -546,7 +537,6 @@ abstract class AbstractTreeView {
 	 * @param integer $bank Bank pointer (which mount point number)
 	 * @return string
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function wrapTitle($title, $row, $bank = 0) {
 		$aOnClick = 'return jumpTo(\'' . $this->getJumpToParam($row) . '\',this,\'' . $this->domIdPrefix . $this->getId($row) . '\',' . $bank . ');';
@@ -560,7 +550,6 @@ abstract class AbstractTreeView {
 	 * @param array $row The row for the current element
 	 * @return string The processed icon input value.
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function wrapIcon($icon, $row) {
 		return $icon;
@@ -572,7 +561,6 @@ abstract class AbstractTreeView {
 	 * @param string $icon Icon image tag
 	 * @param string $attr Attributes to add, eg. ' border="0"'
 	 * @return string Image tag, modified with $attr attributes added.
-	 * @todo Define visibility
 	 */
 	public function addTagAttributes($icon, $attr) {
 		return preg_replace('/ ?\\/?>$/', '', $icon) . ' ' . $attr . ' />';
@@ -585,7 +573,6 @@ abstract class AbstractTreeView {
 	 * @param array $row record row with "php_tree_stop" field
 	 * @return string Modified string
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function wrapStop($str, $row) {
 		if ($row['php_tree_stop']) {
@@ -608,7 +595,6 @@ abstract class AbstractTreeView {
 	 * @return boolean
 	 * @access private
 	 * @see \TYPO3\CMS\Backend\Tree\View\PageTreeView::expandNext()
-	 * @todo Define visibility
 	 */
 	public function expandNext($id) {
 		return $this->stored[$this->bank][$id] || $this->expandAll ? 1 : 0;
@@ -619,7 +605,6 @@ abstract class AbstractTreeView {
 	 *
 	 * @return void
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function initializePositionSaving() {
 		// Get stored tree structure:
@@ -649,7 +634,6 @@ abstract class AbstractTreeView {
 	 *
 	 * @return void
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function savePosition() {
 		$this->BE_USER->uc['browseTrees'][$this->treeName] = serialize($this->stored);
@@ -666,7 +650,6 @@ abstract class AbstractTreeView {
 	 *
 	 * @param array $rec Record for root.
 	 * @return string Icon image tag.
-	 * @todo Define visibility
 	 */
 	public function getRootIcon($rec) {
 		return $this->wrapIcon(IconUtility::getSpriteIcon('apps-pagetree-root'), $rec);
@@ -678,7 +661,6 @@ abstract class AbstractTreeView {
 	 *
 	 * @param array $row Item row.
 	 * @return string Image tag.
-	 * @todo Define visibility
 	 */
 	public function getIcon($row) {
 		if ($this->iconPath && $this->iconName) {
@@ -699,7 +681,6 @@ abstract class AbstractTreeView {
 	 * @param array $row The input row array (where the key "title" is used for the title)
 	 * @param integer $titleLen Title length (30)
 	 * @return string The title.
-	 * @todo Define visibility
 	 */
 	public function getTitleStr($row, $titleLen = 30) {
 		if ($this->ext_showNavTitle && strlen(trim($row['nav_title'])) > 0) {
@@ -720,7 +701,6 @@ abstract class AbstractTreeView {
 	 * @param array $row The input row array (where the key "title" is used for the title)
 	 * @return string The attribute value (is htmlspecialchared() already)
 	 * @see wrapIcon()
-	 * @todo Define visibility
 	 */
 	public function getTitleAttrib($row) {
 		return htmlspecialchars($row['title']);
@@ -731,7 +711,6 @@ abstract class AbstractTreeView {
 	 *
 	 * @param array $row Record array
 	 * @return integer The "uid" field value.
-	 * @todo Define visibility
 	 */
 	public function getId($row) {
 		return $row['uid'];
@@ -742,7 +721,6 @@ abstract class AbstractTreeView {
 	 *
 	 * @param array $row The record array.
 	 * @return string The jump-url parameter.
-	 * @todo Define visibility
 	 */
 	public function getJumpToParam($row) {
 		return $this->getId($row);
@@ -762,7 +740,6 @@ abstract class AbstractTreeView {
 	 * @param string $blankLineCode ? (internal)
 	 * @param string $subCSSclass CSS class to use for <td> sub-elements
 	 * @return integer The count of items on the level
-	 * @todo Define visibility
 	 */
 	public function getTree($uid, $depth = 999, $depthData = '', $blankLineCode = '', $subCSSclass = '') {
 		// Buffer for id hierarchy is reset:
@@ -849,7 +826,6 @@ abstract class AbstractTreeView {
 	 * @param integer $uid Id to count subitems for
 	 * @return integer
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function getCount($uid) {
 		if (is_array($this->data)) {
@@ -865,7 +841,6 @@ abstract class AbstractTreeView {
 	 *
 	 * @param integer $uid uid, <= 0 (normally, this does not matter)
 	 * @return array Array with title/uid keys with values of $this->title/0 (zero)
-	 * @todo Define visibility
 	 */
 	public function getRootRecord($uid) {
 		return array('title' => $this->title, 'uid' => 0);
@@ -878,7 +853,6 @@ abstract class AbstractTreeView {
 	 *
 	 * @param integer $uid UID to look up
 	 * @return array The record
-	 * @todo Define visibility
 	 */
 	public function getRecord($uid) {
 		if (is_array($this->data)) {
@@ -897,7 +871,6 @@ abstract class AbstractTreeView {
 	 * @param string $subCSSclass Class for sub-elements.
 	 * @return mixed Data handle (Tables: An sql-resource, arrays: A parentId integer. -1 is returned if there were NO subLevel.)
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function getDataInit($parentId, $subCSSclass = '') {
 		if (is_array($this->data)) {
@@ -920,7 +893,6 @@ abstract class AbstractTreeView {
 	 * @return integer number of items
 	 * @access private
 	 * @see getDataInit()
-	 * @todo Define visibility
 	 */
 	public function getDataCount(&$res) {
 		if (is_array($this->data)) {
@@ -939,7 +911,6 @@ abstract class AbstractTreeView {
 	 * @return array item data array OR FALSE if end of elements.
 	 * @access private
 	 * @see getDataInit()
-	 * @todo Define visibility
 	 */
 	public function getDataNext(&$res, $subCSSclass = '') {
 		if (is_array($this->data)) {
@@ -982,7 +953,6 @@ abstract class AbstractTreeView {
 	 * @param mixed $res Data handle
 	 * @return void
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function getDataFree(&$res) {
 		if (!is_array($this->data)) {
@@ -1001,7 +971,6 @@ abstract class AbstractTreeView {
 	 * @param boolean $traverse Internal, for recursion.
 	 * @param integer $pid Internal, for recursion.
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function setDataFromArray(&$dataArr, $traverse = FALSE, $pid = 0) {
 		if (!$traverse) {
@@ -1027,7 +996,6 @@ abstract class AbstractTreeView {
 	 * @param array $treeArr Content for $this->data
 	 * @param array $treeLookupArr Content for $this->dataLookup
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function setDataFromTreeArray(&$treeArr, &$treeLookupArr) {
 		$this->data = &$treeArr;

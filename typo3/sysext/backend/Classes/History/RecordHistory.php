@@ -35,54 +35,54 @@ class RecordHistory {
 	// External, static:
 	// Maximum number of sys_history steps to show.
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $maxSteps = 20;
 
 	// display diff or not (0-no diff, 1-inline)
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $showDiff = 1;
 
 	// on a pages table - show sub elements as well.
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $showSubElements = 1;
 
 	// show inserts and deletes as well
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $showInsertDelete = 1;
 
 	// Internal, GPvars
 	// Element reference, syntax [tablename]:[uid]
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $element;
 
 	// syslog ID which is not shown anymore
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $lastSyslogId;
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $returnUrl;
 
 	// Internal
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $changeLog;
 
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $showMarked = FALSE;
 
@@ -98,8 +98,6 @@ class RecordHistory {
 
 	/**
 	 * Constructor for the class
-	 *
-	 * @todo Define visibility
 	 */
 	public function __construct() {
 		// GPvars:
@@ -116,7 +114,6 @@ class RecordHistory {
 	 * It detects incoming variables like element reference, history element uid etc. and renders the correct screen.
 	 *
 	 * @return HTML content for the module
-	 * @todo Define visibility
 	 */
 	public function main() {
 		$content = '';
@@ -165,7 +162,6 @@ class RecordHistory {
 	 *
 	 * @param integer $uid Uid of sys_history entry
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function toggleHighlight($uid) {
 		$uid = (int)$uid;
@@ -180,7 +176,6 @@ class RecordHistory {
 	 * @param array $diff Diff array to rollback
 	 * @return void
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function performRollback($diff) {
 		if (!$this->rollbackFields) {
@@ -295,7 +290,6 @@ class RecordHistory {
 	 * Displays settings
 	 *
 	 * @return string HTML code to modify settings
-	 * @todo Define visibility
 	 */
 	public function displaySettings() {
 		// Get current selection from UC, merge data, write it back to UC
@@ -367,7 +361,6 @@ class RecordHistory {
 	 * Shows the full change log
 	 *
 	 * @return string HTML for list, wrapped in a table.
-	 * @todo Define visibility
 	 */
 	public function displayHistory() {
 		$lines = array();
@@ -478,7 +471,6 @@ class RecordHistory {
 	 *
 	 * @param array $diff Difference array
 	 * @return string HTML output
-	 * @todo Define visibility
 	 */
 	public function displayMultipleDiff($diff) {
 		$content = '';
@@ -525,7 +517,6 @@ class RecordHistory {
 	 * @param integer $rollbackUid If set to UID of record, display rollback links
 	 * @return string HTML table
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function renderDiff($entry, $table, $rollbackUid = 0) {
 		$lines = array();
@@ -564,7 +555,6 @@ class RecordHistory {
 	 * Creates a diff between the current version of the records and the selected version
 	 *
 	 * @return array Diff for many elements, 0 if no changelog is found
-	 * @todo Define visibility
 	 */
 	public function createMultipleDiff() {
 		$insertsDeletes = array();
@@ -626,7 +616,6 @@ class RecordHistory {
 	 * Creates change log including sub-elements, filling $this->changeLog
 	 *
 	 * @return integer
-	 * @todo Define visibility
 	 */
 	public function createChangeLog() {
 		$elParts = explode(':', $this->element);
@@ -665,7 +654,6 @@ class RecordHistory {
 	 * @param string $table DB table name
 	 * @param integer $uid UID of record
 	 * @return array history data of the record
-	 * @todo Define visibility
 	 */
 	public function getHistoryData($table, $uid) {
 		// If table is found in $GLOBALS['TCA']:
@@ -745,7 +733,6 @@ class RecordHistory {
 	 * @param string $table
 	 * @param string $uid
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function generateTitle($table, $uid) {
 		$out = $table . ':' . $uid;
@@ -763,7 +750,6 @@ class RecordHistory {
 	 * @param string $alt Optional, alternative label and title tag of image
 	 * @param integer $type Optional, type of rollback: 0 - ALL; 1 - element; 2 - field
 	 * @return string HTML output
-	 * @todo Define visibility
 	 */
 	public function createRollbackLink($key, $alt = '', $type = 0) {
 		return $this->linkPage('<img ' . IconUtility::skinImg('', ('gfx/revert_' . $type . '.gif'), 'width="33" height="33"') . ' alt="' . $alt . '" title="' . $alt . '" align="middle" />', array('rollbackFields' => $key));
@@ -778,7 +764,6 @@ class RecordHistory {
 	 * @param string $title Possible title.
 	 * @return string Link.
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function linkPage($str, $inparams = array(), $anchor = '', $title = '') {
 		// Setting default values based on GET parameters:
@@ -799,7 +784,6 @@ class RecordHistory {
 	 * @param array $dataArray The data array
 	 * @return array The modified data array
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function removeFilefields($table, $dataArray) {
 		if ($GLOBALS['TCA'][$table]) {
@@ -818,7 +802,6 @@ class RecordHistory {
 	 * @param string $table Table of input element
 	 * @param integer $uid UID of record
 	 * @return integer converted UID of record
-	 * @todo Define visibility
 	 */
 	public function resolveElement($table, $uid) {
 		if (isset($GLOBALS['TCA'][$table])) {
@@ -833,7 +816,6 @@ class RecordHistory {
 	 * Resolve sh_uid (used from log)
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function resolveShUid() {
 		if ($this->getArgument('sh_uid')) {

@@ -29,75 +29,75 @@ class PagePositionMap {
 
 	// EXTERNAL, static:
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $moveOrCopy = 'move';
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $dontPrintPageInsertIcons = 0;
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $backPath = '';
 
 	// How deep the position page tree will go.
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $depth = 2;
 
 	// Can be set to the sys_language uid to select content elements for.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $cur_sys_language;
 
 	// INTERNAL, dynamic:
 	// Request uri
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $R_URI = '';
 
 	// Element id.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $elUid = '';
 
 	// tt_content element uid to move.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $moveUid = '';
 
 	// Caching arrays:
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $getModConfigCache = array();
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $checkNewPageCache = array();
 
 	// Label keys:
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $l_insertNewPageHere = 'insertNewPageHere';
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $l_insertNewRecordHere = 'insertNewRecordHere';
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $modConfigStr = 'mod.web_list.newPageWiz';
 
@@ -132,7 +132,6 @@ class PagePositionMap {
 	 * @param string $perms_clause Page selection permission clause.
 	 * @param string $R_URI Current REQUEST_URI
 	 * @return string HTML code for the tree.
-	 * @todo Define visibility
 	 */
 	public function positionTree($id, $pageinfo, $perms_clause, $R_URI) {
 		$code = '';
@@ -216,7 +215,6 @@ class PagePositionMap {
 	 *
 	 * @param string $prefix Insert record image prefix.
 	 * @return string <script> section
-	 * @todo Define visibility
 	 */
 	public function JSimgFunc($prefix = '') {
 		$code = $GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
@@ -247,7 +245,6 @@ class PagePositionMap {
 	 * @param array $dat Infomation array with record array inside.
 	 * @param integer $id The current id.
 	 * @return string The title string.
-	 * @todo Define visibility
 	 */
 	public function boldTitle($t_code, $dat, $id) {
 		if ($dat['row']['uid'] == $id) {
@@ -265,7 +262,6 @@ class PagePositionMap {
 	 * @param integer $pid The pid.
 	 * @param integer $newPagePID New page id.
 	 * @return string Onclick attribute content
-	 * @todo Define visibility
 	 */
 	public function onClickEvent($pid, $newPagePID) {
 		$TSconfigProp = $this->getModConfig($newPagePID);
@@ -283,7 +279,6 @@ class PagePositionMap {
 	 * Get label, htmlspecialchars()'ed
 	 *
 	 * @return string The localized label for "insert new page here
-	 * @todo Define visibility
 	 */
 	public function insertlabel() {
 		return $GLOBALS['LANG']->getLL($this->l_insertNewPageHere, 1);
@@ -295,7 +290,6 @@ class PagePositionMap {
 	 * @param string $str Page title.
 	 * @param array $rec Page record (?)
 	 * @return string Wrapped title.
-	 * @todo Define visibility
 	 */
 	public function linkPageTitle($str, $rec) {
 		return $str;
@@ -307,7 +301,6 @@ class PagePositionMap {
 	 *
 	 * @param integer $pid Page id for which to test.
 	 * @return boolean
-	 * @todo Define visibility
 	 */
 	public function checkNewPageInPid($pid) {
 		if (!isset($this->checkNewPageCache[$pid])) {
@@ -323,7 +316,6 @@ class PagePositionMap {
 	 * @param integer $pid Page id for which to get the module configuration.
 	 * @return array The properties of teh module configuration for the page id.
 	 * @see onClickEvent()
-	 * @todo Define visibility
 	 */
 	public function getModConfig($pid) {
 		if (!isset($this->getModConfigCache[$pid])) {
@@ -339,7 +331,6 @@ class PagePositionMap {
 	 * @param string $codes Keywords for which lines to insert.
 	 * @param boolean $allBlank If TRUE all lines are just blank clear.gifs
 	 * @return string HTML content.
-	 * @todo Define visibility
 	 */
 	public function insertQuadLines($codes, $allBlank = FALSE) {
 		$codeA = GeneralUtility::trimExplode(',', $codes . ',line', TRUE);
@@ -368,7 +359,6 @@ class PagePositionMap {
 	 * @param boolean $showHidden If not set, then hidden/starttime/endtime records are filtered out.
 	 * @param string $R_URI Request URI
 	 * @return string HTML
-	 * @todo Define visibility
 	 */
 	public function printContentElementColumns($pid, $moveUid, $colPosList, $showHidden, $R_URI) {
 		$this->R_URI = $R_URI;
@@ -398,7 +388,6 @@ class PagePositionMap {
 	 * @param array $colPosArray Column position array
 	 * @param integer $pid The id of the page
 	 * @return string HTML
-	 * @todo Define visibility
 	 */
 	public function printRecordMap($lines, $colPosArray, $pid = 0) {
 		$row1 = '';
@@ -482,7 +471,6 @@ class PagePositionMap {
 	 * @param string $vv Column info.
 	 * @return string
 	 * @see printRecordMap()
-	 * @todo Define visibility
 	 */
 	public function wrapColumnHeader($str, $vv) {
 		return $str;
@@ -498,7 +486,6 @@ class PagePositionMap {
 	 * @param integer $moveUid Move uid
 	 * @param integer $pid PID value.
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function insertPositionIcon($row, $vv, $kk, $moveUid, $pid) {
 		if (is_array($row) && !empty($row['uid'])) {
@@ -522,7 +509,6 @@ class PagePositionMap {
 	 * @param integer $pid PID value.
 	 * @param integer $sys_lang System language (not used currently)
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function onClickInsertRecord($row, $vv, $moveUid, $pid, $sys_lang = 0) {
 		$table = 'tt_content';
@@ -542,7 +528,6 @@ class PagePositionMap {
 	 * @param string $str HTML content
 	 * @param array $row Record array.
 	 * @return string HTML content
-	 * @todo Define visibility
 	 */
 	public function wrapRecordHeader($str, $row) {
 		return $str;
@@ -553,7 +538,6 @@ class PagePositionMap {
 	 *
 	 * @param array $row Record row.
 	 * @return string HTML
-	 * @todo Define visibility
 	 */
 	public function getRecordHeader($row) {
 		$line = IconUtility::getSpriteIconForRecord('tt_content', $row, array('title' => htmlspecialchars(BackendUtility::getRecordIconAltText($row, 'tt_content'))));
@@ -567,7 +551,6 @@ class PagePositionMap {
 	 * @param string $str The title value.
 	 * @param array $row The record row.
 	 * @return string Wrapped title string.
-	 * @todo Define visibility
 	 */
 	public function wrapRecordTitle($str, $row) {
 		return '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('uid' => (int)$row['uid'], 'moveUid' => ''))) . '">' . $str . '</a>';

@@ -18,13 +18,11 @@ namespace TYPO3\CMS\Backend\Tree\Pagetree;
  *
  * @author Susanne Moog <typo3@susanne-moog.de>
  */
-interface IndicatorProviderInterface
-{
+interface IndicatorProviderInterface {
 	/**
 	 * Returns the indicator html code
 	 *
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function getIndicator();
 

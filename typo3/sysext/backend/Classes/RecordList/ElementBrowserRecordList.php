@@ -44,7 +44,6 @@ class ElementBrowserRecordList extends \TYPO3\CMS\Recordlist\RecordList\Database
 	 * Initializes the script path
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -58,7 +57,6 @@ class ElementBrowserRecordList extends \TYPO3\CMS\Recordlist\RecordList\Database
 	 * @param string $table If this is "-1" then $this->table is used, otherwise the value of the input variable.
 	 * @param string $exclList Commalist of fields NOT to pass as parameters (currently "sortField" and "sortRev")
 	 * @return string Query-string for URL
-	 * @todo Define visibility
 	 */
 	public function listURL($altId = '', $table = -1, $exclList = '') {
 		return $this->getThisScript() . 'id=' . ($altId !== '' ? $altId : $this->id) . '&table=' . rawurlencode(($table == -1 ? $this->table : $table)) . ($this->thumbs ? '&imagemode=' . $this->thumbs : '') . ($this->searchString ? '&search_field=' . rawurlencode($this->searchString) : '') . ($this->searchLevels ? '&search_levels=' . rawurlencode($this->searchLevels) : '') . ((!$exclList || !GeneralUtility::inList($exclList, 'sortField')) && $this->sortField ? '&sortField=' . rawurlencode($this->sortField) : '') . ((!$exclList || !GeneralUtility::inList($exclList, 'sortRev')) && $this->sortRev ? '&sortRev=' . rawurlencode($this->sortRev) : '') . $this->ext_addP();
@@ -68,7 +66,6 @@ class ElementBrowserRecordList extends \TYPO3\CMS\Recordlist\RecordList\Database
 	 * Returns additional, local GET parameters to include in the links of the record list.
 	 *
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function ext_addP() {
 		$str = '&act=' . $GLOBALS['SOBE']->browser->act . '&mode=' . $GLOBALS['SOBE']->browser->mode . '&expandPage=' . $GLOBALS['SOBE']->browser->expandPage . '&bparams=' . rawurlencode($GLOBALS['SOBE']->browser->bparams);
@@ -83,7 +80,6 @@ class ElementBrowserRecordList extends \TYPO3\CMS\Recordlist\RecordList\Database
 	 * @param string $code Title string
 	 * @param array $row Records array (from table name)
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function linkWrapItems($table, $uid, $code, $row) {
 		if (!$code) {
@@ -151,7 +147,6 @@ class ElementBrowserRecordList extends \TYPO3\CMS\Recordlist\RecordList\Database
 	 *
 	 * @return void
 	 * @see fieldSelectBox
-	 * @todo Define visibility
 	 */
 	public function generateList() {
 		$this->allFields = TRUE;

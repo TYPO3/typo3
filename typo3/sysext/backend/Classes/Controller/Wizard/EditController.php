@@ -28,13 +28,13 @@ class EditController {
 	// Internal, static: GPvars
 	// Wizard parameters, coming from TCEforms linking to the wizard.
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $P;
 
 	// Boolean; if set, the window will be closed by JavaScript
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $doClose;
 
@@ -106,7 +106,6 @@ class EditController {
 	 * Printing a little JavaScript to close the open window.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function closeWindow() {
 		echo '<script language="javascript" type="text/javascript">close();</script>';

@@ -202,7 +202,6 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject The folder to be used
 	 * @return 	string The attribute value (is htmlspecialchared() already)
-	 * @todo Define visibility
 	 */
 	public function getTitleAttrib(\TYPO3\CMS\Core\Resource\Folder $folderObject) {
 		return htmlspecialchars($folderObject->getName());
@@ -515,7 +514,6 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 *
 	 * @return 	void
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function initializePositionSaving() {
 		// Get stored tree structure:

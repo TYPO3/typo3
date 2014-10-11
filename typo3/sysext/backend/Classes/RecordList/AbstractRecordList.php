@@ -34,117 +34,118 @@ abstract class AbstractRecordList {
 	// Used in this class:
 	// default Max items shown
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $iLimit = 10;
 
 	// OBSOLETE - NOT USED ANYMORE. leftMargin
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $leftMargin = 0;
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $showIcon = 1;
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $no_noWrap = 0;
 
 	// If set this is <td> CSS-classname for odd columns in addElement. Used with db_layout / pages section
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $oddColumnsCssClass = '';
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $backPath = '';
 
 	// Decides the columns shown. Filled with values that refers to the keys of the data-array. $this->fieldArray[0] is the title column.
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $fieldArray = array();
 
 	// Keys are fieldnames and values are td-parameters to add in addElement(), please use $addElement_tdCSSClass for CSS-classes;
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $addElement_tdParams = array();
 
 	// Keys are fieldnames and values are td-css-classes to add in addElement();
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $addElement_tdCssClass = array();
 
 	// Not used in this class - but maybe extension classes...
 	// Max length of strings
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $fixedL = 30;
 
 	/**
 	 * Script URL
+	 *
+	 * @var string
 	 */
 	public $thisScript = '';
 
 	// Set to zero, if you don't want a left-margin with addElement function
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $setLMargin = 1;
 
 	// Counter increased for each element. Used to index elements for the JavaScript-code that transfers to the clipboard
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $counter = 0;
 
 	// This could be set to the total number of items. Used by the fwd_rew_navigation...
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $totalItems = '';
 
 	// Internal (used in this class.)
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $firstElementNumber = 0;
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $eCounter = 0;
 
 	// String with accumulated HTML content
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $HTMLcode = '';
 
 	// Contains page translation languages
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $pageOverlays = array();
 
 	// Contains sys language icons and titles
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $languageIconTitles = array();
 
 	/**
 	 * @var \TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider
-	 * @todo Define visibility
 	 */
 	public $translateTools;
 
@@ -187,7 +188,6 @@ abstract class AbstractRecordList {
 	 * @param integer OBSOLETE - NOT USED ANYMORE. $lMargin is the leftMargin (integer)
 	 * @param string $altLine Is the HTML <img>-tag for an alternative 'gfx/ol/line.gif'-icon (used in the top)
 	 * @return string HTML content for the table row
-	 * @todo Define visibility
 	 */
 	public function addElement($h, $icon, $data, $trParams = '', $lMargin = '', $altLine = '') {
 		$noWrap = $this->no_noWrap ? '' : ' nowrap="nowrap"';
@@ -265,7 +265,6 @@ abstract class AbstractRecordList {
 	 * Dummy function, used to write the top of a table listing.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function writeTop() {
 
@@ -275,7 +274,6 @@ abstract class AbstractRecordList {
 	 * Finishes the list with the "stopper"-gif, adding the HTML code for that item to the internal ->HTMLcode string
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 * @deprecated since 6.2, will be removed 2 versions later - Function not needed anymore
 	 */
 	public function writeBottom() {
@@ -287,7 +285,6 @@ abstract class AbstractRecordList {
 	 *
 	 * @param string $table Table name
 	 * @return array array([boolean], [HTML]) where [boolean] is 1 for reverse element, [HTML] is the table-row code for the element
-	 * @todo Define visibility
 	 */
 	public function fwd_rwd_nav($table = '') {
 		$code = '';
@@ -320,7 +317,6 @@ abstract class AbstractRecordList {
 	 * @param string $table Table name
 	 * @return string
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function fwd_rwd_HTML($type, $pointer, $table = '') {
 		$content = '';
@@ -343,7 +339,6 @@ abstract class AbstractRecordList {
 	 *
 	 * @param string $altId Alternative id value. Enter blank string for the current id ($this->id)
 	 * @return string URL
-	 * @todo Define visibility
 	 */
 	public function listURL($altId = '') {
 		return $this->getThisScript() . 'id=' . ($altId !== '' ? $altId : $this->id);
@@ -353,7 +348,6 @@ abstract class AbstractRecordList {
 	 * Returning JavaScript for ClipBoard functionality.
 	 *
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function CBfunctions() {
 		return '
@@ -392,7 +386,6 @@ abstract class AbstractRecordList {
 	 * Initializes page languages and icons
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function initializeLanguages() {
 		// Look up page overlays:
@@ -406,7 +399,6 @@ abstract class AbstractRecordList {
 	 * @param integer $sys_language_uid Sys language uid
 	 * @param boolean $addAsAdditionalText If set to true, only the flag is returned
 	 * @return string Language icon
-	 * @todo Define visibility
 	 */
 	public function languageFlag($sys_language_uid, $addAsAdditionalText = TRUE) {
 		$out = '';

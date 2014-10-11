@@ -38,82 +38,85 @@ class InlineElement {
 	 * Reference to the calling TCEforms instance
 	 *
 	 * @var \TYPO3\CMS\Backend\Form\FormEngine
-	 * @todo Define visibility
 	 */
 	public $fObj;
 
 	// Reference to $fObj->backPath
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $backPath;
 
 	// Indicates if a field is rendered upon an AJAX call
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $isAjaxCall = FALSE;
 
 	// The structure/hierarchy where working in, e.g. cascading inline tables
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $inlineStructure = array();
 
 	// The first call of an inline type appeared on this page (pid of record)
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $inlineFirstPid;
 
 	// Keys: form, object -> hold the name/id for each of them
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $inlineNames = array();
 
 	// Inline data array used for JSON output
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $inlineData = array();
 
 	// Expanded/collapsed states for the current BE user
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $inlineView = array();
 
 	// Count the number of inline types used
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $inlineCount = 0;
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $inlineStyles = array();
 
 	// How the $this->fObj->prependFormFieldNames should be set ('data' is default)
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $prependNaming = 'data';
 
 	// Reference to $this->fObj->prependFormFieldNames
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $prependFormFieldNames;
 
 	// Reference to $this->fObj->prependCmdFieldNames
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $prependCmdFieldNames;
 
-	// Array containing instances of hook classes called once for IRRE objects
+	/**
+	 * Array containing instances of hook classes called once for IRRE objects
+	 *
+	 * @var array
+	 */
 	protected $hookObjects = array();
 
 	/**
@@ -121,7 +124,6 @@ class InlineElement {
 	 *
 	 * @param \TYPO3\CMS\Backend\Form\FormEngine $tceForms Reference to an TCEforms instance
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function init(&$tceForms) {
 		$this->fObj = $tceForms;
@@ -165,7 +167,6 @@ class InlineElement {
 	 * @param array $row The record data array where the value(s) for the field can be found
 	 * @param array $PA An array with additional configuration options.
 	 * @return string The HTML code for the TCEform field
-	 * @todo Define visibility
 	 */
 	public function getSingleField_typeInline($table, $field, $row, &$PA) {
 		// Check the TCA configuration - if FALSE is returned, something was wrong
@@ -357,7 +358,6 @@ class InlineElement {
 	 * @param array $rec The table record of the child/embedded table (normaly post-processed by \TYPO3\CMS\Backend\Form\DataPreprocessor)
 	 * @param array $config Content of $PA['fieldConf']['config']
 	 * @return string The HTML code for this "foreign record
-	 * @todo Define visibility
 	 */
 	public function renderForeignRecord($parentUid, $rec, $config = array()) {
 		$foreign_table = $config['foreign_table'];
@@ -497,7 +497,6 @@ class InlineElement {
 	 * @param array $config content of $PA['fieldConf']['config']
 	 * @param boolean $isVirtualRecord
 	 * @return string The HTML code of the header
-	 * @todo Define visibility
 	 */
 	public function renderForeignRecordHeader($parentUid, $foreign_table, $rec, $config, $isVirtualRecord = FALSE) {
 		// Init:
@@ -626,7 +625,6 @@ class InlineElement {
 	 * @param array $rec The current record of that foreign_table
 	 * @param array $config (modified) TCA configuration of the field
 	 * @return string The HTML code with the control-icons
-	 * @todo Define visibility
 	 */
 	public function renderForeignRecordHeaderControl($parentUid, $foreign_table, $rec, $config = array(), $isVirtualRecord = FALSE) {
 		// Initialize:
@@ -750,7 +748,6 @@ class InlineElement {
 	 * @param string $appendFormFieldNames The [<table>][<uid>] of the parent record (the intermediate table)
 	 * @param array $config content of $PA['fieldConf']['config']
 	 * @return string A HTML string with <table> tag around.
-	 * @todo Define visibility
 	 */
 	public function renderCombinationTable(&$rec, $appendFormFieldNames, $config = array()) {
 		$foreign_table = $config['foreign_table'];
@@ -793,7 +790,6 @@ class InlineElement {
 	 * @param array $conf TCA configuration of the parent(!) field
 	 * @param array $uniqueIds The uids that have already been used and should be unique
 	 * @return string A HTML <select> box with all possible records
-	 * @todo Define visibility
 	 */
 	public function renderPossibleRecordsSelector($selItems, $conf, $uniqueIds = array()) {
 		$foreign_table = $conf['foreign_table'];
@@ -817,7 +813,6 @@ class InlineElement {
 	 * @param array $PA An array with additional configuration options
 	 * @param array $uniqueIds The uids that have already been used and should be unique
 	 * @return string A HTML <select> box with all possible records
-	 * @todo Define visibility
 	 */
 	public function renderPossibleRecordsSelectorTypeSelect($selItems, $conf, &$PA, $uniqueIds = array()) {
 		$foreign_table = $conf['foreign_table'];
@@ -874,7 +869,6 @@ class InlineElement {
 	 * @param array $conf TCA configuration of the parent(!) field
 	 * @param array $PA An array with additional configuration options
 	 * @return string A HTML link that opens an element browser in a new window
-	 * @todo Define visibility
 	 */
 	public function renderPossibleRecordsSelectorTypeGroupDB($conf, &$PA) {
 		$foreign_table = $conf['foreign_table'];
@@ -1010,7 +1004,6 @@ class InlineElement {
 	 *
 	 * @param string $objectId The container id of the object - elements inside will be sortable
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function addJavaScriptSortable($objectId) {
 		$this->fObj->additionalJS_post[] = '
@@ -1177,7 +1170,6 @@ class InlineElement {
 	 * @param string $domObjectId The calling object in hierarchy, that requested a new record.
 	 * @param string $foreignUid If set, the new record should be inserted after that one.
 	 * @return array An array to be used for JSON
-	 * @todo Define visibility
 	 */
 	public function createNewRecord($domObjectId, $foreignUid = 0) {
 		// The current table - for this table we should add/import records
@@ -1317,7 +1309,6 @@ class InlineElement {
 	 *
 	 * @param string $domObjectId The calling object in hierarchy, that requested a new record.
 	 * @return array An array to be used for JSON
-	 * @todo Define visibility
 	 */
 	public function getRecordDetails($domObjectId) {
 		// The current table - for this table we should add/import records
@@ -1417,7 +1408,6 @@ class InlineElement {
 	 * @param string $expand Whether this record is expanded.
 	 * @param string $collapse Whether this record is collapsed.
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function setExpandedCollapsedState($domObjectId, $expand, $collapse) {
 		// Parse the DOM identifier (string), add the levels to the structure stack (array), but don't load TCA config
@@ -1464,7 +1454,6 @@ class InlineElement {
 	 * @param array $PA An array with additional configuration options.
 	 * @param array $config (Redundant) content of $PA['fieldConf']['config'] (for convenience)
 	 * @return array The records related to the parent item as associative array.
-	 * @todo Define visibility
 	 */
 	public function getRelatedRecords($table, $field, $row, &$PA, $config) {
 		$language = 0;
@@ -1616,7 +1605,6 @@ class InlineElement {
 	 * @param array $conf An array with additional configuration options.
 	 * @param string $checkForConfField For which field in the foreign_table the possible records should be fetched
 	 * @return mixed Array of possible record items; FALSE if type is "group/db", then everything could be "possible
-	 * @todo Define visibility
 	 */
 	public function getPossibleRecords($table, $field, $row, $conf, $checkForConfField = 'foreign_selector') {
 		// ctrl configuration from TCA:
@@ -1676,7 +1664,6 @@ class InlineElement {
 	 * @param array $conf The TCA field configuration of the inline field to be rendered
 	 * @param boolean $splitValue For usage with group/db, values come like "tx_table_123|Title%20abc", but we need "tx_table" and "123
 	 * @return array The uids, that have been used already and should be used unique
-	 * @todo Define visibility
 	 */
 	public function getUniqueIds($records, $conf = array(), $splitValue = FALSE) {
 		$uniqueIds = array();
@@ -1730,7 +1717,6 @@ class InlineElement {
 	 * @param string $uid The uid of the record to fetch, or the pid if a new record should be created
 	 * @param string $cmd The command to perform, empty or 'new'
 	 * @return array A record row from the database post-processed by \TYPO3\CMS\Backend\Form\DataPreprocessor
-	 * @todo Define visibility
 	 */
 	public function getRecord($pid, $table, $uid, $cmd = '') {
 		// Fetch workspace version of a record (if any):
@@ -1761,7 +1747,6 @@ class InlineElement {
 	 * @param integer $pid The pid of the page the record should be stored (only relevant for NEW records)
 	 * @param string $table The table to fetch data from (= foreign_table)
 	 * @return array A record row from the database post-processed by \TYPO3\CMS\Backend\Form\DataPreprocessor
-	 * @todo Define visibility
 	 */
 	public function getNewRecord($pid, $table) {
 		$rec = $this->getRecord($pid, $table, $pid, 'new');
@@ -1785,7 +1770,6 @@ class InlineElement {
 	 * @param array $config The TCA-configuration of the inline field
 	 * @param array $parameters The full parameter array (PA)
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function pushStructure($table, $uid, $field = '', $config = array(), array $parameters = array()) {
 		$structure = array(
@@ -1814,7 +1798,6 @@ class InlineElement {
 	 * Remove the item on top of the structure stack and return it.
 	 *
 	 * @return array The top item of the structure stack - array(<table>,<uid>,<field>,<config>)
-	 * @todo Define visibility
 	 */
 	public function popStructure() {
 		$popItem = NULL;
@@ -1833,7 +1816,6 @@ class InlineElement {
 	 * inline structure stack.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function updateStructureNames() {
 		$current = $this->getStructureLevel(-1);
@@ -1854,7 +1836,6 @@ class InlineElement {
 	 * @param array $levelData Array of a level of the structure stack (containing the keys table, uid and field)
 	 * @param string $disposal How the structure name is used (e.g. as <div id="..."> or <input name="..." />)
 	 * @return string The name/id of that level, to be used for HTML output
-	 * @todo Define visibility
 	 */
 	public function getStructureItemName($levelData, $disposal = self::Disposal_AttributeId) {
 		$name = NULL;
@@ -1893,7 +1874,6 @@ class InlineElement {
 	 *
 	 * @param integer $level Which level to return
 	 * @return array The item of the stack at the requested level
-	 * @todo Define visibility
 	 */
 	public function getStructureLevel($level) {
 		$level = $this->calculateStructureLevel($level);
@@ -1930,8 +1910,7 @@ class InlineElement {
 	 * An identifier looks like "<table>-<uid>-<field>".
 	 *
 	 * @param integer $structureDepth How much levels to output, beginning from the top of the stack
-	 * @return 	string		The path of identifiers
-	 * @todo Define visibility
+	 * @return string The path of identifiers
 	 */
 	public function getStructurePath($structureDepth = -1) {
 		$structureLevels = array();
@@ -1956,7 +1935,6 @@ class InlineElement {
 	 * @param string $domObjectId The DOM object-id
 	 * @param boolean $loadConfig Load the TCA configuration for that level (default: TRUE)
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function parseStructureString($string, $loadConfig = TRUE) {
 		$unstable = array();
@@ -2020,7 +1998,6 @@ class InlineElement {
 	 * @param string $field The field name which this element is supposed to edit
 	 * @param array $row The record data array of the parent
 	 * @return boolean If critical configuration errors were found, FALSE is returned
-	 * @todo Define visibility
 	 */
 	public function checkConfiguration(&$config) {
 		$foreign_table = $config['foreign_table'];
@@ -2064,7 +2041,6 @@ class InlineElement {
 	 * @param string $table The table to check access for
 	 * @param string $theUid The record uid of the table
 	 * @return boolean Returns TRUE is the user has access, or FALSE if not
-	 * @todo Define visibility
 	 */
 	public function checkAccess($cmd, $table, $theUid) {
 		// Checking if the user has permissions? (Only working as a precaution, because the final permission check is always down in TCE. But it's good to notify the user on beforehand...)
@@ -2135,7 +2111,6 @@ class InlineElement {
 	 * @param array $compare Keys and values to compare to the ['config'] part of the top level of the stack
 	 * @return boolean Whether the comparison was successful
 	 * @see arrayCompareComplex
-	 * @todo Define visibility
 	 */
 	public function compareStructureConfiguration($compare) {
 		$level = $this->getStructureLevel(-1);
@@ -2148,7 +2123,6 @@ class InlineElement {
 	 *
 	 * @param string $string A transferData reference string, containing the uid
 	 * @return string The normalized uid
-	 * @todo Define visibility
 	 */
 	public function normalizeUid($string) {
 		$parts = explode('|', $string);
@@ -2162,7 +2136,6 @@ class InlineElement {
 	 * @param array $styleAttrs Attributes for the style argument in the table tag
 	 * @param array $tableAttrs Attributes for the table tag (like width, border, etc.)
 	 * @return string The wrapped HTML code
-	 * @todo Define visibility
 	 */
 	public function wrapFormsSection($section, $styleAttrs = array(), $tableAttrs = array()) {
 		$style = '';
@@ -2194,7 +2167,6 @@ class InlineElement {
 	 * @param string $table The table to check
 	 * @param string $field The field on this table to check
 	 * @return boolean Is inline child and field is responsible for the label
-	 * @todo Define visibility
 	 */
 	public function isInlineChildAndLabelField($table, $field) {
 		$level = $this->getStructureLevel(-1);
@@ -2211,7 +2183,6 @@ class InlineElement {
 	 * (count($this->inlineStructure['stable'])
 	 *
 	 * @return integer The depth of the structure stack
-	 * @todo Define visibility
 	 */
 	public function getStructureDepth() {
 		return count($this->inlineStructure['stable']);
@@ -2248,7 +2219,6 @@ class InlineElement {
 	 * @param array $searchArray The array with keys and values to search for
 	 * @param string $type Use '%AND' or '%OR' for comparison
 	 * @return boolean The result of the comparison
-	 * @todo Define visibility
 	 */
 	public function arrayCompareComplex($subjectArray, $searchArray, $type = '') {
 		$localMatches = 0;
@@ -2305,7 +2275,6 @@ class InlineElement {
 	 *
 	 * @param mixed $object The object to be checked
 	 * @return boolean Returns TRUE, if the object is an associative array
-	 * @todo Define visibility
 	 */
 	public function isAssociativeArray($object) {
 		return is_array($object) && count($object) && array_keys($object) !== range(0, sizeof($object) - 1) ? TRUE : FALSE;
@@ -2318,7 +2287,6 @@ class InlineElement {
 	 * @param array $haystack The array the element should be removed from.
 	 * @param mixed $strict Search elements strictly.
 	 * @return array The array $haystack without the $needle
-	 * @todo Define visibility
 	 */
 	public function removeFromArray($needle, $haystack, $strict = NULL) {
 		$pos = array_search($needle, $haystack, $strict);
@@ -2335,7 +2303,6 @@ class InlineElement {
 	 *
 	 * @param array $possibleRecords The possibleRecords array (for select fields)
 	 * @return mixed A flat array with key=uid, value=label; if $possibleRecords isn't an array, FALSE is returned.
-	 * @todo Define visibility
 	 */
 	public function getPossibleRecordsFlat($possibleRecords) {
 		$flat = FALSE;
@@ -2353,7 +2320,6 @@ class InlineElement {
 	 *
 	 * @param array $conf TCA configuration of the parent(!) field
 	 * @return array Associative array with the keys 'PA' and 'type', both are FALSE if the selector was not valid.
-	 * @todo Define visibility
 	 */
 	public function getPossibleRecordsSelectorConfig($conf, $field = '') {
 		$foreign_table = $conf['foreign_table'];
@@ -2394,7 +2360,6 @@ class InlineElement {
 	 *
 	 * @param array $config TCE configuration of the selector
 	 * @return mixed The type of the selector, 'select' or 'groupdb' - FALSE not valid
-	 * @todo Define visibility
 	 */
 	public function getPossibleRecordsSelectorType($config) {
 		$type = FALSE;
@@ -2415,7 +2380,6 @@ class InlineElement {
 	 * @param array $row The record row from the database
 	 * @param array $config TCA configuration of the field
 	 * @return boolean Determines whether the field should be skipped.
-	 * @todo Define visibility
 	 */
 	public function skipField($table, $field, $row, $config) {
 		$skipThisField = FALSE;
@@ -2465,7 +2429,6 @@ class InlineElement {
 	 * @param string $table Name of the child table
 	 * @param integer $uid uid of the the child record
 	 * @return boolean TRUE=expand, FALSE=collapse
-	 * @todo Define visibility
 	 */
 	public function getExpandedCollapsedState($table, $uid) {
 		if (isset($this->inlineView[$table]) && is_array($this->inlineView[$table])) {
@@ -2482,7 +2445,6 @@ class InlineElement {
 	 * @param array $uc The uc array to be processed and saved (by reference)
 	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tce Instance of TCEmain that saved data before
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function updateInlineView(&$uc, $tce) {
 		if (isset($uc['inlineView']) && is_array($uc['inlineView'])) {
@@ -2521,7 +2483,6 @@ class InlineElement {
 	 * Returns the the margin in pixels, that is used for each new inline level.
 	 *
 	 * @return integer A pixel value for the margin of each new inline level.
-	 * @todo Define visibility
 	 */
 	public function getLevelMargin() {
 		$margin = ($this->inlineStyles['margin-right'] + 1) * 2;

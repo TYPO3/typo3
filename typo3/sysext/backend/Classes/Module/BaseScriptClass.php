@@ -223,7 +223,6 @@ class BaseScriptClass {
 	 *
 	 * @return void
 	 * @see init(), $MOD_MENU, $MOD_SETTINGS, \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData(), mergeExternalItems()
-	 * @todo Define visibility
 	 */
 	public function menuConfig() {
 		// Page/be_user TSconfig settings and blinding of menu-items
@@ -242,7 +241,6 @@ class BaseScriptClass {
 	 * @return array Modified array part.
 	 * @access private
 	 * @see \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(), menuConfig()
-	 * @todo Define visibility
 	 */
 	public function mergeExternalItems($modName, $menuKey, $menuArr) {
 		$mergeArray = $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey];
@@ -265,7 +263,6 @@ class BaseScriptClass {
 	 * @return void
 	 * @see getExternalItemConfig(), $include_once, init()
 	 * @deprecated since 6.2. Instead of this include_once array, extensions should use auto-loading
-	 * @todo Define visibility
 	 */
 	public function handleExternalFunctionValue($MM_key = 'function', $MS_value = NULL) {
 		if ($MS_value === NULL) {
@@ -286,7 +283,6 @@ class BaseScriptClass {
 	 * @param string $value Optionally the value-key to fetch from the array that would otherwise have been returned if this value was not set. Look source...
 	 * @return mixed The value from the TBE_MODULES_EXT array.
 	 * @see handleExternalFunctionValue()
-	 * @todo Define visibility
 	 */
 	public function getExternalItemConfig($modName, $menuKey, $value = '') {
 		return (string)$value !== '' ? $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey][$value] : $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey];
@@ -301,7 +297,6 @@ class BaseScriptClass {
 	 *
 	 * @return void
 	 * @see handleExternalFunctionValue(), \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(), $extObj
-	 * @todo Define visibility
 	 */
 	public function checkExtObj() {
 		if (is_array($this->extClassConf) && $this->extClassConf['name']) {
@@ -316,7 +311,6 @@ class BaseScriptClass {
 	 * Calls the checkExtObj function in sub module if present.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function checkSubExtObj() {
 		if (is_object($this->extObj)) {
@@ -331,7 +325,6 @@ class BaseScriptClass {
 	 * $this->pObj->doc->JScode = $this->pObj->doc->wrapScriptTags(' ...
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function extObjHeader() {
 		if (is_callable(array($this->extObj, 'head'))) {
@@ -343,7 +336,6 @@ class BaseScriptClass {
 	 * Calls the 'main' function inside the "Function menu module" if present
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function extObjContent() {
 		$this->extObj->pObj = $this;

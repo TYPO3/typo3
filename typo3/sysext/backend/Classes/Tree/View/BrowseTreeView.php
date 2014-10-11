@@ -31,7 +31,6 @@ class BrowseTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 * @param string $clause Additional clause for selecting pages.
 	 * @param string $orderByFields record ORDER BY field
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function init($clause = '', $orderByFields = '') {
 		// This will hide records from display - it has nothing todo with user rights!!
@@ -64,7 +63,6 @@ class BrowseTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 *
 	 * @param array $row The table row.
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function getTitleAttrib($row) {
 		return BackendUtility::titleAttribForPages($row, '1=1 ' . $this->clause, 0);
@@ -77,7 +75,6 @@ class BrowseTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 * @param array $row The row for the current element
 	 * @return string The processed icon input value.
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function wrapIcon($icon, $row) {
 		// Add title attribute to input icon tag
@@ -99,7 +96,6 @@ class BrowseTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 * @param array $row The input row array (where the key "title" is used for the title)
 	 * @param integer $titleLen Title length (30)
 	 * @return string The title.
-	 * @todo Define visibility
 	 */
 	public function getTitleStr($row, $titleLen = 30) {
 		$title = parent::getTitleStr($row, $titleLen);
@@ -119,7 +115,6 @@ class BrowseTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 * @param array $row Record row with "php_tree_stop" field
 	 * @return string Modified string
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function wrapStop($str, $row) {
 		if ($row['php_tree_stop']) {

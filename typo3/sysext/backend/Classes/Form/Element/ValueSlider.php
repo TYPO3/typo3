@@ -29,7 +29,6 @@ class ValueSlider {
 	 * @param array $params
 	 * @param \TYPO3\CMS\Backend\Form\FormEngine $pObj
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function renderWizard(&$params, &$pObj) {
 		$pObj->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/ValueSlider.js');

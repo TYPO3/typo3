@@ -189,7 +189,6 @@ class RteController {
 	 * Outputting the accumulated content to screen
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		$this->content .= $this->doc->endPage();
@@ -257,7 +256,6 @@ class RteController {
 	 * @param string $table Table name
 	 * @param integer $uid Record uid
 	 * @return boolean
-	 * @todo Define visibility
 	 * @todo: Refactor to remove duplicate code (see FormsController, TableController)
 	 */
 	public function checkEditAccess($table, $uid) {

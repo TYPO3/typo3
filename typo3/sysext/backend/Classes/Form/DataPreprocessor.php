@@ -28,50 +28,50 @@ class DataPreprocessor {
 	// External, static:
 	// If set, the records requested are locked.
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $lockRecords = 0;
 
 	// Is set externally if RTE is disabled.
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $disableRTE = 0;
 
 	// If the pid in the command is 'prev' then $prevPageID is used as pid for the record. This is used to attach new records to other previous records eg. new pages.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $prevPageID = '';
 
 	// Can be set with an array of default values for tables. First key is table name, second level keys are field names. Originally this was a GLOBAL array used internally.
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $defVals = array();
 
 	// If set, the processed data is overlaid the raw record.
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $addRawData = FALSE;
 
 	// Internal, dynamic
 	// Used to register, which items are already loaded!!
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $regTableItems = array();
 
 	// This stores the record data of the loaded records
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $regTableItems_data = array();
 
 	// Contains loadModules object, if used. (for reuse internally)
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $loadModules = '';
 
@@ -90,7 +90,6 @@ class DataPreprocessor {
 	 * @param string $operation If "new", then a record with default data is returned. Further, the $id values are meant to be PID values (or if negative, pointing to a previous record). If NOT new, then the table/ids are just pointing to an existing record!
 	 * @return void
 	 * @see renderRecord()
-	 * @todo Define visibility
 	 */
 	public function fetchRecord($table, $idList, $operation) {
 		if ((string)$idList === 'prev') {
@@ -187,7 +186,6 @@ class DataPreprocessor {
 	 * @param array $row The row of the current record. If NEW record, then it may be loaded with default values (by eg. fetchRecord()).
 	 * @return void
 	 * @see fetchRecord()
-	 * @todo Define visibility
 	 */
 	public function renderRecord($table, $id, $pid, $row) {
 		$dateTimeFormats = $GLOBALS['TYPO3_DB']->getDateTimeFormats($table);
@@ -232,7 +230,6 @@ class DataPreprocessor {
 	 * @param integer $tscPID PAGE TSconfig pid
 	 * @return array Processed record data
 	 * @see renderRecord()
-	 * @todo Define visibility
 	 */
 	public function renderRecordRaw($table, $id, $pid, $row, $TSconfig = '', $tscPID = 0) {
 		if (!is_array($TSconfig)) {
@@ -288,7 +285,6 @@ class DataPreprocessor {
 	 * @param array $row The row array, always of the real record (also for flexforms)
 	 * @param string $field The field
 	 * @return string Modified $value
-	 * @todo Define visibility
 	 */
 	public function renderRecord_SW($data, $fieldConfig, $TSconfig, $table, $row, $field) {
 		switch ((string)$fieldConfig['config']['type']) {
@@ -320,7 +316,6 @@ class DataPreprocessor {
 	 * @return string The processed input field value ($data)
 	 * @access private
 	 * @see renderRecord()
-	 * @todo Define visibility
 	 */
 	public function renderRecord_groupProc($data, $fieldConfig, $TSconfig, $table, $row, $field) {
 		switch ($fieldConfig['config']['internal_type']) {
@@ -372,7 +367,6 @@ class DataPreprocessor {
 	 * @return string The processed input field value ($data)
 	 * @access private
 	 * @see renderRecord()
-	 * @todo Define visibility
 	 */
 	public function renderRecord_selectProc($data, $fieldConfig, $TSconfig, $table, $row, $field) {
 		// Initialize:
@@ -433,7 +427,6 @@ class DataPreprocessor {
 	 * @return string The processed input field value ($data)
 	 * @access private
 	 * @see renderRecord()
-	 * @todo Define visibility
 	 */
 	public function renderRecord_flexProc($data, $fieldConfig, $TSconfig, $table, $row, $field) {
 		// Convert the XML data to PHP array:
@@ -470,7 +463,6 @@ class DataPreprocessor {
 	 * @param integer $pid PID value
 	 * @return array The processed version of $totalRecordContent
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function renderRecord_typesProc($totalRecordContent, $types_fieldConfig, $tscPID, $table, $pid) {
 		foreach ($types_fieldConfig as $vconf) {
@@ -503,7 +495,6 @@ class DataPreprocessor {
 	 * @return string The processed input field value ($data)
 	 * @access private
 	 * @see renderRecord()
-	 * @todo Define visibility
 	 */
 	public function renderRecord_inlineProc($data, $fieldConfig, $TSconfig, $table, $row, $field) {
 		// Initialize:
@@ -543,7 +534,6 @@ class DataPreprocessor {
 	 * @return array Modified $dataPart array.
 	 * @access private
 	 * @see \TYPO3\CMS\Core\DataHandling\DataHandler::checkValue_flex_procInData(), renderRecord_flexProc_procInData_travDS()
-	 * @todo Define visibility
 	 */
 	public function renderRecord_flexProc_procInData($dataPart, $dataStructArray, $pParams) {
 		if (is_array($dataPart)) {
@@ -567,7 +557,6 @@ class DataPreprocessor {
 	 * @param array $pParams Various parameters pass-through.
 	 * @return void
 	 * @see \TYPO3\CMS\Core\DataHandling\DataHandler::checkValue_flex_procInData(), renderRecord_flexProc_procInData_travDS()
-	 * @todo Define visibility
 	 */
 	public function renderRecord_flexProc_procInData_travDS(&$dataValues, $DSelements, $pParams) {
 		if (is_array($DSelements)) {
@@ -624,7 +613,6 @@ class DataPreprocessor {
 	 * @return array Modified $dataAcc array
 	 * @access private
 	 * @see renderRecord_selectProc()
-	 * @todo Define visibility
 	 */
 	public function selectAddSpecial($dataAcc, $elements, $specialKey) {
 		// Special select types:
@@ -745,7 +733,6 @@ class DataPreprocessor {
 	 * @return array Modified $dataAcc array
 	 * @access private
 	 * @see renderRecord_selectProc()
-	 * @todo Define visibility
 	 */
 	public function selectAddForeign($dataAcc, $elements, $fieldConfig, $field, $TSconfig, $row, $table) {
 		// Init:
@@ -802,7 +789,6 @@ class DataPreprocessor {
 	 * @param string $table Current table name. passed on to \TYPO3\CMS\Core\Database\RelationHandler
 	 * @return array An array with ids of the records from the input elements array.
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function getDataIdList($elements, $fieldConfig, $row, $table) {
 		// Use given uid (might be the uid of a workspace record)
@@ -830,7 +816,6 @@ class DataPreprocessor {
 	 * @return array The modified input $selItems array
 	 * @access private
 	 * @see renderRecord_selectProc()
-	 * @todo Define visibility
 	 */
 	public function procesItemArray($selItems, $config, $fieldTSConfig, $table, $row, $field) {
 		$selItems = $this->addItems($selItems, $fieldTSConfig['addItems.']);
@@ -848,7 +833,6 @@ class DataPreprocessor {
 	 * @return array The modified input $items array
 	 * @access private
 	 * @see procesItemArray()
-	 * @todo Define visibility
 	 */
 	public function addItems($items, $iArray) {
 		if (is_array($iArray)) {
@@ -871,7 +855,6 @@ class DataPreprocessor {
 	 * @return array The modified input $items array
 	 * @access private
 	 * @see procesItemArray()
-	 * @todo Define visibility
 	 */
 	public function procItems($items, $itemsProcFuncTSconfig, $config, $table, $row, $field) {
 		$params = array();
@@ -897,7 +880,6 @@ class DataPreprocessor {
 	 * @param integer $id The id of the record
 	 * @param integer $pid The pid of the record
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function lockRecord($table, $id, $pid = 0) {
 		if ($this->lockRecords) {
@@ -915,7 +897,6 @@ class DataPreprocessor {
 	 * @return void
 	 * @access private
 	 * @see renderRecord()
-	 * @todo Define visibility
 	 */
 	public function regItem($table, $id, $field, $content) {
 
@@ -927,7 +908,6 @@ class DataPreprocessor {
 	 * @param string Language label key
 	 * @return string Localized label value.
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function sL($in) {
 		return $GLOBALS['LANG']->sL($in);

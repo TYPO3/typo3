@@ -25,7 +25,7 @@ namespace TYPO3\CMS\Backend\Template;
 class BigDocumentTemplate extends \TYPO3\CMS\Backend\Template\DocumentTemplate {
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $divClass = 'typo3-bigDoc';
 

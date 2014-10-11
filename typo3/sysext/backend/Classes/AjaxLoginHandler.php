@@ -101,7 +101,6 @@ class AjaxLoginHandler {
 	 * @param array $parameters Parameters (not used)
 	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj The calling parent AJAX object
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function isTimedOut(array $parameters, \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj) {
 		if (is_object($GLOBALS['BE_USER'])) {

@@ -55,7 +55,7 @@ class FileSystemNavigationFrameController {
 	public $currentSubScript;
 
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $cMR;
 

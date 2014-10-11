@@ -64,12 +64,12 @@ class NewRecordController {
 	public $web_list_modTSconfig;
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $allowedNewTables;
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $deniedNewTables;
 

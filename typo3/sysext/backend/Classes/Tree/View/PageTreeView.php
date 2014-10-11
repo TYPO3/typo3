@@ -22,7 +22,7 @@ namespace TYPO3\CMS\Backend\Tree\View;
 class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $fieldArray = array(
 		'uid',
@@ -35,12 +35,12 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	);
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $defaultList = 'uid,pid,tstamp,sorting,deleted,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,crdate,cruser_id';
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $setRecs = 0;
 
@@ -51,7 +51,6 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 * @param string $clause Part of where query which will filter out non-readable pages.
 	 * @param string $orderByFields Record ORDER BY field
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function init($clause = '', $orderByFields = '') {
 		parent::init(' AND deleted=0 ' . $clause, 'sorting');
@@ -73,7 +72,6 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 *
 	 * @param integer $id ID (uid) to test for (see extending classes where this is checked against session data)
 	 * @return boolean
-	 * @todo Define visibility
 	 */
 	public function expandNext($id) {
 		return 1;
@@ -91,7 +89,6 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 * @return string Image tag with the plus/minus icon.
 	 * @access private
 	 * @see AbstarctTreeView::PMicon()
-	 * @todo Define visibility
 	 */
 	public function PMicon($row, $a, $c, $nextCount, $exp) {
 		$PM = 'join';
@@ -106,7 +103,6 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 *
 	 * @return void
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function initializePositionSaving() {
 		$this->stored = array();
