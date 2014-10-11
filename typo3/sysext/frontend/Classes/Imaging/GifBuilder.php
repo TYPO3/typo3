@@ -45,69 +45,69 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 	// Internal
 	// the main image
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $im = '';
 
 	// the image-width
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $w = 0;
 
 	// the image-height
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $h = 0;
 
 	// map-data
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $map;
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $workArea;
 
 	// This holds the operational setup for gifbuilder. Basically this is a TypoScript array with properties.
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $setup = array();
 
 	// Contains all text strings used on this image
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $combinedTextStrings = array();
 
 	// Contains all filenames (basename without extension) used on this image
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $combinedFileNames = array();
 
 	// This is the array from which data->field: [key] is fetched. So this is the current record!
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $data = array();
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $objBB = array();
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $myClassName = 'gifbuilder';
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $charRangeMap = array();
 
@@ -121,7 +121,6 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 	 * @param array $data The current data record from \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer. Stored internally in the variable ->data
 	 * @return void
 	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getImgResource(), \TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject::makeGifs(), \TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject::findLargestDims()
-	 * @todo Define visibility
 	 */
 	public function start($conf, $data) {
 		if (is_array($conf)) {
@@ -324,7 +323,6 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 	 *
 	 * @return string The filename for the created GIF/PNG file. The filename will be prefixed "GB_
 	 * @see make(), fileName()
-	 * @todo Define visibility
 	 */
 	public function gifBuild() {
 		if ($this->setup) {
@@ -352,7 +350,6 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 	 * @return void
 	 * @access private
 	 * @see gifBuild()
-	 * @todo Define visibility
 	 */
 	public function make() {
 		// Get trivial data
@@ -527,7 +524,6 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 	 * @param array $conf GIFBUILDER object TypoScript properties
 	 * @return array Modified $conf array IF the "text" property is not blank
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function checkTextObj($conf) {
 		$cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
@@ -624,7 +620,6 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 	 * @param string $string The string to resolve/calculate the result of. The string is divided by a comma first and each resulting part is calculated into an integer.
 	 * @return string The resolved string with each part (separated by comma) returned separated by comma
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function calcOffset($string) {
 		$value = array();
@@ -648,7 +643,6 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 	 * @return array|NULL Returns an array with file information from ContentObjectRenderer::getImgResource()
 	 * @access private
 	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getImgResource()
-	 * @todo Define visibility
 	 */
 	public function getResource($file, $fileArray) {
 		if (!GeneralUtility::inList($this->imageFileExt, $fileArray['ext'])) {
@@ -667,7 +661,6 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 	 * @return string Returns the relative filepath
 	 * @access private
 	 * @see \TYPO3\CMS\Core\TypoScript\TemplateService::getFileName()
-	 * @todo Define visibility
 	 */
 	public function checkFile($file) {
 		return $GLOBALS['TSFE']->tmpl->getFileName($file);
@@ -679,7 +672,6 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 	 * @param string $pre Filename prefix, eg. "GB_
 	 * @return string The relative filepath (relative to PATH_site)
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function fileName($pre) {
 		$meaningfulPrefix = '';
@@ -710,7 +702,6 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 	 *
 	 * @return string Extension; "jpg" or "gif"/"png
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function extension() {
 		switch (strtolower($this->setup['format'])) {

@@ -23,108 +23,108 @@ class TableRenderer {
 
 	// offset, x
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $offX = 0;
 
 	// offset, y
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $offY = 0;
 
 	// top menu
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $tm = '';
 
 	// left menu
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $lm = '';
 
 	// right menu
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $rm = '';
 
 	// bottom menu
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $bm = '';
 
 	// content
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $content = '';
 
 	// top menu TDparams
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $tmTDparams = 'valign="top"';
 
 	// left menu TDparams
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $lmTDparams = 'valign="top"';
 
 	// right menu TDparams
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $rmTDparams = 'valign="top"';
 
 	// bottom menu TDparams
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $bmTDparams = 'valign="top"';
 
 	// content TDparams
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $contentTDparams = 'valign="top"';
 
 	// content margin, left
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $cMl = 1;
 
 	// content margin, right
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $cMr = 1;
 
 	// content margin, top
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $cMt = 0;
 
 	// content margin, bottom
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $cMb = 1;
 
 	// Places a little gif-spacer in the bottom of the content frame
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $contentW = 0;
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $tableParams = 'border="0" cellspacing="0" cellpadding="0"';
 
@@ -136,7 +136,6 @@ class TableRenderer {
 	 * @param string $cMargins List of margin parameters; left, top, right, bottom
 	 * @return string The content strings wrapped in a <table> as the parameters defined
 	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::CTABLE()
-	 * @todo Define visibility
 	 */
 	public function start($offset, $cMargins) {
 		$offArr = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $offset);

@@ -25,7 +25,6 @@ interface FileLinkHookInterface {
 	 * @param \TYPO3\CMS\Core\Resource\File $file
 	 * @return \TYPO3\CMS\Core\Resource\File
 	 * @abstract
-	 * @todo Define visibility
 	 */
 	public function getPreviewImage(\TYPO3\CMS\Core\Resource\File $file);
 

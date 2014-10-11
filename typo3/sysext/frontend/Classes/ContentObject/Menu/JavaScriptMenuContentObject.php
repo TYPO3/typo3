@@ -25,7 +25,6 @@ class JavaScriptMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu
 	 * Dummy. Should do nothing, because we don't use the result-array here!
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function generate() {
 
@@ -35,7 +34,6 @@ class JavaScriptMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu
 	 * Creates the HTML (mixture of a <form> and a JavaScript section) for the JavaScript menu (basically an array of selector boxes with onchange handlers)
 	 *
 	 * @return string The HTML code for the menu
-	 * @todo Define visibility
 	 */
 	public function writeMenu() {
 		if ($this->id) {
@@ -94,7 +92,6 @@ class JavaScriptMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu
 	 * @param array $MP_array Previous MP vars
 	 * @return string JavaScript code lines.
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function generate_level($levels, $count, $pid, $menuItemArray = '', $MP_array = array()) {
 		$levelConf = $this->mconf[$count . '.'];

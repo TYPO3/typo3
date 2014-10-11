@@ -83,7 +83,6 @@ class DataSubmissionController {
 	 * @param array $valueList Contains values for the field names listed above (with slashes removed if from POST input)
 	 * @param boolean $base64 Whether to base64 encode the mail content
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function start($valueList, $base64 = FALSE) {
 		$this->mailMessage = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');

@@ -31,25 +31,24 @@ class AbstractPlugin {
 	 * The backReference to the mother cObj object set at call time
 	 *
 	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
-	 * @todo Define visibility
 	 */
 	public $cObj;
 
 	// Should be same as classname of the plugin, used for CSS classes, variables
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $prefixId;
 
 	// Path to the plugin class script relative to extension directory, eg. 'pi1/class.tx_newfaq_pi1.php'
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $scriptRelPath;
 
 	// Extension key.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $extKey;
 
@@ -57,7 +56,7 @@ class AbstractPlugin {
 	// Eg. if the class name is 'tx_myext'
 	// then the content of this array will be whatever comes into &tx_myext[...]=...
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $piVars = array(
 		'pointer' => '',
@@ -70,13 +69,13 @@ class AbstractPlugin {
 	);
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $internal = array('res_count' => 0, 'results_at_a_time' => 20, 'maxPages' => 10, 'currentRow' => array(), 'currentTable' => '');
 
 	// Local Language content
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $LOCAL_LANG = array();
 
@@ -92,84 +91,84 @@ class AbstractPlugin {
 
 	// Local Language content charset for individual labels (overriding)
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $LOCAL_LANG_charset = array();
 
 	// Flag that tells if the locallang file has been fetch (or tried to be fetched) already.
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $LOCAL_LANG_loaded = 0;
 
 	// Pointer to the language to use.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $LLkey = 'default';
 
 	// Pointer to alternative fall-back language to use.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $altLLkey = '';
 
 	// You can set this during development to some value that makes it easy for you to spot all labels that ARe delivered by the getLL function.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $LLtestPrefix = '';
 
 	// Save as LLtestPrefix, but additional prefix for the alternative value in getLL() function calls
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $LLtestPrefixAlt = '';
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $pi_isOnlyFields = 'mode,pointer';
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $pi_alwaysPrev = 0;
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $pi_lowerThan = 5;
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $pi_moreParams = '';
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $pi_listFields = '*';
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $pi_autoCacheFields = array();
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $pi_autoCacheEn = 0;
 
 	// If set, then links are 1) not using cHash and 2) not allowing pages to be cached. (Set this for all USER_INT plugins!)
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $pi_USER_INT_obj = FALSE;
 
 	// If set, then caching is disabled if piVars are incoming while no cHash was set (Set this for all USER plugins!)
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $pi_checkCHash = FALSE;
 
@@ -179,18 +178,18 @@ class AbstractPlugin {
 	 * $conf[LOCAL_LANG][_key_] is reserved for Local Language overrides.
 	 * $conf[userFunc] / $conf[includeLibs]  reserved for setting up the USER / USER_INT object. See TSref
 	 *
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $conf = array();
 
 	// internal, don't mess with...
 	/**
-	 * @todo Define visibility
+	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
 	 */
 	public $pi_EPtemp_cObj;
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $pi_tmpPageId = 0;
 
@@ -203,8 +202,6 @@ class AbstractPlugin {
 	 * Class Constructor (true constructor)
 	 * Initializes $this->piVars if $this->prefixId is set to any value
 	 * Will also set $this->LLkey based on the config.language setting.
-	 *
-	 * @todo Define visibility
 	 */
 	public function __construct() {
 		// Setting piVars:
@@ -302,7 +299,6 @@ class AbstractPlugin {
 	 * @return string The resulting URL
 	 * @see pi_linkToPage()
 	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getTypoLink()
-	 * @todo Define visibility
 	 */
 	public function pi_getPageLink($id, $target = '', $urlParameters = array()) {
 		return $this->cObj->getTypoLink_URL($id, $urlParameters, $target);
@@ -319,7 +315,6 @@ class AbstractPlugin {
 	 * @param array|string $urlParameters As an array key/value pairs represent URL parameters to set. Values NOT URL-encoded yet, keys should be URL-encoded if needed. As a string the parameter is expected to be URL-encoded already.
 	 * @return string The input string wrapped in <a> tags with the URL and target set.
 	 * @see pi_getPageLink(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getTypoLink()
-	 * @todo Define visibility
 	 */
 	public function pi_linkToPage($str, $id, $target = '', $urlParameters = array()) {
 		return $this->cObj->getTypoLink($str, $id, $urlParameters, $target);
@@ -335,7 +330,6 @@ class AbstractPlugin {
 	 * @param integer $altPageId Alternative page ID for the link. (By default this function links to the SAME page!)
 	 * @return string The input string wrapped in <a> tags
 	 * @see pi_linkTP_keepPIvars(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink()
-	 * @todo Define visibility
 	 */
 	public function pi_linkTP($str, $urlParameters = array(), $cache = 0, $altPageId = 0) {
 		$conf = array();
@@ -358,7 +352,6 @@ class AbstractPlugin {
 	 * @param integer $altPageId Alternative page ID for the link. (By default this function links to the SAME page!)
 	 * @return string The input string wrapped in <a> tags
 	 * @see pi_linkTP()
-	 * @todo Define visibility
 	 */
 	public function pi_linkTP_keepPIvars($str, $overrulePIvars = array(), $cache = 0, $clearAnyway = 0, $altPageId = 0) {
 		if (is_array($this->piVars) && is_array($overrulePIvars) && !$clearAnyway) {
@@ -384,7 +377,6 @@ class AbstractPlugin {
 	 * @param integer $altPageId See pi_linkTP_keepPIvars
 	 * @return string The URL ($this->cObj->lastTypoLinkUrl)
 	 * @see pi_linkTP_keepPIvars()
-	 * @todo Define visibility
 	 */
 	public function pi_linkTP_keepPIvars_url($overrulePIvars = array(), $cache = 0, $clearAnyway = 0, $altPageId = 0) {
 		$this->pi_linkTP_keepPIvars('|', $overrulePIvars, $cache, $clearAnyway, $altPageId);
@@ -403,7 +395,6 @@ class AbstractPlugin {
 	 * @param integer $altPageId Alternative page ID for the link. (By default this function links to the SAME page!)
 	 * @return string The input string wrapped in <a> tags
 	 * @see pi_linkTP(), pi_linkTP_keepPIvars()
-	 * @todo Define visibility
 	 */
 	public function pi_list_linkSingle($str, $uid, $cache = FALSE, $mergeArr = array(), $urlOnly = FALSE, $altPageId = 0) {
 		if ($this->prefixId) {
@@ -431,7 +422,6 @@ class AbstractPlugin {
 	 * @param string $winName Window name for the pop-up window
 	 * @param string $winParams Window parameters, see the default list for inspiration
 	 * @return string The processed input string, modified IF a <a> tag was found
-	 * @todo Define visibility
 	 */
 	public function pi_openAtagHrefInJSwindow($str, $winName = '', $winParams = 'width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1') {
 		if (preg_match('/(.*)(<a[^>]*>)(.*)/i', $str, $match)) {
@@ -470,7 +460,6 @@ class AbstractPlugin {
 	 * @param boolean $hscText Enable htmlspecialchars() for the pi_getLL function (set this to FALSE if you want f.e use images instead of text for links like 'previous' and 'next').
 	 * @param boolean $forceOutput Forces the output of the page browser if you set this option to "TRUE" (otherwise it's only drawn if enough entries are available)
 	 * @return string Output HTML-Table, wrapped in <div>-tags with a class attribute (if $wrapArr is not passed,
-	 * @todo Define visibility
 	 */
 	public function pi_list_browseresults($showResultCount = 1, $tableParams = '', $wrapArr = array(), $pointerName = 'pointer', $hscText = TRUE, $forceOutput = FALSE) {
 		// example $wrapArr-array how it could be traversed from an extension
@@ -625,7 +614,6 @@ class AbstractPlugin {
 	 *
 	 * @param string $tableParams Attributes for the table tag which is wrapped around the table cells containing the search box
 	 * @return string Output HTML, wrapped in <div>-tags with a class attribute
-	 * @todo Define visibility
 	 */
 	public function pi_list_searchBox($tableParams = '') {
 		// Search box design:
@@ -653,7 +641,6 @@ class AbstractPlugin {
 	 * @param array $items Key/Value pairs for the menu; keys are the piVars[mode] values and the "values" are the labels for them.
 	 * @param string $tableParams Attributes for the table tag which is wrapped around the table cells containing the menu
 	 * @return string Output HTML, wrapped in <div>-tags with a class attribute
-	 * @todo Define visibility
 	 */
 	public function pi_list_modeSelector($items = array(), $tableParams = '') {
 		$cells = array();
@@ -687,7 +674,6 @@ class AbstractPlugin {
 	 * @param string $tableParams Attributes for the table tag which is wrapped around the table rows containing the list
 	 * @return string Output HTML, wrapped in <div>-tags with a class attribute
 	 * @see pi_list_row(), pi_list_header()
-	 * @todo Define visibility
 	 */
 	public function pi_list_makelist($res, $tableParams = '') {
 		// Make list table header:
@@ -720,7 +706,6 @@ class AbstractPlugin {
 	 *
 	 * @param integer $c Row counting. Starts at 0 (zero). Used for alternating class values in the output rows.
 	 * @return string HTML output, a table row with a class attribute set (alternative based on odd/even rows)
-	 * @todo Define visibility
 	 */
 	public function pi_list_row($c) {
 		// Dummy
@@ -733,7 +718,6 @@ class AbstractPlugin {
 	 * Notice: This function should ALWAYS be defined in the extension class of the plugin since it is directly concerned with the specific layout of the listing for your plugins purpose.
 	 *
 	 * @return string HTML output, a table row with a class attribute set
-	 * @todo Define visibility
 	 */
 	public function pi_list_header() {
 		return '<tr' . $this->pi_classParam('listrow-header') . '><td><p>[dummy header row]</p></td></tr>';
@@ -749,7 +733,6 @@ class AbstractPlugin {
 	 *
 	 * @param string $class The class name (or the END of it since it will be prefixed by $this->prefixId.'-')
 	 * @return string The combined class name (with the correct prefix)
-	 * @todo Define visibility
 	 */
 	public function pi_getClassName($class) {
 		return str_replace('_', '-', $this->prefixId) . ($this->prefixId ? '-' : '') . $class;
@@ -763,7 +746,6 @@ class AbstractPlugin {
 	 * @param string $addClasses Additional class names which should not be prefixed - separate multiple classes with commas
 	 * @return string A "class" attribute with value and a single space char before it.
 	 * @see pi_getClassName()
-	 * @todo Define visibility
 	 */
 	public function pi_classParam($class, $addClasses = '') {
 		$output = '';
@@ -782,7 +764,6 @@ class AbstractPlugin {
 	 *
 	 * @param string $str HTML content to wrap in the div-tags with the "main class" of the plugin
 	 * @return string HTML content wrapped, ready to return to the parent object.
-	 * @todo Define visibility
 	 */
 	public function pi_wrapInBaseClass($str) {
 		$content = '<div class="' . str_replace('_', '-', $this->prefixId) . '">
@@ -820,7 +801,6 @@ class AbstractPlugin {
 	 * @param array $conf TypoScript parameters to pass along to the EDITPANEL content Object that gets rendered. The property "allow" WILL get overridden/set though.
 	 * @return string Returns FALSE/blank if no BE User login and of course if the panel is not shown for other reasons. Otherwise the HTML for the panel (a table).
 	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::EDITPANEL()
-	 * @todo Define visibility
 	 */
 	public function pi_getEditPanel($row = '', $tablename = '', $label = '', $conf = array()) {
 		$panel = '';
@@ -863,7 +843,6 @@ class AbstractPlugin {
 	 * @param array $oConf Conf array
 	 * @return string The processed content
 	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::editIcons()
-	 * @todo Define visibility
 	 */
 	public function pi_getEditIcon($content, $fields, $title = '', $row = '', $tablename = '', $oConf = array()) {
 		if ($GLOBALS['TSFE']->beUserLogin) {
@@ -1007,7 +986,6 @@ class AbstractPlugin {
 	 * @param string $orderBy If set, this is added as a " ORDER BY ...." part of the query. The default is that an ORDER BY clause is made based on $this->internal['orderBy'] and $this->internal['descFlag'] where the orderBy field must be found in $this->internal['orderByList']
 	 * @param string $query If set, this is taken as the first part of the query instead of what is created internally. Basically this should be a query starting with "FROM [table] WHERE ... AND ...". The $addWhere clauses and all the other stuff is still added. Only the tables and PID selecting clauses are bypassed. May be deprecated in the future!
 	 * @return pointer SQL result pointer
-	 * @todo Define visibility
 	 */
 	public function pi_exec_query($table, $count = 0, $addWhere = '', $mm_cat = '', $groupBy = '', $orderBy = '', $query = '') {
 		// Begin Query:
@@ -1079,7 +1057,6 @@ class AbstractPlugin {
 	 * @param integer $uid The uid of the record from the table
 	 * @param boolean $checkPage If $checkPage is set, it's required that the page on which the record resides is accessible
 	 * @return array If record is found, an array. Otherwise FALSE.
-	 * @todo Define visibility
 	 */
 	public function pi_getRecord($table, $uid, $checkPage = 0) {
 		return $GLOBALS['TSFE']->sys_page->checkRecord($table, $uid, $checkPage);
@@ -1091,7 +1068,6 @@ class AbstractPlugin {
 	 * @param string $pid_list A comma list of page ids (if empty current page is used)
 	 * @param integer$recursive An integer >=0 telling how deep to dig for pids under each entry in $pid_list
 	 * @return string List of PID values (comma separated)
-	 * @todo Define visibility
 	 */
 	public function pi_getPidList($pid_list, $recursive = 0) {
 		if (!strcmp($pid_list, '')) {
@@ -1118,7 +1094,6 @@ class AbstractPlugin {
 	 * @param string $table Table name to prepend
 	 * @param string $fieldList List of fields where each element will be prepended with the table name given.
 	 * @return string List of fields processed.
-	 * @todo Define visibility
 	 */
 	public function pi_prependFieldsWithTable($table, $fieldList) {
 		$list = GeneralUtility::trimExplode(',', $fieldList, TRUE);
@@ -1139,7 +1114,6 @@ class AbstractPlugin {
 	 * @param string $orderBy Optional ORDER BY field(s), if none, supply blank string.
 	 * @param string $limit Optional LIMIT value ([begin,]max), if none, supply blank string.
 	 * @return array The array with the category records in.
-	 * @todo Define visibility
 	 */
 	public function pi_getCategoryTableContents($table, $pid, $whereClause = '', $groupBy = '', $orderBy = '', $limit = '') {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'pid=' . (int)$pid . $this->cObj->enableFields($table) . ' ' . $whereClause, $groupBy, $orderBy, $limit);
@@ -1163,7 +1137,6 @@ class AbstractPlugin {
 	 * @param string $fList List of fields (keys from piVars) to evaluate on
 	 * @param integer $lowerThan Limit for the values.
 	 * @return boolean Returns TRUE (1) if conditions are met.
-	 * @todo Define visibility
 	 */
 	public function pi_isOnlyFields($fList, $lowerThan = -1) {
 		$lowerThan = $lowerThan == -1 ? $this->pi_lowerThan : $lowerThan;
@@ -1187,7 +1160,6 @@ class AbstractPlugin {
 	 * @param array $inArray An array with piVars values to evaluate
 	 * @return boolean Returns TRUE (1) if conditions are met.
 	 * @see pi_linkTP_keepPIvars()
-	 * @todo Define visibility
 	 */
 	public function pi_autoCache($inArray) {
 		if (is_array($inArray)) {
@@ -1217,7 +1189,6 @@ class AbstractPlugin {
 	 * @param string $str The input text string to process
 	 * @return string The processed string
 	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::parseFunc()
-	 * @todo Define visibility
 	 */
 	public function pi_RTEcssText($str) {
 		$parseFunc = $GLOBALS['TSFE']->tmpl->setup['lib.']['parseFunc_RTE.'];
@@ -1237,7 +1208,6 @@ class AbstractPlugin {
 	 *
 	 * @param string $field Field name to convert
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function pi_initPIflexForm($field = 'pi_flexform') {
 		// Converting flexform data into array:
@@ -1258,7 +1228,6 @@ class AbstractPlugin {
 	 * @param string $lang Language pointer, eg. "lDEF
 	 * @param string $value Value pointer, eg. "vDEF
 	 * @return string The content.
-	 * @todo Define visibility
 	 */
 	public function pi_getFFvalue($T3FlexForm_array, $fieldName, $sheet = 'sDEF', $lang = 'lDEF', $value = 'vDEF') {
 		$sheetArray = is_array($T3FlexForm_array) ? $T3FlexForm_array['data'][$sheet][$lang] : '';
@@ -1276,7 +1245,6 @@ class AbstractPlugin {
 	 * @return mixed The value, typ. string.
 	 * @access private
 	 * @see pi_getFFvalue()
-	 * @todo Define visibility
 	 */
 	public function pi_getFFvalueFromSheetArray($sheetArray, $fieldNameArr, $value) {
 		$tempArr = $sheetArray;

@@ -27,7 +27,6 @@ class ImageMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abst
 	 *
 	 * @return void
 	 * @see AbstractMenuContentObject::procesItemStates(), makeImageMap()
-	 * @todo Define visibility
 	 */
 	public function generate() {
 		$splitCount = count($this->menuArr);
@@ -49,7 +48,6 @@ class ImageMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abst
 	 * @return void
 	 * @access private
 	 * @see generate()
-	 * @todo Define visibility
 	 */
 	public function makeImageMap($conf) {
 		if (!is_array($conf)) {
@@ -222,7 +220,6 @@ class ImageMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abst
 	 * If ->result is TRUE it will create the HTML for the image map menu.
 	 *
 	 * @return string The HTML for the menu
-	 * @todo Define visibility
 	 */
 	public function writeMenu() {
 		if ($this->result) {

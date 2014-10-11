@@ -31,7 +31,6 @@ class PageRepository {
 
 	/**
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $urltypes = array('', 'http://', 'ftp://', 'mailto:', 'https://');
 
@@ -41,7 +40,6 @@ class PageRepository {
 	 * by the init() function
 	 *
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $where_hid_del = ' AND pages.deleted=0';
 
@@ -49,13 +47,11 @@ class PageRepository {
 	 * Clause for fe_group access
 	 *
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $where_groupAccess = '';
 
 	/**
 	 * @var int
-	 * @todo Define visibility
 	 */
 	public $sys_language_uid = 0;
 
@@ -67,7 +63,6 @@ class PageRepository {
 	 * user!!!
 	 *
 	 * @var bool
-	 * @todo Define visibility
 	 */
 	public $versioningPreview = FALSE;
 
@@ -75,13 +70,11 @@ class PageRepository {
 	 * Workspace ID for preview
 	 *
 	 * @var int
-	 * @todo Define visibility
 	 */
 	public $versioningWorkspaceId = 0;
 
 	/**
 	 * @var array
-	 * @todo Define visibility
 	 */
 	public $workspaceCache = array();
 
@@ -91,7 +84,6 @@ class PageRepository {
 	 * Error string set by getRootLine()
 	 *
 	 * @var string
-	 * @todo Define visibility
 	 */
 	public $error_getRootLine = '';
 
@@ -99,7 +91,6 @@ class PageRepository {
 	 * Error uid set by getRootLine()
 	 *
 	 * @var int
-	 * @todo Define visibility
 	 */
 	public $error_getRootLine_failPid = 0;
 
@@ -167,7 +158,6 @@ class PageRepository {
 	 * @param boolean $show_hidden If $show_hidden is TRUE, the hidden-field is ignored!! Normally this should be FALSE. Is used for previewing.
 	 * @return void
 	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::fetch_the_id(), \TYPO3\CMS\Tstemplate\Controller\TemplateAnalyzerModuleFunctionController::initialize_editor()
-	 * @todo Define visibility
 	 */
 	public function init($show_hidden) {
 		$this->where_groupAccess = '';
@@ -209,7 +199,6 @@ class PageRepository {
 	 * @throws \UnexpectedValueException
 	 * @return array The page row with overlayed localized fields. Empty it no page.
 	 * @see getPage_noCheck()
-	 * @todo Define visibility
 	 */
 	public function getPage($uid, $disableGroupAccessCheck = FALSE) {
 		// Hook to manipulate the page uid for special overlay handling
@@ -248,7 +237,6 @@ class PageRepository {
 	 * @param integer $uid The page id to look up
 	 * @return array The page row with overlayed localized fields. Empty array if no page.
 	 * @see getPage()
-	 * @todo Define visibility
 	 */
 	public function getPage_noCheck($uid) {
 		if ($this->cache_getPage_noCheck[$uid]) {
@@ -274,7 +262,6 @@ class PageRepository {
 	 * @param integer $uid The page id for which to fetch first subpages (PID)
 	 * @return mixed If found: The page record (with overlayed localized fields, if any). If NOT found: blank value (not array!)
 	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::fetch_the_id()
-	 * @todo Define visibility
 	 */
 	public function getFirstWebPage($uid) {
 		$output = '';
@@ -296,7 +283,6 @@ class PageRepository {
 	 * @param string $alias The alias to look up the page uid for.
 	 * @return integer Returns page uid (integer) if found, otherwise 0 (zero)
 	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::checkAndSetAlias(), ContentObjectRenderer::typoLink()
-	 * @todo Define visibility
 	 */
 	public function getPageIdFromAlias($alias) {
 		$alias = strtolower($alias);
@@ -322,7 +308,6 @@ class PageRepository {
 	 * @param integer $lUid Language UID if you want to set an alternative value to $this->sys_language_uid which is default. Should be >=0
 	 * @throws \UnexpectedValueException
 	 * @return array Page row which is overlayed with language_overlay record (or the overlay record alone)
-	 * @todo Define visibility
 	 */
 	public function getPageOverlay($pageInput, $lUid = -1) {
 		// Initialize:
@@ -403,7 +388,6 @@ class PageRepository {
 	 * @param string $OLmode Overlay mode. If "hideNonTranslated" then records without translation will not be returned  un-translated but unset (and return value is FALSE)
 	 * @throws \UnexpectedValueException
 	 * @return mixed Returns the input record, possibly overlaid with a translation.  But if $OLmode is "hideNonTranslated" then it will return FALSE if no translation is found.
-	 * @todo Define visibility
 	 */
 	public function getRecordOverlay($table, $row, $sys_language_content, $OLmode = '') {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getRecordOverlay'])) {
@@ -501,7 +485,6 @@ class PageRepository {
 	 * @return array Array with key/value pairs; keys are page-uid numbers. values are the corresponding page records (with overlayed localized fields, if any)
 	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::getPageShortcut(), \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::makeMenu()
 	 * @see \TYPO3\CMS\WizardCrpages\Controller\CreatePagesWizardModuleFunctionController, \TYPO3\CMS\WizardSortpages\View\SortPagesWizardModuleFunction
-	 * @todo Define visibility
 	 */
 	public function getMenu($uid, $fields = '*', $sortField = 'sorting', $addWhere = '', $checkShortcuts = TRUE) {
 		$output = array();
@@ -571,7 +554,6 @@ class PageRepository {
 	 * @param string $request_uri Request URI: Used to get parameters from if they should be appended. Typ. supplied by \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')
 	 * @return mixed If found, returns integer with page UID where found. Otherwise blank. Might exit if location-header is sent, see description.
 	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::findDomainRecord()
-	 * @todo Define visibility
 	 */
 	public function getDomainStartPage($domain, $path = '', $request_uri = '') {
 		$domain = explode(':', $domain);
@@ -626,7 +608,6 @@ class PageRepository {
 	 * @throws \RuntimeException
 	 * @return array Array with page records from the root line as values. The array is ordered with the outer records first and root record in the bottom. The keys are numeric but in reverse order. So if you traverse/sort the array by the numeric keys order you will get the order from root and out. If an error is found (like eternal looping or invalid mountpoint) it will return an empty array.
 	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::getPageAndRootline()
-	 * @todo Define visibility
 	 */
 	public function getRootLine($uid, $MP = '', $ignoreMPerrors = FALSE) {
 		$rootline = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\RootlineUtility', $uid, $MP, $this);
@@ -655,7 +636,6 @@ class PageRepository {
 	 * @param integer $len The max length of each title from the rootline.
 	 * @return string The path in the form "/page title/This is another pageti.../Another page
 	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::getConfigArray()
-	 * @todo Define visibility
 	 */
 	public function getPathFromRootline($rl, $len = 20) {
 		if (is_array($rl)) {
@@ -678,7 +658,6 @@ class PageRepository {
 	 * @param boolean $disable A flag to simply disable any output from here.
 	 * @return string The URL type from $this->urltypes array. False if not found or disabled.
 	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::setExternalJumpUrl()
-	 * @todo Define visibility
 	 */
 	public function getExtURL($pagerow, $disable = 0) {
 		if ($pagerow['doktype'] == self::DOKTYPE_LINK && !$disable) {
@@ -705,7 +684,6 @@ class PageRepository {
 	 * @param integer $firstPageUid The first page id.
 	 * @return mixed Returns FALSE if no mount point was found, "-1" if there should have been one, but no connection to it, otherwise an array with information about mount pid and modes.
 	 * @see \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject
-	 * @todo Define visibility
 	 */
 	public function getMountPointInfo($pageId, $pageRec = FALSE, $prevMountPids = array(), $firstPageUid = 0) {
 		$result = FALSE;
@@ -770,7 +748,6 @@ class PageRepository {
 	 * @param integer $uid The uid to look up in $table
 	 * @param boolean $checkPage If checkPage is set, it's also required that the page on which the record resides is accessible
 	 * @return mixed Returns array (the record) if OK, otherwise blank/0 (zero)
-	 * @todo Define visibility
 	 */
 	public function checkRecord($table, $uid, $checkPage = 0) {
 		$uid = (int)$uid;
@@ -807,7 +784,6 @@ class PageRepository {
 	 * @param boolean $noWSOL If set, no version overlay is applied
 	 * @return mixed Returns array (the record) if found, otherwise blank/0 (zero)
 	 * @see getPage_noCheck()
-	 * @todo Define visibility
 	 */
 	public function getRawRecord($table, $uid, $fields = '*', $noWSOL = FALSE) {
 		$uid = (int)$uid;
@@ -839,7 +815,6 @@ class PageRepository {
 	 * @param string $orderBy Optional ORDER BY field(s). If none, supply blank string.
 	 * @param string $limit Optional LIMIT value ([begin,]max). If none, supply blank string.
 	 * @return mixed Returns array (the record) if found, otherwise nothing (void)
-	 * @todo Define visibility
 	 */
 	public function getRecordsByField($theTable, $theField, $theValue, $whereClause = '', $groupBy = '', $orderBy = '', $limit = '') {
 		if (is_array($GLOBALS['TCA'][$theTable])) {
@@ -910,7 +885,6 @@ class PageRepository {
 	 * @param string $table Tablename
 	 * @return string
 	 * @see enableFields()
-	 * @todo Define visibility
 	 */
 	public function deleteClause($table) {
 		// Hardcode for pages because TCA might not be loaded yet (early frontend
@@ -938,7 +912,6 @@ class PageRepository {
 	 * @throws \InvalidArgumentException
 	 * @return string The clause starting like " AND ...=... AND ...=...
 	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::enableFields(), deleteClause()
-	 * @todo Define visibility
 	 */
 	public function enableFields($table, $show_hidden = -1, $ignore_array = array(), $noVersionPreview = FALSE) {
 		if ($show_hidden === -1 && is_object($GLOBALS['TSFE'])) {
@@ -1030,7 +1003,6 @@ class PageRepository {
 	 * @param string $table Table name
 	 * @return string AND sql-clause
 	 * @see enableFields()
-	 * @todo Define visibility
 	 */
 	public function getMultipleGroupsWhereClause($field, $table) {
 		$memberGroups = GeneralUtility::intExplode(',', $GLOBALS['TSFE']->gr_list);
@@ -1071,7 +1043,6 @@ class PageRepository {
 	 * @param array $rr Record array passed by reference. As minimum, "pid" and "uid" fields must exist! "t3ver_oid" and "t3ver_wsid" is nice and will save you a DB query.
 	 * @return void (Passed by ref).
 	 * @see \TYPO3\CMS\Backend\Utility\BackendUtility::fixVersioningPid(), versionOL(), getRootLine()
-	 * @todo Define visibility
 	 */
 	public function fixVersioningPid($table, &$rr) {
 		if ($this->versioningPreview && is_array($rr) && $rr['pid'] == -1 && ($table == 'pages' || $GLOBALS['TCA'][$table]['ctrl']['versioningWS'])) {
@@ -1130,7 +1101,6 @@ class PageRepository {
 	 * @param boolean $bypassEnableFieldsCheck Unless this option is TRUE, the $row is unset if enablefields for BOTH the version AND the online record deselects it. This is because when versionOL() is called it is assumed that the online record is already selected with no regards to it's enablefields. However, after looking for a new version the online record enablefields must ALSO be evaluated of course. This is done all by this function!
 	 * @return void (Passed by ref).
 	 * @see fixVersioningPid(), \TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL()
-	 * @todo Define visibility
 	 */
 	public function versionOL($table, &$row, $unsetMovePointers = FALSE, $bypassEnableFieldsCheck = FALSE) {
 		if ($this->versioningPreview && is_array($row)) {
@@ -1204,7 +1174,6 @@ class PageRepository {
 	 * @param array $row Row (passed by reference) - only online records...
 	 * @return boolean TRUE if overlay is made.
 	 * @see \TYPO3\CMS\Backend\Utility\BackendUtility::movePlhOl()
-	 * @todo Define visibility
 	 */
 	public function movePlhOL($table, &$row) {
 		if (
@@ -1242,7 +1211,6 @@ class PageRepository {
 	 * @param string $fields Field list, default is *
 	 * @return array If found, the record, otherwise nothing.
 	 * @see \TYPO3\CMS\Backend\Utility\BackendUtility::getMovePlaceholder()
-	 * @todo Define visibility
 	 */
 	public function getMovePlaceholder($table, $uid, $fields = '*') {
 		if ($this->versioningPreview) {
@@ -1271,7 +1239,6 @@ class PageRepository {
 	 * @param boolean $bypassEnableFieldsCheck If TRUE, enablefields are not checked for.
 	 * @return mixed If found, return record, otherwise other value: Returns 1 if version was sought for but not found, returns -1/-2 if record (offline/online) existed but had enableFields that would disable it. Returns FALSE if not in workspace or no versioning for record. Notice, that the enablefields of the online record is also tested.
 	 * @see \TYPO3\CMS\Backend\Utility\BackendUtility::getWorkspaceVersionOfRecord()
-	 * @todo Define visibility
 	 */
 	public function getWorkspaceVersionOfRecord($workspace, $table, $uid, $fields = '*', $bypassEnableFieldsCheck = FALSE) {
 		if ($workspace !== 0 && !empty($GLOBALS['TCA'][$table]['ctrl']['versioningWS'])) {
@@ -1322,7 +1289,6 @@ class PageRepository {
 	 *
 	 * @param integer $wsid	Workspace ID
 	 * @return boolean <code>TRUE</code> if has access
-	 * @todo Define visibility
 	 */
 	public function checkWorkspaceAccess($wsid) {
 		if (!$GLOBALS['BE_USER'] || !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {

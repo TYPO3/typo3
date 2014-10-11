@@ -18,17 +18,17 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  */
 class OffsetTableContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $tableParams = 'border="0" cellspacing="0" cellpadding="0"';
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $default_tableParams = 'border="0" cellspacing="0" cellpadding="0"';
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $tdParams = ' width="99%" valign="top"';
 
@@ -70,7 +70,6 @@ class OffsetTableContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstrac
 	 * @param string $content The HTML content string
 	 * @param string $offset List of offset parameters; x,y,r,b,w,h
 	 * @return string The HTML content string being wrapped in a <table> offsetting the content as the $offset parameters defined
-	 * @todo Define visibility
 	 */
 	public function start($content, $offset) {
 		$valPairs = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $offset . ',,,,,');

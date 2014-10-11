@@ -39,7 +39,6 @@ class CompressionUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return string Compressed string
 	 * @see ob_start()
 	 * @see ob_gzhandler()
-	 * @todo Define visibility
 	 */
 	public function compressionOutputHandler($outputBuffer, $mode) {
 		// Compress the content

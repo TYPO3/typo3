@@ -23,30 +23,30 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  */
 class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $tables = array();
 
 	// Alternatively 'PRIMARY_KEY'; sorting by primary key
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $group_by = 'PRIMARY_KEY';
 
 	// Standard SQL-operator between words
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $default_operator = 'AND';
 
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $operator_translate_table_caseinsensitive = TRUE;
 
 	// case-sensitive. Defines the words, which will be operators between words
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $operator_translate_table = array(
 		array('+', 'AND'),
@@ -61,54 +61,48 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 	// Internal
 	// Contains the search-words and operators
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $sword_array;
 
 	// Contains the query parts after processing.
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $queryParts;
 
-	// Addition to the whereclause. This could be used to limit search to a certain page or alike in the system.
-	/**
-	 * @todo Define visibility
-	 */
-	public $other_where_clauses;
-
 	// This is set with the foreign table that 'pages' are connected to.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $fTable;
 
 	// How many rows to offset from the beginning
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $res_offset = 0;
 
 	// How many results to show (0 = no limit)
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $res_shows = 20;
 
 	// Intern: How many results, there was last time (with the exact same searchstring.
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $res_count;
 
 	// List of pageIds.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $pageIdList = '';
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $listOfSearchFields = '';
 
@@ -296,7 +290,6 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 	 * @param string $requestedCols is a list (-) of columns that we want to search. This could be input from the search-form (see TypoScript documentation)
 	 * @param string $allowedCols $allowedCols: is the list of columns, that MAY be searched. All allowed cols are set as result-fields. All requested cols MUST be in the allowed-fields list.
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function register_tables_and_columns($requestedCols, $allowedCols) {
 		$rCols = $this->explodeCols($requestedCols);
@@ -335,7 +328,6 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 	 * @param string $in This is the code-line defining the tables/fields to search. Syntax: '[table1].[field1]-[field2]-[field3] : [table2].[field1]-[field2]'
 	 * @return array An array where the values is "[table].[field]" strings to search
 	 * @see 	register_tables_and_columns()
-	 * @todo Define visibility
 	 */
 	public function explodeCols($in) {
 		$theArray = explode(':', $in);
@@ -363,7 +355,6 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 	 *
 	 * @param string $sword The input search-word string.
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function register_and_explode_search_string($sword) {
 		$sword = trim($sword);
@@ -398,7 +389,6 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 	 * @param string $specchars Special chars which are used as operators (+- is default)
 	 * @param string $delchars Special chars which are deleted if the append the searchword (+-., is default)
 	 * @return mixed Returns an ARRAY if there were search words, otherwise the return value may be unset.
-	 * @todo Define visibility
 	 */
 	public function split($origSword, $specchars = '+-', $delchars = '+.,-') {
 		$sword = $origSword;
@@ -455,7 +445,6 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 	 * @return boolean Returns TRUE no matter what - sweet isn't it!
 	 * @access private
 	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::SEARCHRESULT()
-	 * @todo Define visibility
 	 */
 	public function build_search_query($endClause) {
 		if (is_array($this->tables)) {
@@ -533,7 +522,6 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 	 *
 	 * @return string Part of where class limiting result to the those having the search word.
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function build_search_query_for_searchwords() {
 		if (is_array($this->sword_array)) {
@@ -571,7 +559,6 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 	 * @param string $operator The possible operator to find in the internal operator array.
 	 * @return string If found, the SQL operator for the localized input operator.
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function get_operator($operator) {
 		$operator = trim($operator);
@@ -597,7 +584,6 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 	 * Counts the results and sets the result in $this->res_count
 	 *
 	 * @return boolean TRUE, if $this->query was found
-	 * @todo Define visibility
 	 */
 	public function count_query() {
 		if (is_array($this->queryParts)) {
@@ -611,7 +597,6 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 	 * Executes the search, sets result pointer in $this->result
 	 *
 	 * @return boolean TRUE, if $this->query was set and query performed
-	 * @todo Define visibility
 	 */
 	public function execute_query() {
 		if (is_array($this->queryParts)) {
@@ -625,7 +610,6 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 	 * Used when linking to result pages so that search words can be highlighted.
 	 *
 	 * @return string URL-parameters with the searchwords
-	 * @todo Define visibility
 	 */
 	public function get_searchwords() {
 		$SWORD_PARAMS = '';
@@ -641,7 +625,6 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 	 * Returns an array with the search words in
 	 *
 	 * @return array IF the internal sword_array contained search words it will return these, otherwise "void
-	 * @todo Define visibility
 	 */
 	public function get_searchwordsArray() {
 		if (is_array($this->sword_array)) {
