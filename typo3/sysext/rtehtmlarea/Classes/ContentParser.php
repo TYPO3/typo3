@@ -24,12 +24,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ContentParser {
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $content;
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $modData;
 
@@ -37,23 +37,21 @@ class ContentParser {
 	 * document template object
 	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 * @todo Define visibility
 	 */
 	public $doc;
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $extKey = 'rtehtmlarea';
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $prefixId = 'TYPO3HtmlParser';
 
 	/**
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function init() {
 		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
@@ -71,7 +69,6 @@ class ContentParser {
 	 * [Describe function...]
 	 *
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function main() {
 		$this->content .= $this->main_parse_html($this->modData['openKeys']);
@@ -82,7 +79,6 @@ class ContentParser {
 	 * [Describe function...]
 	 *
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		echo $this->content;
@@ -93,7 +89,6 @@ class ContentParser {
 	 *
 	 * @param 	[type]		$openKeys: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function main_parse_html($openKeys) {
 		global $TYPO3_CONF_VARS;

@@ -97,7 +97,6 @@ class Language extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	 * Note: we exclude sacred and constructed languages
 	 *
 	 * @return 	array		An array of names of languages
-	 * @todo Define visibility
 	 */
 	public function getLanguages() {
 		$nameArray = array();

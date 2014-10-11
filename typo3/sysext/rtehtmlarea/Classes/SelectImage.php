@@ -32,12 +32,12 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	const PLAIN_MODE_IMAGE_FILE_EXTENSIONS = 'jpg,jpeg,gif,png';
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $extKey = 'rtehtmlarea';
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $content;
 
@@ -291,7 +291,6 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 * @param 	string		$editorNo: the number of the RTE instance on the page
 	 * @param 	string		$sys_language_content: the language of the content element
 	 * @return 	string		the generated JS code
-	 * @todo Define visibility
 	 */
 	public function getJSCode($act, $editorNo, $sys_language_content) {
 		$removedProperties = array();
@@ -612,7 +611,6 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 *
 	 * @param array $data Session data array
 	 * @return array Session data and boolean which indicates that data needs to be stored in session because it's changed
-	 * @todo Define visibility
 	 */
 	public function processSessionData($data) {
 		$store = FALSE;

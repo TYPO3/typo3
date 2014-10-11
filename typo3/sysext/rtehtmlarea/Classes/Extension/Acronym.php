@@ -107,7 +107,6 @@ class Acronym extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	 * Return an acronym array for the Acronym plugin
 	 *
 	 * @return 	string		acronym Javascript array
-	 * @todo Define visibility
 	 */
 	public function buildJSAcronymArray($languageUid) {
 		$button = 'acronym';

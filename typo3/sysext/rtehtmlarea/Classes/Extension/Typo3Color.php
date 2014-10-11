@@ -72,7 +72,6 @@ class Typo3Color extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	 *
 	 * @param 	integer		$RTEcounter: The index number of the current RTE editing area within the form.
 	 * @return 	string		Javascript configuration of colors
-	 * @todo Define visibility
 	 */
 	public function buildJSColorsConfig($RTEcounter) {
 		if ($this->htmlAreaRTE->is_FE()) {

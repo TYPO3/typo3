@@ -29,56 +29,51 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 	// Alternative style for RTE <div> tag.
 	// For the editor
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $elementId;
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $elementParts;
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $tscPID;
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $typeVal;
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $thePid;
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $RTEsetup = array();
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $thisConfig = array();
-
-	/**
-	 * @todo Define visibility
-	 */
-	public $confValues;
 
 	public $language;
 
 	public $OutputCharset;
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $specConf;
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $LOCAL_LANG;
 
@@ -101,7 +96,6 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 	 * @param 	string		Relative path for images/links in RTE; this is used when the RTE edits content from static files where the path of such media has to be transformed forth and back!
 	 * @param 	integer		PID value of record (true parent page id)
 	 * @return 	string		HTML code for RTE!
-	 * @todo Define visibility
 	 */
 	public function drawRTE(&$parentObject, $table, $field, $row, $PA, $specConf, $thisConfig, $RTEtypeVal, $RTErelPath, $thePidValue) {
 		global $TSFE, $TYPO3_CONF_VARS, $TYPO3_DB;
@@ -294,7 +288,6 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 	 * @param 	string		$form: the name of the form
 	 * @param 	string		$textareaId: the id of the textarea
 	 * @return 	string		the JS-Code
-	 * @todo Define visibility
 	 */
 	public function setSaveRTE($RTEcounter, $form, $textareaId) {
 		return '

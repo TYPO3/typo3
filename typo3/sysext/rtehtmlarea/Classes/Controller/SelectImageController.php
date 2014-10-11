@@ -39,8 +39,7 @@ class SelectImageController {
 	/**
 	 * Main function, rendering the element browser in RTE mode.
 	 *
-	 * @return 	void
-	 * @todo Define visibility
+	 * @return void
 	 */
 	public function main() {
 		// Setting alternative browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
@@ -79,8 +78,7 @@ class SelectImageController {
 	/**
 	 * Print module content
 	 *
-	 * @return 	void
-	 * @todo Define visibility
+	 * @return void
 	 */
 	public function printContent() {
 		echo $this->content;

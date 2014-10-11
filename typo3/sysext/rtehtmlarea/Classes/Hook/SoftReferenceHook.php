@@ -34,7 +34,6 @@ class SoftReferenceHook extends \TYPO3\CMS\Core\Database\SoftReferenceIndex {
 	 * @param array Parameters of the softlink parser. Basically this is the content inside optional []-brackets after the softref keys. Parameters are exploded by ";
 	 * @param string If running from inside a FlexForm structure, this is the path of the tag.
 	 * @return array Result array on positive matches. Otherwise FALSE
-	 * @todo Define visibility
 	 */
 	public function findRef($table, $field, $uid, $content, $spKey, $spParams, $structurePath = '') {
 		$retVal = FALSE;
@@ -56,7 +55,6 @@ class SoftReferenceHook extends \TYPO3\CMS\Core\Database\SoftReferenceIndex {
 	 * @param 	string		The input content to analyse
 	 * @param 	array		Parameters set for the softref parser key in TCA/columns
 	 * @return 	array		Result array on positive matches, see description above. Otherwise FALSE
-	 * @todo Define visibility
 	 */
 	public function findRef_rtehtmlarea_images($content, $spParams) {
 		$retVal = FALSE;

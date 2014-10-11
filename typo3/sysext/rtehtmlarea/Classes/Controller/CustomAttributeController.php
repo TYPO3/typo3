@@ -22,25 +22,25 @@ class CustomAttributeController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugi
 
 	// Default plugin variables:
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $prefixId = 'tx_rtehtmlarea_pi3';
 
 	// Same as class name
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $scriptRelPath = 'pi3/class.tx_rtehtmlarea_pi3.php';
 
 	// Path to this script relative to the extension dir.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $extKey = 'rtehtmlarea';
 
 	// The extension key.
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $conf = array();
 
@@ -48,7 +48,6 @@ class CustomAttributeController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugi
 	 * cObj object
 	 *
 	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
-	 * @todo Define visibility
 	 */
 	public $cObj;
 
@@ -59,7 +58,6 @@ class CustomAttributeController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugi
 	 * @param 	array		TypoScript configuration
 	 * @return 	string		HTML output.
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function render_clickenlarge($content, $conf) {
 		$clickenlarge = isset($this->cObj->parameters['data-htmlarea-clickenlarge']) ? $this->cObj->parameters['data-htmlarea-clickenlarge'] : 0;

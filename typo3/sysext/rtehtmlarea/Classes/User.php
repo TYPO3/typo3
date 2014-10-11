@@ -25,17 +25,17 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class User {
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $content;
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $modData;
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $siteUrl;
 
@@ -43,12 +43,11 @@ class User {
 	 * document template object
 	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 * @todo Define visibility
 	 */
 	public $doc;
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $editorNo;
 
@@ -62,7 +61,6 @@ class User {
 
 	/**
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function init() {
 		$this->editorNo = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('editorNo');
@@ -126,7 +124,6 @@ class User {
 	 * [Describe function...]
 	 *
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function main() {
 		$this->content = '';
@@ -137,7 +134,6 @@ class User {
 	 * [Describe function...]
 	 *
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		echo $this->content;
@@ -153,7 +149,6 @@ class User {
 	 * @param 	[type]		$maxW: ...
 	 * @param 	[type]		$maxH: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function calcWH($imgInfo, $maxW = 380, $maxH = 500) {
 		$IW = $imgInfo[0];
@@ -175,7 +170,6 @@ class User {
 	 *
 	 * @param 	[type]		$openKeys: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function main_user($openKeys) {
 		// Starting content:

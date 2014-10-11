@@ -25,7 +25,6 @@ class FolderTree extends \localFolderTree {
 	 * @param string $title Title, ready for output.
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject The "record"
 	 * @return string Wrapping title string.
-	 * @todo Define visibility
 	 */
 	public function wrapTitle($title, \TYPO3\CMS\Core\Resource\Folder $folderObject) {
 		if ($this->ext_isLinkable($folderObject)) {

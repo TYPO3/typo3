@@ -37,7 +37,6 @@ class PageTree extends \localPageTree {
 	 *
 	 * @param 	array		Tree array
 	 * @return 	string		HTML output.
-	 * @todo Define visibility
 	 */
 	public function printTree($treeArr = '') {
 		$titleLen = (int)$GLOBALS['BE_USER']->uc['titleLen'];

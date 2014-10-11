@@ -286,7 +286,6 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 * Generate JS code to be used on the link insert/modify dialogue
 	 *
 	 * @return 	string		the generated JS code
-	 * @todo Define visibility
 	 */
 	public function getJSCode() {
 		// BEGIN accumulation of header JavaScript:
@@ -698,7 +697,10 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	}
 
 	/**
-	 * @todo Define visibility
+	 * Wrap in form
+	 *
+	 * @param string $string
+	 * @return string
 	 */
 	public function wrapInForm($string) {
 		$form = '
@@ -726,7 +728,9 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	}
 
 	/**
-	 * @todo Define visibility
+	 * Add page id selector
+	 *
+	 * @return string
 	 */
 	public function addPageIdSelector() {
 		if ($this->act == 'page' && isset($this->buttonConfig['pageIdSelector.']['enabled'])
@@ -745,7 +749,9 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	}
 
 	/**
-	 * @todo Define visibility
+	 * Add rel field
+	 *
+	 * @return string
 	 */
 	public function addRelField() {
 		if (($this->act == 'page' || $this->act == 'url' || $this->act == 'file')
@@ -764,7 +770,9 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	}
 
 	/**
-	 * @todo Define visibility
+	 * Add query parameter selector
+	 *
+	 * @return string
 	 */
 	public function addQueryParametersSelector() {
 		if ($this->act == 'page' && isset($this->buttonConfig['queryParametersSelector.']['enabled'])
@@ -783,7 +791,9 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	}
 
 	/**
-	 * @todo Define visibility
+	 * Add target selector
+	 *
+	 * @return string
 	 */
 	public function addTargetSelector() {
 		if ($this->act === 'mail') {
@@ -914,7 +924,9 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	}
 
 	/**
-	 * @todo Define visibility
+	 * Add title selector
+	 *
+	 * @return string
 	 */
 	public function addTitleSelector() {
 		$title = $this->setTitle ?: ($this->setClass || !$this->classesAnchorDefault[$this->act] ? '' : $this->classesAnchorDefaultTitle[$this->act]);

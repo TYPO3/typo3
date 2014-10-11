@@ -30,102 +30,102 @@ class SpellCheckingController {
 
 	// The extension key
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $extKey = 'rtehtmlarea';
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $siteUrl;
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $charset = 'utf-8';
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $parserCharset = 'utf-8';
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $defaultAspellEncoding = 'utf-8';
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $aspellEncoding;
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $result;
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $text;
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $misspelled = array();
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $suggestedWords;
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $wordCount = 0;
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $suggestionCount = 0;
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $suggestedWordCount = 0;
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $pspell_link;
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $pspellMode = 'normal';
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $dictionary;
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $AspellDirectory;
 
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $pspell_is_available;
 
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $forceCommandMode = 0;
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $filePrefix = 'rtehtmlarea_';
 
@@ -139,7 +139,7 @@ class SpellCheckingController {
 	protected $personalDictionaryPath;
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $xmlCharacterData = '';
 
@@ -147,7 +147,6 @@ class SpellCheckingController {
 	 * Main class of Spell Checker plugin for Typo3 CMS
 	 *
 	 * @return 	string		content produced by the plugin
-	 * @todo Define visibility
 	 */
 	public function main() {
 		$this->csConvObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');

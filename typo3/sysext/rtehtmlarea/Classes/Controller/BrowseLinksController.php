@@ -38,7 +38,6 @@ class BrowseLinksController {
 	 * Main function, rendering the element browser in RTE mode.
 	 *
 	 * @return 	void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		// Setting alternative web browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
@@ -94,7 +93,6 @@ class BrowseLinksController {
 	 * Print module content
 	 *
 	 * @return 	void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		echo $this->content;
