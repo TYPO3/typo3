@@ -1876,7 +1876,7 @@ pre code {
   }
 }
 table {
-  background-color: transparent;
+  background-color: #f9f9f9;
 }
 th {
   text-align: left;
@@ -1895,11 +1895,11 @@ th {
   padding: 6px;
   line-height: 1.5;
   vertical-align: top;
-  border-top: 1px solid #dddddd;
+  border-top: 1px solid #ffffff;
 }
 .table > thead > tr > th {
   vertical-align: bottom;
-  border-bottom: 2px solid #dddddd;
+  border-bottom: 2px solid #ffffff;
 }
 .table > caption + thead > tr:first-child > th,
 .table > colgroup + thead > tr:first-child > th,
@@ -1910,7 +1910,7 @@ th {
   border-top: 0;
 }
 .table > tbody + tbody {
-  border-top: 2px solid #dddddd;
+  border-top: 2px solid #ffffff;
 }
 .table .table {
   background-color: #ffffff;
@@ -1924,7 +1924,7 @@ th {
   padding: 6px;
 }
 .table-bordered {
-  border: 1px solid #dddddd;
+  border: 1px solid #ffffff;
 }
 .table-bordered > thead > tr > th,
 .table-bordered > tbody > tr > th,
@@ -1932,7 +1932,7 @@ th {
 .table-bordered > thead > tr > td,
 .table-bordered > tbody > tr > td,
 .table-bordered > tfoot > tr > td {
-  border: 1px solid #dddddd;
+  border: 1px solid #ffffff;
 }
 .table-bordered > thead > tr > th,
 .table-bordered > thead > tr > td {
@@ -1940,11 +1940,11 @@ th {
 }
 .table-striped > tbody > tr:nth-child(odd) > td,
 .table-striped > tbody > tr:nth-child(odd) > th {
-  background-color: #f7f7f7;
+  background-color: #f4f4f4;
 }
 .table-hover > tbody > tr:hover > td,
 .table-hover > tbody > tr:hover > th {
-  background-color: #dedede;
+  background-color: #e0e0e0;
 }
 table col[class*="col-"] {
   position: static;
@@ -1969,14 +1969,14 @@ table th[class*="col-"] {
 .table > thead > tr.active > th,
 .table > tbody > tr.active > th,
 .table > tfoot > tr.active > th {
-  background-color: #dedede;
+  background-color: #e0e0e0;
 }
 .table-hover > tbody > tr > td.active:hover,
 .table-hover > tbody > tr > th.active:hover,
 .table-hover > tbody > tr.active:hover > td,
 .table-hover > tbody > tr:hover > .active,
 .table-hover > tbody > tr.active:hover > th {
-  background-color: #d1d1d1;
+  background-color: #d3d3d3;
 }
 .table > thead > tr > td.success,
 .table > tbody > tr > td.success,
@@ -2069,7 +2069,7 @@ table th[class*="col-"] {
     overflow-y: hidden;
     overflow-x: auto;
     -ms-overflow-style: -ms-autohiding-scrollbar;
-    border: 1px solid #dddddd;
+    border: 1px solid #ffffff;
     -webkit-overflow-scrolling: touch;
   }
   .table-responsive > .table {
@@ -4913,7 +4913,7 @@ a.list-group-item-danger.active:focus {
 }
 .panel > .panel-body + .table,
 .panel > .panel-body + .table-responsive {
-  border-top: 1px solid #dddddd;
+  border-top: 1px solid #ffffff;
 }
 .panel > .table > tbody:first-child > tr:first-child th,
 .panel > .table > tbody:first-child > tr:first-child td {
@@ -8472,6 +8472,9 @@ div.typo3-dyntabmenu-divs-foldout div.disabled:hover {
   margin: 2px 0 15px 20px;
   padding-left: 22px;
 }
+table {
+  background: transparent;
+}
 /**
  * Common style for tables
  *
@@ -8492,11 +8495,6 @@ div.typo3-dyntabmenu-divs-foldout div.disabled:hover {
  *   </tbody>
  * </table>
  */
-.table {
-  border-right: 1px solid #dddddd;
-  border-bottom: 1px solid #dddddd;
-  border-left: 1px solid #dddddd;
-}
 .table > thead tr th:first-child,
 .table > tbody tr th:first-child,
 .table > thead tr th:last-child,
@@ -8509,17 +8507,10 @@ div.typo3-dyntabmenu-divs-foldout div.disabled:hover {
 }
 .table > thead > tr > th,
 .table > thead > tr > td {
-  background-color: #666;
-  color: #fff;
-  font-weight: normal;
-  min-height: 16px;
+  border-bottom: 1px solid #666;
 }
-.table > thead > tr > th a,
-.table > thead > tr > td a,
-.table > thead > tr > th a,
-.table > thead > tr > td a {
-  color: #fff;
-  text-decoration: underline;
+.table > tbody > tr > td {
+  background-color: #f9f9f9;
 }
 .table > tbody > tr:hover > td {
   transition: background-color 100ms linear;
@@ -8531,9 +8522,6 @@ table.t3-table {
   width: 100%;
   max-width: 100%;
   margin-bottom: 18px;
-  border-right: 1px solid #dddddd;
-  border-bottom: 1px solid #dddddd;
-  border-left: 1px solid #dddddd;
 }
 table.t3-table > thead > tr > th,
 table.t3-table > tbody > tr > th,
@@ -8544,11 +8532,11 @@ table.t3-table > tfoot > tr > td {
   padding: 6px;
   line-height: 1.5;
   vertical-align: top;
-  border-top: 1px solid #dddddd;
+  border-top: 1px solid #ffffff;
 }
 table.t3-table > thead > tr > th {
   vertical-align: bottom;
-  border-bottom: 2px solid #dddddd;
+  border-bottom: 2px solid #ffffff;
 }
 table.t3-table > caption + thead > tr:first-child > th,
 table.t3-table > colgroup + thead > tr:first-child > th,
@@ -8559,7 +8547,7 @@ table.t3-table > thead:first-child > tr:first-child > td {
   border-top: 0;
 }
 table.t3-table > tbody + tbody {
-  border-top: 2px solid #dddddd;
+  border-top: 2px solid #ffffff;
 }
 table.t3-table .table {
   background-color: #ffffff;
@@ -8576,17 +8564,10 @@ table.t3-table > tbody tr td:last-child {
 }
 table.t3-table > thead > tr > th,
 table.t3-table > thead > tr > td {
-  background-color: #666;
-  color: #fff;
-  font-weight: normal;
-  min-height: 16px;
+  border-bottom: 1px solid #666;
 }
-table.t3-table > thead > tr > th a,
-table.t3-table > thead > tr > td a,
-table.t3-table > thead > tr > th a,
-table.t3-table > thead > tr > td a {
-  color: #fff;
-  text-decoration: underline;
+table.t3-table > tbody > tr > td {
+  background-color: #f9f9f9;
 }
 table.t3-table > tbody > tr:hover > td {
   transition: background-color 100ms linear;
@@ -8596,11 +8577,11 @@ table.t3-table > tbody > tr:hover > td a {
 }
 table.t3-table > tbody > tr:nth-child(odd) > td,
 table.t3-table > tbody > tr:nth-child(odd) > th {
-  background-color: #f7f7f7;
+  background-color: #f4f4f4;
 }
 table.t3-table > tbody > tr:hover > td,
 table.t3-table > tbody > tr:hover > th {
-  background-color: #dedede;
+  background-color: #e0e0e0;
 }
 /**
  * This file is part of the TYPO3 CMS project.

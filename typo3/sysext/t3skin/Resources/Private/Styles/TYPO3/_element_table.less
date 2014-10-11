@@ -26,6 +26,10 @@
 	padding-left: 22px;
 }
 
+table {
+	background: transparent;
+}
+
 /**
  * Common style for tables
  *
@@ -48,9 +52,6 @@
  */
 
 .table {
-	border-right: 1px solid @table-border-color;
-	border-bottom: 1px solid @table-border-color;
-	border-left: 1px solid @table-border-color;
 
 	> thead,
 	> tbody {
@@ -68,21 +69,17 @@
 		> tr {
 			> th,
 			> td {
-				background-color: #666;
-				color: #fff;
-				font-weight: normal;
-				min-height: 16px;
-
-				a,
-				a {
-					color: #fff;
-					text-decoration: underline;
-				}
+				border-bottom: 1px solid #666;
 			}
 		}
 	}
 
 	> tbody {
+		> tr {
+			> td {
+				background-color: @table-bg;
+			}
+		}
 		> tr:hover {
 			> td {
 				transition: background-color 100ms linear;
