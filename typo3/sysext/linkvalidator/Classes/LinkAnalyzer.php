@@ -15,6 +15,9 @@ namespace TYPO3\CMS\Linkvalidator;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * This class provides Processing plugin implementation
@@ -98,11 +101,11 @@ class LinkAnalyzer {
 	 * Fill hookObjectsArr with different link types and possible XClasses.
 	 */
 	public function __construct() {
-		$GLOBALS['LANG']->includeLLFile('EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf');
+		$this->getLanguageService()->includeLLFile('EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf');
 		// Hook to handle own checks
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $key => $classRef) {
-				$this->hookObjectsArr[$key] = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
+				$this->hookObjectsArr[$key] = GeneralUtility::getUserObj($classRef);
 			}
 		}
 	}
@@ -133,7 +136,7 @@ class LinkAnalyzer {
 		if (count($checkOptions) > 0) {
 			$checkKeys = array_keys($checkOptions);
 			$checkLinkTypeCondition = ' AND link_type IN (\'' . implode('\',\'', $checkKeys) . '\')';
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery(
+			$this->getDatabaseConnection()->exec_DELETEquery(
 				'tx_linkvalidator_link',
 				'(record_pid IN (' . $this->pidList . ')' .
 					' OR ( record_uid IN (' . $this->pidList . ') AND table_name like \'pages\'))' .
@@ -157,14 +160,14 @@ class LinkAnalyzer {
 				// Re-init selectFields for table
 				$selectFields = 'uid, pid';
 				$selectFields .= ', ' . $GLOBALS['TCA'][$table]['ctrl']['label'] . ', ' . implode(', ', $fields);
-				// @todo only select rows that have content in at least one of the relevant fields (via OR)
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selectFields, $table, $where);
-				// Get record rows of table
-				while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) !== FALSE) {
-					// Analyse each record
-					$this->analyzeRecord($results, $table, $fields, $row);
+
+				// @todo #64091: only select rows that have content in at least one of the relevant fields (via OR)
+				$rows = $this->getDatabaseConnection()->exec_SELECTgetRows($selectFields, $table, $where);
+				if (!empty($rows)) {
+					foreach ($rows as $row) {
+						$this->analyzeRecord($results, $table, $fields, $row);
+					}
 				}
-				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			}
 			foreach ($this->hookObjectsArr as $key => $hookObj) {
 				if (is_array($results[$key]) && empty($checkOptions) || is_array($results[$key]) && $checkOptions[$key]) {
@@ -198,15 +201,15 @@ class LinkAnalyzer {
 							$record['link_type'] = $key;
 							$record['url'] = $url;
 							$record['url_response'] = serialize($response);
-							$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_linkvalidator_link', $record);
-						} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('showalllinks')) {
+							$this->getDatabaseConnection()->exec_INSERTquery('tx_linkvalidator_link', $record);
+						} elseif (GeneralUtility::_GP('showalllinks')) {
 							$response = array();
 							$response['valid'] = TRUE;
 							$this->brokenLinkCounts[$table]++;
 							$record['url'] = $url;
 							$record['link_type'] = $key;
 							$record['url_response'] = serialize($response);
-							$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_linkvalidator_link', $record);
+							$this->getDatabaseConnection()->exec_INSERTquery('tx_linkvalidator_link', $record);
 						}
 					}
 				}
@@ -226,8 +229,8 @@ class LinkAnalyzer {
 	public function analyzeRecord(array &$results, $table, array $fields, array $record) {
 		// Put together content of all relevant fields
 		$haystack = '';
-		/** @var $htmlParser \TYPO3\CMS\Core\Html\HtmlParser */
-		$htmlParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
+		/** @var $htmlParser HtmlParser */
+		$htmlParser = GeneralUtility::makeInstance(HtmlParser::class);
 		$idRecord = $record['uid'];
 		// Get all references
 		foreach ($fields as $field) {
@@ -310,7 +313,7 @@ class LinkAnalyzer {
 	 *
 	 * @param array $resultArray findRef parsed records
 	 * @param array $results Array of broken links
-	 * @param \TYPO3\CMS\Core\Html\HtmlParser $htmlParser Instance of html parser
+	 * @param HtmlParser $htmlParser Instance of html parser
 	 * @param array $record The current record
 	 * @param string $field The current field
 	 * @param string $table The current table
@@ -322,7 +325,8 @@ class LinkAnalyzer {
 		$idRecord = $record['uid'];
 		$type = '';
 		$title = '';
-		for ($i = 1; $i < count($linkTags); $i += 2) {
+		$countLinkTags = count($linkTags);
+		for ($i = 1; $i < $countLinkTags; $i += 2) {
 			$referencedRecordType = '';
 			foreach ($resultArray['elements'] as $element) {
 				$type = '';
@@ -376,17 +380,19 @@ class LinkAnalyzer {
 			$this->pidList = $curPage;
 		}
 		$this->pidList = rtrim($this->pidList, ',');
-		if (($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+
+		$rows = $this->getDatabaseConnection()->exec_SELECTgetRows(
 			'count(uid) as nbBrokenLinks,link_type',
 			'tx_linkvalidator_link',
-			'record_pid in (' . $this->pidList . ')', 'link_type')
-		)) {
-			while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) !== FALSE) {
+			'record_pid in (' . $this->pidList . ')',
+			'link_type'
+		);
+		if (!empty($rows)) {
+			foreach ($rows as $row) {
 				$markerArray[$row['link_type']] = $row['nbBrokenLinks'];
 				$markerArray['brokenlinkCount'] += $row['nbBrokenLinks'];
 			}
 		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		return $markerArray;
 	}
 
@@ -411,20 +417,22 @@ class LinkAnalyzer {
 		$id = (int)$id;
 		$theList = '';
 		if ($depth > 0) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			$rows = $this->getDatabaseConnection()->exec_SELECTgetRows(
 				'uid,title,hidden,extendToSubpages',
-				'pages', 'pid=' . $id . ' AND deleted=0 AND ' . $permsClause
+				'pages',
+				'pid=' . $id . ' AND deleted=0 AND ' . $permsClause
 			);
-			while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) !== FALSE) {
-				if ($begin <= 0 && ($row['hidden'] == 0 || $considerHidden == 1)) {
-					$theList .= $row['uid'] . ',';
-					$this->extPageInTreeInfo[] = array($row['uid'], htmlspecialchars($row['title'], $depth));
-				}
-				if ($depth > 1 && (!($row['hidden'] == 1 && $row['extendToSubpages'] == 1) || $considerHidden == 1)) {
-					$theList .= $this->extGetTreeList($row['uid'], $depth - 1, $begin - 1, $permsClause, $considerHidden);
+			if (!empty($rows)) {
+				foreach ($rows as $row) {
+					if ($begin <= 0 && ($row['hidden'] == 0 || $considerHidden)) {
+						$theList .= $row['uid'] . ',';
+						$this->extPageInTreeInfo[] = array($row['uid'], htmlspecialchars($row['title'], $depth));
+					}
+					if ($depth > 1 && (!($row['hidden'] == 1 && $row['extendToSubpages'] == 1) || $considerHidden)) {
+						$theList .= $this->extGetTreeList($row['uid'], $depth - 1, $begin - 1, $permsClause, $considerHidden);
+					}
 				}
 			}
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
 		return $theList;
 	}
@@ -441,16 +449,32 @@ class LinkAnalyzer {
 			$hidden = TRUE;
 		} else {
 			if ($pageInfo['pid'] > 0) {
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title,hidden,extendToSubpages', 'pages', 'uid=' . $pageInfo['pid']);
-				while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) !== FALSE) {
-					$hidden = $this->getRootLineIsHidden($row);
+				$rows = $this->getDatabaseConnection()->exec_SELECTgetRows(
+					'uid,title,hidden,extendToSubpages',
+					'pages',
+					'uid=' . $pageInfo['pid']
+				);
+				if (!empty($rows)) {
+					foreach ($rows as $row) {
+						$hidden = $this->getRootLineIsHidden($row);
+					}
 				}
-				$GLOBALS['TYPO3_DB']->sql_free_result($res);
-			} else {
-				$hidden = FALSE;
 			}
 		}
 		return $hidden;
 	}
 
+	/**
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
+	}
+
+	/**
+	 * @return LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
 }

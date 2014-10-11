@@ -3,6 +3,9 @@
 	<file t3:id="1415814894" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:34Z" product-name="linkvalidator">
 		<header/>
 		<body>
+			<trans-unit id="linkvalidator" xml:space="preserve">
+				<source>Link validator</source>
+			</trans-unit>
 			<trans-unit id="menu.introduction" xml:space="preserve">
 				<source>Introduction</source>
 			</trans-unit>

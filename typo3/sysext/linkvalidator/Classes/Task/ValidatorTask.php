@@ -15,7 +15,14 @@ namespace TYPO3\CMS\Linkvalidator\Task;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Mail\MailMessage;
+use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\Utility\MailUtility;
+use TYPO3\CMS\Lang\LanguageService;
+use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
 
 /**
  * This class provides Scheduler plugin implementation
@@ -232,7 +239,8 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	public function execute() {
 		$this->setCliArguments();
 		$successfullyExecuted = TRUE;
-		if (!file_exists(($file = GeneralUtility::getFileAbsFileName($this->emailTemplateFile)))
+		if (
+			!file_exists(($file = GeneralUtility::getFileAbsFileName($this->emailTemplateFile)))
 			&& !empty($this->email)
 		) {
 			if ($this->emailTemplateFile === 'EXT:linkvalidator/res/mailtemplate.html') {
@@ -241,15 +249,14 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 				$this->save();
 			} else {
 				throw new \InvalidArgumentException(
-					$GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.error.invalidEmailTemplateFile'),
+					$this->getLanguageService()->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.error.invalidEmailTemplateFile'),
 					'1295476972'
 				);
 			}
 		}
 		$htmlFile = GeneralUtility::getURL($file);
-		$this->templateMail = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($htmlFile, '###REPORT_TEMPLATE###');
+		$this->templateMail = HtmlParser::getSubpart($htmlFile, '###REPORT_TEMPLATE###');
 		// The array to put the content into
-		$html = array();
 		$pageSections = '';
 		$this->isDifferentToLastRun = FALSE;
 		$pageList = GeneralUtility::trimExplode(',', $this->page, TRUE);
@@ -282,12 +289,12 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 		$modTs = $this->loadModTsConfig($page);
 		$searchFields = $this->getSearchField($modTs);
 		$linkTypes = $this->getLinkTypes($modTs);
-		/** @var $processor \TYPO3\CMS\Linkvalidator\LinkAnalyzer */
-		$processor = GeneralUtility::makeInstance(\TYPO3\CMS\Linkvalidator\LinkAnalyzer::class);
+		/** @var $processor LinkAnalyzer */
+		$processor = GeneralUtility::makeInstance(LinkAnalyzer::class);
 		if ($page === 0) {
 			$rootLineHidden = FALSE;
 		} else {
-			$pageRow = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'pages', 'uid=' . $page);
+			$pageRow = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'pages', 'uid=' . $page);
 			$rootLineHidden = $processor->getRootLineIsHidden($pageRow);
 		}
 		if (!$rootLineHidden || $modTs['checkhidden'] == 1) {
@@ -322,10 +329,10 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 */
 	protected function loadModTsConfig($page) {
 		$modTs = BackendUtility::getModTSconfig($page, 'mod.linkvalidator');
-		$parseObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
+		$parseObj = GeneralUtility::makeInstance(TypoScriptParser::class);
 		$parseObj->parse($this->configuration);
 		if (count($parseObj->errors) > 0) {
-			$parseErrorMessage = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.error.invalidTSconfig') . '<br />';
+			$parseErrorMessage = $this->getLanguageService()->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.error.invalidTSconfig') . '<br />';
 			foreach ($parseObj->errors as $errorInfo) {
 				$parseErrorMessage .= $errorInfo[0] . '<br />';
 			}
@@ -335,7 +342,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 		$modTs = $modTs['properties'];
 		$overrideTs = $tsConfig['mod.']['tx_linkvalidator.'];
 		if (is_array($overrideTs)) {
-			\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($modTs, $overrideTs);
+			ArrayUtility::mergeRecursiveWithOverrule($modTs, $overrideTs);
 		}
 		return $modTs;
 	}
@@ -387,7 +394,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 * @throws \Exception if required modTsConfig settings are missing
 	 */
 	protected function reportEmail($pageSections, array $modTsConfig) {
-		$content = \TYPO3\CMS\Core\Html\HtmlParser::substituteSubpart($this->templateMail, '###PAGE_SECTION###', $pageSections);
+		$content = HtmlParser::substituteSubpart($this->templateMail, '###PAGE_SECTION###', $pageSections);
 		/** @var array $markerArray */
 		$markerArray = array();
 		/** @var array $validEmailList */
@@ -410,19 +417,19 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 				unset($params);
 			}
 		}
-		$content = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($content, $markerArray, '###|###', TRUE, TRUE);
-		/** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
-		$mail = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
+		$content = HtmlParser::substituteMarkerArray($content, $markerArray, '###|###', TRUE, TRUE);
+		/** @var $mail MailMessage */
+		$mail = GeneralUtility::makeInstance(MailMessage::class);
 		if (empty($modTsConfig['mail.']['fromemail'])) {
-			$modTsConfig['mail.']['fromemail'] = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFromAddress();
+			$modTsConfig['mail.']['fromemail'] = MailUtility::getSystemFromAddress();
 		}
 		if (empty($modTsConfig['mail.']['fromname'])) {
-			$modTsConfig['mail.']['fromname'] = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFromName();
+			$modTsConfig['mail.']['fromname'] = MailUtility::getSystemFromName();
 		}
 		if (GeneralUtility::validEmail($modTsConfig['mail.']['fromemail'])) {
 			$mail->setFrom(array($modTsConfig['mail.']['fromemail'] => $modTsConfig['mail.']['fromname']));
 		} else {
-			throw new \Exception($GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.error.invalidFromEmail'), '1295476760');
+			throw new \Exception($this->getLanguageService()->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.error.invalidFromEmail'), '1295476760');
 		}
 		if (GeneralUtility::validEmail($modTsConfig['mail.']['replytoemail'])) {
 			$mail->setReplyTo(array($modTsConfig['mail.']['replytoemail'] => $modTsConfig['mail.']['replytoname']));
@@ -430,13 +437,13 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 		if (!empty($modTsConfig['mail.']['subject'])) {
 			$mail->setSubject($modTsConfig['mail.']['subject']);
 		} else {
-			throw new \Exception($GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.error.noSubject'), '1295476808');
+			throw new \Exception($this->getLanguageService()->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.error.noSubject'), '1295476808');
 		}
 		if (!empty($this->email)) {
 			$emailList = GeneralUtility::trimExplode(',', $this->email);
 			foreach ($emailList as $emailAdd) {
 				if (!GeneralUtility::validEmail($emailAdd)) {
-					throw new \Exception($GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.error.invalidToEmail'), '1295476821');
+					throw new \Exception($this->getLanguageService()->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.error.invalidToEmail'), '1295476821');
 				} else {
 					$validEmailList[] = $emailAdd;
 				}
@@ -464,7 +471,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 * @return string Content of the mail
 	 */
 	protected function buildMail($curPage, $pageList, array $markerArray, array $oldBrokenLink) {
-		$pageSectionHtml = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($this->templateMail, '###PAGE_SECTION###');
+		$pageSectionHtml = HtmlParser::getSubpart($this->templateMail, '###PAGE_SECTION###');
 		// Hook
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['buildMailMarkers'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['buildMailMarkers'] as $userFunc) {
@@ -499,7 +506,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 		);
 		$content = '';
 		if ($markerArray['brokenlinkCount'] > 0) {
-			$content = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($pageSectionHtml, $markerArray, '###|###', TRUE, TRUE);
+			$content = HtmlParser::substituteMarkerArray($pageSectionHtml, $markerArray, '###|###', TRUE, TRUE);
 		}
 		return $content;
 	}
@@ -522,12 +529,13 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 				$pageLabel = $pageTitle . ' (' . $page . ')';
 			}
 		}
-		$additionalInformation[] = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.page') . ': ' . $pageLabel;
+		$lang = $this->getLanguageService();
+		$additionalInformation[] = $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.page') . ': ' . $pageLabel;
 
 		$depth = (int)$this->getDepth();
-		$additionalInformation[] = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.depth') . ': ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_' . ($depth === 999 ? 'infi' : $depth));
+		$additionalInformation[] = $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.depth') . ': ' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_' . ($depth === 999 ? 'infi' : $depth));
 
-		$additionalInformation[] = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.email') . ': ' . $this->getEmail();
+		$additionalInformation[] = $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.email') . ': ' . $this->getEmail();
 
 		return implode(', ', $additionalInformation);
 	}
@@ -552,4 +560,17 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 		);
 	}
 
+	/**
+	 * @return LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
+	}
 }

@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * This class provides Check Link Handler plugin implementation
@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @author Dimitri König <dk@cabag.ch>
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
  */
-class LinkHandler extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
+class LinkHandler extends AbstractLinktype {
 
 	/**
 	 * @var string
@@ -116,7 +116,7 @@ class LinkHandler extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
 	 * @return string fetched type
 	 */
 	public function fetchType($value, $type, $key) {
-		if ($value['type'] === 'string' && GeneralUtility::isFirstPartOfStr(strtolower($value['tokenValue']), 'record:')) {
+		if ($value['type'] === 'string' && StringUtility::beginsWith(strtolower($value['tokenValue']), 'record:')) {
 			$type = 'linkhandler';
 		}
 		return $type;
@@ -132,13 +132,13 @@ class LinkHandler extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
 		$errorType = $errorParams['errorType'];
 		$tableName = $errorParams['tablename'];
 		if (!empty($GLOBALS['TCA'][$tableName]['ctrl']['title'])) {
-			$title = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$tableName]['ctrl']['title'], TRUE);
+			$title = $this->getLanguageService()->sL($GLOBALS['TCA'][$tableName]['ctrl']['title'], TRUE);
 		} else {
 			$title = $tableName;
 		}
 		switch ($errorType) {
 			case self::DISABLED:
-				$response = $GLOBALS['LANG']->getLL('list.report.rownotvisible');
+				$response = $this->getLanguageService()->getLL('list.report.rownotvisible');
 				$response = str_replace('###title###', $title, $response);
 				$response = str_replace('###uid###', $errorParams['uid'], $response);
 				break;
@@ -152,11 +152,11 @@ class LinkHandler extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
 						$title,
 						$errorParams['uid']
 					),
-					$GLOBALS['LANG']->getLL('list.report.rowdeleted')
+					$this->getLanguageService()->getLL('list.report.rowdeleted')
 				);
 				break;
 			default:
-				$response = str_replace('###uid###', $errorParams['uid'], $GLOBALS['LANG']->getLL('list.report.rownotexisting'));
+				$response = str_replace('###uid###', $errorParams['uid'], $this->getLanguageService()->getLL('list.report.rownotexisting'));
 		}
 		return $response;
 	}
@@ -201,13 +201,6 @@ class LinkHandler extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
 		}
 
 		return $row;
-	}
-
-	/**
-	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-	 */
-	protected function getDatabaseConnection() {
-		return $GLOBALS['TYPO3_DB'];
 	}
 
 }

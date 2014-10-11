@@ -13,13 +13,14 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * This class provides Check Base plugin implementation
  *
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
  */
-abstract class AbstractLinktype implements \TYPO3\CMS\Linkvalidator\Linktype\LinktypeInterface {
+abstract class AbstractLinktype implements LinktypeInterface {
 
 	/**
 	 * Contains parameters needed for the rendering of the error message
@@ -72,4 +73,17 @@ abstract class AbstractLinktype implements \TYPO3\CMS\Linkvalidator\Linktype\Lin
 		return $row['url'];
 	}
 
+	/**
+	 * @return LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
+	}
 }

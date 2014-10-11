@@ -14,13 +14,15 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * This class provides Check File Links plugin implementation
  *
  * @author Dimitri König <dk@cabag.ch>
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
  */
-class FileLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
+class FileLinktype extends AbstractLinktype {
 
 	/**
 	 * Checks a given URL + /path/filename.ext for validity
@@ -31,10 +33,7 @@ class FileLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
 	 * @return bool TRUE on success or FALSE on error
 	 */
 	public function checkLink($url, $softRefEntry, $reference) {
-		if (!@file_exists((PATH_site . rawurldecode($url)))) {
-			return FALSE;
-		}
-		return TRUE;
+		return @file_exists(PATH_site . rawurldecode($url));
 	}
 
 	/**
@@ -44,8 +43,7 @@ class FileLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
 	 * @return string Validation error message
 	 */
 	public function getErrorMessage($errorParams) {
-		$response = $GLOBALS['LANG']->getLL('list.report.filenotexisting');
-		return $response;
+		return $this->getLanguageService()->getLL('list.report.filenotexisting');
 	}
 
 	/**
@@ -55,8 +53,7 @@ class FileLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
 	 * @return string Parsed broken url
 	 */
 	public function getBrokenUrl($row) {
-		$brokenUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $row['url'];
-		return $brokenUrl;
+		return GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $row['url'];
 	}
 
 }

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
  */
 interface LinktypeInterface {
+
 	/**
 	 * Checks a given link for validity
 	 *

@@ -1,64 +1,65 @@
 <!-- ###FULLDOC### begin -->
-			<div class="linkvalidator_checkoptions">
-				###ID###
-				###CHECKALLLINK###
-				<h4>###CHECKOPTIONS_TITLE###</h4>
-				<div>###CHECKOPTIONS###</div>
-			</div>
-			<div class="linkvalidator_funcmenu"><h4>###FUNC_TITLE###</h4><div>###FUNC_MENU###</div></div>
-			<div class="linkvalidator_button">###REFRESH######UPDATE###</div>
+<div class="linkvalidator-check-options">
+	###ID###
+	<h4>###CHECKOPTIONS_TITLE###</h4>
+	<div>###CHECKOPTIONS###</div>
+</div>
+<div class="linkvalidator-function-menu"><h4>###FUNC_TITLE###</h4><div>###FUNC_MENU###</div></div>
+<div class="linkvalidator-button">###REFRESH######UPDATE###</div>
 
-			###CONTENT###
+###CONTENT###
 <!-- ###FULLDOC### end -->
 
-
 <!-- ###CHECKOPTIONS_SECTION### begin -->
-	<table class="typo3-dblist" id="linkvalidator_statsTable" cellspacing="0" cellpadding="0">
-		<tr class="t3-row-header">
-			<td>
-				###TOTAL_COUNT_LABEL###
-			</td>
-			<td class="number">###TOTAL_COUNT###</td>
+<table class="t3-table" id="linkvalidator-statistics-table">
+	<thead>
+		<tr>
+			<th>###TOTAL_COUNT_LABEL###</th>
+			<th class="number">###TOTAL_COUNT###</th>
 		</tr>
+	</thead>
+	<tbody>
 		<!-- ###HOOK_SECTION### begin -->
 		<tr>
-			<td>
-				<div class="linkvalidator_singleOption">###OPTION###</div>
-			</td>
-			<td class="number">###COUNT###</td>
+			<td>###OPTION###</td>
+			<td class="number"><span class="badge">###COUNT###</span></td>
 		</tr>
 		<!-- ###HOOK_SECTION### end -->
-	</table>
+	</tbody>
+</table>
 <!-- ###CHECKOPTIONS_SECTION### end -->
 
-
 <!-- ###BROKENLINKS_CONTENT### begin -->
-	###LIST_HEADER###
-	<table class="typo3-dblist" id="linkvalidator_brokenLinksTable" cellspacing="0" cellpadding="0">
-		<tr class="t3-row-header">
-			<td></td>
-			<td>###TABLEHEAD_PATH###</td>
-			<td>###TABLEHEAD_ELEMENT###</td>
-			<td>###TABLEHEAD_HEADLINK###</td>
-			<td>###TABLEHEAD_LINKTARGET###</td>
-			<td>###TABLEHEAD_LINKMESSAGE###</td>
-			<td>###TABLEHEAD_LASTCHECK###</td>
+###LIST_HEADER###
+<table class="t3-table" id="linkvalidator-broken-links-table">
+	<thead>
+		<tr>
+			<th>###TABLEHEAD_PATH###</th>
+			<th>###TABLEHEAD_ELEMENT###</th>
+			<th>###TABLEHEAD_HEADLINK###</th>
+			<th>###TABLEHEAD_LINKTARGET###</th>
+			<th>###TABLEHEAD_LINKMESSAGE###</th>
+			<th>###TABLEHEAD_LASTCHECK###</th>
+			<th></th>
 		</tr>
+	</thead>
+	<tbody>
 		<!-- ###BROKENLINKS_ITEM### begin -->
 		<tr>
-			<td>###ACTIONLINK###</td>
 			<td>###PATH###</td>
 			<td>###ELEMENT###</td>
 			<td>###HEADLINK###</td>
 			<td><a href="###LINKTARGET###" target="_blank">###LINKTARGET###</a></td>
 			<td>###LINKMESSAGE###</td>
 			<td>###LASTCHECK###</td>
+			<td>###ACTIONLINK###</td>
 		</tr>
 		<!-- ###BROKENLINKS_ITEM### end -->
-	</table>
+	</tbody>
+</table>
 <!-- ###BROKENLINKS_CONTENT### end -->
 
 <!-- ###NOBROKENLINKS_CONTENT### begin -->
-	###LIST_HEADER###
-	###NO_BROKEN_LINKS###
+###LIST_HEADER###
+###NO_BROKEN_LINKS###
 <!-- ###NOBROKENLINKS_CONTENT### end -->

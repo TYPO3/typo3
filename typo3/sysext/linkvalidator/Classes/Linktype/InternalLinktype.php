@@ -14,13 +14,16 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * This class provides Check Internal Links plugin implementation
  *
  * @author Dimitri König <dk@cabag.ch>
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
  */
-class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
+class InternalLinktype extends AbstractLinktype {
 
 	/**
 	 * @var string
@@ -41,13 +44,6 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 	 * @var string
 	 */
 	const NOTEXISTING = 'notExisting';
-
-	/**
-	 * All parameters needed for rendering the error message
-	 *
-	 * @var array
-	 */
-	protected $errorParams = array();
 
 	/**
 	 * Result of the check, if the current page uid is valid or not
@@ -96,17 +92,14 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 			// Check if the content element is OK
 			$this->responseContent = $this->checkContent($page, $anchor);
 		}
-		if (is_array($this->errorParams['page']) && !$this->responsePage
+		if (
+			is_array($this->errorParams['page']) && !$this->responsePage
 			|| is_array($this->errorParams['content']) && !$this->responseContent
 		) {
 			$this->setErrorParams($this->errorParams);
 		}
-		if ($this->responsePage === TRUE && $this->responseContent === TRUE) {
-			$response = TRUE;
-		} else {
-			$response = FALSE;
-		}
-		return $response;
+
+		return ($this->responsePage && $this->responseContent);
 	}
 
 	/**
@@ -116,7 +109,7 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 	 * @return bool TRUE on success or FALSE on error
 	 */
 	protected function checkPage($page) {
-		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid, title, deleted, hidden, starttime, endtime', 'pages', 'uid = ' . (int)$page);
+		$row = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('uid, title, deleted, hidden, starttime, endtime', 'pages', 'uid = ' . (int)$page);
 		$this->responsePage = TRUE;
 		if ($row) {
 			if ($row['deleted'] == '1') {
@@ -147,7 +140,11 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 	 */
 	protected function checkContent($page, $anchor) {
 		// Get page ID on which the content element in fact is located
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid, pid, header, deleted, hidden, starttime, endtime', 'tt_content', 'uid = ' . (int)$anchor);
+		$res = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
+			'uid, pid, header, deleted, hidden, starttime, endtime',
+			'tt_content',
+			'uid = ' . (int)$anchor
+		);
 		$this->responseContent = TRUE;
 		// this content element exists
 		if ($res) {
@@ -191,6 +188,7 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 	 * @return string Validation error message
 	 */
 	public function getErrorMessage($errorParams) {
+		$lang = $this->getLanguageService();
 		$errorType = $errorParams['errorType'];
 		if (is_array($errorParams['page'])) {
 			switch ($errorType['page']) {
@@ -204,9 +202,9 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 							$errorParams['page']['title'],
 							$errorParams['page']['uid']
 						),
-						$GLOBALS['LANG']->getLL('list.report.pagedeleted')
+						$lang->getLL('list.report.pagedeleted')
 					);
-				break;
+					break;
 				case self::HIDDEN:
 					$errorPage = str_replace(
 						array(
@@ -217,14 +215,14 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 							$errorParams['page']['title'],
 							$errorParams['page']['uid']
 						),
-						$GLOBALS['LANG']->getLL('list.report.pagenotvisible')
+						$lang->getLL('list.report.pagenotvisible')
 					);
-				break;
+					break;
 				default:
 					$errorPage = str_replace(
 						'###uid###',
 						$errorParams['page']['uid'],
-						$GLOBALS['LANG']->getLL('list.report.pagenotexisting')
+						$lang->getLL('list.report.pagenotexisting')
 					);
 			}
 		}
@@ -240,9 +238,9 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 							$errorParams['content']['title'],
 							$errorParams['content']['uid']
 						),
-						$GLOBALS['LANG']->getLL('list.report.contentdeleted')
+						$lang->getLL('list.report.contentdeleted')
 					);
-				break;
+					break;
 				case self::HIDDEN:
 					$errorContent = str_replace(
 						array(
@@ -253,9 +251,9 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 							$errorParams['content']['title'],
 							$errorParams['content']['uid']
 						),
-						$GLOBALS['LANG']->getLL('list.report.contentnotvisible')
+						$lang->getLL('list.report.contentnotvisible')
 					);
-				break;
+					break;
 				case self::MOVED:
 					$errorContent = str_replace(
 						array(
@@ -270,11 +268,11 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 							$errorParams['content']['wrongPage'],
 							$errorParams['content']['rightPage']
 						),
-						$GLOBALS['LANG']->getLL('list.report.contentmoved')
+						$lang->getLL('list.report.contentmoved')
 					);
-				break;
+					break;
 				default:
-					$errorContent = str_replace('###uid###', $errorParams['content']['uid'], $GLOBALS['LANG']->getLL('list.report.contentnotexisting'));
+					$errorContent = str_replace('###uid###', $errorParams['content']['uid'], $lang->getLL('list.report.contentnotexisting'));
 			}
 		}
 		if (isset($errorPage) && isset($errorContent)) {
@@ -285,7 +283,7 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 			$response = $errorContent;
 		} else {
 			// This should not happen
-			$response = $GLOBALS['LANG']->getLL('list.report.noinformation');
+			$response = $lang->getLL('list.report.noinformation');
 		}
 		return $response;
 	}
@@ -297,12 +295,12 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 	 * @return string Parsed broken url
 	 */
 	public function getBrokenUrl($row) {
-		$domain = rtrim(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), '/');
-		$rootLine = \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($row['record_pid']);
+		$domain = rtrim(GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), '/');
+		$rootLine = BackendUtility::BEgetRootLine($row['record_pid']);
 		// checks alternate domains
 		if (count($rootLine) > 0) {
-			$protocol = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://';
-			$domainRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::firstDomainRecord($rootLine);
+			$protocol = GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://';
+			$domainRecord = BackendUtility::firstDomainRecord($rootLine);
 			if (!empty($domainRecord)) {
 				$domain = $protocol . $domainRecord;
 			}
