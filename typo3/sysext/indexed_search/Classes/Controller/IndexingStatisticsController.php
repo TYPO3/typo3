@@ -33,7 +33,6 @@ class IndexingStatisticsController extends \TYPO3\CMS\Backend\Module\AbstractFun
 	 * Calls showStats to generate output.
 	 *
 	 * @return 	string		html table with results from showStats()
-	 * @todo Define visibility
 	 */
 	public function main() {
 		// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
@@ -51,7 +50,6 @@ class IndexingStatisticsController extends \TYPO3\CMS\Backend\Module\AbstractFun
 	 * Calls listSeveralStats 3 times, for all statistics, statistics of the last 30 days and statistics of the last 24 hours.
 	 *
 	 * @return 	string		html table with results
-	 * @todo Define visibility
 	 */
 	public function showStats() {
 		$conf['words'] = 50;
@@ -87,7 +85,6 @@ class IndexingStatisticsController extends \TYPO3\CMS\Backend\Module\AbstractFun
 	 * @param 	string		add where for sql query
 	 * @param 	array		configuration: words = max words for results, bid = pageid
 	 * @return 	string		html table with results
-	 * @todo Define visibility
 	 */
 	public function listSeveralStats($title, $addwhere, $conf) {
 		global $LANG;
@@ -142,7 +139,6 @@ class IndexingStatisticsController extends \TYPO3\CMS\Backend\Module\AbstractFun
 	 * @param 	integer		$begin is an optional integer that determines at which level in the tree to start collecting uid's. Zero means 'start right away', 1 = 'next level and out'
 	 * @param 	string		Perms clause
 	 * @return 	string		Returns the list with a comma in the end (if any pages selected!)
-	 * @todo Define visibility
 	 */
 	public function extGetTreeList($id, $depth, $begin = 0, $perms_clause) {
 		return GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\FrontendBackendUserAuthentication')->extGetTreeList($id, $depth, $begin, $perms_clause);
@@ -154,7 +150,6 @@ class IndexingStatisticsController extends \TYPO3\CMS\Backend\Module\AbstractFun
 	 * @param 	string		Name of the function you want to call / hook key
 	 * @return 	object		Hook object, if any. Otherwise NULL.
 	 * @author Kasper Skårhøj
-	 * @todo Define visibility
 	 */
 	public function hookRequest($functionName) {
 		// Hook: menuConfig_preProcessModMenu

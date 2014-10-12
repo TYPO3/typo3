@@ -13,11 +13,7 @@ namespace TYPO3\CMS\IndexedSearch\Example;
  *
  * The TYPO3 project - inspiring people to share!
  */
-/**
- * Index search crawler hook example
- *
- * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
- */
+
 /**
  * Index search crawler hook example
  *
@@ -29,7 +25,6 @@ class CrawlerHook {
 	 * Function is called when an indexing session starts according to the time intervals set for the indexing configuration.
 	 *
 	 * @return 	string		Return a text string for the first, initiating queue entry for the crawler.
-	 * @todo Define visibility
 	 */
 	public function initMessage() {
 		return 'Start of Custom Example Indexing session!';
@@ -46,7 +41,6 @@ class CrawlerHook {
 	 * @param 	object		Grant Parent Object (from "crawler" extension)
 	 * @param 	object		Parent Object (from "indexed_search" extension)
 	 * @return 	void
-	 * @todo Define visibility
 	 */
 	public function indexOperation($cfgRec, &$session_data, $params, &$pObj) {
 		// Init session data array if not already:

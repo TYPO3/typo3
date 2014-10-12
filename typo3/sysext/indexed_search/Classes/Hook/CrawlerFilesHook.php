@@ -29,7 +29,6 @@ class CrawlerFilesHook {
 	 * @param array $params Params from log element.
 	 * @param object $pObj Parent object (tx_crawler lib)
 	 * @return null|array Result array
-	 * @todo Define visibility
 	 */
 	public function crawler_execute($params, &$pObj) {
 		if (!is_array($params['conf'])) {

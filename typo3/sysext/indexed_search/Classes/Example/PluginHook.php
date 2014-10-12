@@ -28,7 +28,7 @@ namespace TYPO3\CMS\IndexedSearch\Example;
 class PluginHook {
 
 	/**
-	 * @todo Define visibility
+	 * @var \TYPO3\CMS\IndexedSearch\Controller\SearchFormController
 	 */
 	public $pObj;
 
@@ -41,7 +41,6 @@ class PluginHook {
 	 * 'initialize_postProc' => 'EXT:indexed_search/example/class.pihook.php:&tx_indexedsearch_pihook',
 	 *
 	 * @return 	void
-	 * @todo Define visibility
 	 */
 	public function initialize_postProc() {
 		$this->pObj->optValues['order'] = array_reverse($this->pObj->optValues['order']);
@@ -52,7 +51,6 @@ class PluginHook {
 	 *
 	 * @param 	array		Array of search words
 	 * @return 	array		Array of first row, result rows, count
-	 * @todo Define visibility
 	 */
 	public function getResultRows($sWArr) {
 
@@ -66,7 +64,6 @@ class PluginHook {
 	 * @param 	array		Result row
 	 * @param 	boolean		If set, the result row is a sub-row.
 	 * @return 	array		Template Content returned.
-	 * @todo Define visibility
 	 */
 	public function prepareResultRowTemplateData_postProc($tmplContent, $row, $headerOnly) {
 		$tmplContent['description'] = '<em>' . $tmplContent['description'] . '</em>';

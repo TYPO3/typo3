@@ -26,21 +26,21 @@ class CrawlerHook {
 
 	// Static:
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $secondsPerExternalUrl = 3;
 
 	// Number of seconds to use as interval between queued indexing operations of URLs / files (types 2 & 3)
 	// Internal, dynamic:
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $instanceCounter = 0;
 
 	// Counts up for each added URL (type 3)
 	// Internal, static:
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $callBack = '&TYPO3\\CMS\\IndexedSearch\\Hook\\CrawlerHook';
 
@@ -52,7 +52,6 @@ class CrawlerHook {
 	 *
 	 * @param 	object		Parent object (tx_crawler lib)
 	 * @return 	void
-	 * @todo Define visibility
 	 */
 	public function crawler_init(&$pObj) {
 		// Select all indexing configuration which are waiting to be activated:
@@ -160,7 +159,6 @@ class CrawlerHook {
 	 * @param 	array		Params from log element. Must contain $params['indexConfigUid']
 	 * @param 	object		Parent object (tx_crawler lib)
 	 * @return 	array		Result array
-	 * @todo Define visibility
 	 */
 	public function crawler_execute($params, &$pObj) {
 		// Indexer configuration ID must exist:
@@ -220,7 +218,6 @@ class CrawlerHook {
 	 * @param 	array		Parameters from the log queue.
 	 * @param 	object		Parent object (from "crawler" extension!)
 	 * @return 	void
-	 * @todo Define visibility
 	 */
 	public function crawler_execute_type1($cfgRec, &$session_data, $params, &$pObj) {
 		if ($cfgRec['table2index'] && isset($GLOBALS['TCA'][$cfgRec['table2index']])) {
@@ -265,7 +262,6 @@ class CrawlerHook {
 	 * @param 	array		Parameters from the log queue.
 	 * @param 	object		Parent object (from "crawler" extension!)
 	 * @return 	void
-	 * @todo Define visibility
 	 */
 	public function crawler_execute_type2($cfgRec, &$session_data, $params, &$pObj) {
 		// Prepare path, making it absolute and checking:
@@ -327,7 +323,6 @@ class CrawlerHook {
 	 * @param 	array		Parameters from the log queue.
 	 * @param 	object		Parent object (from "crawler" extension!)
 	 * @return 	void
-	 * @todo Define visibility
 	 */
 	public function crawler_execute_type3($cfgRec, &$session_data, $params, &$pObj) {
 		// Init session data array if not already:
@@ -368,7 +363,6 @@ class CrawlerHook {
 	 * @param 	array		Parameters from the log queue.
 	 * @param 	object		Parent object (from "crawler" extension!)
 	 * @return 	void
-	 * @todo Define visibility
 	 */
 	public function crawler_execute_type4($cfgRec, &$session_data, $params, &$pObj) {
 		// Base page uid:
@@ -413,7 +407,6 @@ class CrawlerHook {
 	 * Look up all old index configurations which are finished and needs to be reset and done
 	 *
 	 * @return 	void
-	 * @todo Define visibility
 	 */
 	public function cleanUpOldRunningConfigurations() {
 		// Lookup running index configurations:
@@ -454,7 +447,6 @@ class CrawlerHook {
 	 * @param 	array		Array of already indexed URLs (input url is looked up here and must not exist already)
 	 * @param 	string		Base URL of the indexing process (input URL must be "inside" the base URL!)
 	 * @return 	string		Returls the URL if OK, otherwise FALSE
-	 * @todo Define visibility
 	 */
 	public function checkUrl($url, $urlLog, $baseUrl) {
 		$url = preg_replace('/\\/\\/$/', '/', $url);
@@ -477,7 +469,6 @@ class CrawlerHook {
 	 * @param 	integer		Configuration UID
 	 * @param 	integer		Set ID value
 	 * @return 	array		URLs found on this page
-	 * @todo Define visibility
 	 */
 	public function indexExtUrl($url, $pageId, $rl, $cfgUid, $setId) {
 		// Index external URL:
@@ -524,7 +515,6 @@ class CrawlerHook {
 	 * @param 	array		Configuration Record
 	 * @param 	array		Rootline array to relate indexing to
 	 * @return 	void
-	 * @todo Define visibility
 	 */
 	public function indexSingleRecord($r, $cfgRec, $rl = NULL) {
 		// Init:
@@ -554,7 +544,6 @@ class CrawlerHook {
 	 * Include indexer class.
 	 *
 	 * @return 	void
-	 * @todo Define visibility
 	 * @deprecated since 6.2 will be removed two version later. Rely on autoloading of the indexer class.
 	 */
 	public function loadIndexerClass() {
@@ -567,7 +556,6 @@ class CrawlerHook {
 	 *
 	 * @param 	integer		The page id to traverse rootline back from
 	 * @return 	array		Array where the root lines uid values are found.
-	 * @todo Define visibility
 	 */
 	public function getUidRootLineForClosestTemplate($id) {
 		global $TYPO3_CONF_VARS;
@@ -593,7 +581,6 @@ class CrawlerHook {
 	 *
 	 * @param 	array		Index configuration record
 	 * @return 	integer		The next time stamp
-	 * @todo Define visibility
 	 */
 	public function generateNextIndexingTime($cfgRec) {
 		$currentTime = $GLOBALS['EXEC_TIME'];
@@ -620,7 +607,6 @@ class CrawlerHook {
 	 * @param 	string		URL to test
 	 * @param 	string		String where URLs are separated by line-breaks; If any of these strings is the first part of $url, the function returns TRUE (to indicate denial of decend)
 	 * @return 	boolean		TRUE if there is a matching URL (hence, do not index!)
-	 * @todo Define visibility
 	 */
 	public function checkDeniedSuburls($url, $url_deny) {
 		if (trim($url_deny)) {
@@ -641,7 +627,6 @@ class CrawlerHook {
 	 * @param 	array		Configuration record
 	 * @param 	string		Title/URL
 	 * @return 	void
-	 * @todo Define visibility
 	 */
 	public function addQueueEntryForHook($cfgRec, $title) {
 		$nparams = array(
@@ -658,7 +643,6 @@ class CrawlerHook {
 	 *
 	 * @param 	integer		Uid of the page to delete all pHash
 	 * @return 	void
-	 * @todo Define visibility
 	 */
 	public function deleteFromIndex($id) {
 		// Lookup old phash rows:
@@ -690,7 +674,6 @@ class CrawlerHook {
 	 * @param 	mixed		Target value (ignored)
 	 * @param 	object		Reference to tcemain calling object
 	 * @return 	void
-	 * @todo Define visibility
 	 */
 	public function processCmdmap_preProcess($command, $table, $id, $value, $pObj) {
 		// Clean up the index
@@ -708,7 +691,6 @@ class CrawlerHook {
 	 * @param 	array		Field array of updated fields in the operation
 	 * @param 	object		Reference to tcemain calling object
 	 * @return 	void
-	 * @todo Define visibility
 	 */
 	public function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, $pObj) {
 		// Check if any fields are actually updated:

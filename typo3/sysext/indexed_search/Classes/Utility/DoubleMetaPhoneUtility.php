@@ -23,50 +23,56 @@ class DoubleMetaPhoneUtility {
 
 	//  properties
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $original = '';
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $primary = '';
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $secondary = '';
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $length = 0;
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $last = 0;
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $current = 0;
 
 	//  methods
 	// TYPO3 specific API to this class. BEGIN
 	/**
-	 * @todo Define visibility
+	 * Metaphone
+	 *
+	 * @param string $string
+	 * @param int $sys_language_uid
+	 * @return string
 	 */
 	public function metaphone($string, $sys_language_uid = 0) {
 		$res = $this->DoubleMetaPhone($string);
-		// debug(array($string,$res['primary']));
 		return $res['primary'];
 	}
 
 	// TYPO3 specific API to this class. END
 	// Public method
 	/**
-	 * @todo Define visibility
+	 * Double metaphone
+	 *
+	 * @param string $string
+	 * @return array
 	 */
 	public function DoubleMetaPhone($string) {
 		$this->primary = '';
@@ -772,7 +778,13 @@ class DoubleMetaPhoneUtility {
 	// end of function MetaPhone
 	// Private methods
 	/**
-	 * @todo Define visibility
+	 * String at
+	 *
+	 * @param string $string
+	 * @param int $start
+	 * @param int $length
+	 * @param array $list
+	 * @return bool
 	 */
 	public function StringAt($string, $start, $length, $list) {
 		if ($start < 0 || $start >= strlen($string)) {
@@ -793,7 +805,6 @@ class DoubleMetaPhoneUtility {
 	 * @param 	[type]		$string: ...
 	 * @param 	[type]		$pos: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function IsVowel($string, $pos) {
 		return preg_match('/[AEIOUY]/', substr($string, $pos, 1));
@@ -804,7 +815,6 @@ class DoubleMetaPhoneUtility {
 	 *
 	 * @param 	[type]		$string: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function SlavoGermanic($string) {
 		return preg_match('/W|K|CZ|WITZ/', $string);

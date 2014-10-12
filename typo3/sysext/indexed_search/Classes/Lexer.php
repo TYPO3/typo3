@@ -28,13 +28,13 @@ class Lexer {
 
 	// Debugging options:
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $debug = FALSE;
 
 	// If set, the debugString is filled with HTML output highlighting search / non-search words (for backend display)
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $debugString = '';
 
@@ -42,13 +42,12 @@ class Lexer {
 	 * Charset class object
 	 *
 	 * @var \TYPO3\CMS\Core\Charset\CharsetConverter
-	 * @todo Define visibility
 	 */
 	public $csObj;
 
 	// Configuration of the lexer:
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $lexerConf = array(
 		'printjoins' => array(46, 45, 95, 58, 47, 39),
@@ -61,7 +60,6 @@ class Lexer {
 	 * Constructor: Initializes the charset class
 	 *
 	 * @return 	void
-	 * @todo Define visibility
 	 */
 	public function __construct() {
 		$this->csObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
@@ -73,7 +71,6 @@ class Lexer {
 	 *
 	 * @param 	string		String with UTF-8 content to process.
 	 * @return 	array		Array of words in utf-8
-	 * @todo Define visibility
 	 */
 	public function split2Words($wordString) {
 		// Reset debug string:
@@ -117,7 +114,6 @@ class Lexer {
 	 * @param 	integer		Start position of word in input string
 	 * @param 	integer		The Length of the word string from start position
 	 * @return 	void
-	 * @todo Define visibility
 	 */
 	public function addWords(&$words, &$wordString, $start, $len) {
 		// Get word out of string:
@@ -164,7 +160,6 @@ class Lexer {
 	 * @param 	string		Input string (reference)
 	 * @param 	integer		Starting position in input string
 	 * @return 	array		0: start, 1: len or FALSE if no word has been found
-	 * @todo Define visibility
 	 */
 	public function get_word(&$str, $pos = 0) {
 		$len = 0;
@@ -189,7 +184,6 @@ class Lexer {
 	 * @param 	integer		Byte-length of character sequence (reference, return value)
 	 * @param 	integer		Starting position in input string
 	 * @return 	boolean		letter (or word) found
-	 * @todo Define visibility
 	 */
 	public function utf8_is_letter(&$str, &$len, $pos = 0) {
 		global $cs;
@@ -259,7 +253,6 @@ class Lexer {
 	 *
 	 * @param 	integer		Unicode number to evaluate
 	 * @return 	array		Type of char; index-0: the main type: num, alpha or CJK (Chinese / Japanese / Korean)
-	 * @todo Define visibility
 	 */
 	public function charType($cp) {
 		// Numeric?
@@ -286,7 +279,6 @@ class Lexer {
 	 * @param 	integer		Starting position in input string
 	 * @param 	boolean		If set, then a hex. number is returned
 	 * @return 	integer		UNICODE codepoint
-	 * @todo Define visibility
 	 */
 	public function utf8_ord(&$str, &$len, $pos = 0, $hex = FALSE) {
 		$ord = ord($str[$pos]);

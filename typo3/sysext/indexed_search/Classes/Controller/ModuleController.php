@@ -24,17 +24,17 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 class ModuleController {
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $MCONF = array();
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $MOD_MENU = array();
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $MOD_SETTINGS = array();
 
@@ -42,17 +42,16 @@ class ModuleController {
 	 * document template object
 	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 * @todo Define visibility
 	 */
 	public $doc;
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $include_once = array();
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $content;
 
@@ -68,7 +67,6 @@ class ModuleController {
 	 * Initialization
 	 *
 	 * @return 	void
-	 * @todo Define visibility
 	 */
 	public function init() {
 		$this->MCONF = $GLOBALS['MCONF'];
@@ -94,7 +92,6 @@ class ModuleController {
 	 * Values NOT in this array will not be saved in the settings-array for the module.
 	 *
 	 * @return 	void
-	 * @todo Define visibility
 	 */
 	public function menuConfig() {
 		$this->MOD_MENU = array(
@@ -112,7 +109,6 @@ class ModuleController {
 	 * Main function to generate the content
 	 *
 	 * @return 	void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		$this->content = $this->doc->header('Indexing Engine Statistics');
@@ -149,7 +145,6 @@ class ModuleController {
 	 * Print content
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		echo $this->content;
@@ -179,7 +174,6 @@ class ModuleController {
 	 ***************************/
 	/**
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function getRecordsNumbers() {
 		$tables = explode(',', 'index_phash,index_words,index_rel,index_grlist,index_section,index_fulltext');
@@ -198,7 +192,6 @@ class ModuleController {
 	 *
 	 * @param 	[type]		$str: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function tableHead($str) {
 		return '<strong>' . $str . ':&nbsp;&nbsp;&nbsp;</strong>';
@@ -208,7 +201,6 @@ class ModuleController {
 	 * [Describe function...]
 	 *
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function getPhashStat() {
 		$recList = array();
@@ -241,7 +233,6 @@ class ModuleController {
 	 * [Describe function...]
 	 *
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function getPhashT3pages() {
 		$recList[] = array(
@@ -308,7 +299,6 @@ class ModuleController {
 	 * [Describe function...]
 	 *
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function getPhashExternalDocs() {
 		$recList[] = array(
@@ -374,7 +364,6 @@ class ModuleController {
 	 *
 	 * @param 	[type]		$fegroup_recs: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function formatFeGroup($fegroup_recs) {
 		$str = array();
@@ -390,7 +379,6 @@ class ModuleController {
 	 *
 	 * @param 	[type]		$arr: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function formatCHash($arr) {
 		$list = array();
@@ -405,7 +393,6 @@ class ModuleController {
 	 *
 	 * @param 	[type]		$phash: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function getNumberOfSections($phash) {
 		return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('phash', 'index_section', 'phash=' . (int)$phash);
@@ -416,7 +403,6 @@ class ModuleController {
 	 *
 	 * @param 	[type]		$phash: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function getNumberOfWords($phash) {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'index_rel', 'phash=' . (int)$phash);
@@ -429,7 +415,6 @@ class ModuleController {
 	 *
 	 * @param 	[type]		$phash: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function getGrlistRecord($phash) {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('index_grlist.*', 'index_grlist', 'phash=' . (int)$phash);
@@ -446,7 +431,6 @@ class ModuleController {
 	 *
 	 * @param 	[type]		$phash: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function getNumberOfFulltext($phash) {
 		return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('phash', 'index_fulltext', 'phash=' . (int)$phash);
@@ -456,7 +440,6 @@ class ModuleController {
 	 * [Describe function...]
 	 *
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function getPhashTypes() {
 		$recList = array();
@@ -483,7 +466,6 @@ class ModuleController {
 	 *
 	 * @param 	[type]		$item_type: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function countUniqueTypes($item_type) {
 		// TYPO3 pages, unique
