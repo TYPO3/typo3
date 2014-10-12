@@ -13,12 +13,7 @@ namespace TYPO3\CMS\Dbal\RecordList;
  *
  * The TYPO3 project - inspiring people to share!
  */
-/**
- * Include file extending localRecordList for DBAL compatibility
- *
- * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
- * @author 	Karsten Dambekalns <k.dambekalns@fishfarm.de>
- */
+
 /**
  * Child class for rendering of Web > List (not the final class)
  *
@@ -35,7 +30,6 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecord
 	 *
 	 * @param 	string		Table, in which the fields are being searched.
 	 * @return 	string		Returns part of WHERE-clause for searching, if applicable.
-	 * @todo Define visibility
 	 */
 	public function makeSearchString($table) {
 		// Make query, only if table is valid and a search string is actually defined:

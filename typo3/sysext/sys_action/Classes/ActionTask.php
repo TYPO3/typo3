@@ -32,7 +32,6 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Backend\Form\FormEngine
-	 * @todo Define visibility
 	 */
 	public $t3lib_TCEforms;
 

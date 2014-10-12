@@ -39,7 +39,7 @@ $LOCAL_LANG = $LOCAL_LANG_orig;
 class ext_posMap extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $dontPrintPageInsertIcons = 1;
 
@@ -49,7 +49,6 @@ class ext_posMap extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 	 * @param string $str The title value.
 	 * @param array $row The record row.
 	 * @return string Wrapped title string.
-	 * @todo Define visibility
 	 */
 	public function wrapRecordTitle($str, $row) {
 		return $str;
@@ -64,7 +63,6 @@ class ext_posMap extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 	 * @param integer $pid PID value.
 	 * @param integer $sys_lang System language
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function onClickInsertRecord($row, $vv, $moveUid, $pid, $sys_lang = 0) {
 		$table = 'tt_content';

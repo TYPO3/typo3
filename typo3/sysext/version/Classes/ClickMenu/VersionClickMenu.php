@@ -67,7 +67,6 @@ class VersionClickMenu {
 	 * Includes the [extDir]/locallang.php and returns the $LOCAL_LANG array found in that file.
 	 *
 	 * @return array Local lang array
-	 * @todo Define visibility
 	 */
 	public function includeLL() {
 		return $GLOBALS['LANG']->includeLLFile('EXT:version/locallang.xlf', FALSE);

@@ -36,7 +36,6 @@ class Evaluator {
 	 * hashing will be done on server-side.
 	 *
 	 * @return string JavaScript code for evaluating the
-	 * @todo Define visibility
 	 */
 	public function returnFieldJS() {
 		return 'return value;';
@@ -49,7 +48,6 @@ class Evaluator {
 	 * @param string $is_in Is-In String
 	 * @param integer $set Determines if the field can be set (value correct) or not, e.g. if input is required but the value is empty, then $set should be set to FALSE. (PASSED BY REFERENCE!)
 	 * @return The new value of the field
-	 * @todo Define visibility
 	 */
 	public function evaluateFieldValue($value, $is_in, &$set) {
 		$isEnabled = $this->mode ? \TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::isUsageEnabled($this->mode) : \TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::isUsageEnabled();

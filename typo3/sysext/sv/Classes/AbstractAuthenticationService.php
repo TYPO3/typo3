@@ -25,49 +25,48 @@ class AbstractAuthenticationService extends \TYPO3\CMS\Core\Service\AbstractServ
 	 * User object
 	 *
 	 * @var \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication
-	 * @todo Define visibility
 	 */
 	public $pObj;
 
 	// Subtype of the service which is used to call the service.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $mode;
 
 	// Submitted login form data
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $login = array();
 
 	// Various data
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $authInfo = array();
 
 	// User db table definition
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $db_user = array();
 
 	// Usergroups db table definition
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $db_groups = array();
 
 	// If the writelog() functions is called if a login-attempt has be tried without success
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $writeAttemptLog = FALSE;
 
 	// If the \TYPO3\CMS\Core\Utility\GeneralUtility::devLog() function should be used
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $writeDevLog = FALSE;
 
@@ -79,7 +78,6 @@ class AbstractAuthenticationService extends \TYPO3\CMS\Core\Service\AbstractServ
 	 * @param array $authInfo Information array. Holds submitted form data etc.
 	 * @param object $pObj Parent object
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function initAuth($mode, $loginData, $authInfo, $pObj) {
 		$this->pObj = $pObj;
@@ -100,7 +98,6 @@ class AbstractAuthenticationService extends \TYPO3\CMS\Core\Service\AbstractServ
 	 * @param array $loginData Login data array
 	 * @param string $passwordCompareStrategy Password compare strategy
 	 * @return boolean TRUE if login data matched
-	 * @todo Define visibility
 	 */
 	public function compareUident(array $user, array $loginData, $passwordCompareStrategy = '') {
 		if ($this->authInfo['loginType'] === 'BE') {
@@ -129,7 +126,6 @@ class AbstractAuthenticationService extends \TYPO3\CMS\Core\Service\AbstractServ
 	 * @param integer $recuid Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
 	 * @param integer $recpid Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function writelog($type, $action, $error, $details_nr, $details, $data, $tablename = '', $recuid = '', $recpid = '') {
 		if ($this->writeAttemptLog) {
@@ -149,7 +145,6 @@ class AbstractAuthenticationService extends \TYPO3\CMS\Core\Service\AbstractServ
 	 * @param string $extraWhere Additional WHERE clause: " AND ...
 	 * @param array $dbUserSetup User db table definition: $this->db_user
 	 * @return mixed User array or FALSE
-	 * @todo Define visibility
 	 */
 	public function fetchUserRecord($username, $extraWhere = '', $dbUserSetup = '') {
 		$dbUser = is_array($dbUserSetup) ? $dbUserSetup : $this->db_user;

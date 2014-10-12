@@ -61,7 +61,6 @@ class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 	 * Find a user (eg. look up the user record in database when a login is sent)
 	 *
 	 * @return mixed User array or FALSE
-	 * @todo Define visibility
 	 */
 	public function getUser() {
 		$user = FALSE;
@@ -135,7 +134,6 @@ class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 	 * @param array $user Data of user.
 	 * @param array $knownGroups Group data array of already known groups. This is handy if you want select other related groups. Keys in this array are unique IDs of those groups.
 	 * @return mixed Groups array, keys = uid which must be unique
-	 * @todo Define visibility
 	 */
 	public function getGroups($user, $knownGroups) {
 		global $TYPO3_CONF_VARS;
@@ -193,7 +191,6 @@ class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 	 * @param array $groups
 	 * @return array
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function getSubGroups($grList, $idList = '', &$groups) {
 		// Fetching records of the groups in $grList (which are not blocked by lockedToDomain either):

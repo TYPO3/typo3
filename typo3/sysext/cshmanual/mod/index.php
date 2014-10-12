@@ -26,7 +26,6 @@ class local_t3lib_parsehtml extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 * @param mixed $conf Not used, ignore.
 	 * @return string The processed value.
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function processContent($value, $dir, $conf) {
 		$value = $this->pObj->substituteGlossaryWords_htmlcleaner_callback($value);

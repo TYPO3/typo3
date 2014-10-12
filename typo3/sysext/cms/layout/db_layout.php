@@ -37,12 +37,12 @@ $BE_USER->modAccess($MCONF, 1);
 class ext_posMap extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $dontPrintPageInsertIcons = 1;
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $l_insertNewRecordHere = 'newContentElement';
 
@@ -52,7 +52,6 @@ class ext_posMap extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 	 * @param string $str The title value.
 	 * @param array $row The record row.
 	 * @return string Wrapped title string.
-	 * @todo Define visibility
 	 */
 	public function wrapRecordTitle($str, $row) {
 		$aOnClick = 'jumpToUrl(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($GLOBALS['SOBE']->local_linkThisScript(array('edit_record' => ('tt_content:' . $row['uid'])))) . ');return false;';
@@ -66,7 +65,6 @@ class ext_posMap extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 	 * @param string $vv Column info.
 	 * @return string
 	 * @see printRecordMap()
-	 * @todo Define visibility
 	 */
 	public function wrapColumnHeader($str, $vv) {
 		$aOnClick = 'jumpToUrl(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($GLOBALS['SOBE']->local_linkThisScript(array('edit_record' => ('_EDIT_COL:' . $vv)))) . ');return false;';
@@ -82,7 +80,6 @@ class ext_posMap extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 	 * @param integer $pid PID value.
 	 * @param integer $sys_lang System language
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function onClickInsertRecord($row, $vv, $moveUid, $pid, $sys_lang = 0) {
 		if (is_array($row)) {
@@ -99,7 +96,6 @@ class ext_posMap extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 	 * @param string $str HTML content
 	 * @param array $row Record array.
 	 * @return string HTML content
-	 * @todo Define visibility
 	 */
 	public function wrapRecordHeader($str, $row) {
 		if ($row['uid'] == $this->moveUid) {

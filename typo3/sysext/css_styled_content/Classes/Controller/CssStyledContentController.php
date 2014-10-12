@@ -28,26 +28,26 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 	/**
 	 * Same as class name
 	 *
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $prefixId = 'tx_cssstyledcontent_pi1';
 
 	/**
 	 * Path to this script relative to the extension dir.
 	 *
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $scriptRelPath = 'pi1/class.tx_cssstyledcontent_pi1.php';
 
 	/**
 	 * The extension key
 	 *
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $extKey = 'css_styled_content';
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $conf = array();
 
@@ -1178,7 +1178,6 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 	 * @param array $conf TypoScript configuration array
 	 * @param integer $type The "layout" type
 	 * @return array Array with attributes inside.
-	 * @todo Define visibility
 	 */
 	public function getTableAttributes($conf, $type) {
 		// Initializing:
@@ -1259,7 +1258,6 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 	 *
 	 * @param string $functionName Name of the function you want to call / hook key
 	 * @return object Hook object, if any. Otherwise NULL.
-	 * @todo Define visibility
 	 */
 	public function hookRequest($functionName) {
 		global $TYPO3_CONF_VARS;

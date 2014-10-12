@@ -32,7 +32,6 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends \TYPO3\CM
 	 * @param integer $pageId
 	 * @param integer $template_uid
 	 * @return integer
-	 * @todo Define visibility
 	 */
 	public function initialize_editor($pageId, $template_uid = 0) {
 		// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
@@ -68,7 +67,6 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends \TYPO3\CM
 	 *
 	 * @param string $theOutput
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function displayExample($theOutput) {
 		global $tmpl;
@@ -83,7 +81,6 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends \TYPO3\CM
 	 * Main
 	 *
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function main() {
 		global $TYPO3_CONF_VARS;

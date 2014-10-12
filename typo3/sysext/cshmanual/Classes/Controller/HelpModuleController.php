@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class HelpModuleController {
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $allowedHTML = '<strong><em><b><i>';
 
@@ -34,21 +34,21 @@ class HelpModuleController {
 	 * For these vars, see init()
 	 * If set access to fields and tables is checked. Should be done for TRUE database tables.
 	 *
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $limitAccess;
 
 	/**
 	 * The "table" key
 	 *
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $table;
 
 	/**
 	 * The "field" key
 	 *
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $field;
 
@@ -64,35 +64,35 @@ class HelpModuleController {
 	 * Internal, static: GPvar
 	 * Table/Field id
 	 *
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $tfID;
 
 	/**
 	 * Back (previous tfID)
 	 *
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $back;
 
 	/**
 	 * If set, then in TOC mode the FULL manual will be printed as well!
 	 *
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $renderALL;
 
 	/**
 	 * Content accumulation
 	 *
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $content;
 
 	/**
 	 * Glossary words
 	 *
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $glossaryWords;
 
@@ -107,7 +107,6 @@ class HelpModuleController {
 	 * Initialize the class for various input etc.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function init() {
 		$this->moduleUrl = BackendUtility::getModuleUrl('help_cshmanual');
@@ -156,7 +155,6 @@ class HelpModuleController {
 	 * Main function, rendering the display
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		if ($this->field == '*') {
@@ -186,7 +184,6 @@ class HelpModuleController {
 	 * Outputting the accumulated content to screen
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		echo $this->content;
@@ -200,7 +197,6 @@ class HelpModuleController {
 	 * Creates Table Of Contents and possibly "Full Manual" mode if selected.
 	 *
 	 * @return string HTML content
-	 * @todo Define visibility
 	 */
 	public function render_TOC() {
 		// Initialize:
@@ -293,7 +289,6 @@ class HelpModuleController {
 	 * @param array $tocArray TOC array; Here TOC index elements are created. Passed by reference!
 	 * @param array $CSHkeys CSH keys array. Every item rendered will be unset in this array so finally we can see what CSH keys are not processed yet. Passed by reference!
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function render_TOC_el($table, $tocCat, &$outputSections, &$tocArray, &$CSHkeys) {
 		// Render full manual right here!
@@ -324,7 +319,6 @@ class HelpModuleController {
 	 *
 	 * @param array $tocArray ToC Array.
 	 * @return string HTML bullet list for index.
-	 * @todo Define visibility
 	 */
 	public function render_TOC_makeTocList($tocArray) {
 		// The Various manual sections:
@@ -360,7 +354,6 @@ class HelpModuleController {
 	 * @param string $key Full CSH key (may be different from table name)
 	 * @param string $table CSH key / table name
 	 * @return string HTML output
-	 * @todo Define visibility
 	 */
 	public function render_Table($key, $table = NULL) {
 		$output = '';
@@ -411,7 +404,6 @@ class HelpModuleController {
 	 * @param string $key CSH key / table name
 	 * @param string $field Sub key / field name
 	 * @return string HTML output
-	 * @todo Define visibility
 	 */
 	public function render_Single($key, $field) {
 		$output = '';
@@ -439,7 +431,6 @@ class HelpModuleController {
 	 * @param string $value See-also input codes
 	 * @param string $anchorTable If $anchorTable is set to a tablename, then references to this table will be made as anchors, not URLs.
 	 * @return string See-also links HTML
-	 * @todo Define visibility
 	 */
 	public function make_seeAlso($value, $anchorTable = '') {
 		// Split references by comma or linebreak
@@ -482,7 +473,6 @@ class HelpModuleController {
 	 * @param string $images Image file reference (list of)
 	 * @param string $descr Description string (divided for each image by line break)
 	 * @return string Image HTML codes
-	 * @todo Define visibility
 	 */
 	public function printImage($images, $descr) {
 		$code = '';
@@ -519,7 +509,6 @@ class HelpModuleController {
 	 * @param string $str Header text
 	 * @param integer $type Header type (1, 0)
 	 * @return string The HTML for the header.
-	 * @todo Define visibility
 	 */
 	public function headerLine($str, $type = 0) {
 		switch ($type) {
@@ -540,7 +529,6 @@ class HelpModuleController {
 	 *
 	 * @param string $str Content to format.
 	 * @return string Formatted content.
-	 * @todo Define visibility
 	 */
 	public function prepareContent($str) {
 		return '<p>' . nl2br(trim(strip_tags($str, $this->allowedHTML))) . '</p>
@@ -555,7 +543,6 @@ class HelpModuleController {
 	 * @param string $field Sub key / field name
 	 * @param boolean $anchors If anchors is to be shown.
 	 * @return string HTML content
-	 * @todo Define visibility
 	 */
 	public function printItem($key, $field, $anchors = FALSE) {
 		$out = '';
@@ -574,7 +561,6 @@ class HelpModuleController {
 	 * @param string $key CSH key / table name
 	 * @param string $field Sub key / field name
 	 * @return array Table and field labels in a numeric array
-	 * @todo Define visibility
 	 */
 	public function getTableFieldNames($key, $field) {
 		$GLOBALS['LANG']->loadSingleTableDescription($key);
@@ -610,7 +596,6 @@ class HelpModuleController {
 	 * @param string $mergeToken Token to merge the two strings with
 	 * @return string Labels joined with merge token
 	 * @see getTableFieldNames()
-	 * @todo Define visibility
 	 */
 	public function getTableFieldLabel($key, $field = '', $mergeToken = ': ') {
 		// Get table / field parts:
@@ -629,7 +614,6 @@ class HelpModuleController {
 	 * Glossary is cached in cache_hash cache and so will be updated only when cache is cleared.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function createGlossaryIndex() {
 		// Create hash string and try to retrieve glossary array:
@@ -680,7 +664,6 @@ class HelpModuleController {
 	 *
 	 * @param string $code Input HTML code
 	 * @return string Output HTML code
-	 * @todo Define visibility
 	 */
 	public function substituteGlossaryWords($code) {
 		$htmlParser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
@@ -696,7 +679,6 @@ class HelpModuleController {
 	 *
 	 * @param string $code Input HTML string
 	 * @return string HTML with substituted words in.
-	 * @todo Define visibility
 	 */
 	public function substituteGlossaryWords_htmlcleaner_callback($code) {
 		if (is_array($this->substWords) && count($this->substWords) && strlen(trim($code))) {
