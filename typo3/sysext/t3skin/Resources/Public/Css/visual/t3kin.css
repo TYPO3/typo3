@@ -5474,6 +5474,10 @@ button.close {
  *  Font Awesome 4.2.0 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
  */
+.t3-icon.fa {
+  background: none;
+  font-size: 14px;
+}
 /* FONT PATH
  * -------------------------- */
 @font-face {
@@ -10649,10 +10653,12 @@ Topbar
   padding-bottom: 4px;
   padding-top: 2px;
   text-align: center;
+  color: #fff;
 }
 #typo3-topbar #typo3-top-container .typo3-top-toolbar #typo3-toolbar .toolbar-item-active {
   background-image: url('../../../../icons/gfx/toolbar_item_active_bg.png');
   height: 25px;
+  color: #000;
 }
 #typo3-topbar #typo3-top-container .typo3-top-toolbar #typo3-toolbar .toolbar-item-menu {
   background-color: #f9f9f9;
@@ -10773,7 +10779,6 @@ Shortcuts menu
 Username inside the toolbar
 - - - - - - - - - - - - - - - - - - - - - */
 #username {
-  color: #ffffff;
   font-weight: bold;
   margin-right: 12px;
 }
