@@ -639,7 +639,8 @@ class SetupModuleController {
 			$opt = array();
 			foreach ($users as $rr) {
 				if ($rr['uid'] != $GLOBALS['BE_USER']->user['uid']) {
-					$opt[] = '<option value="' . $rr['uid'] . '"' . ($this->simUser == $rr['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars(($rr['username'] . ' (' . $rr['realName'] . ')')) . '</option>';
+					$label = htmlspecialchars(($rr['username'] . ($rr['realName'] ? ' (' . $rr['realName'] . ')' : '')));
+					$opt[] = '<option value="' . $rr['uid'] . '"' . ($this->simUser == $rr['uid'] ? ' selected="selected"' : '') . '>' . $label . '</option>';
 				}
 			}
 			if (count($opt)) {
