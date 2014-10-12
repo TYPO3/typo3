@@ -31,25 +31,25 @@ class GraphicalFunctions {
 
 	// If set, there is no frame pointer prepended to the filenames.
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $noFramePrepended = 0;
 
 	// This should be changed to 'png' if you want this class to read/make PNG-files instead!
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $gifExtension = 'gif';
 
 	// File formats supported by gdlib. This variable get's filled in "init" method
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $gdlibExtensions = '';
 
 	// Set to TRUE if generated png's should be truecolor by default
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $png_truecolor = FALSE;
 
@@ -96,35 +96,35 @@ class GraphicalFunctions {
 
 	// 16777216 Colors is the maximum value for PNG, JPEG truecolor images (24-bit, 8-bit / Channel)
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $truecolorColors = 16777215;
 
 	// If set, then all files in typo3temp will be logged in a database table. In addition to being a log of the files with original filenames, it also serves to secure that the same image is not rendered simultaneously by two different processes.
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $enable_typo3temp_db_tracking = 0;
 
 	// Commalist of file extensions perceived as images by TYPO3. List should be set to 'gif,png,jpeg,jpg' if IM is not available. Lowercase and no spaces between!
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $imageFileExt = 'gif,jpg,jpeg,png,tif,bmp,tga,pcx,ai,pdf';
 
 	// Commalist of web image extensions (can be shown by a webbrowser)
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $webImageExt = 'gif,jpg,jpeg,png';
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $NO_IM_EFFECTS = '';
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $cmds = array(
 		'jpg' => '',
@@ -134,66 +134,66 @@ class GraphicalFunctions {
 	);
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $NO_IMAGE_MAGICK = '';
 
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $V5_EFFECTS = 0;
 
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $mayScaleUp = 1;
 
 	// Variables for testing, alternative usage etc.
 	// Filename prefix for images scaled in imageMagickConvert()
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $filenamePrefix = '';
 
 	// Forcing the output filename of imageMagickConvert() to this value. However after calling imageMagickConvert() it will be set blank again.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $imageMagickConvert_forceFileNameBody = '';
 
 	// This flag should always be FALSE. If set TRUE, imageMagickConvert will always write a new file to the tempdir! Used for debugging.
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $dontCheckForExistingTempFile = 0;
 
 	// Prevents imageMagickConvert() from compressing the gif-files with \TYPO3\CMS\Core\Utility\GeneralUtility::gif_compress()
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $dontCompress = 0;
 
 	// For debugging ONLY!
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $dontUnlinkTempFiles = 0;
 
 	// For debugging only. Filenames will not be based on mtime and only filename (not path) will be used. This key is also included in the hash of the filename...
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $alternativeOutputKey = '';
 
 	// Internal:
 	// All ImageMagick commands executed is stored in this array for tracking. Used by the Install Tools Image section
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $IM_commands = array();
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $workArea = array();
 
@@ -207,43 +207,43 @@ class GraphicalFunctions {
 	// Constants:
 	// The temp-directory where to store the files. Normally relative to PATH_site but is allowed to be the absolute path AS LONG AS it is a subdir to PATH_site.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $tempPath = 'typo3temp/';
 
 	// Prefix for relative paths. Used in "show_item.php" script. Is prefixed the output file name IN imageMagickConvert()
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $absPrefix = '';
 
 	// ImageMagick scaling command; "-geometry" eller "-sample". Used in makeText() and imageMagickConvert()
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $scalecmd = '-geometry';
 
 	// Used by v5_blur() to simulate 10 continuous steps of blurring
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $im5fx_blurSteps = '1x2,2x2,3x2,4x3,5x3,5x4,6x4,7x5,8x5,9x5';
 
 	// Used by v5_sharpen() to simulate 10 continuous steps of sharpening.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $im5fx_sharpenSteps = '1x2,2x2,3x2,2x3,3x3,4x3,3x4,4x4,4x5,5x5';
 
 	// This is the limit for the number of pixels in an image before it will be rendered as JPG instead of GIF/PNG
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $pixelLimitGif = 10000;
 
 	// Array mapping HTML color names to RGB values.
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $colMap = array(
 		'aqua' => array(0, 255, 255),
@@ -268,13 +268,12 @@ class GraphicalFunctions {
 	 * Charset conversion object:
 	 *
 	 * @var \TYPO3\CMS\Core\Charset\CharsetConverter
-	 * @todo Define visibility
 	 */
 	public $csConvObj;
 
 	// Is set to the native character set of the input strings.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $nativeCharset = '';
 
@@ -283,7 +282,6 @@ class GraphicalFunctions {
 	 * This function will read the configuration information from $GLOBALS['TYPO3_CONF_VARS']['GFX'] can set some values in internal variables.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function init() {
 		$gfxConf = $GLOBALS['TYPO3_CONF_VARS']['GFX'];
@@ -374,7 +372,6 @@ class GraphicalFunctions {
 	 * @param array $workArea The current working area coordinates.
 	 * @return void
 	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make()
-	 * @todo Define visibility
 	 */
 	public function maskImageOntoImage(&$im, $conf, $workArea) {
 		if ($conf['file'] && $conf['mask']) {
@@ -461,7 +458,6 @@ class GraphicalFunctions {
 	 * @param array $workArea The current working area coordinates.
 	 * @return void
 	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make(), maskImageOntoImage()
-	 * @todo Define visibility
 	 */
 	public function copyImageOntoImage(&$im, $conf, $workArea) {
 		if ($conf['file']) {
@@ -484,7 +480,6 @@ class GraphicalFunctions {
 	 * @param array $workArea Work area
 	 * @return void Works on the $im image pointer
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function copyGifOntoGif(&$im, $cpImg, $conf, $workArea) {
 		$cpW = imagesx($cpImg);
@@ -565,7 +560,6 @@ class GraphicalFunctions {
 	 * @return void
 	 * @access private
 	 * @see \TYPO3\CMS\Backend\Utility\IconUtility::imagecopyresized()
-	 * @todo Define visibility
 	 */
 	public function imagecopyresized(&$dstImg, $srcImg, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight) {
 		if (!$this->saveAlphaLayer) {
@@ -595,7 +589,6 @@ class GraphicalFunctions {
 	 * @param array $workArea The current working area coordinates.
 	 * @return void
 	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make()
-	 * @todo Define visibility
 	 */
 	public function makeText(&$im, $conf, $workArea) {
 		// Spacing
@@ -700,7 +693,6 @@ class GraphicalFunctions {
 	 * @return array [0]=x, [1]=y, [2]=w, [3]=h
 	 * @access private
 	 * @see makeText()
-	 * @todo Define visibility
 	 */
 	public function txtPosition($conf, $workArea, $BB) {
 		$angle = (int)$conf['angle'] / 180 * pi();
@@ -751,7 +743,6 @@ class GraphicalFunctions {
 	 * @return array Array with three keys [0]/[1] being x/y and [2] being the bounding box array
 	 * @access private
 	 * @see txtPosition(), \TYPO3\CMS\Frontend\Imaging\GifBuilder::start()
-	 * @todo Define visibility
 	 */
 	public function calcBBox($conf) {
 		$sF = $this->getTextScalFactor($conf);
@@ -831,7 +822,6 @@ class GraphicalFunctions {
 	 * @return void
 	 * @access private
 	 * @see makeText(), calcTextCordsForMap()
-	 * @todo Define visibility
 	 */
 	public function addToMap($cords, $conf) {
 		$this->map .= '<area' . ' shape="poly"' . ' coords="' . implode(',', $cords) . '"' . ' href="' . htmlspecialchars($conf['url']) . '"' . ($conf['target'] ? ' target="' . htmlspecialchars($conf['target']) . '"' : '') . $JS . (strlen($conf['titleText']) ? ' title="' . htmlspecialchars($conf['titleText']) . '"' : '') . ' alt="' . htmlspecialchars($conf['altText']) . '" />';
@@ -846,7 +836,6 @@ class GraphicalFunctions {
 	 * @return array
 	 * @access private
 	 * @see makeText(), calcTextCordsForMap()
-	 * @todo Define visibility
 	 */
 	public function calcTextCordsForMap($cords, $offset, $conf) {
 		$pars = GeneralUtility::intExplode(',', $conf['explode'] . ',');
@@ -880,7 +869,6 @@ class GraphicalFunctions {
 	 * @param integer $sF Scale factor
 	 * @return void
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function SpacedImageTTFText(&$im, $fontSize, $angle, $x, $y, $Fcolor, $fontFile, $text, $spacing, $wordSpacing, $splitRenderingConf, $sF = 1) {
 		$spacing *= $sF;
@@ -913,7 +901,6 @@ class GraphicalFunctions {
 	 * @return integer The new fontSize
 	 * @access private
 	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::start()
-	 * @todo Define visibility
 	 */
 	public function fontResize($conf) {
 		// You have to use +calc options like [10.h] in 'offset' to get the right position of your text-image, if you use +calc in XY height!!!!
@@ -956,7 +943,6 @@ class GraphicalFunctions {
 	 * @param array $splitRendering Split-rendering configuration
 	 * @param integer $sF Scale factor
 	 * @return array Information array.
-	 * @todo Define visibility
 	 */
 	public function ImageTTFBBoxWrapper($fontSize, $angle, $fontFile, $string, $splitRendering, $sF = 1) {
 		// Initialize:
@@ -1008,7 +994,6 @@ class GraphicalFunctions {
 	 * @param array $splitRendering Split-rendering configuration
 	 * @param integer $sF Scale factor
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function ImageTTFTextWrapper($im, $fontSize, $angle, $x, $y, $color, $fontFile, $string, $splitRendering, $sF = 1) {
 		// Initialize:
@@ -1052,7 +1037,6 @@ class GraphicalFunctions {
 	 * @param integer $fontSize Current fontsize
 	 * @param string $fontFile Current font file
 	 * @return array Array with input string splitted according to configuration
-	 * @todo Define visibility
 	 */
 	public function splitString($string, $splitRendering, $fontSize, $fontFile) {
 		// Initialize by setting the whole string and default configuration as the first entry.
@@ -1190,7 +1174,6 @@ class GraphicalFunctions {
 	 * @return array Array with two keys [0]/[1] being array($spacing,$wordSpacing)
 	 * @access private
 	 * @see calcBBox()
-	 * @todo Define visibility
 	 */
 	public function calcWordSpacing($conf, $scaleFactor = 1) {
 		$spacing = (int)$conf['spacing'];
@@ -1207,7 +1190,6 @@ class GraphicalFunctions {
 	 * @param array $conf TypoScript array for the TEXT GIFBUILDER object
 	 * @return integer TypoScript value from eg $conf['niceText.']['scaleFactor']
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function getTextScalFactor($conf) {
 		if (!$conf['niceText']) {
@@ -1336,7 +1318,6 @@ class GraphicalFunctions {
 	 * @param array $txtConf TypoScript array with configuration for the associated TEXT GIFBUILDER object.
 	 * @return void
 	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make(), makeText()
-	 * @todo Define visibility
 	 */
 	public function makeOutline(&$im, $conf, $workArea, $txtConf) {
 		$thickness = (int)$conf['thickness'];
@@ -1366,7 +1347,6 @@ class GraphicalFunctions {
 	 * @param integer $iterations Iterations.
 	 * @return array
 	 * @see makeOutline()
-	 * @todo Define visibility
 	 */
 	public function circleOffset($distance, $iterations) {
 		$res = array();
@@ -1395,7 +1375,6 @@ class GraphicalFunctions {
 	 * @param array $txtConf TypoScript array with configuration for the associated TEXT GIFBUILDER object.
 	 * @return void
 	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make(), makeShadow()
-	 * @todo Define visibility
 	 */
 	public function makeEmboss(&$im, $conf, $workArea, $txtConf) {
 		$conf['color'] = $conf['highColor'];
@@ -1418,7 +1397,6 @@ class GraphicalFunctions {
 	 * @param array $txtConf TypoScript array with configuration for the associated TEXT GIFBUILDER object.
 	 * @retur void
 	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make(), makeText(), makeEmboss()
-	 * @todo Define visibility
 	 */
 	public function makeShadow(&$im, $conf, $workArea, $txtConf) {
 		$workArea = $this->applyOffset($workArea, GeneralUtility::intExplode(',', $conf['offset']));
@@ -1533,7 +1511,6 @@ class GraphicalFunctions {
 	 * @param array $workArea The current working area coordinates.
 	 * @return void
 	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make()
-	 * @todo Define visibility
 	 */
 	public function makeBox(&$im, $conf, $workArea) {
 		$cords = GeneralUtility::intExplode(',', $conf['dimensions'] . ',,,');
@@ -1593,7 +1570,6 @@ class GraphicalFunctions {
 	 * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
 	 * @return void
 	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make(), applyImageMagickToPHPGif()
-	 * @todo Define visibility
 	 */
 	public function makeEffect(&$im, $conf) {
 		$commands = $this->IMparams($conf['value']);
@@ -1609,7 +1585,6 @@ class GraphicalFunctions {
 	 * @return string ImageMagick prepared parameters.
 	 * @access private
 	 * @see makeEffect()
-	 * @todo Define visibility
 	 */
 	public function IMparams($setup) {
 		if (!trim($setup)) {
@@ -1695,7 +1670,6 @@ class GraphicalFunctions {
 	 * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
 	 * @return void
 	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make(), autoLevels(), outputLevels(), inputLevels()
-	 * @todo Define visibility
 	 */
 	public function adjust(&$im, $conf) {
 		$setup = $conf['value'];
@@ -1731,7 +1705,6 @@ class GraphicalFunctions {
 	 * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
 	 * @return void
 	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make()
-	 * @todo Define visibility
 	 */
 	public function crop(&$im, $conf) {
 		// Clears workArea to total image
@@ -1770,7 +1743,6 @@ class GraphicalFunctions {
 	 * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
 	 * @return void
 	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make()
-	 * @todo Define visibility
 	 */
 	public function scale(&$im, $conf) {
 		if ($conf['width'] || $conf['height'] || $conf['params']) {
@@ -1804,7 +1776,6 @@ class GraphicalFunctions {
 	 * @return void
 	 * @access private
 	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make()
-	 * @todo Define visibility
 	 */
 	public function setWorkArea($workArea) {
 		$this->workArea = GeneralUtility::intExplode(',', $workArea);
@@ -1827,7 +1798,6 @@ class GraphicalFunctions {
 	 *
 	 * @param integer $im GDlib Image Pointer
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function autolevels(&$im) {
 		$totalCols = ImageColorsTotal($im);
@@ -1859,7 +1829,6 @@ class GraphicalFunctions {
 	 * @param integer $high The "high" value (close to 255)
 	 * @param boolean $swap If swap, then low and high are swapped. (Useful for negated masks...)
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function outputLevels(&$im, $low, $high, $swap = '') {
 		if ($low < $high) {
@@ -1890,7 +1859,6 @@ class GraphicalFunctions {
 	 * @param integer $high The "high" value (close to 255)
 	 * @param boolean $swap @deprecated since 6.2, unused and obsolete parameter, was used for older image magick versions
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function inputLevels(&$im, $low, $high, $swap = '') {
 		if ($low < $high) {
@@ -1914,7 +1882,6 @@ class GraphicalFunctions {
 	 * @param string $file Image file to reduce
 	 * @param integer $cols Number of colors to reduce the image to.
 	 * @return string Reduced file
-	 * @todo Define visibility
 	 */
 	public function IMreduceColors($file, $cols) {
 		$fI = GeneralUtility::split_fileref($file);
@@ -1948,7 +1915,6 @@ class GraphicalFunctions {
 	 *
 	 * @param string $fontFile The font file
 	 * @return string The font file with absolute path.
-	 * @todo Define visibility
 	 */
 	public function prependAbsolutePath($fontFile) {
 		$absPath = defined('PATH_typo3') ? dirname(PATH_thisScript) . '/' : PATH_site;
@@ -1963,7 +1929,6 @@ class GraphicalFunctions {
 	 * @param integer $factor The sharpening factor, 0-100 (effectively in 10 steps)
 	 * @return string The sharpening command, eg. " -sharpen 3x4
 	 * @see makeText(), IMparams(), v5_blur()
-	 * @todo Define visibility
 	 */
 	public function v5_sharpen($factor) {
 		$factor = MathUtility::forceIntegerInRange(ceil($factor / 10), 0, 10);
@@ -1982,7 +1947,6 @@ class GraphicalFunctions {
 	 * @param integer $factor The blurring factor, 0-100 (effectively in 10 steps)
 	 * @return string The blurring command, eg. " -blur 3x4
 	 * @see makeText(), IMparams(), v5_sharpen()
-	 * @todo Define visibility
 	 */
 	public function v5_blur($factor) {
 		$factor = MathUtility::forceIntegerInRange(ceil($factor / 10), 0, 10);
@@ -1999,7 +1963,6 @@ class GraphicalFunctions {
 	 * Used by functions in this class to create truely temporary files for the on-the-fly processing. These files will most likely be deleted right away.
 	 *
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function randomName() {
 		$this->createTempSubDir('temp/');
@@ -2013,7 +1976,6 @@ class GraphicalFunctions {
 	 * @param array $cords Integer coordinates in key 0/1
 	 * @param array $OFFSET Offset values in key 0/1
 	 * @return array Modified $cords array
-	 * @todo Define visibility
 	 */
 	public function applyOffset($cords, $OFFSET) {
 		$cords[0] = (int)$cords[0] + (int)$OFFSET[0];
@@ -2027,7 +1989,6 @@ class GraphicalFunctions {
 	 *
 	 * @param string $string "HTML-color" data type string, eg. 'red', '#ffeedd' or '255,0,255'. You can also add a modifying operator afterwards. There are two options: "255,0,255 : 20" - will add 20 to values, result is "255,20,255". Or "255,0,255 : *1.23" which will multiply all RGB values with 1.23
 	 * @return array RGB values in key 0/1/2 of the array
-	 * @todo Define visibility
 	 */
 	public function convertColor($string) {
 		$col = array();
@@ -2077,7 +2038,6 @@ class GraphicalFunctions {
 	 *
 	 * @param string The text to recode
 	 * @return string The recoded string. Should be UTF-8 output. MAY contain entities (eg. &#123; or &#quot; which should render as real chars).
-	 * @todo Define visibility
 	 */
 	public function recodeString($string) {
 		// Recode string to UTF-8 from $this->nativeCharset:
@@ -2095,7 +2055,6 @@ class GraphicalFunctions {
 	 * @param string $theText The text string to split
 	 * @param boolean $returnUnicodeNumber Return Unicode numbers instead of chars.
 	 * @return array Numerical array with a char as each value.
-	 * @todo Define visibility
 	 */
 	public function singleChars($theText, $returnUnicodeNumber = FALSE) {
 		if ($this->nativeCharset) {
@@ -2120,7 +2079,6 @@ class GraphicalFunctions {
 	 * @return array [0]=x, [1]=y, [2]=w, [3]=h
 	 * @access private
 	 * @see copyGifOntoGif(), makeBox(), crop()
-	 * @todo Define visibility
 	 */
 	public function objPosition($conf, $workArea, $BB) {
 		// offset, align, valign, workarea
@@ -2176,7 +2134,6 @@ class GraphicalFunctions {
 	 * @param boolean $mustCreate If set, then another image than the input imagefile MUST be returned. Otherwise you can risk that the input image is good enough regarding messures etc and is of course not rendered to a new, temporary file in typo3temp/. But this option will force it to.
 	 * @return array [0]/[1] is w/h, [2] is file extension and [3] is the filename.
 	 * @see getImageScale(), typo3/show_item.php, fileList_ext::renderImage(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getImgResource(), SC_tslib_showpic::show(), maskImageOntoImage(), copyImageOntoImage(), scale()
-	 * @todo Define visibility
 	 */
 	public function imageMagickConvert($imagefile, $newExt = '', $w = '', $h = '', $params = '', $frame = '', $options = array(), $mustCreate = FALSE) {
 		if ($this->NO_IMAGE_MAGICK) {
@@ -2284,7 +2241,6 @@ class GraphicalFunctions {
 	 * @param string $imageFile The image filepath
 	 * @return array|NULL Returns an array where [0]/[1] is w/h, [2] is extension and [3] is the filename.
 	 * @see imageMagickConvert(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getImgResource()
-	 * @todo Define visibility
 	 */
 	public function getImageDimensions($imageFile) {
 		preg_match('/([^\\.]*)$/', $imageFile, $reg);
@@ -2312,7 +2268,6 @@ class GraphicalFunctions {
 	 *
 	 * @param array $identifyResult Result of the getImageDimensions function
 	 * @return boolean TRUE if operation was successful
-	 * @todo Define visibility
 	 */
 	public function cacheImageDimensions($identifyResult) {
 		// Create md5 hash of filemtime and filesize
@@ -2341,7 +2296,6 @@ class GraphicalFunctions {
 	 *
 	 * @param string $imageFile The image filepath
 	 * @return array Returns an array where [0]/[1] is w/h, [2] is extension and [3] is the filename.
-	 * @todo Define visibility
 	 */
 	public function getCachedImageDimensions($imageFile) {
 		// Create md5 hash of filemtime and filesize
@@ -2376,7 +2330,6 @@ class GraphicalFunctions {
 	 * @return array
 	 * @access private
 	 * @see imageMagickConvert()
-	 * @todo Define visibility
 	 */
 	public function getImageScale($info, $w, $h, $options) {
 		if (strstr($w . $h, 'm')) {
@@ -2495,7 +2448,6 @@ class GraphicalFunctions {
 	 * @param string $orig Original basis file
 	 * @return boolean Returns TRUE if the file is already being made; thus "TRUE" means "Don't render the image again
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function file_exists_typo3temp_file($output, $orig = '') {
 		if ($this->enable_typo3temp_db_tracking) {
@@ -2550,7 +2502,6 @@ class GraphicalFunctions {
 	 *
 	 * @param string $imagefile The relative (to PATH_site) image filepath
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function imageMagickIdentify($imagefile) {
 		if (!$this->NO_IMAGE_MAGICK) {
@@ -2589,7 +2540,6 @@ class GraphicalFunctions {
 	 * @param string $params ImageMagick parameters
 	 * @param integer $frame Optional, refers to which frame-number to select in the image. '' or 0
 	 * @return string The result of a call to PHP function "exec()
-	 * @todo Define visibility
 	 */
 	public function imageMagickExec($input, $output, $params, $frame = 0) {
 		if (!$this->NO_IMAGE_MAGICK) {
@@ -2619,7 +2569,6 @@ class GraphicalFunctions {
 	 * @param string $output The relative (to PATH_site) image filepath, output filename (written to)
 	 * @param boolean $handleNegation
 	 * @return 	void
-	 * @todo Define visibility
 	 */
 	public function combineExec($input, $overlay, $mask, $output, $handleNegation = FALSE) {
 		if (!$this->NO_IMAGE_MAGICK) {
@@ -2667,7 +2616,6 @@ class GraphicalFunctions {
 	 *
 	 * @param string $file Input file to check
 	 * @return string Returns the filename if the file existed, otherwise empty.
-	 * @todo Define visibility
 	 */
 	public function checkFile($file) {
 		if (@is_file($file)) {
@@ -2682,7 +2630,6 @@ class GraphicalFunctions {
 	 *
 	 * @param string $dirName Name of sub directory
 	 * @return boolean Result of \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir(), TRUE if it went well.
-	 * @todo Define visibility
 	 */
 	public function createTempSubDir($dirName) {
 		// Checking if the this->tempPath is already prefixed with PATH_site and if not, prefix it with that constant.
@@ -2703,7 +2650,6 @@ class GraphicalFunctions {
 	 * @param pointer $im The image pointer (reference)
 	 * @param string $command The ImageMagick parameters. Like effects, scaling etc.
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function applyImageMagickToPHPGif(&$im, $command) {
 		$tmpStr = $this->randomName();
@@ -2730,7 +2676,6 @@ class GraphicalFunctions {
 	 * @param integer $w The width of the output image.
 	 * @param integer $h The height of the output image.
 	 * @return string The filename, either "jpg" or "gif"/"png" (whatever $this->gifExtension is set to.)
-	 * @todo Define visibility
 	 */
 	public function gif_or_jpg($type, $w, $h) {
 		if ($type == 'ai' || $w * $h < $this->pixelLimitGif) {
@@ -2748,7 +2693,6 @@ class GraphicalFunctions {
 	 * @param string $file The filename to write to.
 	 * @return string Returns input filename
 	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::gifBuild()
-	 * @todo Define visibility
 	 */
 	public function output($file) {
 		if ($file) {
@@ -2796,7 +2740,6 @@ class GraphicalFunctions {
 	 *
 	 * @return void
 	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::gifBuild()
-	 * @todo Define visibility
 	 */
 	public function destroy() {
 		ImageDestroy($this->im);
@@ -2807,7 +2750,6 @@ class GraphicalFunctions {
 	 *
 	 * @param array $imgInfo Image information array, key 0/1 is width/height and key 3 is the src value
 	 * @return string Image tag for the input image information array.
-	 * @todo Define visibility
 	 */
 	public function imgTag($imgInfo) {
 		return '<img src="' . $imgInfo[3] . '" width="' . $imgInfo[0] . '" height="' . $imgInfo[1] . '" border="0" alt="" />';
@@ -2821,7 +2763,6 @@ class GraphicalFunctions {
 	 * @param integer $quality The image quality (for JPEGs)
 	 * @return boolean The output of either imageGif, imagePng or imageJpeg based on the filename to write
 	 * @see maskImageOntoImage(), scale(), output()
-	 * @todo Define visibility
 	 */
 	public function ImageWrite($destImg, $theImage, $quality = 0) {
 		imageinterlace($destImg, 0);
@@ -2862,7 +2803,6 @@ class GraphicalFunctions {
 	 *
 	 * @param string $sourceImg Image filename
 	 * @return pointer Image Resource pointer
-	 * @todo Define visibility
 	 */
 	public function imageCreateFromFile($sourceImg) {
 		$imgInf = pathinfo($sourceImg);
@@ -2903,7 +2843,6 @@ class GraphicalFunctions {
 	 *
 	 * @param array RGB color array
 	 * @return string HEX color value
-	 * @todo Define visibility
 	 */
 	public function hexColor($col) {
 		$r = dechex($col[0]);
@@ -2928,7 +2867,6 @@ class GraphicalFunctions {
 	 * @param array $colArr Array containing RGB color arrays
 	 * @param boolean $closest
 	 * @return integer The index of the unified color
-	 * @todo Define visibility
 	 */
 	public function unifyColors(&$img, $colArr, $closest = FALSE) {
 		$retCol = -1;

@@ -27,7 +27,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 
 	// Static:
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $blockElementList = 'PRE,UL,OL,H1,H2,H3,H4,H5,H6,ADDRESS,DL,DD,HEADER,SECTION,FOOTER,NAV,ARTICLE,ASIDE';
 
@@ -35,25 +35,25 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	// Internal, static:
 	// Set this to the pid of the record manipulated by the class.
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $recPid = 0;
 
 	// Element reference [table]:[field], eg. "tt_content:bodytext"
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $elRef = '';
 
 	// Relative path
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $relPath = '';
 
 	// Relative back-path
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $relBackPath = '';
 
@@ -62,38 +62,38 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 
 	// Set to the TSconfig options coming from Page TSconfig
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $procOptions = array();
 
 	// Internal, dynamic
 	// Run-away brake for recursive calls.
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $TS_transform_db_safecounter = 100;
 
 	// Parameters from TCA types configuration related to the RTE
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $rte_p = '';
 
 	// Data caching for processing function
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $getKeepTags_cache = array();
 
 	// Storage of the allowed CSS class names in the RTE
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $allowedClasses = array();
 
 	// Set to tags to preserve from Page TSconfig configuration
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $preserveTags = '';
 
@@ -103,7 +103,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 * @param string $elRef Element reference, eg "tt_content:bodytext
 	 * @param integer $recPid PID of the record (page id)
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function init($elRef = '', $recPid = 0) {
 		$this->recPid = $recPid;
@@ -116,7 +115,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 *
 	 * @param string $path The relative path from PATH_site to the place where the file being edited is. Eg. "fileadmin/static".
 	 * @return void There is no output, it is set in internal variables. With the above example of "fileadmin/static" as input this will yield ->relPath to be "fileadmin/static/" and ->relBackPath to be "../../
-	 * @todo Define visibility
 	 */
 	public function setRelPath($path) {
 		$path = trim($path);
@@ -187,7 +185,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 * @param string Direction of the transformation. Two keywords are allowed; "db" or "rte". If "db" it means the transformation will clean up content coming from the Rich Text Editor and goes into the database. The other direction, "rte", is of course when content is coming from database and must be transformed to fit the RTE.
 	 * @param array Parsed TypoScript content configuring the RTE, probably coming from Page TSconfig.
 	 * @return string Output value
-	 * @todo Define visibility
 	 */
 	public function RTE_transform($value, $specConf, $direction = 'rte', $thisConfig = array()) {
 		// Init:
@@ -342,7 +339,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 *
 	 * @param string $value The content from RTE going to Database
 	 * @return string Processed content
-	 * @todo Define visibility
 	 */
 	public function TS_images_db($value) {
 		// Split content by <img> tags and traverse the resulting array for processing:
@@ -535,7 +531,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 * @param string $value Content input
 	 * @param string $direction Direction of conversion; "rte" (from database to RTE) or "db" (from RTE to database)
 	 * @return string Content output
-	 * @todo Define visibility
 	 */
 	public function TS_reglinks($value, $direction) {
 		$retVal = '';
@@ -572,7 +567,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 * @param string $value Content input
 	 * @return string Content output
 	 * @see TS_links_rte()
-	 * @todo Define visibility
 	 */
 	public function TS_links_db($value) {
 		$conf = array();
@@ -675,7 +669,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 * @param string $value Content input
 	 * @return string Content output
 	 * @see TS_links_rte()
-	 * @todo Define visibility
 	 */
 	public function TS_links_rte($value) {
 		$conf = array();
@@ -808,7 +801,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 *
 	 * @param string $value Content input
 	 * @return string Content output
-	 * @todo Define visibility
 	 */
 	public function TS_preserve_db($value) {
 		if (!$this->preserveTags) {
@@ -835,7 +827,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 *
 	 * @param string $value Content input
 	 * @return string Content output
-	 * @todo Define visibility
 	 */
 	public function TS_preserve_rte($value) {
 		if (!$this->preserveTags) {
@@ -859,7 +850,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 * @param boolean $css If TRUE, the transformation was "css_transform", otherwise "ts_transform
 	 * @return string Content output
 	 * @see TS_transform_rte()
-	 * @todo Define visibility
 	 */
 	public function TS_transform_db($value, $css = FALSE) {
 		// Safety... so forever loops are avoided (they should not occur, but an error would potentially do this...)
@@ -995,7 +985,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 *
 	 * @param string $value Content input
 	 * @return string Content output
-	 * @todo Define visibility
 	 */
 	public function transformStyledATags($value) {
 		$blockSplit = $this->splitIntoBlock('A', $value);
@@ -1024,7 +1013,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 * @param boolean If TRUE, the transformation was "css_transform", otherwise "ts_transform
 	 * @return string Content output
 	 * @see TS_transform_db()
-	 * @todo Define visibility
 	 */
 	public function TS_transform_rte($value, $css = 0) {
 		// Split the content from database by the occurence of the block elements
@@ -1116,7 +1104,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 *
 	 * @param string $value Content input
 	 * @return string Content output
-	 * @todo Define visibility
 	 */
 	public function TS_strip_db($value) {
 		$value = strip_tags($value, '<' . implode('><', explode(',', 'b,i,u,a,img,br,div,center,pre,font,hr,sub,sup,p,strong,em,li,ul,ol,blockquote')) . '>');
@@ -1134,7 +1121,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 * @param string $url Filepath/URL to read
 	 * @return string The content from the resource given as input.
 	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl()
-	 * @todo Define visibility
 	 */
 	public function getUrl($url) {
 		return GeneralUtility::getUrl($url);
@@ -1149,7 +1135,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 * @param string $tagList Comma list of tags to specifically allow. Default comes from getKeepTags and is
 	 * @return string Clean content
 	 * @see getKeepTags()
-	 * @todo Define visibility
 	 */
 	public function HTMLcleaner_db($content, $tagList = '') {
 		if (!$tagList) {
@@ -1177,7 +1162,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 * @param string $tagList Comma list of tags to keep (overriding default which is to keep all + take notice of internal configuration)
 	 * @return array Configuration array
 	 * @see HTMLcleaner_db()
-	 * @todo Define visibility
 	 */
 	public function getKeepTags($direction = 'rte', $tagList = '') {
 		if (!is_array($this->getKeepTags_cache[$direction]) || $tagList) {
@@ -1295,7 +1279,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 * @param boolean $returnArray If TRUE, an array with the lines is returned, otherwise a string of the processed input value.
 	 * @return string Processed input value.
 	 * @see setDivTags()
-	 * @todo Define visibility
 	 */
 	public function divideIntoLines($value, $count = 5, $returnArray = FALSE) {
 		// Internalize font tags (move them from OUTSIDE p/div to inside it that is the case):
@@ -1424,7 +1407,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 * @param string $dT Tag to wrap with. Either "p" or "div" should it be. Lowercase preferably.
 	 * @return string Processed value.
 	 * @see divideIntoLines()
-	 * @todo Define visibility
 	 */
 	public function setDivTags($value, $dT = 'p') {
 		// First, setting configuration for the HTMLcleaner function. This will process each line between the <div>/<p> section on their way to the RTE
@@ -1473,7 +1455,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 * @param string Input content
 	 * @return string Output content
 	 * @see divideIntoLines()
-	 * @todo Define visibility
 	 */
 	public function internalizeFontTags($value) {
 		// Splitting into font tag blocks:
@@ -1513,7 +1494,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 *
 	 * @return string Value of GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv()
-	 * @todo Define visibility
 	 */
 	public function siteUrl() {
 		return GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
@@ -1537,7 +1517,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 * @param string $value Input value
 	 * @param string $breakChar Break character to use for linebreaks.
 	 * @return string Output value
-	 * @todo Define visibility
 	 */
 	public function removeTables($value, $breakChar = '<br />') {
 		// Splitting value into table blocks:
@@ -1567,7 +1546,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 * @param string $code Input code to process
 	 * @param string $direction Direction To databsae (db) or from database to RTE (rte)
 	 * @return string Processed value
-	 * @todo Define visibility
 	 */
 	public function defaultTStagMapping($code, $direction = 'rte') {
 		if ($direction == 'db') {
@@ -1593,7 +1571,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 *
 	 * @param array $attribArray Array of attributes from tag in which to search. More specifically the content of the key "style" is used to extract "width:xxx / height:xxx" information
 	 * @return array Integer w/h in key 0/1. Zero is returned if not found.
-	 * @todo Define visibility
 	 */
 	public function getWHFromAttribs($attribArray) {
 		$style = trim($attribArray['style']);
@@ -1621,7 +1598,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 *
 	 * @param string $url URL to analyse.
 	 * @return array Information in an array about the URL
-	 * @todo Define visibility
 	 */
 	public function urlInfoForLinkTags($url) {
 		$info = array();
@@ -1685,7 +1661,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 * @param string $value Content input
 	 * @param boolean $dontSetRTEKEEP If TRUE, then the "rtekeep" attribute will not be set.
 	 * @return string Content output
-	 * @todo Define visibility
 	 */
 	public function TS_AtagToAbs($value, $dontSetRTEKEEP = FALSE) {
 		$blockSplit = $this->splitIntoBlock('A', $value);

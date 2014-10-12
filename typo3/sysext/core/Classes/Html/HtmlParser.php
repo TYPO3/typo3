@@ -314,7 +314,6 @@ class HtmlParser {
 	 * @param boolean $eliminateExtraEndTags If set, excessive end tags are ignored - you should probably set this in most cases.
 	 * @return array Even numbers in the array are outside the blocks, Odd numbers are block-content.
 	 * @see splitTags(), getAllParts(), removeFirstAndLastTag()
-	 * @todo Define visibility
 	 */
 	public function splitIntoBlock($tag, $content, $eliminateExtraEndTags = FALSE) {
 		$tags = array_unique(GeneralUtility::trimExplode(',', $tag, TRUE));
@@ -385,7 +384,6 @@ class HtmlParser {
 	 * @param integer $level Indent level
 	 * @return string Processed content
 	 * @see splitIntoBlock()
-	 * @todo Define visibility
 	 */
 	public function splitIntoBlockRecursiveProc($tag, $content, &$procObj, $callBackContent, $callBackTags, $level = 0) {
 		$parts = $this->splitIntoBlock($tag, $content, TRUE);
@@ -420,7 +418,6 @@ class HtmlParser {
 	 * @param string $content HTML-content
 	 * @return array Even numbers in the array are outside the blocks, Odd numbers are block-content.
 	 * @see splitIntoBlock(), getAllParts(), removeFirstAndLastTag()
-	 * @todo Define visibility
 	 */
 	public function splitTags($tag, $content) {
 		$tags = GeneralUtility::trimExplode(',', $tag, TRUE);
@@ -456,7 +453,6 @@ class HtmlParser {
 	 * @param boolean $include_tag Whether to include the tags in the tag-parts (most useful for input made by ->splitIntoBlock())
 	 * @return array Tag-parts/Non-tag-parts depending on input argument settings
 	 * @see splitIntoBlock(), splitTags()
-	 * @todo Define visibility
 	 */
 	public function getAllParts($parts, $tag_parts = TRUE, $include_tag = TRUE) {
 		$newParts = array();
@@ -477,7 +473,6 @@ class HtmlParser {
 	 *
 	 * @param string $str String to process
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function removeFirstAndLastTag($str) {
 		// End of first tag:
@@ -494,7 +489,6 @@ class HtmlParser {
 	 *
 	 * @param string $str HTML string with tags
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function getFirstTag($str) {
 		// First:
@@ -509,7 +503,6 @@ class HtmlParser {
 	 * @param boolean $preserveCase If set, then the tag is NOT converted to uppercase by case is preserved.
 	 * @return string Tag name in upper case
 	 * @see getFirstTag()
-	 * @todo Define visibility
 	 */
 	public function getFirstTagName($str, $preserveCase = FALSE) {
 		$matches = array();
@@ -529,7 +522,6 @@ class HtmlParser {
 	 * @param string $tag Tag: $tag is either a whole tag (eg '<TAG OPTION ATTRIB=VALUE>') or the parameterlist (ex ' OPTION ATTRIB=VALUE>')
 	 * @param boolean $deHSC If set, the attribute values are de-htmlspecialchar'ed. Should actually always be set!
 	 * @return array array(Tag attributes,Attribute meta-data)
-	 * @todo Define visibility
 	 */
 	public function get_tag_attributes($tag, $deHSC = 0) {
 		list($components, $metaC) = $this->split_tag_attributes($tag);
@@ -573,7 +565,6 @@ class HtmlParser {
 	 * @return array
 	 * @access private
 	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::split_tag_attributes()
-	 * @todo Define visibility
 	 */
 	public function split_tag_attributes($tag) {
 		$matches = array();
@@ -611,7 +602,6 @@ class HtmlParser {
 	 * @param string $blockTags Tag names for block tags (eg. table or div or p) in lowercase, commalist (eg. "table,div,p")
 	 * @param string $soloTags Tag names for solo tags (eg. img, br or input) in lowercase, commalist ("img,br,input")
 	 * @return array Analyse data.
-	 * @todo Define visibility
 	 */
 	public function checkTagTypeCounts($content, $blockTags = 'a,b,blockquote,body,div,em,font,form,h1,h2,h3,h4,h5,h6,i,li,map,ol,option,p,pre,select,span,strong,table,td,textarea,tr,u,ul', $soloTags = 'br,hr,img,input,area') {
 		$content = strtolower($content);
@@ -699,7 +689,6 @@ class HtmlParser {
 	 * @param integer $hSC Values -1,0,1,2: Set to zero= disabled, set to 1 then the content BETWEEN tags is htmlspecialchar()'ed, set to -1 its the opposite and set to 2 the content will be HSC'ed BUT with preservation for real entities (eg. "&amp;" or "&#234;")
 	 * @param array $addConfig Configuration array send along as $conf to the internal functions ->processContent() and ->processTag()
 	 * @return string Processed HTML content
-	 * @todo Define visibility
 	 */
 	public function HTMLcleaner($content, $tags = array(), $keepAll = 0, $hSC = 0, $addConfig = array()) {
 		$newContent = array();
@@ -969,7 +958,6 @@ class HtmlParser {
 	 * @param string $value Input value
 	 * @param int $dir Direction: forth ($dir=1, dir=2 for preserving entities) AND back ($dir=-1)
 	 * @return string Output value
-	 * @todo Define visibility
 	 */
 	public function bidir_htmlspecialchars($value, $dir) {
 		$dir = (int)$dir;
@@ -991,7 +979,6 @@ class HtmlParser {
 	 * @param array $alternatives Array with alternative prefixes for certain of the tags. key=>value pairs where the keys are the tag element names in uppercase
 	 * @param string $suffix Suffix string (put after the resource).
 	 * @return string Processed HTML content
-	 * @todo Define visibility
 	 */
 	public function prefixResourcePath($main_prefix, $content, $alternatives = array(), $suffix = '') {
 		$parts = $this->splitTags('embed,td,table,body,img,input,form,link,script,a,param', $content);
@@ -1086,7 +1073,6 @@ class HtmlParser {
 	 * @param string $suffix Suffix string
 	 * @return string Output path, prefixed if no scheme in input string
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function prefixRelPath($prefix, $srcVal, $suffix = '') {
 		// Only prefix if it's not an absolute URL or
@@ -1110,7 +1096,6 @@ class HtmlParser {
 	 * @param boolean If set, keep "size" attribute
 	 * @param boolean If set, keep "color" attribute
 	 * @return string Processed HTML content
-	 * @todo Define visibility
 	 */
 	public function cleanFontTags($value, $keepFace = 0, $keepSize = 0, $keepColor = 0) {
 		// ,1 ?? - could probably be more stable if splitTags() was used since this depends on end-tags being properly set!
@@ -1148,7 +1133,6 @@ class HtmlParser {
 	 * @param string $ltChar Alternative less-than char to search for (search regex string)
 	 * @param string $ltChar2 Alternative less-than char to replace with (replace regex string)
 	 * @return string Processed HTML content
-	 * @todo Define visibility
 	 */
 	public function mapTags($value, $tags = array(), $ltChar = '<', $ltChar2 = '<') {
 		foreach ($tags as $from => $to) {
@@ -1163,7 +1147,6 @@ class HtmlParser {
 	 * @param string $content HTML content
 	 * @param string $tagList Tag list, separated by comma. Lowercase!
 	 * @return string Processed HTML content
-	 * @todo Define visibility
 	 */
 	public function unprotectTags($content, $tagList = '') {
 		$tagsArray = GeneralUtility::trimExplode(',', $tagList, TRUE);
@@ -1203,7 +1186,6 @@ class HtmlParser {
 	 * @param string $cacheKey Key string used for internal caching of the results. Could be an MD5 hash of the serialized version of the input $str if that is an array.
 	 * @return string Output string, processed
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function caseShift($str, $flag, $cacheKey = '') {
 		$cacheKey .= $flag ? 1 : 0;
@@ -1235,7 +1217,6 @@ class HtmlParser {
 	 * @param boolean $xhtmlClean If set, then the attribute names will be set in lower case, value quotes in double-quotes and the value will be htmlspecialchar()'ed
 	 * @return string Imploded attributes, eg: 'attribute="value" attrib2="value2"'
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function compileTagAttribs($tagAttrib, $meta = array(), $xhtmlClean = 0) {
 		$accu = array();
@@ -1264,7 +1245,6 @@ class HtmlParser {
 	 * @param boolean $deHSC De-htmlspecialchar flag.
 	 * @return array
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function get_tag_attributes_classic($tag, $deHSC = 0) {
 		$attr = $this->get_tag_attributes($tag, $deHSC);
@@ -1278,7 +1258,6 @@ class HtmlParser {
 	 * @param integer $number Number of indents
 	 * @param string $indentChar Indent character/string
 	 * @return strin Indented code (typ. HTML)
-	 * @todo Define visibility
 	 */
 	public function indentLines($content, $number = 1, $indentChar = TAB) {
 		$preTab = str_pad('', $number * strlen($indentChar), $indentChar);
@@ -1297,7 +1276,6 @@ class HtmlParser {
 	 * @param array $keepTags Array of tags to keep (?)
 	 * @return array
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function HTMLparserConfig($TSconfig, $keepTags = array()) {
 		// Allow tags (base list, merged with incoming array)
@@ -1433,7 +1411,6 @@ class HtmlParser {
 	 * @param string $content Content to clean up
 	 * @return string Cleaned up content returned.
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function XHTML_clean($content) {
 		$content = $this->HTMLcleaner($content, array(), 1, 0, array('xhtml' => 1));
@@ -1450,7 +1427,6 @@ class HtmlParser {
 	 * @param boolean If set, just return value straight away
 	 * @return string Processed value.
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function processTag($value, $conf, $endTag, $protected = 0) {
 		// Return immediately if protected or no parameters
@@ -1506,7 +1482,6 @@ class HtmlParser {
 	 * @param mixed $conf Not used, ignore.
 	 * @return string The processed value.
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function processContent($value, $dir, $conf) {
 		if ($dir != 0) {

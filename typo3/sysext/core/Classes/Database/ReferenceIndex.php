@@ -32,38 +32,38 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ReferenceIndex {
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $temp_flexRelations = array();
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $errorLog = array();
 
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $WSOL = FALSE;
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $relations = array();
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $words_strings = array();
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $words = array();
 
 	// Number which we can increase if a change in the code means we will have to force a re-generation of the index.
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $hashVersion = 1;
 
@@ -98,7 +98,6 @@ class ReferenceIndex {
 	 * @param integer $uid UID of record
 	 * @param boolean $testOnly If set, nothing will be written to the index but the result value will still report statistics on what is added, deleted and kept. Can be used for mere analysis.
 	 * @return array Array with statistics about how many index records were added, deleted and not altered plus the complete reference set for the record.
-	 * @todo Define visibility
 	 */
 	public function updateRefIndexTable($table, $uid, $testOnly = FALSE) {
 		// First, secure that the index table is not updated with workspace tainted relations:
@@ -159,7 +158,6 @@ class ReferenceIndex {
 	 * @param string $table Table name from $GLOBALS['TCA']
 	 * @param integer $uid Record UID
 	 * @return array Index Rows
-	 * @todo Define visibility
 	 */
 	public function generateRefIndexData($table, $uid) {
 		if (isset($GLOBALS['TCA'][$table])) {
@@ -240,7 +238,6 @@ class ReferenceIndex {
 	 * @param string $softref_key If the reference is a soft reference, this is the soft reference parser key. Otherwise empty.
 	 * @param string $softref_id Soft reference ID for key. Might be useful for replace operations.
 	 * @return array Array record to insert into table.
-	 * @todo Define visibility
 	 */
 	public function createEntryData($table, $uid, $field, $flexpointer, $deleted, $ref_table, $ref_uid, $ref_string = '', $sort = -1, $softref_key = '', $softref_id = '') {
 		return array(
@@ -269,7 +266,6 @@ class ReferenceIndex {
 	 * @param integer $deleted Whether record is deleted-flagged or not
 	 * @param array $items Data array with databaes relations (table/id)
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function createEntryData_dbRels($table, $uid, $fieldname, $flexpointer, $deleted, $items) {
 		foreach ($items as $sort => $i) {
@@ -287,7 +283,6 @@ class ReferenceIndex {
 	 * @param integer $deleted Whether record is deleted-flagged or not
 	 * @param array $items Data array with file relations
 	 * @return 	void
-	 * @todo Define visibility
 	 */
 	public function createEntryData_fileRels($table, $uid, $fieldname, $flexpointer, $deleted, $items) {
 		foreach ($items as $sort => $i) {
@@ -309,7 +304,6 @@ class ReferenceIndex {
 	 * @param integer $deleted
 	 * @param array $keys Data array with soft reference keys
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function createEntryData_softreferences($table, $uid, $fieldname, $flexpointer, $deleted, $keys) {
 		if (is_array($keys)) {
@@ -353,7 +347,6 @@ class ReferenceIndex {
 	 * @param string $onlyField Specific field to fetch for.
 	 * @return array Array with information about relations
 	 * @see export_addRecord()
-	 * @todo Define visibility
 	 */
 	public function getRelations($table, $row, $onlyField = '') {
 		// Initialize:
@@ -459,7 +452,6 @@ class ReferenceIndex {
 	 * @param object $pObj Object reference to caller
 	 * @return void
 	 * @see \TYPO3\CMS\Core\DataHandling\DataHandler::checkValue_flex_procInData_travDS()
-	 * @todo Define visibility
 	 */
 	public function getRelations_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath, $pObj) {
 		// Removing "data/" in the beginning of path (which points to location in data array)
@@ -524,7 +516,6 @@ class ReferenceIndex {
 	 * @param array $conf Field configuration array of type "TCA/columns
 	 * @param integer $uid Field uid
 	 * @return bool|array If field type is OK it will return an array with the files inside. Else FALSE
-	 * @todo Define visibility
 	 */
 	public function getRelations_procFiles($value, $conf, $uid) {
 		if ($conf['type'] !== 'group' || ($conf['internal_type'] !== 'file' && $conf['internal_type'] !== 'file_reference')) {
@@ -587,7 +578,6 @@ class ReferenceIndex {
 	 * @param string $table Table name
 	 * @param string $field Field name
 	 * @return array If field type is OK it will return an array with the database relations. Else FALSE
-	 * @todo Define visibility
 	 */
 	public function getRelations_procDB($value, $conf, $uid, $table = '', $field = '') {
 		// Get IRRE relations
@@ -648,7 +638,6 @@ class ReferenceIndex {
 	 * @param boolean $returnDataArray Return $dataArray only, do not submit it to database.
 	 * @param boolean $bypassWorkspaceAdminCheck If set, it will bypass check for workspace-zero and admin user
 	 * @return string If a return string, that carries an error message, otherwise FALSE (=OK) (except if $returnDataArray is set!)
-	 * @todo Define visibility
 	 */
 	public function setReferenceValue($hash, $newValue, $returnDataArray = FALSE, $bypassWorkspaceAdminCheck = FALSE) {
 		if ($GLOBALS['BE_USER']->workspace === 0 && $GLOBALS['BE_USER']->isAdmin() || $bypassWorkspaceAdminCheck) {
@@ -754,7 +743,6 @@ class ReferenceIndex {
 	 * @param array $dataArray Data array in which the new value is set (passed by reference)
 	 * @param string $flexpointer Flexform pointer, if in a flex form field.
 	 * @return string Error message if any, otherwise FALSE = OK
-	 * @todo Define visibility
 	 */
 	public function setReferenceValue_dbRels($refRec, $itemArray, $newValue, &$dataArray, $flexpointer = '') {
 		if ((int)$itemArray[$refRec['sorting']]['id'] === (int)$refRec['ref_uid'] && (string)$itemArray[$refRec['sorting']]['table'] === (string)$refRec['ref_table']) {
@@ -792,7 +780,6 @@ class ReferenceIndex {
 	 * @param array $dataArray Data array in which the new value is set (passed by reference)
 	 * @param string $flexpointer Flexform pointer, if in a flex form field.
 	 * @return string Error message if any, otherwise FALSE = OK
-	 * @todo Define visibility
 	 */
 	public function setReferenceValue_fileRels($refRec, $itemArray, $newValue, &$dataArray, $flexpointer = '') {
 		$ID_absFile = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($itemArray[$refRec['sorting']]['ID_absFile']);
@@ -831,7 +818,6 @@ class ReferenceIndex {
 	 * @param array $dataArray Data array in which the new value is set (passed by reference)
 	 * @param string $flexpointer Flexform pointer, if in a flex form field.
 	 * @return string Error message if any, otherwise FALSE = OK
-	 * @todo Define visibility
 	 */
 	public function setReferenceValue_softreferences($refRec, $softref, $newValue, &$dataArray, $flexpointer = '') {
 		if (is_array($softref['keys'][$refRec['softref_key']][$refRec['softref_id']])) {
@@ -870,7 +856,6 @@ class ReferenceIndex {
 	 *
 	 * @param array $conf Config array for TCA/columns field
 	 * @return boolean TRUE if DB reference field (group/db or select with foreign-table)
-	 * @todo Define visibility
 	 */
 	public function isReferenceField($conf) {
 		return (
@@ -887,7 +872,6 @@ class ReferenceIndex {
 	 *
 	 * @param string $folder Folder relative to PATH_site
 	 * @return string Input folder prefixed with PATH_site. No checking for existence is done. Output must be a folder without trailing slash.
-	 * @todo Define visibility
 	 */
 	public function destPathFromUploadFolder($folder) {
 		if (!$folder) {
@@ -901,7 +885,6 @@ class ReferenceIndex {
 	 *
 	 * @param string $msg Error message
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function error($msg) {
 		$this->errorLog[] = $msg;

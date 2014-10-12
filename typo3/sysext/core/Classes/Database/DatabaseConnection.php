@@ -61,26 +61,26 @@ class DatabaseConnection {
 
 	// Set "TRUE" or "1" if you want database errors outputted. Set to "2" if you also want successful database actions outputted.
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $debugOutput = FALSE;
 
 	// Internally: Set to last built query (not necessarily executed...)
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $debug_lastBuiltQuery = '';
 
 	// Set "TRUE" if you want the last built query to be stored in $debug_lastBuiltQuery independent of $this->debugOutput
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $store_lastBuiltQuery = FALSE;
 
 	// Set this to 1 to get queries explained (devIPmask must match). Set the value to 2 to the same but disregarding the devIPmask.
 	// There is an alternative option to enable explain output in the admin panel under "TypoScript", which will produce much nicer output, but only works in FE.
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $explainOutput = 0;
 
@@ -150,7 +150,7 @@ class DatabaseConnection {
 
 	// Default character set, applies unless character set or collation are explicitly set
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $default_charset = 'utf8';
 
@@ -1761,7 +1761,6 @@ class DatabaseConnection {
 	 * @param string $func Function calling debug()
 	 * @param string $query Last query if not last built query
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function debug($func, $query = '') {
 		$error = $this->sql_error();
@@ -1786,7 +1785,6 @@ class DatabaseConnection {
 	 *
 	 * @param boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 * @return boolean TRUE if the  record set is valid, FALSE otherwise
-	 * @todo Define visibility
 	 */
 	public function debug_check_recordset($res) {
 		if ($res !== FALSE) {

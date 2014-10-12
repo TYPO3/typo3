@@ -22,27 +22,27 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 
 	// Internal
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $categories = array();
 
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $ext_dontCheckIssetValues = 1;
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $ext_CEformName = 'tsStyleConfigForm';
 
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $ext_printAll = 1;
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $ext_incomingValues = array();
 
@@ -52,7 +52,6 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	 * @param string $pathAbs PathAbs is the absolute path from root
 	 * @param string $backPath BackPath is the backReference from current position to typo3/ dir
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_initTSstyleConfig($configTemplate, $pathRel, $pathAbs, $backPath) {
 		// Do not log time-performance information
@@ -72,7 +71,6 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	 * @param 	[type]		$theConstants: ...
 	 * @param 	[type]		$valueArray: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_setValueArray($theConstants, $valueArray) {
 		$temp = $this->flatSetup;
@@ -96,7 +94,6 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	 * [Describe function...]
 	 *
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_getCategoriesForModMenu() {
 		return $this->ext_getCategoryLabelArray();
@@ -107,7 +104,6 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	 *
 	 * @param 	[type]		$cat: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_makeHelpInformationForCategory($cat) {
 		return $this->ext_getTSCE_config($cat);
@@ -123,7 +119,6 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	 * @param string $extKey
 	 * @param boolean Adds opening <form> tag to the ouput, if TRUE
 	 * @return string The form
-	 * @todo Define visibility
 	 */
 	public function ext_getForm($cat, $theConstants, $script = '', $addFields = '', $extKey = '', $addFormTag = TRUE) {
 		$this->ext_makeHelpInformationForCategory($cat);
@@ -149,7 +144,6 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	 * [Describe function...]
 	 *
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_displayExample() {
 		if ($this->helpConfig['imagetag'] || $this->helpConfig['description'] || $this->helpConfig['header']) {
@@ -163,7 +157,6 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	 *
 	 * @param 	[type]		$arr: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_mergeIncomingWithExisting($arr) {
 		$parseObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
@@ -175,7 +168,6 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 
 	// Extends:
 	/**
-	 * @todo Define visibility
 	 */
 	public function ext_getKeyImage($key) {
 		return '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->ext_backPath, ('gfx/rednumbers/' . $key . '.gif'), '') . ' hspace="2" align="top" alt="" />';
@@ -186,7 +178,6 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	 *
 	 * @param 	[type]		$imgConf: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_getTSCE_config_image($imgConf) {
 		$iFile = $this->ext_localGfxPrefix . $imgConf;
@@ -200,7 +191,6 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	 *
 	 * @param 	[type]		$params: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_fNandV($params) {
 		$fN = 'data[' . $params['name'] . ']';
@@ -220,7 +210,6 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	 * @param 	[type]		$key: ...
 	 * @param 	[type]		$var: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_putValueInConf($key, $var) {
 		$this->ext_incomingValues[$key] = $key . '=' . $var;
@@ -231,7 +220,6 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	 *
 	 * @param 	[type]		$key: ...
 	 * @return 	[type]		...
-	 * @todo Define visibility
 	 */
 	public function ext_removeValueInConf($key) {
 

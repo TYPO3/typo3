@@ -25,18 +25,18 @@ class TimeTracker {
 
 	// Is loaded with the millisecond time when this object is created
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $starttime = 0;
 
 	// Log Rendering flag. If set, ->push() and ->pull() is called from the cObj->cObjGetSingle(). This determines whether or not the TypoScript parsing activity is logged. But it also slows down the rendering
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $LR = 1;
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $printConf = array(
 		'showParentKeys' => 1,
@@ -53,53 +53,53 @@ class TimeTracker {
 	);
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $wrapError = array();
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $wrapIcon = array();
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $uniqueCounter = 0;
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $tsStack = array(array());
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $tsStackLevel = 0;
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $tsStackLevelMax = array();
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $tsStackLog = array();
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $tsStackPointer = 0;
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $currentHashPointer = array();
 
 	// Log entries that take than this number of milliseconds (own time) will be highlighted during log display. Set 0 to disable highlighting.
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $highlightLongerThan = 0;
 

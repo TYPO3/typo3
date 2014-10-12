@@ -23,49 +23,41 @@ abstract class AbstractService {
 
 	/**
 	 * @var array service description array
-	 * @todo Define visibility
 	 */
 	public $info = array();
 
 	/**
 	 * @var array error stack
-	 * @todo Define visibility
 	 */
 	public $error = array();
 
 	/**
 	 * @var bool Defines if debug messages should be written with \TYPO3\CMS\Core\Utility\GeneralUtility::devLog
-	 * @todo Define visibility
 	 */
 	public $writeDevLog = FALSE;
 
 	/**
 	 * @var string The output content. That's what the services produced as result.
-	 * @todo Define visibility
 	 */
 	public $out = '';
 
 	/**
 	 * @var string The file that should be processed.
-	 * @todo Define visibility
 	 */
 	public $inputFile = '';
 
 	/**
 	 * @var string The content that should be processed.
-	 * @todo Define visibility
 	 */
 	public $inputContent = '';
 
 	/**
 	 * @var string The type of the input content (or file). Might be the same as the service subtypes.
-	 * @todo Define visibility
 	 */
 	public $inputType = '';
 
 	/**
 	 * @var string The file where the output should be written to.
-	 * @todo Define visibility
 	 */
 	public $outputFile = '';
 
@@ -73,7 +65,7 @@ abstract class AbstractService {
 	 * Temporary files which have to be deleted
 	 *
 	 * @private
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $tempFiles = array();
 
@@ -96,7 +88,6 @@ abstract class AbstractService {
 	 * Returns internal information array for service
 	 *
 	 * @return array Service description array
-	 * @todo Define visibility
 	 */
 	public function getServiceInfo() {
 		return $this->info;
@@ -106,7 +97,6 @@ abstract class AbstractService {
 	 * Returns the service key of the service
 	 *
 	 * @return string Service key
-	 * @todo Define visibility
 	 */
 	public function getServiceKey() {
 		return $this->info['serviceKey'];
@@ -116,7 +106,6 @@ abstract class AbstractService {
 	 * Returns the title of the service
 	 *
 	 * @return string Service title
-	 * @todo Define visibility
 	 */
 	public function getServiceTitle() {
 		return $this->info['title'];
@@ -129,7 +118,6 @@ abstract class AbstractService {
 	 * @param mixed $defaultValue Default configuration if no special config is available
 	 * @param boolean $includeDefaultConfig If set the 'default' config will be returned if no special config for this service is available (default: TRUE)
 	 * @return mixed Configuration value for the service
-	 * @todo Define visibility
 	 */
 	public function getServiceOption($optionName, $defaultValue = '', $includeDefaultConfig = TRUE) {
 		$config = NULL;
@@ -157,7 +145,6 @@ abstract class AbstractService {
 	 * @param integer $severity Severity: 0 is info, 1 is notice, 2 is warning, 3 is fatal error, -1 is "OK" message
 	 * @param array|boolean $dataVar dditional data you want to pass to the logger.
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function devLog($msg, $severity = 0, $dataVar = FALSE) {
 		if ($this->writeDevLog) {
@@ -171,7 +158,6 @@ abstract class AbstractService {
 	 * @param integer $errNum Error number (see T3_ERR_SV_* constants)
 	 * @param string $errMsg Error message
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function errorPush($errNum = T3_ERR_SV_GENERAL, $errMsg = 'Unspecified error occurred') {
 		array_push($this->error, array('nr' => $errNum, 'msg' => $errMsg));
@@ -184,7 +170,6 @@ abstract class AbstractService {
 	 * Removes the last error from the error stack.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function errorPull() {
 		array_pop($this->error);
@@ -194,7 +179,6 @@ abstract class AbstractService {
 	 * Returns the last error number from the error stack.
 	 *
 	 * @return integer|boolean Error number (or TRUE if no error)
-	 * @todo Define visibility
 	 */
 	public function getLastError() {
 		// Means all is ok - no error
@@ -210,7 +194,6 @@ abstract class AbstractService {
 	 * Returns the last message from the error stack.
 	 *
 	 * @return string Error message
-	 * @todo Define visibility
 	 */
 	public function getLastErrorMsg() {
 		$lastErrorMessage = '';
@@ -225,7 +208,6 @@ abstract class AbstractService {
 	 * Returns all error messages as array.
 	 *
 	 * @return array Error messages
-	 * @todo Define visibility
 	 */
 	public function getErrorMsgArray() {
 		$errArr = array();
@@ -241,7 +223,6 @@ abstract class AbstractService {
 	 * Returns the last array from the error stack.
 	 *
 	 * @return array Error number and message
-	 * @todo Define visibility
 	 */
 	public function getLastErrorArray() {
 		return end($this->error);
@@ -251,7 +232,6 @@ abstract class AbstractService {
 	 * Reset the error stack.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function resetErrors() {
 		$this->error = array();
@@ -267,7 +247,6 @@ abstract class AbstractService {
 	 *
 	 * @param string $progList Comma list of programs 'perl,python,pdftotext'
 	 * @return boolean Return FALSE if one program was not found
-	 * @todo Define visibility
 	 */
 	public function checkExec($progList) {
 		$ret = TRUE;
@@ -286,7 +265,6 @@ abstract class AbstractService {
 	 * Deactivate the service. Use this if the service fails at runtime and will not be available.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function deactivateService() {
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::deactivateService($this->info['serviceType'], $this->info['serviceKey']);
@@ -302,7 +280,6 @@ abstract class AbstractService {
 	 *
 	 * @param string $absFile File name with absolute path.
 	 * @return string|boolean File name or FALSE.
-	 * @todo Define visibility
 	 */
 	public function checkInputFile($absFile) {
 		$checkResult = FALSE;
@@ -324,7 +301,6 @@ abstract class AbstractService {
 	 * @param string $absFile File name to read from.
 	 * @param integer $length Maximum length to read. If empty the whole file will be read.
 	 * @return string|boolean $content or FALSE
-	 * @todo Define visibility
 	 */
 	public function readFile($absFile, $length = 0) {
 		$out = FALSE;
@@ -343,7 +319,6 @@ abstract class AbstractService {
 	 * @param string $content Content to write to the file
 	 * @param string $absFile File name to write into. If empty a temp file will be created.
 	 * @return string|boolean File name or FALSE
-	 * @todo Define visibility
 	 */
 	public function writeFile($content, $absFile = '') {
 		if (!$absFile) {
@@ -366,7 +341,6 @@ abstract class AbstractService {
 	 *
 	 * @param string $filePrefix File prefix.
 	 * @return string|boolean File name or FALSE
-	 * @todo Define visibility
 	 */
 	public function tempFile($filePrefix) {
 		$absFile = \TYPO3\CMS\Core\Utility\GeneralUtility::tempnam($filePrefix);
@@ -385,7 +359,6 @@ abstract class AbstractService {
 	 *
 	 * @param string File name with absolute path.
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function registerTempFile($absFile) {
 		if (!isset($this->shutdownRegistry[__METHOD__])) {
@@ -399,7 +372,6 @@ abstract class AbstractService {
 	 * Delete registered temporary files.
 	 *
 	 * @return 	void
-	 * @todo Define visibility
 	 */
 	public function unlinkTempFiles() {
 		foreach ($this->tempFiles as $absFile) {
@@ -419,7 +391,6 @@ abstract class AbstractService {
 	 * @param mixed $content Input content (going into ->inputContent)
 	 * @param string $type The type of the input content (or file). Might be the same as the service subtypes.
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function setInput($content, $type = '') {
 		$this->inputContent = $content;
@@ -433,7 +404,6 @@ abstract class AbstractService {
 	 * @param string $absFile File name
 	 * @param string $type The type of the input content (or file). Might be the same as the service subtypes.
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function setInputFile($absFile, $type = '') {
 		$this->inputContent = '';
@@ -446,7 +416,6 @@ abstract class AbstractService {
 	 * Will be read from input file if needed. (That is if ->inputContent is empty and ->inputFile is not)
 	 *
 	 * @return mixed
-	 * @todo Define visibility
 	 */
 	public function getInput() {
 		if ($this->inputContent == '') {
@@ -461,7 +430,6 @@ abstract class AbstractService {
 	 *
 	 * @param string $createFile File name. If empty a temp file will be created.
 	 * @return string File name or FALSE if no input or file error.
-	 * @todo Define visibility
 	 */
 	public function getInputFile($createFile = '') {
 		if ($this->inputFile) {
@@ -482,7 +450,6 @@ abstract class AbstractService {
 	 *
 	 * @param string $absFile File name
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function setOutputFile($absFile) {
 		$this->outputFile = $absFile;
@@ -492,7 +459,6 @@ abstract class AbstractService {
 	 * Get the output content.
 	 *
 	 * @return mixed
-	 * @todo Define visibility
 	 */
 	public function getOutput() {
 		if ($this->outputFile) {
@@ -506,7 +472,6 @@ abstract class AbstractService {
 	 *
 	 * @param string $absFile Absolute filename to write to
 	 * @return mixed
-	 * @todo Define visibility
 	 */
 	public function getOutputFile($absFile = '') {
 		if (!$this->outputFile) {
@@ -527,7 +492,6 @@ abstract class AbstractService {
 	 * example: check if the perl interpreter is available which is needed to run an extern perl script.
 	 *
 	 * @return boolean TRUE if the service is available
-	 * @todo Define visibility
 	 */
 	public function init() {
 		// look in makeInstanceService()
@@ -546,7 +510,6 @@ abstract class AbstractService {
 	 * Will be called by init(). Should be used before every use if a service instance is used multiple times.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function reset() {
 		$this->unlinkTempFiles();
@@ -563,7 +526,6 @@ abstract class AbstractService {
 	 * Child classes should explicitly call parent::__destruct() in their destructors for this to work
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function __destruct() {
 		$this->unlinkTempFiles();

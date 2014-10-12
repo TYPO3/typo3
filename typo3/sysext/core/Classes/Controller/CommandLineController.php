@@ -27,12 +27,12 @@ class CommandLineController {
 
 	// Command line arguments, exploded into key => value-array pairs
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $cli_args = array();
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $cli_options = array(
 		array('-s', 'Silent operation, will only output errors and important messages.'),
@@ -41,7 +41,7 @@ class CommandLineController {
 	);
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $cli_help = array(
 		'name' => 'CLI base class (overwrite this...)',
@@ -54,7 +54,7 @@ class CommandLineController {
 	);
 
 	/**
-	 * @todo Define visibility
+	 * @var resource
 	 */
 	public $stdin = NULL;
 
@@ -63,7 +63,6 @@ class CommandLineController {
 	 * Make sure child classes also call this!
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function __construct() {
 		// Loads the cli_args array with command line arguments
@@ -77,7 +76,6 @@ class CommandLineController {
 	 * @param string $option Option string, eg. "-s
 	 * @param array $argv Input argv array
 	 * @return array Output argv array with all options AFTER the found option.
-	 * @todo Define visibility
 	 */
 	public function cli_getArgArray($option, $argv) {
 		while (count($argv) && (string)$argv[0] !== (string)$option) {
@@ -94,7 +92,6 @@ class CommandLineController {
 	 *
 	 * @param string $option Option string, eg. "-s
 	 * @return boolean TRUE if option found
-	 * @todo Define visibility
 	 */
 	public function cli_isArg($option) {
 		return isset($this->cli_args[$option]);
@@ -106,7 +103,6 @@ class CommandLineController {
 	 * @param string $option Option string, eg. "-s
 	 * @param integer $idx Value index, default is 0 (zero) = the first one...
 	 * @return boolean TRUE if option found
-	 * @todo Define visibility
 	 */
 	public function cli_argValue($option, $idx = 0) {
 		return is_array($this->cli_args[$option]) ? $this->cli_args[$option][$idx] : '';
@@ -119,7 +115,6 @@ class CommandLineController {
 	 *
 	 * @param array $argv Configuration options
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function cli_getArgIndex(array $argv = array()) {
 		$cli_options = array();
@@ -147,7 +142,6 @@ class CommandLineController {
 	 * Validates if the input arguments in this->cli_args are all listed in this->cli_options and if not,
 	 * will exit with an error.
 	 *
-	 * @todo Define visibility
 	 */
 	public function cli_validateArgs() {
 		$cli_args_copy = $this->cli_args;
@@ -195,7 +189,6 @@ class CommandLineController {
 	 * Asks stdin for keyboard input and returns the line (after enter is pressed)
 	 *
 	 * @return string
-	 * @todo Define visibility
 	 */
 	public function cli_keyboardInput() {
 		// Have to open the stdin stream only ONCE! otherwise I cannot read multiple lines from it... :
@@ -213,7 +206,6 @@ class CommandLineController {
 	 *
 	 * @param string $msg String to ask before...
 	 * @return boolean TRUE if "y" or "yes" is the input (case insensitive)
-	 * @todo Define visibility
 	 */
 	public function cli_keyboardInput_yes($msg = '') {
 		// ONLY makes sense to echo it out since we are awaiting keyboard input - that cannot be silenced
@@ -227,7 +219,6 @@ class CommandLineController {
 	 * @param string $string The string
 	 * @param boolean $force If string should be written even if -s is set (-ss will subdue it!)
 	 * @return boolean Returns TRUE if string was outputted.
-	 * @todo Define visibility
 	 */
 	public function cli_echo($string = '', $force = FALSE) {
 		if (isset($this->cli_args['-ss'])) {
@@ -248,7 +239,6 @@ class CommandLineController {
 	 * Prints help-output from ->cli_help array
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function cli_help() {
 		foreach ($this->cli_help as $key => $value) {
@@ -291,7 +281,6 @@ class CommandLineController {
 	 * @param string $str String to break and indent.
 	 * @param integer $indent Number of space chars to indent.
 	 * @return string Result
-	 * @todo Define visibility
 	 */
 	public function cli_indent($str, $indent) {
 		$lines = explode(LF, wordwrap($str, 75 - $indent));

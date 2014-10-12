@@ -24,25 +24,25 @@ class DiffUtility {
 	// External, static
 	// If set, the HTML tags are stripped from the input strings first.
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $stripTags = 0;
 
 	// Diff options. eg "--unified=3"
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $diffOptions = '';
 
 	// Internal, dynamic
 	// This indicates the number of times the function addClearBuffer has been called - and used to detect the very first call...
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $clearBufferIdx = 0;
 
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $differenceLgd = 0;
 
@@ -53,7 +53,6 @@ class DiffUtility {
 	 * @param string $str2 String 2
 	 * @param string $wrapTag Setting the wrapping tag name
 	 * @return string Formatted output.
-	 * @todo Define visibility
 	 */
 	public function makeDiffDisplay($str1, $str2, $wrapTag = 'span') {
 		if ($this->stripTags) {
@@ -128,7 +127,6 @@ class DiffUtility {
 	 * @param string $str2 String 2
 	 * @return array The result from the exec() function call.
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function getDiff($str1, $str2) {
 		// Create file 1 and write string
@@ -153,7 +151,6 @@ class DiffUtility {
 	 * @param boolean $last If set, it indicates that the string should just end with ... (thus no "complete" ending)
 	 * @return string Processed string.
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function addClearBuffer($clearBuffer, $last = 0) {
 		if (strlen($clearBuffer) > 200) {
@@ -170,7 +167,6 @@ class DiffUtility {
 	 * @param string $str The string input
 	 * @return array Array with words.
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function explodeStringIntoWords($str) {
 		$strArr = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(LF, $str);
@@ -191,7 +187,6 @@ class DiffUtility {
 	 * @param boolean $rev If set, the < > searched for will be &lt; and &gt;
 	 * @return string Processed string
 	 * @access private
-	 * @todo Define visibility
 	 */
 	public function tagSpace($str, $rev = 0) {
 		if ($rev) {

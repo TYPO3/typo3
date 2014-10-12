@@ -25,134 +25,134 @@ class TypoScriptParser {
 
 	// If set, then key names cannot contain characters other than [:alnum:]_\.-
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $strict = 1;
 
 	// Internal
 	// TypoScript hierarchy being build during parsing.
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $setup = array();
 
 	// Raw data, the input string exploded by LF
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $raw;
 
 	// Pointer to entry in raw data array
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $rawP;
 
 	// Holding the value of the last comment
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $lastComment = '';
 
 	// Internally set, used as internal flag to create a multi-line comment (one of those like /*... */)
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $commentSet = 0;
 
 	// Internally set, when multiline value is accumulated
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $multiLineEnabled = 0;
 
 	// Internally set, when multiline value is accumulated
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $multiLineObject = '';
 
 	// Internally set, when multiline value is accumulated
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $multiLineValue = array();
 
 	// Internally set, when in brace. Counter.
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $inBrace = 0;
 
 	// For each condition this flag is set, if the condition is TRUE, else it's cleared. Then it's used by the [ELSE] condition to determine if the next part should be parsed.
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $lastConditionTrue = 1;
 
 	// Tracking all conditions found
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $sections = array();
 
 	// Tracking all matching conditions found
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $sectionsMatch = array();
 
 	// If set, then syntax highlight mode is on; Call the function syntaxHighlight() to use this function
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $syntaxHighLight = 0;
 
 	// Syntax highlight data is accumulated in this array. Used by syntaxHighlight_print() to construct the output.
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $highLightData = array();
 
 	// Syntax highlight data keeping track of the curly brace level for each line
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $highLightData_bracelevel = array();
 
 	// Debugging, analysis:
 	// DO NOT register the comments. This is default for the ordinary sitetemplate!
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $regComments = 0;
 
 	// DO NOT register the linenumbers. This is default for the ordinary sitetemplate!
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $regLinenumbers = 0;
 
 	// Error accumulation array.
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $errors = array();
 
 	// Used for the error messages line number reporting. Set externally.
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $lineNumberOffset = 0;
 
 	// Line for break point.
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $breakPointLN = 0;
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $highLightStyles = array(
 		'prespace' => array('<span class="ts-prespace">', '</span>'),
@@ -186,17 +186,19 @@ class TypoScriptParser {
 
 	// Additional attributes for the <span> tags for a blockmode line
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $highLightBlockStyles = '';
 
 	// The hex-HTML color for the blockmode
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $highLightBlockStyles_basecolor = '#cccccc';
 
-	//Instance of parentObject, used by \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService
+	/**
+	 * @var \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService
+	 */
 	public $parentObject;
 
 	/**
@@ -206,7 +208,6 @@ class TypoScriptParser {
 	 * @param object|string $matchObj If is object, then this is used to match conditions found in the TypoScript code. If matchObj not specified, then no conditions will work! (Except [GLOBAL])
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function parse($string, $matchObj = '') {
 		$this->raw = explode(LF, $string);
@@ -257,7 +258,6 @@ class TypoScriptParser {
 	 *
 	 * @return string The condition value
 	 * @see parse()
-	 * @todo Define visibility
 	 */
 	public function nextDivider() {
 		while (isset($this->raw[$this->rawP])) {
@@ -274,7 +274,6 @@ class TypoScriptParser {
 	 *
 	 * @param array $setup Reference to the setup array in which to accumulate the values.
 	 * @return string|NULL Returns the string of the condition found, the exit signal or possible nothing (if it completed parsing with no interruptions)
-	 * @todo Define visibility
 	 */
 	public function parseSub(array &$setup) {
 		while (isset($this->raw[$this->rawP])) {
@@ -565,7 +564,6 @@ class TypoScriptParser {
 	 * @param array $setup The local setup array from the function calling this function
 	 * @return string Returns the exitSignal
 	 * @see parseSub()
-	 * @todo Define visibility
 	 */
 	public function rollParseSub($string, array &$setup) {
 		if ((string)$string === '') {
@@ -590,7 +588,6 @@ class TypoScriptParser {
 	 * @param string $string Object path for which to get the value
 	 * @param array $setup Global setup code if $string points to a global object path. But if string is prefixed with "." then its the local setup array.
 	 * @return array An array with keys 0/1 being value/property respectively
-	 * @todo Define visibility
 	 */
 	public function getVal($string, $setup) {
 		if ((string)$string === '') {
@@ -624,7 +621,6 @@ class TypoScriptParser {
 	 * @param array|string $value The value/property pair array to set. If only one of them is set, then the other is not touched (unless $wipeOut is set, which it is when copies are made which must include both value and property)
 	 * @param bool $wipeOut If set, then both value and property is wiped out when a copy is made of another value.
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function setVal($string, array &$setup, $value, $wipeOut = FALSE) {
 		if ((string)$string === '') {
@@ -729,7 +725,6 @@ class TypoScriptParser {
 	 * @param string $err The error message string
 	 * @param integer $num The error severity (in the scale of $GLOBALS['TT']->setTSlogMessage: Approx: 2=warning, 1=info, 0=nothing, 3=fatal.)
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function error($err, $num = 2) {
 		if (is_object($GLOBALS['TT'])) {
@@ -1147,7 +1142,6 @@ class TypoScriptParser {
 	 * @param mixed $lineNum If blank, linenumbers are NOT printed. If array then the first key is the linenumber offset to add to the internal counter.
 	 * @param boolean $highlightBlockMode If set, then the highlighted output will be formatted in blocks based on the brace levels. prespace will be ignored and empty lines represented with a single no-break-space.
 	 * @return string HTML code for the syntax highlighted string
-	 * @todo Define visibility
 	 */
 	public function doSyntaxHighlight($string, $lineNum = '', $highlightBlockMode = FALSE) {
 		$this->syntaxHighLight = 1;
@@ -1168,7 +1162,6 @@ class TypoScriptParser {
 	 * @return void
 	 * @access private
 	 * @see 	parse()
-	 * @todo Define visibility
 	 */
 	public function regHighLight($code, $pointer, $strlen = -1) {
 		if ($strlen === -1) {
@@ -1187,7 +1180,6 @@ class TypoScriptParser {
 	 * @return string HTML content
 	 * @access private
 	 * @see doSyntaxHighlight()
-	 * @todo Define visibility
 	 */
 	public function syntaxHighlight_print($lineNumDat, $highlightBlockMode) {
 		// Registers all error messages in relation to their linenumber

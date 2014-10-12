@@ -74,19 +74,18 @@ class SoftReferenceIndex {
 
 	// External configuration
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $fileAdminDir = '';
 
 	// Internal:
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $tokenID_basePrefix = '';
 
 	/**
 	 * Class construct to set global variable
-	 *
 	 */
 	public function __construct() {
 		$this->fileAdminDir = !empty($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']) ? rtrim($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '/') : 'fileadmin';
@@ -103,7 +102,6 @@ class SoftReferenceIndex {
 	 * @param array $spParams Parameters of the softlink parser. Basically this is the content inside optional []-brackets after the softref keys. Parameters are exploded by ";
 	 * @param string $structurePath If running from inside a FlexForm structure, this is the path of the tag.
 	 * @return array Result array on positive matches, see description above. Otherwise FALSE
-	 * @todo Define visibility
 	 */
 	public function findRef($table, $field, $uid, $content, $spKey, $spParams, $structurePath = '') {
 		$retVal = FALSE;
@@ -176,7 +174,6 @@ class SoftReferenceIndex {
 	 * @param string $content The input content to analyse
 	 * @param array $spParams Parameters set for the softref parser key in TCA/columns
 	 * @return array Result array on positive matches, see description above. Otherwise FALSE
-	 * @todo Define visibility
 	 */
 	public function findRef_images($content, $spParams) {
 		// Start HTML parser and split content by image tag:
@@ -239,7 +236,6 @@ class SoftReferenceIndex {
 	 * @param array $spParams Parameters set for the softref parser key in TCA/columns. value "linkList" will split the string by comma before processing.
 	 * @return array Result array on positive matches, see description above. Otherwise FALSE
 	 * @see tslib_content::typolink(), getTypoLinkParts()
-	 * @todo Define visibility
 	 */
 	public function findRef_typolink($content, $spParams) {
 		// First, split the input string by a comma if the "linkList" parameter is set.
@@ -275,7 +271,6 @@ class SoftReferenceIndex {
 	 * @param array $spParams Parameters set for the softref parser key in TCA/columns
 	 * @return array Result array on positive matches, see description above. Otherwise FALSE
 	 * @see tslib_content::typolink(), getTypoLinkParts()
-	 * @todo Define visibility
 	 */
 	public function findRef_typolink_tag($content, $spParams) {
 		// Parse string for special TYPO3 <link> tag:
@@ -307,7 +302,6 @@ class SoftReferenceIndex {
 	 * @param string $content The input content to analyse
 	 * @param array $spParams Parameters set for the softref parser key in TCA/columns
 	 * @return array Result array on positive matches, see description above. Otherwise FALSE
-	 * @todo Define visibility
 	 */
 	public function findRef_TStemplate($content, $spParams) {
 		$elements = array();
@@ -381,7 +375,6 @@ class SoftReferenceIndex {
 	 * @param string $content The input content to analyse
 	 * @param array $spParams Parameters set for the softref parser key in TCA/columns
 	 * @return array Result array on positive matches, see description above. Otherwise FALSE
-	 * @todo Define visibility
 	 */
 	public function findRef_TSconfig($content, $spParams) {
 		$elements = array();
@@ -403,7 +396,6 @@ class SoftReferenceIndex {
 	 * @param string $content The input content to analyse
 	 * @param array $spParams Parameters set for the softref parser key in TCA/columns
 	 * @return array Result array on positive matches, see description above. Otherwise FALSE
-	 * @todo Define visibility
 	 */
 	public function findRef_email($content, $spParams) {
 		$resultArray = array();
@@ -440,7 +432,6 @@ class SoftReferenceIndex {
 	 * @param string $content The input content to analyse
 	 * @param array $spParams Parameters set for the softref parser key in TCA/columns
 	 * @return array Result array on positive matches, see description above. Otherwise FALSE
-	 * @todo Define visibility
 	 */
 	public function findRef_url($content, $spParams) {
 		$resultArray = array();
@@ -480,7 +471,6 @@ class SoftReferenceIndex {
 	 * @param string $content The input content to analyse
 	 * @param array $spParams Parameters set for the softref parser key in TCA/columns
 	 * @return array Result array on positive matches, see description above. Otherwise FALSE
-	 * @todo Define visibility
 	 */
 	public function findRef_extension_fileref($content, $spParams) {
 		$resultArray = array();
@@ -515,7 +505,6 @@ class SoftReferenceIndex {
 	 * @param string $content Input content to analyse
 	 * @param array $elements Element array to be modified with new entries. Passed by reference.
 	 * @return string Output content, possibly with tokens inserted.
-	 * @todo Define visibility
 	 */
 	public function fileadminReferences($content, &$elements) {
 		// Fileadmin files are found
@@ -555,7 +544,6 @@ class SoftReferenceIndex {
 	 * @param string $typolinkValue TypoLink value.
 	 * @return array Array with the properties of the input link specified. The key "LINK_TYPE" will reveal the type. If that is blank it could not be determined.
 	 * @see TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typolink(), setTypoLinkPartsElement()
-	 * @todo Define visibility
 	 */
 	public function getTypoLinkParts($typolinkValue) {
 		$finalTagParts = array();
@@ -682,7 +670,6 @@ class SoftReferenceIndex {
 	 * @param integer $idx Index value of the found element - user to make unique but stable tokenID
 	 * @return string The input content, possibly containing tokens now according to the added substitution entries in $elements
 	 * @see getTypoLinkParts()
-	 * @todo Define visibility
 	 */
 	public function setTypoLinkPartsElement($tLP, &$elements, $content, $idx) {
 		// Initialize, set basic values. In any case a link will be shown
@@ -819,7 +806,6 @@ class SoftReferenceIndex {
 	 *
 	 * @param integer $link_param Page alias string value
 	 * @return integer Page uid corresponding to alias value.
-	 * @todo Define visibility
 	 */
 	public function getPageIdFromAlias($link_param) {
 		$pRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordsByField('pages', 'alias', $link_param);
@@ -831,7 +817,6 @@ class SoftReferenceIndex {
 	 *
 	 * @param string $index Suffix value.
 	 * @return string Token ID
-	 * @todo Define visibility
 	 */
 	public function makeTokenID($index = '') {
 		return md5($this->tokenID_basePrefix . ':' . $index);

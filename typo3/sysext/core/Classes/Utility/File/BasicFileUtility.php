@@ -38,56 +38,56 @@ class BasicFileUtility {
 	const UNSAFE_FILENAME_CHARACTER_EXPRESSION = '\\x00-\\x2C\\/\\x3A-\\x3F\\x5B-\\x60\\x7B-\\xBF';
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $getUniqueNamePrefix = '';
 
 	// Prefix which will be prepended the file when using the getUniqueName-function
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $maxNumber = 99;
 
 	// This number decides the highest allowed appended number used on a filename before we use naming with unique strings
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $uniquePrecision = 6;
 
 	// This number decides how many characters out of a unique MD5-hash that is appended to a filename if getUniqueName is asked to find an available filename.
 	/**
-	 * @todo Define visibility
+	 * @var int
 	 */
 	public $maxInputNameLen = 60;
 
 	// This is the maximum length of names treated by cleanFileName()
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $tempFN = '_temp_';
 
 	// Temp-foldername. A folder in the root of one of the mounts with this name is regarded a TEMP-folder (used for upload from clipboard)
 	// internal
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $f_ext = array();
 
 	// See comment in header
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $mounts = array();
 
 	// See comment in header
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $webPath = '';
 
 	// Set to DOCUMENT_ROOT.
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $isInit = 0;
 
@@ -275,7 +275,6 @@ class BasicFileUtility {
 	 *
 	 * @param 	string		Filename, eg "somefile.html
 	 * @return 	boolean
-	 * @todo Define visibility
 	 * @deprecated since TYPO3 6.0. Please use corresponding TYPO3\\CMS\\Core\\Resource\\ResourceStorage (fetched via BE_USERS->getFileStorages())
 	 */
 	public function checkFileNameLen($fileName) {

@@ -52,13 +52,13 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	// Notice; some of these are overridden in the start() method with values from $GLOBALS['TYPO3_CONF_VARS']['BE']
 	// Path to unzip-program (with trailing '/')
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $unzipPath = '';
 
 	// If set, the uploaded files will overwrite existing files.
 	/**
-	 * @todo Define visibility
+	 * @var bool
 	 */
 	public $dontCheckForUnique = 0;
 
@@ -66,6 +66,8 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	 * This array is self-explaining (look in the class below).
 	 * It grants access to the functions. This could be set from outside in order to enabled functions to users.
 	 * See also the function setActionPermissions() which takes input directly from the user-record
+	 *
+	 * @var array
 	 */
 	public $actionPerms = array(
 		// File permissions
@@ -90,28 +92,19 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 
 	// This is regarded to be the recycler folder
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $recyclerFN = '_recycler_';
-
-	/**
-	 * Whether to use recycler (0 = no, 1 = if available, 2 = always)
-	 *
-	 * @var integer
-	 * @deprecated since TYPO3 6.0
-	 * @todo Define visibility
-	 */
-	public $useRecycler = 1;
 
 	// Internal, dynamic
 	// Will contain map between upload ID and the final filename
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $internalUploadMap = array();
 
 	/**
-	 * @todo Define visibility
+	 * @var string
 	 */
 	public $lastError = '';
 
@@ -140,7 +133,6 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	 *
 	 * @param array $fileCmds Array with the commands to execute. See "TYPO3 Core API" document
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function start($fileCmds) {
 		$unzipPath = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['unzip_path']);
@@ -185,7 +177,6 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	 *
 	 * @return mixed FALSE, if the file functions were not initialized
 	 * @throws \UnexpectedValueException
-	 * @todo Define visibility
 	 */
 	public function processData() {
 		$result = array();
@@ -323,7 +314,6 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	 * @param string $theFile Takes a valid Path ($theFile)
 	 * @return string Returns the path (without trailing slash) of the closest recycle-folder if found. Else FALSE.
 	 * @todo To be put in Storage with a better concept
-	 * @todo Define visibility
 	 * @deprecated since TYPO3 6.0, use \TYPO3\CMS\Core\Resource\ResourceStorage method instead
 	 */
 	public function findRecycler($theFile) {
@@ -355,7 +345,6 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	 * @param string $details This is the default, raw error message in english
 	 * @param array $data Array with special information that may go into $details by "%s" marks / sprintf() when the log is shown
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function writeLog($action, $error, $details_nr, $details, $data) {
 		// Type value for tce_file.php
@@ -379,7 +368,6 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	 *
 	 * @param array $cmds $cmds['data'] is the file/folder to delete
 	 * @return boolean Returns TRUE upon success
-	 * @todo Define visibility
 	 */
 	public function func_delete($cmds) {
 		$result = FALSE;
@@ -693,7 +681,6 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	 *
 	 * @param array $cmds Command details as described above
 	 * @return \TYPO3\CMS\Core\Resource\File Returns the new file upon success
-	 * @todo Define visibility
 	 */
 	public function func_rename($cmds) {
 		if (!$this->isInit) {
@@ -746,7 +733,6 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	 *
 	 * @param array $cmds Command details as described above
 	 * @return \TYPO3\CMS\Core\Resource\Folder Returns the new foldername upon success
-	 * @todo Define visibility
 	 */
 	public function func_newfolder($cmds) {
 		if (!$this->isInit) {
@@ -782,7 +768,6 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	 *
 	 * @param array $cmds Command details as described above
 	 * @return string Returns the new filename upon success
-	 * @todo Define visibility
 	 */
 	public function func_newfile($cmds) {
 		if (!$this->isInit) {
@@ -819,7 +804,6 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	 *
 	 * @param array $cmds $cmds['data'] is the new content. $cmds['target'] is the target (file or dir)
 	 * @return boolean Returns TRUE on success
-	 * @todo Define visibility
 	 */
 	public function func_edit($cmds) {
 		if (!$this->isInit) {
@@ -884,7 +868,6 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	 *
 	 * @param array $cmds $cmds['data'] is the ID-number (points to the global var that holds the filename-ref  ($_FILES['upload_' . $id]['name']) . $cmds['target'] is the target directory, $cmds['charset'] is the the character set of the file name (utf-8 is needed for JS-interaction)
 	 * @return File[] | FALSE Returns an array of new file objects upon success. False otherwise
-	 * @todo Define visibility
 	 */
 	public function func_upload($cmds) {
 		if (!$this->isInit) {
@@ -959,7 +942,6 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	 *
 	 * @param array $cmds $cmds['data'] is the zip-file. $cmds['target'] is the target directory. If not set we'll default to the same directory as the file is in.
 	 * @return boolean Returns TRUE on success
-	 * @todo Define visibility
 	 */
 	public function func_unzip($cmds) {
 		if (!$this->isInit || $this->dont_use_exec_commands) {
