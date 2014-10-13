@@ -1455,6 +1455,26 @@ return array(
 				),
 			),
 		),
+		'inline_2' => array( /** Taken from irre_tutorial 1nff */
+			'label' => '2 1:n foreign field to table with sheets',
+			'config' => array(
+				'type' => 'inline',
+				'foreign_table' => 'tx_styleguide_forms_inline_2_child1',
+				'foreign_field' => 'parentid',
+				'foreign_table_field' => 'parenttable',
+				'maxitems' => 10,
+				'appearance' => array(
+					'showSynchronizationLink' => TRUE,
+					'showAllLocalizationLink' => TRUE,
+					'showPossibleLocalizationRecords' => TRUE,
+					'showRemovedLocalizationRecords' => TRUE,
+				),
+				'behaviour' => array(
+					'localizationMode' => 'select',
+					'localizeChildrenAtParentLocalization' => TRUE,
+				),
+			),
+		),
 
 
 	),
@@ -1479,7 +1499,7 @@ return array(
 			passthrough_1,
 			user_1, user_2,
 			flex_1, flex_2, flex_3,
-			inline_1,
+			inline_1, inline_2,
 			',
 	),
 
@@ -1515,7 +1535,7 @@ return array(
 				--div--;Flex,
 					flex_1, flex_2, flex_3,
 				--div--;Inline,
-					inline_1,
+					inline_1, inline_2,
 				--div--;Access,
 					--palette--;Visibility;visibility,
 					--palette--;Access;access
