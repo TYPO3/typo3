@@ -369,7 +369,7 @@ class TypoScriptParser {
 								} else {
 									// Checking for special TSparser properties (to change TS values at parsetime)
 									$match = array();
-									if ($line[0] === ':' && preg_match('/^:=\\s*([^\\(]+)\\s*\\((.*)\\).*/', $line, $match)) {
+									if ($line[0] === ':' && preg_match('/^:=\\s*([[:alpha:]]+)\\s*\\((.*)\\).*/', $line, $match)) {
 										$tsFunc = $match[1];
 										$tsFuncArg = $match[2];
 										list($currentValue) = $this->getVal($objStrName, $setup);
@@ -508,7 +508,7 @@ class TypoScriptParser {
 				$newValue = str_replace($fromStr, $toStr, $currentValue);
 				break;
 			case 'addToList':
-				$newValue = ((string)$currentValue !== '' ? $currentValue . ',' : '') . trim($modifierArgument);
+				$newValue = ((string)$currentValue !== '' ? $currentValue . ',' : '') . $modifierArgument;
 				break;
 			case 'removeFromList':
 				$existingElements = GeneralUtility::trimExplode(',', $currentValue);
