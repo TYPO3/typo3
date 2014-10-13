@@ -107,6 +107,12 @@ class TypoScriptParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				'789',
 				'123,456,789',
 			),
+			'addToList adds at end of existing list including white-spaces' => array(
+				'addToList',
+				'123,456',
+				' 789 , 32 , 12 ',
+				'123,456, 789 , 32 , 12 ',
+			),
 			'addToList adds nothing' => array(
 				'addToList',
 				'123,456',
@@ -607,30 +613,48 @@ class TypoScriptParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					),
 				),
 			),
-		    'key with colon' => array(
+			'key with colon' => array(
 				'some:key = is valid',
 				array(
 					'some:key' => 'is valid'
 				)
-		    ),
-		    'special operator' => array(
-			    'some := addToList(a)',
-			    array(
-				    'some' => 'a'
-			    )
-		    ),
-		    'special operator and colon, no spaces' => array(
-			    'some:key:=addToList(a)',
-			    array(
-				    'some:key' => 'a'
-			    )
-		    ),
-		    'key with all special symbols' => array(
-			    'someSpecial\\_:-\\.Chars = is valid',
-			    array(
-				    'someSpecial\\_:-.Chars' => 'is valid'
-			    )
-		    ),
+			),
+			'special operator' => array(
+				'some := addToList(a)',
+				array(
+					'some' => 'a'
+				)
+			),
+			'special operator with white-spaces' => array(
+				'some := addToList (a)',
+				array(
+					'some' => 'a'
+				)
+			),
+			'special operator with tabs' => array(
+				'some :=	addToList	(a)',
+				array(
+					'some' => 'a'
+				)
+			),
+			'special operator with white-spaces and tabs in value' => array(
+				'some := addToList( a, b,	c )',
+				array(
+					'some' => 'a, b,	c'
+				)
+			),
+			'special operator and colon, no spaces' => array(
+				'some:key:=addToList(a)',
+				array(
+					'some:key' => 'a'
+				)
+			),
+			'key with all special symbols' => array(
+				'someSpecial\\_:-\\.Chars = is valid',
+				array(
+					'someSpecial\\_:-.Chars' => 'is valid'
+				)
+			),
 		);
 	}
 
