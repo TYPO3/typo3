@@ -94,6 +94,28 @@
 							</config>
 						</TCEforms>
 					</text_1>
+					<text_2>
+						<TCEforms>
+							<label>text_2 RTE</label>
+							<config>
+								<type>text</type>
+								<cols>48</cols>
+								<rows>5</rows>
+							</config>
+							<defaultExtras>richtext[*]:rte_transform[mode=ts_css]</defaultExtras>
+						</TCEforms>
+					</text_2>
+					<text_3>
+						<TCEforms>
+							<label>text_3 RTE</label>
+							<config>
+								<type>text</type>
+								<cols>48</cols>
+								<rows>5</rows>
+							</config>
+							<defaultExtras>richtext[*]:rte_transform[mode=ts_css]</defaultExtras>
+						</TCEforms>
+					</text_3>
 
 
 					<check_1>
@@ -308,40 +330,6 @@
 				</el>
 			</ROOT>
 		</sGeneral>
-		<sRte>
-			<ROOT>
-				<TCEforms>
-					<sheetTitle>RTE</sheetTitle>
-					<sheetDescription>Some RTE elements</sheetDescription>
-					<sheetShortDescr>Rich Text Editor</sheetShortDescr> <!-- @TODO: Where is that shown? -->
-				</TCEforms>
-				<type>array</type>
-				<el>
-					<rte_1>
-						<TCEforms>
-							<label>rte_1</label>
-							<config>
-								<type>text</type>
-								<cols>48</cols>
-								<rows>5</rows>
-							</config>
-							<defaultExtras>richtext[*]:rte_transform[mode=ts_css]</defaultExtras>
-						</TCEforms>
-					</rte_1>
-					<rte_2>
-						<TCEforms>
-							<label>rte_2</label>
-							<config>
-								<type>text</type>
-								<cols>48</cols>
-								<rows>5</rows>
-							</config>
-							<defaultExtras>richtext[*]:rte_transform[mode=ts_css]</defaultExtras>
-						</TCEforms>
-					</rte_2>
-				</el>
-			</ROOT>
-		</sRte>
 		<sSections> <!-- @TODO: Could have more combinations, eg. required elements, RTE fields, inline, FAL -->
 			<ROOT>
 				<TCEforms>
@@ -350,7 +338,7 @@
 				<type>array</type>
 				<el>
 					<section_1>
-						<title>LLL:EXT:cms/locallang_ttc.xml:media.additionalOptions</title>
+						<title>section_1</title>
 						<type>array</type>
 						<section>1</section>
 						<el>
@@ -409,5 +397,24 @@
 				</el>
 			</ROOT>
 		</sSections>
+		<sInline> <!-- @TODO: Could have more combinations, eg. required elements, RTE fields, inline, FAL -->
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>Inline</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<inline_1>
+						<TCEforms>
+							<label>inline_1 to tt_content</label>
+							<config>
+								<type>inline</type>
+								<foreign_table>tt_content</foreign_table>
+							</config>
+						</TCEforms>
+					</inline_1>
+				</el>
+			</ROOT>
+		</sInline>
 	</sheets>
 </T3DataStructure>
