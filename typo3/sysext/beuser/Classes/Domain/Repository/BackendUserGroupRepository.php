@@ -21,4 +21,10 @@ namespace TYPO3\CMS\Beuser\Domain\Repository;
  */
 class BackendUserGroupRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 
+	/**
+	 * @var array Default order is by title ascending
+	 */
+	protected $defaultOrderings = array(
+		'title' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
+	);
 }
