@@ -206,16 +206,13 @@ return array(
 				'eval' => 'trim',
 			),
 		),
-		/**
-		 * @TODO Add evaluation with a userfunc
 		'input_21' => array(
-			'label' => 'eval tx_*',
+			'label' => '21 eval with user function',
 			'config' => array(
 				'type' => 'input',
-				'eval' => '',
+				'eval' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\TypeInput21Eval',
 			),
 		),
-		 */
 		'input_22' => array(
 			'label' => '22 eval unique',
 			'config' => array(
@@ -320,7 +317,7 @@ return array(
 			),
 		),
 		'input_32' => array(
-			'label' => '32 Slider wizard, Step 10, Width 200',
+			'label' => '32 Slider wizard, step=10, width=200, eval=trim,int',
 			'config' => array(
 				'type' => 'input',
 				'size' => 5,
@@ -348,7 +345,7 @@ return array(
 				'wizards' => array(
 					'userFuncInputWizard' => array(
 						'type' => 'userFunc',
-						'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\Wizard->render',
+						'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\WizardInput33->render',
 						'params' => array(
 							'color' => 'green',
 						),
@@ -693,8 +690,6 @@ return array(
 				),
 			),
 		),
-		/**
-		 * @TODO Add a itemsProcFunc
 		'select_2' => array(
 			'label' => '2 itemsProcFunc',
 			'config' => array(
@@ -703,10 +698,9 @@ return array(
 					array('foo', 1),
 					array('bar', 'bar'),
 				),
-				'itemsProcFunc' => '',
+				'itemsProcFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\TypeSelect2->itemsProcFunc',
 			),
 		),
-		 */
 		'select_3' => array(
 			'label' => '3 Three items, second pre-selected, size=2',
 			'config' => array(
@@ -1294,7 +1288,7 @@ return array(
 			'label' => '1 parameter color used as border color',
 			'config' => array(
 				'type' => 'user',
-				'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\TypeUser->render',
+				'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\TypeUser1->render',
 				'parameters' => array(
 					'color' => 'green',
 				),
@@ -1304,7 +1298,7 @@ return array(
 			'label' => '2 noTableWrapping',
 			'config' => array(
 				'type' => 'user',
-				'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\TypeUser->render',
+				'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\TypeUser2->render',
 				'parameters' => array(
 					'color' => 'green',
 				),

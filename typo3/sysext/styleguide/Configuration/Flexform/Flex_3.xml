@@ -397,7 +397,7 @@
 				</el>
 			</ROOT>
 		</sSections>
-		<sInline> <!-- @TODO: Could have more combinations, eg. required elements, RTE fields, inline, FAL -->
+		<sInline>
 			<ROOT>
 				<TCEforms>
 					<sheetTitle>Inline</sheetTitle>

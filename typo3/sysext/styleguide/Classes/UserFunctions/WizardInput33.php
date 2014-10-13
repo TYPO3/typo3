@@ -15,9 +15,9 @@ namespace TYPO3\CMS\Styleguide\UserFunctions;
  */
 
 /**
- * Class for a TCA wizard user function
+ * Class for a TCA wizard user function used in input_33
  */
-class Wizard {
+class WizardInput33 {
 
 	/**
 	 * This method renders a wizard providing JavaScript +/- controls

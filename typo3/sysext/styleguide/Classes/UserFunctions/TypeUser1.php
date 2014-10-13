@@ -15,12 +15,14 @@ namespace TYPO3\CMS\Styleguide\UserFunctions;
  */
 
 /**
- * A user function rendering a type=user TCA type
+ * A user function rendering a type=user TCA type used in user_1
  */
-class TypeUser {
+class TypeUser1 {
 
 	/**
-	 * @param array $
+	 * @param array $parameters
+	 * @param $parentObject
+	 * @return string
 	 */
 	public function render(array $parameters, $parentObject) {
 		$html = array();
