@@ -31,7 +31,7 @@
 				<source>Display thumbnails</source>
 			</trans-unit>
 			<trans-unit id="c_file" xml:space="preserve">
-				<source>Filename</source>
+				<source>File Name</source>
 			</trans-unit>
 			<trans-unit id="c_size" xml:space="preserve">
 				<source>Size</source>
@@ -40,7 +40,7 @@
 				<source>Type</source>
 			</trans-unit>
 			<trans-unit id="c_tstamp" xml:space="preserve">
-				<source>Date</source>
+				<source>Last Modified</source>
 			</trans-unit>
 			<trans-unit id="c_rw" xml:space="preserve">
 				<source>RW</source>
