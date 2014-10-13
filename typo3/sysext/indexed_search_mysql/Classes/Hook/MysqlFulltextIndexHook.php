@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\IndexedSearch\Hook;
+namespace TYPO3\CMS\IndexedSearchMysql\Hook;
 
 /**
  * This file is part of the TYPO3 CMS project.
