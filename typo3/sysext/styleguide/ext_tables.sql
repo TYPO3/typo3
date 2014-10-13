@@ -162,7 +162,7 @@ CREATE TABLE tx_styleguide_forms (
 	flex_2 text,
 	flex_3 text,
 
-	inline_1 text,
+	inline_1 int(11) DEFAULT '0' NOT NULL,
 	inline_2 int(11) DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
@@ -199,6 +199,7 @@ CREATE TABLE tx_styleguide_forms_inline_2_child1 (
 	parentidentifier tinytext NOT NULL,
 	input_1 tinytext NOT NULL,
 	inline_1 int(11) DEFAULT '0' NOT NULL,
+	inline_2 int(11) DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
