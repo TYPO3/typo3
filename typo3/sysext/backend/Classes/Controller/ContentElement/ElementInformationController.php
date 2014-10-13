@@ -16,7 +16,9 @@ namespace TYPO3\CMS\Backend\Controller\ContentElement;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -91,7 +93,7 @@ class ElementInformationController {
 	protected $fileObject;
 
 	/**
-	 * @var \TYPO3\CMS\Core\Resource\Folder
+	 * @var Folder
 	 */
 	protected $folderObject;
 
@@ -155,10 +157,9 @@ class ElementInformationController {
 	 * Init file/folder parameters
 	 */
 	protected function initFileOrFolderRecord() {
-		$fileOrFolderObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->
-				retrieveFileOrFolderObject($this->uid);
+		$fileOrFolderObject = ResourceFactory::getInstance()->retrieveFileOrFolderObject($this->uid);
 
-		if ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\Folder) {
+		if ($fileOrFolderObject instanceof Folder) {
 			$this->folderObject = $fileOrFolderObject;
 			$this->access = $this->folderObject->checkActionPermission('read');
 			$this->type = 'folder';
@@ -166,11 +167,10 @@ class ElementInformationController {
 			$this->fileObject = $fileOrFolderObject;
 			$this->access = $this->fileObject->checkActionPermission('read');
 			$this->type = 'file';
-			$this->table = 'sys_file_metadata';
+			$this->table = 'sys_file';
 
 			try {
-				$metaData = $fileOrFolderObject->_getMetaData();
-				$this->row = BackendUtility::getRecordWSOL($this->table, $metaData['uid']);
+				$this->row = BackendUtility::getRecordWSOL($this->table, $fileOrFolderObject->getUid());
 			} catch (\Exception $e) {
 				$this->row = array();
 			}
@@ -295,21 +295,33 @@ class ElementInformationController {
 		$tableRows = array();
 		$extraFields = array();
 
-		if ($this->type !== 'folder') {
-			$extraFields = array(
-				'crdate' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.creationDate', TRUE),
-				'cruser_id' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.creationUserId', TRUE),
-				'tstamp' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.timestamp', TRUE)
-			);
-		}
-
 		if (in_array($this->type, array('folder', 'file'), TRUE)) {
+			if ($this->type === 'file') {
+				$extraFields['creation_date'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.creationDate', TRUE);
+				$extraFields['modification_date'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.timestamp', TRUE);
+			}
 			$extraFields['storage'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xlf:sys_file.storage', TRUE);
 			$extraFields['folder'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:folder', TRUE);
+		} else {
+			$extraFields['crdate'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.creationDate', TRUE);
+			$extraFields['cruser_id'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.creationUserId', TRUE);
+			$extraFields['tstamp'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.timestamp', TRUE);
 		}
 
 		foreach ($extraFields as $name => $value) {
-			$rowValue = BackendUtility::getProcessedValueExtra($this->table, $name, $this->row[$name]);
+			$rowValue = '';
+			if (!isset($this->row[$name])) {
+				$resourceObject = $this->fileObject ?: $this->folderObject;
+				if ($name === 'storage') {
+					$rowValue = $resourceObject->getStorage()->getName();
+				} elseif ($name === 'folder') {
+					$rowValue = $resourceObject->getParentFolder()->getIdentifier();
+				}
+			} elseif (in_array($name, array('creation_date', 'modification_date'), TRUE)) {
+				$rowValue = BackendUtility::datetime($this->row[$name]);
+			} else {
+				$rowValue = BackendUtility::getProcessedValueExtra($this->table, $name, $this->row[$name]);
+			}
 			if ($name === 'cruser_id' && $rowValue) {
 				$userTemp = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('username, realName', 'be_users', 'uid = ' . (int)$rowValue);
 				if ($userTemp[0]['username'] !== '') {
@@ -317,13 +329,6 @@ class ElementInformationController {
 					if ($userTemp[0]['realName'] !== '') {
 						$rowValue .= ' - ' . $userTemp[0]['realName'];
 					}
-				}
-			} elseif ($rowValue === NULL) {
-				$resourceObject = $this->fileObject ?: $this->folderObject;
-				if ($name === 'storage') {
-					$rowValue = $resourceObject->getStorage()->getName();
-				} elseif ($name === 'folder') {
-					$rowValue = $resourceObject->getParentFolder()->getIdentifier();
 				}
 			}
 			$tableRows[] = '
@@ -340,6 +345,11 @@ class ElementInformationController {
 			$uid = $this->row['uid'];
 
 			if (!isset($GLOBALS['TCA'][$this->table]['columns'][$name])) {
+				continue;
+			}
+
+			// Storage is already handled above
+			if ($this->type === 'file' && $name === 'storage') {
 				continue;
 			}
 
