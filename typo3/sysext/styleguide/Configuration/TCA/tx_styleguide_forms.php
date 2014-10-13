@@ -1480,7 +1480,7 @@ return array(
 				'foreign_unique' => 'select_child',
 				'maxitems' => 9999,
 				'appearance' => array(
-					'useCombination' => TRUE,
+					'useCombination' => TRUE, /** @TODO: The "Create new relation" button throws a JS error */
 					'collapseAll' => FALSE,
 					'levelLinksPosition' => 'top',
 					'showSynchronizationLink' => 1,
