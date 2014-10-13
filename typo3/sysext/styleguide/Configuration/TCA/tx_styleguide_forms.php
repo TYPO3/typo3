@@ -1469,6 +1469,26 @@ return array(
 				),
 			),
 		),
+		'inline_3' => array(
+			'exclude' => 1,
+			'label' => '3 m:m async, useCombination',
+			'config' => array(
+				'type' => 'inline',
+				'foreign_table' => 'tx_styleguide_forms_inline_3_mm',
+				'foreign_field' => 'select_parent',
+				'foreign_selector' => 'select_child',
+				'foreign_unique' => 'select_child',
+				'maxitems' => 9999,
+				'appearance' => array(
+					'useCombination' => TRUE,
+					'collapseAll' => FALSE,
+					'levelLinksPosition' => 'top',
+					'showSynchronizationLink' => 1,
+					'showPossibleLocalizationRecords' => 1,
+					'showAllLocalizationLink' => 1,
+				),
+			),
+		),
 
 
 	),
@@ -1493,7 +1513,7 @@ return array(
 			passthrough_1,
 			user_1, user_2,
 			flex_1, flex_2, flex_3,
-			inline_1, inline_2,
+			inline_1, inline_2, inline_3,
 			',
 	),
 
@@ -1529,7 +1549,7 @@ return array(
 				--div--;Flex,
 					flex_1, flex_2, flex_3,
 				--div--;Inline,
-					inline_1, inline_2,
+					inline_1, inline_2, inline_3,
 				--div--;Access,
 					--palette--;Visibility;visibility,
 					--palette--;Access;access
