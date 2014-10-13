@@ -162,6 +162,8 @@ CREATE TABLE tx_styleguide_forms (
 	flex_2 text,
 	flex_3 text,
 
+	inline_1 text,
+
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
