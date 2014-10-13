@@ -45,16 +45,16 @@ var inline = {
 		this.noTitleString = value;
 	},
 	toggleEvent: function (event) {
-		var triggerElement = TYPO3.jQuery(event.target);
-		if (triggerElement.parents('.t3-form-field-header-inline-ctrl').length == 1) {
+		var $triggerElement = TYPO3.jQuery(event.target);
+		if ($triggerElement.parents('.t3-form-field-header-inline-ctrl').length == 1) {
 			return;
 		}
 
-		var recordHeader = TYPO3.jQuery(this);
+		var $recordHeader = TYPO3.jQuery(this);
 		inline.expandCollapseRecord(
-			recordHeader.attr('id').replace('_header', ''),
-			recordHeader.attr('data-expandSingle'),
-			recordHeader.attr('data-returnURL')
+			$recordHeader.attr('id').replace('_header', ''),
+			$recordHeader.attr('data-expandSingle'),
+			$recordHeader.attr('data-returnURL')
 		);
 	},
 	expandCollapseRecord: function (objectId, expandSingle, returnURL) {
@@ -62,7 +62,7 @@ var inline = {
 		var objectPrefix = this.parseObjectId('full', objectId, 0, 1);
 		var escapedObjectId = this.escapeObjectId(objectId);
 
-		var currentObject = TYPO3.jQuery('#' + escapedObjectId + '_div');
+		var $currentObject = TYPO3.jQuery('#' + escapedObjectId + '_div');
 		// if content is not loaded yet, get it now from server
 		if (inline.isLoading || (TYPO3.jQuery('#' + escapedObjectId + '_fields').length > 0 && TYPO3.jQuery("#irre-loading-indicator" + escapedObjectId).length > 0)) {
 			return false;
@@ -76,13 +76,13 @@ var inline = {
 			return this.getRecordDetails(objectId, returnURL);
 		}
 
-		var isCollapsed = currentObject.hasClass(this.classCollapsed);
+		var isCollapsed = $currentObject.hasClass(this.classCollapsed);
 		var collapse = [];
 		var expand = [];
 
 		// if only a single record should be visibly for that set of records
 		// and the record clicked itself is no visible, collapse all others
-		if (expandSingle && currentObject.hasClass(this.classCollapsed)) {
+		if (expandSingle && $currentObject.hasClass(this.classCollapsed)) {
 			collapse = this.collapseAllRecords(objectId, objectPrefix, currentUid);
 		}
 
@@ -103,14 +103,14 @@ var inline = {
 
 	toggleElement: function (objectId) {
 		var escapedObjectId = this.escapeObjectId(objectId);
-		var jQueryObject = TYPO3.jQuery('#' + escapedObjectId + '_div');
+		var $jQueryObject = TYPO3.jQuery('#' + escapedObjectId + '_div');
 
-		if (jQueryObject.hasClass(this.classCollapsed)) {
-			jQueryObject.removeClass(this.classCollapsed).addClass(this.classVisible);
-			jQueryObject.find('#' + escapedObjectId + '_header .t3-icon-irre-collapsed').removeClass('t3-icon-irre-collapsed').addClass('t3-icon-irre-expanded');
+		if ($jQueryObject.hasClass(this.classCollapsed)) {
+			$jQueryObject.removeClass(this.classCollapsed).addClass(this.classVisible);
+			$jQueryObject.find('#' + escapedObjectId + '_header .t3-icon-irre-collapsed').removeClass('t3-icon-irre-collapsed').addClass('t3-icon-irre-expanded');
 		} else {
-			jQueryObject.removeClass(this.classVisible).addClass(this.classCollapsed);
-			jQueryObject.find('#' + escapedObjectId + '_header .t3-icon-irre-expanded').addClass('t3-icon-irre-collapsed').removeClass('t3-icon-irre-expanded');
+			$jQueryObject.removeClass(this.classVisible).addClass(this.classCollapsed);
+			$jQueryObject.find('#' + escapedObjectId + '_header .t3-icon-irre-expanded').addClass('t3-icon-irre-collapsed').removeClass('t3-icon-irre-expanded');
 		}
 	},
 	collapseAllRecords: function (objectId, objectPrefix, callingUid) {
@@ -128,8 +128,8 @@ var inline = {
 				recObjectId = objectPrefix + this.structureSeparator + records[i];
 				escapedRecordObjectId = this.escapeObjectId(recObjectId);
 
-				var recordEntry = TYPO3.jQuery('#' + escapedRecordObjectId);
-				if (records[i] != callingUid && recordEntry.hasClass(this.classVisible)) {
+				var $recordEntry = TYPO3.jQuery('#' + escapedRecordObjectId);
+				if (records[i] != callingUid && $recordEntry.hasClass(this.classVisible)) {
 					TYPO3.jQuery('#' + escapedRecordObjectId + '_div').removeClass(this.classVisible).addClass(this.classCollapsed);
 					if (this.isNewRecord(recObjectId)) {
 						this.updateExpandedCollapsedStateLocally(recObjectId, 0);
@@ -315,12 +315,13 @@ var inline = {
 
 	// foreign_selector: used by selector box (type='select')
 	importNewRecord: function (objectId) {
-		var selector = TYPO3.jQuery('#' + this.escapeObjectId(objectId) + '_selector');
-		if (selector.selectedIndex != -1) {
+		var $selector = TYPO3.jQuery('#' + this.escapeObjectId(objectId) + '_selector');
+		var selectedIndex = $selector.prop('selectedIndex');
+		if (selectedIndex != -1) {
 			var context = this.getContext(objectId);
-			var selectedValue = selector.options[selector.selectedIndex].value;
+			var selectedValue = $selector.val();
 			if (!this.data.unique || !this.data.unique[objectId]) {
-				selector.options[selector.selectedIndex].selected = false;
+				$selector.find('option').eq(selectedIndex).prop('selected', false);
 			}
 			this.makeAjaxCall('createNewRecord', [this.getNumberOfRTE(), objectId, selectedValue], true, context);
 		}
@@ -341,7 +342,7 @@ var inline = {
 	delayedImportElement: function (objectId, table, uid, type) {
 		if (inline.lockedAjaxMethod['createNewRecord'] == true) {
 			window.setTimeout("inline.delayedImportElement('" + objectId + "','" + table + "'," + uid + ", null );",
-			                  300);
+				300);
 		} else {
 			inline.importElement(objectId, table, uid, type);
 		}
@@ -425,7 +426,7 @@ var inline = {
 	// it removes the used select items, that should be unique
 	setUnique: function (objectId, recordUid, selectedValue) {
 		if (this.data.unique && this.data.unique[objectId]) {
-			var selector = TYPO3.jQuery('#' + this.escapeObjectId(objectId) + '_selector');
+			var $selector = TYPO3.jQuery('#' + this.escapeObjectId(objectId) + '_selector');
 			var unique = this.data.unique[objectId];
 			if (unique.type == 'select') {
 				if (!(unique.selector && unique.max == -1)) {
@@ -433,7 +434,7 @@ var inline = {
 					var formObj = document.getElementsByName(formName);
 					var recordObj = document.getElementsByName(this.prependFormFieldNames + '[' + unique.table + '][' + recordUid + '][' + unique.field + ']');
 					var values = this.getValuesFromHashMap(unique.used);
-					if (selector.length) {
+					if ($selector.length) {
 						// remove all items from the new select-item which are already used in other children
 						if (recordObj.length) {
 							for (var i = 0; i < values.length; i++) {
@@ -448,7 +449,7 @@ var inline = {
 							}
 						}
 						for (var i = 0; i < values.length; i++) {
-							this.removeSelectOption(selector, values[i]);
+							this.removeSelectOption($selector, values[i]);
 						}
 						if (typeof this.data.unique[objectId].used.length != 'undefined') {
 							this.data.unique[objectId].used = {};
@@ -461,7 +462,7 @@ var inline = {
 						for (var i = 0; i < records.length; i++) {
 							recordObj = document.getElementsByName(this.prependFormFieldNames + '[' + unique.table + '][' + records[i] + '][' + unique.field + ']');
 							if (recordObj.length && records[i] != recordUid) {
-								this.removeSelectOption(recordObj[0], selectedValue);
+								this.removeSelectOption(TYPO3.jQuery(recordObj[0]), selectedValue);
 							}
 						}
 					}
@@ -473,7 +474,7 @@ var inline = {
 
 			// remove used items from a selector-box
 			if (unique.selector == 'select' && selectedValue) {
-				this.removeSelectOption(selector, selectedValue);
+				this.removeSelectOption($selector, selectedValue);
 				this.data.unique[objectId]['used'][recordUid] = selectedValue;
 			}
 		}
@@ -481,37 +482,37 @@ var inline = {
 
 	domAddNewRecord: function (method, insertObjectId, objectPrefix, htmlData) {
 		if (this.isBelowMax(objectPrefix)) {
-			var insertObject = TYPO3.jQuery('#' + this.escapeObjectId(insertObjectId));
+			var $insertObject = TYPO3.jQuery('#' + this.escapeObjectId(insertObjectId));
 			if (method == 'bottom') {
-				insertObject.append(htmlData);
+				$insertObject.append(htmlData);
 			} else if (method == 'after') {
-				insertObject.after(htmlData);
+				$insertObject.after(htmlData);
 			}
 		}
 	},
 	domAddRecordDetails: function (objectId, objectPrefix, expandSingle, htmlData) {
 		var hiddenValue, formObj, valueObj;
 		var escapeObjectId = this.escapeObjectId(objectId);
-		var objectDiv = TYPO3.jQuery('#' + escapeObjectId + '_fields');
-		if (objectDiv.length == 0 || objectDiv.html().substr(0, 16) != '<!--notloaded-->') {
+		var $objectDiv = TYPO3.jQuery('#' + escapeObjectId + '_fields');
+		if ($objectDiv.length == 0 || $objectDiv.html().substr(0, 16) != '<!--notloaded-->') {
 			return;
 		}
 
 		var elName = this.parseObjectId('full', objectId, 2, 0, true);
 
-		formObj = TYPO3.jQuery('[name="' + elName + '[hidden]_0"]');
-		valueObj = TYPO3.jQuery('[name="' + elName + '[hidden]"]');
+		var $formObj = TYPO3.jQuery('[name="' + elName + '[hidden]_0"]');
+		var $valueObj = TYPO3.jQuery('[name="' + elName + '[hidden]"]');
 
 		// It might be the case that a child record
 		// cannot be hidden at all (no hidden field)
-		if (formObj.length && valueObj.length) {
-			hiddenValue = formObj[0].checked;
-			formObj[0].remove();
-			valueObj[0].remove();
+		if ($formObj.length && $valueObj.length) {
+			hiddenValue = $formObj[0].checked;
+			$formObj[0].remove();
+			$valueObj[0].remove();
 		}
 
 		// Update DOM
-		objectDiv.html(htmlData);
+		$objectDiv.html(htmlData);
 
 		formObj = document.getElementsByName(elName + '[hidden]_0');
 		valueObj = document.getElementsByName(elName + '[hidden]');
@@ -542,9 +543,9 @@ var inline = {
 		if (document && document.head) {
 			return document.head;
 		} else {
-			var head = TYPO3.jQuery('head');
-			if (head.length) {
-				return head[0];
+			var $head = TYPO3.jQuery('head');
+			if ($head.length) {
+				return $head[0];
 			}
 		}
 		return false;
@@ -690,7 +691,7 @@ var inline = {
 	},
 
 	redrawSortingButtons: function (objectPrefix, records) {
-		var i, headerObj, sortUp, sortDown;
+		var i, $headerObj, sortUp, sortDown;
 
 		// if no records were passed, fetch them from form field
 		if (typeof records == 'undefined') {
@@ -707,9 +708,9 @@ var inline = {
 				continue;
 			}
 
-			headerObj = TYPO3.jQuery('#' + this.escapeObjectId(objectPrefix) + this.structureSeparator + records[i] + '_header');
-			sortUp = headerObj.find('.sortingUp');
-			sortDown = headerObj.find('.sortingDown');
+			$headerObj = TYPO3.jQuery('#' + this.escapeObjectId(objectPrefix) + this.structureSeparator + records[i] + '_header');
+			sortUp = $headerObj.find('.sortingUp');
+			sortDown = $headerObj.find('.sortingDown');
 
 			if (sortUp) {
 				sortUp.css('visibility', (i == 0 ? 'hidden' : 'visible'));
@@ -829,14 +830,13 @@ var inline = {
 
 					if (unique.selector == 'select') {
 						if (!isNaN(fieldObj[0].value)) {
-							var selector = $(objectPrefix + '_selector');
-							this.readdSelectOption(selector, fieldObj[0].value, unique);
+							var $selector = TYPO3.jQuery('#' + objectPrefix + '_selector');
+							this.readdSelectOption($selector, fieldObj[0].value, unique);
 						}
 					}
 
 					if (!(unique.selector && unique.max == -1)) {
-						var formName = this.prependFormFieldNames + this.parseObjectId('parts', objectPrefix, 3, 1,
-						                                                               true);
+						var formName = this.prependFormFieldNames + this.parseObjectId('parts', objectPrefix, 3, 1, true);
 						var formObj = document.getElementsByName(formName);
 						if (formObj.length) {
 							var records = formObj[0].value.split(',');
@@ -921,9 +921,9 @@ var inline = {
 		}
 
 		// Mark this container as deleted
-		var deletedRecordContainer = TYPO3.jQuery('#' + this.escapeObjectId(objectId) + '_div');
-		if (deletedRecordContainer.length) {
-			deletedRecordContainer.addClass('inlineIsDeletedRecord');
+		var $deletedRecordContainer = TYPO3.jQuery('#' + this.escapeObjectId(objectId) + '_div');
+		if ($deletedRecordContainer.length) {
+			$deletedRecordContainer.addClass('inlineIsDeletedRecord');
 		}
 
 		// If the record is new and was never saved before, just remove it from DOM:
@@ -1133,24 +1133,24 @@ var inline = {
 		return isBelowMax;
 	},
 
-	getOptionsHash: function (selectObj) {
+	getOptionsHash: function ($selectObj) {
 		var optionsHash = {};
-		for (var i = 0; i < selectObj.options.length; i++) {
-			optionsHash[selectObj.options[i].value] = i;
-		}
+		$selectObj.find('option').each(function(i, option) {
+			optionsHash[option.value] = i;
+		});
 		return optionsHash;
 	},
 
-	removeSelectOption: function (selectObj, value) {
-		var optionsHash = this.getOptionsHash(selectObj);
+	removeSelectOption: function ($selectObj, value) {
+		var optionsHash = this.getOptionsHash($selectObj);
 		if (optionsHash[value] != undefined) {
-			selectObj.options[optionsHash[value]] = null;
+			$selectObj.find('option').eq(optionsHash[value]).remove();
 		}
 	},
 
-	readdSelectOption: function (selectObj, value, unique) {
+	readdSelectOption: function ($selectObj, value, unique) {
 		var index = null;
-		var optionsHash = this.getOptionsHash(selectObj);
+		var optionsHash = this.getOptionsHash($selectObj);
 		var possibleValues = this.getKeysFromHashMap(unique.possible);
 
 		for (var possibleValue in unique.possible) {
@@ -1164,7 +1164,7 @@ var inline = {
 
 		if (index == null) {
 			index = 0;
-		} else if (index < selectObj.options.length) {
+		} else if (index < $selectObj.find('option').length) {
 			index++;
 		}
 		// recreate the <option> tag
@@ -1172,6 +1172,9 @@ var inline = {
 		readdOption.text = unique.possible[value];
 		readdOption.value = value;
 		// add the <option> at the right position
+		// I didn't find a possibility to add an option to a predefined position
+		// with help of an index in jQuery. So we realized it the "old" style
+		var selectObj = $selectObj.get(0);
 		selectObj.add(readdOption, document.all ? index : selectObj.options[index]);
 	},
 
@@ -1206,8 +1209,8 @@ var inline = {
 	},
 
 	isNewRecord: function (objectId) {
-		var selector = TYPO3.jQuery('#' + this.escapeObjectId(objectId) + '_div');
-		return selector.length && selector.hasClass('inlineIsNewRecord')
+		var $selector = TYPO3.jQuery('#' + this.escapeObjectId(objectId) + '_div');
+		return $selector.length && $selector.hasClass('inlineIsNewRecord')
 			? true
 			: false;
 	},
