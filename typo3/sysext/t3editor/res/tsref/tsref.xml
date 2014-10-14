@@ -5817,7 +5817,7 @@ includeJS {
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="includeJSlibs" type="array">
+		<property name="includeJSLibs" type="array">
 			<description><![CDATA[Adds JS library files to head of page.
 
 The file definition must be a valid "resource" datatype, otherwise nothing is inserted. This means that remote files cannot be referenced (i.e. using "http://..."), except by using the ".external" property.
@@ -5830,9 +5830,9 @@ Each file has optional properties:
 
 Example:
 
-includeJSlibs.twitter = http://twitter.com/javascripts/blogger.js
+includeJSLibs.twitter = http://twitter.com/javascripts/blogger.js
 
-includeJSlibs.twitter.external = 1
+includeJSLibs.twitter.external = 1
 ]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -5845,7 +5845,7 @@ includeJSlibs.twitter.external = 1
 ]]></default>
 		</property>
 		<property name="includeJSFooterlibs" type="array">
-			<description><![CDATA[	Same as includeJSlibs above, except that this block gets included at the bottom of the page (just before the closing body tag).
+			<description><![CDATA[	Same as includeJSLibs above, except that this block gets included at the bottom of the page (just before the closing body tag).
 ]]></description>
 			<default><![CDATA[
 ]]></default>
