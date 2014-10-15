@@ -74,6 +74,7 @@ class StyleguideController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 * Icons
 	 */
 	public function iconsAction() {
+		$this->view->assign('icons', $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable']);
 	}
 
 	/**
