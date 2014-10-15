@@ -24,22 +24,34 @@ use TYPO3\CMS\Install\Service\SqlSchemaMigrationService;
 class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Install\Service\SqlSchemaMigrationService
+	 * @test
 	 */
-	protected $fixture;
-
-	/**
-	 * Sets up the fixture for testing
-	 */
-	public function setUp() {
-		$this->fixture = new SqlSchemaMigrationService();
+	public function getFieldDefinitionsFileContentHandlesMultipleWhitespacesInFieldDefinitions() {
+		$subject = new SqlSchemaMigrationService();
+		// Multiple whitespaces and tabs in field definition
+		$inputString = 'CREATE table aTable (' . LF . 'aFieldName   int(11)' . TAB . TAB . TAB . 'unsigned   DEFAULT \'0\'' . LF . ');';
+		$result = $subject->getFieldDefinitions_fileContent($inputString);
+		$this->assertEquals(
+			array(
+				'aTable' => array(
+					'fields' => array(
+						'aFieldName' => 'int(11) unsigned default \'0\'',
+					),
+					'extra' => array(
+						'COLLATE' => '',
+					),
+				),
+			),
+			$result
+		);
 	}
 
 	/**
 	 * @test
 	 */
 	public function getDatabaseExtraFindsChangedFields() {
-		$differenceArray = $this->fixture->getDatabaseExtra(
+		$subject = new SqlSchemaMigrationService();
+		$differenceArray = $subject->getDatabaseExtra(
 			array(
 				'tx_foo' => array(
 					'fields' => array(
@@ -84,7 +96,8 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getDatabaseExtraIgnoresCaseDifference() {
-		$differenceArray = $this->fixture->getDatabaseExtra(
+		$subject = new SqlSchemaMigrationService();
+		$differenceArray = $subject->getDatabaseExtra(
 			array(
 				'tx_foo' => array(
 					'fields' => array(
@@ -116,7 +129,8 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getDatabaseExtraDoesNotLowercaseReservedWordsForTheComparison() {
-		$differenceArray = $this->fixture->getDatabaseExtra(
+		$subject = new SqlSchemaMigrationService();
+		$differenceArray = $subject->getDatabaseExtra(
 			array(
 				'tx_foo' => array(
 					'fields' => array(
