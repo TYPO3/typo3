@@ -8,12 +8,11 @@
 }
 
 .t3-clearable {
-	height: 17px;
 	padding-right: 15px;
 }
 
 .t3-clearable-wrapper .t3-tceforms-input-clearer {
 	position: absolute;
-	right: 10px;
-	top: 6px;
+	right: 5px;
+	top: 5px;
 }

@@ -252,15 +252,17 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 					) . '">' . IconUtility::getSpriteIcon('actions-document-new') . '</a></td>';
 			}
 		}
-		$output = '
-			<tr class="t3-row-header">
-				' . implode('
-				', $tCells) . '
-			</tr>' . $output;
-		$output = '
 
-		<table border="0" cellspacing="0" cellpadding="0" id="langTable" class="typo3-dblist">' . $output . '
-		</table>';
+		$output = '<table id="langTable" class="t3-table">' .
+			'<thead>' .
+				'<tr>' .
+					implode('', $tCells) .
+				'</tr>' .
+				'</thead>' .
+				'<tbody>' .
+					$output .
+				'</tbody>' .
+			'</table>';
 		return $output;
 	}
 

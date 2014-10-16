@@ -651,7 +651,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		$this->pageRenderer->addInlineSettingArray('', $typo3Settings);
 		// Define table layout for add/edit form
 		$tableLayout = array(
-			'table' => array('<table border="0" cellspacing="0" cellpadding="0" id="edit_form" class="typo3-usersettings">', '</table>')
+			'table' => array('<table border="0" cellspacing="0" cellpadding="0" id="edit_form">', '</table>')
 		);
 		// Define a style for hiding
 		// Some fields will be hidden when the task is not recurring
@@ -823,11 +823,10 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				}
 			}
 		}
-		// Render the add/edit task form
-		$content .= '<div style="float: left;"><div class="typo3-dyntabmenu-divs">';
+
 		$content .= $this->doc->table($table, $tableLayout);
-		$content .= '</div></div>';
 		$content .= '<div style="padding-top: 20px; clear: both;"></div>';
+
 		// Display information about server time usage
 		$content .= $this->displayServerTime();
 		return $content;

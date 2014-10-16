@@ -7676,9 +7676,6 @@ DocHeader
 #typo3-docheader .typo3-docheader-functions select {
   color: #000;
 }
-#typo3-docheader .typo3-docheader-functions .typo3-docheader-pagePath {
-  font-weight: bold;
-}
 #typo3-docheader .typo3-docheader-buttons {
   background-color: #dadada;
   color: #000;
@@ -11801,13 +11798,6 @@ File Upload Window
 /* - - - - - - - - - - - - - - - - - - - - -
 Web > Info
 - - - - - - - - - - - - - - - - - - - - - */
-table.typo3-page-pages {
-  background-color: #fff;
-  border: 1px solid #a2aab8;
-}
-table.typo3-page-pages tr td.c-headLine {
-  background-color: #abbbb4;
-}
 table.typo3-page-sysnote tr td {
   background-color: #d9d5c9;
 }

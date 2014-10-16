@@ -365,9 +365,14 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			$this->oddColumnsCssClass = '';
 			// CSH:
 			$out = BackendUtility::cshItem($this->descrTable, ('func_' . $pKey), $GLOBALS['BACK_PATH']) . '
-				<table border="0" cellpadding="0" cellspacing="0" class="typo3-page-pages">
-					' . $this->addelement(1, '', $theData, ' class="t3-row-header"', 20) . $out . '
-				</table>';
+				<table class="t3-table typo3-page-pages">' .
+					'<thead>' .
+						$this->addelement(1, '', $theData) .
+					'</thead>' .
+					'<tbody>' .
+						$out .
+					'</tbody>' .
+				'</table>';
 		}
 		$this->oddColumnsCssClass = '';
 		return $out;

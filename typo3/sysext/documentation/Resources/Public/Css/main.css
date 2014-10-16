@@ -11,11 +11,6 @@
   border: none;
   font-weight: normal; }
 
-.dataTable {
-  border-right: 1px solid #a2aab8;
-  border-bottom: 1px solid #a2aab8;
-  border-left: 1px solid #a2aab8; }
-
 .dataTables_info {
   font-size: 10px;
   color: #444;
@@ -40,12 +35,6 @@
 .dataTables_paginate {
   width: auto; }
 
-.typo3-documentation-list {
-  width: 100%; }
-
-.typo3-documentation-list td {
-  padding: 10px; }
-
 .typo3-documentation-list td.title {
   width: 280px; }
 
@@ -59,7 +48,8 @@
 
 .headerTooltip,
 .tooltip {
-  box-shadow: 2px 2px 11px #666666;
+  -webkit-box-shadow: 2px 2px 11px #666;
+  box-shadow: 2px 2px 11px #666;
   display: none;
   width: 400px;
   background-color: #ffa;
@@ -89,49 +79,20 @@ p {
   .ui-toolbar .dataTables_filter {
     display: block; }
 
-.typo3-documentation-list {
-  border-spacing: 0; }
-  .typo3-documentation-list thead {
-    background-color: #666; }
-    .typo3-documentation-list thead tr {
-      background: none !important; }
-      .typo3-documentation-list thead tr:hover {
-        background: none; }
-  .typo3-documentation-list th {
-    background: none;
-    border: 0;
-    padding: 8px 10px;
-    min-width: 53px;
+.typo3-documentation-list th {
+  min-width: 53px;
+  vertical-align: middle;
+  cursor: pointer;
+  white-space: nowrap; }
+  .typo3-documentation-list th .DataTables_sort_icon {
+    display: inline-block;
     vertical-align: middle;
-    font-weight: bold;
-    color: #fff;
-    cursor: pointer;
-    white-space: nowrap; }
-    .typo3-documentation-list th:hover {
-      background: rgba(200, 200, 200, 0.3); }
-    .typo3-documentation-list th .DataTables_sort_icon {
-      display: inline-block;
-      vertical-align: middle;
-      margin-left: 5px; }
-      .typo3-documentation-list th .DataTables_sort_icon.ui-icon-carat-2-n-s {
-        background: none; }
-  .typo3-documentation-list tr.odd td, .typo3-documentation-list tr.even td {
-    background: none; }
-  .typo3-documentation-list tr.odd:hover td, .typo3-documentation-list tr.even:hover td {
-    background: none; }
-  .typo3-documentation-list tr td {
-    background: none;
-    padding: 8px 10px;
-    vertical-align: middle; }
-    .typo3-documentation-list tr td img {
-      vertical-align: middle;
-      margin-right: 5px; }
-  .typo3-documentation-list tr:nth-child(2n) {
-    background: #fff; }
-  .typo3-documentation-list tr:nth-child(2n + 1) {
-    background: #f7f7f7; }
-  .typo3-documentation-list tr:hover {
-    background: #ececec; }
+    margin-left: 5px; }
+    .typo3-documentation-list th .DataTables_sort_icon.ui-icon-carat-2-n-s {
+      background: none; }
+.typo3-documentation-list tr td img {
+  vertical-align: middle;
+  margin-right: 5px; }
 
 .dataTables_info {
   display: none; }
@@ -144,3 +105,5 @@ p {
 .typo3-documentation-list .t3-icon:hover {
   border: none;
   background-color: transparent; }
+
+/*# sourceMappingURL=main.css.map */

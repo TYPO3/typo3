@@ -6,12 +6,6 @@
 	font-weight: normal;
 }
 
-.dataTable {
-	border-right: 1px solid #a2aab8;
-	border-bottom: 1px solid #a2aab8;
-	border-left: 1px solid #a2aab8;
-}
-
 .dataTables_info {
 	font-size: 10px;
 	color: #444;
@@ -42,28 +36,12 @@
 	width: auto;
 }
 
-.typo3-documentation-list {
-	width: 100%;
-}
-
-.typo3-documentation-list td {
-	padding: 10px;
-}
-
 .typo3-documentation-list td.title {
 	width: 280px;
 }
 
 .typo3-documentation-list td.icons {
 	width: 40px;
-}
-
-.typo3-documentation-list .icons a {
-	display: none;
-}
-
-.typo3-documentation-list tr:hover .icons a {
-	display: inline;
 }
 
 .typo3-documentation-list td.actions {

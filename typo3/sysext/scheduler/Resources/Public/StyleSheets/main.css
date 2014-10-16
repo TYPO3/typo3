@@ -89,3 +89,10 @@
 .info-block p {
 	margin: 8px 5px 8px 5px;
 }
+
+#edit_form tr td {
+	padding-bottom: 0.5em;
+}
+#edit_form tr td.td-label {
+	padding-right: 1em;
+}
