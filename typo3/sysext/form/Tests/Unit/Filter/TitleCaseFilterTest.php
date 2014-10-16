@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Charset\CharsetConverter;
+use TYPO3\CMS\Form\Filter\TitleCaseFilter;
 
 /**
  * Test case
@@ -22,7 +24,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
 class TitleCaseFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Form\Filter\TitleCaseFilter
+	 * @var TitleCaseFilter
 	 */
 	protected $fixture = NULL;
 
@@ -30,9 +32,15 @@ class TitleCaseFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Set up
 	 */
 	public function setUp() {
-		$this->fixture = new \TYPO3\CMS\Form\Filter\TitleCaseFilter();
+		$this->fixture = new TitleCaseFilter();
+		$GLOBALS['TSFE'] = new \stdClass();
+		$GLOBALS['TSFE']->csConvObj = new CharsetConverter();
+		$GLOBALS['TSFE']->renderCharset = 'utf-8';
 	}
 
+	/**
+	 * @return array
+	 */
 	public function stringProvider() {
 		return array(
 			'some text' => array('some text', 'Some Text'),
