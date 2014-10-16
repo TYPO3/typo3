@@ -86,10 +86,14 @@ class ExternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 			$isValidUrl = FALSE;
 			// A redirect loop occurred
 			if ($e->getCode() === 40) {
-				// Parse the exception for more information
-				$trace = $e->getTrace();
-				$traceUrl = $trace[0]['args'][0]->getUrl()->getUrl();
-				$traceCode = $trace[0]['args'][1]->getStatus();
+				$traceUrl = $request->getUrl()->getURL();
+				/** @var \HTTP_Request2_Response $event['data'] */
+				$event = $request->getLastEvent();
+				if ($event['data'] instanceof \HTTP_Request2_Response) {
+					$traceCode = $event['data']->getStatus();
+				} else {
+					$traceCode = 'loop';
+				}
 				$errorParams['errorType'] = 'loop';
 				$errorParams['location'] = $traceUrl;
 				$errorParams['errorCode'] = $traceCode;
