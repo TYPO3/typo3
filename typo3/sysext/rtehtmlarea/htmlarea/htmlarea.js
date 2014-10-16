@@ -25,8 +25,6 @@ Ext.apply(HTMLArea, {
 	RE_tagName		: /(<\/|<)\s*([^ \t\n>]+)/ig,
 	RE_head			: /<head>((.|\n)*?)<\/head>/i,
 	RE_body			: /<body>((.|\n)*?)<\/body>/i,
-		// This expression is deprecated as of TYPO3 4.7
-	Reg_body		: new RegExp('<\/?(body)[^>]*>', 'gi'),
 	reservedClassNames	: /htmlarea/,
 	RE_email		: /([0-9a-z]+([a-z0-9_-]*[0-9a-z])*){1}(\.[0-9a-z]+([a-z0-9_-]*[0-9a-z])*)*@([0-9a-z]+([a-z0-9_-]*[0-9a-z])*\.)+[a-z]{2,9}/i,
 	RE_url			: /(([^:/?#]+):\/\/)?(([a-z0-9_]+:[a-z0-9_]+@)?[a-z0-9_-]{2,}(\.[a-z0-9_-]{2,})+\.[a-z]{2,5}(:[0-9]+)?(\/\S+)*\/?)/i,
@@ -963,8 +961,6 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 		} else {
 			this.document = iframe.contentWindow ? iframe.contentWindow.document : iframe.contentDocument;
 			this.getEditor().document = this.document;
-			this.getEditor()._doc = this.document;
-			this.getEditor()._iframe = iframe;
 			this.initializeCustomTags();
 			this.createHead();
 				// Style the document body
@@ -1299,7 +1295,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	onDrop: function (event, target) {
 			// Clean up span elements added by WebKit
 		if (Ext.isWebKit) {
-			this.getEditor().cleanAppleStyleSpans.defer(50, this.getEditor(), [this.getEditor().document.body]);
+			this.getEditor().getDomNode().cleanAppleStyleSpans.defer(50, this.getEditor(), [this.getEditor().document.body]);
 		}
 			// Make src url absolute in Firefox
 		if (Ext.isGecko) {
@@ -1378,7 +1374,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 			editor.getSelection().detectURL(event);
 			if (Ext.isSafari) {
 				var brNode = editor.document.createElement('br');
-				editor.insertNodeAtSelection(brNode);
+				editor.getSelection().insertNode(brNode);
 				brNode.parentNode.normalize();
 					// Selection issue when an URL was detected
 				if (editor._unlinkOnUndo) {
@@ -1452,8 +1448,6 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 		Ext.get(this.document.documentElement).dom = null;
 		this.document = null;
 		this.getEditor().document = null;
-		this.getEditor()._doc = null;
-		this.getEditor()._iframe = null;
 		Ext.each(this.nestedParentElements.sorted, function (nested) {
 			Ext.get(nested).purgeAllListeners();
 			Ext.get(nested).dom = null;
@@ -2184,7 +2178,7 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 						id: this.editorId + '-iframe',
 						tag: 'iframe',
 						cls: 'editorIframe',
-						src: Ext.isGecko ? 'javascript:void(0);' : (Ext.isWebKit ? 'javascript: \'' + HTMLArea.htmlEncode(this.config.documentType + this.config.blankDocument) + '\'' : HTMLArea.editorUrl + 'popups/blank.html')
+						src: Ext.isGecko ? 'javascript:void(0);' : (Ext.isWebKit ? 'javascript: \'' + HTMLArea.util.htmlEncode(this.config.documentType + this.config.blankDocument) + '\'' : HTMLArea.editorUrl + 'popups/blank.html')
 					},
 					isNested: this.isNested,
 					nestedParentElements: this.nestedParentElements,
@@ -2735,146 +2729,6 @@ HTMLArea.util.TYPO3 = function () {
 		}
 	}
 }();
- /*
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.forceRedraw = function() {
-	this.appendToLog('HTMLArea.Editor', 'forceRedraw', 'Reference to deprecated method', 'warn');
-	this.htmlArea.doLayout();
-};
-/*
- * Surround the currently selected HTML source code with the given tags.
- * Delete the selection, if any.
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.surroundHTML = function(startTag,endTag) {
-	this.appendToLog('HTMLArea.Editor', 'surroundHTML', 'Reference to deprecated method', 'warn');
-	this.getSelection().surroundHtml(startTag, endTag);
-};
-
-/*
- * Change the tag name of a node.
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.convertNode = function(el,newTagName) {
-	this.appendToLog('HTMLArea.Editor', 'surroundHTML', 'Reference to deprecated method', 'warn');
-	return HTMLArea.DOM.convertNode(el, newTagName);
-};
-
-/*
- * This function removes the given markup element
- *
- * @param	object	element: the inline element to be removed, content and selection being preserved
- *
- * @return	void
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.removeMarkup = function(element) {
-	this.appendToLog('HTMLArea.Editor', 'removeMarkup', 'Reference to deprecated method', 'warn');
-	this.getDomNode().removeMarkup(element);
-};
-/*
- * Return true if we have some selected content
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.hasSelectedText = function() {
-	this.appendToLog('HTMLArea.Editor', 'hasSelectedText', 'Reference to deprecated method', 'warn');
-	return !this.getSelection().isEmpty();
-};
-
-/*
- * Get an array with all the ancestor nodes of the selection
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.getAllAncestors = function() {
-	this.appendToLog('HTMLArea.Editor', 'getAllAncestors', 'Reference to deprecated method', 'warn');
-	return this.getSelection().getAllAncestors();
-};
-
-/*
- * Get the block elements containing the start and the end points of the selection
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.getEndBlocks = function(selection) {
-	this.appendToLog('HTMLArea.Editor', 'getEndBlocks', 'Reference to deprecated method', 'warn');
-	return this.getSelection().getEndBlocks();
-};
-
-/*
- * This function determines if the end poins of the current selection are within the same block
- *
- * @return	boolean	true if the end points of the current selection are inside the same block element
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.endPointsInSameBlock = function() {
-	this.appendToLog('HTMLArea.Editor', 'endPointsInSameBlock', 'Reference to deprecated method', 'warn');
-	return this.getSelection().endPointsInSameBlock();
-};
-
-/*
- * Get the deepest ancestor of the selection that is of the specified type
- * Borrowed from Xinha (is not htmlArea) - http://xinha.gogo.co.nz/
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype._getFirstAncestor = function(sel,types) {
-	this.appendToLog('HTMLArea.Editor', '_getFirstAncestor', 'Reference to deprecated method', 'warn');
-	return this.getSelection().getFirstAncestorOfType(types);
-};
-/*
- * Get the node whose contents are currently fully selected
- *
- * @param 	array		selection: the current selection
- * @param 	array		range: the range of the current selection
- * @param 	array		ancestors: the array of ancestors node of the current selection
- *
- * @return	object		the fully selected node, if any, null otherwise
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.getFullySelectedNode = function (selection, range, ancestors) {
-	this.appendToLog('HTMLArea.Editor', 'getFullySelectedNode', 'Reference to deprecated method', 'warn');
-	return this.getSelection().getFullySelectedNode();
-};
-/*
- * Intercept some native execCommand commands
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.execCommand = function(cmdID, UI, param) {
-	this.appendToLog('HTMLArea.Editor', 'execCommand', 'Reference to deprecated method', 'warn');
-	return this.getSelection().execCommand(cmdID, UI, param);
-};
-
 /***************************************************
  *  UTILITY FUNCTIONS
  ***************************************************/
@@ -2902,19 +2756,6 @@ Ext.apply(HTMLArea.util, {
 		return str;
 	}
 });
-/*
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.htmlDecode = HTMLArea.util.htmlDecode;
-/*
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.htmlEncode = HTMLArea.util.htmlEncode;
-
 /*****************************************************************
  * HTMLArea.DOM: Utility functions for dealing with the DOM tree *
  *****************************************************************/
@@ -5081,321 +4922,6 @@ HTMLArea.DOM.Node = Ext.extend(HTMLArea.DOM.Node, {
 		}
 	}
 });
- /*
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.getInnerText = HTMLArea.DOM.getInnerText;
- /*
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.removeFromParent = HTMLArea.DOM.removeFromParent;
-/*
- * Get the block ancestors of an element within a given block
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.getBlockAncestors = HTMLArea.DOM.getBlockAncestors;
-/*
- * This function verifies if the element has any allowed attributes
- *
- * @param	object	element: the DOM element
- * @param	array	allowedAttributes: array of allowed attribute names
- *
- * @return	boolean	true if the element has one of the allowed attributes
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.hasAllowedAttributes = HTMLArea.DOM.hasAllowedAttributes;
-/*
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.isBlockElement = HTMLArea.DOM.isBlockElement;
-/*
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.needsClosingTag = HTMLArea.DOM.needsClosingTag;
-/*
- * Get the current selection object
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype._getSelection = function() {
-	this.appendToLog('HTMLArea.Editor', '_getSelection', 'Reference to deprecated method', 'warn');
-	return this.getSelection().get().selection;
-};
-/*
- * Empty the selection object
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.emptySelection = function (selection) {
-	this.appendToLog('HTMLArea.Editor', 'emptySelection', 'Reference to deprecated method', 'warn');
-	this.getSelection().empty();
-};
-/*
- * Add a range to the selection
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.addRangeToSelection = function(selection, range) {
-	this.appendToLog('HTMLArea.Editor', 'addRangeToSelection', 'Reference to deprecated method', 'warn');
-	this.getSelection().addRange(range);
-};
-/*
- * Create a range for the current selection
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype._createRange = function(sel) {
-	this.appendToLog('HTMLArea.Editor', '_createRange', 'Reference to deprecated method', 'warn');
-	return this.getSelection().createRange();
-};
-/*
- * Select a node AND the contents inside the node
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.selectNode = function(node, endPoint) {
-	this.appendToLog('HTMLArea.Editor', 'selectNode', 'Reference to deprecated method', 'warn');
-	this.getSelection().selectNode(node, endPoint);
-};
-/*
- * Select ONLY the contents inside the given node
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.selectNodeContents = function(node, endPoint) {
-	this.appendToLog('HTMLArea.Editor', 'selectNodeContents', 'Reference to deprecated method', 'warn');
-	this.getSelection().selectNodeContents(node, endPoint);
-};
-/*
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.rangeIntersectsNode = function(range, node) {
-	this.appendToLog('HTMLArea.Editor', 'rangeIntersectsNode', 'Reference to deprecated method', 'warn');
-	this.focus();
-	return HTMLArea.DOM.rangeIntersectsNode(range, node);
-};
-/*
- * Get the selection type
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.getSelectionType = function(selection) {
-	this.appendToLog('HTMLArea.Editor', 'getSelectionType', 'Reference to deprecated method', 'warn');
-	return this.getSelection().getType();
-};
-/*
- * Return the ranges of the selection
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.getSelectionRanges = function(selection) {
-	this.appendToLog('HTMLArea.Editor', 'getSelectionRanges', 'Reference to deprecated method', 'warn');
-	return this.getSelection().getRanges();
-};
-/*
- * Add ranges to the selection
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.setSelectionRanges = function(ranges, selection) {
-	this.appendToLog('HTMLArea.Editor', 'setSelectionRanges', 'Reference to deprecated method', 'warn');
-	this.getSelection().setRanges(ranges);
-};
-/*
- * Retrieves the selected element (if any), just in the case that a single element (object like and image or a table) is selected.
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.getSelectedElement = function(selection) {
-	this.appendToLog('HTMLArea.Editor', 'getSelectedElement', 'Reference to deprecated method', 'warn');
-	return this.getSelection().getElement();
-};
-/*
- * Retrieve the HTML contents of selected block
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.getSelectedHTML = function() {
-	this.appendToLog('HTMLArea.Editor', 'getSelectedHTML', 'Reference to deprecated method', 'warn');
-	return this.getSelection().getHtml();
-};
-/*
- * Retrieve simply HTML contents of the selected block, IE ignoring control ranges
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.getSelectedHTMLContents = function() {
-	this.appendToLog('HTMLArea.Editor', 'getSelectedHTMLContents', 'Reference to deprecated method', 'warn');
-	return this.getSelection().getHtml();
-};
-/*
- * Get the deepest node that contains both endpoints of the current selection.
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.getParentElement = function(selection, range) {
-	this.appendToLog('HTMLArea.Editor', 'getParentElement', 'Reference to deprecated method', 'warn');
-	return this.getSelection().getParentElement();
-};
-/*
- * Determine if the current selection is empty or not.
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype._selectionEmpty = function(sel) {
-	this.appendToLog('HTMLArea.Editor', '_selectionEmpty', 'Reference to deprecated method', 'warn');
-	return this.getSelection().isEmpty();
-};
-/*
- * Get a bookmark
- * Adapted from FCKeditor
- * This is an "intrusive" way to create a bookmark. It includes <span> tags
- * in the range boundaries. The advantage of it is that it is possible to
- * handle DOM mutations when moving back to the bookmark.
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.getBookmark = function (range) {
-	this.appendToLog('HTMLArea.Editor', 'getBookmark', 'Reference to deprecated method', 'warn');
-	return this.getBookMark().get(range);
-};
-/*
- * Get the end point of the bookmark
- * Adapted from FCKeditor
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.getBookmarkNode = function(bookmark, endPoint) {
-	this.appendToLog('HTMLArea.Editor', 'getBookmarkNode', 'Reference to deprecated method', 'warn');
-	return this.getBookMark().getEndPoint(bookmark, endPoint);
-};
-/*
- * Move the range to the bookmark
- * Adapted from FCKeditor
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.moveToBookmark = function (bookmark) {
-	this.appendToLog('HTMLArea.Editor', 'moveToBookmark', 'Reference to deprecated method', 'warn');
-	return this.getBookMark().moveTo(bookmark);
-};
-/*
- * Select range
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.selectRange = function (range) {
-	this.appendToLog('HTMLArea.Editor', 'selectRange', 'Reference to deprecated method', 'warn');
-	this.selection.selectRange(range);
-};
- /*
- * Insert a node at the current position.
- * Delete the current selection, if any.
- * Split the text node, if needed.
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.insertNodeAtSelection = function(toBeInserted) {
-	this.appendToLog('HTMLArea.Editor', 'insertNodeAtSelection', 'Reference to deprecated method', 'warn');
-	this.getSelection().insertNode(toBeInserted);
-};
-/*
- * Insert HTML source code at the current position.
- * Delete the current selection, if any.
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.insertHTML = function(html) {
-	this.appendToLog('HTMLArea.Editor', 'insertHTML', 'Reference to deprecated method', 'warn');
-	this.getSelection().insertHtml(html);
-};
-/*
- * Wrap the range with an inline element
- *
- * @param	string	element: the node that will wrap the range
- * @param	object	range: the range to be wrapped
- *
- * @return	void
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.wrapWithInlineElement = function(element, selection,range) {
-	this.appendToLog('HTMLArea.Editor', 'wrapWithInlineElement', 'Reference to deprecated method', 'warn');
-	this.getDomNode().wrapWithInlineElement(element, range);
-};
-/*
- * Clean Apple wrapping span and font elements under the specified node
- *
- * @param	object		node: the node in the subtree of which cleaning is performed
- *
- * @return	void
- *
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
- ***********************************************
- */
-HTMLArea.Editor.prototype.cleanAppleStyleSpans = function(node) {
-	this.appendToLog('HTMLArea.Editor', 'cleanAppleStyleSpans', 'Reference to deprecated method', 'warn');
-	this.getDomNode().cleanAppleStyleSpans(node);
-};
 /***************************************************
  *  HTMLArea.CSS.Parser: CSS Parser
  ***************************************************/
