@@ -54,7 +54,8 @@ class CopyPaste extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 
 	// Hide buttons not implemented in client browsers
 	protected $hideButtonsFromClient = array(
-		'webkit' => array('paste'),
+		'gecko' => array('copy', 'cut', 'paste'),
+		'webkit' => array('copy', 'cut', 'paste'),
 		'opera' => array('copy', 'cut', 'paste')
 	);
 
