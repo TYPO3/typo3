@@ -232,7 +232,13 @@ HTMLArea.QuickTag = Ext.extend(HTMLArea.Plugin, {
 			} else {
 					// ImportRule (Mozilla)
 				if (rule.styleSheet) {
-					this.parseCssRule(rule.styleSheet.cssRules, valueStore);
+					try {
+						this.parseCssRule(rule.styleSheet.cssRules, valueStore);
+					} catch (e) {
+						if (/Security/i.test(e)) {
+							this.appendToLog('parseCssRule', 'A security error occurred. Make sure all stylesheets are accessed from the same domain/subdomain and using the same protocol as the current script.', 'error');
+						}
+					}
 				}
 					// MediaRule (Mozilla)
 				if (rule.cssRules) {
