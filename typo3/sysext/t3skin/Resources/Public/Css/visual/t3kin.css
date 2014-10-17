@@ -847,7 +847,7 @@ h6 .small,
 .h6 .small {
   font-weight: normal;
   line-height: 1;
-  color: #d7d7d7;
+  color: #737373;
 }
 h1,
 .h1,
@@ -2232,7 +2232,7 @@ input[type="date"].input-lg,
 input[type="time"].input-lg,
 input[type="datetime-local"].input-lg,
 input[type="month"].input-lg {
-  line-height: 46px;
+  line-height: 41.2px;
 }
 .form-group {
   margin-bottom: 15px;
@@ -2326,15 +2326,15 @@ select[multiple].input-sm {
 }
 .input-lg,
 .form-horizontal .form-group-lg .form-control {
-  height: 46px;
+  height: 41.2px;
   padding: 12px 12px;
   font-size: 15px;
   line-height: 1.33;
   border-radius: 6px;
 }
 select.input-lg {
-  height: 46px;
-  line-height: 46px;
+  height: 41.2px;
+  line-height: 41.2px;
 }
 textarea.input-lg,
 select[multiple].input-lg {
@@ -2358,9 +2358,9 @@ select[multiple].input-lg {
   text-align: center;
 }
 .input-lg + .form-control-feedback {
-  width: 46px;
-  height: 46px;
-  line-height: 46px;
+  width: 41.2px;
+  height: 41.2px;
+  line-height: 41.2px;
 }
 .input-sm + .form-control-feedback {
   width: 26px;
@@ -3257,7 +3257,7 @@ tbody.collapse.in {
 .input-group-lg > .form-control,
 .input-group-lg > .input-group-addon,
 .input-group-lg > .input-group-btn > .btn {
-  height: 46px;
+  height: 41.2px;
   padding: 12px 12px;
   font-size: 15px;
   line-height: 1.33;
@@ -3266,8 +3266,8 @@ tbody.collapse.in {
 select.input-group-lg > .form-control,
 select.input-group-lg > .input-group-addon,
 select.input-group-lg > .input-group-btn > .btn {
-  height: 46px;
-  line-height: 46px;
+  height: 41.2px;
+  line-height: 41.2px;
 }
 textarea.input-group-lg > .form-control,
 textarea.input-group-lg > .input-group-addon,
@@ -9713,297 +9713,123 @@ AJAX Page Tree
  * According to the GPL license an interactive application must show such a notice on start-up ('If the program is interactive, make it output a short notice... ' - see GPL.txt)
  * Therefore preventing this notice from being properly shown is a violation of the license, regardless of whether you remove it or use the stylesheet to obstruct the display.
  */
-#typo3-index-php #t3-login-news-outer #t3-login-news dt {
-  font-weight: bold;
-}
-#typo3-index-php #t3-login-news-outer #t3-login-news dd {
-  border: 0;
-}
 #typo3-index-php {
-  background-color: #494949;
-  background-image: url('../../../../images/backgrounds/gray-gradient.png');
-  background-repeat: repeat-x;
-  margin: 0;
+  background: #ebebeb;
+  min-width: 400px;
+  min-height: 550px;
 }
-#typo3-index-php #t3-login-form {
-  margin: 0 auto;
-  width: 430px;
-  padding: 10% 0 0 0;
+#typo3-index-php #t3-login-wrap {
+  position: absolute;
+  left: 50%;
+  margin-left: -200px;
+  width: 400px;
+  z-index: 1;
+  padding-top: 50px;
+  padding-bottom: 100px;
 }
-#typo3-index-php #t3-login-form .t3-login-logo {
-  margin-bottom: 30px;
+#typo3-index-php #t3-login-wrap .t3-login-header {
+  padding: 18px;
 }
-#typo3-index-php #t3-login-form-fields {
-  font-size: 11px;
+#typo3-index-php #t3-login-wrap .t3-login-header .t3-default-logo {
+  margin: 5px 15px;
 }
-#typo3-index-php .t3-icons {
-  float: left;
-  padding: 3px 5px 0 0;
+#typo3-index-php #t3-login-wrap .t3-login-body {
+  background-color: #5a5a5a;
+  padding: 25px 40px;
 }
-#typo3-index-php .t3-headline {
-  background-color: #4f4f4f;
-  margin: 0;
-  width: auto;
+#typo3-index-php #t3-login-wrap .t3-login-body .form-group {
+  margin-bottom: 10px;
+  position: relative;
 }
-#typo3-index-php .t3-headline .t3-login-news-headline {
-  padding: 0 0 0 40px;
-  vertical-align: middle;
-}
-#typo3-index-php .t3-headline h2 {
-  background: transparent url('../../../../icons/login-icon-key.png') no-repeat 12px 8px;
-  color: #fff;
+#typo3-index-php #t3-login-wrap .t3-login-body .form-group .form-control {
+  border-radius: 0;
+  background-color: #3a3a3a;
+  color: #a7a7a7;
+  border: none;
   font-size: 12px;
-  margin: 0;
-  padding: 5px 12px 5px 40px;
-  line-height: 24px;
+  height: 41.2px;
+  padding-left: 12px;
+  padding-right: 12px;
 }
-#typo3-index-php #t3-login-interface-section {
-  float: left;
+#typo3-index-php #t3-login-wrap .t3-login-body .form-group .form-control:hover {
+  color: #fff;
 }
-#typo3-index-php div#t3-login-image {
-  text-align: left;
+#typo3-index-php #t3-login-wrap .t3-login-body .form-group .form-control:focus {
+  border: none;
+  box-shadow: none;
 }
-#typo3-index-php input.t3-login-submit {
+#typo3-index-php #t3-login-wrap .t3-login-body .form-group .input-group-addon {
+  background-color: #3a3a3a;
+  color: #a7a7a7;
+  border-radius: 0;
+  border: none;
+}
+#typo3-index-php #t3-login-wrap .t3-login-body .form-group #t3-login-submit {
   background-color: #ff8600;
-  background-image: url('../../../../images/login/login-submit-background.gif');
   background-image: linear-gradient(center top, #fe9500 0%, #cf6610 100%);
   background-repeat: repeat-x;
-  border-top: 1px solid #ffb955;
-  border-left: 1px solid #E69036;
   text-shadow: 0px -1px 0px rgba(149, 81, 5, 0.6);
   color: #fff;
+  padding: 4px 20px;
+  height: 41.2px;
 }
-#typo3-index-php .t3-login-error {
-  margin: 2px;
-  padding: 10px;
-}
-#typo3-index-php .t3-login-field .t3-login-alert-capslock {
-  left: 300px;
+#typo3-index-php #t3-login-wrap .t3-login-body .form-group #t3-login-process {
+  background-color: #ff8600;
+  color: #fff;
+  cursor: wait;
   position: absolute;
-  top: 5px;
-}
-#typo3-index-php .t3-login-field .t3-login-clearInputField {
-  cursor: pointer;
-  position: absolute;
-  top: 11px;
-  right: 11px;
-}
-#typo3-index-php .t3-login-field input.t3-login-submit {
-  width: auto;
-  height: 28px;
-  padding: 0 50px;
-}
-#typo3-index-php input {
-  background: #fff;
-  border: none;
-  color: #606060;
-  font-size: 12px;
-}
-#typo3-index-php .t3-login-field,
-#typo3-index-php .t3-login-submit {
-  margin: 0 0 6px;
-  /** For clearable */
-  position: relative;
-}
-#typo3-index-php #t3-login-process h2 {
-  display: inline;
-  padding: 20px 0 20px 50px;
-  position: relative;
-  top: 45%;
-  vertical-align: middle;
-}
-#typo3-index-php #t3-login-openIdLogo {
-  position: absolute;
-}
-#typo3-index-php .t3-login-openid-disabled .t3-login-form-footer,
-#typo3-index-php .t3-login-openid-disabled #t3-login-openIdLogo {
-  display: none;
-}
-#typo3-index-php #t3-interfaceselector {
-  font-size: 11px;
-}
-#typo3-index-php #t3-interfaceselector option {
-  height: 19px;
-}
-#typo3-index-php .t3-login-box-body {
-  background-color: #c2c2c2;
-  background-image: linear-gradient(center top, #e2e2e2 0%, #c2c2c2 100%);
-  background-repeat: repeat-x;
-  padding: 25px 40px 20px 40px;
-}
-#typo3-index-php #t3-login-news-outer {
-  margin-top: 35px;
-}
-#typo3-index-php #t3-login-news-outer #t3-login-news {
-  margin-top: 0;
-  clear: both;
-}
-#typo3-index-php #t3-login-news-outer #t3-login-news dd {
-  clear: both;
-  margin-left: 0;
-  padding: 0;
-}
-#typo3-index-php #t3-login-news-outer #t3-login-news .t3-login-news-item {
-  margin-top: 0;
-  padding-top: 20px;
-}
-#typo3-index-php #t3-login-news-outer .t3-login-box-body {
-  padding-bottom: 14px;
-  padding-top: 0;
-}
-#typo3-index-php .shadow {
-  box-shadow: 0px 0px 18px rgba(0, 0, 0, 0.3);
-}
-#typo3-index-php div#t3-copyright-notice {
-  border-top: 1px solid #565655;
-  font-weight: normal;
-  font-size: 10px;
-  color: #797878;
-  padding-top: 12px;
-  margin-top: 30px;
-}
-#typo3-index-php div#t3-copyright-notice a {
-  color: #797878;
-  text-decoration: underline;
-}
-#typo3-index-php div#t3-copyright-notice a:hover {
-  color: #b0b0b0;
-}
-#typo3-index-php .t3-login-logout-form .t3-username-current {
-  float: left;
-  height: 21px;
-  vertical-align: middle;
-}
-#typo3-index-php .t3-login-logout-form .t3-username-current,
-#typo3-index-php .t3-login-logout-form div.t3-login-label {
-  color: #606060;
-  line-height: 21px;
-}
-#typo3-index-php #t3-meta-links {
-  color: #797878;
-  font-size: 10px;
-}
-#typo3-index-php #t3-meta-links a {
-  color: #797878;
-  text-decoration: underline;
-}
-#typo3-index-php #t3-meta-links a:hover {
-  color: #b0b0b0;
-}
-#typo3-index-php #t3-meta-links a.t3-login-link-donate {
-  font-weight: bold;
-}
-#t3-nocookies-ignore {
-  margin-top: 10px;
-}
-/**
- * @section logout
- */
-#typo3-index-php .t3-login-logout-form div.t3-login-label {
-  float: left;
-  padding-right: 10px;
-  width: 70px;
-}
-/**
- * @section erros/warnings
- */
-.t3-login-alert {
-  padding: 12px;
-  margin-bottom: 6px;
-}
-.t3-login-alert p {
-  font-size: 11px;
-  line-height: 15px;
-  margin: 10px 0 0 0;
-  padding: 0 10px 0 30px;
-}
-.t3-login-alert a {
-  text-decoration: underline;
-}
-.t3-login-alert h2 {
-  background: none;
-  font-size: 14px;
-  margin: 0;
-  padding: 0 10px 0 30px;
-  line-height: 16px;
-}
-/**
- * @section box layout
- */
-.t3-login-box-shadow {
-  height: 3px;
-}
-.t3-login-box-border-bottom {
-  height: 6px;
-}
-/* Login Screen
- * Warning:
- * DO NOT prevent the copyright notice from being shown!
- * According to the GPL license an interactive application must show such a notice on start-up ('If the program is interactive, make it output a short notice... ' - see GPL.txt)
- * Therefore preventing this notice from being properly shown is a violation of the license, regardless of whether you remove it or use the stylesheet to obstruct the display.
- */
-#typo3-index-php #t3-login-process {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  line-height: 41.2px;
   text-align: center;
 }
-#typo3-index-php #t3-login-process h2 {
-  background: url('../../../../icons/login-submit-progress.gif') no-repeat 10px center;
-  font-size: 11px !important;
+#typo3-index-php #t3-login-wrap .t3-login-body .form-group:last-child {
+  margin-bottom: 0;
 }
-#typo3-index-php .t3-headline .t3-login-news-headline {
-  background: transparent url('../../../../icons/login-icon-news.gif') no-repeat 10px center;
-  color: #fff;
-  font-size: 12px;
-  line-height: 3em;
-}
-#typo3-index-php .t3-login-form-footer {
-  text-align: right;
-}
-#typo3-index-php .t3-login-form-footer a {
+#typo3-index-php #t3-login-wrap .t3-login-body a {
   cursor: pointer;
 }
-#typo3-index-php .t3-login-form-footer,
-#typo3-index-php .t3-login-form-footer a.switchToOpenId,
-#typo3-index-php dl#t3-login-news a {
-  color: #888;
-  font-size: 10px;
+#typo3-index-php #t3-login-wrap .t3-login-body a i {
+  margin-right: 6px;
 }
-#typo3-index-php .t3-login-form-footer a.switchToOpenId,
-#typo3-index-php dl#t3-login-news a {
+#typo3-index-php #t3-login-wrap .t3-login-body a.switchToOpenId {
+  color: #a7a7a7;
+}
+#typo3-index-php #t3-login-wrap #t3-login-news {
+  background: #fff;
+  padding: 25px 40px;
+}
+#typo3-index-php #t3-login-wrap #t3-login-news h4 {
+  margin-top: 0;
+}
+#typo3-index-php #t3-login-wrap #t3-login-news dl {
+  margin-bottom: 0;
+}
+#typo3-index-php #t3-login-wrap #t3-login-news dl dt {
+  font-size: 17px;
+  font-weight: 500;
+}
+#typo3-index-php #t3-login-wrap #t3-login-news dl dt span {
+  color: #737373;
+  font-size: 11px;
+}
+#typo3-index-php #t3-login-copyright {
+  font-size: 11px;
+  color: #737373;
+  position: fixed;
+  bottom: 18px;
+  left: 18px;
+  right: 18px;
+}
+#typo3-index-php #t3-login-copyright a {
+  color: #4d4d4d;
   text-decoration: underline;
 }
-#typo3-index-php .t3-login-form-footer a.switchToOpenId:hover,
-#typo3-index-php dl#t3-login-news a:hover {
-  color: #333;
-}
-/**
- * @section erros/warnings
- */
-.t3-login-alert-error {
-  background: #f6d3cf;
-  border: 1px solid #d66c68;
-}
-.t3-login-alert-error h2 {
-  background: url('../../../../icons/login-alert-error.gif') no-repeat left 2px;
-  color: #be0027;
-}
-.t3-login-alert-error p,
-.t3-login-alert-error a {
-  color: #be0027;
-}
-#t3-nocookies-ignore {
-  padding-left: 30px;
-}
-.t3-login-alert-warning {
-  background: #fbf6de;
-  border: 1px solid #b1905c;
-}
-.t3-login-alert-warning h2 {
-  background: url('../../../../icons/login-alert-warning.gif') no-repeat left 2px;
-  color: #9e7d4a;
-}
-.t3-login-alert-warning p,
-.t3-login-alert-warning a {
-  color: #9e7d4a;
+#typo3-index-php #t3-login-copyright a:hover {
+  color: #000;
 }
 /**
  * This file is part of the TYPO3 CMS project.

@@ -11,8 +11,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 define('TYPO3/CMS/Backend/Login', ['jquery'], function($) {
-
-	var isWebKit = document.childNodes && !document.all && !navigator.taintEnabled;
 	var BackendLogin = {
 		options: {
 			usernameField: '#t3-username',
@@ -55,8 +53,6 @@ define('TYPO3/CMS/Backend/Login', ['jquery'], function($) {
 	 * Change to Interface for OpenId login and save the selection to a cookie
 	 */
 	BackendLogin.switchToOpenId = function() {
-		$('t3-login-openIdLogo').show();
-
 		$('#t3-login-form-footer-default').hide();
 		$('#t3-login-form-footer-openId').show();
 
@@ -239,13 +235,11 @@ define('TYPO3/CMS/Backend/Login', ['jquery'], function($) {
 		$(document).on('focus blur keypress', options.usernameField + ', ' + options.passwordField + ', ' + options.openIdField, function() {
 			BackendLogin.setVisibilityOfClearIcon($(this));
 		});
-		if (!isWebKit) {
-			$(document).on('keypress', options.usernameField + ', ' + options.passwordField + ', ' + options.openIdField, function(evt) {
-				BackendLogin.showCapsLockWarning($(this).siblings('.t3-login-alert-capslock'), evt);
-			});
-		}
+		$(document).on('keypress', options.usernameField + ', ' + options.passwordField + ', ' + options.openIdField, function(evt) {
+			BackendLogin.showCapsLockWarning($(this).siblings('.t3-login-alert-capslock'), evt);
+		});
 	};
-	// intialize and return the BackendLogin object
+	// initialize and return the BackendLogin object
 	return function() {
 
 		$(document).ready(function() {
