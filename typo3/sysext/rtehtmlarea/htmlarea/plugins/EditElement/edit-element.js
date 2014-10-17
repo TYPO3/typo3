@@ -424,7 +424,11 @@ HTMLArea.EditElement = Ext.extend(HTMLArea.Plugin, {
 		var textFields = this.dialog.findByType('textfield');
 		Ext.each(textFields, function (field) {
 			if (field.getXType() !== 'combo') {
-				this.element.setAttribute(field.getItemId(), field.getValue());
+				if (field.getValue()) {
+					this.element.setAttribute(field.getItemId(), field.getValue());
+				} else {
+					this.element.removeAttribute(field.getItemId());
+				}
 			}
 		}, this);
 		var comboFields = this.dialog.findByType('combo');
