@@ -325,23 +325,27 @@ HTMLArea.MicrodataSchema = Ext.extend(HTMLArea.Plugin, {
 	 * Set microdata attributes of the element
 	 */
 	setMicrodataAttributes: function (element) {
-		var comboFields = this.fieldset.findByType('combo');
-		Ext.each(comboFields, function (field) {
-			var itemId = field.getItemId();
-			var value = field.getValue();
-			switch (itemId) {
-				case 'itemprop':
-				case 'itemtype':
-					element.setAttribute(itemId, (value === 'none') ? '' : value);
-					break;
+		if (this.fieldset) {
+			var comboFields = this.fieldset.findByType('combo');
+			Ext.each(comboFields, function (field) {
+				var itemId = field.getItemId();
+				var value = field.getValue();
+				switch (itemId) {
+					case 'itemprop':
+					case 'itemtype':
+						element.setAttribute(itemId, (value === 'none') ? '' : value);
+						break;
+				}
+			}, this);
+			var itemScopeField = this.fieldset.find('itemId', 'itemscope')[0];
+			if (itemScopeField) {
+				if (itemScopeField.getValue()) {
+					element.setAttribute('itemscope', 'itemscope');
+				} else {
+					element.removeAttribute('itemscope');
+					element.removeAttribute('itemtype');
+				}
 			}
-		}, this);
-		var itemScopeField = this.fieldset.find('itemId', 'itemscope')[0];
-		if (itemScopeField.getValue()) {
-			element.setAttribute('itemscope', 'itemscope');
-		} else {
-			element.removeAttribute('itemscope');
-			element.removeAttribute('itemtype');
 		}
 	},
 	/*
