@@ -79,6 +79,7 @@ class IconUtility {
 		't3-icon t3-icon-apps t3-icon-apps-toolbar t3-icon-toolbar-menu-search' => 'fa-search',
 		't3-icon t3-icon-apps t3-icon-apps-toolbar t3-icon-toolbar-menu-shortcut' => 'fa-star',
 		't3-icon t3-icon-apps t3-icon-apps-toolbar t3-icon-toolbar-menu-workspace' => 'fa-th-large',
+		't3-icon t3-icon-apps t3-icon-apps-toolbar t3-icon-toolbar-menu-actions' => 'fa-cog',
 		't3-icon t3-icon-extensions t3-icon-extensions-extensionmanager t3-icon-extensionmanager-update-script' => 'fa-refresh',
 		't3-icon t3-icon-extensions t3-icon-extensions-scheduler t3-icon-scheduler-run-task' => 'fa-play-circle',
 		't3-icon t3-icon-mimetypes t3-icon-mimetypes-pdf t3-icon-pdf' => 'fa-file-pdf-o',
