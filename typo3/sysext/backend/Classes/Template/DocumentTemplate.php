@@ -1523,42 +1523,26 @@ function jumpToUrl(URL) {
 	 * @access private
 	 */
 	public function getTabMenuRaw($menuItems) {
-		$content = '';
-		if (is_array($menuItems)) {
-			$options = '';
-			$count = count($menuItems);
-			$widthLeft = 1;
-			$addToAct = 5;
-			$widthRight = max(1, floor(30 - pow($count, 1.72)));
-			$widthTabs = 100 - $widthRight - $widthLeft;
-			$widthNo = floor(($widthTabs - $addToAct) / $count);
-			$addToAct = max($addToAct, $widthTabs - $widthNo * $count);
-			$widthAct = $widthNo + $addToAct;
-			$widthRight = 100 - ($widthLeft + $count * $widthNo + $addToAct);
-			foreach ($menuItems as $id => $def) {
-				$isActive = $def['isActive'];
-				$class = $isActive ? 'tabact' : 'tab';
-				$width = $isActive ? $widthAct : $widthNo;
-				// @rene: Here you should probably wrap $label and $url in htmlspecialchars() in order to make sure its XHTML compatible! I did it for $url already since that is VERY likely to break.
-				$label = $def['label'];
-				$url = htmlspecialchars($def['url']);
-				$params = $def['addParams'];
-				$options .= '<td width="' . $width . '%" class="' . $class . '"><a href="' . $url . '" ' . $params . '>' . $label . '</a></td>';
-			}
-			if ($options) {
-				$content .= '
-				<!-- Tab menu -->
-				<table cellpadding="0" cellspacing="0" border="0" width="100%" id="typo3-tabmenu">
-					<tr>
-							<td width="' . $widthLeft . '%">&nbsp;</td>
-							' . $options . '
-						<td width="' . $widthRight . '%">&nbsp;</td>
-					</tr>
-				</table>
-				<div class="hr" style="margin:0px"></div>';
-			}
+		if (!is_array($menuItems)) {
+			return '';
 		}
-		return $content;
+
+		$options = '';
+		foreach ($menuItems as $id => $def) {
+			$class = $def['isActive'] ? 'active' : '';
+			$label = $def['label'];
+			$url = htmlspecialchars($def['url']);
+			$params = $def['addParams'];
+
+			$options .= '<li class="' . $class . '">' .
+				'<a href="' . $url . '" ' . $params . '>' . $label . '</a>' .
+				'</li>';
+		}
+
+		return '<ul class="nav nav-tabs" role="tablist">' .
+				$options .
+			'</ul>';
+
 	}
 
 	/**
