@@ -142,7 +142,7 @@ HTMLArea.AboutEditor = Ext.extend(HTMLArea.Plugin, {
 					+ '<br />'
 					+ '&copy; 2002-2004 <a href="http://interactivetools.com" target="_blank">interactivetools.com, inc.</a><br />'
 					+ '&copy; 2003-2004 <a href="http://dynarch.com" target="_blank">dynarch.com LLC.</a><br />'
-					+ '&copy; 2004-2010 <a href="http://www.sjbr.ca" target="_blank">Stanislas Rolland</a><br />'
+					+ '&copy; 2004-2014 <a href="http://www.sjbr.ca" target="_blank">Stanislas Rolland</a><br />'
 					+ this.localize('All rights reserved.')
 				+ '</p>'
 		});
@@ -184,19 +184,20 @@ HTMLArea.AboutEditor = Ext.extend(HTMLArea.Plugin, {
 		return tabItems;
 	},
 	/*
-	 * Format an arry of information on each configured plugin
+	 * Format an array of information on each configured plugin
 	 *
 	 * @return	array		array of data objects
 	 */
 	getPluginsInfo: function () {
 		var pluginsInfo = [];
-		Ext.iterate(this.editor.plugins, function (pluginId, plugin) {
+		for (var pluginId in this.editor.plugins) {
+			var plugin = this.editor.plugins[pluginId];
 			pluginsInfo.push([
 				plugin.name + ' ' + plugin.version,
 				'<a href="' + plugin.developerUrl + '" target="_blank">' + plugin.developer + '</a>',
 				'<a href="' + plugin.sponsorUrl + '" target="_blank">' + plugin.sponsor + '</a>'
 			]);
-		}, this);
+		}
 		return pluginsInfo;
 	}
 });

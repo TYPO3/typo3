@@ -35,7 +35,8 @@ HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 		/*
 		 * Registering the buttons
 		 */
-		Ext.iterate(this.buttonList, function (buttonId, buttonConf) {
+		for (var buttonId in this.buttonList) {
+			var buttonConf = this.buttonList[buttonId];
 			var buttonConfiguration = {
 				id		: buttonId,
 				tooltip		: this.localize(buttonId + 'Tooltip'),
@@ -50,7 +51,7 @@ HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 				this.buttonsConfiguration[buttonConf[0]].hotKey = null;
 			}
 			this.registerButton(buttonConfiguration);
-		}, this);
+		}
 		return true;
 	},
 	/*
@@ -82,7 +83,7 @@ HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 			this.pasteBehaviourConfiguration = this.buttonsConfiguration['pastebehaviour'];
 		}
 		this.cleaners = {};
-		Ext.iterate(this.cleanerConfig, function (behaviour) {
+		for (var behaviour in this.cleanerConfig) {
 			if (this.pasteBehaviourConfiguration && this.pasteBehaviourConfiguration[behaviour]) {
 				if (this.pasteBehaviourConfiguration[behaviour].keepTags) {
 					this.cleanerConfig[behaviour].keepTags = new RegExp( '^(' + this.pasteBehaviourConfiguration[behaviour].keepTags.split(',').join('|') + ')$', 'i');
@@ -92,7 +93,7 @@ HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 				}
 			}
 			this.cleaners[behaviour] = new HTMLArea.DOM.Walker(this.cleanerConfig[behaviour]);
-		}, this);
+		}
 			// Initial behaviour
 		this.currentBehaviour = 'plainText';
 			// May be set in TYPO3 User Settings
@@ -214,13 +215,14 @@ HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 			'plainText',
 			'pasteStructure',
 			'pasteFormat'
-		];
-		Ext.each(fields, function (field) {
+		], field;
+		for (var i = fields.length; --i >= 0;) {
+			field = fields[i];
 			if (this.dialog.find('itemId', field)[0].getValue()) {
 				this.currentBehaviour = field;
-				return false;
+				break;
 			}
-		}, this);
+		}
 		this.close();
 		return false;
 	},

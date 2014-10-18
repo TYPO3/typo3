@@ -277,10 +277,11 @@ HTMLArea.FindReplace = Ext.extend(HTMLArea.Plugin, {
 			'matchCase',
 			'replaceAll'
 		];
-		var params = {};
-		Ext.each(fields, function (field) {
+		var params = {}, field;
+		for (var i = fields.length; --i >= 0;) {
+			field = fields[i];
 			params[field] = this.dialog.find('itemId', field)[0].getValue();
-		}, this);
+		}
 		this.search(params);
 		return false;
 	},
@@ -304,11 +305,13 @@ HTMLArea.FindReplace = Ext.extend(HTMLArea.Plugin, {
 		if (this.matches == 0) {
 			var pattern = new RegExp(params.words ? '(?!<[^>]*)(\\b' + params.pattern + '\\b)(?![^<]*>)' : '(?!<[^>]*)(' + params.pattern + ')(?![^<]*>)', 'g' + (params.matchCase? '' : 'i'));
 			this.editor.setHTML(html.replace(pattern, '<span id="htmlarea-frmark">' + "$1" + '</span>'));
-			Ext.each(this.editor.document.body.getElementsByTagName('span'), function (mark) {
+			var spanElements = this.editor.document.body.getElementsByTagName('span');
+			for (var i = 0, n = spanElements.length; i < n; i++) {
+				var mark = spanElements[i];
 				if (/^htmlarea-frmark/.test(mark.id)) {
 					this.spans.push(mark);
 				}
-			}, this);
+			}
 		}
 		this.spanWalker(params.pattern, params.replacement, params.replaceAll);
 	},
@@ -324,7 +327,8 @@ HTMLArea.FindReplace = Ext.extend(HTMLArea.Plugin, {
 	spanWalker: function (pattern, replacement, replaceAll) {
 		this.clearMarks();
 		if (this.spans.length) {
-			Ext.each(this.spans, function (mark, i) {
+			for (var i = 0, n = this.spans.length; i < n; i++) {
+				var mark = this.spans[i];
 				if (i >= this.matches && !/[0-9]$/.test(mark.id)) {
 					this.matches++;
 					this.disableActions('clear', false);
@@ -344,7 +348,6 @@ HTMLArea.FindReplace = Ext.extend(HTMLArea.Plugin, {
 					}
 					if (replaceAll) {
 						replace('yes');
-						return true;
 					} else {
 						TYPO3.Dialog.QuestionDialog({
 							title: this.getButton('FindReplace').tooltip.title,
@@ -352,10 +355,10 @@ HTMLArea.FindReplace = Ext.extend(HTMLArea.Plugin, {
 							fn: replace,
 							scope: this
 						});
-						return false;
+						break;
 					}
 				}
-			}, this);
+			}
 		} else {
 			this.endWalk(pattern, 0);
 		}
@@ -408,13 +411,15 @@ HTMLArea.FindReplace = Ext.extend(HTMLArea.Plugin, {
 	 * De-highlight all marks
 	 */
 	clearMarks: function () {
-		Ext.each(this.editor.document.body.getElementsByTagName('span'), function (mark) {
+		var spanElements = this.editor.document.body.getElementsByTagName('span');
+		for (var i = spanElements.length; --i >= 0;) {
+			var mark = spanElements[i];
 			if (/^htmlarea-frmark/.test(mark.id)) {
 				mark.style.backgroundColor = '';
 				mark.style.color = '';
 				mark.style.fontWeight = '';
 			}
-		}, this);
+		}
 		this.disableActions('hiliteall', false);
 		this.disableActions('clear', true);
 	},
@@ -422,13 +427,15 @@ HTMLArea.FindReplace = Ext.extend(HTMLArea.Plugin, {
 	 * Highlight all marks
 	 */
 	hiliteAll: function () {
-		Ext.each(this.editor.document.body.getElementsByTagName('span'), function (mark) {
+		var spanElements = this.editor.document.body.getElementsByTagName('span');
+		for (var i = spanElements.length; --i >= 0;) {
+			var mark = spanElements[i];
 			if (/^htmlarea-frmark/.test(mark.id)) {
 				mark.style.backgroundColor = 'highlight';
 				mark.style.color = 'white';
 				mark.style.fontWeight = 'bold';
 			}
-		}, this);
+		}
 		this.disableActions('clear', false);
 		this.disableActions('hiliteall', true);
 	},
@@ -443,16 +450,18 @@ HTMLArea.FindReplace = Ext.extend(HTMLArea.Plugin, {
 			this.disableActions('clear', true);
 		}
 	},
-	/*
+	/**
 	 * Disable action buttons
 	 *
-	 * @param	array		actions: array of buttonIds to set disabled/enabled
-	 * @param	boolean		disabled: true to set disabled
+	 * @param string actions: comma-separated list of buttonIds to set disabled/enabled
+	 * @param boolean disabled: true to set disabled
 	 */
 	disableActions: function (actions, disabled) {
-		Ext.each(actions.split(/[,; ]+/), function (action) {
-				this.dialog.find('itemId', action)[0].setDisabled(disabled);
-		}, this);
+		var buttonIds = actions.split(/[,; ]+/), action;
+		for (var i = buttonIds.length; --i >= 0;) {
+			action = buttonIds[i];
+			this.dialog.find('itemId', action)[0].setDisabled(disabled);
+		}
 	},
 	/*
 	 * Initialize find & replace variables

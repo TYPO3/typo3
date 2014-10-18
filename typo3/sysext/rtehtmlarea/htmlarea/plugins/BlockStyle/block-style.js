@@ -238,7 +238,7 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 			} else if (this.showTagFreeClasses && Ext.isDefined(this.cssArray['all'])) {
 				allowedClasses = this.cssArray['all'];
 			}
-			Ext.iterate(allowedClasses, function (cssClass, value) {
+			for (var cssClass in allowedClasses) {
 				var style = null;
 				if (!this.pageTSconfiguration.disableStyleOnOptionLabel) {
 					if (HTMLArea.classesValues[cssClass] && !HTMLArea.classesNoShow[cssClass]) {
@@ -248,11 +248,11 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 					}
 				}
 				store.add(new store.recordType({
-					text: value,
+					text: allowedClasses[cssClass],
 					value: cssClass,
 					style: style
 				}));
-			}, this);
+			}
 		}
 	},
 	/*

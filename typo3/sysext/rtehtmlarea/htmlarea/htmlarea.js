@@ -386,16 +386,22 @@ Ext.ux.HTMLAreaButton = Ext.extend(Ext.Button, {
 			}
 			contexts = new RegExp( '^(' + contexts.join('|') + ')$', 'i');
 			var matchAny = contexts.test('*');
-			Ext.each(ancestors, function (ancestor) {
+			var i, j, n;
+			for (i = 0, n = ancestors.length; i < n; i++) {
+				var ancestor = ancestors[i];
 				inContext = matchAny || contexts.test(ancestor.nodeName);
 				if (inContext) {
-					Ext.each(attributes, function (attribute) {
-						inContext = eval("ancestor." + attribute);
-						return inContext;
-					});
+					for (j = attributes.length; --j >= 0;) {
+						inContext = eval("ancestor." + attributes[j]);
+						if (!inContext) {
+							break;
+						}
+					}
 				}
-				return !inContext;
-			});
+				if (inContext) {
+					break;
+				}
+			}
 		}
 		return inContext && (!this.selection || !selectionEmpty);
 	},
@@ -717,43 +723,47 @@ HTMLArea.Toolbar = Ext.extend(Ext.Container, {
 	getEditor: function() {
 		return RTEarea[this.editorId].editor;
 	},
-	/*
+	/**
 	 * Create the toolbar items based on editor toolbar configuration
 	 */
 	addItems: function () {
 		var editor = this.getEditor();
-			// Walk through the editor toolbar configuration nested arrays: [ toolbar [ row [ group ] ] ]
+		// Walk through the editor toolbar configuration nested arrays: [ toolbar [ row [ group ] ] ]
 		var firstOnRow = true;
 		var firstInGroup = true;
-		Ext.each(editor.config.toolbar, function (row) {
+		var i, j, k, n, m, p, row, group, item;
+		for (i = 0, n = editor.config.toolbar.length; i < n; i++) {
+			row = editor.config.toolbar[i];
 			if (!firstOnRow) {
-					// If a visible item was added to the previous line
+				// If a visible item was added to the previous line
 				this.add({
 					xtype: 'tbspacer',
 					cls: 'x-form-clear-left'
 				});
 			}
 			firstOnRow = true;
-				// Add the groups
-			Ext.each(row, function (group) {
-					// To do: this.config.keepButtonGroupTogether ...
+			// Add the groups
+			for (j = 0, m = row.length; j < m; j++) {
+				group = row[j];
+				// To do: this.config.keepButtonGroupTogether ...
 				if (!firstOnRow && !firstInGroup) {
-						// If a visible item was added to the line
+					// If a visible item was added to the line
 					this.add({
 						xtype: 'tbseparator',
 						cls: 'separator'
 					});
 				}
 				firstInGroup = true;
-					// Add each item
-				Ext.each(group, function (item) {
+				// Add each item
+				for (k = 0, p = group.length; k < p; k++) {
+					item = group[k];
 					if (item == 'space') {
 						this.add({
 							xtype: 'tbspacer',
 							cls: 'space'
 						});
 					} else {
-							// Get the item's config as registered by some plugin
+						// Get the item's config as registered by some plugin
 						var itemConfig = editor.config.buttonsConfig[item];
 						if (!Ext.isEmpty(itemConfig)) {
 							itemConfig.id = this.editorId + '-' + itemConfig.id;
@@ -762,12 +772,9 @@ HTMLArea.Toolbar = Ext.extend(Ext.Container, {
 							firstOnRow = firstOnRow && firstInGroup;
 						}
 					}
-					return true;
-				}, this);
-				return true;
-			}, this);
-			return true;
-		}, this);
+				}
+			}
+		}
 		this.add({
 			xtype: 'tbspacer',
 			cls: 'x-form-clear-left'
@@ -869,8 +876,8 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 				stopEvent: true,
 				delay: 50
 			};
-			Ext.each(this.nestedParentElements.sorted, function (nested) {
-				var nestedElement = Ext.get(nested);
+			for (var i = this.nestedParentElements.sorted.length; --i >= 0;) {
+				var nestedElement = Ext.get(this.nestedParentElements.sorted[i]);
 				this.mon(
 					nestedElement,
 					Ext.isIE ? 'propertychange' : 'DOMAttrModified',
@@ -885,7 +892,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 					this,
 					options
 				);
-			}, this);
+			}
 		}
 	},
 	/*
@@ -985,9 +992,9 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 */
 	initializeCustomTags: function () {
 		if (HTMLArea.isIEBeforeIE9) {
-			Ext.each(this.config.customTags, function (tag) {
-				this.document.createElement(tag);
-			}, this);
+			for (var i = this.config.customTags.length; --i >= 0;) {
+				this.document.createElement(this.config.customTags[i]);
+			}
 		}
 	},
 	/*
@@ -1207,13 +1214,13 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 				scope: this
 			});
 		}
-			// Hot key map (on keydown for all browsers)
+		// Hot key map (on keydown for all browsers)
 		var hotKeys = '';
-		Ext.iterate(this.config.hotKeyList, function (key) {
+		for (var key in this.config.hotKeyList) {
 			if (key.length == 1) {
 				hotKeys += key.toUpperCase();
 			}
-		});
+		}
 			// Make hot key map available, even if empty, so that plugins may add bindings
 		this.hotKeyMap = new Ext.KeyMap(Ext.get(this.document.documentElement));
 		if (!Ext.isEmpty(hotKeys)) {
@@ -1425,19 +1432,19 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 		this.getButton(this.config.hotKeyList[hotKey].cmd).fireEvent('HTMLAreaEventHotkey', hotKey, event);
 		return false;
 	},
-	/*
+	/**
 	 * Cleanup
 	 */
 	onBeforeDestroy: function () {
-			// ExtJS KeyMap object makes IE leak memory
-			// Nullify EXTJS private handlers
-		Ext.each(this.keyMap.bindings, function (binding, index) {
+		// ExtJS KeyMap object makes IE leak memory
+		// Nullify EXTJS private handlers
+		for (var index = this.keyMap.bindings.length; --index >= 0;) {
 			this.keyMap.bindings[index] = null;
-		}, this);
+		}
 		this.keyMap.handleKeyDown = null;
-		Ext.each(this.hotKeyMap.bindings, function (binding, index) {
+		for (var index = this.hotKeyMap.bindings.length; --index >= 0;) {
 			this.hotKeyMap.bindings[index] = null;
-		}, this);
+		}
 		this.hotKeyMap.handleKeyDown = null;
 		this.keyMap.disable();
 		this.hotKeyMap.disable();
@@ -1448,10 +1455,11 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 		Ext.get(this.document.documentElement).dom = null;
 		this.document = null;
 		this.getEditor().document = null;
-		Ext.each(this.nestedParentElements.sorted, function (nested) {
+		for (var index = this.nestedParentElements.sorted.length; --index >= 0;) {
+			var nested = this.nestedParentElements.sorted[index];
 			Ext.get(nested).purgeAllListeners();
 			Ext.get(nested).dom = null;
-		});
+		}
 		Ext.destroy(this.autoEl, this.el, this.resizeEl, this.positionEl);
 		return true;
 	}
@@ -1535,11 +1543,13 @@ HTMLArea.StatusBar = Ext.extend(Ext.Container, {
 	 */
 	clear: function () {
 		this.statusBarTree.removeAllListeners();
-		Ext.each(this.statusBarTree.query('a'), function (node) {
+		var statusBarNodes = this.statusBarTree.query('a');
+		for (var i = statusBarNodes.length; --i >= 0;) {
+			var node = statusBarNodes[i];
 			Ext.QuickTips.unregister(node);
 			Ext.get(node).dom.ancestor = null;
 			Ext.destroy(node);
-		});
+		}
 		this.statusBarTree.update('');
 		this.setSelection(null);
 	},
@@ -1562,9 +1572,11 @@ HTMLArea.StatusBar = Ext.extend(Ext.Container, {
 				tag: 'span',
 				html: HTMLArea.localize('Path') + ': '
 			},true);
-			Ext.each(ancestors, function (ancestor, index) {
+			var index, n, j, m;
+			for (index = 0, n = ancestors.length; index < n; index++) {
+				var ancestor = ancestors[index];
 				if (!ancestor) {
-					return true;
+					continue;
 				}
 				text = ancestor.nodeName.toLowerCase();
 					// Do not show any id generated by ExtJS
@@ -1580,7 +1592,7 @@ HTMLArea.StatusBar = Ext.extend(Ext.Container, {
 				if (ancestor.className) {
 					classText = '';
 					classes = ancestor.className.trim().split(' ');
-					for (var j = 0, n = classes.length; j < n; ++j) {
+					for (j = 0, m = classes.length; j < m; ++j) {
 						if (!HTMLArea.reservedClassNames.test(classes[j])) {
 							classText += '.' + classes[j];
 						}
@@ -1607,7 +1619,7 @@ HTMLArea.StatusBar = Ext.extend(Ext.Container, {
 						html: String.fromCharCode(0xbb)
 					});
 				}
-			}, this);
+			}
 		}
 		this.updateWordCount();
 		this.noUpdate = false;
@@ -1980,20 +1992,19 @@ HTMLArea.Framework = Ext.extend(Ext.Panel, {
 			this.onIframeReady.defer(50, this);
 		}
 	},
-	/*
+	/**
 	 * Handler invoked if we are inside a form and the form is reset
 	 * On reset, re-initialize the HTMLArea content and update the toolbar
 	 */
 	onReset: function (event) {
 		this.getEditor().setHTML(this.textArea.getValue());
 		this.toolbar.update();
-			// Invoke previous reset handlers, if any
+		// Invoke previous reset handlers, if any
 		var htmlAreaPreviousOnReset = event.getTarget().dom.htmlAreaPreviousOnReset;
 		if (typeof(htmlAreaPreviousOnReset) != 'undefined') {
-			Ext.each(htmlAreaPreviousOnReset, function (onReset) {
-				onReset();
-				return true;
-			});
+			for (var i = 0, n = htmlAreaPreviousOnReset.length; i < n; i++) {
+				htmlAreaPreviousOnReset[i]();
+			}
 		}
 	},
 	/*
@@ -2062,14 +2073,14 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 				this.wizards.hide();
 			}
 		}
-			// Plugins register
+		// Plugins register
 		this.plugins = {};
-			// Register the plugins included in the configuration
-		Ext.iterate(this.config.plugin, function (plugin) {
+		// Register the plugins included in the configuration
+		for (var plugin in this.config.plugin) {
 			if (this.config.plugin[plugin]) {
 				this.registerPlugin(plugin);
 			}
-		}, this);
+		}
 			// Create Ajax object
 		this.ajax = new HTMLArea.Ajax({
 			editor: this
@@ -2249,15 +2260,16 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 		if (this.wizards) {
 			this.wizards.show();
 		}
-			// Focus on the first editor that is not hidden
-		Ext.iterate(RTEarea, function (editorId, RTE) {
+		// Focus on the first editor that is not hidden
+		for (var editorId in RTEarea) {
+			var RTE = RTEarea[editorId];
 			if (!Ext.isDefined(RTE.editor) || (RTE.editor.isNested && !HTMLArea.util.TYPO3.allElementsAreDisplayed(RTE.editor.nestedParentElements.sorted))) {
-				return true;
+				continue;
 			} else {
 				RTE.editor.focus();
-				return false;
+				break;
 			}
-		}, this);
+		}
 		this.ready = true;
 		this.fireEvent('HTMLAreaEventEditorReady');
 		this.appendToLog('HTMLArea.Editor', 'onFrameworkReady', 'Editor ready.', 'info');
@@ -2297,9 +2309,9 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 		}
 		this.fireEvent('HTMLAreaEventModeChange', this.mode);
 		this.focus();
-		Ext.iterate(this.plugins, function(pluginId) {
+		for (var pluginId in this.plugins) {
 			this.getPlugin(pluginId).onMode(this.mode);
-		}, this);
+		}
 	},
 	/*
 	 * Get current editor mode
@@ -2372,11 +2384,12 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 	 */
 	getNodeByPosition: function (position, normalized) {
 		var current = this.document.documentElement;
-		for (var i = 0, n = position.length; current && i < n; i++) {
+		var i, j, n, m;
+		for (i = 0, n = position.length; current && i < n; i++) {
 			var target = position[i];
 			if (normalized) {
 				var currentIndex = -1;
-				for (var j = 0, m = current.childNodes.length; j < m; j++) {
+				for (j = 0, m = current.childNodes.length; j < m; j++) {
 					var candidate = current.childNodes[j];
 					if (
 						candidate.nodeType == HTMLArea.DOM.TEXT_NODE
@@ -2425,10 +2438,10 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 	 * Generate registered plugins
 	 */
 	generatePlugins: function () {
-		Ext.iterate(this.plugins, function (pluginId) {
+		for (var pluginId in this.plugins) {
 			var plugin = this.getPlugin(pluginId);
 			plugin.onGenerate();
-		}, this);
+		}
 	},
 	/*
 	 * Get the instance of the specified plugin, if it exists
@@ -2523,11 +2536,11 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 				value: this.getHTML()
 			}, false);
 		}
-			// Cleanup
+		// Cleanup
 		Ext.TaskMgr.stopAll();
-		Ext.iterate(this.plugins, function (pluginId) {
+		for (var pluginId in this.plugins) {
 			this.unRegisterPlugin(pluginId);
-		}, this);
+		}
 		this.purgeListeners();
 			// Cleaning references to DOM in order to avoid IE memory leaks
 		if (this.wizards) {
@@ -2587,9 +2600,9 @@ HTMLArea.Ajax = Ext.extend(HTMLArea.Ajax, {
 		var self = this;
 		data.charset = this.editor.config.typo3ContentCharset ? this.editor.config.typo3ContentCharset : 'utf-8';
 		var params = '';
-		Ext.iterate(data, function (parameter, value) {
-			params += (params.length ? '&' : '') + parameter + '=' + encodeURIComponent(value);
-		});
+		for (var parameter in data) {
+			params += (params.length ? '&' : '') + parameter + '=' + encodeURIComponent(data[parameter]);
+		}
 		params += this.editor.config.RTEtsConfigParams;
 		Ext.Ajax.request({
 			method: 'POST',
@@ -2699,10 +2712,12 @@ HTMLArea.util.TYPO3 = function () {
 		 */
 		allElementsAreDisplayed: function(elements) {
 			var allDisplayed = true;
-			Ext.each(elements, function (element) {
-				allDisplayed = Ext.get(element).getStyle('display') != 'none';
-				return allDisplayed;
-			});
+			for (var i = elements.length; --i >= 0;) {
+				allDisplayed = Ext.get(elements[i]).getStyle('display') !== 'none';
+				if (!allDisplayed) {
+					break;
+				}
+			}
 			return allDisplayed;
 		},
 		/*
@@ -2821,7 +2836,7 @@ HTMLArea.DOM = function () {
 				if (HTMLArea.reservedClassNames.test(node.className)) {
 					var cleanClassNames = [];
 					var j = -1;
-					for (var i = 0; i < classNames.length; ++i) {
+					for (var i = 0, n = classNames.length; i < n; ++i) {
 						if (!HTMLArea.reservedClassNames.test(classNames[i])) {
 							cleanClassNames[++j] = classNames[i];
 						}
@@ -3836,7 +3851,8 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 			var type = this.getType();
 			var range = this.createRange();
 			var ancestors = this.getAllAncestors();
-			Ext.each(ancestors, function (ancestor) {
+			for (var i = 0, n = ancestors.length; i < n; i++) {
+				var ancestor = ancestors[i];
 				if (HTMLArea.isIEBeforeIE9) {
 					isFullySelected = (type !== 'Control' && ancestor.innerText == range.text) || (type === 'Control' && ancestor.innerText == range.item(0).text);
 				} else {
@@ -3844,9 +3860,9 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 				}
 				if (isFullySelected) {
 					node = ancestor;
-					return false;
+					break;
 				}
-			});
+			}
 				// Working around bug with WebKit selection
 			if (Ext.isWebKit && !isFullySelected) {
 				var statusBarSelection = this.editor.statusBar ? this.editor.statusBar.getSelection() : null;
@@ -4240,14 +4256,14 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 	 */
 	checkInsertParagraph: function() {
 		var editor = this.editor;
-		var i, left, right, rangeClone,
+		var left, right, rangeClone,
 			sel	= this.get().selection,
 			range	= this.createRange(),
 			p	= this.getAllAncestors(),
 			block	= null,
 			a	= null,
 			doc	= this.document;
-		for (i = 0; i < p.length; ++i) {
+		for (var i = 0, n = p.length; i < n; ++i) {
 			if (HTMLArea.DOM.isBlockElement(p[i]) && !/^(html|body|table|tbody|thead|tfoot|tr|dl)$/i.test(p[i].nodeName)) {
 				block = p[i];
 				break;
@@ -5073,15 +5089,17 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 		if (this.cssLoaded) {
 				// Expecting 2 stylesheets...
 			if (this.editor.document.styleSheets.length > 1) {
-				Ext.each(this.editor.document.styleSheets, function (styleSheet, index) {
+				var styleSheets = this.editor.document.styleSheets;
+				for (var index = 0, n = styleSheets.length; index < n; index++) {
 					try {
+						var styleSheet = styleSheets[index];
 						if (HTMLArea.isIEBeforeIE9) {
 							var rules = styleSheet.rules;
 							var imports = styleSheet.imports;
 							if (!rules.length && !imports.length) {
 								this.cssLoaded = false;
 								this.error = 'Empty rules and imports arrays of styleSheets[' + index + ']';
-								return false;
+								break;
 							}
 							if (styleSheet.imports) {
 								this.parseIeRules(styleSheet.imports);
@@ -5096,9 +5114,9 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 						this.error = e;
 						this.cssLoaded = false;
 						this.parsedClasses = {};
-						return false;
+						break;
 					}
-				}, this);
+				}
 			} else {
 				this.cssLoaded = false;
 				this.error = 'Empty stylesheets array or missing linked stylesheets';
@@ -5112,7 +5130,7 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 	 * @return	void
 	 */
 	parseRules: function (cssRules) {
-		for (var rule = 0; rule < cssRules.length; rule++) {
+		for (var rule = 0, n = cssRules.length; rule < n; rule++) {
 				// Style rule
 			if (cssRules[rule].selectorText) {
 				this.parseSelectorText(cssRules[rule].selectorText);
@@ -5144,7 +5162,7 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 	 * @return	void
 	 */
 	parseIeRules: function (cssRules) {
-		for (var rule = 0; rule < cssRules.length; rule++) {
+		for (var rule = 0, n = cssRules.length; rule < n; rule++) {
 				// Import rule
 			if (cssRules[rule].imports) {
 				this.parseIeRules(cssRules[rule].imports);
@@ -5169,7 +5187,7 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 		if (selectorText.search(/:+/) == -1) {
 				// Split equal styles
 			cssElements = selectorText.split(',');
-			for (var k = 0; k < cssElements.length; k++) {
+			for (var k = 0, n = cssElements.length; k < n; k++) {
 					// Match all classes (<element name (optional)>.<class name>) in selector rule
 				var s = cssElements[k], index;
 				while ((index = s.search(pattern)) > -1) {
@@ -5202,47 +5220,48 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 	 * @return	void
 	 */
 	filterAllowedClasses: function() {
-		Ext.iterate(this.tags, function (nodeName) {
+		var nodeName, cssClass;
+		for (nodeName in this.tags) {
 			var allowedClasses = {};
-				// Get classes allowed for all tags
+			// Get classes allowed for all tags
 			if (nodeName !== 'all' && Ext.isDefined(this.parsedClasses['all'])) {
 				if (this.tags && this.tags[nodeName] && this.tags[nodeName].allowedClasses) {
 					var allowed = this.tags[nodeName].allowedClasses;
-					Ext.iterate(this.parsedClasses['all'], function (cssClass, value) {
+					for (cssClass in this.parsedClasses['all']) {
 						if (allowed.test(cssClass)) {
-							allowedClasses[cssClass] = value;
+							allowedClasses[cssClass] = this.parsedClasses['all'][cssClass];
 						}
-					});
+					}
 				} else {
 					allowedClasses = this.parsedClasses['all'];
 				}
 			}
-				// Merge classes allowed for nodeName
+			// Merge classes allowed for nodeName
 			if (Ext.isDefined(this.parsedClasses[nodeName])) {
 				if (this.tags && this.tags[nodeName] && this.tags[nodeName].allowedClasses) {
 					var allowed = this.tags[nodeName].allowedClasses;
-					Ext.iterate(this.parsedClasses[nodeName], function (cssClass, value) {
+					for (cssClass in this.parsedClasses[nodeName]) {
 						if (allowed.test(cssClass)) {
-							allowedClasses[cssClass] = value;
+							allowedClasses[cssClass] = this.parsedClasses[nodeName][cssClass];
 						}
-					});
+					}
 				} else {
-					Ext.iterate(this.parsedClasses[nodeName], function (cssClass, value) {
-						allowedClasses[cssClass] = value;
-					});
+					for (cssClass in this.parsedClasses[nodeName]) {
+						allowedClasses[cssClass] = this.parsedClasses[nodeName][cssClass];
+					}
 				}
 			}
 			this.parsedClasses[nodeName] = allowedClasses;
-		}, this);
-			// If showTagFreeClasses is set and there is no allowedClasses clause on a tag, merge classes allowed for all tags
+		}
+		// If showTagFreeClasses is set and there is no allowedClasses clause on a tag, merge classes allowed for all tags
 		if (this.showTagFreeClasses && Ext.isDefined(this.parsedClasses['all'])) {
-			Ext.iterate(this.parsedClasses, function (nodeName) {
+			for (nodeName in this.parsedClasses) {
 				if (nodeName !== 'all' && !this.tags[nodeName]) {
-					Ext.iterate(this.parsedClasses['all'], function (cssClass, value) {
-						this.parsedClasses[nodeName][cssClass] = value;
-					}, this);
+					for (cssClass in this.parsedClasses['all']) {
+						this.parsedClasses[nodeName][cssClass] = this.parsedClasses['all'][cssClass];
+					}
 				}
-			}, this);
+			}
 		}
 	},
 	/*
@@ -5251,25 +5270,27 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 	 * @return	void
 	 */
 	sort: function() {
-		Ext.iterate(this.parsedClasses, function (nodeName, value) {
+		var nodeName, cssClass, i, n;
+		for (nodeName in this.parsedClasses) {
+			var value = this.parsedClasses[nodeName];
 			var classes = [];
 			var sortedClasses= {};
-				// Collect keys
-			Ext.iterate(value, function (cssClass) {
+			// Collect keys
+			for (cssClass in value) {
 				classes.push(cssClass);
-			});
+			}
 			function compare(a, b) {
 				x = value[a];
 				y = value[b];
 				return ((x < y) ? -1 : ((x > y) ? 1 : 0));
 			}
-				// Sort keys by comparing texts
+			// Sort keys by comparing texts
 			classes = classes.sort(compare);
-			for (var i = 0; i < classes.length; ++i) {
+			for (i = 0, n = classes.length; i < n; ++i) {
 				sortedClasses[classes[i]] = value[classes[i]];
 			}
 			this.parsedClasses[nodeName] = sortedClasses;
-		}, this);
+		}
 	}
 });
 /***************************************************
@@ -5710,13 +5731,20 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 */
 	isButtonInToolbar: function (buttonId) {
 		var index = -1;
-		Ext.each(this.editorConfiguration.toolbar, function (row) {
-			Ext.each(row, function (group) {
+		var i, j, n, m;
+		for (i = 0, n = this.editorConfiguration.toolbar.length; i < n; i++) {
+			var row = this.editorConfiguration.toolbar[i];
+			for (j = 0, m = row.length; j < m; j++) {
+				var group = row[j];
 				index = group.indexOf(buttonId);
-				return index === -1;
-			});
-			return index === -1;
-		});
+				if (index !== -1) {
+					break;
+				}
+			}
+			if (index !== -1) {
+				break;
+			}
+		}
 		return index !== -1;
 	},
 

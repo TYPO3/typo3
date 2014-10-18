@@ -377,7 +377,9 @@ HTMLArea.EditElement = Ext.extend(HTMLArea.Plugin, {
 		var itemsConfig = [];
 		var events = ['onkeydown', 'onkeypress', 'onkeyup', 'onclick', 'ondblclick', 'onmousedown', 'onmousemove', 'onmouseout', 'onmouseover', 'onmouseup'];
 		if (!/^(base|bdo|br|frame|frameset|head|html|iframe|meta|param|script|style|title)$/i.test(element.nodeName)) {
-			Ext.each(events, function (event) {
+			var event;
+			for (var i = 0, n = events.length; i < n; i++) {
+				event = events[i];
 				if (this.removedProperties.indexOf(event) == -1) {
 					itemsConfig.push({
 						itemId: event,
@@ -385,7 +387,7 @@ HTMLArea.EditElement = Ext.extend(HTMLArea.Plugin, {
 						value: element ? element.getAttribute(event) : ''
 					});
 				}
-			}, this);
+			}
 		}
 		return itemsConfig.length ? {
 			xtype: 'fieldset',
@@ -422,7 +424,8 @@ HTMLArea.EditElement = Ext.extend(HTMLArea.Plugin, {
 	okHandler: function (button, event) {
 		this.restoreSelection();
 		var textFields = this.dialog.findByType('textfield');
-		Ext.each(textFields, function (field) {
+		for (var i = textFields.length; --i >= 0;) {
+			var field = textFields[i];
 			if (field.getXType() !== 'combo') {
 				if (field.getValue()) {
 					this.element.setAttribute(field.getItemId(), field.getValue());
@@ -430,10 +433,11 @@ HTMLArea.EditElement = Ext.extend(HTMLArea.Plugin, {
 					this.element.removeAttribute(field.getItemId());
 				}
 			}
-		}, this);
+		}
 		var comboFields = this.dialog.findByType('combo');
 		var languageCombo = this.dialog.find('itemId', 'lang')[0];
-		Ext.each(comboFields, function (field) {
+		for (var i = comboFields.length; --i >= 0;) {
+			var field = comboFields[i];
 			var itemId = field.getItemId();
 			var value = field.getValue();
 			switch (itemId) {
@@ -449,7 +453,7 @@ HTMLArea.EditElement = Ext.extend(HTMLArea.Plugin, {
 					this.element.setAttribute(itemId, (value === 'not set') ? '' : value);
 					break;
 			}
-		}, this);
+		}
 		var microdataTab = this.dialog.find('itemId', 'microdata')[0];
 		if (microdataTab) {
 			this.getPluginInstance('MicrodataSchema').setMicrodataAttributes(this.element);

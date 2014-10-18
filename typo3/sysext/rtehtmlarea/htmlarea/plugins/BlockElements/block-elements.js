@@ -116,12 +116,13 @@ HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 		/*
 		 * Establishing the list of allowed block elements
 		 */
-		var blockElements = new Array();
-		Ext.each(dropDownConfiguration.options, function (option) {
+		var blockElements = new Array(), option;
+		for (var i = 0, n = dropDownConfiguration.options.length; i < n; i++) {
+			option = dropDownConfiguration.options[i];
 			if (option[1] != 'none') {
 				blockElements.push(option[1]);
 			}
-		});
+		}
 		if (blockElements.length) {
 			this.allowedBlockElements = new RegExp( "^(" + blockElements.join("|") + ")$", "i");
 		} else {
@@ -130,8 +131,10 @@ HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 		/*
 		 * Registering hot keys for the dropdown list items
 		 */
-		Ext.each(blockElements, function (blockElement) {
-			var configuredHotKey = this.defaultHotKeys[blockElement];
+		var blockElement, configuredHotKey;
+		for (var i = 0, n = blockElements.length; i < n; i++) {
+			blockElement = blockElements[i];
+			configuredHotKey = this.defaultHotKeys[blockElement];
 			if (this.editorConfiguration.buttons.formatblock
 					&& this.editorConfiguration.buttons.formatblock.items
 					&& this.editorConfiguration.buttons.formatblock.items[blockElement]
@@ -146,7 +149,7 @@ HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 				};
 				this.registerHotKey(hotKeyConfiguration);
 			}
-		}, this);
+		}
 		/*
 		 * Registering the buttons
 		 */

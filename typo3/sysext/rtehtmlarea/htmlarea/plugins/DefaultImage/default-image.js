@@ -403,13 +403,14 @@ HTMLArea.DefaultImage = Ext.extend(HTMLArea.Plugin, {
 		var urlField = this.dialog.find('itemId', 'url')[0];
 		var url = urlField.getValue().trim();
 		if (url) {
-			var fieldNames = ['url', 'alt', 'align', 'border', 'paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft', 'cssFloat'];
-			Ext.each(fieldNames, function (fieldName) {
+			var fieldNames = ['url', 'alt', 'align', 'border', 'paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft', 'cssFloat'], fieldName;
+			for (var i = fieldNames.length; --i >= 0;) {
+				fieldName = fieldNames[i];
 				var field = this.dialog.find('itemId', fieldName)[0];
 				if (field && !field.hidden) {
 					this.parameters[fieldName] = field.getValue();
 				}
-			}, this);
+			}
 			this.insertImage();
 			this.close();
 		} else {
@@ -452,7 +453,9 @@ HTMLArea.DefaultImage = Ext.extend(HTMLArea.Plugin, {
 			image.src = this.parameters.url;
 		}
 		if (/^img$/i.test(image.nodeName)) {
-			Ext.iterate(this.parameters, function (fieldName, value) {
+			var value;
+			for (var fieldName in this.parameters) {
+				value = this.parameters[fieldName];
 				switch (fieldName) {
 					case 'alt':
 						image.alt = value;
@@ -487,7 +490,7 @@ HTMLArea.DefaultImage = Ext.extend(HTMLArea.Plugin, {
 						}
 						break;
 				}
-			});
+			}
 		}
 	},
 	/*

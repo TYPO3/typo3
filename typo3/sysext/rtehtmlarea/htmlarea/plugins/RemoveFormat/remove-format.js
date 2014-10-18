@@ -165,11 +165,12 @@ HTMLArea.RemoveFormat = Ext.extend(HTMLArea.Plugin, {
 			'spaces',
 			'images',
 			'allHtml'
-		];
+		], field;
 		var params = {};
-		Ext.each(fields, function (field) {
+		for (var i = fields.length; --i >= 0;) {
+			field = fields[i];
 			params[field] = this.dialog.find('itemId', field)[0].getValue();
-		}, this);
+		}
 		if (params['allHtml'] || params['formatting'] || params['spaces'] || params['images'] || params['msWordFormatting'] || params['typographical']) {
 			this.applyRequest(params);
 			this.close();

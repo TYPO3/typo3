@@ -38,7 +38,8 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 		/*
 		 * Registering the buttons
 		 */
-		Ext.iterate(this.buttonList, function (buttonId, button) {
+		for (var buttonId in this.buttonList) {
+			var button = this.buttonList[buttonId];
 			var buttonConfiguration = {
 				id		: buttonId,
 				tooltip		: this.localize(buttonId.toLowerCase()),
@@ -49,7 +50,7 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 				hotKey		: button[1]
 			};
 			this.registerButton(buttonConfiguration);
-		}, this);
+		}
 		return true;
 	},
 	/*
@@ -65,7 +66,8 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 	 */
 	onGenerate: function () {
 		this.editor.iframe.mon(Ext.get(Ext.isIE ? this.editor.document.body : this.editor.document.documentElement), 'cut', this.cutHandler, this);
-		Ext.iterate(this.buttonList, function (buttonId, button) {
+		for (var buttonId in this.buttonList) {
+			var button = this.buttonList[buttonId];
 				// Remove button from toolbar, if command is not supported
 				// Starting with Safari 5 and Chrome 6, cut and copy commands are not supported anymore by WebKit
 				// Starting with Firefox 29, cut, copy and paste commands are not supported anymore by Firefox
@@ -88,7 +90,7 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 					cmd	: buttonId
 				};
 			}
-		}, this);
+		}
 	},
 	/*
 	 * This function gets called when a button or a hotkey was pressed.

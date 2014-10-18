@@ -34,8 +34,10 @@ HTMLArea.DefaultInline = Ext.extend(HTMLArea.Plugin, {
 		/*
 		 * Registering the buttons
 		 */
-		Ext.each(this.buttonList, function (button) {
-			var buttonId = button[0];
+		var button, buttonId;
+		for (var i = 0, n = this.buttonList.length; i < n; i++) {
+			button = this.buttonList[i];
+			buttonId = button[0];
 			var buttonConfiguration = {
 				id		: buttonId,
 				tooltip		: this.localize(buttonId + '-Tooltip'),
@@ -46,8 +48,7 @@ HTMLArea.DefaultInline = Ext.extend(HTMLArea.Plugin, {
 				hotKey		: (this.editorConfiguration.buttons[buttonId.toLowerCase()]?this.editorConfiguration.buttons[buttonId.toLowerCase()].hotKey:null)
 			};
 			this.registerButton(buttonConfiguration);
-			return true;
-		}, this);
+		}
 		return true;
 	},
 	/*

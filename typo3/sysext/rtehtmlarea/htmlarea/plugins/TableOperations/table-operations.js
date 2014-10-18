@@ -63,9 +63,9 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		 * Registering the buttons
 		 */
 		var hideToggleBorders = this.editorConfiguration.hideTableOperationsInToolbar && !(this.buttonsConfiguration.toggleborders && this.buttonsConfiguration.toggleborders.keepInToolbar);
-		var buttonList = this.buttonList, buttonId;
+		var buttonList = this.buttonList, button, buttonId;
 		for (var i = 0, n = buttonList.length; i < n; ++i) {
-			var button = buttonList[i];
+			button = buttonList[i];
 			buttonId = (button[0] === 'InsertTable') ? button[0] : ('TO-' + button[0]);
 			var buttonConfiguration = {
 				id		: buttonId,
@@ -364,7 +364,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 					f_caption: 'caption',
 					f_summary: 'summary'
 				};
-				Ext.iterate(required, function (item) {
+				for (var item in required) {
 					if (!params[item] && this.properties.required.indexOf(required[item]) != -1) {
 						TYPO3.Dialog.ErrorDialog({
 							title: this.getButton(this.dialog.arguments.buttonId).tooltip.title,
@@ -375,9 +375,9 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 						tab.ownerCt.activate(tab);
 						field.focus();
 						errorFlag = true;
-						return false;
+						break;
 					}
-				}, this);
+				}
 				if (errorFlag) {
 					return false;
 				}
@@ -389,7 +389,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				f_rows: 'You must enter a number of rows',
 				f_cols: 'You must enter a number of columns'
 			};
-			Ext.iterate(required, function (item) {
+			for (var item in required) {
 				if (!params[item]) {
 					TYPO3.Dialog.ErrorDialog({
 						title: this.getButton(this.dialog.arguments.buttonId).tooltip.title,
@@ -400,9 +400,9 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 					tab.ownerCt.activate(tab);
 					field.focus();
 					errorFlag = true;
-					return false;
+					break;
 				}
-			}, this);
+			}
 			if (errorFlag) {
 				return false;
 			}
@@ -426,7 +426,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		this.setHeaders(table, params);
 		this.processStyle(table, params);
 		table.removeAttribute('border');
-		Ext.iterate(params, function (item) {
+		for (var item in params) {
 			var val = params[item];
 			switch (item) {
 			    case "f_caption":
@@ -516,7 +516,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				table.dir = (val != "not set") ? val : "";
 				break;
 			}
-		}, this);
+		}
 		if (this.dialog.arguments.buttonId === "InsertTable") {
 			if (!HTMLArea.isIEBeforeIE9) {
 				this.editor.getSelection().insertNode(table);
@@ -558,9 +558,10 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		} else {
 			elements.push(this.dialog.arguments.element);
 		}
-		Ext.each(elements, function (element) {
+		for (var i = elements.length; --i >= 0;) {
+			var element = elements[i];
 			this.processStyle(element, params);
-			Ext.iterate(params, function (item) {
+			for (var item in params) {
 				var val = params[item];
 				switch (item) {
 				    case "f_cell_type":
@@ -610,8 +611,8 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 					element.dir = (val != "not set") ? val : "";
 					break;
 				}
-			}, this);
-		}, this);
+			}
+		}
 		this.reStyleTable(table);
 		this.close();
 	},
@@ -2123,13 +2124,12 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		var selectedTextAlign = 'not set';
 		var blockElements = this.getPluginInstance('BlockElements');
 		if (element && blockElements) {
-			Ext.iterate(this.convertAlignment, function (value) {
+			for (var value in this.convertAlignment) {
 				if (Ext.get(element).hasClass(blockElements.useClass[this.convertAlignment[value]])) {
 					selectedTextAlign = value;
-					return false;
+					break;
 				}
-				return true;
-			}, this);
+			}
 		} else {
 			selectedTextAlign = (element && element.style.textAlign) ? element.style.textAlign : 'not set';
 		}
@@ -2565,13 +2565,13 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		if (this.properties[property] && this.properties[property].removeItems) {
 			var items = this.properties[property].removeItems.split(',');
 			var index = -1;
-			Ext.each(items, function (item) {
+			for (var i = items.length; --i >= 0;) {
+				var item = items[i];
 				index = store.findExact('value', item.trim());
 				if (index !== -1) {
 					store.removeAt(index);
 				}
-				return true;
-			});
+			}
 		}
 	},
 	/*

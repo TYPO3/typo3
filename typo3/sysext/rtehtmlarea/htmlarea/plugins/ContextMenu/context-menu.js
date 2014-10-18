@@ -72,17 +72,20 @@ HTMLArea.ContextMenu = Ext.extend(HTMLArea.Plugin, {
 			// Monitor editor being destroyed
 		this.menu.mon(this.editor, 'beforedestroy', this.onBeforeDestroy, this, {single: true});
 	},
-	/*
+	/**
 	 * Create the menu items config
 	 */
 	buildItemsConfig: function () {
 		var itemsConfig = [];
-			// Walk through the editor toolbar configuration nested arrays: [ toolbar [ row [ group ] ] ]
+		// Walk through the editor toolbar configuration nested arrays: [ toolbar [ row [ group ] ] ]
 		var firstInGroup = true, convertedItemId;
-		Ext.each(this.editor.config.toolbar, function (row) {
-				// Add the groups
+		var i, j ,k, n, m, p, row, group, itemId;
+		for (i = 0, n = this.editor.config.toolbar.length; i < n; i++) {
+			row = this.editor.config.toolbar[i];
+			// Add the groups
 			firstInGroup = true;
-			Ext.each(row, function (group) {
+			for (j = 0, m = row.length; j < m; j++) {
+				group = row[j];
 				if (!firstInGroup) {
 					// If a visible item was added to the line
 					itemsConfig.push({
@@ -91,8 +94,9 @@ HTMLArea.ContextMenu = Ext.extend(HTMLArea.Plugin, {
 					});
 				}
 				firstInGroup = true;
-					// Add each item
-				Ext.each(group, function (itemId) {
+				// Add each item
+				for (k = 0, p = group.length; k < p; k++) {
+					itemId = group[k];
 					convertedItemId = this.editorConfiguration.convertButtonId[itemId];
 					if ((!this.showButtons || this.showButtons.indexOf(convertedItemId) !== -1)
 						&& (!this.hideButtons || this.hideButtons.indexOf(convertedItemId) === -1)) {
@@ -111,21 +115,18 @@ HTMLArea.ContextMenu = Ext.extend(HTMLArea.Plugin, {
 							firstInGroup = false;
 						}
 					}
-					return true;
-				}, this);
-				return true;
-			}, this);
-			return true;
-		}, this);
-			// If a visible item was added
+				}
+			}
+		}
+		// If a visible item was added
 		if (!firstInGroup) {
 			itemsConfig.push({
 					xtype: 'menuseparator',
 					cls: 'separator'
 			});
 		}
-		 	// Add special target delete item
-		var itemId = 'DeleteTarget';
+		 // Add special target delete item
+		itemId = 'DeleteTarget';
 		itemsConfig.push({
 			itemId: itemId,
 			cls: 'button',

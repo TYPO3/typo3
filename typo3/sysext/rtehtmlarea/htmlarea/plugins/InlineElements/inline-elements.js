@@ -74,9 +74,9 @@ HTMLArea.InlineElements = Ext.extend(HTMLArea.Plugin, {
 		/*
 		 * Registering the buttons
 		 */
-		var n = this.buttonList.length;
-		for (var i = 0; i < n; ++i) {
-			var button = this.buttonList[i];
+		var buttonList = this.buttonList, button, buttonId;
+		for (var i = 0, n = buttonList.length; i < n; ++i) {
+			button = buttonList[i];
 			buttonId = button[0];
 			var buttonConfiguration = {
 				id		: buttonId,
@@ -91,6 +91,7 @@ HTMLArea.InlineElements = Ext.extend(HTMLArea.Plugin, {
 			};
 			this.registerButton(buttonConfiguration);
 		}
+		return true;
 	},
 	/*
 	 * The list of buttons added by this plugin
@@ -360,14 +361,13 @@ HTMLArea.InlineElements = Ext.extend(HTMLArea.Plugin, {
 					break;
 				default:
 					var activeButton = false;
-					Ext.each(ancestors, function (ancestor) {
+					for (var i = ancestors.length; --i >= 0;) {
+						var ancestor = ancestors[i];
 						if (ancestor && this.convertBtn[button.itemId] === ancestor.nodeName.toLowerCase()) {
 							activeButton = true;
-							return false;
-						} else {
-							return true;
+							break;
 						}
-					}, this);
+					}
 					button.setInactive(!activeButton && this.convertBtn[button.itemId] !== tagName);
 					button.setDisabled(disabled);
 					break;

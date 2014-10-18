@@ -312,13 +312,13 @@ HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 					allowedClasses = this.cssArray['all'];
 				}
 			}
-			Ext.iterate(allowedClasses, function (cssClass, value) {
+			for (var cssClass in allowedClasses) {
 				store.add(new store.recordType({
-					text: value,
+					text: allowedClasses[cssClass],
 					value: cssClass,
 					style: (!(this.pageTSconfiguration && this.pageTSconfiguration.disableStyleOnOptionLabel) && HTMLArea.classesValues && HTMLArea.classesValues[cssClass] && !HTMLArea.classesNoShow[cssClass]) ? HTMLArea.classesValues[cssClass] : null
 				}));
-			}, this);
+			}
 		}
 	},
 	/*

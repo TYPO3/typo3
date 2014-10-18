@@ -56,8 +56,10 @@ HTMLArea.SelectFont = Ext.extend(HTMLArea.Plugin, {
 		/*
 		 * Registering the dropdowns
 		 */
-		Ext.each(this.dropDownList, function (dropDown) {
-			var buttonId = dropDown[0];
+		var dropDown, buttonId;
+		for (var i = this.dropDownList.length; --i >= 0;) {
+			dropDown = this.dropDownList[i];
+			buttonId = dropDown[0];
 			if (this.isButtonInToolbar(buttonId)) {
 				var dropDownConfiguration = {
 					id: buttonId,
@@ -79,8 +81,7 @@ HTMLArea.SelectFont = Ext.extend(HTMLArea.Plugin, {
 				}
 				this.registerDropDown(dropDownConfiguration);
 			}
-			return true;
-		}, this);
+		}
 		return true;
 	 },
 	/*
@@ -104,12 +105,14 @@ HTMLArea.SelectFont = Ext.extend(HTMLArea.Plugin, {
 		FontName: 'font-family',
 		FontSize: 'font-size'
 	},
-	/*
+	/**
 	 * This funcion is invoked by the editor when it is being generated
 	 */
 	onGenerate: function () {
-			// Monitor the dropdowns stores being loaded
-		Ext.each(this.dropDownList, function (dropDown) {
+		// Monitor the dropdowns stores being loaded
+		var dropDown;
+		for (var i = this.dropDownList.length; --i >= 0;) {
+			dropDown = this.dropDownList[i];
 			var select = this.getButton(dropDown[0]);
 			if (select) {
 				select.mon(select.getStore(), 'load', function () {
@@ -120,7 +123,7 @@ HTMLArea.SelectFont = Ext.extend(HTMLArea.Plugin, {
 					this.onUpdateToolbar(select, this.getEditorMode(), selectionEmpty, ancestors, endPointsInSameBlock);
 				}, this);
 			}
-		}, this);
+		}
 	},
 	/*
 	 * This function gets called when some font style or font size was selected from the dropdown lists

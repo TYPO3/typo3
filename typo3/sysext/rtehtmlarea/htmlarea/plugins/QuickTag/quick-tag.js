@@ -220,7 +220,8 @@ HTMLArea.QuickTag = Ext.extend(HTMLArea.Plugin, {
 		this.parseCssRule(this.editor.document.styleSheets, valueStore);
 	},
 	parseCssRule: function (rules, valueStore) {
-		Ext.each(rules, function (rule) {
+		for (var i = 0, n = rules.length; i < n; i++) {
+			var rule = rules[i];
 			if (rule.selectorText) {
 				if (/^(\w*)\.(\w+)$/.test(rule.selectorText)) {
 					valueStore.add(new this.valueRecord({
@@ -237,6 +238,8 @@ HTMLArea.QuickTag = Ext.extend(HTMLArea.Plugin, {
 					} catch (e) {
 						if (/Security/i.test(e)) {
 							this.appendToLog('parseCssRule', 'A security error occurred. Make sure all stylesheets are accessed from the same domain/subdomain and using the same protocol as the current script.', 'error');
+						} else {
+							throw e;
 						}
 					}
 				}
@@ -252,7 +255,7 @@ HTMLArea.QuickTag = Ext.extend(HTMLArea.Plugin, {
 					this.parseCssRule(rule.rules, valueStore);
 				}
 			}
-		}, this);
+		}
 	},
 	/*
 	 * Handler invoked when a tag is selected

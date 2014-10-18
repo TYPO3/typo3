@@ -51,6 +51,7 @@ HTMLArea.SpellChecker = Ext.extend(HTMLArea.Plugin, {
 			dialog		: true
 		};
 		this.registerButton(buttonConfiguration);
+		return true;
 	},
 	/*
 	 * Sets of default configuration values for dialogue form fields
@@ -403,13 +404,17 @@ HTMLArea.SpellChecker = Ext.extend(HTMLArea.Plugin, {
 				pspell_charset: this.contentCharset,
 				pspell_mode: this.spellCheckerMode
 			};
-			Ext.each(this.addToPersonalDictionary, function (word, index) {
+			var word;
+			for (var index = this.addToPersonalDictionary.length; --index >= 0;) {
+				word = this.addToPersonalDictionary[index];
 				data['to_p_dict[' + index + ']'] = word;
-			});
-			Ext.each(this.addToReplacementList, function (replacement, index) {
+			}
+			var replacement;
+			for (var index = this.addToReplacementList.length; --index >= 0;) {
+				replacement = this.addToReplacementList[index];
 				data['to_r_list[' + index + '][0]'] = replacement[0];
 				data['to_r_list[' + index + '][1]'] = replacement[1];
-			});
+			}
 			this.postData(this.pageTSconfiguration.path, data);
 		}
 		this.close();
@@ -447,7 +452,7 @@ HTMLArea.SpellChecker = Ext.extend(HTMLArea.Plugin, {
 		this.statusIconClass = iconCls;
 		this.status.addClass(this.statusIconClass);
 	},
-	/*
+	/**
 	 * Clean away span elements from the text before leaving or re-submitting
 	 *
 	 * @param	boolean		leaveFixed: if true, span elements of corrected words will be left in the text (re-submit case)
@@ -456,7 +461,9 @@ HTMLArea.SpellChecker = Ext.extend(HTMLArea.Plugin, {
 	 */
 	cleanDocument: function (leaveFixed) {
 		var iframeDocument = this.dialog.getComponent('spell-check-iframe').getEl().dom.contentWindow.document;
-		Ext.each(this.misspelledWords.concat(this.correctedWords), function (element) {
+		var spanElements = this.misspelledWords.concat(this.correctedWords);
+		for (var i = spanElements.length; --i >= 0;) {
+			var element = spanElements[i];
 			element.onclick = null;
 			element.onmouseover = null;
 			element.onmouseout = null;
@@ -468,11 +475,13 @@ HTMLArea.SpellChecker = Ext.extend(HTMLArea.Plugin, {
 				HTMLArea.DOM.removeClass(element, 'htmlarea-spellcheck-same');
 				HTMLArea.DOM.removeClass(element, 'htmlarea-spellcheck-current');
 			}
-		}, this);
-			// Cleanup event handlers on links
-		Ext.each(iframeDocument.getElementsByTagName('a'), function (link) {
+		}
+		// Cleanup event handlers on links
+		var linkElements = iframeDocument.getElementsByTagName('a');
+		for (var i = linkElements.length; --i >= 0;) {
+			var link = linkElements[i];
 			link.onclick = null;
-		}, this);
+		}
 		return this.editor.iframe.htmlRenderer.render(iframeDocument.body, false);
 	},
 	/*
@@ -492,10 +501,12 @@ HTMLArea.SpellChecker = Ext.extend(HTMLArea.Plugin, {
 			// Set status
 		this.status.setText(this.localize('statusBarReady'));
 		this.setStatusIconClass('status-ready');
-			// Process all misspelled words
+		// Process all misspelled words
 		var id = 0;
 		var self = this;
-		Ext.each(contentWindow.document.getElementsByTagName('span'), function (span) {
+		var spanElements = contentWindow.document.getElementsByTagName('span');
+		for (var i = spanElements.length; --i >= 0;) {
+			var span = spanElements[i];
 			if (HTMLArea.DOM.hasClass(span, 'htmlarea-spellcheck-error')) {
 				this.misspelledWords.push(span);
 				span.onclick = function (event) { self.setCurrentWord(this, false); };
@@ -511,18 +522,24 @@ HTMLArea.SpellChecker = Ext.extend(HTMLArea.Plugin, {
 			} else if (HTMLArea.DOM.hasClass(span, 'htmlarea-spellcheck-fixed')) {
 				this.correctedWords.push(span);
 			}
-		}, this);
-			// Do not open links in the iframe
-		Ext.each(contentWindow.document.getElementsByTagName('a'), function (link) {
+		}
+		// Do not open links in the iframe
+		var linkElements = contentWindow.document.getElementsByTagName('a');
+		for (var i = linkElements.length; --i >= 0;) {
+			var link = linkElements[i];
 			link.onclick = function (event) { return false; };
-		}, this);
-			// Enable buttons
-		Ext.each(this.dialog.findByType('button'), function (button) {
+		}
+		// Enable buttons
+		var buttons = this.dialog.findByType('button');
+		for (var i = buttons.length; --i >= 0;) {
+			var button = buttons[i];
 			button.setDisabled(false);
-		});
-		Ext.each(this.dialog.getBottomToolbar().findByType('button'), function (button) {
+		}
+		var buttons = this.dialog.getBottomToolbar().findByType('button');
+		for (var i = buttons.length; --i >= 0;) {
+			var button = buttons[i];
 			button.setDisabled(false);
-		});
+		}
 		if (this.misspelledWords.length) {
 				// Set current element to first misspelled word
 			this.currentElement = this.misspelledWords[0];
@@ -533,12 +550,14 @@ HTMLArea.SpellChecker = Ext.extend(HTMLArea.Plugin, {
 				var select = this.dialog.find('itemId', 'dictionaries')[0];
 				var store = select.getStore();
 				store.removeAll();
-				Ext.each(dictionaries, function (dictionary) {
+				var dictionary;
+				for (var i = dictionaries.length; --i >= 0;) {
+					dictionary = dictionaries[i];
 					store.add(new store.recordType({
 						text: dictionary,
 						value: dictionary
 					}));
-				});
+				}
 				select.setValue(contentWindow.selectedDictionary);
 				var selectedIndex = store.find('value', contentWindow.selectedDictionary);
 				select.fireEvent('select', select, store.getAt(selectedIndex), selectedIndex);
@@ -600,19 +619,22 @@ HTMLArea.SpellChecker = Ext.extend(HTMLArea.Plugin, {
 			// De-highlight all occurrences of current word
 		if (this.currentElement) {
 			HTMLArea.DOM.removeClass(this.currentElement, 'htmlarea-spellcheck-current');
-			Ext.each(this.allWords[this.currentElement.htmlareaOriginalWord], function (word) {
+			var occurrences = this.allWords[this.currentElement.htmlareaOriginalWord];
+			for (var i = occurrences.length; --i >= 0;) {
+				var word = occurrences[i];
 				HTMLArea.DOM.removeClass(word, 'htmlarea-spellcheck-same');
-			});
+			}
 		}
 			// Highlight all occurrences of new current word
 		this.currentElement = element;
 		HTMLArea.DOM.addClass(this.currentElement, 'htmlarea-spellcheck-current');
 		var occurrences = this.allWords[this.currentElement.htmlareaOriginalWord];
-		Ext.each(occurrences, function (word) {
+		for (var i = occurrences.length; --i >= 0;) {
+			var word = occurrences[i];
 			if (word != this.currentElement) {
 				HTMLArea.DOM.addClass(word, 'htmlarea-spellcheck-same');
 			}
-		}, this);
+		}
 		this.dialog.find('itemId', 'replaceAll')[0].setDisabled(occurrences.length <= 1);
 		this.dialog.find('itemId', 'ignoreAll')[0].setDisabled(occurrences.length <= 1);
 			// Display status
@@ -640,12 +662,14 @@ HTMLArea.SpellChecker = Ext.extend(HTMLArea.Plugin, {
 		var select = this.dialog.find('itemId', 'suggestions')[0];
 		var store = select.getStore();
 		store.removeAll();
-		Ext.each(suggestions, function (suggestion) {
+		var suggestion;
+		for (var i = suggestions.length; --i >= 0;) {
+			suggestion = suggestions[i];
 			store.add(new store.recordType({
 				text: suggestion,
 				value: suggestion
 			}));
-		});
+		}
 			// Update the current word
 		this.dialog.find('itemId', 'word')[0].setValue(this.currentElement.htmlareaOriginalWord);
 		if (suggestions.length > 0) {
@@ -728,16 +752,18 @@ HTMLArea.SpellChecker = Ext.extend(HTMLArea.Plugin, {
 		this.setCurrentWord(this.misspelledWords[index], true);
 		return false;
 	},
-	/*
+	/**
 	 * Handler invoked when the Replace all button is clicked
 	 */
 	onReplaceAllClick: function () {
-		Ext.each(this.allWords[this.currentElement.htmlareaOriginalWord], function (element) {
+		var words = this.allWords[this.currentElement.htmlareaOriginalWord];
+		for (var i = words.length; --i >= 0;) {
+			var element = words[i];		
 			if (element != this.currentElement) {
 				this.replaceWord(element);
 			}
-		}, this);
-			// Replace current element last, so that we jump to the next word
+		}
+		// Replace current element last, so that we jump to the next word
 		return this.onReplaceClick();
 	},
 	/*
@@ -765,13 +791,17 @@ HTMLArea.SpellChecker = Ext.extend(HTMLArea.Plugin, {
 	 * Handler invoked when the Re-check button is clicked
 	 */
 	onRecheckClick: function () {
-			// Disable buttons
-		Ext.each(this.dialog.findByType('button'), function (button) {
+		// Disable buttons
+		var buttons = this.dialog.findByType('button');
+		for (var i = buttons.length; --i >= 0;) {
+			var button = buttons[i];
 			button.setDisabled(true);
-		});
-		Ext.each(this.dialog.getBottomToolbar().findByType('button'), function (button) {
+		}
+		var buttons = this.dialog.getBottomToolbar().findByType('button');
+		for (var i = buttons.length; --i >= 0;) {
+			var button = buttons[i];
 			button.setDisabled(true);
-		});
+		}
 		this.status.setText(this.localize('Please wait: changing dictionary to') + ': "' + this.dialog.find('itemId', 'dictionary')[0].getValue() + '".');
 		this.setStatusIconClass('status-wait');
 		this.dialog.find('itemId', 'content')[0].setValue(this.cleanDocument(true));
@@ -789,9 +819,9 @@ HTMLArea.SpellChecker = Ext.extend(HTMLArea.Plugin, {
 			});
 		} else {
 			var txt = '';
-			Ext.iterate(info, function (key, value) {
-				txt += (txt ? '<br />' : '') + this.localize(key) + ': ' + value;
-			}, this);
+			for (var key in info) {
+				txt += (txt ? '<br />' : '') + this.localize(key) + ': ' + info[key];
+			}
 			txt += ' ' + this.localize('seconds');
 			TYPO3.Dialog.InformationDialog({
 				title: this.localize('Document information'),

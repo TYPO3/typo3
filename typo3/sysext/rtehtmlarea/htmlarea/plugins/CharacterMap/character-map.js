@@ -50,11 +50,12 @@ HTMLArea.CharacterMap = Ext.extend(HTMLArea.Plugin, {
 		/*
 		 * Localizing the maps
 		 */
-		Ext.iterate(this.maps, function (key, map, maps) {
+		for (var key in this.maps) {
+			var map = this.maps[key];
 			for (var i = map.length; --i >= 0;) {
-				maps[key][i].push(this.localize(map[i][1]));
+				this.maps[key][i].push(this.localize(map[i][1]));
 			}
-		}, this);
+		}
 		return true;
 	 },
 	/*
@@ -404,7 +405,7 @@ HTMLArea.CharacterMap = Ext.extend(HTMLArea.Plugin, {
 	 */
 	buildTabItems: function () {
 		var tabItems = [];
-		Ext.iterate(this.maps, function (id, map) {
+		for (var id in this.maps) {
 			tabItems.push({
 				xtype: 'box',
 				cls: 'character-map',
@@ -420,7 +421,7 @@ HTMLArea.CharacterMap = Ext.extend(HTMLArea.Plugin, {
 					}
 				}
 			});
-		}, this);
+		}
 		return tabItems;
 	},
 	/*
