@@ -12,6 +12,9 @@
 			<trans-unit id="installExtension">
 				<source>Install Extension</source>
 			</trans-unit>
+			<trans-unit id="installedExtensions">
+				<source>Installed Extensions</source>
+			</trans-unit>
 			<trans-unit id="getExtensions" xml:space="preserve">
 				<source>Get Extensions</source>
 			</trans-unit>
