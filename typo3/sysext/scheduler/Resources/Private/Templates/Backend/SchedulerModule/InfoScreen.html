@@ -1,0 +1,38 @@
+{namespace s = TYPO3\CMS\Scheduler\ViewHelpers}
+
+<p class="lead">
+	<f:translate key="msg.infoScreenIntro" />
+</p>
+
+<table class="t3-table">
+	<thead>
+		<tr>
+			<th>
+				<f:translate key="label.name" />
+			</th>
+			<th>
+				<f:translate key="label.extension" />
+			</th>
+			<th colspan="2">
+				<f:translate key="label.description" />
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<f:for each="{registeredClasses}" key="class" as="classInfo">
+			<tr>
+				<td>{classInfo.title}</td>
+				<td>{classInfo.extension}</td>
+				<td>{classInfo.description}</td>
+				<td>
+					<a
+						href="{s:moduleLink(function:'list',cmd:'add',arguments:'{class: class}')}"
+						title="{f:translate(key:'LLL:EXT:lang/locallang_common.xlf:new')}"
+						class="icon">
+							<s:spriteIcon iconName="actions-document-new" />
+					</a>
+				</td>
+			</tr>
+		</f:for>
+	</tbody>
+</table>

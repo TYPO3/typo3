@@ -1,0 +1,20 @@
+<p class="lead">
+	<f:translate key="msg.schedulerSetupCheck" />
+</p>
+
+<div class="info-block">
+	<h2><f:translate key="hdg.lastRun" /></h2>
+	<f:format.raw>{lastRun}</f:format.raw>
+</div>
+
+<div class="info-block">
+	<h2><f:translate key="hdg.schedulerUser" /></h2>
+	<p><f:translate key="msg.schedulerUser" /></p>
+	<f:format.raw>{cliUser}</f:format.raw>
+</div>
+
+<div class="info-block">
+	<h2><f:translate key="hdg.cliScript" /></h2>
+	<p><f:translate key="msg.cliScript" arguments="{0: script}" /></p>
+	<f:format.raw>{isExecutable}</f:format.raw>
+</div>

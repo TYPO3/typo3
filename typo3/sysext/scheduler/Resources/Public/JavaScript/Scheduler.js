@@ -51,7 +51,7 @@ define('TYPO3/CMS/Scheduler/Scheduler', ['jquery'], function($) {
 		var $numberOfDays = $('#task_tableGarbageCollection_numberOfDays');
 		if (theCheckbox.prop('checked')) {
 			$('#task_tableGarbageCollection_table').prop('disabled', true);
-		$numberOfDays.prop('disabled', true);
+			$numberOfDays.prop('disabled', true);
 		} else {
 			// Get number of days for selected table
 			var numberOfDays = parseInt($numberOfDays.val());
@@ -135,11 +135,11 @@ define('TYPO3/CMS/Scheduler/Scheduler', ['jquery'], function($) {
 			Scheduler.executeSelected();
 		});
 
-		$('.tx_scheduler_mod1 tr.db_list_normal').on('click', function(event) {
+		$('.tx_scheduler_mod1 tbody tr').on('click', function(event) {
 			Scheduler.handleTableRowClick($(this), event);
 		});
 
-		$('.t3-icon-scheduler-run-task').on('click', function() {
+		$('.fa-play-circle').on('click', function() {
 			Scheduler.runSingleTask($(this));
 		});
 

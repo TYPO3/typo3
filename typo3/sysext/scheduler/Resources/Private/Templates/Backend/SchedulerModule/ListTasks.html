@@ -1,0 +1,35 @@
+{namespace s = TYPO3\CMS\Scheduler\ViewHelpers}
+<f:format.raw>{table}</f:format.raw>
+<button name="go" id="scheduler_executeselected">
+	<s:spriteIcon iconName="extensions-scheduler-run-task" />
+	<f:translate key="label.executeSelected" />
+</button>
+
+<h3><f:translate key="status.legend" /></h3>
+
+<ul class="list-unstyled">
+	<li>
+		<f:image src="EXT:scheduler/Resources/Public/Images/status_failure.png" alt="{f:translate(extensionName:'scheduler',key:'status.failure')}" />
+		<f:translate key="status.legend.failure" />
+	</li>
+	<li>
+		<f:image src="EXT:scheduler/Resources/Public/Images/status_late.png" alt="{f:translate(extensionName:'scheduler',key:'status.legend.late')}" />
+		<f:translate key="status.legend.late" />
+	</li>
+	<li>
+		<f:image src="EXT:scheduler/Resources/Public/Images/status_running.png" alt="{f:translate(extensionName:'scheduler',key:'status.running')}" />
+		<f:translate key="status.legend.running" />
+	</li>
+	<li>
+		<f:image src="EXT:scheduler/Resources/Public/Images/status_scheduled.png" alt="{f:translate(extensionName:'scheduler',key:'status.scheduled')}" />
+		<f:translate key="status.legend.scheduled" />
+	</li>
+	<li>
+		<f:image src="EXT:scheduler/Resources/Public/Images/status_disabled.png" alt="{f:translate(extensionName:'scheduler',key:'status.disabled')}" />
+		<f:translate key="status.legend.disabled" />
+	</li>
+</ul>
+
+<h3><f:translate key="label.serverTime" /></h3>
+<p><f:translate key="msg.serverTimeHelp" /></p>
+<p><f:translate key="msg.serverTime" arguments="{0: now}" /></p>
