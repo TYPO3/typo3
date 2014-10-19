@@ -210,10 +210,12 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 				}
 			}
 		}
-		if (Ext.isWebKit) {
-				// Remove Apple's span and font tags
+		if (Ext.isWebKit || Ext.isOpera) {
+			// Remove Apple's span and font tags
 			this.editor.getDomNode().cleanAppleStyleSpans(this.editor.document.body);
-				// Reset Safari selection in order to prevent insertion of span and/or font tags on next text input
+		}
+		if (Ext.isWebKit) {
+			// Reset Safari selection in order to prevent insertion of span and/or font tags on next text input
 			var bookmark = this.editor.getBookMark().get(this.editor.getSelection().createRange());
 			this.editor.getSelection().selectRange(this.editor.getBookMark().moveTo(bookmark));
 		}
