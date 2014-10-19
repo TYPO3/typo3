@@ -23,6 +23,11 @@ class ElementBrowserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function printCurrentUrlWithAnyTextReturnsThatText() {
+		$mockPageRenderer = $this->getMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array(), array(), '', FALSE);
+		$mockDocumentTemplate = $this->getMock(\TYPO3\CMS\Backend\Template\DocumentTemplate::class, array(), array(), '', FALSE);
+		$mockDocumentTemplate->expects($this->once())->method('getPageRenderer')->will($this->returnValue($mockPageRenderer));
+		$GLOBALS['TBE_TEMPLATE'] = $mockDocumentTemplate;
+
 		$GLOBALS['LANG'] = $this->getMock(\TYPO3\CMS\Lang\LanguageService::class, array(), array(), '', FALSE);
 		$subject = new \TYPO3\CMS\Recordlist\Browser\ElementBrowser();
 		$subject->act = 'file';

@@ -11185,6 +11185,13 @@ body#ext-backend-Modules-FileSystemNavigationFrame-index-php {
 .pagination-block {
   display: block;
 }
+.fieldSelectBox table .col-title {
+  padding: 0 6px;
+}
+.fieldSelectBox table .label-block {
+  line-height: 32px;
+  height: 32px;
+}
 .label-inline,
 .label-block {
   margin: 0;

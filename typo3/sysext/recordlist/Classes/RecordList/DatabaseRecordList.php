@@ -1661,18 +1661,18 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	}
 
 	/**
-	 * Create the selector box for selecting fields to display from a table:
+	 * Creates a checkbox list for selecting fields to display from a table:
 	 *
 	 * @param string $table Table name
 	 * @param bool $formFields If TRUE, form-fields will be wrapped around the table.
-	 * @return string HTML table with the selector box (name: displayFields['.$table.'][])
+	 * @return string HTML table with the selector check box (name: displayFields['.$table.'][])
 	 */
 	public function fieldSelectBox($table, $formFields = TRUE) {
 		$lang = $this->getLanguageService();
 		// Init:
 		$formElements = array('', '');
 		if ($formFields) {
-			$formElements = array('<form action="' . htmlspecialchars($this->listURL()) . '" method="post">', '</form>');
+			$formElements = array('<form action="' . htmlspecialchars($this->listURL()) . '" method="post" name="fieldSelectBox">', '</form>');
 		}
 		// Load already selected fields, if any:
 		$setFields = is_array($this->setFields[$table]) ? $this->setFields[$table] : array();
@@ -1684,38 +1684,47 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		$fields[] = '_LOCALIZATION_';
 		$fields[] = '_CONTROL_';
 		$fields[] = '_CLIPBOARD_';
-		// Create an option for each field:
-		$opt = array();
-		$opt[] = '<option value=""></option>';
-		foreach ($fields as $fN) {
+		// Create a checkbox for each field:
+		$checkboxes = array();
+		$checkAllChecked = TRUE;
+		foreach ($fields as $fieldName) {
+			// Determine, if checkbox should be checked
+			if (in_array($fieldName, $setFields, TRUE) || $fieldName === $this->fieldArray[0]) {
+				$checked = ' checked="checked"';
+			} else {
+				$checkAllChecked = FALSE;
+				$checked = '';
+			}
 			// Field label
-			$fL = is_array($GLOBALS['TCA'][$table]['columns'][$fN])
-				? rtrim($lang->sL($GLOBALS['TCA'][$table]['columns'][$fN]['label']), ':')
-				: '[' . $fN . ']';
-			$opt[] = '<option value="' . $fN . '"' . (in_array($fN, $setFields) ? ' selected="selected"' : '') . '>'
-				. htmlspecialchars($fL) . '</option>';
+			$fL = is_array($GLOBALS['TCA'][$table]['columns'][$fieldName])
+				? rtrim($lang->sL($GLOBALS['TCA'][$table]['columns'][$fieldName]['label']), ':')
+				: '[' . $fieldName . ']';
+			$checkboxes[] = '<tr><td class="col-checkbox"><input type="checkbox" id="check-' . $fieldName . '" name="displayFields['
+				. $table . '][]" value="' . $fieldName . '"' . $checked
+				. ($fieldName === $this->fieldArray[0] ? ' disabled="disabled"' : '') . '></td><td class="col-title">'
+				. '<label class="label-block" for="check-' . $fieldName . '">' . htmlspecialchars($fL) . '</label></td></tr>';
 		}
-		// Compile the options into a multiple selector box:
-		$lMenu = '<select size="' . MathUtility::forceIntegerInRange(count($fields) + 1, 3, 20)
-			. '" multiple="multiple" name="displayFields[' . $table . '][]">' . implode('', $opt) . '</select>';
 		// Table with the field selector::
 		$content = $formElements[0] . '
-			<!--
-				Field selector for extended table view:
-			-->
-			<table border="0" cellpadding="0" cellspacing="0" id="typo3-dblist-fieldSelect">
-				<tr>
-					<td>
-						' . $lMenu . '
-					</td>
-					<td>
-						<input class="btn btn-default" type="submit" name="search" value="'
-						. $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.setFields', TRUE) . '" />
-					</td>
-				</tr>
-			</table>
+			<input type="hidden" name="displayFields[' . $table . '][]" value="">
+			<div class="table-fit">
+				<table border="0" cellpadding="0" cellspacing="0" class="table table-transparent table-hover">
+					<thead>
+						<tr>
+							<th class="col-checkbox" colspan="2">
+								<input type="checkbox" class="checkbox checkAll" ' . ($checkAllChecked ? ' checked="checked"' : '') .'>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+					' . implode('', $checkboxes) . '
+					</tbody>
+				</table>
+			</div>
+			<input type="submit" name="search" class="btn btn-default" value="'
+			. $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.setFields', TRUE) . '"/>
 			' . $formElements[1];
-		return '<div class="db_list-fieldSelect">' . $content . '</div>';
+		return '<div class="fieldSelectBox">' . $content . '</div>';
 	}
 
 	/*********************************
