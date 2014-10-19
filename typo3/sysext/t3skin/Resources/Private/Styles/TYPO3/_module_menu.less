@@ -16,7 +16,9 @@ Module menu
 - - - - - - - - - - - - - - - - - - - - - */
 
 #typo3-module-menu {
-	background: #dddddd;
+	background: @navbar-inverse-bg;
+	color: @navbar-inverse-color;
+	padding-bottom: ceil(@navbar-padding-vertical * 2);
 
 	.x-panel-body {
 		background-color: transparent;
@@ -24,51 +26,39 @@ Module menu
 
 	#typo3-menu {
 	    margin-top: 18px;
-		padding-left: 0;
 		.list-unstyled;
 
 		> li {
-			margin-bottom: 6px;
-			border-bottom: 1px solid #c7c7c7;
+			margin-bottom: 1px;
 
 			div.modgroup {
-				color: #252524;
+				.text-nowrap;
+				background-color: @navbar-inverse-link-disabled-bg;
+				color: @navbar-inverse-link-disabled-color;
 				cursor: pointer;
 				font-weight: bold;
 				text-transform: uppercase;
 				font-size: 0.9em;
-				padding-left: 24px;
-				margin-bottom: 3px;
-				margin-left: 0px;
-				padding: 2px 0px 4px 16px;
-				background-repeat: no-repeat;
-
-				&.collapsed {
-					background-image: url('../../../../images/arrows/module-menu-left-gray.png');
-					background-position: right 23px top 7px;
-				}
-
-				&.expanded {
-					background-image: url('../../../../images/arrows/module-menu-down-gray.png');
-					background-position: right 22px top 9px;
-				}
+				padding: @navbar-padding-vertical @navbar-padding-horizontal;
 			}
 
 			ul {
 				.list-unstyled;
-				margin: 6px 0;
 
 				li {
-					&.highlighted {
-						font-weight: bold;
-					}
-
 					a {
+						.text-nowrap;
+						color: @navbar-inverse-link-color;
+						padding: @navbar-padding-vertical @navbar-padding-horizontal;
+						position: relative;
 						display: block;
-						color: #1e2121;
 						text-decoration: none;
-						line-height: 16px;
-						padding: 3px 0 3px 24px;
+						overflow: hidden;
+
+						&:hover {
+							background-color: @navbar-inverse-link-hover-bg;
+							color: @navbar-inverse-link-hover-color;
+						}
 
 						span.submodule-icon {
 							position: absolute;
@@ -80,22 +70,25 @@ Module menu
 						}
 
 					}
-				}
 
-				li a:hover {
-					background-color: #e8e8e8;
-				}
+					&.highlighted {
+						font-weight: bold;
 
-				/* hovered menu item */
-				li a:hover,
-				li.highlighted a {
-					border-top: 1px solid #b8b8b8;
-					border-bottom: 1px solid #b8b8b8;
-					padding-top: 2px;
-					padding-bottom: 2px;
+						a {
+							background-color: @navbar-inverse-link-active-bg;
+							color: @navbar-inverse-link-active-color;
 
-					background-color: #ebebeb;
-					box-shadow: none;
+							&:after {
+								content: " ";
+								line-height: 0;
+								position: absolute;
+								right: 0;
+								top: 8px;
+								border: 8px solid transparent;
+								border-right: 8px solid white;
+							}
+						}
+					}
 				}
 			}
 
@@ -104,30 +97,5 @@ Module menu
 				max-height: 16px;
 			}
 		}
-
-		> li:last-child {
-			border-bottom: none;
-		}
-	}
-}
-
-/**
- * Shadow on the right side of the module menu.
- */
-#typo3-module-menu,
-#typo3-menu li li a:hover {
-	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA9JREFUeNpi3LFjB0CAAQAEWAIqGE4BVwAAAABJRU5ErkJggg==");
-	background-position: right;
-	background-repeat: repeat-y;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-	.backgroundsize #typo3-menu li div.collapsed {
-		background-image: url('../../../../images/arrows/module-menu-left-gray@2x.png');
-		background-size: 6px 7px;
-	}
-	.backgroundsize #typo3-menu li div.expanded {
-		background-image: url('../../../../images/arrows/module-menu-down-gray@2x.png');
-		background-size: 7px 6px;
 	}
 }

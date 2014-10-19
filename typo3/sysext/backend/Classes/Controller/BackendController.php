@@ -47,6 +47,11 @@ class BackendController {
 	protected $debug;
 
 	/**
+	 * @var \TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository
+	 */
+	protected $backendModuleRepository;
+
+	/**
 	 * Object for loading backend modules
 	 *
 	 * @var \TYPO3\CMS\Backend\Module\ModuleLoader
@@ -71,6 +76,8 @@ class BackendController {
 	 * Constructor
 	 */
 	public function __construct() {
+		$this->backendModuleRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Domain\\Repository\\Module\\BackendModuleRepository');
+
 		// Set debug flag for BE development only
 		$this->debug = (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] === 1;
 		// Initializes the backend modules structure for use later.
@@ -738,9 +745,7 @@ class BackendController {
 	 * @return string
 	 */
 	protected function generateModuleMenu() {
-		/** @var $moduleRepository \TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository */
-		$moduleRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Domain\\Repository\\Module\\BackendModuleRepository');
-		$moduleStorage = $moduleRepository->loadAllowedModules();
+		$moduleStorage = $this->backendModuleRepository->loadAllowedModules();
 
 		/** @var $view \TYPO3\CMS\Fluid\View\StandaloneView */
 		$view = GeneralUtility::makeInstance('TYPO3\\CMS\\Fluid\\View\\StandaloneView');

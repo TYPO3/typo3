@@ -1,19 +1,19 @@
-<ul id="typo3-menu">
-<f:for each="{modules}" as="mainModule">
-	<li class="menuSection t3-menuitem-main" id="{mainModule.name}" data-navigationcomponentid="{mainModule.navigationComponentId}" data-navigationframescript="{mainModule.navigationFrameScript}" data-navigationframescriptparameters="{mainModule.navigationFrameScriptParameters}">
-		<div class="modgroup expanded">{mainModule.title}</div>
-		<ul class="t3-menuitem-submodules">
-			<f:for each="{mainModule.children}" as="subModule">
-				<li id="{subModule.name}" class="t3-menuitem-submodule submodule mod-{subModule.name}"  data-navigationcomponentid="{subModule.navigationComponentId}" data-navigationframescript="{subModule.navigationFrameScript}" data-navigationframescriptparameters="{subModule.navigationFrameScriptParameters}">
-					<a title="{subModule.description}" href="{subModule.link}" class="modlink">
-						<span class="submodule-icon">
-							<f:format.raw>{subModule.icon.html}</f:format.raw>
-						</span>
-						<span class="submodule-label">{subModule.title}</span>
-					</a>
-				</li>
-			</f:for>
-		</ul>
-	</li>
-</f:for>
+<ul class="nav nav-modules" data-typo3-role="typo3-module-menu" id="typo3-menu">
+	<f:for each="{modules}" as="mainModule">
+		<li class="menuSection t3-menuitem-main" id="{mainModule.name}" data-navigationcomponentid="{mainModule.navigationComponentId}" data-navigationframescript="{mainModule.navigationFrameScript}" data-navigationframescriptparameters="{mainModule.navigationFrameScriptParameters}">
+			<div class="modgroup expanded">{mainModule.title}</div>
+			<ul class="t3-menuitem-submodules">
+				<f:for each="{mainModule.children}" as="subModule">
+					<li id="{subModule.name}" class="t3-menuitem-submodule submodule mod-{subModule.name}"  data-navigationcomponentid="{subModule.navigationComponentId}" data-navigationframescript="{subModule.navigationFrameScript}" data-navigationframescriptparameters="{subModule.navigationFrameScriptParameters}">
+						<a title="{subModule.description}" href="{subModule.link}" class="modlink">
+							<span class="submodule-icon">
+								<f:format.raw>{subModule.icon.html}</f:format.raw>
+							</span>
+							<span class="submodule-label">{subModule.title}</span>
+						</a>
+					</li>
+				</f:for>
+			</ul>
+		</li>
+	</f:for>
 </ul>
