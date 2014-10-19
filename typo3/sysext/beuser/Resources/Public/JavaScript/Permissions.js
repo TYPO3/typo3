@@ -14,7 +14,7 @@
 /**
  * Javascript functions regarding the permissions module
  */
-define('TYPO3/CMS/Perm/Permissions', ['jquery'], function($) {
+define('TYPO3/CMS/Beuser/Permissions', ['jquery'], function($) {
 
 	var Permissions = {
 		options: {
@@ -45,7 +45,7 @@ define('TYPO3/CMS/Perm/Permissions', ['jquery'], function($) {
 				res|=Math.pow(2,a-1);
 			}
 		}
-		document.editform[varname].value = res | (checknames === 'check[perms_user]' ? 1 : 0);
+		document.editform[varname].value = res | (checknames === 'tx_beuser_system_beusertxpermission[check][perms_user]' ? 1 : 0);
 		Permissions.setCheck(checknames, varname);
 	};
 
@@ -162,8 +162,8 @@ define('TYPO3/CMS/Perm/Permissions', ['jquery'], function($) {
 				'class': 'not_set',
 				'text': '[not set]'
 			});
-			username = username.text();
 			usernameHtml = username.html();
+			username = username.text();
 		}
 
 		var html = $('<span/>', {
@@ -240,8 +240,8 @@ define('TYPO3/CMS/Perm/Permissions', ['jquery'], function($) {
 				'class': 'not_set',
 				'text': '[not set]'
 			});
-			groupname = groupname.text();
 			groupnameHtml = groupname.html();
+			groupname = groupname.text();
 		}
 		var html = $('<span/>', {
 			'id': 'g_' + page

@@ -1,0 +1,102 @@
+{namespace bu = TYPO3\CMS\Beuser\ViewHelpers}
+
+<f:layout name="Permission" />
+
+<f:section name="iconButtons">
+	<a href="#" onclick="{previewUrl}" title="{f:translate(key: 'LLL:EXT:lang/locallang_core.xlf:labels.showPage')}"><bu:spriteManagerIcon iconName="actions-document-view" /></a>
+</f:section>
+
+<f:section name="headline">
+	<h1><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:permissions" /></h1>
+</f:section>
+
+<f:section name="content">
+	<div class="form-group">
+		<label for="depth"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Depth" />:</label>
+		<f:form.select id="depth" value="{depth}" options="{depthOptions}" additionalAttributes="{onchange: 'jumpToUrl(\'{depthBaseUrl}\'.replace(\'__DEPTH__\', this.options[this.selectedIndex].value), this);'}" />
+	</div>
+
+	<table class="t3-table" id="typo3-permissionList">
+		<thead>
+		<tr>
+			<th colspan="2">&nbsp;</th>
+			<th><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Owner" /></th>
+			<th align="center"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Group" /></th>
+			<th align="center"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Everybody" /></th>
+			<th align="center"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:EditLock" /></th>
+		</tr>
+		</thead>
+		<f:for each="{viewTree}" as="data">
+			<tr>
+				<f:if condition="{data.cellAttrib}">
+					<f:then>
+						<td align="left" nowrap="nowrap" {data.cellAttrib}>
+							<f:format.raw>{data.html}</f:format.raw>
+						</td>
+					</f:then>
+					<f:else>
+						<td align="left" nowrap="nowrap" {data.groupName}>
+							<f:format.raw>{data.html}</f:format.raw>
+						</td>
+					</f:else>
+				</f:if>
+				<f:if condition="{data.editPermsAllowed}">
+					<f:then>
+						<td>
+							<f:if condition="{data.id} > 0">
+								<f:link.action action="edit" arguments="{id: data.id, depth: depth}" title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:ch_permissions')}">
+									<bu:spriteManagerIcon iconName="actions-document-open" />
+								</f:link.action>
+							</f:if>
+						</td>
+					</f:then>
+					<f:else>
+						<td></td>
+					</f:else>
+				</f:if>
+				<td nowrap="nowrap"><f:format.raw>{data.userPermissions}</f:format.raw></td>
+				<td nowrap="nowrap"><f:format.raw>{data.groupPermissions}</f:format.raw></td>
+				<td nowrap="nowrap"><f:format.raw>{data.otherPermissions}</f:format.raw></td>
+				<td nowrap="nowrap">
+				<f:if condition="{data.id} > 0">
+					<span id="el_{data.id}">
+						<f:if condition="{data.editLock}">
+							<f:then>
+								<a class="editlock" data-page="{data.pageId}" data-lockstate="1" title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:EditLock_descr')}">
+									<bu:spriteManagerIcon iconName="status-warning-lock" />
+								</a>
+							</f:then>
+							<f:else>
+								<a class="editlock" data-page="{data.pageId}" data-lockstate="0" title="Enable the &raquo;Admin-only&laquo; edit lock for this page">
+									[+]
+								</a>
+							</f:else>
+						</f:if>
+					</span>
+				</f:if>
+			</tr>
+		</f:for>
+	</table>
+
+	<br />
+	<f:format.raw>{cshItem}</f:format.raw>
+
+	<h3><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Legend" />:</h3>
+	<div class="legend">
+		<div class="pull-left">
+			<f:image src="{f:uri.resource(path:'Images/legend.gif')}" width="90" height="75" alt="" />
+		</div>
+		<small>
+			<strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:1" /></strong>: <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:1_t" /><br/>
+			<strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:16" /></strong>: <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:16_t" /><br/>
+			<strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:2" /></strong>: <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:2_t" /><br/>
+			<strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:4" /></strong>: <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:4_t" /><br/>
+			<strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:8" /></strong>: <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:8_t" />
+		</small>
+	</div>
+	<p><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:def" /></p>
+	<p>
+		<bu:spriteManagerIcon iconName="status-status-permission-granted" /> <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:A_Granted" /><br/>
+		<bu:spriteManagerIcon iconName="status-status-permission-denied" /> <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:A_Denied" />
+	</p>
+</f:section>

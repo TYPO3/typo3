@@ -46,3 +46,10 @@ form div { clear: both; margin-bottom: 5px; }
 /**
  * @end
  */
+
+.legend .pull-left {
+    margin-right: 0.5em;
+}
+.t3-table a {
+    cursor: pointer;
+}

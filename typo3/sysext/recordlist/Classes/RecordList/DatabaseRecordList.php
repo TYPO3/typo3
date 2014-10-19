@@ -1225,8 +1225,8 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 					}
 				}
 				// "Edit Perms" link:
-				if ($table === 'pages' && $GLOBALS['BE_USER']->check('modules', 'web_perm') && ExtensionManagementUtility::isLoaded('perm')) {
-					$href = htmlspecialchars((BackendUtility::getModuleUrl('web_perm') . '&id=' . $row['uid'] . '&return_id=' . $row['uid'] . '&edit=1'));
+				if ($table === 'pages' && $GLOBALS['BE_USER']->check('modules', 'system_BeuserTxPermission') && ExtensionManagementUtility::isLoaded('beuser')) {
+					$href = htmlspecialchars((BackendUtility::getModuleUrl('system_BeuserTxPermission') . '&id=' . $row['uid'] . '&return_id=' . $row['uid'] . '&edit=1'));
 					$cells['perms'] = '<a class="btn" href="' . $href . '" title="'
 						. $GLOBALS['LANG']->getLL('permissions', TRUE) . '">'
 						. IconUtility::getSpriteIcon('status-status-locked') . '</a>';

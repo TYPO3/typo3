@@ -1,0 +1,98 @@
+{namespace bu = TYPO3\CMS\Beuser\ViewHelpers}
+
+<f:layout name="Permission" />
+
+<f:section name="iconButtons">
+	<a href="#" onclick="{previewUrl}" title="{f:translate(key: 'LLL:EXT:lang/locallang_core.xlf:labels.showPage')}"><bu:spriteManagerIcon iconName="actions-document-view" /></a>
+</f:section>
+
+<f:section name="headline">
+	<h1>
+		<f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:permissions" />:
+		<f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Edit" />
+	</h1>
+</f:section>
+
+<f:section name="content">
+	<f:form action="update" name="editform">
+		<h3><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Owner" /></h3>
+		<div class="form-group">
+			<f:form.select name="data[pages][{id}][perms_userid]" options="{beUserData}" value="{currentBeUser}" />
+		</div>
+
+		<h3><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Group" /></h3>
+		<div class="form-group">
+			<f:form.select name="data[pages][{id}][perms_groupid]" options="{beGroupData}" value="{currentBeGroup}" />
+		</div>
+
+		<table class="t3-table" id="typo3-permissionMatrix">
+			<thead>
+			<tr>
+				<th></th>
+				<th><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:1" /></th>
+				<th><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:16" /></th>
+				<th><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:2" /></th>
+				<th><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:4" /></th>
+				<th><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:8" /></th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr>
+				<td><strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Owner" /></strong></td>
+				<td><input type="checkbox" name="check[perms_user][1]" onclick="TYPO3.Permissions.checkChange('check[perms_user]', 'tx_beuser_system_beusertxpermission[data][pages][{id}][perms_user]')" /></td>
+				<td><input type="checkbox" name="check[perms_user][5]" onclick="TYPO3.Permissions.checkChange('check[perms_user]', 'tx_beuser_system_beusertxpermission[data][pages][{id}][perms_user]')" /></td>
+				<td><input type="checkbox" name="check[perms_user][2]" onclick="TYPO3.Permissions.checkChange('check[perms_user]', 'tx_beuser_system_beusertxpermission[data][pages][{id}][perms_user]')" /></td>
+				<td><input type="checkbox" name="check[perms_user][3]" onclick="TYPO3.Permissions.checkChange('check[perms_user]', 'tx_beuser_system_beusertxpermission[data][pages][{id}][perms_user]')" /></td>
+				<td><input type="checkbox" name="check[perms_user][4]" onclick="TYPO3.Permissions.checkChange('check[perms_user]', 'tx_beuser_system_beusertxpermission[data][pages][{id}][perms_user]')" /></td>
+			</tr>
+			<tr>
+				<td><strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Group" /></strong></td>
+				<td><input type="checkbox" name="check[perms_group][1]" onclick="TYPO3.Permissions.checkChange('check[perms_group]', 'tx_beuser_system_beusertxpermission[data][pages][{id}][perms_group]')" /></td>
+				<td><input type="checkbox" name="check[perms_group][5]" onclick="TYPO3.Permissions.checkChange('check[perms_group]', 'tx_beuser_system_beusertxpermission[data][pages][{id}][perms_group]')" /></td>
+				<td><input type="checkbox" name="check[perms_group][2]" onclick="TYPO3.Permissions.checkChange('check[perms_group]', 'tx_beuser_system_beusertxpermission[data][pages][{id}][perms_group]')" /></td>
+				<td><input type="checkbox" name="check[perms_group][3]" onclick="TYPO3.Permissions.checkChange('check[perms_group]', 'tx_beuser_system_beusertxpermission[data][pages][{id}][perms_group]')" /></td>
+				<td><input type="checkbox" name="check[perms_group][4]" onclick="TYPO3.Permissions.checkChange('check[perms_group]', 'tx_beuser_system_beusertxpermission[data][pages][{id}][perms_group]')" /></td>
+			</tr>
+			<tr>
+				<td><strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Everybody" /></strong></td>
+				<td><input type="checkbox" name="check[perms_everybody][1]" onclick="TYPO3.Permissions.checkChange('check[perms_everybody]', 'tx_beuser_system_beusertxpermission[data][pages][{id}][perms_everybody]')" /></td>
+				<td><input type="checkbox" name="check[perms_everybody][5]" onclick="TYPO3.Permissions.checkChange('check[perms_everybody]', 'tx_beuser_system_beusertxpermission[data][pages][{id}][perms_everybody]')" /></td>
+				<td><input type="checkbox" name="check[perms_everybody][2]" onclick="TYPO3.Permissions.checkChange('check[perms_everybody]', 'tx_beuser_system_beusertxpermission[data][pages][{id}][perms_everybody]')" /></td>
+				<td><input type="checkbox" name="check[perms_everybody][3]" onclick="TYPO3.Permissions.checkChange('check[perms_everybody]', 'tx_beuser_system_beusertxpermission[data][pages][{id}][perms_everybody]')" /></td>
+				<td><input type="checkbox" name="check[perms_everybody][4]" onclick="TYPO3.Permissions.checkChange('check[perms_everybody]', 'tx_beuser_system_beusertxpermission[data][pages][{id}][perms_everybody]')" /></td>
+			</tr>
+			</tbody>
+		</table>
+		<f:form.hidden name="data[pages][{id}][perms_user]" value="{pageInfo.perms_user}" />
+		<f:form.hidden name="data[pages][{id}][perms_group]" value="{pageInfo.perms_group}" />
+		<f:form.hidden name="data[pages][{id}][perms_everybody]" value="{pageInfo.perms_everybody}" />
+
+		<f:form.select name="mirror[pages][{id}]" options="{recursiveSelectOptions}" />
+
+		<br/><br/>
+
+		<f:form.hidden name="depth" value="{depth}" />
+		<f:form.submit name="submit" value="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Save')}" />
+		<f:link.action action="index" arguments="{id: id}"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Abort" /></f:link.action>
+
+		<f:form.hidden name="redirect" value="{f:uri.action(action: 'index', arguments: {lastEdited: id, id: returnId})}" />
+	</f:form>
+	<f:if condition="{showHelp}">
+		<h3><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Legend" /></h3>
+		<p>
+			<strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:1" /></strong>: <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:1_t" /> <br />
+			<strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:16" /></strong>: <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:16_t" /> <br />
+			<strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:2" /></strong>: <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:2_t" /> <br />
+			<strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:4" /></strong>: <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:4_t" /> <br />
+			<strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:8" /></strong>: <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:8_t" />
+		</p>
+		<p><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:def" /></p>
+	</f:if>
+	<script type="text/javascript">
+		require(["jquery", "TYPO3/CMS/Beuser/Permissions"], function($, Permissions) {
+			Permissions.setCheck("check[perms_user]", "tx_beuser_system_beusertxpermission[data][pages][{id}][perms_user]");
+			Permissions.setCheck("check[perms_group]", "tx_beuser_system_beusertxpermission[data][pages][{id}][perms_group]");
+			Permissions.setCheck("check[perms_everybody]", "tx_beuser_system_beusertxpermission[data][pages][{id}][perms_everybody]");
+		});
+	</script>
+</f:section>

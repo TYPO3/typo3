@@ -89,7 +89,6 @@
 		"typo3/cms-lowlevel": "self.version",
 		"typo3/cms-opendocs": "self.version",
 		"typo3/cms-openid": "self.version",
-		"typo3/cms-perm": "self.version",
 		"typo3/cms-recordlist": "self.version",
 		"typo3/cms-recycler": "self.version",
 		"typo3/cms-reports": "self.version",

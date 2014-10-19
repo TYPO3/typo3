@@ -1,0 +1,35 @@
+{namespace bu = TYPO3\CMS\Beuser\ViewHelpers}
+
+<bu:be.container
+	includeCssFiles="{0: '{f:uri.resource(path:\'Css/style.css\')}'}"
+	loadRequireJsModules="{0: 'TYPO3/CMS/Beuser/Permissions'}"
+	loadPrototype="0"
+	loadExtJsTheme="0"
+	loadJQuery="1"
+>
+	<div class="typo3-fullDoc">
+		<div id="typo3-docheader">
+			<div class="typo3-docheader-functions">
+				<div class="left"></div>
+				<div class="right"></div>
+			</div>
+			<div class="typo3-docheader-buttons">
+				<div class="left">
+					<f:render section="iconButtons" />
+				</div>
+				<div class="right">
+					<f:be.buttons.shortcut />
+				</div>
+			</div>
+		</div>
+		<div id="typo3-docbody">
+			<div id="typo3-inner-docbody">
+				<f:render section="headline" />
+
+				<f:flashMessages renderMode="div" />
+
+				<f:render section="content" />
+			</div>
+		</div>
+	</div>
+</bu:be.container>

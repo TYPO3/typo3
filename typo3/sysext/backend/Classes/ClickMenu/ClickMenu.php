@@ -420,7 +420,7 @@ class ClickMenu {
 				if (($table === 'pages' || $table === 'tt_content') && !in_array('new_wizard', $this->disabledItems, TRUE)) {
 					$localItems['new_wizard'] = $this->DB_newWizard($table, $uid, $this->rec);
 				}
-				if ($table === 'pages' && !in_array('perms', $this->disabledItems, TRUE) && $GLOBALS['BE_USER']->check('modules', 'web_perm')) {
+				if ($table === 'pages' && !in_array('perms', $this->disabledItems, TRUE) && $GLOBALS['BE_USER']->check('modules', 'system_BeuserTxPermission')) {
 					$localItems['perms'] = $this->DB_perms($table, $uid, $this->rec);
 				}
 				if (!in_array('db_list', $this->disabledItems, TRUE) && $GLOBALS['BE_USER']->check('modules', 'web_list')) {
@@ -566,7 +566,7 @@ class ClickMenu {
 	 * @internal
 	 */
 	public function DB_perms($table, $uid, $rec) {
-		if (!ExtensionManagementUtility::isLoaded('perm')) {
+		if (!ExtensionManagementUtility::isLoaded('beuser')) {
 			return '';
 		}
 
@@ -579,7 +579,7 @@ class ClickMenu {
 			$parameters['edit'] = '1';
 		}
 
-		$url = BackendUtility::getModuleUrl('web_perm', $parameters);
+		$url = BackendUtility::getModuleUrl('system_BeuserTxPermission', $parameters);
 		return $this->linkItem($GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_perms')), $this->excludeIcon(IconUtility::getSpriteIcon('status-status-locked')), $this->urlRefForCM($url), 0);
 	}
 
