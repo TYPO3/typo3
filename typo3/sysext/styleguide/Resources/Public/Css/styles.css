@@ -45,3 +45,27 @@
 .highlight-color {
 	background-color: rgb(50, 160, 255);
 }
+
+div.icon-set {
+}
+div.icon-set ul {
+	margin-right: -5px;
+	list-style-type: none;
+	padding-left: 0;
+	margin-left: 0;
+}
+div.icon-set li {
+	background-color: rgb(240, 240, 240);
+	float: left;
+	width: 12.5%;
+	border: 2px solid #fff;
+	padding: 10px;
+	height: 120px;
+	overflow: hidden;
+}
+div.icon-set li:hover {
+	background-color: rgb(250, 250, 250);
+}
+div.icon-set li span {
+	margin-bottom: 5px;
+}

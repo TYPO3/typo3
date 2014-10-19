@@ -10,14 +10,27 @@
 </f:section>
 
 <f:section name="content">
-	<dl>
-		<f:for each="{icons}" as="icon">
-			<dt>
-				<sg:spriteManagerIcon iconName="{icon}" />
-			</dt>
-			<dd>
-				{icon}
-			</dd>
-		</f:for>
-	</dl>
+	<p class="lead">These icons can be used in backend modules. TYPO3 automatically sends the corresponding HTML output code.</p>
+
+	<div class="icon-set clearfix">
+		<ul>
+			<f:for each="{icons}" as="icon">
+				<li class="text-center">
+					<sg:spriteManagerIcon iconName="{icon}" /><br>
+					{icon}
+				</li>
+			</f:for>
+		</ul>
+	</div>
+
+	<h2>Method invocation</h2>
+
+	<p>In PHP call method <code>getSpriteIcon</code> on class <code>\TYPO3\CMS\Backend\Utility\IconUtility</code> with the corresponding icon name, see above.</p>
+
+	<div class="example code">
+		<span class="tag-border">&lt;</span>?<span class="tag-name">php</span> echo <span class="tag-attribute">\TYPO3\CMS\Backend\Utility\IconUtility</span>::<span class="tag-attribute">getSpriteIcon</span>(<span class="tag-attribute-value">$iconName</span>); ?<span class="tag-border">&gt;</span><br />
+	</div>
+
+
+
 </f:section>
