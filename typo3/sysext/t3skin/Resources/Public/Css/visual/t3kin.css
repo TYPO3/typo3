@@ -10101,6 +10101,10 @@ button {
 /* - - - - - - - - - - - - - - - - - - - - -
 Form
 - - - - - - - - - - - - - - - - - - - - - */
+/* Limit form width globally */
+.form-group {
+  max-width: 440px;
+}
 input,
 textarea,
 button {
