@@ -51,66 +51,33 @@
 		Listing of all users
 	</f:comment>
 
-	<f:if condition="<f:count subject='{backendUsers}' /> > 50">
-		<f:then>
-			<f:be.widget.paginate objects="{backendUsers}" as="paginatedBackendUsers" configuration="{itemsPerPage: 50, insertAbove: 1, insertBelow: 1}">
-				<table class="t3-table">
-					<thead>
-						<tr>
-							<th>&nbsp;</th>
-							<th>
-								<f:translate key="userName">Username</f:translate> /
-								<f:translate key="realName">Real name</f:translate>
-							</th>
-							<th>&nbsp;</th>
-							<th>&nbsp;</th>
-							<th><f:translate key="lastLogin">Last login</f:translate></th>
-						</tr>
-					</thead>
-					<tbody>
-						<f:for each="{paginatedBackendUsers}" as="backendUser">
-							<f:render partial="BackendUser/IndexListRow" arguments="{demand: demand, backendUser: backendUser, dateFormat: dateFormat, timeFormat: timeFormat, returnUrl: returnUrl}" />
-						</f:for>
-						<f:comment>
-							Footer row: no officially defined style yet
-						</f:comment>
-						<tr>
-							<td colspan="6">
-								<f:count subject="{backendUsers}" /> <f:translate key="users">Users</f:translate>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</f:be.widget.paginate>
-		</f:then>
-		<f:else>
-			<table class="t3-table">
-				<thead>
-					<tr>
-						<th>&nbsp;</th>
-						<th>
-							<f:translate key="userName">Username</f:translate> /
-							<f:translate key="realName">Real name</f:translate>
-						</th>
-						<th>&nbsp;</th>
-						<th>&nbsp;</th>
-						<th><f:translate key="lastLogin">Last login</f:translate></th>
-					</tr>
-				</thead>
-				<tbody>
-					<f:for each="{backendUsers}" as="backendUser">
-						<f:render partial="BackendUser/IndexListRow" arguments="{demand: demand, backendUser: backendUser, dateFormat: dateFormat, timeFormat: timeFormat, returnUrl: returnUrl}" />
-					</f:for>
-					<f:comment>
-						Footer row: no officially defined style yet
-					</f:comment>
-					<tr>
-						<td colspan="6">
-							<f:count subject="{backendUsers}" /> <f:translate key="users">Users</f:translate>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</f:else>
-	</f:if>
+	<f:be.widget.paginate objects="{backendUsers}" as="paginatedBackendUsers" configuration="{itemsPerPage: 50, insertAbove: 1, insertBelow: 1}">
+		<table class="t3-table">
+			<thead>
+				<tr>
+					<th>&nbsp;</th>
+					<th>
+						<f:translate key="userName">Username</f:translate> /
+						<f:translate key="realName">Real name</f:translate>
+					</th>
+					<th>&nbsp;</th>
+					<th>&nbsp;</th>
+					<th class="hidden-xs hidden-sm"><f:translate key="lastLogin">Last login</f:translate></th>
+				</tr>
+			</thead>
+			<tbody>
+				<f:for each="{paginatedBackendUsers}" as="backendUser">
+					<f:render partial="BackendUser/IndexListRow" arguments="{demand: demand, backendUser: backendUser, dateFormat: dateFormat, timeFormat: timeFormat, returnUrl: returnUrl}" />
+				</f:for>
+				<f:comment>
+					Footer row: no officially defined style yet
+				</f:comment>
+				<tr>
+					<td colspan="6">
+						<f:count subject="{backendUsers}" /> <f:translate key="users">Users</f:translate>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</f:be.widget.paginate>
 </f:section>

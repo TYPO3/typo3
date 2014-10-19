@@ -41,7 +41,7 @@
 			<bu:SwitchUser backendUser="{backendUser}" emulate="TRUE" />
 		</f:if>
 	</td>
-	<td>
+	<td class="hidden-xs hidden-sm">
 		<f:if condition="{backendUser.lastLoginDateAndTime}">
 			<f:then>
 				<f:format.date format="{dateFormat} {timeFormat}">{backendUser.lastLoginDateAndTime}</f:format.date>

@@ -29,8 +29,8 @@
 				<th title="{f:translate(key:'extensionList.header.title.update')}"><f:translate key="extensionList.header.update"/></th>
 				<th title="{f:translate(key:'extensionList.header.title.activate')}"><f:translate key="extensionList.header.activate"/></th>
 				<th><f:translate key="extensionList.header.extensionName"/></th>
-				<th><f:translate key="extensionList.header.extensionKey"/></th>
-				<th><f:translate key="extensionList.header.extensionVersion"/></th>
+				<th class="hidden-xs hidden-sm"><f:translate key="extensionList.header.extensionKey"/></th>
+				<th class="hidden-xs"><f:translate key="extensionList.header.extensionVersion"/></th>
 				<th><f:translate key="extensionList.header.extensionActions"/></th>
 				<th><f:translate key="extensionList.header.extensionState"/></th>
 			</tr>
@@ -80,10 +80,10 @@
 					</f:if>
 					<em:configureExtension extension="{extension}" forceConfiguration="0" showDescription="1">{extension.title}</em:configureExtension>
 				</td>
-				<td>
+				<td class="hidden-xs hidden-sm">
 					{extensionKey}
 				</td>
-				<td>
+				<td class="hidden-xs">
 					{extension.version}
 				</td>
 				<td class="icons">

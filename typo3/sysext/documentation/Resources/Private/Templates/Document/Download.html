@@ -22,8 +22,8 @@
 		<thead>
 		<tr>
 			<th><f:translate key="documentation.title" /></th>
-			<th><f:translate key="documentation.shortcut" /></th>
-			<th><f:translate key="documentation.type" /></th>
+			<th class="hidden-xs"><f:translate key="documentation.shortcut" /></th>
+			<th class="hidden-xs"><f:translate key="documentation.type" /></th>
 			<th><f:translate key="documentation.actions" /></th>
 		</tr>
 		</thead>
@@ -34,8 +34,8 @@
 					<img src="../{document.icon}" title="{document.title}" alt="{document.title}" />
 					{document.title}
 				</td>
-				<td>{document.shortcut}</td>
-				<td>{document.type}</td>
+				<td class="hidden-xs">{document.shortcut}</td>
+				<td class="hidden-xs">{document.type}</td>
 				<td class="icons">
 					<doc:link.action action="fetch" arguments="{url:document.url, key:document.key, version:document.version}" title="{f:translate(key:'documentation.actions.download')}">
 						<span class="t3-icon t3-icon-actions t3-icon-system-extension-download">&nbsp;</span>
