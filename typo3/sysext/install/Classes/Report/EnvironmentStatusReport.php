@@ -14,20 +14,40 @@ namespace TYPO3\CMS\Install\Report;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Reports\ExtendedStatusProviderInterface;
+use TYPO3\CMS\Reports\StatusProviderInterface;
+
 /**
  * Provides an environment status report
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
-class EnvironmentStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface {
+class EnvironmentStatusReport implements StatusProviderInterface, ExtendedStatusProviderInterface {
 
 	/**
 	 * Compile environment status report
 	 *
-	 * @throws \TYPO3\CMS\Install\Exception
-	 * @return array<\TYPO3\CMS\Reports\Status>
+	 * @return \TYPO3\CMS\Reports\Status[]
 	 */
 	public function getStatus() {
+		return $this->getStatusInternal(FALSE);
+	}
+
+	/**
+	 * Returns the detailed status of an extension or (sub)system
+	 *
+	 * @return \TYPO3\CMS\Reports\Status[]
+	 */
+	public function getDetailedStatus() {
+		return $this->getStatusInternal(TRUE);
+	}
+
+	/**
+	 * @param $verbose
+	 * @return \TYPO3\CMS\Reports\Status[]
+	 * @throws \TYPO3\CMS\Install\Exception
+	 */
+	protected function getStatusInternal($verbose) {
 		/** @var $statusCheck \TYPO3\CMS\Install\SystemEnvironment\Check */
 		$statusCheck = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\SystemEnvironment\\Check');
 		$statusObjects = $statusCheck->getStatus();
@@ -52,13 +72,22 @@ class EnvironmentStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterf
 		$statusArray = array();
 		foreach ($reportStatusTypes as $type => $statusObjects) {
 			$value = count($statusObjects);
+			$message = '';
+			if ($verbose) {
+				foreach ($statusObjects as $statusObject) {
+					$message .= '### ' . $statusObject->getTitle() . ': ' . $statusObject->getSeverity() . CRLF;
+				}
+			}
+
 			if ($value > 0) {
 				$pathToXliff = 'LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf';
 				// Map information type to abbreviation which is used in \TYPO3\CMS\Reports\Status class
 				if ($type === 'information') {
 					$type = 'info';
 				}
-				$message = $GLOBALS['LANG']->sL($pathToXliff . ':environment.status.message.' . $type);
+				if (!$verbose) {
+					$message = $GLOBALS['LANG']->sL($pathToXliff . ':environment.status.message.' . $type);
+				}
 				$severity = constant('\TYPO3\CMS\Reports\Status::' . strtoupper($type));
 				$statusArray[] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 					'TYPO3\\CMS\\Reports\\Status',
@@ -72,4 +101,5 @@ class EnvironmentStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterf
 
 		return $statusArray;
 	}
+
 }
