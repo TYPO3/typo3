@@ -414,6 +414,7 @@ class TypoScriptFrontendController {
 	 * applications on a page can set handlers for onload, onmouseover and onmouseup
 	 *
 	 * @var array
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public $JSeventFuncCalls = array(
 		'onmousemove' => array(),

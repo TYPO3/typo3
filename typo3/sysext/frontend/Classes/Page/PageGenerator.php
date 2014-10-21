@@ -194,6 +194,7 @@ class PageGenerator {
 	 * Processing JavaScript handlers
 	 *
 	 * @return array Array with a) a JavaScript section with event handlers and variables set and b) an array with attributes for the body tag.
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8, use JS directly
 	 */
 	static public function JSeventFunctions() {
 		$functions = array();
@@ -201,6 +202,7 @@ class PageGenerator {
 		$setBody = array();
 		foreach ($GLOBALS['TSFE']->JSeventFuncCalls as $event => $handlers) {
 			if (count($handlers)) {
+				GeneralUtility::deprecationLog('The usage of $GLOBALS[\'TSFE\']->JSeventFuncCalls is deprecated as of CMS 7. Use Javascript directly.');
 				$functions[] = '	function T3_' . $event . 'Wrapper(e) {	' . implode('   ', $handlers) . '	}';
 				$setEvents[] = '	document.' . $event . '=T3_' . $event . 'Wrapper;';
 				if ($event == 'onload') {
@@ -786,7 +788,7 @@ class PageGenerator {
 		$scriptJsCode = $JSef[0];
 
 		if ($GLOBALS['TSFE']->spamProtectEmailAddresses && $GLOBALS['TSFE']->spamProtectEmailAddresses !== 'ascii') {
-			$scriptJsCode .= '
+			$scriptJsCode = '
 			// decrypt helper function
 		function decryptCharcode(n,start,end,offset) {
 			n = n + offset;
