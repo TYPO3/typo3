@@ -183,5 +183,3 @@ final class RemoveXSS {
 		return $val;
 	}
 }
-
-?>
