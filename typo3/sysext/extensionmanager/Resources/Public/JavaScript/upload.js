@@ -3,7 +3,7 @@
 
 	$(function() {
 		// Show upload form
-		$('.t3-icon-edit-upload').parent().not('.transformed').on('click', function(event) {
+		$('#upload-button-wrap > a').not('.transformed').on('click', function(event) {
 			event.preventDefault();
 			$(this).addClass('transformed');
 			$('.uploadForm').slideDown();
