@@ -478,7 +478,7 @@ class SelectElement extends AbstractFormElement {
 		$item .= '</select>';
 		// Create icon table:
 		if (count($selicons) && !$config['noIconsBelowSelect']) {
-			$item .= '<table border="0" cellpadding="0" cellspacing="0" class="typo3-TCEforms-selectIcons">';
+			$item .= '<div class="typo3-TCEforms-selectIcons">';
 			$selicon_cols = (int)$config['selicon_cols'];
 			if (!$selicon_cols) {
 				$selicon_cols = count($selicons);
@@ -486,17 +486,17 @@ class SelectElement extends AbstractFormElement {
 			$sR = ceil(count($selicons) / $selicon_cols);
 			$selicons = array_pad($selicons, $sR * $selicon_cols, '');
 			for ($sa = 0; $sa < $sR; $sa++) {
-				$item .= '<tr>';
+				$item .= '<div>';
 				for ($sb = 0; $sb < $selicon_cols; $sb++) {
 					$sk = $sa * $selicon_cols + $sb;
 					$imgN = 'selIcon_' . $table . '_' . $row['uid'] . '_' . $field . '_' . $selicons[$sk][1];
 					$imgS = $selicons[$sk][2] ? $this->formEngine->backPath . 'gfx/content_selected.gif' : 'clear.gif';
-					$item .= '<td><img name="' . htmlspecialchars($imgN) . '" src="' . $imgS . '" width="7" height="10" alt="" /></td>';
-					$item .= '<td>' . $selicons[$sk][0] . '</td>';
+					$item .= '<span><img name="' . htmlspecialchars($imgN) . '" src="' . htmlspecialchars($imgS) . '" width="7" height="10" alt="" /></span>';
+					$item .= '<span>' . $selicons[$sk][0] . '</span>';
 				}
-				$item .= '</tr>';
+				$item .= '</div>';
 			}
-			$item .= '</table>';
+			$item .= '</div>';
 		}
 		return $item;
 	}
