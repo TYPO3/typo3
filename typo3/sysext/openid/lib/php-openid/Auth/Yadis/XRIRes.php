@@ -68,3 +68,5 @@ class Auth_Yadis_ProxyResolver {
         return array($canonicalID, $services);
     }
 }
+
+

@@ -67,3 +67,4 @@ class Auth_OpenID_SQLiteStore extends Auth_OpenID_SQLStore {
         return parent::_add_nonce('x' . $server_url, $timestamp, $salt);
     }
 }
+
