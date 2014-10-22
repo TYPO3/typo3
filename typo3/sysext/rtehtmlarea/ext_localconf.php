@@ -39,7 +39,7 @@ require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKE
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/Hook/Frontend/Controller/ext_localconf.php';
 
 // Set warning in the Update Wizard of the Install Tool for deprecated Page TS Config properties
-$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['checkForDeprecatedRtePageTSConfigProperties'] = '&TYPO3\\CMS\\Rtehtmlarea\\Hook\\Install\\DeprecatedRteProperties';
+$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['checkForDeprecatedRtePageTSConfigProperties'] = 'TYPO3\\CMS\\Rtehtmlarea\\Hook\\Install\\DeprecatedRteProperties';
 
 // Initialize plugin registration array
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins'] = array();

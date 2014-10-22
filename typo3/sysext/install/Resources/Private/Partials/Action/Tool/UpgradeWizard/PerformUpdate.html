@@ -21,9 +21,9 @@
 
 <form method="post">
 	<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
-	<f:if condition="{nextUpgradeWizardIdentifier}">
+	<f:if condition="{nextUpdateIdentifier}">
 		<f:then>
-			<input type="hidden" name="install[values][identifier]" value="{nextUpgradeWizardIdentifier}"/>
+			<input type="hidden" name="install[values][identifier]" value="{nextUpdateIdentifier}"/>
 			<f:render
 				partial="Action/Common/SubmitButton"
 				arguments="{name:'getUserInput', text:'Go to the next update wizard'}"

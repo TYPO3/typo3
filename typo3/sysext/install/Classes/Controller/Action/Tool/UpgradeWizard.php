@@ -14,8 +14,10 @@ namespace TYPO3\CMS\Install\Controller\Action\Tool;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Install\Controller\Action;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Updates\AbstractUpdate;
 
 /**
  * Handle update wizards
@@ -35,11 +37,11 @@ class UpgradeWizard extends Action\AbstractAction {
 	 * @return string Rendered content
 	 */
 	protected function executeAction() {
-		// ext_localconf, db and ext_tables must be loaded for the upgrade wizards
+		// ext_localconf, db and ext_tables must be loaded for the updates
 		$this->loadExtLocalconfDatabaseAndExtTables();
 
 		// To make sure initialUpdateDatabaseSchema is first wizard, it is added here instead of ext_localconf.php
-		$initialUpdateDatabaseSchemaUpdateObject = $this->getUpgradeObjectInstance('TYPO3\\CMS\\Install\\Updates\\InitialDatabaseSchemaUpdate', 'initialUpdateDatabaseSchema');
+		$initialUpdateDatabaseSchemaUpdateObject = $this->getUpdateObjectInstance('TYPO3\\CMS\\Install\\Updates\\InitialDatabaseSchemaUpdate', 'initialUpdateDatabaseSchema');
 		if ($initialUpdateDatabaseSchemaUpdateObject->shouldRenderWizard()) {
 			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] = array_merge(
 				array('initialUpdateDatabaseSchema' => 'TYPO3\\CMS\\Install\\Updates\\InitialDatabaseSchemaUpdate'),
@@ -49,18 +51,18 @@ class UpgradeWizard extends Action\AbstractAction {
 		}
 
 		// To make sure finalUpdateDatabaseSchema is last wizard, it is added here instead of ext_localconf.php
-		$finalUpdateDatabaseSchemaUpdateObject = $this->getUpgradeObjectInstance('TYPO3\\CMS\\Install\\Updates\\FinalDatabaseSchemaUpdate', 'finalUpdateDatabaseSchema');
+		$finalUpdateDatabaseSchemaUpdateObject = $this->getUpdateObjectInstance('TYPO3\\CMS\\Install\\Updates\\FinalDatabaseSchemaUpdate', 'finalUpdateDatabaseSchema');
 		if ($finalUpdateDatabaseSchemaUpdateObject->shouldRenderWizard()) {
 			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['finalUpdateDatabaseSchema'] = 'TYPO3\\CMS\\Install\\Updates\\FinalDatabaseSchemaUpdate';
 		}
 
-		// Perform silent cache framework table upgrades
+		// Perform silent cache framework table upgrade
 		$this->silentCacheFrameworkTableSchemaMigration();
 
 		$actionMessages = array();
 
 		if (isset($this->postValues['set']['getUserInput'])) {
-			$actionMessages[] = $this->getUserInputForUpgradeWizard();
+			$actionMessages[] = $this->getUserInputForUpdate();
 			$this->view->assign('updateAction', 'getUserInput');
 		} elseif (isset($this->postValues['set']['performUpdate'])) {
 			$actionMessages[] = $this->performUpdate();
@@ -90,9 +92,9 @@ class UpgradeWizard extends Action\AbstractAction {
 
 		$availableUpdates = array();
 		foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] as $identifier => $className) {
-			$updateObject = $this->getUpgradeObjectInstance($className, $identifier);
+			$updateObject = $this->getUpdateObjectInstance($className, $identifier);
 			if ($updateObject->shouldRenderWizard()) {
-				// $explanation is changed by reference in upgrade objects!
+				// $explanation is changed by reference in Update objects!
 				$explanation = '';
 				$updateObject->checkForUpdate($explanation);
 				$availableUpdates[$identifier] = array(
@@ -107,7 +109,7 @@ class UpgradeWizard extends Action\AbstractAction {
 					// Okay to check here because finalUpdateDatabaseSchema is last element in array
 					$availableUpdates['finalUpdateDatabaseSchema']['renderNext'] = count($availableUpdates) === 1;
 				} elseif (!$this->needsInitialUpdateDatabaseSchema && $updateObject->shouldRenderNextButton()) {
-					// There are upgrade wizards that only show text and don't want to be executed
+					// There are Updates that only show text and don't want to be executed
 					$availableUpdates[$identifier]['renderNext'] = TRUE;
 				}
 			}
@@ -126,23 +128,23 @@ class UpgradeWizard extends Action\AbstractAction {
 	 *
 	 * @return \TYPO3\CMS\Install\Status\StatusInterface
 	 */
-	protected function getUserInputForUpgradeWizard() {
+	protected function getUserInputForUpdate() {
 		$wizardIdentifier = $this->postValues['values']['identifier'];
 
 		$className = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$wizardIdentifier];
-		$updateObject = $this->getUpgradeObjectInstance($className, $wizardIdentifier);
+		$updateObject = $this->getUpdateObjectInstance($className, $wizardIdentifier);
 		$wizardHtml = '';
 		if (method_exists($updateObject, 'getUserInput')) {
 			$wizardHtml = $updateObject->getUserInput('install[values][' . $wizardIdentifier . ']');
 		}
 
-		$upgradeWizardData = array(
+		$updateData = array(
 			'identifier' => $wizardIdentifier,
 			'title' => $updateObject->getTitle(),
 			'wizardHtml' => $wizardHtml,
 		);
 
-		$this->view->assign('upgradeWizardData', $upgradeWizardData);
+		$this->view->assign('updateData', $updateData);
 
 		/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
 		$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\OkStatus');
@@ -161,7 +163,7 @@ class UpgradeWizard extends Action\AbstractAction {
 
 		$wizardIdentifier = $this->postValues['values']['identifier'];
 		$className = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$wizardIdentifier];
-		$updateObject = $this->getUpgradeObjectInstance($className, $wizardIdentifier);
+		$updateObject = $this->getUpdateObjectInstance($className, $wizardIdentifier);
 
 		$wizardData = array(
 			'identifier' => $wizardIdentifier,
@@ -212,45 +214,41 @@ class UpgradeWizard extends Action\AbstractAction {
 		$this->getDatabaseConnection()->store_lastBuiltQuery = FALSE;
 
 		// Next update wizard, if available
-		$nextUpgradeWizard = $this->getNextUpgradeWizardInstance($updateObject);
-		$nextUpgradeWizardIdentifier = '';
-		if ($nextUpgradeWizard) {
-			$nextUpgradeWizardIdentifier = $nextUpgradeWizard->getIdentifier();
+		$nextUpdate = $this->getNextUpdateInstance($updateObject);
+		$nextUpdateIdentifier = '';
+		if ($nextUpdate) {
+			$nextUpdateIdentifier = $nextUpdate->getIdentifier();
 		}
-		$this->view->assign('nextUpgradeWizardIdentifier', $nextUpgradeWizardIdentifier);
+		$this->view->assign('nextUpdateIdentifier', $nextUpdateIdentifier);
 
 		return $message;
 	}
 
 	/**
-	 * Creates instance of an upgrade object, setting the pObj, versionNumber and userInput
+	 * Creates instance of an Update object
 	 *
 	 * @param string $className The class name
-	 * @param string $identifier The identifier of upgrade object - needed to fetch user input
-	 * @return object Newly instantiated upgrade object
+	 * @param string $identifier The identifier of Update object - needed to fetch user input
+	 * @return AbstractUpdate Newly instantiated Update object
 	 */
-	protected function getUpgradeObjectInstance($className, $identifier) {
-		$formValues = $this->postValues;
-		$updateObject = GeneralUtility::getUserObj($className);
-		$updateObject->setIdentifier($identifier);
-		$updateObject->versionNumber = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version);
-		$updateObject->pObj = $this;
-		$updateObject->userInput = $formValues['values'][$identifier];
-		return $updateObject;
+	protected function getUpdateObjectInstance($className, $identifier) {
+		$userInput = $this->postValues['values'][$identifier];
+		$versionAsInt = VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version);
+		return GeneralUtility::makeInstance($className, $identifier, $versionAsInt, $userInput, $this);
 	}
 
 	/**
-	 * Returns the next upgrade wizard object
-	 * Used to show the link/button to the next upgrade wizard
+	 * Returns the next Update object
+	 * Used to show the link/button to the next Update
 	 *
-	 * @param object $currentObj Current update wizard object
-	 * @return mixed Upgrade wizard instance or FALSE
+	 * @param AbstractUpdate $currentUpdate Current Update object
+	 * @return AbstractUpdate|NULL
 	 */
-	protected function getNextUpgradeWizardInstance($currentObj) {
+	protected function getNextUpdateInstance(AbstractUpdate $currentUpdate) {
 		$isPreviousRecord = TRUE;
 		foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] as $identifier => $className) {
 			// Find the current update wizard, and then start validating the next ones
-			if ($currentObj->getIdentifier() == $identifier) {
+			if ($currentUpdate->getIdentifier() === $identifier) {
 				$isPreviousRecord = FALSE;
 				// For the updateDatabaseSchema-wizards verify they do not have to be executed again
 				if ($identifier !== 'initialUpdateDatabaseSchema' && $identifier !== 'finalUpdateDatabaseSchema') {
@@ -258,13 +256,13 @@ class UpgradeWizard extends Action\AbstractAction {
 				}
 			}
 			if (!$isPreviousRecord) {
-				$nextUpgradeWizard = $this->getUpgradeObjectInstance($className, $identifier);
-				if ($nextUpgradeWizard->shouldRenderWizard()) {
-					return $nextUpgradeWizard;
+				$nextUpdate = $this->getUpdateObjectInstance($className, $identifier);
+				if ($nextUpdate->shouldRenderWizard()) {
+					return $nextUpdate;
 				}
 			}
 		}
-		return FALSE;
+		return NULL;
 	}
 
 	/**
