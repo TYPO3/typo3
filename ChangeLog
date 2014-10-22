@@ -1,3 +1,13 @@
+2014-10-22  e116bb1                  [RELEASE] Release of TYPO3 6.1.12 (TYPO3 Release Team)
+2014-10-22  e92c1d6  #62357          [SECURITY] Fix DoS in openid (Markus Klein)
+2014-10-22  6af3757  #59573          [SECURITY] Fix RCE in swiftmailer (Helmut Hummel)
+2014-10-15  fb5445e  #61749          [BUGFIX] Allow lower case for drive letters on Windows in CLI scripts (Alexander Bohndorf)
+2014-10-07  8ef0e3d  #47188          [BUGFIX] Fluid tries to render folders as templates partials and layouts (Krzysztof Adamczyk)
+2014-10-01  6ad3e2b  #26172          [BUGFIX] Search word markup for UTF8 characters in summary (Ralf Hettinger)
+2014-09-30  5cb8ac8  #61982          [BUGFIX] Fix search mode switcher of indexed_search (Markus Klein)
+2014-09-23  5bd5ce1                  [TASK] Set TYPO3 version to 6.1.12-dev (TYPO3 Release Team)
+
+
 2014-09-23  63ef9fc                  [RELEASE] Release of TYPO3 6.1.11 (TYPO3 Release Team)
 2014-09-20  c72e901  #36822          [BUGFIX] Invalid shortcut target on translated pages (Oliver Hader)
 2014-09-18  ca5de2e  #45834          [BUGFIX] Transfer curlProxyServer to new HTTP settings (Ernesto Baschny)
