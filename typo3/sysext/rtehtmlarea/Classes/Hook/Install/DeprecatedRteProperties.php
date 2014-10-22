@@ -13,16 +13,28 @@ namespace TYPO3\CMS\Rtehtmlarea\Hook\Install;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Install\Updates\AbstractUpdate;
+
 /**
- * Contains the update class for the replacement of deprecated RTE properties in Page TSconfig. Used by the update wizard in the install tool.
+ * Contains the update class for the replacement of deprecated RTE properties in Page TSconfig.
+ * Used by the upgrade wizard in the install tool.
  *
  * @author Stanislas Rolland <typo3@sjbr.ca>
  */
-class DeprecatedRteProperties extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
+class DeprecatedRteProperties extends AbstractUpdate {
 
+	/**
+	 * @var string
+	 */
 	protected $title = 'Deprecated RTE properties in Page TSconfig';
 
-	// Properties that may be replaced automatically in Page TSconfig (except inludes from external files)
+	/**
+	 * Properties that may be replaced automatically in Page TSconfig (except inludes from external files)
+	 * Syntax: 'oldProperty' => 'newProperty'
+	 *
+	 * @var array
+	 */
 	protected $replacementRteProperties = array(
 		'disableRightClick' => 'contextMenu.disable',
 		'disableContextMenu' => 'contextMenu.disable',
@@ -41,6 +53,12 @@ class DeprecatedRteProperties extends \TYPO3\CMS\Install\Updates\AbstractUpdate 
 		'defaultLinkTarget' => 'buttons.link.properties.target.default'
 	);
 
+	/**
+	 * Properties that may be replaced automatically in Page TSconfig (except inludes from external files)
+	 * Syntax: 'oldProperty' => [ 'newProperty', 'newProperty' ]
+	 *
+	 * @var array
+	 */
 	protected $doubleReplacementRteProperties = array(
 		'disableTYPO3Browsers' => array(
 			'buttons.image.TYPO3Browser.disabled',
@@ -56,7 +74,12 @@ class DeprecatedRteProperties extends \TYPO3\CMS\Install\Updates\AbstractUpdate 
 		)
 	);
 
-	// Properties that may not be replaced automatically in Page TSconfig
+	/**
+	 * Properties that may not be replaced automatically in Page TSconfig
+	 * Syntax: 'oldProperty' => 'newProperty'
+	 *
+	 * @var array
+	 */
 	protected $useInsteadRteProperties = array(
 		'fontSize' => 'buttons.fontsize.addItems',
 		'RTE.default.classesAnchor' => 'RTE.default.buttons.link.properties.class.allowedClasses',
@@ -74,68 +97,67 @@ class DeprecatedRteProperties extends \TYPO3\CMS\Install\Updates\AbstractUpdate 
 	/**
 	 * Function which checks if update is needed. Called in the beginning of an update process.
 	 *
-	 * @param string pointer to description for the update
+	 * @param string $description Pointer to description for the update
 	 * @return bool TRUE if update is needs to be performed, FALSE otherwise.
 	 */
 	public function checkForUpdate(&$description) {
 		$result = FALSE;
-		// TYPO3 version 4.6 and above
-		if ($this->versionNumber >= 4006000) {
-			$pages = $this->getPagesWithDeprecatedRteProperties($dbQueries, $customMessages);
-			$pagesCount = count($pages);
-			$deprecatedProperties = '';
-			$deprecatedRteProperties = array_merge($this->replacementRteProperties, $this->useInsteadRteProperties);
-			foreach ($deprecatedRteProperties as $deprecatedProperty => $replacementProperty) {
-				$deprecatedProperties .= '<tr><td>' . $deprecatedProperty . '</td><td>' . $replacementProperty . '</td></tr>' . LF;
-			}
-			foreach ($this->doubleReplacementRteProperties as $deprecatedProperty => $replacementProperties) {
-				$deprecatedProperties .= '<tr><td>' . $deprecatedProperty . '</td><td>' . implode(' and ', $replacementProperties) . '</td></tr>' . LF;
-			}
-			$description = '<p>The following Page TSconfig RTE properties are deprecated since TYPO3 4.6 and have been removed in TYPO3 6.0.</p>' . LF . '<table><thead><tr><th>Deprecated property</th><th>Use instead</th></tr></thead>' . LF . '<tbody>' . $deprecatedProperties . '</tboby></table>' . LF . '<p>You are currently using some of these properties on <strong>' . strval($pagesCount) . '&nbsp;pages</strong>  (including deleted and hidden pages).</p>' . LF;
-			if ($pagesCount) {
-				$pagesUids = array();
-				foreach ($pages as $page) {
-					$pagesUids[] = $page['uid'];
-				}
-				$description .= '<p>Pages id\'s: ' . implode(', ', $pagesUids) . '</p>';
-			}
-			$replacementProperties = '';
-			foreach ($this->useInsteadRteProperties as $deprecatedProperty => $replacementProperty) {
-				$replacementProperties .= '<tr><td>' . $deprecatedProperty . '</td><td>' . $replacementProperty . '</td></tr>' . LF;
-			}
-			if ($pagesCount) {
-				$updateablePages = $this->findUpdateablePagesWithDeprecatedRteProperties($pages);
-				if (count($updateablePages)) {
-					$replacementProperties = '';
-					foreach ($this->replacementRteProperties as $deprecatedProperty => $replacementProperty) {
-						$replacementProperties .= '<tr><td>' . $deprecatedProperty . '</td><td>' . $replacementProperty . '</td></tr>' . LF;
-					}
-					$description .= '<p>This wizard will perform automatic replacement of the following properties on <strong>' . strval(count($updateablePages)) . '&nbsp;pages</strong> (including deleted and hidden):</p>' . LF . '<table><thead><tr><th>Deprecated property</th><th>Will be replaced by</th></tr></thead><tbody>' . $replacementProperties . '</tboby></table>' . LF . '<p>The Page TSconfig column of the remaining pages will need to be updated manually.</p>' . LF;
-				} else {
-					$replacementProperties = '';
-					foreach (array_keys(array_merge($this->useInsteadRteProperties, $this->doubleReplacementRteProperties)) as $deprecatedProperty) {
-						$replacementProperties .= '<tr><td>' . $deprecatedProperty . '</td></tr>' . LF;
-					}
-					$description .= '<p>This wizard cannot update the following properties, some of which are present on those pages:</p>' . LF . '<table><thead><tr><th>Deprecated property</th></tr></thead><tbody>' . $replacementProperties . '</tboby></table>' . LF . '<p>Therefore, the Page TSconfig column of those pages will need to be updated manually.</p>' . LF;
-				}
-				$result = TRUE;
-			} else {
-				// if we found no occurence of deprecated settings and wizard was already executed, then
-				// we do not show up anymore
-				if ($this->isWizardDone()) {
-					$result = FALSE;
-				}
-			}
-			$description .= '<p>Only page records are searched for deprecated properties. However, such properties can also be used in BE group and BE user records (prepended with page.). These are not searched nor updated by this wizard.</p>' . LF . '<p>Page TSconfig may also be included from external files. These are not updated by this wizard. If required, the update will need to be done manually.</p>' . LF . '<p>Note also that deprecated properties have been replaced in default configurations provided by htmlArea RTE';
+
+		$pages = $this->getPagesWithDeprecatedRteProperties($dbQueries, $customMessages);
+		$pagesCount = count($pages);
+		$deprecatedProperties = '';
+		$deprecatedRteProperties = array_merge($this->replacementRteProperties, $this->useInsteadRteProperties);
+		foreach ($deprecatedRteProperties as $deprecatedProperty => $replacementProperty) {
+			$deprecatedProperties .= '<tr><td>' . $deprecatedProperty . '</td><td>' . $replacementProperty . '</td></tr>' . LF;
 		}
+		foreach ($this->doubleReplacementRteProperties as $deprecatedProperty => $replacementProperties) {
+			$deprecatedProperties .= '<tr><td>' . $deprecatedProperty . '</td><td>' . implode(' and ', $replacementProperties) . '</td></tr>' . LF;
+		}
+		$description = '<p>The following Page TSconfig RTE properties are deprecated since TYPO3 4.6 and have been removed in TYPO3 6.0.</p>' . LF . '<table><thead><tr><th>Deprecated property</th><th>Use instead</th></tr></thead>' . LF . '<tbody>' . $deprecatedProperties . '</tboby></table>' . LF . '<p>You are currently using some of these properties on <strong>' . strval($pagesCount) . '&nbsp;pages</strong>  (including deleted and hidden pages).</p>' . LF;
+		if ($pagesCount) {
+			$pagesUids = array();
+			foreach ($pages as $page) {
+				$pagesUids[] = $page['uid'];
+			}
+			$description .= '<p>Pages id\'s: ' . implode(', ', $pagesUids) . '</p>';
+		}
+		$replacementProperties = '';
+		foreach ($this->useInsteadRteProperties as $deprecatedProperty => $replacementProperty) {
+			$replacementProperties .= '<tr><td>' . $deprecatedProperty . '</td><td>' . $replacementProperty . '</td></tr>' . LF;
+		}
+		if ($pagesCount) {
+			$updateablePages = $this->findUpdateablePagesWithDeprecatedRteProperties($pages);
+			if (count($updateablePages)) {
+				$replacementProperties = '';
+				foreach ($this->replacementRteProperties as $deprecatedProperty => $replacementProperty) {
+					$replacementProperties .= '<tr><td>' . $deprecatedProperty . '</td><td>' . $replacementProperty . '</td></tr>' . LF;
+				}
+				$description .= '<p>This wizard will perform automatic replacement of the following properties on <strong>' . strval(count($updateablePages)) . '&nbsp;pages</strong> (including deleted and hidden):</p>' . LF . '<table><thead><tr><th>Deprecated property</th><th>Will be replaced by</th></tr></thead><tbody>' . $replacementProperties . '</tboby></table>' . LF . '<p>The Page TSconfig column of the remaining pages will need to be updated manually.</p>' . LF;
+			} else {
+				$replacementProperties = '';
+				foreach (array_keys(array_merge($this->useInsteadRteProperties, $this->doubleReplacementRteProperties)) as $deprecatedProperty) {
+					$replacementProperties .= '<tr><td>' . $deprecatedProperty . '</td></tr>' . LF;
+				}
+				$description .= '<p>This wizard cannot update the following properties, some of which are present on those pages:</p>' . LF . '<table><thead><tr><th>Deprecated property</th></tr></thead><tbody>' . $replacementProperties . '</tboby></table>' . LF . '<p>Therefore, the Page TSconfig column of those pages will need to be updated manually.</p>' . LF;
+			}
+			$result = TRUE;
+		} else {
+			// if we found no occurrence of deprecated settings and wizard was already executed, then
+			// we do not show up anymore
+			if ($this->isWizardDone()) {
+				$result = FALSE;
+			}
+		}
+		$description .= '<p>Only page records are searched for deprecated properties. However, such properties can also be used in BE group and BE user records (prepended with page.). These are not searched nor updated by this wizard.</p>' . LF . '<p>Page TSconfig may also be included from external files. These are not updated by this wizard. If required, the update will need to be done manually.</p>' . LF . '<p>Note also that deprecated properties have been replaced in default configurations provided by htmlArea RTE';
+
 		return $result;
 	}
 
 	/**
 	 * Performs the update itself
 	 *
-	 * @param array pointer where to insert all DB queries made, so they can be shown to the user if wanted
-	 * @param string pointer to output custom messages
+	 * @param array $dbQueries Pointer where to insert all DB queries made, so they can be shown to the user if wanted
+	 * @param string $customMessages Pointer to output custom messages
 	 * @return bool TRUE if update succeeded, FALSE otherwise
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
@@ -173,8 +195,8 @@ class DeprecatedRteProperties extends \TYPO3\CMS\Install\Updates\AbstractUpdate 
 	/**
 	 * Gets the pages with deprecated RTE properties in TSConfig column
 	 *
-	 * @param array pointer where to insert all DB queries made, so they can be shown to the user if wanted
-	 * @param string pointer to output custom messages
+	 * @param array $dbQueries Pointer where to insert all DB queries made, so they can be shown to the user if wanted
+	 * @param string $customMessages Pointer to output custom messages
 	 * @return array uid and inclusion string for the pages with deprecated RTE properties in TSConfig column
 	 */
 	protected function getPagesWithDeprecatedRteProperties(&$dbQueries, &$customMessages) {
@@ -185,13 +207,14 @@ class DeprecatedRteProperties extends \TYPO3\CMS\Install\Updates\AbstractUpdate 
 		foreach ($deprecatedRteProperties as $deprecatedRteProperty) {
 			$where .= ($where ? ' OR ' : '') . '(TSConfig LIKE BINARY "%RTE.%' . $deprecatedRteProperty . '%" AND TSConfig NOT LIKE BINARY "%RTE.%' . $deprecatedRteProperty . 's%") ';
 		}
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $table, $where);
-		$dbQueries[] = str_replace(chr(10), ' ', $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery);
-		if ($GLOBALS['TYPO3_DB']->sql_error()) {
-			$customMessages = 'SQL-ERROR: ' . htmlspecialchars($GLOBALS['TYPO3_DB']->sql_error());
+		$db = $this->getDatabaseConnection();
+		$res = $db->exec_SELECTquery($fields, $table, $where);
+		$dbQueries[] = str_replace(chr(10), ' ', $db->debug_lastBuiltQuery);
+		if ($db->sql_error()) {
+			$customMessages = 'SQL-ERROR: ' . htmlspecialchars($db->sql_error());
 		}
 		$pages = array();
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+		while ($row = $db->sql_fetch_assoc($res)) {
 			$pages[] = $row;
 		}
 		return $pages;
@@ -200,7 +223,7 @@ class DeprecatedRteProperties extends \TYPO3\CMS\Install\Updates\AbstractUpdate 
 	/**
 	 * Gets the pages with updateable deprecated RTE properties in TSConfig column
 	 *
-	 * @param array $pages: reference to pages with deprecated property
+	 * @param array $pages reference to pages with deprecated property
 	 * @return array uid and inclusion string for the pages with deprecated RTE properties in TSConfig column
 	 */
 	protected function findUpdateablePagesWithDeprecatedRteProperties(&$pages) {
@@ -220,23 +243,23 @@ class DeprecatedRteProperties extends \TYPO3\CMS\Install\Updates\AbstractUpdate 
 	/**
 	 * updates the pages records with updateable Page TSconfig properties
 	 *
-	 * @param array pages records to update, fetched by getTemplates() and filtered by
-	 * @param array pointer where to insert all DB queries made, so they can be shown to the user if wanted
-	 * @param string pointer to output custom messages
+	 * @param array $pages Page records to update, fetched by getTemplates() and filtered by
+	 * @param array $dbQueries Pointer where to insert all DB queries made, so they can be shown to the user if wanted
+	 * @param string $customMessages Pointer to output custom messages
 	 */
 	protected function updatePages($pages, &$dbQueries, &$customMessages) {
+		$db = $this->getDatabaseConnection();
 		foreach ($pages as $page) {
 			$table = 'pages';
 			$where = 'uid =' . $page['uid'];
 			$field_values = array(
 				'TSconfig' => $page['TSconfig']
 			);
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, $where, $field_values);
-			$dbQueries[] = str_replace(chr(10), ' ', $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery);
-			if ($GLOBALS['TYPO3_DB']->sql_error()) {
-				$customMessages .= 'SQL-ERROR: ' . htmlspecialchars($GLOBALS['TYPO3_DB']->sql_error()) . LF . LF;
+			$db->exec_UPDATEquery($table, $where, $field_values);
+			$dbQueries[] = str_replace(chr(10), ' ', $db->debug_lastBuiltQuery);
+			if ($db->sql_error()) {
+				$customMessages .= 'SQL-ERROR: ' . htmlspecialchars($db->sql_error()) . LF . LF;
 			}
 		}
 	}
-
 }

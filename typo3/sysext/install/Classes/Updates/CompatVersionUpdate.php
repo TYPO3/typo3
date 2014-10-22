@@ -14,9 +14,20 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+
 /**
  * Contains the update class for the compatibility version.
  * Used by the update wizard in the install tool.
+ *
+ * The various checks are defined in ext_localconf.php with the following syntax
+ * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['compat_version']['<internalName>'] = [
+ *      'title' => '',
+ *      'version' => '700000000',
+ *      'description' => '',
+ *      'description_acknowledge' => ''
+ * ];
  *
  * @author Sebastian Kurfürst <sebastian@garbage-group.de
  */
@@ -58,7 +69,7 @@ class CompatVersionUpdate extends AbstractUpdate {
 	/**
 	 * Second step: get user input if needed
 	 *
-	 * @param string Input prefix, all names of form fields have to start with this. Append custom name in [ ... ]
+	 * @param string $inputPrefix All names of form fields have to start with this. Append custom name in [ ... ]
 	 * @return string HTML output
 	 */
 	public function getUserInput($inputPrefix) {
@@ -74,12 +85,7 @@ class CompatVersionUpdate extends AbstractUpdate {
 							<select name="' . $inputPrefix . '[version]" id="version">
 			';
 			$versions = array(
-				'3.8' => '<= 3.8',
-				'4.1' => '<= 4.1',
-				'4.2' => '<= 4.2',
-				'4.3' => '<= 4.3',
-				'4.4' => '<= 4.4',
-				'4.5' => '<= 4.5'
+				'6.2' => '<= 6.2'
 			);
 			foreach ($versions as $singleVersion => $caption) {
 				$content .= '
@@ -129,31 +135,37 @@ class CompatVersionUpdate extends AbstractUpdate {
 	/**
 	 * Checks if user input is valid
 	 *
-	 * @param string Pointer to output custom messages
+	 * @param string $customMessages Pointer to output custom messages
 	 * @return bool TRUE if user input is correct, then the update is performed. When FALSE, return to getUserInput
 	 */
 	public function checkUserInput(&$customMessages) {
 		if ($this->compatVersionIsCurrent()) {
 			return TRUE;
-		} else {
-			if ($this->userInput['compatVersion']['all']) {
-				return TRUE;
-			} else {
-				$performUpdate = TRUE;
-				$oldVersion = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger($GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version']);
-				$currentVersion = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_branch);
-				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['compat_version'] as $internalName => $details) {
-					if ($details['version'] > $oldVersion && $details['version'] <= $currentVersion) {
-						if (!$this->userInput['compatVersion'][$internalName]) {
-							$performUpdate = FALSE;
-							$customMessages = 'If you want to update the compatibility version, you need to confirm all checkboxes on the previous page.';
-							break;
-						}
-					}
+		}
+		if ($this->userInput['compatVersion']['all']) {
+			return TRUE;
+		}
+
+		if (
+			!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['compat_version'])
+			|| !is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['compat_version'])
+		) {
+			return TRUE;
+		}
+
+		$performUpdate = TRUE;
+		$oldVersion = VersionNumberUtility::convertVersionNumberToInteger($GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version']);
+		$newVersion = VersionNumberUtility::convertVersionNumberToInteger(TYPO3_branch);
+		foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['compat_version'] as $internalName => $details) {
+			if ($details['version'] > $oldVersion && $details['version'] <= $newVersion) {
+				if (!$this->userInput['compatVersion'][$internalName]) {
+					$performUpdate = FALSE;
+					$customMessages = 'If you want to update the compatibility version, you need to confirm all checkboxes on the previous page.';
+					break;
 				}
-				return $performUpdate;
 			}
 		}
+		return $performUpdate;
 	}
 
 	/**
@@ -170,7 +182,7 @@ class CompatVersionUpdate extends AbstractUpdate {
 			$customMessages .= 'If you want to see what you need to do to use the new features, run the update wizard again!';
 		}
 		$version = $this->userInput['version'] ? $this->userInput['version'] : TYPO3_branch;
-		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->setLocalConfigurationValueByPath('SYS/compat_version', $version);
+		GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->setLocalConfigurationValueByPath('SYS/compat_version', $version);
 		$customMessages .= '<br />The compatibility version has been set to ' . $version . '.';
 		return TRUE;
 	}
@@ -181,50 +193,48 @@ class CompatVersionUpdate extends AbstractUpdate {
 	 * @return bool TRUE if compat version is equal the current version
 	 */
 	protected function compatVersionIsCurrent() {
-		if (TYPO3_branch != $GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version']) {
-			return FALSE;
-		} else {
-			return TRUE;
-		}
+		return TYPO3_branch == $GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version'];
 	}
 
 	/**
 	 * Show changes needed
 	 *
-	 * @param string Input prefix to prepend all form fields with.
+	 * @param string $inputPrefix Input prefix to prepend all form fields with
 	 * @return string HTML output
 	 */
 	protected function showChangesNeeded($inputPrefix = '') {
-		$oldVersion = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger($GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version']);
-		$currentVersion = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_branch);
-		$tableContents = '';
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['compat_version'])) {
-			$upgradeWizardBoxes = '';
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['compat_version'] as $internalName => $details) {
-				if ($details['version'] > $oldVersion && $details['version'] <= $currentVersion) {
-					$description = str_replace(chr(10), '<br />', $details['description']);
-					$description_acknowledge = isset($details['description_acknowledge']) ? str_replace(chr(10), '<br />', $details['description_acknowledge']) : '';
-					$upgradeWizardBoxes .= '
-						<div style="border: 1px solid; padding: 10px; margin: 10px; padding-top: 0px; width: 500px;">
-							<h3>' . (isset($details['title']) ? $details['title'] : $internalName) . '</h3>
-							' . $description . (strlen($description_acknowledge) ? '<p>' . $description_acknowledge . '</p>' : '') . (strlen($inputPrefix) ? '
-								<fieldset>
-									<ol>
-										<li class="labelAfter">
-											<input type="checkbox" name="' . $inputPrefix . '[compatVersion][' . $internalName . ']" id="compatVersion' . $internalName . '" value="1" />
-											<label for="compatVersion' . $internalName . '">Acknowledged</label>
-										</li>
-									</ol>
-								</fieldset>
-							' : '') . '
-						</div>';
-				}
+		if (
+			!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['compat_version'])
+			|| !is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['compat_version'])
+		) {
+			return '';
+		}
+
+		$oldVersion = VersionNumberUtility::convertVersionNumberToInteger($GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version']);
+		$newVersion = VersionNumberUtility::convertVersionNumberToInteger(TYPO3_branch);
+
+		$upgradeWizardBoxes = '';
+		foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['compat_version'] as $internalName => $details) {
+			if ($details['version'] > $oldVersion && $details['version'] <= $newVersion) {
+				$description = str_replace(chr(10), '<br />', $details['description']);
+				$description_acknowledge = isset($details['description_acknowledge']) ? str_replace(chr(10), '<br />', $details['description_acknowledge']) : '';
+				$upgradeWizardBoxes .= '
+					<div style="border: 1px solid; padding: 0 10px 10px 10px; margin: 10px; width: 500px;">
+						<h3>' . (isset($details['title']) ? $details['title'] : $internalName) . '</h3>
+						' . $description . ($description_acknowledge !== '' ? '<p>' . $description_acknowledge . '</p>' : '') . ($inputPrefix !== '' ? '
+							<fieldset>
+								<ol>
+									<li class="labelAfter">
+										<input type="checkbox" name="' . $inputPrefix . '[compatVersion][' . $internalName . ']" id="compatVersion' . $internalName . '" value="1" />
+										<label for="compatVersion' . $internalName . '">Acknowledged</label>
+									</li>
+								</ol>
+							</fieldset>
+						' : '') . '
+					</div>';
 			}
 		}
-		if (strlen($upgradeWizardBoxes)) {
-			return $upgradeWizardBoxes;
-		}
-		return '';
+		return $upgradeWizardBoxes;
 	}
 
 }

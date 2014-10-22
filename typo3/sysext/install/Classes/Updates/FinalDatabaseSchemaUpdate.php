@@ -122,12 +122,13 @@ class FinalDatabaseSchemaUpdate extends AbstractDatabaseSchemaUpdate {
 		$databaseDifferences = $this->getDatabaseDifferences();
 		$updateStatements = $this->schemaMigrationService->getUpdateSuggestions($databaseDifferences);
 
+		$db = $this->getDatabaseConnection();
 		$customMessagesArray = array();
 		foreach ((array)$updateStatements['change'] as $query) {
-			$GLOBALS['TYPO3_DB']->admin_query($query);
+			$db->admin_query($query);
 			$dbQueries[] = $query;
-			if ($GLOBALS['TYPO3_DB']->sql_error()) {
-				$customMessagesArray[] = 'SQL-ERROR: ' . htmlspecialchars($GLOBALS['TYPO3_DB']->sql_error());
+			if ($db->sql_error()) {
+				$customMessagesArray[] = 'SQL-ERROR: ' . htmlspecialchars($db->sql_error());
 			}
 		}
 
@@ -136,6 +137,6 @@ class FinalDatabaseSchemaUpdate extends AbstractDatabaseSchemaUpdate {
 				'indexes. Please repeat this step! Following errors occurred:' . LF . LF . implode(LF, $customMessagesArray);
 		}
 
-		return count($customMessagesArray) === 0;
+		return empty($customMessagesArray);
 	}
 }

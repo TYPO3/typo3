@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Controller\Action\Tool\UpgradeWizard;
+
 /**
  * Generic class that every update wizard class inherits from.
  * Used by the update wizard in the install tool.
@@ -39,7 +42,7 @@ abstract class AbstractUpdate {
 	/**
 	 * Parent object
 	 *
-	 * @var \TYPO3\CMS\Install\Installer
+	 * @var UpgradeWizard
 	 */
 	public $pObj;
 
@@ -127,7 +130,7 @@ abstract class AbstractUpdate {
 		$showUpdate = 0;
 		$explanation = '';
 		$result = $this->checkForUpdate($explanation, $showUpdate);
-		return $showUpdate != 2 || $result == TRUE;
+		return $showUpdate != 2 || $result;
 	}
 
 	/**
@@ -137,7 +140,7 @@ abstract class AbstractUpdate {
 	 * @return bool
 	 */
 	public function checkIfTableExists($table) {
-		$databaseTables = $GLOBALS['TYPO3_DB']->admin_get_tables();
+		$databaseTables = $this->getDatabaseConnection()->admin_get_tables();
 		if (array_key_exists($table, $databaseTables)) {
 			return TRUE;
 		}
@@ -170,7 +173,7 @@ abstract class AbstractUpdate {
 	 */
 	protected function installExtensions(array $extensionKeys) {
 		/** @var $installUtility \TYPO3\CMS\Extensionmanager\Utility\InstallUtility */
-		$installUtility = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+		$installUtility = GeneralUtility::makeInstance(
 			'TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility'
 		);
 		foreach ($extensionKeys as $extension) {
@@ -187,7 +190,8 @@ abstract class AbstractUpdate {
 	 * @return void
 	 */
 	protected function markWizardAsDone($confValue = 1) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->setLocalConfigurationValueByPath('INSTALL/wizardDone/' . get_class($this), $confValue);
+		GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')
+			->setLocalConfigurationValueByPath('INSTALL/wizardDone/' . get_class($this), $confValue);
 	}
 
 	/**
@@ -205,6 +209,13 @@ abstract class AbstractUpdate {
 			$done = TRUE;
 		}
 		return $done;
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
 	}
 
 }

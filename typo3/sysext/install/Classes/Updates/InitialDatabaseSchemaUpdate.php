@@ -144,20 +144,21 @@ class InitialDatabaseSchemaUpdate extends AbstractDatabaseSchemaUpdate {
 		$databaseDifferences = $this->getDatabaseDifferences();
 		$updateStatements = $this->schemaMigrationService->getUpdateSuggestions($databaseDifferences);
 
+		$db = $this->getDatabaseConnection();
 		foreach ((array)$updateStatements['create_table'] as $query) {
-			$GLOBALS['TYPO3_DB']->admin_query($query);
+			$db->admin_query($query);
 			$dbQueries[] = $query;
-			if ($GLOBALS['TYPO3_DB']->sql_error()) {
-				$customMessages = 'SQL-ERROR: ' . htmlspecialchars($GLOBALS['TYPO3_DB']->sql_error());
+			if ($db->sql_error()) {
+				$customMessages = 'SQL-ERROR: ' . htmlspecialchars($db->sql_error());
 				return FALSE;
 			}
 		}
 
 		foreach ((array)$updateStatements['add'] as $query) {
-			$GLOBALS['TYPO3_DB']->admin_query($query);
+			$db->admin_query($query);
 			$dbQueries[] = $query;
-			if ($GLOBALS['TYPO3_DB']->sql_error()) {
-				$customMessages = 'SQL-ERROR: ' . htmlspecialchars($GLOBALS['TYPO3_DB']->sql_error());
+			if ($db->sql_error()) {
+				$customMessages = 'SQL-ERROR: ' . htmlspecialchars($db->sql_error());
 				return FALSE;
 			}
 		}

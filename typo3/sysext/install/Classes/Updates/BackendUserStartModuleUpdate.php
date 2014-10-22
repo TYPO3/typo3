@@ -51,21 +51,22 @@ class BackendUserStartModuleUpdate extends AbstractUpdate {
 	 * @return bool
 	 */
 	public function performUpdate(array &$databaseQueries, &$customMessages) {
-		$backendUsers = $this->getDatabaseConnection()->exec_SELECTgetRows('uid,uc', 'be_users', '1=1');
+		$db = $this->getDatabaseConnection();
+		$backendUsers = $db->exec_SELECTgetRows('uid,uc', 'be_users', '1=1');
 		if (!empty($backendUsers)) {
 			foreach ($backendUsers as $backendUser) {
 				if ($backendUser['uc'] !== NULL) {
 					$userConfig = unserialize($backendUser['uc']);
 					if ($userConfig['startModule'] === 'help_aboutmodules') {
 						$userConfig['startModule'] = 'help_AboutmodulesAboutmodules';
-						$this->getDatabaseConnection()->exec_UPDATEquery(
+						$db->exec_UPDATEquery(
 							'be_users',
 							'uid=' . (int)$backendUser['uid'],
 							array(
 								'uc' => serialize($userConfig),
 							)
 						);
-						$databaseQueries[] = $this->getDatabaseConnection()->debug_lastBuiltQuery;
+						$databaseQueries[] = $db->debug_lastBuiltQuery;
 					}
 				}
 			}
@@ -73,14 +74,5 @@ class BackendUserStartModuleUpdate extends AbstractUpdate {
 
 		$this->markWizardAsDone();
 		return TRUE;
-	}
-
-	/**
-	 * Get database connection
-	 *
-	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-	 */
-	protected function getDatabaseConnection() {
-		return $GLOBALS['TYPO3_DB'];
 	}
 }

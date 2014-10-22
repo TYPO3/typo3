@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Install\Service;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Controller\Exception\RedirectException;
 
 /**
  * Execute "silent" LocalConfiguration upgrades if needed.
@@ -43,79 +44,29 @@ class SilentConfigurationUpgradeService {
 	protected $configurationManager = NULL;
 
 	/**
-	 * @var array List of obsolete configuration options in LocalConfiguration to be removed
+	 * List of obsolete configuration options in LocalConfiguration to be removed
+	 * Example:
+	 *    // #forge-ticket
+	 *    'BE/somesetting',
+	 *
+	 * @var array
 	 */
 	protected $obsoleteLocalConfigurationSettings = array(
-		// #34092
-		'BE/forceCharset',
-		// #26519
-		'BE/loginLabels',
-		// #44506
-		'BE/loginNews',
-		// #52013
-		'BE/TSconfigConditions',
-		// #30613
-		'BE/useOnContextMenuHandler',
-		// #57921
-		'BE/usePHPFileFunctions',
-		// #48179
-		'EXT/em_mirrorListURL',
-		'EXT/em_wsdlURL',
-		// #43094
-		'EXT/extList',
-		// #47018
-		'EXT/extListArray',
-		// #35877
-		'EXT/extList_FE',
-		// #41813
-		'EXT/noEdit',
-		// #47018
-		'EXT/requiredExt',
-		// #26090
-		'FE/defaultTypoScript_editorcfg',
-		'FE/defaultTypoScript_editorcfg.',
-		// #25099
-		'FE/simulateStaticDocuments',
-		// #52786
-		'FE/logfile_dir',
-		// #55549
-		'FE/dontSetCookie',
-		// #52011
-		'GFX/im_combine_filename',
-		// #52088
-		'GFX/im_imvMaskState',
-		// #22687
-		'GFX/gdlib_2',
-		// #52012
-		'GFX/im_mask_temp_ext_noloss',
-		// #52088
-		'GFX/im_negate_mask',
-		// #52010
-		'GFX/im_no_effects',
-		// #18431
-		'GFX/noIconProc',
-		// #17606
-		'GFX/TTFLocaleConv',
-		// #39164
-		'SYS/additionalAllowedClassPrefixes',
-		// #27689
-		'SYS/caching/cacheBackends',
-		'SYS/caching/cacheFrontends',
-		// #38414
-		'SYS/extCache',
-		// #35923
-		'SYS/multiplyDBfieldSize',
-		// #46993
-		'SYS/T3instID',
-		// #52857
-		'SYS/forceReturnPath',
-	    // #54930
-	    'INSTALL/wizardDone/tx_coreupdates_compressionlevel',
-	    'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\CompressionLevelUpdate',
-	    'INSTALL/wizardDone/tx_coreupdates_installsysexts',
-	    'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\InstallSysExtsUpdate',
-	    'INSTALL/wizardDone/tx_coreupdates_migrateworkspaces',
-	    'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\MigrateWorkspacesUpdate',
+		// #62402
+		'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\ExtensionManagerTables',
+		'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\FileIdentifierHashUpdate',
+		'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\FilemountUpdateWizard',
+		'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\FilePermissionUpdate',
+		'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\FileTableSplittingUpdate',
+		'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\InitUpdateWizard',
+		'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\MediaFlexformUpdate',
+		'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\ReferenceIntegrityUpdateWizard',
+		'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\RteFileLinksUpdateWizard',
+		'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\RteMagicImagesUpdateWizard',
+		'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\TceformsUpdateWizard',
+		'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\TtContentUploadsUpdateWizard',
+		'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\TruncateSysFileProcessedFileTable',
+		'INSTALL/wizardDone/TYPO3\\CMS\\Rtehtmlarea\\Hook\\Install\\DeprecatedRteProperties',
 	);
 
 	/**
@@ -128,12 +79,10 @@ class SilentConfigurationUpgradeService {
 		$this->generateEncryptionKeyIfNeeded();
 		$this->configureBackendLoginSecurity();
 		$this->configureSaltedPasswords();
-		$this->migrateOldInstallWizardDoneSettingsToNewClassNames();
 		$this->setProxyAuthScheme();
 		$this->disableImageMagickAndGdlibIfImageProcessingIsDisabled();
 		$this->disableImageMagickDetailSettingsIfImageMagickIsDisabled();
 		$this->setImageMagickDetailSettings();
-		$this->addFileTableToDefaultCategorizedTablesIfAlreadyCustomized();
 		$this->removeObsoleteLocalConfigurationSettings();
 	}
 
@@ -147,13 +96,6 @@ class SilentConfigurationUpgradeService {
 	 */
 	protected function removeObsoleteLocalConfigurationSettings() {
 		$removed = $this->configurationManager->removeLocalConfigurationKeysByPath($this->obsoleteLocalConfigurationSettings);
-
-		// The old default value is not needed anymore. So if the user
-		// did not set a different value we can remove it.
-		$currentSetDbInitValue = $this->configurationManager->getConfigurationValueByPath('SYS/setDBinit');
-		if (preg_match('/^\s*SET\s+NAMES\s+[\'"]?utf8[\'"]?\s*[;]?\s*$/i', $currentSetDbInitValue) === 1) {
-			$removed = $removed || $this->configurationManager->removeLocalConfigurationKeysByPath(array('SYS/setDBinit'));
-		}
 
 		// If something was changed: Trigger a reload to have new values in next request
 		if ($removed) {
@@ -424,103 +366,12 @@ class SilentConfigurationUpgradeService {
 	}
 
 	/**
-	 * Make sure file table is categorized as of TYPO3 6.2. To enable DAM Migration
-	 * sys_file_metadata table is included in DefaultConfiguration.
-	 * If the setting already has been modified but does not contain sys_file_metadata: add it
-	 *
-	 * @return void
-	 */
-	protected function addFileTableToDefaultCategorizedTablesIfAlreadyCustomized() {
-		/** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
-		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
-
-		$default = $configurationManager->getDefaultConfigurationValueByPath('SYS/defaultCategorizedTables');
-		try {
-			$actual = $configurationManager->getLocalConfigurationValueByPath('SYS/defaultCategorizedTables');
-		} catch(\RuntimeException $e) {
-			$actual = '';
-		}
-
-		$tables =  GeneralUtility::trimExplode(',', $actual);
-		if ($actual !== '' && $actual !== $default && !in_array('sys_file_metadata', $tables)) {
-			$tables[] = 'sys_file_metadata';
-			$configurationManager->setLocalConfigurationValueByPath('SYS/defaultCategorizedTables', implode(',', $tables));
-			$this->throwRedirectException();
-		}
-	}
-
-	/**
-	 * Migrate old Install Tool Wizard "done"-settings to new class names
-	 * this happens usually when an existing 6.0/6.1 has called the TceformsUpdateWizard wizard
-	 * and has written Tx_Install_Updates_File_TceformsUpdateWizard in TYPO3's LocalConfiguration.php
-	 *
-	 * @return void
-	 */
-	protected function migrateOldInstallWizardDoneSettingsToNewClassNames() {
-		$classNamesToConvert = array();
-		$localConfiguration = $this->configurationManager->getLocalConfiguration();
-		// check for wizards that have been run already and don't start with TYPO3...
-		if (isset($localConfiguration['INSTALL']['wizardDone']) && is_array($localConfiguration['INSTALL']['wizardDone'])) {
-			$classNames = array_keys($localConfiguration['INSTALL']['wizardDone']);
-			foreach ($classNames as $className) {
-				if (!GeneralUtility::isFirstPartOfStr($className, 'TYPO3')) {
-					$classNamesToConvert[] = $className;
-				}
-			}
-		}
-		if (!count($classNamesToConvert)) {
-			return;
-		}
-
-		$migratedClassesMapping = array(
-			'Tx_Install_Updates_File_TceformsUpdateWizard' => 'TYPO3\\CMS\\Install\\Updates\\TceformsUpdateWizard'
-		);
-
-		$migratedSettings = array();
-		$settingsToRemove = array();
-		foreach ($classNamesToConvert as $oldClassName) {
-			if (isset($migratedClassesMapping[$oldClassName])) {
-				$newClassName = $migratedClassesMapping[$oldClassName];
-			} else {
-				continue;
-			}
-			$oldValue = NULL;
-			$newValue = NULL;
-			try {
-				$oldValue = $this->configurationManager->getLocalConfigurationValueByPath('INSTALL/wizardDone/' . $oldClassName);
-			} catch (\RuntimeException $e) {
-				// The old configuration does not exist
-				continue;
-			}
-			try {
-				$newValue = $this->configurationManager->getLocalConfigurationValueByPath('INSTALL/wizardDone/' . $newClassName);
-			} catch (\RuntimeException $e) {
-				// The new configuration does not exist yet
-			}
-			if ($newValue === NULL) {
-				// Migrate the old configuration to the new one
-				$migratedSettings['INSTALL/wizardDone/' . $newClassName] = $oldValue;
-			}
-			$settingsToRemove[] = 'INSTALL/wizardDone/' . $oldClassName;
-
-		}
-
-		if (count($migratedSettings)) {
-			$this->configurationManager->setLocalConfigurationValuesByPathValuePairs($migratedSettings);
-		}
-		$this->configurationManager->removeLocalConfigurationKeysByPath($settingsToRemove);
-		if (count($migratedSettings) || count($settingsToRemove)) {
-			$this->throwRedirectException();
-		}
-	}
-
-	/**
 	 * Throw exception after configuration change to trigger a redirect.
 	 *
-	 * @throws \TYPO3\CMS\Install\Controller\Exception\RedirectException
+	 * @throws RedirectException
 	 */
 	protected function throwRedirectException() {
-		throw new \TYPO3\CMS\Install\Controller\Exception\RedirectException(
+		throw new RedirectException(
 			'Configuration updated, reload needed',
 			1379024938
 		);
