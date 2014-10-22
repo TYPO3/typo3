@@ -90,6 +90,15 @@ class Auth_Yadis_ParanoidHTTPFetcher extends Auth_Yadis_HTTPFetcher {
             $this->reset();
 
             $c = curl_init();
+            if (defined('Auth_OpenID_DISABLE_SSL_VERIFYPEER')
+                    && Auth_OpenID_DISABLE_SSL_VERIFYPEER === true) {
+                trigger_error(
+                    'You have disabled SSL verifcation, this is a TERRIBLE ' .
+                    'idea in almost all cases. Set Auth_OpenID_DISABLE_SSL_' .
+                    'VERIFYPEER to false if you want to be safe again',
+                    E_USER_WARNING);
+                curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
+            }
 
             if ($c === false) {
                 Auth_OpenID::log(
@@ -141,6 +150,9 @@ class Auth_Yadis_ParanoidHTTPFetcher extends Auth_Yadis_HTTPFetcher {
                     curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
                 }
             }
+            if (defined('Auth_OpenID_HTTP_PROXY')) {
+                curl_setopt($c, CURLOPT_PROXY, Auth_OpenID_HTTP_PROXY);
+            }
 
 			// <TYPO3-specific>
 			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']) {
@@ -190,10 +202,6 @@ class Auth_Yadis_ParanoidHTTPFetcher extends Auth_Yadis_HTTPFetcher {
                     }
                 }
 
-                Auth_OpenID::log(
-                    "Successfully fetched '%s': GET response code %s",
-                    $url, $code);
-
                 return new Auth_Yadis_HTTPResponse($url, $code,
                                                     $new_headers, $body);
             }
@@ -218,6 +226,23 @@ class Auth_Yadis_ParanoidHTTPFetcher extends Auth_Yadis_HTTPFetcher {
             curl_setopt($c, CURLOPT_NOSIGNAL, true);
         }
 
+        if (defined('Auth_OpenID_HTTP_PROXY')) {
+            curl_setopt($c, CURLOPT_PROXY, Auth_OpenID_HTTP_PROXY);
+        }
+
+		// <TYPO3-specific>
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']) {
+			curl_setopt($c, CURLOPT_PROXY, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']);
+
+			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel']) {
+				curl_setopt($c, CURLOPT_HTTPPROXYTUNNEL, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel']);
+			}
+			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass']) {
+				curl_setopt($c, CURLOPT_PROXYUSERPWD, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass']);
+			}
+		}
+		// </TYPO3-specific>
+
         curl_setopt($c, CURLOPT_POST, true);
         curl_setopt($c, CURLOPT_POSTFIELDS, $body);
         curl_setopt($c, CURLOPT_TIMEOUT, $this->timeout);
@@ -238,19 +263,6 @@ class Auth_Yadis_ParanoidHTTPFetcher extends Auth_Yadis_HTTPFetcher {
                 curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
             }
         }
-
-		// <TYPO3-specific>
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']) {
-			curl_setopt($c, CURLOPT_PROXY, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']);
-
-			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel']) {
-				curl_setopt($c, CURLOPT_HTTPPROXYTUNNEL, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel']);
-			}
-			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass']) {
-				curl_setopt($c, CURLOPT_PROXYUSERPWD, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass']);
-			}
-		}
-		// </TYPO3-specific>
 
         curl_exec($c);
 
@@ -282,9 +294,6 @@ class Auth_Yadis_ParanoidHTTPFetcher extends Auth_Yadis_HTTPFetcher {
             }
 
         }
-
-        Auth_OpenID::log("Successfully fetched '%s': POST response code %s",
-                         $url, $code);
 
         return new Auth_Yadis_HTTPResponse($url, $code,
                                            $new_headers, $body);
