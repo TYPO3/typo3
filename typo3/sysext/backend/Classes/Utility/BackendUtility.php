@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Backend\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
@@ -25,6 +27,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Standard functions available for the TYPO3 backend.
@@ -82,10 +85,8 @@ class BackendUtility {
 	static public function getRecord($table, $uid, $fields = '*', $where = '', $useDeleteClause = TRUE) {
 		// Ensure we have a valid uid (not 0 and not NEWxxxx) and a valid TCA
 		if ((int)$uid && !empty($GLOBALS['TCA'][$table])) {
-			/** @var DatabaseConnection $db */
-			$db = $GLOBALS['TYPO3_DB'];
 			$where = 'uid=' . (int)$uid . ($useDeleteClause ? self::deleteClause($table) : '') . $where;
-			$row = $db->exec_SELECTgetSingleRow($fields, $table, $where);
+			$row = static::getDatabaseConnection()->exec_SELECTgetSingleRow($fields, $table, $where);
 			if ($row) {
 				return $row;
 			}
@@ -137,9 +138,10 @@ class BackendUtility {
 	 */
 	static public function getRecordRaw($table, $where = '', $fields = '*') {
 		$row = FALSE;
-		if (FALSE !== ($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $table, $where, '', '', '1'))) {
-			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		$db = static::getDatabaseConnection();
+		if (FALSE !== ($res = $db->exec_SELECTquery($fields, $table, $where, '', '', '1'))) {
+			$row = $db->sql_fetch_assoc($res);
+			$db->sql_free_result($res);
 		}
 		return $row;
 	}
@@ -161,10 +163,11 @@ class BackendUtility {
 	 */
 	static public function getRecordsByField($theTable, $theField, $theValue, $whereClause = '', $groupBy = '', $orderBy = '', $limit = '', $useDeleteClause = TRUE) {
 		if (is_array($GLOBALS['TCA'][$theTable])) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			$db = static::getDatabaseConnection();
+			$res = $db->exec_SELECTquery(
 				'*',
 				$theTable,
-				$theField . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($theValue, $theTable) .
+				$theField . '=' . $db->fullQuoteStr($theValue, $theTable) .
 					($useDeleteClause ? self::deleteClause($theTable) . ' ' : '') .
 					self::versioningPlaceholderClause($theTable) . ' ' .
 					$whereClause,
@@ -173,10 +176,10 @@ class BackendUtility {
 				$limit
 			);
 			$rows = array();
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			while ($row = $db->sql_fetch_assoc($res)) {
 				$rows[] = $row;
 			}
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			$db->sql_free_result($res);
 			if (count($rows)) {
 				return $rows;
 			}
@@ -356,8 +359,9 @@ class BackendUtility {
 		if (is_array($getPageForRootline_cache[$ident])) {
 			$row = $getPageForRootline_cache[$ident];
 		} else {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid,uid,title,TSconfig,is_siteroot,storage_pid,t3ver_oid,t3ver_wsid,t3ver_state,t3ver_stage,backend_layout_next_level', 'pages', 'uid=' . (int)$uid . ' ' . self::deleteClause('pages') . ' ' . $clause);
-			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+			$db = static::getDatabaseConnection();
+			$res = $db->exec_SELECTquery('pid,uid,title,TSconfig,is_siteroot,storage_pid,t3ver_oid,t3ver_wsid,t3ver_state,t3ver_stage,backend_layout_next_level', 'pages', 'uid=' . (int)$uid . ' ' . self::deleteClause('pages') . ' ' . $clause);
+			$row = $db->sql_fetch_assoc($res);
 			if ($row) {
 				$newLocation = FALSE;
 				if ($workspaceOL) {
@@ -373,7 +377,7 @@ class BackendUtility {
 					$getPageForRootline_cache[$ident] = $row;
 				}
 			}
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			$db->sql_free_result($res);
 		}
 		return $row;
 	}
@@ -386,17 +390,18 @@ class BackendUtility {
 	 * @return void
 	 */
 	static public function openPageTree($pid, $clearExpansion) {
+		$beUser = static::getBackendUserAuthentication();
 		// Get current expansion data:
 		if ($clearExpansion) {
 			$expandedPages = array();
 		} else {
-			$expandedPages = unserialize($GLOBALS['BE_USER']->uc['browseTrees']['browsePages']);
+			$expandedPages = unserialize($beUser->uc['browseTrees']['browsePages']);
 		}
 		// Get rootline:
 		$rL = self::BEgetRootLine($pid);
 		// First, find out what mount index to use (if more than one DB mount exists):
 		$mountIndex = 0;
-		$mountKeys = array_flip($GLOBALS['BE_USER']->returnWebmounts());
+		$mountKeys = array_flip($beUser->returnWebmounts());
 		foreach ($rL as $rLDat) {
 			if (isset($mountKeys[$rLDat['uid']])) {
 				$mountIndex = $mountKeys[$rLDat['uid']];
@@ -408,8 +413,8 @@ class BackendUtility {
 			$expandedPages[$mountIndex][$rLDat['uid']] = 1;
 		}
 		// Write back:
-		$GLOBALS['BE_USER']->uc['browseTrees']['browsePages'] = serialize($expandedPages);
-		$GLOBALS['BE_USER']->writeUC();
+		$beUser->uc['browseTrees']['browsePages'] = serialize($expandedPages);
+		$beUser->writeUC();
 	}
 
 	/**
@@ -463,8 +468,9 @@ class BackendUtility {
 		$tableNamesFromTca = array_keys($GLOBALS['TCA']);
 		// Fetch translations for table names
 		$tableToTranslation = array();
+		$lang = static::getLanguageService();
 		foreach ($tableNamesFromTca as $table) {
-			$tableToTranslation[$table] = $GLOBALS['LANG']->sl($GLOBALS['TCA'][$table]['ctrl']['title']);
+			$tableToTranslation[$table] = $lang->sl($GLOBALS['TCA'][$table]['ctrl']['title']);
 		}
 		// Sort by translations
 		asort($tableToTranslation);
@@ -480,7 +486,7 @@ class BackendUtility {
 				foreach ($fieldKeys as $field) {
 					if ($GLOBALS['TCA'][$table]['columns'][$field]['exclude']) {
 						// Get human readable names of fields
-						$translatedField = $GLOBALS['LANG']->sl($GLOBALS['TCA'][$table]['columns'][$field]['label']);
+						$translatedField = $lang->sl($GLOBALS['TCA'][$table]['columns'][$field]['label']);
 						// Add entry
 						$excludeArrayTable[] = array($translatedTable . ': ' . $translatedField, $table . ':' . $field);
 					}
@@ -492,11 +498,11 @@ class BackendUtility {
 				// Prefix for field label, e.g. "Plugin Options:"
 				$labelPrefix = '';
 				if (!empty($GLOBALS['TCA'][$table]['columns'][$tableField]['label'])) {
-					$labelPrefix = $GLOBALS['LANG']->sl($GLOBALS['TCA'][$table]['columns'][$tableField]['label']);
+					$labelPrefix = $lang->sl($GLOBALS['TCA'][$table]['columns'][$tableField]['label']);
 				}
 				// Get all sheets and title
 				foreach ($flexForms as $extIdent => $extConf) {
-					$extTitle = $GLOBALS['LANG']->sl($extConf['title']);
+					$extTitle = $lang->sl($extConf['title']);
 					// Get all fields in sheet
 					foreach ($extConf['ds']['sheets'] as $sheetName => $sheet) {
 						if (empty($sheet['ROOT']['el']) || !is_array($sheet['ROOT']['el'])) {
@@ -507,7 +513,7 @@ class BackendUtility {
 							if (empty($field['TCEforms']['exclude'])) {
 								continue;
 							}
-							$fieldLabel = !empty($field['TCEforms']['label']) ? $GLOBALS['LANG']->sl($field['TCEforms']['label']) : $fieldName;
+							$fieldLabel = !empty($field['TCEforms']['label']) ? $lang->sl($field['TCEforms']['label']) : $fieldName;
 							$fieldIdent = $table . ':' . $tableField . ';' . $extIdent . ';' . $sheetName . ';' . $fieldName;
 							$excludeArrayTable[] = array(trim(($labelPrefix . ' ' . $extTitle), ': ') . ': ' . $fieldLabel, $fieldIdent);
 						}
@@ -532,9 +538,10 @@ class BackendUtility {
 	 */
 	static public function getExplicitAuthFieldValues() {
 		// Initialize:
+		$lang = static::getLanguageService();
 		$adLabel = array(
-			'ALLOW' => $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_core.xlf:labels.allow'),
-			'DENY' => $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_core.xlf:labels.deny')
+			'ALLOW' => $lang->sl('LLL:EXT:lang/locallang_core.xlf:labels.allow'),
+			'DENY' => $lang->sl('LLL:EXT:lang/locallang_core.xlf:labels.deny')
 		);
 		// All TCA keys:
 		$allowDenyOptions = array();
@@ -549,7 +556,9 @@ class BackendUtility {
 						// Check for items:
 						if (is_array($fCfg['items'])) {
 							// Get Human Readable names of fields and table:
-							$allowDenyOptions[$table . ':' . $field]['tableFieldLabel'] = $GLOBALS['LANG']->sl($GLOBALS['TCA'][$table]['ctrl']['title']) . ': ' . $GLOBALS['LANG']->sl($GLOBALS['TCA'][$table]['columns'][$field]['label']);
+							$allowDenyOptions[$table . ':' . $field]['tableFieldLabel'] =
+								$lang->sl($GLOBALS['TCA'][$table]['ctrl']['title']) . ': '
+								. $lang->sl($GLOBALS['TCA'][$table]['columns'][$field]['label']);
 							// Check for items:
 							foreach ($fCfg['items'] as $iVal) {
 								// Values '' is not controlled by this setting.
@@ -573,7 +582,7 @@ class BackendUtility {
 									}
 									// Set iMode
 									if ($iMode) {
-										$allowDenyOptions[$table . ':' . $field]['items'][$iVal[1]] = array($iMode, $GLOBALS['LANG']->sl($iVal[0]), $adLabel[$iMode]);
+										$allowDenyOptions[$table . ':' . $field]['items'][$iVal[1]] = array($iMode, $lang->sl($iVal[0]), $adLabel[$iMode]);
 									}
 								}
 							}
@@ -672,21 +681,21 @@ class BackendUtility {
 	 * In any case ->isInWebMount must return TRUE for the user (regardless of $perms_clause)
 	 *
 	 * @param int $id Page uid for which to check read-access
-	 * @param string $perms_clause This is typically a value generated with $GLOBALS['BE_USER']->getPagePermsClause(1);
+	 * @param string $perms_clause This is typically a value generated with static::getBackendUserAuthentication()->getPagePermsClause(1);
 	 * @return array Returns page record if OK, otherwise FALSE.
 	 */
 	static public function readPageAccess($id, $perms_clause) {
 		if ((string) $id != '') {
 			$id = (int)$id;
 			if (!$id) {
-				if ($GLOBALS['BE_USER']->isAdmin()) {
+				if (static::getBackendUserAuthentication()->isAdmin()) {
 					$path = '/';
 					$pageinfo['_thePath'] = $path;
 					return $pageinfo;
 				}
 			} else {
 				$pageinfo = self::getRecord('pages', $id, '*', $perms_clause ? ' AND ' . $perms_clause : '');
-				if ($pageinfo['uid'] && $GLOBALS['BE_USER']->isInWebMount($id, $perms_clause)) {
+				if ($pageinfo['uid'] && static::getBackendUserAuthentication()->isInWebMount($id, $perms_clause)) {
 					self::workspaceOL('pages', $pageinfo);
 					if (is_array($pageinfo)) {
 						self::fixVersioningPid('pages', $pageinfo);
@@ -941,14 +950,15 @@ class BackendUtility {
 					self::workspaceOL($table, $rr);
 					self::fixVersioningPid($table, $rr, TRUE);
 				}
+				$db = static::getDatabaseConnection();
 				$uidAcc = array();
 				// Used to avoid looping, if any should happen.
 				$subFieldPointer = $conf['ds_pointerField_searchParent_subField'];
 				while (!$srcPointer) {
-					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,' . $ds_pointerField . ',' . $ds_searchParentField . ($subFieldPointer ? ',' . $subFieldPointer : ''), $table, 'uid=' . (int)($newRecordPidValue ?: $rr[$ds_searchParentField]) . self::deleteClause($table));
+					$res = $db->exec_SELECTquery('uid,' . $ds_pointerField . ',' . $ds_searchParentField . ($subFieldPointer ? ',' . $subFieldPointer : ''), $table, 'uid=' . (int)($newRecordPidValue ?: $rr[$ds_searchParentField]) . self::deleteClause($table));
 					$newRecordPidValue = 0;
-					$rr = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-					$GLOBALS['TYPO3_DB']->sql_free_result($res);
+					$rr = $db->sql_fetch_assoc($res);
+					$db->sql_free_result($res);
 					// Break if no result from SQL db or if looping...
 					if (!is_array($rr) || isset($uidAcc[$rr['uid']])) {
 						break;
@@ -1180,7 +1190,7 @@ class BackendUtility {
 				$TSconfig = $res['TSconfig'];
 			}
 			// Get User TSconfig overlay
-			$userTSconfig = $GLOBALS['BE_USER']->userTS['page.'];
+			$userTSconfig = static::getBackendUserAuthentication()->userTS['page.'];
 			if (is_array($userTSconfig)) {
 				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($TSconfig, $userTSconfig);
 			}
@@ -1268,8 +1278,9 @@ class BackendUtility {
 		$fieldsIndex[$titleField] = 1;
 
 		$result = array();
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, '1=1 ' . $where . self::deleteClause($table));
-		while ($record = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+		$db = static::getDatabaseConnection();
+		$res = $db->exec_SELECTquery('*', $table, '1=1 ' . $where . self::deleteClause($table));
+		while ($record = $db->sql_fetch_assoc($res)) {
 			// store the uid, because it might be unset if it's not among the requested $fields
 			$recordId = $record['uid'];
 			$record[$titleField] = self::getRecordTitle($table, $record);
@@ -1277,7 +1288,7 @@ class BackendUtility {
 			// include only the requested fields in the result
 			$result[$recordId] = array_intersect_key($record, $fieldsIndex);
 		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		$db->sql_free_result($res);
 
 		// sort records by $sortField. This is not done in the query because the title might have been overwritten by
 		// self::getRecordTitle();
@@ -1292,9 +1303,10 @@ class BackendUtility {
 	 * @return 	array
 	 */
 	static public function getListGroupNames($fields = 'title, uid') {
+		$beUser = static::getBackendUserAuthentication();
 		$exQ = ' AND hide_in_lists=0';
-		if (!$GLOBALS['BE_USER']->isAdmin()) {
-			$exQ .= ' AND uid IN (' . ($GLOBALS['BE_USER']->user['usergroup_cached_list'] ?: 0) . ')';
+		if (!$beUser->isAdmin()) {
+			$exQ .= ' AND uid IN (' . ($beUser->user['usergroup_cached_list'] ?: 0) . ')';
 		}
 		return self::getGroupNames($fields, $exQ);
 	}
@@ -1314,7 +1326,7 @@ class BackendUtility {
 			foreach ($usernames as $uid => $row) {
 				$userN = $uid;
 				$set = 0;
-				if ($row['uid'] != $GLOBALS['BE_USER']->user['uid']) {
+				if ($row['uid'] != static::getBackendUserAuthentication()->user['uid']) {
 					foreach ($groupArray as $v) {
 						if ($v && GeneralUtility::inList($row['usergroup_cached_list'], $v)) {
 							$userN = $row['username'];
@@ -1452,7 +1464,12 @@ class BackendUtility {
 	 * @return string
 	 */
 	static public function dateTimeAge($tstamp, $prefix = 1, $date = '') {
-		return $tstamp ? ($date == 'date' ? self::date($tstamp) : self::datetime($tstamp)) . ' (' . self::calcAge($prefix * ($GLOBALS['EXEC_TIME'] - $tstamp), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')) . ')' : '';
+		if (!$tstamp) {
+			return '';
+		}
+		$label = static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears');
+		$age = ' (' . self::calcAge($prefix * ($GLOBALS['EXEC_TIME'] - $tstamp), $label) . ')';
+		return $date === 'date' ? self::date($tstamp) : self::datetime($tstamp) . $age;
 	}
 
 	/**
@@ -1586,7 +1603,7 @@ class BackendUtility {
 						/** @var FlashMessage $flashMessage */
 						$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
 							htmlspecialchars($exception->getMessage()),
-							$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing', TRUE),
+							static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing', TRUE),
 							FlashMessage::ERROR
 						);
 						$thumbData .= $flashMessage->render();
@@ -1650,10 +1667,11 @@ class BackendUtility {
 	 * @return string
 	 */
 	static public function titleAttribForPages($row, $perms_clause = '', $includeAttrib = 1) {
+		$lang = static::getLanguageService();
 		$parts = array();
 		$parts[] = 'id=' . $row['uid'];
 		if ($row['alias']) {
-			$parts[] = $GLOBALS['LANG']->sL($GLOBALS['TCA']['pages']['columns']['alias']['label']) . ' ' . $row['alias'];
+			$parts[] = $lang->sL($GLOBALS['TCA']['pages']['columns']['alias']['label']) . ' ' . $row['alias'];
 		}
 		if ($row['pid'] < 0) {
 			$parts[] = 'v#1.' . $row['t3ver_id'];
@@ -1676,7 +1694,7 @@ class BackendUtility {
 				break;
 		}
 		if ($row['doktype'] == PageRepository::DOKTYPE_LINK) {
-			$parts[] = $GLOBALS['LANG']->sL($GLOBALS['TCA']['pages']['columns']['url']['label']) . ' ' . $row['url'];
+			$parts[] = $lang->sL($GLOBALS['TCA']['pages']['columns']['url']['label']) . ' ' . $row['url'];
 		} elseif ($row['doktype'] == PageRepository::DOKTYPE_SHORTCUT) {
 			if ($perms_clause) {
 				$label = self::getRecordPath((int)$row['shortcut'], $perms_clause, 20);
@@ -1686,9 +1704,9 @@ class BackendUtility {
 				$label = $lRec['title'] . ' (id=' . $row['shortcut'] . ')';
 			}
 			if ($row['shortcut_mode'] != PageRepository::SHORTCUT_MODE_NONE) {
-				$label .= ', ' . $GLOBALS['LANG']->sL($GLOBALS['TCA']['pages']['columns']['shortcut_mode']['label']) . ' ' . $GLOBALS['LANG']->sL(self::getLabelFromItemlist('pages', 'shortcut_mode', $row['shortcut_mode']));
+				$label .= ', ' . $lang->sL($GLOBALS['TCA']['pages']['columns']['shortcut_mode']['label']) . ' ' . $lang->sL(self::getLabelFromItemlist('pages', 'shortcut_mode', $row['shortcut_mode']));
 			}
-			$parts[] = $GLOBALS['LANG']->sL($GLOBALS['TCA']['pages']['columns']['shortcut']['label']) . ' ' . $label;
+			$parts[] = $lang->sL($GLOBALS['TCA']['pages']['columns']['shortcut']['label']) . ' ' . $label;
 		} elseif ($row['doktype'] == PageRepository::DOKTYPE_MOUNTPOINT) {
 			if ($perms_clause) {
 				$label = self::getRecordPath((int)$row['mount_pid'], $perms_clause, 20);
@@ -1696,35 +1714,35 @@ class BackendUtility {
 				$lRec = self::getRecordWSOL('pages', (int)$row['mount_pid'], 'title');
 				$label = $lRec['title'] . ' (id=' . $row['mount_pid'] . ')';
 			}
-			$parts[] = $GLOBALS['LANG']->sL($GLOBALS['TCA']['pages']['columns']['mount_pid']['label']) . ' ' . $label;
+			$parts[] = $lang->sL($GLOBALS['TCA']['pages']['columns']['mount_pid']['label']) . ' ' . $label;
 			if ($row['mount_pid_ol']) {
-				$parts[] = $GLOBALS['LANG']->sL($GLOBALS['TCA']['pages']['columns']['mount_pid_ol']['label']);
+				$parts[] = $lang->sL($GLOBALS['TCA']['pages']['columns']['mount_pid_ol']['label']);
 			}
 		}
 		if ($row['nav_hide']) {
-			$parts[] = rtrim($GLOBALS['LANG']->sL($GLOBALS['TCA']['pages']['columns']['nav_hide']['label']), ':');
+			$parts[] = rtrim($lang->sL($GLOBALS['TCA']['pages']['columns']['nav_hide']['label']), ':');
 		}
 		if ($row['hidden']) {
-			$parts[] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.hidden');
+			$parts[] = $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.hidden');
 		}
 		if ($row['starttime']) {
-			$parts[] = $GLOBALS['LANG']->sL($GLOBALS['TCA']['pages']['columns']['starttime']['label']) . ' ' . self::dateTimeAge($row['starttime'], -1, 'date');
+			$parts[] = $lang->sL($GLOBALS['TCA']['pages']['columns']['starttime']['label']) . ' ' . self::dateTimeAge($row['starttime'], -1, 'date');
 		}
 		if ($row['endtime']) {
-			$parts[] = $GLOBALS['LANG']->sL($GLOBALS['TCA']['pages']['columns']['endtime']['label']) . ' ' . self::dateTimeAge($row['endtime'], -1, 'date');
+			$parts[] = $lang->sL($GLOBALS['TCA']['pages']['columns']['endtime']['label']) . ' ' . self::dateTimeAge($row['endtime'], -1, 'date');
 		}
 		if ($row['fe_group']) {
 			$fe_groups = array();
 			foreach (GeneralUtility::intExplode(',', $row['fe_group']) as $fe_group) {
 				if ($fe_group < 0) {
-					$fe_groups[] = $GLOBALS['LANG']->sL(self::getLabelFromItemlist('pages', 'fe_group', $fe_group));
+					$fe_groups[] = $lang->sL(self::getLabelFromItemlist('pages', 'fe_group', $fe_group));
 				} else {
 					$lRec = self::getRecordWSOL('fe_groups', $fe_group, 'title');
 					$fe_groups[] = $lRec['title'];
 				}
 			}
 			$label = implode(', ', $fe_groups);
-			$parts[] = $GLOBALS['LANG']->sL($GLOBALS['TCA']['pages']['columns']['fe_group']['label']) . ' ' . $label;
+			$parts[] = $lang->sL($GLOBALS['TCA']['pages']['columns']['fe_group']['label']) . ' ' . $label;
 		}
 		$out = htmlspecialchars(implode(' - ', $parts));
 		return $includeAttrib ? 'title="' . $out . '"' : $out;
@@ -1772,16 +1790,17 @@ class BackendUtility {
 				}
 			}
 			// Hidden
+			$lang = static::getLanguageService();
 			if ($ctrl['disabled']) {
-				$out .= $row[$ctrl['disabled']] ? ' - ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.hidden') : '';
+				$out .= $row[$ctrl['disabled']] ? ' - ' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.hidden') : '';
 			}
 			if ($ctrl['starttime']) {
 				if ($row[$ctrl['starttime']] > $GLOBALS['EXEC_TIME']) {
-					$out .= ' - ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.starttime') . ':' . self::date($row[$ctrl['starttime']]) . ' (' . self::daysUntil($row[$ctrl['starttime']]) . ' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.days') . ')';
+					$out .= ' - ' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.starttime') . ':' . self::date($row[$ctrl['starttime']]) . ' (' . self::daysUntil($row[$ctrl['starttime']]) . ' ' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.days') . ')';
 				}
 			}
 			if ($row[$ctrl['endtime']]) {
-				$out .= ' - ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.endtime') . ': ' . self::date($row[$ctrl['endtime']]) . ' (' . self::daysUntil($row[$ctrl['endtime']]) . ' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.days') . ')';
+				$out .= ' - ' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.endtime') . ': ' . self::date($row[$ctrl['endtime']]) . ' (' . self::daysUntil($row[$ctrl['endtime']]) . ' ' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.days') . ')';
 			}
 		}
 		return htmlspecialchars($out);
@@ -1857,7 +1876,7 @@ class BackendUtility {
 						// Loop on all available items
 						// Keep matches and move on to next value
 						if ($aValue == $itemConfiguration[1]) {
-							$labels[] = $GLOBALS['LANG']->sL($itemConfiguration[0]);
+							$labels[] = static::getLanguageService()->sL($itemConfiguration[0]);
 							break;
 						}
 					}
@@ -1994,7 +2013,7 @@ class BackendUtility {
 	static public function getRecordTitlePrep($title, $titleLength = 0) {
 		// If $titleLength is not a valid positive integer, use BE_USER->uc['titleLen']:
 		if (!$titleLength || !MathUtility::canBeInterpretedAsInteger($titleLength) || $titleLength < 0) {
-			$titleLength = $GLOBALS['BE_USER']->uc['titleLen'];
+			$titleLength = static::getBackendUserAuthentication()->uc['titleLen'];
 		}
 		$titleOrig = htmlspecialchars($title);
 		$title = htmlspecialchars(GeneralUtility::fixed_lgd_cs($title, $titleLength));
@@ -2012,7 +2031,7 @@ class BackendUtility {
 	 * @return string Localized [No title] string
 	 */
 	static public function getNoRecordTitle($prep = FALSE) {
-		$noTitle = '[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', TRUE) . ']';
+		$noTitle = '[' . static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', TRUE) . ']';
 		if ($prep) {
 			$noTitle = '<em>' . $noTitle . '</em>';
 		}
@@ -2055,10 +2074,12 @@ class BackendUtility {
 				}
 			}
 			$l = '';
+			$db = static::getDatabaseConnection();
+			$lang = static::getLanguageService();
 			switch ((string) $theColConf['type']) {
 				case 'radio':
 					$l = self::getLabelFromItemlist($table, $col, $value);
-					$l = $GLOBALS['LANG']->sL($l);
+					$l = $lang->sL($l);
 					break;
 				case 'inline':
 				case 'select':
@@ -2079,15 +2100,15 @@ class BackendUtility {
 							$dbGroup->start($value, $theColConf['foreign_table'], $theColConf['MM'], $uid, $table, $theColConf);
 							$selectUids = $dbGroup->tableArray[$theColConf['foreign_table']];
 							if (is_array($selectUids) && count($selectUids) > 0) {
-								$MMres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid, ' . $MMfield, $theColConf['foreign_table'], 'uid IN (' . implode(',', $selectUids) . ')' . self::deleteClause($theColConf['foreign_table']));
+								$MMres = $db->exec_SELECTquery('uid, ' . $MMfield, $theColConf['foreign_table'], 'uid IN (' . implode(',', $selectUids) . ')' . self::deleteClause($theColConf['foreign_table']));
 								$mmlA = array();
-								while ($MMrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($MMres)) {
+								while ($MMrow = $db->sql_fetch_assoc($MMres)) {
 									// Keep sorting of $selectUids
 									$mmlA[array_search($MMrow['uid'], $selectUids)] = $noRecordLookup ?
 										$MMrow['uid'] :
 										self::getRecordTitle($theColConf['foreign_table'], $MMrow, FALSE, $forceResult);
 								}
-								$GLOBALS['TYPO3_DB']->sql_free_result($MMres);
+								$db->sql_free_result($MMres);
 								if (!empty($mmlA)) {
 									ksort($mmlA);
 									$l = implode('; ', $mmlA);
@@ -2127,7 +2148,7 @@ class BackendUtility {
 										$r = self::getRecordWSOL($theColConf['neg_foreign_table'], -$rVal);
 									}
 									if (is_array($r)) {
-										$lA[] = $GLOBALS['LANG']->sL(($rVal > 0 ? $theColConf['foreign_table_prefix'] : $theColConf['neg_foreign_table_prefix'])) . self::getRecordTitle(($rVal > 0 ? $theColConf['foreign_table'] : $theColConf['neg_foreign_table']), $r, FALSE, $forceResult);
+										$lA[] = $lang->sL(($rVal > 0 ? $theColConf['foreign_table_prefix'] : $theColConf['neg_foreign_table_prefix'])) . self::getRecordTitle(($rVal > 0 ? $theColConf['foreign_table'] : $theColConf['neg_foreign_table']), $r, FALSE, $forceResult);
 									} else {
 										$lA[] = $rVal ? '[' . $rVal . '!]' : '';
 									}
@@ -2167,12 +2188,12 @@ class BackendUtility {
 					break;
 				case 'check':
 					if (!is_array($theColConf['items']) || count($theColConf['items']) == 1) {
-						$l = $value ? $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:yes') : $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:no');
+						$l = $value ? $lang->sL('LLL:EXT:lang/locallang_common.xlf:yes') : $lang->sL('LLL:EXT:lang/locallang_common.xlf:no');
 					} else {
 						$lA = array();
 						foreach ($theColConf['items'] as $key => $val) {
 							if ($value & pow(2, $key)) {
-								$lA[] = $GLOBALS['LANG']->sL($val[0]);
+								$lA[] = $lang->sL($val[0]);
 							}
 						}
 						$l = implode(', ', $lA);
@@ -2184,12 +2205,12 @@ class BackendUtility {
 						if (GeneralUtility::inList($theColConf['eval'], 'date')) {
 							// Handle native date field
 							if (isset($theColConf['dbType']) && $theColConf['dbType'] === 'date') {
-								$dateTimeFormats = $GLOBALS['TYPO3_DB']->getDateTimeFormats($table);
+								$dateTimeFormats = $db->getDateTimeFormats($table);
 								$emptyValue = $dateTimeFormats['date']['empty'];
 								$value = $value !== $emptyValue ? strtotime($value) : 0;
 							}
 							if (!empty($value)) {
-								$l = self::date($value) . ' (' . ($GLOBALS['EXEC_TIME'] - $value > 0 ? '-' : '') . self::calcAge(abs(($GLOBALS['EXEC_TIME'] - $value)), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')) . ')';
+								$l = self::date($value) . ' (' . ($GLOBALS['EXEC_TIME'] - $value > 0 ? '-' : '') . self::calcAge(abs(($GLOBALS['EXEC_TIME'] - $value)), $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')) . ')';
 							}
 						} elseif (GeneralUtility::inList($theColConf['eval'], 'time')) {
 							if (!empty($value)) {
@@ -2202,7 +2223,7 @@ class BackendUtility {
 						} elseif (GeneralUtility::inList($theColConf['eval'], 'datetime')) {
 							// Handle native date/time field
 							if (isset($theColConf['dbType']) && $theColConf['dbType'] === 'datetime') {
-								$dateTimeFormats = $GLOBALS['TYPO3_DB']->getDateTimeFormats($table);
+								$dateTimeFormats = $db->getDateTimeFormats($table);
 								$emptyValue = $dateTimeFormats['datetime']['empty'];
 								$value = $value !== $emptyValue ? strtotime($value) : 0;
 							}
@@ -2369,7 +2390,7 @@ class BackendUtility {
 						case 'string':
 
 						case 'short':
-							$formEl = '<input type="text" name="' . $dataPrefix . '[' . $fname . ']" value="' . $params[$fname] . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(($config[0] == 'short' ? 24 : 48)) . ' />';
+							$formEl = '<input type="text" name="' . $dataPrefix . '[' . $fname . ']" value="' . $params[$fname] . '"' . static::getDocumentTemplate()->formWidth(($config[0] == 'short' ? 24 : 48)) . ' />';
 							break;
 						case 'check':
 							$formEl = '<input type="hidden" name="' . $dataPrefix . '[' . $fname . ']" value="0" /><input type="checkbox" name="' . $dataPrefix . '[' . $fname . ']" value="1"' . ($params[$fname] ? ' checked="checked"' : '') . ' />';
@@ -2412,7 +2433,7 @@ class BackendUtility {
 	 *******************************************/
 	/**
 	 * Returns help-text icon if configured for.
-	 * TCA_DESCR must be loaded prior to this function and $GLOBALS['BE_USER'] must
+	 * TCA_DESCR must be loaded prior to this function and static::getBackendUserAuthentication() must
 	 * have 'edit_showFieldHelp' set to 'icon', otherwise nothing is returned
 	 *
 	 * Please note: since TYPO3 4.5 the UX team decided to not use CSH in its former way,
@@ -2427,7 +2448,10 @@ class BackendUtility {
 	 * @return string HTML content for a help icon/text
 	 */
 	static public function helpTextIcon($table, $field, $BACK_PATH, $force = 0) {
-		if (is_array($GLOBALS['TCA_DESCR'][$table]) && is_array($GLOBALS['TCA_DESCR'][$table]['columns'][$field]) && (isset($GLOBALS['BE_USER']->uc['edit_showFieldHelp']) || $force)) {
+		if (
+			is_array($GLOBALS['TCA_DESCR'][$table]) && is_array($GLOBALS['TCA_DESCR'][$table]['columns'][$field])
+			&& (isset(static::getBackendUserAuthentication()->uc['edit_showFieldHelp']) || $force)
+		) {
 			return self::wrapInHelp($table, $field);
 		}
 	}
@@ -2441,7 +2465,7 @@ class BackendUtility {
 	 */
 	static public function helpTextArray($table, $field) {
 		if (!isset($GLOBALS['TCA_DESCR'][$table]['columns'])) {
-			$GLOBALS['LANG']->loadSingleTableDescription($table);
+			static::getLanguageService()->loadSingleTableDescription($table);
 		}
 		$output = array(
 			'description' => NULL,
@@ -2553,10 +2577,10 @@ class BackendUtility {
 	 * @see helpTextIcon()
 	 */
 	static public function cshItem($table, $field, $BACK_PATH, $wrap = '', $onlyIconMode = FALSE, $styleAttrib = '') {
-		if (!$GLOBALS['BE_USER']->uc['edit_showFieldHelp']) {
+		if (!static::getBackendUserAuthentication()->uc['edit_showFieldHelp']) {
 			return '';
 		}
-		$GLOBALS['LANG']->loadSingleTableDescription($table);
+		static::getLanguageService()->loadSingleTableDescription($table);
 		if (is_array($GLOBALS['TCA_DESCR'][$table])) {
 			// Creating CSH icon and short description:
 			$output = self::helpTextIcon($table, $field, $BACK_PATH);
@@ -2639,13 +2663,14 @@ class BackendUtility {
 	 */
 	static protected function createPreviewUrl($pageUid, $rootLine, $anchorSection, $additionalGetVars, $viewScript) {
 		// Look if a fixed preview language should be added:
-		$viewLanguageOrder = $GLOBALS['BE_USER']->getTSConfigVal('options.view.languageOrder');
+		$beUser = static::getBackendUserAuthentication();
+		$viewLanguageOrder = $beUser->getTSConfigVal('options.view.languageOrder');
 
 		if (strlen($viewLanguageOrder) > 0) {
 			$suffix = '';
 			// Find allowed languages (if none, all are allowed!)
-			if (!$GLOBALS['BE_USER']->user['admin'] && strlen($GLOBALS['BE_USER']->groupData['allowed_languages'])) {
-				$allowedLanguages = array_flip(explode(',', $GLOBALS['BE_USER']->groupData['allowed_languages']));
+			if (!$beUser->user['admin'] && strlen($beUser->groupData['allowed_languages'])) {
+				$allowedLanguages = array_flip(explode(',', $beUser->groupData['allowed_languages']));
 			}
 			// Traverse the view order, match first occurence:
 			$languageOrder = GeneralUtility::intExplode(',', $viewLanguageOrder);
@@ -2704,7 +2729,7 @@ class BackendUtility {
 			if ($page['url_scheme'] == \TYPO3\CMS\Core\Utility\HttpUtility::SCHEME_HTTPS || $page['url_scheme'] == 0 && GeneralUtility::getIndpEnv('TYPO3_SSL')) {
 				$protocol = 'https';
 			}
-			$previewDomainConfig = $GLOBALS['BE_USER']->getTSConfig('TCEMAIN.previewDomain', self::getPagesTSconfig($pageId));
+			$previewDomainConfig = static::getBackendUserAuthentication()->getTSConfig('TCEMAIN.previewDomain', self::getPagesTSconfig($pageId));
 			if ($previewDomainConfig['value']) {
 				$domainName = $previewDomainConfig['value'];
 			} else {
@@ -2739,8 +2764,9 @@ class BackendUtility {
 	 * @return array
 	 */
 	static public function getModTSconfig($id, $TSref) {
-		$pageTS_modOptions = $GLOBALS['BE_USER']->getTSConfig($TSref, static::getPagesTSconfig($id));
-		$BE_USER_modOptions = $GLOBALS['BE_USER']->getTSConfig($TSref);
+		$beUser = static::getBackendUserAuthentication();
+		$pageTS_modOptions = $beUser->getTSConfig($TSref, static::getPagesTSconfig($id));
+		$BE_USER_modOptions = $beUser->getTSConfig($TSref);
 		if (is_null($BE_USER_modOptions['value'])) {
 			unset($BE_USER_modOptions['value']);
 		}
@@ -2852,7 +2878,7 @@ class BackendUtility {
 			$scriptUrl = $script . '?' . $mainParams . $addparams;
 		}
 		$onChange = 'jumpToUrl(' . GeneralUtility::quoteJSvalue($scriptUrl . '&' . $elementName . '=') . '+escape(this.value),this);';
-		return '<input type="text"' . $GLOBALS['TBE_TEMPLATE']->formWidth($size) . ' name="' . $elementName . '" value="' . htmlspecialchars($currentValue) . '" onchange="' . htmlspecialchars($onChange) . '" />';
+		return '<input type="text"' . static::getDocumentTemplate()->formWidth($size) . ' name="' . $elementName . '" value="' . htmlspecialchars($currentValue) . '" onchange="' . htmlspecialchars($onChange) . '" />';
 	}
 
 	/**
@@ -2866,7 +2892,7 @@ class BackendUtility {
 	 */
 	static public function unsetMenuItems($modTSconfig, $itemArray, $TSref) {
 		// Getting TS-config options for this module for the Backend User:
-		$conf = $GLOBALS['BE_USER']->getTSConfig($TSref, $modTSconfig);
+		$conf = static::getBackendUserAuthentication()->getTSConfig($TSref, $modTSconfig);
 		if (is_array($conf['properties'])) {
 			foreach ($conf['properties'] as $key => $val) {
 				if (!$val) {
@@ -2887,7 +2913,8 @@ class BackendUtility {
 	 * @see 	BackendUtility::getUpdateSignalCode()
 	 */
 	static public function setUpdateSignal($set = '', $params = '') {
-		$modData = $GLOBALS['BE_USER']->getModuleData('TYPO3\\CMS\\Backend\\Utility\\BackendUtility::getUpdateSignal', 'ses');
+		$beUser = static::getBackendUserAuthentication();
+		$modData = $beUser->getModuleData('TYPO3\\CMS\\Backend\\Utility\\BackendUtility::getUpdateSignal', 'ses');
 		if ($set) {
 			$modData[$set] = array(
 				'set' => $set,
@@ -2897,7 +2924,7 @@ class BackendUtility {
 			// clear the module data
 			$modData = array();
 		}
-		$GLOBALS['BE_USER']->pushModuleData('TYPO3\\CMS\\Backend\\Utility\\BackendUtility::getUpdateSignal', $modData);
+		$beUser->pushModuleData('TYPO3\\CMS\\Backend\\Utility\\BackendUtility::getUpdateSignal', $modData);
 	}
 
 	/**
@@ -2910,7 +2937,7 @@ class BackendUtility {
 	 */
 	static public function getUpdateSignalCode() {
 		$signals = array();
-		$modData = $GLOBALS['BE_USER']->getModuleData('TYPO3\\CMS\\Backend\\Utility\\BackendUtility::getUpdateSignal', 'ses');
+		$modData = static::getBackendUserAuthentication()->getModuleData('TYPO3\\CMS\\Backend\\Utility\\BackendUtility::getUpdateSignal', 'ses');
 		if (!count($modData)) {
 			return '';
 		}
@@ -2973,7 +3000,8 @@ class BackendUtility {
 	static public function getModuleData($MOD_MENU, $CHANGED_SETTINGS, $modName, $type = '', $dontValidateList = '', $setDefaultList = '') {
 		if ($modName && is_string($modName)) {
 			// Getting stored user-data from this module:
-			$settings = $GLOBALS['BE_USER']->getModuleData($modName, $type);
+			$beUser = static::getBackendUserAuthentication();
+			$settings = $beUser->getModuleData($modName, $type);
 			$changed = 0;
 			if (!is_array($settings)) {
 				$changed = 1;
@@ -3015,7 +3043,7 @@ class BackendUtility {
 				die('No menu!');
 			}
 			if ($changed) {
-				$GLOBALS['BE_USER']->pushModuleData($modName, $settings);
+				$beUser->pushModuleData($modName, $settings);
 			}
 			return $settings;
 		} else {
@@ -3129,8 +3157,9 @@ class BackendUtility {
 	 * @internal
 	 */
 	static public function lockRecords($table = '', $uid = 0, $pid = 0) {
-		if (isset($GLOBALS['BE_USER']->user['uid'])) {
-			$user_id = (int)$GLOBALS['BE_USER']->user['uid'];
+		$beUser = static::getBackendUserAuthentication();
+		if (isset($beUser->user['uid'])) {
+			$user_id = (int)$beUser->user['uid'];
 			if ($table && $uid) {
 				$fields_values = array(
 					'userid' => $user_id,
@@ -3138,12 +3167,12 @@ class BackendUtility {
 					'tstamp' => $GLOBALS['EXEC_TIME'],
 					'record_table' => $table,
 					'record_uid' => $uid,
-					'username' => $GLOBALS['BE_USER']->user['username'],
+					'username' => $beUser->user['username'],
 					'record_pid' => $pid
 				);
-				$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_lockedrecords', $fields_values);
+				static::getDatabaseConnection()->exec_INSERTquery('sys_lockedrecords', $fields_values);
 			} else {
-				$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_lockedrecords', 'userid=' . (int)$user_id);
+				static::getDatabaseConnection()->exec_DELETEquery('sys_lockedrecords', 'userid=' . (int)$user_id);
 			}
 		}
 	}
@@ -3161,9 +3190,10 @@ class BackendUtility {
 	static public function isRecordLocked($table, $uid) {
 		if (!is_array($GLOBALS['LOCKED_RECORDS'])) {
 			$GLOBALS['LOCKED_RECORDS'] = array();
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_lockedrecords', 'sys_lockedrecords.userid<>' . (int)$GLOBALS['BE_USER']->user['uid'] . '
+			$db = static::getDatabaseConnection();
+			$res = $db->exec_SELECTquery('*', 'sys_lockedrecords', 'sys_lockedrecords.userid<>' . (int)static::getBackendUserAuthentication()->user['uid'] . '
 								AND sys_lockedrecords.tstamp > ' . ($GLOBALS['EXEC_TIME'] - 2 * 3600));
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			while ($row = $db->sql_fetch_assoc($res)) {
 				// Get the type of the user that locked this record:
 				if ($row['userid']) {
 					$userTypeLabel = 'beUser';
@@ -3172,20 +3202,21 @@ class BackendUtility {
 				} else {
 					$userTypeLabel = 'user';
 				}
-				$userType = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.' . $userTypeLabel);
+				$lang = static::getLanguageService();
+				$userType = $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.' . $userTypeLabel);
 				// Get the username (if available):
 				if ($row['username']) {
 					$userName = $row['username'];
 				} else {
-					$userName = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.unknownUser');
+					$userName = $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.unknownUser');
 				}
 				$GLOBALS['LOCKED_RECORDS'][$row['record_table'] . ':' . $row['record_uid']] = $row;
-				$GLOBALS['LOCKED_RECORDS'][$row['record_table'] . ':' . $row['record_uid']]['msg'] = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.lockedRecordUser'), $userType, $userName, self::calcAge($GLOBALS['EXEC_TIME'] - $row['tstamp'], $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')));
+				$GLOBALS['LOCKED_RECORDS'][$row['record_table'] . ':' . $row['record_uid']]['msg'] = sprintf($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.lockedRecordUser'), $userType, $userName, self::calcAge($GLOBALS['EXEC_TIME'] - $row['tstamp'], $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')));
 				if ($row['record_pid'] && !isset($GLOBALS['LOCKED_RECORDS'][($row['record_table'] . ':' . $row['record_pid'])])) {
-					$GLOBALS['LOCKED_RECORDS']['pages:' . $row['record_pid']]['msg'] = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.lockedRecordUser_content'), $userType, $userName, self::calcAge($GLOBALS['EXEC_TIME'] - $row['tstamp'], $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')));
+					$GLOBALS['LOCKED_RECORDS']['pages:' . $row['record_pid']]['msg'] = sprintf($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.lockedRecordUser_content'), $userType, $userName, self::calcAge($GLOBALS['EXEC_TIME'] - $row['tstamp'], $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')));
 				}
 			}
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			$db->sql_free_result($res);
 		}
 		return $GLOBALS['LOCKED_RECORDS'][$table . ':' . $uid];
 	}
@@ -3205,7 +3236,8 @@ class BackendUtility {
 		$rootLevel = $GLOBALS['TCA'][$foreign_table]['ctrl']['rootLevel'];
 		$fTWHERE = $fieldValue['config'][$prefix . 'foreign_table_where'];
 		$fTWHERE = static::replaceMarkersInWhereClause($fTWHERE, $foreign_table, $field, $TSconfig);
-		$wgolParts = $GLOBALS['TYPO3_DB']->splitGroupOrderLimit($fTWHERE);
+		$db = static::getDatabaseConnection();
+		$wgolParts = $db->splitGroupOrderLimit($fTWHERE);
 		// rootLevel = -1 means that elements can be on the rootlevel OR on any page (pid!=-1)
 		// rootLevel = 0 means that elements are not allowed on root level
 		// rootLevel = 1 means that elements are only on the root level (pid=0)
@@ -3220,7 +3252,7 @@ class BackendUtility {
 				'LIMIT' => $wgolParts['LIMIT']
 			);
 		} else {
-			$pageClause = $GLOBALS['BE_USER']->getPagePermsClause(1);
+			$pageClause = static::getBackendUserAuthentication()->getPagePermsClause(1);
 			if ($foreign_table != 'pages') {
 				$queryParts = array(
 					'SELECT' => self::getCommonSelectFields($foreign_table, $foreign_table . '.'),
@@ -3243,7 +3275,7 @@ class BackendUtility {
 				);
 			}
 		}
-		return $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
+		return $db->exec_SELECT_queryArray($queryParts);
 	}
 
 	/**
@@ -3266,15 +3298,16 @@ class BackendUtility {
 	 * @return string
 	 */
 	static public function replaceMarkersInWhereClause($whereClause, $table, $field = '', $tsConfig = array()) {
+		$db = static::getDatabaseConnection();
 		if (strstr($whereClause, '###REC_FIELD_')) {
 			$whereClauseParts = explode('###REC_FIELD_', $whereClause);
 			foreach ($whereClauseParts as $key => $value) {
 				if ($key) {
 					$whereClauseSubarts = explode('###', $value, 2);
 					if (substr($whereClauseParts[0], -1) === '\'' && $whereClauseSubarts[1][0] === '\'') {
-						$whereClauseParts[$key] = $GLOBALS['TYPO3_DB']->quoteStr($tsConfig['_THIS_ROW'][$whereClauseSubarts[0]], $table) . $whereClauseSubarts[1];
+						$whereClauseParts[$key] = $db->quoteStr($tsConfig['_THIS_ROW'][$whereClauseSubarts[0]], $table) . $whereClauseSubarts[1];
 					} else {
-						$whereClauseParts[$key] = $GLOBALS['TYPO3_DB']->fullQuoteStr($tsConfig['_THIS_ROW'][$whereClauseSubarts[0]], $table) . $whereClauseSubarts[1];
+						$whereClauseParts[$key] = $db->fullQuoteStr($tsConfig['_THIS_ROW'][$whereClauseSubarts[0]], $table) . $whereClauseSubarts[1];
 					}
 				}
 			}
@@ -3298,8 +3331,8 @@ class BackendUtility {
 				(int)$tsConfig['_STORAGE_PID'],
 				(int)$tsConfig['_SITEROOT'],
 				(int)$tsConfig[$field]['PAGE_TSCONFIG_ID'],
-				$GLOBALS['TYPO3_DB']->cleanIntList($tsConfig[$field]['PAGE_TSCONFIG_IDLIST']),
-				$GLOBALS['TYPO3_DB']->quoteStr($tsConfig[$field]['PAGE_TSCONFIG_STR'], $table)
+				$db->cleanIntList($tsConfig[$field]['PAGE_TSCONFIG_IDLIST']),
+				$db->quoteStr($tsConfig[$field]['PAGE_TSCONFIG_STR'], $table)
 			),
 			$whereClause
 		);
@@ -3320,7 +3353,7 @@ class BackendUtility {
 		// Get main config for the table
 		list($TScID, $cPid) = self::getTSCpid($table, $row['uid'], $row['pid']);
 		if ($TScID >= 0) {
-			$tempConf = $GLOBALS['BE_USER']->getTSConfig('TCEFORM.' . $table, self::getPagesTSconfig($TScID));
+			$tempConf = static::getBackendUserAuthentication()->getTSConfig('TCEFORM.' . $table, self::getPagesTSconfig($TScID));
 			if (is_array($tempConf['properties'])) {
 				foreach ($tempConf['properties'] as $key => $val) {
 					if (is_array($val)) {
@@ -3460,12 +3493,14 @@ class BackendUtility {
 		$path = trim(preg_replace('/\\/[^\\/]*$/', '', $path));
 		// Stuff
 		$domain .= $path;
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('sys_domain.*', 'pages,sys_domain', '
+		$db = static::getDatabaseConnection();
+		$res = $db->exec_SELECTquery('sys_domain.*', 'pages,sys_domain', '
 			pages.uid=sys_domain.pid
 			AND sys_domain.hidden=0
-			AND (sys_domain.domainName=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($domain, 'sys_domain') . ' OR sys_domain.domainName=' . $GLOBALS['TYPO3_DB']->fullQuoteStr(($domain . '/'), 'sys_domain') . ')' . self::deleteClause('pages'), '', '', '1');
-		$result = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			AND (sys_domain.domainName=' . $db->fullQuoteStr($domain, 'sys_domain') . ' OR sys_domain.domainName='
+			. $db->fullQuoteStr(($domain . '/'), 'sys_domain') . ')' . self::deleteClause('pages'), '', '', '1');
+		$result = $db->sql_fetch_assoc($res);
+		$db->sql_free_result($res);
 		return $result;
 	}
 
@@ -3612,18 +3647,19 @@ class BackendUtility {
 	 */
 	static public function referenceCount($table, $ref, $msg = '', $count = NULL) {
 		if ($count === NULL) {
+			$db = static::getDatabaseConnection();
 			// Look up the path:
 			if ($table == '_FILE') {
 				if (GeneralUtility::isFirstPartOfStr($ref, PATH_site)) {
 					$ref = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($ref);
-					$condition = 'ref_string=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($ref, 'sys_refindex');
+					$condition = 'ref_string=' . $db->fullQuoteStr($ref, 'sys_refindex');
 				} else {
 					return '';
 				}
 			} else {
 				$condition = 'ref_uid=' . (int)$ref;
 			}
-			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'sys_refindex', 'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_refindex') . ' AND ' . $condition . ' AND deleted=0');
+			$count = $db->exec_SELECTcountRows('*', 'sys_refindex', 'ref_table=' . $db->fullQuoteStr($table, 'sys_refindex') . ' AND ' . $condition . ' AND deleted=0');
 		}
 		return $count ? ($msg ? sprintf($msg, $count) : $count) : '';
 	}
@@ -3642,7 +3678,7 @@ class BackendUtility {
 			if (!empty($GLOBALS['TCA'][$table]['ctrl']['delete'])) {
 				$where .= ' AND ' . $GLOBALS['TCA'][$table]['ctrl']['delete'] . '=0';
 			}
-			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', $table, $where);
+			$count = static::getDatabaseConnection()->exec_SELECTcountRows('*', $table, $where);
 		}
 		return $count ? ($msg ? sprintf($msg, $count) : $count) : '';
 	}
@@ -3683,7 +3719,7 @@ class BackendUtility {
 				}
 			}
 			// Select all offline versions of record:
-			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			$rows = static::getDatabaseConnection()->exec_SELECTgetRows(
 				$fields,
 				$table,
 				'pid=-1 AND uid<>' . (int)$uid . ' AND t3ver_oid=' . (int)$uid
@@ -3735,7 +3771,7 @@ class BackendUtility {
 					}
 				}
 				// If ID of current online version is found, look up the PID value of that:
-				if ($oid && ($ignoreWorkspaceMatch || (int)$wsid === (int)$GLOBALS['BE_USER']->workspace)) {
+				if ($oid && ($ignoreWorkspaceMatch || (int)$wsid === (int)static::getBackendUserAuthentication()->workspace)) {
 					$oidRec = self::getRecord($table, $oid, 'pid');
 					if (is_array($oidRec)) {
 						$rr['_ORIG_pid'] = $rr['pid'];
@@ -3758,7 +3794,7 @@ class BackendUtility {
 	 *
 	 * @param string $table Table name
 	 * @param array $row Record array passed by reference. As minimum, the "uid" and  "pid" fields must exist! Fake fields cannot exist since the fields in the array is used as field names in the SQL look up. It would be nice to have fields like "t3ver_state" and "t3ver_mode_id" as well to avoid a new lookup inside movePlhOL().
-	 * @param int $wsid Workspace ID, if not specified will use $GLOBALS['BE_USER']->workspace
+	 * @param int $wsid Workspace ID, if not specified will use static::getBackendUserAuthentication()->workspace
 	 * @param bool $unsetMovePointers If TRUE the function does not return a "pointer" row for moved records in a workspace
 	 * @return void (Passed by ref).
 	 * @see fixVersioningPid()
@@ -3770,7 +3806,7 @@ class BackendUtility {
 			$previewMovePlaceholders = TRUE;
 			// Initialize workspace ID
 			if ($wsid == -99) {
-				$wsid = $GLOBALS['BE_USER']->workspace;
+				$wsid = static::getBackendUserAuthentication()->workspace;
 			}
 			// Check if workspace is different from zero and record is set:
 			if ($wsid !== 0 && is_array($row)) {
@@ -3871,7 +3907,7 @@ class BackendUtility {
 		if (ExtensionManagementUtility::isLoaded('version')) {
 			if ($workspace !== 0 && $GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 				// Select workspace version of record:
-				$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow($fields, $table, 'pid=-1 AND ' . 't3ver_oid=' . (int)$uid . ' AND ' . 't3ver_wsid=' . (int)$workspace . self::deleteClause($table));
+				$row = static::getDatabaseConnection()->exec_SELECTgetSingleRow($fields, $table, 'pid=-1 AND ' . 't3ver_oid=' . (int)$uid . ' AND ' . 't3ver_wsid=' . (int)$workspace . self::deleteClause($table));
 				if (is_array($row)) {
 					return $row;
 				}
@@ -3922,7 +3958,7 @@ class BackendUtility {
 	 */
 	static public function versioningPlaceholderClause($table) {
 		if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
-			$currentWorkspace = (int)$GLOBALS['BE_USER']->workspace;
+			$currentWorkspace = (int)static::getBackendUserAuthentication()->workspace;
 			return ' AND (' . $table . '.t3ver_state <= ' . new VersionState(VersionState::DEFAULT_STATE) . ' OR ' . $table . '.t3ver_wsid = ' . $currentWorkspace . ')';
 		}
 	}
@@ -3938,7 +3974,7 @@ class BackendUtility {
 		$whereClause = '';
 		if (self::isTableWorkspaceEnabled($table)) {
 			if (is_null($workspaceId)) {
-				$workspaceId = $GLOBALS['BE_USER']->workspace;
+				$workspaceId = static::getBackendUserAuthentication()->workspace;
 			}
 			$workspaceId = (int)$workspaceId;
 			$pidOperator = $workspaceId === 0 ? '!=' : '=';
@@ -3968,7 +4004,7 @@ class BackendUtility {
 					}
 					// Select all records from this table in the database from the workspace
 					// This joins the online version with the offline version as tables A and B
-					$output[$tableName] = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+					$output[$tableName] = static::getDatabaseConnection()->exec_SELECTgetRows(
 						'B.uid as live_uid, A.uid as offline_uid',
 						$tableName . ' A,' . $tableName . ' B',
 						'A.pid=-1' . ' AND B.pid=' . (int)$pageId
@@ -3992,7 +4028,7 @@ class BackendUtility {
 	 * @return integer Uid of offline version if any, otherwise live uid.
 	 */
 	static public function wsMapId($table, $uid) {
-		if ($wsRec = self::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $table, $uid, 'uid')) {
+		if ($wsRec = self::getWorkspaceVersionOfRecord(static::getBackendUserAuthentication()->workspace, $table, $uid, 'uid')) {
 			return $wsRec['uid'];
 		} else {
 			return $uid;
@@ -4008,10 +4044,10 @@ class BackendUtility {
 	 * @return array If found, the record, otherwise nothing.
 	 */
 	static public function getMovePlaceholder($table, $uid, $fields = '*') {
-		$workspace = $GLOBALS['BE_USER']->workspace;
+		$workspace = static::getBackendUserAuthentication()->workspace;
 		if ($workspace !== 0 && $GLOBALS['TCA'][$table] && (int)$GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2) {
 			// Select workspace version of record:
-			$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+			$row = static::getDatabaseConnection()->exec_SELECTgetSingleRow(
 				$fields,
 				$table,
 				'pid<>-1 AND t3ver_state=' . new VersionState(VersionState::MOVE_PLACEHOLDER) . ' AND t3ver_move_id='
@@ -4045,23 +4081,24 @@ class BackendUtility {
 		$loginCopyrightWarrantyProvider = strip_tags(trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightWarrantyProvider']));
 		$loginCopyrightWarrantyURL = strip_tags(trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightWarrantyURL']));
 
+		$lang = static::getLanguageService();
 		$versionNumber = $showVersionNumber ?
-				' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xlf:version.short') . ' ' .
+				' ' . $lang->sL('LLL:EXT:lang/locallang_login.xlf:version.short') . ' ' .
 				htmlspecialchars(TYPO3_version) : '';
 
 		if (strlen($loginCopyrightWarrantyProvider) >= 2 && strlen($loginCopyrightWarrantyURL) >= 10) {
-			$warrantyNote = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xlf:warranty.by'), htmlspecialchars($loginCopyrightWarrantyProvider), '<a href="' . htmlspecialchars($loginCopyrightWarrantyURL) . '" target="_blank">', '</a>');
+			$warrantyNote = sprintf($lang->sL('LLL:EXT:lang/locallang_login.xlf:warranty.by'), htmlspecialchars($loginCopyrightWarrantyProvider), '<a href="' . htmlspecialchars($loginCopyrightWarrantyURL) . '" target="_blank">', '</a>');
 		} else {
-			$warrantyNote = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xlf:no.warranty'), '<a href="' . TYPO3_URL_LICENSE . '" target="_blank">', '</a>');
+			$warrantyNote = sprintf($lang->sL('LLL:EXT:lang/locallang_login.xlf:no.warranty'), '<a href="' . TYPO3_URL_LICENSE . '" target="_blank">', '</a>');
 		}
 		$cNotice = '<a href="' . TYPO3_URL_GENERAL . '" target="_blank">' .
-				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xlf:typo3.cms') . $versionNumber . '</a>. ' .
-				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xlf:copyright') . ' &copy; ' . htmlspecialchars(TYPO3_copyright_year) . ' Kasper Sk&aring;rh&oslash;j. ' .
-				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xlf:extension.copyright') . ' ' .
-				sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xlf:details.link'), ('<a href="' . TYPO3_URL_GENERAL . '" target="_blank">' . TYPO3_URL_GENERAL . '</a>')) . ' ' .
+				$lang->sL('LLL:EXT:lang/locallang_login.xlf:typo3.cms') . $versionNumber . '</a>. ' .
+				$lang->sL('LLL:EXT:lang/locallang_login.xlf:copyright') . ' &copy; ' . htmlspecialchars(TYPO3_copyright_year) . ' Kasper Sk&aring;rh&oslash;j. ' .
+				$lang->sL('LLL:EXT:lang/locallang_login.xlf:extension.copyright') . ' ' .
+				sprintf($lang->sL('LLL:EXT:lang/locallang_login.xlf:details.link'), ('<a href="' . TYPO3_URL_GENERAL . '" target="_blank">' . TYPO3_URL_GENERAL . '</a>')) . ' ' .
 				strip_tags($warrantyNote, '<a>') . ' ' .
-				sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xlf:free.software'), ('<a href="' . TYPO3_URL_LICENSE . '" target="_blank">'), '</a> ') .
-				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xlf:keep.notice');
+				sprintf($lang->sL('LLL:EXT:lang/locallang_login.xlf:free.software'), ('<a href="' . TYPO3_URL_LICENSE . '" target="_blank">'), '</a> ') .
+				$lang->sL('LLL:EXT:lang/locallang_login.xlf:keep.notice');
 		return $cNotice;
 	}
 
@@ -4137,7 +4174,7 @@ class BackendUtility {
 	 */
 	static public function getBackendScript($interface = '') {
 		if (!$interface) {
-			$interface = $GLOBALS['BE_USER']->uc['interfaceSetup'];
+			$interface = static::getBackendUserAuthentication()->uc['interfaceSetup'];
 		}
 		switch ($interface) {
 			case 'frontend':
@@ -4232,5 +4269,33 @@ class BackendUtility {
 	static protected function emitGetPagesTSconfigPreIncludeSignal(array $TSdataArray, $id, array $rootLine, $returnPartArray) {
 		$signalArguments = static::getSignalSlotDispatcher()->dispatch(__CLASS__, 'getPagesTSconfigPreInclude', array($TSdataArray, $id, $rootLine, $returnPartArray));
 		return $signalArguments[0];
+	}
+
+	/**
+	 * @return DatabaseConnection
+	 */
+	static protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
+	}
+
+	/**
+	 * @return LanguageService
+	 */
+	static protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
+
+	/**
+	 * @return BackendUserAuthentication
+	 */
+	static protected function getBackendUserAuthentication() {
+		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * @return DocumentTemplate
+	 */
+	static protected function getDocumentTemplate() {
+		return $GLOBALS['TBE_TEMPLATE'];
 	}
 }
