@@ -2134,7 +2134,7 @@ class FormEngine {
 	 */
 	public function renderDefaultLanguageContent($table, $field, $row, $item) {
 		if (is_array($this->defaultLanguageData[$table . ':' . $row['uid']])) {
-			$defaultLanguageValue = BackendUtility::getProcessedValue($table, $field, $this->defaultLanguageData[$table . ':' . $row['uid']][$field], 0, 1);
+			$defaultLanguageValue = BackendUtility::getProcessedValue($table, $field, $this->defaultLanguageData[$table . ':' . $row['uid']][$field], 0, 1, FALSE, $this->defaultLanguageData[$table . ':' . $row['uid']]['uid']);
 			$fieldConfig = $GLOBALS['TCA'][$table]['columns'][$field];
 			// Don't show content if it's for IRRE child records:
 			if ($fieldConfig['config']['type'] != 'inline') {
