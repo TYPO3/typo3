@@ -1,3 +1,14 @@
+2014-10-22  6b61880                  [RELEASE] Release of TYPO3 4.7.20 (TYPO3 Release Team)
+2014-10-22  727258f  #62357          [SECURITY] Fix DoS in openid (Markus Klein)
+2014-10-22  313c4bb  #59573          [SECURITY] Fix RCE in swiftmailer (Helmut Hummel)
+2014-08-23  aec409c  #60199          [BUGFIX] Collect correct information on elements in page (Jigal van Hemert)
+2014-07-08  c409513  #48939,#49055   [BUGFIX] Movements pollute colPos value of content elements (Nicole Cordes)
+2014-06-29  b0033d1                  [TASK] Improve travis notifications to channels (Helmut Hummel)
+2014-06-05  f731fc3  #59059          [BUGFIX] New content elements are always stored on pid 0 (Markus Klein)
+2014-06-03  d9d2dd1  #59034          [BUGFIX] Fix double ? in eID url for encryption key (Markus Klein)
+2014-05-22  854cca5                  [TASK] Set TYPO3 version to 4.7.20-dev (TYPO3 Release Team)
+
+
 2014-05-22  4ebc6ca                  [RELEASE] Release of TYPO3 4.7.19 (TYPO3 Release Team)
 2014-05-22  07eba3e  #30377          [SECURITY] Add trusted HTTP_HOST configuration (Helmut Hummel)
 2014-05-22  ec33beb  #54111,#54113   [SECURITY] XSS in (old) extension manager information function (Marc Bastian Heinrichs)
