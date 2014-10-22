@@ -39,7 +39,7 @@ class Auth_OpenID_Extension {
      *
      * Returns the message with the extension arguments added.
      */
-    function toMessage($message)
+    function toMessage($message, $request = null)
     {
         $implicit = $message->isOpenID1();
         $added = $message->namespaces->addAlias($this->ns_uri,
@@ -53,8 +53,13 @@ class Auth_OpenID_Extension {
             }
         }
 
-        $message->updateArgs($this->ns_uri,
-                             $this->getExtensionArgs());
+        if ($request !== null) {
+            $message->updateArgs($this->ns_uri,
+                                 $this->getExtensionArgs($request));
+        } else {
+            $message->updateArgs($this->ns_uri,
+                                 $this->getExtensionArgs());
+        }
         return $message;
     }
 }

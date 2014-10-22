@@ -37,7 +37,7 @@ class Auth_Yadis_PHPSession {
      */
     function get($name, $default=null)
     {
-        if (array_key_exists($name, $_SESSION)) {
+        if (isset($_SESSION) && array_key_exists($name, $_SESSION)) {
             return $_SESSION[$name];
         } else {
             return $default;
@@ -414,7 +414,7 @@ class Auth_Yadis_Discovery {
             list($yadis_url, $services) = call_user_func_array($discover_cb,
                                                                array(
                                                                 $this->url,
-                                                                &$fetcher,
+                                                                $fetcher,
                                                                ));
 
             $manager = $this->createManager($services, $yadis_url);

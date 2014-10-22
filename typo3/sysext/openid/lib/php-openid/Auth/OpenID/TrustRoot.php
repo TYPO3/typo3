@@ -210,7 +210,7 @@ class Auth_OpenID_TrustRoot {
         if ($parts['host'] == 'localhost') {
             return true;
         }
-        
+
         $host_parts = explode('.', $parts['host']);
         if ($parts['wildcard']) {
             // Remove the empty string from the beginning of the array
@@ -413,7 +413,7 @@ function Auth_OpenID_getAllowedReturnURLs($relying_party_url, $fetcher,
     }
 
     call_user_func_array($discover_function,
-                         array($relying_party_url, &$fetcher));
+                         array($relying_party_url, $fetcher));
 
     $return_to_urls = array();
     $matching_endpoints = Auth_OpenID_extractReturnURL($endpoints);

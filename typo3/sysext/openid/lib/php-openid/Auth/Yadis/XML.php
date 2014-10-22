@@ -234,7 +234,23 @@ class Auth_Yadis_dom extends Auth_Yadis_XMLParser {
             return false;
         }
 
-        if (!@$this->doc->loadXML($xml_string)) {
+        // libxml_disable_entity_loader (PHP 5 >= 5.2.11)
+        if (function_exists('libxml_disable_entity_loader') && function_exists('libxml_use_internal_errors')) {
+            // disable external entities and libxml errors
+            $loader = libxml_disable_entity_loader(true);
+            $errors = libxml_use_internal_errors(true);
+            $parse_result = @$this->doc->loadXML($xml_string);
+            libxml_disable_entity_loader($loader);
+            libxml_use_internal_errors($errors);
+        } else {
+            $parse_result = @$this->doc->loadXML($xml_string);
+        }
+
+        if (!$parse_result) {
+            return false;
+        }
+
+        if (isset($this->doc->doctype)) {
             return false;
         }
 
@@ -331,11 +347,11 @@ function Auth_Yadis_getSupportedExtensions()
 function Auth_Yadis_getXMLParser()
 {
     global $__Auth_Yadis_defaultParser;
-    
+
     if (isset($__Auth_Yadis_defaultParser)) {
         return $__Auth_Yadis_defaultParser;
     }
-    
+
     foreach(Auth_Yadis_getSupportedExtensions() as $extension => $classname)
     {
       if (extension_loaded($extension))
@@ -345,7 +361,7 @@ function Auth_Yadis_getXMLParser()
         return $p;
       }
     }
-    
+
     return false;
 }
 
