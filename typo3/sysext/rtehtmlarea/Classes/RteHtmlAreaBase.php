@@ -790,11 +790,44 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 * @return void
 	 */
 	protected function addRteJsFiles($RTEcounter) {
-		$this->pageRenderer->addJsFile($this->getFullFileName('EXT:' . $this->ID . '/htmlarea/htmlarea.js'));
+		// Component files. Order is important.
+		$components = array(
+			'Util/Wrap.open',
+			'HTMLArea',
+			'Configuration/HTMLArea.Config',
+			'Extjs/ux/Ext.ux.HTMLAreaButton',
+			'Extjs/ux/Ext.ux.Toolbar.HTMLAreaToolbarText',
+			'Extjs/ux/Ext.ux.form.HTMLAreaCombo',
+			'Editor/HTMLArea.Toolbar',
+			'Editor/HTMLArea.Iframe',
+			'Editor/HTMLArea.StatusBar',
+			'Editor/HTMLArea.Framework',
+			'Editor/HTMLArea.Editor',
+			'Ajax/HTMLArea.Ajax',
+			'Util/HTMLArea.util.TYPO3',
+			'Util/HTMLArea.util',
+			'DOM/HTMLArea.DOM',
+			'DOM/HTMLArea.DOM.Walker',
+			'DOM/HTMLArea.DOM.Selection',
+			'DOM/HTMLArea.DOM.BookMark',
+			'DOM/HTMLArea.DOM.Node',
+			'CSS/HTMLArea.CSS.Parser',
+			'Util/HTMLArea.util.Tips',
+			'Util/HTMLArea.util.Color',
+			'Extjs/Ext.ColorPalette',
+			'Extjs/ux/Ext.ux.menu.HTMLAreaColorMenu',
+			'Extjs/ux/Ext.ux.form.ColorPaletteField',
+			'LoremIpsum',
+			'plugins/Plugin'
+		);
+		foreach ($components as $component) {
+			$this->pageRenderer->addJsFile($this->getFullFileName('EXT:' . $this->ID . '/htmlarea/' . $component . '.js'));
+		}
 		foreach ($this->pluginEnabledCumulativeArray[$RTEcounter] as $pluginId) {
 			$extensionKey = is_object($this->registeredPlugins[$pluginId]) ? $this->registeredPlugins[$pluginId]->getExtensionKey() : $this->ID;
 			$this->pageRenderer->addJsFile($this->getFullFileName('EXT:' . $extensionKey . '/htmlarea/plugins/' . $pluginId . '/' . strtolower(preg_replace('/([a-z])([A-Z])([a-z])/', '$1-$2$3', $pluginId)) . '.js'));
 		}
+		$this->pageRenderer->addJsFile($this->getFullFileName('EXT:' . $this->ID . '/htmlarea/Util/Wrap.close.js'));
 	}
 
 	/**
