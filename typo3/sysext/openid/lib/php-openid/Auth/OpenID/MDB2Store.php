@@ -85,7 +85,7 @@ class Auth_OpenID_MDB2Store extends Auth_OpenID_OpenIDStore {
         // column name instead of column index.
         $this->connection->setFetchMode(MDB2_FETCHMODE_ASSOC);
         
-        if (PEAR::isError($this->connection->loadModule('Extended'))) {
+        if (@PEAR::isError($this->connection->loadModule('Extended'))) {
             trigger_error("Unable to load MDB2_Extended module", E_USER_ERROR);
             return;
         }
@@ -103,7 +103,7 @@ class Auth_OpenID_MDB2Store extends Auth_OpenID_OpenIDStore {
 
     function tableExists($table_name)
     {
-        return !PEAR::isError($this->connection->query(
+        return !@PEAR::isError($this->connection->query(
                                   sprintf("SELECT * FROM %s LIMIT 0",
                                           $table_name)));
     }
@@ -135,12 +135,12 @@ class Auth_OpenID_MDB2Store extends Auth_OpenID_OpenIDStore {
                                 "  UNIQUE (server_url(255), timestamp, salt)\n".
                                 ") TYPE=InnoDB",
                                 $this->nonces_table_name));
-                    if (PEAR::isError($r)) {
+                    if (@PEAR::isError($r)) {
                         return false;
                     }
                     break;
                 default:
-                    if (PEAR::isError(
+                    if (@PEAR::isError(
                         $this->connection->loadModule('Manager'))) {
                         return false;
                     }
@@ -172,7 +172,7 @@ class Auth_OpenID_MDB2Store extends Auth_OpenID_OpenIDStore {
                     
                     $r = $this->connection->createTable($this->nonces_table_name,
                                                         $fields);
-                    if (PEAR::isError($r)) {
+                    if (@PEAR::isError($r)) {
                         return false;
                     }
                     
@@ -180,7 +180,7 @@ class Auth_OpenID_MDB2Store extends Auth_OpenID_OpenIDStore {
                         $this->nonces_table_name,
                         $this->nonces_table_name . "_constraint",
                         $constraint);
-                    if (PEAR::isError($r)) {
+                    if (@PEAR::isError($r)) {
                         return false;
                     }
                     break;
@@ -208,12 +208,12 @@ class Auth_OpenID_MDB2Store extends Auth_OpenID_OpenIDStore {
                                 "  PRIMARY KEY (server_url(255), handle)\n".
                                 ") TYPE=InnoDB",
                             $this->associations_table_name));
-                    if (PEAR::isError($r)) {
+                    if (@PEAR::isError($r)) {
                         return false;
                     }
                     break;
                 default:
-                    if (PEAR::isError(
+                    if (@PEAR::isError(
                         $this->connection->loadModule('Manager'))) {
                         return false;
                     }
@@ -258,7 +258,7 @@ class Auth_OpenID_MDB2Store extends Auth_OpenID_OpenIDStore {
                         $this->associations_table_name,
                         $fields,
                         $options);
-                    if (PEAR::isError($r)) {
+                    if (@PEAR::isError($r)) {
                         return false;
                     }
                     break;
@@ -293,7 +293,7 @@ class Auth_OpenID_MDB2Store extends Auth_OpenID_OpenIDStore {
             )
         );
         
-        return !PEAR::isError($this->connection->replace(
+        return !@PEAR::isError($this->connection->replace(
                                   $this->associations_table_name,
                                   $fields));
     }
@@ -340,7 +340,7 @@ class Auth_OpenID_MDB2Store extends Auth_OpenID_OpenIDStore {
         
         $assoc = $this->connection->getRow($sql, $types, $params);
 
-        if (!$assoc || PEAR::isError($assoc)) {
+        if (!$assoc || @PEAR::isError($assoc)) {
             return null;
         } else {
             $association = new Auth_OpenID_Association($assoc['handle'],
@@ -361,7 +361,7 @@ class Auth_OpenID_MDB2Store extends Auth_OpenID_OpenIDStore {
                     $this->associations_table_name),
             array($server_url, $handle));
         
-        if (PEAR::isError($r) || $r == 0) {
+        if (@PEAR::isError($r) || $r == 0) {
             return false;
         }
         return true;
@@ -389,7 +389,7 @@ class Auth_OpenID_MDB2Store extends Auth_OpenID_OpenIDStore {
             $fields,
             MDB2_AUTOQUERY_INSERT);
         
-        if (PEAR::isError($r)) {
+        if (@PEAR::isError($r)) {
             return false;
         }
         return true;
