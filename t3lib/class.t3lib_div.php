@@ -5429,7 +5429,8 @@ final class t3lib_div {
 		}
 
 			// Create new instance and call constructor with parameters
-		$instance = self::instantiateClass($finalClassName, func_get_args());
+		$arguments = func_get_args();
+		$instance = self::instantiateClass($finalClassName, $arguments);
 
 			// Register new singleton instance
 		if ($instance instanceof t3lib_Singleton) {
