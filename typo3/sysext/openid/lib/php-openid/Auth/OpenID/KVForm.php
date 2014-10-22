@@ -108,3 +108,4 @@ class Auth_OpenID_KVForm {
         return $serialized;
     }
 }
+

@@ -102,3 +102,4 @@ if (function_exists('hash_hmac') &&
 } else {
     define('Auth_OpenID_HMACSHA256_SUPPORTED', false);
 }
+

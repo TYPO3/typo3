@@ -517,3 +517,5 @@ class Auth_OpenID_SRegResponse extends Auth_OpenID_SRegBase {
         return $this->data;
     }
 }
+
+

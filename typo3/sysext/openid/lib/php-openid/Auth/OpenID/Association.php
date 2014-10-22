@@ -607,3 +607,4 @@ class Auth_OpenID_SessionNegotiator {
         return $this->allowed_types[0];
     }
 }
+

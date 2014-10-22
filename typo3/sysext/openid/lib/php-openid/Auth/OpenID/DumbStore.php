@@ -96,3 +96,4 @@ class Auth_OpenID_DumbStore extends Auth_OpenID_OpenIDStore {
         return $this->auth_key;
     }
 }
+
