@@ -1,9 +1,15 @@
---- Auth/Yadis/ParanoidHTTPFetcher.php	2012-10-21 00:26:52.036842042 +0200
-+++ Auth/Yadis/ParanoidHTTPFetcher.php	2012-10-21 00:33:46.515660341 +0200
-@@ -142,6 +142,19 @@
-                 }
+ .../php-openid/Auth/Yadis/ParanoidHTTPFetcher.php  | 27 ++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+diff --git a/typo3/sysext/openid/lib/php-openid/Auth/Yadis/ParanoidHTTPFetcher.php b/typo3/sysext/openid/lib/php-openid/Auth/Yadis/ParanoidHTTPFetcher.php
+index 627ea9a..af5043e 100644
+--- a/typo3/sysext/openid/lib/php-openid/Auth/Yadis/ParanoidHTTPFetcher.php
++++ b/typo3/sysext/openid/lib/php-openid/Auth/Yadis/ParanoidHTTPFetcher.php
+@@ -153,6 +153,20 @@ class Auth_Yadis_ParanoidHTTPFetcher extends Auth_Yadis_HTTPFetcher {
+             if (defined('Auth_OpenID_HTTP_PROXY')) {
+                 curl_setopt($c, CURLOPT_PROXY, Auth_OpenID_HTTP_PROXY);
              }
- 
++
 +			// <TYPO3-specific>
 +			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']) {
 +				curl_setopt($c, CURLOPT_PROXY, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']);
@@ -20,8 +26,8 @@
              curl_exec($c);
  
              $code = curl_getinfo($c, CURLINFO_HTTP_CODE);
-@@ -226,6 +239,19 @@
-             }
+@@ -216,6 +230,19 @@ class Auth_Yadis_ParanoidHTTPFetcher extends Auth_Yadis_HTTPFetcher {
+             curl_setopt($c, CURLOPT_PROXY, Auth_OpenID_HTTP_PROXY);
          }
  
 +		// <TYPO3-specific>
@@ -37,6 +43,6 @@
 +		}
 +		// </TYPO3-specific>
 +
-         curl_exec($c);
- 
-         $code = curl_getinfo($c, CURLINFO_HTTP_CODE);
+         curl_setopt($c, CURLOPT_POST, true);
+         curl_setopt($c, CURLOPT_POSTFIELDS, $body);
+         curl_setopt($c, CURLOPT_TIMEOUT, $this->timeout);
