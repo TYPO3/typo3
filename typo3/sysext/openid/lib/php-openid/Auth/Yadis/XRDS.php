@@ -429,7 +429,7 @@ class Auth_Yadis_XRDS {
 
                 foreach ($filters as $filter) {
 
-                    if (call_user_func_array($filter, array(&$service))) {
+                    if (call_user_func_array($filter, array($service))) {
                         $matches++;
 
                         if ($filter_mode == SERVICES_YADIS_MATCH_ANY) {

@@ -141,7 +141,7 @@ function Auth_Yadis_getServiceEndpoints($input_url, $xrds_parse_func,
     }
 
     $yadis_result = call_user_func_array($discover_func,
-                                         array($input_url, &$fetcher));
+                                         array($input_url, $fetcher));
 
     if ($yadis_result === null) {
         return array($input_url, array());

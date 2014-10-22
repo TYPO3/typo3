@@ -675,7 +675,7 @@ class Auth_OpenID_Message {
 
         if ($form_tag_attrs) {
             foreach ($form_tag_attrs as $name => $attr) {
-                $form .= sprintf(" %s=\"%s\"", $name, $attr);
+                $form .= sprintf(" %s=\"%s\"", $name, htmlspecialchars($attr));
             }
         }
 
@@ -684,11 +684,11 @@ class Auth_OpenID_Message {
         foreach ($this->toPostArgs() as $name => $value) {
             $form .= sprintf(
                         "<input type=\"hidden\" name=\"%s\" value=\"%s\" />\n",
-                        $name, urldecode($value));
+                        htmlspecialchars($name), htmlspecialchars($value));
         }
 
         $form .= sprintf("<input type=\"submit\" value=\"%s\" />\n",
-                         $submit_text);
+                         htmlspecialchars($submit_text));
 
         $form .= "</form>\n";
 

@@ -29,7 +29,7 @@
  * identity check.
  *
  * LIBRARY DESIGN
- * 
+ *
  * This consumer library is designed with that flow in mind.  The goal
  * is to make it as easy as possible to perform the above steps
  * securely.
@@ -427,7 +427,7 @@ class Auth_OpenID_Consumer {
             $loader->fromSession($endpoint_data);
 
         $message = Auth_OpenID_Message::fromPostArgs($query);
-        $response = $this->consumer->complete($message, $endpoint, 
+        $response = $this->consumer->complete($message, $endpoint,
                                               $current_url);
         $this->session->del($this->_token_key);
 
@@ -616,6 +616,9 @@ class Auth_OpenID_GenericConsumer {
         $this->store = $store;
         $this->negotiator = Auth_OpenID_getDefaultNegotiator();
         $this->_use_assocs = (is_null($this->store) ? false : true);
+        if (get_class($this->store) == "Auth_OpenID_DumbStore") {
+            $this->_use_assocs = false;
+        }
 
         $this->fetcher = Auth_Yadis_Yadis::getHTTPFetcher();
 
@@ -666,7 +669,7 @@ class Auth_OpenID_GenericConsumer {
                                         '_completeInvalid');
 
         return call_user_func_array(array($this, $method),
-                                    array($message, &$endpoint, $return_to));
+                                    array($message, $endpoint, $return_to));
     }
 
     /**
@@ -1186,7 +1189,7 @@ class Auth_OpenID_GenericConsumer {
         list($unused, $services) = call_user_func_array($this->discoverMethod,
                                                         array(
                                                             $claimed_id,
-                                                            &$this->fetcher,
+                                                            $this->fetcher,
                                                         ));
 
         if (!$services) {
@@ -1202,7 +1205,7 @@ class Auth_OpenID_GenericConsumer {
     /**
      * @access private
      */
-    function _verifyDiscoveryServices($claimed_id, 
+    function _verifyDiscoveryServices($claimed_id,
                                       $services, $to_match_endpoints)
     {
         // Search the services resulting from discovery to find one
@@ -1210,7 +1213,7 @@ class Auth_OpenID_GenericConsumer {
 
         foreach ($services as $endpoint) {
             foreach ($to_match_endpoints as $to_match_endpoint) {
-                $result = $this->_verifyDiscoverySingle($endpoint, 
+                $result = $this->_verifyDiscoverySingle($endpoint,
                                                         $to_match_endpoint);
 
                 if (!Auth_OpenID::isFailure($result)) {
@@ -1368,7 +1371,7 @@ class Auth_OpenID_GenericConsumer {
             }
         }
         $ca_message = $message->copy();
-        $ca_message->setArg(Auth_OpenID_OPENID_NS, 'mode', 
+        $ca_message->setArg(Auth_OpenID_OPENID_NS, 'mode',
                             'check_authentication');
         return $ca_message;
     }
@@ -1606,7 +1609,7 @@ class Auth_OpenID_GenericConsumer {
 
         $expires_in = Auth_OpenID::intval($expires_in_str);
         if ($expires_in === false) {
-            
+
             $err = sprintf("Could not parse expires_in from association ".
                            "response %s", print_r($assoc_response, true));
             return new Auth_OpenID_FailureResponse(null, $err);
@@ -1953,7 +1956,7 @@ class Auth_OpenID_AuthRequest {
     function htmlMarkup($realm, $return_to=null, $immediate=false,
                         $form_tag_attrs=null)
     {
-        $form = $this->formMarkup($realm, $return_to, $immediate, 
+        $form = $this->formMarkup($realm, $return_to, $immediate,
                                   $form_tag_attrs);
 
         if (Auth_OpenID::isFailure($form)) {
