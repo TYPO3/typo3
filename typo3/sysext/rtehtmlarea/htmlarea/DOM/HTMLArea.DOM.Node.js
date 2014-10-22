@@ -163,7 +163,7 @@ HTMLArea.DOM.Node = Ext.extend(HTMLArea.DOM.Node, {
 		}
 		return position;
 	},
-	/*
+	/**
 	 * Clean Apple wrapping span and font elements under the specified node
 	 *
 	 * @param	object		node: the node in the subtree of which cleaning is performed
@@ -171,24 +171,26 @@ HTMLArea.DOM.Node = Ext.extend(HTMLArea.DOM.Node, {
 	 * @return	void
 	 */
 	cleanAppleStyleSpans: function (node) {
-		if (Ext.isWebKit) {
+		if (Ext.isWebKit || Ext.isOpera) {
 			if (node.getElementsByClassName) {
 				var spans = node.getElementsByClassName('Apple-style-span');
 				for (var i = spans.length; --i >= 0;) {
 					this.removeMarkup(spans[i]);
 				}
-			} else {
-				var spans = node.getElementsByTagName('span');
-				for (var i = spans.length; --i >= 0;) {
-					if (HTMLArea.DOM.hasClass(spans[i], 'Apple-style-span')) {
-						this.removeMarkup(spans[i]);
-					}
+			}
+			var spans = node.getElementsByTagName('span');
+			for (var i = spans.length; --i >= 0;) {
+				if (HTMLArea.DOM.hasClass(spans[i], 'Apple-style-span')) {
+					this.removeMarkup(spans[i]);
 				}
-				var fonts = node.getElementsByTagName('font');
-				for (i = fonts.length; --i >= 0;) {
-					if (HTMLArea.DOM.hasClass(fonts[i], 'Apple-style-span')) {
-						this.removeMarkup(fonts[i]);
-					}
+				if (spans[i].style.cssText.indexOf('line-height') !== -1) {
+					this.removeMarkup(spans[i]);
+				}
+			}
+			var fonts = node.getElementsByTagName('font');
+			for (i = fonts.length; --i >= 0;) {
+				if (HTMLArea.DOM.hasClass(fonts[i], 'Apple-style-span')) {
+					this.removeMarkup(fonts[i]);
 				}
 			}
 		}

@@ -698,7 +698,7 @@ HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 			} catch(e) {
 				this.appendToLog('onButtonPress', e + '\n\nby execCommand(' + buttonId + ');', 'error');
 			}
-			if (Ext.isWebKit) {
+			if (Ext.isWebKit || Ext.isOpera) {
 				this.editor.getDomNode().cleanAppleStyleSpans(parentNode);
 			}
 		}
