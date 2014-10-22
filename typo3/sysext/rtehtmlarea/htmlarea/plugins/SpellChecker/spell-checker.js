@@ -355,7 +355,8 @@ HTMLArea.SpellChecker = Ext.extend(HTMLArea.Plugin, {
 					this.buildButtonConfig('Info', this.onInfoClick),
 					this.buildButtonConfig('Cancel', this.onCancel)
 				]
-			}
+			},
+			maximizable: true
 		});
 		this.show();
 	},

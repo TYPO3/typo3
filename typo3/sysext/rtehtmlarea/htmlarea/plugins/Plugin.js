@@ -437,7 +437,8 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 					cls: 'content-iframe',
 					src: url
 				}
-			}
+			},
+			maximizable: true
 		});
 		this.show();
 	},
