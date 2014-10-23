@@ -13,8 +13,8 @@ HTMLArea.Config = function (editorId) {
 	this.removeTrailingBR = true;
 		// style included in the iframe document
 	this.editedContentStyle = HTMLArea.editedContentCSS;
-		// content style
-	this.pageStyle = "";
+		// Array of content styles
+	this.pageStyle = [];
 		// Maximum attempts at accessing the stylesheets
 	this.styleSheetsMaximumAttempts = 20;
 		// Remove tags (must be a regular expression)

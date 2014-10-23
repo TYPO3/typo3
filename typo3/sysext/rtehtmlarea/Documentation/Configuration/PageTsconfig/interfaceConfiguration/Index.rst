@@ -2516,9 +2516,10 @@ contentCSS
 
    Property
          contentCSS
+         contentCSS.[id-string]
    
    Data type
-         resource
+         resource(s)
    
    Description
          The CSS file that contains the style definitions that should be
@@ -2531,6 +2532,13 @@ contentCSS
          
          For example, this default could be overridden with:
          fileadmin/styles/my\_contentCSS.css
+         
+         Multiple files may be specified by using contentCSS.[id-string].
+         For example: 
+         contentCSS {
+         	file1 = fileadmin/myStylesheet1.css
+         	file2 = fileadmin/myStylesheet2.css
+         }
 
 
 

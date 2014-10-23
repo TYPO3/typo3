@@ -502,31 +502,46 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	}
 
 	/**
-	 * Add link to content style sheet to document header
+	 * Add links to content style sheets to document header
 	 *
 	 * @return 	void
 	 */
 	protected function addPageStyle() {
-		$this->addStyleSheet('rtehtmlarea-page-style', $this->getContentCssFileName(), 'htmlArea RTE Content CSS', 'alternate stylesheet');
+		$contentCssFileNames = $this->getContentCssFileNames();
+		foreach ($contentCssFileNames as $contentCssKey => $contentCssFile) {
+			$this->addStyleSheet($contentCssKey, $contentCssFile, 'htmlArea RTE Content CSS', 'alternate stylesheet');
+		}
 	}
 
 	/**
-	 * Get the name of the contentCSS file to use
+	 * Get the name of the contentCSS files to use
 	 *
-	 * @return 	the full file name of the content css file to use
+	 * @return array An array of full file name of the content css files to use
 	 */
-	protected function getContentCssFileName() {
-		// Get stylesheet file name from Page TSConfig if any
-		$fileName = trim($this->thisConfig['contentCSS']);
-		if ($fileName) {
-			$fileName = $this->getFullFileName($fileName);
+	protected function getContentCssFileNames() {
+		$contentCss = is_array($this->thisConfig['contentCSS.']) ? $this->thisConfig['contentCSS.'] : array();
+
+		if (isset($this->thisConfig['contentCSS'])) {
+			$contentCss[] = trim($this->thisConfig['contentCSS']);
 		}
-		$absolutePath = $fileName ? GeneralUtility::resolveBackPath(PATH_site . ($this->is_FE() || $this->isFrontendEditActive() ? '' : TYPO3_mainDir) . $fileName) : '';
-		// Fallback to default content css file if configured file does not exists or is of zero size
-		if (!$fileName || !file_exists($absolutePath) || !filesize($absolutePath)) {
-			$fileName = $this->getFullFileName('EXT:' . $this->ID . '/res/contentcss/default.css');
+
+		$contentCssFiles = array();
+
+		if (count($contentCss)) {
+			foreach ($contentCss as $contentCssKey => $contentCssfile) {
+				$fileName = $this->getFullFileName($contentCssfile);
+				$absolutePath = $fileName ? GeneralUtility::resolveBackPath(PATH_site . ($this->is_FE() || $this->isFrontendEditActive() ? '' : TYPO3_mainDir) . $fileName) : '';
+				if (file_exists($absolutePath) && filesize($absolutePath)) {
+					$contentCssFiles[$contentCssKey] = $fileName;
+				}
+			}
 		}
-		return $fileName;
+
+		if (count($contentCssFiles) === 0) {
+			$contentCssFiles['default'] = $this->getFullFileName('EXT:' . $this->ID . '/res/contentcss/default.css');
+		}
+
+		return array_unique($contentCssFiles);
 	}
 
 	/**
@@ -970,9 +985,14 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 				RTEarea[editornumber].customTags= ' . json_encode($customTags) . ';';
 			}
 		}
-		// Setting the pageStyle
+		// Setting array of content css files if specified in the RTE config
+		$versionNumberedFileNames = array();
+		$contentCssFileNames = $this->getContentCssFileNames();
+		foreach ($contentCssFileNames as $contentCssFileName) {
+			$versionNumberedFileNames[] = GeneralUtility::createVersionNumberedFilename($contentCssFileName);
+		}
 		$configureRTEInJavascriptString .= '
-			RTEarea[editornumber].pageStyle = "' . GeneralUtility::createVersionNumberedFilename($this->getContentCssFileName()) . '";';
+			RTEarea[editornumber].pageStyle = ["' . implode('","', $versionNumberedFileNames) . '"];';
 		// Process classes configuration
 		$classesConfigurationRequired = FALSE;
 		foreach ($this->registeredPlugins as $pluginId => $plugin) {

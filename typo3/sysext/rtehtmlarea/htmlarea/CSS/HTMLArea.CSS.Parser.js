@@ -147,7 +147,7 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 			}
 		}
 		if (this.cssLoaded) {
-				// Expecting 2 stylesheets...
+				// Expecting at least 2 stylesheets...
 			if (this.editor.document.styleSheets.length > 1) {
 				var styleSheets = this.editor.document.styleSheets;
 				for (var index = 0, n = styleSheets.length; index < n; index++) {

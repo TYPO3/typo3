@@ -212,17 +212,16 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 			head.appendChild(link0);
 			this.getEditor().appendToLog('HTMLArea.Iframe', 'createHead', 'Skin CSS set to: ' + link0.href, 'info');
 		}
-		if (this.config.pageStyle) {
-			var link = this.document.getElementsByTagName('link')[1];
-			if (!link) {
-				link = this.document.createElement('link');
-				link.rel = 'stylesheet';
-				link.type = 'text/css';
-				link.href = ((Ext.isGecko && navigator.productSub < 2010072200 && !/^https?:\/{2}/.test(this.config.pageStyle)) ? this.config.baseURL : '') + this.config.pageStyle;
-				head.appendChild(link);
-			}
-			this.getEditor().appendToLog('HTMLArea.Iframe', 'createHead', 'Content CSS set to: ' + link.href, 'info');
-		}
+		var pageStyle;
+		for (var i = 0, n = this.config.pageStyle.length; i < n; i++) {
+			pageStyle = this.config.pageStyle[i];
+			var link = this.document.createElement('link');
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = ((Ext.isGecko && navigator.productSub < 2010072200 && !/^https?:\/{2}/.test(pageStyle)) ? this.config.baseURL : '') + pageStyle;
+			head.appendChild(link);
+ 			this.getEditor().appendToLog('HTMLArea.Iframe', 'createHead', 'Content CSS set to: ' + link.href, 'info');
+ 		}
 	},
 	/*
 	 * Focus on the iframe
