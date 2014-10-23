@@ -567,9 +567,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 	protected function JScode() {
 		$this->t3lib_TCEforms = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormEngine');
 		$this->t3lib_TCEforms->backPath = $GLOBALS['BACK_PATH'];
-		$js = $this->t3lib_TCEforms->dbFileCon();
-		$this->taskObject->doc->JScodeArray[] = $js;
-		return $js;
+		$this->t3lib_TCEforms->printNeededJSFunctions();
 	}
 
 	/**

@@ -1977,7 +1977,7 @@ class FormEngine {
 	 * @param string $field Specify the field name.
 	 * @return array|NULL
 	 * @see getSpecConfFromString(), BackendUtility::getTCAtypes()
-	 * @deprecated since 6.3 - will be removed two versions later; unused in Core
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public function getSpecConfForField($table, $row, $field) {
 		GeneralUtility::logDeprecatedFunction();
@@ -2617,51 +2617,6 @@ class FormEngine {
 										$urlParameters = $wConf['module']['urlParameters'];
 									}
 									$wScript = BackendUtility::getModuleUrl($wConf['module']['name'], $urlParameters);
-								} elseif (isset($wConf['script'])) {
-									GeneralUtility::deprecationLog(
-										'The way registering a wizard in TCA has changed in 6.2. '
-										. 'Please set module[name]=module_name instead of using script=path/to/sctipt.php in your TCA. '
-										. 'The possibility to register wizards this way will be removed in 2 versions.'
-									);
-									if (substr($wConf['script'], 0, 4) === 'EXT:') {
-										$wScript = GeneralUtility::getFileAbsFileName($wConf['script']);
-										if ($wScript) {
-											$wScript = '../' . PathUtility::stripPathSitePrefix($wScript);
-										} else {
-											// Illeagal configuration, fail silently
-											break;
-										}
-									} else {
-										// Compatibility layer
-										// @deprecated since 6.2, will be removed 2 versions later
-										$parsedWizardUrl = parse_url($wConf['script']);
-										if (in_array($parsedWizardUrl['path'], array(
-													'wizard_add.php',
-													'wizard_colorpicker.php',
-													'wizard_edit.php',
-													'wizard_forms.php',
-													'wizard_list.php',
-													'wizard_rte.php',
-													'wizard_table.php',
-													'browse_links.php',
-													'sysext/cms/layout/wizard_backend_layout.php'
-												))
-										) {
-											$urlParameters = array();
-											if (isset($parsedWizardUrl['query'])) {
-												 parse_str($parsedWizardUrl['query'], $urlParameters);
-											}
-											$moduleName = str_replace(
-												array('.php', 'browse_links', 'sysext/cms/layout/wizard_backend_layout'),
-												array('', 'wizard_element_browser', 'wizard_backend_layout'),
-												$parsedWizardUrl['path']
-											);
-											$wScript = BackendUtility::getModuleUrl($moduleName, $urlParameters);
-											unset($moduleName, $urlParameters, $parsedWizardUrl);
-										} else {
-											$wScript = $wConf['script'];
-										}
-									}
 								} elseif (in_array($wConf['type'], array('script', 'colorbox', 'popup'), TRUE)) {
 									// Illegal configuration, fail silently
 									break;
@@ -4175,17 +4130,6 @@ class FormEngine {
 	}
 
 	/**
-	 * Used to connect the db/file browser with this document and the formfields on it!
-	 *
-	 * @param string $formObj Form object reference (including "document.")
-	 * @return string JavaScript functions/code (NOT contained in a <script>-element)
-	 * @deprecated since TYPO3 6.2, remove two versions later. This is now done in an external file, see printNeededJSfunctions
-	 */
-	public function dbFileCon($formObj = 'document.forms[0]') {
-		GeneralUtility::logDeprecatedFunction();
-	}
-
-	/**
 	 * Prints necessary JavaScript for TCEforms (after the form HTML).
 	 * currently this is used to transform page-specific options in the TYPO3.Settings array for JS
 	 * so the JS module can access these values
@@ -4249,7 +4193,7 @@ class FormEngine {
 	 * @param string $table Database Tablename
 	 * @param int $pid PID value (positive / negative)
 	 * @return array|NULL "default" row.
-	 * @deprecated since 6.3 - will be removed two versions later; not used anymore in Core
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public function getDefaultRecord($table, $pid = 0) {
 		GeneralUtility::logDeprecatedFunction();

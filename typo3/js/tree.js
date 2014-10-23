@@ -54,12 +54,12 @@ var DragDrop = {
 	dropElement: function(event) {
 		var dropID = this.getIdFromEvent(event);
 		if ((this.dragID) && (this.dragID !== dropID)) {
-			var url = this.changeURL +
-					'?dragDrop=' + this.table +
+			var urlParams = 'dragDrop=' + this.table +
 					'&srcId=' + this.dragID +
 					'&dstId=' + dropID +
 					'&backPath=' + this.backPath;
-			showClickmenu_raw(url);
+			Clickmenu.clickURL = this.changeURL;
+			Clickmenu.callURL(urlParams);
 		}
 		this.cancelDragEvent();
 		return false;

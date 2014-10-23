@@ -4143,19 +4143,6 @@ class BackendUtility {
 	}
 
 	/**
-	 * Display some warning messages if this installation is obviously insecure!!
-	 * These warnings are only displayed to admin users
-	 *
-	 * @return string Rendered messages as HTML
-	 * @deprecated since 6.2 and is removed two versions later. This was transferred to ext:aboutmodules, do not use any longer!
-	 * @see \TYPO3\CMS\Aboutmodules\Controller\ModulesController
-	 */
-	static public function displayWarningMessages() {
-		GeneralUtility::logDeprecatedFunction();
-		return '';
-	}
-
-	/**
 	 * Returns "web" if the $path (absolute) is within the DOCUMENT ROOT - and thereby qualifies as a "web" folder.
 	 *
 	 * @param string $path Path to evaluate

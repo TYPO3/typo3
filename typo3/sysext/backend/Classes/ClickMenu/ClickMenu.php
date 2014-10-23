@@ -1222,28 +1222,6 @@ class ClickMenu {
 	}
 
 	/**
-	 * Traverses the menuItems and generates an output array for implosion in the topframe horizontal menu
-	 *
-	 * @param array $menuItems Array
-	 * @return array Array of menu items for top frame.
-	 */
-	public function menuItemsForTopFrame($menuItems) {
-		$out = array();
-		foreach ($menuItems as $i) {
-			// IF the topbar is the ONLY means of the click menu, then items normally disabled from
-			// the top menu will appear anyways IF they are disabled with a "1" (2+ will still disallow
-			// them in the topbar)
-			if ($i[4] == 1 && !$GLOBALS['SOBE']->doc->isCMlayers()) {
-				$i[4] = 0;
-			}
-			if (is_array($i) && !$i[4]) {
-				$out[] = $i[0];
-			}
-		}
-		return $out;
-	}
-
-	/**
 	 * Traverses the menuItems and generates an output array for implosion in the CM div-layers table.
 	 *
 	 * @param array $menuItems Array
@@ -1357,7 +1335,7 @@ class ClickMenu {
 	 * @param string $str The label, htmlspecialchar'ed already
 	 * @param string $icon <img>-tag for the icon
 	 * @param string $onClick JavaScript onclick event for label/icon
-	 * @param bool $onlyCM ==1 and the element will NOT appear in clickmenus in the topframe (unless clickmenu is totally unavailable)! ==2 and the item will NEVER appear in top frame. (This is mostly for "less important" options since the top frame is not capable of holding so many elements horizontally)
+	 * @param int $onlyCM ==1 and the element will NOT appear in clickmenus in the topframe (unless clickmenu is totally unavailable)! ==2 and the item will NEVER appear in top frame. (This is mostly for "less important" options since the top frame is not capable of holding so many elements horizontally)
 	 * @param bool $dontHide If set, the clickmenu layer will not hide itself onclick - used for secondary menus to appear...
 	 * @return array $menuItem entry with 6 numerical entries: [0] is the HTML for display of the element with link and icon an mouseover etc., [1]-[5] is simply the input params passed through!
 	 */

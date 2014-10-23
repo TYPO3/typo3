@@ -484,7 +484,7 @@ class LoginController {
 	 * Returns the login box image, whether the default or an image from the rotation folder.
 	 *
 	 * @return string HTML image tag.
-	 * @deprecated since 6.3, see Deprecation-60559-MakeLoginBoxImage.rst
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8, see Deprecation-60559-MakeLoginBoxImage.rst
 	 */
 	public function makeLoginBoxImage() {
 		GeneralUtility::logDeprecatedFunction();
@@ -590,7 +590,7 @@ class LoginController {
 	 * Creates JavaScript for the login form
 	 *
 	 * @return string JavaScript code
-	 * @deprecated since TYPO3 6.3, not in use anymore
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public function getJScode() {
 		GeneralUtility::logDeprecatedFunction();

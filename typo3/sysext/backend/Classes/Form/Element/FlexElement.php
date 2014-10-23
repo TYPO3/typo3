@@ -312,14 +312,6 @@ class FlexElement extends AbstractFormElement {
 								$title = '';
 								if (isset($nCfg['title'])) {
 									$title = $this->formEngine->sL($nCfg['title']);
-								} elseif (isset($nCfg['tx_templavoila']['title'])) {
-									/* @deprecated since 4.7 will be removed two versions after 6.2 */
-									GeneralUtility::deprecationLog(
-										'Flexform data for table ' . $table . ', field ' . $field
-										. 'contains the <tx_templavoila><title>... construct deprecated since TYPO3 4.7. '
-										. 'The <tx_templavoila> element has to be removed now. Support will be removed two versions after 6.2.'
-									);
-									$title = $this->formEngine->sL($nCfg['tx_templavoila']['title']);
 								}
 								$newElementsLinks[] = '<a href="#" onclick="' . htmlspecialchars($onClickInsert) . '">'
 									. IconUtility::getSpriteIcon('actions-document-new')

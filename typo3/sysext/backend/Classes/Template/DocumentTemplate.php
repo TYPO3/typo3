@@ -538,18 +538,6 @@ function jumpToUrl(URL) {
 	}
 
 	/**
-	 * Returns TRUE if click-menu layers can be displayed for the current user/browser
-	 * Use this to test if click-menus (context sensitive menus) can and should be displayed in the backend.
-	 *
-	 * @return bool
-	 * @deprecated since TYPO3 4.7, will be removed in TYPO3 6.1 - This function makes no sense anymore
-	 */
-	public function isCMlayers() {
-		GeneralUtility::logDeprecatedFunction();
-		return !$GLOBALS['BE_USER']->uc['disableCMlayers'] && !($GLOBALS['CLIENT']['SYSTEM'] == 'mac' && $GLOBALS['CLIENT']['BROWSER'] == 'Opera');
-	}
-
-	/**
 	 * Makes the header (icon+title) for a page (or other record). Used in most modules under Web>*
 	 * $table and $row must be a tablename/record from that table
 	 * $path will be shown as alt-text for the icon.
@@ -603,23 +591,6 @@ function jumpToUrl(URL) {
 		}
 
 		return '<span class="typo3-moduleHeader">' . $iconImgTag . $tWrap[0] . htmlspecialchars(GeneralUtility::fixed_lgd_cs($resource->getName(), 45)) . $tWrap[1] . '</span>';
-	}
-
-	/**
-	 * Like ->getHeader() but for files in the File>* main module/submodules
-	 * Returns the file-icon with the path of the file set in the alt/title attribute. Shows the file-name after the icon.
-	 *
-	 * @param string $title Title string, expected to be the filepath
-	 * @param string $path Alt text
-	 * @param string $iconfile The icon file (relative to TYPO3 dir)
-	 * @return string HTML content
-	 * @deprecated since 6.2 remove 2 version later use getResourceHeader() instead
-	 */
-	public function getFileheader($title, $path, $iconfile) {
-		GeneralUtility::logDeprecatedFunction();
-		$fileInfo = GeneralUtility::split_fileref($title);
-		$title = htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileInfo['path'], -35)) . '<strong>' . htmlspecialchars($fileInfo['file']) . '</strong>';
-		return '<span class="typo3-moduleHeader"><img' . IconUtility::skinImg($this->backPath, $iconfile, 'width="18" height="16"') . ' title="' . htmlspecialchars($path) . '" alt="" />' . $title . '</span>';
 	}
 
 	/**

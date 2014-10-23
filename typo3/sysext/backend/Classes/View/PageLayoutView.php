@@ -393,18 +393,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	}
 
 	/**
-	 * Returns the backend layout which should be used for this page.
-	 *
-	 * @param int $id Uid of the current page
-	 * @return bool|string Identifier of the backend layout to be used, or FALSE if none
-	 * @deprecated since TYPO3 CMS 6.2, will be removed two versions later
-	 */
-	public function getSelectedBackendLayoutUid($id) {
-		GeneralUtility::logDeprecatedFunction();
-		return $this->getBackendLayoutView()->getSelectedCombinedIdentifier($id);
-	}
-
-	/**
 	 * Renders Content Elements from the tt_content table from page id
 	 *
 	 * @param int $id Page id

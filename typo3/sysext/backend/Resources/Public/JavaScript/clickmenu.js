@@ -214,16 +214,16 @@ var Clickmenu = {
 		var code = '<div id="contentMenu0" style="display: block;"></div><div id="contentMenu1" style="display: block;"></div>';
 		var insert = new Insertion.Bottom(document.getElementsByTagName('body')[0], code);
 	}
-}
+};
 
 // register mouse movement inside the document
 Event.observe(document, 'mousemove', Clickmenu.calcMousePosEvent.bindAsEventListener(Clickmenu), true);
 
 
-// @deprecated: Deprecated functions since 4.2, here for compatibility, remove in 4.4+
-// ## BEGIN ##
-
-// Still used in Core: typo3/alt_clickmenu.php::linkItem()
+/**
+ * @param url
+ * @deprecated since 4.2, Used in Core: \TYPO3\CMS\Backend\ClickMenu\ClickMenu::linkItem()
+ */
 function showClickmenu_raw(url) {
 	var parts = url.split('?');
 	if (parts.length === 2) {
@@ -232,20 +232,5 @@ function showClickmenu_raw(url) {
 	} else {
 		Clickmenu.callURL(url);
 	}
-}
-function setLayerObj(tableData, cmLevel) {
-	Clickmenu.populateData(tableData, cmLevel);
-}
-function hideEmpty() {
-	Clickmenu.hideAll();
-	return false;
-}
-function hideSpecific(level) {
-	if (level === 0 || level === 1) {
-		Clickmenu.hide('contentMenu'+level);
-	}
-}
-function showHideSelectorBoxes(action) {
-	toggleSelectorBoxes(action);
 }
 // ## END ##

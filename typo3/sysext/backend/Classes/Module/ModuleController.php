@@ -33,7 +33,7 @@ class ModuleController {
 
 	/**
 	 * Constructor
-	 * @deprecated since TYPO3 CMS 6.3, not in use, as everything can be done via the ModuleMenuRepository directly
+	 * @deprecated since TYPO3 CMS 7, not in use, as everything can be done via the ModuleMenuRepository directly
 	 */
 	public function __construct() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();

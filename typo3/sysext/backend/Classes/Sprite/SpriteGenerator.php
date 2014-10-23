@@ -240,18 +240,6 @@ class SpriteGenerator {
 	 *
 	 * @param bool $value
 	 * @return SpriteGenerator An instance of $this, to enable "chaining".
-	 * @deprecated since 6.2, will be removed two versions later - use setOmitSpriteNameInIconName() instead
-	 */
-	public function setOmmitSpriteNameInIconName($value) {
-		GeneralUtility::logDeprecatedFunction();
-		return $this->setOmitSpriteNameInIconName($value);
-	}
-
-	/**
-	 * Setter do enable the exclusion of the sprites-name from iconnames
-	 *
-	 * @param bool $value
-	 * @return SpriteGenerator An instance of $this, to enable "chaining".
 	 */
 	public function setOmitSpriteNameInIconName($value) {
 		$this->omitSpriteNameInIconName = is_bool($value) ? $value : FALSE;

@@ -284,16 +284,6 @@ abstract class AbstractRecordList {
 	}
 
 	/**
-	 * Finishes the list with the "stopper"-gif, adding the HTML code for that item to the internal ->HTMLcode string
-	 *
-	 * @return void
-	 * @deprecated since 6.2, will be removed 2 versions later - Function not needed anymore
-	 */
-	public function writeBottom() {
-		GeneralUtility::logDeprecatedFunction();
-	}
-
-	/**
 	 * Creates a forward/reverse button based on the status of ->eCounter, ->firstElementNumber, ->iLimit
 	 *
 	 * @param string $table Table name

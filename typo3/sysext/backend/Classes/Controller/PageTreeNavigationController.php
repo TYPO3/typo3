@@ -73,7 +73,7 @@ class PageTreeNavigationController {
 
 	/**
 	 * @var string
-	 * @deprecated since version 7; unused
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public $template;
 

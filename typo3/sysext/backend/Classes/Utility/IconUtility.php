@@ -116,30 +116,6 @@ class IconUtility {
 	static protected $spriteIconCache = array();
 
 	/**
-	 * Returns an icon image tag, 18x16 pixels, based on input information.
-	 * This function is recommended to use in your backend modules.
-	 *
-	 * @param string $table The table name
-	 * @param array $row The table row ("enablefields" are at least needed for correct icon display and for pages records some more fields in addition!)
-	 * @param string $backPath The backpath to the main TYPO3 directory (relative path back to PATH_typo3)
-	 * @param string $params Additional attributes for the image tag
-	 * @param bool $shaded If set, the icon will be grayed/shaded
-	 * @return string <img>-tag
-	 * @see getIcon()
-	 * @deprecated since TYPO3 6.1 will be removed in 7.0, should not be used anymore as only sprite icons are used since TYPO3 4.4
-	 */
-	static public function getIconImage($table, $row = array(), $backPath, $params = '', $shaded = FALSE) {
-		GeneralUtility::logDeprecatedFunction();
-
-		$str = '<img' . self::skinImg($backPath, self::getIcon($table, $row, $shaded), 'width="18" height="16"') . (trim($params) ? ' ' . trim($params) : '');
-		if (!stristr($str, 'alt="')) {
-			$str .= ' alt=""';
-		}
-		$str .= ' />';
-		return $str;
-	}
-
-	/**
 	 * Creates the icon for input table/row
 	 * Returns filename for the image icon, relative to PATH_typo3
 	 *
@@ -147,7 +123,6 @@ class IconUtility {
 	 * @param array $row The table row ("enablefields" are at least needed for correct icon display and for pages records some more fields in addition!)
 	 * @param bool $shaded If set, the icon will be grayed/shaded
 	 * @return string Icon filename
-	 * @see getIconImage()
 	 */
 	static public function getIcon($table, $row = array(), $shaded = FALSE) {
 		// Flags
