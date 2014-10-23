@@ -128,9 +128,6 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 			$fromName = $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName'];
 		}
 		$fromName = $this->sanitizeHeaderString($fromName);
-		if (preg_match('/\\s|,/', $fromName) >= 1) {
-			$fromName = '"' . $fromName . '"';
-		}
 		if (!empty($fromName)) {
 			$from = array($fromEmail => $fromName);
 		} else {
