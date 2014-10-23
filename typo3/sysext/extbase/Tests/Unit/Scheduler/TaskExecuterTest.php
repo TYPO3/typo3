@@ -87,7 +87,7 @@ class TaskExecutorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->configurationManager
 			->expects($this->once())
 			->method('getConfiguration')
-			->with(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT)
+			->with(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK)
 			->will($this->returnValue(array()));
 
 		$this->commandManager
