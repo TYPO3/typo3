@@ -153,44 +153,28 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 		 * =======================================
 		 */
 		// Language
-		$TSFE->initLLvars();
-		$this->language = $TSFE->lang;
+		$GLOBALS['TSFE']->initLLvars();
+		$this->language = $GLOBALS['TSFE']->lang;
 		$this->LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile('EXT:' . $this->ID . '/locallang.xml', $this->language);
-		if ($this->language == 'default' || !$this->language) {
+		if ($this->language === 'default' || !$this->language) {
 			$this->language = 'en';
 		}
+		$this->contentISOLanguage = $GLOBALS['TSFE']->sys_language_isocode ?: 'en';
 		$this->contentLanguageUid = max($row['sys_language_uid'], 0);
-		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables')) {
-			if ($this->contentLanguageUid) {
-				$tableA = 'sys_language';
-				$tableB = 'static_languages';
-				$languagesUidsList = $this->contentLanguageUid;
-				$selectFields = $tableA . '.uid,' . $tableB . '.lg_iso_2,' . $tableB . '.lg_country_iso_2,' . $tableB . '.lg_typo3';
-				$tableAB = $tableA . ' LEFT JOIN ' . $tableB . ' ON ' . $tableA . '.static_lang_isocode=' . $tableB . '.uid';
-				$whereClause = $tableA . '.uid IN (' . $languagesUidsList . ') ';
-				$whereClause .= \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields($tableA);
-				$whereClause .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($tableA);
-				$res = $TYPO3_DB->exec_SELECTquery($selectFields, $tableAB, $whereClause);
-				while ($languageRow = $TYPO3_DB->sql_fetch_assoc($res)) {
-					$this->contentISOLanguage = strtolower(trim($languageRow['lg_iso_2']) . (trim($languageRow['lg_country_iso_2']) ? '_' . trim($languageRow['lg_country_iso_2']) : ''));
-					$this->contentTypo3Language = strtolower(trim($languageRow['lg_typo3']));
-				}
-			} else {
-				$this->contentISOLanguage = $GLOBALS['TSFE']->sys_language_isocode ?: 'en';
-				$selectFields = 'lg_iso_2, lg_typo3';
-				$tableAB = 'static_languages';
-				$whereClause = 'lg_iso_2 = ' . $TYPO3_DB->fullQuoteStr(strtoupper($this->contentISOLanguage), $tableAB);
-				$res = $TYPO3_DB->exec_SELECTquery($selectFields, $tableAB, $whereClause);
-				while ($languageRow = $TYPO3_DB->sql_fetch_assoc($res)) {
-					$this->contentTypo3Language = strtolower(trim($languageRow['lg_typo3']));
-				}
+		if ($this->contentLanguageUid && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables')) {
+			$tableA = 'sys_language';
+			$tableB = 'static_languages';
+			$selectFields = $tableA . '.uid,' . $tableB . '.lg_iso_2,' . $tableB . '.lg_country_iso_2';
+			$tableAB = $tableA . ' LEFT JOIN ' . $tableB . ' ON ' . $tableA . '.static_lang_isocode=' . $tableB . '.uid';
+			$whereClause = $tableA . '.uid = ' . intval($this->contentLanguageUid);
+			$whereClause .= \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields($tableA);
+			$whereClause .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($tableA);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selectFields, $tableAB, $whereClause);
+			while ($languageRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+				$this->contentISOLanguage = strtolower(trim($languageRow['lg_iso_2']) . (trim($languageRow['lg_country_iso_2']) ? '_' . trim($languageRow['lg_country_iso_2']) : ''));
 			}
 		}
-		$this->contentISOLanguage = $this->contentISOLanguage ?: ($GLOBALS['TSFE']->sys_language_isocode ?: 'en');
-		$this->contentTypo3Language = $this->contentTypo3Language ?: $GLOBALS['TSFE']->lang;
-		if ($this->contentTypo3Language == 'default') {
-			$this->contentTypo3Language = 'en';
-		}
+		$this->contentTypo3Language = $this->contentISOLanguage;
 		// Character set
 		$this->charset = $TSFE->renderCharset;
 		$this->OutputCharset = $TSFE->metaCharset ?: $TSFE->renderCharset;

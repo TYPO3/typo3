@@ -389,41 +389,41 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			 * =======================================
 			 */
 			// Languages: interface and content
-			$this->language = $LANG->lang;
-			if ($this->language == 'default' || !$this->language) {
+			$this->language = $GLOBALS['LANG']->lang;
+			if ($this->language === 'default' || !$this->language) {
 				$this->language = 'en';
 			}
-			$this->contentTypo3Language = $this->language == 'en' ? 'default' : $this->language;
-			$this->contentISOLanguage = 'en';
 			$this->contentLanguageUid = max($row['sys_language_uid'], 0);
-			if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables')) {
-				if ($this->contentLanguageUid) {
+			if ($this->contentLanguageUid) {
+				$this->contentISOLanguage = $this->language;
+				if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables')) {
 					$tableA = 'sys_language';
 					$tableB = 'static_languages';
-					$languagesUidsList = $this->contentLanguageUid;
-					$selectFields = $tableA . '.uid,' . $tableB . '.lg_iso_2,' . $tableB . '.lg_country_iso_2,' . $tableB . '.lg_typo3';
+					$selectFields = $tableA . '.uid,' . $tableB . '.lg_iso_2,' . $tableB . '.lg_country_iso_2';
 					$tableAB = $tableA . ' LEFT JOIN ' . $tableB . ' ON ' . $tableA . '.static_lang_isocode=' . $tableB . '.uid';
-					$whereClause = $tableA . '.uid IN (' . $languagesUidsList . ') ';
+					$whereClause = $tableA . '.uid = ' . intval($this->contentLanguageUid);
 					$whereClause .= BackendUtility::BEenableFields($tableA);
 					$whereClause .= BackendUtility::deleteClause($tableA);
-					$res = $TYPO3_DB->exec_SELECTquery($selectFields, $tableAB, $whereClause);
-					while ($languageRow = $TYPO3_DB->sql_fetch_assoc($res)) {
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selectFields, $tableAB, $whereClause);
+					while ($languageRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 						$this->contentISOLanguage = strtolower(trim($languageRow['lg_iso_2']) . (trim($languageRow['lg_country_iso_2']) ? '_' . trim($languageRow['lg_country_iso_2']) : ''));
-						$this->contentTypo3Language = trim($languageRow['lg_typo3']) ? strtolower(trim($languageRow['lg_typo3'])) : 'default';
 					}
-				} else {
-					$this->contentISOLanguage = trim($this->thisConfig['defaultContentLanguage']) ?: 'en';
-					$selectFields = 'lg_iso_2, lg_typo3';
-					$tableAB = 'static_languages';
-					$whereClause = 'lg_iso_2 = ' . $TYPO3_DB->fullQuoteStr(strtoupper($this->contentISOLanguage), $tableAB);
-					$res = $TYPO3_DB->exec_SELECTquery($selectFields, $tableAB, $whereClause);
-					while ($languageRow = $TYPO3_DB->sql_fetch_assoc($res)) {
-						$this->contentTypo3Language = trim($languageRow['lg_typo3']) ? strtolower(trim($languageRow['lg_typo3'])) : 'default';
-					}
+				}
+			} else {
+				$this->contentISOLanguage = trim($this->thisConfig['defaultContentLanguage']) ?: 'en';
+				$languageCodeParts = explode('_', $this->contentISOLanguage);
+				$this->contentISOLanguage = strtolower($languageCodeParts[0]) . ($languageCodeParts[1] ? '_' . strtoupper($languageCodeParts[1]) : '');
+				// Find the configured language in the list of localization locales
+				/** @var $locales \TYPO3\CMS\Core\Localization\Locales */
+				$locales = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Locales');
+				// If not found, default to 'en'
+				if (!in_array($this->contentISOLanguage, $locales->getLocales())) {
+					$this->contentISOLanguage = 'en';
 				}
 			}
 			// Create content laguage service
 			$this->contentLanguageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Lang\\LanguageService');
+			$this->contentTypo3Language = $this->contentISOLanguage === 'en' ? 'default' : $this->contentISOLanguage;
 			$this->contentLanguageService->init($this->contentTypo3Language);
 			/* =======================================
 			 * TOOLBAR CONFIGURATION
