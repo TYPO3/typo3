@@ -372,7 +372,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 				scope: this
 			}
 		]);
-		if (HTMLArea.UserAgent.isGecko || HTMLArea.UserAgent.isIE) {
+		if (HTMLArea.UserAgent.isGecko || HTMLArea.UserAgent.isIE || HTMLArea.UserAgent.isWebKit) {
 			this.keyMap.addBinding(
 			{
 				key: [Ext.EventObject.BACKSPACE, Ext.EventObject.DELETE],
