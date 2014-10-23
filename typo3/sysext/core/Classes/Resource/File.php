@@ -48,11 +48,6 @@ class File extends AbstractFile {
 	protected $updatedProperties = array();
 
 	/**
-	 * @var \TYPO3\CMS\Core\Resource\Service\IndexerService
-	 */
-	protected $indexerService = NULL;
-
-	/**
 	 * Constructor for a file object. Should normally not be used directly, use
 	 * the corresponding factory methods instead.
 	 *
@@ -389,20 +384,7 @@ class File extends AbstractFile {
 	}
 
 	/**
-	 * Internal function to retrieve the indexer service,
-	 * if it does not exist, an instance will be created
-	 *
-	 * @return Index\Indexer
-	 */
-	protected function getIndexerService() {
-		if ($this->indexerService === NULL) {
-			$this->indexerService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Index\\Indexer', $this->storage);
-		}
-		return $this->indexerService;
-	}
-
-	/**
-	 * @param bool $indexingState
+	 * @return void
 	 * @internal Only for usage in Indexer
 	 */
 	public function setIndexingInProgess($indexingState) {

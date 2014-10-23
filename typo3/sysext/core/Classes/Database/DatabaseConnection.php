@@ -1154,13 +1154,10 @@ class DatabaseConnection {
 	/**
 	 * Open a (persistent) connection to a MySQL server
 	 *
-	 * @param string $host Deprecated since 6.1, will be removed in two versions. Database host IP/domain[:port]
-	 * @param string $username Deprecated since 6.1, will be removed in two versions. Username to connect with.
-	 * @param string $password Deprecated since 6.1, will be removed in two versions. Password to connect with.
 	 * @return bool|void
 	 * @throws \RuntimeException
 	 */
-	public function sql_pconnect($host = NULL, $username = NULL, $password = NULL) {
+	public function sql_pconnect() {
 		if ($this->isConnected) {
 			return $this->link;
 		}
@@ -1170,10 +1167,6 @@ class DatabaseConnection {
 				'Database Error: PHP mysqli extension not loaded. This is a must have for TYPO3 CMS!',
 				1271492607
 			);
-		}
-
-		if ($host || $username || $password) {
-			$this->handleDeprecatedConnectArguments($host, $username, $password);
 		}
 
 		$host = $this->persistentDatabaseConnection
@@ -1218,7 +1211,7 @@ class DatabaseConnection {
 			$error_msg = $this->link->connect_error;
 			$this->link = NULL;
 			GeneralUtility::sysLog(
-				'Could not connect to MySQL server ' . $host . ' with user ' . $username . ': ' . $error_msg,
+				'Could not connect to MySQL server ' . $host . ' with user ' . $this->databaseUsername . ': ' . $error_msg,
 				'Core',
 				GeneralUtility::SYSLOG_SEVERITY_FATAL
 			);
@@ -1251,27 +1244,17 @@ class DatabaseConnection {
 	/**
 	 * Select a SQL database
 	 *
-	 * @param string $TYPO3_db Deprecated since 6.1, will be removed in two versions. Database to connect to.
 	 * @return bool Returns TRUE on success or FALSE on failure.
 	 */
-	public function sql_select_db($TYPO3_db = NULL) {
+	public function sql_select_db() {
 		if (!$this->isConnected) {
 			$this->connectDB();
 		}
 
-		if ($TYPO3_db) {
-			GeneralUtility::deprecationLog(
-				'DatabaseConnection->sql_select_db() should be called without arguments.' .
-					' Use the setDatabaseName() before. Will be removed two versions after 6.1.'
-			);
-		} else {
-			$TYPO3_db = $this->databaseName;
-		}
-
-		$ret = $this->link->select_db($TYPO3_db);
+		$ret = $this->link->select_db($this->databaseName);
 		if (!$ret) {
 			GeneralUtility::sysLog(
-				'Could not select MySQL database ' . $TYPO3_db . ': ' . $this->sql_error(),
+				'Could not select MySQL database ' . $this->databaseName . ': ' . $this->sql_error(),
 				'Core',
 				GeneralUtility::SYSLOG_SEVERITY_FATAL
 			);
@@ -1532,30 +1515,22 @@ class DatabaseConnection {
 	/**
 	 * Connects to database for TYPO3 sites:
 	 *
-	 * @param string $host Deprecated since 6.1, will be removed in two versions Database. host IP/domain[:port]
-	 * @param string $username Deprecated since 6.1, will be removed in two versions. Username to connect with
-	 * @param string $password Deprecated since 6.1, will be removed in two versions. Password to connect with
-	 * @param string $db Deprecated since 6.1, will be removed in two versions. Database name to connect to
 	 * @throws \RuntimeException
 	 * @throws \UnexpectedValueException
 	 * @internal param string $user Username to connect with.
 	 * @return void
 	 */
-	public function connectDB($host = NULL, $username = NULL, $password = NULL, $db = NULL) {
+	public function connectDB() {
 		// Early return if connected already
 		if ($this->isConnected) {
 			return;
 		}
 
-		if (!$this->databaseName && !$db) {
+		if (!$this->databaseName) {
 			throw new \RuntimeException(
 				'TYPO3 Fatal Error: No database selected!',
 				1270853882
 			);
-		}
-
-		if ($host || $username || $password || $db) {
-			$this->handleDeprecatedConnectArguments($host, $username, $password, $db);
 		}
 
 		if ($this->sql_pconnect()) {
@@ -1715,39 +1690,6 @@ class DatabaseConnection {
 	 */
 	public function setDatabaseHandle($handle) {
 		$this->link = $handle;
-	}
-
-	/**
-	 * Handle deprecated arguments for sql_pconnect() and connectDB()
-	 *
-	 * @param string|null $host Database host[:port]
-	 * @param string|null $username Database user name
-	 * @param string|null $password User password
-	 * @param string|null $db Database
-	 */
-	protected function handleDeprecatedConnectArguments($host = NULL, $username = NULL, $password = NULL, $db = NULL) {
-		GeneralUtility::deprecationLog(
-			'DatabaseConnection->sql_pconnect() and DatabaseConnection->connectDB() should be ' .
-			'called without arguments. Use the setters instead.'
-		);
-		if ($host) {
-			if (strpos($host, ':') > 0) {
-				list($databaseHost, $databasePort) = explode(':', $host);
-				$this->setDatabaseHost($databaseHost);
-				$this->setDatabasePort($databasePort);
-			} else {
-				$this->setDatabaseHost($host);
-			}
-		}
-		if ($username) {
-			$this->setDatabaseUsername($username);
-		}
-		if ($password) {
-			$this->setDatabasePassword($password);
-		}
-		if ($db) {
-			$this->setDatabaseName($db);
-		}
 	}
 
 	/******************************

@@ -1210,7 +1210,7 @@ class TemplateService {
 	 * @param string $content The content to wrap
 	 * @param string $wrap The wrap value, eg. "<strong> | </strong>
 	 * @return string Wrapped input string
-	 * @deprecated since TYPO3 CMS 6.3, remove later - use \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::wrap() instead
+	 * @deprecated since TYPO3 CMS 7.0 - use \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::wrap() instead
 	 * @see \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject, \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::wrap()
 	 */
 	public function wrap($content, $wrap) {

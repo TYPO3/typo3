@@ -676,19 +676,6 @@ class ClassLoader {
 	}
 
 	/**
-	 * Get alias for class name
-	 *
-	 * @param string $className
-	 * @return mixed
-	 * @deprecated since 6.2, will be removed 2 versions later - use getAliasesForClassName() instead
-	 */
-	static public function getAliasForClassName($className) {
-		GeneralUtility::logDeprecatedFunction();
-		$aliases = static::$staticAliasMap->getAliasesForClassName($className);
-		return is_array($aliases) && isset($aliases[0]) ? $aliases[0] : NULL;
-	}
-
-	/**
 	 * Get an aliases for a class name
 	 *
 	 * @param string $className

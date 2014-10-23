@@ -1857,10 +1857,9 @@ class GraphicalFunctions {
 	 * @param int $im GDlib Image Pointer
 	 * @param int $low The "low" value (close to 0)
 	 * @param int $high The "high" value (close to 255)
-	 * @param bool $swap @deprecated since 6.2, unused and obsolete parameter, was used for older image magick versions
 	 * @return void
 	 */
-	public function inputLevels(&$im, $low, $high, $swap = '') {
+	public function inputLevels(&$im, $low, $high) {
 		if ($low < $high) {
 			$low = MathUtility::forceIntegerInRange($low, 0, 255);
 			$high = MathUtility::forceIntegerInRange($high, 0, 255);

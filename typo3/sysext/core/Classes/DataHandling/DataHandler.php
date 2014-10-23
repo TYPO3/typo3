@@ -6832,29 +6832,6 @@ class DataHandler {
 	}
 
 	/**
-	 * Clearing the cache based on a page being updated
-	 * If the $table is 'pages' then cache is cleared for all pages on the same level (and subsequent?)
-	 * Else just clear the cache for the parent page of the record.
-	 *
-	 * @param string $table Table name of record that was just updated.
-	 * @param int $uid UID of updated / inserted record
-	 * @return void
-	 * @deprecated since 6.2 will be removed 2 versions later. Use ->clear_cacheCmd instead. Alternatively you can call ->registerPageCacheClearing from a hook to not immediatly clear the cache but register clearing after DataHandler operation finishes.
-	 */
-	public function clear_cache($table, $uid) {
-		GeneralUtility::logDeprecatedFunction();
-		$originalValues = static::$recordsToClearCacheFor;
-		// Clear the queue temporarily
-		static::$recordsToClearCacheFor = array();
-		static::$recordsToClearCacheFor[$table] = array();
-		static::$recordsToClearCacheFor[$table][] = (int)$uid;
-
-		$this->processClearCacheQueue();
-		// Reset the queue to its original value again
-		static::$recordsToClearCacheFor = $originalValues;
-	}
-
-	/**
 	 * Do the actual clear cache
 	 * @return void
 	 */
@@ -7019,17 +6996,6 @@ class DataHandler {
 					// Clear cache group "all" of caching framework caches
 					$this->getCacheManager()->flushCachesInGroup('all');
 					$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('cache_treelist');
-					// Clearing additional cache tables:
-					if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearAllCache_additionalTables'])) {
-						foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearAllCache_additionalTables'] as $tableName) {
-							GeneralUtility::deprecationLog('Hook clearAllCache_additionalTables in DataHandler is deprecated in 6.2 and will be removed two versions later. Use the caching framework with database backend instead.');
-							if (!preg_match('/[^[:alnum:]_]/', $tableName) && substr($tableName, -5) === 'cache') {
-								$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery($tableName);
-							} else {
-								throw new \RuntimeException('TYPO3 Fatal Error: Trying to flush table "' . $tableName . '" with "Clear All Cache"', 1270853922);
-							}
-						}
-					}
 				}
 
 				break;
@@ -7178,23 +7144,13 @@ class DataHandler {
 	 * Internal (do not use outside Core!)
 	 *
 	 *****************************/
-	/**
-	 * Clears page cache. Takes into account file cache.
-	 *
-	 * @return void
-	 * @deprecated since TYPO3 CMS 6.2, remove two versions later. The DataHandler clearPageCache method is deprecated, use the cache manager directly.
-	 */
-	public function internal_clearPageCache() {
-		GeneralUtility::logDeprecatedFunction();
-		$this->getCacheManager()->flushCachesInGroup('pages');
-	}
 
 	/**
 	 * Proprocesses field array based on field type. Some fields must be adjusted
 	 * before going to database. This is done on the copy of the field array because
 	 * original values are used in remap action later.
 	 *
-	 * @param stringb$table	Table name
+	 * @param string $table	Table name
 	 * @param array $fieldArray	Field array to check
 	 * @return array Updated field array
 	 */

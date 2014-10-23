@@ -4474,35 +4474,6 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 	}
 
-	/**
-	 * @test
-	 */
-	public function arrayMergeRecursiveOverruleDoesConsiderUnsetValues() {
-		$array1 = array(
-			'first' => array(
-				'second' => 'second',
-				'third' => 'third'
-			),
-			'fifth' => array()
-		);
-		$array2 = array(
-			'first' => array(
-				'second' => 'overrule',
-				'third' => '__UNSET',
-				'fourth' => 'overrile'
-			),
-			'fifth' => '__UNSET'
-		);
-		$expected = array(
-			'first' => array(
-				'second' => 'overrule',
-				'fourth' => 'overrile'
-			)
-		);
-		$result = Utility\GeneralUtility::array_merge_recursive_overrule($array1, $array2);
-		$this->assertEquals($expected, $result);
-	}
-
 	///////////////////////////////////////////////////
 	// Tests concerning substUrlsInPlainText
 	///////////////////////////////////////////////////

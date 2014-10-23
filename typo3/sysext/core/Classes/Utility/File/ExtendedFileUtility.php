@@ -155,18 +155,6 @@ class ExtendedFileUtility extends BasicFileUtility {
 	}
 
 	/**
-	 * Sets up permission to perform file/directory operations.
-	 * See below or the be_user-table for the significance of the various bits in $setup.
-	 *
-	 * @return void
-	 * @deprecated since 6.2 will be removed two versions later. Use ExtendedFileUtility::setActionPermissions() instead
-	 */
-	public function init_actionPerms() {
-		GeneralUtility::logDeprecatedFunction();
-		$this->setActionPermissions();
-	}
-
-	/**
 	 * Sets the file action permissions.
 	 * If no argument is given, permissions of the currently logged in backend user are taken into account.
 	 *
@@ -276,18 +264,6 @@ class ExtendedFileUtility extends BasicFileUtility {
 	}
 
 	/**
-	 * Adds log error messages from the operations of this script instance to the FlashMessageQueue
-	 *
-	 * @param string $redirect Redirect URL (for creating link in message)
-	 * @return void
-	 * @deprecated since TYPO3 6.1, will be removed two versions later, use ->pushErrorMessagesToFlashMessageQueue directly instead
-	 */
-	public function printLogErrorMessages($redirect = '') {
-		GeneralUtility::logDeprecatedFunction();
-		$this->pushErrorMessagesToFlashMessageQueue();
-	}
-
-	/**
 	 * Adds all log error messages from the operations of this script instance to the FlashMessageQueue
 	 *
 	 * @return void
@@ -315,37 +291,6 @@ class ExtendedFileUtility extends BasicFileUtility {
 	}
 
 	/**
-	 * Goes back in the path and checks in each directory if a folder named $this->recyclerFN (usually '_recycler_') is present.
-	 * If a folder in the tree happens to be a _recycler_-folder (which means that we're deleting something inside a _recycler_-folder) this is ignored
-	 *
-	 * @param string $theFile Takes a valid Path ($theFile)
-	 * @return string Returns the path (without trailing slash) of the closest recycle-folder if found. Else FALSE.
-	 * @todo To be put in Storage with a better concept
-	 * @deprecated since TYPO3 6.0, use \TYPO3\CMS\Core\Resource\ResourceStorage method instead
-	 */
-	public function findRecycler($theFile) {
-		GeneralUtility::logDeprecatedFunction();
-		if (GeneralUtility::validPathStr($theFile)) {
-			$theFile = PathUtility::getCanonicalPath($theFile);
-			$fI = GeneralUtility::split_fileref($theFile);
-			$c = 0;
-			// !!! Method has been put in the storage, can be saftely removed
-			$rDir = $fI['path'] . $this->recyclerFN;
-			while ($this->checkPathAgainstMounts($fI['path']) && $c < 20) {
-				if (@is_dir($rDir) && $this->recyclerFN != $fI['file']) {
-					return $rDir;
-				}
-				$theFile = $fI['path'];
-				$theFile = PathUtility::getCanonicalPath($theFile);
-				$fI = GeneralUtility::split_fileref($theFile);
-				$c++;
-			}
-		}
-	}
-
-	/**
-	 * Logging file operations
-	 *
 	 * @param int $action The action number. See the functions in the class for a hint. Eg. edit is '9', upload is '1' ...
 	 * @param int $error The severity: 0 = message, 1 = error, 2 = System Error, 3 = security notice (admin)
 	 * @param int $details_nr This number is unique for every combination of $type and $action. This is the error-message number, which can later be used to translate error messages.

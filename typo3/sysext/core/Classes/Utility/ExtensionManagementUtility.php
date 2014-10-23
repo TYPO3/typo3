@@ -661,35 +661,6 @@ class ExtensionManagementUtility {
 	}
 
 	/**
-	 * Generates search needles that are used for inserting fields/items into an existing list.
-	 *
-	 * @see executePositionedStringInsertion
-	 * @param string $item The name of the field/item
-	 * @param array $itemDetails Additional details of the field/item like e.g. palette information
-	 * @return array The needled to be used for inserting content before or after existing fields/items
-	 * @deprecated since 6.2, will be removed two versions later. This method was only used by executePositionedStringInsertion().
-	 */
-	static protected function getInsertionNeedles($item, array $itemDetails) {
-		if (strpos($item, '--') !== FALSE) {
-			// If $item is a separator (--div--) or palette (--palette--) then it may have been appended by a unique number. This must be stripped away here.
-			$item = str_replace(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), '', $item);
-		}
-		$needles = array(
-			'before' => array($item, 'before:' . $item),
-			'after' => array('after:' . $item),
-			'replace' => array('replace:' . $item)
-		);
-		if ($itemDetails['palette']) {
-			$palette = $item . ';;' . $itemDetails['palette'];
-			$needles['before'][] = $palette;
-			$needles['before'][] = 'before:' . $palette;
-			$needles['after'][] = 'after:' . $palette;
-			$needles['replace'][] = 'replace:' . $palette;
-		}
-		return $needles;
-	}
-
-	/**
 	 * Generates an array of fields/items with additional information such as e.g. the name of the palette.
 	 *
 	 * @param string $itemList List of fields/items to be splitted up
@@ -805,8 +776,8 @@ class ExtensionManagementUtility {
 	 * and it replaces old conf.php.
 	 *
 	 * The original function for is called
-	 * Tx_Extbase_Utility_Extension::configureModule, the refered function can
-	 * be deprecated now
+	 * typo3/sysext/extbase/Classes/Utility/ExtensionUtility.php::configureModule
+	 * the referred function can be deprecated now
 	 *
 	 * @param string $moduleSignature The module name
 	 * @param string $modulePath Absolute path to module (not used by Extbase currently)
@@ -952,18 +923,10 @@ class ExtensionManagementUtility {
 	 * @return void
 	 * @see \TYPO3\CMS\Backend\Module\BaseScriptClass::mergeExternalItems()
 	 */
-	static public function insertModuleFunction($modname, $className, $classPath, $title, $MM_key = 'function', $WS = '') {
-		if (!empty($classPath)) {
-			GeneralUtility::deprecationLog(
-				sprintf('insertModuleFunction(%s, %s, ...): Use auto-loading for the class and pass NULL as $classPath since 6.2.',
-					$modname,
-					$className
-				)
-			);
-		}
+	static public function insertModuleFunction($modname, $className, $classPath = NULL, $title, $MM_key = 'function', $WS = '') {
 		$GLOBALS['TBE_MODULES_EXT'][$modname]['MOD_MENU'][$MM_key][$className] = array(
 			'name' => $className,
-			'path' => $classPath,
+			'path' => NULL,
 			'title' => $title,
 			'ws' => $WS
 		);
@@ -1884,17 +1847,6 @@ tt_content.' . $key . $prefix . ' {
 	}
 
 	/**
-	 * Returns REQUIRED_EXTENSIONS constant set by package manager as array.
-	 *
-	 * @return array List of required extensions
-	 * @deprecated since 6,2, will be removed two versions later.
-	 */
-	static public function getRequiredExtensionListArray() {
-		GeneralUtility::logDeprecatedFunction();
-		return GeneralUtility::trimExplode(',', REQUIRED_EXTENSIONS);
-	}
-
-	/**
 	 * Loads given extension
 	 *
 	 * Warning: This method only works if the ugrade wizard to transform
@@ -1926,20 +1878,6 @@ tt_content.' . $key . $prefix . ' {
 			throw new \RuntimeException('Extension not loaded', 1342345487);
 		}
 		static::$packageManager->deactivatePackage($extensionKey);
-	}
-
-	/**
-	 * Writes extension list and clear cache files.
-	 *
-	 * @TODO: This method should be protected, but with current em it is hard to do so,
-	 * @TODO: Find out if we may remove this already
-	 * @param array $newExtensionList Extension array to load, loader order is kept
-	 * @return void
-	 * @internal
-	 * @deprecated since 6.2, will be removed two versions later
-	 */
-	static public function writeNewExtensionList(array $newExtensionList) {
-		GeneralUtility::logDeprecatedFunction();
 	}
 
 	/**

@@ -222,34 +222,6 @@ class ResourceStorage implements ResourceStorageInterface {
 	}
 
 	/**
-	 * Deprecated function, don't use it. Will be removed in some later revision.
-	 *
-	 * @param string $identifier
-	 *
-	 * @throws \BadMethodCallException
-	 */
-	public function getFolderByIdentifier($identifier) {
-		throw new \BadMethodCallException(
-			'Function TYPO3\\CMS\\Core\\Resource\\ResourceStorage::getFolderByIdentifier() has been renamed to just getFolder(). Please fix the method call.',
-			1333754514
-		);
-	}
-
-	/**
-	 * Deprecated function, don't use it. Will be removed in some later revision.
-	 *
-	 * @param string $identifier
-	 *
-	 * @throws \BadMethodCallException
-	 */
-	public function getFileByIdentifier($identifier) {
-		throw new \BadMethodCallException(
-			'Function TYPO3\\CMS\\Core\\Resource\\ResourceStorage::getFileByIdentifier() has been renamed to just getFileInfoByIdentifier(). ' . 'Please fix the method call.',
-			1333754533
-		);
-	}
-
-	/**
 	 * Returns the name of this storage.
 	 *
 	 * @return string
@@ -1326,24 +1298,6 @@ class ResourceStorage implements ResourceStorageInterface {
 	}
 
 	/**
-	 * Returns a list of files in a given path, filtered by some custom filter methods.
-	 *
-	 * @see getUnfilteredFileList(), getFileListWithDefaultFilters()
-	 * @param string $path The path to list
-	 * @param int $start The position to start the listing; if not set or 0, start from the beginning
-	 * @param int $numberOfItems The number of items to list; if not set, return all items
-	 * @param bool $useFilters If FALSE, the list is returned without any filtering; otherwise, the filters defined for this storage are used.
-	 * @param bool $loadIndexRecords If set to TRUE, the index records for all files are loaded from the database. This can greatly improve performance of this method, especially with a lot of files.
-	 * @param bool $recursive
-	 * @return array Information about the files found.
-	 * @deprecated since 6.2, will be removed two versions later
-	 */
-	public function getFileList($path, $start = 0, $numberOfItems = 0, $useFilters = TRUE, $loadIndexRecords = TRUE, $recursive = FALSE) {
-		GeneralUtility::logDeprecatedFunction();
-		return $this->getFilesInFolder($this->getFolder($path), $start, $numberOfItems, $useFilters, $recursive);
-	}
-
-	/**
 	 * @param Folder $folder
 	 * @param int $start
 	 * @param int $maxNumberOfItems
@@ -1923,23 +1877,6 @@ class ResourceStorage implements ResourceStorageInterface {
 	}
 
 	/**
-	 * Returns a list of folders in a given path.
-	 *
-	 * @param string $path The path to list
-	 * @param int $start The position to start the listing; if not set or 0, start from the beginning
-	 * @param int $numberOfItems The number of items to list; if not set, return all items
-	 * @param bool $useFilters If FALSE, the list is returned without any filtering; otherwise, the filters defined for this storage are used.
-	 * @return array Information about the folders found.
-	 * @deprecated since TYPO3 6.2, will be removed to versions later
-	 */
-	public function getFolderList($path, $start = 0, $numberOfItems = 0, $useFilters = TRUE) {
-		GeneralUtility::logDeprecatedFunction();
-		// Permissions are checked in $this->fetchFolderListFromDriver()
-		$filters = $useFilters === TRUE ? $this->fileAndFolderNameFilters : array();
-		return $this->fetchFolderListFromDriver($path, $start, $numberOfItems, $filters);
-	}
-
-	/**
 	 * @param Folder $folder
 	 * @param int $start
 	 * @param int $maxNumberOfItems
@@ -1961,33 +1898,6 @@ class ResourceStorage implements ResourceStorageInterface {
 			$folders[$folderIdentifier] = $this->getFolder($folderIdentifier, TRUE);
 		}
 		return $folders;
-	}
-
-	/**
-	 * @param $path
-	 * @param int $start
-	 * @param int $numberOfItems
-	 * @param array $folderFilterCallbacks
-	 * @param bool $recursive
-	 * @return array
-	 * @deprecated since 6.2, will be removed 2 versions later
-	 */
-	public function fetchFolderListFromDriver($path, $start = 0, $numberOfItems = 0, array $folderFilterCallbacks = array(), $recursive = FALSE) {
-		GeneralUtility::logDeprecatedFunction();
-		// This also checks for access to that path and throws exceptions accordingly
-		$parentFolder = $this->getFolder($path);
-		if ($parentFolder === NULL) {
-			return array();
-		}
-		$folders = $this->getFoldersInFolder($parentFolder, $start, $numberOfItems, count($folderFilterCallbacks) > 0, $recursive);
-		$folderInfo = array();
-		foreach ($folders as $folder) {
-			$folderInfo[$folder->getIdentifier()] = array(
-				'name' => $folder->getName(),
-				'identifier' => $folder->getIdentifier()
-			);
-		}
-		return $folderInfo;
 	}
 
 	/**

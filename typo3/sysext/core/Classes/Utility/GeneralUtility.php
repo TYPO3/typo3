@@ -1012,19 +1012,6 @@ class GeneralUtility {
 	}
 
 	/**
-	 * Inverse version of htmlspecialchars()
-	 *
-	 * @deprecated since 6.2 replaced by php native htmlspecialchars_decode()
-	 *
-	 * @param string $value Value where &gt;, &lt;, &quot; and &amp; should be converted to regular chars.
-	 * @return string Converted result.
-	 */
-	static public function htmlspecialchars_decode($value) {
-		self::logDeprecatedFunction();
-		return htmlspecialchars_decode($value);
-	}
-
-	/**
 	 * Re-converts HTML entities if they have been converted by htmlspecialchars()
 	 * Note: Use htmlspecialchars($str, ENT_COMPAT, 'UTF-8', FALSE) to avoid double encoding.
 	 *       This makes the call to this method obsolete.
@@ -1749,27 +1736,6 @@ class GeneralUtility {
 				}
 			}
 		}
-	}
-
-	/**
-	 * Merges two arrays recursively and "binary safe" (integer keys are
-	 * overridden as well), overruling similar values in the first array
-	 * ($arr0) with the values of the second array ($arr1)
-	 * In case of identical keys, ie. keeping the values of the second.
-	 *
-	 * @param array $arr0 First array
-	 * @param array $arr1 Second array, overruling the first array
-	 * @param bool $notAddKeys If set, keys that are NOT found in $arr0 (first array) will not be set. Thus only existing value can/will be overruled from second array.
-	 * @param bool $includeEmptyValues If set, values from $arr1 will overrule if they are empty or zero. Default: TRUE
-	 * @param bool $enableUnsetFeature If set, special values "__UNSET" can be used in the second array in order to unset array keys in the resulting array.
-	 * @return array Resulting array where $arr1 values has overruled $arr0 values
-	 * @deprecated [!!!] Since 6.2, use ArrayUtility::mergeRecursiveWithOverrule - WARNING: The new method changed its signature and does not return the first parameter anymore, but it is more performant.
-	 */
-	static public function array_merge_recursive_overrule(array $arr0, array $arr1, $notAddKeys = FALSE, $includeEmptyValues = TRUE, $enableUnsetFeature = TRUE) {
-		self::logDeprecatedFunction();
-		ArrayUtility::mergeRecursiveWithOverrule($arr0, $arr1, !$notAddKeys, $includeEmptyValues, $enableUnsetFeature);
-		// Our local $arr0 has been modified now, so return it as result
-		return $arr0;
 	}
 
 	/**
@@ -4236,14 +4202,17 @@ Connection: close
 	 * Just prefix the function call with "&": "$objRef = &\TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj('EXT:myext/class.tx_myext_myclass.php:&tx_myext_myclass');".
 	 * This will work ONLY if you prefix the class name with "&" as well. See description of function arguments.
 	 *
-	 * @TODO : Deprecate the whole method in several steps: 1. Deprecated singleton pattern, 2. Deprecate file prefix/ require file, 3. Deprecate usage without valid class name. The last step should be to deprecate the method itslef.
+	 * @TODO : Deprecate the whole method in several steps:
+	 *      1. Deprecated singleton pattern,
+	 *      2. Deprecate file prefix/ require file,
+	 *      3. Deprecate usage without valid class name.
+	 *      4. The last step should be to deprecate the method itself.
+	 *
 	 * @param string $classRef Class reference, '[file-reference":"]["&"]class-name'. You can prefix the class name with "[file-reference]:" and \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:&tx_realurl". Finally; for the class name you can prefix it with "&" and you will reuse the previous instance of the object identified by the full reference string (meaning; if you ask for the same $classRef later in another place in the code you will get a reference to the first created one!).
-	 * @param string $checkPrefix Not used anymore since 6.0
-	 * @param bool $silent Not used anymore since 6.0
 	 * @return object The instance of the class asked for. Instance is created with \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance
 	 * @see callUserFunction()
 	 */
-	static public function getUserObj($classRef, $checkPrefix = '', $silent = FALSE) {
+	static public function getUserObj($classRef) {
 		// Check persistent object and if found, call directly and exit.
 		if (is_object($GLOBALS['T3_VAR']['getUserObj'][$classRef])) {
 			return $GLOBALS['T3_VAR']['getUserObj'][$classRef];

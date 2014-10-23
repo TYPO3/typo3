@@ -132,12 +132,6 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 			$this->initializeCompatibilityLoadedExtArray();
 		}
 
-		//@deprecated since 6.2, don't use
-		if (!defined('REQUIRED_EXTENSIONS')) {
-			// List of extensions required to run the core
-			define('REQUIRED_EXTENSIONS', implode(',', $this->requiredPackageKeys));
-		}
-
 		$cacheIdentifier = $this->getCacheIdentifier();
 		if ($cacheIdentifier === NULL) {
 			// Create an artificial cache identifier if the package states file is not available yet

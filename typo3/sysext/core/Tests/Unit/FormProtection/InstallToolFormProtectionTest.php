@@ -76,26 +76,4 @@ class InstallToolFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 	}
 
-
-	//////////////////////////////////////////////////
-	// Tests concerning createValidationErrorMessage
-	//////////////////////////////////////////////////
-
-	/**
-	 * @test
-	 * @deprecated since 6.2. Test can be removed if injectInstallTool method is dropped
-	 */
-	public function createValidationErrorMessageAddsErrorMessage() {
-		$installTool = $this->getMock(
-			'stdClass', array('addErrorMessage'), array(), '', FALSE
-		);
-		$installTool->expects($this->once())->method('addErrorMessage')
-			->with(
-				'Validating the security token of this form has failed. ' .
-					'Please reload the form and submit it again.'
-			);
-		$this->fixture->injectInstallTool($installTool);
-
-		$this->fixture->_call('createValidationErrorMessage');
-	}
 }

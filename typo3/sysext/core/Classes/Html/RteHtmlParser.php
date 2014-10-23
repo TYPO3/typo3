@@ -1500,17 +1500,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	}
 
 	/**
-	 * Return the storage folder of RTE image files.
-	 * Default is $GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir'] unless something else is configured in the types configuration for the RTE.
-	 * @deprecated since 6.2, will be removed in two versions
-	 * @return string
-	 */
-	public function rteImageStorageDir() {
-		GeneralUtility::logDeprecatedFunction();
-		return $this->rte_p['imgpath'] ? $this->rte_p['imgpath'] : $GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir'];
-	}
-
-	/**
 	 * Remove all tables from incoming code
 	 * The function is trying to to this is some more or less respectfull way. The approach is to resolve each table cells content and implode it all by <br /> chars. Thus at least the content is preserved in some way.
 	 *

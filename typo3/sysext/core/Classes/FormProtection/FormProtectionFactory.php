@@ -30,7 +30,6 @@ namespace TYPO3\CMS\Core\FormProtection;
  *
  * <pre>
  * $formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
- * $formProtection->injectInstallTool($this);
  * </pre>
  *
  * @author Oliver Klee <typo3-coding@oliverklee.de>

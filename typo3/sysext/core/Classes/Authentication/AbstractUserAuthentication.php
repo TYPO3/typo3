@@ -266,15 +266,6 @@ abstract class AbstractUserAuthentication {
 	public $id;
 
 	/**
-	 * Will contain the session_id gotten from cookie or GET method.
-	 * This is used in statistics as a reliable cookie (one which is known to come from $_COOKIE)
-	 * @var string
-	 * @internal
-	 * @deprecated since TYPO3 CMS 6.2, remove two versions later, use $this->isCookieSet() instead
-	 */
-	public $cookieId;
-
-	/**
 	 * Indicates if an authentication was started but failed
 	 * @var bool
 	 */
@@ -1016,7 +1007,6 @@ abstract class AbstractUserAuthentication {
 	/**
 	 * Returns whether this request is going to set a cookie
 	 * or a cookie was already found in the system
-	 * replaces the old functionality for "$this->cookieId"
 	 *
 	 * @return bool Returns TRUE if a cookie is set
 	 */

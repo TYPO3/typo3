@@ -374,7 +374,6 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					$temporaryFileName = GeneralUtility::tempnam('export');
 					file_put_contents($temporaryFileName, $out);
 					$file = $saveFolder->addFile($temporaryFileName, $dlFile, 'replace');
-					$file = $this->getIndexerService()->indexFile($file);
 					if ($saveFilesOutsideExportFile) {
 						$filesFolderName = $dlFile . '.files';
 						$filesFolder = $saveFolder->createFolder($filesFolderName);
@@ -1528,17 +1527,5 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 		return $file;
 	}
-
-	/**
-	 * Internal function to retrieve the indexer service,
-	 * if it does not exist, an instance will be created
-	 *
-	 * @throws \InvalidArgumentException
-	 * @return \TYPO3\CMS\Core\Resource\Service\IndexerService
-	 */
-	protected function getIndexerService() {
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Service\\IndexerService');
-	}
-
 
 }

@@ -146,42 +146,6 @@ class BasicFileUtility {
 	}
 
 	/**
-	 * Returns an array with a whole lot of fileinformation.
-	 * Information includes:
-	 * - path			: path part of give file
-	 * - file			: filename
-	 * - filebody		: filename without extension
-	 * - fileext		: lowercase extension
-	 * - realFileext	: extension
-	 * - tstamp			: timestamp of modification
-	 * - size			: file size
-	 * - type			: file type (block/char/dir/fifo/file/link)
-	 * - owner			: user ID of owner of file
-	 * - perms			: numerical representation of file permissions
-	 * - writable		: is file writeable by web user (FALSE = yes; TRUE = no) *)
-	 * - readable		: is file readable by web user (FALSE = yes; TRUE = no) *)
-	 *
-	 * ) logic is reversed because of handling by functions in TYPO3\CMS\Filelist\FileList
-	 *
-	 * @param string Filepath to existing file. Should probably be absolute. Filefunctions are performed on this value.
-	 * @return array Information about the file in the filepath
-	 * @deprecated since TYPO3 6.0. Please use corresponding TYPO3\\CMS\\Core\\Resource\\ResourceStorage (fetched via BE_USERS->getFileStorages())
-	 */
-	public function getTotalFileInfo($wholePath) {
-		GeneralUtility::logDeprecatedFunction();
-		$theuser = getmyuid();
-		$info = GeneralUtility::split_fileref($wholePath);
-		$info['tstamp'] = @filemtime($wholePath);
-		$info['size'] = @filesize($wholePath);
-		$info['type'] = @filetype($wholePath);
-		$info['owner'] = @fileowner($wholePath);
-		$info['perms'] = @fileperms($wholePath);
-		$info['writable'] = !@is_writable($wholePath);
-		$info['readable'] = !@is_readable($wholePath);
-		return $info;
-	}
-
-	/**
 	 * Checks if a $iconkey (fileextension) is allowed according to $this->f_ext.
 	 *
 	 * @param string The extension to check, eg. "php" or "html" etc.
@@ -271,19 +235,6 @@ class BasicFileUtility {
 	}
 
 	/**
-	 * Returns TRUE if the input filename string is shorter than $this->maxInputNameLen.
-	 *
-	 * @param string Filename, eg "somefile.html
-	 * @return bool
-	 * @deprecated since TYPO3 6.0. Please use corresponding TYPO3\\CMS\\Core\\Resource\\ResourceStorage (fetched via BE_USERS->getFileStorages())
-	 */
-	public function checkFileNameLen($fileName) {
-		// @todo: should go into the LocalDriver in a protected way (not important to the outside world)
-		GeneralUtility::logDeprecatedFunction();
-		return strlen($fileName) <= $this->maxInputNameLen;
-	}
-
-	/**
 	 * Cleans $theDir for slashes in the end of the string and returns the new path, if it exists on the server.
 	 *
 	 * @param string Directory path to check
@@ -300,20 +251,6 @@ class BasicFileUtility {
 			}
 		}
 		return FALSE;
-	}
-
-	/**
-	 * Wrapper for \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr()
-	 *
-	 * @param string Filepath to evaluate
-	 * @return bool TRUE, if no '//', '..' or '\' is in the $theFile
-	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr()
-	 * @deprecated since TYPO3 6.0. Use GeneralUtility::validPathStr() instead
-	 */
-	public function isPathValid($theFile) {
-		// @todo: should go into the LocalDriver in a protected way (not important to the outside world)
-		GeneralUtility::logDeprecatedFunction();
-		return GeneralUtility::validPathStr($theFile);
 	}
 
 	/**
@@ -410,75 +347,11 @@ class BasicFileUtility {
 		}
 	}
 
-	/**
-	 * Removes filemount part of a path, thus blinding the position.
-	 * Takes a path, $thePath, and removes the part of the path which equals the filemount.
-	 *
-	 * @param string $thePath is a path which MUST be found within one of the internally set filemounts, $this->mounts
-	 * @return string The processed input path
-	 * @deprecated since TYPO3 6.0. No replacement
-	 */
-	public function blindPath($thePath) {
-		// @todo: where and when to use this function?
-		GeneralUtility::logDeprecatedFunction();
-		$k = $this->checkPathAgainstMounts($thePath);
-		if ($k) {
-			$name = '';
-			$name .= '[' . $this->mounts[$k]['name'] . ']: ';
-			$name .= substr($thePath, strlen($this->mounts[$k]['path']));
-			return $name;
-		}
-	}
-
-	/**
-	 * Find temporary folder
-	 * Finds the first $this->tempFN ('_temp_' usually) -folder in the internal array of filemounts, $this->mounts
-	 *
-	 * @return string Returns the path if found, otherwise nothing if error.
-	 * @deprecated since TYPO3 6.0. No replacement
-	 */
-	public function findTempFolder() {
-		// @todo: where and when to use this function?
-		GeneralUtility::logDeprecatedFunction();
-		if ($this->tempFN && is_array($this->mounts)) {
-			foreach ($this->mounts as $k => $val) {
-				$tDir = $val['path'] . $this->tempFN;
-				if (@is_dir($tDir)) {
-					return $tDir;
-				}
-			}
-		}
-	}
-
 	/*********************
 	 *
 	 * Cleaning functions
 	 *
 	 *********************/
-	/**
-	 * Removes all dots, slashes and spaces after a path
-	 *
-	 * @param string $theDir Input string
-	 * @return string Output string
-	 * @deprecated since TYPO3 6.1, will be removed in two versions, use \TYPO3\CMS\Core\Utility\PathUtility::getCanonicalPath() instead
-	 */
-	public function cleanDirectoryName($theDir) {
-		GeneralUtility::logDeprecatedFunction();
-		return PathUtility::getCanonicalPath($theDir);
-	}
-
-	/**
-	 * Converts any double slashes (//) to a single slash (/)
-	 *
-	 * @param string Input value
-	 * @return string Returns the converted string
-	 * @deprecated since TYPO3 6.0, no replacement
-	 */
-	public function rmDoubleSlash($string) {
-		GeneralUtility::logDeprecatedFunction();
-		return str_replace('//', '/', $string);
-	}
-
 	/**
 	 * Returns a string which has a slash '/' appended if it doesn't already have that slash
 	 *

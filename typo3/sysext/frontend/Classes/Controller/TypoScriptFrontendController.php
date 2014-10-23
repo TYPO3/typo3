@@ -4035,7 +4035,6 @@ class TypoScriptFrontendController {
 			'"' . TYPO3_mainDir . 'ext/',
 			'"' . TYPO3_mainDir . 'sysext/',
 			'"' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'],
-			'"' . $GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir']
 		);
 		$replace = array(
 			'"' . $this->absRefPrefix . 'typo3temp/',
@@ -4044,7 +4043,6 @@ class TypoScriptFrontendController {
 			'"' . $this->absRefPrefix . TYPO3_mainDir . 'ext/',
 			'"' . $this->absRefPrefix . TYPO3_mainDir . 'sysext/',
 			'"' . $this->absRefPrefix . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'],
-			'"' . $this->absRefPrefix . $GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir']
 		);
 		// Process additional directories
 		$directories = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['additionalAbsRefPrefixDirectories'], TRUE);

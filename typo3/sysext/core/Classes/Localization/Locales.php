@@ -204,16 +204,6 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * Returns the locales as referenced by the TER and TYPO3 localization files.
-	 *
-	 * @return array
-	 * @deprecated since TYPO3 4.6
-	 */
-	public function getTerLocales() {
-		return $this->convertToTerLocales(array_keys($this->languages));
-	}
-
-	/**
 	 * Returns the dependencies of a given locale, if any.
 	 *
 	 * @param string $locale
@@ -232,33 +222,6 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 		}
 		return $dependencies;
-	}
-
-	/**
-	 * Returns the dependencies of a given locale using TER compatible locale codes.
-	 *
-	 * @param string $locale
-	 * @return array
-	 * @deprecated since TYPO3 4.6
-	 */
-	public function getTerLocaleDependencies($locale) {
-		$terLocale = isset($this->isoMapping[$locale]) ? $this->isoMapping[$locale] : $locale;
-		return $this->convertToTerLocales($this->getLocaleDependencies($terLocale));
-	}
-
-	/**
-	 * Converts an array of ISO locale codes into their TER equivalent.
-	 *
-	 * @param array $locales
-	 * @return array
-	 * @deprecated since TYPO3 4.6
-	 */
-	protected function convertToTerLocales(array $locales) {
-		$terLocales = array();
-		foreach ($locales as $locale) {
-			$terLocales[] = isset($this->isoReverseMapping[$locale]) ? $this->isoReverseMapping[$locale] : $locale;
-		}
-		return $terLocales;
 	}
 
 }

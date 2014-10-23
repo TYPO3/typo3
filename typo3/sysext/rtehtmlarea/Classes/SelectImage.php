@@ -149,17 +149,6 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	}
 
 	/**
-	 * Get the path to the folder where RTE images are stored
-	 *
-	 * @return string the path to the folder where RTE images are stored
-	 * @deprecated since 6.2, will be removed in two versions
-	 */
-	protected function getRTEImageStorageDir() {
-		GeneralUtility::logDeprecatedFunction();
-		return $this->imgPath ?: $GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir'];
-	}
-
-	/**
 	 * Insert the image in the editing area
 	 *
 	 * @return void

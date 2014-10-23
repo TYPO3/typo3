@@ -196,7 +196,7 @@ abstract class AbstractConditionMatcher {
 	protected function evaluateConditionCommon($key, $value) {
 		if (GeneralUtility::inList('browser,version,system,useragent', strtolower($key))) {
 			GeneralUtility::deprecationLog(
-				'Usage of client related conditions (browser, version, system, useragent) is deprecated since 6.3.'
+				'Usage of client related conditions (browser, version, system, useragent) is deprecated since 7.0.'
 			);
 			$browserInfo = $this->getBrowserInfo(GeneralUtility::getIndpEnv('HTTP_USER_AGENT'));
 		}

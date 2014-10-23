@@ -61,49 +61,12 @@ namespace TYPO3\CMS\Core\FormProtection;
 class InstallToolFormProtection extends AbstractFormProtection {
 
 	/**
-	 * an instance of the install tool used for displaying messages
-	 *
-	 * @var \TYPO3\CMS\Install\Installer
-	 */
-	protected $installTool = NULL;
-
-	/**
-	 * Frees as much memory as possible.
-	 */
-	public function __destruct() {
-		$this->installTool = NULL;
-		parent::__destruct();
-	}
-
-	/**
-	 * Injects the current instance of the install tool.
-	 *
-	 * This instance will be used for displaying messages.
-	 *
-	 * @param object $installTool The current instance of the install tool
-	 * @return void
-	 * @deprecated since 6.2, will be removed two versions later. Message handling is done by install tool
-	 */
-	public function injectInstallTool($installTool) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		$this->installTool = $installTool;
-	}
-
-	/**
-	 * Creates or displayes an error message telling the user that the submitted
+	 * Creates or displays an error message telling the user that the submitted
 	 * form token is invalid.
 	 *
 	 * @return void
-	 * @deprecated since 6.2, will be removed two versions later. Message handling is done by install tool
 	 */
 	protected function createValidationErrorMessage() {
-		// @deprecated since 6.2, neither the install tool class nor the addErrorMessage() exist anymore
-		if (is_object($this->installTool)) {
-			$this->installTool->addErrorMessage(
-				'Validating the security token of this form has failed. '
-				. 'Please reload the form and submit it again.'
-			);
-		}
 	}
 
 	/**
