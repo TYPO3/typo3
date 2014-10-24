@@ -1670,6 +1670,7 @@ class TypoScriptFrontendController {
 	 * @param integer $thisUid The current page UID of the page which is a shortcut
 	 * @param integer $itera Safety feature which makes sure that the function is calling itself recursively max 20 times (since this function can find shortcuts to other shortcuts to other shortcuts...)
 	 * @param array $pageLog An array filled with previous page uids tested by the function - new page uids are evaluated against this to avoid going in circles.
+	 * @param bool $disableGroupCheck If true, the group check is disabled when fetching the target page (needed e.g. for menu generation)
 	 * @throws \RuntimeException
 	 * @throws \TYPO3\CMS\Core\Error\Http\PageNotFoundException
 	 * @return mixed Returns the page record of the page that the shortcut pointed to.
@@ -1677,7 +1678,7 @@ class TypoScriptFrontendController {
 	 * @see getPageAndRootline()
 	 * @todo Define visibility
 	 */
-	public function getPageShortcut($SC, $mode, $thisUid, $itera = 20, $pageLog = array()) {
+	public function getPageShortcut($SC, $mode, $thisUid, $itera = 20, $pageLog = array(), $disableGroupCheck = FALSE) {
 		$idArray = GeneralUtility::intExplode(',', $SC);
 		// Find $page record depending on shortcut mode:
 		switch ($mode) {
@@ -1704,15 +1705,15 @@ class TypoScriptFrontendController {
 				}
 				break;
 			case \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_PARENT_PAGE:
-				$parent = $this->sys_page->getPage($thisUid);
-				$page = $this->sys_page->getPage($parent['pid']);
+				$parent = $this->sys_page->getPage($thisUid, $disableGroupCheck);
+				$page = $this->sys_page->getPage($parent['pid'], $disableGroupCheck);
 				if (count($page) == 0) {
 					$message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to its parent page. ' . 'However, the parent page is not accessible.';
 					throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException($message, 1301648358);
 				}
 				break;
 			default:
-				$page = $this->sys_page->getPage($idArray[0]);
+				$page = $this->sys_page->getPage($idArray[0], $disableGroupCheck);
 				if (count($page) == 0) {
 					$message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a page, which is not accessible (ID ' . $idArray[0] . ').';
 					throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException($message, 1301648404);
@@ -1722,7 +1723,7 @@ class TypoScriptFrontendController {
 		if ($page['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT) {
 			if (!in_array($page['uid'], $pageLog) && $itera > 0) {
 				$pageLog[] = $page['uid'];
-				$page = $this->getPageShortcut($page['shortcut'], $page['shortcut_mode'], $page['uid'], $itera - 1, $pageLog);
+				$page = $this->getPageShortcut($page['shortcut'], $page['shortcut_mode'], $page['uid'], $itera - 1, $pageLog, $disableGroupCheck);
 			} else {
 				$pageLog[] = $page['uid'];
 				$message = 'Page shortcuts were looping in uids ' . implode(',', $pageLog) . '...!';
