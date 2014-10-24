@@ -330,20 +330,28 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	 * @author Dmitry Dulepov <dmitry.@typo3.org>
 	 */
 	protected function addIdentifierToTags($entryIdentifier, array $tags) {
+		// Get identifier-to-tag index to look for updates
+		$existingTags = $this->findTagsByIdentifier($entryIdentifier);
+		$existingTagsUpdated = FALSE;
+
 		foreach ($tags as $tag) {
 				// Update tag-to-identifier index
 			$identifiers = $this->findIdentifiersByTag($tag);
-			if (array_search($entryIdentifier, $identifiers) === FALSE) {
+			if (!in_array($entryIdentifier, $identifiers, TRUE)) {
 				$identifiers[] = $entryIdentifier;
 				apc_store($this->getIdentifierPrefix() . 'tag_' . $tag, $identifiers);
 			}
 
-				// Update identifier-to-tag index
-			$existingTags = $this->findTagsByIdentifier($entryIdentifier);
-			if (array_search($entryIdentifier, $existingTags) === false) {
-				apc_store($this->getIdentifierPrefix() . 'ident_' . $entryIdentifier, array_merge($existingTags, $tags));
+			// Test if identifier-to-tag index needs update
+			if (!in_array($tag, $existingTags, TRUE)) {
+				$existingTags[] = $tag;
+				$existingTagsUpdated = TRUE;
 			}
+		}
 
+		// Update identifier-to-tag index if needed
+		if ($existingTagsUpdated) {
+			apc_store($this->getIdentifierPrefix() . 'ident_' . $entryIdentifier, $existingTags);
 		}
 	}
 

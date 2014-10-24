@@ -287,6 +287,27 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 	}
 
 	/**
+	 * @test
+	 */
+	public function setTagsOnlyOnceToIdentifier() {
+		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
+		$tags = array('UnitTestTag%test', 'UnitTestTag%boring');
+
+		$backend = $this->setUpBackend();
+		$backend->addIdentifierToTags($identifier, $tags);
+		$this->assertSame(
+			$tags,
+			$backend->findTagsByIdentifier($identifier)
+		);
+
+		$backend->addIdentifierToTags($identifier, $tags);
+		$this->assertSame(
+			$tags,
+			$backend->findTagsByIdentifier($identifier)
+		);
+	}
+
+	/**
 	 * Sets up the APC backend used for testing
 	 *
 	 * @param array $backendOptions Options for the APC backend

@@ -438,21 +438,29 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 */
 	protected function addIdentifierToTags($entryIdentifier, array $tags) {
 		if ($this->serverConnected) {
+			// Get identifier-to-tag index to look for updates
+			$existingTags = $this->findTagsByIdentifier($entryIdentifier);
+			$existingTagsUpdated = FALSE;
+
 			foreach ($tags as $tag) {
-					// Update tag-to-identifier index
+				// Update tag-to-identifier index
 				$identifiers = $this->findIdentifiersByTag($tag);
-				if (array_search($entryIdentifier, $identifiers) === false) {
+				if (!in_array($entryIdentifier, $identifiers, TRUE)) {
 					$identifiers[] = $entryIdentifier;
 					$this->memcache->set($this->identifierPrefix . 'tag_' . $tag,
 										 $identifiers);
 				}
 
-					// Update identifier-to-tag index
-				$existingTags = $this->findTagsByIdentifier($entryIdentifier);
-				if (array_search($tag, $existingTags) === FALSE) {
-					$this->memcache->set($this->identifierPrefix . 'ident_' . $entryIdentifier,
-										 array_merge($existingTags, $tags));
+				// Test if identifier-to-tag index needs update
+				if (!in_array($tag, $existingTags, TRUE)) {
+					$existingTags[] = $tag;
+					$existingTagsUpdated = TRUE;
 				}
+			}
+
+			// Update identifier-to-tag index if needed
+			if ($existingTagsUpdated) {
+				$this->memcache->set($this->identifierPrefix . 'ident_' . $entryIdentifier, $existingTags);
 			}
 		}
 	}

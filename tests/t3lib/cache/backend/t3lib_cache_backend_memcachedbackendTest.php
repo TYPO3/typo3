@@ -290,6 +290,28 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 	}
 
 	/**
+	 * @test
+	 */
+	public function setTagsOnlyOnceToIdentifier() {
+		$backendOptions = array('servers' => array('localhost:11211'));
+		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
+		$tags = array('UnitTestTag%test', 'UnitTestTag%boring');
+
+		$backend = $this->setUpBackend($backendOptions, TRUE);
+		$backend->addIdentifierToTags($identifier, $tags);
+		$this->assertEquals(
+			$tags,
+			$backend->findTagsByIdentifier($identifier)
+		);
+
+		$backend->addIdentifierToTags($identifier, $tags);
+		$this->assertEquals(
+			$tags,
+			$backend->findTagsByIdentifier($identifier)
+		);
+	}
+
+	/**
 	 * Sets up the memcached backend used for testing
 	 *
 	 * @param	array	$backendOptions Options for the memcache backend
