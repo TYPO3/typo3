@@ -569,7 +569,17 @@ class ClickMenu {
 		if (!ExtensionManagementUtility::isLoaded('perm')) {
 			return '';
 		}
-		$url = ExtensionManagementUtility::extRelPath('perm') . 'mod1/index.php?id=' . $uid . ($rec['perms_userid'] == $GLOBALS['BE_USER']->user['uid'] || $GLOBALS['BE_USER']->isAdmin() ? '&return_id=' . $uid . '&edit=1' : '');
+
+		$parameters = array(
+			'id' => $uid,
+		);
+
+		if ($rec['perms_userid'] == $GLOBALS['BE_USER']->user['uid'] || $GLOBALS['BE_USER']->isAdmin()) {
+			$parameters['return_id'] = $uid;
+			$parameters['edit'] = '1';
+		}
+
+		$url = BackendUtility::getModuleUrl('web_perm', $parameters);
 		return $this->linkItem($GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_perms')), $this->excludeIcon(IconUtility::getSpriteIcon('status-status-locked')), $this->urlRefForCM($url), 0);
 	}
 
