@@ -291,7 +291,7 @@ HTMLArea.EditElement = Ext.extend(HTMLArea.Plugin, {
 		if (comboBox && this.stylePlugin) {
 			var classNames = HTMLArea.DOM.getClassNames(element);
 			this.stylePlugin.buildDropDownOptions(comboBox, nodeName);
-			this.stylePlugin.setSelectedOption(comboBox, classNames, 'noUnknown');
+			this.stylePlugin.setSelectedOption(comboBox, classNames);
 		}
 	},
 	/*

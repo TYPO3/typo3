@@ -1895,7 +1895,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				var classNames = HTMLArea.DOM.getClassNames(element);
 			}
 			blockStyle.buildDropDownOptions(dropDown, nodeName);
-			blockStyle.setSelectedOption(dropDown, classNames, 'noUnknown', defaultClass);
+			blockStyle.setSelectedOption(dropDown, classNames, false, defaultClass);
 		}
 	},
 	/*

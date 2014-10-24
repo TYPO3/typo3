@@ -239,19 +239,21 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 				allowedClasses = this.cssArray['all'];
 			}
 			for (var cssClass in allowedClasses) {
-				var style = null;
-				if (!this.pageTSconfiguration.disableStyleOnOptionLabel) {
-					if (HTMLArea.classesValues[cssClass] && !HTMLArea.classesNoShow[cssClass]) {
-						style = HTMLArea.classesValues[cssClass];
-					} else if (/-[0-9]+$/.test(cssClass) && HTMLArea.classesValues[RegExp.leftContext + '-'])  {
-						style = HTMLArea.classesValues[RegExp.leftContext + '-'];
+				if (typeof HTMLArea.classesSelectable[cssClass] === 'undefined' || HTMLArea.classesSelectable[cssClass]) {
+					var style = null;
+					if (!this.pageTSconfiguration.disableStyleOnOptionLabel) {
+						if (HTMLArea.classesValues[cssClass] && !HTMLArea.classesNoShow[cssClass]) {
+							style = HTMLArea.classesValues[cssClass];
+						} else if (/-[0-9]+$/.test(cssClass) && HTMLArea.classesValues[RegExp.leftContext + '-'])  {
+							style = HTMLArea.classesValues[RegExp.leftContext + '-'];
+						}
 					}
-				}
-				store.add(new store.recordType({
-					text: allowedClasses[cssClass],
-					value: cssClass,
-					style: style
-				}));
+					store.add(new store.recordType({
+						text: allowedClasses[cssClass],
+						value: cssClass,
+						style: style
+					}));
+ 				}
 			}
 		}
 	},
@@ -263,27 +265,34 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 		dropDown.setValue('none');
 		if (classNames.length) {
 			var index = store.findExact('value', classNames[classNames.length-1]);
-			if (index != -1) {
+			if (index !== -1) {
 				dropDown.setValue(classNames[classNames.length-1]);
 				if (!defaultClass) {
 					store.getAt(0).set('text', this.localize('Remove style'));
 				}
 			}
-			if (index == -1 && !noUnknown) {
+			if (index === -1 && !noUnknown) {
+				var text = this.localize('Unknown style');
+				var value = classNames[classNames.length-1];
+				if (typeof HTMLArea.classesSelectable[value] !== 'undefined' && !HTMLArea.classesSelectable[value] && typeof HTMLArea.classesLabels[value] !== 'undefined') {
+					text = HTMLArea.classesLabels[value];
+				}
 				store.add(new store.recordType({
-					text: this.localize('Unknown style'),
-					value: classNames[classNames.length-1]
+					text: text,
+					value: value,
+					style: (!(this.pageTSconfiguration && this.pageTSconfiguration.disableStyleOnOptionLabel) && HTMLArea.classesValues && HTMLArea.classesValues[value] && !HTMLArea.classesNoShow[value]) ? HTMLArea.classesValues[value] : null
 				}));
-				index = store.getCount()-1;
-				dropDown.setValue(classNames[classNames.length-1]);
+				dropDown.setValue(value);
 				if (!defaultClass) {
 					store.getAt(0).set('text', this.localize('Remove style'));
 				}
 			}
-				// Remove already assigned classes from the dropDown box
+			// Remove already assigned classes from the dropDown box
 			var classNamesString = ',' + classNames.join(',') + ',';
+			var selectedValue = dropDown.getValue(), optionValue;
 			store.each(function (option) {
-				if (classNamesString.indexOf(',' + option.get('value') + ',') != -1) {
+				optionValue = option.get('value');
+				if (classNamesString.indexOf(',' + optionValue + ',') !== -1 && optionValue !== selectedValue) {
 					store.removeAt(store.indexOf(option));
 				}
 				return true;

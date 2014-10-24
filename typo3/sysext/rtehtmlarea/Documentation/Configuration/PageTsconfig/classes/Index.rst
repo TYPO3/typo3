@@ -38,6 +38,7 @@ classes.[ *classname* ]
             .name = label of the class (may be a reference to an entry in a localization file of the form LLL:EXT:[fileref]:[labelkey])
             .value = the style for the class
             .noShow = boolean; if set, the style of the class is not used to render it in the pop-up selector.
+            .selectable = boolean; if set to 0, the class is not selectable in the style selectors; if the property is omitted, or set to 1, the class is selectable in the style selectors
             
             # specification of alternating classes for rows and/or columns of a table
             .alternating { 

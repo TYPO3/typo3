@@ -1065,7 +1065,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		} else {
 			$RTEProperties = $this->RTEsetup['properties'];
 		}
-		$classesArray = array('labels' => array(), 'values' => array(), 'noShow' => array(), 'alternating' => array(), 'counting' => array(), 'XOR' => array());
+		$classesArray = array('labels' => array(), 'values' => array(), 'noShow' => array(), 'alternating' => array(), 'counting' => array(), 'selectable' => array(), 'XOR' => array());
 		$JSClassesArray = '';
 		// Scanning the list of classes if specified in the RTE config
 		if (is_array($RTEProperties['classes.'])) {
@@ -1081,6 +1081,9 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 				}
 				if (is_array($conf['counting.'])) {
 					$classesArray['counting'][$className] = $conf['counting.'];
+				}
+				if (isset($conf['selectable'])) {
+					$classesArray['selectable'][$className] = $conf['selectable'];
 				}
 			}
 		}
