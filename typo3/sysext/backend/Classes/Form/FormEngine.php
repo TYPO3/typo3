@@ -3580,24 +3580,32 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 				break;
 			case 'datetime':
 				// compatibility with "eval" (type "input")
-				$itemValue = date('H:i d-m-Y', $itemValue);
+				if ($itemValue !== '') {
+					$itemValue = date('H:i d-m-Y', (int)$itemValue);
+				}
 				break;
 			case 'time':
 				// compatibility with "eval" (type "input")
-				$itemValue = date('H:i', $itemValue);
+				if ($itemValue !== '') {
+					$itemValue = date('H:i', (int)$itemValue);
+				}
 				break;
 			case 'timesec':
 				// compatibility with "eval" (type "input")
-				$itemValue = date('H:i:s', $itemValue);
+				if ($itemValue !== '') {
+					$itemValue = date('H:i:s', (int)$itemValue);
+				}
 				break;
 			case 'year':
 				// compatibility with "eval" (type "input")
-				$itemValue = date('Y', $itemValue);
+				if ($itemValue !== '') {
+					$itemValue = date('Y', (int)$itemValue);
+				}
 				break;
 			case 'int':
 				$baseArr = array('dec' => 'd', 'hex' => 'x', 'HEX' => 'X', 'oct' => 'o', 'bin' => 'b');
 				$base = trim($config['format.']['base']);
-				$format = $baseArr[$base] ? $baseArr[$base] : 'd';
+				$format = $baseArr[$base] ?: 'd';
 				$itemValue = sprintf('%' . $format, $itemValue);
 				break;
 			case 'float':
@@ -3612,6 +3620,8 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 				$itemValue = md5($itemValue);
 				break;
 			case 'filesize':
+				// We need to cast to int here, otherwise empty values result in empty output,
+				// but we expect zero.
 				$value = GeneralUtility::formatSize((int)$itemValue);
 				if ($config['format.']['appendByteSize']) {
 					$value .= ' (' . $itemValue . ')';
@@ -3631,7 +3641,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 				}
 				break;
 			default:
-				// Do nothing
+				// Do nothing e.g. when $format === ''
 		}
 		return $itemValue;
 	}
