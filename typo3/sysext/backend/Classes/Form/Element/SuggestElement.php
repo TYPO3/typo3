@@ -26,6 +26,9 @@ namespace TYPO3\CMS\Backend\Form\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+
 /**
  * TCEforms wizard for rendering an AJAX selector for records
  *
@@ -73,7 +76,8 @@ class SuggestElement {
 		$this->suggestCount++;
 		$containerCssClass = $this->cssClass . ' ' . $this->cssClass . '-position-right';
 		$suggestId = 'suggest-' . $table . '-' . $field . '-' . $row['uid'];
-		if ($GLOBALS['TCA'][$table]['columns'][$field]['config']['type'] === 'flex') {
+		$isFlexFormField = $GLOBALS['TCA'][$table]['columns'][$field]['config']['type'] === 'flex';
+		if ($isFlexFormField) {
 			$fieldPattern = 'data[' . $table . '][' . $row['uid'] . '][';
 			$flexformField = str_replace($fieldPattern, '', $fieldname);
 			$flexformField = substr($flexformField, 0, -1);
@@ -98,12 +102,20 @@ class SuggestElement {
 			$minChars = intval($config['fieldTSConfig']['suggest.']['default.']['minimumCharacters']);
 		}
 		$minChars = $minChars > 0 ? $minChars : 2;
+
+		$jsRow = '';
+		if ($isFlexFormField && !MathUtility::canBeInterpretedAsInteger($row['uid'])) {
+			// Ff we have a new record, we hand that row over to JS.
+			// This way we can properly retrieve the configuration of our wizard
+			// if it is shown in a flexform
+			$jsRow = serialize($row);
+		}
+
 		// Replace "-" with ucwords for the JS object name
 		$jsObj = str_replace(' ', '', ucwords(str_replace('-', ' ', \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($suggestId))));
 		$this->TCEformsObj->additionalJS_post[] = '
-			var ' . $jsObj . ' = new TCEForms.Suggest("' . $fieldname . '", "' . $table . '", "' . $field . '", "' . $row['uid'] . '", ' . $row['pid'] . ', ' . $minChars . ');
-			' . $jsObj . '.defaultValue = "' . \TYPO3\CMS\Core\Utility\GeneralUtility::slashJS($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.findRecord')) . '";
-		';
+			var ' . $jsObj . ' = new TCEForms.Suggest("' . $fieldname . '", "' . $table . '", "' . $field . '", "' . $row['uid'] . '", ' . $row['pid'] . ', ' . $minChars . '", ' . GeneralUtility::quoteJSvalue($jsRow) . ');' . LF
+				. $jsObj . '.defaultValue = "' . \TYPO3\CMS\Core\Utility\GeneralUtility::slashJS($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.findRecord')) . '";' . LF;
 		return $selector;
 	}
 
@@ -121,6 +133,7 @@ class SuggestElement {
 		$field = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('field');
 		$uid = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('uid');
 		$pageId = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('pid');
+		$newRecordRow = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('newRecordRow');
 		// If the $uid is numeric, we have an already existing element, so get the
 		// TSconfig of the page itself or the element container (for non-page elements)
 		// otherwise it's a new element, so use given id of parent page (i.e., don't modify it here)
@@ -132,13 +145,15 @@ class SuggestElement {
 			} else {
 				$pageId = $row['pid'];
 			}
+		} else {
+			$row = unserialize($newRecordRow);
 		}
 		$TSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($pageId);
 		$queryTables = array();
 		$foreign_table_where = '';
 		$fieldConfig = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 		$parts = explode('|', $field);
-		if (!empty($row) && $GLOBALS['TCA'][$table]['columns'][$parts[0]]['config']['type'] === 'flex') {
+		if ($GLOBALS['TCA'][$table]['columns'][$parts[0]]['config']['type'] === 'flex') {
 			$flexfieldTCAConfig = $GLOBALS['TCA'][$table]['columns'][$parts[0]]['config'];
 			$flexformDSArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($flexfieldTCAConfig, $row, $table, $parts[0]);
 			$flexformDSArray = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveAllSheetsInDS($flexformDSArray);
