@@ -294,28 +294,6 @@ class ClickMenu {
 				} else {
 					$menuItems = array_merge($menuItems, $localItems);
 				}
-			} elseif ($subname === 'moreoptions') {
-				// If the page can be edited, then show this:
-				if ($this->editOK) {
-					if (($table === 'pages' || $table === 'tt_content') && !in_array('move_wizard', $this->disabledItems, TRUE)) {
-						$localItems['move_wizard'] = $this->DB_moveWizard($table, $uid, $this->rec);
-					}
-					if (($table === 'pages' || $table === 'tt_content') && !in_array('new_wizard', $this->disabledItems, TRUE)) {
-						$localItems['new_wizard'] = $this->DB_newWizard($table, $uid, $this->rec);
-					}
-					if ($table === 'pages' && !in_array('perms', $this->disabledItems, TRUE) && $GLOBALS['BE_USER']->check('modules', 'web_perm')) {
-						$localItems['perms'] = $this->DB_perms($table, $uid, $this->rec);
-					}
-					if (!in_array('db_list', $this->disabledItems, TRUE) && $GLOBALS['BE_USER']->check('modules', 'web_list')) {
-						$localItems['db_list'] = $this->DB_db_list($table, $uid, $this->rec);
-					}
-				}
-				// Temporary mount point item:
-				if ($table === 'pages') {
-					$localItems['temp_mount_point'] = $this->DB_tempMountPoint($uid);
-				}
-				// Merge the locally created items into the current menu items passed to this function.
-				$menuItems = array_merge($menuItems, $localItems);
 			}
 
 			// Delete:
@@ -358,13 +336,39 @@ class ClickMenu {
 		}
 		// If record was found, check permissions and get menu items.
 		if (is_array($this->rec) || $root) {
-			$lCP = $GLOBALS['BE_USER']->calcPerms(BackendUtility::getRecord('pages', $table == 'pages' ? $this->rec['uid'] : $this->rec['pid']));
+			$lCP = $GLOBALS['BE_USER']->calcPerms(BackendUtility::getRecord('pages', $table === 'pages' ? $this->rec['uid'] : $this->rec['pid']));
 			// Edit:
 			if (!$root && ($GLOBALS['BE_USER']->isPSet($lCP, $table, 'edit') || $GLOBALS['BE_USER']->isPSet($lCP, $table, 'editcontent'))) {
 				$this->editOK = 1;
 			}
 			$menuItems = $this->processingByExtClassArray($menuItems, $table, $uid);
 		}
+
+		$subname = GeneralUtility::_GP('subname');
+		if ($subname === 'moreoptions') {
+			// If the page can be edited, then show this:
+			if ($this->editOK) {
+				if (($table === 'pages' || $table === 'tt_content') && !in_array('move_wizard', $this->disabledItems, TRUE)) {
+					$localItems['move_wizard'] = $this->DB_moveWizard($table, $uid, $this->rec);
+				}
+				if (($table === 'pages' || $table === 'tt_content') && !in_array('new_wizard', $this->disabledItems, TRUE)) {
+					$localItems['new_wizard'] = $this->DB_newWizard($table, $uid, $this->rec);
+				}
+				if ($table === 'pages' && !in_array('perms', $this->disabledItems, TRUE) && $GLOBALS['BE_USER']->check('modules', 'web_perm')) {
+					$localItems['perms'] = $this->DB_perms($table, $uid, $this->rec);
+				}
+				if (!in_array('db_list', $this->disabledItems, TRUE) && $GLOBALS['BE_USER']->check('modules', 'web_list')) {
+					$localItems['db_list'] = $this->DB_db_list($table, $uid, $this->rec);
+				}
+			}
+			// Temporary mount point item:
+			if ($table === 'pages') {
+				$localItems['temp_mount_point'] = $this->DB_tempMountPoint($uid);
+			}
+			// Merge the locally created items into the current menu items passed to this function.
+			$menuItems = array_merge($menuItems, $localItems);
+		}
+
 		// Return the printed elements:
 		if (!is_array($menuItems)) {
 			$menuItems = array();
