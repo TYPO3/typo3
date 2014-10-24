@@ -1224,17 +1224,21 @@ class AbstractMenuContentObject {
 			$LD['totalURL'] = $this->parent_cObj->typoLink_URL(array('parameter' => $this->menuArr[$key]['url']));
 			$LD['target'] = '';
 		}
+
 		// Override url if current page is a shortcut
+		$shortcut = NULL;
 		if ($this->menuArr[$key]['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT && $this->menuArr[$key]['shortcut_mode'] != \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE) {
 
 			$menuItem = $this->determineOriginalShortcutPage($this->menuArr[$key]);
 
-			$shortcut = NULL;
 			try {
 				$shortcut = $GLOBALS['TSFE']->getPageShortcut(
 					$menuItem['shortcut'],
 					$menuItem['shortcut_mode'],
-					$menuItem['uid']
+					$menuItem['uid'],
+					20,
+					array(),
+					TRUE
 				);
 			} catch (\Exception $ex) {
 
@@ -1246,10 +1250,17 @@ class AbstractMenuContentObject {
 			$LD['totalURL'] = $this->parent_cObj->typoLink_URL(array(
 				'parameter' => $shortcut['uid'],
 				'additionalParams' => $this->mconf['addParams'] . $MP_params . $this->I['val']['additionalParams'] . $menuItem['_ADD_GETVARS'],
+				'linkAccessRestrictedPages' => $this->mconf['showAccessRestrictedPages'] && $this->mconf['showAccessRestrictedPages'] !== 'NONE'
 			));
 		}
+		if ($shortcut) {
+			$pageData = $shortcut;
+			$pageData['_SHORTCUT_PAGE_UID'] = $this->menuArr[$key]['uid'];
+		} else {
+			$pageData = $this->menuArr[$key];
+		}
 		// Manipulation in case of access restricted pages:
-		$this->changeLinksForAccessRestrictedPages($LD, $this->menuArr[$key], $mainTarget, $typeOverride);
+		$this->changeLinksForAccessRestrictedPages($LD, $pageData, $mainTarget, $typeOverride);
 		// Overriding URL / Target if set to do so:
 		if ($this->menuArr[$key]['_OVERRIDE_HREF']) {
 			$LD['totalURL'] = $this->menuArr[$key]['_OVERRIDE_HREF'];
@@ -1352,7 +1363,7 @@ class AbstractMenuContentObject {
 				),
 				array(
 					rawurlencode($LD['totalURL']),
-					$page['uid']
+					isset($page['_SHORTCUT_PAGE_UID']) ? $page['_SHORTCUT_PAGE_UID'] : $page['uid']
 				),
 				$this->mconf['showAccessRestrictedPages.']['addParams']
 			);
@@ -1710,6 +1721,7 @@ class AbstractMenuContentObject {
 		if ($page['sectionIndex_uid']) {
 			$conf['section'] = $page['sectionIndex_uid'];
 		}
+		$conf['linkAccessRestrictedPages'] = $this->mconf['showAccessRestrictedPages'] && $this->mconf['showAccessRestrictedPages'] !== 'NONE';
 		$this->parent_cObj->typoLink('|', $conf);
 		$LD = $this->parent_cObj->lastTypoLinkLD;
 		$LD['totalURL'] = $this->parent_cObj->lastTypoLinkUrl;
