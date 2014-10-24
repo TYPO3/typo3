@@ -40,8 +40,9 @@ TCEForms.Suggest = Class.create({
 	 * @param  integer pid       The pid of the record which is currently edited
 	 * @param  integer minimumCharacters the minimum characters that is need to trigger the initial search
 	 * @param  string  fieldType The TCA type of the field (e.g. group, select, ...)
+	 * @param string newRecordRow JSON encoded new content element. Only set when new record is inside flexform
 	 */
-	initialize: function(objectId, table, field, uid, pid, minimumCharacters, fieldType) {
+	initialize: function(objectId, table, field, uid, pid, minimumCharacters, fieldType, newRecordRow) {
 		var PATH_typo3 = top.TS.PATH_typo3 || window.opener.top.TS.PATH_typo3;
 		this.objectId = objectId;
 		this.suggestField = objectId + 'Suggest';
@@ -52,7 +53,7 @@ TCEForms.Suggest = Class.create({
 				paramName: 'value',
 				minChars: (minimumCharacters ? minimumCharacters : this.minimumCharacters),
 				updateElement: this.addElementToList.bind(this),
-				parameters: 'table=' + table + '&field=' + field + '&uid=' + uid + '&pid=' + pid,
+				parameters: 'table=' + table + '&field=' + field + '&uid=' + uid + '&pid=' + pid + '&newRecordRow=' + newRecordRow,
 				indicator: objectId + 'SuggestIndicator'
 			}
 		);
