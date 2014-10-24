@@ -960,18 +960,28 @@ class GeneralUtility {
 		$labelArr = explode('|', $labels);
 		// Find size:
 		if ($sizeInBytes > 900) {
+			// TODO find out which locale is used for current BE user to cover the BE case as well
+			$locale = is_object($GLOBALS['TSFE']) ? $GLOBALS['TSFE']->config['config']['locale_all'] : '';
+			$oldLocale = setlocale(LC_NUMERIC, 0);
+			if ($locale) {
+				setlocale(LC_NUMERIC, $locale);
+			}
+			$localeInfo = localeconv();
+			if ($locale) {
+				setlocale(LC_NUMERIC, $oldLocale);
+			}
 			// GB
 			if ($sizeInBytes > 900000000) {
 				$val = $sizeInBytes / (1024 * 1024 * 1024);
-				return number_format($val, ($val < 20 ? 1 : 0), '.', '') . $labelArr[3];
+				return number_format($val, ($val < 20 ? 1 : 0), $localeInfo['decimal_point'], '') . $labelArr[3];
 			} elseif ($sizeInBytes > 900000) {
 				// MB
 				$val = $sizeInBytes / (1024 * 1024);
-				return number_format($val, ($val < 20 ? 1 : 0), '.', '') . $labelArr[2];
+				return number_format($val, ($val < 20 ? 1 : 0), $localeInfo['decimal_point'], '') . $labelArr[2];
 			} else {
 				// KB
 				$val = $sizeInBytes / 1024;
-				return number_format($val, ($val < 20 ? 1 : 0), '.', '') . $labelArr[1];
+				return number_format($val, ($val < 20 ? 1 : 0), $localeInfo['decimal_point'], '') . $labelArr[1];
 			}
 		} else {
 			// Bytes
