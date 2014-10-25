@@ -277,7 +277,7 @@ class Lexer {
 	 * @param 	string		UTF-8 multibyte character string (reference)
 	 * @param 	integer		The length of the character (reference, return value)
 	 * @param 	integer		Starting position in input string
-	 * @param 	boolean		If set, then a hex. number is returned
+	 * @param 	bool		If set, then a hex. number is returned
 	 * @return 	integer		UNICODE codepoint
 	 */
 	public function utf8_ord(&$str, &$len, $pos = 0, $hex = FALSE) {

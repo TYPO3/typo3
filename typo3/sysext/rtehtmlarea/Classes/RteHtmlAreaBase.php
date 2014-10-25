@@ -1147,7 +1147,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 * @param 	string		$label: A label to insert at the beginning of the name of the file
 	 * @param 	string		$fileExtension: The file extension of the file, defaulting to 'js'
 	 * @param 	string		$contents: The contents to write into the file if no $sourceFileName is provided
-	 * @param	boolean		$concatenate Not used anymore
+	 * @param	bool		$concatenate Not used anymore
 	 * @return 	string		The name of the file writtten to typo3temp/rtehtmlarea
 	 */
 	public function writeTemporaryFile($sourceFileName = '', $label, $fileExtension = 'js', $contents = '', $concatenate = FALSE) {

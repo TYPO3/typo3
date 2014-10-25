@@ -25,7 +25,7 @@ class Tables {
 	 * Get tables for menu example
 	 *
 	 * @param 	string		$format: Return format (example: json)
-	 * @param 	boolean		$withAllOption: 0 no, 1 return tables with a "all" option
+	 * @param 	bool		$withAllOption: 0 no, 1 return tables with a "all" option
 	 * @param 	integer		$id: UID from selected page
 	 * @param 	integer		$depth: How many levels recursive
 	 * @return 	string		The tables to be displayed

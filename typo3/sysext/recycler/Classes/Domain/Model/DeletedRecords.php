@@ -295,7 +295,7 @@ class DeletedRecords {
 	 * If $recursive is TRUE all records below the page uid would be undelete too
 	 *
 	 * @param 	string		$recordArray: Representation of the records
-	 * @param 	boolean		$recursive: TRUE/FALSE
+	 * @param 	bool		$recursive: TRUE/FALSE
 	 * @return 	boolean
 	 */
 	public function undeleteData($recordsArray, $recursive = FALSE) {

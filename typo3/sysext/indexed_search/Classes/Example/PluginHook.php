@@ -62,7 +62,7 @@ class PluginHook {
 	 *
 	 * @param 	array		Template Content (generated from result row) being processed.
 	 * @param 	array		Result row
-	 * @param 	boolean		If set, the result row is a sub-row.
+	 * @param 	bool		If set, the result row is a sub-row.
 	 * @return 	array		Template Content returned.
 	 */
 	public function prepareResultRowTemplateData_postProc($tmplContent, $row, $headerOnly) {

@@ -239,7 +239,7 @@ class Indexer {
 	 * @param 	string		The MP variable (Mount Points), &MP=
 	 * @param 	array		Rootline array of only UIDs.
 	 * @param 	array		Array of GET variables to register with this indexing
-	 * @param 	boolean		If set, calculates a cHash value from the $cHash_array. Probably you will not do that since such cases are indexed through the frontend and the idea of this interface is to index non-cachable pages from the backend!
+	 * @param 	bool		If set, calculates a cHash value from the $cHash_array. Probably you will not do that since such cases are indexed through the frontend and the idea of this interface is to index non-cachable pages from the backend!
 	 * @return 	void
 	 */
 	public function backend_initIndexer($id, $type, $sys_language_uid, $MP, $uidRL, $cHash_array = array(), $createCHash = FALSE) {
@@ -989,7 +989,7 @@ class Indexer {
 	 * Indexing a regular document given as $file (relative to PATH_site, local file)
 	 *
 	 * @param 	string		Relative Filename, relative to PATH_site. It can also be an absolute path as long as it is inside the lockRootPath (validated with \TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath()). Finally, if $contentTmpFile is set, this value can be anything, most likely a URL
-	 * @param 	boolean		If set, indexing is forced (despite content hashes, mtime etc).
+	 * @param 	bool		If set, indexing is forced (despite content hashes, mtime etc).
 	 * @param 	string		Temporary file with the content to read it from (instead of $file). Used when the $file is a URL.
 	 * @param 	string		File extension for temporary file.
 	 * @return 	void
@@ -1281,7 +1281,7 @@ class Indexer {
 	 * Creating metaphone based hash from input word
 	 *
 	 * @param 	string		Word to convert
-	 * @param 	boolean		If set, returns the raw metaphone value (not hashed)
+	 * @param 	bool		If set, returns the raw metaphone value (not hashed)
 	 * @return 	mixed		Metaphone hash integer (or raw value, string)
 	 */
 	public function metaphone($word, $returnRawMetaphoneValue = FALSE) {

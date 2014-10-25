@@ -323,7 +323,7 @@ class BasicFileUtility {
 	 *
 	 * @param 	string		The input filename to check
 	 * @param 	string		The directory for which to return a unique filename for $theFile. $theDest MUST be a valid directory. Should be absolute.
-	 * @param 	boolean		If set the filename is returned with the path prepended without checking whether it already existed!
+	 * @param 	bool		If set the filename is returned with the path prepended without checking whether it already existed!
 	 * @return 	string		The destination absolute filepath (not just the name!) of a unique filename/foldername in that path.
 	 * @see \TYPO3\CMS\Core\DataHandling\DataHandler::checkValue()
 	 * @todo Deprecate, but still in use by the Core (DataHandler...)

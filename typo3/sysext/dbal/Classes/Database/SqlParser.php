@@ -115,8 +115,8 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 	 * Can also compile field lists for ORDER BY and GROUP BY.
 	 *
 	 * @param 	array		$selectFields Array of select fields, (made with ->parseFieldList())
-	 * @param 	boolean		$compileComments Whether comments should be compiled
-	 * @param 	boolean		$functionMapping Whether function mapping should take place
+	 * @param 	bool		$compileComments Whether comments should be compiled
+	 * @param 	bool		$functionMapping Whether function mapping should take place
 	 * @return 	string		Select field string
 	 * @see parseFieldList()
 	 */
@@ -169,7 +169,7 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 	 * Compiles a CASE ... WHEN flow-control construct based on input array (made with ->parseCaseStatement())
 	 *
 	 * @param 	array		$components Array of case components, (made with ->parseCaseStatement())
-	 * @param 	boolean		$functionMapping Whether function mapping should take place
+	 * @param 	bool		$functionMapping Whether function mapping should take place
 	 * @return 	string		case when string
 	 * @see parseCaseStatement()
 	 */

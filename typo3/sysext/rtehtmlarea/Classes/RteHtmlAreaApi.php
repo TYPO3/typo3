@@ -228,7 +228,7 @@ abstract class RteHtmlAreaApi {
 	/**
 	 * Sets the plugin to require synchronous load or not
 	 *
-	 * @param 	boolean		$value: the boolean value to set
+	 * @param 	bool		$value: the boolean value to set
 	 * @return 	void
 	 */
 	public function setSynchronousLoad($value = TRUE) {

@@ -707,7 +707,7 @@ class IndexSearchRepository {
 	 * This means this function will work in conjunction with the preview facilities of the frontend engine/Admin Panel.
 	 *
 	 * @param 	string		The table for which to get the where clause
-	 * @param 	boolean		If set, then you want NOT to filter out hidden records. Otherwise hidden record are filtered based on the current preview settings.
+	 * @param 	bool		If set, then you want NOT to filter out hidden records. Otherwise hidden record are filtered based on the current preview settings.
 	 * @return 	string		The part of the where clause on the form " AND [fieldname]=0 AND ...". Eg. " AND hidden=0 AND starttime < 123345567
 	 * @see \TYPO3\CMS\Frontend\Page\PageRepository::enableFields()
 	 */

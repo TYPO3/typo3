@@ -338,7 +338,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * $defOp is the default operator. 1=OR, 0=AND
 	 *
-	 * @param 	boolean		If TRUE, the default operator will be OR, not AND
+	 * @param 	bool		If TRUE, the default operator will be OR, not AND
 	 * @return 	array		Returns array with search words if any found
 	 */
 	public function getSearchWords($defOp) {
@@ -1171,7 +1171,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Returns "DESC" or "" depending on the settings of the incoming highest/lowest result order (piVars['desc']
 	 *
-	 * @param 	boolean		If TRUE, inverse the order which is defined by piVars['desc']
+	 * @param 	bool		If TRUE, inverse the order which is defined by piVars['desc']
 	 * @return 	string		" DESC" or
 	 */
 	public function isDescending($inverse = FALSE) {
@@ -1564,7 +1564,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Preparing template data for the result row output
 	 *
 	 * @param 	array		Result row
-	 * @param 	boolean		If set, display only header of result (for sub-results)
+	 * @param 	bool		If set, display only header of result (for sub-results)
 	 * @return 	array		Array with data to insert in result row template
 	 */
 	public function prepareResultRowTemplateData($row, $headerOnly) {
@@ -1792,7 +1792,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Returns the resume for the search-result.
 	 *
 	 * @param 	array		Search result row
-	 * @param 	boolean		If noMarkup is FALSE, then the index_fulltext table is used to select the content of the page, split it with regex to display the search words in the text.
+	 * @param 	bool		If noMarkup is FALSE, then the index_fulltext table is used to select the content of the page, split it with regex to display the search words in the text.
 	 * @param 	integer		String length
 	 * @return 	string		HTML string		...
 	 */

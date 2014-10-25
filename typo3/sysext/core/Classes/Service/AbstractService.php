@@ -143,7 +143,7 @@ abstract class AbstractService {
 	 *
 	 * @param string $msg Debug message
 	 * @param int $severity Severity: 0 is info, 1 is notice, 2 is warning, 3 is fatal error, -1 is "OK" message
-	 * @param array|boolean $dataVar dditional data you want to pass to the logger.
+	 * @param array|bool $dataVar dditional data you want to pass to the logger.
 	 * @return void
 	 */
 	public function devLog($msg, $severity = 0, $dataVar = FALSE) {

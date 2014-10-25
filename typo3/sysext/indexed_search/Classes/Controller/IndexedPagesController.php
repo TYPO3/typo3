@@ -272,7 +272,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 * Render a single row of information about a indexing entry.
 	 *
 	 * @param 	array		Row from query (combined phash table with sections etc).
-	 * @param 	boolean		Set if grouped to previous result; the icon of the element is not shown again.
+	 * @param 	bool		Set if grouped to previous result; the icon of the element is not shown again.
 	 * @param 	array		Array of index_grlist records.
 	 * @return 	array		Array of table rows.
 	 * @see indexed_info()
@@ -519,7 +519,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 *
 	 * @param 	array		Array of records selected from index_rel/index_words
 	 * @param 	string		Header string to show before table.
-	 * @param 	boolean		If set, the stopWord checkboxes will be shown in the word list. Only for admins. (because it is a global setting, not per-site).
+	 * @param 	bool		If set, the stopWord checkboxes will be shown in the word list. Only for admins. (because it is a global setting, not per-site).
 	 * @param 	array		The page record from which to load the keywords, if any.
 	 * @return 	string		HTML table
 	 */
@@ -922,7 +922,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 * Removes ALL data regarding a certain list of indexed phash-row
 	 *
 	 * @param 	string		List of phash integers
-	 * @param 	boolean		If set, page cache is cleared as well.
+	 * @param 	bool		If set, page cache is cleared as well.
 	 * @return 	void
 	 */
 	public function removeIndexedPhashRow($phashList, $clearPageCache = 1) {

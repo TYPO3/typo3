@@ -192,7 +192,7 @@ class Query implements QueryInterface {
 	/**
 	 * Executes the query against the database and returns the result
 	 *
-	 * @param $returnRawQueryResult boolean avoids the object mapping by the persistence
+	 * @param bool $returnRawQueryResult avoids the object mapping by the persistence
 	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array The query result object or an array if $returnRawQueryResult is TRUE
 	 * @api
 	 */

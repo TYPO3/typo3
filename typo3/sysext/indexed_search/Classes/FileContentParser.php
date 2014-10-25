@@ -400,7 +400,7 @@ class FileContentParser {
 	 * Wraps the "splitLabel function" of the language object.
 	 *
 	 * @param 	string		$reference: Reference/key of the label
-	 * @param 	boolean		$useHtmlSpecialChar: Convert special chars to HTML entities (default: FALSE)
+	 * @param 	bool		$useHtmlSpecialChar: Convert special chars to HTML entities (default: FALSE)
 	 * @return 	string		The label of the reference/key to be fetched
 	 */
 	protected function sL($reference, $useHtmlSpecialChar = FALSE) {
