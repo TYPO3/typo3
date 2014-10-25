@@ -96,12 +96,11 @@ class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser 
 		$matchObj->setRootline($this->rootLine);
 		$matchObj->setPageId($this->id);
 		$this->parse($TSconfig, $matchObj);
-		$storeData = array(
+		return array(
 			'TSconfig' => $this->setup,
 			'sections' => $this->sections,
 			'match' => $this->sectionsMatch
 		);
-		return $storeData;
 	}
 
 	/**

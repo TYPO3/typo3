@@ -14,7 +14,9 @@ namespace TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Controller\EditDocumentController;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -25,7 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher {
+class ConditionMatcher extends AbstractConditionMatcher {
 
 	/**
 	 * Constructor for this class
@@ -50,15 +52,14 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 					$groupList = $this->getGroupList();
 					$values = GeneralUtility::trimExplode(',', $value, TRUE);
 					foreach ($values as $test) {
-						if ($test == '*' || GeneralUtility::inList($groupList, $test)) {
+						if ($test === '*' || GeneralUtility::inList($groupList, $test)) {
 							return TRUE;
 						}
 					}
 					break;
 				case 'adminUser':
 					if ($this->isUserLoggedIn()) {
-						$result = !((bool)$value xor $this->isAdminUser());
-						return $result;
+						return !((bool)$value xor $this->isAdminUser());
 					}
 					break;
 				case 'treeLevel':
@@ -75,7 +76,6 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 					}
 					break;
 				case 'PIDupinRootline':
-
 				case 'PIDinRootline':
 					$values = GeneralUtility::trimExplode(',', $value, TRUE);
 					if ($key == 'PIDinRootline' || !in_array($this->pageId, $values) || $this->isNewPageWithPageId($this->pageId)) {
@@ -111,8 +111,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 * @return string The usergroup list of the current user
 	 */
 	protected function getGroupList() {
-		$groupList = $GLOBALS['BE_USER']->groupList;
-		return $groupList;
+		return $this->getBackendUserAuthentication()->groupList;
 	}
 
 	/**
@@ -187,11 +186,11 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 * Determine if record of table 'pages' with the given $pid is currently created in TCEforms.
 	 * This information is required for conditions in BE for PIDupinRootline.
 	 *
-	 * @param int $pid The pid the check for as parent page
+	 * @param int $pageId The pid the check for as parent page
 	 * @return bool TRUE if the is currently a new page record being edited with $pid as uid of the parent page
 	 */
 	protected function isNewPageWithPageId($pageId) {
-		if (isset($GLOBALS['SOBE']) && $GLOBALS['SOBE'] instanceof \TYPO3\CMS\Backend\Controller\EditDocumentController) {
+		if (isset($GLOBALS['SOBE']) && $GLOBALS['SOBE'] instanceof EditDocumentController) {
 			$pageId = (int)$pageId;
 			$elementsData = $GLOBALS['SOBE']->elementsData;
 			$data = $GLOBALS['SOBE']->data;
@@ -206,7 +205,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 			// If editing a new page record (not saved yet):
 			if (is_array($elementsData)) {
 				foreach ($elementsData as $element) {
-					if ($element['cmd'] == 'new' && $element['table'] == 'pages') {
+					if ($element['cmd'] === 'new' && $element['table'] === 'pages') {
 						if ($element['pid'] < 0) {
 							$pageRecord = BackendUtility::getRecord('pages', abs($element['pid']), 'pid');
 							$element['pid'] = $pageRecord['pid'];
@@ -228,8 +227,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 */
 	protected function determineRootline() {
 		$pageId = isset($this->pageId) ? $this->pageId : $this->determinePageId();
-		$rootline = BackendUtility::BEgetRootLine($pageId, '', TRUE);
-		return $rootline;
+		return BackendUtility::BEgetRootLine($pageId, '', TRUE);
 	}
 
 	/**
@@ -238,8 +236,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 * @return int The id of the current user
 	 */
 	protected function getUserId() {
-		$userId = $GLOBALS['BE_USER']->user['uid'];
-		return $userId;
+		return $this->getBackendUserAuthentication()->user['uid'];
 	}
 
 	/**
@@ -248,11 +245,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 * @return bool Determines if a user is logged in
 	 */
 	protected function isUserLoggedIn() {
-		$userLoggedIn = FALSE;
-		if ($GLOBALS['BE_USER']->user['uid']) {
-			$userLoggedIn = TRUE;
-		}
-		return $userLoggedIn;
+		return (bool)$this->getBackendUserAuthentication()->user['uid'];
 	}
 
 	/**
@@ -261,11 +254,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 * @return bool Whether the current user is admin
 	 */
 	protected function isAdminUser() {
-		$isAdminUser = FALSE;
-		if ($GLOBALS['BE_USER']->user['admin']) {
-			$isAdminUser = TRUE;
-		}
-		return $isAdminUser;
+		return $this->getBackendUserAuthentication()->isAdmin();
 	}
 
 	/**
@@ -275,9 +264,16 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 * @return void
 	 */
 	protected function log($message) {
-		if (is_object($GLOBALS['BE_USER'])) {
-			$GLOBALS['BE_USER']->writelog(3, 0, 1, 0, $message, array());
+		if (is_object($this->getBackendUserAuthentication())) {
+			$this->getBackendUserAuthentication()->writelog(3, 0, 1, 0, $message, array());
 		}
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUserAuthentication() {
+		return $GLOBALS['BE_USER'];
 	}
 
 }

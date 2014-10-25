@@ -57,8 +57,8 @@ class TranslationConfigurationProvider {
 			'flagIcon' => 'flags-multiple'
 		);
 		// Find all system languages:
-		$sys_languages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_language', '');
-		foreach ($sys_languages as $row) {
+		$sysLanguages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_language', '');
+		foreach ($sysLanguages as $row) {
 			$languageIconTitles[$row['uid']] = $row;
 			if ($row['static_lang_isocode'] && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables')) {
 				$staticLangRow = BackendUtility::getRecord('static_languages', $row['static_lang_isocode'], 'lg_iso_2');

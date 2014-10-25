@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Configuration\TypoScript\ConditionMatchin
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Testcase for class \TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher.
@@ -34,8 +36,16 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var string
 	 */
+	protected $testGlobalNamespace;
+
+	/**
+	 * @var string
+	 */
 	protected $testTableName;
 
+	/**
+	 * Set up tests
+	 */
 	public function setUp() {
 		$this->testTableName = 'conditionMatcherTestTable';
 		$this->testGlobalNamespace = uniqid('TEST');
@@ -45,15 +55,21 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->matchCondition = $this->getMock('TYPO3\\CMS\\Backend\\Configuration\\TypoScript\\ConditionMatching\\ConditionMatcher', array('determineRootline'), array(), '', FALSE);
 	}
 
+	/**
+	 * Set up a backend
+	 */
 	private function setUpBackend() {
 		$this->rootline = array(
 			2 => array('uid' => 121, 'pid' => 111),
 			1 => array('uid' => 111, 'pid' => 101),
 			0 => array('uid' => 101, 'pid' => 0)
 		);
-		$GLOBALS['BE_USER'] = $this->getMock('beUserAuth', array(), array(), '', FALSE);
+		$GLOBALS['BE_USER'] = $this->getMock(BackendUserAuthentication::class, array('dummy'), array(), '', FALSE);
 	}
 
+	/**
+	 * Set up database mock
+	 */
 	private function setUpDatabaseMockForDeterminePageId() {
 		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('exec_SELECTquery', 'sql_fetch_assoc', 'sql_free_result'));
 		$GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTquery')->will($this->returnCallback(array($this, 'determinePageIdByRecordDatabaseExecuteCallback')));
@@ -66,7 +82,6 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function simulateDisabledMatchAllConditionsFailsOnFaultyExpression() {
-		$this->matchCondition->matchAll = FALSE;
 		$this->assertFalse($this->matchCondition->match('[nullCondition = This expression would return FALSE in general]'));
 	}
 
@@ -825,7 +840,7 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function genericGetVariablesSucceedsWithNamespaceIENV() {
-		$_SERVER['HTTP_HOST'] = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY') . ':1234567';
+		$_SERVER['HTTP_HOST'] = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY') . ':1234567';
 		$this->assertTrue($this->matchCondition->match('[globalString = IENV:TYPO3_PORT = 1234567]'));
 	}
 
