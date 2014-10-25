@@ -329,7 +329,7 @@ class PagePositionMap {
 	 * Insert half/quad lines.
 	 *
 	 * @param string $codes Keywords for which lines to insert.
-	 * @param boolean $allBlank If TRUE all lines are just blank clear.gifs
+	 * @param bool $allBlank If TRUE all lines are just blank clear.gifs
 	 * @return string HTML content.
 	 */
 	public function insertQuadLines($codes, $allBlank = FALSE) {
@@ -356,7 +356,7 @@ class PagePositionMap {
 	 * @param integer $pid page id onto which to insert content element.
 	 * @param integer $moveUid Move-uid (tt_content element uid?)
 	 * @param string $colPosList List of columns to show
-	 * @param boolean $showHidden If not set, then hidden/starttime/endtime records are filtered out.
+	 * @param bool $showHidden If not set, then hidden/starttime/endtime records are filtered out.
 	 * @param string $R_URI Request URI
 	 * @return string HTML
 	 */

@@ -428,7 +428,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 * Generates the link selector for the Rich Text Editor.
 	 * Can also be used to select links for the TCEforms (see $wiz)
 	 *
-	 * @param boolean $wiz If set, the "remove link" is not shown in the menu: Used for the "Select link" wizard which is used by the TCEforms
+	 * @param bool $wiz If set, the "remove link" is not shown in the menu: Used for the "Select link" wizard which is used by the TCEforms
 	 * @return string Modified content variable.
 	 */
 	public function main_rte($wiz = FALSE) {

@@ -51,7 +51,7 @@ interface PersistableCollectionInterface {
 	 * Entries can be load on first access.
 	 *
 	 * @param integer|string $id
-	 * @param boolean $fillItems Populates the entries directly on load, might be bad for memory on large collections
+	 * @param bool $fillItems Populates the entries directly on load, might be bad for memory on large collections
 	 * @return \TYPO3\CMS\Core\Collection\CollectionInterface
 	 */
 	static public function load($id, $fillItems = FALSE);

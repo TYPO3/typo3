@@ -153,7 +153,7 @@ abstract class AbstractController implements ControllerInterface {
 	 * @param string $messageBody The message
 	 * @param string $messageTitle Optional message title
 	 * @param integer $severity Optional severity, must be one of \TYPO3\CMS\Core\Messaging\FlashMessage constants
-	 * @param boolean $storeInSession Optional, defines whether the message should be stored in the session (default) or not
+	 * @param bool $storeInSession Optional, defines whether the message should be stored in the session (default) or not
 	 * @return void
 	 * @throws \InvalidArgumentException if the message body is no string
 	 * @see \TYPO3\CMS\Core\Messaging\FlashMessage

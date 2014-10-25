@@ -128,7 +128,7 @@ class DatabaseSelect extends AbstractStepAction {
 	/**
 	 * Returns list of available databases (with access-check based on username/password)
 	 *
-	 * @param boolean $initialInstallation TRUE if first installation is in progress, FALSE if upgrading or usual access
+	 * @param bool $initialInstallation TRUE if first installation is in progress, FALSE if upgrading or usual access
 	 * @return array List of available databases
 	 */
 	protected function getDatabaseList($initialInstallation) {

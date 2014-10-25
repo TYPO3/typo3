@@ -139,7 +139,7 @@ class Rfc822AddressesParser {
 	 * @access public
 	 * @param string  $address		 The address(es) to validate.
 	 * @param string  $default_domain  Default domain/host etc. If not supplied, will be set to localhost.
-	 * @param boolean $validate		Whether to validate atoms. Turn this off if you need to run addresses through before encoding the personal names, for instance.
+	 * @param bool $validate		Whether to validate atoms. Turn this off if you need to run addresses through before encoding the personal names, for instance.
 	 */
 	public function __construct($address = NULL, $default_domain = NULL, $validate = NULL, $limit = NULL) {
 		if (isset($address)) {
@@ -163,8 +163,8 @@ class Rfc822AddressesParser {
 	 * @access public
 	 * @param string  $address		 The address(es) to validate.
 	 * @param string  $default_domain  Default domain/host etc.
-	 * @param boolean $nest_groups	 Whether to return the structure with groups nested for easier viewing.
-	 * @param boolean $validate		Whether to validate atoms. Turn this off if you need to run addresses through before encoding the personal names, for instance.
+	 * @param bool $nest_groups	 Whether to return the structure with groups nested for easier viewing.
+	 * @param bool $validate		Whether to validate atoms. Turn this off if you need to run addresses through before encoding the personal names, for instance.
 	 * @return array A structured array of addresses.
 	 */
 	public function parseAddressList($address = NULL, $default_domain = NULL, $validate = NULL, $limit = NULL) {

@@ -45,7 +45,7 @@ class ArrayUtility {
 	 *
 	 * @param string $delimiter Delimiter string to explode with
 	 * @param string $string The string to explode
-	 * @param boolean $onlyNonEmptyValues If set, all empty values (='') will NOT be set in output
+	 * @param bool $onlyNonEmptyValues If set, all empty values (='') will NOT be set in output
 	 * @return array Exploded values
 	 * @api
 	 */
@@ -67,8 +67,8 @@ class ArrayUtility {
 	 *
 	 * @param array $firstArray First array
 	 * @param array $secondArray Second array, overruling the first array
-	 * @param boolean $dontAddNewKeys If set, keys that are NOT found in $firstArray (first array) will not be set. Thus only existing value can/will be overruled from second array.
-	 * @param boolean $emptyValuesOverride If set (which is the default), values from $secondArray will overrule if they are empty (according to PHP's empty() function)
+	 * @param bool $dontAddNewKeys If set, keys that are NOT found in $firstArray (first array) will not be set. Thus only existing value can/will be overruled from second array.
+	 * @param bool $emptyValuesOverride If set (which is the default), values from $secondArray will overrule if they are empty (according to PHP's empty() function)
 	 * @return array Resulting array where $secondArray values has overruled $firstArray values
 	 * @api
 	 */

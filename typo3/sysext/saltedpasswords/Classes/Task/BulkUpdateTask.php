@@ -225,7 +225,7 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	/**
 	 * Set if it can deactivate self
 	 *
-	 * @param boolean $canDeactivateSelf
+	 * @param bool $canDeactivateSelf
 	 * @return void
 	 */
 	public function setCanDeactivateSelf($canDeactivateSelf) {

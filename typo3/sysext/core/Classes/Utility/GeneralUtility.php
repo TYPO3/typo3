@@ -332,7 +332,7 @@ class GeneralUtility {
 	 * If input file type does not match the wanted output type a conversion is made and temp-filename returned.
 	 *
 	 * @param string $theFile Filepath of image file
-	 * @param boolean $output_png If set, then input file is converted to PNG, otherwise to GIF
+	 * @param bool $output_png If set, then input file is converted to PNG, otherwise to GIF
 	 * @return string If the new image file exists, its filepath is returned
 	 */
 	static public function read_png_gif($theFile, $output_png = FALSE) {
@@ -1041,7 +1041,7 @@ class GeneralUtility {
 	 * This function is used to escape any ' -characters when transferring text to JavaScript!
 	 *
 	 * @param string $string String to escape
-	 * @param boolean $extended If set, also backslashes are escaped.
+	 * @param bool $extended If set, also backslashes are escaped.
 	 * @param string $char The character to escape, default is ' (single-quote)
 	 * @return string Processed input string
 	 */
@@ -1450,7 +1450,7 @@ class GeneralUtility {
 	 *
 	 * @param string $delimiter Delimiter string to explode with
 	 * @param string $string The string to explode
-	 * @param boolean $removeEmptyValues If set, all empty values (='') will NOT be set in output
+	 * @param bool $removeEmptyValues If set, all empty values (='') will NOT be set in output
 	 * @param integer $limit If positive, the result will contain a maximum of limit elements,
 	 * @return array Exploded values, all converted to integers
 	 */
@@ -1514,7 +1514,7 @@ class GeneralUtility {
 	 *
 	 * @param string $delim Delimiter string to explode with
 	 * @param string $string The string to explode
-	 * @param boolean $removeEmptyValues If set, all empty values will be removed in output
+	 * @param bool $removeEmptyValues If set, all empty values will be removed in output
 	 * @param integer $limit If positive, the result will contain a maximum of
 	 * @return array Exploded values
 	 */
@@ -1610,8 +1610,8 @@ class GeneralUtility {
 	 * @param string $name Name prefix for entries. Set to blank if you wish none.
 	 * @param array $theArray The (multidimensional) array to implode
 	 * @param string $str (keep blank)
-	 * @param boolean $skipBlank If set, parameters which were blank strings would be removed.
-	 * @param boolean $rawurlencodeParamName If set, the param name itself (for example "param[key][key2]") would be rawurlencoded as well.
+	 * @param bool $skipBlank If set, parameters which were blank strings would be removed.
+	 * @param bool $rawurlencodeParamName If set, the param name itself (for example "param[key][key2]") would be rawurlencoded as well.
 	 * @return string Imploded result, fx. &param[key][key2]=value2&param[key][key3]=value3
 	 * @see explodeUrl2Array()
 	 */
@@ -1633,7 +1633,7 @@ class GeneralUtility {
 	 * Explodes a string with GETvars (eg. "&id=1&type=2&ext[mykey]=3") into an array
 	 *
 	 * @param string $string GETvars string
-	 * @param boolean $multidim If set, the string will be parsed into a multidimensional array if square brackets are used in variable names (using PHP function parse_str())
+	 * @param bool $multidim If set, the string will be parsed into a multidimensional array if square brackets are used in variable names (using PHP function parse_str())
 	 * @return array Array of values. All values AND keys are rawurldecoded() as they properly should be. But this means that any implosion of the array again must rawurlencode it!
 	 * @see implodeArrayForUrl()
 	 */
@@ -1659,7 +1659,7 @@ class GeneralUtility {
 	 *
 	 * @param string $varList List of variable/key names
 	 * @param array $getArray Array from where to get values based on the keys in $varList
-	 * @param boolean $GPvarAlt If set, then \TYPO3\CMS\Core\Utility\GeneralUtility::_GP() is used to fetch the value if not found (isset) in the $getArray
+	 * @param bool $GPvarAlt If set, then \TYPO3\CMS\Core\Utility\GeneralUtility::_GP() is used to fetch the value if not found (isset) in the $getArray
 	 * @return array Output array with selected variables.
 	 */
 	static public function compileSelectedGetVarsFromArray($varList, array $getArray, $GPvarAlt = TRUE) {
@@ -1759,9 +1759,9 @@ class GeneralUtility {
 	 *
 	 * @param array $arr0 First array
 	 * @param array $arr1 Second array, overruling the first array
-	 * @param boolean $notAddKeys If set, keys that are NOT found in $arr0 (first array) will not be set. Thus only existing value can/will be overruled from second array.
-	 * @param boolean $includeEmptyValues If set, values from $arr1 will overrule if they are empty or zero. Default: TRUE
-	 * @param boolean $enableUnsetFeature If set, special values "__UNSET" can be used in the second array in order to unset array keys in the resulting array.
+	 * @param bool $notAddKeys If set, keys that are NOT found in $arr0 (first array) will not be set. Thus only existing value can/will be overruled from second array.
+	 * @param bool $includeEmptyValues If set, values from $arr1 will overrule if they are empty or zero. Default: TRUE
+	 * @param bool $enableUnsetFeature If set, special values "__UNSET" can be used in the second array in order to unset array keys in the resulting array.
 	 * @return array Resulting array where $arr1 values has overruled $arr0 values
 	 * @deprecated [!!!] Since 6.2, use ArrayUtility::mergeRecursiveWithOverrule - WARNING: The new method changed its signature and does not return the first parameter anymore, but it is more performant.
 	 */
@@ -1938,8 +1938,8 @@ class GeneralUtility {
 	 * Implodes attributes in the array $arr for an attribute list in eg. and HTML tag (with quotes)
 	 *
 	 * @param array $arr Array with attribute key/value pairs, eg. "bgcolor"=>"red", "border"=>0
-	 * @param boolean $xhtmlSafe If set the resulting attribute list will have a) all attributes in lowercase (and duplicates weeded out, first entry taking precedence) and b) all values htmlspecialchar()'ed. It is recommended to use this switch!
-	 * @param boolean $dontOmitBlankAttribs If TRUE, don't check if values are blank. Default is to omit attributes with blank values.
+	 * @param bool $xhtmlSafe If set the resulting attribute list will have a) all attributes in lowercase (and duplicates weeded out, first entry taking precedence) and b) all values htmlspecialchar()'ed. It is recommended to use this switch!
+	 * @param bool $dontOmitBlankAttribs If TRUE, don't check if values are blank. Default is to omit attributes with blank values.
 	 * @return string Imploded attributes, eg. 'bgcolor="red" border="0"'
 	 */
 	static public function implodeAttributes(array $arr, $xhtmlSafe = FALSE, $dontOmitBlankAttribs = FALSE) {
@@ -1967,7 +1967,7 @@ class GeneralUtility {
 	 * This is nice for indenting JS code with PHP code on the same level.
 	 *
 	 * @param string $string JavaScript code
-	 * @param boolean $linebreak Wrap script element in line breaks? Default is TRUE.
+	 * @param bool $linebreak Wrap script element in line breaks? Default is TRUE.
 	 * @return string The wrapped JS code, ready to put into a XHTML page
 	 */
 	static public function wrapJS($string, $linebreak = TRUE) {
@@ -2202,7 +2202,7 @@ class GeneralUtility {
 	 *
 	 * @param string $string XML content to convert into an array
 	 * @param string $NSprefix The tag-prefix resolve, eg. a namespace like "T3:
-	 * @param boolean $reportDocTag If set, the document tag will be set in the key "_DOCUMENT_TAG" of the output array
+	 * @param bool $reportDocTag If set, the document tag will be set in the key "_DOCUMENT_TAG" of the output array
 	 * @return mixed If the parsing had errors, a string with the error message is returned. Otherwise an array with the content.
 	 * @see array2xml(),xml2arrayProcess()
 	 */
@@ -2231,7 +2231,7 @@ class GeneralUtility {
 	 *
 	 * @param string $string XML content to convert into an array
 	 * @param string $NSprefix The tag-prefix resolve, eg. a namespace like "T3:
-	 * @param boolean $reportDocTag If set, the document tag will be set in the key "_DOCUMENT_TAG" of the output array
+	 * @param bool $reportDocTag If set, the document tag will be set in the key "_DOCUMENT_TAG" of the output array
 	 * @return mixed If the parsing had errors, a string with the error message is returned. Otherwise an array with the content.
 	 * @see array2xml()
 	 */
@@ -2595,7 +2595,7 @@ Connection: close
 	 *
 	 * @param string $file Filepath to write to
 	 * @param string $content Content to write
-	 * @param boolean $changePermissions If TRUE, permissions are forced to be set
+	 * @param bool $changePermissions If TRUE, permissions are forced to be set
 	 * @return boolean TRUE if the file was successfully opened and written to.
 	 */
 	static public function writeFile($file, $content, $changePermissions = FALSE) {
@@ -2621,7 +2621,7 @@ Connection: close
 	 * Sets the file system mode and group ownership of a file or a folder.
 	 *
 	 * @param string $path Path of file or folder, must not be escaped. Path can be absolute or relative
-	 * @param boolean $recursive If set, also fixes permissions of files and folders in the folder (if $path is a folder)
+	 * @param bool $recursive If set, also fixes permissions of files and folders in the folder (if $path is a folder)
 	 * @return mixed TRUE on success, FALSE on error, always TRUE on Windows OS
 	 */
 	static public function fixPermissions($path, $recursive = FALSE) {
@@ -2813,7 +2813,7 @@ Connection: close
 	 * Wrapper function for rmdir, allowing recursive deletion of folders and files
 	 *
 	 * @param string $path Absolute path to folder, see PHP rmdir() function. Removes trailing slash internally.
-	 * @param boolean $removeNonEmpty Allow deletion of non-empty directories
+	 * @param bool $removeNonEmpty Allow deletion of non-empty directories
 	 * @return boolean TRUE if @rmdir went well!
 	 */
 	static public function rmdir($path, $removeNonEmpty = FALSE) {
@@ -2904,7 +2904,7 @@ Connection: close
 	 *
 	 * @param string $path The path to retrieve the files from.
 	 * @param string $extensionList A comma-separated list of file extensions. Only files of the specified types will be retrieved. When left blank, files of any type will be retrieved.
-	 * @param boolean $prependPath If TRUE, the full path to the file is returned. If FALSE only the file name is returned.
+	 * @param bool $prependPath If TRUE, the full path to the file is returned. If FALSE only the file name is returned.
 	 * @param string $order The sorting order. The default sorting order is alphabetical. Setting $order to 'mtime' will sort the files by modification time.
 	 * @param string $excludePattern A regular expression pattern of file names to exclude. For example: 'clear.gif' or '(clear.gif|.htaccess)'. The pattern will be wrapped with: '/^' and '$/'.
 	 * @return array|string Array of the files found, or an error message in case the path could not be opened.
@@ -2965,7 +2965,7 @@ Connection: close
 	 * @param array $fileArr Empty input array (will have files added to it)
 	 * @param string $path The path to read recursively from (absolute) (include trailing slash!)
 	 * @param string $extList Comma list of file extensions: Only files with extensions in this list (if applicable) will be selected.
-	 * @param boolean $regDirs If set, directories are also included in output.
+	 * @param bool $regDirs If set, directories are also included in output.
 	 * @param integer $recursivityLevels The number of levels to dig down...
 	 * @param string $excludePattern regex pattern of files/directories to exclude
 	 * @return array An array with the found files/directories.
@@ -3132,7 +3132,7 @@ Connection: close
 	 * = FALSE (BE) / "querystring" (FE) : add timestamp as parameter
 	 *
 	 * @param string $file Relative path to file including all potential query parameters (not htmlspecialchared yet)
-	 * @param boolean $forceQueryString If settings would suggest to embed in filename, this parameter allows us to force the versioning to occur in the query string. This is needed for scriptaculous.js which cannot have a different filename in order to load its modules (?load=...)
+	 * @param bool $forceQueryString If settings would suggest to embed in filename, this parameter allows us to force the versioning to occur in the query string. This is needed for scriptaculous.js which cannot have a different filename in order to load its modules (?load=...)
 	 * @return Relative path with version filename including the timestamp
 	 */
 	static public function createVersionNumberedFilename($file, $forceQueryString = FALSE) {
@@ -3660,7 +3660,7 @@ Connection: close
 	/**
 	 * Get the fully-qualified domain name of the host.
 	 *
-	 * @param boolean $requestHost Use request host (when not in CLI mode).
+	 * @param bool $requestHost Use request host (when not in CLI mode).
 	 * @return string The fully-qualified host name.
 	 */
 	static public function getHostname($requestHost = TRUE) {
@@ -3707,8 +3707,8 @@ Connection: close
 	 * \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr().
 	 *
 	 * @param string $filename The input filename/filepath to evaluate
-	 * @param boolean $onlyRelative If $onlyRelative is set (which it is by default), then only return values relative to the current PATH_site is accepted.
-	 * @param boolean $relToTYPO3_mainDir If $relToTYPO3_mainDir is set, then relative paths are relative to PATH_typo3 constant - otherwise (default) they are relative to PATH_site
+	 * @param bool $onlyRelative If $onlyRelative is set (which it is by default), then only return values relative to the current PATH_site is accepted.
+	 * @param bool $relToTYPO3_mainDir If $relToTYPO3_mainDir is set, then relative paths are relative to PATH_typo3 constant - otherwise (default) they are relative to PATH_site
 	 * @return string Returns the absolute filename of $filename if valid, otherwise blank string.
 	 */
 	static public function getFileAbsFileName($filename, $onlyRelative = TRUE, $relToTYPO3_mainDir = FALSE) {
@@ -4021,7 +4021,7 @@ Connection: close
 	 *
 	 * @param string $fileRef Absolute file reference to locallang-XML file. Must be inside system/global/local extension
 	 * @param string $language Language key
-	 * @param boolean $sameLocation if TRUE, then locallang-XML localization file name will be returned with same directory as $fileRef
+	 * @param bool $sameLocation if TRUE, then locallang-XML localization file name will be returned with same directory as $fileRef
 	 * @return string Returns the filename reference for the language unless error occurred (or local mode is used) in which case it will be NULL
 	 */
 	static public function llXmlAutoFileName($fileRef, $language, $sameLocation = FALSE) {
@@ -4239,7 +4239,7 @@ Connection: close
 	 * @TODO : Deprecate the whole method in several steps: 1. Deprecated singleton pattern, 2. Deprecate file prefix/ require file, 3. Deprecate usage without valid class name. The last step should be to deprecate the method itslef.
 	 * @param string $classRef Class reference, '[file-reference":"]["&"]class-name'. You can prefix the class name with "[file-reference]:" and \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:&tx_realurl". Finally; for the class name you can prefix it with "&" and you will reuse the previous instance of the object identified by the full reference string (meaning; if you ask for the same $classRef later in another place in the code you will get a reference to the first created one!).
 	 * @param string $checkPrefix Not used anymore since 6.0
-	 * @param boolean $silent Not used anymore since 6.0
+	 * @param bool $silent Not used anymore since 6.0
 	 * @return object The instance of the class asked for. Instance is created with \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance
 	 * @see callUserFunction()
 	 */
@@ -5086,7 +5086,7 @@ Connection: close
 	 * Explode a string (normally a list of filenames) with whitespaces by considering quotes in that string. This is mostly needed by the imageMagickCommand function above.
 	 *
 	 * @param string $parameters The whole parameters string
-	 * @param boolean $unQuote If set, the elements of the resulting array are unquoted.
+	 * @param bool $unQuote If set, the elements of the resulting array are unquoted.
 	 * @return array Exploded parameters
 	 */
 	static public function unQuoteFilenames($parameters, $unQuote = FALSE) {

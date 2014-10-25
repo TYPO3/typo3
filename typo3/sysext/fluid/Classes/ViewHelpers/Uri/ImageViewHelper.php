@@ -74,7 +74,7 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 	 * @param integer $minHeight minimum height of the image
 	 * @param integer $maxWidth maximum width of the image
 	 * @param integer $maxHeight maximum height of the image
-	 * @param boolean $treatIdAsReference given src argument is a sys_file_reference record
+	 * @param bool $treatIdAsReference given src argument is a sys_file_reference record
 	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 * @return string path to the image
 	 */

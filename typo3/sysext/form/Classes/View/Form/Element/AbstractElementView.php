@@ -209,7 +209,7 @@ abstract class AbstractElementView {
 	 * Get the content for the current object as DOMDocument
 	 *
 	 * @param string $type Type of element for layout
-	 * @param boolean $returnFirstChild If TRUE, the first child will be returned instead of the DOMDocument
+	 * @param bool $returnFirstChild If TRUE, the first child will be returned instead of the DOMDocument
 	 * @return mixed \DOMDocument|\DOMNode XML part of the view object
 	 */
 	public function render($type = 'element', $returnFirstChild = TRUE) {
@@ -353,7 +353,7 @@ abstract class AbstractElementView {
 	 * like <option>content</option>
 	 * or <textarea>content</textarea>
 	 *
-	 * @param boolean $encodeSpecialCharacters Whether to encode the data
+	 * @param bool $encodeSpecialCharacters Whether to encode the data
 	 * @return string
 	 */
 	public function getElementData($encodeSpecialCharacters = TRUE) {

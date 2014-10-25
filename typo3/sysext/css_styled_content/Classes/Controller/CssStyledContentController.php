@@ -1155,8 +1155,8 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 	 *
 	 * @param array $links
 	 * @param string $fileName
-	 * @param boolean $useSpaces
-	 * @param boolean $cutFileExtension
+	 * @param bool $useSpaces
+	 * @param bool $cutFileExtension
 	 * @return array modified array with new link text
 	 */
 	protected function beautifyFileLink(array $links, $fileName, $useSpaces = FALSE, $cutFileExtension = FALSE) {

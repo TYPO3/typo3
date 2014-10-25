@@ -50,7 +50,7 @@ class CshViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewH
 	 *
 	 * @param string $table Table name ('_MOD_'+module name). If not set, the current module name will be used
 	 * @param string $field Field name (CSH locallang main key)
-	 * @param boolean $iconOnly If set, the full text will never be shown (only icon)
+	 * @param bool $iconOnly If set, the full text will never be shown (only icon)
 	 * @param string $styleAttributes Additional style-attribute content for wrapping table (full text mode only)
 	 * @return string the rendered CSH icon
 	 */

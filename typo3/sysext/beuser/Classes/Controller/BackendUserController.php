@@ -198,7 +198,7 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
 	 * Switches to a given user (SU-mode) and then redirects to the start page of the backend to refresh the navigation etc.
 	 *
 	 * @param string $switchUser BE-user record that will be switched to
-	 * @param boolean $switchBack
+	 * @param bool $switchBack
 	 * @return void
 	 */
 	protected function switchUser($switchUser, $switchBack = FALSE) {

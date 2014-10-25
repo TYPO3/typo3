@@ -394,7 +394,7 @@ class ProcessedFile extends AbstractFile {
 	/**
 	 * Delete processed file
 	 *
-	 * @param boolean $force
+	 * @param bool $force
 	 * @return boolean
 	 */
 	public function delete($force = FALSE) {

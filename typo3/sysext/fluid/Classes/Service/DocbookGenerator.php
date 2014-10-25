@@ -111,7 +111,7 @@ class DocbookGenerator extends \TYPO3\CMS\Fluid\Service\AbstractGenerator {
 	 * @param \SimpleXMLElement $parent
 	 * @param string $name
 	 * @param string $type
-	 * @param boolean $required
+	 * @param bool $required
 	 * @param string $description
 	 * @param string $default
 	 * @return void

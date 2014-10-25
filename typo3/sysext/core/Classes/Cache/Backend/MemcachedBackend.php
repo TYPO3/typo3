@@ -110,7 +110,7 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
 	/**
 	 * Setter for compression flags bit
 	 *
-	 * @param boolean $useCompression
+	 * @param bool $useCompression
 	 * @return void
 	 * @api
 	 */

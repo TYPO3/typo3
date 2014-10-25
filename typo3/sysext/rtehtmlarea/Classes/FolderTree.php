@@ -40,7 +40,7 @@ class FolderTree extends \localFolderTree {
 	 *
 	 * @param string $icon HTML string to wrap, probably an image tag.
 	 * @param string $cmd Command for 'PM' get var
-	 * @param boolean $isExpand If expanded
+	 * @param bool $isExpand If expanded
 	 * @return string Link-wrapped input string
 	 * @access private
 	 */

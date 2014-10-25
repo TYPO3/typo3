@@ -25,7 +25,7 @@ class SectionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
 	 * Display section with title and content
 	 *
 	 * @param string $title
-	 * @param boolean $collapsible
+	 * @param bool $collapsible
 	 *
 	 * @return string
 	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::section()

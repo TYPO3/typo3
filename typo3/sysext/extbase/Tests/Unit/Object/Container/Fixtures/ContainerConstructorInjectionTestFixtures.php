@@ -10,7 +10,7 @@ class SimpleTypeConstructorArgument {
 	public $foo;
 
 	/**
-	 * @param boolean $foo
+	 * @param bool $foo
 	 */
 	public function __construct($foo = FALSE) {
 		$this->foo = $foo;

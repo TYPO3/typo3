@@ -217,7 +217,7 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Set group by page
 	 *
-	 * @param boolean $groupByPage
+	 * @param bool $groupByPage
 	 * @return void
 	 */
 	public function setGroupByPage($groupByPage) {
@@ -312,7 +312,7 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Set page context
 	 *
-	 * @param boolean $pageContext
+	 * @param bool $pageContext
 	 * @return void
 	 */
 	public function setIsInPageContext($pageContext) {

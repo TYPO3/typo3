@@ -120,7 +120,7 @@ class IconUtility {
 	 * @param array $row The table row ("enablefields" are at least needed for correct icon display and for pages records some more fields in addition!)
 	 * @param string $backPath The backpath to the main TYPO3 directory (relative path back to PATH_typo3)
 	 * @param string $params Additional attributes for the image tag
-	 * @param boolean $shaded If set, the icon will be grayed/shaded
+	 * @param bool $shaded If set, the icon will be grayed/shaded
 	 * @return string <img>-tag
 	 * @see getIcon()
 	 * @deprecated since TYPO3 6.1 will be removed in 7.0, should not be used anymore as only sprite icons are used since TYPO3 4.4
@@ -142,7 +142,7 @@ class IconUtility {
 	 *
 	 * @param string $table The table name
 	 * @param array $row The table row ("enablefields" are at least needed for correct icon display and for pages records some more fields in addition!)
-	 * @param boolean $shaded If set, the icon will be grayed/shaded
+	 * @param bool $shaded If set, the icon will be grayed/shaded
 	 * @return string Icon filename
 	 * @see getIconImage()
 	 */
@@ -372,7 +372,7 @@ class IconUtility {
 	 * @param string $iconfile Original unprocessed Icon file, relative path to PATH_typo3
 	 * @param string $mode Mode string, eg. "deleted" or "futuretiming" determining how the icon will look
 	 * @param integer $user The number of the fe_group record uid if applicable
-	 * @param boolean $protectSection Flag determines if the protected-section icon should be applied.
+	 * @param bool $protectSection Flag determines if the protected-section icon should be applied.
 	 * @param string $absFile Absolute path to file from which to create the icon.
 	 * @param string $iconFileName_stateTagged The filename that this icon should have had, basically [icon base name]_[flags].[extension] - used for part of temporary filename
 	 * @return string Filename relative to PATH_typo3

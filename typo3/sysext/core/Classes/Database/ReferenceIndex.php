@@ -96,7 +96,7 @@ class ReferenceIndex {
 	 *
 	 * @param string $table Table name
 	 * @param integer $uid UID of record
-	 * @param boolean $testOnly If set, nothing will be written to the index but the result value will still report statistics on what is added, deleted and kept. Can be used for mere analysis.
+	 * @param bool $testOnly If set, nothing will be written to the index but the result value will still report statistics on what is added, deleted and kept. Can be used for mere analysis.
 	 * @return array Array with statistics about how many index records were added, deleted and not altered plus the complete reference set for the record.
 	 */
 	public function updateRefIndexTable($table, $uid, $testOnly = FALSE) {
@@ -635,8 +635,8 @@ class ReferenceIndex {
 	 *
 	 * @param string $hash 32-byte hash string identifying the record from sys_refindex which you wish to change the value for
 	 * @param mixed $newValue Value you wish to set for reference. If NULL, the reference is removed (unless a soft-reference in which case it can only be set to a blank string). If you wish to set a database reference, use the format "[table]:[uid]". Any other case, the input value is set as-is
-	 * @param boolean $returnDataArray Return $dataArray only, do not submit it to database.
-	 * @param boolean $bypassWorkspaceAdminCheck If set, it will bypass check for workspace-zero and admin user
+	 * @param bool $returnDataArray Return $dataArray only, do not submit it to database.
+	 * @param bool $bypassWorkspaceAdminCheck If set, it will bypass check for workspace-zero and admin user
 	 * @return string If a return string, that carries an error message, otherwise FALSE (=OK) (except if $returnDataArray is set!)
 	 */
 	public function setReferenceValue($hash, $newValue, $returnDataArray = FALSE, $bypassWorkspaceAdminCheck = FALSE) {
@@ -893,8 +893,8 @@ class ReferenceIndex {
 	/**
 	 * Updating Index (External API)
 	 *
-	 * @param boolean $testOnly If set, only a test
-	 * @param boolean $cli_echo If set, output CLI status
+	 * @param bool $testOnly If set, only a test
+	 * @param bool $cli_echo If set, output CLI status
 	 * @return array Header and body status content
 	 */
 	public function updateIndex($testOnly, $cli_echo = FALSE) {

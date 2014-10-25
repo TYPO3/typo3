@@ -93,7 +93,7 @@ class NameAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttri
 	 * TRUE if element is not allowed to use a prefix
 	 * This is the case with the <form> tag
 	 *
-	 * @param boolean $parameter
+	 * @param bool $parameter
 	 * @return void
 	 */
 	public function setReturnValueWithoutPrefix($parameter) {

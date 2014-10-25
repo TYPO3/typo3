@@ -52,7 +52,7 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 	 * Prepare fixture
 	 *
 	 * @param array $configuration
-	 * @param boolean $mockPermissionChecks
+	 * @param bool $mockPermissionChecks
 	 * @return void
 	 */
 	protected function prepareFixture($configuration, $mockPermissionChecks = FALSE, $driverObject = NULL, array $storageRecord = array()) {
@@ -262,7 +262,7 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 	 * @dataProvider checkFolderPermissionsFilesystemPermissionsDataProvider
 	 * @param string $action 'read' or 'write'
 	 * @param array $permissionsFromDriver The permissions as returned from the driver
-	 * @param boolean $expectedResult
+	 * @param bool $expectedResult
 	 */
 	public function checkFolderPermissionsRespectsFilesystemPermissions($action, $permissionsFromDriver, $expectedResult) {
 		$mockedDriver = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Driver\\LocalDriver');

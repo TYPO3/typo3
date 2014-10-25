@@ -134,7 +134,7 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request {
 	/**
 	 * Set if the current request is cached.
 	 *
-	 * @param boolean $isCached
+	 * @param bool $isCached
 	 */
 	public function setIsCached($isCached) {
 		$this->isCached = (boolean) $isCached;

@@ -1485,7 +1485,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Returns a results browser
 	 *
-	 * @param boolean $showResultCount Show result count
+	 * @param bool $showResultCount Show result count
 	 * @param string $addString String appended to "displaying results..." notice.
 	 * @param string $addPart String appended after section "displaying results...
 	 * @param string $freeIndexUid List of integers pointing to free indexing configurations to search. -1 represents no filtering, 0 represents TYPO3 pages only, any number above zero is a uid of an indexing configuration!

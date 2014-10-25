@@ -152,7 +152,7 @@ class Folder implements FolderInterface {
 	 * WARNING: Access to the folder may be restricted by further means, e.g. some
 	 * web-based authentication. You have to take care of this yourself.
 	 *
-	 * @param boolean $relativeToCurrentScript Determines whether the URL returned should be relative to the current script, in case it is relative at all (only for the LocalDriver)
+	 * @param bool $relativeToCurrentScript Determines whether the URL returned should be relative to the current script, in case it is relative at all (only for the LocalDriver)
 	 * @return string
 	 */
 	public function getPublicUrl($relativeToCurrentScript = FALSE) {
@@ -168,7 +168,7 @@ class Folder implements FolderInterface {
 	 * @param integer $start The item to start at
 	 * @param integer $numberOfItems The number of items to return
 	 * @param integer $filterMode The filter mode to use for the file list.
-	 * @param boolean $recursive
+	 * @param bool $recursive
 	 * @return \TYPO3\CMS\Core\Resource\File[]
 	 */
 	public function getFiles($start = 0, $numberOfItems = 0, $filterMode = self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, $recursive = FALSE) {
@@ -192,7 +192,7 @@ class Folder implements FolderInterface {
 	 * the given pattern
 	 *
 	 * @param array $filterMethods
-	 * @param boolean $recursive
+	 * @param bool $recursive
 	 *
 	 * @return integer
 	 */
@@ -271,7 +271,7 @@ class Folder implements FolderInterface {
 	/**
 	 * Deletes this folder from its storage. This also means that this object becomes useless.
 	 *
-	 * @param boolean $deleteRecursively
+	 * @param bool $deleteRecursively
 	 * @return boolean TRUE if deletion succeeded
 	 */
 	public function delete($deleteRecursively = TRUE) {

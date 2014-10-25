@@ -226,7 +226,7 @@ class CacheHashCalculator implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * @param boolean $excludeAllEmptyParameters
+	 * @param bool $excludeAllEmptyParameters
 	 */
 	protected function setExcludeAllEmptyParameters($excludeAllEmptyParameters) {
 		$this->excludeAllEmptyParameters = $excludeAllEmptyParameters;

@@ -905,7 +905,7 @@ abstract class AbstractUserAuthentication {
 	/**
 	 * Read the user session from db.
 	 *
-	 * @param boolean $skipSessionUpdate
+	 * @param bool $skipSessionUpdate
 	 * @return array User session data
 	 */
 	public function fetchUserSession($skipSessionUpdate = FALSE) {

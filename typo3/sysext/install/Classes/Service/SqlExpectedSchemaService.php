@@ -54,7 +54,7 @@ class SqlExpectedSchemaService {
 	/**
 	 * Cycle through all loaded extensions and get full table definitions as concatenated string
 	 *
-	 * @param boolean $withStatic TRUE if sql from ext_tables_static+adt.sql should be loaded, too.
+	 * @param bool $withStatic TRUE if sql from ext_tables_static+adt.sql should be loaded, too.
 	 * @return string Concatenated SQL of loaded extensions ext_tables.sql
 	 */
 	public function getTablesDefinitionString($withStatic = FALSE) {

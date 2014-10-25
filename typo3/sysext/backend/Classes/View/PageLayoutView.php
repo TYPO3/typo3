@@ -932,7 +932,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @param string $table Table name
 	 * @param integer $id Page id.
 	 * @param string $fList Comma list of fields to display
-	 * @param boolean $icon If TRUE, icon is shown
+	 * @param bool $icon If TRUE, icon is shown
 	 * @param string $addWhere Additional WHERE-clauses.
 	 * @return string HTML table
 	 */
@@ -1306,9 +1306,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 *
 	 * @param array $row Record array
 	 * @param integer $space Amount of pixel space above the header. UNUSED
-	 * @param boolean $disableMoveAndNewButtons If set the buttons for creating new elements and moving up and down are not shown.
-	 * @param boolean $langMode If set, we are in language mode and flags will be shown for languages
-	 * @param boolean $dragDropEnabled If set the move button must be hidden
+	 * @param bool $disableMoveAndNewButtons If set the buttons for creating new elements and moving up and down are not shown.
+	 * @param bool $langMode If set, we are in language mode and flags will be shown for languages
+	 * @param bool $dragDropEnabled If set the move button must be hidden
 	 * @return string HTML table with the record header.
 	 */
 	public function tt_content_drawHeader($row, $space = 0, $disableMoveAndNewButtons = FALSE, $langMode = FALSE, $dragDropEnabled = FALSE) {
@@ -1424,7 +1424,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * Draws the preview content for a content element
 	 *
 	 * @param string $row Content element
-	 * @param boolean $isRTE Set if the RTE link can be created.
+	 * @param bool $isRTE Set if the RTE link can be created.
 	 * @return string HTML
 	 * @throws \UnexpectedValueException
 	 */
@@ -1806,7 +1806,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	/**
 	 * Traverse the result pointer given, adding each record to array and setting some internal values at the same time.
 	 *
-	 * @param boolean|\mysqli_result|object $result MySQLi result object / DBAL object
+	 * @param bool|\mysqli_result|object $result MySQLi result object / DBAL object
 	 * @param string $table Table name defaulting to tt_content
 	 * @return array The selected rows returned in this array.
 	 */

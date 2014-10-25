@@ -100,7 +100,7 @@ class BetweenValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator impl
 	/**
 	 * Set boolean to make minimum and maximum value inclusive in comparison
 	 *
-	 * @param boolean $inclusive True is inclusive
+	 * @param bool $inclusive True is inclusive
 	 * @return object Rule object
 	 */
 	public function setInclusive($inclusive) {

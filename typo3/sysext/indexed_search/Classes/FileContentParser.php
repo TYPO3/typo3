@@ -627,7 +627,7 @@ class FileContentParser {
 	 * Parameter <code>$resetLocale</code> has to be FALSE and TRUE alternating for all calls.
 	 *
 	 * @staticvar string $lastLocale Stores the locale used before it is overridden by this method.
-	 * @param boolean $resetLocale TRUE resets the locale to $lastLocale.
+	 * @param bool $resetLocale TRUE resets the locale to $lastLocale.
 	 * @return void
 	 * @throws \RuntimeException
 	 */

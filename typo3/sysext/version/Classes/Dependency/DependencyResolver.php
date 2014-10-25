@@ -99,7 +99,7 @@ class DependencyResolver {
 	/**
 	 * Sets the condition that outermost parents required at least one child or parent reference.
 	 *
-	 * @param boolean $outerMostParentsRequireReferences
+	 * @param bool $outerMostParentsRequireReferences
 	 * @return \TYPO3\CMS\Version\Dependency\DependencyResolver
 	 */
 	public function setOuterMostParentsRequireReferences($outerMostParentsRequireReferences) {

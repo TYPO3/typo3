@@ -337,7 +337,7 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Setter for workspace permission
 	 *
-	 * @param boolean $workspacePermission
+	 * @param bool $workspacePermission
 	 * @return void
 	 */
 	public function setWorkspacePermissions($workspacePermission) {
@@ -404,7 +404,7 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Set the the bit for file operations are allowed.
 	 *
-	 * @param boolean $value
+	 * @param bool $value
 	 * @return void
 	 */
 	public function setFileOperationAllowed($value) {
@@ -423,7 +423,7 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Set the the bit for unzip files are allowed.
 	 *
-	 * @param boolean $value
+	 * @param bool $value
 	 * @return void
 	 */
 	public function setFileUnzipAllowed($value) {
@@ -442,7 +442,7 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Set the the bit for directory operations are allowed.
 	 *
-	 * @param boolean $value
+	 * @param bool $value
 	 * @return void
 	 */
 	public function setDirectoryOperationAllowed($value) {
@@ -461,7 +461,7 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Set the the bit for copy directories.
 	 *
-	 * @param boolean $value
+	 * @param bool $value
 	 * @return void
 	 */
 	public function setDirectoryCopyAllowed($value) {
@@ -480,7 +480,7 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Set the the bit for remove directories recursively.
 	 *
-	 * @param boolean $value
+	 * @param bool $value
 	 * @return void
 	 */
 	public function setDirectoryRemoveRecursivelyAllowed($value) {
@@ -509,7 +509,7 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Setter for hide in list
 	 *
-	 * @param boolean $hideInList
+	 * @param bool $hideInList
 	 * @return void
 	 */
 	public function setHideInList($hideInList) {
@@ -557,7 +557,7 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * Helper method for settung permissions bitwise.
 	 *
 	 * @param integer $permission
-	 * @param boolean $value
+	 * @param bool $value
 	 * @return void
 	 */
 	protected function setPermission($permission, $value) {

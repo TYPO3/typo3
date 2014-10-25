@@ -25,7 +25,7 @@ class SwitchUserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
 	 * Render link with sprite icon to change current backend user to target
 	 *
 	 * @param \TYPO3\CMS\Beuser\Domain\Model\BackendUser $backendUser Target backendUser to switch active session to
-	 * @param boolean $emulate Return to current session or logout after target session termination?
+	 * @param bool $emulate Return to current session or logout after target session termination?
 	 * @return string
 	 */
 	public function render(\TYPO3\CMS\Beuser\Domain\Model\BackendUser $backendUser, $emulate = FALSE) {

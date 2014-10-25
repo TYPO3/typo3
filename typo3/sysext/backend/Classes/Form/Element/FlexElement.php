@@ -214,7 +214,7 @@ class FlexElement extends AbstractFormElement {
 	 * @param string $formPrefix Form field prefix, eg. "[data][sDEF][lDEF][...][...]
 	 * @param integer $level Indicates nesting level for the function call
 	 * @param string $idPrefix Prefix for ID-values
-	 * @param boolean $toggleClosed Defines whether the next flexform level is open or closed. Comes from _TOGGLE pseudo field in FlexForm xml.
+	 * @param bool $toggleClosed Defines whether the next flexform level is open or closed. Comes from _TOGGLE pseudo field in FlexForm xml.
 	 * @return string HTMl code for form.
 	 */
 	public function getSingleField_typeFlex_draw($dataStruct, $editData, $table, $field, $row, &$PA, $formPrefix = '', $level = 0, $idPrefix = 'ID', $toggleClosed = FALSE) {

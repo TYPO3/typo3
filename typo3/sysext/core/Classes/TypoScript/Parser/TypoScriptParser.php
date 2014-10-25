@@ -739,7 +739,7 @@ class TypoScriptParser {
 	 *
 	 * @param string $string Unparsed TypoScript
 	 * @param integer $cycle_counter Counter for detecting endless loops
-	 * @param boolean $returnFiles When set an array containing the resulting typoscript and all included files will get returned
+	 * @param bool $returnFiles When set an array containing the resulting typoscript and all included files will get returned
 	 * @param string $parentFilenameOrPath The parent file (with absolute path) or path for relative includes
 	 * @return string Complete TypoScript with includes added.
 	 * @static
@@ -848,7 +848,7 @@ class TypoScriptParser {
 	 *
 	 * @param string $filename Relative path to the typoscript file to be included
 	 * @param integer $cycle_counter Counter for detecting endless loops
-	 * @param boolean $returnFiles When set, filenames of included files will be prepended to the array &$includedFiles
+	 * @param bool $returnFiles When set, filenames of included files will be prepended to the array &$includedFiles
 	 * @param string &$newString The output string to which the content of the file will be prepended (referenced
 	 * @param array &$includedFiles Array to which the filenames of included files will be prepended (referenced)
 	 * @param string $optionalProperties
@@ -896,7 +896,7 @@ class TypoScriptParser {
 	 *
 	 * @param string $dirPath Relative path to the directory to be included
 	 * @param integer $cycle_counter Counter for detecting endless loops
-	 * @param boolean $returnFiles When set, filenames of included files will be prepended to the array &$includedFiles
+	 * @param bool $returnFiles When set, filenames of included files will be prepended to the array &$includedFiles
 	 * @param string &$newString The output string to which the content of the file will be prepended (referenced)
 	 * @param array &$includedFiles Array to which the filenames of included files will be prepended (referenced)
 	 * @param string $optionalProperties
@@ -1140,7 +1140,7 @@ class TypoScriptParser {
 	 *
 	 * @param string $string The TypoScript text
 	 * @param mixed $lineNum If blank, linenumbers are NOT printed. If array then the first key is the linenumber offset to add to the internal counter.
-	 * @param boolean $highlightBlockMode If set, then the highlighted output will be formatted in blocks based on the brace levels. prespace will be ignored and empty lines represented with a single no-break-space.
+	 * @param bool $highlightBlockMode If set, then the highlighted output will be formatted in blocks based on the brace levels. prespace will be ignored and empty lines represented with a single no-break-space.
 	 * @return string HTML code for the syntax highlighted string
 	 */
 	public function doSyntaxHighlight($string, $lineNum = '', $highlightBlockMode = FALSE) {
@@ -1176,7 +1176,7 @@ class TypoScriptParser {
 	 * Formatting the TypoScript code in $this->raw based on the data collected by $this->regHighLight in $this->highLightData
 	 *
 	 * @param mixed $lineNumDat If blank, linenumbers are NOT printed. If array then the first key is the linenumber offset to add to the internal counter.
-	 * @param boolean $highlightBlockMode If set, then the highlighted output will be formatted in blocks based on the brace levels. prespace will be ignored and empty lines represented with a single no-break-space.
+	 * @param bool $highlightBlockMode If set, then the highlighted output will be formatted in blocks based on the brace levels. prespace will be ignored and empty lines represented with a single no-break-space.
 	 * @return string HTML content
 	 * @access private
 	 * @see doSyntaxHighlight()

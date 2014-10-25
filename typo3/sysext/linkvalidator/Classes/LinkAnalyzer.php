@@ -116,7 +116,7 @@ class LinkAnalyzer {
 	 * Find all supported broken links and store them in tx_linkvalidator_link
 	 *
 	 * @param array $checkOptions List of hook object to activate
-	 * @param boolean $considerHidden Defines whether to look into hidden fields
+	 * @param bool $considerHidden Defines whether to look into hidden fields
 	 * @return void
 	 */
 	public function getLinkStatistics($checkOptions = array(), $considerHidden = FALSE) {
@@ -381,7 +381,7 @@ class LinkAnalyzer {
 	 * @param integer $depth Depth to traverse down the page tree.
 	 * @param integer $begin is an optional integer that determines at which
 	 * @param string $permsClause Perms clause
-	 * @param boolean $considerHidden Whether to consider hidden pages or not
+	 * @param bool $considerHidden Whether to consider hidden pages or not
 	 * @return string Returns the list with a comma in the end (if any pages selected!)
 	 */
 	public function extGetTreeList($id, $depth, $begin = 0, $permsClause, $considerHidden = FALSE) {

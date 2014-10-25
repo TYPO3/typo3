@@ -52,22 +52,22 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 	 * Render start page with \TYPO3\CMS\Backend\Template\DocumentTemplate and pageTitle
 	 *
 	 * @param string  $pageTitle title tag of the module. Not required by default, as BE modules are shown in a frame
-	 * @param boolean $enableJumpToUrl If TRUE, includes "jumpTpUrl" javascript function required by ActionMenu. Defaults to TRUE, deprecated, as not needed anymore
-	 * @param boolean $enableClickMenu If TRUE, loads clickmenu.js required by BE context menus. Defaults to TRUE
-	 * @param boolean $loadPrototype specifies whether to load prototype library. Defaults to TRUE
-	 * @param boolean $loadScriptaculous specifies whether to load scriptaculous libraries. Defaults to FALSE
+	 * @param bool $enableJumpToUrl If TRUE, includes "jumpTpUrl" javascript function required by ActionMenu. Defaults to TRUE, deprecated, as not needed anymore
+	 * @param bool $enableClickMenu If TRUE, loads clickmenu.js required by BE context menus. Defaults to TRUE
+	 * @param bool $loadPrototype specifies whether to load prototype library. Defaults to TRUE
+	 * @param bool $loadScriptaculous specifies whether to load scriptaculous libraries. Defaults to FALSE
 	 * @param string  $scriptaculousModule additionales modules for scriptaculous
-	 * @param boolean $loadExtJs specifies whether to load ExtJS library. Defaults to FALSE
-	 * @param boolean $loadExtJsTheme whether to load ExtJS "grey" theme. Defaults to FALSE
+	 * @param bool $loadExtJs specifies whether to load ExtJS library. Defaults to FALSE
+	 * @param bool $loadExtJsTheme whether to load ExtJS "grey" theme. Defaults to FALSE
 	 * @param string  $extJsAdapter load alternative adapter (ext-base is default adapter)
-	 * @param boolean $enableExtJsDebug if TRUE, debug version of ExtJS is loaded. Use this for development only
+	 * @param bool $enableExtJsDebug if TRUE, debug version of ExtJS is loaded. Use this for development only
 	 * @param string $addCssFile Custom CSS file to be loaded (deprecated, use $includeCssFiles)
 	 * @param string $addJsFile Custom JavaScript file to be loaded (deprecated, use $includeJsFiles)
-	 * @param boolean $loadJQuery whether to load jQuery library. Defaults to FALSE
+	 * @param bool $loadJQuery whether to load jQuery library. Defaults to FALSE
 	 * @param array $includeCssFiles List of custom CSS file to be loaded
 	 * @param array $includeJsFiles List of custom JavaScript file to be loaded
 	 * @param array $addJsInlineLabels Custom labels to add to JavaScript inline labels
-	 * @param boolean $includeCsh flag for including CSH
+	 * @param bool $includeCsh flag for including CSH
 	 * @return string
 	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 * @see \TYPO3\CMS\Core\Page\PageRenderer

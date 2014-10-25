@@ -43,7 +43,7 @@ abstract class AbstractMemoryProcessor extends \TYPO3\CMS\Core\Log\Processor\Abs
 	/**
 	 * Sets the allocated memory usage type
 	 *
-	 * @param boolean $realMemoryUsage Which allocated memory type to use
+	 * @param bool $realMemoryUsage Which allocated memory type to use
 	 * @return void
 	 */
 	public function setRealMemoryUsage($realMemoryUsage) {
@@ -62,7 +62,7 @@ abstract class AbstractMemoryProcessor extends \TYPO3\CMS\Core\Log\Processor\Abs
 	/**
 	 * Sets whether size should be formatted
 	 *
-	 * @param boolean $formatSize
+	 * @param bool $formatSize
 	 * @return void
 	 */
 	public function setFormatSize($formatSize) {

@@ -23,7 +23,7 @@ interface RequestInterface {
 	/**
 	 * Sets the dispatched flag
 	 *
-	 * @param boolean $flag If this request has been dispatched
+	 * @param bool $flag If this request has been dispatched
 	 * @return void
 	 * @api
 	 */

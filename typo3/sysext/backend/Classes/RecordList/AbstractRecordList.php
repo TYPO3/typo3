@@ -397,7 +397,7 @@ abstract class AbstractRecordList {
 	 * Return the icon for the language
 	 *
 	 * @param integer $sys_language_uid Sys language uid
-	 * @param boolean $addAsAdditionalText If set to true, only the flag is returned
+	 * @param bool $addAsAdditionalText If set to true, only the flag is returned
 	 * @return string Language icon
 	 */
 	public function languageFlag($sys_language_uid, $addAsAdditionalText = TRUE) {

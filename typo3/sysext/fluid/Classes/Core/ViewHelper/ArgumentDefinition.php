@@ -64,9 +64,9 @@ class ArgumentDefinition {
 	 * @param string $name Name of argument
 	 * @param string $type Type of argument
 	 * @param string $description Description of argument
-	 * @param boolean $required TRUE if argument is required
+	 * @param bool $required TRUE if argument is required
 	 * @param mixed $defaultValue Default value
-	 * @param boolean $isMethodParameter TRUE if this argument is a method parameter
+	 * @param bool $isMethodParameter TRUE if this argument is a method parameter
 	 */
 	public function __construct($name, $type, $description, $required, $defaultValue = NULL, $isMethodParameter = FALSE) {
 		$this->name = $name;

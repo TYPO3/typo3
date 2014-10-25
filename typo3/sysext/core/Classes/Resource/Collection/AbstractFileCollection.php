@@ -90,7 +90,7 @@ abstract class AbstractFileCollection extends \TYPO3\CMS\Core\Collection\Abstrac
 	/**
 	 * Generates comma-separated list of entry uids for usage in TCEmain
 	 *
-	 * @param boolean $includeTableName
+	 * @param bool $includeTableName
 	 * @return string
 	 */
 	protected function getItemUidList($includeTableName = FALSE) {

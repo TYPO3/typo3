@@ -102,7 +102,7 @@ class AjaxController extends AbstractController {
 	 * Overwrites abstract method
 	 * In contrast to abstract method, a response "you are not authorized is outputted"
 	 *
-	 * @param boolean $tokenOk
+	 * @param bool $tokenOk
 	 * @return void
 	 */
 	protected function handleSessionTokenCheck($tokenOk) {

@@ -63,11 +63,11 @@ class TableListViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 	 * @param string $filter corresponds to the "Search String" textbox of the TYPO3 list module. If not empty, only records matching the string will be fetched
 	 * @param integer $recordsPerPage amount of records to be displayed at once. Defaults to $TCA[$tableName]['interface']['maxSingleDBListItems'] or (if that's not set) to 100
 	 * @param string $sortField table field to sort the results by
-	 * @param boolean $sortDescending if TRUE records will be sorted in descending order
-	 * @param boolean $readOnly if TRUE, the edit icons won't be shown. Otherwise edit icons will be shown, if the current BE user has edit rights for the specified table!
-	 * @param boolean $enableClickMenu enables context menu
+	 * @param bool $sortDescending if TRUE records will be sorted in descending order
+	 * @param bool $readOnly if TRUE, the edit icons won't be shown. Otherwise edit icons will be shown, if the current BE user has edit rights for the specified table!
+	 * @param bool $enableClickMenu enables context menu
 	 * @param string $clickTitleMode one of "edit", "show" (only pages, tt_content), "info
-	 * @param boolean $alternateBackgroundColors if set, rows will have alternate background colors
+	 * @param bool $alternateBackgroundColors if set, rows will have alternate background colors
 	 * @return string the rendered record list
 	 * @see localRecordList
 	 */

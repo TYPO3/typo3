@@ -485,8 +485,8 @@ class GridDataService {
 	 * Gets the state of a given state value.
 	 *
 	 * @param integer $stateId stateId of offline record
-	 * @param boolean $hiddenOnline hidden status of online record
-	 * @param boolean $hiddenOffline hidden status of offline record
+	 * @param bool $hiddenOnline hidden status of online record
+	 * @param bool $hiddenOffline hidden status of offline record
 	 * @return string
 	 */
 	protected function workspaceState($stateId, $hiddenOnline = FALSE, $hiddenOffline = FALSE) {

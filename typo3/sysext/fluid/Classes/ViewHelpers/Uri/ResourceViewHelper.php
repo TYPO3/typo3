@@ -33,7 +33,7 @@ class ResourceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 	 *
 	 * @param string $path The path and filename of the resource (relative to Public resource directory of the extension).
 	 * @param string $extensionName Target extension name. If not set, the current extension name will be used
-	 * @param boolean $absolute If set, an absolute URI is rendered
+	 * @param bool $absolute If set, an absolute URI is rendered
 	 * @return string The URI to the resource
 	 * @api
 	 */

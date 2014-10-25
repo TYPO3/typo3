@@ -195,7 +195,7 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
 	 *
 	 * @param string $sectionName Name of section to render
 	 * @param array $variables The variables to use
-	 * @param boolean $ignoreUnknown Ignore an unknown section and just return an empty string
+	 * @param bool $ignoreUnknown Ignore an unknown section and just return an empty string
 	 * @return string rendered template for the section
 	 * @throws \TYPO3\CMS\Fluid\View\Exception\InvalidSectionException
 	 */

@@ -76,7 +76,7 @@ class BackendUtility {
 	 * @param integer $uid UID of record
 	 * @param string $fields List of fields to select
 	 * @param string $where Additional WHERE clause, eg. " AND blablabla = 0
-	 * @param boolean $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
+	 * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
 	 * @return array|NULL Returns the row if found, otherwise NULL
 	 */
 	static public function getRecord($table, $uid, $fields = '*', $where = '', $useDeleteClause = TRUE) {
@@ -100,8 +100,8 @@ class BackendUtility {
 	 * @param integer $uid UID of record
 	 * @param string $fields List of fields to select
 	 * @param string $where Additional WHERE clause, eg. " AND blablabla = 0
-	 * @param boolean $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
-	 * @param boolean $unsetMovePointers If TRUE the function does not return a "pointer" row for moved records in a workspace
+	 * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
+	 * @param bool $unsetMovePointers If TRUE the function does not return a "pointer" row for moved records in a workspace
 	 * @return array Returns the row if found, otherwise nothing
 	 */
 	static public function getRecordWSOL($table, $uid, $fields = '*', $where = '', $useDeleteClause = TRUE, $unsetMovePointers = FALSE) {
@@ -156,7 +156,7 @@ class BackendUtility {
 	 * @param string $groupBy Optional GROUP BY field(s), if none, supply blank string.
 	 * @param string $orderBy Optional ORDER BY field(s), if none, supply blank string.
 	 * @param string $limit Optional LIMIT value ([begin,]max), if none, supply blank string.
-	 * @param boolean $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
+	 * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
 	 * @return mixed Multidimensional array with selected records (if any is selected)
 	 */
 	static public function getRecordsByField($theTable, $theField, $theValue, $whereClause = '', $groupBy = '', $orderBy = '', $limit = '', $useDeleteClause = TRUE) {
@@ -230,7 +230,7 @@ class BackendUtility {
 	 * $GLOBALS["SIM_ACCESS_TIME"] is used for date.
 	 *
 	 * @param string $table The table from which to return enableFields WHERE clause. Table name must have a 'ctrl' section in $GLOBALS['TCA'].
-	 * @param boolean $inv Means that the query will select all records NOT VISIBLE records (inverted selection)
+	 * @param bool $inv Means that the query will select all records NOT VISIBLE records (inverted selection)
 	 * @return string WHERE clause part
 	 */
 	static public function BEenableFields($table, $inv = 0) {
@@ -290,7 +290,7 @@ class BackendUtility {
 	 *
 	 * @param integer $uid Page id for which to create the root line.
 	 * @param string $clause Clause can be used to select other criteria. It would typically be where-clauses that stops the process if we meet a page, the user has no reading access to.
-	 * @param boolean $workspaceOL If TRUE, version overlay is applied. This must be requested specifically because it is usually only wanted when the rootline is used for visual output while for permission checking you want the raw thing!
+	 * @param bool $workspaceOL If TRUE, version overlay is applied. This must be requested specifically because it is usually only wanted when the rootline is used for visual output while for permission checking you want the raw thing!
 	 * @return array Root line array, all the way to the page tree root (or as far as $clause allows!)
 	 */
 	static public function BEgetRootLine($uid, $clause = '', $workspaceOL = FALSE) {
@@ -346,7 +346,7 @@ class BackendUtility {
 	 *
 	 * @param integer $uid Page id for which to create the root line.
 	 * @param string $clause Clause can be used to select other criteria. It would typically be where-clauses that stops the process if we meet a page, the user has no reading access to.
-	 * @param boolean $workspaceOL If TRUE, version overlay is applied. This must be requested specifically because it is usually only wanted when the rootline is used for visual output while for permission checking you want the raw thing!
+	 * @param bool $workspaceOL If TRUE, version overlay is applied. This must be requested specifically because it is usually only wanted when the rootline is used for visual output while for permission checking you want the raw thing!
 	 * @return array Cached page record for the rootline
 	 * @see BEgetRootLine
 	 */
@@ -382,7 +382,7 @@ class BackendUtility {
 	 * Opens the page tree to the specified page id
 	 *
 	 * @param integer $pid Page id.
-	 * @param boolean $clearExpansion If set, then other open branches are closed.
+	 * @param bool $clearExpansion If set, then other open branches are closed.
 	 * @return void
 	 */
 	static public function openPageTree($pid, $clearExpansion) {
@@ -704,7 +704,7 @@ class BackendUtility {
 	 *
 	 * @param string $table Table name (present in TCA)
 	 * @param array $rec Record from $table
-	 * @param boolean $useFieldNameAsKey If $useFieldNameAsKey is set, then the fieldname is associative keys in the return array, otherwise just numeric keys.
+	 * @param bool $useFieldNameAsKey If $useFieldNameAsKey is set, then the fieldname is associative keys in the return array, otherwise just numeric keys.
 	 * @return array
 	 */
 	static public function getTCAtypes($table, $rec, $useFieldNameAsKey = 0) {
@@ -877,7 +877,7 @@ class BackendUtility {
 	 * @param array $row Record data
 	 * @param string $table The table name
 	 * @param string $fieldName Optional fieldname passed to hook object
-	 * @param boolean $WSOL Boolean; If set, workspace overlay is applied to records. This is correct behaviour for all presentation and export, but NOT if you want a TRUE reflection of how things are in the live workspace.
+	 * @param bool $WSOL Boolean; If set, workspace overlay is applied to records. This is correct behaviour for all presentation and export, but NOT if you want a TRUE reflection of how things are in the live workspace.
 	 * @param integer $newRecordPidValue SPECIAL CASES: Use this, if the DataStructure may come from a parent record and the INPUT row doesn't have a uid yet (hence, the pid cannot be looked up). Then it is necessary to supply a PID value to search recursively in for the DS (used from TCEmain)
 	 * @return mixed If array, the data structure was found and returned as an array. Otherwise (string) it is an error message.
 	 * @see \TYPO3\CMS\Backend\Form\FormEngine::getSingleField_typeFlex()
@@ -1136,7 +1136,7 @@ class BackendUtility {
 	 *
 	 * @param $id integer Page uid for which to create Page TSconfig
 	 * @param $rootLine array If $rootLine is an array, that is used as rootline, otherwise rootline is just calculated
-	 * @param boolean $returnPartArray If $returnPartArray is set, then the array with accumulated Page TSconfig is returned non-parsed. Otherwise the output will be parsed by the TypoScript parser.
+	 * @param bool $returnPartArray If $returnPartArray is set, then the array with accumulated Page TSconfig is returned non-parsed. Otherwise the output will be parsed by the TypoScript parser.
 	 * @return array Page TSconfig
 	 * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
 	 */
@@ -1306,7 +1306,7 @@ class BackendUtility {
 	 *
 	 * @param array $usernames User names
 	 * @param array $groupArray Group names
-	 * @param boolean $excludeBlindedFlag If $excludeBlindedFlag is set, then these records are unset from the array $usernames
+	 * @param bool $excludeBlindedFlag If $excludeBlindedFlag is set, then these records are unset from the array $usernames
 	 * @return array User names, blinded
 	 */
 	static public function blindUserNames($usernames, $groupArray, $excludeBlindedFlag = 0) {
@@ -1339,7 +1339,7 @@ class BackendUtility {
 	 *
 	 * @param array $groups Group names
 	 * @param array $groupArray Group names (reference)
-	 * @param boolean $excludeBlindedFlag If $excludeBlindedFlag is set, then these records are unset from the array $usernames
+	 * @param bool $excludeBlindedFlag If $excludeBlindedFlag is set, then these records are unset from the array $usernames
 	 * @return array
 	 */
 	static public function blindGroupNames($groups, $groupArray, $excludeBlindedFlag = 0) {
@@ -1401,7 +1401,7 @@ class BackendUtility {
 	 * For instance $value = 3600 + 60*2 + 3 should return "01:02:03"
 	 *
 	 * @param integer $value Time stamp, seconds
-	 * @param boolean $withSeconds Output hh:mm:ss. If FALSE: hh:mm
+	 * @param bool $withSeconds Output hh:mm:ss. If FALSE: hh:mm
 	 * @return string Formatted time
 	 */
 	static public function time($value, $withSeconds = TRUE) {
@@ -1516,10 +1516,10 @@ class BackendUtility {
 	 * @param string $backPath Back path prefix for image tag src="" field
 	 * @param string $thumbScript Optional: $thumbScript - not used anymore since FAL
 	 * @param string $uploaddir Optional: $uploaddir is the directory relative to PATH_site where the image files from the $field value is found (Is by default set to the entry in $GLOBALS['TCA'] for that field! so you don't have to!)
-	 * @param boolean $abs If set, uploaddir is NOT prepended with "../
+	 * @param bool $abs If set, uploaddir is NOT prepended with "../
 	 * @param string $tparams Optional: $tparams is additional attributes for the image tags
 	 * @param integer $size Optional: $size is [w]x[h] of the thumbnail. 56 is default.
-	 * @param boolean $linkInfoPopup Whether to wrap with a link opening the info popup
+	 * @param bool $linkInfoPopup Whether to wrap with a link opening the info popup
 	 * @return string Thumbnail image tag.
 	 */
 	static public function thumbCode($row, $table, $field, $backPath, $thumbScript = '', $uploaddir = NULL, $abs = 0, $tparams = '', $size = '', $linkInfoPopup = TRUE) {
@@ -1646,7 +1646,7 @@ class BackendUtility {
 	 *
 	 * @param array $row Input must be a page row ($row) with the proper fields set (be sure - send the full range of fields for the table)
 	 * @param string $perms_clause This is used to get the record path of the shortcut page, if any (and doktype==4)
-	 * @param boolean $includeAttrib If $includeAttrib is set, then the 'title=""' attribute is wrapped about the return value, which is in any case htmlspecialchar()'ed already
+	 * @param bool $includeAttrib If $includeAttrib is set, then the 'title=""' attribute is wrapped about the return value, which is in any case htmlspecialchar()'ed already
 	 * @return string
 	 */
 	static public function titleAttribForPages($row, $perms_clause = '', $includeAttrib = 1) {
@@ -1925,8 +1925,8 @@ class BackendUtility {
 	 *
 	 * @param string $table Table name, present in TCA
 	 * @param array $row Row from table
-	 * @param boolean $prep If set, result is prepared for output: The output is cropped to a limited length (depending on BE_USER->uc['titleLen']) and if no value is found for the title, '<em>[No title]</em>' is returned (localized). Further, the output is htmlspecialchars()'ed
-	 * @param boolean $forceResult If set, the function always returns an output. If no value is found for the title, '[No title]' is returned (localized).
+	 * @param bool $prep If set, result is prepared for output: The output is cropped to a limited length (depending on BE_USER->uc['titleLen']) and if no value is found for the title, '<em>[No title]</em>' is returned (localized). Further, the output is htmlspecialchars()'ed
+	 * @param bool $forceResult If set, the function always returns an output. If no value is found for the title, '[No title]' is returned (localized).
 	 * @return string
 	 */
 	static public function getRecordTitle($table, $row, $prep = FALSE, $forceResult = TRUE) {
@@ -2008,7 +2008,7 @@ class BackendUtility {
 	/**
 	 * Get a localized [No title] string, wrapped in <em>|</em> if $prep is TRUE.
 	 *
-	 * @param boolean $prep Wrap result in <em>|</em>
+	 * @param bool $prep Wrap result in <em>|</em>
 	 * @return string Localized [No title] string
 	 */
 	static public function getNoRecordTitle($prep = FALSE) {
@@ -2029,10 +2029,10 @@ class BackendUtility {
 	 * @param string $col Field name, present in TCA
 	 * @param string $value The value of that field from a selected record
 	 * @param integer $fixed_lgd_chars The max amount of characters the value may occupy
-	 * @param boolean $defaultPassthrough Flag means that values for columns that has no conversion will just be pass through directly (otherwise cropped to 200 chars or returned as "N/A")
-	 * @param boolean $noRecordLookup If set, no records will be looked up, UIDs are just shown.
+	 * @param bool $defaultPassthrough Flag means that values for columns that has no conversion will just be pass through directly (otherwise cropped to 200 chars or returned as "N/A")
+	 * @param bool $noRecordLookup If set, no records will be looked up, UIDs are just shown.
 	 * @param integer $uid Uid of the current record
-	 * @param boolean $forceResult If BackendUtility::getRecordTitle is used to process the value, this parameter is forwarded.
+	 * @param bool $forceResult If BackendUtility::getRecordTitle is used to process the value, this parameter is forwarded.
 	 * @return string
 	 */
 	static public function getProcessedValue($table, $col, $value, $fixed_lgd_chars = 0, $defaultPassthrough = 0, $noRecordLookup = FALSE, $uid = 0, $forceResult = TRUE) {
@@ -2264,7 +2264,7 @@ class BackendUtility {
 	 * @param string $fV Field value
 	 * @param integer $fixed_lgd_chars The max amount of characters the value may occupy
 	 * @param integer $uid Uid of the current record
-	 * @param boolean $forceResult If BackendUtility::getRecordTitle is used to process the value, this parameter is forwarded.
+	 * @param bool $forceResult If BackendUtility::getRecordTitle is used to process the value, this parameter is forwarded.
 	 * @return string
 	 * @see getProcessedValue()
 	 */
@@ -2423,7 +2423,7 @@ class BackendUtility {
 	 * @param string $table Table name
 	 * @param string $field Field name
 	 * @param string $BACK_PATH Back path
-	 * @param boolean $force Force display of icon no matter BE_USER setting for help
+	 * @param bool $force Force display of icon no matter BE_USER setting for help
 	 * @return string HTML content for a help icon/text
 	 */
 	static public function helpTextIcon($table, $field, $BACK_PATH, $force = 0) {
@@ -2547,7 +2547,7 @@ class BackendUtility {
 	 * @param string $field Field name (CSH locallang main key)
 	 * @param string $BACK_PATH Back path
 	 * @param string $wrap Wrap code for icon-mode, splitted by "|". Not used for full-text mode.
-	 * @param boolean $onlyIconMode If set, the full text will never be shown (only icon). Useful for places where it will break the page if the table with full text is shown.
+	 * @param bool $onlyIconMode If set, the full text will never be shown (only icon). Useful for places where it will break the page if the table with full text is shown.
 	 * @param string $styleAttrib Additional style-attribute content for wrapping table (full text mode only)
 	 * @return string HTML content for help text
 	 * @see helpTextIcon()
@@ -2595,7 +2595,7 @@ class BackendUtility {
 	 * @param string $anchorSection Optional anchor to the URL
 	 * @param string $alternativeUrl An alternative URL that, if set, will ignore other parameters except $switchFocus: It will return the window.open command wrapped around this URL!
 	 * @param string $additionalGetVars Additional GET variables.
-	 * @param boolean $switchFocus If TRUE, then the preview window will gain the focus.
+	 * @param bool $switchFocus If TRUE, then the preview window will gain the focus.
 	 * @return string
 	 */
 	static public function viewOnClick($pageUid, $backPath = '', $rootLine = '', $anchorSection = '', $alternativeUrl = '', $additionalGetVars = '', $switchFocus = TRUE) {
@@ -3028,8 +3028,8 @@ class BackendUtility {
 	 *
 	 * @param string $moduleName Name of the module
 	 * @param array $urlParameters URL parameters that should be added as key value pairs
-	 * @param boolean/string $backPathOverride backpath that should be used instead of the global $BACK_PATH
-	 * @param boolean $returnAbsoluteUrl If set to TRUE, the URL returned will be absolute, $backPathOverride will be ignored in this case
+	 * @param bool/string $backPathOverride backpath that should be used instead of the global $BACK_PATH
+	 * @param bool $returnAbsoluteUrl If set to TRUE, the URL returned will be absolute, $backPathOverride will be ignored in this case
 	 * @return string Calculated URL
 	 */
 	static public function getModuleUrl($moduleName, $urlParameters = array(), $backPathOverride = FALSE, $returnAbsoluteUrl = FALSE) {
@@ -3659,7 +3659,7 @@ class BackendUtility {
 	 * @param integer $uid Record uid for which to find versions.
 	 * @param string $fields Field list to select
 	 * @param integer $workspace Workspace ID, if zero all versions regardless of workspace is found.
-	 * @param boolean $includeDeletedRecords If set, deleted-flagged versions are included! (Only for clean-up script!)
+	 * @param bool $includeDeletedRecords If set, deleted-flagged versions are included! (Only for clean-up script!)
 	 * @param array $row The current record
 	 * @return array Array of versions of table/uid
 	 */
@@ -3713,7 +3713,7 @@ class BackendUtility {
 	 *
 	 * @param string $table Table name
 	 * @param array $rr Record array passed by reference. As minimum, "pid" and "uid" fields must exist! "t3ver_oid" and "t3ver_wsid" is nice and will save you a DB query.
-	 * @param boolean $ignoreWorkspaceMatch Ignore workspace match
+	 * @param bool $ignoreWorkspaceMatch Ignore workspace match
 	 * @return void (Passed by ref). If the record had its pid corrected to the online versions pid, then "_ORIG_pid" is set to the original pid value (-1 of course). The field "_ORIG_pid" is used by various other functions to detect if a record was in fact in a versionized branch.
 	 * @see PageRepository::fixVersioningPid()
 	 */
@@ -3759,7 +3759,7 @@ class BackendUtility {
 	 * @param string $table Table name
 	 * @param array $row Record array passed by reference. As minimum, the "uid" and  "pid" fields must exist! Fake fields cannot exist since the fields in the array is used as field names in the SQL look up. It would be nice to have fields like "t3ver_state" and "t3ver_mode_id" as well to avoid a new lookup inside movePlhOL().
 	 * @param integer $wsid Workspace ID, if not specified will use $GLOBALS['BE_USER']->workspace
-	 * @param boolean $unsetMovePointers If TRUE the function does not return a "pointer" row for moved records in a workspace
+	 * @param bool $unsetMovePointers If TRUE the function does not return a "pointer" row for moved records in a workspace
 	 * @return void (Passed by ref).
 	 * @see fixVersioningPid()
 	 */
@@ -4037,7 +4037,7 @@ class BackendUtility {
 	 * According to the GPL license an interactive application must show such a notice on start-up ('If the program is interactive, make it output a short notice... ' - see GPL.txt)
 	 * Therefore preventing this notice from being properly shown is a violation of the license, regardless of whether you remove it or use a stylesheet to obstruct the display.
 	 *
-	 * @param boolean Display the version number within the copyright notice?
+	 * @param bool Display the version number within the copyright notice?
 	 * @return string Text/Image (HTML) for copyright notice.
 	 */
 	static public function TYPO3_copyRightNotice($showVersionNumber = TRUE) {
@@ -4226,7 +4226,7 @@ class BackendUtility {
 	 * @param array $TSdataArray Current TSconfig data array - Can be modified by slots!
 	 * @param int $id Page ID we are handling
 	 * @param array $rootLine Rootline array of page
-	 * @param boolean $returnPartArray Whether TSdata should be parsed by TS parser or returned as plain text
+	 * @param bool $returnPartArray Whether TSdata should be parsed by TS parser or returned as plain text
 	 * @return array Modified Data array
 	 */
 	static protected function emitGetPagesTSconfigPreIncludeSignal(array $TSdataArray, $id, array $rootLine, $returnPartArray) {

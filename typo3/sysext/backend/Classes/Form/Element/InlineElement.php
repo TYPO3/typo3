@@ -494,7 +494,7 @@ class InlineElement {
 	 * @param string $foreign_table The foreign_table we create a header for
 	 * @param array $rec The current record of that foreign_table
 	 * @param array $config content of $PA['fieldConf']['config']
-	 * @param boolean $isVirtualRecord
+	 * @param bool $isVirtualRecord
 	 * @return string The HTML code of the header
 	 */
 	public function renderForeignRecordHeader($parentUid, $foreign_table, $rec, $config, $isVirtualRecord = FALSE) {
@@ -1677,7 +1677,7 @@ class InlineElement {
 	 *
 	 * @param array $records All inline records on this level
 	 * @param array $conf The TCA field configuration of the inline field to be rendered
-	 * @param boolean $splitValue For usage with group/db, values come like "tx_table_123|Title%20abc", but we need "tx_table" and "123
+	 * @param bool $splitValue For usage with group/db, values come like "tx_table_123|Title%20abc", but we need "tx_table" and "123
 	 * @return array The uids, that have been used already and should be used unique
 	 */
 	public function getUniqueIds($records, $conf = array(), $splitValue = FALSE) {
@@ -1948,7 +1948,7 @@ class InlineElement {
 	 * - 'unstable': Containting partly filled data (e.g. only table and possibly field)
 	 *
 	 * @param string $domObjectId The DOM object-id
-	 * @param boolean $loadConfig Load the TCA configuration for that level (default: TRUE)
+	 * @param bool $loadConfig Load the TCA configuration for that level (default: TRUE)
 	 * @return void
 	 */
 	public function parseStructureString($string, $loadConfig = TRUE) {

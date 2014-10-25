@@ -27,7 +27,7 @@ class WorkspacesUtility {
 	 * Building tcemain CMD-array for swapping all versions in a workspace.
 	 *
 	 * @param integer $wsid Real workspace ID, cannot be ONLINE (zero).
-	 * @param boolean $doSwap If set, then the currently online versions are swapped into the workspace in exchange for the offline versions. Otherwise the workspace is emptied.
+	 * @param bool $doSwap If set, then the currently online versions are swapped into the workspace in exchange for the offline versions. Otherwise the workspace is emptied.
 	 * @param int $pageId
 	 * @return array Command array for tcemain
 	 */

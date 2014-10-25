@@ -448,7 +448,7 @@ class Locker {
 	/**
 	 * Enable/ disable logging
 	 *
-	 * @param boolean $isLoggingEnabled
+	 * @param bool $isLoggingEnabled
 	 */
 	public function setEnableLogging($isLoggingEnabled) {
 		$this->isLoggingEnabled = $isLoggingEnabled;

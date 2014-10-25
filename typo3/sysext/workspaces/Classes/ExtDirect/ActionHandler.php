@@ -132,7 +132,7 @@ class ActionHandler extends AbstractHandler {
 	 * Get publish swap commands
 	 *
 	 * @param array|\stdClass[] $selection
-	 * @param boolean $swapIntoWorkspace
+	 * @param bool $swapIntoWorkspace
 	 * @return array
 	 */
 	protected function getPublishSwapCommands(array $selection, $swapIntoWorkspace) {

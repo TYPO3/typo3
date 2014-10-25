@@ -97,7 +97,7 @@ class ExtensionManagementUtility {
 	 * Returns TRUE if the extension with extension key $key is loaded.
 	 *
 	 * @param string $key Extension key to test
-	 * @param boolean $exitOnError If $exitOnError is TRUE and the extension is not loaded the function will die with an error message
+	 * @param bool $exitOnError If $exitOnError is TRUE and the extension is not loaded the function will die with an error message
 	 * @return boolean
 	 * @throws \BadFunctionCallException
 	 */
@@ -242,7 +242,7 @@ class ExtensionManagementUtility {
 	 *
 	 * @param string $table The table name of a table already present in $GLOBALS['TCA'] with a columns section
 	 * @param array $columnArray The array with the additional columns (typical some fields an extension wants to add)
-	 * @param boolean $addTofeInterface DEPRECATED: Usage of feInterface is no longer part of the TYPO3 CMS Core. Please check EXT:statictemplates.
+	 * @param bool $addTofeInterface DEPRECATED: Usage of feInterface is no longer part of the TYPO3 CMS Core. Please check EXT:statictemplates.
 	 * @return void
 	 */
 	static public function addTCAcolumns($table, $columnArray, $addTofeInterface = FALSE) {
@@ -724,7 +724,7 @@ class ExtensionManagementUtility {
 	 *
 	 * @see explodeItemList
 	 * @param array $items The array of fields/items with optional additional information
-	 * @param boolean $useRawData Use raw data instead of building by using the details (default: FALSE)
+	 * @param bool $useRawData Use raw data instead of building by using the details (default: FALSE)
 	 * @return string The list of fields/items which gets used for $GLOBALS['TCA'][<table>]['types'][<type>]['showitem']
 	 */
 	static protected function generateItemList(array $items, $useRawData = FALSE) {
@@ -1466,7 +1466,7 @@ tt_content.' . $key . $prefix . ' {
 	 * Find extension icon
 	 *
 	 * @param string $extensionPath Path to extension directory.
-	 * @param boolean $returnFullPath Return full path of file.
+	 * @param bool $returnFullPath Return full path of file.
 	 *
 	 * @return string
 	 */
@@ -1490,7 +1490,7 @@ tt_content.' . $key . $prefix . ' {
 	 * This is an internal method. It is only used during bootstrap and
 	 * extensions should not use it!
 	 *
-	 * @param boolean $allowCaching Whether or not to load / create concatenated cache file
+	 * @param bool $allowCaching Whether or not to load / create concatenated cache file
 	 * @return void
 	 * @access private
 	 */
@@ -1590,7 +1590,7 @@ tt_content.' . $key . $prefix . ' {
 	 * This is an internal method. It is only used during bootstrap and
 	 * extensions should not use it!
 	 *
-	 * @param boolean $allowCaching Whether or not to load / create concatenated cache file
+	 * @param bool $allowCaching Whether or not to load / create concatenated cache file
 	 * @return void
 	 * @access private
 	 */
@@ -1715,7 +1715,7 @@ tt_content.' . $key . $prefix . ' {
 	 * This is an internal method. It is only used during bootstrap and
 	 * extensions should not use it!
 	 *
-	 * @param boolean $allowCaching Whether to load / create concatenated cache file
+	 * @param bool $allowCaching Whether to load / create concatenated cache file
 	 * @return void
 	 * @access private
 	 */

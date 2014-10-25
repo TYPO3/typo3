@@ -363,11 +363,11 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * @param boolean $expected
+	 * @param bool $expected
 	 * @param string $submittedValue
 	 * @param string $storedValue
 	 * @param string $storedType
-	 * @param boolean $allowNull
+	 * @param bool $allowNull
 	 *
 	 * @dataProvider equalSubmittedAndStoredValuesAreDeterminedDataProvider
 	 * @test
@@ -562,7 +562,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * @param boolean $expected
+	 * @param bool $expected
 	 * @param array $eval
 	 * @dataProvider getPlaceholderTitleForTableLabelReturnsLabelThatsMatchesLabelFieldConditionsDataProvider
 	 * @test

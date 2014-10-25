@@ -353,7 +353,7 @@ class FlexFormTools {
 	 * Convert FlexForm data array to XML
 	 *
 	 * @param array $array Array to output in <T3FlexForms> XML
-	 * @param boolean $addPrologue If set, the XML prologue is returned as well.
+	 * @param bool $addPrologue If set, the XML prologue is returned as well.
 	 * @return string XML content.
 	 */
 	public function flexArray2Xml($array, $addPrologue = FALSE) {

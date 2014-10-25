@@ -423,7 +423,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * Checks access to a backend module with the $MCONF passed as first argument
 	 *
 	 * @param array $conf $MCONF array of a backend module!
-	 * @param boolean $exitOnError If set, an array will issue an error message and exit.
+	 * @param bool $exitOnError If set, an array will issue an error message and exit.
 	 * @throws \RuntimeException
 	 * @return boolean Will return TRUE if $MCONF['access'] is not set at all, if the BE_USER is admin or if the module is enabled in the be_users/be_groups records of the user (specifically enabled). Will return FALSE if the module name is not even found in $TBE_MODULES
 	 */
@@ -729,9 +729,9 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 *
 	 * @param string $table Table name
 	 * @param mixed $idOrRow If integer, then this is the ID of the record. If Array this just represents fields in the record.
-	 * @param boolean $newRecord Set, if testing a new (non-existing) record array. Will disable certain checks that doesn't make much sense in that context.
-	 * @param boolean $deletedRecord Set, if testing a deleted record array.
-	 * @param boolean $checkFullLanguageAccess Set, whenever access to all translations of the record is required
+	 * @param bool $newRecord Set, if testing a new (non-existing) record array. Will disable certain checks that doesn't make much sense in that context.
+	 * @param bool $deletedRecord Set, if testing a deleted record array.
+	 * @param bool $checkFullLanguageAccess Set, whenever access to all translations of the record is required
 	 * @return boolean TRUE if OK, otherwise FALSE
 	 */
 	public function recordEditAccessInternals($table, $idOrRow, $newRecord = FALSE, $deletedRecord = FALSE, $checkFullLanguageAccess = FALSE) {
@@ -2065,7 +2065,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	/**
 	 * Setting workspace preview state for user:
 	 *
-	 * @param boolean $previewState State of user preview.
+	 * @param bool $previewState State of user preview.
 	 * @return void
 	 */
 	public function setWorkspacePreview($previewState) {

@@ -183,7 +183,7 @@ class ParsingState implements \TYPO3\CMS\Fluid\Core\Parser\ParsedTemplateInterfa
 	}
 
 	/**
-	 * @param boolean $compilable
+	 * @param bool $compilable
 	 */
 	public function setCompilable($compilable) {
 		$this->compilable = $compilable;

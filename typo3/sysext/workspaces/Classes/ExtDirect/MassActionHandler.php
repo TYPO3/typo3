@@ -121,7 +121,7 @@ class MassActionHandler extends AbstractHandler {
 	 * Initializes the command map to be used for publishing.
 	 *
 	 * @param integer $workspace
-	 * @param boolean $swap
+	 * @param bool $swap
 	 * @param integer $language
 	 * @return integer
 	 */

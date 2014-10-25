@@ -202,7 +202,7 @@ class TemplateService {
 	}
 
 	/**
-	 * @param boolean $processExtensionStatics
+	 * @param bool $processExtensionStatics
 	 */
 	public function setProcessExtensionStatics($processExtensionStatics) {
 		$this->processExtensionStatics = (bool) $processExtensionStatics;
@@ -1159,8 +1159,8 @@ class TemplateService {
 	 * Compiles the content for the page <title> tag.
 	 *
 	 * @param string $pageTitle The input title string, typically the "title" field of a page's record.
-	 * @param boolean $noTitle If set, then only the site title is outputted (from $this->setup['sitetitle'])
-	 * @param boolean $showTitleFirst If set, then "sitetitle" and $title is swapped
+	 * @param bool $noTitle If set, then only the site title is outputted (from $this->setup['sitetitle'])
+	 * @param bool $showTitleFirst If set, then "sitetitle" and $title is swapped
 	 * @return string The page title on the form "[sitetitle]: [input-title]". Not htmlspecialchar()'ed.
 	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::tempPageCacheContent(), TSpagegen::renderContentWithHeader()
 	 */
@@ -1243,7 +1243,7 @@ class TemplateService {
 	 * Call it like \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList()
 	 *
 	 * @param array $setupArr TypoScript array with numerical array in
-	 * @param boolean $acceptOnlyProperties If set, then a value is not required - the properties alone will be enough.
+	 * @param bool $acceptOnlyProperties If set, then a value is not required - the properties alone will be enough.
 	 * @return array An array with all integer properties listed in numeric order.
 	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGet(), \TYPO3\CMS\Frontend\Imaging\GifBuilder, \TYPO3\CMS\Frontend\ContentObject\Menu\ImageMenuContentObject::makeImageMap()
 	 */
@@ -1290,7 +1290,7 @@ class TemplateService {
 	 *
 	 * @param array $page The page record of the page to which we are creating a link. Needed due to fields like uid, alias, target, no_cache, title and sectionIndex_uid.
 	 * @param string $oTarget Default target string to use IF not $page['target'] is set.
-	 * @param boolean $no_cache If set, then the "&no_cache=1" parameter is included in the URL.
+	 * @param bool $no_cache If set, then the "&no_cache=1" parameter is included in the URL.
 	 * @param string $script Alternative script name if you don't want to use $GLOBALS['TSFE']->config['mainScript'] (normally set to "index.php")
 	 * @param array $overrideArray Array with overriding values for the $page array.
 	 * @param string $addParams Additional URL parameters to set in the URL. Syntax is "&foo=bar&foo2=bar2" etc. Also used internally to add parameters if needed.

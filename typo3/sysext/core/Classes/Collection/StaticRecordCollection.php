@@ -25,7 +25,7 @@ class StaticRecordCollection extends \TYPO3\CMS\Core\Collection\AbstractRecordCo
 	 * given database record to the new object.
 	 *
 	 * @param array $collectionRecord Database record
-	 * @param boolean $fillItems Populates the entries directly on load, might be bad for memory on large collections
+	 * @param bool $fillItems Populates the entries directly on load, might be bad for memory on large collections
 	 * @return \TYPO3\CMS\Core\Collection\StaticRecordCollection
 	 */
 	static public function create(array $collectionRecord, $fillItems = FALSE) {

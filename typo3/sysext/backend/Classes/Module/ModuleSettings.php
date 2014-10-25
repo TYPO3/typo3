@@ -352,7 +352,7 @@ class ModuleSettings {
 	 * Returns the storage control box
 	 *
 	 * @param string $showElements List of elemetns which should be shown: load,remove,save
-	 * @param boolean $useOwnForm If set the box is wrapped with own form tag
+	 * @param bool $useOwnForm If set the box is wrapped with own form tag
 	 * @return string HTML code
 	 */
 	public function getStoreControl($showElements = 'load,remove,save', $useOwnForm = TRUE) {

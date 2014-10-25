@@ -1265,7 +1265,7 @@ class SqlParser {
 	 *
 	 * @param string $parseString Parse string; if $regex finds anything the value of the first () level will be stripped of the string in the beginning. Further $parseString is left-trimmed (on success). Notice; parsestring is passed by reference.
 	 * @param string $regex Regex to find a matching part in the beginning of the string. Rules: You MUST start the regex with "^" (finding stuff in the beginning of string) and the result of the first parenthesis is what will be returned to you (and stripped of the string). Eg. '^(AND|OR|&&)[[:space:]]+' will return AND, OR or && if found and having one of more whitespaces after it, plus shorten $parseString with that match and any space after (by ltrim())
-	 * @param boolean $trimAll If set the full match of the regex is stripped of the beginning of the string!
+	 * @param bool $trimAll If set the full match of the regex is stripped of the beginning of the string!
 	 * @return string The value of the first parenthesis level of the REGEX.
 	 */
 	protected function nextPart(&$parseString, $regex, $trimAll = FALSE) {
@@ -1688,7 +1688,7 @@ class SqlParser {
 	 * Can also compile field lists for ORDER BY and GROUP BY.
 	 *
 	 * @param array $selectFields Array of select fields, (made with ->parseFieldList())
-	 * @param boolean $compileComments Whether comments should be compiled
+	 * @param bool $compileComments Whether comments should be compiled
 	 * @return string Select field string
 	 * @see parseFieldList()
 	 */
@@ -1949,7 +1949,7 @@ class SqlParser {
 	 *
 	 * @param string $str SQL String 1
 	 * @param string $newStr SQL string 2
-	 * @param boolean $caseInsensitive If TRUE, the strings are compared insensitive to case
+	 * @param bool $caseInsensitive If TRUE, the strings are compared insensitive to case
 	 * @return mixed Returns array with string 1 and 2 if error, otherwise FALSE
 	 */
 	public function debug_parseSQLpartCompare($str, $newStr, $caseInsensitive = FALSE) {

@@ -1889,7 +1889,7 @@ class ElementBrowser {
 	 *
 	 * @param Folder $folder The folder path to expand
 	 * @param string $extensionList List of fileextensions to show
-	 * @param boolean $noThumbs Whether to show thumbnails or not. If set, no thumbnails are shown.
+	 * @param bool $noThumbs Whether to show thumbnails or not. If set, no thumbnails are shown.
 	 * @return string HTML output
 	 */
 	public function TBE_expandFolder(Folder $folder, $extensionList = '', $noThumbs = FALSE) {
@@ -1906,7 +1906,7 @@ class ElementBrowser {
 	 *
 	 * @param File[] $files List of files
 	 * @param Folder $folder If set a header with a folder icon and folder name are shown
-	 * @param boolean $noThumbs Whether to show thumbnails or not. If set, no thumbnails are shown.
+	 * @param bool $noThumbs Whether to show thumbnails or not. If set, no thumbnails are shown.
 	 * @return string HTML output
 	 */
 	protected function fileList(array $files, Folder $folder = NULL, $noThumbs = FALSE) {
@@ -2616,7 +2616,7 @@ class ElementBrowser {
 	 * Determines whether submitted field change functions are valid
 	 * and are coming from the system and not from an external abuse.
 	 *
-	 * @param boolean $handleFlexformSections Whether to handle flexform sections differently
+	 * @param bool $handleFlexformSections Whether to handle flexform sections differently
 	 * @return boolean Whether the submitted field change functions are valid
 	 */
 	protected function areFieldChangeFunctionsValid($handleFlexformSections = FALSE) {

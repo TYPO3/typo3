@@ -76,7 +76,7 @@ interface ValidatorInterface {
 	/**
 	 * Set if message needs to be displayed
 	 *
-	 * @param boolean $show TRUE is display
+	 * @param bool $show TRUE is display
 	 * @return object The rule object
 	 */
 	public function setShowMessage($show);

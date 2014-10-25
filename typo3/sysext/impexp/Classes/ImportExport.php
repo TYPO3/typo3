@@ -521,7 +521,7 @@ class ImportExport {
 	 * Option to enable having the files not included in the export file.
 	 * The files are saved to a temporary folder instead.
 	 *
-	 * @param boolean $saveFilesOutsideExportFile
+	 * @param bool $saveFilesOutsideExportFile
 	 * @see getTemporaryFilesPathForExport()
 	 */
 	public function setSaveFilesOutsideExportFile($saveFilesOutsideExportFile) {
@@ -1440,7 +1440,7 @@ class ImportExport {
 	 * Returns a content part for a filename being build.
 	 *
 	 * @param array $data Data to store in part
-	 * @param boolean $compress Compress file?
+	 * @param bool $compress Compress file?
 	 * @return string Content stream.
 	 */
 	public function addFilePart($data, $compress = FALSE) {
@@ -2848,7 +2848,7 @@ class ImportExport {
 	 *
 	 * @param string $fileName Absolute filename inside PATH_site to write to
 	 * @param string $fileID File ID from import memory
-	 * @param boolean $bypassMountCheck Bypasses the checking against filemounts - only for RTE files!
+	 * @param bool $bypassMountCheck Bypasses the checking against filemounts - only for RTE files!
 	 * @return boolean Returns TRUE if it went well. Notice that the content of the file is read again, and md5 from import memory is validated.
 	 */
 	public function writeFileVerify($fileName, $fileID, $bypassMountCheck = FALSE) {
@@ -3066,7 +3066,7 @@ class ImportExport {
 	 * If it doesn't it will try to find another relative filemount for the user and return an alternative path prefix for the file.
 	 *
 	 * @param string $dirPrefix Path relative to PATH_site
-	 * @param boolean $noAlternative If set, Do not look for alternative path! Just return FALSE
+	 * @param bool $noAlternative If set, Do not look for alternative path! Just return FALSE
 	 * @return string|bool If a path is available that will be returned, otherwise FALSE.
 	 */
 	public function verifyFolderAccess($dirPrefix, $noAlternative = FALSE) {
@@ -3102,7 +3102,7 @@ class ImportExport {
 	 * Loads the header section/all of the $filename into memory
 	 *
 	 * @param string $filename Filename, absolute
-	 * @param boolean $all If set, all information is loaded (header, records and files). Otherwise the default is to read only the header information
+	 * @param bool $all If set, all information is loaded (header, records and files). Otherwise the default is to read only the header information
 	 * @return boolean TRUE if the operation went well
 	 */
 	public function loadFile($filename, $all = FALSE) {
@@ -3162,7 +3162,7 @@ class ImportExport {
 	 * Returns the next content part form the fileresource (t3d), $fd
 	 *
 	 * @param int $fd File pointer
-	 * @param boolean $unserialize If set, the returned content is unserialized into an array, otherwise you get the raw string
+	 * @param bool $unserialize If set, the returned content is unserialized into an array, otherwise you get the raw string
 	 * @param string $name For error messages this indicates the section of the problem.
 	 * @return string|NULL Data string or NULL in case of an error
 	 * @access private
@@ -3487,7 +3487,7 @@ class ImportExport {
 	 * @param integer $uid Record uid
 	 * @param array $lines Output lines array (is passed by reference and modified)
 	 * @param string $preCode Pre-HTML code
-	 * @param boolean $checkImportInPidRecord If you want import validation, you can set this so it checks if the import can take place on the specified page.
+	 * @param bool $checkImportInPidRecord If you want import validation, you can set this so it checks if the import can take place on the specified page.
 	 * @return void
 	 */
 	public function singleRecordLines($table, $uid, &$lines, $preCode, $checkImportInPidRecord = FALSE) {
@@ -4040,7 +4040,7 @@ class ImportExport {
 	 * @param array $databaseRecord Database record, all fields (new values)
 	 * @param array $importRecord Import memorys record for the same table/uid, all fields (old values)
 	 * @param string $table The table name of the record
-	 * @param boolean $inverseDiff Inverse the diff view (switch red/green, needed for pre-update difference view)
+	 * @param bool $inverseDiff Inverse the diff view (switch red/green, needed for pre-update difference view)
 	 * @return string HTML
 	 */
 	public function compareRecords($databaseRecord, $importRecord, $table, $inverseDiff = FALSE) {

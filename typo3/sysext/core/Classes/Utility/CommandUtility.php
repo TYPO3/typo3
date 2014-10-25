@@ -259,7 +259,7 @@ class CommandUtility {
 	/**
 	 * Returns an array of search paths
 	 *
-	 * @param boolean $addInvalid If set the array contains invalid path too. Then the key is the path and the value is empty
+	 * @param bool $addInvalid If set the array contains invalid path too. Then the key is the path and the value is empty
 	 * @return array Array of search paths (empty if exec is disabled)
 	 */
 	public static function getPaths($addInvalid = FALSE) {

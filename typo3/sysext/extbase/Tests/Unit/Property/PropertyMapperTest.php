@@ -93,7 +93,7 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @param string $name
-	 * @param boolean $canConvertFrom
+	 * @param bool $canConvertFrom
 	 * @param array $properties
 	 * @param string $typeOfSubObject
 	 * @return \PHPUnit_Framework_MockObject_MockObject
@@ -302,7 +302,7 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param mixed $targetClass
 	 * @param mixed $expectedTypeConverter
 	 * @param mixed $typeConverters
-	 * @param boolean $shouldFailWithException
+	 * @param bool $shouldFailWithException
 	 * @throws \Exception
 	 * @return void
 	 */

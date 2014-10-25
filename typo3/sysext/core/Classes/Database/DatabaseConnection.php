@@ -193,7 +193,7 @@ class DatabaseConnection {
 	 *
 	 * @param string $table Table name
 	 * @param array $fields_values Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$insertFields" with 'fieldname'=>'value' and pass it to this function as argument.
-	 * @param boolean $no_quote_fields See fullQuoteArray()
+	 * @param bool $no_quote_fields See fullQuoteArray()
 	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function exec_INSERTquery($table, $fields_values, $no_quote_fields = FALSE) {
@@ -214,7 +214,7 @@ class DatabaseConnection {
 	 * @param string $table Table name
 	 * @param array $fields Field names
 	 * @param array $rows Table rows. Each row should be an array with field values mapping to $fields
-	 * @param boolean $no_quote_fields See fullQuoteArray()
+	 * @param bool $no_quote_fields See fullQuoteArray()
 	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function exec_INSERTmultipleRows($table, array $fields, array $rows, $no_quote_fields = FALSE) {
@@ -236,7 +236,7 @@ class DatabaseConnection {
 	 * @param string $table Database tablename
 	 * @param string $where WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
 	 * @param array $fields_values Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$updateFields" with 'fieldname'=>'value' and pass it to this function as argument.
-	 * @param boolean $no_quote_fields See fullQuoteArray()
+	 * @param bool $no_quote_fields See fullQuoteArray()
 	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function exec_UPDATEquery($table, $where, $fields_values, $no_quote_fields = FALSE) {
@@ -383,7 +383,7 @@ class DatabaseConnection {
 	 * @param string $where_clause Optional additional WHERE clauses put in the end of the query. NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
 	 * @param string $groupBy Optional GROUP BY field(s), if none, supply blank string.
 	 * @param string $orderBy Optional ORDER BY field(s), if none, supply blank string.
-	 * @param boolean $numIndex If set, the result will be fetched with sql_fetch_row, otherwise sql_fetch_assoc will be used.
+	 * @param bool $numIndex If set, the result will be fetched with sql_fetch_row, otherwise sql_fetch_assoc will be used.
 	 * @return array|FALSE|NULL Single row, FALSE on empty result, NULL on error
 	 */
 	public function exec_SELECTgetSingleRow($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $numIndex = FALSE) {
@@ -464,7 +464,7 @@ class DatabaseConnection {
 	 *
 	 * @param string $table See exec_INSERTquery()
 	 * @param array $fields_values See exec_INSERTquery()
-	 * @param boolean $no_quote_fields See fullQuoteArray()
+	 * @param bool $no_quote_fields See fullQuoteArray()
 	 * @return string|NULL Full SQL query for INSERT, NULL if $fields_values is empty
 	 */
 	public function INSERTquery($table, $fields_values, $no_quote_fields = FALSE) {
@@ -493,7 +493,7 @@ class DatabaseConnection {
 	 * @param string $table Table name
 	 * @param array $fields Field names
 	 * @param array $rows Table rows. Each row should be an array with field values mapping to $fields
-	 * @param boolean $no_quote_fields See fullQuoteArray()
+	 * @param bool $no_quote_fields See fullQuoteArray()
 	 * @return string|NULL Full SQL query for INSERT, NULL if $rows is empty
 	 */
 	public function INSERTmultipleRows($table, array $fields, array $rows, $no_quote_fields = FALSE) {
@@ -529,7 +529,7 @@ class DatabaseConnection {
 	 * @param string $table See exec_UPDATEquery()
 	 * @param string $where See exec_UPDATEquery()
 	 * @param array $fields_values See exec_UPDATEquery()
-	 * @param boolean $no_quote_fields
+	 * @param bool $no_quote_fields
 	 * @throws \InvalidArgumentException
 	 * @return string Full SQL query for UPDATE
 	 */
@@ -786,7 +786,7 @@ class DatabaseConnection {
 	 *
 	 * @param string $str Input string
 	 * @param string $table Table name for which to quote string. Just enter the table that the field-value is selected from (and any DBAL will look up which handler to use and then how to quote the string!).
-	 * @param boolean $allowNull Whether to allow NULL values
+	 * @param bool $allowNull Whether to allow NULL values
 	 * @return string Output string; Wrapped in single quotes and quotes in the string (" / ') and \ will be backslashed (or otherwise based on DBAL handler)
 	 * @see quoteStr()
 	 */
@@ -806,8 +806,8 @@ class DatabaseConnection {
 	 *
 	 * @param array $arr Array with values (either associative or non-associative array)
 	 * @param string $table Table name for which to quote
-	 * @param boolean|array $noQuote List/array of keys NOT to quote (eg. SQL functions) - ONLY for associative arrays
-	 * @param boolean $allowNull Whether to allow NULL values
+	 * @param bool|array $noQuote List/array of keys NOT to quote (eg. SQL functions) - ONLY for associative arrays
+	 * @param bool $allowNull Whether to allow NULL values
 	 * @return array The input array with the values quoted
 	 * @see cleanIntArray()
 	 */
@@ -1008,7 +1008,7 @@ class DatabaseConnection {
 	/**
 	 * Returns the number of selected rows.
 	 *
-	 * @param boolean|\mysqli_result|object $res MySQLi result object / DBAL object
+	 * @param bool|\mysqli_result|object $res MySQLi result object / DBAL object
 	 * @return integer Number of resulting rows
 	 */
 	public function sql_num_rows($res) {
@@ -1023,7 +1023,7 @@ class DatabaseConnection {
 	 * Returns an associative array that corresponds to the fetched row, or FALSE if there are no more rows.
 	 * MySQLi fetch_assoc() wrapper function
 	 *
-	 * @param boolean|\mysqli_result|object $res MySQLi result object / DBAL object
+	 * @param bool|\mysqli_result|object $res MySQLi result object / DBAL object
 	 * @return array|boolean Associative array of result row.
 	 */
 	public function sql_fetch_assoc($res) {
@@ -1044,7 +1044,7 @@ class DatabaseConnection {
 	 * The array contains the values in numerical indices.
 	 * MySQLi fetch_row() wrapper function
 	 *
-	 * @param boolean|\mysqli_result|object $res MySQLi result object / DBAL object
+	 * @param bool|\mysqli_result|object $res MySQLi result object / DBAL object
 	 * @return array|boolean Array with result rows.
 	 */
 	public function sql_fetch_row($res) {
@@ -1064,7 +1064,7 @@ class DatabaseConnection {
 	 * Free result memory
 	 * free_result() wrapper function
 	 *
-	 * @param boolean|\mysqli_result|object $res MySQLi result object / DBAL object
+	 * @param bool|\mysqli_result|object $res MySQLi result object / DBAL object
 	 * @return boolean Returns TRUE on success or FALSE on failure.
 	 */
 	public function sql_free_result($res) {
@@ -1097,7 +1097,7 @@ class DatabaseConnection {
 	/**
 	 * Move internal result pointer
 	 *
-	 * @param boolean|\mysqli_result|object $res MySQLi result object / DBAL object
+	 * @param bool|\mysqli_result|object $res MySQLi result object / DBAL object
 	 * @param integer $seek Seek result number.
 	 * @return boolean Returns TRUE on success or FALSE on failure.
 	 */
@@ -1113,7 +1113,7 @@ class DatabaseConnection {
 	 * Get the type of the specified field in a result
 	 * mysql_field_type() wrapper function
 	 *
-	 * @param boolean|\mysqli_result|object $res MySQLi result object / DBAL object
+	 * @param bool|\mysqli_result|object $res MySQLi result object / DBAL object
 	 * @param integer $pointer Field index.
 	 * @return string Returns the name of the specified field index, or FALSE on error
 	 */
@@ -1487,7 +1487,7 @@ class DatabaseConnection {
 	/**
 	 * Set persistent database connection
 	 *
-	 * @param boolean $persistentDatabaseConnection
+	 * @param bool $persistentDatabaseConnection
 	 * @see http://php.net/manual/de/mysqli.persistconns.php
 	 */
 	public function setPersistentDatabaseConnection($persistentDatabaseConnection) {
@@ -1783,7 +1783,7 @@ class DatabaseConnection {
 	/**
 	 * Checks if record set is valid and writes debugging information into devLog if not.
 	 *
-	 * @param boolean|\mysqli_result|object MySQLi result object / DBAL object
+	 * @param bool|\mysqli_result|object MySQLi result object / DBAL object
 	 * @return boolean TRUE if the  record set is valid, FALSE otherwise
 	 */
 	public function debug_check_recordset($res) {

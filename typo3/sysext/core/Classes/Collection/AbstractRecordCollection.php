@@ -302,7 +302,7 @@ abstract class AbstractRecordCollection implements \TYPO3\CMS\Core\Collection\Re
 	 * Entries can be load on first access.
 	 *
 	 * @param integer $id Id of database record to be loaded
-	 * @param boolean $fillItems Populates the entries directly on load, might be bad for memory on large collections
+	 * @param bool $fillItems Populates the entries directly on load, might be bad for memory on large collections
 	 * @return \TYPO3\CMS\Core\Collection\CollectionInterface
 	 */
 	static public function load($id, $fillItems = FALSE) {
@@ -315,7 +315,7 @@ abstract class AbstractRecordCollection implements \TYPO3\CMS\Core\Collection\Re
 	 * given database record to the new object.
 	 *
 	 * @param array $collectionRecord Database record
-	 * @param boolean $fillItems Populates the entries directly on load, might be bad for memory on large collections
+	 * @param bool $fillItems Populates the entries directly on load, might be bad for memory on large collections
 	 * @return \TYPO3\CMS\Core\Collection\CollectionInterface
 	 */
 	static public function create(array $collectionRecord, $fillItems = FALSE) {
@@ -366,7 +366,7 @@ abstract class AbstractRecordCollection implements \TYPO3\CMS\Core\Collection\Re
 	 * also allow to add table name, if it might be needed by TCEmain for
 	 * storing the relation
 	 *
-	 * @param boolean $includeTableName
+	 * @param bool $includeTableName
 	 * @return string
 	 */
 	protected function getItemUidList($includeTableName = TRUE) {

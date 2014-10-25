@@ -64,7 +64,7 @@ class IntrospectionProcessor extends \TYPO3\CMS\Core\Log\Processor\AbstractProce
 	/**
 	 * Set if the full backtrace should be added to the log or just the last item
 	 *
-	 * @param boolean $appendFullBackTrace If the full backtrace should be added
+	 * @param bool $appendFullBackTrace If the full backtrace should be added
 	 * @return \TYPO3\CMS\Core\Log\Writer\AbstractWriter
 	 */
 	public function setAppendFullBackTrace($appendFullBackTrace) {

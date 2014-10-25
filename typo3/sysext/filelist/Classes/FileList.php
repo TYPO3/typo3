@@ -106,9 +106,9 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject The folder to work on
 	 * @param integer $pointer Pointer
-	 * @param boolean $sort Sorting column
-	 * @param boolean $sortRev Sorting direction
-	 * @param boolean $bigControlPanel Show clipboard flag
+	 * @param bool $sort Sorting column
+	 * @param bool $sortRev Sorting direction
+	 * @param bool $bigControlPanel Show clipboard flag
 	 * @return void
 	 */
 	public function start(\TYPO3\CMS\Core\Resource\Folder $folderObject, $pointer, $sort, $sortRev, $clipBoard = FALSE, $bigControlPanel = FALSE) {

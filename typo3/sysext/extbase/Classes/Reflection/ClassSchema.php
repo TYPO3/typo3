@@ -94,7 +94,7 @@ class ClassSchema {
 	 *
 	 * @param string $name Name of the property
 	 * @param string $type Type of the property
-	 * @param boolean $lazy Whether the property should be lazy-loaded when reconstituting
+	 * @param bool $lazy Whether the property should be lazy-loaded when reconstituting
 	 * @param string $cascade Strategy to cascade the object graph.
 	 * @return void
 	 */
@@ -155,7 +155,7 @@ class ClassSchema {
 	 * Marks the class if it is root of an aggregate and therefore accessible
 	 * through a repository - or not.
 	 *
-	 * @param boolean $isRoot TRUE if it is the root of an aggregate
+	 * @param bool $isRoot TRUE if it is the root of an aggregate
 	 * @return void
 	 */
 	public function setAggregateRoot($isRoot) {

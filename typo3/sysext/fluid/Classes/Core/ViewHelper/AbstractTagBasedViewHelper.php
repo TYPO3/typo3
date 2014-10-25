@@ -93,7 +93,7 @@ abstract class AbstractTagBasedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelp
 	 * @param string $name Name of tag attribute
 	 * @param string $type Type of the tag attribute
 	 * @param string $description Description of tag attribute
-	 * @param boolean $required set to TRUE if tag attribute is required. Defaults to FALSE.
+	 * @param bool $required set to TRUE if tag attribute is required. Defaults to FALSE.
 	 * @param string $default Default value
 	 * @return void
 	 * @api

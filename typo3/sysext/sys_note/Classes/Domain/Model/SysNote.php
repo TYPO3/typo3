@@ -139,7 +139,7 @@ class SysNote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @param boolean $personal
+	 * @param bool $personal
 	 * @return void
 	 */
 	public function setPersonal($personal) {

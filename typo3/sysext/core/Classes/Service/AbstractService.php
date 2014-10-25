@@ -116,7 +116,7 @@ abstract class AbstractService {
 	 *
 	 * @param string $optionName Name of the config option
 	 * @param mixed $defaultValue Default configuration if no special config is available
-	 * @param boolean $includeDefaultConfig If set the 'default' config will be returned if no special config for this service is available (default: TRUE)
+	 * @param bool $includeDefaultConfig If set the 'default' config will be returned if no special config for this service is available (default: TRUE)
 	 * @return mixed Configuration value for the service
 	 */
 	public function getServiceOption($optionName, $defaultValue = '', $includeDefaultConfig = TRUE) {

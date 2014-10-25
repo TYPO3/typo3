@@ -174,7 +174,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * description
 	 *
 	 * @param array $items List of items to be displayed in the definition list.
-	 * @param boolean $mainMenu Set it to TRUE to render the main menu
+	 * @param bool $mainMenu Set it to TRUE to render the main menu
 	 * @return string Fefinition list
 	 */
 	public function renderListMenu($items, $mainMenu = FALSE) {

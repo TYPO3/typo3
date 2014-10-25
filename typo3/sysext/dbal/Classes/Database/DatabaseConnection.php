@@ -2120,7 +2120,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	/**
 	 * Returns the number of selected rows.
 	 *
-	 * @param boolean|\mysqli_result|object $res MySQLi result object / DBAL object
+	 * @param bool|\mysqli_result|object $res MySQLi result object / DBAL object
 	 * @return integer Number of resulting rows
 	 */
 	public function sql_num_rows($res) {
@@ -2147,7 +2147,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * Returns an associative array that corresponds to the fetched row, or FALSE if there are no more rows.
 	 * MySQLi fetch_assoc() wrapper function
 	 *
-	 * @param boolean|\mysqli_result|object $res MySQLi result object / DBAL object
+	 * @param bool|\mysqli_result|object $res MySQLi result object / DBAL object
 	 * @return array|boolean Associative array of result row.
 	 */
 	public function sql_fetch_assoc($res) {
@@ -2216,7 +2216,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * The array contains the values in numerical indices.
 	 * MySQLi fetch_row() wrapper function
 	 *
-	 * @param boolean|\mysqli_result|object $res MySQLi result object / DBAL object
+	 * @param bool|\mysqli_result|object $res MySQLi result object / DBAL object
 	 * @return array|boolean Array with result rows.
 	 */
 	public function sql_fetch_row($res) {
@@ -2270,7 +2270,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * Free result memory
 	 * free_result() wrapper function
 	 *
-	 * @param boolean|\mysqli_result|object $res MySQLi result object / DBAL object
+	 * @param bool|\mysqli_result|object $res MySQLi result object / DBAL object
 	 * @return bool Returns TRUE on success or FALSE on failure.
 	 */
 	public function sql_free_result($res) {
@@ -2360,7 +2360,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	/**
 	 * Move internal result pointer
 	 *
-	 * @param boolean|\mysqli_result|object $res MySQLi result object / DBAL object
+	 * @param bool|\mysqli_result|object $res MySQLi result object / DBAL object
 	 * @param integer $seek Seek result number.
 	 * @return bool Returns TRUE on success or FALSE on failure.
 	 */
@@ -2408,7 +2408,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * Get the type of the specified field in a result
 	 * mysql_field_type() wrapper function
 	 *
-	 * @param boolean|\mysqli_result|object $res MySQLi result object / DBAL object
+	 * @param bool|\mysqli_result|object $res MySQLi result object / DBAL object
 	 * @param integer $pointer Field index.
 	 * @return string Returns the name of the specified field index, or FALSE on error
 	 */

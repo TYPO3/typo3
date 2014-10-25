@@ -24,7 +24,7 @@ class CmsLayout implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInt
 	 * Preprocesses the preview rendering of a content element.
 	 *
 	 * @param \TYPO3\CMS\Backend\View\PageLayoutView $parentObject Calling parent object
-	 * @param boolean $drawItem Whether to draw the item using the default functionalities
+	 * @param bool $drawItem Whether to draw the item using the default functionalities
 	 * @param string $headerContent Header content
 	 * @param string $itemContent Item content
 	 * @param array $row Record row of tt_content

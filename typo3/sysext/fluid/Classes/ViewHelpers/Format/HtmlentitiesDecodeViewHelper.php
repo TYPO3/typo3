@@ -47,7 +47,7 @@ class HtmlentitiesDecodeViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Format\A
 	 * Converts all HTML entities to their applicable characters as needed using PHPs html_entity_decode() function.
 	 *
 	 * @param string $value string to format
-	 * @param boolean $keepQuotes if TRUE, single and double quotes won't be replaced (sets ENT_NOQUOTES flag)
+	 * @param bool $keepQuotes if TRUE, single and double quotes won't be replaced (sets ENT_NOQUOTES flag)
 	 * @param string $encoding
 	 * @return string the altered string
 	 * @see http://www.php.net/html_entity_decode

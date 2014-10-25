@@ -62,9 +62,9 @@ class QueryFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * @param boolean $static
-	 * @param boolean $rootLevel
-	 * @param boolean $expectedResult
+	 * @param bool $static
+	 * @param bool $rootLevel
+	 * @param bool $expectedResult
 	 *
 	 * @dataProvider getStaticAndRootLevelAndExpectedResult
 	 * @test

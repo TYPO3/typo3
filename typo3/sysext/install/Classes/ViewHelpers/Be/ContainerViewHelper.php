@@ -43,15 +43,15 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 	 * Render start page with \TYPO3\CMS\Backend\Template\DocumentTemplate and pageTitle
 	 *
 	 * @param string  $pageTitle title tag of the module. Not required by default, as BE modules are shown in a frame
-	 * @param boolean $enableJumpToUrl If TRUE, includes "jumpTpUrl" javascript function required by ActionMenu. Defaults to TRUE, not needed anymore, as it is included all the time
-	 * @param boolean $enableClickMenu If TRUE, loads clickmenu.js required by BE context menus. Defaults to TRUE
-	 * @param boolean $loadPrototype specifies whether to load prototype library. Defaults to TRUE
-	 * @param boolean $loadScriptaculous specifies whether to load scriptaculous libraries. Defaults to FALSE
+	 * @param bool $enableJumpToUrl If TRUE, includes "jumpTpUrl" javascript function required by ActionMenu. Defaults to TRUE, not needed anymore, as it is included all the time
+	 * @param bool $enableClickMenu If TRUE, loads clickmenu.js required by BE context menus. Defaults to TRUE
+	 * @param bool $loadPrototype specifies whether to load prototype library. Defaults to TRUE
+	 * @param bool $loadScriptaculous specifies whether to load scriptaculous libraries. Defaults to FALSE
 	 * @param string  $scriptaculousModule additionales modules for scriptaculous
-	 * @param boolean $loadExtJs specifies whether to load ExtJS library. Defaults to FALSE
-	 * @param boolean $loadExtJsTheme whether to load ExtJS "grey" theme. Defaults to FALSE
+	 * @param bool $loadExtJs specifies whether to load ExtJS library. Defaults to FALSE
+	 * @param bool $loadExtJsTheme whether to load ExtJS "grey" theme. Defaults to FALSE
 	 * @param string  $extJsAdapter load alternative adapter (ext-base is default adapter)
-	 * @param boolean $enableExtJsDebug if TRUE, debug version of ExtJS is loaded. Use this for development only
+	 * @param bool $enableExtJsDebug if TRUE, debug version of ExtJS is loaded. Use this for development only
 	 * @param array $addCssFiles Custom CSS files to be loaded
 	 * @param array $addJsFiles Custom JavaScript files to be loaded
 	 * @param array $triggers Defined triggers to be forwarded to client (e.g. refreshing backend widgets)

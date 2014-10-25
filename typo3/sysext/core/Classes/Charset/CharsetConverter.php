@@ -677,7 +677,7 @@ class CharsetConverter {
 	 * @param string $str Input string
 	 * @param string $fromCS From charset (the current charset of the string)
 	 * @param string $toCS To charset (the output charset wanted)
-	 * @param boolean $useEntityForNoChar If set, then characters that are not available in the destination character set will be encoded as numeric entities
+	 * @param bool $useEntityForNoChar If set, then characters that are not available in the destination character set will be encoded as numeric entities
 	 * @return string Converted string
 	 * @see convArray()
 	 */
@@ -725,7 +725,7 @@ class CharsetConverter {
 	 * @param string $array Input array, possibly multidimensional
 	 * @param string $fromCS From charset (the current charset of the string)
 	 * @param string $toCS To charset (the output charset wanted)
-	 * @param boolean $useEntityForNoChar If set, then characters that are not available in the destination character set will be encoded as numeric entities
+	 * @param bool $useEntityForNoChar If set, then characters that are not available in the destination character set will be encoded as numeric entities
 	 * @return void
 	 * @see conv()
 	 */
@@ -802,7 +802,7 @@ class CharsetConverter {
 	 *
 	 * @param string $str String in UTF-8 to convert to local charset
 	 * @param string $charset Charset, lowercase. Must be found in csconvtbl/ folder.
-	 * @param boolean $useEntityForNoChar If set, then characters that are not available in the destination character set will be encoded as numeric entities
+	 * @param bool $useEntityForNoChar If set, then characters that are not available in the destination character set will be encoded as numeric entities
 	 * @return string Output string, converted to local charset
 	 */
 	public function utf8_decode($str, $charset, $useEntityForNoChar = 0) {
@@ -913,7 +913,7 @@ class CharsetConverter {
 	 * Converts numeric entities (UNICODE, eg. decimal (&#1234;) or hexadecimal (&#x1b;)) to UTF-8 multibyte chars
 	 *
 	 * @param string $str Input string, UTF-8
-	 * @param boolean $alsoStdHtmlEnt If set, then all string-HTML entities (like &amp; or &pound; will be converted as well)
+	 * @param bool $alsoStdHtmlEnt If set, then all string-HTML entities (like &amp; or &pound; will be converted as well)
 	 * @return string Output string
 	 */
 	public function entities_to_utf8($str, $alsoStdHtmlEnt = FALSE) {
@@ -953,8 +953,8 @@ class CharsetConverter {
 	 * Converts all chars in the input UTF-8 string into integer numbers returned in an array
 	 *
 	 * @param string $str Input string, UTF-8
-	 * @param boolean $convEntities If set, then all HTML entities (like &amp; or &pound; or &#123; or &#x3f5d;) will be detected as characters.
-	 * @param boolean $retChar If set, then instead of integer numbers the real UTF-8 char is returned.
+	 * @param bool $convEntities If set, then all HTML entities (like &amp; or &pound; or &#123; or &#x3f5d;) will be detected as characters.
+	 * @param bool $retChar If set, then instead of integer numbers the real UTF-8 char is returned.
 	 * @return array Output array with the char numbers
 	 */
 	public function utf8_to_numberarray($str, $convEntities = 0, $retChar = 0) {
@@ -1071,7 +1071,7 @@ class CharsetConverter {
 	 * Unit-tested by Kasper
 	 *
 	 * @param string $str UTF-8 multibyte character string
-	 * @param boolean $hex If set, then a hex. number is returned.
+	 * @param bool $hex If set, then a hex. number is returned.
 	 * @return integer UNICODE integer
 	 * @see UnumberToChar()
 	 */

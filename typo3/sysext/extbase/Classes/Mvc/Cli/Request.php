@@ -93,7 +93,7 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	/**
 	 * Sets the dispatched flag
 	 *
-	 * @param boolean $flag If this request has been dispatched
+	 * @param bool $flag If this request has been dispatched
 	 * @return void
 	 */
 	public function setDispatched($flag) {

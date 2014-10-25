@@ -546,7 +546,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 * Returns the resume for the search-result.
 	 *
 	 * @param array $row Search result row
-	 * @param boolean $noMarkup If noMarkup is FALSE, then the index_fulltext table is used to select the content of the page, split it with regex to display the search words in the text.
+	 * @param bool $noMarkup If noMarkup is FALSE, then the index_fulltext table is used to select the content of the page, split it with regex to display the search words in the text.
 	 * @param integer $length String length
 	 * @return string HTML string
 	 * @todo overwork this
@@ -695,7 +695,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 *
 	 * $defOp is the default operator. 1=OR, 0=AND
 	 *
-	 * @param boolean $defaultOperator If TRUE, the default operator will be OR, not AND
+	 * @param bool $defaultOperator If TRUE, the default operator will be OR, not AND
 	 * @return array Search words if any found
 	 */
 	protected function getSearchWords($defaultOperator) {

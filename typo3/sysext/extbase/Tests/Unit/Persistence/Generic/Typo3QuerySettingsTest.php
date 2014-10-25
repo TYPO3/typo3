@@ -66,7 +66,7 @@ class Typo3QuerySettingsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider booleanValueProvider
-	 * @param boolean $input
+	 * @param bool $input
 	 */
 	public function setRespectStoragePageSetsRespectStoragePageCorrectly($input) {
 		$this->typo3QuerySettings->setRespectStoragePage($input);
@@ -102,7 +102,7 @@ class Typo3QuerySettingsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 * @dataProvider booleanValueProvider
 	 *
-	 * @param boolean $input
+	 * @param bool $input
 	 */
 	public function setRespectSysLanguageSetsRespectSysLanguageCorrectly($input) {
 		$this->typo3QuerySettings->setRespectSysLanguage($input);
@@ -127,7 +127,7 @@ class Typo3QuerySettingsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 * @dataProvider booleanValueProvider
 	 *
-	 * @param boolean $input
+	 * @param bool $input
 	 */
 	public function setIgnoreEnableFieldsSetsIgnoreEnableFieldsCorrectly($input) {
 		$this->typo3QuerySettings->setIgnoreEnableFields($input);
@@ -163,7 +163,7 @@ class Typo3QuerySettingsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 * @dataProvider booleanValueProvider
 	 *
-	 * @param boolean $input
+	 * @param bool $input
 	 */
 	public function setIncludeDeletedSetsIncludeDeletedCorrectly($input) {
 		$this->typo3QuerySettings->setIncludeDeleted($input);
@@ -181,7 +181,7 @@ class Typo3QuerySettingsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 * @dataProvider booleanValueProvider
 	 *
-	 * @param boolean $input
+	 * @param bool $input
 	 */
 	public function setReturnRawQueryResultSetsReturnRawQueryResultCorrectly($input) {
 		$this->typo3QuerySettings->setReturnRawQueryResult($input);

@@ -91,8 +91,8 @@ class DebuggerUtility {
 	 *
 	 * @param mixed $value
 	 * @param integer $level
-	 * @param boolean $plainText
-	 * @param boolean $ansiColors
+	 * @param bool $plainText
+	 * @param bool $ansiColors
 	 * @return string
 	 */
 	static protected function renderDump($value, $level, $plainText, $ansiColors) {
@@ -123,8 +123,8 @@ class DebuggerUtility {
 	 *
 	 * @param array|\Traversable $array
 	 * @param integer $level
-	 * @param boolean $plainText
-	 * @param boolean $ansiColors
+	 * @param bool $plainText
+	 * @param bool $ansiColors
 	 * @return string
 	 */
 	static protected function renderArray($array, $level, $plainText = FALSE, $ansiColors = FALSE) {
@@ -162,8 +162,8 @@ class DebuggerUtility {
 	 *
 	 * @param object $object
 	 * @param integer $level
-	 * @param boolean $plainText
-	 * @param boolean $ansiColors
+	 * @param bool $plainText
+	 * @param bool $ansiColors
 	 * @return string
 	 */
 	static protected function renderObject($object, $level, $plainText = FALSE, $ansiColors = FALSE) {
@@ -214,8 +214,8 @@ class DebuggerUtility {
 	 *
 	 * @param object $object
 	 * @param integer $level
-	 * @param boolean $plainText
-	 * @param boolean $ansiColors
+	 * @param bool $plainText
+	 * @param bool $ansiColors
 	 * @return string The rendered header with tags
 	 */
 	static protected function renderHeader($object, $level, $plainText, $ansiColors) {
@@ -298,8 +298,8 @@ class DebuggerUtility {
 	/**
 	 * @param object $object
 	 * @param integer $level
-	 * @param boolean $plainText
-	 * @param boolean $ansiColors
+	 * @param bool $plainText
+	 * @param bool $ansiColors
 	 * @return string The rendered body content of the Object(Storage)
 	 */
 	static protected function renderContent($object, $level, $plainText, $ansiColors) {
@@ -340,8 +340,8 @@ class DebuggerUtility {
 	/**
 	 * @param mixed $collection
 	 * @param integer $level
-	 * @param boolean $plainText
-	 * @param boolean $ansiColors
+	 * @param bool $plainText
+	 * @param bool $ansiColors
 	 * @return string
 	 */
 	static protected function renderCollection($collection, $level, $plainText, $ansiColors) {
@@ -361,7 +361,7 @@ class DebuggerUtility {
 	 *
 	 * @param string $string The string to wrap
 	 * @param string $ansiColors The ansi color sequence (e.g. "1;37")
-	 * @param boolean $enable If FALSE, the raw string will be returned
+	 * @param bool $enable If FALSE, the raw string will be returned
 	 * @return string The wrapped or raw string
 	 */
 	static protected function ansiEscapeWrap($string, $ansiColors, $enable = TRUE) {
@@ -378,9 +378,9 @@ class DebuggerUtility {
 	 * @param mixed $variable The value to dump
 	 * @param string $title optional custom title for the debug output
 	 * @param integer $maxDepth Sets the max recursion depth of the dump. De- or increase the number according to your needs and memory limit.
-	 * @param boolean $plainText If TRUE, the dump is in plain text, if FALSE the debug output is in HTML format.
-	 * @param boolean $ansiColors If TRUE (default), ANSI color codes is added to the output, if FALSE the debug output not colored.
-	 * @param boolean $return if TRUE, the dump is returned for custom post-processing (e.g. embed in custom HTML). If FALSE (default), the dump is directly displayed.
+	 * @param bool $plainText If TRUE, the dump is in plain text, if FALSE the debug output is in HTML format.
+	 * @param bool $ansiColors If TRUE (default), ANSI color codes is added to the output, if FALSE the debug output not colored.
+	 * @param bool $return if TRUE, the dump is returned for custom post-processing (e.g. embed in custom HTML). If FALSE (default), the dump is directly displayed.
 	 * @param array $blacklistedClassNames An array of class names (RegEx) to be filtered. Default is an array of some common class names.
 	 * @param array $blacklistedPropertyNames An array of property names and/or array keys (RegEx) to be filtered. Default is an array of some common property names.
 	 * @return string if $return is TRUE, the dump is returned. By default, the dump is directly displayed, and nothing is returned.

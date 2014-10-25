@@ -58,7 +58,7 @@ class CategoryCollection extends \TYPO3\CMS\Core\Collection\AbstractRecordCollec
 	 * given database record to the new object.
 	 *
 	 * @param array $collectionRecord Database record
-	 * @param boolean $fillItems Populates the entries directly on load, might be bad for memory on large collections
+	 * @param bool $fillItems Populates the entries directly on load, might be bad for memory on large collections
 	 * @return \TYPO3\CMS\Core\Category\Collection\CategoryCollection
 	 */
 	static public function create(array $collectionRecord, $fillItems = FALSE) {
@@ -82,7 +82,7 @@ class CategoryCollection extends \TYPO3\CMS\Core\Collection\AbstractRecordCollec
 	 * Entries can be load on first access.
 	 *
 	 * @param integer $id Id of database record to be loaded
-	 * @param boolean $fillItems Populates the entries directly on load, might be bad for memory on large collections
+	 * @param bool $fillItems Populates the entries directly on load, might be bad for memory on large collections
 	 * @param string $tableName Name of table from which entries should be loaded
 	 * @param string $fieldName Name of the categories relation field
 	 * @return \TYPO3\CMS\Core\Collection\CollectionInterface

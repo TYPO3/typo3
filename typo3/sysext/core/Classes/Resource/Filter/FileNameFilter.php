@@ -63,7 +63,7 @@ class FileNameFilter {
 	 * set the flag to show (or hide) the hidden files
 	 *
 	 * @static
-	 * @param boolean $showHiddenFilesAndFolders
+	 * @param bool $showHiddenFilesAndFolders
 	 * @return boolean
 	 */
 	static public function setShowHiddenFilesAndFolders($showHiddenFilesAndFolders) {

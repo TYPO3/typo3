@@ -32,7 +32,7 @@ class ExtJsJsonTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\AbstractTre
 	 * Renders a node recursive or just a single instance
 	 *
 	 * @param \TYPO3\CMS\Backend\Tree\TreeRepresentationNode $node
-	 * @param boolean $recursive
+	 * @param bool $recursive
 	 * @return array
 	 */
 	public function renderNode(\TYPO3\CMS\Backend\Tree\TreeRepresentationNode $node, $recursive = TRUE) {
@@ -74,7 +74,7 @@ class ExtJsJsonTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\AbstractTre
 	 * Renders a node collection recursive or just a single instance
 	 *
 	 * @param \TYPO3\CMS\Backend\Tree\TreeNodeCollection $node
-	 * @param boolean $recursive
+	 * @param bool $recursive
 	 * @return string
 	 */
 	public function renderTree(\TYPO3\CMS\Backend\Tree\AbstractTree $tree, $recursive = TRUE) {
@@ -87,7 +87,7 @@ class ExtJsJsonTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\AbstractTre
 	 * Renders an tree recursive or just a single instance
 	 *
 	 * @param \TYPO3\CMS\Backend\Tree\AbstractTree $node
-	 * @param boolean $recursive
+	 * @param bool $recursive
 	 * @return array
 	 */
 	public function renderNodeCollection(\TYPO3\CMS\Backend\Tree\TreeNodeCollection $collection, $recursive = TRUE) {

@@ -541,7 +541,7 @@ class HelpModuleController {
 	 *
 	 * @param string $key CSH key / table name
 	 * @param string $field Sub key / field name
-	 * @param boolean $anchors If anchors is to be shown.
+	 * @param bool $anchors If anchors is to be shown.
 	 * @return string HTML content
 	 */
 	public function printItem($key, $field, $anchors = FALSE) {

@@ -44,7 +44,7 @@ class ExtJsArrayTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\ExtJsJsonT
 	 * Renders a node collection recursive or just a single instance
 	 *
 	 * @param \TYPO3\CMS\Backend\Tree\TreeNodeCollection $node
-	 * @param boolean $recursive
+	 * @param bool $recursive
 	 * @return array
 	 */
 	public function renderTree(\TYPO3\CMS\Backend\Tree\AbstractTree $tree, $recursive = TRUE) {

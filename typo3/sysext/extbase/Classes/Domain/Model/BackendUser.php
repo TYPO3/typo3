@@ -97,7 +97,7 @@ class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Sets whether this user should be an administrator.
 	 *
-	 * @param boolean $isAdministrator whether this user should be an administrator
+	 * @param bool $isAdministrator whether this user should be an administrator
 	 * @return void
 	 */
 	public function setIsAdministrator($isAdministrator) {
@@ -116,7 +116,7 @@ class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Sets whether this user is disabled.
 	 *
-	 * @param boolean $isDisabled whether this user is disabled
+	 * @param bool $isDisabled whether this user is disabled
 	 * @return void
 	 */
 	public function setIsDisabled($isDisabled) {
@@ -238,7 +238,7 @@ class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Sets whether the IP lock for this user is disabled.
 	 *
-	 * @param boolean $disableIpLock whether the IP lock for this user is disabled
+	 * @param bool $disableIpLock whether the IP lock for this user is disabled
 	 * @return void
 	 */
 	public function setIpLockIsDisabled($disableIpLock) {

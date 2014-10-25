@@ -77,7 +77,7 @@ class RenderViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
 	 * @param string $section Name of section to render. If used in a layout, renders a section of the main content file. If used inside a standard template, renders a section of the same file.
 	 * @param string $partial Reference to a partial.
 	 * @param array $arguments Arguments to pass to the partial.
-	 * @param boolean $optional Set to TRUE, to ignore unknown sections, so the definition of a section inside a template can be optional for a layout
+	 * @param bool $optional Set to TRUE, to ignore unknown sections, so the definition of a section inside a template can be optional for a layout
 	 * @return string
 	 * @api
 	 */

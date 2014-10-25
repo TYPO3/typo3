@@ -217,7 +217,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 *
 	 * @param string $newFolderName
 	 * @param string $parentFolderIdentifier
-	 * @param boolean $recursive
+	 * @param bool $recursive
 	 * @return string the Identifier of the new folder
 	 */
 	public function createFolder($newFolderName, $parentFolderIdentifier = '', $recursive = FALSE) {
@@ -333,9 +333,9 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @param integer $start The position to start the listing; if not set, start from the beginning
 	 * @param integer $numberOfItems The number of items to list; if set to zero, all items are returned
 	 * @param array $filterMethods The filter methods used to filter the directory items
-	 * @param boolean $includeFiles
-	 * @param boolean $includeDirs
-	 * @param boolean $recursive
+	 * @param bool $includeFiles
+	 * @param bool $includeDirs
+	 * @param bool $recursive
 	 *
 	 * @return array
 	 * @throws \InvalidArgumentException
@@ -432,7 +432,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @param string $folderIdentifier
 	 * @param integer $start
 	 * @param integer $numberOfItems
-	 * @param boolean $recursive
+	 * @param bool $recursive
 	 * @param array $filenameFilterCallbacks The method callbacks to use for filtering the items
 	 *
 	 * @return array of FileIdentifiers
@@ -447,7 +447,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @param string $folderIdentifier
 	 * @param integer $start
 	 * @param integer $numberOfItems
-	 * @param boolean $recursive
+	 * @param bool $recursive
 	 * @param array $folderNameFilterCallbacks The method callbacks to use for filtering the items
 	 *
 	 * @return array of Folder Identifier
@@ -460,9 +460,9 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * Returns a list with the names of all files and folders in a path, optionally recursive.
 	 *
 	 * @param string $path The absolute path
-	 * @param boolean $recursive If TRUE, recursively fetches files and folders
-	 * @param boolean $includeFiles
-	 * @param boolean $includeDirs
+	 * @param bool $recursive If TRUE, recursively fetches files and folders
+	 * @param bool $includeFiles
+	 * @param bool $includeDirs
 	 * @return array
 	 */
 	protected function retrieveFileAndFoldersInPath($path, $recursive = FALSE, $includeFiles = TRUE, $includeDirs = TRUE) {
@@ -637,7 +637,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @param string $localFilePath (within PATH_site)
 	 * @param string $targetFolderIdentifier
 	 * @param string $newFileName optional, if not given original name is used
-	 * @param boolean $removeOriginal if set the original file will be removed after successful operation
+	 * @param bool $removeOriginal if set the original file will be removed after successful operation
 	 * @return string the identifier of the new file
 	 * @throws \RuntimeException
 	 * @throws \InvalidArgumentException
@@ -1014,7 +1014,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * Removes a folder from this storage.
 	 *
 	 * @param string $folderIdentifier
-	 * @param boolean $deleteRecursively
+	 * @param bool $deleteRecursively
 	 * @return boolean
 	 * @throws \TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException
 	 */
@@ -1054,7 +1054,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * first when in writable mode, so if you change the file, you have to update it yourself afterwards.
 	 *
 	 * @param string $fileIdentifier
-	 * @param boolean $writable Set this to FALSE if you only need the file for read operations.
+	 * @param bool $writable Set this to FALSE if you only need the file for read operations.
 	 *                          This might speed up things, e.g. by using a cached local version.
 	 *                          Never modify the file if you have set this flag!
 	 * @return string The path to the file on the local disk

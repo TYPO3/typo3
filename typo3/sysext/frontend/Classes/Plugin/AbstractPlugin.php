@@ -326,7 +326,7 @@ class AbstractPlugin {
 	 *
 	 * @param string $str The content string to wrap in <a> tags
 	 * @param array $urlParameters Array with URL parameters as key/value pairs. They will be "imploded" and added to the list of parameters defined in the plugins TypoScript property "parent.addParams" plus $this->pi_moreParams.
-	 * @param boolean $cache If $cache is set (0/1), the page is asked to be cached by a &cHash value (unless the current plugin using this class is a USER_INT). Otherwise the no_cache-parameter will be a part of the link.
+	 * @param bool $cache If $cache is set (0/1), the page is asked to be cached by a &cHash value (unless the current plugin using this class is a USER_INT). Otherwise the no_cache-parameter will be a part of the link.
 	 * @param integer $altPageId Alternative page ID for the link. (By default this function links to the SAME page!)
 	 * @return string The input string wrapped in <a> tags
 	 * @see pi_linkTP_keepPIvars(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink()
@@ -347,8 +347,8 @@ class AbstractPlugin {
 	 *
 	 * @param string $str The content string to wrap in <a> tags
 	 * @param array $overrulePIvars Array of values to override in the current piVars. Contrary to pi_linkTP the keys in this array must correspond to the real piVars array and therefore NOT be prefixed with the $this->prefixId string. Further, if a value is a blank string it means the piVar key will not be a part of the link (unset)
-	 * @param boolean $cache If $cache is set, the page is asked to be cached by a &cHash value (unless the current plugin using this class is a USER_INT). Otherwise the no_cache-parameter will be a part of the link.
-	 * @param boolean $clearAnyway If set, then the current values of piVars will NOT be preserved anyways... Practical if you want an easy way to set piVars without having to worry about the prefix, "tx_xxxxx[]
+	 * @param bool $cache If $cache is set, the page is asked to be cached by a &cHash value (unless the current plugin using this class is a USER_INT). Otherwise the no_cache-parameter will be a part of the link.
+	 * @param bool $clearAnyway If set, then the current values of piVars will NOT be preserved anyways... Practical if you want an easy way to set piVars without having to worry about the prefix, "tx_xxxxx[]
 	 * @param integer $altPageId Alternative page ID for the link. (By default this function links to the SAME page!)
 	 * @return string The input string wrapped in <a> tags
 	 * @see pi_linkTP()
@@ -372,8 +372,8 @@ class AbstractPlugin {
 	 * Same as pi_linkTP_keepPIvars but returns only the URL from the link.
 	 *
 	 * @param array $overrulePIvars See pi_linkTP_keepPIvars
-	 * @param boolean $cache See pi_linkTP_keepPIvars
-	 * @param boolean $clearAnyway See pi_linkTP_keepPIvars
+	 * @param bool $cache See pi_linkTP_keepPIvars
+	 * @param bool $clearAnyway See pi_linkTP_keepPIvars
 	 * @param integer $altPageId See pi_linkTP_keepPIvars
 	 * @return string The URL ($this->cObj->lastTypoLinkUrl)
 	 * @see pi_linkTP_keepPIvars()
@@ -389,9 +389,9 @@ class AbstractPlugin {
 	 *
 	 * @param string $str The content string to wrap in <a> tags
 	 * @param integer $uid UID of the record for which to display details (basically this will become the value of [showUid]
-	 * @param boolean $cache See pi_linkTP_keepPIvars
+	 * @param bool $cache See pi_linkTP_keepPIvars
 	 * @param array $mergeArr Array of values to override in the current piVars. Same as $overrulePIvars in pi_linkTP_keepPIvars
-	 * @param boolean $urlOnly If TRUE, only the URL is returned, not a full link
+	 * @param bool $urlOnly If TRUE, only the URL is returned, not a full link
 	 * @param integer $altPageId Alternative page ID for the link. (By default this function links to the SAME page!)
 	 * @return string The input string wrapped in <a> tags
 	 * @see pi_linkTP(), pi_linkTP_keepPIvars()
@@ -457,8 +457,8 @@ class AbstractPlugin {
 	 * @param string $tableParams Attributes for the table tag which is wrapped around the table cells containing the browse links
 	 * @param array $wrapArr Array with elements to overwrite the default $wrapper-array.
 	 * @param string $pointerName varname for the pointer.
-	 * @param boolean $hscText Enable htmlspecialchars() for the pi_getLL function (set this to FALSE if you want f.e use images instead of text for links like 'previous' and 'next').
-	 * @param boolean $forceOutput Forces the output of the page browser if you set this option to "TRUE" (otherwise it's only drawn if enough entries are available)
+	 * @param bool $hscText Enable htmlspecialchars() for the pi_getLL function (set this to FALSE if you want f.e use images instead of text for links like 'previous' and 'next').
+	 * @param bool $forceOutput Forces the output of the page browser if you set this option to "TRUE" (otherwise it's only drawn if enough entries are available)
 	 * @return string Output HTML-Table, wrapped in <div>-tags with a class attribute (if $wrapArr is not passed,
 	 */
 	public function pi_list_browseresults($showResultCount = 1, $tableParams = '', $wrapArr = array(), $pointerName = 'pointer', $hscText = TRUE, $forceOutput = FALSE) {
@@ -870,7 +870,7 @@ class AbstractPlugin {
 	 *
 	 * @param string $key The key from the LOCAL_LANG array for which to return the value.
 	 * @param string $alternativeLabel Alternative string to return IF no value is found set for the key, neither for the local language nor the default.
-	 * @param boolean $hsc If TRUE, the output label is passed through htmlspecialchars()
+	 * @param bool $hsc If TRUE, the output label is passed through htmlspecialchars()
 	 * @return string The value from LOCAL_LANG.
 	 */
 	public function pi_getLL($key, $alternativeLabel = '', $hsc = FALSE) {
@@ -979,7 +979,7 @@ class AbstractPlugin {
 	 * Notice that the query will use $this->conf['pidList'] and $this->conf['recursive'] to generate a PID list within which to search for records.
 	 *
 	 * @param string $table The table name to make the query for.
-	 * @param boolean $count If set, you will get a "count(*)" query back instead of field selecting
+	 * @param bool $count If set, you will get a "count(*)" query back instead of field selecting
 	 * @param string $addWhere Additional WHERE clauses (should be starting with " AND ....")
 	 * @param mixed $mm_cat If an array, then it must contain the keys "table", "mmtable" and (optionally) "catUidList" defining a table to make a MM-relation to in the query (based on fields uid_local and uid_foreign). If not array, the query will be a plain query looking up data in only one table.
 	 * @param string $groupBy If set, this is added as a " GROUP BY ...." part of the query.
@@ -1055,7 +1055,7 @@ class AbstractPlugin {
 	 *
 	 * @param string $table The table name
 	 * @param integer $uid The uid of the record from the table
-	 * @param boolean $checkPage If $checkPage is set, it's required that the page on which the record resides is accessible
+	 * @param bool $checkPage If $checkPage is set, it's required that the page on which the record resides is accessible
 	 * @return array If record is found, an array. Otherwise FALSE.
 	 */
 	public function pi_getRecord($table, $uid, $checkPage = 0) {

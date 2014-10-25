@@ -706,7 +706,7 @@ class SetupModuleController {
 	 *
 	 * @param string $str Locallang key
 	 * @param string $key Alternative override-config key
-	 * @param boolean $addLabelTag Defines whether the string should be wrapped in a <label> tag.
+	 * @param bool $addLabelTag Defines whether the string should be wrapped in a <label> tag.
 	 * @param string $altLabelTagId Alternative id for use in "for" attribute of <label> tag. By default the $str key is used prepended with "field_".
 	 * @return string HTML output.
 	 */

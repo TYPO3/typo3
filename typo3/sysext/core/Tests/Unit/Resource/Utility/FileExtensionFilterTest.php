@@ -121,7 +121,7 @@ class FileExtensionFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param string $fileExtension
 	 * @param array|string $allowedExtensions
 	 * @param array|string $disallowedExtensions
-	 * @param boolean $isAllowed
+	 * @param bool $isAllowed
 	 * @test
 	 * @dataProvider extensionFilterIgnoresCaseInAllowedExtensionCheckDataProvider
 	 */

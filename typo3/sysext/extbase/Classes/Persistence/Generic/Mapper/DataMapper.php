@@ -283,7 +283,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param DomainObjectInterface $parentObject The object instance this proxy is part of
 	 * @param string $propertyName The name of the proxied property in it's parent
 	 * @param mixed $fieldValue The raw field value.
-	 * @param boolean $enableLazyLoading A flag indication if the related objects should be lazy loaded
+	 * @param bool $enableLazyLoading A flag indication if the related objects should be lazy loaded
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage|Persistence\QueryResultInterface The result
 	 */
 	public function fetchRelated(DomainObjectInterface $parentObject, $propertyName, $fieldValue = '', $enableLazyLoading = TRUE) {

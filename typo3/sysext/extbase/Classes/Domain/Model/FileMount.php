@@ -104,7 +104,7 @@ class FileMount extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Setter for is absolute path of the file mount.
 	 *
-	 * @param boolean $value
+	 * @param bool $value
 	 * @return void
 	 */
 	public function setIsAbsolutePath($value) {

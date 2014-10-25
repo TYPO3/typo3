@@ -211,7 +211,7 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 	/**
 	 * Enable data compression
 	 *
-	 * @param boolean $compression TRUE to enable compression
+	 * @param bool $compression TRUE to enable compression
 	 * @return void
 	 * @throws \InvalidArgumentException if compression parameter is not of type boolean
 	 * @api

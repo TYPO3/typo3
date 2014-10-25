@@ -280,7 +280,7 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 	 *
 	 * @param integer $rootID Root page id from where to start traversal. Use "0" (zero) to have full page tree (necessary when spotting orphans, otherwise you can run it on parts only)
 	 * @param integer $depth Depth to traverse. zero is do not traverse at all. 1 = 1 sublevel, 1000= 1000 sublevels (all...)
-	 * @param boolean $echoLevel If >0, will echo information about the traversal process.
+	 * @param bool $echoLevel If >0, will echo information about the traversal process.
 	 * @param string $callBack Call back function (from this class or subclass)
 	 * @return void
 	 */

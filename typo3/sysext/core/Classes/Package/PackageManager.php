@@ -441,7 +441,7 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	/**
 	 * Requires and registers all packages which were defined in packageStatesConfiguration
 	 *
-	 * @param boolean $registerOnlyNewPackages
+	 * @param bool $registerOnlyNewPackages
 	 * @return void
 	 * @throws \TYPO3\Flow\Package\Exception\CorruptPackageException
 	 */
@@ -483,7 +483,7 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	 * Register a native Flow package
 	 *
 	 * @param \TYPO3\Flow\Package\PackageInterface $package The Package to be registered
-	 * @param boolean $sortAndSave allows for not saving packagestates when used in loops etc.
+	 * @param bool $sortAndSave allows for not saving packagestates when used in loops etc.
 	 * @return \TYPO3\Flow\Package\PackageInterface
 	 * @throws \TYPO3\Flow\Package\Exception\CorruptPackageException
 	 */

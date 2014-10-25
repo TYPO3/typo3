@@ -684,7 +684,7 @@ class IndexSearchRepository {
 	 * Returns "DESC" or "" depending on the settings of the incoming
 	 * highest/lowest result order (piVars['desc'])
 	 *
-	 * @param boolean $inverse If TRUE, inverse the order which is defined by piVars['desc']
+	 * @param bool $inverse If TRUE, inverse the order which is defined by piVars['desc']
 	 * @return string " DESC" or
 	 * @formallyknownas tx_indexedsearch_pi->isDescending
 	 */

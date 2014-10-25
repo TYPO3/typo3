@@ -88,7 +88,7 @@ class ArrayConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider canConvertFromDataProvider
 	 *
 	 * @param mixed $source
-	 * @param boolean $expectedResult
+	 * @param bool $expectedResult
 	 */
 	public function canConvertFromReturnsCorrectBooleans($source, $expectedResult) {
 		$this->assertSame($expectedResult, $this->converter->canConvertFrom($source, 'array'));

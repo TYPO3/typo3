@@ -212,7 +212,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * server.
 	 *
 	 * @access public
-	 * @param boolean $forcedUpdateFromRemote if boolean TRUE, mirror configuration will always retrieved from remote server
+	 * @param bool $forcedUpdateFromRemote if boolean TRUE, mirror configuration will always retrieved from remote server
 	 * @return \TYPO3\CMS\Extensionmanager\Domain\Model\Mirrors instance of repository mirrors class
 	 */
 	public function getMirrors($forcedUpdateFromRemote = TRUE) {

@@ -234,7 +234,7 @@ class PermissionAjaxController {
 	 * @param integer $page The TYPO3 page id
 	 * @param integer $ownerUid The new page user uid
 	 * @param string $username The TYPO3 BE username (used to display in the element)
-	 * @param boolean $validUser Must be set to FALSE, if the user has no name or is deleted
+	 * @param bool $validUser Must be set to FALSE, if the user has no name or is deleted
 	 * @return string The new group wrapped in HTML
 	 */
 	static public function renderOwnername($page, $ownerUid, $username, $validUser = TRUE) {
@@ -249,7 +249,7 @@ class PermissionAjaxController {
 	 * @param integer $page The TYPO3 page id
 	 * @param integer $groupUid The new page group uid
 	 * @param string $groupname The TYPO3 BE groupname (used to display in the element)
-	 * @param boolean $validGroup Must be set to FALSE, if the group has no name or is deleted
+	 * @param bool $validGroup Must be set to FALSE, if the group has no name or is deleted
 	 * @return string The new group wrapped in HTML
 	 */
 	static public function renderGroupname($page, $groupUid, $groupname, $validGroup = TRUE) {

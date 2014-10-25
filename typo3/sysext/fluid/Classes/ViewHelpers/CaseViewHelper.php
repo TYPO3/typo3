@@ -21,7 +21,7 @@ class CaseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 
 	/**
 	 * @param mixed $value The switch value. If it matches, the child will be rendered
-	 * @param boolean $default If this is set, this child will be rendered, if none else matches
+	 * @param bool $default If this is set, this child will be rendered, if none else matches
 	 *
 	 * @return string the contents of this view helper if $value equals the expression of the surrounding switch view helper, or $default is TRUE. otherwise an empty string
 	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception

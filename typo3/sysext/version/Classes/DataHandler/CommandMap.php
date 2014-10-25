@@ -208,7 +208,7 @@ class CommandMap {
 	 * Sets the workspace behaviour to automatically consider references
 	 * (see options.workspaces.considerReferences)
 	 *
-	 * @param boolean $workspacesConsiderReferences
+	 * @param bool $workspacesConsiderReferences
 	 * @return \TYPO3\CMS\Version\DataHandler\CommandMap
 	 */
 	public function setWorkspacesConsiderReferences($workspacesConsiderReferences) {

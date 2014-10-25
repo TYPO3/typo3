@@ -85,7 +85,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 * @param integer $a The current entry number
 	 * @param integer $c The total number of entries. If equal to $a, a 'bottom' element is returned.
 	 * @param integer $nextCount The number of sub-elements to the current element.
-	 * @param boolean $exp The element was expanded to render subelements if this flag is set.
+	 * @param bool $exp The element was expanded to render subelements if this flag is set.
 	 * @return string Image tag with the plus/minus icon.
 	 * @access private
 	 * @see AbstarctTreeView::PMicon()

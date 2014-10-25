@@ -1039,7 +1039,7 @@ class FormEngine {
 	 * @param string $field The field name
 	 * @param array $row The record to edit from the database table.
 	 * @param string $altName Alternative field name label to show.
-	 * @param boolean $palette Set this if the field is on a palette (in top frame), otherwise not. (if set, field will render as a hidden field).
+	 * @param bool $palette Set this if the field is on a palette (in top frame), otherwise not. (if set, field will render as a hidden field).
 	 * @param string $extra The "extra" options from "Part 4" of the field configurations found in the "types" "showitem" list. Typically parsed by $this->getSpecConfFromString() in order to get the options as an associative array.
 	 * @param integer $pal The palette pointer.
 	 * @return mixed String (normal) or array (palettes)
@@ -1547,7 +1547,7 @@ class FormEngine {
 	 * @param array $languages
 	 * @param string $elName
 	 * @param array $selectedLanguage
-	 * @param boolean $multi
+	 * @param bool $multi
 	 * @return string HTML for menu
 	 */
 	public function getSingleField_typeFlex_langMenu($languages, $elName, $selectedLanguage, $multi = TRUE) {
@@ -2535,7 +2535,7 @@ class FormEngine {
 	 * @param array $PA Additional configuration array. (passed by reference!)
 	 * @param string $itemName The field name
 	 * @param array $specConf Special configuration if available.
-	 * @param boolean $RTE Whether the RTE could have been loaded.
+	 * @param bool $RTE Whether the RTE could have been loaded.
 	 * @return string The new item value.
 	 */
 	public function renderWizards($itemKinds, $wizConf, $table, $row, $field, &$PA, $itemName, $specConf, $RTE = FALSE) {
@@ -2970,7 +2970,7 @@ class FormEngine {
 	 * @param string $table The table name for which to open the palette.
 	 * @param string $row Palette ID
 	 * @param string $palette The record array
-	 * @param boolean $collapsed TRUE if collapsed
+	 * @param bool $collapsed TRUE if collapsed
 	 * @return boolean Is collapsed
 	 */
 	public function wrapPaletteField($code, $table, $row, $palette, $collapsed) {
@@ -3023,7 +3023,7 @@ class FormEngine {
 	 * Returns parameters to set the width for a <input>/<textarea>-element
 	 *
 	 * @param integer $size The abstract size value (1-48)
-	 * @param boolean $textarea If this is for a text area.
+	 * @param bool $textarea If this is for a text area.
 	 * @return string Either a "style" attribute string or "cols"/"size" attribute string.
 	 */
 	public function formWidth($size = 48, $textarea = FALSE) {
@@ -3040,7 +3040,7 @@ class FormEngine {
 	 * Returns parameters to set the width for a <input>/<textarea>-element
 	 *
 	 * @param integer $size The abstract size value (1-48)
-	 * @param boolean $textarea If set, calculates sizes for a text area.
+	 * @param bool $textarea If set, calculates sizes for a text area.
 	 * @return array An array containing style, class, and width attributes.
 	 */
 	public function formWidthAsArray($size = 48, $textarea = FALSE) {
@@ -3089,7 +3089,7 @@ class FormEngine {
 	 * Get style CSS values for the current field type.
 	 *
 	 * @param string $type Field type (eg. "check", "radio", "select")
-	 * @param boolean $class If set, will return value only if prefixed with CLASS, otherwise must not be prefixed "CLASS
+	 * @param bool $class If set, will return value only if prefixed with CLASS, otherwise must not be prefixed "CLASS
 	 * @return string CSS attributes
 	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
@@ -3480,7 +3480,7 @@ class FormEngine {
 	 * @param array $fieldValue The 'columns' array for the field (from TCA)
 	 * @param array $TSconfig TSconfig for the table/row
 	 * @param string $field The fieldname
-	 * @param boolean $pFFlag If set, then we are fetching the 'neg_' foreign tables.
+	 * @param bool $pFFlag If set, then we are fetching the 'neg_' foreign tables.
 	 * @return array The $items array modified.
 	 * @see addSelectOptionsToItemArray(), BackendUtility::exec_foreign_table_where_query()
 	 */
@@ -3945,7 +3945,7 @@ class FormEngine {
 	 * ... and then include the result of this function after the form
 	 *
 	 * @param string $formname The identification of the form on the page.
-	 * @param boolean $update Just extend/update existing settings, e.g. for AJAX call
+	 * @param bool $update Just extend/update existing settings, e.g. for AJAX call
 	 * @return string A section with JavaScript - if $update is FALSE, embedded in <script></script>
 	 */
 	public function JSbottom($formname = 'forms[0]', $update = FALSE) {
@@ -4401,8 +4401,8 @@ class FormEngine {
 	/**
 	 * Returns an array of available languages (to use for FlexForms)
 	 *
-	 * @param boolean $onlyIsoCoded If set, only languages which are paired with a static_info_table / static_language record will be returned.
-	 * @param boolean $setDefault If set, an array entry for a default language is set.
+	 * @param bool $onlyIsoCoded If set, only languages which are paired with a static_info_table / static_language record will be returned.
+	 * @param bool $setDefault If set, an array entry for a default language is set.
 	 * @return array
 	 */
 	public function getAvailableLanguages($onlyIsoCoded = TRUE, $setDefault = TRUE) {
@@ -4592,8 +4592,8 @@ class FormEngine {
 	 * Get the dynNestedStack as associative array.
 	 * The result is e.g. ['tab','DTM-ABCD-1'], ['inline','data[13][table][uid][field]'], ['tab','DTM-DEFG-2'], ...
 	 *
-	 * @param boolean $json Return a JSON string instead of an array - default: FALSE
-	 * @param boolean $skipFirst Skip the first element in the dynNestedStack - default: FALSE
+	 * @param bool $json Return a JSON string instead of an array - default: FALSE
+	 * @param bool $skipFirst Skip the first element in the dynNestedStack - default: FALSE
 	 * @return mixed Returns an associative array by default. If $json is TRUE, it will be returned as JSON string.
 	 */
 	public function getDynNestedStack($json = FALSE, $skipFirst = FALSE) {
@@ -4634,7 +4634,7 @@ class FormEngine {
 	 * Sets the current situation of nested tabs and inline levels for a given element.
 	 *
 	 * @param string $itemName The element the nesting should be stored for
-	 * @param boolean $setLevel Set the reverse level lookup - default: TRUE
+	 * @param bool $setLevel Set the reverse level lookup - default: TRUE
 	 * @return void
 	 */
 	protected function registerNestedElement($itemName, $setLevel = TRUE) {

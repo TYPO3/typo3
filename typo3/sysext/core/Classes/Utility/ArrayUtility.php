@@ -510,9 +510,9 @@ class ArrayUtility {
 	 *
 	 * @param array $original Original array. It will be *modified* by this method and contains the result afterwards!
 	 * @param array $overrule Overrule array, overruling the original array
-	 * @param boolean $addKeys If set to FALSE, keys that are NOT found in $original will not be set. Thus only existing value can/will be overruled from overrule array.
-	 * @param boolean $includeEmptyValues If set, values from $overrule will overrule if they are empty or zero.
-	 * @param boolean $enableUnsetFeature If set, special values "__UNSET" can be used in the overrule array in order to unset array keys in the original array.
+	 * @param bool $addKeys If set to FALSE, keys that are NOT found in $original will not be set. Thus only existing value can/will be overruled from overrule array.
+	 * @param bool $includeEmptyValues If set, values from $overrule will overrule if they are empty or zero.
+	 * @param bool $enableUnsetFeature If set, special values "__UNSET" can be used in the overrule array in order to unset array keys in the original array.
 	 * @return void
 	 */
 	static public function mergeRecursiveWithOverrule(array &$original, array $overrule, $addKeys = TRUE, $includeEmptyValues = TRUE, $enableUnsetFeature = TRUE) {

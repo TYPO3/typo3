@@ -130,7 +130,7 @@ class Execution {
 	/**
 	 * This method is used to set the multiple execution flag
 	 *
-	 * @param boolean $multiple TRUE if concurrent executions are allowed, FALSE otherwise
+	 * @param bool $multiple TRUE if concurrent executions are allowed, FALSE otherwise
 	 * @return void
 	 */
 	public function setMultiple($multiple) {
@@ -174,7 +174,7 @@ class Execution {
 	 * Setting this flag to TRUE preserves this task for a single run.
 	 * Upon next execution, this flag is set to FALSE.
 	 *
-	 * @param boolean $isNewSingleExecution Is newly created single execution?
+	 * @param bool $isNewSingleExecution Is newly created single execution?
 	 * @return 	void
 	 * @see \TYPO3\CMS\Scheduler\Execution::getNextExecution()
 	 */

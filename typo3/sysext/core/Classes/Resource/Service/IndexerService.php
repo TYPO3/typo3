@@ -268,7 +268,7 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param File $fileObject
 	 * @param array $fileInfo
-	 * @param boolean $gatherDefaultInformation
+	 * @param bool $gatherDefaultInformation
 	 * @signal
 	 */
 	protected function emitPreGatherFileInformationSignal(File $fileObject, $fileInfo, $gatherDefaultInformation) {
@@ -280,7 +280,7 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param File $fileObject
 	 * @param array $fileInfo
-	 * @param boolean $hasGatheredDefaultInformation
+	 * @param bool $hasGatheredDefaultInformation
 	 * @signal
 	 */
 	protected function emitPostGatherFileInformationSignal(File $fileObject, $fileInfo, $hasGatheredDefaultInformation) {

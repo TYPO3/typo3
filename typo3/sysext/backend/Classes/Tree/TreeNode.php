@@ -171,7 +171,7 @@ class TreeNode implements \TYPO3\CMS\Backend\Tree\ComparableNodeInterface, \Seri
 	/**
 	 * Returns the node in an array representation that can be used for serialization
 	 *
-	 * @param boolean $addChildNodes
+	 * @param bool $addChildNodes
 	 * @return array
 	 */
 	public function toArray($addChildNodes = TRUE) {

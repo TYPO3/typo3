@@ -447,10 +447,10 @@ function jumpToUrl(URL) {
 	 * @param string $str String to be wrapped in link, typ. image tag.
 	 * @param string $table Table name/File path. If the icon is for a database record, enter the tablename from $GLOBALS['TCA']. If a file then enter the absolute filepath
 	 * @param integer $uid If icon is for database record this is the UID for the record from $table
-	 * @param boolean $listFr Tells the top frame script that the link is coming from a "list" frame which means a frame from within the backend content frame.
+	 * @param bool $listFr Tells the top frame script that the link is coming from a "list" frame which means a frame from within the backend content frame.
 	 * @param string $addParams Additional GET parameters for the link to alt_clickmenu.php
 	 * @param string $enDisItems Enable / Disable click menu items. Example: "+new,view" will display ONLY these two items (and any spacers in between), "new,view" will display all BUT these two items.
-	 * @param boolean $returnOnClick If set, will return only the onclick JavaScript, not the whole link.
+	 * @param bool $returnOnClick If set, will return only the onclick JavaScript, not the whole link.
 	 * @return string The link-wrapped input string.
 	 */
 	public function wrapClickMenuOnIcon($str, $table, $uid = 0, $listFr = TRUE, $addParams = '', $enDisItems = '', $returnOnClick = FALSE) {
@@ -517,7 +517,7 @@ function jumpToUrl(URL) {
 	 * @param string $table Table name
 	 * @param array $row Record row
 	 * @param string $path Alt text
-	 * @param boolean $noViewPageIcon Set $noViewPageIcon TRUE if you don't want a magnifier-icon for viewing the page in the frontend
+	 * @param bool $noViewPageIcon Set $noViewPageIcon TRUE if you don't want a magnifier-icon for viewing the page in the frontend
 	 * @param array $tWrap is an array with indexes 0 and 1 each representing HTML-tags (start/end) which will wrap the title
 	 * @param bool $enableClickMenu If TRUE, render click menu code around icon image
 	 * @return string HTML content
@@ -633,7 +633,7 @@ function jumpToUrl(URL) {
 	 * For CSS compliant browsers (recommended) a ' style="width: ...px;"' is returned.
 	 *
 	 * @param integer $size A relative number which multiplied with approx. 10 will lead to the width in pixels
-	 * @param boolean $textarea A flag you can set for textareas - DEPRECATED as there is no difference any more between the two
+	 * @param bool $textarea A flag you can set for textareas - DEPRECATED as there is no difference any more between the two
 	 * @param string $styleOverride A string which will be returned as attribute-value for style="" instead of the calculated width (if CSS is enabled)
 	 * @return string Tag attributes for an <input> tag (regarding width)
 	 */
@@ -721,7 +721,7 @@ function jumpToUrl(URL) {
 	/**
 	 * Defines whether to use the X-UA-Compatible meta tag.
 	 *
-	 * @param boolean $useCompatibilityTag Whether to use the tag
+	 * @param bool $useCompatibilityTag Whether to use the tag
 	 * @return void
 	 */
 	public function useCompatibilityTag($useCompatibilityTag = TRUE) {
@@ -739,7 +739,7 @@ function jumpToUrl(URL) {
 	 * This includes the proper header with charset, title, meta tag and beginning body-tag.
 	 *
 	 * @param string $title HTML Page title for the header
-	 * @param boolean $includeCsh flag for including CSH
+	 * @param bool $includeCsh flag for including CSH
 	 * @return string Returns the whole header section of a HTML-document based on settings in internal variables (like styles, javascript code, charset, generator and docType)
 	 * @see endPage()
 	 */
@@ -887,7 +887,7 @@ function jumpToUrl(URL) {
 	 *
 	 * @param string $title page title
 	 * @param string $content page content
-	 * @param boolean $includeCsh flag for including csh code
+	 * @param bool $includeCsh flag for including csh code
 	 * @return string complete page
 	 */
 	public function render($title, $content, $includeCsh = TRUE) {
@@ -918,10 +918,10 @@ function jumpToUrl(URL) {
 	 *
 	 * @param string $label The header
 	 * @param string $text The HTML-content
-	 * @param boolean $nostrtoupper	A flag that will prevent the header from being converted to uppercase
-	 * @param boolean $sH Defines the type of header (if set, "<h3>" rather than the default "h4")
+	 * @param bool $nostrtoupper	A flag that will prevent the header from being converted to uppercase
+	 * @param bool $sH Defines the type of header (if set, "<h3>" rather than the default "h4")
 	 * @param integer $type The number of an icon to show with the header (see the icon-function). -1,1,2,3
-	 * @param boolean $allowHTMLinHeader If set, HTML tags are allowed in $label (otherwise this value is by default htmlspecialchars()'ed)
+	 * @param bool $allowHTMLinHeader If set, HTML tags are allowed in $label (otherwise this value is by default htmlspecialchars()'ed)
 	 * @return string HTML content
 	 * @see icons(), sectionHeader()
 	 */
@@ -980,7 +980,7 @@ function jumpToUrl(URL) {
 	 * Begins a section if not already open.
 	 *
 	 * @param string $label The label between the <h3> or <h4> tags. (Allows HTML)
-	 * @param boolean $sH If set, <h3> is used, otherwise <h4>
+	 * @param bool $sH If set, <h3> is used, otherwise <h4>
 	 * @param string $addAttrib Additional attributes to h-tag, eg. ' class=""'
 	 * @return string HTML content
 	 */
@@ -1297,7 +1297,7 @@ function jumpToUrl(URL) {
 	 * This is nice for identing JS code with PHP code on the same level.
 	 *
 	 * @param string $string Input string
-	 * @param boolean $linebreak Wrap script element in linebreaks? Default is TRUE.
+	 * @param bool $linebreak Wrap script element in linebreaks? Default is TRUE.
 	 * @return string Output string
 	 */
 	public function wrapScriptTags($string, $linebreak = TRUE) {
@@ -1552,9 +1552,9 @@ function jumpToUrl(URL) {
 	 * @param array $menuItems Numeric array where each entry is an array in itself with associative keys: "label" contains the label for the TAB, "content" contains the HTML content that goes into the div-layer of the tabs content. "description" contains description text to be shown in the layer. "linkTitle" is short text for the title attribute of the tab-menu link (mouse-over text of tab). "stateIcon" indicates a standard status icon (see ->icon(), values: -1, 1, 2, 3). "icon" is an image tag placed before the text.
 	 * @param string $identString Identification string. This should be unique for every instance of a dynamic menu!
 	 * @param integer $toggle If "1", then enabling one tab does not hide the others - they simply toggles each sheet on/off. This makes most sense together with the $foldout option. If "-1" then it acts normally where only one tab can be active at a time BUT you can click a tab and it will close so you have no active tabs.
-	 * @param boolean $foldout If set, the tabs are rendered as headers instead over each sheet. Effectively this means there is no tab menu, but rather a foldout/foldin menu. Make sure to set $toggle as well for this option.
-	 * @param boolean $noWrap Deprecated - delivered by CSS
-	 * @param boolean $fullWidth If set, the tabs will span the full width of their position
+	 * @param bool $foldout If set, the tabs are rendered as headers instead over each sheet. Effectively this means there is no tab menu, but rather a foldout/foldin menu. Make sure to set $toggle as well for this option.
+	 * @param bool $noWrap Deprecated - delivered by CSS
+	 * @param bool $fullWidth If set, the tabs will span the full width of their position
 	 * @param integer $defaultTabIndex Default tab to open (for toggle <=0). Value corresponds to integer-array index + 1 (index zero is "1", index "1" is 2 etc.). A value of zero (or something non-existing) will result in no default tab open.
 	 * @param integer $dividers2tabs If set to '1' empty tabs will be remove, If set to '2' empty tabs will be disabled
 	 * @return string JavaScript section for the HTML header.
@@ -1671,7 +1671,7 @@ function jumpToUrl(URL) {
 	 * Requires the core version management extension, "version" to be loaded.
 	 *
 	 * @param integer $id Page id to create selector for.
-	 * @param boolean $noAction If set, there will be no button for swapping page.
+	 * @param bool $noAction If set, there will be no button for swapping page.
 	 * @return string
 	 */
 	public function getVersionSelector($id, $noAction = FALSE) {

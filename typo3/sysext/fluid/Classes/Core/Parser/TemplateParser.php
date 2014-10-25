@@ -459,7 +459,7 @@ class TemplateParser {
 	 * @param string $namespaceIdentifier Namespace identifier - being looked up in $this->namespaces
 	 * @param string $methodIdentifier Method identifier
 	 * @param string $arguments Arguments string, not yet parsed
-	 * @param boolean $selfclosing true, if the tag is a self-closing tag.
+	 * @param bool $selfclosing true, if the tag is a self-closing tag.
 	 * @return void
 	 */
 	protected function openingViewHelperTagHandler(\TYPO3\CMS\Fluid\Core\Parser\ParsingState $state, $namespaceIdentifier, $methodIdentifier, $arguments, $selfclosing) {

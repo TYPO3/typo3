@@ -162,7 +162,7 @@ abstract class AbstractTask {
 	/**
 	 * This method is used to set the disable status of the task
 	 *
-	 * @param boolean $flag TRUE if task should be disabled, FALSE otherwise
+	 * @param bool $flag TRUE if task should be disabled, FALSE otherwise
 	 * @return void
 	 */
 	public function setDisabled($flag) {
@@ -274,7 +274,7 @@ abstract class AbstractTask {
 	 * @param integer $start The first date/time where this execution should occur (timestamp)
 	 * @param string $interval Execution interval in seconds
 	 * @param integer $end The last date/time where this execution should occur (timestamp)
-	 * @param boolean $multiple Set to FALSE if multiple executions of this task are not permitted in parallel
+	 * @param bool $multiple Set to FALSE if multiple executions of this task are not permitted in parallel
 	 * @param string $cron_cmd Used like in crontab (minute hour day month weekday)
 	 * @return void
 	 */

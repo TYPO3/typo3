@@ -140,7 +140,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	/**
 	 * Set the value of the private property emailOnBrokenLinkOnly
 	 *
-	 * @param boolean $emailOnBrokenLinkOnly Only send an email, if new broken links were found
+	 * @param bool $emailOnBrokenLinkOnly Only send an email, if new broken links were found
 	 * @return void
 	 */
 	public function setEmailOnBrokenLinkOnly($emailOnBrokenLinkOnly) {

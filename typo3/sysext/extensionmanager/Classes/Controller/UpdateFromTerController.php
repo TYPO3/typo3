@@ -47,7 +47,7 @@ class UpdateFromTerController extends AbstractController {
 	/**
 	 * Update extension list from TER
 	 *
-	 * @param boolean $forceUpdateCheck
+	 * @param bool $forceUpdateCheck
 	 * @return void
 	 */
 	public function updateExtensionListFromTerAction($forceUpdateCheck = FALSE) {

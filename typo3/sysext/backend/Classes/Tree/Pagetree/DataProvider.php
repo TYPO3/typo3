@@ -177,7 +177,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 	 * Wrapper method for \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL
 	 *
 	 * @param integer $uid The page id
-	 * @param boolean $unsetMovePointers Whether to unset move pointers
+	 * @param bool $unsetMovePointers Whether to unset move pointers
 	 * @return array
 	 */
 	protected function getRecordWithWorkspaceOverlay($uid, $unsetMovePointers = FALSE) {

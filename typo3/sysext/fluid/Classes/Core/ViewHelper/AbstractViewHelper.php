@@ -160,7 +160,7 @@ abstract class AbstractViewHelper {
 	 * @param string $name Name of the argument
 	 * @param string $type Type of the argument
 	 * @param string $description Description of the argument
-	 * @param boolean $required If TRUE, argument is required. Defaults to FALSE.
+	 * @param bool $required If TRUE, argument is required. Defaults to FALSE.
 	 * @param mixed $defaultValue Default value of argument
 	 * @return \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper $this, to allow chaining.
 	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
@@ -182,7 +182,7 @@ abstract class AbstractViewHelper {
 	 * @param string $name Name of the argument
 	 * @param string $type Type of the argument
 	 * @param string $description Description of the argument
-	 * @param boolean $required If TRUE, argument is required. Defaults to FALSE.
+	 * @param bool $required If TRUE, argument is required. Defaults to FALSE.
 	 * @param mixed $defaultValue Default value of argument
 	 * @return \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper $this, to allow chaining.
 	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception

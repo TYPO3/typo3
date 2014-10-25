@@ -220,7 +220,7 @@ class Commands {
 	 * Returns a node from the given node id
 	 *
 	 * @param integer $nodeId
-	 * @param boolean $unsetMovePointers
+	 * @param bool $unsetMovePointers
 	 * @return \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode
 	 */
 	static public function getNode($nodeId, $unsetMovePointers = TRUE) {
@@ -262,7 +262,7 @@ class Commands {
 	 * Returns a node record from a given id
 	 *
 	 * @param integer $nodeId
-	 * @param boolean $unsetMovePointers
+	 * @param bool $unsetMovePointers
 	 * @return array
 	 */
 	static public function getNodeRecord($nodeId, $unsetMovePointers = TRUE) {

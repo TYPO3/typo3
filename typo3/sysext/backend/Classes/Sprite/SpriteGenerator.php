@@ -227,7 +227,7 @@ class SpriteGenerator {
 	/**
 	 * Enables/Disables HighDensitySprite Generation
 	 *
-	 * @param boolean $enable
+	 * @param bool $enable
 	 * @return SpriteGenerator An instance of $this, to enable "chaining".
 	 */
 	public function setEnableHighDensitySprite($enable = TRUE) {
@@ -238,7 +238,7 @@ class SpriteGenerator {
 	/**
 	 * Setter do enable the exclusion of the sprites-name from iconnames
 	 *
-	 * @param boolean $value
+	 * @param bool $value
 	 * @return SpriteGenerator An instance of $this, to enable "chaining".
 	 * @deprecated since 6.2, will be removed two versions later - use setOmitSpriteNameInIconName() instead
 	 */
@@ -250,7 +250,7 @@ class SpriteGenerator {
 	/**
 	 * Setter do enable the exclusion of the sprites-name from iconnames
 	 *
-	 * @param boolean $value
+	 * @param bool $value
 	 * @return SpriteGenerator An instance of $this, to enable "chaining".
 	 */
 	public function setOmitSpriteNameInIconName($value) {
@@ -272,7 +272,7 @@ class SpriteGenerator {
 	/**
 	 * Setter for timestamp inclusion: imageFiles will be included with ?timestamp
 	 *
-	 * @param boolean $value
+	 * @param bool $value
 	 * @return SpriteGenerator An instance of $this, to enable "chaining".
 	 */
 	public function setIncludeTimestampInCSS($value) {

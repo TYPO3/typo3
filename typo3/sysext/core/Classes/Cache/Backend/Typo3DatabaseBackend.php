@@ -316,7 +316,7 @@ class Typo3DatabaseBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend
 	/**
 	 * Enable data compression
 	 *
-	 * @param boolean $compression TRUE to enable compression
+	 * @param bool $compression TRUE to enable compression
 	 */
 	public function setCompression($compression) {
 		$this->compression = $compression;

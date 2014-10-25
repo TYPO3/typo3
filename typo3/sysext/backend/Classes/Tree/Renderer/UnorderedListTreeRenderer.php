@@ -31,7 +31,7 @@ class UnorderedListTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\Abstrac
 	 * Renders a node recursive or just a single instance
 	 *
 	 * @param \TYPO3\CMS\Backend\Tree\TreeRepresentationNode $node
-	 * @param boolean $recursive
+	 * @param bool $recursive
 	 * @return string
 	 */
 	public function renderNode(\TYPO3\CMS\Backend\Tree\TreeRepresentationNode $node, $recursive = TRUE) {
@@ -49,7 +49,7 @@ class UnorderedListTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\Abstrac
 	 * Renders a node collection recursive or just a single instance
 	 *
 	 * @param \TYPO3\CMS\Backend\Tree\TreeNodeCollection $node
-	 * @param boolean $recursive
+	 * @param bool $recursive
 	 * @return string
 	 */
 	public function renderTree(\TYPO3\CMS\Backend\Tree\AbstractTree $tree, $recursive = TRUE) {
@@ -64,7 +64,7 @@ class UnorderedListTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\Abstrac
 	 * Renders an tree recursive or just a single instance
 	 *
 	 * @param \TYPO3\CMS\Backend\Tree\TreeNodeCollection $collection
-	 * @param boolean $recursive
+	 * @param bool $recursive
 	 * @return string
 	 */
 	public function renderNodeCollection(\TYPO3\CMS\Backend\Tree\TreeNodeCollection $collection, $recursive = TRUE) {

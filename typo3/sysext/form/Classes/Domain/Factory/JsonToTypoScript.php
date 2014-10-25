@@ -71,7 +71,7 @@ class JsonToTypoScript {
 	 *
 	 * @param array $elements The JSON array
 	 * @param array $parent The parent element
-	 * @param boolean $childrenWithParentName Indicates if the children use the parent name
+	 * @param bool $childrenWithParentName Indicates if the children use the parent name
 	 * @return void
 	 */
 	protected function convertToTyposcriptArray(array $elements, array &$parent, $childrenWithParentName = FALSE) {
@@ -141,7 +141,7 @@ class JsonToTypoScript {
 	 *
 	 * @param array $element The JSON array for this element
 	 * @param array $parent The parent element
-	 * @param boolean $childrenWithParentName Indicates if the children use the parent name
+	 * @param bool $childrenWithParentName Indicates if the children use the parent name
 	 * @param integer $elementCounter The element counter
 	 * @return void
 	 */
@@ -179,7 +179,7 @@ class JsonToTypoScript {
 	 * @param array $element The JSON array for this element
 	 * @param array $parent The parent element
 	 * @param integer $elementCounter The element counter
-	 * @param boolean $childrenWithParentName Indicates if the children use the parent name
+	 * @param bool $childrenWithParentName Indicates if the children use the parent name
 	 * @return void
 	 */
 	protected function getDefaultElementSetup(array $element, array &$parent, $elementCounter, $childrenWithParentName = FALSE) {
@@ -241,7 +241,7 @@ class JsonToTypoScript {
 	 * @param array $element The JSON array for this element
 	 * @param array $parent The parent element
 	 * @param integer $elementCounter The element counter
-	 * @param boolean $childrenWithParentName Indicates if the children use the parent name
+	 * @param bool $childrenWithParentName Indicates if the children use the parent name
 	 * @return void
 	 */
 	protected function setConfiguration(array $element, array &$parent, $elementCounter, $childrenWithParentName = FALSE) {
@@ -292,7 +292,7 @@ class JsonToTypoScript {
 	 * @param array $attributes The JSON array for the attributes of this element
 	 * @param array $parent The parent element
 	 * @param integer $elementCounter The element counter
-	 * @param boolean $childrenWithParentName Indicates if the children use the parent name
+	 * @param bool $childrenWithParentName Indicates if the children use the parent name
 	 * @return void
 	 */
 	protected function setAttributes(array $attributes, array &$parent, $elementCounter, $childrenWithParentName = FALSE) {
@@ -311,7 +311,7 @@ class JsonToTypoScript {
 	 *
 	 * The confirmation indicates a confirmation screen has to be displayed
 	 *
-	 * @param boolean $confirmation TRUE when confirmation screen
+	 * @param bool $confirmation TRUE when confirmation screen
 	 * @param array $parent The parent element
 	 * @param integer $elementCounter The element counter
 	 * @return void

@@ -38,7 +38,7 @@ class BackendLayoutViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * @param boolean|string $expected
+	 * @param bool|string $expected
 	 * @param array $page
 	 * @param array $rootLine
 	 * @test

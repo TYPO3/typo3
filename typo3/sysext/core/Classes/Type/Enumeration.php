@@ -156,7 +156,7 @@ abstract class Enumeration implements TypeInterface {
 	 * Defaults to constants you define in your subclass
 	 * override to provide custom functionality
 	 *
-	 * @param boolean $include_default
+	 * @param bool $include_default
 	 * @return array
 	 */
 	static public function getConstants($include_default = FALSE) {

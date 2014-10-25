@@ -44,9 +44,9 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase {
 	 * @param array<string> $methods name of the methods to mock
 	 * @param array $arguments arguments to pass to constructor
 	 * @param string $mockClassName the class name to use for the mock class
-	 * @param boolean $callOriginalConstructor whether to call the constructor
-	 * @param boolean $callOriginalClone whether to call the __clone method
-	 * @param boolean $callAutoload whether to call any autoload function
+	 * @param bool $callOriginalConstructor whether to call the constructor
+	 * @param bool $callOriginalClone whether to call the __clone method
+	 * @param bool $callAutoload whether to call any autoload function
 	 *
 	 * @return \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 *         a mock of $originalClassName with access methods added
@@ -79,9 +79,9 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase {
 	 * @param string $originalClassName Full qualified name of the original class
 	 * @param array $arguments
 	 * @param string $mockClassName
-	 * @param boolean $callOriginalConstructor
-	 * @param boolean $callOriginalClone
-	 * @param boolean $callAutoload
+	 * @param bool $callOriginalConstructor
+	 * @param bool $callOriginalClone
+	 * @param bool $callAutoload
 	 *
 	 * @throws \InvalidArgumentException
 	 *

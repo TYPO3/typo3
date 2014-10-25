@@ -265,7 +265,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 * @param 	[type]		$depthData: ...
 	 * @param 	[type]		$parentType: ...
 	 * @param 	[type]		$parentValue: ...
-	 * @param boolean $alphaSort sorts the array keys / tree by alphabet when set to 1
+	 * @param bool $alphaSort sorts the array keys / tree by alphabet when set to 1
 	 * @return 	[type]		...
 	 */
 	public function ext_getObjTree($arr, $depth_in, $depthData, $parentType = '', $parentValue = '', $alphaSort = '0') {
@@ -613,10 +613,10 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 * Get formatted HTML output for TypoScript either with Syntaxhiglighting or in plain mode
 	 *
 	 * @param array $config Array with simple strings of typoscript code.
-	 * @param boolean $lineNumbers Prepend linNumbers to each line.
-	 * @param boolean $comments Enable including comments in output.
-	 * @param boolean $crop Enable cropping of long lines.
-	 * @param boolean $syntaxHL Enrich output with syntaxhighlighting.
+	 * @param bool $lineNumbers Prepend linNumbers to each line.
+	 * @param bool $comments Enable including comments in output.
+	 * @param bool $crop Enable cropping of long lines.
+	 * @param bool $syntaxHL Enrich output with syntaxhighlighting.
 	 * @param integer $syntaxHLBlockmode
 	 *
 	 * @return string

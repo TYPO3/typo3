@@ -240,7 +240,7 @@ class SqlSchemaMigrationService {
 	 * @param array $FDsrc Field definitions, source (from getFieldDefinitions_fileContent())
 	 * @param array $FDcomp Field definitions, comparison. (from getFieldDefinitions_database())
 	 * @param string $onlyTableList Table names (in list) which is the ONLY one observed.
-	 * @param boolean $ignoreNotNullWhenComparing If set, this function ignores NOT NULL statements of the SQL file field definition when comparing current field definition from database with field definition from SQL file. This way, NOT NULL statements will be executed when the field is initially created, but the SQL parser will never complain about missing NOT NULL statements afterwards.
+	 * @param bool $ignoreNotNullWhenComparing If set, this function ignores NOT NULL statements of the SQL file field definition when comparing current field definition from database with field definition from SQL file. This way, NOT NULL statements will be executed when the field is initially created, but the SQL parser will never complain about missing NOT NULL statements afterwards.
 	 * @return array Returns an array with 1) all elements from $FDsrc that is not in $FDcomp (in key 'extra') and 2) all elements from $FDsrc that is different from the ones in $FDcomp
 	 */
 	public function getDatabaseExtra($FDsrc, $FDcomp, $onlyTableList = '', $ignoreNotNullWhenComparing = TRUE) {
@@ -492,7 +492,7 @@ class SqlSchemaMigrationService {
 	 * Returns an array where every entry is a single SQL-statement. Input must be formatted like an ordinary MySQL-dump files.
 	 *
 	 * @param string $sqlcode The SQL-file content. Provided that 1) every query in the input is ended with ';' and that a line in the file contains only one query or a part of a query.
-	 * @param boolean $removeNonSQL If set, non-SQL content (like comments and blank lines) is not included in the final output
+	 * @param bool $removeNonSQL If set, non-SQL content (like comments and blank lines) is not included in the final output
 	 * @param string $query_regex Regex to filter SQL lines to include
 	 * @return array Array of SQL statements
 	 */
@@ -531,7 +531,7 @@ class SqlSchemaMigrationService {
 	 * Returns tables to create and how many records in each
 	 *
 	 * @param array $statements Array of SQL statements to analyse.
-	 * @param boolean $insertCountFlag If set, will count number of INSERT INTO statements following that table definition
+	 * @param bool $insertCountFlag If set, will count number of INSERT INTO statements following that table definition
 	 * @return array Array with table definitions in index 0 and count in index 1
 	 */
 	public function getCreateTables($statements, $insertCountFlag = FALSE) {

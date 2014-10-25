@@ -40,7 +40,7 @@ class AlphabeticFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 	/**
 	 * Allow white space in the submitted value
 	 *
-	 * @param boolean $allowWhiteSpace True if allowed
+	 * @param bool $allowWhiteSpace True if allowed
 	 * @return void
 	 */
 	public function setAllowWhiteSpace($allowWhiteSpace = TRUE) {

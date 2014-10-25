@@ -71,7 +71,7 @@ class DataHandlerHook {
 	 * @param string $table the table of the record
 	 * @param integer $id the ID of the record
 	 * @param mixed $value the value containing the data
-	 * @param boolean $commandIsProcessed can be set so that other hooks or
+	 * @param bool $commandIsProcessed can be set so that other hooks or
 	 * @param DataHandler $tcemainObj reference to the main tcemain object
 	 * @return void
 	 */
@@ -151,7 +151,7 @@ class DataHandlerHook {
 	 * @param string $table the table of the record
 	 * @param integer $id the ID of the record
 	 * @param array $record The accordant database record
-	 * @param boolean $recordWasDeleted can be set so that other hooks or
+	 * @param bool $recordWasDeleted can be set so that other hooks or
 	 * @param DataHandler $tcemainObj reference to the main tcemain object
 	 * @return void
 	 */
@@ -258,7 +258,7 @@ class DataHandlerHook {
 	 * @param array $propArr Record properties, like header and pid (includes workspace overlay)
 	 * @param array $moveRec Record properties, like header and pid (without workspace overlay)
 	 * @param integer $resolvedPid The final page ID of the record
-	 * @param boolean $recordWasMoved can be set so that other hooks or
+	 * @param bool $recordWasMoved can be set so that other hooks or
 	 * @param DataHandler $tcemainObj
 	 * @return void
 	 */
@@ -616,7 +616,7 @@ class DataHandlerHook {
 	 * previously called notifyStageChange_getEmails() in tcemain
 	 *
 	 * @param string $listOfUsers List of backend users, on the form "be_users_10,be_users_2" or "10,2" in case noTablePrefix is set.
-	 * @param boolean $noTablePrefix If set, the input list are integers and not strings.
+	 * @param bool $noTablePrefix If set, the input list are integers and not strings.
 	 * @return array Array of emails
 	 */
 	protected function getEmailsForStageChangeNotification($listOfUsers, $noTablePrefix = FALSE) {
@@ -649,7 +649,7 @@ class DataHandlerHook {
 	 * @param integer $integer Record UID
 	 * @param integer $stageId Stage ID to set
 	 * @param string $comment Comment that goes into log
-	 * @param boolean $notificationEmailInfo Accumulate state changes in memory for compiled notification email?
+	 * @param bool $notificationEmailInfo Accumulate state changes in memory for compiled notification email?
 	 * @param DataHandler $tcemainObj TCEmain object
 	 * @param array $notificationAlternativeRecipients comma separated list of recipients to notify instead of normal be_users
 	 * @return void
@@ -756,10 +756,10 @@ class DataHandlerHook {
 	 * @param string $table Table name
 	 * @param integer $id UID of the online record to swap
 	 * @param integer $swapWith UID of the archived version to swap with!
-	 * @param boolean $swapIntoWS If set, swaps online into workspace instead of publishing out of workspace.
+	 * @param bool $swapIntoWS If set, swaps online into workspace instead of publishing out of workspace.
 	 * @param DataHandler $tcemainObj TCEmain object
 	 * @param string $comment Notification comment
-	 * @param boolean $notificationEmailInfo Accumulate state changes in memory for compiled notification email?
+	 * @param bool $notificationEmailInfo Accumulate state changes in memory for compiled notification email?
 	 * @param array $notificationAlternativeRecipients comma separated list of recipients to notificate instead of normal be_users
 	 * @return void
 	 */
@@ -999,7 +999,7 @@ class DataHandlerHook {
 	 *
 	 * @param string $table Table name
 	 * @param integer $id Record UID
-	 * @param boolean $flush If set, will completely delete element
+	 * @param bool $flush If set, will completely delete element
 	 * @param DataHandler $tcemainObj TCEmain object
 	 * @return void
 	 */

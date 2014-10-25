@@ -71,7 +71,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 * @param integer $subFolderCounter The current entry number
 	 * @param integer $totalSubFolders The total number of entries. If equal to $a, a "bottom" element is returned.
 	 * @param integer $nextCount The number of sub-elements to the current element.
-	 * @param boolean $isExpanded The element was expanded to render subelements if this flag is set.
+	 * @param bool $isExpanded The element was expanded to render subelements if this flag is set.
 	 * @return string Image tag with the plus/minus icon.
 	 * @internal
 	 * @see \TYPO3\CMS\Backend\Tree\View\PageTreeView::PMicon()
@@ -92,7 +92,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 *
 	 * @param string $icon HTML string to wrap, probably an image tag.
 	 * @param string $cmd Command for 'PM' get var
-	 * @param boolean $isExpand Whether to be expanded
+	 * @param bool $isExpand Whether to be expanded
 	 * @return string Link-wrapped input string
 	 * @internal
 	 */
@@ -610,7 +610,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 * Generates the "PM" string to sent to expand/collapse items
 	 *
 	 * @param string $mountKey The mount key / storage UID
-	 * @param boolean $doExpand Whether to expand/collapse
+	 * @param bool $doExpand Whether to expand/collapse
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject The folder object
 	 * @param string $treeName The name of the tree
 	 * @return string

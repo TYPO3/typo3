@@ -409,7 +409,7 @@ class ClickMenu {
 	 *
 	 * @param string $url The URL relative to TYPO3_mainDir
 	 * @param string $retUrl The return_url-parameter
-	 * @param boolean $hideCM If set, the "hideCM()" will be called
+	 * @param bool $hideCM If set, the "hideCM()" will be called
 	 * @param string $overrideLoc If set, gives alternative location to load in (for example top frame or somewhere else)
 	 * @return string JavaScript for an onClick event.
 	 */
@@ -868,7 +868,7 @@ class ClickMenu {
 	 * @param string $moduleName Script (deprecated) or module name (e.g. file_edit) to pass &target= to
 	 * @param string $type "type" is the code which fetches the correct label for the element from "cm.
 	 * @param string $image icon image-filename from "gfx/" (12x12 icon)
-	 * @param boolean $noReturnUrl If set, the return URL parameter will not be set in the link
+	 * @param bool $noReturnUrl If set, the return URL parameter will not be set in the link
 	 * @return array Item array, element in $menuItems
 	 * @internal
 	 */
@@ -1276,8 +1276,8 @@ class ClickMenu {
 	 * @param string $str The label, htmlspecialchar'ed already
 	 * @param string $icon <img>-tag for the icon
 	 * @param string $onClick JavaScript onclick event for label/icon
-	 * @param boolean $onlyCM ==1 and the element will NOT appear in clickmenus in the topframe (unless clickmenu is totally unavailable)! ==2 and the item will NEVER appear in top frame. (This is mostly for "less important" options since the top frame is not capable of holding so many elements horizontally)
-	 * @param boolean $dontHide If set, the clickmenu layer will not hide itself onclick - used for secondary menus to appear...
+	 * @param bool $onlyCM ==1 and the element will NOT appear in clickmenus in the topframe (unless clickmenu is totally unavailable)! ==2 and the item will NEVER appear in top frame. (This is mostly for "less important" options since the top frame is not capable of holding so many elements horizontally)
+	 * @param bool $dontHide If set, the clickmenu layer will not hide itself onclick - used for secondary menus to appear...
 	 * @return array $menuItem entry with 6 numerical entries: [0] is the HTML for display of the element with link and icon an mouseover etc., [1]-[5] is simply the input params passed through!
 	 */
 	public function linkItem($str, $icon, $onClick, $onlyCM = 0, $dontHide = 0) {

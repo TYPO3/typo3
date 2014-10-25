@@ -540,7 +540,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Enables/disables rendering of XHTML code
 	 *
-	 * @param boolean $enable Enable XHTML
+	 * @param bool $enable Enable XHTML
 	 * @return void
 	 */
 	public function setRenderXhtml($enable) {
@@ -1185,10 +1185,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $name Arbitrary identifier
 	 * @param string $file File name
 	 * @param string $type Content Type
-	 * @param boolean $compress Flag if library should be compressed
-	 * @param boolean $forceOnTop Flag if added library should be inserted at begin of this block
+	 * @param bool $compress Flag if library should be compressed
+	 * @param bool $forceOnTop Flag if added library should be inserted at begin of this block
 	 * @param string $allWrap
-	 * @param boolean $excludeFromConcatenation
+	 * @param bool $excludeFromConcatenation
 	 * @param string $splitChar The char used to split the allWrap value, default is "|"
 	 * @return void
 	 */
@@ -1216,10 +1216,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $name Arbitrary identifier
 	 * @param string $file File name
 	 * @param string $type Content Type
-	 * @param boolean $compress Flag if library should be compressed
-	 * @param boolean $forceOnTop Flag if added library should be inserted at begin of this block
+	 * @param bool $compress Flag if library should be compressed
+	 * @param bool $forceOnTop Flag if added library should be inserted at begin of this block
 	 * @param string $allWrap
-	 * @param boolean $excludeFromConcatenation
+	 * @param bool $excludeFromConcatenation
 	 * @param string $splitChar The char used to split the allWrap value, default is "|"
 	 * @return void
 	 */
@@ -1246,10 +1246,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $file File name
 	 * @param string $type Content Type
-	 * @param boolean $compress
-	 * @param boolean $forceOnTop
+	 * @param bool $compress
+	 * @param bool $forceOnTop
 	 * @param string $allWrap
-	 * @param boolean $excludeFromConcatenation
+	 * @param bool $excludeFromConcatenation
 	 * @param string $splitChar The char used to split the allWrap value, default is "|"
 	 * @return void
 	 */
@@ -1279,10 +1279,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $file File name
 	 * @param string $type Content Type
-	 * @param boolean $compress
-	 * @param boolean $forceOnTop
+	 * @param bool $compress
+	 * @param bool $forceOnTop
 	 * @param string $allWrap
-	 * @param boolean $excludeFromConcatenation
+	 * @param bool $excludeFromConcatenation
 	 * @param string $splitChar The char used to split the allWrap value, default is "|"
 	 * @return void
 	 */
@@ -1312,8 +1312,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $name
 	 * @param string $block
-	 * @param boolean $compress
-	 * @param boolean $forceOnTop
+	 * @param bool $compress
+	 * @param bool $forceOnTop
 	 * @return void
 	 */
 	public function addJsInlineCode($name, $block, $compress = TRUE, $forceOnTop = FALSE) {
@@ -1332,8 +1332,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $name
 	 * @param string $block
-	 * @param boolean $compress
-	 * @param boolean $forceOnTop
+	 * @param bool $compress
+	 * @param bool $forceOnTop
 	 * @return void
 	 */
 	public function addJsFooterInlineCode($name, $block, $compress = TRUE, $forceOnTop = FALSE) {
@@ -1351,7 +1351,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Adds Ext.onready code, which will be wrapped in Ext.onReady(function() {...});
 	 *
 	 * @param string $block Javascript code
-	 * @param boolean $forceOnTop Position of the javascript code (TRUE for putting it on top, default is FALSE = bottom)
+	 * @param bool $forceOnTop Position of the javascript code (TRUE for putting it on top, default is FALSE = bottom)
 	 * @return void
 	 */
 	public function addExtOnReadyCode($block, $forceOnTop = FALSE) {
@@ -1498,10 +1498,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $rel
 	 * @param string $media
 	 * @param string $title
-	 * @param boolean $compress
-	 * @param boolean $forceOnTop
+	 * @param bool $compress
+	 * @param bool $forceOnTop
 	 * @param string $allWrap
-	 * @param boolean $excludeFromConcatenation
+	 * @param bool $excludeFromConcatenation
 	 * @param string $splitChar The char used to split the allWrap value, default is "|"
 	 * @return void
 	 */
@@ -1528,10 +1528,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $rel
 	 * @param string $media
 	 * @param string $title
-	 * @param boolean $compress
-	 * @param boolean $forceOnTop
+	 * @param bool $compress
+	 * @param bool $forceOnTop
 	 * @param string $allWrap
-	 * @param boolean $excludeFromConcatenation
+	 * @param bool $excludeFromConcatenation
 	 * @param string $splitChar The char used to split the allWrap value, default is "|"
 	 * @return void
 	 */
@@ -1556,8 +1556,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $name
 	 * @param string $block
-	 * @param boolean $compress
-	 * @param boolean $forceOnTop
+	 * @param bool $compress
+	 * @param bool $forceOnTop
 	 * @return void
 	 */
 	public function addCssInlineBlock($name, $block, $compress = FALSE, $forceOnTop = FALSE) {
@@ -1719,8 +1719,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * call this function if you need the extJS library
 	 *
-	 * @param boolean $css Flag, if set the ext-css will be loaded
-	 * @param boolean $theme Flag, if set the ext-theme "grey" will be loaded
+	 * @param bool $css Flag, if set the ext-css will be loaded
+	 * @param bool $theme Flag, if set the ext-theme "grey" will be loaded
 	 * @param string $adapter Choose alternative adapter, possible values: yui, prototype, jquery
 	 * @return void
 	 */

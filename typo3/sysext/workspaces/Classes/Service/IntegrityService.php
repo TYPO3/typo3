@@ -198,7 +198,7 @@ class IntegrityService {
 	 * Gets the message of all issues.
 	 *
 	 * @param string $identifier Record identifier (table:id) for look-ups
-	 * @param boolean $asString Return results as string instead of array
+	 * @param bool $asString Return results as string instead of array
 	 * @return array|string
 	 */
 	public function getIssueMessages($identifier = NULL, $asString = FALSE) {

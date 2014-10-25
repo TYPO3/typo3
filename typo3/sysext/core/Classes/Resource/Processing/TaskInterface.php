@@ -112,7 +112,7 @@ interface TaskInterface {
 	 * Mark this task as executed. This is used by the Processors in order to transfer the state of this task to
 	 * the file processing service.
 	 *
-	 * @param boolean $successful Set this to FALSE if executing the task failed
+	 * @param bool $successful Set this to FALSE if executing the task failed
 	 * @return void
 	 */
 	public function setExecuted($successful);

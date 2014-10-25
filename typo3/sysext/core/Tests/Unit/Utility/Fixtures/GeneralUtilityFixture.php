@@ -38,7 +38,7 @@ class GeneralUtilityFixture extends GeneralUtility {
 	}
 
 	/**
-	 * @param boolean $allowHostHeaderValue
+	 * @param bool $allowHostHeaderValue
 	 */
 	static public function setAllowHostHeaderValue($allowHostHeaderValue) {
 		static::$allowHostHeaderValue = $allowHostHeaderValue;

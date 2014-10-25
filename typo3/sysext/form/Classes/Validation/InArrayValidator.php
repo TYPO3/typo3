@@ -75,7 +75,7 @@ class InArrayValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	/**
 	 * Set the strict mode for the search
 	 *
-	 * @param boolean $strict True if strict
+	 * @param bool $strict True if strict
 	 * @return object Rule object
 	 */
 	public function setStrict($strict) {

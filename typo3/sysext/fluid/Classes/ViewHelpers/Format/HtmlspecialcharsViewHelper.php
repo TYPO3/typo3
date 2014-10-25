@@ -47,9 +47,9 @@ class HtmlspecialcharsViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Format\Abs
 	 * Escapes special characters with their escaped counterparts as needed using PHPs htmlspecialchars() function.
 	 *
 	 * @param string $value string to format
-	 * @param boolean $keepQuotes if TRUE, single and double quotes won't be replaced (sets ENT_NOQUOTES flag)
+	 * @param bool $keepQuotes if TRUE, single and double quotes won't be replaced (sets ENT_NOQUOTES flag)
 	 * @param string $encoding
-	 * @param boolean $doubleEncode If FALSE existing html entities won't be encoded, the default is to convert everything.
+	 * @param bool $doubleEncode If FALSE existing html entities won't be encoded, the default is to convert everything.
 	 * @return string the altered string
 	 * @see http://www.php.net/manual/function.htmlspecialchars.php
 	 * @api

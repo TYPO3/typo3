@@ -392,7 +392,7 @@ class TimeTracker {
 	 * @param array $arr Array which is modified with content. Reference
 	 * @param string $content Current content string for the level
 	 * @param string $depthData Prefixed icons for new PM icons
-	 * @param boolean $first Set this for the first call from outside.
+	 * @param bool $first Set this for the first call from outside.
 	 * @param string $vKey Seems to be the previous tsStackLog key
 	 * @return string Returns the $content string generated/modified. Also the $arr array is modified!
 	 */

@@ -66,7 +66,7 @@ class DatabaseUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $table
 	 * @param array $fieldKeyInfo
-	 * @param boolean $dropTableIfExists
+	 * @param bool $dropTableIfExists
 	 * @return string
 	 */
 	protected function dumpTableHeader($table, array $fieldKeyInfo, $dropTableIfExists = FALSE) {

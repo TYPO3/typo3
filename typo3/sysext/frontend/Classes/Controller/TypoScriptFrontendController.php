@@ -1695,7 +1695,7 @@ class TypoScriptFrontendController {
 	 * Takes notice of the ->showHiddenPage flag and uses SIM_ACCESS_TIME for start/endtime evaluation
 	 *
 	 * @param array $row The page record to evaluate (needs fields: hidden, starttime, endtime, fe_group)
-	 * @param boolean $bypassGroupCheck Bypass group-check
+	 * @param bool $bypassGroupCheck Bypass group-check
 	 * @return boolean TRUE, if record is viewable.
 	 * @see TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer::getTreeList(), checkPagerecordForIncludeSection()
 	 */
@@ -1864,7 +1864,7 @@ class TypoScriptFrontendController {
 	/**
 	 * Looking up a domain record based on HTTP_HOST
 	 *
-	 * @param boolean $recursive If set, it looks "recursively" meaning that a domain like "123.456.typo3.com" would find a domain record like "typo3.com" if "123.456.typo3.com" or "456.typo3.com" did not exist.
+	 * @param bool $recursive If set, it looks "recursively" meaning that a domain like "123.456.typo3.com" would find a domain record like "typo3.com" if "123.456.typo3.com" or "456.typo3.com" did not exist.
 	 * @return integer Returns the page id of the page where the domain record was found.
 	 * @access private
 	 */
@@ -2381,7 +2381,7 @@ class TypoScriptFrontendController {
 	 * ->MP (Mount Points) and cHash array
 	 * Used to get and later store the cached data.
 	 *
-	 * @param boolean $createLockHashBase Whether to create the lock hash, which doesn't contain the "this->all" (the template information)
+	 * @param bool $createLockHashBase Whether to create the lock hash, which doesn't contain the "this->all" (the template information)
 	 * @return string the serialized hash base
 	 */
 	protected function createHashBase($createLockHashBase = FALSE) {
@@ -3908,7 +3908,7 @@ class TypoScriptFrontendController {
 	 * Encryption of email addresses for <A>-tags See the spam protection setup in TS 'config.'
 	 *
 	 * @param string $string Input string to en/decode: "mailto:blabla@bla.com
-	 * @param boolean $back If set, the process is reversed, effectively decoding, not encoding.
+	 * @param bool $back If set, the process is reversed, effectively decoding, not encoding.
 	 * @return string encoded/decoded version of $string
 	 */
 	public function encryptEmail($string, $back = FALSE) {
@@ -3947,7 +3947,7 @@ class TypoScriptFrontendController {
 	 * Encryption is mainly to avoid spam-bots to pick up information.
 	 *
 	 * @param string $string Input string to en/decode
-	 * @param boolean $decode If set, string is decoded, not encoded.
+	 * @param bool $decode If set, string is decoded, not encoded.
 	 * @return string encoded/decoded version of $string
 	 */
 	public function codeString($string, $decode = FALSE) {
@@ -4173,7 +4173,7 @@ class TypoScriptFrontendController {
 	/**
 	 * Returns the name of the workspace
 	 *
-	 * @param boolean $returnTitle If set, returns title of current workspace being previewed
+	 * @param bool $returnTitle If set, returns title of current workspace being previewed
 	 * @return mixed If $returnTitle is set, returns string (title), otherwise workspace integer for which workspace is being preview. False if none.
 	 */
 	public function whichWorkspace($returnTitle = FALSE) {
@@ -4339,7 +4339,7 @@ class TypoScriptFrontendController {
 	 * Sets the cache-flag to 1. Could be called from user-included php-files in order to ensure that a page is not cached.
 	 *
 	 * @param string $reason An optional reason to be written to the syslog.
-	 * @param boolean $internal Whether the call is done from core itself (should only be used by core).
+	 * @param bool $internal Whether the call is done from core itself (should only be used by core).
 	 * @return void
 	 */
 	public function set_no_cache($reason = '', $internal = FALSE) {

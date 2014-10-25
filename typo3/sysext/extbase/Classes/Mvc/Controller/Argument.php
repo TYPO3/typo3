@@ -158,7 +158,7 @@ class Argument {
 	/**
 	 * Marks this argument to be required
 	 *
-	 * @param boolean $required TRUE if this argument should be required
+	 * @param bool $required TRUE if this argument should be required
 	 * @return \TYPO3\CMS\Extbase\Mvc\Controller\Argument $this
 	 * @api
 	 */

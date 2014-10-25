@@ -66,7 +66,7 @@ class ForViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper 
 	 * @param array $each The array or \TYPO3\CMS\Extbase\Persistence\ObjectStorage to iterated over
 	 * @param string $as The name of the iteration variable
 	 * @param string $key The name of the variable to store the current array key
-	 * @param boolean $reverse If enabled, the iterator will start with the last element and proceed reversely
+	 * @param bool $reverse If enabled, the iterator will start with the last element and proceed reversely
 	 * @param string $iteration The name of the variable to store iteration information (index, cycle, isFirst, isLast, isEven, isOdd)
 	 * @return string Rendered string
 	 * @api

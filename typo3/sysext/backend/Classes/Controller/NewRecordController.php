@@ -578,7 +578,7 @@ class NewRecordController {
 	 * @param string $linkText Link text
 	 * @param string $table Table name (in which to create new record)
 	 * @param integer $pid PID value for the "&edit['.$table.']['.$pid.']=new" command (positive/negative)
-	 * @param boolean $addContentTable If $addContentTable is set, then a new tt_content record is created together with pages
+	 * @param bool $addContentTable If $addContentTable is set, then a new tt_content record is created together with pages
 	 * @return string The link.
 	 */
 	public function linkWrap($linkText, $table, $pid, $addContentTable = FALSE) {

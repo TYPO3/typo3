@@ -117,7 +117,7 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	 * @param string $script
 	 * @param string $addFields
 	 * @param string $extKey
-	 * @param boolean Adds opening <form> tag to the ouput, if TRUE
+	 * @param bool Adds opening <form> tag to the ouput, if TRUE
 	 * @return string The form
 	 */
 	public function ext_getForm($cat, $theConstants, $script = '', $addFields = '', $extKey = '', $addFormTag = TRUE) {

@@ -1827,7 +1827,7 @@ class GraphicalFunctions {
 	 * @param integer $im GDlib Image Pointer
 	 * @param integer $low The "low" value (close to 0)
 	 * @param integer $high The "high" value (close to 255)
-	 * @param boolean $swap If swap, then low and high are swapped. (Useful for negated masks...)
+	 * @param bool $swap If swap, then low and high are swapped. (Useful for negated masks...)
 	 * @return void
 	 */
 	public function outputLevels(&$im, $low, $high, $swap = '') {
@@ -1857,7 +1857,7 @@ class GraphicalFunctions {
 	 * @param integer $im GDlib Image Pointer
 	 * @param integer $low The "low" value (close to 0)
 	 * @param integer $high The "high" value (close to 255)
-	 * @param boolean $swap @deprecated since 6.2, unused and obsolete parameter, was used for older image magick versions
+	 * @param bool $swap @deprecated since 6.2, unused and obsolete parameter, was used for older image magick versions
 	 * @return void
 	 */
 	public function inputLevels(&$im, $low, $high, $swap = '') {
@@ -2053,7 +2053,7 @@ class GraphicalFunctions {
 	 * The function will look at $this->nativeCharset and if that is set, the input string is expected to be UTF-8 encoded, possibly with entities in it. Otherwise the string is supposed to be a single-byte charset which is just splitted by a for-loop.
 	 *
 	 * @param string $theText The text string to split
-	 * @param boolean $returnUnicodeNumber Return Unicode numbers instead of chars.
+	 * @param bool $returnUnicodeNumber Return Unicode numbers instead of chars.
 	 * @return array Numerical array with a char as each value.
 	 */
 	public function singleChars($theText, $returnUnicodeNumber = FALSE) {
@@ -2131,7 +2131,7 @@ class GraphicalFunctions {
 	 * @param string $params Additional ImageMagick parameters.
 	 * @param string $frame Refers to which frame-number to select in the image. '' or 0 will select the first frame, 1 will select the next and so on...
 	 * @param array $options An array with options passed to getImageScale (see this function).
-	 * @param boolean $mustCreate If set, then another image than the input imagefile MUST be returned. Otherwise you can risk that the input image is good enough regarding messures etc and is of course not rendered to a new, temporary file in typo3temp/. But this option will force it to.
+	 * @param bool $mustCreate If set, then another image than the input imagefile MUST be returned. Otherwise you can risk that the input image is good enough regarding messures etc and is of course not rendered to a new, temporary file in typo3temp/. But this option will force it to.
 	 * @return array [0]/[1] is w/h, [2] is file extension and [3] is the filename.
 	 * @see getImageScale(), typo3/show_item.php, fileList_ext::renderImage(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getImgResource(), SC_tslib_showpic::show(), maskImageOntoImage(), copyImageOntoImage(), scale()
 	 */
@@ -2567,7 +2567,7 @@ class GraphicalFunctions {
 	 * @param string $overlay The relative (to PATH_site) image filepath, overlay file (top)
 	 * @param string $mask The relative (to PATH_site) image filepath, the mask file (grayscale)
 	 * @param string $output The relative (to PATH_site) image filepath, output filename (written to)
-	 * @param boolean $handleNegation
+	 * @param bool $handleNegation
 	 * @return 	void
 	 */
 	public function combineExec($input, $overlay, $mask, $output, $handleNegation = FALSE) {
@@ -2865,7 +2865,7 @@ class GraphicalFunctions {
 	 *
 	 * @param pointer $img Image resource
 	 * @param array $colArr Array containing RGB color arrays
-	 * @param boolean $closest
+	 * @param bool $closest
 	 * @return integer The index of the unified color
 	 */
 	public function unifyColors(&$img, $colArr, $closest = FALSE) {

@@ -88,7 +88,7 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $src
 	 * @param mixed $image
-	 * @param boolean $treatIdAsReference
+	 * @param bool $treatIdAsReference
 	 * @return FileInterface
 	 * @throws \UnexpectedValueException
 	 * @internal
@@ -112,7 +112,7 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Get File or FileReference object by src
 	 *
 	 * @param string $src
-	 * @param boolean $treatIdAsReference
+	 * @param bool $treatIdAsReference
 	 * @return FileInterface|FileReference|\TYPO3\CMS\Core\Resource\Folder
 	 */
 	protected function getImageFromSourceString($src, $treatIdAsReference) {

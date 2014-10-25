@@ -64,7 +64,7 @@ abstract class AbstractElementView {
 	 *
 	 * @param \DOMDocument $dom
 	 * @param \DOMNode $reference Current XML structure
-	 * @param boolean $emptyElement
+	 * @param bool $emptyElement
 	 * @return boolean
 	 */
 	protected function parseXML(\DOMDocument $dom, \DOMNode $reference, $emptyElement = FALSE) {
@@ -163,7 +163,7 @@ abstract class AbstractElementView {
 	 * Get the content for the current object as DOMDocument
 	 *
 	 * @param string $type Type of element for layout
-	 * @param boolean $returnFirstChild If TRUE, the first child will be returned instead of the DOMDocument
+	 * @param bool $returnFirstChild If TRUE, the first child will be returned instead of the DOMDocument
 	 * @return mixed \DOMDocument|\DOMNode XML part of the view object
 	 */
 	public function render($type = 'element', $returnFirstChild = TRUE) {

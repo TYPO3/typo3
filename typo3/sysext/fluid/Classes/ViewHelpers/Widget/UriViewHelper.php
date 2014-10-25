@@ -54,7 +54,7 @@ class UriViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper 
 	 * @param array $arguments Arguments
 	 * @param string $section The anchor to be added to the URI
 	 * @param string $format The requested format, e.g. ".html
-	 * @param boolean $ajax TRUE if the URI should be to an AJAX widget, FALSE otherwise.
+	 * @param bool $ajax TRUE if the URI should be to an AJAX widget, FALSE otherwise.
 	 * @return string The rendered link
 	 * @api
 	 */

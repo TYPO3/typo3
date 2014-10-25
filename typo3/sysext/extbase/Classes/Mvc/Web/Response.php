@@ -153,7 +153,7 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response {
 	 *
 	 * @param string $name Name of the header, for example "Location", "Content-Description" etc.
 	 * @param mixed $value The value of the given header
-	 * @param boolean $replaceExistingHeader If a header with the same name should be replaced. Default is TRUE.
+	 * @param bool $replaceExistingHeader If a header with the same name should be replaced. Default is TRUE.
 	 * @throws \InvalidArgumentException
 	 * @return void
 	 * @api

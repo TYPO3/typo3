@@ -426,7 +426,7 @@ class StagesService {
 	 * Get array of all responsilbe be_users for a stage
 	 *
 	 * @param integer $stageId Stage id
-	 * @param boolean $selectDefaultUserField If field notification_defaults should be selected instead of responsible users
+	 * @param bool $selectDefaultUserField If field notification_defaults should be selected instead of responsible users
 	 * @return array be_users with e-mail and name
 	 */
 	public function getResponsibleBeUser($stageId, $selectDefaultUserField = FALSE) {

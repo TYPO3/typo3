@@ -81,7 +81,7 @@ class DataSubmissionController {
 	 * [use_base64]:		If set, base64 encoding will be used instead of quoted-printable
 	 *
 	 * @param array $valueList Contains values for the field names listed above (with slashes removed if from POST input)
-	 * @param boolean $base64 Whether to base64 encode the mail content
+	 * @param bool $base64 Whether to base64 encode the mail content
 	 * @return void
 	 */
 	public function start($valueList, $base64 = FALSE) {

@@ -480,8 +480,8 @@ class TemplateViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param array $partialRootPaths
 	 * @param string $layoutRootPath
 	 * @param array $layoutRootPaths
-	 * @param boolean $bubbleControllerAndSubpackage
-	 * @param boolean $formatIsOptional
+	 * @param bool $bubbleControllerAndSubpackage
+	 * @param bool $formatIsOptional
 	 * @param string $pattern
 	 * @param string $expectedResult
 	 */

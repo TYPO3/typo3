@@ -140,7 +140,7 @@ interface DriverInterface {
 	 *
 	 * @param string $newFolderName
 	 * @param string $parentFolderIdentifier
-	 * @param boolean $recursive
+	 * @param bool $recursive
 	 * @return string the Identifier of the new folder
 	 */
 	public function createFolder($newFolderName, $parentFolderIdentifier = '', $recursive = FALSE);
@@ -158,7 +158,7 @@ interface DriverInterface {
 	 * Removes a folder in filesystem.
 	 *
 	 * @param string $folderIdentifier
-	 * @param boolean $deleteRecursively
+	 * @param bool $deleteRecursively
 	 * @return boolean
 	 */
 	public function deleteFolder($folderIdentifier, $deleteRecursively = FALSE);
@@ -198,7 +198,7 @@ interface DriverInterface {
 	 * @param string $localFilePath (within PATH_site)
 	 * @param string $targetFolderIdentifier
 	 * @param string $newFileName optional, if not given original name is used
-	 * @param boolean $removeOriginal if set the original file will be removed
+	 * @param bool $removeOriginal if set the original file will be removed
 	 *                                after successful operation
 	 * @return string the identifier of the new file
 	 */
@@ -408,7 +408,7 @@ interface DriverInterface {
 	 * @param string $folderIdentifier
 	 * @param integer $start
 	 * @param integer $numberOfItems
-	 * @param boolean $recursive
+	 * @param bool $recursive
 	 * @param array $filenameFilterCallbacks callbacks for filtering the items
 	 *
 	 * @return array of FileIdentifiers
@@ -421,7 +421,7 @@ interface DriverInterface {
 	 * @param string $folderIdentifier
 	 * @param integer $start
 	 * @param integer $numberOfItems
-	 * @param boolean $recursive
+	 * @param bool $recursive
 	 * @param array $folderNameFilterCallbacks callbacks for filtering the items
 	 *
 	 * @return array of Folder Identifier

@@ -390,7 +390,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @param boolean $currentVersion
+	 * @param bool $currentVersion
 	 * @return void
 	 */
 	public function setCurrentVersion($currentVersion) {

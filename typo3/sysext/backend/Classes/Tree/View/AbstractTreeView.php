@@ -360,7 +360,7 @@ abstract class AbstractTreeView {
 	 * Adds a fieldname to the internal array ->fieldArray
 	 *
 	 * @param string $field Field name to
-	 * @param boolean $noCheck If set, the fieldname will be set no matter what. Otherwise the field name must either be found as key in $GLOBALS['TCA'][$table]['columns'] or in the list ->defaultList
+	 * @param bool $noCheck If set, the fieldname will be set no matter what. Otherwise the field name must either be found as key in $GLOBALS['TCA'][$table]['columns'] or in the list ->defaultList
 	 * @return void
 	 */
 	public function addField($field, $noCheck = 0) {
@@ -490,7 +490,7 @@ abstract class AbstractTreeView {
 	 * @param integer $a The current entry number
 	 * @param integer $c The total number of entries. If equal to $a, a "bottom" element is returned.
 	 * @param integer $nextCount The number of sub-elements to the current element.
-	 * @param boolean $exp The element was expanded to render subelements if this flag is set.
+	 * @param bool $exp The element was expanded to render subelements if this flag is set.
 	 * @return string Image tag with the plus/minus icon.
 	 * @access private
 	 * @see \TYPO3\CMS\Backend\Tree\View\PageTreeView::PMicon()
@@ -512,7 +512,7 @@ abstract class AbstractTreeView {
 	 *
 	 * @param string $icon HTML string to wrap, probably an image tag.
 	 * @param string $cmd Command for 'PM' get var
-	 * @param boolean $bMark If set, the link will have a anchor point (=$bMark) and a name attribute (=$bMark)
+	 * @param bool $bMark If set, the link will have a anchor point (=$bMark) and a name attribute (=$bMark)
 	 * @return string Link-wrapped input string
 	 * @access private
 	 */
@@ -968,7 +968,7 @@ abstract class AbstractTreeView {
 	 * All other fields are optional.
 	 *
 	 * @param array $dataArr The input array, see examples below in this script.
-	 * @param boolean $traverse Internal, for recursion.
+	 * @param bool $traverse Internal, for recursion.
 	 * @param integer $pid Internal, for recursion.
 	 * @return void
 	 */

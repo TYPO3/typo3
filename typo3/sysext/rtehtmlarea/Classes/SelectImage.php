@@ -634,7 +634,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	/**
 	 * Rich Text Editor (RTE) image selector
 	 *
-	 * @param boolean $wiz Not used here, kept for method signature compatibility with parent class
+	 * @param bool $wiz Not used here, kept for method signature compatibility with parent class
 	 * @return string Modified content variable.
 	 * @return string
 	 */

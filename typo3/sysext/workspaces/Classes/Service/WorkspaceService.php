@@ -111,7 +111,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Building tcemain CMD-array for swapping all versions in a workspace.
 	 *
 	 * @param integer Real workspace ID, cannot be ONLINE (zero).
-	 * @param boolean If set, then the currently online versions are swapped into the workspace in exchange for the offline versions. Otherwise the workspace is emptied.
+	 * @param bool If set, then the currently online versions are swapped into the workspace in exchange for the offline versions. Otherwise the workspace is emptied.
 	 * @param integer $pageId The page id
 	 * @param integer $language Select specific language only
 	 * @return array Command array for tcemain
@@ -145,7 +145,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Building tcemain CMD-array for releasing all versions in a workspace.
 	 *
 	 * @param integer Real workspace ID, cannot be ONLINE (zero).
-	 * @param boolean Run Flush (TRUE) or ClearWSID (FALSE) command
+	 * @param bool Run Flush (TRUE) or ClearWSID (FALSE) command
 	 * @param integer $pageId The page id
 	 * @param integer $language Select specific language only
 	 * @return array Command array for tcemain
@@ -591,7 +591,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Generates a workspace splitted preview link.
 	 *
 	 * @param integer $uid The ID of the record to be linked
-	 * @param boolean $addDomain Parameter to decide if domain should be added to the generated link, FALSE per default
+	 * @param bool $addDomain Parameter to decide if domain should be added to the generated link, FALSE per default
 	 * @return string the preview link without the trailing '/'
 	 */
 	public function generateWorkspaceSplittedPreviewLink($uid, $addDomain = FALSE) {

@@ -349,7 +349,7 @@ class File extends AbstractFile {
 	}
 
 	/**
-	 * @param boolean $missing
+	 * @param bool $missing
 	 */
 	public function setMissing($missing) {
 		$this->updateProperties(array('missing' => $missing ? 1 : 0));
@@ -402,7 +402,7 @@ class File extends AbstractFile {
 	}
 
 	/**
-	 * @param boolean $indexingState
+	 * @param bool $indexingState
 	 * @internal Only for usage in Indexer
 	 */
 	public function setIndexingInProgess($indexingState) {

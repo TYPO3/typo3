@@ -357,7 +357,7 @@ class ModuleMenuView {
 	/**
 	 * turns linking of modules on or off
 	 *
-	 * @param boolean $linkModules Status for linking modules with a-tags, set to FALSE to turn lining off
+	 * @param bool $linkModules Status for linking modules with a-tags, set to FALSE to turn lining off
 	 * @throws \InvalidArgumentException
 	 * @return void
 	 */

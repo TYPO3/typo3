@@ -366,8 +366,8 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 *
 	 * @param array $inputArray1
 	 * @param array $inputArray2
-	 * @param boolean $dontAddNewKeys
-	 * @param boolean $emptyValuesOverride
+	 * @param bool $dontAddNewKeys
+	 * @param bool $emptyValuesOverride
 	 * @param array $expected
 	 *
 	 * @dataProvider arrayMergeRecursiveOverruleData

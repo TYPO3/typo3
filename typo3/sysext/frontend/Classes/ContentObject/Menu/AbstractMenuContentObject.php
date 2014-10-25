@@ -865,7 +865,7 @@ class AbstractMenuContentObject {
 	 *
 	 * @param array $data Array of menu items
 	 * @param array $banUidArray Array of page uids which are to be excluded
-	 * @param boolean $spacer If set, then the page is a spacer.
+	 * @param bool $spacer If set, then the page is a spacer.
 	 * @return boolean Returns TRUE if the page can be safely included.
 	 */
 	public function filterMenuPages(&$data, $banUidArray, $spacer) {
@@ -1682,7 +1682,7 @@ class AbstractMenuContentObject {
 	 *
 	 * @param array $page Page record (uid points where to link to)
 	 * @param string $oTarget Target frame/window
-	 * @param boolean $no_cache TRUE if caching should be disabled
+	 * @param bool $no_cache TRUE if caching should be disabled
 	 * @param string $script Alternative script name
 	 * @param array $overrideArray Array to override values in $page
 	 * @param string $addParams Parameters to add to URL

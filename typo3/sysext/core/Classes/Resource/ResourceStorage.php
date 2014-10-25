@@ -498,7 +498,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * Sets whether the permissions to access or write
 	 * into this storage should be checked or not.
 	 *
-	 * @param boolean $evaluatePermissions
+	 * @param bool $evaluatePermissions
 	 */
 	public function setEvaluatePermissions($evaluatePermissions) {
 		$this->evaluatePermissions = (bool)$evaluatePermissions;
@@ -742,7 +742,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * Assures delete permission for given folder.
 	 *
 	 * @param Folder $folder If a folder is given, mountpoints are checked. If not only user folder delete permissions are checked.
-	 * @param boolean $checkDeleteRecursively
+	 * @param bool $checkDeleteRecursively
 	 * @return void
 	 * @throws Exception\InsufficientFolderAccessPermissionsException
 	 * @throws Exception\InsufficientFolderWritePermissionsException
@@ -1163,7 +1163,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * some web-based authentication. You have to take care of this yourself.
 	 *
 	 * @param ResourceInterface $resourceObject The file or folder object
-	 * @param boolean $relativeToCurrentScript Determines whether the URL returned should be relative to the current script, in case it is relative at all (only for the LocalDriver)
+	 * @param bool $relativeToCurrentScript Determines whether the URL returned should be relative to the current script, in case it is relative at all (only for the LocalDriver)
 	 * @return string
 	 */
 	public function getPublicUrl(ResourceInterface $resourceObject, $relativeToCurrentScript = FALSE) {
@@ -1228,7 +1228,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * Copies a file from the storage for local processing.
 	 *
 	 * @param FileInterface $fileObject
-	 * @param boolean $writable
+	 * @param bool $writable
 	 * @return string Path to local file (either original or copied to some temporary local location)
 	 */
 	public function getFileForLocalProcessing(FileInterface $fileObject, $writable = TRUE) {

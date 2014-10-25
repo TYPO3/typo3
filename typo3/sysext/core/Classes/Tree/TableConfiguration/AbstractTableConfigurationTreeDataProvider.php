@@ -90,7 +90,7 @@ abstract class AbstractTableConfigurationTreeDataProvider extends \TYPO3\CMS\Bac
 	/**
 	 * Sets the expandAll
 	 *
-	 * @param boolean $expandAll
+	 * @param bool $expandAll
 	 * @return void
 	 */
 	public function setExpandAll($expandAll) {

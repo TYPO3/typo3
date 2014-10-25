@@ -445,7 +445,7 @@ class FrontendEditingController {
 	 * @param string $table The name of the table.
 	 * @param array $dataArray The data array.
 	 * @param array $conf The configuration array for the edit panel.
-	 * @param boolean $checkEditAccessInternals Boolean indicating whether recordEditAccessInternals should not be checked. Defaults
+	 * @param bool $checkEditAccessInternals Boolean indicating whether recordEditAccessInternals should not be checked. Defaults
 	 * @return boolean
 	 */
 	protected function allowedToEdit($table, array $dataArray, array $conf, $checkEditAccessInternals = TRUE) {

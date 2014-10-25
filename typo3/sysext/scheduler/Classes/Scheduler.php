@@ -316,7 +316,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Objects are returned as an array
 	 *
 	 * @param string $where Part of a SQL where clause (without the "WHERE" keyword)
-	 * @param boolean $includeDisabledTasks TRUE if disabled tasks should be fetched too, FALSE otherwise
+	 * @param bool $includeDisabledTasks TRUE if disabled tasks should be fetched too, FALSE otherwise
 	 * @return array List of task objects
 	 */
 	public function fetchTasksWithCondition($where, $includeDisabledTasks = FALSE) {

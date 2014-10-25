@@ -125,7 +125,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	/**
 	 * Sets the indicator if the node is a mount point
 	 *
-	 * @param boolean $isMountPoint
+	 * @param bool $isMountPoint
 	 * @return void
 	 */
 	public function setIsMountPoint($isMountPoint) {
@@ -352,7 +352,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	/**
 	 * Returns the node in an array representation that can be used for serialization
 	 *
-	 * @param boolean $addChildNodes
+	 * @param bool $addChildNodes
 	 * @return array
 	 */
 	public function toArray($addChildNodes = TRUE) {

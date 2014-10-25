@@ -322,7 +322,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	/**
 	 * Creates the search box
 	 *
-	 * @param boolean $formFields If TRUE, the search box is wrapped in its own form-tags
+	 * @param bool $formFields If TRUE, the search box is wrapped in its own form-tags
 	 * @return string HTML for the search box
 	 */
 	public function getSearchBox($formFields = 1) {
@@ -724,8 +724,8 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 * Makes the list of fields to select for a table
 	 *
 	 * @param string $table Table name
-	 * @param boolean $dontCheckUser If set, users access to the field (non-exclude-fields) is NOT checked.
-	 * @param boolean $addDateFields If set, also adds crdate and tstamp fields (note: they will also be added if user is admin or dontCheckUser is set)
+	 * @param bool $dontCheckUser If set, users access to the field (non-exclude-fields) is NOT checked.
+	 * @param bool $addDateFields If set, also adds crdate and tstamp fields (note: they will also be added if user is admin or dontCheckUser is set)
 	 * @return array Array, where values are fieldnames to include in query
 	 */
 	public function makeFieldList($table, $dontCheckUser = 0, $addDateFields = 0) {

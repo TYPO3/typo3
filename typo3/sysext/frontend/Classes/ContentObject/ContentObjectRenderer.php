@@ -1074,7 +1074,7 @@ class ContentObjectRenderer {
 	 *
 	 * @param string|array $flexData Flexform data
 	 * @param array $conf Array to write the data into, by reference
-	 * @param boolean $recursive Is set if called recursive. Don't call function with this parameter, it's used inside the function only
+	 * @param bool $recursive Is set if called recursive. Don't call function with this parameter, it's used inside the function only
 	 * @return void
 	 */
 	public function readFlexformIntoConf($flexData, &$conf, $recursive = FALSE) {
@@ -1147,7 +1147,7 @@ class ContentObjectRenderer {
 	 * Returns a default value for a form field in the FORM cObject.
 	 * Page CANNOT be cached because that would include the inserted value for the current user.
 	 *
-	 * @param boolean $noValueInsert If noValueInsert OR if the no_cache flag for this page is NOT set, the original default value is returned.
+	 * @param bool $noValueInsert If noValueInsert OR if the no_cache flag for this page is NOT set, the original default value is returned.
 	 * @param string $fieldName The POST var name to get default value for
 	 * @param string $defaultVal The current default value
 	 * @return string The default value, either from INPUT var or the current default, based on whether caching is enabled or not.
@@ -1512,7 +1512,7 @@ class ContentObjectRenderer {
 	 * From the $conf array it implements the properties "altText", "titleText" and "longdescURL"
 	 *
 	 * @param array $conf TypoScript configuration properties
-	 * @param boolean $longDesc If set, the longdesc attribute will be generated - must only be used for img elements!
+	 * @param bool $longDesc If set, the longdesc attribute will be generated - must only be used for img elements!
 	 * @return string Parameter string containing alt and title parameters (if any)
 	 * @see IMGTEXT(), FILE(), FORM(), cImage(), filelink()
 	 */
@@ -1561,7 +1561,7 @@ class ContentObjectRenderer {
 	 * Uses the ATagParams property.
 	 *
 	 * @param array $conf TypoScript configuration properties
-	 * @param boolean $addGlobal If set, will add the global config.ATagParams to the link
+	 * @param bool $addGlobal If set, will add the global config.ATagParams to the link
 	 * @return string String containing the parameters to the A tag (if non empty, with a leading space)
 	 * @see IMGTEXT(), filelink(), makelinks(), typolink()
 	 */
@@ -1650,7 +1650,7 @@ class ContentObjectRenderer {
 	 * @param string $content The content stream, typically HTML template content.
 	 * @param string $marker The marker string, typically on the form "###[the marker string]###
 	 * @param mixed $subpartContent The content to insert instead of the subpart found. If a string, then just plain substitution happens (includes removing the HTML comments of the subpart if found). If $subpartContent happens to be an array, it's [0] and [1] elements are wrapped around the EXISTING content of the subpart (fetched by getSubpart()) thereby not removing the original content.
-	 * @param boolean $recursive If $recursive is set, the function calls itself with the content set to the remaining part of the content after the second marker. This means that proceding subparts are ALSO substituted!
+	 * @param bool $recursive If $recursive is set, the function calls itself with the content set to the remaining part of the content after the second marker. This means that proceding subparts are ALSO substituted!
 	 * @return string The processed HTML content string.
 	 */
 	public function substituteSubpart($content, $marker, $subpartContent, $recursive = 1) {
@@ -1816,8 +1816,8 @@ class ContentObjectRenderer {
 	 * @param string $content The content stream, typically HTML template content.
 	 * @param array $markContentArray The array of key/value pairs being marker/content values used in the substitution. For each element in this array the function will substitute a marker in the content stream with the content.
 	 * @param string $wrap A wrap value - [part 1] | [part 2] - for the markers before substitution
-	 * @param boolean $uppercase If set, all marker string substitution is done with upper-case markers.
-	 * @param boolean $deleteUnused If set, all unused marker are deleted.
+	 * @param bool $uppercase If set, all marker string substitution is done with upper-case markers.
+	 * @param bool $deleteUnused If set, all unused marker are deleted.
 	 * @return string The processed output stream
 	 * @see substituteMarker(), substituteMarkerInObject(), TEMPLATE()
 	 */
@@ -1850,8 +1850,8 @@ class ContentObjectRenderer {
 	 * @param string $content
 	 * @param array $markersAndSubparts
 	 * @param string $wrap
-	 * @param boolean $uppercase
-	 * @param boolean $deleteUnused
+	 * @param bool $uppercase
+	 * @param bool $deleteUnused
 	 * @return string
 	 */
 	public function substituteMarkerAndSubpartArrayRecursive($content, array $markersAndSubparts, $wrap = '', $uppercase = FALSE, $deleteUnused = FALSE) {
@@ -1865,9 +1865,9 @@ class ContentObjectRenderer {
 	 * @param array $markContentArray Array with key/values being marker-strings/substitution values.
 	 * @param array $row An array with keys found in the $fieldList (typically a record) which values should be moved to the $markContentArray
 	 * @param string $fieldList A list of fields from the $row array to add to the $markContentArray array. If empty all fields from $row will be added (unless they are integers)
-	 * @param boolean $nl2br If set, all values added to $markContentArray will be nl2br()'ed
+	 * @param bool $nl2br If set, all values added to $markContentArray will be nl2br()'ed
 	 * @param string $prefix Prefix string to the fieldname before it is added as a key in the $markContentArray. Notice that the keys added to the $markContentArray always start and end with "###
-	 * @param boolean $HSC If set, all values are passed through htmlspecialchars() - RECOMMENDED to avoid most obvious XSS and maintain XHTML compliance.
+	 * @param bool $HSC If set, all values are passed through htmlspecialchars() - RECOMMENDED to avoid most obvious XSS and maintain XHTML compliance.
 	 * @return array The modified $markContentArray
 	 */
 	public function fillInMarkerArray(array $markContentArray, array $row, $fieldList = '', $nl2br = TRUE, $prefix = 'FIELD_', $HSC = FALSE) {
@@ -5467,7 +5467,7 @@ class ContentObjectRenderer {
 	 *
 	 * @param string $key Which level in the root line
 	 * @param string $field The field in the rootline record to return (a field from the pages table)
-	 * @param boolean $slideBack If set, then we will traverse through the rootline from outer level towards the root level until the value found is TRUE
+	 * @param bool $slideBack If set, then we will traverse through the rootline from outer level towards the root level until the value found is TRUE
 	 * @param mixed $altRootLine If you supply an array for this it will be used as an alternative root line array
 	 * @return string The value from the field of the rootline.
 	 * @access private
@@ -6301,7 +6301,7 @@ class ContentObjectRenderer {
 	 * The function will do its best to find a MP value that will keep the page id inside the current Mount Point rootline if any.
 	 *
 	 * @param integer $pageId page id
-	 * @param boolean $raw If TRUE, the MPvalue is returned raw. Normally it is encoded as &MP=... variable
+	 * @param bool $raw If TRUE, the MPvalue is returned raw. Normally it is encoded as &MP=... variable
 	 * @return string MP value, prefixed with &MP= (depending on $raw)
 	 * @see typolink()
 	 */
@@ -6398,7 +6398,7 @@ class ContentObjectRenderer {
 	 *
 	 * @param string $conf Configuration
 	 * @param array $overruleQueryArguments Multidimensional key/value pairs that overrule incoming query arguments
-	 * @param boolean $forceOverruleArguments If set, key/value pairs not in the query but the overrule array will be set
+	 * @param bool $forceOverruleArguments If set, key/value pairs not in the query but the overrule array will be set
 	 * @return string The URL query part (starting with a &)
 	 */
 	public function getQueryArguments($conf, $overruleQueryArguments = array(), $forceOverruleArguments = FALSE) {
@@ -6987,7 +6987,7 @@ class ContentObjectRenderer {
 	 *
 	 * @param string $table The table name, should be in $GLOBALS['TCA']
 	 * @param integer $uid The UID of the record from $table which we are going to delete
-	 * @param boolean $doExec If set, the query is executed. IT'S HIGHLY RECOMMENDED TO USE THIS FLAG to execute the query directly!!!
+	 * @param bool $doExec If set, the query is executed. IT'S HIGHLY RECOMMENDED TO USE THIS FLAG to execute the query directly!!!
 	 * @return string The query, ready to execute unless $doExec was TRUE in which case the return value is FALSE.
 	 * @see DBgetUpdate(), DBgetInsert(), user_feAdmin
 	 */
@@ -7026,7 +7026,7 @@ class ContentObjectRenderer {
 	 * @param integer $uid The UID of the record from $table which we are going to update
 	 * @param array $dataArr The data array where key/value pairs are fieldnames/values for the record to update.
 	 * @param string $fieldList Comma list of fieldnames which are allowed to be updated. Only values from the data record for fields in this list will be updated!!
-	 * @param boolean $doExec If set, the query is executed. IT'S HIGHLY RECOMMENDED TO USE THIS FLAG to execute the query directly!!!
+	 * @param bool $doExec If set, the query is executed. IT'S HIGHLY RECOMMENDED TO USE THIS FLAG to execute the query directly!!!
 	 * @return string The query, ready to execute unless $doExec was TRUE in which case the return value is FALSE.
 	 * @see DBgetInsert(), DBgetDelete(), user_feAdmin
 	 */
@@ -7065,7 +7065,7 @@ class ContentObjectRenderer {
 	 * @param integer $pid The PID value for the record to insert
 	 * @param array $dataArr The data array where key/value pairs are fieldnames/values for the record to insert
 	 * @param string $fieldList Comma list of fieldnames which are allowed to be inserted. Only values from the data record for fields in this list will be inserted!!
-	 * @param boolean $doExec If set, the query is executed. IT'S HIGHLY RECOMMENDED TO USE THIS FLAG to execute the query directly!!!
+	 * @param bool $doExec If set, the query is executed. IT'S HIGHLY RECOMMENDED TO USE THIS FLAG to execute the query directly!!!
 	 * @return string The query, ready to execute unless $doExec was TRUE in which case the return value is FALSE.
 	 * @see DBgetUpdate(), DBgetDelete(), user_feAdmin
 	 */
@@ -7124,7 +7124,7 @@ class ContentObjectRenderer {
 	 * @param array $row The record data array for the record in question
 	 * @param array $feUserRow The array of the fe_user which is evaluated, typ. $GLOBALS['TSFE']->fe_user->user
 	 * @param string $allowedGroups Commalist of the only fe_groups uids which may edit the record. If not set, then the usergroup field of the fe_user is used.
-	 * @param boolean $feEditSelf TRUE, if the fe_user may edit his own fe_user record.
+	 * @param bool $feEditSelf TRUE, if the fe_user may edit his own fe_user record.
 	 * @return boolean
 	 * @see user_feAdmin
 	 */
@@ -7165,7 +7165,7 @@ class ContentObjectRenderer {
 	 * @param string $table The table name
 	 * @param array $feUserRow The array of the fe_user which is evaluated, typ. $GLOBALS['TSFE']->fe_user->user
 	 * @param string $allowedGroups Commalist of the only fe_groups uids which may edit the record. If not set, then the usergroup field of the fe_user is used.
-	 * @param boolean $feEditSelf TRUE, if the fe_user may edit his own fe_user record.
+	 * @param bool $feEditSelf TRUE, if the fe_user may edit his own fe_user record.
 	 * @return string The where clause part. ALWAYS returns a string. If no access at all, then " AND 1=0
 	 * @see DBmayFEUserEdit(), user_feAdmin::displayEditScreen()
 	 */
@@ -7211,7 +7211,7 @@ class ContentObjectRenderer {
 	 * This means this function will work in conjunction with the preview facilities of the frontend engine/Admin Panel.
 	 *
 	 * @param string $table The table for which to get the where clause
-	 * @param boolean $show_hidden If set, then you want NOT to filter out hidden records. Otherwise hidden record are filtered based on the current preview settings.
+	 * @param bool $show_hidden If set, then you want NOT to filter out hidden records. Otherwise hidden record are filtered based on the current preview settings.
 	 * @param array $ignore_array Array you can pass where keys can be "disabled", "starttime", "endtime", "fe_group" (keys from "enablefields" in TCA) and if set they will make sure that part of the clause is not added. Thus disables the specific part of the clause. For previewing etc.
 	 * @return string The part of the where clause on the form " AND [fieldname]=0 AND ...". Eg. " AND hidden=0 AND starttime < 123345567
 	 */
@@ -7238,7 +7238,7 @@ class ContentObjectRenderer {
 	 * @param integer $id The id of the start page from which point in the page tree to descend. IF NEGATIVE the id itself is included in the end of the list (only if $begin is 0) AND the output does NOT contain a last comma. Recommended since it will resolve the input ID for mount pages correctly and also check if the start ID actually exists!
 	 * @param integer $depth The number of levels to descend. If you want to descend infinitely, just set this to 100 or so. Should be at least "1" since zero will just make the function return (no decend...)
 	 * @param integer $begin Is an optional integer that determines at which level in the tree to start collecting uid's. Zero means 'start right away', 1 = 'next level and out'
-	 * @param boolean $dontCheckEnableFields See function description
+	 * @param bool $dontCheckEnableFields See function description
 	 * @param string $addSelectFields Additional fields to select. Syntax: ",[fieldname],[fieldname],...
 	 * @param string $moreWhereClauses Additional where clauses. Syntax: " AND [fieldname]=[value] AND ...
 	 * @param array $prevId_array array of IDs from previous recursions. In order to prevent infinite loops with mount pages.
@@ -7497,7 +7497,7 @@ class ContentObjectRenderer {
 	 *
 	 * @param string $table See ->exec_getQuery()
 	 * @param array $conf See ->exec_getQuery()
-	 * @param boolean $returnQueryArray If set, the function will return the query not as a string but array with the various parts. RECOMMENDED!
+	 * @param bool $returnQueryArray If set, the function will return the query not as a string but array with the various parts. RECOMMENDED!
 	 * @return mixed A SELECT query if $returnQueryArray is FALSE, otherwise the SELECT query in an array as parts.
 	 * @access private
 	 * @see CONTENT(), numRows()
@@ -7645,7 +7645,7 @@ class ContentObjectRenderer {
 	 *
 	 * @param string $table The table name
 	 * @param array $conf The TypoScript configuration properties
-	 * @param boolean $returnQueryArray If set, the function will return the query not as a string but array with the various parts. RECOMMENDED!
+	 * @param bool $returnQueryArray If set, the function will return the query not as a string but array with the various parts. RECOMMENDED!
 	 * @return mixed A WHERE clause based on the relevant parts of the TypoScript properties for a "select" function in TypoScript, see link. If $returnQueryArray is FALSE the where clause is returned as a string with WHERE, GROUP BY and ORDER BY parts, otherwise as an array with these parts.
 	 * @access private
 	 * @see getQuery()

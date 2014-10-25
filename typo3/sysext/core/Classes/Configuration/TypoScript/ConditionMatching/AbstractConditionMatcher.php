@@ -101,7 +101,7 @@ abstract class AbstractConditionMatcher {
 	/**
 	 * Sets whether to simulate the behaviour and match all conditions.
 	 *
-	 * @param boolean $simulateMatchResult Whether to simulate positive matches
+	 * @param bool $simulateMatchResult Whether to simulate positive matches
 	 * @return void
 	 */
 	public function setSimulateMatchResult($simulateMatchResult) {

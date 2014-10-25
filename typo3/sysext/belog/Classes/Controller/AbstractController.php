@@ -171,7 +171,7 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 	 * [pid][dayTimestamp][items]
 	 *
 	 * @param \TYPO3\CMS\Extbase\Persistence\QueryResultInterface<\TYPO3\CMS\Belog\Domain\Model\LogEntry> $logEntries
-	 * @param boolean $groupByPage Whether or not log entries should be grouped by page
+	 * @param bool $groupByPage Whether or not log entries should be grouped by page
 	 * @return array
 	 */
 	protected function groupLogEntriesByPageAndDay(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface $logEntries, $groupByPage = FALSE) {

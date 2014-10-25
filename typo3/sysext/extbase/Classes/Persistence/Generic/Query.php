@@ -414,7 +414,7 @@ class Query implements QueryInterface {
 	 *
 	 * @param string $propertyName The name of the property to compare against
 	 * @param mixed $operand The value to compare with
-	 * @param boolean $caseSensitive Whether the equality test should be done case-sensitive
+	 * @param bool $caseSensitive Whether the equality test should be done case-sensitive
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ComparisonInterface
 	 * @api
 	 */
@@ -440,7 +440,7 @@ class Query implements QueryInterface {
 	 *
 	 * @param string $propertyName The name of the property to compare against
 	 * @param mixed $operand The value to compare with
-	 * @param boolean $caseSensitive Whether the matching should be done case-sensitive
+	 * @param bool $caseSensitive Whether the matching should be done case-sensitive
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ComparisonInterface
 	 * @api
 	 */

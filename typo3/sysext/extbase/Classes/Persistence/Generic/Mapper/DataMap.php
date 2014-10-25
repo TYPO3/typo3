@@ -473,7 +473,7 @@ class DataMap {
 	}
 
 	/**
-	 * @param boolean $isStatic
+	 * @param bool $isStatic
 	 */
 	public function setIsStatic($isStatic) {
 		$this->isStatic = $isStatic;
@@ -487,7 +487,7 @@ class DataMap {
 	}
 
 	/**
-	 * @param boolean $rootLevel
+	 * @param bool $rootLevel
 	 */
 	public function setRootLevel($rootLevel) {
 		$this->rootLevel = $rootLevel;

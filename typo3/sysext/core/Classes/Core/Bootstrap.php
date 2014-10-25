@@ -206,7 +206,7 @@ class Bootstrap {
 	 * Includes LocalConfiguration.php and sets several
 	 * global settings depending on configuration.
 	 *
-	 * @param boolean $allowCaching Whether to allow caching - affects cache_core (autoloader)
+	 * @param bool $allowCaching Whether to allow caching - affects cache_core (autoloader)
 	 * @param string $packageManagerClassName Define an alternative package manager implementation (usually for the installer)
 	 * @return Bootstrap
 	 * @internal This is not a public API method, do not use in own extensions
@@ -322,7 +322,7 @@ class Bootstrap {
 	/**
 	 * Load ext_localconf of extensions
 	 *
-	 * @param boolean $allowCaching
+	 * @param bool $allowCaching
 	 * @return Bootstrap
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
@@ -625,7 +625,7 @@ class Bootstrap {
 	 * The ext_localconf.php files in extensions are meant to make changes
 	 * to the global $TYPO3_CONF_VARS configuration array.
 	 *
-	 * @param boolean $allowCaching
+	 * @param bool $allowCaching
 	 * @return Bootstrap
 	 */
 	protected function loadAdditionalConfigurationFromExtensions($allowCaching = TRUE) {
@@ -876,7 +876,7 @@ class Bootstrap {
 	 * Executes ext_tables.php files of loaded extensions or the
 	 * according cache file if exists.
 	 *
-	 * @param boolean $allowCaching True, if reading compiled ext_tables file from cache is allowed
+	 * @param bool $allowCaching True, if reading compiled ext_tables file from cache is allowed
 	 * @return Bootstrap
 	 * @internal This is not a public API method, do not use in own extensions
 	 */

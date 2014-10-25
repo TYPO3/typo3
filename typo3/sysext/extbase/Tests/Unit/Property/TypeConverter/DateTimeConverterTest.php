@@ -131,7 +131,7 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @param string $source the string to be converted
 	 * @param string $dateFormat the expected date format
-	 * @param boolean $isValid TRUE if the conversion is expected to be successful, otherwise FALSE
+	 * @param bool $isValid TRUE if the conversion is expected to be successful, otherwise FALSE
 	 * @test
 	 * @dataProvider convertFromStringDataProvider
 	 */
@@ -355,7 +355,7 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @param array $source the array to be converted
-	 * @param boolean $isValid TRUE if the conversion is expected to be successful, otherwise FALSE
+	 * @param bool $isValid TRUE if the conversion is expected to be successful, otherwise FALSE
 	 * @test
 	 * @dataProvider convertFromArrayDataProvider
 	 */

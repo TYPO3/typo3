@@ -27,7 +27,7 @@ interface MailerAdapterInterface {
 	 * @param string $messageBody Mail body.
 	 * @param array $additionalHeaders Additional mail headers.
 	 * @param array $additionalParameters Additional mailer parameters.
-	 * @param boolean $fakeSending Whether to fake sending or not, used in Unit Tests.
+	 * @param bool $fakeSending Whether to fake sending or not, used in Unit Tests.
 	 * @return boolean TRUE if the mail was successfully sent, FALSE otherwise.
 	 */
 	public function mail($to, $subject, $messageBody, $additionalHeaders = NULL, $additionalParameters = NULL, $fakeSending = FALSE);

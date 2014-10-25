@@ -124,7 +124,7 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 	 *
 	 * @param mixed $identifier
 	 * @param string $objectType
-	 * @param boolean $useLazyLoading Set to TRUE if you want to use lazy loading for this object
+	 * @param bool $useLazyLoading Set to TRUE if you want to use lazy loading for this object
 	 * @return object The object for the identifier if it is known, or NULL
 	 * @api
 	 */

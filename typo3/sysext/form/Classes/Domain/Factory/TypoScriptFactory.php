@@ -57,7 +57,7 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Disables the content element.
 	 *
-	 * @param boolean $disableContentElement
+	 * @param bool $disableContentElement
 	 * @return void
 	 */
 	public function setDisableContentElement($disableContentElement) {

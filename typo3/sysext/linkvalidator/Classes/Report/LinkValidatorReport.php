@@ -352,7 +352,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 	/**
 	 * Flushes the rendered content to the browser
 	 *
-	 * @param boolean $form
+	 * @param bool $form
 	 * @return string $content
 	 */
 	protected function flush($form = FALSE) {

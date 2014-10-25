@@ -114,7 +114,7 @@ class DatabaseIntegrityCheck {
 	 *
 	 * @param integer $theID a pid (page-record id) from which to start making the tree
 	 * @param string $depthData HTML-code (image-tags) used when this function calls itself recursively.
-	 * @param boolean $versions Internal variable, don't set from outside!
+	 * @param bool $versions Internal variable, don't set from outside!
 	 * @return void
 	 */
 	public function genTree($theID, $depthData, $versions = FALSE) {
@@ -183,7 +183,7 @@ class DatabaseIntegrityCheck {
 	 * @param integer $theID a pid (page-record id) from which to start making the tree
 	 * @param string $depthData HTML-code used when this function calls itself recursively.
 	 * @param string $table Table to get the records from
-	 * @param boolean $versions Internal variable, don't set from outside!
+	 * @param bool $versions Internal variable, don't set from outside!
 	 * @return 	void
 	 */
 	public function genTree_records($theID, $depthData, $table = '', $versions = FALSE) {

@@ -816,7 +816,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 	 *
 	 * @param string $label Linktext
 	 * @param array $piVars Link vars
-	 * @param boolean $returnUrl TRUE: returns only url  FALSE (default) returns the link)
+	 * @param bool $returnUrl TRUE: returns only url  FALSE (default) returns the link)
 	 * @return string Link or url
 	 */
 	protected function getPageLink($label, $piVars, $returnUrl = FALSE) {

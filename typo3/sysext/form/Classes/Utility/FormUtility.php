@@ -114,7 +114,7 @@ class FormUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * e.g. for 'tx_form_View_Confirmation_Additional' it will be 'Additional'
 	 *
 	 * @param object $object The object to be used
-	 * @param boolean $lowercase Whether to convert to lowercase
+	 * @param bool $lowercase Whether to convert to lowercase
 	 * @return string
 	 */
 	public function getLastPartOfClassName($object, $lowercase = FALSE) {

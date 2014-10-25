@@ -53,7 +53,7 @@ class TextfieldViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractForm
 	/**
 	 * Renders the textfield.
 	 *
-	 * @param boolean $required If the field is required or not
+	 * @param bool $required If the field is required or not
 	 * @param string $type The field type, e.g. "text", "email", "url" etc.
 	 * @return string
 	 * @api

@@ -98,7 +98,7 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper {
 	 * Get the value of this form element.
 	 * Either returns arguments['value'], or the correct value for Object Access.
 	 *
-	 * @param boolean $convertObjects whether or not to convert objects to identifiers
+	 * @param bool $convertObjects whether or not to convert objects to identifiers
 	 * @return mixed Value
 	 */
 	protected function getValue($convertObjects = TRUE) {

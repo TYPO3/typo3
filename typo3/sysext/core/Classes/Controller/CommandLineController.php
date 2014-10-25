@@ -217,7 +217,7 @@ class CommandLineController {
 	 * Echos strings to shell, but respective silent-modes
 	 *
 	 * @param string $string The string
-	 * @param boolean $force If string should be written even if -s is set (-ss will subdue it!)
+	 * @param bool $force If string should be written even if -s is set (-ss will subdue it!)
 	 * @return boolean Returns TRUE if string was outputted.
 	 */
 	public function cli_echo($string = '', $force = FALSE) {

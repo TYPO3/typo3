@@ -166,7 +166,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 *
 	 * @param string $table Name of the table
 	 * @param integer $id Id of the accordant record
-	 * @param boolean $ignoreTable Whether to ignore the page, if TRUE a positive
+	 * @param bool $ignoreTable Whether to ignore the page, if TRUE a positive
 	 * @return integer Id of the page the record is persisted on
 	 */
 	protected function getPageIdByRecord($table, $id, $ignoreTable = FALSE) {

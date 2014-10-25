@@ -78,7 +78,7 @@ class ValidatorUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param object $rule Rule object
 	 * @param string $fieldName Field name the rule belongs to
-	 * @param boolean $breakOnError Break the rule chain when TRUE
+	 * @param bool $breakOnError Break the rule chain when TRUE
 	 * @return \TYPO3\CMS\Form\Utility\ValidatorUtility
 	 */
 	public function addRule($rule, $fieldName, $breakOnError = FALSE) {

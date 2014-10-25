@@ -113,7 +113,7 @@ class NormalizeCommand {
 	 * Normalize month field.
 	 *
 	 * @param string $expression Month field expression
-	 * @param boolean $isMonthField TRUE if month field is handled, FALSE for weekday field
+	 * @param bool $isMonthField TRUE if month field is handled, FALSE for weekday field
 	 * @return string Normalized expression
 	 */
 	static protected function normalizeMonthAndWeekdayField($expression, $isMonthField = TRUE) {
@@ -297,7 +297,7 @@ class NormalizeCommand {
 	 * Dispatcher method for normalizeMonth and normalizeWeekday
 	 *
 	 * @param string $expression Month or weekday to be normalized
-	 * @param boolean $isMonth TRUE if a month is handled, FALSE for weekday
+	 * @param bool $isMonth TRUE if a month is handled, FALSE for weekday
 	 * @return string normalized month or weekday
 	 */
 	static protected function normalizeMonthAndWeekday($expression, $isMonth = TRUE) {

@@ -509,7 +509,7 @@ abstract class AbstractFile implements FileInterface {
 	 * If the file is normally located on a remote storages, this creates a local copy.
 	 * If the file is already on the local system, this only makes a new copy if $writable is set to TRUE.
 	 *
-	 * @param boolean $writable Set this to FALSE if you only want to do read operations on the file.
+	 * @param bool $writable Set this to FALSE if you only want to do read operations on the file.
 	 *
 	 * @throws \RuntimeException
 	 * @return string

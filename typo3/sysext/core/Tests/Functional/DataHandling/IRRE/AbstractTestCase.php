@@ -303,7 +303,7 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
 	 * Asserts reference index elements.
 	 *
 	 * @param array $assertions
-	 * @param boolean $expected
+	 * @param bool $expected
 	 */
 	protected function assertReferenceIndex(array $assertions, $expected = TRUE) {
 		$references = $this->getAllRecords('sys_refindex', 'hash');
@@ -335,7 +335,7 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
 	 * @param string $parentFieldName
 	 * @param array $assertions
 	 * @param string $mmTable
-	 * @param boolean $expected
+	 * @param bool $expected
 	 * @return void
 	 */
 	protected function assertChildren($parentTableName, $parentId, $parentFieldName, array $assertions, $mmTable = '', $expected = TRUE) {

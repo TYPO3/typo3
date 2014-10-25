@@ -29,7 +29,7 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
 	 * Overrides the parent method to create a *frontend* category collection.
 	 *
 	 * @param array $collectionRecord Database record
-	 * @param boolean $fillItems Populates the entries directly on load, might be bad for memory on large collections
+	 * @param bool $fillItems Populates the entries directly on load, might be bad for memory on large collections
 	 * @return \TYPO3\CMS\Frontend\Category\Collection\CategoryCollection
 	 */
 	static public function create(array $collectionRecord, $fillItems = FALSE) {
@@ -55,7 +55,7 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
 	 * \TYPO3\CMS\Core\Category\Collection\CategoryCollection
 	 *
 	 * @param integer $id Id of database record to be loaded
-	 * @param boolean $fillItems Populates the entries directly on load, might be bad for memory on large collections
+	 * @param bool $fillItems Populates the entries directly on load, might be bad for memory on large collections
 	 * @param string $tableName the table name
 	 * @param string $fieldName Name of the categories relation field
 	 * @return \TYPO3\CMS\Core\Collection\CollectionInterface

@@ -148,7 +148,7 @@ class DiffUtility {
 	 * Will bring down the length of strings to < 150 chars if they were longer than 200 chars. This done by preserving the 70 first and last chars and concatenate those strings with "..." and a number indicating the string length
 	 *
 	 * @param string $clearBuffer The input string.
-	 * @param boolean $last If set, it indicates that the string should just end with ... (thus no "complete" ending)
+	 * @param bool $last If set, it indicates that the string should just end with ... (thus no "complete" ending)
 	 * @return string Processed string.
 	 * @access private
 	 */
@@ -184,7 +184,7 @@ class DiffUtility {
 	 * Adds a space character before and after HTML tags (more precisely any found < or >)
 	 *
 	 * @param string $str String to process
-	 * @param boolean $rev If set, the < > searched for will be &lt; and &gt;
+	 * @param bool $rev If set, the < > searched for will be &lt; and &gt;
 	 * @return string Processed string
 	 * @access private
 	 */

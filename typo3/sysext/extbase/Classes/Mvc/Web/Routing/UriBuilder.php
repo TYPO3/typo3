@@ -221,7 +221,7 @@ class UriBuilder {
 	/**
 	 * If set, the URI is prepended with the current base URI. Defaults to FALSE.
 	 *
-	 * @param boolean $createAbsoluteUri
+	 * @param bool $createAbsoluteUri
 	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
 	 * @api
 	 */
@@ -259,7 +259,7 @@ class UriBuilder {
 	/**
 	 * If set, the current query parameters will be merged with $this->arguments. Defaults to FALSE.
 	 *
-	 * @param boolean $addQueryString
+	 * @param bool $addQueryString
 	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
 	 * @api
 	 * @see TSref/typolink.addQueryString
@@ -343,7 +343,7 @@ class UriBuilder {
 	/**
 	 * If set, URIs for pages without access permissions will be created
 	 *
-	 * @param boolean $linkAccessRestrictedPages
+	 * @param bool $linkAccessRestrictedPages
 	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
 	 * @api
 	 */
@@ -405,7 +405,7 @@ class UriBuilder {
 	 * by default FALSE; if TRUE, &no_cache=1 will be appended to the URI
 	 * This overrules the useCacheHash setting
 	 *
-	 * @param boolean $noCache
+	 * @param bool $noCache
 	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
 	 * @api
 	 */
@@ -426,7 +426,7 @@ class UriBuilder {
 	 * by default TRUE; if FALSE, no cHash parameter will be appended to the URI
 	 * If noCache is set, this setting will be ignored.
 	 *
-	 * @param boolean $useCacheHash
+	 * @param bool $useCacheHash
 	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
 	 * @api
 	 */

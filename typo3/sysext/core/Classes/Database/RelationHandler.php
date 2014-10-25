@@ -339,7 +339,7 @@ class RelationHandler {
 	/**
 	 * Sets $fetchAllFields
 	 *
-	 * @param boolean $allFields enables fetching of all fields in getFromDB()
+	 * @param bool $allFields enables fetching of all fields in getFromDB()
 	 */
 	public function setFetchAllFields($allFields) {
 		$this->fetchAllFields = (boolean)$allFields;
@@ -348,7 +348,7 @@ class RelationHandler {
 	/**
 	 * Sets whether the reference index shall be updated.
 	 *
-	 * @param boolean $updateReferenceIndex Whether the reference index shall be updated
+	 * @param bool $updateReferenceIndex Whether the reference index shall be updated
 	 * @return void
 	 */
 	public function setUpdateReferenceIndex($updateReferenceIndex) {
@@ -548,7 +548,7 @@ class RelationHandler {
 	 *
 	 * @param string $MM_tableName MM table name
 	 * @param integer $uid Local UID
-	 * @param boolean $prependTableName If set, then table names will always be written.
+	 * @param bool $prependTableName If set, then table names will always be written.
 	 * @return void
 	 */
 	public function writeMM($MM_tableName, $uid, $prependTableName = FALSE) {
@@ -700,7 +700,7 @@ class RelationHandler {
 	 * @param string $MM_tableName MM table name
 	 * @param integer $uid Local, current UID
 	 * @param integer $newUid Local, new UID
-	 * @param boolean $prependTableName If set, then table names will always be written.
+	 * @param bool $prependTableName If set, then table names will always be written.
 	 * @return void
 	 */
 	public function remapMM($MM_tableName, $uid, $newUid, $prependTableName = FALSE) {
@@ -826,7 +826,7 @@ class RelationHandler {
 	 * @param array $conf TCA configuration for current field
 	 * @param integer $parentUid The uid of the parent record
 	 * @param integer $updateToUid If this is larger than zero it will be used as foreign UID instead of the given $parentUid (on Copy)
-	 * @param boolean $skipSorting Do not update the sorting columns, this could happen for imported values
+	 * @param bool $skipSorting Do not update the sorting columns, this could happen for imported values
 	 * @return void
 	 */
 	public function writeForeignField($conf, $parentUid, $updateToUid = 0, $skipSorting = FALSE) {
@@ -934,7 +934,7 @@ class RelationHandler {
 	/**
 	 * After initialization you can extract an array of the elements from the object. Use this function for that.
 	 *
-	 * @param boolean $prependTableName If set, then table names will ALWAYS be prepended (unless its a _NO_TABLE value)
+	 * @param bool $prependTableName If set, then table names will ALWAYS be prepended (unless its a _NO_TABLE value)
 	 * @return array A numeric array.
 	 */
 	public function getValueArray($prependTableName = FALSE) {
@@ -1047,7 +1047,7 @@ class RelationHandler {
 	/**
 	 * Counts the items in $this->itemArray and puts this value in an array by default.
 	 *
-	 * @param boolean $returnAsArray Whether to put the count value in an array
+	 * @param bool $returnAsArray Whether to put the count value in an array
 	 * @return mixed The plain count as integer or the same inside an array
 	 */
 	public function countItems($returnAsArray = TRUE) {

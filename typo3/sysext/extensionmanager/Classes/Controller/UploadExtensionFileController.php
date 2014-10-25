@@ -72,7 +72,7 @@ class UploadExtensionFileController extends AbstractController {
 	/**
 	 * Extract an uploaded file and install the matching extension
 	 *
-	 * @param boolean $overwrite Overwrite existing extension if TRUE
+	 * @param bool $overwrite Overwrite existing extension if TRUE
 	 * @throws ExtensionManagerException
 	 * @return void
 	 */
@@ -158,7 +158,7 @@ class UploadExtensionFileController extends AbstractController {
 	 * Extracts a given t3x file and installs the extension
 	 *
 	 * @param string $file Path to uploaded file
-	 * @param boolean $overwrite Overwrite existing extension if TRUE
+	 * @param bool $overwrite Overwrite existing extension if TRUE
 	 * @throws ExtensionManagerException
 	 * @return array
 	 */
@@ -192,7 +192,7 @@ class UploadExtensionFileController extends AbstractController {
 	 *
 	 * @param string $file Path to uploaded file
 	 * @param string $fileName Filename (basename) of uploaded file
-	 * @param boolean $overwrite Overwrite existing extension if TRUE
+	 * @param bool $overwrite Overwrite existing extension if TRUE
 	 * @return array
 	 * @throws ExtensionManagerException
 	 */

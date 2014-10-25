@@ -201,7 +201,7 @@ class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 * @dataProvider normalizeMonthAndWeekdayFieldValidDataProvider
 	 * @param string $expression Cron command partial expression for month and weekday fields
-	 * @param boolean $isMonthField Flag to designate month field or not
+	 * @param bool $isMonthField Flag to designate month field or not
 	 * @param string $expected Expected result (normalized months or weekdays)
 	 */
 	public function normalizeMonthAndWeekdayFieldReturnsNormalizedListForValidExpression($expression, $isMonthField, $expected) {
@@ -229,7 +229,7 @@ class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider normalizeMonthAndWeekdayFieldInvalidDataProvider
 	 * @expectedException \InvalidArgumentException
 	 * @param string $expression Cron command partial expression for month and weekday fields (invalid)
-	 * @param boolean $isMonthField Flag to designate month field or not
+	 * @param bool $isMonthField Flag to designate month field or not
 	 */
 	public function normalizeMonthAndWeekdayFieldThrowsExceptionForInvalidExpression($expression, $isMonthField) {
 		$accessibleProxyClassName = $this->getAccessibleProxy();

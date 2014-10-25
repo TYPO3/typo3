@@ -304,7 +304,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
 	 * _isDirty check inside AbstractEntity work, but it is just a work-
 	 * around right now.
 	 *
-	 * @param boolean $clone
+	 * @param bool $clone
 	 */
 	public function _setClone($clone) {
 		$this->_isClone = (boolean) $clone;

@@ -25,7 +25,7 @@ abstract class AbstractContextMenuRenderer {
 	 * Renders an action recursive or just a single one
 	 *
 	 * @param \TYPO3\CMS\Backend\ContextMenu\ContextMenuAction $action
-	 * @param boolean $recursive
+	 * @param bool $recursive
 	 * @return mixed
 	 */
 	abstract public function renderAction(\TYPO3\CMS\Backend\ContextMenu\ContextMenuAction $action, $recursive = FALSE);
@@ -34,7 +34,7 @@ abstract class AbstractContextMenuRenderer {
 	 * Renders an action collection recursive or just a single one
 	 *
 	 * @param \TYPO3\CMS\Backend\ContextMenu\ContextMenuActionCollection $actionCollection
-	 * @param boolean $recursive
+	 * @param bool $recursive
 	 * @return mixed
 	 */
 	abstract public function renderActionCollection(\TYPO3\CMS\Backend\ContextMenu\ContextMenuActionCollection $actionCollection, $recursive = FALSE);
@@ -43,7 +43,7 @@ abstract class AbstractContextMenuRenderer {
 	 * Renders a context menu recursive or just a single one
 	 *
 	 * @param \TYPO3\CMS\Backend\ContextMenu\AbstractContextMenu $contextMenu
-	 * @param boolean $recursive
+	 * @param bool $recursive
 	 * @return mixed
 	 */
 	abstract public function renderContextMenu(\TYPO3\CMS\Backend\ContextMenu\AbstractContextMenu $contextMenu, $recursive = FALSE);

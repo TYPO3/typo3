@@ -227,7 +227,7 @@ class LanguageService {
 	 * Mostly used from modules with only one LOCAL_LANG file loaded into the global space.
 	 *
 	 * @param string $index Label key
-	 * @param boolean $hsc If set, the return value is htmlspecialchar'ed
+	 * @param bool $hsc If set, the return value is htmlspecialchar'ed
 	 * @return string
 	 */
 	public function getLL($index, $hsc = FALSE) {
@@ -249,7 +249,7 @@ class LanguageService {
 	 *
 	 * @param string $index Label key
 	 * @param array $localLanguage $LOCAL_LANG array to get label key from
-	 * @param boolean $hsc If set, the return value is htmlspecialchar'ed
+	 * @param bool $hsc If set, the return value is htmlspecialchar'ed
 	 * @return string
 	 */
 	public function getLLL($index, $localLanguage, $hsc = FALSE) {
@@ -278,7 +278,7 @@ class LanguageService {
 	 * Refer to 'Inside TYPO3' for more details
 	 *
 	 * @param string $input Label key/reference
-	 * @param boolean $hsc If set, the return value is htmlspecialchar'ed
+	 * @param bool $hsc If set, the return value is htmlspecialchar'ed
 	 * @return string
 	 */
 	public function sL($input, $hsc = FALSE) {
@@ -388,8 +388,8 @@ class LanguageService {
 	 * Read language labels will be merged with $LOCAL_LANG (if $setGlobal = TRUE).
 	 *
 	 * @param string $fileRef $fileRef is a file-reference
-	 * @param boolean $setGlobal Setting in global variable $LOCAL_LANG (or returning the variable)
-	 * @param boolean $mergeLocalOntoDefault
+	 * @param bool $setGlobal Setting in global variable $LOCAL_LANG (or returning the variable)
+	 * @param bool $mergeLocalOntoDefault
 	 * @return mixed if $setGlobal===TRUE, LL-files set $LOCAL_LANG in global scope, or array is returned from function
 	 */
 	public function includeLLFile($fileRef, $setGlobal = TRUE, $mergeLocalOntoDefault = FALSE) {
@@ -474,7 +474,7 @@ class LanguageService {
 	 *
 	 * @param string $index
 	 * @param string $value
-	 * @param boolean $overrideDefault Overrides default language
+	 * @param bool $overrideDefault Overrides default language
 	 * @return void
 	 */
 	public function overrideLL($index, $value, $overrideDefault = TRUE) {

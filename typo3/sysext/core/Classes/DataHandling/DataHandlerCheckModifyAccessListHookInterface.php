@@ -24,7 +24,7 @@ interface DataHandlerCheckModifyAccessListHookInterface {
 	/**
 	 * Hook that determines whether a user has access to modify a table.
 	 *
-	 * @param boolean &$accessAllowed Whether the user has access to modify a table
+	 * @param bool &$accessAllowed Whether the user has access to modify a table
 	 * @param string $table The name of the table to be modified
 	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $parent The calling parent object
 	 * @return void

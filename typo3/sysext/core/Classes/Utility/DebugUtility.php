@@ -190,7 +190,7 @@ class DebugUtility {
 	 *
 	 * @param mixed $rows Array of arrays with similar keys
 	 * @param string $header Table header
-	 * @param boolean $returnHTML If TRUE, will return content instead of echo'ing out.
+	 * @param bool $returnHTML If TRUE, will return content instead of echo'ing out.
 	 * @return void Outputs to browser.
 	 */
 	static public function debugRows($rows, $header = '', $returnHTML = FALSE) {

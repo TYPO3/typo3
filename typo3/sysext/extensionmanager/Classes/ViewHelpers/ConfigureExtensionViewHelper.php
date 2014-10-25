@@ -29,8 +29,8 @@ class ConfigureExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\Act
 	 * Renders a configure extension link if the extension has configuration options
 	 *
 	 * @param array $extension Extension configuration array with extension information
-	 * @param boolean $forceConfiguration If TRUE the content is only returned if a link could be generated
-	 * @param boolean $showDescription If TRUE the extension description is also shown in the title attribute
+	 * @param bool $forceConfiguration If TRUE the content is only returned if a link could be generated
+	 * @param bool $showDescription If TRUE the extension description is also shown in the title attribute
 	 * @return string the rendered tag or child nodes content
 	 */
 	public function render($extension, $forceConfiguration = TRUE, $showDescription = FALSE) {

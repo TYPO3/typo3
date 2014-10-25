@@ -129,7 +129,7 @@ class AbstractController {
 	 * a redirect is initialized (will load the same step step controller again) or
 	 * if in install tool, the login form is displayed.
 	 *
-	 * @param boolean $tokenOk
+	 * @param bool $tokenOk
 	 * @return void
 	 */
 	protected function handleSessionTokenCheck($tokenOk) {

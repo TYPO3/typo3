@@ -2192,7 +2192,7 @@ class DataHandler {
 	 * Converts an array to FlexForm XML
 	 *
 	 * @param array $array Array with FlexForm data
-	 * @param boolean $addPrologue If set, the XML prologue is returned as well.
+	 * @param bool $addPrologue If set, the XML prologue is returned as well.
 	 * @return string Input array converted to XML
 	 */
 	public function checkValue_flexArray2Xml($array, $addPrologue = FALSE) {
@@ -2980,7 +2980,7 @@ class DataHandler {
 	 * @param string $table Element table
 	 * @param integer $uid Element UID
 	 * @param integer $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
-	 * @param boolean $first Is a flag set, if the record copied is NOT a 'slave' to another record copied. That is, if this record was asked to be copied in the cmd-array
+	 * @param bool $first Is a flag set, if the record copied is NOT a 'slave' to another record copied. That is, if this record was asked to be copied in the cmd-array
 	 * @param array $overrideValues Associative array with field/value pairs to override directly. Notice; Fields must exist in the table record and NOT be among excluded fields!
 	 * @param string $excludeFields Commalist of fields to exclude from the copy process (might get default values)
 	 * @param integer $language Language ID (from sys_language table)
@@ -3146,7 +3146,7 @@ class DataHandler {
 	 * @param integer $uid Page uid
 	 * @param integer $destPid Destination PID: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
 	 * @param array $copyTablesArray Table on pages to copy along with the page.
-	 * @param boolean $first Is a flag set, if the record copied is NOT a 'slave' to another record copied. That is, if this record was asked to be copied in the cmd-array
+	 * @param bool $first Is a flag set, if the record copied is NOT a 'slave' to another record copied. That is, if this record was asked to be copied in the cmd-array
 	 * @return integer The id of the new page, if applicable.
 	 */
 	public function copySpecificPage($uid, $destPid, $copyTablesArray, $first = 0) {
@@ -3577,7 +3577,7 @@ class DataHandler {
 	 * @param string $table Record Table
 	 * @param string $uid Record UID
 	 * @param string $destPid Position to copy to
-	 * @param boolean $first
+	 * @param bool $first
 	 * @param array $overrideValues
 	 * @param string $excludeFields
 	 * @return void
@@ -4194,8 +4194,8 @@ class DataHandler {
 	 *
 	 * @param string $table Table name
 	 * @param integer $uid Record UID
-	 * @param boolean $noRecordCheck Flag: If $noRecordCheck is set, then the function does not check permission to delete record
-	 * @param boolean $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
+	 * @param bool $noRecordCheck Flag: If $noRecordCheck is set, then the function does not check permission to delete record
+	 * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
 	 * @return void
 	 */
 	public function deleteEl($table, $uid, $noRecordCheck = FALSE, $forceHardDelete = FALSE) {
@@ -4212,7 +4212,7 @@ class DataHandler {
 	 *
 	 * @param string $table Table name
 	 * @param integer $uid Record UID
-	 * @param boolean $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
+	 * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
 	 * @return void
 	 */
 	public function deleteVersionsForRecord($table, $uid, $forceHardDelete) {
@@ -4251,9 +4251,9 @@ class DataHandler {
 	 *
 	 * @param string $table Table name
 	 * @param integer $uid Record UID
-	 * @param boolean $noRecordCheck Flag: If $noRecordCheck is set, then the function does not check permission to delete record
-	 * @param boolean $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
-	 * @param boolean $undeleteRecord If TRUE, the "deleted" flag is set to 0 again and thus, the item is undeleted.
+	 * @param bool $noRecordCheck Flag: If $noRecordCheck is set, then the function does not check permission to delete record
+	 * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
+	 * @param bool $undeleteRecord If TRUE, the "deleted" flag is set to 0 again and thus, the item is undeleted.
 	 * @return void
 	 */
 	public function deleteRecord($table, $uid, $noRecordCheck = FALSE, $forceHardDelete = FALSE, $undeleteRecord = FALSE) {
@@ -4385,8 +4385,8 @@ class DataHandler {
 	 * Used to delete page because it will check for branch below pages and unallowed tables on the page as well.
 	 *
 	 * @param integer $uid Page id
-	 * @param boolean $force If TRUE, pages are not checked for permission.
-	 * @param boolean $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
+	 * @param bool $force If TRUE, pages are not checked for permission.
+	 * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
 	 * @return void
 	 */
 	public function deletePages($uid, $force = FALSE, $forceHardDelete = FALSE) {
@@ -4412,7 +4412,7 @@ class DataHandler {
 	 * Delete a page and all records on it.
 	 *
 	 * @param integer $uid Page id
-	 * @param boolean $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
+	 * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
 	 * @return void
 	 * @access private
 	 * @see deletePages()
@@ -4576,7 +4576,7 @@ class DataHandler {
 	 *
 	 * @param string $table Record Table
 	 * @param string $uid Record UID
-	 * @param boolean $undeleteRecord If a record should be undeleted (e.g. from history/undo)
+	 * @param bool $undeleteRecord If a record should be undeleted (e.g. from history/undo)
 	 * @return void
 	 * @see 	 deleteRecord()
 	 */
@@ -4597,7 +4597,7 @@ class DataHandler {
 	 * @param string $field Record field
 	 * @param string $value Record field value
 	 * @param array $conf TCA configuration of current field
-	 * @param boolean $undeleteRecord If a record should be undeleted (e.g. from history/undo)
+	 * @param bool $undeleteRecord If a record should be undeleted (e.g. from history/undo)
 	 * @return void
 	 * @see 	 deleteRecord()
 	 */
@@ -4685,7 +4685,7 @@ class DataHandler {
 	 * @param string $table Table name
 	 * @param integer $id Record uid to versionize
 	 * @param string $label Version label
-	 * @param boolean $delete If TRUE, the version is created to delete the record.
+	 * @param bool $delete If TRUE, the version is created to delete the record.
 	 * @return integer Returns the id of the new version (if any)
 	 * @see copyRecord()
 	 */
@@ -4885,8 +4885,8 @@ class DataHandler {
 	/**
 	 * Returns a instance of TCEmain for handling local datamaps/cmdmaps
 	 *
-	 * @param boolean $stripslashesValues If TRUE, incoming values in the data-array have their slashes stripped.
-	 * @param boolean $dontProcessTransformations If set, then transformations are NOT performed on the input.
+	 * @param bool $stripslashesValues If TRUE, incoming values in the data-array have their slashes stripped.
+	 * @param bool $dontProcessTransformations If set, then transformations are NOT performed on the input.
 	 * @return DataHandler
 	 */
 	protected function getLocalTCE($stripslashesValues = FALSE, $dontProcessTransformations = TRUE) {
@@ -5266,7 +5266,7 @@ class DataHandler {
 	 * @param string $id Id of the record (can also be a "NEW..." string)
 	 * @param array $callback The method to be called
 	 * @param array $arguments The arguments to be submitted to the callback method
-	 * @param boolean $forceRemapStackActions Whether to force to use the stack
+	 * @param bool $forceRemapStackActions Whether to force to use the stack
 	 * @return void
 	 * @see processRemapStack
 	 */
@@ -5591,7 +5591,7 @@ class DataHandler {
 	 * @param string $inList List of page uids, this is added to and outputted in the end
 	 * @param integer $pid Page ID to select subpages from.
 	 * @param integer $perms Perms integer to check each page record for.
-	 * @param boolean $recurse Recursion flag: If set, it will go out through the branch.
+	 * @param bool $recurse Recursion flag: If set, it will go out through the branch.
 	 * @return string List of integers in branch
 	 */
 	public function doesBranchExist($inList, $pid, $perms, $recurse) {
@@ -5783,7 +5783,7 @@ class DataHandler {
 	 *
 	 * @param string $table Table name
 	 * @param integer $id Uid of record
-	 * @param boolean $noWSOL If set, no workspace overlay is performed
+	 * @param bool $noWSOL If set, no workspace overlay is performed
 	 * @return array Properties of record
 	 */
 	public function getRecordProperties($table, $id, $noWSOL = FALSE) {
@@ -5879,9 +5879,9 @@ class DataHandler {
 	 * @param string $table Record table name
 	 * @param string $id "NEW...." uid string
 	 * @param array $fieldArray Array of field=>value pairs to insert. FIELDS MUST MATCH the database FIELDS. No check is done. "pid" must point to the destination of the record!
-	 * @param boolean $newVersion Set to TRUE if new version is created.
+	 * @param bool $newVersion Set to TRUE if new version is created.
 	 * @param integer $suggestedUid Suggested UID value for the inserted record. See the array $this->suggestedInsertUids; Admin-only feature
-	 * @param boolean $dontSetNewIdIndex If TRUE, the ->substNEWwithIDs array is not updated. Only useful in very rare circumstances!
+	 * @param bool $dontSetNewIdIndex If TRUE, the ->substNEWwithIDs array is not updated. Only useful in very rare circumstances!
 	 * @return integer Returns ID on success.
 	 */
 	public function insertDB($table, $id, $fieldArray, $newVersion = FALSE, $suggestedUid = 0, $dontSetNewIdIndex = FALSE) {
@@ -6338,7 +6338,7 @@ class DataHandler {
 	 * @param mixed $submittedValue Value that has submitted (e.g. from a backend form)
 	 * @param mixed $storedValue Value that is currently stored in the database
 	 * @param string $storedType SQL type of the stored value column (see mysql_field_type(), e.g 'int', 'string',  ...)
-	 * @param boolean $allowNull Whether NULL values are allowed by accordant TCA definition ('eval' = 'null')
+	 * @param bool $allowNull Whether NULL values are allowed by accordant TCA definition ('eval' = 'null')
 	 * @return boolean Whether both values are considered to be equal
 	 */
 	protected function isSubmittedValueEqualToStoredValue($submittedValue, $storedValue, $storedType, $allowNull = FALSE) {
@@ -6588,7 +6588,7 @@ class DataHandler {
 	 * @param string $table Table name
 	 * @param integer $uid Record UID
 	 * @param integer $prevUid UID of previous record
-	 * @param boolean $update If set, updates the record
+	 * @param bool $update If set, updates the record
 	 * @param array $newData Input array. If fields are already specified AND $update is not set, values are not set in output array.
 	 * @return array Output array (For when the copying operation needs to get the information instead of updating the info)
 	 */

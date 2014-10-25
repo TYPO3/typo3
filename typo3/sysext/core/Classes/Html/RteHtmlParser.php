@@ -847,7 +847,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 * Cleaning (->db) for standard content elements (ts)
 	 *
 	 * @param string $value Content input
-	 * @param boolean $css If TRUE, the transformation was "css_transform", otherwise "ts_transform
+	 * @param bool $css If TRUE, the transformation was "css_transform", otherwise "ts_transform
 	 * @return string Content output
 	 * @see TS_transform_rte()
 	 */
@@ -1010,7 +1010,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 * Set (->rte) for standard content elements (ts)
 	 *
 	 * @param string Content input
-	 * @param boolean If TRUE, the transformation was "css_transform", otherwise "ts_transform
+	 * @param bool If TRUE, the transformation was "css_transform", otherwise "ts_transform
 	 * @return string Content output
 	 * @see TS_transform_db()
 	 */
@@ -1276,7 +1276,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 *
 	 * @param string $value Value to process.
 	 * @param integer $count Recursion brake. Decremented on each recursion down to zero. Default is 5 (which equals the allowed nesting levels of p/div tags).
-	 * @param boolean $returnArray If TRUE, an array with the lines is returned, otherwise a string of the processed input value.
+	 * @param bool $returnArray If TRUE, an array with the lines is returned, otherwise a string of the processed input value.
 	 * @return string Processed input value.
 	 * @see setDivTags()
 	 */
@@ -1659,7 +1659,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 * Converting <A>-tags to absolute URLs (+ setting rtekeep attribute)
 	 *
 	 * @param string $value Content input
-	 * @param boolean $dontSetRTEKEEP If TRUE, then the "rtekeep" attribute will not be set.
+	 * @param bool $dontSetRTEKEEP If TRUE, then the "rtekeep" attribute will not be set.
 	 * @return string Content output
 	 */
 	public function TS_AtagToAbs($value, $dontSetRTEKEEP = FALSE) {
