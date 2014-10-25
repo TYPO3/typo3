@@ -705,7 +705,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
 	 * @param Qom\SourceInterface $source The source (selector od join)
 	 * @param array $rows
 	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings The TYPO3 CMS specific query settings
-	 * @param null|integer $workspaceUid
+	 * @param null|int $workspaceUid
 	 * @return array
 	 */
 	protected function doLanguageAndWorkspaceOverlay(Qom\SourceInterface $source, array $rows, \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings, $workspaceUid = NULL) {

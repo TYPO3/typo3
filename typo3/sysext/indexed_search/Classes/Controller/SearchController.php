@@ -648,8 +648,8 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 *
 	 * @param 	array		search params
 	 * @param 	array		Search Word array
-	 * @param 	integer		Number of hits
-	 * @param 	integer		Milliseconds the search took
+	 * @param 	int			Number of hits
+	 * @param 	int			Milliseconds the search took
 	 * @return 	void
 	 */
 	protected function writeSearchStat($searchParams, $searchWords, $count, $pt) {

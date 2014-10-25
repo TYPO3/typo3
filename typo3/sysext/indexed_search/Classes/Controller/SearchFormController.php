@@ -558,7 +558,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Gets a SQL result pointer to traverse for the search records.
 	 *
 	 * @param 	array		Search words
-	 * @param 	integer		Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
+	 * @param	int		Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
 	 * @return 	pointer
 	 */
 	public function getResultRows_SQLpointer($sWArr, $freeIndexUid = -1) {
@@ -581,7 +581,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @param 	array		Search words array (for display of text describing what was searched for)
 	 * @param 	array		Array with result rows, count, first row.
-	 * @param 	integer		Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
+	 * @param	int		Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
 	 * @return 	string		HTML content to display result.
 	 */
 	public function getDisplayResults($sWArr, $resData, $freeIndexUid = -1) {
@@ -625,7 +625,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Takes the "group" var into account: Makes a "section" or "flat" display.
 	 *
 	 * @param 	array		Result rows
-	 * @param 	integer		Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
+	 * @param	int		Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
 	 * @return 	string		HTML
 	 */
 	public function compileResult($resultRows, $freeIndexUid = -1) {
@@ -960,7 +960,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Where-clause for free index-uid value.
 	 *
-	 * @param 	integer		Free Index UID value to limit search to.
+	 * @param	int		Free Index UID value to limit search to.
 	 * @return 	string		WHERE SQL clause part.
 	 */
 	public function freeIndexUidWhere($freeIndexUid) {
@@ -1000,7 +1000,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Execute final query, based on phash integer list. The main point is sorting the result in the right order.
 	 *
 	 * @param 	string		List of phash integers which match the search.
-	 * @param 	integer		Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
+	 * @param	int		Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
 	 * @return 	pointer		Query result pointer
 	 */
 	public function execFinalQuery($list, $freeIndexUid = -1) {
@@ -1186,8 +1186,8 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Write statistics information to database for the search operation
 	 *
 	 * @param 	array		Search Word array
-	 * @param 	integer		Number of hits
-	 * @param 	integer		Milliseconds the search took
+	 * @param	int		Number of hits
+	 * @param	int		Milliseconds the search took
 	 * @return 	void
 	 */
 	public function writeSearchStat($sWArr, $count, $pt) {
@@ -1417,7 +1417,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @param 	string		ID for the section (used for anchor link)
 	 * @param 	string		Section title with linked wrapped around
-	 * @param 	integer		Number of results in section
+	 * @param	int		Number of results in section
 	 * @return 	string		HTML output
 	 */
 	public function makeSectionHeader($id, $sectionTitleLinked, $countResultRows) {
@@ -1434,7 +1434,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * This prints a single result row, including a recursive call for subrows.
 	 *
 	 * @param 	array		Search result row
-	 * @param 	integer		1=Display only header (for sub-rows!), 2=nothing at all
+	 * @param	int		1=Display only header (for sub-rows!), 2=nothing at all
 	 * @return 	string		HTML code
 	 */
 	public function printResultRow($row, $headerOnly = 0) {
@@ -1687,7 +1687,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Notice how the links must resubmit the form after setting the new pointer-value in a hidden formfield.
 	 *
 	 * @param 	string		String to wrap in <a> tag
-	 * @param 	integer		Pointer value
+	 * @param	int		Pointer value
 	 * @param 	string		List of integers pointing to free indexing configurations to search. -1 represents no filtering, 0 represents TYPO3 pages only, any number above zero is a uid of an indexing configuration!
 	 * @return 	string		Input string wrapped in <a> tag with onclick event attribute set.
 	 */
@@ -1793,7 +1793,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @param 	array		Search result row
 	 * @param 	bool		If noMarkup is FALSE, then the index_fulltext table is used to select the content of the page, split it with regex to display the search words in the text.
-	 * @param 	integer		String length
+	 * @param	int		String length
 	 * @return 	string		HTML string		...
 	 */
 	public function makeDescription($row, $noMarkup = 0, $lgd = 180) {
@@ -1992,7 +1992,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Returns the HTML code for the locking symbol.
 	 * NOTICE: Requires a call to ->getPathFromPageId() first in order to work (done in ->makeInfo() by calling that first)
 	 *
-	 * @param 	integer		Page id for which to find answer
+	 * @param	int		Page id for which to find answer
 	 * @return 	string		<img> tag if access is limited.
 	 */
 	public function makeAccessIndication($id) {
@@ -2004,7 +2004,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Links the $str to page $id
 	 *
-	 * @param 	integer		Page id
+	 * @param	int		Page id
 	 * @param 	string		Title String to link
 	 * @param 	array		Result row
 	 * @param 	array		Additional parameters for marking up seach words
@@ -2052,7 +2052,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Returns the path to the page $id
 	 *
-	 * @param 	integer		Page ID
+	 * @param	int		Page ID
 	 * @param 	string		MP variable content.
 	 * @return 	string		Root line for result.
 	 */
@@ -2067,7 +2067,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Gets the first sys_domain record for the page, $id
 	 *
-	 * @param 	integer		Page id
+	 * @param	int		Page id
 	 * @return 	string		Domain name
 	 */
 	public function getFirstSysDomainRecordForPage($id) {
@@ -2079,7 +2079,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Returns the path to the page $id
 	 *
-	 * @param 	integer		Page ID
+	 * @param	int		Page ID
 	 * @param 	string		MP variable content
 	 * @return 	string		Path
 	 */
@@ -2125,7 +2125,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Return the menu of pages used for the selector.
 	 *
-	 * @param 	integer		Page ID for which to return menu
+	 * @param	int		Page ID for which to return menu
 	 * @return 	array		Menu items (for making the section selector box)
 	 */
 	public function getMenu($id) {

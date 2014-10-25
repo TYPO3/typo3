@@ -111,8 +111,8 @@ class Lexer {
 	 *
 	 * @param 	array		Array of accumulated words
 	 * @param 	string		Complete Input string from where to extract word
-	 * @param 	integer		Start position of word in input string
-	 * @param 	integer		The Length of the word string from start position
+	 * @param	int		Start position of word in input string
+	 * @param	int		The Length of the word string from start position
 	 * @return 	void
 	 */
 	public function addWords(&$words, &$wordString, $start, $len) {
@@ -158,7 +158,7 @@ class Lexer {
 	 * Get the first word in a given utf-8 string (initial non-letters will be skipped)
 	 *
 	 * @param 	string		Input string (reference)
-	 * @param 	integer		Starting position in input string
+	 * @param	int		Starting position in input string
 	 * @return 	array		0: start, 1: len or FALSE if no word has been found
 	 */
 	public function get_word(&$str, $pos = 0) {
@@ -181,8 +181,8 @@ class Lexer {
 	 * See if a character is a letter (or a string of letters or non-letters).
 	 *
 	 * @param 	string		Input string (reference)
-	 * @param 	integer		Byte-length of character sequence (reference, return value)
-	 * @param 	integer		Starting position in input string
+	 * @param	int		Byte-length of character sequence (reference, return value)
+	 * @param	int		Starting position in input string
 	 * @return 	boolean		letter (or word) found
 	 */
 	public function utf8_is_letter(&$str, &$len, $pos = 0) {
@@ -251,7 +251,7 @@ class Lexer {
 	/**
 	 * Determine the type of character
 	 *
-	 * @param 	integer		Unicode number to evaluate
+	 * @param	int		Unicode number to evaluate
 	 * @return 	array		Type of char; index-0: the main type: num, alpha or CJK (Chinese / Japanese / Korean)
 	 */
 	public function charType($cp) {
@@ -275,8 +275,8 @@ class Lexer {
 	 * Converts a UTF-8 multibyte character to a UNICODE codepoint
 	 *
 	 * @param 	string		UTF-8 multibyte character string (reference)
-	 * @param 	integer		The length of the character (reference, return value)
-	 * @param 	integer		Starting position in input string
+	 * @param	int		The length of the character (reference, return value)
+	 * @param	int		Starting position in input string
 	 * @param 	bool		If set, then a hex. number is returned
 	 * @return 	integer		UNICODE codepoint
 	 */

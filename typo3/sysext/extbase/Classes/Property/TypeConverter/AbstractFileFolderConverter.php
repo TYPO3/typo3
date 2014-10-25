@@ -40,7 +40,7 @@ abstract class AbstractFileFolderConverter extends \TYPO3\CMS\Extbase\Property\T
 	 * Actually convert from $source to $targetType, taking into account the fully
 	 * built $convertedChildProperties and $configuration.
 	 *
-	 * @param string|integer $source
+	 * @param string|int $source
 	 * @param string $targetType
 	 * @param array $convertedChildProperties
 	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
@@ -60,7 +60,7 @@ abstract class AbstractFileFolderConverter extends \TYPO3\CMS\Extbase\Property\T
 	}
 
 	/**
-	 * @param string|integer $source
+	 * @param string|int $source
 	 * @return \TYPO3\CMS\Core\Resource\ResourceInterface
 	 */
 	abstract protected function getOriginalResource($source);

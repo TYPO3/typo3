@@ -215,7 +215,7 @@ class DataMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * @param NULL|string|integer $value
+	 * @param NULL|string|int $value
 	 * @param NULL|string $storageFormat
 	 * @param NULL|string $expectedValue
 	 * @test

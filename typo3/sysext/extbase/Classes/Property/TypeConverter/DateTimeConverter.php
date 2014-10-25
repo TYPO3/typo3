@@ -113,7 +113,7 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
 	/**
 	 * Converts $source to a \DateTime using the configured dateFormat
 	 *
-	 * @param string|integer|array $source the string to be converted to a \DateTime object
+	 * @param string|int|array $source the string to be converted to a \DateTime object
 	 * @param string $targetType must be "DateTime"
 	 * @param array $convertedChildProperties not used currently
 	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration

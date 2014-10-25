@@ -1066,7 +1066,7 @@ class AbstractPlugin {
 	 * Returns a commalist of page ids for a query (eg. 'WHERE pid IN (...)')
 	 *
 	 * @param string $pid_list A comma list of page ids (if empty current page is used)
-	 * @param int$recursive An integer >=0 telling how deep to dig for pids under each entry in $pid_list
+	 * @param int $recursive An integer >=0 telling how deep to dig for pids under each entry in $pid_list
 	 * @return string List of PID values (comma separated)
 	 */
 	public function pi_getPidList($pid_list, $recursive = 0) {

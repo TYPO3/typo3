@@ -36,7 +36,7 @@ class FileConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractFi
 	protected $expectedObjectType = 'TYPO3\\CMS\\Core\\Resource\\File';
 
 	/**
-	 * @param string|integer $source
+	 * @param string|int $source
 	 * @return \TYPO3\CMS\Core\Resource\FileInterface|\TYPO3\CMS\Core\Resource\Folder
 	 */
 	protected function getOriginalResource($source) {

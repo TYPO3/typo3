@@ -26,8 +26,8 @@ class Tables {
 	 *
 	 * @param 	string		$format: Return format (example: json)
 	 * @param 	bool		$withAllOption: 0 no, 1 return tables with a "all" option
-	 * @param 	integer		$id: UID from selected page
-	 * @param 	integer		$depth: How many levels recursive
+	 * @param 	int		$id: UID from selected page
+	 * @param 	int		$depth: How many levels recursive
 	 * @return 	string		The tables to be displayed
 	 */
 	public function getTables($format, $withAllOption = 0, $startUid, $depth = 0) {

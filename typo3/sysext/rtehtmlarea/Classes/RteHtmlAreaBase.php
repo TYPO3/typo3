@@ -883,7 +883,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	/**
 	 * Return the Javascript code for configuring the RTE
 	 *
-	 * @param 	integer		$RTEcounter: The index number of the current RTE editing area within the form.
+	 * @param	int		$RTEcounter: The index number of the current RTE editing area within the form.
 	 * @param 	string		$table: The table that includes this RTE (optional, necessary for IRRE).
 	 * @param 	string		$uid: The uid of that table that includes this RTE (optional, necessary for IRRE).
 	 * @param 	string		$field: The field of that record that includes this RTE (optional).
@@ -1044,7 +1044,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	/**
 	 * Return Javascript configuration of classes
 	 *
-	 * @param 	integer		$RTEcounter: The index number of the current RTE editing area within the form.
+	 * @param	int		$RTEcounter: The index number of the current RTE editing area within the form.
 	 * @return 	string		Javascript configuration of classes
 	 */
 	public function buildJSClassesConfig($RTEcounter) {
@@ -1181,7 +1181,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	/**
 	 * Return a file name containing the main JS language array for HTMLArea
 	 *
-	 * @param 	integer		$RTEcounter: The index number of the current RTE editing area within the form.
+	 * @param	int		$RTEcounter: The index number of the current RTE editing area within the form.
 	 * @return 	string		filename
 	 */
 	public function buildJSMainLangFile($RTEcounter) {
@@ -1341,7 +1341,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 * Return the Javascript code for copying the HTML code from the editor into the hidden input field.
 	 * This is for submit function of the form.
 	 *
-	 * @param 	integer		$RTEcounter: The index number of the current RTE editing area within the form.
+	 * @param	int		$RTEcounter: The index number of the current RTE editing area within the form.
 	 * @param 	string		$formName: the name of the form
 	 * @param 	string		$textareaId: the id of the textarea
 	 * @param 	string		$textareaName: the name of the textarea
@@ -1355,7 +1355,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 * Return the Javascript code for copying the HTML code from the editor into the hidden input field.
 	 * This is for submit function of the form.
 	 *
-	 * @param 	integer		$RTEcounter: The index number of the current RTE editing area within the form.
+	 * @param	int		$RTEcounter: The index number of the current RTE editing area within the form.
 	 * @param 	string		$formName: the name of the form
 	 * @param 	string		$textareaId: the id of the textarea
 	 * @return 	string		Javascript code

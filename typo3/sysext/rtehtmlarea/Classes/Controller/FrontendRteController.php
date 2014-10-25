@@ -94,7 +94,7 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 	 * @param 	array		Configuration for RTEs; A mix between TSconfig and otherwise. Contains configuration for display, which buttons are enabled, additional transformation information etc.
 	 * @param 	string		Record "type" field value.
 	 * @param 	string		Relative path for images/links in RTE; this is used when the RTE edits content from static files where the path of such media has to be transformed forth and back!
-	 * @param 	integer		PID value of record (true parent page id)
+	 * @param 	int		PID value of record (true parent page id)
 	 * @return 	string		HTML code for RTE!
 	 */
 	public function drawRTE(&$parentObject, $table, $field, $row, $PA, $specConf, $thisConfig, $RTEtypeVal, $RTErelPath, $thePidValue) {
@@ -268,7 +268,7 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 	 * Return the JS-Code for copy the HTML-Code from the editor in the hidden input field.
 	 * This is for submit function from the form.
 	 *
-	 * @param 	integer		$RTEcounter: The index number of the RTE editing area.
+	 * @param 	int		$RTEcounter: The index number of the RTE editing area.
 	 * @param 	string		$form: the name of the form
 	 * @param 	string		$textareaId: the id of the textarea
 	 * @return 	string		the JS-Code

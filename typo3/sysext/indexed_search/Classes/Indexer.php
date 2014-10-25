@@ -233,9 +233,9 @@ class Indexer {
 	/**
 	 * Initializing the "combined ID" of the page (phash) being indexed (or for which external media is attached)
 	 *
-	 * @param 	integer		The page uid, &id=
-	 * @param 	integer		The page type, &type=
-	 * @param 	integer		sys_language uid, typically &L=
+	 * @param	int		The page uid, &id=
+	 * @param	int		The page type, &type=
+	 * @param	int		sys_language uid, typically &L=
 	 * @param 	string		The MP variable (Mount Points), &MP=
 	 * @param 	array		Rootline array of only UIDs.
 	 * @param 	array		Array of GET variables to register with this indexing
@@ -287,8 +287,8 @@ class Indexer {
 	/**
 	 * Sets the free-index uid. Can be called right after backend_initIndexer()
 	 *
-	 * @param 	integer		Free index UID
-	 * @param 	integer		Set id - an integer identifying the "set" of indexing operations.
+	 * @param	int		Free index UID
+	 * @param	int		Set id - an integer identifying the "set" of indexing operations.
 	 * @return 	void
 	 */
 	public function backend_setFreeIndexUid($freeIndexUid, $freeIndexSetId = 0) {
@@ -304,9 +304,9 @@ class Indexer {
 	 * @param 	string		Description equivalent
 	 * @param 	string		The main content to index
 	 * @param 	string		The charset of the title, keyword, description and body-content. MUST BE VALID, otherwise nothing is indexed!
-	 * @param 	integer		Last modification time, in seconds
-	 * @param 	integer		The creation date of the content, in seconds
-	 * @param 	integer		The record UID that the content comes from (for registration with the indexed rows)
+	 * @param	int		Last modification time, in seconds
+	 * @param	int		The creation date of the content, in seconds
+	 * @param	int		The record UID that the content comes from (for registration with the indexed rows)
 	 * @return 	void
 	 */
 	public function backend_indexAsTYPO3Page($title, $keywords, $description, $content, $charset, $mtime, $crdate = 0, $recordUid = 0) {
@@ -809,7 +809,7 @@ class Indexer {
 	 * Getting HTTP request headers of URL
 	 *
 	 * @param 	string		The URL
-	 * @param 	integer		Timeout (seconds?)
+	 * @param	int		Timeout (seconds?)
 	 * @return 	mixed		If no answer, returns FALSE. Otherwise an array where HTTP headers are keys
 	 */
 	public function getUrlHeaders($url) {
@@ -1221,7 +1221,7 @@ class Indexer {
 	 * @param 	array		Index array, passed by reference
 	 * @param 	array		Standard content array
 	 * @param 	string		Key from standard content array
-	 * @param 	integer		Bit-wise priority to type
+	 * @param	int		Bit-wise priority to type
 	 * @return 	void
 	 */
 	public function analyzeHeaderinfo(&$retArr, $content, $key, $offset) {
@@ -1384,8 +1384,8 @@ class Indexer {
 	/**
 	 * Stores gr_list in the database.
 	 *
-	 * @param 	integer		Search result record phash
-	 * @param 	integer		Actual phash of current content
+	 * @param	int		Search result record phash
+	 * @param	int		Actual phash of current content
 	 * @return 	void
 	 * @see update_grlist()
 	 */
@@ -1406,8 +1406,8 @@ class Indexer {
 	 * Stores section
 	 * $hash and $hash_t3 are the same for TYPO3 pages, but different when it is external files.
 	 *
-	 * @param 	integer		phash of TYPO3 parent search result record
-	 * @param 	integer		phash of the file indexation search record
+	 * @param	int		phash of TYPO3 parent search result record
+	 * @param	int		phash of the file indexation search record
 	 * @return 	void
 	 */
 	public function submit_section($hash, $hash_t3) {
@@ -1425,7 +1425,7 @@ class Indexer {
 	/**
 	 * Removes records for the indexed page, $phash
 	 *
-	 * @param 	integer		phash value to flush
+	 * @param	int		phash value to flush
 	 * @return 	void
 	 */
 	public function removeOldIndexedPages($phash) {
@@ -1454,10 +1454,10 @@ class Indexer {
 	 * @param 	string		File name
 	 * @param 	array		Array of "cHashParams" for files: This is for instance the page index for a PDF file (other document types it will be a zero)
 	 * @param 	string		File extension determining the type of media.
-	 * @param 	integer		Modification time of file.
-	 * @param 	integer		Creation time of file.
-	 * @param 	integer		Size of file in bytes
-	 * @param 	integer		Content HASH value.
+	 * @param	int		Modification time of file.
+	 * @param	int		Creation time of file.
+	 * @param	int		Size of file in bytes
+	 * @param	int		Content HASH value.
 	 * @param 	array		Standard content array (using only title and body for a file)
 	 * @return 	void
 	 */
@@ -1526,7 +1526,7 @@ class Indexer {
 	/**
 	 * Stores file gr_list for a file IF it does not exist already
 	 *
-	 * @param 	integer		phash value of file
+	 * @param	int		phash value of file
 	 * @return 	void
 	 */
 	public function submitFile_grlist($hash) {
@@ -1542,7 +1542,7 @@ class Indexer {
 	/**
 	 * Stores file section for a file IF it does not exist
 	 *
-	 * @param 	integer		phash value of file
+	 * @param	int		phash value of file
 	 * @return 	void
 	 */
 	public function submitFile_section($hash) {
@@ -1558,7 +1558,7 @@ class Indexer {
 	/**
 	 * Removes records for the indexed page, $phash
 	 *
-	 * @param 	integer		phash value to flush
+	 * @param	int		phash value to flush
 	 * @return 	void
 	 */
 	public function removeOldIndexedFiles($phash) {
@@ -1580,8 +1580,8 @@ class Indexer {
 	 * Check the mtime / tstamp of the currently indexed page/file (based on phash)
 	 * Return positive integer if the page needs to be indexed
 	 *
-	 * @param 	integer		mtime value to test against limits and indexed page (usually this is the mtime of the cached document)
-	 * @param 	integer		"phash" used to select any already indexed page to see what its mtime is.
+	 * @param	int		mtime value to test against limits and indexed page (usually this is the mtime of the cached document)
+	 * @param	int		"phash" used to select any already indexed page to see what its mtime is.
 	 * @return 	integer		Result integer: Generally: <0 = No indexing, >0 = Do indexing (see $this->reasons): -2) Min age was NOT exceeded and so indexing cannot occur.  -1) mtime matched so no need to reindex page. 0) N/A   1) Max age exceeded, page must be indexed again.   2) mtime of indexed page doesn't match mtime given for current content and we must index page.  3) No mtime was set, so we will index...  4) No indexed page found, so of course we will index.
 	 */
 	public function checkMtimeTstamp($mtime, $phash) {
@@ -1653,8 +1653,8 @@ class Indexer {
 	 * Check content hash for external documents
 	 * Returns TRUE if the document needs to be indexed (that is, there was no result)
 	 *
-	 * @param 	integer		phash value to check (phash_grouping)
-	 * @param 	integer		Content hash to check
+	 * @param	int		phash value to check (phash_grouping)
+	 * @param	int		Content hash to check
 	 * @return 	boolean		Returns TRUE if the document needs to be indexed (that is, there was no result)
 	 */
 	public function checkExternalDocContentHash($hashGr, $content_md5h) {
@@ -1669,7 +1669,7 @@ class Indexer {
 	/**
 	 * Checks if a grlist record has been set for the phash value input (looking at the "real" phash of the current content, not the linked-to phash of the common search result page)
 	 *
-	 * @param 	integer		Phash integer to test.
+	 * @param	int		Phash integer to test.
 	 * @return 	boolean
 	 */
 	public function is_grlist_set($phash_x) {
@@ -1684,8 +1684,8 @@ class Indexer {
 	/**
 	 * Check if an grlist-entry for this hash exists and if not so, write one.
 	 *
-	 * @param 	integer		phash of the search result that should be found
-	 * @param 	integer		The real phash of the current content. The two values are different when a page with userlogin turns out to contain the exact same content as another already indexed version of the page; This is the whole reason for the grlist table in fact...
+	 * @param	int		phash of the search result that should be found
+	 * @param	int		The real phash of the current content. The two values are different when a page with userlogin turns out to contain the exact same content as another already indexed version of the page; This is the whole reason for the grlist table in fact...
 	 * @return 	void
 	 * @see submit_grlist()
 	 */
@@ -1702,8 +1702,8 @@ class Indexer {
 	/**
 	 * Update tstamp for a phash row.
 	 *
-	 * @param 	integer		phash value
-	 * @param 	integer		If set, update the mtime field to this value.
+	 * @param	int		phash value
+	 * @param	int		If set, update the mtime field to this value.
 	 * @return 	void
 	 */
 	public function updateTstamp($phash, $mtime = 0) {
@@ -1721,7 +1721,7 @@ class Indexer {
 	/**
 	 * Update SetID of the index_phash record.
 	 *
-	 * @param 	integer		phash value
+	 * @param	int		phash value
 	 * @return 	void
 	 */
 	public function updateSetId($phash) {
@@ -1736,8 +1736,8 @@ class Indexer {
 	/**
 	 * Update parsetime for phash row.
 	 *
-	 * @param 	integer		phash value.
-	 * @param 	integer		Parsetime value to set.
+	 * @param	int		phash value.
+	 * @param	int		Parsetime value to set.
 	 * @return 	void
 	 */
 	public function updateParsetime($phash, $parsetime) {
@@ -1855,7 +1855,7 @@ class Indexer {
 	 * Submits RELATIONS between words and phash
 	 *
 	 * @param 	array		Word list array
-	 * @param 	integer		phash value
+	 * @param	int		phash value
 	 * @return 	void
 	 */
 	public function submitWords($wordList, $phash) {
@@ -1980,7 +1980,7 @@ class Indexer {
 	 * Set log message function wrapper for TT logging
 	 *
 	 * @param 	string		Message to set
-	 * @param 	integer		Error number
+	 * @param	int		Error number
 	 * @return 	void
 	 */
 	public function log_setTSlogMessage($msg, $errorNum = 0) {

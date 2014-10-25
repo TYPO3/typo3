@@ -464,10 +464,10 @@ class CrawlerHook {
 	 * Indexing External URL
 	 *
 	 * @param 	string		URL, http://....
-	 * @param 	integer		Page id to relate indexing to.
+	 * @param	int		Page id to relate indexing to.
 	 * @param 	array		Rootline array to relate indexing to
-	 * @param 	integer		Configuration UID
-	 * @param 	integer		Set ID value
+	 * @param	int		Configuration UID
+	 * @param	int		Set ID value
 	 * @return 	array		URLs found on this page
 	 */
 	public function indexExtUrl($url, $pageId, $rl, $cfgUid, $setId) {
@@ -554,7 +554,7 @@ class CrawlerHook {
 	 * Get rootline for closest TypoScript template root.
 	 * Algorithm same as used in Web > Template, Object browser
 	 *
-	 * @param 	integer		The page id to traverse rootline back from
+	 * @param	int		The page id to traverse rootline back from
 	 * @return 	array		Array where the root lines uid values are found.
 	 */
 	public function getUidRootLineForClosestTemplate($id) {
@@ -641,7 +641,7 @@ class CrawlerHook {
 	/**
 	 * Deletes all data stored by indexed search for a given page
 	 *
-	 * @param 	integer		Uid of the page to delete all pHash
+	 * @param	int		Uid of the page to delete all pHash
 	 * @return 	void
 	 */
 	public function deleteFromIndex($id) {

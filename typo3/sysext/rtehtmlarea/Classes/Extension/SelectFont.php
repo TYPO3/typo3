@@ -89,7 +89,7 @@ class SelectFont extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
-	 * @param 	integer		Relative id of the RTE editing area in the form
+	 * @param 	int		Relative id of the RTE editing area in the form
 	 * @return string		JS configuration for registered plugins
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {
@@ -107,7 +107,7 @@ class SelectFont extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	/**
 	 * Return Javascript configuration of font faces
 	 *
-	 * @param 	integer		$RTEcounter: The index number of the current RTE editing area within the form.
+	 * @param 	int		$RTEcounter: The index number of the current RTE editing area within the form.
 	 * @param 	string		$buttonId: button id
 	 * @return 	string		Javascript configuration of font faces
 	 */

@@ -357,7 +357,7 @@ class IndexSearchRepository {
 	 * Search for a word
 	 *
 	 * @param 	string the search word
-	 * @param 	integer constant from this class to see if the wildcard should be left and/or right of the search string
+	 * @param	int constant from this class to see if the wildcard should be left and/or right of the search string
 	 * @return 	pointer		SQL result pointer
 	 */
 	protected function searchWord($sWord, $mode) {
@@ -494,7 +494,7 @@ class IndexSearchRepository {
 	/**
 	 * Where-clause for free index-uid value.
 	 *
-	 * @param 	integer		Free Index UID value to limit search to.
+	 * @param	int		Free Index UID value to limit search to.
 	 * @return 	string		WHERE SQL clause part.
 	 */
 	public function freeIndexUidWhere($freeIndexUid) {
@@ -536,7 +536,7 @@ class IndexSearchRepository {
 	 * Execute final query, based on phash integer list. The main point is sorting the result in the right order.
 	 *
 	 * @param 	string		List of phash integers which match the search.
-	 * @param 	integer		Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
+	 * @param	int		Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
 	 * @return 	pointer		Query result pointer
 	 */
 	protected function execFinalQuery($list, $freeIndexUid = -1) {

@@ -218,7 +218,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * Returns category index from a given string or a integer.
 	 * Fallback to 4 - 'misc' in case string is not found or integer ist out of range.
 	 *
-	 * @param string|integer $category Category string or integer
+	 * @param string|int $category Category string or integer
 	 * @return integer Valid category index
 	 */
 	public function getCategoryIndexFromStringOrNumber($category) {

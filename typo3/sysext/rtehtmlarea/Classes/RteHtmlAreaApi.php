@@ -135,7 +135,7 @@ abstract class RteHtmlAreaApi {
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
-	 * @param 	integer		Relative id of the RTE editing area in the form
+	 * @param 	int		Relative id of the RTE editing area in the form
 	 * @return 	string		JS configuration for registered plugins
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {

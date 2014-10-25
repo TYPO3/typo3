@@ -460,7 +460,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Showing details for a particular phash row
 	 *
-	 * @param 	integer		phash value to display details for.
+	 * @param	int		phash value to display details for.
 	 * @return 	string		HTML content
 	 */
 	public function showDetailsForPhash($phash) {
@@ -597,7 +597,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 * Wraps input string in a link that will display details for the word. Eg. which other pages has the word, metaphone associations etc.
 	 *
 	 * @param 	string		String to wrap, possibly a title or so.
-	 * @param 	integer		wid value to show details for
+	 * @param	int		wid value to show details for
 	 * @return 	string		Wrapped string
 	 */
 	public function linkWordDetails($string, $wid) {
@@ -608,7 +608,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 * Wraps input string in a link to see more details for metaphone value
 	 *
 	 * @param 	string		String to wrap
-	 * @param 	integer		Metaphone value
+	 * @param	int		Metaphone value
 	 * @return 	string		Wrapped string
 	 */
 	public function linkMetaPhoneDetails($string, $metaphone) {
@@ -618,7 +618,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Creates message for flag value
 	 *
-	 * @param 	integer		Flags integer
+	 * @param	int		Flags integer
 	 * @return 	string		Message string
 	 */
 	public function flagsMsg($flags) {
@@ -635,7 +635,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Show details for words
 	 *
-	 * @param 	integer		Word ID (wid)
+	 * @param	int		Word ID (wid)
 	 * @return 	string		HTML content
 	 */
 	public function showDetailsForWord($wid) {
@@ -678,7 +678,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Show details for metaphone value
 	 *
-	 * @param 	integer		Metaphone integer hash
+	 * @param	int		Metaphone integer hash
 	 * @return 	string		HTML content
 	 */
 	public function showDetailsForMetaphone($metaphone) {
@@ -745,7 +745,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 * Wraps input string in a link that will display details for the phash value set.
 	 *
 	 * @param 	string		String to wrap, possibly a title or so.
-	 * @param 	integer		phash value to show details for
+	 * @param	int		phash value to show details for
 	 * @return 	string		Wrapped string
 	 */
 	public function linkDetails($string, $phash) {
@@ -765,7 +765,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 * Wraps input string in a link that will display details for the phash value set.
 	 *
 	 * @param 	string		String to wrap, possibly a title or so.
-	 * @param 	integer		phash value to show details for
+	 * @param	int		phash value to show details for
 	 * @return 	string		Wrapped string
 	 */
 	public function showPageDetails($string, $id) {
@@ -850,8 +850,8 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Re-indexing files/records attached to a page.
 	 *
-	 * @param 	integer		Phash value
-	 * @param 	integer		The page uid for the section record (file/url could appear more than one place you know...)
+	 * @param	int		Phash value
+	 * @param	int		The page uid for the section record (file/url could appear more than one place you know...)
 	 * @return 	string		HTML content
 	 */
 	public function reindexPhash($phash, $pageId) {
@@ -891,7 +891,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 * Get rootline for closest TypoScript template root.
 	 * Algorithm same as used in Web > Template, Object browser
 	 *
-	 * @param 	integer		The page id to traverse rootline back from
+	 * @param	int		The page id to traverse rootline back from
 	 * @return 	array		Array where the root lines uid values are found.
 	 */
 	public function getUidRootLineForClosestTemplate($id) {
@@ -963,7 +963,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Returns an array with gr_list records for a phash
 	 *
-	 * @param 	integer		phash integer to look up on
+	 * @param	int		phash integer to look up on
 	 * @param 	string		gr_list string to filter OUT of the result (first occurence)
 	 * @return 	array		Array of records from index_grlist table
 	 */
@@ -1003,7 +1003,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 * Setting / Unsetting keywords in page header
 	 *
 	 * @param 	array		Page keywords as keys in array with value 0 or 1 for set or unset.
-	 * @param 	integer		The page uid of the header where the keywords are to be set.
+	 * @param	int		The page uid of the header where the keywords are to be set.
 	 * @return 	void
 	 */
 	public function processPageKeywords($pageKeywords, $pageUid) {

@@ -252,8 +252,8 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 * Echo the HTML page and JS that will insert the image
 	 *
 	 * @param 	string		$url: the url of the image
-	 * @param 	integer		$width: the width of the image
-	 * @param 	integer		$height: the height of the image
+	 * @param 	int		$width: the width of the image
+	 * @param 	int		$height: the height of the image
 	 * @param 	string		$altText: text for the alt attribute of the image
 	 * @param 	string		$titleText: text for the title attribute of the image
 	 * @param 	string		$additionalParams: text representing more html attributes to be added on the img tag

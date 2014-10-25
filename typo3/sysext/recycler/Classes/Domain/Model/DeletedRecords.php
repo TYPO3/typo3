@@ -72,10 +72,10 @@ class DeletedRecords {
 	 * Load all deleted rows from $table
 	 * If table is not set, it iterates the TCA tables
 	 *
-	 * @param 	integer		$id: UID from selected page
+	 * @param	int		$id: UID from selected page
 	 * @param 	string		$table: Tablename
-	 * @param 	integer		$depth: How many levels recursive
-	 * @param 	integer		$limit: MySQL LIMIT
+	 * @param	int		$depth: How many levels recursive
+	 * @param	int		$limit: MySQL LIMIT
 	 * @param 	string		$filter: Filter text
 	 * @return 	recycler_model_delRecords
 	 */
@@ -107,9 +107,9 @@ class DeletedRecords {
 	/**
 	 * Find the total count of deleted records
 	 *
-	 * @param 	integer		$id: UID from record
+	 * @param	int		$id: UID from record
 	 * @param 	string		$table: Tablename from record
-	 * @param 	integer		$depth: How many levels recursive
+	 * @param	int		$depth: How many levels recursive
 	 * @param 	string		$filter: Filter text
 	 * @return 	void
 	 */
@@ -125,9 +125,9 @@ class DeletedRecords {
 	/**
 	 * Set all deleted rows
 	 *
-	 * @param 	integer		$id: UID from record
+	 * @param	int		$id: UID from record
 	 * @param 	string		$table: Tablename from record
-	 * @param 	integer		$depth: How many levels recursive
+	 * @param	int		$depth: How many levels recursive
 	 * @param 	array		$ctrl: TCA CTRL Array
 	 * @param 	string		$filter: Filter text
 	 * @return 	void

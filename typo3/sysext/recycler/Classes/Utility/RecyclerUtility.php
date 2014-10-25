@@ -68,10 +68,10 @@ class RecyclerUtility {
 	 * Each part of the path will be limited to $titleLimit characters
 	 * Deleted pages are filtered out.
 	 *
-	 * @param 	integer		Page uid for which to create record path
+	 * @param	int		Page uid for which to create record path
 	 * @param 	string		$clause is additional where clauses, eg.
-	 * @param 	integer		Title limit
-	 * @param 	integer		Title limit of Full title (typ. set to 1000 or so)
+	 * @param	int		Title limit
+	 * @param	int		Title limit of Full title (typ. set to 1000 or so)
 	 * @return 	mixed		Path of record (string) OR array with short/long title if $fullTitleLimit is set.
 	 */
 	static public function getRecordPath($uid, $clause = '', $titleLimit = 1000, $fullTitleLimit = 0) {

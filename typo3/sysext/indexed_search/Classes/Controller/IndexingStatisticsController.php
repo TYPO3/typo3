@@ -134,9 +134,9 @@ class IndexingStatisticsController extends \TYPO3\CMS\Backend\Module\AbstractFun
 	 * Generates a list of Page-uid's from $id. List does not include $id itself
 	 * The only pages excluded from the list are deleted pages.
 	 *
-	 * @param 	integer		Start page id
-	 * @param 	integer		Depth to traverse down the page tree.
-	 * @param 	integer		$begin is an optional integer that determines at which level in the tree to start collecting uid's. Zero means 'start right away', 1 = 'next level and out'
+	 * @param	int		Start page id
+	 * @param	int		Depth to traverse down the page tree.
+	 * @param	int		$begin is an optional integer that determines at which level in the tree to start collecting uid's. Zero means 'start right away', 1 = 'next level and out'
 	 * @param 	string		Perms clause
 	 * @return 	string		Returns the list with a comma in the end (if any pages selected!)
 	 */
