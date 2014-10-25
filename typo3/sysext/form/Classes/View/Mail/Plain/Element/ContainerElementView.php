@@ -23,7 +23,7 @@ class ContainerElementView extends \TYPO3\CMS\Form\View\Mail\Plain\Element\Abstr
 
 	/**
 	 * @param array $children
-	 * @param integer $spaces
+	 * @param int $spaces
 	 * @return string
 	 */
 	protected function renderChildren(array $children, $spaces = 0) {
@@ -37,7 +37,7 @@ class ContainerElementView extends \TYPO3\CMS\Form\View\Mail\Plain\Element\Abstr
 
 	/**
 	 * @param \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement $modelChild
-	 * @param integer $spaces
+	 * @param int $spaces
 	 * @return string
 	 */
 	protected function renderChild(\TYPO3\CMS\Form\Domain\Model\Element\AbstractElement $modelChild, $spaces) {

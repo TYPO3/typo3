@@ -101,7 +101,7 @@ class CommandLineController {
 	 * Return argument value
 	 *
 	 * @param string $option Option string, eg. "-s
-	 * @param integer $idx Value index, default is 0 (zero) = the first one...
+	 * @param int $idx Value index, default is 0 (zero) = the first one...
 	 * @return boolean TRUE if option found
 	 */
 	public function cli_argValue($option, $idx = 0) {
@@ -279,7 +279,7 @@ class CommandLineController {
 	 * Indentation function for 75 char wide lines.
 	 *
 	 * @param string $str String to break and indent.
-	 * @param integer $indent Number of space chars to indent.
+	 * @param int $indent Number of space chars to indent.
 	 * @return string Result
 	 */
 	public function cli_indent($str, $indent) {

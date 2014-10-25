@@ -142,7 +142,7 @@ abstract class AbstractService {
 	 * Logs debug messages to \TYPO3\CMS\Core\Utility\GeneralUtility::devLog()
 	 *
 	 * @param string $msg Debug message
-	 * @param integer $severity Severity: 0 is info, 1 is notice, 2 is warning, 3 is fatal error, -1 is "OK" message
+	 * @param int $severity Severity: 0 is info, 1 is notice, 2 is warning, 3 is fatal error, -1 is "OK" message
 	 * @param array|boolean $dataVar dditional data you want to pass to the logger.
 	 * @return void
 	 */
@@ -155,7 +155,7 @@ abstract class AbstractService {
 	/**
 	 * Puts an error on the error stack. Calling without parameter adds a general error.
 	 *
-	 * @param integer $errNum Error number (see T3_ERR_SV_* constants)
+	 * @param int $errNum Error number (see T3_ERR_SV_* constants)
 	 * @param string $errMsg Error message
 	 * @return void
 	 */
@@ -299,7 +299,7 @@ abstract class AbstractService {
 	 * Read content from a file a file.
 	 *
 	 * @param string $absFile File name to read from.
-	 * @param integer $length Maximum length to read. If empty the whole file will be read.
+	 * @param int $length Maximum length to read. If empty the whole file will be read.
 	 * @return string|boolean $content or FALSE
 	 */
 	public function readFile($absFile, $length = 0) {

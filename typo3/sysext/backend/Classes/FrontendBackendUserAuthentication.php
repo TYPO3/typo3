@@ -224,9 +224,9 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 	 * Generates a list of Page-uid's from $id. List does not include $id itself
 	 * The only pages excluded from the list are deleted pages.
 	 *
-	 * @param integer $id Start page id
-	 * @param integer $depth Depth to traverse down the page tree.
-	 * @param integer $begin Is an optional integer that determines at which level in the tree to start collecting uid's. Zero means 'start right away', 1 = 'next level and out'
+	 * @param int $id Start page id
+	 * @param int $depth Depth to traverse down the page tree.
+	 * @param int $begin Is an optional integer that determines at which level in the tree to start collecting uid's. Zero means 'start right away', 1 = 'next level and out'
 	 * @param string $perms_clause Perms clause
 	 * @return string Returns the list with a comma in the end (if any pages selected!)
 	 */
@@ -256,7 +256,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 	/**
 	 * Returns the number of cached pages for a page id.
 	 *
-	 * @param integer $pageId The page id.
+	 * @param int $pageId The page id.
 	 * @return integer The number of pages for this page in the table "cache_pages
 	 */
 	public function extGetNumberOfCachedPages($pageId) {

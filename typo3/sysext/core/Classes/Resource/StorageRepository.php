@@ -66,7 +66,7 @@ class StorageRepository extends AbstractRepository {
 	}
 
 	/**
-	 * @param integer $uid
+	 * @param int $uid
 	 *
 	 * @return null|ResourceStorage
 	 */

@@ -58,7 +58,7 @@ interface FrontendInterface
 	 * @param string $entryIdentifier Something which identifies the data - depends on concrete cache
 	 * @param mixed $data The data to cache - also depends on the concrete cache implementation
 	 * @param array $tags Tags to associate with this cache entry
-	 * @param integer $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
+	 * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
 	 * @return void
 	 * @api
 	 */

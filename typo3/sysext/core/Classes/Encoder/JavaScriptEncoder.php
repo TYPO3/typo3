@@ -129,7 +129,7 @@ class JavaScriptEncoder implements \TYPO3\CMS\Core\SingletonInterface {
 	 * If the character is an alphanumeric character with ordinal value below 255,
 	 * then this method will return NULL.
 	 *
-	 * @param integer $ordinalValue Ordinal value of the character
+	 * @param int $ordinalValue Ordinal value of the character
 	 * @return string hexadecimal ordinal value of non-alphanumeric characters or NULL otherwise.
 	 */
 	protected function getHexForNonAlphanumeric($ordinalValue) {

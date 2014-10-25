@@ -46,7 +46,7 @@ class FileListFolderTree extends \TYPO3\CMS\Backend\Tree\View\FolderTreeView {
 	 *
 	 * @param string $title Title string
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject Folder to work on
-	 * @param integer $bank Bank pointer (which mount point number)
+	 * @param int $bank Bank pointer (which mount point number)
 	 * @return string
 	 * @access private
 	 */

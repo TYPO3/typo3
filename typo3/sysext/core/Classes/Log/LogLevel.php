@@ -105,7 +105,7 @@ class LogLevel {
 	/**
 	 * Resolves the name of a log level.
 	 *
-	 * @param integer $level Log level.
+	 * @param int $level Log level.
 	 * @return string Log level name.
 	 */
 	static public function getName($level) {
@@ -117,7 +117,7 @@ class LogLevel {
 	 * Checks a level for validity,
 	 * whether it is an integer and in the range of 0-7.
 	 *
-	 * @param integer $level log level to validate
+	 * @param int $level log level to validate
 	 * @return boolean TRUE if the given log level is valid, FALSE otherwise
 	 */
 	static public function isValidLevel($level) {
@@ -127,7 +127,7 @@ class LogLevel {
 	/**
 	 * Validates a log level.
 	 *
-	 * @param integer $level log level to validate
+	 * @param int $level log level to validate
 	 * @return void
 	 * @throws \Psr\Log\InvalidArgumentException if the given log level is invalid
 	 */

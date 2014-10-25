@@ -29,9 +29,9 @@ class ExtdirectPageCommands {
 	 *
 	 * Function is called from the Page module javascript.
 	 *
-	 * @param integer $sourceElement  Id attribute of content element which must be moved
+	 * @param int $sourceElement  Id attribute of content element which must be moved
 	 * @param string $destinationColumn Column to move the content element to
-	 * @param integer $destinationElement Id attribute of the element it was dropped on
+	 * @param int $destinationElement Id attribute of the element it was dropped on
 	 * @return array
 	 */
 	public function moveContentElement($sourceElement, $destinationColumn, $destinationElement) {

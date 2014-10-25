@@ -48,8 +48,8 @@ class SortedTreeNodeCollection extends \TYPO3\CMS\Backend\Tree\TreeNodeCollectio
 	 * Binary search that returns the offset of a given node
 	 *
 	 * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
-	 * @param integer $start
-	 * @param integer $end
+	 * @param int $start
+	 * @param int $end
 	 * @return integer
 	 */
 	protected function binarySearch(\TYPO3\CMS\Backend\Tree\TreeNode $node, $start, $end) {

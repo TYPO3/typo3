@@ -594,7 +594,7 @@ class PermissionModuleController {
 	 * Print a checkbox for the edit-permission form
 	 *
 	 * @param string $checkName Checkbox name key
-	 * @param integer $num Checkbox number index
+	 * @param int $num Checkbox number index
 	 * @return string HTML checkbox
 	 */
 	public function printCheckBox($checkName, $num) {
@@ -605,7 +605,7 @@ class PermissionModuleController {
 	/**
 	 * Finding tree and offer setting of values recursively.
 	 *
-	 * @param integer $id Page id.
+	 * @param int $id Page id.
 	 * @param string $perms_clause Select clause
 	 * @return string Select form element for recursive levels (if any levels are found)
 	 */

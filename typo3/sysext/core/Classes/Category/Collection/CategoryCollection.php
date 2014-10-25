@@ -81,7 +81,7 @@ class CategoryCollection extends \TYPO3\CMS\Core\Collection\AbstractRecordCollec
 	 * identifier (what ever static data is defined) is loaded.
 	 * Entries can be load on first access.
 	 *
-	 * @param integer $id Id of database record to be loaded
+	 * @param int $id Id of database record to be loaded
 	 * @param bool $fillItems Populates the entries directly on load, might be bad for memory on large collections
 	 * @param string $tableName Name of table from which entries should be loaded
 	 * @param string $fieldName Name of the categories relation field

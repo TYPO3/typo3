@@ -323,7 +323,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 * @param array $thisConfig Configuration for RTEs; A mix between TSconfig and otherwise. Contains configuration for display, which buttons are enabled, additional transformation information etc.
 	 * @param string $RTEtypeVal Record "type" field value.
 	 * @param string $RTErelPath Relative path for images/links in RTE; this is used when the RTE edits content from static files where the path of such media has to be transformed forth and back!
-	 * @param integer $thePidValue PID value of record (true parent page id)
+	 * @param int $thePidValue PID value of record (true parent page id)
 	 * @return string HTML code for RTE!
 	 */
 	public function drawRTE($parentObject, $table, $field, $row, $PA, $specConf, $thisConfig, $RTEtypeVal, $RTErelPath, $thePidValue) {

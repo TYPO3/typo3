@@ -40,7 +40,7 @@ class ActionHandler extends AbstractHandler {
 	/**
 	 * Generates a workspace preview link.
 	 *
-	 * @param integer $uid The ID of the record to be linked
+	 * @param int $uid The ID of the record to be linked
 	 * @return string the full domain including the protocol http:// or https://, but without the trailing '/'
 	 */
 	public function generateWorkspacePreviewLink($uid) {
@@ -51,8 +51,8 @@ class ActionHandler extends AbstractHandler {
 	 * Swaps a single record.
 	 *
 	 * @param string $table
-	 * @param integer $t3ver_oid
-	 * @param integer $orig_uid
+	 * @param int $t3ver_oid
+	 * @param int $orig_uid
 	 * @return void
 	 * @todo What about reporting errors back to the ExtJS interface? /olly/
 	 */
@@ -74,7 +74,7 @@ class ActionHandler extends AbstractHandler {
 	 * Deletes a single record.
 	 *
 	 * @param string $table
-	 * @param integer $uid
+	 * @param int $uid
 	 * @return void
 	 * @todo What about reporting errors back to the ExtJS interface? /olly/
 	 */
@@ -192,7 +192,7 @@ class ActionHandler extends AbstractHandler {
 	/**
 	 * Saves the selected language.
 	 *
-	 * @param integer|string $language
+	 * @param int|string $language
 	 * @return void
 	 */
 	public function saveLanguageSelection($language) {
@@ -206,9 +206,9 @@ class ActionHandler extends AbstractHandler {
 	/**
 	 * Gets the dialog window to be displayed before a record can be sent to the next stage.
 	 *
-	 * @param integer $uid
+	 * @param int $uid
 	 * @param string $table
-	 * @param integer $t3ver_oid
+	 * @param int $t3ver_oid
 	 * @return array
 	 */
 	public function sendToNextStageWindow($uid, $table, $t3ver_oid) {
@@ -240,7 +240,7 @@ class ActionHandler extends AbstractHandler {
 	/**
 	 * Gets the dialog window to be displayed before a record can be sent to the previous stage.
 	 *
-	 * @param integer $uid
+	 * @param int $uid
 	 * @param string $table
 	 * @return array
 	 */
@@ -277,7 +277,7 @@ class ActionHandler extends AbstractHandler {
 	/**
 	 * Gets the dialog window to be displayed before a record can be sent to a specific stage.
 	 *
-	 * @param integer $nextStageId
+	 * @param int $nextStageId
 	 * @return array
 	 */
 	public function sendToSpecificStageWindow($nextStageId) {
@@ -293,7 +293,7 @@ class ActionHandler extends AbstractHandler {
 	 *
 	 * @param array list of recipients
 	 * @param string given user string of additional recipients
-	 * @param integer stage id
+	 * @param int stage id
 	 * @return array
 	 */
 	public function getRecipientList(array $uidOfRecipients, $additionalRecipients, $stageId) {
@@ -355,7 +355,7 @@ class ActionHandler extends AbstractHandler {
 	/**
 	 * Discard all items from given page id.
 	 *
-	 * @param integer $pageId
+	 * @param int $pageId
 	 * @return array
 	 * @author Michael Klapper <development@morphodo.com>
 	 */
@@ -658,7 +658,7 @@ class ActionHandler extends AbstractHandler {
 	/**
 	 * Gets all assigned recipients of a particular stage.
 	 *
-	 * @param integer $stage
+	 * @param int $stage
 	 * @return array
 	 */
 	protected function getReceipientsOfStage($stage) {
@@ -702,7 +702,7 @@ class ActionHandler extends AbstractHandler {
 	/**
 	 * Gets the default comment of a particular stage.
 	 *
-	 * @param integer $stage
+	 * @param int $stage
 	 * @return string
 	 */
 	protected function getDefaultCommentOfStage($stage) {
@@ -725,7 +725,7 @@ class ActionHandler extends AbstractHandler {
 	/**
 	 * Send all available workspace records to the previous stage.
 	 *
-	 * @param integer $id Current page id to process items to previous stage.
+	 * @param int $id Current page id to process items to previous stage.
 	 * @return array
 	 * @author Michael Klapper <development@morphodo.com>
 	 */
@@ -744,7 +744,7 @@ class ActionHandler extends AbstractHandler {
 	}
 
 	/**
-	 * @param integer $id Current Page id to select Workspace items from.
+	 * @param int $id Current Page id to select Workspace items from.
 	 * @return array
 	 * @author Michael Klapper <development@morphodo.com>
 	 */
@@ -765,7 +765,7 @@ class ActionHandler extends AbstractHandler {
 	/**
 	 * Fetch the current label and visible state of the buttons.
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 * @return array Contains the visibility state and label of the stage change buttons.
 	 * @author Michael Klapper <development@morphodo.com>
 	 */
@@ -794,7 +794,7 @@ class ActionHandler extends AbstractHandler {
 	}
 
 	/**
-	 * @param integer $workspaceId
+	 * @param int $workspaceId
 	 * @return integer Id of the original workspace
 	 * @throws \TYPO3\CMS\Core\Exception
 	 */

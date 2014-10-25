@@ -165,7 +165,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 * Gets the page id by a record.
 	 *
 	 * @param string $table Name of the table
-	 * @param integer $id Id of the accordant record
+	 * @param int $id Id of the accordant record
 	 * @param bool $ignoreTable Whether to ignore the page, if TRUE a positive
 	 * @return integer Id of the page the record is persisted on
 	 */
@@ -187,7 +187,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 * Determine if record of table 'pages' with the given $pid is currently created in TCEforms.
 	 * This information is required for conditions in BE for PIDupinRootline.
 	 *
-	 * @param integer $pid The pid the check for as parent page
+	 * @param int $pid The pid the check for as parent page
 	 * @return boolean TRUE if the is currently a new page record being edited with $pid as uid of the parent page
 	 */
 	protected function isNewPageWithPageId($pageId) {

@@ -361,7 +361,7 @@ class GeneralUtility {
 	 * Truncates a string with appended/prepended "..." and takes current character set into consideration.
 	 *
 	 * @param string $string String to truncate
-	 * @param integer $chars Must be an integer with an absolute value of at least 4. if negative the string is cropped from the right end.
+	 * @param int $chars Must be an integer with an absolute value of at least 4. if negative the string is cropped from the right end.
 	 * @param string $appendString Appendix to the truncated string
 	 * @return string Cropped string
 	 */
@@ -797,7 +797,7 @@ class GeneralUtility {
 	 * Returns the first 10 positions of the MD5-hash		(changed from 6 to 10 recently)
 	 *
 	 * @param string $input Input string to be md5-hashed
-	 * @param integer $len The string-length of the output
+	 * @param int $len The string-length of the output
 	 * @return string Substring of the resulting md5-hash, being $len chars long (from beginning)
 	 */
 	static public function shortMD5($input, $len = 10) {
@@ -905,9 +905,9 @@ class GeneralUtility {
 	 * Modifies a HTML Hex color by adding/subtracting $R,$G and $B integers
 	 *
 	 * @param string $color A hexadecimal color code, #xxxxxx
-	 * @param integer $R Offset value 0-255
-	 * @param integer $G Offset value 0-255
-	 * @param integer $B Offset value 0-255
+	 * @param int $R Offset value 0-255
+	 * @param int $G Offset value 0-255
+	 * @param int $B Offset value 0-255
 	 * @return string A hexadecimal color code, #xxxxxx, modified according to input vars
 	 * @see modifyHTMLColorAll()
 	 */
@@ -923,7 +923,7 @@ class GeneralUtility {
 	 * Modifies a HTML Hex color by adding/subtracting $all integer from all R/G/B channels
 	 *
 	 * @param string $color A hexadecimal color code, #xxxxxx
-	 * @param integer $all Offset value 0-255 for all three channels.
+	 * @param int $all Offset value 0-255 for all three channels.
 	 * @return string A hexadecimal color code, #xxxxxx, modified according to input vars
 	 * @see modifyHTMLColor()
 	 */
@@ -945,7 +945,7 @@ class GeneralUtility {
 	/**
 	 * Formats the input integer $sizeInBytes as bytes/kilobytes/megabytes (-/K/M)
 	 *
-	 * @param integer $sizeInBytes Number of bytes to format.
+	 * @param int $sizeInBytes Number of bytes to format.
 	 * @param string $labels Labels for bytes, kilo, mega and giga separated by vertical bar (|) and possibly encapsulated in "". Eg: " | K| M| G" (which is the default value)
 	 * @return string Formatted representation of the byte number, for output.
 	 */
@@ -1184,7 +1184,7 @@ class GeneralUtility {
 	 * Note: Returned values are not guaranteed to be crypto-safe,
 	 * most likely they are not, depending on the used retrieval method.
 	 *
-	 * @param integer $bytesToReturn Number of characters (bytes) to return
+	 * @param int $bytesToReturn Number of characters (bytes) to return
 	 * @return string Random Bytes
 	 * @see http://bugs.php.net/bug.php?id=52523
 	 * @see http://www.php-security.org/2010/05/09/mops-submission-04-generating-unpredictable-session-ids-and-hashes/index.html
@@ -1307,7 +1307,7 @@ class GeneralUtility {
 	/**
 	 * Returns a hex representation of a random byte string.
 	 *
-	 * @param integer $count Number of hex characters to return
+	 * @param int $count Number of hex characters to return
 	 * @return string Random Bytes
 	 */
 	static public function getRandomHexString($count) {
@@ -1451,7 +1451,7 @@ class GeneralUtility {
 	 * @param string $delimiter Delimiter string to explode with
 	 * @param string $string The string to explode
 	 * @param bool $removeEmptyValues If set, all empty values (='') will NOT be set in output
-	 * @param integer $limit If positive, the result will contain a maximum of limit elements,
+	 * @param int $limit If positive, the result will contain a maximum of limit elements,
 	 * @return array Exploded values, all converted to integers
 	 */
 	static public function intExplode($delimiter, $string, $removeEmptyValues = FALSE, $limit = 0) {
@@ -1487,7 +1487,7 @@ class GeneralUtility {
 	 *
 	 * @param string $delimiter Delimiter string to explode with
 	 * @param string $string The string to explode
-	 * @param integer $count Number of array entries
+	 * @param int $count Number of array entries
 	 * @return array Exploded values
 	 */
 	static public function revExplode($delimiter, $string, $count = 0) {
@@ -1515,7 +1515,7 @@ class GeneralUtility {
 	 * @param string $delim Delimiter string to explode with
 	 * @param string $string The string to explode
 	 * @param bool $removeEmptyValues If set, all empty values will be removed in output
-	 * @param integer $limit If positive, the result will contain a maximum of
+	 * @param int $limit If positive, the result will contain a maximum of
 	 * @return array Exploded values
 	 */
 	static public function trimExplode($delim, $string, $removeEmptyValues = FALSE, $limit = 0) {
@@ -1994,7 +1994,7 @@ class GeneralUtility {
 	 * Parses XML input into a PHP array with associative keys
 	 *
 	 * @param string $string XML data input
-	 * @param integer $depth Number of element levels to resolve the XML into an array. Any further structure will be set as XML.
+	 * @param int $depth Number of element levels to resolve the XML into an array. Any further structure will be set as XML.
 	 * @return mixed The array with the parsed structure unless the XML parser returns with an error in which case the error message string is returned.
 	 * @author bisqwit at iki dot fi dot not dot for dot ads dot invalid / http://dk.php.net/xml_parse_into_struct + kasperYYYY@typo3.com
 	 */
@@ -2085,9 +2085,9 @@ class GeneralUtility {
 	 *
 	 * @param array $array The input PHP array with any kind of data; text, binary, integers. Not objects though.
 	 * @param string $NSprefix tag-prefix, eg. a namespace prefix like "T3:
-	 * @param integer $level Current recursion level. Don't change, stay at zero!
+	 * @param int $level Current recursion level. Don't change, stay at zero!
 	 * @param string $docTag Alternative document tag. Default is "phparray".
-	 * @param integer $spaceInd If greater than zero, then the number of spaces corresponding to this number is used for indenting, if less than zero - no indentation, if zero - a single TAB is used
+	 * @param int $spaceInd If greater than zero, then the number of spaces corresponding to this number is used for indenting, if less than zero - no indentation, if zero - a single TAB is used
 	 * @param array $options Options for the compilation. Key "useNindex" => 0/1 (boolean: whether to use "n0, n1, n2" for num. indexes); Key "useIndexTagForNum" => "[tag for numerical indexes]"; Key "useIndexTagForAssoc" => "[tag for associative indexes"; Key "parentTagMap" => array('parentTag' => 'thisLevelTag')
 	 * @param array $stackData Stack data. Don't touch.
 	 * @return string An XML string made from the input content in the array.
@@ -2427,7 +2427,7 @@ class GeneralUtility {
 	 * If you are having trouble with proxys when reading URLs you can configure your way out of that with settings like $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] etc.
 	 *
 	 * @param string $url File/URL to read
-	 * @param integer $includeHeader Whether the HTTP header should be fetched or not. 0=disable, 1=fetch header+content, 2=fetch header only
+	 * @param int $includeHeader Whether the HTTP header should be fetched or not. 0=disable, 1=fetch header+content, 2=fetch header only
 	 * @param array $requestHeaders HTTP headers to be used in the request
 	 * @param array $report Error code/message and, if $includeHeader is 1, response meta data (HTTP status and content type)
 	 * @return mixed The content from the resource given as input. FALSE if an error has occurred.
@@ -2966,7 +2966,7 @@ Connection: close
 	 * @param string $path The path to read recursively from (absolute) (include trailing slash!)
 	 * @param string $extList Comma list of file extensions: Only files with extensions in this list (if applicable) will be selected.
 	 * @param bool $regDirs If set, directories are also included in output.
-	 * @param integer $recursivityLevels The number of levels to dig down...
+	 * @param int $recursivityLevels The number of levels to dig down...
 	 * @param string $excludePattern regex pattern of files/directories to exclude
 	 * @return array An array with the found files/directories.
 	 */
@@ -3072,7 +3072,7 @@ Connection: close
 	 * TYPO3 installation. The first parameter can be used to set something that overrides
 	 * the maxFileSize, usually for the TCA values.
 	 *
-	 * @param integer $localLimit the number of Kilobytes (!) that should be used as
+	 * @param int $localLimit the number of Kilobytes (!) that should be used as
 	 * @return integer The maximum size of uploads that are allowed (measured in kilobytes)
 	 */
 	static public function getMaxUploadFileSize($localLimit = 0) {
@@ -3953,7 +3953,7 @@ Connection: close
 	 *
 	 * @param mixed $uid_or_record Uid (integer) or record (array)
 	 * @param string $fields List of fields from the record if that is given.
-	 * @param integer $codeLength Length of returned authentication code.
+	 * @param int $codeLength Length of returned authentication code.
 	 * @return string MD5 hash of 8 chars.
 	 */
 	static public function stdAuthCode($uid_or_record, $fields = '', $codeLength = 8) {
@@ -3979,7 +3979,7 @@ Connection: close
 	/**
 	 * Responds on input localization setting value whether the page it comes from should be hidden if no translation exists or not.
 	 *
-	 * @param integer $l18n_cfg_fieldValue Value from "l18n_cfg" field of a page record
+	 * @param int $l18n_cfg_fieldValue Value from "l18n_cfg" field of a page record
 	 * @return boolean TRUE if the page should be hidden
 	 */
 	static public function hideIfNotTranslated($l18n_cfg_fieldValue) {
@@ -3994,7 +3994,7 @@ Connection: close
 	 * Returns true if the "l18n_cfg" field value is not set to hide
 	 * pages in the default language
 	 *
-	 * @param integer $localizationConfiguration
+	 * @param int $localizationConfiguration
 	 * @return boolean
 	 */
 	static public function hideIfDefaultLanguage($localizationConfiguration) {
@@ -4007,7 +4007,7 @@ Connection: close
 	 * @param string $fileRef Input is a file-reference (see \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName). That file is expected to be a 'locallang.php' file containing a $LOCAL_LANG array (will be included!) or a 'locallang.xml' file conataining a valid XML TYPO3 language structure.
 	 * @param string $langKey Language key
 	 * @param string $charset Character set (option); if not set, determined by the language key
-	 * @param integer $errorMode Error mode (when file could not be found): 0 - syslog entry, 1 - do nothing, 2 - throw an exception
+	 * @param int $errorMode Error mode (when file could not be found): 0 - syslog entry, 1 - do nothing, 2 - throw an exception
 	 * @return array Value of $LOCAL_LANG found in the included file. If that array is found it will returned.
 	 */
 	static public function readLLfile($fileRef, $langKey, $charset = '', $errorMode = 0) {
@@ -4137,7 +4137,7 @@ Connection: close
 	 * @param mixed $params Parameters to be pass along (typically an array) (REFERENCE!)
 	 * @param mixed $ref Reference to be passed along (typically "$this" - being a reference to the calling object) (REFERENCE!)
 	 * @param string $checkPrefix Not used anymore since 6.0
-	 * @param integer $errorMode Error mode (when class/function could not be found): 0 - call debug(), 1 - do nothing, 2 - raise an exception (allows to call a user function that may return FALSE)
+	 * @param int $errorMode Error mode (when class/function could not be found): 0 - call debug(), 1 - do nothing, 2 - raise an exception (allows to call a user function that may return FALSE)
 	 * @return mixed Content from method/function call or FALSE if the class/method/function was not found
 	 * @see getUserObj()
 	 */
@@ -4648,7 +4648,7 @@ Connection: close
 	 * See RFC 1521, section 5.1 Quoted-Printable Content-Transfer-Encoding
 	 *
 	 * @param string $string Content to encode
-	 * @param integer $maxlen Length of the lines, default is 76
+	 * @param int $maxlen Length of the lines, default is 76
 	 * @return string The QP encoded string
 	 */
 	static public function quoted_printable($string, $maxlen = 76) {
@@ -4795,7 +4795,7 @@ Connection: close
 	 * Sub-function for substUrlsInPlainText() above.
 	 *
 	 * @param string $inUrl Input URL
-	 * @param integer $l URL string length limit
+	 * @param int $l URL string length limit
 	 * @param string $index_script_url URL of "index script" - the prefix of the "?RDCT=..." parameter. If not supplied it will default to \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_DIR').'index.php'
 	 * @return string Processed URL
 	 */
@@ -4820,7 +4820,7 @@ Connection: close
 	/**
 	 * Function to compensate for FreeType2 96 dpi
 	 *
-	 * @param integer $font_size Fontsize for freetype function call
+	 * @param int $font_size Fontsize for freetype function call
 	 * @return integer Compensated fontsize based on $GLOBALS['TYPO3_CONF_VARS']['GFX']['TTFdpi']
 	 */
 	static public function freetypeDpiComp($font_size) {
@@ -4877,7 +4877,7 @@ Connection: close
 	 *
 	 * @param string $msg Message (in English).
 	 * @param string $extKey Extension key (from which extension you are calling the log) or "Core
-	 * @param integer $severity \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_* constant
+	 * @param int $severity \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_* constant
 	 * @return void
 	 */
 	static public function sysLog($msg, $extKey, $severity = 0) {
@@ -4948,7 +4948,7 @@ Connection: close
 	 *
 	 * @param string $msg Message (in english).
 	 * @param string $extKey Extension key (from which extension you are calling the log)
-	 * @param integer $severity Severity: 0 is info, 1 is notice, 2 is warning, 3 is fatal error, -1 is "OK" message
+	 * @param int $severity Severity: 0 is info, 1 is notice, 2 is warning, 3 is fatal error, -1 is "OK" message
 	 * @param mixed $dataVar Additional data you want to pass to the logger.
 	 * @return void
 	 */
@@ -5053,7 +5053,7 @@ Connection: close
 	 *
 	 * @param array $arr Data array which should be outputted
 	 * @param mixed $valueList List of keys which should be listed in the output string. Pass a comma list or an array. An empty list outputs the whole array.
-	 * @param integer $valueLength Long string values are shortened to this length. Default: 20
+	 * @param int $valueLength Long string values are shortened to this length. Default: 20
 	 * @return string Output string with key names and their value as string
 	 */
 	static public function arrayToLogString(array $arr, $valueList = array(), $valueLength = 20) {

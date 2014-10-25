@@ -30,7 +30,7 @@ interface DriverInterface {
 	/**
 	 * Sets the storage uid the driver belongs to
 	 *
-	 * @param integer $storageUid
+	 * @param int $storageUid
 	 * @return void
 	 */
 	public function setStorageUid($storageUid);
@@ -56,7 +56,7 @@ interface DriverInterface {
 	 * configuration into the actual capabilities of the driver
 	 * and returns the result.
 	 *
-	 * @param integer $capabilities
+	 * @param int $capabilities
 	 *
 	 * @return integer
 	 */
@@ -65,7 +65,7 @@ interface DriverInterface {
 	/**
 	 * Returns TRUE if this driver has the given capability.
 	 *
-	 * @param integer $capability A capability, as defined in a CAPABILITY_* constant
+	 * @param int $capability A capability, as defined in a CAPABILITY_* constant
 	 * @return boolean
 	 */
 	public function hasCapability($capability);
@@ -406,8 +406,8 @@ interface DriverInterface {
 	 * Returns a list of files inside the specified path
 	 *
 	 * @param string $folderIdentifier
-	 * @param integer $start
-	 * @param integer $numberOfItems
+	 * @param int $start
+	 * @param int $numberOfItems
 	 * @param bool $recursive
 	 * @param array $filenameFilterCallbacks callbacks for filtering the items
 	 *
@@ -419,8 +419,8 @@ interface DriverInterface {
 	 * Returns a list of folders inside the specified path
 	 *
 	 * @param string $folderIdentifier
-	 * @param integer $start
-	 * @param integer $numberOfItems
+	 * @param int $start
+	 * @param int $numberOfItems
 	 * @param bool $recursive
 	 * @param array $folderNameFilterCallbacks callbacks for filtering the items
 	 *

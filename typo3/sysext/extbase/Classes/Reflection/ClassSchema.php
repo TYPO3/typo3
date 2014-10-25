@@ -131,7 +131,7 @@ class ClassSchema {
 	/**
 	 * Sets the model type of the class this schema is referring to.
 	 *
-	 * @param integer $modelType The model type, one of the MODELTYPE_* constants.
+	 * @param int $modelType The model type, one of the MODELTYPE_* constants.
 	 * @throws \InvalidArgumentException
 	 * @return void
 	 */

@@ -25,7 +25,7 @@ class ErrorIconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 	 * Renders an error icon link as known from the TYPO3 backend.
 	 * Error codes 2 and three are mapped to "error" and 1 is mapped to "warning".
 	 *
-	 * @param integer $errorNumber The error number (0 ... 3)
+	 * @param int $errorNumber The error number (0 ... 3)
 	 * @return string the rendered error icon link
 	 */
 	public function render($errorNumber = 0) {

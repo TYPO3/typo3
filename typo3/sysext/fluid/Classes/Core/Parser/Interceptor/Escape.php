@@ -42,7 +42,7 @@ class Escape implements \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface {
 	 * If "escapingInterceptorEnabled" in the ViewHelper is FALSE, will disable itself inside the ViewHelpers body.
 	 *
 	 * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface $node
-	 * @param integer $interceptorPosition One of the INTERCEPT_* constants for the current interception point
+	 * @param int $interceptorPosition One of the INTERCEPT_* constants for the current interception point
 	 * @param \TYPO3\CMS\Fluid\Core\Parser\ParsingState $parsingState the current parsing state. Not needed in this interceptor.
 	 * @return \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface
 	 */

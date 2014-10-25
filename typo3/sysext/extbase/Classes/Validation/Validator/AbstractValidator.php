@@ -113,7 +113,7 @@ abstract class AbstractValidator implements ValidatorInterface {
 	 * Creates a new validation error object and adds it to $this->results
 	 *
 	 * @param string $message The error message
-	 * @param integer $code The error code (a unix timestamp)
+	 * @param int $code The error code (a unix timestamp)
 	 * @param array $arguments Arguments to be replaced in message
 	 * @param string $title title of the error
 	 * @return void

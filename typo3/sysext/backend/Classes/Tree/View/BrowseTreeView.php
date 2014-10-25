@@ -94,7 +94,7 @@ class BrowseTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 * Do NOT htmlspecialchar the string from this function - has already been done.
 	 *
 	 * @param array $row The input row array (where the key "title" is used for the title)
-	 * @param integer $titleLen Title length (30)
+	 * @param int $titleLen Title length (30)
 	 * @return string The title.
 	 */
 	public function getTitleStr($row, $titleLen = 30) {

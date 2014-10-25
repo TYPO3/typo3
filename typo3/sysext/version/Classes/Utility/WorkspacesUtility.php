@@ -26,7 +26,7 @@ class WorkspacesUtility {
 	/**
 	 * Building tcemain CMD-array for swapping all versions in a workspace.
 	 *
-	 * @param integer $wsid Real workspace ID, cannot be ONLINE (zero).
+	 * @param int $wsid Real workspace ID, cannot be ONLINE (zero).
 	 * @param bool $doSwap If set, then the currently online versions are swapped into the workspace in exchange for the offline versions. Otherwise the workspace is emptied.
 	 * @param int $pageId
 	 * @return array Command array for tcemain
@@ -65,10 +65,10 @@ class WorkspacesUtility {
 	 * Used from backend to display workspace overview
 	 * User for auto-publishing for selecting versions for publication
 	 *
-	 * @param integer $wsid Workspace ID. If -99, will select ALL versions from ANY workspace. If -98 will select all but ONLINE. >=-1 will select from the actual workspace
-	 * @param integer $filter Lifecycle filter: 1 = select all drafts (never-published), 2 = select all published one or more times (archive/multiple), anything else selects all.
-	 * @param integer $stage Stage filter: -99 means no filtering, otherwise it will be used to select only elements with that stage. For publishing, that would be "10
-	 * @param integer $pageId Page id: Live page for which to find versions in workspace!
+	 * @param int $wsid Workspace ID. If -99, will select ALL versions from ANY workspace. If -98 will select all but ONLINE. >=-1 will select from the actual workspace
+	 * @param int $filter Lifecycle filter: 1 = select all drafts (never-published), 2 = select all published one or more times (archive/multiple), anything else selects all.
+	 * @param int $stage Stage filter: -99 means no filtering, otherwise it will be used to select only elements with that stage. For publishing, that would be "10
+	 * @param int $pageId Page id: Live page for which to find versions in workspace!
 	 * @return array Array of all records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid and t3ver_oid fields. The REAL pid of the online record is found as "realpid
 	 */
 	public function selectVersionsInWorkspace($wsid, $filter = 0, $stage = -99, $pageId = -1) {

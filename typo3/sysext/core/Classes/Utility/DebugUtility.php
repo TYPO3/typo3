@@ -240,7 +240,7 @@ class DebugUtility {
 	 * Returns a string with a list of ascii-values for the first $characters characters in $string
 	 *
 	 * @param string $string String to show ASCII value for
-	 * @param integer $characters Number of characters to show
+	 * @param int $characters Number of characters to show
 	 * @return string The string with ASCII values in separated by a space char.
 	 */
 	static public function ordinalValue($string, $characters = 100) {

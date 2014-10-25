@@ -84,7 +84,7 @@ class Comparison implements ComparisonInterface {
 	 * Constructs this Comparison instance
 	 *
 	 * @param PropertyValueInterface $operand1
-	 * @param integer $operator one of QueryInterface::OPERATOR_*
+	 * @param int $operator one of QueryInterface::OPERATOR_*
 	 * @param mixed $operand2
 	 */
 	public function __construct(PropertyValueInterface $operand1, $operator, $operand2) {

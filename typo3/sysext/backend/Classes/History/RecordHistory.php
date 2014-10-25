@@ -160,7 +160,7 @@ class RecordHistory {
 	/**
 	 * Toggles highlight state of record
 	 *
-	 * @param integer $uid Uid of sys_history entry
+	 * @param int $uid Uid of sys_history entry
 	 * @return void
 	 */
 	public function toggleHighlight($uid) {
@@ -514,7 +514,7 @@ class RecordHistory {
 	 *
 	 * @param array $entry sys_history entry record.
 	 * @param string $table The table name
-	 * @param integer $rollbackUid If set to UID of record, display rollback links
+	 * @param int $rollbackUid If set to UID of record, display rollback links
 	 * @return string HTML table
 	 * @access private
 	 */
@@ -652,7 +652,7 @@ class RecordHistory {
 	 * Gets history and delete/insert data from sys_log and sys_history
 	 *
 	 * @param string $table DB table name
-	 * @param integer $uid UID of record
+	 * @param int $uid UID of record
 	 * @return array history data of the record
 	 */
 	public function getHistoryData($table, $uid) {
@@ -748,7 +748,7 @@ class RecordHistory {
 	 *
 	 * @param string $key Parameter which is set to rollbackFields
 	 * @param string $alt Optional, alternative label and title tag of image
-	 * @param integer $type Optional, type of rollback: 0 - ALL; 1 - element; 2 - field
+	 * @param int $type Optional, type of rollback: 0 - ALL; 1 - element; 2 - field
 	 * @return string HTML output
 	 */
 	public function createRollbackLink($key, $alt = '', $type = 0) {
@@ -800,7 +800,7 @@ class RecordHistory {
 	 * Convert input element reference to workspace version if any.
 	 *
 	 * @param string $table Table of input element
-	 * @param integer $uid UID of record
+	 * @param int $uid UID of record
 	 * @return integer converted UID of record
 	 */
 	public function resolveElement($table, $uid) {
@@ -831,7 +831,7 @@ class RecordHistory {
 	 * Determines whether user has access to a page.
 	 *
 	 * @param string $table
-	 * @param integer $uid
+	 * @param int $uid
 	 * @return boolean
 	 */
 	protected function hasPageAccess($table, $uid) {
@@ -867,7 +867,7 @@ class RecordHistory {
 	 * Gets a database record.
 	 *
 	 * @param string $table
-	 * @param integer $uid
+	 * @param int $uid
 	 * @return array|NULL
 	 */
 	protected function getRecord($table, $uid) {

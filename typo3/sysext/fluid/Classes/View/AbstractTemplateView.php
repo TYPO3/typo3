@@ -358,7 +358,7 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
 	/**
 	 * Start a new nested rendering. Pushes the given information onto the $renderingStack.
 	 *
-	 * @param integer $type one of the RENDERING_* constants
+	 * @param int $type one of the RENDERING_* constants
 	 * @param \TYPO3\CMS\Fluid\Core\Parser\ParsedTemplateInterface $parsedTemplate
 	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
 	 * @return void

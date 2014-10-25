@@ -62,7 +62,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 	/**
 	 * Constructor
 	 *
-	 * @param integer $nodeLimit (optional)
+	 * @param int $nodeLimit (optional)
 	 */
 	public function __construct($nodeLimit = NULL) {
 		if ($nodeLimit === NULL) {
@@ -102,8 +102,8 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 	 * Fetches the sub-nodes of the given node
 	 *
 	 * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
-	 * @param integer $mountPoint
-	 * @param integer $level internally used variable as a recursion limiter
+	 * @param int $mountPoint
+	 * @param int $level internally used variable as a recursion limiter
 	 * @return \TYPO3\CMS\Backend\Tree\TreeNodeCollection
 	 */
 	public function getNodes(\TYPO3\CMS\Backend\Tree\TreeNode $node, $mountPoint = 0, $level = 0) {
@@ -176,7 +176,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 	/**
 	 * Wrapper method for \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL
 	 *
-	 * @param integer $uid The page id
+	 * @param int $uid The page id
 	 * @param bool $unsetMovePointers Whether to unset move pointers
 	 * @return array
 	 */
@@ -189,7 +189,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 	 *
 	 * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
 	 * @param string $searchFilter
-	 * @param integer $mountPoint
+	 * @param int $mountPoint
 	 * @return \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection the filtered nodes
 	 */
 	public function getFilteredNodes(\TYPO3\CMS\Backend\Tree\TreeNode $node, $searchFilter, $mountPoint = 0) {
@@ -408,7 +408,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 	/**
 	 * Returns the where clause for fetching pages
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 * @param string $searchFilter
 	 * @return string
 	 */
@@ -452,7 +452,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 	/**
 	 * Returns all sub-pages of a given id
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 * @param string $searchFilter
 	 * @return array
 	 */
@@ -464,7 +464,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 	/**
 	 * Returns TRUE if the node has child's
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 * @return boolean
 	 */
 	protected function hasNodeSubPages($id) {

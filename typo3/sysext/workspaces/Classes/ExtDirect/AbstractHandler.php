@@ -33,7 +33,7 @@ abstract class AbstractHandler {
 	 * Gets an error response to be shown in the grid component.
 	 *
 	 * @param string $errorLabel Name of the label in the locallang.xlf file
-	 * @param integer $errorCode The error code to be used
+	 * @param int $errorCode The error code to be used
 	 * @param bool $successFlagValue Value of the success flag to be delivered back (might be FALSE in most cases)
 	 * @return array
 	 */

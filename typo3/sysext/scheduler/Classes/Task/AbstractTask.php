@@ -107,7 +107,7 @@ abstract class AbstractTask {
 	/**
 	 * This method is used to set the unique id of the task
 	 *
-	 * @param integer $id Primary key (from the database record) of the scheduled task
+	 * @param int $id Primary key (from the database record) of the scheduled task
 	 * @return void
 	 */
 	public function setTaskUid($id) {
@@ -176,7 +176,7 @@ abstract class AbstractTask {
 	/**
 	 * This method is used to set the timestamp corresponding to the next execution time of the task
 	 *
-	 * @param integer $timestamp Timestamp of next execution
+	 * @param int $timestamp Timestamp of next execution
 	 * @return void
 	 */
 	public function setExecutionTime($timestamp) {
@@ -195,7 +195,7 @@ abstract class AbstractTask {
 	/**
 	 * This method is used to set the task group (uid) of the task
 	 *
-	 * @param integer $timestamp Uid of task group
+	 * @param int $timestamp Uid of task group
 	 * @return void
 	 */
 	public function setTaskGroup($taskGroup) {
@@ -253,7 +253,7 @@ abstract class AbstractTask {
 	/**
 	 * Registers a single execution of the task
 	 *
-	 * @param integer $timestamp Timestamp of the next execution
+	 * @param int $timestamp Timestamp of the next execution
 	 */
 	public function registerSingleExecution($timestamp) {
 		/** @var $execution \TYPO3\CMS\Scheduler\Execution */
@@ -271,9 +271,9 @@ abstract class AbstractTask {
 	/**
 	 * Registers a recurring execution of the task
 	 *
-	 * @param integer $start The first date/time where this execution should occur (timestamp)
+	 * @param int $start The first date/time where this execution should occur (timestamp)
 	 * @param string $interval Execution interval in seconds
-	 * @param integer $end The last date/time where this execution should occur (timestamp)
+	 * @param int $end The last date/time where this execution should occur (timestamp)
 	 * @param bool $multiple Set to FALSE if multiple executions of this task are not permitted in parallel
 	 * @param string $cron_cmd Used like in crontab (minute hour day month weekday)
 	 * @return void
@@ -399,7 +399,7 @@ abstract class AbstractTask {
 	/**
 	 * Removes given execution from list
 	 *
-	 * @param integer $executionID Id of the execution to remove.
+	 * @param int $executionID Id of the execution to remove.
 	 * @param \Exception $failure An exception to signal a failed execution
 	 * @return 	void
 	 */

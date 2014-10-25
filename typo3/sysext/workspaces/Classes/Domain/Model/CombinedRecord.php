@@ -39,8 +39,8 @@ class CombinedRecord {
 	 * Creates combined record object just by live-id and version-id of database record rows.
 	 *
 	 * @param string $table Name of the database table
-	 * @param integer $liveId Id of the database live-record row
-	 * @param integer $versionId Id of the datbase version-record row
+	 * @param int $liveId Id of the database live-record row
+	 * @param int $versionId Id of the datbase version-record row
 	 * @return \TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord
 	 */
 	static public function create($table, $liveId, $versionId) {

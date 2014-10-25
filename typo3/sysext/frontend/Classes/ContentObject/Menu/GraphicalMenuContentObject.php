@@ -267,7 +267,7 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 	 * Remember to upgrade the code in here if the makeGifs function is updated.
 	 *
 	 * @param array $conf Same configuration array as passed to makeGifs()
-	 * @param integer $items The number of menu items
+	 * @param int $items The number of menu items
 	 * @param array $Hobjs Array with "applyTotalH" numbers
 	 * @param array $Wobjs Array with "applyTotalW" numbers
 	 * @param array $minDim Array with "min" x/y
@@ -477,7 +477,7 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 	/**
 	 * Called after all processing for RollOver of an element has been done.
 	 *
-	 * @param integer Pointer to $this->menuArr[$key] where the current menu element record is found OR $this->result['RO'][$key] where the configuration for that elements RO version is found!
+	 * @param int Pointer to $this->menuArr[$key] where the current menu element record is found OR $this->result['RO'][$key] where the configuration for that elements RO version is found!
 	 * @return void
 	 * @access private
 	 * @see writeMenu()
@@ -489,7 +489,7 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 	/**
 	 * Called right before the creation of the link for the menu item
 	 *
-	 * @param integer Pointer to $this->menuArr[$key] where the current menu element record is found
+	 * @param int Pointer to $this->menuArr[$key] where the current menu element record is found
 	 * @return void
 	 * @access private
 	 * @see writeMenu()
@@ -503,7 +503,7 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 	 * This function MUST set $this->WMresult.=[HTML for menu item] to add the generated menu item to the internal accumulation of items.
 	 * Further this calls the subMenu function in the parent class to create any submenu there might be.
 	 *
-	 * @param integer Pointer to $this->menuArr[$key] where the current menu element record is found
+	 * @param int Pointer to $this->menuArr[$key] where the current menu element record is found
 	 * @return void
 	 * @access private
 	 * @see writeMenu(), AbstractMenuContentObject::subMenu()
@@ -521,7 +521,7 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 	 * Called before the "wrap" happens on the menu item.
 	 *
 	 * @param string The current content of the menu item, $this->I['theItem'], passed along.
-	 * @param integer Pointer to $this->menuArr[$key] where the current menu element record is found
+	 * @param int Pointer to $this->menuArr[$key] where the current menu element record is found
 	 * @return string The modified version of $item, going back into $this->I['theItem']
 	 * @access private
 	 * @see writeMenu()

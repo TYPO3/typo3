@@ -73,7 +73,7 @@ class BackendUtility {
 	 * $table must be found in $GLOBALS['TCA']
 	 *
 	 * @param string $table Table name present in $GLOBALS['TCA']
-	 * @param integer $uid UID of record
+	 * @param int $uid UID of record
 	 * @param string $fields List of fields to select
 	 * @param string $where Additional WHERE clause, eg. " AND blablabla = 0
 	 * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
@@ -97,7 +97,7 @@ class BackendUtility {
 	 * Like getRecord(), but overlays workspace version if any.
 	 *
 	 * @param string $table Table name present in $GLOBALS['TCA']
-	 * @param integer $uid UID of record
+	 * @param int $uid UID of record
 	 * @param string $fields List of fields to select
 	 * @param string $where Additional WHERE clause, eg. " AND blablabla = 0
 	 * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
@@ -264,8 +264,8 @@ class BackendUtility {
 	 * Fetches the localization for a given record.
 	 *
 	 * @param string $table Table name present in $GLOBALS['TCA']
-	 * @param integer $uid The uid of the record
-	 * @param integer $language The uid of the language record in sys_language
+	 * @param int $uid The uid of the record
+	 * @param int $language The uid of the language record in sys_language
 	 * @param string $andWhereClause Optional additional WHERE clause (default: '')
 	 * @return mixed Multidimensional array with selected records; if none exist, FALSE is returned
 	 */
@@ -288,7 +288,7 @@ class BackendUtility {
 	 * By default deleted pages are filtered.
 	 * This RootLine will follow the tree all the way to the root. This is opposite to another kind of root line known from the frontend where the rootline stops when a root-template is found.
 	 *
-	 * @param integer $uid Page id for which to create the root line.
+	 * @param int $uid Page id for which to create the root line.
 	 * @param string $clause Clause can be used to select other criteria. It would typically be where-clauses that stops the process if we meet a page, the user has no reading access to.
 	 * @param bool $workspaceOL If TRUE, version overlay is applied. This must be requested specifically because it is usually only wanted when the rootline is used for visual output while for permission checking you want the raw thing!
 	 * @return array Root line array, all the way to the page tree root (or as far as $clause allows!)
@@ -344,7 +344,7 @@ class BackendUtility {
 	/**
 	 * Gets the cached page record for the rootline
 	 *
-	 * @param integer $uid Page id for which to create the root line.
+	 * @param int $uid Page id for which to create the root line.
 	 * @param string $clause Clause can be used to select other criteria. It would typically be where-clauses that stops the process if we meet a page, the user has no reading access to.
 	 * @param bool $workspaceOL If TRUE, version overlay is applied. This must be requested specifically because it is usually only wanted when the rootline is used for visual output while for permission checking you want the raw thing!
 	 * @return array Cached page record for the rootline
@@ -381,7 +381,7 @@ class BackendUtility {
 	/**
 	 * Opens the page tree to the specified page id
 	 *
-	 * @param integer $pid Page id.
+	 * @param int $pid Page id.
 	 * @param bool $clearExpansion If set, then other open branches are closed.
 	 * @return void
 	 */
@@ -417,10 +417,10 @@ class BackendUtility {
 	 * Each part of the path will be limited to $titleLimit characters
 	 * Deleted pages are filtered out.
 	 *
-	 * @param integer $uid Page uid for which to create record path
+	 * @param int $uid Page uid for which to create record path
 	 * @param string $clause Clause is additional where clauses, eg.
-	 * @param integer $titleLimit Title limit
-	 * @param integer $fullTitleLimit Title limit of Full title (typ. set to 1000 or so)
+	 * @param int $titleLimit Title limit
+	 * @param int $fullTitleLimit Title limit of Full title (typ. set to 1000 or so)
 	 * @return mixed Path of record (string) OR array with short/long title if $fullTitleLimit is set.
 	 */
 	static public function getRecordPath($uid, $clause, $titleLimit, $fullTitleLimit = 0) {
@@ -671,7 +671,7 @@ class BackendUtility {
 	 * If $id is zero a pseudo root-page with "_thePath" set is returned IF the current BE_USER is admin.
 	 * In any case ->isInWebMount must return TRUE for the user (regardless of $perms_clause)
 	 *
-	 * @param integer $id Page uid for which to check read-access
+	 * @param int $id Page uid for which to check read-access
 	 * @param string $perms_clause This is typically a value generated with $GLOBALS['BE_USER']->getPagePermsClause(1);
 	 * @return array Returns page record if OK, otherwise FALSE.
 	 */
@@ -878,7 +878,7 @@ class BackendUtility {
 	 * @param string $table The table name
 	 * @param string $fieldName Optional fieldname passed to hook object
 	 * @param bool $WSOL Boolean; If set, workspace overlay is applied to records. This is correct behaviour for all presentation and export, but NOT if you want a TRUE reflection of how things are in the live workspace.
-	 * @param integer $newRecordPidValue SPECIAL CASES: Use this, if the DataStructure may come from a parent record and the INPUT row doesn't have a uid yet (hence, the pid cannot be looked up). Then it is necessary to supply a PID value to search recursively in for the DS (used from TCEmain)
+	 * @param int $newRecordPidValue SPECIAL CASES: Use this, if the DataStructure may come from a parent record and the INPUT row doesn't have a uid yet (hence, the pid cannot be looked up). Then it is necessary to supply a PID value to search recursively in for the DS (used from TCEmain)
 	 * @return mixed If array, the data structure was found and returned as an array. Otherwise (string) it is an error message.
 	 * @see \TYPO3\CMS\Backend\Form\FormEngine::getSingleField_typeFlex()
 	 */
@@ -1114,7 +1114,7 @@ class BackendUtility {
 	 * IDENTICAL to the function by same name found in \TYPO3\CMS\Frontend\Page\PageRepository
 	 *
 	 * @param string $hash The hash-string which was used to store the data value
-	 * @param integer $expTime Variable is not used in the function
+	 * @param int $expTime Variable is not used in the function
 	 * @return mixed The "data" from the cache
 	 */
 	static public function getHash($hash, $expTime = 0) {
@@ -1368,7 +1368,7 @@ class BackendUtility {
 	/**
 	 * Returns the difference in days between input $tstamp and $EXEC_TIME
 	 *
-	 * @param integer $tstamp Time stamp, seconds
+	 * @param int $tstamp Time stamp, seconds
 	 * @return integer
 	 */
 	static public function daysUntil($tstamp) {
@@ -1379,7 +1379,7 @@ class BackendUtility {
 	/**
 	 * Returns $tstamp formatted as "ddmmyy" (According to $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'])
 	 *
-	 * @param integer $tstamp Time stamp, seconds
+	 * @param int $tstamp Time stamp, seconds
 	 * @return string Formatted time
 	 */
 	static public function date($tstamp) {
@@ -1389,7 +1389,7 @@ class BackendUtility {
 	/**
 	 * Returns $tstamp formatted as "ddmmyy hhmm" (According to $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] AND $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'])
 	 *
-	 * @param integer $value Time stamp, seconds
+	 * @param int $value Time stamp, seconds
 	 * @return string Formatted time
 	 */
 	static public function datetime($value) {
@@ -1400,7 +1400,7 @@ class BackendUtility {
 	 * Returns $value (in seconds) formatted as hh:mm:ss
 	 * For instance $value = 3600 + 60*2 + 3 should return "01:02:03"
 	 *
-	 * @param integer $value Time stamp, seconds
+	 * @param int $value Time stamp, seconds
 	 * @param bool $withSeconds Output hh:mm:ss. If FALSE: hh:mm
 	 * @return string Formatted time
 	 */
@@ -1418,7 +1418,7 @@ class BackendUtility {
 	/**
 	 * Returns the "age" in minutes / hours / days / years of the number of $seconds inputted.
 	 *
-	 * @param integer $seconds Seconds could be the difference of a certain timestamp and time()
+	 * @param int $seconds Seconds could be the difference of a certain timestamp and time()
 	 * @param string $labels Labels should be something like ' min| hrs| days| yrs| min| hour| day| year'. This value is typically delivered by this function call: $GLOBALS["LANG"]->sL("LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears")
 	 * @return string Formatted time
 	 */
@@ -1446,8 +1446,8 @@ class BackendUtility {
 	 * Returns a formatted timestamp if $tstamp is set.
 	 * The date/datetime will be followed by the age in parenthesis.
 	 *
-	 * @param integer $tstamp Time stamp, seconds
-	 * @param integer $prefix 1/-1 depending on polarity of age.
+	 * @param int $tstamp Time stamp, seconds
+	 * @param int $prefix 1/-1 depending on polarity of age.
 	 * @param string $date $date=="date" will yield "dd:mm:yy" formatting, otherwise "dd:mm:yy hh:mm
 	 * @return string
 	 */
@@ -1518,7 +1518,7 @@ class BackendUtility {
 	 * @param string $uploaddir Optional: $uploaddir is the directory relative to PATH_site where the image files from the $field value is found (Is by default set to the entry in $GLOBALS['TCA'] for that field! so you don't have to!)
 	 * @param bool $abs If set, uploaddir is NOT prepended with "../
 	 * @param string $tparams Optional: $tparams is additional attributes for the image tags
-	 * @param integer $size Optional: $size is [w]x[h] of the thumbnail. 56 is default.
+	 * @param int $size Optional: $size is [w]x[h] of the thumbnail. 56 is default.
 	 * @param bool $linkInfoPopup Whether to wrap with a link opening the info popup
 	 * @return string Thumbnail image tag.
 	 */
@@ -1628,7 +1628,7 @@ class BackendUtility {
 	 * @param string $thumbScript Must point to "thumbs.php" relative to the script position
 	 * @param string $theFile Must be the proper reference to the file that thumbs.php should show
 	 * @param string $tparams The additional attributes for the image tag
-	 * @param integer $size The size of the thumbnail send along to "thumbs.php
+	 * @param int $size The size of the thumbnail send along to "thumbs.php
 	 * @return string Image tag
 	 */
 	static public function getThumbNail($thumbScript, $theFile, $tparams = '', $size = '') {
@@ -1811,7 +1811,7 @@ class BackendUtility {
 	/**
 	 * Return the label of a field by additionally checking TsConfig values
 	 *
-	 * @param integer $pageId Page id
+	 * @param int $pageId Page id
 	 * @param string $table Table name
 	 * @param string $column Field Name
 	 * @param string $key item value
@@ -1988,7 +1988,7 @@ class BackendUtility {
 	 * which offers a tooltip with the original title when moving mouse over it.
 	 *
 	 * @param string $title The title string to be cropped
-	 * @param integer $titleLength Crop title after this length - if not set, BE_USER->uc['titleLen'] is used
+	 * @param int $titleLength Crop title after this length - if not set, BE_USER->uc['titleLen'] is used
 	 * @return string The processed title string, wrapped in <span title="...">|</span> if cropped
 	 */
 	static public function getRecordTitlePrep($title, $titleLength = 0) {
@@ -2028,10 +2028,10 @@ class BackendUtility {
 	 * @param string $table Table name, present in TCA
 	 * @param string $col Field name, present in TCA
 	 * @param string $value The value of that field from a selected record
-	 * @param integer $fixed_lgd_chars The max amount of characters the value may occupy
+	 * @param int $fixed_lgd_chars The max amount of characters the value may occupy
 	 * @param bool $defaultPassthrough Flag means that values for columns that has no conversion will just be pass through directly (otherwise cropped to 200 chars or returned as "N/A")
 	 * @param bool $noRecordLookup If set, no records will be looked up, UIDs are just shown.
-	 * @param integer $uid Uid of the current record
+	 * @param int $uid Uid of the current record
 	 * @param bool $forceResult If BackendUtility::getRecordTitle is used to process the value, this parameter is forwarded.
 	 * @return string
 	 */
@@ -2262,8 +2262,8 @@ class BackendUtility {
 	 * @param string $table Table name, present in TCA
 	 * @param string $fN Field name
 	 * @param string $fV Field value
-	 * @param integer $fixed_lgd_chars The max amount of characters the value may occupy
-	 * @param integer $uid Uid of the current record
+	 * @param int $fixed_lgd_chars The max amount of characters the value may occupy
+	 * @param int $uid Uid of the current record
 	 * @param bool $forceResult If BackendUtility::getRecordTitle is used to process the value, this parameter is forwarded.
 	 * @return string
 	 * @see getProcessedValue()
@@ -2589,7 +2589,7 @@ class BackendUtility {
 	 * It will detect the correct domain name if needed and provide the link with the right back path.
 	 * Also it will re-use any window already open.
 	 *
-	 * @param integer $pageUid Page UID
+	 * @param int $pageUid Page UID
 	 * @param string $backPath Must point back to TYPO3_mainDir (where the site is assumed to be one level above)
 	 * @param array $rootLine If root line is supplied the function will look for the first found domain record and use that URL instead (if found)
 	 * @param string $anchorSection Optional anchor to the URL
@@ -2629,7 +2629,7 @@ class BackendUtility {
 	/**
 	 * Creates the view-on-click preview URL without any alternative URL.
 	 *
-	 * @param integer $pageUid Page UID
+	 * @param int $pageUid Page UID
 	 * @param array $rootLine If rootline is supplied, the function will look for the first found domain record and use that URL instead
 	 * @param string $anchorSection Optional anchor to the URL
 	 * @param string $additionalGetVars Additional GET variables.
@@ -2684,7 +2684,7 @@ class BackendUtility {
 	 * Builds the frontend view domain for a given page ID with a given root
 	 * line.
 	 *
-	 * @param integer $pageId The page ID to use, must be > 0
+	 * @param int $pageId The page ID to use, must be > 0
 	 * @param array $rootLine The root line structure to use
 	 * @return string The full domain including the protocol http:// or https://, but without the trailing '/'
 	 * @author Michael Klapper <michael.klapper@aoemedia.de>
@@ -2734,7 +2734,7 @@ class BackendUtility {
 	 * Returns the merged User/Page TSconfig for page id, $id.
 	 * Please read details about module programming elsewhere!
 	 *
-	 * @param integer $id Page uid
+	 * @param int $id Page uid
 	 * @param string $TSref An object string which determines the path of the TSconfig to return.
 	 * @return array
 	 */
@@ -2835,7 +2835,7 @@ class BackendUtility {
 	 * @param mixed $mainParams $id is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
 	 * @param string $elementName The form elements name, probably something like "SET[...]
 	 * @param string $currentValue The value to be selected currently.
-	 * @param integer $size Relative size of input field, max is 48
+	 * @param int $size Relative size of input field, max is 48
 	 * @param string $script The script to send the &id to, if empty it's automatically found
 	 * @param string $addParams Additional parameters to pass to the script.
 	 * @return string HTML code for input text field.
@@ -3123,8 +3123,8 @@ class BackendUtility {
 	 * If $table and $uid is not set, then all locking for the current BE_USER is removed!
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid Record uid
-	 * @param integer $pid Record pid
+	 * @param int $uid Record uid
+	 * @param int $pid Record pid
 	 * @return void
 	 * @internal
 	 */
@@ -3153,7 +3153,7 @@ class BackendUtility {
 	 * Notice: Locking is not strictly carried out since locking is abandoned when other backend scripts are activated - which means that a user CAN have a record "open" without having it locked. So this just serves as a warning that counts well in 90% of the cases, which should be sufficient.
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid Record uid
+	 * @param int $uid Record uid
 	 * @return array
 	 * @internal
 	 * @see class.db_layout.inc, alt_db_navframe.php, alt_doc.php, db_layout.php
@@ -3358,8 +3358,8 @@ class BackendUtility {
 	 * Therefore, you should always use BackendUtility::fixVersioningPid($table,$row); on the data you input before calling this function!
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid Record uid
-	 * @param integer $pid Record pid, could be negative then pointing to a record from same table whose pid to find and return.
+	 * @param int $uid Record uid
+	 * @param int $pid Record pid, could be negative then pointing to a record from same table whose pid to find and return.
 	 * @return integer
 	 * @internal
 	 * @see \TYPO3\CMS\Core\DataHandling\DataHandler::copyRecord(), getTSCpid()
@@ -3400,8 +3400,8 @@ class BackendUtility {
 	 * Return $uid if $table is pages and $uid is integer - otherwise the $pid
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid Record uid
-	 * @param integer $pid Record pid
+	 * @param int $uid Record uid
+	 * @param int $pid Record pid
 	 * @return integer
 	 * @internal
 	 * @see \TYPO3\CMS\Backend\Form\FormEngine::getTSCpid()
@@ -3415,8 +3415,8 @@ class BackendUtility {
 	 * Returns the REAL pid of the record, if possible. If both $uid and $pid is strings, then pid=-1 is returned as an error indication.
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid Record uid
-	 * @param integer $pid Record pid
+	 * @param int $uid Record uid
+	 * @param int $pid Record pid
 	 * @return array Array of two integers; first is the REAL PID of a record and if its a new record negative values are resolved to the true PID, second value is the PID value for TSconfig (uid if table is pages, otherwise the pid)
 	 * @internal
 	 * @see \TYPO3\CMS\Core\DataHandling\DataHandler::setHistory(), \TYPO3\CMS\Core\DataHandling\DataHandler::process_datamap()
@@ -3656,9 +3656,9 @@ class BackendUtility {
 	 * Select all versions of a record, ordered by version id (DESC)
 	 *
 	 * @param string $table Table name to select from
-	 * @param integer $uid Record uid for which to find versions.
+	 * @param int $uid Record uid for which to find versions.
 	 * @param string $fields Field list to select
-	 * @param integer $workspace Workspace ID, if zero all versions regardless of workspace is found.
+	 * @param int $workspace Workspace ID, if zero all versions regardless of workspace is found.
 	 * @param bool $includeDeletedRecords If set, deleted-flagged versions are included! (Only for clean-up script!)
 	 * @param array $row The current record
 	 * @return array Array of versions of table/uid
@@ -3758,7 +3758,7 @@ class BackendUtility {
 	 *
 	 * @param string $table Table name
 	 * @param array $row Record array passed by reference. As minimum, the "uid" and  "pid" fields must exist! Fake fields cannot exist since the fields in the array is used as field names in the SQL look up. It would be nice to have fields like "t3ver_state" and "t3ver_mode_id" as well to avoid a new lookup inside movePlhOL().
-	 * @param integer $wsid Workspace ID, if not specified will use $GLOBALS['BE_USER']->workspace
+	 * @param int $wsid Workspace ID, if not specified will use $GLOBALS['BE_USER']->workspace
 	 * @param bool $unsetMovePointers If TRUE the function does not return a "pointer" row for moved records in a workspace
 	 * @return void (Passed by ref).
 	 * @see fixVersioningPid()
@@ -3861,9 +3861,9 @@ class BackendUtility {
 	/**
 	 * Select the workspace version of a record, if exists
 	 *
-	 * @param integer $workspace Workspace ID
+	 * @param int $workspace Workspace ID
 	 * @param string $table Table name to select from
-	 * @param integer $uid Record uid for which to find workspace version.
+	 * @param int $uid Record uid for which to find workspace version.
 	 * @param string $fields Field list to select
 	 * @return array If found, return record, otherwise FALSE
 	 */
@@ -3884,7 +3884,7 @@ class BackendUtility {
 	 * Returns live version of record
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid Record UID of draft, offline version
+	 * @param int $uid Record UID of draft, offline version
 	 * @param string $fields Field list, default is *
 	 * @return array If found, the record, otherwise nothing.
 	 */
@@ -3899,7 +3899,7 @@ class BackendUtility {
 	 * Gets the id of the live version of a record.
 	 *
 	 * @param string $table Name of the table
-	 * @param integer $uid Uid of the offline/draft record
+	 * @param int $uid Uid of the offline/draft record
 	 * @return integer The id of the live version of the record (or NULL if nothing was found)
 	 */
 	static public function getLiveVersionIdOfRecord($table, $uid) {
@@ -3931,7 +3931,7 @@ class BackendUtility {
 	 * Get additional where clause to select records of a specific workspace (includes live as well).
 	 *
 	 * @param string $table Table name
-	 * @param integer $workspaceId Workspace ID
+	 * @param int $workspaceId Workspace ID
 	 * @return string Workspace where clause
 	 */
 	static public function getWorkspaceWhereClause($table, $workspaceId = NULL) {
@@ -3950,8 +3950,8 @@ class BackendUtility {
 	/**
 	 * Count number of versions on a page
 	 *
-	 * @param integer $workspace Workspace ID
-	 * @param integer $pageId Page ID
+	 * @param int $workspace Workspace ID
+	 * @param int $pageId Page ID
 	 * @return array Overview of records
 	 */
 	static public function countVersionsOfRecordsOnPage($workspace, $pageId) {
@@ -3988,7 +3988,7 @@ class BackendUtility {
 	 * Performs mapping of new uids to new versions UID in case of import inside a workspace.
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid Record uid (of live record placeholder)
+	 * @param int $uid Record uid (of live record placeholder)
 	 * @return integer Uid of offline version if any, otherwise live uid.
 	 */
 	static public function wsMapId($table, $uid) {
@@ -4003,7 +4003,7 @@ class BackendUtility {
 	 * Returns move placeholder of online (live) version
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid Record UID of online version
+	 * @param int $uid Record UID of online version
 	 * @param string $fields Field list, default is *
 	 * @return array If found, the record, otherwise nothing.
 	 */

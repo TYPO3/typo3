@@ -213,7 +213,7 @@ class ExtDirectServer extends AbstractHandler {
 	/**
 	 * Gets an array with all sys_log entries and their comments for the given record uid and table
 	 *
-	 * @param integer $uid uid of changed element to search for in log
+	 * @param int $uid uid of changed element to search for in log
 	 * @param string $table Name of the record's table
 	 * @return array
 	 */

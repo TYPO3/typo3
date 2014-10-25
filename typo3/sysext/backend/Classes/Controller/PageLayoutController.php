@@ -1140,7 +1140,7 @@ class PageLayoutController {
 	/**
 	 * Returns a SQL query for selecting sys_language records.
 	 *
-	 * @param integer $id Page id: If zero, the query will select all sys_language records from root level which are NOT hidden. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
+	 * @param int $id Page id: If zero, the query will select all sys_language records from root level which are NOT hidden. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
 	 * @return string Return query string.
 	 */
 	public function exec_languageQuery($id) {

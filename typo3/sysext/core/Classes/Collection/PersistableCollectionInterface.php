@@ -38,7 +38,7 @@ interface PersistableCollectionInterface {
 	/**
 	 * Sets the identifier of the collection
 	 *
-	 * @param integer|string $id
+	 * @param int|string $id
 	 * @return void
 	 */
 	public function setIdentifier($id);
@@ -50,7 +50,7 @@ interface PersistableCollectionInterface {
 	 * identifier (what ever static data is defined) is loaded.
 	 * Entries can be load on first access.
 	 *
-	 * @param integer|string $id
+	 * @param int|string $id
 	 * @param bool $fillItems Populates the entries directly on load, might be bad for memory on large collections
 	 * @return \TYPO3\CMS\Core\Collection\CollectionInterface
 	 */

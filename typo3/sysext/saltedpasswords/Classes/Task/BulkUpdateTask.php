@@ -195,7 +195,7 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 * Increments current user record counter by number of handled rows.
 	 *
 	 * @param string $mode 'FE' for frontend, 'BE' for backend user records
-	 * @param integer $number Number of handled rows
+	 * @param int $number Number of handled rows
 	 * @return void
 	 */
 	protected function incrementUserRecordPointer($mode, $number) {
@@ -244,7 +244,7 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	/**
 	 * Set number of records
 	 *
-	 * @param integer $numberOfRecords
+	 * @param int $numberOfRecords
 	 * @return void
 	 */
 	public function setNumberOfRecords($numberOfRecords) {

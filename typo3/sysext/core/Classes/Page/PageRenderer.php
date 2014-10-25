@@ -1840,7 +1840,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $fileRef Input is a file-reference (see GeneralUtility::getFileAbsFileName). That file is expected to be a 'locallang.xml' file containing a valid XML TYPO3 language structure.
 	 * @param string $selectionPrefix Prefix to select the correct labels (default: '')
 	 * @param string $stripFromSelectionName Sub-prefix to be removed from label names in the result (default: '')
-	 * @param integer $errorMode Error mode (when file could not be found): 0 - syslog entry, 1 - do nothing, 2 - throw an exception
+	 * @param int $errorMode Error mode (when file could not be found): 0 - syslog entry, 1 - do nothing, 2 - throw an exception
 	 * @return void
 	 */
 	public function addInlineLanguageLabelFile($fileRef, $selectionPrefix = '', $stripFromSelectionName = '', $errorMode = 0) {
@@ -1927,7 +1927,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Render the section (Header or Footer)
 	 *
-	 * @param integer $part Section which should be rendered: self::PART_COMPLETE, self::PART_HEADER or self::PART_FOOTER
+	 * @param int $part Section which should be rendered: self::PART_COMPLETE, self::PART_HEADER or self::PART_FOOTER
 	 * @return string Content of rendered section
 	 */
 	public function render($part = self::PART_COMPLETE) {
@@ -2126,7 +2126,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Reads the template file and returns the requested part as string
 	 *
-	 * @param integer $part
+	 * @param int $part
 	 * @return string
 	 */
 	protected function getTemplateForPart($part) {
@@ -2554,7 +2554,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $fileRef
 	 * @param string $selectionPrefix
 	 * @param string $stripFromSelectionName
-	 * @param integer $errorMode
+	 * @param int $errorMode
 	 * @return void
 	 * @throws \RuntimeException
 	 */
@@ -2590,7 +2590,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Reads a locallang file.
 	 *
 	 * @param string $fileRef Reference to a relative filename to include.
-	 * @param integer $errorMode Error mode (when file could not be found): 0 - syslog entry, 1 - do nothing, 2 - throw an exception
+	 * @param int $errorMode Error mode (when file could not be found): 0 - syslog entry, 1 - do nothing, 2 - throw an exception
 	 * @return array Returns the $LOCAL_LANG array found in the file. If no array found, returns empty array.
 	 */
 	protected function readLLfile($fileRef, $errorMode = 0) {

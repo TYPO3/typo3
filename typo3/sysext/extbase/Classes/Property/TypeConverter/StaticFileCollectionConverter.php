@@ -36,7 +36,7 @@ class StaticFileCollectionConverter extends \TYPO3\CMS\Extbase\Property\TypeConv
 	protected $expectedObjectType = 'TYPO3\\CMS\\Core\\Resource\\Collection\\StaticFileCollection';
 
 	/**
-	 * @param integer $source
+	 * @param int $source
 	 * @return \TYPO3\CMS\Core\Resource\Collection\StaticFileCollection
 	 */
 	protected function getObject($source) {

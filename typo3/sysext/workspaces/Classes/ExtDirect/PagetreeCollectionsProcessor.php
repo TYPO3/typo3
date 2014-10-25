@@ -24,8 +24,8 @@ class PagetreeCollectionsProcessor implements \TYPO3\CMS\Backend\Tree\Pagetree\C
 	/**
 	 * @abstract
 	 * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node
-	 * @param integer $mountPoint
-	 * @param integer $level
+	 * @param int $mountPoint
+	 * @param int $level
 	 * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection $nodeCollection
 	 * @return void
 	 */
@@ -40,7 +40,7 @@ class PagetreeCollectionsProcessor implements \TYPO3\CMS\Backend\Tree\Pagetree\C
 	 * @abstract
 	 * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node
 	 * @param string $searchFilter
-	 * @param integer $mountPoint
+	 * @param int $mountPoint
 	 * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection $nodeCollection
 	 * @return void
 	 */

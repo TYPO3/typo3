@@ -76,7 +76,7 @@ class ElementBrowserRecordList extends \TYPO3\CMS\Recordlist\RecordList\Database
 	 * Returns the title (based on $code) of a record (from table $table) with the proper link around (that is for "pages"-records a link to the level of that record...)
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid UID (not used here)
+	 * @param int $uid UID (not used here)
 	 * @param string $code Title string
 	 * @param array $row Records array (from table name)
 	 * @return string

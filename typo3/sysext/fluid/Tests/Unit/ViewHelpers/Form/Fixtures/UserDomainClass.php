@@ -25,7 +25,7 @@ class UserDomainClass {
 	/**
 	 * Constructor.
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 * @param string $firstName
 	 * @param string $lastName
 	 */

@@ -451,7 +451,7 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Converts the given parameter reflection into an information array
 	 *
 	 * @param ParameterReflection $parameter The parameter to reflect
-	 * @param integer $parameterPosition
+	 * @param int $parameterPosition
 	 * @param MethodReflection|NULL $method
 	 * @return array Parameter information array
 	 */

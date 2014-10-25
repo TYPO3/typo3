@@ -61,7 +61,7 @@ class ModuleData {
 	 * Adds one backend user (by uid) to the compare user list
 	 * Cannot be ObjectStorage, must be array
 	 *
-	 * @param integer $uid
+	 * @param int $uid
 	 * @return void
 	 */
 	public function attachUidCompareUser($uid) {
@@ -71,7 +71,7 @@ class ModuleData {
 	/**
 	 * Strip one backend user from the compare user list
 	 *
-	 * @param integer $uid
+	 * @param int $uid
 	 * @return void
 	 */
 	public function detachUidCompareUser($uid) {

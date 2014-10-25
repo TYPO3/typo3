@@ -248,7 +248,7 @@ class RelationHandler {
 	 * @param string $itemlist List of group/select items
 	 * @param string $tablelist Comma list of tables, first table takes priority if no table is set for an entry in the list.
 	 * @param string $MMtable Name of a MM table.
-	 * @param integer $MMuid Local UID for MM lookup
+	 * @param int $MMuid Local UID for MM lookup
 	 * @param string $currentTable Current table name
 	 * @param array $conf TCA configuration for current field
 	 * @return void
@@ -486,7 +486,7 @@ class RelationHandler {
 	 * You can call this function after start if you supply no list to start()
 	 *
 	 * @param string $tableName MM Tablename
-	 * @param integer $uid Local UID
+	 * @param int $uid Local UID
 	 * @return void
 	 */
 	public function readMM($tableName, $uid) {
@@ -547,7 +547,7 @@ class RelationHandler {
 	 * Writes the internal itemArray to MM table:
 	 *
 	 * @param string $MM_tableName MM table name
-	 * @param integer $uid Local UID
+	 * @param int $uid Local UID
 	 * @param bool $prependTableName If set, then table names will always be written.
 	 * @return void
 	 */
@@ -698,8 +698,8 @@ class RelationHandler {
 	 * Does NOT update the reference index for you, must be called subsequently to do that!
 	 *
 	 * @param string $MM_tableName MM table name
-	 * @param integer $uid Local, current UID
-	 * @param integer $newUid Local, new UID
+	 * @param int $uid Local, current UID
+	 * @param int $newUid Local, new UID
 	 * @param bool $prependTableName If set, then table names will always be written.
 	 * @return void
 	 */
@@ -738,7 +738,7 @@ class RelationHandler {
 	 * Reads items from a foreign_table, that has a foreign_field (uid of the parent record) and
 	 * stores the parts in the internal array itemArray and tableArray.
 	 *
-	 * @param integer $uid The uid of the parent record (this value is also on the foreign_table in the foreign_field)
+	 * @param int $uid The uid of the parent record (this value is also on the foreign_table in the foreign_field)
 	 * @param array $conf TCA configuration for current field
 	 * @return void
 	 */
@@ -824,8 +824,8 @@ class RelationHandler {
 	 * Write the sorting values to a foreign_table, that has a foreign_field (uid of the parent record)
 	 *
 	 * @param array $conf TCA configuration for current field
-	 * @param integer $parentUid The uid of the parent record
-	 * @param integer $updateToUid If this is larger than zero it will be used as foreign UID instead of the given $parentUid (on Copy)
+	 * @param int $parentUid The uid of the parent record
+	 * @param int $updateToUid If this is larger than zero it will be used as foreign UID instead of the given $parentUid (on Copy)
 	 * @param bool $skipSorting Do not update the sorting columns, this could happen for imported values
 	 * @return void
 	 */
@@ -1064,7 +1064,7 @@ class RelationHandler {
 	 * (copied from TCEmain)
 	 *
 	 * @param string $table Table name
-	 * @param integer $id Record UID
+	 * @param int $id Record UID
 	 * @return array Information concerning modifications delivered by \TYPO3\CMS\Core\Database\ReferenceIndex::updateRefIndexTable()
 	 */
 	public function updateRefIndex($table, $id) {

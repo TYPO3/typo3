@@ -512,7 +512,7 @@ class DatabaseIntegrityView {
 	 * @param string $basedir Base directory
 	 * @param string $pattern Match pattern
 	 * @param array $matching_files Array of matching files, passed by reference
-	 * @param integer $depth Depth to recurse
+	 * @param int $depth Depth to recurse
 	 * @deprecated since 6.2 will be removed two versions later
 	 * @return array Array with various information about the search result
 	 */

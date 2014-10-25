@@ -30,7 +30,7 @@ class NullBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implemen
 	 * @param string $entryIdentifier ignored
 	 * @param string $data ignored
 	 * @param array $tags ignored
-	 * @param integer $lifetime ignored
+	 * @param int $lifetime ignored
 	 * @return void
 	 * @api
 	 */

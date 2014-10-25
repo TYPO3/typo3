@@ -22,7 +22,7 @@ class MockACommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandCo
 	/**
 	 * funcACommand
 	 *
-	 * @param integer $arg A not required argument
+	 * @param int $arg A not required argument
 	 * @return string
 	 */
 	public function funcACommand($arg = 1) {

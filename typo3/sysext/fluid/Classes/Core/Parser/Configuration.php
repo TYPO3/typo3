@@ -44,7 +44,7 @@ class Configuration {
 	/**
 	 * Returns all interceptors for a given Interception Point.
 	 *
-	 * @param integer $interceptionPoint one of the \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_* constants,
+	 * @param int $interceptionPoint one of the \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_* constants,
 	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface>
 	 */
 	public function getInterceptors($interceptionPoint) {

@@ -170,7 +170,7 @@ class PreparedStatementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \InvalidArgumentException
 	 * @dataProvider invalidParameterTypesPassedToBindValueThrowsExceptionDataProvider
 	 * @param mixed $parameter Parameter to be replaced in the query
-	 * @param integer $type Type of the parameter value
+	 * @param int $type Type of the parameter value
 	 * @return void
 	 */
 	public function invalidParameterTypesPassedToBindValueThrowsException($parameter, $type) {

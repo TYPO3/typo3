@@ -33,7 +33,7 @@ class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser 
 	 *
 	 * @param string $TStext The TSConfig being parsed
 	 * @param string $type The type of TSConfig (either "userTS" or "PAGES")
-	 * @param integer $id The uid of the page being handled
+	 * @param int $id The uid of the page being handled
 	 * @param array $rootLine The rootline of the page being handled
 	 * @return array Array containing the parsed TSConfig and a flag whether the content was retrieved from cache
 	 */

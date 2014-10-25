@@ -452,7 +452,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Get search result rows / data from database. Returned as data in array.
 	 *
 	 * @param array $searchWordArray Search word array
-	 * @param integer Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
+	 * @param int Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
 	 * @return array False if no result, otherwise an array with keys for first row, result rows and total number of results found.
 	 */
 	public function getResultRows($searchWordArray, $freeIndexUid = -1) {
@@ -822,7 +822,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Search for a word
 	 *
 	 * @param string $sWord Word to search for
-	 * @param integer $mode Bit-field which can contain WILDCARD_LEFT and/or WILDCARD_RIGHT
+	 * @param int $mode Bit-field which can contain WILDCARD_LEFT and/or WILDCARD_RIGHT
 	 * @return pointer SQL result pointer
 	 */
 	public function searchWord($sWord, $mode) {
@@ -2214,7 +2214,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Formats date as 'created' date
 	 *
-	 * @param integer $date
+	 * @param int $date
 	 * @return string
 	 */
 	protected function formatCreatedDate($date) {
@@ -2225,7 +2225,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Formats date as 'modified' date
 	 *
-	 * @param integer $date
+	 * @param int $date
 	 * @return string
 	 */
 	protected function formatModifiedDate($date) {
@@ -2237,7 +2237,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Formats the date using format string from TypoScript or default format
 	 * if TypoScript format is not set
 	 *
-	 * @param integer $date
+	 * @param int $date
 	 * @param string $tsKey
 	 * @param string $defaultFormat
 	 * @return string

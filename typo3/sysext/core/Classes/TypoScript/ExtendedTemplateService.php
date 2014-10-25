@@ -587,7 +587,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 * and turns it into a hierachical array to show dependencies (used by TemplateAnalyzer)
 	 *
 	 * @param array $depthDataArr (empty array on external call)
-	 * @param integer &$pointer Element number (1! to count()) of $this->hierarchyInfo that should be processed.
+	 * @param int &$pointer Element number (1! to count()) of $this->hierarchyInfo that should be processed.
 	 *
 	 * @return array Processed hierachyInfo.
 	 */
@@ -617,7 +617,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 * @param bool $comments Enable including comments in output.
 	 * @param bool $crop Enable cropping of long lines.
 	 * @param bool $syntaxHL Enrich output with syntaxhighlighting.
-	 * @param integer $syntaxHLBlockmode
+	 * @param int $syntaxHLBlockmode
 	 *
 	 * @return string
 	 *
@@ -664,7 +664,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	/**
 	 * [Describe function...]
 	 *
-	 * @param integer $lineNumber Line Number
+	 * @param int $lineNumber Line Number
 	 * @param 	[type]		$str: ...
 	 * @return string
 	 */

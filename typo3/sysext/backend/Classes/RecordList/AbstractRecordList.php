@@ -181,11 +181,11 @@ abstract class AbstractRecordList {
 	 * Returns a table-row with the content from the fields in the input data array.
 	 * OBS: $this->fieldArray MUST be set! (represents the list of fields to display)
 	 *
-	 * @param integer $h Is an integer >=0 and denotes how tall a element is. Set to '0' makes a halv line, -1 = full line, set to 1 makes a 'join' and above makes 'line'
+	 * @param int $h Is an integer >=0 and denotes how tall a element is. Set to '0' makes a halv line, -1 = full line, set to 1 makes a 'join' and above makes 'line'
 	 * @param string $icon Is the <img>+<a> of the record. If not supplied the first 'join'-icon will be a 'line' instead
 	 * @param array $data Is the dataarray, record with the fields. Notice: These fields are (currently) NOT htmlspecialchar'ed before being wrapped in <td>-tags
 	 * @param string $tdParams Is insert in the <td>-tags. Must carry a ' ' as first character
-	 * @param integer OBSOLETE - NOT USED ANYMORE. $lMargin is the leftMargin (integer)
+	 * @param int OBSOLETE - NOT USED ANYMORE. $lMargin is the leftMargin (integer)
 	 * @param string $altLine Is the HTML <img>-tag for an alternative 'gfx/ol/line.gif'-icon (used in the top)
 	 * @return string HTML content for the table row
 	 */
@@ -313,7 +313,7 @@ abstract class AbstractRecordList {
 	 * Creates the button with link to either forward or reverse
 	 *
 	 * @param string $type Type: "fwd" or "rwd
-	 * @param integer $pointer Pointer
+	 * @param int $pointer Pointer
 	 * @param string $table Table name
 	 * @return string
 	 * @access private
@@ -396,7 +396,7 @@ abstract class AbstractRecordList {
 	/**
 	 * Return the icon for the language
 	 *
-	 * @param integer $sys_language_uid Sys language uid
+	 * @param int $sys_language_uid Sys language uid
 	 * @param bool $addAsAdditionalText If set to true, only the flag is returned
 	 * @return string Language icon
 	 */

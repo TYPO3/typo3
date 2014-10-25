@@ -88,7 +88,7 @@ class Indexer {
 	}
 
 	/**
-	 * @param integer $maximumFileCount
+	 * @param int $maximumFileCount
 	 * @return void
 	 */
 	public function runMetaDataExtraction($maximumFileCount = -1) {

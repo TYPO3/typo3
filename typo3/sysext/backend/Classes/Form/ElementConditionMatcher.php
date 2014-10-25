@@ -43,7 +43,7 @@ class ElementConditionMatcher {
 	 * @param string $displayCondition
 	 * @param array $record
 	 * @param string $flexformValueKey
-	 * @param integer $recursionLevel Internal level of recursion
+	 * @param int $recursionLevel Internal level of recursion
 	 * @return boolean TRUE if condition evaluates successfully
 	 */
 	public function match($displayCondition, array $record = array(), $flexformValueKey = '', $recursionLevel = 0) {

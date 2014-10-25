@@ -1016,7 +1016,7 @@ class CharsetConverter {
 	 * 5 |   26 | 111110vv 10vvvvvv 10vvvvvv 10vvvvvv 10vvvvvv
 	 * 6 |   31 | 1111110v 10vvvvvv 10vvvvvv 10vvvvvv 10vvvvvv 10vvvvvv
 	 *
-	 * @param integer $cbyte UNICODE integer
+	 * @param int $cbyte UNICODE integer
 	 * @return string UTF-8 multibyte character string
 	 * @see utf8CharToUnumber()
 	 */
@@ -1526,8 +1526,8 @@ class CharsetConverter {
 	 *
 	 * @param string $charset The character set
 	 * @param string $string Character string
-	 * @param integer $start Start position (character position)
-	 * @param integer $len Length (in characters)
+	 * @param int $start Start position (character position)
+	 * @param int $len Length (in characters)
 	 * @return string The substring
 	 * @see substr(), mb_substr()
 	 */
@@ -1606,7 +1606,7 @@ class CharsetConverter {
 	 *
 	 * @param string $charset The character set
 	 * @param string $string String to be cropped
-	 * @param integer $len Crop length (in characters)
+	 * @param int $len Crop length (in characters)
 	 * @param string $crop Crop signifier
 	 * @return string The shortened string
 	 * @see mb_strlen(), mb_substr()
@@ -1629,7 +1629,7 @@ class CharsetConverter {
 	 *
 	 * @param string $charset The character set
 	 * @param string $string Character string
-	 * @param integer $len Length (in characters)
+	 * @param int $len Length (in characters)
 	 * @param string $crop Crop signifier
 	 * @return string The shortened string
 	 * @see substr(), mb_strimwidth()
@@ -1677,7 +1677,7 @@ class CharsetConverter {
 	 *
 	 * @param string $charset The character set
 	 * @param string $string Character string
-	 * @param integer $len The byte length
+	 * @param int $len The byte length
 	 * @return string The shortened string
 	 * @see mb_strcut()
 	 */
@@ -1879,8 +1879,8 @@ class CharsetConverter {
 	 * Unit-tested by Kasper and works 100% like substr() / mb_substr() for full range of $start/$len
 	 *
 	 * @param string $str UTF-8 string
-	 * @param integer $start Start position (character position)
-	 * @param integer $len Length (in characters)
+	 * @param int $start Start position (character position)
+	 * @param int $len Length (in characters)
 	 * @return string The substring
 	 * @see substr()
 	 */
@@ -1939,7 +1939,7 @@ class CharsetConverter {
 	 * Truncates a string in UTF-8 short at a given byte length.
 	 *
 	 * @param string $str UTF-8 multibyte character string
-	 * @param integer $len The byte length
+	 * @param int $len The byte length
 	 * @return string The shortened string
 	 * @see mb_strcut()
 	 */
@@ -1970,7 +1970,7 @@ class CharsetConverter {
 	 *
 	 * @param string $haystack UTF-8 string to search in
 	 * @param string $needle UTF-8 string to search for
-	 * @param integer $offset Positition to start the search
+	 * @param int $offset Positition to start the search
 	 * @return integer The character position
 	 * @see strpos()
 	 */
@@ -2020,7 +2020,7 @@ class CharsetConverter {
 	 * Unit tested by Kasper.
 	 *
 	 * @param string $str UTF-8 string
-	 * @param integer $pos Character position (negative values start from the end)
+	 * @param int $pos Character position (negative values start from the end)
 	 * @return integer Byte position
 	 */
 	public function utf8_char2byte_pos($str, $pos) {
@@ -2066,7 +2066,7 @@ class CharsetConverter {
 	 * Unit tested by Kasper.
 	 *
 	 * @param string $str UTF-8 string
-	 * @param integer $pos Byte position
+	 * @param int $pos Byte position
 	 * @return integer Character position
 	 */
 	public function utf8_byte2char_pos($str, $pos) {
@@ -2151,7 +2151,7 @@ class CharsetConverter {
 	 * Cuts a string in the EUC charset family short at a given byte length.
 	 *
 	 * @param string $str EUC multibyte character string
-	 * @param integer $len The byte length
+	 * @param int $len The byte length
 	 * @param string $charset The charset
 	 * @return string The shortened string
 	 * @see mb_strcut()
@@ -2186,9 +2186,9 @@ class CharsetConverter {
 	 * Returns a part of a string in the EUC charset family.
 	 *
 	 * @param string $str EUC multibyte character string
-	 * @param integer $start Start position (character position)
+	 * @param int $start Start position (character position)
 	 * @param string $charset The charset
-	 * @param integer $len Length (in characters)
+	 * @param int $len Length (in characters)
 	 * @return string the substring
 	 */
 	public function euc_substr($str, $start, $charset, $len = NULL) {
@@ -2242,7 +2242,7 @@ class CharsetConverter {
 	 * Translates a character position into an 'absolute' byte position.
 	 *
 	 * @param string $str EUC multibyte character string
-	 * @param integer $pos Character position (negative values start from the end)
+	 * @param int $pos Character position (negative values start from the end)
 	 * @param string $charset The charset
 	 * @return integer Byte position
 	 */

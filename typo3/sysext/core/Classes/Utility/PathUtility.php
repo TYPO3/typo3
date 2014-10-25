@@ -167,7 +167,7 @@ class PathUtility {
 	 *
 	 *
 	 * @param string $path
-	 * @param integer $options
+	 * @param int $options
 	 *
 	 * @return string|array
 	 *

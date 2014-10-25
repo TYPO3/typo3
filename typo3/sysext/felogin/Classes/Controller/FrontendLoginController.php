@@ -874,7 +874,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 	 * Is used by forgot password - function with md5 option.
 	 *
 	 * @author Bernhard Kraft
-	 * @param integer $len Length of new password
+	 * @param int $len Length of new password
 	 * @return string New password
 	 */
 	protected function generatePassword($len) {

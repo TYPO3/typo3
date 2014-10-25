@@ -111,7 +111,7 @@ class PostRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	 * Finds most recent posts by the specified blog
 	 *
 	 * @param \ExtbaseTeam\BlogExample\Domain\Model\Blog $blog The blog the post must refer to
-	 * @param integer $limit The number of posts to return at max
+	 * @param int $limit The number of posts to return at max
 	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface The posts
 	 */
 	public function findRecentByBlog(\ExtbaseTeam\BlogExample\Domain\Model\Blog $blog, $limit = 5) {

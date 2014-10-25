@@ -45,7 +45,7 @@ class IntegerConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstrac
 	/**
 	 * Actually convert from $source to $targetType, in fact a noop here.
 	 *
-	 * @param integer|string $source
+	 * @param int|string $source
 	 * @param string $targetType
 	 * @param array $convertedChildProperties
 	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration

@@ -24,7 +24,7 @@ interface RecordListGetTableHookInterface
 	 * modifies the DB list query
 	 *
 	 * @param string $table The current database table
-	 * @param integer $pageId The record's page ID
+	 * @param int $pageId The record's page ID
 	 * @param string $additionalWhereClause An additional WHERE clause
 	 * @param string $selectedFieldsList Comma separated list of selected fields
 	 * @param \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList $parentObject Parent localRecordList object

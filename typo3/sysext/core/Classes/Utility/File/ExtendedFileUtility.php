@@ -339,9 +339,9 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	/**
 	 * Logging file operations
 	 *
-	 * @param integer $action The action number. See the functions in the class for a hint. Eg. edit is '9', upload is '1' ...
-	 * @param integer $error The severity: 0 = message, 1 = error, 2 = System Error, 3 = security notice (admin)
-	 * @param integer $details_nr This number is unique for every combination of $type and $action. This is the error-message number, which can later be used to translate error messages.
+	 * @param int $action The action number. See the functions in the class for a hint. Eg. edit is '9', upload is '1' ...
+	 * @param int $error The severity: 0 = message, 1 = error, 2 = System Error, 3 = security notice (admin)
+	 * @param int $details_nr This number is unique for every combination of $type and $action. This is the error-message number, which can later be used to translate error messages.
 	 * @param string $details This is the default, raw error message in english
 	 * @param array $data Array with special information that may go into $details by "%s" marks / sprintf() when the log is shown
 	 * @return void

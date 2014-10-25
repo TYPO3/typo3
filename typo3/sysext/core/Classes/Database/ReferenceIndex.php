@@ -95,7 +95,7 @@ class ReferenceIndex {
 	 * NOTICE: Currently, references updated for a deleted-flagged record will not include those from within flexform fields in some cases where the data structure is defined by another record since the resolving process ignores deleted records! This will also result in bad cleaning up in tcemain I think... Anyway, thats the story of flexforms; as long as the DS can change, lots of references can get lost in no time.
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid UID of record
+	 * @param int $uid UID of record
 	 * @param bool $testOnly If set, nothing will be written to the index but the result value will still report statistics on what is added, deleted and kept. Can be used for mere analysis.
 	 * @return array Array with statistics about how many index records were added, deleted and not altered plus the complete reference set for the record.
 	 */
@@ -156,7 +156,7 @@ class ReferenceIndex {
 	 * If the result is used to update the sys_refindex table then ->WSOL must NOT be TRUE (no workspace overlay anywhere!)
 	 *
 	 * @param string $table Table name from $GLOBALS['TCA']
-	 * @param integer $uid Record UID
+	 * @param int $uid Record UID
 	 * @return array Index Rows
 	 */
 	public function generateRefIndexData($table, $uid) {
@@ -227,14 +227,14 @@ class ReferenceIndex {
 	 * The "hash" field is a fingerprint value across this table.
 	 *
 	 * @param string $table Tablename of source record (where reference is located)
-	 * @param integer $uid UID of source record (where reference is located)
+	 * @param int $uid UID of source record (where reference is located)
 	 * @param string $field Fieldname of source record (where reference is located)
 	 * @param string $flexpointer Pointer to location inside flexform structure where reference is located in [field]
-	 * @param integer $deleted Whether record is deleted-flagged or not
+	 * @param int $deleted Whether record is deleted-flagged or not
 	 * @param string $ref_table For database references; the tablename the reference points to. Special keyword "_FILE" indicates that "ref_string" is a file reference either absolute or relative to PATH_site. Special keyword "_STRING" indicates some special usage (typ. softreference) where "ref_string" is used for the value.
-	 * @param integer $ref_uid For database references; The UID of the record (zero "ref_table" is "_FILE" or "_STRING")
+	 * @param int $ref_uid For database references; The UID of the record (zero "ref_table" is "_FILE" or "_STRING")
 	 * @param string $ref_string For "_FILE" or "_STRING" references: The filepath (relative to PATH_site or absolute) or other string.
-	 * @param integer $sort The sorting order of references if many (the "group" or "select" TCA types). -1 if no sorting order is specified.
+	 * @param int $sort The sorting order of references if many (the "group" or "select" TCA types). -1 if no sorting order is specified.
 	 * @param string $softref_key If the reference is a soft reference, this is the soft reference parser key. Otherwise empty.
 	 * @param string $softref_id Soft reference ID for key. Might be useful for replace operations.
 	 * @return array Array record to insert into table.
@@ -260,10 +260,10 @@ class ReferenceIndex {
 	 * Enter database references to ->relations array
 	 *
 	 * @param string $table Tablename of source record (where reference is located)
-	 * @param integer $uid UID of source record (where reference is located)
+	 * @param int $uid UID of source record (where reference is located)
 	 * @param string $fieldname Fieldname of source record (where reference is located)
 	 * @param string $flexpointer Pointer to location inside flexform structure where reference is located in [field]
-	 * @param integer $deleted Whether record is deleted-flagged or not
+	 * @param int $deleted Whether record is deleted-flagged or not
 	 * @param array $items Data array with databaes relations (table/id)
 	 * @return void
 	 */
@@ -277,10 +277,10 @@ class ReferenceIndex {
 	 * Enter file references to ->relations array
 	 *
 	 * @param string $table Tablename of source record (where reference is located)
-	 * @param integer $uid UID of source record (where reference is located)
+	 * @param int $uid UID of source record (where reference is located)
 	 * @param string $fieldname Fieldname of source record (where reference is located)
 	 * @param string $flexpointer Pointer to location inside flexform structure where reference is located in [field]
-	 * @param integer $deleted Whether record is deleted-flagged or not
+	 * @param int $deleted Whether record is deleted-flagged or not
 	 * @param array $items Data array with file relations
 	 * @return 	void
 	 */
@@ -298,10 +298,10 @@ class ReferenceIndex {
 	 * Enter softref references to ->relations array
 	 *
 	 * @param string $table Tablename of source record (where reference is located)
-	 * @param integer $uid UID of source record (where reference is located)
+	 * @param int $uid UID of source record (where reference is located)
 	 * @param string $fieldname Fieldname of source record (where reference is located)
 	 * @param string $flexpointer Pointer to location inside flexform struc
-	 * @param integer $deleted
+	 * @param int $deleted
 	 * @param array $keys Data array with soft reference keys
 	 * @return void
 	 */
@@ -514,7 +514,7 @@ class ReferenceIndex {
 	 *
 	 * @param string $value Field value
 	 * @param array $conf Field configuration array of type "TCA/columns
-	 * @param integer $uid Field uid
+	 * @param int $uid Field uid
 	 * @return bool|array If field type is OK it will return an array with the files inside. Else FALSE
 	 */
 	public function getRelations_procFiles($value, $conf, $uid) {
@@ -574,7 +574,7 @@ class ReferenceIndex {
 	 *
 	 * @param string $value Field value
 	 * @param array $conf Field configuration array of type "TCA/columns
-	 * @param integer $uid Field uid
+	 * @param int $uid Field uid
 	 * @param string $table Table name
 	 * @param string $field Field name
 	 * @return array If field type is OK it will return an array with the database relations. Else FALSE

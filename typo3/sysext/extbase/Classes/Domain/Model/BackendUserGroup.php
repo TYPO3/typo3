@@ -375,7 +375,7 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Getter for file operation permissions
 	 *
-	 * @param integer $fileOperationPermissions
+	 * @param int $fileOperationPermissions
 	 * @return void
 	 */
 	public function setFileOperationPermissions($fileOperationPermissions) {
@@ -546,7 +546,7 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Helper method for checking the permissions bitwise.
 	 *
-	 * @param integer $permission
+	 * @param int $permission
 	 * @return boolean
 	 */
 	protected function isPermissionSet($permission) {
@@ -556,7 +556,7 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Helper method for settung permissions bitwise.
 	 *
-	 * @param integer $permission
+	 * @param int $permission
 	 * @param bool $value
 	 * @return void
 	 */

@@ -336,7 +336,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 	/**
 	 * Gets shortcuts for a specific group
 	 *
-	 * @param integer $groupId Group Id
+	 * @param int $groupId Group Id
 	 * @return array Array of shortcuts that matched the group
 	 */
 	protected function getShortcutsByGroup($groupId) {
@@ -352,7 +352,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 	/**
 	 * Gets a shortcut by its uid
 	 *
-	 * @param integer $shortcutId Shortcut id to get the complete shortcut for
+	 * @param int $shortcutId Shortcut id to get the complete shortcut for
 	 * @return mixed An array containing the shortcut's data on success or FALSE on failure
 	 */
 	protected function getShortcutById($shortcutId) {
@@ -563,7 +563,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 	/**
 	 * Gets the label for a shortcut group
 	 *
-	 * @param integer $groupId A shortcut group id
+	 * @param int $groupId A shortcut group id
 	 * @return string The shortcut group label, can be an empty string if no group was found for the id
 	 */
 	protected function getShortcutGroupLabel($groupId) {

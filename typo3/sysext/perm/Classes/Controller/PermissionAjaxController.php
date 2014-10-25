@@ -156,8 +156,8 @@ class PermissionAjaxController {
 	/**
 	 * Generate the user selector element
 	 *
-	 * @param integer $page The page id to change the user for
-	 * @param integer $ownerUid The page owner uid
+	 * @param int $page The page id to change the user for
+	 * @param int $ownerUid The page owner uid
 	 * @param string $username The username to display
 	 * @return string The html select element
 	 */
@@ -188,8 +188,8 @@ class PermissionAjaxController {
 	/**
 	 * Generate the group selector element
 	 *
-	 * @param integer $page The page id to change the user for
-	 * @param integer $groupUid The page group uid
+	 * @param int $page The page id to change the user for
+	 * @param int $groupUid The page group uid
 	 * @param string $username The username to display
 	 * @return string The html select element
 	 */
@@ -231,8 +231,8 @@ class PermissionAjaxController {
 	/**
 	 * Print the string with the new owner of a page record
 	 *
-	 * @param integer $page The TYPO3 page id
-	 * @param integer $ownerUid The new page user uid
+	 * @param int $page The TYPO3 page id
+	 * @param int $ownerUid The new page user uid
 	 * @param string $username The TYPO3 BE username (used to display in the element)
 	 * @param bool $validUser Must be set to FALSE, if the user has no name or is deleted
 	 * @return string The new group wrapped in HTML
@@ -246,8 +246,8 @@ class PermissionAjaxController {
 	/**
 	 * Print the string with the new group of a page record
 	 *
-	 * @param integer $page The TYPO3 page id
-	 * @param integer $groupUid The new page group uid
+	 * @param int $page The TYPO3 page id
+	 * @param int $groupUid The new page group uid
 	 * @param string $groupname The TYPO3 BE groupname (used to display in the element)
 	 * @param bool $validGroup Must be set to FALSE, if the group has no name or is deleted
 	 * @return string The new group wrapped in HTML
@@ -261,7 +261,7 @@ class PermissionAjaxController {
 	/**
 	 * Print the string with the new edit lock state of a page record
 	 *
-	 * @param integer $page The TYPO3 page id
+	 * @param int $page The TYPO3 page id
 	 * @param string $editlockstate The state of the TYPO3 page (locked, unlocked)
 	 * @return string The new edit lock string wrapped in HTML
 	 */
@@ -277,8 +277,8 @@ class PermissionAjaxController {
 	/**
 	 * Print a set of permissions. Also used in index.php
 	 *
-	 * @param integer $int Permission integer (bits)
-	 * @param integer $page The TYPO3 page id
+	 * @param int $int Permission integer (bits)
+	 * @param int $page The TYPO3 page id
 	 * @param string $who The scope (user, group or everybody)
 	 * @return string HTML marked up x/* indications.
 	 */

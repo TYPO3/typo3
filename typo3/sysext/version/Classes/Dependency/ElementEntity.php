@@ -85,7 +85,7 @@ class ElementEntity {
 	 * Creates this object.
 	 *
 	 * @param string $table
-	 * @param integer $id
+	 * @param int $id
 	 * @param array $data (optional)
 	 * @param \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency
 	 */
@@ -317,7 +317,7 @@ class ElementEntity {
 	 * Converts the object for string representation.
 	 *
 	 * @param string $table
-	 * @param integer $id
+	 * @param int $id
 	 * @return string
 	 */
 	static public function getIdentifier($table, $id) {

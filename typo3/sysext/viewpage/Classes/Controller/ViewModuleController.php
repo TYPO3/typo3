@@ -87,7 +87,7 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	/**
 	 * Get admin command
 	 *
-	 * @param integer $pageId
+	 * @param int $pageId
 	 * @return string
 	 */
 	protected function getAdminCommand($pageId) {
@@ -105,7 +105,7 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 * for a page id or a page tree.
 	 * The method checks if a type is set for the given id and returns the additional GET string.
 	 *
-	 * @param integer $pageId
+	 * @param int $pageId
 	 * @return string
 	 */
 	protected function getTypeParameterIfSet($pageId) {
@@ -121,7 +121,7 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	/**
 	 * Get domain name for requested page id
 	 *
-	 * @param integer $pageId
+	 * @param int $pageId
 	 * @return string|NULL Domain name from first sys_domains-Record or from TCEMAIN.previewDomain, NULL if neither is configured
 	 */
 	protected function getDomainName($pageId) {

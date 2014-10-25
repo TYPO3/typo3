@@ -45,7 +45,7 @@ class AttributesAttribute {
 	/**
 	 * Constructor
 	 *
-	 * @param integer $elementId The ID of the element
+	 * @param int $elementId The ID of the element
 	 * @return void
 	 */
 	public function __construct($elementId) {

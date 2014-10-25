@@ -59,8 +59,8 @@ class CodeCompletion {
 	 * Loads all templates up to a given page id (walking the rootline) and
 	 * cleans parts that are not required for the t3editor codecompletion.
 	 *
-	 * @param integer $pageId ID of the page
-	 * @param integer $templateId Currently unused (default: 0)
+	 * @param int $pageId ID of the page
+	 * @param int $templateId Currently unused (default: 0)
 	 * @return array Cleaned array of TypoScript information
 	 * @author Oliver Hader <oliver@typo3.org>
 	 */
@@ -84,8 +84,8 @@ class CodeCompletion {
 	 * Gets merged templates by walking the rootline to a given page id.
 	 *
 	 * @todo oliver@typo3.org: Refactor this method and comment what's going on there
-	 * @param integer $pageId
-	 * @param integer $templateId
+	 * @param int $pageId
+	 * @param int $templateId
 	 * @return array Setup part of merged template records
 	 */
 	protected function getMergedTemplates($pageId, $templateId = 0) {

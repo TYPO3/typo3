@@ -102,7 +102,7 @@ class ExtdirectTreeCommands {
 	 * Restore the page
 	 *
 	 * @param stdClass $nodeData
-	 * @param integer $destination
+	 * @param int $destination
 	 * @return array
 	 */
 	public function restoreNode($nodeData, $destination) {
@@ -169,7 +169,7 @@ class ExtdirectTreeCommands {
 	 * Moves the source node directly as the first child of the destination node
 	 *
 	 * @param stdClass $nodeData
-	 * @param integer $destination
+	 * @param int $destination
 	 * @return array
 	 */
 	public function moveNodeToFirstChildOfDestination($nodeData, $destination) {
@@ -193,7 +193,7 @@ class ExtdirectTreeCommands {
 	 * Moves the source node directly after the destination node
 	 *
 	 * @param stdClass $nodeData
-	 * @param integer $destination
+	 * @param int $destination
 	 * @return void
 	 */
 	public function moveNodeAfterDestination($nodeData, $destination) {
@@ -218,7 +218,7 @@ class ExtdirectTreeCommands {
 	 * returns the created node.
 	 *
 	 * @param stdClass $nodeData
-	 * @param integer $destination
+	 * @param int $destination
 	 * @return array
 	 */
 	public function copyNodeToFirstChildOfDestination($nodeData, $destination) {
@@ -245,7 +245,7 @@ class ExtdirectTreeCommands {
 	 * created node.
 	 *
 	 * @param stdClass $nodeData
-	 * @param integer $destination
+	 * @param int $destination
 	 * @return array
 	 */
 	public function copyNodeAfterDestination($nodeData, $destination) {
@@ -271,7 +271,7 @@ class ExtdirectTreeCommands {
 	 * Inserts a new node as the first child node of the destination node and returns the created node.
 	 *
 	 * @param stdClass $parentNodeData
-	 * @param integer $pageType
+	 * @param int $pageType
 	 * @return array
 	 */
 	public function insertNodeToFirstChildOfDestination($parentNodeData, $pageType) {
@@ -293,8 +293,8 @@ class ExtdirectTreeCommands {
 	 * Inserts a new node directly after the destination node and returns the created node.
 	 *
 	 * @param stdClass $parentNodeData
-	 * @param integer $destination
-	 * @param integer $pageType
+	 * @param int $destination
+	 * @param int $pageType
 	 * @return array
 	 */
 	public function insertNodeAfterDestination($parentNodeData, $destination, $pageType) {
@@ -333,7 +333,7 @@ class ExtdirectTreeCommands {
 	 *
 	 * @static
 	 * @param string $stateId
-	 * @param integer $nodeId
+	 * @param int $nodeId
 	 * @return array
 	 */
 	static public function addRootlineOfNodeToStateHash($stateId, $nodeId) {

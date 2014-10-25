@@ -87,7 +87,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	/**
 	 * Set's the original id of the element
 	 *
-	 * @param integer $workspaceId
+	 * @param int $workspaceId
 	 * @return void
 	 */
 	public function setWorkspaceId($workspaceId) {
@@ -106,7 +106,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	/**
 	 * Sets the mount point id
 	 *
-	 * @param integer $mountPoint
+	 * @param int $mountPoint
 	 * @return void
 	 */
 	public function setMountPoint($mountPoint) {

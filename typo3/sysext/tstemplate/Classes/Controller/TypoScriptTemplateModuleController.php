@@ -291,7 +291,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 	/**
 	 * No template
 	 *
-	 * @param integer $newStandardTemplate
+	 * @param int $newStandardTemplate
 	 * @return string
 	 */
 	public function noTemplate($newStandardTemplate = 0) {
@@ -369,8 +369,8 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 	/**
 	 * Create template
 	 *
-	 * @param integer $id
-	 * @param integer $actTemplateId
+	 * @param int $id
+	 * @param int $actTemplateId
 	 * @return string
 	 */
 	public function createTemplate($id, $actTemplateId = 0) {
@@ -459,7 +459,7 @@ page.10.value = HELLO WORLD!
 	 *
 	 * @param array $pArray
 	 * @param array $lines
-	 * @param integer $c
+	 * @param int $c
 	 * @return array
 	 */
 	public function renderList($pArray, $lines = array(), $c = 0) {

@@ -97,7 +97,7 @@ abstract class AbstractMessage {
 	/**
 	 * Sets the message' severity
 	 *
-	 * @param integer $severity The severity, must be one of AbstractMessage::INFO or similar constants
+	 * @param int $severity The severity, must be one of AbstractMessage::INFO or similar constants
 	 * @return void
 	 */
 	public function setSeverity($severity = self::OK) {

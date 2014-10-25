@@ -25,7 +25,7 @@ class RadioElementView extends \TYPO3\CMS\Form\View\Mail\Plain\Element\AbstractE
 	 * Constructor
 	 *
 	 * @param \TYPO3\CMS\Form\Domain\Model\Element\RadioElement $model Model for this element
-	 * @param integer $spaces
+	 * @param int $spaces
 	 */
 	public function __construct(\TYPO3\CMS\Form\Domain\Model\Element\RadioElement $model, $spaces) {
 		parent::__construct($model, $spaces);

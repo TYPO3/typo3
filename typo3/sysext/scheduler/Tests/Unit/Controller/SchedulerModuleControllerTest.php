@@ -135,7 +135,7 @@ class SchedulerModuleControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider checkDateWithTypo3DateSyntaxDataProvider
 	 * @test
 	 * @param string $typo3DateValue Test value which will be passed to $this->testObject->checkDate
-	 * @param integer $expectedTimestamp Expected value to compare with result from operation
+	 * @param int $expectedTimestamp Expected value to compare with result from operation
 	 */
 	public function checkDateWithTypo3DateSyntax($typo3DateValue, $expectedTimestamp) {
 		$this->assertSame($expectedTimestamp, $this->testObject->checkDate($typo3DateValue), 'Fails with value "' . $typo3DateValue . '"');

@@ -57,7 +57,7 @@ class FramesetRenderer {
 	 * Creates the attributes for a <frame> tag based on a $conf array and the type number
 	 *
 	 * @param array $setup Configuration for the parameter generation for the FRAME set. See link
-	 * @param integer $typeNum The typenumber to use for the link.
+	 * @param int $typeNum The typenumber to use for the link.
 	 * @return string String with attributes for the frame-tag. With a prefixed space character.
 	 * @access private
 	 * @link http://typo3.org/documentation/document-library/references/doc_core_tsref/current/view/7/9/

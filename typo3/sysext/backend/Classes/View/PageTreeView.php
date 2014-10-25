@@ -118,7 +118,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 *
 	 * @param string $title Title string
 	 * @param string $row Item record
-	 * @param integer $bank Bank pointer (which mount point number)
+	 * @param int $bank Bank pointer (which mount point number)
 	 * @return string
 	 * @access private
 	 */
@@ -243,9 +243,9 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 * Generate the plus/minus icon for the browsable tree.
 	 *
 	 * @param array $row Record for the entry
-	 * @param integer $a The current entry number
-	 * @param integer $c The total number of entries. If equal to $a, a "bottom" element is returned.
-	 * @param integer $nextCount The number of sub-elements to the current element.
+	 * @param int $a The current entry number
+	 * @param int $c The total number of entries. If equal to $a, a "bottom" element is returned.
+	 * @param int $nextCount The number of sub-elements to the current element.
 	 * @param bool $exp The element was expanded to render subelements if this flag is set.
 	 * @return string Image tag with the plus/minus icon.
 	 * @access private
@@ -340,8 +340,8 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	/**
 	 * Fetches the data for the tree
 	 *
-	 * @param integer $uid Item id for which to select subitems (parent id)
-	 * @param integer $depth Max depth (recursivity limit)
+	 * @param int $uid Item id for which to select subitems (parent id)
+	 * @param int $depth Max depth (recursivity limit)
 	 * @param string $blankLineCode ? (internal)
 	 * @param string $subCSSclass
 	 * @return integer The count of items on the level

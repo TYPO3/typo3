@@ -152,7 +152,7 @@ interface QueryInterface {
 	 * Sets the maximum size of the result set to limit. Returns $this to allow
 	 * for chaining (fluid interface).
 	 *
-	 * @param integer $limit
+	 * @param int $limit
 	 * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
 	 * @api
 	 */
@@ -162,7 +162,7 @@ interface QueryInterface {
 	 * Sets the start offset of the result set to offset. Returns $this to
 	 * allow for chaining (fluid interface).
 	 *
-	 * @param integer $offset
+	 * @param int $offset
 	 * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
 	 * @api
 	 */

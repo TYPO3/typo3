@@ -118,9 +118,9 @@ class CheckboxElement extends AbstractFormElement {
 	 * Creates checkbox parameters
 	 *
 	 * @param string $itemName Form element name
-	 * @param integer $formElementValue The value of the checkbox (representing checkboxes with the bits)
-	 * @param integer $checkbox Checkbox # (0-9?)
-	 * @param integer $checkboxesCount Total number of checkboxes in the array.
+	 * @param int $formElementValue The value of the checkbox (representing checkboxes with the bits)
+	 * @param int $checkbox Checkbox # (0-9?)
+	 * @param int $checkboxesCount Total number of checkboxes in the array.
 	 * @param string $additionalJavaScript Additional JavaScript for the onclick handler.
 	 * @return string The onclick attribute + possibly the checked-option set.
 	 */

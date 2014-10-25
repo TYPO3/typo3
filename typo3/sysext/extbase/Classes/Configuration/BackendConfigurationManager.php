@@ -203,7 +203,7 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
 	 * Returns a comma separated list of storagePid that are below a certain storage pid.
 	 *
 	 * @param string $storagePid Storage PID to start at; multiple PIDs possible as comma-separated list
-	 * @param integer $recursionDepth Maximum number of levels to search, 0 to disable recursive lookup
+	 * @param int $recursionDepth Maximum number of levels to search, 0 to disable recursive lookup
 	 * @return string storage PIDs
 	 */
 	protected function getRecursiveStoragePids($storagePid, $recursionDepth = 0) {

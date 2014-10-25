@@ -68,9 +68,9 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 * Generate the plus/minus icon for the browsable tree.
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject Entry folder object
-	 * @param integer $subFolderCounter The current entry number
-	 * @param integer $totalSubFolders The total number of entries. If equal to $a, a "bottom" element is returned.
-	 * @param integer $nextCount The number of sub-elements to the current element.
+	 * @param int $subFolderCounter The current entry number
+	 * @param int $totalSubFolders The total number of entries. If equal to $a, a "bottom" element is returned.
+	 * @param int $nextCount The number of sub-elements to the current element.
 	 * @param bool $isExpanded The element was expanded to render subelements if this flag is set.
 	 * @return string Image tag with the plus/minus icon.
 	 * @internal
@@ -150,7 +150,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 *
 	 * @param string $title Title string
 	 * @param \TYPO3\CMS\Core\Resource\Folder	$folderObject the folder record
-	 * @param integer $bank Bank pointer (which mount point number)
+	 * @param int $bank Bank pointer (which mount point number)
 	 * @return string
 	 * @internal
 	 */
@@ -190,7 +190,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 * '_title' is used for setting an alternative title for folders.
 	 *
 	 * @param array $row The input row array (where the key "_title" is used for the title)
-	 * @param integer $titleLen Title length (30)
+	 * @param int $titleLen Title length (30)
 	 * @return string The title
 	 */
 	public function getTitleStr($row, $titleLen = 30) {
@@ -318,7 +318,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 * Fetches the data for the tree
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject the folderobject
-	 * @param integer $depth Max depth (recursivity limit)
+	 * @param int $depth Max depth (recursivity limit)
 	 * @param string $type HTML-code prefix for recursive calls.
 	 * @return integer The count of items on the level
 	 * @see getBrowsableTree()

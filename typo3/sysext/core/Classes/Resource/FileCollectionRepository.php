@@ -37,7 +37,7 @@ class FileCollectionRepository extends \TYPO3\CMS\Core\Collection\RecordCollecti
 	/**
 	 * Finds a record collection by uid.
 	 *
-	 * @param integer $uid The uid to be looked up
+	 * @param int $uid The uid to be looked up
 	 * @return NULL|Collection\AbstractFileCollection
 	 * @throws ResourceDoesNotExistException
 	 */

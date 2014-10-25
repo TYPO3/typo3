@@ -200,7 +200,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 *
 	 * @param array $searchWords Search words array (for display of text describing what was searched for)
 	 * @param array $resultData Array with result rows, count, first row.
-	 * @param integer $freeIndexUid Pointing to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
+	 * @param int $freeIndexUid Pointing to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
 	 * @return array
 	 */
 	protected function getDisplayResults($searchWords, $resultData, $freeIndexUid = -1) {
@@ -235,7 +235,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 * Takes the "group" var into account: Makes a "section" or "flat" display.
 	 *
 	 * @param array $resultRows Result rows
-	 * @param integer $freeIndexUid Pointing to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
+	 * @param int $freeIndexUid Pointing to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
 	 * @return string HTML
 	 */
 	protected function compileResultRows($resultRows, $freeIndexUid = -1) {
@@ -318,7 +318,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 * This prints a single result row, including a recursive call for subrows.
 	 *
 	 * @param array $row Search result row
-	 * @param integer $headerOnly 1=Display only header (for sub-rows!), 2=nothing at all
+	 * @param int $headerOnly 1=Display only header (for sub-rows!), 2=nothing at all
 	 * @return string HTML code
 	 */
 	protected function compileSingleResultRow($row, $headerOnly = 0) {
@@ -547,7 +547,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 *
 	 * @param array $row Search result row
 	 * @param bool $noMarkup If noMarkup is FALSE, then the index_fulltext table is used to select the content of the page, split it with regex to display the search words in the text.
-	 * @param integer $length String length
+	 * @param int $length String length
 	 * @return string HTML string
 	 * @todo overwork this
 	 */
@@ -1115,7 +1115,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	/**
 	 * Links the $linkText to page $pageUid
 	 *
-	 * @param integer $pageUid Page id
+	 * @param int $pageUid Page id
 	 * @param string $linkText Title String to link
 	 * @param array $row Result row
 	 * @param array $markUpSwParams Additional parameters for marking up seach words
@@ -1163,7 +1163,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	/**
 	 * Return the menu of pages used for the selector.
 	 *
-	 * @param integer $pageUid Page ID for which to return menu
+	 * @param int $pageUid Page ID for which to return menu
 	 * @return array Menu items (for making the section selector box)
 	 */
 	protected function getMenuOfPages($pageUid) {
@@ -1183,7 +1183,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	/**
 	 * Returns the path to the page $id
 	 *
-	 * @param integer $id Page ID
+	 * @param int $id Page ID
 	 * @param string MP variable content
 	 * @return string Path
 	 */
@@ -1225,7 +1225,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	/**
 	 * Gets the first sys_domain record for the page, $id
 	 *
-	 * @param integer $id Page id
+	 * @param int $id Page id
 	 * @return string Domain name
 	 */
 	protected function getFirstSysDomainRecordForPage($id) {

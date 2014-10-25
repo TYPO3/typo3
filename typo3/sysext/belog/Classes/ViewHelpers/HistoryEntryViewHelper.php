@@ -31,7 +31,7 @@ class HistoryEntryViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 	/**
 	 * Get system history record
 	 *
-	 * @param integer $uid Uid of the log entry
+	 * @param int $uid Uid of the log entry
 	 * @return string Formatted history entry if one exists, else empty string
 	 */
 	public function render($uid) {

@@ -102,7 +102,7 @@ class UserFileMountService {
 	 * a "flat" option list
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\Folder $parentFolder
-	 * @param integer $level a limiter
+	 * @param int $level a limiter
 	 * @return \TYPO3\CMS\Core\Resource\Folder[]
 	 */
 	protected function getSubfoldersForOptionList(\TYPO3\CMS\Core\Resource\Folder $parentFolder, $level = 0) {

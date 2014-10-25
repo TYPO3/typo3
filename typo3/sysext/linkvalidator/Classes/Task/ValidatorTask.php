@@ -159,7 +159,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	/**
 	 * Set the value of the private property page
 	 *
-	 * @param integer $page UID of the start page for this task.
+	 * @param int $page UID of the start page for this task.
 	 * @return void
 	 */
 	public function setPage($page) {
@@ -178,7 +178,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	/**
 	 * Set the value of the private property depth
 	 *
-	 * @param integer $depth Level of pages the task should check
+	 * @param int $depth Level of pages the task should check
 	 * @return void
 	 */
 	public function setDepth($depth) {
@@ -271,7 +271,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	/**
 	 * Validate all links for a page based on the task configuration
 	 *
-	 * @param integer $page Uid of the page to parse
+	 * @param int $page Uid of the page to parse
 	 * @return string $pageSections Content of page section
 	 */
 	protected function checkPageLinks($page) {
@@ -316,7 +316,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	/**
 	 * Get the linkvalidator modTSconfig for a page
 	 *
-	 * @param integer $page Uid of the page
+	 * @param int $page Uid of the page
 	 * @return array $modTsConfig mod.linkvalidator TSconfig array
 	 * @throws \Exception
 	 */
@@ -457,7 +457,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	/**
 	 * Build the mail content
 	 *
-	 * @param integer $curPage Id of the current page
+	 * @param int $curPage Id of the current page
 	 * @param string $pageList List of pages id
 	 * @param array $markerArray Array of markers
 	 * @param array $oldBrokenLink Marker array with the number of link found

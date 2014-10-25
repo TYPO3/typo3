@@ -56,7 +56,7 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 	/**
 	 * Fetches the next tree level
 	 *
-	 * @param integer $nodeId
+	 * @param int $nodeId
 	 * @param stdClass $nodeData
 	 * @return array
 	 */
@@ -75,7 +75,7 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 	/**
 	 * Returns a tree that only contains elements that match the given search string
 	 *
-	 * @param integer $nodeId
+	 * @param int $nodeId
 	 * @param stdClass $nodeData
 	 * @param string $searchFilter
 	 * @return array

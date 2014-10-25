@@ -1208,7 +1208,7 @@ class DataHandler {
 	 * Fix shadowing of data in case we are editing a offline version of a live "New" placeholder record:
 	 *
 	 * @param string $table Table name
-	 * @param integer $id Record uid
+	 * @param int $id Record uid
 	 * @return void
 	 */
 	public function placeholderShadowing($table, $id) {
@@ -1257,12 +1257,12 @@ class DataHandler {
 	 * $this->exclude_array is used to filter fields if needed.
 	 *
 	 * @param string $table Table name
-	 * @param integer $id Record ID
+	 * @param int $id Record ID
 	 * @param array $fieldArray Default values, Preset $fieldArray with 'pid' maybe (pid and uid will be not be overridden anyway)
 	 * @param array $incomingFieldArray Is which fields/values you want to set. There are processed and put into $fieldArray if OK
-	 * @param integer $realPid The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted.
+	 * @param int $realPid The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted.
 	 * @param string $status Is 'new' or 'update'
-	 * @param integer $tscPID TSconfig PID
+	 * @param int $tscPID TSconfig PID
 	 * @return array Field Array
 	 */
 	public function fillInFieldArray($table, $id, $fieldArray, $incomingFieldArray, $realPid, $status, $tscPID) {
@@ -1468,8 +1468,8 @@ class DataHandler {
 	 * @param string $value Value to be evaluated. Notice, this is the INPUT value from the form. The original value (from any existing record) must be manually looked up inside the function if needed - or taken from $currentRecord array.
 	 * @param string $id The record-uid, mainly - but not exclusively - used for logging
 	 * @param string $status 'update' or 'new' flag
-	 * @param integer $realPid The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted. If $realPid is -1 it means that a new version of the record is being inserted.
-	 * @param integer $tscPID tscPID
+	 * @param int $realPid The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted. If $realPid is -1 it means that a new version of the record is being inserted.
+	 * @param int $tscPID tscPID
 	 * @return array Returns the evaluated $value as key "value" in this array. Can be checked with isset($res['value']) ...
 	 */
 	public function checkValue($table, $field, $value, $id, $status, $realPid, $tscPID) {
@@ -1515,10 +1515,10 @@ class DataHandler {
 	 * @param string $value The value to set.
 	 * @param array $tcaFieldConf Field configuration from $GLOBALS['TCA']
 	 * @param string $table Table name
-	 * @param integer $id Return UID
+	 * @param int $id Return UID
 	 * @param [type] $curValue
 	 * @param [type] $status
-	 * @param integer $realPid The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted. If $realPid is -1 it means that a new version of the record is being inserted.
+	 * @param int $realPid The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted. If $realPid is -1 it means that a new version of the record is being inserted.
 	 * @param [type] $recFID
 	 * @param string $field Field name. Must NOT be set if the call is for a flexform field (since flexforms are not allowed within flexforms).
 	 * @param [type] $uploadedFiles
@@ -1844,7 +1844,7 @@ class DataHandler {
 	 * @param array $uploadedFileArray Array of uploaded files, if any
 	 * @param string $status Status ("update" or ?)
 	 * @param string $table tablename of record
-	 * @param integer $id UID of record
+	 * @param int $id UID of record
 	 * @param string $recFID Field identifier ([table:uid:field:....more for flexforms?]
 	 * @return array Modified value array
 	 * @see checkValue_group_select()
@@ -2317,8 +2317,8 @@ class DataHandler {
 	 * @param string $table Table name
 	 * @param string $field Field name for which $value must be unique
 	 * @param string $value Value string.
-	 * @param integer $id UID to filter out in the lookup (the record itself...)
-	 * @param integer $newPid If set, the value will be unique for this PID
+	 * @param int $id UID to filter out in the lookup (the record itself...)
+	 * @param int $newPid If set, the value will be unique for this PID
 	 * @return string Modified value (if not-unique). Will be the value appended with a number (until 100, then the function just breaks).
 	 */
 	public function getUnique($table, $field, $value, $id, $newPid = 0) {
@@ -2358,10 +2358,10 @@ class DataHandler {
 	 * excluding the given uid
 	 *
 	 * @param string $tableName Table name
-	 * @param integer $uid UID to filter out in the lookup (the record itself...)
+	 * @param int $uid UID to filter out in the lookup (the record itself...)
 	 * @param string $fieldName Field name for which $value must be unique
 	 * @param string $value Value string.
-	 * @param integer $pageId If set, the value will be unique for this PID
+	 * @param int $pageId If set, the value will be unique for this PID
 	 * @return array
 	 */
 	public function getRecordsWithSameValue($tableName, $uid, $fieldName, $value, $pageId = 0) {
@@ -2557,7 +2557,7 @@ class DataHandler {
 	 *
 	 * @param array $valueArray Current value array
 	 * @param array $tcaFieldConf TCA field config
-	 * @param integer $id Record id, used for look-up of MM relations (local_uid)
+	 * @param int $id Record id, used for look-up of MM relations (local_uid)
 	 * @param string $status Status string ('update' or 'new')
 	 * @param string $type The type, either 'select', 'group' or 'inline'
 	 * @param string $currentTable Table name, needs to be passed to \TYPO3\CMS\Core\Database\RelationHandler
@@ -2772,7 +2772,7 @@ class DataHandler {
 	 *
 	 * @param array $valueArray Current value array
 	 * @param array $tcaFieldConf TCA field config
-	 * @param integer $id Record id
+	 * @param int $id Record id
 	 * @param string $status Status string ('update' or 'new')
 	 * @param string $table Table name, needs to be passed to \TYPO3\CMS\Core\Database\RelationHandler
 	 * @param string $field The current field the values are modified for
@@ -2978,12 +2978,12 @@ class DataHandler {
 	 * Copying a single record
 	 *
 	 * @param string $table Element table
-	 * @param integer $uid Element UID
-	 * @param integer $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
+	 * @param int $uid Element UID
+	 * @param int $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
 	 * @param bool $first Is a flag set, if the record copied is NOT a 'slave' to another record copied. That is, if this record was asked to be copied in the cmd-array
 	 * @param array $overrideValues Associative array with field/value pairs to override directly. Notice; Fields must exist in the table record and NOT be among excluded fields!
 	 * @param string $excludeFields Commalist of fields to exclude from the copy process (might get default values)
-	 * @param integer $language Language ID (from sys_language table)
+	 * @param int $language Language ID (from sys_language table)
 	 * @return integer ID of new record, if any
 	 */
 	public function copyRecord($table, $uid, $destPid, $first = 0, $overrideValues = array(), $excludeFields = '', $language = 0) {
@@ -3095,8 +3095,8 @@ class DataHandler {
 	 * Copying pages
 	 * Main function for copying pages.
 	 *
-	 * @param integer $uid Page UID to copy
-	 * @param integer $destPid Destination PID: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
+	 * @param int $uid Page UID to copy
+	 * @param int $destPid Destination PID: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
 	 * @return void
 	 */
 	public function copyPages($uid, $destPid) {
@@ -3143,8 +3143,8 @@ class DataHandler {
 	/**
 	 * Copying a single page ($uid) to $destPid and all tables in the array copyTablesArray.
 	 *
-	 * @param integer $uid Page uid
-	 * @param integer $destPid Destination PID: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
+	 * @param int $uid Page uid
+	 * @param int $destPid Destination PID: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
 	 * @param array $copyTablesArray Table on pages to copy along with the page.
 	 * @param bool $first Is a flag set, if the record copied is NOT a 'slave' to another record copied. That is, if this record was asked to be copied in the cmd-array
 	 * @return integer The id of the new page, if applicable.
@@ -3179,8 +3179,8 @@ class DataHandler {
 	 * NOTICE: DOES NOT CHECK PERMISSIONS to create! And since page permissions are just passed through and not changed to the user who executes the copy we cannot enforce permissions without getting an incomplete copy - unless we change permissions of course.
 	 *
 	 * @param string $table Element table
-	 * @param integer $uid Element UID
-	 * @param integer $pid Element PID (real PID, not checked)
+	 * @param int $uid Element UID
+	 * @param int $pid Element PID (real PID, not checked)
 	 * @param array $overrideArray Override array - must NOT contain any fields not in the table!
 	 * @return array $workspaceOptions Options to be forwarded if actions happen on a workspace currently
 	 * @return integer Returns the new ID of the record (if applicable)
@@ -3244,7 +3244,7 @@ class DataHandler {
 	 *
 	 * @param string $table Table name
 	 * @param array $fieldArray Field array to insert as a record
-	 * @param integer $realPid The value of PID field.  -1 is indication that we are creating a new version!
+	 * @param int $realPid The value of PID field.  -1 is indication that we are creating a new version!
 	 * @return integer Returns the new ID of the record (if applicable)
 	 */
 	public function insertNewCopyVersion($table, $fieldArray, $realPid) {
@@ -3287,13 +3287,13 @@ class DataHandler {
 	 * Processing/Preparing content for copyRecord() function
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid Record uid
+	 * @param int $uid Record uid
 	 * @param string $field Field name being processed
 	 * @param string $value Input value to be processed.
 	 * @param array $row Record array
 	 * @param array $conf TCA field configuration
-	 * @param integer $realDestPid Real page id (pid) the record is copied to
-	 * @param integer $language Language ID (from sys_language table) used in the duplicated record
+	 * @param int $realDestPid Real page id (pid) the record is copied to
+	 * @param int $language Language ID (from sys_language table) used in the duplicated record
 	 * @return array $workspaceOptions Options to be forwarded if actions happen on a workspace currently
 	 * @access private
 	 * @see copyRecord()
@@ -3460,7 +3460,7 @@ class DataHandler {
 	 * For DB references: Nothing done.
 	 *
 	 * @param array $conf TCE field config
-	 * @param integer $uid Record UID
+	 * @param int $uid Record UID
 	 * @param string $value Field value (eg. list of files)
 	 * @return string The (possibly modified) value
 	 * @see copyRecord(), copyRecord_flexFormCallBack()
@@ -3507,7 +3507,7 @@ class DataHandler {
 	 * Reason for copying RTEmagic files: a) if you remove an RTEmagic image from a record it will remove the file - any other record using it will have a lost reference! b) RTEmagic images keeps an original and a copy. The copy always is re-calculated to have the correct physical measures as the HTML tag inserting it defines. This is calculated from the original. Two records using the same image could have difference HTML-width/heights for the image and the copy could only comply with one of them. If you don't want a 1-1 relation you should NOT use RTEmagic files but just insert it as a normal file reference to a file inside fileadmin/ folder
 	 *
 	 * @param string $table Table name
-	 * @param integer $theNewSQLID Record UID
+	 * @param int $theNewSQLID Record UID
 	 * @return void
 	 */
 	public function copyRecord_fixRTEmagicImages($table, $theNewSQLID) {
@@ -3629,8 +3629,8 @@ class DataHandler {
 	 * Moving single records
 	 *
 	 * @param string $table Table name to move
-	 * @param integer $uid Record uid to move
-	 * @param integer $destPid Position to move to: $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
+	 * @param int $uid Record uid to move
+	 * @param int $destPid Position to move to: $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
 	 * @return void
 	 */
 	public function moveRecord($table, $uid, $destPid) {
@@ -3703,8 +3703,8 @@ class DataHandler {
 	 * USE ONLY INTERNALLY
 	 *
 	 * @param string $table Table name to move
-	 * @param integer $uid Record uid to move
-	 * @param integer $destPid Position to move to: $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
+	 * @param int $uid Record uid to move
+	 * @param int $destPid Position to move to: $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
 	 * @return void
 	 * @see moveRecord()
 	 */
@@ -3951,8 +3951,8 @@ class DataHandler {
 	 * In reality it only works if transOrigPointerTable is not set. For "pages" the implementation is hardcoded
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid Record uid (to be localized)
-	 * @param integer $language Language ID (from sys_language table)
+	 * @param int $uid Record uid (to be localized)
+	 * @param int $language Language ID (from sys_language table)
 	 * @return mixed The uid (integer) of the new translated record or FALSE (boolean) if something went wrong
 	 */
 	public function localize($table, $uid, $language) {
@@ -4059,7 +4059,7 @@ class DataHandler {
 	 * Performs localization or synchronization of child records.
 	 *
 	 * @param string $table The table of the localized parent record
-	 * @param integer $id The uid of the localized parent record
+	 * @param int $id The uid of the localized parent record
 	 * @param string $command Defines the type 'localize' or 'synchronize' (string) or a single uid to be localized (integer)
 	 * @return void
 	 */
@@ -4166,7 +4166,7 @@ class DataHandler {
 	 * Delete a single record
 	 *
 	 * @param string $table Table name
-	 * @param integer $id Record UID
+	 * @param int $id Record UID
 	 * @return void
 	 */
 	public function deleteAction($table, $id) {
@@ -4193,7 +4193,7 @@ class DataHandler {
 	 * Delete element from any table
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid Record UID
+	 * @param int $uid Record UID
 	 * @param bool $noRecordCheck Flag: If $noRecordCheck is set, then the function does not check permission to delete record
 	 * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
 	 * @return void
@@ -4211,7 +4211,7 @@ class DataHandler {
 	 * Delete versions for element from any table
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid Record UID
+	 * @param int $uid Record UID
 	 * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
 	 * @return void
 	 */
@@ -4234,7 +4234,7 @@ class DataHandler {
 	 * Undelete a single record
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid Record UID
+	 * @param int $uid Record UID
 	 * @return void
 	 */
 	public function undeleteRecord($table, $uid) {
@@ -4250,7 +4250,7 @@ class DataHandler {
 	 * If both $noRecordCheck and $forceHardDelete are set it could even delete a "deleted"-flagged record!
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid Record UID
+	 * @param int $uid Record UID
 	 * @param bool $noRecordCheck Flag: If $noRecordCheck is set, then the function does not check permission to delete record
 	 * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
 	 * @param bool $undeleteRecord If TRUE, the "deleted" flag is set to 0 again and thus, the item is undeleted.
@@ -4384,7 +4384,7 @@ class DataHandler {
 	/**
 	 * Used to delete page because it will check for branch below pages and unallowed tables on the page as well.
 	 *
-	 * @param integer $uid Page id
+	 * @param int $uid Page id
 	 * @param bool $force If TRUE, pages are not checked for permission.
 	 * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
 	 * @return void
@@ -4411,7 +4411,7 @@ class DataHandler {
 	/**
 	 * Delete a page and all records on it.
 	 *
-	 * @param integer $uid Page id
+	 * @param int $uid Page id
 	 * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
 	 * @return void
 	 * @access private
@@ -4481,7 +4481,7 @@ class DataHandler {
 	/**
 	 * Used to evaluate if a page can be deleted
 	 *
-	 * @param integer $uid Page id
+	 * @param int $uid Page id
 	 * @return mixed If array: List of page uids to traverse and delete (means OK), if string: error code.
 	 */
 	public function canDeletePage($uid) {
@@ -4533,7 +4533,7 @@ class DataHandler {
 	 * Returns TRUE if record CANNOT be deleted, otherwise FALSE. Used to check before the versioning API allows a record to be marked for deletion.
 	 *
 	 * @param string $table Record Table
-	 * @param integer $id Record UID
+	 * @param int $id Record UID
 	 * @return string Returns a string IF there is an error (error string explaining). FALSE means record can be deleted
 	 */
 	public function cannotDeleteRecord($table, $id) {
@@ -4549,7 +4549,7 @@ class DataHandler {
 	 * Determines whether a record can be undeleted.
 	 *
 	 * @param string $table Table name of the record
-	 * @param integer $uid uid of the record
+	 * @param int $uid uid of the record
 	 * @return boolean Whether the record can be undeleted
 	 */
 	public function isRecordUndeletable($table, $uid) {
@@ -4683,7 +4683,7 @@ class DataHandler {
 	 * (Requires support in the table)
 	 *
 	 * @param string $table Table name
-	 * @param integer $id Record uid to versionize
+	 * @param int $id Record uid to versionize
 	 * @param string $label Version label
 	 * @param bool $delete If TRUE, the version is created to delete the record.
 	 * @return integer Returns the id of the new version (if any)
@@ -4773,8 +4773,8 @@ class DataHandler {
 	 * Swaps MM-relations for current/swap record, see version_swap()
 	 *
 	 * @param string $table Table for the two input records
-	 * @param integer $id Current record (about to go offline)
-	 * @param integer $swapWith Swap record (about to go online)
+	 * @param int $id Current record (about to go offline)
+	 * @param int $swapWith Swap record (about to go online)
 	 * @return void
 	 * @see version_swap()
 	 */
@@ -4853,8 +4853,8 @@ class DataHandler {
 	 * It must be done in three steps with an intermediate "fake" uid. The UID can be something else than -$id (fx. 9999999+$id if you dare... :-)- as long as it is unique.
 	 *
 	 * @param string $table Table for the two input records
-	 * @param integer $id Current record (about to go offline)
-	 * @param integer $swapWith Swap record (about to go online)
+	 * @param int $id Current record (about to go offline)
+	 * @param int $swapWith Swap record (about to go online)
 	 * @return void
 	 * @see version_remapMMForVersionSwap()
 	 */
@@ -4987,7 +4987,7 @@ class DataHandler {
 	 *
 	 * @param array $conf TCA field config
 	 * @param string $value Field value
-	 * @param integer $MM_localUid UID of local record (for MM relations - might need to change if support for FlexForms should be done!)
+	 * @param int $MM_localUid UID of local record (for MM relations - might need to change if support for FlexForms should be done!)
 	 * @param string $table Table name
 	 * @return array Returns array of items ready to implode for field content.
 	 * @see remapListedDBRecords()
@@ -5056,7 +5056,7 @@ class DataHandler {
 	 *
 	 * @param array $conf TCA field config
 	 * @param string $value Field value
-	 * @param integer $uid The uid of the ORIGINAL record
+	 * @param int $uid The uid of the ORIGINAL record
 	 * @param string $table Table name
 	 * @return void
 	 */
@@ -5283,7 +5283,7 @@ class DataHandler {
 	 * Adds an instruction to the remap action stack (used with IRRE).
 	 *
 	 * @param string $table The affected table
-	 * @param integer $id The affected ID
+	 * @param int $id The affected ID
 	 * @param array $callback The callback information (object and method)
 	 * @param array $arguments The arguments to be used with the callback
 	 * @return void
@@ -5303,7 +5303,7 @@ class DataHandler {
 	 * Adds a table-id-pair to the reference index remapping stack.
 	 *
 	 * @param string $table
-	 * @param integer $id
+	 * @param int $id
 	 * @return void
 	 */
 	public function addRemapStackRefIndex($table, $id) {
@@ -5317,7 +5317,7 @@ class DataHandler {
 	 * The $incomingFieldArray is updated by reference!
 	 *
 	 * @param string $table Table name of the parent record
-	 * @param integer $id Uid of the parent record
+	 * @param int $id Uid of the parent record
 	 * @param array $incomingFieldArray Reference to the incominfFieldArray of process_datamap
 	 * @param array $registerDBList Reference to the $registerDBList array that was created/updated by versionizing calls to TCEmain in process_datamap.
 	 * @return void
@@ -5370,7 +5370,7 @@ class DataHandler {
 	 * Checking if a record with uid $id from $table is in the BE_USERS webmounts which is required for editing etc.
 	 *
 	 * @param string $table Table name
-	 * @param integer $id UID of record
+	 * @param int $id UID of record
 	 * @return boolean Returns TRUE if OK. Cached results.
 	 */
 	public function isRecordInWebMount($table, $id) {
@@ -5384,7 +5384,7 @@ class DataHandler {
 	/**
 	 * Checks if the input page ID is in the BE_USER webmounts
 	 *
-	 * @param integer $pid Page ID to check
+	 * @param int $pid Page ID to check
 	 * @return boolean TRUE if OK. Cached results.
 	 */
 	public function isInWebMount($pid) {
@@ -5398,7 +5398,7 @@ class DataHandler {
 	 * Checks if user may update a record with uid=$id from $table
 	 *
 	 * @param string $table Record table
-	 * @param integer $id Record UID
+	 * @param int $id Record UID
 	 * @param array $data Record data
 	 * @param array $hookObjectsArr Hook objects
 	 * @return boolean Returns TRUE if the user may update the record given by $table and $id
@@ -5472,7 +5472,7 @@ class DataHandler {
 	/**
 	 * Checks if a table is allowed on a certain page id according to allowed tables set for the page "doktype" and its [ctrl][rootLevel]-settings if any.
 	 *
-	 * @param integer $page_uid Page id for which to check, including 0 (zero) if checking for page tree root.
+	 * @param int $page_uid Page id for which to check, including 0 (zero) if checking for page tree root.
 	 * @param string $checkTable Table name to check
 	 * @return bool TRUE if OK
 	 */
@@ -5571,8 +5571,8 @@ class DataHandler {
 	/**
 	 * Looks up a page based on permissions.
 	 *
-	 * @param integer $id Page id
-	 * @param integer $perms Permission integer
+	 * @param int $id Page id
+	 * @param int $perms Permission integer
 	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object (from exec_SELECTquery())
 	 * @access private
 	 * @see doesRecordExist()
@@ -5589,8 +5589,8 @@ class DataHandler {
 	 * if $recurse is set, then the function will follow subpages. This MUST be set, if we need the idlist for deleting pages or else we get an incomplete list
 	 *
 	 * @param string $inList List of page uids, this is added to and outputted in the end
-	 * @param integer $pid Page ID to select subpages from.
-	 * @param integer $perms Perms integer to check each page record for.
+	 * @param int $pid Page ID to select subpages from.
+	 * @param int $perms Perms integer to check each page record for.
 	 * @param bool $recurse Recursion flag: If set, it will go out through the branch.
 	 * @return string List of integers in branch
 	 */
@@ -5646,8 +5646,8 @@ class DataHandler {
 	 * Checks if piage $id is a uid in the rootline from page id, $dest
 	 * Used when moving a page
 	 *
-	 * @param integer $dest Destination Page ID to test
-	 * @param integer $id Page ID to test for presence inside Destination
+	 * @param int $dest Destination Page ID to test
+	 * @param int $id Page ID to test for presence inside Destination
 	 * @return boolean Returns FALSE if ID is inside destination (including equal to)
 	 */
 	public function destNotInsideSelf($dest, $id) {
@@ -5698,8 +5698,8 @@ class DataHandler {
 	/**
 	 * Checks if there are records on a page from tables that are not allowed
 	 *
-	 * @param integer $page_uid Page ID
-	 * @param integer $doktype Page doktype
+	 * @param int $page_uid Page ID
+	 * @param int $doktype Page doktype
 	 * @return array Returns a list of the tables that are 'present' on the page but not allowed with the page_uid/doktype
 	 */
 	public function doesPageHaveUnallowedTables($page_uid, $doktype) {
@@ -5737,7 +5737,7 @@ class DataHandler {
 	 * Returns the value of the $field from page $id
 	 * NOTICE; the function caches the result for faster delivery next time. You can use this function repeatedly without performanceloss since it doesn't look up the same record twice!
 	 *
-	 * @param integer $id Page uid
+	 * @param int $id Page uid
 	 * @param string $field Field name for which to return value
 	 * @return string Value of the field. Result is cached in $this->pageCache[$id][$field] and returned from there next time!
 	 */
@@ -5757,7 +5757,7 @@ class DataHandler {
 	 * NOTICE: No check for deleted or access!
 	 *
 	 * @param string $table Table name
-	 * @param integer $id UID of the record from $table
+	 * @param int $id UID of the record from $table
 	 * @param string $fieldList Field list for the SELECT query, eg. "*" or "uid,pid,...
 	 * @return NULL|array Returns the selected record on success, otherwise NULL.
 	 */
@@ -5782,7 +5782,7 @@ class DataHandler {
 	 * Used for loggin
 	 *
 	 * @param string $table Table name
-	 * @param integer $id Uid of record
+	 * @param int $id Uid of record
 	 * @param bool $noWSOL If set, no workspace overlay is performed
 	 * @return array Properties of record
 	 */
@@ -5817,8 +5817,8 @@ class DataHandler {
 
 	/**
 	 * @param string $table
-	 * @param integer $uid
-	 * @param integer $pid
+	 * @param int $uid
+	 * @param int $pid
 	 * @return integer
 	 */
 	public function eventPid($table, $uid, $pid) {
@@ -5835,7 +5835,7 @@ class DataHandler {
 	 * Does not check permissions but expects them to be verified on beforehand
 	 *
 	 * @param string $table Record table name
-	 * @param integer $id Record uid
+	 * @param int $id Record uid
 	 * @param array $fieldArray Array of field=>value pairs to insert. FIELDS MUST MATCH the database FIELDS. No check is done.
 	 * @return void
 	 */
@@ -5880,7 +5880,7 @@ class DataHandler {
 	 * @param string $id "NEW...." uid string
 	 * @param array $fieldArray Array of field=>value pairs to insert. FIELDS MUST MATCH the database FIELDS. No check is done. "pid" must point to the destination of the record!
 	 * @param bool $newVersion Set to TRUE if new version is created.
-	 * @param integer $suggestedUid Suggested UID value for the inserted record. See the array $this->suggestedInsertUids; Admin-only feature
+	 * @param int $suggestedUid Suggested UID value for the inserted record. See the array $this->suggestedInsertUids; Admin-only feature
 	 * @param bool $dontSetNewIdIndex If TRUE, the ->substNEWwithIDs array is not updated. Only useful in very rare circumstances!
 	 * @return integer Returns ID on success.
 	 */
@@ -5943,7 +5943,7 @@ class DataHandler {
 	 * Checking stored record to see if the written values are properly updated.
 	 *
 	 * @param string $table Record table name
-	 * @param integer $id Record uid
+	 * @param int $id Record uid
 	 * @param array $fieldArray Array of field=>value pairs to insert/update
 	 * @param string $action Action, for logging only.
 	 * @return array Selected row
@@ -5978,8 +5978,8 @@ class DataHandler {
 	 * Setting sys_history record, based on content previously set in $this->historyRecords[$table . ':' . $id] (by compareFieldArrayWithCurrentAndUnset())
 	 *
 	 * @param string $table Table name
-	 * @param integer $id Record ID
-	 * @param integer $logId Log entry ID, important for linking between log and history views
+	 * @param int $id Record ID
+	 * @param int $logId Log entry ID, important for linking between log and history views
 	 * @return void
 	 */
 	public function setHistory($table, $id, $logId) {
@@ -6000,7 +6000,7 @@ class DataHandler {
 	 * Should be called any almost any update to a record which could affect references inside the record.
 	 *
 	 * @param string $table Table name
-	 * @param integer $id Record UID
+	 * @param int $id Record UID
 	 * @return void
 	 */
 	public function updateRefIndex($table, $id) {
@@ -6022,8 +6022,8 @@ class DataHandler {
 	 * Using when new records are created and existing records are moved around.
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid Uid of record to find sorting number for. May be zero in case of new.
-	 * @param integer $pid Positioning PID, either >=0 (pointing to page in which case we find sorting number for first record in page) or <0 (pointing to record in which case to find next sorting number after this record)
+	 * @param int $uid Uid of record to find sorting number for. May be zero in case of new.
+	 * @param int $pid Positioning PID, either >=0 (pointing to page in which case we find sorting number for first record in page) or <0 (pointing to record in which case to find next sorting number after this record)
 	 * @return mixed Returns integer if PID is >=0, otherwise an array with PID and sorting number. Possibly FALSE in case of error.
 	 */
 	public function getSortNumber($table, $uid, $pid) {
@@ -6109,9 +6109,9 @@ class DataHandler {
 	 * Used internally by getSortNumber()
 	 *
 	 * @param string $table Table name
-	 * @param integer $pid Pid in which to resort records.
+	 * @param int $pid Pid in which to resort records.
 	 * @param string $sortRow Sorting row
-	 * @param integer $return_SortNumber_After_This_Uid Uid of record from $table in this $pid and for which the return value will be set to a free sorting number after that record. This is used to return a sortingValue if the list is resorted because of inserting records inside the list and not in the top
+	 * @param int $return_SortNumber_After_This_Uid Uid of record from $table in this $pid and for which the return value will be set to a free sorting number after that record. This is used to return a sortingValue if the list is resorted because of inserting records inside the list and not in the top
 	 * @return integer If $return_SortNumber_After_This_Uid is set, will contain usable sorting number after that record if found (otherwise 0)
 	 * @access private
 	 * @see getSortNumber()
@@ -6146,9 +6146,9 @@ class DataHandler {
 	 * Used when new localized records are created so that localized records are sorted in the same order as the default language records
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid Uid of default language record
-	 * @param integer $pid Pid of default language record
-	 * @param integer $language Language of localization
+	 * @param int $uid Uid of default language record
+	 * @param int $pid Pid of default language record
+	 * @param int $language Language of localization
 	 * @return integer uid of record after which the localized record should be inserted
 	 */
 	protected function getPreviousLocalizedRecordUid($table, $uid, $pid, $language) {
@@ -6281,7 +6281,7 @@ class DataHandler {
 	 * Used for existing records being updated
 	 *
 	 * @param string $table Record table name
-	 * @param integer $id Record uid
+	 * @param int $id Record uid
 	 * @param array $fieldArray Array of field=>value pairs intended to be inserted into the database. All keys with values matching exactly the current value will be unset!
 	 * @return array Returns $fieldArray. If the returned array is empty, then the record should not be updated!
 	 */
@@ -6450,7 +6450,7 @@ class DataHandler {
 	/**
 	 * Return TSconfig for a page id
 	 *
-	 * @param integer $tscPID Page id (PID) from which to get configuration.
+	 * @param int $tscPID Page id (PID) from which to get configuration.
 	 * @return array TSconfig array, if any
 	 */
 	public function getTCEMAIN_TSconfig($tscPID) {
@@ -6479,7 +6479,7 @@ class DataHandler {
 	 * Returns the pid of a record from $table with $uid
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid Record uid
+	 * @param int $uid Record uid
 	 * @return integer PID value (unless the record did not exist in which case FALSE)
 	 */
 	public function getPID($table, $uid) {
@@ -6520,9 +6520,9 @@ class DataHandler {
 	 * Selecting ONLY pages which the user has read-access to!
 	 *
 	 * @param array $CPtable Accumulation of page uid=>pid pairs in branch of $pid
-	 * @param integer $pid Page ID for which to find subpages
-	 * @param integer $counter Number of levels to go down.
-	 * @param integer $rootID ID of root point for new copied branch: The idea seems to be that a copy is not made of the already new page!
+	 * @param int $pid Page ID for which to find subpages
+	 * @param int $counter Number of levels to go down.
+	 * @param int $rootID ID of root point for new copied branch: The idea seems to be that a copy is not made of the already new page!
 	 * @return array Return array.
 	 */
 	public function int_pageTreeInfo($CPtable, $pid, $counter, $rootID) {
@@ -6556,7 +6556,7 @@ class DataHandler {
 	 * Checks if any uniqueInPid eval input fields are in the record and if so, they are re-written to be correct.
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid Record UID
+	 * @param int $uid Record UID
 	 * @return void
 	 */
 	public function fixUniqueInPid($table, $uid) {
@@ -6586,8 +6586,8 @@ class DataHandler {
 	 * This function is also called with new elements. But then $update must be set to zero and $newData containing the data array. In that case data in the incoming array is NOT overridden. (250202)
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid Record UID
-	 * @param integer $prevUid UID of previous record
+	 * @param int $uid Record UID
+	 * @param int $prevUid UID of previous record
 	 * @param bool $update If set, updates the record
 	 * @param array $newData Input array. If fields are already specified AND $update is not set, values are not set in output array.
 	 * @return array Output array (For when the copying operation needs to get the information instead of updating the info)
@@ -6663,10 +6663,10 @@ class DataHandler {
 	 * Get modified header for a copied record
 	 *
 	 * @param string $table Table name
-	 * @param integer $pid PID value in which other records to test might be
+	 * @param int $pid PID value in which other records to test might be
 	 * @param string $field Field name to get header value for.
 	 * @param string $value Current field value
-	 * @param integer $count Counter (number of recursions)
+	 * @param int $count Counter (number of recursions)
 	 * @param string $prevTitle Previous title we checked for (in previous recursion)
 	 * @return string The field value, possibly appended with a "copy label
 	 */
@@ -6708,7 +6708,7 @@ class DataHandler {
 	 * Get the final pid based on $table and $pid ($destPid type... pos/neg)
 	 *
 	 * @param string $table Table name
-	 * @param integer $pid "Destination pid" : If the value is >= 0 it's just returned directly (through (int)though) but if the value is <0 then the method looks up the record with the uid equal to abs($pid) (positive number) and returns the PID of that record! The idea is that negative numbers point to the record AFTER WHICH the position is supposed to be!
+	 * @param int $pid "Destination pid" : If the value is >= 0 it's just returned directly (through (int)though) but if the value is <0 then the method looks up the record with the uid equal to abs($pid) (positive number) and returns the PID of that record! The idea is that negative numbers point to the record AFTER WHICH the position is supposed to be!
 	 * @return integer
 	 */
 	public function resolvePid($table, $pid) {
@@ -6795,7 +6795,7 @@ class DataHandler {
 	 * Determine if a record was copied or if a record is the result of a copy action.
 	 *
 	 * @param string $table The tablename of the record
-	 * @param integer $uid The uid of the record
+	 * @param int $uid The uid of the record
 	 * @return boolean Returns TRUE if the record is copied or is the result of a copy action
 	 */
 	public function isRecordCopied($table, $uid) {
@@ -6820,7 +6820,7 @@ class DataHandler {
 	 * Else just clear the cache for the parent page of the record.
 	 *
 	 * @param string $table Table name of record that was just updated.
-	 * @param integer $uid UID of updated / inserted record
+	 * @param int $uid UID of updated / inserted record
 	 * @return void
 	 * @internal This method is not meant to be called directly but only from the core itself or from hooks
 	 */
@@ -6837,7 +6837,7 @@ class DataHandler {
 	 * Else just clear the cache for the parent page of the record.
 	 *
 	 * @param string $table Table name of record that was just updated.
-	 * @param integer $uid UID of updated / inserted record
+	 * @param int $uid UID of updated / inserted record
 	 * @return void
 	 * @deprecated since 6.2 will be removed 2 versions later. Use ->clear_cacheCmd instead. Alternatively you can call ->registerPageCacheClearing from a hook to not immediatly clear the cache but register clearing after DataHandler operation finishes.
 	 */
@@ -7091,14 +7091,14 @@ class DataHandler {
 	 * Logging actions from TCEmain
 	 *
 	 * @param string $table Table name the log entry is concerned with. Blank if NA
-	 * @param integer $recuid Record UID. Zero if NA
-	 * @param integer $action Action number: 0=No category, 1=new record, 2=update record, 3= delete record, 4= move record, 5= Check/evaluate
-	 * @param integer $recpid Normally 0 (zero). If set, it indicates that this log-entry is used to notify the backend of a record which is moved to another location
-	 * @param integer $error The severity: 0 = message, 1 = error, 2 = System Error, 3 = security notice (admin)
+	 * @param int $recuid Record UID. Zero if NA
+	 * @param int $action Action number: 0=No category, 1=new record, 2=update record, 3= delete record, 4= move record, 5= Check/evaluate
+	 * @param int $recpid Normally 0 (zero). If set, it indicates that this log-entry is used to notify the backend of a record which is moved to another location
+	 * @param int $error The severity: 0 = message, 1 = error, 2 = System Error, 3 = security notice (admin)
 	 * @param string $details Default error message in english
-	 * @param integer $details_nr This number is unique for every combination of $type and $action. This is the error-message number, which can later be used to translate error messages. 0 if not categorized, -1 if temporary
+	 * @param int $details_nr This number is unique for every combination of $type and $action. This is the error-message number, which can later be used to translate error messages. 0 if not categorized, -1 if temporary
 	 * @param array $data Array with special information that may go into $details by '%s' marks / sprintf() when the log is shown
-	 * @param integer $event_pid The page_uid (pid) where the event occurred. Used to select log-content for specific pages.
+	 * @param int $event_pid The page_uid (pid) where the event occurred. Used to select log-content for specific pages.
 	 * @param string $NEWid NEW id for new records
 	 * @return integer Log entry UID (0 if no log entry was written or logging is disabled)
 	 */
@@ -7125,7 +7125,7 @@ class DataHandler {
 	 * Simple logging function meant to be used when logging messages is not yet fixed.
 	 *
 	 * @param string $message Message string
-	 * @param integer $error Error code, see log()
+	 * @param int $error Error code, see log()
 	 * @return integer Log entry UID
 	 * @see log()
 	 */
@@ -7138,9 +7138,9 @@ class DataHandler {
 	 *
 	 * @param string $message Message string
 	 * @param string $table Table name
-	 * @param integer $uid Record uid
-	 * @param integer $pid Record PID (from page tree). Will be turned into an event_pid internally in function: Meaning that the PID for a page will be its own UID, not its page tree PID.
-	 * @param integer $error Error code, see log()
+	 * @param int $uid Record uid
+	 * @param int $pid Record PID (from page tree). Will be turned into an event_pid internally in function: Meaning that the PID for a page will be its own UID, not its page tree PID.
+	 * @param int $error Error code, see log()
 	 * @return integer Log entry UID
 	 * @see log()
 	 */
@@ -7218,7 +7218,7 @@ class DataHandler {
 	 * Gets the automatically versionized id of a record.
 	 *
 	 * @param string $table Name of the table
-	 * @param integer $id Uid of the record
+	 * @param int $id Uid of the record
 	 * @return integer
 	 */
 	public function getAutoVersionId($table, $id) {
@@ -7233,7 +7233,7 @@ class DataHandler {
 	 * Overlays the automatically versionized id of a record.
 	 *
 	 * @param string $table Name of the table
-	 * @param integer $id Uid of the record
+	 * @param int $id Uid of the record
 	 * @return integer
 	 */
 	protected function overlayAutoVersionId($table, $id) {
@@ -7303,7 +7303,7 @@ class DataHandler {
 	 * Determines nested element calls.
 	 *
 	 * @param string $table Name of the table
-	 * @param integer $id Uid of the record
+	 * @param int $id Uid of the record
 	 * @param string $identifier Name of the action to be checked
 	 * @return boolean
 	 */
@@ -7317,7 +7317,7 @@ class DataHandler {
 	 * This is used to track nested calls (e.g. for following m:n relations).
 	 *
 	 * @param string $table Name of the table
-	 * @param integer $id Uid of the record
+	 * @param int $id Uid of the record
 	 * @param string $identifier Name of the action to be tracked
 	 * @return void
 	 */
@@ -7340,7 +7340,7 @@ class DataHandler {
 	 * Determines whether an element was registered to be deleted in the registry.
 	 *
 	 * @param string $table Name of the table
-	 * @param integer $id Uid of the record
+	 * @param int $id Uid of the record
 	 * @return boolean
 	 * @see registerElementsToBeDeleted
 	 * @see resetElementsToBeDeleted

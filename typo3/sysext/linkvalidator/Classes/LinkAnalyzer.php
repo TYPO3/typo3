@@ -377,9 +377,9 @@ class LinkAnalyzer {
 	 * Generates a list of page uids from $id. List does not include $id itself.
 	 * The only pages excluded from the list are deleted pages.
 	 *
-	 * @param integer $id Start page id
-	 * @param integer $depth Depth to traverse down the page tree.
-	 * @param integer $begin is an optional integer that determines at which
+	 * @param int $id Start page id
+	 * @param int $depth Depth to traverse down the page tree.
+	 * @param int $begin is an optional integer that determines at which
 	 * @param string $permsClause Perms clause
 	 * @param bool $considerHidden Whether to consider hidden pages or not
 	 * @return string Returns the list with a comma in the end (if any pages selected!)

@@ -194,7 +194,7 @@ class TtContentUploadsUpdateWizard extends AbstractUpdate {
 	 * Removes the old fields from the database-record
 	 *
 	 * @param array $record
-	 * @param integer $fileCount
+	 * @param int $fileCount
 	 * @param array $collectionUids
 	 * @return void
 	 */

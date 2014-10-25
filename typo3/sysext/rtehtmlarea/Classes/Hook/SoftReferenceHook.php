@@ -28,7 +28,7 @@ class SoftReferenceHook extends \TYPO3\CMS\Core\Database\SoftReferenceIndex {
 	 *
 	 * @param string Database table name
 	 * @param string Field name for which processing occurs
-	 * @param integer UID of the record
+	 * @param int UID of the record
 	 * @param string The content/value of the field
 	 * @param string The softlink parser key. This is only interesting if more than one parser is grouped in the same class. That is the case with this parser.
 	 * @param array Parameters of the softlink parser. Basically this is the content inside optional []-brackets after the softref keys. Parameters are exploded by ";

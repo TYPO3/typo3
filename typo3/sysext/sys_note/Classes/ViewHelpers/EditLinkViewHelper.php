@@ -22,7 +22,7 @@ namespace TYPO3\CMS\SysNote\ViewHelpers;
 class EditLinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
-	 * @param integer $id
+	 * @param int $id
 	 * @return string
 	 */
 	public function render($id) {

@@ -116,7 +116,7 @@ class Typo3DatabaseBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend
 	 * @param string $entryIdentifier An identifier for this specific cache entry
 	 * @param string $data The data to be stored
 	 * @param array $tags Tags to associate with this cache entry
-	 * @param integer $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
+	 * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
 	 * @return void
 	 * @throws \TYPO3\CMS\Core\Cache\Exception if no cache frontend has been set.
 	 * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException if the data to be stored is not a string.
@@ -327,7 +327,7 @@ class Typo3DatabaseBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend
 	 * If compression is enabled and this is not set,
 	 * gzcompress default level will be used
 	 *
-	 * @param integer -1 to 9: Compression level
+	 * @param int -1 to 9: Compression level
 	 */
 	public function setCompressionLevel($compressionLevel) {
 		if ($compressionLevel >= -1 && $compressionLevel <= 9) {

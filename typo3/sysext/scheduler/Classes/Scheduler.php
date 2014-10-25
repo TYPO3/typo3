@@ -243,7 +243,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 	 * with the uid is returned, else the object representing the next due task is returned.
 	 * If there are no due tasks the method throws an exception.
 	 *
-	 * @param integer $uid Primary key of a task
+	 * @param int $uid Primary key of a task
 	 * @return \TYPO3\CMS\Scheduler\Task\AbstractTask The fetched task object
 	 * @throws \OutOfBoundsException
 	 * @throws \UnexpectedValueException
@@ -294,7 +294,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 	 * This method is used to get the database record for a given task
 	 * It returns the database record and not the task object
 	 *
-	 * @param integer $uid Primary key of the task to get
+	 * @param int $uid Primary key of the task to get
 	 * @return array Database record for the task
 	 * @see \TYPO3\CMS\Scheduler\Scheduler::fetchTask()
 	 * @throws \OutOfBoundsException
@@ -368,7 +368,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 	 * It could be expanded to write to some other log
 	 *
 	 * @param string $message The message to write to the log
-	 * @param integer $status Status (0 = message, 1 = error)
+	 * @param int $status Status (0 = message, 1 = error)
 	 * @param mixed $code Key for the message
 	 * @return void
 	 */

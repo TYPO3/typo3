@@ -25,7 +25,7 @@ class FieldsetElementView extends \TYPO3\CMS\Form\View\Mail\Plain\Element\Contai
 	 * Constructor
 	 *
 	 * @param \TYPO3\CMS\Form\Domain\Model\Element\FieldsetElement $model Model for this element
-	 * @param integer $spaces
+	 * @param int $spaces
 	 */
 	public function __construct(\TYPO3\CMS\Form\Domain\Model\Element\FieldsetElement $model, $spaces) {
 		parent::__construct($model, $spaces);

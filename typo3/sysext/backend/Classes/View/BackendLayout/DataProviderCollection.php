@@ -92,7 +92,7 @@ class DataProviderCollection implements \TYPO3\CMS\Core\SingletonInterface {
 	 * the accordant backend layout.
 	 *
 	 * @param string $combinedIdentifier
-	 * @param integer $pageId
+	 * @param int $pageId
 	 * @return NULL|BackendLayout
 	 */
 	public function getBackendLayout($combinedIdentifier, $pageId) {

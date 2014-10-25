@@ -36,7 +36,7 @@ abstract class AbstractCompiledTemplate implements \TYPO3\CMS\Fluid\Core\Parser\
 	/**
 	 * Public such that it is callable from within closures
 	 *
-	 * @param integer $uniqueCounter
+	 * @param int $uniqueCounter
 	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
 	 * @param string $viewHelperName
 	 * @return \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper

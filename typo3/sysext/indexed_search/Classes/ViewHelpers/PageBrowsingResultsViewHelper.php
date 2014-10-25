@@ -23,9 +23,9 @@ class PageBrowsingResultsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 	/**
 	 * main render function
 	 *
-	 * @param integer $numberOfResults
-	 * @param integer $resultsPerPage
-	 * @param integer $currentPage
+	 * @param int $numberOfResults
+	 * @param int $resultsPerPage
+	 * @param int $currentPage
 	 * @return the content
 	 */
 	public function render($numberOfResults, $resultsPerPage, $currentPage = 1) {

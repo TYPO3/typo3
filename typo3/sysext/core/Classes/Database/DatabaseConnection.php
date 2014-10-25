@@ -1098,7 +1098,7 @@ class DatabaseConnection {
 	 * Move internal result pointer
 	 *
 	 * @param bool|\mysqli_result|object $res MySQLi result object / DBAL object
-	 * @param integer $seek Seek result number.
+	 * @param int $seek Seek result number.
 	 * @return boolean Returns TRUE on success or FALSE on failure.
 	 */
 	public function sql_data_seek($res, $seek) {
@@ -1114,7 +1114,7 @@ class DatabaseConnection {
 	 * mysql_field_type() wrapper function
 	 *
 	 * @param bool|\mysqli_result|object $res MySQLi result object / DBAL object
-	 * @param integer $pointer Field index.
+	 * @param int $pointer Field index.
 	 * @return string Returns the name of the specified field index, or FALSE on error
 	 */
 	public function sql_field_type($res, $pointer) {
@@ -1437,7 +1437,7 @@ class DatabaseConnection {
 	/**
 	 * Set database port
 	 *
-	 * @param integer $port
+	 * @param int $port
 	 */
 	public function setDatabasePort($port = 3306) {
 		$this->disconnectIfConnected();
@@ -1829,7 +1829,7 @@ class DatabaseConnection {
 	 *
 	 * @param string $query SQL query
 	 * @param string $from_table Table(s) from which to select. This is what comes right after "FROM ...". Required value.
-	 * @param integer $row_count Number of resulting rows
+	 * @param int $row_count Number of resulting rows
 	 * @return boolean TRUE if explain was run, FALSE otherwise
 	 */
 	protected function explain($query, $from_table, $row_count) {

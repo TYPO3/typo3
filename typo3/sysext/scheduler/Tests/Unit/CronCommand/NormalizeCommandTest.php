@@ -292,8 +292,8 @@ class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider normalizeIntegerFieldInvalidDataProvider
 	 * @expectedException \InvalidArgumentException
 	 * @param string $expression Cron command partial integer expression (invalid)
-	 * @param integer $lowerBound Lower limit
-	 * @param integer $upperBound Upper limit
+	 * @param int $lowerBound Lower limit
+	 * @param int $upperBound Upper limit
 	 */
 	public function normalizeIntegerFieldThrowsExceptionForInvalidExpressions($expression, $lowerBound, $upperBound) {
 		$accessibleProxyClassName = $this->getAccessibleProxy();
@@ -502,7 +502,7 @@ class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 * @dataProvider validMonthNamesDataProvider
 	 * @param string $monthName Month name
-	 * @param integer $expectedInteger Number of the month
+	 * @param int $expectedInteger Number of the month
 	 */
 	public function normalizeMonthConvertsName($monthName, $expectedInteger) {
 		$accessibleProxyClassName = $this->getAccessibleProxy();
@@ -514,7 +514,7 @@ class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 * @dataProvider validMonthNamesDataProvider
 	 * @param string $monthName Month name
-	 * @param integer $expectedInteger Number of the month (not used)
+	 * @param int $expectedInteger Number of the month (not used)
 	 */
 	public function normalizeMonthReturnsInteger($monthName, $expectedInteger) {
 		$accessibleProxyClassName = $this->getAccessibleProxy();
@@ -598,7 +598,7 @@ class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 * @dataProvider validWeekdayDataProvider
 	 * @param string $weekday Weekday expression
-	 * @param integer $expectedInteger Number of weekday
+	 * @param int $expectedInteger Number of weekday
 	 */
 	public function normalizeWeekdayConvertsName($weekday, $expectedInteger) {
 		$accessibleProxyClassName = $this->getAccessibleProxy();
@@ -610,7 +610,7 @@ class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 * @dataProvider validWeekdayDataProvider
 	 * @param string $weekday Weekday expression
-	 * @param integer $expectedInteger Number of weekday (not used)
+	 * @param int $expectedInteger Number of weekday (not used)
 	 */
 	public function normalizeWeekdayReturnsInteger($weekday, $expectedInteger) {
 		$accessibleProxyClassName = $this->getAccessibleProxy();

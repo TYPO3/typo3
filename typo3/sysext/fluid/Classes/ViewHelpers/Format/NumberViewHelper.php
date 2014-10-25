@@ -39,7 +39,7 @@ class NumberViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
 	 * Format the numeric value as a number with grouped thousands, decimal point and
 	 * precision.
 	 *
-	 * @param integer $decimals The number of digits after the decimal point
+	 * @param int $decimals The number of digits after the decimal point
 	 * @param string $decimalSeparator The decimal point character
 	 * @param string $thousandsSeparator The character for grouping the thousand digits
 	 * @return string The formatted number

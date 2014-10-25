@@ -115,7 +115,7 @@ class FileIndexRepository implements SingletonInterface {
 	/**
 	 * Retrieves Index record for a given $storageUid and $identifier
 	 *
-	 * @param integer $storageUid
+	 * @param int $storageUid
 	 * @param string $identifierHash
 	 * @return array|boolean
 	 *
@@ -258,7 +258,7 @@ class FileIndexRepository implements SingletonInterface {
 	 * Finds the files needed for second indexer step
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\ResourceStorage $storage
-	 * @param integer $limit
+	 * @param int $limit
 	 * @return array
 	 */
 	public function findInStorageWithIndexOutstanding(\TYPO3\CMS\Core\Resource\ResourceStorage $storage, $limit = -1) {
@@ -293,7 +293,7 @@ class FileIndexRepository implements SingletonInterface {
 	/**
 	 * Updates the timestamp when the file indexer extracted metadata
 	 *
-	 * @param integer $fileUid
+	 * @param int $fileUid
 	 * @return void
 	 */
 	public function updateIndexingTime($fileUid) {
@@ -303,7 +303,7 @@ class FileIndexRepository implements SingletonInterface {
 	/**
 	 * Marks given file as missing in sys_file
 	 *
-	 * @param integer $fileUid
+	 * @param int $fileUid
 	 * @return void
 	 */
 	public function markFileAsMissing($fileUid) {
@@ -333,7 +333,7 @@ class FileIndexRepository implements SingletonInterface {
 	/**
 	 * Remove a sys_file record from the database
 	 *
-	 * @param integer $fileUid
+	 * @param int $fileUid
 	 * @return void
 	 */
 	public function remove($fileUid) {
@@ -384,7 +384,7 @@ class FileIndexRepository implements SingletonInterface {
 	/**
 	 * Signal that is called after an IndexRecord is deleted
 	 *
-	 * @param integer $fileUid
+	 * @param int $fileUid
 	 * @signal
 	 */
 	protected function emitRecordDeletedSignal($fileUid) {

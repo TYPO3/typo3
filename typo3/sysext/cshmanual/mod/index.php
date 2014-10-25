@@ -22,7 +22,7 @@ class local_t3lib_parsehtml extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 * Processing content between tags for HTML_cleaner
 	 *
 	 * @param string $value The value
-	 * @param integer $dir Direction, either -1 or +1. 0 (zero) means no change to input value.
+	 * @param int $dir Direction, either -1 or +1. 0 (zero) means no change to input value.
 	 * @param mixed $conf Not used, ignore.
 	 * @return string The processed value.
 	 * @access private

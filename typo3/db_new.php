@@ -44,7 +44,7 @@ class newRecordLocalPageTree extends \TYPO3\CMS\Backend\Tree\View\PageTreeView {
 	 * Determines whether to expand a branch or not.
 	 * Here the branch is expanded if the current id matches the global id for the listing/new
 	 *
-	 * @param integer $id The ID (page id) of the element
+	 * @param int $id The ID (page id) of the element
 	 * @return boolean Returns TRUE if the IDs matches
 	 */
 	public function expandNext($id) {

@@ -1320,7 +1320,7 @@ class ExtensionManagementUtility {
 	 * @param string $classFile The PHP-class filename relative to the extension root directory. If set to blank a default value is chosen according to convensions.
 	 * @param string $prefix Is used as a - yes, suffix - of the class name (fx. "_pi1")
 	 * @param string $type See description above
-	 * @param integer $cached If $cached is set as USER content object (cObject) is created - otherwise a USER_INT object is created.
+	 * @param int $cached If $cached is set as USER content object (cObject) is created - otherwise a USER_INT object is created.
 	 *
 	 * @return void
 	 */

@@ -207,7 +207,7 @@ class ArrayBrowser {
 	 * Fixed length function
 	 *
 	 * @param string $string String to process
-	 * @param integer $chars Max number of chars
+	 * @param int $chars Max number of chars
 	 * @return string Processed string
 	 */
 	public function fixed_lgd($string, $chars) {

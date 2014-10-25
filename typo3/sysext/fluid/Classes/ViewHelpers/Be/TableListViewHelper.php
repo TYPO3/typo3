@@ -58,10 +58,10 @@ class TableListViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 	 *
 	 * @param string $tableName name of the database table
 	 * @param array $fieldList list of fields to be displayed. If empty, only the title column (configured in $TCA[$tableName]['ctrl']['title']) is shown
-	 * @param integer $storagePid by default, records are fetched from the storage PID configured in persistence.storagePid. With this argument, the storage PID can be overwritten
-	 * @param integer $levels corresponds to the level selector of the TYPO3 list module. By default only records from the current storagePid are fetched
+	 * @param int $storagePid by default, records are fetched from the storage PID configured in persistence.storagePid. With this argument, the storage PID can be overwritten
+	 * @param int $levels corresponds to the level selector of the TYPO3 list module. By default only records from the current storagePid are fetched
 	 * @param string $filter corresponds to the "Search String" textbox of the TYPO3 list module. If not empty, only records matching the string will be fetched
-	 * @param integer $recordsPerPage amount of records to be displayed at once. Defaults to $TCA[$tableName]['interface']['maxSingleDBListItems'] or (if that's not set) to 100
+	 * @param int $recordsPerPage amount of records to be displayed at once. Defaults to $TCA[$tableName]['interface']['maxSingleDBListItems'] or (if that's not set) to 100
 	 * @param string $sortField table field to sort the results by
 	 * @param bool $sortDescending if TRUE records will be sorted in descending order
 	 * @param bool $readOnly if TRUE, the edit icons won't be shown. Otherwise edit icons will be shown, if the current BE user has edit rights for the specified table!

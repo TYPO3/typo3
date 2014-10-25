@@ -258,7 +258,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Creates a DateTime from an unix timestamp or date/datetime value.
 	 * If the input is empty, NULL is returned.
 	 *
-	 * @param integer|string $value Unix timestamp or date/datetime value
+	 * @param int|string $value Unix timestamp or date/datetime value
 	 * @param NULL|string $storageFormat Storage format for native date/datetime fields
 	 * @return \DateTime
 	 */

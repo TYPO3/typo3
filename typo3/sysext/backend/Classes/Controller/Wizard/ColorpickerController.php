@@ -381,8 +381,8 @@ class ColorpickerController {
 	 * This method handles the correct imageResource no matter what format
 	 *
 	 * @param pointer $im Valid ImageResource returned by \TYPO3\CMS\Core\Imaging\GraphicalFunctions::imageCreateFromFile
-	 * @param integer $x X-Coordinate of the pixel that should be checked
-	 * @param integer $y Y-Coordinate of the pixel that should be checked
+	 * @param int $x X-Coordinate of the pixel that should be checked
+	 * @param int $y Y-Coordinate of the pixel that should be checked
 	 * @return string HEX RGB value for color
 	 * @see colorImage()
 	 */

@@ -277,7 +277,7 @@ class CommandController implements CommandControllerInterface {
 	 * Exits the CLI through the dispatcher
 	 * An exit status code can be specified @see http://www.php.net/exit
 	 *
-	 * @param integer $exitCode Exit code to return on exit
+	 * @param int $exitCode Exit code to return on exit
 	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
 	 * @return void
 	 */
@@ -290,7 +290,7 @@ class CommandController implements CommandControllerInterface {
 	 * Sends the response and exits the CLI without any further code execution
 	 * Should be used for commands that flush code caches.
 	 *
-	 * @param integer $exitCode Exit code to return on exit
+	 * @param int $exitCode Exit code to return on exit
 	 * @return void
 	 */
 	protected function sendAndExit($exitCode = 0) {

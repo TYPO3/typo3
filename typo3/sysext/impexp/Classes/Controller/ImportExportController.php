@@ -451,9 +451,9 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Adds records to the export object for a specific page id.
 	 *
-	 * @param integer $k Page id for which to select records to add
+	 * @param int $k Page id for which to select records to add
 	 * @param array $tables Array of table names to select from
-	 * @param integer $maxNumber Max amount of records to select
+	 * @param int $maxNumber Max amount of records to select
 	 * @return void
 	 */
 	public function addRecordsForPid($k, $tables, $maxNumber) {
@@ -478,8 +478,8 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * Selects records from table / pid
 	 *
 	 * @param string $table Table to select from
-	 * @param integer $pid Page ID to select from
-	 * @param integer $limit Max number of records to select
+	 * @param int $pid Page ID to select from
+	 * @param int $limit Max number of records to select
 	 * @return \mysqli_result|object Database resource
 	 */
 	public function exec_listQueryPid($table, $pid, $limit) {
@@ -1242,7 +1242,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Get single preset record
 	 *
-	 * @param integer $uid Preset record
+	 * @param int $uid Preset record
 	 * @return array Preset record, if any (otherwise FALSE)
 	 */
 	public function getPreset($uid) {

@@ -612,7 +612,7 @@ class ImportExport {
 	 *
 	 * @param array $idH Page uid hierarchy
 	 * @param array $a Accumulation array of pages (internal, don't set from outside)
-	 * @param integer $pid PID value (internal)
+	 * @param int $pid PID value (internal)
 	 * @return array Array with uid-pid pairs for all pages in the page tree.
 	 * @see flatInversePageTree()
 	 */
@@ -666,7 +666,7 @@ class ImportExport {
 	 *
 	 * @param string $table Table name
 	 * @param array $row Record row.
-	 * @param integer $relationLevel (Internal) if the record is added as a relation, this is set to the "level" it was on.
+	 * @param int $relationLevel (Internal) if the record is added as a relation, this is set to the "level" it was on.
 	 * @return void
 	 */
 	public function export_addRecord($table, $row, $relationLevel = 0) {
@@ -761,7 +761,7 @@ class ImportExport {
 	 * In principle it should not allow to infinite recursivity, but you better set a limit...
 	 * Call this BEFORE the ext_addFilesFromRelations (so files from added relations are also included of course)
 	 *
-	 * @param integer $relationLevel Recursion level
+	 * @param int $relationLevel Recursion level
 	 * @return array overview of relations found and added: Keys [table]:[uid], values array with table and id
 	 * @see export_addFilesFromRelations()
 	 */
@@ -1489,7 +1489,7 @@ class ImportExport {
 	/**
 	 * Imports the internal data array to $pid.
 	 *
-	 * @param integer $pid Page ID in which to import the content
+	 * @param int $pid Page ID in which to import the content
 	 * @return void
 	 */
 	public function importData($pid) {
@@ -1832,7 +1832,7 @@ class ImportExport {
 	/**
 	 * Writing pagetree/pages to database:
 	 *
-	 * @param integer $pid PID in which to import. If the operation is an update operation, the root of the page tree inside will be moved to this PID unless it is the same as the root page from the import
+	 * @param int $pid PID in which to import. If the operation is an update operation, the root of the page tree inside will be moved to this PID unless it is the same as the root page from the import
 	 * @return void
 	 * @see writeRecords_records()
 	 */
@@ -1886,7 +1886,7 @@ class ImportExport {
 	 * Organize all updated pages in page tree so they are related like in the import file
 	 * Only used for updates and when $this->dat['header']['pagetree'] is an array.
 	 *
-	 * @param integer $pid Page id in which to import
+	 * @param int $pid Page id in which to import
 	 * @return void
 	 * @access private
 	 * @see writeRecords_pages(), writeRecords_records_order()
@@ -1926,7 +1926,7 @@ class ImportExport {
 	/**
 	 * Write all database records except pages (writtein in writeRecords_pages())
 	 *
-	 * @param integer $pid Page id in which to import
+	 * @param int $pid Page id in which to import
 	 * @return void
 	 * @see writeRecords_pages()
 	 */
@@ -1977,7 +1977,7 @@ class ImportExport {
 	 * Organize all updated record to their new positions.
 	 * Only used for updates
 	 *
-	 * @param integer $mainPid Main PID into which we import.
+	 * @param int $mainPid Main PID into which we import.
 	 * @return void
 	 * @access private
 	 * @see writeRecords_records(), writeRecords_pages_order()
@@ -2031,8 +2031,8 @@ class ImportExport {
 	 * That is done with setRelations() later
 	 *
 	 * @param string $table Table name (from import memory)
-	 * @param integer $uid Record UID (from import memory)
-	 * @param integer $pid Page id
+	 * @param int $uid Record UID (from import memory)
+	 * @param int $pid Page id
 	 * @return void
 	 * @see writeRecords()
 	 */
@@ -3221,7 +3221,7 @@ class ImportExport {
 	 * Returns the next content part from the $filecontent
 	 *
 	 * @param string $filecontent File content string
-	 * @param integer $pointer File pointer (where to read from)
+	 * @param int $pointer File pointer (where to read from)
 	 * @param bool $unserialize If set, the returned content is unserialized into an array, otherwise you get the raw string
 	 * @param string $name For error messages this indicates the section of the problem.
 	 * @return string|NULL Data string
@@ -3484,7 +3484,7 @@ class ImportExport {
 	 * Add entries for a single record
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid Record uid
+	 * @param int $uid Record uid
 	 * @param array $lines Output lines array (is passed by reference and modified)
 	 * @param string $preCode Pre-HTML code
 	 * @param bool $checkImportInPidRecord If you want import validation, you can set this so it checks if the import can take place on the specified page.
@@ -3817,7 +3817,7 @@ class ImportExport {
 	 * Verifies that a table is allowed on a certain doktype of a page
 	 *
 	 * @param string $checkTable Table name to check
-	 * @param integer $doktype doktype value.
+	 * @param int $doktype doktype value.
 	 * @return boolean TRUE if OK
 	 */
 	public function checkDokType($checkTable, $doktype) {
@@ -3942,7 +3942,7 @@ class ImportExport {
 	 * Returns TRUE if the element should be excluded as static record.
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid UID value
+	 * @param int $uid UID value
 	 * @return boolean TRUE, if table is marked static
 	 */
 	public function isExcluded($table, $uid) {
@@ -3962,7 +3962,7 @@ class ImportExport {
 	/**
 	 * Checking if a PID is in the webmounts of the user
 	 *
-	 * @param integer $pid Page ID to check
+	 * @param int $pid Page ID to check
 	 * @return boolean TRUE if OK
 	 */
 	public function checkPID($pid) {
@@ -3976,7 +3976,7 @@ class ImportExport {
 	 * Checks if the position of an updated record is configured to be corrected. This can be disabled globally and changed for elements individually.
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid Uid or record
+	 * @param int $uid Uid or record
 	 * @return boolean TRUE if the position of the record should be updated to match the one in the import structure
 	 */
 	public function dontIgnorePid($table, $uid) {
@@ -3987,7 +3987,7 @@ class ImportExport {
 	 * Checks if the record exists
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid UID of record
+	 * @param int $uid UID of record
 	 * @param string $fields Field list to select. Default is "uid,pid
 	 * @return array Result of \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord() which means the record if found, otherwise FALSE
 	 */
@@ -3998,7 +3998,7 @@ class ImportExport {
 	/**
 	 * Returns the page title path of a PID value. Results are cached internally
 	 *
-	 * @param integer $pid Record PID to check
+	 * @param int $pid Record PID to check
 	 * @return string The path for the input PID
 	 */
 	public function getRecordPath($pid) {

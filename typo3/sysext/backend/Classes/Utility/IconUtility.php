@@ -293,7 +293,7 @@ class IconUtility {
 	 * @param string $backPath Current backpath to PATH_typo3 folder
 	 * @param string $src Icon file name relative to PATH_typo3 folder
 	 * @param string $wHattribs Default width/height, defined like 'width="12" height="14"'
-	 * @param integer $outputMode Mode: 0 (zero) is default and returns src/width/height. 1 returns value of src+backpath, 2 returns value of w/h.
+	 * @param int $outputMode Mode: 0 (zero) is default and returns src/width/height. 1 returns value of src+backpath, 2 returns value of w/h.
 	 * @return string Returns ' src="[backPath][src]" [wHattribs]'
 	 * @see skinImgFile()
 	 */
@@ -371,7 +371,7 @@ class IconUtility {
 	 *
 	 * @param string $iconfile Original unprocessed Icon file, relative path to PATH_typo3
 	 * @param string $mode Mode string, eg. "deleted" or "futuretiming" determining how the icon will look
-	 * @param integer $user The number of the fe_group record uid if applicable
+	 * @param int $user The number of the fe_group record uid if applicable
 	 * @param bool $protectSection Flag determines if the protected-section icon should be applied.
 	 * @param string $absFile Absolute path to file from which to create the icon.
 	 * @param string $iconFileName_stateTagged The filename that this icon should have had, basically [icon base name]_[flags].[extension] - used for part of temporary filename
@@ -493,14 +493,14 @@ class IconUtility {
 	 *
 	 * @param resource $destinationImage Destination image
 	 * @param resource $sourceImage Source image
-	 * @param integer $destinationX Destination x-coordinate
-	 * @param integer $destinationY Destination y-coordinate
-	 * @param integer $sourceX Source x-coordinate
-	 * @param integer $sourceY Source y-coordinate
-	 * @param integer $destinationWidth Destination width
-	 * @param integer $destinationHeight Destination height
-	 * @param integer $sourceWidth Source width
-	 * @param integer $sourceHeight Source height
+	 * @param int $destinationX Destination x-coordinate
+	 * @param int $destinationY Destination y-coordinate
+	 * @param int $sourceX Source x-coordinate
+	 * @param int $sourceY Source y-coordinate
+	 * @param int $destinationWidth Destination width
+	 * @param int $destinationHeight Destination height
+	 * @param int $sourceWidth Source width
+	 * @param int $sourceHeight Source height
 	 * @return void
 	 * @access private
 	 * @see \TYPO3\CMS\Core\Imaging\GraphicalFunctions::imagecopyresized()

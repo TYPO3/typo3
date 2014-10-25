@@ -78,7 +78,7 @@ class CommandUtility {
 	 * @static
 	 * @param string $command
 	 * @param NULL|array $output
-	 * @param integer $returnValue
+	 * @param int $returnValue
 	 * @return NULL|array
 	 */
 	static public function exec($command, &$output = NULL, &$returnValue = 0) {

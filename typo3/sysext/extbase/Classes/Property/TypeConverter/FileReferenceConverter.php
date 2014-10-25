@@ -36,7 +36,7 @@ class FileReferenceConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\A
 	protected $expectedObjectType = 'TYPO3\\CMS\\Core\\Resource\\FileReference';
 
 	/**
-	 * @param integer $source
+	 * @param int $source
 	 * @return \TYPO3\CMS\Core\Resource\FileReference
 	 */
 	protected function getOriginalResource($source) {

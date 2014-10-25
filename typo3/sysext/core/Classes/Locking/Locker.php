@@ -459,7 +459,7 @@ class Locker {
 	 * Example: 25-02-08 17:58 - cms: Locking [simple::0aeafd2a67a6bb8b9543fb9ea25ecbe2]: Acquired
 	 *
 	 * @param string $message The message to be logged
-	 * @param integer $severity Severity - 0 is info (default), 1 is notice, 2 is warning, 3 is error, 4 is fatal error
+	 * @param int $severity Severity - 0 is info (default), 1 is notice, 2 is warning, 3 is error, 4 is fatal error
 	 * @return void
 	 */
 	public function sysLog($message, $severity = 0) {

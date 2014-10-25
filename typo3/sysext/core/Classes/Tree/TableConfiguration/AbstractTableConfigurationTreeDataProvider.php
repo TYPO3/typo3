@@ -109,7 +109,7 @@ abstract class AbstractTableConfigurationTreeDataProvider extends \TYPO3\CMS\Bac
 	/**
 	 * Sets the levelMaximum
 	 *
-	 * @param integer $levelMaximum
+	 * @param int $levelMaximum
 	 * @return void
 	 */
 	public function setLevelMaximum($levelMaximum) {

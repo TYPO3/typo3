@@ -112,7 +112,7 @@ class DatabaseIntegrityCheck {
 	 * Generates a list of Page-uid's that corresponds to the tables in the tree.
 	 * This list should ideally include all records in the pages-table.
 	 *
-	 * @param integer $theID a pid (page-record id) from which to start making the tree
+	 * @param int $theID a pid (page-record id) from which to start making the tree
 	 * @param string $depthData HTML-code (image-tags) used when this function calls itself recursively.
 	 * @param bool $versions Internal variable, don't set from outside!
 	 * @return void
@@ -180,7 +180,7 @@ class DatabaseIntegrityCheck {
 	}
 
 	/**
-	 * @param integer $theID a pid (page-record id) from which to start making the tree
+	 * @param int $theID a pid (page-record id) from which to start making the tree
 	 * @param string $depthData HTML-code used when this function calls itself recursively.
 	 * @param string $table Table to get the records from
 	 * @param bool $versions Internal variable, don't set from outside!
@@ -278,7 +278,7 @@ class DatabaseIntegrityCheck {
 	 * If there is a disabled column for the record that will be set as well.
 	 *
 	 * @param string $table Database tablename
-	 * @param integer $uid The uid of the record which will have the PID value set to 0 (zero)
+	 * @param int $uid The uid of the record which will have the PID value set to 0 (zero)
 	 * @return boolean TRUE if done.
 	 */
 	public function fixLostRecord($table, $uid) {
@@ -586,7 +586,7 @@ class DatabaseIntegrityCheck {
 	 * Finding all references to record based on table/uid
 	 *
 	 * @param string $searchTable Table name
-	 * @param integer $id Uid of database record
+	 * @param int $id Uid of database record
 	 * @return array Array with other arrays containing information about where references was found
 	 */
 	public function whereIsRecordReferenced($searchTable, $id) {

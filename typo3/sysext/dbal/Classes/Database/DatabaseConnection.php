@@ -2361,7 +2361,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * Move internal result pointer
 	 *
 	 * @param bool|\mysqli_result|object $res MySQLi result object / DBAL object
-	 * @param integer $seek Seek result number.
+	 * @param int $seek Seek result number.
 	 * @return bool Returns TRUE on success or FALSE on failure.
 	 */
 	public function sql_data_seek($res, $seek) {
@@ -2386,7 +2386,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * If the first parameter is a string, it is used as table name for the lookup.
 	 *
 	 * @param string $table MySQL result pointer (of SELECT query) / DBAL object / table name
-	 * @param integer $field Field index. In case of ADOdb a string (field name!)
+	 * @param int $field Field index. In case of ADOdb a string (field name!)
 	 * @return string Returns the type of the specified field index
 	 */
 	public function sql_field_metatype($table, $field) {
@@ -2409,7 +2409,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * mysql_field_type() wrapper function
 	 *
 	 * @param bool|\mysqli_result|object $res MySQLi result object / DBAL object
-	 * @param integer $pointer Field index.
+	 * @param int $pointer Field index.
 	 * @return string Returns the name of the specified field index, or FALSE on error
 	 */
 	public function sql_field_type($res, $pointer) {
@@ -3752,10 +3752,10 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * Inserts row in the log table
 	 *
 	 * @param string $query The current query
-	 * @param integer $ms Execution time of query in milliseconds
+	 * @param int $ms Execution time of query in milliseconds
 	 * @param array $data Data to be stored serialized.
 	 * @param string $join Join string if there IS a join.
-	 * @param integer $errorFlag Error status.
+	 * @param int $errorFlag Error status.
 	 * @param string $script The script calling the logging
 	 * @return void
 	 */

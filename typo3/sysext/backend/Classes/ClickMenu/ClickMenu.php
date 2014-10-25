@@ -144,7 +144,7 @@ class ClickMenu {
 	 * Make 1st level clickmenu:
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid UID for the current record.
+	 * @param int $uid UID for the current record.
 	 * @return string HTML content
 	 */
 	public function printDBClickMenu($table, $uid) {
@@ -321,7 +321,7 @@ class ClickMenu {
 	 * Make 2nd level clickmenu (only for DBmenus)
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid UID for the current record.
+	 * @param int $uid UID for the current record.
 	 * @return string HTML content
 	 */
 	public function printNewDBLevel($table, $uid) {
@@ -391,7 +391,7 @@ class ClickMenu {
 	 *
 	 * @param array $menuItems Array for manipulation.
 	 * @param string $table Table name
-	 * @param integer $uid UID for the current record.
+	 * @param int $uid UID for the current record.
 	 * @return array Processed $menuItems array
 	 */
 	public function processingByExtClassArray($menuItems, $table, $uid) {
@@ -423,7 +423,7 @@ class ClickMenu {
 	 * Adding CM element for Clipboard "copy" and "cut"
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid UID for the current record.
+	 * @param int $uid UID for the current record.
 	 * @param string $type Type: "copy" or "cut
 	 * @return array Item array, element in $menuItems
 	 * @internal
@@ -444,7 +444,7 @@ class ClickMenu {
 	 * NOTICE: $table and $uid should follow the special syntax for paste, see clipboard-class :: pasteUrl();
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid UID for the current record. NOTICE: Special syntax!
+	 * @param int $uid UID for the current record. NOTICE: Special syntax!
 	 * @param string $type Type: "into" or "after
 	 * @param array $elInfo Contains instructions about whether to copy or cut an element.
 	 * @return array Item array, element in $menuItems
@@ -467,7 +467,7 @@ class ClickMenu {
 	 * Adding CM element for Info
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid UID for the current record.
+	 * @param int $uid UID for the current record.
 	 * @return array Item array, element in $menuItems
 	 * @internal
 	 */
@@ -479,7 +479,7 @@ class ClickMenu {
 	 * Adding CM element for History
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid UID for the current record.
+	 * @param int $uid UID for the current record.
 	 * @return array Item array, element in $menuItems
 	 * @internal
 	 */
@@ -492,7 +492,7 @@ class ClickMenu {
 	 * Adding CM element for Permission setting
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid UID for the current record.
+	 * @param int $uid UID for the current record.
 	 * @param array $rec The "pages" record with "perms_*" fields inside.
 	 * @return array Item array, element in $menuItems
 	 * @internal
@@ -509,7 +509,7 @@ class ClickMenu {
 	 * Adding CM element for DBlist
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid UID for the current record.
+	 * @param int $uid UID for the current record.
 	 * @param array $rec Record of the element (needs "pid" field if not pages-record)
 	 * @return array Item array, element in $menuItems
 	 * @internal
@@ -526,7 +526,7 @@ class ClickMenu {
 	 * Adding CM element for Moving wizard
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid UID for the current record.
+	 * @param int $uid UID for the current record.
 	 * @param array $rec Record. Needed for tt-content elements which will have the sys_language_uid sent
 	 * @return array Item array, element in $menuItems
 	 * @internal
@@ -541,7 +541,7 @@ class ClickMenu {
 	 * Adding CM element for Create new wizard (either db_new.php or sysext/cms/layout/db_new_content_el.php or custom wizard)
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid UID for the current record.
+	 * @param int $uid UID for the current record.
 	 * @param array $rec Record.
 	 * @return array Item array, element in $menuItems
 	 * @internal
@@ -559,7 +559,7 @@ class ClickMenu {
 	 * Adding CM element for Editing of the access related fields of a table (disable, starttime, endtime, fe_groups)
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid UID for the current record.
+	 * @param int $uid UID for the current record.
 	 * @return array Item array, element in $menuItems
 	 * @internal
 	 */
@@ -572,7 +572,7 @@ class ClickMenu {
 	/**
 	 * Adding CM element for edit page properties
 	 *
-	 * @param integer $uid page uid to edit (PID)
+	 * @param int $uid page uid to edit (PID)
 	 * @return array Item array, element in $menuItems
 	 * @internal
 	 */
@@ -585,7 +585,7 @@ class ClickMenu {
 	 * Adding CM element for regular editing of the element!
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid UID for the current record.
+	 * @param int $uid UID for the current record.
 	 * @return array Item array, element in $menuItems
 	 * @internal
 	 */
@@ -616,7 +616,7 @@ class ClickMenu {
 	 * Adding CM element for regular Create new element
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid UID for the current record.
+	 * @param int $uid UID for the current record.
 	 * @return array Item array, element in $menuItems
 	 * @internal
 	 */
@@ -631,7 +631,7 @@ class ClickMenu {
 	 * Adding CM element for Delete
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid UID for the current record.
+	 * @param int $uid UID for the current record.
 	 * @param array $elInfo Label for including in the confirmation message, EXT:lang/locallang_core.xlf:mess.delete
 	 * @return array Item array, element in $menuItems
 	 * @internal
@@ -651,7 +651,7 @@ class ClickMenu {
 	/**
 	 * Adding CM element for View Page
 	 *
-	 * @param integer $id Page uid (PID)
+	 * @param int $id Page uid (PID)
 	 * @param string $anchor Anchor, if any
 	 * @return array Item array, element in $menuItems
 	 * @internal
@@ -663,7 +663,7 @@ class ClickMenu {
 	/**
 	 * Adding element for setting temporary mount point.
 	 *
-	 * @param integer $page_id Page uid (PID)
+	 * @param int $page_id Page uid (PID)
 	 * @return array Item array, element in $menuItems
 	 * @internal
 	 */
@@ -985,8 +985,8 @@ class ClickMenu {
 	 * Make 1st level clickmenu:
 	 *
 	 * @param string $table The absolute path
-	 * @param integer $srcId UID for the current record.
-	 * @param integer $dstId Destination ID
+	 * @param int $srcId UID for the current record.
+	 * @param int $dstId Destination ID
 	 * @return string HTML content
 	 */
 	public function printDragDropClickMenu($table, $srcId, $dstId) {
@@ -1031,8 +1031,8 @@ class ClickMenu {
 	/**
 	 * Adding CM element for Copying/Moving a Page Into/After from a drag & drop action
 	 *
-	 * @param integer $srcUid source UID code for the record to modify
-	 * @param integer $dstUid destination UID code for the record to modify
+	 * @param int $srcUid source UID code for the record to modify
+	 * @param int $dstUid destination UID code for the record to modify
 	 * @param string $action Action code: either "move" or "copy
 	 * @param string $into Parameter code: either "into" or "after
 	 * @return array Item array, element in $menuItems

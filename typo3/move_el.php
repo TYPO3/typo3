@@ -62,8 +62,8 @@ class ext_posMap_pages extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 	/**
 	 * Creates the onclick event for the insert-icons.
 	 *
-	 * @param integer $pid The pid.
-	 * @param integer $newPagePID New page id.
+	 * @param int $pid The pid.
+	 * @param int $newPagePID New page id.
 	 * @return string Onclick attribute content
 	 */
 	public function onClickEvent($pid, $newPagePID) {
@@ -87,7 +87,7 @@ class ext_posMap_pages extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 	 *
 	 * @param string $t_code Title string
 	 * @param array $dat Information array with record array inside.
-	 * @param integer $id The current id.
+	 * @param int $id The current id.
 	 * @return string The title string.
 	 */
 	public function boldTitle($t_code, $dat, $id) {

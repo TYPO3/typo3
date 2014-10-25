@@ -54,7 +54,7 @@ class DataProviderContext implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * @param integer $pageId
+	 * @param int $pageId
 	 * @return DataProviderContext
 	 */
 	public function setPageId($pageId) {

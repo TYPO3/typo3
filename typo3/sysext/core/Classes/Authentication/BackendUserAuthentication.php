@@ -344,7 +344,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * $groupId must be set. $this->groupList must contain groups
 	 * Will return TRUE also if the user is a member of a group through subgroups.
 	 *
-	 * @param integer $groupId Group ID to look for in $this->groupList
+	 * @param int $groupId Group ID to look for in $this->groupList
 	 * @return boolean
 	 */
 	public function isMemberOfGroup($groupId) {
@@ -367,7 +367,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * 8- New pages: Create new pages under the page.
 	 *
 	 * @param array $row Is the pagerow for which the permissions is checked
-	 * @param integer $perms Is the binary representation of the permission we are going to check. Every bit in this number represents a permission that must be set. See function explanation.
+	 * @param int $perms Is the binary representation of the permission we are going to check. Every bit in this number represents a permission that must be set. See function explanation.
 	 * @return boolean
 	 */
 	public function doesUserHaveAccess($row, $perms) {
@@ -385,7 +385,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * (fx. by setting TYPO3_CONF_VARS['BE']['lockBeUserToDBmounts']=0) then it returns "1" right away
 	 * Otherwise the function will return the uid of the webmount which was first found in the rootline of the input page $id
 	 *
-	 * @param integer $id Page ID to check
+	 * @param int $id Page ID to check
 	 * @param string $readPerms Content of "->getPagePermsClause(1)" (read-permissions). If not set, they will be internally calculated (but if you have the correct value right away you can save that database lookup!)
 	 * @param bool|int $exitOnError If set, then the function will exit with an error message.
 	 * @throws \RuntimeException
@@ -475,7 +475,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * The 95% use of this function is "->getPagePermsClause(1)" which will
 	 * return WHERE clauses for *selecting* pages in backend listings - in other words this will check read permissions.
 	 *
-	 * @param integer $perms Permission mask to use, see function description
+	 * @param int $perms Permission mask to use, see function description
 	 * @return string Part of where clause. Prefix " AND " to this.
 	 */
 	public function getPagePermsClause($perms) {
@@ -671,7 +671,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	/**
 	 * Checking if a language value (-1, 0 and >0 for sys_language records) is allowed to be edited by the user.
 	 *
-	 * @param integer $langValue Language value to evaluate
+	 * @param int $langValue Language value to evaluate
 	 * @return boolean Returns TRUE if the language value is allowed, otherwise FALSE.
 	 */
 	public function checkLanguageAccess($langValue) {
@@ -833,7 +833,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * Checks a type of permission against the compiled permission integer,
 	 * $compiledPermissions, and in relation to table, $tableName
 	 *
-	 * @param integer $compiledPermissions Could typically be the "compiled permissions" integer returned by ->calcPerms
+	 * @param int $compiledPermissions Could typically be the "compiled permissions" integer returned by ->calcPerms
 	 * @param string $tableName Is the tablename to check: If "pages" table then edit,new,delete and editcontent permissions can be checked. Other tables will be checked for "editcontent" only (and $type will be ignored)
 	 * @param string $actionType For $tableName='pages' this can be 'edit' (2), 'new' (8 or 16), 'delete' (4), 'editcontent' (16). For all other tables this is ignored. (16 is used)
 	 * @return boolean
@@ -970,7 +970,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * of versioning because the element was within a versionized branch
 	 * but NOT ok in terms of the state the root point had!
 	 *
-	 * @param integer $pid PID value to check for. OBSOLETE!
+	 * @param int $pid PID value to check for. OBSOLETE!
 	 * @param string $table Table name
 	 * @return mixed Returns FALSE if a live record cannot be created and must be versionized in order to do so. 2 means a) Workspace is "Live" or workspace allows "live edit" of records from non-versionized tables (and the $table is not versionizable). 1 and -1 means the pid is inside a versionized branch where -1 means that the branch-point did NOT allow a new record according to its state.
 	 */
@@ -993,7 +993,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	/**
 	 * Evaluates if a record from $table can be created in $pid
 	 *
-	 * @param integer $pid Page id. This value must be the _ORIG_uid if available: So when you have pages versionized as "page" or "element" you must supply the id of the page version in the workspace!
+	 * @param int $pid Page id. This value must be the _ORIG_uid if available: So when you have pages versionized as "page" or "element" you must supply the id of the page version in the workspace!
 	 * @param string $table Table name
 	 * @return boolean TRUE if OK.
 	 */
@@ -1015,8 +1015,8 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * Evaluates if auto creation of a version of a record is allowed.
 	 *
 	 * @param string $table Table of the record
-	 * @param integer $id UID of record
-	 * @param integer $recpid PID of record
+	 * @param int $id UID of record
+	 * @param int $recpid PID of record
 	 * @return boolean TRUE if ok.
 	 */
 	public function workspaceAllowAutoCreation($table, $id, $recpid) {
@@ -1042,7 +1042,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * Admins are always allowed.
 	 * An option for custom workspaces allows members to also edit when the stage is "Review"
 	 *
-	 * @param integer $stage Stage id from an element: -1,0 = editing, 1 = reviewer, >1 = owner
+	 * @param int $stage Stage id from an element: -1,0 = editing, 1 = reviewer, >1 = owner
 	 * @return boolean TRUE if user is allowed access
 	 */
 	public function workspaceCheckStageForCurrent($stage) {
@@ -1106,7 +1106,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * For custom workspaces it depends on whether the user is owner OR like with
 	 * draft workspace if the user has access to Live workspace.
 	 *
-	 * @param integer $wsid Workspace UID; 0,1+
+	 * @param int $wsid Workspace UID; 0,1+
 	 * @return boolean Returns TRUE if the user has access to publish content from the workspace ID given.
 	 */
 	public function workspacePublishAccess($wsid) {
@@ -1223,7 +1223,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * 8 - frontend editing
 	 * 128 - other (not used yet)
 	 *
-	 * @param integer $bitmask Bitmask
+	 * @param int $bitmask Bitmask
 	 * @return boolean TRUE if the confirmation should be shown
 	 */
 	public function jsConfirmation($bitmask) {
@@ -2015,7 +2015,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	/**
 	 * Setting workspace ID
 	 *
-	 * @param integer $workspaceId ID of workspace to set for backend user. If not valid the default workspace for BE user is found and set.
+	 * @param int $workspaceId ID of workspace to set for backend user. If not valid the default workspace for BE user is found and set.
 	 * @return void
 	 */
 	public function setWorkspace($workspaceId) {
@@ -2036,7 +2036,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	/**
 	 * Sets a temporary workspace in the context of the current backend user.
 	 *
-	 * @param integer $workspaceId
+	 * @param int $workspaceId
 	 * @return boolean
 	 */
 	public function setTemporaryWorkspace($workspaceId) {
@@ -2105,18 +2105,18 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * Writes an entry in the logfile/table
 	 * Documentation in "TYPO3 Core API"
 	 *
-	 * @param integer $type Denotes which module that has submitted the entry. See "TYPO3 Core API". Use "4" for extensions.
-	 * @param integer $action Denotes which specific operation that wrote the entry. Use "0" when no sub-categorizing applies
-	 * @param integer $error Flag. 0 = message, 1 = error (user problem), 2 = System Error (which should not happen), 3 = security notice (admin)
-	 * @param integer $details_nr The message number. Specific for each $type and $action. This will make it possible to translate errormessages to other languages
+	 * @param int $type Denotes which module that has submitted the entry. See "TYPO3 Core API". Use "4" for extensions.
+	 * @param int $action Denotes which specific operation that wrote the entry. Use "0" when no sub-categorizing applies
+	 * @param int $error Flag. 0 = message, 1 = error (user problem), 2 = System Error (which should not happen), 3 = security notice (admin)
+	 * @param int $details_nr The message number. Specific for each $type and $action. This will make it possible to translate errormessages to other languages
 	 * @param string $details Default text that follows the message (in english!). Possibly translated by identification through type/action/details_nr
 	 * @param array $data Data that follows the log. Might be used to carry special information. If an array the first 5 entries (0-4) will be sprintf'ed with the details-text
 	 * @param string $tablename Table name. Special field used by tce_main.php.
 	 * @param int|string $recuid Record UID. Special field used by tce_main.php.
 	 * @param int|string $recpid Record PID. Special field used by tce_main.php. OBSOLETE
-	 * @param integer $event_pid The page_uid (pid) where the event occurred. Used to select log-content for specific pages.
+	 * @param int $event_pid The page_uid (pid) where the event occurred. Used to select log-content for specific pages.
 	 * @param string $NEWid Special field used by tce_main.php. NEWid string of newly created records.
-	 * @param integer $userId Alternative Backend User ID (used for logging login actions where this is not yet known).
+	 * @param int $userId Alternative Backend User ID (used for logging login actions where this is not yet known).
 	 * @return integer Log entry ID.
 	 */
 	public function writelog($type, $action, $error, $details_nr, $details, $data, $tablename = '', $recuid = '', $recpid = '', $event_pid = -1, $NEWid = '', $userId = 0) {
@@ -2149,7 +2149,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 *
 	 * @param string $message Log message
 	 * @param string $extKey Option extension key / module name
-	 * @param integer $error Error level. 0 = message, 1 = error (user problem), 2 = System Error (which should not happen), 3 = security notice (admin)
+	 * @param int $error Error level. 0 = message, 1 = error (user problem), 2 = System Error (which should not happen), 3 = security notice (admin)
 	 * @return integer Log entry UID
 	 */
 	public function simplelog($message, $extKey = '', $error = 0) {
@@ -2163,8 +2163,8 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * If so, an email with a warning is sent to $email.
 	 *
 	 * @param string $email Email address
-	 * @param integer $secondsBack Number of sections back in time to check. This is a kind of limit for how many failures an hour for instance.
-	 * @param integer $max Max allowed failures before a warning mail is sent
+	 * @param int $secondsBack Number of sections back in time to check. This is a kind of limit for how many failures an hour for instance.
+	 * @param int $max Max allowed failures before a warning mail is sent
 	 * @return void
 	 * @access private
 	 */

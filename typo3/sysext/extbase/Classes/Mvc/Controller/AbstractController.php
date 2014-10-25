@@ -152,7 +152,7 @@ abstract class AbstractController implements ControllerInterface {
 	 *
 	 * @param string $messageBody The message
 	 * @param string $messageTitle Optional message title
-	 * @param integer $severity Optional severity, must be one of \TYPO3\CMS\Core\Messaging\FlashMessage constants
+	 * @param int $severity Optional severity, must be one of \TYPO3\CMS\Core\Messaging\FlashMessage constants
 	 * @param bool $storeInSession Optional, defines whether the message should be stored in the session (default) or not
 	 * @return void
 	 * @throws \InvalidArgumentException if the message body is no string
@@ -279,9 +279,9 @@ abstract class AbstractController implements ControllerInterface {
 	 * @param string $controllerName Unqualified object name of the controller to forward to. If not specified, the current controller is used.
 	 * @param string $extensionName Name of the extension containing the controller to forward to. If not specified, the current extension is assumed.
 	 * @param array $arguments Arguments to pass to the target action
-	 * @param integer $pageUid Target page uid. If NULL, the current page uid is used
-	 * @param integer $delay (optional) The delay in seconds. Default is no delay.
-	 * @param integer $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other
+	 * @param int $pageUid Target page uid. If NULL, the current page uid is used
+	 * @param int $delay (optional) The delay in seconds. Default is no delay.
+	 * @param int $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other
 	 * @return void
 	 * @throws UnsupportedRequestTypeException If the request is not a web request
 	 * @throws StopActionException
@@ -309,8 +309,8 @@ abstract class AbstractController implements ControllerInterface {
 	 * NOTE: This method only supports web requests and will thrown an exception if used with other request types.
 	 *
 	 * @param mixed $uri A string representation of a URI
-	 * @param integer $delay (optional) The delay in seconds. Default is no delay.
-	 * @param integer $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other
+	 * @param int $delay (optional) The delay in seconds. Default is no delay.
+	 * @param int $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other
 	 * @throws UnsupportedRequestTypeException If the request is not a web request
 	 * @throws StopActionException
 	 * @api
@@ -347,7 +347,7 @@ abstract class AbstractController implements ControllerInterface {
 	 *
 	 * NOTE: This method only supports web requests and will thrown an exception if used with other request types.
 	 *
-	 * @param integer $statusCode The HTTP status code
+	 * @param int $statusCode The HTTP status code
 	 * @param string $statusMessage A custom HTTP status message
 	 * @param string $content Body content which further explains the status
 	 * @throws UnsupportedRequestTypeException If the request is not a web request

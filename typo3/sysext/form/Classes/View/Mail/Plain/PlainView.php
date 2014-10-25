@@ -25,7 +25,7 @@ class PlainView extends \TYPO3\CMS\Form\View\Mail\Plain\Element\ContainerElement
 	 * Constructor
 	 *
 	 * @param \TYPO3\CMS\Form\Domain\Model\Form $model
-	 * @param integer $spaces
+	 * @param int $spaces
 	 */
 	public function __construct(\TYPO3\CMS\Form\Domain\Model\Form $model, $spaces = 0) {
 		parent::__construct($model, $spaces);

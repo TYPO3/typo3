@@ -506,7 +506,7 @@ class Clipboard {
 	 * Returns the select-url for database elements
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid Uid of record
+	 * @param int $uid Uid of record
 	 * @param bool $copy If set, copymode will be enabled
 	 * @param bool $deselect If set, the link will deselect, otherwise select.
 	 * @param array $baseArray The base array of GET vars to be sent in addition. Notice that current GET vars WILL automatically be included.
@@ -798,7 +798,7 @@ class Clipboard {
 	 * If the pad is "normal", the mode value is returned if the element existed. Thus you'll know if the item was copy or cut moded...
 	 *
 	 * @param string $table Table name, (_FILE for files...)
-	 * @param integer $uid Element uid (path for files)
+	 * @param int $uid Element uid (path for files)
 	 * @return string
 	 */
 	public function isSelected($table, $uid) {
@@ -812,7 +812,7 @@ class Clipboard {
 	 * Makes sense only for DB records - not files!
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid Element uid
+	 * @param int $uid Element uid
 	 * @return array Element record with extra field _RECORD_TITLE set to the title of the record
 	 */
 	public function getSelectedRecord($table = '', $uid = '') {

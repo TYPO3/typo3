@@ -43,7 +43,7 @@ class PhpErrorCodeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 	/**
 	 * Render a readable string for PHP error code
 	 *
-	 * @param integer $phpErrorCode
+	 * @param int $phpErrorCode
 	 * @return string
 	 */
 	public function render($phpErrorCode) {

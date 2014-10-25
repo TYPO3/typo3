@@ -70,7 +70,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	/**
 	 * Returns TRUE/FALSE if the next level for $id should be expanded - and all levels should, so we always return 1.
 	 *
-	 * @param integer $id ID (uid) to test for (see extending classes where this is checked against session data)
+	 * @param int $id ID (uid) to test for (see extending classes where this is checked against session data)
 	 * @return boolean
 	 */
 	public function expandNext($id) {
@@ -82,9 +82,9 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 * In this case, there is no plus-minus icon displayed.
 	 *
 	 * @param array $row Record for the entry
-	 * @param integer $a The current entry number
-	 * @param integer $c The total number of entries. If equal to $a, a 'bottom' element is returned.
-	 * @param integer $nextCount The number of sub-elements to the current element.
+	 * @param int $a The current entry number
+	 * @param int $c The total number of entries. If equal to $a, a 'bottom' element is returned.
+	 * @param int $nextCount The number of sub-elements to the current element.
 	 * @param bool $exp The element was expanded to render subelements if this flag is set.
 	 * @return string Image tag with the plus/minus icon.
 	 * @access private

@@ -23,10 +23,10 @@ class MathUtility {
 	/**
 	 * Forces the integer $theInt into the boundaries of $min and $max. If the $theInt is FALSE then the $defaultValue is applied.
 	 *
-	 * @param integer $theInt Input value
-	 * @param integer $min Lower limit
-	 * @param integer $max Higher limit
-	 * @param integer $defaultValue Default value if input is FALSE.
+	 * @param int $theInt Input value
+	 * @param int $min Lower limit
+	 * @param int $max Higher limit
+	 * @param int $defaultValue Default value if input is FALSE.
 	 * @return integer The input value forced into the boundaries of $min and $max
 	 */
 	static public function forceIntegerInRange($theInt, $min, $max = 2000000000, $defaultValue = 0) {
@@ -49,7 +49,7 @@ class MathUtility {
 	/**
 	 * Returns $theInt if it is greater than zero, otherwise returns zero.
 	 *
-	 * @param integer $theInt Integer string to process
+	 * @param int $theInt Integer string to process
 	 * @return integer
 	 */
 	static public function convertToPositiveInteger($theInt) {
@@ -187,9 +187,9 @@ class MathUtility {
 	/**
 	 * Checks whether the given number $value is an integer in the range [$minimum;$maximum]
 	 *
-	 * @param integer $value Integer value to check
-	 * @param integer $minimum Lower boundary of the range
-	 * @param integer $maximum Upper boundary of the range
+	 * @param int $value Integer value to check
+	 * @param int $minimum Lower boundary of the range
+	 * @param int $maximum Upper boundary of the range
 	 * @return boolean
 	 */
 	static public function isIntegerInRange($value, $minimum, $maximum) {

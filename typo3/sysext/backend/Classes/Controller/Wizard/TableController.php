@@ -544,7 +544,7 @@ class TableController {
 	 * Converts the input configuration code string into an array
 	 *
 	 * @param string $cfgStr Configuration code
-	 * @param integer $cols Default number of columns
+	 * @param int $cols Default number of columns
 	 * @return array Configuration array
 	 * @see cfgArray2CfgString()
 	 */
@@ -578,7 +578,7 @@ class TableController {
 	 * Checks access for element
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid Record uid
+	 * @param int $uid Record uid
 	 * @return boolean
 	 * @todo: Refactor to remove duplicate code (see FormsController, RteController)
 	 */

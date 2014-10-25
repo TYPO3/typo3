@@ -261,7 +261,7 @@ class SpriteGenerator {
 	/**
 	 * Setter to adjust how much space is between to icons in the sprite
 	 *
-	 * @param integer $value
+	 * @param int $value
 	 * @return SpriteGenerator An instance of $this, to enable "chaining".
 	 */
 	public function setIconSpace($value) {

@@ -142,7 +142,7 @@ class JsonToTypoScript {
 	 * @param array $element The JSON array for this element
 	 * @param array $parent The parent element
 	 * @param bool $childrenWithParentName Indicates if the children use the parent name
-	 * @param integer $elementCounter The element counter
+	 * @param int $elementCounter The element counter
 	 * @return void
 	 */
 	protected function getContainer(array $element, array &$parent, $elementCounter, $childrenWithParentName = FALSE) {
@@ -160,7 +160,7 @@ class JsonToTypoScript {
 	 *
 	 * @param array $element The JSON array for this element
 	 * @param array $parent The parent element
-	 * @param integer $elementCounter The element counter
+	 * @param int $elementCounter The element counter
 	 * @return void
 	 */
 	protected function getForm(array $element, array &$parent, $elementCounter) {
@@ -178,7 +178,7 @@ class JsonToTypoScript {
 	 *
 	 * @param array $element The JSON array for this element
 	 * @param array $parent The parent element
-	 * @param integer $elementCounter The element counter
+	 * @param int $elementCounter The element counter
 	 * @param bool $childrenWithParentName Indicates if the children use the parent name
 	 * @return void
 	 */
@@ -240,7 +240,7 @@ class JsonToTypoScript {
 	 *
 	 * @param array $element The JSON array for this element
 	 * @param array $parent The parent element
-	 * @param integer $elementCounter The element counter
+	 * @param int $elementCounter The element counter
 	 * @param bool $childrenWithParentName Indicates if the children use the parent name
 	 * @return void
 	 */
@@ -291,7 +291,7 @@ class JsonToTypoScript {
 	 *
 	 * @param array $attributes The JSON array for the attributes of this element
 	 * @param array $parent The parent element
-	 * @param integer $elementCounter The element counter
+	 * @param int $elementCounter The element counter
 	 * @param bool $childrenWithParentName Indicates if the children use the parent name
 	 * @return void
 	 */
@@ -313,7 +313,7 @@ class JsonToTypoScript {
 	 *
 	 * @param bool $confirmation TRUE when confirmation screen
 	 * @param array $parent The parent element
-	 * @param integer $elementCounter The element counter
+	 * @param int $elementCounter The element counter
 	 * @return void
 	 */
 	protected function setConfirmation($confirmation, array &$parent, $elementCounter) {
@@ -325,7 +325,7 @@ class JsonToTypoScript {
 	 *
 	 * @param array $filters The JSON array for the filters of this element
 	 * @param array $parent The parent element
-	 * @param integer $elementCounter The element counter
+	 * @param int $elementCounter The element counter
 	 * @return void
 	 */
 	protected function setFilters(array $filters, array &$parent, $elementCounter) {
@@ -345,7 +345,7 @@ class JsonToTypoScript {
 	 *
 	 * @param array $label The JSON array for the label of this element
 	 * @param array $parent The parent element
-	 * @param integer $elementCounter The element counter
+	 * @param int $elementCounter The element counter
 	 * @return void
 	 */
 	protected function setLabel(array $label, array &$parent, $elementCounter) {
@@ -364,7 +364,7 @@ class JsonToTypoScript {
 	 * @param array $element The JSON array for this element
 	 * @param string $value The layout setting, back or front
 	 * @param array $parent The parent element
-	 * @param integer $elementCounter The element counter
+	 * @param int $elementCounter The element counter
 	 * @return void
 	 */
 	protected function setLayout(array $element, $value, array &$parent, $elementCounter) {
@@ -411,7 +411,7 @@ class JsonToTypoScript {
 	 *
 	 * @param array $legend The JSON array for the legend of this element
 	 * @param array $parent The parent element
-	 * @param integer $elementCounter The element counter
+	 * @param int $elementCounter The element counter
 	 * @return void
 	 */
 	protected function setLegend(array $legend, array &$parent, $elementCounter) {
@@ -430,7 +430,7 @@ class JsonToTypoScript {
 	 * @param array $element The JSON array for this element
 	 * @param array $options The JSON array for the options of this element
 	 * @param array $parent The parent element
-	 * @param integer $elementCounter The element counter
+	 * @param int $elementCounter The element counter
 	 * @return void
 	 */
 	protected function setOptions(array $element, array $options, array &$parent, $elementCounter) {
@@ -452,7 +452,7 @@ class JsonToTypoScript {
 	 *
 	 * @param array $postProcessors The JSON array for the post processors of this element
 	 * @param array $parent The parent element
-	 * @param integer $elementCounter The element counter
+	 * @param int $elementCounter The element counter
 	 * @return void
 	 */
 	protected function setPostProcessor(array $postProcessors, array &$parent, $elementCounter) {
@@ -474,7 +474,7 @@ class JsonToTypoScript {
 	 *
 	 * @param string $prefix The prefix for all element names
 	 * @param array $parent The parent element
-	 * @param integer $elementCounter The element counter
+	 * @param int $elementCounter The element counter
 	 * @return void
 	 */
 	protected function setPrefix($prefix, array &$parent, $elementCounter) {
@@ -512,7 +512,7 @@ class JsonToTypoScript {
 	 * @param array $element The JSON array for this element
 	 * @param array $options The JSON array for the various options of this element
 	 * @param array $parent The parent element
-	 * @param integer $elementCounter The element counter
+	 * @param int $elementCounter The element counter
 	 * @return void
 	 */
 	protected function setVarious(array $element, array $various, array &$parent, $elementCounter) {
@@ -536,7 +536,7 @@ class JsonToTypoScript {
 	 *
 	 * @param array $typoscriptArray The TypoScript array
 	 * @param string $addKey Key which has underlying configuration
-	 * @param integer $tabCount The amount of tabs for indentation
+	 * @param int $tabCount The amount of tabs for indentation
 	 * @return string The formatted TypoScript string
 	 */
 	protected function typoscriptArrayToString(array $typoscriptArray, $addKey = '', $tabCount = -1) {

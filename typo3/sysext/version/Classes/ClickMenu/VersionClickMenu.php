@@ -27,7 +27,7 @@ class VersionClickMenu {
 	 * @param object $backRef References to parent clickmenu objects.
 	 * @param array $menuItems Array of existing menu items accumulated. New element added to this.
 	 * @param string $table Table name of the element
-	 * @param integer $uid Record UID of the element
+	 * @param int $uid Record UID of the element
 	 * @return array Modified menuItems array
 	 */
 	public function main(&$backRef, $menuItems, $table, $uid) {

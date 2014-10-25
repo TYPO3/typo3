@@ -65,7 +65,7 @@ class Keypair implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * Note: This method must not be called more than one time.
 	 *
-	 * @param integer $exponent the new exponent
+	 * @param int $exponent the new exponent
 	 *
 	 * @return void
 	 *
@@ -139,7 +139,7 @@ class Keypair implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * Note: This method must not be called more than one time.
 	 *
-	 * @param integer $publicKeyModulus the new public key modulus
+	 * @param int $publicKeyModulus the new public key modulus
 	 *
 	 * @return void
 	 *

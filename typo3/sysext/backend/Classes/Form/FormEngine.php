@@ -758,7 +758,7 @@ class FormEngine {
 	 *
 	 * @param string $table The table name
 	 * @param array $row The record from the table for which to render a field.
-	 * @param integer $depth Depth level
+	 * @param int $depth Depth level
 	 * @param array $overruleTypesArray Overrule types array. Can be used to override the showitem etc. configuration for the TCA types of the table. Can contain all settings which are possible in the TCA 'types' section. See e.g. $TCA['tt_content']['types'].
 	 * @return string HTML output
 	 * @see getSoloField()
@@ -1041,7 +1041,7 @@ class FormEngine {
 	 * @param string $altName Alternative field name label to show.
 	 * @param bool $palette Set this if the field is on a palette (in top frame), otherwise not. (if set, field will render as a hidden field).
 	 * @param string $extra The "extra" options from "Part 4" of the field configurations found in the "types" "showitem" list. Typically parsed by $this->getSpecConfFromString() in order to get the options as an associative array.
-	 * @param integer $pal The palette pointer.
+	 * @param int $pal The palette pointer.
 	 * @return mixed String (normal) or array (palettes)
 	 */
 	public function getSingleField($table, $field, $row, $altName = '', $palette = FALSE, $extra = '', $pal = 0) {
@@ -2513,7 +2513,7 @@ class FormEngine {
 	 *
 	 * @param string $str The icon HTML to wrap
 	 * @param string $table Table name (eg. "pages" or "tt_content") OR the absolute path to the file
-	 * @param integer $uid The uid of the record OR if file, just blank value.
+	 * @param int $uid The uid of the record OR if file, just blank value.
 	 * @return string HTML
 	 */
 	public function getClickMenu($str, $table, $uid = 0) {
@@ -2953,7 +2953,7 @@ class FormEngine {
 	 * @param string $header The string to wrap in an A-tag
 	 * @param string $table The table name for which to open the palette.
 	 * @param array $row The palette pointer.
-	 * @param integer $palette The record array
+	 * @param int $palette The record array
 	 * @param mixed $retFunc Not used
 	 * @return array
 	 */
@@ -3022,7 +3022,7 @@ class FormEngine {
 	/**
 	 * Returns parameters to set the width for a <input>/<textarea>-element
 	 *
-	 * @param integer $size The abstract size value (1-48)
+	 * @param int $size The abstract size value (1-48)
 	 * @param bool $textarea If this is for a text area.
 	 * @return string Either a "style" attribute string or "cols"/"size" attribute string.
 	 */
@@ -3039,7 +3039,7 @@ class FormEngine {
 	/**
 	 * Returns parameters to set the width for a <input>/<textarea>-element
 	 *
-	 * @param integer $size The abstract size value (1-48)
+	 * @param int $size The abstract size value (1-48)
 	 * @param bool $textarea If set, calculates sizes for a text area.
 	 * @return array An array containing style, class, and width attributes.
 	 */
@@ -3127,7 +3127,7 @@ class FormEngine {
 	 *
 	 * @param array $parts Parts for the tab menu, fed to template::getDynTabMenu()
 	 * @param string $idString ID string for the tab menu
-	 * @param integer $dividersToTabsBehaviour If set to '1' empty tabs will be removed, If set to '2' empty tabs will be disabled
+	 * @param int $dividersToTabsBehaviour If set to '1' empty tabs will be removed, If set to '2' empty tabs will be disabled
 	 * @return string HTML for the menu
 	 */
 	public function getDynTabMenu($parts, $idString, $dividersToTabsBehaviour = 1) {
@@ -3705,7 +3705,7 @@ class FormEngine {
 	 * Wraps an element in the $out_array with the template row for a "section" ($this->sectionWrap)
 	 *
 	 * @param array $out_array The array with form elements stored in (passed by reference and changed!)
-	 * @param integer $out_pointer The pointer to the entry in the $out_array  (passed by reference and incremented!)
+	 * @param int $out_pointer The pointer to the entry in the $out_array  (passed by reference and incremented!)
 	 * @return void
 	 */
 	public function wrapBorder(&$out_array, &$out_pointer) {
@@ -4243,7 +4243,7 @@ class FormEngine {
 	 * Gets default record. Maybe not used anymore. FE-editor?
 	 *
 	 * @param string $table Database Tablename
-	 * @param integer $pid PID value (positive / negative)
+	 * @param int $pid PID value (positive / negative)
 	 * @return array|NULL "default" row.
 	 * @deprecated since 6.3 - will be removed two versions later; not used anymore in Core
 	 */
@@ -4354,7 +4354,7 @@ class FormEngine {
 	 * Returns TRUE, if the palette, $palette, is collapsed (not shown, but found in top-frame) for the table.
 	 *
 	 * @param string $table The table name
-	 * @param integer $palette The palette pointer/number
+	 * @param int $palette The palette pointer/number
 	 * @return boolean
 	 */
 	public function isPalettesCollapsed($table, $palette) {

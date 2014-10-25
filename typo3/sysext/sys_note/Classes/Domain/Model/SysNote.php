@@ -154,7 +154,7 @@ class SysNote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @param integer $category
+	 * @param int $category
 	 * @return void
 	 */
 	public function setCategory($category) {

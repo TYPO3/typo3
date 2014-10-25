@@ -31,10 +31,10 @@ class PageBrowsingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 	/**
 	 * Main render function
 	 *
-	 * @param integer $maximumNumberOfResultPages The number of page links shown
-	 * @param integer $numberOfResults Total number of results
-	 * @param integer $resultsPerPage Number of results per page
-	 * @param integer $currentPage The current page starting with 0
+	 * @param int $maximumNumberOfResultPages The number of page links shown
+	 * @param int $numberOfResults Total number of results
+	 * @param int $resultsPerPage Number of results per page
+	 * @param int $currentPage The current page starting with 0
 	 * @param string|NULL $freeIndexUid List of integers pointing to free indexing configurations to search. -1 represents no filtering, 0 represents TYPO3 pages only, any number above zero is a uid of an indexing configuration!
 	 * @return string The content
 	 */
@@ -91,7 +91,7 @@ class PageBrowsingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 	 * Notice how the links must resubmit the form after setting the new currentPage-value in a hidden formfield.
 	 *
 	 * @param string $str String to wrap in <a> tag
-	 * @param integer $p currentPage value
+	 * @param int $p currentPage value
 	 * @param string $freeIndexUid List of integers pointing to free indexing configurations to search. -1 represents no filtering, 0 represents TYPO3 pages only, any number above zero is a uid of an indexing configuration!
 	 * @return string Input string wrapped in <a> tag with onclick event attribute set.
 	 */

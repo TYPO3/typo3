@@ -73,7 +73,7 @@ class Execution {
 	/**
 	 * This method is used to set the start date
 	 *
-	 * @param integer $start Start date (timestamp)
+	 * @param int $start Start date (timestamp)
 	 * @return void
 	 */
 	public function setStart($start) {
@@ -92,7 +92,7 @@ class Execution {
 	/**
 	 * This method is used to set the end date
 	 *
-	 * @param integer $end End date (timestamp)
+	 * @param int $end End date (timestamp)
 	 * @return void
 	 */
 	public function setEnd($end) {
@@ -111,7 +111,7 @@ class Execution {
 	/**
 	 * This method is used to set the interval
 	 *
-	 * @param integer $interval Interval (in seconds)
+	 * @param int $interval Interval (in seconds)
 	 * @return void
 	 */
 	public function setInterval($interval) {

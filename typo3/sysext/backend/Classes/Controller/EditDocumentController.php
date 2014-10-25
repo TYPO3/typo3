@@ -1018,8 +1018,8 @@ class EditDocumentController {
 	 * Displays only languages which are available for the current page.
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid Uid for which to create a new language
-	 * @param integer $pid Pid of the record
+	 * @param int $uid Uid for which to create a new language
+	 * @param int $pid Pid of the record
 	 * @return string <select> HTML element (if there were items for the box anyways...)
 	 */
 	public function languageSwitch($table, $uid, $pid = NULL) {
@@ -1114,7 +1114,7 @@ class EditDocumentController {
 	/**
 	 * Returns sys_language records available for record translations on given page.
 	 *
-	 * @param integer $id Page id: If zero, the query will select all sys_language records from root level which are NOT hidden. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
+	 * @param int $id Page id: If zero, the query will select all sys_language records from root level which are NOT hidden. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
 	 * @return array Language records including faked record for default language
 	 */
 	public function getLanguages($id) {
@@ -1200,7 +1200,7 @@ class EditDocumentController {
 	 * Get record for editing.
 	 *
 	 * @param string $table Table name
-	 * @param integer $theUid Record UID
+	 * @param int $theUid Record UID
 	 * @return array Returns record to edit, FALSE if none
 	 */
 	public function getRecordForEdit($table, $theUid) {
@@ -1280,7 +1280,7 @@ class EditDocumentController {
 	/**
 	 * Handling the closing of a document
 	 *
-	 * @param integer $code Close code: 0/1 will redirect to $this->retUrl, 3 will clear the docHandler (thus closing all documents) and otehr values will call setDocument with ->retUrl
+	 * @param int $code Close code: 0/1 will redirect to $this->retUrl, 3 will clear the docHandler (thus closing all documents) and otehr values will call setDocument with ->retUrl
 	 * @return void
 	 */
 	public function closeDocument($code = 0) {

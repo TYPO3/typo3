@@ -164,7 +164,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Returns the backend layout which should be used for this page.
 	 *
-	 * @param integer $pageId
+	 * @param int $pageId
 	 * @return boolean|string Identifier of the backend layout to be used, or FALSE if none
 	 */
 	public function getSelectedCombinedIdentifier($pageId) {
@@ -238,7 +238,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Adds items to a colpos list
 	 *
-	 * @param integer $pageId
+	 * @param int $pageId
 	 * @param array $items
 	 * @return array
 	 */
@@ -253,7 +253,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Gets the list of available columns for a given page id
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 * @return array $tcaItems
 	 */
 	public function getColPosListItemsParsed($id) {
@@ -279,7 +279,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Gets the selected backend layout
 	 *
-	 * @param integer $pageId
+	 * @param int $pageId
 	 * @return array|NULL $backendLayout
 	 */
 	public function getSelectedBackendLayout($pageId) {
@@ -376,7 +376,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Gets a page record.
 	 *
-	 * @param integer $pageId
+	 * @param int $pageId
 	 * @return NULL|array
 	 */
 	protected function getPage($pageId) {
@@ -392,7 +392,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Gets the page root-line.
 	 *
-	 * @param integer $pageId
+	 * @param int $pageId
 	 * @return array
 	 */
 	protected function getRootLine($pageId) {

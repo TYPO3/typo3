@@ -230,7 +230,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Wrapper for dev log, in order to ease testing
 	 *
 	 * @param string $message Message (in english).
-	 * @param integer $severity Severity: 0 is info, 1 is notice, 2 is warning, 3 is fatal error, -1 is "OK" message
+	 * @param int $severity Severity: 0 is info, 1 is notice, 2 is warning, 3 is fatal error, -1 is "OK" message
 	 * @return void
 	 */
 	protected function log($message, $severity) {

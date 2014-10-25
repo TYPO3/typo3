@@ -83,7 +83,7 @@ class CropViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 	/**
 	 * Render the cropped text
 	 *
-	 * @param integer $maxCharacters Place where to truncate the string
+	 * @param int $maxCharacters Place where to truncate the string
 	 * @param string $append What to append, if truncation happened
 	 * @param bool $respectWordBoundaries If TRUE and division is in the middle of a word, the remains of that word is removed.
 	 * @param bool $respectHtml If TRUE the cropped string will respect HTML tags and entities. Technically that means, that cropHTML() is called rather than crop()

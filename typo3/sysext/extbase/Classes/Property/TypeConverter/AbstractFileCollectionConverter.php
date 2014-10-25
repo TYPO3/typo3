@@ -40,7 +40,7 @@ abstract class AbstractFileCollectionConverter extends \TYPO3\CMS\Extbase\Proper
 	 * Actually convert from $source to $targetType, taking into account the fully
 	 * built $convertedChildProperties and $configuration.
 	 *
-	 * @param integer $source
+	 * @param int $source
 	 * @param string $targetType
 	 * @param array $convertedChildProperties
 	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
@@ -60,7 +60,7 @@ abstract class AbstractFileCollectionConverter extends \TYPO3\CMS\Extbase\Proper
 	}
 
 	/**
-	 * @param integer $source
+	 * @param int $source
 	 * @return \TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection
 	 */
 	abstract protected function getObject($source);

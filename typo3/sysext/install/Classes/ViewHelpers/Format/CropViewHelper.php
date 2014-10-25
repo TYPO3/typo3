@@ -39,7 +39,7 @@ class CropViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 	/**
 	 * Render the cropped text
 	 *
-	 * @param integer $maxCharacters Place where to truncate the string
+	 * @param int $maxCharacters Place where to truncate the string
 	 * @throws \TYPO3\CMS\Install\ViewHelpers\Exception
 	 * @return string cropped text
 	 */

@@ -352,7 +352,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * Returns HTML code to dislay an url in an iframe at the right side of the taskcenter
 	 *
 	 * @param string $url Url to display
-	 * @param integer $max
+	 * @param int $max
 	 * @return string Code that inserts the iframe (HTML)
 	 */
 	public function urlInIframe($url, $max = 0) {

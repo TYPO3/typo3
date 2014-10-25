@@ -134,7 +134,7 @@ class ExtensionListUtility implements \SplObserver {
 	 * Method initializes parsing of extension.xml.gz file.
 	 *
 	 * @param string $localExtensionListFile absolute path to extension list xml.gz
-	 * @param integer $repositoryUid UID of repository when inserting records into DB
+	 * @param int $repositoryUid UID of repository when inserting records into DB
 	 * @return integer total number of imported extension versions
 	 */
 	public function import($localExtensionListFile, $repositoryUid = NULL) {

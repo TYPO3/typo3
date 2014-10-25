@@ -39,7 +39,7 @@ class DatabaseRecord {
 	 * Creates database record object just by id of database record.
 	 *
 	 * @param string $table Name of the database table
-	 * @param integer $uid Id of the datbase record row
+	 * @param int $uid Id of the datbase record row
 	 * @return \TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord
 	 */
 	static public function create($table, $uid) {
@@ -59,7 +59,7 @@ class DatabaseRecord {
 
 	/**
 	 * @param string $table Name of the database table
-	 * @param integer $uid Id of the datbase record row
+	 * @param int $uid Id of the datbase record row
 	 * @param array|NULL $row The relevant database record row
 	 */
 	public function __construct($table, $uid, array $row = NULL) {
@@ -101,7 +101,7 @@ class DatabaseRecord {
 	/**
 	 * Sets the id of the database record row.
 	 *
-	 * @param integer $uid
+	 * @param int $uid
 	 * @return void
 	 */
 	public function setUid($uid) {

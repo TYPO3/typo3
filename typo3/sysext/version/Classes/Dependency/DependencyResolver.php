@@ -111,7 +111,7 @@ class DependencyResolver {
 	 * Adds an element to be checked for dependent references.
 	 *
 	 * @param string $table
-	 * @param integer $id
+	 * @param int $id
 	 * @param array $data
 	 * @return \TYPO3\CMS\Version\Dependency\ElementEntity
 	 */

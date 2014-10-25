@@ -24,7 +24,7 @@ class VersionView {
 	 * Creates the version selector for the page id inputted.
 	 * Moved out of the core file \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 *
-	 * @param integer $id Page id to create selector for.
+	 * @param int $id Page id to create selector for.
 	 * @param bool $noAction If set, there will be no button for swapping page.
 	 * @return void
 	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate

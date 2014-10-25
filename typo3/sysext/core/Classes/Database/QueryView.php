@@ -128,7 +128,7 @@ class QueryView {
 	 * [Describe function...]
 	 *
 	 * @param array $storeQueryConfigs
-	 * @param integer $index
+	 * @param int $index
 	 * @return array
 	 */
 	public function addToStoreQueryConfigs($storeQueryConfigs, $index) {
@@ -143,7 +143,7 @@ class QueryView {
 	/**
 	 * [Describe function...]
 	 *
-	 * @param integer $uid
+	 * @param int $uid
 	 * @return integer
 	 */
 	public function saveQueryInAction($uid) {
@@ -186,7 +186,7 @@ class QueryView {
 	 * [Describe function...]
 	 *
 	 * @param array $storeQueryConfigs
-	 * @param integer $storeIndex
+	 * @param int $storeIndex
 	 * @param array $writeArray
 	 * @return array
 	 */
@@ -673,9 +673,9 @@ class QueryView {
 	/**
 	 * [Describe function...]
 	 *
-	 * @param integer $id
-	 * @param integer $depth
-	 * @param integer $begin
+	 * @param int $id
+	 * @param int $depth
+	 * @param int $begin
 	 * @param string $perms_clause
 	 * @return string
 	 */

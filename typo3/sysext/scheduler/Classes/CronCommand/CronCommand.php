@@ -131,7 +131,7 @@ class CronCommand {
 	/**
 	 * Determine if current timestamp matches minute and hour cron command restriction.
 	 *
-	 * @param integer $timestamp to test
+	 * @param int $timestamp to test
 	 * @return boolean TRUE if cron command conditions are met
 	 */
 	protected function minuteAndHourMatchesCronCommand($timestamp) {
@@ -148,7 +148,7 @@ class CronCommand {
 	 * Determine if current timestamp matches day of month, month and day of week
 	 * cron command restriction
 	 *
-	 * @param integer $timestamp to test
+	 * @param int $timestamp to test
 	 * @return boolean TRUE if cron command conditions are met
 	 */
 	protected function dayMatchesCronCommand($timestamp) {
@@ -179,7 +179,7 @@ class CronCommand {
 	 * command must be a 'normalized' list with only comma separated integers or '*'
 	 *
 	 * @param string $commandExpression: cron command
-	 * @param integer $numberToMatch: number to look up
+	 * @param int $numberToMatch: number to look up
 	 * @return boolean TRUE if number is in list
 	 */
 	protected function isInCommandList($commandExpression, $numberToMatch) {
@@ -201,7 +201,7 @@ class CronCommand {
 	 * and on last sunday of october they are set back one hour (from 3:00 to 2:00).
 	 * This shortens and lengthens the length of a day by one hour.
 	 *
-	 * @param integer $timestamp Unix timestamp
+	 * @param int $timestamp Unix timestamp
 	 * @return integer Number of seconds of day
 	 */
 	protected function numberOfSecondsInDay($timestamp) {
@@ -215,7 +215,7 @@ class CronCommand {
 	/**
 	 * Round a timestamp down to full minute.
 	 *
-	 * @param integer $timestamp Unix timestamp
+	 * @param int $timestamp Unix timestamp
 	 * @return integer Rounded timestamp
 	 */
 	protected function roundTimestamp($timestamp) {

@@ -36,7 +36,7 @@ class FolderBasedFileCollectionConverter extends \TYPO3\CMS\Extbase\Property\Typ
 	protected $expectedObjectType = 'TYPO3\\CMS\\Core\\Resource\\Collection\\FolderBasedFileCollection';
 
 	/**
-	 * @param integer $source
+	 * @param int $source
 	 * @return \TYPO3\CMS\Core\Resource\Collection\FolderBasedFileCollection
 	 */
 	protected function getObject($source) {

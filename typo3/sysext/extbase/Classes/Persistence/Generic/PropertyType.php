@@ -208,7 +208,7 @@ class PropertyType {
 	/**
 	 * Returns the name of the specified type, as used in serialization.
 	 *
-	 * @param integer $type type the property type
+	 * @param int $type type the property type
 	 * @return string  name of the specified type
 	 */
 	static public function nameFromValue($type) {

@@ -174,7 +174,7 @@ class TimeTracker {
 	 * Logs the TypoScript entry
 	 *
 	 * @param string $content The message string
-	 * @param integer $num Message type: 0: information, 1: message, 2: warning, 3: error
+	 * @param int $num Message type: 0: information, 1: message, 2: warning, 3: error
 	 * @return void
 	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::CONTENT()
 	 */
@@ -478,7 +478,7 @@ class TimeTracker {
 	 * Helper function for internal data manipulation
 	 *
 	 * @param array $arr Array (passed by reference) and modified
-	 * @param integer $pointer Pointer value
+	 * @param int $pointer Pointer value
 	 * @param string $uniqueId Unique ID string
 	 * @return void
 	 * @access private

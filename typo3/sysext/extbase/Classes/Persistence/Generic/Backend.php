@@ -507,7 +507,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject
 	 * @param string $parentPropertyName
-	 * @param integer $sortingPosition
+	 * @param int $sortingPosition
 	 * @return void
 	 */
 	protected function attachObjectToParentObject(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $parentPropertyName, $sortingPosition = 0) {
@@ -526,7 +526,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object
 	 * @param \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $parentObject
 	 * @param string $parentPropertyName
-	 * @param integer $sortingPosition
+	 * @param int $sortingPosition
 	 * @return void
 	 */
 	protected function updateRelationOfObjectToParentObject(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $parentObject, $parentPropertyName, $sortingPosition = 0) {
@@ -545,7 +545,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object
 	 * @param \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $parentObject
 	 * @param string $parentPropertyName
-	 * @param integer $sortingPosition
+	 * @param int $sortingPosition
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalRelationTypeException
 	 * @return void
 	 */
@@ -687,7 +687,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object The related object
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject The parent object
 	 * @param string $propertyName The name of the parent object's property where the related objects are stored in
-	 * @param integer $sortingPosition Defaults to NULL
+	 * @param int $sortingPosition Defaults to NULL
 	 * @return integer The uid of the inserted row
 	 */
 	protected function insertRelationInRelationtable(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, $sortingPosition = NULL) {
@@ -720,7 +720,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object The related object
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject The parent object
 	 * @param string $propertyName The name of the parent object's property where the related objects are stored in
-	 * @param integer $sortingPosition Defaults to NULL
+	 * @param int $sortingPosition Defaults to NULL
 	 * @return bool TRUE if update was successfully
 	 */
 	protected function updateRelationInRelationTable(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, $sortingPosition = 0) {

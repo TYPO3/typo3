@@ -38,7 +38,7 @@ class DebugViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 	 * A wrapper for Tx_Extbase_Utility_Debugger::var_dump().
 	 *
 	 * @param string $title optional custom title for the debug output
-	 * @param integer $maxDepth Sets the max recursion depth of the dump (defaults to 8). De- or increase the number according to your needs and memory limit.
+	 * @param int $maxDepth Sets the max recursion depth of the dump (defaults to 8). De- or increase the number according to your needs and memory limit.
 	 * @param bool $plainText If TRUE, the dump is in plain text, if FALSE the debug output is in HTML format.
 	 * @param bool $ansiColors If TRUE, ANSI color codes is added to the plaintext output, if FALSE (default) the plaintext debug output not colored.
 	 * @param bool $inline if TRUE, the dump is rendered at the position of the <f:debug> tag. If FALSE (default), the dump is displayed at the top of the page.

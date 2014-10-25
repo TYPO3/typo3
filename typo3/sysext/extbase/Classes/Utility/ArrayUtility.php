@@ -244,7 +244,7 @@ class ArrayUtility {
 	 * Sorts multidimensional arrays by recursively calling ksort on its elements.
 	 *
 	 * @param array &$array the array to sort
-	 * @param integer $sortFlags may be used to modify the sorting behavior using these values (see http://www.php.net/manual/en/function.sort.php)
+	 * @param int $sortFlags may be used to modify the sorting behavior using these values (see http://www.php.net/manual/en/function.sort.php)
 	 * @return boolean TRUE on success, FALSE on failure
 	 * @see asort()
 	 * @api

@@ -45,7 +45,7 @@ class Content {
 	/**
 	 * Sets the uid
 	 *
-	 * @param integer $uid The uid
+	 * @param int $uid The uid
 	 * @return void
 	 */
 	public function setUid($uid) {
@@ -64,7 +64,7 @@ class Content {
 	/**
 	 * Sets the page id
 	 *
-	 * @param integer $pageId The page id
+	 * @param int $pageId The page id
 	 * @return void
 	 */
 	public function setPageId($pageId) {

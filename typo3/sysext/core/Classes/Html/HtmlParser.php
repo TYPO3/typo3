@@ -381,7 +381,7 @@ class HtmlParser {
 	 * @param object $procObj Object where call back methods are.
 	 * @param string $callBackContent Name of call back method for content; "function callBackContent($str,$level)
 	 * @param string $callBackTags Name of call back method for tags; "function callBackTags($tags,$level)
-	 * @param integer $level Indent level
+	 * @param int $level Indent level
 	 * @return string Processed content
 	 * @see splitIntoBlock()
 	 */
@@ -686,7 +686,7 @@ class HtmlParser {
 	 * @param string $content Is the HTML-content being processed. This is also the result being returned.
 	 * @param array $tags Is an array where each key is a tagname in lowercase. Only tags present as keys in this array are preserved. The value of the key can be an array with a vast number of options to configure.
 	 * @param string $keepAll Boolean/'protect', if set, then all tags are kept regardless of tags present as keys in $tags-array. If 'protect' then the preserved tags have their <> converted to &lt; and &gt;
-	 * @param integer $hSC Values -1,0,1,2: Set to zero= disabled, set to 1 then the content BETWEEN tags is htmlspecialchar()'ed, set to -1 its the opposite and set to 2 the content will be HSC'ed BUT with preservation for real entities (eg. "&amp;" or "&#234;")
+	 * @param int $hSC Values -1,0,1,2: Set to zero= disabled, set to 1 then the content BETWEEN tags is htmlspecialchar()'ed, set to -1 its the opposite and set to 2 the content will be HSC'ed BUT with preservation for real entities (eg. "&amp;" or "&#234;")
 	 * @param array $addConfig Configuration array send along as $conf to the internal functions ->processContent() and ->processTag()
 	 * @return string Processed HTML content
 	 */
@@ -1255,7 +1255,7 @@ class HtmlParser {
 	 * Indents input content with $number instances of $indentChar
 	 *
 	 * @param string $content Content string, multiple lines.
-	 * @param integer $number Number of indents
+	 * @param int $number Number of indents
 	 * @param string $indentChar Indent character/string
 	 * @return strin Indented code (typ. HTML)
 	 */
@@ -1478,7 +1478,7 @@ class HtmlParser {
 	 * Processing content between tags for HTML_cleaner
 	 *
 	 * @param string $value The value
-	 * @param integer $dir Direction, either -1 or +1. 0 (zero) means no change to input value.
+	 * @param int $dir Direction, either -1 or +1. 0 (zero) means no change to input value.
 	 * @param mixed $conf Not used, ignore.
 	 * @return string The processed value.
 	 * @access private

@@ -123,7 +123,7 @@ class IndexSearchRepository {
 	 * Get search result rows / data from database. Returned as data in array.
 	 *
 	 * @param array $searchWords Search word array
-	 * @param integer $freeIndexUid Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
+	 * @param int $freeIndexUid Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
 	 * @return boolean|array FALSE if no result, otherwise an array with keys for first row, result rows and total number of results found.
 	 */
 	public function doSearch($searchWords, $freeIndexUid = -1) {
@@ -213,7 +213,7 @@ class IndexSearchRepository {
 	 * Gets a SQL result pointer to traverse for the search records.
 	 *
 	 * @param array $searchWords Search words
-	 * @param integer $freeIndexUid Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
+	 * @param int $freeIndexUid Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
 	 * @return boolean|pointer
 	 */
 	protected function getResultRows_SQLpointer($searchWords, $freeIndexUid = -1) {

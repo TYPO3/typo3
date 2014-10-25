@@ -507,7 +507,7 @@ class HelpModuleController {
 	 * Returns header HTML content
 	 *
 	 * @param string $str Header text
-	 * @param integer $type Header type (1, 0)
+	 * @param int $type Header type (1, 0)
 	 * @return string The HTML for the header.
 	 */
 	public function headerLine($str, $type = 0) {

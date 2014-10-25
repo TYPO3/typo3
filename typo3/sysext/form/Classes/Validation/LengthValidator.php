@@ -76,7 +76,7 @@ class LengthValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	/**
 	 * Set the minimum value
 	 *
-	 * @param integer $minimum Minimum value
+	 * @param int $minimum Minimum value
 	 * @return object Rule object
 	 */
 	public function setMinimum($minimum) {
@@ -87,7 +87,7 @@ class LengthValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	/**
 	 * Set the maximum value
 	 *
-	 * @param integer $maximum Maximum value
+	 * @param int $maximum Maximum value
 	 * @return object Rule object
 	 */
 	public function setMaximum($maximum) {

@@ -46,7 +46,7 @@ class FrontendEditPanel {
 	 * @param array $dataArr Alternative data array to use. Default is $this->data
 	 * @param string $table
 	 * @param string $allow
-	 * @param integer $newUID
+	 * @param int $newUID
 	 * @param array $hiddenFields
 	 * @return string The input content string with the editPanel appended. This function returns only an edit panel appended to the content string if a backend user is logged in (and has the correct permissions). Otherwise the content string is directly returned.
 	 */
@@ -165,7 +165,7 @@ class FrontendEditPanel {
 	 * @param array $dataArr Alternative data array to use. Default is $this->data
 	 * @param string $addUrlParamStr Additional URL parameters for the link pointing to alt_doc.php
 	 * @param string $table
-	 * @param integer $editUid
+	 * @param int $editUid
 	 * @param string $fieldList
 	 * @return string The input content string, possibly with edit icons added (not necessarily in the end but just after the last string of normal content.
 	 */

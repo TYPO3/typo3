@@ -421,7 +421,7 @@ class TemplateService {
 	 * Also creates $this->rootLine which is a root line stopping at the root template (contrary to $GLOBALS['TSFE']->rootLine which goes all the way to the root of the tree
 	 *
 	 * @param array $theRootLine The rootline of the current page (going ALL the way to tree root)
-	 * @param integer $start_template_uid Set specific template record UID to select; this is only for debugging/development/analysis use in backend modules like "Web > Template". For parsing TypoScript templates in the frontend it should be 0 (zero)
+	 * @param int $start_template_uid Set specific template record UID to select; this is only for debugging/development/analysis use in backend modules like "Web > Template". For parsing TypoScript templates in the frontend it should be 0 (zero)
 	 * @return void
 	 * @see start()
 	 */
@@ -1040,7 +1040,7 @@ class TemplateService {
 	 * The concept is known as "optionSplit" and is rather advanced to handle but quite powerful, in particular for creating menus in TYPO3.
 	 *
 	 * @param array $conf A TypoScript array
-	 * @param integer $splitCount The number of items for which to generated individual TypoScript arrays
+	 * @param int $splitCount The number of items for which to generated individual TypoScript arrays
 	 * @return array The individualized TypoScript array.
 	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::IMGTEXT(), \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::procesItemStates()
 	 */
@@ -1385,7 +1385,7 @@ class TemplateService {
 	 * Initializes the automatically created MPmap coming from the "config.MP_mapRootPoints" setting
 	 * Can be called many times with overhead only the first time since then the map is generated and cached in memory.
 	 *
-	 * @param integer $pageId Page id to return MPvar value for.
+	 * @param int $pageId Page id to return MPvar value for.
 	 * @return string
 	 * @see initMPmap_create()
 	 * @todo Implement some caching of the result between hits. (more than just the memory caching used here)
@@ -1418,9 +1418,9 @@ class TemplateService {
 	/**
 	 * Creating MPmap for a certain ID root point.
 	 *
-	 * @param integer $id Root id from which to start map creation.
+	 * @param int $id Root id from which to start map creation.
 	 * @param array $MP_array MP_array passed from root page.
-	 * @param integer $level Recursion brake. Incremented for each recursive call. 20 is the limit.
+	 * @param int $level Recursion brake. Incremented for each recursive call. 20 is the limit.
 	 * @return void
 	 * @see getFromMPvar()
 	 */

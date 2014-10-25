@@ -827,7 +827,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
 	 * Much of this functionality is taken from t3lib_tcemain::clear_cache() which unfortunately only works with logged-in BE user.
 	 *
 	 * @param string $tableName Table name of the record
-	 * @param integer $uid UID of the record
+	 * @param int $uid UID of the record
 	 * @return void
 	 */
 	protected function clearPageCache($tableName, $uid) {

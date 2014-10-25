@@ -127,7 +127,7 @@ class PagePositionMap {
 	/**
 	 * Creates a "position tree" based on the page tree.
 	 *
-	 * @param integer $id Current page id
+	 * @param int $id Current page id
 	 * @param array $pageinfo Current page record.
 	 * @param string $perms_clause Page selection permission clause.
 	 * @param string $R_URI Current REQUEST_URI
@@ -243,7 +243,7 @@ class PagePositionMap {
 	 *
 	 * @param string $t_code Title string
 	 * @param array $dat Infomation array with record array inside.
-	 * @param integer $id The current id.
+	 * @param int $id The current id.
 	 * @return string The title string.
 	 */
 	public function boldTitle($t_code, $dat, $id) {
@@ -259,8 +259,8 @@ class PagePositionMap {
 	 * TSconfig mod.web_list.newPageWiz.overrideWithExtension may contain an extension which provides a module
 	 * to be used instead of the normal create new page wizard.
 	 *
-	 * @param integer $pid The pid.
-	 * @param integer $newPagePID New page id.
+	 * @param int $pid The pid.
+	 * @param int $newPagePID New page id.
 	 * @return string Onclick attribute content
 	 */
 	public function onClickEvent($pid, $newPagePID) {
@@ -299,7 +299,7 @@ class PagePositionMap {
 	 * Checks if the user has permission to created pages inside of the $pid page.
 	 * Uses caching so only one regular lookup is made - hence you can call the function multiple times without worrying about performance.
 	 *
-	 * @param integer $pid Page id for which to test.
+	 * @param int $pid Page id for which to test.
 	 * @return boolean
 	 */
 	public function checkNewPageInPid($pid) {
@@ -313,7 +313,7 @@ class PagePositionMap {
 	/**
 	 * Returns module configuration for a pid.
 	 *
-	 * @param integer $pid Page id for which to get the module configuration.
+	 * @param int $pid Page id for which to get the module configuration.
 	 * @return array The properties of teh module configuration for the page id.
 	 * @see onClickEvent()
 	 */
@@ -353,8 +353,8 @@ class PagePositionMap {
 	/**
 	 * Creates HTML for inserting/moving content elements.
 	 *
-	 * @param integer $pid page id onto which to insert content element.
-	 * @param integer $moveUid Move-uid (tt_content element uid?)
+	 * @param int $pid page id onto which to insert content element.
+	 * @param int $moveUid Move-uid (tt_content element uid?)
 	 * @param string $colPosList List of columns to show
 	 * @param bool $showHidden If not set, then hidden/starttime/endtime records are filtered out.
 	 * @param string $R_URI Request URI
@@ -386,7 +386,7 @@ class PagePositionMap {
 	 *
 	 * @param array $lines Array with arrays of lines for each column
 	 * @param array $colPosArray Column position array
-	 * @param integer $pid The id of the page
+	 * @param int $pid The id of the page
 	 * @return string HTML
 	 */
 	public function printRecordMap($lines, $colPosArray, $pid = 0) {
@@ -482,9 +482,9 @@ class PagePositionMap {
 	 * @param mixed $row Element row. If this is an array the link will cause an insert after this content element, otherwise
 	 * the link will insert at the first position in the column
 	 * @param string $vv Column position value.
-	 * @param integer $kk Column key.
-	 * @param integer $moveUid Move uid
-	 * @param integer $pid PID value.
+	 * @param int $kk Column key.
+	 * @param int $moveUid Move uid
+	 * @param int $pid PID value.
 	 * @return string
 	 */
 	public function insertPositionIcon($row, $vv, $kk, $moveUid, $pid) {
@@ -505,9 +505,9 @@ class PagePositionMap {
 	 * @param mixed $row The record. If this is not an array with the record data the insert will be for the first position
 	 * in the column
 	 * @param string $vv Column position value.
-	 * @param integer $moveUid Move uid
-	 * @param integer $pid PID value.
-	 * @param integer $sys_lang System language (not used currently)
+	 * @param int $moveUid Move uid
+	 * @param int $pid PID value.
+	 * @param int $sys_lang System language (not used currently)
 	 * @return string
 	 */
 	public function onClickInsertRecord($row, $vv, $moveUid, $pid, $sys_lang = 0) {

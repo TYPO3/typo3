@@ -140,7 +140,7 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider sectionIndexFiltersDataProvider
-	 * @param integer $expectedAmount
+	 * @param int $expectedAmount
 	 * @param array $dataRow
 	 */
 	public function sectionIndexFilters($expectedAmount, array $dataRow) {

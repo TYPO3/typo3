@@ -156,8 +156,8 @@ class NormalizeCommand {
 	 *
 	 * @throws \InvalidArgumentException If field is invalid or out of bounds
 	 * @param string $expression Expression
-	 * @param integer $lowerBound Lower limit of result list
-	 * @param integer $upperBound Upper limit of result list
+	 * @param int $lowerBound Lower limit of result list
+	 * @param int $upperBound Upper limit of result list
 	 * @return string Normalized expression
 	 */
 	static protected function normalizeIntegerField($expression, $lowerBound = 0, $upperBound = 59) {

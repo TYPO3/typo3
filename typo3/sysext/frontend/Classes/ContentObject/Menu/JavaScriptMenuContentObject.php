@@ -85,9 +85,9 @@ class JavaScriptMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu
 	 * Generates a number of lines of JavaScript code for a menu level.
 	 * Calls itself recursively for additional levels.
 	 *
-	 * @param integer $levels Number of levels to generate
-	 * @param integer $count Current level being generated - and if this number is less than $levels it will call itself recursively with $count incremented
-	 * @param integer $pid Page id of the starting point.
+	 * @param int $levels Number of levels to generate
+	 * @param int $count Current level being generated - and if this number is less than $levels it will call itself recursively with $count incremented
+	 * @param int $pid Page id of the starting point.
 	 * @param array $menuItemArray $this->menuArr passed along
 	 * @param array $MP_array Previous MP vars
 	 * @return string JavaScript code lines.

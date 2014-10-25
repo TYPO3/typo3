@@ -33,7 +33,7 @@ class DependencyEntityFactory {
 	 * Gets and registers a new element.
 	 *
 	 * @param string $table
-	 * @param integer $id
+	 * @param int $id
 	 * @param array $data (optional)
 	 * @param \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency
 	 * @return \TYPO3\CMS\Version\Dependency\ElementEntity
@@ -67,7 +67,7 @@ class DependencyEntityFactory {
 	 * Gets and registers a new reference.
 	 *
 	 * @param string $table
-	 * @param integer $id
+	 * @param int $id
 	 * @param string $field
 	 * @param array $data (optional)
 	 * @param \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency

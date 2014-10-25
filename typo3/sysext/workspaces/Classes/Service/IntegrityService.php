@@ -224,7 +224,7 @@ class IntegrityService {
 	 * Adds an issue.
 	 *
 	 * @param string $identifier Record identifier (table:id)
-	 * @param integer $status Status code (see constants)
+	 * @param int $status Status code (see constants)
 	 * @param string $message Message/description of the issue
 	 * @return void
 	 */

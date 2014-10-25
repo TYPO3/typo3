@@ -141,7 +141,7 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Set number of log rows to show
 	 *
-	 * @param integer $number
+	 * @param int $number
 	 * @return void
 	 */
 	public function setNumber($number) {
@@ -179,7 +179,7 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Set time frame
 	 *
-	 * @param integer $timeFrame
+	 * @param int $timeFrame
 	 * @return void
 	 */
 	public function setTimeFrame($timeFrame) {
@@ -198,7 +198,7 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Set action
 	 *
-	 * @param integer $action
+	 * @param int $action
 	 * @return void
 	 */
 	public function setAction($action) {
@@ -274,7 +274,7 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Set calculated start timestamp from query constraints
 	 *
-	 * @param integer $timestamp
+	 * @param int $timestamp
 	 * @return void
 	 */
 	public function setStartTimestamp($timestamp) {
@@ -293,7 +293,7 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Set calculated end timestamp from query constraints
 	 *
-	 * @param integer $timestamp
+	 * @param int $timestamp
 	 * @return void
 	 */
 	public function setEndTimestamp($timestamp) {
@@ -331,7 +331,7 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Set page id
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 * @return void
 	 */
 	public function setPageId($id) {
@@ -350,7 +350,7 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Set page level depth
 	 *
-	 * @param integer $depth
+	 * @param int $depth
 	 * @return void
 	 */
 	public function setDepth($depth) {

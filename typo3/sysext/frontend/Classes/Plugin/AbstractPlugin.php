@@ -236,7 +236,7 @@ class AbstractPlugin {
 	 * Recursively looks for stdWrap and executes it
 	 *
 	 * @param array $conf Current section of configuration to work on
-	 * @param integer $level Current level being processed (currently just for tracking; no limit enforced)
+	 * @param int $level Current level being processed (currently just for tracking; no limit enforced)
 	 * @return array Current section of configuration after stdWrap applied
 	 */
 	protected function applyStdWrapRecursive(array $conf, $level = 0) {
@@ -293,7 +293,7 @@ class AbstractPlugin {
 	 *
 	 * The function basically calls $this->cObj->getTypoLink_URL()
 	 *
-	 * @param integer $id Page id
+	 * @param int $id Page id
 	 * @param string $target Target value to use. Affects the &type-value of the URL, defaults to current.
 	 * @param array|string $urlParameters As an array key/value pairs represent URL parameters to set. Values NOT URL-encoded yet, keys should be URL-encoded if needed. As a string the parameter is expected to be URL-encoded already.
 	 * @return string The resulting URL
@@ -310,7 +310,7 @@ class AbstractPlugin {
 	 * Simple example: $this->pi_linkToPage('My link', 123) to get something like <a href="index.php?id=123&type=1">My link</a>
 	 *
 	 * @param string $str The content string to wrap in <a> tags
-	 * @param integer $id Page id
+	 * @param int $id Page id
 	 * @param string $target Target value to use. Affects the &type-value of the URL, defaults to current.
 	 * @param array|string $urlParameters As an array key/value pairs represent URL parameters to set. Values NOT URL-encoded yet, keys should be URL-encoded if needed. As a string the parameter is expected to be URL-encoded already.
 	 * @return string The input string wrapped in <a> tags with the URL and target set.
@@ -327,7 +327,7 @@ class AbstractPlugin {
 	 * @param string $str The content string to wrap in <a> tags
 	 * @param array $urlParameters Array with URL parameters as key/value pairs. They will be "imploded" and added to the list of parameters defined in the plugins TypoScript property "parent.addParams" plus $this->pi_moreParams.
 	 * @param bool $cache If $cache is set (0/1), the page is asked to be cached by a &cHash value (unless the current plugin using this class is a USER_INT). Otherwise the no_cache-parameter will be a part of the link.
-	 * @param integer $altPageId Alternative page ID for the link. (By default this function links to the SAME page!)
+	 * @param int $altPageId Alternative page ID for the link. (By default this function links to the SAME page!)
 	 * @return string The input string wrapped in <a> tags
 	 * @see pi_linkTP_keepPIvars(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink()
 	 */
@@ -349,7 +349,7 @@ class AbstractPlugin {
 	 * @param array $overrulePIvars Array of values to override in the current piVars. Contrary to pi_linkTP the keys in this array must correspond to the real piVars array and therefore NOT be prefixed with the $this->prefixId string. Further, if a value is a blank string it means the piVar key will not be a part of the link (unset)
 	 * @param bool $cache If $cache is set, the page is asked to be cached by a &cHash value (unless the current plugin using this class is a USER_INT). Otherwise the no_cache-parameter will be a part of the link.
 	 * @param bool $clearAnyway If set, then the current values of piVars will NOT be preserved anyways... Practical if you want an easy way to set piVars without having to worry about the prefix, "tx_xxxxx[]
-	 * @param integer $altPageId Alternative page ID for the link. (By default this function links to the SAME page!)
+	 * @param int $altPageId Alternative page ID for the link. (By default this function links to the SAME page!)
 	 * @return string The input string wrapped in <a> tags
 	 * @see pi_linkTP()
 	 */
@@ -374,7 +374,7 @@ class AbstractPlugin {
 	 * @param array $overrulePIvars See pi_linkTP_keepPIvars
 	 * @param bool $cache See pi_linkTP_keepPIvars
 	 * @param bool $clearAnyway See pi_linkTP_keepPIvars
-	 * @param integer $altPageId See pi_linkTP_keepPIvars
+	 * @param int $altPageId See pi_linkTP_keepPIvars
 	 * @return string The URL ($this->cObj->lastTypoLinkUrl)
 	 * @see pi_linkTP_keepPIvars()
 	 */
@@ -388,11 +388,11 @@ class AbstractPlugin {
 	 * Uses pi_linkTP for the linking
 	 *
 	 * @param string $str The content string to wrap in <a> tags
-	 * @param integer $uid UID of the record for which to display details (basically this will become the value of [showUid]
+	 * @param int $uid UID of the record for which to display details (basically this will become the value of [showUid]
 	 * @param bool $cache See pi_linkTP_keepPIvars
 	 * @param array $mergeArr Array of values to override in the current piVars. Same as $overrulePIvars in pi_linkTP_keepPIvars
 	 * @param bool $urlOnly If TRUE, only the URL is returned, not a full link
-	 * @param integer $altPageId Alternative page ID for the link. (By default this function links to the SAME page!)
+	 * @param int $altPageId Alternative page ID for the link. (By default this function links to the SAME page!)
 	 * @return string The input string wrapped in <a> tags
 	 * @see pi_linkTP(), pi_linkTP_keepPIvars()
 	 */
@@ -453,7 +453,7 @@ class AbstractPlugin {
 	 * If $wrapArr['showResultsNumbersWrap'] is set, the formatting string is expected to hold template markers (###FROM###, ###TO###, ###OUT_OF###, ###FROM_TO###, ###CURRENT_PAGE###, ###TOTAL_PAGES###)
 	 * otherwise the formatting string is expected to hold sprintf-markers (%s) for from, to, outof (in that sequence)
 	 *
-	 * @param integer $showResultCount Determines how the results of the pagerowser will be shown. See description below
+	 * @param int $showResultCount Determines how the results of the pagerowser will be shown. See description below
 	 * @param string $tableParams Attributes for the table tag which is wrapped around the table cells containing the browse links
 	 * @param array $wrapArr Array with elements to overwrite the default $wrapper-array.
 	 * @param string $pointerName varname for the pointer.
@@ -704,7 +704,7 @@ class AbstractPlugin {
 	 * (Dummy)
 	 * Notice: This function should ALWAYS be defined in the extension class of the plugin since it is directly concerned with the specific layout of the listing for your plugins purpose.
 	 *
-	 * @param integer $c Row counting. Starts at 0 (zero). Used for alternating class values in the output rows.
+	 * @param int $c Row counting. Starts at 0 (zero). Used for alternating class values in the output rows.
 	 * @return string HTML output, a table row with a class attribute set (alternative based on odd/even rows)
 	 */
 	public function pi_list_row($c) {
@@ -1054,7 +1054,7 @@ class AbstractPlugin {
 	 * (Simply calling $GLOBALS['TSFE']->sys_page->checkRecord())
 	 *
 	 * @param string $table The table name
-	 * @param integer $uid The uid of the record from the table
+	 * @param int $uid The uid of the record from the table
 	 * @param bool $checkPage If $checkPage is set, it's required that the page on which the record resides is accessible
 	 * @return array If record is found, an array. Otherwise FALSE.
 	 */
@@ -1066,7 +1066,7 @@ class AbstractPlugin {
 	 * Returns a commalist of page ids for a query (eg. 'WHERE pid IN (...)')
 	 *
 	 * @param string $pid_list A comma list of page ids (if empty current page is used)
-	 * @param integer$recursive An integer >=0 telling how deep to dig for pids under each entry in $pid_list
+	 * @param int$recursive An integer >=0 telling how deep to dig for pids under each entry in $pid_list
 	 * @return string List of PID values (comma separated)
 	 */
 	public function pi_getPidList($pid_list, $recursive = 0) {
@@ -1108,7 +1108,7 @@ class AbstractPlugin {
 	 * Will select all records from the "category table", $table, and return them in an array.
 	 *
 	 * @param string $table The name of the category table to select from.
-	 * @param integer $pid The page from where to select the category records.
+	 * @param int $pid The page from where to select the category records.
 	 * @param string $whereClause Optional additional WHERE clauses put in the end of the query. DO NOT PUT IN GROUP BY, ORDER BY or LIMIT!
 	 * @param string $groupBy Optional GROUP BY field(s), if none, supply blank string.
 	 * @param string $orderBy Optional ORDER BY field(s), if none, supply blank string.
@@ -1135,7 +1135,7 @@ class AbstractPlugin {
 	 * Notice that this function will only work as long as values are integers.
 	 *
 	 * @param string $fList List of fields (keys from piVars) to evaluate on
-	 * @param integer $lowerThan Limit for the values.
+	 * @param int $lowerThan Limit for the values.
 	 * @return boolean Returns TRUE (1) if conditions are met.
 	 */
 	public function pi_isOnlyFields($fList, $lowerThan = -1) {

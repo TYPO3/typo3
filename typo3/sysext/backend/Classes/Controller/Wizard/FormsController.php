@@ -869,7 +869,7 @@ class FormsController {
 	 * Checks access for element
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid Record uid
+	 * @param int $uid Record uid
 	 * @return boolean
 	 * @todo: Refactor to remove duplicate code (see TableController, RteController)
 	 */

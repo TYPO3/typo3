@@ -77,7 +77,7 @@ class NullTimeTracker {
 	 * does nothing
 	 *
 	 * @param string $content The message string
-	 * @param integer $num Message type: 0: information, 1: message, 2: warning, 3: error
+	 * @param int $num Message type: 0: information, 1: message, 2: warning, 3: error
 	 * @return void
 	 */
 	public function setTSlogMessage($content, $num = 0) {

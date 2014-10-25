@@ -46,7 +46,7 @@ class Evaluator {
 	 *
 	 * @param mixed $value The value that has to be checked.
 	 * @param string $is_in Is-In String
-	 * @param integer $set Determines if the field can be set (value correct) or not, e.g. if input is required but the value is empty, then $set should be set to FALSE. (PASSED BY REFERENCE!)
+	 * @param int $set Determines if the field can be set (value correct) or not, e.g. if input is required but the value is empty, then $set should be set to FALSE. (PASSED BY REFERENCE!)
 	 * @return The new value of the field
 	 */
 	public function evaluateFieldValue($value, $is_in, &$set) {

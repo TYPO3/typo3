@@ -363,7 +363,7 @@ class UriBuilder {
 	/**
 	 * Uid of the target page
 	 *
-	 * @param integer $targetPageUid
+	 * @param int $targetPageUid
 	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
 	 * @api
 	 */
@@ -385,7 +385,7 @@ class UriBuilder {
 	/**
 	 * Sets the page type of the target URI. Defaults to 0
 	 *
-	 * @param integer $targetPageType
+	 * @param int $targetPageType
 	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
 	 * @api
 	 */

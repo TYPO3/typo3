@@ -211,7 +211,7 @@ class TextElement extends AbstractFormElement {
 	/**
 	 * Returns parameters to set with for a textarea field
 	 *
-	 * @param integer $size The abstract width (1-48)
+	 * @param int $size The abstract width (1-48)
 	 * @param string $wrap Empty or "off" (text wrapping in the field or not)
 	 * @return string The "cols" attribute string (or style from formWidth())
 	 * @see formWidth()

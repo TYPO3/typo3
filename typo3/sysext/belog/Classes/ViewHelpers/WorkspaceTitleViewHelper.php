@@ -30,7 +30,7 @@ class WorkspaceTitleViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
 	/**
 	 * Resolve workspace title from UID.
 	 *
-	 * @param integer $uid UID of the workspace
+	 * @param int $uid UID of the workspace
 	 * @return string username or UID
 	 */
 	public function render($uid) {

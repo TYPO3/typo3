@@ -232,7 +232,7 @@ class PersistentObjectConverterTest extends UnitTestCase {
 	}
 
 	/**
-	 * @param integer $numberOfResults
+	 * @param int $numberOfResults
 	 * @param Matcher $howOftenIsGetFirstCalled
 	 * @return \stdClass
 	 */

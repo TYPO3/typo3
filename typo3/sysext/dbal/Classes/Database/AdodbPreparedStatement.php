@@ -219,7 +219,7 @@ class AdodbPreparedStatement extends \TYPO3\CMS\Dbal\Database\DatabaseConnection
 	/**
 	 * Seeks to an arbitrary row in statement result set.
 	 *
-	 * @param integer $offset Must be between zero and the total number of rows minus one
+	 * @param int $offset Must be between zero and the total number of rows minus one
 	 * @return boolean TRUE on success or FALSE on failure
 	 */
 	public function data_seek($offset) {

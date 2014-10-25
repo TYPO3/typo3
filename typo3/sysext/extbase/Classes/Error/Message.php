@@ -60,7 +60,7 @@ class Message {
 	 * Constructs this error
 	 *
 	 * @param string $message An english error message which is used if no other error message can be resolved
-	 * @param integer $code A unique error code
+	 * @param int $code A unique error code
 	 * @param array $arguments Array of arguments to be replaced in message
 	 * @param string $title optional title for the message
 	 * @api

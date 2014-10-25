@@ -61,7 +61,7 @@ class DataHandlerHook {
 	 * for all existing records in that stage to avoid that any of these end up
 	 * as orphan records.
 	 *
-	 * @param integer $stageId Elements with this stage are resetted
+	 * @param int $stageId Elements with this stage are resetted
 	 * @return void
 	 */
 	protected function resetStageOfElements($stageId) {
@@ -79,7 +79,7 @@ class DataHandlerHook {
 	/**
 	 * Flushes elements of a particular workspace to avoid orphan records.
 	 *
-	 * @param integer $workspaceId The workspace to be flushed
+	 * @param int $workspaceId The workspace to be flushed
 	 * @return void
 	 */
 	protected function flushWorkspaceElements($workspaceId) {
@@ -125,7 +125,7 @@ class DataHandlerHook {
 	/**
 	 * Flushes the workspace cache for current workspace and for the virtual "all workspaces" too.
 	 *
-	 * @param integer $workspaceId The workspace to be flushed in cache
+	 * @param int $workspaceId The workspace to be flushed in cache
 	 * @return void
 	 */
 	protected function flushWorkspaceCacheEntriesByWorkspaceId($workspaceId) {

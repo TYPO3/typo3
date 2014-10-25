@@ -25,7 +25,7 @@ interface PageRepositoryGetPageOverlayHookInterface {
 	 * enables to preprocess the pageoverlay
 	 *
 	 * @param array $pageInput The page record
-	 * @param integer $lUid The overlay language
+	 * @param int $lUid The overlay language
 	 * @param \TYPO3\CMS\Frontend\Page\PageRepository $parent The calling parent object
 	 * @return void
 	 */

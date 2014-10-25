@@ -67,7 +67,7 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $fileReference Input is a file-reference (see \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName). That file is expected to be a supported locallang file format
 	 * @param string $languageKey Language key
 	 * @param string $charset Character set (option); if not set, determined by the language key
-	 * @param integer $errorMode Error mode (when file could not be found): 0 - syslog entry, 1 - do nothing, 2 - throw an exception$
+	 * @param int $errorMode Error mode (when file could not be found): 0 - syslog entry, 1 - do nothing, 2 - throw an exception$
 	 * @param bool $isLocalizationOverride TRUE if $fileReference is a localization override
 	 * @return array|boolean
 	 */
@@ -119,7 +119,7 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $fileReference
 	 * @param string $languageKey
 	 * @param string $charset
-	 * @param integer $errorMode
+	 * @param int $errorMode
 	 * @param array $LOCAL_LANG
 	 * @return void
 	 */

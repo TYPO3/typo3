@@ -142,7 +142,7 @@ class MetaDataRepository implements SingletonInterface {
 	/**
 	 * Remove all metadata records for a certain file from the database
 	 *
-	 * @param integer $fileUid
+	 * @param int $fileUid
 	 * @return void
 	 */
 	public function removeByFileUid($fileUid) {
@@ -203,7 +203,7 @@ class MetaDataRepository implements SingletonInterface {
 	/**
 	 * Signal that is called after an IndexRecord is deleted
 	 *
-	 * @param integer $fileUid
+	 * @param int $fileUid
 	 * @signal
 	 */
 	protected function emitRecordDeletedSignal($fileUid) {

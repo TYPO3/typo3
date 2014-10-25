@@ -102,9 +102,9 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
 	 * @param string $controller Target controller
 	 * @param string $extensionName Target Extension Name (without "tx_" prefix and no underscores). If NULL the current extension name is used
 	 * @param string $pluginName Target plugin. If empty, the current plugin name is used
-	 * @param integer $pageUid Target page uid
+	 * @param int $pageUid Target page uid
 	 * @param mixed $object Object to use for the form. Use in conjunction with the "property" attribute on the sub tags
-	 * @param integer $pageType Target page type
+	 * @param int $pageType Target page type
 	 * @param bool $noCache set this to disable caching for the target page. You should not need this.
 	 * @param bool $noCacheHash set this to supress the cHash query parameter created by TypoLink. You should not need this.
 	 * @param string $section The anchor to be added to the action URI (only active if $actionUri is not set)

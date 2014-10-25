@@ -121,7 +121,7 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response {
 	/**
 	 * Sets the HTTP status code and (optionally) a customized message.
 	 *
-	 * @param integer $code The status code
+	 * @param int $code The status code
 	 * @param string $message If specified, this message is sent instead of the standard message
 	 * @throws \InvalidArgumentException if the specified status code is not valid
 	 * @return void

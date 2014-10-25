@@ -35,8 +35,8 @@ class RepositoryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	/**
 	 * Updates ExtCount and lastUpdated in Repository eg after import
 	 *
-	 * @param integer $extCount
-	 * @param integer $uid
+	 * @param int $extCount
+	 * @param int $uid
 	 * @return void
 	 */
 	public function updateRepositoryCount($extCount, $uid = 1) {

@@ -267,7 +267,7 @@ class StagesService {
 	/**
 	 * Gets the title of a stage.
 	 *
-	 * @param integer $ver_stage
+	 * @param int $ver_stage
 	 * @return string
 	 */
 	public function getStageTitle($ver_stage) {
@@ -295,7 +295,7 @@ class StagesService {
 	/**
 	 * Gets a particular stage record.
 	 *
-	 * @param integer $stageid
+	 * @param int $stageid
 	 * @return array
 	 */
 	public function getStageRecord($stageid) {
@@ -305,7 +305,7 @@ class StagesService {
 	/**
 	 * Gets next stage in process for given stage id
 	 *
-	 * @param integer $stageId Id of the stage to fetch the next one for
+	 * @param int $stageId Id of the stage to fetch the next one for
 	 * @return integer The next stage Id
 	 * @throws \InvalidArgumentException
 	 */
@@ -342,7 +342,7 @@ class StagesService {
 	 * Recursive function to get all next stages for a record depending on user permissions
 	 *
 	 * @param array $nextStageArray Next stages
-	 * @param integer $stageId Current stage id of the record
+	 * @param int $stageId Current stage id of the record
 	 * @return array Next stages
 	 */
 	public function getNextStages(array &$nextStageArray, $stageId) {
@@ -372,7 +372,7 @@ class StagesService {
 	/**
 	 * Get next stage in process for given stage id
 	 *
-	 * @param integer $stageId Id of the stage to fetch the previous one for
+	 * @param int $stageId Id of the stage to fetch the previous one for
 	 * @return integer The previous stage Id
 	 * @throws \InvalidArgumentException
 	 */
@@ -402,7 +402,7 @@ class StagesService {
 	 * Recursive function to get all prev stages for a record depending on user permissions
 	 *
 	 * @param array	$prevStageArray Prev stages
-	 * @param integer $stageId Current stage id of the record
+	 * @param int $stageId Current stage id of the record
 	 * @return array prev stages
 	 */
 	public function getPrevStages(array &$prevStageArray, $stageId) {
@@ -425,7 +425,7 @@ class StagesService {
 	/**
 	 * Get array of all responsilbe be_users for a stage
 	 *
-	 * @param integer $stageId Stage id
+	 * @param int $stageId Stage id
 	 * @param bool $selectDefaultUserField If field notification_defaults should be selected instead of responsible users
 	 * @return array be_users with e-mail and name
 	 */
@@ -591,7 +591,7 @@ class StagesService {
 	/**
 	 * Gets a property of a workspaces stage.
 	 *
-	 * @param integer $stageId
+	 * @param int $stageId
 	 * @param string $property
 	 * @return string
 	 * @throws \InvalidArgumentException
@@ -612,7 +612,7 @@ class StagesService {
 	 * Gets the position of the given workspace in the hole process
 	 * f.e. 3 means step 3 of 20, by which 1 is edit and 20 is ready to publish
 	 *
-	 * @param integer $stageId
+	 * @param int $stageId
 	 * @return array position => 3, count => 20
 	 */
 	public function getPositionOfCurrentStage($stageId) {
@@ -640,7 +640,7 @@ class StagesService {
 	/**
 	 * Check if the user has access to the previous stage, relative to the given stage
 	 *
-	 * @param integer $stageId
+	 * @param int $stageId
 	 * @return boolean
 	 */
 	public function isPrevStageAllowedForUser($stageId) {
@@ -662,7 +662,7 @@ class StagesService {
 	/**
 	 * Check if the user has access to the next stage, relative to the given stage
 	 *
-	 * @param integer $stageId
+	 * @param int $stageId
 	 * @return boolean
 	 */
 	public function isNextStageAllowedForUser($stageId) {
@@ -700,7 +700,7 @@ class StagesService {
 	/**
 	 * Determines whether a stage Id is valid.
 	 *
-	 * @param integer $stageId The stage Id to be checked
+	 * @param int $stageId The stage Id to be checked
 	 * @return boolean
 	 */
 	public function isValid($stageId) {
@@ -723,7 +723,7 @@ class StagesService {
 	 * 1 = notify all responsible users (some users checked per default and you're not allowed to uncheck them)
 	 * 2 = notify all responsible users (all users are checked and nothing can be changed during stage change)
 	 *
-	 * @param integer $stageId Stage id to return the notification mode for
+	 * @param int $stageId Stage id to return the notification mode for
 	 * @return integer
 	 * @throws \InvalidArgumentException
 	 */

@@ -27,7 +27,7 @@ interface InterceptorInterface {
 	 * that will be used in place of the given node.
 	 *
 	 * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface $node
-	 * @param integer $interceptorPosition One of the INTERCEPT_* constants for the current interception point
+	 * @param int $interceptorPosition One of the INTERCEPT_* constants for the current interception point
 	 * @param \TYPO3\CMS\Fluid\Core\Parser\ParsingState $parsingState the parsing state
 	 * @return \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface
 	 */

@@ -147,7 +147,7 @@ class ResourceFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @param array $storageConfiguration
 	 * @param string $path
-	 * @param integer $expectedStorageId
+	 * @param int $expectedStorageId
 	 * @test
 	 * @dataProvider storageDetectionDataProvider
 	 */

@@ -49,7 +49,7 @@ class HistoryService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Gets the editing history of a record.
 	 *
 	 * @param string $table Name of the table
-	 * @param integer $id Uid of the record
+	 * @param int $id Uid of the record
 	 * @return array Record history entries
 	 */
 	public function getHistory($table, $id) {
@@ -134,7 +134,7 @@ class HistoryService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Gets an instance of the record history service.
 	 *
 	 * @param string $table Name of the table
-	 * @param integer $id Uid of the record
+	 * @param int $id Uid of the record
 	 * @return \TYPO3\CMS\Backend\History\RecordHistory
 	 */
 	protected function getHistoryObject($table, $id) {

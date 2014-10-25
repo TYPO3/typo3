@@ -44,8 +44,8 @@ class BytesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 	/**
 	 * Render the supplied byte count as a human readable string.
 	 *
-	 * @param integer $value The incoming data to convert, or NULL if VH children should be used
-	 * @param integer $decimals The number of digits after the decimal point
+	 * @param int $value The incoming data to convert, or NULL if VH children should be used
+	 * @param int $decimals The number of digits after the decimal point
 	 * @param string $decimalSeparator The decimal point character
 	 * @param string $thousandsSeparator The character for grouping the thousand digits
 	 * @return string Formatted byte count

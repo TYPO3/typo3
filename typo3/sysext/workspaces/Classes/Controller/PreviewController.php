@@ -79,7 +79,7 @@ class PreviewController extends AbstractController {
 	 * The preview itself consists of three frames, so there are
 	 * only the frames-urls we've to generate here
 	 *
-	 * @param integer $previewWS
+	 * @param int $previewWS
 	 * @return void
 	 */
 	public function indexAction($previewWS = NULL) {

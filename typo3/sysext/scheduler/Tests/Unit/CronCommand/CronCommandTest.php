@@ -231,8 +231,8 @@ class CronCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 * @dataProvider expectedTimestampDataProvider
 	 * @param string $cronCommand Cron command
-	 * @param integer $startTimestamp Timestamp for start of calculation
-	 * @param integer $expectedTimestamp Expected result (next time of execution)
+	 * @param int $startTimestamp Timestamp for start of calculation
+	 * @param int $expectedTimestamp Expected result (next time of execution)
 	 */
 	public function calculateNextValueDeterminesCorrectNextTimestamp($cronCommand, $startTimestamp, $expectedTimestamp) {
 		$instance = new CronCommand($cronCommand, $startTimestamp);
@@ -244,7 +244,7 @@ class CronCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 * @dataProvider expectedCalculatedTimestampDataProvider
 	 * @param string $cronCommand Cron command
-	 * @param integer $startTimestamp Timestamp for start of calculation
+	 * @param int $startTimestamp Timestamp for start of calculation
 	 * @param string $expectedTimestamp Expected result (next time of execution), to be feeded to strtotime
 	 */
 	public function calculateNextValueDeterminesCorrectNextCalculatedTimestamp($cronCommand, $startTimestamp, $expectedTimestamp) {
@@ -257,9 +257,9 @@ class CronCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 * @dataProvider expectedTimestampDataProvider
 	 * @param string $cronCommand Cron command
-	 * @param integer $startTimestamp [unused] Timestamp for start of calculation
-	 * @param integer $firstTimestamp Timestamp of the next execution
-	 * @param integer $secondTimestamp Timestamp of the further execution
+	 * @param int $startTimestamp [unused] Timestamp for start of calculation
+	 * @param int $firstTimestamp Timestamp of the next execution
+	 * @param int $secondTimestamp Timestamp of the further execution
 	 */
 	public function calculateNextValueDeterminesCorrectNextTimestampOnConsecutiveCall($cronCommand, $startTimestamp, $firstTimestamp, $secondTimestamp) {
 		$instance = new CronCommand($cronCommand, $firstTimestamp);
@@ -271,7 +271,7 @@ class CronCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 * @dataProvider expectedCalculatedTimestampDataProvider
 	 * @param string $cronCommand Cron command
-	 * @param integer $startTimestamp [unused] Timestamp for start of calculation
+	 * @param int $startTimestamp [unused] Timestamp for start of calculation
 	 * @param string $firstTimestamp Timestamp of the next execution, to be fed to strtotime
 	 * @param string $secondTimestamp Timestamp of the further execution, to be fed to strtotime
 	 */

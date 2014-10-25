@@ -90,7 +90,7 @@ class DebuggerUtility {
 	 * Renders a dump of the given value
 	 *
 	 * @param mixed $value
-	 * @param integer $level
+	 * @param int $level
 	 * @param bool $plainText
 	 * @param bool $ansiColors
 	 * @return string
@@ -122,7 +122,7 @@ class DebuggerUtility {
 	 * Renders a dump of the given array
 	 *
 	 * @param array|\Traversable $array
-	 * @param integer $level
+	 * @param int $level
 	 * @param bool $plainText
 	 * @param bool $ansiColors
 	 * @return string
@@ -161,7 +161,7 @@ class DebuggerUtility {
 	 * Renders a dump of the given object
 	 *
 	 * @param object $object
-	 * @param integer $level
+	 * @param int $level
 	 * @param bool $plainText
 	 * @param bool $ansiColors
 	 * @return string
@@ -213,7 +213,7 @@ class DebuggerUtility {
 	 * Renders the header of a given object/collection. It is usually the class name along with some flags.
 	 *
 	 * @param object $object
-	 * @param integer $level
+	 * @param int $level
 	 * @param bool $plainText
 	 * @param bool $ansiColors
 	 * @return string The rendered header with tags
@@ -297,7 +297,7 @@ class DebuggerUtility {
 
 	/**
 	 * @param object $object
-	 * @param integer $level
+	 * @param int $level
 	 * @param bool $plainText
 	 * @param bool $ansiColors
 	 * @return string The rendered body content of the Object(Storage)
@@ -339,7 +339,7 @@ class DebuggerUtility {
 
 	/**
 	 * @param mixed $collection
-	 * @param integer $level
+	 * @param int $level
 	 * @param bool $plainText
 	 * @param bool $ansiColors
 	 * @return string
@@ -377,7 +377,7 @@ class DebuggerUtility {
 	 *
 	 * @param mixed $variable The value to dump
 	 * @param string $title optional custom title for the debug output
-	 * @param integer $maxDepth Sets the max recursion depth of the dump. De- or increase the number according to your needs and memory limit.
+	 * @param int $maxDepth Sets the max recursion depth of the dump. De- or increase the number according to your needs and memory limit.
 	 * @param bool $plainText If TRUE, the dump is in plain text, if FALSE the debug output is in HTML format.
 	 * @param bool $ansiColors If TRUE (default), ANSI color codes is added to the output, if FALSE the debug output not colored.
 	 * @param bool $return if TRUE, the dump is returned for custom post-processing (e.g. embed in custom HTML). If FALSE (default), the dump is directly displayed.

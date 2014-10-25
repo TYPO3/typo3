@@ -187,7 +187,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * Adds the code of a single table
 	 *
 	 * @param string $table Table name
-	 * @param integer $id Current page id
+	 * @param int $id Current page id
 	 * @return string HTML for listing.
 	 */
 	public function getTable($table, $id) {
@@ -211,7 +211,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	/**
 	 * Renders an external table from page id
 	 *
-	 * @param integer $id Page id
+	 * @param int $id Page id
 	 * @param string $table Name of the table
 	 * @return string HTML for the listing
 	 */
@@ -235,7 +235,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * Renders records from the pages table from page id
 	 * (Used to get information about the page tree content by "Web>Info"!)
 	 *
-	 * @param integer $id Page id
+	 * @param int $id Page id
 	 * @return string HTML for the listing
 	 */
 	public function getTable_pages($id) {
@@ -381,7 +381,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	/**
 	 * Returns the backend layout which should be used for this page.
 	 *
-	 * @param integer $id Uid of the current page
+	 * @param int $id Uid of the current page
 	 * @return boolean|string Identifier of the backend layout to be used, or FALSE if none
 	 * @deprecated since TYPO3 CMS 6.2, will be removed two versions later
 	 */
@@ -393,7 +393,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	/**
 	 * Renders Content Elements from the tt_content table from page id
 	 *
-	 * @param integer $id Page id
+	 * @param int $id Page id
 	 * @return string HTML for the listing
 	 */
 	public function getTable_tt_content($id) {
@@ -930,7 +930,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * Creates a standard list of elements from a table.
 	 *
 	 * @param string $table Table name
-	 * @param integer $id Page id.
+	 * @param int $id Page id.
 	 * @param string $fList Comma list of fields to display
 	 * @param bool $icon If TRUE, icon is shown
 	 * @param string $addWhere Additional WHERE-clauses.
@@ -1099,7 +1099,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * This is required for correct workspace overlays.
 	 *
 	 * @param string $table UNUSED (will always be queried from tt_content)
-	 * @param integer $id Page Id to be used (not used at all, but part of the API, see $this->pidSelect)
+	 * @param int $id Page Id to be used (not used at all, but part of the API, see $this->pidSelect)
 	 * @param array $columns colPos values to be considered to be shown
 	 * @param string $additionalWhereClause Additional where clause for database select
 	 * @return array Associative array for each column (colPos)
@@ -1130,10 +1130,10 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * Adds pages-rows to an array, selecting recursively in the page tree.
 	 *
 	 * @param array $theRows Array which will accumulate page rows
-	 * @param integer $pid Pid to select from
+	 * @param int $pid Pid to select from
 	 * @param string $qWhere Query-where clause
 	 * @param string $treeIcons Prefixed icon code.
-	 * @param integer $depth Depth (decreasing)
+	 * @param int $depth Depth (decreasing)
 	 * @return array $theRows, but with added rows.
 	 */
 	public function pages_getTree($theRows, $pid, $qWhere, $treeIcons, $depth) {
@@ -1305,7 +1305,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * Draw the header for a single tt_content element
 	 *
 	 * @param array $row Record array
-	 * @param integer $space Amount of pixel space above the header. UNUSED
+	 * @param int $space Amount of pixel space above the header. UNUSED
 	 * @param bool $disableMoveAndNewButtons If set the buttons for creating new elements and moving up and down are not shown.
 	 * @param bool $langMode If set, we are in language mode and flags will be shown for languages
 	 * @param bool $dragDropEnabled If set the move button must be hidden
@@ -1625,8 +1625,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * for translations and original but this may be a conceptual error (?)
 	 *
 	 * @param array $defLanguageCount Numeric array with uids of tt_content elements in the default language
-	 * @param integer $id Page pid
-	 * @param integer $lP Sys language UID
+	 * @param int $id Page pid
+	 * @param int $lP Sys language UID
 	 * @return array Modified $defLanguageCount
 	 */
 	public function getNonTranslatedTTcontentUids($defLanguageCount, $id, $lP) {
@@ -1652,7 +1652,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * Creates button which is used to create copies of records..
 	 *
 	 * @param array $defLanguageCount Numeric array with uids of tt_content elements in the default language
-	 * @param integer $lP Sys language UID
+	 * @param int $lP Sys language UID
 	 * @return string "Copy languages" button, if available.
 	 */
 	public function newLanguageButton($defLanguageCount, $lP) {
@@ -1676,9 +1676,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	/**
 	 * Creates onclick-attribute content for a new content element
 	 *
-	 * @param integer $id Page id where to create the element.
-	 * @param integer $colPos Preset: Column position value
-	 * @param integer $sys_language Preset: Sys langauge value
+	 * @param int $id Page id where to create the element.
+	 * @param int $colPos Preset: Column position value
+	 * @param int $sys_language Preset: Sys langauge value
 	 * @return string String for onclick attribute.
 	 * @see getTable_tt_content()
 	 */
@@ -1740,7 +1740,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * Displays only languages which are not yet present for the current page and
 	 * that are not disabled with page TS.
 	 *
-	 * @param integer $id Page id for which to create a new language (pages_language_overlay record)
+	 * @param int $id Page id for which to create a new language (pages_language_overlay record)
 	 * @return string <select> HTML element (if there were items for the box anyways...)
 	 * @see getTable_tt_content()
 	 */
@@ -1897,7 +1897,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * Counts and returns the number of records on the page with $pid
 	 *
 	 * @param string $table Table name
-	 * @param integer $pid Page id
+	 * @param int $pid Page id
 	 * @return integer Number of records.
 	 */
 	public function numberOfRecords($table, $pid) {
@@ -1983,7 +1983,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * long strings that will be broken).
 	 *
 	 * @param string $content Content to word-wrap.
-	 * @param integer $max Max number of chars in a word before it will be wrapped.
+	 * @param int $max Max number of chars in a word before it will be wrapped.
 	 * @param string $char Character to insert when wrapping.
 	 * @return string Processed output.
 	 * @deprecated since 6.2 - will be removed two versions later; use CSS instead (word-break: break-all;)
@@ -2113,7 +2113,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * Only tables which has records on the page will be included.
 	 * Notice: The function also fills in the internal variable $this->activeTables with icon/titles.
 	 *
-	 * @param integer $id Page id from which we are listing records (the function will look up if there are records on the page)
+	 * @param int $id Page id from which we are listing records (the function will look up if there are records on the page)
 	 * @return string HTML output.
 	 */
 	public function getTableMenu($id) {

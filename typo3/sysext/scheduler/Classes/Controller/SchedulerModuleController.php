@@ -1418,7 +1418,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	 * This method is used to add a message to the internal queue
 	 *
 	 * @param string $message The message itself
-	 * @param integer $severity Message level (according to FlashMessage class constants)
+	 * @param int $severity Message level (according to FlashMessage class constants)
 	 * @return void
 	 */
 	public function addMessage($message, $severity = FlashMessage::OK) {

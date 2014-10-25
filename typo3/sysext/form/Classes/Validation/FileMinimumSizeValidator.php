@@ -58,7 +58,7 @@ class FileMinimumSizeValidator extends \TYPO3\CMS\Form\Validation\AbstractValida
 	/**
 	 * Set the minimum value
 	 *
-	 * @param integer $minimum Minimum value
+	 * @param int $minimum Minimum value
 	 * @return object Rule object
 	 */
 	public function setMinimum($minimum) {

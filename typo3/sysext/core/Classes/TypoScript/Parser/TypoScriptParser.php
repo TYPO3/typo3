@@ -723,7 +723,7 @@ class TypoScriptParser {
 	 * If "TT" is a global object (as it is in the frontend when backend users are logged in) the message will be registered here as well.
 	 *
 	 * @param string $err The error message string
-	 * @param integer $num The error severity (in the scale of $GLOBALS['TT']->setTSlogMessage: Approx: 2=warning, 1=info, 0=nothing, 3=fatal.)
+	 * @param int $num The error severity (in the scale of $GLOBALS['TT']->setTSlogMessage: Approx: 2=warning, 1=info, 0=nothing, 3=fatal.)
 	 * @return void
 	 */
 	public function error($err, $num = 2) {
@@ -738,7 +738,7 @@ class TypoScriptParser {
 	 * Use: \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::checkIncludeLines()
 	 *
 	 * @param string $string Unparsed TypoScript
-	 * @param integer $cycle_counter Counter for detecting endless loops
+	 * @param int $cycle_counter Counter for detecting endless loops
 	 * @param bool $returnFiles When set an array containing the resulting typoscript and all included files will get returned
 	 * @param string $parentFilenameOrPath The parent file (with absolute path) or path for relative includes
 	 * @return string Complete TypoScript with includes added.
@@ -847,7 +847,7 @@ class TypoScriptParser {
 	 * Further include_typoscript tags in the contents are processed recursively
 	 *
 	 * @param string $filename Relative path to the typoscript file to be included
-	 * @param integer $cycle_counter Counter for detecting endless loops
+	 * @param int $cycle_counter Counter for detecting endless loops
 	 * @param bool $returnFiles When set, filenames of included files will be prepended to the array &$includedFiles
 	 * @param string &$newString The output string to which the content of the file will be prepended (referenced
 	 * @param array &$includedFiles Array to which the filenames of included files will be prepended (referenced)
@@ -895,7 +895,7 @@ class TypoScriptParser {
 	 * Further include_typoscript tags in the contents of the files are processed recursively.
 	 *
 	 * @param string $dirPath Relative path to the directory to be included
-	 * @param integer $cycle_counter Counter for detecting endless loops
+	 * @param int $cycle_counter Counter for detecting endless loops
 	 * @param bool $returnFiles When set, filenames of included files will be prepended to the array &$includedFiles
 	 * @param string &$newString The output string to which the content of the file will be prepended (referenced)
 	 * @param array &$includedFiles Array to which the filenames of included files will be prepended (referenced)
@@ -967,7 +967,7 @@ class TypoScriptParser {
 	 * and save the content between the BEGIN and the END line to the specified file
 	 *
 	 * @param string  $string Template content
-	 * @param integer $cycle_counter Counter for detecting endless loops
+	 * @param int $cycle_counter Counter for detecting endless loops
 	 * @param array   $extractedFileNames
 	 * @param string  $parentFilenameOrPath
 	 *
@@ -1157,8 +1157,8 @@ class TypoScriptParser {
 	 * Registers a part of a TypoScript line for syntax highlighting.
 	 *
 	 * @param string $code Key from the internal array $this->highLightStyles
-	 * @param integer $pointer Pointer to the line in $this->raw which this is about
-	 * @param integer $strlen The number of chars LEFT on this line before the end is reached.
+	 * @param int $pointer Pointer to the line in $this->raw which this is about
+	 * @param int $strlen The number of chars LEFT on this line before the end is reached.
 	 * @return void
 	 * @access private
 	 * @see 	parse()

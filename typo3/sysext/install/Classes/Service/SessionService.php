@@ -382,7 +382,7 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Garbage collect session info. See @session_set_save_handler
 	 *
-	 * @param integer $maxLifeTime The setting of session.gc_maxlifetime
+	 * @param int $maxLifeTime The setting of session.gc_maxlifetime
 	 * @return boolean
 	 */
 	public function gc($maxLifeTime) {

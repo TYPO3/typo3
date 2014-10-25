@@ -557,7 +557,7 @@ class TestSetup extends Action\AbstractAction {
 	/**
 	 * Create a 'image test was done' message
 	 *
-	 * @param integer $parseTime Parse time
+	 * @param int $parseTime Parse time
 	 * @return \TYPO3\CMS\Install\Status\StatusInterface
 	 */
 	protected function imageTestDoneMessage($parseTime = 0) {

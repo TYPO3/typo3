@@ -76,7 +76,7 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
 	/**
 	 * Sets the number of expected log entries.
 	 *
-	 * @param integer $count
+	 * @param int $count
 	 * @return void
 	 */
 	protected function setExpectedLogEntries($count) {
@@ -331,7 +331,7 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
 
 	/**
 	 * @param string $parentTableName
-	 * @param integer $parentId
+	 * @param int $parentId
 	 * @param string $parentFieldName
 	 * @param array $assertions
 	 * @param string $mmTable

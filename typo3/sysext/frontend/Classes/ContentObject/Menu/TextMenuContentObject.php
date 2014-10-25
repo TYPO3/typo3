@@ -207,7 +207,7 @@ class TextMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abstr
 	/**
 	 * Called right before the creation of the link for the menu item
 	 *
-	 * @param integer Pointer to $this->menuArr[$key] where the current menu element record is found
+	 * @param int Pointer to $this->menuArr[$key] where the current menu element record is found
 	 * @return void
 	 * @access private
 	 * @see writeMenu()
@@ -220,7 +220,7 @@ class TextMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abstr
 	 * Called right after the creation of links for the menu item. This is also the last function call before the while-loop traversing menu items goes to the next item.
 	 * This function MUST set $this->WMresult.=[HTML for menu item] to add the generated menu item to the internal accumulation of items.
 	 *
-	 * @param integer Pointer to $this->menuArr[$key] where the current menu element record is found
+	 * @param int Pointer to $this->menuArr[$key] where the current menu element record is found
 	 * @return void
 	 * @access private
 	 * @see writeMenu()
@@ -238,7 +238,7 @@ class TextMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abstr
 	 * Called before the "allWrap" happens on the menu item.
 	 *
 	 * @param string $item The current content of the menu item, $this->I['theItem'], passed along.
-	 * @param integer $key Pointer to $this->menuArr[$key] where the current menu element record is found
+	 * @param int $key Pointer to $this->menuArr[$key] where the current menu element record is found
 	 * @return string The modified version of $item, going back into $this->I['theItem']
 	 * @access private
 	 * @see writeMenu()

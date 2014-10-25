@@ -446,7 +446,7 @@ function jumpToUrl(URL) {
 	 *
 	 * @param string $str String to be wrapped in link, typ. image tag.
 	 * @param string $table Table name/File path. If the icon is for a database record, enter the tablename from $GLOBALS['TCA']. If a file then enter the absolute filepath
-	 * @param integer $uid If icon is for database record this is the UID for the record from $table
+	 * @param int $uid If icon is for database record this is the UID for the record from $table
 	 * @param bool $listFr Tells the top frame script that the link is coming from a "list" frame which means a frame from within the backend content frame.
 	 * @param string $addParams Additional GET parameters for the link to alt_clickmenu.php
 	 * @param string $enDisItems Enable / Disable click menu items. Example: "+new,view" will display ONLY these two items (and any spacers in between), "new,view" will display all BUT these two items.
@@ -465,7 +465,7 @@ function jumpToUrl(URL) {
 	 * $id must be a page-uid
 	 * If the BE_USER has access to Web>List then a link to that module is shown as well (with return-url)
 	 *
-	 * @param integer $id The page id
+	 * @param int $id The page id
 	 * @param string $backPath The current "BACK_PATH" (the back relative to the typo3/ directory)
 	 * @param string $addParams Additional parameters for the image tag(s)
 	 * @return string HTML string with linked icon(s)
@@ -632,7 +632,7 @@ function jumpToUrl(URL) {
 	 * For client browsers with no CSS support the cols/size attribute is returned.
 	 * For CSS compliant browsers (recommended) a ' style="width: ...px;"' is returned.
 	 *
-	 * @param integer $size A relative number which multiplied with approx. 10 will lead to the width in pixels
+	 * @param int $size A relative number which multiplied with approx. 10 will lead to the width in pixels
 	 * @param bool $textarea A flag you can set for textareas - DEPRECATED as there is no difference any more between the two
 	 * @param string $styleOverride A string which will be returned as attribute-value for style="" instead of the calculated width (if CSS is enabled)
 	 * @return string Tag attributes for an <input> tag (regarding width)
@@ -648,7 +648,7 @@ function jumpToUrl(URL) {
 	 * or
 	 * <textarea rows="10" wrap="virtual" '.$GLOBALS["TBE_TEMPLATE"]->formWidthText(48, "", "virtual").'>
 	 *
-	 * @param integer $size A relative number which multiplied with approx. 10 will lead to the width in pixels
+	 * @param int $size A relative number which multiplied with approx. 10 will lead to the width in pixels
 	 * @param string $styleOverride A string which will be returned as attribute-value for style="" instead of the calculated width (if CSS is enabled)
 	 * @param string $wrap Pass on the wrap-attribute value you use in your <textarea>! This will be used to make sure that some browsers will detect wrapping alright.
 	 * @return string Tag attributes for an <input> tag (regarding width)
@@ -686,8 +686,8 @@ function jumpToUrl(URL) {
 	 * Returns a formatted string of $tstamp
 	 * Uses $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] and $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] to format date and time
 	 *
-	 * @param integer $tstamp UNIX timestamp, seconds since 1970
-	 * @param integer $type How much data to show: $type = 1: hhmm, $type = 10:	ddmmmyy
+	 * @param int $tstamp UNIX timestamp, seconds since 1970
+	 * @param int $type How much data to show: $type = 1: hhmm, $type = 10:	ddmmmyy
 	 * @return string Formatted timestamp
 	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the corresponding methods in BackendUtility
 	 */
@@ -920,7 +920,7 @@ function jumpToUrl(URL) {
 	 * @param string $text The HTML-content
 	 * @param bool $nostrtoupper	A flag that will prevent the header from being converted to uppercase
 	 * @param bool $sH Defines the type of header (if set, "<h3>" rather than the default "h4")
-	 * @param integer $type The number of an icon to show with the header (see the icon-function). -1,1,2,3
+	 * @param int $type The number of an icon to show with the header (see the icon-function). -1,1,2,3
 	 * @param bool $allowHTMLinHeader If set, HTML tags are allowed in $label (otherwise this value is by default htmlspecialchars()'ed)
 	 * @return string HTML content
 	 * @see icons(), sectionHeader()
@@ -946,7 +946,7 @@ function jumpToUrl(URL) {
 	 * Inserts a divider image
 	 * Ends a section (if open) before inserting the image
 	 *
-	 * @param integer $dist The margin-top/-bottom of the <hr> ruler.
+	 * @param int $dist The margin-top/-bottom of the <hr> ruler.
 	 * @return string HTML content
 	 */
 	public function divider($dist) {
@@ -962,7 +962,7 @@ function jumpToUrl(URL) {
 	/**
 	 * Returns a blank <div>-section with a height
 	 *
-	 * @param integer $dist Padding-top for the div-section (should be margin-top but konqueror (3.1) doesn't like it :-(
+	 * @param int $dist Padding-top for the div-section (should be margin-top but konqueror (3.1) doesn't like it :-(
 	 * @return string HTML content
 	 */
 	public function spacer($dist) {
@@ -1222,7 +1222,7 @@ function jumpToUrl(URL) {
 	 * 2:	Warning (Yellow triangle)
 	 * 3:	Fatal error (Red stop sign)
 	 *
-	 * @param integer $type See description
+	 * @param int $type See description
 	 * @param string $styleAttribValue Value for style attribute
 	 * @return string HTML image tag (if applicable)
 	 */
@@ -1551,12 +1551,12 @@ function jumpToUrl(URL) {
 	 *
 	 * @param array $menuItems Numeric array where each entry is an array in itself with associative keys: "label" contains the label for the TAB, "content" contains the HTML content that goes into the div-layer of the tabs content. "description" contains description text to be shown in the layer. "linkTitle" is short text for the title attribute of the tab-menu link (mouse-over text of tab). "stateIcon" indicates a standard status icon (see ->icon(), values: -1, 1, 2, 3). "icon" is an image tag placed before the text.
 	 * @param string $identString Identification string. This should be unique for every instance of a dynamic menu!
-	 * @param integer $toggle If "1", then enabling one tab does not hide the others - they simply toggles each sheet on/off. This makes most sense together with the $foldout option. If "-1" then it acts normally where only one tab can be active at a time BUT you can click a tab and it will close so you have no active tabs.
+	 * @param int $toggle If "1", then enabling one tab does not hide the others - they simply toggles each sheet on/off. This makes most sense together with the $foldout option. If "-1" then it acts normally where only one tab can be active at a time BUT you can click a tab and it will close so you have no active tabs.
 	 * @param bool $foldout If set, the tabs are rendered as headers instead over each sheet. Effectively this means there is no tab menu, but rather a foldout/foldin menu. Make sure to set $toggle as well for this option.
 	 * @param bool $noWrap Deprecated - delivered by CSS
 	 * @param bool $fullWidth If set, the tabs will span the full width of their position
-	 * @param integer $defaultTabIndex Default tab to open (for toggle <=0). Value corresponds to integer-array index + 1 (index zero is "1", index "1" is 2 etc.). A value of zero (or something non-existing) will result in no default tab open.
-	 * @param integer $dividers2tabs If set to '1' empty tabs will be remove, If set to '2' empty tabs will be disabled
+	 * @param int $defaultTabIndex Default tab to open (for toggle <=0). Value corresponds to integer-array index + 1 (index zero is "1", index "1" is 2 etc.). A value of zero (or something non-existing) will result in no default tab open.
+	 * @param int $dividers2tabs If set to '1' empty tabs will be remove, If set to '2' empty tabs will be disabled
 	 * @return string JavaScript section for the HTML header.
 	 */
 	public function getDynTabMenu($menuItems, $identString, $toggle = 0, $foldout = FALSE, $noWrap = TRUE, $fullWidth = FALSE, $defaultTabIndex = 1, $dividers2tabs = 2) {
@@ -1670,7 +1670,7 @@ function jumpToUrl(URL) {
 	 * Creates the version selector for the page id inputted.
 	 * Requires the core version management extension, "version" to be loaded.
 	 *
-	 * @param integer $id Page id to create selector for.
+	 * @param int $id Page id to create selector for.
 	 * @param bool $noAction If set, there will be no button for swapping page.
 	 * @return string
 	 */

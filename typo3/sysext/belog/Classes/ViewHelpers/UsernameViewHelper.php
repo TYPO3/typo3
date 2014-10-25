@@ -30,7 +30,7 @@ class UsernameViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 	/**
 	 * Resolve user name from backend user id.
 	 *
-	 * @param integer $uid Uid of the user
+	 * @param int $uid Uid of the user
 	 * @return string Username or an empty string if there is no user with that UID
 	 */
 	public function render($uid) {

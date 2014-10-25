@@ -25,7 +25,7 @@ interface PageRepositoryGetRecordOverlayHookInterface {
 	 *
 	 * @param string $table
 	 * @param array $row
-	 * @param integer $sys_language_content
+	 * @param int $sys_language_content
 	 * @param string $OLmode
 	 * @param \TYPO3\CMS\Frontend\Page\PageRepository $parent
 	 */
@@ -36,7 +36,7 @@ interface PageRepositoryGetRecordOverlayHookInterface {
 	 *
 	 * @param string $table
 	 * @param array $row
-	 * @param integer $sys_language_content
+	 * @param int $sys_language_content
 	 * @param string $OLmode
 	 * @param \TYPO3\CMS\Frontend\Page\PageRepository $parent
 	 */

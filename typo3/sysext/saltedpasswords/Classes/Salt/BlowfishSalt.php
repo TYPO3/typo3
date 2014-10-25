@@ -253,7 +253,7 @@ class BlowfishSalt extends \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt {
 	/**
 	 * Method sets log2 number of iterations for password stretching.
 	 *
-	 * @param integer $hashCount log2 number of iterations for password stretching to set
+	 * @param int $hashCount log2 number of iterations for password stretching to set
 	 * @see HASH_COUNT
 	 * @see $hashCount
 	 * @see getHashCount()
@@ -265,7 +265,7 @@ class BlowfishSalt extends \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt {
 	/**
 	 * Method sets maximum allowed log2 number of iterations for password stretching.
 	 *
-	 * @param integer $maxHashCount Maximum allowed log2 number of iterations for password stretching to set
+	 * @param int $maxHashCount Maximum allowed log2 number of iterations for password stretching to set
 	 * @see MAX_HASH_COUNT
 	 * @see $maxHashCount
 	 * @see getMaxHashCount()
@@ -277,7 +277,7 @@ class BlowfishSalt extends \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt {
 	/**
 	 * Method sets minimum allowed log2 number of iterations for password stretching.
 	 *
-	 * @param integer $minHashCount Minimum allowed log2 number of iterations for password stretching to set
+	 * @param int $minHashCount Minimum allowed log2 number of iterations for password stretching to set
 	 * @see MIN_HASH_COUNT
 	 * @see $minHashCount
 	 * @see getMinHashCount()

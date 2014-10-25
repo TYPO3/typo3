@@ -84,8 +84,8 @@ class localPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	/**
 	 * Returns TRUE if a doktype can be linked.
 	 *
-	 * @param integer $doktype Doktype value to test
-	 * @param integer $uid uid to test.
+	 * @param int $doktype Doktype value to test
+	 * @param int $uid uid to test.
 	 * @return boolean
 	 */
 	public function ext_isLinkable($doktype, $uid) {
@@ -139,8 +139,8 @@ class TBE_PageTree extends localPageTree {
 	/**
 	 * Returns TRUE if a doktype can be linked (which is always the case here).
 	 *
-	 * @param integer $doktype Doktype value to test
-	 * @param integer $uid uid to test.
+	 * @param int $doktype Doktype value to test
+	 * @param int $uid uid to test.
 	 * @return boolean
 	 */
 	public function ext_isLinkable($doktype, $uid) {

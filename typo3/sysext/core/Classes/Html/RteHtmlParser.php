@@ -101,7 +101,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 * Initialize, setting element reference and record PID
 	 *
 	 * @param string $elRef Element reference, eg "tt_content:bodytext
-	 * @param integer $recPid PID of the record (page id)
+	 * @param int $recPid PID of the record (page id)
 	 * @return void
 	 */
 	public function init($elRef = '', $recPid = 0) {
@@ -1275,7 +1275,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 * This function processes content to go into the database.
 	 *
 	 * @param string $value Value to process.
-	 * @param integer $count Recursion brake. Decremented on each recursion down to zero. Default is 5 (which equals the allowed nesting levels of p/div tags).
+	 * @param int $count Recursion brake. Decremented on each recursion down to zero. Default is 5 (which equals the allowed nesting levels of p/div tags).
 	 * @param bool $returnArray If TRUE, an array with the lines is returned, otherwise a string of the processed input value.
 	 * @return string Processed input value.
 	 * @see setDivTags()

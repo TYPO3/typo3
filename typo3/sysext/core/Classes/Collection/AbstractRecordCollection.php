@@ -266,8 +266,8 @@ abstract class AbstractRecordCollection implements \TYPO3\CMS\Core\Collection\Re
 	 * the item at $currentPosition will be moved to
 	 * $newPosition. Omiting $newPosition will move to top.
 	 *
-	 * @param integer $currentPosition
-	 * @param integer $newPosition
+	 * @param int $currentPosition
+	 * @param int $newPosition
 	 * @return void
 	 */
 	public function moveItemAt($currentPosition, $newPosition = 0) {
@@ -287,7 +287,7 @@ abstract class AbstractRecordCollection implements \TYPO3\CMS\Core\Collection\Re
 	/**
 	 * Sets the identifier of the collection
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 * @return void
 	 */
 	public function setIdentifier($id) {
@@ -301,7 +301,7 @@ abstract class AbstractRecordCollection implements \TYPO3\CMS\Core\Collection\Re
 	 * identifier (what ever static data is defined) is loaded.
 	 * Entries can be load on first access.
 	 *
-	 * @param integer $id Id of database record to be loaded
+	 * @param int $id Id of database record to be loaded
 	 * @param bool $fillItems Populates the entries directly on load, might be bad for memory on large collections
 	 * @return \TYPO3\CMS\Core\Collection\CollectionInterface
 	 */

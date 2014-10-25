@@ -212,7 +212,7 @@ class FlexElement extends AbstractFormElement {
 	 * @param array $row The particular record from $table in which the field $field is found
 	 * @param array $PA Array of standard information for rendering of a form field in TCEforms, see other rendering functions too
 	 * @param string $formPrefix Form field prefix, eg. "[data][sDEF][lDEF][...][...]
-	 * @param integer $level Indicates nesting level for the function call
+	 * @param int $level Indicates nesting level for the function call
 	 * @param string $idPrefix Prefix for ID-values
 	 * @param bool $toggleClosed Defines whether the next flexform level is open or closed. Comes from _TOGGLE pseudo field in FlexForm xml.
 	 * @return string HTMl code for form.

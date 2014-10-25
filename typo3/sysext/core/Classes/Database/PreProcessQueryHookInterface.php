@@ -28,7 +28,7 @@ interface PreProcessQueryHookInterface {
 	 * @param string $where_clause Where clause
 	 * @param string $groupBy Group by statement
 	 * @param string $orderBy Order by statement
-	 * @param integer $limit Database return limit
+	 * @param int $limit Database return limit
 	 * @param \TYPO3\CMS\Core\Database\DatabaseConnection $parentObject
 	 * @return void
 	 */

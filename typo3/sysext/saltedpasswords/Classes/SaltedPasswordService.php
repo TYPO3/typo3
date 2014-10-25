@@ -217,7 +217,7 @@ class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 	/**
 	 * Method updates a FE/BE user record - in this case a new password string will be set.
 	 *
-	 * @param integer $uid uid of user record that will be updated
+	 * @param int $uid uid of user record that will be updated
 	 * @param mixed $updateFields Field values as key=>value pairs to be updated in database
 	 * @return void
 	 */

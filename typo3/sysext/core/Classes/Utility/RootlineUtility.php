@@ -114,7 +114,7 @@ class RootlineUtility {
 	protected $databaseConnection;
 
 	/**
-	 * @param integer $uid
+	 * @param int $uid
 	 * @param string $mountPointParameter
 	 * @param \TYPO3\CMS\Frontend\Page\PageRepository $context
 	 * @throws \RuntimeException
@@ -176,7 +176,7 @@ class RootlineUtility {
 	/**
 	 * Constructs the cache Identifier
 	 *
-	 * @param integer $otherUid
+	 * @param int $otherUid
 	 * @return string
 	 */
 	public function getCacheIdentifier($otherUid = NULL) {
@@ -231,7 +231,7 @@ class RootlineUtility {
 	/**
 	 * Queries the database for the page record and returns it.
 	 *
-	 * @param integer $uid Page id
+	 * @param int $uid Page id
 	 * @throws \RuntimeException
 	 * @return array
 	 */
@@ -261,7 +261,7 @@ class RootlineUtility {
 	/**
 	 * Resolve relations as defined in TCA and add them to the provided $pageRecord array.
 	 *
-	 * @param integer $uid Page id
+	 * @param int $uid Page id
 	 * @param array $pageRecord Array with page data to add relation data to.
 	 * @throws \RuntimeException
 	 * @return array $pageRecord with additional relations

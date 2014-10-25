@@ -371,7 +371,7 @@ class Rfc822AddressesParser {
 	 *
 	 * @access private
 	 * @param string $string The string to check.
-	 * @param integer &$num	The number of occurrences.
+	 * @param int &$num	The number of occurrences.
 	 * @param string $char   The character to count.
 	 * @return integer The number of occurrences of $char in $string, adjusted for backslashes.
 	 */

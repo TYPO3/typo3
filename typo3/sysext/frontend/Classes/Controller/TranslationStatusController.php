@@ -292,8 +292,8 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 	/**
 	 * Get an alternative language record for a specific page / language
 	 *
-	 * @param integer $pageId Page ID to look up for.
-	 * @param integer $langId Language UID to select for.
+	 * @param int $pageId Page ID to look up for.
+	 * @param int $langId Language UID to select for.
 	 * @return array pages_languages_overlay record
 	 */
 	public function getLangStatus($pageId, $langId) {
@@ -317,8 +317,8 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 	/**
 	 * Counting content elements for a single language on a page.
 	 *
-	 * @param integer $pageId Page id to select for.
-	 * @param integer $sysLang Sys language uid
+	 * @param int $pageId Page id to select for.
+	 * @param int $sysLang Sys language uid
 	 * @return integer Number of content elements from the PID where the language is set to a certain value.
 	 */
 	public function getContentElementCount($pageId, $sysLang) {

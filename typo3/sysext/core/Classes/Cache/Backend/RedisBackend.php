@@ -171,7 +171,7 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 	/**
 	 * Setter for server port
 	 *
-	 * @param integer $port Port
+	 * @param int $port Port
 	 * @return void
 	 * @api
 	 */
@@ -182,7 +182,7 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 	/**
 	 * Setter for database number
 	 *
-	 * @param integer $database Database
+	 * @param int $database Database
 	 * @return void
 	 * @throws \InvalidArgumentException if database number is not valid
 	 * @api
@@ -228,7 +228,7 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 	 * If compression is enabled and this is not set,
 	 * gzcompress default level will be used.
 	 *
-	 * @param integer $compressionLevel -1 to 9: Compression level
+	 * @param int $compressionLevel -1 to 9: Compression level
 	 * @return void
 	 * @throws \InvalidArgumentException if compressionLevel parameter is not within allowed bounds
 	 * @api
@@ -253,7 +253,7 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 	 * @param string $entryIdentifier Identifier for this specific cache entry
 	 * @param string $data Data to be stored
 	 * @param array $tags Tags to associate with this cache entry
-	 * @param integer $lifetime Lifetime of this cache entry in seconds. If NULL is specified, default lifetime is used. "0" means unlimited lifetime.
+	 * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, default lifetime is used. "0" means unlimited lifetime.
 	 * @return void
 	 * @throws \InvalidArgumentException if identifier is not valid
 	 * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException if data is not a string

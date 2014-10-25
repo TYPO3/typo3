@@ -59,7 +59,7 @@ abstract class AbstractConditionMatcher {
 	/**
 	 * Sets the id of the page to evaluate conditions for.
 	 *
-	 * @param integer $pageId Id of the page (must be positive)
+	 * @param int $pageId Id of the page (must be positive)
 	 * @return void
 	 */
 	public function setPageId($pageId) {

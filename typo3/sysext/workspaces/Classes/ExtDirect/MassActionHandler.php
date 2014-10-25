@@ -120,9 +120,9 @@ class MassActionHandler extends AbstractHandler {
 	/**
 	 * Initializes the command map to be used for publishing.
 	 *
-	 * @param integer $workspace
+	 * @param int $workspace
 	 * @param bool $swap
-	 * @param integer $language
+	 * @param int $language
 	 * @return integer
 	 */
 	protected function initPublishData($workspace, $swap, $language = NULL) {
@@ -143,8 +143,8 @@ class MassActionHandler extends AbstractHandler {
 	/**
 	 * Initializes the command map to be used for flushing.
 	 *
-	 * @param integer $workspace
-	 * @param integer $language
+	 * @param int $workspace
+	 * @param int $language
 	 * @return integer
 	 */
 	protected function initFlushData($workspace, $language = NULL) {
@@ -165,7 +165,7 @@ class MassActionHandler extends AbstractHandler {
 	/**
 	 * Processes the data.
 	 *
-	 * @param integer $workspace
+	 * @param int $workspace
 	 * @return integer
 	 */
 	protected function processData($workspace) {

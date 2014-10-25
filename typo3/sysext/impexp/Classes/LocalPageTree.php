@@ -75,7 +75,7 @@ class LocalPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	/**
 	 * Tree rendering
 	 *
-	 * @param integer $pid PID value
+	 * @param int $pid PID value
 	 * @param string $clause Additional where clause
 	 * @return array Array of tree elements
 	 */

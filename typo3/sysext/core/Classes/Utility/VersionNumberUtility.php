@@ -34,7 +34,7 @@ class VersionNumberUtility {
 	/**
 	 * Returns the three part version number (string) from an integer, eg 4012003 -> '4.12.3'
 	 *
-	 * @param integer $versionInteger Integer representation of version number
+	 * @param int $versionInteger Integer representation of version number
 	 * @return string Version number as format x.x.x
 	 * @throws \InvalidArgumentException if $versionInteger is not an integer
 	 */

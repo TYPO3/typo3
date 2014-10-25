@@ -2574,7 +2574,7 @@ class ElementBrowser {
 	/**
 	 * Get the HTML data required for a bulk selection of files of the TYPO3 Element Browser.
 	 *
-	 * @param integer $filesCount Number of files currently displayed
+	 * @param int $filesCount Number of files currently displayed
 	 * @return string HTML data required for a bulk selection of files - if $filesCount is 0, nothing is returned
 	 */
 	public function getBulkSelector($filesCount) {

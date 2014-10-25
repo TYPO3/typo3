@@ -320,7 +320,7 @@ class PageTreeNavigationController {
 	/**
 	 * Setting temporary page id as DB mount
 	 *
-	 * @param integer $pageId The page id to set as DB mount
+	 * @param int $pageId The page id to set as DB mount
 	 * @return void
 	 */
 	public function settingTemporaryMountPoint($pageId) {

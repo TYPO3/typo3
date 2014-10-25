@@ -103,7 +103,7 @@ class MailUtility {
 	 *
 	 * @param string $str The string to break up
 	 * @param string $newlineChar The string to implode the broken lines with (default/typically \n)
-	 * @param integer $lineWidth The line width
+	 * @param int $lineWidth The line width
 	 * @return string Reformated text
 	 */
 	static public function breakLinesForEmail($str, $newlineChar = LF, $lineWidth = 76) {

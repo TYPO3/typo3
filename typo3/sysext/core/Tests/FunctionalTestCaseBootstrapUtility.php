@@ -643,7 +643,7 @@ class FunctionalTestCaseBootstrapUtility {
 	 * See unit tests for detailed examples
 	 *
 	 * @param array $array Array to export
-	 * @param integer $level Internal level used for recursion, do *not* set from outside!
+	 * @param int $level Internal level used for recursion, do *not* set from outside!
 	 * @return string String representation of array
 	 * @throws \RuntimeException
 	 */

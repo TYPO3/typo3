@@ -466,7 +466,7 @@ class ElementInformationController {
 	 * Returns the rendered record actions
 	 *
 	 * @param string $table
-	 * @param integer $uid
+	 * @param int $uid
 	 * @return string
 	 */
 	protected function getRecordActions($table, $uid) {

@@ -150,7 +150,7 @@ abstract class AbstractElement {
 	/**
 	 * Constructor
 	 *
-	 * @param integer $elementId Internal Id of the element
+	 * @param int $elementId Internal Id of the element
 	 * @param array $arguments Configuration array
 	 */
 	public function __construct() {
@@ -167,7 +167,7 @@ abstract class AbstractElement {
 	/**
 	 * Set the internal ID of the element
 	 *
-	 * @param integer $elementId Internal Id of the element
+	 * @param int $elementId Internal Id of the element
 	 * @return void
 	 */
 	public function setElementId() {

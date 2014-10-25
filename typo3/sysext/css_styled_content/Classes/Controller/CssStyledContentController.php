@@ -369,7 +369,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 	 * uses "1:1" column relations by default.
 	 *
 	 * @param array $conf TS configuration for img
-	 * @param integer $colCount number of columns
+	 * @param int $colCount number of columns
 	 * @return array
 	 */
 	protected function getImgColumnRelations($conf, $colCount) {
@@ -411,8 +411,8 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 	 * Returns an array containing the image widths for an image row with $colCount columns.
 	 *
 	 * @param array $conf TS configuration of img
-	 * @param integer $colCount number of columns
-	 * @param integer $netW max usable width for images (without spaces and borders)
+	 * @param int $colCount number of columns
+	 * @param int $netW max usable width for images (without spaces and borders)
 	 * @return array
 	 */
 	protected function getImgColumnWidths($conf, $colCount, $netW) {
@@ -1176,7 +1176,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 	 * Returns table attributes for uploads / tables.
 	 *
 	 * @param array $conf TypoScript configuration array
-	 * @param integer $type The "layout" type
+	 * @param int $type The "layout" type
 	 * @return array Array with attributes inside.
 	 */
 	public function getTableAttributes($conf, $type) {

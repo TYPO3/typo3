@@ -6,7 +6,7 @@ class TestViewHelper2 extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 	/**
 	 * My comments. Bla blubb.
 	 *
-	 * @param integer $param1 P1 Stuff
+	 * @param int $param1 P1 Stuff
 	 * @param array $param2 P2 Stuff
 	 * @param string $param3 P3 Stuff
 	 */

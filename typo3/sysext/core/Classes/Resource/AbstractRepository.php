@@ -166,7 +166,7 @@ abstract class AbstractRepository implements \TYPO3\CMS\Extbase\Persistence\Repo
 	/**
 	 * Finds an object matching the given identifier.
 	 *
-	 * @param integer $uid The identifier of the object to find
+	 * @param int $uid The identifier of the object to find
 	 *
 	 * @throws \RuntimeException
 	 * @throws \InvalidArgumentException

@@ -90,7 +90,7 @@ class Demand extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @param integer $userType
+	 * @param int $userType
 	 * @return void
 	 */
 	public function setUserType($userType) {
@@ -105,7 +105,7 @@ class Demand extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @param integer $status
+	 * @param int $status
 	 * @return void
 	 */
 	public function setStatus($status) {
@@ -120,7 +120,7 @@ class Demand extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @param integer $logins
+	 * @param int $logins
 	 * @return void
 	 */
 	public function setLogins($logins) {

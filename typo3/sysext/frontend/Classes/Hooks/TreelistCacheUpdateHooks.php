@@ -90,7 +90,7 @@ class TreelistCacheUpdateHooks {
 	 *
 	 * @param string $command The TCE command
 	 * @param string $table The record's table
-	 * @param integer $recordId The record's uid
+	 * @param int $recordId The record's uid
 	 * @param array $commandValue The commands value, typically an array with more detailed command information
 	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain The TCEmain parent object
 	 * @return void
@@ -112,8 +112,8 @@ class TreelistCacheUpdateHooks {
 	 * changes take place to determine whether the cache needs to be updated
 	 *
 	 * @param string $table Table name of the moved record
-	 * @param integer $recordId The record's uid
-	 * @param integer $destinationPid The record's destination page id
+	 * @param int $recordId The record's uid
+	 * @param int $destinationPid The record's destination page id
 	 * @param array $movedRecord The record that moved
 	 * @param array $updatedFields Array of changed fields
 	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain TCEmain parent object
@@ -137,9 +137,9 @@ class TreelistCacheUpdateHooks {
 	 * changes take place to determine whether the cache needs to be updated
 	 *
 	 * @param string $table Table name of the moved record
-	 * @param integer $recordId The record's uid
-	 * @param integer $destinationPid The record's destination page id
-	 * @param integer $originalDestinationPid (negative) page id th page has been moved after
+	 * @param int $recordId The record's uid
+	 * @param int $destinationPid The record's destination page id
+	 * @param int $originalDestinationPid (negative) page id th page has been moved after
 	 * @param array $movedRecord The record that moved
 	 * @param array $updatedFields Array of changed fields
 	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain TCEmain parent object
@@ -179,8 +179,8 @@ class TreelistCacheUpdateHooks {
 	/**
 	 * Calls the cache maintainance functions according to the determined actions
 	 *
-	 * @param integer $affectedPage uid of the affected page
-	 * @param integer $affectedParentPage parent uid of the affected page
+	 * @param int $affectedPage uid of the affected page
+	 * @param int $affectedParentPage parent uid of the affected page
 	 * @param array $updatedFields Array of updated fields and their new values
 	 * @param array $actions Array of actions to carry out
 	 * @return void
@@ -214,7 +214,7 @@ class TreelistCacheUpdateHooks {
 	 * Clears the treelist cache for all parents of a changed page.
 	 * gets called after creating a new page and after moving a page
 	 *
-	 * @param integer $affectedParentPage Parent page id of the changed page, the page to start clearing from
+	 * @param int $affectedParentPage Parent page id of the changed page, the page to start clearing from
 	 * @return void
 	 */
 	protected function clearCacheForAllParents($affectedParentPage) {
@@ -235,7 +235,7 @@ class TreelistCacheUpdateHooks {
 	 * Clears the treelist cache for all pages where the affected page is found
 	 * in the treelist
 	 *
-	 * @param integer $affectedPage ID of the changed page
+	 * @param int $affectedPage ID of the changed page
 	 * @return void
 	 */
 	protected function clearCacheWhereUidInTreelist($affectedPage) {
@@ -246,8 +246,8 @@ class TreelistCacheUpdateHooks {
 	 * Sets an expiration time for all cache entries having the changed page in
 	 * the treelist.
 	 *
-	 * @param integer $affectedPage Uid of the changed page
-	 * @param integer $expirationTime
+	 * @param int $affectedPage Uid of the changed page
+	 * @param int $expirationTime
 	 * @return void
 	 */
 	protected function setCacheExpiration($affectedPage, $expirationTime) {

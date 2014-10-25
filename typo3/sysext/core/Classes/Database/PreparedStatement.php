@@ -217,7 +217,7 @@ class PreparedStatement {
 	 *
 	 * @param mixed $parameter Parameter identifier. For a prepared statement using named placeholders, this will be a parameter name of the form :name. For a prepared statement using question mark placeholders, this will be the 1-indexed position of the parameter.
 	 * @param mixed $value The value to bind to the parameter.
-	 * @param integer $data_type Explicit data type for the parameter using the \TYPO3\CMS\Core\Database\PreparedStatement::PARAM_* constants. If not given, the PHP type of the value will be used instead (int, string, boolean).
+	 * @param int $data_type Explicit data type for the parameter using the \TYPO3\CMS\Core\Database\PreparedStatement::PARAM_* constants. If not given, the PHP type of the value will be used instead (int, string, boolean).
 	 * @return \TYPO3\CMS\Core\Database\PreparedStatement The current prepared statement to allow method chaining
 	 * @api
 	 */
@@ -392,7 +392,7 @@ class PreparedStatement {
 	/**
 	 * Fetches a row from a result set associated with a \TYPO3\CMS\Core\Database\PreparedStatement object.
 	 *
-	 * @param integer $fetch_style Controls how the next row will be returned to the caller. This value must be one of the \TYPO3\CMS\Core\Database\PreparedStatement::FETCH_* constants. If omitted, default fetch mode for this prepared query will be used.
+	 * @param int $fetch_style Controls how the next row will be returned to the caller. This value must be one of the \TYPO3\CMS\Core\Database\PreparedStatement::FETCH_* constants. If omitted, default fetch mode for this prepared query will be used.
 	 * @return array Array of rows or FALSE if there are no more rows.
 	 * @api
 	 */
@@ -443,7 +443,7 @@ class PreparedStatement {
 	/**
 	 * Moves internal result pointer.
 	 *
-	 * @param integer $rowNumber Where to place the result pointer (0 = start)
+	 * @param int $rowNumber Where to place the result pointer (0 = start)
 	 * @return boolean Returns TRUE on success or FALSE on failure.
 	 * @api
 	 */
@@ -459,7 +459,7 @@ class PreparedStatement {
 	/**
 	 * Returns an array containing all of the result set rows.
 	 *
-	 * @param integer $fetch_style Controls the contents of the returned array as documented in {@link \TYPO3\CMS\Core\Database\PreparedStatement::fetch()}.
+	 * @param int $fetch_style Controls the contents of the returned array as documented in {@link \TYPO3\CMS\Core\Database\PreparedStatement::fetch()}.
 	 * @return array Array of rows.
 	 * @api
 	 */
@@ -522,7 +522,7 @@ class PreparedStatement {
 	/**
 	 * Sets the default fetch mode for this prepared query.
 	 *
-	 * @param integer $mode One of the \TYPO3\CMS\Core\Database\PreparedStatement::FETCH_* constants
+	 * @param int $mode One of the \TYPO3\CMS\Core\Database\PreparedStatement::FETCH_* constants
 	 * @return void
 	 * @api
 	 */

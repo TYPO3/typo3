@@ -32,7 +32,7 @@ class TranslationConfigurationProvider {
 	 * \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(<flags-xx>) to get an HTML
 	 * which will represent the flag of this language.
 	 *
-	 * @param integer $page_id Page id (only used to get TSconfig configuration setting flag and label for default language)
+	 * @param int $page_id Page id (only used to get TSconfig configuration setting flag and label for default language)
 	 * @param string $backPath Backpath for flags
 	 * @return array Array with languages (title, uid, flagIcon)
 	 */
@@ -78,8 +78,8 @@ class TranslationConfigurationProvider {
 	 * Will overlay workspace version of record too!
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid Record uid
-	 * @param integer $sys_language_uid Language uid. If zero, then all languages are selected.
+	 * @param int $uid Record uid
+	 * @param int $sys_language_uid Language uid. If zero, then all languages are selected.
 	 * @param array $row The record to be translated
 	 * @param array $selFieldList Select fields for the query which fetches the translations of the current record
 	 * @return array Array with information. Errors will return string with message.

@@ -54,7 +54,7 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
 	 * Overrides the parent method because of the call to "self::create()" which otherwise calls up
 	 * \TYPO3\CMS\Core\Category\Collection\CategoryCollection
 	 *
-	 * @param integer $id Id of database record to be loaded
+	 * @param int $id Id of database record to be loaded
 	 * @param bool $fillItems Populates the entries directly on load, might be bad for memory on large collections
 	 * @param string $tableName the table name
 	 * @param string $fieldName Name of the categories relation field

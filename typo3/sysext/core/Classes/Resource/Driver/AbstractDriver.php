@@ -86,7 +86,7 @@ abstract class AbstractDriver implements DriverInterface {
 	/**
 	 * Sets the storage uid the driver belongs to
 	 *
-	 * @param integer $storageUid
+	 * @param int $storageUid
 	 * @return void
 	 */
 	public function setStorageUid($storageUid) {
@@ -106,7 +106,7 @@ abstract class AbstractDriver implements DriverInterface {
 	/**
 	 * Returns TRUE if this driver has the given capability.
 	 *
-	 * @param integer $capability A capability, as defined in a CAPABILITY_* constant
+	 * @param int $capability A capability, as defined in a CAPABILITY_* constant
 	 * @return boolean
 	 */
 	public function hasCapability($capability) {

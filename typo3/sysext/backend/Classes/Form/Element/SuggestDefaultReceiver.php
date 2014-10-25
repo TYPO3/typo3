@@ -138,7 +138,7 @@ class SuggestDefaultReceiver {
 	 * this function itself
 	 *
 	 * @param array $params
-	 * @param integer $ref The parent object
+	 * @param int $ref The parent object
 	 * @return array Array of rows or FALSE if nothing found
 	 */
 	public function queryTable(&$params, $recursionCounter = 0) {
@@ -241,8 +241,8 @@ class SuggestDefaultReceiver {
 	/**
 	 * Selects all subpages of one page, optionally only upto a certain level
 	 *
-	 * @param integer $uid The uid of the page
-	 * @param integer $depth The depth to select upto. Defaults to 99
+	 * @param int $uid The uid of the page
+	 * @param int $depth The depth to select upto. Defaults to 99
 	 * @return array of page IDs
 	 */
 	protected function getAllSubpagesOfPage($uid, $depth = 99) {
@@ -289,7 +289,7 @@ class SuggestDefaultReceiver {
 	 * Selects whether the logged in Backend User is allowed to read a specific record
 	 *
 	 * @param array $row
-	 * @param integer $uid
+	 * @param int $uid
 	 * @return boolean
 	 */
 	protected function checkRecordAccess($row, $uid) {

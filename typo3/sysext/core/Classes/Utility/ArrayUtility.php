@@ -295,7 +295,7 @@ class ArrayUtility {
 	 * See unit tests for detailed examples
 	 *
 	 * @param array $array Array to export
-	 * @param integer $level Internal level used for recursion, do *not* set from outside!
+	 * @param int $level Internal level used for recursion, do *not* set from outside!
 	 * @return string String representation of array
 	 * @throws \RuntimeException
 	 */
@@ -470,7 +470,7 @@ class ArrayUtility {
 	 *  array(0 => 'Zero', 1 => 'One')
 	 *
 	 * @param array $array Input array
-	 * @param integer $level Internal level used for recursion, do *not* set from outside!
+	 * @param int $level Internal level used for recursion, do *not* set from outside!
 	 * @return array
 	 */
 	static public function renumberKeysToAvoidLeapsIfKeysAreAllNumeric(array $array = array(), $level = 0) {

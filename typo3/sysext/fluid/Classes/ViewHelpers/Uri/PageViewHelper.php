@@ -45,9 +45,9 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
 class PageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
-	 * @param integer|NULL $pageUid target PID
+	 * @param int|NULL $pageUid target PID
 	 * @param array $additionalParams query parameters to be attached to the resulting URI
-	 * @param integer $pageType type of the target page. See typolink.parameter
+	 * @param int $pageType type of the target page. See typolink.parameter
 	 * @param bool $noCache set this to disable caching for the target page. You should not need this.
 	 * @param bool $noCacheHash set this to supress the cHash query parameter created by TypoLink. You should not need this.
 	 * @param string $section the anchor to be added to the URI

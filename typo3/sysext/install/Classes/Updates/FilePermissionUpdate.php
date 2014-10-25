@@ -144,7 +144,7 @@ class FilePermissionUpdate extends AbstractUpdate {
 	/**
 	 * Processes the actual transformation from old binary file permissions to new separate list
 	 *
-	 * @param integer $oldFileOperationPermissions
+	 * @param int $oldFileOperationPermissions
 	 * @return string
 	 */
 	protected function getFilePermissions($oldFileOperationPermissions) {

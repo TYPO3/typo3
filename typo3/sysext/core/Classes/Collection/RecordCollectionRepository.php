@@ -41,7 +41,7 @@ class RecordCollectionRepository {
 	/**
 	 * Finds a record collection by uid.
 	 *
-	 * @param integer $uid The uid to be looked up
+	 * @param int $uid The uid to be looked up
 	 * @return NULL|\TYPO3\CMS\Core\Collection\AbstractRecordCollection
 	 */
 	public function findByUid($uid) {
@@ -106,7 +106,7 @@ class RecordCollectionRepository {
 	/**
 	 * Deletes a record collection by uid.
 	 *
-	 * @param integer $uid uid to be deleted
+	 * @param int $uid uid to be deleted
 	 * @return void
 	 */
 	public function deleteByUid($uid) {

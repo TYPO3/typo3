@@ -35,7 +35,7 @@ class ActionService {
 
 	/**
 	 * @param string $tableName
-	 * @param integer $pageId
+	 * @param int $pageId
 	 * @param array $recordData
 	 * @return array
 	 */
@@ -44,7 +44,7 @@ class ActionService {
 	}
 
 	/**
-	 * @param integer $pageId
+	 * @param int $pageId
 	 * @param array $tableRecordData
 	 * @return array
 	 */
@@ -88,7 +88,7 @@ class ActionService {
 
 	/**
 	 * @param string $tableName
-	 * @param integer $uid
+	 * @param int $uid
 	 * @param array $recordData
 	 * @param NULL|array $deleteTableRecordIds
 	 */
@@ -115,7 +115,7 @@ class ActionService {
 	}
 
 	/**
-	 * @param integer $pageId
+	 * @param int $pageId
 	 * @param array $tableRecordData
 	 */
 	public function modifyRecords($pageId, array $tableRecordData) {
@@ -151,7 +151,7 @@ class ActionService {
 
 	/**
 	 * @param string $tableName
-	 * @param integer $uid
+	 * @param int $uid
 	 * @return array
 	 */
 	public function deleteRecord($tableName, $uid) {
@@ -184,7 +184,7 @@ class ActionService {
 
 	/**
 	 * @param string $tableName
-	 * @param integer $uid
+	 * @param int $uid
 	 */
 	public function clearWorkspaceRecord($tableName, $uid) {
 		$this->clearWorkspaceRecords(
@@ -215,8 +215,8 @@ class ActionService {
 
 	/**
 	 * @param string $tableName
-	 * @param integer $uid
-	 * @param integer $pageId
+	 * @param int $uid
+	 * @param int $pageId
 	 * @param NULL|array $recordData
 	 * @return array
 	 */
@@ -243,8 +243,8 @@ class ActionService {
 
 	/**
 	 * @param string $tableName
-	 * @param integer $uid
-	 * @param integer $pageId
+	 * @param int $uid
+	 * @param int $pageId
 	 * @param NULL|array $recordData
 	 */
 	public function moveRecord($tableName, $uid, $pageId, array $recordData = NULL) {
@@ -269,8 +269,8 @@ class ActionService {
 
 	/**
 	 * @param string $tableName
-	 * @param integer $uid
-	 * @param integer $languageId
+	 * @param int $uid
+	 * @param int $languageId
 	 * @return array
 	 */
 	public function localizeRecord($tableName, $uid, $languageId) {
@@ -289,7 +289,7 @@ class ActionService {
 
 	/**
 	 * @param string $tableName
-	 * @param integer $uid
+	 * @param int $uid
 	 * @param string $fieldName
 	 * @param array $referenceIds
 	 */

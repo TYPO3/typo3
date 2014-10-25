@@ -83,7 +83,7 @@ class GridDataService {
 	 *
 	 * @param array $versions All records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid and t3ver_oid fields. The pid of the online record is found as "livepid" the pid of the offline record is found in "wspid
 	 * @param object $parameter Parameters as submitted by JavaScript component
-	 * @param integer $currentWorkspace The current workspace
+	 * @param int $currentWorkspace The current workspace
 	 * @return array Version record information (filtered, sorted and limited)
 	 * @throws \InvalidArgumentException
 	 */
@@ -245,8 +245,8 @@ class GridDataService {
 	/**
 	 * Gets the data array by considering the page to be shown in the grid view.
 	 *
-	 * @param integer $start
-	 * @param integer $limit
+	 * @param int $start
+	 * @param int $limit
 	 * @return array
 	 */
 	protected function getDataArray($start, $limit) {
@@ -484,7 +484,7 @@ class GridDataService {
 	/**
 	 * Gets the state of a given state value.
 	 *
-	 * @param integer $stateId stateId of offline record
+	 * @param int $stateId stateId of offline record
 	 * @param bool $hiddenOnline hidden status of online record
 	 * @param bool $hiddenOffline hidden status of offline record
 	 * @return string
@@ -551,7 +551,7 @@ class GridDataService {
 	/**
 	 * Gets a named value of the available sys_language elements.
 	 *
-	 * @param integer $id sys_language uid
+	 * @param int $id sys_language uid
 	 * @param string $key Name of the value to be fetched (e.g. title)
 	 * @return string|NULL
 	 * @see getSystemLanguages

@@ -43,7 +43,7 @@ class FlashMessage extends \TYPO3\CMS\Core\Messaging\AbstractMessage {
 	 *
 	 * @param string $message The message.
 	 * @param string $title Optional message title.
-	 * @param integer $severity Optional severity, must be either of one of \TYPO3\CMS\Core\Messaging\FlashMessage constants
+	 * @param int $severity Optional severity, must be either of one of \TYPO3\CMS\Core\Messaging\FlashMessage constants
 	 * @param bool $storeInSession Optional, defines whether the message should be stored in the session or only for one request (default)
 	 * @return void
 	 */

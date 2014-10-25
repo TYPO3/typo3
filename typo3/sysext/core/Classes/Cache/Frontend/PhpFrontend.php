@@ -39,7 +39,7 @@ class PhpFrontend extends \TYPO3\CMS\Core\Cache\Frontend\StringFrontend {
 	 * @param string $entryIdentifier An identifier used for this cache entry, for example the class name
 	 * @param string $sourceCode PHP source code
 	 * @param array $tags Tags to associate with this cache entry
-	 * @param integer $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
+	 * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
 	 * @return void
 	 * @throws \InvalidArgumentException If $entryIdentifier or $tags is invalid
 	 * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException If $sourceCode is not a string

@@ -35,7 +35,7 @@ interface DataProviderInterface {
 	 * Gets a backend layout by (regular) identifier.
 	 *
 	 * @param string $identifier
-	 * @param integer $pageId
+	 * @param int $pageId
 	 * @return NULL|BackendLayout
 	 */
 	public function getBackendLayout($identifier, $pageId);

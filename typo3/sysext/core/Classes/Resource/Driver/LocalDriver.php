@@ -80,7 +80,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * configuration into the actual capabilities of the driver
 	 * and returns the result.
 	 *
-	 * @param integer $capabilities
+	 * @param int $capabilities
 	 *
 	 * @return integer
 	 */
@@ -330,8 +330,8 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * Generic wrapper for extracting a list of items from a path.
 	 *
 	 * @param string $folderIdentifier
-	 * @param integer $start The position to start the listing; if not set, start from the beginning
-	 * @param integer $numberOfItems The number of items to list; if set to zero, all items are returned
+	 * @param int $start The position to start the listing; if not set, start from the beginning
+	 * @param int $numberOfItems The number of items to list; if set to zero, all items are returned
 	 * @param array $filterMethods The filter methods used to filter the directory items
 	 * @param bool $includeFiles
 	 * @param bool $includeDirs
@@ -430,8 +430,8 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * Returns a list of files inside the specified path
 	 *
 	 * @param string $folderIdentifier
-	 * @param integer $start
-	 * @param integer $numberOfItems
+	 * @param int $start
+	 * @param int $numberOfItems
 	 * @param bool $recursive
 	 * @param array $filenameFilterCallbacks The method callbacks to use for filtering the items
 	 *
@@ -445,8 +445,8 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * Returns a list of folders inside the specified path
 	 *
 	 * @param string $folderIdentifier
-	 * @param integer $start
-	 * @param integer $numberOfItems
+	 * @param int $start
+	 * @param int $numberOfItems
 	 * @param bool $recursive
 	 * @param array $folderNameFilterCallbacks The method callbacks to use for filtering the items
 	 *

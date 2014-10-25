@@ -33,7 +33,7 @@ interface DomainObjectInterface {
 	/**
 	 * Setter for the pid.
 	 *
-	 * @param integer $pid
+	 * @param int $pid
 	 * @return void
 	 */
 	public function setPid($pid);

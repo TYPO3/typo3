@@ -563,7 +563,7 @@ class FrontendUserAuthentication extends \TYPO3\CMS\Core\Authentication\Abstract
 	 * If a change in the recs storage happens (which it probably does) the function setKey() is called in order to store the array again.
 	 *
 	 * @param array $recs The data array to merge into/override the current recs values. The $recs array is constructed as [table]][uid] = scalar-value (eg. string/integer).
-	 * @param integer $maxSizeOfSessionData The maximum size of stored session data. If zero, no limit is applied and even confirmation of cookie session is discarded.
+	 * @param int $maxSizeOfSessionData The maximum size of stored session data. If zero, no limit is applied and even confirmation of cookie session is discarded.
 	 * @return void
 	 */
 	public function record_registration($recs, $maxSizeOfSessionData = 0) {
@@ -598,7 +598,7 @@ class FrontendUserAuthentication extends \TYPO3\CMS\Core\Authentication\Abstract
 	 *
 	 * This calls the parent function but additionally tries to look up the session ID in the "fe_session_data" table.
 	 *
-	 * @param integer $id Claimed Session ID
+	 * @param int $id Claimed Session ID
 	 * @return boolean Returns TRUE if a corresponding session was found in the database
 	 */
 	public function isExistingSessionRecord($id) {

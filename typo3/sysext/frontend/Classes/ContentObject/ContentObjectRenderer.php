@@ -1477,7 +1477,7 @@ class ContentObjectRenderer {
 	 * The SYS_LASTCHANGED timestamp can be used by various caching/indexing applications to determine if the page has new content.
 	 * Therefore you should call this function with the last-changed timestamp of any element you display.
 	 *
-	 * @param integer $tstamp Unix timestamp (number of seconds since 1970)
+	 * @param int $tstamp Unix timestamp (number of seconds since 1970)
 	 * @return void
 	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::setSysLastChanged()
 	 */
@@ -5522,7 +5522,7 @@ class ContentObjectRenderer {
 	 * Processing of key values pointing to entries in $arr; Here negative values are converted to positive keys pointer to an entry in the array but from behind (based on the negative value).
 	 * Example: entrylevel = -1 means that entryLevel ends up pointing at the outermost-level, -2 means the level before the outermost...
 	 *
-	 * @param integer $key The integer to transform
+	 * @param int $key The integer to transform
 	 * @param array $arr array in which the key should be found.
 	 * @return integer The processed integer key value.
 	 * @access private
@@ -6288,7 +6288,7 @@ class ContentObjectRenderer {
 	 * Returns the current page URL
 	 *
 	 * @param array|string $urlParameters As an array key/value pairs represent URL parameters to set. Values NOT URL-encoded yet, keys should be URL-encoded if needed. As a string the parameter is expected to be URL-encoded already.
-	 * @param integer $id An alternative ID to the current id ($GLOBALS['TSFE']->id)
+	 * @param int $id An alternative ID to the current id ($GLOBALS['TSFE']->id)
 	 * @return string The URL
 	 * @see getTypoLink_URL()
 	 */
@@ -6300,7 +6300,7 @@ class ContentObjectRenderer {
 	 * Returns the &MP variable value for a page id.
 	 * The function will do its best to find a MP value that will keep the page id inside the current Mount Point rootline if any.
 	 *
-	 * @param integer $pageId page id
+	 * @param int $pageId page id
 	 * @param bool $raw If TRUE, the MPvalue is returned raw. Normally it is encoded as &MP=... variable
 	 * @return string MP value, prefixed with &MP= (depending on $raw)
 	 * @see typolink()
@@ -6652,7 +6652,7 @@ class ContentObjectRenderer {
 	/**
 	 * Returns the 'age' of the tstamp $seconds
 	 *
-	 * @param integer $seconds Seconds to return age for. Example: "70" => "1 min", "3601" => "1 hrs
+	 * @param int $seconds Seconds to return age for. Example: "70" => "1 min", "3601" => "1 hrs
 	 * @param string $labels The labels of the individual units. Defaults to : ' min| hrs| days| yrs'
 	 * @return string The formatted string
 	 */
@@ -6867,8 +6867,8 @@ class ContentObjectRenderer {
 	 * Splits a text string into lines and returns an array with these lines but a max number of lines.
 	 *
 	 * @param string $string The string to break
-	 * @param integer $chars Max number of characters per line.
-	 * @param integer $maxLines Max number of lines in all.
+	 * @param int $chars Max number of characters per line.
+	 * @param int $maxLines Max number of lines in all.
 	 * @return array array with lines.
 	 * @access private
 	 * @see gifBuilderTextBox()
@@ -6986,7 +6986,7 @@ class ContentObjectRenderer {
 	 * If the $GLOBALS['TCA'] config for the table tells us to NOT "physically" delete the record but rather set the "deleted" field to "1" then an UPDATE query is returned doing just that. Otherwise it truely is a DELETE query.
 	 *
 	 * @param string $table The table name, should be in $GLOBALS['TCA']
-	 * @param integer $uid The UID of the record from $table which we are going to delete
+	 * @param int $uid The UID of the record from $table which we are going to delete
 	 * @param bool $doExec If set, the query is executed. IT'S HIGHLY RECOMMENDED TO USE THIS FLAG to execute the query directly!!!
 	 * @return string The query, ready to execute unless $doExec was TRUE in which case the return value is FALSE.
 	 * @see DBgetUpdate(), DBgetInsert(), user_feAdmin
@@ -7023,7 +7023,7 @@ class ContentObjectRenderer {
 	 * NOTICE: From TYPO3 3.6.0 this function ALWAYS adds slashes to values inserted in the query.
 	 *
 	 * @param string $table The table name, should be in $GLOBALS['TCA']
-	 * @param integer $uid The UID of the record from $table which we are going to update
+	 * @param int $uid The UID of the record from $table which we are going to update
 	 * @param array $dataArr The data array where key/value pairs are fieldnames/values for the record to update.
 	 * @param string $fieldList Comma list of fieldnames which are allowed to be updated. Only values from the data record for fields in this list will be updated!!
 	 * @param bool $doExec If set, the query is executed. IT'S HIGHLY RECOMMENDED TO USE THIS FLAG to execute the query directly!!!
@@ -7062,7 +7062,7 @@ class ContentObjectRenderer {
 	 * NOTICE: From TYPO3 3.6.0 this function ALWAYS adds slashes to values inserted in the query.
 	 *
 	 * @param string $table The table name, should be in $GLOBALS['TCA']
-	 * @param integer $pid The PID value for the record to insert
+	 * @param int $pid The PID value for the record to insert
 	 * @param array $dataArr The data array where key/value pairs are fieldnames/values for the record to insert
 	 * @param string $fieldList Comma list of fieldnames which are allowed to be inserted. Only values from the data record for fields in this list will be inserted!!
 	 * @param bool $doExec If set, the query is executed. IT'S HIGHLY RECOMMENDED TO USE THIS FLAG to execute the query directly!!!
@@ -7235,14 +7235,14 @@ class ContentObjectRenderer {
 	 * Mount Pages are also descended but notice that these ID numbers are not
 	 * useful for links unless the correct MPvar is set.
 	 *
-	 * @param integer $id The id of the start page from which point in the page tree to descend. IF NEGATIVE the id itself is included in the end of the list (only if $begin is 0) AND the output does NOT contain a last comma. Recommended since it will resolve the input ID for mount pages correctly and also check if the start ID actually exists!
-	 * @param integer $depth The number of levels to descend. If you want to descend infinitely, just set this to 100 or so. Should be at least "1" since zero will just make the function return (no decend...)
-	 * @param integer $begin Is an optional integer that determines at which level in the tree to start collecting uid's. Zero means 'start right away', 1 = 'next level and out'
+	 * @param int $id The id of the start page from which point in the page tree to descend. IF NEGATIVE the id itself is included in the end of the list (only if $begin is 0) AND the output does NOT contain a last comma. Recommended since it will resolve the input ID for mount pages correctly and also check if the start ID actually exists!
+	 * @param int $depth The number of levels to descend. If you want to descend infinitely, just set this to 100 or so. Should be at least "1" since zero will just make the function return (no decend...)
+	 * @param int $begin Is an optional integer that determines at which level in the tree to start collecting uid's. Zero means 'start right away', 1 = 'next level and out'
 	 * @param bool $dontCheckEnableFields See function description
 	 * @param string $addSelectFields Additional fields to select. Syntax: ",[fieldname],[fieldname],...
 	 * @param string $moreWhereClauses Additional where clauses. Syntax: " AND [fieldname]=[value] AND ...
 	 * @param array $prevId_array array of IDs from previous recursions. In order to prevent infinite loops with mount pages.
-	 * @param integer $recursionLevel Internal: Zero for the first recursion, incremented for each recursive call.
+	 * @param int $recursionLevel Internal: Zero for the first recursion, incremented for each recursive call.
 	 * @return string Returns the list of ids as a comma separated string
 	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::checkEnableFields(), \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::checkPagerecordForIncludeSection()
 	 */
@@ -7831,7 +7831,7 @@ class ContentObjectRenderer {
 	/**
 	 * Checks if a page UID is available due to enableFields() AND the list of bad doktype numbers ($this->checkPid_badDoktypeList)
 	 *
-	 * @param integer $uid Page UID to test
+	 * @param int $uid Page UID to test
 	 * @return boolean TRUE if OK
 	 * @access private
 	 * @see getWhere(), checkPidArray()

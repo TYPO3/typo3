@@ -91,7 +91,7 @@ interface QuerySettingsInterface {
 	public function getLanguageMode();
 
 	/**
-	 * @param integer $languageUid
+	 * @param int $languageUid
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
 	 * @api
 	 */

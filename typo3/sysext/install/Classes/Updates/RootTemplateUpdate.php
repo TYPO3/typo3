@@ -28,7 +28,7 @@ class RootTemplateUpdate extends AbstractUpdate implements InstallerProcessInter
 	 * Checks whether updates need to be performed
 	 *
 	 * @param string &$description The description for the update
-	 * @param integer &$showUpdate 0=dont show update; 1=show update and next button; 2=only show description
+	 * @param int &$showUpdate 0=dont show update; 1=show update and next button; 2=only show description
 	 * @return boolean
 	 */
 	public function checkForUpdate(&$description, &$showUpdate = 0) {

@@ -1535,7 +1535,7 @@ class InlineElement {
 	/**
 	 * Gets the related records of the embedding item, this could be 1:n, m:n.
 	 *
-	 * @param integer $pid The pid of the parent record
+	 * @param int $pid The pid of the parent record
 	 * @param string $table The table name of the record
 	 * @param string $itemList The list of related child records
 	 * @return array The records related to the parent item
@@ -1708,7 +1708,7 @@ class InlineElement {
 	 * The pid to be used can be defined by a Page TSconfig.
 	 *
 	 * @param string $table The table name
-	 * @param integer $parentPid The pid of the parent record
+	 * @param int $parentPid The pid of the parent record
 	 * @return integer The corrected pid to be used for a new record
 	 */
 	protected function getNewRecordPid($table, $parentPid = NULL) {
@@ -1727,7 +1727,7 @@ class InlineElement {
 	 * \TYPO3\CMS\Backend\Form\DataPreprocessor is used for "upgrading" the
 	 * values, especially the relations.
 	 *
-	 * @param integer $pid The pid of the page the record should be stored (only relevant for NEW records)
+	 * @param int $pid The pid of the page the record should be stored (only relevant for NEW records)
 	 * @param string $table The table to fetch data from (= foreign_table)
 	 * @param string $uid The uid of the record to fetch, or the pid if a new record should be created
 	 * @param string $cmd The command to perform, empty or 'new'
@@ -1759,7 +1759,7 @@ class InlineElement {
 	/**
 	 * Wrapper. Calls getRecord in case of a new record should be created.
 	 *
-	 * @param integer $pid The pid of the page the record should be stored (only relevant for NEW records)
+	 * @param int $pid The pid of the page the record should be stored (only relevant for NEW records)
 	 * @param string $table The table to fetch data from (= foreign_table)
 	 * @return array A record row from the database post-processed by \TYPO3\CMS\Backend\Form\DataPreprocessor
 	 */
@@ -1887,7 +1887,7 @@ class InlineElement {
 	 * If the $level value is negative, this function works top-down,
 	 * if the $level value is positive, this function works bottom-up.
 	 *
-	 * @param integer $level Which level to return
+	 * @param int $level Which level to return
 	 * @return array The item of the stack at the requested level
 	 */
 	public function getStructureLevel($level) {
@@ -1903,7 +1903,7 @@ class InlineElement {
 	/**
 	 * Calculates structure level.
 	 *
-	 * @param integer $level Which level to return
+	 * @param int $level Which level to return
 	 * @return boolean|integer
 	 */
 	protected function calculateStructureLevel($level) {
@@ -1924,7 +1924,7 @@ class InlineElement {
 	 * Get the identifiers of a given depth of level, from the top of the stack to the bottom.
 	 * An identifier looks like "<table>-<uid>-<field>".
 	 *
-	 * @param integer $structureDepth How much levels to output, beginning from the top of the stack
+	 * @param int $structureDepth How much levels to output, beginning from the top of the stack
 	 * @return string The path of identifiers
 	 */
 	public function getStructurePath($structureDepth = -1) {
@@ -2442,7 +2442,7 @@ class InlineElement {
 	 * Checks if a uid of a child table is in the inline view settings.
 	 *
 	 * @param string $table Name of the child table
-	 * @param integer $uid uid of the the child record
+	 * @param int $uid uid of the the child record
 	 * @return boolean TRUE=expand, FALSE=collapse
 	 */
 	public function getExpandedCollapsedState($table, $uid) {

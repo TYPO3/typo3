@@ -49,7 +49,7 @@ class Mirrors extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Method selects one specific mirror to be used.
 	 *
-	 * @param integer $mirrorId number (>=1) of mirror or NULL for random selection
+	 * @param int $mirrorId number (>=1) of mirror or NULL for random selection
 	 * @return void
 	 * @see $currentMirror
 	 */

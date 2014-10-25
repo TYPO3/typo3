@@ -55,8 +55,8 @@ class TemplateAnalyzerModuleFunctionController extends \TYPO3\CMS\Backend\Module
 	/**
 	 * Initialize editor
 	 *
-	 * @param integer $pageId
-	 * @param integer $template_uid
+	 * @param int $pageId
+	 * @param int $template_uid
 	 * @return integer
 	 */
 	public function initialize_editor($pageId, $template_uid = 0) {

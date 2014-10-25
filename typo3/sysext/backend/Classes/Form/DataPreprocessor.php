@@ -182,7 +182,7 @@ class DataPreprocessor {
 	 *
 	 * @param string $table The table name
 	 * @param string $id The uid value of the record (integer). Can also be a string (NEW-something) if the record is a NEW record.
-	 * @param integer $pid The pid integer. For existing records this is of course the row's "pid" field. For new records it can be either a page id (positive) or a pointer to another record from the SAME table (negative) after which the record should be inserted (or on same page)
+	 * @param int $pid The pid integer. For existing records this is of course the row's "pid" field. For new records it can be either a page id (positive) or a pointer to another record from the SAME table (negative) after which the record should be inserted (or on same page)
 	 * @param array $row The row of the current record. If NEW record, then it may be loaded with default values (by eg. fetchRecord()).
 	 * @return void
 	 * @see fetchRecord()
@@ -224,10 +224,10 @@ class DataPreprocessor {
 	 *
 	 * @param string $table The table name
 	 * @param string $id The uid value of the record (integer). Can also be a string (NEW-something) if the record is a NEW record.
-	 * @param integer $pid The pid integer. For existing records this is of course the row's "pid" field. For new records it can be either a page id (positive) or a pointer to another record from the SAME table (negative) after which the record should be inserted (or on same page)
+	 * @param int $pid The pid integer. For existing records this is of course the row's "pid" field. For new records it can be either a page id (positive) or a pointer to another record from the SAME table (negative) after which the record should be inserted (or on same page)
 	 * @param array $row The row of the current record. If NEW record, then it may be loaded with default values (by eg. fetchRecord()).
 	 * @param array $TSconfig Tsconfig array
-	 * @param integer $tscPID PAGE TSconfig pid
+	 * @param int $tscPID PAGE TSconfig pid
 	 * @return array Processed record data
 	 * @see renderRecord()
 	 */
@@ -458,9 +458,9 @@ class DataPreprocessor {
 	 *
 	 * @param array $totalRecordContent The array of values which has been processed according to their type (eg. "group" or "select")
 	 * @param array $types_fieldConfig The "types" configuration for the current display of fields.
-	 * @param integer $tscPID PAGE TSconfig PID
+	 * @param int $tscPID PAGE TSconfig PID
 	 * @param string $table Table name
-	 * @param integer $pid PID value
+	 * @param int $pid PID value
 	 * @return array The processed version of $totalRecordContent
 	 * @access private
 	 */
@@ -877,8 +877,8 @@ class DataPreprocessor {
 	 * Sets the lock for a record from table/id, IF $this->lockRecords is set!
 	 *
 	 * @param string $table The table name
-	 * @param integer $id The id of the record
-	 * @param integer $pid The pid of the record
+	 * @param int $id The id of the record
+	 * @param int $pid The pid of the record
 	 * @return void
 	 */
 	public function lockRecord($table, $id, $pid = 0) {
@@ -891,7 +891,7 @@ class DataPreprocessor {
 	 * Dummy function, can be used to "register" records. Used by eg. the "show_item" script.
 	 *
 	 * @param string $table Table name
-	 * @param integer $id Record id
+	 * @param int $id Record id
 	 * @param string $field Field name
 	 * @param string $content Field content.
 	 * @return void

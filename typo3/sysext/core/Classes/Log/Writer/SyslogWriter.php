@@ -84,7 +84,7 @@ class SyslogWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 	/**
 	 * Sets the facility to use when logging to syslog.
 	 *
-	 * @param integer $facility Facility to use when logging.
+	 * @param int $facility Facility to use when logging.
 	 * @return void
 	 */
 	public function setFacility($facility) {

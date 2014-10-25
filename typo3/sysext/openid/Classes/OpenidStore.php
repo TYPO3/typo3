@@ -128,7 +128,7 @@ class OpenidStore extends \Auth_OpenID_OpenIDStore {
 	 * Checks if this nonce was already used
 	 *
 	 * @param string $serverUrl Server URL
-	 * @param integer $timestamp Time stamp
+	 * @param int $timestamp Time stamp
 	 * @param string $salt Nonce value
 	 * @return boolean TRUE if nonce was not used before anc can be used now
 	 */
@@ -213,7 +213,7 @@ class OpenidStore extends \Auth_OpenID_OpenIDStore {
 	/**
 	 * Updates association time stamp.
 	 *
-	 * @param integer $recordId Association record id in the database
+	 * @param int $recordId Association record id in the database
 	 * @return void
 	 */
 	protected function updateAssociationTimeStamp($recordId) {

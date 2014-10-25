@@ -287,7 +287,7 @@ class CommandMap {
 	 * Applies workspaces behaviour for swapping/publishing and takes care of the swapMode.
 	 *
 	 * @param string $table
-	 * @param integer $liveId
+	 * @param int $liveId
 	 * @param array $properties
 	 * @return void
 	 */
@@ -314,7 +314,7 @@ class CommandMap {
 	 *
 	 * @param \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency
 	 * @param string $table
-	 * @param integer $liveId
+	 * @param int $liveId
 	 * @param array $properties
 	 * @return void
 	 */

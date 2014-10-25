@@ -401,8 +401,8 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	/**
 	 * Recursively look for children for page version with $pid
 	 *
-	 * @param integer $pid UID of page record for which to look up sub-elements following that version
-	 * @param integer $c Counter, do not set (limits to 100 levels)
+	 * @param int $pid UID of page record for which to look up sub-elements following that version
+	 * @param int $c Counter, do not set (limits to 100 levels)
 	 * @return string Table with content if any
 	 */
 	public function pageSubContent($pid, $c = 0) {
@@ -451,7 +451,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	 * Look for number of versions of a record
 	 *
 	 * @param string $table Table name
-	 * @param integer $uid Record uid
+	 * @param int $uid Record uid
 	 * @return integer Number of versions for record, FALSE if none.
 	 */
 	public function lookForOwnVersions($table, $uid) {

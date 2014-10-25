@@ -56,7 +56,7 @@ abstract class AbstractSalt {
 	 * Encodes bytes into printable base 64 using the *nix standard from crypt().
 	 *
 	 * @param string $input The string containing bytes to encode.
-	 * @param integer $count The number of characters (bytes) to encode.
+	 * @param int $count The number of characters (bytes) to encode.
 	 * @return string Encoded string
 	 */
 	public function base64Encode($input, $count) {
@@ -89,7 +89,7 @@ abstract class AbstractSalt {
 	 * Method determines required length of base64 characters for a given
 	 * length of a byte string.
 	 *
-	 * @param integer $byteLength Length of bytes to calculate in base64 chars
+	 * @param int $byteLength Length of bytes to calculate in base64 chars
 	 * @return integer Required length of base64 characters
 	 */
 	protected function getLengthBase64FromBytes($byteLength) {

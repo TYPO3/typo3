@@ -849,7 +849,7 @@ class TypoScriptFrontendController {
 	 *
 	 * @param array $TYPO3_CONF_VARS The global $TYPO3_CONF_VARS array. Will be set internally in ->TYPO3_CONF_VARS
 	 * @param mixed $id The value of \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id')
-	 * @param integer $type The value of \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('type')
+	 * @param int $type The value of \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('type')
 	 * @param bool|string $no_cache The value of \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('no_cache'), evaluated to 1/0
 	 * @param string $cHash The value of \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cHash')
 	 * @param string $jumpurl The value of \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('jumpurl')
@@ -1582,10 +1582,10 @@ class TypoScriptFrontendController {
 	/**
 	 * Get page shortcut; Finds the records pointed to by input value $SC (the shortcut value)
 	 *
-	 * @param integer $SC The value of the "shortcut" field from the pages record
-	 * @param integer $mode The shortcut mode: 1 will select first subpage, 2 a random subpage, 3 the parent page; default is the page pointed to by $SC
-	 * @param integer $thisUid The current page UID of the page which is a shortcut
-	 * @param integer $itera Safety feature which makes sure that the function is calling itself recursively max 20 times (since this function can find shortcuts to other shortcuts to other shortcuts...)
+	 * @param int $SC The value of the "shortcut" field from the pages record
+	 * @param int $mode The shortcut mode: 1 will select first subpage, 2 a random subpage, 3 the parent page; default is the page pointed to by $SC
+	 * @param int $thisUid The current page UID of the page which is a shortcut
+	 * @param int $itera Safety feature which makes sure that the function is calling itself recursively max 20 times (since this function can find shortcuts to other shortcuts to other shortcuts...)
 	 * @param array $pageLog An array filled with previous page uids tested by the function - new page uids are evaluated against this to avoid going in circles.
 	 * @throws \RuntimeException
 	 * @throws PageNotFoundException
@@ -1825,7 +1825,7 @@ class TypoScriptFrontendController {
 	 * Gets ->page and ->rootline information based on ->id. ->id may change during this operation.
 	 * If not inside domain, then default to first page in domain.
 	 *
-	 * @param integer $domainStartPage Page uid of the page where the found domain record is (pid of the domain record)
+	 * @param int $domainStartPage Page uid of the page where the found domain record is (pid of the domain record)
 	 * @return void
 	 * @access private
 	 */
@@ -3154,7 +3154,7 @@ class TypoScriptFrontendController {
 	 *
 	 * @param string $content The content to store in the HTML field of the cache table
 	 * @param mixed $data The additional cache_data array, fx. $this->config
-	 * @param integer $expirationTstamp Expiration timestamp
+	 * @param int $expirationTstamp Expiration timestamp
 	 * @return void
 	 * @see realPageCacheContent(), tempPageCacheContent()
 	 */
@@ -3888,10 +3888,10 @@ class TypoScriptFrontendController {
 	 * Encryption (or decryption) of a single character.
 	 * Within the given range the character is shifted with the supplied offset.
 	 *
-	 * @param integer $n Ordinal of input character
-	 * @param integer $start Start of range
-	 * @param integer $end End of range
-	 * @param integer $offset Offset
+	 * @param int $n Ordinal of input character
+	 * @param int $start Start of range
+	 * @param int $end End of range
+	 * @param int $offset Offset
 	 * @return string encoded/decoded version of character
 	 */
 	public function encryptCharcode($n, $start, $end, $offset) {
@@ -4388,7 +4388,7 @@ class TypoScriptFrontendController {
 	/**
 	 * Sets the cache-timeout in seconds
 	 *
-	 * @param integer $seconds Cache-timeout in seconds
+	 * @param int $seconds Cache-timeout in seconds
 	 * @return void
 	 */
 	public function set_cache_timeout_default($seconds) {
@@ -4675,7 +4675,7 @@ class TypoScriptFrontendController {
 	 * Find the minimum starttime or endtime value in the table and pid that is greater than the current time.
 	 *
 	 * @param string $tableDef Table definition (format tablename:pid)
-	 * @param integer $now "Now" time value
+	 * @param int $now "Now" time value
 	 * @throws \InvalidArgumentException
 	 * @return integer Value of the next start/stop time or PHP_INT_MAX if not found
 	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::calculatePageCacheTimeout()
