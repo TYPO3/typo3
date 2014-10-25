@@ -104,7 +104,7 @@ class CheckboxElement extends AbstractFormElement {
 				$checkboxId = $additionalInformation['itemFormElID'] . '_' . $c;
 				$item .= ($c > 0 ? '<br />' : '') . '<input type="checkbox"' . $this->formEngine->insertDefStyle('check')
 					. ' value="1" name="' . $checkboxName . '"' . $checkboxParameters . $additionalInformation['onFocus'] . $disabled
-					. ' id="' . $checkboxId . '" />'
+					. ' id="' . $checkboxId . '" /> '
 					. '<label for="' . $checkboxId . '">' . htmlspecialchars($selectedItem[0]) . '</label>';
 			}
 		}

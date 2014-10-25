@@ -2331,7 +2331,7 @@ class FormEngine {
 				$spriteIcon = IconUtility::getSpriteIcon('actions-insert-record', array(
 					'title' => htmlspecialchars($this->getLL('l_browse_' . ($mode == 'db' ? 'db' : 'file')))
 				));
-				$icons['R'][] = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $spriteIcon . '</a>';
+				$icons['R'][] = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '" class="btn btn-default">' . $spriteIcon . '</a>';
 			}
 			if (!$params['dontShowMoveIcons']) {
 				if ($sSize >= 5) {

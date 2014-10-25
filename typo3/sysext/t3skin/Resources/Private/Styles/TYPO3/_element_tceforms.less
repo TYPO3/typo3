@@ -15,6 +15,56 @@
 TCEforms
 - - - - - - - - - - - - - - - - - - - - - */
 
+// Special handling of Tabs within FormEngine
+.typo3-TCEforms {
+
+	div.typo3-dyntabmenu-divs {
+		// Override .tab inner padding: for section border
+		padding: 0;
+	}
+
+	.table {
+		margin-bottom: 0;
+
+		> tbody {
+			> tr {
+				> td {
+					background: none;
+
+
+
+					&.palette-header {
+						border-top: 1px solid @gray-light;
+
+						h3 {
+							// Padding and margin are created by table <td>
+							margin-top: @padding-large-vertical;
+							margin-bottom: 0;
+						}
+					}
+
+					.t3-form-palette-fieldset {
+						margin-bottom: @padding-large-vertical;
+
+						.t3-form-palette-field-container {
+							margin-bottom: @padding-base-vertical;
+						}
+					}
+
+
+					table.t3-form-field-group-file {
+						td {
+							// Padding coming from outer wrap
+							padding-left: 0;
+						}
+					}
+
+				}
+			}
+		}
+	}
+}
+
 img.t3-TCEforms-reqImg {
 	display: block;
 	position: absolute;
@@ -94,10 +144,6 @@ img.t3-TCEforms-contentchangedPaletteImg {
 
 td.palette-header {
 	padding-left: 10px;
-}
-
-.typo3-TCEforms .palette-header h3 {
-	margin-top: 10px;
 }
 
 .typo3-TCEforms .bgColor2,
@@ -265,6 +311,7 @@ div.typo3-TCEforms div.c-tablayer table > tbody > tr > td > table.wrapperTable >
 	display: inline-block;
 	vertical-align: top;
 	padding-right: 25px;
+	margin-bottom: 0.5em;
 }
 
 .t3-form-palette-field-container .t3-form-palette-field-label,
@@ -357,11 +404,6 @@ input.typo3-TCEforms-suggest-search {
 /* - - - - - - - - - - - - - - - - - - - - -
 TCEforms Flexforms
 - - - - - - - - - - - - - - - - - - - - - */
-/** tabs inside the table => flexforms */
-.typo3-TCEforms .typo3-dyntabmenu-divs {
-	margin-right: 20px;
-	margin-bottom: 10px;
-}
 
 .t3-form-field-label-flex {
 	border-top: 1px solid #c0c0c0;
@@ -757,10 +799,6 @@ select option.c-divider {
 	border-bottom: 1px solid #c0c0c0;
 }
 
-.t3-form-palette-fieldset {
-	border:none;
-}
-
 input.typo3-TCEforms-suggest-search {
 	background-image: url('../../../../icons/gfx/zoom.gif');
 	background-position: 2px center;
@@ -903,7 +941,7 @@ TCEforms Sections
 .t3-form-field-item {
 	position: relative;
 	border: 1px solid transparent;
-	padding: 7px 0;
+	padding: 0;
 }
 
 .t3-tceforms-widget-null-wrapper + .t3-form-field-item {
