@@ -2569,13 +2569,46 @@ enableWordClean
          enableWordClean
    
    Data type
+         boolean
+   
+   Description
+         Specifies that text pasted from external sources, presumably from
+         Microsoft Word, should be "cleaned" or not.
+         
+         Default: 0
+         
+         Note:If no HTMLparser configuration is specified, a limited default
+         cleaning operation will be performed. If a HTMLparser specification is
+         specified, parsing will be performed on the server at the time of the
+         paste operation.
+         
+         Note: Additional cleanup may be performed by the user when the
+         removeformat button is enabled.
+         
+         Note: Cleaning on paste cannot be performed in Opera.
+         
+         Note: The same cleaning operation is performed with hotkey CTRL+0,
+         including in Opera.
+
+
+
+.. _enablewordclean_HTMLparser:
+
+enableWordClean.HTMLparser
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. container:: table-row
+
+   Property
+         enableWordClean.HTMLparser
+   
+   Data type
          boolean/
          
          ->HTMLparser
    
    Description
-         Specifies that text pasted from external sources, presumably from
-         Microsoft Word, should be "cleaned" or not.
+         HTMLparser specification use by the enableWordClean feature.
          
          Default: 0
          
@@ -2589,14 +2622,6 @@ enableWordClean
          operation. If they are removed, the cursor position will not be
          restored in non-IE browsers after the paste operation, and the cursor
          will then be positionned at the start of the text.
-         
-         Note: Additional cleanup may be performed by the user when the
-         removeformat button is enabled.
-         
-         Note: Cleaning on paste cannot be performed in Opera.
-         
-         Note: The same cleaning operation is performed with hotkey CTRL+0,
-         including in Opera.
 
 
 
