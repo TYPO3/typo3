@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Core\Utility\File;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -400,29 +402,51 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 				'deleted=0 AND ref_table="sys_file" AND ref_uid=' . (int)$fileObject->getUid()
 				. ' AND tablename != "sys_file_metadata"'
 			);
+			$deleteFile = TRUE;
 			if (count($refIndexRecords) > 0) {
 				$shortcutContent = array();
+				$brokenReferences = array();
+
 				foreach ($refIndexRecords as $fileReferenceRow) {
-					$row = $fileReferenceRow;
 					if ($fileReferenceRow['tablename'] === 'sys_file_reference') {
 						$row = $this->transformFileReferenceToRecordReference($fileReferenceRow);
-					}
-					$shortcutRecord = BackendUtility::getRecord($row['tablename'], $row['recuid']);
-					$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($row['tablename'], $shortcutRecord);
-					$onClick = 'Clickmenu.show("' . $row['tablename'] . '", "' . $row['recuid'] . '", "1", "+info,history,edit", "|", "");return false;';
-					$shortcutContent[] = '<a href="#" oncontextmenu="this.click();return false;" onclick="' . htmlspecialchars($onClick) . '">' . $icon . '</a>' . htmlspecialchars((BackendUtility::getRecordTitle($row['tablename'], $shortcutRecord) . '  [' . BackendUtility::getRecordPath($shortcutRecord['pid'], '', 80) . ']'));
-				}
+						$shortcutRecord = BackendUtility::getRecord($row['tablename'], $row['recuid']);
 
-				// render a message that the file could not be deleted
-				$flashMessage = GeneralUtility::makeInstance(
-					'\\TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
-					sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.description.fileNotDeletedHasReferences'), $fileObject->getName()) . '<br />' . implode('<br />', $shortcutContent),
-					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.header.fileNotDeletedHasReferences'),
-					\TYPO3\CMS\Core\Messaging\FlashMessage::WARNING,
-					TRUE
-				);
-				$this->addFlashMessage($flashMessage);
-			} else {
+						if ($shortcutRecord) {
+							$icon = IconUtility::getSpriteIconForRecord($row['tablename'], $shortcutRecord);
+							$onClick = 'Clickmenu.show("' . $row['tablename'] . '", "' . $row['recuid'] . '", "1", "+info,history,edit", "|", "");return false;';
+							$shortcutContent[] = '<a href="#" oncontextmenu="this.click();return false;" onclick="' . htmlspecialchars($onClick) . '">' . $icon . '</a>' . htmlspecialchars((BackendUtility::getRecordTitle($row['tablename'], $shortcutRecord) . '  [' . BackendUtility::getRecordPath($shortcutRecord['pid'], '', 80) . ']'));
+						} else {
+							$brokenReferences[] = $fileReferenceRow['ref_uid'];
+						}
+					}
+				}
+				if (!empty($brokenReferences)) {
+					// render a message that the file has broken references
+					$flashMessage = GeneralUtility::makeInstance(
+						'\\TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+						sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.description.fileHasBrokenReferences'), count($brokenReferences)),
+						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.header.fileHasBrokenReferences'),
+						FlashMessage::INFO,
+						TRUE
+					);
+					$this->addFlashMessage($flashMessage);
+				}
+				if (!empty($shortcutContent)) {
+					// render a message that the file could not be deleted
+					$flashMessage = GeneralUtility::makeInstance(
+						'\\TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+						sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.description.fileNotDeletedHasReferences'), $fileObject->getName()) . '<br />' . implode('<br />', $shortcutContent),
+						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.header.fileNotDeletedHasReferences'),
+						FlashMessage::WARNING,
+						TRUE
+					);
+					$this->addFlashMessage($flashMessage);
+					$deleteFile = FALSE;
+				}
+			}
+
+			if ($deleteFile) {
 				try {
 					$result = $fileObject->delete();
 
