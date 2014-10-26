@@ -348,6 +348,9 @@ if (TYPO3_MODE == 'BE' || TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER'])) {
 	foreach ($flagNames as $flagName) {
 		$TCA['sys_language']['columns']['flag']['config']['items'][] = array($flagName, $flagName, 'EXT:t3skin/images/flags/' . $flagName . '.png');
 	}
+
+	$TCA['pages']['columns']['module']['config']['items'][1][2] = 'EXT:t3skin/images/icons/status/user-frontend.png';
+
 	// Manual setting up of alternative icons. This is mainly for module icons which has a special prefix:
 	$TBE_STYLES['skinImg'] = array_merge($presetSkinImgs, array(
 		'gfx/ol/blank.gif' => array('clear.gif', 'width="18" height="16"'),
