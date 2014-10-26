@@ -115,10 +115,10 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 		$workspaceMenu = array(
 			'<a href="#" class="toolbar-item">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-toolbar-menu-workspace', array('title' => $title)) . '</a>',
 			'<div class="toolbar-item-menu" style="display: none">' ,
-				'<ul class="top">',
+				'<ul class="top list-unstyled">',
 					implode(LF, $workspaceSections['top']),
 				'</ul>',
-				'<ul class="items">',
+				'<ul class="items list-unstyled">',
 					implode(LF, $workspaceSections['items']),
 				'</ul>',
 			'</div>'

@@ -166,11 +166,20 @@ class BackendController {
 
 		// Create backend scaffolding
 		$backendScaffolding = '
-		<div id="typo3-top-container" class="x-hide-display">
-			<div id="typo3-logo">' . $logo->render() . '</div>
-			<div id="typo3-top" class="typo3-top-toolbar">' . $this->renderToolbar() . '</div>
-		</div>
-		' . $this->generateModuleMenu();
+			<div class="navbar navbar-inverse x-hide-display" role="navigation" id="typo3-top-container">
+				<div class="container-fluid">
+					<div class="navbar-header" id="typo3-logo">' .
+						$logo->render() .
+					'</div>
+					<div id="typo3-top">
+						<ul class="nav navbar-nav navbar-right typo3-top-toolbar" id="typo3-toolbar">' .
+							$this->renderToolbar() .
+						'</ul>
+					</div>
+				</div>
+			</div>' .
+			$this->generateModuleMenu();
+
 		/******************************************************
 		 * Now put the complete backend document together
 		 ******************************************************/
@@ -283,9 +292,9 @@ class BackendController {
 			unset($this->toolbarItems['liveSearch']);
 			$this->toolbarItems['liveSearch'] = $search;
 		}
-		$toolbar = '<ul id="typo3-toolbar">';
-		$toolbar .= '<li>' . $this->getLoggedInUserLabel() . '</li>';
-		$toolbar .= '<li class="separator"><div id="logout-button" class="toolbar-item no-separator">' . $this->renderLogoutButton() . '</div></li>';
+		$toolbar = $this->getLoggedInUserLabel();
+		$toolbar .= '<li class="toolbar-item" id="logout-button">' . $this->renderLogoutButton() . '</li>';
+
 		$i = 0;
 		$numberOfToolbarItems = count($this->toolbarItems);
 		foreach ($this->toolbarItems as $key => $toolbarItem) {
@@ -303,10 +312,10 @@ class BackendController {
 				if ($additionalAttributes !== '') {
 					$additionalAttributes = ' ' . $additionalAttributes;
 				}
-				$toolbar .= '<li' . $additionalAttributes . '>' . $menu . '</li>';
+				$toolbar .= '<li' . $additionalAttributes . ' role="menu">' . $menu . '</li>';
 			}
 		}
-		return $toolbar . '</ul>';
+		return $toolbar;
 	}
 
 	/**
@@ -315,24 +324,31 @@ class BackendController {
 	 * @return string Html code snippet displaying the currently logged in user
 	 */
 	protected function getLoggedInUserLabel() {
-		$css = 'toolbar-item';
+		$css = '';
 		$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-user-' . ($GLOBALS['BE_USER']->isAdmin() ? 'admin' : 'backend'));
 		$realName = $GLOBALS['BE_USER']->user['realName'];
 		$username = $GLOBALS['BE_USER']->user['username'];
 		$label = $realName ?: $username;
 		$title = $username;
+
 		// Link to user setup if it's loaded and user has access
 		$link = '';
 		if (ExtensionManagementUtility::isLoaded('setup') && $GLOBALS['BE_USER']->check('modules', 'user_setup')) {
 			$link = '<a href="#" onclick="top.goToModule(\'user_setup\'); this.blur(); return false;">';
+		} else {
+			$link = '<a name="username">';
 		}
+
 		// Superuser mode
 		if ($GLOBALS['BE_USER']->user['ses_backuserid']) {
 			$css .= ' su-user';
 			$title = $GLOBALS['LANG']->getLL('switchtouser') . ': ' . $username;
 			$label = $GLOBALS['LANG']->getLL('switchtousershort') . ' ' . ($realName ? $realName . ' (' . $username . ')' : $username);
 		}
-		return '<div id="username" class="' . $css . '">' . $link . $icon . '<span title="' . htmlspecialchars($title) . '">' . htmlspecialchars($label) . '</span>' . ($link ? '</a>' : '') . '</div>';
+
+		return '<li id="username" class="' . $css . '">' .
+			$link . $icon . '<span title="' . htmlspecialchars($title) . '">' . htmlspecialchars($label) . '</span></a>' .
+		'</li>';
 	}
 
 	/**

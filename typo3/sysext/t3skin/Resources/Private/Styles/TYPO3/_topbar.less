@@ -16,6 +16,7 @@ Topbar
 - - - - - - - - - - - - - - - - - - - - - */
 
 #typo3-topbar {
+	background-color: @navbar-inverse-bg;
 	z-index: 200;
 
 	div {
@@ -23,11 +24,7 @@ Topbar
 	}
 
 	#typo3-top-container {
-		background: #000;
-		color: @navbar-inverse-color;
-
-		height: 100%;
-		padding: 0 24px;
+		margin-bottom: 0;
 
 		#typo3-logo {
 			margin: 8px 0 0 0;
@@ -35,99 +32,60 @@ Topbar
 			width: 159px;
 		}
 
-		.typo3-top-toolbar {
-			margin-top: 6px;
-			padding-right: 24px;
-			position: absolute;
-			right: 0px;
+		#typo3-toolbar {
+			list-style: none;
+			display: inline;
 
-			.separator {
-				border-right: 1px solid #000;
-				box-shadow: 1px 0 #585858;
+			div {
+				overflow: visible !important;
 			}
 
-			#typo3-toolbar {
-				list-style: none;
-				display: inline;
-				margin: 0px;
-				padding: 0px;
+			span.spinner {
+				background-image: url('../../../../images/spinner/3f3f3f.gif');
+			}
 
-				div {
-					overflow: visible !important;
-				}
+			> li {
+				.dropdown;
+			}
 
-				span.spinner {
-					background-image: url('../../../../images/spinner/3f3f3f.gif');
-				}
-
-				>li {
-					display: inline;
-					float: left;
-				}
-
-				li {
-					padding-top: 3px;
-					position: relative;
-					padding-bottom: 2px;
-				}
-
-				.separator {
-					padding-right: 12px;
-					margin-right: 13px;
-
-					.toolbar-item-menu {
-						right: 12px;
-					}
-				}
-
-				.toolbar-item {
-					display: block;
-					padding-bottom: 4px;
-					padding-top: 2px;
-					text-align: center;
-					color: #fff;
-
-					.badge {
-						position: absolute;
-						top: -3px;
-						right: -3px;
-						font-size: 7px;
-					}
-				}
-
-				.toolbar-item-active {
-					background-image: url('../../../../icons/gfx/toolbar_item_active_bg.png');
-					height: 25px;
-					color: #000;
-				}
-
-				.toolbar-item-menu {
-					background-color: #f9f9f9;
-					border: 1px solid #abb2bc;
-					border-top: none;
-					list-style: none;
+			.toolbar-item {
+				.badge {
 					position: absolute;
-					top: 28px;
-					z-index: 100;
-					right: 0;
-					margin: 0;
-					padding: 2px 0 0;
-					width: 180px;
+					top: 6px;
+					right: 4px;
+					font-size: 7px;
+				}
+			}
 
-					li {
-						padding-top: 0;
-						padding-bottom: 0;
+			.toolbar-item-active {
+				background-color: @navbar-inverse-link-active-bg;
+				color: @navbar-inverse-link-active-color;
+			}
 
-						a {
-							float: none;
-							min-height: 19px;
-							padding-left: 2px;
-							padding-top: 1px;
-							vertical-align: middle;
-							display: block;
-							padding-bottom: 2px;
-							padding-left: 3px;
-							vertical-align: middle;
+			.toolbar-item-menu {
+				.dropdown-menu;
+
+				// Migration between Toolbaritem -> Bootstrap
+				display: block;
+				visiblity: hidden;
+				left: auto;
+				right: 0;
+
+				background-color: @navbar-inverse-link-active-bg;
+				color: @navbar-inverse-link-active-color;
+				border: 0;
+				margin: 0;
+
+				li,
+				td {
+					a {
+						color: @navbar-inverse-link-active-color;
+						text-decoration: none;
+
+						&:hover {
+							background-color: darken(@navbar-inverse-link-active-bg, 10%);
+							color: @navbar-inverse-link-active-color;
+							text-decoration: none;
 						}
 					}
 				}
@@ -136,20 +94,11 @@ Topbar
 	}
 }
 
-#typo3-toolbar * li:hover,
-tr.shortcut:hover,
-tr.recentdoc:hover,
-tr.opendoc:hover {
-	background: #eee;
-}
-
 /* - - - - - - - - - - - - - - - - - - - - -
 Clear cache
 - - - - - - - - - - - - - - - - - - - - - */
 
 #clear-cache-actions-menu {
-	width: 30px;
-
 	li {
 		text-align: left;
 
@@ -172,23 +121,8 @@ Shortcuts menu
 - - - - - - - - - - - - - - - - - - - - - */
 
 #shortcut-menu {
-	width: 30px;
-
-	.toolbar-item-menu {
-		margin: 0px;
-		padding: 2px 0px 0px;
-		position: absolute;
-		width: 220px;
-	}
-
 	.shortcut-list {
 		width: 100%;
-
-		tr.shortcut.first-row td {
-			background-image: url('../../../../icons/gfx/shortcutgroups-bg.png');
-			background-repeat: repeat-x;
-			padding-top: 4px;
-		}
 
 		tr.shortcut td {
 			line-height: 16px;
@@ -214,6 +148,7 @@ Shortcuts menu
 
 #shortcut-menu .shortcut-list .shortcut-group td {
 	background-color: #dbdbdb;
+	color: #000;
 	border-bottom: 1px solid #a5a5a5;
 	border-top: 1px solid #a5a5a5;
 }
@@ -252,8 +187,7 @@ Username inside the toolbar
 - - - - - - - - - - - - - - - - - - - - - */
 
 #username {
-	font-weight: bold;
-	margin-right: 12px;
+	color: #fff;
 
 	a {
 		color: #ffffff;
@@ -279,6 +213,11 @@ Username inside the toolbar
 		}
 
 	}
+}
+
+#logout-button {
+	margin-top: (@navbar-padding-vertical - 2);
+	padding: 0 @navbar-padding-horizontal;
 }
 
 /* - - - - - - - - - - - - - - - - - - - - -
@@ -319,33 +258,12 @@ Logon / Logout
 Workspace Selector
 - - - - - - - - - - - - - - - - - - - - - */
 #workspace-selector-menu  {
-	width: 30px;
-
 	ul {
-		position: static;
-		list-style: none;
-		margin: 0px;
-		padding: 2px 0px 0px;
-		width: 180px;
-
 		li {
-			text-align: left;
-			float: none;
-			min-height: 19px;
-			vertical-align: middle;
-
 			span.t3-icon {
 				float: left;
 				margin-top: 0;
 				margin-right: 2px;
-			}
-
-			a {
-				text-decoration: none;
-				display: block;
-				padding-bottom: 2px;
-				padding-left: 3px;
-				vertical-align: middle;
 			}
 
 			img {
@@ -354,48 +272,29 @@ Workspace Selector
 				margin-right: 2px;
 			}
 		}
-
-		li.divider {
-			border: 0;
-			background-image: url('../../../../icons/gfx/shortcutgroups-bg.png');
-			background-repeat: repeat-x;
-			min-height: 10px;
-			padding-right: 0;
-			padding-top: 4px;
-
-			&:hover {
-				background-color: transparent;
-			}
-		}
-
 	}
 
 	.items {
 		list-style: none;
-		background-color: #f9f9f9;
 		overflow-y: auto;
 		max-height: 300px;
 	}
 }
 
-body.typo3-in-workspace #typo3-top-container {
-	background: none;
-}
 
-body.typo3-in-workspace #typo3-topbar .x-panel-bwrap {
-	background: url('../../../../images/backgrounds/topbar-in-workspace-background-left.png') no-repeat;
-}
+body.typo3-in-workspace {
+	#typo3-top-container {
+		background-image:
+			url('../../../../images/backgrounds/topbar-in-workspace-background-left.png'),
+			url('../../../../images/backgrounds/topbar-in-workspace-background-right.png'),
+			url('../../../../images/backgrounds/topbar-in-workspace-background.gif');
+		background-repeat: no-repeat, no-repeat, repeat-x;
+		background-position: left top, right top, left top;
 
-body.typo3-in-workspace #typo3-topbar .x-panel-body {
-	background: url('../../../../images/backgrounds/topbar-in-workspace-background-right.png') no-repeat right 0;
-}
-
-body.typo3-in-workspace #typo3-topbar {
-	background: url('../../../../images/backgrounds/topbar-in-workspace-background.gif');
-}
-
-body.typo3-in-workspace #typo3-topbar #username {
-	text-shadow: 0 0 5px #000000;
+		#username {
+			text-shadow: 0 0 5px #000000;
+		}
+	}
 }
 
 /* - - - - - - - - - - - - - - - - - - - - -
@@ -403,13 +302,15 @@ Live Search
 - - - - - - - - - - - - - - - - - - - - - */
 
 #typo3-toolbar #live-search-menu {
-	padding-top: 4px;
+	padding-top: 13px;
+	padding-left: @navbar-padding-horizontal;
+	padding-right: @navbar-padding-horizontal;
 }
 
 .live-search-results .t3-icon-toolbar-menu-search {
 	position: absolute;
 	z-index: 3000;
-	top: 3px;
+	top: 13px;
 	margin: 3px;
 }
 
@@ -458,7 +359,6 @@ Live Search
 		margin-left: 110px;
 		color: #ddd;
 	}
-
 }
 
 .search-list-help-content {

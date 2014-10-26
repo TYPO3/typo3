@@ -9,55 +9,15 @@ Description : styles the Open Documents toolbar item
 
 - - - - - - - - - - - - - - - - - - - - - */
 
-#tx-opendocs-menu .toolbar-item {
-	padding-left: 8px;
-	padding-right: 7px;
-}
-
-#tx-opendocs-menu .toolbar-item-active {
-	background-image: url('../Images/toolbar_item_active_bg.png');
-}
-
-#tx-opendocs-menu span.t3-icon {
-
-}
-
-#tx-opendocs-menu .toolbar-item-menu {
-	position: absolute;
-	list-style: none;
-	padding: 2px 0px 0px;
-	margin: 0px;
-	background-color: #f9f9f9;
-	border: 1px solid #abb2bc;
-	border-top: none;
-	width: 200px;
-}
-
-#tx-opendocs-menu .toolbar-item-menu .list {
-	width: 100%;
-}
-
 #tx-opendocs-menu .toolbar-item-menu .list th {
-	border-top: 1px solid #a5a5a5;
-	border-bottom: 1px solid #a5a5a5;
-	background-color: #dbdbdb;
-
 	text-align: left;
 	font-weight: normal;
 	line-height: 16px;
 	padding-left: 7px;
 }
 
-#tx-opendocs-menu .toolbar-item-menu .list  td {
-	padding: 2px 1px;
-	line-height: 16px;
-}
-
-#tx-opendocs-menu .toolbar-item-menu .list tr.opendoc.first-row td,
-#tx-opendocs-menu .toolbar-item-menu .list tr.recentdoc.first-row td {
-	background-image: url('../../../../../../gfx/shortcutgroups-bg.png');
-	background-repeat: repeat-x;
-	padding-top: 4px;
+#tx-opendocs-menu .toolbar-item-menu td.label {
+	font-size: 100%;
 }
 
 #tx-opendocs-menu .toolbar-item-menu .list .opendoc .icon,
@@ -76,4 +36,3 @@ Description : styles the Open Documents toolbar item
 #tx-opendocs-menu .toolbar-item-menu .list .opendoc .close span {
 	cursor: pointer;
 }
-

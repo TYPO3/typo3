@@ -21,7 +21,7 @@ if (TYPO3_MODE === 'BE' || TYPO3_MODE === 'FE' && isset($GLOBALS['BE_USER'])) {
 	$TBE_STYLES['dims']['leftMenuFrameW'] = 190;
 
 	// Top frame height
-	$TBE_STYLES['dims']['topFrameH'] = 42;
+	$TBE_STYLES['dims']['topFrameH'] = 45;
 
 	// Default navigation frame width
 	$TBE_STYLES['dims']['navFrameWidth'] = 280;

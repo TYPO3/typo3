@@ -157,7 +157,7 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 			$entry = '
 				<tr class="opendoc' . $firstRow . '">
 					<td class="icon">' . $icon . '</td>
-					<td class="label"><a href="#" onclick="jump(unescape(\'' . htmlspecialchars($link) . '\'), \'web_list\', \'web\', ' . $pageId . '); TYPO3BackendOpenDocs.toggleMenu(); return false;" target="content">' . $label . '</a></td>
+					<td><a href="#" onclick="jump(unescape(\'' . htmlspecialchars($link) . '\'), \'web_list\', \'web\', ' . $pageId . '); TYPO3BackendOpenDocs.toggleMenu(); return false;" target="content">' . $label . '</a></td>
 					<td class="close" onclick="return TYPO3BackendOpenDocs.closeDocument(\'' . $md5sum . '\');">' . $closeIcon . '</td>
 				</tr>';
 		} else {

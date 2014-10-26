@@ -48,8 +48,8 @@ var ShortcutMenu = Class.create({
 			var edit = new Ajax.InPlaceEditor('shortcut-label-' + shortcutId, TYPO3.settings.ajaxUrls['ShortcutMenu::saveShortcut'], {
 				externalControl     : 'shortcut-edit-' + shortcutId,
 				externalControlOnly : true,
-				highlightcolor      : '#f9f9f9',
-				highlightendcolor   : '#f9f9f9',
+				highlightcolor      : 'transparent',
+				highlightendcolor   : 'transparent',
 				onFormCustomization : this.addGroupSelect,
 				onComplete          : this.reRenderMenu.bind(this),
 				callback            : function(form, nameInputFieldValue) {

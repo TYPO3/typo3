@@ -3582,7 +3582,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 .navbar {
   position: relative;
-  min-height: 32px;
+  min-height: 45px;
   margin-bottom: 18px;
   border: 1px solid transparent;
 }
@@ -3690,10 +3690,10 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 .navbar-brand {
   float: left;
-  padding: 7px 15px;
+  padding: 13.5px 15px;
   font-size: 15px;
   line-height: 18px;
-  height: 32px;
+  height: 45px;
 }
 .navbar-brand:hover,
 .navbar-brand:focus {
@@ -3710,8 +3710,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   float: right;
   margin-right: 15px;
   padding: 9px 10px;
-  margin-top: -1px;
-  margin-bottom: -1px;
+  margin-top: 5.5px;
+  margin-bottom: 5.5px;
   background-color: transparent;
   background-image: none;
   border: 1px solid transparent;
@@ -3735,7 +3735,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   }
 }
 .navbar-nav {
-  margin: 3.5px -15px;
+  margin: 6.75px -15px;
 }
 .navbar-nav > li > a {
   padding-top: 10px;
@@ -3773,8 +3773,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     float: left;
   }
   .navbar-nav > li > a {
-    padding-top: 7px;
-    padding-bottom: 7px;
+    padding-top: 13.5px;
+    padding-bottom: 13.5px;
   }
   .navbar-nav.navbar-right:last-child {
     margin-right: -15px;
@@ -3798,8 +3798,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   border-bottom: 1px solid transparent;
   -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
-  margin-top: 0px;
-  margin-bottom: 0px;
+  margin-top: 6.5px;
+  margin-bottom: 6.5px;
 }
 @media (min-width: 768px) {
   .navbar-form .form-group {
@@ -3878,20 +3878,20 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   border-bottom-left-radius: 0;
 }
 .navbar-btn {
-  margin-top: 0px;
-  margin-bottom: 0px;
+  margin-top: 6.5px;
+  margin-bottom: 6.5px;
 }
 .navbar-btn.btn-sm {
-  margin-top: 3px;
-  margin-bottom: 3px;
+  margin-top: 9.5px;
+  margin-bottom: 9.5px;
 }
 .navbar-btn.btn-xs {
-  margin-top: 5px;
-  margin-bottom: 5px;
+  margin-top: 11.5px;
+  margin-bottom: 11.5px;
 }
 .navbar-text {
-  margin-top: 7px;
-  margin-bottom: 7px;
+  margin-top: 13.5px;
+  margin-bottom: 13.5px;
 }
 @media (min-width: 768px) {
   .navbar-text {
@@ -4001,10 +4001,10 @@ fieldset[disabled] .navbar-default .btn-link:focus {
 }
 .navbar-inverse {
   background-color: #222222;
-  border-color: #080808;
+  border-color: none;
 }
 .navbar-inverse .navbar-brand {
-  color: #d7d7d7;
+  color: #999999;
 }
 .navbar-inverse .navbar-brand:hover,
 .navbar-inverse .navbar-brand:focus {
@@ -4012,26 +4012,26 @@ fieldset[disabled] .navbar-default .btn-link:focus {
   background-color: transparent;
 }
 .navbar-inverse .navbar-text {
-  color: #d7d7d7;
+  color: #999999;
 }
 .navbar-inverse .navbar-nav > li > a {
-  color: #d7d7d7;
+  color: #999999;
 }
 .navbar-inverse .navbar-nav > li > a:hover,
 .navbar-inverse .navbar-nav > li > a:focus {
-  color: #ffffff;
-  background-color: #151515;
+  color: #c8c8c8;
+  background-color: #323232;
 }
 .navbar-inverse .navbar-nav > .active > a,
 .navbar-inverse .navbar-nav > .active > a:hover,
 .navbar-inverse .navbar-nav > .active > a:focus {
   color: #ffffff;
-  background-color: #3c3c3c;
+  background-color: #4e4e4e;
 }
 .navbar-inverse .navbar-nav > .disabled > a,
 .navbar-inverse .navbar-nav > .disabled > a:hover,
 .navbar-inverse .navbar-nav > .disabled > a:focus {
-  color: #8b8b8b;
+  color: #4d4d4d;
   background-color: #000000;
 }
 .navbar-inverse .navbar-toggle {
@@ -4051,55 +4051,55 @@ fieldset[disabled] .navbar-default .btn-link:focus {
 .navbar-inverse .navbar-nav > .open > a,
 .navbar-inverse .navbar-nav > .open > a:hover,
 .navbar-inverse .navbar-nav > .open > a:focus {
-  background-color: #3c3c3c;
+  background-color: #4e4e4e;
   color: #ffffff;
 }
 @media (max-width: 767px) {
   .navbar-inverse .navbar-nav .open .dropdown-menu > .dropdown-header {
-    border-color: #080808;
+    border-color: none;
   }
   .navbar-inverse .navbar-nav .open .dropdown-menu .divider {
-    background-color: #080808;
+    background-color: none;
   }
   .navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
-    color: #d7d7d7;
+    color: #999999;
   }
   .navbar-inverse .navbar-nav .open .dropdown-menu > li > a:hover,
   .navbar-inverse .navbar-nav .open .dropdown-menu > li > a:focus {
-    color: #ffffff;
-    background-color: #151515;
+    color: #c8c8c8;
+    background-color: #323232;
   }
   .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a,
   .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a:hover,
   .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a:focus {
     color: #ffffff;
-    background-color: #3c3c3c;
+    background-color: #4e4e4e;
   }
   .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > a,
   .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > a:hover,
   .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > a:focus {
-    color: #8b8b8b;
+    color: #4d4d4d;
     background-color: #000000;
   }
 }
 .navbar-inverse .navbar-link {
-  color: #d7d7d7;
+  color: #999999;
 }
 .navbar-inverse .navbar-link:hover {
-  color: #ffffff;
+  color: #c8c8c8;
 }
 .navbar-inverse .btn-link {
-  color: #d7d7d7;
+  color: #999999;
 }
 .navbar-inverse .btn-link:hover,
 .navbar-inverse .btn-link:focus {
-  color: #ffffff;
+  color: #c8c8c8;
 }
 .navbar-inverse .btn-link[disabled]:hover,
 fieldset[disabled] .navbar-inverse .btn-link:hover,
 .navbar-inverse .btn-link[disabled]:focus,
 fieldset[disabled] .navbar-inverse .btn-link:focus {
-  color: #8b8b8b;
+  color: #4d4d4d;
 }
 .breadcrumb {
   padding: 8px 15px;
@@ -9958,6 +9958,9 @@ div.hr {
 .divider {
   padding-bottom: 12px;
 }
+li.divider {
+  padding: 0;
+}
 a span {
   cursor: pointer;
 }
@@ -10519,7 +10522,7 @@ Module menu
 - - - - - - - - - - - - - - - - - - - - - */
 #typo3-module-menu {
   background: #222222;
-  color: #d7d7d7;
+  color: #999999;
   padding-bottom: 14px;
 }
 #typo3-module-menu .x-panel-body {
@@ -10536,7 +10539,7 @@ Module menu
 #typo3-module-menu #typo3-menu > li div.modgroup {
   white-space: nowrap;
   background-color: #000000;
-  color: #8b8b8b;
+  color: #4d4d4d;
   cursor: pointer;
   font-weight: bold;
   text-transform: uppercase;
@@ -10549,7 +10552,7 @@ Module menu
 }
 #typo3-module-menu #typo3-menu > li ul li a {
   white-space: nowrap;
-  color: #d7d7d7;
+  color: #999999;
   padding: 7px 15px;
   position: relative;
   display: block;
@@ -10557,8 +10560,8 @@ Module menu
   overflow: hidden;
 }
 #typo3-module-menu #typo3-menu > li ul li a:hover {
-  background-color: #151515;
-  color: #ffffff;
+  background-color: #323232;
+  color: #c8c8c8;
 }
 #typo3-module-menu #typo3-menu > li ul li a span.submodule-icon {
   position: absolute;
@@ -10571,7 +10574,7 @@ Module menu
   font-weight: bold;
 }
 #typo3-module-menu #typo3-menu > li ul li.highlighted a {
-  background-color: #3c3c3c;
+  background-color: #4e4e4e;
   color: #ffffff;
 }
 #typo3-module-menu #typo3-menu > li ul li.highlighted a:after {
@@ -10603,117 +10606,105 @@ Module menu
 Topbar
 - - - - - - - - - - - - - - - - - - - - - */
 #typo3-topbar {
+  background-color: #222222;
   z-index: 200;
 }
 #typo3-topbar div {
   overflow: visible !important;
 }
 #typo3-topbar #typo3-top-container {
-  background: #000;
-  color: #d7d7d7;
-  height: 100%;
-  padding: 0 24px;
+  margin-bottom: 0;
 }
 #typo3-topbar #typo3-top-container #typo3-logo {
   margin: 8px 0 0 0;
   padding: 1px 0 0 0;
   width: 159px;
 }
-#typo3-topbar #typo3-top-container .typo3-top-toolbar {
-  margin-top: 6px;
-  padding-right: 24px;
-  position: absolute;
-  right: 0px;
-}
-#typo3-topbar #typo3-top-container .typo3-top-toolbar .separator {
-  border-right: 1px solid #000;
-  box-shadow: 1px 0 #585858;
-}
-#typo3-topbar #typo3-top-container .typo3-top-toolbar #typo3-toolbar {
+#typo3-topbar #typo3-top-container #typo3-toolbar {
   list-style: none;
   display: inline;
-  margin: 0px;
-  padding: 0px;
 }
-#typo3-topbar #typo3-top-container .typo3-top-toolbar #typo3-toolbar div {
+#typo3-topbar #typo3-top-container #typo3-toolbar div {
   overflow: visible !important;
 }
-#typo3-topbar #typo3-top-container .typo3-top-toolbar #typo3-toolbar span.spinner {
+#typo3-topbar #typo3-top-container #typo3-toolbar span.spinner {
   background-image: url('../../../../images/spinner/3f3f3f.gif');
 }
-#typo3-topbar #typo3-top-container .typo3-top-toolbar #typo3-toolbar > li {
-  display: inline;
-  float: left;
-}
-#typo3-topbar #typo3-top-container .typo3-top-toolbar #typo3-toolbar li {
-  padding-top: 3px;
+#typo3-topbar #typo3-top-container #typo3-toolbar > li {
   position: relative;
-  padding-bottom: 2px;
 }
-#typo3-topbar #typo3-top-container .typo3-top-toolbar #typo3-toolbar .separator {
-  padding-right: 12px;
-  margin-right: 13px;
-}
-#typo3-topbar #typo3-top-container .typo3-top-toolbar #typo3-toolbar .separator .toolbar-item-menu {
-  right: 12px;
-}
-#typo3-topbar #typo3-top-container .typo3-top-toolbar #typo3-toolbar .toolbar-item {
-  display: block;
-  padding-bottom: 4px;
-  padding-top: 2px;
-  text-align: center;
-  color: #fff;
-}
-#typo3-topbar #typo3-top-container .typo3-top-toolbar #typo3-toolbar .toolbar-item .badge {
+#typo3-topbar #typo3-top-container #typo3-toolbar .toolbar-item .badge {
   position: absolute;
-  top: -3px;
-  right: -3px;
+  top: 6px;
+  right: 4px;
   font-size: 7px;
 }
-#typo3-topbar #typo3-top-container .typo3-top-toolbar #typo3-toolbar .toolbar-item-active {
-  background-image: url('../../../../icons/gfx/toolbar_item_active_bg.png');
-  height: 25px;
-  color: #000;
+#typo3-topbar #typo3-top-container #typo3-toolbar .toolbar-item-active {
+  background-color: #4e4e4e;
+  color: #ffffff;
 }
-#typo3-topbar #typo3-top-container .typo3-top-toolbar #typo3-toolbar .toolbar-item-menu {
-  background-color: #f9f9f9;
-  border: 1px solid #abb2bc;
-  border-top: none;
-  list-style: none;
+#typo3-topbar #typo3-top-container #typo3-toolbar .toolbar-item-menu {
   position: absolute;
-  top: 28px;
-  z-index: 100;
-  right: 0;
-  margin: 0;
-  padding: 2px 0 0;
-  width: 180px;
-}
-#typo3-topbar #typo3-top-container .typo3-top-toolbar #typo3-toolbar .toolbar-item-menu li {
-  padding-top: 0;
-  padding-bottom: 0;
-}
-#typo3-topbar #typo3-top-container .typo3-top-toolbar #typo3-toolbar .toolbar-item-menu li a {
-  float: none;
-  min-height: 19px;
-  padding-left: 2px;
-  padding-top: 1px;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  float: left;
+  min-width: 160px;
+  padding: 5px 0;
+  margin: 2px 0 0;
+  list-style: none;
+  font-size: 12px;
+  text-align: left;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 2px;
+  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  background-clip: padding-box;
   display: block;
-  padding-bottom: 2px;
-  padding-left: 3px;
-  vertical-align: middle;
+  visiblity: hidden;
+  left: auto;
+  right: 0;
+  background-color: #4e4e4e;
+  color: #ffffff;
+  border: 0;
+  margin: 0;
 }
-#typo3-toolbar * li:hover,
-tr.shortcut:hover,
-tr.recentdoc:hover,
-tr.opendoc:hover {
-  background: #eee;
+#typo3-topbar #typo3-top-container #typo3-toolbar .toolbar-item-menu.pull-right {
+  right: 0;
+  left: auto;
+}
+#typo3-topbar #typo3-top-container #typo3-toolbar .toolbar-item-menu .divider {
+  height: 1px;
+  margin: 8px 0;
+  overflow: hidden;
+  background-color: #e5e5e5;
+}
+#typo3-topbar #typo3-top-container #typo3-toolbar .toolbar-item-menu > li > a {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.5;
+  color: #5a5a5a;
+  white-space: nowrap;
+}
+#typo3-topbar #typo3-top-container #typo3-toolbar .toolbar-item-menu li a,
+#typo3-topbar #typo3-top-container #typo3-toolbar .toolbar-item-menu td a {
+  color: #ffffff;
+  text-decoration: none;
+}
+#typo3-topbar #typo3-top-container #typo3-toolbar .toolbar-item-menu li a:hover,
+#typo3-topbar #typo3-top-container #typo3-toolbar .toolbar-item-menu td a:hover {
+  background-color: #353535;
+  color: #ffffff;
+  text-decoration: none;
 }
 /* - - - - - - - - - - - - - - - - - - - - -
 Clear cache
 - - - - - - - - - - - - - - - - - - - - - */
-#clear-cache-actions-menu {
-  width: 30px;
-}
 #clear-cache-actions-menu li {
   text-align: left;
 }
@@ -10730,22 +10721,8 @@ Clear cache
 /* - - - - - - - - - - - - - - - - - - - - -
 Shortcuts menu
 - - - - - - - - - - - - - - - - - - - - - */
-#shortcut-menu {
-  width: 30px;
-}
-#shortcut-menu .toolbar-item-menu {
-  margin: 0px;
-  padding: 2px 0px 0px;
-  position: absolute;
-  width: 220px;
-}
 #shortcut-menu .shortcut-list {
   width: 100%;
-}
-#shortcut-menu .shortcut-list tr.shortcut.first-row td {
-  background-image: url('../../../../icons/gfx/shortcutgroups-bg.png');
-  background-repeat: repeat-x;
-  padding-top: 4px;
 }
 #shortcut-menu .shortcut-list tr.shortcut td {
   line-height: 16px;
@@ -10764,6 +10741,7 @@ Shortcuts menu
 }
 #shortcut-menu .shortcut-list .shortcut-group td {
   background-color: #dbdbdb;
+  color: #000;
   border-bottom: 1px solid #a5a5a5;
   border-top: 1px solid #a5a5a5;
 }
@@ -10794,8 +10772,7 @@ Shortcuts menu
 Username inside the toolbar
 - - - - - - - - - - - - - - - - - - - - - */
 #username {
-  font-weight: bold;
-  margin-right: 12px;
+  color: #fff;
 }
 #username a {
   color: #ffffff;
@@ -10813,6 +10790,10 @@ Username inside the toolbar
 }
 #username.su-user a {
   color: #eb6e5a;
+}
+#logout-button {
+  margin-top: 11.5px;
+  padding: 0 15px;
 }
 /* - - - - - - - - - - - - - - - - - - - - -
 Logon / Logout
@@ -10846,81 +10827,41 @@ Logon / Logout
 /* - - - - - - - - - - - - - - - - - - - - -
 Workspace Selector
 - - - - - - - - - - - - - - - - - - - - - */
-#workspace-selector-menu {
-  width: 30px;
-}
-#workspace-selector-menu ul {
-  position: static;
-  list-style: none;
-  margin: 0px;
-  padding: 2px 0px 0px;
-  width: 180px;
-}
-#workspace-selector-menu ul li {
-  text-align: left;
-  float: none;
-  min-height: 19px;
-  vertical-align: middle;
-}
 #workspace-selector-menu ul li span.t3-icon {
   float: left;
   margin-top: 0;
   margin-right: 2px;
-}
-#workspace-selector-menu ul li a {
-  text-decoration: none;
-  display: block;
-  padding-bottom: 2px;
-  padding-left: 3px;
-  vertical-align: middle;
 }
 #workspace-selector-menu ul li img {
   float: left;
   position: relative;
   margin-right: 2px;
 }
-#workspace-selector-menu ul li.divider {
-  border: 0;
-  background-image: url('../../../../icons/gfx/shortcutgroups-bg.png');
-  background-repeat: repeat-x;
-  min-height: 10px;
-  padding-right: 0;
-  padding-top: 4px;
-}
-#workspace-selector-menu ul li.divider:hover {
-  background-color: transparent;
-}
 #workspace-selector-menu .items {
   list-style: none;
-  background-color: #f9f9f9;
   overflow-y: auto;
   max-height: 300px;
 }
 body.typo3-in-workspace #typo3-top-container {
-  background: none;
+  background-image: url('../../../../images/backgrounds/topbar-in-workspace-background-left.png'), url('../../../../images/backgrounds/topbar-in-workspace-background-right.png'), url('../../../../images/backgrounds/topbar-in-workspace-background.gif');
+  background-repeat: no-repeat, no-repeat, repeat-x;
+  background-position: left top, right top, left top;
 }
-body.typo3-in-workspace #typo3-topbar .x-panel-bwrap {
-  background: url('../../../../images/backgrounds/topbar-in-workspace-background-left.png') no-repeat;
-}
-body.typo3-in-workspace #typo3-topbar .x-panel-body {
-  background: url('../../../../images/backgrounds/topbar-in-workspace-background-right.png') no-repeat right 0;
-}
-body.typo3-in-workspace #typo3-topbar {
-  background: url('../../../../images/backgrounds/topbar-in-workspace-background.gif');
-}
-body.typo3-in-workspace #typo3-topbar #username {
+body.typo3-in-workspace #typo3-top-container #username {
   text-shadow: 0 0 5px #000000;
 }
 /* - - - - - - - - - - - - - - - - - - - - -
 Live Search
 - - - - - - - - - - - - - - - - - - - - - */
 #typo3-toolbar #live-search-menu {
-  padding-top: 4px;
+  padding-top: 13px;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 .live-search-results .t3-icon-toolbar-menu-search {
   position: absolute;
   z-index: 3000;
-  top: 3px;
+  top: 13px;
   margin: 3px;
 }
 .t3-icon-input-clear {
