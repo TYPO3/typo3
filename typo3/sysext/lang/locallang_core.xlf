@@ -753,6 +753,12 @@ Would you like to save now in order to refresh the display?</source>
 			<trans-unit id="message.description.fileNotDeletedHasReferences" xml:space="preserve">
 				<source>The file cannot be deleted since it is still used at the following places:</source>
 			</trans-unit>
+			<trans-unit id="message.header.fileHasBrokenReferences" xml:space="preserve">
+				<source>File has broken references</source>
+			</trans-unit>
+			<trans-unit id="message.description.fileHasBrokenReferences" xml:space="preserve">
+				<source>The file has %s broken reference(s) but it will be deleted regardless.</source>
+			</trans-unit>
 			<trans-unit id="message.header.fileDeleted" xml:space="preserve">
 				<source>File deleted</source>
 			</trans-unit>

@@ -343,29 +343,51 @@ class ExtendedFileUtility extends BasicFileUtility {
 				'deleted=0 AND ref_table="sys_file" AND ref_uid=' . (int)$fileObject->getUid()
 				. ' AND tablename != "sys_file_metadata"'
 			);
+			$deleteFile = TRUE;
 			if (count($refIndexRecords) > 0) {
 				$shortcutContent = array();
+				$brokenReferences = array();
+
 				foreach ($refIndexRecords as $fileReferenceRow) {
-					$row = $fileReferenceRow;
 					if ($fileReferenceRow['tablename'] === 'sys_file_reference') {
 						$row = $this->transformFileReferenceToRecordReference($fileReferenceRow);
-					}
-					$shortcutRecord = BackendUtility::getRecord($row['tablename'], $row['recuid']);
-					$icon = IconUtility::getSpriteIconForRecord($row['tablename'], $shortcutRecord);
-					$icon = '<a href="#" class="t3-js-clickmenutrigger" data-table="' . $row['tablename'] . '" data-uid="' . $row['recuid'] . '" data-listframe="1" data-iteminfo="%2Binfo,history,edit">' . $icon . '</a>';
-					$shortcutContent[] = $icon . htmlspecialchars((BackendUtility::getRecordTitle($row['tablename'], $shortcutRecord) . '  [' . BackendUtility::getRecordPath($shortcutRecord['pid'], '', 80) . ']'));
-				}
+						$shortcutRecord = BackendUtility::getRecord($row['tablename'], $row['recuid']);
 
-				// render a message that the file could not be deleted
-				$flashMessage = GeneralUtility::makeInstance(
-					FlashMessage::class,
-					sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.description.fileNotDeletedHasReferences'), $fileObject->getName()) . '<br />' . implode('<br />', $shortcutContent),
-					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.header.fileNotDeletedHasReferences'),
-					FlashMessage::WARNING,
-					TRUE
-				);
-				$this->addFlashMessage($flashMessage);
-			} else {
+						if ($shortcutRecord) {
+							$icon = IconUtility::getSpriteIconForRecord($row['tablename'], $shortcutRecord);
+							$icon = '<a href="#" class="t3-js-clickmenutrigger" data-table="' . $row['tablename'] . '" data-uid="' . $row['recuid'] . '" data-listframe="1" data-iteminfo="%2Binfo,history,edit">' . $icon . '</a>';
+							$shortcutContent[] = $icon . htmlspecialchars((BackendUtility::getRecordTitle($row['tablename'], $shortcutRecord) . '  [' . BackendUtility::getRecordPath($shortcutRecord['pid'], '', 80) . ']'));
+						} else {
+							$brokenReferences[] = $fileReferenceRow['ref_uid'];
+						}
+					}
+				}
+				if (!empty($brokenReferences)) {
+					// render a message that the file has broken references
+					$flashMessage = GeneralUtility::makeInstance(
+						FlashMessage::class,
+						sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.description.fileHasBrokenReferences'), count($brokenReferences)),
+						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.header.fileHasBrokenReferences'),
+						FlashMessage::INFO,
+						TRUE
+					);
+					$this->addFlashMessage($flashMessage);
+				}
+				if (!empty($shortcutContent)) {
+					// render a message that the file could not be deleted
+					$flashMessage = GeneralUtility::makeInstance(
+						FlashMessage::class,
+						sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.description.fileNotDeletedHasReferences'), $fileObject->getName()) . '<br />' . implode('<br />', $shortcutContent),
+						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.header.fileNotDeletedHasReferences'),
+						FlashMessage::WARNING,
+						TRUE
+					);
+					$this->addFlashMessage($flashMessage);
+					$deleteFile = FALSE;
+				}
+			}
+
+			if ($deleteFile) {
 				try {
 					$result = $fileObject->delete();
 
