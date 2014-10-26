@@ -10664,6 +10664,12 @@ Topbar
   text-align: center;
   color: #fff;
 }
+#typo3-topbar #typo3-top-container .typo3-top-toolbar #typo3-toolbar .toolbar-item .badge {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  font-size: 7px;
+}
 #typo3-topbar #typo3-top-container .typo3-top-toolbar #typo3-toolbar .toolbar-item-active {
   background-image: url('../../../../icons/gfx/toolbar_item_active_bg.png');
   height: 25px;
