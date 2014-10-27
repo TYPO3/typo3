@@ -254,7 +254,7 @@ class DatabaseIntegrityView {
 			$functionUrl = BackendUtility::getModuleUrl('system_dbint') . '&SET[function]=' . $modFunc;
 			$title = $GLOBALS['LANG']->getLL($modFunc);
 			$description = $GLOBALS['LANG']->getLL($modFunc . '_description');
-			$icon = '<img src="' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'MOD:system_dbint/db.gif', '', 1) . '" width="16" height="16" title="' . $title . '" alt="' . $title . '" />';
+			$icon = '<img src="sysext/lowlevel/Resources/Public/Icons/module-dbint.gif" width="16" height="16" title="' . $title . '" alt="' . $title . '" />';
 			$content .= '
 				<dt><a href="' . htmlspecialchars($functionUrl) . '">' . $icon . $title . '</a></dt>
 				<dd>' . $description . '</dd>
