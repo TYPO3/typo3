@@ -79,6 +79,7 @@ class IconUtility {
 		't3-icon t3-icon-actions t3-icon-actions-view t3-icon-view-paging-next' => 'fa-arrow-right',
 		't3-icon t3-icon-actions t3-icon-actions-view t3-icon-view-paging-previous' => 'fa-arrow-left',
 		't3-icon t3-icon-actions t3-icon-actions-view t3-icon-view-table-expand' => 'fa-angle-double-right',
+		't3-icon t3-icon-actions t3-icon-actions-view t3-icon-view-table-collapse' => 'fa-angle-double-left',
 		't3-icon t3-icon-actions t3-icon-actions-window t3-icon-window-open' => 'fa-arrows-alt',
 		't3-icon t3-icon-actions t3-icon-system-extension-import' => 'fa-cloud-download',
 		't3-icon t3-icon-apps t3-icon-apps-toolbar t3-icon-toolbar-menu-actions' => 'fa-cog',
