@@ -25,7 +25,7 @@ if (TYPO3_MODE === 'BE') {
 				'csh' => 'beUser_realName'
 			),
 			'email' => array(
-				'type' => 'text',
+				'type' => 'email',
 				'label' => 'LLL:EXT:setup/mod/locallang.xlf:beUser_email',
 				'table' => 'be_users',
 				'csh' => 'beUser_email'
