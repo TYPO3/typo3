@@ -2499,7 +2499,7 @@ class InlineElement {
 	 * @return void
 	 * @todo Define visibility
 	 */
-	public function updateInlineView(&$uc, $tce) {
+	static public function updateInlineView(&$uc, $tce) {
 		if (isset($uc['inlineView']) && is_array($uc['inlineView'])) {
 			$inlineView = (array) unserialize($GLOBALS['BE_USER']->uc['inlineView']);
 			foreach ($uc['inlineView'] as $topTable => $topRecords) {
