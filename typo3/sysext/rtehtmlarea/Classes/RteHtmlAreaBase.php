@@ -529,7 +529,8 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		if ($fileName) {
 			$fileName = $this->getFullFileName($fileName);
 		}
-		$absolutePath = $fileName ? GeneralUtility::resolveBackPath(PATH_site . ($this->is_FE() || $this->isFrontendEditActive() ? '' : TYPO3_mainDir) . $fileName) : '';
+		$backPathResolvedFileName = $fileName ? GeneralUtility::resolveBackPath(($this->is_FE() || $this->isFrontendEditActive() ? '' : TYPO3_mainDir) . $fileName) : '';
+		$absolutePath = $fileName ? GeneralUtility::getFileAbsFileName($backPathResolvedFileName) : '';
 		// Fallback to default content css file if configured file does not exists or is of zero size
 		if (!$fileName || !file_exists($absolutePath) || !filesize($absolutePath)) {
 			$fileName = $this->getFullFileName('EXT:' . $this->ID . '/res/contentcss/default.css');
