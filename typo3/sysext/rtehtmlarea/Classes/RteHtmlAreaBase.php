@@ -509,7 +509,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	protected function addPageStyle() {
 		$contentCssFileNames = $this->getContentCssFileNames();
 		foreach ($contentCssFileNames as $contentCssKey => $contentCssFile) {
-			$this->addStyleSheet($contentCssKey, $contentCssFile, 'htmlArea RTE Content CSS', 'alternate stylesheet');
+			$this->addStyleSheet('rtehtmlarea-content-' . $contentCssKey, $contentCssFile, 'htmlArea RTE Content CSS', 'alternate stylesheet');
 		}
 	}
 
@@ -520,27 +520,24 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 */
 	protected function getContentCssFileNames() {
 		$contentCss = is_array($this->thisConfig['contentCSS.']) ? $this->thisConfig['contentCSS.'] : array();
-
 		if (isset($this->thisConfig['contentCSS'])) {
 			$contentCss[] = trim($this->thisConfig['contentCSS']);
 		}
-
 		$contentCssFiles = array();
-
 		if (count($contentCss)) {
 			foreach ($contentCss as $contentCssKey => $contentCssfile) {
-				$fileName = $this->getFullFileName($contentCssfile);
-				$absolutePath = $fileName ? GeneralUtility::resolveBackPath(PATH_site . ($this->is_FE() || $this->isFrontendEditActive() ? '' : TYPO3_mainDir) . $fileName) : '';
+				$fileName = trim($contentCssfile) ? $this->getFullFileName($contentCssfile) : '';
+				$backPathResolvedFileName = $fileName ? GeneralUtility::resolveBackPath(($this->is_FE() || $this->isFrontendEditActive() ? '' : TYPO3_mainDir) . $fileName) : '';
+				$absolutePath = $fileName ? GeneralUtility::getFileAbsFileName($backPathResolvedFileName) : '';
 				if (file_exists($absolutePath) && filesize($absolutePath)) {
 					$contentCssFiles[$contentCssKey] = $fileName;
 				}
 			}
 		}
-
+		// Fallback to default content css file if none of the configured files exists and is not empty
 		if (count($contentCssFiles) === 0) {
 			$contentCssFiles['default'] = $this->getFullFileName('EXT:' . $this->ID . '/res/contentcss/default.css');
 		}
-
 		return array_unique($contentCssFiles);
 	}
 
@@ -581,7 +578,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 * @return void
 	 */
 	protected function addStyleSheet($key, $href, $title = '', $relation = 'stylesheet') {
-		// If it was not known that an RTE-enabled would be created when the page was first created, the css would not be added to head
+		// If it was not known that an RTE-enabled CE would be created when the page was first created, the css would not be added to head
 		if (is_object($this->TCEform->inline) && $this->TCEform->inline->isAjaxCall) {
 			$this->TCEform->additionalCode_pre[$key] = '<link rel="' . $relation . '" type="text/css" href="' . $href . '" title="' . $title . '" />';
 		} else {
