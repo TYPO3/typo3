@@ -715,14 +715,16 @@ class ClickMenu {
 	 * @internal
 	 */
 	public function DB_delete($table, $uid, $elInfo) {
-		$editOnClick = '';
 		$loc = 'top.content.list_frame';
 		if ($GLOBALS['BE_USER']->jsConfirmation(4)) {
 			$conf = 'confirm(' . GeneralUtility::quoteJSvalue((sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.delete'), $elInfo[0]) . BackendUtility::referenceCount($table, $uid, ' (There are %s reference(s) to this record!)') . BackendUtility::translationCount($table, $uid, (' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.translationsOfRecord'))))) . ')';
 		} else {
 			$conf = '1==1';
 		}
-		$editOnClick = 'if(' . $loc . ' && ' . $conf . ' ){' . $loc . '.location.href=top.TS.PATH_typo3+\'tce_db.php?redirect=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+\'' . '&cmd[' . $table . '][' . $uid . '][delete]=1&prErr=1&vC=' . $GLOBALS['BE_USER']->veriCode() . BackendUtility::getUrlToken('tceAction') . '\';}hideCM();top.nav.refresh.defer(500, top.nav);';
+		$editOnClick = 'if(' . $loc . ' && ' . $conf . ' ){' . $loc . '.location.href=top.TS.PATH_typo3+\'tce_db.php?redirect=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+\'' . '&cmd[' . $table . '][' . $uid . '][delete]=1&prErr=1&vC=' . $GLOBALS['BE_USER']->veriCode() . BackendUtility::getUrlToken('tceAction') . '\';}hideCM();';
+		if ($table === 'pages') {
+			$editOnClick .= 'top.nav.refresh.defer(500, top.nav);';
+		}
 		return $this->linkItem($this->label('delete'), $this->excludeIcon(IconUtility::getSpriteIcon('actions-edit-delete')), $editOnClick . 'return false;');
 	}
 
@@ -792,9 +794,11 @@ class ClickMenu {
 	 */
 	public function DB_changeFlag($table, $rec, $flagField, $title, $name, $iconRelPath = 'gfx/') {
 		$uid = $rec['_ORIG_uid'] ?: $rec['uid'];
-		$editOnClick = '';
 		$loc = 'top.content.list_frame';
-		$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=top.TS.PATH_typo3+\'tce_db.php?redirect=\'' . '+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+\'' . '&data[' . $table . '][' . $uid . '][' . $flagField . ']=' . ($rec[$flagField] ? 0 : 1) . '&prErr=1&vC=' . $GLOBALS['BE_USER']->veriCode() . BackendUtility::getUrlToken('tceAction') . '\';}hideCM();top.nav.refresh.defer(500, top.nav);';
+		$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=top.TS.PATH_typo3+\'tce_db.php?redirect=\'' . '+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+\'' . '&data[' . $table . '][' . $uid . '][' . $flagField . ']=' . ($rec[$flagField] ? 0 : 1) . '&prErr=1&vC=' . $GLOBALS['BE_USER']->veriCode() . BackendUtility::getUrlToken('tceAction') . '\';}hideCM();';
+		if ($table === 'pages') {
+			$editOnClick .= 'top.nav.refresh.defer(500, top.nav);';
+		}
 		return $this->linkItem($title, $this->excludeIcon(IconUtility::getSpriteIcon('actions-edit-' . ($rec[$flagField] ? 'un' : '') . 'hide')), $editOnClick . 'return false;', 1);
 	}
 
