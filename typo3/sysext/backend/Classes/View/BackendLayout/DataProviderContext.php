@@ -47,7 +47,7 @@ class DataProviderContext implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $pageTsConfig;
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getPageId() {
 		return $this->pageId;

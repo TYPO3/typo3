@@ -48,7 +48,7 @@ class DriverRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $shortName
 	 * @param string $label
 	 * @param string $flexFormDataStructurePathAndFilename
-	 * @return boolean TRUE if registering succeeded
+	 * @return bool TRUE if registering succeeded
 	 * @throws \InvalidArgumentException
 	 */
 	public function registerDriverClass($className, $shortName = NULL, $label = NULL, $flexFormDataStructurePathAndFilename = NULL) {
@@ -121,7 +121,7 @@ class DriverRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Checks if the given driver exists
 	 *
 	 * @param string $shortName Name of the driver
-	 * @return boolean TRUE if the driver exists, FALSE otherwise
+	 * @return bool TRUE if the driver exists, FALSE otherwise
 	 */
 	public function driverExists($shortName) {
 		return array_key_exists($shortName, $this->drivers);

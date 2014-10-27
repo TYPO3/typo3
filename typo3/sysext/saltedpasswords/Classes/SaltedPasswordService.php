@@ -76,7 +76,7 @@ class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 	 * following prerequesties are fulfilled:
 	 * - loginSecurityLevel of according TYPO3_MODE is set to normal
 	 *
-	 * @return boolean TRUE if service is available
+	 * @return bool TRUE if service is available
 	 */
 	public function init() {
 		$available = FALSE;
@@ -99,7 +99,7 @@ class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 	 * @param array $user User data array
 	 * @param array $loginData Login data array
 	 * @param string $passwordCompareStrategy Password compare strategy
-	 * @return boolean TRUE if login data matched
+	 * @return bool TRUE if login data matched
 	 */
 	public function compareUident(array $user, array $loginData, $passwordCompareStrategy = '') {
 		$validPasswd = FALSE;
@@ -168,7 +168,7 @@ class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 	 * - 200 - the service was able to authenticate the user
 	 *
 	 * @param array Array containing FE user data of the logged user.
-	 * @return integer Authentication statuscode, one of 0,100 and 200
+	 * @return int Authentication statuscode, one of 0,100 and 200
 	 */
 	public function authUser(array $user) {
 		$OK = 100;

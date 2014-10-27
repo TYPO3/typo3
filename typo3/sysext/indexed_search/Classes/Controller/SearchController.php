@@ -22,9 +22,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Creates a searchform for indexed search. Indexing must be enabled
  * for this to make sense.
  *
- * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
- * @author 	Christian Jul Jensen <christian@typo3.com>
- * @author 	Benjamin Mack <benni@typo3.org>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Christian Jul Jensen <christian@typo3.com>
+ * @author Benjamin Mack <benni@typo3.org>
  */
 class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
@@ -646,11 +646,11 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	/**
 	 * Write statistics information to database for the search operation
 	 *
-	 * @param 	array		search params
-	 * @param 	array		Search Word array
-	 * @param 	int			Number of hits
-	 * @param 	int			Milliseconds the search took
-	 * @return 	void
+	 * @param array search params
+	 * @param array Search Word array
+	 * @param int Number of hits
+	 * @param int Milliseconds the search took
+	 * @return void
 	 */
 	protected function writeSearchStat($searchParams, $searchWords, $count, $pt) {
 		$insertFields = array(
@@ -1275,7 +1275,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 * Returns if an item type is a multipage item type
 	 *
 	 * @param string $item_type Item type
-	 * @return boolean TRUE if multipage capable
+	 * @return bool TRUE if multipage capable
 	 */
 	protected function multiplePagesType($item_type) {
 		return is_object($this->externalParsers[$item_type]) && $this->externalParsers[$item_type]->isMultiplePageExtension($item_type);

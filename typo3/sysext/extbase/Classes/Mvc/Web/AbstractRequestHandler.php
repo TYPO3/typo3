@@ -45,7 +45,7 @@ abstract class AbstractRequestHandler implements \TYPO3\CMS\Extbase\Mvc\RequestH
 	/**
 	 * This request handler can handle any web request.
 	 *
-	 * @return boolean If the request is a web request, TRUE otherwise FALSE
+	 * @return bool If the request is a web request, TRUE otherwise FALSE
 	 */
 	public function canHandleRequest() {
 		return TRUE;
@@ -55,7 +55,7 @@ abstract class AbstractRequestHandler implements \TYPO3\CMS\Extbase\Mvc\RequestH
 	 * Returns the priority - how eager the handler is to actually handle the
 	 * request.
 	 *
-	 * @return integer The priority of the request handler.
+	 * @return int The priority of the request handler.
 	 */
 	public function getPriority() {
 		return 100;

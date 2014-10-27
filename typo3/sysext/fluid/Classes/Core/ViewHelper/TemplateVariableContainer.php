@@ -122,7 +122,7 @@ class TemplateVariableContainer implements \ArrayAccess {
 	 * Checks if this property exists in the VariableContainer.
 	 *
 	 * @param string $identifier
-	 * @return boolean TRUE if $identifier exists, FALSE otherwise
+	 * @return bool TRUE if $identifier exists, FALSE otherwise
 	 * @api
 	 */
 	public function exists($identifier) {
@@ -167,7 +167,7 @@ class TemplateVariableContainer implements \ArrayAccess {
 	 * Checks if this property exists in the VariableContainer.
 	 *
 	 * @param string $identifier
-	 * @return boolean TRUE if $identifier exists, FALSE otherwise
+	 * @return bool TRUE if $identifier exists, FALSE otherwise
 	 */
 	public function offsetExists($identifier) {
 		return $this->exists($identifier);

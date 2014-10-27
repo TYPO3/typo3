@@ -75,7 +75,7 @@ class ObjectConverter extends AbstractTypeConverter implements \TYPO3\CMS\Core\S
 	 *
 	 * @param mixed $source
 	 * @param string $targetType
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canConvertFrom($source, $targetType) {
 		return !is_subclass_of($targetType, 'TYPO3\\CMS\\Extbase\\DomainObject\\AbstractDomainObject');

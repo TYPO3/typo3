@@ -135,7 +135,7 @@ class TranslationConfigurationProvider {
 	 * Returns the table in which translations for input table is found.
 	 *
 	 * @param string $table The table name
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getTranslationTable($table) {
 		return $this->isTranslationInOwnTable($table) ? $table : $this->foreignTranslationTable($table);
@@ -145,7 +145,7 @@ class TranslationConfigurationProvider {
 	 * Returns TRUE, if the input table has localization enabled and done so with records from the same table
 	 *
 	 * @param string $table The table name
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isTranslationInOwnTable($table) {
 		return $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] && !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'];

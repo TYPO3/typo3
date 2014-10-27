@@ -87,7 +87,7 @@ class TypoScriptTemplateInfoHook {
 	/**
 	 * Process saving request like in class.tstemplateinfo.php (TCE processing)
 	 *
-	 * @return boolean TRUE if successful
+	 * @return bool TRUE if successful
 	 */
 	public function save($parameters, $pObj) {
 		$savingsuccess = FALSE;

@@ -118,7 +118,7 @@ class LogLevel {
 	 * whether it is an integer and in the range of 0-7.
 	 *
 	 * @param int $level log level to validate
-	 * @return boolean TRUE if the given log level is valid, FALSE otherwise
+	 * @return bool TRUE if the given log level is valid, FALSE otherwise
 	 */
 	static public function isValidLevel($level) {
 		return \TYPO3\CMS\Core\Utility\MathUtility::isIntegerInRange($level, self::EMERGENCY, self::DEBUG);
@@ -141,7 +141,7 @@ class LogLevel {
 	 * Normalizes level by converting it from string to integer
 	 *
 	 * @param string $level
-	 * @return integer|string
+	 * @return int|string
 	 */
 	static public function normalizeLevel($level) {
 		if (is_string($level) && defined(__CLASS__ . '::' . strtoupper($level))) {

@@ -141,7 +141,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * @return boolean TRUE if the t3editor is enabled
+	 * @return bool TRUE if the t3editor is enabled
 	 */
 	public function isEnabled() {
 		return $this->_isEnabled;

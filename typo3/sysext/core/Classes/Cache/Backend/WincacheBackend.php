@@ -104,7 +104,7 @@ class WincacheBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impl
 	 * Checks if a cache entry with the specified identifier exists
 	 *
 	 * @param string $entryIdentifier An identifier specifying the cache entry
-	 * @return boolean TRUE if such an entry exists, FALSE if not
+	 * @return bool TRUE if such an entry exists, FALSE if not
 	 */
 	public function has($entryIdentifier) {
 		return wincache_ucache_exists($this->identifierPrefix . $entryIdentifier);
@@ -116,7 +116,7 @@ class WincacheBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impl
 	 * old entries for the identifier still exist, they are removed as well.
 	 *
 	 * @param string $entryIdentifier Specifies the cache entry to remove
-	 * @return boolean TRUE if (at least) an entry could be removed or FALSE if no entry was found
+	 * @return bool TRUE if (at least) an entry could be removed or FALSE if no entry was found
 	 */
 	public function remove($entryIdentifier) {
 		$this->removeIdentifierFromAllTags($entryIdentifier);

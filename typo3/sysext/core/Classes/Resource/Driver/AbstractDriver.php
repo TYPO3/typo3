@@ -71,7 +71,7 @@ abstract class AbstractDriver implements DriverInterface {
 	 * drivers if they have different file naming rules.
 	 *
 	 * @param string $fileName
-	 * @return boolean TRUE if file name is valid
+	 * @return bool TRUE if file name is valid
 	 */
 	protected function isValidFilename($fileName) {
 		if (strpos($fileName, '/') !== FALSE) {
@@ -96,7 +96,7 @@ abstract class AbstractDriver implements DriverInterface {
 	/**
 	 * Returns the capabilities of this driver.
 	 *
-	 * @return integer
+	 * @return int
 	 * @see Storage::CAPABILITY_* constants
 	 */
 	public function getCapabilities() {
@@ -107,7 +107,7 @@ abstract class AbstractDriver implements DriverInterface {
 	 * Returns TRUE if this driver has the given capability.
 	 *
 	 * @param int $capability A capability, as defined in a CAPABILITY_* constant
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasCapability($capability) {
 		return $this->capabilities & $capability == $capability;
@@ -159,7 +159,7 @@ abstract class AbstractDriver implements DriverInterface {
 	 * therefore always reflect the file system and not try to change its
 	 * behaviour
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isCaseSensitiveFileSystem() {
 		if (isset($this->configuration['caseSensitive'])) {

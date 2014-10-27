@@ -90,7 +90,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
 	/**
 	 * Checks if the array pointer of the storage points to a valid position.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function valid() {
 		return current($this->storage) !== FALSE;
@@ -129,7 +129,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
 	/**
 	 * Returns the number of objects in the storage.
 	 *
-	 * @return integer The number of objects in the storage.
+	 * @return int The number of objects in the storage.
 	 */
 	public function count() {
 		return count($this->storage);
@@ -154,7 +154,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
 	 * Checks whether an object exists in the storage.
 	 *
 	 * @param object $object The object to look for.
-	 * @return boolean
+	 * @return bool
 	 */
 	public function offsetExists($object) {
 		return isset($this->storage[spl_object_hash($object)]);
@@ -192,7 +192,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
 	 * Checks if the storage contains a specific object.
 	 *
 	 * @param object $object The object to look for.
-	 * @return boolean
+	 * @return bool
 	 */
 	public function contains($object) {
 		return $this->offsetExists($object);
@@ -312,7 +312,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
 	/**
 	 * Returns TRUE if the storage was modified after reconstitution.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function _isDirty() {
 		return $this->isModified;
@@ -322,7 +322,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
 	 * Returns TRUE if an object is added, then removed and added at a different position
 	 *
 	 * @param mixed $object
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isRelationDirty($object) {
 		return (isset($this->addedObjectsPositions[spl_object_hash($object)])
@@ -332,7 +332,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
 
 	/**
 	 * @param mixed $object
-	 * @return integer|NULL
+	 * @return int|NULL
 	 */
 	public function getPosition($object) {
 		if (!isset($this->addedObjectsPositions[spl_object_hash($object)])) {

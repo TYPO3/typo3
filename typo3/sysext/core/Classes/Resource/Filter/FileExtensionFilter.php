@@ -81,7 +81,7 @@ class FileExtensionFilter {
 	 * @param string $parentIdentifier
 	 * @param array $additionalInformation Additional information about the inspected item
 	 * @param \TYPO3\CMS\Core\Resource\Driver\DriverInterface $driver
-	 * @return boolean|integer -1 if the file should not be included in a listing
+	 * @return bool|int -1 if the file should not be included in a listing
 	 */
 	public function filterFileList($itemName, $itemIdentifier, $parentIdentifier, array $additionalInformation, \TYPO3\CMS\Core\Resource\Driver\DriverInterface $driver) {
 		$returnCode = TRUE;
@@ -102,7 +102,7 @@ class FileExtensionFilter {
 	 * Checks whether a file is allowed according to the criteria defined in the class variables ($this->allowedFileExtensions etc.)
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isAllowed($fileName) {
 		$result = TRUE;

@@ -24,7 +24,7 @@ class VersionNumberUtility {
 	 * Returns an integer from a three part version number, eg '4.12.3' -> 4012003
 	 *
 	 * @param string $versionNumber Version number on format x.x.x
-	 * @return integer Integer version of version number (where each part can count to 999)
+	 * @return int Integer version of version number (where each part can count to 999)
 	 */
 	static public function convertVersionNumberToInteger($versionNumber) {
 		$versionParts = explode('.', $versionNumber);

@@ -86,7 +86,7 @@ class localPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 *
 	 * @param int $doktype Doktype value to test
 	 * @param int $uid uid to test.
-	 * @return boolean
+	 * @return bool
 	 */
 	public function ext_isLinkable($doktype, $uid) {
 		if ($uid && $doktype < 199) {
@@ -141,7 +141,7 @@ class TBE_PageTree extends localPageTree {
 	 *
 	 * @param int $doktype Doktype value to test
 	 * @param int $uid uid to test.
-	 * @return boolean
+	 * @return bool
 	 */
 	public function ext_isLinkable($doktype, $uid) {
 		return TRUE;
@@ -209,7 +209,7 @@ class localFolderTree extends \TYPO3\CMS\Backend\Tree\View\FolderTreeView {
 	 * Returns TRUE if the input "record" contains a folder which can be linked.
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject Object with information about the folder element. Contains keys like title, uid, path, _title
-	 * @return boolean TRUE is returned if the path is found in the web-part of the server and is NOT a recycler or temp folder
+	 * @return bool TRUE is returned if the path is found in the web-part of the server and is NOT a recycler or temp folder
 	 */
 	public function ext_isLinkable(\TYPO3\CMS\Core\Resource\Folder $folderObject) {
 		if (strstr($folderObject->getIdentifier(), '_recycler_') || strstr($folderObject->getIdentifier(), '_temp_')) {
@@ -258,7 +258,7 @@ class TBE_FolderTree extends localFolderTree {
 	 * Returns TRUE if the input "record" contains a folder which can be linked.
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject object with information about the folder element. Contains keys like title, uid, path, _title
-	 * @return boolean TRUE is returned if the path is NOT a recycler or temp folder AND if ->ext_noTempRecyclerDirs is not set.
+	 * @return bool TRUE is returned if the path is NOT a recycler or temp folder AND if ->ext_noTempRecyclerDirs is not set.
 	 */
 	public function ext_isLinkable($folderObject) {
 		if ($this->ext_noTempRecyclerDirs && (substr($folderObject->getIdentifier(), -7) == '_temp_/' || substr($folderObject->getIdentifier(), -11) == '_recycler_/')) {

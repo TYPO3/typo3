@@ -141,7 +141,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Wrapper function to check for loaded extensions
 	 *
 	 * @param string $extensionKey
-	 * @return boolean TRUE if extension is loaded
+	 * @return bool TRUE if extension is loaded
 	 */
 	public function isLoaded($extensionKey) {
 		return $this->packageManager->isPackageActive($extensionKey);
@@ -172,7 +172,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Checks if an extension is available in the system
 	 *
 	 * @param $extensionKey
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isAvailable($extensionKey) {
 		return $this->packageManager->isPackageAvailable($extensionKey);
@@ -400,7 +400,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @internal
 	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extensionData
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isUpdateAvailable(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extensionData) {
 		$isUpdateAvailable = FALSE;

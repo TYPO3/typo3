@@ -123,7 +123,7 @@ class XcacheBackend extends AbstractBackend implements TaggableBackendInterface 
 	 * Checks if a cache entry with the specified identifier exists
 	 *
 	 * @param string $entryIdentifier An identifier specifying the cache entry
-	 * @return boolean TRUE if such an entry exists, FALSE if not
+	 * @return bool TRUE if such an entry exists, FALSE if not
 	 */
 	public function has($entryIdentifier) {
 		if ($this->runningFromCliOrWrongConfiguration()) {
@@ -138,7 +138,7 @@ class XcacheBackend extends AbstractBackend implements TaggableBackendInterface 
 	 * old entries for the identifier still exist, they are removed as well.
 	 *
 	 * @param string $entryIdentifier Specifies the cache entry to remove
-	 * @return boolean TRUE if (at least) an entry could be removed or FALSE if no entry was found
+	 * @return bool TRUE if (at least) an entry could be removed or FALSE if no entry was found
 	 */
 	public function remove($entryIdentifier) {
 		if ($this->runningFromCliOrWrongConfiguration()) {
@@ -294,7 +294,7 @@ class XcacheBackend extends AbstractBackend implements TaggableBackendInterface 
 	 * In this case all methods fail silently as xcache user cache is not available in CLI context.
 	 * xcache.var_size cat be zero or empty if in CLI mode, or if not correctly configured.
 	 *
-	 * @return boolean TRUE if misconfigured or in CLI mode
+	 * @return bool TRUE if misconfigured or in CLI mode
 	 */
 	protected function runningFromCliOrWrongConfiguration() {
 		$varSize = ini_get('xcache.var_size');

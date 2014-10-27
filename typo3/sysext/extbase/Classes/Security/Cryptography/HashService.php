@@ -58,7 +58,7 @@ class HashService implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $string The string which should be validated
 	 * @param string $hmac The hash of the string
-	 * @return boolean TRUE if string and hash fit together, FALSE otherwise.
+	 * @return bool TRUE if string and hash fit together, FALSE otherwise.
 	 */
 	public function validateHmac($string, $hmac) {
 		return $this->generateHmac($string) === $hmac;

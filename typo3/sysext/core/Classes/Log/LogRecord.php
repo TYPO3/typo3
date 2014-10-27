@@ -163,7 +163,7 @@ class LogRecord implements \ArrayAccess {
 	 * Returns the severity level
 	 *
 	 * @see \TYPO3\CMS\Core\Log\Level
-	 * @return integer Severity level
+	 * @return int Severity level
 	 */
 	public function getLevel() {
 		return $this->level;
@@ -275,7 +275,7 @@ class LogRecord implements \ArrayAccess {
 	 * Checks whether an offset exists, required by ArrayAccess interface
 	 *
 	 * @param mixed $offset
-	 * @return boolean
+	 * @return bool
 	 */
 	public function offsetExists($offset) {
 		$offsetExists = FALSE;

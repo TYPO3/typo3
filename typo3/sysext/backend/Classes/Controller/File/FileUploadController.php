@@ -79,7 +79,7 @@ class FileUploadController {
 	/**
 	 * Initialize
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	protected function init() {
 		// Initialize GPvars:

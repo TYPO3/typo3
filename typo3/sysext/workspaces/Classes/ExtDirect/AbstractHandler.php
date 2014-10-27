@@ -23,7 +23,7 @@ abstract class AbstractHandler {
 	/**
 	 * Gets the current workspace ID.
 	 *
-	 * @return integer The current workspace ID
+	 * @return int The current workspace ID
 	 */
 	protected function getCurrentWorkspace() {
 		return $this->getWorkspaceService()->getCurrentWorkspace();
@@ -63,7 +63,7 @@ abstract class AbstractHandler {
 	 * interpreted as integer value.
 	 *
 	 * @param stdClass $parameters
-	 * @return integer|NULL
+	 * @return int|NULL
 	 */
 	protected function validateLanguageParameter(\stdClass $parameters) {
 		$language = NULL;

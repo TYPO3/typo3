@@ -264,7 +264,7 @@ class FlexFormsHelper extends \TYPO3\CMS\Backend\Form\FormEngine {
 	 *
 	 * @param array $array1 First array
 	 * @param array $array2 Second array
-	 * @return integer Negative int if first array is lower, zero if both are identical, and positive if second is higher
+	 * @return int Negative int if first array is lower, zero if both are identical, and positive if second is higher
 	 */
 	static public function compareArraysByFirstValue(array $array1, array $array2) {
 		$array1 = reset($array1);

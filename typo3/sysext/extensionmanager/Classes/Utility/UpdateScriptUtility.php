@@ -86,7 +86,7 @@ class UpdateScriptUtility {
 	 * Does not check if some update is needed.
 	 *
 	 * @param string $extensionKey Extension key
-	 * @return boolean True, if there is some update script
+	 * @return bool True, if there is some update script
 	 */
 	public function checkUpdateScriptExists($extensionKey) {
 		$updateScriptFileExists = FALSE;

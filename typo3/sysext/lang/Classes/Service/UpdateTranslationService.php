@@ -94,7 +94,7 @@ class UpdateTranslationService {
 	 *
 	 * @param string $extensionKey The extension key
 	 * @param string $locale Locale to return
-	 * @return integer Translation state
+	 * @return int Translation state
 	 */
 	protected function getTranslationStateForExtension($extensionKey, $locale) {
 		if (empty($extensionKey) || empty($locale)) {
@@ -159,7 +159,7 @@ class UpdateTranslationService {
 	 *
 	 * @param string $extensionKey The extension key
 	 * @param string $locale Locale to update
-	 * @return integer Translation state
+	 * @return int Translation state
 	 */
 	protected function updateTranslationForExtension($extensionKey, $locale) {
 		if (empty($extensionKey) || empty($locale)) {

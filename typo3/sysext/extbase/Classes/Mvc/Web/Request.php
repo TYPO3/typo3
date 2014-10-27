@@ -144,7 +144,7 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request {
 	 * Return whether the current request is a cached request or not.
 	 *
 	 * @api (v4 only)
-	 * @return boolean the caching status.
+	 * @return bool the caching status.
 	 */
 	public function isCached() {
 		return $this->isCached;

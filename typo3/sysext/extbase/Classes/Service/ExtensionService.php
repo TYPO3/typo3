@@ -109,7 +109,7 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $pluginName Name of the target plugin
 	 * @param string $controllerName Name of the target controller
 	 * @param string $actionName Name of the action to be called
-	 * @return boolean TRUE if the specified plugin action is cacheable, otherwise FALSE
+	 * @return bool TRUE if the specified plugin action is cacheable, otherwise FALSE
 	 */
 	public function isActionCacheable($extensionName, $pluginName, $controllerName, $actionName) {
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName, $pluginName);
@@ -129,7 +129,7 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $extensionName name of the extension to retrieve the target PID for
 	 * @param string $pluginName name of the plugin to retrieve the target PID for
 	 * @throws \TYPO3\CMS\Extbase\Exception
-	 * @return integer uid of the target page or NULL if target page could not be determined
+	 * @return int uid of the target page or NULL if target page could not be determined
 	 */
 	public function getTargetPidByPlugin($extensionName, $pluginName) {
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName, $pluginName);
@@ -187,7 +187,7 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $extensionName name of the extension that has defined the target page type
 	 * @param string $format The format for which to look up the page type
-	 * @return integer Page type number for target page
+	 * @return int Page type number for target page
 	 */
 	public function getTargetPageTypeByFormat($extensionName, $format) {
 		$targetPageType = 0;

@@ -78,7 +78,7 @@ class CoreVersionService {
 	 * Development git checkout versions always end with '-dev'. They are
 	 * not "released" as such and can not be updated.
 	 *
-	 * @return boolean FALSE If some development version is installed
+	 * @return bool FALSE If some development version is installed
 	 */
 	public function isInstalledVersionAReleasedVersion() {
 		$version = $this->getInstalledVersion();
@@ -121,7 +121,7 @@ class CoreVersionService {
 	/**
 	 * Returns TRUE if a younger patch level release exists in version matrix.
 	 *
-	 * @return boolean TRUE if younger patch release is exists
+	 * @return bool TRUE if younger patch release is exists
 	 */
 	public function isYoungerPatchReleaseAvailable() {
 		$result = FALSE;
@@ -136,7 +136,7 @@ class CoreVersionService {
 	/**
 	 * Returns TRUE if a younger patch level release exists in version matrix that may be a development release.
 	 *
-	 * @return boolean TRUE if younger patch release is exists
+	 * @return bool TRUE if younger patch release is exists
 	 */
 	public function isYoungerPatchDevelopmentReleaseAvailable() {
 		$result = FALSE;
@@ -151,7 +151,7 @@ class CoreVersionService {
 	/**
 	 * Returns TRUE if an upgrade from current version is security relevant
 	 *
-	 * @return boolean TRUE if there is a pending security update
+	 * @return bool TRUE if there is a pending security update
 	 */
 	public function isUpdateSecurityRelevant() {
 		$result = FALSE;
@@ -281,7 +281,7 @@ class CoreVersionService {
 	 *
 	 * @param $version String to check in version matrix, eg. 6.2.0alpha3 or 6.2.2
 	 * @throws Exception\CoreVersionServiceException
-	 * @return integer Timestamp of release
+	 * @return int Timestamp of release
 	 */
 	protected function getReleaseTimestampOfVersion($version) {
 		$minorVersion = $this->getMinorVersion($version);

@@ -14,7 +14,7 @@
 /**
  * Content parsing for htmlArea RTE
  *
- * @author 	Stanislas Rolland <typo3(arobas)sjbr.ca>
+ * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
 
 // Make instance:

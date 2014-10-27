@@ -98,7 +98,7 @@ class FormProtectionFactory {
 	/**
 	 * Check if we are in the install tool
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	static protected function isInstallToolSession() {
 		return defined('TYPO3_enterInstallScript') && TYPO3_enterInstallScript;
@@ -107,7 +107,7 @@ class FormProtectionFactory {
 	/**
 	 * Checks if a user is logged in and the session is active.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	static protected function isBackendSession() {
 		return isset($GLOBALS['BE_USER']) && $GLOBALS['BE_USER'] instanceof \TYPO3\CMS\Core\Authentication\BackendUserAuthentication && isset($GLOBALS['BE_USER']->user['uid']);
@@ -116,7 +116,7 @@ class FormProtectionFactory {
 	/**
 	 * Checks if a frontend user is logged in and the session is active.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	static protected function isFrontendSession() {
 		return is_object($GLOBALS['TSFE']) && $GLOBALS['TSFE']->fe_user instanceof \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication && isset($GLOBALS['TSFE']->fe_user->user['uid']) && TYPO3_MODE === 'FE';

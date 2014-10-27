@@ -19,7 +19,7 @@ namespace TYPO3\CMS\IndexedSearch\ViewHelpers;
  * so this is a cleaner "pi_browsebox" but not a real page browser
  * functionality
  *
- * @author 	Benjamin Mack <benni@typo3.org>
+ * @author Benjamin Mack <benni@typo3.org>
  */
 class PageBrowsingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 

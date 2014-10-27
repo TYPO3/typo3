@@ -25,7 +25,7 @@ class IsExtensionLoadedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstr
 	 * Checks whether an extension is loaded.
 	 *
 	 * @param string $extensionKey The extension's key
-	 * @return boolean TRUE if extension is loaded, FALSE otherwise
+	 * @return bool TRUE if extension is loaded, FALSE otherwise
 	 */
 	public function render($extensionKey) {
 		return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extensionKey);

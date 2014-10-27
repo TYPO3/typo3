@@ -208,7 +208,7 @@ abstract class AbstractExtensionXmlParser extends AbstractXmlParser {
 	 *
 	 * @access public
 	 * @return string e-mail address of extension author
-	 * @see 	 $authoremail, getAll()
+	 * @see $authoremail, getAll()
 	 */
 	public function getAuthoremail() {
 		return $this->authoremail;

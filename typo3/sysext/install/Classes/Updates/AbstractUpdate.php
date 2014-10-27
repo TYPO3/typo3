@@ -105,7 +105,7 @@ abstract class AbstractUpdate {
 	 * layer that some update wizards don't have a second parameter
 	 * thus, it evaluates everything already
 	 *
-	 * @return boolean If the wizard should be shown at all on the overview page
+	 * @return bool If the wizard should be shown at all on the overview page
 	 * @see checkForUpdate()
 	 */
 	public function shouldRenderWizard() {
@@ -120,7 +120,7 @@ abstract class AbstractUpdate {
 	 * this feature is cool if you want to tell the user that the update wizard
 	 * is working fine, just as output (useful for the character set / utf8 wizard)
 	 *
-	 * @return boolean If the wizard should render the Next() button on the overview page
+	 * @return bool If the wizard should render the Next() button on the overview page
 	 * @see checkForUpdate()
 	 */
 	public function shouldRenderNextButton() {
@@ -134,7 +134,7 @@ abstract class AbstractUpdate {
 	 * Check if given table exists
 	 *
 	 * @param string $table
-	 * @return boolean
+	 * @return bool
 	 */
 	public function checkIfTableExists($table) {
 		$databaseTables = $GLOBALS['TYPO3_DB']->admin_get_tables();
@@ -148,7 +148,7 @@ abstract class AbstractUpdate {
 	 * Checks whether updates are required.
 	 *
 	 * @param string &$description The description for the update
-	 * @return boolean Whether an update is required (TRUE) or not (FALSE)
+	 * @return bool Whether an update is required (TRUE) or not (FALSE)
 	 */
 	abstract public function checkForUpdate(&$description);
 
@@ -157,7 +157,7 @@ abstract class AbstractUpdate {
 	 *
 	 * @param array &$dbQueries Queries done in this update
 	 * @param mixed &$customMessages Custom messages
-	 * @return boolean Whether everything went smoothly or not
+	 * @return bool Whether everything went smoothly or not
 	 */
 	abstract public function performUpdate(array &$dbQueries, &$customMessages);
 
@@ -193,7 +193,7 @@ abstract class AbstractUpdate {
 	/**
 	 * Checks if this wizard has been "done" before
 	 *
-	 * @return boolean TRUE if wizard has been done before, FALSE otherwise
+	 * @return bool TRUE if wizard has been done before, FALSE otherwise
 	 */
 	protected function isWizardDone() {
 		$wizardClassName = get_class($this);

@@ -76,7 +76,7 @@ abstract class AbstractFrontend implements \TYPO3\CMS\Core\Cache\Frontend\Fronte
 	 * Checks if a cache entry with the specified identifier exists.
 	 *
 	 * @param string $entryIdentifier An identifier specifying the cache entry
-	 * @return boolean TRUE if such an entry exists, FALSE if not
+	 * @return bool TRUE if such an entry exists, FALSE if not
 	 * @throws \InvalidArgumentException If $entryIdentifier is invalid
 	 * @api
 	 */
@@ -91,7 +91,7 @@ abstract class AbstractFrontend implements \TYPO3\CMS\Core\Cache\Frontend\Fronte
 	 * Removes the given cache entry from the cache.
 	 *
 	 * @param string $entryIdentifier An identifier specifying the cache entry
-	 * @return boolean TRUE if such an entry exists, FALSE if not
+	 * @return bool TRUE if such an entry exists, FALSE if not
 	 * @throws \InvalidArgumentException
 	 * @api
 	 */
@@ -149,7 +149,7 @@ abstract class AbstractFrontend implements \TYPO3\CMS\Core\Cache\Frontend\Fronte
 	 * Checks the validity of an entry identifier. Returns TRUE if it's valid.
 	 *
 	 * @param string $identifier An identifier to be checked for validity
-	 * @return boolean
+	 * @return bool
 	 * @api
 	 */
 	public function isValidEntryIdentifier($identifier) {
@@ -160,7 +160,7 @@ abstract class AbstractFrontend implements \TYPO3\CMS\Core\Cache\Frontend\Fronte
 	 * Checks the validity of a tag. Returns TRUE if it's valid.
 	 *
 	 * @param string $tag An identifier to be checked for validity
-	 * @return boolean
+	 * @return bool
 	 * @api
 	 */
 	public function isValidTag($tag) {

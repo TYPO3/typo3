@@ -299,7 +299,7 @@ class GridDataService {
 	 *
 	 * @param array $versions All records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid and t3ver_oid fields. The pid of the online record is found as "livepid" the pid of the offline record is found in "wspid
 	 * @param string $filterTxt The given filter text from the grid.
-	 * @return boolean TRUE if cache entry was successfully fetched from cache and content put to $this->dataArray
+	 * @return bool TRUE if cache entry was successfully fetched from cache and content put to $this->dataArray
 	 */
 	protected function getDataArrayFromCache(array $versions, $filterTxt) {
 		$cacheEntry = FALSE;
@@ -375,7 +375,7 @@ class GridDataService {
 	 *
 	 * @param array $a First value
 	 * @param array $b Second value
-	 * @return integer
+	 * @return int
 	 */
 	protected function intSort(array $a, array $b) {
 		if (!$this->isSortable($a, $b)) {
@@ -405,7 +405,7 @@ class GridDataService {
 	 *
 	 * @param string $a First value
 	 * @param string $b Second value
-	 * @return integer
+	 * @return int
 	 */
 	protected function stringSort($a, $b) {
 		if (!$this->isSortable($a, $b)) {
@@ -451,7 +451,7 @@ class GridDataService {
 	 *
 	 * @param string $filterText
 	 * @param array $versionArray
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isFilterTextInVisibleColumns($filterText, array $versionArray) {
 		if (is_array($GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['columns'])) {
@@ -535,7 +535,7 @@ class GridDataService {
 	 *
 	 * @param string $table Name of the table
 	 * @param array $record Database record
-	 * @return integer
+	 * @return int
 	 */
 	protected function getLanguageValue($table, array $record) {
 		$languageValue = 0;

@@ -79,7 +79,7 @@ class Logger implements \Psr\Log\LoggerInterface {
 	/**
 	 * Gets the minimum log level for which log records are written.
 	 *
-	 * @return integer Minimum log level
+	 * @return int Minimum log level
 	 */
 	protected function getMinimumLogLevel() {
 		return $this->minimumLogLevel;

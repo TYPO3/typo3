@@ -36,7 +36,7 @@ class ContextService {
 	/**
 	 * Is the install tool running in the backend?
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isBackendContext() {
 		return $this->backendContext;
@@ -45,7 +45,7 @@ class ContextService {
 	/**
 	 * Is the install tool running as a standalone application?
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isStandaloneContext() {
 		return !$this->backendContext;
@@ -54,7 +54,7 @@ class ContextService {
 	/**
 	 * Is the install tool running as a standalone application?
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getContextString() {
 		return ( $this->isBackendContext() ? 'backend' : 'standalone' );

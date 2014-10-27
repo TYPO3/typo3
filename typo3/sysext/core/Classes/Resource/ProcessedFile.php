@@ -194,7 +194,7 @@ class ProcessedFile extends AbstractFile {
 	/**
 	 * Returns TRUE if this file is indexed
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isIndexed() {
 		// Processed files are never indexed; instead you might be looking for isPersisted()
@@ -204,7 +204,7 @@ class ProcessedFile extends AbstractFile {
 	/**
 	 * Checks whether the ProcessedFile already has an entry in sys_file_processedfile table
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isPersisted() {
 		return is_array($this->properties) && array_key_exists('uid', $this->properties) && $this->properties['uid'] > 0;
@@ -213,7 +213,7 @@ class ProcessedFile extends AbstractFile {
 	/**
 	 * Checks whether the ProcessedFile Object is newly created
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isNew() {
 		return !$this->isPersisted();
@@ -223,7 +223,7 @@ class ProcessedFile extends AbstractFile {
 	 * Checks whether the object since last reconstitution, and therefore
 	 * needs persistence again
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isUpdated() {
 		return $this->updated;
@@ -254,7 +254,7 @@ class ProcessedFile extends AbstractFile {
 	/**
 	 * Returns TRUE if this file is already processed.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isProcessed() {
 		return ($this->isPersisted() && !$this->needsReprocessing()) || $this->updated;
@@ -359,7 +359,7 @@ class ProcessedFile extends AbstractFile {
 	/**
 	 * Returns TRUE if this file has not been changed during processing (i.e., we just deliver the original file)
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isUnchanged() {
 		return $this->identifier == NULL || $this->identifier === $this->originalFile->getIdentifier();
@@ -376,7 +376,7 @@ class ProcessedFile extends AbstractFile {
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function usesOriginalFile() {
 		return $this->isUnchanged();
@@ -385,7 +385,7 @@ class ProcessedFile extends AbstractFile {
 	/**
 	 * Returns TRUE if the original file of this file changed and the file should be processed again.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isOutdated() {
 		return $this->needsReprocessing();
@@ -395,7 +395,7 @@ class ProcessedFile extends AbstractFile {
 	 * Delete processed file
 	 *
 	 * @param bool $force
-	 * @return boolean
+	 * @return bool
 	 */
 	public function delete($force = FALSE) {
 		if (!$force && $this->isUnchanged()) {
@@ -433,7 +433,7 @@ class ProcessedFile extends AbstractFile {
 	/**
 	 * Checks if the ProcessedFile needs reprocessing
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function needsReprocessing() {
 		$fileMustBeRecreated = FALSE;

@@ -74,7 +74,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
 	/**
 	 * Getter for uid.
 	 *
-	 * @return integer the uid or NULL if none set yet.
+	 * @return int the uid or NULL if none set yet.
 	 */
 	public function getUid() {
 		if ($this->uid !== NULL) {
@@ -101,7 +101,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
 	/**
 	 * Getter for the pid.
 	 *
-	 * @return integer The pid or NULL if none set yet.
+	 * @return int The pid or NULL if none set yet.
 	 */
 	public function getPid() {
 		if ($this->pid === NULL) {
@@ -116,7 +116,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
 	 *
 	 * @param string $propertyName
 	 * @param mixed $propertyValue
-	 * @return boolean
+	 * @return bool
 	 */
 	public function _setProperty($propertyName, $propertyValue) {
 		if ($this->_hasProperty($propertyName)) {
@@ -155,7 +155,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
 	 * Returns the property value of the given property name. Only for internal use.
 	 *
 	 * @param string $propertyName
-	 * @return boolean TRUE bool true if the property exists, FALSE if it doesn't exist or NULL in case of an error.
+	 * @return bool TRUE bool true if the property exists, FALSE if it doesn't exist or NULL in case of an error.
 	 */
 	public function _hasProperty($propertyName) {
 		return property_exists($this, $propertyName);
@@ -164,7 +164,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
 	/**
 	 * Returns TRUE if the object is new (the uid was not set, yet). Only for internal use
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function _isNew() {
 		return $this->uid === NULL;
@@ -243,7 +243,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
 	 *
 	 * @param string $propertyName An optional name of a property to be checked if its value is dirty
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\TooDirtyException
-	 * @return boolean
+	 * @return bool
 	 */
 	public function _isDirty($propertyName = NULL) {
 		if ($this->uid !== NULL && $this->_getCleanProperty('uid') !== NULL && $this->uid != $this->_getCleanProperty('uid')) {
@@ -269,7 +269,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
 	 *
 	 * @param mixed $previousValue
 	 * @param mixed $currentValue
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isPropertyDirty($previousValue, $currentValue) {
 		// In case it is an object and it implements the ObjectMonitoringInterface, we call _isDirty() instead of a simple comparison of objects.
@@ -292,7 +292,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
 	/**
 	 * Returns TRUE if the object has been clonesd, cloned, FALSE otherwise.
 	 *
-	 * @return boolean TRUE if the object has been cloned
+	 * @return bool TRUE if the object has been cloned
 	 */
 	public function _isClone() {
 		return $this->_isClone;

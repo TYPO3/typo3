@@ -326,7 +326,7 @@ class FormDataTraverser {
 	 * If exactly one table was defined the name of that table is returned.
 	 *
 	 * @param array $fieldConfig "config" section of a group field from the TCA.
-	 * @return boolean|string FALSE if none ore more than one table was found, otherwise the name of the table.
+	 * @return bool|string FALSE if none ore more than one table was found, otherwise the name of the table.
 	 */
 	protected function getAllowedTableForGroupField(array $fieldConfig) {
 		$allowedTable = FALSE;
@@ -363,7 +363,7 @@ class FormDataTraverser {
 	 * row is returned, otherwise FALSE.
 	 *
 	 * @param array $relatedUids All possible matching UIDs.
-	 * @return boolean|array The row data if a matching record was found, FALSE otherwise.
+	 * @return bool|array The row data if a matching record was found, FALSE otherwise.
 	 */
 	protected function getMatchingRecordRowByTranslation(array $relatedUids) {
 		if ($this->originalLanguageUid === FALSE) {

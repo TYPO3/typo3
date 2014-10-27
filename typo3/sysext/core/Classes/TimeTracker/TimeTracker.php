@@ -230,7 +230,7 @@ class TimeTracker {
 	 * Gets a microtime value as milliseconds value.
 	 *
 	 * @param float $microtime The microtime value - if not set the current time is used
-	 * @return integer The microtime value as milliseconds value
+	 * @return int The microtime value as milliseconds value
 	 */
 	public function getMilliseconds($microtime = NULL) {
 		if (!isset($microtime)) {
@@ -243,7 +243,7 @@ class TimeTracker {
 	 * Gets the difference between a given microtime value and the starting time as milliseconds.
 	 *
 	 * @param float $microtime The microtime value - if not set the current time is used
-	 * @return integer The difference between a given microtime value and starting time as milliseconds
+	 * @return int The difference between a given microtime value and starting time as milliseconds
 	 */
 	public function getDifferenceToStarttime($microtime = NULL) {
 		return $this->getMilliseconds($microtime) - $this->starttime;

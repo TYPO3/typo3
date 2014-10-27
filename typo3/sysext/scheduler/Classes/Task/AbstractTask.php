@@ -88,7 +88,7 @@ abstract class AbstractTask {
 	 * to be handled and logged by the client implementations.
 	 * Should return TRUE on successful execution, FALSE on error.
 	 *
-	 * @return boolean Returns TRUE on successful execution, FALSE on error
+	 * @return bool Returns TRUE on successful execution, FALSE on error
 	 */
 	abstract public function execute();
 
@@ -117,7 +117,7 @@ abstract class AbstractTask {
 	/**
 	 * This method returns the unique id of the task
 	 *
-	 * @return integer The id of the task
+	 * @return int The id of the task
 	 */
 	public function getTaskUid() {
 		return $this->taskUid;
@@ -153,7 +153,7 @@ abstract class AbstractTask {
 	/**
 	 * This method returns the disable status of the task
 	 *
-	 * @return boolean TRUE if task is disabled, FALSE otherwise
+	 * @return bool TRUE if task is disabled, FALSE otherwise
 	 */
 	public function isDisabled() {
 		return $this->disabled;
@@ -186,7 +186,7 @@ abstract class AbstractTask {
 	/**
 	 * This method returns the task group (uid) of the task
 	 *
-	 * @return integer Uid of task group
+	 * @return int Uid of task group
 	 */
 	public function getTaskGroup() {
 		return $this->taskGroup;
@@ -205,7 +205,7 @@ abstract class AbstractTask {
 	/**
 	 * This method returns the timestamp corresponding to the next execution time of the task
 	 *
-	 * @return integer Timestamp of next execution
+	 * @return int Timestamp of next execution
 	 */
 	public function getExecutionTime() {
 		return $this->executionTime;
@@ -319,7 +319,7 @@ abstract class AbstractTask {
 	/**
 	 * Returns the timestamp for next due execution of the task
 	 *
-	 * @return integer Date and time of the next execution as a timestamp
+	 * @return int Date and time of the next execution as a timestamp
 	 */
 	public function getNextDueExecution() {
 		// NOTE: this call may throw an exception, but we let it bubble up
@@ -329,7 +329,7 @@ abstract class AbstractTask {
 	/**
 	 * Returns TRUE if several runs of the task are allowed concurrently
 	 *
-	 * @return boolean TRUE if concurrent executions are allowed, FALSE otherwise
+	 * @return bool TRUE if concurrent executions are allowed, FALSE otherwise
 	 */
 	public function areMultipleExecutionsAllowed() {
 		return $this->execution->getMultiple();
@@ -338,7 +338,7 @@ abstract class AbstractTask {
 	/**
 	 * Returns TRUE if an instance of the task is already running
 	 *
-	 * @return boolean TRUE if an instance is already running, FALSE otherwise
+	 * @return bool TRUE if an instance is already running, FALSE otherwise
 	 */
 	public function isExecutionRunning() {
 		$isRunning = FALSE;
@@ -362,7 +362,7 @@ abstract class AbstractTask {
 	 * This method adds current execution to the execution list
 	 * It also logs the execution time and mode
 	 *
-	 * @return integer Execution id
+	 * @return int Execution id
 	 */
 	public function markExecution() {
 		$queryArr = array(
@@ -401,7 +401,7 @@ abstract class AbstractTask {
 	 *
 	 * @param int $executionID Id of the execution to remove.
 	 * @param \Exception $failure An exception to signal a failed execution
-	 * @return 	void
+	 * @return void
 	 */
 	public function unmarkExecution($executionID, \Exception $failure = NULL) {
 		// Get the executions for the task
@@ -444,7 +444,7 @@ abstract class AbstractTask {
 	/**
 	 * Clears all marked executions
 	 *
-	 * @return boolean TRUE if the clearing succeeded, FALSE otherwise
+	 * @return bool TRUE if the clearing succeeded, FALSE otherwise
 	 */
 	public function unmarkAllExecutions() {
 		// Set the serialized executions field to empty
@@ -457,7 +457,7 @@ abstract class AbstractTask {
 	/**
 	 * Saves the details of the task to the database.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function save() {
 		return $this->scheduler->saveTask($this);
@@ -476,7 +476,7 @@ abstract class AbstractTask {
 	/**
 	 * Removes the task totally from the system.
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function remove() {
 		$this->scheduler->removeTask($this);

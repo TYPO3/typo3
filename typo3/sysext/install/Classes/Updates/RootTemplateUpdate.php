@@ -29,7 +29,7 @@ class RootTemplateUpdate extends AbstractUpdate implements InstallerProcessInter
 	 *
 	 * @param string &$description The description for the update
 	 * @param int &$showUpdate 0=dont show update; 1=show update and next button; 2=only show description
-	 * @return boolean
+	 * @return bool
 	 */
 	public function checkForUpdate(&$description, &$showUpdate = 0) {
 		$pages = $this->findRootLevelPages();
@@ -50,7 +50,7 @@ class RootTemplateUpdate extends AbstractUpdate implements InstallerProcessInter
 	 *
 	 * @param array &$dbQueries Queries done in this update
 	 * @param mixed &$customMessages Custom messages
-	 * @return boolean Whether the updated was made or not
+	 * @return bool Whether the updated was made or not
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$now = time();

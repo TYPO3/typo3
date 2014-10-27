@@ -33,7 +33,7 @@ class SleepTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 * Function executed from the Scheduler.
 	 * Goes to sleep ;-)
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function execute() {
 		$time = 10;

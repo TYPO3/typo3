@@ -152,7 +152,7 @@ class ActionToolbarMenu implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInt
 	/**
 	 * Checks if user has access to the sys action menu
 	 *
-	 * @return boolean TRUE if the user has access, FALSE otherwise
+	 * @return bool TRUE if the user has access, FALSE otherwise
 	 */
 	public function checkAccess() {
 		// Taskcenter is enabled for everybody

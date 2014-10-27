@@ -57,7 +57,7 @@ class FlashMessage extends \TYPO3\CMS\Core\Messaging\AbstractMessage {
 	/**
 	 * Gets the message's storeInSession flag.
 	 *
-	 * @return boolean TRUE if message should be stored in the session, otherwise FALSE.
+	 * @return bool TRUE if message should be stored in the session, otherwise FALSE.
 	 */
 	public function isSessionMessage() {
 		return $this->storeInSession;

@@ -1161,7 +1161,7 @@ class TypoScriptParser {
 	 * @param int $strlen The number of chars LEFT on this line before the end is reached.
 	 * @return void
 	 * @access private
-	 * @see 	parse()
+	 * @see parse()
 	 */
 	public function regHighLight($code, $pointer, $strlen = -1) {
 		if ($strlen === -1) {

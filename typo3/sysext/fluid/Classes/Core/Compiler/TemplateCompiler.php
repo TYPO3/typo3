@@ -40,7 +40,7 @@ class TemplateCompiler implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @param string $identifier
-	 * @return boolean
+	 * @return bool
 	 */
 	public function has($identifier) {
 		$identifier = $this->sanitizeIdentifier($identifier);

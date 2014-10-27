@@ -42,7 +42,7 @@ class EmailAddressValidator extends AbstractValidator {
 	 * Checking syntax of input email address
 	 *
 	 * @param string $emailAddress Input string to evaluate
-	 * @return boolean Returns TRUE if the $email address (input string) is valid
+	 * @return bool Returns TRUE if the $email address (input string) is valid
 	 */
 	protected function validEmail($emailAddress) {
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($emailAddress);

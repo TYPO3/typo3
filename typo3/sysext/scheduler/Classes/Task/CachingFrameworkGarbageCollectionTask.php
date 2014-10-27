@@ -36,7 +36,7 @@ class CachingFrameworkGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\Ab
 	/**
 	 * Execute garbage collection, called by scheduler.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function execute() {
 		// Global sub-array with all configured caches

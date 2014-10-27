@@ -31,7 +31,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends \TYPO3\CM
 	 *
 	 * @param int $pageId
 	 * @param int $template_uid
-	 * @return integer
+	 * @return int
 	 */
 	public function initialize_editor($pageId, $template_uid = 0) {
 		// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!

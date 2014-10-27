@@ -43,7 +43,7 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response {
 	/**
 	 * Rets the numerical exit code which should be returned when exiting this application.
 	 *
-	 * @return integer
+	 * @return int
 	 * @api
 	 */
 	public function getExitCode() {

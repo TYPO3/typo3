@@ -112,7 +112,7 @@ class GenericObjectValidator extends AbstractValidator implements ObjectValidato
 	 * Checks the given object can be validated by the validator implementation
 	 *
 	 * @param object $object The object to be checked
-	 * @return boolean TRUE if the given value is an object
+	 * @return bool TRUE if the given value is an object
 	 * @api
 	 */
 	public function canValidate($object) {
@@ -136,7 +136,7 @@ class GenericObjectValidator extends AbstractValidator implements ObjectValidato
 
 	/**
 	 * @param object $object
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isValidatedAlready($object) {
 		if ($this->validatedInstancesContainer === NULL) {

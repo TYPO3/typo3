@@ -126,7 +126,7 @@ class Package extends \TYPO3\Flow\Package\Package implements PackageInterface {
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isPartOfMinimalUsableSystem() {
 		return $this->partOfMinimalUsableSystem;
@@ -320,7 +320,7 @@ class Package extends \TYPO3\Flow\Package\Package implements PackageInterface {
 	 * Check whether the given package requirement (like "typo3/flow" or "php") is a composer package or not
 	 *
 	 * @param string $requirement the composer requirement string
-	 * @return boolean TRUE if $requirement is a composer package (contains a slash), FALSE otherwise
+	 * @return bool TRUE if $requirement is a composer package (contains a slash), FALSE otherwise
 	 */
 	protected function packageRequirementIsComposerPackage($requirement) {
 		// According to http://getcomposer.org/doc/02-libraries.md#platform-packages

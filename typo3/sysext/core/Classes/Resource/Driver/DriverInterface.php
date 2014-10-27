@@ -46,7 +46,7 @@ interface DriverInterface {
 	/**
 	 * Returns the capabilities of this driver.
 	 *
-	 * @return integer
+	 * @return int
 	 * @see Storage::CAPABILITY_* constants
 	 */
 	public function getCapabilities();
@@ -58,7 +58,7 @@ interface DriverInterface {
 	 *
 	 * @param int $capabilities
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function mergeConfigurationCapabilities($capabilities);
 
@@ -66,7 +66,7 @@ interface DriverInterface {
 	 * Returns TRUE if this driver has the given capability.
 	 *
 	 * @param int $capability A capability, as defined in a CAPABILITY_* constant
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasCapability($capability);
 
@@ -77,7 +77,7 @@ interface DriverInterface {
 	 * therefore always reflect the file system and not try to change its
 	 * behaviour
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isCaseSensitiveFileSystem();
 
@@ -159,7 +159,7 @@ interface DriverInterface {
 	 *
 	 * @param string $folderIdentifier
 	 * @param bool $deleteRecursively
-	 * @return boolean
+	 * @return bool
 	 */
 	public function deleteFolder($folderIdentifier, $deleteRecursively = FALSE);
 
@@ -168,7 +168,7 @@ interface DriverInterface {
 	 *
 	 * @param string $fileIdentifier
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function fileExists($fileIdentifier);
 
@@ -177,7 +177,7 @@ interface DriverInterface {
 	 *
 	 * @param string $folderIdentifier
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function folderExists($folderIdentifier);
 
@@ -185,7 +185,7 @@ interface DriverInterface {
 	 * Checks if a folder contains files and (if supported) other folders.
 	 *
 	 * @param string $folderIdentifier
-	 * @return boolean TRUE if there are no files and folders within $folder
+	 * @return bool TRUE if there are no files and folders within $folder
 	 */
 	public function isFolderEmpty($folderIdentifier);
 
@@ -239,7 +239,7 @@ interface DriverInterface {
 	 *
 	 * @param string $fileIdentifier
 	 * @param string $localFilePath
-	 * @return boolean TRUE if the operation succeeded
+	 * @return bool TRUE if the operation succeeded
 	 */
 	public function replaceFile($fileIdentifier, $localFilePath);
 
@@ -249,7 +249,7 @@ interface DriverInterface {
 	 * this has to be taken care of in the upper layers (e.g. the Storage)!
 	 *
 	 * @param string $fileIdentifier
-	 * @return boolean TRUE if deleting the file succeeded
+	 * @return bool TRUE if deleting the file succeeded
 	 */
 	public function deleteFile($fileIdentifier);
 
@@ -295,7 +295,7 @@ interface DriverInterface {
 	 * @param string $targetFolderIdentifier
 	 * @param string $newFolderName
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function copyFolderWithinStorage($sourceFolderIdentifier, $targetFolderIdentifier, $newFolderName);
 
@@ -315,7 +315,7 @@ interface DriverInterface {
 	 *
 	 * @param string $fileIdentifier
 	 * @param string $contents
-	 * @return integer The number of bytes written to the file
+	 * @return int The number of bytes written to the file
 	 */
 	public function setFileContents($fileIdentifier, $contents);
 
@@ -324,7 +324,7 @@ interface DriverInterface {
 	 *
 	 * @param string $fileName
 	 * @param string $folderIdentifier
-	 * @return boolean
+	 * @return bool
 	 */
 	public function fileExistsInFolder($fileName, $folderIdentifier);
 
@@ -333,7 +333,7 @@ interface DriverInterface {
 	 *
 	 * @param string $folderName
 	 * @param string $folderIdentifier
-	 * @return boolean
+	 * @return bool
 	 */
 	public function folderExistsInFolder($folderName, $folderIdentifier);
 
@@ -380,7 +380,7 @@ interface DriverInterface {
 	 *
 	 * @param string $folderIdentifier
 	 * @param string $identifier identifier to be checked against $folderIdentifier
-	 * @return boolean TRUE if $content is within or matches $folderIdentifier
+	 * @return bool TRUE if $content is within or matches $folderIdentifier
 	 */
 	public function isWithin($folderIdentifier, $identifier);
 

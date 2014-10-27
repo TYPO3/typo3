@@ -24,7 +24,7 @@ class UpdateExtensionListTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	/**
 	 * Public method, called by scheduler.
 	 *
-	 * @return boolean TRUE on success
+	 * @return bool TRUE on success
 	 */
 	public function execute() {
 		// Throws exceptions if something went wrong

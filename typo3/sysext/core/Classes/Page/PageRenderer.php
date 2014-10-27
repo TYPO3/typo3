@@ -921,7 +921,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Returns rendering mode XHTML or HTML
 	 *
-	 * @return boolean TRUE if XHTML, FALSE if HTML
+	 * @return bool TRUE if XHTML, FALSE if HTML
 	 */
 	public function getRenderXhtml() {
 		return $this->renderXhtml;
@@ -993,7 +993,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Gets MoveJsFromHeaderToFooter
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getMoveJsFromHeaderToFooter() {
 		return $this->moveJsFromHeaderToFooter;
@@ -1002,7 +1002,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Gets compress of javascript
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getCompressJavascript() {
 		return $this->compressJavascript;
@@ -1011,7 +1011,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Gets compress of css
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getCompressCss() {
 		return $this->compressCss;
@@ -1020,7 +1020,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Gets concatenate of js and css files
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getConcatenateFiles() {
 		return $this->concatenateFiles;
@@ -1029,7 +1029,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Gets concatenate of js files
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getConcatenateJavascript() {
 		return $this->concatenateJavascript;
@@ -1038,7 +1038,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Gets concatenate of css files
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getConcatenateCss() {
 		return $this->concatenateCss;
@@ -1047,7 +1047,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Gets remove of empty lines from template
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getRemoveLineBreaksFromTemplate() {
 		return $this->removeLineBreaksFromTemplate;

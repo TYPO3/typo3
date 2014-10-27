@@ -96,7 +96,7 @@ class File extends AbstractFile {
 	 * can be retrieved by "getProperty"
 	 *
 	 * @param string $key
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasProperty($key) {
 		if (!parent::hasProperty($key)) {
@@ -175,7 +175,7 @@ class File extends AbstractFile {
 	/**
 	 * Returns TRUE if this file is indexed
 	 *
-	 * @return boolean|NULL
+	 * @return bool|NULL
 	 */
 	public function isIndexed() {
 		return TRUE;
@@ -272,7 +272,7 @@ class File extends AbstractFile {
 	 * Check if a file operation (= action) is allowed for this file
 	 *
 	 * @param 	string	$action, can be read, write, delete
-	 * @return boolean
+	 * @return bool
 	 */
 	public function checkActionPermission($action) {
 		return $this->getStorage()->checkFileActionPermission($action, $this);
@@ -342,7 +342,7 @@ class File extends AbstractFile {
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isMissing() {
 		return (bool) $this->getProperty('missing');

@@ -53,7 +53,7 @@ abstract class AbstractMemoryProcessor extends \TYPO3\CMS\Core\Log\Processor\Abs
 	/**
 	 * Returns the allocated memory usage type
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getRealMemoryUsage() {
 		return $this->realMemoryUsage;
@@ -72,7 +72,7 @@ abstract class AbstractMemoryProcessor extends \TYPO3\CMS\Core\Log\Processor\Abs
 	/**
 	 * Returns whether size should be formatted
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getFormatSize() {
 		return $this->formatSize;

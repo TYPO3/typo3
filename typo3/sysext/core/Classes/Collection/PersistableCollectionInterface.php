@@ -31,7 +31,7 @@ interface PersistableCollectionInterface {
 	 * session stored, registry stored or other collections might
 	 * use a string as well
 	 *
-	 * @return integer|string
+	 * @return int|string
 	 */
 	public function getIdentifier();
 

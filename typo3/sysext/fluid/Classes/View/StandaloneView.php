@@ -276,7 +276,7 @@ class StandaloneView extends AbstractTemplateView {
 	/**
 	 * Checks whether a template can be resolved for the current request
 	 *
-	 * @return boolean
+	 * @return bool
 	 * @api
 	 */
 	public function hasTemplate() {

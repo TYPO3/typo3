@@ -55,7 +55,7 @@ class Content {
 	/**
 	 * Returns the uid
 	 *
-	 * @return integer The uid
+	 * @return int The uid
 	 */
 	public function getUid() {
 		return $this->uid;
@@ -74,7 +74,7 @@ class Content {
 	/**
 	 * Returns the page id
 	 *
-	 * @return integer The page id
+	 * @return int The page id
 	 */
 	public function getPageId() {
 		return $this->pageId;

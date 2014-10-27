@@ -238,7 +238,7 @@ class DataMap {
 	 * Returns TRUE if the property is persistable (configured in $TCA)
 	 *
 	 * @param string $propertyName The property name
-	 * @return boolean TRUE if the property is persistable (configured in $TCA)
+	 * @return bool TRUE if the property is persistable (configured in $TCA)
 	 */
 	public function isPersistableProperty($propertyName) {
 		return isset($this->columnMaps[$propertyName]);
@@ -480,7 +480,7 @@ class DataMap {
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getIsStatic() {
 		return $this->isStatic;
@@ -494,7 +494,7 @@ class DataMap {
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getRootLevel() {
 		return $this->rootLevel;

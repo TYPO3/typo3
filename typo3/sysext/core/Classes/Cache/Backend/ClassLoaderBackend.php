@@ -98,7 +98,7 @@ class ClassLoaderBackend extends SimpleFileBackend {
 	 * command in the cache entry with the given identifier.
 	 *
 	 * @param string $entryIdentifier
-	 * @return boolean|string FALSE if required path can not be retrieved or the required file path on success
+	 * @return bool|string FALSE if required path can not be retrieved or the required file path on success
 	 * @internal
 	 */
 	public function getPathOfRequiredFileInCacheEntry($entryIdentifier) {
@@ -120,7 +120,7 @@ class ClassLoaderBackend extends SimpleFileBackend {
 	 * Checks if a cache entry with the specified identifier exists.
 	 *
 	 * @param string $entryIdentifier
-	 * @return boolean TRUE if such an entry exists, FALSE if not
+	 * @return bool TRUE if such an entry exists, FALSE if not
 	 * @throws \InvalidArgumentException
 	 * @internal
 	 */
@@ -137,7 +137,7 @@ class ClassLoaderBackend extends SimpleFileBackend {
 	 * lifetime has exceeded.
 	 *
 	 * @param string $cacheEntryPathAndFilename
-	 * @return boolean
+	 * @return bool
 	 * @internal
 	 */
 	protected function isCacheFileExpired($cacheEntryPathAndFilename) {

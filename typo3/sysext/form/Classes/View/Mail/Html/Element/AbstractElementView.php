@@ -65,7 +65,7 @@ abstract class AbstractElementView {
 	 * @param \DOMDocument $dom
 	 * @param \DOMNode $reference Current XML structure
 	 * @param bool $emptyElement
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function parseXML(\DOMDocument $dom, \DOMNode $reference, $emptyElement = FALSE) {
 		$node = $reference->firstChild;
@@ -351,7 +351,7 @@ abstract class AbstractElementView {
 	 * if TRUE the element does not need a element wrap
 	 * like <li>element</li>
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function noWrap() {
 		return $this->noWrap;

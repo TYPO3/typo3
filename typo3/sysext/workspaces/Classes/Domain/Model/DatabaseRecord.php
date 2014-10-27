@@ -92,7 +92,7 @@ class DatabaseRecord {
 	/**
 	 * Gets the id of the database record row.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getUid() {
 		return $this->uid;

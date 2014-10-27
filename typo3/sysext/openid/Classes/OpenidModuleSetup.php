@@ -27,7 +27,7 @@ class OpenidModuleSetup {
 	 * Checks weather BE user has access to change its OpenID identifier
 	 *
 	 * @param array $config: Configuration of the field
-	 * @return boolean Whether it is allowed to modify the given field
+	 * @return bool Whether it is allowed to modify the given field
 	 */
 	public function accessLevelCheck(array $config) {
 		$setupConfig = $GLOBALS['BE_USER']->getTSConfigProp('setup.fields');

@@ -41,7 +41,7 @@ class ClassInfoCache {
 	 * checks if cacheentry exists for id
 	 *
 	 * @param string $id
-	 * @return boolean
+	 * @return bool
 	 */
 	public function has($id) {
 		return isset($this->level1Cache[$id]) || $this->level2Cache->has($id);

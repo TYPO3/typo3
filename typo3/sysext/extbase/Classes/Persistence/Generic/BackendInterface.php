@@ -83,7 +83,7 @@ interface BackendInterface {
 	 * Checks if the given object has ever been persisted.
 	 *
 	 * @param object $object The object to check
-	 * @return boolean TRUE if the object is new, FALSE if the object exists in the repository
+	 * @return bool TRUE if the object is new, FALSE if the object exists in the repository
 	 */
 	public function isNewObject($object);
 
@@ -91,7 +91,7 @@ interface BackendInterface {
 	 * Returns the number of records matching the query.
 	 *
 	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
-	 * @return integer
+	 * @return int
 	 * @api
 	 */
 	public function getObjectCountByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query);

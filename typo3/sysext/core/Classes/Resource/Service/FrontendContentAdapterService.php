@@ -183,7 +183,7 @@ class FrontendContentAdapterService {
 	 * @param string $fieldName
 	 * @param string $table
 	 * @param array $row
-	 * @return boolean
+	 * @return bool
 	 */
 	static protected function fieldIsInType($fieldName, $table, array $row) {
 		$fieldConfiguration = static::$migrateFields[$table][$fieldName];

@@ -55,7 +55,7 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	/**
 	 * Execute task
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function execute() {
 		$processedAllRecords = TRUE;
@@ -166,7 +166,7 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 * If a password does not start with M or C determine if a password is already a usual salted hash.
 	 *
 	 * @param string $password Password
-	 * @return boolean TRUE if password is a salted hash
+	 * @return bool TRUE if password is a salted hash
 	 */
 	protected function isSaltedHash($password) {
 		$isSaltedHash = FALSE;
@@ -185,7 +185,7 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 * Checks if a given password is a md5 hash, the default for be_user records before saltedpasswords.
 	 *
 	 * @param string $password The password to test
-	 * @return boolean TRUE if password is md5
+	 * @return bool TRUE if password is md5
 	 */
 	protected function isMd5Password($password) {
 		return (bool) preg_match('/[0-9abcdef]{32,32}/i', $password);
@@ -235,7 +235,7 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	/**
 	 * Get if it can deactivate self
 	 *
-	 * @return boolean TRUE if task shall deactivate itself, FALSE otherwise
+	 * @return bool TRUE if task shall deactivate itself, FALSE otherwise
 	 */
 	public function getCanDeactivateSelf() {
 		return $this->canDeactivateSelf;
@@ -254,7 +254,7 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	/**
 	 * Get number of records
 	 *
-	 * @return integer The number of records
+	 * @return int The number of records
 	 */
 	public function getNumberOfRecords() {
 		return $this->numberOfRecords;

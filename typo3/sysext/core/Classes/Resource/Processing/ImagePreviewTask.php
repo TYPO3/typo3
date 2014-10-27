@@ -45,7 +45,7 @@ class ImagePreviewTask extends AbstractGraphicalTask {
 	 * are given, within the boundaries and don't conflict with each other.
 	 *
 	 * @param array $configuration
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isValidConfiguration(array $configuration) {
 		/**
@@ -60,7 +60,7 @@ class ImagePreviewTask extends AbstractGraphicalTask {
 	 * Note: This does not indicate if the concrete ProcessedFile attached to this task has to be (re)processed.
 	 * This check is done in ProcessedFile::isOutdated(). TODO isOutdated()/needsReprocessing()?
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function fileNeedsProcessing() {
 		// TODO: Implement fileNeedsProcessing() method.

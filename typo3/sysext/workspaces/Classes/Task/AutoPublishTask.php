@@ -27,7 +27,7 @@ class AutoPublishTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 * Call on the workspace logic to publish workspaces whose publication date
 	 * is in the past
 	 *
-	 * @return 	boolean
+	 * @return bool
 	 */
 	public function execute() {
 		$autopubObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\AutoPublishService');

@@ -62,7 +62,7 @@ class WidgetRequestHandler extends \TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestHan
 	}
 
 	/**
-	 * @return boolean TRUE if it is an AJAX widget request
+	 * @return bool TRUE if it is an AJAX widget request
 	 */
 	public function canHandleRequest() {
 		$rawGetArguments = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET();
@@ -72,7 +72,7 @@ class WidgetRequestHandler extends \TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestHan
 	/**
 	 * This request handler has a higher priority than the default request handler.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getPriority() {
 		return 200;

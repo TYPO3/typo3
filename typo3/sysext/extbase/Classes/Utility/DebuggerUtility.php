@@ -187,7 +187,7 @@ class DebuggerUtility {
 	 * Checks if a given object or property should be excluded/filtered
 	 *
 	 * @param object $value An ReflectionProperty or other Object
-	 * @return boolean TRUE if the given object should be filtered
+	 * @return bool TRUE if the given object should be filtered
 	 */
 	static protected function isBlacklisted($value) {
 		$result = FALSE;
@@ -203,7 +203,7 @@ class DebuggerUtility {
 	 * Checks if a given object was already rendered.
 	 *
 	 * @param object $object
-	 * @return boolean TRUE if the given object was already rendered
+	 * @return bool TRUE if the given object was already rendered
 	 */
 	static protected function isAlreadyRendered($object) {
 		return self::$renderedObjects->contains($object);

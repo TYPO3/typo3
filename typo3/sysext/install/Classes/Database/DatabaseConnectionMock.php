@@ -32,7 +32,7 @@ class DatabaseConnectionMock {
 	/**
 	 * Insert row mock
 	 *
-	 * @return boolean TRUE
+	 * @return bool TRUE
 	 */
 	public function exec_INSERTquery() {
 		return TRUE;

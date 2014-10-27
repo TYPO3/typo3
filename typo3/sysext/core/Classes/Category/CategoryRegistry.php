@@ -75,7 +75,7 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 *              + position: insert position of the categories field
 	 *              + label: backend label of the categories field
 	 *              + fieldConfiguration: TCA field config array to override defaults
-	 * @return boolean
+	 * @return bool
 	 * @throws \InvalidArgumentException
 	 * @throws \RuntimeException
 	 */
@@ -172,7 +172,7 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $tableName Name of the table to be looked up
 	 * @param string $fieldName Name of the field to be looked up
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isRegistered($tableName, $fieldName = 'categories') {
 		return isset($this->registry[$tableName][$fieldName]);

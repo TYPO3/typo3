@@ -85,17 +85,17 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 	/**
 	 * Draws the RTE as an iframe
 	 *
-	 * @param 	object		Reference to parent object, which is an instance of the TCEforms.
-	 * @param 	string		The table name
-	 * @param 	string		The field name
-	 * @param 	array		The current row from which field is being rendered
-	 * @param 	array		Array of standard content for rendering form fields from TCEforms. See TCEforms for details on this. Includes for instance the value and the form field name, java script actions and more.
-	 * @param 	array		"special" configuration - what is found at position 4 in the types configuration of a field from record, parsed into an array.
-	 * @param 	array		Configuration for RTEs; A mix between TSconfig and otherwise. Contains configuration for display, which buttons are enabled, additional transformation information etc.
-	 * @param 	string		Record "type" field value.
-	 * @param 	string		Relative path for images/links in RTE; this is used when the RTE edits content from static files where the path of such media has to be transformed forth and back!
-	 * @param 	int		PID value of record (true parent page id)
-	 * @return 	string		HTML code for RTE!
+	 * @param object Reference to parent object, which is an instance of the TCEforms.
+	 * @param string The table name
+	 * @param string The field name
+	 * @param array The current row from which field is being rendered
+	 * @param array Array of standard content for rendering form fields from TCEforms. See TCEforms for details on this. Includes for instance the value and the form field name, java script actions and more.
+	 * @param array "special" configuration - what is found at position 4 in the types configuration of a field from record, parsed into an array.
+	 * @param array Configuration for RTEs; A mix between TSconfig and otherwise. Contains configuration for display, which buttons are enabled, additional transformation information etc.
+	 * @param string Record "type" field value.
+	 * @param string Relative path for images/links in RTE; this is used when the RTE edits content from static files where the path of such media has to be transformed forth and back!
+	 * @param int PID value of record (true parent page id)
+	 * @return string HTML code for RTE!
 	 */
 	public function drawRTE(&$parentObject, $table, $field, $row, $PA, $specConf, $thisConfig, $RTEtypeVal, $RTErelPath, $thePidValue) {
 		global $TSFE, $TYPO3_CONF_VARS, $TYPO3_DB;
@@ -254,11 +254,11 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 	/**
 	 * Add style sheet file to document header
 	 *
-	 * @param 	string		$key: some key identifying the style sheet
-	 * @param 	string		$href: uri to the style sheet file
-	 * @param 	string		$title: value for the title attribute of the link element
-	 * @param 	string		$relation: value for the rel attribute of the link element
-	 * @return 	void
+	 * @param string $key: some key identifying the style sheet
+	 * @param string $href: uri to the style sheet file
+	 * @param string $title: value for the title attribute of the link element
+	 * @param string $relation: value for the rel attribute of the link element
+	 * @return void
 	 */
 	protected function addStyleSheet($key, $href, $title = '', $relation = 'stylesheet') {
 		$this->pageRenderer->addCssFile($href, $relation, 'screen', $title);
@@ -268,10 +268,10 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 	 * Return the JS-Code for copy the HTML-Code from the editor in the hidden input field.
 	 * This is for submit function from the form.
 	 *
-	 * @param 	int		$RTEcounter: The index number of the RTE editing area.
-	 * @param 	string		$form: the name of the form
-	 * @param 	string		$textareaId: the id of the textarea
-	 * @return 	string		the JS-Code
+	 * @param int $RTEcounter: The index number of the RTE editing area.
+	 * @param string $form: the name of the form
+	 * @param string $textareaId: the id of the textarea
+	 * @return string the JS-Code
 	 */
 	public function setSaveRTE($RTEcounter, $form, $textareaId) {
 		return '
@@ -301,8 +301,8 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 	/**
 	 * Wrap input string in CDATA enclosure
 	 *
-	 * @param 	string		$string: input to be wrapped
-	 * @return 	string		wrapped string
+	 * @param string $string: input to be wrapped
+	 * @return string wrapped string
 	 */
 	public function wrapCDATA($string) {
 		return implode(LF, array(

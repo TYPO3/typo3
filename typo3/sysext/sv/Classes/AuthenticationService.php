@@ -27,7 +27,7 @@ class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 	 *
 	 * @param array $loginData Credentials that are submitted and potentially modified by other services
 	 * @param string $passwordTransmissionStrategy Keyword of how the password has been hashed or encrypted before submission
-	 * @return boolean
+	 * @return bool
 	 */
 	public function processLoginData(array &$loginData, $passwordTransmissionStrategy) {
 		$isProcessed = TRUE;
@@ -90,8 +90,7 @@ class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 	 * Authenticate a user (Check various conditions for the user that might invalidate its authentication, eg. password match, domain, IP, etc.)
 	 *
 	 * @param array $user Data of user.
-	 *
-	 * @return integer >= 200: User authenticated successfully.
+	 * @return int >= 200: User authenticated successfully.
 	 *                         No more checking is needed by other auth services.
 	 *                 >= 100: User not authenticated; this service is not responsible.
 	 *                         Other auth services will be asked.

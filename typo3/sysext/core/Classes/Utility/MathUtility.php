@@ -27,7 +27,7 @@ class MathUtility {
 	 * @param int $min Lower limit
 	 * @param int $max Higher limit
 	 * @param int $defaultValue Default value if input is FALSE.
-	 * @return integer The input value forced into the boundaries of $min and $max
+	 * @return int The input value forced into the boundaries of $min and $max
 	 */
 	static public function forceIntegerInRange($theInt, $min, $max = 2000000000, $defaultValue = 0) {
 		// Returns $theInt as an integer in the integerspace from $min to $max
@@ -50,7 +50,7 @@ class MathUtility {
 	 * Returns $theInt if it is greater than zero, otherwise returns zero.
 	 *
 	 * @param int $theInt Integer string to process
-	 * @return integer
+	 * @return int
 	 */
 	static public function convertToPositiveInteger($theInt) {
 		$theInt = (int)$theInt;
@@ -67,7 +67,7 @@ class MathUtility {
 	 *
 	 * @see http://php.net/manual/en/language.types.integer.php#language.types.integer.casting.from-other
 	 * @param mixed $var Any input variable to test
-	 * @return boolean Returns TRUE if string is an integer
+	 * @return bool Returns TRUE if string is an integer
 	 */
 	static public function canBeInterpretedAsInteger($var) {
 		if ($var === '' || is_object($var) || is_array($var)) {
@@ -83,7 +83,7 @@ class MathUtility {
 	 *
 	 * @see http://www.php.net/manual/en/language.types.float.php, section "Formally" for the notation
 	 * @param mixed $var Any input variable to test
-	 * @return boolean Returns TRUE if string is a float
+	 * @return bool Returns TRUE if string is a float
 	 */
 	static public function canBeInterpretedAsFloat($var) {
 		$pattern_lnum = '[0-9]+';
@@ -102,7 +102,7 @@ class MathUtility {
 	 * Calculates the input by +,-,*,/,%,^ with priority to + and -
 	 *
 	 * @param string $string Input string, eg "123 + 456 / 789 - 4
-	 * @return integer Calculated value. Or error string.
+	 * @return int Calculated value. Or error string.
 	 * @see \TYPO3\CMS\Core\Utility\MathUtility::calculateWithParentheses()
 	 */
 	static public function calculateWithPriorityToAdditionAndSubtraction($string) {
@@ -160,7 +160,7 @@ class MathUtility {
 	 * Calculates the input with parenthesis levels
 	 *
 	 * @param string $string Input string, eg "(123 + 456) / 789 - 4
-	 * @return integer Calculated value. Or error string.
+	 * @return int Calculated value. Or error string.
 	 * @see calculateWithPriorityToAdditionAndSubtraction(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::stdWrap()
 	 */
 	static public function calculateWithParentheses($string) {
@@ -190,7 +190,7 @@ class MathUtility {
 	 * @param int $value Integer value to check
 	 * @param int $minimum Lower boundary of the range
 	 * @param int $maximum Upper boundary of the range
-	 * @return boolean
+	 * @return bool
 	 */
 	static public function isIntegerInRange($value, $minimum, $maximum) {
 		$value = filter_var($value, FILTER_VALIDATE_INT, array(

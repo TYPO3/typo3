@@ -317,7 +317,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * @param string $className
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isSingleton($className) {
 		return $this->getClassInfo($className)->getIsSingleton();
@@ -326,7 +326,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * @param string $className
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isPrototype($className) {
 		return !$this->isSingleton($className);

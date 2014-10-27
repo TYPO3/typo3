@@ -147,7 +147,7 @@ abstract class AbstractViewHelper {
 	 *
 	 * THIS METHOD MIGHT CHANGE WITHOUT NOTICE; NO PUBLIC API!
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isEscapingInterceptorEnabled() {
 		return $this->escapingInterceptorEnabled;
@@ -426,7 +426,7 @@ abstract class AbstractViewHelper {
 	 * Tests if the given $argumentName is set, and not NULL.
 	 *
 	 * @param string $argumentName
-	 * @return boolean TRUE if $argumentName is found, FALSE otherwise
+	 * @return bool TRUE if $argumentName is found, FALSE otherwise
 	 * @api
 	 */
 	protected function hasArgument($argumentName) {

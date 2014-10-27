@@ -139,7 +139,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 	/**
 	 * Determines whether frontend editing is currently active.
 	 *
-	 * @return boolean Whether frontend editing is active
+	 * @return bool Whether frontend editing is active
 	 */
 	public function isFrontendEditingActive() {
 		return $this->extAdmEnabled
@@ -158,7 +158,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 	/**
 	 * Determines whether the admin panel is enabled and visible.
 	 *
-	 * @return boolean Whether the admin panel is enabled and visible
+	 * @return bool Whether the admin panel is enabled and visible
 	 */
 	public function isAdminPanelVisible() {
 		return $this->extAdmEnabled && !$this->extAdminConfig['hide'] && $GLOBALS['TSFE']->config['config']['admPanel'];
@@ -173,7 +173,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 	 * Implementing the access checks that the typo3/init.php script does before a user is ever logged in.
 	 * Used in the frontend.
 	 *
-	 * @return boolean Returns TRUE if access is OK
+	 * @return bool Returns TRUE if access is OK
 	 */
 	public function checkBackendAccessSettingsFromInitPhp() {
 		// Check Hardcoded lock on BE
@@ -209,7 +209,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 	 * Used in index_ts.php
 	 *
 	 * @param array $pageRec The page record to evaluate for
-	 * @return boolean TRUE if read access
+	 * @return bool TRUE if read access
 	 */
 	public function extPageReadAccess($pageRec) {
 		return $this->isInWebMount($pageRec['uid']) && $this->doesUserHaveAccess($pageRec, 1);
@@ -257,7 +257,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 	 * Returns the number of cached pages for a page id.
 	 *
 	 * @param int $pageId The page id.
-	 * @return integer The number of pages for this page in the table "cache_pages
+	 * @return int The number of pages for this page in the table "cache_pages
 	 */
 	public function extGetNumberOfCachedPages($pageId) {
 		/** @var FrontendInterface $pageCache */

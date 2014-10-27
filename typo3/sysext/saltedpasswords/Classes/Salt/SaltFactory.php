@@ -108,7 +108,7 @@ class SaltFactory {
 	 *
 	 * @param string $saltedHash
 	 * @param string $mode (optional) The TYPO3 mode (FE or BE) saltedpasswords shall be used for
-	 * @return boolean TRUE, if salting hashing method has been found, otherwise FALSE
+	 * @return bool TRUE, if salting hashing method has been found, otherwise FALSE
 	 */
 	static public function determineSaltingHashingMethod($saltedHash, $mode = TYPO3_MODE) {
 		$registeredMethods = static::getRegisteredSaltedHashingMethods();

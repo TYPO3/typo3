@@ -98,7 +98,7 @@ class Demand extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getUserType() {
 		return $this->userType;
@@ -113,7 +113,7 @@ class Demand extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getStatus() {
 		return $this->status;
@@ -128,7 +128,7 @@ class Demand extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getLogins() {
 		return $this->logins;

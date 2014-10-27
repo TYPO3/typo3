@@ -281,7 +281,7 @@ class PageRepository {
 	 * Returns a pagerow for the page with alias $alias
 	 *
 	 * @param string $alias The alias to look up the page uid for.
-	 * @return integer Returns page uid (integer) if found, otherwise 0 (zero)
+	 * @return int Returns page uid (integer) if found, otherwise 0 (zero)
 	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::checkAndSetAlias(), ContentObjectRenderer::typoLink()
 	 */
 	public function getPageIdFromAlias($alias) {
@@ -1172,7 +1172,7 @@ class PageRepository {
 	 *
 	 * @param string $table Table name
 	 * @param array $row Row (passed by reference) - only online records...
-	 * @return boolean TRUE if overlay is made.
+	 * @return bool TRUE if overlay is made.
 	 * @see \TYPO3\CMS\Backend\Utility\BackendUtility::movePlhOl()
 	 */
 	public function movePlhOL($table, &$row) {
@@ -1287,8 +1287,8 @@ class PageRepository {
 	/**
 	 * Checks if user has access to workspace.
 	 *
-	 * @param int $wsid	Workspace ID
-	 * @return boolean <code>TRUE</code> if has access
+	 * @param int $wsid Workspace ID
+	 * @return bool <code>TRUE</code> if has access
 	 */
 	public function checkWorkspaceAccess($wsid) {
 		if (!$GLOBALS['BE_USER'] || !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
@@ -1360,7 +1360,7 @@ class PageRepository {
 	 * @param string $table TCA tablename
 	 * @param string $field TCA fieldname
 	 * @param mixed $value Current value of the field
-	 * @return boolean Returns TRUE if a given record field needs to be overlaid
+	 * @return bool Returns TRUE if a given record field needs to be overlaid
 	 */
 	protected function shouldFieldBeOverlaid($table, $field, $value) {
 		$l10n_mode = isset($GLOBALS['TCA'][$table]['columns'][$field]['l10n_mode'])

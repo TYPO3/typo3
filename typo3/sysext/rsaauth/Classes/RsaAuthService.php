@@ -63,7 +63,7 @@ class RsaAuthService extends \TYPO3\CMS\Sv\AuthenticationService {
 	 *
 	 * @param array $loginData Credentials that are submitted and potentially modified by other services
 	 * @param string $passwordTransmissionStrategy Keyword of how the password has been hashed or encrypted before submission
-	 * @return boolean
+	 * @return bool
 	 */
 	public function processLoginData(array &$loginData, $passwordTransmissionStrategy) {
 		$isProcessed = FALSE;
@@ -98,7 +98,7 @@ class RsaAuthService extends \TYPO3\CMS\Sv\AuthenticationService {
 	/**
 	 * Initializes the service.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function init() {
 		$available = parent::init();

@@ -116,7 +116,7 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
 	 * Returns the page uid of the current page.
 	 * If no page is selected, we'll return the uid of the first root page.
 	 *
-	 * @return integer current page id. If no page is selected current root page id is returned
+	 * @return int current page id. If no page is selected current root page id is returned
 	 */
 	protected function getCurrentPageId() {
 		if ($this->currentPageId !== NULL) {

@@ -25,7 +25,7 @@ abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver {
 	 * Wrapper for \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr()
 	 *
 	 * @param string $theFile Filepath to evaluate
-	 * @return boolean TRUE if no '/', '..' or '\' is in the $theFile
+	 * @return bool TRUE if no '/', '..' or '\' is in the $theFile
 	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr()
 	 */
 	protected function isPathValid($theFile) {

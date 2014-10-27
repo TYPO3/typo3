@@ -83,7 +83,7 @@ abstract class AbstractContextMenuDataProvider {
 	 *
 	 * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
 	 * @param string $displayCondition
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function evaluateDisplayCondition(\TYPO3\CMS\Backend\Tree\TreeNode $node, $displayCondition) {
 		if ($displayCondition === '') {

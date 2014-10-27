@@ -576,7 +576,7 @@ class FunctionalTestCaseBootstrapUtility {
 	 *
 	 * @param string $path Absolute path to folder, see PHP rmdir() function. Removes trailing slash internally.
 	 * @param bool $removeNonEmpty Allow deletion of non-empty directories
-	 * @return boolean TRUE if @rmdir went well!
+	 * @return bool TRUE if @rmdir went well!
 	 */
 	protected function rmdir($path, $removeNonEmpty = FALSE) {
 		$OK = FALSE;
@@ -620,7 +620,7 @@ class FunctionalTestCaseBootstrapUtility {
 	 *
 	 * @param string $file Filepath to write to
 	 * @param string $content Content to write
-	 * @return boolean TRUE if the file was successfully opened and written to.
+	 * @return bool TRUE if the file was successfully opened and written to.
 	 */
 	protected function writeFile($file, $content) {
 		if ($fd = fopen($file, 'wb')) {

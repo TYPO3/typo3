@@ -172,7 +172,7 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
 	 *
 	 * @param array $submittedData Reference to the array containing the data submitted by the user
 	 * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
-	 * @return boolean True if validation was ok (or selected class is not relevant), false otherwise
+	 * @return bool True if validation was ok (or selected class is not relevant), false otherwise
 	 */
 	public function validateAdditionalFields(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject) {
 		$validData = $this->validateAllTablesAdditionalField($submittedData, $parentObject);
@@ -186,7 +186,7 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
 	 *
 	 * @param array $submittedData Reference to the array containing the data submitted by the user
 	 * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
-	 * @return boolean True if data is valid
+	 * @return bool True if data is valid
 	 */
 	public function validateAllTablesAdditionalField(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject) {
 		$validData = FALSE;
@@ -203,7 +203,7 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
 	 *
 	 * @param array $submittedData Reference to the array containing the data submitted by the user
 	 * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
-	 * @return boolean True if table exists in configuration, false otherwise
+	 * @return bool True if table exists in configuration, false otherwise
 	 */
 	public function validateTableAdditionalField(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject) {
 		$validData = FALSE;
@@ -221,7 +221,7 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
 	 *
 	 * @param array $submittedData Reference to the array containing the data submitted by the user
 	 * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
-	 * @return boolean True if validation was ok (or selected class is not relevant), false otherwise
+	 * @return bool True if validation was ok (or selected class is not relevant), false otherwise
 	 */
 	public function validateNumberOfDaysAdditionalField(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject) {
 		$validData = FALSE;

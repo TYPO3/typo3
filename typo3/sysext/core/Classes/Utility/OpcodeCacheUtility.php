@@ -174,7 +174,7 @@ class OpcodeCacheUtility {
 	 *
 	 * @param string $system The cache system to test (APC, ...)
 	 *
-	 * @return boolean The calculated value from array or FALSE if cache system not exists.
+	 * @return bool The calculated value from array or FALSE if cache system not exists.
 	 * @internal Do not rely on this function. Will be removed if PHP5.4 is minimum requirement.
 	 */
 	static public function getCanInvalidate($system) {

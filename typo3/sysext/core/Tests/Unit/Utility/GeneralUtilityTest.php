@@ -49,7 +49,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Helper method to test for an existing internet connection.
 	 * Some tests are skipped if there is no working uplink.
 	 *
-	 * @return boolean $isConnected
+	 * @return bool $isConnected
 	 */
 	public function isConnected() {
 		$isConnected = FALSE;
@@ -3588,7 +3588,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Data provider for ImageMagick shell commands
 	 *
-	 * @see 	explodeAndUnquoteImageMagickCommands
+	 * @see explodeAndUnquoteImageMagickCommands
 	 */
 	public function imageMagickCommandsDataProvider() {
 		return array(

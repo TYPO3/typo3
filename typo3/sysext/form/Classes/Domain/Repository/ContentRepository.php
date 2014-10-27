@@ -26,7 +26,7 @@ class ContentRepository {
 	 *
 	 * Using the GET or POST variable 'P'
 	 *
-	 * @return boolean|\TYPO3\CMS\Form\Domain\Model\Content if found, FALSE if not
+	 * @return bool|\TYPO3\CMS\Form\Domain\Model\Content if found, FALSE if not
 	 */
 	public function getRecord() {
 		$record = FALSE;
@@ -59,7 +59,7 @@ class ContentRepository {
 	/**
 	 * Check if the referenced record exists
 	 *
-	 * @return boolean TRUE if record exists, FALSE if not
+	 * @return bool TRUE if record exists, FALSE if not
 	 */
 	public function hasRecord() {
 		return $this->getRecord() !== FALSE;
@@ -68,7 +68,7 @@ class ContentRepository {
 	/**
 	 * Convert and save the incoming data of the FORM wizard
 	 *
-	 * @return boolean TRUE if succeeded, FALSE if not
+	 * @return bool TRUE if succeeded, FALSE if not
 	 */
 	public function save() {
 		$json = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('configuration');

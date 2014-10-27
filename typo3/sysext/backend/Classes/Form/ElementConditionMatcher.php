@@ -44,7 +44,7 @@ class ElementConditionMatcher {
 	 * @param array $record
 	 * @param string $flexformValueKey
 	 * @param int $recursionLevel Internal level of recursion
-	 * @return boolean TRUE if condition evaluates successfully
+	 * @return bool TRUE if condition evaluates successfully
 	 */
 	public function match($displayCondition, array $record = array(), $flexformValueKey = '', $recursionLevel = 0) {
 		if ($recursionLevel > 99) {
@@ -114,7 +114,7 @@ class ElementConditionMatcher {
 	 * @param string $displayCondition
 	 * @param array $record
 	 * @param string $flexformValueKey
-	 * @return boolean
+	 * @return bool
 	 * @see match()
 	 */
 	protected function matchSingle($displayCondition, array $record = array(), $flexformValueKey = '') {
@@ -152,7 +152,7 @@ class ElementConditionMatcher {
 	 * "EXT:saltedpasswords:LOADED:TRUE" => TRUE, if extension saltedpasswords is loaded.
 	 *
 	 * @param string $condition
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function matchExtensionCondition($condition) {
 		$result = FALSE;
@@ -175,7 +175,7 @@ class ElementConditionMatcher {
 	 * "FIELD:sys_language_uid:>:0" => TRUE, if the field 'sys_language_uid' is greater than 0
 	 *
 	 * @param string $condition
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function matchFieldCondition($condition) {
 		list($fieldName, $operator, $operand) = explode(':', $condition, 3);
@@ -242,7 +242,7 @@ class ElementConditionMatcher {
 	/**
 	 * Evaluates TRUE if current backend user is an admin.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function matchHideForNonAdminsCondition() {
 		return (bool) $this->getBackendUser()->isAdmin();
@@ -253,7 +253,7 @@ class ElementConditionMatcher {
 	 * Works only for <langChildren>=1, otherwise it has no effect.
 	 *
 	 * @param string $condition
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function matchHideL10nSiblingsCondition($condition) {
 		$result = FALSE;
@@ -273,7 +273,7 @@ class ElementConditionMatcher {
 	 * "REC:NEW:FALSE" => TRUE, if the record is already persisted (has a uid > 0)
 	 *
 	 * @param string $condition
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function matchRecordCondition($condition) {
 		$result = FALSE;
@@ -293,7 +293,7 @@ class ElementConditionMatcher {
 	 * Requires a record set via ->setRecord()
 	 *
 	 * @param string $condition
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function matchVersionCondition($condition) {
 		$result = FALSE;

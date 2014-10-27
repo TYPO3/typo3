@@ -192,7 +192,7 @@ class DatabaseConnect extends AbstractStepAction {
 	 * Step needs to be executed if database connection is not successful.
 	 *
 	 * @throws \TYPO3\CMS\Install\Controller\Exception\RedirectException
-	 * @return boolean
+	 * @return bool
 	 */
 	public function needsExecution() {
 		if ($this->isConnectSuccessful() && $this->isConfigurationComplete()) {
@@ -244,7 +244,7 @@ class DatabaseConnect extends AbstractStepAction {
 	/**
 	 * Render connect port and label
 	 *
-	 * @return integer Configured or default port
+	 * @return int Configured or default port
 	 */
 	protected function getConfiguredOrDefaultPort() {
 		$configuredPort = (int)$this->getConfiguredPort();
@@ -277,7 +277,7 @@ class DatabaseConnect extends AbstractStepAction {
 	/**
 	 * Test connection with given credentials
 	 *
-	 * @return boolean TRUE if connect was successful
+	 * @return bool TRUE if connect was successful
 	 */
 	protected function isConnectSuccessful() {
 		/** @var $databaseConnection \TYPO3\CMS\Core\Database\DatabaseConnection */
@@ -310,7 +310,7 @@ class DatabaseConnect extends AbstractStepAction {
 	 * - 'host' is mandatory and must not be empty
 	 * - 'port' OR 'socket' is mandatory, but may be empty
 	 *
-	 * @return boolean TRUE if host is set
+	 * @return bool TRUE if host is set
 	 */
 	protected function isHostConfigured() {
 		$hostConfigured = TRUE;
@@ -332,7 +332,7 @@ class DatabaseConnect extends AbstractStepAction {
 	 * - 'port' OR 'socket' is mandatory, but may be empty
 	 * - 'username' and 'password' are mandatory, but may be empty
 	 *
-	 * @return boolean TRUE if required settings are present
+	 * @return bool TRUE if required settings are present
 	 */
 	protected function isConfigurationComplete() {
 		$configurationComplete = $this->isHostConfigured();
@@ -402,7 +402,7 @@ class DatabaseConnect extends AbstractStepAction {
 	 * Test if a unix domain socket can be opened. This does not
 	 * authenticate but only tests if a connect is successful.
 	 *
-	 * @return boolean TRUE on success
+	 * @return bool TRUE on success
 	 */
 	protected function isConnectionWithUnixDomainSocketPossible() {
 		$result = FALSE;
@@ -622,7 +622,7 @@ class DatabaseConnect extends AbstractStepAction {
 	/**
 	 * Returns configured port. Gets port from host value if port is not yet set.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	protected function getConfiguredPort() {
 		$host = isset($GLOBALS['TYPO3_CONF_VARS']['DB']['host']) ? $GLOBALS['TYPO3_CONF_VARS']['DB']['host'] : '';

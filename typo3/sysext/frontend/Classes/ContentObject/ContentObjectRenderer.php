@@ -3403,7 +3403,7 @@ class ContentObjectRenderer {
 	 * Implements the stdWrap "numRows" property
 	 *
 	 * @param array $conf TypoScript properties for the property (see link to "numRows")
-	 * @return integer The number of rows found by the select (FALSE on error)
+	 * @return int The number of rows found by the select (FALSE on error)
 	 * @access private
 	 * @see stdWrap()
 	 */
@@ -3449,7 +3449,7 @@ class ContentObjectRenderer {
 	 * Implements the "if" function in TYPO3 TypoScript
 	 *
 	 * @param array $conf TypoScript properties defining what to compare
-	 * @return boolean
+	 * @return bool
 	 * @see HMENU(), CASEFUNC(), IMAGE(), COLUMN(), stdWrap(), _parseFunc()
 	 */
 	public function checkIf($conf) {
@@ -4268,7 +4268,7 @@ class ContentObjectRenderer {
 	 * Performs basic mathematical evaluation of the input string. Does NOT take parathesis and operator precedence into account! (for that, see \TYPO3\CMS\Core\Utility\MathUtility::calculateWithPriorityToAdditionAndSubtraction())
 	 *
 	 * @param string $val The string to evaluate. Example: "3+4*10/5" will generate "35". Only integer numbers can be used.
-	 * @return integer The result (might be a float if you did a division of the numbers).
+	 * @return int The result (might be a float if you did a division of the numbers).
 	 * @see \TYPO3\CMS\Core\Utility\MathUtility::calculateWithPriorityToAdditionAndSubtraction()
 	 */
 	public function calc($val) {
@@ -5524,7 +5524,7 @@ class ContentObjectRenderer {
 	 *
 	 * @param int $key The integer to transform
 	 * @param array $arr array in which the key should be found.
-	 * @return integer The processed integer key value.
+	 * @return int The processed integer key value.
 	 * @access private
 	 * @see getData()
 	 */
@@ -6693,7 +6693,7 @@ class ContentObjectRenderer {
 	 * @param string $senderAddress "From" email address
 	 * @param string $senderName Optional "From" name
 	 * @param string $replyTo Optional "Reply-To" header email address.
-	 * @return boolean Returns TRUE if sent
+	 * @return bool Returns TRUE if sent
 	 */
 	public function sendNotifyEmail($message, $recipients, $cc, $senderAddress, $senderName = '', $replyTo = '') {
 		$result = FALSE;
@@ -6932,7 +6932,7 @@ class ContentObjectRenderer {
 	 * Includes resources if the config property 'includeLibs' is set.
 	 *
 	 * @param array $config TypoScript configuration
-	 * @return boolean Whether a configuration for including libs was found and processed
+	 * @return bool Whether a configuration for including libs was found and processed
 	 */
 	public function includeLibs(array $config) {
 		$librariesIncluded = FALSE;
@@ -6959,7 +6959,7 @@ class ContentObjectRenderer {
 	 *
 	 * @param string $className The name of the PHP class to be checked
 	 * @param array $config TypoScript configuration (naturally of a USER or COA cObject)
-	 * @return boolean Whether the class is available
+	 * @return bool Whether the class is available
 	 * @link http://forge.typo3.org/issues/19510
 	 * @TODO This method was introduced in TYPO3 4.3 and can be removed if the autoload was integrated
 	 */
@@ -7125,7 +7125,7 @@ class ContentObjectRenderer {
 	 * @param array $feUserRow The array of the fe_user which is evaluated, typ. $GLOBALS['TSFE']->fe_user->user
 	 * @param string $allowedGroups Commalist of the only fe_groups uids which may edit the record. If not set, then the usergroup field of the fe_user is used.
 	 * @param bool $feEditSelf TRUE, if the fe_user may edit his own fe_user record.
-	 * @return boolean
+	 * @return bool
 	 * @see user_feAdmin
 	 */
 	public function DBmayFEUserEdit($table, $row, $feUserRow, $allowedGroups = '', $feEditSelf = 0) {
@@ -7832,7 +7832,7 @@ class ContentObjectRenderer {
 	 * Checks if a page UID is available due to enableFields() AND the list of bad doktype numbers ($this->checkPid_badDoktypeList)
 	 *
 	 * @param int $uid Page UID to test
-	 * @return boolean TRUE if OK
+	 * @return bool TRUE if OK
 	 * @access private
 	 * @see getWhere(), checkPidArray()
 	 */
@@ -7976,7 +7976,7 @@ class ContentObjectRenderer {
 	 *
 	 * @param string $table The table name
 	 * @param array $row The data record
-	 * @return boolean
+	 * @return bool
 	 * @access private
 	 * @see editPanelPreviewBorder()
 	 */

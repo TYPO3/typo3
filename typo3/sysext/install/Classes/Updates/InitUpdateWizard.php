@@ -43,7 +43,7 @@ class InitUpdateWizard extends AbstractUpdate {
 	 * Checks if an update is needed
 	 *
 	 * @param string &$description The description for the update
-	 * @return boolean TRUE if an update is needed, FALSE otherwise
+	 * @return bool TRUE if an update is needed, FALSE otherwise
 	 */
 	public function checkForUpdate(&$description) {
 		$description = 'Create the database tables which are required for the File Abstraction Layer in order to work. Do this as the first step for all further wizards related to FAL.';
@@ -55,7 +55,7 @@ class InitUpdateWizard extends AbstractUpdate {
 	 *
 	 * @param array &$dbQueries Queries done in this update
 	 * @param mixed &$customMessages Custom messages
-	 * @return boolean TRUE on success, FALSE on error
+	 * @return bool TRUE on success, FALSE on error
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$updates = $this->getRequiredUpdates();

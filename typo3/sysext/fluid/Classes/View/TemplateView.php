@@ -481,7 +481,7 @@ class TemplateView extends AbstractTemplateView {
 	 * Checks whether a template can be resolved for the current request context.
 	 *
 	 * @param ControllerContext $controllerContext Controller context which is available inside the view
-	 * @return boolean
+	 * @return bool
 	 * @api
 	 */
 	public function canRender(ControllerContext $controllerContext) {

@@ -62,7 +62,7 @@ class SpriteManager {
 	/**
 	 * Whether the sprite manager is initialized.
 	 *
-	 * @return boolean TRUE if sprite manager is initialized
+	 * @return bool TRUE if sprite manager is initialized
 	 */
 	static public function isInitialized() {
 		return self::$isInitialized;

@@ -185,7 +185,7 @@ class ExtDirectApi {
 	 *
 	 * @param string $namespace
 	 * @param array $filterNamespaces
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function findNamespace($namespace, array $filterNamespaces) {
 		if ($filterNamespaces === array('TYPO3')) {

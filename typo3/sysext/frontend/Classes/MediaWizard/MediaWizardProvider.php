@@ -78,7 +78,7 @@ class MediaWizardProvider implements MediaWizardProviderInterface {
 	 ***********************************************/
 	/**
 	 * @param string $url
-	 * @return boolean
+	 * @return bool
 	 * @see MediaWizardProviderInterface::canHandle
 	 */
 	public function canHandle($url) {

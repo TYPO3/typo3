@@ -95,7 +95,7 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	 * - GMP or BCMATH PHP extensions are installed and functional
 	 * - set_include_path() PHP function is available
 	 *
-	 * @return boolean TRUE if service is available
+	 * @return bool TRUE if service is available
 	 */
 	public function init() {
 		$available = FALSE;
@@ -141,7 +141,7 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	 *
 	 * @param array $loginData Credentials that are submitted and potentially modified by other services
 	 * @param string $passwordTransmissionStrategy Keyword of how the password has been hashed or encrypted before submission
-	 * @return boolean
+	 * @return bool
 	 */
 	public function processLoginData(array &$loginData, $passwordTransmissionStrategy) {
 		$isProcessed = FALSE;
@@ -212,7 +212,7 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	 * Authenticates user using OpenID.
 	 *
 	 * @param array $userRecord User record
-	 * @return integer Code that shows if user is really authenticated.
+	 * @return int Code that shows if user is really authenticated.
 	 */
 	public function authUser(array $userRecord) {
 		$result = 100;

@@ -68,7 +68,7 @@ abstract class AbstractElementView {
 	 * Determines whether the model is expected in this object.
 	 *
 	 * @param \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement $model
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isValidModel(\TYPO3\CMS\Form\Domain\Model\Element\AbstractElement $model) {
 		return is_a($model, $this->getExpectedModelName($model));
@@ -406,7 +406,7 @@ abstract class AbstractElementView {
 	 * if TRUE the element does not need a element wrap
 	 * like <li>element</li>
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function noWrap() {
 		return $this->noWrap;

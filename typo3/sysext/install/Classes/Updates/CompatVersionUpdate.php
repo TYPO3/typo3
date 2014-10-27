@@ -31,7 +31,7 @@ class CompatVersionUpdate extends AbstractUpdate {
 	 * Function which checks if update is needed. Called in the beginning of an update process.
 	 *
 	 * @param string &$description Pointer to description for the update
-	 * @return boolean TRUE if update is needs to be performed, FALSE otherwise.
+	 * @return bool TRUE if update is needs to be performed, FALSE otherwise.
 	 */
 	public function checkForUpdate(&$description) {
 		if (!$this->compatVersionIsCurrent()) {
@@ -130,7 +130,7 @@ class CompatVersionUpdate extends AbstractUpdate {
 	 * Checks if user input is valid
 	 *
 	 * @param string Pointer to output custom messages
-	 * @return boolean TRUE if user input is correct, then the update is performed. When FALSE, return to getUserInput
+	 * @return bool TRUE if user input is correct, then the update is performed. When FALSE, return to getUserInput
 	 */
 	public function checkUserInput(&$customMessages) {
 		if ($this->compatVersionIsCurrent()) {
@@ -161,7 +161,7 @@ class CompatVersionUpdate extends AbstractUpdate {
 	 *
 	 * @param array $dbQueries where to insert all DB queries made, so they can be shown to the user if wanted
 	 * @param string $customMessages to output custom messages
-	 * @return boolean TRUE if update succeeded, FALSE otherwise
+	 * @return bool TRUE if update succeeded, FALSE otherwise
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$customMessages = '';
@@ -178,7 +178,7 @@ class CompatVersionUpdate extends AbstractUpdate {
 	/**
 	 * Checks if compatibility version is set to current version
 	 *
-	 * @return boolean TRUE if compat version is equal the current version
+	 * @return bool TRUE if compat version is equal the current version
 	 */
 	protected function compatVersionIsCurrent() {
 		if (TYPO3_branch != $GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version']) {

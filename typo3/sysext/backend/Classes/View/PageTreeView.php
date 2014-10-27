@@ -267,7 +267,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 *
 	 * @param string $icon HTML string to wrap, probably an image tag.
 	 * @param string $cmd Command for 'PM' get var
-	 * @return boolean $isExpand Link-wrapped input string
+	 * @return bool $isExpand Link-wrapped input string
 	 * @access private
 	 */
 	public function PMiconATagWrap($icon, $cmd, $isExpand = TRUE) {
@@ -344,7 +344,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 * @param int $depth Max depth (recursivity limit)
 	 * @param string $blankLineCode ? (internal)
 	 * @param string $subCSSclass
-	 * @return integer The count of items on the level
+	 * @return int The count of items on the level
 	 */
 	public function getTree($uid, $depth = 999, $blankLineCode = '', $subCSSclass = '') {
 		// Buffer for id hierarchy is reset:

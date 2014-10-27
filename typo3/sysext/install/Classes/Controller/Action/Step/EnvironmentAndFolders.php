@@ -74,7 +74,7 @@ class EnvironmentAndFolders extends AbstractStepAction {
 	/**
 	 * Step needs to be executed if LocalConfiguration file does not exist.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function needsExecution() {
 		if (@is_file(PATH_typo3conf . 'LocalConfiguration.php')) {

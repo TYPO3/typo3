@@ -193,7 +193,7 @@ class ConfigurationManager {
 	 *
 	 * @param string $path Path to update
 	 * @param mixed $value Value to set
-	 * @return boolean TRUE on success
+	 * @return bool TRUE on success
 	 */
 	public function setLocalConfigurationValueByPath($path, $value) {
 		$result = FALSE;
@@ -209,7 +209,7 @@ class ConfigurationManager {
 	 * Update / set a list of path and value pairs in local configuration file
 	 *
 	 * @param array $pairs Key is path, value is value to set
-	 * @return boolean TRUE on success
+	 * @return bool TRUE on success
 	 */
 	public function setLocalConfigurationValuesByPathValuePairs(array $pairs) {
 		$localConfiguration = $this->getLocalConfiguration();
@@ -225,7 +225,7 @@ class ConfigurationManager {
 	 * Remove keys from LocalConfiguration
 	 *
 	 * @param array $keys Array with key paths to remove from LocalConfiguration
-	 * @return boolean TRUE if something was removed
+	 * @return bool TRUE if something was removed
 	 */
 	public function removeLocalConfigurationKeysByPath(array $keys) {
 		$result = FALSE;
@@ -246,7 +246,7 @@ class ConfigurationManager {
 	/**
 	 * Checks if the configuration can be written.
 	 *
-	 * @return boolean
+	 * @return bool
 	 * @access private
 	 */
 	public function canWriteConfiguration() {
@@ -285,7 +285,7 @@ class ConfigurationManager {
 	 *
 	 * @param array $configuration The local configuration to be written
 	 * @throws \RuntimeException
-	 * @return boolean TRUE on success
+	 * @return bool TRUE on success
 	 * @access private
 	 */
 	public function writeLocalConfiguration(array $configuration) {
@@ -318,7 +318,7 @@ class ConfigurationManager {
 	 *
 	 * @param array $additionalConfigurationLines The configuration lines to be written
 	 * @throws \RuntimeException
-	 * @return boolean TRUE on success
+	 * @return bool TRUE on success
 	 * @access private
 	 */
 	public function writeAdditionalConfiguration(array $additionalConfigurationLines) {
@@ -362,7 +362,7 @@ class ConfigurationManager {
 	 * Check if access / write to given path in local configuration is allowed.
 	 *
 	 * @param string $path Path to search for
-	 * @return boolean TRUE if access is allowed
+	 * @return bool TRUE if access is allowed
 	 */
 	protected function isValidLocalConfigurationPath($path) {
 		// Early return for white listed paths

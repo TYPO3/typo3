@@ -33,7 +33,7 @@ class IdentityMap implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Checks whether the given object is known to the identity map
 	 *
 	 * @param object $object
-	 * @return boolean
+	 * @return bool
 	 * @deprecated since 6.1, will be removed two versions later, use the persistence session instead
 	 */
 	public function hasObject($object) {
@@ -45,7 +45,7 @@ class IdentityMap implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $uuid
 	 * @param string $className
-	 * @return boolean
+	 * @return bool
 	 * @deprecated since 6.1, will be removed two versions later, use the persistence session instead
 	 */
 	public function hasIdentifier($uuid, $className) {

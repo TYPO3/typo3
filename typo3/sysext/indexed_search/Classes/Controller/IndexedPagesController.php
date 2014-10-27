@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Indexing class for TYPO3 frontend
  *
- * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
 
@@ -61,7 +61,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Initialize menu array internally
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function modMenu() {
 		global $LANG;
@@ -84,7 +84,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Produces main content of the module
 	 *
-	 * @return 	string		HTML output
+	 * @return string HTML output
 	 */
 	public function main() {
 		// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
@@ -166,7 +166,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Produces a table with indexing information for each page.
 	 *
-	 * @return 	string		HTML output
+	 * @return string HTML output
 	 */
 	public function drawTableOfIndexedPages() {
 		global $BACK_PATH;
@@ -202,9 +202,9 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Create information table row for a page regarding indexing information.
 	 *
-	 * @param 	array		Data array for this page
-	 * @param 	string		HTML content for first column (page tree icon etc.)
-	 * @return 	string		HTML code. (table row)
+	 * @param array Data array for this page
+	 * @param string HTML content for first column (page tree icon etc.)
+	 * @return string HTML code. (table row)
 	 */
 	public function indexed_info($data, $firstColContent) {
 		// Query:
@@ -271,10 +271,10 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Render a single row of information about a indexing entry.
 	 *
-	 * @param 	array		Row from query (combined phash table with sections etc).
-	 * @param 	bool		Set if grouped to previous result; the icon of the element is not shown again.
-	 * @param 	array		Array of index_grlist records.
-	 * @return 	array		Array of table rows.
+	 * @param array Row from query (combined phash table with sections etc).
+	 * @param bool Set if grouped to previous result; the icon of the element is not shown again.
+	 * @param array Array of index_grlist records.
+	 * @return array Array of table rows.
 	 * @see indexed_info()
 	 */
 	public function printPhashRow($row, $grouping = 0, $extraGrListRows) {
@@ -386,7 +386,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Creates the header row for the table
 	 *
-	 * @return 	string		HTML string (table row)
+	 * @return string HTML string (table row)
 	 */
 	public function printPhashRowHeader() {
 		$lines = array();
@@ -437,7 +437,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Returns the number of columns depending on display type of list
 	 *
-	 * @return 	integer		Number of columns in list:
+	 * @return int Number of columns in list:
 	 */
 	public function returnNumberOfColumns() {
 		switch ($this->pObj->MOD_SETTINGS['type']) {
@@ -460,8 +460,8 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Showing details for a particular phash row
 	 *
-	 * @param	int		phash value to display details for.
-	 * @return 	string		HTML content
+	 * @param int phash value to display details for.
+	 * @return string HTML content
 	 */
 	public function showDetailsForPhash($phash) {
 		$content = '';
@@ -517,11 +517,11 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Create table with list of words from $ftrows
 	 *
-	 * @param 	array		Array of records selected from index_rel/index_words
-	 * @param 	string		Header string to show before table.
-	 * @param 	bool		If set, the stopWord checkboxes will be shown in the word list. Only for admins. (because it is a global setting, not per-site).
-	 * @param 	array		The page record from which to load the keywords, if any.
-	 * @return 	string		HTML table
+	 * @param array Array of records selected from index_rel/index_words
+	 * @param string Header string to show before table.
+	 * @param bool If set, the stopWord checkboxes will be shown in the word list. Only for admins. (because it is a global setting, not per-site).
+	 * @param array The page record from which to load the keywords, if any.
+	 * @return string HTML table
 	 */
 	public function listWords($ftrows, $header, $stopWordBoxes = FALSE, $page = '') {
 		// Prepare keywords:
@@ -562,9 +562,9 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Displays table of metaphone groups larger than 1
 	 *
-	 * @param 	array		Result from word selection (index_rel/index_words)
-	 * @param 	string		Header string
-	 * @return 	string		HTML table
+	 * @param array Result from word selection (index_rel/index_words)
+	 * @param string Header string
+	 * @return string HTML table
 	 */
 	public function listMetaphoneStat($ftrows, $header) {
 		$trows = '';
@@ -596,9 +596,9 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Wraps input string in a link that will display details for the word. Eg. which other pages has the word, metaphone associations etc.
 	 *
-	 * @param 	string		String to wrap, possibly a title or so.
-	 * @param	int		wid value to show details for
-	 * @return 	string		Wrapped string
+	 * @param string String to wrap, possibly a title or so.
+	 * @param int wid value to show details for
+	 * @return string Wrapped string
 	 */
 	public function linkWordDetails($string, $wid) {
 		return '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('wid' => $wid, 'phash' => ''))) . '">' . $string . '</a>';
@@ -607,9 +607,9 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Wraps input string in a link to see more details for metaphone value
 	 *
-	 * @param 	string		String to wrap
-	 * @param	int		Metaphone value
-	 * @return 	string		Wrapped string
+	 * @param string String to wrap
+	 * @param int Metaphone value
+	 * @return string Wrapped string
 	 */
 	public function linkMetaPhoneDetails($string, $metaphone) {
 		return '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('metaphone' => $metaphone, 'wid' => '', 'phash' => ''))) . '">' . $string . '</a>';
@@ -618,8 +618,8 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Creates message for flag value
 	 *
-	 * @param	int		Flags integer
-	 * @return 	string		Message string
+	 * @param int Flags integer
+	 * @return string Message string
 	 */
 	public function flagsMsg($flags) {
 		if ($flags > 0) {
@@ -635,8 +635,8 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Show details for words
 	 *
-	 * @param	int		Word ID (wid)
-	 * @return 	string		HTML content
+	 * @param int Word ID (wid)
+	 * @return string HTML content
 	 */
 	public function showDetailsForWord($wid) {
 		// Select references to this word
@@ -678,8 +678,8 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Show details for metaphone value
 	 *
-	 * @param	int		Metaphone integer hash
-	 * @return 	string		HTML content
+	 * @param int Metaphone integer hash
+	 * @return string HTML content
 	 */
 	public function showDetailsForMetaphone($metaphone) {
 		// Finding top-20 on frequency for this phash:
@@ -720,9 +720,9 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Creates icon which clears indexes for a certain list of phash values.
 	 *
-	 * @param 	string		List of phash integers
-	 * @param 	string		Alt-text for the garbage bin icon.
-	 * @return 	string		HTML img-tag with link around.
+	 * @param string List of phash integers
+	 * @param string Alt-text for the garbage bin icon.
+	 * @return string HTML img-tag with link around.
 	 */
 	public function printRemoveIndexed($phash, $alt) {
 		return '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('deletePhash' => $phash))) . '" title="' . htmlspecialchars($alt) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
@@ -731,9 +731,9 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Button for re-indexing of documents
 	 *
-	 * @param 	array		phash table result row.
-	 * @param 	string		Title attribute text for icon
-	 * @return 	string		HTML content; Icon wrapped in link.
+	 * @param array phash table result row.
+	 * @param string Title attribute text for icon
+	 * @return string HTML content; Icon wrapped in link.
 	 */
 	public function printReindex($resultRow, $alt) {
 		if ($resultRow['item_type'] && $resultRow['item_type'] !== '0') {
@@ -744,9 +744,9 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Wraps input string in a link that will display details for the phash value set.
 	 *
-	 * @param 	string		String to wrap, possibly a title or so.
-	 * @param	int		phash value to show details for
-	 * @return 	string		Wrapped string
+	 * @param string String to wrap, possibly a title or so.
+	 * @param int phash value to show details for
+	 * @return string Wrapped string
 	 */
 	public function linkDetails($string, $phash) {
 		return '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('phash' => $phash))) . '">' . $string . '</a>';
@@ -755,7 +755,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Creates link back to listing
 	 *
-	 * @return 	string		Link back to list
+	 * @return string Link back to list
 	 */
 	public function linkList() {
 		return '<br /><a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_info', array('id' => $this->pObj->id))) . '">Back to list.</a><br />';
@@ -764,9 +764,9 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Wraps input string in a link that will display details for the phash value set.
 	 *
-	 * @param 	string		String to wrap, possibly a title or so.
-	 * @param	int		phash value to show details for
-	 * @return 	string		Wrapped string
+	 * @param string String to wrap, possibly a title or so.
+	 * @param int phash value to show details for
+	 * @return string Wrapped string
 	 */
 	public function showPageDetails($string, $id) {
 		return '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_info', array('id' => $id, 'SET' => array('depth' => 0, 'type' => 1)))) . '">' . $string . '</a>';
@@ -775,8 +775,8 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Prints the gr_lists attached to a indexed entry.
 	 *
-	 * @param 	array		Array of index_grlist records
-	 * @return 	string		HTML code.
+	 * @param array Array of index_grlist records
+	 * @return string HTML code.
 	 */
 	public function printExtraGrListRows($extraGrListRows) {
 		if (count($extraGrListRows)) {
@@ -791,8 +791,8 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Print path for indexing
 	 *
-	 * @param 	array		Result row with content from index_section
-	 * @return 	string		Rootline information
+	 * @param array Result row with content from index_section
+	 * @return string Rootline information
 	 */
 	public function printRootlineInfo($row) {
 		$uidCollection = array();
@@ -821,9 +821,9 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Return icon for file extension
 	 *
-	 * @param 	string		File extension / item type
-	 * @param 	string		Title attribute value in icon.
-	 * @return 	string		<img> tag for icon
+	 * @param string File extension / item type
+	 * @param string Title attribute value in icon.
+	 * @return string <img> tag for icon
 	 */
 	public function makeItemTypeIcon($it, $alt = '') {
 		if (!isset($this->iconFileNameCache[$it])) {
@@ -850,9 +850,9 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Re-indexing files/records attached to a page.
 	 *
-	 * @param	int		Phash value
-	 * @param	int		The page uid for the section record (file/url could appear more than one place you know...)
-	 * @return 	string		HTML content
+	 * @param int Phash value
+	 * @param int The page uid for the section record (file/url could appear more than one place you know...)
+	 * @return string HTML content
 	 */
 	public function reindexPhash($phash, $pageId) {
 		// Query:
@@ -891,8 +891,8 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 * Get rootline for closest TypoScript template root.
 	 * Algorithm same as used in Web > Template, Object browser
 	 *
-	 * @param	int		The page id to traverse rootline back from
-	 * @return 	array		Array where the root lines uid values are found.
+	 * @param int The page id to traverse rootline back from
+	 * @return array Array where the root lines uid values are found.
 	 */
 	public function getUidRootLineForClosestTemplate($id) {
 		$tmpl = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService');
@@ -921,9 +921,9 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Removes ALL data regarding a certain list of indexed phash-row
 	 *
-	 * @param 	string		List of phash integers
-	 * @param 	bool		If set, page cache is cleared as well.
-	 * @return 	void
+	 * @param string List of phash integers
+	 * @param bool If set, page cache is cleared as well.
+	 * @return void
 	 */
 	public function removeIndexedPhashRow($phashList, $clearPageCache = 1) {
 		// FIXME: This is only a workaround
@@ -963,9 +963,9 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Returns an array with gr_list records for a phash
 	 *
-	 * @param	int		phash integer to look up on
-	 * @param 	string		gr_list string to filter OUT of the result (first occurence)
-	 * @return 	array		Array of records from index_grlist table
+	 * @param int phash integer to look up on
+	 * @param string gr_list string to filter OUT of the result (first occurence)
+	 * @return array Array of records from index_grlist table
 	 */
 	public function getGrListEntriesForPhash($phash, $gr_list) {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'index_grlist', 'phash=' . (int)$phash);
@@ -984,8 +984,8 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Setting / Unsetting stopwords
 	 *
-	 * @param 	array		Array of stop-words WIDs with 0/1 to set / unset
-	 * @return 	void
+	 * @param array Array of stop-words WIDs with 0/1 to set / unset
+	 * @return void
 	 */
 	public function processStopWords($stopWords) {
 		if ($GLOBALS['BE_USER']->isAdmin()) {
@@ -1002,9 +1002,9 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	/**
 	 * Setting / Unsetting keywords in page header
 	 *
-	 * @param 	array		Page keywords as keys in array with value 0 or 1 for set or unset.
-	 * @param	int		The page uid of the header where the keywords are to be set.
-	 * @return 	void
+	 * @param array Page keywords as keys in array with value 0 or 1 for set or unset.
+	 * @param int The page uid of the header where the keywords are to be set.
+	 * @return void
 	 */
 	public function processPageKeywords($pageKeywords, $pageUid) {
 		// Get pages current keywords

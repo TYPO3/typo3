@@ -58,8 +58,8 @@ class DefaultInline extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
-	 * @param 	int		Relative id of the RTE editing area in the form
-	 * @return string		JS configuration for registered plugins
+	 * @param int Relative id of the RTE editing area in the form
+	 * @return string JS configuration for registered plugins
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {
 		global $TSFE, $LANG;
@@ -70,8 +70,8 @@ class DefaultInline extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	/**
 	 * Return tranformed content
 	 *
-	 * @param 	string		$content: The content that is about to be sent to the RTE
-	 * @return 	string		the transformed content
+	 * @param string $content: The content that is about to be sent to the RTE
+	 * @return string the transformed content
 	 */
 	public function transformContent($content) {
 		// Change the strong and em tags for gecko browsers

@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
 /**
  * ImageMap based menus
  *
- * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class ImageMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject {
 

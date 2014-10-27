@@ -211,7 +211,7 @@ class Rfc822AddressesParser {
 	 *
 	 * @access private
 	 * @param string $address The addresses to split.
-	 * @return boolean Success or failure.
+	 * @return bool Success or failure.
 	 */
 	protected function _splitAddresses($address) {
 		if (!empty($this->limit) && count($this->addresses) == $this->limit) {
@@ -272,7 +272,7 @@ class Rfc822AddressesParser {
 	 *
 	 * @access private
 	 * @param string $address The address to check.
-	 * @return boolean Whether or not there is a group at the start of the string.
+	 * @return bool Whether or not there is a group at the start of the string.
 	 */
 	protected function _isGroup($address) {
 		// First comma not in quotes, angles or escaped:
@@ -321,7 +321,7 @@ class Rfc822AddressesParser {
 	 *
 	 * @access private
 	 * @param string $string  The string to check.
-	 * @return boolean  TRUE if there are unclosed quotes inside the string,
+	 * @return bool TRUE if there are unclosed quotes inside the string,
 	 */
 	protected function _hasUnclosedQuotes($string) {
 		$string = trim($string);
@@ -351,7 +351,7 @@ class Rfc822AddressesParser {
 	 * @access private
 	 * @param string $string The string to check.
 	 * @param string $chars  The characters to check for.
-	 * @return boolean TRUE if there are unclosed brackets inside the string, FALSE otherwise.
+	 * @return bool TRUE if there are unclosed brackets inside the string, FALSE otherwise.
 	 */
 	protected function _hasUnclosedBrackets($string, $chars) {
 		$num_angle_start = substr_count($string, $chars[0]);
@@ -373,7 +373,7 @@ class Rfc822AddressesParser {
 	 * @param string $string The string to check.
 	 * @param int &$num	The number of occurrences.
 	 * @param string $char   The character to count.
-	 * @return integer The number of occurrences of $char in $string, adjusted for backslashes.
+	 * @return int The number of occurrences of $char in $string, adjusted for backslashes.
 	 */
 	protected function _hasUnclosedBracketsSub($string, &$num, $char) {
 		$parts = explode($char, $string);
@@ -459,7 +459,7 @@ class Rfc822AddressesParser {
 	 *
 	 * @access private
 	 * @param string $phrase The phrase to check.
-	 * @return boolean Success or failure.
+	 * @return bool Success or failure.
 	 */
 	protected function _validatePhrase($phrase) {
 		// Splits on one or more Tab or space.
@@ -498,7 +498,7 @@ class Rfc822AddressesParser {
 	 *
 	 * @access private
 	 * @param string $atom The string to check.
-	 * @return boolean Success or failure.
+	 * @return bool Success or failure.
 	 */
 	protected function _validateAtom($atom) {
 		if (!$this->validate) {
@@ -526,7 +526,7 @@ class Rfc822AddressesParser {
 	 *
 	 * @access private
 	 * @param string $qstring The string to check
-	 * @return boolean Success or failure.
+	 * @return bool Success or failure.
 	 */
 	protected function _validateQuotedString($qstring) {
 		// Leading and trailing "
@@ -542,7 +542,7 @@ class Rfc822AddressesParser {
 	 *
 	 * @access public
 	 * @param string &$mailbox The string to check.
-	 * @return boolean Success or failure.
+	 * @return bool Success or failure.
 	 */
 	protected function validateMailbox(&$mailbox) {
 		// A couple of defaults.
@@ -708,7 +708,7 @@ class Rfc822AddressesParser {
 	 *
 	 * @access private
 	 * @param string $subdomain The string to check.
-	 * @return boolean Success or failure.
+	 * @return bool Success or failure.
 	 */
 	protected function _validateSubdomain($subdomain) {
 		if (preg_match('|^\\[(.*)]$|', $subdomain, $arr)) {
@@ -730,7 +730,7 @@ class Rfc822AddressesParser {
 	 *
 	 * @access private
 	 * @param string $dliteral The string to check.
-	 * @return boolean Success or failure.
+	 * @return bool Success or failure.
 	 */
 	protected function _validateDliteral($dliteral) {
 		return !preg_match('/(.)[][\\x0D\\\\]/', $dliteral, $matches) && $matches[1] != '\\';

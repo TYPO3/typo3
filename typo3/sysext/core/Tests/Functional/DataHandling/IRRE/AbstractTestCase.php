@@ -111,7 +111,7 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
 	/**
 	 * Simulates executing commands by using t3lib_TCEmain.
 	 *
-	 * @param  array $elements The cmdmap to be delivered to DataHandler
+	 * @param array $elements The cmdmap to be delivered to DataHandler
 	 * @return \TYPO3\CMS\Core\DataHandling\DataHandler
 	 */
 	protected function simulateCommandByStructure(array $elements) {
@@ -152,7 +152,7 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
 	}
 
 	/**
-	 * @param  array $itemArray
+	 * @param array $itemArray
 	 * @return array
 	 */
 	protected function getElementsByItemArray(array $itemArray) {
@@ -371,9 +371,9 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
 	}
 
 	/**
-	 * @param  array $assertion
-	 * @param  array $elements
-	 * @return boolean
+	 * @param array $assertion
+	 * @param array $elements
+	 * @return bool
 	 */
 	protected function executeAssertionOnElements(array $assertion, array $elements) {
 		if (!empty($assertion['tableName'])) {

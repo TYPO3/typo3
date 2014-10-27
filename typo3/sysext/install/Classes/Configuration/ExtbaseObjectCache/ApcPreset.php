@@ -49,7 +49,7 @@ class ApcPreset extends Configuration\AbstractPreset {
 	 * APC preset is available if extension is loaded, if APC has ~100MB
 	 * memory and if ~5MB are free.
 	 *
-	 * @return boolean TRUE
+	 * @return bool TRUE
 	 */
 	public function isAvailable() {
 		$result = FALSE;

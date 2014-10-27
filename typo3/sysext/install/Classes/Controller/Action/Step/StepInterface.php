@@ -30,7 +30,7 @@ interface StepInterface {
 	/**
 	 * Whether this step must be executed
 	 *
-	 * @return boolean TRUE if this step needs to be executed
+	 * @return bool TRUE if this step needs to be executed
 	 */
 	public function needsExecution();
 

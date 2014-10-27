@@ -638,7 +638,7 @@ class BackendUtility {
 	 * Determines whether a table is localizable and has the languageField and transOrigPointerField set in $GLOBALS['TCA'].
 	 *
 	 * @param string $table The table to check
-	 * @return boolean Whether a table is localizable
+	 * @return bool Whether a table is localizable
 	 */
 	static public function isTableLocalizable($table) {
 		$isLocalizable = FALSE;
@@ -1111,7 +1111,7 @@ class BackendUtility {
 	 * @param string $hash 32 bit hash string (eg. a md5 hash of a serialized array identifying the data being stored)
 	 * @param mixed $data The data to store
 	 * @param string $ident $ident is just a textual identification in order to inform about the content!
-	 * @return 	void
+	 * @return void
 	 */
 	static public function storeHash($hash, $data, $ident) {
 		GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_hash')->set($hash, $data, array('ident_' . $ident), 0);
@@ -1381,7 +1381,7 @@ class BackendUtility {
 	 * Returns the difference in days between input $tstamp and $EXEC_TIME
 	 *
 	 * @param int $tstamp Time stamp, seconds
-	 * @return integer
+	 * @return int
 	 */
 	static public function daysUntil($tstamp) {
 		$delta_t = $tstamp - $GLOBALS['EXEC_TIME'];
@@ -2910,7 +2910,7 @@ class BackendUtility {
 	 * @param string $set Key to set the update signal. When setting, this value contains strings telling WHAT to set. At this point it seems that the value "updatePageTree" is the only one it makes sense to set. If empty, all update signals will be removed.
 	 * @param mixed $params Additional information for the update signal, used to only refresh a branch of the tree
 	 * @return void
-	 * @see 	BackendUtility::getUpdateSignalCode()
+	 * @see BackendUtility::getUpdateSignalCode()
 	 */
 	static public function setUpdateSignal($set = '', $params = '') {
 		$beUser = static::getBackendUserAuthentication();
@@ -3393,7 +3393,7 @@ class BackendUtility {
 	 * @param string $table Table name
 	 * @param int $uid Record uid
 	 * @param int $pid Record pid, could be negative then pointing to a record from same table whose pid to find and return.
-	 * @return integer
+	 * @return int
 	 * @internal
 	 * @see \TYPO3\CMS\Core\DataHandling\DataHandler::copyRecord(), getTSCpid()
 	 */
@@ -3435,7 +3435,7 @@ class BackendUtility {
 	 * @param string $table Table name
 	 * @param int $uid Record uid
 	 * @param int $pid Record pid
-	 * @return integer
+	 * @return int
 	 * @internal
 	 * @see \TYPO3\CMS\Backend\Form\FormEngine::getTSCpid()
 	 */
@@ -3620,7 +3620,7 @@ class BackendUtility {
 	 * Returns TRUE if $modName is set and is found as a main- or submodule in $TBE_MODULES array
 	 *
 	 * @param string $modName Module name
-	 * @return boolean
+	 * @return bool
 	 */
 	static public function isModuleSetInTBE_MODULES($modName) {
 		$loaded = array();
@@ -3868,7 +3868,7 @@ class BackendUtility {
 	 *
 	 * @param string $table Table name
 	 * @param array $row Row (passed by reference) - must be online record!
-	 * @return boolean TRUE if overlay is made.
+	 * @return bool TRUE if overlay is made.
 	 * @see PageRepository::movePlhOl()
 	 */
 	static public function movePlhOL($table, &$row) {
@@ -3936,7 +3936,7 @@ class BackendUtility {
 	 *
 	 * @param string $table Name of the table
 	 * @param int $uid Uid of the offline/draft record
-	 * @return integer The id of the live version of the record (or NULL if nothing was found)
+	 * @return int The id of the live version of the record (or NULL if nothing was found)
 	 */
 	static public function getLiveVersionIdOfRecord($table, $uid) {
 		$liveVersionId = NULL;
@@ -4025,7 +4025,7 @@ class BackendUtility {
 	 *
 	 * @param string $table Table name
 	 * @param int $uid Record uid (of live record placeholder)
-	 * @return integer Uid of offline version if any, otherwise live uid.
+	 * @return int Uid of offline version if any, otherwise live uid.
 	 */
 	static public function wsMapId($table, $uid) {
 		if ($wsRec = self::getWorkspaceVersionOfRecord(static::getBackendUserAuthentication()->workspace, $table, $uid, 'uid')) {
@@ -4119,7 +4119,7 @@ class BackendUtility {
 	 * Returns "web" if the $path (absolute) is within the DOCUMENT ROOT - and thereby qualifies as a "web" folder.
 	 *
 	 * @param string $path Path to evaluate
-	 * @return boolean
+	 * @return bool
 	 */
 	static public function getPathType_web_nonweb($path) {
 		return GeneralUtility::isFirstPartOfStr($path, GeneralUtility::getIndpEnv('TYPO3_DOCUMENT_ROOT')) ? 'web' : '';
@@ -4230,7 +4230,7 @@ class BackendUtility {
 	 * in a valid user's web-mount.
 	 *
 	 * @param string $table Name of the table
-	 * @return boolean
+	 * @return bool
 	 */
 	static public function isWebMountRestrictionIgnored($table) {
 		return !empty($GLOBALS['TCA'][$table]['ctrl']['security']['ignoreWebMountRestriction']);
@@ -4242,7 +4242,7 @@ class BackendUtility {
 	 * only can be accessed by admin users.
 	 *
 	 * @param string $table Name of the table
-	 * @return boolean
+	 * @return bool
 	 */
 	static public function isRootLevelRestrictionIgnored($table) {
 		return !empty($GLOBALS['TCA'][$table]['ctrl']['security']['ignoreRootLevelRestriction']);

@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Configuration\TypoScript\ConditionMatchin
 /**
  * Testcase for class \TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher.
  *
- * @author 	Oliver Hader <oliver@typo3.org>
+ * @author Oliver Hader <oliver@typo3.org>
  */
 class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
@@ -94,7 +94,7 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Tests whether a condition matches Internet Explorer 7 on Windows.
 	 *
-	 * @return 	void
+	 * @return void
 	 * @test
 	 */
 	public function conditionMatchesInternetExplorer7Windows() {
@@ -106,7 +106,7 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Tests whether a condition does not match Internet Explorer 7 on Windows.
 	 *
-	 * @return 	void
+	 * @return void
 	 * @test
 	 */
 	public function conditionDoesNotMatchInternetExplorer7Windows() {
@@ -949,10 +949,10 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Callback method for pageIdCanBeDetermined test cases.
 	 * Simulates TYPO3_DB->exec_SELECTquery().
 	 *
-	 * @param 	string		$fields
-	 * @param 	string		$table
-	 * @param 	string		$where
-	 * @return 	mixed
+	 * @param string $fields
+	 * @param string $table
+	 * @param string $where
+	 * @return mixed
 	 */
 	public function determinePageIdByRecordDatabaseExecuteCallback($fields, $table, $where) {
 		if ($table === $this->testTableName) {
@@ -971,8 +971,8 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Callback method for pageIdCanBeDetermined test cases.
 	 * Simulates TYPO3_DB->sql_fetch_assoc().
 	 *
-	 * @param 	mixed		$resource
-	 * @return 	mixed
+	 * @param mixed $resource
+	 * @return mixed
 	 */
 	public function determinePageIdByRecordDatabaseFetchCallback($resource) {
 		if (is_array($resource) && $resource['scope'] === $this->testTableName) {

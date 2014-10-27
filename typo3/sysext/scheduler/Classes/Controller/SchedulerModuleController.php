@@ -241,7 +241,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	 * It will differentiate between a non-existing user and an existing,
 	 * but disabled user (as per enable fields)
 	 *
-	 * @return integer -1 If user doesn't exist, 0 If user exist but not enabled, 1 If user exists and is enabled
+	 * @return int -1 If user doesn't exist, 0 If user exist but not enabled, 1 If user exists and is enabled
 	 */
 	protected function checkSchedulerUser() {
 		$schedulerUserStatus = -1;
@@ -1289,7 +1289,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	/**
 	 * Checks the submitted data and performs some pre-processing on it
 	 *
-	 * @return boolean TRUE if everything was ok, FALSE otherwise
+	 * @return bool TRUE if everything was ok, FALSE otherwise
 	 */
 	protected function preprocessData() {
 		$result = TRUE;
@@ -1382,7 +1382,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	 * Otherwise an exception is thrown
 	 *
 	 * @param string $string String to check
-	 * @return integer Unix timestamp
+	 * @return int Unix timestamp
 	 * @throws \InvalidArgumentException
 	 */
 	public function checkDate($string) {

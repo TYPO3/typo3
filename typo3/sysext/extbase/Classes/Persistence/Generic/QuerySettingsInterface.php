@@ -30,7 +30,7 @@ interface QuerySettingsInterface {
 	/**
 	 * Returns the state, if the storage page should be respected for the query.
 	 *
-	 * @return boolean TRUE, if the storage page should be respected; otherwise FALSE.
+	 * @return bool TRUE, if the storage page should be respected; otherwise FALSE.
 	 */
 	public function getRespectStoragePage();
 
@@ -62,7 +62,7 @@ interface QuerySettingsInterface {
 	/**
 	 * Returns the state, if a  and language overlay should be performed.
 	 *
-	 * @return boolean TRUE, if a  and language overlay should be performed; otherwise FALSE.
+	 * @return bool TRUE, if a  and language overlay should be performed; otherwise FALSE.
 	 */
 	public function getRespectSysLanguage();
 
@@ -98,7 +98,7 @@ interface QuerySettingsInterface {
 	public function setLanguageUid($languageUid);
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getLanguageUid();
 
@@ -120,7 +120,7 @@ interface QuerySettingsInterface {
 	 * If TRUE, all enable fields are ignored. If--in addition to this--enableFieldsToBeIgnored is set, only fields specified there are ignored.
 	 * If FALSE, all enable fields are taken into account, regardless of the enableFieldsToBeIgnored setting.
 	 *
-	 * @return boolean
+	 * @return bool
 	 * @see getEnableFieldsToBeIgnored()
 	 */
 	public function getIgnoreEnableFields();
@@ -158,7 +158,7 @@ interface QuerySettingsInterface {
 	/**
 	 * Returns if the query should return objects that are deleted.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getIncludeDeleted();
 
@@ -174,7 +174,7 @@ interface QuerySettingsInterface {
 	/**
 	 * Returns the state, if the QueryResult should be returned unmapped.
 	 *
-	 * @return boolean TRUE, if the QueryResult should be returned unmapped; otherwise FALSE.
+	 * @return bool TRUE, if the QueryResult should be returned unmapped; otherwise FALSE.
 	 * @deprecated since Extbase 6.2, will be removed two versions later
 	 */
 	public function getReturnRawQueryResult();

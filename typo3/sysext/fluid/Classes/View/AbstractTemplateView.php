@@ -380,7 +380,7 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
 	/**
 	 * Get the current rendering type.
 	 *
-	 * @return integer one of RENDERING_* constants
+	 * @return int one of RENDERING_* constants
 	 */
 	protected function getCurrentRenderingType() {
 		$currentRendering = end($this->renderingStack);
@@ -414,7 +414,7 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
 	 * contexts. Override this method if that is not the case.
 	 *
 	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext Controller context which is available inside the view
-	 * @return boolean TRUE if the view has something useful to display, otherwise FALSE
+	 * @return bool TRUE if the view has something useful to display, otherwise FALSE
 	 * @api
 	 */
 	public function canRender(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext) {

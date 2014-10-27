@@ -100,7 +100,7 @@ abstract class AbstractTableConfigurationTreeDataProvider extends \TYPO3\CMS\Bac
 	/**
 	 * Gets the expamdAll
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getExpandAll() {
 		return $this->expandAll;
@@ -119,7 +119,7 @@ abstract class AbstractTableConfigurationTreeDataProvider extends \TYPO3\CMS\Bac
 	/**
 	 * Gets the levelMaximum
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getLevelMaximum() {
 		return $this->levelMaximum;
@@ -129,7 +129,7 @@ abstract class AbstractTableConfigurationTreeDataProvider extends \TYPO3\CMS\Bac
 	 * Gets the expanded state of a given node
 	 *
 	 * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isExpanded(\TYPO3\CMS\Backend\Tree\TreeNode $node) {
 		return $this->getExpandAll() || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->expandedList, $node->getId());

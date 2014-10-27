@@ -152,7 +152,7 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Get pid
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getPid() {
 		return $this->pid;
@@ -171,7 +171,7 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Get backend user id
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getBackendUserUid() {
 		return $this->backendUserUid;
@@ -190,7 +190,7 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Get action
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getAction() {
 		return (int)$this->action;
@@ -209,7 +209,7 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Get record uid
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getRecordUid() {
 		return (int)$this->recordUid;
@@ -247,7 +247,7 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Get record pid
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getRecordPid() {
 		return (int)$this->recordPid;
@@ -266,7 +266,7 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Get error
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getError() {
 		return (int)$this->error;
@@ -304,7 +304,7 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Get tstamp
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getTstamp() {
 		return (int)$this->tstamp;
@@ -323,7 +323,7 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Get type
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getType() {
 		return (int)$this->type;
@@ -342,7 +342,7 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Get details number
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getDetailsNumber() {
 		return (int)$this->detailsNumber;
@@ -406,7 +406,7 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Get event pid
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getEventPid() {
 		return (int)$this->eventPid;
@@ -425,7 +425,7 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Get workspace
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getWorkspaceUid() {
 		return (int)$this->workspaceUid;

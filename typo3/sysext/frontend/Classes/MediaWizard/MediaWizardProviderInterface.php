@@ -24,7 +24,7 @@ interface MediaWizardProviderInterface {
 	 * Tells the calling party if we can handle the URL passed to the constructor
 	 *
 	 * @param string $url URL to be handled
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canHandle($url);
 

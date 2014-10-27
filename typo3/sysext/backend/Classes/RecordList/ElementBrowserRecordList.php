@@ -101,7 +101,7 @@ class ElementBrowserRecordList extends \TYPO3\CMS\Recordlist\RecordList\Database
 	 *
 	 * @param string $table String Table name
 	 * @param array $row Array Record
-	 * @return boolean True, if all conditions are fulfilled.
+	 * @return bool True, if all conditions are fulfilled.
 	 */
 	protected function isRowListingConditionFulfilled($table, $row) {
 		$returnValue = TRUE;

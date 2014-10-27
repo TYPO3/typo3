@@ -88,7 +88,7 @@ class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Checks whether this user is an administrator.
 	 *
-	 * @return boolean whether this user is an administrator
+	 * @return bool whether this user is an administrator
 	 */
 	public function getIsAdministrator() {
 		return $this->isAdministrator;
@@ -107,7 +107,7 @@ class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Checks whether this user is disabled.
 	 *
-	 * @return boolean whether this user is disabled
+	 * @return bool whether this user is disabled
 	 */
 	public function getIsDisabled() {
 		return $this->isDisabled;
@@ -203,7 +203,7 @@ class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 *
 	 * This function takes the "disabled" flag, the start date/time and the end date/time into account.
 	 *
-	 * @return boolean whether this user is currently activated
+	 * @return bool whether this user is currently activated
 	 */
 	public function isActivated() {
 		return !$this->getIsDisabled() && $this->isActivatedViaStartDateAndTime() && $this->isActivatedViaEndDateAndTime();
@@ -212,7 +212,7 @@ class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Checks whether this user is activated as far as the start date and time is concerned.
 	 *
-	 * @return boolean whether this user is activated as far as the start date and time is concerned
+	 * @return bool whether this user is activated as far as the start date and time is concerned
 	 */
 	protected function isActivatedViaStartDateAndTime() {
 		if ($this->getStartDateAndTime() === NULL) {
@@ -225,7 +225,7 @@ class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Checks whether this user is activated as far as the end date and time is concerned.
 	 *
-	 * @return boolean whether this user is activated as far as the end date and time is concerned
+	 * @return bool whether this user is activated as far as the end date and time is concerned
 	 */
 	protected function isActivatedViaEndDateAndTime() {
 		if ($this->getEndDateAndTime() === NULL) {
@@ -248,7 +248,7 @@ class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Checks whether the IP lock for this user is disabled.
 	 *
-	 * @return boolean whether the IP lock for this user is disabled
+	 * @return bool whether the IP lock for this user is disabled
 	 */
 	public function getIpLockIsDisabled() {
 		return $this->ipLockIsDisabled;

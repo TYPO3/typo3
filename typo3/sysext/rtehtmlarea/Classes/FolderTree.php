@@ -6,7 +6,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Base extension class which generates the folder tree.
  * Used directly by the RTE.
  *
- * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class FolderTree extends \localFolderTree {
 

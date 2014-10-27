@@ -47,7 +47,7 @@ class LoadedExtensionsArray implements \Iterator, \ArrayAccess, \Serializable, \
 	 *
 	 * @link http://php.net/manual/en/arrayaccess.offsetexists.php
 	 * @param mixed $offset An offset to check for.
-	 * @return boolean TRUE on success or FALSE on failure.
+	 * @return bool TRUE on success or FALSE on failure.
 	 */
 	public function offsetExists($offset) {
 		return $this->packageManager->isPackageActive($offset);
@@ -120,7 +120,7 @@ class LoadedExtensionsArray implements \Iterator, \ArrayAccess, \Serializable, \
 	 * Count elements of an object
 	 *
 	 * @link http://php.net/manual/en/countable.count.php
-	 * @return integer The custom count as an integer.
+	 * @return int The custom count as an integer.
 	 */
 	public function count() {
 		return count($this->packageManager->getActivePackages());
@@ -167,7 +167,7 @@ class LoadedExtensionsArray implements \Iterator, \ArrayAccess, \Serializable, \
 	 * Checks if current position is valid
 	 *
 	 * @link http://php.net/manual/en/iterator.valid.php
-	 * @return boolean The return value will be casted to boolean and then evaluated. Returns true on success or false on failure.
+	 * @return bool The return value will be casted to boolean and then evaluated. Returns true on success or false on failure.
 	 */
 	public function valid() {
 		return $this->offsetExists($this->iteratorPosition);
@@ -197,7 +197,7 @@ class LoadedExtensionsArray implements \Iterator, \ArrayAccess, \Serializable, \
 	/**
 	 * Whether package manager is set in class
 	 *
-	 * @return boolean TRUE if package manager is set
+	 * @return bool TRUE if package manager is set
 	 */
 	public function hasPackageManager() {
 		return $this->packageManager !== NULL;

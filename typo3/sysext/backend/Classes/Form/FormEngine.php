@@ -1353,7 +1353,7 @@ class FormEngine {
 	 * @param string $field Name of the field
 	 * @param array $row Accordant data
 	 * @param array $PA Parameters array with rendering instructions
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isDisabledNullValueField($table, $field, array $row, array $PA) {
 		$result = FALSE;
@@ -2971,7 +2971,7 @@ class FormEngine {
 	 * @param string $row Palette ID
 	 * @param string $palette The record array
 	 * @param bool $collapsed TRUE if collapsed
-	 * @return boolean Is collapsed
+	 * @return bool Is collapsed
 	 */
 	public function wrapPaletteField($code, $table, $row, $palette, $collapsed) {
 		$display = $collapsed ? 'none' : 'block';
@@ -3546,7 +3546,7 @@ class FormEngine {
 	 * Sets the design to the backend design.
 	 * Backend
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function setNewBEDesign() {
 		$template = GeneralUtility::getUrl(PATH_typo3 . $this->templateFile);
@@ -4355,7 +4355,7 @@ class FormEngine {
 	 *
 	 * @param string $table The table name
 	 * @param int $palette The palette pointer/number
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isPalettesCollapsed($table, $palette) {
 		if (is_array($GLOBALS['TCA'][$table]['palettes'][$palette]) && $GLOBALS['TCA'][$table]['palettes'][$palette]['isHiddenPalette']) {
@@ -4392,7 +4392,7 @@ class FormEngine {
 	 * Returns TRUE if descriptions should be loaded always
 	 *
 	 * @param string $table Table for which to check
-	 * @return boolean
+	 * @return bool
 	 */
 	public function doLoadTableDescr($table) {
 		return $GLOBALS['TCA'][$table]['interface']['always_description'];

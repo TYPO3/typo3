@@ -100,7 +100,7 @@ class QueryResult implements QueryResultInterface {
 	/**
 	 * Returns the number of objects in the result
 	 *
-	 * @return integer The number of matching objects
+	 * @return int The number of matching objects
 	 * @api
 	 */
 	public function count() {
@@ -127,7 +127,7 @@ class QueryResult implements QueryResultInterface {
 	 * but it isn't very useful as the offset has to be an integer
 	 *
 	 * @param mixed $offset
-	 * @return boolean
+	 * @return bool
 	 * @see ArrayAccess::offsetExists()
 	 */
 	public function offsetExists($offset) {
@@ -207,7 +207,7 @@ class QueryResult implements QueryResultInterface {
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 * @see Iterator::valid()
 	 */
 	public function valid() {

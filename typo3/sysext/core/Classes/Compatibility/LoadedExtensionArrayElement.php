@@ -137,7 +137,7 @@ class LoadedExtensionArrayElement implements \IteratorAggregate, \ArrayAccess, \
 	 *
 	 * @link http://php.net/manual/en/arrayaccess.offsetexists.php
 	 * @param mixed $offset An offset to check for.
-	 * @return boolean TRUE on success or FALSE on failure.
+	 * @return bool TRUE on success or FALSE on failure.
 	 */
 	public function offsetExists($offset) {
 		return isset($this->extensionInformation[$offset]);
@@ -204,7 +204,7 @@ class LoadedExtensionArrayElement implements \IteratorAggregate, \ArrayAccess, \
 	 * Count elements of an object
 	 *
 	 * @link http://php.net/manual/en/countable.count.php
-	 * @return integer The custom count as an integer. The return value is cast to an integer.
+	 * @return int The custom count as an integer. The return value is cast to an integer.
 	 */
 	public function count() {
 		return count($this->extensionInformation);

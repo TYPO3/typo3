@@ -49,7 +49,7 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 	/**
 	 * Checks whether the user has access to this toolbar item
 	 *
-	 * @return boolean TRUE if user has access, FALSE if not
+	 * @return bool TRUE if user has access, FALSE if not
 	 */
 	public function checkAccess() {
 		$conf = $GLOBALS['BE_USER']->getTSConfig('backendToolbarItem.tx_opendocs.disabled');

@@ -27,9 +27,9 @@ class DeletedRecordsController {
 	/**
 	 * Transforms the rows for the deleted Records into the Array View necessary for ExtJS Ext.data.ArrayReader
 	 *
-	 * @param array     $rows   Array with table as key and array with all deleted rows
-	 * @param int	$totalDeleted: Number of deleted records in total, for PagingToolbar
-	 * @return string   JSON Array
+	 * @param array $rows Array with table as key and array with all deleted rows
+	 * @param int $totalDeleted: Number of deleted records in total, for PagingToolbar
+	 * @return string JSON Array
 	 */
 	public function transform($deletedRowsArray, $totalDeleted) {
 		$total = 0;

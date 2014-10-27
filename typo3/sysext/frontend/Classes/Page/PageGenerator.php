@@ -1051,7 +1051,7 @@ class PageGenerator {
 	 *
 	 * @param string $haystack The string in which to find $needle
 	 * @param string $needle The string to find in $haystack
-	 * @return boolean Returns TRUE if $needle matches or is found in $haystack
+	 * @return bool Returns TRUE if $needle matches or is found in $haystack
 	 */
 	static public function isAllowedLinkVarValue($haystack, $needle) {
 		$OK = FALSE;

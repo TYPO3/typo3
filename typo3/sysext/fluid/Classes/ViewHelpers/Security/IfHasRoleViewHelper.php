@@ -82,7 +82,7 @@ class IfHasRoleViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractCondi
 	 * Determines whether the currently logged in FE user belongs to the specified usergroup
 	 *
 	 * @param string $role The usergroup (either the usergroup uid or its title)
-	 * @return boolean TRUE if the currently logged in FE user belongs to $role
+	 * @return bool TRUE if the currently logged in FE user belongs to $role
 	 */
 	protected function frontendUserHasRole($role) {
 		if (!isset($GLOBALS['TSFE']) || !$GLOBALS['TSFE']->loginUser) {

@@ -222,7 +222,7 @@ abstract class AbstractValidator implements \TYPO3\CMS\Form\Validation\Validator
 	/**
 	 * Returns TRUE when message needs to be displayed
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function messageMustBeDisplayed() {
 		return $this->showMessage;

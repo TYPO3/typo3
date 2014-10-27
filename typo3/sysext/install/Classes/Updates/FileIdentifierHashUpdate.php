@@ -68,7 +68,7 @@ class FileIdentifierHashUpdate extends AbstractUpdate {
 	 * Checks if an update is needed.
 	 *
 	 * @param string &$description The description for the update
-	 * @return boolean TRUE if an update is needed, FALSE otherwise
+	 * @return bool TRUE if an update is needed, FALSE otherwise
 	 */
 	public function checkForUpdate(&$description) {
 		$description = 'Add file identifier hash to sys_file records, where it is missing. Additionally upgrade storage configurations.';
@@ -92,7 +92,7 @@ class FileIdentifierHashUpdate extends AbstractUpdate {
 	 *
 	 * @param array &$dbQueries Queries done in this update
 	 * @param mixed &$customMessages Custom messages
-	 * @return boolean TRUE on success, FALSE on error
+	 * @return bool TRUE on success, FALSE on error
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$this->init();
@@ -218,7 +218,7 @@ class FileIdentifierHashUpdate extends AbstractUpdate {
 	 * Test if the local filesystem is case sensitive
 	 *
 	 * @param $absolutePath
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function testCaseSensitivity($absolutePath) {
 		$caseSensitive = TRUE;

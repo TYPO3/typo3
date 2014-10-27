@@ -123,7 +123,7 @@ class ArrayUtility {
 	 * Returns TRUE if the given array contains elements of varying types
 	 *
 	 * @param array $array
-	 * @return boolean
+	 * @return bool
 	 * @api
 	 */
 	static public function containsMultipleTypes(array $array) {
@@ -245,7 +245,7 @@ class ArrayUtility {
 	 *
 	 * @param array &$array the array to sort
 	 * @param int $sortFlags may be used to modify the sorting behavior using these values (see http://www.php.net/manual/en/function.sort.php)
-	 * @return boolean TRUE on success, FALSE on failure
+	 * @return bool TRUE on success, FALSE on failure
 	 * @see asort()
 	 * @api
 	 */

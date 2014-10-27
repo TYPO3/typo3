@@ -87,7 +87,7 @@ class Status implements \TYPO3\CMS\Reports\ReportInterface {
 	 * Determines the highest severity from the given statuses.
 	 *
 	 * @param array $statusCollection An array of \TYPO3\CMS\Reports\Status objects.
-	 * @return integer The highest severity found from the statuses.
+	 * @return int The highest severity found from the statuses.
 	 */
 	public function getHighestSeverity(array $statusCollection) {
 		$highestSeverity = \TYPO3\CMS\Reports\Status::NOTICE;

@@ -106,7 +106,7 @@ abstract class AbstractFile implements FileInterface {
 	 * Returns true if the given property key exists for this file.
 	 *
 	 * @param string $key
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasProperty($key) {
 		return array_key_exists($key, $this->properties);
@@ -177,7 +177,7 @@ abstract class AbstractFile implements FileInterface {
 	 * Returns the size of this file
 	 *
 	 * @throws \RuntimeException
-	 * @return integer
+	 * @return int
 	 */
 	public function getSize() {
 		if ($this->deleted) {
@@ -189,7 +189,7 @@ abstract class AbstractFile implements FileInterface {
 	/**
 	 * Returns the uid of this file
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getUid() {
 		return $this->getProperty('uid');
@@ -212,7 +212,7 @@ abstract class AbstractFile implements FileInterface {
 	 * Returns the creation time of the file as Unix timestamp
 	 *
 	 * @throws \RuntimeException
-	 * @return integer
+	 * @return int
 	 */
 	public function getCreationTime() {
 		if ($this->deleted) {
@@ -225,7 +225,7 @@ abstract class AbstractFile implements FileInterface {
 	 * Returns the date (as UNIX timestamp) the file was last modified.
 	 *
 	 * @throws \RuntimeException
-	 * @return integer
+	 * @return int
 	 */
 	public function getModificationTime() {
 		if ($this->deleted) {
@@ -267,7 +267,7 @@ abstract class AbstractFile implements FileInterface {
 	 * "other"
 	 * see the constants in this class
 	 *
-	 * @return integer $fileType
+	 * @return int $fileType
 	 */
 	public function getType() {
 		// this basically extracts the mimetype and guess the filetype based
@@ -355,7 +355,7 @@ abstract class AbstractFile implements FileInterface {
 	 * it might only return FALSE when this object has been created from an
 	 * index record without checking for.
 	 *
-	 * @return boolean TRUE if this file physically exists
+	 * @return bool TRUE if this file physically exists
 	 */
 	public function exists() {
 		if ($this->deleted) {
@@ -408,7 +408,7 @@ abstract class AbstractFile implements FileInterface {
 	/**
 	 * Deletes this file from its storage. This also means that this object becomes useless.
 	 *
-	 * @return boolean TRUE if deletion succeeded
+	 * @return bool TRUE if deletion succeeded
 	 */
 	public function delete() {
 		// The storage will mark this file as deleted
@@ -428,7 +428,7 @@ abstract class AbstractFile implements FileInterface {
 	/**
 	 * Returns TRUE if this file has been deleted
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDeleted() {
 		return $this->deleted;

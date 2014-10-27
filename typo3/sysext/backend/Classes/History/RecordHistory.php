@@ -615,7 +615,7 @@ class RecordHistory {
 	/**
 	 * Creates change log including sub-elements, filling $this->changeLog
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function createChangeLog() {
 		$elParts = explode(':', $this->element);
@@ -801,7 +801,7 @@ class RecordHistory {
 	 *
 	 * @param string $table Table of input element
 	 * @param int $uid UID of record
-	 * @return integer converted UID of record
+	 * @return int converted UID of record
 	 */
 	public function resolveElement($table, $uid) {
 		if (isset($GLOBALS['TCA'][$table])) {
@@ -832,7 +832,7 @@ class RecordHistory {
 	 *
 	 * @param string $table
 	 * @param int $uid
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function hasPageAccess($table, $uid) {
 		$uid = (int)$uid;
@@ -857,7 +857,7 @@ class RecordHistory {
 	 * Determines whether user has access to a table.
 	 *
 	 * @param string $table
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function hasTableAccess($table) {
 		return $this->getBackendUser()->check('tables_select', $table);

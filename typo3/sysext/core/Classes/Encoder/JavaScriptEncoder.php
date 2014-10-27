@@ -116,7 +116,7 @@ class JavaScriptEncoder implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Checks if the given character is one of the immune characters
 	 *
 	 * @param string $character utf-8 character to search for, must not be empty
-	 * @return boolean TRUE if character is immune, FALSE otherwise
+	 * @return bool TRUE if character is immune, FALSE otherwise
 	 */
 	protected function isImmuneCharacter($character) {
 		return in_array($character, $this->immuneCharacters, TRUE);

@@ -40,7 +40,7 @@ interface ComparableNodeInterface
 	 * </pre>
 	 *
 	 * @param \TYPO3\CMS\Backend\Tree\TreeNode $other
-	 * @return integer see description
+	 * @return int see description
 	 */
 	public function compareTo($other);
 

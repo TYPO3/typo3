@@ -142,7 +142,7 @@ class LinkNode extends AbstractNode implements NodeInterface {
 	 * Find out if node is a link
 	 *
 	 * @throws Exception\InvalidArgumentException
-	 * @return boolean TRUE if node is a link
+	 * @return bool TRUE if node is a link
 	 */
 	protected function isLink() {
 		if (!$this->exists()) {
@@ -158,7 +158,7 @@ class LinkNode extends AbstractNode implements NodeInterface {
 	 * Checks if the real link target is identical to given target
 	 *
 	 * @throws Exception\InvalidArgumentException
-	 * @return boolean TRUE if target is correct
+	 * @return bool TRUE if target is correct
 	 */
 	protected function isTargetCorrect() {
 		if (!$this->exists()) {

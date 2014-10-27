@@ -50,9 +50,9 @@ class AccessibilityLinkController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlu
 	/**
 	 * Remove accessibility icon when no link was rendered, called from TypoScript
 	 *
-	 * @param	string		Content input. Not used, ignore.
+	 * @param string Content input. Not used, ignore.
 	 * @param	array		TypoScript configuration
-	 * @return	string		HTML output.
+	 * @return string HTML output.
 	 * @access private
 	 */
 	public function removeAccessibilityIcon ($content, $conf) {

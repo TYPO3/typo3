@@ -100,7 +100,7 @@ class BlowfishSalt extends \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt {
 	 * Parses the log2 iteration count from a stored hash or setting string.
 	 *
 	 * @param string $setting Complete hash or a hash's setting string or to get log2 iteration count from
-	 * @return integer Used hashcount for given hash string
+	 * @return int Used hashcount for given hash string
 	 */
 	protected function getCountLog2($setting) {
 		$countLog2 = NULL;
@@ -116,7 +116,7 @@ class BlowfishSalt extends \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt {
 	/**
 	 * Method returns log2 number of iterations for password stretching.
 	 *
-	 * @return integer log2 number of iterations for password stretching
+	 * @return int log2 number of iterations for password stretching
 	 * @see HASH_COUNT
 	 * @see $hashCount
 	 * @see setHashCount()
@@ -128,7 +128,7 @@ class BlowfishSalt extends \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt {
 	/**
 	 * Method returns maximum allowed log2 number of iterations for password stretching.
 	 *
-	 * @return integer Maximum allowed log2 number of iterations for password stretching
+	 * @return int Maximum allowed log2 number of iterations for password stretching
 	 * @see MAX_HASH_COUNT
 	 * @see $maxHashCount
 	 * @see setMaxHashCount()
@@ -140,7 +140,7 @@ class BlowfishSalt extends \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt {
 	/**
 	 * Returns whether all prerequisites for the hashing methods are matched
 	 *
-	 * @return boolean Method available
+	 * @return bool Method available
 	 */
 	public function isAvailable() {
 		return CRYPT_BLOWFISH;
@@ -149,7 +149,7 @@ class BlowfishSalt extends \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt {
 	/**
 	 * Method returns minimum allowed log2 number of iterations for password stretching.
 	 *
-	 * @return integer Minimum allowed log2 number of iterations for password stretching
+	 * @return int Minimum allowed log2 number of iterations for password stretching
 	 * @see MIN_HASH_COUNT
 	 * @see $minHashCount
 	 * @see setMinHashCount()
@@ -164,7 +164,7 @@ class BlowfishSalt extends \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt {
 	 * Overwrites {@link Md5Salt::getSaltLength()}
 	 * with Blowfish specifics.
 	 *
-	 * @return integer Length of a Blowfish salt in bytes
+	 * @return int Length of a Blowfish salt in bytes
 	 */
 	public function getSaltLength() {
 		return self::$saltLengthBlowfish;
@@ -191,7 +191,7 @@ class BlowfishSalt extends \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt {
 	 * HASH_COUNT.
 	 *
 	 * @param string $saltedPW Salted hash to check if it needs an update
-	 * @return boolean TRUE if salted hash needs an update, otherwise FALSE
+	 * @return bool TRUE if salted hash needs an update, otherwise FALSE
 	 */
 	public function isHashUpdateNeeded($saltedPW) {
 		// Check whether this was an updated password.
@@ -210,7 +210,7 @@ class BlowfishSalt extends \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt {
 	 * Blowfish specifics.
 	 *
 	 * @param string $salt String to check
-	 * @return boolean TRUE if it's valid salt, otherwise FALSE
+	 * @return bool TRUE if it's valid salt, otherwise FALSE
 	 */
 	public function isValidSalt($salt) {
 		$isValid = ($skip = FALSE);
@@ -239,7 +239,7 @@ class BlowfishSalt extends \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt {
 	 * Method determines if a given string is a valid salted hashed password.
 	 *
 	 * @param string $saltedPW String to check
-	 * @return boolean TRUE if it's valid salted hashed password, otherwise FALSE
+	 * @return bool TRUE if it's valid salted hashed password, otherwise FALSE
 	 */
 	public function isValidSaltedPW($saltedPW) {
 		$isValid = FALSE;

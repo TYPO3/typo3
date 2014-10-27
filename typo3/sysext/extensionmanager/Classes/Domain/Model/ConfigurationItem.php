@@ -194,7 +194,7 @@ class ConfigurationItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getHighlight() {
 		return $this->highlight;

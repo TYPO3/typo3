@@ -99,7 +99,7 @@ class Mirrors extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 *
 	 * @access public
 	 * @return array multidimensional array with mirrors and their properties
-	 * @see 	 $mirrors, setMirrors()
+	 * @see $mirrors, setMirrors()
 	 */
 	public function getMirrors() {
 		return $this->mirrors;

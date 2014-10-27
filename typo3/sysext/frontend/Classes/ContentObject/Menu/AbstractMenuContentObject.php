@@ -137,7 +137,7 @@ class AbstractMenuContentObject {
 	 * @param array $conf The TypoScript configuration for the HMENU cObject
 	 * @param int $menuNumber Menu number; 1,2,3. Should probably be '1'
 	 * @param string $objSuffix Submenu Object suffix. This offers submenus a way to use alternative configuration for specific positions in the menu; By default "1 = TMENU" would use "1." for the TMENU configuration, but if this string is set to eg. "a" then "1a." would be used for configuration instead (while "1 = " is still used for the overall object definition of "TMENU")
-	 * @return boolean Returns TRUE on success
+	 * @return bool Returns TRUE on success
 	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::HMENU()
 	 */
 	public function start(&$tmpl, &$sys_page, $id, $conf, $menuNumber, $objSuffix = '') {
@@ -866,7 +866,7 @@ class AbstractMenuContentObject {
 	 * @param array $data Array of menu items
 	 * @param array $banUidArray Array of page uids which are to be excluded
 	 * @param bool $spacer If set, then the page is a spacer.
-	 * @return boolean Returns TRUE if the page can be safely included.
+	 * @return bool Returns TRUE if the page can be safely included.
 	 */
 	public function filterMenuPages(&$data, $banUidArray, $spacer) {
 		$includePage = TRUE;
@@ -1419,7 +1419,7 @@ class AbstractMenuContentObject {
 	 *
 	 * @param int $uid Page uid to evaluate.
 	 * @param string $MPvar MPvar for the current position of item.
-	 * @return boolean TRUE if page with $uid is active
+	 * @return bool TRUE if page with $uid is active
 	 * @access private
 	 * @see subMenu()
 	 */
@@ -1439,7 +1439,7 @@ class AbstractMenuContentObject {
 	 *
 	 * @param int $uid Page uid to evaluate.
 	 * @param string $MPvar MPvar for the current position of item.
-	 * @return boolean TRUE if page with $uid is active
+	 * @return bool TRUE if page with $uid is active
 	 * @access private
 	 */
 	public function isActive($uid, $MPvar = '') {
@@ -1458,7 +1458,7 @@ class AbstractMenuContentObject {
 	 *
 	 * @param int $uid Page uid to evaluate.
 	 * @param string $MPvar MPvar for the current position of item.
-	 * @return boolean TRUE if page $uid = $GLOBALS['TSFE']->id
+	 * @return bool TRUE if page $uid = $GLOBALS['TSFE']->id
 	 * @access private
 	 */
 	public function isCurrent($uid, $MPvar = '') {
@@ -1473,7 +1473,7 @@ class AbstractMenuContentObject {
 	 * Used by the item states "IFSUB", "ACTIFSUB" and "CURIFSUB" to check if there is a submenu
 	 *
 	 * @param int $uid Page uid for which to search for a submenu
-	 * @return boolean Returns TRUE if there was a submenu with items found
+	 * @return bool Returns TRUE if there was a submenu with items found
 	 * @access private
 	 */
 	public function isSubMenu($uid) {
@@ -1522,7 +1522,7 @@ class AbstractMenuContentObject {
 	 *
 	 * @param string $kind The item state to evaluate (SPC, IFSUB, ACT etc... but no xxxRO states of course)
 	 * @param int $key Key pointing to menu item from ->menuArr
-	 * @return boolean True (integer!=0) if match, otherwise FALSE (=0, zero)
+	 * @return bool True (integer!=0) if match, otherwise FALSE (=0, zero)
 	 * @access private
 	 * @see procesItemStates()
 	 */

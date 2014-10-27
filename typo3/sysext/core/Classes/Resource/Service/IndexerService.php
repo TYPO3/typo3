@@ -175,7 +175,7 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * currently this is done in a simple way, however could be changed to be more performant
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
-	 * @return integer The number of indexed files.
+	 * @return int The number of indexed files.
 	 */
 	public function indexFilesInFolder(\TYPO3\CMS\Core\Resource\Folder $folder) {
 		$numberOfIndexedFiles = 0;

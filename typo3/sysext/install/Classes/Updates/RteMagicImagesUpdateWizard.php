@@ -77,7 +77,7 @@ class RteMagicImagesUpdateWizard extends AbstractUpdate {
 	 * Checks if an update is needed
 	 *
 	 * @param string $description The description for the update
-	 * @return boolean TRUE if an update is needed, FALSE otherwise
+	 * @return bool TRUE if an update is needed, FALSE otherwise
 	 */
 	public function checkForUpdate(&$description) {
 		$description = 'This update wizard goes through all magic images, located in "' . htmlspecialchars($this->oldPrefix) . '", and moves the files to fileadmin/_migrated/RTE/.';
@@ -110,7 +110,7 @@ class RteMagicImagesUpdateWizard extends AbstractUpdate {
 	 *
 	 * @param array $dbQueries queries done in this update
 	 * @param mixed $customMessages custom messages
-	 * @return boolean TRUE on success, FALSE on error
+	 * @return bool TRUE on success, FALSE on error
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$this->init();

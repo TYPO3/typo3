@@ -60,7 +60,7 @@ class ImageMagick6Preset extends AbstractImagePreset implements Configuration\Pr
 	 * Search for GraphicsMagick executables in given paths.
 	 *
 	 * @param array $searchPaths List of paths to search for
-	 * @return boolean TRUE if graphics magick was found in path
+	 * @return bool TRUE if graphics magick was found in path
 	 */
 	protected function findImageMagick6InPaths(array $searchPaths) {
 		$result = FALSE;

@@ -405,7 +405,7 @@ class Clipboard {
 	/**
 	 * Returns true if the clipboard contains elements
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasElements() {
 		foreach ($this->clipData as $data) {
@@ -831,7 +831,7 @@ class Clipboard {
 	/**
 	 * Reports if the current pad has elements (does not check file/DB type OR if file/DBrecord exists or not. Only counting array)
 	 *
-	 * @return boolean TRUE if elements exist.
+	 * @return bool TRUE if elements exist.
 	 */
 	public function isElements() {
 		return is_array($this->clipData[$this->current]['el']) && count($this->clipData[$this->current]['el']);

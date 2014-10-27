@@ -657,7 +657,7 @@ class BackendController {
 	 * Adds a javscript file to the backend after it has been checked that it exists
 	 *
 	 * @param string $javascriptFile Javascript file reference
-	 * @return boolean TRUE if the javascript file was successfully added, FALSE otherwise
+	 * @return bool TRUE if the javascript file was successfully added, FALSE otherwise
 	 */
 	public function addJavascriptFile($javascriptFile) {
 		$jsFileAdded = FALSE;
@@ -687,7 +687,7 @@ class BackendController {
 	 *
 	 * @param string $cssFileName The css file's name with out the .css ending
 	 * @param string $cssFile Css file reference
-	 * @return boolean TRUE if the css file was added, FALSE otherwise
+	 * @return bool TRUE if the css file was added, FALSE otherwise
 	 */
 	public function addCssFile($cssFileName, $cssFile) {
 		$cssFileAdded = FALSE;

@@ -73,7 +73,7 @@ class Md5Salt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements \T
 	 *
 	 * @param string $plainPW plain-text password to compare with salted hash
 	 * @param string $saltedHashPW salted hash to compare plain-text password with
-	 * @return boolean TRUE, if plain-text password matches the salted hash, otherwise FALSE
+	 * @return bool TRUE, if plain-text password matches the salted hash, otherwise FALSE
 	 */
 	public function checkPassword($plainPW, $saltedHashPW) {
 		$isCorrect = FALSE;
@@ -129,7 +129,7 @@ class Md5Salt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements \T
 	/**
 	 * Returns whether all prerequisites for the hashing methods are matched
 	 *
-	 * @return boolean Method available
+	 * @return bool Method available
 	 */
 	public function isAvailable() {
 		return CRYPT_MD5;
@@ -138,7 +138,7 @@ class Md5Salt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements \T
 	/**
 	 * Returns length of a MD5 salt in bytes.
 	 *
-	 * @return integer Length of a MD5 salt in bytes
+	 * @return int Length of a MD5 salt in bytes
 	 */
 	public function getSaltLength() {
 		return self::$saltLengthMD5;
@@ -172,7 +172,7 @@ class Md5Salt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements \T
 	 * with class ext_update.
 	 *
 	 * @param string $passString Salted hash to check if it needs an update
-	 * @return boolean TRUE if salted hash needs an update, otherwise FALSE
+	 * @return bool TRUE if salted hash needs an update, otherwise FALSE
 	 */
 	public function isHashUpdateNeeded($passString) {
 		return FALSE;
@@ -182,7 +182,7 @@ class Md5Salt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements \T
 	 * Method determines if a given string is a valid salt
 	 *
 	 * @param string $salt String to check
-	 * @return boolean TRUE if it's valid salt, otherwise FALSE
+	 * @return bool TRUE if it's valid salt, otherwise FALSE
 	 */
 	public function isValidSalt($salt) {
 		$isValid = ($skip = FALSE);
@@ -211,7 +211,7 @@ class Md5Salt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements \T
 	 * Method determines if a given string is a valid salted hashed password.
 	 *
 	 * @param string $saltedPW String to check
-	 * @return boolean TRUE if it's valid salted hashed password, otherwise FALSE
+	 * @return bool TRUE if it's valid salted hashed password, otherwise FALSE
 	 */
 	public function isValidSaltedPW($saltedPW) {
 		$isValid = FALSE;

@@ -201,7 +201,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 	 * Render the option tags.
 	 *
 	 * @param mixed $value Value to check for
-	 * @return boolean TRUE if the value should be marked a s selected; FALSE otherwise
+	 * @return bool TRUE if the value should be marked a s selected; FALSE otherwise
 	 */
 	protected function isSelected($value) {
 		$selectedValue = $this->getSelectedValue();

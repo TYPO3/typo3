@@ -31,7 +31,7 @@ class ElementCounter implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Raise the element counter by one
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getElementId() {
 		$elementId = $this->elementCounter;

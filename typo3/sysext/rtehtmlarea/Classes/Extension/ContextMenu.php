@@ -56,8 +56,8 @@ class ContextMenu extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
-	 * @param 	int		Relative id of the RTE editing area in the form
-	 * @return string		JS configuration for registered plugins
+	 * @param int Relative id of the RTE editing area in the form
+	 * @return string JS configuration for registered plugins
 	 */
 	public function buildJavascriptConfiguration($editorId) {
 		$registerRTEinJavascriptString = '';

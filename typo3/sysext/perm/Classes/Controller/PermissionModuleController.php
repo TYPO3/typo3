@@ -273,7 +273,7 @@ class PermissionModuleController {
 	/**
 	 * Create the panel of buttons for submitting the form or otherwise perform operations.
 	 *
-	 * @return 	array		all available buttons as an assoc. array
+	 * @return array all available buttons as an assoc. array
 	 */
 	protected function getButtons() {
 		$buttons = array(

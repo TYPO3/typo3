@@ -178,7 +178,7 @@ abstract class AbstractService {
 	/**
 	 * Returns the last error number from the error stack.
 	 *
-	 * @return integer|boolean Error number (or TRUE if no error)
+	 * @return int|bool Error number (or TRUE if no error)
 	 */
 	public function getLastError() {
 		// Means all is ok - no error
@@ -246,7 +246,7 @@ abstract class AbstractService {
 	 * check the availability of external programs
 	 *
 	 * @param string $progList Comma list of programs 'perl,python,pdftotext'
-	 * @return boolean Return FALSE if one program was not found
+	 * @return bool Return FALSE if one program was not found
 	 */
 	public function checkExec($progList) {
 		$ret = TRUE;
@@ -371,7 +371,7 @@ abstract class AbstractService {
 	/**
 	 * Delete registered temporary files.
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function unlinkTempFiles() {
 		foreach ($this->tempFiles as $absFile) {
@@ -491,7 +491,7 @@ abstract class AbstractService {
 	 * The class have to do a strict check if the service is available.
 	 * example: check if the perl interpreter is available which is needed to run an extern perl script.
 	 *
-	 * @return boolean TRUE if the service is available
+	 * @return bool TRUE if the service is available
 	 */
 	public function init() {
 		// look in makeInstanceService()

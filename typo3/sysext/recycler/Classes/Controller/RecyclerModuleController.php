@@ -21,7 +21,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 /**
  * Module 'Recycler' for the 'recycler' extension.
  *
- * @author 	Julian Kleinhans <typo3@kj187.de>
+ * @author Julian Kleinhans <typo3@kj187.de>
  */
 class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
@@ -56,7 +56,7 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 	/**
 	 * Initializes the Module
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function initialize() {
 		parent::init();
@@ -87,7 +87,7 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 	/**
 	 * Renders the content of the module.
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function render() {
 		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('title'));
@@ -105,7 +105,7 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 	/**
 	 * Flushes the rendered content to browser.
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function flush() {
 		$content = $this->doc->moduleBody($this->pageRecord, $this->getDocHeaderButtons(), $this->getTemplateMarkers());
@@ -119,7 +119,7 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 	/**
 	 * Determines whether the current user is admin.
 	 *
-	 * @return 	boolean		Whether the current user is admin
+	 * @return bool Whether the current user is admin
 	 */
 	protected function isCurrentUserAdmin() {
 		return (bool) $GLOBALS['BE_USER']->user['admin'];
@@ -128,7 +128,7 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 	/**
 	 * Loads data in the HTML head section (e.g. JavaScript or stylesheet information).
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	protected function loadHeaderData() {
 		// Load CSS Stylesheets:
@@ -152,7 +152,7 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 	/**
 	 * Gets the JavaScript configuration for the Ext JS interface.
 	 *
-	 * @return 	array		The JavaScript configuration
+	 * @return array The JavaScript configuration
 	 */
 	protected function getJavaScriptConfiguration() {
 		$configuration = array(
@@ -173,7 +173,7 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 	/**
 	 * Gets the labels to be used in JavaScript in the Ext JS interface.
 	 *
-	 * @return 	array		The labels to be used in JavaScript
+	 * @return array The labels to be used in JavaScript
 	 */
 	protected function getJavaScriptLabels() {
 		$coreLabels = array(
@@ -196,10 +196,10 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 	/**
 	 * Gets labels to be used in JavaScript fetched from the current locallang file.
 	 *
-	 * @param 	string		$selectionPrefix: Prefix to select the correct labels (default: 'js.')
-	 * @param 	string		$stripFromSelectionName: Sub-prefix to be removed from label names in the result (default: '')
-	 * @return 	array		Labels to be used in JavaScript of the current locallang file
-	 * @todo 	Check, whether this method can be moved in a generic way to $GLOBALS['LANG']
+	 * @param string $selectionPrefix: Prefix to select the correct labels (default: 'js.')
+	 * @param string $stripFromSelectionName: Sub-prefix to be removed from label names in the result (default: '')
+	 * @return array Labels to be used in JavaScript of the current locallang file
+	 * @todo Check, whether this method can be moved in a generic way to $GLOBALS['LANG']
 	 */
 	protected function getJavaScriptLabelsFromLocallang($selectionPrefix = 'js.', $stripFromSelectionName = '') {
 		$extraction = array();
@@ -219,7 +219,7 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 	/**
 	 * Gets the buttons that shall be rendered in the docHeader.
 	 *
-	 * @return 	array		Available buttons for the docHeader
+	 * @return array Available buttons for the docHeader
 	 */
 	protected function getDocHeaderButtons() {
 		$buttons = array(
@@ -235,7 +235,7 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 	/**
 	 * Gets the button to set a new shortcut in the backend (if current user is allowed to).
 	 *
-	 * @return 	string		HTML representation of the shortcut button
+	 * @return string HTML representation of the shortcut button
 	 */
 	protected function getShortcutButton() {
 		$result = '';
@@ -248,7 +248,7 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 	/**
 	 * Gets the filled markers that are used in the HTML template.
 	 *
-	 * @return 	array		The filled marker array
+	 * @return array The filled marker array
 	 */
 	protected function getTemplateMarkers() {
 		$markers = array(
@@ -262,7 +262,7 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 	/**
 	 * Gets the function menu selector for this backend module.
 	 *
-	 * @return 	string		The HTML representation of the function menu selector
+	 * @return string The HTML representation of the function menu selector
 	 */
 	protected function getFunctionMenu() {
 		return BackendUtility::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
@@ -271,9 +271,9 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 	/**
 	 * Gets data from the session of the current backend user.
 	 *
-	 * @param 	string		$identifier: The identifier to be used to get the data
-	 * @param 	string		$default: The default date to be used if nothing was found in the session
-	 * @return 	string		The accordant data in the session of the current backend user
+	 * @param string $identifier: The identifier to be used to get the data
+	 * @param string $default: The default date to be used if nothing was found in the session
+	 * @return string The accordant data in the session of the current backend user
 	 */
 	protected function getDataFromSession($identifier, $default = NULL) {
 		$sessionData = &$GLOBALS['BE_USER']->uc['tx_recycler'];

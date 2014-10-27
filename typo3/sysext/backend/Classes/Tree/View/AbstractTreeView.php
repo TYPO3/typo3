@@ -592,7 +592,7 @@ abstract class AbstractTreeView {
 	 * Extending parent function
 	 *
 	 * @param int $id Record id/key
-	 * @return boolean
+	 * @return bool
 	 * @access private
 	 * @see \TYPO3\CMS\Backend\Tree\View\PageTreeView::expandNext()
 	 */
@@ -710,7 +710,7 @@ abstract class AbstractTreeView {
 	 * Returns the id from the record (typ. uid)
 	 *
 	 * @param array $row Record array
-	 * @return integer The "uid" field value.
+	 * @return int The "uid" field value.
 	 */
 	public function getId($row) {
 		return $row['uid'];
@@ -739,7 +739,7 @@ abstract class AbstractTreeView {
 	 * @param string $depthData HTML-code prefix for recursive calls.
 	 * @param string $blankLineCode ? (internal)
 	 * @param string $subCSSclass CSS class to use for <td> sub-elements
-	 * @return integer The count of items on the level
+	 * @return int The count of items on the level
 	 */
 	public function getTree($uid, $depth = 999, $depthData = '', $blankLineCode = '', $subCSSclass = '') {
 		// Buffer for id hierarchy is reset:
@@ -824,7 +824,7 @@ abstract class AbstractTreeView {
 	 * Returns the number of records having the parent id, $uid
 	 *
 	 * @param int $uid Id to count subitems for
-	 * @return integer
+	 * @return int
 	 * @access private
 	 */
 	public function getCount($uid) {
@@ -890,7 +890,7 @@ abstract class AbstractTreeView {
 	 * Getting the tree data: Counting elements in resource
 	 *
 	 * @param mixed $res Data handle
-	 * @return integer number of items
+	 * @return int number of items
 	 * @access private
 	 * @see getDataInit()
 	 */

@@ -333,7 +333,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * Returns TRUE if user is admin
 	 * Basically this function evaluates if the ->user[admin] field has bit 0 set. If so, user is admin.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isAdmin() {
 		return is_array($this->user) && ($this->user['admin'] & 1) == 1;
@@ -345,7 +345,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * Will return TRUE also if the user is a member of a group through subgroups.
 	 *
 	 * @param int $groupId Group ID to look for in $this->groupList
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isMemberOfGroup($groupId) {
 		$groupId = (int)$groupId;
@@ -368,7 +368,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 *
 	 * @param array $row Is the pagerow for which the permissions is checked
 	 * @param int $perms Is the binary representation of the permission we are going to check. Every bit in this number represents a permission that must be set. See function explanation.
-	 * @return boolean
+	 * @return bool
 	 */
 	public function doesUserHaveAccess($row, $perms) {
 		$userPerms = $this->calcPerms($row);
@@ -425,7 +425,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @param array $conf $MCONF array of a backend module!
 	 * @param bool $exitOnError If set, an array will issue an error message and exit.
 	 * @throws \RuntimeException
-	 * @return boolean Will return TRUE if $MCONF['access'] is not set at all, if the BE_USER is admin or if the module is enabled in the be_users/be_groups records of the user (specifically enabled). Will return FALSE if the module name is not even found in $TBE_MODULES
+	 * @return bool Will return TRUE if $MCONF['access'] is not set at all, if the BE_USER is admin or if the module is enabled in the be_users/be_groups records of the user (specifically enabled). Will return FALSE if the module name is not even found in $TBE_MODULES
 	 */
 	public function modAccess($conf, $exitOnError) {
 		if (!BackendUtility::isModuleSetInTBE_MODULES($conf['name'])) {
@@ -516,7 +516,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * If the user is admin, 31 is returned	(full permissions for all five flags)
 	 *
 	 * @param array $row Input page row with all perms_* fields available.
-	 * @return integer Bitwise representation of the users permissions in relation to input page row, $row
+	 * @return int Bitwise representation of the users permissions in relation to input page row, $row
 	 */
 	public function calcPerms($row) {
 		// Return 31 for admin users.
@@ -561,7 +561,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * a loaded extension, browser/client type and a configuration option in ->uc[edit_RTE]
 	 * The reasons for a FALSE return can be found in $this->RTE_errors
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isRTE() {
 		// Start:
@@ -592,7 +592,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 *
 	 * @param string $type The type value; "webmounts", "filemounts", "pagetypes_select", "tables_select", "tables_modify", "non_exclude_fields", "modules
 	 * @param string $value String to search for in the groupData-list
-	 * @return boolean TRUE if permission is granted (that is, the value was found in the groupData list - or the BE_USER is "admin")
+	 * @return bool TRUE if permission is granted (that is, the value was found in the groupData list - or the BE_USER is "admin")
 	 */
 	public function check($type, $value) {
 		if (isset($this->groupData[$type])) {
@@ -610,7 +610,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @param string $field Field name (must be configured in TCA and of type "select" with authMode set!)
 	 * @param string $value Value to evaluation (single value, must not contain any of the chars ":,|")
 	 * @param string $authMode Auth mode keyword (explicitAllow, explicitDeny, individual)
-	 * @return boolean Whether access is granted or not
+	 * @return bool Whether access is granted or not
 	 */
 	public function checkAuthMode($table, $field, $value, $authMode) {
 		// Admin users can do anything:
@@ -672,7 +672,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * Checking if a language value (-1, 0 and >0 for sys_language records) is allowed to be edited by the user.
 	 *
 	 * @param int $langValue Language value to evaluate
-	 * @return boolean Returns TRUE if the language value is allowed, otherwise FALSE.
+	 * @return bool Returns TRUE if the language value is allowed, otherwise FALSE.
 	 */
 	public function checkLanguageAccess($langValue) {
 		// The users language list must be non-blank - otherwise all languages are allowed.
@@ -691,7 +691,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 *
 	 * @param string $table The table
 	 * @param array $record The current record
-	 * @return boolean
+	 * @return bool
 	 */
 	public function checkFullLanguagesAccess($table, $record) {
 		$recordLocalizationAccess = $this->checkLanguageAccess(0);
@@ -732,7 +732,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @param bool $newRecord Set, if testing a new (non-existing) record array. Will disable certain checks that doesn't make much sense in that context.
 	 * @param bool $deletedRecord Set, if testing a deleted record array.
 	 * @param bool $checkFullLanguageAccess Set, whenever access to all translations of the record is required
-	 * @return boolean TRUE if OK, otherwise FALSE
+	 * @return bool TRUE if OK, otherwise FALSE
 	 */
 	public function recordEditAccessInternals($table, $idOrRow, $newRecord = FALSE, $deletedRecord = FALSE, $checkFullLanguageAccess = FALSE) {
 		if (!isset($GLOBALS['TCA'][$table])) {
@@ -836,7 +836,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @param int $compiledPermissions Could typically be the "compiled permissions" integer returned by ->calcPerms
 	 * @param string $tableName Is the tablename to check: If "pages" table then edit,new,delete and editcontent permissions can be checked. Other tables will be checked for "editcontent" only (and $type will be ignored)
 	 * @param string $actionType For $tableName='pages' this can be 'edit' (2), 'new' (8 or 16), 'delete' (4), 'editcontent' (16). For all other tables this is ignored. (16 is used)
-	 * @return boolean
+	 * @return bool
 	 * @access public (used by typo3/alt_clickmenu.php)
 	 */
 	public function isPSet($compiledPermissions, $tableName, $actionType = '') {
@@ -869,7 +869,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	/**
 	 * Returns TRUE if the BE_USER is allowed to *create* shortcuts in the backend modules
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function mayMakeShortcut() {
 		return $this->getTSConfigVal('options.enableBookmarks')
@@ -995,7 +995,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 *
 	 * @param int $pid Page id. This value must be the _ORIG_uid if available: So when you have pages versionized as "page" or "element" you must supply the id of the page version in the workspace!
 	 * @param string $table Table name
-	 * @return boolean TRUE if OK.
+	 * @return bool TRUE if OK.
 	 */
 	public function workspaceCreateNewRecord($pid, $table) {
 		if ($res = $this->workspaceAllowLiveRecordsInPID($pid, $table)) {
@@ -1017,7 +1017,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @param string $table Table of the record
 	 * @param int $id UID of record
 	 * @param int $recpid PID of record
-	 * @return boolean TRUE if ok.
+	 * @return bool TRUE if ok.
 	 */
 	public function workspaceAllowAutoCreation($table, $id, $recpid) {
 		// Auto-creation of version: In offline workspace, test if versioning is
@@ -1043,7 +1043,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * An option for custom workspaces allows members to also edit when the stage is "Review"
 	 *
 	 * @param int $stage Stage id from an element: -1,0 = editing, 1 = reviewer, >1 = owner
-	 * @return boolean TRUE if user is allowed access
+	 * @return bool TRUE if user is allowed access
 	 */
 	public function workspaceCheckStageForCurrent($stage) {
 		// Always allow for admins
@@ -1107,7 +1107,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * draft workspace if the user has access to Live workspace.
 	 *
 	 * @param int $wsid Workspace UID; 0,1+
-	 * @return boolean Returns TRUE if the user has access to publish content from the workspace ID given.
+	 * @return bool Returns TRUE if the user has access to publish content from the workspace ID given.
 	 */
 	public function workspacePublishAccess($wsid) {
 		if ($this->isAdmin()) {
@@ -1137,7 +1137,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	/**
 	 * Workspace swap-mode access?
 	 *
-	 * @return boolean Returns TRUE if records can be swapped in the current workspace, otherwise FALSE
+	 * @return bool Returns TRUE if records can be swapped in the current workspace, otherwise FALSE
 	 */
 	public function workspaceSwapAccess() {
 		if ($this->workspace > 0 && (int)$this->workspaceRec['swap_modes'] === 2) {
@@ -1182,7 +1182,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 *
 	 * @param string $objectString Object string, eg. "somestring.someproperty.somesubproperty
 	 * @return string The value for that object string (object path)
-	 * @see 	getTSConfig()
+	 * @see getTSConfig()
 	 */
 	public function getTSConfigVal($objectString) {
 		$TSConf = $this->getTSConfig($objectString);
@@ -1194,7 +1194,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 *
 	 * @param string $objectString Object string, eg. "somestring.someproperty.somesubproperty
 	 * @return array The properties for that object string (object path) - if any
-	 * @see 	getTSConfig()
+	 * @see getTSConfig()
 	 */
 	public function getTSConfigProp($objectString) {
 		$TSConf = $this->getTSConfig($objectString);
@@ -1224,7 +1224,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * 128 - other (not used yet)
 	 *
 	 * @param int $bitmask Bitmask
-	 * @return boolean TRUE if the confirmation should be shown
+	 * @return bool TRUE if the confirmation should be shown
 	 */
 	public function jsConfirmation($bitmask) {
 		$alertPopup = $this->getTSConfig('options.alertPopups');
@@ -2037,7 +2037,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * Sets a temporary workspace in the context of the current backend user.
 	 *
 	 * @param int $workspaceId
-	 * @return boolean
+	 * @return bool
 	 */
 	public function setTemporaryWorkspace($workspaceId) {
 		$result = FALSE;
@@ -2078,7 +2078,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * If EXT:workspaces is not installed the user will be pushed the the
 	 * Live workspace
 	 *
-	 * @return integer Default workspace id. If no workspace is available it will be "-99
+	 * @return int Default workspace id. If no workspace is available it will be "-99
 	 */
 	public function getDefaultWorkspace() {
 		$defaultWorkspace = -99;
@@ -2117,7 +2117,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @param int $event_pid The page_uid (pid) where the event occurred. Used to select log-content for specific pages.
 	 * @param string $NEWid Special field used by tce_main.php. NEWid string of newly created records.
 	 * @param int $userId Alternative Backend User ID (used for logging login actions where this is not yet known).
-	 * @return integer Log entry ID.
+	 * @return int Log entry ID.
 	 */
 	public function writelog($type, $action, $error, $details_nr, $details, $data, $tablename = '', $recuid = '', $recpid = '', $event_pid = -1, $NEWid = '', $userId = 0) {
 		if (!$userId && isset($this->user['uid'])) {
@@ -2150,7 +2150,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @param string $message Log message
 	 * @param string $extKey Option extension key / module name
 	 * @param int $error Error level. 0 = message, 1 = error (user problem), 2 = System Error (which should not happen), 3 = security notice (admin)
-	 * @return integer Log entry UID
+	 * @return int Log entry UID
 	 */
 	public function simplelog($message, $extKey = '', $error = 0) {
 		return $this->writelog(4, 0, $error, 0, ($extKey ? '[' . $extKey . '] ' : '') . $message, array());
@@ -2227,7 +2227,7 @@ This is a dump of the failures:
 	 * an IP-list is found in the User TSconfig objString "options.lockToIP",
 	 * then make an IP comparison with REMOTE_ADDR and return the outcome (TRUE/FALSE)
 	 *
-	 * @return boolean TRUE, if IP address validates OK (or no check is done at all)
+	 * @return bool TRUE, if IP address validates OK (or no check is done at all)
 	 */
 	public function checkLockToIP() {
 		$out = 1;
@@ -2279,7 +2279,7 @@ This is a dump of the failures:
 	/**
 	 * If the backend script is in CLI mode, it will try to load a backend user named by the CLI module name (in lowercase)
 	 *
-	 * @return boolean Returns TRUE if a CLI user was loaded, otherwise FALSE!
+	 * @return bool Returns TRUE if a CLI user was loaded, otherwise FALSE!
 	 */
 	public function checkCLIuser() {
 		// First, check if cliMode is enabled:
@@ -2443,7 +2443,7 @@ This is a dump of the failures:
 	 * + backend user is used in CLI context and adminOnly is explicitly set to "2"
 	 * + backend user is being controlled by an admin user
 	 *
-	 * @return boolean Whether a backend user is allowed to access the backend
+	 * @return bool Whether a backend user is allowed to access the backend
 	 */
 	protected function isUserAllowedToLogin() {
 		$isUserAllowedToLogin = FALSE;

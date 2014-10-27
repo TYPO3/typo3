@@ -21,8 +21,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * A RTE using the htmlArea editor
  *
- * @author 	Philipp Borgmann <philipp.borgmann@gmx.de>
- * @author 	Stanislas Rolland <typo3(arobas)sjbr.ca>
+ * @author Philipp Borgmann <philipp.borgmann@gmx.de>
+ * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
 class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 
@@ -244,7 +244,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 * Returns TRUE if the RTE is available. Here you check if the browser requirements are met.
 	 * If there are reasons why the RTE cannot be displayed you simply enter them as text in ->errorLog
 	 *
-	 * @return 	boolean		TRUE if this RTE object offers an RTE in the current browser environment
+	 * @return bool TRUE if this RTE object offers an RTE in the current browser environment
 	 */
 	public function isAvailable() {
 		$this->client = $this->clientInfo();
@@ -504,7 +504,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	/**
 	 * Add links to content style sheets to document header
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	protected function addPageStyle() {
 		$contentCssFileNames = $this->getContentCssFileNames();
@@ -547,7 +547,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	/**
 	 * Add links to skin style sheet(s) to document header
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	protected function addSkin() {
 		// Get skin file name from Page TSConfig if any
@@ -574,11 +574,11 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	/**
 	 * Add style sheet file to document header
 	 *
-	 * @param 	string		$key: some key identifying the style sheet
-	 * @param 	string		$href: uri to the style sheet file
-	 * @param 	string		$title: value for the title attribute of the link element
-	 * @param 	string		$relation: value for the rel attribute of the link element
-	 * @return 	void
+	 * @param string $key: some key identifying the style sheet
+	 * @param string $href: uri to the style sheet file
+	 * @param string $title: value for the title attribute of the link element
+	 * @param string $relation: value for the rel attribute of the link element
+	 * @return void
 	 */
 	protected function addStyleSheet($key, $href, $title = '', $relation = 'stylesheet') {
 		// If it was not known that an RTE-enabled would be created when the page was first created, the css would not be added to head
@@ -592,7 +592,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	/**
 	 * Initialize toolbar configuration and enable registered plugins
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	protected function initializeToolbarConfiguration() {
 		// Enable registred plugins
@@ -883,12 +883,12 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	/**
 	 * Return the Javascript code for configuring the RTE
 	 *
-	 * @param	int		$RTEcounter: The index number of the current RTE editing area within the form.
-	 * @param 	string		$table: The table that includes this RTE (optional, necessary for IRRE).
-	 * @param 	string		$uid: The uid of that table that includes this RTE (optional, necessary for IRRE).
-	 * @param 	string		$field: The field of that record that includes this RTE (optional).
-	 * @param	string		$textAreaId ID of the textarea, to have a unigue number for the editor
-	 * @return 	string		the Javascript code for configuring the RTE
+	 * @param int $RTEcounter: The index number of the current RTE editing area within the form.
+	 * @param string $table: The table that includes this RTE (optional, necessary for IRRE).
+	 * @param string $uid: The uid of that table that includes this RTE (optional, necessary for IRRE).
+	 * @param string $field: The field of that record that includes this RTE (optional).
+	 * @param string $textAreaId ID of the textarea, to have a unigue number for the editor
+	 * @return string the Javascript code for configuring the RTE
 	 */
 	public function registerRTEinJS($RTEcounter, $table = '', $uid = '', $field = '', $textAreaId = '') {
 		$configureRTEInJavascriptString = '
@@ -1023,8 +1023,8 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	/**
 	 * Return TRUE, if the plugin can be loaded
 	 *
-	 * @param 	string		$pluginId: The identification string of the plugin
-	 * @return 	boolean		TRUE if the plugin can be loaded
+	 * @param string $pluginId: The identification string of the plugin
+	 * @return bool TRUE if the plugin can be loaded
 	 */
 	public function isPluginEnabled($pluginId) {
 		return in_array($pluginId, $this->pluginEnabledArray);
@@ -1033,7 +1033,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	/**
 	 * Build the default content style sheet
 	 *
-	 * @return string		Style sheet
+	 * @return string Style sheet
 	 * @deprecated since TYPO3 6.0, will be removed in TYPO3 6.2
 	 */
 	public function buildStyleSheet() {
@@ -1044,8 +1044,8 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	/**
 	 * Return Javascript configuration of classes
 	 *
-	 * @param	int		$RTEcounter: The index number of the current RTE editing area within the form.
-	 * @return 	string		Javascript configuration of classes
+	 * @param int $RTEcounter: The index number of the current RTE editing area within the form.
+	 * @return string Javascript configuration of classes
 	 */
 	public function buildJSClassesConfig($RTEcounter) {
 		// Include JS arrays of configured classes
@@ -1109,8 +1109,8 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 * Unquote regular expression values
 	 * Replace empty arrays with empty objects
 	 *
-	 * @param 	array		$conf: Page TSConfig configuration array
-	 * @return 	string		nested JS array definition
+	 * @param array $conf: Page TSConfig configuration array
+	 * @return string nested JS array definition
 	 */
 	public function buildNestedJSArray($conf) {
 		$convertedConf = GeneralUtility::removeDotsFromTS($conf);
@@ -1120,7 +1120,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	/**
 	 * Return a Javascript localization array for htmlArea RTE
 	 *
-	 * @return 	string		Javascript localization array
+	 * @return string Javascript localization array
 	 */
 	public function buildJSMainLangArray() {
 		$JSLanguageArray = 'HTMLArea.I18N = new Object();' . LF;
@@ -1143,12 +1143,12 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	/**
 	 * Writes contents in a file in typo3temp/rtehtmlarea directory and returns the file name
 	 *
-	 * @param 	string		$sourceFileName: The name of the file from which the contents should be extracted
-	 * @param 	string		$label: A label to insert at the beginning of the name of the file
-	 * @param 	string		$fileExtension: The file extension of the file, defaulting to 'js'
-	 * @param 	string		$contents: The contents to write into the file if no $sourceFileName is provided
-	 * @param	bool		$concatenate Not used anymore
-	 * @return 	string		The name of the file writtten to typo3temp/rtehtmlarea
+	 * @param string $sourceFileName: The name of the file from which the contents should be extracted
+	 * @param string $label: A label to insert at the beginning of the name of the file
+	 * @param string $fileExtension: The file extension of the file, defaulting to 'js'
+	 * @param string $contents: The contents to write into the file if no $sourceFileName is provided
+	 * @param bool $concatenate Not used anymore
+	 * @return string The name of the file writtten to typo3temp/rtehtmlarea
 	 */
 	public function writeTemporaryFile($sourceFileName = '', $label, $fileExtension = 'js', $contents = '', $concatenate = FALSE) {
 		if ($sourceFileName) {
@@ -1181,8 +1181,8 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	/**
 	 * Return a file name containing the main JS language array for HTMLArea
 	 *
-	 * @param	int		$RTEcounter: The index number of the current RTE editing area within the form.
-	 * @return 	string		filename
+	 * @param int $RTEcounter: The index number of the current RTE editing area within the form.
+	 * @return string filename
 	 */
 	public function buildJSMainLangFile($RTEcounter) {
 		$contents = $this->buildJSMainLangArray() . LF;
@@ -1195,8 +1195,8 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	/**
 	 * Return a Javascript localization array for the plugin
 	 *
-	 * @param 	string		$plugin: identification string of the plugin
-	 * @return 	string		Javascript localization array
+	 * @param string $plugin: identification string of the plugin
+	 * @return string Javascript localization array
 	 */
 	public function buildJSLangArray($plugin) {
 		$extensionKey = is_object($this->registeredPlugins[$plugin]) ? $this->registeredPlugins[$plugin]->getExtensionKey() : $this->ID;
@@ -1276,8 +1276,8 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	/**
 	 * Localize a string using the language of the content element rather than the language of the BE interface
 	 *
-	 * @param 	string		string: the label to be localized
-	 * @return 	string		Localized string.
+	 * @param string string: the label to be localized
+	 * @return string Localized string.
 	 */
 	public function getLLContent($string) {
 		return GeneralUtility::quoteJSvalue($this->contentLanguageService->sL($string));
@@ -1341,11 +1341,11 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 * Return the Javascript code for copying the HTML code from the editor into the hidden input field.
 	 * This is for submit function of the form.
 	 *
-	 * @param	int		$RTEcounter: The index number of the current RTE editing area within the form.
-	 * @param 	string		$formName: the name of the form
-	 * @param 	string		$textareaId: the id of the textarea
-	 * @param 	string		$textareaName: the name of the textarea
-	 * @return 	string		Javascript code
+	 * @param int $RTEcounter: The index number of the current RTE editing area within the form.
+	 * @param string $formName: the name of the form
+	 * @param string $textareaId: the id of the textarea
+	 * @param string $textareaName: the name of the textarea
+	 * @return string Javascript code
 	 */
 	public function setSaveRTE($RTEcounter, $formName, $textareaId, $textareaName) {
 		return 'if (RTEarea["' . $textareaId . '"]) { document.' . $formName . '["' . $textareaName . '"].value = RTEarea["' . $textareaId . '"].editor.getHTML(); } else { OK = 0; };';
@@ -1355,10 +1355,10 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 * Return the Javascript code for copying the HTML code from the editor into the hidden input field.
 	 * This is for submit function of the form.
 	 *
-	 * @param	int		$RTEcounter: The index number of the current RTE editing area within the form.
-	 * @param 	string		$formName: the name of the form
-	 * @param 	string		$textareaId: the id of the textarea
-	 * @return 	string		Javascript code
+	 * @param int $RTEcounter: The index number of the current RTE editing area within the form.
+	 * @param string $formName: the name of the form
+	 * @param string $textareaId: the id of the textarea
+	 * @return string Javascript code
 	 */
 	public function setDeleteRTE($RTEcounter, $formName, $textareaId) {
 		return 'if (RTEarea["' . $textareaId . '"]) { RTEarea["' . $textareaId . '"].deleted = true;}';
@@ -1367,7 +1367,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	/**
 	 * Return TRUE if we are in the FE, but not in the FE editing feature of BE.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function is_FE() {
 		return is_object($GLOBALS['TSFE']) && !$this->isFrontendEditActive() && TYPO3_MODE == 'FE';
@@ -1385,8 +1385,8 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	/**
 	 * Client Browser Information
 	 *
-	 * @param 	string		$userAgent: The useragent string, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT')
-	 * @return 	array		Contains keys "useragent", "browser", "version", "system
+	 * @param string $userAgent: The useragent string, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT')
+	 * @return array Contains keys "useragent", "browser", "version", "system
 	 */
 	public function clientInfo($userAgent = '') {
 		if (!$userAgent) {

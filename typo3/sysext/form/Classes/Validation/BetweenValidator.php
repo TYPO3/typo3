@@ -56,7 +56,7 @@ class BetweenValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator impl
 	/**
 	 * Returns TRUE if submitted value validates according to rule
 	 *
-	 * @return boolean
+	 * @return bool
 	 * @see \TYPO3\CMS\Form\Validation\ValidatorInterface::isValid()
 	 */
 	public function isValid() {

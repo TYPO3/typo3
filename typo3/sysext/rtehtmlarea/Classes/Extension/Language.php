@@ -63,8 +63,8 @@ class Language extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
-	 * @param 	int		Relative id of the RTE editing area in the form
-	 * @return string		JS configuration for registered plugins
+	 * @param int Relative id of the RTE editing area in the form
+	 * @return string JS configuration for registered plugins
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {
 		$button = 'language';
@@ -96,7 +96,7 @@ class Language extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	 * and where the value are the name of the language in the current language
 	 * Note: we exclude sacred and constructed languages
 	 *
-	 * @return 	array		An array of names of languages
+	 * @return array An array of names of languages
 	 */
 	public function getLanguages() {
 		$nameArray = array();
@@ -136,8 +136,8 @@ class Language extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	/**
 	 * Return an updated array of toolbar enabled buttons
 	 *
-	 * @param 	array		$show: array of toolbar elements that will be enabled, unless modified here
-	 * @return 	array		toolbar button array, possibly updated
+	 * @param array $show: array of toolbar elements that will be enabled, unless modified here
+	 * @return array toolbar button array, possibly updated
 	 */
 	public function applyToolbarConstraints($show) {
 		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables')) {

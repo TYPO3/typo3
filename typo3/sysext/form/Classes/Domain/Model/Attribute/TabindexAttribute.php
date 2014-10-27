@@ -56,7 +56,7 @@ class TabindexAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractA
 	 * in reverse. When the end (or beginning) of the tabbing order is reached,
 	 * user agents may circle back to the beginning (or end).
 	 *
-	 * @return integer Attribute value
+	 * @return int Attribute value
 	 */
 	public function getValue() {
 		$attribute = (int)$this->value;

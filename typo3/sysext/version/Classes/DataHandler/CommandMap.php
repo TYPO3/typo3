@@ -604,7 +604,7 @@ class CommandMap {
 	 * Callback to get the liveId of an dependent element.
 	 *
 	 * @param ElementEntity $element
-	 * @return integer
+	 * @return int
 	 */
 	protected function getElementLiveIdCallback(ElementEntity $element) {
 		return $element->getDataValue('liveId');
@@ -614,7 +614,7 @@ class CommandMap {
 	 * Callback to get the real id of an dependent element.
 	 *
 	 * @param ElementEntity $element
-	 * @return integer
+	 * @return int
 	 */
 	protected function getElementIdCallback(ElementEntity $element) {
 		return $element->getId();

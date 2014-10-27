@@ -139,7 +139,7 @@ abstract class Enumeration implements TypeInterface {
 	 * Check if the value on this enum is a valid value for the enum
 	 *
 	 * @param mixed $value
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isValid($value) {
 		$value = (string) $value;
@@ -185,7 +185,7 @@ abstract class Enumeration implements TypeInterface {
 	 * Compare if the value of the current object value equals the given value
 	 *
 	 * @param mixed $value default
-	 * @return boolean
+	 * @return bool
 	 */
 	public function equals($value) {
 		$value = static::cast($value);

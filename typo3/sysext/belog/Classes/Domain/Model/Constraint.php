@@ -151,7 +151,7 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Get number of log entries to show
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getNumber() {
 		return $this->number;
@@ -189,7 +189,7 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Get time frame
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getTimeFrame() {
 		return (int)$this->timeFrame;
@@ -208,7 +208,7 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Get action
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getAction() {
 		return (int)$this->action;
@@ -227,7 +227,7 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Get group by page
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getGroupByPage() {
 		return (bool) $this->groupByPage;
@@ -284,7 +284,7 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Get calculated start timestamp from query constraints
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getStartTimestamp() {
 		return $this->startTimestamp;
@@ -303,7 +303,7 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Get calculated end timestamp from query constraints
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getEndTimestamp() {
 		return $this->endTimestamp;
@@ -322,7 +322,7 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Get page context
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getIsInPageContext() {
 		return (bool) $this->isInPageContext;
@@ -341,7 +341,7 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Get page id
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getPageId() {
 		return $this->pageId;
@@ -360,7 +360,7 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Get page level depth
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getDepth() {
 		return (int)$this->depth;

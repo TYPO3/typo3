@@ -74,8 +74,8 @@ class DeprecatedRteProperties extends \TYPO3\CMS\Install\Updates\AbstractUpdate 
 	/**
 	 * Function which checks if update is needed. Called in the beginning of an update process.
 	 *
-	 * @param 	string		pointer to description for the update
-	 * @return 	boolean		TRUE if update is needs to be performed, FALSE otherwise.
+	 * @param string pointer to description for the update
+	 * @return bool TRUE if update is needs to be performed, FALSE otherwise.
 	 */
 	public function checkForUpdate(&$description) {
 		$result = FALSE;
@@ -134,9 +134,9 @@ class DeprecatedRteProperties extends \TYPO3\CMS\Install\Updates\AbstractUpdate 
 	/**
 	 * Performs the update itself
 	 *
-	 * @param 	array		pointer where to insert all DB queries made, so they can be shown to the user if wanted
-	 * @param 	string		pointer to output custom messages
-	 * @return 	boolean		TRUE if update succeeded, FALSE otherwise
+	 * @param array pointer where to insert all DB queries made, so they can be shown to the user if wanted
+	 * @param string pointer to output custom messages
+	 * @return bool TRUE if update succeeded, FALSE otherwise
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$customMessages = '';
@@ -173,9 +173,9 @@ class DeprecatedRteProperties extends \TYPO3\CMS\Install\Updates\AbstractUpdate 
 	/**
 	 * Gets the pages with deprecated RTE properties in TSConfig column
 	 *
-	 * @param 	array		pointer where to insert all DB queries made, so they can be shown to the user if wanted
-	 * @param 	string		pointer to output custom messages
-	 * @return 	array		uid and inclusion string for the pages with deprecated RTE properties in TSConfig column
+	 * @param array pointer where to insert all DB queries made, so they can be shown to the user if wanted
+	 * @param string pointer to output custom messages
+	 * @return array uid and inclusion string for the pages with deprecated RTE properties in TSConfig column
 	 */
 	protected function getPagesWithDeprecatedRteProperties(&$dbQueries, &$customMessages) {
 		$fields = 'uid, TSconfig';
@@ -200,8 +200,8 @@ class DeprecatedRteProperties extends \TYPO3\CMS\Install\Updates\AbstractUpdate 
 	/**
 	 * Gets the pages with updateable deprecated RTE properties in TSConfig column
 	 *
-	 * @param 	array		$pages: reference to pages with deprecated property
-	 * @return 	array		uid and inclusion string for the pages with deprecated RTE properties in TSConfig column
+	 * @param array $pages: reference to pages with deprecated property
+	 * @return array uid and inclusion string for the pages with deprecated RTE properties in TSConfig column
 	 */
 	protected function findUpdateablePagesWithDeprecatedRteProperties(&$pages) {
 		foreach ($pages as $index => $page) {
@@ -220,9 +220,9 @@ class DeprecatedRteProperties extends \TYPO3\CMS\Install\Updates\AbstractUpdate 
 	/**
 	 * updates the pages records with updateable Page TSconfig properties
 	 *
-	 * @param 	array		pages records to update, fetched by getTemplates() and filtered by
-	 * @param 	array		pointer where to insert all DB queries made, so they can be shown to the user if wanted
-	 * @param 	string		pointer to output custom messages
+	 * @param array pages records to update, fetched by getTemplates() and filtered by
+	 * @param array pointer where to insert all DB queries made, so they can be shown to the user if wanted
+	 * @param string pointer to output custom messages
 	 */
 	protected function updatePages($pages, &$dbQueries, &$customMessages) {
 		foreach ($pages as $page) {

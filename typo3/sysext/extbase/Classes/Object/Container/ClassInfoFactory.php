@@ -126,7 +126,7 @@ class ClassInfoFactory {
 	 * This method checks if given method can be used for injection
 	 *
 	 * @param string $methodName
-	 * @return boolean
+	 * @return bool
 	 */
 	private function isNameOfInjectMethod($methodName) {
 		if (
@@ -143,7 +143,7 @@ class ClassInfoFactory {
 	 * This method is used to determine if a class is a singleton or not.
 	 *
 	 * @param string $classname
-	 * @return boolean
+	 * @return bool
 	 */
 	private function getIsSingleton($classname) {
 		return in_array('TYPO3\\CMS\\Core\\SingletonInterface', class_implements($classname));
@@ -154,7 +154,7 @@ class ClassInfoFactory {
 	 * method initializeObject.
 	 *
 	 * @param string $classname
-	 * @return boolean
+	 * @return bool
 	 */
 	private function getIsInitializeable($classname) {
 		return method_exists($classname, 'initializeObject');

@@ -311,7 +311,7 @@ class NormalizeCommand {
 	 *
 	 * @throws \InvalidArgumentException If month string can not be converted to integer
 	 * @param string $month Month representation
-	 * @return integer month integer representation between 1 and 12
+	 * @return int month integer representation between 1 and 12
 	 */
 	static protected function normalizeMonth($month) {
 		$timestamp = strtotime('2010-' . $month . '-01');
@@ -328,7 +328,7 @@ class NormalizeCommand {
 	 *
 	 * @throws \InvalidArgumentException If weekday string can not be converted
 	 * @param string $weekday Weekday representation
-	 * @return integer weekday integer representation between 1 and 7
+	 * @return int weekday integer representation between 1 and 7
 	 */
 	static protected function normalizeWeekday($weekday) {
 		$normalizedWeekday = FALSE;

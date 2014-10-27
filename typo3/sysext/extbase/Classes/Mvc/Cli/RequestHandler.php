@@ -66,7 +66,7 @@ class RequestHandler implements \TYPO3\CMS\Extbase\Mvc\RequestHandlerInterface {
 	/**
 	 * This request handler can handle any command line request.
 	 *
-	 * @return boolean If the request is a command line request, TRUE otherwise FALSE
+	 * @return bool If the request is a command line request, TRUE otherwise FALSE
 	 */
 	public function canHandleRequest() {
 		return $this->environmentService->isEnvironmentInCliMode();
@@ -76,7 +76,7 @@ class RequestHandler implements \TYPO3\CMS\Extbase\Mvc\RequestHandlerInterface {
 	 * Returns the priority - how eager the handler is to actually handle the
 	 * request.
 	 *
-	 * @return integer The priority of the request handler.
+	 * @return int The priority of the request handler.
 	 */
 	public function getPriority() {
 		return 100;

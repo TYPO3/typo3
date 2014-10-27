@@ -69,7 +69,7 @@ class LanguageStore implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $fileReference File reference
 	 * @param string $languageKey Valid language key
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasData($fileReference, $languageKey) {
 		if (isset($this->data[$fileReference][$languageKey]) && is_array($this->data[$fileReference][$languageKey])) {

@@ -30,7 +30,7 @@ class BackendUserStartModuleUpdate extends AbstractUpdate {
 	 * Checks if an update is needed
 	 *
 	 * @param string &$description The description for the update
-	 * @return boolean Whether an update is needed (TRUE) or not (FALSE)
+	 * @return bool Whether an update is needed (TRUE) or not (FALSE)
 	 */
 	public function checkForUpdate(&$description) {
 		$backendUsersCount = $this->getDatabaseConnection()->exec_SELECTcountRows('uid', 'be_users');
@@ -48,7 +48,7 @@ class BackendUserStartModuleUpdate extends AbstractUpdate {
 	 *
 	 * @param array &$databaseQueries Queries done in this update
 	 * @param mixed &$customMessages Custom messages
-	 * @return boolean
+	 * @return bool
 	 */
 	public function performUpdate(array &$databaseQueries, &$customMessages) {
 		$backendUsers = $this->getDatabaseConnection()->exec_SELECTgetRows('uid,uc', 'be_users', '1=1');

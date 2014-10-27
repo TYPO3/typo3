@@ -94,7 +94,7 @@ class Status {
 	/**
 	 * Gets the status' severity
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getSeverity() {
 		return $this->severity;

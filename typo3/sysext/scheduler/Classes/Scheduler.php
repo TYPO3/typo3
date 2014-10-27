@@ -50,7 +50,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Adds a task to the pool
 	 *
 	 * @param \TYPO3\CMS\Scheduler\Task\AbstractTask $task The object representing the task to add
-	 * @return boolean TRUE if the task was successfully added, FALSE otherwise
+	 * @return bool TRUE if the task was successfully added, FALSE otherwise
 	 */
 	public function addTask(\TYPO3\CMS\Scheduler\Task\AbstractTask $task) {
 		$taskUid = $task->getTaskUid();
@@ -119,7 +119,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 	 * It is expected to return FALSE if the task was barred from running or if it was not saved properly
 	 *
 	 * @param \TYPO3\CMS\Scheduler\Task\AbstractTask $task The task to execute
-	 * @return boolean Whether the task was saved successfully to the database or not
+	 * @return bool Whether the task was saved successfully to the database or not
 	 */
 	public function executeTask(\TYPO3\CMS\Scheduler\Task\AbstractTask $task) {
 		// Trigger the saving of the task, as this will calculate its next execution time
@@ -189,7 +189,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 	 * TODO: find a way to actually kill the existing jobs
 	 *
 	 * @param \TYPO3\CMS\Scheduler\Task\AbstractTask $task The object representing the task to delete
-	 * @return boolean TRUE if task was successfully deleted, FALSE otherwise
+	 * @return bool TRUE if task was successfully deleted, FALSE otherwise
 	 */
 	public function removeTask(\TYPO3\CMS\Scheduler\Task\AbstractTask $task) {
 		$taskUid = $task->getTaskUid();
@@ -208,7 +208,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Updates a task in the pool
 	 *
 	 * @param \TYPO3\CMS\Scheduler\Task\AbstractTask $task Scheduler task object
-	 * @return boolean False if submitted task was not of proper class
+	 * @return bool False if submitted task was not of proper class
 	 */
 	public function saveTask(\TYPO3\CMS\Scheduler\Task\AbstractTask $task) {
 		$taskUid = $task->getTaskUid();
@@ -357,7 +357,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 	 * This test checks whether the unserialized object is of the right (parent) class or not.
 	 *
 	 * @param object $task The object to test
-	 * @return boolean TRUE if object is a task, FALSE otherwise
+	 * @return bool TRUE if object is a task, FALSE otherwise
 	 */
 	public function isValidTaskObject($task) {
 		return $task instanceof \TYPO3\CMS\Scheduler\Task\AbstractTask;
@@ -383,7 +383,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Schedule the next run of scheduler
 	 * For the moment only the "at"-daemon is used, and only if it is enabled
 	 *
-	 * @return boolean Successfully scheduled next execution using "at"-daemon
+	 * @return bool Successfully scheduled next execution using "at"-daemon
 	 * @see tx_scheduler::fetchTask()
 	 */
 	public function scheduleNextSchedulerRunUsingAtDaemon() {

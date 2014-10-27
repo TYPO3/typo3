@@ -639,7 +639,7 @@ class TestSetup extends Action\AbstractAction {
 	/**
 	 * Find out if ImageMagick or GraphicsMagick is enabled and set up
 	 *
-	 * @return boolean TRUE if enabled and path is set
+	 * @return bool TRUE if enabled and path is set
 	 */
 	protected function isImageMagickEnabledAndConfigured() {
 		$enabled = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im'];

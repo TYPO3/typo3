@@ -29,7 +29,7 @@ class MediaFlexformUpdate extends AbstractUpdate {
 	 *
 	 * @param string &$description The description for the update
 	 * @param int &$showUpdate 0=dont show update; 1=show update and next button; 2=only show description
-	 * @return boolean
+	 * @return bool
 	 */
 	public function checkForUpdate(&$description, &$showUpdate = 0) {
 		$mediaElements = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'tt_content', 'CType = "media" AND pi_flexform LIKE "%<sheet index=\\"sDEF\\">%"');
@@ -48,7 +48,7 @@ class MediaFlexformUpdate extends AbstractUpdate {
 	 *
 	 * @param array &$dbQueries Queries done in this update
 	 * @param mixed &$customMessages Custom messages
-	 * @return boolean Whether the updated was made or not
+	 * @return bool Whether the updated was made or not
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(

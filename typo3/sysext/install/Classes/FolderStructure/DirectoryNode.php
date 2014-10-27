@@ -82,7 +82,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface {
 	/**
 	 * Create a test file and delete again if directory exists
 	 *
-	 * @return boolean TRUE if test file creation was successful
+	 * @return bool TRUE if test file creation was successful
 	 */
 	public function isWritable() {
 		$result = TRUE;
@@ -240,7 +240,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface {
 	/**
 	 * Create a test file and delete again - helper for isWritable
 	 *
-	 * @return boolean TRUE if test file creation was successful
+	 * @return bool TRUE if test file creation was successful
 	 */
 	protected function canFileBeCreated() {
 		$testFileName = uniqid('installToolTest_', TRUE);
@@ -254,7 +254,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface {
 	/**
 	 * Checks if not is a directory
 	 *
-	 * @return boolean True if node is a directory
+	 * @return bool True if node is a directory
 	 */
 	protected function isDirectory() {
 		$path = $this->getAbsolutePath();

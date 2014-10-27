@@ -36,7 +36,7 @@ class FileStorageExtractionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	/**
 	 * Function execute from the Scheduler
 	 *
-	 * @return boolean TRUE on successful execution, FALSE on error
+	 * @return bool TRUE on successful execution, FALSE on error
 	 */
 	public function execute() {
 		$success = FALSE;

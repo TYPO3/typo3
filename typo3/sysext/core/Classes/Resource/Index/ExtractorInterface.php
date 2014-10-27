@@ -51,7 +51,7 @@ interface ExtractorInterface {
 	 *
 	 * Should be between 1 and 100, 100 is more important than 1
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getPriority();
 
@@ -59,7 +59,7 @@ interface ExtractorInterface {
 	 * Returns the execution priority of the extraction Service
 	 * Should be between 1 and 100, 100 means runs as first service, 1 runs at last service
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getExecutionPriority();
 
@@ -67,7 +67,7 @@ interface ExtractorInterface {
 	 * Checks if the given file can be processed by this Extractor
 	 *
 	 * @param Resource\File $file
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canProcess(Resource\File $file);
 

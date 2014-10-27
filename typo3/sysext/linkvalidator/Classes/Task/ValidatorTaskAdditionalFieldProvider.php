@@ -180,7 +180,7 @@ class ValidatorTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
 	 *
 	 * @param array $submittedData Reference to the array containing the data submitted by the user
 	 * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule Reference to the BE module of the Scheduler
-	 * @return boolean TRUE if validation was ok (or selected class is not relevant), FALSE otherwise
+	 * @return bool TRUE if validation was ok (or selected class is not relevant), FALSE otherwise
 	 */
 	public function validateAdditionalFields(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule) {
 		$isValid = TRUE;

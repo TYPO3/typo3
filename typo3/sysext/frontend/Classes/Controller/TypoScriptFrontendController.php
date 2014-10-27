@@ -1087,7 +1087,7 @@ class TypoScriptFrontendController {
 	/**
 	 * Checking if a user is logged in or a group constellation different from "0,-1"
 	 *
-	 * @return boolean TRUE if either a login user is found (array fe_user->user) OR if the gr_list is set to something else than '0,-1' (could be done even without a user being logged in!)
+	 * @return bool TRUE if either a login user is found (array fe_user->user) OR if the gr_list is set to something else than '0,-1' (could be done even without a user being logged in!)
 	 */
 	public function isUserOrGroupSet() {
 		return is_array($this->fe_user->user) || $this->gr_list !== '0,-1';
@@ -1131,7 +1131,7 @@ class TypoScriptFrontendController {
 	/**
 	 * Checks if a backend user is logged in
 	 *
-	 * @return boolean whether a backend user is logged in
+	 * @return bool whether a backend user is logged in
 	 */
 	public function isBackendUserLoggedIn() {
 		return (bool)$this->beUserLogin;
@@ -1328,7 +1328,7 @@ class TypoScriptFrontendController {
 	 * Checks if the page is hidden in the active workspace.
 	 * If it is hidden, preview flags will be set.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function determineIdIsHiddenPage() {
 		$field = \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->id) ? 'uid' : 'alias';
@@ -1653,7 +1653,7 @@ class TypoScriptFrontendController {
 	/**
 	 * Checks the current rootline for defined sections.
 	 *
-	 * @return boolean
+	 * @return bool
 	 * @access private
 	 */
 	public function checkRootlineForIncludeSection() {
@@ -1696,7 +1696,7 @@ class TypoScriptFrontendController {
 	 *
 	 * @param array $row The page record to evaluate (needs fields: hidden, starttime, endtime, fe_group)
 	 * @param bool $bypassGroupCheck Bypass group-check
-	 * @return boolean TRUE, if record is viewable.
+	 * @return bool TRUE, if record is viewable.
 	 * @see TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer::getTreeList(), checkPagerecordForIncludeSection()
 	 */
 	public function checkEnableFields($row, $bypassGroupCheck = FALSE) {
@@ -1720,7 +1720,7 @@ class TypoScriptFrontendController {
 	 *
 	 * @param array $row The page record to evaluate (needs field: fe_group)
 	 * @param mixed $groupList List of group id's (comma list or array). Default is $this->gr_list
-	 * @return boolean TRUE, if group access is granted.
+	 * @return bool TRUE, if group access is granted.
 	 * @access private
 	 */
 	public function checkPageGroupAccess($row, $groupList = NULL) {
@@ -1738,7 +1738,7 @@ class TypoScriptFrontendController {
 	 * Checks page record for include section
 	 *
 	 * @param array $row The page record to evaluate (needs fields: extendToSubpages + hidden, starttime, endtime, fe_group)
-	 * @return boolean Returns TRUE if either extendToSubpages is not checked or if the enableFields does not disable the page record.
+	 * @return bool Returns TRUE if either extendToSubpages is not checked or if the enableFields does not disable the page record.
 	 * @access private
 	 * @see checkEnableFields(), TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer::getTreeList(), checkRootlineForIncludeSection()
 	 */
@@ -1749,7 +1749,7 @@ class TypoScriptFrontendController {
 	/**
 	 * Checks if logins are allowed in the current branch of the page tree. Traverses the full root line and returns TRUE if logins are OK, otherwise FALSE (and then the login user must be unset!)
 	 *
-	 * @return boolean returns TRUE if logins are OK, otherwise FALSE (and then the login user must be unset!)
+	 * @return bool returns TRUE if logins are OK, otherwise FALSE (and then the login user must be unset!)
 	 */
 	public function checkIfLoginAllowedInBranch() {
 		// Initialize:
@@ -1865,7 +1865,7 @@ class TypoScriptFrontendController {
 	 * Looking up a domain record based on HTTP_HOST
 	 *
 	 * @param bool $recursive If set, it looks "recursively" meaning that a domain like "123.456.typo3.com" would find a domain record like "typo3.com" if "123.456.typo3.com" or "456.typo3.com" did not exist.
-	 * @return integer Returns the page id of the page where the domain record was found.
+	 * @return int Returns the page id of the page where the domain record was found.
 	 * @access private
 	 */
 	public function findDomainRecord($recursive = FALSE) {
@@ -1915,7 +1915,7 @@ class TypoScriptFrontendController {
 	 * Checks whether the pageUnavailableHandler should be used. To be used, pageUnavailable_handling must be set
 	 * and devIPMask must not match the current visitor's IP address.
 	 *
-	 * @return boolean TRUE/FALSE whether the pageUnavailable_handler should be used.
+	 * @return bool TRUE/FALSE whether the pageUnavailable_handler should be used.
 	 */
 	public function checkPageUnavailableHandler() {
 		if (
@@ -2329,7 +2329,7 @@ class TypoScriptFrontendController {
 	 * Will not be called if re-generation of page happens by other reasons (for instance that the page is not in cache yet!)
 	 * Also, a backend user MUST be logged in for the shift-reload to be detected due to DoS-attack-security reasons.
 	 *
-	 * @return boolean If shift-reload in client browser has been clicked, disable getting cached page (and regenerate it).
+	 * @return bool If shift-reload in client browser has been clicked, disable getting cached page (and regenerate it).
 	 */
 	public function headerNoCache() {
 		$disableAcquireCacheData = FALSE;
@@ -3054,7 +3054,7 @@ class TypoScriptFrontendController {
 	 * Returns TRUE if the page should be generated
 	 * That is if jumpurl is not set and the cacheContentFlag is not set.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isGeneratePage() {
 		return !$this->cacheContentFlag && !$this->jumpurl;
@@ -3223,7 +3223,7 @@ class TypoScriptFrontendController {
 	 *
 	 * @param \TYPO3\CMS\Core\Locking\Locker $lockObj Reference to a locking object
 	 * @param string $key String to identify the lock in the system
-	 * @return boolean Returns TRUE if the lock could be obtained, FALSE otherwise (= process had to wait for existing lock to be released)
+	 * @return bool Returns TRUE if the lock could be obtained, FALSE otherwise (= process had to wait for existing lock to be released)
 	 * @see releasePageGenerationLock()
 	 */
 	public function acquirePageGenerationLock(&$lockObj, $key) {
@@ -3257,7 +3257,7 @@ class TypoScriptFrontendController {
 	 * Release the page generation lock
 	 *
 	 * @param \TYPO3\CMS\Core\Locking\Locker $lockObj Reference to a locking object
-	 * @return boolean Returns TRUE on success, FALSE otherwise
+	 * @return bool Returns TRUE on success, FALSE otherwise
 	 * @see acquirePageGenerationLock()
 	 */
 	public function releasePageGenerationLock(&$lockObj) {
@@ -3566,7 +3566,7 @@ class TypoScriptFrontendController {
 	/**
 	 * Determines if there are any INTincScripts to include
 	 *
-	 * @return boolean Returns TRUE if scripts are found (and not jumpurl)
+	 * @return bool Returns TRUE if scripts are found (and not jumpurl)
 	 */
 	public function isINTincScript() {
 		return is_array($this->config['INTincScript']) && !$this->jumpurl;
@@ -3599,7 +3599,7 @@ class TypoScriptFrontendController {
 	 * Determines if content should be outputted.
 	 * Outputting content is done only if jumpUrl is NOT set.
 	 *
-	 * @return boolean Returns TRUE if $this->jumpurl is not set.
+	 * @return bool Returns TRUE if $this->jumpurl is not set.
 	 */
 	public function isOutputting() {
 		// Initialize by status of jumpUrl:
@@ -3737,7 +3737,7 @@ class TypoScriptFrontendController {
 	 * There can be no USER_INT objects on the page ("isINTincScript()") because they implicitly indicate dynamic content
 	 * There can be no logged in user because user sessions are based on a cookie and thereby does not offer client caching a chance to know if the user is logged in. Actually, there will be a reverse problem here; If a page will somehow change when a user is logged in he may not see it correctly if the non-login version sent a cache-header! So do NOT use cache headers in page sections where user logins change the page content. (unless using such as realurl to apply a prefix in case of login sections)
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isStaticCacheble() {
 		$doCache = !$this->no_cache && !$this->isINTincScript() && !$this->isUserOrGroupSet();
@@ -3997,7 +3997,7 @@ class TypoScriptFrontendController {
 	 * Checks if a PHPfile may be included.
 	 *
 	 * @param string $incFile Relative path to php file
-	 * @return boolean Returns TRUE if $GLOBALS['TYPO3_CONF_VARS']['FE']['noPHPscriptInclude'] is not set OR if the file requested for inclusion is found in one of the allowed paths.
+	 * @return bool Returns TRUE if $GLOBALS['TYPO3_CONF_VARS']['FE']['noPHPscriptInclude'] is not set OR if the file requested for inclusion is found in one of the allowed paths.
 	 * @see \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::includeMakeMenu()
 	 */
 	public function checkFileInclude($incFile) {
@@ -4164,7 +4164,7 @@ class TypoScriptFrontendController {
 	/**
 	 * Returns TRUE if workspace preview is enabled
 	 *
-	 * @return boolean Returns TRUE if workspace preview is enabled
+	 * @return bool Returns TRUE if workspace preview is enabled
 	 */
 	public function doWorkspacePreview() {
 		return $this->workspacePreview !== 0;
@@ -4398,7 +4398,7 @@ class TypoScriptFrontendController {
 	/**
 	 * Get the cache timeout for the current page.
 	 *
-	 * @return integer The cache timeout for the current page.
+	 * @return int The cache timeout for the current page.
 	 */
 	public function get_cache_timeout() {
 		/** @var $runtimeCache \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend */
@@ -4627,7 +4627,7 @@ class TypoScriptFrontendController {
 	/**
 	 * Calculates page cache timeout according to the records with starttime/endtime on the page.
 	 *
-	 * @return integer Page cache timeout or PHP_INT_MAX if cannot be determined
+	 * @return int Page cache timeout or PHP_INT_MAX if cannot be determined
 	 */
 	protected function calculatePageCacheTimeout() {
 		$result = PHP_INT_MAX;
@@ -4677,7 +4677,7 @@ class TypoScriptFrontendController {
 	 * @param string $tableDef Table definition (format tablename:pid)
 	 * @param int $now "Now" time value
 	 * @throws \InvalidArgumentException
-	 * @return integer Value of the next start/stop time or PHP_INT_MAX if not found
+	 * @return int Value of the next start/stop time or PHP_INT_MAX if not found
 	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::calculatePageCacheTimeout()
 	 */
 	protected function getFirstTimeValueForRecord($tableDef, $now) {

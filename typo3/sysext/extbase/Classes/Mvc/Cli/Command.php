@@ -151,7 +151,7 @@ class Command {
 	/**
 	 * Returns TRUE if this command expects required and/or optional arguments, otherwise FALSE
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasArguments() {
 		return count($this->getCommandMethodReflection()->getParameters()) > 0;
@@ -188,7 +188,7 @@ class Command {
 	 * Internall commands are still accessible through the regular command line interface, but should not be used
 	 * by users.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isInternal() {
 		return $this->getCommandMethodReflection()->isTaggedWith('internal');
@@ -199,7 +199,7 @@ class Command {
 	 *
 	 * Note that neither this method nor the @flushesCaches annotation is currently part of the official API.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isFlushingCaches() {
 		return $this->getCommandMethodReflection()->isTaggedWith('flushesCaches');

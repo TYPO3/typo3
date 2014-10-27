@@ -33,7 +33,7 @@ interface FreezableBackendInterface extends \TYPO3\CMS\Core\Cache\Backend\Backen
 	/**
 	 * Tells if this backend is frozen.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isFrozen();
 

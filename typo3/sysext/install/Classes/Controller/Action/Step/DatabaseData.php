@@ -74,7 +74,7 @@ class DatabaseData extends AbstractStepAction {
 	/**
 	 * Step needs to be executed if there are no tables in database
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function needsExecution() {
 		$result = FALSE;

@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Crawler hook for indexed search. Works with the "crawler" extension
  *
- * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class CrawlerHook {
 
@@ -50,8 +50,8 @@ class CrawlerHook {
 	 * This function is asked for each instance of the crawler and we must check if something is timed to happen and if so put entry(s) in the crawlers log to start processing.
 	 * In reality we select indexing configurations and evaluate if any of them needs to run.
 	 *
-	 * @param 	object		Parent object (tx_crawler lib)
-	 * @return 	void
+	 * @param object Parent object (tx_crawler lib)
+	 * @return void
 	 */
 	public function crawler_init(&$pObj) {
 		// Select all indexing configuration which are waiting to be activated:
@@ -156,9 +156,9 @@ class CrawlerHook {
 	/**
 	 * Call back function for execution of a log element
 	 *
-	 * @param 	array		Params from log element. Must contain $params['indexConfigUid']
-	 * @param 	object		Parent object (tx_crawler lib)
-	 * @return 	array		Result array
+	 * @param array Params from log element. Must contain $params['indexConfigUid']
+	 * @param object Parent object (tx_crawler lib)
+	 * @return array Result array
 	 */
 	public function crawler_execute($params, &$pObj) {
 		// Indexer configuration ID must exist:
@@ -213,11 +213,11 @@ class CrawlerHook {
 	/**
 	 * Indexing records from a table
 	 *
-	 * @param 	array		Indexing Configuration Record
-	 * @param 	array		Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
-	 * @param 	array		Parameters from the log queue.
-	 * @param 	object		Parent object (from "crawler" extension!)
-	 * @return 	void
+	 * @param array Indexing Configuration Record
+	 * @param array Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
+	 * @param array Parameters from the log queue.
+	 * @param object Parent object (from "crawler" extension!)
+	 * @return void
 	 */
 	public function crawler_execute_type1($cfgRec, &$session_data, $params, &$pObj) {
 		if ($cfgRec['table2index'] && isset($GLOBALS['TCA'][$cfgRec['table2index']])) {
@@ -257,11 +257,11 @@ class CrawlerHook {
 	/**
 	 * Indexing files from fileadmin
 	 *
-	 * @param 	array		Indexing Configuration Record
-	 * @param 	array		Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
-	 * @param 	array		Parameters from the log queue.
-	 * @param 	object		Parent object (from "crawler" extension!)
-	 * @return 	void
+	 * @param array Indexing Configuration Record
+	 * @param array Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
+	 * @param array Parameters from the log queue.
+	 * @param object Parent object (from "crawler" extension!)
+	 * @return void
 	 */
 	public function crawler_execute_type2($cfgRec, &$session_data, $params, &$pObj) {
 		// Prepare path, making it absolute and checking:
@@ -318,11 +318,11 @@ class CrawlerHook {
 	/**
 	 * Indexing External URLs
 	 *
-	 * @param 	array		Indexing Configuration Record
-	 * @param 	array		Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
-	 * @param 	array		Parameters from the log queue.
-	 * @param 	object		Parent object (from "crawler" extension!)
-	 * @return 	void
+	 * @param array Indexing Configuration Record
+	 * @param array Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
+	 * @param array Parameters from the log queue.
+	 * @param object Parent object (from "crawler" extension!)
+	 * @return void
 	 */
 	public function crawler_execute_type3($cfgRec, &$session_data, $params, &$pObj) {
 		// Init session data array if not already:
@@ -358,11 +358,11 @@ class CrawlerHook {
 	/**
 	 * Page tree indexing type
 	 *
-	 * @param 	array		Indexing Configuration Record
-	 * @param 	array		Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
-	 * @param 	array		Parameters from the log queue.
-	 * @param 	object		Parent object (from "crawler" extension!)
-	 * @return 	void
+	 * @param array Indexing Configuration Record
+	 * @param array Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
+	 * @param array Parameters from the log queue.
+	 * @param object Parent object (from "crawler" extension!)
+	 * @return void
 	 */
 	public function crawler_execute_type4($cfgRec, &$session_data, $params, &$pObj) {
 		// Base page uid:
@@ -406,7 +406,7 @@ class CrawlerHook {
 	/**
 	 * Look up all old index configurations which are finished and needs to be reset and done
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function cleanUpOldRunningConfigurations() {
 		// Lookup running index configurations:
@@ -443,10 +443,10 @@ class CrawlerHook {
 	/**
 	 * Check if an input URL are allowed to be indexed. Depends on whether it is already present in the url log.
 	 *
-	 * @param 	string		URL string to check
-	 * @param 	array		Array of already indexed URLs (input url is looked up here and must not exist already)
-	 * @param 	string		Base URL of the indexing process (input URL must be "inside" the base URL!)
-	 * @return 	string		Returls the URL if OK, otherwise FALSE
+	 * @param string URL string to check
+	 * @param array Array of already indexed URLs (input url is looked up here and must not exist already)
+	 * @param string Base URL of the indexing process (input URL must be "inside" the base URL!)
+	 * @return string Returls the URL if OK, otherwise FALSE
 	 */
 	public function checkUrl($url, $urlLog, $baseUrl) {
 		$url = preg_replace('/\\/\\/$/', '/', $url);
@@ -463,12 +463,12 @@ class CrawlerHook {
 	/**
 	 * Indexing External URL
 	 *
-	 * @param 	string		URL, http://....
-	 * @param	int		Page id to relate indexing to.
-	 * @param 	array		Rootline array to relate indexing to
-	 * @param	int		Configuration UID
-	 * @param	int		Set ID value
-	 * @return 	array		URLs found on this page
+	 * @param string URL, http://....
+	 * @param int Page id to relate indexing to.
+	 * @param array Rootline array to relate indexing to
+	 * @param int Configuration UID
+	 * @param int Set ID value
+	 * @return array URLs found on this page
 	 */
 	public function indexExtUrl($url, $pageId, $rl, $cfgUid, $setId) {
 		// Index external URL:
@@ -511,10 +511,10 @@ class CrawlerHook {
 	/**
 	 * Indexing Single Record
 	 *
-	 * @param 	array		Record to index
-	 * @param 	array		Configuration Record
-	 * @param 	array		Rootline array to relate indexing to
-	 * @return 	void
+	 * @param array Record to index
+	 * @param array Configuration Record
+	 * @param array Rootline array to relate indexing to
+	 * @return void
 	 */
 	public function indexSingleRecord($r, $cfgRec, $rl = NULL) {
 		// Init:
@@ -543,7 +543,7 @@ class CrawlerHook {
 	/**
 	 * Include indexer class.
 	 *
-	 * @return 	void
+	 * @return void
 	 * @deprecated since 6.2 will be removed two version later. Rely on autoloading of the indexer class.
 	 */
 	public function loadIndexerClass() {
@@ -554,8 +554,8 @@ class CrawlerHook {
 	 * Get rootline for closest TypoScript template root.
 	 * Algorithm same as used in Web > Template, Object browser
 	 *
-	 * @param	int		The page id to traverse rootline back from
-	 * @return 	array		Array where the root lines uid values are found.
+	 * @param int The page id to traverse rootline back from
+	 * @return array Array where the root lines uid values are found.
 	 */
 	public function getUidRootLineForClosestTemplate($id) {
 		global $TYPO3_CONF_VARS;
@@ -579,8 +579,8 @@ class CrawlerHook {
 	/**
 	 * Generate the unix time stamp for next visit.
 	 *
-	 * @param 	array		Index configuration record
-	 * @return 	integer		The next time stamp
+	 * @param array Index configuration record
+	 * @return int The next time stamp
 	 */
 	public function generateNextIndexingTime($cfgRec) {
 		$currentTime = $GLOBALS['EXEC_TIME'];
@@ -604,9 +604,9 @@ class CrawlerHook {
 	/**
 	 * Checks if $url has any of the URls in the $url_deny "list" in it and if so, returns TRUE.
 	 *
-	 * @param 	string		URL to test
-	 * @param 	string		String where URLs are separated by line-breaks; If any of these strings is the first part of $url, the function returns TRUE (to indicate denial of decend)
-	 * @return 	boolean		TRUE if there is a matching URL (hence, do not index!)
+	 * @param string URL to test
+	 * @param string String where URLs are separated by line-breaks; If any of these strings is the first part of $url, the function returns TRUE (to indicate denial of decend)
+	 * @return bool TRUE if there is a matching URL (hence, do not index!)
 	 */
 	public function checkDeniedSuburls($url, $url_deny) {
 		if (trim($url_deny)) {
@@ -624,9 +624,9 @@ class CrawlerHook {
 	/**
 	 * Adding entry in queue for Hook
 	 *
-	 * @param 	array		Configuration record
-	 * @param 	string		Title/URL
-	 * @return 	void
+	 * @param array Configuration record
+	 * @param string Title/URL
+	 * @return void
 	 */
 	public function addQueueEntryForHook($cfgRec, $title) {
 		$nparams = array(
@@ -641,8 +641,8 @@ class CrawlerHook {
 	/**
 	 * Deletes all data stored by indexed search for a given page
 	 *
-	 * @param	int		Uid of the page to delete all pHash
-	 * @return 	void
+	 * @param int Uid of the page to delete all pHash
+	 * @return void
 	 */
 	public function deleteFromIndex($id) {
 		// Lookup old phash rows:
@@ -668,12 +668,12 @@ class CrawlerHook {
 	/**
 	 * TCEmain hook function for on-the-fly indexing of database records
 	 *
-	 * @param 	string		TCEmain command
-	 * @param 	string		Table name
-	 * @param 	string		Record ID. If new record its a string pointing to index inside \TYPO3\CMS\Core\DataHandling\DataHandler::substNEWwithIDs
-	 * @param 	mixed		Target value (ignored)
-	 * @param 	object		Reference to tcemain calling object
-	 * @return 	void
+	 * @param string TCEmain command
+	 * @param string Table name
+	 * @param string Record ID. If new record its a string pointing to index inside \TYPO3\CMS\Core\DataHandling\DataHandler::substNEWwithIDs
+	 * @param mixed Target value (ignored)
+	 * @param object Reference to tcemain calling object
+	 * @return void
 	 */
 	public function processCmdmap_preProcess($command, $table, $id, $value, $pObj) {
 		// Clean up the index
@@ -685,12 +685,12 @@ class CrawlerHook {
 	/**
 	 * TCEmain hook function for on-the-fly indexing of database records
 	 *
-	 * @param 	string		Status "new" or "update
-	 * @param 	string		Table name
-	 * @param 	string		Record ID. If new record its a string pointing to index inside \TYPO3\CMS\Core\DataHandling\DataHandler::substNEWwithIDs
-	 * @param 	array		Field array of updated fields in the operation
-	 * @param 	object		Reference to tcemain calling object
-	 * @return 	void
+	 * @param string Status "new" or "update
+	 * @param string Table name
+	 * @param string Record ID. If new record its a string pointing to index inside \TYPO3\CMS\Core\DataHandling\DataHandler::substNEWwithIDs
+	 * @param array Field array of updated fields in the operation
+	 * @param object Reference to tcemain calling object
+	 * @return void
 	 */
 	public function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, $pObj) {
 		// Check if any fields are actually updated:

@@ -100,7 +100,7 @@ class FileRepository extends AbstractRepository {
 	 * indexed, the uid otherwise.
 	 *
 	 * @param File $fileObject
-	 * @return boolean|integer
+	 * @return bool|int
 	 * @deprecated since TYPO3 6.2, will be removed two versions later - use FileIndexRepository::isIndexed
 	 */
 	public function getFileIndexStatus(File $fileObject) {

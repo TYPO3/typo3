@@ -93,7 +93,7 @@ class DummyClassWithGettersAndSetters {
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isBooleanProperty() {
 		return $this->booleanProperty;

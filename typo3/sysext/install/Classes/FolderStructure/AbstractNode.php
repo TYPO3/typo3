@@ -105,7 +105,7 @@ abstract class AbstractNode {
 	/**
 	 * Current node is writable if parent is writable
 	 *
-	 * @return boolean TRUE if parent is writable
+	 * @return bool TRUE if parent is writable
 	 */
 	public function isWritable() {
 		return $this->getParent()->isWritable();
@@ -116,7 +116,7 @@ abstract class AbstractNode {
 	 * Returns TRUE if it is there, even if it is only a link.
 	 * Does not check the type!
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function exists() {
 		if (@is_link($this->getAbsolutePath())) {
@@ -157,7 +157,7 @@ abstract class AbstractNode {
 	/**
 	 * Checks if current permission are identical to target permission
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isPermissionCorrect() {
 		if ($this->isWindowsOs()) {
@@ -183,7 +183,7 @@ abstract class AbstractNode {
 	/**
 	 * Returns TRUE if OS is windows
 	 *
-	 * @return boolean TRUE on windows
+	 * @return bool TRUE on windows
 	 */
 	protected function isWindowsOs() {
 		if (TYPO3_OS === 'WIN') {

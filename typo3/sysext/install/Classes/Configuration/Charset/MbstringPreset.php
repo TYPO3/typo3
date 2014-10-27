@@ -42,7 +42,7 @@ class MbstringPreset extends Configuration\AbstractPreset {
 	/**
 	 * Check if mbstring PHP module is loaded
 	 *
-	 * @return boolean TRUE if mbstring PHP module is loaded
+	 * @return bool TRUE if mbstring PHP module is loaded
 	 */
 	public function isAvailable() {
 		$result = FALSE;

@@ -538,7 +538,7 @@ class NewRecordController {
 	 *
 	 * @param string $a First array element for compare
 	 * @param string $b First array element for compare
-	 * @return integer -1 for lower, 0 for equal, 1 for greater
+	 * @return int -1 for lower, 0 for equal, 1 for greater
 	 */
 	public function sortNewRecordsByConfig($a, $b) {
 		if (count($this->newRecordSortList)) {
@@ -597,7 +597,7 @@ class NewRecordController {
 	 *
 	 * @param array $pid_row Record for parent page.
 	 * @param string $checkTable Table name to check
-	 * @return boolean Returns TRUE if the tablename $checkTable is allowed to be created on the page with record $pid_row
+	 * @return bool Returns TRUE if the tablename $checkTable is allowed to be created on the page with record $pid_row
 	 */
 	public function isTableAllowedForThisPage($pid_row, $checkTable) {
 		if (!is_array($pid_row)) {
@@ -633,7 +633,7 @@ class NewRecordController {
 	 * @param string $table Table name to test if in allowedTables
 	 * @param array $allowedNewTables Array of new tables that are allowed.
 	 * @param array $deniedNewTables Array of new tables that are not allowed.
-	 * @return boolean Returns TRUE if a link for creating new records should be displayed for $table
+	 * @return bool Returns TRUE if a link for creating new records should be displayed for $table
 	 */
 	public function showNewRecLink($table, array $allowedNewTables = array(), array $deniedNewTables = array()) {
 

@@ -36,7 +36,7 @@ interface AdditionalFieldProviderInterface {
 	 *
 	 * @param array $submittedData An array containing the data submitted by the add/edit task form
 	 * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule Reference to the scheduler backend module
-	 * @return boolean TRUE if validation was ok (or selected class is not relevant), FALSE otherwise
+	 * @return bool TRUE if validation was ok (or selected class is not relevant), FALSE otherwise
 	 */
 	public function validateAdditionalFields(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule);
 

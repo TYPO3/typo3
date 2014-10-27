@@ -28,21 +28,21 @@ interface SaltInterface {
 	 *
 	 * @param string $plainPW plain-text password to compare with salted hash
 	 * @param string $saltedHashPW Salted hash to compare plain-text password with
-	 * @return boolean TRUE, if plaintext password is correct, otherwise FALSE
+	 * @return bool TRUE, if plaintext password is correct, otherwise FALSE
 	 */
 	public function checkPassword($plainPW, $saltedHashPW);
 
 	/**
 	 * Returns length of required salt.
 	 *
-	 * @return integer Length of required salt
+	 * @return int Length of required salt
 	 */
 	public function getSaltLength();
 
 	/**
 	 * Returns whether all prequesites for the hashing methods are matched
 	 *
-	 * @return boolean Method available
+	 * @return bool Method available
 	 */
 	public function isAvailable();
 
@@ -65,7 +65,7 @@ interface SaltInterface {
 	 * with class ext_update.
 	 *
 	 * @param string $passString Salted hash to check if it needs an update
-	 * @return boolean TRUE if salted hash needs an update, otherwise FALSE
+	 * @return bool TRUE if salted hash needs an update, otherwise FALSE
 	 */
 	public function isHashUpdateNeeded($passString);
 
@@ -73,7 +73,7 @@ interface SaltInterface {
 	 * Method determines if a given string is a valid salt
 	 *
 	 * @param string $salt String to check
-	 * @return boolean TRUE if it's valid salt, otherwise FALSE
+	 * @return bool TRUE if it's valid salt, otherwise FALSE
 	 */
 	public function isValidSalt($salt);
 
@@ -81,7 +81,7 @@ interface SaltInterface {
 	 * Method determines if a given string is a valid salted hashed password.
 	 *
 	 * @param string $saltedPW String to check
-	 * @return boolean TRUE if it's valid salted hashed password, otherwise FALSE
+	 * @return bool TRUE if it's valid salted hashed password, otherwise FALSE
 	 */
 	public function isValidSaltedPW($saltedPW);
 

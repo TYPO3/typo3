@@ -45,7 +45,7 @@ class ExtDirectEidController {
 	/**
 	 * Returns TRUE if the associated action in _GET is allowed.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function actionIsAllowed() {
 		if (!in_array(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('action'), array('route', 'getAPI'))) {

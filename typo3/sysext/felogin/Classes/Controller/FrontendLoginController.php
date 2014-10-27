@@ -953,7 +953,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 	 * and belongs to the current TYPO3 installation.
 	 *
 	 * @param string $url URL to be checked
-	 * @return boolean Whether the URL belongs to the current TYPO3 installation
+	 * @return bool Whether the URL belongs to the current TYPO3 installation
 	 */
 	protected function isInCurrentDomain($url) {
 		return GeneralUtility::isOnCurrentHost($url) && GeneralUtility::isFirstPartOfStr($url, GeneralUtility::getIndpEnv('TYPO3_SITE_URL'));
@@ -964,7 +964,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 	 * in the sys_domain database table.
 	 *
 	 * @param string $url Absolute URL which needs to be checked
-	 * @return boolean Whether the URL is considered to be local
+	 * @return bool Whether the URL is considered to be local
 	 */
 	protected function isInLocalDomain($url) {
 		$result = FALSE;
@@ -995,7 +995,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 	 * current TYPO3 installation.
 	 *
 	 * @param string $url URL which needs to be checked
-	 * @return boolean Whether the URL is considered to be relative
+	 * @return bool Whether the URL is considered to be relative
 	 */
 	protected function isRelativeUrl($url) {
 		$parsedUrl = @parse_url($url);

@@ -347,7 +347,7 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Getter for workspace permission
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getWorkspacePermission() {
 		return $this->workspacePermission;
@@ -385,7 +385,7 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Getter for file operation permissions
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getFileOperationPermissions() {
 		return $this->fileOperationPermissions;
@@ -395,7 +395,7 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * Check if file operations like upload, copy, move, delete, rename, new and
 	 * edit files is allowed.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isFileOperationAllowed() {
 		return $this->isPermissionSet(self::FILE_OPPERATIONS);
@@ -414,7 +414,7 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Check if it is allowed to unzip files.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isFileUnzipAllowed() {
 		return $this->isPermissionSet(self::FILE_UNZIP);
@@ -433,7 +433,7 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Check if folder operations like move, delete, rename, and new are allowed.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDirectoryOperationAllowed() {
 		return $this->isPermissionSet(self::DIRECTORY_OPPERATIONS);
@@ -452,7 +452,7 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Check if it is allowed to copy folders.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDirectoryCopyAllowed() {
 		return $this->isPermissionSet(self::DIRECTORY_COPY);
@@ -471,7 +471,7 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Check if it is allowed to remove folders recursively.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDirectoryRemoveRecursivelyAllowed() {
 		return $this->isPermissionSet(self::DIRECTORY_REMOVE_RECURSIVELY);
@@ -519,7 +519,7 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Getter for hide in list
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getHideInList() {
 		return $this->hideInList;
@@ -547,7 +547,7 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * Helper method for checking the permissions bitwise.
 	 *
 	 * @param int $permission
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isPermissionSet($permission) {
 		return ($this->fileOperationPermissions & $permission) == $permission;

@@ -93,7 +93,7 @@ class DocumentationService {
 	 * @param string $key
 	 * @param string $version
 	 * @param string $language
-	 * @return boolean TRUE if fetch succeeded, otherwise FALSE
+	 * @return bool TRUE if fetch succeeded, otherwise FALSE
 	 */
 	public function fetchNearestDocument($url, $key, $version = 'latest', $language = 'default') {
 		// In case we could not find a working combination
@@ -151,7 +151,7 @@ class DocumentationService {
 	 * @param string $key
 	 * @param string $version
 	 * @param string $language
-	 * @return boolean TRUE if fetch succeeded, otherwise FALSE
+	 * @return bool TRUE if fetch succeeded, otherwise FALSE
 	 */
 	public function fetchDocument($url, $key, $version = 'latest', $language = 'default') {
 		$result = FALSE;
@@ -265,7 +265,7 @@ class DocumentationService {
 	 * @param string $file path to zip file
 	 * @param string $path path to extract to
 	 * @throws \TYPO3\CMS\Documentation\Exception\Document
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function unzipDocumentPackage($file, $path) {
 		$zip = zip_open($file);

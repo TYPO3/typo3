@@ -36,7 +36,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 * Evaluates a TypoScript condition given as input, eg. "[browser=net][...(other conditions)...]"
 	 *
 	 * @param string $string The condition to match against its criterias.
-	 * @return boolean Whether the condition matched
+	 * @return bool Whether the condition matched
 	 * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::parse()
 	 */
 	protected function evaluateCondition($string) {
@@ -121,7 +121,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 * (i.e. in the Extension Manager, etc.) this function will return "0", so that
 	 * the accordant conditions (e.g. PIDinRootline) will return "FALSE"
 	 *
-	 * @return integer The determined page id or otherwise 0
+	 * @return int The determined page id or otherwise 0
 	 */
 	protected function determinePageId() {
 		$pageId = 0;
@@ -167,7 +167,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 * @param string $table Name of the table
 	 * @param int $id Id of the accordant record
 	 * @param bool $ignoreTable Whether to ignore the page, if TRUE a positive
-	 * @return integer Id of the page the record is persisted on
+	 * @return int Id of the page the record is persisted on
 	 */
 	protected function getPageIdByRecord($table, $id, $ignoreTable = FALSE) {
 		$pageId = 0;
@@ -188,7 +188,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 * This information is required for conditions in BE for PIDupinRootline.
 	 *
 	 * @param int $pid The pid the check for as parent page
-	 * @return boolean TRUE if the is currently a new page record being edited with $pid as uid of the parent page
+	 * @return bool TRUE if the is currently a new page record being edited with $pid as uid of the parent page
 	 */
 	protected function isNewPageWithPageId($pageId) {
 		if (isset($GLOBALS['SOBE']) && $GLOBALS['SOBE'] instanceof \TYPO3\CMS\Backend\Controller\EditDocumentController) {
@@ -235,7 +235,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	/**
 	 * Get the id of the current user.
 	 *
-	 * @return integer The id of the current user
+	 * @return int The id of the current user
 	 */
 	protected function getUserId() {
 		$userId = $GLOBALS['BE_USER']->user['uid'];
@@ -245,7 +245,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	/**
 	 * Determines if a user is logged in.
 	 *
-	 * @return boolean Determines if a user is logged in
+	 * @return bool Determines if a user is logged in
 	 */
 	protected function isUserLoggedIn() {
 		$userLoggedIn = FALSE;
@@ -258,7 +258,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	/**
 	 * Determines whether the current user is admin.
 	 *
-	 * @return boolean Whether the current user is admin
+	 * @return bool Whether the current user is admin
 	 */
 	protected function isAdminUser() {
 		$isAdminUser = FALSE;

@@ -330,7 +330,7 @@ class RootlineUtility {
 	 * describes a relation which is not stored as CSV in the record
 	 *
 	 * @param array $configuration TCA configuration to check
-	 * @return boolean TRUE, if it describes a non-CSV relation
+	 * @return bool TRUE, if it describes a non-CSV relation
 	 */
 	protected function columnHasRelationToResolve(array $configuration) {
 		$configuration = $configuration['config'];
@@ -388,7 +388,7 @@ class RootlineUtility {
 	 * Checks whether the current Page is a Mounted Page
 	 * (according to the MP-URL-Parameter)
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isMountedPage() {
 		return in_array($this->pageUid, array_keys($this->parsedMountPointParameters));

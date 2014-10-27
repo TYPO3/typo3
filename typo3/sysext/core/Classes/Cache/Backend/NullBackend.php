@@ -52,7 +52,7 @@ class NullBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implemen
 	 * Returns False
 	 *
 	 * @param string $entryIdentifier ignored
-	 * @return boolean FALSE
+	 * @return bool FALSE
 	 * @api
 	 */
 	public function get($entryIdentifier) {
@@ -63,7 +63,7 @@ class NullBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implemen
 	 * Returns False
 	 *
 	 * @param string $entryIdentifier ignored
-	 * @return boolean FALSE
+	 * @return bool FALSE
 	 * @api
 	 */
 	public function has($entryIdentifier) {
@@ -74,7 +74,7 @@ class NullBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implemen
 	 * Does nothing
 	 *
 	 * @param string $entryIdentifier ignored
-	 * @return boolean FALSE
+	 * @return bool FALSE
 	 * @api
 	 */
 	public function remove($entryIdentifier) {

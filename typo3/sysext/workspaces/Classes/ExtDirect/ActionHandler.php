@@ -795,7 +795,7 @@ class ActionHandler extends AbstractHandler {
 
 	/**
 	 * @param int $workspaceId
-	 * @return integer Id of the original workspace
+	 * @return int Id of the original workspace
 	 * @throws \TYPO3\CMS\Core\Exception
 	 */
 	protected function setTemporaryWorkspace($workspaceId) {

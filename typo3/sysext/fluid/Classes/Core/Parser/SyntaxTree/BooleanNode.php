@@ -185,7 +185,7 @@ class BooleanNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 
 	/**
 	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
-	 * @return boolean the boolean value
+	 * @return bool the boolean value
 	 */
 	public function evaluate(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext) {
 		if ($this->comparator !== NULL) {
@@ -213,7 +213,7 @@ class BooleanNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 	 * @param string $comparator
 	 * @param mixed $evaluatedLeftSide
 	 * @param mixed $evaluatedRightSide
-	 * @return boolean TRUE if comparison of left and right side using the comparator emit TRUE, false otherwise
+	 * @return bool TRUE if comparison of left and right side using the comparator emit TRUE, false otherwise
 	 * @throws \TYPO3\CMS\Fluid\Core\Parser\Exception
 	 */
 	static public function evaluateComparator($comparator, $evaluatedLeftSide, $evaluatedRightSide) {
@@ -268,7 +268,7 @@ class BooleanNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 	 *
 	 * @param mixed $evaluatedLeftSide
 	 * @param mixed $evaluatedRightSide
-	 * @return boolean TRUE if the operands can be compared using arithmetic operators, FALSE otherwise.
+	 * @return bool TRUE if the operands can be compared using arithmetic operators, FALSE otherwise.
 	 */
 	static protected function isComparable($evaluatedLeftSide, $evaluatedRightSide) {
 		if ((is_null($evaluatedLeftSide) || is_string($evaluatedLeftSide))
@@ -312,7 +312,7 @@ class BooleanNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 	 * Must be public and static as it is used from inside cached templates.
 	 *
 	 * @param mixed $value Value to be converted to boolean
-	 * @return boolean
+	 * @return bool
 	 */
 	static public function convertToBoolean($value) {
 		if (is_bool($value)) {

@@ -121,7 +121,7 @@ class LazyLoadingProxy implements \Iterator, \TYPO3\CMS\Extbase\Persistence\Gene
 	 * Magic isset call implementation.
 	 *
 	 * @param string $propertyName The name of the property to check
-	 * @return boolean
+	 * @return bool
 	 */
 	public function __isset($propertyName) {
 		$realInstance = $this->_loadRealInstance();
@@ -162,7 +162,7 @@ class LazyLoadingProxy implements \Iterator, \TYPO3\CMS\Extbase\Persistence\Gene
 	/**
 	 * Returns the current key storage array
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function key() {
 		$realInstance = $this->_loadRealInstance();
@@ -192,7 +192,7 @@ class LazyLoadingProxy implements \Iterator, \TYPO3\CMS\Extbase\Persistence\Gene
 	/**
 	 * Checks if the array pointer of the storage points to a valid position
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function valid() {
 		return $this->current() !== FALSE;

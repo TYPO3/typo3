@@ -146,7 +146,7 @@ class CommandManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param Command $command
 	 * @param string $commandIdentifier command identifier in the format foo:bar:baz (all lower case)
-	 * @return boolean TRUE if the specified command identifier matches this commands identifier
+	 * @return bool TRUE if the specified command identifier matches this commands identifier
 	 */
 	protected function commandMatchesIdentifier(Command $command, $commandIdentifier) {
 		$commandIdentifierParts = explode(':', $command->getCommandIdentifier());

@@ -17,14 +17,14 @@ namespace TYPO3\CMS\IndexedSearch\Example;
 /**
  * Index search crawler hook example
  *
- * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class CrawlerHook {
 
 	/**
 	 * Function is called when an indexing session starts according to the time intervals set for the indexing configuration.
 	 *
-	 * @return 	string		Return a text string for the first, initiating queue entry for the crawler.
+	 * @return string Return a text string for the first, initiating queue entry for the crawler.
 	 */
 	public function initMessage() {
 		return 'Start of Custom Example Indexing session!';
@@ -35,12 +35,12 @@ class CrawlerHook {
 	 * 1) Carry out actual indexing of content (one or more items)
 	 * 2) Add one or more new entries into the crawlers queue so we are called again (another instance) for further indexing in the session (optional of course, if all indexing is done, we add no new entries)
 	 *
-	 * @param 	array		Indexing Configuration Record (the record which holds the information that lead to this indexing session...)
-	 * @param 	array		Session data variable. Passed by reference. Changed content is saved and passed back upon next instance in the session.
-	 * @param 	array		Params array from the queue entry.
-	 * @param 	object		Grant Parent Object (from "crawler" extension)
-	 * @param 	object		Parent Object (from "indexed_search" extension)
-	 * @return 	void
+	 * @param array Indexing Configuration Record (the record which holds the information that lead to this indexing session...)
+	 * @param array Session data variable. Passed by reference. Changed content is saved and passed back upon next instance in the session.
+	 * @param array Params array from the queue entry.
+	 * @param object Grant Parent Object (from "crawler" extension)
+	 * @param object Parent Object (from "indexed_search" extension)
+	 * @return void
 	 */
 	public function indexOperation($cfgRec, &$session_data, $params, &$pObj) {
 		// Init session data array if not already:

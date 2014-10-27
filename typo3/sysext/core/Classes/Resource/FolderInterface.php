@@ -51,7 +51,7 @@ interface FolderInterface extends ResourceInterface
 	 * Checks if a folder exists in this folder.
 	 *
 	 * @param string $name
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasFolder($name);
 
@@ -59,7 +59,7 @@ interface FolderInterface extends ResourceInterface
 	 * Checks if a file exists in this folder
 	 *
 	 * @param string $name
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasFile($name);
 
@@ -74,7 +74,7 @@ interface FolderInterface extends ResourceInterface
 	/**
 	 * Deletes this folder from its storage. This also means that this object becomes useless.
 	 *
-	 * @return boolean TRUE if deletion succeeded
+	 * @return bool TRUE if deletion succeeded
 	 */
 	public function delete();
 

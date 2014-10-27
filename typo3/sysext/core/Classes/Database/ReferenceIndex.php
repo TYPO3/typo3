@@ -282,7 +282,7 @@ class ReferenceIndex {
 	 * @param string $flexpointer Pointer to location inside flexform structure where reference is located in [field]
 	 * @param int $deleted Whether record is deleted-flagged or not
 	 * @param array $items Data array with file relations
-	 * @return 	void
+	 * @return void
 	 */
 	public function createEntryData_fileRels($table, $uid, $fieldname, $flexpointer, $deleted, $items) {
 		foreach ($items as $sort => $i) {
@@ -855,7 +855,7 @@ class ReferenceIndex {
 	 * Returns TRUE if the TCA/columns field type is a DB reference field
 	 *
 	 * @param array $conf Config array for TCA/columns field
-	 * @return boolean TRUE if DB reference field (group/db or select with foreign-table)
+	 * @return bool TRUE if DB reference field (group/db or select with foreign-table)
 	 */
 	public function isReferenceField($conf) {
 		return (

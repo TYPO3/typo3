@@ -127,7 +127,7 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper {
 	/**
 	 * Checks if a property mapping error has occurred in the last request.
 	 *
-	 * @return boolean TRUE if a mapping error occurred, FALSE otherwise
+	 * @return bool TRUE if a mapping error occurred, FALSE otherwise
 	 */
 	protected function hasMappingErrorOccurred() {
 		return $this->controllerContext->getRequest()->getOriginalRequest() !== NULL;
@@ -190,7 +190,7 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper {
 	/**
 	 * Internal method which checks if we should evaluate a domain object or just output arguments['name'] and arguments['value']
 	 *
-	 * @return boolean TRUE if we should evaluate the domain object, FALSE otherwise.
+	 * @return bool TRUE if we should evaluate the domain object, FALSE otherwise.
 	 */
 	protected function isObjectAccessorMode() {
 		return $this->hasArgument('property') && $this->viewHelperVariableContainer->exists('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObjectName');

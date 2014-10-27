@@ -20,23 +20,23 @@ namespace TYPO3\CMS\Rtehtmlarea;
  *
  * Adapted for htmlArea RTE by Stanislas Rolland
  *
- * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
- * @author 	Stanislas Rolland <typo3(arobas)sjbr.ca>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class which generates the page tree
  *
- * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class PageTree extends \localPageTree {
 
 	/**
 	 * Create the page navigation tree in HTML
 	 *
-	 * @param 	array		Tree array
-	 * @return 	string		HTML output.
+	 * @param array Tree array
+	 * @return string HTML output.
 	 */
 	public function printTree($treeArr = '') {
 		$titleLen = (int)$GLOBALS['BE_USER']->uc['titleLen'];

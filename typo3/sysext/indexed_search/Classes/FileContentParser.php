@@ -16,14 +16,14 @@ namespace TYPO3\CMS\IndexedSearch;
 /**
  * External standard parsers for indexed_search
  *
- * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @coauthor 	Olivier Simah <noname_paris@yahoo.fr>
  */
 /**
  * External standard parsers for indexed_search
  * MUST RETURN utf-8 content!
  *
- * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class FileContentParser {
 
@@ -55,8 +55,8 @@ class FileContentParser {
 	/**
 	 * Initialize external parser for parsing content.
 	 *
-	 * @param 	string		File extension
-	 * @return 	boolean		Returns TRUE if extension is supported/enabled, otherwise FALSE.
+	 * @param string File extension
+	 * @return bool Returns TRUE if extension is supported/enabled, otherwise FALSE.
 	 */
 	public function initParser($extension) {
 		// Then read indexer-config and set if appropriate:
@@ -214,8 +214,8 @@ class FileContentParser {
 	 * Initialize external parser for backend modules
 	 * Doesn't evaluate if parser is configured right - more like returning POSSIBLE supported extensions (for showing icons etc) in backend and frontend plugin
 	 *
-	 * @param 	string		File extension to initialize for.
-	 * @return 	boolean		Returns TRUE if the extension is supported and enabled, otherwise FALSE.
+	 * @param string File extension to initialize for.
+	 * @return bool Returns TRUE if the extension is supported and enabled, otherwise FALSE.
 	 */
 	public function softInit($extension) {
 		switch ($extension) {
@@ -267,8 +267,8 @@ class FileContentParser {
 	/**
 	 * Return title of entry in media type selector box.
 	 *
-	 * @param 	string		File extension
-	 * @return 	string		String with label value of entry in media type search selector box (frontend plugin).
+	 * @param string File extension
+	 * @return string String with label value of entry in media type search selector box (frontend plugin).
 	 */
 	public function searchTypeMediaTitle($extension) {
 		// Read indexer-config
@@ -384,8 +384,8 @@ class FileContentParser {
 	/**
 	 * Returns TRUE if the input extension (item_type) is a potentially a multi-page extension
 	 *
-	 * @param 	string		Extension / item_type string
-	 * @return 	boolean		Return TRUE if multi-page
+	 * @param string Extension / item_type string
+	 * @return bool Return TRUE if multi-page
 	 */
 	public function isMultiplePageExtension($extension) {
 		// Switch on file extension:
@@ -399,9 +399,9 @@ class FileContentParser {
 	/**
 	 * Wraps the "splitLabel function" of the language object.
 	 *
-	 * @param 	string		$reference: Reference/key of the label
-	 * @param 	bool		$useHtmlSpecialChar: Convert special chars to HTML entities (default: FALSE)
-	 * @return 	string		The label of the reference/key to be fetched
+	 * @param string $reference: Reference/key of the label
+	 * @param bool $useHtmlSpecialChar: Convert special chars to HTML entities (default: FALSE)
+	 * @return string The label of the reference/key to be fetched
 	 */
 	protected function sL($reference, $useHtmlSpecialChar = FALSE) {
 		return $this->langObject->sL($reference, $useHtmlSpecialChar);
@@ -697,8 +697,8 @@ class FileContentParser {
 	/**
 	 * Analysing PDF info into a useable format.
 	 *
-	 * @param 	array		Array of PDF content, coming from the pdfinfo tool
-	 * @return 	array		Result array
+	 * @param array Array of PDF content, coming from the pdfinfo tool
+	 * @return array Result array
 	 * @access private
 	 * @see fileContentParts()
 	 */
@@ -718,8 +718,8 @@ class FileContentParser {
 	/**
 	 * Removes some strange char(12) characters and line breaks that then to occur in the end of the string from external files.
 	 *
-	 * @param 	string		String to clean up
-	 * @return 	string		String
+	 * @param string String to clean up
+	 * @return string String
 	 */
 	public function removeEndJunk($string) {
 		return trim(preg_replace('/[' . LF . chr(12) . ']*$/', '', $string));
@@ -733,8 +733,8 @@ class FileContentParser {
 	/**
 	 * Return icon for file extension
 	 *
-	 * @param 	string		File extension, lowercase.
-	 * @return 	string		Relative file reference, resolvable by \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName()
+	 * @param string File extension, lowercase.
+	 * @return string Relative file reference, resolvable by \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName()
 	 */
 	public function getIcon($extension) {
 		if ($extension == 'htm') {

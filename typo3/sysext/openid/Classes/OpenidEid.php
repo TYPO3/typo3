@@ -20,14 +20,14 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
 /**
  * This class is the OpenID return script for the TYPO3 Frontend.
  *
- * @author 	Dmitry Dulepov <dmitry@typo3.org>
+ * @author Dmitry Dulepov <dmitry@typo3.org>
  */
 class OpenidEid {
 
 	/**
 	 * Processes eID request.
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function main() {
 		// Due to the nature of OpenID (redrections, etc) we need to force user

@@ -47,7 +47,7 @@ class EnableFileService {
 	/**
 	 * Creates the INSTALL_TOOL_ENABLE file
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	static public function createInstallToolEnableFile() {
 		$installEnableFilePath = self::getInstallToolEnableFilePath();
@@ -64,7 +64,7 @@ class EnableFileService {
 	/**
 	 * Removes the INSTALL_TOOL_ENABLE file
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	static public function removeInstallToolEnableFile() {
 		return unlink(self::getInstallToolEnableFilePath());
@@ -73,7 +73,7 @@ class EnableFileService {
 	/**
 	 * Removes the FIRST_INSTALL file
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	static public function removeFirstInstallFile() {
 		return unlink(self::getFirstInstallFilePath());
@@ -91,7 +91,7 @@ class EnableFileService {
 	/**
 	 * Checks if the install tool file exists
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	static public function checkInstallToolEnableFile() {
 		if (!self::installToolEnableFileExists()) {

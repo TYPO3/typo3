@@ -231,7 +231,7 @@ class UriBuilder {
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 * @api
 	 */
 	public function getCreateAbsoluteUri() {
@@ -270,7 +270,7 @@ class UriBuilder {
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 * @api
 	 */
 	public function getAddQueryString() {
@@ -353,7 +353,7 @@ class UriBuilder {
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 * @api
 	 */
 	public function getLinkAccessRestrictedPages() {
@@ -375,7 +375,7 @@ class UriBuilder {
 	/**
 	 * returns $this->targetPageUid.
 	 *
-	 * @return integer
+	 * @return int
 	 * @api
 	 */
 	public function getTargetPageUid() {
@@ -395,7 +395,7 @@ class UriBuilder {
 	}
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getTargetPageType() {
 		return $this->targetPageType;
@@ -415,7 +415,7 @@ class UriBuilder {
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 * @api
 	 */
 	public function getNoCache() {
@@ -436,7 +436,7 @@ class UriBuilder {
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 * @api
 	 */
 	public function getUseCacheHash() {

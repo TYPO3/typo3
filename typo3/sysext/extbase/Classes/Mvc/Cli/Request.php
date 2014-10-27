@@ -107,7 +107,7 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 * The dispatcher will try to dispatch the request again if it has not been
 	 * addressed yet.
 	 *
-	 * @return boolean TRUE if this request has been disptached successfully
+	 * @return bool TRUE if this request has been disptached successfully
 	 */
 	public function isDispatched() {
 		return $this->dispatched;
@@ -223,7 +223,7 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 * Checks if an argument of the given name exists (is set)
 	 *
 	 * @param string $argumentName Name of the argument to check
-	 * @return boolean TRUE if the argument is set, otherwise FALSE
+	 * @return bool TRUE if the argument is set, otherwise FALSE
 	 */
 	public function hasArgument($argumentName) {
 		return isset($this->arguments[$argumentName]);

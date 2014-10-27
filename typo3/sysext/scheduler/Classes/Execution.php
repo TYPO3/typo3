@@ -83,7 +83,7 @@ class Execution {
 	/**
 	 * This method is used to get the start date
 	 *
-	 * @return integer Start date (timestamp)
+	 * @return int Start date (timestamp)
 	 */
 	public function getStart() {
 		return $this->start;
@@ -102,7 +102,7 @@ class Execution {
 	/**
 	 * This method is used to get the end date
 	 *
-	 * @return integer End date (timestamp)
+	 * @return int End date (timestamp)
 	 */
 	public function getEnd() {
 		return $this->end;
@@ -121,7 +121,7 @@ class Execution {
 	/**
 	 * This method is used to get the interval
 	 *
-	 * @return integer Interval (in seconds)
+	 * @return int Interval (in seconds)
 	 */
 	public function getInterval() {
 		return $this->interval;
@@ -140,7 +140,7 @@ class Execution {
 	/**
 	 * This method is used to get the multiple execution flag
 	 *
-	 * @return boolean TRUE if concurrent executions are allowed, FALSE otherwise
+	 * @return bool TRUE if concurrent executions are allowed, FALSE otherwise
 	 */
 	public function getMultiple() {
 		return $this->multiple;
@@ -175,7 +175,7 @@ class Execution {
 	 * Upon next execution, this flag is set to FALSE.
 	 *
 	 * @param bool $isNewSingleExecution Is newly created single execution?
-	 * @return 	void
+	 * @return void
 	 * @see \TYPO3\CMS\Scheduler\Execution::getNextExecution()
 	 */
 	public function setIsNewSingleExecution($isNewSingleExecution) {
@@ -185,7 +185,7 @@ class Execution {
 	/**
 	 * Get whether this is a newly created single execution
 	 *
-	 * @return boolean Is newly created single execution?
+	 * @return bool Is newly created single execution?
 	 */
 	public function getIsNewSingleExecution() {
 		return $this->isNewSingleExecution;
@@ -197,7 +197,7 @@ class Execution {
 	/**
 	 * This method gets or calculates the next execution date
 	 *
-	 * @return integer Timestamp of the next execution
+	 * @return int Timestamp of the next execution
 	 * @throws \OutOfBoundsException
 	 */
 	public function getNextExecution() {
@@ -238,7 +238,7 @@ class Execution {
 	/**
 	 * Calculates the next execution from a cron command
 	 *
-	 * @return integer Next execution (timestamp)
+	 * @return int Next execution (timestamp)
 	 */
 	public function getNextCronExecution() {
 		/** @var $cronCmd \TYPO3\CMS\Scheduler\CronCommand\CronCommand */
@@ -250,7 +250,7 @@ class Execution {
 	/**
 	 * Checks if the schedule for a task is started or not
 	 *
-	 * @return boolean TRUE if the schedule is already active, FALSE otherwise
+	 * @return bool TRUE if the schedule is already active, FALSE otherwise
 	 */
 	public function isStarted() {
 		return $this->start < time();
@@ -259,7 +259,7 @@ class Execution {
 	/**
 	 * Checks if the schedule for a task is passed or not
 	 *
-	 * @return boolean TRUE if the schedule is not active anymore, FALSE otherwise
+	 * @return bool TRUE if the schedule is not active anymore, FALSE otherwise
 	 */
 	public function isEnded() {
 		if (empty($this->end)) {

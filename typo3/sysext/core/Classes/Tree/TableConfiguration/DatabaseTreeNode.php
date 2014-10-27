@@ -58,7 +58,7 @@ class DatabaseTreeNode extends \TYPO3\CMS\Backend\Tree\TreeRepresentationNode {
 	/**
 	 * Gets the expand state
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getExpanded() {
 		return $this->expanded;
@@ -77,7 +77,7 @@ class DatabaseTreeNode extends \TYPO3\CMS\Backend\Tree\TreeRepresentationNode {
 	/**
 	 * Gets the selectable property
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getSelectable() {
 		return $this->selectable;
@@ -96,7 +96,7 @@ class DatabaseTreeNode extends \TYPO3\CMS\Backend\Tree\TreeRepresentationNode {
 	/**
 	 * Gets the select state
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getSelected() {
 		return $this->selected;
@@ -105,7 +105,7 @@ class DatabaseTreeNode extends \TYPO3\CMS\Backend\Tree\TreeRepresentationNode {
 	/**
 	 * Gets the hasChildren property
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasChildren() {
 		return $this->hasChildren;
@@ -130,7 +130,7 @@ class DatabaseTreeNode extends \TYPO3\CMS\Backend\Tree\TreeRepresentationNode {
 	 * 0 if its equal
 	 *
 	 * @param \TYPO3\CMS\Backend\Tree\TreeNode $other
-	 * @return integer see description above
+	 * @return int see description above
 	 */
 	public function compareTo($other) {
 		if ($this->equals($other)) {

@@ -92,7 +92,7 @@ class BackendUser extends \TYPO3\CMS\Extbase\Domain\Model\BackendUser {
 	/**
 	 * Check if user is active, not disabled
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isActive() {
 		if ($this->getIsDisabled()) {

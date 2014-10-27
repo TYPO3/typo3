@@ -97,7 +97,7 @@ class AbstractAuthenticationService extends \TYPO3\CMS\Core\Service\AbstractServ
 	 * @param array $user User data array
 	 * @param array $loginData Login data array
 	 * @param string $passwordCompareStrategy Password compare strategy
-	 * @return boolean TRUE if login data matched
+	 * @return bool TRUE if login data matched
 	 */
 	public function compareUident(array $user, array $loginData, $passwordCompareStrategy = '') {
 		if ($this->authInfo['loginType'] === 'BE') {

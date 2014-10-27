@@ -329,7 +329,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @param string $extKey Extension key
 	 * @param string $taskClass Name of the task
-	 * @return boolean Access to the task allowed or not
+	 * @return bool Access to the task allowed or not
 	 */
 	protected function checkAccess($extKey, $taskClass) {
 		// Check if task is blinded with TsConfig (taskcenter.<extkey>.<taskName>

@@ -275,7 +275,7 @@ class PreparedStatement {
 	 * </code>
 	 *
 	 * @param array $input_parameters An array of values with as many elements as there are bound parameters in the SQL statement being executed. The PHP type of each array value will be used to decide which PARAM_* type to use (int, string, boolean, NULL), so make sure your variables are properly casted, if needed.
-	 * @return boolean Returns TRUE on success or FALSE on failure.
+	 * @return bool Returns TRUE on success or FALSE on failure.
 	 * @throws \InvalidArgumentException
 	 * @api
 	 */
@@ -444,7 +444,7 @@ class PreparedStatement {
 	 * Moves internal result pointer.
 	 *
 	 * @param int $rowNumber Where to place the result pointer (0 = start)
-	 * @return boolean Returns TRUE on success or FALSE on failure.
+	 * @return bool Returns TRUE on success or FALSE on failure.
 	 * @api
 	 */
 	public function seek($rowNumber) {
@@ -485,7 +485,7 @@ class PreparedStatement {
 	/**
 	 * Returns the number of rows affected by the last SQL statement.
 	 *
-	 * @return integer The number of rows.
+	 * @return int The number of rows.
 	 * @api
 	 */
 	public function rowCount() {
@@ -495,7 +495,7 @@ class PreparedStatement {
 	/**
 	 * Returns the error number on the last execute() call.
 	 *
-	 * @return integer Driver specific error code.
+	 * @return int Driver specific error code.
 	 * @api
 	 */
 	public function errorCode() {
@@ -542,7 +542,7 @@ class PreparedStatement {
 	 * Guesses the type of a given value.
 	 *
 	 * @param mixed $value
-	 * @return integer One of the \TYPO3\CMS\Core\Database\PreparedStatement::PARAM_* constants
+	 * @return int One of the \TYPO3\CMS\Core\Database\PreparedStatement::PARAM_* constants
 	 */
 	protected function guessValueType($value) {
 		if (is_bool($value)) {
@@ -561,7 +561,7 @@ class PreparedStatement {
 	 * Returns TRUE if named placeholers are used in a query.
 	 *
 	 * @param string $query
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function hasNamedPlaceholders($query) {
 		$matches = preg_match('/(?<![\\w:]):[\\w]+\\b/', $query);

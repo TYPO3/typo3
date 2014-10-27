@@ -97,7 +97,7 @@ class FileStorageExtractionAdditionalFieldProvider implements \TYPO3\CMS\Schedul
 	 *
 	 * @param array $submittedData Reference to the array containing the data submitted by the user
 	 * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
-	 * @return boolean True if validation was ok (or selected class is not relevant), false otherwise
+	 * @return bool True if validation was ok (or selected class is not relevant), false otherwise
 	 */
 	public function validateAdditionalFields(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject) {
 		if (

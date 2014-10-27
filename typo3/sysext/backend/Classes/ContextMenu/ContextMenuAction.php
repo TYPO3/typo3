@@ -209,7 +209,7 @@ class ContextMenuAction {
 	/**
 	 * Returns TRUE if the action has child actions
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasChildActions() {
 		if ($this->childActions !== NULL) {

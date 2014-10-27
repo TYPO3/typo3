@@ -57,7 +57,7 @@ interface BackendInterface
 	 * Checks if a cache entry with the specified identifier exists.
 	 *
 	 * @param string $entryIdentifier An identifier specifying the cache entry
-	 * @return boolean TRUE if such an entry exists, FALSE if not
+	 * @return bool TRUE if such an entry exists, FALSE if not
 	 * @api
 	 */
 	public function has($entryIdentifier);
@@ -68,7 +68,7 @@ interface BackendInterface
 	 * old entries for the identifier still exist, they are removed as well.
 	 *
 	 * @param string $entryIdentifier Specifies the cache entry to remove
-	 * @return boolean TRUE if (at least) an entry could be removed or FALSE if no entry was found
+	 * @return bool TRUE if (at least) an entry could be removed or FALSE if no entry was found
 	 * @api
 	 */
 	public function remove($entryIdentifier);

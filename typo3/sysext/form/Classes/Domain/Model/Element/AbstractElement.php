@@ -222,7 +222,7 @@ abstract class AbstractElement {
 	/**
 	 * Check to see if this element accepts the parent name instead of its own
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function acceptsParentName() {
 		return $this->acceptsParentName;
@@ -263,7 +263,7 @@ abstract class AbstractElement {
 	/**
 	 * Check if element has attributes which are allowed
 	 *
-	 * @return boolean TRUE if there is a list of allowed attributes
+	 * @return bool TRUE if there is a list of allowed attributes
 	 */
 	public function hasAllowedAttributes() {
 		return empty($this->allowedAttributes) === FALSE;
@@ -272,7 +272,7 @@ abstract class AbstractElement {
 	/**
 	 * Check if element has additionals which are allowed
 	 *
-	 * @return boolean TRUE if there is a list of allowed additionals
+	 * @return bool TRUE if there is a list of allowed additionals
 	 */
 	public function hasAllowedAdditionals() {
 		return empty($this->allowedAdditional) === FALSE;
@@ -300,7 +300,7 @@ abstract class AbstractElement {
 	 * Returns TRUE if attribute is set
 	 *
 	 * @param string $key The name of the attribute
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasAttribute($key) {
 		return $this->attributes->hasAttribute($key);
@@ -443,7 +443,7 @@ abstract class AbstractElement {
 	 * Check if additional exists
 	 *
 	 * @param string $key Name of the additional
-	 * @return boolean
+	 * @return bool
 	 */
 	public function additionalIsSet($key) {
 		return $this->additional->additionalIsSet($key);

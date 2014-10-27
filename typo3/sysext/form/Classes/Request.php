@@ -133,7 +133,7 @@ class Request implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Check to see if a property is set
 	 *
 	 * @param string $key Parameter to look for
-	 * @return boolean
+	 * @return bool
 	 */
 	public function has($key) {
 		switch (TRUE) {
@@ -151,7 +151,7 @@ class Request implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Check to see if there is a request
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasRequest() {
 		switch (TRUE) {

@@ -67,7 +67,7 @@ class AdditionalAdditionalElement {
 	 * Returns TRUE if set, FALSE if not set.
 	 *
 	 * @param string $key Name of the additional
-	 * @return boolean
+	 * @return bool
 	 */
 	public function additionalIsSet($key) {
 		return isset($this->additional[$key]);

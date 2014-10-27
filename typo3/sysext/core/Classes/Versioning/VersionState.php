@@ -72,7 +72,7 @@ class VersionState extends \TYPO3\CMS\Core\Type\Enumeration {
 	const MOVE_POINTER = 4;
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function indicatesPlaceholder() {
 		return (int)$this->__toString() > self::DEFAULT_STATE;

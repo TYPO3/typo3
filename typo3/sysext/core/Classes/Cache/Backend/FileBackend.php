@@ -87,7 +87,7 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
 	/**
 	 * Tells if this backend is frozen.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isFrozen() {
 		return $this->frozen;
@@ -196,7 +196,7 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
 	 * Checks if a cache entry with the specified identifier exists.
 	 *
 	 * @param string $entryIdentifier
-	 * @return boolean TRUE if such an entry exists, FALSE if not
+	 * @return bool TRUE if such an entry exists, FALSE if not
 	 * @throws \InvalidArgumentException
 	 * @api
 	 */
@@ -215,7 +215,7 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
 	 * Usually this only affects one entry.
 	 *
 	 * @param string $entryIdentifier Specifies the cache entry to remove
-	 * @return boolean TRUE if (at least) an entry could be removed or FALSE if no entry was found
+	 * @return bool TRUE if (at least) an entry could be removed or FALSE if no entry was found
 	 * @throws \RuntimeException
 	 * @throws \InvalidArgumentException
 	 * @api
@@ -309,7 +309,7 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
 	 * lifetime has exceeded.
 	 *
 	 * @param string $cacheEntryPathAndFilename
-	 * @return boolean
+	 * @return bool
 	 * @api
 	 */
 	protected function isCacheFileExpired($cacheEntryPathAndFilename) {

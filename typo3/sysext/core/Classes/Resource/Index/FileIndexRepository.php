@@ -215,7 +215,7 @@ class FileIndexRepository implements SingletonInterface {
 	 *
 	 * @param array $data
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	protected function insertRecord(array $data) {
 		$data = array_intersect_key($data, array_flip($this->fields));
@@ -229,7 +229,7 @@ class FileIndexRepository implements SingletonInterface {
 	 * Checks if a file is indexed
 	 *
 	 * @param File $file
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasIndexRecord(File $file) {
 		return $this->getDatabaseConnection()->exec_SELECTcountRows('uid', $this->table, $this->getWhereClauseForFile($file)) >= 1;

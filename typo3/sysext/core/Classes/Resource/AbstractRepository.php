@@ -145,7 +145,7 @@ abstract class AbstractRepository implements \TYPO3\CMS\Extbase\Persistence\Repo
 	/**
 	 * Returns the total number objects of this repository.
 	 *
-	 * @return integer The object count
+	 * @return int The object count
 	 * @api
 	 */
 	public function countAll() {

@@ -32,7 +32,7 @@ interface PackageInterface extends \TYPO3\Flow\Package\PackageInterface {
 	 * Tells if the package is part of the default factory configuration
 	 * and therefor activated at first installation.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isPartOfFactoryDefault();
 
@@ -41,7 +41,7 @@ interface PackageInterface extends \TYPO3\Flow\Package\PackageInterface {
 	 * and therefor activated if PackageStates is created from scratch for
 	 * whatever reason.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isPartOfMinimalUsableSystem();
 }

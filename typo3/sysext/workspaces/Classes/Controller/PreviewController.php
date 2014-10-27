@@ -164,7 +164,7 @@ class PreviewController extends AbstractController {
 	 * Evaluate the activate state based on given $stageArray.
 	 *
 	 * @param array $stageArray
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isInvalidStage($stageArray) {
 		return !(is_array($stageArray) && count($stageArray) > 0);

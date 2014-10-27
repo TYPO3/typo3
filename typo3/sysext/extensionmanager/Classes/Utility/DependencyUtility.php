@@ -165,7 +165,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param Dependency $dependency
 	 * @throws Exception\UnresolvedTypo3DependencyException
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function checkTypo3Dependency(Dependency $dependency) {
 		$lowerCaseIdentifier = strtolower($dependency->getIdentifier());
@@ -196,7 +196,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param Dependency $dependency
 	 * @throws Exception\UnresolvedPhpDependencyException
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function checkPhpDependency(Dependency $dependency) {
 		$lowerCaseIdentifier = strtolower($dependency->getIdentifier());
@@ -232,7 +232,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @todo handle exceptions / markForUpload
 	 * @param Dependency $dependency
 	 * @throws Exception\MissingVersionDependencyException
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function checkExtensionDependency(Dependency $dependency) {
 		$extensionKey = $dependency->getIdentifier();
@@ -286,7 +286,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * (the local extension storage)
 	 *
 	 * @param string $extensionKey
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function getExtensionFromInExtensionRepository($extensionKey) {
 		if ($this->localExtensionStorage !== '' && is_dir($this->localExtensionStorage)) {
@@ -351,7 +351,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @param string $extensionKey
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isDependentExtensionLoaded($extensionKey) {
 		return ExtensionManagementUtility::isLoaded($extensionKey);
@@ -359,7 +359,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @param Dependency $dependency
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isLoadedVersionCompatible(Dependency $dependency) {
 		$extensionVersion = ExtensionManagementUtility::getExtensionVersion($dependency->getIdentifier());
@@ -369,7 +369,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * @param string $version
 	 * @param Dependency $dependency
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isVersionCompatible($version, Dependency $dependency) {
 		if (!($dependency->getLowestVersion() === '') && version_compare($version, $dependency->getLowestVersion()) === -1) {
@@ -386,7 +386,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * (not necessarily installed, but present in system)
 	 *
 	 * @param string $extensionKey
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isDependentExtensionAvailable($extensionKey) {
 		$this->setAvailableExtensions();
@@ -397,7 +397,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Checks whether the available version is compatible
 	 *
 	 * @param Dependency $dependency
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isAvailableVersionCompatible(Dependency $dependency) {
 		$this->setAvailableExtensions();
@@ -409,7 +409,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Checks whether a ter extension with $extensionKey exists
 	 *
 	 * @param string $extensionKey
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isExtensionDownloadableFromTer($extensionKey) {
 		return $this->extensionRepository->countByExtensionKey($extensionKey) > 0;
@@ -419,7 +419,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Checks whether a compatible version of the extension exists in TER
 	 *
 	 * @param Dependency $dependency
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isDownloadableVersionCompatible(Dependency $dependency) {
 		$versions = $this->getLowestAndHighestIntegerVersions($dependency);

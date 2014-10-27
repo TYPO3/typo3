@@ -31,7 +31,7 @@ class ModuleRunner implements ModuleRunnerInterface {
 	 *
 	 * @param string $moduleSignature
 	 * @throws \RuntimeException
-	 * @return boolean TRUE, if the request request could be dispatched
+	 * @return bool TRUE, if the request request could be dispatched
 	 * @see run()
 	 */
 	public function callModule($moduleSignature) {

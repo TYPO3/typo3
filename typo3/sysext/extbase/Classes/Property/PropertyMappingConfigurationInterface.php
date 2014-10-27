@@ -32,7 +32,7 @@ interface PropertyMappingConfigurationInterface {
 	 * returns TRUE if the given propertyName should be mapped, FALSE otherwise.
 	 *
 	 * @param string $propertyName
-	 * @return boolean
+	 * @return bool
 	 * @api
 	 */
 	public function shouldSkip($propertyName);
@@ -41,7 +41,7 @@ interface PropertyMappingConfigurationInterface {
 	 * Whether unknown (unconfigured) properties should be skipped during
 	 * mapping, instead if causing an error.
 	 *
-	 * @return boolean
+	 * @return bool
 	 * @api
 	 */
 	public function shouldSkipUnknownProperties();

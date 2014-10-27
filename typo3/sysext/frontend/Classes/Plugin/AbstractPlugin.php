@@ -1136,7 +1136,7 @@ class AbstractPlugin {
 	 *
 	 * @param string $fList List of fields (keys from piVars) to evaluate on
 	 * @param int $lowerThan Limit for the values.
-	 * @return boolean Returns TRUE (1) if conditions are met.
+	 * @return bool Returns TRUE (1) if conditions are met.
 	 */
 	public function pi_isOnlyFields($fList, $lowerThan = -1) {
 		$lowerThan = $lowerThan == -1 ? $this->pi_lowerThan : $lowerThan;
@@ -1158,7 +1158,7 @@ class AbstractPlugin {
 	 * This is an advanced form of evaluation of whether a URL should be cached or not.
 	 *
 	 * @param array $inArray An array with piVars values to evaluate
-	 * @return boolean Returns TRUE (1) if conditions are met.
+	 * @return bool Returns TRUE (1) if conditions are met.
 	 * @see pi_linkTP_keepPIvars()
 	 */
 	public function pi_autoCache($inArray) {

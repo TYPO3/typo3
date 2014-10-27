@@ -67,7 +67,7 @@ class EditFileController {
 	/**
 	 * Initialize script class
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	protected function init() {
 		// Setting target, which must be a file reference to a file within the mounts.

@@ -59,8 +59,8 @@ class Plaintext extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
-	 * @param 	int		Relative id of the RTE editing area in the form
-	 * @return string		JS configuration for registered plugins
+	 * @param int Relative id of the RTE editing area in the form
+	 * @return string JS configuration for registered plugins
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {
 		$registerRTEinJavascriptString = '';
@@ -80,8 +80,8 @@ class Plaintext extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	/**
 	 * Return an updated array of toolbar enabled buttons
 	 *
-	 * @param 	array		$show: array of toolbar elements that will be enabled, unless modified here
-	 * @return 	array		toolbar button array, possibly updated
+	 * @param array $show: array of toolbar elements that will be enabled, unless modified here
+	 * @return array toolbar button array, possibly updated
 	 */
 	public function applyToolbarConstraints($show) {
 		$removeButtons = array();

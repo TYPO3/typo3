@@ -25,7 +25,7 @@ class CleanupPreviewLinkTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 * Cleanup old preview links.
 	 * endtime < $GLOBALS['EXEC_TIME']
 	 *
-	 * @return 	boolean
+	 * @return bool
 	 */
 	public function execute() {
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_preview', 'endtime < ' . (int)$GLOBALS['EXEC_TIME']);

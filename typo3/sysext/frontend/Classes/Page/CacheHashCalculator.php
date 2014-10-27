@@ -78,7 +78,7 @@ class CacheHashCalculator implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Checks whether a parameter of the given $queryString requires cHash calculation
 	 *
 	 * @param string $queryString
-	 * @return boolean
+	 * @return bool
 	 */
 	public function doParametersRequireCacheHash($queryString) {
 		if (empty($this->requireCacheHashPresenceParameters)) {
@@ -149,7 +149,7 @@ class CacheHashCalculator implements \TYPO3\CMS\Core\SingletonInterface {
 	 * stristr check added to avoid bad performance
 	 *
 	 * @param string $key
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isAdminPanelParameter($key) {
 		return stristr($key, 'TSFE_ADMIN_PANEL') !== FALSE && preg_match('/TSFE_ADMIN_PANEL\\[.*?\\]/', $key);
@@ -159,7 +159,7 @@ class CacheHashCalculator implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Checks whether the given parameter is a core parameter
 	 *
 	 * @param string $key
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isCoreParameter($key) {
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::inList('id,type,no_cache,cHash,MP,ftu', $key);
@@ -169,7 +169,7 @@ class CacheHashCalculator implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Checks whether the given parameter should be exluded from cHash calculation
 	 *
 	 * @param string $key
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isExcludedParameter($key) {
 		return in_array($key, $this->excludedParameters);
@@ -179,7 +179,7 @@ class CacheHashCalculator implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Checks whether the given parameter is an exclusive parameter for cHash calculation
 	 *
 	 * @param string $key
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isInCachedParametersWhiteList($key) {
 		return in_array($key, $this->cachedParametersWhiteList);
@@ -188,7 +188,7 @@ class CacheHashCalculator implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Checks whether cachedParametersWhiteList parameters are configured
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function hasCachedParametersWhiteList() {
 		return !empty($this->cachedParametersWhiteList);

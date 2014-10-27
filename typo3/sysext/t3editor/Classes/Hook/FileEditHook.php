@@ -103,7 +103,7 @@ class FileEditHook {
 	 * @param array $parameters
 	 * @param mixed $pObj
 	 *
-	 * @return boolean TRUE if successful
+	 * @return bool TRUE if successful
 	 */
 	public function save($parameters, $pObj) {
 		$savingsuccess = FALSE;

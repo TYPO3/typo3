@@ -382,7 +382,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * Returns the backend layout which should be used for this page.
 	 *
 	 * @param int $id Uid of the current page
-	 * @return boolean|string Identifier of the backend layout to be used, or FALSE if none
+	 * @return bool|string Identifier of the backend layout to be used, or FALSE if none
 	 * @deprecated since TYPO3 CMS 6.2, will be removed two versions later
 	 */
 	public function getSelectedBackendLayoutUid($id) {
@@ -1898,7 +1898,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 *
 	 * @param string $table Table name
 	 * @param int $pid Page id
-	 * @return integer Number of records.
+	 * @return int Number of records.
 	 */
 	public function numberOfRecords($table, $pid) {
 		$count = 0;
@@ -1967,7 +1967,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 *
 	 * @param string $table Tablename of table to test
 	 * @param array $row Record row.
-	 * @return boolean Returns TRUE, if disabled.
+	 * @return bool Returns TRUE, if disabled.
 	 */
 	public function isDisabled($table, $row) {
 		$enableCols = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns'];
@@ -2051,7 +2051,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @param string $table Table name
 	 * @param array $row Record row (needed, if there are RTE dependencies based on other fields in the record)
 	 * @param string $field Field name
-	 * @return boolean Returns TRUE if the rich text editor would be enabled/available for the field name specified.
+	 * @return bool Returns TRUE if the rich text editor would be enabled/available for the field name specified.
 	 */
 	public function isRTEforField($table, $row, $field) {
 		$specConf = $this->getSpecConfForField($table, $row, $field);

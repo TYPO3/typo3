@@ -71,7 +71,7 @@ class ObjectManager implements ObjectManagerInterface {
 	 * Returns TRUE if an object with the given name is registered
 	 *
 	 * @param string $objectName Name of the object
-	 * @return boolean TRUE if the object has been registered, otherwise FALSE
+	 * @return bool TRUE if the object has been registered, otherwise FALSE
 	 */
 	public function isRegistered($objectName) {
 		return class_exists($objectName, TRUE);
@@ -100,7 +100,7 @@ class ObjectManager implements ObjectManagerInterface {
 	 * Returns the scope of the specified object.
 	 *
 	 * @param string $objectName The object name
-	 * @return integer One of the Container::SCOPE_ constants
+	 * @return int One of the Container::SCOPE_ constants
 	 * @throws \TYPO3\CMS\Extbase\Object\Container\Exception\UnknownObjectException
 	 * @api
 	 */

@@ -189,7 +189,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 	 *
 	 * @param string $localPath
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	protected function findBestMatchingStorageByLocalPath(&$localPath) {
 		if ($this->localDriverStorageCache === NULL) {

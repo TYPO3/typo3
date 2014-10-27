@@ -1430,7 +1430,7 @@ class ImportExport {
 	/**
 	 * Returns TRUE if the output should be compressed.
 	 *
-	 * @return boolean TRUE if compression is possible AND requested.
+	 * @return bool TRUE if compression is possible AND requested.
 	 */
 	public function doOutputCompress() {
 		return $this->compress && !$this->dontCompress;
@@ -2849,7 +2849,7 @@ class ImportExport {
 	 * @param string $fileName Absolute filename inside PATH_site to write to
 	 * @param string $fileID File ID from import memory
 	 * @param bool $bypassMountCheck Bypasses the checking against filemounts - only for RTE files!
-	 * @return boolean Returns TRUE if it went well. Notice that the content of the file is read again, and md5 from import memory is validated.
+	 * @return bool Returns TRUE if it went well. Notice that the content of the file is read again, and md5 from import memory is validated.
 	 */
 	public function writeFileVerify($fileName, $fileID, $bypassMountCheck = FALSE) {
 		$fileProcObj = $this->getFileProcObj();
@@ -3034,7 +3034,7 @@ class ImportExport {
 	 * Returns TRUE if directory exists  and if it doesn't it will create directory and return TRUE if that succeeded.
 	 *
 	 * @param string $dirPrefix Directory to create. Having a trailing slash. Must be in fileadmin/. Relative to PATH_site
-	 * @return boolean TRUE, if directory exists (was created)
+	 * @return bool TRUE, if directory exists (was created)
 	 */
 	public function checkOrCreateDir($dirPrefix) {
 		// Split dir path and remove first directory (which should be "fileadmin")
@@ -3103,7 +3103,7 @@ class ImportExport {
 	 *
 	 * @param string $filename Filename, absolute
 	 * @param bool $all If set, all information is loaded (header, records and files). Otherwise the default is to read only the header information
-	 * @return boolean TRUE if the operation went well
+	 * @return bool TRUE if the operation went well
 	 */
 	public function loadFile($filename, $all = FALSE) {
 		if (!@is_file($filename)) {
@@ -3818,7 +3818,7 @@ class ImportExport {
 	 *
 	 * @param string $checkTable Table name to check
 	 * @param int $doktype doktype value.
-	 * @return boolean TRUE if OK
+	 * @return bool TRUE if OK
 	 */
 	public function checkDokType($checkTable, $doktype) {
 		global $PAGES_TYPES;
@@ -3917,7 +3917,7 @@ class ImportExport {
 	 * Returns TRUE if the input table name is to be regarded as a static relation (that is, not exported etc).
 	 *
 	 * @param string $table Table name
-	 * @return boolean TRUE, if table is marked static
+	 * @return bool TRUE, if table is marked static
 	 */
 	public function isTableStatic($table) {
 		if (is_array($GLOBALS['TCA'][$table])) {
@@ -3930,7 +3930,7 @@ class ImportExport {
 	 * Returns TRUE if the input table name is to be included as relation
 	 *
 	 * @param string $table Table name
-	 * @return boolean TRUE, if table is marked static
+	 * @return bool TRUE, if table is marked static
 	 */
 	public function inclRelation($table) {
 		return is_array($GLOBALS['TCA'][$table])
@@ -3943,7 +3943,7 @@ class ImportExport {
 	 *
 	 * @param string $table Table name
 	 * @param int $uid UID value
-	 * @return boolean TRUE, if table is marked static
+	 * @return bool TRUE, if table is marked static
 	 */
 	public function isExcluded($table, $uid) {
 		return (bool)$this->excludeMap[$table . ':' . $uid];
@@ -3953,7 +3953,7 @@ class ImportExport {
 	 * Returns TRUE if soft reference should be included in exported file.
 	 *
 	 * @param string $tokenID Token ID for soft reference
-	 * @return boolean TRUE if softreference media should be included
+	 * @return bool TRUE if softreference media should be included
 	 */
 	public function includeSoftref($tokenID) {
 		return $tokenID && !GeneralUtility::inList('exclude,editable', $this->softrefCfg[$tokenID]['mode']);
@@ -3963,7 +3963,7 @@ class ImportExport {
 	 * Checking if a PID is in the webmounts of the user
 	 *
 	 * @param int $pid Page ID to check
-	 * @return boolean TRUE if OK
+	 * @return bool TRUE if OK
 	 */
 	public function checkPID($pid) {
 		if (!isset($this->checkPID_cache[$pid])) {
@@ -3977,7 +3977,7 @@ class ImportExport {
 	 *
 	 * @param string $table Table name
 	 * @param int $uid Uid or record
-	 * @return boolean TRUE if the position of the record should be updated to match the one in the import structure
+	 * @return bool TRUE if the position of the record should be updated to match the one in the import structure
 	 */
 	public function dontIgnorePid($table, $uid) {
 		return $this->import_mode[$table . ':' . $uid] !== 'ignore_pid' && (!$this->global_ignore_pid || $this->import_mode[$table . ':' . $uid] === 'respect_pid');

@@ -146,7 +146,7 @@ class SpellCheckingController {
 	/**
 	 * Main class of Spell Checker plugin for Typo3 CMS
 	 *
-	 * @return 	string		content produced by the plugin
+	 * @return string content produced by the plugin
 	 */
 	public function main() {
 		$this->csConvObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');

@@ -146,7 +146,7 @@ class FrontendEditingController {
 	/**
 	 * Returns TRUE if an edit-action is sent from the Admin Panel
 	 *
-	 * @return boolean
+	 * @return bool
 	 * @see index_ts.php
 	 */
 	public function isEditAction() {
@@ -168,7 +168,7 @@ class FrontendEditingController {
 	 * Returns TRUE if an edit form is shown on the page.
 	 * Used from index_ts.php where a TRUE return-value will result in classes etc. being included.
 	 *
-	 * @return boolean
+	 * @return bool
 	 * @see index_ts.php
 	 */
 	public function isEditFormShown() {
@@ -418,7 +418,7 @@ class FrontendEditingController {
 	 *
 	 * @param string $table The name of the table.
 	 * @param array $currentRecord The record.
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function allowedToEditLanguage($table, array $currentRecord) {
 		// If no access right to record languages, return immediately
@@ -446,7 +446,7 @@ class FrontendEditingController {
 	 * @param array $dataArray The data array.
 	 * @param array $conf The configuration array for the edit panel.
 	 * @param bool $checkEditAccessInternals Boolean indicating whether recordEditAccessInternals should not be checked. Defaults
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function allowedToEdit($table, array $dataArray, array $conf, $checkEditAccessInternals = TRUE) {
 		// Unless permissions specifically allow it, editing is not allowed.

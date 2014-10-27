@@ -50,7 +50,7 @@ class AbstractRte {
 	 * Returns TRUE if the RTE is available. Here you check if the browser requirements are met.
 	 * If there are reasons why the RTE cannot be displayed you simply enter them as text in ->errorLog
 	 *
-	 * @return boolean TRUE if this RTE object offers an RTE in the current browser environment
+	 * @return bool TRUE if this RTE object offers an RTE in the current browser environment
 	 */
 	public function isAvailable() {
 		return TRUE;

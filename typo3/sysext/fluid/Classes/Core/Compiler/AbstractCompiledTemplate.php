@@ -71,14 +71,14 @@ abstract class AbstractCompiledTemplate implements \TYPO3\CMS\Fluid\Core\Parser\
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isCompilable() {
 		return FALSE;
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isCompiled() {
 		return TRUE;

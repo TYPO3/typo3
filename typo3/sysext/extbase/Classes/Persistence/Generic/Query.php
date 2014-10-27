@@ -267,7 +267,7 @@ class Query implements QueryInterface {
 	/**
 	 * Returns the maximum size of the result set to limit.
 	 *
-	 * @return integer
+	 * @return int
 	 * @api
 	 */
 	public function getLimit() {
@@ -294,7 +294,7 @@ class Query implements QueryInterface {
 	/**
 	 * Returns the start offset of the result set.
 	 *
-	 * @return integer
+	 * @return int
 	 * @api
 	 */
 	public function getOffset() {
@@ -546,7 +546,7 @@ class Query implements QueryInterface {
 	/**
 	 * Returns the query result count.
 	 *
-	 * @return integer The query result count
+	 * @return int The query result count
 	 * @api
 	 */
 	public function count() {

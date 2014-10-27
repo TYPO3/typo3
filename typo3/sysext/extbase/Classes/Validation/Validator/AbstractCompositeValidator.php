@@ -112,7 +112,7 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
 	/**
 	 * Returns the number of validators contained in this conjunction.
 	 *
-	 * @return integer The number of validators
+	 * @return int The number of validators
 	 * @api
 	 */
 	public function count() {

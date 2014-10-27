@@ -319,7 +319,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 	 *
 	 * @param int $pageId Page id to select for.
 	 * @param int $sysLang Sys language uid
-	 * @return integer Number of content elements from the PID where the language is set to a certain value.
+	 * @return int Number of content elements from the PID where the language is set to a certain value.
 	 */
 	public function getContentElementCount($pageId, $sysLang) {
 		$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'tt_content', 'pid=' . (int)$pageId . ' AND sys_language_uid=' . (int)$sysLang . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content'));

@@ -19,7 +19,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 /**
  * Helper class for the 'recycler' extension.
  *
- * @author 	Julian Kleinhans <typo3@kj187.de>
+ * @author Julian Kleinhans <typo3@kj187.de>
  */
 class RecyclerUtility {
 
@@ -34,7 +34,7 @@ class RecyclerUtility {
 	 *
 	 * @param string $table The table to check access for
 	 * @param string $row Record array
-	 * @return boolean Returns TRUE is the user has access, or FALSE if not
+	 * @return bool Returns TRUE is the user has access, or FALSE if not
 	 */
 	static public function checkAccess($table, $row) {
 		// Checking if the user has permissions? (Only working as a precaution, because the final permission check is always down in TCE. But it's good to notify the user on beforehand...)
@@ -68,11 +68,11 @@ class RecyclerUtility {
 	 * Each part of the path will be limited to $titleLimit characters
 	 * Deleted pages are filtered out.
 	 *
-	 * @param	int		Page uid for which to create record path
-	 * @param 	string		$clause is additional where clauses, eg.
-	 * @param	int		Title limit
-	 * @param	int		Title limit of Full title (typ. set to 1000 or so)
-	 * @return 	mixed		Path of record (string) OR array with short/long title if $fullTitleLimit is set.
+	 * @param int Page uid for which to create record path
+	 * @param string $clause is additional where clauses, eg.
+	 * @param int Title limit
+	 * @param int Title limit of Full title (typ. set to 1000 or so)
+	 * @return mixed Path of record (string) OR array with short/long title if $fullTitleLimit is set.
 	 */
 	static public function getRecordPath($uid, $clause = '', $titleLimit = 1000, $fullTitleLimit = 0) {
 		$loopCheck = 100;
@@ -111,8 +111,8 @@ class RecyclerUtility {
 	/**
 	 * Gets the name of the field with the information whether a record is deleted.
 	 *
-	 * @param 	string		$tableName: Name of the table to get the deleted field for
-	 * @return 	string		Name of the field with the information whether a record is deleted
+	 * @param string $tableName: Name of the table to get the deleted field for
+	 * @return string Name of the field with the information whether a record is deleted
 	 */
 	static public function getDeletedField($tableName) {
 		$TCA = self::getTableTCA($tableName);
@@ -124,8 +124,8 @@ class RecyclerUtility {
 	/**
 	 * Gets the TCA of the table used in the current context.
 	 *
-	 * @param 	string		$tableName: Name of the table to get TCA for
-	 * @return 	mixed		TCA of the table used in the current context (array)
+	 * @param string $tableName: Name of the table to get TCA for
+	 * @return mixed TCA of the table used in the current context (array)
 	 */
 	static public function getTableTCA($tableName) {
 		$TCA = FALSE;
@@ -138,7 +138,7 @@ class RecyclerUtility {
 	/**
 	 * Gets the current backend charset.
 	 *
-	 * @return 	string		The current backend charset
+	 * @return string The current backend charset
 	 */
 	static public function getCurrentCharset() {
 		return $GLOBALS['LANG']->csConvObj->parse_charset($GLOBALS['LANG']->charSet);
@@ -147,7 +147,7 @@ class RecyclerUtility {
 	/**
 	 * Determines whether the current charset is not UTF-8
 	 *
-	 * @return 	boolean		Whether the current charset is not UTF-8
+	 * @return bool Whether the current charset is not UTF-8
 	 */
 	static public function isNotUtf8Charset() {
 		return self::getCurrentCharset() !== 'utf-8';
@@ -156,8 +156,8 @@ class RecyclerUtility {
 	/**
 	 * Gets an UTF-8 encoded string (only if the current charset is not UTF-8!).
 	 *
-	 * @param 	string		$string: String to be converted to UTF-8 if required
-	 * @return 	string		UTF-8 encoded string
+	 * @param string $string: String to be converted to UTF-8 if required
+	 * @return string UTF-8 encoded string
 	 */
 	static public function getUtf8String($string) {
 		if (self::isNotUtf8Charset()) {

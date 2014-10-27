@@ -149,7 +149,7 @@ class CommandUtility {
 	 *
 	 * @param string $cmd The command that should be executed. eg: "convert"
 	 * @param string $handler Executer for the command. eg: "perl"
-	 * @return boolean FALSE if cmd is not found, or -1 if the handler is not found
+	 * @return bool FALSE if cmd is not found, or -1 if the handler is not found
 	 */
 	public static function checkCommand($cmd, $handler = '') {
 		if (!self::init()) {
@@ -282,7 +282,7 @@ class CommandUtility {
 	/**
 	 * Initializes this class
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected static function init() {
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['disable_exec_function']) {

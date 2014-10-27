@@ -2984,7 +2984,7 @@ class DataHandler {
 	 * @param array $overrideValues Associative array with field/value pairs to override directly. Notice; Fields must exist in the table record and NOT be among excluded fields!
 	 * @param string $excludeFields Commalist of fields to exclude from the copy process (might get default values)
 	 * @param int $language Language ID (from sys_language table)
-	 * @return integer ID of new record, if any
+	 * @return int ID of new record, if any
 	 */
 	public function copyRecord($table, $uid, $destPid, $first = 0, $overrideValues = array(), $excludeFields = '', $language = 0) {
 		$uid = ($origUid = (int)$uid);
@@ -3147,7 +3147,7 @@ class DataHandler {
 	 * @param int $destPid Destination PID: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
 	 * @param array $copyTablesArray Table on pages to copy along with the page.
 	 * @param bool $first Is a flag set, if the record copied is NOT a 'slave' to another record copied. That is, if this record was asked to be copied in the cmd-array
-	 * @return integer The id of the new page, if applicable.
+	 * @return int The id of the new page, if applicable.
 	 */
 	public function copySpecificPage($uid, $destPid, $copyTablesArray, $first = 0) {
 		// Copy the page itself:
@@ -3183,7 +3183,7 @@ class DataHandler {
 	 * @param int $pid Element PID (real PID, not checked)
 	 * @param array $overrideArray Override array - must NOT contain any fields not in the table!
 	 * @return array $workspaceOptions Options to be forwarded if actions happen on a workspace currently
-	 * @return integer Returns the new ID of the record (if applicable)
+	 * @return int Returns the new ID of the record (if applicable)
 	 */
 	public function copyRecord_raw($table, $uid, $pid, $overrideArray = array(), array $workspaceOptions = array()) {
 		$uid = (int)$uid;
@@ -3245,7 +3245,7 @@ class DataHandler {
 	 * @param string $table Table name
 	 * @param array $fieldArray Field array to insert as a record
 	 * @param int $realPid The value of PID field.  -1 is indication that we are creating a new version!
-	 * @return integer Returns the new ID of the record (if applicable)
+	 * @return int Returns the new ID of the record (if applicable)
 	 */
 	public function insertNewCopyVersion($table, $fieldArray, $realPid) {
 		$id = uniqid('NEW', TRUE);
@@ -4550,7 +4550,7 @@ class DataHandler {
 	 *
 	 * @param string $table Table name of the record
 	 * @param int $uid uid of the record
-	 * @return boolean Whether the record can be undeleted
+	 * @return bool Whether the record can be undeleted
 	 */
 	public function isRecordUndeletable($table, $uid) {
 		$result = FALSE;
@@ -4578,7 +4578,7 @@ class DataHandler {
 	 * @param string $uid Record UID
 	 * @param bool $undeleteRecord If a record should be undeleted (e.g. from history/undo)
 	 * @return void
-	 * @see 	 deleteRecord()
+	 * @see deleteRecord()
 	 */
 	public function deleteRecord_procFields($table, $uid, $undeleteRecord = FALSE) {
 		$conf = $GLOBALS['TCA'][$table]['columns'];
@@ -4599,7 +4599,7 @@ class DataHandler {
 	 * @param array $conf TCA configuration of current field
 	 * @param bool $undeleteRecord If a record should be undeleted (e.g. from history/undo)
 	 * @return void
-	 * @see 	 deleteRecord()
+	 * @see deleteRecord()
 	 */
 	public function deleteRecord_procBasedOnFieldType($table, $uid, $field, $value, $conf, $undeleteRecord = FALSE) {
 		if ($conf['type'] == 'inline') {
@@ -4686,7 +4686,7 @@ class DataHandler {
 	 * @param int $id Record uid to versionize
 	 * @param string $label Version label
 	 * @param bool $delete If TRUE, the version is created to delete the record.
-	 * @return integer Returns the id of the new version (if any)
+	 * @return int Returns the id of the new version (if any)
 	 * @see copyRecord()
 	 */
 	public function versionizeRecord($table, $id, $label, $delete = FALSE) {
@@ -5354,7 +5354,7 @@ class DataHandler {
 	 * Checking group modify_table access list
 	 *
 	 * @param string $table Table name
-	 * @return boolean Returns TRUE if the user has general access to modify the $table
+	 * @return bool Returns TRUE if the user has general access to modify the $table
 	 */
 	public function checkModifyAccessList($table) {
 		$res = $this->admin || !$this->tableAdminOnly($table) && GeneralUtility::inList($this->BE_USER->groupData['tables_modify'], $table);
@@ -5371,7 +5371,7 @@ class DataHandler {
 	 *
 	 * @param string $table Table name
 	 * @param int $id UID of record
-	 * @return boolean Returns TRUE if OK. Cached results.
+	 * @return bool Returns TRUE if OK. Cached results.
 	 */
 	public function isRecordInWebMount($table, $id) {
 		if (!isset($this->isRecordInWebMount_Cache[($table . ':' . $id)])) {
@@ -5385,7 +5385,7 @@ class DataHandler {
 	 * Checks if the input page ID is in the BE_USER webmounts
 	 *
 	 * @param int $pid Page ID to check
-	 * @return boolean TRUE if OK. Cached results.
+	 * @return bool TRUE if OK. Cached results.
 	 */
 	public function isInWebMount($pid) {
 		if (!isset($this->isInWebMount_Cache[$pid])) {
@@ -5401,7 +5401,7 @@ class DataHandler {
 	 * @param int $id Record UID
 	 * @param array $data Record data
 	 * @param array $hookObjectsArr Hook objects
-	 * @return boolean Returns TRUE if the user may update the record given by $table and $id
+	 * @return bool Returns TRUE if the user may update the record given by $table and $id
 	 */
 	public function checkRecordUpdateAccess($table, $id, $data = FALSE, &$hookObjectsArr = FALSE) {
 		$res = NULL;
@@ -5573,7 +5573,7 @@ class DataHandler {
 	 *
 	 * @param int $id Page id
 	 * @param int $perms Permission integer
-	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object (from exec_SELECTquery())
+	 * @return bool|\mysqli_result|object MySQLi result object / DBAL object (from exec_SELECTquery())
 	 * @access private
 	 * @see doesRecordExist()
 	 */
@@ -5624,7 +5624,7 @@ class DataHandler {
 	 * Checks if the $table is readOnly
 	 *
 	 * @param string $table Table name
-	 * @return boolean TRUE, if readonly
+	 * @return bool TRUE, if readonly
 	 */
 	public function tableReadOnly($table) {
 		// Returns TRUE if table is readonly
@@ -5635,7 +5635,7 @@ class DataHandler {
 	 * Checks if the $table is only editable by admin-users
 	 *
 	 * @param string $table Table name
-	 * @return boolean TRUE, if readonly
+	 * @return bool TRUE, if readonly
 	 */
 	public function tableAdminOnly($table) {
 		// Returns TRUE if table is admin-only
@@ -5648,7 +5648,7 @@ class DataHandler {
 	 *
 	 * @param int $dest Destination Page ID to test
 	 * @param int $id Page ID to test for presence inside Destination
-	 * @return boolean Returns FALSE if ID is inside destination (including equal to)
+	 * @return bool Returns FALSE if ID is inside destination (including equal to)
 	 */
 	public function destNotInsideSelf($dest, $id) {
 		$loopCheck = 100;
@@ -5819,7 +5819,7 @@ class DataHandler {
 	 * @param string $table
 	 * @param int $uid
 	 * @param int $pid
-	 * @return integer
+	 * @return int
 	 */
 	public function eventPid($table, $uid, $pid) {
 		return $table == 'pages' ? $uid : $pid;
@@ -5882,7 +5882,7 @@ class DataHandler {
 	 * @param bool $newVersion Set to TRUE if new version is created.
 	 * @param int $suggestedUid Suggested UID value for the inserted record. See the array $this->suggestedInsertUids; Admin-only feature
 	 * @param bool $dontSetNewIdIndex If TRUE, the ->substNEWwithIDs array is not updated. Only useful in very rare circumstances!
-	 * @return integer Returns ID on success.
+	 * @return int Returns ID on success.
 	 */
 	public function insertDB($table, $id, $fieldArray, $newVersion = FALSE, $suggestedUid = 0, $dontSetNewIdIndex = FALSE) {
 		if (is_array($fieldArray) && is_array($GLOBALS['TCA'][$table]) && isset($fieldArray['pid'])) {
@@ -6112,7 +6112,7 @@ class DataHandler {
 	 * @param int $pid Pid in which to resort records.
 	 * @param string $sortRow Sorting row
 	 * @param int $return_SortNumber_After_This_Uid Uid of record from $table in this $pid and for which the return value will be set to a free sorting number after that record. This is used to return a sortingValue if the list is resorted because of inserting records inside the list and not in the top
-	 * @return integer If $return_SortNumber_After_This_Uid is set, will contain usable sorting number after that record if found (otherwise 0)
+	 * @return int If $return_SortNumber_After_This_Uid is set, will contain usable sorting number after that record if found (otherwise 0)
 	 * @access private
 	 * @see getSortNumber()
 	 */
@@ -6149,7 +6149,7 @@ class DataHandler {
 	 * @param int $uid Uid of default language record
 	 * @param int $pid Pid of default language record
 	 * @param int $language Language of localization
-	 * @return integer uid of record after which the localized record should be inserted
+	 * @return int uid of record after which the localized record should be inserted
 	 */
 	protected function getPreviousLocalizedRecordUid($table, $uid, $pid, $language) {
 		$previousLocalizedRecordUid = $uid;
@@ -6339,7 +6339,7 @@ class DataHandler {
 	 * @param mixed $storedValue Value that is currently stored in the database
 	 * @param string $storedType SQL type of the stored value column (see mysql_field_type(), e.g 'int', 'string',  ...)
 	 * @param bool $allowNull Whether NULL values are allowed by accordant TCA definition ('eval' = 'null')
-	 * @return boolean Whether both values are considered to be equal
+	 * @return bool Whether both values are considered to be equal
 	 */
 	protected function isSubmittedValueEqualToStoredValue($submittedValue, $storedValue, $storedType, $allowNull = FALSE) {
 		// No NULL values are allowed, this is the regular behaviour.
@@ -6366,7 +6366,7 @@ class DataHandler {
 	 * Calculates the bitvalue of the permissions given in a string, comma-sep
 	 *
 	 * @param string $string List of pMap strings
-	 * @return integer Integer mask
+	 * @return int Integer mask
 	 * @see setTSconfigPermissions(), newFieldArray()
 	 */
 	public function assemblePermissions($string) {
@@ -6480,7 +6480,7 @@ class DataHandler {
 	 *
 	 * @param string $table Table name
 	 * @param int $uid Record uid
-	 * @return integer PID value (unless the record did not exist in which case FALSE)
+	 * @return int PID value (unless the record did not exist in which case FALSE)
 	 */
 	public function getPID($table, $uid) {
 		$res_tmp = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid', $table, 'uid=' . (int)$uid);
@@ -6630,7 +6630,7 @@ class DataHandler {
 	 * Returns TRUE if the TCA/columns field type is a DB reference field
 	 *
 	 * @param array $conf Config array for TCA/columns field
-	 * @return boolean TRUE if DB reference field (group/db or select with foreign-table)
+	 * @return bool TRUE if DB reference field (group/db or select with foreign-table)
 	 */
 	public function isReferenceField($conf) {
 		return $conf['type'] == 'group' && $conf['internal_type'] == 'db' || $conf['type'] == 'select' && $conf['foreign_table'];
@@ -6709,7 +6709,7 @@ class DataHandler {
 	 *
 	 * @param string $table Table name
 	 * @param int $pid "Destination pid" : If the value is >= 0 it's just returned directly (through (int)though) but if the value is <0 then the method looks up the record with the uid equal to abs($pid) (positive number) and returns the PID of that record! The idea is that negative numbers point to the record AFTER WHICH the position is supposed to be!
-	 * @return integer
+	 * @return int
 	 */
 	public function resolvePid($table, $pid) {
 		$pid = (int)$pid;
@@ -6776,7 +6776,7 @@ class DataHandler {
 	 * Used by the deleteFunctions to check if there are records from disallowed tables under the pages to be deleted.
 	 *
 	 * @param string $inList List of page integers
-	 * @return boolean Return TRUE, if permission granted
+	 * @return bool Return TRUE, if permission granted
 	 */
 	public function noRecordsFromUnallowedTables($inList) {
 		$inList = trim($this->rmComma(trim($inList)));
@@ -6796,7 +6796,7 @@ class DataHandler {
 	 *
 	 * @param string $table The tablename of the record
 	 * @param int $uid The uid of the record
-	 * @return boolean Returns TRUE if the record is copied or is the result of a copy action
+	 * @return bool Returns TRUE if the record is copied or is the result of a copy action
 	 */
 	public function isRecordCopied($table, $uid) {
 		// If the record was copied:
@@ -7100,7 +7100,7 @@ class DataHandler {
 	 * @param array $data Array with special information that may go into $details by '%s' marks / sprintf() when the log is shown
 	 * @param int $event_pid The page_uid (pid) where the event occurred. Used to select log-content for specific pages.
 	 * @param string $NEWid NEW id for new records
-	 * @return integer Log entry UID (0 if no log entry was written or logging is disabled)
+	 * @return int Log entry UID (0 if no log entry was written or logging is disabled)
 	 */
 	public function log($table, $recuid, $action, $recpid, $error, $details, $details_nr = -1, $data = array(), $event_pid = -1, $NEWid = '') {
 		if (!$this->enableLogging) {
@@ -7126,7 +7126,7 @@ class DataHandler {
 	 *
 	 * @param string $message Message string
 	 * @param int $error Error code, see log()
-	 * @return integer Log entry UID
+	 * @return int Log entry UID
 	 * @see log()
 	 */
 	public function newlog($message, $error = 0) {
@@ -7141,7 +7141,7 @@ class DataHandler {
 	 * @param int $uid Record uid
 	 * @param int $pid Record PID (from page tree). Will be turned into an event_pid internally in function: Meaning that the PID for a page will be its own UID, not its page tree PID.
 	 * @param int $error Error code, see log()
-	 * @return integer Log entry UID
+	 * @return int Log entry UID
 	 * @see log()
 	 */
 	public function newlog2($message, $table, $uid, $pid = FALSE, $error = 0) {
@@ -7219,7 +7219,7 @@ class DataHandler {
 	 *
 	 * @param string $table Name of the table
 	 * @param int $id Uid of the record
-	 * @return integer
+	 * @return int
 	 */
 	public function getAutoVersionId($table, $id) {
 		$result = NULL;
@@ -7234,7 +7234,7 @@ class DataHandler {
 	 *
 	 * @param string $table Name of the table
 	 * @param int $id Uid of the record
-	 * @return integer
+	 * @return int
 	 */
 	protected function overlayAutoVersionId($table, $id) {
 		$autoVersionId = $this->getAutoVersionId($table, $id);
@@ -7283,7 +7283,7 @@ class DataHandler {
 	 * Since DataHandler can create nested objects of itself,
 	 * this method helps to determine the first (= outer most) one.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isOuterMostInstance() {
 		return $this->getOuterMostInstance() === $this;
@@ -7305,7 +7305,7 @@ class DataHandler {
 	 * @param string $table Name of the table
 	 * @param int $id Uid of the record
 	 * @param string $identifier Name of the action to be checked
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isNestedElementCallRegistered($table, $id, $identifier) {
 		$nestedElementCalls = (array) $this->getMemoryCache()->get('nestedElementCalls');
@@ -7341,7 +7341,7 @@ class DataHandler {
 	 *
 	 * @param string $table Name of the table
 	 * @param int $id Uid of the record
-	 * @return boolean
+	 * @return bool
 	 * @see registerElementsToBeDeleted
 	 * @see resetElementsToBeDeleted
 	 * @see copyRecord_raw

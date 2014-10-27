@@ -64,8 +64,8 @@ class Acronym extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	/**
 	 * Return tranformed content
 	 *
-	 * @param 	string		$content: The content that is about to be sent to the RTE
-	 * @return 	string		the transformed content
+	 * @param string $content: The content that is about to be sent to the RTE
+	 * @return string the transformed content
 	 */
 	public function transformContent($content) {
 		// <abbr> was not supported by IE before verison 7
@@ -79,8 +79,8 @@ class Acronym extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
-	 * @param 	int		Relative id of the RTE editing area in the form
-	 * @return 	string		JS configuration for registered plugins, in this case, JS configuration of block elements
+	 * @param int Relative id of the RTE editing area in the form
+	 * @return string JS configuration for registered plugins, in this case, JS configuration of block elements
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {
 		$registerRTEinJavascriptString = '';
@@ -106,7 +106,7 @@ class Acronym extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	/**
 	 * Return an acronym array for the Acronym plugin
 	 *
-	 * @return 	string		acronym Javascript array
+	 * @return string acronym Javascript array
 	 */
 	public function buildJSAcronymArray($languageUid) {
 		$button = 'acronym';

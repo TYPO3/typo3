@@ -327,7 +327,7 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 	 *
 	 * @param string $in This is the code-line defining the tables/fields to search. Syntax: '[table1].[field1]-[field2]-[field3] : [table2].[field1]-[field2]'
 	 * @return array An array where the values is "[table].[field]" strings to search
-	 * @see 	register_tables_and_columns()
+	 * @see register_tables_and_columns()
 	 */
 	public function explodeCols($in) {
 		$theArray = explode(':', $in);
@@ -442,7 +442,7 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 	 * Sets $this->queryParts
 	 *
 	 * @param string $endClause Some extra conditions that the search must match.
-	 * @return boolean Returns TRUE no matter what - sweet isn't it!
+	 * @return bool Returns TRUE no matter what - sweet isn't it!
 	 * @access private
 	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::SEARCHRESULT()
 	 */
@@ -583,7 +583,7 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 	/**
 	 * Counts the results and sets the result in $this->res_count
 	 *
-	 * @return boolean TRUE, if $this->query was found
+	 * @return bool TRUE, if $this->query was found
 	 */
 	public function count_query() {
 		if (is_array($this->queryParts)) {
@@ -596,7 +596,7 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 	/**
 	 * Executes the search, sets result pointer in $this->result
 	 *
-	 * @return boolean TRUE, if $this->query was set and query performed
+	 * @return bool TRUE, if $this->query was set and query performed
 	 */
 	public function execute_query() {
 		if (is_array($this->queryParts)) {

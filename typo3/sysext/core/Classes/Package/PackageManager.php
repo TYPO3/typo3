@@ -576,7 +576,7 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	 * or FALSE if it's not. If a package is available it doesn't mean necessarily that it's active!
 	 *
 	 * @param string $packageKey The key of the package to check
-	 * @return boolean TRUE if the package is available, otherwise FALSE
+	 * @return bool TRUE if the package is available, otherwise FALSE
 	 * @api
 	 */
 	public function isPackageAvailable($packageKey) {
@@ -590,7 +590,7 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	 * Returns TRUE if a package is activated or FALSE if it's not.
 	 *
 	 * @param string $packageKey The key of the package to check
-	 * @return boolean TRUE if package is active, otherwise FALSE
+	 * @return bool TRUE if package is active, otherwise FALSE
 	 * @api
 	 */
 	public function isPackageActive($packageKey) {
@@ -762,7 +762,7 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	 * Check the conformance of the given package key
 	 *
 	 * @param string $packageKey The package key to validate
-	 * @return boolean If the package key is valid, returns TRUE otherwise FALSE
+	 * @return bool If the package key is valid, returns TRUE otherwise FALSE
 	 * @api
 	 */
 	public function isPackageKeyValid($packageKey) {

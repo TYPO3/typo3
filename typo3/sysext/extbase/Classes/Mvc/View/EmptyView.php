@@ -56,7 +56,7 @@ class EmptyView implements \TYPO3\CMS\Extbase\Mvc\View\ViewInterface {
 	 * This view can be used in any case.
 	 *
 	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
-	 * @return boolean TRUE
+	 * @return bool TRUE
 	 * @api
 	 */
 	public function canRender(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext) {

@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Resource;
 /**
  * Script Class
  *
- * @author 	Kasper Skårhøj <kasper@typo3.com>
+ * @author Kasper Skårhøj <kasper@typo3.com>
  */
 class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 
@@ -142,7 +142,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	/**
 	 * Provide the additional parameters to be included in the template body tag
 	 *
-	 * @return 	string		the body tag additions
+	 * @return string the body tag additions
 	 */
 	public function getBodyTagAdditions() {
 		return 'onload="initEventListeners();"';
@@ -151,7 +151,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	/**
 	 * Get the path to the folder where RTE images are stored
 	 *
-	 * @return  string the path to the folder where RTE images are stored
+	 * @return string the path to the folder where RTE images are stored
 	 * @deprecated since 6.2, will be removed in two versions
 	 */
 	protected function getRTEImageStorageDir() {
@@ -162,7 +162,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	/**
 	 * Insert the image in the editing area
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	protected function insertImage() {
 		$table = htmlspecialchars(GeneralUtility::_GP('table'));
@@ -226,10 +226,10 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 * Insert a plain image
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\File $fileObject: the image file
-	 * @param 	string		$altText: text for the alt attribute of the image
-	 * @param 	string		$titleText: text for the title attribute of the image
-	 * @param 	string		$additionalParams: text representing more HTML attributes to be added on the img tag
-	 * @return 	void
+	 * @param string $altText: text for the alt attribute of the image
+	 * @param string $titleText: text for the title attribute of the image
+	 * @param string $additionalParams: text representing more HTML attributes to be added on the img tag
+	 * @return void
 	 */
 	public function insertPlainImage(Resource\File $fileObject, $altText = '', $titleText = '', $additionalParams = '') {
 		$width = $fileObject->getProperty('width');
@@ -251,13 +251,13 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	/**
 	 * Echo the HTML page and JS that will insert the image
 	 *
-	 * @param 	string		$url: the url of the image
-	 * @param 	int		$width: the width of the image
-	 * @param 	int		$height: the height of the image
-	 * @param 	string		$altText: text for the alt attribute of the image
-	 * @param 	string		$titleText: text for the title attribute of the image
-	 * @param 	string		$additionalParams: text representing more html attributes to be added on the img tag
-	 * @return 	void
+	 * @param string $url: the url of the image
+	 * @param int $width: the width of the image
+	 * @param int $height: the height of the image
+	 * @param string $altText: text for the alt attribute of the image
+	 * @param string $titleText: text for the title attribute of the image
+	 * @param string $additionalParams: text representing more html attributes to be added on the img tag
+	 * @return void
 	 */
 	protected function imageInsertJS($url, $width, $height, $altText = '', $titleText = '', $additionalParams = '') {
 		echo '
@@ -287,10 +287,10 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	/**
 	 * Generate JS code to be used on the image insert/modify dialogue
 	 *
-	 * @param 	string		$act: the action to be performed
-	 * @param 	string		$editorNo: the number of the RTE instance on the page
-	 * @param 	string		$sys_language_content: the language of the content element
-	 * @return 	string		the generated JS code
+	 * @param string $act: the action to be performed
+	 * @param string $editorNo: the number of the RTE instance on the page
+	 * @param string $sys_language_content: the language of the content element
+	 * @return string the generated JS code
 	 */
 	public function getJSCode($act, $editorNo, $sys_language_content) {
 		$removedProperties = array();
@@ -836,7 +836,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	/**
 	 * Initializes the configuration variables
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function initConfiguration() {
 		$this->thisConfig = $this->getRTEConfig();
@@ -849,7 +849,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	/**
 	 * Get the path of the image to be inserted or modified
 	 *
-	 * @return 	string		path to the image
+	 * @return string path to the image
 	 */
 	protected function getImgPath() {
 		$RTEtsConfigParts = explode(':', $this->RTEtsConfigParams);
@@ -859,7 +859,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	/**
 	 * Get the configuration of the image button
 	 *
-	 * @return 	array		the configuration array of the image button
+	 * @return array the configuration array of the image button
 	 */
 	protected function getButtonConfig() {
 		return is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['image.']) ? $this->thisConfig['buttons.']['image.'] : array();
@@ -915,7 +915,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	/**
 	 * Get the default image class
 	 *
-	 * @return 	string		the default class, if any
+	 * @return string the default class, if any
 	 */
 	protected function getDefaultClass() {
 		$defaultClass = '';
@@ -930,7 +930,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	/**
 	 * Set variables for maximum plain image dimensions
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	protected function setMaximumPlainImageDimensions() {
 		if (is_array($this->buttonConfig['options.']) && is_array($this->buttonConfig['options.']['plain.'])) {

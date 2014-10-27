@@ -37,7 +37,7 @@ class MirrorXmlPullParser extends AbstractMirrorXmlParser {
 	/**
 	 * Create required parser
 	 *
-	 * @return  void
+	 * @return void
 	 */
 	protected function createParser() {
 		$this->objXml = new \XMLReader();

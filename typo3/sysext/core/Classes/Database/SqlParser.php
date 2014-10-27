@@ -1808,7 +1808,7 @@ class SqlParser {
 	 *
 	 * @param array $clauseArray WHERE clause configuration
 	 * @return string WHERE clause as string.
-	 * @see 	explodeWhereClause()
+	 * @see explodeWhereClause()
 	 */
 	public function compileWhereClause($clauseArray) {
 		// Prepare buffer variable:

@@ -169,7 +169,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 * Returns the id from the record - for folders, this is an md5 hash.
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject The folder object
-	 * @return integer The "uid" field value.
+	 * @return int The "uid" field value.
 	 */
 	public function getId(\TYPO3\CMS\Core\Resource\Folder $folderObject) {
 		return GeneralUtility::md5Int($folderObject->getCombinedIdentifier());
@@ -320,7 +320,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject the folderobject
 	 * @param int $depth Max depth (recursivity limit)
 	 * @param string $type HTML-code prefix for recursive calls.
-	 * @return integer The count of items on the level
+	 * @return int The count of items on the level
 	 * @see getBrowsableTree()
 	 */
 	public function getFolderTree(\TYPO3\CMS\Core\Resource\Folder $folderObject, $depth = 999, $type = '') {
@@ -502,7 +502,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 * Counts the number of directories in a file path.
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject File path.
-	 * @return integer
+	 * @return int
 	 */
 	public function getNumberOfSubfolders(\TYPO3\CMS\Core\Resource\Folder $folderObject) {
 		$subFolders = $folderObject->getSubfolders();
@@ -512,7 +512,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	/**
 	 * Get stored tree structure AND updating it if needed according to incoming PM GET var.
 	 *
-	 * @return 	void
+	 * @return void
 	 * @access private
 	 */
 	public function initializePositionSaving() {
@@ -543,7 +543,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\ResourceStorage $storageObject
 	 * @param \TYPO3\CMS\Core\Resource\Folder $startingPointFolder
-	 * @return integer
+	 * @return int
 	 */
 	protected function getShortHashNumberForStorage(\TYPO3\CMS\Core\Resource\ResourceStorage $storageObject = NULL, \TYPO3\CMS\Core\Resource\Folder $startingPointFolder = NULL) {
 		if (!$this->storageHashNumbers) {
@@ -628,7 +628,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	/**
 	 * Gets the AJAX status.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getAjaxStatus() {
 		return $this->ajaxStatus;

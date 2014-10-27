@@ -97,7 +97,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	/**
 	 * Returns the original id of the element
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getWorkspaceId() {
 		return $this->workspaceId;
@@ -116,7 +116,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	/**
 	 * Returns the mount point id
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getMountPoint() {
 		return $this->mountPoint;
@@ -135,7 +135,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	/**
 	 * Returns TRUE if the node is a mount point
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isMountPoint() {
 		return $this->isMountPoint;
@@ -163,7 +163,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	/**
 	 * Checks if the user may create pages below the given page
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function canCreate() {
 		if (!isset($this->cachedAccessRights['create'])) {
@@ -175,7 +175,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	/**
 	 * Checks if the user has editing rights
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function canEdit() {
 		if (!isset($this->cachedAccessRights['edit'])) {
@@ -187,7 +187,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	/**
 	 * Checks if the user has the right to delete the page
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function canRemove() {
 		if (!isset($this->cachedAccessRights['remove'])) {
@@ -202,7 +202,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	/**
 	 * Checks if the page can be disabled
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canBeDisabledAndEnabled() {
 		return $this->canEdit($this->record) && $GLOBALS['BE_USER']->checkLanguageAccess(0);
@@ -211,7 +211,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	/**
 	 * Checks if the page is allowed to can be cut
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canBeCut() {
 		return (
@@ -224,7 +224,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	/**
 	 * Checks if the page is allowed to be edited
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canBeEdited() {
 		return $this->canEdit($this->record) && $GLOBALS['BE_USER']->checkLanguageAccess(0);
@@ -233,7 +233,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	/**
 	 * Checks if the page is allowed to be copied
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canBeCopied() {
 		return (
@@ -246,7 +246,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	/**
 	 * Checks if there can be new pages created
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canCreateNewPages() {
 		return $this->canCreate($this->record) && $GLOBALS['BE_USER']->checkLanguageAccess(0);
@@ -255,7 +255,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	/**
 	 * Checks if the page is allowed to be removed
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canBeRemoved() {
 		return (
@@ -268,7 +268,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	/**
 	 * Checks if something can be pasted into the node
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canBePastedInto() {
 		return (
@@ -281,7 +281,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	/**
 	 * Checks if something can be pasted after the node
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canBePastedAfter() {
 		return (
@@ -294,7 +294,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	/**
 	 * Checks if the page is allowed to show history
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canShowHistory() {
 		return $GLOBALS['BE_USER']->checkLanguageAccess(0);
@@ -303,7 +303,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	/**
 	 * Checks if the page is allowed to be viewed
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canBeViewed() {
 		return !$this->isDeleted();
@@ -312,7 +312,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	/**
 	 * Checks if the page is allowed to show info
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canShowInfo() {
 		return TRUE;
@@ -321,7 +321,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	/**
 	 * Checks if the page is allowed to be a temporary mount point
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canBeTemporaryMountPoint() {
 		return TRUE;

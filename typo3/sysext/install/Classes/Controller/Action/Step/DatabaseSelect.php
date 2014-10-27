@@ -92,7 +92,7 @@ class DatabaseSelect extends AbstractStepAction {
 	 * Step needs to be executed if database is not set or can
 	 * not be selected.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function needsExecution() {
 		$this->initializeDatabaseConnection();

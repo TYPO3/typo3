@@ -1709,7 +1709,7 @@ class InlineElement {
 	 *
 	 * @param string $table The table name
 	 * @param int $parentPid The pid of the parent record
-	 * @return integer The corrected pid to be used for a new record
+	 * @return int The corrected pid to be used for a new record
 	 */
 	protected function getNewRecordPid($table, $parentPid = NULL) {
 		$newRecordPid = $this->inlineFirstPid;
@@ -1904,7 +1904,7 @@ class InlineElement {
 	 * Calculates structure level.
 	 *
 	 * @param int $level Which level to return
-	 * @return boolean|integer
+	 * @return bool|int
 	 */
 	protected function calculateStructureLevel($level) {
 		$result = FALSE;
@@ -2012,7 +2012,7 @@ class InlineElement {
 	 * @param string $table The table name of the record
 	 * @param string $field The field name which this element is supposed to edit
 	 * @param array $row The record data array of the parent
-	 * @return boolean If critical configuration errors were found, FALSE is returned
+	 * @return bool If critical configuration errors were found, FALSE is returned
 	 */
 	public function checkConfiguration(&$config) {
 		$foreign_table = $config['foreign_table'];
@@ -2055,7 +2055,7 @@ class InlineElement {
 	 * @param string $cmd The command that sould be performed ('new' or 'edit')
 	 * @param string $table The table to check access for
 	 * @param string $theUid The record uid of the table
-	 * @return boolean Returns TRUE is the user has access, or FALSE if not
+	 * @return bool Returns TRUE is the user has access, or FALSE if not
 	 */
 	public function checkAccess($cmd, $table, $theUid) {
 		// Checking if the user has permissions? (Only working as a precaution, because the final permission check is always down in TCE. But it's good to notify the user on beforehand...)
@@ -2124,7 +2124,7 @@ class InlineElement {
 	 * A boolean value is return depending on how the comparison was successful.
 	 *
 	 * @param array $compare Keys and values to compare to the ['config'] part of the top level of the stack
-	 * @return boolean Whether the comparison was successful
+	 * @return bool Whether the comparison was successful
 	 * @see arrayCompareComplex
 	 */
 	public function compareStructureConfiguration($compare) {
@@ -2181,7 +2181,7 @@ class InlineElement {
 	 *
 	 * @param string $table The table to check
 	 * @param string $field The field on this table to check
-	 * @return boolean Is inline child and field is responsible for the label
+	 * @return bool Is inline child and field is responsible for the label
 	 */
 	public function isInlineChildAndLabelField($table, $field) {
 		$level = $this->getStructureLevel(-1);
@@ -2197,7 +2197,7 @@ class InlineElement {
 	 * Get the depth of the stable structure stack.
 	 * (count($this->inlineStructure['stable'])
 	 *
-	 * @return integer The depth of the structure stack
+	 * @return int The depth of the structure stack
 	 */
 	public function getStructureDepth() {
 		return count($this->inlineStructure['stable']);
@@ -2233,7 +2233,7 @@ class InlineElement {
 	 * @param array $subjectArray The array to search in
 	 * @param array $searchArray The array with keys and values to search for
 	 * @param string $type Use '%AND' or '%OR' for comparison
-	 * @return boolean The result of the comparison
+	 * @return bool The result of the comparison
 	 */
 	public function arrayCompareComplex($subjectArray, $searchArray, $type = '') {
 		$localMatches = 0;
@@ -2289,7 +2289,7 @@ class InlineElement {
 	 * Checks whether an object is an associative array.
 	 *
 	 * @param mixed $object The object to be checked
-	 * @return boolean Returns TRUE, if the object is an associative array
+	 * @return bool Returns TRUE, if the object is an associative array
 	 */
 	public function isAssociativeArray($object) {
 		return is_array($object) && count($object) && array_keys($object) !== range(0, sizeof($object) - 1) ? TRUE : FALSE;
@@ -2394,7 +2394,7 @@ class InlineElement {
 	 * @param string $field The field name
 	 * @param array $row The record row from the database
 	 * @param array $config TCA configuration of the field
-	 * @return boolean Determines whether the field should be skipped.
+	 * @return bool Determines whether the field should be skipped.
 	 */
 	public function skipField($table, $field, $row, $config) {
 		$skipThisField = FALSE;
@@ -2443,7 +2443,7 @@ class InlineElement {
 	 *
 	 * @param string $table Name of the child table
 	 * @param int $uid uid of the the child record
-	 * @return boolean TRUE=expand, FALSE=collapse
+	 * @return bool TRUE=expand, FALSE=collapse
 	 */
 	public function getExpandedCollapsedState($table, $uid) {
 		if (isset($this->inlineView[$table]) && is_array($this->inlineView[$table])) {
@@ -2497,7 +2497,7 @@ class InlineElement {
 	/**
 	 * Returns the the margin in pixels, that is used for each new inline level.
 	 *
-	 * @return integer A pixel value for the margin of each new inline level.
+	 * @return int A pixel value for the margin of each new inline level.
 	 */
 	public function getLevelMargin() {
 		$margin = ($this->inlineStyles['margin-right'] + 1) * 2;

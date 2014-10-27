@@ -149,7 +149,7 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
 	/**
 	 * Returns the total number objects of this repository.
 	 *
-	 * @return integer The object count
+	 * @return int The object count
 	 * @api
 	 */
 	public function countAll() {

@@ -1254,7 +1254,7 @@ class RelationHandler {
 	 * @param string $parentUid The uid of the parent record
 	 * @param array $parentConf The TCA configuration of the parent field embedding the child records
 	 * @param array $childRec The record row of the child record
-	 * @return boolean Returns TRUE if looking from the symmetric ("other") side to the relation.
+	 * @return bool Returns TRUE if looking from the symmetric ("other") side to the relation.
 	 */
 	static public function isOnSymmetricSide($parentUid, $parentConf, $childRec) {
 		return MathUtility::canBeInterpretedAsInteger($childRec['uid'])

@@ -542,7 +542,7 @@ class LoginController {
 	/**
 	 * Checks if login credentials are currently submitted
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isLoginInProgress() {
 		$username = GeneralUtility::_GP('username');

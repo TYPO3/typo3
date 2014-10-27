@@ -40,7 +40,7 @@ class FilePermissionUpdate extends AbstractUpdate {
 	 * Checks if an update is needed
 	 *
 	 * @param string &$description The description for the update
-	 * @return boolean TRUE if an update is needed, FALSE otherwise
+	 * @return bool TRUE if an update is needed, FALSE otherwise
 	 */
 	public function checkForUpdate(&$description) {
 		$description = 'There are backend users and backend groups with specified file permissions.' .
@@ -84,7 +84,7 @@ class FilePermissionUpdate extends AbstractUpdate {
 	 *
 	 * @param array &$dbQueries Queries done in this update
 	 * @param mixed &$customMessages Custom messages
-	 * @return boolean TRUE on success, FALSE on error
+	 * @return bool TRUE on success, FALSE on error
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 		// First perform all add update statements to database

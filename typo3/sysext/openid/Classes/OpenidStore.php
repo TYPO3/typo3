@@ -63,7 +63,7 @@ class OpenidStore extends \Auth_OpenID_OpenIDStore {
 	/**
 	 * Removes all expired associations.
 	 *
-	 * @return integer A number of removed associations
+	 * @return int A number of removed associations
 	 */
 	public function cleanupAssociations() {
 		$where = sprintf('expires<=%d', time());
@@ -105,7 +105,7 @@ class OpenidStore extends \Auth_OpenID_OpenIDStore {
 	 *
 	 * @param string $serverUrl Server URL
 	 * @param string $handle Association handle (optional)
-	 * @return boolean TRUE if the association existed
+	 * @return bool TRUE if the association existed
 	 */
 	public function removeAssociation($serverUrl, $handle) {
 		$where = sprintf('server_url=%s AND assoc_handle=%s', $this->databaseConnection->fullQuoteStr($serverUrl, self::ASSOCIATION_TABLE_NAME), $this->databaseConnection->fullQuoteStr($handle, self::ASSOCIATION_TABLE_NAME));
@@ -130,7 +130,7 @@ class OpenidStore extends \Auth_OpenID_OpenIDStore {
 	 * @param string $serverUrl Server URL
 	 * @param int $timestamp Time stamp
 	 * @param string $salt Nonce value
-	 * @return boolean TRUE if nonce was not used before anc can be used now
+	 * @return bool TRUE if nonce was not used before anc can be used now
 	 */
 	public function useNonce($serverUrl, $timestamp, $salt) {
 		$result = FALSE;
@@ -163,7 +163,7 @@ class OpenidStore extends \Auth_OpenID_OpenIDStore {
 	 *
 	 * @param string $serverUrl Server URL
 	 * @param \Auth_OpenID_Association $association OpenID association
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function doesAssociationExist($serverUrl, $association) {
 		$where = sprintf('server_url=%s AND assoc_handle=%s AND expires>%d', $this->databaseConnection->fullQuoteStr($serverUrl, self::ASSOCIATION_TABLE_NAME), $this->databaseConnection->fullQuoteStr($association->handle, self::ASSOCIATION_TABLE_NAME), time());

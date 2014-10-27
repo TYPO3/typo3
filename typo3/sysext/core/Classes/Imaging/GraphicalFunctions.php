@@ -898,7 +898,7 @@ class GraphicalFunctions {
 	 * Function that finds the right fontsize that will render the textstring within a certain width
 	 *
 	 * @param array $conf The TypoScript properties of the TEXT GIFBUILDER object
-	 * @return integer The new fontSize
+	 * @return int The new fontSize
 	 * @access private
 	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::start()
 	 */
@@ -1188,7 +1188,7 @@ class GraphicalFunctions {
 	 * Calculates and returns the niceText.scaleFactor
 	 *
 	 * @param array $conf TypoScript array for the TEXT GIFBUILDER object
-	 * @return integer TypoScript value from eg $conf['niceText.']['scaleFactor']
+	 * @return int TypoScript value from eg $conf['niceText.']['scaleFactor']
 	 * @access private
 	 */
 	public function getTextScalFactor($conf) {
@@ -1289,7 +1289,7 @@ class GraphicalFunctions {
 	 *
 	 * @param array $conf TypoScript configuration for the currently rendered object
 	 * @param array $boundingBox The bounding box the the currently rendered object
-	 * @return integer The break space
+	 * @return int The break space
 	 */
 	protected function getBreakSpace($conf, array $boundingBox = NULL) {
 		if (!isset($boundingBox)) {
@@ -2267,7 +2267,7 @@ class GraphicalFunctions {
 	 * file exists!
 	 *
 	 * @param array $identifyResult Result of the getImageDimensions function
-	 * @return boolean TRUE if operation was successful
+	 * @return bool TRUE if operation was successful
 	 */
 	public function cacheImageDimensions($identifyResult) {
 		// Create md5 hash of filemtime and filesize
@@ -2446,7 +2446,7 @@ class GraphicalFunctions {
 	 *
 	 * @param string $output Output imagefile
 	 * @param string $orig Original basis file
-	 * @return boolean Returns TRUE if the file is already being made; thus "TRUE" means "Don't render the image again
+	 * @return bool Returns TRUE if the file is already being made; thus "TRUE" means "Don't render the image again
 	 * @access private
 	 */
 	public function file_exists_typo3temp_file($output, $orig = '') {
@@ -2568,7 +2568,7 @@ class GraphicalFunctions {
 	 * @param string $mask The relative (to PATH_site) image filepath, the mask file (grayscale)
 	 * @param string $output The relative (to PATH_site) image filepath, output filename (written to)
 	 * @param bool $handleNegation
-	 * @return 	void
+	 * @return void
 	 */
 	public function combineExec($input, $overlay, $mask, $output, $handleNegation = FALSE) {
 		if (!$this->NO_IMAGE_MAGICK) {
@@ -2629,7 +2629,7 @@ class GraphicalFunctions {
 	 * Creates subdirectory in typo3temp/ if not already found.
 	 *
 	 * @param string $dirName Name of sub directory
-	 * @return boolean Result of \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir(), TRUE if it went well.
+	 * @return bool Result of \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir(), TRUE if it went well.
 	 */
 	public function createTempSubDir($dirName) {
 		// Checking if the this->tempPath is already prefixed with PATH_site and if not, prefix it with that constant.
@@ -2761,7 +2761,7 @@ class GraphicalFunctions {
 	 * @param pointer $destImg The GDlib image resource pointer
 	 * @param string $theImage The filename to write to
 	 * @param int $quality The image quality (for JPEGs)
-	 * @return boolean The output of either imageGif, imagePng or imageJpeg based on the filename to write
+	 * @return bool The output of either imageGif, imagePng or imageJpeg based on the filename to write
 	 * @see maskImageOntoImage(), scale(), output()
 	 */
 	public function ImageWrite($destImg, $theImage, $quality = 0) {
@@ -2866,7 +2866,7 @@ class GraphicalFunctions {
 	 * @param pointer $img Image resource
 	 * @param array $colArr Array containing RGB color arrays
 	 * @param bool $closest
-	 * @return integer The index of the unified color
+	 * @return int The index of the unified color
 	 */
 	public function unifyColors(&$img, $colArr, $closest = FALSE) {
 		$retCol = -1;

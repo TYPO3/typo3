@@ -47,7 +47,7 @@ class ArrayConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractT
 	 *
 	 * @param mixed $source
 	 * @param string $targetType
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canConvertFrom($source, $targetType) {
 		return is_string($source) && $source === '' || is_array($source);

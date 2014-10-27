@@ -61,7 +61,7 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	/**
 	 * Count all extensions
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function countAll() {
 		$query = $this->createQuery();
@@ -249,7 +249,7 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	 * @param string $extensionKey
 	 * @param int $lowestVersion
 	 * @param int $highestVersion
-	 * @return integer
+	 * @return int
 	 */
 	public function countByVersionRangeAndExtensionKey($extensionKey, $lowestVersion = 0, $highestVersion = 0) {
 		return $this->findByVersionRangeAndExtensionKeyOrderedByVersion($extensionKey, $lowestVersion, $highestVersion)->count();

@@ -78,7 +78,7 @@ class ProductionExceptionHandler extends AbstractExceptionHandler {
 	 * Determines, whether Exception details should be outputted
 	 *
 	 * @param \Exception $exception The exception
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function discloseExceptionInformation(\Exception $exception) {
 		// Allow message to be shown in production mode if the exception is about

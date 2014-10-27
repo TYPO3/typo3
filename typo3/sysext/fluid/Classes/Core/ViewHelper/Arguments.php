@@ -48,7 +48,7 @@ class Arguments implements \ArrayAccess {
 	 * Checks if a given key exists in the array
 	 *
 	 * @param string $key Key to check
-	 * @return boolean true if exists
+	 * @return bool true if exists
 	 */
 	public function offsetExists($key) {
 		return array_key_exists($key, $this->arguments);
@@ -90,7 +90,7 @@ class Arguments implements \ArrayAccess {
 	 * Checks if an argument with the specified name exists
 	 *
 	 * @param string $argumentName Name of the argument to check for
-	 * @return boolean TRUE if such an argument exists, otherwise FALSE
+	 * @return bool TRUE if such an argument exists, otherwise FALSE
 	 * @see offsetExists()
 	 */
 	public function hasArgument($argumentName) {

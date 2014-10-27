@@ -123,7 +123,7 @@ class MassActionHandler extends AbstractHandler {
 	 * @param int $workspace
 	 * @param bool $swap
 	 * @param int $language
-	 * @return integer
+	 * @return int
 	 */
 	protected function initPublishData($workspace, $swap, $language = NULL) {
 		// workspace might be -98 a.k.a "All Workspaces but that's save here
@@ -145,7 +145,7 @@ class MassActionHandler extends AbstractHandler {
 	 *
 	 * @param int $workspace
 	 * @param int $language
-	 * @return integer
+	 * @return int
 	 */
 	protected function initFlushData($workspace, $language = NULL) {
 		// workspace might be -98 a.k.a "All Workspaces but that's save here
@@ -166,7 +166,7 @@ class MassActionHandler extends AbstractHandler {
 	 * Processes the data.
 	 *
 	 * @param int $workspace
-	 * @return integer
+	 * @return int
 	 */
 	protected function processData($workspace) {
 		$processData = $GLOBALS['BE_USER']->getSessionData('workspaceMassAction');

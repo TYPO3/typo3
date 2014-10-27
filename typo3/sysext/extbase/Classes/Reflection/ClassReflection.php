@@ -133,7 +133,7 @@ class ClassReflection extends \ReflectionClass {
 	 * the specified tag
 	 *
 	 * @param string $tag Tag name to check for
-	 * @return boolean TRUE if such a tag has been defined, otherwise FALSE
+	 * @return bool TRUE if such a tag has been defined, otherwise FALSE
 	 */
 	public function isTaggedWith($tag) {
 		$result = $this->getDocCommentParser()->isTaggedWith($tag);

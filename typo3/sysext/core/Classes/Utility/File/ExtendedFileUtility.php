@@ -374,7 +374,7 @@ class ExtendedFileUtility extends BasicFileUtility {
 	 * Deleting files and folders (action=4)
 	 *
 	 * @param array $cmds $cmds['data'] is the file/folder to delete
-	 * @return boolean Returns TRUE upon success
+	 * @return bool Returns TRUE upon success
 	 */
 	public function func_delete($cmds) {
 		$result = FALSE;
@@ -811,7 +811,7 @@ class ExtendedFileUtility extends BasicFileUtility {
 	 * Editing textfiles or folders (action=9)
 	 *
 	 * @param array $cmds $cmds['data'] is the new content. $cmds['target'] is the target (file or dir)
-	 * @return boolean Returns TRUE on success
+	 * @return bool Returns TRUE on success
 	 */
 	public function func_edit($cmds) {
 		if (!$this->isInit) {
@@ -949,7 +949,7 @@ class ExtendedFileUtility extends BasicFileUtility {
 	 * This is permitted only if the user has fullAccess or if the file resides
 	 *
 	 * @param array $cmds $cmds['data'] is the zip-file. $cmds['target'] is the target directory. If not set we'll default to the same directory as the file is in.
-	 * @return boolean Returns TRUE on success
+	 * @return bool Returns TRUE on success
 	 */
 	public function func_unzip($cmds) {
 		if (!$this->isInit || $this->dont_use_exec_commands) {

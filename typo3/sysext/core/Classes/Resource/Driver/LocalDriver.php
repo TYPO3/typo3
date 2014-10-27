@@ -82,7 +82,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 *
 	 * @param int $capabilities
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function mergeConfigurationCapabilities($capabilities) {
 		$this->capabilities &= $capabilities;
@@ -408,7 +408,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @param string $itemIdentifier
 	 * @param string $parentIdentifier
 	 * @throws \RuntimeException
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function applyFilterMethodsToDirectoryItem(array $filterMethods, $itemName, $itemIdentifier, $parentIdentifier) {
 		foreach ($filterMethods as $filter) {
@@ -677,7 +677,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 *
 	 * @param string $fileIdentifier
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function fileExists($fileIdentifier) {
 		$absoluteFilePath = $this->getAbsolutePath($fileIdentifier);
@@ -689,7 +689,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 *
 	 * @param string $fileName
 	 * @param string $folderIdentifier
-	 * @return boolean
+	 * @return bool
 	 */
 	public function fileExistsInFolder($fileName, $folderIdentifier) {
 		$identifier = $folderIdentifier . '/' . $fileName;
@@ -702,7 +702,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 *
 	 * @param string $folderIdentifier
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function folderExists($folderIdentifier) {
 		$absoluteFilePath = $this->getAbsolutePath($folderIdentifier);
@@ -714,7 +714,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 *
 	 * @param string $folderName
 	 * @param string $folderIdentifier
-	 * @return boolean
+	 * @return bool
 	 */
 	public function folderExistsInFolder($folderName, $folderIdentifier) {
 		$identifier = $folderIdentifier . '/' . $folderName;
@@ -740,7 +740,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 *
 	 * @param string $fileIdentifier
 	 * @param string $localFilePath
-	 * @return boolean TRUE if the operation succeeded
+	 * @return bool TRUE if the operation succeeded
 	 * @throws \RuntimeException
 	 */
 	public function replaceFile($fileIdentifier, $localFilePath) {
@@ -882,7 +882,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @param string $targetFolderIdentifier
 	 * @param string $newFolderName
 	 *
-	 * @return boolean
+	 * @return bool
 	 * @throws \TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException
 	 */
 	public function copyFolderWithinStorage($sourceFolderIdentifier, $targetFolderIdentifier, $newFolderName) {
@@ -998,7 +998,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * this has to be taken care of in the upper layers (e.g. the Storage)!
 	 *
 	 * @param string $fileIdentifier
-	 * @return boolean TRUE if deleting the file succeeded
+	 * @return bool TRUE if deleting the file succeeded
 	 * @throws \RuntimeException
 	 */
 	public function deleteFile($fileIdentifier) {
@@ -1015,7 +1015,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 *
 	 * @param string $folderIdentifier
 	 * @param bool $deleteRecursively
-	 * @return boolean
+	 * @return bool
 	 * @throws \TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException
 	 */
 	public function deleteFolder($folderIdentifier, $deleteRecursively = FALSE) {
@@ -1034,7 +1034,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * Checks if a folder contains files and (if supported) other folders.
 	 *
 	 * @param string $folderIdentifier
-	 * @return boolean TRUE if there are no files and folders within $folder
+	 * @return bool TRUE if there are no files and folders within $folder
 	 */
 	public function isFolderEmpty($folderIdentifier) {
 		$path = $this->getAbsolutePath($folderIdentifier);
@@ -1094,7 +1094,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 *
 	 * @param string $folderIdentifier
 	 * @param string $identifier identifier to be checked against $folderIdentifier
-	 * @return boolean TRUE if $content is within or matches $folderIdentifier
+	 * @return bool TRUE if $content is within or matches $folderIdentifier
 	 */
 	public function isWithin($folderIdentifier, $identifier) {
 		$folderIdentifier = $this->canonicalizeAndCheckFileIdentifier($folderIdentifier);
@@ -1159,7 +1159,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 *
 	 * @param string $fileIdentifier
 	 * @param string $contents
-	 * @return integer The number of bytes written to the file
+	 * @return int The number of bytes written to the file
 	 * @throws \RuntimeException if the operation failed
 	 */
 	public function setFileContents($fileIdentifier, $contents) {

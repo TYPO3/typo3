@@ -82,7 +82,7 @@ class AbstractJsonElement {
 	/**
 	 * Check if child elements are allowed within this element
 	 *
-	 * @return boolean TRUE if allowed
+	 * @return bool TRUE if allowed
 	 */
 	public function childElementsAllowed() {
 		return $this->childElementsAllowed;

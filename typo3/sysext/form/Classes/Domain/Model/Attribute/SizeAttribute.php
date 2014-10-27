@@ -31,7 +31,7 @@ class SizeAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttri
 	 * has the value "text" or "password".
 	 * In that case, its value refers to the (integer) number of characters.
 	 *
-	 * @return integer Attribute value
+	 * @return int Attribute value
 	 */
 	public function getValue() {
 		$value = (int)$this->value;

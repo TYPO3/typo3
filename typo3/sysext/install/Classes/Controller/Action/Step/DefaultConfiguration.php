@@ -71,7 +71,7 @@ class DefaultConfiguration extends AbstractStepAction {
 	/**
 	 * Step needs to be executed if 'isInitialInstallationInProgress' is set to TRUE in LocalConfiguration
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function needsExecution() {
 		$result = FALSE;

@@ -151,7 +151,7 @@ class DefaultDataProvider implements DataProviderInterface {
 	 * Returns the storage PID from TCEFORM.
 	 *
 	 * @param array $pageTsConfig
-	 * @return integer
+	 * @return int
 	 */
 	protected function getStoragePid(array $pageTsConfig) {
 		$storagePid = 0;

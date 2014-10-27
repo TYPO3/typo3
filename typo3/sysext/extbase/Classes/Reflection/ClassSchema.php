@@ -145,7 +145,7 @@ class ClassSchema {
 	/**
 	 * Returns the model type of the class this schema is referring to.
 	 *
-	 * @return integer The model type, one of the MODELTYPE_* constants.
+	 * @return int The model type, one of the MODELTYPE_* constants.
 	 */
 	public function getModelType() {
 		return $this->modelType;
@@ -166,7 +166,7 @@ class ClassSchema {
 	 * Whether the class is an aggregate root and therefore accessible through
 	 * a repository.
 	 *
-	 * @return boolean TRUE if it is managed
+	 * @return bool TRUE if it is managed
 	 */
 	public function isAggregateRoot() {
 		return $this->aggregateRoot;
@@ -176,7 +176,7 @@ class ClassSchema {
 	 * If the class schema has a certain property.
 	 *
 	 * @param string $propertyName Name of the property
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasProperty($propertyName) {
 		return array_key_exists($propertyName, $this->properties);

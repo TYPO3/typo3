@@ -500,7 +500,7 @@ function jumpToUrl(URL) {
 	 * Returns TRUE if click-menu layers can be displayed for the current user/browser
 	 * Use this to test if click-menus (context sensitive menus) can and should be displayed in the backend.
 	 *
-	 * @return boolean
+	 * @return bool
 	 * @deprecated since TYPO3 4.7, will be removed in TYPO3 6.1 - This function makes no sense anymore
 	 */
 	public function isCMlayers() {

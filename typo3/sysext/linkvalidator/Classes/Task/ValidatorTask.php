@@ -131,7 +131,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	/**
 	 * Get the value of the protected property emailOnBrokenLinkOnly
 	 *
-	 * @return boolean Whether to send an email, if new broken links were found
+	 * @return bool Whether to send an email, if new broken links were found
 	 */
 	public function getEmailOnBrokenLinkOnly() {
 		return $this->emailOnBrokenLinkOnly;
@@ -150,7 +150,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	/**
 	 * Get the value of the protected property page
 	 *
-	 * @return integer UID of the start page for this task
+	 * @return int UID of the start page for this task
 	 */
 	public function getPage() {
 		return $this->page;
@@ -169,7 +169,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	/**
 	 * Get the value of the protected property depth
 	 *
-	 * @return integer Level of pages the task should check
+	 * @return int Level of pages the task should check
 	 */
 	public function getDepth() {
 		return $this->depth;
@@ -226,7 +226,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	/**
 	 * Function execute from the Scheduler
 	 *
-	 * @return boolean TRUE on successful execution, FALSE on error
+	 * @return bool TRUE on successful execution, FALSE on error
 	 * @throws \InvalidArgumentException if the email template file can not be read
 	 */
 	public function execute() {
@@ -383,7 +383,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 *
 	 * @param string $pageSections Content of page section
 	 * @param array $modTsConfig TSconfig array
-	 * @return boolean TRUE if mail was sent, FALSE if or not
+	 * @return bool TRUE if mail was sent, FALSE if or not
 	 * @throws \Exception if required modTsConfig settings are missing
 	 */
 	protected function reportEmail($pageSections, array $modTsConfig) {

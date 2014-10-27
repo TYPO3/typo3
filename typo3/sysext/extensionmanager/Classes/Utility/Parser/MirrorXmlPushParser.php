@@ -44,7 +44,7 @@ class MirrorXmlPushParser extends AbstractMirrorXmlParser {
 	/**
 	 * Create required parser
 	 *
-	 * @return  void
+	 * @return void
 	 */
 	protected function createParser() {
 		$this->objXml = xml_parser_create();

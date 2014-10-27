@@ -195,7 +195,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getCategory() {
 		return $this->category;
@@ -219,7 +219,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * Fallback to 4 - 'misc' in case string is not found or integer ist out of range.
 	 *
 	 * @param string|int $category Category string or integer
-	 * @return integer Valid category index
+	 * @return int Valid category index
 	 */
 	public function getCategoryIndexFromStringOrNumber($category) {
 		$categoryIndex = 4;
@@ -291,7 +291,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getState() {
 		return $this->state;
@@ -398,7 +398,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getCurrentVersion() {
 		return $this->currentVersion;
@@ -517,7 +517,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getIntegerVersion() {
 		return $this->integerVersion;
@@ -532,7 +532,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getReviewState() {
 		return $this->reviewState;
@@ -547,7 +547,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getPosition() {
 		return $this->position;
@@ -561,7 +561,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getAlldownloadcounter() {
 		return $this->alldownloadcounter;

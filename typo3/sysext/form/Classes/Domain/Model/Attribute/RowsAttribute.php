@@ -32,7 +32,7 @@ class RowsAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttri
 	 * through the contents of the control when the contents extend
 	 * beyond the visible area.
 	 *
-	 * @return integer Attribute value
+	 * @return int Attribute value
 	 */
 	public function getValue() {
 		$value = (int)$this->value;

@@ -43,7 +43,7 @@ class CountViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 	 * Counts the items of a given property.
 	 *
 	 * @param array $subject The array or \Countable to be counted
-	 * @return integer The number of elements
+	 * @return int The number of elements
 	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 * @api
 	 */

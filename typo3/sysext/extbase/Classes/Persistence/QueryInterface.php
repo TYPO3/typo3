@@ -339,7 +339,7 @@ interface QueryInterface {
 	/**
 	 * Returns the query result count.
 	 *
-	 * @return integer The query result count
+	 * @return int The query result count
 	 * @api
 	 */
 	public function count();
@@ -359,7 +359,7 @@ interface QueryInterface {
 	/**
 	 * Returns the maximum size of the result set to limit.
 	 *
-	 * @return integer
+	 * @return int
 	 * @api
 	 */
 	public function getLimit();
@@ -367,7 +367,7 @@ interface QueryInterface {
 	/**
 	 * Returns the start offset of the result set.
 	 *
-	 * @return integer
+	 * @return int
 	 * @api
 	 */
 	public function getOffset();
@@ -385,7 +385,7 @@ interface QueryInterface {
 	 * It matches if the multivalued property contains no values or is NULL.
 	 *
 	 * @param string $propertyName The name of the multivalued property to compare against
-	 * @return boolean
+	 * @return bool
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException if used on a single-valued property
 	 * @api
 	 */

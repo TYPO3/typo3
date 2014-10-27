@@ -57,7 +57,7 @@ class FrontendRequestHandler extends AbstractRequestHandler {
 	/**
 	 * This request handler can handle any web request.
 	 *
-	 * @return boolean If the request is a web request, TRUE otherwise FALSE
+	 * @return bool If the request is a web request, TRUE otherwise FALSE
 	 */
 	public function canHandleRequest() {
 		return $this->environmentService->isEnvironmentInFrontendMode();

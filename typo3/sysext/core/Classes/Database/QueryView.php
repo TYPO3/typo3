@@ -144,7 +144,7 @@ class QueryView {
 	 * [Describe function...]
 	 *
 	 * @param int $uid
-	 * @return integer
+	 * @return int
 	 */
 	public function saveQueryInAction($uid) {
 		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('sys_action')) {

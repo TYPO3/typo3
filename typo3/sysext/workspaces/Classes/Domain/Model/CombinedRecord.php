@@ -136,7 +136,7 @@ class CombinedRecord {
 	/**
 	 * Gets the id of the live-record.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getLiveId() {
 		return $this->getLiveRecord()->getUid();
@@ -145,7 +145,7 @@ class CombinedRecord {
 	/**
 	 * Gets the id of version-record.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getVersiondId() {
 		return $this->getVersionRecord()->getUid();

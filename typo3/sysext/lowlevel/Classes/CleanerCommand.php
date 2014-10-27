@@ -159,7 +159,7 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 	/**
 	 * Checks reference index
 	 *
-	 * @return boolean TRUE if reference index was OK (either OK, updated or ignored)
+	 * @return bool TRUE if reference index was OK (either OK, updated or ignored)
 	 */
 	public function cli_referenceIndexCheck() {
 		// Reference index option:

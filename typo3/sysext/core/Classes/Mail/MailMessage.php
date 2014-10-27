@@ -58,7 +58,7 @@ class MailMessage extends \Swift_Message {
 	/**
 	 * Sends the message.
 	 *
-	 * @return integer the number of recipients who were accepted for delivery
+	 * @return int the number of recipients who were accepted for delivery
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function send() {
@@ -71,7 +71,7 @@ class MailMessage extends \Swift_Message {
 	/**
 	 * Checks whether the message has been sent.
 	 *
-	 * @return boolean
+	 * @return bool
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function isSent() {

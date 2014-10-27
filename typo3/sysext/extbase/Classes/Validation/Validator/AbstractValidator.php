@@ -133,7 +133,7 @@ abstract class AbstractValidator implements ValidatorInterface {
 
 	/**
 	 * @param mixed $value
-	 * @return boolean TRUE if the given $value is NULL or an empty string ('')
+	 * @return bool TRUE if the given $value is NULL or an empty string ('')
 	 */
 	final protected function isEmpty($value) {
 		return $value === NULL || $value === '';

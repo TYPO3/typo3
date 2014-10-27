@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Rtehtmlarea\Controller;
 /**
  * Script class for the Element Browser window.
  *
- * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class BrowseLinksController {
 
@@ -37,7 +37,7 @@ class BrowseLinksController {
 	/**
 	 * Main function, rendering the element browser in RTE mode.
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function main() {
 		// Setting alternative web browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
@@ -92,7 +92,7 @@ class BrowseLinksController {
 	/**
 	 * Print module content
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function printContent() {
 		echo $this->content;

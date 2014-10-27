@@ -71,7 +71,7 @@ abstract class AbstractConditionMatcher {
 	/**
 	 * Gets the id of the page to evaluate conditions for.
 	 *
-	 * @return integer Id of the page
+	 * @return int Id of the page
 	 */
 	public function getPageId() {
 		return $this->pageId;
@@ -143,7 +143,7 @@ abstract class AbstractConditionMatcher {
 	 * Matches a TypoScript condition expression.
 	 *
 	 * @param string $expression The expression to match
-	 * @return boolean Whether the expression matched
+	 * @return bool Whether the expression matched
 	 */
 	public function match($expression) {
 		// Return directly if result should be simulated:
@@ -516,7 +516,7 @@ abstract class AbstractConditionMatcher {
 	 *
 	 * @param string $test The value to compare with on the form [operator][number]. Eg. "< 123
 	 * @param float $leftValue The value on the left side
-	 * @return boolean If $value is "50" and $test is "< 123" then it will return TRUE.
+	 * @return bool If $value is "50" and $test is "< 123" then it will return TRUE.
 	 */
 	protected function compareNumber($test, $leftValue) {
 		if (preg_match('/^(!?=+|<=?|>=?)\\s*([^\\s]*)\\s*$/', $test, $matches)) {
@@ -571,7 +571,7 @@ abstract class AbstractConditionMatcher {
 	 *
 	 * @param string $haystack The string in which to find $needle.
 	 * @param string $needle The string to find in $haystack
-	 * @return boolean Returns TRUE if $needle matches or is found in (according to wildcards) in $haystack. Eg. if $haystack is "Netscape 6.5" and $needle is "Net*" or "Net*ape" then it returns TRUE.
+	 * @return bool Returns TRUE if $needle matches or is found in (according to wildcards) in $haystack. Eg. if $haystack is "Netscape 6.5" and $needle is "Net*" or "Net*ape" then it returns TRUE.
 	 */
 	protected function searchStringWildcard($haystack, $needle) {
 		$result = FALSE;
@@ -649,7 +649,7 @@ abstract class AbstractConditionMatcher {
 	 * Evaluates a TypoScript condition given as input, eg. "[browser=net][...(other conditions)...]"
 	 *
 	 * @param string $string The condition to match against its criterias.
-	 * @return boolean Whether the condition matched
+	 * @return bool Whether the condition matched
 	 * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::parse()
 	 */
 	abstract protected function evaluateCondition($string);
@@ -678,7 +678,7 @@ abstract class AbstractConditionMatcher {
 	/**
 	 * Determines the current page Id.
 	 *
-	 * @return integer The current page Id
+	 * @return int The current page Id
 	 */
 	abstract protected function determinePageId();
 
@@ -699,14 +699,14 @@ abstract class AbstractConditionMatcher {
 	/**
 	 * Gets the id of the current user.
 	 *
-	 * @return integer The id of the current user
+	 * @return int The id of the current user
 	 */
 	abstract protected function getUserId();
 
 	/**
 	 * Determines if a user is logged in.
 	 *
-	 * @return boolean Determines if a user is logged in
+	 * @return bool Determines if a user is logged in
 	 */
 	abstract protected function isUserLoggedIn();
 

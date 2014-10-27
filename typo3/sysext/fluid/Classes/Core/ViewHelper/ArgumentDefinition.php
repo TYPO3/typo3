@@ -107,7 +107,7 @@ class ArgumentDefinition {
 	/**
 	 * Get the optionality of the argument
 	 *
-	 * @return boolean TRUE if argument is optional
+	 * @return bool TRUE if argument is optional
 	 */
 	public function isRequired() {
 		return $this->required;
@@ -125,7 +125,7 @@ class ArgumentDefinition {
 	/**
 	 * TRUE if it is a method parameter
 	 *
-	 * @return boolean TRUE if it's a method parameter
+	 * @return bool TRUE if it's a method parameter
 	 */
 	public function isMethodParameter() {
 		return $this->isMethodParameter;

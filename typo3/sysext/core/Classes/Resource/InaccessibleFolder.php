@@ -87,7 +87,7 @@ class InaccessibleFolder extends Folder {
 	 * @param array $filterMethods
 	 * @param bool $recursive
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getFileCount(array $filterMethods = array(), $recursive = FALSE) {
 		$this->throwInaccessibleException();
@@ -155,7 +155,7 @@ class InaccessibleFolder extends Folder {
 	 * Deletes this folder from its storage. This also means that this object becomes useless.
 	 *
 	 * @param bool $deleteRecursively
-	 * @return boolean TRUE if deletion succeeded
+	 * @return bool TRUE if deletion succeeded
 	 */
 	public function delete($deleteRecursively = TRUE) {
 		$this->throwInaccessibleException();
@@ -209,7 +209,7 @@ class InaccessibleFolder extends Folder {
 	 * Checks if a file exists in this folder
 	 *
 	 * @param string $name
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasFile($name) {
 		$this->throwInaccessibleException();
@@ -219,7 +219,7 @@ class InaccessibleFolder extends Folder {
 	 * Checks if a folder exists in this folder.
 	 *
 	 * @param string $name
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasFolder($name) {
 		$this->throwInaccessibleException();

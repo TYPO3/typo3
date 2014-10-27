@@ -1072,7 +1072,7 @@ class CharsetConverter {
 	 *
 	 * @param string $str UTF-8 multibyte character string
 	 * @param bool $hex If set, then a hex. number is returned.
-	 * @return integer UNICODE integer
+	 * @return int UNICODE integer
 	 * @see UnumberToChar()
 	 */
 	public function utf8CharToUnumber($str, $hex = 0) {
@@ -1112,7 +1112,7 @@ class CharsetConverter {
 	 * PLEASE SEE: http://www.unicode.org/Public/MAPPINGS/
 	 *
 	 * @param string The charset to be initialized. Use lowercase charset always (the charset must match exactly with a filename in csconvtbl/ folder ([charset].tbl)
-	 * @return integer Returns '1' if already loaded. Returns FALSE if charset conversion table was not found. Returns '2' if the charset conversion table was found and parsed.
+	 * @return int Returns '1' if already loaded. Returns FALSE if charset conversion table was not found. Returns '2' if the charset conversion table was found and parsed.
 	 * @acces private
 	 */
 	public function initCharset($charset) {
@@ -1177,7 +1177,7 @@ class CharsetConverter {
 	 * PLEASE SEE: http://www.unicode.org/Public/UNIDATA/
 	 *
 	 * @param string $mode Mode ("case", "ascii", ...)
-	 * @return integer Returns FALSE on error, a TRUE value on success: 1 table already loaded, 2, cached version, 3 table parsed (and cached).
+	 * @return int Returns FALSE on error, a TRUE value on success: 1 table already loaded, 2, cached version, 3 table parsed (and cached).
 	 * @access private
 	 */
 	public function initUnicodeData($mode = NULL) {
@@ -1418,7 +1418,7 @@ class CharsetConverter {
 	 * This function is automatically called by the case folding functions.
 	 *
 	 * @param string $charset Charset for which to initialize case folding.
-	 * @return integer Returns FALSE on error, a TRUE value on success: 1 table already loaded, 2, cached version, 3 table parsed (and cached).
+	 * @return int Returns FALSE on error, a TRUE value on success: 1 table already loaded, 2, cached version, 3 table parsed (and cached).
 	 * @access private
 	 */
 	public function initCaseFolding($charset) {
@@ -1479,7 +1479,7 @@ class CharsetConverter {
 	 * This function is automatically called by the ASCII transliteration functions.
 	 *
 	 * @param string $charset Charset for which to initialize conversion.
-	 * @return integer Returns FALSE on error, a TRUE value on success: 1 table already loaded, 2, cached version, 3 table parsed (and cached).
+	 * @return int Returns FALSE on error, a TRUE value on success: 1 table already loaded, 2, cached version, 3 table parsed (and cached).
 	 * @access private
 	 */
 	public function initToASCII($charset) {
@@ -1580,7 +1580,7 @@ class CharsetConverter {
 	 *
 	 * @param string $charset The character set
 	 * @param string $string Character string
-	 * @return integer The number of characters
+	 * @return int The number of characters
 	 * @see strlen()
 	 */
 	public function strlen($charset, $string) {
@@ -1917,7 +1917,7 @@ class CharsetConverter {
 	 * Unit-tested by Kasper and works 100% like strlen() / mb_strlen()
 	 *
 	 * @param string $str UTF-8 multibyte character string
-	 * @return integer The number of characters
+	 * @return int The number of characters
 	 * @see strlen()
 	 */
 	public function utf8_strlen($str) {
@@ -1971,7 +1971,7 @@ class CharsetConverter {
 	 * @param string $haystack UTF-8 string to search in
 	 * @param string $needle UTF-8 string to search for
 	 * @param int $offset Positition to start the search
-	 * @return integer The character position
+	 * @return int The character position
 	 * @see strpos()
 	 */
 	public function utf8_strpos($haystack, $needle, $offset = 0) {
@@ -1998,7 +1998,7 @@ class CharsetConverter {
 	 *
 	 * @param string $haystack UTF-8 string to search in
 	 * @param string $needle UTF-8 character to search for (single character)
-	 * @return integer The character position
+	 * @return int The character position
 	 * @see strrpos()
 	 */
 	public function utf8_strrpos($haystack, $needle) {
@@ -2021,7 +2021,7 @@ class CharsetConverter {
 	 *
 	 * @param string $str UTF-8 string
 	 * @param int $pos Character position (negative values start from the end)
-	 * @return integer Byte position
+	 * @return int Byte position
 	 */
 	public function utf8_char2byte_pos($str, $pos) {
 		// Number of characters found
@@ -2067,7 +2067,7 @@ class CharsetConverter {
 	 *
 	 * @param string $str UTF-8 string
 	 * @param int $pos Byte position
-	 * @return integer Character position
+	 * @return int Character position
 	 */
 	public function utf8_byte2char_pos($str, $pos) {
 		// Number of characters
@@ -2216,7 +2216,7 @@ class CharsetConverter {
 	 *
 	 * @param string $str EUC multibyte character string
 	 * @param string $charset The charset
-	 * @return integer The number of characters
+	 * @return int The number of characters
 	 * @see strlen()
 	 */
 	public function euc_strlen($str, $charset) {
@@ -2244,7 +2244,7 @@ class CharsetConverter {
 	 * @param string $str EUC multibyte character string
 	 * @param int $pos Character position (negative values start from the end)
 	 * @param string $charset The charset
-	 * @return integer Byte position
+	 * @return int Byte position
 	 */
 	public function euc_char2byte_pos($str, $pos, $charset) {
 		$sjis = $charset == 'shift_jis';

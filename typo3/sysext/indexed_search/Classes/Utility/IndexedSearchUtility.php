@@ -29,7 +29,7 @@ class IndexedSearchUtility {
 	 * like indexed_search_mysql.
 	 *
 	 * @param string $tableName Table name to check
-	 * @return boolean True if the given table is used
+	 * @return bool True if the given table is used
 	 */
 	static public function isTableUsed($tableName) {
 		$tableList = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['use_tables'];
@@ -41,7 +41,7 @@ class IndexedSearchUtility {
 	 * Using 7 instead of 8 just because that makes the integers lower than 32 bit (28 bit) and so they do not interfere with UNSIGNED integers or PHP-versions which has varying output from the hexdec function.
 	 *
 	 * @param string $stringToHash String to hash
-	 * @return integer Integer intepretation of the md5 hash of input string.
+	 * @return int Integer intepretation of the md5 hash of input string.
 	 */
 	static public function md5inthash($stringToHash) {
 		return hexdec(substr(md5($stringToHash), 0, 7));

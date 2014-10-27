@@ -23,8 +23,8 @@ class QueryCache {
 	/**
 	 * Returns a proper cache key.
 	 *
-	 * @param 	mixed		$config
-	 * @return 	void
+	 * @param mixed $config
+	 * @return void
 	 */
 	static public function getCacheKey($config) {
 		if (is_array($config)) {

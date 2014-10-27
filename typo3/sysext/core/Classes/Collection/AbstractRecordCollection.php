@@ -112,7 +112,7 @@ abstract class AbstractRecordCollection implements \TYPO3\CMS\Core\Collection\Re
 	 * Return the key of the current element
 	 *
 	 * @link http://php.net/manual/en/iterator.key.php
-	 * @return integer 0 on failure.
+	 * @return int 0 on failure.
 	 */
 	public function key() {
 		$currentRecord = $this->storage->current();
@@ -124,7 +124,7 @@ abstract class AbstractRecordCollection implements \TYPO3\CMS\Core\Collection\Re
 	 * Checks if current position is valid
 	 *
 	 * @link http://php.net/manual/en/iterator.valid.php
-	 * @return boolean The return value will be casted to boolean and then evaluated.
+	 * @return bool The return value will be casted to boolean and then evaluated.
 	 */
 	public function valid() {
 		return $this->storage->valid();
@@ -173,7 +173,7 @@ abstract class AbstractRecordCollection implements \TYPO3\CMS\Core\Collection\Re
 	 * Count elements of an object
 	 *
 	 * @link http://php.net/manual/en/countable.count.php
-	 * @return integer The custom count as an integer.
+	 * @return int The custom count as an integer.
 	 */
 	public function count() {
 		return $this->storage->count();
@@ -191,7 +191,7 @@ abstract class AbstractRecordCollection implements \TYPO3\CMS\Core\Collection\Re
 	/**
 	 * Getter for the UID
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getUid() {
 		return $this->uid;
@@ -278,7 +278,7 @@ abstract class AbstractRecordCollection implements \TYPO3\CMS\Core\Collection\Re
 	/**
 	 * Returns the uid of the collection
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getIdentifier() {
 		return $this->uid;

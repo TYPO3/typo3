@@ -27,7 +27,7 @@ interface AbstractMenuFilterPagesHookInterface {
 	 * @param array $banUidArray Array of page uids which are to be excluded
 	 * @param bool $spacer If set, then the page is a spacer.
 	 * @param \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject $obj The menu object
-	 * @return boolean Returns TRUE if the page can be safely included.
+	 * @return bool Returns TRUE if the page can be safely included.
 	 */
 	public function processFilter(array &$data, array $banUidArray, $spacer, \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject $obj);
 

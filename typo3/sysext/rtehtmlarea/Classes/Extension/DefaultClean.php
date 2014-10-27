@@ -57,8 +57,8 @@ class DefaultClean extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
-	 * @param 	int		Relative id of the RTE editing area in the form
-	 * @return 	string		JS configuration for registered plugins, in this case, JS configuration of block elements
+	 * @param int Relative id of the RTE editing area in the form
+	 * @return string JS configuration for registered plugins, in this case, JS configuration of block elements
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {
 		$registerRTEinJavascriptString = '';
@@ -78,8 +78,8 @@ class DefaultClean extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	 * Return an updated array of toolbar enabled buttons
 	 * Force inclusion of hidden button cleanword
 	 *
-	 * @param 	array		$show: array of toolbar elements that will be enabled, unless modified here
-	 * @return 	array		toolbar button array, possibly updated
+	 * @param array $show: array of toolbar elements that will be enabled, unless modified here
+	 * @return array toolbar button array, possibly updated
 	 */
 	public function applyToolbarConstraints($show) {
 		return array_unique(array_merge($show, \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->pluginButtons)));

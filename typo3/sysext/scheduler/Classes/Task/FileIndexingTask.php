@@ -73,7 +73,7 @@ class FileIndexingTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	/**
 	 * Hardcode disabled state
 	 *
-	 * @return boolean TRUE if task is disabled, FALSE otherwise
+	 * @return bool TRUE if task is disabled, FALSE otherwise
 	 */
 	public function isDisabled() {
 		return TRUE;
@@ -82,7 +82,7 @@ class FileIndexingTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	/**
 	 * Function execute from the Scheduler
 	 *
-	 * @return boolean TRUE on successful execution, FALSE on error
+	 * @return bool TRUE on successful execution, FALSE on error
 	 */
 	public function execute() {
 		return FALSE;

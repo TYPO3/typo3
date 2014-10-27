@@ -54,7 +54,7 @@ abstract class AbstractImagePreset extends Configuration\AbstractPreset {
 	 * Check is preset is currently active on the system.
 	 * Overwrites parent method to ignore im_path and im_path_lzw settings
 	 *
-	 * @return boolean TRUE if preset is active
+	 * @return bool TRUE if preset is active
 	 */
 	public function isActive() {
 		$isActive = TRUE;
@@ -75,7 +75,7 @@ abstract class AbstractImagePreset extends Configuration\AbstractPreset {
 	/**
 	 * Find out if GraphicsMagick is available
 	 *
-	 * @return boolean TRUE if GraphicsMagick executable is found in path
+	 * @return bool TRUE if GraphicsMagick executable is found in path
 	 */
 	public function isAvailable() {
 		$searchPaths = $this->getSearchPaths();

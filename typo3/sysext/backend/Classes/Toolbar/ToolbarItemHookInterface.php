@@ -29,7 +29,7 @@ interface ToolbarItemHookInterface {
 	/**
 	 * Checks whether the user has access to this toolbar item
 	 *
-	 * @return boolean TRUE if user has access, FALSE if not
+	 * @return bool TRUE if user has access, FALSE if not
 	 */
 	public function checkAccess();
 

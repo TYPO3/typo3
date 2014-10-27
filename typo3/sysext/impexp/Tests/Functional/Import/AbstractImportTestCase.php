@@ -68,7 +68,7 @@ abstract class AbstractImportTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	/**
 	 * Test if the local filesystem is case sensitive
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isCaseSensitiveFilesystem() {
 		$caseSensitive = TRUE;

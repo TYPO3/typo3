@@ -88,7 +88,7 @@ abstract class AbstractXmlParser implements \SplSubject {
 	 * Method tries to load the extension if necessary and possible.
 	 *
 	 * @access public
-	 * @return boolean TRUE, if PHP extension is available, otherwise FALSE
+	 * @return bool TRUE, if PHP extension is available, otherwise FALSE
 	 */
 	public function isAvailable() {
 		$isAvailable = TRUE;
@@ -112,7 +112,7 @@ abstract class AbstractXmlParser implements \SplSubject {
 	/**
 	 * Create required parser
 	 *
-	 * @return  void
+	 * @return void
 	 */
 	abstract protected function createParser();
 }

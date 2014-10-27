@@ -389,7 +389,7 @@ class ModuleLoader {
 	 *
 	 * @param string $name Module name
 	 * @param array $MCONF MCONF array (module configuration array) from the modules conf.php file (contains settings about what access level the module has)
-	 * @return boolean TRUE if access is granted for $this->BE_USER
+	 * @return bool TRUE if access is granted for $this->BE_USER
 	 */
 	public function checkModAccess($name, $MCONF) {
 		if ($MCONF['access']) {
@@ -423,7 +423,7 @@ class ModuleLoader {
 	 *
 	 * @param string $name Module name
 	 * @param array $MCONF MCONF array (module configuration array) from the modules conf.php file (contains settings about workspace restrictions)
-	 * @return boolean TRUE if access is granted for $this->BE_USER
+	 * @return bool TRUE if access is granted for $this->BE_USER
 	 */
 	public function checkModWorkspace($name, $MCONF) {
 		if ($this->observeWorkspaces) {

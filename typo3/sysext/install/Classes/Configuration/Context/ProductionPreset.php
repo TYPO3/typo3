@@ -48,7 +48,7 @@ class ProductionPreset extends Configuration\AbstractPreset {
 	/**
 	 * Production preset is always available
 	 *
-	 * @return boolean TRUE if mbstring PHP module is loaded
+	 * @return bool TRUE if mbstring PHP module is loaded
 	 */
 	public function isAvailable() {
 		return TRUE;
@@ -58,7 +58,7 @@ class ProductionPreset extends Configuration\AbstractPreset {
 	 * If context is set to production, priority
 	 * of this preset is raised.
 	 *
-	 * @return integer Priority of preset
+	 * @return int Priority of preset
 	 */
 	public function getPriority() {
 		$context = \TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext();

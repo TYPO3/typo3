@@ -155,7 +155,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Getter for the version
 	 *
-	 * @return integer interpretion of the extension version
+	 * @return int interpretion of the extension version
 	 */
 	public function getVersion() {
 		return $this->version;

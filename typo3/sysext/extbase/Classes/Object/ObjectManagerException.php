@@ -68,7 +68,7 @@ class ObjectManagerException implements \TYPO3\CMS\Extbase\Object\ObjectManagerI
 	 * Returns TRUE if an object with the given name is registered
 	 *
 	 * @param string $objectName Name of the object
-	 * @return boolean TRUE if the object has been registered, otherwise FALSE
+	 * @return bool TRUE if the object has been registered, otherwise FALSE
 	 */
 	public function isRegistered($objectName) {
 		return class_exists($objectName, TRUE);

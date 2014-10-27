@@ -100,7 +100,7 @@ class ExtensionManagementUtility {
 	 *
 	 * @param string $key Extension key to test
 	 * @param bool $exitOnError If $exitOnError is TRUE and the extension is not loaded the function will die with an error message
-	 * @return boolean
+	 * @return bool
 	 * @throws \BadFunctionCallException
 	 */
 	static public function isLoaded($key, $exitOnError = FALSE) {
@@ -1197,7 +1197,7 @@ class ExtensionManagementUtility {
 	 * @param string $serviceType Type of service
 	 * @param string $serviceKey Specific key of the service
 	 * @param array $serviceDetails Information about the service
-	 * @return boolean Service availability
+	 * @return bool Service availability
 	 */
 	static public function isServiceAvailable($serviceType, $serviceKey, $serviceDetails) {
 		// If the service depends on external programs - check if they exists

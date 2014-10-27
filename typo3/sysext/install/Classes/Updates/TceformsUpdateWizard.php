@@ -108,7 +108,7 @@ class TceformsUpdateWizard extends AbstractUpdate {
 	 * Checks if an update is needed
 	 *
 	 * @param string &$description The description for the update
-	 * @return boolean TRUE if an update is needed, FALSE otherwise
+	 * @return bool TRUE if an update is needed, FALSE otherwise
 	 */
 	public function checkForUpdate(&$description) {
 		$description = 'This update wizard goes through all files that are referenced in the tt_content.image and '
@@ -145,7 +145,7 @@ class TceformsUpdateWizard extends AbstractUpdate {
 	 *
 	 * @param array &$dbQueries Queries done in this update
 	 * @param mixed &$customMessages Custom messages
-	 * @return boolean TRUE on success, FALSE on error
+	 * @return bool TRUE on success, FALSE on error
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 		if ($this->versionNumber < 6000000) {

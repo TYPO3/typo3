@@ -36,7 +36,7 @@ interface RequestInterface {
 	 * The dispatcher will try to dispatch the request again if it has not been
 	 * addressed yet.
 	 *
-	 * @return boolean TRUE if this request has been disptached successfully
+	 * @return bool TRUE if this request has been disptached successfully
 	 * @api
 	 */
 	public function isDispatched();
@@ -85,7 +85,7 @@ interface RequestInterface {
 	 * Checks if an argument of the given name exists (is set)
 	 *
 	 * @param string $argumentName Name of the argument to check
-	 * @return boolean TRUE if the argument is set, otherwise FALSE
+	 * @return bool TRUE if the argument is set, otherwise FALSE
 	 * @api
 	 */
 	public function hasArgument($argumentName);

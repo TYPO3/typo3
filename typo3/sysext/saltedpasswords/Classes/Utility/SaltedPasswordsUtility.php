@@ -31,7 +31,7 @@ class SaltedPasswordsUtility {
 	 * Calculates number of backend users, who have no saltedpasswords
 	 * protection.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	static public function getNumberOfBackendUsersWithInsecurePassword() {
 		$userCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
@@ -115,7 +115,7 @@ class SaltedPasswordsUtility {
 	 * indeed used in the TYPO3_MODE.
 	 *
 	 * @param string $mode (optional) The TYPO3 mode (FE or BE) saltedpasswords shall be used for
-	 * @return boolean TRUE, if salted password hashes are used in the TYPO3_MODE, otherwise FALSE
+	 * @return bool TRUE, if salted password hashes are used in the TYPO3_MODE, otherwise FALSE
 	 */
 	static public function isUsageEnabled($mode = TYPO3_MODE) {
 		// Login Security Level Recognition

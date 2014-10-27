@@ -123,7 +123,7 @@ class Commands {
 	 *
 	 * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $sourceNode
 	 * @param int $targetId
-	 * @return integer
+	 * @return int
 	 */
 	static public function copyNode(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $sourceNode, $targetId) {
 		$cmd['pages'][$sourceNode->getId()]['copy'] = $targetId;
@@ -151,7 +151,7 @@ class Commands {
 	 * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $parentNode
 	 * @param int $targetId
 	 * @param int $pageType
-	 * @return integer
+	 * @return int
 	 */
 	static public function createNode(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $parentNode, $targetId, $pageType) {
 		$placeholder = 'NEW12345';

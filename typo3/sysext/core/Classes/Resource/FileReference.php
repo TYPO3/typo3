@@ -102,7 +102,7 @@ class FileReference implements FileInterface {
 	 * Returns true if the given key exists for this file.
 	 *
 	 * @param string $key The property to be looked up
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasProperty($key) {
 		return array_key_exists($key, $this->getProperties());
@@ -235,7 +235,7 @@ class FileReference implements FileInterface {
 	/**
 	 * Returns the uid of this File In Use
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getUid() {
 		return (int)$this->propertiesOfFileReference['uid'];
@@ -244,7 +244,7 @@ class FileReference implements FileInterface {
 	/**
 	 * Returns the size of this file
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getSize() {
 		return (int)$this->originalFile->getSize();
@@ -289,7 +289,7 @@ class FileReference implements FileInterface {
 	/**
 	 * Returns the modification time of the file as Unix timestamp
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getModificationTime() {
 		return (int)$this->originalFile->getModificationTime();
@@ -298,7 +298,7 @@ class FileReference implements FileInterface {
 	/**
 	 * Returns the creation time of the file as Unix timestamp
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getCreationTime() {
 		return (int)$this->originalFile->getCreationTime();
@@ -307,7 +307,7 @@ class FileReference implements FileInterface {
 	/**
 	 * Returns the fileType of this file
 	 *
-	 * @return integer $fileType
+	 * @return int $fileType
 	 */
 	public function getType() {
 		return (int)$this->originalFile->getType();
@@ -316,7 +316,7 @@ class FileReference implements FileInterface {
 	/**
 	 * Check if file is marked as missing by indexer
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isMissing() {
 		return (bool) $this->originalFile->getProperty('missing');
@@ -379,7 +379,7 @@ class FileReference implements FileInterface {
 	 * (database table sys_file_reference) but leaves the original file untouched.
 	 *
 	 * @throws \BadMethodCallException
-	 * @return boolean TRUE if deletion succeeded
+	 * @return bool TRUE if deletion succeeded
 	 */
 	public function delete() {
 		// TODO: Implement this function. This should only delete the
@@ -425,7 +425,7 @@ class FileReference implements FileInterface {
 	 * sys_file_reference record to be present, which in turn can only exist if
 	 * the original file is indexed.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isIndexed() {
 		return TRUE;

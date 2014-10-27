@@ -182,7 +182,7 @@ class LocallangArrayParser implements \TYPO3\CMS\Core\Localization\Parser\Locali
 	 * Checks if the file is within the web root.
 	 *
 	 * @param string $fileName
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isWithinWebRoot($fileName) {
 		return (bool) \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($fileName);

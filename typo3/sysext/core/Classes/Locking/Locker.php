@@ -165,7 +165,7 @@ class Locker {
 	 * It is important to know that the lock will be acquired in any case, even if the request was blocked first.
 	 * Therefore, the lock needs to be released in every situation.
 	 *
-	 * @return boolean Returns TRUE if lock could be acquired without waiting, FALSE otherwise.
+	 * @return bool Returns TRUE if lock could be acquired without waiting, FALSE otherwise.
 	 * @throws \RuntimeException
 	 * @deprecated since 6.2 - will be removed two versions later; use new API instead
 	 */
@@ -325,7 +325,7 @@ class Locker {
 	/**
 	 * Release the lock
 	 *
-	 * @return boolean Returns TRUE on success or FALSE on failure
+	 * @return bool Returns TRUE on success or FALSE on failure
 	 */
 	public function release() {
 		if (!$this->isAcquired) {

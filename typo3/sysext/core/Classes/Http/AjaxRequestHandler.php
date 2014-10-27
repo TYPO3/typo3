@@ -161,7 +161,7 @@ class AjaxRequestHandler {
 	/**
 	 * Checks whether an error occurred during the execution or not
 	 *
-	 * @return boolean Whether this AJAX call had errors
+	 * @return bool Whether this AJAX call had errors
 	 */
 	public function isError() {
 		return $this->isError;

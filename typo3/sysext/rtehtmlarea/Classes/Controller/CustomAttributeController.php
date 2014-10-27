@@ -54,9 +54,9 @@ class CustomAttributeController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugi
 	/**
 	 * Rendering the "data-htmlarea-clickenlarge" custom attribute, called from TypoScript
 	 *
-	 * @param 	string		Content input. Not used, ignore.
-	 * @param 	array		TypoScript configuration
-	 * @return 	string		HTML output.
+	 * @param string Content input. Not used, ignore.
+	 * @param array TypoScript configuration
+	 * @return string HTML output.
 	 * @access private
 	 */
 	public function render_clickenlarge($content, $conf) {

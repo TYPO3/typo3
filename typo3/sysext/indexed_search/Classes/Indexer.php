@@ -19,12 +19,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * This class is a search indexer for TYPO3
  *
- * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
  * Indexing class for TYPO3 frontend
  *
- * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class Indexer {
 
@@ -138,8 +138,8 @@ class Indexer {
 	/**
 	 * Parent Object (TSFE) Initialization
 	 *
-	 * @param 	object		Parent Object (frontend TSFE object), passed by reference
-	 * @return 	void
+	 * @param object Parent Object (frontend TSFE object), passed by reference
+	 * @return void
 	 */
 	public function hook_indexContent(&$pObj) {
 		// Indexer configuration from Extension Manager interface:
@@ -233,14 +233,14 @@ class Indexer {
 	/**
 	 * Initializing the "combined ID" of the page (phash) being indexed (or for which external media is attached)
 	 *
-	 * @param	int		The page uid, &id=
-	 * @param	int		The page type, &type=
-	 * @param	int		sys_language uid, typically &L=
-	 * @param 	string		The MP variable (Mount Points), &MP=
-	 * @param 	array		Rootline array of only UIDs.
-	 * @param 	array		Array of GET variables to register with this indexing
-	 * @param 	bool		If set, calculates a cHash value from the $cHash_array. Probably you will not do that since such cases are indexed through the frontend and the idea of this interface is to index non-cachable pages from the backend!
-	 * @return 	void
+	 * @param int The page uid, &id=
+	 * @param int The page type, &type=
+	 * @param int sys_language uid, typically &L=
+	 * @param string The MP variable (Mount Points), &MP=
+	 * @param array Rootline array of only UIDs.
+	 * @param array Array of GET variables to register with this indexing
+	 * @param bool If set, calculates a cHash value from the $cHash_array. Probably you will not do that since such cases are indexed through the frontend and the idea of this interface is to index non-cachable pages from the backend!
+	 * @return void
 	 */
 	public function backend_initIndexer($id, $type, $sys_language_uid, $MP, $uidRL, $cHash_array = array(), $createCHash = FALSE) {
 		// Setting up internal configuration from config array:
@@ -287,9 +287,9 @@ class Indexer {
 	/**
 	 * Sets the free-index uid. Can be called right after backend_initIndexer()
 	 *
-	 * @param	int		Free index UID
-	 * @param	int		Set id - an integer identifying the "set" of indexing operations.
-	 * @return 	void
+	 * @param int Free index UID
+	 * @param int Set id - an integer identifying the "set" of indexing operations.
+	 * @return void
 	 */
 	public function backend_setFreeIndexUid($freeIndexUid, $freeIndexSetId = 0) {
 		$this->conf['freeIndexUid'] = $freeIndexUid;
@@ -299,15 +299,15 @@ class Indexer {
 	/**
 	 * Indexing records as the content of a TYPO3 page.
 	 *
-	 * @param 	string		Title equivalent
-	 * @param 	string		Keywords equivalent
-	 * @param 	string		Description equivalent
-	 * @param 	string		The main content to index
-	 * @param 	string		The charset of the title, keyword, description and body-content. MUST BE VALID, otherwise nothing is indexed!
-	 * @param	int		Last modification time, in seconds
-	 * @param	int		The creation date of the content, in seconds
-	 * @param	int		The record UID that the content comes from (for registration with the indexed rows)
-	 * @return 	void
+	 * @param string Title equivalent
+	 * @param string Keywords equivalent
+	 * @param string Description equivalent
+	 * @param string The main content to index
+	 * @param string The charset of the title, keyword, description and body-content. MUST BE VALID, otherwise nothing is indexed!
+	 * @param int Last modification time, in seconds
+	 * @param int The creation date of the content, in seconds
+	 * @param int The record UID that the content comes from (for registration with the indexed rows)
+	 * @return void
 	 */
 	public function backend_indexAsTYPO3Page($title, $keywords, $description, $content, $charset, $mtime, $crdate = 0, $recordUid = 0) {
 		// Content of page:
@@ -347,7 +347,7 @@ class Indexer {
 	/**
 	 * Initializes the object. $this->conf MUST be set with proper values prior to this call!!!
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function init() {
 		global $TYPO3_CONF_VARS;
@@ -393,7 +393,7 @@ class Indexer {
 	/**
 	 * Initialize external parsers
 	 *
-	 * @return 	void
+	 * @return void
 	 * @access private
 	 * @see init()
 	 */
@@ -419,7 +419,7 @@ class Indexer {
 	/**
 	 * Start indexing of the TYPO3 page
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function indexTypo3PageContent() {
 		$check = $this->checkMtimeTstamp($this->conf['mtime'], $this->hash['phash']);
@@ -495,8 +495,8 @@ class Indexer {
 	/**
 	 * Splits HTML content and returns an associative array, with title, a list of metatags, and a list of words in the body.
 	 *
-	 * @param 	string		HTML content to index. To some degree expected to be made by TYPO3 (ei. splitting the header by ":")
-	 * @return 	array		Array of content, having keys "title", "body", "keywords" and "description" set.
+	 * @param string HTML content to index. To some degree expected to be made by TYPO3 (ei. splitting the header by ":")
+	 * @return array Array of content, having keys "title", "body", "keywords" and "description" set.
 	 * @see splitRegularContent()
 	 */
 	public function splitHTMLContent($content) {
@@ -547,8 +547,8 @@ class Indexer {
 	/**
 	 * Extract the charset value from HTML meta tag.
 	 *
-	 * @param 	string		HTML content
-	 * @return 	string		The charset value if found.
+	 * @param string HTML content
+	 * @return string The charset value if found.
 	 */
 	public function getHTMLcharset($content) {
 		if (preg_match('/<meta[[:space:]]+[^>]*http-equiv[[:space:]]*=[[:space:]]*["\']CONTENT-TYPE["\'][^>]*>/i', $content, $reg)) {
@@ -561,9 +561,9 @@ class Indexer {
 	/**
 	 * Converts a HTML document to utf-8
 	 *
-	 * @param 	string		HTML content, any charset
-	 * @param 	string		Optional charset (otherwise extracted from HTML)
-	 * @return 	string		Converted HTML
+	 * @param string HTML content, any charset
+	 * @param string Optional charset (otherwise extracted from HTML)
+	 * @return string Converted HTML
 	 */
 	public function convertHTMLToUtf8($content, $charset = '') {
 		// Find charset:
@@ -583,12 +583,12 @@ class Indexer {
 	 * the tag removed in the two passed variables. Returns FALSE if no match found. ie. useful for finding
 	 * <title> of document or removing <script>-sections
 	 *
-	 * @param 	string		String to search in
-	 * @param 	string		Tag name, eg. "script
-	 * @param 	string		Passed by reference: Content inside found tag
-	 * @param 	string		Passed by reference: Content after found tag
-	 * @param 	string		Passed by reference: Attributes of the found tag.
-	 * @return 	boolean		Returns FALSE if tag was not found, otherwise TRUE.
+	 * @param string String to search in
+	 * @param string Tag name, eg. "script
+	 * @param string Passed by reference: Content inside found tag
+	 * @param string Passed by reference: Content after found tag
+	 * @param string Passed by reference: Attributes of the found tag.
+	 * @return bool Returns FALSE if tag was not found, otherwise TRUE.
 	 */
 	public function embracingTags($string, $tagName, &$tagContent, &$stringAfter, &$paramList) {
 		$endTag = '</' . $tagName . '>';
@@ -615,8 +615,8 @@ class Indexer {
 	/**
 	 * Removes content that shouldn't be indexed according to TYPO3SEARCH-tags.
 	 *
-	 * @param 	string		HTML Content, passed by reference
-	 * @return 	boolean		Returns TRUE if a TYPOSEARCH_ tag was found, otherwise FALSE.
+	 * @param string HTML Content, passed by reference
+	 * @return bool Returns TRUE if a TYPOSEARCH_ tag was found, otherwise FALSE.
 	 */
 	public function typoSearchTags(&$body) {
 		$expBody = preg_split('/\\<\\!\\-\\-[\\s]?TYPO3SEARCH_/', $body);
@@ -642,8 +642,8 @@ class Indexer {
 	/**
 	 * Extract links (hrefs) from HTML content and if indexable media is found, it is indexed.
 	 *
-	 * @param 	string		HTML content
-	 * @return 	void
+	 * @param string HTML content
+	 * @return void
 	 */
 	public function extractLinks($content) {
 		// Get links:
@@ -748,8 +748,8 @@ class Indexer {
 	/**
 	 * Extracts the "base href" from content string.
 	 *
-	 * @param 	string		Content to analyze
-	 * @return 	string		The base href or an empty string if not found
+	 * @param string Content to analyze
+	 * @return string The base href or an empty string if not found
 	 */
 	public function extractBaseHref($html) {
 		$href = '';
@@ -778,8 +778,8 @@ class Indexer {
 	/**
 	 * Index External URLs HTML content
 	 *
-	 * @param 	string		URL, eg. "http://typo3.org/
-	 * @return 	void
+	 * @param string URL, eg. "http://typo3.org/
+	 * @return void
 	 * @see indexRegularDocument()
 	 */
 	public function indexExternalUrl($externalUrl) {
@@ -808,9 +808,9 @@ class Indexer {
 	/**
 	 * Getting HTTP request headers of URL
 	 *
-	 * @param 	string		The URL
-	 * @param	int		Timeout (seconds?)
-	 * @return 	mixed		If no answer, returns FALSE. Otherwise an array where HTTP headers are keys
+	 * @param string The URL
+	 * @param int Timeout (seconds?)
+	 * @return mixed If no answer, returns FALSE. Otherwise an array where HTTP headers are keys
 	 */
 	public function getUrlHeaders($url) {
 		// Try to get the headers only
@@ -960,7 +960,7 @@ class Indexer {
 	 * Checks if URL is relative.
 	 *
 	 * @param string $url
-	 * @return boolean
+	 * @return bool
 	 */
 	static protected function isRelativeURL($url) {
 		$urlParts = @parse_url($url);
@@ -971,7 +971,7 @@ class Indexer {
 	 * Checks if the path points to the file inside the web site
 	 *
 	 * @param string $filePath
-	 * @return boolean
+	 * @return bool
 	 */
 	static protected function isAllowedLocalFile($filePath) {
 		$filePath = GeneralUtility::resolveBackPath($filePath);
@@ -988,11 +988,11 @@ class Indexer {
 	/**
 	 * Indexing a regular document given as $file (relative to PATH_site, local file)
 	 *
-	 * @param 	string		Relative Filename, relative to PATH_site. It can also be an absolute path as long as it is inside the lockRootPath (validated with \TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath()). Finally, if $contentTmpFile is set, this value can be anything, most likely a URL
-	 * @param 	bool		If set, indexing is forced (despite content hashes, mtime etc).
-	 * @param 	string		Temporary file with the content to read it from (instead of $file). Used when the $file is a URL.
-	 * @param 	string		File extension for temporary file.
-	 * @return 	void
+	 * @param string Relative Filename, relative to PATH_site. It can also be an absolute path as long as it is inside the lockRootPath (validated with \TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath()). Finally, if $contentTmpFile is set, this value can be anything, most likely a URL
+	 * @param bool If set, indexing is forced (despite content hashes, mtime etc).
+	 * @param string Temporary file with the content to read it from (instead of $file). Used when the $file is a URL.
+	 * @param string File extension for temporary file.
+	 * @return void
 	 */
 	public function indexRegularDocument($file, $force = FALSE, $contentTmpFile = '', $altExtension = '') {
 		// Init
@@ -1095,10 +1095,10 @@ class Indexer {
 	 * Reads the content of an external file being indexed.
 	 * The content from the external parser MUST be returned in utf-8!
 	 *
-	 * @param 	string		File extension, eg. "pdf", "doc" etc.
-	 * @param 	string		Absolute filename of file (must exist and be validated OK before calling function)
-	 * @param 	string		Pointer to section (zero for all other than PDF which will have an indication of pages into which the document should be splitted.)
-	 * @return 	array		Standard content array (title, description, keywords, body keys)
+	 * @param string File extension, eg. "pdf", "doc" etc.
+	 * @param string Absolute filename of file (must exist and be validated OK before calling function)
+	 * @param string Pointer to section (zero for all other than PDF which will have an indication of pages into which the document should be splitted.)
+	 * @return array Standard content array (title, description, keywords, body keys)
 	 */
 	public function readFileContent($fileExtension, $absoluteFileName, $sectionPointer) {
 		$contentArray = NULL;
@@ -1112,9 +1112,9 @@ class Indexer {
 	/**
 	 * Creates an array with pointers to divisions of document.
 	 *
-	 * @param 	string		File extension
-	 * @param 	string		Absolute filename (must exist and be validated OK before calling function)
-	 * @return 	array		Array of pointers to sections that the document should be divided into
+	 * @param string File extension
+	 * @param string Absolute filename (must exist and be validated OK before calling function)
+	 * @return array Array of pointers to sections that the document should be divided into
 	 */
 	public function fileContentParts($ext, $absFile) {
 		$cParts = array(0);
@@ -1128,8 +1128,8 @@ class Indexer {
 	/**
 	 * Splits non-HTML content (from external files for instance)
 	 *
-	 * @param 	string		Input content (non-HTML) to index.
-	 * @return 	array		Array of content, having the key "body" set (plus "title", "description" and "keywords", but empty)
+	 * @param string Input content (non-HTML) to index.
+	 * @return array Array of content, having the key "body" set (plus "title", "description" and "keywords", but empty)
 	 * @see splitHTMLContent()
 	 */
 	public function splitRegularContent($content) {
@@ -1146,9 +1146,9 @@ class Indexer {
 	/**
 	 * Convert character set and HTML entities in the value of input content array keys
 	 *
-	 * @param 	array		Standard content array
-	 * @param 	string		Charset of the input content (converted to utf-8)
-	 * @return 	void
+	 * @param array Standard content array
+	 * @param string Charset of the input content (converted to utf-8)
+	 * @return void
 	 */
 	public function charsetEntity2utf8(&$contentArr, $charset) {
 		// Convert charset if necessary
@@ -1166,8 +1166,8 @@ class Indexer {
 	/**
 	 * Processing words in the array from split*Content -functions
 	 *
-	 * @param 	array		Array of content to index, see splitHTMLContent() and splitRegularContent()
-	 * @return 	array		Content input array modified so each key is not a unique array of words
+	 * @param array Array of content to index, see splitHTMLContent() and splitRegularContent()
+	 * @return array Content input array modified so each key is not a unique array of words
 	 */
 	public function processWordsInArrays($contentArr) {
 		// split all parts to words
@@ -1185,8 +1185,8 @@ class Indexer {
 	/**
 	 * Extracts the sample description text from the content array.
 	 *
-	 * @param 	array		Content array
-	 * @return 	string		Description string
+	 * @param array Content array
+	 * @return string Description string
 	 */
 	public function bodyDescription($contentArr) {
 		// Setting description
@@ -1202,8 +1202,8 @@ class Indexer {
 	/**
 	 * Analyzes content to use for indexing,
 	 *
-	 * @param 	array		Standard content array: an array with the keys title,keywords,description and body, which all contain an array of words.
-	 * @return 	array		Index Array (whatever that is...)
+	 * @param array Standard content array: an array with the keys title,keywords,description and body, which all contain an array of words.
+	 * @return array Index Array (whatever that is...)
 	 */
 	public function indexAnalyze($content) {
 		$indexArr = array();
@@ -1218,11 +1218,11 @@ class Indexer {
 	/**
 	 * Calculates relevant information for headercontent
 	 *
-	 * @param 	array		Index array, passed by reference
-	 * @param 	array		Standard content array
-	 * @param 	string		Key from standard content array
-	 * @param	int		Bit-wise priority to type
-	 * @return 	void
+	 * @param array Index array, passed by reference
+	 * @param array Standard content array
+	 * @param string Key from standard content array
+	 * @param int Bit-wise priority to type
+	 * @return void
 	 */
 	public function analyzeHeaderinfo(&$retArr, $content, $key, $offset) {
 		foreach ($content[$key] as $val) {
@@ -1250,9 +1250,9 @@ class Indexer {
 	/**
 	 * Calculates relevant information for bodycontent
 	 *
-	 * @param 	array		Index array, passed by reference
-	 * @param 	array		Standard content array
-	 * @return 	void
+	 * @param array Index array, passed by reference
+	 * @param array Standard content array
+	 * @return void
 	 */
 	public function analyzeBody(&$retArr, $content) {
 		foreach ($content['body'] as $key => $val) {
@@ -1280,9 +1280,9 @@ class Indexer {
 	/**
 	 * Creating metaphone based hash from input word
 	 *
-	 * @param 	string		Word to convert
-	 * @param 	bool		If set, returns the raw metaphone value (not hashed)
-	 * @return 	mixed		Metaphone hash integer (or raw value, string)
+	 * @param string Word to convert
+	 * @param bool If set, returns the raw metaphone value (not hashed)
+	 * @return mixed Metaphone hash integer (or raw value, string)
 	 */
 	public function metaphone($word, $returnRawMetaphoneValue = FALSE) {
 		if (is_object($this->metaphoneObj)) {
@@ -1310,7 +1310,7 @@ class Indexer {
 	/**
 	 * Updates db with information about the page (TYPO3 page, not external media)
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function submitPage() {
 		// Remove any current data for this phash:
@@ -1384,9 +1384,9 @@ class Indexer {
 	/**
 	 * Stores gr_list in the database.
 	 *
-	 * @param	int		Search result record phash
-	 * @param	int		Actual phash of current content
-	 * @return 	void
+	 * @param int Search result record phash
+	 * @param int Actual phash of current content
+	 * @return void
 	 * @see update_grlist()
 	 */
 	public function submit_grlist($hash, $phash_x) {
@@ -1406,9 +1406,9 @@ class Indexer {
 	 * Stores section
 	 * $hash and $hash_t3 are the same for TYPO3 pages, but different when it is external files.
 	 *
-	 * @param	int		phash of TYPO3 parent search result record
-	 * @param	int		phash of the file indexation search record
-	 * @return 	void
+	 * @param int phash of TYPO3 parent search result record
+	 * @param int phash of the file indexation search record
+	 * @return void
 	 */
 	public function submit_section($hash, $hash_t3) {
 		$fields = array(
@@ -1425,8 +1425,8 @@ class Indexer {
 	/**
 	 * Removes records for the indexed page, $phash
 	 *
-	 * @param	int		phash value to flush
-	 * @return 	void
+	 * @param int phash value to flush
+	 * @return void
 	 */
 	public function removeOldIndexedPages($phash) {
 		// Removing old registrations for all tables. Because the pages are TYPO3 pages there can be nothing else than 1-1 relations here.
@@ -1450,16 +1450,16 @@ class Indexer {
 	/**
 	 * Updates db with information about the file
 	 *
-	 * @param 	array		Array with phash and phash_grouping keys for file
-	 * @param 	string		File name
-	 * @param 	array		Array of "cHashParams" for files: This is for instance the page index for a PDF file (other document types it will be a zero)
-	 * @param 	string		File extension determining the type of media.
-	 * @param	int		Modification time of file.
-	 * @param	int		Creation time of file.
-	 * @param	int		Size of file in bytes
-	 * @param	int		Content HASH value.
-	 * @param 	array		Standard content array (using only title and body for a file)
-	 * @return 	void
+	 * @param array Array with phash and phash_grouping keys for file
+	 * @param string File name
+	 * @param array Array of "cHashParams" for files: This is for instance the page index for a PDF file (other document types it will be a zero)
+	 * @param string File extension determining the type of media.
+	 * @param int Modification time of file.
+	 * @param int Creation time of file.
+	 * @param int Size of file in bytes
+	 * @param int Content HASH value.
+	 * @param array Standard content array (using only title and body for a file)
+	 * @return void
 	 */
 	public function submitFilePage($hash, $file, $subinfo, $ext, $mtime, $ctime, $size, $content_md5h, $contentParts) {
 		// Find item Type:
@@ -1526,8 +1526,8 @@ class Indexer {
 	/**
 	 * Stores file gr_list for a file IF it does not exist already
 	 *
-	 * @param	int		phash value of file
-	 * @return 	void
+	 * @param int phash value of file
+	 * @return void
 	 */
 	public function submitFile_grlist($hash) {
 		// Testing if there is a gr_list record for a non-logged in user and if so, there is no need to place another one.
@@ -1542,8 +1542,8 @@ class Indexer {
 	/**
 	 * Stores file section for a file IF it does not exist
 	 *
-	 * @param	int		phash value of file
-	 * @return 	void
+	 * @param int phash value of file
+	 * @return void
 	 */
 	public function submitFile_section($hash) {
 		// Testing if there is already a section
@@ -1558,8 +1558,8 @@ class Indexer {
 	/**
 	 * Removes records for the indexed page, $phash
 	 *
-	 * @param	int		phash value to flush
-	 * @return 	void
+	 * @param int phash value to flush
+	 * @return void
 	 */
 	public function removeOldIndexedFiles($phash) {
 		// Removing old registrations for tables.
@@ -1580,9 +1580,9 @@ class Indexer {
 	 * Check the mtime / tstamp of the currently indexed page/file (based on phash)
 	 * Return positive integer if the page needs to be indexed
 	 *
-	 * @param	int		mtime value to test against limits and indexed page (usually this is the mtime of the cached document)
-	 * @param	int		"phash" used to select any already indexed page to see what its mtime is.
-	 * @return 	integer		Result integer: Generally: <0 = No indexing, >0 = Do indexing (see $this->reasons): -2) Min age was NOT exceeded and so indexing cannot occur.  -1) mtime matched so no need to reindex page. 0) N/A   1) Max age exceeded, page must be indexed again.   2) mtime of indexed page doesn't match mtime given for current content and we must index page.  3) No mtime was set, so we will index...  4) No indexed page found, so of course we will index.
+	 * @param int mtime value to test against limits and indexed page (usually this is the mtime of the cached document)
+	 * @param int "phash" used to select any already indexed page to see what its mtime is.
+	 * @return int Result integer: Generally: <0 = No indexing, >0 = Do indexing (see $this->reasons): -2) Min age was NOT exceeded and so indexing cannot occur.  -1) mtime matched so no need to reindex page. 0) N/A   1) Max age exceeded, page must be indexed again.   2) mtime of indexed page doesn't match mtime given for current content and we must index page.  3) No mtime was set, so we will index...  4) No indexed page found, so of course we will index.
 	 */
 	public function checkMtimeTstamp($mtime, $phash) {
 		if (!\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_phash')) {
@@ -1635,7 +1635,7 @@ class Indexer {
 	/**
 	 * Check content hash in phash table
 	 *
-	 * @return 	mixed		Returns TRUE if the page needs to be indexed (that is, there was no result), otherwise the phash value (in an array) of the phash record to which the grlist_record should be related!
+	 * @return mixed Returns TRUE if the page needs to be indexed (that is, there was no result), otherwise the phash value (in an array) of the phash record to which the grlist_record should be related!
 	 */
 	public function checkContentHash() {
 		// With this query the page will only be indexed if it's content is different from the same "phash_grouping" -page.
@@ -1653,9 +1653,9 @@ class Indexer {
 	 * Check content hash for external documents
 	 * Returns TRUE if the document needs to be indexed (that is, there was no result)
 	 *
-	 * @param	int		phash value to check (phash_grouping)
-	 * @param	int		Content hash to check
-	 * @return 	boolean		Returns TRUE if the document needs to be indexed (that is, there was no result)
+	 * @param int phash value to check (phash_grouping)
+	 * @param int Content hash to check
+	 * @return bool Returns TRUE if the document needs to be indexed (that is, there was no result)
 	 */
 	public function checkExternalDocContentHash($hashGr, $content_md5h) {
 		$result = TRUE;
@@ -1669,8 +1669,8 @@ class Indexer {
 	/**
 	 * Checks if a grlist record has been set for the phash value input (looking at the "real" phash of the current content, not the linked-to phash of the common search result page)
 	 *
-	 * @param	int		Phash integer to test.
-	 * @return 	boolean
+	 * @param int Phash integer to test.
+	 * @return bool
 	 */
 	public function is_grlist_set($phash_x) {
 		$result = FALSE;
@@ -1684,9 +1684,9 @@ class Indexer {
 	/**
 	 * Check if an grlist-entry for this hash exists and if not so, write one.
 	 *
-	 * @param	int		phash of the search result that should be found
-	 * @param	int		The real phash of the current content. The two values are different when a page with userlogin turns out to contain the exact same content as another already indexed version of the page; This is the whole reason for the grlist table in fact...
-	 * @return 	void
+	 * @param int phash of the search result that should be found
+	 * @param int The real phash of the current content. The two values are different when a page with userlogin turns out to contain the exact same content as another already indexed version of the page; This is the whole reason for the grlist table in fact...
+	 * @return void
 	 * @see submit_grlist()
 	 */
 	public function update_grlist($phash, $phash_x) {
@@ -1702,9 +1702,9 @@ class Indexer {
 	/**
 	 * Update tstamp for a phash row.
 	 *
-	 * @param	int		phash value
-	 * @param	int		If set, update the mtime field to this value.
-	 * @return 	void
+	 * @param int phash value
+	 * @param int If set, update the mtime field to this value.
+	 * @return void
 	 */
 	public function updateTstamp($phash, $mtime = 0) {
 		if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_phash')) {
@@ -1721,8 +1721,8 @@ class Indexer {
 	/**
 	 * Update SetID of the index_phash record.
 	 *
-	 * @param	int		phash value
-	 * @return 	void
+	 * @param int phash value
+	 * @return void
 	 */
 	public function updateSetId($phash) {
 		if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_phash')) {
@@ -1736,9 +1736,9 @@ class Indexer {
 	/**
 	 * Update parsetime for phash row.
 	 *
-	 * @param	int		phash value.
-	 * @param	int		Parsetime value to set.
-	 * @return 	void
+	 * @param int phash value.
+	 * @param int Parsetime value to set.
+	 * @return void
 	 */
 	public function updateParsetime($phash, $parsetime) {
 		if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_phash')) {
@@ -1752,7 +1752,7 @@ class Indexer {
 	/**
 	 * Update section rootline for the page
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function updateRootline() {
 		if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_section')) {
@@ -1766,8 +1766,8 @@ class Indexer {
 	 * Adding values for root-line fields.
 	 * rl0, rl1 and rl2 are standard. A hook might add more.
 	 *
-	 * @param 	array		Field array, passed by reference
-	 * @return 	void
+	 * @param array Field array, passed by reference
+	 * @return void
 	 */
 	public function getRootLineFields(array &$fieldArray) {
 		$fieldArray['rl0'] = (int)$this->conf['rootline_uids'][0];
@@ -1784,7 +1784,7 @@ class Indexer {
 	 * Removes any indexed pages with userlogins which has the same contentHash
 	 * NOT USED anywhere inside this class!
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function removeLoginpagesWithContentHash() {
 		if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_phash') && \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_grlist')) {
@@ -1804,7 +1804,7 @@ class Indexer {
 	/**
 	 * Includes the crawler class
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function includeCrawlerClass() {
 		GeneralUtility::requireOnce(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('crawler') . 'class.tx_crawler_lib.php');
@@ -1854,9 +1854,9 @@ class Indexer {
 	/**
 	 * Submits RELATIONS between words and phash
 	 *
-	 * @param 	array		Word list array
-	 * @param	int		phash value
-	 * @return 	void
+	 * @param array Word list array
+	 * @param int phash value
+	 * @return void
 	 */
 	public function submitWords($wordList, $phash) {
 		if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_rel')) {
@@ -1887,7 +1887,7 @@ class Indexer {
 	 * and back.
 	 *
 	 * @param 	double		Frequency
-	 * @return 	integer		Frequency in range.
+	 * @return int Frequency in range.
 	 */
 	public function freqMap($freq) {
 		$mapFactor = $this->freqMax * 100 * $this->freqRange;
@@ -1908,7 +1908,7 @@ class Indexer {
 	/**
 	 * Get search hash, T3 pages
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function setT3Hashes() {
 		//  Set main array:
@@ -1929,9 +1929,9 @@ class Indexer {
 	/**
 	 * Get search hash, external files
 	 *
-	 * @param 	string		File name / path which identifies it on the server
-	 * @param 	array		Additional content identifying the (subpart of) content. For instance; PDF files are divided into groups of pages for indexing.
-	 * @return 	array		Array with "phash_grouping" and "phash" inside.
+	 * @param string File name / path which identifies it on the server
+	 * @param array Additional content identifying the (subpart of) content. For instance; PDF files are divided into groups of pages for indexing.
+	 * @return array Array with "phash_grouping" and "phash" inside.
 	 */
 	public function setExtHashes($file, $subinfo = array()) {
 		//  Set main array:
@@ -1955,9 +1955,9 @@ class Indexer {
 	/**
 	 * Push function wrapper for TT logging
 	 *
-	 * @param 	string		Title to set
-	 * @param 	string		Key (?)
-	 * @return 	void
+	 * @param string Title to set
+	 * @param string Key (?)
+	 * @return void
 	 */
 	public function log_push($msg, $key) {
 		if (is_object($GLOBALS['TT'])) {
@@ -1968,7 +1968,7 @@ class Indexer {
 	/**
 	 * Pull function wrapper for TT logging
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function log_pull() {
 		if (is_object($GLOBALS['TT'])) {
@@ -1979,9 +1979,9 @@ class Indexer {
 	/**
 	 * Set log message function wrapper for TT logging
 	 *
-	 * @param 	string		Message to set
-	 * @param	int		Error number
-	 * @return 	void
+	 * @param string Message to set
+	 * @param int Error number
+	 * @return void
 	 */
 	public function log_setTSlogMessage($msg, $errorNum = 0) {
 		if (is_object($GLOBALS['TT'])) {

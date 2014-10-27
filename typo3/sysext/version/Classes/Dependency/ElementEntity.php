@@ -123,7 +123,7 @@ class ElementEntity {
 	/**
 	 * Gets the id.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getId() {
 		return $this->id;
@@ -263,7 +263,7 @@ class ElementEntity {
 	/**
 	 * Determines whether there are child or parent references.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasReferences() {
 		return count($this->getChildren()) > 0 || count($this->getParents()) > 0;

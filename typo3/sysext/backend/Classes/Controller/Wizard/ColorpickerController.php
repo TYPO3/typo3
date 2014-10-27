@@ -115,7 +115,7 @@ class ColorpickerController {
 	/**
 	 * Initialises the Class
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	protected function init() {
 		// Setting GET vars (used in frameset script):
@@ -186,7 +186,7 @@ class ColorpickerController {
 	/**
 	 * Main Method, rendering either colorpicker or frameset depending on ->showPicker
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function main() {
 		// Show frameset by default:
@@ -407,7 +407,7 @@ class ColorpickerController {
 	 * Determines whether submitted field change functions are valid
 	 * and are coming from the system and not from an external abuse.
 	 *
-	 * @return boolean Whether the submitted field change functions are valid
+	 * @return bool Whether the submitted field change functions are valid
 	 */
 	protected function areFieldChangeFunctionsValid() {
 		return $this->fieldChangeFunc && $this->fieldChangeFuncHash && $this->fieldChangeFuncHash === GeneralUtility::hmac($this->fieldChangeFunc);

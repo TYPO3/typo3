@@ -675,7 +675,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	 * Returns TRUE if $ext is an image-extension according to $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
 	 *
 	 * @param string $ext File extension
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isImage($ext) {
 		return GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], strtolower($ext));

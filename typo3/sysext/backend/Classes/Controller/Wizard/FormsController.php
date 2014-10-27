@@ -870,7 +870,7 @@ class FormsController {
 	 *
 	 * @param string $table Table name
 	 * @param int $uid Record uid
-	 * @return boolean
+	 * @return bool
 	 * @todo: Refactor to remove duplicate code (see TableController, RteController)
 	 */
 	protected function checkEditAccess($table, $uid) {

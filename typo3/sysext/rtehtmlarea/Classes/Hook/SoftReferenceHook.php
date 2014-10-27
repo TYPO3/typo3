@@ -52,9 +52,9 @@ class SoftReferenceHook extends \TYPO3\CMS\Core\Database\SoftReferenceIndex {
 	 * Finding image tags with data-htmlarea-file-uid attribute in the content.
 	 * All images that have an data-htmlarea-file-uid attribute will be returned with an info text
 	 *
-	 * @param 	string		The input content to analyse
-	 * @param 	array		Parameters set for the softref parser key in TCA/columns
-	 * @return 	array		Result array on positive matches, see description above. Otherwise FALSE
+	 * @param string The input content to analyse
+	 * @param array Parameters set for the softref parser key in TCA/columns
+	 * @return array Result array on positive matches, see description above. Otherwise FALSE
 	 */
 	public function findRef_rtehtmlarea_images($content, $spParams) {
 		$retVal = FALSE;

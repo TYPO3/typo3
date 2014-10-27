@@ -219,7 +219,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface {
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isInCliMode() {
 		return (defined('TYPO3_cliMode') && TYPO3_cliMode);

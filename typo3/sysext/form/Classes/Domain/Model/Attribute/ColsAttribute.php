@@ -33,7 +33,7 @@ class ColsAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttri
 	 * User agents may wrap visible text lines to keep long lines visible
 	 * without the need for scrolling.
 	 *
-	 * @return integer Attribute value
+	 * @return int Attribute value
 	 */
 	public function getValue() {
 		$value = (int)$this->value;

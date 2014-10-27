@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Content parsing for htmlArea RTE
  *
- * @author 	Stanislas Rolland <typo3(arobas)sjbr.ca>
+ * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
 class ContentParser {
 
@@ -123,8 +123,8 @@ class ContentParser {
 	 * Modify incoming HTMLparser config in an attempt to keep span tags with id
 	 * Such tags are used by the RTE in order to restore the cursor position when the cleaning operation is completed.
 	 *
-	 * @param 	array		$HTMLparserConfig: incoming HTMLParser configuration (wil be modified)
-	 * @return 	void
+	 * @param array $HTMLparserConfig: incoming HTMLParser configuration (wil be modified)
+	 * @return void
 	 */
 	protected function keepSpanTagsWithId(&$HTMLparserConfig) {
 		// Allow span tag

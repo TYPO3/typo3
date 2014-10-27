@@ -184,7 +184,7 @@ class DatabaseIntegrityCheck {
 	 * @param string $depthData HTML-code used when this function calls itself recursively.
 	 * @param string $table Table to get the records from
 	 * @param bool $versions Internal variable, don't set from outside!
-	 * @return 	void
+	 * @return void
 	 */
 	public function genTree_records($theID, $depthData, $table = '', $versions = FALSE) {
 		if ($versions) {
@@ -279,7 +279,7 @@ class DatabaseIntegrityCheck {
 	 *
 	 * @param string $table Database tablename
 	 * @param int $uid The uid of the record which will have the PID value set to 0 (zero)
-	 * @return boolean TRUE if done.
+	 * @return bool TRUE if done.
 	 */
 	public function fixLostRecord($table, $uid) {
 		if ($table && $GLOBALS['TCA'][$table] && $uid && is_array($this->lRecords[$table][$uid]) && $GLOBALS['BE_USER']->user['admin']) {

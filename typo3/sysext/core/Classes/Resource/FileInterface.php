@@ -26,7 +26,7 @@ interface FileInterface extends ResourceInterface {
 	 * Returns true if the given key exists for this file.
 	 *
 	 * @param string $key
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasProperty($key);
 
@@ -41,7 +41,7 @@ interface FileInterface extends ResourceInterface {
 	/**
 	 * Returns the size of this file
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getSize();
 
@@ -76,14 +76,14 @@ interface FileInterface extends ResourceInterface {
 	/**
 	 * Returns the modification time of the file as Unix timestamp
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getModificationTime();
 
 	/**
 	 * Returns the creation time of the file as Unix timestamp
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getCreationTime();
 
@@ -113,7 +113,7 @@ interface FileInterface extends ResourceInterface {
 	/**
 	 * Deletes this file from its storage. This also means that this object becomes useless.
 	 *
-	 * @return boolean TRUE if deletion succeeded
+	 * @return bool TRUE if deletion succeeded
 	 */
 	public function delete();
 
@@ -142,7 +142,7 @@ interface FileInterface extends ResourceInterface {
 	/**
 	 * Returns TRUE if this file is indexed
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isIndexed();
 

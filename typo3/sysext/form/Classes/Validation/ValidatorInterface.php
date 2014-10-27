@@ -39,7 +39,7 @@ interface ValidatorInterface {
 	/**
 	 * Returns TRUE if submitted value validates according to rule
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isValid();
 
@@ -84,7 +84,7 @@ interface ValidatorInterface {
 	/**
 	 * Returns TRUE when message needs to be displayed
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function messageMustBeDisplayed();
 

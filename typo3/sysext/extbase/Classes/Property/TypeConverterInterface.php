@@ -61,7 +61,7 @@ interface TypeConverterInterface {
 	/**
 	 * Return the priority of this TypeConverter. TypeConverters with a high priority are chosen before low priority.
 	 *
-	 * @return integer
+	 * @return int
 	 * @api
 	 */
 	public function getPriority();
@@ -72,7 +72,7 @@ interface TypeConverterInterface {
 	 *
 	 * @param mixed $source the source data
 	 * @param string $targetType the type to convert to.
-	 * @return boolean TRUE if this TypeConverter can convert from $source to $targetType, FALSE otherwise.
+	 * @return bool TRUE if this TypeConverter can convert from $source to $targetType, FALSE otherwise.
 	 * @api
 	 */
 	public function canConvertFrom($source, $targetType);

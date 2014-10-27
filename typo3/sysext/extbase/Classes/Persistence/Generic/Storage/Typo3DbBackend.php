@@ -120,7 +120,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
 	 * @param string $tableName The database table name
 	 * @param array $fieldValues The row to be inserted
 	 * @param bool $isRelation TRUE if we are currently inserting into a relation table, FALSE by default
-	 * @return integer The uid of the inserted row
+	 * @return int The uid of the inserted row
 	 */
 	public function addRow($tableName, array $fieldValues, $isRelation = FALSE) {
 		if (isset($fieldValues['uid'])) {
@@ -431,7 +431,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
 	 *
 	 * @param QueryInterface $query
 	 * @throws Exception\BadConstraintException
-	 * @return integer The number of matching tuples
+	 * @return int The number of matching tuples
 	 */
 	public function getObjectCountByQuery(QueryInterface $query) {
 		if ($query->getConstraint() instanceof Qom\Statement) {

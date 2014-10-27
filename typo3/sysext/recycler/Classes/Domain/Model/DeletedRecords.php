@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Recycler\Domain\Model;
 /**
  * Model class for the 'recycler' extension.
  *
- * @author 	Julian Kleinhans <typo3@kj187.de>
+ * @author Julian Kleinhans <typo3@kj187.de>
  */
 class DeletedRecords {
 
@@ -72,11 +72,11 @@ class DeletedRecords {
 	 * Load all deleted rows from $table
 	 * If table is not set, it iterates the TCA tables
 	 *
-	 * @param	int		$id: UID from selected page
-	 * @param 	string		$table: Tablename
-	 * @param	int		$depth: How many levels recursive
-	 * @param	int		$limit: MySQL LIMIT
-	 * @param 	string		$filter: Filter text
+	 * @param int $id: UID from selected page
+	 * @param string $table: Tablename
+	 * @param int $depth: How many levels recursive
+	 * @param int $limit: MySQL LIMIT
+	 * @param string $filter: Filter text
 	 * @return 	recycler_model_delRecords
 	 */
 	public function loadData($id, $table, $depth, $limit = '', $filter = '') {
@@ -107,11 +107,11 @@ class DeletedRecords {
 	/**
 	 * Find the total count of deleted records
 	 *
-	 * @param	int		$id: UID from record
-	 * @param 	string		$table: Tablename from record
-	 * @param	int		$depth: How many levels recursive
-	 * @param 	string		$filter: Filter text
-	 * @return 	void
+	 * @param int $id: UID from record
+	 * @param string $table: Tablename from record
+	 * @param int $depth: How many levels recursive
+	 * @param string $filter: Filter text
+	 * @return void
 	 */
 	public function getTotalCount($id, $table, $depth, $filter) {
 		$deletedRecords = $this->loadData($id, $table, $depth, '', $filter)->getDeletedRows();
@@ -125,12 +125,12 @@ class DeletedRecords {
 	/**
 	 * Set all deleted rows
 	 *
-	 * @param	int		$id: UID from record
-	 * @param 	string		$table: Tablename from record
-	 * @param	int		$depth: How many levels recursive
-	 * @param 	array		$ctrl: TCA CTRL Array
-	 * @param 	string		$filter: Filter text
-	 * @return 	void
+	 * @param int $id: UID from record
+	 * @param string $table: Tablename from record
+	 * @param int $depth: How many levels recursive
+	 * @param array $ctrl: TCA CTRL Array
+	 * @param string $filter: Filter text
+	 * @return void
 	 */
 	protected function setData($id = 0, $table, $depth, $tcaCtrl, $filter) {
 		$id = (int)$id;
@@ -240,9 +240,9 @@ class DeletedRecords {
 	/**
 	 * Checks whether the current backend user has access to the given records.
 	 *
-	 * @param 	string		$table: Name of the table
-	 * @param 	array		$rows: Record row
-	 * @return 	void
+	 * @param string $table: Name of the table
+	 * @param array $rows: Record row
+	 * @return void
 	 */
 	protected function checkRecordAccess($table, array $rows) {
 		foreach ($rows as $key => $row) {
@@ -256,9 +256,9 @@ class DeletedRecords {
 	 * Escapes a value to be used for like in a database query.
 	 * There is a special handling for the characters '%' and '_'.
 	 *
-	 * @param 	string		$value: The value to be escaped for like conditions
-	 * @param 	string		$tableName: The name of the table the query should be used for
-	 * @return 	string		The escaped value to be used for like conditions
+	 * @param string $value: The value to be escaped for like conditions
+	 * @param string $tableName: The name of the table the query should be used for
+	 * @return string The escaped value to be used for like conditions
 	 */
 	protected function escapeValueForLike($value, $tableName) {
 		return $GLOBALS['TYPO3_DB']->escapeStrForLike($GLOBALS['TYPO3_DB']->quoteStr($value, $tableName), $tableName);
@@ -270,8 +270,8 @@ class DeletedRecords {
 	/**
 	 * Delete element from any table
 	 *
-	 * @param 	string		$recordArray: Representation of the records
-	 * @return 	void
+	 * @param string $recordArray: Representation of the records
+	 * @return void
 	 */
 	public function deleteData($recordsArray) {
 		$recordsArray = json_decode($recordsArray);
@@ -294,9 +294,9 @@ class DeletedRecords {
 	 * Undelete records
 	 * If $recursive is TRUE all records below the page uid would be undelete too
 	 *
-	 * @param 	string		$recordArray: Representation of the records
-	 * @param 	bool		$recursive: TRUE/FALSE
-	 * @return 	boolean
+	 * @param string $recordArray: Representation of the records
+	 * @param bool $recursive: TRUE/FALSE
+	 * @return bool
 	 */
 	public function undeleteData($recordsArray, $recursive = FALSE) {
 		$result = FALSE;
@@ -335,9 +335,9 @@ class DeletedRecords {
 	/**
 	 * Set deleted rows
 	 *
-	 * @param 	string		$table: Tablename
-	 * @param 	array		$row: Deleted record row
-	 * @return 	void
+	 * @param string $table: Tablename
+	 * @param array $row: Deleted record row
+	 * @return void
 	 */
 	public function setDeletedRows($table, array $row) {
 		$this->deletedRows[$table][] = $row;
@@ -349,7 +349,7 @@ class DeletedRecords {
 	/**
 	 * Get deleted Rows
 	 *
-	 * @return 	array		$this->deletedRows: Array with all deleted rows from TCA
+	 * @return array $this->deletedRows: Array with all deleted rows from TCA
 	 */
 	public function getDeletedRows() {
 		return $this->deletedRows;
@@ -358,7 +358,7 @@ class DeletedRecords {
 	/**
 	 * Get table
 	 *
-	 * @return 	array		$this->table: Array with table from TCA
+	 * @return array $this->table: Array with table from TCA
 	 */
 	public function getTable() {
 		return $this->table;

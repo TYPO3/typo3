@@ -32,7 +32,7 @@ interface ObjectMonitoringInterface {
 	/**
 	 * Returns TRUE if the properties were modified after reconstitution
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function _isDirty();
 }

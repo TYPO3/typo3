@@ -573,7 +573,7 @@ abstract class AbstractUserAuthentication {
 	/**
 	 * Determine whether a session cookie needs to be set (lifetime=0)
 	 *
-	 * @return boolean
+	 * @return bool
 	 * @internal
 	 */
 	public function isSetSessionCookie() {
@@ -583,7 +583,7 @@ abstract class AbstractUserAuthentication {
 	/**
 	 * Determine whether a non-session cookie needs to be set (lifetime>0)
 	 *
-	 * @return boolean
+	 * @return bool
 	 * @internal
 	 */
 	public function isRefreshTimeBasedCookie() {
@@ -1003,7 +1003,7 @@ abstract class AbstractUserAuthentication {
 	 * in the database. Don't care if session record is still valid or not.
 	 *
 	 * @param int $id Claimed Session ID
-	 * @return boolean Returns TRUE if a corresponding session was found in the database
+	 * @return bool Returns TRUE if a corresponding session was found in the database
 	 */
 	public function isExistingSessionRecord($id) {
 		$statement = $this->db->prepare_SELECTquery('COUNT(*)', $this->session_table, 'ses_id = :ses_id');
@@ -1018,7 +1018,7 @@ abstract class AbstractUserAuthentication {
 	 * or a cookie was already found in the system
 	 * replaces the old functionality for "$this->cookieId"
 	 *
-	 * @return boolean Returns TRUE if a cookie is set
+	 * @return bool Returns TRUE if a cookie is set
 	 */
 	public function isCookieSet() {
 		return $this->cookieWasSetOnCurrentRequest || $this->getCookie($this->name);
@@ -1170,7 +1170,7 @@ abstract class AbstractUserAuthentication {
 	/**
 	 * Creates hash integer to lock user to. Depends on configured keywords
 	 *
-	 * @return integer Hash integer
+	 * @return int Hash integer
 	 * @access private
 	 */
 	protected function hashLockClause_getHashInt() {
@@ -1399,7 +1399,7 @@ abstract class AbstractUserAuthentication {
 	 * @param array $user User data array
 	 * @param array $loginData Login data array
 	 * @param string $passwordCompareStrategy Alternative passwordCompareStrategy. Used when authentication services wants to override the default.
-	 * @return boolean TRUE if login data matched
+	 * @return bool TRUE if login data matched
 	 */
 	public function compareUident($user, $loginData, $passwordCompareStrategy = '') {
 		$OK = FALSE;

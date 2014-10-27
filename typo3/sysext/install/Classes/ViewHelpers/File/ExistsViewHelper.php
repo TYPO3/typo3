@@ -33,7 +33,7 @@ class ExistsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
 	 * Check if given file is a regular file
 	 *
 	 * @param string $file Absolute path
-	 * @return boolean
+	 * @return bool
 	 */
 	public function render($file) {
 		$result = FALSE;

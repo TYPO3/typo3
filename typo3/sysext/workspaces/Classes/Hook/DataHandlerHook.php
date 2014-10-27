@@ -50,7 +50,7 @@ class DataHandlerHook {
 	 * executed
 	 *
 	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj reference to the main tcemain object
-	 * @return 	void
+	 * @return void
 	 */
 	public function processCmdmap_afterFinish(\TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj) {
 		$this->flushWorkspaceCacheEntriesByWorkspaceId($tcemainObj->BE_USER->workspace);

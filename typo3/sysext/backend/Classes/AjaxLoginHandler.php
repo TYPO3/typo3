@@ -49,7 +49,7 @@ class AjaxLoginHandler {
 	/**
 	 * Checks if a user is logged in and the session is active.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isAuthorizedBackendSession() {
 		return isset($GLOBALS['BE_USER']) && $GLOBALS['BE_USER'] instanceof \TYPO3\CMS\Core\Authentication\BackendUserAuthentication && isset($GLOBALS['BE_USER']->user['uid']);
@@ -58,7 +58,7 @@ class AjaxLoginHandler {
 	/**
 	 * Check whether the user was already authorized or not
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function hasLoginBeenProcessed() {
 		$loginFormData = $GLOBALS['BE_USER']->getLoginFormData();

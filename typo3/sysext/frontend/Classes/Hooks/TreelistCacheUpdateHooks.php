@@ -162,7 +162,7 @@ class TreelistCacheUpdateHooks {
 	 * Checks whether the change requires an update of the treelist cache
 	 *
 	 * @param array $updatedFields Array of changed fields
-	 * @return boolean TRUE if the treelist cache needs to be updated, FALSE if no update to the cache is required
+	 * @return bool TRUE if the treelist cache needs to be updated, FALSE if no update to the cache is required
 	 */
 	protected function requiresUpdate(array $updatedFields) {
 		$requiresUpdate = FALSE;

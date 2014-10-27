@@ -64,7 +64,7 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 	/**
 	 * Returns the state of the initialization
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isInitialized() {
 		return $this->isInitialized;
@@ -104,7 +104,7 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isStorageAlreadyMemorizedInParentCleanState() {
 		return $this->parentObject->_getCleanProperty($this->propertyName) === $this;
@@ -134,7 +134,7 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 
 	/**
 	 * @param object $object The object to look for.
-	 * @return boolean
+	 * @return bool
 	 *
 	 * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::contains
 	 */
@@ -147,7 +147,7 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 	 * Counts the elements in the storage array
 	 *
 	 * @throws Exception
-	 * @return integer The number of elements in the ObjectStorage
+	 * @return int The number of elements in the ObjectStorage
 	 */
 	public function count() {
 		$columnMap = $this->dataMapper->getDataMap(get_class($this->parentObject))->getColumnMap($this->propertyName);
@@ -204,7 +204,7 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 
 	/**
 	 * @param object $object The object to look for.
-	 * @return boolean
+	 * @return bool
 	 *
 	 * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::offsetExists
 	 */
@@ -266,7 +266,7 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 *
 	 * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::valid
 	 */
@@ -287,7 +287,7 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 
 	/**
 	 * @param mixed $object
-	 * @return integer|NULL
+	 * @return int|NULL
 	 */
 	public function getPosition($object) {
 		$this->initialize();

@@ -108,7 +108,7 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
 	 * - else, return FALSE.
 	 *
 	 * @param string $propertyName
-	 * @return boolean TRUE if the given propertyName should be mapped, FALSE otherwise.
+	 * @return bool TRUE if the given propertyName should be mapped, FALSE otherwise.
 	 * @api
 	 */
 	public function shouldMap($propertyName) {
@@ -131,7 +131,7 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
 	 * Check if the given $propertyName should be skipped during mapping.
 	 *
 	 * @param string $propertyName
-	 * @return boolean
+	 * @return bool
 	 * @api
 	 */
 	public function shouldSkip($propertyName) {
@@ -215,7 +215,7 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
 	 * Whether unknown (unconfigured) properties should be skipped during
 	 * mapping, instead if causing an error.
 	 *
-	 * @return boolean
+	 * @return bool
 	 * @api
 	 */
 	public function shouldSkipUnknownProperties() {

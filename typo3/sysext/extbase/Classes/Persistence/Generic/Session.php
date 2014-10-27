@@ -113,7 +113,7 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Tells whether the given object is a reconstituted entity.
 	 *
 	 * @param object $entity
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isReconstitutedEntity($entity) {
 		return $this->reconstitutedEntities->contains($entity);
@@ -125,7 +125,7 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Checks whether the given object is known to the identity map
 	 *
 	 * @param object $object
-	 * @return boolean
+	 * @return bool
 	 * @api
 	 */
 	public function hasObject($object) {
@@ -137,7 +137,7 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $identifier
 	 * @param string $className
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasIdentifier($identifier, $className) {
 		return isset($this->identifierMap[strtolower($className)][$identifier]);

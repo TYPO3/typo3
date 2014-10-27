@@ -249,7 +249,7 @@ class DependencyResolver {
 	 *
 	 * @param array $dependencyGraph
 	 * @param string $packageKey
-	 * @return integer
+	 * @return int
 	 */
 	protected function getIncomingEdgeCount(array $dependencyGraph, $packageKey) {
 		$incomingEdgeCount = 0;

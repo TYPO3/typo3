@@ -82,7 +82,7 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
 	 *
 	 * @param array &$submittedData
 	 * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule
-	 * @return boolean
+	 * @return bool
 	 */
 	public function validateAdditionalFields(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule) {
 		return TRUE;
@@ -93,7 +93,7 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
 	 *
 	 * @param array $submittedData
 	 * @param \TYPO3\CMS\Scheduler\Task\AbstractTask $task
-	 * @return boolean
+	 * @return bool
 	 */
 	public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task\AbstractTask $task) {
 		$task->setCommandIdentifier($submittedData['task_extbase']['action']);

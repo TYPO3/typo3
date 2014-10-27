@@ -19,7 +19,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 /**
  * Backend module providing boring statistics of the index-tables.
  *
- * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class ModuleController {
 
@@ -66,7 +66,7 @@ class ModuleController {
 	/**
 	 * Initialization
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function init() {
 		$this->MCONF = $GLOBALS['MCONF'];
@@ -91,7 +91,7 @@ class ModuleController {
 	 * If empty string it's just a variable, that'll be saved.
 	 * Values NOT in this array will not be saved in the settings-array for the module.
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function menuConfig() {
 		$this->MOD_MENU = array(
@@ -108,7 +108,7 @@ class ModuleController {
 	/**
 	 * Main function to generate the content
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function main() {
 		$this->content = $this->doc->header('Indexing Engine Statistics');

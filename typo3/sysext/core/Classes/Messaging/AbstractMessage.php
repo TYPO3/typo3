@@ -88,7 +88,7 @@ abstract class AbstractMessage {
 	/**
 	 * Gets the message' severity.
 	 *
-	 * @return integer The message' severity, must be one of AbstractMessage::INFO or similar contstants
+	 * @return int The message' severity, must be one of AbstractMessage::INFO or similar contstants
 	 */
 	public function getSeverity() {
 		return $this->severity;

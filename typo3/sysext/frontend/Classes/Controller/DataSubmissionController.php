@@ -241,7 +241,7 @@ class DataSubmissionController {
 	/**
 	 * Sends the actual mail and handles autorespond message
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function sendTheMail() {
 		// Sending the mail requires the recipient and message to be set.

@@ -184,7 +184,7 @@ class StorageRepository extends AbstractRepository {
 	 * @param string $pathType
 	 * @param string $description
 	 * @param bool $default set to default storage
-	 * @return integer uid of the inserted record
+	 * @return int uid of the inserted record
 	 */
 	public function createLocalStorage($name, $basePath, $pathType, $description = '', $default = FALSE) {
 		$caseSensitive = $this->testCaseSensitivity($pathType === 'relative' ? PATH_site . $basePath : $basePath);
@@ -238,7 +238,7 @@ class StorageRepository extends AbstractRepository {
 	 * Test if the local filesystem is case sensitive
 	 *
 	 * @param string $absolutePath
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function testCaseSensitivity($absolutePath) {
 		$caseSensitive = TRUE;

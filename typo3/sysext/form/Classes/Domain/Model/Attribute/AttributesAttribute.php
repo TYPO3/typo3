@@ -114,7 +114,7 @@ class AttributesAttribute {
 	 * Returns TRUE if attribute is set
 	 *
 	 * @param string $key The name of the attribute
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasAttribute($key) {
 		return isset($this->attributes[$key]);

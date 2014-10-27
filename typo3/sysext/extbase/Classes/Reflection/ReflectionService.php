@@ -173,7 +173,7 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Returns whether the Reflection Service is initialized.
 	 *
-	 * @return boolean true if the Reflection Service is initialized, otherwise false
+	 * @return bool true if the Reflection Service is initialized, otherwise false
 	 */
 	public function isInitialized() {
 		return $this->initialized;
@@ -257,7 +257,7 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $className Name of the class containing the method
 	 * @param string $methodName Name of the method
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasMethod($className, $methodName) {
 		try {
@@ -351,7 +351,7 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * reflection information is available.
 	 *
 	 * @param string $className Name of the class
-	 * @return boolean If the class is reflected by this service
+	 * @return bool If the class is reflected by this service
 	 */
 	public function isClassReflected($className) {
 		return isset($this->reflectedClassNames[$className]);
@@ -362,7 +362,7 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $className Name of the class
 	 * @param string $tag Tag to check for
-	 * @return boolean TRUE if the class is tagged with $tag, otherwise FALSE
+	 * @return bool TRUE if the class is tagged with $tag, otherwise FALSE
 	 */
 	public function isClassTaggedWith($className, $tag) {
 		if ($this->initialized === FALSE) {
@@ -383,7 +383,7 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $className Name of the class
 	 * @param string $propertyName Name of the property
 	 * @param string $tag Tag to check for
-	 * @return boolean TRUE if the class property is tagged with $tag, otherwise FALSE
+	 * @return bool TRUE if the class property is tagged with $tag, otherwise FALSE
 	 */
 	public function isPropertyTaggedWith($className, $propertyName, $tag) {
 		if (!isset($this->reflectedClassNames[$className])) {

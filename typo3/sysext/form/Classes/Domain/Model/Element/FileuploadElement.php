@@ -75,7 +75,7 @@ class FileuploadElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractEle
 	/**
 	 * Gets the file size.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getSize() {
 		$uploadData = $this->requestHandler->get($this->name);

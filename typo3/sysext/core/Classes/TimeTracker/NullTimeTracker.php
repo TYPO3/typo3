@@ -121,7 +121,7 @@ class NullTimeTracker {
 	 * Gets a microtime value as milliseconds value.
 	 *
 	 * @param float $microtime The microtime value - if not set the current time is used
-	 * @return integer The microtime value as milliseconds value
+	 * @return int The microtime value as milliseconds value
 	 */
 	public function getMilliseconds($microtime = NULL) {
 

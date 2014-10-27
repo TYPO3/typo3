@@ -235,7 +235,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @access public
 	 * @see Tx_Extensionmanager_Utility_Repository_Helper::PROBLEM_NO_VERSIONS_IN_DATABASE,
 	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
-	 * @return integer "0" if everything is perfect, otherwise bitmask with problems
+	 * @return int "0" if everything is perfect, otherwise bitmask with problems
 	 */
 	public function isExtListUpdateNecessary() {
 		$updateNecessity = 0;
@@ -262,7 +262,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Method updates TYPO3 database with up-to-date
 	 * extension version records.
 	 *
-	 * @return boolean TRUE if the extension list was successfully update, FALSE if no update necessary
+	 * @return bool TRUE if the extension list was successfully update, FALSE if no update necessary
 	 * @see isExtListUpdateNecessary()
 	 */
 	public function updateExtList() {

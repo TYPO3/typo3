@@ -176,7 +176,7 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Checks whether we already have an active session.
 	 *
-	 * @return boolean TRUE if there is an active session, FALSE otherwise
+	 * @return bool TRUE if there is an active session, FALSE otherwise
 	 */
 	public function hasSession() {
 		return ($_SESSION['active'] === TRUE);
@@ -232,7 +232,7 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Check if we have an already authorized session
 	 *
-	 * @return boolean TRUE if this session has been authorized before (by a correct password)
+	 * @return bool TRUE if this session has been authorized before (by a correct password)
 	 */
 	public function isAuthorized() {
 		if (!$_SESSION['authorized']) {
@@ -250,7 +250,7 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Useful only right after a FALSE "isAuthorized" to see if this is the
 	 * reason for not being authorized anymore.
 	 *
-	 * @return boolean TRUE if an authorized session exists, but is expired
+	 * @return bool TRUE if an authorized session exists, but is expired
 	 */
 	public function isExpired() {
 		if (!$_SESSION['authorized']) {
@@ -330,7 +330,7 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $savePath
 	 * @param string $sessionName
-	 * @return boolean
+	 * @return bool
 	 */
 	public function open($savePath, $sessionName) {
 		return TRUE;
@@ -339,7 +339,7 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Close function. See @session_set_save_handler
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function close() {
 		return TRUE;
@@ -361,7 +361,7 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $id The session id
 	 * @param string $sessionData The data to be stored
-	 * @return boolean
+	 * @return bool
 	 */
 	public function write($id, $sessionData) {
 		$sessionFile = $this->getSessionFile($id);
@@ -383,7 +383,7 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Garbage collect session info. See @session_set_save_handler
 	 *
 	 * @param int $maxLifeTime The setting of session.gc_maxlifetime
-	 * @return boolean
+	 * @return bool
 	 */
 	public function gc($maxLifeTime) {
 		$sessionSavePath = $this->getSessionSavePath();

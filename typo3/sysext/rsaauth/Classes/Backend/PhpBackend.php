@@ -105,7 +105,7 @@ class PhpBackend extends \TYPO3\CMS\Rsaauth\Backend\AbstractBackend {
 	 * Extracts the exponent from the OpenSSL CSR
 	 *
 	 * @param string $data The result of openssl_csr_export()
-	 * @return integer The exponent as a number
+	 * @return int The exponent as a number
 	 */
 	protected function extractExponent($data) {
 		$index = strpos($data, 'Exponent: ');

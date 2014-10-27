@@ -63,7 +63,7 @@ class Helper extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Checks whether a value for $key has been stored.
 	 *
 	 * @param string $key the key to check, must not be empty
-	 * @return boolean whether a value for $key has been stored.
+	 * @return bool whether a value for $key has been stored.
 	 */
 	public function has($key) {
 		return isset($this->mockData[$key]);

@@ -300,7 +300,7 @@ class PagePositionMap {
 	 * Uses caching so only one regular lookup is made - hence you can call the function multiple times without worrying about performance.
 	 *
 	 * @param int $pid Page id for which to test.
-	 * @return boolean
+	 * @return bool
 	 */
 	public function checkNewPageInPid($pid) {
 		if (!isset($this->checkNewPageCache[$pid])) {

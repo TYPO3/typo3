@@ -141,7 +141,7 @@ class FormController {
 	 * when data has been submitted but the validation rules do not fit
 	 * or when the user returns from the confirmation screen.
 	 *
-	 * @return boolean TRUE when form needs to be shown
+	 * @return bool TRUE when form needs to be shown
 	 */
 	protected function showForm() {
 		$show = FALSE;
@@ -181,7 +181,7 @@ class FormController {
 	 * the confirmation screen has been configured in TypoScript
 	 * and the confirmation screen has not been submitted
 	 *
-	 * @return boolean TRUE when confirmation screen needs to be shown
+	 * @return bool TRUE when confirmation screen needs to be shown
 	 */
 	protected function showConfirmation() {
 		$show = FALSE;

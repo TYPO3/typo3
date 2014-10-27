@@ -16,16 +16,16 @@ namespace TYPO3\CMS\IndexedSearch\Hook;
 /**
  * Hooks for \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController (TSFE).
  *
- * @author 		Oliver Hader <oliver@typo3.org>
+ * @author Oliver Hader <oliver@typo3.org>
  */
 class TypoScriptFrontendHook {
 
 	/**
 	 * Frontend hook: If the page is not being re-generated this is our chance to force it to be (because re-generation of the page is required in order to have the indexer called!)
 	 *
-	 * @param 	array		Parameters from frontend
-	 * @param 	object		TSFE object (reference under PHP5)
-	 * @return 	void
+	 * @param array Parameters from frontend
+	 * @param object TSFE object (reference under PHP5)
+	 * @return void
 	 */
 	public function headerNoCache(array &$params, $ref) {
 		// Requirements are that the crawler is loaded, a crawler session is running and re-indexing requested as processing instruction:

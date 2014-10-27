@@ -19,8 +19,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Controller class for the 'recycler' extension. Handles the AJAX Requests
  *
- * @author 		Julian Kleinhans <typo3@kj187.de>
- * @author 	Erik Frister <erik_frister@otq-solutions.com>
+ * @author Julian Kleinhans <typo3@kj187.de>
+ * @author Erik Frister <erik_frister@otq-solutions.com>
  */
 class RecyclerAjaxController {
 
@@ -139,9 +139,9 @@ class RecyclerAjaxController {
 	/**
 	 * Sets data in the session of the current backend user.
 	 *
-	 * @param 	string		$identifier: The identifier to be used to set the data
-	 * @param 	string		$data: The data to be stored in the session
-	 * @return 	void
+	 * @param string $identifier: The identifier to be used to set the data
+	 * @param string $data: The data to be stored in the session
+	 * @return void
 	 */
 	protected function setDataInSession($identifier, $data) {
 		$GLOBALS['BE_USER']->uc['tx_recycler'][$identifier] = $data;

@@ -30,7 +30,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 * Evaluates a TypoScript condition given as input, eg. "[browser=net][...(other conditions)...]"
 	 *
 	 * @param string $string The condition to match against its criterias.
-	 * @return boolean Whether the condition matched
+	 * @return bool Whether the condition matched
 	 * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::parse()
 	 * @throws \TYPO3\CMS\Core\Configuration\TypoScript\Exception\InvalidTypoScriptConditionException
 	 */
@@ -137,7 +137,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	/**
 	 * Determines the current page Id.
 	 *
-	 * @return integer The current page Id
+	 * @return int The current page Id
 	 */
 	protected function determinePageId() {
 		return (int)$GLOBALS['TSFE']->id;
@@ -165,7 +165,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	/**
 	 * Get the id of the current user.
 	 *
-	 * @return integer The id of the current user
+	 * @return int The id of the current user
 	 */
 	protected function getUserId() {
 		$userId = $GLOBALS['TSFE']->fe_user->user['uid'];
@@ -175,7 +175,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	/**
 	 * Determines if a user is logged in.
 	 *
-	 * @return boolean Determines if a user is logged in
+	 * @return bool Determines if a user is logged in
 	 */
 	protected function isUserLoggedIn() {
 		$userLoggedIn = FALSE;

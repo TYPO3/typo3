@@ -38,7 +38,7 @@ class UserDomainClass {
 	/**
 	 * Return the ID
 	 *
-	 * @return integer ID
+	 * @return int ID
 	 */
 	public function getId() {
 		return $this->id;

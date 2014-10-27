@@ -22,7 +22,7 @@ interface ObjectManagerInterface extends \TYPO3\CMS\Core\SingletonInterface {
 	 * Returns TRUE if an object with the given name is registered
 	 *
 	 * @param string $objectName Name of the object
-	 * @return boolean TRUE if the object has been registered, otherwise FALSE
+	 * @return bool TRUE if the object has been registered, otherwise FALSE
 	 */
 	public function isRegistered($objectName);
 
@@ -62,7 +62,7 @@ interface ObjectManagerInterface extends \TYPO3\CMS\Core\SingletonInterface {
 	 * Returns the scope of the specified object.
 	 *
 	 * @param string $objectName The object name
-	 * @return integer One of the Container::SCOPE_ constants
+	 * @return int One of the Container::SCOPE_ constants
 	 */
 	public function getScope($objectName);
 }

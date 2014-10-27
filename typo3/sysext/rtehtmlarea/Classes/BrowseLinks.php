@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Script class for the Element Browser window.
  *
- * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 
@@ -162,7 +162,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	/**
 	 * Get the RTE configuration from Page TSConfig
 	 *
-	 * @return 	array		RTE configuration array
+	 * @return array RTE configuration array
 	 */
 	protected function getRTEConfig() {
 		$RTEtsConfigParts = explode(':', $this->RTEtsConfigParams);
@@ -174,8 +174,8 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	/**
 	 * Get the configuration of the button
 	 *
-	 * @param 	string		$buttonName: the name of the button
-	 * @return 	array		the configuration array of the image button
+	 * @param string $buttonName: the name of the button
+	 * @return array the configuration array of the image button
 	 */
 	protected function getButtonConfig($buttonName) {
 		return is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.'][$buttonName . '.'])
@@ -186,7 +186,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	/**
 	 * Initialize the current or default values of the link attributes
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	protected function initLinkAttributes() {
 		// Initializing the title value
@@ -269,7 +269,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	/**
 	 * Provide the additional parameters to be included in the template body tag
 	 *
-	 * @return 	string		the body tag additions
+	 * @return string the body tag additions
 	 */
 	public function getBodyTagAdditions() {
 		$bodyTagAdditions = array();
@@ -285,7 +285,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	/**
 	 * Generate JS code to be used on the link insert/modify dialogue
 	 *
-	 * @return 	string		the generated JS code
+	 * @return string the generated JS code
 	 */
 	public function getJSCode() {
 		// BEGIN accumulation of header JavaScript:
@@ -868,7 +868,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	/**
 	 * Return html code for the class selector
 	 *
-	 * @return 	string		the html code to be added to the form
+	 * @return string the html code to be added to the form
 	 */
 	public function addClassSelector() {
 		$selectClass = '';
@@ -951,8 +951,8 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	/**
 	 * Localize a string using the language of the content element rather than the language of the BE interface
 	 *
-	 * @param 	string		string: the label to be localized
-	 * @return 	string		Localized string.
+	 * @param string string: the label to be localized
+	 * @return string Localized string.
 	 */
 	public function getLLContent($string) {
 		return $this->contentLanguageService->sL($string);

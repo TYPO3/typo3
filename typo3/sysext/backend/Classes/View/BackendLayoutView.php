@@ -165,7 +165,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Returns the backend layout which should be used for this page.
 	 *
 	 * @param int $pageId
-	 * @return boolean|string Identifier of the backend layout to be used, or FALSE if none
+	 * @return bool|string Identifier of the backend layout to be used, or FALSE if none
 	 */
 	public function getSelectedCombinedIdentifier($pageId) {
 		if (!isset($this->selectedCombinedIdentifier[$pageId])) {

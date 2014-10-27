@@ -92,7 +92,7 @@ class Arguments extends \ArrayObject {
 	 * Returns whether the requested index exists
 	 *
 	 * @param mixed $offset Offset
-	 * @return boolean
+	 * @return bool
 	 */
 	public function offsetExists($offset) {
 		$translatedOffset = $this->translateToLongArgumentName($offset);
@@ -166,7 +166,7 @@ class Arguments extends \ArrayObject {
 	 * Checks if an argument with the specified name exists
 	 *
 	 * @param string $argumentName Name of the argument to check for
-	 * @return boolean TRUE if such an argument exists, otherwise FALSE
+	 * @return bool TRUE if such an argument exists, otherwise FALSE
 	 * @see offsetExists()
 	 */
 	public function hasArgument($argumentName) {

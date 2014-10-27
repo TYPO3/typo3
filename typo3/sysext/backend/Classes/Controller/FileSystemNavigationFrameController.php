@@ -76,7 +76,7 @@ class FileSystemNavigationFrameController {
 	/**
 	 * Initialiation of the script class
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	protected function init() {
 		// Setting backPath

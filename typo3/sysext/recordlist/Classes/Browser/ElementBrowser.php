@@ -2251,7 +2251,7 @@ class ElementBrowser {
 	 * Verifies that a path is a web-folder:
 	 *
 	 * @param string $folder Absolute filepath
-	 * @return boolean If the input path is found in PATH_site then it returns TRUE.
+	 * @return bool If the input path is found in PATH_site then it returns TRUE.
 	 * @deprecated since 6.2 - will be removed two versions later without replacement
 	 */
 	public function isWebFolder($folder) {
@@ -2264,7 +2264,7 @@ class ElementBrowser {
 	 * Checks, if a path is within the mountpoints of the backend user
 	 *
 	 * @param string $folder Absolute filepath
-	 * @return boolean If the input path is found in the backend users filemounts, then return TRUE.
+	 * @return bool If the input path is found in the backend users filemounts, then return TRUE.
 	 * @deprecated since 6.2 - will be removed two versions later without replacement
 	 */
 	public function checkFolder($folder) {
@@ -2617,7 +2617,7 @@ class ElementBrowser {
 	 * and are coming from the system and not from an external abuse.
 	 *
 	 * @param bool $handleFlexformSections Whether to handle flexform sections differently
-	 * @return boolean Whether the submitted field change functions are valid
+	 * @return bool Whether the submitted field change functions are valid
 	 */
 	protected function areFieldChangeFunctionsValid($handleFlexformSections = FALSE) {
 		$result = FALSE;

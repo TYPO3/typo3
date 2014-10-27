@@ -281,7 +281,7 @@ class Result {
 	/**
 	 * Does the current Result object have Notices, Errors or Warnings? (Recursively)
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasMessages() {
 		return $this->errorsExist || $this->noticesExist || $this->warningsExist;
@@ -309,7 +309,7 @@ class Result {
 	 *
 	 * @param string $propertyName
 	 * @param string $checkerMethodName
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function hasProperty($propertyName, $checkerMethodName) {
 		if (count($this->{$propertyName}) > 0) {
@@ -326,7 +326,7 @@ class Result {
 	/**
 	 * Does the current Result object have Errors? (Recursively)
 	 *
-	 * @return boolean
+	 * @return bool
 	 * @api
 	 */
 	public function hasErrors() {
@@ -336,7 +336,7 @@ class Result {
 	/**
 	 * Does the current Result object have Warnings? (Recursively)
 	 *
-	 * @return boolean
+	 * @return bool
 	 * @api
 	 */
 	public function hasWarnings() {
@@ -346,7 +346,7 @@ class Result {
 	/**
 	 * Does the current Result object have Notices? (Recursively)
 	 *
-	 * @return boolean
+	 * @return bool
 	 * @api
 	 */
 	public function hasNotices() {

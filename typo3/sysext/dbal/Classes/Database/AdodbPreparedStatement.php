@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Notice: Extends \TYPO3\CMS\Dbal\Database\DatabaseConnection to be able to access
  * protected properties solely (thus would be a "friend" class in C++).
  *
- * @author 	Xavier Perseguers <xavier@typo3.org>
+ * @author Xavier Perseguers <xavier@typo3.org>
  */
 class AdodbPreparedStatement extends \TYPO3\CMS\Dbal\Database\DatabaseConnection {
 
@@ -68,7 +68,7 @@ class AdodbPreparedStatement extends \TYPO3\CMS\Dbal\Database\DatabaseConnection
 	/**
 	 * Prepares an SQL statement for execution.
 	 *
-	 * @return boolean TRUE on success or FALSE on failure
+	 * @return bool TRUE on success or FALSE on failure
 	 */
 	public function prepare() {
 		// TODO: actually prepare the query with ADOdb, if supported by the underlying DBMS
@@ -91,7 +91,7 @@ class AdodbPreparedStatement extends \TYPO3\CMS\Dbal\Database\DatabaseConnection
 	 * @param string $types
 	 * @param mixed $var1 The number of variables and length of string types must match the parameters in the statement.
 	 * @param mixed $_ [optional]
-	 * @return boolean TRUE on success or FALSE on failure
+	 * @return bool TRUE on success or FALSE on failure
 	 * @see \mysqli_stmt::bind_param()
 	 */
 	public function bind_param($types, $var1, $_ = NULL) {
@@ -119,7 +119,7 @@ class AdodbPreparedStatement extends \TYPO3\CMS\Dbal\Database\DatabaseConnection
 	/**
 	 * Resets a prepared statement.
 	 *
-	 * @return boolean TRUE on success or FALSE on failure
+	 * @return bool TRUE on success or FALSE on failure
 	 */
 	public function reset() {
 		return TRUE;
@@ -128,7 +128,7 @@ class AdodbPreparedStatement extends \TYPO3\CMS\Dbal\Database\DatabaseConnection
 	/**
 	 * Executes a prepared query.
 	 *
-	 * @return boolean TRUE on success or FALSE on failure
+	 * @return bool TRUE on success or FALSE on failure
 	 */
 	public function execute() {
 		$queryParts = $this->queryComponents['queryParts'];
@@ -220,7 +220,7 @@ class AdodbPreparedStatement extends \TYPO3\CMS\Dbal\Database\DatabaseConnection
 	 * Seeks to an arbitrary row in statement result set.
 	 *
 	 * @param int $offset Must be between zero and the total number of rows minus one
-	 * @return boolean TRUE on success or FALSE on failure
+	 * @return bool TRUE on success or FALSE on failure
 	 */
 	public function data_seek($offset) {
 		return $this->databaseConnection->sql_data_seek($this->recordSet, $offset);
@@ -229,7 +229,7 @@ class AdodbPreparedStatement extends \TYPO3\CMS\Dbal\Database\DatabaseConnection
 	/**
 	 * Closes a prepared statement.
 	 *
-	 * @return boolean TRUE on success or FALSE on failure
+	 * @return bool TRUE on success or FALSE on failure
 	 */
 	public function close() {
 		return $this->databaseConnection->sql_free_result($this->recordSet);

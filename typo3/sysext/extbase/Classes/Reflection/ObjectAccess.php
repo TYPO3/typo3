@@ -175,7 +175,7 @@ class ObjectAccess {
 	 * @param bool $forceDirectAccess directly access property using reflection(!)
 	 *
 	 * @throws \InvalidArgumentException in case $object was not an object or $propertyName was not a string
-	 * @return boolean TRUE if the property could be set, FALSE otherwise
+	 * @return bool TRUE if the property could be set, FALSE otherwise
 	 */
 	static public function setProperty(&$subject, $propertyName, $propertyValue, $forceDirectAccess = FALSE) {
 		if (is_array($subject)) {
@@ -282,7 +282,7 @@ class ObjectAccess {
 	 * @param string $propertyName Name of the property to check
 	 *
 	 * @throws \InvalidArgumentException
-	 * @return boolean
+	 * @return bool
 	 */
 	static public function isPropertySettable($object, $propertyName) {
 		if (!is_object($object)) {
@@ -303,7 +303,7 @@ class ObjectAccess {
 	 * @param string $propertyName Name of the property to check
 	 *
 	 * @throws \InvalidArgumentException
-	 * @return boolean
+	 * @return bool
 	 */
 	static public function isPropertyGettable($object, $propertyName) {
 		if (!is_object($object)) {

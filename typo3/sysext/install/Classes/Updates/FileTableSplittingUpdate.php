@@ -37,7 +37,7 @@ class FileTableSplittingUpdate extends AbstractUpdate {
 	 * Checks if an update is needed
 	 *
 	 * @param string &$description The description for the update
-	 * @return boolean Whether an update is needed (TRUE) or not (FALSE)
+	 * @return bool Whether an update is needed (TRUE) or not (FALSE)
 	 */
 	public function checkForUpdate(&$description) {
 		$result = FALSE;
@@ -67,7 +67,7 @@ class FileTableSplittingUpdate extends AbstractUpdate {
 	 *
 	 * @param array &$dbQueries Queries done in this update
 	 * @param mixed &$customMessages Custom messages
-	 * @return boolean Whether it worked (TRUE) or not (FALSE)
+	 * @return bool Whether it worked (TRUE) or not (FALSE)
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 

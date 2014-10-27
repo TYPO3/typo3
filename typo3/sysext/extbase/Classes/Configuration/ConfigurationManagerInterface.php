@@ -67,7 +67,7 @@ interface ConfigurationManagerInterface extends \TYPO3\CMS\Core\SingletonInterfa
 	 * Do not use it in your custom code!
 	 *
 	 * @param string $featureName
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isFeatureEnabled($featureName);
 }

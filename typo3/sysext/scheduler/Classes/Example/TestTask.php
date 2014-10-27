@@ -32,7 +32,7 @@ class TestTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 * Function executed from the Scheduler.
 	 * Sends an email
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function execute() {
 		$success = FALSE;

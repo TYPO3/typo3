@@ -74,8 +74,8 @@ abstract class RteHtmlAreaApi {
 	/**
 	 * Returns TRUE if the plugin is available and correctly initialized
 	 *
-	 * @param 	object		Reference to parent object, which is an instance of the htmlArea RTE
-	 * @return 	boolean		TRUE if this plugin object should be made available in the current environment and is correctly initialized
+	 * @param object Reference to parent object, which is an instance of the htmlArea RTE
+	 * @return bool TRUE if this plugin object should be made available in the current environment and is correctly initialized
 	 */
 	public function main($parentObject) {
 		global $TYPO3_CONF_VARS, $LANG, $TSFE;
@@ -110,7 +110,7 @@ abstract class RteHtmlAreaApi {
 	/**
 	 * Returns a modified toolbar order string
 	 *
-	 * @return 	string		a modified tollbar order list
+	 * @return string a modified tollbar order list
 	 */
 	public function addButtonsToToolbar() {
 		//Add only buttons not yet in the default toolbar order
@@ -121,7 +121,7 @@ abstract class RteHtmlAreaApi {
 	/**
 	 * Returns the path to the skin component (button icons) that should be added to linked stylesheets
 	 *
-	 * @return 	string		path to the skin (css) file
+	 * @return string path to the skin (css) file
 	 */
 	public function getPathToSkin() {
 		global $TYPO3_CONF_VARS;
@@ -135,8 +135,8 @@ abstract class RteHtmlAreaApi {
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
-	 * @param 	int		Relative id of the RTE editing area in the form
-	 * @return 	string		JS configuration for registered plugins
+	 * @param int Relative id of the RTE editing area in the form
+	 * @return string JS configuration for registered plugins
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {
 		global $TSFE, $LANG;
@@ -156,7 +156,7 @@ abstract class RteHtmlAreaApi {
 	/**
 	 * Returns the extension key
 	 *
-	 * @return 	string		the extension key
+	 * @return string the extension key
 	 */
 	public function getExtensionKey() {
 		return $this->extensionKey;
@@ -165,7 +165,7 @@ abstract class RteHtmlAreaApi {
 	/**
 	 * Returns the path to the plugin directory, if any
 	 *
-	 * @return 	string		the full path to the plugin directory
+	 * @return string the full path to the plugin directory
 	 */
 	public function getPathToPluginDirectory() {
 		return $this->relativePathToPluginDirectory ? $this->htmlAreaRTE->httpTypo3Path . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath($this->extensionKey) . $this->relativePathToPluginDirectory : '';
@@ -174,7 +174,7 @@ abstract class RteHtmlAreaApi {
 	/**
 	 * Returns a boolean indicating whether the plugin adds buttons or not to the toolbar
 	 *
-	 * @return 	boolean
+	 * @return bool
 	 */
 	public function addsButtons() {
 		return $this->pluginAddsButtons;
@@ -183,7 +183,7 @@ abstract class RteHtmlAreaApi {
 	/**
 	 * Returns the list of buttons implemented by the plugin
 	 *
-	 * @return 	string		the list of buttons implemented by the plugin
+	 * @return string the list of buttons implemented by the plugin
 	 */
 	public function getPluginButtons() {
 		return $this->pluginButtons;
@@ -192,7 +192,7 @@ abstract class RteHtmlAreaApi {
 	/**
 	 * Returns the list of toolbar labels implemented by the plugin
 	 *
-	 * @return 	string		the list of labels implemented by the plugin
+	 * @return string the list of labels implemented by the plugin
 	 */
 	public function getPluginLabels() {
 		return $this->pluginLabels;
@@ -201,7 +201,7 @@ abstract class RteHtmlAreaApi {
 	/**
 	 * Returns the conversion array from TYPO3 button names to htmlArea button names
 	 *
-	 * @return 	array		the conversion array from TYPO3 button names to htmlArea button names
+	 * @return array the conversion array from TYPO3 button names to htmlArea button names
 	 */
 	public function getConvertToolbarForHtmlAreaArray() {
 		return $this->convertToolbarForHtmlAreaArray;
@@ -210,7 +210,7 @@ abstract class RteHtmlAreaApi {
 	/**
 	 * Returns TRUE if the extension requires the PageTSConfig Classes configuration
 	 *
-	 * @return 	boolean		TRUE if the extension requires the PageTSConfig Classes configuration
+	 * @return bool TRUE if the extension requires the PageTSConfig Classes configuration
 	 */
 	public function requiresClassesConfiguration() {
 		return $this->requiresClassesConfiguration;
@@ -219,7 +219,7 @@ abstract class RteHtmlAreaApi {
 	/**
 	 * Returns TRUE if the plugin requires synchronous load
 	 *
-	 * @return 	boolean		TRUE if the plugin requires synchronous load
+	 * @return bool TRUE if the plugin requires synchronous load
 	 */
 	public function requiresSynchronousLoad() {
 		return $this->requiresSynchronousLoad;
@@ -228,8 +228,8 @@ abstract class RteHtmlAreaApi {
 	/**
 	 * Sets the plugin to require synchronous load or not
 	 *
-	 * @param 	bool		$value: the boolean value to set
-	 * @return 	void
+	 * @param bool $value: the boolean value to set
+	 * @return void
 	 */
 	public function setSynchronousLoad($value = TRUE) {
 		$this->requiresSynchronousLoad = $value;
@@ -238,7 +238,7 @@ abstract class RteHtmlAreaApi {
 	/**
 	 * Returns the list of plugins required by the plugin
 	 *
-	 * @return 	string		the list of plugins required by the plugin
+	 * @return string the list of plugins required by the plugin
 	 */
 	public function getRequiredPlugins() {
 		return $this->requiredPlugins;

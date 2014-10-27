@@ -27,7 +27,7 @@ class AutoPublishService {
 	 * It searches for workspaces whose publication date is in the past
 	 * and publishes them
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function autoPublishWorkspaces() {
 		global $TYPO3_CONF_VARS;

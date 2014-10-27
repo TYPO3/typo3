@@ -79,7 +79,7 @@ class Bootstrap {
 	 * This mechanism should increase the performance of the hooked backend modules heavily.
 	 *
 	 * @param array $arguments Arguments for the extbase plugin
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function expectOutput(array $arguments = array()) {
 		// no pids set

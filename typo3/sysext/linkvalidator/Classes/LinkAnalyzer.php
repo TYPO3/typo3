@@ -105,7 +105,7 @@ class LinkAnalyzer {
 	 *
 	 * @param array $searchField List of fields in which to search for links
 	 * @param string $pid List of comma separated page uids in which to search for links
-	 * @return 	void
+	 * @return void
 	 */
 	public function init(array $searchField, $pid) {
 		$this->searchFields = $searchField;
@@ -412,7 +412,7 @@ class LinkAnalyzer {
 	 * Check if rootline contains a hidden page
 	 *
 	 * @param array $pageInfo Array with uid, title, hidden, extendToSubpages from pages table
-	 * @return boolean TRUE if rootline contains a hidden page, FALSE if not
+	 * @return bool TRUE if rootline contains a hidden page, FALSE if not
 	 */
 	public function getRootLineIsHidden(array $pageInfo) {
 		$hidden = FALSE;

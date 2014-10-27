@@ -16,7 +16,7 @@ namespace TYPO3\CMS\IndexedSearch\ViewHelpers;
 /**
  * renders the header of the results page
  *
- * @author 	Benjamin Mack <benni@typo3.org>
+ * @author Benjamin Mack <benni@typo3.org>
  */
 class PageBrowsingResultsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 

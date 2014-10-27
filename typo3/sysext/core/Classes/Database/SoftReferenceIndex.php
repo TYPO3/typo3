@@ -805,7 +805,7 @@ class SoftReferenceIndex {
 	 * Look up and return page uid for alias
 	 *
 	 * @param int $link_param Page alias string value
-	 * @return integer Page uid corresponding to alias value.
+	 * @return int Page uid corresponding to alias value.
 	 */
 	public function getPageIdFromAlias($link_param) {
 		$pRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordsByField('pages', 'alias', $link_param);

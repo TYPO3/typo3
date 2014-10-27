@@ -18,7 +18,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 /**
  * Provides an installation status report
  *
- * @author 		Ingo Renner <ingo@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
  */
 class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface {
 

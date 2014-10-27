@@ -37,7 +37,7 @@ abstract class AbstractCustomPreset extends AbstractPreset {
 	/**
 	 * Whether custom preset is active is set by feature
 	 *
-	 * @return boolean TRUE if custom preset is active
+	 * @return bool TRUE if custom preset is active
 	 */
 	public function isActive() {
 		return $this->isActive;
@@ -60,7 +60,7 @@ abstract class AbstractCustomPreset extends AbstractPreset {
 	/**
 	 * Custom configuration is always available
 	 *
-	 * @return boolean TRUE
+	 * @return bool TRUE
 	 */
 	public function isAvailable() {
 		return TRUE;

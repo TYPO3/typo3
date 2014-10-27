@@ -23,7 +23,7 @@ interface ProcessorInterface {
 	 * Returns TRUE if this processor can process the given task.
 	 *
 	 * @param TaskInterface $task
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canProcessTask(TaskInterface $task);
 

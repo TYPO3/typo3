@@ -184,7 +184,7 @@ class PathUtility {
 	 * Checks if the $path is absolute or relative (detecting either '/' or 'x:/' as first part of string) and returns TRUE if so.
 	 *
 	 * @param string $path File path to evaluate
-	 * @return boolean
+	 * @return bool
 	 */
 	static public function isAbsolutePath($path) {
 		// On Windows also a path starting with a drive letter is absolute: X:/

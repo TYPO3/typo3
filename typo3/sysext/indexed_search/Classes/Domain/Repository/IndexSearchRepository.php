@@ -16,9 +16,9 @@ namespace TYPO3\CMS\IndexedSearch\Domain\Repository;
 /**
  * Index search abstraction to search through the index
  *
- * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
- * @author 	Christian Jul Jensen <christian@typo3.com>
- * @author 	Benjamin Mack <benni@typo3.org>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Christian Jul Jensen <christian@typo3.com>
+ * @author Benjamin Mack <benni@typo3.org>
  */
 class IndexSearchRepository {
 
@@ -124,7 +124,7 @@ class IndexSearchRepository {
 	 *
 	 * @param array $searchWords Search word array
 	 * @param int $freeIndexUid Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
-	 * @return boolean|array FALSE if no result, otherwise an array with keys for first row, result rows and total number of results found.
+	 * @return bool|array FALSE if no result, otherwise an array with keys for first row, result rows and total number of results found.
 	 */
 	public function doSearch($searchWords, $freeIndexUid = -1) {
 		// Getting SQL result pointer:
@@ -214,7 +214,7 @@ class IndexSearchRepository {
 	 *
 	 * @param array $searchWords Search words
 	 * @param int $freeIndexUid Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
-	 * @return boolean|pointer
+	 * @return bool|pointer
 	 */
 	protected function getResultRows_SQLpointer($searchWords, $freeIndexUid = -1) {
 		// This SEARCHES for the searchwords in $searchWords AND returns a
@@ -339,9 +339,9 @@ class IndexSearchRepository {
 	/**
 	 * Returns a query which selects the search-word from the word/rel tables.
 	 *
-	 * @param 	string		WHERE clause selecting the word from phash
-	 * @param 	string		Additional AND clause in the end of the query.
-	 * @return 	pointer		SQL result pointer
+	 * @param string WHERE clause selecting the word from phash
+	 * @param string Additional AND clause in the end of the query.
+	 * @return pointer SQL result pointer
 	 */
 	protected function execPHashListQuery($wordSel, $additionalWhereClause = '') {
 		return $GLOBALS['TYPO3_DB']->exec_SELECTquery('IR.phash', 'index_words IW,
@@ -358,7 +358,7 @@ class IndexSearchRepository {
 	 *
 	 * @param 	string the search word
 	 * @param	int constant from this class to see if the wildcard should be left and/or right of the search string
-	 * @return 	pointer		SQL result pointer
+	 * @return pointer SQL result pointer
 	 */
 	protected function searchWord($sWord, $mode) {
 		$wildcard_left = $mode & self::WILDCARD_LEFT ? '%' : '';
@@ -372,7 +372,7 @@ class IndexSearchRepository {
 	 * Search for one distinct word
 	 *
 	 * @param 	string the search word
-	 * @return 	pointer		SQL result pointer
+	 * @return pointer SQL result pointer
 	 */
 	protected function searchDistinct($sWord) {
 		$wSel = 'IW.wid=' . $this->md5inthash($sWord);
@@ -384,7 +384,7 @@ class IndexSearchRepository {
 	 * Search for a sentence
 	 *
 	 * @param 	string the search word
-	 * @return 	pointer		SQL result pointer
+	 * @return pointer SQL result pointer
 	 */
 	protected function searchSentence($sWord) {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('ISEC.phash', 'index_section ISEC, index_fulltext IFT', 'IFT.fulltextdata LIKE \'%' . $GLOBALS['TYPO3_DB']->quoteStr($sWord, 'index_fulltext') . '%\' AND
@@ -397,7 +397,7 @@ class IndexSearchRepository {
 	 * Search for a metaphone word
 	 *
 	 * @param 	string the search word
-	 * @return 	pointer		SQL result pointer
+	 * @return pointer SQL result pointer
 	 */
 	protected function searchMetaphone($sWord) {
 		$wSel = 'IW.metaphone=' . $sWord;
@@ -407,7 +407,7 @@ class IndexSearchRepository {
 	/**
 	 * Returns AND statement for selection of section in database. (rootlevel 0-2 + page_id)
 	 *
-	 * @return 	string		AND clause for selection of section in database.
+	 * @return string AND clause for selection of section in database.
 	 */
 	protected function sectionTableWhere() {
 		$whereClause = '';
@@ -454,7 +454,7 @@ class IndexSearchRepository {
 	/**
 	 * Returns AND statement for selection of media type
 	 *
-	 * @return 	string		AND statement for selection of media type
+	 * @return string AND statement for selection of media type
 	 */
 	public function mediaTypeWhere() {
 		$whereClause = '';
@@ -482,7 +482,7 @@ class IndexSearchRepository {
 	/**
 	 * Returns AND statement for selection of langauge
 	 *
-	 * @return 	string		AND statement for selection of langauge
+	 * @return string AND statement for selection of langauge
 	 */
 	public function languageWhere() {
 		// -1 is the same as ALL language.
@@ -494,8 +494,8 @@ class IndexSearchRepository {
 	/**
 	 * Where-clause for free index-uid value.
 	 *
-	 * @param	int		Free Index UID value to limit search to.
-	 * @return 	string		WHERE SQL clause part.
+	 * @param int Free Index UID value to limit search to.
+	 * @return string WHERE SQL clause part.
 	 */
 	public function freeIndexUidWhere($freeIndexUid) {
 		$freeIndexUid = (int)$freeIndexUid;
@@ -535,9 +535,9 @@ class IndexSearchRepository {
 	/**
 	 * Execute final query, based on phash integer list. The main point is sorting the result in the right order.
 	 *
-	 * @param 	string		List of phash integers which match the search.
-	 * @param	int		Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
-	 * @return 	pointer		Query result pointer
+	 * @param string List of phash integers which match the search.
+	 * @param int Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
+	 * @return pointer Query result pointer
 	 */
 	protected function execFinalQuery($list, $freeIndexUid = -1) {
 		// Setting up methods of filtering results
@@ -634,7 +634,7 @@ class IndexSearchRepository {
 	 * ? Should it also check for gr_list "0,-1"?
 	 *
 	 * @param array $row Result row array.
-	 * @return boolean Returns TRUE if resume can safely be shown
+	 * @return bool Returns TRUE if resume can safely be shown
 	 */
 	protected function checkResume($row) {
 		// If the record is indexed by an indexing configuration, just show it.
@@ -706,9 +706,9 @@ class IndexSearchRepository {
 	 * Simply calls \TYPO3\CMS\Frontend\Page\PageRepository::enableFields() BUT will send the show_hidden flag along!
 	 * This means this function will work in conjunction with the preview facilities of the frontend engine/Admin Panel.
 	 *
-	 * @param 	string		The table for which to get the where clause
-	 * @param 	bool		If set, then you want NOT to filter out hidden records. Otherwise hidden record are filtered based on the current preview settings.
-	 * @return 	string		The part of the where clause on the form " AND [fieldname]=0 AND ...". Eg. " AND hidden=0 AND starttime < 123345567
+	 * @param string The table for which to get the where clause
+	 * @param bool If set, then you want NOT to filter out hidden records. Otherwise hidden record are filtered based on the current preview settings.
+	 * @return string The part of the where clause on the form " AND [fieldname]=0 AND ...". Eg. " AND hidden=0 AND starttime < 123345567
 	 * @see \TYPO3\CMS\Frontend\Page\PageRepository::enableFields()
 	 */
 	protected function enableFields($table) {
@@ -718,8 +718,8 @@ class IndexSearchRepository {
 	/**
 	 * Returns if an item type is a multipage item type
 	 *
-	 * @param 	string		Item type
-	 * @return 	boolean		TRUE if multipage capable
+	 * @param string Item type
+	 * @return bool TRUE if multipage capable
 	 */
 	protected function multiplePagesType($itemType) {
 		return is_object($this->externalParsers[$itemType]) && $this->externalParsers[$itemType]->isMultiplePageExtension($itemType);
@@ -732,7 +732,7 @@ class IndexSearchRepository {
 	 * or PHP-versions which has varying output from the hexdec function.
 	 *
 	 * @param string $str String to hash
-	 * @return integer Integer intepretation of the md5 hash of input string.
+	 * @return int Integer intepretation of the md5 hash of input string.
 	 */
 	protected function md5inthash($str) {
 		return \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::md5inthash($str);
@@ -744,7 +744,7 @@ class IndexSearchRepository {
 	 * functionality like indexed_search_mysql.
 	 *
 	 * @param string $table_list Comma-separated list of tables
-	 * @return boolean TRUE if given tables are enabled
+	 * @return bool TRUE if given tables are enabled
 	 */
 	protected function isTableUsed($table_list) {
 		return \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed($table_list);

@@ -16,13 +16,13 @@ namespace TYPO3\CMS\IndexedSearch;
 /**
  * Lexer for indexed_search
  *
- * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
  * Lexer class for indexed_search
  * A lexer splits the text into words
  *
- * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class Lexer {
 
@@ -59,7 +59,7 @@ class Lexer {
 	/**
 	 * Constructor: Initializes the charset class
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function __construct() {
 		$this->csObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
@@ -69,8 +69,8 @@ class Lexer {
 	 * Splitting string into words.
 	 * Used for indexing, can also be used to find words in query.
 	 *
-	 * @param 	string		String with UTF-8 content to process.
-	 * @return 	array		Array of words in utf-8
+	 * @param string String with UTF-8 content to process.
+	 * @return array Array of words in utf-8
 	 */
 	public function split2Words($wordString) {
 		// Reset debug string:
@@ -109,11 +109,11 @@ class Lexer {
 	 * Add word to word-array
 	 * This function should be used to make sure CJK sequences are split up in the right way
 	 *
-	 * @param 	array		Array of accumulated words
-	 * @param 	string		Complete Input string from where to extract word
-	 * @param	int		Start position of word in input string
-	 * @param	int		The Length of the word string from start position
-	 * @return 	void
+	 * @param array Array of accumulated words
+	 * @param string Complete Input string from where to extract word
+	 * @param int Start position of word in input string
+	 * @param int The Length of the word string from start position
+	 * @return void
 	 */
 	public function addWords(&$words, &$wordString, $start, $len) {
 		// Get word out of string:
@@ -157,9 +157,9 @@ class Lexer {
 	/**
 	 * Get the first word in a given utf-8 string (initial non-letters will be skipped)
 	 *
-	 * @param 	string		Input string (reference)
-	 * @param	int		Starting position in input string
-	 * @return 	array		0: start, 1: len or FALSE if no word has been found
+	 * @param string Input string (reference)
+	 * @param int Starting position in input string
+	 * @return array 0: start, 1: len or FALSE if no word has been found
 	 */
 	public function get_word(&$str, $pos = 0) {
 		$len = 0;
@@ -180,10 +180,10 @@ class Lexer {
 	/**
 	 * See if a character is a letter (or a string of letters or non-letters).
 	 *
-	 * @param 	string		Input string (reference)
-	 * @param	int		Byte-length of character sequence (reference, return value)
-	 * @param	int		Starting position in input string
-	 * @return 	boolean		letter (or word) found
+	 * @param string Input string (reference)
+	 * @param int Byte-length of character sequence (reference, return value)
+	 * @param int Starting position in input string
+	 * @return bool letter (or word) found
 	 */
 	public function utf8_is_letter(&$str, &$len, $pos = 0) {
 		global $cs;
@@ -251,8 +251,8 @@ class Lexer {
 	/**
 	 * Determine the type of character
 	 *
-	 * @param	int		Unicode number to evaluate
-	 * @return 	array		Type of char; index-0: the main type: num, alpha or CJK (Chinese / Japanese / Korean)
+	 * @param int Unicode number to evaluate
+	 * @return array Type of char; index-0: the main type: num, alpha or CJK (Chinese / Japanese / Korean)
 	 */
 	public function charType($cp) {
 		// Numeric?
@@ -274,11 +274,11 @@ class Lexer {
 	/**
 	 * Converts a UTF-8 multibyte character to a UNICODE codepoint
 	 *
-	 * @param 	string		UTF-8 multibyte character string (reference)
-	 * @param	int		The length of the character (reference, return value)
-	 * @param	int		Starting position in input string
-	 * @param 	bool		If set, then a hex. number is returned
-	 * @return 	integer		UNICODE codepoint
+	 * @param string UTF-8 multibyte character string (reference)
+	 * @param int The length of the character (reference, return value)
+	 * @param int Starting position in input string
+	 * @param bool If set, then a hex. number is returned
+	 * @return int UNICODE codepoint
 	 */
 	public function utf8_ord(&$str, &$len, $pos = 0, $hex = FALSE) {
 		$ord = ord($str[$pos]);

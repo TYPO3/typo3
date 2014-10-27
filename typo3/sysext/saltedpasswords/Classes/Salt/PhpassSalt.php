@@ -114,7 +114,7 @@ class PhpassSalt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements
 	 *
 	 * @param string $plainPW Plain-text password to compare with salted hash
 	 * @param string $saltedHashPW Salted hash to compare plain-text password with
-	 * @return boolean TRUE, if plain-text password matches the salted hash, otherwise FALSE
+	 * @return bool TRUE, if plain-text password matches the salted hash, otherwise FALSE
 	 */
 	public function checkPassword($plainPW, $saltedHashPW) {
 		$hash = $this->cryptPassword($plainPW, $saltedHashPW);
@@ -124,7 +124,7 @@ class PhpassSalt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements
 	/**
 	 * Returns whether all prerequisites for the hashing methods are matched
 	 *
-	 * @return boolean Method available
+	 * @return bool Method available
 	 */
 	public function isAvailable() {
 		return TRUE;
@@ -172,7 +172,7 @@ class PhpassSalt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements
 	 * Parses the log2 iteration count from a stored hash or setting string.
 	 *
 	 * @param string $setting Complete hash or a hash's setting string or to get log2 iteration count from
-	 * @return integer Used hashcount for given hash string
+	 * @return int Used hashcount for given hash string
 	 */
 	protected function getCountLog2($setting) {
 		return strpos($this->getItoa64(), $setting[strlen($this->getSetting())]);
@@ -197,7 +197,7 @@ class PhpassSalt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements
 	/**
 	 * Method returns log2 number of iterations for password stretching.
 	 *
-	 * @return integer log2 number of iterations for password stretching
+	 * @return int log2 number of iterations for password stretching
 	 * @see HASH_COUNT
 	 * @see $hashCount
 	 * @see setHashCount()
@@ -236,7 +236,7 @@ class PhpassSalt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements
 	/**
 	 * Method returns maximum allowed log2 number of iterations for password stretching.
 	 *
-	 * @return integer Maximum allowed log2 number of iterations for password stretching
+	 * @return int Maximum allowed log2 number of iterations for password stretching
 	 * @see MAX_HASH_COUNT
 	 * @see $maxHashCount
 	 * @see setMaxHashCount()
@@ -248,7 +248,7 @@ class PhpassSalt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements
 	/**
 	 * Method returns minimum allowed log2 number of iterations for password stretching.
 	 *
-	 * @return integer Minimum allowed log2 number of iterations for password stretching
+	 * @return int Minimum allowed log2 number of iterations for password stretching
 	 * @see MIN_HASH_COUNT
 	 * @see $minHashCount
 	 * @see setMinHashCount()
@@ -260,7 +260,7 @@ class PhpassSalt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements
 	/**
 	 * Returns length of a Blowfish salt in bytes.
 	 *
-	 * @return integer Length of a Blowfish salt in bytes
+	 * @return int Length of a Blowfish salt in bytes
 	 */
 	public function getSaltLength() {
 		return self::$saltLengthPhpass;
@@ -285,7 +285,7 @@ class PhpassSalt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements
 	 * with class ext_update.
 	 *
 	 * @param string $passString Salted hash to check if it needs an update
-	 * @return boolean TRUE if salted hash needs an update, otherwise FALSE
+	 * @return bool TRUE if salted hash needs an update, otherwise FALSE
 	 */
 	public function isHashUpdateNeeded($passString) {
 		// Check whether this was an updated password.
@@ -300,7 +300,7 @@ class PhpassSalt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements
 	 * Method determines if a given string is a valid salt.
 	 *
 	 * @param string $salt String to check
-	 * @return boolean TRUE if it's valid salt, otherwise FALSE
+	 * @return bool TRUE if it's valid salt, otherwise FALSE
 	 */
 	public function isValidSalt($salt) {
 		$isValid = ($skip = FALSE);
@@ -329,7 +329,7 @@ class PhpassSalt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements
 	 * Method determines if a given string is a valid salted hashed password.
 	 *
 	 * @param string $saltedPW String to check
-	 * @return boolean TRUE if it's valid salted hashed password, otherwise FALSE
+	 * @return bool TRUE if it's valid salted hashed password, otherwise FALSE
 	 */
 	public function isValidSaltedPW($saltedPW) {
 		$isValid = FALSE;

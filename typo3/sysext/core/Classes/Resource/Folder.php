@@ -194,7 +194,7 @@ class Folder implements FolderInterface {
 	 * @param array $filterMethods
 	 * @param bool $recursive
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getFileCount(array $filterMethods = array(), $recursive = FALSE) {
 		return count($this->storage->getFileIdentifiersInFolder($this->identifier, TRUE, $recursive));
@@ -272,7 +272,7 @@ class Folder implements FolderInterface {
 	 * Deletes this folder from its storage. This also means that this object becomes useless.
 	 *
 	 * @param bool $deleteRecursively
-	 * @return boolean TRUE if deletion succeeded
+	 * @return bool TRUE if deletion succeeded
 	 */
 	public function delete($deleteRecursively = TRUE) {
 		return $this->storage->deleteFolder($this, $deleteRecursively);
@@ -326,7 +326,7 @@ class Folder implements FolderInterface {
 	 * Checks if a file exists in this folder
 	 *
 	 * @param string $name
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasFile($name) {
 		return $this->storage->hasFileInFolder($name, $this);
@@ -336,7 +336,7 @@ class Folder implements FolderInterface {
 	 * Checks if a folder exists in this folder.
 	 *
 	 * @param string $name
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasFolder($name) {
 		return $this->storage->hasFolderInFolder($name, $this);
@@ -346,7 +346,7 @@ class Folder implements FolderInterface {
 	 * Check if a file operation (= action) is allowed on this folder
 	 *
 	 * @param string $action Action that can be read, write or delete
-	 * @return boolean
+	 * @return bool
 	 */
 	public function checkActionPermission($action) {
 		return $this->getStorage()->checkFolderActionPermission($action, $this);
@@ -437,7 +437,7 @@ class Folder implements FolderInterface {
 	/**
 	 * Returns the role of this folder (if any). See FolderInterface::ROLE_* constants for possible values.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getRole() {
 		return $this->storage->getRole($this);

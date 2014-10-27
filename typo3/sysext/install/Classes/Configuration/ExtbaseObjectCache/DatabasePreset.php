@@ -48,7 +48,7 @@ class DatabasePreset extends Configuration\AbstractPreset {
 	/**
 	 * Database preset is always available
 	 *
-	 * @return boolean TRUE
+	 * @return bool TRUE
 	 */
 	public function isAvailable() {
 		return TRUE;

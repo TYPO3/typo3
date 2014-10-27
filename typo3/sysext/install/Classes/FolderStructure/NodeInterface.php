@@ -51,7 +51,7 @@ interface NodeInterface {
 	/**
 	 * Check if node is writable - can be created and permission can be fixed
 	 *
-	 * @return boolean TRUE if node is writable
+	 * @return bool TRUE if node is writable
 	 */
 	public function isWritable();
 

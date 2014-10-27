@@ -63,8 +63,8 @@ class Typo3Link extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
-	 * @param 	int		Relative id of the RTE editing area in the form
-	 * @return 	string		JS configuration for registered plugins, in this case, JS configuration of block elements
+	 * @param int Relative id of the RTE editing area in the form
+	 * @return string JS configuration for registered plugins, in this case, JS configuration of block elements
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {
 		$registerRTEinJavascriptString = '';
@@ -94,7 +94,7 @@ class Typo3Link extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	/**
 	 * Return a JS array for special anchor classes
 	 *
-	 * @return 	string		classesAnchor array definition
+	 * @return string classesAnchor array definition
 	 */
 	public function buildJSClassesAnchorArray() {
 		global $LANG;
@@ -133,8 +133,8 @@ class Typo3Link extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	/**
 	 * Return an updated array of toolbar enabled buttons
 	 *
-	 * @param 	array		$show: array of toolbar elements that will be enabled, unless modified here
-	 * @return 	array		toolbar button array, possibly updated
+	 * @param array $show: array of toolbar elements that will be enabled, unless modified here
+	 * @return array toolbar button array, possibly updated
 	 */
 	public function applyToolbarConstraints($show) {
 		// We will not allow unlink if link is not enabled

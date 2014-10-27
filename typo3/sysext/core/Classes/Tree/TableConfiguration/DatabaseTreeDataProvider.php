@@ -159,7 +159,7 @@ class DatabaseTreeDataProvider extends \TYPO3\CMS\Core\Tree\TableConfiguration\A
 	/**
 	 * Gets the lookup mode
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getLookupMode() {
 		return $this->lookupMode;
@@ -197,7 +197,7 @@ class DatabaseTreeDataProvider extends \TYPO3\CMS\Core\Tree\TableConfiguration\A
 	/**
 	 * Gets the root uid
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getRootUid() {
 		return $this->rootUid;
@@ -418,7 +418,7 @@ class DatabaseTreeDataProvider extends \TYPO3\CMS\Core\Tree\TableConfiguration\A
 	 *
 	 * @param string $fieldName the name of the field to be queried
 	 * @param int $queryId the uid to search for
-	 * @return integer[] all uids found
+	 * @return int[] all uids found
 	 */
 	protected function listFieldQuery($fieldName, $queryId) {
 		$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', $this->getTableName(), $GLOBALS['TYPO3_DB']->listQuery($fieldName, (int)$queryId, $this->getTableName()) . ((int)$queryId == 0 ? ' OR ' . $fieldName . ' = \'\'' : ''));

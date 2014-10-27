@@ -49,7 +49,7 @@ class BooleanConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstrac
 	 * @param string $targetType
 	 * @param array $convertedChildProperties
 	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
-	 * @return boolean
+	 * @return bool
 	 * @api
 	 */
 	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL) {

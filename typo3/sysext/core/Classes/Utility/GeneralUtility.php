@@ -388,7 +388,7 @@ class GeneralUtility {
 	 *
 	 * @param string $baseIP Is the current remote IP address for instance, typ. REMOTE_ADDR
 	 * @param string $list Is a comma-list of IP-addresses to match with. *-wildcard allowed instead of number, plus leaving out parts in the IP number is accepted as wildcard (eg. 192.168.*.* equals 192.168). If list is "*" no check is done and the function returns TRUE immediately. An empty list always returns FALSE.
-	 * @return boolean TRUE if an IP-mask from $list matches $baseIP
+	 * @return bool TRUE if an IP-mask from $list matches $baseIP
 	 */
 	static public function cmpIP($baseIP, $list) {
 		$list = trim($list);
@@ -409,7 +409,7 @@ class GeneralUtility {
 	 *
 	 * @param string $baseIP Is the current remote IP address for instance, typ. REMOTE_ADDR
 	 * @param string $list Is a comma-list of IP-addresses to match with. *-wildcard allowed instead of number, plus leaving out parts in the IP number is accepted as wildcard (eg. 192.168.*.* equals 192.168), could also contain IPv6 addresses
-	 * @return boolean TRUE if an IP-mask from $list matches $baseIP
+	 * @return bool TRUE if an IP-mask from $list matches $baseIP
 	 */
 	static public function cmpIPv4($baseIP, $list) {
 		$IPpartsReq = explode('.', $baseIP);
@@ -455,7 +455,7 @@ class GeneralUtility {
 	 *
 	 * @param string $baseIP Is the current remote IP address for instance
 	 * @param string $list Is a comma-list of IPv6 prefixes, could also contain IPv4 addresses
-	 * @return boolean TRUE If an baseIP matches any prefix
+	 * @return bool TRUE If an baseIP matches any prefix
 	 */
 	static public function cmpIPv6($baseIP, $list) {
 		// Policy default: Deny connection
@@ -605,7 +605,7 @@ class GeneralUtility {
 	 * Possible format are IPv4 and IPv6.
 	 *
 	 * @param string $ip IP address to be tested
-	 * @return boolean TRUE if $ip is either of IPv4 or IPv6 format.
+	 * @return bool TRUE if $ip is either of IPv4 or IPv6 format.
 	 */
 	static public function validIP($ip) {
 		return filter_var($ip, FILTER_VALIDATE_IP) !== FALSE;
@@ -617,7 +617,7 @@ class GeneralUtility {
 	 * Example for possible format: 10.0.45.99
 	 *
 	 * @param string $ip IP address to be tested
-	 * @return boolean TRUE if $ip is of IPv4 format.
+	 * @return bool TRUE if $ip is of IPv4 format.
 	 */
 	static public function validIPv4($ip) {
 		return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) !== FALSE;
@@ -629,7 +629,7 @@ class GeneralUtility {
 	 * Example for possible format: 43FB::BB3F:A0A0:0 | ::1
 	 *
 	 * @param string $ip IP address to be tested
-	 * @return boolean TRUE if $ip is of IPv6 format.
+	 * @return bool TRUE if $ip is of IPv6 format.
 	 */
 	static public function validIPv6($ip) {
 		return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== FALSE;
@@ -640,7 +640,7 @@ class GeneralUtility {
 	 *
 	 * @param string $baseHost A hostname or an IPv4/IPv6-address (will by reverse-resolved; typically REMOTE_ADDR)
 	 * @param string $list A comma-list of domain names to match with. *-wildcard allowed but cannot be part of a string, so it must match the full host name (eg. myhost.*.com => correct, myhost.*domain.com => wrong)
-	 * @return boolean TRUE if a domain name mask from $list matches $baseIP
+	 * @return bool TRUE if a domain name mask from $list matches $baseIP
 	 */
 	static public function cmpFQDN($baseHost, $list) {
 		$baseHost = trim($baseHost);
@@ -706,7 +706,7 @@ class GeneralUtility {
 	 * Scheme, hostname and (optional) port of the given URL are compared.
 	 *
 	 * @param string $url URL to compare with the TYPO3 request host
-	 * @return boolean Whether the URL matches the TYPO3 request host
+	 * @return bool Whether the URL matches the TYPO3 request host
 	 */
 	static public function isOnCurrentHost($url) {
 		return stripos($url . '/', self::getIndpEnv('TYPO3_REQUEST_HOST') . '/') === 0;
@@ -718,7 +718,7 @@ class GeneralUtility {
 	 *
 	 * @param string $list Comma-separated list of items (string)
 	 * @param string $item Item to check for
-	 * @return boolean TRUE if $item is in $list
+	 * @return bool TRUE if $item is in $list
 	 */
 	static public function inList($list, $item) {
 		return strpos(',' . $list . ',', ',' . $item . ',') !== FALSE;
@@ -775,7 +775,7 @@ class GeneralUtility {
 	 * Notice that this function compares branches, not versions (4.0.1 would be > 4.0.0 although they use the same compat_version)
 	 *
 	 * @param string $verNumberStr Minimum branch number required (format x.y / e.g. "4.0" NOT "4.0.0"!)
-	 * @return boolean Returns TRUE if this setup is compatible with the provided version number
+	 * @return bool Returns TRUE if this setup is compatible with the provided version number
 	 * @todo Still needs a function to convert versions to branches
 	 */
 	static public function compat_version($verNumberStr) {
@@ -791,7 +791,7 @@ class GeneralUtility {
 	 * Makes a positive integer hash out of the first 7 chars from the md5 hash of the input
 	 *
 	 * @param string $str String to md5-hash
-	 * @return integer Returns 28bit integer-hash
+	 * @return int Returns 28bit integer-hash
 	 */
 	static public function md5int($str) {
 		return hexdec(substr(md5($str), 0, 7));
@@ -940,7 +940,7 @@ class GeneralUtility {
 	 *
 	 * @param string $str Full string to check
 	 * @param string $partStr Reference string which must be found as the "first part" of the full string
-	 * @return boolean TRUE if $partStr was found to be equal to the first part of $str
+	 * @return bool TRUE if $partStr was found to be equal to the first part of $str
 	 */
 	static public function isFirstPartOfStr($str, $partStr) {
 		return $partStr != '' && strpos((string) $str, (string) $partStr, 0) === 0;
@@ -986,7 +986,7 @@ class GeneralUtility {
 	 * Returns microtime input to milliseconds
 	 *
 	 * @param string $microtime Microtime
-	 * @return integer Microtime input string converted to an integer (milliseconds)
+	 * @return int Microtime input string converted to an integer (milliseconds)
 	 */
 	static public function convertMicrotime($microtime) {
 		$parts = explode(' ', $microtime);
@@ -1094,7 +1094,7 @@ class GeneralUtility {
 	 * rest together again.
 	 *
 	 * @param string $email Input string to evaluate
-	 * @return boolean Returns TRUE if the $email address (input string) is valid
+	 * @return bool Returns TRUE if the $email address (input string) is valid
 	 */
 	static public function validEmail($email) {
 		// Early return in case input is not a string
@@ -1124,7 +1124,7 @@ class GeneralUtility {
 	 * TODO: 4.3 should have additional configuration variable, which is combined
 	 * by || with the rest in this function.
 	 *
-	 * @return boolean TRUE if mail() does not accept recipient name
+	 * @return bool TRUE if mail() does not accept recipient name
 	 */
 	static public function isBrokenEmailEnvironment() {
 		return TYPO3_OS == 'WIN' || FALSE !== strpos(ini_get('sendmail_path'), 'mini_sendmail');
@@ -1387,7 +1387,7 @@ class GeneralUtility {
 	 * http://tools.ietf.org/html/rfc3986#appendix-A
 	 *
 	 * @param string $url The URL to be validated
-	 * @return boolean Whether the given URL is valid
+	 * @return bool Whether the given URL is valid
 	 */
 	static public function isValidUrl($url) {
 		$parsedUrl = parse_url($url);
@@ -1437,7 +1437,7 @@ class GeneralUtility {
 	 *
 	 * @param array $in_array One-dimensional array of items
 	 * @param string $item Item to check for
-	 * @return boolean TRUE if $item is in the one-dimensional array $in_array
+	 * @return bool TRUE if $item is in the one-dimensional array $in_array
 	 */
 	static public function inArray(array $in_array, $item) {
 		foreach ($in_array as $val) {
@@ -1850,7 +1850,7 @@ class GeneralUtility {
 	 * Sorts an array by key recursive - uses natural sort order (aAbB-zZ)
 	 *
 	 * @param array $array array to be sorted recursively, passed by reference
-	 * @return boolean TRUE if param is an array
+	 * @return bool TRUE if param is an array
 	 */
 	static public function naturalKeySortRecursive(&$array) {
 		if (!is_array($array)) {
@@ -2600,7 +2600,7 @@ Connection: close
 	 * @param string $file Filepath to write to
 	 * @param string $content Content to write
 	 * @param bool $changePermissions If TRUE, permissions are forced to be set
-	 * @return boolean TRUE if the file was successfully opened and written to.
+	 * @return bool TRUE if the file was successfully opened and written to.
 	 */
 	static public function writeFile($file, $content, $changePermissions = FALSE) {
 		if (!@is_file($file)) {
@@ -2747,7 +2747,7 @@ Connection: close
 	 * and group ownership according to $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup']
 	 *
 	 * @param string $newFolder Absolute path to folder, see PHP mkdir() function. Removes trailing slash internally.
-	 * @return boolean TRUE if @mkdir went well!
+	 * @return bool TRUE if @mkdir went well!
 	 */
 	static public function mkdir($newFolder) {
 		$result = @mkdir($newFolder, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']));
@@ -2818,7 +2818,7 @@ Connection: close
 	 *
 	 * @param string $path Absolute path to folder, see PHP rmdir() function. Removes trailing slash internally.
 	 * @param bool $removeNonEmpty Allow deletion of non-empty directories
-	 * @return boolean TRUE if @rmdir went well!
+	 * @return bool TRUE if @rmdir went well!
 	 */
 	static public function rmdir($path, $removeNonEmpty = FALSE) {
 		$OK = FALSE;
@@ -2858,7 +2858,7 @@ Connection: close
 	 *
 	 * @param string $directory The directory to be renamed and flushed
 	 * @param bool $keepOriginalDirectory Whether to only empty the directory and not remove it
-	 * @return boolean Whether the action was successful
+	 * @return bool Whether the action was successful
 	 */
 	static public function flushDirectory($directory, $keepOriginalDirectory = FALSE) {
 		$result = FALSE;
@@ -3077,7 +3077,7 @@ Connection: close
 	 * the maxFileSize, usually for the TCA values.
 	 *
 	 * @param int $localLimit the number of Kilobytes (!) that should be used as
-	 * @return integer The maximum size of uploads that are allowed (measured in kilobytes)
+	 * @return int The maximum size of uploads that are allowed (measured in kilobytes)
 	 */
 	static public function getMaxUploadFileSize($localLimit = 0) {
 		// Don't allow more than the global max file size at all
@@ -3099,7 +3099,7 @@ Connection: close
 	 * Gets the bytes value from a measurement string like "100k".
 	 *
 	 * @param string $measurement The measurement (e.g. "100k")
-	 * @return integer The bytes value (e.g. 102400)
+	 * @return int The bytes value (e.g. 102400)
 	 */
 	static public function getBytesFromSizeMeasurement($measurement) {
 		$bytes = doubleval($measurement);
@@ -3116,7 +3116,7 @@ Connection: close
 	/**
 	 * Retrieves the maximum path length that is valid in the current environment.
 	 *
-	 * @return integer The maximum available path length
+	 * @return int The maximum available path length
 	 */
 	static public function getMaximumPathLength() {
 		return PHP_MAXPATHLEN;
@@ -3591,7 +3591,7 @@ Connection: close
 	/**
 	 * Gets the unixtime as milliseconds.
 	 *
-	 * @return integer The unixtime as milliseconds
+	 * @return int The unixtime as milliseconds
 	 */
 	static public function milliseconds() {
 		return round(microtime(TRUE) * 1000);
@@ -3753,7 +3753,7 @@ Connection: close
 	 * So it's compatible with the UNIX style path strings valid for TYPO3 internally.
 	 *
 	 * @param string $theFile File path to evaluate
-	 * @return boolean TRUE, $theFile is allowed path string, FALSE otherwise
+	 * @return bool TRUE, $theFile is allowed path string, FALSE otherwise
 	 * @see http://php.net/manual/en/security.filesystem.nullbytes.php
 	 * @todo Possible improvement: Should it rawurldecode the string first to check if any of these characters is encoded?
 	 */
@@ -3766,7 +3766,7 @@ Connection: close
 	 * Checks if the $path is absolute or relative (detecting either '/' or 'x:/' as first part of string) and returns TRUE if so.
 	 *
 	 * @param string $path File path to evaluate
-	 * @return boolean
+	 * @return bool
 	 */
 	static public function isAbsPath($path) {
 		return $path[0] === '/' || TYPO3_OS === 'WIN' && (strpos($path, ':/') === 1 || strpos($path, ':\\') === 1);
@@ -3776,7 +3776,7 @@ Connection: close
 	 * Returns TRUE if the path is absolute, without backpath '..' and within the PATH_site OR within the lockRootPath
 	 *
 	 * @param string $path File path to evaluate
-	 * @return boolean
+	 * @return bool
 	 */
 	static public function isAllowedAbsPath($path) {
 		$lockRootPath = $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'];
@@ -3792,7 +3792,7 @@ Connection: close
 	 * allways filter on [[:cntrl:]].
 	 *
 	 * @param string $filename File path to evaluate
-	 * @return boolean
+	 * @return bool
 	 */
 	static public function verifyFilenameAgainstDenyPattern($filename) {
 		$pattern = '/[[:cntrl:]]/';
@@ -3868,7 +3868,7 @@ Connection: close
 	 *
 	 * @param string $source Source file, absolute path
 	 * @param string $destination Destination file, absolute path
-	 * @return boolean Returns TRUE if the file was moved.
+	 * @return bool Returns TRUE if the file was moved.
 	 * @coauthor Dennis Petersen <fessor@software.dk>
 	 * @see upload_to_tempfile()
 	 */
@@ -3910,7 +3910,7 @@ Connection: close
 	 * Use this after upload_to_tempfile() or tempnam() from this class!
 	 *
 	 * @param string $uploadedTempFileName Filepath for a file in PATH_site."typo3temp/". Must be absolute.
-	 * @return boolean Returns TRUE if the file was unlink()'ed
+	 * @return bool Returns TRUE if the file was unlink()'ed
 	 * @see upload_to_tempfile(), tempnam()
 	 */
 	static public function unlink_tempfile($uploadedTempFileName) {
@@ -3984,7 +3984,7 @@ Connection: close
 	 * Responds on input localization setting value whether the page it comes from should be hidden if no translation exists or not.
 	 *
 	 * @param int $l18n_cfg_fieldValue Value from "l18n_cfg" field of a page record
-	 * @return boolean TRUE if the page should be hidden
+	 * @return bool TRUE if the page should be hidden
 	 */
 	static public function hideIfNotTranslated($l18n_cfg_fieldValue) {
 		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['hidePagesIfNotTranslatedByDefault']) {
@@ -3999,7 +3999,7 @@ Connection: close
 	 * pages in the default language
 	 *
 	 * @param int $localizationConfiguration
-	 * @return boolean
+	 * @return bool
 	 */
 	static public function hideIfDefaultLanguage($localizationConfiguration) {
 		return $localizationConfiguration & 1;
@@ -4407,7 +4407,7 @@ Connection: close
 	 * Checks if a class has a configured implementation
 	 *
 	 * @param string $className
-	 * @return boolean
+	 * @return bool
 	 */
 	static protected function classHasImplementation($className) {
 		// If we are early in the bootstrap, the configuration might not yet be present
@@ -4825,7 +4825,7 @@ Connection: close
 	 * Function to compensate for FreeType2 96 dpi
 	 *
 	 * @param int $font_size Fontsize for freetype function call
-	 * @return integer Compensated fontsize based on $GLOBALS['TYPO3_CONF_VARS']['GFX']['TTFdpi']
+	 * @return int Compensated fontsize based on $GLOBALS['TYPO3_CONF_VARS']['GFX']['TTFdpi']
 	 */
 	static public function freetypeDpiComp($font_size) {
 		$dpi = (int)$GLOBALS['TYPO3_CONF_VARS']['GFX']['TTFdpi'];

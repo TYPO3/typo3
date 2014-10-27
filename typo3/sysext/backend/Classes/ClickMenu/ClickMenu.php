@@ -1476,7 +1476,7 @@ class ClickMenu {
 	/**
 	 * Returns TRUE if there should be writing to the div-layers (commands sent to clipboard MUST NOT write to div-layers)
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isCMlayers() {
 		return !$this->CB;

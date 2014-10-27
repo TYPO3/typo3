@@ -32,7 +32,7 @@ class MaxlengthAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\Abstract
 	 * in which case the user agent should offer a scrolling mechanism.
 	 * The default value for this attribute is an unlimited number.
 	 *
-	 * @return integer Attribute value
+	 * @return int Attribute value
 	 */
 	public function getValue() {
 		$value = (int)$this->value;

@@ -132,7 +132,7 @@ class SysNote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @return boolean $personal
+	 * @return bool $personal
 	 */
 	public function getPersonal() {
 		return $this->personal;
@@ -147,7 +147,7 @@ class SysNote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @return integer $category
+	 * @return int $category
 	 */
 	public function getCategory() {
 		return $this->category;

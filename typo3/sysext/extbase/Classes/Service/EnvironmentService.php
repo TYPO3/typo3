@@ -21,7 +21,7 @@ class EnvironmentService implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Detects if TYPO3_MODE is defined and its value is "FE"
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isEnvironmentInFrontendMode() {
 		return (defined('TYPO3_MODE') && TYPO3_MODE === 'FE') ?: FALSE;
@@ -30,7 +30,7 @@ class EnvironmentService implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Detects if TYPO3_MODE is defined and its value is "BE"
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isEnvironmentInBackendMode() {
 		return (defined('TYPO3_MODE') && TYPO3_MODE === 'BE') ?: FALSE;
@@ -39,7 +39,7 @@ class EnvironmentService implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Detects if we are running a script from the command line.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isEnvironmentInCliMode() {
 		return $this->isEnvironmentInBackendMode() && defined('TYPO3_cliMode') && TYPO3_cliMode === TRUE;

@@ -24,7 +24,7 @@ interface ControllerInterface {
 	 * Checks if the current request type is supported by the controller.
 	 *
 	 * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The current request
-	 * @return boolean TRUE if this request type is supported, otherwise FALSE
+	 * @return bool TRUE if this request type is supported, otherwise FALSE
 	 * @api
 	 */
 	public function canProcessRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request);

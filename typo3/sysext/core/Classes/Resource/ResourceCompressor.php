@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Compressor
  * This merges and compresses CSS and JavaScript files of the TYPO3 Backend.
  *
- * @author 	Steffen Gebert <steffen@steffen-gebert.de>
+ * @author Steffen Gebert <steffen@steffen-gebert.de>
  */
 class ResourceCompressor {
 
@@ -577,7 +577,7 @@ class ResourceCompressor {
 	 *
 	 * @param string $filename Filename
 	 * @param array $baseDirectories Base directories
-	 * @return boolean File belongs to a base directory or not
+	 * @return bool File belongs to a base directory or not
 	 */
 	protected function checkBaseDirectory($filename, array $baseDirectories) {
 		foreach ($baseDirectories as $baseDirectory) {

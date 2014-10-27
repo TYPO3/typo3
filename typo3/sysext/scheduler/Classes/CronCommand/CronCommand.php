@@ -112,7 +112,7 @@ class CronCommand {
 	 * Get next timestamp
 	 *
 	 * @api
-	 * @return integer Unix timestamp
+	 * @return int Unix timestamp
 	 */
 	public function getTimestamp() {
 		return $this->timestamp;
@@ -132,7 +132,7 @@ class CronCommand {
 	 * Determine if current timestamp matches minute and hour cron command restriction.
 	 *
 	 * @param int $timestamp to test
-	 * @return boolean TRUE if cron command conditions are met
+	 * @return bool TRUE if cron command conditions are met
 	 */
 	protected function minuteAndHourMatchesCronCommand($timestamp) {
 		$minute = (int)date('i', $timestamp);
@@ -149,7 +149,7 @@ class CronCommand {
 	 * cron command restriction
 	 *
 	 * @param int $timestamp to test
-	 * @return boolean TRUE if cron command conditions are met
+	 * @return bool TRUE if cron command conditions are met
 	 */
 	protected function dayMatchesCronCommand($timestamp) {
 		$dayOfMonth = date('j', $timestamp);
@@ -180,7 +180,7 @@ class CronCommand {
 	 *
 	 * @param string $commandExpression: cron command
 	 * @param int $numberToMatch: number to look up
-	 * @return boolean TRUE if number is in list
+	 * @return bool TRUE if number is in list
 	 */
 	protected function isInCommandList($commandExpression, $numberToMatch) {
 		$inList = FALSE;
@@ -202,7 +202,7 @@ class CronCommand {
 	 * This shortens and lengthens the length of a day by one hour.
 	 *
 	 * @param int $timestamp Unix timestamp
-	 * @return integer Number of seconds of day
+	 * @return int Number of seconds of day
 	 */
 	protected function numberOfSecondsInDay($timestamp) {
 		$now = mktime(0, 0, 0, date('n', $timestamp), date('j', $timestamp), date('Y', $timestamp));
@@ -216,7 +216,7 @@ class CronCommand {
 	 * Round a timestamp down to full minute.
 	 *
 	 * @param int $timestamp Unix timestamp
-	 * @return integer Rounded timestamp
+	 * @return int Rounded timestamp
 	 */
 	protected function roundTimestamp($timestamp) {
 		return mktime(date('H', $timestamp), date('i', $timestamp), 0, date('n', $timestamp), date('j', $timestamp), date('Y', $timestamp));

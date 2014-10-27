@@ -34,7 +34,7 @@ class BackendRequestHandler extends AbstractRequestHandler {
 	/**
 	 * This request handler can handle a web request invoked by the backend.
 	 *
-	 * @return boolean If we are in backend mode TRUE otherwise FALSE
+	 * @return bool If we are in backend mode TRUE otherwise FALSE
 	 */
 	public function canHandleRequest() {
 		return $this->environmentService->isEnvironmentInBackendMode() && !$this->environmentService->isEnvironmentInCliMode();

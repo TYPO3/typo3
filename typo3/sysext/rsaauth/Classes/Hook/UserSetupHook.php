@@ -87,7 +87,7 @@ class UserSetupHook {
 	/**
 	 * Rsa is available if loginSecurityLevel is set and rsa backend is working.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isRsaAvailable() {
 		return trim($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']) === 'rsa' && \TYPO3\CMS\Rsaauth\Backend\BackendFactory::getBackend() !== NULL;

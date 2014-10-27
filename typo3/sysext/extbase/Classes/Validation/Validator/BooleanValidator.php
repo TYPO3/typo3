@@ -40,7 +40,7 @@ class BooleanValidator extends AbstractValidator {
 	 * tests and actual usage. This makes the validator loose but still keeping functionality.
 	 *
 	 * @param mixed $value The value that should be validated
-	 * @return boolean TRUE if the value is within the range, otherwise FALSE
+	 * @return bool TRUE if the value is within the range, otherwise FALSE
 	 */
 	public function isValid($value) {
 		// see comment above, check if expectation is NULL, then nothing to do!

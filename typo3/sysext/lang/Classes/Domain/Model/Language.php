@@ -99,7 +99,7 @@ class Language extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Getter for the selected
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getSelected() {
 		return $this->selected;

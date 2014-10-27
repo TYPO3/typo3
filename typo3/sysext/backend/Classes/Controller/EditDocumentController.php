@@ -307,7 +307,7 @@ class EditDocumentController {
 	/**
 	 * Detects, if a save command has been triggered.
 	 *
-	 * @return boolean TRUE, then save the document (data submitted)
+	 * @return bool TRUE, then save the document (data submitted)
 	 */
 	public function doProcessData() {
 		$out = $this->doSave || isset($_POST['_savedok_x']) || isset($_POST['_saveandclosedok_x']) || isset($_POST['_savedokview_x']) || isset($_POST['_savedoknew_x']) || isset($_POST['_translation_savedok_x']) || isset($_POST['_translation_savedokclear_x']);

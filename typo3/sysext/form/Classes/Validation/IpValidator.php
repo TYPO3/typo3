@@ -24,7 +24,7 @@ class IpValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	/**
 	 * Returns TRUE if submitted value validates according to rule
 	 *
-	 * @return boolean
+	 * @return bool
 	 * @see \TYPO3\CMS\Form\Validation\ValidatorInterface::isValid()
 	 */
 	public function isValid() {

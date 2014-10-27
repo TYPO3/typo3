@@ -413,7 +413,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 	 *
 	 * @param array $record Current action record
 	 * @param array $vars POST vars
-	 * @return integer Id of the new/updated user
+	 * @return int Id of the new/updated user
 	 */
 	protected function saveNewBackendUser($record, $vars) {
 		// Check if the db mount is a page the current user is allowed to.);
@@ -545,7 +545,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 	 * Check if a page is inside the rootline the current user can see
 	 *
 	 * @param int $pageId Id of the the page to be checked
-	 * @return boolean Access to the page
+	 * @return bool Access to the page
 	 */
 	protected function checkRootline($pageId) {
 		$access = FALSE;

@@ -107,7 +107,7 @@ class AdminPanelView {
 	 * Checks if a Admin Panel section ("module") is available for the user. If so, TRUE is returned.
 	 *
 	 * @param string $key The module key, eg. "edit", "preview", "info" etc.
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isAdminModuleEnabled($key) {
 		$result = FALSE;
@@ -198,7 +198,7 @@ class AdminPanelView {
 	 * Returns TRUE if admin panel module is open
 	 *
 	 * @param string $key Module key
-	 * @return boolean TRUE, if the admin panel is open for the specified admin panel module key.
+	 * @return bool TRUE, if the admin panel is open for the specified admin panel module key.
 	 */
 	public function isAdminModuleOpen($key) {
 		return $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_top'] && $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_' . $key];

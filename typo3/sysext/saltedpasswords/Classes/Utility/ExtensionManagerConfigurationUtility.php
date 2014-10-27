@@ -231,7 +231,7 @@ system! Please check your configuration.';
 	/**
 	 * Checks if rsaauth is able to obtain a backend
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isRsaAuthBackendAvailable() {
 		/**

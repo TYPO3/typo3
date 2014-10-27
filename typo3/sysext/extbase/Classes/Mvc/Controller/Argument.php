@@ -170,7 +170,7 @@ class Argument {
 	/**
 	 * Returns TRUE if this argument is required
 	 *
-	 * @return boolean TRUE if this argument is required
+	 * @return bool TRUE if this argument is required
 	 * @api
 	 */
 	public function isRequired() {
@@ -272,7 +272,7 @@ class Argument {
 	}
 
 	/**
-	 * @return boolean TRUE if the argument is valid, FALSE otherwise
+	 * @return bool TRUE if the argument is valid, FALSE otherwise
 	 * @api
 	 */
 	public function isValid() {

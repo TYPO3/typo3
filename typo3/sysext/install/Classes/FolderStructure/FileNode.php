@@ -235,7 +235,7 @@ class FileNode extends AbstractNode implements NodeInterface {
 	 * Compare current file content with target file content
 	 *
 	 * @throws Exception If file does not exist
-	 * @return boolean TRUE if current and target file content are identical
+	 * @return bool TRUE if current and target file content are identical
 	 */
 	protected function isContentCorrect() {
 		$absolutePath = $this->getAbsolutePath();
@@ -293,7 +293,7 @@ class FileNode extends AbstractNode implements NodeInterface {
 	/**
 	 * Checks if not is a file
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isFile() {
 		$path = $this->getAbsolutePath();

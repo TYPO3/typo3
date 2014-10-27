@@ -76,7 +76,7 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Tests whether a condition matches Internet Explorer 7 on Windows.
 	 *
-	 * @return 	void
+	 * @return void
 	 * @test
 	 */
 	public function conditionMatchesInternetExplorer7Windows() {
@@ -88,7 +88,7 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Tests whether a condition does not match Internet Explorer 7 on Windows.
 	 *
-	 * @return 	void
+	 * @return void
 	 * @test
 	 */
 	public function conditionDoesNotMatchInternetExplorer7Windows() {

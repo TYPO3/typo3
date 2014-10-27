@@ -124,7 +124,7 @@ class FileCollectionRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Checks if the given FileCollection type exists
 	 *
 	 * @param string $type Type of the FileCollection
-	 * @return boolean TRUE if the FileCollection exists, FALSE otherwise
+	 * @return bool TRUE if the FileCollection exists, FALSE otherwise
 	 */
 	public function fileCollectionTypeExists($type) {
 		return isset($this->types[$type]);

@@ -104,7 +104,7 @@ class TagBuilder {
 	/**
 	 * Returns TRUE if tag contains content, otherwise FALSE
 	 *
-	 * @return boolean TRUE if tag contains text, otherwise FALSE
+	 * @return bool TRUE if tag contains text, otherwise FALSE
 	 * @api
 	 */
 	public function hasContent() {
@@ -129,7 +129,7 @@ class TagBuilder {
 	 * Returns TRUE if the tag has an attribute with the given name
 	 *
 	 * @param string $attributeName name of the attribute
-	 * @return boolean TRUE if the tag has an attribute with the given name, otherwise FALSE
+	 * @return bool TRUE if the tag has an attribute with the given name, otherwise FALSE
 	 * @api
 	 */
 	public function hasAttribute($attributeName) {

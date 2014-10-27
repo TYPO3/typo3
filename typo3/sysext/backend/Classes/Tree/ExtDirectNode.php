@@ -192,7 +192,7 @@ class ExtDirectNode extends \TYPO3\CMS\Backend\Tree\TreeNode {
 	/**
 	 * Returns if the node is a leaf node
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isLeafNode() {
 		return $this->leaf;
@@ -211,7 +211,7 @@ class ExtDirectNode extends \TYPO3\CMS\Backend\Tree\TreeNode {
 	/**
 	 * Returns the expandable indicator
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isExpandable() {
 		return $this->expandable;
@@ -230,7 +230,7 @@ class ExtDirectNode extends \TYPO3\CMS\Backend\Tree\TreeNode {
 	/**
 	 * Returns the expanded indicator
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isExpanded() {
 		if ($this->isLeafNode()) {
@@ -252,7 +252,7 @@ class ExtDirectNode extends \TYPO3\CMS\Backend\Tree\TreeNode {
 	/**
 	 * Returns the draggable indicator
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDraggable() {
 		return $this->draggable;
@@ -271,7 +271,7 @@ class ExtDirectNode extends \TYPO3\CMS\Backend\Tree\TreeNode {
 	/**
 	 * Returns the indicator if the node is a drop target
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDropTarget() {
 		return $this->isDropTarget;
@@ -343,7 +343,7 @@ class ExtDirectNode extends \TYPO3\CMS\Backend\Tree\TreeNode {
 	/**
 	 * Returns the copy mode indicator
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isInCopyMode() {
 		return $this->t3InCopyMode;
@@ -362,7 +362,7 @@ class ExtDirectNode extends \TYPO3\CMS\Backend\Tree\TreeNode {
 	/**
 	 * Returns the cut mode indicator
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isInCutMode() {
 		return $this->t3InCutMode;
@@ -456,7 +456,7 @@ class ExtDirectNode extends \TYPO3\CMS\Backend\Tree\TreeNode {
 	/**
 	 * Returns the editable label indicator
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isLabelEditable() {
 		return $this->labelIsEditable;
@@ -526,7 +526,7 @@ class ExtDirectNode extends \TYPO3\CMS\Backend\Tree\TreeNode {
 	/**
 	 * Checks if the node can have child nodes
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canHaveChildren() {
 		return $this->allowChildren;

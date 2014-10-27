@@ -17,18 +17,18 @@ namespace TYPO3\CMS\Recycler\Domain\Model;
 /**
  * Model class for the 'recycler' extension.
  *
- * @author 	Julian Kleinhans <typo3@kj187.de>
+ * @author Julian Kleinhans <typo3@kj187.de>
  */
 class Tables {
 
 	/**
 	 * Get tables for menu example
 	 *
-	 * @param 	string		$format: Return format (example: json)
-	 * @param 	bool		$withAllOption: 0 no, 1 return tables with a "all" option
-	 * @param 	int		$id: UID from selected page
-	 * @param 	int		$depth: How many levels recursive
-	 * @return 	string		The tables to be displayed
+	 * @param string $format: Return format (example: json)
+	 * @param bool $withAllOption: 0 no, 1 return tables with a "all" option
+	 * @param int $id: UID from selected page
+	 * @param int $depth: How many levels recursive
+	 * @return string The tables to be displayed
 	 */
 	public function getTables($format, $withAllOption = 0, $startUid, $depth = 0) {
 		$deletedRecordsTotal = 0;

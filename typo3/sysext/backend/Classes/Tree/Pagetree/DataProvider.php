@@ -465,7 +465,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 	 * Returns TRUE if the node has child's
 	 *
 	 * @param int $id
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function hasNodeSubPages($id) {
 		$where = $this->getWhereClause($id);

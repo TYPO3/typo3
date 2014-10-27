@@ -90,7 +90,7 @@ abstract class AbstractSalt {
 	 * length of a byte string.
 	 *
 	 * @param int $byteLength Length of bytes to calculate in base64 chars
-	 * @return integer Required length of base64 characters
+	 * @return int Required length of base64 characters
 	 */
 	protected function getLengthBase64FromBytes($byteLength) {
 		// Calculates bytes in bits in base64

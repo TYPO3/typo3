@@ -33,7 +33,7 @@ class ImageDimensionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
 	 *
 	 * @param string $dimension Either width or height
 	 * @throws \TYPO3\CMS\Install\ViewHelpers\Exception
-	 * @return integer width or height
+	 * @return int width or height
 	 */
 	public function render($dimension = 'width') {
 		if ($dimension !== 'width' && $dimension !== 'height') {

@@ -134,7 +134,7 @@ class CacheManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Checks if the specified cache has been registered.
 	 *
 	 * @param string $identifier The identifier of the cache
-	 * @return boolean TRUE if a cache with the given identifier exists, otherwise FALSE
+	 * @return bool TRUE if a cache with the given identifier exists, otherwise FALSE
 	 * @api
 	 */
 	public function hasCache($identifier) {

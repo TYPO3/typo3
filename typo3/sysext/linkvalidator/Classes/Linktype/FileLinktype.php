@@ -28,7 +28,7 @@ class FileLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
 	 * @param string $url Url to check
 	 * @param array $softRefEntry The soft reference entry which builds the context of the url
 	 * @param \TYPO3\CMS\Linkvalidator\LinkAnalyzer $reference Parent instance
-	 * @return boolean TRUE on success or FALSE on error
+	 * @return bool TRUE on success or FALSE on error
 	 */
 	public function checkLink($url, $softRefEntry, $reference) {
 		if (!@file_exists((PATH_site . rawurldecode($url)))) {

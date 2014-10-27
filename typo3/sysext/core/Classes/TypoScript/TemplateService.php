@@ -195,7 +195,7 @@ class TemplateService {
 	protected $processIncludesHasBeenRun = FALSE;
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getProcessExtensionStatics() {
 		return $this->processExtensionStatics;
@@ -1264,7 +1264,7 @@ class TemplateService {
 	 * Returns the level of the given page in the rootline - Multiple pages can be given by separating the UIDs by comma.
 	 *
 	 * @param string $list A list of UIDs for which the rootline-level should get returned
-	 * @return integer The level in the rootline. If more than one page was given the lowest level will get returned.
+	 * @return int The level in the rootline. If more than one page was given the lowest level will get returned.
 	 */
 	public function getRootlineLevel($list) {
 		$idx = 0;

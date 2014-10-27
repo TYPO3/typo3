@@ -33,28 +33,28 @@ interface PresetInterface {
 	/**
 	 * Check if preset is available on the system
 	 *
-	 * @return boolean TRUE if preset is available
+	 * @return bool TRUE if preset is available
 	 */
 	public function isAvailable();
 
 	/**
 	 * Wrapper for isAvailable, used in fluid
 	 *
-	 * @return boolean TRUE if preset is available
+	 * @return bool TRUE if preset is available
 	 */
 	public function getIsAvailable();
 
 	/**
 	 * Check is preset is currently active on the system
 	 *
-	 * @return boolean TRUE if preset is active
+	 * @return bool TRUE if preset is active
 	 */
 	public function isActive();
 
 	/**
 	 * Wrapper for isActive, used in fluid
 	 *
-	 * @return boolean TRUE if preset is active
+	 * @return bool TRUE if preset is active
 	 */
 	public function getIsActive();
 
@@ -68,7 +68,7 @@ interface PresetInterface {
 	/**
 	 * Get priority of preset
 	 *
-	 * @return integer Priority, usually between 0 and 100
+	 * @return int Priority, usually between 0 and 100
 	 */
 	public function getPriority();
 

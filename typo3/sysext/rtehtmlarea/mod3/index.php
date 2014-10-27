@@ -18,8 +18,8 @@
  *
  * Adapted for htmlArea RTE by Stanislas Rolland
  *
- * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
- * @author 	Stanislas Rolland <typo3(arobas)sjbr.ca>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
 
 // Make instance:

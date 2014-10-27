@@ -157,7 +157,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 	 *
 	 * @param int $pageId
 	 * @param int $template_uid
-	 * @return integer
+	 * @return int
 	 */
 	public function initialize_editor($pageId, $template_uid = 0) {
 		// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!

@@ -290,7 +290,7 @@ class SuggestDefaultReceiver {
 	 *
 	 * @param array $row
 	 * @param int $uid
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function checkRecordAccess($row, $uid) {
 		$retValue = TRUE;

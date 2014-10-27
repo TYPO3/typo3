@@ -99,7 +99,7 @@ class PageTreeNavigationController {
 	/**
 	 * Initialization of the class
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	protected function init() {
 		// Setting backPath
@@ -187,7 +187,7 @@ class PageTreeNavigationController {
 	/**
 	 * Main function, rendering the browsable page tree
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function main() {
 		// Produce browse-tree:

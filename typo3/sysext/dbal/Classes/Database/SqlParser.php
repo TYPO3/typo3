@@ -18,9 +18,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * PHP SQL engine / server
  *
- * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
- * @author 	Karsten Dambekalns <karsten@typo3.org>
- * @author 	Xavier Perseguers <xavier@typo3.org>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Karsten Dambekalns <karsten@typo3.org>
+ * @author Xavier Perseguers <xavier@typo3.org>
  */
 class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 
@@ -114,10 +114,10 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 	 * Compiles a "SELECT [output] FROM..:" field list based on input array (made with ->parseFieldList())
 	 * Can also compile field lists for ORDER BY and GROUP BY.
 	 *
-	 * @param 	array		$selectFields Array of select fields, (made with ->parseFieldList())
-	 * @param 	bool		$compileComments Whether comments should be compiled
-	 * @param 	bool		$functionMapping Whether function mapping should take place
-	 * @return 	string		Select field string
+	 * @param array $selectFields Array of select fields, (made with ->parseFieldList())
+	 * @param bool $compileComments Whether comments should be compiled
+	 * @param bool $functionMapping Whether function mapping should take place
+	 * @return string Select field string
 	 * @see parseFieldList()
 	 */
 	public function compileFieldList($selectFields, $compileComments = TRUE, $functionMapping = TRUE) {
@@ -168,9 +168,9 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 	/**
 	 * Compiles a CASE ... WHEN flow-control construct based on input array (made with ->parseCaseStatement())
 	 *
-	 * @param 	array		$components Array of case components, (made with ->parseCaseStatement())
-	 * @param 	bool		$functionMapping Whether function mapping should take place
-	 * @return 	string		case when string
+	 * @param array $components Array of case components, (made with ->parseCaseStatement())
+	 * @param bool $functionMapping Whether function mapping should take place
+	 * @return string case when string
 	 * @see parseCaseStatement()
 	 */
 	protected function compileCaseStatement(array $components, $functionMapping = TRUE) {
@@ -208,8 +208,8 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 	 * This method overrides the method from \TYPO3\CMS\Core\Database\SqlParser because
 	 * the input string is already properly escaped.
 	 *
-	 * @param 	string		$str Input string
-	 * @return 	string		Output string
+	 * @param string $str Input string
+	 * @return string Output string
 	 */
 	protected function compileAddslashes($str) {
 		return $str;
@@ -259,8 +259,8 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 	/**
 	 * Compiles a CREATE TABLE statement from components array
 	 *
-	 * @param 	array		$components Array of SQL query components
-	 * @return 	array		array with SQL CREATE TABLE/INDEX command(s)
+	 * @param array $components Array of SQL query components
+	 * @return array array with SQL CREATE TABLE/INDEX command(s)
 	 * @see parseCREATETABLE()
 	 */
 	public function compileCREATETABLE($components) {
@@ -352,8 +352,8 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 	/**
 	 * Compile field definition
 	 *
-	 * @param 	array		$fieldCfg Field definition parts
-	 * @return 	string		Field definition string
+	 * @param array $fieldCfg Field definition parts
+	 * @return string Field definition string
 	 */
 	public function compileFieldCfg($fieldCfg) {
 		$cfg = '';
@@ -429,7 +429,7 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 	 * Checks if the submitted feature index contains a default value definition and the default value
 	 *
 	 * @param array $featureIndex A feature index as produced by parseFieldDef()
-	 * @return boolean
+	 * @return bool
 	 * @see \TYPO3\CMS\Core\Database\SqlParser::parseFieldDef()
 	 */
 	public function checkEmptyDefaultValue($featureIndex) {

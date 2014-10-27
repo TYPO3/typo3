@@ -129,7 +129,7 @@ class ClassInfo {
 	/**
 	 * Asserts if the class is a singleton or not.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getIsSingleton() {
 		return $this->isSingleton;
@@ -138,7 +138,7 @@ class ClassInfo {
 	/**
 	 * Asserts if the class is initializeable with initializeObject.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getIsInitializeable() {
 		return $this->isInitializeable;
@@ -147,14 +147,14 @@ class ClassInfo {
 	/**
 	 * Asserts if the class has Dependency Injection methods
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasInjectMethods() {
 		return count($this->injectMethods) > 0;
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasInjectProperties() {
 		return count($this->injectProperties) > 0;

@@ -196,7 +196,7 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * Method returns extension count
 	 *
 	 * @access public
-	 * @return integer count of read extensions
+	 * @return int count of read extensions
 	 */
 	public function getExtensionCount() {
 		return $this->extensionCount;
@@ -232,7 +232,7 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * object has been registered to this repository.
 	 *
 	 * @access public
-	 * @return boolean TRUE, if a repository mirrors object has been registered, otherwise FALSE
+	 * @return bool TRUE, if a repository mirrors object has been registered, otherwise FALSE
 	 * @see $mirrors, addMirrors(), getMirrors(), removeMirrors()
 	 */
 	public function hasMirrors() {

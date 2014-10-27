@@ -78,7 +78,7 @@ class CoreUpdateService {
 	/**
 	 * Check if this installation wants to enable the core updater
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isCoreUpdateEnabled() {
 		$coreUpdateDisabled = getenv('TYPO3_DISABLE_CORE_UPDATER') ?: (getenv('REDIRECT_TYPO3_DISABLE_CORE_UPDATER') ?: FALSE);
@@ -119,7 +119,7 @@ class CoreUpdateService {
 	/**
 	 * Wrapper method for CoreVersionService
 	 *
-	 * @return boolean TRUE on success
+	 * @return bool TRUE on success
 	 */
 	public function updateVersionMatrix() {
 		$success = TRUE;
@@ -142,7 +142,7 @@ class CoreUpdateService {
 	/**
 	 * Check if an update is possible at all
 	 *
-	 * @return boolean TRUE on success
+	 * @return bool TRUE on success
 	 */
 	public function checkPreConditions() {
 		$success = TRUE;
@@ -232,7 +232,7 @@ class CoreUpdateService {
 	 * Download the specified version
 	 *
 	 * @param string $version A version to download
-	 * @return boolean TRUE on success
+	 * @return bool TRUE on success
 	 */
 	public function downloadVersion($version) {
 		$downloadUri = $this->downloadBaseUri . $version;
@@ -274,7 +274,7 @@ class CoreUpdateService {
 	 * Verify checksum of downloaded version
 	 *
 	 * @param string $version A downloaded version to check
-	 * @return boolean TRUE on success
+	 * @return bool TRUE on success
 	 */
 	public function verifyFileChecksum($version) {
 		$fileLocation = $this->getDownloadTarGzTargetPath($version);
@@ -313,7 +313,7 @@ class CoreUpdateService {
 	 * Unpack a downloaded core
 	 *
 	 * @param string $version A version to unpack
-	 * @return boolean TRUE on success
+	 * @return bool TRUE on success
 	 */
 	public function unpackVersion($version) {
 		$fileLocation = $this->downloadTargetPath . $version . '.tar.gz';
@@ -361,7 +361,7 @@ class CoreUpdateService {
 	 * Move an unpacked core to its final destination
 	 *
 	 * @param string $version A version to move
-	 * @return boolean TRUE on success
+	 * @return bool TRUE on success
 	 */
 	public function moveVersion($version) {
 		$downloadedCoreLocation = $this->downloadTargetPath . 'typo3_src-' . $version;
@@ -401,7 +401,7 @@ class CoreUpdateService {
 	 * Activate a core version
 	 *
 	 * @param string $version A version to activate
-	 * @return boolean TRUE on success
+	 * @return bool TRUE on success
 	 */
 	public function activateVersion($version) {
 		$newCoreLocation = @realPath($this->currentCoreLocation . '/../') . '/typo3_src-' . $version;

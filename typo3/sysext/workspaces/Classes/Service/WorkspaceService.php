@@ -60,7 +60,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Gets the current workspace ID.
 	 *
-	 * @return integer The current workspace ID
+	 * @return int The current workspace ID
 	 */
 	public function getCurrentWorkspace() {
 		$workspaceId = $GLOBALS['BE_USER']->workspace;
@@ -432,7 +432,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $table Name of the table
 	 * @param array $record Record row to be checked
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isLanguageAccessibleForCurrentUser($table, array $record) {
 		$languageUid = 0;
@@ -448,7 +448,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Trivial check to see if the user already migrated his workspaces
 	 * to the new style (either manually or with the migrator scripts)
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	static public function isOldStyleWorkspaceUsed() {
 		$oldStyleWorkspaceIsUsed = FALSE;
@@ -470,7 +470,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param int $id Primary key of the page to check
 	 * @param int $language Language for which to check the page
-	 * @return boolean
+	 * @return bool
 	 */
 	static public function isNewPage($id, $language = 0) {
 		$isNewPage = FALSE;
@@ -551,7 +551,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param int $pageUid
 	 * @param int $workspaceUid
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canCreatePreviewLink($pageUid, $workspaceUid) {
 		$result = TRUE;
@@ -624,7 +624,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @throws \InvalidArgumentException
 	 * @param int $uid
-	 * @return integer
+	 * @return int
 	 */
 	public function getLivePageUid($uid) {
 		if (!isset($this->pageCache[$uid])) {

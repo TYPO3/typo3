@@ -67,7 +67,7 @@ class StagesService {
 	/**
 	 * Getter for current workspace id
 	 *
-	 * @return integer Current workspace id
+	 * @return int Current workspace id
 	 */
 	public function getWorkspaceId() {
 		return $this->getBackendUser()->workspace;
@@ -255,7 +255,7 @@ class StagesService {
 	/**
 	 * Check if given workspace has custom staging activated
 	 *
-	 * @return boolean
+	 * @return bool
 	 * @deprecated since TYPO3 6.2, will be removed two versions later
 	 * not used anymore in the TYPO3 CMS Core
 	 */
@@ -306,7 +306,7 @@ class StagesService {
 	 * Gets next stage in process for given stage id
 	 *
 	 * @param int $stageId Id of the stage to fetch the next one for
-	 * @return integer The next stage Id
+	 * @return int The next stage Id
 	 * @throws \InvalidArgumentException
 	 */
 	public function getNextStage($stageId) {
@@ -373,7 +373,7 @@ class StagesService {
 	 * Get next stage in process for given stage id
 	 *
 	 * @param int $stageId Id of the stage to fetch the previous one for
-	 * @return integer The previous stage Id
+	 * @return int The previous stage Id
 	 * @throws \InvalidArgumentException
 	 */
 	public function getPrevStage($stageId) {
@@ -641,7 +641,7 @@ class StagesService {
 	 * Check if the user has access to the previous stage, relative to the given stage
 	 *
 	 * @param int $stageId
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isPrevStageAllowedForUser($stageId) {
 		$isAllowed = FALSE;
@@ -663,7 +663,7 @@ class StagesService {
 	 * Check if the user has access to the next stage, relative to the given stage
 	 *
 	 * @param int $stageId
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isNextStageAllowedForUser($stageId) {
 		$isAllowed = FALSE;
@@ -683,7 +683,7 @@ class StagesService {
 
 	/**
 	 * @param $stageId
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isStageAllowedForUser($stageId) {
 		$cacheKey = $this->getWorkspaceId() . '_' . $stageId;
@@ -701,7 +701,7 @@ class StagesService {
 	 * Determines whether a stage Id is valid.
 	 *
 	 * @param int $stageId The stage Id to be checked
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isValid($stageId) {
 		$isValid = FALSE;
@@ -724,7 +724,7 @@ class StagesService {
 	 * 2 = notify all responsible users (all users are checked and nothing can be changed during stage change)
 	 *
 	 * @param int $stageId Stage id to return the notification mode for
-	 * @return integer
+	 * @return int
 	 * @throws \InvalidArgumentException
 	 */
 	public function getNotificationMode($stageId) {

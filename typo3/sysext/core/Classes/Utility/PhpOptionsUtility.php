@@ -24,7 +24,7 @@ class PhpOptionsUtility {
 	/**
 	 * Check if php sql.safe_mode is enabled
 	 *
-	 * @return boolean TRUE if sql.safe_mode is enabled, FALSE if disabled
+	 * @return bool TRUE if sql.safe_mode is enabled, FALSE if disabled
 	 * @deprecated since 6.2, will be removed two versions later
 	 */
 	static public function isSqlSafeModeEnabled() {
@@ -35,7 +35,7 @@ class PhpOptionsUtility {
 	/**
 	 * Check if php session.auto_start is enabled
 	 *
-	 * @return boolean TRUE if session.auto_start is enabled, FALSE if disabled
+	 * @return bool TRUE if session.auto_start is enabled, FALSE if disabled
 	 */
 	static public function isSessionAutoStartEnabled() {
 		return self::getIniValueBoolean('session.auto_start');
@@ -45,7 +45,7 @@ class PhpOptionsUtility {
 	 * Cast a on/off php ini value to boolean
 	 *
 	 * @param string $configOption
-	 * @return boolean TRUE if the given option is enabled, FALSE if disabled
+	 * @return bool TRUE if the given option is enabled, FALSE if disabled
 	 */
 	static public function getIniValueBoolean($configOption) {
 		return filter_var(ini_get($configOption), FILTER_VALIDATE_BOOLEAN, array(FILTER_REQUIRE_SCALAR, FILTER_NULL_ON_FAILURE));

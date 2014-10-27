@@ -41,7 +41,7 @@ interface PersistenceManagerInterface {
 	 * Checks if the given object has ever been persisted.
 	 *
 	 * @param object $object The object to check
-	 * @return boolean TRUE if the object is new, FALSE if the object exists in the repository
+	 * @return bool TRUE if the object is new, FALSE if the object exists in the repository
 	 * @api
 	 */
 	public function isNewObject($object);
@@ -78,7 +78,7 @@ interface PersistenceManagerInterface {
 	 * Returns the number of records matching the query.
 	 *
 	 * @param QueryInterface $query
-	 * @return integer
+	 * @return int
 	 * @deprecated since Extbase 6.0, will be removed in Extbase 7.0. It is deprecated only in the interface to be more
 	 * in sync with Flow in future and will stay in Generic Persistence.
 	 * @api

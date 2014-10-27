@@ -697,7 +697,7 @@ class SetupModuleController {
 	 * Returns access check (currently only "admin" is supported)
 	 *
 	 * @param array $config Configuration of the field, access mode is defined in key 'access'
-	 * @return boolean Whether it is allowed to modify the given field
+	 * @return bool Whether it is allowed to modify the given field
 	 */
 	protected function checkAccess(array $config) {
 		$access = $config['access'];

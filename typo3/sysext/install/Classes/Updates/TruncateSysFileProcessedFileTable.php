@@ -28,7 +28,7 @@ class TruncateSysFileProcessedFileTable extends AbstractUpdate {
 	 * Checks whether updates are required.
 	 *
 	 * @param string &$description The description for the update
-	 * @return boolean Whether an update is required (TRUE) or not (FALSE)
+	 * @return bool Whether an update is required (TRUE) or not (FALSE)
 	 */
 	public function checkForUpdate(&$description) {
 		if ($this->isWizardDone() || !$this->checkIfTableExists('sys_file_processedfile')) {
@@ -44,7 +44,7 @@ class TruncateSysFileProcessedFileTable extends AbstractUpdate {
 	 *
 	 * @param array &$databaseQueries Queries done in this update
 	 * @param mixed &$customMessages Custom messages
-	 * @return boolean Whether everything went smoothly or not
+	 * @return bool Whether everything went smoothly or not
 	 */
 	public function performUpdate(array &$databaseQueries, &$customMessages) {
 		$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('sys_file_processedfile');

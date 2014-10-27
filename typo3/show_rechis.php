@@ -15,7 +15,7 @@
 /**
  * Shows information about a database or file item
  *
- * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 require __DIR__ . '/init.php';
 
