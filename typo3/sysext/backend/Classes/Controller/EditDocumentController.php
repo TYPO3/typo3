@@ -823,7 +823,7 @@ class EditDocumentController {
 			$buttons['save'] = IconUtility::getSpriteIcon('actions-document-save', array('html' => '<input type="image" name="_savedok" class="c-inputButton" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" />'));
 			// SAVE / VIEW button:
 			if ($this->viewId && !$this->noView && $this->getNewIconMode($this->firstEl['table'], 'saveDocView')) {
-				$buttons['save_view'] = IconUtility::getSpriteIcon('actions-document-save-view', array('html' => '<input type="image" class="c-inputButton" name="_savedokview" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', TRUE) . '" />'));
+				$buttons['save_view'] = IconUtility::getSpriteIcon('actions-document-save-view', array('html' => '<input onclick="window.open(\'\', \'newTYPO3frontendWindow\');" type="image" class="c-inputButton" name="_savedokview" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', TRUE) . '" />'));
 			}
 			// SAVE / NEW button:
 			if (count($this->elementsData) == 1 && $this->getNewIconMode($this->firstEl['table'])) {
