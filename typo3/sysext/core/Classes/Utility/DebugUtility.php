@@ -89,7 +89,7 @@ class DebugUtility {
 					});
 				})();
 			';
-			echo \TYPO3\CMS\Core\Utility\GeneralUtility::wrapJS($script);
+			echo GeneralUtility::wrapJS($script);
 		} else {
 			echo $debug;
 		}
@@ -161,7 +161,7 @@ class DebugUtility {
 				}
 			})();
 		';
-		echo \TYPO3\CMS\Core\Utility\GeneralUtility::wrapJS($script);
+		echo GeneralUtility::wrapJS($script);
 	}
 
 	/**
@@ -178,7 +178,7 @@ class DebugUtility {
 			$pathFragment = $dat['class'] . $dat['type'] . $dat['function'];
 			// add the path of the included file
 			if (in_array($dat['function'], array('require', 'include', 'require_once', 'include_once'))) {
-				$pathFragment .= '(' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($dat['args'][0]) . '),' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($dat['file']);
+				$pathFragment .= '(' . PathUtility::stripPathSitePrefix($dat['args'][0]) . '),' . PathUtility::stripPathSitePrefix($dat['file']);
 			}
 			$path[] = $pathFragment . '#' . $dat['line'];
 		}

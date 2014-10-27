@@ -39,7 +39,7 @@ class ClientUtility {
 				// need reference for third parameter in \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction,
 				// so create a reference to NULL
 				$null = NULL;
-				$hookResult = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($hookFunction, $hookParameters, $null);
+				$hookResult = GeneralUtility::callUserFunction($hookFunction, $hookParameters, $null);
 				if ($returnResult && is_array($hookResult) && count($hookResult)) {
 					return $hookResult;
 				}

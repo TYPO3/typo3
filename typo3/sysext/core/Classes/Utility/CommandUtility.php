@@ -101,7 +101,7 @@ class CommandUtility {
 		if (!$path) {
 			$path = $gfxConf['im_path'];
 		}
-		$path = \TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath($path);
+		$path = GeneralUtility::fixWindowsFilePath($path);
 		$im_version = strtolower($gfxConf['im_version_5']);
 		// This is only used internally, has no effect outside
 		if ($command === 'combine') {
@@ -132,7 +132,7 @@ class CommandUtility {
 		// Because of some weird incompatibilities between ImageMagick 4 and 6 (plus GraphicsMagick),
 		// it is needed to change the parameters order under some preconditions
 		if ($command == 'composite' && $switchCompositeParameters) {
-			$paramsArr = \TYPO3\CMS\Core\Utility\GeneralUtility::unQuoteFilenames($parameters);
+			$paramsArr = GeneralUtility::unQuoteFilenames($parameters);
 			// The mask image has been specified => swap the parameters
 			if (count($paramsArr) > 5) {
 				$tmp = $paramsArr[count($paramsArr) - 3];

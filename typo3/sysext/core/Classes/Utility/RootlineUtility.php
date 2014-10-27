@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Core\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Frontend\Page\PageRepository;
+
 /**
  * A utility resolving and Caching the Rootline generation
  *
@@ -119,14 +121,14 @@ class RootlineUtility {
 	 * @param \TYPO3\CMS\Frontend\Page\PageRepository $context
 	 * @throws \RuntimeException
 	 */
-	public function __construct($uid, $mountPointParameter = '', \TYPO3\CMS\Frontend\Page\PageRepository $context = NULL) {
+	public function __construct($uid, $mountPointParameter = '', PageRepository $context = NULL) {
 		$this->pageUid = (int)$uid;
 		$this->mountPointParameter = trim($mountPointParameter);
 		if ($context === NULL) {
 			if (isset($GLOBALS['TSFE']) && is_object($GLOBALS['TSFE']) && is_object($GLOBALS['TSFE']->sys_page)) {
 				$this->pageContext = $GLOBALS['TSFE']->sys_page;
 			} else {
-				$this->pageContext = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+				$this->pageContext = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
 			}
 		} else {
 			$this->pageContext = $context;
@@ -152,9 +154,9 @@ class RootlineUtility {
 			}
 		}
 		if (self::$cache === NULL) {
-			self::$cache = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_rootline');
+			self::$cache = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_rootline');
 		}
-		self::$rootlineFields = array_merge(self::$rootlineFields, \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields'], TRUE));
+		self::$rootlineFields = array_merge(self::$rootlineFields, GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields'], TRUE));
 		self::$rootlineFields = array_unique(self::$rootlineFields);
 		$this->databaseConnection = $GLOBALS['TYPO3_DB'];
 
@@ -238,7 +240,7 @@ class RootlineUtility {
 	protected function getRecordArray($uid) {
 		$currentCacheIdentifier = $this->getCacheIdentifier($uid);
 		if (!isset(self::$pageRecordCache[$currentCacheIdentifier])) {
-			$row = $this->databaseConnection->exec_SELECTgetSingleRow(implode(',', self::$rootlineFields), 'pages', 'uid = ' . (int)$uid . ' AND pages.deleted = 0 AND pages.doktype <> ' . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER);
+			$row = $this->databaseConnection->exec_SELECTgetSingleRow(implode(',', self::$rootlineFields), 'pages', 'uid = ' . (int)$uid . ' AND pages.deleted = 0 AND pages.doktype <> ' . PageRepository::DOKTYPE_RECYCLER);
 			if (empty($row)) {
 				throw new \RuntimeException('Could not fetch page data for uid ' . $uid . '.', 1343589451);
 			}
@@ -267,13 +269,13 @@ class RootlineUtility {
 	 * @return array $pageRecord with additional relations
 	 */
 	protected function enrichWithRelationFields($uid, array $pageRecord) {
-		$pageOverlayFields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['pageOverlayFields']);
+		$pageOverlayFields = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['pageOverlayFields']);
 		foreach ($GLOBALS['TCA']['pages']['columns'] as $column => $configuration) {
 			if ($this->columnHasRelationToResolve($configuration)) {
 				$configuration = $configuration['config'];
 				if ($configuration['MM']) {
 					/** @var $loadDBGroup \TYPO3\CMS\Core\Database\RelationHandler */
-					$loadDBGroup = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+					$loadDBGroup = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
 					$loadDBGroup->start(
 						$pageRecord[$column],
 						isset($configuration['allowed']) ? $configuration['allowed'] : $configuration['foreign_table'],
@@ -364,7 +366,7 @@ class RootlineUtility {
 			// Get rootline of (and including) parent page
 			$mountPointParameter = count($this->parsedMountPointParameters) > 0 ? $this->mountPointParameter : '';
 			/** @var $rootline \TYPO3\CMS\Core\Utility\RootlineUtility */
-			$rootline = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\RootlineUtility', $parentUid, $mountPointParameter, $this->pageContext);
+			$rootline = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\RootlineUtility', $parentUid, $mountPointParameter, $this->pageContext);
 			$rootline = $rootline->get();
 			// retrieve cache tags of parent rootline
 			foreach ($rootline as $entry) {
@@ -429,9 +431,9 @@ class RootlineUtility {
 	 * @return void
 	 */
 	protected function parseMountPointParameter() {
-		$mountPoints = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->mountPointParameter);
+		$mountPoints = GeneralUtility::trimExplode(',', $this->mountPointParameter);
 		foreach ($mountPoints as $mP) {
-			list($mountedPageUid, $mountPageUid) = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode('-', $mP);
+			list($mountedPageUid, $mountPageUid) = GeneralUtility::intExplode('-', $mP);
 			$this->parsedMountPointParameters[$mountedPageUid] = $mountPageUid;
 		}
 	}

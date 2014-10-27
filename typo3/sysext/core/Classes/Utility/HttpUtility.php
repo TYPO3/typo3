@@ -75,7 +75,7 @@ class HttpUtility {
 	 */
 	static public function redirect($url, $httpStatus = self::HTTP_STATUS_303) {
 		self::setResponseCode($httpStatus);
-		header('Location: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($url));
+		header('Location: ' . GeneralUtility::locationHeaderUrl($url));
 		die;
 	}
 

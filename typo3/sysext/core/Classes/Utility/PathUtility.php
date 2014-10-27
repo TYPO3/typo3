@@ -45,7 +45,7 @@ class PathUtility {
 		$targetPath = rtrim(GeneralUtility::fixWindowsFilePath($targetPath), '/');
 		if ($sourcePath !== $targetPath) {
 			$commonPrefix = self::getCommonPrefix(array($sourcePath, $targetPath));
-			if ($commonPrefix !== NULL && \TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath($commonPrefix)) {
+			if ($commonPrefix !== NULL && GeneralUtility::isAllowedAbsPath($commonPrefix)) {
 				$commonPrefixLength = strlen($commonPrefix);
 				$resolvedSourcePath = '';
 				$resolvedTargetPath = '';

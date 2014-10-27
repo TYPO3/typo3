@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Core\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Category\CategoryRegistry;
+use TYPO3\CMS\Core\Package\PackageManager;
 
 /**
  * Extension Management functions
@@ -50,7 +52,7 @@ class ExtensionManagementUtility {
 	 * @param \TYPO3\CMS\Core\Package\PackageManager $packageManager
 	 * @internal
 	 */
-	static public function setPackageManager(\TYPO3\CMS\Core\Package\PackageManager $packageManager) {
+	static public function setPackageManager(PackageManager $packageManager) {
 		static::$packageManager = $packageManager;
 	}
 
@@ -156,7 +158,7 @@ class ExtensionManagementUtility {
 	 * @return string
 	 */
 	static public function siteRelPath($key) {
-		return \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix(self::extPath($key));
+		return PathUtility::stripPathSitePrefix(self::extPath($key));
 	}
 
 	/**
@@ -460,7 +462,7 @@ class ExtensionManagementUtility {
 		$GLOBALS['TCA'][$table]['columns'][$field]['config']['items'] = array_values($GLOBALS['TCA'][$table]['columns'][$field]['config']['items']);
 		if (strlen($relativePosition) > 0) {
 			// Insert at specified position
-			$matchedPosition = \TYPO3\CMS\Core\Utility\ArrayUtility::filterByValueRecursive($relativeToField, $GLOBALS['TCA'][$table]['columns'][$field]['config']['items']);
+			$matchedPosition = ArrayUtility::filterByValueRecursive($relativeToField, $GLOBALS['TCA'][$table]['columns'][$field]['config']['items']);
 			if (count($matchedPosition) > 0) {
 				$relativeItemKey = key($matchedPosition);
 				if ($relativePosition === 'replace') {
@@ -549,7 +551,7 @@ class ExtensionManagementUtility {
 				'localizeChildrenAtParentLocalization' => TRUE,
 			),
 		);
-		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($fileFieldTCAConfig, $customSettingOverride);
+		ArrayUtility::mergeRecursiveWithOverrule($fileFieldTCAConfig, $customSettingOverride);
 		return $fileFieldTCAConfig;
 	}
 
@@ -783,7 +785,7 @@ class ExtensionManagementUtility {
 		if ($mainModuleName === 'web') {
 			$defaultModuleConfiguration['navigationComponentId'] = 'typo3-pagetree';
 		}
-		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($defaultModuleConfiguration, $moduleConfiguration);
+		ArrayUtility::mergeRecursiveWithOverrule($defaultModuleConfiguration, $moduleConfiguration);
 		$moduleConfiguration = $defaultModuleConfiguration;
 		if (strlen($subModuleName) > 0) {
 			$moduleSignature = $mainModuleName . '_' . $subModuleName;
@@ -1203,7 +1205,7 @@ class ExtensionManagementUtility {
 			$executables = GeneralUtility::trimExplode(',', $serviceDetails['exec'], TRUE);
 			foreach ($executables as $executable) {
 				// If at least one executable file is not available, exit early returning FALSE
-				if (!\TYPO3\CMS\Core\Utility\CommandUtility::checkCommand($executable)) {
+				if (!CommandUtility::checkCommand($executable)) {
 					self::deactivateService($serviceType, $serviceKey);
 					return FALSE;
 				}
@@ -1648,7 +1650,7 @@ tt_content.' . $key . $prefix . ' {
 		}
 
 		// Apply category stuff
-		\TYPO3\CMS\Core\Category\CategoryRegistry::getInstance()->applyTcaForPreRegisteredTables();
+		CategoryRegistry::getInstance()->applyTcaForPreRegisteredTables();
 
 		// Execute override files from Configuration/TCA/Overrides
 		foreach ($activePackages as $package) {
@@ -1953,7 +1955,7 @@ tt_content.' . $key . $prefix . ' {
 	 */
 	static public function makeCategorizable($extensionKey, $tableName, $fieldName = 'categories', array $options = array()) {
 		// Update the category registry
-		$result = \TYPO3\CMS\Core\Category\CategoryRegistry::getInstance()->add($extensionKey, $tableName, $fieldName, $options);
+		$result = CategoryRegistry::getInstance()->add($extensionKey, $tableName, $fieldName, $options);
 		if ($result === FALSE) {
 			$message = '\TYPO3\CMS\Core\Category\CategoryRegistry: no category registered for table "%s". Key was already registered.';
 			/** @var $logger \TYPO3\CMS\Core\Log\Logger */

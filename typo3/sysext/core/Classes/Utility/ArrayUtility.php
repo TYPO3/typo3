@@ -62,7 +62,7 @@ class ArrayUtility {
 			if ($value === $needle) {
 				($resultArray[$key] = $value);
 			} elseif (is_array($value)) {
-				($subArrayMatches = \TYPO3\CMS\Core\Utility\ArrayUtility::filterByValueRecursive($needle, $value));
+				($subArrayMatches = static::filterByValueRecursive($needle, $value));
 				if (count($subArrayMatches) > 0) {
 					($resultArray[$key] = $subArrayMatches);
 				}

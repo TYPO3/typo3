@@ -27,15 +27,15 @@ class MonitorUtility {
 	 */
 	static public function peakMemoryUsage() {
 		$peakUsage = memory_get_peak_usage(TRUE);
-		$memoryLimit = \TYPO3\CMS\Core\Utility\GeneralUtility::getBytesFromSizeMeasurement(ini_get('memory_limit'));
+		$memoryLimit = GeneralUtility::getBytesFromSizeMeasurement(ini_get('memory_limit'));
 		if (is_double($memoryLimit) && $memoryLimit != 0) {
 			if ($peakUsage / $memoryLimit >= 0.9) {
 				/** @var $registry \TYPO3\CMS\Core\Registry */
-				$registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
+				$registry = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
 				$data = array(
 					'used' => $peakUsage,
 					'tstamp' => $GLOBALS['EXEC_TIME'],
-					'url' => \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')
+					'url' => GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')
 				);
 				$registry->set('core', 'reports-peakMemoryUsage', $data);
 			}

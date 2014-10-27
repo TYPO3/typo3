@@ -13,6 +13,10 @@ namespace TYPO3\CMS\Core\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Core\ApplicationContext;
+use TYPO3\CMS\Core\Core\ClassLoader;
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * The legendary "t3lib_div" class - Miscellaneous functions for general purpose.
@@ -285,7 +289,7 @@ class GeneralUtility {
 				// Rename could fail, if a simultaneous thread is currently working on the same thing
 				if (@rename($theFile, $temporaryName)) {
 					$cmd = self::imageMagickCommand('convert', '"' . $temporaryName . '" "' . $theFile . '"', $gfxConf['im_path_lzw']);
-					\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
+					CommandUtility::exec($cmd);
 					unlink($temporaryName);
 				}
 				$returnCode = 'IM';
@@ -318,7 +322,7 @@ class GeneralUtility {
 			// IM
 			$newFile = substr($theFile, 0, -4) . '.gif';
 			$cmd = self::imageMagickCommand('convert', '"' . $theFile . '" "' . $newFile . '"', $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw']);
-			\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
+			CommandUtility::exec($cmd);
 			$theFile = $newFile;
 			if (@is_file($newFile)) {
 				self::fixPermissions($newFile);
@@ -343,7 +347,7 @@ class GeneralUtility {
 			} else {
 				$newFile = PATH_site . 'typo3temp/readPG_' . md5(($theFile . '|' . filemtime($theFile))) . ($output_png ? '.png' : '.gif');
 				$cmd = self::imageMagickCommand('convert', '"' . $theFile . '" "' . $newFile . '"', $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path']);
-				\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
+				CommandUtility::exec($cmd);
 				if (@is_file($newFile)) {
 					self::fixPermissions($newFile);
 					return $newFile;
@@ -776,7 +780,7 @@ class GeneralUtility {
 	 */
 	static public function compat_version($verNumberStr) {
 		$currVersionStr = $GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version'] : TYPO3_branch;
-		if (\TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger($currVersionStr) < \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger($verNumberStr)) {
+		if (VersionNumberUtility::convertVersionNumberToInteger($currVersionStr) < VersionNumberUtility::convertVersionNumberToInteger($verNumberStr)) {
 			return FALSE;
 		} else {
 			return TRUE;
@@ -913,9 +917,9 @@ class GeneralUtility {
 	 */
 	static public function modifyHTMLColor($color, $R, $G, $B) {
 		// This takes a hex-color (# included!) and adds $R, $G and $B to the HTML-color (format: #xxxxxx) and returns the new color
-		$nR = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(hexdec(substr($color, 1, 2)) + $R, 0, 255);
-		$nG = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(hexdec(substr($color, 3, 2)) + $G, 0, 255);
-		$nB = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(hexdec(substr($color, 5, 2)) + $B, 0, 255);
+		$nR = MathUtility::forceIntegerInRange(hexdec(substr($color, 1, 2)) + $R, 0, 255);
+		$nG = MathUtility::forceIntegerInRange(hexdec(substr($color, 3, 2)) + $G, 0, 255);
+		$nB = MathUtility::forceIntegerInRange(hexdec(substr($color, 5, 2)) + $B, 0, 255);
 		return '#' . substr(('0' . dechex($nR)), -2) . substr(('0' . dechex($nG)), -2) . substr(('0' . dechex($nB)), -2);
 	}
 
@@ -2111,7 +2115,7 @@ class GeneralUtility {
 			if (isset($options['grandParentTagMap'][$stackData['grandParentTagName'] . '/' . $stackData['parentTagName']])) {
 				$attr .= ' index="' . htmlspecialchars($tagName) . '"';
 				$tagName = (string) $options['grandParentTagMap'][($stackData['grandParentTagName'] . '/' . $stackData['parentTagName'])];
-			} elseif (isset($options['parentTagMap'][$stackData['parentTagName'] . ':_IS_NUM']) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($tagName)) {
+			} elseif (isset($options['parentTagMap'][$stackData['parentTagName'] . ':_IS_NUM']) && MathUtility::canBeInterpretedAsInteger($tagName)) {
 				// Use tag based on parent tag name + if current tag is numeric
 				$attr .= ' index="' . htmlspecialchars($tagName) . '"';
 				$tagName = (string) $options['parentTagMap'][($stackData['parentTagName'] . ':_IS_NUM')];
@@ -2214,10 +2218,10 @@ class GeneralUtility {
 			$array = $firstLevelCache[$identifier];
 		} else {
 			// Look up in second level cache
-			$array = \TYPO3\CMS\Frontend\Page\PageRepository::getHash($identifier, 0);
+			$array = PageRepository::getHash($identifier, 0);
 			if (!is_array($array)) {
 				$array = self::xml2arrayProcess($string, $NSprefix, $reportDocTag);
-				\TYPO3\CMS\Frontend\Page\PageRepository::storeHash($identifier, $array, 'ident_xml2array');
+				PageRepository::storeHash($identifier, $array, 'ident_xml2array');
 			}
 			// Store content in first level cache
 			$firstLevelCache[$identifier] = $array;
@@ -3467,7 +3471,7 @@ Connection: close
 				break;
 			case 'TYPO3_SITE_URL':
 				if (defined('PATH_thisScript') && defined('PATH_site')) {
-					$lPath = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix(dirname(PATH_thisScript)) . '/';
+					$lPath = PathUtility::stripPathSitePrefix(dirname(PATH_thisScript)) . '/';
 					$url = self::getIndpEnv('TYPO3_REQUEST_DIR');
 					$siteUrl = substr($url, 0, -strlen($lPath));
 					if (substr($siteUrl, -1) != '/') {
@@ -3724,8 +3728,8 @@ Connection: close
 		if (strpos($filename, 'EXT:') === 0) {
 			list($extKey, $local) = explode('/', substr($filename, 4), 2);
 			$filename = '';
-			if ((string)$extKey !== '' && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey) && (string)$local !== '') {
-				$filename = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extKey) . $local;
+			if ((string)$extKey !== '' && ExtensionManagementUtility::isLoaded($extKey) && (string)$local !== '') {
+				$filename = ExtensionManagementUtility::extPath($extKey) . $local;
 			}
 		} elseif (!self::isAbsPath($filename)) {
 			// relative. Prepended with $relPathPrefix
@@ -4319,7 +4323,7 @@ Connection: close
 		// Create new instance and call constructor with parameters
 		$instance = static::instantiateClass($finalClassName, func_get_args());
 		// Register new singleton instance
-		if ($instance instanceof \TYPO3\CMS\Core\SingletonInterface) {
+		if ($instance instanceof SingletonInterface) {
 			self::$singletonInstances[$finalClassName] = $instance;
 		}
 		return $instance;
@@ -4386,7 +4390,7 @@ Connection: close
 				$className = static::getImplementationForClass($className);
 			}
 		}
-		return \TYPO3\CMS\Core\Core\ClassLoader::getClassNameForAlias($className);
+		return ClassLoader::getClassNameForAlias($className);
 	}
 
 	/**
@@ -4434,7 +4438,7 @@ Connection: close
 	 * @return void
 	 * @internal
 	 */
-	static public function setSingletonInstance($className, \TYPO3\CMS\Core\SingletonInterface $instance) {
+	static public function setSingletonInstance($className, SingletonInterface $instance) {
 		self::checkInstanceClassName($className, $instance);
 		self::$singletonInstances[$className] = $instance;
 	}
@@ -4455,7 +4459,7 @@ Connection: close
 	 * @return void
 	 * @internal
 	 */
-	static public function removeSingletonInstance($className, \TYPO3\CMS\Core\SingletonInterface $instance) {
+	static public function removeSingletonInstance($className, SingletonInterface $instance) {
 		self::checkInstanceClassName($className, $instance);
 		if (!isset(self::$singletonInstances[$className])) {
 			throw new \InvalidArgumentException('No Instance registered for ' . $className . '.', 1394099179);
@@ -4520,7 +4524,7 @@ Connection: close
 	 */
 	static public function addInstance($className, $instance) {
 		self::checkInstanceClassName($className, $instance);
-		if ($instance instanceof \TYPO3\CMS\Core\SingletonInterface) {
+		if ($instance instanceof SingletonInterface) {
 			throw new \InvalidArgumentException('$instance must not be an instance of TYPO3\\CMS\\Core\\SingletonInterface. ' . 'For setting singletons, please use setSingletonInstance.', 1288969325);
 		}
 		if (!isset(self::$nonSingletonInstances[$className])) {
@@ -4582,7 +4586,7 @@ Connection: close
 			'requestedServiceSubType' => $serviceSubType,
 			'requestedExcludeServiceKeys' => $excludeServiceKeys
 		);
-		while ($info = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::findService($serviceType, $serviceSubType, $excludeServiceKeys)) {
+		while ($info = ExtensionManagementUtility::findService($serviceType, $serviceSubType, $excludeServiceKeys)) {
 			// provide information about requested service to service object
 			$info = array_merge($info, $requestInfo);
 			// Check persistent object and if found, call directly and exit.
@@ -4597,7 +4601,7 @@ Connection: close
 				if (is_object($obj)) {
 					if (!@is_callable(array($obj, 'init'))) {
 						// use silent logging??? I don't think so.
-						die('Broken service:' . \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($info));
+						die('Broken service:' . DebugUtility::viewArray($info));
 					}
 					$obj->info = $info;
 					// service available?
@@ -4611,7 +4615,7 @@ Connection: close
 				}
 			}
 			// deactivate the service
-			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::deactivateService($info['serviceType'], $info['serviceKey']);
+			ExtensionManagementUtility::deactivateService($info['serviceType'], $info['serviceKey']);
 		}
 		return $error;
 	}
@@ -4865,7 +4869,7 @@ Connection: close
 				openlog($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'], LOG_ODELAY, $facility);
 			}
 		}
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLogLevel'] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLogLevel'], 0, 4);
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLogLevel'] = MathUtility::forceIntegerInRange($GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLogLevel'], 0, 4);
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogInit'] = TRUE;
 	}
 
@@ -4881,7 +4885,7 @@ Connection: close
 	 * @return void
 	 */
 	static public function sysLog($msg, $extKey, $severity = 0) {
-		$severity = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($severity, 0, 4);
+		$severity = MathUtility::forceIntegerInRange($severity, 0, 4);
 		// Is message worth logging?
 		if ((int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLogLevel'] > $severity) {
 			return;
@@ -4923,7 +4927,7 @@ Connection: close
 			} elseif ($type == 'mail') {
 				list($to, $from) = explode('/', $destination);
 				if (!self::validEmail($from)) {
-					$from = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFrom();
+					$from = MailUtility::getSystemFrom();
 				}
 				/** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
 				$mail = self::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
@@ -5000,7 +5004,7 @@ Connection: close
 		}
 		// Do not use console in login screen
 		if (in_array('console', $log) !== FALSE && isset($GLOBALS['BE_USER']->user['uid'])) {
-			\TYPO3\CMS\Core\Utility\DebugUtility::debug($msg, $date, 'Deprecation Log');
+			DebugUtility::debug($msg, $date, 'Deprecation Log');
 		}
 	}
 
@@ -5042,8 +5046,8 @@ Connection: close
 		}
 			// Write a longer message to the deprecation log: <function> <annotion> - <trace> (<source>)
 		$logMsg = $trail[1]['class'] . $trail[1]['type'] . $trail[1]['function'];
-		$logMsg .= '() - ' . $msg . ' - ' . \TYPO3\CMS\Core\Utility\DebugUtility::debugTrail();
-		$logMsg .= ' (' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($function->getFileName()) . '#' . $function->getStartLine() . ')';
+		$logMsg .= '() - ' . $msg . ' - ' . DebugUtility::debugTrail();
+		$logMsg .= ' (' . PathUtility::stripPathSitePrefix($function->getFileName()) . '#' . $function->getStartLine() . ')';
 		self::deprecationLog($logMsg);
 	}
 
@@ -5079,7 +5083,7 @@ Connection: close
 	 * @return string Compiled command that deals with IM6 & GraphicsMagick
 	 */
 	static public function imageMagickCommand($command, $parameters, $path = '') {
-		return \TYPO3\CMS\Core\Utility\CommandUtility::imageMagickCommand($command, $parameters, $path);
+		return CommandUtility::imageMagickCommand($command, $parameters, $path);
 	}
 
 	/**
@@ -5187,7 +5191,7 @@ Connection: close
 	 * @throws \RuntimeException if applicationContext is overriden
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
-	static public function presetApplicationContext(\TYPO3\CMS\Core\Core\ApplicationContext $applicationContext) {
+	static public function presetApplicationContext(ApplicationContext $applicationContext) {
 		if (is_null(static::$applicationContext)) {
 			static::$applicationContext = $applicationContext;
 		} else {

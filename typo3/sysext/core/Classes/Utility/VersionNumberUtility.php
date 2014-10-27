@@ -87,10 +87,10 @@ class VersionNumberUtility {
 	static public function getNumericTypo3Version() {
 		$t3version = static::getCurrentTypo3Version();
 		$t3version = preg_replace('/-?(dev|alpha|beta|RC).*$/', '', $t3version);
-		$parts = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode('.', $t3version . '..');
-		$t3version = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($parts[0], 0, 999) . '.' .
-			\TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($parts[1], 0, 999) . '.' .
-			\TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($parts[2], 0, 999);
+		$parts = GeneralUtility::intExplode('.', $t3version . '..');
+		$t3version = MathUtility::forceIntegerInRange($parts[0], 0, 999) . '.' .
+			MathUtility::forceIntegerInRange($parts[1], 0, 999) . '.' .
+			MathUtility::forceIntegerInRange($parts[2], 0, 999);
 		return $t3version;
 	}
 
@@ -113,13 +113,13 @@ class VersionNumberUtility {
 	 * @return array
 	 */
 	static public function convertVersionsStringToVersionNumbers($versionsString) {
-		$versions = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('-', $versionsString);
+		$versions = GeneralUtility::trimExplode('-', $versionsString);
 		$versionsCount = count($versions);
 		for ($i = 0; $i < $versionsCount; $i++) {
-			$cleanedVersion = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $versions[$i]);
+			$cleanedVersion = GeneralUtility::trimExplode('.', $versions[$i]);
 			$cleanedVersionCount = count($cleanedVersion);
 			for ($j = 0; $j < $cleanedVersionCount; $j++) {
-				$cleanedVersion[$j] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($cleanedVersion[$j], 0, 999);
+				$cleanedVersion[$j] = MathUtility::forceIntegerInRange($cleanedVersion[$j], 0, 999);
 			}
 			$cleanedVersionString = implode('.', $cleanedVersion);
 			if (static::convertVersionNumberToInteger($cleanedVersionString) === 0) {
@@ -138,10 +138,10 @@ class VersionNumberUtility {
 	 * @return array
 	 */
 	static public function convertVersionStringToArray($version) {
-		$parts = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode('.', $version . '..');
-		$parts[0] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($parts[0], 0, 999);
-		$parts[1] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($parts[1], 0, 999);
-		$parts[2] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($parts[2], 0, 999);
+		$parts = GeneralUtility::intExplode('.', $version . '..');
+		$parts[0] = MathUtility::forceIntegerInRange($parts[0], 0, 999);
+		$parts[1] = MathUtility::forceIntegerInRange($parts[1], 0, 999);
+		$parts[2] = MathUtility::forceIntegerInRange($parts[2], 0, 999);
 		$result = array();
 		$result['version'] = $parts[0] . '.' . $parts[1] . '.' . $parts[2];
 		$result['version_int'] = (int)($parts[0] * 1000000 + $parts[1] * 1000 + $parts[2]);
@@ -163,10 +163,10 @@ class VersionNumberUtility {
 		if (!in_array($raise, array('main', 'sub', 'dev'))) {
 			throw new \TYPO3\CMS\Core\Exception('RaiseVersionNumber expects one of "main", "sub" or "dev".', 1342639555);
 		}
-		$parts = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode('.', $version . '..');
-		$parts[0] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($parts[0], 0, 999);
-		$parts[1] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($parts[1], 0, 999);
-		$parts[2] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($parts[2], 0, 999);
+		$parts = GeneralUtility::intExplode('.', $version . '..');
+		$parts[0] = MathUtility::forceIntegerInRange($parts[0], 0, 999);
+		$parts[1] = MathUtility::forceIntegerInRange($parts[1], 0, 999);
+		$parts[2] = MathUtility::forceIntegerInRange($parts[2], 0, 999);
 		switch ((string) $raise) {
 			case 'main':
 				$parts[0]++;
