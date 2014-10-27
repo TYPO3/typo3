@@ -2461,7 +2461,7 @@ class InlineElement {
 	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tce Instance of TCEmain that saved data before
 	 * @return void
 	 */
-	public function updateInlineView(&$uc, $tce) {
+	static public function updateInlineView(&$uc, $tce) {
 		if (isset($uc['inlineView']) && is_array($uc['inlineView'])) {
 			$inlineView = (array) unserialize($GLOBALS['BE_USER']->uc['inlineView']);
 			foreach ($uc['inlineView'] as $topTable => $topRecords) {
