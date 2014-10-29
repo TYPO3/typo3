@@ -1609,7 +1609,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 				// all pages after the 1st one
 				$links[] = '<li>' . $this->makePointerSelector_link($this->pi_getLL('pi_list_browseresults_prev', '< Previous', TRUE), $pointer - 1, $freeIndexUid) . '</li>';
 			}
-			$minPage = $pointer - floor($maxPages / 2);
+			$minPage = $pointer - (int)floor($maxPages / 2);
 			$maxPage = $minPage + $maxPages - 1;
 			// Check if the indexes are within the page limits
 			if ($minPage < 0) {
