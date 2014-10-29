@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Extbase\Reflection;
  */
 
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
+use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 
 /**
  * A backport of the FLOW3 reflection service for aquiring reflection based information.
@@ -503,7 +504,14 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 			if (isset($methodTagsAndValues['param']) && isset($methodTagsAndValues['param'][$parameterPosition])) {
 				$explodedParameters = explode(' ', $methodTagsAndValues['param'][$parameterPosition]);
 				if (count($explodedParameters) >= 2) {
-					$parameterInformation['type'] = $explodedParameters[0];
+					if (TypeHandlingUtility::isSimpleType($explodedParameters[0])) {
+						// ensure that short names of simple types are resolved correctly to the long form
+						// this is important for all kinds of type checks later on
+						$typeInfo = TypeHandlingUtility::parseType($explodedParameters[0]);
+						$parameterInformation['type'] = $typeInfo['type'];
+					} else {
+						$parameterInformation['type'] = $explodedParameters[0];
+					}
 				}
 			}
 		}
