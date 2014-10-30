@@ -1281,7 +1281,9 @@ class TemplateService {
 				$file = $newFile;
 			}
 		}
-		if (parse_url($file) !== FALSE || is_file(PATH_site . $file)) {
+		// if this is an URL, it can be returned directly
+		$urlScheme = parse_url($file, PHP_URL_SCHEME);
+		if ($urlScheme === 'https' || $urlScheme === 'http' || is_file(PATH_site . $file)) {
 			return $file;
 		}
 		// Find
