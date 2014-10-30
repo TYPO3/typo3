@@ -100,12 +100,6 @@ lib.parseFunc_RTE {
 		blockquote.callRecursive.tagStdWrap.HTMLparser = 1
 		blockquote.callRecursive.tagStdWrap.HTMLparser.tags.blockquote.overrideAttribs = style="margin-bottom:0;margin-top:0;"
 
-		ol.stripNL=1
-		ol.stdWrap.parseFunc = < lib.parseFunc
-
-		ul.stripNL=1
-		ul.stdWrap.parseFunc = < lib.parseFunc
-
 		table.stripNL=1
 		table.stdWrap.HTMLparser = 1
 		table.stdWrap.HTMLparser.tags.table.fixAttrib.class {
@@ -122,12 +116,14 @@ lib.parseFunc_RTE {
 		div.stripNL = 1
 		div.callRecursive = 1
 
-		# Definition list processing
+		# List processing
 		dl < .div
 		dd < .div
+		ol < .div
+		ul < .div
 	}
 	nonTypoTagStdWrap.encapsLines {
-		encapsTagList = p,pre,h1,h2,h3,h4,h5,h6,hr,dt
+		encapsTagList = p,pre,h1,h2,h3,h4,h5,h6,hr,dt,li
 		remapTag.DIV = P
 		nonWrappedTag = P
 		innerStdWrap_all.ifBlank = &nbsp;
