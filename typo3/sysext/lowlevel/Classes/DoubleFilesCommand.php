@@ -61,7 +61,6 @@ This will check the system for double files relations.';
 	 * @return array
 	 */
 	public function main() {
-		global $TYPO3_DB;
 		// Initialize result array:
 		$resultArray = array(
 			'message' => $this->cli_help['name'] . LF . LF . $this->cli_help['description'],
@@ -81,7 +80,7 @@ This will check the system for double files relations.';
 			'warnings' => array()
 		);
 		// Select all files in the reference table not found by a soft reference parser (thus TCA configured)
-		$recs = $TYPO3_DB->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table=' . $TYPO3_DB->fullQuoteStr('_FILE', 'sys_refindex') . ' AND softref_key=' . $TYPO3_DB->fullQuoteStr('', 'sys_refindex'), '', 'sorting DESC');
+		$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('_FILE', 'sys_refindex') . ' AND softref_key=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('', 'sys_refindex'), '', 'sorting DESC');
 		// Traverse the files and put into a large table:
 		$tempCount = array();
 		if (is_array($recs)) {

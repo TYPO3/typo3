@@ -558,7 +558,6 @@ class CrawlerHook {
 	 * @return array Array where the root lines uid values are found.
 	 */
 	public function getUidRootLineForClosestTemplate($id) {
-		global $TYPO3_CONF_VARS;
 		$tmpl = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService');
 		$tmpl->tt_track = 0;
 		// Do not log time-performance information

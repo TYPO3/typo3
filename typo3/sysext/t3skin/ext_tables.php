@@ -2,32 +2,31 @@
 defined('TYPO3_MODE') or die();
 
 if (TYPO3_MODE === 'BE' || TYPO3_MODE === 'FE' && isset($GLOBALS['BE_USER'])) {
-	global $TBE_STYLES;
 
 	// Register as a skin
-	$TBE_STYLES['skins'][$_EXTKEY] = array(
+	$GLOBALS['TBE_STYLES']['skins'][$_EXTKEY] = array(
 		'name' => 't3skin'
 	);
 
 	// Support for other extensions to add own icons...
-	$presetSkinImgs = is_array($TBE_STYLES['skinImg']) ? $TBE_STYLES['skinImg'] : array();
-	$TBE_STYLES['skins'][$_EXTKEY]['stylesheetDirectories']['sprites'] = 'EXT:t3skin/stylesheets/sprites/';
+	$presetSkinImgs = is_array($GLOBALS['TBE_STYLES']['skinImg']) ? $GLOBALS['TBE_STYLES']['skinImg'] : array();
+	$GLOBALS['TBE_STYLES']['skins'][$_EXTKEY]['stylesheetDirectories']['sprites'] = 'EXT:t3skin/stylesheets/sprites/';
 
 	// Setting the relative path to the extension in temp. variable:
 	$temp_eP = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY);
 
 	// Alternative dimensions for frameset sizes:
 	// Left menu frame width
-	$TBE_STYLES['dims']['leftMenuFrameW'] = 190;
+	$GLOBALS['TBE_STYLES']['dims']['leftMenuFrameW'] = 190;
 
 	// Top frame height
-	$TBE_STYLES['dims']['topFrameH'] = 45;
+	$GLOBALS['TBE_STYLES']['dims']['topFrameH'] = 45;
 
 	// Default navigation frame width
-	$TBE_STYLES['dims']['navFrameWidth'] = 280;
+	$GLOBALS['TBE_STYLES']['dims']['navFrameWidth'] = 280;
 
 	// Setting up auto detection of alternative icons:
-	$TBE_STYLES['skinImgAutoCfg'] = array(
+	$GLOBALS['TBE_STYLES']['skinImgAutoCfg'] = array(
 		'absDir' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'icons/',
 		'relDir' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'icons/',
 		'forceFileExtension' => 'gif',
@@ -37,11 +36,11 @@ if (TYPO3_MODE === 'BE' || TYPO3_MODE === 'FE' && isset($GLOBALS['BE_USER'])) {
 	);
 
 	// Changing icon for filemounts, needs to be done here as overwriting the original icon would also change the filelist tree's root icon
-	$TCA['sys_filemounts']['ctrl']['iconfile'] = '_icon_ftp_2.gif';
+	$GLOBALS['TCA']['sys_filemounts']['ctrl']['iconfile'] = '_icon_ftp_2.gif';
 
 	// Adding flags to sys_language
-	$TCA['sys_language']['ctrl']['typeicon_column'] = 'flag';
-	$TCA['sys_language']['ctrl']['typeicon_classes'] = array(
+	$GLOBALS['TCA']['sys_language']['ctrl']['typeicon_column'] = 'flag';
+	$GLOBALS['TCA']['sys_language']['ctrl']['typeicon_classes'] = array(
 		'default' => 'mimetypes-x-sys_language',
 		'mask' => 'flags-###TYPE###'
 	);
@@ -297,13 +296,13 @@ if (TYPO3_MODE === 'BE' || TYPO3_MODE === 'FE' && isset($GLOBALS['BE_USER'])) {
 		'zw'
 	);
 	foreach ($flagNames as $flagName) {
-		$TCA['sys_language']['columns']['flag']['config']['items'][] = array($flagName, $flagName, 'EXT:t3skin/images/flags/' . $flagName . '.png');
+		$GLOBALS['TCA']['sys_language']['columns']['flag']['config']['items'][] = array($flagName, $flagName, 'EXT:t3skin/images/flags/' . $flagName . '.png');
 	}
 
-	$TCA['pages']['columns']['module']['config']['items'][1][2] = 'EXT:t3skin/images/icons/status/user-frontend.png';
+	$GLOBALS['TCA']['pages']['columns']['module']['config']['items'][1][2] = 'EXT:t3skin/images/icons/status/user-frontend.png';
 
 	// Manual setting up of alternative icons. This is mainly for module icons which has a special prefix:
-	$TBE_STYLES['skinImg'] = array_merge($presetSkinImgs, array(
+	$GLOBALS['TBE_STYLES']['skinImg'] = array_merge($presetSkinImgs, array(
 		'gfx/ol/blank.gif' => array('clear.gif', 'width="18" height="16"'),
 		'MOD:web/website.gif' => array($temp_eP . 'icons/module_web.gif', 'width="24" height="24"'),
 		'MOD:web_ts/ts1.gif' => array($temp_eP . 'icons/module_web_ts.gif', 'width="24" height="24"'),
@@ -320,7 +319,7 @@ if (TYPO3_MODE === 'BE' || TYPO3_MODE === 'FE' && isset($GLOBALS['BE_USER'])) {
 	));
 
 	// extJS theme
-	$TBE_STYLES['extJS']['theme'] = $temp_eP . 'extjs/xtheme-t3skin.css';
+	$GLOBALS['TBE_STYLES']['extJS']['theme'] = $temp_eP . 'extjs/xtheme-t3skin.css';
 	$GLOBALS['TBE_STYLES']['stylesheets']['admPanel'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('t3skin') . 'stylesheets/standalone/admin_panel.css';
 	$flagIcons = array();
 	foreach ($flagNames as $flagName) {

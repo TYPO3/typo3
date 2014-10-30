@@ -66,7 +66,6 @@ Will report lost files.';
 	 * @return array
 	 */
 	public function main() {
-		global $TYPO3_DB;
 		// Initialize result array:
 		$resultArray = array(
 			'message' => $this->cli_help['name'] . LF . LF . $this->cli_help['description'],
@@ -104,7 +103,7 @@ Will report lost files.';
 					$resultArray['ignoredFiles'][$shortKey] = $value;
 				} else {
 					// Looking for a reference from a field which is NOT a soft reference (thus, only fields with a proper TCA/Flexform configuration)
-					$recs = $TYPO3_DB->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table=' . $TYPO3_DB->fullQuoteStr('_FILE', 'sys_refindex') . ' AND ref_string=' . $TYPO3_DB->fullQuoteStr($value, 'sys_refindex') . ' AND softref_key=' . $TYPO3_DB->fullQuoteStr('', 'sys_refindex'), '', 'sorting DESC');
+					$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('_FILE', 'sys_refindex') . ' AND ref_string=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, 'sys_refindex') . ' AND softref_key=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('', 'sys_refindex'), '', 'sorting DESC');
 					// If found, unset entry:
 					if (count($recs)) {
 						unset($fileArr[$key]);

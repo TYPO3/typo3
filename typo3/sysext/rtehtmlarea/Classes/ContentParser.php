@@ -91,7 +91,6 @@ class ContentParser {
 	 * @return 	[type]		...
 	 */
 	public function main_parse_html($openKeys) {
-		global $TYPO3_CONF_VARS;
 		$editorNo = GeneralUtility::_GP('editorNo');
 		$html = GeneralUtility::_GP('content');
 		$RTEtsConfigParts = explode(':', GeneralUtility::_GP('RTEtsConfigParams'));
@@ -108,8 +107,8 @@ class ContentParser {
 		if (is_array($HTMLparserConfig)) {
 			$html = $HTMLParser->HTMLcleaner($html, $HTMLparserConfig[0], $HTMLparserConfig[1], $HTMLparserConfig[2], $HTMLparserConfig[3]);
 		}
-		if (is_array($TYPO3_CONF_VARS['EXTCONF'][$this->extKey][$this->prefixId]['cleanPastedContent'])) {
-			foreach ($TYPO3_CONF_VARS['EXTCONF'][$this->extKey][$this->prefixId]['cleanPastedContent'] as $classRef) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey][$this->prefixId]['cleanPastedContent'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey][$this->prefixId]['cleanPastedContent'] as $classRef) {
 				$hookObj = GeneralUtility::getUserObj($classRef);
 				if (method_exists($hookObj, 'cleanPastedContent_afterCleanWord')) {
 					$html = $hookObj->cleanPastedContent_afterCleanWord($html, $thisConfig);

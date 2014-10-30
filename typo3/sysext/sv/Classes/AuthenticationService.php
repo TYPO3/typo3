@@ -135,7 +135,6 @@ class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 	 * @return mixed Groups array, keys = uid which must be unique
 	 */
 	public function getGroups($user, $knownGroups) {
-		global $TYPO3_CONF_VARS;
 		$groupDataArr = array();
 		if ($this->mode == 'getGroupsFE') {
 			$groups = array();
@@ -145,8 +144,8 @@ class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 				$this->getSubGroups($groupList, '', $groups);
 			}
 			// ADD group-numbers if the IPmask matches.
-			if (is_array($TYPO3_CONF_VARS['FE']['IPmaskMountGroups'])) {
-				foreach ($TYPO3_CONF_VARS['FE']['IPmaskMountGroups'] as $IPel) {
+			if (is_array($GLOBALS['TYPO3_CONF_VARS']['FE']['IPmaskMountGroups'])) {
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['FE']['IPmaskMountGroups'] as $IPel) {
 					if ($this->authInfo['REMOTE_ADDR'] && $IPel[0] && \TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP($this->authInfo['REMOTE_ADDR'], $IPel[0])) {
 						$groups[] = (int)$IPel[1];
 					}

@@ -78,7 +78,6 @@ abstract class RteHtmlAreaApi {
 	 * @return bool TRUE if this plugin object should be made available in the current environment and is correctly initialized
 	 */
 	public function main($parentObject) {
-		global $TYPO3_CONF_VARS, $LANG, $TSFE;
 		$this->htmlAreaRTE = $parentObject;
 		$this->rteExtensionKey = &$this->htmlAreaRTE->ID;
 		$this->thisConfig = &$this->htmlAreaRTE->thisConfig;
@@ -87,7 +86,7 @@ abstract class RteHtmlAreaApi {
 		// Set the value of this boolean based on the initial value of $this->pluginButtons
 		$this->pluginAddsButtons = !empty($this->pluginButtons);
 		// Check if the plugin should be disabled in frontend
-		if ($this->htmlAreaRTE->is_FE() && $TYPO3_CONF_VARS['EXTCONF'][$this->rteExtensionKey]['plugins'][$this->pluginName]['disableInFE']) {
+		if ($this->htmlAreaRTE->is_FE() && $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->rteExtensionKey]['plugins'][$this->pluginName]['disableInFE']) {
 			return FALSE;
 		}
 		// Localization array must be initialized here
@@ -101,7 +100,7 @@ abstract class RteHtmlAreaApi {
 					)
 				);
 			} else {
-				$LANG->includeLLFile('EXT:' . $this->extensionKey . '/' . $this->relativePathToLocallangFile);
+				$GLOBALS['LANG']->includeLLFile('EXT:' . $this->extensionKey . '/' . $this->relativePathToLocallangFile);
 			}
 		}
 		return TRUE;
@@ -124,8 +123,7 @@ abstract class RteHtmlAreaApi {
 	 * @return string path to the skin (css) file
 	 */
 	public function getPathToSkin() {
-		global $TYPO3_CONF_VARS;
-		if ($TYPO3_CONF_VARS['EXTCONF'][$this->rteExtensionKey]['plugins'][$this->pluginName]['addIconsToSkin']) {
+		if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->rteExtensionKey]['plugins'][$this->pluginName]['addIconsToSkin']) {
 			return $this->relativePathToSkin;
 		} else {
 			return '';
@@ -139,7 +137,6 @@ abstract class RteHtmlAreaApi {
 	 * @return string JS configuration for registered plugins
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {
-		global $TSFE, $LANG;
 		$registerRTEinJavascriptString = '';
 		$pluginButtons = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->pluginButtons, TRUE);
 		foreach ($pluginButtons as $button) {

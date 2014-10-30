@@ -98,7 +98,6 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 	 * @return string HTML code for RTE!
 	 */
 	public function drawRTE(&$parentObject, $table, $field, $row, $PA, $specConf, $thisConfig, $RTEtypeVal, $RTErelPath, $thePidValue) {
-		global $TSFE, $TYPO3_CONF_VARS, $TYPO3_DB;
 		$this->TCEform = $parentObject;
 		$this->client = $this->clientInfo();
 		$this->typoVersion = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version);
@@ -122,7 +121,7 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 		$this->typeVal = $RTEtypeVal;
 		// TCA "type" value for record
 		// RTE configuration
-		$pageTSConfig = $TSFE->getPagesTSconfig();
+		$pageTSConfig = $GLOBALS['TSFE']->getPagesTSconfig();
 		if (is_array($pageTSConfig) && is_array($pageTSConfig['RTE.'])) {
 			$this->RTEsetup = $pageTSConfig['RTE.'];
 		}
@@ -170,12 +169,12 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 		}
 		$this->contentTypo3Language = $this->contentISOLanguage;
 		// Character set
-		$this->charset = $TSFE->renderCharset;
-		$this->OutputCharset = $TSFE->metaCharset ?: $TSFE->renderCharset;
+		$this->charset = $GLOBALS['TSFE']->renderCharset;
+		$this->OutputCharset = $GLOBALS['TSFE']->metaCharset ?: $GLOBALS['TSFE']->renderCharset;
 		// Set the charset of the content
-		$this->contentCharset = $TSFE->csConvObj->charSetArray[$this->contentTypo3Language];
+		$this->contentCharset = $GLOBALS['TSFE']->csConvObj->charSetArray[$this->contentTypo3Language];
 		$this->contentCharset = $this->contentCharset ?: 'utf-8';
-		$this->contentCharset = trim($TSFE->config['config']['metaCharset']) ?: $this->contentCharset;
+		$this->contentCharset = trim($GLOBALS['TSFE']->config['config']['metaCharset']) ?: $this->contentCharset;
 		/* =======================================
 		 * TOOLBAR CONFIGURATION
 		 * =======================================
@@ -244,7 +243,7 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 		}
 		// draw the textarea
 		$item = $this->triggerField($PA['itemFormElName']) . '
-			<div id="pleasewait' . $textAreaId . '" class="pleasewait" style="display: block;" >' . $TSFE->csConvObj->conv($TSFE->getLLL('Please wait', $this->LOCAL_LANG), $this->charset, $TSFE->renderCharset) . '</div>
+			<div id="pleasewait' . $textAreaId . '" class="pleasewait" style="display: block;" >' . $GLOBALS['TSFE']->csConvObj->conv($GLOBALS['TSFE']->getLLL('Please wait', $this->LOCAL_LANG), $this->charset, $GLOBALS['TSFE']->renderCharset) . '</div>
 			<div id="editorWrap' . $textAreaId . '" class="editorWrap" style="visibility: hidden; ' . htmlspecialchars($this->RTEWrapStyle) . '">
 			<textarea id="RTEarea' . $textAreaId . '" name="' . htmlspecialchars($PA['itemFormElName']) . '" rows="0" cols="0" style="' . htmlspecialchars($this->RTEdivStyle) . '">' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatForTextarea($value) . '</textarea>
 			</div>' . LF;

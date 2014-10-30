@@ -186,7 +186,6 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 	 * @return string
 	 */
 	public function main() {
-		global $BACK_PATH;
 		global $tmpl, $tplRow, $theConstants;
 		$POST = GeneralUtility::_POST();
 		// Checking for more than one template an if, set a menu...

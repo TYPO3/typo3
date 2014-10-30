@@ -133,11 +133,10 @@ class ElementBrowserRecordList extends \TYPO3\CMS\Recordlist\RecordList\Database
 	 * @param string $fieldName Field name
 	 */
 	public function setRelatingTableAndField($tableName, $fieldName) {
-		global $TCA;
 		// Check validity of the input data and load TCA
-		if (isset($TCA[$tableName])) {
+		if (isset($GLOBALS['TCA'][$tableName])) {
 			$this->relatingTable = $tableName;
-			if ($fieldName && isset($TCA[$tableName]['columns'][$fieldName])) {
+			if ($fieldName && isset($GLOBALS['TCA'][$tableName]['columns'][$fieldName])) {
 				$this->relatingField = $fieldName;
 			}
 		}

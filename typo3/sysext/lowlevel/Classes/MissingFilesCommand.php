@@ -62,7 +62,6 @@ This will show you missing files in the TYPO3 system and only report back if err
 	 * @return array
 	 */
 	public function main() {
-		global $TYPO3_DB;
 		// Initialize result array:
 		$listExplain = ' Shows the relative filename of missing file as header and under a list of record fields in which the references are found. ' . $this->label_infoString;
 		$resultArray = array(
@@ -75,7 +74,7 @@ This will show you missing files in the TYPO3 system and only report back if err
 			'softrefFilesMissing' => array()
 		);
 		// Select all files in the reference table
-		$recs = $TYPO3_DB->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table=' . $TYPO3_DB->fullQuoteStr('_FILE', 'sys_refindex'), '', 'sorting DESC');
+		$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('_FILE', 'sys_refindex'), '', 'sorting DESC');
 		// Traverse the files and put into a large table:
 		if (is_array($recs)) {
 			foreach ($recs as $rec) {

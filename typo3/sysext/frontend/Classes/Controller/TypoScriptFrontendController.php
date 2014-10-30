@@ -4200,6 +4200,7 @@ class TypoScriptFrontendController {
 	 *
 	 * @param array $libraries The libraries to be included.
 	 * @return void
+	 * @todo deprecate this method
 	 */
 	public function includeLibraries(array $libraries) {
 		global $TYPO3_CONF_VARS;

@@ -87,7 +87,6 @@ class IndexingStatisticsController extends \TYPO3\CMS\Backend\Module\AbstractFun
 	 * @return string html table with results
 	 */
 	public function listSeveralStats($title, $addwhere, $conf) {
-		global $LANG;
 		$queryParts['SELECT'] = 'word, COUNT(*) AS c';
 		$queryParts['FROM'] = 'index_stat_word';
 		$queryParts['WHERE'] = sprintf('pageid= %d ' . $addwhere, $conf['bid']);
@@ -102,11 +101,11 @@ class IndexingStatisticsController extends \TYPO3\CMS\Backend\Module\AbstractFun
 		}
 		// exist several statistics for this page?
 		if ($count > 0) {
-			$this->note = $LANG->getLL('justthispage');
+			$this->note = $GLOBALS['LANG']->getLL('justthispage');
 		} else {
 			// Limit access to pages of the current site
 			$secureaddwhere = ' AND pageid IN (' . $this->extGetTreeList($conf['bid'], 100, 0, '1=1') . $conf['bid'] . ') ';
-			$this->note = $LANG->getLL('allpages');
+			$this->note = $GLOBALS['LANG']->getLL('allpages');
 			$queryParts['WHERE'] = '1=1 ' . $addwhere . $secureaddwhere;
 		}
 		// make real query
@@ -120,7 +119,7 @@ class IndexingStatisticsController extends \TYPO3\CMS\Backend\Module\AbstractFun
 			}
 		}
 		if ($i == 0) {
-			$table1 = '<tr class="bgColor4"><td callspan="3">' . $LANG->getLL('noresults') . '</td></tr>';
+			$table1 = '<tr class="bgColor4"><td callspan="3">' . $GLOBALS['LANG']->getLL('noresults') . '</td></tr>';
 		}
 		$table1 = '<table class="bgColor5" cellpadding="2" cellspacing="1"><tr class="tableheader"><td colspan="3">' . $title . '</td></tr>' . $table1 . '</table>';
 		return $note . $table1;

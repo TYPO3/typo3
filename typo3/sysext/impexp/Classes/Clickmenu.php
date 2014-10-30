@@ -73,8 +73,7 @@ class Clickmenu {
 	 * @return array Local lang array
 	 */
 	public function includeLL() {
-		global $LANG;
-		return $LANG->includeLLFile('EXT:impexp/app/locallang.xlf', FALSE);
+		return $GLOBALS['LANG']->includeLLFile('EXT:impexp/app/locallang.xlf', FALSE);
 	}
 
 }

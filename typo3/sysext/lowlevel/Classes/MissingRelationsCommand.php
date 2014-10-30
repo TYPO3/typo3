@@ -64,7 +64,6 @@ Reports missing relations';
 	 * @return array
 	 */
 	public function main() {
-		global $TYPO3_DB;
 		// Initialize result array:
 		$listExplain = ' Shows the missing record as header and underneath a list of record fields in which the references are found. ' . $this->label_infoString;
 		$resultArray = array(
@@ -86,7 +85,7 @@ Reports missing relations';
 			'nonExistingRecords_s' => array()
 		);
 		// Select DB relations from reference table
-		$recs = $TYPO3_DB->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table<>' . $TYPO3_DB->fullQuoteStr('_FILE', 'sys_refindex') . ' AND ref_uid>0' . $filterClause, '', 'sorting DESC');
+		$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table<>' . $GLOBALS['TYPO3_DB']->fullQuoteStr('_FILE', 'sys_refindex') . ' AND ref_uid>0' . $filterClause, '', 'sorting DESC');
 		// Traverse the records
 		$tempExists = array();
 		if (is_array($recs)) {

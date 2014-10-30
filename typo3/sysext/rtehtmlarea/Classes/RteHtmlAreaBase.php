@@ -327,10 +327,9 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 * @return string HTML code for RTE!
 	 */
 	public function drawRTE($parentObject, $table, $field, $row, $PA, $specConf, $thisConfig, $RTEtypeVal, $RTErelPath, $thePidValue) {
-		global $LANG, $TYPO3_DB;
 		$this->TCEform = $parentObject;
 		$inline = $this->TCEform->inline;
-		$LANG->includeLLFile('EXT:' . $this->ID . '/locallang.xml');
+		$GLOBALS['LANG']->includeLLFile('EXT:' . $this->ID . '/locallang.xml');
 		$this->client = $this->clientInfo();
 		$this->typoVersion = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version);
 		$this->userUid = 'BE_' . $GLOBALS['BE_USER']->user['uid'];
@@ -492,7 +491,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			// Draw the textarea
 			$visibility = 'hidden';
 			$item = $this->triggerField($PA['itemFormElName']) . '
-				<div id="pleasewait' . $textAreaId . '" class="pleasewait" style="display: block;" >' . $LANG->getLL('Please wait') . '</div>
+				<div id="pleasewait' . $textAreaId . '" class="pleasewait" style="display: block;" >' . $GLOBALS['LANG']->getLL('Please wait') . '</div>
 				<div id="editorWrap' . $textAreaId . '" class="editorWrap" style="visibility: hidden; width:' . $editorWrapWidth . '; height:' . $editorWrapHeight . ';">
 				<textarea id="RTEarea' . $textAreaId . '" name="' . htmlspecialchars($PA['itemFormElName']) . '" rows="0" cols="0" style="' . htmlspecialchars($this->RTEdivStyle, ENT_COMPAT, 'UTF-8', FALSE) . '">' . GeneralUtility::formatForTextarea($value) . '</textarea>
 				</div>' . LF;
@@ -608,10 +607,9 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 * Add registered plugins to the array of enabled plugins
 	 */
 	public function enableRegisteredPlugins() {
-		global $TYPO3_CONF_VARS;
 		// Traverse registered plugins
-		if (is_array($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['plugins'])) {
-			foreach ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['plugins'] as $pluginId => $pluginObjectConfiguration) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['plugins'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['plugins'] as $pluginId => $pluginObjectConfiguration) {
 				$plugin = FALSE;
 				if (is_array($pluginObjectConfiguration) && count($pluginObjectConfiguration)) {
 					$plugin = GeneralUtility::getUserObj($pluginObjectConfiguration['objectReference']);
@@ -1217,7 +1215,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		} else {
 			$output = $contents;
 		}
-		$relativeFilename = 'typo3temp/' . $this->ID . '_' . str_replace('-', '_', $label) . '_' . GeneralUtility::shortMD5((TYPO3_version . $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['version'] . ($sourceFileName ? $sourceFileName : $output)), 20) . '.' . $fileExtension;
+		$relativeFilename = 'typo3temp/' . $this->ID . '_' . str_replace('-', '_', $label) . '_' . GeneralUtility::shortMD5((TYPO3_version . $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['version'] . ($sourceFileName ? $sourceFileName : $output)), 20) . '.' . $fileExtension;
 		$destination = PATH_site . $relativeFilename;
 		if (!file_exists($destination)) {
 			$minifiedJavaScript = '';
@@ -1343,13 +1341,12 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	}
 
 	public function getPageConfigLabel($string, $JScharCode = 1) {
-		global $LANG, $TSFE, $TYPO3_CONF_VARS;
 		if ($this->is_FE()) {
 			if (substr($string, 0, 4) !== 'LLL:') {
 				// A pure string coming from Page TSConfig must be in utf-8
-				$label = $TSFE->csConvObj->conv($TSFE->sL(trim($string)), 'utf-8', $this->OutputCharset);
+				$label = $GLOBALS['TSFE']->csConvObj->conv($GLOBALS['TSFE']->sL(trim($string)), 'utf-8', $this->OutputCharset);
 			} else {
-				$label = $TSFE->csConvObj->conv($TSFE->sL(trim($string)), $this->charset, $this->OutputCharset);
+				$label = $GLOBALS['TSFE']->csConvObj->conv($GLOBALS['TSFE']->sL(trim($string)), $this->charset, $this->OutputCharset);
 			}
 			$label = str_replace('"', '\\"', str_replace('\\\'', '\'', $label));
 			$label = $JScharCode ? $this->feJScharCode($label) : $label;
@@ -1357,7 +1354,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			if (substr($string, 0, 4) !== 'LLL:') {
 				$label = $string;
 			} else {
-				$label = $LANG->sL(trim($string));
+				$label = $GLOBALS['LANG']->sL(trim($string));
 			}
 			$label = str_replace('"', '\\"', str_replace('\\\'', '\'', $label));
 			$label = $JScharCode ? GeneralUtility::quoteJSvalue($label) : $label;

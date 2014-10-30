@@ -92,7 +92,6 @@ class BlockElements extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	 * @return string JS configuration for registered plugins, in this case, JS configuration of block elements
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {
-		global $TSFE, $LANG;
 		$registerRTEinJavascriptString = '';
 		if (in_array('formatblock', $this->toolbar)) {
 			if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.']['formatblock.'])) {
@@ -155,9 +154,9 @@ class BlockElements extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 			}
 			foreach ($blockElementsOrder as $item) {
 				if ($this->htmlAreaRTE->is_FE()) {
-					$blockElementsOptions[$item] = $TSFE->getLLL($this->defaultBlockElements[$item], $this->LOCAL_LANG);
+					$blockElementsOptions[$item] = $GLOBALS['TSFE']->getLLL($this->defaultBlockElements[$item], $this->LOCAL_LANG);
 				} else {
-					$blockElementsOptions[$item] = $LANG->getLL($this->defaultBlockElements[$item]);
+					$blockElementsOptions[$item] = $GLOBALS['LANG']->getLL($this->defaultBlockElements[$item]);
 				}
 				// Getting custom labels
 				if (is_array($labels[$item . '.']) && $labels[$item . '.']['label']) {

@@ -62,7 +62,6 @@ class DefaultInline extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	 * @return string JS configuration for registered plugins
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {
-		global $TSFE, $LANG;
 		$registerRTEinJavascriptString = '';
 		return $registerRTEinJavascriptString;
 	}

@@ -64,14 +64,13 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 * @return void
 	 */
 	public function modMenu() {
-		global $LANG;
 		return array(
 			'depth' => array(
-				0 => $LANG->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_0'),
-				1 => $LANG->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_1'),
-				2 => $LANG->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_2'),
-				3 => $LANG->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_3'),
-				999 => $LANG->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi')
+				0 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_0'),
+				1 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_1'),
+				2 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_2'),
+				3 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_3'),
+				999 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi')
 			),
 			'type' => array(
 				0 => 'Overview',
@@ -88,7 +87,6 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 */
 	public function main() {
 		// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
-		global $LANG, $TYPO3_CONF_VARS;
 		// Return if no page id:
 		if ($this->pObj->id <= 0) {
 			return;
@@ -113,8 +111,8 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 		}
 		// Initialize external document parsers:
 		// Example configuration, see ext_localconf.php of this file!
-		if (is_array($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['external_parsers'])) {
-			foreach ($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['external_parsers'] as $extension => $_objRef) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'] as $extension => $_objRef) {
 				$this->external_parsers[$extension] = GeneralUtility::getUserObj($_objRef);
 				// Init parser and if it returns FALSE, unset its entry again:
 				if (!$this->external_parsers[$extension]->softInit($extension)) {
@@ -151,7 +149,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 			$h_func = BackendUtility::getFuncMenu($this->pObj->id, 'SET[type]', $this->pObj->MOD_SETTINGS['type'], $this->pObj->MOD_MENU['type']);
 			$h_func .= BackendUtility::getFuncMenu($this->pObj->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth']);
 			// Show title / function menu:
-			$theOutput .= $this->pObj->doc->header($LANG->getLL('title'));
+			$theOutput .= $this->pObj->doc->header($GLOBALS['LANG']->getLL('title'));
 			$theOutput .= $this->pObj->doc->section('', $h_func, 0, 1);
 			$theOutput .= $this->drawTableOfIndexedPages();
 		}
@@ -169,12 +167,11 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 * @return string HTML output
 	 */
 	public function drawTableOfIndexedPages() {
-		global $BACK_PATH;
 		// Drawing tree:
 		$tree = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\View\\PageTreeView');
 		$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 		$tree->init('AND ' . $perms_clause);
-		$HTML = '<img src="' . $BACK_PATH . \TYPO3\CMS\Backend\Utility\IconUtility::getIcon('pages', $this->pObj->pageinfo) . '" width="18" height="16" align="top" alt="" />';
+		$HTML = '<img src="' . $GLOBALS['BACK_PATH'] . \TYPO3\CMS\Backend\Utility\IconUtility::getIcon('pages', $this->pObj->pageinfo) . '" width="18" height="16" align="top" alt="" />';
 		$tree->tree[] = array(
 			'row' => $this->pObj->pageinfo,
 			'HTML' => $HTML

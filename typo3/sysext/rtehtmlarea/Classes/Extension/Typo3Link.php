@@ -97,7 +97,6 @@ class Typo3Link extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	 * @return string classesAnchor array definition
 	 */
 	public function buildJSClassesAnchorArray() {
-		global $LANG;
 		$JSClassesAnchorArray .= 'HTMLArea.classesAnchorSetup = [ ' . LF;
 		$classesAnchorIndex = 0;
 		foreach ($this->htmlAreaRTE->RTEsetup['properties']['classesAnchor.'] as $label => $conf) {

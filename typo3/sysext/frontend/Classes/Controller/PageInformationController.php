@@ -29,19 +29,18 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
 	 * @return 	array
 	 */
 	public function modMenu() {
-		global $LANG;
 		return array(
 			'pages' => array(
-				0 => $LANG->sL('LLL:EXT:cms/web_info/locallang.xlf:pages_0'),
-				2 => $LANG->sL('LLL:EXT:cms/web_info/locallang.xlf:pages_2'),
-				1 => $LANG->sL('LLL:EXT:cms/web_info/locallang.xlf:pages_1')
+				0 => $GLOBALS['LANG']->sL('LLL:EXT:cms/web_info/locallang.xlf:pages_0'),
+				2 => $GLOBALS['LANG']->sL('LLL:EXT:cms/web_info/locallang.xlf:pages_2'),
+				1 => $GLOBALS['LANG']->sL('LLL:EXT:cms/web_info/locallang.xlf:pages_1')
 			),
 			'depth' => array(
-				0 => $LANG->getLL('depth_0'),
-				1 => $LANG->getLL('depth_1'),
-				2 => $LANG->getLL('depth_2'),
-				3 => $LANG->getLL('depth_3'),
-				999 => $LANG->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi')
+				0 => $GLOBALS['LANG']->getLL('depth_0'),
+				1 => $GLOBALS['LANG']->getLL('depth_1'),
+				2 => $GLOBALS['LANG']->getLL('depth_2'),
+				3 => $GLOBALS['LANG']->getLL('depth_3'),
+				999 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi')
 			)
 		);
 	}
@@ -52,15 +51,14 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
 	 * @return string Output HTML for the module.
 	 */
 	public function main() {
-		global $BACK_PATH, $LANG, $SOBE;
 		$dblist = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\View\\PageLayoutView');
 		$dblist->descrTable = '_MOD_' . $GLOBALS['MCONF']['name'];
-		$dblist->backPath = $BACK_PATH;
+		$dblist->backPath = $GLOBALS['BACK_PATH'];
 		$dblist->thumbs = 0;
 		$dblist->script = BackendUtility::getModuleUrl('web_info');
 		$dblist->showIcon = 0;
 		$dblist->setLMargin = 0;
-		$dblist->agePrefixes = $LANG->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears');
+		$dblist->agePrefixes = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears');
 		$dblist->pI_showUser = 1;
 		// PAGES:
 		$this->pObj->MOD_SETTINGS['pages_levels'] = $this->pObj->MOD_SETTINGS['depth'];
@@ -70,7 +68,7 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
 		$dblist->start($this->pObj->id, 'pages', 0);
 		$dblist->generateList();
 		// CSH
-		$theOutput = $this->pObj->doc->header($LANG->sL('LLL:EXT:cms/web_info/locallang.xlf:page_title'));
+		$theOutput = $this->pObj->doc->header($GLOBALS['LANG']->sL('LLL:EXT:cms/web_info/locallang.xlf:page_title'));
 		$theOutput .= $this->pObj->doc->section('', BackendUtility::cshItem($dblist->descrTable, 'pagetree_overview', $GLOBALS['BACK_PATH'], '|<br />') . $h_func . $dblist->HTMLcode, 0, 1);
 		// Additional footer content
 		$footerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/web_info/class.tx_cms_webinfo.php']['drawFooterHook'];

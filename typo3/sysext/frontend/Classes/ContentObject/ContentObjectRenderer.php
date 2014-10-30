@@ -514,22 +514,21 @@ class ContentObjectRenderer {
 	 * @return void
 	 */
 	public function start($data, $table = '') {
-		global $TYPO3_CONF_VARS;
-		if ($TYPO3_CONF_VARS['FE']['activateContentAdapter'] && is_array($data) && !empty($data) && !empty($table)) {
+		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['activateContentAdapter'] && is_array($data) && !empty($data) && !empty($table)) {
 			\TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService::modifyDBRow($data, $table);
 		}
 		$this->data = $data;
 		$this->table = $table;
 		$this->currentRecord = $table ? $table . ':' . $this->data['uid'] : '';
 		$this->parameters = array();
-		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'])) {
-			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'] as $classArr) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'] as $classArr) {
 				$this->cObjHookObjectsRegistry[$classArr[0]] = $classArr[1];
 			}
 		}
 		$this->stdWrapHookObjects = array();
-		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap'])) {
-			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap'] as $classData) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap'] as $classData) {
 				$hookObject = GeneralUtility::getUserObj($classData);
 				if (!$hookObject instanceof \TYPO3\CMS\Frontend\ContentObject\ContentObjectStdWrapHookInterface) {
 					throw new \UnexpectedValueException($classData . ' must implement interface TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectStdWrapHookInterface', 1195043965);
@@ -537,8 +536,8 @@ class ContentObjectRenderer {
 				$this->stdWrapHookObjects[] = $hookObject;
 			}
 		}
-		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['postInit'])) {
-			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['postInit'] as $classData) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['postInit'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['postInit'] as $classData) {
 				$postInitializationProcessor = GeneralUtility::getUserObj($classData);
 				if (!$postInitializationProcessor instanceof \TYPO3\CMS\Frontend\ContentObject\ContentObjectPostInitHookInterface) {
 					throw new \UnexpectedValueException($classData . ' must implement interface TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectPostInitHookInterface', 1274563549);
@@ -657,7 +656,6 @@ class ContentObjectRenderer {
 	 * @throws \UnexpectedValueException
 	 */
 	public function cObjGetSingle($name, $conf, $TSkey = '__') {
-		global $TYPO3_CONF_VARS;
 		$content = '';
 		// Checking that the function is not called eternally. This is done by interrupting at a depth of 100
 		$GLOBALS['TSFE']->cObjectDepthCounter--;
@@ -697,8 +695,8 @@ class ContentObjectRenderer {
 						$content .= $this->render($contentObject, $conf);
 					} else {
 						// Call hook functions for extra processing
-						if ($name && is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClassDefault'])) {
-							foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClassDefault'] as $classData) {
+						if ($name && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClassDefault'])) {
+							foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClassDefault'] as $classData) {
 								$hookObject = GeneralUtility::getUserObj($classData);
 								if (!$hookObject instanceof \TYPO3\CMS\Frontend\ContentObject\ContentObjectGetSingleHookInterface) {
 									throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectGetSingleHookInterface', 1195043731);
@@ -5256,7 +5254,7 @@ class ContentObjectRenderer {
 				$processingConfiguration['additionalParameters'] = isset($fileArray['params.']) ? $this->stdWrap($fileArray['params'], $fileArray['params.']) : $fileArray['params'];
 				$processingConfiguration['frame'] = isset($fileArray['frame.']) ? (int)$this->stdWrap($fileArray['frame'], $fileArray['frame.']) : (int)$fileArray['frame'];
 				// Possibility to cancel/force profile extraction
-				// see $TYPO3_CONF_VARS['GFX']['im_stripProfileCommand']
+				// see $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_stripProfileCommand']
 				if (isset($fileArray['stripProfile'])) {
 					$processingConfiguration['stripProfile'] = $fileArray['stripProfile'];
 				}
@@ -7565,7 +7563,6 @@ class ContentObjectRenderer {
 	 * @return string The WHERE clause.
 	 */
 	public function searchWhere($sw, $searchFieldList, $searchTable = '') {
-		global $TYPO3_DB;
 		$prefixTableName = $searchTable ? $searchTable . '.' : '';
 		$where = '';
 		if ($sw) {
@@ -7575,7 +7572,7 @@ class ContentObjectRenderer {
 				$val = trim($val);
 				$where_p = array();
 				if (strlen($val) >= 2) {
-					$val = $TYPO3_DB->escapeStrForLike($TYPO3_DB->quoteStr($val, $searchTable), $searchTable);
+					$val = $GLOBALS['TYPO3_DB']->escapeStrForLike($GLOBALS['TYPO3_DB']->quoteStr($val, $searchTable), $searchTable);
 					foreach ($searchFields as $field) {
 						$where_p[] = $prefixTableName . $field . ' LIKE \'%' . $val . '%\'';
 					}

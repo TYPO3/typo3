@@ -83,7 +83,6 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends \TYPO3\CM
 	 * @return string
 	 */
 	public function main() {
-		global $TYPO3_CONF_VARS;
 		global $tmpl, $tplRow, $theConstants;
 		$GLOBALS['LANG']->includeLLFile('EXT:tstemplate/Resources/Private/Language/locallang_ceditor.xlf');
 		$theOutput = '';

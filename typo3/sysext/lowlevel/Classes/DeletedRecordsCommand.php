@@ -47,7 +47,6 @@ Although deleted records are not errors to be repaired, this tool allows you to 
 	 * @return array
 	 */
 	public function main() {
-		global $TYPO3_DB;
 		// Initialize result array:
 		$resultArray = array(
 			'message' => $this->cli_help['name'] . LF . LF . $this->cli_help['description'],

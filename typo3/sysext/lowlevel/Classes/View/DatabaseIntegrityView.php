@@ -57,11 +57,10 @@ class DatabaseIntegrityView {
 	 * @return void
 	 */
 	public function init() {
-		global $LANG, $BACK_PATH;
 		$this->MCONF = $GLOBALS['MCONF'];
 		$this->menuConfig();
 		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
-		$this->doc->backPath = $BACK_PATH;
+		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:lowlevel/Resources/Private/Templates/dbint.html');
 		$this->doc->form = '<form action="" method="post" name="' . $this->formName . '">';
 		$this->doc->table_TABLE = '<table class="t3-table">
@@ -83,7 +82,6 @@ class DatabaseIntegrityView {
 	 * @return void
 	 */
 	public function menuConfig() {
-		global $LANG;
 		// MENU-ITEMS:
 		// If array, then it's a selector box menu
 		// If empty string it's just a variable, that'll be saved.
@@ -313,7 +311,6 @@ class DatabaseIntegrityView {
 	 * @return void
 	 */
 	public function func_search() {
-		global $LANG;
 		$fullsearch = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\QueryView');
 		$fullsearch->setFormName($this->formName);
 		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('search'));
@@ -396,7 +393,7 @@ class DatabaseIntegrityView {
 		$admin->lostRecords($id_list);
 		if ($admin->fixLostRecord(GeneralUtility::_GET('fixLostRecords_table'), GeneralUtility::_GET('fixLostRecords_uid'))) {
 			$admin = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Integrity\\DatabaseIntegrityCheck');
-			$admin->backPath = $BACK_PATH;
+			$admin->backPath = $GLOBALS['BACK_PATH'];
 			$admin->genTree(0, '');
 			$id_list = '-1,0,' . implode(',', array_keys($admin->page_idArray));
 			$id_list = rtrim($id_list, ',');
@@ -434,9 +431,9 @@ class DatabaseIntegrityView {
 				if (is_array($admin->lRecords[$t])) {
 					foreach ($admin->lRecords[$t] as $data) {
 						if (!GeneralUtility::inList($admin->lostPagesList, $data[pid])) {
-							$lr .= '<nobr><strong><a href="' . htmlspecialchars((BackendUtility::getModuleUrl('system_dbint') . '&SET[function]=records&fixLostRecords_table=' . $t . '&fixLostRecords_uid=' . $data['uid'])) . '"><img src="' . $BACK_PATH . 'gfx/required_h.gif" width="10" hspace="3" height="10" border="0" align="top" title="' . $GLOBALS['LANG']->getLL('fixLostRecord') . '"></a>uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) . '</strong></nobr><br>';
+							$lr .= '<nobr><strong><a href="' . htmlspecialchars((BackendUtility::getModuleUrl('system_dbint') . '&SET[function]=records&fixLostRecords_table=' . $t . '&fixLostRecords_uid=' . $data['uid'])) . '"><img src="' . $GLOBALS['BACK_PATH'] . 'gfx/required_h.gif" width="10" hspace="3" height="10" border="0" align="top" title="' . $GLOBALS['LANG']->getLL('fixLostRecord') . '"></a>uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) . '</strong></nobr><br>';
 						} else {
-							$lr .= '<nobr><img src="' . $BACK_PATH . 'clear.gif" width="16" height="1" border="0"><font color="Gray">uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) . '</font></nobr><br>';
+							$lr .= '<nobr><img src="' . $GLOBALS['BACK_PATH'] . 'clear.gif" width="16" height="1" border="0"><font color="Gray">uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) . '</font></nobr><br>';
 						}
 					}
 				}
@@ -452,11 +449,10 @@ class DatabaseIntegrityView {
 	 * @return void
 	 */
 	public function func_relations() {
-		global $LANG, $BACK_PATH;
 		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('relations'));
 		$admin = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Integrity\\DatabaseIntegrityCheck');
 		$admin->genTree_makeHTML = 0;
-		$admin->backPath = $BACK_PATH;
+		$admin->backPath = $GLOBALS['BACK_PATH'];
 		$fkey_arrays = $admin->getGroupFields('');
 		$admin->selectNonEmptyRecordsWithFkeys($fkey_arrays);
 		$fileTest = $admin->testFileRefs();

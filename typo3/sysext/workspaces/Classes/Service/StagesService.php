@@ -271,7 +271,6 @@ class StagesService {
 	 * @return string
 	 */
 	public function getStageTitle($ver_stage) {
-		global $LANG;
 		$stageTitle = '';
 		switch ($ver_stage) {
 			case self::STAGE_PUBLISH_EXECUTE_ID:

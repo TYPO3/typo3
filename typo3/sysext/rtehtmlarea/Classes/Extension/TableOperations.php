@@ -92,7 +92,6 @@ class TableOperations extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	 * @return string JS configuration for registered plugins, in this case, JS configuration of block elements
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {
-		global $TSFE, $LANG;
 		$registerRTEinJavascriptString = '';
 		if (in_array('table', $this->toolbar)) {
 			// Combining fieldset disablers as a list

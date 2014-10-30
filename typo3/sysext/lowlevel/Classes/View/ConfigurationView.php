@@ -66,11 +66,10 @@ class ConfigurationView {
 	 * @return void
 	 */
 	public function init() {
-		global $BACK_PATH;
 		$this->MCONF = $GLOBALS['MCONF'];
 		$this->menuConfig();
 		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
-		$this->doc->backPath = $BACK_PATH;
+		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:lowlevel/Resources/Private/Templates/config.html');
 		$this->doc->form = '<form action="" method="post">';
 	}
@@ -81,7 +80,6 @@ class ConfigurationView {
 	 * @return void
 	 */
 	public function menuConfig() {
-		global $TYPO3_CONF_VARS;
 		// MENU-ITEMS:
 		// If array, then it's a selector box menu
 		// If empty string it's just a variable, that'll be saved.

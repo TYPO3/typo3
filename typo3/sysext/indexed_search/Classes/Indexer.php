@@ -350,7 +350,6 @@ class Indexer {
 	 * @return void
 	 */
 	public function init() {
-		global $TYPO3_CONF_VARS;
 		// Initializing:
 		$this->cHashParams = $this->conf['cHash_array'];
 		if (is_array($this->cHashParams) && count($this->cHashParams)) {
@@ -377,13 +376,13 @@ class Indexer {
 			$this->initializeExternalParsers();
 		}
 		// Initialize lexer (class that deconstructs the text into words):
-		$lexerObjRef = $TYPO3_CONF_VARS['EXTCONF']['indexed_search']['lexer'] ? $TYPO3_CONF_VARS['EXTCONF']['indexed_search']['lexer'] : 'TYPO3\\CMS\\IndexedSearch\\Lexer';
+		$lexerObjRef = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['lexer'] ? $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['lexer'] : 'TYPO3\\CMS\\IndexedSearch\\Lexer';
 		$this->lexerObj = GeneralUtility::getUserObj($lexerObjRef);
 		$this->lexerObj->debug = $this->indexerConfig['debugMode'];
 		// Initialize metaphone hook:
 		// Make sure that the hook is loaded _after_ indexed_search as this may overwrite the hook depending on the configuration.
-		if ($this->enableMetaphoneSearch && $TYPO3_CONF_VARS['EXTCONF']['indexed_search']['metaphone']) {
-			$this->metaphoneObj = GeneralUtility::getUserObj($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['metaphone']);
+		if ($this->enableMetaphoneSearch && $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['metaphone']) {
+			$this->metaphoneObj = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['metaphone']);
 			$this->metaphoneObj->pObj = $this;
 		}
 		// Init charset class:
@@ -398,9 +397,8 @@ class Indexer {
 	 * @see init()
 	 */
 	public function initializeExternalParsers() {
-		global $TYPO3_CONF_VARS;
-		if (is_array($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['external_parsers'])) {
-			foreach ($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['external_parsers'] as $extension => $_objRef) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'] as $extension => $_objRef) {
 				$this->external_parsers[$extension] = GeneralUtility::getUserObj($_objRef);
 				$this->external_parsers[$extension]->pObj = $this;
 				// Init parser and if it returns FALSE, unset its entry again:
