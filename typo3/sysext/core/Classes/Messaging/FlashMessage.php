@@ -23,7 +23,7 @@ class FlashMessage extends \TYPO3\CMS\Core\Messaging\AbstractMessage {
 	/**
 	 * defines whether the message should be stored in the session (to survive redirects) or only for one request (default)
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $storeInSession = FALSE;
 

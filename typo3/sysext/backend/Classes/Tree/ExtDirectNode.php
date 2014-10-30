@@ -37,28 +37,28 @@ class ExtDirectNode extends \TYPO3\CMS\Backend\Tree\TreeNode {
 	/**
 	 * Indicator if the node is expanded
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $expanded = FALSE;
 
 	/**
 	 * Indicator if the node can be expanded
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $expandable = FALSE;
 
 	/**
 	 * Indicator if the node is draggable
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $draggable = TRUE;
 
 	/**
 	 * Indicator if the node is allowed as a drop target
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isDropTarget = TRUE;
 
@@ -121,14 +121,14 @@ class ExtDirectNode extends \TYPO3\CMS\Backend\Tree\TreeNode {
 	/**
 	 * Indicator if the copy mode is activated
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $t3InCopyMode = FALSE;
 
 	/**
 	 * Indicator if the cut mode is activated
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $t3InCutMode = FALSE;
 
@@ -149,14 +149,14 @@ class ExtDirectNode extends \TYPO3\CMS\Backend\Tree\TreeNode {
 	/**
 	 * Indicator if the label is editable
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $labelIsEditable = TRUE;
 
 	/**
 	 * Indicator if the node can have children's
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $allowChildren = TRUE;
 

@@ -35,7 +35,7 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $localContentObject;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $disableContentElement = FALSE;
 

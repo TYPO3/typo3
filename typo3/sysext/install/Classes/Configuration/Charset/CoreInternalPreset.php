@@ -27,7 +27,7 @@ class CoreInternalPreset extends Configuration\AbstractPreset {
 	protected $name = 'CoreInternal';
 
 	/**
-	 * @var integer Priority of preset
+	 * @var int Priority of preset
 	 */
 	protected $priority = 20;
 

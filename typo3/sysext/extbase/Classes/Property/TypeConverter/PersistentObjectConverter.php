@@ -37,12 +37,12 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 class PersistentObjectConverter extends ObjectConverter {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	const CONFIGURATION_MODIFICATION_ALLOWED = 1;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	const CONFIGURATION_CREATION_ALLOWED = 2;
 
@@ -57,7 +57,7 @@ class PersistentObjectConverter extends ObjectConverter {
 	protected $targetType = 'object';
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $priority = 1;
 

@@ -76,7 +76,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $version = '';
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $integerVersion = 0;
 
@@ -91,12 +91,12 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $description = '';
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $state = 0;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $category = 0;
 
@@ -121,7 +121,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $authorEmail = '';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $currentVersion = FALSE;
 
@@ -131,12 +131,12 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $md5hash = '';
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $reviewState;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $alldownloadcounter;
 
@@ -152,7 +152,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
 	 * @internal
-	 * @var integer
+	 * @var int
 	 */
 	protected $position = 0;
 

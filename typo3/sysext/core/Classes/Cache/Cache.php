@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class Cache {
 
 	/**
-	 * @var boolean TRUE if caching framework was fully initialized
+	 * @var bool TRUE if caching framework was fully initialized
 	 */
 	static protected $isCachingFrameworkInitialized = FALSE;
 

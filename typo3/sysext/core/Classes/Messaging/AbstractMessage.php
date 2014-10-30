@@ -43,7 +43,7 @@ abstract class AbstractMessage {
 	/**
 	 * The message's severity
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $severity = self::OK;
 

@@ -48,7 +48,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
 	/**
 	 * TRUE if the object is a clone
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	private $_isClone = FALSE;
 

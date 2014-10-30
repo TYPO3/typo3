@@ -45,7 +45,7 @@ class LogRecord implements \ArrayAccess {
 	/**
 	 * Severity level
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $level = \TYPO3\CMS\Core\Log\LogLevel::INFO;
 

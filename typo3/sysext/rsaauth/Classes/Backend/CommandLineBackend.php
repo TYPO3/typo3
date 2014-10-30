@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class CommandLineBackend extends \TYPO3\CMS\Rsaauth\Backend\AbstractBackend {
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	const DEFAULT_EXPONENT = 65537;
 

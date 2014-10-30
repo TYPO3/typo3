@@ -31,7 +31,7 @@ class Language extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $language = '';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $selected = FALSE;
 

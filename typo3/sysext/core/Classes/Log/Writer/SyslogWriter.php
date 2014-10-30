@@ -44,7 +44,7 @@ class SyslogWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 	/**
 	 * Type of program that is logging to syslog.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $facility = LOG_USER;
 

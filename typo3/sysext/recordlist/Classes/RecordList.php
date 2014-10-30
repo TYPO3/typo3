@@ -27,7 +27,7 @@ class RecordList {
 	// Internal, GPvars:
 	// Page Id for which to make the listing
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	public $id;
 

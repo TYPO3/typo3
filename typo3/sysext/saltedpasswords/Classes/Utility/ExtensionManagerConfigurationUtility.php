@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 class ExtensionManagerConfigurationUtility {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $errorType = FlashMessage::OK;
 

@@ -60,35 +60,35 @@ class SpriteGenerator {
 ';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $enableHighDensitySprite = TRUE;
 
 	/**
 	 * Most common icon-width in the sprite
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $defaultWidth = 0;
 
 	/**
 	 * Most common icon-height in the sprite
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $defaultHeight = 0;
 
 	/**
 	 * Calculated width of the sprite
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $spriteWidth = 0;
 
 	/**
 	 * Calculated height of the sprite
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $spriteHeight = 0;
 
@@ -116,7 +116,7 @@ class SpriteGenerator {
 	/**
 	 * The spriteName will not be included in icon names
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $omitSpriteNameInIconName = FALSE;
 
@@ -131,7 +131,7 @@ class SpriteGenerator {
 	 * Setting this to TRUE, the timestamp of the creation will be included to the background import
 	 * helps to easily rebuild sprites without cache problems
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $includeTimestampInCSS = TRUE;
 
@@ -167,7 +167,7 @@ class SpriteGenerator {
 	/**
 	 * space in px between to icons in the sprite (gap)
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $space = 2;
 

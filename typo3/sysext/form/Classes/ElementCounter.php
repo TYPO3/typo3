@@ -24,7 +24,7 @@ class ElementCounter implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Counter
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $elementCounter = 1;
 

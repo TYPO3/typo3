@@ -39,14 +39,14 @@ class ClassSchema {
 	/**
 	 * Model type of the class this schema is referring to
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $modelType = self::MODELTYPE_ENTITY;
 
 	/**
 	 * Whether a repository exists for the class this schema is referring to
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $aggregateRoot = FALSE;
 

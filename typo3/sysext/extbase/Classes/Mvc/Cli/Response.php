@@ -21,7 +21,7 @@ namespace TYPO3\CMS\Extbase\Mvc\Cli;
 class Response extends \TYPO3\CMS\Extbase\Mvc\Response {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $exitCode = 0;
 

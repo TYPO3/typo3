@@ -47,7 +47,7 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request {
 	protected $baseUri;
 
 	/**
-	 * @var boolean TRUE if the current request is cached, false otherwise.
+	 * @var bool TRUE if the current request is cached, false otherwise.
 	 */
 	protected $isCached = FALSE;
 

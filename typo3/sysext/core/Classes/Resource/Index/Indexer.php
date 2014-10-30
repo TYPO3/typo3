@@ -28,7 +28,7 @@ class Indexer {
 	protected $filesToUpdate = array();
 
 	/**
-	 * @var integer[]
+	 * @var int[]
 	 */
 	protected $identifiedFileUids = array();
 

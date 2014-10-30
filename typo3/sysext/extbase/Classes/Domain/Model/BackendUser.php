@@ -27,12 +27,12 @@ class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $userName = '';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isAdministrator = FALSE;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isDisabled = FALSE;
 
@@ -62,7 +62,7 @@ class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $lastLoginDateAndTime;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $ipLockIsDisabled = FALSE;
 

@@ -36,7 +36,7 @@ class OptionElementView extends \TYPO3\CMS\Form\View\Mail\Html\Element\AbstractE
 	 * True if element needs no element wrap
 	 * like <li>element</li>
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $noWrap = TRUE;
 

@@ -31,7 +31,7 @@ class AttributesAttribute {
 	/**
 	 * Internal Id of the element
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $elementId;
 

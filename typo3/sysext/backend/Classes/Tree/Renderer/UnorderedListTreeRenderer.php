@@ -23,7 +23,7 @@ class UnorderedListTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\Abstrac
 	/**
 	 * recursion level
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $recursionLevel = 0;
 

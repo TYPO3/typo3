@@ -27,7 +27,7 @@ abstract class AbstractElementView {
 	protected $model;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $spaces;
 

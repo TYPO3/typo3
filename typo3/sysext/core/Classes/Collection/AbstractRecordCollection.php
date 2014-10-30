@@ -46,7 +46,7 @@ abstract class AbstractRecordCollection implements \TYPO3\CMS\Core\Collection\Re
 	/**
 	 * Uid of the storage
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $uid = 0;
 

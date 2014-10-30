@@ -49,14 +49,14 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * time (minutes) to expire an unused session
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	private $expireTimeInMinutes = 60;
 
 	/**
 	 * time (minutes) to generate a new session id for our current session
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	private $regenerateSessionIdTime = 5;
 

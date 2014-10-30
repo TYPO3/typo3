@@ -26,7 +26,7 @@ class LogLevel {
 	 * You'd likely not be able to reach the system. You better have an SLA in
 	 * place when this happens.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	const EMERGENCY = 0;
 	/**
@@ -34,7 +34,7 @@ class LogLevel {
 	 *
 	 * Example: Entire website down, database unavailable, etc.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	const ALERT = 1;
 	/**
@@ -42,7 +42,7 @@ class LogLevel {
 	 *
 	 * Example: unexpected exception.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	const CRITICAL = 2;
 	/**
@@ -50,7 +50,7 @@ class LogLevel {
 	 *
 	 * Example: Runtime error.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	const ERROR = 3;
 	/**
@@ -59,7 +59,7 @@ class LogLevel {
 	 * Examples: Use of deprecated APIs, undesirable things that are not
 	 * necessarily wrong.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	const WARNING = 4;
 	/**
@@ -67,7 +67,7 @@ class LogLevel {
 	 *
 	 * Example: things you should have a look at, nothing to worry about though.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	const NOTICE = 5;
 	/**
@@ -75,7 +75,7 @@ class LogLevel {
 	 *
 	 * Examples: User logs in, SQL logs.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	const INFO = 6;
 	/**
@@ -83,7 +83,7 @@ class LogLevel {
 	 *
 	 * Example: Detailed status information.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	const DEBUG = 7;
 	/**

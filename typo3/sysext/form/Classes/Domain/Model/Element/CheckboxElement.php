@@ -56,7 +56,7 @@ class CheckboxElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractEleme
 	 * True if it accepts the parent name instead of its own
 	 * This is necessary for groups
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $acceptsParentName = TRUE;
 

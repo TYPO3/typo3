@@ -31,7 +31,7 @@ abstract class AbstractAttribute {
 	/**
 	 * Internal Id of the element
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $elementId;
 

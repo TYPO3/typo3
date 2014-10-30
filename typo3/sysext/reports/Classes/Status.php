@@ -41,7 +41,7 @@ class Status {
 	protected $message;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $severity;
 

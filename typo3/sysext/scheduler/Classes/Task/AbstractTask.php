@@ -34,14 +34,14 @@ abstract class AbstractTask {
 	/**
 	 * The unique id of the task used to identify it in the database
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $taskUid;
 
 	/**
 	 * Disable flag, TRUE if task is disabled, FALSE otherwise
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $disabled = FALSE;
 
@@ -55,7 +55,7 @@ abstract class AbstractTask {
 	/**
 	 * This variable contains the time of next execution of the task
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $executionTime = 0;
 
@@ -69,7 +69,7 @@ abstract class AbstractTask {
 	/**
 	 * Task group for this task
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $taskGroup;
 

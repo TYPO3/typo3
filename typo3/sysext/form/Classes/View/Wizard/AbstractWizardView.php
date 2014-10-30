@@ -24,7 +24,7 @@ abstract class AbstractWizardView {
 	/**
 	 * Is the referenced record available
 	 *
-	 * @var boolean TRUE if available, FALSE if not
+	 * @var bool TRUE if available, FALSE if not
 	 */
 	protected $recordIsAvailable = FALSE;
 

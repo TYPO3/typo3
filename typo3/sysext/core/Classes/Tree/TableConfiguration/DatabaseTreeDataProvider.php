@@ -46,7 +46,7 @@ class DatabaseTreeDataProvider extends \TYPO3\CMS\Core\Tree\TableConfiguration\A
 	protected $tableWhere = '';
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $lookupMode = self::MODE_CHILDREN;
 
@@ -56,7 +56,7 @@ class DatabaseTreeDataProvider extends \TYPO3\CMS\Core\Tree\TableConfiguration\A
 	protected $lookupField = '';
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $rootUid = 0;
 

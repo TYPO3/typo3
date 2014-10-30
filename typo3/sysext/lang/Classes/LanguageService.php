@@ -60,7 +60,7 @@ class LanguageService {
 	/**
 	 * If TRUE, will show the key/location of labels in the backend.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $debugKey = FALSE;
 

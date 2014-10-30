@@ -24,7 +24,7 @@ class Keypair implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * RSA public exponent (3 or 0x10001)
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $exponent = 0;
 
@@ -38,7 +38,7 @@ class Keypair implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * The public key modulus
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $publicKeyModulus = 0;
 

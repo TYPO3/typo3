@@ -33,7 +33,7 @@ class Md5Salt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements \T
 	/**
 	 * Keeps length of a MD5 salt in bytes.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	static protected $saltLengthMD5 = 6;
 

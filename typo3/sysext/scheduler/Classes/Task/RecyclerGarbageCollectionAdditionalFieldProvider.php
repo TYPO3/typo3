@@ -27,7 +27,7 @@ class RecyclerGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Sch
 	/**
 	 * Default period in days to remove a recycled file
 	 *
-	 * @var integer Default number of days
+	 * @var int Default number of days
 	 */
 	protected $defaultNumberOfDays = 30;
 

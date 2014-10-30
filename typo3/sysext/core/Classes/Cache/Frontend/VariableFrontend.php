@@ -28,7 +28,7 @@ class VariableFrontend extends \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend {
 	 * If the extension "igbinary" is installed, use it for increased performance.
 	 * Caching the result of extension_loaded() here is faster than calling extension_loaded() multiple times.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $useIgBinary = FALSE;
 

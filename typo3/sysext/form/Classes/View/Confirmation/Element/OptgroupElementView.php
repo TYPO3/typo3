@@ -34,7 +34,7 @@ class OptgroupElementView extends \TYPO3\CMS\Form\View\Confirmation\Element\Cont
 	 * True if element needs no element wrap
 	 * like <li>element</li>
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $noWrap = TRUE;
 

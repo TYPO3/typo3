@@ -31,35 +31,35 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Number of log rows to show
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $number = 20;
 
 	/**
 	 * UID of selected workspace
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $workspaceUid = \TYPO3\CMS\Belog\Domain\Model\Workspace::UID_ANY_WORKSPACE;
 
 	/**
 	 * Selected time frame
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $timeFrame = 0;
 
 	/**
 	 * Selected action
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $action = 0;
 
 	/**
 	 * Whether rows should be grouped by page
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $groupByPage = FALSE;
 
@@ -80,35 +80,35 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Calculated start timestamp
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $startTimestamp = 0;
 
 	/**
 	 * Calculated end timestamp
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $endTimestamp = 0;
 
 	/**
 	 * Whether the plugin is called in page context (submodule of Web > Info)
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isInPageContext = FALSE;
 
 	/**
 	 * Selected page ID in page context
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $pageId = 0;
 
 	/**
 	 * Page level depth
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $depth = 0;
 

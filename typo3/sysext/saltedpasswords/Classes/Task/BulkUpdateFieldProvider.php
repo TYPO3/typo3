@@ -23,14 +23,14 @@ class BulkUpdateFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldPro
 	/**
 	 * Default value whether the task deactivates itself after last run.
 	 *
-	 * @var boolean Whether the task is allowed to deactivate itself after processing all existing user records.
+	 * @var bool Whether the task is allowed to deactivate itself after processing all existing user records.
 	 */
 	protected $defaultCanDeactivateSelf = TRUE;
 
 	/**
 	 * Default value for the number of records to handle at each run.
 	 *
-	 * @var integer Number of records
+	 * @var int Number of records
 	 */
 	protected $defaultNumberOfRecords = 250;
 

@@ -164,14 +164,14 @@ class TemplateService {
 	 * has been processed or the $processExtensionStatics
 	 * property has been set to TRUE.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $extensionStaticsProcessed = FALSE;
 
 	/**
 	 * Trigger value, to ensure that extension statics are processed.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $processExtensionStatics = FALSE;
 
@@ -180,7 +180,7 @@ class TemplateService {
 	 * This prevents double inclusion of the same TypoScript code.
 	 *
 	 * @see addDefaultTypoScript()
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isDefaultTypoScriptAdded = FALSE;
 
@@ -190,7 +190,7 @@ class TemplateService {
 	 * This prevents double processing of INCLUDES.
 	 *
 	 * @see processIncludes()
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $processIncludesHasBeenRun = FALSE;
 

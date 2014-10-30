@@ -23,7 +23,7 @@ namespace TYPO3\CMS\Extbase\SignalSlot;
 class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isInitialized = FALSE;
 

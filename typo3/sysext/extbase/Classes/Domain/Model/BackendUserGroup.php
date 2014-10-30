@@ -78,7 +78,7 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $allowedLanguages = '';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $workspacePermission = FALSE;
 
@@ -88,7 +88,7 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $databaseMounts = '';
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $fileOperationPermissions = 0;
 
@@ -98,7 +98,7 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $lockToDomain = '';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $hideInList = FALSE;
 

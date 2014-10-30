@@ -27,7 +27,7 @@ class GraphicsMagickPreset extends AbstractImagePreset implements Configuration\
 	protected $name = 'GraphicsMagick';
 
 	/**
-	 * @var integer Priority of preset
+	 * @var int Priority of preset
 	 */
 	protected $priority = 80;
 

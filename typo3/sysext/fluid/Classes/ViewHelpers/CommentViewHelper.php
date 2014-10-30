@@ -45,7 +45,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
 class CommentViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $escapingInterceptorEnabled = FALSE;
 

@@ -47,12 +47,12 @@ class SysNote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $message;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $personal;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $category;
 

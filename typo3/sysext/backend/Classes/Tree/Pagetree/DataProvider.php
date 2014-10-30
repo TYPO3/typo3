@@ -27,14 +27,14 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 	/**
 	 * Node limit that should be loaded for this request per mount
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $nodeLimit = 0;
 
 	/**
 	 * Current amount of nodes
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $nodeCounter = 0;
 

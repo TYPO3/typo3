@@ -43,7 +43,7 @@ class TagBuilder {
 	 * Specifies whether this tag needs a closing tag.
 	 * E.g. <textarea> cant be self-closing even if its empty
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $forceClosingTag = FALSE;
 

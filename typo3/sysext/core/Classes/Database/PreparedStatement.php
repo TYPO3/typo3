@@ -35,31 +35,31 @@ class PreparedStatement {
 	/**
 	 * Represents the SQL NULL data type.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	const PARAM_NULL = 0;
 	/**
 	 * Represents the SQL INTEGER data type.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	const PARAM_INT = 1;
 	/**
 	 * Represents the SQL CHAR, VARCHAR, or other string data type.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	const PARAM_STR = 2;
 	/**
 	 * Represents a boolean data type.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	const PARAM_BOOL = 3;
 	/**
 	 * Automatically detects underlying type
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	const PARAM_AUTOTYPE = 4;
 	/**
@@ -68,14 +68,14 @@ class PreparedStatement {
 	 * contains multiple columns with the same name, \TYPO3\CMS\Core\Database\PreparedStatement::FETCH_ASSOC
 	 * returns only a single value per column name.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	const FETCH_ASSOC = 2;
 	/**
 	 * Specifies that the fetch method shall return each row as an array indexed by
 	 * column number as returned in the corresponding result set, starting at column 0.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	const FETCH_NUM = 3;
 	/**
@@ -109,7 +109,7 @@ class PreparedStatement {
 	/**
 	 * Default fetch mode.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $defaultFetchMode = self::FETCH_ASSOC;
 

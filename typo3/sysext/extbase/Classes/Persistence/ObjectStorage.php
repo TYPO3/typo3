@@ -50,7 +50,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
 	/**
 	 * A flag indication if the object storage was modified after reconstitution (eg. by adding a new object)
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isModified = FALSE;
 
@@ -74,7 +74,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
 	 * An internal var holding the count of added objects to be stored as position.
 	 * It would be resetted, when all objects will be removed from the objectstorage
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $positionCounter = 0;
 

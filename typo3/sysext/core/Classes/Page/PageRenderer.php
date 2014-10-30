@@ -41,37 +41,37 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	const JQUERY_NAMESPACE_DEFAULT = 'jQuery';
 	const JQUERY_NAMESPACE_DEFAULT_NOCONFLICT = 'defaultNoConflict';
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $compressJavascript = FALSE;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $compressCss = FALSE;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $removeLineBreaksFromTemplate = FALSE;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $concatenateFiles = FALSE;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $concatenateJavascript = FALSE;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $concatenateCss = FALSE;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $moveJsFromHeaderToFooter = FALSE;
 
@@ -162,7 +162,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $baseUrl;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $renderXhtml = TRUE;
 
@@ -349,7 +349,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * if set, the requireJS library is included
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $addRequireJs = FALSE;
 
@@ -360,12 +360,12 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $requireJsConfig = array();
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $addPrototype = FALSE;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $addScriptaculous = FALSE;
 
@@ -375,12 +375,12 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $addScriptaculousModules = array('builder' => FALSE, 'effects' => FALSE, 'dragdrop' => FALSE, 'controls' => FALSE, 'slider' => FALSE);
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $addExtJS = FALSE;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $addExtCore = FALSE;
 
@@ -390,37 +390,37 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $extJSadapter = 'ext/ext-base.js';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $extDirectCodeAdded = FALSE;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $enableExtJsDebug = FALSE;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $enableExtCoreDebug = FALSE;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $enableJqueryDebug = FALSE;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $extJStheme = TRUE;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $extJScss = TRUE;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $enableExtJSQuickTips = FALSE;
 
@@ -461,12 +461,12 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * SVG library
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $addSvg = FALSE;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $enableSvgDebug = FALSE;
 

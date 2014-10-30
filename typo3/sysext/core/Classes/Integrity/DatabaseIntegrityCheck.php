@@ -28,17 +28,17 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 class DatabaseIntegrityCheck {
 
 	/**
-	 * @var boolean If set, genTree() includes deleted pages. This is default.
+	 * @var bool If set, genTree() includes deleted pages. This is default.
 	 */
 	public $genTree_includeDeleted = TRUE;
 
 	/**
-	 * @var boolean If set, genTree() includes versionized pages/records. This is default.
+	 * @var bool If set, genTree() includes versionized pages/records. This is default.
 	 */
 	public $genTree_includeVersions = TRUE;
 
 	/**
-	 * @var boolean If set, genTree() includes records from pages.
+	 * @var bool If set, genTree() includes records from pages.
 	 */
 	public $genTree_includeRecords = FALSE;
 

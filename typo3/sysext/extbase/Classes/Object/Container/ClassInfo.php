@@ -62,14 +62,14 @@ class ClassInfo {
 	/**
 	 * Indicates if the class is a singleton or not.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isSingleton = FALSE;
 
 	/**
 	 * Indicates if the class has the method initializeObject
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isInitializeable = FALSE;
 

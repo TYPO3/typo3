@@ -21,7 +21,7 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 abstract class AbstractFileFolderConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $priority = 1;
 

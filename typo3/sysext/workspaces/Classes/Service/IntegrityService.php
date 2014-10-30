@@ -27,25 +27,25 @@ class IntegrityService {
 	/**
 	 * Succes status - everything is fine
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	const STATUS_Succes = 100;
 	/**
 	 * Info status - nothing is wrong, but a notice is shown
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	const STATUS_Info = 101;
 	/**
 	 * Warning status - user interaction might be required
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	const STATUS_Warning = 102;
 	/**
 	 * Error status - user interaction is required
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	const STATUS_Error = 103;
 	/**

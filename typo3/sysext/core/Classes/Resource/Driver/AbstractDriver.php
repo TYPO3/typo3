@@ -29,7 +29,7 @@ abstract class AbstractDriver implements DriverInterface {
 	 * The capabilities of this driver. See Storage::CAPABILITY_* constants for possible values. This value should be set
 	 * in the constructor of derived classes.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $capabilities = 0;
 
@@ -37,7 +37,7 @@ abstract class AbstractDriver implements DriverInterface {
 	/**
 	 * The storage uid the driver was instantiated for
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $storageUid;
 

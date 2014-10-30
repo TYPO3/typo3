@@ -48,7 +48,7 @@ abstract class AbstractElementView {
 	 * True if element needs no element wrap
 	 * like <li>element</li>
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $noWrap = FALSE;
 

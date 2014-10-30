@@ -64,7 +64,7 @@ class UriBuilder {
 	protected $section = '';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $createAbsoluteUri = FALSE;
 
@@ -74,7 +74,7 @@ class UriBuilder {
 	protected $absoluteUriScheme = NULL;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $addQueryString = FALSE;
 
@@ -89,27 +89,27 @@ class UriBuilder {
 	protected $argumentsToBeExcludedFromQueryString = array();
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $linkAccessRestrictedPages = FALSE;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $targetPageUid = NULL;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $targetPageType = 0;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $noCache = FALSE;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $useCacheHash = TRUE;
 

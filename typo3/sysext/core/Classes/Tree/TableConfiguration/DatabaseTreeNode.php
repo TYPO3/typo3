@@ -21,22 +21,22 @@ namespace TYPO3\CMS\Core\Tree\TableConfiguration;
 class DatabaseTreeNode extends \TYPO3\CMS\Backend\Tree\TreeRepresentationNode {
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $selectable;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $selected = FALSE;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $expanded = TRUE;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $hasChildren = FALSE;
 

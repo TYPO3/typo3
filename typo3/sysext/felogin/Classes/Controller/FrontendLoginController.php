@@ -46,19 +46,19 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 	public $extKey = 'felogin';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	public $pi_checkCHash = FALSE;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	public $pi_USER_INT_obj = TRUE;
 
 	/**
 	 * Is user logged in?
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $userIsLoggedIn;
 
@@ -86,7 +86,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 	/**
 	 * Flag for disable the redirect
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $noRedirect = FALSE;
 

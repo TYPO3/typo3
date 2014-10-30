@@ -26,14 +26,14 @@ class AdminPanelView {
 	/**
 	 * Determines whether the update button should be shown.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $extNeedUpdate = FALSE;
 
 	/**
 	 * Force preview
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $ext_forcePreview = FALSE;
 

@@ -19,7 +19,7 @@ class Escape implements \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface {
 	/**
 	 * Is the interceptor enabled right now?
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $interceptorEnabled = TRUE;
 

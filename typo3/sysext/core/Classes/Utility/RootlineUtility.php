@@ -23,7 +23,7 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 class RootlineUtility {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $pageUid;
 
@@ -38,17 +38,17 @@ class RootlineUtility {
 	protected $parsedMountPointParameters = array();
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $languageUid = 0;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $workspaceUid = 0;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $versionPreview = FALSE;
 

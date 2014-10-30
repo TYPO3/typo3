@@ -57,7 +57,7 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	/**
 	 * If this request has been changed and needs to be dispatched again
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $dispatched = FALSE;
 

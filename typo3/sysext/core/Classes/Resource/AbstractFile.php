@@ -60,7 +60,7 @@ abstract class AbstractFile implements FileInterface {
 	/**
 	 * If set to true, this file is regarded as being deleted.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $deleted = FALSE;
 

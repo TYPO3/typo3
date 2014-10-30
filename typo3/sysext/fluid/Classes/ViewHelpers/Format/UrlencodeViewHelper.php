@@ -39,7 +39,7 @@ class UrlencodeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewH
 	 * Disable the escaping interceptor because otherwise the child nodes would be escaped before this view helper
 	 * can decode the text's entities.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $escapingInterceptorEnabled = FALSE;
 

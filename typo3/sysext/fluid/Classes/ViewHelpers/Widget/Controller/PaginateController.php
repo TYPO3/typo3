@@ -33,17 +33,17 @@ class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
 	protected $objects;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $currentPage = 1;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $maximumNumberOfLinks = 99;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $numberOfPages = 1;
 

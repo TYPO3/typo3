@@ -27,7 +27,7 @@ class ImageMagick6Preset extends AbstractImagePreset implements Configuration\Pr
 	protected $name = 'ImageMagick6';
 
 	/**
-	 * @var integer Priority of preset
+	 * @var int Priority of preset
 	 */
 	protected $priority = 70;
 

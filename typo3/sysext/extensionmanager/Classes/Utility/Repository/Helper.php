@@ -29,19 +29,19 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Type of problem: extension file not existing in file system.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	const PROBLEM_EXTENSION_FILE_NOT_EXISTING = 1;
 	/**
 	 * Type of problem: wrong hash indicates outdated extension file.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	const PROBLEM_EXTENSION_HASH_CHANGED = 2;
 	/**
 	 * Type of problem: no version records in database.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	const PROBLEM_NO_VERSIONS_IN_DATABASE = 4;
 	/**

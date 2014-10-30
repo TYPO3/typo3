@@ -36,7 +36,7 @@ class BackendFactory {
 	 * A flag that tells if the factory is initialized. This is to prevent
 	 * continuous creation of backends in case if none of them is available.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	static protected $initialized = FALSE;
 

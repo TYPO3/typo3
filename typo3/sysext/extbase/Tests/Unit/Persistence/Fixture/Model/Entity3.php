@@ -25,7 +25,7 @@ class Entity3 extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public $someString;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	public $someInteger;
 

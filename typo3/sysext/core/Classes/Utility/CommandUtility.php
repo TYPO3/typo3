@@ -49,7 +49,7 @@ class CommandUtility {
 	/**
 	 * Tells if object is already initialized
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected static $initialized = FALSE;
 

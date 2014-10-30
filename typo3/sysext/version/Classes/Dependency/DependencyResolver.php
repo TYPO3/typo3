@@ -40,7 +40,7 @@ class DependencyResolver {
 	protected $eventCallbacks = array();
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $outerMostParentsRequireReferences = FALSE;
 

@@ -38,7 +38,7 @@ class ExtensionListUtility implements \SplObserver {
 	/**
 	 * Keeps number of processed version records.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $sumRecords = 0;
 
@@ -89,7 +89,7 @@ class ExtensionListUtility implements \SplObserver {
 	 *
 	 * The UID is necessary for inserting records.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $repositoryUid = 1;
 

@@ -34,7 +34,7 @@ class Mirrors extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 *
 	 * Is array index.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $currentMirror;
 
@@ -42,7 +42,7 @@ class Mirrors extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * Keeps information if a mirror should
 	 * be randomly selected.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isRandomSelection = TRUE;
 

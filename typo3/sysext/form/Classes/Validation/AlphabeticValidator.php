@@ -24,7 +24,7 @@ class AlphabeticValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	/**
 	 * Allow white space in the submitted value
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $allowWhiteSpace;
 

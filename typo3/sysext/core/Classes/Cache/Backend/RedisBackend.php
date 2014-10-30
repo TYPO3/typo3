@@ -37,7 +37,7 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 	 * we just make every entry volatile and treat a high number as "unlimited"
 	 *
 	 * @see http://code.google.com/p/redis/wiki/ExpireCommand
-	 * @var integer Faked unlimited lifetime
+	 * @var int Faked unlimited lifetime
 	 */
 	const FAKED_UNLIMITED_LIFETIME = 31536000;
 	/**
@@ -68,7 +68,7 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 	/**
 	 * Indicates whether the server is connected
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $connected = FALSE;
 
@@ -82,14 +82,14 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 	/**
 	 * Port of the Redis server, defaults to 6379
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $port = 6379;
 
 	/**
 	 * Number of selected database, defaults to 0
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $database = 0;
 
@@ -103,14 +103,14 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 	/**
 	 * Indicates whether data is compressed or not (requires php zlib)
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $compression = FALSE;
 
 	/**
 	 * -1 to 9, indicates zlib compression level: -1 = default level 6, 0 = no compression, 9 maximum compression
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $compressionLevel = -1;
 

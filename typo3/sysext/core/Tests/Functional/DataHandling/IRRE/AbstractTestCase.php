@@ -37,7 +37,7 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
 	protected $testExtensionsToLoad = array('typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial');
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $expectedLogEntries = 0;
 

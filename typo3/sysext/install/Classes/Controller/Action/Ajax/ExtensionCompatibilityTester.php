@@ -43,7 +43,7 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction {
 	/**
 	 * Define whether to log errors to file or not.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $logError = FALSE;
 

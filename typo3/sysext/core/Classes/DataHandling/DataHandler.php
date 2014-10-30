@@ -44,14 +44,14 @@ class DataHandler {
 	 * If TRUE, the default log-messages will be stored. This should not be necessary if the locallang-file for the
 	 * log-display is properly configured. So disabling this will just save some database-space as the default messages are not saved.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $storeLogMessages = TRUE;
 
 	/**
 	 * If TRUE, actions are logged to sys_log.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $enableLogging = TRUE;
 
@@ -59,7 +59,7 @@ class DataHandler {
 	 * If TRUE, the datamap array is reversed in the order, which is a nice thing if you're creating a whole new
 	 * bunch of records.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $reverseOrder = FALSE;
 
@@ -67,7 +67,7 @@ class DataHandler {
 	 * If TRUE, only fields which are different from the database values are saved! In fact, if a whole input array
 	 * is similar, it's not saved then.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $checkSimilar = TRUE;
 
@@ -75,7 +75,7 @@ class DataHandler {
 	 * If TRUE, incoming values in the data-array have their slashes stripped. ALWAYS SET THIS TO ZERO and supply an
 	 * unescaped data array instead. This switch may totally disappear in future versions of this class!
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $stripslashes_values = TRUE;
 
@@ -83,14 +83,14 @@ class DataHandler {
 	 * This will read the record after having updated or inserted it. If anything is not properly submitted an error
 	 * is written to the log. This feature consumes extra time by selecting records
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $checkStoredRecords = TRUE;
 
 	/**
 	 * If set, values '' and 0 will equal each other when the stored records are checked.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $checkStoredRecords_loose = TRUE;
 
@@ -98,35 +98,35 @@ class DataHandler {
 	 * If this is set, then a page is deleted by deleting the whole branch under it (user must have
 	 * delete permissions to it all). If not set, then the page is deleted ONLY if it has no branch.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $deleteTree = FALSE;
 
 	/**
 	 * If set, then the 'hideAtCopy' flag for tables will be ignored.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $neverHideAtCopy = FALSE;
 
 	/**
 	 * If set, then the TCE class has been instantiated during an import action of a T3D
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $isImporting = FALSE;
 
 	/**
 	 * If set, then transformations are NOT performed on the input.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $dontProcessTransformations = FALSE;
 
 	/**
 	 * If set, .vDEFbase values are unset in flexforms.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $clear_flexFormData_vDEFbase = FALSE;
 
@@ -135,7 +135,7 @@ class DataHandler {
 	 * FALSE: Will not update anything.
 	 * "FORCE_FFUPD" (string): Like TRUE, but will force update to the FlexForm Field
 	 *
-	 * @var boolean|string
+	 * @var bool|string
 	 */
 	public $updateModeL10NdiffData = TRUE;
 
@@ -143,7 +143,7 @@ class DataHandler {
 	 * If TRUE, the translation diff. fields will in fact be reset so that they indicate that all needs to change again!
 	 * It's meant as the opposite of declaring the record translated.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $updateModeL10NdiffDataClear = FALSE;
 
@@ -151,7 +151,7 @@ class DataHandler {
 	 * If TRUE, workspace restrictions are bypassed on edit an create actions (process_datamap()).
 	 * YOU MUST KNOW what you do if you use this feature!
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $bypassWorkspaceRestrictions = FALSE;
 
@@ -159,7 +159,7 @@ class DataHandler {
 	 * If TRUE, file handling of attached files (addition, deletion etc) is bypassed - the value is saved straight away.
 	 * YOU MUST KNOW what you are doing with this feature!
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $bypassFileHandling = FALSE;
 
@@ -167,7 +167,7 @@ class DataHandler {
 	 * If TRUE, access check, check for deleted etc. for records is bypassed.
 	 * YOU MUST KNOW what you are doing if you use this feature!
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $bypassAccessCheckForRecords = FALSE;
 
@@ -184,7 +184,7 @@ class DataHandler {
 	 * If 1 then pages on the 1st level is copied.
 	 * If 2 then pages on the second level is copied ... and so on
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	public $copyTree = 0;
 
@@ -327,7 +327,7 @@ class DataHandler {
 	/**
 	 * Will be set to uid of be_user executing this script
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	public $userid;
 
@@ -341,7 +341,7 @@ class DataHandler {
 	/**
 	 * Will be set if user is admin
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $admin;
 
@@ -406,7 +406,7 @@ class DataHandler {
 	/**
 	 * Integer: The interval between sorting numbers used with tables with a 'sorting' field defined. Min 1
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	public $sortIntervals = 256;
 
@@ -585,14 +585,14 @@ class DataHandler {
 	/**
 	 * A signal flag used to tell file processing that autoversioning has happend and hence certain action should be applied.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $autoVersioningUpdate = FALSE;
 
 	/**
 	 * Disable delete clause
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $disableDeleteClause = FALSE;
 

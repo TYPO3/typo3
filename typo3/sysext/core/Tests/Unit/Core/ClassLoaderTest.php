@@ -46,7 +46,7 @@ class ClassLoaderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Test flag used in in this test case
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public static $testClassWasLoaded = FALSE;
 

@@ -52,14 +52,14 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 	/**
 	 * Result of the check, if the current page uid is valid or not
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $responsePage = TRUE;
 
 	/**
 	 * Result of the check, if the current content uid is valid or not
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $responseContent = TRUE;
 

@@ -38,7 +38,7 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
 	/**
 	 * If set to TRUE, it is an AJAX widget.
 	 *
-	 * @var boolean
+	 * @var bool
 	 * @api
 	 */
 	protected $ajaxWidget = FALSE;

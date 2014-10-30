@@ -26,28 +26,28 @@ class Execution {
 	/**
 	 * Start date of a task (timestamp)
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $start;
 
 	/**
 	 * End date of a task (timestamp)
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $end;
 
 	/**
 	 * Interval between executions (in seconds)
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $interval;
 
 	/**
 	 * Flag for concurrent executions: TRUE if allowed, FALSE otherwise (default)
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $multiple = FALSE;
 
@@ -62,7 +62,7 @@ class Execution {
 	 * This flag is used to mark a new single execution
 	 * See explanations in method setIsNewSingleExecution()
 	 *
-	 * @var boolean
+	 * @var bool
 	 * @see \TYPO3\CMS\Scheduler\Execution::setIsNewSingleExecution()
 	 */
 	protected $isNewSingleExecution = FALSE;

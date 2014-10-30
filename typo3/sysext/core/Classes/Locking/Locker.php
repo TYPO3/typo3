@@ -55,17 +55,17 @@ class Locker {
 	protected $filePointer;
 
 	/**
-	 * @var boolean True if lock is acquired
+	 * @var bool True if lock is acquired
 	 */
 	protected $isAcquired = FALSE;
 
 	/**
-	 * @var integer Number of times a locked resource is tried to be acquired. Only used in manual locks method "simple".
+	 * @var int Number of times a locked resource is tried to be acquired. Only used in manual locks method "simple".
 	 */
 	protected $loops = 150;
 
 	/**
-	 * @var integer Milliseconds after lock acquire is retried. $loops * $step results in the maximum delay of a lock. Only used in manual lock method "simple".
+	 * @var int Milliseconds after lock acquire is retried. $loops * $step results in the maximum delay of a lock. Only used in manual lock method "simple".
 	 */
 	protected $step = 200;
 
@@ -75,7 +75,7 @@ class Locker {
 	protected $syslogFacility = 'cms';
 
 	/**
-	 * @var boolean True if locking should be logged
+	 * @var bool True if locking should be logged
 	 */
 	protected $isLoggingEnabled = TRUE;
 

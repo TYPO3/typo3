@@ -90,7 +90,7 @@ class DatabaseConnection {
 	protected $databaseHost = '';
 
 	/**
-	 * @var integer Database port to connect to
+	 * @var int Database port to connect to
 	 */
 	protected $databasePort = 3306;
 
@@ -115,13 +115,13 @@ class DatabaseConnection {
 	protected $databaseUserPassword = '';
 
 	/**
-	 * @var boolean TRUE if database connection should be persistent
+	 * @var bool TRUE if database connection should be persistent
 	 * @see http://php.net/manual/de/mysqli.persistconns.php
 	 */
 	protected $persistentDatabaseConnection = FALSE;
 
 	/**
-	 * @var boolean TRUE if connection between client and sql server is compressed
+	 * @var bool TRUE if connection between client and sql server is compressed
 	 */
 	protected $connectionCompression = FALSE;
 
@@ -139,7 +139,7 @@ class DatabaseConnection {
 	protected $initializeCommandsAfterConnect = array();
 
 	/**
-	 * @var boolean TRUE if database connection is established
+	 * @var bool TRUE if database connection is established
 	 */
 	protected $isConnected = FALSE;
 

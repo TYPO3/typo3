@@ -22,7 +22,7 @@ namespace TYPO3\CMS\Saltedpasswords\Task;
 class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
 	/**
-	 * @var boolean Whether or not the task is allowed to deactivate itself after processing all existing user records.
+	 * @var bool Whether or not the task is allowed to deactivate itself after processing all existing user records.
 	 */
 	protected $canDeactivateSelf = TRUE;
 
@@ -32,12 +32,12 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 * Therefore only a small number of frontend and backend users are processed.
 	 * If saltedpasswords is enabled for both frontend and backend 2 * numberOfRecords will be handled.
 	 *
-	 * @var integer Number of records
+	 * @var int Number of records
 	 */
 	protected $numberOfRecords = 250;
 
 	/**
-	 * @var integer Pointer to last handled frontend and backend user row
+	 * @var int Pointer to last handled frontend and backend user row
 	 */
 	protected $userRecordPointer = array();
 

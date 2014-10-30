@@ -66,7 +66,7 @@ class DebuggerUtility {
 	/**
 	 * Is set to TRUE once the CSS file is included in the current page to prevent double inclusions of the CSS file.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	static protected $stylesheetEchoed = FALSE;
 

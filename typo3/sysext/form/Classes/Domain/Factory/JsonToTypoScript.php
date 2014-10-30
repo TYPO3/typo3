@@ -26,7 +26,7 @@ class JsonToTypoScript {
 	/**
 	 * Internal counter for the elements
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $elementId = 0;
 
@@ -41,7 +41,7 @@ class JsonToTypoScript {
 	/**
 	 * Internal counter for the validation rules
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $validationRulesCounter = 1;
 

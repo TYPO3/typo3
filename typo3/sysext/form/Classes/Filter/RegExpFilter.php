@@ -24,7 +24,7 @@ class RegExpFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 	/**
 	 * Regular expression for filter
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $regularExpression;
 

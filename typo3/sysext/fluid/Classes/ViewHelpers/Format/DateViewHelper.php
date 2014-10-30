@@ -77,7 +77,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
 class DateViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $escapingInterceptorEnabled = FALSE;
 

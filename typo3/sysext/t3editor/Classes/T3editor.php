@@ -42,14 +42,14 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Counts the editors on the current page
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $editorCounter = 0;
 
 	/**
 	 * Flag to enable the t3editor
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $_isEnabled = TRUE;
 

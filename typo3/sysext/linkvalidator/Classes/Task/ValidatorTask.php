@@ -25,31 +25,31 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $sleepTime;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $sleepAfterFinish;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $countInARun;
 
 	/**
 	 * Total number of broken links
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $totalBrokenLink = 0;
 
 	/**
 	 * Total number of broken links from the last run
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $oldTotalBrokenLink = 0;
 
@@ -70,7 +70,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	/**
 	 * Shows if number of result was different from the result of the last check
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isDifferentToLastRun;
 
@@ -84,14 +84,14 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	/**
 	 * Level of pages the task should check
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $depth;
 
 	/**
 	 * UID of the start page for this task
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $page;
 
@@ -105,7 +105,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	/**
 	 * Only send an email, if new broken links were found
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $emailOnBrokenLinkOnly;
 
@@ -392,7 +392,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 		$markerArray = array();
 		/** @var array $validEmailList */
 		$validEmailList = array();
-		/** @var boolean $sendEmail */
+		/** @var bool $sendEmail */
 		$sendEmail = TRUE;
 		$markerArray['totalBrokenLink'] = $this->totalBrokenLink;
 		$markerArray['totalBrokenLink_old'] = $this->oldTotalBrokenLink;

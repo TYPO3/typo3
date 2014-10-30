@@ -29,7 +29,7 @@ class Join implements JoinInterface {
 	protected $right;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $joinType;
 

@@ -31,7 +31,7 @@ abstract class AbstractPreset implements PresetInterface {
 	protected $name = '';
 
 	/**
-	 * @var integer Default priority of preset
+	 * @var int Default priority of preset
 	 */
 	protected $priority = 50;
 

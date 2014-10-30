@@ -27,7 +27,7 @@ abstract class AbstractValidator implements ValidatorInterface {
 	 * Note: A value is considered empty if it is NULL or an empty string!
 	 * By default all validators except for NotEmpty and the Composite Validators accept empty values
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $acceptsEmptyValues = TRUE;
 

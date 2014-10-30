@@ -26,7 +26,7 @@ class CommandArgumentDefinition {
 	protected $name = '';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $required = FALSE;
 

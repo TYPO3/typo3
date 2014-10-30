@@ -45,14 +45,14 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 	/**
 	 * Information, if the module is accessible for the current user or not
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isAccessibleForCurrentUser = FALSE;
 
 	/**
 	 * Depth for the recursive traversal of pages for the link validation
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $searchLevel;
 

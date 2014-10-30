@@ -86,7 +86,7 @@ class Rfc822AddressesParser {
 	/**
 	 * Whether or not to validate atoms for non-ascii characters.
 	 *
-	 * @var boolean $validate
+	 * @var bool $validate
 	 */
 	private $validate = TRUE;
 
@@ -114,14 +114,14 @@ class Rfc822AddressesParser {
 	/**
 	 * An internal counter/pointer.
 	 *
-	 * @var integer $index
+	 * @var int $index
 	 */
 	private $index = NULL;
 
 	/**
 	 * The number of groups that have been found in the address list.
 	 *
-	 * @var integer $num_groups
+	 * @var int $num_groups
 	 * @access public
 	 */
 	private $num_groups = 0;

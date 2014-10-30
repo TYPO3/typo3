@@ -40,7 +40,7 @@ class ArgumentDefinition {
 	/**
 	 * Is argument required?
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $required = FALSE;
 
@@ -54,7 +54,7 @@ class ArgumentDefinition {
 	/**
 	 * TRUE if it is a method parameter
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isMethodParameter = FALSE;
 

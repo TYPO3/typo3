@@ -57,7 +57,7 @@ class CycleViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 	/**
 	 * current values index
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $currentCycleIndex = NULL;
 

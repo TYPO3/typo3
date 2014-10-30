@@ -50,14 +50,14 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 	/**
 	 * Decides if the writelog() function is called at login and logout.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $writeStdLog = FALSE;
 
 	/**
 	 * If the writelog() functions is called if a login-attempt has be tried without success.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $writeAttemptLog = FALSE;
 
@@ -71,7 +71,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 	/**
 	 * General flag which is set if the adminpanel should be displayed at all.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $extAdmEnabled = FALSE;
 

@@ -28,17 +28,17 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 class Commands {
 
 	/**
-	 * @var boolean|null
+	 * @var bool|null
 	 */
 	static protected $useNavTitle = NULL;
 
 	/**
-	 * @var boolean|null
+	 * @var bool|null
 	 */
 	static protected $addIdAsPrefix = NULL;
 
 	/**
-	 * @var boolean|null
+	 * @var bool|null
 	 */
 	static protected $addDomainName = NULL;
 
@@ -48,7 +48,7 @@ class Commands {
 	static protected $backgroundColors = NULL;
 
 	/**
-	 * @var integer|null
+	 * @var int|null
 	 */
 	static protected $titleLength = NULL;
 

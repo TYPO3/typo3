@@ -27,7 +27,7 @@ class FailsafePackageManager extends \TYPO3\CMS\Core\Package\PackageManager {
 	protected $configurationManager;
 
 	/**
-	 * @var boolean TRUE if package manager is in failsafe mode
+	 * @var bool TRUE if package manager is in failsafe mode
 	 */
 	protected $inFailsafeMode = FALSE;
 

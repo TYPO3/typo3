@@ -5,7 +5,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Object\Container\Fixtures;
 class SimpleTypeConstructorArgument {
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	public $foo;
 

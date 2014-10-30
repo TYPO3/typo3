@@ -24,14 +24,14 @@ class Content {
 	/**
 	 * The uid
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $uid = 0;
 
 	/**
 	 * The page id
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $pageId = 0;
 

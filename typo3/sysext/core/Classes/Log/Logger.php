@@ -36,7 +36,7 @@ class Logger implements \Psr\Log\LoggerInterface {
 	/**
 	 * Minimum log level, anything below this level will be ignored.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $minimumLogLevel = \TYPO3\CMS\Core\Log\LogLevel::EMERGENCY;
 

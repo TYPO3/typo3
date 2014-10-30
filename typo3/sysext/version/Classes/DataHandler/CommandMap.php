@@ -69,7 +69,7 @@ class CommandMap {
 	protected $workspacesChangeStageMode;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $workspacesConsiderReferences;
 

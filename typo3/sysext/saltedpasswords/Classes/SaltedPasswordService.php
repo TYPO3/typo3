@@ -67,7 +67,7 @@ class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 	 * Prevents authentication bypass. See vulnerability report:
 	 * { @link http://forge.typo3.org/issues/22030 }
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $authenticationFailed = FALSE;
 

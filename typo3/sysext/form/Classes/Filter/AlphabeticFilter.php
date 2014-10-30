@@ -24,7 +24,7 @@ class AlphabeticFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 	/**
 	 * Allow whitespace
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $allowWhiteSpace;
 

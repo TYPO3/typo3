@@ -22,51 +22,51 @@ namespace TYPO3\CMS\Belog\Controller;
 abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	const TIMEFRAME_THISWEEK = 0;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	const TIMEFRAME_LASTWEEK = 1;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	const TIMEFRAME_LASTSEVENDAYS = 2;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	const TIMEFRAME_THISMONTH = 10;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	const TIMEFRAME_LASTMONTH = 11;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	const TIMEFRAME_LAST31DAYS = 12;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	const TIMEFRAME_CUSTOM = 30;
 
 	/**
 	 * Whether plugin is running in page context (sub module of Web > Info)
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isInPageContext = FALSE;
 
 	/**
 	 * Page ID in page context
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $pageId = 0;
 

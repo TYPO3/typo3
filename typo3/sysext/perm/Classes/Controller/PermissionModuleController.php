@@ -35,7 +35,7 @@ class PermissionModuleController {
 	/**
 	 * Number of levels to enable recursive settings for
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	public $getLevels = 10;
 
@@ -113,14 +113,14 @@ class PermissionModuleController {
 	/**
 	 * Set internally if the current user either OWNS the page OR is admin user!
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $editingAllowed;
 
 	/**
 	 * Internal, static: GPvars: Page id.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	public $id;
 
@@ -128,21 +128,21 @@ class PermissionModuleController {
 	 * If set, editing of the page permissions will occur (showing the editing screen). Notice:
 	 * This value is evaluated against permissions and so it will change internally!
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $edit;
 
 	/**
 	 * ID to return to after editing.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	public $return_id;
 
 	/**
 	 * Id of the page which was just edited.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	public $lastEdited;
 

@@ -26,14 +26,14 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface 
 	/**
 	 * 10MB
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $deprecationLogFileSizeWarningThreshold = 10485760;
 
 	/**
 	 * 100MB
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $deprecationLogFileSizeErrorThreshold = 104857600;
 

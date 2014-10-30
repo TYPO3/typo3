@@ -26,7 +26,7 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $cacheInstance;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $errorMode;
 

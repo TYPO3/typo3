@@ -38,7 +38,7 @@ class GridDataService {
 	/**
 	 * Id of the current active workspace.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $currentWorkspace = NULL;
 

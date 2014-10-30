@@ -88,14 +88,14 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
 	/**
 	 * If TRUE, unknown properties will be skipped during property mapping
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $skipUnknownProperties = FALSE;
 
 	/**
 	 * If TRUE, unknown properties will be mapped.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $mapUnknownProperties = FALSE;
 

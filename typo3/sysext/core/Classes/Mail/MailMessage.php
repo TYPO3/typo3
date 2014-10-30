@@ -37,7 +37,7 @@ class MailMessage extends \Swift_Message {
 	/**
 	 * TRUE if the message has been sent.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $sent = FALSE;
 

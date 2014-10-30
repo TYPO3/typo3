@@ -33,14 +33,14 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	/**
 	 * Workspace Overlay Id
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $workspaceId = 0;
 
 	/**
 	 * Mount Point Id
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $mountPoint = 0;
 
@@ -54,7 +54,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	/**
 	 * Indicator if the node is a mount point
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isMountPoint = FALSE;
 

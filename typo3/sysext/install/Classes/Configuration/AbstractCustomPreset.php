@@ -25,12 +25,12 @@ abstract class AbstractCustomPreset extends AbstractPreset {
 	protected $name = 'Custom';
 
 	/**
-	 * @var boolean TRUE if custom preset is active
+	 * @var bool TRUE if custom preset is active
 	 */
 	protected $isActive = FALSE;
 
 	/**
-	 * @var integer Priority of custom prefix is usually the lowest
+	 * @var int Priority of custom prefix is usually the lowest
 	 */
 	protected $priority = 10;
 

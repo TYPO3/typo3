@@ -30,7 +30,7 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	 * being updated to 500 to make sure it does not collide with a limit in any
 	 * other DBMS.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	const CHUNK_SIZE = 500;
 

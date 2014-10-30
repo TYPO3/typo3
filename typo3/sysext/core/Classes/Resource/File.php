@@ -35,7 +35,7 @@ class File extends AbstractFile {
 	/**
 	 * Set to TRUE while this file is being indexed - used to prevent some endless loops
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $indexingInProgress = FALSE;
 

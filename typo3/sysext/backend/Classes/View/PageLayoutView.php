@@ -174,7 +174,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	/**
 	 * User permissions
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	public $ext_CALC_PERMS;
 

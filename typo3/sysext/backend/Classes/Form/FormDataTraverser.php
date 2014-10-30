@@ -37,7 +37,7 @@ class FormDataTraverser {
 	 * If this is TRUE the alternative field value will be used even if
 	 * the detected field value is not empty.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $forceAlternativeFieldValueUse = FALSE;
 
@@ -66,7 +66,7 @@ class FormDataTraverser {
 	 * If the first record in the chain is translatable the language
 	 * UID of this record is stored in this variable.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $originalLanguageUid = NULL;
 

@@ -48,7 +48,7 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	private $collectionRecord = array();
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $numberOfRecords = 5;
 

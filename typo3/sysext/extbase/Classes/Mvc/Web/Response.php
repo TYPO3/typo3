@@ -41,7 +41,7 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response {
 	/**
 	 * The HTTP status code
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $statusCode;
 

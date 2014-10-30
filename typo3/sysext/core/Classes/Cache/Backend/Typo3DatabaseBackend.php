@@ -23,7 +23,7 @@ namespace TYPO3\CMS\Core\Cache\Backend;
 class Typo3DatabaseBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implements \TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface {
 
 	/**
-	 * @var integer Timestamp of 2038-01-01)
+	 * @var int Timestamp of 2038-01-01)
 	 */
 	const FAKED_UNLIMITED_EXPIRE = 2145909600;
 	/**
@@ -37,12 +37,12 @@ class Typo3DatabaseBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend
 	protected $tagsTable;
 
 	/**
-	 * @var boolean Indicates whether data is compressed or not (requires php zlib)
+	 * @var bool Indicates whether data is compressed or not (requires php zlib)
 	 */
 	protected $compression = FALSE;
 
 	/**
-	 * @var integer -1 to 9, indicates zlib compression level: -1 = default level 6, 0 = no compression, 9 maximum compression
+	 * @var int -1 to 9, indicates zlib compression level: -1 = default level 6, 0 = no compression, 9 maximum compression
 	 */
 	protected $compressionLevel = -1;
 
@@ -57,7 +57,7 @@ class Typo3DatabaseBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend
 	protected $expiresField;
 
 	/**
-	 * @var integer Maximum lifetime to stay with expire field below FAKED_UNLIMITED_LIFETIME
+	 * @var int Maximum lifetime to stay with expire field below FAKED_UNLIMITED_LIFETIME
 	 */
 	protected $maximumLifetime;
 

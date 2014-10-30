@@ -27,7 +27,7 @@ class MbstringPreset extends Configuration\AbstractPreset {
 	protected $name = 'Mbstring';
 
 	/**
-	 * @var integer Priority of preset
+	 * @var int Priority of preset
 	 */
 	protected $priority = 90;
 

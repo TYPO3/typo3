@@ -46,7 +46,7 @@ class ElementInformationController {
 	protected $permsClause;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	public $access = FALSE;
 

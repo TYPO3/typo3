@@ -22,7 +22,7 @@ namespace TYPO3\CMS\Backend\View\BackendLayout;
 class DataProviderContext implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $pageId;
 

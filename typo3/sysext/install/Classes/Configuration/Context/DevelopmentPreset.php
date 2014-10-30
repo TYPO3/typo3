@@ -27,7 +27,7 @@ class DevelopmentPreset extends Configuration\AbstractPreset {
 	protected $name = 'Development';
 
 	/**
-	 * @var integer Priority of preset
+	 * @var int Priority of preset
 	 */
 	protected $priority = 50;
 

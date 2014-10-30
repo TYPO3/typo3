@@ -27,7 +27,7 @@ class IconvPreset extends Configuration\AbstractPreset {
 	protected $name = 'Iconv';
 
 	/**
-	 * @var integer Priority of preset
+	 * @var int Priority of preset
 	 */
 	protected $priority = 80;
 

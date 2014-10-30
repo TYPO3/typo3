@@ -26,7 +26,7 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Storage page ID of the log entry
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $pid = 0;
 
@@ -37,21 +37,21 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * have found now is to resolve the username (if it exists) in a
 	 * view helper and just use the uid of the be user here.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $backendUserUid = 0;
 
 	/**
 	 * Action ID of the action that happened, for example 3 was a file action
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $action = 0;
 
 	/**
 	 * UID of the record the event happened to
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $recordUid = 0;
 
@@ -65,14 +65,14 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * PID of the record the event happened to
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $recordPid = 0;
 
 	/**
 	 * Error code
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $error = 0;
 
@@ -86,21 +86,21 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Timestamp when the log entry was written
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $tstamp = 0;
 
 	/**
 	 * Type code
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $type = 0;
 
 	/**
 	 * Details number
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $detailsNumber = 0;
 
@@ -121,14 +121,14 @@ class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Event PID
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $eventPid = 0;
 
 	/**
 	 * This is only the UID and not the full workspace object for the same reason as in $beUserUid.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $workspaceUid = 0;
 

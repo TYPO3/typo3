@@ -25,7 +25,7 @@ class NotEmptyValidator extends AbstractValidator {
 	 * This validator always needs to be executed even if the given value is empty.
 	 * See AbstractValidator::validate()
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $acceptsEmptyValues = FALSE;
 

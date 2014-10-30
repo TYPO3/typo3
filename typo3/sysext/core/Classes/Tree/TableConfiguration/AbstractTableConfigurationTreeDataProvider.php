@@ -21,12 +21,12 @@ namespace TYPO3\CMS\Core\Tree\TableConfiguration;
 abstract class AbstractTableConfigurationTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $expandAll = FALSE;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $levelMaximum = 2;
 

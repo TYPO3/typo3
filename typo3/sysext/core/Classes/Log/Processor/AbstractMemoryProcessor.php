@@ -26,7 +26,7 @@ abstract class AbstractMemoryProcessor extends \TYPO3\CMS\Core\Log\Processor\Abs
 	 * If set, the real size of memory allocated from system is used.
 	 * Otherwise the memory used by emalloc() is used.
 	 *
-	 * @var boolean
+	 * @var bool
 	 * @see memory_get_usage()
 	 * @see memory_get_peak_usage()
 	 */
@@ -35,7 +35,7 @@ abstract class AbstractMemoryProcessor extends \TYPO3\CMS\Core\Log\Processor\Abs
 	/**
 	 * Whether the size is formatted, e.g. in megabytes
 	 *
-	 * @var boolean
+	 * @var bool
 	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize()
 	 */
 	protected $formatSize = TRUE;

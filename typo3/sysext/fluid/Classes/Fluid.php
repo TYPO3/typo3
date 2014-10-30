@@ -27,7 +27,7 @@ class Fluid {
 	 * This is NO PUBLIC API and the way this mode is enabled might change without
 	 * notice in the future.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	static public $debugMode = FALSE;
 }

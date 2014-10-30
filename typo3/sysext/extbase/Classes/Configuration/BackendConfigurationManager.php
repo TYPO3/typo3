@@ -33,7 +33,7 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
 
 	/**
 	 * stores the current page ID
-	 * @var integer
+	 * @var int
 	 */
 	protected $currentPageId;
 

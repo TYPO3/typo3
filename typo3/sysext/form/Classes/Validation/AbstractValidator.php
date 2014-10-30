@@ -51,7 +51,7 @@ abstract class AbstractValidator implements \TYPO3\CMS\Form\Validation\Validator
 	/**
 	 * Display the message like mandatory
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $showMessage = TRUE;
 

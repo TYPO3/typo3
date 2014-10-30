@@ -35,7 +35,7 @@ class Result {
 
 	/**
 	 * Caches the existence of errors
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $errorsExist = FALSE;
 
@@ -46,7 +46,7 @@ class Result {
 
 	/**
 	 * Caches the existence of warning
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $warningsExist = FALSE;
 
@@ -57,7 +57,7 @@ class Result {
 
 	/**
 	 * Caches the existence of notices
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $noticesExist = FALSE;
 

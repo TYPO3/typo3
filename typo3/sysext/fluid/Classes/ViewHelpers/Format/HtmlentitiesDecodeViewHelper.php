@@ -39,7 +39,7 @@ class HtmlentitiesDecodeViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Format\A
 	 * Disable the escaping interceptor because otherwise the child nodes would be escaped before this view helper
 	 * can decode the text's entities.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $escapingInterceptorEnabled = FALSE;
 

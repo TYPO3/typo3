@@ -57,12 +57,12 @@ abstract class AbstractTask implements TaskInterface {
 	protected $name;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $executed = FALSE;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $successful;
 

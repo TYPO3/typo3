@@ -39,7 +39,7 @@ class BetweenValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator impl
 	/**
 	 * If TRUE, minimum and maximum values are included in comparison
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $inclusive;
 

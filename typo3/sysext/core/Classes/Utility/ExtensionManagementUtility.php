@@ -36,7 +36,7 @@ class ExtensionManagementUtility {
 	 * already read from cache
 	 *
 	 * @TODO : See if we can get rid of the 'load multiple times' scenario in fe
-	 * @var boolean
+	 * @var bool
 	 */
 	static protected $extTablesWasReadFromCacheOnce = FALSE;
 

@@ -34,7 +34,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 	/**
 	 * Indicator for t3editor, whether data is stored
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $tce_processed = FALSE;
 

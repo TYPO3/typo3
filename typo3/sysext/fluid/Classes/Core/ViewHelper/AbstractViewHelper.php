@@ -21,7 +21,7 @@ abstract class AbstractViewHelper {
 	/**
 	 * TRUE if arguments have already been initialized
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	private $argumentsInitialized = FALSE;
 
@@ -108,7 +108,7 @@ abstract class AbstractViewHelper {
 	/**
 	 * With this flag, you can disable the escaping interceptor inside this ViewHelper.
 	 * THIS MIGHT CHANGE WITHOUT NOTICE, NO PUBLIC API!
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $escapingInterceptorEnabled = TRUE;
 

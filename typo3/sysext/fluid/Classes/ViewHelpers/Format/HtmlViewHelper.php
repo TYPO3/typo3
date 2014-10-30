@@ -60,7 +60,7 @@ class HtmlViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 	 * If the escaping interceptor should be disabled inside this ViewHelper, then set this value to FALSE.
 	 * This is internal and NO part of the API. It is very likely to change.
 	 *
-	 * @var boolean
+	 * @var bool
 	 * @internal
 	 */
 	protected $escapingInterceptorEnabled = FALSE;

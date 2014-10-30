@@ -43,7 +43,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 * Indicates, whether the AJAX call was successful,
 	 * i.e. the requested page has been found
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $ajaxStatus = FALSE;
 

@@ -53,7 +53,7 @@ abstract class AbstractBackend implements \TYPO3\CMS\Core\Cache\Backend\BackendI
 	/**
 	 * Default lifetime of a cache entry in seconds
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $defaultLifetime = 3600;
 

@@ -31,7 +31,7 @@ class InArrayValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	/**
 	 * Search strict
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $strict;
 

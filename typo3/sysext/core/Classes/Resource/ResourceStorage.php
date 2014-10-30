@@ -87,7 +87,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * Default is FALSE so that resources are accessible for
 	 * front end rendering or admins.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $evaluatePermissions = FALSE;
 
@@ -127,12 +127,12 @@ class ResourceStorage implements ResourceStorageInterface {
 	/**
 	 * whether this storage is online or offline in this request
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isOnline = NULL;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isDefault = FALSE;
 

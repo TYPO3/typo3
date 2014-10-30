@@ -66,7 +66,7 @@ class Comparison implements ComparisonInterface {
 	protected $operand1;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $operator;
 

@@ -26,7 +26,7 @@ class CompressionUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * replace the Content-length HTTP header after compression if it was added
 	 * by TYPO3 before compression.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $contentLength = 0;
 

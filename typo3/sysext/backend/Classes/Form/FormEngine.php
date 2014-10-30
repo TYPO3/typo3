@@ -250,7 +250,7 @@ class FormEngine {
 	/**
 	 * Value that gets added for style="width: ...px" for textareas compared to input fields.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $form_additionalTextareaStyleWidth = 23;
 
@@ -640,7 +640,7 @@ class FormEngine {
 	public $templateFile = '';
 
 	/**
-	 * @var integer
+	 * @var int
 	 * @var internal
 	 */
 	public $multiSelectFilterCount = 0;

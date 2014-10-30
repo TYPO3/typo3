@@ -200,7 +200,7 @@ class GraphicalFunctions {
 	/**
 	 * Preserve the alpha transparency layer of read PNG images
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $saveAlphaLayer = FALSE;
 

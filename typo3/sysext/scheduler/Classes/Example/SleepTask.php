@@ -25,7 +25,7 @@ class SleepTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	/**
 	 * Number of seconds the task should be sleeping for
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	public $sleepTime = 10;
 

@@ -32,15 +32,15 @@ class LiveSearch {
 	 */
 	const PAGE_JUMP_TABLE = 'pages';
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	const RECURSIVE_PAGE_LEVEL = 99;
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	const GROUP_TITLE_MAX_LENGTH = 15;
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	const RECORD_TITLE_MAX_LENGTH = 28;
 	/**
@@ -49,12 +49,12 @@ class LiveSearch {
 	private $queryString = '';
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $startCount = 0;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $limitCount = 5;
 

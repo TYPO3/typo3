@@ -52,7 +52,7 @@ class PhpassSalt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements
 	 * Keeps log2 number
 	 * of iterations for password stretching.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	static protected $hashCount;
 
@@ -60,7 +60,7 @@ class PhpassSalt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements
 	 * Keeps maximum allowed log2 number
 	 * of iterations for password stretching.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	static protected $maxHashCount;
 
@@ -68,14 +68,14 @@ class PhpassSalt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements
 	 * Keeps minimum allowed log2 number
 	 * of iterations for password stretching.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	static protected $minHashCount;
 
 	/**
 	 * Keeps length of a PHPass salt in bytes.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	static protected $saltLengthPhpass = 6;
 

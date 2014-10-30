@@ -475,7 +475,7 @@ class ContentObjectRenderer {
 	protected $stopRendering = array();
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $stdWrapRecursionLevel = 0;
 

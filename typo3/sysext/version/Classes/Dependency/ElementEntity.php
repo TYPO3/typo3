@@ -37,7 +37,7 @@ class ElementEntity {
 	protected $table;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $id;
 
@@ -67,7 +67,7 @@ class ElementEntity {
 	protected $parents;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $traversingParents = FALSE;
 

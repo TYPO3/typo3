@@ -50,7 +50,7 @@ class SwitchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
 	protected $backupSwitchExpression = NULL;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $backupBreakState = FALSE;
 

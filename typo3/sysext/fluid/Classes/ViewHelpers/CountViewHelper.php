@@ -35,7 +35,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
 class CountViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $escapingInterceptorEnabled = FALSE;
 

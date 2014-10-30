@@ -58,7 +58,7 @@ class Argument {
 	/**
 	 * TRUE if this argument is required
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isRequired = FALSE;
 

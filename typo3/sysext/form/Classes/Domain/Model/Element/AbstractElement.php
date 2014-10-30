@@ -38,7 +38,7 @@ abstract class AbstractElement {
 	/**
 	 * Internal Id of the element
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $elementId;
 
@@ -58,7 +58,7 @@ abstract class AbstractElement {
 	 * True if it accepts the parent name instead of its own
 	 * This is necessary for groups
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $acceptsParentName = FALSE;
 

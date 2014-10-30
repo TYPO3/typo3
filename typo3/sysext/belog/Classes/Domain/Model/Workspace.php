@@ -23,12 +23,12 @@ namespace TYPO3\CMS\Belog\Domain\Model;
 class Workspace extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	const UID_LIVE_WORKSPACE = 0;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	const UID_ANY_WORKSPACE = -99;
 

@@ -21,7 +21,7 @@ class TemplateCompiler implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $templateCache;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $variableCounter = 0;
 

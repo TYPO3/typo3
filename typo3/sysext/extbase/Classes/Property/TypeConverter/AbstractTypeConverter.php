@@ -51,7 +51,7 @@ abstract class AbstractTypeConverter implements \TYPO3\CMS\Extbase\Property\Type
 	/**
 	 * The priority for this converter.
 	 *
-	 * @var integer
+	 * @var int
 	 * @api
 	 */
 	protected $priority;

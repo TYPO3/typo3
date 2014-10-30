@@ -26,7 +26,7 @@ class DatabaseRecord {
 	protected $table;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $uid;
 

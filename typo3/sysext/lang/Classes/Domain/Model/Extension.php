@@ -37,7 +37,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $icon = '';
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $version = '';
 

@@ -24,7 +24,7 @@ class ExtJsJsonTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\AbstractTre
 	/**
 	 * recursion level
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $recursionLevel = 0;
 

@@ -83,7 +83,7 @@ class SuggestDefaultReceiver {
 	/**
 	 * The maximum number of items to select.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $maxItems = 10;
 

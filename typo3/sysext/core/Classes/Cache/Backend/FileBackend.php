@@ -42,7 +42,7 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
 	protected $cacheEntryIdentifiers = array();
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $frozen = FALSE;
 

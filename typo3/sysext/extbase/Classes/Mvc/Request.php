@@ -92,7 +92,7 @@ class Request implements RequestInterface {
 	protected $format = 'txt';
 
 	/**
-	 * @var boolean If this request has been changed and needs to be dispatched again
+	 * @var bool If this request has been changed and needs to be dispatched again
 	 */
 	protected $dispatched = FALSE;
 

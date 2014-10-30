@@ -213,7 +213,7 @@ function jumpToUrl(URL) {
 	/**
 	 * Whether to use the X-UA-Compatible meta tag
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $useCompatibilityTag = TRUE;
 
@@ -330,7 +330,7 @@ function jumpToUrl(URL) {
 	/**
 	 * Whether flashmessages should be rendered or not
 	 *
-	 * @var boolean $showFlashMessages
+	 * @var bool $showFlashMessages
 	 */
 	public $showFlashMessages = TRUE;
 

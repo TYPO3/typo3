@@ -57,7 +57,7 @@ abstract class AbstractUpdate {
 	 * Current TYPO3 version number, set from outside
 	 * Version number coming from \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger()
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	public $versionNumber;
 

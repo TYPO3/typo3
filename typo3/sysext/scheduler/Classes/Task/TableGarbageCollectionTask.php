@@ -28,12 +28,12 @@ namespace TYPO3\CMS\Scheduler\Task;
 class TableGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
 	/**
-	 * @var boolean True if all tables should be cleaned up
+	 * @var bool True if all tables should be cleaned up
 	 */
 	public $allTables = FALSE;
 
 	/**
-	 * @var integer Number of days
+	 * @var int Number of days
 	 */
 	public $numberOfDays = 180;
 

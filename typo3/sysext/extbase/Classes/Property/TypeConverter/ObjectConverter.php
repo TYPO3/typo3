@@ -28,12 +28,12 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 class ObjectConverter extends AbstractTypeConverter implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	const CONFIGURATION_TARGET_TYPE = 3;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	const CONFIGURATION_OVERRIDE_TARGET_TYPE_ALLOWED = 4;
 
@@ -48,7 +48,7 @@ class ObjectConverter extends AbstractTypeConverter implements \TYPO3\CMS\Core\S
 	protected $targetType = 'object';
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $priority = 0;
 

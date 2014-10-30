@@ -31,7 +31,7 @@ class RelationHandler {
 	/**
 	 * $fetchAllFields if false getFromDB() fetches only uid, pid, thumbnail and label fields (as defined in TCA)
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $fetchAllFields = FALSE;
 
@@ -70,7 +70,7 @@ class RelationHandler {
 	/**
 	 * Deleted-column is added to additionalWhere... if this is set...
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $checkIfDeleted = TRUE;
 
@@ -97,7 +97,7 @@ class RelationHandler {
 	 * If TRUE, uid_local and uid_foreign are switched, and the current table
 	 * is inserted as tablename - this means you display a foreign relation "from the opposite side"
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $MM_is_foreign = FALSE;
 
@@ -140,7 +140,7 @@ class RelationHandler {
 	 * If a record should be undeleted
 	 * (so do not use the $useDeleteClause on \TYPO3\CMS\Backend\Utility\BackendUtility)
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $undeleteRecord;
 
@@ -155,7 +155,7 @@ class RelationHandler {
 	/**
 	 * This is set to TRUE if the MM table has a UID field.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $MM_hasUidField;
 
@@ -181,7 +181,7 @@ class RelationHandler {
 	protected $MM_oppositeUsage;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $updateReferenceIndex = TRUE;
 

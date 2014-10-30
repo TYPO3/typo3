@@ -98,7 +98,7 @@ class ProcessedFile extends AbstractFile {
 	 * A flag that shows if this object has been updated during its lifetime, i.e. the file has been
 	 * replaced with a new one.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $updated = FALSE;
 

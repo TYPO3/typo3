@@ -26,14 +26,14 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase {
 	/**
 	 * Whether global variables should be backed up
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $backupGlobals = TRUE;
 
 	/**
 	 * Whether static attributes should be backed up
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $backupStaticAttributes = FALSE;
 

@@ -49,7 +49,7 @@ class ParsingState implements \TYPO3\CMS\Fluid\Core\Parser\ParsedTemplateInterfa
 	protected $layoutNameNode;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $compilable = TRUE;
 

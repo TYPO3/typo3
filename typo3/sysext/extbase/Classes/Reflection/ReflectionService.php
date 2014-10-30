@@ -34,7 +34,7 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Whether this service has been initialized.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $initialized = FALSE;
 
@@ -46,7 +46,7 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Whether class alterations should be detected on each initialization.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $detectClassChanges = FALSE;
 
@@ -116,7 +116,7 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @see reflectClass()
 	 * @see getMethodReflection()
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $dataCacheNeedsUpdate = FALSE;
 

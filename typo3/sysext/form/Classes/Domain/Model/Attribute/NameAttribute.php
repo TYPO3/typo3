@@ -31,7 +31,7 @@ class NameAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttri
 	/**
 	 * TRUE if value is expected without prefix
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $returnValueWithoutPrefix = FALSE;
 
