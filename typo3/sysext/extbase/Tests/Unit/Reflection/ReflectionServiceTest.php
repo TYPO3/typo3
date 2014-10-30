@@ -32,6 +32,14 @@ class ReflectionServiceTest extends UnitTestCase {
 	}
 
 	/**
+	 * @param bool $dummy
+	 * @param int $foo
+	 * @return void
+	 */
+	public function fixtureMethodForMethodTagsValuesWithShortTypes($dummy, $foo) {
+	}
+
+	/**
 	 * @test
 	 */
 	public function getClassTagsValues() {
@@ -81,7 +89,7 @@ class ReflectionServiceTest extends UnitTestCase {
 	public function getMethodParameters() {
 		$service = new ReflectionService();
 		$parameters = $service->getMethodParameters(get_class($this), 'fixtureMethodForMethodTagsValues');
-		$this->assertEquals(array(
+		$this->assertSame(array(
 			'foo' => array(
 				'position' => 0,
 				'byReference' => FALSE,
@@ -90,6 +98,34 @@ class ReflectionServiceTest extends UnitTestCase {
 				'allowsNull' => FALSE,
 				'class' => NULL,
 				'type' => 'array'
+			)
+		), $parameters);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getMethodParametersWithShortTypeNames() {
+		$service = new ReflectionService();
+		$parameters = $service->getMethodParameters(get_class($this), 'fixtureMethodForMethodTagsValuesWithShortTypes');
+		$this->assertSame(array(
+			'dummy' => array(
+				'position' => 0,
+				'byReference' => FALSE,
+				'array' => FALSE,
+				'optional' => FALSE,
+				'allowsNull' => TRUE,
+				'class' => NULL,
+				'type' => 'boolean'
+			),
+			'foo' => array(
+				'position' => 1,
+				'byReference' => FALSE,
+				'array' => FALSE,
+				'optional' => FALSE,
+				'allowsNull' => TRUE,
+				'class' => NULL,
+				'type' => 'integer'
 			)
 		), $parameters);
 	}
