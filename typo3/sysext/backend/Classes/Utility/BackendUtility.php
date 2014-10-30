@@ -2814,15 +2814,7 @@ class BackendUtility {
 		if (!is_array($menuItems) || count($menuItems) <= 1) {
 			return '';
 		}
-		if (!is_array($mainParams)) {
-			$mainParams = array('id' => $mainParams);
-		}
-		if (!$script) {
-			$scriptUrl = self::getModuleUrl(GeneralUtility::_GET('M'), $mainParams) . $addParams;
-		} else {
-			$mainParams = GeneralUtility::implodeArrayForUrl('', $mainParams);
-			$scriptUrl = $script . '?' . $mainParams . $addParams;
-		}
+		$scriptUrl = self::buildScriptUrl($mainParams, $addParams, $script);
 		$options = array();
 		foreach ($menuItems as $value => $label) {
 			$options[] = '<option value="' . htmlspecialchars($value) . '"' . ((string)$currentValue === (string)$value ? ' selected="selected"' : '') . '>' . htmlspecialchars($label, ENT_COMPAT, 'UTF-8', FALSE) . '</option>';
@@ -2855,15 +2847,7 @@ class BackendUtility {
 	 * @see getFuncMenu()
 	 */
 	static public function getFuncCheck($mainParams, $elementName, $currentValue, $script = '', $addParams = '', $tagParams = '') {
-		if (!is_array($mainParams)) {
-			$mainParams = array('id' => $mainParams);
-		}
-		if (!$script) {
-			$scriptUrl = self::getModuleUrl(GeneralUtility::_GET('M'), $mainParams) . $addParams;
-		} else {
-			$mainParams = GeneralUtility::implodeArrayForUrl('', $mainParams);
-			$scriptUrl = $script . '?' . $mainParams . $addParams;
-		}
+		$scriptUrl = self::buildScriptUrl($mainParams, $addParams, $script);
 		$onClick = 'jumpToUrl(' . GeneralUtility::quoteJSvalue($scriptUrl . '&' . $elementName . '=') . '+(this.checked?1:0),this);';
 
 		return
@@ -2892,17 +2876,33 @@ class BackendUtility {
 	 * @see getFuncMenu()
 	 */
 	static public function getFuncInput($mainParams, $elementName, $currentValue, $size = 10, $script = '', $addParams = '') {
+		$scriptUrl = self::buildScriptUrl($mainParams, $addParams, $script);
+		$onChange = 'jumpToUrl(' . GeneralUtility::quoteJSvalue($scriptUrl . '&' . $elementName . '=') . '+escape(this.value),this);';
+		return '<input type="text"' . static::getDocumentTemplate()->formWidth($size) . ' name="' . $elementName . '" value="' . htmlspecialchars($currentValue) . '" onchange="' . htmlspecialchars($onChange) . '" />';
+	}
+
+	/**
+	 * Builds the URL to the current script with given arguments
+	 *
+	 * @param mixed $mainParams $id is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
+	 * @param string $addParams Additional parameters to pass to the script.
+	 * @param string $script The script to send the &id to, if empty it's automatically found
+	 * @return string The completes script URL
+	 */
+	protected static function buildScriptUrl($mainParams, $addParams, $script = '') {
 		if (!is_array($mainParams)) {
 			$mainParams = array('id' => $mainParams);
 		}
 		if (!$script) {
+			$script = basename(PATH_thisScript);
+		}
+		if ($script === 'mod.php' && GeneralUtility::_GET('M')) {
 			$scriptUrl = self::getModuleUrl(GeneralUtility::_GET('M'), $mainParams) . $addParams;
 		} else {
-			$mainParams = GeneralUtility::implodeArrayForUrl('', $mainParams);
-			$scriptUrl = $script . '?' . $mainParams . $addParams;
+			$scriptUrl = $script . '?' . GeneralUtility::implodeArrayForUrl('', $mainParams) . $addParams;
 		}
-		$onChange = 'jumpToUrl(' . GeneralUtility::quoteJSvalue($scriptUrl . '&' . $elementName . '=') . '+escape(this.value),this);';
-		return '<input type="text"' . static::getDocumentTemplate()->formWidth($size) . ' name="' . $elementName . '" value="' . htmlspecialchars($currentValue) . '" onchange="' . htmlspecialchars($onChange) . '" />';
+
+		return $scriptUrl;
 	}
 
 	/**
