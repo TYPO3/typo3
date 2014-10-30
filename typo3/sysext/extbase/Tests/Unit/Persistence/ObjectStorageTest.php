@@ -105,6 +105,22 @@ class ObjectStorageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function offsetExistsWorksWithEmptyStorageAndIntegerKey() {
+		$objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->assertEquals($objectStorage->offsetExists(0), FALSE);
+	}
+
+	/**
+	 * @test
+	 */
+	public function offsetExistsWorksWithEmptyStorageAndStringKey() {
+		$objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->assertEquals($objectStorage->offsetExists('0'), FALSE);
+	}
+
+	/**
+	 * @test
+	 */
 	public function getInfoReturnsTheDataAssociatedWithTheCurrentIteratorEntry() {
 		$objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$object1 = new \StdClass();

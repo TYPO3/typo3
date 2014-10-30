@@ -157,7 +157,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
 	 * @return bool
 	 */
 	public function offsetExists($object) {
-		return isset($this->storage[spl_object_hash($object)]);
+		return is_object($object) && isset($this->storage[spl_object_hash($object)]);
 	}
 
 	/**
