@@ -688,7 +688,7 @@ HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 			first.innerHTML = '<br />';
 			this.editor.getSelection().selectNodeContents(first, true);
 		} else {
-				// parentElement may be removed by following command
+			// parentElement may be removed by following command
 			var parentNode = parentElement.parentNode;
 			try {
 				this.editor.getSelection().execCommand(buttonId, false, null);
@@ -696,6 +696,15 @@ HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 				this.appendToLog('onButtonPress', e + '\n\nby execCommand(' + buttonId + ');', 'error');
 			}
 			if (Ext.isWebKit || Ext.isOpera) {
+				// Webkit and Opera may wrap the list inside a paragraph
+				if (parentElement && /^(p)$/i.test(parentElement.nodeName) && parentElement.firstChild && /^(ol|ul)$/i.test(parentElement.firstChild.nodeName)) {
+					// Probably Chrome
+					this.editor.getDomNode().removeMarkup(parentElement);
+				} else if (parentElement.firstChild && /^(p)$/i.test(parentElement.firstChild.nodeName) && parentElement.firstChild.firstChild && /^(ol|ul)$/i.test(parentElement.firstChild.firstChild.nodeName)) {
+					// Probably Opera
+					this.editor.getDomNode().removeMarkup(parentElement.firstChild);
+				}
+				// Webkit and Opera may pollute the list with span tags
 				this.editor.getDomNode().cleanAppleStyleSpans(parentNode);
 			}
 		}
