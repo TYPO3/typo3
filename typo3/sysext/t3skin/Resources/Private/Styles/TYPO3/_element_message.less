@@ -11,8 +11,73 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+.alert {
+	border-top: 0;
+	border-right: 0;
+	border-bottom: 0;
+	border-left-width: 6px;
+
+	a {
+		text-decoration: underline;
+	}
+
+	.alert-body {
+		p:last-child {
+			margin-bottom: 0;
+		}
+	}
+}
+
 .alert-notice {
-  background-color: #f6f7fa;
-  border-color: #eef;
-  color: #777;
+	color: @state-notice-text;
+	background-color: @state-notice-bg;
+	border-color: @state-notice-border;
+
+	a {
+		color: darken(@state-notice-text, 5%);
+
+		&:hover {
+			color: darken(@state-notice-text, 10%);
+		}
+	}
+}
+
+.alert-success {
+	a {
+		color: darken(@brand-success, 10%);
+
+		&:hover {
+			color: darken(@brand-success, 15%);
+		}
+	}
+}
+
+.alert-info {
+	a {
+		color: darken(@brand-info, 5%);
+
+		&:hover {
+			color: darken(@brand-info, 10%);
+		}
+	}
+}
+
+.alert-warning {
+	a {
+		color: @brand-warning;
+
+		&:hover {
+			color: darken(@brand-warning, 5%)
+		}
+	}
+}
+
+.alert-danger {
+	a {
+		color: @brand-danger;
+
+		&:hover {
+			color: darken(@brand-danger, 10%);
+		}
+	}
 }
