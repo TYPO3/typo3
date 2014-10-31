@@ -186,6 +186,7 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	 */
 	public function ext_fNandV($params) {
 		$fN = 'data[' . $params['name'] . ']';
+		$idName = str_replace('.', '-', $params['name']);
 		$fV = ($params['value'] = isset($this->ext_realValues[$params['name']]) ? $this->ext_realValues[$params['name']] : $params['default_value']);
 		$reg = array();
 		// Values entered from the constantsedit cannot be constants!
@@ -193,7 +194,7 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 			$fV = '';
 		}
 		$fV = htmlspecialchars($fV);
-		return array($fN, $fV, $params);
+		return array($fN, $fV, $params, $idName);
 	}
 
 	/**

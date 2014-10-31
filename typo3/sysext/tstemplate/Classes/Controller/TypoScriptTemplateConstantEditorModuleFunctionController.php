@@ -98,6 +98,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends \TYPO3\CM
 		// initialize
 		$existTemplate = $this->initialize_editor($this->pObj->id, $template_uid);
 		if ($existTemplate) {
+			$this->pObj->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Tstemplate/ConstantEditor');
 			$saveId = $tplRow['_ORIG_uid'] ? $tplRow['_ORIG_uid'] : $tplRow['uid'];
 			// Update template ?
 			if (\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('submit') || \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger(\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('submit_x')) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger(\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('submit_y'))) {
@@ -138,6 +139,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends \TYPO3\CM
 			// Category and constant editor config:
 			$category = $this->pObj->MOD_SETTINGS['constant_editor_cat'];
 			$tmpl->ext_getTSCE_config($category);
+
 			$printFields = trim($tmpl->ext_printFields($theConstants, $category));
 			if ($printFields) {
 				$theOutput .= $this->pObj->doc->section('', $printFields);

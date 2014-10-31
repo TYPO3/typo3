@@ -1030,13 +1030,14 @@ class ExtendedTemplateService extends TemplateService {
 	 */
 	public function ext_fNandV($params) {
 		$fN = 'data[' . $params['name'] . ']';
+		$idName = str_replace('.', '-', $params['name']);
 		$fV = $params['value'];
 		// Values entered from the constantsedit cannot be constants!	230502; removed \{ and set {
 		if (preg_match('/^{[\\$][a-zA-Z0-9\\.]*}$/', trim($fV), $reg)) {
 			$fV = '';
 		}
 		$fV = htmlspecialchars($fV);
-		return array($fN, $fV, $params);
+		return array($fN, $fV, $params, $idName);
 	}
 
 	/**
@@ -1048,8 +1049,6 @@ class ExtendedTemplateService extends TemplateService {
 	 */
 	public function ext_printFields($theConstants, $category) {
 		reset($theConstants);
-		$output = '<script type="text/javascript" src="' . $GLOBALS['BACK_PATH'] . 'js/constantEditor.js"></script>
-		';
 		$subcat = '';
 		if (is_array($this->categories[$category])) {
 			$help = $this->helpConfig;
@@ -1084,12 +1083,12 @@ class ExtendedTemplateService extends TemplateService {
 					$p_field = '';
 					$raname = substr(md5($params['name']), 0, 10);
 					$aname = '\'' . $raname . '\'';
-					list($fN, $fV, $params) = $this->ext_fNandV($params);
+					list($fN, $fV, $params, $idName) = $this->ext_fNandV($params);
 					switch ($typeDat['type']) {
 						case 'int':
 
 						case 'int+':
-							$p_field = '<input id="' . $fN . '" type="text" name="' . $fN . '" value="' . $fV . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(5) . ' onChange="uFormUrl(' . $aname . ')" />';
+							$p_field = '<input id="' . $idName . '" type="text" name="' . $fN . '" value="' . $fV . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(5) . ' onChange="uFormUrl(' . $aname . ')" />';
 							if ($typeDat['paramstr']) {
 								$p_field .= ' Range: ' . $typeDat['paramstr'];
 							} elseif ($typeDat['type'] == 'int+') {
@@ -1108,12 +1107,12 @@ class ExtendedTemplateService extends TemplateService {
 								}
 								$p_field .= '<option value="' . htmlspecialchars($val) . '"' . $sel . '>' . $val . '</option>';
 							}
-							$p_field = '<select id="select-' . $fN . '" rel="' . $fN . '" name="C' . $fN . '" class="typo3-tstemplate-ceditor-color-select" onChange="uFormUrl(' . $aname . ');">' . $p_field . '</select>';
-							$p_field .= '<input type="text" id="input-' . $fN . '" rel="' . $fN . '" name="' . $fN . '" class="typo3-tstemplate-ceditor-color-input" value="' . $fV . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(7) . ' onChange="uFormUrl(' . $aname . ')" />';
+							$p_field = '<select id="select-' . $idName . '" rel="' . $idName . '" name="C' . $fN . '" class="typo3-tstemplate-ceditor-color-select" onChange="uFormUrl(' . $aname . ');">' . $p_field . '</select>';
+							$p_field .= '<input type="text" id="input-' . $idName . '" rel="' . $idName . '" name="' . $fN . '" class="typo3-tstemplate-ceditor-color-input" value="' . $fV . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(7) . ' onChange="uFormUrl(' . $aname . ')" />';
 							break;
 						case 'wrap':
 							$wArr = explode('|', $fV);
-							$p_field = '<input type="text" id="' . $fN . '" name="' . $fN . '" value="' . $wArr[0] . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(29) . ' onChange="uFormUrl(' . $aname . ')" />';
+							$p_field = '<input type="text" id="' . $idName . '" name="' . $fN . '" value="' . $wArr[0] . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(29) . ' onChange="uFormUrl(' . $aname . ')" />';
 							$p_field .= ' | ';
 							$p_field .= '<input type="text" name="W' . $fN . '" value="' . $wArr[1] . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(15) . ' onChange="uFormUrl(' . $aname . ')" />';
 							break;
@@ -1146,7 +1145,7 @@ class ExtendedTemplateService extends TemplateService {
 									}
 									$p_field .= '<option value="' . htmlspecialchars($val) . '"' . $sel . '>' . $GLOBALS['LANG']->sL($label) . '</option>';
 								}
-								$p_field = '<select id="' . $fN . '" name="' . $fN . '" onChange="uFormUrl(' . $aname . ')">' . $p_field . '</select>';
+								$p_field = '<select id="' . $idName . '" name="' . $fN . '" onChange="uFormUrl(' . $aname . ')">' . $p_field . '</select>';
 							}
 							break;
 						case 'boolean':
@@ -1155,7 +1154,7 @@ class ExtendedTemplateService extends TemplateService {
 							if ($fV) {
 								$sel = ' checked';
 							}
-							$p_field .= '<input id="' . $fN . '" type="checkbox" name="' . $fN . '" value="' . ($typeDat['paramstr'] ? $typeDat['paramstr'] : 1) . '"' . $sel . ' onClick="uFormUrl(' . $aname . ')" />';
+							$p_field .= '<input id="' . $idName . '" type="checkbox" name="' . $fN . '" value="' . ($typeDat['paramstr'] ? $typeDat['paramstr'] : 1) . '"' . $sel . ' onClick="uFormUrl(' . $aname . ')" />';
 							break;
 						case 'comment':
 							$p_field = '<input type="hidden" name="' . $fN . '" value="#" />';
@@ -1163,7 +1162,7 @@ class ExtendedTemplateService extends TemplateService {
 							if (!$fV) {
 								$sel = ' checked';
 							}
-							$p_field .= '<input id="' . $fN . '" type="checkbox" name="' . $fN . '" value=""' . $sel . ' onClick="uFormUrl(' . $aname . ')" />';
+							$p_field .= '<input id="' . $idName . '" type="checkbox" name="' . $fN . '" value=""' . $sel . ' onClick="uFormUrl(' . $aname . ')" />';
 							break;
 						case 'file':
 							$p_field = '<option value=""></option>';
@@ -1179,7 +1178,7 @@ class ExtendedTemplateService extends TemplateService {
 								$p_field .= '<option value=""></option>';
 								$p_field .= '<option value="' . htmlspecialchars($val) . '" selected>' . $val . '</option>';
 							}
-							$p_field = '<select id="' . $fN . '" name="' . $fN . '" onChange="uFormUrl(' . $aname . ')">' . $p_field . '</select>';
+							$p_field = '<select id="' . $idName . '" name="' . $fN . '" onChange="uFormUrl(' . $aname . ')">' . $p_field . '</select>';
 							$p_field .= $theImage;
 							break;
 						case 'user':
@@ -1191,16 +1190,16 @@ class ExtendedTemplateService extends TemplateService {
 
 						default:
 							$fwidth = $typeDat['type'] == 'small' ? 10 : 46;
-							$p_field = '<input id="' . $fN . '" type="text" name="' . $fN . '" value="' . $fV . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth($fwidth) . ' onChange="uFormUrl(' . $aname . ')" />';
+							$p_field = '<input id="' . $idName . '" type="text" name="' . $fN . '" value="' . $fV . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth($fwidth) . ' onChange="uFormUrl(' . $aname . ')" />';
 					}
 					// Define default names and IDs
-					$userTyposcriptID = 'userTS-' . $params['name'];
-					$defaultTyposcriptID = 'defaultTS-' . $params['name'];
+					$userTyposcriptID = 'userTS-' . $idName;
+					$defaultTyposcriptID = 'defaultTS-' . $idName;
 					$checkboxName = 'check[' . $params['name'] . ']';
-					$checkboxID = $checkboxName;
+					$checkboxID = 'check-' . $idName;
 					// Handle type=color specially
 					if ($typeDat['type'] == 'color' && substr($params['value'], 0, 2) != '{$') {
-						$color = '<div id="colorbox-' . $fN . '" class="typo3-tstemplate-ceditor-colorblock" style="background-color:' . $params['value'] . ';">&nbsp;</div>';
+						$color = '<div id="colorbox-' . $idName . '" class="typo3-tstemplate-ceditor-colorblock" style="background-color:' . $params['value'] . ';">&nbsp;</div>';
 					} else {
 						$color = '';
 					}
@@ -1219,13 +1218,13 @@ class ExtendedTemplateService extends TemplateService {
 							'class' => 'typo3-tstemplate-ceditor-control undoIcon',
 							'alt' => 'Revert to default Constant',
 							'title' => 'Revert to default Constant',
-							'rel' => $params['name']
+							'rel' => $idName
 						));
 						$editIconHTML = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array(
 							'class' => 'typo3-tstemplate-ceditor-control editIcon',
 							'alt' => 'Edit this Constant',
 							'title' => 'Edit this Constant',
-							'rel' => $params['name']
+							'rel' => $idName
 						));
 						$constantCheckbox = '<input type="hidden" name="' . $checkboxName . '" id="' . $checkboxID . '" value="' . $checkboxValue . '"/>';
 						// If there's no default value for the field, use a static label.
