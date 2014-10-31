@@ -46,16 +46,19 @@ class IconUtility {
 		't3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-unhide' => 'fa-circle-thin',
 		't3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-upload' => 'fa-upload',
 		't3-icon t3-icon-actions t3-icon-actions-input t3-icon-input-clear' => 'fa-times-circle',
-		't3-icon t3-icon-actions t3-icon-actions-move t3-icon-move-down t3-btn t3-btn-moveoption-down' => 'fa-caret-down',
+		// TODO: t3-btn-* is still used in FormEngine.js refactor to use data attributes in HTML
+		't3-icon t3-icon-actions t3-icon-actions-move t3-icon-move-down t3-btn t3-btn-moveoption-down' => 'fa-caret-down t3-btn t3-btn-moveoption-down',
 		't3-icon t3-icon-actions t3-icon-actions-move t3-icon-move-down' => 'fa-arrow-down',
 		't3-icon t3-icon-actions t3-icon-actions-move t3-icon-move-left' => 'fa-arrow-left',
 		't3-icon t3-icon-actions t3-icon-actions-move t3-icon-move-right' => 'fa-arrow-right',
-		't3-icon t3-icon-actions t3-icon-actions-move t3-icon-move-up t3-btn t3-btn-moveoption-up' => 'fa-caret-up',
+		// TODO: t3-btn-* is still used in FormEngine.js refactor to use data attributes in HTML
+		't3-icon t3-icon-actions t3-icon-actions-move t3-icon-move-up t3-btn t3-btn-moveoption-up' => 'fa-caret-up t3-btn t3-btn-moveoption-up',
 		't3-icon t3-icon-actions t3-icon-actions-move t3-icon-move-up' => 'fa-arrow-up',
 		't3-icon t3-icon-actions t3-icon-actions-page t3-icon-page-move' => 'fa-arrows',
 		't3-icon t3-icon-actions t3-icon-actions-page t3-icon-page-new' => 'fa-plus-square',
 		't3-icon t3-icon-actions t3-icon-actions-page t3-icon-page-open' => 'fa-pencil',
-		't3-icon t3-icon-actions t3-icon-actions-selection t3-icon-selection-delete t3-btn t3-btn-removeoption' => 'fa-times',
+		// TODO: t3-btn-* is still used in FormEngine.js refactor to use data attributes in HTML
+		't3-icon t3-icon-actions t3-icon-actions-selection t3-icon-selection-delete t3-btn t3-btn-removeoption' => 'fa-times t3-btn t3-btn-removeoption',
 		't3-icon t3-icon-actions t3-icon-actions-selection t3-icon-selection-delete' => 'fa-remove',
 		't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-backend-user-emulate' => 'fa-sign-in',
 		't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-backend-user-switch' => 'fa-sign-out',
