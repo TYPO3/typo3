@@ -514,6 +514,9 @@ HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 				var bookmark = this.editor.getBookMark().get(range);
 				var newBlock = this.wrapSelectionInBlockElement(buttonId, className, null, true);
 				this.editor.getSelection().selectRange(this.editor.getBookMark().moveTo(bookmark));
+				if (Ext.isWebKit || Ext.isOpera) {
+					this.editor.getDomNode().cleanAppleStyleSpans(newBlock);
+				}
 				break;
 			case "JustifyLeft"   :
 			case "JustifyCenter" :
