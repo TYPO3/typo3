@@ -1,6 +1,6 @@
 <?php
 $EM_CONF[$_EXTKEY] = array(
-	'title' => 'Web>Access',
+	'title' => 'System>Access',
 	'description' => 'Page editing permissions',
 	'category' => 'module',
 	'state' => 'stable',

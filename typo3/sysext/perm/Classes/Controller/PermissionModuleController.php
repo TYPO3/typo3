@@ -410,8 +410,8 @@ class PermissionModuleController {
 			<input type="hidden" name="data[pages][' . $this->id . '][perms_group]" value="' . $this->pageinfo['perms_group'] . '" />
 			<input type="hidden" name="data[pages][' . $this->id . '][perms_everybody]" value="' . $this->pageinfo['perms_everybody'] . '" />
 			' . $this->getRecursiveSelect($this->id, $this->perms_clause) . '
-			<input type="submit" name="submit" value="' . $GLOBALS['LANG']->getLL('Save', TRUE) . '" />' . '<input type="submit" value="' . $GLOBALS['LANG']->getLL('Abort', TRUE) . '" onclick="' . htmlspecialchars(('jumpToUrl(' . GeneralUtility::quoteJSvalue((BackendUtility::getModuleUrl('web_perm') . '&id=' . $this->id), TRUE) . '); return false;')) . '" />
-			<input type="hidden" name="redirect" value="' . htmlspecialchars((BackendUtility::getModuleUrl('web_perm') . '&mode=' . $this->MOD_SETTINGS['mode'] . '&depth=' . $this->MOD_SETTINGS['depth'] . '&id=' . (int)$this->return_id . '&lastEdited=' . $this->id)) . '" />
+			<input type="submit" name="submit" value="' . $GLOBALS['LANG']->getLL('Save', TRUE) . '" />' . '<input type="submit" value="' . $GLOBALS['LANG']->getLL('Abort', TRUE) . '" onclick="' . htmlspecialchars(('jumpToUrl(' . GeneralUtility::quoteJSvalue((BackendUtility::getModuleUrl('system_perm') . '&id=' . $this->id), TRUE) . '); return false;')) . '" />
+			<input type="hidden" name="redirect" value="' . htmlspecialchars((BackendUtility::getModuleUrl('system_perm') . '&mode=' . $this->MOD_SETTINGS['mode'] . '&depth=' . $this->MOD_SETTINGS['depth'] . '&id=' . (int)$this->return_id . '&lastEdited=' . $this->id)) . '" />
 			' . \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction');
 
 		// Adding section with the permission setting matrix:
@@ -534,7 +534,7 @@ class PermissionModuleController {
 
 			// "Edit permissions" -icon
 			if ($editPermsAllowed && $pageId) {
-				$aHref = BackendUtility::getModuleUrl('web_perm') . '&mode=' . $this->MOD_SETTINGS['mode'] . '&depth=' . $this->MOD_SETTINGS['depth'] . '&id=' . ($data['row']['_ORIG_uid'] ? $data['row']['_ORIG_uid'] : $pageId) . '&return_id=' . $this->id . '&edit=1';
+				$aHref = BackendUtility::getModuleUrl('system_perm') . '&mode=' . $this->MOD_SETTINGS['mode'] . '&depth=' . $this->MOD_SETTINGS['depth'] . '&id=' . ($data['row']['_ORIG_uid'] ? $data['row']['_ORIG_uid'] : $pageId) . '&return_id=' . $this->id . '&edit=1';
 				$cells[] = '<td' . $bgCol . '><a href="' . htmlspecialchars($aHref) . '" title="' . $GLOBALS['LANG']->getLL('ch_permissions', TRUE) . '">' .
 						IconUtility::getSpriteIcon('actions-document-open') . '</a></td>';
 			} else {
