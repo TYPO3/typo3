@@ -14,7 +14,6 @@
 /**
  * Flashmessage rendered by ExtJS
  *
- *
  * @author Steffen Kamper <info@sk-typo3.de>
  */
 Ext.ns('TYPO3');
@@ -40,16 +39,14 @@ TYPO3.Severity = {
  */
 TYPO3.Flashmessage = function() {
 	var messageContainer;
-	var severities = ['notice', 'information', 'ok', 'warning', 'error'];
+	var severities = ['notice', 'info', 'ok', 'warning', 'danger'];
 
 	function createBox(severity, title, message) {
-		return ['<div class="typo3-message message-', severity, '" style="width: 400px">',
-				'<div class="t3-icon t3-icon-actions t3-icon-actions-message t3-icon-actions-message-close t3-icon-message-' + severity + '-close"></div>',
-				'<div class="header-container">',
-				'<div class="message-header">', title, '</div>',
-				'</div>',
-				'<div class="message-body">', message, '</div>',
-				'</div>'].join('');
+		return ['<div class="typo3-messages"><div class="alert alert-', severity, '" style="width: 400px">',
+				'<div class="pull-right t3-icon fa fa-close t3js-icon-actions-message-close" style="cursor: pointer;"></div>',
+				'<h4>', title, '</h4>',
+				'<div class="alert-body">', message, '</div>',
+				'</div></div>'].join('');
 	}
 
 	return {
@@ -74,9 +71,9 @@ TYPO3.Flashmessage = function() {
 				html: createBox(severities[severity], title, message)
 			}, true);
 			messageContainer.alignTo(document, 't-t');
-			box.child('.t3-icon-actions-message-close').on('click',	function (e, t, o) {
+			box.child('.t3js-icon-actions-message-close').on('click', function (e, t, o) {
 				var node;
-				node = new Ext.Element(Ext.get(t).findParent('div.typo3-message'));
+				node = new Ext.Element(Ext.get(t).findParent('div.typo3-messages'));
 				node.hide();
 				Ext.removeNode(node.dom);
 			}, box);
