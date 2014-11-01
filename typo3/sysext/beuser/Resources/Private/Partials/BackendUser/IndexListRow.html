@@ -37,8 +37,7 @@
 			Only admin users may use the backend user administration.
 		</f:comment>
 		<f:if condition="{backendUser.active} == 1">
-			<bu:SwitchUser backendUser="{backendUser}" emulate="FALSE" />
-			<bu:SwitchUser backendUser="{backendUser}" emulate="TRUE" />
+			<bu:SwitchUser backendUser="{backendUser}" />
 		</f:if>
 	</td>
 	<td class="hidden-xs hidden-sm">

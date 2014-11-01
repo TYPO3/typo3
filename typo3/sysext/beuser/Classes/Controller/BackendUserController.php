@@ -101,12 +101,10 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
 		} else {
 			$this->moduleData->setDemand($demand);
 		}
-		// Switch user permanently or only until logout
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SwitchUser')) {
-			$this->switchUser(
-				\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SwitchUser'),
-				\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('switchBackUser')
-			);
+		// Switch user until logout
+		$switchUser = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SwitchUser');
+		if ($switchUser > 0) {
+			$this->switchUser($switchUser);
 		}
 		$compareUserList = $this->moduleData->getCompareUserList();
 		$this->view->assign('demand', $demand);
@@ -198,21 +196,17 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
 	 * Switches to a given user (SU-mode) and then redirects to the start page of the backend to refresh the navigation etc.
 	 *
 	 * @param string $switchUser BE-user record that will be switched to
-	 * @param bool $switchBack
 	 * @return void
 	 */
-	protected function switchUser($switchUser, $switchBack = FALSE) {
+	protected function switchUser($switchUser) {
 		$targetUser = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('be_users', $switchUser);
 		if (is_array($targetUser) && $GLOBALS['BE_USER']->isAdmin()) {
-			$updateData['ses_userid'] = $targetUser['uid'];
-			// User switchback or replace current session?
-			if ($switchBack) {
-				$updateData['ses_backuserid'] = (int)$GLOBALS['BE_USER']->user['uid'];
+			$updateData['ses_userid'] = (int)$targetUser['uid'];
+			$updateData['ses_backuserid'] = (int)$GLOBALS['BE_USER']->user['uid'];
 
-				// Set backend user listing module as starting module for switchback
-				$GLOBALS['BE_USER']->uc['startModuleOnFirstLogin'] = 'system_BeuserTxBeuser';
-				$GLOBALS['BE_USER']->writeUC();
-			}
+			// Set backend user listing module as starting module for switchback
+			$GLOBALS['BE_USER']->uc['startModuleOnFirstLogin'] = 'system_BeuserTxBeuser';
+			$GLOBALS['BE_USER']->writeUC();
 
 			$whereClause = 'ses_id=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($GLOBALS['BE_USER']->id, 'be_sessions');
 			$whereClause .= ' AND ses_name=' . $GLOBALS['TYPO3_DB']->fullQuoteStr(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getCookieName(), 'be_sessions');
