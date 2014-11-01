@@ -52,7 +52,7 @@ Ext.apply(HTMLArea, {
 				editorSkin	: HTMLArea.editorUrl + 'skins/default/',
 				editorCSS	: HTMLArea.editorUrl + 'skins/default/htmlarea.css'
 			});
-			if (!Ext.isString(HTMLArea.editedContentCSS)) {
+			if (typeof HTMLArea.editedContentCSS !== 'string' || HTMLArea.editedContentCSS === '') {
 				HTMLArea.editedContentCSS = HTMLArea.editorSkin + 'htmlarea-edited-content.css';
 			}
 			HTMLArea.isReady = true;
@@ -114,7 +114,7 @@ Ext.apply(HTMLArea, {
 		}
 		if (typeof console !== 'undefined' && typeof console === 'object') {
 			// If console is TYPO3.Backend.DebugConsole, write only error messages
-			if (Ext.isFunction(console.addTab)) {
+			if (typeof console.addTab === 'function') {
 				if (type === 'error') {
 					console[type](str);
 				}

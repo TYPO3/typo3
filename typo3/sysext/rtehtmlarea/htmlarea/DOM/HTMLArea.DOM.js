@@ -105,7 +105,7 @@ HTMLArea.DOM = function () {
 			if (node) {
 				HTMLArea.DOM.removeClass(node, className);
 					// Remove classes configured to be incompatible with the class to be added
-				if (node.className && HTMLArea.classesXOR && HTMLArea.classesXOR[className] && Ext.isFunction(HTMLArea.classesXOR[className].test)) {
+				if (node.className && HTMLArea.classesXOR && HTMLArea.classesXOR[className] && typeof HTMLArea.classesXOR[className].test === 'function') {
 					var classNames = node.className.trim().split(' ');
 					for (var i = classNames.length; --i >= 0;) {
 						if (HTMLArea.classesXOR[className].test(classNames[i])) {
@@ -193,7 +193,7 @@ HTMLArea.DOM = function () {
 			var ancestor = null,
 				parent = node;
 			if (!Ext.isEmpty(types)) {
-				if (Ext.isString(types)) {
+				if (typeof types === 'string') {
 					var types = [types];
 				}
 				types = new RegExp( '^(' + types.join('|') + ')$', 'i');
@@ -243,7 +243,7 @@ HTMLArea.DOM = function () {
 		 hasAllowedAttributes: function (node, allowedAttributes) {
 			var value,
 				hasAllowedAttributes = false;
-			if (Ext.isString(allowedAttributes)) {
+			if (typeof allowedAttributes === 'string') {
 				allowedAttributes = [allowedAttributes];
 			}
 			allowedAttributes = allowedAttributes || [];

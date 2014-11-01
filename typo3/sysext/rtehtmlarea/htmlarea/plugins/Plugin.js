@@ -152,7 +152,7 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 */
 	registerButton: function (buttonConfiguration) {
 		if (this.isButtonInToolbar(buttonConfiguration.id)) {
-			if (Ext.isString(buttonConfiguration.action) && Ext.isFunction(this[buttonConfiguration.action])) {
+			if (typeof buttonConfiguration.action === 'string' && typeof this[buttonConfiguration.action] === 'function') {
 				buttonConfiguration.plugins = this;
 				if (buttonConfiguration.dialog) {
 					if (!buttonConfiguration.dimensions) {
@@ -204,7 +204,7 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 */
 	registerDropDown: function (dropDownConfiguration) {
 		if (this.isButtonInToolbar(dropDownConfiguration.id)) {
-			if (Ext.isString(dropDownConfiguration.action) && Ext.isFunction(this[dropDownConfiguration.action])) {
+			if (typeof dropDownConfiguration.action === 'string' && typeof this[dropDownConfiguration.action] === 'function') {
 				dropDownConfiguration.plugins = this;
 				dropDownConfiguration.hidden = dropDownConfiguration.hide;
 				dropDownConfiguration.xtype = 'htmlareacombo';

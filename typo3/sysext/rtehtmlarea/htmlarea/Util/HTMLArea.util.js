@@ -15,7 +15,7 @@ Ext.apply(HTMLArea.util, {
 		return str;
 	},
 	htmlEncode: function (str) {
-		if (typeof(str) != 'string') {
+		if (typeof str !== 'string') {
 			str = str.toString();
 		}
 		str = str.replace(/&/g, '&amp;');

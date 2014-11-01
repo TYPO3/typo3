@@ -52,7 +52,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 		var type = 'Text';
 		this.get();
 		if (!Ext.isEmpty(this.selection)) {
-			if (Ext.isFunction(this.selection.getRangeAt)) {
+			if (typeof this.selection.getRangeAt === 'function') {
 					// Check if the current selection is a Control
 				if (this.selection && this.selection.rangeCount == 1) {
 					var range = this.selection.getRangeAt(0);
@@ -84,7 +84,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 	empty: function () {
 		this.get();
 		if (!Ext.isEmpty(this.selection)) {
-			if (Ext.isFunction(this.selection.removeAllRanges)) {
+			if (typeof this.selection.removeAllRanges === 'function') {
 				this.selection.removeAllRanges();
 			} else {
 					// IE8, IE7 or old version of WebKit
@@ -138,7 +138,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 				range = this.document.createRange();
 			} else {
 					// Older versions of WebKit did not support getRangeAt
-				if (Ext.isWebKit && !Ext.isFunction(this.selection.getRangeAt)) {
+				if (Ext.isWebKit && typeof this.selection.getRangeAt !== 'function') {
 					range = this.document.createRange();
 					if (this.selection.baseNode == null) {
 						range.setStart(this.document.body, 0);
@@ -171,7 +171,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 		this.get();
 		var ranges = [];
 			// Older versions of WebKit, IE7 and IE8 did not support getRangeAt
-		if (!Ext.isEmpty(this.selection) && Ext.isFunction(this.selection.getRangeAt)) {
+		if (!Ext.isEmpty(this.selection) && typeof this.selection.getRangeAt === 'function') {
 			for (var i = this.selection.rangeCount; --i >= 0;) {
 				ranges.push(this.selection.getRangeAt(i));
 			}
@@ -190,7 +190,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 	addRange: function (range) {
 		this.get();
 		if (!Ext.isEmpty(this.selection)) {
-			if (Ext.isFunction(this.selection.addRange)) {
+			if (typeof this.selection.addRange === 'function') {
 				this.selection.addRange(range);
 			} else if (Ext.isWebKit) {
 				this.selection.setBaseAndExtent(range.startContainer, range.startOffset, range.endContainer, range.endOffset);
@@ -223,7 +223,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 	selectRange: function (range) {
 		this.get();
 		if (!Ext.isEmpty(this.selection)) {
-			if (Ext.isFunction(this.selection.getRangeAt)) {
+			if (typeof this.selection.getRangeAt === 'function') {
 				this.empty().addRange(range);
 			} else {
 					// IE8 or IE7

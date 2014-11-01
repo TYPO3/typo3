@@ -388,7 +388,7 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 	registerPlugin: function (pluginName) {
 		var plugin = HTMLArea[pluginName],
 			isRegistered = false;
-		if (typeof plugin !== 'undefined' && Ext.isFunction(plugin)) {
+		if (typeof plugin !== 'undefined' && typeof plugin === 'function') {
 			var pluginInstance = new plugin(this, pluginName);
 			if (pluginInstance) {
 				var pluginInformation = pluginInstance.getPluginInformation();

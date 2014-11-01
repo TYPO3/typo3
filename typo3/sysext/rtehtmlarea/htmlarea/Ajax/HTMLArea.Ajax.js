@@ -55,7 +55,7 @@ HTMLArea.Ajax = Ext.extend(HTMLArea.Ajax, {
 			},
 			url: url,
 			params: params,
-			callback: Ext.isFunction(callback) ? callback: function (options, success, response) {
+			callback: typeof callback === 'function' ? callback : function (options, success, response) {
 				if (!success) {
 					self.editor.appendToLog('HTMLArea.Ajax', 'postData', 'Post request to ' + url + ' failed. Server reported ' + response.status, 'error');
 				}

@@ -119,7 +119,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	onRender: function (ct, position){
 			// from Ext.Component
 		if (!this.el && this.autoEl) {
-			if (Ext.isString(this.autoEl)) {
+			if (typeof this.autoEl === 'string') {
 				this.el = document.createElement(this.autoEl);
 			} else {
 					// ExtJS Default method will not work with iframe element

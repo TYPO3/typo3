@@ -52,7 +52,7 @@ HTMLArea.Framework = Ext.extend(Ext.Panel, {
 			// If the textarea is inside a form, on reset, re-initialize the HTMLArea content and update the toolbar
 		var form = this.textArea.dom.form;
 		if (form) {
-			if (Ext.isFunction(form.onreset)) {
+			if (typeof form.onreset === 'function') {
 				if (typeof form.htmlAreaPreviousOnReset === 'undefined') {
 					form.htmlAreaPreviousOnReset = [];
 				}
