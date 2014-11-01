@@ -90,13 +90,6 @@ class HelpModuleController {
 	public $content;
 
 	/**
-	 * Glossary words
-	 *
-	 * @var array
-	 */
-	public $glossaryWords;
-
-	/**
 	 * URL to help module
 	 *
 	 * @var string
@@ -159,11 +152,9 @@ class HelpModuleController {
 	public function main() {
 		if ($this->field == '*') {
 			// If ALL fields is supposed to be shown:
-			$this->createGlossaryIndex();
 			$this->content .= $this->render_Table($this->mainKey);
 		} elseif ($this->tfID) {
 			// ... otherwise show only single field:
-			$this->createGlossaryIndex();
 			$this->content .= $this->render_Single($this->mainKey, $this->field);
 		} else {
 			// Render Table Of Contents if nothing else:
@@ -241,13 +232,6 @@ class HelpModuleController {
 				$this->render_TOC_el($cshKey, 'extensions', $outputSections, $tocArray, $CSHkeys);
 			}
 		}
-		// Glossary
-		foreach ($CSHkeys as $cshKey => $value) {
-			if (GeneralUtility::isFirstPartOfStr($cshKey, 'xGLOSSARY_') && !isset($GLOBALS['TCA'][$cshKey])) {
-				$GLOBALS['LANG']->loadSingleTableDescription($cshKey);
-				$this->render_TOC_el($cshKey, 'glossary', $outputSections, $tocArray, $CSHkeys);
-			}
-		}
 		// Other:
 		foreach ($CSHkeys as $cshKey => $value) {
 			if (!GeneralUtility::isFirstPartOfStr($cshKey, '_MOD_') && !isset($GLOBALS['TCA'][$cshKey])) {
@@ -322,7 +306,7 @@ class HelpModuleController {
 	 */
 	public function render_TOC_makeTocList($tocArray) {
 		// The Various manual sections:
-		$keys = explode(',', 'core,modules,tables,extensions,glossary,other');
+		$keys = explode(',', 'core,modules,tables,extensions,other');
 		// Create TOC bullet list:
 		$output = '';
 		foreach ($keys as $tocKey) {
@@ -386,8 +370,6 @@ class HelpModuleController {
 			}
 			$output .= implode('<br />', $parts);
 		}
-		// Substitute glossary words:
-		$output = $this->substituteGlossaryWords($output);
 		// TOC link:
 		if (!$this->renderALL) {
 			$tocLink = '<p class="c-nav"><a href="' . htmlspecialchars($this->moduleUrl) . '">' . $GLOBALS['LANG']->getLL('goToToc', TRUE) . '</a></p>';
@@ -411,8 +393,6 @@ class HelpModuleController {
 		$GLOBALS['LANG']->loadSingleTableDescription($key);
 		// Render single item
 		$output .= $this->printItem($key, $field);
-		// Substitute glossary words:
-		$output = $this->substituteGlossaryWords($output);
 		// Link to Full table description and TOC:
 		$getLLKey = $this->limitAccess ? 'fullDescription' : 'fullDescription_module';
 		$output .= '<br />
@@ -550,7 +530,7 @@ class HelpModuleController {
 			// Make seeAlso references.
 			$seeAlsoRes = $this->make_seeAlso($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['seeAlso'], $anchors ? $key : '');
 			// Making item:
-			$out = '<a name="' . $key . '.' . $field . '"></a>' . $this->headerLine($this->getTableFieldLabel($key, $field), 1) . $this->prepareContent($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['description']) . ($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['details'] ? $this->headerLine(($GLOBALS['LANG']->getLL('details') . ':')) . $this->prepareContent($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['details']) : '') . ($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['syntax'] ? $this->headerLine(($GLOBALS['LANG']->getLL('syntax') . ':')) . $this->prepareContent($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['syntax']) : '') . ($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['image'] ? $this->printImage($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['image'], $GLOBALS['TCA_DESCR'][$key]['columns'][$field]['image_descr']) : '') . ($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['seeAlso'] && $seeAlsoRes ? $this->headerLine(($GLOBALS['LANG']->getLL('seeAlso') . ':')) . '<p>' . $seeAlsoRes . '</p>' : '') . ($this->back ? '<br /><p><a href="' . htmlspecialchars($this->moduleUrl . '&amp;tfID=' . rawurlencode($this->back)) . '" class="typo3-goBack">' . htmlspecialchars($GLOBALS['LANG']->getLL('goBack')) . '</a></p>' : '') . '<br />';
+			$out = '<a name="' . $key . '.' . $field . '"></a>' . $this->headerLine($this->getTableFieldLabel($key, $field), 1) . $this->prepareContent($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['description']) . ($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['details'] ? $this->headerLine(($GLOBALS['LANG']->getLL('details') . ':')) . $this->prepareContent($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['details']) : '') . ($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['syntax'] ? $this->headerLine(($GLOBALS['LANG']->getLL('syntax') . ':')) . $this->prepareContent($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['syntax']) : '') . ($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['image'] ? $this->printImage($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['image'], $GLOBALS['TCA_DESCR'][$key]['columns'][$field]['image_descr']) : '') . ($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['seeAlso'] && $seeAlsoRes ? $this->headerLine(($GLOBALS['LANG']->getLL('seeAlso') . ':')) . '<p>' . $seeAlsoRes . '</p>' : '') . ($this->back ? '<br /><p><a href="' . htmlspecialchars($this->moduleUrl . '&tfID=' . rawurlencode($this->back)) . '" class="typo3-goBack">' . htmlspecialchars($GLOBALS['LANG']->getLL('goBack')) . '</a></p>' : '') . '<br />';
 		}
 		return $out;
 	}
@@ -604,98 +584,4 @@ class HelpModuleController {
 		$labelString = $GLOBALS['LANG']->sL($tableName) . ($field ? $mergeToken . rtrim(trim($GLOBALS['LANG']->sL($fieldName)), ':') : '');
 		return $labelString;
 	}
-
-	/******************************
-	 * Glossary related
-	 ******************************/
-
-	/**
-	 * Creates glossary index in $this->glossaryWords
-	 * Glossary is cached in cache_hash cache and so will be updated only when cache is cleared.
-	 *
-	 * @return void
-	 */
-	public function createGlossaryIndex() {
-		// Create hash string and try to retrieve glossary array:
-		$hash = md5('help_cshmanual:glossary');
-		$cachedData = BackendUtility::getHash($hash);
-		// Generate glossary words if not found:
-		if (is_array($cachedData)) {
-			list($this->glossaryWords, $this->substWords) = $cachedData;
-		} else {
-			// Initialize:
-			$this->glossaryWords = array();
-			$this->substWords = array();
-			$CSHkeys = array_flip(array_keys($GLOBALS['TCA_DESCR']));
-			// Glossary
-			foreach ($CSHkeys as $cshKey => $value) {
-				if (GeneralUtility::isFirstPartOfStr($cshKey, 'xGLOSSARY_') && !isset($GLOBALS['TCA'][$cshKey])) {
-					$GLOBALS['LANG']->loadSingleTableDescription($cshKey);
-					if (is_array($GLOBALS['TCA_DESCR'][$cshKey]['columns'])) {
-						// Traverse table columns as listed in TCA_DESCR
-						foreach ($GLOBALS['TCA_DESCR'][$cshKey]['columns'] as $field => $data) {
-							if ($field) {
-								$this->glossaryWords[$cshKey . '.' . $field] = array(
-									'title' => trim($data['alttitle'] ?: $cshKey),
-									'description' => str_replace('%22', '%23%23%23', rawurlencode($data['description']))
-								);
-							}
-						}
-					}
-				}
-			}
-			// First, create unique list of words:
-			foreach ($this->glossaryWords as $key => $value) {
-				// Making word lowercase in order to filter out same words in different cases.
-				$word = strtolower($value['title']);
-				if ($word !== '') {
-					$this->substWords[$word] = $value;
-					$this->substWords[$word]['key'] = $key;
-				}
-			}
-			krsort($this->substWords);
-			BackendUtility::storeHash($hash, array($this->glossaryWords, $this->substWords), 'Glossary');
-		}
-	}
-
-	/**
-	 * Processing of all non-HTML content in the output
-	 * Will be done by a call-back to ->substituteGlossaryWords_htmlcleaner_callback()
-	 *
-	 * @param string $code Input HTML code
-	 * @return string Output HTML code
-	 */
-	public function substituteGlossaryWords($code) {
-		$htmlParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
-		$htmlParser->pObj = $this;
-		$code = $htmlParser->HTMLcleaner($code, array(), 1);
-		return $code;
-	}
-
-	/**
-	 * Substituting glossary words in the CSH
-	 * This is a call-back function from "class local_t3lib_parsehtml
-	 * extends \TYPO3\CMS\Core\Html\HtmlParser", see top of this script
-	 *
-	 * @param string $code Input HTML string
-	 * @return string HTML with substituted words in.
-	 */
-	public function substituteGlossaryWords_htmlcleaner_callback($code) {
-		if (is_array($this->substWords) && count($this->substWords) && strlen(trim($code))) {
-			// Substitute words:
-			foreach ($this->substWords as $wordKey => $wordSet) {
-				// quoteMeta used so special chars (which should not occur though) in words will not break the regex. Seemed to work (- kasper)
-				$parts = preg_split('/( |[\\(])(' . quoteMeta($wordSet['title']) . ')([\\.\\!\\)\\?\\:\\,]+| )/i', ' ' . $code . ' ', 2, PREG_SPLIT_DELIM_CAPTURE);
-				if (count($parts) == 5) {
-					$parts[2] = '<a class="glossary-term" href="' . htmlspecialchars($this->moduleUrl . '&amp;tfID=' . rawurlencode($wordSet['key']) . '&amp;back=' . $this->tfID) . '" title="' . rawurlencode(htmlspecialchars(GeneralUtility::fixed_lgd_cs(rawurldecode($wordSet['description']), 80))) . '">' . htmlspecialchars($parts[2]) . '</a>';
-					$code = substr(implode('', $parts), 1, -1);
-					// Disable entry so it doesn't get used next time:
-					unset($this->substWords[$wordKey]);
-				}
-			}
-			$code = str_replace('###', '&quot;', rawurldecode($code));
-		}
-		return $code;
-	}
-
 }
