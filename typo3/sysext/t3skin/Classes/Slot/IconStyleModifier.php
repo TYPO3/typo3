@@ -17,9 +17,9 @@ namespace TYPO3\CMS\T3skin\Slot;
 /**
  * Slot for IconUtility
  */
-class IconUtility {
+class IconStyleModifier {
 
-	static public $flatSpriteIconName = array(
+	protected $flatSpriteIconName = array(
 		't3-icon t3-i-con-status t3-icon-status-warning t3-icon-warning-lock' => 'fa-lock',
 		't3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-close' => 'fa-close',
 		't3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-export-csv' => 'fa-download',
@@ -115,8 +115,8 @@ class IconUtility {
 	 * @return array
 	 */
 	public function buildSpriteHtmlIconTag(array $tagAttributes, $innerHtml, $tagName) {
-		$class = self::$flatSpriteIconName[$tagAttributes['class']];
-		if ($class) {
+		$class = !empty($this->flatSpriteIconName[$tagAttributes['class']]) ? $this->flatSpriteIconName[$tagAttributes['class']] : NULL;
+		if ($class !== NULL) {
 			$tagAttributes['class'] = 't3-icon fa ' . $class;
 		}
 
