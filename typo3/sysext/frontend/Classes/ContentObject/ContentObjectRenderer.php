@@ -814,7 +814,7 @@ class ContentObjectRenderer {
 		}
 
 		if ($exceptionHandlerClassName === '1') {
-			$exceptionHandlerClassName = Exception\ProductionExceptionHandler::class;
+			$exceptionHandlerClassName = 'TYPO3\\CMS\\Frontend\\ContentObject\\Exception\\ProductionExceptionHandler';
 		}
 
 		return $exceptionHandlerClassName;
