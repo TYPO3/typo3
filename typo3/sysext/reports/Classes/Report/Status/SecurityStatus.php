@@ -206,23 +206,23 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		$message = '<p>' . $GLOBALS['LANG']->getLL('status_saltedPasswords_infoText') . '</p>';
 		$messageDetail = '';
 		$flashMessage = $configCheck->checkConfigurationBackend(array(), new \TYPO3\CMS\Core\TypoScript\ConfigurationForm());
-		if (strpos($flashMessage, 'message-error') !== FALSE) {
+		if (strpos($flashMessage, 'alert-danger') !== FALSE) {
 			$value = $GLOBALS['LANG']->getLL('status_insecure');
 			$severity = \TYPO3\CMS\Reports\Status::ERROR;
 			$messageDetail .= $flashMessage;
 		}
-		if (strpos($flashMessage, 'message-warning') !== FALSE) {
+		if (strpos($flashMessage, 'alert-warning') !== FALSE) {
 			$severity = \TYPO3\CMS\Reports\Status::WARNING;
 			$messageDetail .= $flashMessage;
 		}
-		if (strpos($flashMessage, 'message-information') !== FALSE) {
+		if (strpos($flashMessage, 'alert-info') !== FALSE) {
 			$messageDetail .= $flashMessage;
 		}
 		$unsecureUserCount = \TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::getNumberOfBackendUsersWithInsecurePassword();
 		if ($unsecureUserCount > 0) {
 			$value = $GLOBALS['LANG']->getLL('status_insecure');
 			$severity = \TYPO3\CMS\Reports\Status::ERROR;
-			$messageDetail .= '<div class="typo3-message message-warning">' . $GLOBALS['LANG']->getLL('status_saltedPasswords_notAllPasswordsHashed') . '</div>';
+			$messageDetail .= '<div class="alert alert-warning">' . $GLOBALS['LANG']->getLL('status_saltedPasswords_notAllPasswordsHashed') . '</div>';
 		}
 		$message .= $messageDetail;
 		if (empty($messageDetail)) {
