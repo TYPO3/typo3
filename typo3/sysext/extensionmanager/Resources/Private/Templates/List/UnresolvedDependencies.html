@@ -13,11 +13,11 @@
 	<f:flashMessages renderMode="div" />
 	<f:render partial="List/UnresolvedDependencies" arguments="{_all}" />
 	<br />
-	<div class="typo3-message message-error">
+	<div class="alert alert-danger">
 		<div class="header-container">
-			<div class="message-header"><f:translate key="dependencyCheck.unresolvedDependencies.title" /></div>
+			<h4><f:translate key="dependencyCheck.unresolvedDependencies.title" /></h4>
 		</div>
-		<div class="message-body"><f:render partial="List/UnresolvedDependenciesMessage" /></div>
+		<div class="alert-body"><f:render partial="List/UnresolvedDependenciesMessage" /></div>
 	</div>
 	<br />
 	<f:link.action action="index" class="t3-button onClickMaskExtensionManager">
