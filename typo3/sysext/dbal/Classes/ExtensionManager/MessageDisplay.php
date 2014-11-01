@@ -28,9 +28,9 @@ class MessageDisplay {
 	public function displayMessage() {
 		$out = '
 			<div>
-				<div class="typo3-message message-information">
-					<div class="message-header">PostgreSQL</div>
-					<div class="message-body">
+				<div class="alert alert-info">
+					<h4>PostgreSQL</h4>
+					<div class="alert-body">
 						If you use a PostgreSQL database, make sure to run SQL scripts located in<br />
 						<tt>' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('dbal') . 'res/postgresql/</tt><br />
 						to ensure best compatibility with TYPO3.
