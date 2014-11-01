@@ -97,4 +97,115 @@ table.t3-table {
 	.table;
 	.table-striped;
 	.table-hover;
+
+	// .active
+	> thead > tr,
+	> tbody > tr,
+	> tfoot > tr {
+		> td.active,
+		> th.active,
+		&.active > td,
+		&.active > th {
+			background-color: @table-bg-active;
+		}
+	}
+
+	> tbody > tr {
+		> td.active:hover,
+		> th.active:hover,
+		&.active:hover > td,
+		&:hover > .active,
+		&.active:hover > th {
+			background-color: darken(@table-bg-active, 5%);
+		}
+	}
+
+	// .success
+	> thead > tr,
+	> tbody > tr,
+	> tfoot > tr {
+		> td.success,
+		> th.success,
+		&.success > td,
+		&.success > th {
+			background-color: @state-success-bg;
+		}
+	}
+
+	> tbody > tr {
+		> td.success:hover,
+		> th.success:hover,
+		&.success:hover > td,
+		&:hover > .success,
+		&.success:hover > th {
+			background-color: darken(@state-success-bg, 5%);
+		}
+	}
+
+	// .info
+	> thead > tr,
+	> tbody > tr,
+	> tfoot > tr {
+		> td.info,
+		> th.info,
+		&.info > td,
+		&.info > th {
+			background-color: @state-info-bg;
+		}
+	}
+
+	> tbody > tr {
+		> td.info:hover,
+		> th.info:hover,
+		&.info:hover > td,
+		&:hover > .info,
+		&.info:hover > th {
+			background-color: darken(@state-info-bg, 5%);
+		}
+	}
+
+	// .warning
+	> thead > tr,
+	> tbody > tr,
+	> tfoot > tr {
+		> td.warning,
+		> th.warning,
+		&.warning > td,
+		&.warning > th {
+			background-color: @state-warning-bg;
+		}
+	}
+
+	> tbody > tr {
+		> td.warning:hover,
+		> th.warning:hover,
+		&.warning:hover > td,
+		&:hover > .warning,
+		&.warning:hover > th {
+			background-color: darken(@state-warning-bg, 5%);
+		}
+	}
+
+	// .danger
+	> thead > tr,
+	> tbody > tr,
+	> tfoot > tr {
+		> td.danger,
+		> th.danger,
+		&.danger > td,
+		&.danger > th {
+			background-color: @state-danger-bg;
+		}
+	}
+
+	> tbody > tr {
+		> td.danger:hover,
+		> th.danger:hover,
+		&.danger:hover > td,
+		&:hover > .danger,
+		&.danger:hover > th {
+			background-color: darken(@state-danger-bg, 5%);
+		}
+	}
+
 }

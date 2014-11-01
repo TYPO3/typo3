@@ -8754,6 +8754,111 @@ table.t3-table > tbody > tr:nth-child(odd) {
 table.t3-table > tbody > tr:hover {
   background-color: #e0e0e0;
 }
+table.t3-table > thead > tr > td.active,
+table.t3-table > tbody > tr > td.active,
+table.t3-table > tfoot > tr > td.active,
+table.t3-table > thead > tr > th.active,
+table.t3-table > tbody > tr > th.active,
+table.t3-table > tfoot > tr > th.active,
+table.t3-table > thead > tr.active > td,
+table.t3-table > tbody > tr.active > td,
+table.t3-table > tfoot > tr.active > td,
+table.t3-table > thead > tr.active > th,
+table.t3-table > tbody > tr.active > th,
+table.t3-table > tfoot > tr.active > th {
+  background-color: #e0e0e0;
+}
+table.t3-table > tbody > tr > td.active:hover,
+table.t3-table > tbody > tr > th.active:hover,
+table.t3-table > tbody > tr.active:hover > td,
+table.t3-table > tbody > tr:hover > .active,
+table.t3-table > tbody > tr.active:hover > th {
+  background-color: #d3d3d3;
+}
+table.t3-table > thead > tr > td.success,
+table.t3-table > tbody > tr > td.success,
+table.t3-table > tfoot > tr > td.success,
+table.t3-table > thead > tr > th.success,
+table.t3-table > tbody > tr > th.success,
+table.t3-table > tfoot > tr > th.success,
+table.t3-table > thead > tr.success > td,
+table.t3-table > tbody > tr.success > td,
+table.t3-table > tfoot > tr.success > td,
+table.t3-table > thead > tr.success > th,
+table.t3-table > tbody > tr.success > th,
+table.t3-table > tfoot > tr.success > th {
+  background-color: #dff0d8;
+}
+table.t3-table > tbody > tr > td.success:hover,
+table.t3-table > tbody > tr > th.success:hover,
+table.t3-table > tbody > tr.success:hover > td,
+table.t3-table > tbody > tr:hover > .success,
+table.t3-table > tbody > tr.success:hover > th {
+  background-color: #d0e9c6;
+}
+table.t3-table > thead > tr > td.info,
+table.t3-table > tbody > tr > td.info,
+table.t3-table > tfoot > tr > td.info,
+table.t3-table > thead > tr > th.info,
+table.t3-table > tbody > tr > th.info,
+table.t3-table > tfoot > tr > th.info,
+table.t3-table > thead > tr.info > td,
+table.t3-table > tbody > tr.info > td,
+table.t3-table > tfoot > tr.info > td,
+table.t3-table > thead > tr.info > th,
+table.t3-table > tbody > tr.info > th,
+table.t3-table > tfoot > tr.info > th {
+  background-color: #d9edf7;
+}
+table.t3-table > tbody > tr > td.info:hover,
+table.t3-table > tbody > tr > th.info:hover,
+table.t3-table > tbody > tr.info:hover > td,
+table.t3-table > tbody > tr:hover > .info,
+table.t3-table > tbody > tr.info:hover > th {
+  background-color: #c4e3f3;
+}
+table.t3-table > thead > tr > td.warning,
+table.t3-table > tbody > tr > td.warning,
+table.t3-table > tfoot > tr > td.warning,
+table.t3-table > thead > tr > th.warning,
+table.t3-table > tbody > tr > th.warning,
+table.t3-table > tfoot > tr > th.warning,
+table.t3-table > thead > tr.warning > td,
+table.t3-table > tbody > tr.warning > td,
+table.t3-table > tfoot > tr.warning > td,
+table.t3-table > thead > tr.warning > th,
+table.t3-table > tbody > tr.warning > th,
+table.t3-table > tfoot > tr.warning > th {
+  background-color: #fcf8e3;
+}
+table.t3-table > tbody > tr > td.warning:hover,
+table.t3-table > tbody > tr > th.warning:hover,
+table.t3-table > tbody > tr.warning:hover > td,
+table.t3-table > tbody > tr:hover > .warning,
+table.t3-table > tbody > tr.warning:hover > th {
+  background-color: #faf2cc;
+}
+table.t3-table > thead > tr > td.danger,
+table.t3-table > tbody > tr > td.danger,
+table.t3-table > tfoot > tr > td.danger,
+table.t3-table > thead > tr > th.danger,
+table.t3-table > tbody > tr > th.danger,
+table.t3-table > tfoot > tr > th.danger,
+table.t3-table > thead > tr.danger > td,
+table.t3-table > tbody > tr.danger > td,
+table.t3-table > tfoot > tr.danger > td,
+table.t3-table > thead > tr.danger > th,
+table.t3-table > tbody > tr.danger > th,
+table.t3-table > tfoot > tr.danger > th {
+  background-color: #f2dede;
+}
+table.t3-table > tbody > tr > td.danger:hover,
+table.t3-table > tbody > tr > th.danger:hover,
+table.t3-table > tbody > tr.danger:hover > td,
+table.t3-table > tbody > tr:hover > .danger,
+table.t3-table > tbody > tr.danger:hover > th {
+  background-color: #ebcccc;
+}
 /**
  * This file is part of the TYPO3 CMS project.
  *

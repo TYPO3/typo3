@@ -85,24 +85,29 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface {
 	 * @return string Service list as HTML for one service type
 	 */
 	protected function renderServiceTypeList($serviceType, $services) {
-		$header = '<h3 class="divider">' . sprintf($GLOBALS['LANG']->getLL('service_type'), $serviceType) . '</h3>';
+		$header = '<h3>' . sprintf($GLOBALS['LANG']->getLL('service_type'), $serviceType) . '</h3>';
 		$serviceList = '
-		<table class="t3-table tx_sv_reportlist">
-			<thead><tr class="t3-row-header">
-				<td style="width: 35%">' . $GLOBALS['LANG']->getLL('service') . '</td>
-				<td>' . $GLOBALS['LANG']->getLL('priority') . '</td>
-				<td>' . $GLOBALS['LANG']->getLL('quality') . '</td>
-				<td style="width: 35%">' . $GLOBALS['LANG']->getLL('subtypes') . '</td>
-				<td>' . $GLOBALS['LANG']->getLL('os') . '</td>
-				<td>' . $GLOBALS['LANG']->getLL('externals') . '</td>
-				<td>' . $GLOBALS['LANG']->getLL('available') . '</td>
-			</tr></thead><tbody>';
+			<table class="t3-table table tx_sv_reportlist">
+				<thead>
+					<tr>
+						<td style="width: 35%">' . $GLOBALS['LANG']->getLL('service') . '</td>
+						<td>' . $GLOBALS['LANG']->getLL('priority') . '</td>
+						<td>' . $GLOBALS['LANG']->getLL('quality') . '</td>
+						<td style="width: 35%">' . $GLOBALS['LANG']->getLL('subtypes') . '</td>
+						<td>' . $GLOBALS['LANG']->getLL('os') . '</td>
+						<td>' . $GLOBALS['LANG']->getLL('externals') . '</td>
+						<td>' . $GLOBALS['LANG']->getLL('available') . '</td>
+					</tr>
+				</thead>
+			<tbody>';
+
 		foreach ($services as $serviceKey => $serviceInformation) {
 			$serviceList .= $this->renderServiceRow($serviceKey, $serviceInformation);
 		}
+
 		$serviceList .= '
-		</tbody>
-		</table>
+			</tbody>
+			</table>
 		';
 		return $header . $serviceList;
 	}
@@ -125,27 +130,27 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface {
 		$serviceSubtypes = $serviceInformation['serviceSubTypes'] ? implode(', ', $serviceInformation['serviceSubTypes']) : '-';
 		$serviceOperatingSystem = $serviceInformation['os'] ?: $GLOBALS['LANG']->getLL('any');
 		$serviceRequiredExecutables = $serviceInformation['exec'] ?: '-';
-		$serviceAvailabilityClass = 'alert alert-danger';
+		$serviceAvailabilityClass = 'danger';
 		$serviceAvailable = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:no');
 		try {
 			$serviceDetails = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::findServiceByKey($serviceKey);
 			if ($serviceDetails['available']) {
-				$serviceAvailabilityClass = 'alert alert-success';
+				$serviceAvailabilityClass = 'success';
 				$serviceAvailable = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:yes');
 			}
 		} catch (\TYPO3\CMS\Core\Exception $e) {
 
 		}
 		$serviceRow = '
-		<tr class="service">
-			<td class="first-cell ' . $serviceAvailabilityClass . '">' . $serviceDescription . '</td>
-			<td class="cell ' . $serviceAvailabilityClass . '">' . $serviceInformation['priority'] . '</td>
-			<td class="cell ' . $serviceAvailabilityClass . '">' . $serviceInformation['quality'] . '</td>
-			<td class="cell ' . $serviceAvailabilityClass . '">' . $serviceSubtypes . '</td>
-			<td class="cell ' . $serviceAvailabilityClass . '">' . $serviceOperatingSystem . '</td>
-			<td class="cell ' . $serviceAvailabilityClass . '">' . $serviceRequiredExecutables . '</td>
-			<td class="last-cell ' . $serviceAvailabilityClass . '">' . $serviceAvailable . '</td>
-		</tr>';
+			<tr class="service ' . $serviceAvailabilityClass . '">
+				<td class="first-cell">' . $serviceDescription . '</td>
+				<td class="cell">' . $serviceInformation['priority'] . '</td>
+				<td class="cell">' . $serviceInformation['quality'] . '</td>
+				<td class="cell">' . $serviceSubtypes . '</td>
+				<td class="cell">' . $serviceOperatingSystem . '</td>
+				<td class="cell">' . $serviceRequiredExecutables . '</td>
+				<td class="last-cell">' . $serviceAvailable . '</td>
+			</tr>';
 		return $serviceRow;
 	}
 
@@ -163,23 +168,23 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface {
 			$content .= '
 			<table class="t3-table tx_sv_reportlist">
 				<thead>
-					<tr class="t3-row-header">
+					<tr>
 						<td>' . $GLOBALS['LANG']->getLL('path') . '</td>
 						<td>' . $GLOBALS['LANG']->getLL('valid') . '</td>
 					</tr>
 				</thead>
 				<tbody>';
 			foreach ($searchPaths as $path => $isValid) {
-				$pathAccessibleClass = 'alert alert-danger';
+				$pathAccessibleClass = 'danger';
 				$pathAccessible = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:no');
 				if ($isValid) {
-					$pathAccessibleClass = 'alert alert-success';
+					$pathAccessibleClass = 'success';
 					$pathAccessible = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:yes');
 				}
 				$content .= '
-					<tr>
-						<td class="first-cell ' . $pathAccessibleClass . '">' . \TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath($path) . '</td>
-						<td class="last-cell ' . $pathAccessibleClass . '">' . $pathAccessible . '</td>
+					<tr class="' . $pathAccessibleClass . '">
+						<td class="first-cell">' . \TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath($path) . '</td>
+						<td class="last-cell">' . $pathAccessible . '</td>
 					</tr>';
 			}
 			$content .= '
