@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Saltedpasswords\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * class providing configuration checks for saltedpasswords.
@@ -55,7 +57,7 @@ class ExtensionManagerConfigurationUtility {
 	 * @param string $level One out of error, ok, warning, info
 	 * @return void
 	 */
-	private function setErrorLevel($level) {
+	protected function setErrorLevel($level) {
 		switch ($level) {
 			case 'error':
 				$this->errorType = FlashMessage::ERROR;
@@ -84,34 +86,59 @@ class ExtensionManagerConfigurationUtility {
 					$this->preText = 'SaltedPasswords has been configured correctly and works as expected.<br />';
 				}
 				break;
+			default:
 		}
 	}
 
 	/**
-	 * Renders the flash messages if problems have been found.
+	 * Renders the messages if problems have been found.
 	 *
-	 * @return string The flash message as HTML.
+	 * @return array an array with errorType and html code
 	 */
-	private function renderFlashMessage() {
+	protected function renderMessage() {
 		$message = '';
 		// If there are problems, render them into an unordered list
 		if (count($this->problems) > 0) {
-			$message = '<ul>
-	<li>###PROBLEMS###</li>
-</ul>';
+			$message = '<ul><li>###PROBLEMS###</li></ul>';
 			$message = str_replace('###PROBLEMS###', implode('<br />&nbsp;</li><li>', $this->problems), $message);
 			if ($this->errorType > FlashMessage::OK) {
-				$message .= '<br />
-Note, that a wrong configuration might have impact on the security of
-your TYPO3 installation and the usability of the backend.';
+				$message .= '<br />' .
+				'Note, that a wrong configuration might have impact on the security of ' .
+				'your TYPO3 installation and the usability of the backend.';
 			}
 		}
 		if (empty($message)) {
 			$this->setErrorLevel('ok');
 		}
 		$message = $this->preText . $message;
-		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $message, $this->header, $this->errorType);
-		return $flashMessage->render();
+
+		$class = 'default';
+		switch ($this->errorType) {
+			case FlashMessage::NOTICE:
+				$class = 'notice';
+				break;
+			case FlashMessage::INFO:
+				$class = 'info';
+				break;
+			case FlashMessage::OK:
+				$class = 'success';
+				break;
+			case FlashMessage::WARNING;
+				$class = 'warning';
+				break;
+			case FlashMessage::ERROR:
+				$class = 'danger';
+				break;
+			default:
+		}
+		$html = '<div class="panel panel-' . $class . '">' .
+					'<div class="panel-heading">' . $this->header . '</div>' .
+					'<div class="panel-body">' . $message . '</div>' .
+				'</div>';
+		return array(
+			'errorType' => $this->errorType,
+			'html' => $html
+		);
 	}
 
 	/**
@@ -120,7 +147,7 @@ your TYPO3 installation and the usability of the backend.';
 	 * @return void
 	 */
 	private function init() {
-		$requestSetup = $this->processPostData((array)$_REQUEST['data']);
+		$requestSetup = $this->processPostData((array) $_REQUEST['data']);
 		$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['saltedpasswords']);
 		$this->extConf['BE'] = array_merge((array)$extConf['BE.'], (array)$requestSetup['BE.']);
 		$this->extConf['FE'] = array_merge((array)$extConf['FE.'], (array)$requestSetup['FE.']);
@@ -129,19 +156,24 @@ your TYPO3 installation and the usability of the backend.';
 
 	/**
 	 * Checks the backend configuration and shows a message if necessary.
+	 * The method returns an array or the HTML code depends on
+	 * $params['propertyName'] is set or not.
 	 *
 	 * @param array $params Field information to be rendered
 	 * @param \TYPO3\CMS\Core\TypoScript\ConfigurationForm $pObj The calling parent object.
-	 * @return string Messages as HTML if something needs to be reported
+	 * @return array|string array with errorType and HTML or only the HTML as string
 	 */
 	public function checkConfigurationBackend(array $params, $pObj) {
 		$this->init();
 		$extConf = $this->extConf['BE'];
 		// The backend is called over SSL
-		$SSL = ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] > 0 && $GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'] !== 'superchallenged');
-		$rsaAuthLoaded = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('rsaauth');
+		$isBackendCalledOverSsl = (
+			(int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] > 0
+			&& $GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'] !== 'superchallenged'
+		);
+		$rsaAuthLoaded = ExtensionManagementUtility::isLoaded('rsaauth');
 		// SSL configured?
-		if ($SSL) {
+		if ($isBackendCalledOverSsl) {
 			$this->setErrorLevel('ok');
 			$problems[] = 'The backend is configured to use SaltedPasswords over SSL.';
 		} elseif ($rsaAuthLoaded) {
@@ -167,65 +199,69 @@ your TYPO3 installation and the usability of the backend.';
 			// This means that we don't use any encryption method
 			$this->setErrorLevel('warning');
 			$problems[] = 'SaltedPasswords is used without any transfer encryption, this means your passwords are sent in plain text.
-Please install rsaauth to secure your passwords submits.<br />
-<ul>
-<li>Install the "rsaauth" extension and use the Install Tool to set the
-	Login Security Level for the backend to "rsa"
-	($TYPO3_CONF_VARS[\'BE\'][\'loginSecurityLevel\'])</li>
+				Please install rsaauth to secure your passwords submits.<br />
+				<ul>
+				<li>Install the "rsaauth" extension and use the Install Tool to set the
+					Login Security Level for the backend to "rsa"
+					($TYPO3_CONF_VARS[\'BE\'][\'loginSecurityLevel\'])</li>
 
-<li>If you have the option to use SSL, you can also configure your
-	backend for SSL usage:<br />
-	Use the Install Tool to set the Security-Level for the backend
-	to "normal" ($TYPO3_CONF_VARS[\'BE\'][\'loginSecurityLevel\']) and
-	the SSL-locking option to a value greater than "0"
-	(see description - $TYPO3_CONF_VARS[\'BE\'][\'lockSSL\'])</li>
-</ul>
-<br />
-It is also possible to use "lockSSL" and "rsa" Login Security Level at the same
-time.';
+				<li>If you have the option to use SSL, you can also configure your
+					backend for SSL usage:<br />
+					Use the Install Tool to set the Security-Level for the backend
+					to "normal" ($TYPO3_CONF_VARS[\'BE\'][\'loginSecurityLevel\']) and
+					the SSL-locking option to a value greater than "0"
+					(see description - $TYPO3_CONF_VARS[\'BE\'][\'lockSSL\'])</li>
+				</ul>
+				<br />
+				It is also possible to use "lockSSL" and "rsa" Login Security Level at the same time.';
 		}
 		// Only saltedpasswords as authsservice
 		if ($extConf['onlyAuthService']) {
-			// Warn user that the combination with "forceSalted" may lock him out from Backend
+			// Warn user that the combination with "forceSalted" may lock him
+			// out from Backend
 			if ($extConf['forceSalted']) {
 				$this->setErrorLevel('warning');
 				$problems[] = 'SaltedPasswords has been configured to be the only authentication service for
-the backend. Additionally, usage of salted passwords is enforced (forceSalted).
-The result is that there is no chance to login with users not having a salted
-password hash.<br />
-<strong><i>WARNING:</i></strong> This may lock you out of the backend!';
+					the backend. Additionally, usage of salted passwords is enforced (forceSalted).
+					The result is that there is no chance to login with users not having a salted
+					password hash.<br />
+					<strong><i>WARNING:</i></strong> This may lock you out of the backend!';
 			} else {
 				// Inform the user that things like openid won't work anymore
 				$this->setErrorLevel('info');
 				$problems[] = 'SaltedPasswords has been configured to be the only authentication service for
-the backend. This means that other services like "ipauth", "openid", etc. will
-be ignored (except "rsauth", which is implicitely used).';
+					the backend. This means that other services like "ipauth", "openid", etc. will
+					be ignored (except "rsauth", which is implicitely used).';
 			}
 		}
 		// forceSalted is set
 		if ($extConf['forceSalted'] && !$extConf['onlyAuthService']) {
 			$this->setErrorLevel('info');
 			$problems[] = 'SaltedPasswords has been configured to enforce salted passwords (forceSalted).
-<br />
-This means that only passwords in the format of this extension will succeed for
-login.';
+				<br />
+				This means that only passwords in the format of this extension will succeed for
+				login.';
 		}
 		// updatePasswd wont work with "forceSalted"
 		if ($extConf['updatePasswd'] && $extConf['forceSalted']) {
 			$this->setErrorLevel('error');
 			$problems[] = 'SaltedPasswords is configured wrong and will not work as expected:<br />
-It is not possible to set "updatePasswd" and "forceSalted" at the same time.
-Please disable either one of them.';
+				It is not possible to set "updatePasswd" and "forceSalted" at the same time.
+				Please disable either one of them.';
 		}
 		// Check if the configured hash-method is available on system
 		$instance = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(NULL, 'BE');
 		if ($instance === NULL || !$instance->isAvailable()) {
 			$this->setErrorLevel('error');
 			$problems[] = 'The selected method for hashing your salted passwords is not available on this
-system! Please check your configuration.';
+				system! Please check your configuration.';
 		}
 		$this->problems = $problems;
-		return $this->renderFlashMessage();
+		$result = $this->renderMessage();
+		if (!empty($params['propertyName'])) {
+			return $result['html'];
+		}
+		return $result;
 	}
 
 	/**
@@ -234,22 +270,22 @@ system! Please check your configuration.';
 	 * @return bool
 	 */
 	protected function isRsaAuthBackendAvailable() {
-		/**
-		 * Try to instantiate an RSAauth backend. If this does not work, it means that OpenSSL is not usable
-		 *
-		 * @var $rsaauthBackendFactory \TYPO3\CMS\Rsaauth\Backend\BackendFactory
-		 */
-		$rsaauthBackendFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Rsaauth\\Backend\\BackendFactory');
+		// Try to instantiate an RSAauth backend. If this does not work,
+		// it means that OpenSSL is not usable
+		/** @var \TYPO3\CMS\Rsaauth\Backend\BackendFactory $rsaauthBackendFactory */
+		$rsaauthBackendFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Rsaauth\\Backend\\BackendFactory');
 		$backend = $rsaauthBackendFactory->getBackend();
 		return $backend !== NULL;
 	}
 
 	/**
 	 * Checks the frontend configuration and shows a message if necessary.
+	 * The method returns an array or the HTML code depends on
+	 * $params['propertyName'] is set or not.
 	 *
 	 * @param array $params Field information to be rendered
 	 * @param \TYPO3\CMS\Core\TypoScript\ConfigurationForm $pObj The calling parent object.
-	 * @return string Messages as HTML if something needs to be reported
+	 * @return array|string array with errorType and HTML or only the HTML as string
 	 */
 	public function checkConfigurationFrontend(array $params, $pObj) {
 		$this->init();
@@ -257,79 +293,80 @@ system! Please check your configuration.';
 		$problems = array();
 		if ($extConf['enabled']) {
 			// Inform the user if securityLevel in FE is challenged or blank --> extension won't work
-			if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList('normal,rsa', $GLOBALS['TYPO3_CONF_VARS']['FE']['loginSecurityLevel'])) {
+			if (!GeneralUtility::inList('normal,rsa', $GLOBALS['TYPO3_CONF_VARS']['FE']['loginSecurityLevel'])) {
 				$this->setErrorLevel('info');
 				$problems[] = '<strong>IMPORTANT:</strong><br />
-Frontend requirements for SaltedPasswords are not met, therefore the
-authentication will not work even if it was explicitly enabled for frontend
-usage:<br />
-<ul>
-	<li>Install the "rsaauth" extension and use the Install Tool to set the
-		Login Security Level for the frontend to "rsa"
-		($TYPO3_CONF_VARS[\'FE\'][\'loginSecurityLevel\'])</li>
+					Frontend requirements for SaltedPasswords are not met, therefore the
+					authentication will not work even if it was explicitly enabled for frontend
+					usage:<br />
+					<ul>
+						<li>Install the "rsaauth" extension and use the Install Tool to set the
+							Login Security Level for the frontend to "rsa"
+							($TYPO3_CONF_VARS[\'FE\'][\'loginSecurityLevel\'])</li>
 
-	<li>Alternatively, use the Install Tool to set the Login Security Level
-		for the frontend to "normal"
-		($TYPO3_CONF_VARS[\'FE\'][\'loginSecurityLevel\'])</li>
-</ul>
-<br />
-Make sure that the Login Security Level is not set to "" or "challenged"!';
+						<li>Alternatively, use the Install Tool to set the Login Security Level
+							for the frontend to "normal"
+							($TYPO3_CONF_VARS[\'FE\'][\'loginSecurityLevel\'])</li>
+					</ul>
+					<br />
+					Make sure that the Login Security Level is not set to "" or "challenged"!';
 			} elseif (trim($GLOBALS['TYPO3_CONF_VARS']['FE']['loginSecurityLevel']) === 'rsa') {
-				if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('rsaauth')) {
+				if (ExtensionManagementUtility::isLoaded('rsaauth')) {
 					if ($this->isRsaAuthBackendAvailable()) {
 						$this->setErrorLevel('ok');
 						$problems[] = 'The frontend is configured to use SaltedPasswords with RSA authentication.';
 					} else {
 						// This means that login would fail because rsaauth is not working properly
 						$this->setErrorLevel('error');
-						$problems[] = '<strong>Using the extension "rsaauth" is not possible, as no encryption backend '
-							. 'is available. Please install and configure the PHP extension "openssl". '
-							. 'See <a href="http://php.net/manual/en/openssl.installation.php" target="_blank">PHP.net</a></strong>.';
+						$problems[] = '<strong>Using the extension "rsaauth" is not possible, as no encryption backend ' .
+							'is available. Please install and configure the PHP extension "openssl". ' .
+							'See <a href="http://php.net/manual/en/openssl.installation.php" target="_blank">PHP.net</a></strong>.';
 					}
 				} else {
 					// Rsaauth is not installed but configured to be used
 					$this->setErrorLevel('warning');
-					$problems[] = 'The "rsaauth" extension is not installed, but TYPO3 CMS is configured to use it.'
-						. ' Either install the extension or adapt the configuration by setting [FE][loginSecurityLevel]'
-						. ' to "normal" in the Install Tool.';
+					$problems[] = 'The "rsaauth" extension is not installed, but TYPO3 CMS is configured to use it.' .
+						' Either install the extension or adapt the configuration by setting [FE][loginSecurityLevel]' .
+						' to "normal" in the Install Tool.';
 				}
 			}
 			// Only saltedpasswords as authsservice
 			if ($extConf['onlyAuthService']) {
-				// Warn user taht the combination with "forceSalted" may lock him out from frontend
+				// Warn user that the combination with "forceSalted" may lock
+				// him out from frontend
 				if ($extConf['forceSalted']) {
 					$this->setErrorLevel('warning');
 					$problems[] = 'SaltedPasswords has been configured to enforce salted passwords (forceSalted).
-<br />
-This means that only passwords in the format of this extension will succeed for
-login.<br />
-<strong><i>IMPORTANT:</i></strong> Because of this, it is not possible to login with
-users not having a salted password hash (e.g. existing frontend users).';
+						<br />
+						This means that only passwords in the format of this extension will succeed for
+						login.<br />
+						<strong><i>IMPORTANT:</i></strong> Because of this, it is not possible to login with
+						users not having a salted password hash (e.g. existing frontend users).';
 				} else {
 					// Inform the user that things like openid won't work anymore
 					$this->setErrorLevel('info');
 					$problems[] = 'SaltedPasswords has been configured to be the only authentication service for
-frontend logins. This means that other services like "ipauth", "openid", etc.
-will be ignored.';
+						frontend logins. This means that other services like "ipauth", "openid", etc.
+						will be ignored.';
 				}
 			}
 			// forceSalted is set
 			if ($extConf['forceSalted'] && !$extConf['onlyAuthService']) {
 				$this->setErrorLevel('warning');
 				$problems[] = 'SaltedPasswords has been configured to enforce salted passwords (forceSalted).
-<br />
-This means that only passwords in the format of this extension will succeed for
-login.<br />
-<strong><i>IMPORTANT:</i></strong> This has the effect that passwords that were set
-before SaltedPasswords was used will not work (in fact, they need to be
-redefined).';
+					<br />
+					This means that only passwords in the format of this extension will succeed for
+					login.<br />
+					<strong><i>IMPORTANT:</i></strong> This has the effect that passwords that were set
+					before SaltedPasswords was used will not work (in fact, they need to be
+					redefined).';
 			}
 			// updatePasswd wont work with "forceSalted"
 			if ($extConf['updatePasswd'] && $extConf['forceSalted']) {
 				$this->setErrorLevel('error');
 				$problems[] = 'SaltedPasswords is configured wrong and will not work as expected:<br />
-It is not possible to set "updatePasswd" and "forceSalted" at the same time.
-Please disable either one of them.';
+					It is not possible to set "updatePasswd" and "forceSalted" at the same time.
+					Please disable either one of them.';
 			}
 		} else {
 			// Not enabled warning
@@ -337,7 +374,11 @@ Please disable either one of them.';
 			$problems[] = 'SaltedPasswords has been disabled for frontend users.';
 		}
 		$this->problems = $problems;
-		return $this->renderFlashMessage();
+		$result = $this->renderMessage();
+		if (!empty($params['propertyName'])) {
+			return $result['html'];
+		}
+		return $result;
 	}
 
 	/**
@@ -352,22 +393,24 @@ Please disable either one of them.';
 		$this->init();
 		$propertyName = $params['propertyName'];
 		$unknownVariablePleaseRenameMe = '\'' . substr(md5($propertyName), 0, 10) . '\'';
-		$p_field = '';
+		$pField = '';
 		$registeredMethods = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getRegisteredSaltedHashingMethods();
 		foreach ($registeredMethods as $class => $reference) {
-			$classInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($reference, 'tx_');
+			$classInstance = GeneralUtility::getUserObj($reference, 'tx_');
 			if ($classInstance instanceof \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface && $classInstance->isAvailable()) {
 				$sel = $this->extConf[$disposal]['saltedPWHashingMethod'] == $class ? ' selected="selected" ' : '';
 				$label = 'ext.saltedpasswords.title.' . strtolower(end(explode('\\', $class)));
-				$p_field .= '<option value="' . htmlspecialchars($class) . '"' . $sel . '>' . $GLOBALS['LANG']->getLL($label) . '</option>';
+				$pField .= '<option value="' . htmlspecialchars($class) . '"' . $sel . '>' . $GLOBALS['LANG']->getLL($label) . '</option>';
 			}
 		}
-		$p_field = '<select id="' . $propertyName . '" name="' . $params['fieldName'] . '" onChange="uFormUrl(' . $unknownVariablePleaseRenameMe . ')">' . $p_field . '</select>';
-		return $p_field;
+		$pField = '<select id="' . $propertyName . '" name="' . $params['fieldName'] .
+			'" onChange="uFormUrl(' . $unknownVariablePleaseRenameMe . ')">' . $pField . '</select>';
+		return $pField;
 	}
 
 	/**
-	 * Renders a selector element that allows to select the hash method to be used (frontend disposal).
+	 * Renders a selector element that allows to select the hash method to be
+	 * used (frontend disposal).
 	 *
 	 * @param array $params Field information to be rendered
 	 * @param \TYPO3\CMS\Core\TypoScript\ConfigurationForm $pObj The calling parent object.
@@ -378,7 +421,8 @@ Please disable either one of them.';
 	}
 
 	/**
-	 * Renders a selector element that allows to select the hash method to be used (backend disposal)
+	 * Renders a selector element that allows to select the hash method to
+	 * be used (backend disposal)
 	 *
 	 * @param array $params Field information to be rendered
 	 * @param \TYPO3\CMS\Core\TypoScript\ConfigurationForm $pObj The calling parent object.
@@ -395,7 +439,7 @@ Please disable either one of them.';
 	 * @param array $postArray Incoming POST information
 	 * @return array Processed and transformed POST information
 	 */
-	private function processPostData(array $postArray = array()) {
+	protected function processPostData(array $postArray = array()) {
 		foreach ($postArray as $key => $value) {
 			// TODO: Explain
 			$parts = explode('.', $key, 2);
@@ -410,5 +454,4 @@ Please disable either one of them.';
 		}
 		return $postArray;
 	}
-
 }

@@ -140,15 +140,22 @@ class Status implements ReportInterface {
 		// TODO refactor into separate methods, status list and single status
 		$content = '';
 		$template = '
-		<div class="alert alert-###CLASS###">
-			<div class="header-container">
-				<div class="message-header message-left">###HEADER###</div>
-				<div class="message-header message-right">###STATUS###</div>
-			</div>
-			<div class="message-body">###CONTENT###</div>
-		</div>';
+		<table class="t3-table">
+			<thead>
+				<tr>
+					<th colspan="2" class="default">###HEADER###</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="###CLASS### col-sm-2">###STATUS###</td>
+					<td class="###CLASS### col-sm-10">###CONTENT###</td>
+				</tr>
+			</tbody>
+		</table>';
 		$statuses = $this->sortStatusProviders($statusCollection);
 		foreach ($statuses as $provider => $providerStatus) {
+			$headerIcon = '';
 			$providerState = $this->sortStatuses($providerStatus);
 			$id = str_replace(' ', '-', $provider);
 			$classes = array(
@@ -158,10 +165,12 @@ class Status implements ReportInterface {
 				\TYPO3\CMS\Reports\Status::WARNING => 'warning',
 				\TYPO3\CMS\Reports\Status::ERROR => 'danger'
 			);
+			$icon[\TYPO3\CMS\Reports\Status::NOTICE] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-notification');
+			$icon[\TYPO3\CMS\Reports\Status::INFO] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-information');
+			$icon[\TYPO3\CMS\Reports\Status::OK] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-ok');
 			$icon[\TYPO3\CMS\Reports\Status::WARNING] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-warning');
 			$icon[\TYPO3\CMS\Reports\Status::ERROR] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-error');
 			$messages = '';
-			$headerIcon = '';
 			$sectionSeverity = 0;
 			/** @var $status \TYPO3\CMS\Reports\Status */
 			foreach ($providerState as $status) {
