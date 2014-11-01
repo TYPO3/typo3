@@ -248,4 +248,3 @@ itemRendering
                     30.bytes = 1
                     30.bytes.labels = {$styles.content.uploads.filesizeBytesLabels}
             }
-

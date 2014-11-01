@@ -37,7 +37,7 @@ styles.content.editPanelPage {
 	10 = EDITPANEL
 	10 {
 		allow = toolbar,move,hide
-		label.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.page
+		label.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.page
 		label.wrap = |&nbsp;<b>%s</b>
 	}
 }
@@ -366,7 +366,7 @@ lib.stdheader {
 
 	stdWrap.editIcons = tt_content : header, [header_layout | header_position], [header_link|date]
 	stdWrap.editIcons.beforeLastTag = 1
-	stdWrap.editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.header
+	stdWrap.editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.header
 
 	stdWrap {
 		dataWrap = <div class="csc-header csc-header-n{cObj:parentRecordNumber}">|</div>
@@ -382,17 +382,6 @@ lib.stdheader {
 	}
 	stdWrap.prefixComment = 2 | Header:
 }
-
-
-
-
-
-
-
-
-
-
-
 
 #**********************************
 # tt_content is started
@@ -566,7 +555,7 @@ tt_content.stdWrap {
 		}
 	}
 
-	innerWrap2 = | <p class="csc-linkToTop"><a href="#">{LLL:EXT:css_styled_content/pi1/locallang.xml:label.toTop}</a></p>
+	innerWrap2 = | <p class="csc-linkToTop"><a href="#">{LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:label.toTop}</a></p>
 	innerWrap2.insertData = 1
 	innerWrap2.fieldRequired = linkToTop
 
@@ -613,7 +602,7 @@ tt_content.header {
 
 		editIcons = tt_content:subheader,layout
 		editIcons.beforeLastTag = 1
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.subheader
+		editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.subheader
 
 		prefixComment = 2 | Subheader:
 	}
@@ -637,7 +626,7 @@ tt_content.text {
 
 		editIcons = tt_content:bodytext, rte_enabled
 		editIcons.beforeLastTag = 1
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.bodytext
+		editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.bodytext
 
 		prefixComment = 2 | Text:
 	}
@@ -1100,11 +1089,11 @@ tt_content.image.20 {
 	renderMethod = singleNoCaption
 
 	editIcons = tt_content : image [imageorient|imagewidth|imageheight], [imagecols|image_noRows|imageborder],[image_link|image_zoom],[image_compression|image_effects|image_frames],imagecaption[imagecaption_position]
-	editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.images
+	editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.images
 
 	caption.editIcons = tt_content : imagecaption[imagecaption_position]
 	caption.editIcons.beforeLastTag=1
-	caption.editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.caption
+	caption.editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.caption
 
 	stdWrap.prefixComment = 2 | Image block:
 }
@@ -1308,7 +1297,7 @@ tt_content.uploads {
 		# wrap around whole content element with <ul> and editIcons
 		stdWrap {
 			editIcons = tt_content: media, layout [table_bgColor|table_border|table_cellspacing|table_cellpadding], filelink_size
-			editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.filelist
+			editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.filelist
 			prefixComment = 2 | File list:
 			dataWrap = <ul class="csc-uploads csc-uploads-{field:layout}">|</ul>
 		}
@@ -1366,7 +1355,7 @@ tt_content.table {
 	20.stdWrap {
 		editIcons = tt_content: cols, bodytext, [layout], [table_bgColor|table_border|table_cellspacing|table_cellpadding]
 		editIcons.beforeLastTag = 1
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.table
+		editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.table
 
 		prefixComment = 2 | Table:
 	}
@@ -1387,7 +1376,7 @@ tt_content.multimedia {
 
 	20.stdWrap {
 		editIcons = tt_content: multimedia, bodytext
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.multimedia
+		editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.multimedia
 
 		prefixComment = 2 | Multimedia element:
 	}
@@ -1448,7 +1437,7 @@ tt_content.swfobject {
 	}
 	20.stdWrap {
 		editIcons = tt_content: multimedia, imagewidth, imageheight, pi_flexform, bodytext
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.multimedia
+		editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.multimedia
 
 		prefixComment = 2 | SWFobject element:
 	}
@@ -1508,7 +1497,7 @@ tt_content.qtobject {
 	}
 	20.stdWrap {
 		editIcons = tt_content: multimedia, imagewidth, imageheight, pi_flexform, bodytext
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.multimedia
+		editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.multimedia
 
 		prefixComment = 2 | QTobject element:
 	}
@@ -1559,7 +1548,7 @@ tt_content.media {
 	}
 	20.stdWrap {
 		editIcons = tt_content: pi_flexform, bodytext
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.multimedia
+		editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.multimedia
 
 		prefixComment = 2 | Media element:
 	}
@@ -1605,7 +1594,7 @@ tt_content.mailform.20 {
 	stdWrap.wrap = <fieldset class="csc-mailform"> | </fieldset>
 	stdWrap {
 		editIcons = tt_content: bodytext, pages, subheader
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.form
+		editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.form
 
 		prefixComment = 2 | Mail form inserted:
 	}
@@ -1656,7 +1645,7 @@ tt_content.search.20 {
 		wrap = <table border="0" cellspacing="0" cellpadding="2" class="csc-searchResultInfo"><tr> | </tr></table> ###RESULT###
 
 		10 = TEXT
-		10.data = LLL:EXT:css_styled_content/pi1/locallang.xml:search.resultRange
+		10.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:search.resultRange
 		10.wrap = <td class="csc-searchResultRange"><p>|</p></td>
 
 		20 = TEXT
@@ -1667,15 +1656,15 @@ tt_content.search.20 {
 	noResultObj = COA
 	noResultObj {
 		10 = TEXT
-		10.data = LLL:EXT:css_styled_content/pi1/locallang.xml:search.emptySearch
+		10.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:search.emptySearch
 		10.wrap = <h3 class="csc-noSearchResultMsg">|</h3>
 	}
 
 	next = TEXT
-	next.data = LLL:EXT:css_styled_content/pi1/locallang.xml:search.searchResultNext
+	next.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:search.searchResultNext
 
 	prev = TEXT
-	prev.data = LLL:EXT:css_styled_content/pi1/locallang.xml:search.searchResultPrev
+	prev.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:search.searchResultPrev
 
 	target < lib.parseTarget
 	target =
@@ -1694,20 +1683,20 @@ tt_content.search.30 {
 	recipient >
 	data >
 	dataArray {
-		10.label.data = LLL:EXT:css_styled_content/pi1/locallang.xml:search.searchWord
+		10.label.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:search.searchWord
 		10.type = sword=input
-		20.label.data = LLL:EXT:css_styled_content/pi1/locallang.xml:search.searchIn
+		20.label.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:search.searchIn
 		20.type = scols=select
 		20.valueArray {
-			10.label.data = LLL:EXT:css_styled_content/pi1/locallang.xml:search.headersKeywords
+			10.label.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:search.headersKeywords
 			10.value = pages.title-subtitle-keywords-description:tt_content.header
-			20.label.data = LLL:EXT:css_styled_content/pi1/locallang.xml:search.pageContent
+			20.label.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:search.pageContent
 			20.value = tt_content.header-bodytext-imagecaption
 		}
 		30.type = stype=hidden
 		30.value = L0
 		40.type = submit=submit
-		40.value.data = LLL:EXT:css_styled_content/pi1/locallang.xml:search.searchButton
+		40.value.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:search.searchButton
 	}
 	type.field = pages
 	type.listNum = 0
@@ -1716,7 +1705,7 @@ tt_content.search.30 {
 
 	stdWrap.wrap = <table border="0" cellspacing="1" cellpadding="1" class="csc-searchform">  | </table>
 	stdWrap {
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.search
+		editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.search
 
 		prefixComment = 2 | Search form inserted:
 	}
@@ -1767,7 +1756,7 @@ tt_content.menu {
 						renderObj = TEXT
 						renderObj {
 							required = 1
-							data = LLL:EXT:css_styled_content/pi1/locallang.xml:menu.bypassNavigation
+							data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:menu.bypassNavigation
 							override.data = register:accessibility_bypass_text
 							trim = 1
 							htmlSpecialChars = 1
@@ -1994,7 +1983,7 @@ tt_content.menu {
 			}
 		}
 		editIcons = tt_content: menu_type, pages
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.menuSitemap
+		editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.menuSitemap
 
 		prefixComment = 2 | Menu/Sitemap element:
 	}
@@ -2023,7 +2012,7 @@ tt_content.shortcut {
 
 	20.stdWrap {
 		editIcons = tt_content: records
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.recordList
+		editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.recordList
 
 		prefixComment = 2 | Inclusion of other records (by reference):
 	}
@@ -2043,7 +2032,7 @@ tt_content.list {
 
 	20.stdWrap {
 		editIcons = tt_content: list_type, layout, select_key, pages [recursive]
-		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.plugin
+		editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.plugin
 
 		prefixComment = 2 | Plugin inserted:
 	}
@@ -2076,7 +2065,7 @@ tt_content.html {
 
 	editIcons = tt_content:bodytext
 	editIcons.beforeLastTag = 1
-	editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.html
+	editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.html
 
 	prefixComment = 2 | Raw HTML content:
 }
@@ -2206,4 +2195,3 @@ plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 	TABLE.contenttable-color-243 { background-color: {$styles.content.table.backgroundColor.243}; }
 	TABLE.contenttable-color-244 { background-color: {$styles.content.table.backgroundColor.244}; }
 )
-

@@ -278,4 +278,6 @@ return array(
 	't3lib_utility_Path' => 'TYPO3\\CMS\\Core\\Utility\\PathUtility',
 	't3lib_utility_PhpOptions' => 'TYPO3\\CMS\\Core\\Utility\\PhpOptionsUtility',
 	't3lib_utility_VersionNumber' => 'TYPO3\\CMS\\Core\\Utility\\VersionNumberUtility',
+	'SC_view_help' => 'TYPO3\\CMS\\Cshmanual\\Controller\\HelpModuleController',
+	'tx_cssstyledcontent_pi1' => 'TYPO3\\CMS\\CssStyledContent\\Controller\\CssStyledContentController',
 );

@@ -1101,4 +1101,3 @@ imageStdWrapNoWidth
 
    Description
          Wrapping around the whole image block if no width is needed.
-

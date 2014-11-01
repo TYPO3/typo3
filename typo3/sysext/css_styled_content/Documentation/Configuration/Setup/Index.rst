@@ -181,7 +181,7 @@ And here is an example setup for the edit panel. Note that all propoperties of
    styles.content.editPanelPage = EDITPANEL
    styles.content.editPanelPage {
            allow = toolbar,move,hide
-           label.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.page
+           label.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.page
            label.wrap = |&nbsp;<b>%s</b>
    }
 

@@ -556,3 +556,7 @@ class t3lib_utility_Path extends \TYPO3\CMS\Core\Utility\PathUtility {}
 class t3lib_utility_PhpOptions extends \TYPO3\CMS\Core\Utility\PhpOptionsUtility {}
 
 class t3lib_utility_VersionNumber extends \TYPO3\CMS\Core\Utility\VersionNumberUtility {}
+
+class SC_view_help extends \TYPO3\CMS\Cshmanual\Controller\HelpModuleController {}
+
+class tx_cssstyledcontent_pi1 extends \TYPO3\CMS\CssStyledContent\Controller\CssStyledContentController {}

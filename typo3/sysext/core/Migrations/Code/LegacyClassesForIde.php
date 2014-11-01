@@ -21,16 +21,6 @@ class SC_db_layout extends \TYPO3\CMS\Backend\Controller\PageLayoutController {}
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class SC_view_help extends \TYPO3\CMS\Cshmanual\Controller\HelpModuleController {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class tx_cssstyledcontent_pi1 extends \TYPO3\CMS\CssStyledContent\Controller\CssStyledContentController {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
 class ux_t3lib_DB extends \TYPO3\CMS\Dbal\Database\DatabaseConnection {}
 
 /**
