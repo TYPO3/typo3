@@ -49,12 +49,12 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  * </code>
  * <output>
  * <div class="typo3-messages">
- * <div class="typo3-message message-ok">
- * <div class="message-header">Some Message Header</div>
- * <div class="message-body">Some message body</div>
+ * <div class="alert alert-ok">
+ * <h4>Some Message Header</h4>
+ * <div class="alert-body">Some message body</div>
  * </div>
- * <div class="typo3-message message-notice">
- * <div class="message-body">Some notice message without header</div>
+ * <div class="alert alert-notice">
+ * <div class="alert-body">Some notice message without header</div>
  * </div>
  * </div>
  * </output>
