@@ -516,7 +516,7 @@ HTMLArea.SpellChecker = Ext.extend(HTMLArea.Plugin, {
 				span.htmlareaId = id++;
 				span.htmlareaOriginalWord = span.firstChild.data;
 				span.htmlareaFixed = false;
-				if (typeof(this.allWords[span.htmlareaOriginalWord]) == 'undefined') {
+				if (typeof this.allWords[span.htmlareaOriginalWord] === 'undefined') {
 					this.allWords[span.htmlareaOriginalWord] = [];
 				}
 				this.allWords[span.htmlareaOriginalWord].push(span);

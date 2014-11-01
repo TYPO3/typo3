@@ -231,7 +231,7 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 		// Focus on the first editor that is not hidden
 		for (var editorId in RTEarea) {
 			var RTE = RTEarea[editorId];
-			if (!Ext.isDefined(RTE.editor) || (RTE.editor.isNested && !HTMLArea.util.TYPO3.allElementsAreDisplayed(RTE.editor.nestedParentElements.sorted))) {
+			if (typeof RTE.editor === 'undefined' || (RTE.editor.isNested && !HTMLArea.util.TYPO3.allElementsAreDisplayed(RTE.editor.nestedParentElements.sorted))) {
 				continue;
 			} else {
 				RTE.editor.focus();
@@ -388,7 +388,7 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 	registerPlugin: function (pluginName) {
 		var plugin = HTMLArea[pluginName],
 			isRegistered = false;
-		if (typeof(plugin) !== 'undefined' && Ext.isFunction(plugin)) {
+		if (typeof plugin !== 'undefined' && Ext.isFunction(plugin)) {
 			var pluginInstance = new plugin(this, pluginName);
 			if (pluginInstance) {
 				var pluginInformation = pluginInstance.getPluginInformation();

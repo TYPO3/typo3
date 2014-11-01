@@ -233,9 +233,9 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 		this.initializeDropDown(dropDown);
 		if (this.blockStyles.isReady) {
 			var allowedClasses = {};
-			if (Ext.isDefined(this.cssArray[nodeName])) {
+			if (typeof this.cssArray[nodeName] !== 'undefined') {
 				allowedClasses = this.cssArray[nodeName];
-			} else if (this.showTagFreeClasses && Ext.isDefined(this.cssArray['all'])) {
+			} else if (this.showTagFreeClasses && typeof this.cssArray['all'] !== 'undefined') {
 				allowedClasses = this.cssArray['all'];
 			}
 			for (var cssClass in allowedClasses) {

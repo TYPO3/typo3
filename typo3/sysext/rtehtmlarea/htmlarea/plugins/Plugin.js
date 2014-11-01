@@ -273,9 +273,9 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 * @return	string		the buttonId or ""
 	 */
 	translateHotKey : function(key) {
-		if (typeof(this.editorConfiguration.hotKeyList[key]) !== "undefined") {
+		if (typeof this.editorConfiguration.hotKeyList[key] !== 'undefined') {
 			var buttonId = this.editorConfiguration.hotKeyList[key].cmd;
-			if (typeof(buttonId) !== "undefined") {
+			if (typeof buttonId !== 'undefined') {
 				return buttonId;
 			} else {
 				return "";
@@ -292,7 +292,7 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 * @return	object		the hotkey configuration object
 	 */
 	getHotKeyConfiguration: function(key) {
-		if (Ext.isDefined(this.editorConfiguration.hotKeyList[key])) {
+		if (typeof this.editorConfiguration.hotKeyList[key] !== 'undefined') {
 			return this.editorConfiguration.hotKeyList[key];
 		} else {
 			return null;
@@ -364,8 +364,8 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 * @return	string		localized label with CSH markup
 	 */
 	getHelpTip: function (fieldName, label, pluginName) {
-		if (Ext.isDefined(TYPO3.ContextHelp)) {
-			var pluginName = Ext.isDefined(pluginName) ? pluginName : this.name;
+		if (typeof TYPO3.ContextHelp !== 'undefined') {
+			var pluginName = typeof pluginName !== 'undefined' ? pluginName : this.name;
 			if (!Ext.isEmpty(fieldName)) {
 				fieldName = fieldName.replace(/-|\s/gi, '_');
 			}
@@ -536,7 +536,7 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 			// Close the window if the editor changes mode
 		this.dialog.mon(this.editor, 'HTMLAreaEventModeChange', this.close, this, {single: true });
 		this.saveSelection();
-		if (typeof(this.dialogueWindowDimensions) !== 'undefined') {
+		if (typeof this.dialogueWindowDimensions !== 'undefined') {
 			this.dialog.setPosition(this.dialogueWindowDimensions.positionFromLeft, this.dialogueWindowDimensions.positionFromTop);
 		}
 		this.dialog.show();

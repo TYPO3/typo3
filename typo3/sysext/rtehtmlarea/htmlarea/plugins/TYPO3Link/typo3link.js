@@ -67,11 +67,11 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 	 */
 	onGenerate: function () {
 			// Download the definition of special anchor classes if not yet done
-		if (this.classesAnchorUrl && (typeof(HTMLArea.classesAnchorSetup) === 'undefined')) {
+		if (this.classesAnchorUrl && typeof HTMLArea.classesAnchorSetup === 'undefined') {
 			this.getJavascriptFile(this.classesAnchorUrl, function (options, success, response) {
 				if (success) {
 					try {
-						if (typeof(HTMLArea.classesAnchorSetup) === 'undefined') {
+						if (typeof HTMLArea.classesAnchorSetup === 'undefined') {
 							eval(response.responseText);
 						}
 					} catch(e) {
@@ -95,11 +95,11 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
 			// Download the definition of special anchor classes if not yet done
-		if (this.classesAnchorUrl && (typeof(HTMLArea.classesAnchorSetup) === 'undefined')) {
+		if (this.classesAnchorUrl && typeof HTMLArea.classesAnchorSetup === 'undefined') {
 			this.getJavascriptFile(this.classesAnchorUrl, function (options, success, response) {
 				if (success) {
 					try {
-						if (typeof(HTMLArea.classesAnchorSetup) === 'undefined') {
+						if (typeof HTMLArea.classesAnchorSetup === 'undefined') {
 							eval(response.responseText);
 						}
 						this.onButtonPress(editor, id, target);

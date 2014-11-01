@@ -260,7 +260,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 				} else {
 					range.selectNode(node);
 				}
-				if (typeof(endPoint) !== 'undefined') {
+				if (typeof endPoint !== 'undefined') {
 					range.collapse(endPoint);
 				}
 				this.selectRange(range);
@@ -296,7 +296,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 					range.selectNodeContents(node);
 				}
 			}
-			if (typeof(endPoint) !== 'undefined') {
+			if (typeof endPoint !== 'undefined') {
 				range.collapse(endPoint);
 			}
 			this.selectRange(range);

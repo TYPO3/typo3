@@ -849,7 +849,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 */
 	protected function getRteInitJsCode() {
 		return '
-			if (typeof(RTEarea) == "undefined") {
+			if (typeof RTEarea === "undefined") {
 				RTEarea = new Object();
 				RTEarea[0] = new Object();
 				RTEarea[0].version = "' . $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['version'] . '";
@@ -859,7 +859,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 				RTEarea[0].editedContentCSS = "' . GeneralUtility::createVersionNumberedFilename($this->editedContentCSS) . '";
 				RTEarea[0].hostUrl = "' . $this->hostURL . '";
 				RTEarea.init = function() {
-					if (typeof(HTMLArea) == "undefined" || !Ext.isReady) {
+					if (typeof HTMLArea === "undefined" || !Ext.isReady) {
 						window.setTimeout("RTEarea.init();", 10);
 					} else {
 						Ext.QuickTips.init();
@@ -867,7 +867,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 					}
 				};
 				RTEarea.initEditor = function(editorNumber) {
-					if (typeof(HTMLArea) == "undefined" || !HTMLArea.isReady) {
+					if (typeof HTMLArea === "undefined" || !HTMLArea.isReady) {
 						RTEarea.initEditor.defer(40, null, [editorNumber]);
 					} else {
 						HTMLArea.initEditor(editorNumber);
@@ -889,11 +889,11 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 */
 	public function registerRTEinJS($RTEcounter, $table = '', $uid = '', $field = '', $textAreaId = '') {
 		$configureRTEInJavascriptString = '
-			if (typeof(configureEditorInstance) == "undefined") {
+			if (typeof configureEditorInstance === "undefined") {
 				configureEditorInstance = new Object();
 			}
 			configureEditorInstance["' . $textAreaId . '"] = function() {
-				if (typeof(RTEarea) == "undefined" || typeof(HTMLArea) == "undefined") {
+				if (typeof RTEarea === "undefined" || typeof HTMLArea === "undefined") {
 					window.setTimeout("configureEditorInstance[\'' . $textAreaId . '\']();", 40);
 				} else {
 			editornumber = "' . $textAreaId . '";

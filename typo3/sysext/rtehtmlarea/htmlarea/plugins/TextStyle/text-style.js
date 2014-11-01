@@ -306,9 +306,9 @@ HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 		if (this.textStyles.isReady) {
 			var allowedClasses = {};
 			if (this.REInlineTags.test(nodeName)) {
-				if (Ext.isDefined(this.cssArray[nodeName])) {
+				if (typeof this.cssArray[nodeName] !== 'undefined') {
 					allowedClasses = this.cssArray[nodeName];
-				} else if (this.showTagFreeClasses && Ext.isDefined(this.cssArray['all'])) {
+				} else if (this.showTagFreeClasses && typeof this.cssArray['all'] !== 'undefined') {
 					allowedClasses = this.cssArray['all'];
 				}
 			}

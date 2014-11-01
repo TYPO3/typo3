@@ -786,17 +786,17 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 							var rowSpan = cell.rowSpan || 1;
 							var colSpan = cell.colSpan || 1;
 							var firstAvailCol;
-							if(typeof(matrix[rowIndex])=="undefined") { matrix[rowIndex] = []; }
+							if (typeof matrix[rowIndex] === 'undefined') { matrix[rowIndex] = []; }
 							// Find first available column in the first row
 							for (var k=0; k<matrix[rowIndex].length+1; k++) {
-								if (typeof(matrix[rowIndex][k])=="undefined") {
+								if (typeof matrix[rowIndex][k] === 'undefined') {
 									firstAvailCol = k;
 									break;
 								}
 							}
 							lookup[cellId] = firstAvailCol;
 							for (var k=rowIndex; k<rowIndex+rowSpan; k++) {
-								if (typeof(matrix[k])=="undefined") { matrix[k] = []; }
+								if (typeof matrix[k] === 'undefined') { matrix[k] = []; }
 								var matrixrow = matrix[k];
 								for (var l=firstAvailCol; l<firstAvailCol+colSpan; l++) {
 									matrixrow[l] = "x";
@@ -1159,11 +1159,11 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 	 */
 	reStyleTable: function (table) {
 		if (table) {
-			if (this.classesUrl && (typeof(HTMLArea.classesAlternating) === 'undefined' || typeof(HTMLArea.classesCounting) === 'undefined')) {
+			if (this.classesUrl && (typeof HTMLArea.classesAlternating === 'undefined' || typeof HTMLArea.classesCounting === 'undefined')) {
 				this.getJavascriptFile(this.classesUrl, function (options, success, response) {
 					if (success) {
 						try {
-							if (typeof(HTMLArea.classesAlternating) === 'undefined' || typeof(HTMLArea.classesCounting) === 'undefined') {
+							if (typeof HTMLArea.classesAlternating === 'undefined' || typeof HTMLArea.classesCounting === 'undefined') {
 								eval(response.responseText);
 							}
 							this.reStyleTable(table);
@@ -1211,11 +1211,11 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 	 */
 	removeAlternatingClasses: function (table, removeClass) {
 		if (table) {
-			if (this.classesUrl && typeof(HTMLArea.classesAlternating) === 'undefined') {
+			if (this.classesUrl && typeof HTMLArea.classesAlternating === 'undefined') {
 				this.getJavascriptFile(this.classesUrl, function (options, success, response) {
 					if (success) {
 						try {
-							if (typeof(HTMLArea.classesAlternating) === 'undefined') {
+							if (typeof HTMLArea.classesAlternating === 'undefined') {
 								eval(response.responseText);
 							}
 							this.removeAlternatingClasses(table, removeClass);
@@ -1331,11 +1331,11 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 	 */
 	removeCountingClasses: function (table, removeClass) {
 		if (table) {
-			if (this.classesUrl && typeof(HTMLArea.classesCounting) === 'undefined') {
+			if (this.classesUrl && typeof HTMLArea.classesCounting === 'undefined') {
 				this.getJavascriptFile(this.classesUrl, function (options, success, response) {
 					if (success) {
 						try {
-							if (typeof(HTMLArea.classesCounting) === 'undefined') {
+							if (typeof HTMLArea.classesCounting === 'undefined') {
 								eval(response.responseText);
 							}
 							this.removeCountingClasses(table, removeClass);
@@ -1714,15 +1714,15 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			items: [{
 				fieldLabel: this.getHelpTip('caption', 'Caption:'),
 				itemId: 'f_caption',
-				value: Ext.isDefined(caption) ? caption.innerHTML : '',
+				value: typeof caption !== 'undefined' ? caption.innerHTML : '',
 				width: 300,
-				helpTitle: Ext.isDefined(TYPO3.ContextHelp) ? '' : this.localize('Description of the nature of the table')
+				helpTitle: typeof TYPO3.ContextHelp !== 'undefined' ? '' : this.localize('Description of the nature of the table')
 			    	},{
 				fieldLabel: this.getHelpTip('summary', 'Summary:'),
 				itemId: 'f_summary',
 				value: !Ext.isEmpty(table) ? table.summary : '',
 				width: 300,
-				helpTitle: Ext.isDefined(TYPO3.ContextHelp) ? '' : this.localize('Summary of the table purpose and structure')
+				helpTitle: typeof TYPO3.ContextHelp !== 'undefined' ? '' : this.localize('Summary of the table purpose and structure')
 			}]
 		};
 	},
@@ -1743,7 +1743,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				value: (this.properties.numberOfRows && this.properties.numberOfRows.defaultValue) ? this.properties.numberOfRows.defaultValue : '2',
 				width: 30,
 				minValue: 1,
-				helpTitle: Ext.isDefined(TYPO3.ContextHelp) ? '' : this.localize('Number of rows')
+				helpTitle: typeof TYPO3.ContextHelp !== 'undefined' ? '' : this.localize('Number of rows')
 			});
 			itemsConfig.push({
 				fieldLabel: this.getHelpTip('numberOfColumns', 'Number of columns'),
@@ -1752,7 +1752,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				value: (this.properties.numberOfColumns && this.properties.numberOfColumns.defaultValue) ? this.properties.numberOfColumns.defaultValue : '4',
 				width: 30,
 				minValue: 1,
-				helpTitle: Ext.isDefined(TYPO3.ContextHelp) ? '' : this.localize('Number of columns')
+				helpTitle: typeof TYPO3.ContextHelp !== 'undefined' ? '' : this.localize('Number of columns')
 			});
 		}
 		if (this.removedProperties.indexOf('headers') == -1) {
@@ -1789,7 +1789,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				fieldLabel: this.getHelpTip('tableHeaders', 'Headers:'),
 				labelSeparator: '',
 				itemId: 'f_headers',
-				helpTitle: Ext.isDefined(TYPO3.ContextHelp) ? '' : this.localize('Table headers'),
+				helpTitle: typeof TYPO3.ContextHelp !== 'undefined' ? '' : this.localize('Table headers'),
 				store: store,
 				width: (this.properties['headers'] && this.properties['headers'].width) ? this.properties['headers'].width : 200,
 				value: selected
@@ -1863,7 +1863,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			xtype: 'combo',
 			itemId: fieldName,
 			fieldLabel: this.getHelpTip(fieldTitle, fieldLabel),
-			helpTitle: Ext.isDefined(TYPO3.ContextHelp) ? '' : this.localize(fieldTitle),
+			helpTitle: typeof TYPO3.ContextHelp !== 'undefined' ? '' : this.localize(fieldTitle),
 			width: (this.properties['style'] && this.properties['style'].width) ? this.properties['style'].width : 300,
 			store: new Ext.data.ArrayStore({
 				autoDestroy:  true,
@@ -1933,7 +1933,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				xtype: 'combo',
 				fieldLabel: this.getHelpTip('languageCombo', 'Language', 'Language'),
 				itemId: 'f_lang',
-				helpTitle: Ext.isDefined(TYPO3.ContextHelp) ? '' : this.localize('Language'),
+				helpTitle: typeof TYPO3.ContextHelp !== 'undefined' ? '' : this.localize('Language'),
 				store: languageStore,
 				width: (this.properties['language'] && this.properties['language'].width) ? this.properties['language'].width : 200,
 				value: selectedLanguage
@@ -1944,7 +1944,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				xtype: 'combo',
 				fieldLabel: this.getHelpTip('directionCombo', 'Text direction', 'Language'),
 				itemId: 'f_dir',
-				helpTitle: Ext.isDefined(TYPO3.ContextHelp) ? '' : this.localize('Text direction'),
+				helpTitle: typeof TYPO3.ContextHelp !== 'undefined' ? '' : this.localize('Text direction'),
 				store: new Ext.data.ArrayStore({
 					autoDestroy:  true,
 					fields: [ { name: 'text'}, { name: 'value'}],
@@ -1986,14 +1986,14 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				value: !Ext.isEmpty(table) ? table.cellSpacing : '',
 				width: 30,
 				minValue: 0,
-				helpTitle: Ext.isDefined(TYPO3.ContextHelp) ? '' : this.localize('Space between adjacent cells')
+				helpTitle: typeof TYPO3.ContextHelp !== 'undefined' ? '' : this.localize('Space between adjacent cells')
 				},{
 				fieldLabel: this.getHelpTip('cellPadding', 'Cell padding:'),
 				itemId: 'f_padding',
 				value: !Ext.isEmpty(table) ? table.cellPadding : '',
 				width: 30,
 				minValue: 0,
-				helpTitle: Ext.isDefined(TYPO3.ContextHelp) ? '' : this.localize('Space between content and border in cell')
+				helpTitle: typeof TYPO3.ContextHelp !== 'undefined' ? '' : this.localize('Space between content and border in cell')
 			}]
 		};
 	},
@@ -2038,13 +2038,13 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				itemId: 'f_st_width',
 				value: element ? this.getLength(element.style.width) : ((this.properties.width && this.properties.width.defaultValue) ? this.properties.width.defaultValue : ''),
 				width: 30,
-				helpTitle: Ext.isDefined(TYPO3.ContextHelp) ? '' : this.localize(widthTitle)
+				helpTitle: typeof TYPO3.ContextHelp !== 'undefined' ? '' : this.localize(widthTitle)
 			});
 			itemsConfig.push(Ext.apply({
 				xtype: 'combo',
 				fieldLabel: this.getHelpTip('Width unit', 'Width unit'),
 				itemId: 'f_st_widthUnit',
-				helpTitle: Ext.isDefined(TYPO3.ContextHelp) ? '' : this.localize('Width unit'),
+				helpTitle: typeof TYPO3.ContextHelp !== 'undefined' ? '' : this.localize('Width unit'),
 				store: widthUnitStore,
 				width: (this.properties['widthUnit'] && this.properties['widthUnit'].width) ? this.properties['widthUnit'].width : 70,
 				value: element ? (/%/.test(element.style.width) ? '%' : (/px/.test(element.style.width) ? 'px' : 'em')) : ((this.properties.widthUnit && this.properties.widthUnit.defaultValue) ? this.properties.widthUnit.defaultValue : '%')
@@ -2067,13 +2067,13 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				itemId: 'f_st_height',
 				value: element ? this.getLength(element.style.height) : ((this.properties.height && this.properties.height.defaultValue) ? this.properties.height.defaultValue : ''),
 				width: 30,
-				helpTitle: Ext.isDefined(TYPO3.ContextHelp) ? '' : this.localize(heightTitle)
+				helpTitle: typeof TYPO3.ContextHelp !== 'undefined' ? '' : this.localize(heightTitle)
 			});
 			itemsConfig.push(Ext.apply({
 				xtype: 'combo',
 				fieldLabel: this.getHelpTip('Height unit', 'Height unit'),
 				itemId: 'f_st_heightUnit',
-				helpTitle: Ext.isDefined(TYPO3.ContextHelp) ? '' : this.localize('Height unit'),
+				helpTitle: typeof TYPO3.ContextHelp !== 'undefined' ? '' : this.localize('Height unit'),
 				store: heightUnitStore,
 				width: (this.properties['heightUnit'] && this.properties['heightUnit'].width) ? this.properties['heightUnit'].width : 70,
 				value: element ? (/%/.test(element.style.height) ? '%' : (/px/.test(element.style.height) ? 'px' : 'em')) : ((this.properties.heightUnit && this.properties.heightUnit.defaultValue) ? this.properties.heightUnit.defaultValue : '%')
@@ -2095,7 +2095,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				fieldLabel: this.getHelpTip('tableFloat', 'Float:'),
 				labelSeparator: '',
 				itemId: 'f_st_float',
-				helpTitle: Ext.isDefined(TYPO3.ContextHelp) ? '' : this.localize('Specifies where the table should float'),
+				helpTitle: typeof TYPO3.ContextHelp !== 'undefined' ? '' : this.localize('Specifies where the table should float'),
 				store: floatStore,
 				width: (this.properties['float'] && this.properties['float'].width) ? this.properties['float'].width : 120,
 				value: element ? (Ext.get(element).hasClass(this.floatLeft) ? 'left' : (Ext.get(element).hasClass(this.floatRight) ? 'right' : 'not set')) : this.floatDefault
@@ -2137,7 +2137,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			xtype: 'combo',
 			fieldLabel: this.getHelpTip('textAlignment', 'Text alignment:'),
 			itemId: 'f_st_textAlign',
-			helpTitle: Ext.isDefined(TYPO3.ContextHelp) ? '' : this.localize('Horizontal alignment of text within cell'),
+			helpTitle: typeof TYPO3.ContextHelp !== 'undefined' ? '' : this.localize('Horizontal alignment of text within cell'),
 			store: new Ext.data.ArrayStore({
 				autoDestroy:  true,
 				fields: [ { name: 'text'}, { name: 'value'}],
@@ -2157,7 +2157,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			xtype: 'combo',
 			fieldLabel: this.getHelpTip('verticalAlignment', 'Vertical alignment:'),
 			itemId: 'f_st_vertAlign',
-			helpTitle: Ext.isDefined(TYPO3.ContextHelp) ? '' : this.localize('Vertical alignment of content within cell'),
+			helpTitle: typeof TYPO3.ContextHelp !== 'undefined' ? '' : this.localize('Vertical alignment of content within cell'),
 			store: new Ext.data.ArrayStore({
 				autoDestroy:  true,
 				fields: [ { name: 'text'}, { name: 'value'}],
@@ -2216,7 +2216,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			xtype: 'combo',
 			fieldLabel: this.getHelpTip('borderStyle', 'Border style:'),
 			itemId: 'f_st_borderStyle',
-			helpTitle: Ext.isDefined(TYPO3.ContextHelp) ? '' : this.localize('Border style'),
+			helpTitle: typeof TYPO3.ContextHelp !== 'undefined' ? '' : this.localize('Border style'),
 			store: borderStyleStore,
 			width: (this.properties.borderStyle && this.properties.borderStyle.width) ? this.properties.borderStyle.width : 150,
 			value: selectedBorderStyle,
@@ -2233,7 +2233,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			value: element ? this.getLength(element.style.borderWidth) : ((this.properties.borderWidth && this.properties.borderWidth.defaultValue) ? this.properties.borderWidth.defaultValue : ''),
 			width: 30,
 			minValue: 0,
-			helpTitle: Ext.isDefined(TYPO3.ContextHelp) ? '' : this.localize('Border width'),
+			helpTitle: typeof TYPO3.ContextHelp !== 'undefined' ? '' : this.localize('Border width'),
 			disabled: (selectedBorderStyle === 'none')
 		});
 			// Border color
@@ -2244,7 +2244,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			colors: this.editorConfiguration.disableColorPicker ? [] : null,
 			colorsConfiguration: this.editorConfiguration.colors,
 			value: HTMLArea.util.Color.colorToHex(element && element.style.borderColor ? element.style.borderColor : ((this.properties.borderColor && this.properties.borderColor.defaultValue) ? this.properties.borderColor.defaultValue : '')).substr(1, 6),
-			helpTitle: Ext.isDefined(TYPO3.ContextHelp) ? '' : this.localize('Border color'),
+			helpTitle: typeof TYPO3.ContextHelp !== 'undefined' ? '' : this.localize('Border color'),
 			disabled: (selectedBorderStyle === 'none')
 		});
 		if (nodeName === 'table') {
@@ -2254,7 +2254,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				fieldLabel: this.getHelpTip('collapsedBorders', 'Collapsed borders'),
 				labelSeparator: ':',
 				itemId: 'f_st_borderCollapse',
-				helpTitle: Ext.isDefined(TYPO3.ContextHelp) ? '' : this.localize('Collapsed borders'),
+				helpTitle: typeof TYPO3.ContextHelp !== 'undefined' ? '' : this.localize('Collapsed borders'),
 				store: new Ext.data.ArrayStore({
 					autoDestroy:  true,
 					fields: [ { name: 'text'}, { name: 'value'}],
@@ -2273,7 +2273,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				xtype: 'combo',
 				fieldLabel: this.getHelpTip('frames', 'Frames:'),
 				itemId: 'f_frames',
-				helpTitle: Ext.isDefined(TYPO3.ContextHelp) ? '' : this.localize('Specifies which sides should have a border'),
+				helpTitle: typeof TYPO3.ContextHelp !== 'undefined' ? '' : this.localize('Specifies which sides should have a border'),
 				store: new Ext.data.ArrayStore({
 					autoDestroy:  true,
 					fields: [ { name: 'text'}, { name: 'value'}],
@@ -2298,7 +2298,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				xtype: 'combo',
 				fieldLabel: this.getHelpTip('rules', 'Rules:'),
 				itemId: 'f_rules',
-				helpTitle: Ext.isDefined(TYPO3.ContextHelp) ? '' : this.localize('Specifies where rules should be displayed'),
+				helpTitle: typeof TYPO3.ContextHelp !== 'undefined' ? '' : this.localize('Specifies where rules should be displayed'),
 				store: new Ext.data.ArrayStore({
 					autoDestroy:  true,
 					fields: [ { name: 'text'}, { name: 'value'}],
@@ -2385,7 +2385,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			itemId: 'f_st_backgroundImage',
 			value: element && element.style.backgroundImage.match(/url\(\s*(.*?)\s*\)/) ? RegExp.$1 : '',
 			width: (this.properties.backgroundImage && this.properties.backgroundImage.width) ? this.properties.backgroundImage.width : 300,
-			helpTitle: Ext.isDefined(TYPO3.ContextHelp) ? '' : this.localize('URL of the background image'),
+			helpTitle: typeof TYPO3.ContextHelp !== 'undefined' ? '' : this.localize('URL of the background image'),
 			helpIcon: true
 		});
 		return {
@@ -2445,7 +2445,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			xtype: 'combo',
 			fieldLabel: column ? this.getHelpTip('columnCellsType', 'Type of cells of the column') : this.getHelpTip('cellType', 'Type of cell'),
 			itemId: 'f_cell_type',
-			helpTitle: Ext.isDefined(TYPO3.ContextHelp) ? '' : this.localize(column ? 'Specifies the type of cells' : 'Specifies the type of cell'),
+			helpTitle: typeof TYPO3.ContextHelp !== 'undefined' ? '' : this.localize(column ? 'Specifies the type of cells' : 'Specifies the type of cell'),
 			store: new Ext.data.ArrayStore({
 				autoDestroy:  true,
 				fields: [ { name: 'text'}, { name: 'value'}],
@@ -2466,7 +2466,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				fieldLabel: this.getHelpTip('cellAbbreviation', 'Abbreviation'),
 				labelSeparator: ':',
 				itemId: 'f_cell_abbr',
-				helpTitle: Ext.isDefined(TYPO3.ContextHelp) ? '' : this.localize('Header abbreviation'),
+				helpTitle: typeof TYPO3.ContextHelp !== 'undefined' ? '' : this.localize('Header abbreviation'),
 				width: 300,
 				value: element.abbr,
 				hideMode: 'visibility',
@@ -2516,7 +2516,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			xtype: 'combo',
 			fieldLabel: this.getHelpTip('rowGroup', 'Row group:'),
 			itemId: 'f_rowgroup',
-			helpTitle: Ext.isDefined(TYPO3.ContextHelp) ? '' : this.localize('Table section'),
+			helpTitle: typeof TYPO3.ContextHelp !== 'undefined' ? '' : this.localize('Table section'),
 			store: new Ext.data.ArrayStore({
 				autoDestroy:  true,
 				fields: [ { name: 'text'}, { name: 'value'}],
@@ -2542,7 +2542,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			fieldLabel: this.localize('Make cells header cells'),
 			labelSeparator: ':',
 			itemId: 'f_convertCells',
-			helpTitle: Ext.isDefined(TYPO3.ContextHelp) ? '' : this.localize('Make cells header cells'),
+			helpTitle: typeof TYPO3.ContextHelp !== 'undefined' ? '' : this.localize('Make cells header cells'),
 			value: false,
 			hideMode: 'visibility',
 			hidden: true,

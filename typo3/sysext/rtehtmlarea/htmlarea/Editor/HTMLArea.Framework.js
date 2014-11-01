@@ -53,7 +53,7 @@ HTMLArea.Framework = Ext.extend(Ext.Panel, {
 		var form = this.textArea.dom.form;
 		if (form) {
 			if (Ext.isFunction(form.onreset)) {
-				if (typeof(form.htmlAreaPreviousOnReset) == 'undefined') {
+				if (typeof form.htmlAreaPreviousOnReset === 'undefined') {
 					form.htmlAreaPreviousOnReset = [];
 				}
 				form.htmlAreaPreviousOnReset.push(form.onreset);
@@ -260,7 +260,7 @@ HTMLArea.Framework = Ext.extend(Ext.Panel, {
 		this.toolbar.update();
 		// Invoke previous reset handlers, if any
 		var htmlAreaPreviousOnReset = event.getTarget().dom.htmlAreaPreviousOnReset;
-		if (typeof(htmlAreaPreviousOnReset) != 'undefined') {
+		if (typeof htmlAreaPreviousOnReset !== 'undefined') {
 			for (var i = 0, n = htmlAreaPreviousOnReset.length; i < n; i++) {
 				htmlAreaPreviousOnReset[i]();
 			}

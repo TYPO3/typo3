@@ -109,17 +109,17 @@ Ext.apply(HTMLArea, {
 	 */
 	appendToLog: function (editorId, objectName, functionName, text, type) {
 		var str = 'RTE[' + editorId + '][' + objectName + '::' + functionName + ']: ' + text;
-		if (typeof(type) === 'undefined') {
+		if (typeof type === 'undefined') {
 			var type = 'info';
 		}
-		if (typeof(console) !== 'undefined' && typeof(console) === 'object') {
+		if (typeof console !== 'undefined' && typeof console === 'object') {
 			// If console is TYPO3.Backend.DebugConsole, write only error messages
 			if (Ext.isFunction(console.addTab)) {
 				if (type === 'error') {
 					console[type](str);
 				}
 			// IE may not have any console
-			} else if (typeof(console[type]) !== 'undefined') {
+			} else if (typeof console[type] !== 'undefined') {
 				console[type](str);
 			}
 		}

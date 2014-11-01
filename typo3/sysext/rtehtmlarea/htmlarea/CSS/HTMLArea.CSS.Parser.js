@@ -65,11 +65,11 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 	 * @return	void
 	 */
 	initiateParsing: function () {
-		if (this.editor.config.classesUrl && (typeof(HTMLArea.classesLabels) === 'undefined')) {
+		if (this.editor.config.classesUrl && typeof HTMLArea.classesLabels === 'undefined') {
 			this.editor.ajax.getJavascriptFile(this.editor.config.classesUrl, function (options, success, response) {
 				if (success) {
 					try {
-						if (typeof(HTMLArea.classesLabels) === 'undefined') {
+						if (typeof HTMLArea.classesLabels === 'undefined') {
 							eval(response.responseText);
 						}
 					} catch(e) {
@@ -284,7 +284,7 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 		for (nodeName in this.tags) {
 			var allowedClasses = {};
 			// Get classes allowed for all tags
-			if (nodeName !== 'all' && Ext.isDefined(this.parsedClasses['all'])) {
+			if (nodeName !== 'all' && typeof this.parsedClasses['all'] !== 'undefined') {
 				if (this.tags && this.tags[nodeName] && this.tags[nodeName].allowedClasses) {
 					var allowed = this.tags[nodeName].allowedClasses;
 					for (cssClass in this.parsedClasses['all']) {
@@ -297,7 +297,7 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 				}
 			}
 			// Merge classes allowed for nodeName
-			if (Ext.isDefined(this.parsedClasses[nodeName])) {
+			if (typeof this.parsedClasses[nodeName] !== 'undefined') {
 				if (this.tags && this.tags[nodeName] && this.tags[nodeName].allowedClasses) {
 					var allowed = this.tags[nodeName].allowedClasses;
 					for (cssClass in this.parsedClasses[nodeName]) {
@@ -314,7 +314,7 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 			this.parsedClasses[nodeName] = allowedClasses;
 		}
 		// If showTagFreeClasses is set and there is no allowedClasses clause on a tag, merge classes allowed for all tags
-		if (this.showTagFreeClasses && Ext.isDefined(this.parsedClasses['all'])) {
+		if (this.showTagFreeClasses && typeof this.parsedClasses['all'] !== 'undefined') {
 			for (nodeName in this.parsedClasses) {
 				if (nodeName !== 'all' && !this.tags[nodeName]) {
 					for (cssClass in this.parsedClasses['all']) {
