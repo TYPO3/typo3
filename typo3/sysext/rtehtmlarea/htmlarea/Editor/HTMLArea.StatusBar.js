@@ -143,7 +143,7 @@ HTMLArea.StatusBar = Ext.extend(Ext.Container, {
 				element.dom.ancestor = ancestor;
 				element.on('click', this.onClick, this);
 				element.on('mousedown', this.onClick, this);
-				if (!Ext.isOpera) {
+				if (!HTMLArea.UserAgent.isOpera) {
 					element.on('contextmenu', this.onContextMenu, this);
 				}
 				if (index) {
@@ -227,7 +227,7 @@ HTMLArea.StatusBar = Ext.extend(Ext.Container, {
 	selectElement: function (element) {
 		var editor = this.getEditor();
 		element.blur();
-		if (!HTMLArea.isIEBeforeIE9) {
+		if (!HTMLArea.UserAgent.isIEBeforeIE9) {
 			if (/^(img|table)$/i.test(element.ancestor.nodeName)) {
 				editor.getSelection().selectNode(element.ancestor);
 			} else {

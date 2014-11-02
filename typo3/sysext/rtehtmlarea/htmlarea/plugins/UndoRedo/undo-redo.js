@@ -146,7 +146,7 @@ HTMLArea.UndoRedo = Ext.extend(HTMLArea.Plugin, {
 		var bookmark = null, bookmarkedText = null;
 			// Insert a bookmark
 		if (this.getEditorMode() === 'wysiwyg' && this.editor.isEditable()) {
-			if ((!HTMLArea.isIEBeforeIE9 && !(Ext.isOpera && navigator.userAgent.toLowerCase().indexOf('presto/2.1') != -1)) || (HTMLArea.isIEBeforeIE9 && this.editor.getSelection().getType() !== 'Control')) {
+			if ((!HTMLArea.UserAgent.isIEBeforeIE9 && !(HTMLArea.UserAgent.isOpera && navigator.userAgent.toLowerCase().indexOf('presto/2.1') != -1)) || (HTMLArea.UserAgent.isIEBeforeIE9 && this.editor.getSelection().getType() !== 'Control')) {
 					// Catch error in FF when the selection contains no usable range
 				try {
 					var range = this.editor.getSelection().createRange();
@@ -156,7 +156,7 @@ HTMLArea.UndoRedo = Ext.extend(HTMLArea.Plugin, {
 				}
 			}
 				// Get the bookmarked html text and remove the bookmark
-			if (HTMLArea.isIEBeforeIE9 && bookmark) {
+			if (HTMLArea.UserAgent.isIEBeforeIE9 && bookmark) {
 				bookmarkedText = this.editor.getInnerHTML();
 				this.editor.getBookMark().moveTo(bookmark);
 			}
@@ -198,7 +198,7 @@ HTMLArea.UndoRedo = Ext.extend(HTMLArea.Plugin, {
 	setContent: function (undoPosition) {
 		var bookmark = this.undoQueue[undoPosition].bookmark;
 		if (bookmark) {
-			if (HTMLArea.isIEBeforeIE9) {
+			if (HTMLArea.UserAgent.isIEBeforeIE9) {
 				this.editor.setHTML(this.undoQueue[undoPosition].bookmarkedText);
 			} else {
 				this.editor.setHTML(this.undoQueue[undoPosition].text);

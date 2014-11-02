@@ -140,9 +140,9 @@ HTMLArea.DOM = function () {
 				if (newClasses.length) {
 					node.className = newClasses.join(' ');
 				} else {
-					if (!Ext.isOpera) {
+					if (!HTMLArea.UserAgent.isOpera) {
 						node.removeAttribute('class');
-						if (HTMLArea.isIEBeforeIE9) {
+						if (HTMLArea.UserAgent.isIEBeforeIE9) {
 							node.removeAttribute('className');
 						}
 					} else {
@@ -159,7 +159,7 @@ HTMLArea.DOM = function () {
 		 * @return	string		the text inside the node
 		 */
 		getInnerText: function (node) {
-			return HTMLArea.isIEBeforeIE9 ? node.innerText : node.textContent;;
+			return HTMLArea.UserAgent.isIEBeforeIE9 ? node.innerText : node.textContent;;
 		},
 		/*
 		 * Get the block ancestors of a node within a given block
@@ -310,7 +310,7 @@ HTMLArea.DOM = function () {
 			var rangeIntersectsNode = false,
 				ownerDocument = node.ownerDocument;
 			if (ownerDocument) {
-				if (HTMLArea.isIEBeforeIE9) {
+				if (HTMLArea.UserAgent.isIEBeforeIE9) {
 					var nodeRange = ownerDocument.body.createTextRange();
 					nodeRange.moveToElementText(node);
 					rangeIntersectsNode = (range.compareEndPoints('EndToStart', nodeRange) == -1 && range.compareEndPoints('StartToEnd', nodeRange) == 1) ||
@@ -320,7 +320,7 @@ HTMLArea.DOM = function () {
 					try {
 						nodeRange.selectNode(node);
 					} catch (e) {
-						if (Ext.isWebKit) {
+						if (HTMLArea.UserAgent.isWebKit) {
 							nodeRange.setStart(node, 0);
 							if (node.nodeType === HTMLArea.DOM.TEXT_NODE || node.nodeType === HTMLArea.DOM.COMMENT_NODE || node.nodeType === HTMLArea.DOM.CDATA_SECTION_NODE) {
 								nodeRange.setEnd(node, node.textContent.length);

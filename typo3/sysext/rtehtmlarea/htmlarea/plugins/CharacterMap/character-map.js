@@ -459,11 +459,11 @@ HTMLArea.CharacterMap = Ext.extend(HTMLArea.Plugin, {
 	 * @return	void
 	 */
 	insertEntity: function (entity) {
-		if (HTMLArea.isIEBeforeIE9) {
+		if (HTMLArea.UserAgent.isIEBeforeIE9) {
 			this.editor.getSelection().insertHtml(entity);
 		} else {
 				// Firefox, WebKit and IE convert '&nbsp;' to '&amp;nbsp;'
-			var node = this.editor.document.createTextNode(((Ext.isGecko || Ext.isWebKit || Ext.isIE) && entity == '&nbsp;') ? '\xA0' : entity);
+			var node = this.editor.document.createTextNode(((HTMLArea.UserAgent.isGecko || HTMLArea.UserAgent.isWebKit || HTMLArea.UserAgent.isIE) && entity == '&nbsp;') ? '\xA0' : entity);
 			this.editor.getSelection().insertNode(node);
 			this.editor.getSelection().selectNode(node, false);
 		}

@@ -119,13 +119,13 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 		this.cssLoaded = true;
 		this.error = null;
 			// Test if the styleSheets array is at all accessible
-		if (Ext.isOpera) {
+		if (HTMLArea.UserAgent.isOpera) {
 			if (this.editor.document.readyState !== 'complete') {
 				this.cssLoaded = false;
 				this.error = 'Document.readyState not complete';
 			}
 		} else {
-			if (HTMLArea.isIEBeforeIE9) {
+			if (HTMLArea.UserAgent.isIEBeforeIE9) {
 				try {
 					var rules = this.editor.document.styleSheets[0].rules;
 					var imports = this.editor.document.styleSheets[0].imports;
@@ -153,7 +153,7 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 				for (var index = 0, n = styleSheets.length; index < n; index++) {
 					try {
 						var styleSheet = styleSheets[index];
-						if (HTMLArea.isIEBeforeIE9) {
+						if (HTMLArea.UserAgent.isIEBeforeIE9) {
 							var rules = styleSheet.rules;
 							var imports = styleSheet.imports;
 							if (!rules.length && !imports.length) {

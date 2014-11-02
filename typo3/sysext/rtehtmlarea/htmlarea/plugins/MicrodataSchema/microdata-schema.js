@@ -124,7 +124,7 @@ HTMLArea.MicrodataSchema = Ext.extend(HTMLArea.Plugin, {
 			var selector = 'body.htmlarea-show-microdata *[' + store.storeId + '="' + option.get('name') + '"]:before';
 			var style = 'content: "' + option.get('label') + ': "; font-variant: small-caps;';
 			var rule = selector + ' { ' + style + ' }';
-			if (!HTMLArea.isIEBeforeIE9) {
+			if (!HTMLArea.UserAgent.isIEBeforeIE9) {
 				try {
 					styleSheet.insertRule(rule, styleSheet.cssRules.length);
 				} catch (e) {

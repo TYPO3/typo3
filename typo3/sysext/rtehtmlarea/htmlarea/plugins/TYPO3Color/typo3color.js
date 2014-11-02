@@ -37,7 +37,7 @@ HTMLArea.TYPO3Color = Ext.extend(HTMLArea.Plugin, {
 		}
 		if (!this.allowedAttributes) {
 			this.allowedAttributes = new Array('id', 'title', 'lang', 'xml:lang', 'dir', 'class', 'style');
-			if (HTMLArea.isIEBeforeIE9) {
+			if (HTMLArea.UserAgent.isIEBeforeIE9) {
 				this.allowedAttributes.push('className');
 			}
 		}

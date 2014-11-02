@@ -64,7 +64,7 @@ Ext.ux.form.HTMLAreaCombo = Ext.extend(Ext.form.ComboBox, {
 		if (!combo.disabled) {
 			var editor = this.getEditor();
 				// In IE, reclaim lost focus on the editor iframe and restore the bookmarked selection
-			if (Ext.isIE) {
+			if (HTMLArea.UserAgent.isIE) {
 				if (typeof this.savedRange === 'object' && this.savedRange !== null) {
 					editor.getSelection().selectRange(this.savedRange);
 					this.savedRange = null;
@@ -73,11 +73,11 @@ Ext.ux.form.HTMLAreaCombo = Ext.extend(Ext.form.ComboBox, {
 				// Invoke the plugin onChange handler
 			this.plugins[this.action](editor, combo, record, index);
 				// In IE, bookmark the updated selection as the editor will be loosing focus
-			if (Ext.isIE) {
+			if (HTMLArea.UserAgent.isIE) {
 				this.savedRange = editor.getSelection().createRange();
 				this.triggered = true;
 			}
-			if (Ext.isOpera) {
+			if (HTMLArea.UserAgent.isOpera) {
 				editor.focus();
 			}
 			this.getToolbar().update();
@@ -91,7 +91,7 @@ Ext.ux.form.HTMLAreaCombo = Ext.extend(Ext.form.ComboBox, {
 	onTriggerClick: function () {
 		Ext.ux.form.HTMLAreaCombo.superclass.onTriggerClick.call(this);
 			// In IE, avoid focus being stolen and selection being lost
-		if (Ext.isIE) {
+		if (HTMLArea.UserAgent.isIE) {
 			this.triggered = true;
 			this.getEditor().focus();
 		}
@@ -136,7 +136,7 @@ Ext.ux.form.HTMLAreaCombo = Ext.extend(Ext.form.ComboBox, {
 	onHotKey: function (key) {
 		if (!this.disabled) {
 			this.plugins.onHotKey(this.getEditor(), key);
-			if (Ext.isOpera) {
+			if (HTMLArea.UserAgent.isOpera) {
 				this.getEditor().focus();
 			}
 			this.getToolbar().update();
@@ -161,7 +161,7 @@ Ext.ux.form.HTMLAreaCombo = Ext.extend(Ext.form.ComboBox, {
 			// Note: ExtJS is monitoring events only on the parent window
 		this.mon(Ext.get(iframe.document.documentElement), 'click', this.collapse, this);
 			// Special handling for combo stealing focus in IE
-		if (Ext.isIE) {
+		if (HTMLArea.UserAgent.isIE) {
 				// Take a bookmark in case the editor looses focus by activation of this combo
 			this.mon(iframe.getEl(), 'mouseleave', this.saveSelection, this);
 				// Restore the selection if combo was triggered

@@ -82,7 +82,7 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 	 * @return	boolean		true, if the document is contentEditable
 	 */
  	isEditable: function () {
- 		return Ext.isIE ? this.document.body.contentEditable : (this.document.designMode === 'on');
+ 		return HTMLArea.UserAgent.isIE ? this.document.body.contentEditable : (this.document.designMode === 'on');
 	},
 	/*
 	 * The selection object
@@ -157,7 +157,7 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 						id: this.editorId + '-iframe',
 						tag: 'iframe',
 						cls: 'editorIframe',
-						src: Ext.isGecko ? 'javascript:void(0);' : (Ext.isWebKit ? 'javascript: \'' + HTMLArea.util.htmlEncode(this.config.documentType + this.config.blankDocument) + '\'' : HTMLArea.editorUrl + 'popups/blank.html')
+						src: HTMLArea.UserAgent.isGecko ? 'javascript:void(0);' : (HTMLArea.UserAgent.isWebKit ? 'javascript: \'' + HTMLArea.util.htmlEncode(this.config.documentType + this.config.blankDocument) + '\'' : HTMLArea.editorUrl + 'popups/blank.html')
 					},
 					isNested: this.isNested,
 					nestedParentElements: this.nestedParentElements,
@@ -453,7 +453,7 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 	 * Scroll the editor window to the current caret position
 	 */
 	scrollToCaret: function () {
-		if (!Ext.isIE) {
+		if (!HTMLArea.UserAgent.isIE) {
 			var e = this.getSelection().getParentElement(),
 				w = this.iframe.getEl().dom.contentWindow ? this.iframe.getEl().dom.contentWindow : window,
 				h = w.innerHeight || w.height,
@@ -468,7 +468,7 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 	 * Add listeners
 	 */
 	initEventsListening: function () {
-		if (Ext.isOpera) {
+		if (HTMLArea.UserAgent.isOpera) {
 			this.iframe.startListening();
 		}
 			// Add unload handler

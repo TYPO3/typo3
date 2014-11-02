@@ -1,0 +1,51 @@
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+/**
+ * Identify the current user agent
+ */
+HTMLArea.UserAgent = function () {
+	var userAgent = navigator.userAgent.toLowerCase();
+	var documentMode = document.documentMode,
+		isOpera = /opera/i.test(userAgent),
+		isChrome = /\bchrome\b/i.test(userAgent),
+		isWebKit = /webkit/i.test(userAgent),
+		isIE = !isOpera && /msie/i.test(userAgent),
+		isIE6 = isIE && /msie 6/i.test(userAgent),
+		isIE7 = isIE && (/msie 7/i.test(userAgent) || documentMode == 7),
+		isIE8 = isIE && ((/msie 8/i.test(userAgent) && documentMode != 7) || documentMode == 8),
+		isGecko = !isWebKit && /gecko/i.test(userAgent),
+		isiPhone = /iphone/i.test(userAgent),
+		isiPad = /ipad/i.test(userAgent);
+	return {
+		isOpera: isOpera,
+		isChrome: isChrome,
+		isWebKit: isWebKit,
+		isSafari: !isChrome && /safari/i.test(userAgent),
+		isIE: isIE,
+		isIE6: isIE6,
+		isIE7: isIE7,
+		isIE8: isIE8,
+		isIEBeforeIE9: isIE6 || isIE7 || isIE8 || (isIE && typeof documentMode !== 'undefined' && documentMode < 9),
+		isGecko: isGecko,
+		isGecko2: isGecko && /rv:1\.8/i.test(userAgent),
+		isGecko3: isGecko && /rv:1\.9/i.test(userAgent),
+		isWindows: /windows|win32/i.test(userAgent),
+		isMac: /macintosh|mac os x/i.test(userAgent),
+		isAir: /adobeair/i.test(userAgent),
+		isLinux: /linux/i.test(userAgent),
+		isAndroid: /android/i.test(userAgent),
+		isiPhone: isiPhone,
+		isiPad: isiPad,
+		isiOS: isiPhone || isiPad
+	};
+}();

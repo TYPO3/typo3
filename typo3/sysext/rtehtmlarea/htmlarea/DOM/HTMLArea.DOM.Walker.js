@@ -129,10 +129,10 @@ HTMLArea.DOM.Walker = Ext.extend(HTMLArea.DOM.Walker, {
 			if (!attribute.specified && attributeName !== 'value') {
 				continue;
 			}
-			if (Ext.isIE) {
+			if (HTMLArea.UserAgent.isIE) {
 					// IE before I9 fails to put style in attributes list.
 				if (attributeName === 'style') {
-					if (HTMLArea.isIEBeforeIE9) {
+					if (HTMLArea.UserAgent.isIEBeforeIE9) {
 						attributeValue = node.style.cssText;
 					}
 					// May need to strip the base url
@@ -142,7 +142,7 @@ HTMLArea.DOM.Walker = Ext.extend(HTMLArea.DOM.Walker, {
 				} else if (attributeName === 'value' && /^li$/i.test(node.nodeName) && attributeValue == 0) {
 					continue;
 				}
-			} else if (Ext.isGecko) {
+			} else if (HTMLArea.UserAgent.isGecko) {
 					// Ignore special values reported by Mozilla
 				if (/(_moz|^$)/.test(attributeValue)) {
 					continue;
@@ -160,7 +160,7 @@ HTMLArea.DOM.Walker = Ext.extend(HTMLArea.DOM.Walker, {
 				attributeValue: attributeValue
 			});
 		}
-		return (Ext.isWebKit || Ext.isOpera) ? filterededAttributes.reverse() : filterededAttributes;
+		return (HTMLArea.UserAgent.isWebKit || HTMLArea.UserAgent.isOpera) ? filterededAttributes.reverse() : filterededAttributes;
 	},
 	/*
 	 * Set opening tag for a node
@@ -173,7 +173,7 @@ HTMLArea.DOM.Walker = Ext.extend(HTMLArea.DOM.Walker, {
 			// Handle br oddities
 		if (/^br$/i.test(node.nodeName)) {
 				// Remove Mozilla special br node
-			if (Ext.isGecko && node.hasAttribute('_moz_editor_bogus_node')) {
+			if (HTMLArea.UserAgent.isGecko && node.hasAttribute('_moz_editor_bogus_node')) {
 				return html;
 				// In Gecko, whenever some text is entered in an empty block, a trailing br tag is added by the browser.
 				// If the br element is a trailing br in a block element with no other content or with content other than a br, it may be configured to be removed

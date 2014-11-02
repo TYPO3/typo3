@@ -87,12 +87,12 @@ HTMLArea.TextIndicator = Ext.extend(HTMLArea.Plugin, {
 			};
 			try {
 					//  Note: IE always reports FFFFFF as background color
-				style.backgroundColor = HTMLArea.util.Color.colorToRgb(doc.queryCommandValue((Ext.isIE || Ext.isWebKit) ? 'BackColor' : 'HiliteColor'));
+				style.backgroundColor = HTMLArea.util.Color.colorToRgb(doc.queryCommandValue((HTMLArea.UserAgent.isIE || HTMLArea.UserAgent.isWebKit) ? 'BackColor' : 'HiliteColor'));
 				style.color = HTMLArea.util.Color.colorToRgb(doc.queryCommandValue('ForeColor'));
 				style.fontFamily = doc.queryCommandValue('FontName');
 			} catch (e) { }
 				// queryCommandValue does not work in Gecko
-			if (Ext.isGecko) {
+			if (HTMLArea.UserAgent.isGecko) {
 				var computedStyle = editor.iframe.getEl().dom.contentWindow.getComputedStyle(editor.getSelection().getParentElement(), null);
 				style.color = computedStyle.getPropertyValue('color');
 				style.backgroundColor = computedStyle.getPropertyValue('background-color');

@@ -65,13 +65,13 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 	 * This function gets called when the editor is generated
 	 */
 	onGenerate: function () {
-		this.editor.iframe.mon(Ext.get(Ext.isIE ? this.editor.document.body : this.editor.document.documentElement), 'cut', this.cutHandler, this);
+		this.editor.iframe.mon(Ext.get(HTMLArea.UserAgent.isIE ? this.editor.document.body : this.editor.document.documentElement), 'cut', this.cutHandler, this);
 		for (var buttonId in this.buttonList) {
 			var button = this.buttonList[buttonId];
 				// Remove button from toolbar, if command is not supported
 				// Starting with Safari 5 and Chrome 6, cut and copy commands are not supported anymore by WebKit
 				// Starting with Firefox 29, cut, copy and paste commands are not supported anymore by Firefox
-			if (Ext.isGecko || !this.editor.document.queryCommandSupported(buttonId)) {
+			if (HTMLArea.UserAgent.isGecko || !this.editor.document.queryCommandSupported(buttonId)) {
 				this.editor.toolbar.remove(buttonId);
 			}
 				// Add hot key handling if the button is not enabled in the toolbar
@@ -120,7 +120,7 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 						this.applyBrowserCommand(buttonId);
 					}
 						// Opera will not trigger the onCut event
-					if (Ext.isOpera) {
+					if (HTMLArea.UserAgent.isOpera) {
 						this.cutHandler();
 					}
 					break;
@@ -130,7 +130,7 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 						this.applyBrowserCommand(buttonId);
 					}
 						// In FF3, the paste operation will indeed trigger the onPaste event not in FF2; nor in Opera
-					if (Ext.isOpera || Ext.isGecko2) {
+					if (HTMLArea.UserAgent.isOpera || HTMLArea.UserAgent.isGecko2) {
 						var cleaner = this.getButton('CleanWord');
 						if (cleaner) {
 							cleaner.fireEvent.defer(250, cleaner, ['click', cleaner]);
@@ -147,7 +147,7 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 				// No cleaning required as the pasted cells are copied from the editor.
 				// However paste by Opera cannot be stopped.
 				// Revert Opera's operation as it produces invalid html anyways
-			if (Ext.isOpera) {
+			if (HTMLArea.UserAgent.isOpera) {
 				this.editor.inhibitKeyboardInput = true;
 				var bookmark = this.editor.getBookMark().get(this.editor.getSelection().createRange());
 				var html = this.editor.getInnerHTML();
@@ -199,11 +199,11 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 		if (/^(a)$/i.test(parent.nodeName)) {
 			parent.normalize();
 			if (!parent.innerHTML || (parent.childNodes.length == 1 && /^(br)$/i.test(parent.firstChild.nodeName))) {
-				if (!HTMLArea.isIEBeforeIE9) {
+				if (!HTMLArea.UserAgent.isIEBeforeIE9) {
 					var container = parent.parentNode;
 					this.editor.getDomNode().removeMarkup(parent);
 						// Opera does not render empty list items
-					if (Ext.isOpera && /^(li)$/i.test(container.nodeName) && !container.firstChild) {
+					if (HTMLArea.UserAgent.isOpera && /^(li)$/i.test(container.nodeName) && !container.firstChild) {
 						container.innerHTML = '<br />';
 						this.editor.getSelection().selectNodeContents(container, true);
 					}
@@ -212,11 +212,11 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 				}
 			}
 		}
-		if (Ext.isWebKit || Ext.isOpera) {
+		if (HTMLArea.UserAgent.isWebKit || HTMLArea.UserAgent.isOpera) {
 			// Remove Apple's span and font tags
 			this.editor.getDomNode().cleanAppleStyleSpans(this.editor.document.body);
 		}
-		if (Ext.isWebKit) {
+		if (HTMLArea.UserAgent.isWebKit) {
 			// Reset Safari selection in order to prevent insertion of span and/or font tags on next text input
 			var bookmark = this.editor.getBookMark().get(this.editor.getSelection().createRange());
 			this.editor.getSelection().selectRange(this.editor.getBookMark().moveTo(bookmark));
@@ -235,7 +235,7 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 			case 'Copy':
 			case 'Cut' :
 				HTMLArea.copiedCells = null;
-				if ((/^(tr)$/i.test(parent.nodeName) && !Ext.isIE) || (/^(td|th)$/i.test(endBlocks.start.nodeName) && /^(td|th)$/i.test(endBlocks.end.nodeName) && !Ext.isGecko && endBlocks.start != endBlocks.end)) {
+				if ((/^(tr)$/i.test(parent.nodeName) && !HTMLArea.UserAgent.isIE) || (/^(td|th)$/i.test(endBlocks.start.nodeName) && /^(td|th)$/i.test(endBlocks.end.nodeName) && !HTMLArea.UserAgent.isGecko && endBlocks.start != endBlocks.end)) {
 					HTMLArea.copiedCells = this.collectCells(buttonId, endBlocks);
 				}
 				break;
@@ -254,7 +254,7 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 	 */
 	pasteCells: function (endBlocks) {
 		var cell = null;
-		if (Ext.isGecko) {
+		if (HTMLArea.UserAgent.isGecko) {
 			var range = this.editor.getSelection().createRange();
 			cell = range.startContainer.childNodes[range.startOffset];
 			while (cell && !HTMLArea.DOM.isBlockElement(cell)) {
@@ -314,7 +314,7 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 		}
 		var row = null;
 		var cutRows = [];
-		if (Ext.isGecko) {
+		if (HTMLArea.UserAgent.isGecko) {
 			if (selection.rangeCount == 1) { // Collect the cells in the selected row
 				cells = [];
 				for (var i = 0, n = endBlocks.start.cells.length; i < n; ++i) {

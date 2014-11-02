@@ -570,7 +570,7 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 */
 	saveSelection: function () {
 			// If IE, save the current selection
-		if (Ext.isIE) {
+		if (HTMLArea.UserAgent.isIE) {
 			this.savedRange = this.editor.getSelection().createRange();
 		}
 	},
@@ -580,7 +580,7 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 */
 	restoreSelection: function () {
 			// If IE, restore the selection saved when the window was shown
-		if (Ext.isIE && this.savedRange) {
+		if (HTMLArea.UserAgent.isIE && this.savedRange) {
 				// Restoring the selection will not work if the inner html was replaced by the plugin
 			try {
 				this.editor.getSelection().selectRange(this.savedRange);

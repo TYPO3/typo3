@@ -180,7 +180,7 @@ HTMLArea.SpellChecker = Ext.extend(HTMLArea.Plugin, {
 						name: 'contentframe',
 						tag: 'iframe',
 						cls: 'contentframe',
-						src: Ext.isGecko ? 'javascript:void(0);' : HTMLArea.editorUrl + 'popups/blank.html'
+						src: HTMLArea.UserAgent.isGecko ? 'javascript:void(0);' : HTMLArea.editorUrl + 'popups/blank.html'
 					}
 				},{
 						// The original word

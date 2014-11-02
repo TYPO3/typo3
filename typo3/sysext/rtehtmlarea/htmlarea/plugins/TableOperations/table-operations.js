@@ -103,7 +103,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		['cell-insert-before',	'td,th',			'cellinsertbefore', false, 'cell-insert-before'],
 		['cell-insert-after',	'td,th',			'cellinsertafter', false, 'cell-insert-after'],
 		['cell-delete',		'td,th',			'celldelete', false, 'cell-delete'],
-		['cell-merge',		Ext.isGecko? 'tr' : 'td,th',	'cellmerge', false, 'cell-merge'],
+		['cell-merge',		HTMLArea.UserAgent.isGecko? 'tr' : 'td,th',	'cellmerge', false, 'cell-merge'],
 		['cell-split',		'td,th[colSpan!=1,rowSpan!=1]',	'cellsplit', false, 'cell-split']
 	],
 	/*
@@ -414,7 +414,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				tbody.appendChild(tr);
 				for (var j = params.f_cols; --j >= 0;) {
 					var td = doc.createElement('td');
-					if (!HTMLArea.isIEBeforeIE9) {
+					if (!HTMLArea.UserAgent.isIEBeforeIE9) {
 						td.innerHTML = '<br />';
 					}
 					tr.appendChild(td);
@@ -518,7 +518,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			}
 		}
 		if (this.dialog.arguments.buttonId === "InsertTable") {
-			if (!HTMLArea.isIEBeforeIE9) {
+			if (!HTMLArea.UserAgent.isIEBeforeIE9) {
 				this.editor.getSelection().insertNode(table);
 			} else {
 				table.id = "htmlarea_table_insert";
@@ -625,7 +625,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			this.toggleBorders(true);
 		}
 			// Register handler for the enter key for IE and Opera when buttons.table.disableEnterParagraphs is set in the editor configuration
-		if ((Ext.isIE || Ext.isOpera) && this.disableEnterParagraphs) {
+		if ((HTMLArea.UserAgent.isIE || HTMLArea.UserAgent.isOpera) && this.disableEnterParagraphs) {
 			this.editor.iframe.keyMap.addBinding({
 				key: Ext.EventObject.ENTER,
 				shift: false,
@@ -644,7 +644,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 					button.setInactive(!HTMLArea.DOM.hasClass(this.editor.document.body, 'htmlarea-showtableborders'));
 					break;
 				case 'TO-cell-merge':
-					if (Ext.isGecko) {
+					if (HTMLArea.UserAgent.isGecko) {
 						var selection = this.editor.getSelection().get().selection;
 						button.setDisabled(button.disabled || selection.rangeCount < 2);
 					}
@@ -665,7 +665,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
 
-		var mozbr = !HTMLArea.isIEBeforeIE9 ? "<br />" : "";
+		var mozbr = !HTMLArea.UserAgent.isIEBeforeIE9 ? "<br />" : "";
 		var tableParts = ["tfoot", "thead", "tbody"];
 		var tablePartsIndex = { tfoot : 0, thead : 1, tbody : 2 };
 
@@ -845,7 +845,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			var cell = this.editor.getSelection().getFirstAncestorOfType(['td', 'th']);
 			if (!cell) break;
 			var sel = editor.getSelection().get().selection;
-			if (Ext.isGecko && !sel.isCollapsed) {
+			if (HTMLArea.UserAgent.isGecko && !sel.isCollapsed) {
 				var cells = getSelectedCells(sel);
 				for (i = 0; i < cells.length; ++i) {
 					splitRow(cells[i]);
@@ -887,7 +887,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		    	var cell = this.editor.getSelection().getFirstAncestorOfType(['td', 'th']);
 			if (!cell) break;
 			var sel = this.editor.getSelection().get().selection;
-			if (Ext.isGecko && !sel.isCollapsed) {
+			if (HTMLArea.UserAgent.isGecko && !sel.isCollapsed) {
 				var cells = getSelectedCells(sel);
 				for (i = 0; i < cells.length; ++i) {
 					splitCol(cells[i]);
@@ -941,7 +941,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			var cell = this.editor.getSelection().getFirstAncestorOfType(['td', 'th']);
 			if (!cell) break;
 			var sel = this.editor.getSelection().get().selection;
-			if (Ext.isGecko && !sel.isCollapsed) {
+			if (HTMLArea.UserAgent.isGecko && !sel.isCollapsed) {
 				var cells = getSelectedCells(sel);
 				for (i = 0; i < cells.length; ++i) {
 					splitCell(cells[i]);
@@ -990,7 +990,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			for (var k = tableParts.length; --k >= 0;) rows[k] = [];
 			var row = null;
 			var cells = null;
-			if (Ext.isGecko) {
+			if (HTMLArea.UserAgent.isGecko) {
 				try {
 					while (range = sel.getRangeAt(i++)) {
 						var td = range.startContainer.childNodes[range.startOffset];
@@ -1549,7 +1549,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			}
 		}
 			// In IE before IE9, the above fails to update the classname and style attributes.
-		if (HTMLArea.isIEBeforeIE9) {
+		if (HTMLArea.UserAgent.isIEBeforeIE9) {
 			if (element.style.cssText) {
 				newCell.style.cssText = element.style.cssText;
 			}
@@ -1609,7 +1609,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 	 */
 	processStyle: function (element, params) {
 		var style = element.style;
-		if (HTMLArea.isIEBeforeIE9) {
+		if (HTMLArea.UserAgent.isIEBeforeIE9) {
 			style.styleFloat = "";
 		} else {
 			style.cssFloat = "";
@@ -2590,7 +2590,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			parentElement = parentElement.parentNode;
 		}
 		if (/^(td|th)$/i.test(parentElement.nodeName)) {
-			if (HTMLArea.isIEBeforeIE9) {
+			if (HTMLArea.UserAgent.isIEBeforeIE9) {
 				range.pasteHTML('<br />');
 				range.select();
 			} else {

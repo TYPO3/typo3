@@ -97,7 +97,7 @@ HTMLArea.util.TYPO3 = function () {
 		 * @return	object		width and height of window
 		 */
 		getWindowSize: function () {
-			if (Ext.isIE) {
+			if (HTMLArea.UserAgent.isIE) {
 				var size = Ext.getBody().getSize();
 			} else {
 				var size = {

@@ -64,7 +64,7 @@ HTMLArea.DefaultClean = Ext.extend(HTMLArea.Plugin, {
 	 * This function gets called when the editor is generated
 	 */
 	onGenerate: function () {
-		this.editor.iframe.mon(Ext.get(Ext.isIE ? this.editor.document.body : this.editor.document.documentElement), 'paste', this.wordCleanHandler, this);
+		this.editor.iframe.mon(Ext.get(HTMLArea.UserAgent.isIE ? this.editor.document.body : this.editor.document.documentElement), 'paste', this.wordCleanHandler, this);
 	},
 	/*
 	 * This function cleans all nodes in the node tree below the input node
@@ -79,9 +79,9 @@ HTMLArea.DefaultClean = Ext.extend(HTMLArea.Plugin, {
 			if (newc != node.className) {
 				node.className = newc;
 				if (!/\S/.test(node.className)) {
-					if (!Ext.isOpera) {
+					if (!HTMLArea.UserAgent.isOpera) {
 						node.removeAttribute('class');
-						if (HTMLArea.isIEBeforeIE9) {
+						if (HTMLArea.UserAgent.isIEBeforeIE9) {
 							node.removeAttribute('className');
 						}
 					} else {
@@ -91,7 +91,7 @@ HTMLArea.DefaultClean = Ext.extend(HTMLArea.Plugin, {
 			}
 		}
 		function clearStyle(node) {
-			var style = HTMLArea.isIEBeforeIE9 ? node.style.cssText : node.getAttribute('style');
+			var style = HTMLArea.UserAgent.isIEBeforeIE9 ? node.style.cssText : node.getAttribute('style');
 			if (style) {
 				var declarations = style.split(/\s*;\s*/);
 				for (var i = declarations.length; --i >= 0;) {
@@ -103,7 +103,7 @@ HTMLArea.DefaultClean = Ext.extend(HTMLArea.Plugin, {
 			}
 		}
 		function stripTag(el) {
-			if (HTMLArea.isIEBeforeIE9) {
+			if (HTMLArea.UserAgent.isIEBeforeIE9) {
 				el.outerHTML = HTMLArea.util.htmlEncode(el.innerText);
 			} else {
 				var txt = document.createTextNode(HTMLArea.DOM.getInnerText(el));
@@ -128,7 +128,7 @@ HTMLArea.DefaultClean = Ext.extend(HTMLArea.Plugin, {
 				case HTMLArea.DOM.TEXT_NODE:
 				case HTMLArea.DOM.DOCUMENT_NODE:
 				case HTMLArea.DOM.DOCUMENT_FRAGMENT_NODE:
-					if ((HTMLArea.isIEBeforeIE9 && root.scopeName != 'HTML') || (!HTMLArea.isIEBeforeIE9 && /:/.test(tag)) || /o:p/.test(tag)) {
+					if ((HTMLArea.UserAgent.isIEBeforeIE9 && root.scopeName != 'HTML') || (!HTMLArea.UserAgent.isIEBeforeIE9 && /:/.test(tag)) || /o:p/.test(tag)) {
 						stripTag(root);
 						return false;
 					} else {
@@ -150,7 +150,7 @@ HTMLArea.DefaultClean = Ext.extend(HTMLArea.Plugin, {
 			}
 		}
 		parseTree(this.editor.document.body);
-		if (Ext.isWebKit) {
+		if (HTMLArea.UserAgent.isWebKit) {
 			this.editor.getDomNode().cleanAppleStyleSpans(this.editor.document.body);
 		}
 	},

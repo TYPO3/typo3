@@ -45,7 +45,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 */
 	initEventListeners: function () {
 		this.initStyleChangeEventListener();
-		if (Ext.isOpera) {
+		if (HTMLArea.UserAgent.isOpera) {
 			this.mon(this.getEl(), 'load', this.initializeIframe , this, {single: true});
 		} else {
 			this.initializeIframe();
@@ -57,7 +57,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 * In all browsers, it breaks the evaluation of the framework dimensions
 	 */
 	initStyleChangeEventListener: function () {
-		if (this.isNested && Ext.isGecko) {
+		if (this.isNested && HTMLArea.UserAgent.isGecko) {
 			var options = {
 				stopEvent: true,
 				delay: 50
@@ -66,14 +66,14 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 				var nestedElement = Ext.get(this.nestedParentElements.sorted[i]);
 				this.mon(
 					nestedElement,
-					Ext.isIE ? 'propertychange' : 'DOMAttrModified',
+					HTMLArea.UserAgent.isIE ? 'propertychange' : 'DOMAttrModified',
 					this.onNestedShow,
 					this,
 					options
 				);
 				this.mon(
 					nestedElement.parent(),
-					Ext.isIE ? 'propertychange' : 'DOMAttrModified',
+					HTMLArea.UserAgent.isIE ? 'propertychange' : 'DOMAttrModified',
 					this.onNestedShow,
 					this,
 					options
@@ -146,10 +146,10 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 		if (!iframe || (!iframe.contentWindow && !iframe.contentDocument)) {
 			this.initializeIframe.defer(50, this);
 			// All except WebKit
-		} else if (iframe.contentWindow && !Ext.isWebKit && (!iframe.contentWindow.document || !iframe.contentWindow.document.documentElement)) {
+		} else if (iframe.contentWindow && !HTMLArea.UserAgent.isWebKit && (!iframe.contentWindow.document || !iframe.contentWindow.document.documentElement)) {
 			this.initializeIframe.defer(50, this);
 			// WebKit
-		} else if (Ext.isWebKit && (!iframe.contentDocument.documentElement || !iframe.contentDocument.body)) {
+		} else if (HTMLArea.UserAgent.isWebKit && (!iframe.contentDocument.documentElement || !iframe.contentDocument.body)) {
 			this.initializeIframe.defer(50, this);
 		} else {
 			this.document = iframe.contentWindow ? iframe.contentWindow.document : iframe.contentDocument;
@@ -160,7 +160,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 			Ext.get(this.document.body).addClass('htmlarea-content-body');
 				// Start listening to things happening in the iframe
 				// For some unknown reason, this is too early for Opera
-			if (!Ext.isOpera) {
+			if (!HTMLArea.UserAgent.isOpera) {
 				this.startListening();
 			}
 				// Hide the iframe
@@ -177,7 +177,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 * @return	void
 	 */
 	initializeCustomTags: function () {
-		if (HTMLArea.isIEBeforeIE9) {
+		if (HTMLArea.UserAgent.isIEBeforeIE9) {
 			for (var i = this.config.customTags.length; --i >= 0;) {
 				this.document.createElement(this.config.customTags[i]);
 			}
@@ -208,7 +208,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 			link0.type = 'text/css';
 				// Firefox 3.0.1 does not apply the base URL while Firefox 3.6.8 does so. Do not know in what version this was fixed.
 				// Therefore, for versions before 3.6.8, we prepend the url with the base, if the url is not absolute
-			link0.href = ((Ext.isGecko && navigator.productSub < 2010072200 && !/^http(s?):\/{2}/.test(this.config.editedContentStyle)) ? this.config.baseURL : '') + this.config.editedContentStyle;
+			link0.href = ((HTMLArea.UserAgent.isGecko && navigator.productSub < 2010072200 && !/^http(s?):\/{2}/.test(this.config.editedContentStyle)) ? this.config.baseURL : '') + this.config.editedContentStyle;
 			head.appendChild(link0);
 			this.getEditor().appendToLog('HTMLArea.Iframe', 'createHead', 'Skin CSS set to: ' + link0.href, 'info');
 		}
@@ -218,7 +218,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 			var link = this.document.createElement('link');
 			link.rel = 'stylesheet';
 			link.type = 'text/css';
-			link.href = ((Ext.isGecko && navigator.productSub < 2010072200 && !/^https?:\/{2}/.test(pageStyle)) ? this.config.baseURL : '') + pageStyle;
+			link.href = ((HTMLArea.UserAgent.isGecko && navigator.productSub < 2010072200 && !/^https?:\/{2}/.test(pageStyle)) ? this.config.baseURL : '') + pageStyle;
 			head.appendChild(link);
  			this.getEditor().appendToLog('HTMLArea.Iframe', 'createHead', 'Content CSS set to: ' + link.href, 'info');
  		}
@@ -228,7 +228,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 */
 	focus: function () {
 		try {
-			if (Ext.isWebKit) {
+			if (HTMLArea.UserAgent.isWebKit) {
 				this.getEl().dom.focus();
 			} else {
 				this.getEl().dom.contentWindow.focus();
@@ -254,8 +254,8 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 */
 	setDesignMode: function (on) {
 		if (on) {
-	 		if (!Ext.isIE) {
-				if (Ext.isGecko) {
+	 		if (!HTMLArea.UserAgent.isIE) {
+				if (HTMLArea.UserAgent.isGecko) {
 						// In Firefox, we can't set designMode when we are in a hidden TYPO3 tab or inline element
 					if (!this.isNested || HTMLArea.util.TYPO3.allElementsAreDisplayed(this.nestedParentElements.sorted)) {
 						this.document.designMode = 'on';
@@ -266,14 +266,14 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 					this.setOptions();
 				}
 			}
-			if (Ext.isIE || Ext.isWebKit) {
+			if (HTMLArea.UserAgent.isIE || HTMLArea.UserAgent.isWebKit) {
 				this.document.body.contentEditable = true;
 			}
 		} else {
-	 		if (!Ext.isIE) {
+	 		if (!HTMLArea.UserAgent.isIE) {
 	 			this.document.designMode = 'off';
 	 		}
-	 		if (Ext.isIE || Ext.isWebKit) {
+	 		if (HTMLArea.UserAgent.isIE || HTMLArea.UserAgent.isWebKit) {
 	 			this.document.body.contentEditable = false;
 	 		}
 	 	}
@@ -284,17 +284,17 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 * @return	void
 	 */
 	setOptions: function () {
-		if (!Ext.isIE) {
+		if (!HTMLArea.UserAgent.isIE) {
 			try {
 				if (this.document.queryCommandEnabled('insertBrOnReturn')) {
 					this.document.execCommand('insertBrOnReturn', false, this.config.disableEnterParagraphs);
 				}
 				if (this.document.queryCommandEnabled('styleWithCSS')) {
 					this.document.execCommand('styleWithCSS', false, this.config.useCSS);
-				} else if (Ext.isGecko && this.document.queryCommandEnabled('useCSS')) {
+				} else if (HTMLArea.UserAgent.isGecko && this.document.queryCommandEnabled('useCSS')) {
 					this.document.execCommand('useCSS', false, !this.config.useCSS);
 				}
-				if (Ext.isGecko) {
+				if (HTMLArea.UserAgent.isGecko) {
 					if (this.document.queryCommandEnabled('enableObjectResizing')) {
 						this.document.execCommand('enableObjectResizing', false, !this.config.disableObjectResizing);
 					}
@@ -311,16 +311,16 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	onNestedShow: function (event, target) {
 		var styleEvent = true;
 			// In older versions of Gecko attrName is not set and refering to it causes a non-catchable crash
-		if ((Ext.isGecko && navigator.productSub > 2007112700) || Ext.isOpera) {
+		if ((HTMLArea.UserAgent.isGecko && navigator.productSub > 2007112700) || HTMLArea.UserAgent.isOpera) {
 			styleEvent = (event.browserEvent.attrName == 'style') || (event.browserEvent.attrName == 'className');
-		} else if (Ext.isIE) {
+		} else if (HTMLArea.UserAgent.isIE) {
 			styleEvent = (event.browserEvent.propertyName == 'style.display');
 		}
 		if (styleEvent && (this.nestedParentElements.sorted.indexOf(target.id) != -1 || this.nestedParentElements.sorted.indexOf(target.id.replace('_div', '_fields')) != -1)) {
 				// Check if all container nested elements are displayed
 			if (HTMLArea.util.TYPO3.allElementsAreDisplayed(this.nestedParentElements.sorted)) {
 				if (this.getEditor().getMode() === 'wysiwyg') {
-					if (Ext.isGecko) {
+					if (HTMLArea.UserAgent.isGecko) {
 						this.setDesignMode(true);
 					}
 					this.fireEvent('show');
@@ -347,7 +347,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 */
 	startListening: function () {
 			// Create keyMap so that plugins may bind key handlers
-		this.keyMap = new Ext.KeyMap(Ext.get(this.document.documentElement), [], (Ext.isIE || Ext.isWebKit) ? 'keydown' : 'keypress');
+		this.keyMap = new Ext.KeyMap(Ext.get(this.document.documentElement), [], (HTMLArea.UserAgent.isIE || HTMLArea.UserAgent.isWebKit) ? 'keydown' : 'keypress');
 			// Special keys map
 		this.keyMap.addBinding([
 			{
@@ -372,7 +372,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 				scope: this
 			}
 		]);
-		if (Ext.isGecko || Ext.isIE) {
+		if (HTMLArea.UserAgent.isGecko || HTMLArea.UserAgent.isIE) {
 			this.keyMap.addBinding(
 			{
 				key: [Ext.EventObject.BACKSPACE, Ext.EventObject.DELETE],
@@ -381,7 +381,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 				scope: this
 			});
 		}
-		if (!Ext.isIE && !this.config.disableEnterParagraphs) {
+		if (!HTMLArea.UserAgent.isIE && !this.config.disableEnterParagraphs) {
 			this.keyMap.addBinding(
 			{
 				key: Ext.EventObject.ENTER,
@@ -390,7 +390,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 				scope: this
 			});
 		}
-		if (Ext.isWebKit) {
+		if (HTMLArea.UserAgent.isWebKit) {
 			this.keyMap.addBinding(
 			{
 				key: Ext.EventObject.ENTER,
@@ -418,14 +418,14 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 				scope: this
 			});
 		}
-		this.mon(Ext.get(this.document.documentElement), (Ext.isIE || Ext.isWebKit) ? 'keydown' : 'keypress', this.onAnyKey, this);
+		this.mon(Ext.get(this.document.documentElement), (HTMLArea.UserAgent.isIE || HTMLArea.UserAgent.isWebKit) ? 'keydown' : 'keypress', this.onAnyKey, this);
 		this.mon(Ext.get(this.document.documentElement), 'mouseup', this.onMouse, this);
 		this.mon(Ext.get(this.document.documentElement), 'click', this.onMouse, this);
-		if (Ext.isGecko) {
+		if (HTMLArea.UserAgent.isGecko) {
 			this.mon(Ext.get(this.document.documentElement), 'paste', this.onPaste, this);
 		}
 		this.mon(Ext.get(this.document.documentElement), 'drop', this.onDrop, this);
-		if (Ext.isWebKit) {
+		if (HTMLArea.UserAgent.isWebKit) {
 			this.mon(Ext.get(this.document.body), 'dragend', this.onDrop, this);
 		}
 	},
@@ -439,11 +439,11 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 		this.fireEvent('HTMLAreaEventWordCountChange', 100);
 		if (!event.altKey && !event.ctrlKey) {
 				// Detect URL in non-IE browsers
-			if (!Ext.isIE && (event.getKey() != Ext.EventObject.ENTER || (event.shiftKey && !Ext.isWebKit))) {
+			if (!HTMLArea.UserAgent.isIE && (event.getKey() != Ext.EventObject.ENTER || (event.shiftKey && !HTMLArea.UserAgent.isWebKit))) {
 				this.getEditor().getSelection().detectURL(event);
 			}
 				// Handle option+SPACE for Mac users
-			if (Ext.isMac && event.browserEvent.charCode == 160) {
+			if (HTMLArea.UserAgent.isMac && event.browserEvent.charCode == 160) {
 				return this.onOptionSpace(event.browserEvent.charCode, event);
 			}
 		}
@@ -466,7 +466,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 */
 	onMouse: function (event, target) {
 			// In WebKit, select the image when it is clicked
-		if (Ext.isWebKit && /^(img)$/i.test(target.nodeName) && event.browserEvent.type == 'click') {
+		if (HTMLArea.UserAgent.isWebKit && /^(img)$/i.test(target.nodeName) && event.browserEvent.type == 'click') {
 			this.getEditor().getSelection().selectNode(target);
 		}
 		this.getToolbar().updateLater.delay(100);
@@ -477,7 +477,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 */
 	onPaste: function (event) {
 			// Make src and href urls absolute
-		if (Ext.isGecko) {
+		if (HTMLArea.UserAgent.isGecko) {
 			HTMLArea.DOM.makeUrlsAbsolute.defer(50, this, [this.getEditor().document.body, this.config.baseURL, this.htmlRenderer]);
 		}
 	},
@@ -486,11 +486,11 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 */
 	onDrop: function (event, target) {
 			// Clean up span elements added by WebKit
-		if (Ext.isWebKit) {
+		if (HTMLArea.UserAgent.isWebKit) {
 			this.getEditor().getDomNode().cleanAppleStyleSpans.defer(50, this.getEditor(), [this.getEditor().document.body]);
 		}
 			// Make src url absolute in Firefox
-		if (Ext.isGecko) {
+		if (HTMLArea.UserAgent.isGecko) {
 			HTMLArea.DOM.makeUrlsAbsolute.defer(50, this, [target, this.config.baseURL, this.htmlRenderer]);
 		}
 		this.getToolbar().updateLater.delay(100);
@@ -530,7 +530,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 		if (this.inhibitKeyboardInput(event)) {
 			return false;
 		}
-		if ((!Ext.isIE && !event.shiftKey) || Ext.isIE) {
+		if ((!HTMLArea.UserAgent.isIE && !event.shiftKey) || HTMLArea.UserAgent.isIE) {
 			if (this.getEditor().getSelection().handleBackSpace()) {
 				event.stopEvent();
 			}
@@ -564,7 +564,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 		if (event.shiftKey || this.config.disableEnterParagraphs) {
 			var editor = this.getEditor();
 			editor.getSelection().detectURL(event);
-			if (Ext.isSafari) {
+			if (HTMLArea.UserAgent.isSafari) {
 				var brNode = editor.document.createElement('br');
 				editor.getSelection().insertNode(brNode);
 				brNode.parentNode.normalize();

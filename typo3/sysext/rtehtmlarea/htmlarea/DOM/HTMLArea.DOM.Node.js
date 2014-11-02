@@ -56,7 +56,7 @@ HTMLArea.DOM.Node = Ext.extend(HTMLArea.DOM.Node, {
 	 * @return	void
 	 */
 	wrapWithInlineElement: function (element, range) {
-		if (HTMLArea.isIEBeforeIE9) {
+		if (HTMLArea.UserAgent.isIEBeforeIE9) {
 			var nodeName = element.nodeName;
 			var bookMark = this.bookMark.get(range);
 			if (range.parentElement) {
@@ -171,7 +171,7 @@ HTMLArea.DOM.Node = Ext.extend(HTMLArea.DOM.Node, {
 	 * @return	void
 	 */
 	cleanAppleStyleSpans: function (node) {
-		if (Ext.isWebKit || Ext.isOpera) {
+		if (HTMLArea.UserAgent.isWebKit || HTMLArea.UserAgent.isOpera) {
 			if (node.getElementsByClassName) {
 				var spans = node.getElementsByClassName('Apple-style-span');
 				for (var i = spans.length; --i >= 0;) {

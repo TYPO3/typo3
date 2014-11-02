@@ -65,15 +65,15 @@ HTMLArea.Config = function (editorId) {
 			cls: 'button',
 			overCls: 'buttonHover',
 				// Erratic behaviour of click event in WebKit and IE browsers
-			clickEvent: (Ext.isWebKit || Ext.isIE) ? 'mousedown' : 'click'
+			clickEvent: (HTMLArea.UserAgent.isWebKit || HTMLArea.UserAgent.isIE) ? 'mousedown' : 'click'
 		},
 		htmlareacombo: {
 			cls: 'select',
 			typeAhead: true,
 			lastQuery: '',
 			triggerAction: 'all',
-			editable: !Ext.isIE,
-			selectOnFocus: !Ext.isIE,
+			editable: !HTMLArea.UserAgent.isIE,
+			selectOnFocus: !HTMLArea.UserAgent.isIE,
 			validationEvent: false,
 			validateOnBlur: false,
 			submitValue: false,
@@ -135,7 +135,7 @@ HTMLArea.Config = Ext.extend(HTMLArea.Config, {
 						url: config.storeUrl
 					});
 				}
-				config.hideLabel = typeof config.fieldLabel !== 'string' || !config.fieldLabel.length || Ext.isIE6;
+				config.hideLabel = typeof config.fieldLabel !== 'string' || !config.fieldLabel.length || HTMLArea.UserAgent.isIE6;
 				config.helpTitle = config.tooltip;
 				break;
 			default:

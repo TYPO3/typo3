@@ -65,12 +65,12 @@ HTMLArea.TYPO3HtmlParser = Ext.extend(HTMLArea.Plugin, {
 	 * This function gets called when the editor is generated
 	 */
 	onGenerate: function () {
-		this.editor.iframe.mon(Ext.get(Ext.isIE ? this.editor.document.body : this.editor.document.documentElement), 'paste', this.wordCleanHandler, this);
+		this.editor.iframe.mon(Ext.get(HTMLArea.UserAgent.isIE ? this.editor.document.body : this.editor.document.documentElement), 'paste', this.wordCleanHandler, this);
 	},
 	clean: function() {
 		this.editor.inhibitKeyboardInput = true;
 		var editor = this.editor;
-		if (Ext.isWebKit) {
+		if (HTMLArea.UserAgent.isWebKit) {
 			editor.getDomNode().cleanAppleStyleSpans(editor.document.body);
 		}
 		var bookmark = editor.getBookMark().get(editor.getSelection().createRange());

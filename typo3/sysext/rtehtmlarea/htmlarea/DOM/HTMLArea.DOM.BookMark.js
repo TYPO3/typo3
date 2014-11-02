@@ -36,7 +36,7 @@ HTMLArea.DOM.BookMark = Ext.extend(HTMLArea.DOM.BookMark, {
 	 */
 	get: function (range, nonIntrusive) {
 		var bookMark;
-		if (HTMLArea.isIEBeforeIE9) {
+		if (HTMLArea.UserAgent.isIEBeforeIE9) {
 			// Bookmarking will not work on control ranges
 			try {
 				bookMark = range.getBookmark();
@@ -224,7 +224,7 @@ HTMLArea.DOM.BookMark = Ext.extend(HTMLArea.DOM.BookMark, {
 	 */
 	moveTo: function (bookMark) {
 		var range = this.selection.createRange();
-		if (HTMLArea.isIEBeforeIE9) {
+		if (HTMLArea.UserAgent.isIEBeforeIE9) {
 			if (bookMark) {
 				range.moveToBookmark(bookMark);
 			}

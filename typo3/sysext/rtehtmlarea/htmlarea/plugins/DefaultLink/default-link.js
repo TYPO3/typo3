@@ -84,7 +84,7 @@ HTMLArea.DefaultLink = Ext.extend(HTMLArea.Plugin, {
 	 * This function gets called when the editor is generated
 	 */
 	onGenerate: function () {
-		if (Ext.isIE) {
+		if (HTMLArea.UserAgent.isIE) {
 			this.editor.iframe.htmlRenderer.stripBaseUrl = this.stripBaseUrl;
 		}
 	},
@@ -122,7 +122,7 @@ HTMLArea.DefaultLink = Ext.extend(HTMLArea.Plugin, {
 					};
 				} else {
 					this.parameters = {
-						href:	(Ext.isIE && this.stripBaseUrl) ? this.stripBaseURL(this.link.href) : this.link.getAttribute('href'),
+						href:	(HTMLArea.UserAgent.isIE && this.stripBaseUrl) ? this.stripBaseURL(this.link.href) : this.link.getAttribute('href'),
 						title:	this.link.title,
 						target:	this.link.target
 					};
@@ -304,7 +304,7 @@ HTMLArea.DefaultLink = Ext.extend(HTMLArea.Plugin, {
 			this.restoreSelection();
 			this.editor.getSelection().execCommand('CreateLink', false, href);
 			a = this.editor.getSelection().getParentElement();
-			if (!HTMLArea.isIEBeforeIE9 && !/^a$/i.test(a.nodeName)) {
+			if (!HTMLArea.UserAgent.isIEBeforeIE9 && !/^a$/i.test(a.nodeName)) {
 				var range = this.editor.getSelection().createRange();
 				if (range.startContainer.nodeType !== HTMLArea.DOM.TEXT_NODE) {
 					a = range.startContainer.childNodes[range.startOffset];
@@ -323,7 +323,7 @@ HTMLArea.DefaultLink = Ext.extend(HTMLArea.Plugin, {
 		if (a && /^a$/i.test(a.nodeName)) {
 			a.title = title;
 			a.target = target;
-			if (Ext.isOpera) {
+			if (HTMLArea.UserAgent.isOpera) {
 				this.editor.getSelection().selectNodeContents(a, false);
 			} else {
 				this.editor.getSelection().selectNodeContents(a);
@@ -382,7 +382,7 @@ HTMLArea.DefaultLink = Ext.extend(HTMLArea.Plugin, {
 				case 'UnLink':
 					var link = false;
 						// Let's see if a link was double-clicked in Firefox
-					if (Ext.isGecko && !selectionEmpty) {
+					if (HTMLArea.UserAgent.isGecko && !selectionEmpty) {
 						var range = this.editor.getSelection().createRange();
 						if (range.startContainer.nodeType === HTMLArea.DOM.ELEMENT_NODE && range.startContainer == range.endContainer && (range.endOffset - range.startOffset == 1)) {
 							var node = range.startContainer.childNodes[range.startOffset];

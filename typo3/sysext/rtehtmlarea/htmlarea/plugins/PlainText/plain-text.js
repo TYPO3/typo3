@@ -105,7 +105,7 @@ HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 			this.toggleButton('PasteToggle');
 		}
 			// Start monitoring paste events
-		this.editor.iframe.mon(Ext.get(Ext.isIE ? this.editor.document.body : this.editor.document.documentElement), 'paste', this.onPaste, this);
+		this.editor.iframe.mon(Ext.get(HTMLArea.UserAgent.isIE ? this.editor.document.body : this.editor.document.documentElement), 'paste', this.onPaste, this);
 	},
 	/*
 	 * This function toggles the state of a button
@@ -238,7 +238,7 @@ HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 			switch (this.currentBehaviour) {
 				case 'plainText':
 					// Only IE before IE9 and Chrome will allow access to the clipboard content by default, in plain text only however
-					if (HTMLArea.isIEBeforeIE9 || Ext.isChrome) {
+					if (HTMLArea.UserAgent.isIEBeforeIE9 || HTMLArea.UserAgent.isChrome) {
 						var clipboardText = this.grabClipboardText(event);
 						if (clipboardText) {
 							this.editor.getSelection().insertHtml(clipboardText);
@@ -247,7 +247,7 @@ HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 					}
 				case 'pasteStructure':
 				case 'pasteFormat':
-					if (Ext.isIE) {
+					if (HTMLArea.UserAgent.isIE) {
 							// Show the pasting pad
 						this.openPastingPad(
 							'PasteToggle',
@@ -260,7 +260,7 @@ HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 								'PasteToggle'
 							)
 						);
-						if (HTMLArea.isIEBeforeIE9) {
+						if (HTMLArea.UserAgent.isIEBeforeIE9) {
 							event.browserEvent.returnValue = false;
 						} else {
 							event.stopEvent();
@@ -271,7 +271,7 @@ HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 						this.redirectPaste();
 							// Process the content of the hidden section after the paste operation is completed
 							// WebKit seems to be pondering a very long time over what is happenning here...
-						this.processPastedContent.defer(Ext.isWebKit ? 500 : 50, this);
+						this.processPastedContent.defer(HTMLArea.UserAgent.isWebKit ? 500 : 50, this);
 					}
 					break;
 				default:
@@ -319,7 +319,7 @@ HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 		HTMLArea.DOM.addClass(hiddenSection, 'htmlarea-paste-hidden-section');
 		hiddenSection.setAttribute('style', 'position: absolute; left: -10000px; top: ' + this.editor.document.body.scrollTop + 'px; overflow: hidden;');
 		hiddenSection = this.editor.document.body.appendChild(hiddenSection);
-		if (Ext.isWebKit) {
+		if (HTMLArea.UserAgent.isWebKit) {
 			hiddenSection.innerHTML = '&nbsp;';
 		}
 			// Move the selection to the hidden section and let the browser paste into the hidden section
@@ -404,7 +404,7 @@ HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 						name: 'contentframe',
 						tag: 'iframe',
 						cls: 'contentframe',
-						src: Ext.isGecko ? 'javascript:void(0);' : HTMLArea.editorUrl + 'popups/blank.html'
+						src: HTMLArea.UserAgent.isGecko ? 'javascript:void(0);' : HTMLArea.editorUrl + 'popups/blank.html'
 					}
 				}
 			],

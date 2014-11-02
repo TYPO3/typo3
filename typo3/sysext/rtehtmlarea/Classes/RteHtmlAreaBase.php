@@ -805,6 +805,8 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		// Component files. Order is important.
 		$components = array(
 			'Util/Wrap.open',
+			'NameSpace/NameSpace',
+			'UserAgent/UserAgent',
 			'HTMLArea',
 			'Configuration/HTMLArea.Config',
 			'Extjs/ux/Ext.ux.HTMLAreaButton',

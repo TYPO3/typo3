@@ -13,7 +13,6 @@
 /**
  * Main script of TYPO3 htmlArea RTE
  */
-Ext.namespace('HTMLArea.CSS', 'HTMLArea.util.TYPO3', 'HTMLArea.util.Tips', 'HTMLArea.util.Color', 'Ext.ux.form', 'Ext.ux.menu', 'Ext.ux.Toolbar');
 Ext.apply(HTMLArea, {
 	/***************************************************
 	 * COMPILED REGULAR EXPRESSIONS                    *
@@ -26,21 +25,6 @@ Ext.apply(HTMLArea, {
 	RE_email		: /([0-9a-z]+([a-z0-9_-]*[0-9a-z])*){1}(\.[0-9a-z]+([a-z0-9_-]*[0-9a-z])*)*@([0-9a-z]+([a-z0-9_-]*[0-9a-z])*\.)+[a-z]{2,9}/i,
 	RE_url			: /(([^:/?#]+):\/\/)?(([a-z0-9_]+:[a-z0-9_]+@)?[a-z0-9_-]{2,}(\.[a-z0-9_-]{2,})+\.[a-z]{2,5}(:[0-9]+)?(\/\S+)*\/?)/i,
 	RE_numberOrPunctuation	: /[0-9.(),;:!¡?¿%#$'"_+=\\\/-]*/g,
-	/***************************************************
-	 * BROWSER IDENTIFICATION                          *
-	 ***************************************************/
-	isIEBeforeIE9: Ext.isIE6 || Ext.isIE7 || Ext.isIE8 || (Ext.isIE && typeof(document.documentMode) !== 'undefined' && document.documentMode < 9),
-	/***************************************************
-	 * LOCALIZATION                                    *
-	 ***************************************************/
-	localize: function (label, plural) {
-		var i = plural || 0;
-		var localized = HTMLArea.I18N.dialogs[label] || HTMLArea.I18N.tooltips[label] || HTMLArea.I18N.msg[label] || '';
-		if (typeof localized === 'object' && localized !== null && typeof localized[i] !== 'undefined') {
-			localized = localized[i]['target'];
-		}
-		return localized;
-	},
 	/***************************************************
 	 * INITIALIZATION                                  *
 	 ***************************************************/
@@ -88,14 +72,31 @@ Ext.apply(HTMLArea, {
 		}
 		return true;
 	},
+	/***************************************************
+	 * USER AGENT CHECK                                *
+	 ***************************************************/
 	/*
 	 * Check if the client agent is supported
 	 *
 	 * @return	boolean		true if the client is supported
 	 */
 	checkSupportedBrowser: function () {
-		return Ext.isGecko || Ext.isWebKit || Ext.isOpera || Ext.isIE;
+		return HTMLArea.UserAgent.isGecko || HTMLArea.UserAgent.isWebKit || HTMLArea.UserAgent.isOpera || HTMLArea.UserAgent.isIE;
 	},
+	/***************************************************
+	 * LOCALIZATION                                    *
+	 ***************************************************/
+	localize: function (label, plural) {
+		var i = plural || 0;
+		var localized = HTMLArea.I18N.dialogs[label] || HTMLArea.I18N.tooltips[label] || HTMLArea.I18N.msg[label] || '';
+		if (typeof localized === 'object' && localized !== null && typeof localized[i] !== 'undefined') {
+			localized = localized[i]['target'];
+		}
+		return localized;
+	},
+	/***************************************************
+	 * LOGGING                                         *
+	 ***************************************************/
 	/*
 	 * Write message to JavaScript console
 	 *

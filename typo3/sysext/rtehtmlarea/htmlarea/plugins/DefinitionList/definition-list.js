@@ -145,7 +145,7 @@ HTMLArea.DefinitionList = Ext.extend(HTMLArea.BlockElements, {
 			if (attributeValue) newNode.setAttribute(attributeName, attributeValue);
 		}
 			// In IE, the above fails to update the classname and style attributes.
-		if (HTMLArea.isIEBeforeIE9) {
+		if (HTMLArea.UserAgent.isIEBeforeIE9) {
 			if (node.style.cssText) {
 				newNode.style.cssText = node.style.cssText;
 			}
@@ -214,8 +214,8 @@ HTMLArea.DefinitionList = Ext.extend(HTMLArea.BlockElements, {
 		if (this.editor.getSelection().isEmpty() && /^dd$/i.test(parentElement.nodeName)) {
 			var list = parentElement.appendChild(this.editor.document.createElement('dl'));
 			var term = list.appendChild(this.editor.document.createElement('dt'));
-			if (!HTMLArea.isIEBeforeIE9) {
-				if (Ext.isWebKit) {
+			if (!HTMLArea.UserAgent.isIEBeforeIE9) {
+				if (HTMLArea.UserAgent.isWebKit) {
 					term.innerHTML = '<br />';
 				} else {
 					term.appendChild(this.editor.document.createTextNode(''));

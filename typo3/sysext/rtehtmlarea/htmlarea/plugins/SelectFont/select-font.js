@@ -36,7 +36,7 @@ HTMLArea.SelectFont = Ext.extend(HTMLArea.Plugin, {
 		}
 		if (!this.allowedAttributes) {
 			this.allowedAttributes = new Array('id', 'title', 'lang', 'xml:lang', 'dir', 'class', 'style');
-			if (HTMLArea.isIEBeforeIE9) {
+			if (HTMLArea.UserAgent.isIEBeforeIE9) {
 				this.allowedAttributes.push('className');
 			}
 		}
@@ -165,7 +165,7 @@ HTMLArea.SelectFont = Ext.extend(HTMLArea.Plugin, {
 			this.setStyle(element, combo.itemId, param);
 				// Wrap the selection with span tag with the style attribute
 			editor.getDomNode().wrapWithInlineElement(element, range);
-			if (!HTMLArea.isIEBeforeIE9) {
+			if (!HTMLArea.UserAgent.isIEBeforeIE9) {
 				range.detach();
 			}
 		}
@@ -183,10 +183,10 @@ HTMLArea.SelectFont = Ext.extend(HTMLArea.Plugin, {
 	setStyle: function (element, buttonId, value) {
 		element.style[this.styleProperty[buttonId]] = (value && value !== 'none') ? value : '';
 			// In IE, we need to remove the empty attribute in order to unset it
-		if (Ext.isIE && (!value || value == 'none')) {
+		if (HTMLArea.UserAgent.isIE && (!value || value == 'none')) {
 			element.style.removeAttribute(this.styleProperty[buttonId], false);
 		}
-		if (Ext.isOpera) {
+		if (HTMLArea.UserAgent.isOpera) {
 				// Opera 9.60 replaces single quotes with double quotes
 			element.style.cssText = element.style.cssText.replace(/\"/g, "\'");
 				// Opera 9.60 removes from the list of fonts any fonts that are not installed on the client system
@@ -207,7 +207,7 @@ HTMLArea.SelectFont = Ext.extend(HTMLArea.Plugin, {
 			var parentElement = statusBarSelection ? statusBarSelection : editor.getSelection().getParentElement();
 			var value = parentElement.style[this.styleProperty[select.itemId]];
 			if (!value) {
-				if (!HTMLArea.isIEBeforeIE9) {
+				if (!HTMLArea.UserAgent.isIEBeforeIE9) {
 					if (editor.document.defaultView && editor.document.defaultView.getComputedStyle(parentElement, null)) {
 						value = editor.document.defaultView.getComputedStyle(parentElement, null).getPropertyValue(this.cssProperty[select.itemId]);
 					}

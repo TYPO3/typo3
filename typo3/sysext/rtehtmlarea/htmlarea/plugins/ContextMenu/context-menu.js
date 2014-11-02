@@ -161,7 +161,7 @@ HTMLArea.ContextMenu = Ext.extend(HTMLArea.Plugin, {
 	 */
 	showMenu: function (target) {
 		this.showContextItems(target);
-		if (!HTMLArea.isIEBeforeIE9) {
+		if (!HTMLArea.UserAgent.isIEBeforeIE9) {
 			this.ranges = this.editor.getSelection().getRanges();
 		}
 		var iframeEl = this.editor.iframe.getEl();
@@ -220,7 +220,7 @@ HTMLArea.ContextMenu = Ext.extend(HTMLArea.Plugin, {
 	 * Handler invoked when a menu item is clicked on
 	 */
 	onItemClick: function (item, event) {
-		if (!HTMLArea.isIEBeforeIE9) {
+		if (!HTMLArea.UserAgent.isIEBeforeIE9) {
 			this.editor.getSelection().setRanges(this.ranges);
 		}
 		var button = this.getButton(item.getItemId());
@@ -230,7 +230,7 @@ HTMLArea.ContextMenu = Ext.extend(HTMLArea.Plugin, {
 				// Do not leave a non-ie table cell empty
 			var parent = this.deleteTarget.parentNode;
 			parent.normalize();
-			if (!Ext.isIE && /^(td|th)$/i.test(parent.nodeName) && parent.childNodes.length == 1) {
+			if (!HTMLArea.UserAgent.isIE && /^(td|th)$/i.test(parent.nodeName) && parent.childNodes.length == 1) {
 					// Do not leave a non-ie table cell empty
 				parent.appendChild(this.editor.document.createElement('br'));
 			}

@@ -90,7 +90,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 					// IE8, IE7 or old version of WebKit
 				this.selection.empty();
 			}
-			if (Ext.isOpera) {
+			if (HTMLArea.UserAgent.isOpera) {
 				this.editor.focus();
 			}
 		}
@@ -105,7 +105,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 		var isEmpty = true;
 		this.get();
 		if (typeof this.selection === 'object' && this.selection !== null) {
-			if (HTMLArea.isIEBeforeIE9) {
+			if (HTMLArea.UserAgent.isIEBeforeIE9) {
 				switch (this.selection.type) {
 					case 'None':
 						isEmpty = true;
@@ -131,14 +131,14 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 	createRange: function () {
 		var range;
 		this.get();
-		if (HTMLArea.isIEBeforeIE9) {
+		if (HTMLArea.UserAgent.isIEBeforeIE9) {
 			range = this.selection.createRange();
 		} else {
 			if (typeof this.selection !== 'object' || this.selection === null) {
 				range = this.document.createRange();
 			} else {
 					// Older versions of WebKit did not support getRangeAt
-				if (Ext.isWebKit && typeof this.selection.getRangeAt !== 'function') {
+				if (HTMLArea.UserAgent.isWebKit && typeof this.selection.getRangeAt !== 'function') {
 					range = this.document.createRange();
 					if (this.selection.baseNode == null) {
 						range.setStart(this.document.body, 0);
@@ -192,7 +192,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 		if (typeof this.selection === 'object' && this.selection !== null) {
 			if (typeof this.selection.addRange === 'function') {
 				this.selection.addRange(range);
-			} else if (Ext.isWebKit) {
+			} else if (HTMLArea.UserAgent.isWebKit) {
 				this.selection.setBaseAndExtent(range.startContainer, range.startOffset, range.endContainer, range.endOffset);
 			}
 		}
@@ -243,15 +243,15 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 	selectNode: function (node, endPoint) {
 		this.get();
 		if (typeof this.selection === 'object' && this.selection !== null) {
-			if (HTMLArea.isIEBeforeIE9) {
+			if (HTMLArea.UserAgent.isIEBeforeIE9) {
 					// IE8/7/6 cannot set this type of selection
 				this.selectNodeContents(node, endPoint);
-			} else if (Ext.isWebKit && /^(img)$/i.test(node.nodeName)) {
+			} else if (HTMLArea.UserAgent.isWebKit && /^(img)$/i.test(node.nodeName)) {
 				this.selection.setBaseAndExtent(node, 0, node, 1);
 			} else {
 				var range = this.document.createRange();
 				if (node.nodeType === HTMLArea.DOM.ELEMENT_NODE && /^(body)$/i.test(node.nodeName)) {
-					if (Ext.isWebKit) {
+					if (HTMLArea.UserAgent.isWebKit) {
 						range.setStart(node, 0);
 						range.setEnd(node, node.childNodes.length);
 					} else {
@@ -280,12 +280,12 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 		var range;
 		this.get();
 		if (typeof this.selection === 'object' && this.selection !== null) {
-			if (HTMLArea.isIEBeforeIE9) {
+			if (HTMLArea.UserAgent.isIEBeforeIE9) {
 				range = this.document.body.createTextRange();
 				range.moveToElementText(node);
 			} else {
 				range = this.document.createRange();
-				if (Ext.isWebKit) {
+				if (HTMLArea.UserAgent.isWebKit) {
 					range.setStart(node, 0);
 					if (node.nodeType === HTMLArea.DOM.TEXT_NODE || node.nodeType === HTMLArea.DOM.COMMENT_NODE || node.nodeType === HTMLArea.DOM.CDATA_SECTION_NODE) {
 						range.setEnd(node, node.textContent.length);
@@ -312,7 +312,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 		var parentElement,
 			range;
 		this.get();
-		if (HTMLArea.isIEBeforeIE9) {
+		if (HTMLArea.UserAgent.isIEBeforeIE9) {
 			range = this.createRange();
 			switch (this.selection.type) {
 				case 'Text':
@@ -442,7 +442,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 			var ancestors = this.getAllAncestors();
 			for (var i = 0, n = ancestors.length; i < n; i++) {
 				var ancestor = ancestors[i];
-				if (HTMLArea.isIEBeforeIE9) {
+				if (HTMLArea.UserAgent.isIEBeforeIE9) {
 					isFullySelected = (type !== 'Control' && ancestor.innerText == range.text) || (type === 'Control' && ancestor.innerText == range.item(0).text);
 				} else {
 					isFullySelected = (ancestor.textContent == range.toString());
@@ -453,7 +453,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 				}
 			}
 				// Working around bug with WebKit selection
-			if (Ext.isWebKit && !isFullySelected) {
+			if (HTMLArea.UserAgent.isWebKit && !isFullySelected) {
 				var statusBarSelection = this.editor.statusBar ? this.editor.statusBar.getSelection() : null;
 				if (statusBarSelection && statusBarSelection.textContent == range.toString()) {
 					isFullySelected = true;
@@ -472,7 +472,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 		var range = this.createRange(),
 			parentStart,
 			parentEnd;
-		if (HTMLArea.isIEBeforeIE9) {
+		if (HTMLArea.UserAgent.isIEBeforeIE9) {
 			if (this.getType() === 'Control') {
 				parentStart = range.item(0);
 				parentEnd = parentStart;
@@ -527,7 +527,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 	getHtml: function () {
 		var range = this.createRange(),
 			html = '';
-		if (HTMLArea.isIEBeforeIE9) {
+		if (HTMLArea.UserAgent.isIEBeforeIE9) {
 			if (this.getType() === 'Control') {
 					// We have a controlRange collection
 				var bodyRange = this.document.body.createTextRange();
@@ -555,7 +555,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 	 * @return	object		this
 	 */
 	insertNode: function (toBeInserted) {
-		if (HTMLArea.isIEBeforeIE9) {
+		if (HTMLArea.UserAgent.isIEBeforeIE9) {
 			this.insertHtml(toBeInserted.outerHTML);
 		} else {
 			var range = this.createRange();
@@ -575,7 +575,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 	 * @return	object		this
 	 */
 	insertHtml: function (html) {
-		if (HTMLArea.isIEBeforeIE9) {
+		if (HTMLArea.UserAgent.isIEBeforeIE9) {
 			this.get();
 			if (this.getType() === 'Control') {
 				this.selection.clear();
@@ -635,7 +635,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 	 */
 	handleBackSpace: function () {
 		var range = this.createRange();
-		if (HTMLArea.isIEBeforeIE9) {
+		if (HTMLArea.UserAgent.isIEBeforeIE9) {
 			if (this.getType() === 'Control') {
 					// Deleting or backspacing on a control selection : delete the element
 				var element = this.getParentElement();
@@ -945,7 +945,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 					block.removeChild(first);
 				}
 				right = doc.createElement('p');
-				if (Ext.isWebKit || Ext.isOpera) {
+				if (HTMLArea.UserAgent.isWebKit || HTMLArea.UserAgent.isOpera) {
 					right.innerHTML = '<br />';
 				}
 				right = block.appendChild(right);
@@ -955,7 +955,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 			range.setEndAfter(block);
 			var df = range.extractContents(), left_empty = false;
 			if (!/\S/.test(block.innerHTML) || (!/\S/.test(block.textContent) && !/<(img|hr|table)/i.test(block.innerHTML))) {
-				if (!Ext.isOpera) {
+				if (!HTMLArea.UserAgent.isOpera) {
 					block.innerHTML = '<br />';
 				}
 				left_empty = true;
@@ -969,7 +969,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 					if (/^(dt|dd)$/i.test(p.nodeName)) {
 						 p = HTMLArea.DOM.convertNode(p, /^(dt)$/i.test(p.nodeName) ? 'dd' : 'dt');
 					}
-					if (!Ext.isOpera) {
+					if (!HTMLArea.UserAgent.isOpera) {
 						p.innerHTML = '<br />';
 					}
 					if (/^li$/i.test(p.nodeName) && left_empty && (!block.nextSibling || !/^li$/i.test(block.nextSibling.nodeName))) {
@@ -1009,7 +1009,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 				} else {
 					p = doc.createElement('p');
 				}
-				if (!Ext.isOpera) {
+				if (!HTMLArea.UserAgent.isOpera) {
 					p.innerHTML = '<br />';
 				}
 				if (block.nextSibling) {

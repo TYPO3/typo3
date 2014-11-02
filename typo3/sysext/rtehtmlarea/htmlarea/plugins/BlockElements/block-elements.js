@@ -48,7 +48,7 @@ HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 			}
 		}
 		this.allowedAttributes = new Array('id', 'title', 'lang', 'xml:lang', 'dir', 'class', 'itemscope', 'itemtype', 'itemprop');
-		if (HTMLArea.isIEBeforeIE9) {
+		if (HTMLArea.UserAgent.isIEBeforeIE9) {
 			this.addAllowedAttribute('className');
 		}
 		this.indentedList = null;
@@ -250,11 +250,11 @@ HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 					break;
 				default	:
 					var element = tagName;
-					if (Ext.isIE) {
+					if (HTMLArea.UserAgent.isIE) {
 						element = '<' + element + '>';
 					}
 					this.editor.focus();
-					if (Ext.isWebKit) {
+					if (HTMLArea.UserAgent.isWebKit) {
 						if (!this.editor.document.body.hasChildNodes()) {
 							this.editor.document.body.appendChild((this.editor.document.createElement('br')));
 						}
@@ -303,11 +303,11 @@ HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 				}
 			}
 		}
-		var fullNodeTextSelected = (!HTMLArea.isIEBeforeIE9 && parentElement.textContent === range.toString()) || (HTMLArea.isIEBeforeIE9 && parentElement.innerText === range.text);
+		var fullNodeTextSelected = (!HTMLArea.UserAgent.isIEBeforeIE9 && parentElement.textContent === range.toString()) || (HTMLArea.UserAgent.isIEBeforeIE9 && parentElement.innerText === range.text);
 		switch (buttonId) {
 			case "Indent" :
 				if (/^(ol|ul)$/i.test(parentElement.nodeName) && !(fullNodeTextSelected && !/^(li)$/i.test(parentElement.parentNode.nodeName))) {
-					if (Ext.isOpera) {
+					if (HTMLArea.UserAgent.isOpera) {
 						try {
 							this.editor.getSelection().execCommand(buttonId, false, null);
 						} catch(e) {
@@ -345,7 +345,7 @@ HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 						}
 					}
 					if (nextCell) {
-						if (Ext.isOpera && !nextCell.hasChildNodes()) {
+						if (HTMLArea.UserAgent.isOpera && !nextCell.hasChildNodes()) {
 							nextCell.appendChild(this.editor.document.createElement('br'));
 						}
 						this.editor.getSelection().selectNodeContents(nextCell, true);
@@ -373,7 +373,7 @@ HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 			case "Outdent" :
 				if (/^(ol|ul)$/i.test(parentElement.nodeName) && !HTMLArea.DOM.hasClass(parentElement, this.useClass.Indent)) {
 					if (/^(li)$/i.test(parentElement.parentNode.nodeName)) {
-						if (Ext.isOpera) {
+						if (HTMLArea.UserAgent.isOpera) {
 							try {
 								this.editor.getSelection().execCommand(buttonId, false, null);
 							} catch(e) {
@@ -404,7 +404,7 @@ HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 						}
 					}
 					if (previousCell) {
-						if (Ext.isOpera && !previousCell.hasChildNodes()) {
+						if (HTMLArea.UserAgent.isOpera && !previousCell.hasChildNodes()) {
 							previousCell.appendChild(this.editor.document.createElement('br'));
 						}
 						this.editor.getSelection().selectNodeContents(previousCell, true);
@@ -514,7 +514,7 @@ HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 				var bookmark = this.editor.getBookMark().get(range);
 				var newBlock = this.wrapSelectionInBlockElement(buttonId, className, null, true);
 				this.editor.getSelection().selectRange(this.editor.getBookMark().moveTo(bookmark));
-				if (Ext.isWebKit || Ext.isOpera) {
+				if (HTMLArea.UserAgent.isWebKit || HTMLArea.UserAgent.isOpera) {
 					this.editor.getDomNode().cleanAppleStyleSpans(newBlock);
 				}
 				break;
@@ -614,7 +614,7 @@ HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 			blockElement = contextElement.appendChild(blockElement);
 		}
 			// Things go wrong in some browsers when the node is empty
-		if (Ext.isWebKit && !blockElement.hasChildNodes()) {
+		if (HTMLArea.UserAgent.isWebKit && !blockElement.hasChildNodes()) {
 			blockElement = blockElement.appendChild(this.editor.document.createElement('br'));
 		}
 		return blockElement;
@@ -701,7 +701,7 @@ HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 			} catch(e) {
 				this.appendToLog('onButtonPress', e + '\n\nby execCommand(' + buttonId + ');', 'error');
 			}
-			if (Ext.isWebKit || Ext.isOpera) {
+			if (HTMLArea.UserAgent.isWebKit || HTMLArea.UserAgent.isOpera) {
 				// Webkit and Opera may wrap the list inside a paragraph
 				if (parentElement && /^(p)$/i.test(parentElement.nodeName) && parentElement.firstChild && /^(ol|ul)$/i.test(parentElement.firstChild.nodeName)) {
 					// Probably Chrome
@@ -868,7 +868,7 @@ HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 		if (endElement) {
 			var parent = endElement.parentNode;
 			var paragraph = this.editor.document.createElement('p');
-			if (HTMLArea.isIEBeforeIE9) {
+			if (HTMLArea.UserAgent.isIEBeforeIE9) {
 				paragraph.innerHTML = '&nbsp';
 			} else {
 				paragraph.appendChild(this.editor.document.createElement('br'));
@@ -887,7 +887,7 @@ HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 	insertHorizontalRule: function () {
 		this.editor.getSelection().execCommand('InsertHorizontalRule');
 			// Apply enterParagraphs rule
-		if (!Ext.isIE && !Ext.isOpera && !this.editor.config.disableEnterParagraphs) {
+		if (!HTMLArea.UserAgent.isIE && !HTMLArea.UserAgent.isOpera && !this.editor.config.disableEnterParagraphs) {
 			var range = this.editor.getSelection().createRange();
 			var startContainer = range.startContainer;
 			if (/^body$/i.test(startContainer.nodeName)) {
@@ -915,7 +915,7 @@ HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 					}
 				} else {
 					var paragraph = this.editor.document.createElement('p');
-					if (Ext.isWebKit) {
+					if (HTMLArea.UserAgent.isWebKit) {
 						paragraph.innerHTML = '<br />';
 					}
 					paragraph = startContainer.appendChild(paragraph);
@@ -929,7 +929,7 @@ HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 	 */
 	onGenerate: function () {
 			// Register the enter key handler for IE when the cursor is at the end of a dt or a dd element
-		if (Ext.isIE) {
+		if (HTMLArea.UserAgent.isIE) {
 			this.editor.iframe.keyMap.addBinding({
 				key: Ext.EventObject.ENTER,
 				shift: false,

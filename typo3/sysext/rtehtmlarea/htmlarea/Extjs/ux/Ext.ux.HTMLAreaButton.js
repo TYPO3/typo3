@@ -107,7 +107,7 @@ Ext.ux.HTMLAreaButton = Ext.extend(Ext.Button, {
 			if (!this.plugins[this.action](this.getEditor(), key || this.itemId) && event) {
 				event.stopEvent();
 			}
-			if (Ext.isOpera) {
+			if (HTMLArea.UserAgent.isOpera) {
 				this.getEditor().focus();
 			}
 			if (this.dialog) {

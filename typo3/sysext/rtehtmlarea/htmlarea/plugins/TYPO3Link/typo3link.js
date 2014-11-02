@@ -201,11 +201,11 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 			}
 				// Update link href
 				// In IE, setting href may update the content of the element. We don't want this feature.
-			if (Ext.isIE) {
+			if (HTMLArea.UserAgent.isIE) {
 				var content = node.innerHTML;
 			}
-			node.href = Ext.isGecko ? encodeURI(theLink) : theLink;
-			if (Ext.isIE) {
+			node.href = HTMLArea.UserAgent.isGecko ? encodeURI(theLink) : theLink;
+			if (HTMLArea.UserAgent.isIE) {
 				node.innerHTML = content;
 			}
 				// Update link attributes
@@ -215,7 +215,7 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 				// Cleanup selected range
 			range = this.editor.getSelection().createRange();
 				// Clean existing anchors otherwise Mozilla may create nested anchors while IE may update existing link
-			if (HTMLArea.isIEBeforeIE9) {
+			if (HTMLArea.UserAgent.isIEBeforeIE9) {
 				this.cleanAllLinks(node, range, true);
 				this.editor.getSelection().execCommand('UnLink', false, null);
 			} else {
@@ -226,7 +226,7 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 				range = this.editor.getBookMark().moveTo(bookMark);
 				this.editor.getSelection().selectRange(range);
 			}
-			if (Ext.isGecko) {
+			if (HTMLArea.UserAgent.isGecko) {
 				this.editor.getSelection().execCommand('CreateLink', false, encodeURI(theLink));
 			} else {
 				this.editor.getSelection().execCommand('CreateLink', false, theLink);
@@ -237,7 +237,7 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 			range = this.editor.getSelection().createRange();
 			if (node) {
 					// Export trailing br that IE may include in the link
-				if (Ext.isIE) {
+				if (HTMLArea.UserAgent.isIE) {
 					if (node.lastChild && /^br$/i.test(node.lastChild.nodeName)) {
 						HTMLArea.DOM.removeFromParent(node.lastChild);
 						node.parentNode.insertBefore(this.editor.document.createElement('br'), node.nextSibling);
@@ -273,7 +273,7 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 		}
 		if (HTMLArea.classesAnchorSetup) {
 			var range = this.editor.getSelection().createRange();
-			if (!HTMLArea.isIEBeforeIE9) {
+			if (!HTMLArea.UserAgent.isIEBeforeIE9) {
 				this.cleanAllLinks(node, range, false);
 			} else {
 				this.cleanAllLinks(node, range, true);
@@ -304,7 +304,7 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 	setLinkAttributes: function(node, range, cur_target, cur_class, cur_title, imageNode, addIconAfterLink, additionalValues) {
 		if (/^a$/i.test(node.nodeName)) {
 			var nodeInRange = false;
-			if (!HTMLArea.isIEBeforeIE9) {
+			if (!HTMLArea.UserAgent.isIEBeforeIE9) {
 				this.editor.focus();
 				nodeInRange = HTMLArea.DOM.rangeIntersectsNode(range, node);
 			} else {
@@ -325,7 +325,7 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 						node.insertBefore(imageNode.cloneNode(false), node.firstChild);
 					}
 				}
-				if (Ext.isGecko) {
+				if (HTMLArea.UserAgent.isGecko) {
 					node.href = decodeURI(node.href);
 				}
 				if (cur_target.trim()) node.target = cur_target.trim();
@@ -333,9 +333,9 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 				if (cur_class.trim()) {
 					node.className = cur_class.trim();
 				} else {
-					if (!Ext.isOpera) {
+					if (!HTMLArea.UserAgent.isOpera) {
 						node.removeAttribute('class');
-						if (HTMLArea.isIEBeforeIE9) {
+						if (HTMLArea.UserAgent.isIEBeforeIE9) {
 							node.removeAttribute('className');
 						}
 					} else {
@@ -399,7 +399,7 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 	cleanAllLinks: function(node, range, keepLinks) {
 		if (/^a$/i.test(node.nodeName)) {
 			var intersection = false;
-			if (!HTMLArea.isIEBeforeIE9) {
+			if (!HTMLArea.UserAgent.isIEBeforeIE9) {
 				this.editor.focus();
 				intersection = HTMLArea.DOM.rangeIntersectsNode(range, node);
 			} else {
@@ -458,7 +458,7 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 				case 'UnLink':
 					var link = false;
 						// Let's see if a link was double-clicked in Firefox
-					if (Ext.isGecko && !selectionEmpty) {
+					if (HTMLArea.UserAgent.isGecko && !selectionEmpty) {
 						var range = this.editor.getSelection().createRange();
 						if (range.startContainer.nodeType === HTMLArea.DOM.ELEMENT_NODE && range.startContainer == range.endContainer && (range.endOffset - range.startOffset == 1)) {
 							var node = range.startContainer.childNodes[range.startOffset];

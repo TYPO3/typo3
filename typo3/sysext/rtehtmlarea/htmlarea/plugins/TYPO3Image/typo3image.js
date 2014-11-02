@@ -80,7 +80,7 @@ HTMLArea.TYPO3Image = Ext.extend(HTMLArea.Plugin, {
 			),
 			this.makeUrlFromModulePath(this.imageModulePath, additionalParameter)
 		);
-		this.dialog.mon(Ext.get(Ext.isIE ? this.editor.document.body : this.editor.document.documentElement), 'drop', this.onDrop, this, {single: true});
+		this.dialog.mon(Ext.get(HTMLArea.UserAgent.isIE ? this.editor.document.body : this.editor.document.documentElement), 'drop', this.onDrop, this, {single: true});
 		return false;
 	},
 	/*
@@ -96,7 +96,7 @@ HTMLArea.TYPO3Image = Ext.extend(HTMLArea.Plugin, {
 	 * Handlers for drag and drop operations
 	 */
 	onDrop: function (event) {
-		if (Ext.isWebKit) {
+		if (HTMLArea.UserAgent.isWebKit) {
 			this.editor.iframe.onDrop();
 		}
 		this.close();

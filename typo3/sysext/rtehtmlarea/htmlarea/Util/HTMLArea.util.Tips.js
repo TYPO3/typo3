@@ -14,7 +14,7 @@ HTMLArea.util.Tips = function () {
 				}
 				var label = this.label;
 					// IE has problems with img inside label tag
-				if (label && this.helpIcon && !Ext.isIE) {
+				if (label && this.helpIcon && !HTMLArea.UserAgent.isIE) {
 					var helpImage = label.insertFirst({
 						tag: 'img',
 						src: HTMLArea.editorSkin + 'images/system-help-open.png',
