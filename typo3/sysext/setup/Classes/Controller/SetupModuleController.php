@@ -18,35 +18,40 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Module: User configuration
- *
- * This module lets users view and change their individual settings
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-/**
  * Script class for the Setup module
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class SetupModuleController {
 
-	// Internal variables:
+	/**
+	 * @var array
+	 */
 	public $MCONF = array();
 
+	/**
+	 * @var array
+	 */
 	public $MOD_MENU = array();
 
+	/**
+	 * @var array
+	 */
 	public $MOD_SETTINGS = array();
 
 	/**
-	 * document template object
-	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 */
 	public $doc;
 
+	/**
+	 * @var string
+	 */
 	public $content;
 
+	/**
+	 * @var array
+	 */
 	public $overrideConf;
 
 	/**
@@ -56,26 +61,59 @@ class SetupModuleController {
 	 */
 	public $OLD_BE_USER;
 
+	/**
+	 * @var bool
+	 */
 	public $languageUpdate;
 
+	/**
+	 * @var bool
+	 */
 	protected $pagetreeNeedsRefresh = FALSE;
 
+	/**
+	 * @var bool
+	 */
 	protected $isAdmin;
 
+	/**
+	 * @var int
+	 */
 	protected $dividers2tabs;
 
+	/**
+	 * @var array
+	 */
 	protected $tsFieldConf;
 
+	/**
+	 * @var bool
+	 */
 	protected $saveData = FALSE;
 
+	/**
+	 * @var bool
+	 */
 	protected $passwordIsUpdated = FALSE;
 
+	/**
+	 * @var bool
+	 */
 	protected $passwordIsSubmitted = FALSE;
 
+	/**
+	 * @var bool
+	 */
 	protected $setupIsUpdated = FALSE;
 
+	/**
+	 * @var bool
+	 */
 	protected $tempDataIsCleared = FALSE;
 
+	/**
+	 * @var bool
+	 */
 	protected $settingsAreResetToDefault = FALSE;
 
 	/**
@@ -95,11 +133,6 @@ class SetupModuleController {
 	 */
 	protected $simUser = '';
 
-	/******************************
-	 *
-	 * Saving data
-	 *
-	 ******************************/
 	/**
 	 * Instantiate the form protection before a simulated user is initialized.
 	 */
