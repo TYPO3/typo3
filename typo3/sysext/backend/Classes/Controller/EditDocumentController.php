@@ -30,86 +30,173 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class EditDocumentController {
 
-	// Internal, static: GPvars:
-	// GPvar "edit": Is an array looking approx like [tablename][list-of-ids]=command, eg.
-	// "&edit[pages][123]=edit". See \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick(). Value can be seen modified
-	// internally (converting NEW keyword to id, workspace/versioning etc).
+	/**
+	 * GPvar "edit": Is an array looking approx like [tablename][list-of-ids]=command, eg.
+	 * "&edit[pages][123]=edit". See \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick(). Value can be seen modified
+	 * internally (converting NEW keyword to id, workspace/versioning etc).
+	 *
+	 * @var array
+	 */
 	public $editconf;
 
-	// Commalist of fieldnames to edit. The point is IF you specify this list, only those
-	// fields will be rendered in the form. Otherwise all (available) fields in the record
-	// is shown according to the types configuration in $GLOBALS['TCA']
+	/**
+	 * Commalist of fieldnames to edit. The point is IF you specify this list, only those
+	 * fields will be rendered in the form. Otherwise all (available) fields in the record
+	 * is shown according to the types configuration in $GLOBALS['TCA']
+	 *
+	 * @var bool
+	 */
 	public $columnsOnly;
 
-	// Default values for fields (array with tablenames, fields etc. as keys).
-	// Can be seen modified internally.
+	/**
+	 * Default values for fields (array with tablenames, fields etc. as keys).
+	 * Can be seen modified internally.
+	 *
+	 * @var array
+	 */
 	public $defVals;
 
-	// Array of values to force being set (as hidden fields). Will be set as $this->defVals
-	// IF defVals does not exist.
+	/**
+	 * Array of values to force being set (as hidden fields). Will be set as $this->defVals
+	 * IF defVals does not exist.
+	 *
+	 * @var array
+	 */
 	public $overrideVals;
 
-	// If set, this value will be set in $this->retUrl (which is used quite many places
-	// as the return URL). If not set, "dummy.php" will be set in $this->retUrl
+	/**
+	 * If set, this value will be set in $this->retUrl (which is used quite many places
+	 * as the return URL). If not set, "dummy.php" will be set in $this->retUrl
+	 *
+	 * @var string
+	 */
 	public $returnUrl;
 
-	// Close-document command. Not really sure of all options...
+	/**
+	 * Close-document command. Not really sure of all options...
+	 *
+	 * @var int
+	 */
 	public $closeDoc;
 
-	// Quite simply, if this variable is set, then the processing of incoming data will be performed
-	// - as if a save-button is pressed. Used in the forms as a hidden field which can be set through
-	// JavaScript if the form is somehow submitted by JavaScript).
+	/**
+	 * Quite simply, if this variable is set, then the processing of incoming data will be performed
+	 * as if a save-button is pressed. Used in the forms as a hidden field which can be set through
+	 * JavaScript if the form is somehow submitted by JavaScript).
+	 *
+	 * @var bool
+	 */
 	public $doSave;
 
-	// GPvar (for processing only) : The data array from which the data comes...
+	/**
+	 * The data array from which the data comes...
+	 *
+	 * @var array
+	 */
 	public $data;
 
-	// GPvar (for processing only) : ?
+	/**
+	 * @var array
+	 */
 	public $mirror;
 
-	// GPvar (for processing only) : Clear-cache cmd.
+	/**
+	 * Clear-cache cmd.
+	 *
+	 * @var string
+	 */
 	public $cacheCmd;
 
-	// GPvar (for processing only) : Redirect (not used???)
+	/**
+	 * Redirect (not used???)
+	 *
+	 * @var string
+	 */
 	public $redirect;
 
-	// GPvar (for processing only) : Boolean: If set, then the GET var "&id=" will be added to the
-	// retUrl string so that the NEW id of something is returned to the script calling the form.
+	/**
+	 * Boolean: If set, then the GET var "&id=" will be added to the
+	 * retUrl string so that the NEW id of something is returned to the script calling the form.
+	 *
+	 * @var bool
+	 */
 	public $returnNewPageId;
 
-	// GPvar (for processing only) : Verification code, internal stuff.
+	/**
+	 * @var string
+	 */
 	public $vC;
 
-	// GPvar : update BE_USER->uc
+	/**
+	 * update BE_USER->uc
+	 *
+	 * @var array
+	 */
 	public $uc;
 
-	// GPvar (module) : ID for displaying the page in the frontend (used for SAVE/VIEW operations)
+	/**
+	 * ID for displaying the page in the frontend (used for SAVE/VIEW operations)
+	 *
+	 * @var int
+	 */
 	public $popViewId;
 
-	// GPvar (module) : Additional GET vars for the link, eg. "&L=xxx"
+	/**
+	 * Additional GET vars for the link, eg. "&L=xxx"
+	 *
+	 * @var string
+	 */
 	public $popViewId_addParams;
 
-	// GPvar (module) : Alternative URL for viewing the frontend pages.
+	/**
+	 * Alternative URL for viewing the frontend pages.
+	 *
+	 * @var string
+	 */
 	public $viewUrl;
 
-	// If this is pointing to a page id it will automatically load all content elements
-	// (NORMAL column/default language) from that page into the form!
+	/**
+	 * If this is pointing to a page id it will automatically load all content elements
+	 * (NORMAL column/default language) from that page into the form!
+	 *
+	 * @var int
+	 */
 	public $editRegularContentFromId;
 
-	// Alternative title for the document handler.
+	/**
+	 * Alternative title for the document handler.
+	 *
+	 * @var string
+	 */
 	public $recTitle;
 
-	// Disable help... ?
+	/**
+	 * Disable help... ?
+	 *
+	 * @var bool
+	 */
 	public $disHelp;
 
-	// If set, then no SAVE/VIEW button is printed
+	/**
+	 * If set, then no SAVE/VIEW button is printed
+	 *
+	 * @var bool
+	 */
 	public $noView;
 
-	// If set, the $this->editconf array is returned to the calling script
-	// (used by wizard_add.php for instance)
+	/**
+	 * If set, the $this->editconf array is returned to the calling script
+	 * (used by wizard_add.php for instance)
+	 *
+	 * @var bool
+	 */
 	public $returnEditConf;
 
-	// GP var, localization mode for TCEforms (eg. "text")
+	/**
+	 * localization mode for TCEforms (eg. "text")
+	 *
+	 * @var string
+	 */
 	public $localizationMode;
 
 	/**
@@ -119,7 +206,6 @@ class EditDocumentController {
 	 */
 	protected $workspace;
 
-	// Internal, static:
 	/**
 	 * document template object
 	 *
@@ -127,73 +213,148 @@ class EditDocumentController {
 	 */
 	public $doc;
 
-	// a static HTML template, usually in templates/alt_doc.html
+	/**
+	 * a static HTML template, usually in templates/alt_doc.html
+	 *
+	 * @var string
+	 */
 	public $template;
 
-	// Content accumulation
+	/**
+	 * Content accumulation
+	 *
+	 * @var string
+	 */
 	public $content;
 
-	// Return URL script, processed. This contains the script (if any) that we should
-	// RETURN TO from the alt_doc.php script IF we press the close button. Thus this
-	// variable is normally passed along from the calling script so we can properly return if needed.
+	/**
+	 * Return URL script, processed. This contains the script (if any) that we should
+	 * RETURN TO from the alt_doc.php script IF we press the close button. Thus this
+	 * variable is normally passed along from the calling script so we can properly return if needed.
+	 *
+	 * @var string
+	 */
 	public $retUrl;
 
-	// Contains the parts of the REQUEST_URI (current url). By parts we mean the result of resolving
-	// REQUEST_URI (current url) by the parse_url() function. The result is an array where eg. "path"
-	// is the script path and "query" is the parameters...
+	/**
+	 * Contains the parts of the REQUEST_URI (current url). By parts we mean the result of resolving
+	 * REQUEST_URI (current url) by the parse_url() function. The result is an array where eg. "path"
+	 * is the script path and "query" is the parameters...
+	 *
+	 * @var array
+	 */
 	public $R_URL_parts;
 
-	// Contains the current GET vars array; More specifically this array is the foundation for creating
-	// the R_URI internal var (which becomes the "url of this script" to which we submit the forms etc.)
+	/**
+	 * Contains the current GET vars array; More specifically this array is the foundation for creating
+	 * the R_URI internal var (which becomes the "url of this script" to which we submit the forms etc.)
+	 *
+	 * @var array
+	 */
 	public $R_URL_getvars;
 
-	// Set to the URL of this script including variables which is needed to re-display the form. See main()
+	/**
+	 * Set to the URL of this script including variables which is needed to re-display the form. See main()
+	 *
+	 * @var string
+	 */
 	public $R_URI;
 
-	// Is loaded with the "title" of the currently "open document" - this is used in the
-	// Document Selector box. (see makeDocSel())
+	/**
+	 * Is loaded with the "title" of the currently "open document" - this is used in the
+	 * Document Selector box. (see makeDocSel())
+	 *
+	 * @var string
+	 */
 	public $storeTitle;
 
-	// Contains an array with key/value pairs of GET parameters needed to reach the
-	// current document displayed - used in the Document Selector box. (see compileStoreDat())
+	/**
+	 * Contains an array with key/value pairs of GET parameters needed to reach the
+	 * current document displayed - used in the Document Selector box. (see compileStoreDat())
+	 *
+	 * @var array
+	 */
 	public $storeArray;
 
-	// Contains storeArray, but imploded into a GET parameter string (see compileStoreDat())
+	/**
+	 * Contains storeArray, but imploded into a GET parameter string (see compileStoreDat())
+	 *
+	 * @var string
+	 */
 	public $storeUrl;
 
-	// Hashed value of storeURL (see compileStoreDat())
+	/**
+	 * Hashed value of storeURL (see compileStoreDat())
+	 *
+	 * @var string
+	 */
 	public $storeUrlMd5;
 
-	// Module session data
+	/**
+	 * Module session data
+	 *
+	 * @var array
+	 */
 	public $docDat;
 
-	// An array of the "open documents" - keys are md5 hashes (see $storeUrlMd5) identifying
-	// the various documents on the GET parameter list needed to open it. The values are
-	// arrays with 0,1,2 keys with information about the document (see compileStoreDat()).
-	// The docHandler variable is stored in the $docDat session data, key "0".
+	/**
+	 * An array of the "open documents" - keys are md5 hashes (see $storeUrlMd5) identifying
+	 * the various documents on the GET parameter list needed to open it. The values are
+	 * arrays with 0,1,2 keys with information about the document (see compileStoreDat()).
+	 * The docHandler variable is stored in the $docDat session data, key "0".
+	 *
+	 * @var array
+	 */
 	public $docHandler;
 
-	// Internal: Related to the form rendering:
-	// Array of the elements to create edit forms for.
+	/**
+	 * Array of the elements to create edit forms for.
+	 *
+	 * @var array
+	 */
 	public $elementsData;
 
-	// Pointer to the first element in $elementsData
+	/**
+	 * Pointer to the first element in $elementsData
+	 *
+	 * @var array
+	 */
 	public $firstEl;
 
-	// Counter, used to count the number of errors (when users do not have edit permissions)
+	/**
+	 * Counter, used to count the number of errors (when users do not have edit permissions)
+	 *
+	 * @var int
+	 */
 	public $errorC;
 
-	// Counter, used to count the number of new record forms displayed
+	/**
+	 * Counter, used to count the number of new record forms displayed
+	 *
+	 * @var int
+	 */
 	public $newC;
 
-	// Is set to the pid value of the last shown record - thus indicating which page to
-	// show when clicking the SAVE/VIEW button
+	/**
+	 * Is set to the pid value of the last shown record - thus indicating which page to
+	 * show when clicking the SAVE/VIEW button
+	 *
+	 * @var int
+	 */
 	public $viewId;
 
-	// Is set to additional parameters (like "&L=xxx") if the record supports it.
+	/**
+	 * Is set to additional parameters (like "&L=xxx") if the record supports it.
+	 *
+	 * @var string
+	 */
 	public $viewId_addParams;
 
-	// Module TSconfig, loaded from main() based on the page id value of viewId
+	/**
+	 * Module TSconfig, loaded from main() based on the page id value of viewId
+	 *
+	 * @var array
+	 */
 	public $modTSconfig;
 
 	/**
@@ -203,11 +364,18 @@ class EditDocumentController {
 	 */
 	public $tceforms;
 
-	// Contains the root-line path of the currently edited record(s) - for display.
+	/**
+	 * Contains the root-line path of the currently edited record(s) - for display.
+	 *
+	 * @var string
+	 */
 	public $generalPathOfForm;
 
-	// Internal, dynamic:
-	// Used internally to disable the storage of the document reference (eg. new records)
+	/**
+	 * Used internally to disable the storage of the document reference (eg. new records)
+	 *
+	 * @var bool
+	 */
 	public $dontStoreDocumentRef;
 
 	/**

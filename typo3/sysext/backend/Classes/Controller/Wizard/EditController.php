@@ -25,15 +25,16 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
  */
 class EditController {
 
-	// Internal, static: GPvars
-	// Wizard parameters, coming from TCEforms linking to the wizard.
 	/**
+	 * Wizard parameters, coming from TCEforms linking to the wizard.
+	 *
 	 * @var array
 	 */
 	public $P;
 
-	// Boolean; if set, the window will be closed by JavaScript
 	/**
+	 * Boolean; if set, the window will be closed by JavaScript
+	 *
 	 * @var int
 	 */
 	public $doClose;

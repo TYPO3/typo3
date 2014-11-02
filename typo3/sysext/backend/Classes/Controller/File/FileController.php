@@ -28,21 +28,40 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  */
 class FileController {
 
-	// Internal, static: GPvar:
-	// Array of file-operations.
+	/**
+	 * Array of file-operations.
+	 *
+	 * @var array
+	 */
 	protected $file;
 
-	// Clipboard operations array
+	/**
+	 * Clipboard operations array
+	 *
+	 * @var array
+	 */
 	protected $CB;
 
-	// If existing files should be overridden.
+	/**
+	 * If existing files should be overridden.
+	 *
+	 * @var bool
+	 */
 	protected $overwriteExistingFiles;
 
-	// VeriCode - a hash of server specific value and other things which
-	// identifies if a submission is OK. (see $GLOBALS['BE_USER']->veriCode())
+	/**
+	 * VeriCode - a hash of server specific value and other things which
+	 * identifies if a submission is OK. (see $GLOBALS['BE_USER']->veriCode())
+	 *
+	 * @var string
+	 */
 	protected $vC;
 
-	// the page where the user should be redirected after everything is done
+	/**
+	 * The page where the user should be redirected after everything is done
+	 *
+	 * @var string
+	 */
 	protected $redirect;
 
 	/**
@@ -53,7 +72,11 @@ class FileController {
 	 */
 	protected $fileProcessor;
 
-	// the result array from the file processor
+	/**
+	 * The result array from the file processor
+	 *
+	 * @var array
+	 */
 	protected $fileData;
 
 	/**

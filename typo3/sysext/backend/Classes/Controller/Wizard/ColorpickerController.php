@@ -26,65 +26,75 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ColorpickerController {
 
-	// GET vars:
-	// Wizard parameters, coming from TCEforms linking to the wizard.
 	/**
+	 * Wizard parameters, coming from TCEforms linking to the wizard.
+	 *
 	 * @var array
 	 */
 	public $P;
 
-	// Value of the current color picked.
 	/**
+	 * Value of the current color picked.
+	 *
 	 * @var string
 	 */
 	public $colorValue;
 
-	// Serialized functions for changing the field... Necessary to call when the value is transferred to the TCEform since the form might need to do internal processing. Otherwise the value is simply not be saved.
 	/**
+	 * Serialized functions for changing the field...
+	 * Necessary to call when the value is transferred to the TCEform since the form might
+	 * need to do internal processing. Otherwise the value is simply not be saved.
+	 *
 	 * @var string
 	 */
 	public $fieldChangeFunc;
 
+	/**
+	 * @var string
+	 */
 	protected $fieldChangeFuncHash;
 
-	// Form name (from opener script)
 	/**
+	 * Form name (from opener script)
+	 *
 	 * @var string
 	 */
 	public $fieldName;
 
-	// Field name (from opener script)
 	/**
+	 * Field name (from opener script)
+	 *
 	 * @var string
 	 */
 	public $formName;
 
-	// ID of element in opener script for which to set color.
 	/**
+	 * ID of element in opener script for which to set color.
+	 *
 	 * @var string
 	 */
 	public $md5ID;
 
-	// Internal: If FALSE, a frameset is rendered, if TRUE the content of the picker script.
 	/**
+	 * Internal: If FALSE, a frameset is rendered, if TRUE the content of the picker script.
+	 *
 	 * @var int
 	 */
 	public $showPicker;
 
-	// Static:
 	/**
 	 * @var string
 	 */
 	public $HTMLcolorList = 'aqua,black,blue,fuchsia,gray,green,lime,maroon,navy,olive,purple,red,silver,teal,yellow,white';
 
-	// Internal:
 	/**
 	 * @var string
 	 */
 	public $pickerImage = '';
 
-	// Error message if image not found.
 	/**
+	 * Error message if image not found.
+	 *
 	 * @var string
 	 */
 	public $imageError = '';
@@ -96,7 +106,6 @@ class ColorpickerController {
 	 */
 	public $doc;
 
-	// Accumulated content.
 	/**
 	 * @var string
 	 */

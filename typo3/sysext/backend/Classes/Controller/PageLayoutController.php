@@ -28,45 +28,97 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class PageLayoutController {
 
-	// Internal, GPvars:
-	// Page Id for which to make the listing
+	/**
+	 * Page Id for which to make the listing
+	 *
+	 * @var int
+	 */
 	public $id;
 
-	// Pointer - for browsing list of records.
+	/**
+	 * Pointer - for browsing list of records.
+	 *
+	 * @var int
+	 */
 	public $pointer;
 
-	// Thumbnails or not
+	/**
+	 * Thumbnails or not
+	 *
+	 * @var string
+	 */
 	public $imagemode;
 
-	// Search-fields
+	/**
+	 * Search-fields
+	 *
+	 * @var string
+	 */
 	public $search_field;
 
-	// Search-levels
+	/**
+	 * Search-levels
+	 *
+	 * @var int
+	 */
 	public $search_levels;
 
-	// Show-limit
+	/**
+	 * Show-limit
+	 *
+	 * @var int
+	 */
 	public $showLimit;
 
-	// Return URL
+	/**
+	 * Return URL
+	 *
+	 * @var string
+	 */
 	public $returnUrl;
 
-	// Clear-cache flag - if set, clears page cache for current id.
+	/**
+	 * Clear-cache flag - if set, clears page cache for current id.
+	 *
+	 * @var bool
+	 */
 	public $clear_cache;
 
-	// PopView id - for opening a window with the page
+	/**
+	 * PopView id - for opening a window with the page
+	 *
+	 * @var bool
+	 */
 	public $popView;
 
-	// QuickEdit: Variable, that tells quick edit what to show/edit etc. Format is [tablename]:[uid] with some exceptional values for both parameters (with special meanings).
+	/**
+	 * QuickEdit: Variable, that tells quick edit what to show/edit etc.
+	 * Format is [tablename]:[uid] with some exceptional values for both parameters (with special meanings).
+	 *
+	 * @var string
+	 */
 	public $edit_record;
 
-	// QuickEdit: If set, this variable tells quick edit that the last edited record had this value as UID and we should look up the new, real uid value in sys_log.
+	/**
+	 * QuickEdit: If set, this variable tells quick edit that the last edited record had
+	 * this value as UID and we should look up the new, real uid value in sys_log.
+	 *
+	 * @var string
+	 */
 	public $new_unique_uid;
 
-	// Internal, static:
-	// Page select perms clause
+	/**
+	 * Page select perms clause
+	 *
+	 * @var string
+	 */
 	public $perms_clause;
 
-	// Module TSconfig
+	/**
+	 * Module TSconfig
+	 *
+	 * @var array
+	 */
 	public $modTSconfig;
 
 	/**
@@ -76,7 +128,11 @@ class PageLayoutController {
 	 */
 	public $modSharedTSconfig;
 
-	// Current ids page record
+	/**
+	 * Current ids page record
+	 *
+	 * @var array
+	 */
 	public $pageinfo;
 
 	/**
@@ -86,48 +142,96 @@ class PageLayoutController {
 	 */
 	public $doc;
 
-	// Back path of the module
+	/**
+	 * Back path of the module
+	 *
+	 * @var string
+	 */
 	public $backPath;
 
-	// "Pseudo" Description -table name
+	/**
+	 * "Pseudo" Description -table name
+	 *
+	 * @var string
+	 */
 	public $descrTable;
 
-	// List of column-integers to edit. Is set from TSconfig, default is "1,0,2,3"
+	/**
+	 * List of column-integers to edit. Is set from TSconfig, default is "1,0,2,3"
+	 *
+	 * @var string
+	 */
 	public $colPosList;
 
-	// Flag: If content can be edited or not.
+	/**
+	 * Flag: If content can be edited or not.
+	 *
+	 * @var bool
+	 */
 	public $EDIT_CONTENT;
 
-	// Users permissions integer for this page.
+	/**
+	 * Users permissions integer for this page.
+	 *
+	 * @var int
+	 */
 	public $CALC_PERMS;
 
-	// Currently selected language for editing content elements
+	/**
+	 * Currently selected language for editing content elements
+	 *
+	 * @var int
+	 */
 	public $current_sys_language;
 
-	// Module configuration
+	/**
+	 * Module configuration
+	 *
+	 * @var array
+	 */
 	public $MCONF = array();
 
-	// Menu configuration
+	/**
+	 * Menu configuration
+	 *
+	 * @var array
+	 */
 	public $MOD_MENU = array();
 
-	// Module settings (session variable)
+	/**
+	 * Module settings (session variable)
+	 *
+	 * @var array
+	 */
 	public $MOD_SETTINGS = array();
 
-	// Array, where files to include is accumulated in the init() function
+	/**
+	 * Array, where files to include is accumulated in the init() function
+	 *
+	 * @var array
+	 */
 	public $include_once = array();
 
-	// Array of tables to be listed by the Web > Page module in addition to the default tables
+	/**
+	 * Array of tables to be listed by the Web > Page module in addition to the default tables
+	 *
+	 * @var array
+	 */
 	public $externalTables = array();
 
-	// Internal, dynamic:
-	// Module output accumulation
+	/**
+	 * Module output accumulation
+	 *
+	 * @var string
+	 */
 	public $content;
 
-	// Function menu temporary storage
+	/**
+	 * Function menu temporary storage
+	 *
+	 * @var string
+	 */
 	public $topFuncMenu;
-
-	// Temporary storage for page edit icon
-	public $editIcon;
 
 	/**
 	 * List of column-integers accessible to the current BE user.
@@ -138,7 +242,9 @@ class PageLayoutController {
 	public $activeColPosList;
 
 	/**
-	 * @var array markers array
+	 * Markers array
+	 *
+	 * @var array
 	 */
 	protected $markers = array();
 

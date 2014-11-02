@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class MoveElementController {
 
-	// Internal, static (eg. from GPvars):
 	/**
 	 * @var int
 	 */
@@ -68,15 +67,16 @@ class MoveElementController {
 	 */
 	public $doc;
 
-	// Pages-select clause
 	/**
+	 * Pages-select clause
+	 *
 	 * @var string
 	 */
 	public $perms_clause;
 
-	// Internal, dynamic:
-	// Content for module accumulated here.
 	/**
+	 * Content for module accumulated here.
+	 *
 	 * @var string
 	 */
 	public $content;

@@ -25,47 +25,51 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
  */
 class AddController {
 
-	// Internal, dynamic:
-	// Content accumulation for the module.
 	/**
+	 * Content accumulation for the module.
+	 *
 	 * @var string
 	 */
 	public $content;
 
-	// If set, the TCEmain class is loaded and used to add the returning ID to the parent record.
 	/**
+	 * If set, the TCEmain class is loaded and used to add the returning ID to the parent record.
+	 *
 	 * @var int
 	 */
 	public $processDataFlag = 0;
 
-	// Internal, static:
-	// Create new record -pid (pos/neg). If blank, return immediately
 	/**
+	 * Create new record -pid (pos/neg). If blank, return immediately
+	 *
 	 * @var int
 	 */
 	public $pid;
 
-	// The parent table we are working on.
 	/**
+	 * The parent table we are working on.
+	 *
 	 * @var string
 	 */
 	public $table;
 
-	// Loaded with the created id of a record when TCEforms (alt_doc.php) returns ...
 	/**
+	 * Loaded with the created id of a record when TCEforms (alt_doc.php) returns ...
+	 *
 	 * @var int
 	 */
 	public $id;
 
-	// Internal, static: GPvars
-	// Wizard parameters, coming from TCEforms linking to the wizard.
 	/**
+	 * Wizard parameters, coming from TCEforms linking to the wizard.
+	 *
 	 * @var array
 	 */
 	public $P;
 
-	// Information coming back from alt_doc.php script, telling what the table/id was of the newly created record.
 	/**
+	 * Information coming back from alt_doc.php script, telling what the table/id was of the newly created record.
+	 *
 	 * @var array
 	 */
 	public $returnEditConf;

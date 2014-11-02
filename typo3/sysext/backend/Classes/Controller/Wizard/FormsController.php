@@ -109,7 +109,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class FormsController {
 
-	// Internal, dynamic:
 	/**
 	 * document template object
 	 *
@@ -117,42 +116,46 @@ class FormsController {
 	 */
 	public $doc;
 
-	// Content accumulation for the module.
 	/**
+	 * Content accumulation for the module.
+	 *
 	 * @var string
 	 */
 	public $content;
 
-	// Used to numerate attachments automatically.
 	/**
+	 * Used to numerate attachments automatically.
+	 *
 	 * @var int
 	 */
 	public $attachmentCounter = 0;
 
-	// Internal, static:
-	// If set, the string version of the content is interpreted/written as XML instead of
-	// the original linebased kind. This variable still needs binding to the wizard parameters
-	// - but support is ready!
 	/**
+	 * If set, the string version of the content is interpreted/written as XML instead of
+	 * the original linebased kind. This variable still needs binding to the wizard parameters
+	 * - but support is ready!
+	 *
 	 * @var int
 	 */
 	public $xmlStorage = 0;
 
-	// Internal, static: GPvars
-	// Wizard parameters, coming from TCEforms linking to the wizard.
 	/**
+	 * Wizard parameters, coming from TCEforms linking to the wizard.
+	 *
 	 * @var array
 	 */
 	public $P;
 
-	// The array which is constantly submitted by the multidimensional form of this wizard.
 	/**
+	 * The array which is constantly submitted by the multidimensional form of this wizard.
+	 *
 	 * @var array
 	 */
 	public $FORMCFG;
 
-	// Indicates if the form is of a dedicated type, like "formtype_mail" (for tt_content element "Form")
 	/**
+	 * Indicates if the form is of a dedicated type, like "formtype_mail" (for tt_content element "Form")
+	 *
 	 * @var string
 	 */
 	public $special;

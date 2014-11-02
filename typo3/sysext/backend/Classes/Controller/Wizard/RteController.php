@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class RteController {
 
-	// Internal, dynamic:
 	/**
 	 * document template object
 	 *
@@ -33,27 +32,30 @@ class RteController {
 	 */
 	public $doc;
 
-	// Content accumulation for the module.
 	/**
+	 * Content accumulation for the module.
+	 *
 	 * @var string
 	 */
 	public $content;
 
-	// Internal, static: GPvars
-	// Wizard parameters, coming from TCEforms linking to the wizard.
 	/**
+	 * Wizard parameters, coming from TCEforms linking to the wizard.
+	 *
 	 * @var array
 	 */
 	public $P;
 
-	// If set, launch a new window with the current records pid.
 	/**
+	 * If set, launch a new window with the current records pid.
+	 *
 	 * @var string
 	 */
 	public $popView;
 
-	// Set to the URL of this script including variables which is needed to re-display the form. See main()
 	/**
+	 * Set to the URL of this script including variables which is needed to re-display the form. See main()
+	 *
 	 * @var string
 	 */
 	public $R_URI;

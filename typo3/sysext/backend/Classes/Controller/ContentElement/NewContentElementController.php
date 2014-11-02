@@ -25,27 +25,30 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class NewContentElementController {
 
-	// Internal, static (from GPvars):
-	// Page id
 	/**
+	 * Page id
+	 *
 	 * @var int
 	 */
 	public $id;
 
-	// Sys language
 	/**
+	 * Sys language
+	 *
 	 * @var int
 	 */
 	public $sys_language = 0;
 
-	// Return URL.
 	/**
+	 * Return URL.
+	 *
 	 * @var string
 	 */
 	public $R_URI = '';
 
-	// If set, the content is destined for a specific column.
 	/**
+	 * If set, the content is destined for a specific column.
+	 *
 	 * @var int|null
 	 */
 	public $colPos;
@@ -55,9 +58,9 @@ class NewContentElementController {
 	 */
 	public $uid_pid;
 
-	// Internal, static:
-	// Module TSconfig.
 	/**
+	 * Module TSconfig.
+	 *
 	 * @var array
 	 */
 	public $modTSconfig = array();
@@ -69,27 +72,30 @@ class NewContentElementController {
 	 */
 	public $doc;
 
-	// Internal, dynamic:
-	// Includes a list of files to include between init() and main() - see init()
 	/**
+	 * Includes a list of files to include between init() and main() - see init()
+	 *
 	 * @var array
 	 */
 	public $include_once = array();
 
-	// Used to accumulate the content of the module.
 	/**
+	 * Used to accumulate the content of the module.
+	 *
 	 * @var string
 	 */
 	public $content;
 
-	// Access boolean.
 	/**
+	 * Access boolean.
+	 *
 	 * @var bool
 	 */
 	public $access;
 
-	// config of the wizard
 	/**
+	 * config of the wizard
+	 *
 	 * @var array
 	 */
 	public $config;

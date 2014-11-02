@@ -23,8 +23,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class NoDocumentsOpenController {
 
-	// Internal:
-	// Content accumulation
 	/**
 	 * @var string
 	 */

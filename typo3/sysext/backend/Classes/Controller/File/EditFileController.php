@@ -25,9 +25,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class EditFileController {
 
-	// Module content accumulated.
+	/**
+	 * Module content accumulated.
+	 *
+	 * @var string
+	 */
 	public $content;
 
+	/**
+	 * @var string
+	 */
 	public $title;
 
 	/**
@@ -37,14 +44,25 @@ class EditFileController {
 	 */
 	public $doc;
 
-	// Internal, static: GPvar
-	// Original input target
+	/**
+	 * Original input target
+	 *
+	 * @var string
+	 */
 	public $origTarget;
 
-	// The original target, but validated.
+	/**
+	 * The original target, but validated.
+	 *
+	 * @var string
+	 */
 	public $target;
 
-	// Return URL of list module.
+	/**
+	 * Return URL of list module.
+	 *
+	 * @var string
+	 */
 	public $returnUrl;
 
 	/**

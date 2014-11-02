@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class TableController {
 
-	// Internal, dynamic:
 	/**
 	 * document template object
 	 *
@@ -34,62 +33,69 @@ class TableController {
 	 */
 	public $doc;
 
-	// Content accumulation for the module.
 	/**
+	 * Content accumulation for the module.
+	 *
 	 * @var string
 	 */
 	public $content;
 
-	// TRUE, then <input> fields are shown, not textareas.
 	/**
+	 * TRUE, then <input> fields are shown, not textareas.
+	 *
 	 * @var int
 	 */
 	public $inputStyle = 0;
 
-	// Internal, static:
-	// If set, the string version of the content is interpreted/written as XML
-	// instead of the original linebased kind. This variable still needs binding
-	// to the wizard parameters - but support is ready!
 	/**
+	 * If set, the string version of the content is interpreted/written as XML
+	 * instead of the original linebased kind. This variable still needs binding
+	 * to the wizard parameters - but support is ready!
+	 *
 	 * @var int
 	 */
 	public $xmlStorage = 0;
 
-	// Number of new rows to add in bottom of wizard
 	/**
+	 * Number of new rows to add in bottom of wizard
+	 *
 	 * @var int
 	 */
 	public $numNewRows = 1;
 
-	// Name of field in parent record which MAY contain the number of columns for the table
-	// - here hardcoded to the value of tt_content. Should be set by TCEform parameters (from P)
 	/**
+	 * Name of field in parent record which MAY contain the number of columns for the table
+	 * here hardcoded to the value of tt_content. Should be set by TCEform parameters (from P)
+	 *
 	 * @var string
 	 */
 	public $colsFieldName = 'cols';
 
-	// Internal, static: GPvars
-	// Wizard parameters, coming from TCEforms linking to the wizard.
 	/**
+	 * Wizard parameters, coming from TCEforms linking to the wizard.
+	 *
 	 * @var array
 	 */
 	public $P;
 
-	// The array which is constantly submitted by the multidimensional form of this wizard.
 	/**
+	 * The array which is constantly submitted by the multidimensional form of this wizard.
+	 *
 	 * @var array
 	 */
 	public $TABLECFG;
 
-	// Table parsing
-	// quoting of table cells
 	/**
+	 * Table parsing
+	 * quoting of table cells
+	 *
 	 * @var string
 	 */
 	public $tableParsing_quote;
 
-	// delimiter between table cells
 	/**
+	 * delimiter between table cells
+	 *
 	 * @var string
 	 */
 	public $tableParsing_delimiter;

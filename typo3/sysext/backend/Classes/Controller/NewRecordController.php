@@ -98,27 +98,23 @@ class NewRecordController {
 	 */
 	public $R_URI;
 
-	// Internal, static: GPvar
-	// see init()
 	/**
 	 * @var int
 	 */
 	public $id;
 
-	// Return url.
 	/**
 	 * @var string
 	 */
 	public $returnUrl;
 
-	// pagesOnly flag.
 	/**
+	 * pagesOnly flag.
+	 *
 	 * @var int
 	 */
 	public $pagesOnly;
 
-	// Internal
-	// see init()
 	/**
 	 * @var string
 	 */
@@ -131,8 +127,9 @@ class NewRecordController {
 	 */
 	public $doc;
 
-	// Accumulated HTML output
 	/**
+	 * Accumulated HTML output
+	 *
 	 * @var string
 	 */
 	public $content;

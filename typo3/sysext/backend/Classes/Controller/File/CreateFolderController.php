@@ -24,10 +24,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class CreateFolderController {
 
-	// External, static:
+	/**
+	 * @var int
+	 */
 	public $folderNumber = 10;
 
-	// Internal, static:
 	/**
 	 * document template object
 	 *
@@ -35,13 +36,23 @@ class CreateFolderController {
 	 */
 	public $doc;
 
-	// Name of the filemount
+	/**
+	 * Name of the filemount
+	 *
+	 * @var string
+	 */
 	public $title;
 
-	// Internal, static (GPVar):
+	/**
+	 * @var int
+	 */
 	public $number;
 
-	// Set with the target path inputted in &target
+	/**
+	 * Set with the target path inputted in &target
+	 *
+	 * @var string
+	 */
 	public $target;
 
 	/**
@@ -51,11 +62,18 @@ class CreateFolderController {
 	 */
 	protected $folderObject;
 
-	// Return URL of list module.
+	/**
+	 * Return URL of list module.
+	 *
+	 * @var string
+	 */
 	public $returnUrl;
 
-	// Internal, dynamic:
-	// Accumulating content
+	/**
+	 * Accumulating content
+	 *
+	 * @var string
+	 */
 	public $content;
 
 	/**

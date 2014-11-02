@@ -28,76 +28,87 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SimpleDataHandlerController {
 
-	// Internal, static: GPvar
-	// Array. Accepts options to be set in TCE object. Currently it supports "reverseOrder" (boolean).
 	/**
+	 * Array. Accepts options to be set in TCE object. Currently it supports "reverseOrder" (boolean).
+	 *
 	 * @var array
 	 */
 	public $flags;
 
-	// Data array on the form [tablename][uid][fieldname] = value
 	/**
+	 * Data array on the form [tablename][uid][fieldname] = value
+	 *
 	 * @var array
 	 */
 	public $data;
 
-	// Command array on the form [tablename][uid][command] = value. This array may get additional data set internally based on clipboard commands send in CB var!
 	/**
+	 * Command array on the form [tablename][uid][command] = value.
+	 * This array may get additional data set internally based on clipboard commands send in CB var!
+	 *
 	 * @var array
 	 */
 	public $cmd;
 
-	// Array passed to ->setMirror.
 	/**
+	 * Array passed to ->setMirror.
+	 *
 	 * @var array
 	 */
 	public $mirror;
 
-	// Cache command sent to ->clear_cacheCmd
 	/**
+	 * Cache command sent to ->clear_cacheCmd
+	 *
 	 * @var string
 	 */
 	public $cacheCmd;
 
-	// Redirect URL. Script will redirect to this location after performing operations (unless errors has occurred)
 	/**
+	 * Redirect URL. Script will redirect to this location after performing operations (unless errors has occurred)
+	 *
 	 * @var string
 	 */
 	public $redirect;
 
-	// Boolean. If set, errors will be printed on screen instead of redirection. Should always be used, otherwise you will see no errors if they happen.
 	/**
+	 * Boolean. If set, errors will be printed on screen instead of redirection. Should always be used, otherwise you will see no errors if they happen.
+	 *
 	 * @var int
 	 */
 	public $prErr;
 
-	// Clipboard command array. May trigger changes in "cmd"
 	/**
+	 * Clipboard command array. May trigger changes in "cmd"
+	 *
 	 * @var array
 	 */
 	public $CB;
 
-	// Verification code
 	/**
+	 * Verification code
+	 *
 	 * @var string
 	 */
 	public $vC;
 
-	// Boolean. Update Page Tree Trigger. If set and the manipulated records are pages then the update page tree signal will be set.
 	/**
+	 * Boolean. Update Page Tree Trigger. If set and the manipulated records are pages then the update page tree signal will be set.
+	 *
 	 * @var int
 	 */
 	public $uPT;
 
-	// String, general comment (for raising stages of workspace versions)
 	/**
+	 * String, general comment (for raising stages of workspace versions)
+	 *
 	 * @var string
 	 */
 	public $generalComment;
 
-	// Internal, dynamic:
-	// Files to include after init() function is called:
 	/**
+	 * Files to include after init() function is called:
+	 *
 	 * @var array
 	 */
 	public $include_once = array();

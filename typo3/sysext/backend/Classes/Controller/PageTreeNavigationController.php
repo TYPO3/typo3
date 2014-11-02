@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class PageTreeNavigationController {
 
-	// Internal:
 	/**
 	 * @var string
 	 */
@@ -55,7 +54,6 @@ class PageTreeNavigationController {
 	 */
 	public $backPath;
 
-	// Internal, static: GPvar:
 	/**
 	 * @var string
 	 */

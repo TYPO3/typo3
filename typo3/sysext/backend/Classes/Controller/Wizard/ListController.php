@@ -24,28 +24,28 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ListController {
 
-	// Internal, static:
-	// PID
 	/**
 	 * @var int
 	 */
 	public $pid;
 
-	// Internal, static: GPvars
-	// Wizard parameters, coming from TCEforms linking to the wizard.
 	/**
+	 * Wizard parameters, coming from TCEforms linking to the wizard.
+	 *
 	 * @var array
 	 */
 	public $P;
 
-	// Table to show, if none, then all tables are listed in list module.
 	/**
+	 * Table to show, if none, then all tables are listed in list module.
+	 *
 	 * @var string
 	 */
 	public $table;
 
-	// Page id to list.
 	/**
+	 * Page id to list.
+	 *
 	 * @var string
 	 */
 	public $id;

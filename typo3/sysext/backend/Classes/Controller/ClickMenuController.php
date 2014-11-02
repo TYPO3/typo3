@@ -24,24 +24,35 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ClickMenuController {
 
-	// Internal, static: GPvar:
-	// Back path.
+	/**
+	 * @var string
+	 */
 	public $backPath;
 
-	// Definition of which item the click menu should be made for.
-	public $item;
-
-	// Defines the name of the document object for which to reload the URL.
+	/**
+	 * Defines the name of the document object for which to reload the URL.
+	 *
+	 * @var int
+	 */
 	public $reloadListFrame;
 
-	// Internal:
-	// Content accumulation
+	/**
+	 * Content accumulation
+	 *
+	 * @var string
+	 */
 	public $content = '';
 
-	// Template object
+	/**
+	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
+	 */
 	public $doc;
 
-	// Internal array of classes for extending the clickmenu
+	/**
+	 * Internal array of classes for extending the clickmenu
+	 *
+	 * @var array
+	 */
 	public $extClassArray = array();
 
 	/**
@@ -62,7 +73,6 @@ class ClickMenuController {
 	protected function init() {
 		// Setting GPvars:
 		$this->backPath = GeneralUtility::_GP('backPath');
-		$this->item = GeneralUtility::_GP('item');
 		$this->reloadListFrame = GeneralUtility::_GP('reloadListFrame');
 		// Setting pseudo module name
 		$this->MCONF['name'] = 'xMOD_alt_clickmenu.php';

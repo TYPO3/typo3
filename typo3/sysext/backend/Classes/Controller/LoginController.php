@@ -30,56 +30,113 @@ class LoginController {
 
 	const SIGNAL_RenderLoginForm = 'renderLoginForm';
 
-	// Internal, GPvars:
-	// GPvar: redirect_url; The URL to redirect to after login.
+	/**
+	 * The URL to redirect to after login.
+	 *
+	 * @var string
+	 */
 	public $redirect_url;
 
-	// GPvar: Defines which interface to load (from interface selector)
+	/**
+	 * Defines which interface to load (from interface selector)
+	 *
+	 * @var string
+	 */
 	public $GPinterface;
 
-	// GPvar: preset username
+	/**
+	 * preset username
+	 *
+	 * @var string
+	 */
 	public $u;
 
-	// GPvar: preset password
+	/**
+	 * preset password
+	 *
+	 * @var string
+	 */
 	public $p;
 
 	/**
 	 * OpenID URL submitted by form
+	 *
+	 * @var string
 	 */
 	protected $openIdUrl;
 
-	// GPvar: If "L" is "OUT", then any logged in used is logged out. If redirect_url is given, we redirect to it
+	/**
+	 * If "L" is "OUT", then any logged in used is logged out. If redirect_url is given, we redirect to it
+	 *
+	 * @var string
+	 */
 	public $L;
 
-	// Login-refresh boolean; The backend will call this script with this value set when the login is close to being expired and the form needs to be redrawn.
+	/**
+	 * Login-refresh boolean; The backend will call this script
+	 * with this value set when the login is close to being expired
+	 * and the form needs to be redrawn.
+	 *
+	 * @var bool
+	 */
 	public $loginRefresh;
 
-	// Value of forms submit button for login.
+	/**
+	 * Value of forms submit button for login.
+	 *
+	 * @var string
+	 */
 	public $commandLI;
 
-	// Internal, static:
-	// Set to the redirect URL of the form (may be redirect_url or "backend.php")
+	/**
+	 * Set to the redirect URL of the form (may be redirect_url or "backend.php")
+	 *
+	 * @var string
+	 */
 	public $redirectToURL;
 
-	// Internal, dynamic:
-	// Content accumulation
+	/**
+	 * Content accumulation
+	 *
+	 * @var string
+	 */
 	public $content;
 
-	// A selector box for selecting value for "interface" may be rendered into this variable
+	/**
+	 * A selector box for selecting value for "interface" may be rendered into this variable
+	 *
+	 * @var string
+	 */
 	public $interfaceSelector;
 
-	// A selector box for selecting value for "interface" may be rendered into this variable
-	// this will have an onchange action which will redirect the user to the selected interface right away
+	/**
+	 * A selector box for selecting value for "interface" may be rendered into this variable
+	 * this will have an onchange action which will redirect the user to the selected interface right away
+	 *
+	 * @var string
+	 */
 	public $interfaceSelector_jump;
 
-	// A hidden field, if the interface is not set.
+	/**
+	 * A hidden field, if the interface is not set.
+	 *
+	 * @var string
+	 */
 	public $interfaceSelector_hidden;
 
-	// Additional hidden fields to be placed at the login form
+	/**
+	 * Additional hidden fields to be placed at the login form
+	 *
+	 * @var string
+	 */
 	public $addFields_hidden = '';
 
-	// sets the level of security. *'normal' = clear-text. 'challenged' = hashed
-	// password/username from form in $formfield_uident. 'superchallenged' = hashed password hashed again with username.
+	/**
+	 * Sets the level of security. *'normal' = clear-text. 'challenged' = hashed
+	 * password/username from form in $formfield_uident. 'superchallenged' = hashed password hashed again with username.
+	 *
+	 * @var string
+	 */
 	public $loginSecurityLevel = 'superchallenged';
 
 	/**
