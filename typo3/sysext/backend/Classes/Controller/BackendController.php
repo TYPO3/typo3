@@ -25,25 +25,49 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class BackendController {
 
+	/**
+	 * @var string
+	 */
 	protected $content;
 
+	/**
+	 * @var string
+	 */
 	protected $css;
 
+	/**
+	 * @var array
+	 */
 	protected $cssFiles;
 
+	/**
+	 * @var string
+	 */
 	protected $js;
 
+	/**
+	 * @var array
+	 */
 	protected $jsFiles;
 
-	protected $jsFilesAfterInline;
-
+	/**
+	 * @var array
+	 */
 	protected $toolbarItems;
 
-	// intentionally private as nobody should modify defaults
+	/**
+	 * @var int Intentionally private as nobody should modify defaults
+	 */
 	private $menuWidthDefault = 190;
 
+	/**
+	 * @var int
+	 */
 	protected $menuWidth;
 
+	/**
+	 * @var bool
+	 */
 	protected $debug;
 
 	/**
@@ -52,15 +76,11 @@ class BackendController {
 	protected $backendModuleRepository;
 
 	/**
-	 * Object for loading backend modules
-	 *
-	 * @var \TYPO3\CMS\Backend\Module\ModuleLoader
+	 * @var \TYPO3\CMS\Backend\Module\ModuleLoader Object for loading backend modules
 	 */
 	protected $moduleLoader;
 
 	/**
-	 * Pagerenderer
-	 *
 	 * @var \TYPO3\CMS\Core\Page\PageRenderer
 	 */
 	protected $pageRenderer;
