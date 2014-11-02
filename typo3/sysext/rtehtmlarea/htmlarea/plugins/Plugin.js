@@ -58,7 +58,7 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 * @return	boolean		true if the information was registered
 	 */
 	registerPluginInformation: function (pluginInformation) {
-		if (typeof(pluginInformation) !== 'object') {
+		if (typeof pluginInformation !== 'object' || pluginInformation === null) {
 			this.appendToLog('registerPluginInformation', 'Plugin information was not provided', 'warn');
 			return false;
 		} else {
@@ -152,7 +152,7 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 */
 	registerButton: function (buttonConfiguration) {
 		if (this.isButtonInToolbar(buttonConfiguration.id)) {
-			if (typeof buttonConfiguration.action === 'string' && typeof this[buttonConfiguration.action] === 'function') {
+			if (typeof buttonConfiguration.action === 'string' && buttonConfiguration.action.length > 0 && typeof this[buttonConfiguration.action] === 'function') {
 				buttonConfiguration.plugins = this;
 				if (buttonConfiguration.dialog) {
 					if (!buttonConfiguration.dimensions) {
@@ -204,7 +204,7 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 */
 	registerDropDown: function (dropDownConfiguration) {
 		if (this.isButtonInToolbar(dropDownConfiguration.id)) {
-			if (typeof dropDownConfiguration.action === 'string' && typeof this[dropDownConfiguration.action] === 'function') {
+			if (typeof dropDownConfiguration.action === 'string' && dropDownConfiguration.action.length > 0 && typeof this[dropDownConfiguration.action] === 'function') {
 				dropDownConfiguration.plugins = this;
 				dropDownConfiguration.hidden = dropDownConfiguration.hide;
 				dropDownConfiguration.xtype = 'htmlareacombo';
@@ -347,7 +347,7 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	localize: function (label, plural) {
 		var i = plural || 0;
 		var localized = this.I18N[label];
-		if (typeof localized === 'object' && typeof localized[i] !== 'undefined') {
+		if (typeof localized === 'object' && localized !== null && typeof localized[i] !== 'undefined') {
 			localized = localized[i]['target'];
 		} else {
 			localized = HTMLArea.localize(label, plural);
@@ -364,9 +364,9 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 * @return	string		localized label with CSH markup
 	 */
 	getHelpTip: function (fieldName, label, pluginName) {
-		if (typeof TYPO3.ContextHelp !== 'undefined') {
+		if (typeof TYPO3.ContextHelp !== 'undefined' && typeof fieldName === 'string') {
 			var pluginName = typeof pluginName !== 'undefined' ? pluginName : this.name;
-			if (!Ext.isEmpty(fieldName)) {
+			if (fieldName.length > 0) {
 				fieldName = fieldName.replace(/-|\s/gi, '_');
 			}
 			return '<span class="t3-help-link" href="#" data-table="xEXT_rtehtmlarea_' + pluginName + '" data-field="' + fieldName + '"><abbr class="t3-help-teaser">' + (this.localize(label) || label) + '</abbr></span>';
@@ -514,7 +514,7 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 * @return	void
 	 */
 	addConfigElement: function (configElement, configArray) {
-		if (!Ext.isEmpty(configElement)) {
+		if (typeof configElement === 'object'  && configElement !== null) {
 			configArray.push(configElement);
 		}
 	},

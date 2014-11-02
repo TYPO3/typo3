@@ -171,7 +171,7 @@ HTMLArea.StatusBar = Ext.extend(Ext.Container, {
 		if (this.getEditor().getMode() == 'wysiwyg') {
 				// Get the html content
 			var text = this.getEditor().getHTML();
-			if (!Ext.isEmpty(text)) {
+			if (typeof text === 'string' && text.length > 0) {
 					// Replace html tags with spaces
 				text = text.replace(HTMLArea.RE_htmlTag, ' ');
 					// Replace html space entities

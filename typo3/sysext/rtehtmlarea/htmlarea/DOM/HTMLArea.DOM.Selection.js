@@ -51,7 +51,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 			// By default set the type to "Text"
 		var type = 'Text';
 		this.get();
-		if (!Ext.isEmpty(this.selection)) {
+		if (typeof this.selection === 'object' && this.selection !== null) {
 			if (typeof this.selection.getRangeAt === 'function') {
 					// Check if the current selection is a Control
 				if (this.selection && this.selection.rangeCount == 1) {
@@ -83,7 +83,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 	 */
 	empty: function () {
 		this.get();
-		if (!Ext.isEmpty(this.selection)) {
+		if (typeof this.selection === 'object' && this.selection !== null) {
 			if (typeof this.selection.removeAllRanges === 'function') {
 				this.selection.removeAllRanges();
 			} else {
@@ -104,7 +104,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 	isEmpty: function () {
 		var isEmpty = true;
 		this.get();
-		if (!Ext.isEmpty(this.selection)) {
+		if (typeof this.selection === 'object' && this.selection !== null) {
 			if (HTMLArea.isIEBeforeIE9) {
 				switch (this.selection.type) {
 					case 'None':
@@ -134,7 +134,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 		if (HTMLArea.isIEBeforeIE9) {
 			range = this.selection.createRange();
 		} else {
-			if (Ext.isEmpty(this.selection)) {
+			if (typeof this.selection !== 'object' || this.selection === null) {
 				range = this.document.createRange();
 			} else {
 					// Older versions of WebKit did not support getRangeAt
@@ -171,7 +171,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 		this.get();
 		var ranges = [];
 			// Older versions of WebKit, IE7 and IE8 did not support getRangeAt
-		if (!Ext.isEmpty(this.selection) && typeof this.selection.getRangeAt === 'function') {
+		if (typeof this.selection === 'object' && this.selection !== null && typeof this.selection.getRangeAt === 'function') {
 			for (var i = this.selection.rangeCount; --i >= 0;) {
 				ranges.push(this.selection.getRangeAt(i));
 			}
@@ -189,7 +189,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 	 */
 	addRange: function (range) {
 		this.get();
-		if (!Ext.isEmpty(this.selection)) {
+		if (typeof this.selection === 'object' && this.selection !== null) {
 			if (typeof this.selection.addRange === 'function') {
 				this.selection.addRange(range);
 			} else if (Ext.isWebKit) {
@@ -222,7 +222,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 	 */
 	selectRange: function (range) {
 		this.get();
-		if (!Ext.isEmpty(this.selection)) {
+		if (typeof this.selection === 'object' && this.selection !== null) {
 			if (typeof this.selection.getRangeAt === 'function') {
 				this.empty().addRange(range);
 			} else {
@@ -242,7 +242,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 	 */
 	selectNode: function (node, endPoint) {
 		this.get();
-		if (!Ext.isEmpty(this.selection)) {
+		if (typeof this.selection === 'object' && this.selection !== null) {
 			if (HTMLArea.isIEBeforeIE9) {
 					// IE8/7/6 cannot set this type of selection
 				this.selectNodeContents(node, endPoint);
@@ -279,7 +279,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 	selectNodeContents: function (node, endPoint) {
 		var range;
 		this.get();
-		if (!Ext.isEmpty(this.selection)) {
+		if (typeof this.selection === 'object' && this.selection !== null) {
 			if (HTMLArea.isIEBeforeIE9) {
 				range = this.document.body.createTextRange();
 				range.moveToElementText(node);
@@ -358,7 +358,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 	getElement: function () {
 		var element = null;
 		this.get();
-		if (!Ext.isEmpty(this.selection) && this.selection.anchorNode && this.selection.anchorNode.nodeType === HTMLArea.DOM.ELEMENT_NODE && this.getType() == 'Control') {
+		if (typeof this.selection === 'object' && this.selection !== null && this.selection.anchorNode && this.selection.anchorNode.nodeType === HTMLArea.DOM.ELEMENT_NODE && this.getType() == 'Control') {
 			element = this.selection.anchorNode.childNodes[this.selection.anchorOffset];
 				// For Safari, the anchor node for a control selection is the control itself
 			if (!element) {
@@ -732,7 +732,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 		if (!/^(a)$/i.test(this.getParentElement().nodeName)) {
 			var autoWrap = function (textNode, tag) {
 				var rightText = textNode.nextSibling;
-				if (typeof(tag) === 'string') {
+				if (typeof tag === 'string') {
 					tag = editor.document.createElement(tag);
 				}
 				var a = textNode.parentNode.insertBefore(tag, rightText);

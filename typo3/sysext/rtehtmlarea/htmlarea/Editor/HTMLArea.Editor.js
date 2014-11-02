@@ -24,7 +24,7 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 			all: this.config.tceformsNested,
 			sorted: HTMLArea.util.TYPO3.simplifyNested(this.config.tceformsNested)
 		};
-		this.isNested = !Ext.isEmpty(this.nestedParentElements.sorted);
+		this.isNested = this.nestedParentElements.sorted.length > 0;
 			// If in BE, get width of wizards
 		if (Ext.get('typo3-docheader')) {
 			this.wizards = this.textArea.parent().parent().next();
@@ -231,7 +231,7 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 		// Focus on the first editor that is not hidden
 		for (var editorId in RTEarea) {
 			var RTE = RTEarea[editorId];
-			if (typeof RTE.editor === 'undefined' || (RTE.editor.isNested && !HTMLArea.util.TYPO3.allElementsAreDisplayed(RTE.editor.nestedParentElements.sorted))) {
+			if (typeof RTE.editor !== 'object' || RTE.editor === null || (RTE.editor.isNested && !HTMLArea.util.TYPO3.allElementsAreDisplayed(RTE.editor.nestedParentElements.sorted))) {
 				continue;
 			} else {
 				RTE.editor.focus();
@@ -388,7 +388,7 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 	registerPlugin: function (pluginName) {
 		var plugin = HTMLArea[pluginName],
 			isRegistered = false;
-		if (typeof plugin !== 'undefined' && typeof plugin === 'function') {
+		if (typeof plugin === 'function') {
 			var pluginInstance = new plugin(this, pluginName);
 			if (pluginInstance) {
 				var pluginInformation = pluginInstance.getPluginInformation();

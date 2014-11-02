@@ -135,7 +135,7 @@ HTMLArea.Config = Ext.extend(HTMLArea.Config, {
 						url: config.storeUrl
 					});
 				}
-				config.hideLabel = Ext.isEmpty(config.fieldLabel) || Ext.isIE6;
+				config.hideLabel = typeof config.fieldLabel !== 'string' || !config.fieldLabel.length || Ext.isIE6;
 				config.helpTitle = config.tooltip;
 				break;
 			default:
@@ -156,7 +156,7 @@ HTMLArea.Config = Ext.extend(HTMLArea.Config, {
 		if (typeof this.hotKeyList[hotKeyConfiguration.id] !== 'undefined') {
 			HTMLArea.appendToLog('', 'HTMLArea.Config', 'registerHotKey', 'A hotkey with the same key ' + hotKeyConfiguration.id + ' already exists and will be overidden.', 'warn');
 		}
-		if (typeof hotKeyConfiguration.cmd !== 'undefined' && !Ext.isEmpty(hotKeyConfiguration.cmd) && typeof this.buttonsConfig[hotKeyConfiguration.cmd] !== 'undefined') {
+		if (typeof hotKeyConfiguration.cmd === 'string' && hotKeyConfiguration.cmd.length > 0 && typeof this.buttonsConfig[hotKeyConfiguration.cmd] !== 'undefined') {
 			this.hotKeyList[hotKeyConfiguration.id] = hotKeyConfiguration;
 			return true;
 		} else {

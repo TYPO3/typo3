@@ -119,7 +119,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	onRender: function (ct, position){
 			// from Ext.Component
 		if (!this.el && this.autoEl) {
-			if (typeof this.autoEl === 'string') {
+			if (typeof this.autoEl === 'string' && this.autoEl.length > 0) {
 				this.el = document.createElement(this.autoEl);
 			} else {
 					// ExtJS Default method will not work with iframe element
@@ -408,7 +408,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 		}
 			// Make hot key map available, even if empty, so that plugins may add bindings
 		this.hotKeyMap = new Ext.KeyMap(Ext.get(this.document.documentElement));
-		if (!Ext.isEmpty(hotKeys)) {
+		if (hotKeys.length > 0) {
 			this.hotKeyMap.addBinding({
 				key: hotKeys,
 				ctrl: true,

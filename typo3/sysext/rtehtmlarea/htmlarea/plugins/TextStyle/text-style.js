@@ -70,7 +70,7 @@ HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 		 */
 		var buttonId = 'TextStyle';
 		var fieldLabel = this.pageTSconfiguration ? this.pageTSconfiguration.fieldLabel : '';
-		if (Ext.isEmpty(fieldLabel) && this.isButtonInToolbar('I[text_style]')) {
+		if ((typeof fieldLabel !== 'string' || !fieldLabel.length) && this.isButtonInToolbar('I[text_style]')) {
 			fieldLabel = this.localize('text_style');
 		}
 		var dropDownConfiguration = {

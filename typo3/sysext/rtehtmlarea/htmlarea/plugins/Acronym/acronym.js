@@ -81,11 +81,11 @@ HTMLArea.Acronym = Ext.extend(HTMLArea.Plugin, {
 		if (!abbr || !/^(acronym|abbr)$/i.test(abbr.nodeName)) {
 			abbr = editor.getSelection().getFirstAncestorOfType(['acronym', 'abbr']);
 		}
-		var type = !Ext.isEmpty(abbr) ? abbr.nodeName.toLowerCase() : '';
+		var type = typeof abbr === 'object' && abbr !== null ? abbr.nodeName.toLowerCase() : '';
 		this.params = {
 			abbr: abbr,
-			title: !Ext.isEmpty(abbr) ? abbr.title : '',
-			text: !Ext.isEmpty(abbr) ? abbr.innerHTML : this.editor.getSelection().getHtml()
+			title: typeof abbr === 'object' && abbr !== null ? abbr.title : '',
+			text: typeof abbr === 'object' && abbr !== null ? abbr.innerHTML : this.editor.getSelection().getHtml()
 		};
 			// Open the dialogue window
 		this.openDialogue(
@@ -154,7 +154,7 @@ HTMLArea.Acronym = Ext.extend(HTMLArea.Plugin, {
 	 * @return	object		the tab items configuration
 	 */
 	buildTabItemsConfig: function (element) {
-		var type = !Ext.isEmpty(element) ? element.nodeName.toLowerCase() : '';
+		var type = typeof element === 'object' && element !== null ? element.nodeName.toLowerCase() : '';
 		var tabItems = [];
 		var abbrTabItems = [];
 			// abbr tab not shown if the current selection is an acronym
@@ -164,7 +164,7 @@ HTMLArea.Acronym = Ext.extend(HTMLArea.Plugin, {
 			}
 			this.addConfigElement(this.buildUseTermFieldsetConfig((type == 'abbr') ? element : null, 'abbr'), abbrTabItems);
 		}
-		if (!Ext.isEmpty(abbrTabItems)) {
+		if (abbrTabItems.length > 0) {
 			tabItems.push({
 				title: this.localize('Abbreviation'),
 				itemId: 'abbr',
@@ -179,7 +179,7 @@ HTMLArea.Acronym = Ext.extend(HTMLArea.Plugin, {
 			}
 			this.addConfigElement(this.buildUseTermFieldsetConfig((type == 'abbr') ? element : null, 'abbr'), acronymTabItems);
 		}
-		if (!Ext.isEmpty(acronymTabItems)) {
+		if (acronymTabItems.length > 0) {
 			tabItems.push({
 				title: this.localize('Acronym'),
 				itemId: 'acronym',
@@ -280,7 +280,7 @@ HTMLArea.Acronym = Ext.extend(HTMLArea.Plugin, {
 		}, this.configDefaults['combo']));
 		var languageObject = this.getPluginInstance('Language');
 		if (this.getButton('Language')) {
-			var selectedLanguage = !Ext.isEmpty(element) ? languageObject.getLanguageAttribute(element) : 'none';
+			var selectedLanguage = typeof element === 'object' && element !== null ? languageObject.getLanguageAttribute(element) : 'none';
 			function initLanguageStore (store) {
 				if (selectedLanguage !== 'none') {
 					store.removeAt(0);
@@ -420,7 +420,7 @@ HTMLArea.Acronym = Ext.extend(HTMLArea.Plugin, {
 		abbrSelector.setValue(abbr);
 			// Update the language selector
 		var languageSelector = tab.find('itemId', 'language');
-		if (!Ext.isEmpty(languageSelector)) {
+		if (languageSelector.length > 0) {
 			if (language) {
 				languageSelector[0].setValue(language);
 			} else {
@@ -443,7 +443,7 @@ HTMLArea.Acronym = Ext.extend(HTMLArea.Plugin, {
 		termSelector.setValue(term);
 			// Update the language selector
 		var languageSelector = tab.find('itemId', 'language');
-		if (!Ext.isEmpty(languageSelector)) {
+		if (languageSelector.length > 0) {
 			if (language) {
 				languageSelector[0].setValue(language);
 			} else {
@@ -484,7 +484,7 @@ HTMLArea.Acronym = Ext.extend(HTMLArea.Plugin, {
 		var tab = this.dialog.findByType('tabpanel')[0].getActiveTab();
 		var type = tab.getItemId();
 		var languageSelector = tab.find('itemId', 'language');
-		var language = !Ext.isEmpty(languageSelector) ? languageSelector[0].getValue() : '';
+		var language = languageSelector.length > 0 ? languageSelector[0].getValue() : '';
 		var term = tab.find('itemId', 'termSelector')[0].getValue();
 		if (!this.params.abbr) {
 			var abbr = this.editor.document.createElement(type);

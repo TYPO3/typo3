@@ -200,7 +200,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				if (this.removedFieldsets.indexOf('description') === -1) {
 					this.addConfigElement(this.buildDescriptionFieldsetConfig(element), generalTabItems);
 				}
-				if (Ext.isEmpty(element) || this.removedProperties.indexOf('headers') === -1) {
+				if (typeof element !== 'object' || element === null || this.removedProperties.indexOf('headers') === -1) {
 					this.addConfigElement(this.buildSizeAndHeadersFieldsetConfig(element), generalTabItems);
 				}
 				break;
@@ -223,7 +223,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		if (this.removedFieldsets.indexOf('style') == -1 && this.getPluginInstance('BlockStyle')) {
 			this.addConfigElement(this.buildStylingFieldsetConfig(element, buttonId), generalTabItems);
 		}
-		if (!Ext.isEmpty(generalTabItems)) {
+		if (generalTabItems.length > 0) {
 			tabItems.push({
 				title: this.localize('General'),
 				items: generalTabItems
@@ -236,7 +236,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		if (this.removedFieldsets.indexOf('layout') == -1) {
 			this.addConfigElement(this.buildLayoutFieldsetConfig(element), layoutTabItems);
 		}
-		if (!Ext.isEmpty(layoutTabItems)) {
+		if (layoutTabItems.length > 0) {
 			tabItems.push({
 				title: this.localize('Layout'),
 				items: layoutTabItems
@@ -246,7 +246,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		if (this.removedFieldsets.indexOf('language') === -1 && (this.removedProperties.indexOf('language') === -1 || this.removedProperties.indexOf('direction') === -1) && (this.getButton('Language') || this.getButton('LeftToRight') || this.getButton('RightToLeft'))) {
 			this.addConfigElement(this.buildLanguageFieldsetConfig(element), languageTabItems);
 		}
-		if (!Ext.isEmpty(languageTabItems)) {
+		if (languageTabItems.length > 0) {
 			tabItems.push({
 				title: this.localize('Language'),
 				items: languageTabItems
@@ -259,7 +259,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		if (this.removedFieldsets.indexOf('borders') === -1) {
 			this.addConfigElement(this.buildBordersFieldsetConfig(element), alignmentAndBordersTabItems);
 		}
-		if (!Ext.isEmpty(alignmentAndBordersTabItems)) {
+		if (alignmentAndBordersTabItems.length > 0) {
 			tabItems.push({
 				title: this.localize('Alignment') + '/' + this.localize('Border'),
 				items: alignmentAndBordersTabItems
@@ -269,7 +269,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		if (this.removedFieldsets.indexOf('color') === -1) {
 			this.addConfigElement(this.buildColorsFieldsetConfig(element), colorTabItems);
 		}
-		if (!Ext.isEmpty(colorTabItems)) {
+		if (colorTabItems.length > 0) {
 			tabItems.push({
 				title: this.localize('Background and colors'),
 				items: colorTabItems
@@ -1700,7 +1700,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 	 * @return	object		the fieldset configuration object
 	 */
 	buildDescriptionFieldsetConfig: function (table) {
-		if (!Ext.isEmpty(table)) {
+		if (typeof table === 'object' && table !== null) {
 			var caption = table.getElementsByTagName('caption')[0];
 		}
 		return {
@@ -1720,7 +1720,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			    	},{
 				fieldLabel: this.getHelpTip('summary', 'Summary:'),
 				itemId: 'f_summary',
-				value: !Ext.isEmpty(table) ? table.summary : '',
+				value: typeof table === 'object' && table !== null ? table.summary : '',
 				width: 300,
 				helpTitle: typeof TYPO3.ContextHelp !== 'undefined' ? '' : this.localize('Summary of the table purpose and structure')
 			}]
@@ -1735,7 +1735,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 	 */
 	buildSizeAndHeadersFieldsetConfig: function (table) {
 		var itemsConfig = [];
-		if (Ext.isEmpty(table)) {
+		if (typeof table !== 'object' || table === null) {
 			itemsConfig.push({
 				fieldLabel: this.getHelpTip('numberOfRows', 'Number of rows'),
 				labelSeparator: ':',
@@ -1768,7 +1768,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				]
 			});
 			this.removeOptions(store, 'headers');
-			if (Ext.isEmpty(table)) {
+			if (typeof table !== 'object' || table === null) {
 				var selected = (this.properties.headers && this.properties.headers.defaultValue) ? this.properties.headers.defaultValue : 'top';
 			} else {
 				var selected = 'none';
@@ -1797,7 +1797,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		}
 		return {
 			xtype: 'fieldset',
-			title: this.localize(Ext.isEmpty(table) ? 'Size and Headers' : 'Headers'),
+			title: this.localize(typeof table !== 'object' || table === null ? 'Size and Headers' : 'Headers'),
 			defaultType: 'numberfield',
 			defaults: {
 				helpIcon: true
@@ -1909,7 +1909,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		var itemsConfig = [];
 		var languageObject = this.getPluginInstance('Language');
 		if (this.removedProperties.indexOf('language') == -1 && this.getButton('Language')) {
-			var selectedLanguage = !Ext.isEmpty(element) ? languageObject.getLanguageAttribute(element) : 'none';
+			var selectedLanguage = typeof element === 'object' && element !== null ? languageObject.getLanguageAttribute(element) : 'none';
 			function initLanguageStore (store) {
 				if (selectedLanguage !== 'none') {
 					store.removeAt(0);
@@ -1955,7 +1955,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 					]
 				}),
 				width: (this.properties['direction'] && this.properties['dirrection'].width) ? this.properties['direction'].width : 200,
-				value: !Ext.isEmpty(element) && element.dir ? element.dir : 'not set'
+				value: typeof element === 'object' && element !== null && element.dir ? element.dir : 'not set'
 			}, this.configDefaults['combo']));
 		}
 		return {
@@ -1983,14 +1983,14 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			items: [{
 				fieldLabel: this.getHelpTip('cellSpacing', 'Cell spacing:'),
 				itemId: 'f_spacing',
-				value: !Ext.isEmpty(table) ? table.cellSpacing : '',
+				value: typeof table === 'object' && table !== null ? table.cellSpacing : '',
 				width: 30,
 				minValue: 0,
 				helpTitle: typeof TYPO3.ContextHelp !== 'undefined' ? '' : this.localize('Space between adjacent cells')
 				},{
 				fieldLabel: this.getHelpTip('cellPadding', 'Cell padding:'),
 				itemId: 'f_padding',
-				value: !Ext.isEmpty(table) ? table.cellPadding : '',
+				value: typeof table === 'object' && table !== null ? table.cellPadding : '',
 				width: 30,
 				minValue: 0,
 				helpTitle: typeof TYPO3.ContextHelp !== 'undefined' ? '' : this.localize('Space between content and border in cell')

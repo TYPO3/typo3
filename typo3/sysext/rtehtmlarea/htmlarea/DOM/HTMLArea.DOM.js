@@ -185,14 +185,14 @@ HTMLArea.DOM = function () {
 		 * Get the deepest element ancestor of a given node that is of one of the specified types
 		 *
 		 * @param	object		node: the given node
-		 * @param	array		types: an array of nodeNames
+		 * @param	mixed		types: an array of nodeNames, or a nodeName
 		 *
 		 * @return	object		the found ancestor of one of the given types or null
 		 */
 		getFirstAncestorOfType: function (node, types) {
 			var ancestor = null,
 				parent = node;
-			if (!Ext.isEmpty(types)) {
+			if (typeof types !== 'undefined' && types.length > 0) {
 				if (typeof types === 'string') {
 					var types = [types];
 				}

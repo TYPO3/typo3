@@ -273,8 +273,9 @@ HTMLArea.TYPO3Color = Ext.extend(HTMLArea.Plugin, {
 	 * On after render handler: display the color
 	 */
 	onAfterRender: function (field) {
-		if (!Ext.isEmpty(field.getValue())) {
-			this.showColor(field.getValue());
+		var value = field.getValue();
+		if (typeof value === 'string' && value.length > 0) {
+			this.showColor(value);
 		}
 	},
 	/*

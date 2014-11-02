@@ -93,7 +93,7 @@ HTMLArea.Toolbar = Ext.extend(Ext.Container, {
 					} else {
 						// Get the item's config as registered by some plugin
 						var itemConfig = editor.config.buttonsConfig[item];
-						if (!Ext.isEmpty(itemConfig)) {
+						if (typeof itemConfig === 'object' && itemConfig !== null) {
 							itemConfig.id = this.editorId + '-' + itemConfig.id;
 							this.add(itemConfig);
 							firstInGroup = firstInGroup && itemConfig.hidden;

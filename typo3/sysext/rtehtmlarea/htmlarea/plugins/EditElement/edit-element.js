@@ -309,7 +309,7 @@ HTMLArea.EditElement = Ext.extend(HTMLArea.Plugin, {
 			languageConfigurationUrl = this.editorConfiguration.buttons.language.dataUrl;
 		}
 		if (languagePlugin && languageConfigurationUrl && this.removedProperties.indexOf('language') == -1) {
-			var selectedLanguage = !Ext.isEmpty(element) ? languagePlugin.getLanguageAttribute(element) : 'none';
+			var selectedLanguage = typeof element === 'object' && element !== null ? languagePlugin.getLanguageAttribute(element) : 'none';
 			function initLanguageStore (store) {
 				if (selectedLanguage !== 'none') {
 					store.removeAt(0);
@@ -353,7 +353,7 @@ HTMLArea.EditElement = Ext.extend(HTMLArea.Plugin, {
 					]
 				}),
 				width: ((this.properties['direction'] && this.properties['dirrection'].width) ? this.properties['direction'].width : 200),
-				value: !Ext.isEmpty(element) && element.dir ? element.dir : 'not set'
+				value: typeof element === 'object' && element !== null && element.dir ? element.dir : 'not set'
 			}, this.configDefaults['combo']));
 		}
 		return {

@@ -36,7 +36,7 @@ Ext.apply(HTMLArea, {
 	localize: function (label, plural) {
 		var i = plural || 0;
 		var localized = HTMLArea.I18N.dialogs[label] || HTMLArea.I18N.tooltips[label] || HTMLArea.I18N.msg[label] || '';
-		if (typeof localized === 'object' && typeof localized[i] !== 'undefined') {
+		if (typeof localized === 'object' && localized !== null && typeof localized[i] !== 'undefined') {
 			localized = localized[i]['target'];
 		}
 		return localized;
@@ -112,7 +112,7 @@ Ext.apply(HTMLArea, {
 		if (typeof type === 'undefined') {
 			var type = 'info';
 		}
-		if (typeof console !== 'undefined' && typeof console === 'object') {
+		if (typeof console === 'object' && console !== null) {
 			// If console is TYPO3.Backend.DebugConsole, write only error messages
 			if (typeof console.addTab === 'function') {
 				if (type === 'error') {

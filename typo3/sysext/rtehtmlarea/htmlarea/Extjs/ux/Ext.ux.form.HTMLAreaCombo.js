@@ -65,7 +65,7 @@ Ext.ux.form.HTMLAreaCombo = Ext.extend(Ext.form.ComboBox, {
 			var editor = this.getEditor();
 				// In IE, reclaim lost focus on the editor iframe and restore the bookmarked selection
 			if (Ext.isIE) {
-				if (!Ext.isEmpty(this.savedRange)) {
+				if (typeof this.savedRange === 'object' && this.savedRange !== null) {
 					editor.getSelection().selectRange(this.savedRange);
 					this.savedRange = null;
 				}
@@ -116,7 +116,7 @@ Ext.ux.form.HTMLAreaCombo = Ext.extend(Ext.form.ComboBox, {
 	 * Handler invoked in IE when the editor gets the focus back
 	 */
 	restoreSelection: function (event) {
-		if (!Ext.isEmpty(this.savedRange) && this.triggered) {
+		if (typeof this.savedRange === 'object' && this.savedRange !== null && this.triggered) {
 			this.getEditor().getSelection().selectRange(this.savedRange);
 			this.triggered = false;
 		}

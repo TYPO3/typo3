@@ -57,7 +57,7 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 		 */
 		var dropDownId = 'BlockStyle';
 		var fieldLabel = this.pageTSconfiguration ? this.pageTSconfiguration.fieldLabel : '';
-		if (Ext.isEmpty(fieldLabel) && this.isButtonInToolbar('I[Block style label]')) {
+		if ((typeof fieldLabel !== 'string' || !fieldLabel.length) && this.isButtonInToolbar('I[Block style label]')) {
 			fieldLabel = this.localize('Block style label');
 		}
 		var dropDownConfiguration = {
