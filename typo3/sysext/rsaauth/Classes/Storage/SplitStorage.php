@@ -13,22 +13,34 @@ namespace TYPO3\CMS\Rsaauth\Storage;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Utility;
+
 /**
  * This class contains a "split" storage for the data. It keeps part of the data
- * in the database, part in the database.
+ * in the database, part in the session.
  *
  * @author Dmitry Dulepov <dmitry@typo3.org>
  */
-class SplitStorage extends \TYPO3\CMS\Rsaauth\Storage\AbstractStorage {
+class SplitStorage extends AbstractStorage {
+
+	/**
+	 * @var DatabaseConnection;
+	 */
+	protected $databaseConnection;
 
 	/**
 	 * Creates an instance of this class. It checks and initializes PHP
 	 * sessions if necessary.
+	 *
+	 * @param DatabaseConnection $databaseConnection A database connection may be injected here
 	 */
-	public function __construct() {
+	public function __construct(DatabaseConnection $databaseConnection = NULL) {
 		if (session_id() === '') {
 			session_start();
 		}
+		$this->databaseConnection = $databaseConnection ?: $GLOBALS['TYPO3_DB'];
 	}
 
 	/**
@@ -40,11 +52,11 @@ class SplitStorage extends \TYPO3\CMS\Rsaauth\Storage\AbstractStorage {
 	public function get() {
 		$result = NULL;
 		list($keyId, $keyPart1) = $_SESSION['tx_rsaauth_key'];
-		if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($keyId)) {
+		if (Utility\MathUtility::canBeInterpretedAsInteger($keyId)) {
 			// Remove expired keys (more than 30 minutes old)
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_rsaauth_keys', 'crdate<' . ($GLOBALS['EXEC_TIME'] - 30 * 60));
+			$this->databaseConnection->exec_DELETEquery('tx_rsaauth_keys', 'crdate<' . ($GLOBALS['EXEC_TIME'] - 30 * 60));
 			// Get our value
-			$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('key_value', 'tx_rsaauth_keys', 'uid=' . $keyId);
+			$row = $this->databaseConnection->exec_SELECTgetSingleRow('key_value', 'tx_rsaauth_keys', 'uid=' . $keyId);
 			if (is_array($row)) {
 				$result = $keyPart1 . $row['key_value'];
 			}
@@ -63,8 +75,8 @@ class SplitStorage extends \TYPO3\CMS\Rsaauth\Storage\AbstractStorage {
 		if ($key == NULL) {
 			// Remove existing key
 			list($keyId) = $_SESSION['tx_rsaauth_key'];
-			if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($keyId)) {
-				$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_rsaauth_keys', 'uid=' . $keyId);
+			if (Utility\MathUtility::canBeInterpretedAsInteger($keyId)) {
+				$this->databaseConnection->exec_DELETEquery('tx_rsaauth_keys', 'uid=' . $keyId);
 				unset($_SESSION['tx_rsaauth_key']);
 			}
 		} else {
@@ -81,17 +93,17 @@ class SplitStorage extends \TYPO3\CMS\Rsaauth\Storage\AbstractStorage {
 			// Notice: we may not use TCEmain below to insert key part into the
 			// table because TCEmain requires a valid BE user!
 			$time = $GLOBALS['EXEC_TIME'];
-			$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_rsaauth_keys', array(
+			$this->databaseConnection->exec_INSERTquery('tx_rsaauth_keys', array(
 				'pid' => 0,
 				'crdate' => $time,
 				'key_value' => $keyPart2
 			));
-			$keyId = $GLOBALS['TYPO3_DB']->sql_insert_id();
+			$keyId = $this->databaseConnection->sql_insert_id();
 			// Store another part in session
 			$_SESSION['tx_rsaauth_key'] = array($keyId, $keyPart1);
 		}
 		// Remove expired keys (more than 30 minutes old)
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_rsaauth_keys', 'crdate<' . ($GLOBALS['EXEC_TIME'] - 30 * 60));
+		$this->databaseConnection->exec_DELETEquery('tx_rsaauth_keys', 'crdate<' . ($GLOBALS['EXEC_TIME'] - 30 * 60));
 	}
 
 }
