@@ -41,7 +41,7 @@ class NameAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttri
 	 * @return string
 	 */
 	public function getValueWithoutPrefix() {
-		$value = (string) $this->value;
+		$value = (string)$this->value;
 		// Change spaces into hyphens
 		$value = preg_replace('/\\s/', '-', $value);
 		// Remove non-word characters
@@ -85,7 +85,7 @@ class NameAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttri
 	 * @return \TYPO3\CMS\Form\Domain\Model\Attribute\NameAttribute
 	 */
 	public function setAddition($addition) {
-		$this->addition = (string) $addition;
+		$this->addition = (string)$addition;
 		return $this;
 	}
 
@@ -97,7 +97,7 @@ class NameAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttri
 	 * @return void
 	 */
 	public function setReturnValueWithoutPrefix($parameter) {
-		$this->returnValueWithoutPrefix = (bool) $parameter;
+		$this->returnValueWithoutPrefix = (bool)$parameter;
 	}
 
 }

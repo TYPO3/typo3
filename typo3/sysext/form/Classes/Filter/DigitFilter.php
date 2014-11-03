@@ -30,7 +30,7 @@ class DigitFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 	 */
 	public function filter($value) {
 		$pattern = '/[^0-9]/';
-		return preg_replace($pattern, '', (string) $value);
+		return preg_replace($pattern, '', (string)$value);
 	}
 
 }

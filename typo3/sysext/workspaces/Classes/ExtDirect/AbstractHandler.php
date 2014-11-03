@@ -85,7 +85,7 @@ abstract class AbstractHandler {
 	protected function getAffectedElements(\stdClass $parameters) {
 		$affectedElements = array();
 		if ($parameters->type === 'selection') {
-			foreach ((array) $parameters->selection as $element) {
+			foreach ((array)$parameters->selection as $element) {
 				$affectedElements[] = \TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord::create($element->table, $element->liveId, $element->versionId);
 			}
 		} elseif ($parameters->type === 'all') {

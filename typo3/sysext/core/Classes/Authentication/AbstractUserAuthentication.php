@@ -483,9 +483,9 @@ abstract class AbstractUserAuthentication {
 			// If the cookie lifetime is set, use it:
 			$cookieExpire = $isRefreshTimeBasedCookie ? $GLOBALS['EXEC_TIME'] + $this->lifetime : 0;
 			// Use the secure option when the current request is served by a secure connection:
-			$cookieSecure = (bool) $settings['cookieSecure'] && GeneralUtility::getIndpEnv('TYPO3_SSL');
+			$cookieSecure = (bool)$settings['cookieSecure'] && GeneralUtility::getIndpEnv('TYPO3_SSL');
 			// Deliver cookies only via HTTP and prevent possible XSS by JavaScript:
-			$cookieHttpOnly = (bool) $settings['cookieHttpOnly'];
+			$cookieHttpOnly = (bool)$settings['cookieHttpOnly'];
 			// Do not set cookie if cookieSecure is set to "1" (force HTTPS) and no secure channel is used:
 			if ((int)$settings['cookieSecure'] !== 1 || GeneralUtility::getIndpEnv('TYPO3_SSL')) {
 				setcookie($this->name, $this->id, $cookieExpire, $cookiePath, $cookieDomain, $cookieSecure, $cookieHttpOnly);
@@ -855,7 +855,7 @@ abstract class AbstractUserAuthentication {
 		);
 		// Re-create session entry
 		$insertFields = $this->getNewSessionRecord($tempuser);
-		$inserted = (boolean) $this->db->exec_INSERTquery($this->session_table, $insertFields);
+		$inserted = (bool)$this->db->exec_INSERTquery($this->session_table, $insertFields);
 		if (!$inserted) {
 			$message = 'Session data could not be written to DB. Error: ' . $this->db->sql_error();
 			GeneralUtility::sysLog($message, 'Core', GeneralUtility::SYSLOG_SEVERITY_WARNING);

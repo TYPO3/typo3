@@ -168,7 +168,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return void
 	 */
 	public function setUpdateResult($updateResult) {
-		$this->updateResult = (array) $updateResult;
+		$this->updateResult = (array)$updateResult;
 	}
 
 	/**

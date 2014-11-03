@@ -71,7 +71,7 @@ class CheckboxElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractEleme
 	 */
 	public function checkFilterAndSetIncomingDataFromRequest() {
 		if ($this->value === '') {
-			$this->value = (string) $this->getElementId();
+			$this->value = (string)$this->getElementId();
 			$this->setAttribute('value', $this->value);
 		}
 		if ($this->requestHandler->has($this->getName())) {

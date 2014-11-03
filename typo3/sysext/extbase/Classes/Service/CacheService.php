@@ -53,7 +53,7 @@ class CacheService implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Clears the page cache
 	 *
-	 * @param mixed $pageIdsToClear (integer) single or (array) multiple pageIds to clear the cache for
+	 * @param mixed $pageIdsToClear (int) single or (array) multiple pageIds to clear the cache for
 	 * @return void
 	 */
 	public function clearPageCache($pageIdsToClear = NULL) {

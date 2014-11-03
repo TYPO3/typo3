@@ -600,7 +600,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 				$code = '<span title="' . htmlspecialchars($origCode, ENT_QUOTES, 'UTF-8', FALSE) . '">' . $code . '</span>';
 			}
 		}
-		switch ((string) $this->clickTitleMode) {
+		switch ((string)$this->clickTitleMode) {
 			case 'edit':
 				// If the listed table is 'pages' we have to request the permission settings for each page:
 				if ($table == 'pages') {

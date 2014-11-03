@@ -55,8 +55,8 @@ class Typo3Status implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		$severity = \TYPO3\CMS\Reports\Status::OK;
 
 		$xclasses = array_merge(
-			(array) $GLOBALS['TYPO3_CONF_VARS']['BE']['XCLASS'],
-			(array) $GLOBALS['TYPO3_CONF_VARS']['FE']['XCLASS']
+			(array)$GLOBALS['TYPO3_CONF_VARS']['BE']['XCLASS'],
+			(array)$GLOBALS['TYPO3_CONF_VARS']['FE']['XCLASS']
 		);
 
 		$numberOfXclasses = count($xclasses);

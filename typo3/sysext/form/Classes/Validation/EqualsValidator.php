@@ -66,7 +66,7 @@ class EqualsValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	 * @return Rule object
 	 */
 	public function setField($field) {
-		$this->field = (string) $field;
+		$this->field = (string)$field;
 		return $this;
 	}
 

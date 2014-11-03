@@ -86,7 +86,7 @@ class OptionElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement
 	 */
 	public function checkFilterAndSetIncomingDataFromRequest() {
 		if ($this->value === '') {
-			$this->value = (string) $this->getElementId();
+			$this->value = (string)$this->getElementId();
 			$this->setAttribute('value', $this->value);
 		}
 		if (!empty($this->parentName)) {

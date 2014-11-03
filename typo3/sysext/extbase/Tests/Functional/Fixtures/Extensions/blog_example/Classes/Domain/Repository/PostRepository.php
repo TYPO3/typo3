@@ -120,7 +120,7 @@ class PostRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 			->matching(
 				$query->equals('blog', $blog)
 			)
-			->setLimit((integer)$limit)
+			->setLimit((int)$limit)
 			->execute();
 	}
 

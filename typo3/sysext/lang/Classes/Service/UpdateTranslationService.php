@@ -69,7 +69,7 @@ class UpdateTranslationService {
 		if (is_string($locales)) {
 			$locales = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $locales);
 		}
-		$locales = array_flip((array) $locales);
+		$locales = array_flip((array)$locales);
 
 		foreach ($locales as $locale => $key) {
 			$state = static::TRANSLATION_INVALID;

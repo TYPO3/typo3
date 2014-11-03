@@ -118,7 +118,7 @@ class DatabaseTreeNode extends \TYPO3\CMS\Backend\Tree\TreeRepresentationNode {
 	 * @return void
 	 */
 	public function setHasChildren($value) {
-		$this->hasChildren = (bool) $value;
+		$this->hasChildren = (bool)$value;
 	}
 
 	/**

@@ -406,7 +406,7 @@ class LanguageService {
 			}
 				// Localized addition?
 			$lFileRef = $this->localizedFileRef($fileRef);
-			if ($lFileRef && (string) $globalLanguage[$this->lang] === 'EXT') {
+			if ($lFileRef && (string)$globalLanguage[$this->lang] === 'EXT') {
 				$localLanguage = $this->readLLfile($lFileRef);
 				ArrayUtility::mergeRecursiveWithOverrule($globalLanguage, $localLanguage);
 			}

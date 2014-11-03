@@ -103,7 +103,7 @@ class ElementBrowserController {
 		}
 		$this->content = '';
 		// Look for alternative mountpoints
-		switch ((string) $this->mode) {
+		switch ((string)$this->mode) {
 			case 'rte':
 			case 'db':
 			case 'wizard':
@@ -136,7 +136,7 @@ class ElementBrowserController {
 			list($modData, $store) = $this->browser->processSessionData($modData);
 			$GLOBALS['BE_USER']->pushModuleData('browse_links.php', $modData);
 			// Output the correct content according to $this->mode
-			switch ((string) $this->mode) {
+			switch ((string)$this->mode) {
 				case 'rte':
 					$this->content = $this->browser->main_rte();
 					break;

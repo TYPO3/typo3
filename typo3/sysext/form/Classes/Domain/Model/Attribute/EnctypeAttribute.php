@@ -35,7 +35,7 @@ class EnctypeAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAt
 	 * @return string Attribute value
 	 */
 	public function getValue() {
-		$value = strtolower((string) $this->value);
+		$value = strtolower((string)$this->value);
 		if ($value == 'multipart/form-data' || $value == 'application/x-www-form-urlencoded') {
 			$attribute = $value;
 		} elseif (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'])) {

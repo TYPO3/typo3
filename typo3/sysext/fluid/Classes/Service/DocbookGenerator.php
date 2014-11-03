@@ -122,7 +122,7 @@ class DocbookGenerator extends \TYPO3\CMS\Fluid\Service\AbstractGenerator {
 		$row->addChild('entry', $type);
 		$row->addChild('entry', $required);
 		$row->addChild('entry', $description);
-		$row->addChild('entry', (string) $default);
+		$row->addChild('entry', (string)$default);
 	}
 
 	/**

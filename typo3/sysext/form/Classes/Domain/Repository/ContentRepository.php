@@ -31,7 +31,7 @@ class ContentRepository {
 	public function getRecord() {
 		$record = FALSE;
 		$getPostVariables = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('P');
-		$table = (string) $getPostVariables['table'];
+		$table = (string)$getPostVariables['table'];
 		$recordId = (int)$getPostVariables['uid'];
 		$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $recordId);
 		if (is_array($row)) {

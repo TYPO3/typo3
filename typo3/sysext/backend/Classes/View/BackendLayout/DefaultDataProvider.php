@@ -56,7 +56,7 @@ class DefaultDataProvider implements DataProviderInterface {
 	public function getBackendLayout($identifier, $pageId) {
 		$backendLayout = NULL;
 
-		if ((string) $identifier === 'default') {
+		if ((string)$identifier === 'default') {
 			return $this->createDefaultBackendLayout();
 		}
 

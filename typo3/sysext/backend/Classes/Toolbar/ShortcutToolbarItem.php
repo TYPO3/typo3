@@ -102,7 +102,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 	 * @return bool TRUE if user has access, FALSE if not
 	 */
 	public function checkAccess() {
-		return (bool) $GLOBALS['BE_USER']->getTSConfigVal('options.enableBookmarks');
+		return (bool)$GLOBALS['BE_USER']->getTSConfigVal('options.enableBookmarks');
 	}
 
 	/**

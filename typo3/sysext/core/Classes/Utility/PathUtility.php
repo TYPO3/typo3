@@ -51,10 +51,10 @@ class PathUtility {
 				$resolvedTargetPath = '';
 				$sourcePathSteps = 0;
 				if (strlen($sourcePath) > $commonPrefixLength) {
-					$resolvedSourcePath = (string) substr($sourcePath, $commonPrefixLength);
+					$resolvedSourcePath = (string)substr($sourcePath, $commonPrefixLength);
 				}
 				if (strlen($targetPath) > $commonPrefixLength) {
-					$resolvedTargetPath = (string) substr($targetPath, $commonPrefixLength);
+					$resolvedTargetPath = (string)substr($targetPath, $commonPrefixLength);
 				}
 				if ($resolvedSourcePath !== '') {
 					$sourcePathSteps = count(explode('/', $resolvedSourcePath));

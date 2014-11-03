@@ -34,7 +34,7 @@ class LabelAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttr
 	 * @return string Attribute value
 	 */
 	public function getValue() {
-		$attribute = (string) $this->value;
+		$attribute = (string)$this->value;
 		return $attribute;
 	}
 

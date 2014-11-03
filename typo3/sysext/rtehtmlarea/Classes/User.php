@@ -196,7 +196,7 @@ class User {
 									foreach ($files as $filename) {
 										$iInfo = @getimagesize((PATH_site . $v['path'] . $filename));
 										$iInfo = $this->calcWH($iInfo, 50, 100);
-										$ks = (string) (100 + $c);
+										$ks = (string)(100 + $c);
 										$mArray[$ks] = $filename;
 										$mArray[$ks . '.'] = array(
 											'content' => '<img src="' . $this->siteUrl . $v['path'] . $filename . '" />',
@@ -231,7 +231,7 @@ class User {
 								}
 								$logo = $v[$k2i . '.']['_icon'] ?: '';
 								$onClickEvent = '';
-								switch ((string) $v[($k2i . '.')]['mode']) {
+								switch ((string)$v[($k2i . '.')]['mode']) {
 									case 'wrap':
 										$wrap = explode('|', $v[$k2i . '.']['content']);
 										$onClickEvent = 'wrapHTML(' . GeneralUtility::quoteJSvalue($wrap[0]) . ',' . GeneralUtility::quoteJSvalue($wrap[1]) . ',false);';

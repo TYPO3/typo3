@@ -107,7 +107,7 @@ class BetweenValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator impl
 		if ($inclusive === NULL) {
 			$this->inclusive = FALSE;
 		} else {
-			$this->inclusive = (bool) $inclusive;
+			$this->inclusive = (bool)$inclusive;
 		}
 		return $this;
 	}

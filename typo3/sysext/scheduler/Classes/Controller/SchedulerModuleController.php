@@ -179,7 +179,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			}
 		}
 		// Handle chosen action
-		switch ((string) $this->MOD_SETTINGS['function']) {
+		switch ((string)$this->MOD_SETTINGS['function']) {
 			case 'scheduler':
 				// Scheduler's main screen
 				$this->executeTasks();

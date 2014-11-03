@@ -68,7 +68,7 @@ class InArrayValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	 * @return object Rule object
 	 */
 	public function setArray($array) {
-		$this->array = (array) $array;
+		$this->array = (array)$array;
 		return $this;
 	}
 
@@ -79,7 +79,7 @@ class InArrayValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	 * @return object Rule object
 	 */
 	public function setStrict($strict) {
-		$this->strict = (bool) $strict;
+		$this->strict = (bool)$strict;
 		return $this;
 	}
 

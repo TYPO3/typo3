@@ -66,7 +66,7 @@ class DateValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 		if ($format === NULL) {
 			$this->format = '%e-%m-%Y';
 		} else {
-			$this->format = (string) $format;
+			$this->format = (string)$format;
 		}
 		return $this;
 	}

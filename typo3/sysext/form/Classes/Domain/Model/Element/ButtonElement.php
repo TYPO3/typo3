@@ -68,11 +68,11 @@ class ButtonElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement
 		$oldValue = $this->getAttributeValue('value');
 		if (empty($oldValue)) {
 			if (!empty($value)) {
-				$newValue = (string) $value;
+				$newValue = (string)$value;
 			} else {
 				$newValue = $localizationHandler->getLocalLanguageLabel('tx_form_domain_model_element_button.value');
 			}
-			$this->value = (string) $newValue;
+			$this->value = (string)$newValue;
 			$this->setAttribute('value', $newValue);
 		}
 	}

@@ -139,9 +139,9 @@ class ApplicationContextTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function parentContextIsConnectedRecursively() {
 		$context = new ApplicationContext('Production/Foo/Bar');
 		$parentContext = $context->getParent();
-		$this->assertSame('Production/Foo', (string) $parentContext);
+		$this->assertSame('Production/Foo', (string)$parentContext);
 
 		$rootContext = $parentContext->getParent();
-		$this->assertSame('Production', (string) $rootContext);
+		$this->assertSame('Production', (string)$rootContext);
 	}
 }

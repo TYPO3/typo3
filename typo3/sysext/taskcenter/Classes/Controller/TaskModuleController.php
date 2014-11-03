@@ -67,7 +67,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$this->doc->postCode = $this->doc->wrapScriptTags('if (top.fsMod) { top.fsMod.recentIds["web"] = 0; }');
 
 		// Render content depending on the mode
-		$mode = (string) $this->MOD_SETTINGS['mode'];
+		$mode = (string)$this->MOD_SETTINGS['mode'];
 		if ($mode == 'information') {
 			$this->renderInformationContent();
 		} else {
@@ -98,7 +98,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 */
 	protected function renderModuleContent() {
 		$title = ($content = ($actionContent = ''));
-		$chosenTask = (string) $this->MOD_SETTINGS['function'];
+		$chosenTask = (string)$this->MOD_SETTINGS['function'];
 		// Render the taskcenter task as default
 		if (empty($chosenTask) || $chosenTask == 'index') {
 			$chosenTask = 'taskcenter.tasks';
@@ -231,7 +231,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					$additionalClass .= ' last-item';
 				}
 				// Active menu item
-				$active = (string) $this->MOD_SETTINGS['function'] == $item['uid'] ? ' active-task' : '';
+				$active = (string)$this->MOD_SETTINGS['function'] == $item['uid'] ? ' active-task' : '';
 				// Main menu: Render additional syntax to sort tasks
 				if ($mainMenu) {
 					$dragIcon = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/move.gif', 'width="16" height="16" hspace="2"') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.move', TRUE) . '" alt="" />';

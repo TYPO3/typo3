@@ -205,7 +205,7 @@ class TemplateService {
 	 * @param bool $processExtensionStatics
 	 */
 	public function setProcessExtensionStatics($processExtensionStatics) {
-		$this->processExtensionStatics = (bool) $processExtensionStatics;
+		$this->processExtensionStatics = (bool)$processExtensionStatics;
 	}
 
 	/**
@@ -285,7 +285,7 @@ class TemplateService {
 		if (is_array($cc['all'])) {
 			/** @var $matchObj \TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher */
 			$matchObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Configuration\\TypoScript\\ConditionMatching\\ConditionMatcher');
-			$matchObj->setRootline((array) $cc['rootLine']);
+			$matchObj->setRootline((array)$cc['rootLine']);
 			foreach ($cc['all'] as $key => $pre) {
 				if ($matchObj->match($pre)) {
 					$sectionsMatch[$key] = $pre;
@@ -805,7 +805,7 @@ class TemplateService {
 		/** @var $matchObj \TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher */
 		$matchObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Configuration\\TypoScript\\ConditionMatching\\ConditionMatcher');
 		$matchObj->setSimulateMatchConditions($this->matchAlternative);
-		$matchObj->setSimulateMatchResult((bool) $this->matchAll);
+		$matchObj->setSimulateMatchResult((bool)$this->matchAll);
 		// Traverse constants text fields and parse them
 		foreach ($this->constants as $str) {
 			$constants->parse($str, $matchObj);

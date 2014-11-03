@@ -315,7 +315,7 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		array_walk(
 			$expectedPermissions,
 			function(&$value) {
-				$value = (bool) $value;
+				$value = (bool)$value;
 			}
 		);
 

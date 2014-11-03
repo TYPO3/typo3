@@ -33,7 +33,7 @@ class AltAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttrib
 	 * @return string Attribute value
 	 */
 	public function getValue() {
-		$attribute = (string) $this->value;
+		$attribute = (string)$this->value;
 		return $attribute;
 	}
 

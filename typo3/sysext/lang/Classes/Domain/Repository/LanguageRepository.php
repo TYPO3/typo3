@@ -51,7 +51,7 @@ class LanguageRepository {
 	public function __construct() {
 		try {
 			$globalSettings = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getLocalConfigurationValueByPath($this->configurationPath);
-			$this->selectedLanguages = (array) $globalSettings['availableLanguages'];
+			$this->selectedLanguages = (array)$globalSettings['availableLanguages'];
 		} catch (\Exception $e) {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->setLocalConfigurationValueByPath(
 				$this->configurationPath,

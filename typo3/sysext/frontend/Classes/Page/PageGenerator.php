@@ -111,7 +111,7 @@ class PageGenerator {
 		$GLOBALS['TSFE']->dtdAllowsFrames = FALSE;
 		if ($GLOBALS['TSFE']->config['config']['doctype']) {
 			if (in_array(
-				(string) $GLOBALS['TSFE']->config['config']['doctype'],
+				(string)$GLOBALS['TSFE']->config['config']['doctype'],
 				array('xhtml_trans', 'xhtml_frames', 'xhtml_basic', 'xhtml_2', 'html5'),
 				TRUE)
 			) {
@@ -127,7 +127,7 @@ class PageGenerator {
 		if ($GLOBALS['TSFE']->config['config']['xhtmlDoctype']) {
 			$GLOBALS['TSFE']->xhtmlDoctype = $GLOBALS['TSFE']->config['config']['xhtmlDoctype'];
 			// Checking XHTML-docytpe
-			switch ((string) $GLOBALS['TSFE']->config['config']['xhtmlDoctype']) {
+			switch ((string)$GLOBALS['TSFE']->config['config']['xhtmlDoctype']) {
 				case 'xhtml_trans':
 
 				case 'xhtml_strict':
@@ -277,7 +277,7 @@ class PageGenerator {
 		$docTypeParts = array();
 		$xmlDocument = TRUE;
 		// Part 1: XML prologue
-		switch ((string) $GLOBALS['TSFE']->config['config']['xmlprologue']) {
+		switch ((string)$GLOBALS['TSFE']->config['config']['xmlprologue']) {
 			case 'none':
 				$xmlDocument = FALSE;
 				$GLOBALS['TSFE']->config['config']['xhtml_cleaning'] = 'none';

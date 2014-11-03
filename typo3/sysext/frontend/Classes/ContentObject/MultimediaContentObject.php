@@ -71,7 +71,7 @@ class MultimediaContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 					$parts = explode('=', $l);
 					$parameter = strtolower(trim($parts[0]));
 					$value = trim($parts[1]);
-					if ((string) $value != '') {
+					if ((string)$value != '') {
 						$parArray[$parameter] = $parameter . '="' . htmlspecialchars($value) . '"';
 					} else {
 						unset($parArray[$parameter]);

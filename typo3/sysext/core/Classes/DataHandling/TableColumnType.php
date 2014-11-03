@@ -41,7 +41,7 @@ class TableColumnType extends \TYPO3\CMS\Core\Type\Enumeration {
 	 */
 	public function __construct($type = NULL) {
 		if ($type !== NULL) {
-			$type = strtoupper((string) $type);
+			$type = strtoupper((string)$type);
 		}
 
 		parent::__construct($type);

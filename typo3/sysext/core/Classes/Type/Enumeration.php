@@ -142,9 +142,9 @@ abstract class Enumeration implements TypeInterface {
 	 * @return bool
 	 */
 	protected function isValid($value) {
-		$value = (string) $value;
+		$value = (string)$value;
 		foreach (static::$enumConstants[get_class($this)] as $constantValue) {
-			if ($value === (string) $constantValue) {
+			if ($value === (string)$constantValue) {
 				return TRUE;
 			}
 		}

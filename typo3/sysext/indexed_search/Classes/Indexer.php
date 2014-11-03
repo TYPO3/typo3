@@ -247,11 +247,11 @@ class Indexer {
 		$this->conf = array();
 		// Information about page for which the indexing takes place
 		$this->conf['id'] = $id;
-		// Page id	(integer)
+		// Page id	(int)
 		$this->conf['type'] = $type;
-		// Page type (integer)
+		// Page type (int)
 		$this->conf['sys_language_uid'] = $sys_language_uid;
-		// sys_language UID of the language of the indexing (integer)
+		// sys_language UID of the language of the indexing (int)
 		$this->conf['MP'] = $MP;
 		// MP variable, if any (Mount Points) (string)
 		$this->conf['gr_list'] = '0,-1';
@@ -1330,7 +1330,7 @@ class Indexer {
 			// TYPO3 page
 			'item_title' => $this->contentParts['title'],
 			'item_description' => $this->bodyDescription($this->contentParts),
-			'item_mtime' => (int) $this->conf['mtime'],
+			'item_mtime' => (int)$this->conf['mtime'],
 			'item_size' => strlen($this->conf['content']),
 			'tstamp' => $GLOBALS['EXEC_TIME'],
 			'crdate' => $GLOBALS['EXEC_TIME'],
@@ -1916,13 +1916,13 @@ class Indexer {
 			'id' => (int)$this->conf['id'],
 			'type' => (int)$this->conf['type'],
 			'sys_lang' => (int)$this->conf['sys_language_uid'],
-			'MP' => (string) $this->conf['MP'],
+			'MP' => (string)$this->conf['MP'],
 			'cHash' => $this->cHashParams
 		);
 		// Set grouping hash (Identifies a "page" combined of id, type, language, mountpoint and cHash parameters):
 		$this->hash['phash_grouping'] = \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::md5inthash(serialize($hArray));
 		// Add gr_list and set plain phash (Subdivision where special page composition based on login is taken into account as well. It is expected that such pages are normally similar regardless of the login.)
-		$hArray['gr_list'] = (string) $this->conf['gr_list'];
+		$hArray['gr_list'] = (string)$this->conf['gr_list'];
 		$this->hash['phash'] = \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::md5inthash(serialize($hArray));
 	}
 

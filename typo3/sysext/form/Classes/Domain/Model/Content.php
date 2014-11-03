@@ -87,7 +87,7 @@ class Content {
 	 * @return void
 	 */
 	public function setTyposcript(array $typoscript) {
-		$this->typoscript = (array) $typoscript;
+		$this->typoscript = (array)$typoscript;
 	}
 
 	/**

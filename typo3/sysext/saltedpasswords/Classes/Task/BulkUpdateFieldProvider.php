@@ -61,7 +61,7 @@ class BulkUpdateFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldPro
 		$fieldName = 'tx_scheduler[scheduler_saltedpasswordsBulkUpdateCanDeactivateSelf]';
 		$fieldId = 'task_saltedpasswordsBulkUpdateCanDeactivateSelf';
 		$fieldValue = 'IsChecked';
-		$fieldChecked = (bool) $taskInfo['scheduler_saltedpasswordsBulkUpdateCanDeactivateSelf'];
+		$fieldChecked = (bool)$taskInfo['scheduler_saltedpasswordsBulkUpdateCanDeactivateSelf'];
 		$fieldHtml = '<input type="checkbox"' . ' name="' . $fieldName . '"' . ' id="' . $fieldId . '"' . ' value="' . $fieldValue . '"' . ($fieldChecked ? ' checked="checked"' : '') . ' />';
 		$additionalFields[$fieldId] = array(
 			'code' => $fieldHtml,

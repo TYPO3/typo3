@@ -69,7 +69,7 @@ class AlphanumericValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator
 		if ($allowWhiteSpace === NULL) {
 			$this->allowWhiteSpace = FALSE;
 		} else {
-			$this->allowWhiteSpace = (bool) $allowWhiteSpace;
+			$this->allowWhiteSpace = (bool)$allowWhiteSpace;
 		}
 		return $this;
 	}

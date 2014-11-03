@@ -65,7 +65,7 @@ class CleanerCommand extends \TYPO3\CMS\Core\Controller\CommandLineController {
 	public function __construct() {
 		// Running parent class constructor
 		parent::__construct();
-		$this->cleanerModules = (array) $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules'];
+		$this->cleanerModules = (array)$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules'];
 		// Adding options to help archive:
 		$this->cli_options[] = array('-r', 'Execute this tool, otherwise help is shown');
 		$this->cli_options[] = array('-v level', 'Verbosity level 0-3', 'The value of level can be:
@@ -117,7 +117,7 @@ This will show you missing files in the TYPO3 system and only report back if err
 			die;
 		}
 		// Print help
-		$analysisType = (string) $this->cli_args['_DEFAULT'][1];
+		$analysisType = (string)$this->cli_args['_DEFAULT'][1];
 		if (!$analysisType) {
 			$this->cli_validateArgs();
 			$this->cli_help();

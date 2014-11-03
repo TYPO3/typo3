@@ -162,7 +162,7 @@ class AddController {
 						$flexToolObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
 						$curValueOfFlexform = $flexToolObj->getArrayValueByPath($this->P['flexFormPath'], $currentFlexFormData);
 						$insertValue = '';
-						switch ((string) $this->P['params']['setValue']) {
+						switch ((string)$this->P['params']['setValue']) {
 							case 'set':
 								$insertValue = $addEl;
 								break;
@@ -177,7 +177,7 @@ class AddController {
 						$data[$this->P['table']][$this->P['uid']][$this->P['field']] = array();
 						$flexToolObj->setArrayValueByPath($this->P['flexFormPath'], $data[$this->P['table']][$this->P['uid']][$this->P['field']], $insertValue);
 					} else {
-						switch ((string) $this->P['params']['setValue']) {
+						switch ((string)$this->P['params']['setValue']) {
 							case 'set':
 								$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $addEl;
 								break;

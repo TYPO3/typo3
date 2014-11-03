@@ -36,7 +36,7 @@ class TableColumnSubType extends \TYPO3\CMS\Core\Type\Enumeration {
 	 */
 	public function __construct($subType = NULL) {
 		if ($subType !== NULL) {
-			$subType = strtoupper((string) $subType);
+			$subType = strtoupper((string)$subType);
 		}
 
 		parent::__construct($subType);

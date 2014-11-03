@@ -105,8 +105,8 @@ class LocallangXmlParser extends \TYPO3\CMS\Core\Localization\Parser\AbstractXml
 		foreach ($children as $translationElement) {
 			if ($translationElement->getName() === 'label') {
 				// If restype would be set, it could be metadata from Gettext to XLIFF conversion (and we don't need this data)
-				$parsedData[(string) $translationElement['index']][0] = array(
-					$element => (string) $translationElement
+				$parsedData[(string)$translationElement['index']][0] = array(
+					$element => (string)$translationElement
 				);
 			}
 		}

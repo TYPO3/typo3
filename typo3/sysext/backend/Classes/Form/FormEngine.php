@@ -1786,7 +1786,7 @@ class FormEngine {
 			$typeNum = $GLOBALS['TCA'][$table]['types']['0'] ? 0 : 1;
 		}
 		// Force to string. Necessary for eg '-1' to be recognized as a type value.
-		$typeNum = (string) $typeNum;
+		$typeNum = (string)$typeNum;
 		return $typeNum;
 	}
 
@@ -2589,7 +2589,7 @@ class FormEngine {
 					} else {
 						$icon = $iTitle;
 					}
-					switch ((string) $wConf['type']) {
+					switch ((string)$wConf['type']) {
 						case 'userFunc':
 
 						case 'script':
@@ -2676,7 +2676,7 @@ class FormEngine {
 
 								$url = $this->backPath . $wScript . (strstr($wScript, '?') ? '' : '?');
 								// If "script" type, create the links around the icon:
-								if ((string) $wConf['type'] === 'script') {
+								if ((string)$wConf['type'] === 'script') {
 									$aUrl = $url . GeneralUtility::implodeArrayForUrl('', array('P' => $params));
 									$outArr[] = '<a href="' . htmlspecialchars($aUrl) . '" onclick="this.blur(); return !TBE_EDITOR.isFormChanged();">' . $icon . '</a>';
 								} else {
@@ -2686,7 +2686,7 @@ class FormEngine {
 									$params['hmac'] = GeneralUtility::hmac($params['formName'] . $params['itemName'], 'wizard_js');
 									$params['fieldChangeFunc'] = $fieldChangeFunc;
 									$params['fieldChangeFuncHash'] = GeneralUtility::hmac(serialize($fieldChangeFunc));
-									switch ((string) $wConf['type']) {
+									switch ((string)$wConf['type']) {
 										case 'popup':
 										case 'colorbox':
 											// Current form value is passed as P[currentValue]!
@@ -2704,7 +2704,7 @@ class FormEngine {
 												. 'vHWin.focus();return false;';
 											// Setting "colorBoxLinks" - user LATER to wrap around the color box as well:
 											$colorBoxLinks = array('<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">', '</a>');
-											if ((string) $wConf['type'] == 'popup') {
+											if ((string)$wConf['type'] == 'popup') {
 												$outArr[] = $colorBoxLinks[0] . $icon . $colorBoxLinks[1];
 											}
 											break;
@@ -2774,7 +2774,7 @@ class FormEngine {
 							break;
 					}
 					// Color wizard colorbox:
-					if ((string) $wConf['type'] === 'colorbox') {
+					if ((string)$wConf['type'] === 'colorbox') {
 						$dim = GeneralUtility::intExplode('x', $wConf['dim']);
 						$dX = MathUtility::forceIntegerInRange($dim[0], 1, 200, 20);
 						$dY = MathUtility::forceIntegerInRange($dim[1], 1, 200, 20);

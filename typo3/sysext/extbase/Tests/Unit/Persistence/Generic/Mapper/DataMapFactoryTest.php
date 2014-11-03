@@ -489,7 +489,7 @@ class DataMapFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$dataMapFactory->_call('setType', $columnMap, $columnConfiguration);
 
-		$this->assertEquals($type, (string) $columnMap->getType());
-		$this->assertEquals($internalType, (string) $columnMap->getInternalType());
+		$this->assertEquals($type, (string)$columnMap->getType());
+		$this->assertEquals($internalType, (string)$columnMap->getInternalType());
 	}
 }

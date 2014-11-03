@@ -362,7 +362,7 @@ abstract class AbstractElement {
 	 * @return void
 	 */
 	public function setLayout($layout = '') {
-		$this->layout = (string) $layout;
+		$this->layout = (string)$layout;
 	}
 
 	/**
@@ -381,7 +381,7 @@ abstract class AbstractElement {
 	 * @return void
 	 */
 	public function setValue($value = '') {
-		$this->value = (string) $value;
+		$this->value = (string)$value;
 	}
 
 	/**
@@ -400,7 +400,7 @@ abstract class AbstractElement {
 	 * @return void
 	 */
 	public function setData($data = '') {
-		$this->data = (string) $data;
+		$this->data = (string)$data;
 	}
 
 	/**

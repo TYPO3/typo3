@@ -353,7 +353,7 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function read($id) {
 		$sessionFile = $this->getSessionFile($id);
-		return (string) (@file_get_contents($sessionFile));
+		return (string)(@file_get_contents($sessionFile));
 	}
 
 	/**

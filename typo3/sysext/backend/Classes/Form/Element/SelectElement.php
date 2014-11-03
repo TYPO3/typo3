@@ -683,7 +683,7 @@ class SelectElement extends AbstractFormElement {
 			}
 			// Non-selectable element:
 			$nonSel = '';
-			if ((string) $p[1] === '--div--') {
+			if ((string)$p[1] === '--div--') {
 				$nonSel = ' onclick="this.selected=0;" class="c-divider"';
 			}
 			// Icon style for option tag:

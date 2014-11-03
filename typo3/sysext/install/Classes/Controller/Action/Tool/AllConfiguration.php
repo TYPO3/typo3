@@ -90,7 +90,7 @@ class AllConfiguration extends Action\AbstractAction {
 					} elseif (preg_match('/^(<.*?>)?boolean/i', $description)) {
 						$itemData['type'] = 'checkbox';
 						$itemData['value'] = $value ? '1' : '0';
-						$itemData['checked'] = (boolean)$value;
+						$itemData['checked'] = (bool)$value;
 					} else {
 						$itemData['type'] = 'input';
 						$itemData['value'] = $value;

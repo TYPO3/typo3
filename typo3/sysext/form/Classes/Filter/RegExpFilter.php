@@ -44,7 +44,7 @@ class RegExpFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 	 * @return void
 	 */
 	public function setRegularExpression($expression) {
-		$this->regularExpression = (string) $expression;
+		$this->regularExpression = (string)$expression;
 	}
 
 	/**
@@ -55,7 +55,7 @@ class RegExpFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 	 * @return string
 	 */
 	public function filter($value) {
-		return preg_replace($this->regularExpression, '', (string) $value);
+		return preg_replace($this->regularExpression, '', (string)$value);
 	}
 
 }

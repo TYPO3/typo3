@@ -44,7 +44,7 @@ class AlphanumericFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 	 * @return void
 	 */
 	public function setAllowWhiteSpace($allowWhiteSpace = TRUE) {
-		$this->allowWhiteSpace = (bool) $allowWhiteSpace;
+		$this->allowWhiteSpace = (bool)$allowWhiteSpace;
 	}
 
 	/**
@@ -58,7 +58,7 @@ class AlphanumericFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 	public function filter($value) {
 		$whiteSpace = $this->allowWhiteSpace ? '\\s' : '';
 		$pattern = '/[^\pL\d' . $whiteSpace . ']/u';
-		return preg_replace($pattern, '', (string) $value);
+		return preg_replace($pattern, '', (string)$value);
 	}
 
 }

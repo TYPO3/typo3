@@ -394,7 +394,7 @@ class LoginController {
 					$this->redirectToURL = 'index.php?commandLI=setCookie';
 				}
 			}
-			if ($redirectToURL = (string) $GLOBALS['BE_USER']->getTSConfigVal('auth.BE.redirectToURL')) {
+			if ($redirectToURL = (string)$GLOBALS['BE_USER']->getTSConfigVal('auth.BE.redirectToURL')) {
 				$this->redirectToURL = $redirectToURL;
 				$this->GPinterface = '';
 			}

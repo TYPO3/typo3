@@ -2092,7 +2092,7 @@ class ImportExport {
 			}
 			// Setting db/file blank:
 			foreach ($this->dat['records'][$table . ':' . $uid]['rels'] as $field => $config) {
-				switch ((string) $config['type']) {
+				switch ((string)$config['type']) {
 					case 'db':
 
 					case 'file':
@@ -2225,7 +2225,7 @@ class ImportExport {
 						if ($table === 'sys_file_reference' && $field === 'uid_local') {
 							continue;
 						}
-						switch ((string) $config['type']) {
+						switch ((string)$config['type']) {
 							case 'db':
 								if (is_array($config['itemArray']) && count($config['itemArray'])) {
 									$itemConfig = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
@@ -2417,7 +2417,7 @@ class ImportExport {
 			$thisNewUid = BackendUtility::wsMapId($table, $this->import_mapId[$table][$uid]);
 			// Traverse relation fields of each record
 			foreach ($this->dat['records'][$table . ':' . $uid]['rels'] as $field => $config) {
-				switch ((string) $config['type']) {
+				switch ((string)$config['type']) {
 					case 'flex':
 						// Get XML content and set as default value (string, non-processed):
 						$updateData[$table][$thisNewUid][$field] = $this->dat['records'][$table . ':' . $uid]['data'][$field];
@@ -2630,7 +2630,7 @@ class ImportExport {
 			// Default is current token value:
 			$insertValue = $cfg['subst']['tokenValue'];
 			// Based on mode:
-			switch ((string) $this->softrefCfg[$tokenID]['mode']) {
+			switch ((string)$this->softrefCfg[$tokenID]['mode']) {
 				case 'exclude':
 					// Exclude is a simple passthrough of the value
 					break;
@@ -2640,7 +2640,7 @@ class ImportExport {
 					break;
 				default:
 					// Mapping IDs/creating files: Based on type, look up new value:
-					switch ((string) $cfg['subst']['type']) {
+					switch ((string)$cfg['subst']['type']) {
 						case 'file':
 							// Create / Overwrite file:
 							$insertValue = $this->processSoftReferences_saveFile($cfg['subst']['relFileName'], $cfg, $table, $uid);
@@ -3259,10 +3259,10 @@ class ImportExport {
 	 * @return void
 	 */
 	public function loadInit() {
-		$this->relStaticTables = (array) $this->dat['header']['relStaticTables'];
-		$this->excludeMap = (array) $this->dat['header']['excludeMap'];
-		$this->softrefCfg = (array) $this->dat['header']['softrefCfg'];
-		$this->extensionDependencies = (array) $this->dat['header']['extensionDependencies'];
+		$this->relStaticTables = (array)$this->dat['header']['relStaticTables'];
+		$this->excludeMap = (array)$this->dat['header']['excludeMap'];
+		$this->softrefCfg = (array)$this->dat['header']['softrefCfg'];
+		$this->extensionDependencies = (array)$this->dat['header']['extensionDependencies'];
 		$this->fixCharsets();
 		if (
 			isset($this->dat['header']['meta']['TYPO3_version'])
@@ -3580,7 +3580,7 @@ class ImportExport {
 					}
 				}
 			}
-			$pInfo['preCode'] = $preCode . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, (array) $this->dat['records'][($table . ':' . $uid)]['data'], array('title' => htmlspecialchars(($table . ':' . $uid))));
+			$pInfo['preCode'] = $preCode . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, (array)$this->dat['records'][($table . ':' . $uid)]['data'], array('title' => htmlspecialchars(($table . ':' . $uid))));
 			$pInfo['title'] = htmlspecialchars($record['title']);
 			// View page:
 			if ($table === 'pages') {
@@ -4004,7 +4004,7 @@ class ImportExport {
 	public function getRecordPath($pid) {
 		if (!isset($this->cache_getRecordPath[$pid])) {
 			$clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
-			$this->cache_getRecordPath[$pid] = (string) BackendUtility::getRecordPath($pid, $clause, 20);
+			$this->cache_getRecordPath[$pid] = (string)BackendUtility::getRecordPath($pid, $clause, 20);
 		}
 		return $this->cache_getRecordPath[$pid];
 	}

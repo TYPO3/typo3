@@ -228,7 +228,7 @@ class RecordList {
 			// CBH is all the fields selected for the clipboard, CBC is the checkbox fields which were checked.
 			// By merging we get a full array of checked/unchecked elements
 			// This is set to the 'el' array of the CB after being parsed so only the table in question is registered.
-			$CB['el'] = $dblist->clipObj->cleanUpCBC(array_merge((array) GeneralUtility::_POST('CBH'), (array) GeneralUtility::_POST('CBC')), $this->cmd_table);
+			$CB['el'] = $dblist->clipObj->cleanUpCBC(array_merge((array)GeneralUtility::_POST('CBH'), (array)GeneralUtility::_POST('CBC')), $this->cmd_table);
 		}
 		if (!$this->MOD_SETTINGS['clipBoard']) {
 			// If the clipboard is NOT shown, set the pad to 'normal'.

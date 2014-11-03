@@ -194,7 +194,7 @@ class ElementConditionMatcher {
 		switch ($operator) {
 			case 'REQ':
 				if (strtoupper($operand) === 'TRUE') {
-					$result = (bool) $fieldValue;
+					$result = (bool)$fieldValue;
 				} else {
 					$result = !$fieldValue;
 				}
@@ -245,7 +245,7 @@ class ElementConditionMatcher {
 	 * @return bool
 	 */
 	protected function matchHideForNonAdminsCondition() {
-		return (bool) $this->getBackendUser()->isAdmin();
+		return (bool)$this->getBackendUser()->isAdmin();
 	}
 
 	/**

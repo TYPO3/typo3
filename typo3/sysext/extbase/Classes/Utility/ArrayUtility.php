@@ -272,7 +272,7 @@ class ArrayUtility {
 			throw new \InvalidArgumentException('convertObjectToArray expects either array or object as input, ' . gettype($subject) . ' given.', 1287059709);
 		}
 		if (is_object($subject)) {
-			$subject = (array) $subject;
+			$subject = (array)$subject;
 		}
 		foreach ($subject as $key => $value) {
 			if (is_array($value) || is_object($value)) {

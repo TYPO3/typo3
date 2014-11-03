@@ -409,7 +409,7 @@ class DatabaseConnection {
 	 * @param string $field Name of the field to use in the COUNT() expression (e.g. '*')
 	 * @param string $table Name of the table to count rows for
 	 * @param string $where (optional) WHERE statement of the query
-	 * @return mixed Number of rows counter (integer) or FALSE if something went wrong (boolean)
+	 * @return mixed Number of rows counter (int) or FALSE if something went wrong (bool)
 	 */
 	public function exec_SELECTcountRows($field, $table, $where = '') {
 		$count = FALSE;

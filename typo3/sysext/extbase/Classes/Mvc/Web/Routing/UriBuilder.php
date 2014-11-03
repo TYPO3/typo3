@@ -265,7 +265,7 @@ class UriBuilder {
 	 * @see TSref/typolink.addQueryString
 	 */
 	public function setAddQueryString($addQueryString) {
-		$this->addQueryString = (boolean) $addQueryString;
+		$this->addQueryString = (bool)$addQueryString;
 		return $this;
 	}
 
@@ -329,7 +329,7 @@ class UriBuilder {
 	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
 	 */
 	public function setArgumentPrefix($argumentPrefix) {
-		$this->argumentPrefix = (string) $argumentPrefix;
+		$this->argumentPrefix = (string)$argumentPrefix;
 		return $this;
 	}
 
@@ -348,7 +348,7 @@ class UriBuilder {
 	 * @api
 	 */
 	public function setLinkAccessRestrictedPages($linkAccessRestrictedPages) {
-		$this->linkAccessRestrictedPages = (boolean) $linkAccessRestrictedPages;
+		$this->linkAccessRestrictedPages = (bool)$linkAccessRestrictedPages;
 		return $this;
 	}
 
@@ -410,7 +410,7 @@ class UriBuilder {
 	 * @api
 	 */
 	public function setNoCache($noCache) {
-		$this->noCache = (boolean) $noCache;
+		$this->noCache = (bool)$noCache;
 		return $this;
 	}
 
@@ -431,7 +431,7 @@ class UriBuilder {
 	 * @api
 	 */
 	public function setUseCacheHash($useCacheHash) {
-		$this->useCacheHash = (boolean) $useCacheHash;
+		$this->useCacheHash = (bool)$useCacheHash;
 		return $this;
 	}
 

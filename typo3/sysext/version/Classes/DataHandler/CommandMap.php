@@ -188,7 +188,7 @@ class CommandMap {
 	 * @return \TYPO3\CMS\Version\DataHandler\CommandMap
 	 */
 	public function setWorkspacesSwapMode($workspacesSwapMode) {
-		$this->workspacesSwapMode = (string) $workspacesSwapMode;
+		$this->workspacesSwapMode = (string)$workspacesSwapMode;
 		return $this;
 	}
 
@@ -200,7 +200,7 @@ class CommandMap {
 	 * @return \TYPO3\CMS\Version\DataHandler\CommandMap
 	 */
 	public function setWorkspacesChangeStageMode($workspacesChangeStageMode) {
-		$this->workspacesChangeStageMode = (string) $workspacesChangeStageMode;
+		$this->workspacesChangeStageMode = (string)$workspacesChangeStageMode;
 		return $this;
 	}
 
@@ -212,7 +212,7 @@ class CommandMap {
 	 * @return \TYPO3\CMS\Version\DataHandler\CommandMap
 	 */
 	public function setWorkspacesConsiderReferences($workspacesConsiderReferences) {
-		$this->workspacesConsiderReferences = (bool) $workspacesConsiderReferences;
+		$this->workspacesConsiderReferences = (bool)$workspacesConsiderReferences;
 		return $this;
 	}
 

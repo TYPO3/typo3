@@ -47,7 +47,7 @@ class TypeAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttri
 	 * @return string Attribute value
 	 */
 	public function getValue() {
-		$attribute = strtolower((string) $this->value);
+		$attribute = strtolower((string)$this->value);
 		if (empty($attribute) || !in_array($attribute, $this->allowedValues)) {
 			$attribute = 'text';
 		}

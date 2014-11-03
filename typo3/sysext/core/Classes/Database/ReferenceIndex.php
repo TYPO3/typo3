@@ -175,7 +175,7 @@ class ReferenceIndex {
 				$this->relations = array();
 				foreach ($dbrels as $fieldname => $dat) {
 					// Based on type,
-					switch ((string) $dat['type']) {
+					switch ((string)$dat['type']) {
 						case 'db':
 							$this->createEntryData_dbRels($table, $uid, $fieldname, '', $deleted, $dat['itemArray']);
 							break;
@@ -311,7 +311,7 @@ class ReferenceIndex {
 				if (is_array($elements)) {
 					foreach ($elements as $subKey => $el) {
 						if (is_array($el['subst'])) {
-							switch ((string) $el['subst']['type']) {
+							switch ((string)$el['subst']['type']) {
 								case 'db':
 									list($tableName, $recordId) = explode(':', $el['subst']['recordRef']);
 									$this->relations[] = $this->createEntryData($table, $uid, $fieldname, $flexpointer, $deleted, $tableName, $recordId, '', -1, $spKey, $subKey);
@@ -655,7 +655,7 @@ class ReferenceIndex {
 							// Initialize data array that is to be sent to TCEmain afterwards:
 							$dataArray = array();
 							// Based on type,
-							switch ((string) $dat['type']) {
+							switch ((string)$dat['type']) {
 								case 'db':
 									$error = $this->setReferenceValue_dbRels($refRec, $dat['itemArray'], $newValue, $dataArray);
 									if ($error) {

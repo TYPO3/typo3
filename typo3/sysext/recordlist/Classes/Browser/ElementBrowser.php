@@ -330,7 +330,7 @@ class ElementBrowser {
 	 */
 	public function initConfiguration() {
 		// Rich Text Editor specific configuration:
-		if ((string) $this->mode === 'rte') {
+		if ((string)$this->mode === 'rte') {
 			$this->thisConfig = $this->getRTEConfig();
 		}
 	}
@@ -796,7 +796,7 @@ class ElementBrowser {
 	 */
 	public function processSessionData($data) {
 		$store = FALSE;
-		switch ((string) $this->mode) {
+		switch ((string)$this->mode) {
 			case 'db':
 				if (isset($this->expandPage)) {
 					$data['expandPage'] = $this->expandPage;

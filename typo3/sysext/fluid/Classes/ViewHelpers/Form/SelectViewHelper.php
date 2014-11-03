@@ -160,7 +160,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 					$key = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($value, $this->arguments['optionValueField']);
 					if (is_object($key)) {
 						if (method_exists($key, '__toString')) {
-							$key = (string) $key;
+							$key = (string)$key;
 						} else {
 							throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('Identifying value for object of class "' . get_class($value) . '" was an object.', 1247827428);
 						}
@@ -169,7 +169,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 				} elseif ($this->persistenceManager->getIdentifierByObject($value) !== NULL) {
 					$key = $this->persistenceManager->getIdentifierByObject($value);
 				} elseif (method_exists($value, '__toString')) {
-					$key = (string) $value;
+					$key = (string)$value;
 				} else {
 					throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('No identifying value for object of class "' . get_class($value) . '" found.', 1247826696);
 				}
@@ -177,13 +177,13 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 					$value = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($value, $this->arguments['optionLabelField']);
 					if (is_object($value)) {
 						if (method_exists($value, '__toString')) {
-							$value = (string) $value;
+							$value = (string)$value;
 						} else {
 							throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('Label value for object of class "' . get_class($value) . '" was an object without a __toString() method.', 1247827553);
 						}
 					}
 				} elseif (method_exists($value, '__toString')) {
-					$value = (string) $value;
+					$value = (string)$value;
 				// TODO: use $this->persistenceManager->isNewObject() once it is implemented
 				} elseif ($this->persistenceManager->getIdentifierByObject($value) !== NULL) {
 					$value = $this->persistenceManager->getIdentifierByObject($value);
@@ -205,7 +205,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 	 */
 	protected function isSelected($value) {
 		$selectedValue = $this->getSelectedValue();
-		if ($value === $selectedValue || (string) $value === $selectedValue) {
+		if ($value === $selectedValue || (string)$value === $selectedValue) {
 			return TRUE;
 		}
 		if ($this->hasArgument('multiple')) {
@@ -250,7 +250,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 				if ($this->persistenceManager->getIdentifierByObject($valueElement) !== NULL) {
 					return $this->persistenceManager->getIdentifierByObject($valueElement);
 				} else {
-					return (string) $valueElement;
+					return (string)$valueElement;
 				}
 			}
 		} else {

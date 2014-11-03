@@ -49,7 +49,7 @@ class TypoScriptToJsonConverter {
 	 * @return \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement
 	 */
 	public function createElement($class, array $arguments = array()) {
-		$class = strtolower((string) $class);
+		$class = strtolower((string)$class);
 		$className = 'TYPO3\\CMS\\Form\\Domain\\Model\Json\\' . ucfirst($class) . 'JsonElement';
 		$this->addValidationRules($arguments);
 		/** @var $object \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement */

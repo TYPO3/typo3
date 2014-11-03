@@ -78,7 +78,7 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 						if (is_array($singleKeyArray['valueArray.'])) {
 							$temp_accumulated = array();
 							foreach ($singleKeyArray['valueArray.'] as $singleKey => $singleKey_valueArray) {
-								if (is_array($singleKey_valueArray) && (int)$singleKey . '.' === (string) $singleKey) {
+								if (is_array($singleKey_valueArray) && (int)$singleKey . '.' === (string)$singleKey) {
 									$temp_valueArray = array();
 									$valueArrayLabel = isset($singleKey_valueArray['label.']) ? $this->cObj->stdWrap($singleKey_valueArray['label'], $singleKey_valueArray['label.']) : $singleKey_valueArray['label'];
 									list($temp_valueArray[0]) = explode('=', $valueArrayLabel);
@@ -425,7 +425,7 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 						$modeParameters = array();
 					}
 					// Adding evaluation based on settings:
-					switch ((string) $modeParameters[0]) {
+					switch ((string)$modeParameters[0]) {
 						case 'EREG':
 							$fieldlist[] = '_EREG';
 							$fieldlist[] = $modeParameters[1];

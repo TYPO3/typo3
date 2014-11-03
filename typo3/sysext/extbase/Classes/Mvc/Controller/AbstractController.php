@@ -327,7 +327,7 @@ abstract class AbstractController implements ControllerInterface {
 		$this->response->setContent('<html><head><meta http-equiv="refresh" content="' . (int)$delay . ';url=' . $escapedUri . '"/></head></html>');
 		if ($this->response instanceof \TYPO3\CMS\Extbase\Mvc\Web\Response) {
 			$this->response->setStatus($statusCode);
-			$this->response->setHeader('Location', (string) $uri);
+			$this->response->setHeader('Location', (string)$uri);
 		}
 		throw new StopActionException();
 	}
@@ -339,7 +339,7 @@ abstract class AbstractController implements ControllerInterface {
 	 * @return string
 	 */
 	protected function addBaseUriIfNecessary($uri) {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl((string) $uri);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl((string)$uri);
 	}
 
 	/**

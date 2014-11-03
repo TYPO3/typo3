@@ -340,7 +340,7 @@ class File extends AbstractFile {
 	 * @return bool
 	 */
 	public function isMissing() {
-		return (bool) $this->getProperty('missing');
+		return (bool)$this->getProperty('missing');
 	}
 
 	/**
@@ -388,7 +388,7 @@ class File extends AbstractFile {
 	 * @internal Only for usage in Indexer
 	 */
 	public function setIndexingInProgess($indexingState) {
-		$this->indexingInProgress = (boolean)$indexingState;
+		$this->indexingInProgress = (bool)$indexingState;
 	}
 
 	/**

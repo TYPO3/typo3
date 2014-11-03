@@ -628,7 +628,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		}
 		// Select API
 		$this->lastHandlerKey = $this->handler_getFromTableList($table);
-		$hType = (string) $this->handlerCfg[$this->lastHandlerKey]['type'];
+		$hType = (string)$this->handlerCfg[$this->lastHandlerKey]['type'];
 		$sqlResult = NULL;
 		switch ($hType) {
 			case 'native':
@@ -709,7 +709,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		}
 		// Select API
 		$this->lastHandlerKey = $this->handler_getFromTableList($table);
-		$hType = (string) $this->handlerCfg[$this->lastHandlerKey]['type'];
+		$hType = (string)$this->handlerCfg[$this->lastHandlerKey]['type'];
 		$sqlResult = NULL;
 		switch ($hType) {
 			case 'native':
@@ -772,7 +772,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			$fromTable = $from_table;
 		}
 		$this->lastHandlerKey = $this->handler_getFromTableList($fromTable);
-		$hType = (string) $this->handlerCfg[$this->lastHandlerKey]['type'];
+		$hType = (string)$this->handlerCfg[$this->lastHandlerKey]['type'];
 		$sqlResult = NULL;
 		switch ($hType) {
 			case 'native':
@@ -861,7 +861,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		}
 		// Select API
 		$this->lastHandlerKey = $this->handler_getFromTableList($table);
-		$hType = (string) $this->handlerCfg[$this->lastHandlerKey]['type'];
+		$hType = (string)$this->handlerCfg[$this->lastHandlerKey]['type'];
 		$sqlResult = NULL;
 		switch ($hType) {
 			case 'native':
@@ -1056,7 +1056,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * @return string|array Full SQL query for INSERT (unless $rows does not contain any elements in which case it will be FALSE)
 	 */
 	public function INSERTmultipleRows($table, array $fields, array $rows, $no_quote_fields = FALSE) {
-		if ((string) $this->handlerCfg[$this->lastHandlerKey]['type'] === 'native') {
+		if ((string)$this->handlerCfg[$this->lastHandlerKey]['type'] === 'native') {
 			return parent::INSERTmultipleRows($table, $fields, $rows, $no_quote_fields);
 		}
 		$result = array();
@@ -1196,7 +1196,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 */
 	public function SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '') {
 		$this->lastHandlerKey = $this->handler_getFromTableList($from_table);
-		$hType = (string) $this->handlerCfg[$this->lastHandlerKey]['type'];
+		$hType = (string)$this->handlerCfg[$this->lastHandlerKey]['type'];
 		if ($hType === 'adodb' && $this->runningADOdbDriver('postgres')) {
 			// Possibly rewrite the LIMIT to be PostgreSQL-compatible
 			$splitLimit = GeneralUtility::intExplode(',', $limit);
@@ -1408,7 +1408,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			'parameters' => array()
 		);
 		$this->lastHandlerKey = $this->handler_getFromTableList($from_table);
-		$hType = (string) $this->handlerCfg[$this->lastHandlerKey]['type'];
+		$hType = (string)$this->handlerCfg[$this->lastHandlerKey]['type'];
 		if ($hType === 'adodb' && $this->runningADOdbDriver('postgres')) {
 			// Possibly rewrite the LIMIT to be PostgreSQL-compatible
 			$splitLimit = GeneralUtility::intExplode(',', $limit);
@@ -1461,7 +1461,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		$limit = $components['LIMIT'];
 		$precompiledParts = array();
 		$this->lastHandlerKey = $this->handler_getFromTableList($components['ORIG_tableName']);
-		$hType = (string) $this->handlerCfg[$this->lastHandlerKey]['type'];
+		$hType = (string)$this->handlerCfg[$this->lastHandlerKey]['type'];
 		$precompiledParts['handler'] = $hType;
 		$precompiledParts['ORIG_tableName'] = $components['ORIG_tableName'];
 		switch ($hType) {
@@ -1938,7 +1938,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	public function MetaType($type, $table, $maxLength = -1) {
 		$this->lastHandlerKey = $this->handler_getFromTableList($table);
 		$str = '';
-		switch ((string) $this->handlerCfg[$this->lastHandlerKey]['type']) {
+		switch ((string)$this->handlerCfg[$this->lastHandlerKey]['type']) {
 			case 'native':
 				$str = $type;
 				break;
@@ -2682,7 +2682,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		}
 		// Find columns
 		$this->lastHandlerKey = $this->handler_getFromTableList($tableName);
-		switch ((string) $this->handlerCfg[$this->lastHandlerKey]['type']) {
+		switch ((string)$this->handlerCfg[$this->lastHandlerKey]['type']) {
 			case 'native':
 				/** @var \mysqli_result $columns_res */
 				$columns_res = $this->query('SHOW columns FROM ' . $tableName);
@@ -2747,7 +2747,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		}
 		// Find columns
 		$this->lastHandlerKey = $this->handler_getFromTableList($tableName);
-		switch ((string) $this->handlerCfg[$this->lastHandlerKey]['type']) {
+		switch ((string)$this->handlerCfg[$this->lastHandlerKey]['type']) {
 			case 'native':
 				/** @var \mysqli_result $keyRes */
 				$keyRes = $this->query('SHOW keys FROM ' . $tableName);
@@ -3115,7 +3115,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 */
 	public function isConnected() {
 		$result = FALSE;
-		switch ((string) $this->handlerCfg[$this->lastHandlerKey]['type']) {
+		switch ((string)$this->handlerCfg[$this->lastHandlerKey]['type']) {
 			case 'native':
 				$result = isset($this->handlerCfg[$this->lastHandlerKey]['link']);
 				break;

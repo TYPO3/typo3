@@ -353,7 +353,7 @@ class NewContentElementController {
 				$showAll = $wizardGroup['show'] === '*';
 				$groupItems = array();
 				if (is_array($appendWizards[$groupKey . '.']['elements.'])) {
-					$wizardElements = array_merge((array) $wizardGroup['elements.'], $appendWizards[$groupKey . '.']['elements.']);
+					$wizardElements = array_merge((array)$wizardGroup['elements.'], $appendWizards[$groupKey . '.']['elements.']);
 				} else {
 					$wizardElements = $wizardGroup['elements.'];
 				}

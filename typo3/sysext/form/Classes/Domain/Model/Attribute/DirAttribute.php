@@ -42,7 +42,7 @@ class DirAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttrib
 	 * @return string Attribute value
 	 */
 	public function getValue() {
-		$value = strtolower((string) $this->value);
+		$value = strtolower((string)$this->value);
 		if ($value == 'ltr' || $value == 'rtl') {
 			$attribute = $value;
 		}

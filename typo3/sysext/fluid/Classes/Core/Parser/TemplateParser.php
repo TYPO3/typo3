@@ -710,7 +710,7 @@ class TemplateParser {
 	protected function postProcessArgumentsForObjectAccessor(array $arguments) {
 		foreach ($arguments as $argumentName => $argumentValue) {
 			if (!($argumentValue instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode)) {
-				$arguments[$argumentName] = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\TextNode', (string) $argumentValue);
+				$arguments[$argumentName] = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\TextNode', (string)$argumentValue);
 			}
 		}
 		return $arguments;

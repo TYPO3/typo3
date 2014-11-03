@@ -307,7 +307,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
 	 * @param bool $clone
 	 */
 	public function _setClone($clone) {
-		$this->_isClone = (boolean) $clone;
+		$this->_isClone = (bool)$clone;
 	}
 
 	/**
@@ -325,6 +325,6 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
 	 * @return string
 	 */
 	public function __toString() {
-		return get_class($this) . ':' . (string) $this->uid;
+		return get_class($this) . ':' . (string)$this->uid;
 	}
 }

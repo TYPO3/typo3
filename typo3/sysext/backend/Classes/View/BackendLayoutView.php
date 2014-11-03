@@ -64,7 +64,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface {
 		);
 
 		if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider'])) {
-			$dataProviders = (array) $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider'];
+			$dataProviders = (array)$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider'];
 			foreach ($dataProviders as $identifier => $className) {
 				$dataProviderCollection->add($identifier, $className);
 			}
@@ -96,7 +96,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function addBackendLayoutItems(array $parameters) {
 		$pageId = $this->determinePageId($parameters['table'], $parameters['row']);
-		$pageTsConfig = (array) BackendUtility::getPagesTSconfig($pageId);
+		$pageTsConfig = (array)BackendUtility::getPagesTSconfig($pageId);
 		$identifiersToBeExcluded = $this->getIdentifiersToBeExcluded($pageTsConfig);
 
 		$dataProviderContext = $this->createDataProviderContext()
@@ -170,7 +170,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface {
 	public function getSelectedCombinedIdentifier($pageId) {
 		if (!isset($this->selectedCombinedIdentifier[$pageId])) {
 			$page = $this->getPage($pageId);
-			$this->selectedCombinedIdentifier[$pageId] = (string) $page['backend_layout'];
+			$this->selectedCombinedIdentifier[$pageId] = (string)$page['backend_layout'];
 
 			if ($this->selectedCombinedIdentifier[$pageId] === '-1') {
 				// If it is set to "none" - don't use any
@@ -183,7 +183,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface {
 				array_shift($rootLine);
 				array_pop($rootLine);
 				foreach ($rootLine as $rootLinePage) {
-					$this->selectedCombinedIdentifier[$pageId] = (string) $rootLinePage['backend_layout_next_level'];
+					$this->selectedCombinedIdentifier[$pageId] = (string)$rootLinePage['backend_layout_next_level'];
 					if ($this->selectedCombinedIdentifier[$pageId] === '-1') {
 						// If layout for "next level" is set to "none" - don't use any and stop searching
 						$this->selectedCombinedIdentifier[$pageId] = FALSE;

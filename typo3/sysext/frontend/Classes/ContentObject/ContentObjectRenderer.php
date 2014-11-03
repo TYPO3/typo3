@@ -704,7 +704,7 @@ class ContentObjectRenderer {
 									throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectGetSingleHookInterface', 1195043731);
 								}
 								/** @var $hookObject \TYPO3\CMS\Frontend\ContentObject\ContentObjectGetSingleHookInterface */
-								$content .= $hookObject->getSingleContentObject($name, (array) $conf, $TSkey, $this);
+								$content .= $hookObject->getSingleContentObject($name, (array)$conf, $TSkey, $this);
 							}
 						} else {
 							// Log error in AdminPanel
@@ -1443,7 +1443,7 @@ class ContentObjectRenderer {
 									1380007853
 								);
 							}
-							$oneSourceCollection = $hookObject->getOneSourceCollection((array) $sourceRenderConfiguration, (array) $sourceConfiguration, $oneSourceCollection, $this);
+							$oneSourceCollection = $hookObject->getOneSourceCollection((array)$sourceRenderConfiguration, (array)$sourceConfiguration, $oneSourceCollection, $this);
 						}
 					}
 
@@ -2512,7 +2512,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_required($content = '', $conf = array()) {
-		if ((string) $content === '') {
+		if ((string)$content === '') {
 			$content = '';
 			$this->stopRendering[$this->stdWrapRecursionLevel] = TRUE;
 		}
@@ -4388,7 +4388,7 @@ class ContentObjectRenderer {
 		foreach ($parts as $part) {
 			$theVal = $part[1];
 			$sign = $part[0];
-			if ((string) (int)$theVal === (string) $theVal) {
+			if ((string)(int)$theVal === (string)$theVal) {
 				$theVal = (int)$theVal;
 			} else {
 				$theVal = 0;
@@ -5012,11 +5012,11 @@ class ContentObjectRenderer {
 				if (is_array($conf['addAttributes.'][$uTagName . '.'])) {
 					foreach ($conf['addAttributes.'][$uTagName . '.'] as $kk => $vv) {
 						if (!is_array($vv)) {
-							if ((string) $conf['addAttributes.'][($uTagName . '.')][($kk . '.')]['setOnly'] == 'blank') {
+							if ((string)$conf['addAttributes.'][($uTagName . '.')][($kk . '.')]['setOnly'] == 'blank') {
 								if ((string)$attrib[$kk] === '') {
 									$attrib[$kk] = $vv;
 								}
-							} elseif ((string) $conf['addAttributes.'][($uTagName . '.')][($kk . '.')]['setOnly'] == 'exists') {
+							} elseif ((string)$conf['addAttributes.'][($uTagName . '.')][($kk . '.')]['setOnly'] == 'exists') {
 								if (!isset($attrib[$kk])) {
 									$attrib[$kk] = $vv;
 								}
@@ -5193,7 +5193,7 @@ class ContentObjectRenderer {
 	 */
 	public function getImgResource($file, $fileArray) {
 		if (!is_array($fileArray)) {
-			$fileArray = (array) $fileArray;
+			$fileArray = (array)$fileArray;
 		}
 		$imageResource = NULL;
 		if ($file === 'GIFBUILDER') {
@@ -5320,7 +5320,7 @@ class ContentObjectRenderer {
 		if (isset($imageResource)) {
 			/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectGetImageResourceHookInterface $hookObject */
 			foreach ($this->getGetImgResourceHookObjects() as $hookObject) {
-				$imageResource = $hookObject->getImgResourcePostProcess($file, (array) $fileArray, $imageResource, $this);
+				$imageResource = $hookObject->getImgResourcePostProcess($file, (array)$fileArray, $imageResource, $this);
 			}
 		}
 		return $imageResource;
@@ -6513,7 +6513,7 @@ class ContentObjectRenderer {
 	 * @return string The URL query part (starting with a &)
 	 */
 	public function getQueryArguments($conf, $overruleQueryArguments = array(), $forceOverruleArguments = FALSE) {
-		switch ((string) $conf['method']) {
+		switch ((string)$conf['method']) {
 			case 'GET':
 				$currentQueryArray = GeneralUtility::_GET();
 				break;
@@ -7244,7 +7244,7 @@ class ContentObjectRenderer {
 		$ok = 0;
 		// Points to the field that allows further editing from frontend if not set. If set the record is locked.
 		if (!$GLOBALS['TCA'][$table]['ctrl']['fe_admin_lock'] || !$row[$GLOBALS['TCA'][$table]['ctrl']['fe_admin_lock']]) {
-			// Points to the field (integer) that holds the fe_users-id of the creator fe_user
+			// Points to the field (int) that holds the fe_users-id of the creator fe_user
 			if ($GLOBALS['TCA'][$table]['ctrl']['fe_cruser_id']) {
 				$rowFEUser = (int)$row[$GLOBALS['TCA'][$table]['ctrl']['fe_cruser_id']];
 				if ($rowFEUser && $rowFEUser == $feUserRow['uid']) {
@@ -7255,7 +7255,7 @@ class ContentObjectRenderer {
 			if ($feEditSelf && $table == 'fe_users' && (int)$feUserRow['uid'] === (int)$row['uid']) {
 				$ok = 1;
 			}
-			// Points to the field (integer) that holds the fe_group-id of the creator fe_user's first group
+			// Points to the field (int) that holds the fe_group-id of the creator fe_user's first group
 			if ($GLOBALS['TCA'][$table]['ctrl']['fe_crgroup_id']) {
 				$rowFEUser = (int)$row[$GLOBALS['TCA'][$table]['ctrl']['fe_crgroup_id']];
 				if ($rowFEUser) {
@@ -7284,11 +7284,11 @@ class ContentObjectRenderer {
 		// Returns where-definition that selects user-editable records.
 		$groupList = $allowedGroups ? implode(',', array_intersect(GeneralUtility::trimExplode(',', $feUserRow['usergroup'], TRUE), GeneralUtility::trimExplode(',', $allowedGroups, TRUE))) : $feUserRow['usergroup'];
 		$OR_arr = array();
-		// Points to the field (integer) that holds the fe_users-id of the creator fe_user
+		// Points to the field (int) that holds the fe_users-id of the creator fe_user
 		if ($GLOBALS['TCA'][$table]['ctrl']['fe_cruser_id']) {
 			$OR_arr[] = $GLOBALS['TCA'][$table]['ctrl']['fe_cruser_id'] . '=' . $feUserRow['uid'];
 		}
-		// Points to the field (integer) that holds the fe_group-id of the creator fe_user's first group
+		// Points to the field (int) that holds the fe_group-id of the creator fe_user's first group
 		if ($GLOBALS['TCA'][$table]['ctrl']['fe_crgroup_id']) {
 			$values = GeneralUtility::intExplode(',', $groupList);
 			foreach ($values as $theGroupUid) {
@@ -7951,7 +7951,7 @@ class ContentObjectRenderer {
 		$uid = (int)$uid;
 		if (!isset($this->checkPid_cache[$uid])) {
 			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'pages', 'uid=' . $uid . $this->enableFields('pages') . ' AND doktype NOT IN (' . $this->checkPid_badDoktypeList . ')');
-			$this->checkPid_cache[$uid] = (bool) $count;
+			$this->checkPid_cache[$uid] = (bool)$count;
 		}
 		return $this->checkPid_cache[$uid];
 	}

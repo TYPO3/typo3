@@ -347,7 +347,7 @@ function jumpToUrl(URL) {
 		// Initializes the page rendering object:
 		$this->getPageRenderer();
 		// Setting default scriptID:
-		if (($temp_M = (string) GeneralUtility::_GET('M')) && $GLOBALS['TBE_MODULES']['_PATHS'][$temp_M]) {
+		if (($temp_M = (string)GeneralUtility::_GET('M')) && $GLOBALS['TBE_MODULES']['_PATHS'][$temp_M]) {
 			$this->scriptID = preg_replace('/^.*\\/(sysext|ext)\\//', 'ext/', $GLOBALS['TBE_MODULES']['_PATHS'][$temp_M] . 'index.php');
 		} else {
 			$this->scriptID = preg_replace('/^.*\\/(sysext|ext)\\//', 'ext/', \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix(PATH_thisScript));
@@ -622,7 +622,7 @@ function jumpToUrl(URL) {
 	 */
 	public function makeShortcutUrl($gvList, $setList) {
 		$GET = GeneralUtility::_GET();
-		$storeArray = array_merge(GeneralUtility::compileSelectedGetVarsFromArray($gvList, $GET), array('SET' => GeneralUtility::compileSelectedGetVarsFromArray($setList, (array) $GLOBALS['SOBE']->MOD_SETTINGS)));
+		$storeArray = array_merge(GeneralUtility::compileSelectedGetVarsFromArray($gvList, $GET), array('SET' => GeneralUtility::compileSelectedGetVarsFromArray($setList, (array)$GLOBALS['SOBE']->MOD_SETTINGS)));
 		$storeUrl = GeneralUtility::implodeArrayForUrl('', $storeArray);
 		return $storeUrl;
 	}
@@ -725,7 +725,7 @@ function jumpToUrl(URL) {
 	 * @return void
 	 */
 	public function useCompatibilityTag($useCompatibilityTag = TRUE) {
-		$this->useCompatibilityTag = (bool) $useCompatibilityTag;
+		$this->useCompatibilityTag = (bool)$useCompatibilityTag;
 	}
 
 	/*****************************************

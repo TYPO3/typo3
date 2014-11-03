@@ -356,7 +356,7 @@ class DatabaseTreeDataProvider extends \TYPO3\CMS\Core\Tree\TableConfiguration\A
 	 */
 	protected function getChildrenUidsFromParentRelation(array $row) {
 		$uid = $row['uid'];
-		switch ((string) $this->columnConfiguration['type']) {
+		switch ((string)$this->columnConfiguration['type']) {
 			case 'inline':
 
 			case 'select':
@@ -389,7 +389,7 @@ class DatabaseTreeDataProvider extends \TYPO3\CMS\Core\Tree\TableConfiguration\A
 		$relatedUids = array();
 		$uid = $row['uid'];
 		$value = $row[$this->getLookupField()];
-		switch ((string) $this->columnConfiguration['type']) {
+		switch ((string)$this->columnConfiguration['type']) {
 			case 'inline':
 
 			case 'select':

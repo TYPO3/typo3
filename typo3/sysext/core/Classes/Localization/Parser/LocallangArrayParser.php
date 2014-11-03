@@ -173,9 +173,9 @@ class LocallangArrayParser implements \TYPO3\CMS\Core\Localization\Parser\Locali
 	 * @return array
 	 */
 	protected function getContentFromCacheFile() {
-		$serContent = (array) unserialize(file_get_contents($this->cacheFileName));
+		$serContent = (array)unserialize(file_get_contents($this->cacheFileName));
 		$LOCAL_LANG = $serContent['LOCAL_LANG'];
-		return (array) $LOCAL_LANG;
+		return (array)$LOCAL_LANG;
 	}
 
 	/**
@@ -185,7 +185,7 @@ class LocallangArrayParser implements \TYPO3\CMS\Core\Localization\Parser\Locali
 	 * @return bool
 	 */
 	protected function isWithinWebRoot($fileName) {
-		return (bool) \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($fileName);
+		return (bool)\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($fileName);
 	}
 
 	/**

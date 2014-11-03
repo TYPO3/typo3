@@ -74,7 +74,7 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 		$protocolAndHost = '..';
 		if ($domainName) {
 			$protocol = 'http';
-			$page = (array) $sysPage->getPage($finalPageIdToShow);
+			$page = (array)$sysPage->getPage($finalPageIdToShow);
 			if ($page['url_scheme'] == 2 || $page['url_scheme'] == 0 && \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SSL')) {
 				$protocol = 'https';
 			}

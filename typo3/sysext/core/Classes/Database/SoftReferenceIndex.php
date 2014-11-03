@@ -677,7 +677,7 @@ class SoftReferenceIndex {
 		$elements[$tokenID . ':' . $idx] = array();
 		$elements[$tokenID . ':' . $idx]['matchString'] = $content;
 		// Based on link type, maybe do more:
-		switch ((string) $tLP['LINK_TYPE']) {
+		switch ((string)$tLP['LINK_TYPE']) {
 			case 'mailto':
 
 			case 'url':

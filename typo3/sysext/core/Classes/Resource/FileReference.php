@@ -319,7 +319,7 @@ class FileReference implements FileInterface {
 	 * @return bool
 	 */
 	public function isMissing() {
-		return (bool) $this->originalFile->getProperty('missing');
+		return (bool)$this->originalFile->getProperty('missing');
 	}
 
 	/******************

@@ -122,8 +122,8 @@ class FileWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$simpleRecord = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogRecord', uniqid('test.core.log.fileWriter.simpleRecord.'), \TYPO3\CMS\Core\Log\LogLevel::INFO, 'test record');
 		$recordWithData = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogRecord', uniqid('test.core.log.fileWriter.recordWithData.'), \TYPO3\CMS\Core\Log\LogLevel::ALERT, 'test record with data', array('foo' => array('bar' => 'baz')));
 		return array(
-			'simple record' => array($simpleRecord, trim((string) $simpleRecord)),
-			'record with data' => array($recordWithData, trim((string) $recordWithData))
+			'simple record' => array($simpleRecord, trim((string)$simpleRecord)),
+			'record with data' => array($recordWithData, trim((string)$recordWithData))
 		);
 	}
 

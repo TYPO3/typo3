@@ -117,7 +117,7 @@ class NormalizeCommand {
 	 * @return string Normalized expression
 	 */
 	static protected function normalizeMonthAndWeekdayField($expression, $isMonthField = TRUE) {
-		if ((string) $expression === '*') {
+		if ((string)$expression === '*') {
 			$fieldValues = '*';
 		} else {
 			// Fragment expression by , / and - and substitute three letter code of month and weekday to numbers
@@ -132,7 +132,7 @@ class NormalizeCommand {
 						$rightBound = self::normalizeMonthAndWeekday($rightBound, $isMonthField);
 						$left = $leftBound . '-' . $rightBound;
 					} else {
-						if ((string) $left !== '*') {
+						if ((string)$left !== '*') {
 							$left = self::normalizeMonthAndWeekday($left, $isMonthField);
 						}
 					}
@@ -161,7 +161,7 @@ class NormalizeCommand {
 	 * @return string Normalized expression
 	 */
 	static protected function normalizeIntegerField($expression, $lowerBound = 0, $upperBound = 59) {
-		if ((string) $expression === '*') {
+		if ((string)$expression === '*') {
 			$fieldValues = '*';
 		} else {
 			$listOfCommaValues = explode(',', $expression);
@@ -169,7 +169,7 @@ class NormalizeCommand {
 			foreach ($listOfCommaValues as $listElement) {
 				if (strpos($listElement, '/') !== FALSE) {
 					list($left, $right) = explode('/', $listElement);
-					if ((string) $left === '*') {
+					if ((string)$left === '*') {
 						$leftList = self::convertRangeToListOfValues($lowerBound . '-' . $upperBound);
 					} else {
 						$leftList = self::convertRangeToListOfValues($left);
@@ -188,7 +188,7 @@ class NormalizeCommand {
 		if (strlen($fieldValues) === 0) {
 			throw new \InvalidArgumentException('Unable to convert integer field to list of values: Result list empty.', 1291422012);
 		}
-		if ((string) $fieldValues !== '*') {
+		if ((string)$fieldValues !== '*') {
 			$fieldList = explode(',', $fieldValues);
 			sort($fieldList);
 			$fieldList = array_unique($fieldList);
@@ -200,7 +200,7 @@ class NormalizeCommand {
 			}
 			$fieldValues = implode(',', $fieldList);
 		}
-		return (string) $fieldValues;
+		return (string)$fieldValues;
 	}
 
 	/**
@@ -239,7 +239,7 @@ class NormalizeCommand {
 		} else {
 			throw new \InvalidArgumentException('Unable to convert range to list of values.', 1291234986);
 		}
-		return (string) $resultList;
+		return (string)$resultList;
 	}
 
 	/**
@@ -302,7 +302,7 @@ class NormalizeCommand {
 	 */
 	static protected function normalizeMonthAndWeekday($expression, $isMonth = TRUE) {
 		$expression = $isMonth ? self::normalizeMonth($expression) : self::normalizeWeekday($expression);
-		return (string) $expression;
+		return (string)$expression;
 	}
 
 	/**
@@ -333,7 +333,7 @@ class NormalizeCommand {
 	static protected function normalizeWeekday($weekday) {
 		$normalizedWeekday = FALSE;
 		// 0 (sunday) -> 7
-		if ((string) $weekday === '0') {
+		if ((string)$weekday === '0') {
 			$weekday = 7;
 		}
 		if ($weekday >= 1 && $weekday <= 7) {

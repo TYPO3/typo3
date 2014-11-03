@@ -221,7 +221,7 @@ class Clipboard {
 		if (is_array($CBarr)) {
 			foreach ($CBarr as $k => $v) {
 				$p = explode('|', $k);
-				if ((string) $p[0] != (string) $table || $removeDeselected && !$v) {
+				if ((string)$p[0] != (string)$table || $removeDeselected && !$v) {
 					unset($CBarr[$k]);
 				}
 			}
@@ -779,11 +779,11 @@ class Clipboard {
 				if ($v) {
 					list($table, $uid) = explode('|', $k);
 					if ($table != '_FILE') {
-						if ((!$matchTable || (string) $table == (string) $matchTable) && $GLOBALS['TCA'][$table]) {
+						if ((!$matchTable || (string)$table == (string)$matchTable) && $GLOBALS['TCA'][$table]) {
 							$list[$k] = $pad == 'normal' ? $v : $uid;
 						}
 					} else {
-						if ((string) $table == (string) $matchTable) {
+						if ((string)$table == (string)$matchTable) {
 							$list[$k] = $v;
 						}
 					}

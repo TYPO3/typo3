@@ -469,7 +469,7 @@ class ExtDirectNode extends \TYPO3\CMS\Backend\Tree\TreeNode {
 	 * @return void
 	 */
 	public function setRecord($record) {
-		$this->record = (array) $record;
+		$this->record = (array)$record;
 	}
 
 	/**
@@ -488,7 +488,7 @@ class ExtDirectNode extends \TYPO3\CMS\Backend\Tree\TreeNode {
 	 * @return void
 	 */
 	public function setContextInfo($contextInfo) {
-		$this->contextInfo = (array) $contextInfo;
+		$this->contextInfo = (array)$contextInfo;
 	}
 
 	/**
@@ -497,7 +497,7 @@ class ExtDirectNode extends \TYPO3\CMS\Backend\Tree\TreeNode {
 	 * @return array
 	 */
 	public function getContextInfo() {
-		return (array) $this->contextInfo;
+		return (array)$this->contextInfo;
 	}
 
 	/**

@@ -142,7 +142,7 @@ class Mailer extends \Swift_Mailer {
 		if (is_array($mailSettings)) {
 			$this->mailSettings = $mailSettings;
 		} else {
-			$this->mailSettings = (array) $GLOBALS['TYPO3_CONF_VARS']['MAIL'];
+			$this->mailSettings = (array)$GLOBALS['TYPO3_CONF_VARS']['MAIL'];
 		}
 	}
 

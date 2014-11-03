@@ -34,7 +34,7 @@ class Localization {
 	 * @param string $localLanguageFile File reference to the local language file
 	 */
 	public function __construct($localLanguageFile = 'LLL:EXT:form/Resources/Private/Language/locallang_controller.xlf') {
-		$this->localLanguageFile = (string) $localLanguageFile;
+		$this->localLanguageFile = (string)$localLanguageFile;
 	}
 
 	/**

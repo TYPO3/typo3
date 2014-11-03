@@ -164,7 +164,7 @@ abstract class AbstractElementView {
 	 * @return \DOMDocument|\DOMNode XML part of the view object
 	 */
 	public function render($type = 'element', $returnFirstChild = TRUE) {
-		$useLayout = $this->getLayout((string) $type);
+		$useLayout = $this->getLayout((string)$type);
 		$dom = new \DOMDocument('1.0', 'utf-8');
 		$dom->formatOutput = TRUE;
 		$dom->preserveWhiteSpace = FALSE;
@@ -249,7 +249,7 @@ abstract class AbstractElementView {
 	 * @return void
 	 */
 	public function setAttribute(\DOMElement $domElement, $key) {
-		$value = htmlspecialchars($this->model->getAttributeValue((string) $key), ENT_QUOTES);
+		$value = htmlspecialchars($this->model->getAttributeValue((string)$key), ENT_QUOTES);
 		if (!empty($value)) {
 			$domElement->setAttribute($key, $value);
 		}
@@ -265,7 +265,7 @@ abstract class AbstractElementView {
 	 * @return void
 	 */
 	public function setAttributeWithValueofOtherAttribute(\DOMElement $domElement, $key, $other) {
-		$value = htmlspecialchars($this->model->getAttributeValue((string) $other), ENT_QUOTES);
+		$value = htmlspecialchars($this->model->getAttributeValue((string)$other), ENT_QUOTES);
 		if (!empty($value)) {
 			$domElement->setAttribute($key, $value);
 		}
@@ -278,7 +278,7 @@ abstract class AbstractElementView {
 	 * @return object
 	 */
 	protected function createAdditional($class) {
-		$class = strtolower((string) $class);
+		$class = strtolower((string)$class);
 		$className = 'TYPO3\\CMS\\Form\\View\\Mail\\Html\\Additional\\' . ucfirst($class) . 'AdditionalElementView';
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className, $this->model);
 	}

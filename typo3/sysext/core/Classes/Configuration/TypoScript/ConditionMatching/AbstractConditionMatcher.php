@@ -310,10 +310,10 @@ abstract class AbstractConditionMatcher {
 					$value = trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']);
 				}
 
-				return (bool) GeneralUtility::cmpIP(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $value);
+				return (bool)GeneralUtility::cmpIP(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $value);
 				break;
 			case 'hostname':
-				return (bool) GeneralUtility::cmpFQDN(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $value);
+				return (bool)GeneralUtility::cmpFQDN(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $value);
 				break;
 			case 'hour':
 
@@ -482,7 +482,7 @@ abstract class AbstractConditionMatcher {
 			$splitAgain = explode('|', $vars[1], 2);
 			$k = trim($splitAgain[0]);
 			if ($k) {
-				switch ((string) trim($vars[0])) {
+				switch ((string)trim($vars[0])) {
 					case 'GP':
 						$value = GeneralUtility::_GP($k);
 						break;

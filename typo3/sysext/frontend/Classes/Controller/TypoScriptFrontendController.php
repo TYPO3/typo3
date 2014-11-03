@@ -874,7 +874,7 @@ class TypoScriptFrontendController {
 		}
 		$this->cHash = $cHash;
 		$this->jumpurl = $jumpurl;
-		$this->MP = $this->TYPO3_CONF_VARS['FE']['enable_mount_pids'] ? (string) $MP : '';
+		$this->MP = $this->TYPO3_CONF_VARS['FE']['enable_mount_pids'] ? (string)$MP : '';
 		$this->RDCT = $RDCT;
 		$this->clientInfo = GeneralUtility::clientInfo();
 		$this->uniqueString = md5(microtime());
@@ -2389,8 +2389,8 @@ class TypoScriptFrontendController {
 		$hashParameters = array(
 			'id' => (int)$this->id,
 			'type' => (int)$this->type,
-			'gr_list' => (string) $this->gr_list,
-			'MP' => (string) $this->MP,
+			'gr_list' => (string)$this->gr_list,
+			'MP' => (string)$this->MP,
 			'cHash' => $this->cHash_array,
 			'domainStartPage' => $this->domainStartPage
 		);
@@ -2554,7 +2554,7 @@ class TypoScriptFrontendController {
 					if (GeneralUtility::hideIfNotTranslated($this->page['l18n_cfg'])) {
 						$this->pageNotFoundAndExit('Page is not available in the requested language.');
 					} else {
-						switch ((string) $this->sys_language_mode) {
+						switch ((string)$this->sys_language_mode) {
 							case 'strict':
 								$this->pageNotFoundAndExit('Page is not available in the requested language (strict).');
 								break;
@@ -2856,16 +2856,16 @@ class TypoScriptFrontendController {
 	public function jumpUrl() {
 		if ($this->jumpurl) {
 			if (GeneralUtility::_GP('juSecure')) {
-				$locationData = (string) GeneralUtility::_GP('locationData');
+				$locationData = (string)GeneralUtility::_GP('locationData');
 				// Need a type cast here because mimeType is optional!
-				$mimeType = (string) GeneralUtility::_GP('mimeType');
+				$mimeType = (string)GeneralUtility::_GP('mimeType');
 				$hArr = array(
 					$this->jumpurl,
 					$locationData,
 					$mimeType
 				);
 				$calcJuHash = GeneralUtility::hmac(serialize($hArr));
-				$juHash = (string) GeneralUtility::_GP('juHash');
+				$juHash = (string)GeneralUtility::_GP('juHash');
 				if ($juHash === $calcJuHash) {
 					if ($this->locDataCheck($locationData)) {
 						// 211002 - goes with cObj->filelink() rawurlencode() of filenames so spaces can be allowed.
@@ -2964,7 +2964,7 @@ class TypoScriptFrontendController {
 	 */
 	public function calculateLinkVars() {
 		$this->linkVars = '';
-		$linkVars = GeneralUtility::trimExplode(',', (string) $this->config['config']['linkVars']);
+		$linkVars = GeneralUtility::trimExplode(',', (string)$this->config['config']['linkVars']);
 		if (empty($linkVars)) {
 			return;
 		}

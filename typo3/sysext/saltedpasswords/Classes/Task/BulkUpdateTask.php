@@ -188,7 +188,7 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 * @return bool TRUE if password is md5
 	 */
 	protected function isMd5Password($password) {
-		return (bool) preg_match('/[0-9abcdef]{32,32}/i', $password);
+		return (bool)preg_match('/[0-9abcdef]{32,32}/i', $password);
 	}
 
 	/**

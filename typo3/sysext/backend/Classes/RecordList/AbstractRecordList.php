@@ -185,7 +185,7 @@ abstract class AbstractRecordList {
 	 * @param string $icon Is the <img>+<a> of the record. If not supplied the first 'join'-icon will be a 'line' instead
 	 * @param array $data Is the dataarray, record with the fields. Notice: These fields are (currently) NOT htmlspecialchar'ed before being wrapped in <td>-tags
 	 * @param string $tdParams Is insert in the <td>-tags. Must carry a ' ' as first character
-	 * @param int OBSOLETE - NOT USED ANYMORE. $lMargin is the leftMargin (integer)
+	 * @param int OBSOLETE - NOT USED ANYMORE. $lMargin is the leftMargin (int)
 	 * @param string $altLine Is the HTML <img>-tag for an alternative 'gfx/ol/line.gif'-icon (used in the top)
 	 * @return string HTML content for the table row
 	 */

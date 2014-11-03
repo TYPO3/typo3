@@ -32,7 +32,7 @@ class IdAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttribu
 	 * @return string Attribute value
 	 */
 	public function getValue() {
-		$value = (string) $this->value;
+		$value = (string)$this->value;
 		if ($this->elementClassName === 'TYPO3\\CMS\\Form\\Domain\\Model\\Form') {
 			if (empty($value)) {
 				$value = 'form-' . $GLOBALS['TSFE']->id;

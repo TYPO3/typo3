@@ -291,7 +291,7 @@ class CrawlerHook {
 				$directoryList = GeneralUtility::get_dirs($readpath);
 				if (is_array($directoryList) && $params['depth'] < $cfgRec['depth']) {
 					foreach ($directoryList as $subdir) {
-						if ((string) $subdir != '') {
+						if ((string)$subdir != '') {
 							$files[] = $readpath . $subdir . '/';
 						}
 					}

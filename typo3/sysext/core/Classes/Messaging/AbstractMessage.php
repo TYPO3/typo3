@@ -63,7 +63,7 @@ abstract class AbstractMessage {
 	 * @return void
 	 */
 	public function setTitle($title) {
-		$this->title = (string) $title;
+		$this->title = (string)$title;
 	}
 
 	/**
@@ -82,7 +82,7 @@ abstract class AbstractMessage {
 	 * @return void
 	 */
 	public function setMessage($message) {
-		$this->message = (string) $message;
+		$this->message = (string)$message;
 	}
 
 	/**

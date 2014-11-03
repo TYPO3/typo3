@@ -375,7 +375,7 @@ class Folder implements FolderInterface {
 	 * Prepares the filters in this folder's storage according to a set filter mode.
 	 *
 	 * @param int $filterMode The filter mode to use; one of the FILTER_MODE_* constants
-	 * @return array The backed up filters as an array (NULL if filters were not backed up) and whether to use filters or not (boolean)
+	 * @return array The backed up filters as an array (NULL if filters were not backed up) and whether to use filters or not (bool)
 	 */
 	protected function prepareFiltersInStorage($filterMode) {
 		$backedUpFilters = NULL;

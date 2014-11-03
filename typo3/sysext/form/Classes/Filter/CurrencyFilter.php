@@ -57,7 +57,7 @@ class CurrencyFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 		if (empty($decimalsPoint)) {
 			$this->decimalsPoint = '.';
 		} else {
-			$this->decimalsPoint = (string) $decimalsPoint;
+			$this->decimalsPoint = (string)$decimalsPoint;
 		}
 		return $this;
 	}
@@ -76,7 +76,7 @@ class CurrencyFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 		} elseif ($thousandSeparator === 'none') {
 			$this->thousandSeparator = '';
 		} else {
-			$this->thousandSeparator = (string) $thousandSeparator;
+			$this->thousandSeparator = (string)$thousandSeparator;
 		}
 		return $this;
 	}
@@ -89,7 +89,7 @@ class CurrencyFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 	 * @return string
 	 */
 	public function filter($value) {
-		$value = (double) ((string) $value);
+		$value = (double) ((string)$value);
 		return number_format($value, 2, $this->decimalsPoint, $this->thousandSeparator);
 	}
 

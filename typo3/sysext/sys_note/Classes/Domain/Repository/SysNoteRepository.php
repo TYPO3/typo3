@@ -41,7 +41,7 @@ class SysNoteRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
 	 */
 	public function findByPidsAndAuthor($pids, \TYPO3\CMS\Extbase\Domain\Model\BackendUser $author) {
-		$pids = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', (string) $pids);
+		$pids = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', (string)$pids);
 		$query = $this->createQuery();
 		$query->setOrderings(array(
 			'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING,

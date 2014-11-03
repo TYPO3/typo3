@@ -308,13 +308,13 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 			$diff = $this->installToolSqlParser->getDatabaseExtra($fieldDefinitionsFromFile, $fieldDefinitionsFromCurrentDatabase);
 			$updateStatements = $this->installToolSqlParser->getUpdateSuggestions($diff);
 			$db = $this->getDatabaseConnection();
-			foreach ((array) $updateStatements['add'] as $string) {
+			foreach ((array)$updateStatements['add'] as $string) {
 				$db->admin_query($string);
 			}
-			foreach ((array) $updateStatements['change'] as $string) {
+			foreach ((array)$updateStatements['change'] as $string) {
 				$db->admin_query($string);
 			}
-			foreach ((array) $updateStatements['create_table'] as $string) {
+			foreach ((array)$updateStatements['create_table'] as $string) {
 				$db->admin_query($string);
 			}
 		}

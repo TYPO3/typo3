@@ -1276,7 +1276,7 @@ class InlineElement {
 	 * Handle AJAX calls to localize all records of a parent, localize a single record or to synchronize with the original language parent.
 	 *
 	 * @param string $domObjectId The calling object in hierarchy, that requested a new record.
-	 * @param mixed $type Defines the type 'localize' or 'synchronize' (string) or a single uid to be localized (integer)
+	 * @param mixed $type Defines the type 'localize' or 'synchronize' (string) or a single uid to be localized (int)
 	 * @return array An array to be used for JSON
 	 */
 	protected function synchronizeLocalizeRecords($domObjectId, $type) {
@@ -1418,7 +1418,7 @@ class InlineElement {
 		$top = $this->getStructureLevel(0);
 		// Only do some action if the top record and the current record were saved before
 		if (MathUtility::canBeInterpretedAsInteger($top['uid'])) {
-			$inlineView = (array) unserialize($GLOBALS['BE_USER']->uc['inlineView']);
+			$inlineView = (array)unserialize($GLOBALS['BE_USER']->uc['inlineView']);
 			$inlineViewCurrent = &$inlineView[$top['table']][$top['uid']];
 			$expandUids = GeneralUtility::trimExplode(',', $expand);
 			$collapseUids = GeneralUtility::trimExplode(',', $collapse);
@@ -2463,7 +2463,7 @@ class InlineElement {
 	 */
 	static public function updateInlineView(&$uc, $tce) {
 		if (isset($uc['inlineView']) && is_array($uc['inlineView'])) {
-			$inlineView = (array) unserialize($GLOBALS['BE_USER']->uc['inlineView']);
+			$inlineView = (array)unserialize($GLOBALS['BE_USER']->uc['inlineView']);
 			foreach ($uc['inlineView'] as $topTable => $topRecords) {
 				foreach ($topRecords as $topUid => $childElements) {
 					foreach ($childElements as $childTable => $childRecords) {

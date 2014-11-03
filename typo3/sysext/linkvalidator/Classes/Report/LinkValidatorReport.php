@@ -702,7 +702,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 	 * @return bool Whether the current user is admin
 	 */
 	protected function isCurrentUserAdmin() {
-		return (bool) $GLOBALS['BE_USER']->user['admin'];
+		return (bool)$GLOBALS['BE_USER']->user['admin'];
 	}
 
 }

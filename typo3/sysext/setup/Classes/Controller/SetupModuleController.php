@@ -163,7 +163,7 @@ class SetupModuleController {
 		$beUserId = $GLOBALS['BE_USER']->user['uid'];
 		$storeRec = array();
 		$fieldList = $this->getFieldsFromShowItem();
-		if (is_array($d) && $this->formProtection->validateToken((string) GeneralUtility::_POST('formToken'), 'BE user setup', 'edit')) {
+		if (is_array($d) && $this->formProtection->validateToken((string)GeneralUtility::_POST('formToken'), 'BE user setup', 'edit')) {
 			// UC hashed before applying changes
 			$save_before = md5(serialize($GLOBALS['BE_USER']->uc));
 			// PUT SETTINGS into the ->uc array:

@@ -53,7 +53,7 @@ class QuicktimeObjectContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abs
 		$GLOBALS['TSFE']->register['MMQTID'] = $replaceElementIdString;
 		$qtObject = 'QTObject' . $replaceElementIdString;
 		// Merge with default parameters
-		$conf['params.'] = array_merge((array) $typeConf['default.']['params.'], (array) $conf['params.']);
+		$conf['params.'] = array_merge((array)$typeConf['default.']['params.'], (array)$conf['params.']);
 		if (is_array($conf['params.'])) {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::remapArrayKeys($conf['params.'], $typeConf['mapping.']['params.']);
 			foreach ($conf['params.'] as $key => $value) {

@@ -96,7 +96,7 @@ class DataPreprocessor {
 			$idList = $this->prevPageID;
 		}
 		if ($GLOBALS['TCA'][$table]) {
-			// For each ID value (integer) we
+			// For each ID value (int) we
 			$ids = GeneralUtility::trimExplode(',', $idList, TRUE);
 			foreach ($ids as $id) {
 				// If ID is not blank:
@@ -181,7 +181,7 @@ class DataPreprocessor {
 	 * The resulting, processed row is stored in $this->regTableItems_data[$uniqueItemRef], where $uniqueItemRef is "[tablename]_[id-value]"
 	 *
 	 * @param string $table The table name
-	 * @param string $id The uid value of the record (integer). Can also be a string (NEW-something) if the record is a NEW record.
+	 * @param string $id The uid value of the record (int). Can also be a string (NEW-something) if the record is a NEW record.
 	 * @param int $pid The pid integer. For existing records this is of course the row's "pid" field. For new records it can be either a page id (positive) or a pointer to another record from the SAME table (negative) after which the record should be inserted (or on same page)
 	 * @param array $row The row of the current record. If NEW record, then it may be loaded with default values (by eg. fetchRecord()).
 	 * @return void
@@ -223,7 +223,7 @@ class DataPreprocessor {
 	 * The resulting, processed row will be returned.
 	 *
 	 * @param string $table The table name
-	 * @param string $id The uid value of the record (integer). Can also be a string (NEW-something) if the record is a NEW record.
+	 * @param string $id The uid value of the record (int). Can also be a string (NEW-something) if the record is a NEW record.
 	 * @param int $pid The pid integer. For existing records this is of course the row's "pid" field. For new records it can be either a page id (positive) or a pointer to another record from the SAME table (negative) after which the record should be inserted (or on same page)
 	 * @param array $row The row of the current record. If NEW record, then it may be loaded with default values (by eg. fetchRecord()).
 	 * @param array $TSconfig Tsconfig array

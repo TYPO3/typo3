@@ -217,12 +217,12 @@ class BackendUtility {
 	 */
 	static public function getSQLselectableList($in_list, $tablename, $default_tablename) {
 		$list = array();
-		if ((string) trim($in_list) != '') {
+		if ((string)trim($in_list) != '') {
 			$tempItemArray = explode(',', trim($in_list));
 			foreach ($tempItemArray as $key => $val) {
 				$val = strrev($val);
 				$parts = explode('_', $val, 2);
-				if ((string) trim($parts[0]) != '') {
+				if ((string)trim($parts[0]) != '') {
 					$theID = (int)strrev($parts[0]);
 					$theTable = trim($parts[1]) ? strrev(trim($parts[1])) : $default_tablename;
 					if ($theTable == $tablename) {
@@ -572,7 +572,7 @@ class BackendUtility {
 								if ((string)$iVal[1] !== '') {
 									// Find iMode
 									$iMode = '';
-									switch ((string) $fCfg['authMode']) {
+									switch ((string)$fCfg['authMode']) {
 										case 'explicitAllow':
 											$iMode = 'ALLOW';
 											break;
@@ -821,7 +821,7 @@ class BackendUtility {
 			$typeNum = $GLOBALS['TCA'][$table]['types']['0'] ? 0 : 1;
 		}
 		// Force to string. Necessary for eg '-1' to be recognized as a type value.
-		$typeNum = (string) $typeNum;
+		$typeNum = (string)$typeNum;
 		return $typeNum;
 	}
 
@@ -2096,7 +2096,7 @@ class BackendUtility {
 		$l = '';
 		$db = static::getDatabaseConnection();
 		$lang = static::getLanguageService();
-		switch ((string) $theColConf['type']) {
+		switch ((string)$theColConf['type']) {
 			case 'radio':
 				$l = self::getLabelFromItemlist($table, $col, $value);
 				$l = $lang->sL($l);
@@ -2747,7 +2747,7 @@ class BackendUtility {
 			$urlParts = parse_url($domain);
 			/** @var PageRepository $sysPage */
 			$sysPage = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
-			$page = (array) $sysPage->getPage($pageId);
+			$page = (array)$sysPage->getPage($pageId);
 			$protocol = 'http';
 			if ($page['url_scheme'] == HttpUtility::SCHEME_HTTPS || $page['url_scheme'] == 0 && GeneralUtility::getIndpEnv('TYPO3_SSL')) {
 				$protocol = 'https';
@@ -3052,14 +3052,14 @@ class BackendUtility {
 					if (is_array($var) && (!$dontValidateList || !GeneralUtility::inList($dontValidateList, $key))) {
 						// If the setting is an array or not present in the menu-array, MOD_MENU, then the default value is inserted.
 						if (is_array($settings[$key]) || !isset($MOD_MENU[$key][$settings[$key]])) {
-							$settings[$key] = (string) key($var);
+							$settings[$key] = (string)key($var);
 							$changed = 1;
 						}
 					}
 					// Sets default values (only strings/checkboxes, not menus)
 					if ($setDefaultList && !is_array($var)) {
 						if (GeneralUtility::inList($setDefaultList, $key) && !isset($settings[$key])) {
-							$settings[$key] = (string) $var;
+							$settings[$key] = (string)$var;
 						}
 					}
 				}

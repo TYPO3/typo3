@@ -1409,7 +1409,7 @@ class DataHandler {
 				if (!$this->dontProcessTransformations) {
 					if (isset($fieldArray[$vconf['field']])) {
 						// Look for transformation flag:
-						switch ((string) $incomingFieldArray[('_TRANSFORM_' . $vconf['field'])]) {
+						switch ((string)$incomingFieldArray[('_TRANSFORM_' . $vconf['field'])]) {
 							case 'RTE':
 								$RTEsetup = $this->BE_USER->getTSConfig('RTE', BackendUtility::getPagesTSconfig($tscPID));
 								$thisConfig = BackendUtility::RTEsetup($RTEsetup['properties'], $table, $vconf['field'], $theTypeString);
@@ -3953,7 +3953,7 @@ class DataHandler {
 	 * @param string $table Table name
 	 * @param int $uid Record uid (to be localized)
 	 * @param int $language Language ID (from sys_language table)
-	 * @return mixed The uid (integer) of the new translated record or FALSE (boolean) if something went wrong
+	 * @return mixed The uid (int) of the new translated record or FALSE (bool) if something went wrong
 	 */
 	public function localize($table, $uid, $language) {
 		$newId = FALSE;
@@ -4060,7 +4060,7 @@ class DataHandler {
 	 *
 	 * @param string $table The table of the localized parent record
 	 * @param int $id The uid of the localized parent record
-	 * @param string $command Defines the type 'localize' or 'synchronize' (string) or a single uid to be localized (integer)
+	 * @param string $command Defines the type 'localize' or 'synchronize' (string) or a single uid to be localized (int)
 	 * @return void
 	 */
 	protected function inlineLocalizeSynchronize($table, $id, $command) {
@@ -7002,7 +7002,7 @@ class DataHandler {
 			case 'temp_cached':
 			case 'system':
 				if ($this->admin || $this->BE_USER->getTSConfigVal('options.clearCache.system')
-					|| ((bool) $GLOBALS['TYPO3_CONF_VARS']['SYS']['clearCacheSystem'] === TRUE && $this->admin)) {
+					|| ((bool)$GLOBALS['TYPO3_CONF_VARS']['SYS']['clearCacheSystem'] === TRUE && $this->admin)) {
 					$this->getCacheManager()->flushCachesInGroup('system');
 				}
 				break;
@@ -7264,7 +7264,7 @@ class DataHandler {
 	 * @return bool
 	 */
 	protected function isNestedElementCallRegistered($table, $id, $identifier) {
-		$nestedElementCalls = (array) $this->getMemoryCache()->get('nestedElementCalls');
+		$nestedElementCalls = (array)$this->getMemoryCache()->get('nestedElementCalls');
 		return isset($nestedElementCalls[$identifier][$table][$id]);
 	}
 
@@ -7278,7 +7278,7 @@ class DataHandler {
 	 * @return void
 	 */
 	protected function registerNestedElementCall($table, $id, $identifier) {
-		$nestedElementCalls = (array) $this->getMemoryCache()->get('nestedElementCalls');
+		$nestedElementCalls = (array)$this->getMemoryCache()->get('nestedElementCalls');
 		$nestedElementCalls[$identifier][$table][$id] = TRUE;
 		$this->getMemoryCache()->set('nestedElementCalls', $nestedElementCalls);
 	}
@@ -7304,7 +7304,7 @@ class DataHandler {
 	 * @see versionizeRecord
 	 */
 	protected function isElementToBeDeleted($table, $id) {
-		$elementsToBeDeleted = (array) $this->getMemoryCache()->get('core-t3lib_TCEmain-elementsToBeDeleted');
+		$elementsToBeDeleted = (array)$this->getMemoryCache()->get('core-t3lib_TCEmain-elementsToBeDeleted');
 		return isset($elementsToBeDeleted[$table][$id]);
 	}
 
@@ -7315,7 +7315,7 @@ class DataHandler {
 	 * @see process_datamap
 	 */
 	protected function registerElementsToBeDeleted() {
-		$elementsToBeDeleted = (array) $this->getMemoryCache()->get('core-t3lib_TCEmain-elementsToBeDeleted');
+		$elementsToBeDeleted = (array)$this->getMemoryCache()->get('core-t3lib_TCEmain-elementsToBeDeleted');
 		$this->getMemoryCache()->set('core-t3lib_TCEmain-elementsToBeDeleted', array_merge($elementsToBeDeleted, $this->getCommandMapElements('delete')));
 	}
 

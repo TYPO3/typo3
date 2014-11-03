@@ -1900,9 +1900,9 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				foreach ($parts as $part) {
 					$a = &$a[$part];
 				}
-				$a = array_merge((array) $a, $array);
+				$a = array_merge((array)$a, $array);
 			} else {
-				$this->inlineSettings[$namespace] = array_merge((array) $this->inlineSettings[$namespace], $array);
+				$this->inlineSettings[$namespace] = array_merge((array)$this->inlineSettings[$namespace], $array);
 			}
 		} else {
 			$this->inlineSettings = array_merge($this->inlineSettings, $array);

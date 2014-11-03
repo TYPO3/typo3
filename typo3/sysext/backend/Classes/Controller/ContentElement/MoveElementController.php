@@ -139,7 +139,7 @@ class MoveElementController {
 			// Reset variable to pick up the module content in:
 			$code = '';
 			// IF the table is "pages":
-			if ((string) $this->table == 'pages') {
+			if ((string)$this->table == 'pages') {
 				// Get page record (if accessible):
 				$pageinfo = BackendUtility::readPageAccess($this->page_id, $this->perms_clause);
 				if (is_array($pageinfo) && $GLOBALS['BE_USER']->isInWebMount($pageinfo['pid'], $this->perms_clause)) {
@@ -162,7 +162,7 @@ class MoveElementController {
 				}
 			}
 			// IF the table is "tt_content":
-			if ((string) $this->table == 'tt_content') {
+			if ((string)$this->table == 'tt_content') {
 				// First, get the record:
 				$tt_content_rec = BackendUtility::getRecord('tt_content', $this->moveUid);
 				// ?
@@ -245,9 +245,9 @@ class MoveElementController {
 			'back' => ''
 		);
 		if ($this->page_id) {
-			if ((string) $this->table == 'pages') {
+			if ((string)$this->table == 'pages') {
 				$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'move_el_pages', $GLOBALS['BACK_PATH'], '', TRUE);
-			} elseif ((string) $this->table == 'tt_content') {
+			} elseif ((string)$this->table == 'tt_content') {
 				$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'move_el_cs', $GLOBALS['BACK_PATH'], '', TRUE);
 			}
 			if ($this->R_URI) {

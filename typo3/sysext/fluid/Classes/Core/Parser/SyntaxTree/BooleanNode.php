@@ -234,7 +234,7 @@ class BooleanNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 				if (!self::isComparable($evaluatedLeftSide, $evaluatedRightSide)) {
 					return FALSE;
 				}
-				return (boolean) ((int)$evaluatedLeftSide % (int)$evaluatedRightSide);
+				return (bool)((int)$evaluatedLeftSide % (int)$evaluatedRightSide);
 			case '>':
 				if (!self::isComparable($evaluatedLeftSide, $evaluatedRightSide)) {
 					return FALSE;
@@ -331,7 +331,7 @@ class BooleanNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 			return (!empty($value) && strtolower($value) !== 'false');
 		}
 		if (is_array($value) || (is_object($value) && $value instanceof \Countable)) {
-			return (bool) count($value);
+			return (bool)count($value);
 		}
 		if (is_object($value)) {
 			return TRUE;

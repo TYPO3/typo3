@@ -189,7 +189,7 @@ class LanguageStore implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function getParserInstance($fileReference) {
 		if (isset($this->configuration[$fileReference]['parserClass']) && trim($this->configuration[$fileReference]['parserClass']) !== '') {
-			return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance((string) $this->configuration[$fileReference]['parserClass']);
+			return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance((string)$this->configuration[$fileReference]['parserClass']);
 		} else {
 			throw new \TYPO3\CMS\Core\Localization\Exception\InvalidParserException(sprintf('Invalid parser configuration for the current file (%s)', $fileReference), 1307293692);
 		}
@@ -204,7 +204,7 @@ class LanguageStore implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function getAbsoluteFileReference($fileReference) {
 		if (isset($this->configuration[$fileReference]['fileReference']) && trim($this->configuration[$fileReference]['fileReference']) !== '') {
-			return (string) $this->configuration[$fileReference]['fileReference'];
+			return (string)$this->configuration[$fileReference]['fileReference'];
 		} else {
 			throw new \InvalidArgumentException(sprintf('Invalid file reference configuration for the current file (%s)', $fileReference), 1307293693);
 		}

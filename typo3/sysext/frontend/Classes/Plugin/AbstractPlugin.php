@@ -400,11 +400,11 @@ class AbstractPlugin {
 		if ($this->prefixId) {
 			if ($cache) {
 				$overrulePIvars = $uid ? array('showUid' => $uid) : array();
-				$overrulePIvars = array_merge($overrulePIvars, (array) $mergeArr);
+				$overrulePIvars = array_merge($overrulePIvars, (array)$mergeArr);
 				$str = $this->pi_linkTP($str, array($this->prefixId => $overrulePIvars), $cache, $altPageId);
 			} else {
 				$overrulePIvars = array('showUid' => $uid ?: '');
-				$overrulePIvars = array_merge($overrulePIvars, (array) $mergeArr);
+				$overrulePIvars = array_merge($overrulePIvars, (array)$mergeArr);
 				$str = $this->pi_linkTP_keepPIvars($str, $overrulePIvars, $cache, 0, $altPageId);
 			}
 			// If urlOnly flag, return only URL as it has recently be generated.

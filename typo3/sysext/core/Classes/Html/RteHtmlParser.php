@@ -189,7 +189,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	public function RTE_transform($value, $specConf, $direction = 'rte', $thisConfig = array()) {
 		// Init:
 		$this->tsConfig = $thisConfig;
-		$this->procOptions = (array) $thisConfig['proc.'];
+		$this->procOptions = (array)$thisConfig['proc.'];
 		$this->preserveTags = strtoupper(implode(',', GeneralUtility::trimExplode(',', $this->procOptions['preserveTags'])));
 		// dynamic configuration of blockElementList
 		if ($this->procOptions['blockElementList']) {
@@ -1691,7 +1691,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	protected function applyPlainImageModeSettings($imageInfo, $attribArray) {
 		if ($this->procOptions['plainImageMode']) {
 			// Perform corrections to aspect ratio based on configuration
-			switch ((string) $this->procOptions['plainImageMode']) {
+			switch ((string)$this->procOptions['plainImageMode']) {
 				case 'lockDimensions':
 					$attribArray['width'] = $imageInfo[0];
 					$attribArray['height'] = $imageInfo[1];

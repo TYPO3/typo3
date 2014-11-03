@@ -58,9 +58,9 @@ class Status {
 	 * @param int $severity A severity level. Use one of the constants above!
 	 */
 	public function __construct($title, $value, $message = '', $severity = self::OK) {
-		$this->title = (string) $title;
-		$this->value = (string) $value;
-		$this->message = (string) $message;
+		$this->title = (string)$title;
+		$this->value = (string)$value;
+		$this->message = (string)$message;
 		$this->severity = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($severity, self::NOTICE, self::ERROR, self::OK);
 	}
 

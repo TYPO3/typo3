@@ -249,7 +249,7 @@ class ModuleSettings {
 		}
 		$storageArr = array(
 			'title' => $data['title'],
-			'desc' => (string) $data['desc'],
+			'desc' => (string)$data['desc'],
 			'data' => $storageData,
 			'user' => NULL,
 			'tstamp' => $GLOBALS['EXEC_TIME']

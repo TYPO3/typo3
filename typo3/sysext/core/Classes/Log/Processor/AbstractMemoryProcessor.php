@@ -47,7 +47,7 @@ abstract class AbstractMemoryProcessor extends \TYPO3\CMS\Core\Log\Processor\Abs
 	 * @return void
 	 */
 	public function setRealMemoryUsage($realMemoryUsage) {
-		$this->realMemoryUsage = (bool) $realMemoryUsage;
+		$this->realMemoryUsage = (bool)$realMemoryUsage;
 	}
 
 	/**
@@ -66,7 +66,7 @@ abstract class AbstractMemoryProcessor extends \TYPO3\CMS\Core\Log\Processor\Abs
 	 * @return void
 	 */
 	public function setFormatSize($formatSize) {
-		$this->formatSize = (bool) $formatSize;
+		$this->formatSize = (bool)$formatSize;
 	}
 
 	/**

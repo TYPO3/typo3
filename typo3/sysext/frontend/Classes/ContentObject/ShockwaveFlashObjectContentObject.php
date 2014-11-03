@@ -73,9 +73,9 @@ class ShockwaveFlashObjectContentObject extends \TYPO3\CMS\Frontend\ContentObjec
 		$conf['filename'] = $filename;
 		$conf['prefix'] = $prefix;
 		// Merge with default parameters
-		$conf['flashvars.'] = array_merge((array) $typeConf['default.']['flashvars.'], (array) $conf['flashvars.']);
-		$conf['params.'] = array_merge((array) $typeConf['default.']['params.'], (array) $conf['params.']);
-		$conf['attributes.'] = array_merge((array) $typeConf['default.']['attributes.'], (array) $conf['attributes.']);
+		$conf['flashvars.'] = array_merge((array)$typeConf['default.']['flashvars.'], (array)$conf['flashvars.']);
+		$conf['params.'] = array_merge((array)$typeConf['default.']['params.'], (array)$conf['params.']);
+		$conf['attributes.'] = array_merge((array)$typeConf['default.']['attributes.'], (array)$conf['attributes.']);
 		$conf['embedParams'] = 'flashvars, params, attributes';
 		// Hook for manipulating the conf array, it's needed for some players like flowplayer
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['swfParamTransform'])) {

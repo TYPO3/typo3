@@ -155,7 +155,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 */
 	protected function insertImage() {
 		$table = htmlspecialchars(GeneralUtility::_GP('table'));
-		$uid = (int) GeneralUtility::_GP('uid');
+		$uid = (int)GeneralUtility::_GP('uid');
 		if (GeneralUtility::_GP('insertImage') && $uid) {
 			/** @var $fileObject Resource\File */
 			$fileObject = Resource\ResourceFactory::getInstance()->getFileObject($uid);

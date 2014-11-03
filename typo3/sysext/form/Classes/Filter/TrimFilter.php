@@ -59,9 +59,9 @@ class TrimFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 	 */
 	public function filter($value) {
 		if ($this->characterList === NULL) {
-			return trim((string) $value);
+			return trim((string)$value);
 		} else {
-			return trim((string) $value, $this->characterList);
+			return trim((string)$value, $this->characterList);
 		}
 	}
 

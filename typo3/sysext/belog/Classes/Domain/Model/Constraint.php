@@ -230,7 +230,7 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return bool
 	 */
 	public function getGroupByPage() {
-		return (bool) $this->groupByPage;
+		return (bool)$this->groupByPage;
 	}
 
 	/**
@@ -325,7 +325,7 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return bool
 	 */
 	public function getIsInPageContext() {
-		return (bool) $this->isInPageContext;
+		return (bool)$this->isInPageContext;
 	}
 
 	/**

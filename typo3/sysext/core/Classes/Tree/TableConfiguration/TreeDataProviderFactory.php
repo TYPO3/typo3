@@ -71,7 +71,7 @@ class TreeDataProviderFactory {
 				$dataProvider->setRootUid((int)$treeConfiguration['rootUid']);
 			}
 			if (isset($treeConfiguration['appearance']['expandAll'])) {
-				$dataProvider->setExpandAll((bool) $treeConfiguration['appearance']['expandAll']);
+				$dataProvider->setExpandAll((bool)$treeConfiguration['appearance']['expandAll']);
 			}
 			if (isset($treeConfiguration['appearance']['maxLevels'])) {
 				$dataProvider->setLevelMaximum((int)$treeConfiguration['appearance']['maxLevels']);

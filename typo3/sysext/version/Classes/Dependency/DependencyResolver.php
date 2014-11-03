@@ -55,7 +55,7 @@ class DependencyResolver {
 	 * @param int $workspace
 	 */
 	public function setWorkspace($workspace) {
-		$this->workspace = (int) $workspace;
+		$this->workspace = (int)$workspace;
 	}
 
 	/**
@@ -103,7 +103,7 @@ class DependencyResolver {
 	 * @return \TYPO3\CMS\Version\Dependency\DependencyResolver
 	 */
 	public function setOuterMostParentsRequireReferences($outerMostParentsRequireReferences) {
-		$this->outerMostParentsRequireReferences = (bool) $outerMostParentsRequireReferences;
+		$this->outerMostParentsRequireReferences = (bool)$outerMostParentsRequireReferences;
 		return $this;
 	}
 

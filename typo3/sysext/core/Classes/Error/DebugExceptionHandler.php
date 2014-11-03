@@ -166,7 +166,7 @@ Uncaught TYPO3 Exception ' . $exceptionCodeNumber . $exception->getMessage() . L
 							$arguments .= '"<span style="color:#FF8700;" title="' . htmlspecialchars($argument) . '">'
 								. $preparedArgument . '</span>"';
 						} elseif (is_numeric($argument)) {
-							$arguments .= '<span style="color:#FF8700;">' . (string) $argument . '</span>';
+							$arguments .= '<span style="color:#FF8700;">' . (string)$argument . '</span>';
 						} else {
 							$arguments .= '<span style="color:#FF8700;"><em>' . gettype($argument) . '</em></span>';
 						}

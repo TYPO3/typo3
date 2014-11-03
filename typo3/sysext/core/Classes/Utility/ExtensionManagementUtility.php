@@ -176,7 +176,7 @@ class ExtensionManagementUtility {
 	 * Returns the real extension key like 'tt_news' from an extension prefix like 'tx_ttnews'.
 	 *
 	 * @param string $prefix The extension prefix (e.g. 'tx_ttnews')
-	 * @return mixed Real extension key (string) or FALSE (boolean) if something went wrong
+	 * @return mixed Real extension key (string)or FALSE (bool) if something went wrong
 	 */
 	static public function getExtensionKeyByPrefix($prefix) {
 		$result = FALSE;

@@ -273,7 +273,7 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
 	public function findIdentifiersByTag($tag) {
 		$identifiers = $this->memcache->get($this->identifierPrefix . 'tag_' . $tag);
 		if ($identifiers !== FALSE) {
-			return (array) $identifiers;
+			return (array)$identifiers;
 		} else {
 			return array();
 		}
@@ -380,7 +380,7 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
 	 */
 	protected function findTagsByIdentifier($identifier) {
 		$tags = $this->memcache->get($this->identifierPrefix . 'ident_' . $identifier);
-		return $tags === FALSE ? array() : (array) $tags;
+		return $tags === FALSE ? array() : (array)$tags;
 	}
 
 	/**

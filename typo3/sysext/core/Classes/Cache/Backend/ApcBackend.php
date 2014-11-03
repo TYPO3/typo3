@@ -201,7 +201,7 @@ class ApcBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
 		if ($success === FALSE) {
 			return array();
 		} else {
-			return (array) $identifiers;
+			return (array)$identifiers;
 		}
 	}
 
@@ -215,7 +215,7 @@ class ApcBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
 	protected function findTagsByIdentifier($identifier) {
 		$success = FALSE;
 		$tags = apc_fetch($this->getIdentifierPrefix() . 'ident_' . $identifier, $success);
-		return $success ? (array) $tags : array();
+		return $success ? (array)$tags : array();
 	}
 
 	/**

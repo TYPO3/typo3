@@ -67,7 +67,7 @@ class MysqlFulltextIndexHook {
 		// This holds the result if the search is natural (doesn't contain any boolean operators)
 		$booleanSearchString = '';
 		// This holds the result if the search is boolen (contains +/-/| operators)
-		$searchType = (string) $this->pObj->piVars['type'];
+		$searchType = (string)$this->pObj->piVars['type'];
 		// Traverse searchwords and prefix them with corresponding operator
 		foreach ($searchWordArray as $searchWordData) {
 			// Making the query for a single search word based on the search-type

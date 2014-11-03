@@ -114,7 +114,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 			$splitAgain = explode('|', $vars[1], 2);
 			$k = trim($splitAgain[0]);
 			if ($k) {
-				switch ((string) trim($vars[0])) {
+				switch ((string)trim($vars[0])) {
 				case 'TSFE':
 					$val = $this->getGlobal('TSFE|' . $vars[1]);
 					break;
@@ -158,7 +158,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 * @return array The rootline for the current page.
 	 */
 	protected function determineRootline() {
-		$rootline = (array) $GLOBALS['TSFE']->tmpl->rootLine;
+		$rootline = (array)$GLOBALS['TSFE']->tmpl->rootLine;
 		return $rootline;
 	}
 

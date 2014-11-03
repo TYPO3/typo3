@@ -75,7 +75,7 @@ class GroupElement extends AbstractFormElement {
 				. '\', \'RemoveFirstIfFull\', \'' . $maxitems . '\'); ' . $additionalInformation['fieldChangeFunc']['TBE_EDITOR_fieldChanged'];
 		}
 		// Acting according to either "file" or "db" type:
-		switch ((string) $config['internal_type']) {
+		switch ((string)$config['internal_type']) {
 			case 'file_reference':
 				$config['uploadfolder'] = '';
 				// Fall through

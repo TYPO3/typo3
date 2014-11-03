@@ -31,7 +31,7 @@ class TaskStatus {
 	public function saveCollapseState(array $params, \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj) {
 		// Remove 'el_' in the beginning which is needed for the saveSortingState()
 		$item = substr(htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('item')), 3);
-		$state = (bool) \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('state');
+		$state = (bool)\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('state');
 		$GLOBALS['BE_USER']->uc['taskcenter']['states'][$item] = $state;
 		$GLOBALS['BE_USER']->writeUC();
 	}

@@ -37,7 +37,7 @@ class AdditionalAdditionalElement {
 	 * @return AdditionalAdditionalElement
 	 */
 	public function addAdditional($class, $type, $value) {
-		$class = strtolower((string) $class);
+		$class = strtolower((string)$class);
 		$className = 'TYPO3\\CMS\\Form\\Domain\\Model\\Additional\\' . ucfirst($class) . 'AdditionalElement';
 		$this->additional[$class] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className, $type, $value);
 		return $this;

@@ -75,11 +75,11 @@ class MagicImageService {
 		// Get maximum dimensions from the configuration of the RTE image button
 		$imageButtonConfiguration = (is_array($rteConfiguration['buttons.']) && is_array($rteConfiguration['buttons.']['image.'])) ? $rteConfiguration['buttons.']['image.'] : array();
 		if (is_array($imageButtonConfiguration['options.']) && is_array($imageButtonConfiguration['options.']['magic.'])) {
-			if ((int) $imageButtonConfiguration['options.']['magic.']['maxWidth'] > 0) {
-				$this->magicImageMaximumWidth = (int) $imageButtonConfiguration['options.']['magic.']['maxWidth'];
+			if ((int)$imageButtonConfiguration['options.']['magic.']['maxWidth'] > 0) {
+				$this->magicImageMaximumWidth = (int)$imageButtonConfiguration['options.']['magic.']['maxWidth'];
 			}
-			if ((int) $imageButtonConfiguration['options.']['magic.']['maxHeight'] > 0) {
-				$this->magicImageMaximumHeight = (int) $imageButtonConfiguration['options.']['magic.']['maxHeight'];
+			if ((int)$imageButtonConfiguration['options.']['magic.']['maxHeight'] > 0) {
+				$this->magicImageMaximumHeight = (int)$imageButtonConfiguration['options.']['magic.']['maxHeight'];
 			}
 		}
 	}

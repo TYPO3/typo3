@@ -57,7 +57,7 @@ class IntrospectionProcessor extends \TYPO3\CMS\Core\Log\Processor\AbstractProce
 	 * @return \TYPO3\CMS\Core\Log\Writer\AbstractWriter
 	 */
 	public function setShiftBackTraceLevel($shiftBackTraceLevel) {
-		$this->shiftBackTraceLevel = (int) $shiftBackTraceLevel;
+		$this->shiftBackTraceLevel = (int)$shiftBackTraceLevel;
 		return $this;
 	}
 
@@ -68,7 +68,7 @@ class IntrospectionProcessor extends \TYPO3\CMS\Core\Log\Processor\AbstractProce
 	 * @return \TYPO3\CMS\Core\Log\Writer\AbstractWriter
 	 */
 	public function setAppendFullBackTrace($appendFullBackTrace) {
-		$this->appendFullBackTrace = (bool) $appendFullBackTrace;
+		$this->appendFullBackTrace = (bool)$appendFullBackTrace;
 		return $this;
 	}
 

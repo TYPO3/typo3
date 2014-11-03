@@ -122,8 +122,8 @@ $EM_CONF[$_EXTKEY] = ' . $emConf . ';
 	}
 
 	/**
-	 * Checks whether the passed dependency is TER-style (string) or
-	 * TER2-style (array) and returns a single string for displaying the
+	 * Checks whether the passed dependency is TER-style (string)or
+	 * TER2-style (array)and returns a single string for displaying the
 	 * dependencies.
 	 *
 	 * It leaves out all version numbers and the "php" and "typo3" dependencies,

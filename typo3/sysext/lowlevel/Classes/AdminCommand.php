@@ -65,14 +65,14 @@ class AdminCommand extends \TYPO3\CMS\Core\Controller\CommandLineController {
 		$GLOBALS['BE_USER']->user['admin'] = 1;
 		$GLOBALS['BE_USER']->setWorkspace(0);
 		// Print help
-		$analysisType = (string) $this->cli_args['_DEFAULT'][1];
+		$analysisType = (string)$this->cli_args['_DEFAULT'][1];
 		if (!$analysisType) {
 			$this->cli_validateArgs();
 			$this->cli_help();
 			die;
 		}
 		// Analysis type:
-		switch ((string) $analysisType) {
+		switch ((string)$analysisType) {
 			case 'setBElock':
 				if (@is_file((PATH_typo3conf . 'LOCK_BACKEND'))) {
 					$this->cli_echo('A lockfile already exists. Overwriting it...

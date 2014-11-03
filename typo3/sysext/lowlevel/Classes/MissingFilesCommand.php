@@ -83,7 +83,7 @@ This will show you missing files in the TYPO3 system and only report back if err
 				$infoString = $this->infoStr($rec);
 				// Handle missing file:
 				if (!@is_file((PATH_site . $rec['ref_string']))) {
-					if ((string) $rec['softref_key'] == '') {
+					if ((string)$rec['softref_key'] == '') {
 						$resultArrayIndex = 'managedFilesMissing';
 					} else {
 						$resultArrayIndex = 'softrefFilesMissing';

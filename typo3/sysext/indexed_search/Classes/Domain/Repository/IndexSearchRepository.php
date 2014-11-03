@@ -154,7 +154,7 @@ class IndexSearchRepository {
 			// Will hold the results rows for display.
 			// Now, traverse result and put the rows to be displayed into an array
 			// Each row should contain the fields from 'ISEC.*, IP.*' combined
-			// + artificial fields "show_resume" (boolean) and "result_number" (counter)
+			// + artificial fields "show_resume" (bool) and "result_number" (counter)
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				// Set first row
 				if (!$c) {
@@ -253,7 +253,7 @@ class IndexSearchRepository {
 		foreach ($searchWords as $k => $v) {
 			// Making the query for a single search word based on the search-type
 			$sWord = $v['sword'];
-			$theType = (string) $this->searchType;
+			$theType = (string)$this->searchType;
 			// If there are spaces in the search-word, make a full text search instead.
 			if (strstr($sWord, ' ')) {
 				$theType = 20;
@@ -436,7 +436,7 @@ class IndexSearchRepository {
 		}
 		// If no match above, test the static types:
 		if (!$match) {
-			switch ((string) $this->sections) {
+			switch ((string)$this->sections) {
 				case '-1':
 					$whereClause .= ' AND ISEC.page_id=' . $GLOBALS['TSFE']->id;
 					break;
@@ -611,7 +611,7 @@ class IndexSearchRepository {
 			// Otherwise, if sorting are done with the pages table or other fields,
 			// there is no need for joining with the rel/word tables:
 			$orderBy = '';
-			switch ((string) $this->sortOrder) {
+			switch ((string)$this->sortOrder) {
 				case 'title':
 					$orderBy = 'IP.item_title' . $this->getDescendingSortOrderFlag();
 					break;

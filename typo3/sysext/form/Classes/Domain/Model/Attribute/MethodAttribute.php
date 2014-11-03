@@ -33,7 +33,7 @@ class MethodAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAtt
 	 * @return string Attribute value
 	 */
 	public function getValue() {
-		$value = strtolower((string) $this->value);
+		$value = strtolower((string)$this->value);
 		if ($value == 'post' || $value == 'get') {
 			$attribute = $value;
 		} else {

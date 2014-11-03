@@ -629,7 +629,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 		$testValue = $table . ':' . $field . ':' . $value;
 		$out = TRUE;
 		// Checking value:
-		switch ((string) $authMode) {
+		switch ((string)$authMode) {
 			case 'explicitAllow':
 				if (!GeneralUtility::inList($this->groupData['explicit_allowdeny'], ($testValue . ':ALLOW'))) {
 					$out = FALSE;
@@ -725,7 +725,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * It only deal with record internals; If any values in the record fields disallows it.
 	 * For instance languages settings, authMode selector boxes are evaluated (and maybe more in the future).
 	 * It will check for workspace dependent access.
-	 * The function takes an ID (integer) or row (array) as second argument.
+	 * The function takes an ID (int) or row (array) as second argument.
 	 *
 	 * @param string $table Table name
 	 * @param mixed $idOrRow If integer, then this is the ID of the record. If Array this just represents fields in the record.
@@ -1210,7 +1210,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @return array
 	 */
 	public function returnWebmounts() {
-		return (string) $this->groupData['webmounts'] != '' ? explode(',', $this->groupData['webmounts']) : array();
+		return (string)$this->groupData['webmounts'] != '' ? explode(',', $this->groupData['webmounts']) : array();
 	}
 
 	/**
@@ -1465,7 +1465,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @access private
 	 */
 	public function setCachedList($cList) {
-		if ((string) $cList != (string) $this->user['usergroup_cached_list']) {
+		if ((string)$cList != (string)$this->user['usergroup_cached_list']) {
 			$this->db->exec_UPDATEquery('be_users', 'uid=' . (int)$this->user['uid'], array('usergroup_cached_list' => $cList));
 		}
 	}
@@ -1762,7 +1762,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 					array_walk(
 						$permissionsTsConfig,
 						function($value, $permission) use (&$filePermissions) {
-							$filePermissions[$permission] = (bool) $value;
+							$filePermissions[$permission] = (bool)$value;
 						}
 					);
 				}
@@ -1790,7 +1790,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 				array_walk(
 					$storageFilePermissions,
 					function($value, $permission) use (&$finalUserPermissions) {
-						$finalUserPermissions[$permission] = (bool) $value;
+						$finalUserPermissions[$permission] = (bool)$value;
 					}
 				);
 			}
@@ -1935,7 +1935,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 		$retVal = FALSE;
 		// If not array, look up workspace record:
 		if (!is_array($wsRec)) {
-			switch ((string) $wsRec) {
+			switch ((string)$wsRec) {
 				case '0':
 					$wsRec = array('uid' => $wsRec);
 					break;
@@ -1955,7 +1955,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 			if ($this->isAdmin()) {
 				return array_merge($wsRec, array('_ACCESS' => 'admin'));
 			} else {
-				switch ((string) $wsRec['uid']) {
+				switch ((string)$wsRec['uid']) {
 					case '0':
 						$retVal = $this->groupData['workspace_perms'] & 1
 							? array_merge($wsRec, array('_ACCESS' => 'online'))
@@ -2134,7 +2134,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 			'log_data' => serialize($data),
 			'tablename' => $tablename,
 			'recuid' => (int)$recuid,
-			'IP' => (string) GeneralUtility::getIndpEnv('REMOTE_ADDR'),
+			'IP' => (string)GeneralUtility::getIndpEnv('REMOTE_ADDR'),
 			'tstamp' => $GLOBALS['EXEC_TIME'],
 			'event_pid' => (int)$event_pid,
 			'NEWid' => $NEWid,
@@ -2365,7 +2365,7 @@ This is a dump of the failures:
 	 * @internal
 	 */
 	public function overrideUC() {
-		$this->uc = array_merge((array) $this->uc, (array) $this->getTSConfigProp('setup.override'));
+		$this->uc = array_merge((array)$this->uc, (array)$this->getTSConfigProp('setup.override'));
 	}
 
 	/**

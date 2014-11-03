@@ -106,7 +106,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		// Input data grabbed:
 		$inData = GeneralUtility::_GP('tx_impexp');
 		$this->checkUpload();
-		switch ((string) $inData['action']) {
+		switch ((string)$inData['action']) {
 			case 'export':
 				// Finally: If upload went well, set the new file as the thumbnail in the $inData array:
 				if (!empty($this->uploadedFiles[0])) {
@@ -161,7 +161,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		}
 		// Input data grabbed:
 		$inData = GeneralUtility::_GP('tx_impexp');
-		if ((string) $inData['action'] == 'import') {
+		if ((string)$inData['action'] == 'import') {
 			if ($this->id && is_array($this->pageinfo) || $this->getBackendUser()->user['admin'] && !$this->id) {
 				if (is_array($this->pageinfo) && $this->pageinfo['uid']) {
 					// View
@@ -214,9 +214,9 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$this->export->init(0, 'export');
 		$this->export->setCharset($this->lang->charSet);
 		$this->export->maxFileSize = $inData['maxFileSize'] * 1024;
-		$this->export->excludeMap = (array) $inData['exclude'];
-		$this->export->softrefCfg = (array) $inData['softrefCfg'];
-		$this->export->extensionDependencies = (array) $inData['extension_dep'];
+		$this->export->excludeMap = (array)$inData['exclude'];
+		$this->export->softrefCfg = (array)$inData['softrefCfg'];
+		$this->export->extensionDependencies = (array)$inData['extension_dep'];
 		$this->export->showStaticRelations = $inData['showStaticRelations'];
 		$this->export->includeExtFileResources = !$inData['excludeHTMLfileResources'];
 		// Static tables:
@@ -339,7 +339,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 		// If the download button is clicked, return file
 		if ($inData['download_export'] || $inData['save_export']) {
-			switch ((string) $inData['filetype']) {
+			switch ((string)$inData['filetype']) {
 				case 'xml':
 					$out = $this->export->compileMemoryToFileContent('xml');
 					$fExt = '.xml';
@@ -1213,11 +1213,11 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					if (isset($presetData['merge'])) {
 						// Merge records in:
 						if (is_array($inData_temp['record'])) {
-							$inData['record'] = array_merge((array) $inData['record'], $inData_temp['record']);
+							$inData['record'] = array_merge((array)$inData['record'], $inData_temp['record']);
 						}
 						// Merge lists in:
 						if (is_array($inData_temp['list'])) {
-							$inData['list'] = array_merge((array) $inData['list'], $inData_temp['list']);
+							$inData['list'] = array_merge((array)$inData['list'], $inData_temp['list']);
 						}
 					} else {
 						$msg = 'Preset #' . $preset['uid'] . ' loaded!';

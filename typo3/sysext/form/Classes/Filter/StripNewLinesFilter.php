@@ -28,7 +28,7 @@ class StripNewLinesFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 	 * @return string
 	 */
 	public function filter($value) {
-		return str_replace(array(LF, CR), ' ', (string) $value);
+		return str_replace(array(LF, CR), ' ', (string)$value);
 	}
 
 }

@@ -608,7 +608,7 @@ class IconUtility {
 		}
 
 		$availableIcons = isset($GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'])
-			? (array) $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable']
+			? (array)$GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable']
 			: array();
 		if ($iconName !== 'empty-empty' && !in_array($iconName, $availableIcons, TRUE)) {
 			$iconName = 'status-status-icon-missing';

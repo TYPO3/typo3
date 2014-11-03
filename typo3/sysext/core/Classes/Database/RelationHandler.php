@@ -256,7 +256,7 @@ class RelationHandler {
 	public function start($itemlist, $tablelist, $MMtable = '', $MMuid = 0, $currentTable = '', $conf = array()) {
 		$conf = (array)$conf;
 		// SECTION: MM reverse relations
-		$this->MM_is_foreign = (boolean)$conf['MM_opposite_field'];
+		$this->MM_is_foreign = (bool)$conf['MM_opposite_field'];
 		$this->MM_oppositeField = $conf['MM_opposite_field'];
 		$this->MM_table_where = $conf['MM_table_where'];
 		$this->MM_hasUidField = $conf['MM_hasUidField'];
@@ -342,7 +342,7 @@ class RelationHandler {
 	 * @param bool $allFields enables fetching of all fields in getFromDB()
 	 */
 	public function setFetchAllFields($allFields) {
-		$this->fetchAllFields = (boolean)$allFields;
+		$this->fetchAllFields = (bool)$allFields;
 	}
 
 	/**
@@ -352,7 +352,7 @@ class RelationHandler {
 	 * @return void
 	 */
 	public function setUpdateReferenceIndex($updateReferenceIndex) {
-		$this->updateReferenceIndex = (boolean)$updateReferenceIndex;
+		$this->updateReferenceIndex = (bool)$updateReferenceIndex;
 	}
 
 	/**
@@ -377,7 +377,7 @@ class RelationHandler {
 	 * @return void
 	 */
 	public function readList($itemlist, array $configuration) {
-		if ((string) trim($itemlist) != '') {
+		if ((string)trim($itemlist) != '') {
 			$tempItemArray = GeneralUtility::trimExplode(',', $itemlist);
 			// Changed to trimExplode 31/3 04; HMENU special type "list" didn't work
 			// if there were spaces in the list... I suppose this is better overall...
@@ -397,7 +397,7 @@ class RelationHandler {
 						? strrev(trim($parts[1]))
 						: ($this->secondTable && $theID < 0 ? $this->secondTable : $this->firstTable);
 					// If the ID is not blank and the table name is among the names in the inputted tableList
-					if (((string) $theID != '' && $theID) && $theTable && isset($this->tableArray[$theTable])) {
+					if (((string)$theID != '' && $theID) && $theTable && isset($this->tableArray[$theTable])) {
 						// Get ID as the right value:
 						$theID = $this->secondTable ? abs((int)$theID) : (int)$theID;
 						// Register ID/table name in internal arrays:

@@ -167,7 +167,7 @@ class VersionNumberUtility {
 		$parts[0] = MathUtility::forceIntegerInRange($parts[0], 0, 999);
 		$parts[1] = MathUtility::forceIntegerInRange($parts[1], 0, 999);
 		$parts[2] = MathUtility::forceIntegerInRange($parts[2], 0, 999);
-		switch ((string) $raise) {
+		switch ((string)$raise) {
 			case 'main':
 				$parts[0]++;
 				$parts[1] = 0;

@@ -89,7 +89,7 @@ class ClearCacheToolbarItem implements ToolbarItemHookInterface {
 		// or if the system runs in development mode
 		// or if $GLOBALS['TYPO3_CONF_VARS']['SYS']['clearCacheSystem'] is set (only for admins)
 		if ($backendUser->getTSConfigVal('options.clearCache.system') || GeneralUtility::getApplicationContext()->isDevelopment()
-			|| ((bool) $GLOBALS['TYPO3_CONF_VARS']['SYS']['clearCacheSystem'] === TRUE && $backendUser->isAdmin())) {
+			|| ((bool)$GLOBALS['TYPO3_CONF_VARS']['SYS']['clearCacheSystem'] === TRUE && $backendUser->isAdmin())) {
 			$this->cacheActions[] = array(
 				'id' => 'system',
 				'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:flushSystemCachesTitle', TRUE),

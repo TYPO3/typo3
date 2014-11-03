@@ -443,7 +443,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 * @todo can this be a ViewHelper?
 	 */
 	protected function makeRating($row) {
-		switch ((string) $this->searchData['sortOrder']) {
+		switch ((string)$this->searchData['sortOrder']) {
 			case 'rank_count':
 				return $row['order_val'] . ' ' . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.ratingMatches', 'indexed_search');
 				break;
@@ -485,7 +485,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	protected function makeLanguageIndication($row) {
 		$output = '&nbsp;';
 		// If search result is a TYPO3 page:
-		if ((string) $row['item_type'] === '0') {
+		if ((string)$row['item_type'] === '0') {
 			// If TypoScript is used to render the flag:
 			if (is_array($this->settings['flagRendering.'])) {
 				/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj */
@@ -1124,7 +1124,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 */
 	protected function linkPage($pageUid, $linkText, $row = array(), $markUpSwParams = array()) {
 		// Parameters for link
-		$urlParameters = (array) unserialize($row['cHashParams']);
+		$urlParameters = (array)unserialize($row['cHashParams']);
 		// Add &type and &MP variable:
 		if ($row['data_page_mp']) {
 			$urlParameters['MP'] = $row['data_page_mp'];

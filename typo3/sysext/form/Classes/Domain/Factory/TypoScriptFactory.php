@@ -61,7 +61,7 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	public function setDisableContentElement($disableContentElement) {
-		$this->disableContentElement = (bool) $disableContentElement;
+		$this->disableContentElement = (bool)$disableContentElement;
 	}
 
 	/**
@@ -157,7 +157,7 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @throws \InvalidArgumentException
 	 */
 	public function createElement($class, array $arguments = array()) {
-		$class = strtolower((string) $class);
+		$class = strtolower((string)$class);
 		if ($class === 'form') {
 			$className = 'TYPO3\\CMS\\Form\\Domain\\Model\\' . ucfirst($class);
 		} else {

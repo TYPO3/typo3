@@ -1054,7 +1054,7 @@ class GraphicalFunctions {
 			foreach ($sKeyArray as $key) {
 				$cfg = $splitRendering[$key . '.'];
 				// Process each type of split rendering keyword:
-				switch ((string) $splitRendering[$key]) {
+				switch ((string)$splitRendering[$key]) {
 					case 'highlightWord':
 						if (strlen($cfg['value'])) {
 							$newResult = array();

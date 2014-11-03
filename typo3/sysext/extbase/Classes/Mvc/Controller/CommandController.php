@@ -215,7 +215,7 @@ class CommandController implements CommandControllerInterface {
 		if (is_string($commandResult) && strlen($commandResult) > 0) {
 			$this->response->appendContent($commandResult);
 		} elseif (is_object($commandResult) && method_exists($commandResult, '__toString')) {
-			$this->response->appendContent((string) $commandResult);
+			$this->response->appendContent((string)$commandResult);
 		}
 	}
 

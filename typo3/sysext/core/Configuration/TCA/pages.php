@@ -80,12 +80,12 @@ return array(
 					),
 					array(
 						'LLL:EXT:lang/locallang_tca.xlf:doktype.I.0',
-						(string) \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_DEFAULT,
+						(string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_DEFAULT,
 						'i/pages.gif'
 					),
 					array(
 						'LLL:EXT:cms/locallang_tca.xlf:pages.doktype.I.4',
-						(string) \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION,
+						(string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION,
 						'i/be_users_section.gif'
 					),
 					array(
@@ -94,17 +94,17 @@ return array(
 					),
 					array(
 						'LLL:EXT:cms/locallang_tca.xlf:pages.doktype.I.2',
-						(string) \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT,
+						(string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT,
 						'i/pages_shortcut.gif'
 					),
 					array(
 						'LLL:EXT:cms/locallang_tca.xlf:pages.doktype.I.5',
-						(string) \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_MOUNTPOINT,
+						(string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_MOUNTPOINT,
 						'i/pages_mountpoint.gif'
 					),
 					array(
 						'LLL:EXT:cms/locallang_tca.xlf:pages.doktype.I.8',
-						(string) \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK,
+						(string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK,
 						'i/pages_link.gif'
 					),
 					array(
@@ -113,21 +113,21 @@ return array(
 					),
 					array(
 						'LLL:EXT:lang/locallang_tca.xlf:doktype.I.folder',
-						(string) \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SYSFOLDER,
+						(string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SYSFOLDER,
 						'i/sysf.gif'
 					),
 					array(
 						'LLL:EXT:lang/locallang_tca.xlf:doktype.I.2',
-						(string) \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER,
+						(string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER,
 						'i/recycler.gif'
 					),
 					array(
 						'LLL:EXT:cms/locallang_tca.xlf:pages.doktype.I.7',
-						(string) \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SPACER,
+						(string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SPACER,
 						'i/spacer_icon.gif'
 					)
 				),
-				'default' => (string) \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_DEFAULT,
+				'default' => (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_DEFAULT,
 				'iconsInOptionTags' => 1,
 				'noIconsBelowSelect' => 1
 			)
@@ -822,7 +822,7 @@ return array(
 	),
 	'types' => array(
 		// normal
-		(string) \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_DEFAULT => array(
+		(string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_DEFAULT => array(
 			'showitem' => '--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.standard;standard,
 					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.title;title,
 				--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.access,
@@ -849,7 +849,7 @@ return array(
 		'
 		),
 		// external URL
-		(string) \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK => array(
+		(string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK => array(
 			'showitem' => '--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.external;external,
 					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.title;title,
 				--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.access,
@@ -872,7 +872,7 @@ return array(
 		'
 		),
 		// shortcut
-		(string) \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT => array(
+		(string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT => array(
 			'showitem' => '--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.shortcut;shortcut,
 					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.shortcutpage;shortcutpage,
 					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.title;title,
@@ -896,7 +896,7 @@ return array(
 				'
 		),
 		// mount page
-		(string) \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_MOUNTPOINT => array(
+		(string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_MOUNTPOINT => array(
 			'showitem' => '--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.mountpoint;mountpoint,
 					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.mountpage;mountpage,
 					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.title;title,
@@ -919,7 +919,7 @@ return array(
 		'
 		),
 		// spacer
-		(string) \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SPACER => array(
+		(string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SPACER => array(
 			'showitem' => '--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.standard;standard,
 					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.title;titleonly,
 				--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.access,
@@ -931,7 +931,7 @@ return array(
 			'
 		),
 		// Folder
-		(string) \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SYSFOLDER => array(
+		(string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SYSFOLDER => array(
 			'showitem' => '--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.standard;standard,
 					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.title;titleonly,
 				--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.access,
@@ -947,7 +947,7 @@ return array(
 		'
 		),
 		// Trash
-		(string) \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER => array(
+		(string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER => array(
 			'showitem' => '--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.standard;standard,
 					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.title;titleonly,
 				--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.access,

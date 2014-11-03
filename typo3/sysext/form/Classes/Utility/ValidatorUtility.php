@@ -66,7 +66,7 @@ class ValidatorUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \TYPO3\CMS\Form\Validation\AbstractValidator The rule object
 	 */
 	public function createRule($class, $arguments = array()) {
-		$class = strtolower((string) $class);
+		$class = strtolower((string)$class);
 		$className = 'TYPO3\\CMS\\Form\\Validation\\' . ucfirst($class) . 'Validator';
 		$rule = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className, $arguments);
 		return $rule;
@@ -85,8 +85,8 @@ class ValidatorUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		$prefix = $this->getPrefix();
 		$this->rules[$prefix][] = array(
 			'instance' => (object) $rule,
-			'fieldName' => (string) $fieldName,
-			'breakOnError' => (bool) $breakOnError
+			'fieldName' => (string)$fieldName,
+			'breakOnError' => (bool)$breakOnError
 		);
 		if ($rule->messageMustBeDisplayed()) {
 			if (!isset($this->messages[$prefix][$fieldName])) {

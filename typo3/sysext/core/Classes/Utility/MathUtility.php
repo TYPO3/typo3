@@ -73,7 +73,7 @@ class MathUtility {
 		if ($var === '' || is_object($var) || is_array($var)) {
 			return FALSE;
 		}
-		return (string) (int)$var === (string) $var;
+		return (string)(int)$var === (string)$var;
 	}
 
 	/**

@@ -42,7 +42,7 @@ abstract class AbstractNode implements \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\N
 					}
 					$output = $output->__toString();
 				} else {
-					$output = (string) $output;
+					$output = (string)$output;
 				}
 				$subNodeOutput = $subNode->evaluate($renderingContext);
 
@@ -52,7 +52,7 @@ abstract class AbstractNode implements \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\N
 					}
 					$output .= $subNodeOutput->__toString();
 				} else {
-					$output .= (string) $subNodeOutput;
+					$output .= (string)$subNodeOutput;
 				}
 			}
 		}

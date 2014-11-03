@@ -256,7 +256,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 	 */
 	protected function printCachedInfo() {
 		// Get cmd:
-		if ((string) \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cmd') === 'clear') {
+		if ((string)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cmd') === 'clear') {
 			$GLOBALS['TYPO3_DB']->clearCachedFieldInfo();
 			$GLOBALS['TYPO3_DB']->cacheFieldInfo();
 		}
@@ -336,7 +336,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 		// Disable debugging in any case...
 		$GLOBALS['TYPO3_DB']->debug = FALSE;
 		// Get cmd:
-		$cmd = (string) \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cmd');
+		$cmd = (string)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cmd');
 		switch ($cmd) {
 			case 'flush':
 				$res = $GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('tx_dbal_debuglog');

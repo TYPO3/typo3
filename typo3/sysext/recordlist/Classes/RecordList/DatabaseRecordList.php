@@ -856,7 +856,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		foreach ($this->fieldArray as $fCol) {
 			// Calculate users permissions to edit records in the table:
 			$permsEdit = $this->calcPerms & ($table == 'pages' ? 2 : 16);
-			switch ((string) $fCol) {
+			switch ((string)$fCol) {
 				case '_PATH_':
 					// Path
 					$theData[$fCol] = '<i>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels._PATH_', TRUE) . ']</i>';
@@ -1435,7 +1435,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		// For the "Normal" pad:
 		if ($this->clipObj->current == 'normal') {
 			// Show copy/cut icons:
-			$isSel = (string) $this->clipObj->isSelected($table, $row['uid']);
+			$isSel = (string)$this->clipObj->isSelected($table, $row['uid']);
 			if ($isL10nOverlay) {
 				$cells['copy'] = $this->spaceIcon;
 				$cells['cut'] = $this->spaceIcon;

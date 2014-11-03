@@ -167,7 +167,7 @@ abstract class AbstractElementView {
 	 * @return mixed \DOMDocument|\DOMNode XML part of the view object
 	 */
 	public function render($type = 'element', $returnFirstChild = TRUE) {
-		$useLayout = $this->getLayout((string) $type);
+		$useLayout = $this->getLayout((string)$type);
 		$dom = new \DOMDocument('1.0', 'utf-8');
 		$dom->formatOutput = TRUE;
 		$dom->preserveWhiteSpace = FALSE;
@@ -251,7 +251,7 @@ abstract class AbstractElementView {
 	 * @return void
 	 */
 	public function setAttribute(\DOMElement $domElement, $key) {
-		$attribute = $this->model->getAttributeValue((string) $key);
+		$attribute = $this->model->getAttributeValue((string)$key);
 		if (!empty($attribute)) {
 			$domElement->setAttribute($key, $attribute);
 		}
@@ -267,7 +267,7 @@ abstract class AbstractElementView {
 	 * @return unknown_type
 	 */
 	public function setAttributeWithValueofOtherAttribute(\DOMElement $domElement, $key, $other) {
-		$attribute = $this->model->getAttributeValue((string) $other);
+		$attribute = $this->model->getAttributeValue((string)$other);
 		if (!empty($attribute)) {
 			$domElement->setAttribute($key, $attribute);
 		}
@@ -280,7 +280,7 @@ abstract class AbstractElementView {
 	 * @return object
 	 */
 	protected function createAdditional($class) {
-		$class = strtolower((string) $class);
+		$class = strtolower((string)$class);
 		$className = 'TYPO3\\CMS\\Form\\View\\Confirmation\\Additional\\' . ucfirst($class) . 'AdditionalElementView';
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className, $this->model);
 	}

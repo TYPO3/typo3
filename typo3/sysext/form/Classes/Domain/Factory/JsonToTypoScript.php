@@ -55,7 +55,7 @@ class JsonToTypoScript {
 	 * @return string The typoscript for the form
 	 */
 	public function convert($json) {
-		$elements = json_decode((string) $json, TRUE);
+		$elements = json_decode((string)$json, TRUE);
 		$typoscriptArray = array();
 		$typoscript = NULL;
 		$this->convertToTyposcriptArray($elements, $typoscriptArray);
@@ -523,7 +523,7 @@ class JsonToTypoScript {
 				case 'content':
 
 				case 'name':
-					$parent[$elementCounter . '.'][$key] = (string) $value;
+					$parent[$elementCounter . '.'][$key] = (string)$value;
 					break;
 			}
 		}

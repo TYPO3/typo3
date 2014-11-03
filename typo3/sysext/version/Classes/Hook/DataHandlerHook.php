@@ -79,7 +79,7 @@ class DataHandlerHook {
 		// custom command "version"
 		if ($command == 'version') {
 			$commandIsProcessed = TRUE;
-			$action = (string) $value['action'];
+			$action = (string)$value['action'];
 			$comment = (isset($value['comment']) && $value['comment'] ? $value['comment'] : $this->generalComment);
 			$notificationAlternativeRecipients = (isset($value['notificationAlternativeRecipients'])) && is_array($value['notificationAlternativeRecipients']) ? $value['notificationAlternativeRecipients'] : array();
 			switch ($action) {

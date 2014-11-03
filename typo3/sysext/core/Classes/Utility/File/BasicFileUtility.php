@@ -193,7 +193,7 @@ class BasicFileUtility {
 	public function checkIfFullAccess($theDest) {
 		$type = $this->is_webpath($theDest) ? 'webspace' : 'ftpspace';
 		if (isset($this->f_ext[$type])) {
-			if ((string) $this->f_ext[$type]['deny'] == '' || $this->f_ext[$type]['allow'] == '*') {
+			if ((string)$this->f_ext[$type]['deny'] == '' || $this->f_ext[$type]['allow'] == '*') {
 				return TRUE;
 			}
 		}

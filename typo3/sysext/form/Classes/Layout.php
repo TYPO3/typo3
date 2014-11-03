@@ -81,7 +81,7 @@ class Layout implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \TYPO3\CMS\Form\Layout
 	 */
 	public function setLayoutByElement($elementName, $layout) {
-		$this->layout[$elementName] = (string) $layout;
+		$this->layout[$elementName] = (string)$layout;
 		return $this;
 	}
 

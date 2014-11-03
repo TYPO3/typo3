@@ -136,7 +136,7 @@ class WincacheBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impl
 		if ($success === FALSE) {
 			return array();
 		} else {
-			return (array) $identifiers;
+			return (array)$identifiers;
 		}
 	}
 
@@ -150,7 +150,7 @@ class WincacheBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impl
 	protected function findTagsByIdentifier($identifier) {
 		$success = FALSE;
 		$tags = wincache_ucache_get($this->identifierPrefix . 'ident_' . $identifier, $success);
-		return $success ? (array) $tags : array();
+		return $success ? (array)$tags : array();
 	}
 
 	/**

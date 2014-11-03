@@ -568,7 +568,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 				$conf['text'] = substr($conf['text'], 0, $tlen);
 			}
 		}
-		if ((string) $conf['text'] != '') {
+		if ((string)$conf['text'] != '') {
 			// Char range map thingie:
 			$fontBaseName = basename($conf['fontFile']);
 			if (is_array($this->charRangeMap[$fontBaseName])) {

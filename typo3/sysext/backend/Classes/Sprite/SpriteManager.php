@@ -92,7 +92,7 @@ class SpriteManager {
 		// Generate CSS and TCA files, build icon set register
 		$handler->generate();
 		// Get all icons registered from skins, merge with core icon list
-		$availableSkinIcons = (array) $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'];
+		$availableSkinIcons = (array)$GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'];
 		if (isset($GLOBALS['TBE_STYLES']['skins']) && is_array($GLOBALS['TBE_STYLES']['skins'])) {
 			foreach ($GLOBALS['TBE_STYLES']['skins'] as $skinData) {
 				$availableSkinIcons = array_merge($availableSkinIcons, (array)$skinData['availableSpriteIcons']);
@@ -100,7 +100,7 @@ class SpriteManager {
 		}
 		// Merge icon names provided by the skin, with
 		// registered "complete sprites" and the handler class
-		$iconNames = array_merge($availableSkinIcons, (array) $GLOBALS['TBE_STYLES']['spritemanager']['spriteIconsAvailable'], $handler->getAvailableIconNames());
+		$iconNames = array_merge($availableSkinIcons, (array)$GLOBALS['TBE_STYLES']['spritemanager']['spriteIconsAvailable'], $handler->getAvailableIconNames());
 		$GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'] = $iconNames;
 
 		$cacheFileContent = '$GLOBALS[\'TBE_STYLES\'][\'spriteIconApi\'][\'iconsAvailable\'] = ';
@@ -134,7 +134,7 @@ class SpriteManager {
 	 * @return void
 	 */
 	static public function addIconSprite(array $icons, $styleSheetFile = '') {
-		$GLOBALS['TBE_STYLES']['spritemanager']['spriteIconsAvailable'] = array_merge((array) $GLOBALS['TBE_STYLES']['spritemanager']['spriteIconsAvailable'], $icons);
+		$GLOBALS['TBE_STYLES']['spritemanager']['spriteIconsAvailable'] = array_merge((array)$GLOBALS['TBE_STYLES']['spritemanager']['spriteIconsAvailable'], $icons);
 		if ($styleSheetFile !== '') {
 			$GLOBALS['TBE_STYLES']['spritemanager']['cssFiles'][] = $styleSheetFile;
 		}

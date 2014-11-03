@@ -485,12 +485,12 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			// we are sure they are not displayed in this request?
 			// This will slow down your page rendering, but it allows
 			// precise search result counters.
-			$calculateExactCount = (bool) $this->conf['search.']['exactCount'];
+			$calculateExactCount = (bool)$this->conf['search.']['exactCount'];
 			$lastResultNumberOnPreviousPage = $currentPageNumber * $this->piVars['results'];
 			$firstResultNumberOnNextPage = ($currentPageNumber + 1) * $this->piVars['results'];
 			$lastResultNumberToAnalyze = ($currentPageNumber + 1) * $this->piVars['results'] + $this->piVars['results'];
 			// Now, traverse result and put the rows to be displayed into an array
-			// Each row should contain the fields from 'ISEC.*, IP.*' combined + artificial fields "show_resume" (boolean) and "result_number" (counter)
+			// Each row should contain the fields from 'ISEC.*, IP.*' combined + artificial fields "show_resume" (bool) and "result_number" (counter)
 			while (FALSE !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
 				if (!$this->checkExistance($row)) {
 					// Check if the record is still available or if it has been deleted meanwhile.
@@ -727,7 +727,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		foreach ($sWArr as $k => $v) {
 			// Making the query for a single search word based on the search-type
 			$sWord = $v['sword'];
-			$theType = (string) $this->piVars['type'];
+			$theType = (string)$this->piVars['type'];
 			if (strstr($sWord, ' ')) {
 				// If there are spaces in the search-word, make a full text search instead.
 				$theType = 20;
@@ -902,7 +902,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		}
 		// If no match above, test the static types:
 		if (!$match) {
-			switch ((string) $this->piVars['sections']) {
+			switch ((string)$this->piVars['sections']) {
 				case '-1':
 					// '-1' => 'Only this page',
 					$out .= ' AND ISEC.page_id=' . $GLOBALS['TSFE']->id;
@@ -926,7 +926,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @return string AND statement for selection of media type
 	 */
 	public function mediaTypeWhere() {
-		switch ((string) $this->piVars['media']) {
+		switch ((string)$this->piVars['media']) {
 			case '0':
 				// '0' => 'Kun TYPO3 sider',
 				$out = ' AND IP.item_type=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('0', 'index_phash');
@@ -1080,7 +1080,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		} else {
 			// Otherwise, if sorting are done with the pages table or other fields, there is no need for joining with the rel/word tables:
 			$orderBy = '';
-			switch ((string) $this->piVars['order']) {
+			switch ((string)$this->piVars['order']) {
 				case 'title':
 					$orderBy = 'IP.item_title' . $this->isDescending();
 					break;
@@ -1257,7 +1257,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		foreach (GeneralUtility::trimExplode(',', $this->hiddenFieldList) as $fieldName) {
 			$hiddenFieldMarkerArray = array();
 			$hiddenFieldMarkerArray['###HIDDEN_FIELDNAME###'] = $this->prefixId . '[' . $fieldName . ']';
-			$hiddenFieldMarkerArray['###HIDDEN_VALUE###'] = htmlspecialchars((string) $this->piVars[$fieldName]);
+			$hiddenFieldMarkerArray['###HIDDEN_VALUE###'] = htmlspecialchars((string)$this->piVars[$fieldName]);
 			$hiddenFieldArr[$fieldName] = $this->cObj->substituteMarkerArrayCached($hiddenFieldCode, $hiddenFieldMarkerArray, array(), array());
 		}
 		// Extended search
@@ -1748,7 +1748,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @return string String showing ranking value
 	 */
 	public function makeRating($row) {
-		switch ((string) $this->piVars['order']) {
+		switch ((string)$this->piVars['order']) {
 			case 'rank_count':
 				// Number of occurencies on page
 				return $row['order_val'] . ' ' . $this->pi_getLL('maketitle_matches');
@@ -1978,7 +1978,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 */
 	public function makeLanguageIndication($row) {
 		// If search result is a TYPO3 page:
-		if ((string) $row['item_type'] === '0') {
+		if ((string)$row['item_type'] === '0') {
 			// If TypoScript is used to render the flag:
 			if (is_array($this->conf['flagRendering.'])) {
 				$this->cObj->setCurrentVal($row['sys_language_uid']);
@@ -2012,7 +2012,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 */
 	public function linkPage($id, $str, $row = array(), $markUpSwParams = array()) {
 		// Parameters for link:
-		$urlParameters = (array) unserialize($row['cHashParams']);
+		$urlParameters = (array)unserialize($row['cHashParams']);
 		// Add &type and &MP variable:
 		if ($row['data_page_type']) {
 			$urlParameters['type'] = $row['data_page_type'];

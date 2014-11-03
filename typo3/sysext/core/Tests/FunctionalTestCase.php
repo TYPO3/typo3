@@ -269,7 +269,7 @@ abstract class FunctionalTestCase extends BaseTestCase {
 				} elseif (isset($column['is-NULL']) && ($column['is-NULL'] === 'yes')) {
 					$columnValue = NULL;
 				} else {
-					$columnValue = (string) $table->$columnName;
+					$columnValue = (string)$table->$columnName;
 				}
 
 				$insertArray[$columnName] = $columnValue;
@@ -284,7 +284,7 @@ abstract class FunctionalTestCase extends BaseTestCase {
 				);
 			}
 			if (isset($table['id'])) {
-				$elementId = (string) $table['id'];
+				$elementId = (string)$table['id'];
 				$foreignKeys[$tableName][$elementId] = $database->sql_insert_id();
 			}
 		}

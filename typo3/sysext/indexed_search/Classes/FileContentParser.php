@@ -389,7 +389,7 @@ class FileContentParser {
 	 */
 	public function isMultiplePageExtension($extension) {
 		// Switch on file extension:
-		switch ((string) $extension) {
+		switch ((string)$extension) {
 			case 'pdf':
 				return TRUE;
 				break;

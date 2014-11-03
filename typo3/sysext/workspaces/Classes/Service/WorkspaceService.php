@@ -42,7 +42,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	public function getAvailableWorkspaces() {
 		$availableWorkspaces = array();
 		// add default workspaces
-		if ($GLOBALS['BE_USER']->checkWorkspace(array('uid' => (string) self::LIVE_WORKSPACE_ID))) {
+		if ($GLOBALS['BE_USER']->checkWorkspace(array('uid' => (string)self::LIVE_WORKSPACE_ID))) {
 			$availableWorkspaces[self::LIVE_WORKSPACE_ID] = self::getWorkspaceTitle(self::LIVE_WORKSPACE_ID);
 		}
 		// add custom workspaces (selecting all, filtering by BE_USER check):

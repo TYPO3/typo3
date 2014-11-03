@@ -184,7 +184,7 @@ class CronCommand {
 	 */
 	protected function isInCommandList($commandExpression, $numberToMatch) {
 		$inList = FALSE;
-		if ((string) $commandExpression === '*') {
+		if ((string)$commandExpression === '*') {
 			$inList = TRUE;
 		} else {
 			$inList = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($commandExpression, $numberToMatch);

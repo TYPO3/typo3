@@ -492,7 +492,7 @@ class ExtendedFileUtility extends BasicFileUtility {
 			return FALSE;
 		}
 		// If this is TRUE, we append _XX to the file name if
-		$appendSuffixOnConflict = (string) $cmds['altName'];
+		$appendSuffixOnConflict = (string)$cmds['altName'];
 		$resultObject = NULL;
 		// Copying the file
 		if ($sourceFileObject instanceof File) {
@@ -567,7 +567,7 @@ class ExtendedFileUtility extends BasicFileUtility {
 			$this->writelog(3, 2, 100, 'Destination "%s" was not a directory', array($cmds['target']));
 			return FALSE;
 		}
-		$alternativeName = (string) $cmds['altName'];
+		$alternativeName = (string)$cmds['altName'];
 		$resultObject = NULL;
 		// Moving the file
 		if ($sourceFileObject instanceof File) {

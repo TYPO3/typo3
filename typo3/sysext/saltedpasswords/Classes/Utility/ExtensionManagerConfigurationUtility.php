@@ -120,10 +120,10 @@ your TYPO3 installation and the usability of the backend.';
 	 * @return void
 	 */
 	private function init() {
-		$requestSetup = $this->processPostData((array) $_REQUEST['data']);
+		$requestSetup = $this->processPostData((array)$_REQUEST['data']);
 		$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['saltedpasswords']);
-		$this->extConf['BE'] = array_merge((array) $extConf['BE.'], (array) $requestSetup['BE.']);
-		$this->extConf['FE'] = array_merge((array) $extConf['FE.'], (array) $requestSetup['FE.']);
+		$this->extConf['BE'] = array_merge((array)$extConf['BE.'], (array)$requestSetup['BE.']);
+		$this->extConf['FE'] = array_merge((array)$extConf['FE.'], (array)$requestSetup['FE.']);
 		$GLOBALS['LANG']->includeLLFile('EXT:saltedpasswords/locallang.xlf');
 	}
 
@@ -402,7 +402,7 @@ Please disable either one of them.';
 			if (count($parts) == 2) {
 				// TODO: Explain
 				$value = $this->processPostData(array($parts[1] => $value));
-				$postArray[$parts[0] . '.'] = array_merge((array) $postArray[($parts[0] . '.')], $value);
+				$postArray[$parts[0] . '.'] = array_merge((array)$postArray[($parts[0] . '.')], $value);
 			} else {
 				// TODO: Explain
 				$postArray[$parts[0]] = $value;

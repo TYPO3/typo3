@@ -163,7 +163,7 @@ class MediaContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 		}
 		if ($renderType !== 'qt' && $renderType !== 'embed' && $conf['type'] == 'video') {
 			if (isset($conf['file']) && (strpos($conf['file'], '.swf') !== FALSE || strpos($conf['file'], '://') !== FALSE && strpos(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($conf['file'], 2), 'application/x-shockwave-flash') !== FALSE)) {
-				$conf = array_merge((array) $conf['mimeConf.']['swfobject.'], $conf);
+				$conf = array_merge((array)$conf['mimeConf.']['swfobject.'], $conf);
 				$conf[$conf['type'] . '.']['player'] = strpos($conf['file'], '://') === FALSE ? 'http://' . $conf['file'] : $conf['file'];
 				$conf['installUrl'] = 'null';
 				$conf['forcePlayer'] = 0;
@@ -182,30 +182,30 @@ class MediaContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 		}
 		switch ($renderType) {
 			case 'flowplayer':
-				$conf[$conf['type'] . '.'] = array_merge((array) $conf['mimeConf.']['flowplayer.'][($conf['type'] . '.')], $typeConf);
-				$conf = array_merge((array) $conf['mimeConf.']['flowplayer.'], $conf);
+				$conf[$conf['type'] . '.'] = array_merge((array)$conf['mimeConf.']['flowplayer.'][($conf['type'] . '.')], $typeConf);
+				$conf = array_merge((array)$conf['mimeConf.']['flowplayer.'], $conf);
 				unset($conf['mimeConf.']);
-				$conf['attributes.'] = array_merge((array) $conf['attributes.'], $conf['predefined']);
-				$conf['params.'] = array_merge((array) $conf['params.'], $conf['predefined']);
-				$conf['flashvars.'] = array_merge((array) $conf['flashvars.'], $conf['predefined']);
+				$conf['attributes.'] = array_merge((array)$conf['attributes.'], $conf['predefined']);
+				$conf['params.'] = array_merge((array)$conf['params.'], $conf['predefined']);
+				$conf['flashvars.'] = array_merge((array)$conf['flashvars.'], $conf['predefined']);
 				$content = $this->cObj->FLOWPLAYER($conf);
 				break;
 			case 'swf':
-				$conf[$conf['type'] . '.'] = array_merge((array) $conf['mimeConf.']['swfobject.'][($conf['type'] . '.')], $typeConf);
-				$conf = array_merge((array) $conf['mimeConf.']['swfobject.'], $conf);
+				$conf[$conf['type'] . '.'] = array_merge((array)$conf['mimeConf.']['swfobject.'][($conf['type'] . '.')], $typeConf);
+				$conf = array_merge((array)$conf['mimeConf.']['swfobject.'], $conf);
 				unset($conf['mimeConf.']);
-				$conf['flashvars.'] = array_merge((array) $conf['flashvars.'], $conf['predefined']);
+				$conf['flashvars.'] = array_merge((array)$conf['flashvars.'], $conf['predefined']);
 				$content = $this->cObj->SWFOBJECT($conf);
 				break;
 			case 'qt':
 				$conf[$conf['type'] . '.'] = array_merge($conf['mimeConf.']['swfobject.'][$conf['type'] . '.'], $typeConf);
 				$conf = array_merge($conf['mimeConf.']['qtobject.'], $conf);
 				unset($conf['mimeConf.']);
-				$conf['params.'] = array_merge((array) $conf['params.'], $conf['predefined']);
+				$conf['params.'] = array_merge((array)$conf['params.'], $conf['predefined']);
 				$content = $this->cObj->QTOBJECT($conf);
 				break;
 			case 'embed':
-				$paramsArray = array_merge((array) $typeConf['default.']['params.'], (array) $conf['params.'], $conf['predefined']);
+				$paramsArray = array_merge((array)$typeConf['default.']['params.'], (array)$conf['params.'], $conf['predefined']);
 				$conf['params'] = '';
 				foreach ($paramsArray as $key => $value) {
 					$conf['params'] .= $key . '=' . $value . LF;

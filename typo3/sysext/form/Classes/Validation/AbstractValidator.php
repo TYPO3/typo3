@@ -108,7 +108,7 @@ abstract class AbstractValidator implements \TYPO3\CMS\Form\Validation\Validator
 	 * @return object The rule object
 	 */
 	public function setFieldName($fieldName) {
-		$this->fieldName = (string) $fieldName;
+		$this->fieldName = (string)$fieldName;
 		return $this;
 	}
 
@@ -168,7 +168,7 @@ abstract class AbstractValidator implements \TYPO3\CMS\Form\Validation\Validator
 		} else {
 			$value = $message;
 		}
-		$this->message['cObj'] = (string) $type;
+		$this->message['cObj'] = (string)$type;
 		$this->message['cObj.'] = $value;
 	}
 
@@ -200,7 +200,7 @@ abstract class AbstractValidator implements \TYPO3\CMS\Form\Validation\Validator
 		} else {
 			$value = $error;
 		}
-		$this->error['cObj'] = (string) $type;
+		$this->error['cObj'] = (string)$type;
 		$this->error['cObj.'] = $value;
 	}
 
@@ -214,7 +214,7 @@ abstract class AbstractValidator implements \TYPO3\CMS\Form\Validation\Validator
 		if ($show === NULL) {
 			$this->showMessage = TRUE;
 		} else {
-			$this->showMessage = (bool) $show;
+			$this->showMessage = (bool)$show;
 		}
 		return $this;
 	}

@@ -154,7 +154,7 @@ class FrontendEditingController {
 			if ($this->TSFE_EDIT['cancel']) {
 				unset($this->TSFE_EDIT['cmd']);
 			} else {
-				$cmd = (string) $this->TSFE_EDIT['cmd'];
+				$cmd = (string)$this->TSFE_EDIT['cmd'];
 				if (($cmd != 'edit' || is_array($this->TSFE_EDIT['data']) && ($this->TSFE_EDIT['doSave'] || $this->TSFE_EDIT['update'] || $this->TSFE_EDIT['update_close'])) && $cmd != 'new') {
 					// $cmd can be a command like "hide" or "move". If $cmd is "edit" or "new" it's an indication to show the formfields. But if data is sent with update-flag then $cmd = edit is accepted because edit may be sent because of .keepGoing flag.
 					return TRUE;
@@ -173,7 +173,7 @@ class FrontendEditingController {
 	 */
 	public function isEditFormShown() {
 		if (is_array($this->TSFE_EDIT)) {
-			$cmd = (string) $this->TSFE_EDIT['cmd'];
+			$cmd = (string)$this->TSFE_EDIT['cmd'];
 			if ($cmd == 'edit' || $cmd == 'new') {
 				return TRUE;
 			}

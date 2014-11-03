@@ -163,7 +163,7 @@ class Argument {
 	 * @api
 	 */
 	public function setRequired($required) {
-		$this->isRequired = (boolean) $required;
+		$this->isRequired = (bool)$required;
 		return $this;
 	}
 
@@ -294,6 +294,6 @@ class Argument {
 	 * @api
 	 */
 	public function __toString() {
-		return (string) $this->value;
+		return (string)$this->value;
 	}
 }

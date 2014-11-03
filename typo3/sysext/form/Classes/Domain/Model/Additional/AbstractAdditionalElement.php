@@ -78,7 +78,7 @@ abstract class AbstractAdditionalElement {
 	 * @return void
 	 */
 	public function setLayout($layout) {
-		$this->layout = (string) $layout;
+		$this->layout = (string)$layout;
 	}
 
 	/**

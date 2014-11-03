@@ -49,7 +49,7 @@ class StringUtility {
 		}
 		$stringLength = strlen($haystack);
 		$needleLength = strlen($needle);
-		return strrpos((string) $haystack, (string) $needle, 0) === $stringLength - $needleLength;
+		return strrpos((string)$haystack, (string)$needle, 0) === $stringLength - $needleLength;
 	}
 
 	/**

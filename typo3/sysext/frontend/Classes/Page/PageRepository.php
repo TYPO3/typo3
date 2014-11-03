@@ -281,7 +281,7 @@ class PageRepository {
 	 * Returns a pagerow for the page with alias $alias
 	 *
 	 * @param string $alias The alias to look up the page uid for.
-	 * @return int Returns page uid (integer) if found, otherwise 0 (zero)
+	 * @return int Returns page uid (int) if found, otherwise 0 (zero)
 	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::checkAndSetAlias(), ContentObjectRenderer::typoLink()
 	 */
 	public function getPageIdFromAlias($alias) {

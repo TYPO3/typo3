@@ -133,7 +133,7 @@ class ElementInformationController {
 
 		// Check permissions and uid value:
 		if ($this->uid && $GLOBALS['BE_USER']->check('tables_select', $this->table)) {
-			if ((string) $this->table == 'pages') {
+			if ((string)$this->table == 'pages') {
 				$this->pageinfo = BackendUtility::readPageAccess($this->uid, $this->perms_clause);
 				$this->access = is_array($this->pageinfo) ? 1 : 0;
 				$this->row = $this->pageinfo;

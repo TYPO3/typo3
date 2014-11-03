@@ -67,7 +67,7 @@ class FileNameFilter {
 	 * @return bool
 	 */
 	static public function setShowHiddenFilesAndFolders($showHiddenFilesAndFolders) {
-		return self::$showHiddenFilesAndFolders = (bool) $showHiddenFilesAndFolders;
+		return self::$showHiddenFilesAndFolders = (bool)$showHiddenFilesAndFolders;
 	}
 
 }

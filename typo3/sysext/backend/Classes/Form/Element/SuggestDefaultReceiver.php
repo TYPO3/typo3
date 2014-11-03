@@ -299,7 +299,7 @@ class SuggestDefaultReceiver {
 			if (!BackendUtility::readPageAccess($uid, $GLOBALS['BE_USER']->getPagePermsClause(1))) {
 				$retValue = FALSE;
 			}
-		} elseif (isset($GLOBALS['TCA'][$table]['ctrl']['is_static']) && (bool) $GLOBALS['TCA'][$table]['ctrl']['is_static']) {
+		} elseif (isset($GLOBALS['TCA'][$table]['ctrl']['is_static']) && (bool)$GLOBALS['TCA'][$table]['ctrl']['is_static']) {
 			$retValue = TRUE;
 		} else {
 			if (!is_array(BackendUtility::readPageAccess($row['pid'], $GLOBALS['BE_USER']->getPagePermsClause(1)))) {

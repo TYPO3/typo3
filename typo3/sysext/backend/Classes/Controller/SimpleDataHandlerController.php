@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class SimpleDataHandlerController {
 
 	/**
-	 * Array. Accepts options to be set in TCE object. Currently it supports "reverseOrder" (boolean).
+	 * Array. Accepts options to be set in TCE object. Currently it supports "reverseOrder" (bool).
 	 *
 	 * @var array
 	 */

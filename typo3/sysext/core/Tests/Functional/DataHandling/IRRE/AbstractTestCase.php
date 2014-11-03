@@ -379,7 +379,7 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
 		if (!empty($assertion['tableName'])) {
 			$tableName = $assertion['tableName'];
 			unset($assertion['tableName']);
-			$elements = (array) $elements[$tableName];
+			$elements = (array)$elements[$tableName];
 		}
 
 		foreach ($elements as $element) {

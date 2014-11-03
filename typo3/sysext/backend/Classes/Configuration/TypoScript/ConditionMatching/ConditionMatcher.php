@@ -57,7 +57,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 					break;
 				case 'adminUser':
 					if ($this->isUserLoggedIn()) {
-						$result = !((bool) $value xor $this->isAdminUser());
+						$result = !((bool)$value xor $this->isAdminUser());
 						return $result;
 					}
 					break;

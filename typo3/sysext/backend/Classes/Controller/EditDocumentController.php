@@ -864,7 +864,7 @@ class EditDocumentController {
 									}
 									// Check internals regarding access:
 									$isRootLevelRestrictionIgnored = BackendUtility::isRootLevelRestrictionIgnored($table);
-									if ($hasAccess || (string) $calcPRec['pid'] === '0' && $isRootLevelRestrictionIgnored) {
+									if ($hasAccess || (string)$calcPRec['pid'] === '0' && $isRootLevelRestrictionIgnored) {
 										$hasAccess = $GLOBALS['BE_USER']->recordEditAccessInternals($table, $calcPRec);
 										$deniedAccessReason = $GLOBALS['BE_USER']->errorMsg;
 									}

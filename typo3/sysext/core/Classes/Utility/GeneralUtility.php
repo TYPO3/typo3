@@ -342,7 +342,7 @@ class GeneralUtility {
 	static public function read_png_gif($theFile, $output_png = FALSE) {
 		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im'] && @is_file($theFile)) {
 			$ext = strtolower(substr($theFile, -4, 4));
-			if ((string) $ext == '.png' && $output_png || (string) $ext == '.gif' && !$output_png) {
+			if ((string)$ext == '.png' && $output_png || (string)$ext == '.gif' && !$output_png) {
 				return $theFile;
 			} else {
 				$newFile = PATH_site . 'typo3temp/readPG_' . md5(($theFile . '|' . filemtime($theFile))) . ($output_png ? '.png' : '.gif');
@@ -939,7 +939,7 @@ class GeneralUtility {
 	 * @return bool TRUE if $partStr was found to be equal to the first part of $str
 	 */
 	static public function isFirstPartOfStr($str, $partStr) {
-		return $partStr != '' && strpos((string) $str, (string) $partStr, 0) === 0;
+		return $partStr != '' && strpos((string)$str, (string)$partStr, 0) === 0;
 	}
 
 	/**
@@ -1149,7 +1149,7 @@ class GeneralUtility {
 	 * @return string Uppercase String
 	 */
 	static public function strtoupper($str) {
-		return strtr((string) $str, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+		return strtr((string)$str, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
 	}
 
 	/**
@@ -1162,7 +1162,7 @@ class GeneralUtility {
 	 * @return string Lowercase String
 	 */
 	static public function strtolower($str) {
-		return strtr((string) $str, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');
+		return strtr((string)$str, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');
 	}
 
 	/**
@@ -1219,7 +1219,7 @@ class GeneralUtility {
 			return '';
 		}
 		$isStrong = NULL;
-		return (string) openssl_random_pseudo_bytes($bytesToGenerate, $isStrong);
+		return (string)openssl_random_pseudo_bytes($bytesToGenerate, $isStrong);
 	}
 
 	/**
@@ -1233,7 +1233,7 @@ class GeneralUtility {
 		if (!function_exists('mcrypt_create_iv')) {
 			return '';
 		}
-		return (string) (@mcrypt_create_iv($bytesToGenerate, $randomSource));
+		return (string)(@mcrypt_create_iv($bytesToGenerate, $randomSource));
 	}
 
 	/**
@@ -2076,19 +2076,19 @@ class GeneralUtility {
 			// Use tag based on grand-parent + parent tag name
 			if (isset($options['grandParentTagMap'][$stackData['grandParentTagName'] . '/' . $stackData['parentTagName']])) {
 				$attr .= ' index="' . htmlspecialchars($tagName) . '"';
-				$tagName = (string) $options['grandParentTagMap'][($stackData['grandParentTagName'] . '/' . $stackData['parentTagName'])];
+				$tagName = (string)$options['grandParentTagMap'][($stackData['grandParentTagName'] . '/' . $stackData['parentTagName'])];
 			} elseif (isset($options['parentTagMap'][$stackData['parentTagName'] . ':_IS_NUM']) && MathUtility::canBeInterpretedAsInteger($tagName)) {
 				// Use tag based on parent tag name + if current tag is numeric
 				$attr .= ' index="' . htmlspecialchars($tagName) . '"';
-				$tagName = (string) $options['parentTagMap'][($stackData['parentTagName'] . ':_IS_NUM')];
+				$tagName = (string)$options['parentTagMap'][($stackData['parentTagName'] . ':_IS_NUM')];
 			} elseif (isset($options['parentTagMap'][$stackData['parentTagName'] . ':' . $tagName])) {
 				// Use tag based on parent tag name + current tag
 				$attr .= ' index="' . htmlspecialchars($tagName) . '"';
-				$tagName = (string) $options['parentTagMap'][($stackData['parentTagName'] . ':' . $tagName)];
+				$tagName = (string)$options['parentTagMap'][($stackData['parentTagName'] . ':' . $tagName)];
 			} elseif (isset($options['parentTagMap'][$stackData['parentTagName']])) {
 				// Use tag based on parent tag name:
 				$attr .= ' index="' . htmlspecialchars($tagName) . '"';
-				$tagName = (string) $options['parentTagMap'][$stackData['parentTagName']];
+				$tagName = (string)$options['parentTagMap'][$stackData['parentTagName']];
 			} elseif (MathUtility::canBeInterpretedAsInteger($tagName)) {
 				// If integer...;
 				if ($options['useNindex']) {
@@ -2268,9 +2268,9 @@ class GeneralUtility {
 						$current[$tagName] = base64_decode($val['value']);
 					} else {
 						// Had to cast it as a string - otherwise it would be evaluate FALSE if tested with isset()!!
-						$current[$tagName] = (string) $val['value'];
+						$current[$tagName] = (string)$val['value'];
 						// Cast type:
-						switch ((string) $val['attributes']['type']) {
+						switch ((string)$val['attributes']['type']) {
 							case 'integer':
 								$current[$tagName] = (int)$current[$tagName];
 								break;
@@ -2278,7 +2278,7 @@ class GeneralUtility {
 								$current[$tagName] = (double) $current[$tagName];
 								break;
 							case 'boolean':
-								$current[$tagName] = (bool) $current[$tagName];
+								$current[$tagName] = (bool)$current[$tagName];
 								break;
 							case 'NULL':
 								$current[$tagName] = NULL;
@@ -2944,7 +2944,7 @@ Connection: close
 		$dirs = self::get_dirs($path);
 		if ($recursivityLevels > 0 && is_array($dirs)) {
 			foreach ($dirs as $subdirs) {
-				if ((string) $subdirs != '' && (!strlen($excludePattern) || !preg_match(('/^' . $excludePattern . '$/'), $subdirs))) {
+				if ((string)$subdirs != '' && (!strlen($excludePattern) || !preg_match(('/^' . $excludePattern . '$/'), $subdirs))) {
 					$fileArr = self::getAllFilesAndFoldersInPath($fileArr, $path . $subdirs . '/', $extList, $regDirs, $recursivityLevels - 1, $excludePattern);
 				}
 			}
@@ -3261,7 +3261,7 @@ Connection: close
 		- ALSO TRY the script from the ROOT of a site (like 'http://www.mytest.com/' and not 'http://www.mytest.com/test/' !!)
 		 */
 		$retVal = '';
-		switch ((string) $getEnvName) {
+		switch ((string)$getEnvName) {
 			case 'SCRIPT_NAME':
 				$retVal = self::isRunningOnCgiServerApi()
 					&& ($_SERVER['ORIG_PATH_INFO'] ?: $_SERVER['PATH_INFO'])
@@ -3917,7 +3917,7 @@ Connection: close
 	/**
 	 * Standard authentication code (used in Direct Mail, checkJumpUrl and setfixed links computations)
 	 *
-	 * @param mixed $uid_or_record Uid (integer) or record (array)
+	 * @param mixed $uid_or_record Uid (int) or record (array)
 	 * @param string $fields List of fields from the record if that is given.
 	 * @param int $codeLength Length of returned authentication code.
 	 * @return string MD5 hash of 8 chars.
@@ -4694,7 +4694,7 @@ Connection: close
 			$oldPart = $part;
 			$partWasQuoted = $part[0] == '"';
 			$part = trim($part, '"');
-			switch ((string) $enc) {
+			switch ((string)$enc) {
 				case 'base64':
 					$part = '=?' . $charset . '?B?' . base64_encode($part) . '?=';
 					break;
@@ -4733,7 +4733,7 @@ Connection: close
 	 * @see makeRedirectUrl()
 	 */
 	static public function substUrlsInPlainText($message, $urlmode = '76', $index_script_url = '') {
-		switch ((string) $urlmode) {
+		switch ((string)$urlmode) {
 			case '':
 				$lengthLimit = FALSE;
 				break;
@@ -5033,7 +5033,7 @@ Connection: close
 		$valListCnt = count($valueList);
 		foreach ($arr as $key => $value) {
 			if (!$valListCnt || in_array($key, $valueList)) {
-				$str .= ((string) $key . trim((': ' . self::fixed_lgd_cs(str_replace(LF, '|', (string) $value), $valueLength)))) . '; ';
+				$str .= ((string)$key . trim((': ' . self::fixed_lgd_cs(str_replace(LF, '|', (string)$value), $valueLength)))) . '; ';
 			}
 		}
 		return $str;

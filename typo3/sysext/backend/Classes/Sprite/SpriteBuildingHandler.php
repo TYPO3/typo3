@@ -41,7 +41,7 @@ class SpriteBuildingHandler extends AbstractSpriteHandler {
 			->setIncludeTimestampInCSS(TRUE)
 			->setSpriteFolder(SpriteManager::$tempPath)
 			->setCSSFolder(SpriteManager::$tempPath);
-		$iconsToProcess = array_merge((array) $GLOBALS['TBE_STYLES']['spritemanager']['singleIcons'], $this->collectTcaSpriteIcons());
+		$iconsToProcess = array_merge((array)$GLOBALS['TBE_STYLES']['spritemanager']['singleIcons'], $this->collectTcaSpriteIcons());
 		foreach ($iconsToProcess as $iconName => $iconFile) {
 			$iconsToProcess[$iconName] = GeneralUtility::resolveBackPath('typo3/' . $iconFile);
 		}
