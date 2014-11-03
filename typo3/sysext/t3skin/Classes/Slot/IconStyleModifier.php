@@ -103,7 +103,8 @@ class IconStyleModifier {
 		't3-icon t3-icon-status t3-icon-status-status t3-icon-status-permission-denied' => 'fa-minus-square',
 		't3-icon t3-icon-status t3-icon-status-status t3-icon-status-permission-granted' => 'fa-check-circle-o',
 		't3-icon t3-icon-status t3-icon-status-status t3-icon-status-readonly' => 'fa-lock',
-		't3-icon t3-icon-status t3-icon-status-warning t3-icon-warning-lock' => 'fa-lock'
+		't3-icon t3-icon-status t3-icon-status-warning t3-icon-warning-lock' => 'fa-lock',
+		't3-icon t3-icon-actions t3-icon-actions-move t3-icon-move-move sortableHandle' => 'fa-reorder sortableHandle',
 	);
 
 	/**
