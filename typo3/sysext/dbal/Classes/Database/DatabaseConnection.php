@@ -2505,39 +2505,26 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	/**
 	 * Open a (persistent) connection to a MySQL server
 	 *
-	 * @param string $host Deprecated since 6.1, will be removed in two versions. Database host IP/domain[:port]
-	 * @param string $username Deprecated since 6.1, will be removed in two versions. Username to connect with.
-	 * @param string $password Deprecated since 6.1, will be removed in two versions. Password to connect with.
 	 * @return bool|void
-	 * @throws \RuntimeException
 	 */
-	public function sql_pconnect($host = NULL, $username = NULL, $password = NULL) {
-		if ($host || $username || $password) {
-			$this->handleDeprecatedConnectArguments($host, $username, $password);
-		}
-
-		// Initializing and output value:
-		$sqlResult = $this->handler_init('_DEFAULT');
-		return $sqlResult;
+	public function sql_pconnect() {
+		return $this->handler_init('_DEFAULT');
 	}
 
 	/**
 	 * Select a SQL database
 	 *
-	 * @param string $TYPO3_db Deprecated since 6.1, will be removed in two versions. Database to connect to.
 	 * @return bool Returns TRUE on success or FALSE on failure.
 	 */
-	public function sql_select_db($TYPO3_db = NULL) {
-		if (!$TYPO3_db) {
-			$TYPO3_db = $this->handlerCfg[$this->lastHandlerKey]['config']['database'];
-		}
+	public function sql_select_db() {
+		$databaseName = $this->handlerCfg[$this->lastHandlerKey]['config']['database'];
 		$ret = TRUE;
 		if ((string)$this->handlerCfg[$this->lastHandlerKey]['type'] === 'native') {
-			$ret = $this->handlerInstance[$this->lastHandlerKey]['link']->select_db($TYPO3_db);
+			$ret = $this->handlerInstance[$this->lastHandlerKey]['link']->select_db($databaseName);
 		}
 		if (!$ret) {
 			GeneralUtility::sysLog(
-				'Could not select MySQL database ' . $TYPO3_db . ': ' . $this->sql_error(),
+				'Could not select MySQL database ' . $databaseName . ': ' . $this->sql_error(),
 				'Core',
 				GeneralUtility::SYSLOG_SEVERITY_FATAL
 			);
@@ -2567,11 +2554,14 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			case 'native':
 				/** @var \mysqli_result $db_list */
 				$db_list = $this->query("SELECT SCHEMA_NAME FROM information_schema.SCHEMATA");
+				$oldDb = $this->handlerCfg[$this->lastHandlerKey]['config']['database'];
 				while ($row = $db_list->fetch_object()) {
-					if ($this->sql_select_db($row->SCHEMA_NAME)) {
+					$this->handlerCfg[$this->lastHandlerKey]['config']['database'] = $row->SCHEMA_NAME;
+					if ($this->sql_select_db()) {
 						$dbArr[] = $row->SCHEMA_NAME;
 					}
 				}
+				$this->handlerCfg[$this->lastHandlerKey]['config']['database'] = $oldDb;
 				$db_list->free();
 				break;
 			case 'adodb':

@@ -502,29 +502,6 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	}
 
 	/**
-	 * Returns some data specific for the directories...
-	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject File information array
-	 * @return array (title, icon, path)
-	 * @deprecated since 6.2 - will be removed two versions later without replacement
-	 */
-	public function dirData(\TYPO3\CMS\Core\Resource\Folder $folderObject) {
-		GeneralUtility::logDeprecatedFunction();
-
-		$title = htmlspecialchars($folderObject->getName());
-		$icon = 'apps-filetree-folder-default';
-		$role = $folderObject->getRole();
-		if ($role === FolderInterface::ROLE_TEMPORARY) {
-			$title = '<strong>' . $GLOBALS['LANG']->getLL('temp', TRUE) . '</strong>';
-			$icon = 'apps-filetree-folder-temp';
-		} elseif ($role === FolderInterface::ROLE_RECYCLER) {
-			$icon = 'apps-filetree-folder-recycler';
-			$title = '<strong>' . $GLOBALS['LANG']->getLL('recycler', TRUE) . '</strong>';
-		}
-		return array($title, $icon, $folderObject->getIdentifier());
-	}
-
-	/**
 	 * This returns tablerows for the files in the array $items['sorting'].
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\File[] $files File items

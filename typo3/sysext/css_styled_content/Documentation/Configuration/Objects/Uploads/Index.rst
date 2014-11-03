@@ -28,7 +28,7 @@ CSS Styled Content, as can be seen in the TypoScript setup::
 		10 = < lib.stdheader
 
 		20 = USER
-		20.userFunc = tx_cssstyledcontent_pi1->render_uploads
+		20.userFunc = \TYPO3\CMS\CssStyledContent\Controller\CssStyledContentController->render_uploads
 		...
 	}
 

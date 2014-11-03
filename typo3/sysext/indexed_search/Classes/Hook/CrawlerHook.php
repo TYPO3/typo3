@@ -541,16 +541,6 @@ class CrawlerHook {
 	}
 
 	/**
-	 * Include indexer class.
-	 *
-	 * @return void
-	 * @deprecated since 6.2 will be removed two version later. Rely on autoloading of the indexer class.
-	 */
-	public function loadIndexerClass() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-	}
-
-	/**
 	 * Get rootline for closest TypoScript template root.
 	 * Algorithm same as used in Web > Template, Object browser
 	 *

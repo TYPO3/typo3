@@ -253,18 +253,6 @@ class StagesService {
 	}
 
 	/**
-	 * Check if given workspace has custom staging activated
-	 *
-	 * @return bool
-	 * @deprecated since TYPO3 6.2, will be removed two versions later
-	 * not used anymore in the TYPO3 CMS Core
-	 */
-	public function checkCustomStagingForWS() {
-		$workspaceRec = BackendUtility::getRecord('sys_workspace', $this->getWorkspaceId());
-		return $workspaceRec['custom_stages'] > 0;
-	}
-
-	/**
 	 * Gets the title of a stage.
 	 *
 	 * @param int $ver_stage

@@ -491,29 +491,4 @@ class DatabaseIntegrityView {
 		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('select_db'), $admin->testDBRefs($admin->checkSelectDBRefs), TRUE, TRUE);
 		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('group_db'), $admin->testDBRefs($admin->checkGroupDBRefs), TRUE, TRUE);
 	}
-
-	/**
-	 * Searching for files with a specific pattern
-	 *
-	 * @deprecated since 6.2 will be removed two versions later
-	 * @return void
-	 */
-	public function func_filesearch() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-	}
-
-	/**
-	 * Searching for filename pattern recursively in the specified dir.
-	 *
-	 * @param string $basedir Base directory
-	 * @param string $pattern Match pattern
-	 * @param array $matching_files Array of matching files, passed by reference
-	 * @param int $depth Depth to recurse
-	 * @deprecated since 6.2 will be removed two versions later
-	 * @return array Array with various information about the search result
-	 */
-	public function findFile($basedir, $pattern, &$matching_files, $depth) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-	}
-
 }

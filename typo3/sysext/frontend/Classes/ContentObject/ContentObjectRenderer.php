@@ -6911,20 +6911,6 @@ class ContentObjectRenderer {
 	}
 
 	/**
-	 * Merges two TypoScript propery array, overlaing the $old_conf onto the $conf array
-	 *
-	 * @param array $conf TypoScript property array, the "base
-	 * @param array $old_conf TypoScript property array, the "overlay
-	 * @return array The resulting array
-	 * @see mergeTSRef(), tx_tstemplatestyler_modfunc1::joinTSarrays()
-	 * @deprecated since 6.2, will be removed in two versions, use array_replace_recursive() instead
-	 */
-	public function joinTSarrays($conf, $old_conf) {
-		GeneralUtility::logDeprecatedFunction();
-		return array_replace_recursive($conf, $old_conf);
-	}
-
-	/**
 	 * This function creates a number of TEXT-objects in a Gifbuilder configuration in order to create a text-field like thing.
 	 *
 	 * @param array $gifbuilderConf TypoScript properties for Gifbuilder - TEXT GIFBUILDER objects are added to this array and returned.

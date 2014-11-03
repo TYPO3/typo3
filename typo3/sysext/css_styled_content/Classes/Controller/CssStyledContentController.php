@@ -37,7 +37,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 	 *
 	 * @var string
 	 */
-	public $scriptRelPath = 'pi1/class.tx_cssstyledcontent_pi1.php';
+	public $scriptRelPath = 'Classes/Controller/CssStyledContentController.php';
 
 	/**
 	 * The extension key

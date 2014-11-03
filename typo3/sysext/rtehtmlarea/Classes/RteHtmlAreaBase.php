@@ -1027,17 +1027,6 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	}
 
 	/**
-	 * Build the default content style sheet
-	 *
-	 * @return string Style sheet
-	 * @deprecated since TYPO3 6.0, will be removed in TYPO3 6.2
-	 */
-	public function buildStyleSheet() {
-		$stylesheet = '/* mainStyleOverride and inlineStyle properties ignored. */';
-		return $stylesheet;
-	}
-
-	/**
 	 * Return Javascript configuration of classes
 	 *
 	 * @param int $RTEcounter: The index number of the current RTE editing area within the form.
@@ -1045,7 +1034,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 */
 	public function buildJSClassesConfig($RTEcounter) {
 		// Include JS arrays of configured classes
-		$configureRTEInJavascriptString .= '
+		$configureRTEInJavascriptString = '
 			RTEarea[editornumber].classesUrl = "' . ($this->is_FE() && $GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . $this->writeTemporaryFile('', ('classes_' . $this->language), 'js', $this->buildJSClassesArray(), TRUE) . '";';
 		return $configureRTEInJavascriptString;
 	}
@@ -1542,16 +1531,4 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		}
 		return implode('; ', $nStyle);
 	}
-
-	// Hook on lorem_ipsum extension to insert text into the RTE in wysiwyg mode
-	/**
-	 * @deprecated since 6.2 - will be removed two versions later without replacement
-	 */
-	public function loremIpsumInsert($params) {
-		GeneralUtility::logDeprecatedFunction();
-		return '
-				if (typeof(lorem_ipsum) == \'function\' && ' . $params['element'] . '.tagName.toLowerCase() == \'textarea\' ) lorem_ipsum(' . $params['element'] . ', lipsum_temp_strings[lipsum_temp_pointer]);
-				';
-	}
-
 }

@@ -395,14 +395,6 @@ lib.stdheader {
 
 
 
-
-
-#******************************************************
-# Including library for processing of some elements:
-#******************************************************
-includeLibs.tx_cssstyledcontent_pi1 = EXT:css_styled_content/pi1/class.tx_cssstyledcontent_pi1.php
-
-
 #**********************************
 # tt_content is started
 #**********************************
@@ -458,7 +450,7 @@ tt_content.stdWrap {
 				# Create class for space before content
 				20 = USER
 				20 {
-					userFunc = tx_cssstyledcontent_pi1->renderSpace
+					userFunc = \TYPO3\CMS\CssStyledContent\Controller\CssStyledContentController->renderSpace
 					space = before
 					constant = {$content.spaceBefore}
 					classStdWrap {
@@ -468,7 +460,7 @@ tt_content.stdWrap {
 				# Create class for space after content
 				30 = USER
 				30 {
-					userFunc = tx_cssstyledcontent_pi1->renderSpace
+					userFunc = \TYPO3\CMS\CssStyledContent\Controller\CssStyledContentController->renderSpace
 					space = after
 					constant = {$content.spaceAfter}
 					classStdWrap {
@@ -543,7 +535,7 @@ tt_content.stdWrap {
 			20 {
 				10 = USER
 				10 {
-					userFunc = tx_cssstyledcontent_pi1->renderSpace
+					userFunc = \TYPO3\CMS\CssStyledContent\Controller\CssStyledContentController->renderSpace
 					space = before
 					constant = {$content.spaceBefore}
 					stdWrap {
@@ -662,7 +654,7 @@ tt_content.image = COA
 tt_content.image.10 = < lib.stdheader
 tt_content.image.20 = USER
 tt_content.image.20 {
-	userFunc = tx_cssstyledcontent_pi1->render_textpic
+	userFunc = \TYPO3\CMS\CssStyledContent\Controller\CssStyledContentController->render_textpic
 
 	# Image source
 	imgList.field = image
@@ -1330,13 +1322,13 @@ tt_content.uploads {
 # *****************
 # CType: table
 # *****************
-# Rendered by a PHP function specifically written to handle CE tables. See css_styled_content/pi1/class.tx_cssstyledcontent_pi1.php
+# Rendered by a PHP function specifically written to handle CE tables. See css_styled_content/Classes/Controller/CssStyledContentController.php
 tt_content.table = COA
 tt_content.table {
 	10 = < lib.stdheader
 
 	20 = USER
-	20.userFunc = tx_cssstyledcontent_pi1->render_table
+	20.userFunc = \TYPO3\CMS\CssStyledContent\Controller\CssStyledContentController->render_table
 	20.field = bodytext
 
 	20.color {

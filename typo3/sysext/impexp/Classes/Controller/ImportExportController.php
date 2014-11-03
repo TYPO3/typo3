@@ -1253,30 +1253,6 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 ****************************/
 
 	/**
-	 * Gets the default folder path for temporary uploads,
-	 * e.g. 'fileadmin/user_uploads/_temp_/importexport/'
-	 *
-	 * @return bool|string Path or FALSE otherwise
-	 * @deprecated since TYPO3 CMS 6.2, will be removed two versions later - use getDefaultImportExportFolder() instead
-	 */
-	public function userTempFolder() {
-		GeneralUtility::logDeprecatedFunction();
-		return $this->getDefaultImportExportFolder()->getPublicUrl();
-	}
-
-	/**
-	 * Gets the default folder path for temporary uploads,
-	 * e.g. 'fileadmin/user_uploads/_temp_/importexport/'
-	 *
-	 * @return string Absolute path to folder where export files can be saved.
-	 * @deprecated since TYPO3 CMS 6.2, will be removed two versions later - use getDefaultImportExportFolder() instead
-	 */
-	public function userSaveFolder() {
-		GeneralUtility::logDeprecatedFunction();
-		return $this->getDefaultImportExportFolder()->getPublicUrl();
-	}
-
-	/**
 	 * Returns a \TYPO3\CMS\Core\Resource\Folder object for saving export files
 	 * to the server and is also used for uploading import files.
 	 *

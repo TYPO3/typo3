@@ -229,12 +229,6 @@ lib.stdheader {
 
 
 
-#******************************************************
-# Including library for processing of some elements:
-#******************************************************
-includeLibs.tx_cssstyledcontent_pi1 = EXT:css_styled_content/pi1/class.tx_cssstyledcontent_pi1.php
-
-
 #**********************************
 # tt_content is started
 #**********************************
@@ -474,7 +468,7 @@ tt_content.image = COA
 tt_content.image.10 = < lib.stdheader
 tt_content.image.20 = USER
 tt_content.image.20 {
-	userFunc = tx_cssstyledcontent_pi1->render_textpic
+	userFunc = \TYPO3\CMS\CssStyledContent\Controller\CssStyledContentController->render_textpic
 
 	# Image source
 	imgList.field = image
@@ -792,13 +786,13 @@ tt_content.bullets {
 # *****************
 # CType: table
 # *****************
-# Rendered by a PHP function specifically written to handle CE tables. See css_styled_content/pi1/class.tx_cssstyledcontent_pi1.php
+# Rendered by a PHP function specifically written to handle CE tables. See css_styled_content/Classes/Controller/CssStyledContentController.php
 tt_content.table = COA
 tt_content.table {
 	10 = < lib.stdheader
 
 	20 = USER
-	20.userFunc = tx_cssstyledcontent_pi1->render_table
+	20.userFunc = \TYPO3\CMS\CssStyledContent\Controller\CssStyledContentController->render_table
 	20.field = bodytext
 
 	20.color {
@@ -842,13 +836,13 @@ tt_content.table {
 # *****************
 # CType: uploads
 # *****************
-# Rendered by a PHP function specifically written to handle CE filelists. See css_styled_content/pi1/class.tx_cssstyledcontent_pi1.php
+# Rendered by a PHP function specifically written to handle CE filelists. See css_styled_content/Classes/Controller/CssStyledContentController.php
 tt_content.uploads = COA
 tt_content.uploads {
 	10 = < lib.stdheader
 
 	20 = USER
-	20.userFunc = tx_cssstyledcontent_pi1->render_uploads
+	20.userFunc = \TYPO3\CMS\CssStyledContent\Controller\CssStyledContentController->render_uploads
 	20.field = media
 	20.filePath.field = select_key
 

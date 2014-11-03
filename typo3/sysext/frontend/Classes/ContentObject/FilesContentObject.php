@@ -334,19 +334,6 @@ class FilesContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 	}
 
 	/**
-	 * Gets a configuration value by passing them through stdWrap first and taking a default value if stdWrap doesn't yield a result.
-	 *
-	 * @param string $key The config variable key (from TS array).
-	 * @param array $config The TypoScript array.
-	 * @param string $defaultValue Optional default value.
-	 * @return string Value of the config variable
-	 * @deprecated since TYPO3 CMS 6.2, use ContentObjectRenderer::stdWrapValue() instead. Will be removed two versions later.
-	 */
-	protected function stdWrapValue($key, array $config, $defaultValue = '') {
-		return $this->cObj->stdWrapValue($key, $config, $defaultValue);
-	}
-
-	/**
 	 * @return \TYPO3\CMS\Frontend\Page\PageRepository
 	 */
 	protected function getPageRepository() {

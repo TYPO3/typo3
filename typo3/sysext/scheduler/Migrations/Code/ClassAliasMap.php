@@ -13,7 +13,6 @@ return array(
 	'tx_scheduler_Task' => 'TYPO3\\CMS\\Scheduler\\Task\\AbstractTask',
 	'tx_scheduler_CachingFrameworkGarbageCollection_AdditionalFieldProvider' => 'TYPO3\\CMS\\Scheduler\\Task\\CachingFrameworkGarbageCollectionAdditionalFieldProvider',
 	'tx_scheduler_CachingFrameworkGarbageCollection' => 'TYPO3\\CMS\\Scheduler\\Task\\CachingFrameworkGarbageCollectionTask',
-	'tx_scheduler_FileIndexing' => 'TYPO3\\CMS\\Scheduler\\Task\\FileIndexingTask',
 	'tx_scheduler_RecyclerGarbageCollection_AdditionalFieldProvider' => 'TYPO3\\CMS\\Scheduler\\Task\\RecyclerGarbageCollectionAdditionalFieldProvider',
 	'tx_scheduler_RecyclerGarbageCollection' => 'TYPO3\\CMS\\Scheduler\\Task\\RecyclerGarbageCollectionTask',
 	'tx_scheduler_TableGarbageCollection_AdditionalFieldProvider' => 'TYPO3\\CMS\\Scheduler\\Task\\TableGarbageCollectionAdditionalFieldProvider',

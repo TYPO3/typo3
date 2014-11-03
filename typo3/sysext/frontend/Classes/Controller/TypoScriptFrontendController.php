@@ -486,16 +486,6 @@ class TypoScriptFrontendController {
 	public $absRefPrefix = '';
 
 	/**
-	 * Absolute Reference prefix force flag. This is set, if the type and id is
-	 * retrieve from PATH_INFO and thus we NEED to prefix urls with at least '/'
-	 * UNUSED in Core
-	 *
-	 * @var bool
-	 * @deprecated since 6.2; will be removed two versions later
-	 */
-	public $absRefPrefix_force = FALSE;
-
-	/**
 	 * Factor for form-field widths compensation
 	 * @var string
 	 */
@@ -4078,7 +4068,6 @@ class TypoScriptFrontendController {
 	 * Logs access to deprecated TypoScript objects and properties.
 	 *
 	 * Dumps message to the TypoScript message log (admin panel) and the TYPO3 deprecation log.
-	 * Note: The second parameter was introduced in TYPO3 4.5 and is not available in older versions
 	 *
 	 * @param string $typoScriptProperty Deprecated object or property
 	 * @param string $explanation Message or additional information
@@ -4099,45 +4088,6 @@ class TypoScriptFrontendController {
 	 */
 	public function updateMD5paramsRecord($hash) {
 		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('cache_md5params', 'md5hash=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($hash, 'cache_md5params'), array('tstamp' => $GLOBALS['EXEC_TIME']));
-	}
-
-	/**
-	 * Pass the content through tidy - a little program that cleans up HTML-code.
-	 * Requires $this->TYPO3_CONF_VARS['FE']['tidy'] to be TRUE and $this->TYPO3_CONF_VARS['FE']['tidy_path'] to
-	 * contain the filename/path of tidy including clean-up arguments for tidy. See default value in
-	 * TYPO3_CONF_VARS in ext:core/Configuration/DefaultConfiguration.php
-	 *
-	 * @param string $content The page content to clean up. Will be written to a temporary file which "tidy" is then asked to clean up. File content is read back and returned.
-	 * @return string Returns the
-	 * @deprecated tidy and its options were deprecated with TYPO3 CMS 6.2, this function will be removed two versions later. If you need tidy, use the extension "tidy" from TER.
-	 */
-	public function tidyHTML($content) {
-		GeneralUtility::logDeprecatedFunction();
-		if ($this->TYPO3_CONF_VARS['FE']['tidy'] && $this->TYPO3_CONF_VARS['FE']['tidy_path']) {
-			$oldContent = $content;
-			// Create temporary name
-			$fname = GeneralUtility::tempnam('typo3_tidydoc_');
-			// Delete if exists, just to be safe.
-			@unlink($fname);
-			// Open for writing
-			$fp = fopen($fname, 'wb');
-			// Put $content
-			fputs($fp, $content);
-			// Close
-			@fclose($fp);
-			// run the $content through 'tidy', which formats the HTML to nice code.
-			exec($this->TYPO3_CONF_VARS['FE']['tidy_path'] . ' ' . $fname, $output);
-			// Delete the tempfile again
-			@unlink($fname);
-			$content = implode(LF, $output);
-			if (!trim($content)) {
-				// Restore old content due empty return value.
-				$content = $oldContent;
-				$GLOBALS['TT']->setTSlogMessage('"tidy" returned an empty value!', 2);
-			}
-			$GLOBALS['TT']->setTSlogMessage('"tidy" content length: ' . strlen($content), 0);
-		}
-		return $content;
 	}
 
 	/**

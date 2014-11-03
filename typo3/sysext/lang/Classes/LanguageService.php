@@ -111,8 +111,7 @@ class LanguageService {
 	/**
 	 * Initializes the backend language.
 	 * This is for example done in \TYPO3\CMS\Backend\Template\DocumentTemplate with lines like these:
-	 * require (PATH_typo3 . 'sysext/lang/lang.php');
-	 * $LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('language');
+	 * $LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Lang\\LanguageService');
 	 * $LANG->init($GLOBALS['BE_USER']->uc['lang']);
 	 *
 	 * @throws \RuntimeException
@@ -190,26 +189,6 @@ class LanguageService {
 	public function makeEntities($str) {
 			// Convert string back again, but using the full entity conversion:
 		return $this->csConvObj->utf8_to_entities($str);
-	}
-
-	/**
-	 * Converts the input string to a JavaScript function returning the same string, but charset-safe.
-	 * Used for confirm and alert boxes where we must make sure that any string content
-	 * does not break the script AND want to make sure the charset is preserved.
-	 * Originally I used the JS function unescape() in combination with PHP function
-	 * rawurlencode() in order to pass strings in a safe way. This could still be done
-	 * for iso-8859-1 charsets but now I have applied the same method here for all charsets.
-	 *
-	 * @param string $str Input string, encoded with UTF-8
-	 * @return string Output string, a JavaScript function: "String.fromCharCode(......)
-	 * @depreacted since 6.2 - will be removed two versions later; use GeneralUtility::quoteJSvalue() instead
-	 */
-	public function JScharCode($str) {
-		GeneralUtility::logDeprecatedFunction();
-
-		// Convert the UTF-8 string into a array of char numbers:
-		$nArr = $this->csConvObj->utf8_to_numberarray($str);
-		return 'String.fromCharCode(' . implode(',', $nArr) . ')';
 	}
 
 	/**

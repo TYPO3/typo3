@@ -775,29 +775,6 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	}
 
 	/**
-	 * Creates an instance of \TYPO3\CMS\Backend\Tree\View\PageTreeView which will select a page
-	 * tree to $depth and return the object. In that object we will find the ids of the tree.
-	 *
-	 * @param int $id Page id.
-	 * @param int $depth Depth to go down.
-	 * @param string $perms_clause Select clause
-	 * @return \TYPO3\CMS\Backend\Tree\View\PageTreeView instance with created list of ids.
-	 * @deprecated Deprecated since 6.2, will be removed 2 versions later
-	 */
-	public function getTreeObject($id, $depth, $perms_clause) {
-		GeneralUtility::logDeprecatedFunction();
-		$tree = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\View\\PageTreeView');
-		$tree->init('AND ' . $perms_clause);
-		$tree->makeHTML = 0;
-		$tree->fieldArray = array('uid', 'php_tree_stop');
-		if ($depth) {
-			$tree->getTree($id, $depth, '');
-		}
-		$tree->ids[] = $id;
-		return $tree;
-	}
-
-	/**
 	 * Get all allowed mount pages to be searched in.
 	 *
 	 * @param int $id Page id

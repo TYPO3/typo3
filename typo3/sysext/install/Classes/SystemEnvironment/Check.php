@@ -112,7 +112,6 @@ class Check {
 		$statusArray[] = $this->checkGdLibJpgSupport();
 		$statusArray[] = $this->checkGdLibPngSupport();
 		$statusArray[] = $this->checkGdLibFreeTypeSupport();
-		$statusArray[] = $this->checkPhpMagicQuotes();
 		$statusArray[] = $this->checkRegisterGlobals();
 		$statusArray[] = $this->checkLibXmlBug();
 		$statusArray[] = $this->isTrueTypeFontDpiStandard();
@@ -1295,29 +1294,6 @@ class Check {
 			);
 		}
 
-		return $status;
-	}
-
-	/**
-	 * Check php magic quotes
-	 *
-	 * @return Status\StatusInterface
-	 */
-	protected function checkPhpMagicQuotes() {
-		$magicQuotesGpc = get_magic_quotes_gpc();
-		if ($magicQuotesGpc) {
-			$status = new Status\WarningStatus();
-			$status->setTitle('PHP magic quotes on');
-			$status->setMessage(
-				'magic_quotes_gpc=' . $magicQuotesGpc . LF .
-				'Setting magic_quotes_gpc is deprecated since PHP 5.3.' .
-				' You are advised to disable it until it is completely removed:' . LF .
-				'magic_quotes_gpc=Off'
-			);
-		} else {
-			$status = new Status\OkStatus();
-			$status->setTitle('PHP magic quotes off');
-		}
 		return $status;
 	}
 

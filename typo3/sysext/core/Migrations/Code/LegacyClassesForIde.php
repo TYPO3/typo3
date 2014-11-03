@@ -4686,11 +4686,6 @@ class tx_scheduler_CachingFrameworkGarbageCollection extends \TYPO3\CMS\Schedule
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_scheduler_FileIndexing extends \TYPO3\CMS\Scheduler\Task\FileIndexingTask {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
 class tx_scheduler_RecyclerGarbageCollection_AdditionalFieldProvider extends \TYPO3\CMS\Scheduler\Task\RecyclerGarbageCollectionAdditionalFieldProvider {}
 
 /**

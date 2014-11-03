@@ -19,7 +19,7 @@ CSS Styled Content, as can be seen in the TypoScript setup::
 	tt_content.image.10 = < lib.stdheader
 	tt_content.image.20 = USER
 	tt_content.image.20 {
-		userFunc = tx_cssstyledcontent_pi1->render_textpic
+		userFunc = \TYPO3\CMS\CssStyledContent\Controller\CssStyledContentController->render_textpic
 		...
 	}
 

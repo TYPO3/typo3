@@ -468,7 +468,7 @@ class FunctionalTestCaseBootstrapUtility {
 			);
 		}
 		$database->setDatabaseName($this->databaseName);
-		$database->sql_select_db($this->databaseName);
+		$database->sql_select_db();
 	}
 
 	/**
@@ -491,7 +491,7 @@ class FunctionalTestCaseBootstrapUtility {
 		}
 		$this->databaseName = $GLOBALS['TYPO3_CONF_VARS']['DB']['database'];
 		$database->setDatabaseName($this->databaseName);
-		$database->sql_select_db($this->databaseName);
+		$database->sql_select_db();
 		foreach ($database->admin_get_tables() as $table) {
 			$database->admin_query('TRUNCATE ' . $table['Name'] . ';');
 		}

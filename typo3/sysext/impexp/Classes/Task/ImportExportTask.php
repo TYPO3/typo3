@@ -80,7 +80,7 @@ class ImportExportTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 			$content .= $this->taskObject->description($GLOBALS['LANG']->getLL('.alttitle'), $GLOBALS['LANG']->getLL('.description'));
 			$thumbnails = ($lines = array());
 			// Thumbnail folder and files:
-			$tempDir = $this->userTempFolder();
+			$tempDir = $this->getDefaultImportExportFolder()->getPublicUrl();
 			if ($tempDir) {
 				$thumbnails = \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir($tempDir, 'png,gif,jpg', 1);
 			}
@@ -166,13 +166,37 @@ class ImportExportTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 	}
 
 	/**
-	 * Returns first temporary folder of the user account
+	 * Returns a \TYPO3\CMS\Core\Resource\Folder object for saving export files
+	 * to the server and is also used for uploading import files.
 	 *
-	 * @return string Absolute path to first "_temp_" folder of the current user, otherwise blank.
+	 * @throws \InvalidArgumentException
+	 * @return NULL|\TYPO3\CMS\Core\Resource\Folder
 	 */
-	protected function userTempFolder() {
-		// @TODO: This is broken since move to FAL
-		return '';
+	protected function getDefaultImportExportFolder() {
+		$defaultImportExportFolder = NULL;
+
+		$defaultTemporaryFolder = $this->getBackendUser()->getDefaultUploadTemporaryFolder();
+		if ($defaultTemporaryFolder !== NULL) {
+
+			$importExportFolderName = 'importexport';
+			$createFolder = !$defaultTemporaryFolder->hasFolder($importExportFolderName);
+			if ($createFolder === TRUE) {
+				try {
+					$defaultImportExportFolder = $defaultTemporaryFolder->createFolder($importExportFolderName);
+				} catch (\TYPO3\CMS\Core\Resource\Exception $folderAccessException) {}
+			} else {
+				$defaultImportExportFolder = $defaultTemporaryFolder->getSubfolder($importExportFolderName);
+			}
+		}
+
+		return $defaultImportExportFolder;
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
 	}
 
 }

@@ -2247,30 +2247,6 @@ class ElementBrowser {
 	 * Miscellaneous functions
 	 *
 	 ******************************************************************/
-	/**
-	 * Verifies that a path is a web-folder:
-	 *
-	 * @param string $folder Absolute filepath
-	 * @return bool If the input path is found in PATH_site then it returns TRUE.
-	 * @deprecated since 6.2 - will be removed two versions later without replacement
-	 */
-	public function isWebFolder($folder) {
-		GeneralUtility::logDeprecatedFunction();
-		$folder = rtrim($folder, '/') . '/';
-		return GeneralUtility::isFirstPartOfStr($folder, PATH_site) ? TRUE : FALSE;
-	}
-
-	/**
-	 * Checks, if a path is within the mountpoints of the backend user
-	 *
-	 * @param string $folder Absolute filepath
-	 * @return bool If the input path is found in the backend users filemounts, then return TRUE.
-	 * @deprecated since 6.2 - will be removed two versions later without replacement
-	 */
-	public function checkFolder($folder) {
-		GeneralUtility::logDeprecatedFunction();
-		return $this->fileProcessor->checkPathAgainstMounts(rtrim($folder, '/') . '/') ? TRUE : FALSE;
-	}
 
 	/**
 	 * Prints a 'header' where string is in a tablecell
