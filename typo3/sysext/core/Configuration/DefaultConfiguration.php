@@ -698,6 +698,10 @@ return array(
 				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Template\\DocumentTemplate->renderFlashMessages',
 				'csrfTokenCheck' => TRUE
 			),
+			'ContextMenu::load' => array(
+				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Controller\\ClickMenuController->printContentForAjaxRequest',
+				'csrfTokenCheck' => TRUE
+			),
 		),
 		'HTTP' => array(
 			'Response' => array(

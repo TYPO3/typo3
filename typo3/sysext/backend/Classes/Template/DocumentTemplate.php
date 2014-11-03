@@ -1445,9 +1445,7 @@ function jumpToUrl(URL) {
 	public function getContextMenuCode() {
 		$this->pageRenderer->loadPrototype();
 		$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/clickmenu.js');
-		$this->JScodeArray['clickmenu'] = '
-			Clickmenu.clickURL = "' . $this->backPath . 'alt_clickmenu.php";
-			Clickmenu.ajax     = true;';
+		$this->pageRenderer->addInlineSetting('ClickMenu', 'ajaxURL', BackendUtility::getAjaxUrl('ContextMenu::load', array(), $this->backPath));
 	}
 
 	/**

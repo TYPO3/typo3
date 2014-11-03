@@ -87,10 +87,9 @@ class ClickMenuController {
 		$this->extClassArray = $GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses'];
 
 		// Initialize template object
-		if (!$this->ajax) {
-			$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
-			$this->doc->backPath = $GLOBALS['BACK_PATH'];
-		}
+		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc->backPath = $GLOBALS['BACK_PATH'];
+
 		// Setting mode for display and background image in the top frame
 
 		// Setting clickmenu timeout
@@ -149,7 +148,6 @@ class ClickMenuController {
 	 * @return void
 	 */
 	public function main() {
-		$this->ajax = GeneralUtility::_GP('ajax') ? TRUE : FALSE;
 		// Initialize Clipboard object:
 		$clipObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Clipboard\\Clipboard');
 		$clipObj->initializeClipboard();
@@ -167,10 +165,6 @@ class ClickMenuController {
 		$clickMenu->clipObj = $clipObj;
 		$clickMenu->extClassArray = $this->extClassArray;
 		$clickMenu->backPath = $this->backPath;
-		// Start page
-		if (!$this->ajax) {
-			$this->content .= $this->doc->startPage('Context Sensitive Menu');
-		}
 		// Set content of the clickmenu with the incoming var, "item"
 		$this->content .= $clickMenu->init();
 	}
@@ -181,14 +175,43 @@ class ClickMenuController {
 	 * @return void
 	 */
 	public function printContent() {
-		if (!$this->ajax) {
-			$this->content .= $this->doc->endPage();
-			$this->content = $this->doc->insertStylesAndJS($this->content);
-			echo $this->content;
-		} else {
-			header('Content-Type: text/xml');
-			echo '<?xml version="1.0"?>' . LF . '<t3ajax>' . $this->content . '</t3ajax>';
-		}
+		header('Content-Type: text/xml');
+		echo '<?xml version="1.0"?>' . LF . '<t3ajax>' . $this->content . '</t3ajax>';
+	}
+
+	/**
+	 * this is an intermediate clickmenu handler
+	 *
+	 * @param array $parameters
+	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxRequestHandler
+	 */
+	public function printContentForAjaxRequest($parameters, \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxRequestHandler) {
+
+		$this->init();
+		$clipObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Clipboard\\Clipboard');
+		$clipObj->initializeClipboard();
+		// This locks the clipboard to the Normal for this request.
+		$clipObj->lockToNormal();
+		// Update clipboard if some actions are sent.
+		$CB = GeneralUtility::_GET('CB');
+		$clipObj->setCmd($CB);
+		$clipObj->cleanCurrent();
+		// Saves
+		$clipObj->endClipboard();
+		// Create clickmenu object
+		$clickMenu = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\ClickMenu\\ClickMenu');
+		// Set internal vars in clickmenu object:
+		$clickMenu->clipObj = $clipObj;
+		$clickMenu->extClassArray = $this->extClassArray;
+		$clickMenu->backPath = $this->backPath;
+
+		// Set content of the clickmenu with the incoming var, "item"
+		$this->content = $clickMenu->init();
+
+		// send the data
+		$content = '<?xml version="1.0"?><t3ajax>' . $this->content . '</t3ajax>';
+		$ajaxRequestHandler->addContent('ClickMenu', $content);
+		$ajaxRequestHandler->setContentFormat('xml');
 	}
 
 }
