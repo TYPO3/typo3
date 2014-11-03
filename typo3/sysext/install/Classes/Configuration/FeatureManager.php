@@ -101,7 +101,6 @@ class FeatureManager {
 		$features = $this->getInitializedFeatures(array());
 		foreach ($features as $feature) {
 			/** @var FeatureInterface $feature */
-			$featureName = $feature->getName();
 			$presets = $feature->getPresetsOrderedByPriority();
 			foreach ($presets as $preset) {
 				// Only choose "normal" presets, no custom presets
