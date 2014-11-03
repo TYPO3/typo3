@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Backend\Search\LiveSearch\ExtDirect;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * ExtDirect Class for handling backend live search.
  *

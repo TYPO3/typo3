@@ -31,26 +31,30 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ModuleLoader {
 
-	// After the init() function this array will contain the structure of available modules for the backend user.
 	/**
+	 * After the init() function this array will contain the structure of available modules for the backend user.
+	 *
 	 * @var array
 	 */
 	public $modules = array();
 
-	// Array with paths pointing to the location of modules from extensions
 	/**
+	 * Array with paths pointing to the location of modules from extensions
+	 *
 	 * @var array
 	 */
 	public $absPathArray = array();
 
-	// This array will hold the elements that should go into the select-list of modules for groups...
 	/**
+	 * This array will hold the elements that should go into the select-list of modules for groups...
+	 *
 	 * @var array
 	 */
 	public $modListGroup = array();
 
-	// This array will hold the elements that should go into the select-list of modules for users...
 	/**
+	 * This array will hold the elements that should go into the select-list of modules for users...
+	 *
 	 * @var array
 	 */
 	public $modListUser = array();
@@ -62,8 +66,9 @@ class ModuleLoader {
 	 */
 	public $BE_USER;
 
-	// If set TRUE, workspace "permissions" will be observed so non-allowed modules will not be included in the array of modules.
 	/**
+	 * If set TRUE, workspace "permissions" will be observed so non-allowed modules will not be included in the array of modules.
+	 *
 	 * @var bool
 	 */
 	public $observeWorkspaces = FALSE;

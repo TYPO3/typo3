@@ -104,8 +104,9 @@ class ModuleSettings {
 	 */
 	public $formName = 'storeControl';
 
-	// Write messages into the devlog?
 	/**
+	 * Write messages into the devlog?
+	 *
 	 * @var int
 	 */
 	public $writeDevLog = 0;

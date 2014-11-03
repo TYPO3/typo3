@@ -25,16 +25,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class AbstractRte {
 
-	// Internal, dynamic:
-	// Error messages regarding non-availability is collected here.
 	/**
+	 * Error messages regarding non-availability is collected here.
+	 *
 	 * @var array
 	 */
 	public $errorLog = array();
 
-	// Internal, static:
-	// Set this to the extension key of the RTE so it can identify itself.
 	/**
+	 * Set this to the extension key of the RTE so it can identify itself.
+	 *
 	 * @var string
 	 */
 	public $ID = '';

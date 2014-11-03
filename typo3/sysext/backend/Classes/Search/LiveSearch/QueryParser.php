@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Backend\Search\LiveSearch;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Class for parsing query parameters in backend live search.
  *
@@ -35,10 +36,12 @@ class QueryParser {
 	 * @var string
 	 */
 	const COMMAND_KEY_INDICATOR = '#';
+
 	/**
 	 * @var string
 	 */
 	const COMMAND_SPLIT_INDICATOR = ':';
+
 	/**
 	 * Retrieve the validated command key
 	 *

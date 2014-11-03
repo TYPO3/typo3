@@ -31,10 +31,19 @@ class ModuleMenuView {
 	 */
 	protected $moduleLoader;
 
+	/**
+	 * @var string
+	 */
 	protected $backPath;
 
+	/**
+	 * @var bool
+	 */
 	protected $linkModules;
 
+	/**
+	 * @var array
+	 */
 	protected $loadedModules;
 
 	/**

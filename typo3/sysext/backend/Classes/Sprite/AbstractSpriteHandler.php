@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @author Steffen Ritter <info@steffen-ritter.net>
  */
-abstract class AbstractSpriteHandler implements \TYPO3\CMS\Backend\Sprite\SpriteIconGeneratorInterface {
+abstract class AbstractSpriteHandler implements SpriteIconGeneratorInterface {
 
 	/**
 	 * all "registered" icons available through sprite API will cumulated here

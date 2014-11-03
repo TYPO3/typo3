@@ -31,15 +31,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 abstract class AbstractRecordList {
 
-	// Used in this class:
-	// default Max items shown
 	/**
+	 * default Max items shown
+	 *
 	 * @var int
 	 */
 	public $iLimit = 10;
 
-	// OBSOLETE - NOT USED ANYMORE. leftMargin
 	/**
+	 * OBSOLETE - NOT USED ANYMORE. leftMargin
+	 *
 	 * @var int
 	 */
 	public $leftMargin = 0;
@@ -54,8 +55,9 @@ abstract class AbstractRecordList {
 	 */
 	public $no_noWrap = 0;
 
-	// If set this is <td> CSS-classname for odd columns in addElement. Used with db_layout / pages section
 	/**
+	 * If set this is <td> CSS-classname for odd columns in addElement. Used with db_layout / pages section
+	 *
 	 * @var string
 	 */
 	public $oddColumnsCssClass = '';
@@ -65,27 +67,31 @@ abstract class AbstractRecordList {
 	 */
 	public $backPath = '';
 
-	// Decides the columns shown. Filled with values that refers to the keys of the data-array. $this->fieldArray[0] is the title column.
 	/**
+	 * Decides the columns shown. Filled with values that refers to the keys of the data-array. $this->fieldArray[0] is the title column.
+	 *
 	 * @var array
 	 */
 	public $fieldArray = array();
 
-	// Keys are fieldnames and values are td-parameters to add in addElement(), please use $addElement_tdCSSClass for CSS-classes;
 	/**
+	 * Keys are fieldnames and values are td-parameters to add in addElement(), please use $addElement_tdCSSClass for CSS-classes;
+	 *
 	 * @var array
 	 */
 	public $addElement_tdParams = array();
 
-	// Keys are fieldnames and values are td-css-classes to add in addElement();
 	/**
+	 * Keys are fieldnames and values are td-css-classes to add in addElement();
+	 *
 	 * @var array
 	 */
 	public $addElement_tdCssClass = array();
 
-	// Not used in this class - but maybe extension classes...
-	// Max length of strings
 	/**
+	 * Not used in this class - but maybe extension classes...
+	 * Max length of strings
+	 *
 	 * @var int
 	 */
 	public $fixedL = 30;
@@ -97,26 +103,30 @@ abstract class AbstractRecordList {
 	 */
 	public $thisScript = '';
 
-	// Set to zero, if you don't want a left-margin with addElement function
 	/**
+	 * Set to zero, if you don't want a left-margin with addElement function
+	 *
 	 * @var int
 	 */
 	public $setLMargin = 1;
 
-	// Counter increased for each element. Used to index elements for the JavaScript-code that transfers to the clipboard
 	/**
+	 * Counter increased for each element. Used to index elements for the JavaScript-code that transfers to the clipboard
+	 *
 	 * @var int
 	 */
 	public $counter = 0;
 
-	// This could be set to the total number of items. Used by the fwd_rew_navigation...
 	/**
+	 * This could be set to the total number of items. Used by the fwd_rew_navigation...
+	 *
 	 * @var string
 	 */
 	public $totalItems = '';
 
-	// Internal (used in this class.)
 	/**
+	 * Internal (used in this class.)
+	 *
 	 * @var int
 	 */
 	public $firstElementNumber = 0;
@@ -126,20 +136,23 @@ abstract class AbstractRecordList {
 	 */
 	public $eCounter = 0;
 
-	// String with accumulated HTML content
 	/**
+	 * String with accumulated HTML content
+	 *
 	 * @var string
 	 */
 	public $HTMLcode = '';
 
-	// Contains page translation languages
 	/**
+	 * Contains page translation languages
+	 *
 	 * @var array
 	 */
 	public $pageOverlays = array();
 
-	// Contains sys language icons and titles
 	/**
+	 * Contains sys language icons and titles
+	 *
 	 * @var array
 	 */
 	public $languageIconTitles = array();

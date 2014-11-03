@@ -65,13 +65,25 @@ class DocumentTemplate {
 	 */
 	public $JScodeLibArray = array();
 
-	// Additional header code (eg. a JavaScript section) could be accommulated in this var. It will be directly outputted in the header.
+	/**
+	 * Additional header code (eg. a JavaScript section) could be accommulated in this var. It will be directly outputted in the header.
+	 *
+	 * @var string
+	 */
 	public $JScode = '';
 
-	// Additional header code for ExtJS. It will be included in document header and inserted in a Ext.onReady(function()
+	/**
+	 * Additional header code for ExtJS. It will be included in document header and inserted in a Ext.onReady(function()
+	 *
+	 * @var string
+	 */
 	public $extJScode = '';
 
-	// Similar to $JScode but for use as array with associative keys to prevent double inclusion of JS code. a <script> tag is automatically wrapped around.
+	/**
+	 * Similar to $JScode but for use as array with associative keys to prevent double inclusion of JS code. a <script> tag is automatically wrapped around.
+	 *
+	 * @var array
+	 */
 	public $JScodeArray = array('jumpToUrl' => '
 function jumpToUrl(URL) {
 	window.location.href = URL;
@@ -79,7 +91,11 @@ function jumpToUrl(URL) {
 }
 	');
 
-	// Additional 'page-end' code could be accumulated in this var. It will be outputted at the end of page before </body> and some other internal page-end code.
+	/**
+	 * Additional 'page-end' code could be accumulated in this var. It will be outputted at the end of page before </body> and some other internal page-end code.
+	 *
+	 * @var string
+	 */
 	public $postCode = '';
 
 	/**
@@ -88,20 +104,39 @@ function jumpToUrl(URL) {
 	 */
 	public $docType = '';
 
-	// HTML template with markers for module
+	/**
+	 * HTML template with markers for module
+	 *
+	 * @var string
+	 */
 	public $moduleTemplate = '';
 
-	// the base file (not overlaid by TBE_STYLES) for the current module, useful for hooks when finding out which modules is rendered currently
+	/**
+	 * The base file (not overlaid by TBE_STYLES) for the current module, useful for hooks when finding out which modules is rendered currently
+	 *
+	 * @var string
+	 */
 	protected $moduleTemplateFilename = '';
 
-	// Other vars you can change, but less frequently used:
-	// Script ID.
+	/**
+	 * Script ID
+	 *
+	 * @var string
+	 */
 	public $scriptID = '';
 
-	// Id which can be set for the body tag. Default value is based on script ID
+	/**
+	 * Id which can be set for the body tag. Default value is based on script ID
+	 *
+	 * @var string
+	 */
 	public $bodyTagId = '';
 
-	// You can add additional attributes to the body-tag through this variable.
+	/**
+	 * You can add additional attributes to the body-tag through this variable.
+	 *
+	 * @var string
+	 */
 	public $bodyTagAdditions = '';
 
 	/**
@@ -119,14 +154,23 @@ function jumpToUrl(URL) {
 	 */
 	public $inDocStylesArray = array();
 
-	// Compensation for large documents (used in \TYPO3\CMS\Backend\Form\FormEngine)
+	/**
+	 * Compensation for large documents (used in \TYPO3\CMS\Backend\Form\FormEngine)
+	 *
+	 * @var float
+	 */
 	public $form_largeComp = 1.33;
 
-	// If set, then a JavaScript section will be outputted in the bottom of page which will try and update the top.busy session expiry object.
+	/**
+	 * If set, then a JavaScript section will be outputted in the bottom of page which will try and update the top.busy session expiry object.
+	 *
+	 * @var int
+	 */
 	public $endJS = 1;
 
 	// TYPO3 Colorscheme.
 	// If you want to change this, please do so through a skin using the global var $GLOBALS['TBE_STYLES']
+
 	/**
 	 * Light background color
 	 *
@@ -251,8 +295,7 @@ function jumpToUrl(URL) {
 	 *
 	 * @var array
 	 */
-	protected $jsFiles = array(
-	);
+	protected $jsFiles = array();
 
 	/**
 	 * JavaScript files loaded for every page in the Backend, but explicitly excluded from concatenation (useful for libraries etc.)
@@ -263,7 +306,6 @@ function jumpToUrl(URL) {
 		'modernizr' => 'contrib/modernizr/modernizr.min.js'
 	);
 
-	// DEV:
 	/**
 	 * Will output the parsetime of the scripts in milliseconds (for admin-users).
 	 * Set this to FALSE when releasing TYPO3. Only for dev.
@@ -341,7 +383,6 @@ function jumpToUrl(URL) {
 
 	/**
 	 * Constructor
-	 * Imports relevant parts from global $GLOBALS['TBE_STYLES'] (colorscheme)
 	 */
 	public function __construct() {
 		// Initializes the page rendering object:

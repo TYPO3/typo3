@@ -13,13 +13,13 @@ namespace TYPO3\CMS\Backend\RecordList;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * interface for classes which hook into localRecordList and do additional getTable processing
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
-interface RecordListGetTableHookInterface
-{
+interface RecordListGetTableHookInterface {
 	/**
 	 * modifies the DB list query
 	 *

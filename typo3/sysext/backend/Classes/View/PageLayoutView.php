@@ -32,76 +32,87 @@ use TYPO3\CMS\Lang\LanguageService;
  */
 class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList {
 
-	// External, static: Flags of various kinds:
-	// If TRUE, users/groups are shown in the page info box.
 	/**
+	 * If TRUE, users/groups are shown in the page info box.
+	 *
 	 * @var int
 	 */
 	public $pI_showUser = 0;
 
-	// The number of successive records to edit when showing content elements.
 	/**
+	 * The number of successive records to edit when showing content elements.
+	 *
 	 * @var int
 	 */
 	public $nextThree = 3;
 
-	// If TRUE, disables the edit-column icon for tt_content elements
 	/**
+	 * If TRUE, disables the edit-column icon for tt_content elements
+	 *
 	 * @var int
 	 */
 	public $pages_noEditColumns = 0;
 
-	// If TRUE, shows big buttons for editing page properties, moving, creating elements etc. in the columns view.
 	/**
+	 * If TRUE, shows big buttons for editing page properties, moving, creating elements etc. in the columns view.
+	 *
 	 * @var int
 	 */
 	public $option_showBigButtons = 1;
 
-	// If TRUE, new-wizards are linked to rather than the regular new-element list.
 	/**
+	 * If TRUE, new-wizards are linked to rather than the regular new-element list.
+	 *
 	 * @var int
 	 */
 	public $option_newWizard = 1;
 
-	// If set to "1", will link a big button to content element wizard.
 	/**
+	 * If set to "1", will link a big button to content element wizard.
+	 *
 	 * @var int
 	 */
 	public $ext_function = 0;
 
-	// If TRUE, elements will have edit icons (probably this is whether the user has permission to edit the page content). Set externally.
 	/**
+	 * If TRUE, elements will have edit icons (probably this is whether the user has permission to edit the page content). Set externally.
+	 *
 	 * @var int
 	 */
 	public $doEdit = 1;
 
-	// Age prefixes for displaying times. May be set externally to localized values.
 	/**
+	 * Age prefixes for displaying times. May be set externally to localized values.
+	 *
 	 * @var string
 	 */
 	public $agePrefixes = ' min| hrs| days| yrs| min| hour| day| year';
 
-	// Array of tables to be listed by the Web > Page module in addition to the default tables.
 	/**
+	 * Array of tables to be listed by the Web > Page module in addition to the default tables.
+	 *
 	 * @var array
 	 */
 	public $externalTables = array();
 
-	// "Pseudo" Description -table name
 	/**
+	 * "Pseudo" Description -table name
+	 *
 	 * @var string
 	 */
 	public $descrTable;
 
-	// If set TRUE, the language mode of tt_content elements will be rendered with hard binding between
-	// default language content elements and their translations!
 	/**
+	 * If set TRUE, the language mode of tt_content elements will be rendered with hard binding between
+	 * default language content elements and their translations!
+	 *
 	 * @var bool
 	 */
 	public $defLangBinding = FALSE;
 
-	// External, static: Configuration of tt_content element display:
 	/**
+	 * External, static: Configuration of tt_content element display:
+	 *
 	 * @var array
 	 */
 	public $tt_contentConfig = array(
@@ -127,8 +138,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		// Which columns can be accessed by current BE user
 	);
 
-	// Contains icon/title of pages which are listed in the tables menu (see getTableMenu() function )
 	/**
+	 * Contains icon/title of pages which are listed in the tables menu (see getTableMenu() function )
+	 *
 	 * @var array
 	 */
 	public $activeTables = array();
@@ -142,14 +154,16 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		'next' => array()
 	);
 
-	// Used to store labels for CTypes for tt_content elements
 	/**
+	 * Used to store labels for CTypes for tt_content elements
+	 *
 	 * @var array
 	 */
 	public $CType_labels = array();
 
-	// Used to store labels for the various fields in tt_content elements
 	/**
+	 * Used to store labels for the various fields in tt_content elements
+	 *
 	 * @var array
 	 */
 	public $itemLabels = array();

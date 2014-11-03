@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Backend;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * This is the ajax handler for backend login after timeout.
  *

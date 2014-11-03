@@ -142,7 +142,6 @@ class FormEngine {
 	 */
 	public $additionalPreviewLanguageData = array();
 
-	// EXTERNAL, static
 	/**
 	 * Set this to the 'backPath' pointing back to the typo3 admin directory
 	 * from the script where this form is displayed.
@@ -334,7 +333,6 @@ class FormEngine {
 	 */
 	public $allowOverrideMatrix = array();
 
-	// INTERNAL, dynamic
 	/**
 	 * Set by readPerms()  (caching)
 	 *
@@ -446,7 +444,6 @@ class FormEngine {
 	 */
 	public $commentMessages = array();
 
-	// INTERNAL, templates
 	/**
 	 * Total wrapping for the table rows
 	 *
@@ -489,7 +486,6 @@ class FormEngine {
 	 */
 	public $palFieldTemplate = '';
 
-	// INTERNAL, working memory
 	/**
 	 * Set to the fields NOT to display, if any
 	 *
@@ -641,7 +637,7 @@ class FormEngine {
 
 	/**
 	 * @var int
-	 * @var internal
+	 * @internal
 	 */
 	public $multiSelectFilterCount = 0;
 

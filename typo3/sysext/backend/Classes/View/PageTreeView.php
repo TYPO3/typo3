@@ -45,8 +45,9 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 */
 	public $ext_alphasortNotinmenuPages;
 
-	// Indicates, whether the ajax call was successful, i.e. the requested page has been found
 	/**
+	 * Indicates, whether the ajax call was successful, i.e. the requested page has been found
+	 *
 	 * @var bool
 	 */
 	public $ajaxStatus = FALSE;

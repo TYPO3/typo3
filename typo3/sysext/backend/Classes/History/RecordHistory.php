@@ -21,51 +21,48 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Class for the record history display script (show_rechis.php)
  *
- * XHTML Compliant
- *
- * @author Sebastian Kurfürst <sebastian@garbage-group.de>
- */
-/**
- * Class for the record history display script (show_rechis.php)
- *
  * @author Sebastian Kurfürst <sebastian@garbage-group.de>
  */
 class RecordHistory {
 
-	// External, static:
-	// Maximum number of sys_history steps to show.
 	/**
+	 * Maximum number of sys_history steps to show.
+	 *
 	 * @var int
 	 */
 	public $maxSteps = 20;
 
-	// display diff or not (0-no diff, 1-inline)
 	/**
+	 * Display diff or not (0-no diff, 1-inline)
+	 *
 	 * @var int
 	 */
 	public $showDiff = 1;
 
-	// on a pages table - show sub elements as well.
 	/**
+	 * On a pages table - show sub elements as well.
+	 *
 	 * @var int
 	 */
 	public $showSubElements = 1;
 
-	// show inserts and deletes as well
 	/**
+	 * Show inserts and deletes as well
+	 *
 	 * @var int
 	 */
 	public $showInsertDelete = 1;
 
-	// Internal, GPvars
-	// Element reference, syntax [tablename]:[uid]
 	/**
+	 * Element reference, syntax [tablename]:[uid]
+	 *
 	 * @var string
 	 */
 	public $element;
 
-	// syslog ID which is not shown anymore
 	/**
+	 * syslog ID which is not shown anymore
+	 *
 	 * @var int
 	 */
 	public $lastSyslogId;
@@ -75,7 +72,6 @@ class RecordHistory {
 	 */
 	public $returnUrl;
 
-	// Internal
 	/**
 	 * @var array
 	 */

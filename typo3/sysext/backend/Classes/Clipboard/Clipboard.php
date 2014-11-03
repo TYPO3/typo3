@@ -77,8 +77,9 @@ class Clipboard {
 	 */
 	public $lockToNormal = 0;
 
-	// If set, clipboard is displaying files.
 	/**
+	 * If set, clipboard is displaying files.
+	 *
 	 * @var int
 	 */
 	public $fileMode = 0;

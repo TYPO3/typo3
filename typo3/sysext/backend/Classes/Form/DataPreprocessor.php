@@ -25,52 +25,60 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 class DataPreprocessor {
 
-	// External, static:
-	// If set, the records requested are locked.
 	/**
+	 * If set, the records requested are locked.
+	 *
 	 * @var int
 	 */
 	public $lockRecords = 0;
 
-	// Is set externally if RTE is disabled.
 	/**
+	 * Is set externally if RTE is disabled.
+	 *
 	 * @var int
 	 */
 	public $disableRTE = 0;
 
-	// If the pid in the command is 'prev' then $prevPageID is used as pid for the record. This is used to attach new records to other previous records eg. new pages.
 	/**
+	 * If the pid in the command is 'prev' then $prevPageID is used as pid for the record.
+	 * This is used to attach new records to other previous records eg. new pages.
+	 *
 	 * @var string
 	 */
 	public $prevPageID = '';
 
-	// Can be set with an array of default values for tables. First key is table name, second level keys are field names. Originally this was a GLOBAL array used internally.
 	/**
+	 * Can be set with an array of default values for tables. First key is table name,
+	 * second level keys are field names. Originally this was a GLOBAL array used internally.
+	 *
 	 * @var array
 	 */
 	public $defVals = array();
 
-	// If set, the processed data is overlaid the raw record.
 	/**
+	 * If set, the processed data is overlaid the raw record.
+	 *
 	 * @var bool
 	 */
 	public $addRawData = FALSE;
 
-	// Internal, dynamic
-	// Used to register, which items are already loaded!!
 	/**
+	 * Used to register, which items are already loaded!!
+	 *
 	 * @var array
 	 */
 	public $regTableItems = array();
 
-	// This stores the record data of the loaded records
 	/**
+	 * This stores the record data of the loaded records
+	 *
 	 * @var array
 	 */
 	public $regTableItems_data = array();
 
-	// Contains loadModules object, if used. (for reuse internally)
 	/**
+	 * Contains loadModules object, if used. (for reuse internally)
+	 *
 	 * @var string
 	 */
 	public $loadModules = '';

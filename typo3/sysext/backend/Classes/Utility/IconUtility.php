@@ -36,6 +36,9 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  */
 class IconUtility {
 
+	/**
+	 * @var array
+	 */
 	static public $fileSpriteIconNames = array(
 		'htm' => 'mimetypes-text-html',
 		'html' => 'mimetypes-text-html',

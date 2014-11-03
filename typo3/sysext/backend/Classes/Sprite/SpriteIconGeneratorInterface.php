@@ -13,13 +13,13 @@ namespace TYPO3\CMS\Backend\Sprite;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Interface all handlers in SpriteManager have to implement.
  *
  * @author Steffen Ritter <info@steffen-ritter.net>
  */
-interface SpriteIconGeneratorInterface
-{
+interface SpriteIconGeneratorInterface {
 	/**
 	 * the implementation of this function has to do the main task
 	 * this function will be called if the extension list changed or

@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Backend\Template;
 /**
  * Extension class for "template" - used in the context of frontend editing.
  */
-class FrontendDocumentTemplate extends \TYPO3\CMS\Backend\Template\DocumentTemplate {
+class FrontendDocumentTemplate extends DocumentTemplate {
 
 	/**
 	 * Gets instance of PageRenderer

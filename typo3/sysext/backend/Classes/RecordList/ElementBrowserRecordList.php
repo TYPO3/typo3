@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class ElementBrowserRecordList extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList {
+
 	/**
 	 * Table name of the field pointing to this element browser
 	 *

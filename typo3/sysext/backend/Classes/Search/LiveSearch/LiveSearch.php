@@ -31,18 +31,22 @@ class LiveSearch {
 	 * @var string
 	 */
 	const PAGE_JUMP_TABLE = 'pages';
+
 	/**
 	 * @var int
 	 */
 	const RECURSIVE_PAGE_LEVEL = 99;
+
 	/**
 	 * @var int
 	 */
 	const GROUP_TITLE_MAX_LENGTH = 15;
+
 	/**
 	 * @var int
 	 */
 	const RECORD_TITLE_MAX_LENGTH = 28;
+
 	/**
 	 * @var string
 	 */

@@ -34,7 +34,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Constructs the module menu and gets the Singleton instance of the menu
 	 */
 	public function __construct() {
-		$this->moduleStorage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleStorage');
+		$this->moduleStorage = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleStorage');
 	}
 
 	/**

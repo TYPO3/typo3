@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Backend\Sprite;
  *
  * @author Steffen Ritter <info@steffen-ritter.net>
  */
-class SimpleSpriteHandler extends \TYPO3\CMS\Backend\Sprite\AbstractSpriteHandler {
+class SimpleSpriteHandler extends AbstractSpriteHandler {
 
 	/**
 	 * css template for single Icons registered by extension authors

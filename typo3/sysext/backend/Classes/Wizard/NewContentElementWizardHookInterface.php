@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Backend\Wizard;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Interface for classes which hook into SC_db_new_content_el and manipulator wizardItems array
  *
