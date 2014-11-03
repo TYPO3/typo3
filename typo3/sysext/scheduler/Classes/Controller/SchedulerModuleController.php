@@ -1125,11 +1125,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 						$table[$tr][] = $schedulerRecord['uid'];
 						$table[$tr][] = $executionStatusOutput;
 						if ($schedulerRecord['description'] !== '') {
-							if (!empty($this->scheduler->extConf['listShowTaskDescriptionAsHover'])) {
-								$table[$tr][] = '<span title="' . htmlspecialchars($schedulerRecord['description']) . '">' . $name . '</span>';
-							} else {
-								$table[$tr][] = $name . '<br />' . nl2br(htmlspecialchars($schedulerRecord['description'])) . '<br />';
-							}
+							$table[$tr][] = '<span title="' . htmlspecialchars($schedulerRecord['description']) . '">' . $name . '</span>';
 						} else {
 							$table[$tr][] = $name;
 						}
