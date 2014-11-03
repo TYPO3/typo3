@@ -894,7 +894,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 	 * Returns the header / message value from flexform if present, else from locallang.xlf
 	 *
 	 * @param string $label label name
-	 * @param string $stdWrapArray TS stdWrap array
+	 * @param array $stdWrapArray TS stdWrap array
 	 * @return string label text
 	 */
 	protected function getDisplayText($label, $stdWrapArray = array()) {
