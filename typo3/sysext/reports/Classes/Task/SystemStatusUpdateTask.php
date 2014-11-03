@@ -13,18 +13,12 @@ namespace TYPO3\CMS\Reports\Task;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MailUtility;
-use TYPO3\CMS\Reports\Status;
-use TYPO3\CMS\Scheduler\Task\AbstractTask;
-
 /**
  * A task that should be run regularly to determine the system's status.
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
-class SystemStatusUpdateTask extends AbstractTask {
+class SystemStatusUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
 	/**
 	 * Email addresses to send email notification to in case we find problems with
@@ -43,13 +37,13 @@ class SystemStatusUpdateTask extends AbstractTask {
 	 */
 	public function execute() {
 		/** @var $registry \TYPO3\CMS\Core\Registry */
-		$registry = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
+		$registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
 		/** @var $statusReport \TYPO3\CMS\Reports\Report\Status\Status */
-		$statusReport = GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Report\\Status\\Status');
-		$systemStatus = $statusReport->getDetailedSystemStatus();
+		$statusReport = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Report\\Status\\Status');
+		$systemStatus = $statusReport->getSystemStatus();
 		$highestSeverity = $statusReport->getHighestSeverity($systemStatus);
 		$registry->set('tx_reports', 'status.highestSeverity', $highestSeverity);
-		if ($highestSeverity > Status::OK) {
+		if ($highestSeverity > \TYPO3\CMS\Reports\Status::OK) {
 			$this->sendNotificationEmail($systemStatus);
 		}
 		return TRUE;
@@ -77,20 +71,19 @@ class SystemStatusUpdateTask extends AbstractTask {
 	/**
 	 * Sends a notification email, reporting system issues.
 	 *
-	 * @param Status[] $systemStatus Array of statuses
+	 * @param array $systemStatus Array of statuses
 	 * @return void
 	 */
 	protected function sendNotificationEmail(array $systemStatus) {
 		$systemIssues = array();
 		foreach ($systemStatus as $statusProvider) {
-			/** @var Status $status */
 			foreach ($statusProvider as $status) {
-				if ($status->getSeverity() > Status::OK) {
-					$systemIssues[] = (string)$status . CRLF . $status->getMessage() . CRLF . CRLF;
+				if ($status->getSeverity() > \TYPO3\CMS\Reports\Status::OK) {
+					$systemIssues[] = (string) $status;
 				}
 			}
 		}
-		$notificationEmails = GeneralUtility::trimExplode(LF, $this->notificationEmail, TRUE);
+		$notificationEmails = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(LF, $this->notificationEmail, TRUE);
 		$sendEmailsTo = array();
 		foreach ($notificationEmails as $notificationEmail) {
 			$sendEmailsTo[] = $notificationEmail;
@@ -103,9 +96,9 @@ class SystemStatusUpdateTask extends AbstractTask {
 		$message .= $GLOBALS['LANG']->getLL('status_updateTask_email_issues') . ': ' . CRLF;
 		$message .= implode(CRLF, $systemIssues);
 		$message .= CRLF . CRLF;
-		$from = MailUtility::getSystemFrom();
+		$from = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFrom();
 		/** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
-		$mail = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+		$mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
 		$mail->setFrom($from);
 		$mail->setTo($sendEmailsTo);
 		$mail->setSubject($subject);

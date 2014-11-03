@@ -13,20 +13,15 @@ namespace TYPO3\CMS\Reports\Report\Status;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
-use TYPO3\CMS\Reports\ExtendedStatusProviderInterface;
-use TYPO3\CMS\Reports\ReportInterface;
-use TYPO3\CMS\Reports\StatusProviderInterface;
-
 /**
  * The status report
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
-class Status implements ReportInterface {
+class Status implements \TYPO3\CMS\Reports\ReportInterface {
 
 	/**
-	 * @var StatusProviderInterface[][]
+	 * @var array
 	 */
 	protected $statusProviders = array();
 
@@ -64,7 +59,7 @@ class Status implements ReportInterface {
 			$this->statusProviders[$key] = array();
 			foreach ($statusProvidersList as $statusProvider) {
 				$statusProviderInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($statusProvider);
-				if ($statusProviderInstance instanceof StatusProviderInterface) {
+				if ($statusProviderInstance instanceof \TYPO3\CMS\Reports\StatusProviderInterface) {
 					$this->statusProviders[$key][] = $statusProviderInstance;
 				}
 			}
@@ -74,7 +69,7 @@ class Status implements ReportInterface {
 	/**
 	 * Runs through all status providers and returns all statuses collected.
 	 *
-	 * @return \TYPO3\CMS\Reports\Status[]
+	 * @return array An array of \TYPO3\CMS\Reports\Status objects
 	 */
 	public function getSystemStatus() {
 		$status = array();
@@ -83,25 +78,6 @@ class Status implements ReportInterface {
 			foreach ($statusProviderList as $statusProvider) {
 				$statuses = $statusProvider->getStatus();
 				$status[$statusProviderId] = array_merge($status[$statusProviderId], $statuses);
-			}
-		}
-		return $status;
-	}
-
-	/**
-	 * Runs through all status providers and returns all statuses collected, which are detailed.
-	 *
-	 * @return \TYPO3\CMS\Reports\Status[]
-	 */
-	public function getDetailedSystemStatus() {
-		$status = array();
-		foreach ($this->statusProviders as $statusProviderId => $statusProviderList) {
-			$status[$statusProviderId] = array();
-			foreach ($statusProviderList as $statusProvider) {
-				if ($statusProvider instanceof ExtendedStatusProviderInterface) {
-					$statuses = $statusProvider->getDetailedStatus();
-					$status[$statusProviderId] = array_merge($status[$statusProviderId], $statuses);
-				}
 			}
 		}
 		return $status;
@@ -230,7 +206,6 @@ class Status implements ReportInterface {
 	protected function sortStatuses(array $statusCollection) {
 		$statuses = array();
 		$sortTitle = array();
-		$header = NULL;
 		/** @var $status \TYPO3\CMS\Reports\Status */
 		foreach ($statusCollection as $status) {
 			if ($status->getTitle() === 'TYPO3') {
