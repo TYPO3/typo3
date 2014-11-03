@@ -469,6 +469,7 @@ class FormEngine {
 	 * Wrapping template code for a section
 	 *
 	 * @var string
+	 * @deprecatd since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public $sectionWrap = '';
 
@@ -842,7 +843,6 @@ class FormEngine {
 								if ($cc > 0) {
 									$out_array[$out_sheet][$out_pointer] .= $this->getDivider();
 									if ($this->enableTabMenu && $dividers2tabs) {
-										$this->wrapBorder($out_array[$out_sheet], $out_pointer);
 										// Remove last tab entry from the dynNestedStack:
 										$out_sheet++;
 										// Remove the previous sheet from stack (if any):
@@ -885,8 +885,6 @@ class FormEngine {
 				$hookObj->getMainFields_postProcess($table, $row, $this);
 			}
 		}
-		// Wrapping a border around it all:
-		$this->wrapBorder($out_array[$out_sheet], $out_pointer);
 		// Rendering Main palettes, if any
 		$mParr = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['mainpalette']);
 		$i = 0;
@@ -900,7 +898,6 @@ class FormEngine {
 					$this->palettesCollapsed = $temp_palettesCollapsed;
 					$this->palettesRendered[$this->renderDepth][$table][$mP] = 1;
 				}
-				$this->wrapBorder($out_array[$out_sheet], $out_pointer);
 				$i++;
 				if ($this->renderDepth) {
 					$this->renderDepth--;
@@ -3563,7 +3560,6 @@ class FormEngine {
 		$this->paletteFieldTemplate = HtmlParser::getSubpart($template, '###PALETTEFIELDTEMPLATE###');
 		$this->palFieldTemplate = HtmlParser::getSubpart($template, '###PALETTE_FIELDTEMPLATE###');
 		$this->palFieldTemplateHeader = HtmlParser::getSubpart($template, '###PALETTE_FIELDTEMPLATE_HEADER###');
-		$this->sectionWrap = HtmlParser::getSubpart($template, '###SECTION_WRAP###');
 	}
 
 	/**
@@ -3713,8 +3709,10 @@ class FormEngine {
 	 * @param array $out_array The array with form elements stored in (passed by reference and changed!)
 	 * @param int $out_pointer The pointer to the entry in the $out_array  (passed by reference and incremented!)
 	 * @return void
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, not in use anymore
 	 */
 	public function wrapBorder(&$out_array, &$out_pointer) {
+		GeneralUtility::logDeprecatedFunction();
 		if ($this->sectionWrap && $out_array[$out_pointer]) {
 			$tableAttribs = 'border="0" cellspacing="0" cellpadding="0" width="100%" class="table table-border"';
 			$out_array[$out_pointer] = str_replace('###CONTENT###', $out_array[$out_pointer], str_replace('###TABLE_ATTRIBS###', $tableAttribs, $this->sectionWrap));
