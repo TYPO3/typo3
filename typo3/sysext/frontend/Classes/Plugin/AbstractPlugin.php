@@ -15,6 +15,10 @@ namespace TYPO3\CMS\Frontend\Plugin;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Base class for frontend plugins
@@ -26,7 +30,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class AbstractPlugin {
 
-	// Reserved variables:
 	/**
 	 * The backReference to the mother cObj object set at call time
 	 *
@@ -34,28 +37,32 @@ class AbstractPlugin {
 	 */
 	public $cObj;
 
-	// Should be same as classname of the plugin, used for CSS classes, variables
 	/**
+	 * Should be same as classname of the plugin, used for CSS classes, variables
+	 *
 	 * @var string
 	 */
 	public $prefixId;
 
-	// Path to the plugin class script relative to extension directory, eg. 'pi1/class.tx_newfaq_pi1.php'
 	/**
+	 * Path to the plugin class script relative to extension directory, eg. 'pi1/class.tx_newfaq_pi1.php'
+	 *
 	 * @var string
 	 */
 	public $scriptRelPath;
 
-	// Extension key.
 	/**
+	 * Extension key.
+	 *
 	 * @var string
 	 */
 	public $extKey;
 
-	// This is the incoming array by name $this->prefixId merged between POST and GET, POST taking precedence.
-	// Eg. if the class name is 'tx_myext'
-	// then the content of this array will be whatever comes into &tx_myext[...]=...
 	/**
+	 * This is the incoming array by name $this->prefixId merged between POST and GET, POST taking precedence.
+	 * Eg. if the class name is 'tx_myext'
+	 * then the content of this array will be whatever comes into &tx_myext[...]=...
+	 *
 	 * @var array
 	 */
 	public $piVars = array(
@@ -69,12 +76,17 @@ class AbstractPlugin {
 	);
 
 	/**
+	 * Local pointer variabe array.
+	 * Holds pointer information for the MVC like approach Kasper
+	 * initially proposed
+	 *
 	 * @var array
 	 */
 	public $internal = array('res_count' => 0, 'results_at_a_time' => 20, 'maxPages' => 10, 'currentRow' => array(), 'currentTable' => '');
 
-	// Local Language content
 	/**
+	 * Local Language content
+	 *
 	 * @var array
 	 */
 	public $LOCAL_LANG = array();
@@ -89,38 +101,47 @@ class AbstractPlugin {
 	 */
 	protected $LOCAL_LANG_UNSET = array();
 
-	// Local Language content charset for individual labels (overriding)
 	/**
+	 * Local Language content charset for individual labels (overriding)
+	 *
 	 * @var array
 	 */
 	public $LOCAL_LANG_charset = array();
 
-	// Flag that tells if the locallang file has been fetch (or tried to be fetched) already.
 	/**
+	 * Flag that tells if the locallang file has been fetch (or tried to
+	 * be fetched) already.
+	 *
 	 * @var int
 	 */
 	public $LOCAL_LANG_loaded = 0;
 
-	// Pointer to the language to use.
 	/**
+	 * Pointer to the language to use.
+	 *
 	 * @var string
 	 */
 	public $LLkey = 'default';
 
-	// Pointer to alternative fall-back language to use.
 	/**
+	 * Pointer to alternative fall-back language to use.
+	 *
 	 * @var string
 	 */
 	public $altLLkey = '';
 
-	// You can set this during development to some value that makes it easy for you to spot all labels that ARe delivered by the getLL function.
 	/**
+	 * You can set this during development to some value that makes it
+	 * easy for you to spot all labels that ARe delivered by the getLL function.
+	 *
 	 * @var string
 	 */
 	public $LLtestPrefix = '';
 
-	// Save as LLtestPrefix, but additional prefix for the alternative value in getLL() function calls
 	/**
+	 * Save as LLtestPrefix, but additional prefix for the alternative value
+	 * in getLL() function calls
+	 *
 	 * @var string
 	 */
 	public $LLtestPrefixAlt = '';
@@ -160,14 +181,19 @@ class AbstractPlugin {
 	 */
 	public $pi_autoCacheEn = 0;
 
-	// If set, then links are 1) not using cHash and 2) not allowing pages to be cached. (Set this for all USER_INT plugins!)
 	/**
+	 * If set, then links are
+	 * 1) not using cHash and
+	 * 2) not allowing pages to be cached. (Set this for all USER_INT plugins!)
+	 *
 	 * @var bool
 	 */
 	public $pi_USER_INT_obj = FALSE;
 
-	// If set, then caching is disabled if piVars are incoming while no cHash was set (Set this for all USER plugins!)
 	/**
+	 * If set, then caching is disabled if piVars are incoming while
+	 * no cHash was set (Set this for all USER plugins!)
+	 *
 	 * @var bool
 	 */
 	public $pi_checkCHash = FALSE;
@@ -182,8 +208,9 @@ class AbstractPlugin {
 	 */
 	public $conf = array();
 
-	// internal, don't mess with...
 	/**
+	 * internal, don't mess with...
+	 *
 	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
 	 */
 	public $pi_EPtemp_cObj;
@@ -193,17 +220,31 @@ class AbstractPlugin {
 	 */
 	public $pi_tmpPageId = 0;
 
-	/***************************
+	/**
+	 * Property for accessing TypoScriptFrontendController centrally
 	 *
-	 * Init functions
+	 * @var TypoScriptFrontendController
+	 */
+	protected $frontendController;
+
+	/**
+	 * Property for accessing DatabaseConnection centrally
 	 *
-	 **************************/
+	 * @var DatabaseConnection
+	 */
+	protected $databaseConnection;
+
 	/**
 	 * Class Constructor (true constructor)
 	 * Initializes $this->piVars if $this->prefixId is set to any value
 	 * Will also set $this->LLkey based on the config.language setting.
+	 *
+	 * @param DatabaseConnection $databaseConnection
+	 * @param TypoScriptFrontendController $frontendController
 	 */
-	public function __construct() {
+	public function __construct(DatabaseConnection $databaseConnection = NULL, TypoScriptFrontendController $frontendController = NULL) {
+		$this->databaseConnection = $databaseConnection ?: $GLOBALS['TYPO3_DB'];
+		$this->frontendController = $frontendController ?: $GLOBALS['TSFE'];
 		// Setting piVars:
 		if ($this->prefixId) {
 			$this->piVars = GeneralUtility::_GPmerged($this->prefixId);
@@ -211,12 +252,12 @@ class AbstractPlugin {
 			// IMPORTANT FOR CACHED PLUGINS (USER cObject): As soon as you generate cached plugin output which depends on parameters (eg. seeing the details of a news item) you MUST check if a cHash value is set.
 			// Background: The function call will check if a cHash parameter was sent with the URL because only if it was the page may be cached. If no cHash was found the function will simply disable caching to avoid unpredictable caching behaviour. In any case your plugin can generate the expected output and the only risk is that the content may not be cached. A missing cHash value is considered a mistake in the URL resulting from either URL manipulation, "realurl" "grayzones" etc. The problem is rare (more frequent with "realurl") but when it occurs it is very puzzling!
 			if ($this->pi_checkCHash && count($this->piVars)) {
-				$GLOBALS['TSFE']->reqCHash();
+				$this->frontendController->reqCHash();
 			}
 		}
-		if (!empty($GLOBALS['TSFE']->config['config']['language'])) {
-			$this->LLkey = $GLOBALS['TSFE']->config['config']['language'];
-			if (empty($GLOBALS['TSFE']->config['config']['language_alt'])) {
+		if (!empty($this->frontendController->config['config']['language'])) {
+			$this->LLkey = $this->frontendController->config['config']['language'];
+			if (empty($this->frontendController->config['config']['language_alt'])) {
 				/** @var $locales \TYPO3\CMS\Core\Localization\Locales */
 				$locales = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Locales');
 				if (in_array($this->LLkey, $locales->getLocales())) {
@@ -227,7 +268,7 @@ class AbstractPlugin {
 					$this->altLLkey = rtrim($this->altLLkey, ',');
 				}
 			} else {
-				$this->altLLkey = $GLOBALS['TSFE']->config['config']['language_alt'];
+				$this->altLLkey = $this->frontendController->config['config']['language_alt'];
 			}
 		}
 	}
@@ -247,7 +288,6 @@ class AbstractPlugin {
 				// descend into all non-stdWrap-subelements first
 				foreach ($confNextLevel as $subKey => $subConfNextLevel) {
 					if (is_array($subConfNextLevel) && strpos($subKey, '.') !== FALSE && $subKey !== 'stdWrap.') {
-						$subKey = substr($subKey, 0, -1);
 						$conf[$key . '.'] = $this->applyStdWrapRecursive($confNextLevel, $level + 1);
 					}
 				}
@@ -276,7 +316,7 @@ class AbstractPlugin {
 		if (isset($this->conf['_DEFAULT_PI_VARS.']) && is_array($this->conf['_DEFAULT_PI_VARS.'])) {
 			$this->conf['_DEFAULT_PI_VARS.'] = $this->applyStdWrapRecursive($this->conf['_DEFAULT_PI_VARS.']);
 			$tmp = $this->conf['_DEFAULT_PI_VARS.'];
-			\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($tmp, is_array($this->piVars) ? $this->piVars : array());
+			ArrayUtility::mergeRecursiveWithOverrule($tmp, is_array($this->piVars) ? $this->piVars : array());
 			$this->piVars = $tmp;
 		}
 	}
@@ -331,11 +371,11 @@ class AbstractPlugin {
 	 * @return string The input string wrapped in <a> tags
 	 * @see pi_linkTP_keepPIvars(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink()
 	 */
-	public function pi_linkTP($str, $urlParameters = array(), $cache = 0, $altPageId = 0) {
+	public function pi_linkTP($str, $urlParameters = array(), $cache = FALSE, $altPageId = 0) {
 		$conf = array();
 		$conf['useCacheHash'] = $this->pi_USER_INT_obj ? 0 : $cache;
 		$conf['no_cache'] = $this->pi_USER_INT_obj ? 0 : !$cache;
-		$conf['parameter'] = $altPageId ? $altPageId : ($this->pi_tmpPageId ? $this->pi_tmpPageId : $GLOBALS['TSFE']->id);
+		$conf['parameter'] = $altPageId ? $altPageId : ($this->pi_tmpPageId ? $this->pi_tmpPageId : $this->frontendController->id);
 		$conf['additionalParams'] = $this->conf['parent.']['addParams'] . GeneralUtility::implodeArrayForUrl('', $urlParameters, '', TRUE) . $this->pi_moreParams;
 		return $this->cObj->typoLink($str, $conf);
 	}
@@ -353,18 +393,17 @@ class AbstractPlugin {
 	 * @return string The input string wrapped in <a> tags
 	 * @see pi_linkTP()
 	 */
-	public function pi_linkTP_keepPIvars($str, $overrulePIvars = array(), $cache = 0, $clearAnyway = 0, $altPageId = 0) {
+	public function pi_linkTP_keepPIvars($str, $overrulePIvars = array(), $cache = FALSE, $clearAnyway = FALSE, $altPageId = 0) {
 		if (is_array($this->piVars) && is_array($overrulePIvars) && !$clearAnyway) {
 			$piVars = $this->piVars;
 			unset($piVars['DATA']);
-			\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($piVars, $overrulePIvars);
+			ArrayUtility::mergeRecursiveWithOverrule($piVars, $overrulePIvars);
 			$overrulePIvars = $piVars;
 			if ($this->pi_autoCacheEn) {
 				$cache = $this->pi_autoCache($overrulePIvars);
 			}
 		}
-		$res = $this->pi_linkTP($str, array($this->prefixId => $overrulePIvars), $cache, $altPageId);
-		return $res;
+		return $this->pi_linkTP($str, array($this->prefixId => $overrulePIvars), $cache, $altPageId);
 	}
 
 	/**
@@ -378,7 +417,7 @@ class AbstractPlugin {
 	 * @return string The URL ($this->cObj->lastTypoLinkUrl)
 	 * @see pi_linkTP_keepPIvars()
 	 */
-	public function pi_linkTP_keepPIvars_url($overrulePIvars = array(), $cache = 0, $clearAnyway = 0, $altPageId = 0) {
+	public function pi_linkTP_keepPIvars_url($overrulePIvars = array(), $cache = FALSE, $clearAnyway = FALSE, $altPageId = 0) {
 		$this->pi_linkTP_keepPIvars('|', $overrulePIvars, $cache, $clearAnyway, $altPageId);
 		return $this->cObj->lastTypoLinkUrl;
 	}
@@ -426,7 +465,7 @@ class AbstractPlugin {
 	public function pi_openAtagHrefInJSwindow($str, $winName = '', $winParams = 'width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1') {
 		if (preg_match('/(.*)(<a[^>]*>)(.*)/i', $str, $match)) {
 			$aTagContent = GeneralUtility::get_tag_attributes($match[2]);
-			$match[2] = '<a href="#" onclick="' . htmlspecialchars(('vHWin=window.open(\'' . $GLOBALS['TSFE']->baseUrlWrap($aTagContent['href']) . '\',\'' . ($winName ? $winName : md5($aTagContent['href'])) . '\',\'' . $winParams . '\');vHWin.focus();return false;')) . '">';
+			$match[2] = '<a href="#" onclick="' . htmlspecialchars(('vHWin=window.open(\'' . $this->frontendController->baseUrlWrap($aTagContent['href']) . '\',\'' . ($winName ? $winName : md5($aTagContent['href'])) . '\',\'' . $winParams . '\');vHWin.focus();return false;')) . '">';
 			$str = $match[1] . $match[2] . $match[3];
 		}
 		return $str;
@@ -475,9 +514,9 @@ class AbstractPlugin {
 		// Initializing variables:
 		$pointer = (int)$this->piVars[$pointerName];
 		$count = (int)$this->internal['res_count'];
-		$results_at_a_time = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->internal['results_at_a_time'], 1, 1000);
+		$results_at_a_time = MathUtility::forceIntegerInRange($this->internal['results_at_a_time'], 1, 1000);
 		$totalPages = ceil($count / $results_at_a_time);
-		$maxPages = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->internal['maxPages'], 1, 100);
+		$maxPages = MathUtility::forceIntegerInRange($this->internal['maxPages'], 1, 100);
 		$pi_isOnlyFields = $this->pi_isOnlyFields($this->pi_isOnlyFields);
 		if (!$forceOutput && $count <= $results_at_a_time) {
 			return '';
@@ -496,7 +535,7 @@ class AbstractPlugin {
 				$pagefloat = ceil(($maxPages - 1) / 2);
 			} else {
 				// pagefloat set as integer. 0 = left, value >= $this->internal['maxPages'] = right
-				$pagefloat = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->internal['pagefloat'], -1, $maxPages - 1);
+				$pagefloat = MathUtility::forceIntegerInRange($this->internal['pagefloat'], -1, $maxPages - 1);
 			}
 		} else {
 			// pagefloat disabled
@@ -524,7 +563,7 @@ class AbstractPlugin {
 				$firstPage = max(0, $lastPage - $maxPages);
 			} else {
 				$firstPage = 0;
-				$lastPage = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($totalPages, 1, $maxPages);
+				$lastPage = MathUtility::forceIntegerInRange($totalPages, 1, $maxPages);
 			}
 			$links = array();
 			// Make browse-table/links:
@@ -670,7 +709,7 @@ class AbstractPlugin {
 	 * $this->pi_list_row() is used for rendering each row
 	 * Notice that these two functions are typically ALWAYS defined in the extension class of the plugin since they are directly concerned with the specific layout for that plugins purpose.
 	 *
-	 * @param pointer $res Result pointer to a SQL result which can be traversed.
+	 * @param bool|\mysqli_result|object $res Result pointer to a SQL result which can be traversed.
 	 * @param string $tableParams Attributes for the table tag which is wrapped around the table rows containing the list
 	 * @return string Output HTML, wrapped in <div>-tags with a class attribute
 	 * @see pi_list_row(), pi_list_header()
@@ -682,7 +721,7 @@ class AbstractPlugin {
 		$tRows[] = $this->pi_list_header();
 		// Make list table rows
 		$c = 0;
-		while ($this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+		while ($this->internal['currentRow'] = $this->databaseConnection->sql_fetch_assoc($res)) {
 			$tRows[] = $this->pi_list_row($c);
 			$c++;
 		}
@@ -749,11 +788,13 @@ class AbstractPlugin {
 	 */
 	public function pi_classParam($class, $addClasses = '') {
 		$output = '';
-		foreach (GeneralUtility::trimExplode(',', $class) as $v) {
-			$output .= ' ' . $this->pi_getClassName($v);
+		$classNames = GeneralUtility::trimExplode(',', $class);
+		foreach ($classNames as $className) {
+			$output .= ' ' . $this->pi_getClassName($className);
 		}
-		foreach (GeneralUtility::trimExplode(',', $addClasses) as $v) {
-			$output .= ' ' . $v;
+		$additionalClassNames = GeneralUtility::trimExplode(',', $addClasses);
+		foreach ($additionalClassNames as $additionalClassName) {
+			$output .= ' ' . $additionalClassName;
 		}
 		return ' class="' . trim($output) . '"';
 	}
@@ -770,7 +811,7 @@ class AbstractPlugin {
 		' . $str . '
 	</div>
 	';
-		if (!$GLOBALS['TSFE']->config['config']['disablePrefixComment']) {
+		if (!$this->frontendController->config['config']['disablePrefixComment']) {
 			$content = '
 
 
@@ -802,13 +843,13 @@ class AbstractPlugin {
 	 * @return string Returns FALSE/blank if no BE User login and of course if the panel is not shown for other reasons. Otherwise the HTML for the panel (a table).
 	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::EDITPANEL()
 	 */
-	public function pi_getEditPanel($row = '', $tablename = '', $label = '', $conf = array()) {
+	public function pi_getEditPanel($row = array(), $tablename = '', $label = '', $conf = array()) {
 		$panel = '';
 		if (!$row || !$tablename) {
 			$row = $this->internal['currentRow'];
 			$tablename = $this->internal['currentTable'];
 		}
-		if ($GLOBALS['TSFE']->beUserLogin) {
+		if ($this->frontendController->beUserLogin) {
 			// Create local cObj if not set:
 			if (!is_object($this->pi_EPtemp_cObj)) {
 				$this->pi_EPtemp_cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
@@ -844,8 +885,8 @@ class AbstractPlugin {
 	 * @return string The processed content
 	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::editIcons()
 	 */
-	public function pi_getEditIcon($content, $fields, $title = '', $row = '', $tablename = '', $oConf = array()) {
-		if ($GLOBALS['TSFE']->beUserLogin) {
+	public function pi_getEditIcon($content, $fields, $title = '', $row = array(), $tablename = '', $oConf = array()) {
+		if ($this->frontendController->beUserLogin) {
 			if (!$row || !$tablename) {
 				$row = $this->internal['currentRow'];
 				$tablename = $this->internal['currentTable'];
@@ -880,7 +921,7 @@ class AbstractPlugin {
 		) {
 			// The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
 			if (isset($this->LOCAL_LANG_charset[$this->LLkey][$key])) {
-				$word = $GLOBALS['TSFE']->csConv($this->LOCAL_LANG[$this->LLkey][$key][0]['target'], $this->LOCAL_LANG_charset[$this->LLkey][$key]);
+				$word = $this->frontendController->csConv($this->LOCAL_LANG[$this->LLkey][$key][0]['target'], $this->LOCAL_LANG_charset[$this->LLkey][$key]);
 			} else {
 				$word = $this->LOCAL_LANG[$this->LLkey][$key][0]['target'];
 			}
@@ -895,7 +936,7 @@ class AbstractPlugin {
 					$word = $this->LOCAL_LANG[$languageKey][$key][0]['target'];
 					// The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
 					if (isset($this->LOCAL_LANG_charset[$languageKey][$key])) {
-						$word = $GLOBALS['TSFE']->csConv(
+						$word = $this->frontendController->csConv(
 							$word,
 							$this->LOCAL_LANG_charset[$this->altLLkey][$key]
 						);
@@ -935,7 +976,7 @@ class AbstractPlugin {
 		if (!$this->LOCAL_LANG_loaded && $this->scriptRelPath) {
 			$basePath = 'EXT:' . $this->extKey . '/' . dirname($this->scriptRelPath) . '/locallang.xml';
 			// Read the strings in the required charset (since TYPO3 4.2)
-			$this->LOCAL_LANG = GeneralUtility::readLLfile($basePath, $this->LLkey, $GLOBALS['TSFE']->renderCharset);
+			$this->LOCAL_LANG = GeneralUtility::readLLfile($basePath, $this->LLkey, $this->frontendController->renderCharset);
 			$alternativeLanguageKeys = GeneralUtility::trimExplode(',', $this->altLLkey, TRUE);
 			foreach ($alternativeLanguageKeys as $languageKey) {
 				$tempLL = GeneralUtility::readLLfile($basePath, $languageKey);
@@ -985,9 +1026,9 @@ class AbstractPlugin {
 	 * @param string $groupBy If set, this is added as a " GROUP BY ...." part of the query.
 	 * @param string $orderBy If set, this is added as a " ORDER BY ...." part of the query. The default is that an ORDER BY clause is made based on $this->internal['orderBy'] and $this->internal['descFlag'] where the orderBy field must be found in $this->internal['orderByList']
 	 * @param string $query If set, this is taken as the first part of the query instead of what is created internally. Basically this should be a query starting with "FROM [table] WHERE ... AND ...". The $addWhere clauses and all the other stuff is still added. Only the tables and PID selecting clauses are bypassed. May be deprecated in the future!
-	 * @return pointer SQL result pointer
+	 * @return bool|\mysqli_result|object SQL result pointer
 	 */
-	public function pi_exec_query($table, $count = 0, $addWhere = '', $mm_cat = '', $groupBy = '', $orderBy = '', $query = '') {
+	public function pi_exec_query($table, $count = FALSE, $addWhere = '', $mm_cat = '', $groupBy = '', $orderBy = '', $query = '') {
 		// Begin Query:
 		if (!$query) {
 			// Fetches the list of PIDs to select from.
@@ -1034,32 +1075,32 @@ class AbstractPlugin {
 			}
 			// Limit data:
 			$pointer = (int)$this->piVars['pointer'];
-			$results_at_a_time = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->internal['results_at_a_time'], 1, 1000);
+			$results_at_a_time = MathUtility::forceIntegerInRange($this->internal['results_at_a_time'], 1, 1000);
 			$LIMIT = $pointer * $results_at_a_time . ',' . $results_at_a_time;
 			// Add 'SELECT'
 			$queryParts = array(
 				'SELECT' => $this->pi_prependFieldsWithTable($table, $this->pi_listFields),
 				'FROM' => $TABLENAMES,
 				'WHERE' => $WHERE,
-				'GROUPBY' => $GLOBALS['TYPO3_DB']->stripGroupBy($groupBy),
-				'ORDERBY' => $GLOBALS['TYPO3_DB']->stripOrderBy($orderBy),
+				'GROUPBY' => $this->databaseConnection->stripGroupBy($groupBy),
+				'ORDERBY' => $this->databaseConnection->stripOrderBy($orderBy),
 				'LIMIT' => $LIMIT
 			);
 		}
-		return $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
+		return $this->databaseConnection->exec_SELECT_queryArray($queryParts);
 	}
 
 	/**
 	 * Returns the row $uid from $table
-	 * (Simply calling $GLOBALS['TSFE']->sys_page->checkRecord())
+	 * (Simply calling $this->frontendEngine->sys_page->checkRecord())
 	 *
 	 * @param string $table The table name
 	 * @param int $uid The uid of the record from the table
 	 * @param bool $checkPage If $checkPage is set, it's required that the page on which the record resides is accessible
 	 * @return array If record is found, an array. Otherwise FALSE.
 	 */
-	public function pi_getRecord($table, $uid, $checkPage = 0) {
-		return $GLOBALS['TSFE']->sys_page->checkRecord($table, $uid, $checkPage);
+	public function pi_getRecord($table, $uid, $checkPage = FALSE) {
+		return $this->frontendController->sys_page->checkRecord($table, $uid, $checkPage);
 	}
 
 	/**
@@ -1071,13 +1112,13 @@ class AbstractPlugin {
 	 */
 	public function pi_getPidList($pid_list, $recursive = 0) {
 		if (!strcmp($pid_list, '')) {
-			$pid_list = $GLOBALS['TSFE']->id;
+			$pid_list = $this->frontendController->id;
 		}
-		$recursive = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($recursive, 0);
+		$recursive = MathUtility::forceIntegerInRange($recursive, 0);
 		$pid_list_arr = array_unique(GeneralUtility::trimExplode(',', $pid_list, TRUE));
 		$pid_list = array();
 		foreach ($pid_list_arr as $val) {
-			$val = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($val, 0);
+			$val = MathUtility::forceIntegerInRange($val, 0);
 			if ($val) {
 				$_list = $this->cObj->getTreeList(-1 * $val, $recursive);
 				if ($_list) {
@@ -1116,12 +1157,12 @@ class AbstractPlugin {
 	 * @return array The array with the category records in.
 	 */
 	public function pi_getCategoryTableContents($table, $pid, $whereClause = '', $groupBy = '', $orderBy = '', $limit = '') {
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'pid=' . (int)$pid . $this->cObj->enableFields($table) . ' ' . $whereClause, $groupBy, $orderBy, $limit);
+		$res = $this->databaseConnection->exec_SELECTquery('*', $table, 'pid=' . (int)$pid . $this->cObj->enableFields($table) . ' ' . $whereClause, $groupBy, $orderBy, $limit);
 		$outArr = array();
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+		while ($row = $this->databaseConnection->sql_fetch_assoc($res)) {
 			$outArr[$row['uid']] = $row;
 		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		$this->databaseConnection->sql_free_result($res);
 		return $outArr;
 	}
 
@@ -1136,20 +1177,22 @@ class AbstractPlugin {
 	 *
 	 * @param string $fList List of fields (keys from piVars) to evaluate on
 	 * @param int $lowerThan Limit for the values.
-	 * @return bool Returns TRUE (1) if conditions are met.
+	 * @return bool|NULL Returns TRUE (1) if conditions are met.
 	 */
 	public function pi_isOnlyFields($fList, $lowerThan = -1) {
 		$lowerThan = $lowerThan == -1 ? $this->pi_lowerThan : $lowerThan;
 		$fList = GeneralUtility::trimExplode(',', $fList, TRUE);
 		$tempPiVars = $this->piVars;
 		foreach ($fList as $k) {
-			if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($tempPiVars[$k]) || $tempPiVars[$k] < $lowerThan) {
+			if (!MathUtility::canBeInterpretedAsInteger($tempPiVars[$k]) || $tempPiVars[$k] < $lowerThan) {
 				unset($tempPiVars[$k]);
 			}
 		}
 		if (!count($tempPiVars)) {
+			//@TODO: How do we deal with this? return TRUE would be the right thing to do here but that might be breaking
 			return 1;
 		}
+		return NULL;
 	}
 
 	/**
@@ -1158,7 +1201,7 @@ class AbstractPlugin {
 	 * This is an advanced form of evaluation of whether a URL should be cached or not.
 	 *
 	 * @param array $inArray An array with piVars values to evaluate
-	 * @return bool Returns TRUE (1) if conditions are met.
+	 * @return bool|NULL Returns TRUE (1) if conditions are met.
 	 * @see pi_linkTP_keepPIvars()
 	 */
 	public function pi_autoCache($inArray) {
@@ -1177,8 +1220,10 @@ class AbstractPlugin {
 			}
 		}
 		if (!count($inArray)) {
+			//@TODO: How do we deal with this? return TRUE would be the right thing to do here but that might be breaking
 			return 1;
 		}
+		return NULL;
 	}
 
 	/**
@@ -1191,7 +1236,7 @@ class AbstractPlugin {
 	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::parseFunc()
 	 */
 	public function pi_RTEcssText($str) {
-		$parseFunc = $GLOBALS['TSFE']->tmpl->setup['lib.']['parseFunc_RTE.'];
+		$parseFunc = $this->frontendController->tmpl->setup['lib.']['parseFunc_RTE.'];
 		if (is_array($parseFunc)) {
 			$str = $this->cObj->parseFunc($str, $parseFunc);
 		}
@@ -1227,13 +1272,14 @@ class AbstractPlugin {
 	 * @param string $sheet Sheet pointer, eg. "sDEF
 	 * @param string $lang Language pointer, eg. "lDEF
 	 * @param string $value Value pointer, eg. "vDEF
-	 * @return string The content.
+	 * @return string|NULL The content.
 	 */
 	public function pi_getFFvalue($T3FlexForm_array, $fieldName, $sheet = 'sDEF', $lang = 'lDEF', $value = 'vDEF') {
 		$sheetArray = is_array($T3FlexForm_array) ? $T3FlexForm_array['data'][$sheet][$lang] : '';
 		if (is_array($sheetArray)) {
 			return $this->pi_getFFvalueFromSheetArray($sheetArray, explode('/', $fieldName), $value);
 		}
+		return NULL;
 	}
 
 	/**
@@ -1249,7 +1295,7 @@ class AbstractPlugin {
 	public function pi_getFFvalueFromSheetArray($sheetArray, $fieldNameArr, $value) {
 		$tempArr = $sheetArray;
 		foreach ($fieldNameArr as $k => $v) {
-			if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($v)) {
+			if (MathUtility::canBeInterpretedAsInteger($v)) {
 				if (is_array($tempArr)) {
 					$c = 0;
 					foreach ($tempArr as $values) {
