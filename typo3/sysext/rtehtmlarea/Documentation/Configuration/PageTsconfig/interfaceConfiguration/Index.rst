@@ -3903,29 +3903,6 @@ buttons.cellproperties.properties.borderStyle.removeItems
 
 
 
-.. _buttons-paste-mozillaallowclipboardurl:
-
-buttons.paste.mozillaAllowClipboardUrl
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. container:: table-row
-
-   Property
-         buttons.paste.mozillaAllowClipboardUrl
-   
-   Data type
-         url
-   
-   Description
-         The full absolute url of the AllowClipboard Helper extension for
-         Mozilla/Firefox. The browser extension is used to allow the RTE to
-         access the clipboard. The url is used to install the extension when
-         required.
-         
-         Default: http://typo3.org/fileadmin/allowclipboardhelper-0.6.xpi
-
-
-
 .. _buttons-pastetoggle-setactiveonrteopen:
 
 buttons.pastetoggle.setActiveOnRteOpen
