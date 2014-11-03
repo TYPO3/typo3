@@ -413,7 +413,8 @@ HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 				this.buildButtonConfig('Cancel', this.onCancel)
 			]
 		});
-		this.show();
+		// Apparently, IE needs sometime before being able to show the iframe
+		this.show.defer(100, this);
 	},
 	/*
 	 * Handler invoked after the pasting pad iframe has been rendered
