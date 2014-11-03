@@ -71,29 +71,6 @@ class CopyPaste extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	}
 
 	/**
-	 * Return JS configuration of the htmlArea plugins registered by the extension
-	 *
-	 * @param 	integer		Relative id of the RTE editing area in the form
-	 * @return string		JS configuration for registered plugins
-	 */
-	public function buildJavascriptConfiguration($RTEcounter) {
-		$registerRTEinJavascriptString = '';
-		$button = 'paste';
-		if ($this->htmlAreaRTE->client['browser'] == 'gecko') {
-			$mozillaAllowClipboardURL = $this->thisConfig['buttons.'][$button . '.']['mozillaAllowClipboardURL'] ?: $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extensionKey]['plugins']['CopyPaste']['mozillaAllowClipboardURL'];
-			if ($mozillaAllowClipboardURL) {
-				if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][($button . '.')])) {
-					$registerRTEinJavascriptString .= '
-			RTEarea[' . $RTEcounter . '].buttons.' . $button . ' = new Object();';
-				}
-				$registerRTEinJavascriptString .= '
-			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.mozillaAllowClipboardURL = "' . $mozillaAllowClipboardURL . '";';
-			}
-		}
-		return $registerRTEinJavascriptString;
-	}
-
-	/**
 	 * Return an updated array of toolbar enabled buttons
 	 *
 	 * @param 	array		$show: array of toolbar elements that will be enabled, unless modified here
