@@ -45,7 +45,7 @@ class Auth_OpenID_PredisStore extends Auth_OpenID_OpenIDStore {
      * @param \Predis\Client $redis  Predis client object
      * @param string         $prefix Prefix for all keys stored to the Redis
      */
-    function Auth_OpenID_PredisStore(\Predis\Client $redis, $prefix = '')
+    function Auth_OpenID_PredisStore($redis, $prefix = '')
     {
         $this->prefix = $prefix;
         $this->redis = $redis;
