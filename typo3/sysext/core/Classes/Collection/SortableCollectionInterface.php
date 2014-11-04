@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Collection;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Interface for collection class being sortable
  *
@@ -24,8 +25,8 @@ namespace TYPO3\CMS\Core\Collection;
  *
  * @author Steffen Ritter <typo3steffen-ritter.net>
  */
-interface SortableCollectionInterface
-{
+interface SortableCollectionInterface {
+
 	/**
 	 * Sorts collection via given callBackFunction
 	 *

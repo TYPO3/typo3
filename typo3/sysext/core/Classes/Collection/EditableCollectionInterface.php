@@ -13,13 +13,14 @@ namespace TYPO3\CMS\Core\Collection;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Interface for collection classes which es enabled to be modified
  *
  * @author Steffen Ritter <typo3steffen-ritter.net>
  */
-interface EditableCollectionInterface
-{
+interface EditableCollectionInterface {
+
 	/**
 	 * Adds on entry to the collection
 	 *
@@ -31,10 +32,10 @@ interface EditableCollectionInterface
 	/**
 	 * Adds a set of entries to the collection
 	 *
-	 * @param \TYPO3\CMS\Core\Collection\CollectionInterface $other
+	 * @param CollectionInterface $other
 	 * @return void
 	 */
-	public function addAll(\TYPO3\CMS\Core\Collection\CollectionInterface $other);
+	public function addAll(CollectionInterface $other);
 
 	/**
 	 * Remove the given entry from collection

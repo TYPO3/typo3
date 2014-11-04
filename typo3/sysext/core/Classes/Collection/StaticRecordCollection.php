@@ -13,12 +13,13 @@ namespace TYPO3\CMS\Core\Collection;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Implementation of a RecordCollection for static TCA-Records
  *
  * @author Steffen Ritter <typo3@steffen-ritter.net>
  */
-class StaticRecordCollection extends \TYPO3\CMS\Core\Collection\AbstractRecordCollection implements \TYPO3\CMS\Core\Collection\EditableCollectionInterface {
+class StaticRecordCollection extends AbstractRecordCollection implements EditableCollectionInterface {
 
 	/**
 	 * Creates a new collection objects and reconstitutes the
@@ -29,8 +30,11 @@ class StaticRecordCollection extends \TYPO3\CMS\Core\Collection\AbstractRecordCo
 	 * @return \TYPO3\CMS\Core\Collection\StaticRecordCollection
 	 */
 	static public function create(array $collectionRecord, $fillItems = FALSE) {
-		/** @var $collection \TYPO3\CMS\Core\Collection\StaticRecordCollection */
-		$collection = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Collection\\StaticRecordCollection', $collectionRecord['table_name']);
+		/** @var $collection StaticRecordCollection */
+		$collection = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+			'TYPO3\\CMS\\Core\\Collection\\StaticRecordCollection',
+			$collectionRecord['table_name']
+		);
 		$collection->fromArray($collectionRecord);
 		if ($fillItems) {
 			$collection->loadContents();
@@ -42,6 +46,7 @@ class StaticRecordCollection extends \TYPO3\CMS\Core\Collection\AbstractRecordCo
 	 * Creates this object.
 	 *
 	 * @param string $tableName Name of the table to be working on
+	 * @throws \RuntimeException
 	 */
 	public function __construct($tableName = NULL) {
 		parent::__construct();
@@ -103,10 +108,10 @@ class StaticRecordCollection extends \TYPO3\CMS\Core\Collection\AbstractRecordCo
 	/**
 	 * Adds a set of entries to the collection
 	 *
-	 * @param \TYPO3\CMS\Core\Collection\CollectionInterface $other
+	 * @param CollectionInterface $other
 	 * @return void
 	 */
-	public function addAll(\TYPO3\CMS\Core\Collection\CollectionInterface $other) {
+	public function addAll(CollectionInterface $other) {
 		foreach ($other as $value) {
 			$this->add($value);
 		}
@@ -151,14 +156,29 @@ class StaticRecordCollection extends \TYPO3\CMS\Core\Collection\AbstractRecordCo
 	 */
 	protected function getCollectedRecords() {
 		$relatedRecords = array();
-		$resource = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query($this->getItemTableName() . '.*', self::$storageTableName, 'sys_collection_entries', $this->getItemTableName(), 'AND ' . self::$storageTableName . '.uid=' . (int)$this->getIdentifier());
+		$resource = $this->getDatabaseConnection()->exec_SELECT_mm_query(
+			$this->getItemTableName() . '.*',
+			self::$storageTableName,
+			'sys_collection_entries',
+			$this->getItemTableName(),
+			'AND ' . self::$storageTableName . '.uid=' . (int)$this->getIdentifier()
+		);
 		if ($resource) {
-			while ($record = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resource)) {
+			while ($record = $this->getDatabaseConnection()->sql_fetch_assoc($resource)) {
 				$relatedRecords[] = $record;
 			}
-			$GLOBALS['TYPO3_DB']->sql_free_result($resource);
+			$this->getDatabaseConnection()->sql_free_result($resource);
 		}
 		return $relatedRecords;
+	}
+
+	/**
+	 * Gets the database object.
+	 *
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
 	}
 
 }

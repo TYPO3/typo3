@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Collection;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Abstract implementation of a RecordCollection
  *
@@ -27,7 +28,7 @@ namespace TYPO3\CMS\Core\Collection;
  *
  * @author Steffen Ritter <typo3@steffen-ritter.net>
  */
-abstract class AbstractRecordCollection implements \TYPO3\CMS\Core\Collection\RecordCollectionInterface, \TYPO3\CMS\Core\Collection\PersistableCollectionInterface, \TYPO3\CMS\Core\Collection\SortableCollectionInterface {
+abstract class AbstractRecordCollection implements RecordCollectionInterface, PersistableCollectionInterface, SortableCollectionInterface {
 
 	/**
 	 * The table name collections are stored to
@@ -74,7 +75,7 @@ abstract class AbstractRecordCollection implements \TYPO3\CMS\Core\Collection\Re
 	/**
 	 * The local storage
 	 *
-	 * @var SplDoublyLinkedList
+	 * @var \SplDoublyLinkedList
 	 */
 	protected $storage;
 
@@ -306,7 +307,11 @@ abstract class AbstractRecordCollection implements \TYPO3\CMS\Core\Collection\Re
 	 * @return \TYPO3\CMS\Core\Collection\CollectionInterface
 	 */
 	static public function load($id, $fillItems = FALSE) {
-		$collectionRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', static::$storageTableName, 'uid=' . (int)$id . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause(static::$storageTableName));
+		$collectionRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+			'*',
+			static::$storageTableName,
+			'uid=' . (int)$id . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause(static::$storageTableName)
+		);
 		return self::create($collectionRecord, $fillItems);
 	}
 

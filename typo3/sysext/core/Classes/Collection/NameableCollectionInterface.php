@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Collection;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Marker interface for a collection class with title and description
  *
@@ -23,8 +24,8 @@ namespace TYPO3\CMS\Core\Collection;
  *
  * @author Steffen Ritter <typo3steffen-ritter.net>
  */
-interface NameableCollectionInterface
-{
+interface NameableCollectionInterface {
+
 	/**
 	 * Setter for the title
 	 *

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Collection;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Interface for collection class being persistable
  *
@@ -24,6 +25,7 @@ namespace TYPO3\CMS\Core\Collection;
  * @author Steffen Ritter <typo3steffen-ritter.net>
  */
 interface PersistableCollectionInterface {
+
 	/**
 	 * Get the identifier of the collection
 	 *
