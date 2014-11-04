@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Database;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A helper class for handling PDO databases
  * Backport of FLOW3 class PdoHelper, last synced version: 3528

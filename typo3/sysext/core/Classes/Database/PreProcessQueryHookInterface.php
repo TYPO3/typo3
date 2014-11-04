@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Database;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Interface for classes which hook into \TYPO3\CMS\Core\Database\DatabaseConnection
  * and do additional processing before a query has been executed.
@@ -20,6 +21,7 @@ namespace TYPO3\CMS\Core\Database;
  * @author Xavier Perseguers <typo3@perseguers.ch>
  */
 interface PreProcessQueryHookInterface {
+
 	/**
 	 * Pre-processor for the SELECTquery method.
 	 *

@@ -26,14 +26,34 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  */
 class QueryView {
 
+	/**
+	 * @var string
+	 */
 	public $storeList = 'search_query_smallparts,search_result_labels,labels_noprefix,show_deleted,queryConfig,queryTable,queryFields,queryLimit,queryOrder,queryOrderDesc,queryOrder2,queryOrder2Desc,queryGroup,search_query_makeQuery';
 
+	/**
+	 * @var string
+	 */
 	public $downloadScript = 'index.php';
 
+	/**
+	 * @var int
+	 */
 	public $formW = 48;
 
+	/**
+	 * @var int
+	 */
 	public $noDownloadB = 0;
 
+	/**
+	 * @var array
+	 */
+	public $hookArray = array();
+
+	/**
+	 * @var string
+	 */
 	protected $formName = '';
 
 	/**
@@ -44,7 +64,7 @@ class QueryView {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Get form
 	 *
 	 * @return string
 	 */
@@ -57,7 +77,7 @@ class QueryView {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Make store control
 	 *
 	 * @return string
 	 */
@@ -91,7 +111,7 @@ class QueryView {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Init store array
 	 *
 	 * @return array
 	 */
@@ -107,7 +127,7 @@ class QueryView {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Clean store query configs
 	 *
 	 * @param array $storeQueryConfigs
 	 * @param array $storeArray
@@ -125,7 +145,7 @@ class QueryView {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Add to store query configs
 	 *
 	 * @param array $storeQueryConfigs
 	 * @param int $index
@@ -141,7 +161,7 @@ class QueryView {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Save query in action
 	 *
 	 * @param int $uid
 	 * @return int
@@ -183,7 +203,7 @@ class QueryView {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Load store query configs
 	 *
 	 * @param array $storeQueryConfigs
 	 * @param int $storeIndex
@@ -201,7 +221,7 @@ class QueryView {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Process store control
 	 *
 	 * @return string
 	 */
@@ -277,7 +297,7 @@ class QueryView {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Query marker
 	 *
 	 * @return string
 	 */
@@ -337,10 +357,10 @@ class QueryView {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Get query result code
 	 *
 	 * @param string $mQ
-	 * @param pointer $res
+	 * @param bool|\mysqli_result|object $res MySQLi result object / DBAL object
 	 * @param string $table
 	 * @return string
 	 */
@@ -417,7 +437,7 @@ class QueryView {
 	}
 
 	/**
-	 * [Describe function...]
+	 * CSV values
 	 *
 	 * @param array $row
 	 * @param string $delim
@@ -437,7 +457,7 @@ class QueryView {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Table wrap
 	 *
 	 * @param string $str
 	 * @return string
@@ -447,7 +467,7 @@ class QueryView {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Search
 	 *
 	 * @return string
 	 */
@@ -493,7 +513,7 @@ class QueryView {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Result row display
 	 *
 	 * @param array $row
 	 * @param array $conf
@@ -506,12 +526,12 @@ class QueryView {
 		$SET = $GLOBALS['SOBE']->MOD_SETTINGS;
 		$out = '<tr class="bgColor' . ($even ? '6' : '4') . '">';
 		$even = !$even;
-		foreach ($row as $fN => $fV) {
-			if (GeneralUtility::inList($SET['queryFields'], $fN) || !$SET['queryFields'] && $fN != 'pid' && $fN != 'deleted') {
+		foreach ($row as $fieldName => $fieldValue) {
+			if (GeneralUtility::inList($SET['queryFields'], $fieldName) || !$SET['queryFields'] && $fieldName != 'pid' && $fieldName != 'deleted') {
 				if ($SET['search_result_labels']) {
-					$fVnew = $this->getProcessedValueExtra($table, $fN, $fV, $conf, '<br />');
+					$fVnew = $this->getProcessedValueExtra($table, $fieldName, $fieldValue, $conf, '<br />');
 				} else {
-					$fVnew = htmlspecialchars($fV);
+					$fVnew = htmlspecialchars($fieldValue);
 				}
 				$out .= '<td>' . $fVnew . '</td>';
 			}
@@ -549,19 +569,20 @@ class QueryView {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Get processed value extra
 	 *
 	 * @param string $table
-	 * @param string $fN
-	 * @param string $fV
+	 * @param string $fieldName
+	 * @param string $fieldValue
 	 * @param array $conf Not used
 	 * @param string $splitString
 	 * @return string
 	 */
-	public function getProcessedValueExtra($table, $fN, $fV, $conf, $splitString) {
+	public function getProcessedValueExtra($table, $fieldName, $fieldValue, $conf, $splitString) {
+		$out = '';
 		// Analysing the fields in the table.
 		if (is_array($GLOBALS['TCA'][$table])) {
-			$fC = $GLOBALS['TCA'][$table]['columns'][$fN];
+			$fC = $GLOBALS['TCA'][$table]['columns'][$fieldName];
 			$fields = $fC['config'];
 			$fields['exclude'] = $fC['exclude'];
 			if (is_array($fC) && $fC['label']) {
@@ -604,21 +625,16 @@ class QueryView {
 						}
 						break;
 					case 'user':
-
 					case 'flex':
-
 					case 'passthrough':
-
 					case 'none':
-
 					case 'text':
-
 					default:
 						$fields['type'] = 'text';
 				}
 			} else {
-				$fields['label'] = '[FIELD: ' . $fN . ']';
-				switch ($fN) {
+				$fields['label'] = '[FIELD: ' . $fieldName . ']';
+				switch ($fieldName) {
 					case 'pid':
 						$fields['type'] = 'relation';
 						$fields['allowed'] = 'pages';
@@ -639,39 +655,36 @@ class QueryView {
 		}
 		switch ($fields['type']) {
 			case 'date':
-				if ($fV != -1) {
-					$out = strftime('%e-%m-%Y', $fV);
+				if ($fieldValue != -1) {
+					$out = strftime('%e-%m-%Y', $fieldValue);
 				}
 				break;
 			case 'time':
-				if ($fV != -1) {
+				if ($fieldValue != -1) {
 					if ($splitString == '<br />') {
-						$out = strftime('%H:%M' . $splitString . '%e-%m-%Y', $fV);
+						$out = strftime('%H:%M' . $splitString . '%e-%m-%Y', $fieldValue);
 					} else {
-						$out = strftime('%H:%M %e-%m-%Y', $fV);
+						$out = strftime('%H:%M %e-%m-%Y', $fieldValue);
 					}
 				}
 				break;
 			case 'multiple':
-
 			case 'binary':
-
 			case 'relation':
-				$out = $this->makeValueList($fN, $fV, $fields, $table, $splitString);
+				$out = $this->makeValueList($fieldName, $fieldValue, $fields, $table, $splitString);
 				break;
 			case 'boolean':
-				$out = $fV ? 'True' : 'False';
+				$out = $fieldValue ? 'True' : 'False';
 				break;
 			case 'files':
-
 			default:
-				$out = htmlspecialchars($fV);
+				$out = htmlspecialchars($fieldValue);
 		}
 		return $out;
 	}
 
 	/**
-	 * [Describe function...]
+	 * Get tree list
 	 *
 	 * @param int $id
 	 * @param int $depth
@@ -707,16 +720,16 @@ class QueryView {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Make value list
 	 *
-	 * @param string $fN
-	 * @param string $fV
+	 * @param string $fieldName
+	 * @param string $fieldValue
 	 * @param array $conf
 	 * @param string $table
 	 * @param string $splitString
 	 * @return string
 	 */
-	public function makeValueList($fN, $fV, $conf, $table, $splitString) {
+	public function makeValueList($fieldName, $fieldValue, $conf, $table, $splitString) {
 		$fieldSetup = $conf;
 		$out = '';
 		if ($fieldSetup['type'] == 'files') {
@@ -730,7 +743,7 @@ class QueryView {
 			$d->close();
 			natcasesort($fileArray);
 			while (list(, $fileName) = each($fileArray)) {
-				if (GeneralUtility::inList($fV, $fileName) || $fV == $fileName) {
+				if (GeneralUtility::inList($fieldValue, $fileName) || $fieldValue == $fileName) {
 					if (!$out) {
 						$out = htmlspecialchars($fileName);
 					} else {
@@ -746,7 +759,7 @@ class QueryView {
 				} else {
 					$value = $val[0];
 				}
-				if (GeneralUtility::inList($fV, $val[1]) || $fV == $val[1]) {
+				if (GeneralUtility::inList($fieldValue, $val[1]) || $fieldValue == $val[1]) {
 					if (!$out) {
 						$out = htmlspecialchars($value);
 					} else {
@@ -777,7 +790,7 @@ class QueryView {
 					} else {
 						$value = $val[0];
 					}
-					if (GeneralUtility::inList($fV, $value) || $fV == $value) {
+					if (GeneralUtility::inList($fieldValue, $value) || $fieldValue == $value) {
 						if (!$out) {
 							$out = htmlspecialchars($value);
 						} else {
@@ -790,18 +803,18 @@ class QueryView {
 				$from_table_Arr = explode(',', $fieldSetup['allowed']);
 				$useTablePrefix = 1;
 				if (!$fieldSetup['prepend_tname']) {
-					$checkres = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fN, $table, 'uid ' . BackendUtility::deleteClause($table), ($groupBy = ''), ($orderBy = ''), ($limit = ''));
+					$checkres = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fieldName, $table, 'uid ' . BackendUtility::deleteClause($table), ($groupBy = ''), ($orderBy = ''), ($limit = ''));
 					if ($checkres) {
 						while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($checkres)) {
-							if (stristr($row[$fN], ',')) {
-								$checkContent = explode(',', $row[$fN]);
+							if (stristr($row[$fieldName], ',')) {
+								$checkContent = explode(',', $row[$fieldName]);
 								foreach ($checkContent as $singleValue) {
 									if (!stristr($singleValue, '_')) {
 										$dontPrefixFirstTable = 1;
 									}
 								}
 							} else {
-								$singleValue = $row[$fN];
+								$singleValue = $row[$fieldName];
 								if (strlen($singleValue) && !stristr($singleValue, '_')) {
 									$dontPrefixFirstTable = 1;
 								}
@@ -882,7 +895,7 @@ class QueryView {
 					foreach ($this->tableArray[$from_table] as $key => $val) {
 						$GLOBALS['SOBE']->MOD_SETTINGS['labels_noprefix'] = $GLOBALS['SOBE']->MOD_SETTINGS['labels_noprefix'] == 1 ? 'on' : $GLOBALS['SOBE']->MOD_SETTINGS['labels_noprefix'];
 						$prefixString = $GLOBALS['SOBE']->MOD_SETTINGS['labels_noprefix'] == 'on' ? '' : ' [' . $tablePrefix . $val['uid'] . '] ';
-						if (GeneralUtility::inList($fV, $tablePrefix . $val['uid']) || $fV == $tablePrefix . $val['uid']) {
+						if (GeneralUtility::inList($fieldValue, $tablePrefix . $val['uid']) || $fieldValue == $tablePrefix . $val['uid']) {
 							if ($useSelectLabels) {
 								if (!$out) {
 									$out = htmlspecialchars($prefixString . $labelFieldSelect[$val[$labelField]]);
@@ -945,11 +958,11 @@ class QueryView {
 		$tableHeader[] = '<th style="white-space:nowrap;"></th>';
 		// Close header row
 		$tableHeader[] = '</tr></thead>';
-		return implode($tableHeader, LF);
+		return implode(LF, $tableHeader);
 	}
 
 	/**
-	 * [Describe function...]
+	 * CSV row titles
 	 *
 	 * @param array $row
 	 * @param array $conf
@@ -959,19 +972,19 @@ class QueryView {
 	public function csvRowTitles($row, $conf, $table) {
 		$out = '';
 		$SET = $GLOBALS['SOBE']->MOD_SETTINGS;
-		foreach ($row as $fN => $fV) {
-			if (GeneralUtility::inList($SET['queryFields'], $fN) || !$SET['queryFields'] && $fN != 'pid') {
+		foreach ($row as $fieldName => $fieldValue) {
+			if (GeneralUtility::inList($SET['queryFields'], $fieldName) || !$SET['queryFields'] && $fieldName != 'pid') {
 				if (!$out) {
 					if ($GLOBALS['SOBE']->MOD_SETTINGS['search_result_labels']) {
-						$out = $GLOBALS['LANG']->sL($conf['columns'][$fN]['label'] ? $conf['columns'][$fN]['label'] : $fN, TRUE);
+						$out = $GLOBALS['LANG']->sL($conf['columns'][$fieldName]['label'] ? $conf['columns'][$fieldName]['label'] : $fieldName, TRUE);
 					} else {
-						$out = $GLOBALS['LANG']->sL($fN, TRUE);
+						$out = $GLOBALS['LANG']->sL($fieldName, TRUE);
 					}
 				} else {
 					if ($GLOBALS['SOBE']->MOD_SETTINGS['search_result_labels']) {
-						$out .= ',' . $GLOBALS['LANG']->sL(($conf['columns'][$fN]['label'] ? $conf['columns'][$fN]['label'] : $fN), TRUE);
+						$out .= ',' . $GLOBALS['LANG']->sL(($conf['columns'][$fieldName]['label'] ? $conf['columns'][$fieldName]['label'] : $fieldName), TRUE);
 					} else {
-						$out .= ',' . $GLOBALS['LANG']->sL($fN, TRUE);
+						$out .= ',' . $GLOBALS['LANG']->sL($fieldName, TRUE);
 					}
 				}
 			}

@@ -61,8 +61,9 @@ class ReferenceIndex {
 	 */
 	public $words = array();
 
-	// Number which we can increase if a change in the code means we will have to force a re-generation of the index.
 	/**
+	 * Number which we can increase if a change in the code means we will have to force a re-generation of the index.
+	 *
 	 * @var int
 	 */
 	public $hashVersion = 1;

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Database;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Interface for classes which hook into \TYPO3\CMS\Core\Database\DatabaseConnection
  * and do additional processing after a query has been executed.
@@ -20,6 +21,7 @@ namespace TYPO3\CMS\Core\Database;
  * @author Xavier Perseguers <typo3@perseguers.ch>
  */
 interface PostProcessQueryHookInterface {
+
 	/**
 	 * Post-processor for the SELECTquery method.
 	 *
@@ -39,7 +41,7 @@ interface PostProcessQueryHookInterface {
 	 *
 	 * @param string $table Database table name
 	 * @param array $fieldsValues Field values as key => value pairs
-	 * @param string/array $noQuoteFields List/array of keys NOT to quote
+	 * @param string|array $noQuoteFields List/array of keys NOT to quote
 	 * @param \TYPO3\CMS\Core\Database\DatabaseConnection $parentObject
 	 * @return void
 	 */
@@ -51,7 +53,7 @@ interface PostProcessQueryHookInterface {
 	 * @param string $table Database table name
 	 * @param array $fields Field names
 	 * @param array $rows Table rows
-	 * @param string/array $noQuoteFields List/array of keys NOT to quote
+	 * @param string|array $noQuoteFields List/array of keys NOT to quote
 	 * @param \TYPO3\CMS\Core\Database\DatabaseConnection $parentObject
 	 * @return void
 	 */
@@ -63,7 +65,7 @@ interface PostProcessQueryHookInterface {
 	 * @param string $table Database table name
 	 * @param string $where WHERE clause
 	 * @param array $fieldsValues Field values as key => value pairs
-	 * @param string/array $noQuoteFields List/array of keys NOT to quote
+	 * @param string|array $noQuoteFields List/array of keys NOT to quote
 	 * @param \TYPO3\CMS\Core\Database\DatabaseConnection $parentObject
 	 * @return void
 	 */

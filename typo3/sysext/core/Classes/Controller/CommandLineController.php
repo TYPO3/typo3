@@ -13,11 +13,7 @@ namespace TYPO3\CMS\Core\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
-/**
- * Contains base class for TYPO3 cli scripts
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
+
 /**
  * TYPO3 cli script basis
  *
@@ -25,8 +21,9 @@ namespace TYPO3\CMS\Core\Controller;
  */
 class CommandLineController {
 
-	// Command line arguments, exploded into key => value-array pairs
 	/**
+	 * Command line arguments, exploded into key => value-array pairs
+	 *
 	 * @var array
 	 */
 	public $cli_args = array();

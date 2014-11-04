@@ -25,9 +25,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * which are default for most TYPO3 installations. Soft References can also be userdefined.
  * The Soft Reference parsers are used by the system to find these references and process them accordingly in import/export actions and copy operations.
  *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-/**
  * Example of usage
  * Soft References:
  * if ($conf['softref'] && strlen($value))	{	// Check if a TCA configured field has softreferences defined (see TYPO3 Core API document)
@@ -72,13 +69,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SoftReferenceIndex {
 
-	// External configuration
 	/**
 	 * @var string
 	 */
 	public $fileAdminDir = '';
 
-	// Internal:
 	/**
 	 * @var string
 	 */

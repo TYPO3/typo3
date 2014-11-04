@@ -38,30 +38,35 @@ class PreparedStatement {
 	 * @var int
 	 */
 	const PARAM_NULL = 0;
+
 	/**
 	 * Represents the SQL INTEGER data type.
 	 *
 	 * @var int
 	 */
 	const PARAM_INT = 1;
+
 	/**
 	 * Represents the SQL CHAR, VARCHAR, or other string data type.
 	 *
 	 * @var int
 	 */
 	const PARAM_STR = 2;
+
 	/**
 	 * Represents a boolean data type.
 	 *
 	 * @var int
 	 */
 	const PARAM_BOOL = 3;
+
 	/**
 	 * Automatically detects underlying type
 	 *
 	 * @var int
 	 */
 	const PARAM_AUTOTYPE = 4;
+
 	/**
 	 * Specifies that the fetch method shall return each row as an array indexed by
 	 * column name as returned in the corresponding result set. If the result set
@@ -71,6 +76,7 @@ class PreparedStatement {
 	 * @var int
 	 */
 	const FETCH_ASSOC = 2;
+
 	/**
 	 * Specifies that the fetch method shall return each row as an array indexed by
 	 * column number as returned in the corresponding result set, starting at column 0.
@@ -78,6 +84,7 @@ class PreparedStatement {
 	 * @var int
 	 */
 	const FETCH_NUM = 3;
+
 	/**
 	 * Query to be executed.
 	 *
@@ -529,7 +536,6 @@ class PreparedStatement {
 	public function setFetchMode($mode) {
 		switch ($mode) {
 			case self::FETCH_ASSOC:
-
 			case self::FETCH_NUM:
 				$this->defaultFetchMode = $mode;
 				break;

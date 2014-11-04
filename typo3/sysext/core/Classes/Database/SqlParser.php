@@ -21,18 +21,24 @@ namespace TYPO3\CMS\Core\Database;
  */
 class SqlParser {
 
-	// Parser:
-	// Parsing error string
+	/**
+	 * Parsing error string
+	 *
+	 * @var string
+	 */
 	public $parse_error = '';
 
-	// Last stop keyword used.
+	/**
+	 * Last stop keyword used.
+	 *
+	 * @var string
+	 */
 	public $lastStopKeyWord = '';
 
 	/**
 	 * Default constructor
 	 */
-	public function __construct() {
-	}
+	public function __construct() {}
 
 	/*************************************
 	 *
@@ -495,7 +501,6 @@ class SqlParser {
 							}
 							break;
 						case 'DROP':
-
 						case 'RENAME':
 							$result['FIELD'] = $fieldKey;
 							break;
@@ -511,9 +516,7 @@ class SqlParser {
 							}
 							break;
 						case 'ADDKEY':
-
 						case 'ADDPRIMARYKEY':
-
 						case 'ADDUNIQUE':
 							$result['KEY'] = $fieldKey;
 							$result['fields'] = $this->getValue($parseString, '_LIST', 'INDEX');
@@ -1643,13 +1646,10 @@ class SqlParser {
 				$query .= ' ' . $components['newField'] . ' ' . $this->compileFieldCfg($components['definition']);
 				break;
 			case 'DROP':
-
 			case 'DROPKEY':
 				break;
 			case 'ADDKEY':
-
 			case 'ADDPRIMARYKEY':
-
 			case 'ADDUNIQUE':
 				$query .= ' (' . implode(',', $components['fields']) . ')';
 				break;
