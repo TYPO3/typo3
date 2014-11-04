@@ -29,14 +29,14 @@ abstract class AbstractConditionMatcher {
 	/**
 	 * Id of the current page.
 	 *
-	 * @var 	integer
+	 * @var int
 	 */
 	protected $pageId;
 
 	/**
 	 * The rootline for the current page.
 	 *
-	 * @var 	array
+	 * @var array
 	 */
 	protected $rootline;
 
@@ -44,7 +44,7 @@ abstract class AbstractConditionMatcher {
 	 * Whether to simulate the behaviour and match all conditions
 	 * (used in TypoScript object browser).
 	 *
-	 * @var 	boolean
+	 * @var bool
 	 */
 	protected $simulateMatchResult = FALSE;
 
@@ -52,7 +52,7 @@ abstract class AbstractConditionMatcher {
 	 * Whether to simulat the behaviour and match specific conditions
 	 * (used in TypoScript object browser).
 	 *
-	 * @var 	array
+	 * @var array
 	 */
 	protected $simulateMatchConditions = array();
 
@@ -316,17 +316,11 @@ abstract class AbstractConditionMatcher {
 				return (bool)GeneralUtility::cmpFQDN(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $value);
 				break;
 			case 'hour':
-
 			case 'minute':
-
 			case 'month':
-
 			case 'year':
-
 			case 'dayofweek':
-
 			case 'dayofmonth':
-
 			case 'dayofyear':
 				// In order to simulate time properly in templates.
 				$theEvalTime = $GLOBALS['SIM_EXEC_TIME'];

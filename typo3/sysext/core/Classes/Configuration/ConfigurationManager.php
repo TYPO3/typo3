@@ -14,7 +14,8 @@ namespace TYPO3\CMS\Core\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
  * Handle loading and writing of global and local (instance specific)
@@ -24,7 +25,6 @@ use TYPO3\CMS\Core\Utility;
  * - EXT:core/Configuration/DefaultConfiguration.php (default TYPO3_CONF_VARS)
  * - typo3conf/LocalConfiguration.php (overrides of TYPO3_CONF_VARS)
  * - typo3conf/AdditionalConfiguration.php (optional additional local code blocks)
- * - typo3conf/localconf.php (legacy configuration file)
  *
  * @author Helge Funk <helge.funk@e-net.info>
  */
@@ -151,7 +151,7 @@ class ConfigurationManager {
 	 */
 	public function updateLocalConfiguration(array $configurationToMerge) {
 		$newLocalConfiguration = $this->getLocalConfiguration();
-		Utility\ArrayUtility::mergeRecursiveWithOverrule($newLocalConfiguration, $configurationToMerge);
+		ArrayUtility::mergeRecursiveWithOverrule($newLocalConfiguration, $configurationToMerge);
 		$this->writeLocalConfiguration($newLocalConfiguration);
 	}
 
@@ -162,7 +162,7 @@ class ConfigurationManager {
 	 * @return mixed Value at path
 	 */
 	public function getDefaultConfigurationValueByPath($path) {
-		return Utility\ArrayUtility::getValueByPath($this->getDefaultConfiguration(), $path);
+		return ArrayUtility::getValueByPath($this->getDefaultConfiguration(), $path);
 	}
 
 	/**
@@ -172,7 +172,7 @@ class ConfigurationManager {
 	 * @return mixed Value at path
 	 */
 	public function getLocalConfigurationValueByPath($path) {
-		return Utility\ArrayUtility::getValueByPath($this->getLocalConfiguration(), $path);
+		return ArrayUtility::getValueByPath($this->getLocalConfiguration(), $path);
 	}
 
 	/**
@@ -184,8 +184,8 @@ class ConfigurationManager {
 	 */
 	public function getConfigurationValueByPath($path) {
 		$defaultConfiguration = $this->getDefaultConfiguration();
-		Utility\ArrayUtility::mergeRecursiveWithOverrule($defaultConfiguration, $this->getLocalConfiguration());
-		return Utility\ArrayUtility::getValueByPath($defaultConfiguration, $path);
+		ArrayUtility::mergeRecursiveWithOverrule($defaultConfiguration, $this->getLocalConfiguration());
+		return ArrayUtility::getValueByPath($defaultConfiguration, $path);
 	}
 
 	/**
@@ -199,7 +199,7 @@ class ConfigurationManager {
 		$result = FALSE;
 		if ($this->isValidLocalConfigurationPath($path)) {
 			$localConfiguration = $this->getLocalConfiguration();
-			$localConfiguration = Utility\ArrayUtility::setValueByPath($localConfiguration, $path, $value);
+			$localConfiguration = ArrayUtility::setValueByPath($localConfiguration, $path, $value);
 			$result = $this->writeLocalConfiguration($localConfiguration);
 		}
 		return $result;
@@ -215,7 +215,7 @@ class ConfigurationManager {
 		$localConfiguration = $this->getLocalConfiguration();
 		foreach ($pairs as $path => $value) {
 			if ($this->isValidLocalConfigurationPath($path)) {
-				$localConfiguration = Utility\ArrayUtility::setValueByPath($localConfiguration, $path, $value);
+				$localConfiguration = ArrayUtility::setValueByPath($localConfiguration, $path, $value);
 			}
 		}
 		return $this->writeLocalConfiguration($localConfiguration);
@@ -232,9 +232,9 @@ class ConfigurationManager {
 		$localConfiguration = $this->getLocalConfiguration();
 		foreach ($keys as $path) {
 			// Remove key if path is within LocalConfiguration
-			if (Utility\ArrayUtility::isValidPath($localConfiguration, $path)) {
+			if (ArrayUtility::isValidPath($localConfiguration, $path)) {
 				$result = TRUE;
-				$localConfiguration = Utility\ArrayUtility::removeByPath($localConfiguration, $path);
+				$localConfiguration = ArrayUtility::removeByPath($localConfiguration, $path);
 			}
 		}
 		if ($result) {
@@ -266,7 +266,7 @@ class ConfigurationManager {
 			$localConfiguration = $this->getLocalConfiguration();
 			if (is_array($localConfiguration)) {
 				$defaultConfiguration = $this->getDefaultConfiguration();
-				Utility\ArrayUtility::mergeRecursiveWithOverrule($defaultConfiguration, $localConfiguration);
+				ArrayUtility::mergeRecursiveWithOverrule($defaultConfiguration, $localConfiguration);
 				$GLOBALS['TYPO3_CONF_VARS'] = $defaultConfiguration;
 			} else {
 				throw new \UnexpectedValueException('LocalConfiguration invalid.', 1349272276);
@@ -295,16 +295,15 @@ class ConfigurationManager {
 				$localConfigurationFile . ' is not writable.', 1346323822
 			);
 		}
-		$configuration = Utility\ArrayUtility::sortByKeyRecursive($configuration);
-		$result = Utility\GeneralUtility::writeFile(
+		$configuration = ArrayUtility::sortByKeyRecursive($configuration);
+		$result = GeneralUtility::writeFile(
 			$localConfigurationFile,
 			'<?php' . LF .
 				'return ' .
-					Utility\ArrayUtility::arrayExport(
-						Utility\ArrayUtility::renumberKeysToAvoidLeapsIfKeysAreAllNumeric($configuration)
+					ArrayUtility::arrayExport(
+						ArrayUtility::renumberKeysToAvoidLeapsIfKeysAreAllNumeric($configuration)
 					) .
-				';' . LF .
-			'?>',
+				';' . LF,
 			TRUE
 		);
 
@@ -322,11 +321,10 @@ class ConfigurationManager {
 	 * @access private
 	 */
 	public function writeAdditionalConfiguration(array $additionalConfigurationLines) {
-		return Utility\GeneralUtility::writeFile(
+		return GeneralUtility::writeFile(
 			PATH_site . $this->additionalConfigurationFile,
 			'<?php' . LF .
-				implode(LF, $additionalConfigurationLines) . LF .
-			'?>'
+				implode(LF, $additionalConfigurationLines) . LF
 		);
 	}
 
@@ -350,7 +348,7 @@ class ConfigurationManager {
 		$additionalFactoryConfigurationFileLocation = $this->getAdditionalFactoryConfigurationFileLocation();
 		if (file_exists($additionalFactoryConfigurationFileLocation)) {
 			$additionalFactoryConfigurationArray = require $additionalFactoryConfigurationFileLocation;
-			Utility\ArrayUtility::mergeRecursiveWithOverrule(
+			ArrayUtility::mergeRecursiveWithOverrule(
 				$localConfigurationArray,
 				$additionalFactoryConfigurationArray
 			);
@@ -367,11 +365,11 @@ class ConfigurationManager {
 	protected function isValidLocalConfigurationPath($path) {
 		// Early return for white listed paths
 		foreach ($this->whiteListedLocalConfigurationPaths as $whiteListedPath) {
-			if (Utility\GeneralUtility::isFirstPartOfStr($path, $whiteListedPath)) {
+			if (GeneralUtility::isFirstPartOfStr($path, $whiteListedPath)) {
 				return TRUE;
 			}
 		}
-		return Utility\ArrayUtility::isValidPath($this->getDefaultConfiguration(), $path);
+		return ArrayUtility::isValidPath($this->getDefaultConfiguration(), $path);
 	}
 
 }

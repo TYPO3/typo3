@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Configuration\FlexForm;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Contains functions for manipulating flex form data
@@ -23,20 +24,40 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  */
 class FlexFormTools {
 
-	// If set, the charset of data XML is converted to system charset.
+	/**
+	 * If set, the charset of data XML is converted to system charset.
+	 *
+	 * @var bool
+	 */
 	public $convertCharset = FALSE;
 
-	// If set, section indexes are re-numbered before processing
+	/**
+	 * If set, section indexes are re-numbered before processing
+	 *
+	 * @var bool
+	 */
 	public $reNumberIndexesOfSectionData = FALSE;
 
-	// Contains data structure when traversing flexform
+	/**
+	 * Contains data structure when traversing flexform
+	 *
+	 * @var array
+	 */
 	public $traverseFlexFormXMLData_DS = array();
 
-	// Contains data array when traversing flexform
+	/**
+	 * Contains data array when traversing flexform
+	 *
+	 * @var array
+	 */
 	public $traverseFlexFormXMLData_Data = array();
 
-	// Options for array2xml() for flexform.
-	// This will map the weird keys from the internal array to tags that could potentially be checked with a DTD/schema
+	/**
+	 * Options for array2xml() for flexform.
+	 * This will map the weird keys from the internal array to tags that could potentially be checked with a DTD/schema
+	 *
+	 * @var array
+	 */
 	public $flexArray2Xml_options = array(
 		'parentTagMap' => array(
 			'data' => 'sheet',
@@ -54,10 +75,15 @@ class FlexFormTools {
 	/**
 	 * Reference to object called
 	 *
+	 * @var object
 	 */
 	public $callBackObj = NULL;
 
-	// Used for accumulation of clean XML
+	/**
+	 * Used for accumulation of clean XML
+	 *
+	 * @var array
+	 */
 	public $cleanFlexFormXML = array();
 
 	/**
@@ -68,7 +94,7 @@ class FlexFormTools {
 	 * @param array $row The record data array
 	 * @param object $callBackObj Object (passed by reference) in which the call back function is located
 	 * @param string $callBackMethod_value Method name of call back function in object for values
-	 * @return bool If TRUE, error happened (error string returned)
+	 * @return bool|string If TRUE, error happened (error string returned)
 	 */
 	public function traverseFlexFormXMLData($table, $field, $row, $callBackObj, $callBackMethod_value) {
 		if (!is_array($GLOBALS['TCA'][$table]) || !is_array($GLOBALS['TCA'][$table]['columns'][$field])) {
@@ -83,14 +109,14 @@ class FlexFormTools {
 			$xmlData = $row[$field];
 			// Convert charset:
 			if ($this->convertCharset) {
-				$xmlHeaderAttributes = \TYPO3\CMS\Core\Utility\GeneralUtility::xmlGetHeaderAttribs($xmlData);
+				$xmlHeaderAttributes = GeneralUtility::xmlGetHeaderAttribs($xmlData);
 				$storeInCharset = strtolower($xmlHeaderAttributes['encoding']);
 				if ($storeInCharset) {
 					$currentCharset = $GLOBALS['LANG']->charSet;
 					$xmlData = $GLOBALS['LANG']->csConvObj->conv($xmlData, $storeInCharset, $currentCharset, 1);
 				}
 			}
-			$editData = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($xmlData);
+			$editData = GeneralUtility::xml2array($xmlData);
 			if (!is_array($editData)) {
 				return 'Parsing error: ' . $editData;
 			}
@@ -125,7 +151,7 @@ class FlexFormTools {
 			foreach ($lKeys as $lKey) {
 				foreach ($sKeys as $sheet) {
 					$sheetCfg = $dataStructArray['sheets'][$sheet];
-					list($dataStruct, $sheet) = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveSheetDefInDS($dataStructArray, $sheet);
+					list($dataStruct, $sheet) = GeneralUtility::resolveSheetDefInDS($dataStructArray, $sheet);
 					// Render sheet:
 					if (is_array($dataStruct['ROOT']) && is_array($dataStruct['ROOT']['el'])) {
 						// Separate language key
@@ -216,7 +242,13 @@ class FlexFormTools {
 	public function getAvailableLanguages() {
 		$isL = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables');
 		// Find all language records in the system
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('static_lang_isocode,title,uid', 'sys_language', 'pid=0' . BackendUtility::deleteClause('sys_language'), '', 'title');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'static_lang_isocode,title,uid',
+			'sys_language',
+			'pid=0' . BackendUtility::deleteClause('sys_language'),
+			'',
+			'title'
+		);
 		// Traverse them
 		$output = array();
 		$output[0] = array(
@@ -258,7 +290,7 @@ class FlexFormTools {
 		// New structure:
 		$this->cleanFlexFormXML = array();
 		// Create and call iterator object:
-		$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
+		$flexObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
 		$flexObj->reNumberIndexesOfSectionData = TRUE;
 		$flexObj->traverseFlexFormXMLData($table, $field, $row, $this, 'cleanFlexFormXML_callBackFunction');
 		return $this->flexArray2Xml($this->cleanFlexFormXML, TRUE);
@@ -362,7 +394,7 @@ class FlexFormTools {
 		}
 		$options = $GLOBALS['TYPO3_CONF_VARS']['BE']['niceFlexFormXMLtags'] ? $this->flexArray2Xml_options : array();
 		$spaceInd = $GLOBALS['TYPO3_CONF_VARS']['BE']['compactFlexFormXML'] ? -1 : 4;
-		$output = \TYPO3\CMS\Core\Utility\GeneralUtility::array2xml($array, '', 0, 'T3FlexForms', $spaceInd, $options);
+		$output = GeneralUtility::array2xml($array, '', 0, 'T3FlexForms', $spaceInd, $options);
 		if ($addPrologue) {
 			$output = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>' . LF . $output;
 		}
