@@ -694,24 +694,33 @@ HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 			first.innerHTML = '<br />';
 			this.editor.getSelection().selectNodeContents(first, true);
 		} else {
-			// parentElement may be removed by following command
-			var parentNode = parentElement.parentNode;
 			try {
 				this.editor.getSelection().execCommand(buttonId, false, null);
 			} catch(e) {
 				this.appendToLog('onButtonPress', e + '\n\nby execCommand(' + buttonId + ');', 'error');
 			}
 			if (HTMLArea.UserAgent.isWebKit || HTMLArea.UserAgent.isOpera) {
-				// Webkit and Opera may wrap the list inside a paragraph
-				if (parentElement && /^(p)$/i.test(parentElement.nodeName) && parentElement.firstChild && /^(ol|ul)$/i.test(parentElement.firstChild.nodeName)) {
-					// Probably Chrome
+				var parentElement = this.editor.getSelection().getParentElement();
+				var parentNode = parentElement.parentNode;
+				// If the parent of the selection is a span, remove it
+				if (/^(span)$/i.test(parentElement.nodeName)) {
 					this.editor.getDomNode().removeMarkup(parentElement);
-				} else if (parentElement.firstChild && /^(p)$/i.test(parentElement.firstChild.nodeName) && parentElement.firstChild.firstChild && /^(ol|ul)$/i.test(parentElement.firstChild.firstChild.nodeName)) {
-					// Probably Opera
-					this.editor.getDomNode().removeMarkup(parentElement.firstChild);
+					parentElement = parentNode;
 				}
-				// Webkit and Opera may pollute the list with span tags
-				this.editor.getDomNode().cleanAppleStyleSpans(parentNode);
+				// The list might not be well-formed
+				while (/^(li)$/i.test(parentElement.nodeName)) {
+					parentElement = parentElement.parentNode;
+				}
+				if (/^(ol|ul)$/i.test(parentElement.nodeName)) {
+					// Make sure the list is well-formed
+					this.makeNestedList(parentElement);
+					// The list may be wrapped inside a paragraph
+					if (/^(p)$/i.test(parentElement.parentNode.nodeName)) {
+						this.editor.getDomNode().removeMarkup(parentElement.parentNode);
+					}
+				}
+				// Content may be polluted with span and font tags
+				this.editor.getDomNode().cleanAppleStyleSpans(parentElement);
 			}
 		}
 	},
@@ -826,7 +835,7 @@ HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 	},
 	/*
 	 * Make XHTML-compliant nested list
-	 * We need this for Opera
+	 * We need this for Opera and Chrome
 	 */
 	makeNestedList: function (el) {
 		var previous;
@@ -835,6 +844,8 @@ HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 				for (var j = i.firstChild; j; j = j.nextSibling) {
 					if (/^(ol|ul)$/i.test(j.nodeName)) {
 						this.makeNestedList(j);
+					} else if (/^(li)$/i.test(j.nodeName)) {
+						this.editor.getDomNode().removeMarkup(j);
 					}
 				}
 			} else if (/^(ol|ul)$/i.test(i.nodeName)) {
