@@ -13,6 +13,14 @@ namespace TYPO3\CMS\Aboutmodules\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Lang\LanguageService;
+
 /**
  * 'About modules' script - the default start-up module.
  * Will display the list of main- and sub-modules available to the user.
@@ -21,7 +29,21 @@ namespace TYPO3\CMS\Aboutmodules\Controller;
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
-class ModulesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+class ModulesController extends ActionController {
+
+	/**
+	 * Language Service property. Used to access localized labels
+	 *
+	 * @var LanguageService
+	 */
+	protected $languageService;
+
+	/**
+	 * @param LanguageService $languageService Language Service to inject
+	 */
+	public function __construct(LanguageService $languageService = NULL) {
+		$this->languageService = $languageService ?: $GLOBALS['LANG'];
+	}
 
 	/**
 	 * Show general information and the installed modules
@@ -30,10 +52,11 @@ class ModulesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 	 */
 	public function indexAction() {
 		$warnings = array();
+		$contentWarnings = '';
 		// Hook for additional warnings
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages'] as $classRef) {
-				$hookObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
+				$hookObj = GeneralUtility::getUserObj($classRef);
 				if (method_exists($hookObj, 'displayWarningMessages_postProcess')) {
 					$hookObj->displayWarningMessages_postProcess($warnings);
 				}
@@ -45,20 +68,20 @@ class ModulesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 			} else {
 				$securityWarnings = '<p>' . implode('', $warnings) . '</p>';
 			}
-			$securityMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+			$securityMessage = GeneralUtility::makeInstance(
 				'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
 				$securityWarnings,
-				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.header'),
-				\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+				$this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:warning.header'),
+				FlashMessage::ERROR
 			);
-			$contentWarnings = '<div style="margin: 20px 0px;">' . $securityMessage->render() . '</div>';
+			$contentWarnings = '<div style="margin: 20px 0;">' . $securityMessage->render() . '</div>';
 			unset($warnings);
 		}
 
 		$this->view->assignMultiple(
 			array(
 				'TYPO3Version' => TYPO3_version,
-				'copyRightNotice' => \TYPO3\CMS\Backend\Utility\BackendUtility::TYPO3_copyRightNotice(),
+				'copyRightNotice' => BackendUtility::TYPO3_copyRightNotice(),
 				'warningMessages' => $contentWarnings,
 				'modules' => $this->getModulesData()
 			)
@@ -73,7 +96,7 @@ class ModulesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 	 */
 	protected function getModulesData() {
 		/** @var $loadedModules \TYPO3\CMS\Backend\Module\ModuleLoader */
-		$loadedModules = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleLoader');
+		$loadedModules = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleLoader');
 		$loadedModules->observeWorkspaces = TRUE;
 		$loadedModules->load($GLOBALS['TBE_MODULES']);
 		$mainModulesData = array();
@@ -103,7 +126,7 @@ class ModulesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 			$subModuleKey = $moduleName . '_' . $subModuleName . '_tab';
 			$subModuleData = array();
 			$subModuleData['name'] = $subModuleName;
-			$subModuleData['icon'] = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($GLOBALS['LANG']->moduleLabels['tabs_images'][$subModuleKey]);
+			$subModuleData['icon'] = PathUtility::stripPathSitePrefix($GLOBALS['LANG']->moduleLabels['tabs_images'][$subModuleKey]);
 			$subModuleData['label'] = $GLOBALS['LANG']->moduleLabels['tabs'][$subModuleKey];
 			$subModuleData['shortDescription'] = $GLOBALS['LANG']->moduleLabels['labels'][$subModuleKey . 'label'];
 			$subModuleData['longDescription'] = $GLOBALS['LANG']->moduleLabels['labels'][$subModuleKey . 'descr'];
