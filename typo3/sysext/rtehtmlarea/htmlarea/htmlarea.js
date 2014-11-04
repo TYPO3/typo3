@@ -1184,7 +1184,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 				scope: this
 			}
 		]);
-		if (Ext.isGecko || Ext.isIE) {
+		if (Ext.isGecko || Ext.isIE || Ext.isWebKit) {
 			this.keyMap.addBinding(
 			{
 				key: [Ext.EventObject.BACKSPACE, Ext.EventObject.DELETE],
@@ -4237,20 +4237,21 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 				if (self.isEmpty()) {
 						// ... and the cursor lies in a direct child of body...
 					if (/^(body)$/i.test(startContainer.nodeName)) {
-						var node = startContainer.childNodes[startOffset];
+						var node = startContainer.childNodes[startOffset-1];
 					} else if (/^(body)$/i.test(startContainer.parentNode.nodeName)) {
 						var node = startContainer;
 					} else {
 						return false;
 					}
-						// ... which is a br or text node containing no non-whitespace character
+						// ... which is a br or text node containing no non-whitespace character...
+					node.normalize();
 					if (/^(br|#text)$/i.test(node.nodeName) && !/\S/.test(node.textContent)) {
 							// Get a meaningful previous sibling in which to reposition de cursor
 						var previousSibling = node.previousSibling;
 						while (previousSibling && /^(br|#text)$/i.test(previousSibling.nodeName) && !/\S/.test(previousSibling.textContent)) {
 							previousSibling = previousSibling.previousSibling;
 						}
-							// If there is no meaningful previous sibling, the cursor is at the start of body
+							// If there is no meaningful previous sibling, the cursor is at the start of body or the start of a direct child of body
 						if (previousSibling) {
 								// Remove the node
 							HTMLArea.DOM.removeFromParent(node);
@@ -4265,6 +4266,16 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 								self.selectNodeContents(previousSibling, false);
 							}
 						}
+						// ... or the only child of body and having no child (IE) or only a br child (FF)
+					} else if (
+							/^(body)$/i.test(node.parentNode.nodeName)
+							&& !/\S/.test(node.parentNode.textContent)
+							&& (node.childNodes.length === 0 || (node.childNodes.length === 1 && /^(br)$/i.test(node.firstChild.nodeName)))
+						) {
+						var parentNode = node.parentNode;
+						HTMLArea.DOM.removeFromParent(node);
+						parentNode.innerHTML = '<br />';
+						self.selectNodeContents(parentNode, true);
 					}
 				}
 			}, 10);
