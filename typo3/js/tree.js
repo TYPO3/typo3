@@ -25,7 +25,6 @@ var DragDrop = {
 
 	// options needed for doing the changes when dropping
 	table: null,	// can be "pages" or "folders"
-	changeURL: null,
 	backPath: null,
 
 
@@ -54,12 +53,11 @@ var DragDrop = {
 	dropElement: function(event) {
 		var dropID = this.getIdFromEvent(event);
 		if ((this.dragID) && (this.dragID !== dropID)) {
-			var urlParams = 'dragDrop=' + this.table +
+			var parameters = 'dragDrop=' + this.table +
 					'&srcId=' + this.dragID +
 					'&dstId=' + dropID +
 					'&backPath=' + this.backPath;
-			Clickmenu.clickURL = this.changeURL;
-			Clickmenu.callURL(urlParams);
+			TYPO3.ClickMenu.fetch(parameters);
 		}
 		this.cancelDragEvent();
 		return false;

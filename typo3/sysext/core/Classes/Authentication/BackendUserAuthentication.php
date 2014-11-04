@@ -837,7 +837,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @param string $tableName Is the tablename to check: If "pages" table then edit,new,delete and editcontent permissions can be checked. Other tables will be checked for "editcontent" only (and $type will be ignored)
 	 * @param string $actionType For $tableName='pages' this can be 'edit' (2), 'new' (8 or 16), 'delete' (4), 'editcontent' (16). For all other tables this is ignored. (16 is used)
 	 * @return bool
-	 * @access public (used by typo3/alt_clickmenu.php)
+	 * @access public (used by ClickMenuController)
 	 */
 	public function isPSet($compiledPermissions, $tableName, $actionType = '') {
 		if ($this->isAdmin()) {

@@ -79,7 +79,7 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 
 		// Load various standard libraries
 		if ($enableClickMenu) {
-			$doc->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/clickmenu.js');
+			$doc->getContextMenuCode();
 		}
 		if ($loadPrototype) {
 			$pageRenderer->loadPrototype();

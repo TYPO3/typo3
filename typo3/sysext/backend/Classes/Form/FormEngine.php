@@ -2515,8 +2515,7 @@ class FormEngine {
 	 */
 	public function getClickMenu($str, $table, $uid = 0) {
 		if ($this->enableClickMenu) {
-			$onClick = $this->getControllerDocumentTemplate()->wrapClickMenuOnIcon($str, $table, $uid, 1, '', '+copy,info,edit,view', TRUE);
-			return '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $str . '</a>';
+			return $this->getControllerDocumentTemplate()->wrapClickMenuOnIcon($str, $table, $uid, 1, '', '+copy,info,edit,view');
 		}
 		return '';
 	}

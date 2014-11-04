@@ -490,15 +490,26 @@ function jumpToUrl(URL) {
 	 * @param string $table Table name/File path. If the icon is for a database record, enter the tablename from $GLOBALS['TCA']. If a file then enter the absolute filepath
 	 * @param int $uid If icon is for database record this is the UID for the record from $table
 	 * @param bool $listFr Tells the top frame script that the link is coming from a "list" frame which means a frame from within the backend content frame.
-	 * @param string $addParams Additional GET parameters for the link to alt_clickmenu.php
+	 * @param string $addParams Additional GET parameters for the link to the ClickMenu AJAX request
 	 * @param string $enDisItems Enable / Disable click menu items. Example: "+new,view" will display ONLY these two items (and any spacers in between), "new,view" will display all BUT these two items.
-	 * @param bool $returnOnClick If set, will return only the onclick JavaScript, not the whole link.
+	 * @param bool $returnTagParameters If set, will return only the onclick JavaScript, not the whole link.
 	 * @return string The link-wrapped input string.
 	 */
-	public function wrapClickMenuOnIcon($str, $table, $uid = 0, $listFr = TRUE, $addParams = '', $enDisItems = '', $returnOnClick = FALSE) {
-		$backPath = rawurlencode($this->backPath) . '|' . GeneralUtility::shortMD5(($this->backPath . '|' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']));
-		$onClick = 'Clickmenu.show("' . $table . '","' . ($uid !== 0 ? $uid : '') . '","' . strval($listFr) . '","' . str_replace('+', '%2B', $enDisItems) . '","' . str_replace('&', '&amp;', addcslashes($backPath, '"')) . '","' . str_replace('&', '&amp;', addcslashes($addParams, '"')) . '");return false;';
-		return $returnOnClick ? $onClick : '<a href="#" onclick="' . htmlspecialchars($onClick) . '" oncontextmenu="this.click();return false;">' . $str . '</a>';
+	public function wrapClickMenuOnIcon($content, $table, $uid = 0, $listFr = TRUE, $addParams = '', $enDisItems = '', $returnTagParameters = FALSE) {
+		$tagParameters = array(
+			'class'           => 't3-js-clickmenutrigger',
+			'data-table'      => $table,
+			'data-uid'        => (int)$uid !== 0 ? (int)$uid : '',
+			'data-listframe'  => $listFr,
+			'data-iteminfo'   => str_replace('+', '%2B', $enDisItems),
+			'data-parameters' => $addParams,
+		);
+
+		if ($returnTagParameters) {
+			return $tagParameters;
+		} else {
+			return '<a href="#"' . GeneralUtility::implodeAttributes($tagParameters) . '>' . $content . '</a>';
+		}
 	}
 
 	/**
@@ -1461,9 +1472,8 @@ function jumpToUrl(URL) {
 	 * @return void
 	 */
 	public function getContextMenuCode() {
-		$this->pageRenderer->loadPrototype();
-		$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/clickmenu.js');
-		$this->pageRenderer->addInlineSetting('ClickMenu', 'ajaxURL', BackendUtility::getAjaxUrl('ContextMenu::load', array(), $this->backPath));
+		$this->pageRenderer->loadJquery();
+		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
 	}
 
 	/**
@@ -1474,13 +1484,13 @@ function jumpToUrl(URL) {
 	 * @return void
 	 */
 	public function getDragDropCode($table) {
+		$this->getContextMenuCode();
 		$this->pageRenderer->loadPrototype();
 		$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/common.js');
 		$this->loadJavascriptLib('js/tree.js');
 		// Setting prefs for drag & drop
 		$this->JScodeArray['dragdrop'] = '
-			DragDrop.changeURL = "' . $this->backPath . 'alt_clickmenu.php";
-			DragDrop.backPath  = "' . GeneralUtility::shortMD5(('' . '|' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) . '";
+			DragDrop.backPath  = "' . GeneralUtility::shortMD5('|' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) . '";
 			DragDrop.table     = "' . $table . '";
 		';
 	}

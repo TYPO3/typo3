@@ -17,7 +17,7 @@
 				<th class="label"></th>
 				<f:for each="{compareUserList}" as="compareUser">
 					<th>
-						<a href="#" onClick="Clickmenu.show('be_users', '{compareUser.uid}', '1', '', '', ''); return false;" title="id={compareUser.uid}">
+						<a href="#" class="t3-js-clickmenutrigger" data-table="be_users" data-uid="{compareUser.uid}" data-listframe="1" title="id={compareUser.uid}">
 							<bu:spriteIconForRecord table="be_users" object="{compareUser}" /></a>
 						{compareUser.userName}
 					</th>
@@ -130,7 +130,7 @@
 				<f:for each="{compareUserList}" as="compareUser">
 					<td>
 						<f:for each="{compareUser.BackendUserGroups}" as="backendUserGroup">
-							<a href="#" onClick="Clickmenu.show('be_groups', '{backendUserGroup.uid}', '1', '', '', ''); return false;" title="id={backendUserGroup.uid}">
+							<a href="#" class="t3-js-clickmenutrigger" data-table="be_groups" data-uid="{backendUserGroup.uid}" data-listframe="1" title="id={backendUserGroup.uid}">
 								<bu:spriteIconForRecord table="be_users" object="{backendUserGroup}" />
 							</a>
 							{backendUserGroup.title}<br />

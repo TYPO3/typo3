@@ -200,6 +200,7 @@ class ClickMenuController {
 		$clipObj->endClipboard();
 		// Create clickmenu object
 		$clickMenu = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\ClickMenu\\ClickMenu');
+		$clickMenu->ajax = TRUE;
 		// Set internal vars in clickmenu object:
 		$clickMenu->clipObj = $clipObj;
 		$clickMenu->extClassArray = $this->extClassArray;

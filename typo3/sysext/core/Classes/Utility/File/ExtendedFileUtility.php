@@ -351,8 +351,8 @@ class ExtendedFileUtility extends BasicFileUtility {
 					}
 					$shortcutRecord = BackendUtility::getRecord($row['tablename'], $row['recuid']);
 					$icon = IconUtility::getSpriteIconForRecord($row['tablename'], $shortcutRecord);
-					$onClick = 'Clickmenu.show("' . $row['tablename'] . '", "' . $row['recuid'] . '", "1", "+info,history,edit", "|", "");return false;';
-					$shortcutContent[] = '<a href="#" oncontextmenu="this.click();return false;" onclick="' . htmlspecialchars($onClick) . '">' . $icon . '</a>' . htmlspecialchars((BackendUtility::getRecordTitle($row['tablename'], $shortcutRecord) . '  [' . BackendUtility::getRecordPath($shortcutRecord['pid'], '', 80) . ']'));
+					$icon = '<a href="#" class="t3-js-clickmenutrigger" data-table="' . $row['tablename'] . '" data-uid="' . $row['recuid'] . '" data-listframe="1" data-iteminfo="%2Binfo,history,edit">' . $icon . '</a>';
+					$shortcutContent[] = $icon . htmlspecialchars((BackendUtility::getRecordTitle($row['tablename'], $shortcutRecord) . '  [' . BackendUtility::getRecordPath($shortcutRecord['pid'], '', 80) . ']'));
 				}
 
 				// render a message that the file could not be deleted
