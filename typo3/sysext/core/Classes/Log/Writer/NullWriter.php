@@ -13,12 +13,13 @@ namespace TYPO3\CMS\Core\Log\Writer;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Null writer - just forgets about everything
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
-class NullWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
+class NullWriter extends AbstractWriter {
 
 	/**
 	 * Writes the log record

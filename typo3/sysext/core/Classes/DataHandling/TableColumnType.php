@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\DataHandling;
  * @package TYPO3\CMS\Core
  */
 class TableColumnType extends \TYPO3\CMS\Core\Type\Enumeration {
+
 	const __default = self::INPUT;
 
 	/**

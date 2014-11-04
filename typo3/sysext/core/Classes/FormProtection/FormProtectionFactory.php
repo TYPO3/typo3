@@ -87,7 +87,6 @@ class FormProtectionFactory {
 				$className = 'TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection';
 				break;
 			case self::isFrontendSession():
-
 			default:
 				$className = 'TYPO3\\CMS\\Core\\FormProtection\\DisabledFormProtection';
 		}
@@ -133,7 +132,7 @@ class FormProtectionFactory {
 			throw new \InvalidArgumentException('$className must be the name of an existing class, but ' . 'actually was "' . $className . '".', 1285352962);
 		}
 		$instance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className);
-		if (!$instance instanceof \TYPO3\CMS\Core\FormProtection\AbstractFormProtection) {
+		if (!$instance instanceof AbstractFormProtection) {
 			throw new \InvalidArgumentException('$className must be a subclass of ' . 'TYPO3\\CMS\\Core\\FormProtection\\AbstractFormProtection, but actually was "' . $className . '".', 1285353026);
 		}
 		self::$instances[$className] = $instance;
@@ -147,10 +146,10 @@ class FormProtectionFactory {
 	 *
 	 * @access private
 	 * @param string $className
-	 * @param \TYPO3\CMS\Core\FormProtection\AbstractFormProtection $instance
+	 * @param AbstractFormProtection $instance
 	 * @return void
 	 */
-	static public function set($className, \TYPO3\CMS\Core\FormProtection\AbstractFormProtection $instance) {
+	static public function set($className, AbstractFormProtection $instance) {
 		self::$instances[$className] = $instance;
 	}
 

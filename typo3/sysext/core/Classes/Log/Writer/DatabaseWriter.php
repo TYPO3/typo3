@@ -13,12 +13,13 @@ namespace TYPO3\CMS\Core\Log\Writer;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Log writer that writes the log records into a database table.
  *
  * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
-class DatabaseWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
+class DatabaseWriter extends AbstractWriter {
 
 	/**
 	 * Table to write the log records to.

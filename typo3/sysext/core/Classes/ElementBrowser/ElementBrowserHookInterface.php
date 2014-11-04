@@ -13,12 +13,14 @@ namespace TYPO3\CMS\Core\ElementBrowser;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Interface for classes which hook into browse_links
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
 interface ElementBrowserHookInterface {
+
 	/**
 	 * Initializes the hook object
 	 *

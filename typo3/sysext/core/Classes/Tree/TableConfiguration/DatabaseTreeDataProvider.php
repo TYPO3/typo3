@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Tree\TableConfiguration;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -20,11 +21,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @author Steffen Ritter <info@steffen-ritter.net>
  */
-class DatabaseTreeDataProvider extends \TYPO3\CMS\Core\Tree\TableConfiguration\AbstractTableConfigurationTreeDataProvider {
+class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvider {
 
 	const SIGNAL_PostProcessTreeData = 'PostProcessTreeData';
 	const MODE_CHILDREN = 1;
 	const MODE_PARENT = 2;
+
 	/**
 	 * @var string
 	 */
@@ -230,9 +232,9 @@ class DatabaseTreeDataProvider extends \TYPO3\CMS\Core\Tree\TableConfiguration\A
 	 * @param int $level
 	 * @return \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeNode Node object
 	 */
-	protected function buildRepresentationForNode(\TYPO3\CMS\Backend\Tree\TreeNode $basicNode, \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeNode $parent = NULL, $level = 0) {
+	protected function buildRepresentationForNode(\TYPO3\CMS\Backend\Tree\TreeNode $basicNode, DatabaseTreeNode $parent = NULL, $level = 0) {
 		/** @var $node \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeNode */
-		$node = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Tree\\TableConfiguration\\DatabaseTreeNode');
+		$node = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Tree\\TableConfiguration\\DatabaseTreeNode');
 		$row = array();
 		if ($basicNode->getId() == 0) {
 			$node->setSelected(FALSE);
@@ -245,18 +247,18 @@ class DatabaseTreeDataProvider extends \TYPO3\CMS\Core\Tree\TableConfiguration\A
 			} else {
 				$node->setLabel($basicNode->getId());
 			}
-			$node->setSelected(\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->getSelectedList(), $basicNode->getId()));
+			$node->setSelected(GeneralUtility::inList($this->getSelectedList(), $basicNode->getId()));
 			$node->setExpanded($this->isExpanded($basicNode));
 		}
 		$node->setId($basicNode->getId());
-		$node->setSelectable(!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->getNonSelectableLevelList(), $level) && !in_array($basicNode->getId(), $this->getItemUnselectableList()));
+		$node->setSelectable(!GeneralUtility::inList($this->getNonSelectableLevelList(), $level) && !in_array($basicNode->getId(), $this->getItemUnselectableList()));
 		$node->setSortValue($this->nodeSortValues[$basicNode->getId()]);
 		$node->setIcon(\TYPO3\CMS\Backend\Utility\IconUtility::mapRecordTypeToSpriteIconClass($this->tableName, $row));
 		$node->setParentNode($parent);
 		if ($basicNode->hasChildNodes()) {
 			$node->setHasChildren(TRUE);
 			/** @var $childNodes \TYPO3\CMS\Backend\Tree\SortedTreeNodeCollection */
-			$childNodes = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\SortedTreeNodeCollection');
+			$childNodes = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\SortedTreeNodeCollection');
 			foreach ($basicNode->getChildNodes() as $child) {
 				$childNodes->append($this->buildRepresentationForNode($child, $node, $level + 1));
 			}
@@ -277,7 +279,7 @@ class DatabaseTreeDataProvider extends \TYPO3\CMS\Core\Tree\TableConfiguration\A
 		if (isset($this->columnConfiguration['foreign_table']) && $this->columnConfiguration['foreign_table'] != $this->getTableName()) {
 			throw new \InvalidArgumentException('TCA Tree configuration is invalid: tree for different node-Tables is not implemented yet', 1290944650);
 		}
-		$this->treeData = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\TreeNode');
+		$this->treeData = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\TreeNode');
 		$this->treeData->setId($this->getRootUid());
 		$this->treeData->setParentNode(NULL);
 		$childNodes = $this->getChildrenOf($this->treeData, 0);
@@ -310,9 +312,9 @@ class DatabaseTreeDataProvider extends \TYPO3\CMS\Core\Tree\TableConfiguration\A
 		$children = $this->getRelatedRecords($nodeData);
 		if (count($children)) {
 			/** @var $storage \TYPO3\CMS\Backend\Tree\TreeNodeCollection */
-			$storage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\TreeNodeCollection');
+			$storage = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\TreeNodeCollection');
 			foreach ($children as $child) {
-				$node = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\TreeNode');
+				$node = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\TreeNode');
 				$node->setId($child);
 				if ($level <= $this->levelMaximum) {
 					$children = $this->getChildrenOf($node, $level + 1);
@@ -333,7 +335,7 @@ class DatabaseTreeDataProvider extends \TYPO3\CMS\Core\Tree\TableConfiguration\A
 	 * @return array
 	 */
 	protected function getRelatedRecords(array $row) {
-		if ($this->getLookupMode() == \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider::MODE_PARENT) {
+		if ($this->getLookupMode() == DatabaseTreeDataProvider::MODE_PARENT) {
 			$children = $this->getChildrenUidsFromParentRelation($row);
 		} else {
 			$children = $this->getChildrenUidsFromChildrenRelation($row);
@@ -362,7 +364,7 @@ class DatabaseTreeDataProvider extends \TYPO3\CMS\Core\Tree\TableConfiguration\A
 			case 'select':
 				if ($this->columnConfiguration['MM']) {
 					/** @var $dbGroup \TYPO3\CMS\Core\Database\RelationHandler */
-					$dbGroup = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+					$dbGroup = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
 					// Dummy field for setting "look from other site"
 					$this->columnConfiguration['MM_oppositeField'] = 'children';
 					$dbGroup->start($row[$this->getLookupField()], $this->getTableName(), $this->columnConfiguration['MM'], $uid, $this->getTableName(), $this->columnConfiguration);
@@ -395,7 +397,7 @@ class DatabaseTreeDataProvider extends \TYPO3\CMS\Core\Tree\TableConfiguration\A
 			case 'select':
 				if ($this->columnConfiguration['MM']) {
 					/** @var $dbGroup \TYPO3\CMS\Core\Database\RelationHandler */
-					$dbGroup = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+					$dbGroup = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
 					$dbGroup->start($value, $this->getTableName(), $this->columnConfiguration['MM'], $uid, $this->getTableName(), $this->columnConfiguration);
 					$relatedUids = $dbGroup->tableArray[$this->getTableName()];
 				} elseif ($this->columnConfiguration['foreign_field']) {
@@ -404,11 +406,11 @@ class DatabaseTreeDataProvider extends \TYPO3\CMS\Core\Tree\TableConfiguration\A
 						$relatedUids[] = $record['uid'];
 					}
 				} else {
-					$relatedUids = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $value, TRUE);
+					$relatedUids = GeneralUtility::intExplode(',', $value, TRUE);
 				}
 				break;
 			default:
-				$relatedUids = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $value, TRUE);
+				$relatedUids = GeneralUtility::intExplode(',', $value, TRUE);
 		}
 		return $relatedUids;
 	}

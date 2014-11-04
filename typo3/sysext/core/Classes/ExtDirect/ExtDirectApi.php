@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Core\ExtDirect;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Ext Direct API Generator
  *
@@ -104,7 +107,7 @@ class ExtDirectApi {
 				}
 				if (is_array($configuration)) {
 					$className = $configuration['callbackClass'];
-					$serverObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($className, FALSE);
+					$serverObject = GeneralUtility::getUserObj($className, FALSE);
 					$javascriptNamespaces[$javascriptNamespace]['actions'][$javascriptObjectName] = array();
 					foreach (get_class_methods($serverObject) as $methodName) {
 						$reflectionMethod = new \ReflectionMethod($serverObject, $methodName);
@@ -132,9 +135,9 @@ class ExtDirectApi {
 	public function getRoutingUrl($namespace) {
 		$url = '';
 		if (TYPO3_MODE === 'FE') {
-			$url = \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl('?eID=ExtDirect&action=route&namespace=');
+			$url = GeneralUtility::locationHeaderUrl('?eID=ExtDirect&action=route&namespace=');
 		} else {
-			$url = \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . 'ajax.php?ajaxID=ExtDirect::route&namespace=');
+			$url = GeneralUtility::locationHeaderUrl(GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . 'ajax.php?ajaxID=ExtDirect::route&namespace=');
 		}
 		$url .= rawurlencode($namespace);
 		return $url;
@@ -148,10 +151,10 @@ class ExtDirectApi {
 	 * @return string $javascriptNamespaces
 	 */
 	protected function getExtDirectApi(array $filterNamespaces) {
-		$noCache = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('no_cache') ? TRUE : FALSE;
+		$noCache = GeneralUtility::_GET('no_cache') ? TRUE : FALSE;
 		// Look up into the cache
 		$cacheIdentifier = 'ExtDirectApi';
-		$cacheHash = md5($cacheIdentifier . implode(',', $filterNamespaces) . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SSL') . serialize($this->settings) . TYPO3_MODE . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_HOST'));
+		$cacheHash = md5($cacheIdentifier . implode(',', $filterNamespaces) . GeneralUtility::getIndpEnv('TYPO3_SSL') . serialize($this->settings) . TYPO3_MODE . GeneralUtility::getIndpEnv('HTTP_HOST'));
 		// With no_cache always generate the javascript content
 		// Generate the javascript content if it wasn't found inside the cache and cache it!
 		if ($noCache || !is_array(($javascriptNamespaces = \TYPO3\CMS\Frontend\Page\PageRepository::getHash($cacheHash)))) {
@@ -193,7 +196,7 @@ class ExtDirectApi {
 		}
 		$found = FALSE;
 		foreach ($filterNamespaces as $filter) {
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($filter, $namespace)) {
+			if (GeneralUtility::isFirstPartOfStr($filter, $namespace)) {
 				$found = TRUE;
 				break;
 			}

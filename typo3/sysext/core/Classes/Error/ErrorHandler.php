@@ -13,12 +13,13 @@ namespace TYPO3\CMS\Core\Error;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Global error handler for TYPO3
  *
- * This file is a backport from FLOW3
+ * This file is a backport from TYPO3 Flow
  *
  * @author Rupert Germann <rupi@gmx.li>
  */
@@ -102,12 +103,10 @@ class ErrorHandler implements ErrorHandlerInterface {
 		} else {
 			switch ($errorLevel) {
 				case E_USER_ERROR:
-
 				case E_RECOVERABLE_ERROR:
 					$severity = 2;
 					break;
 				case E_USER_WARNING:
-
 				case E_WARNING:
 					$severity = 1;
 					break;

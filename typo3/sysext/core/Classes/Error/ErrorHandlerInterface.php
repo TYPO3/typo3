@@ -13,14 +13,16 @@ namespace TYPO3\CMS\Core\Error;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Error handler interface for TYPO3
  *
- * This file is a backport from FLOW3
+ * This file is a backport from TYPO3 Flow
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
 interface ErrorHandlerInterface {
+
 	/**
 	 * Registers this class as default error handler
 	 *

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Log;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Log levels according to RFC 3164
  *
@@ -29,6 +30,7 @@ class LogLevel {
 	 * @var int
 	 */
 	const EMERGENCY = 0;
+
 	/**
 	 * Alert: action must be taken immediately
 	 *
@@ -37,6 +39,7 @@ class LogLevel {
 	 * @var int
 	 */
 	const ALERT = 1;
+
 	/**
 	 * Critical: critical conditions
 	 *
@@ -45,6 +48,7 @@ class LogLevel {
 	 * @var int
 	 */
 	const CRITICAL = 2;
+
 	/**
 	 * Error: error conditions
 	 *
@@ -53,6 +57,7 @@ class LogLevel {
 	 * @var int
 	 */
 	const ERROR = 3;
+
 	/**
 	 * Warning: warning conditions
 	 *
@@ -62,6 +67,7 @@ class LogLevel {
 	 * @var int
 	 */
 	const WARNING = 4;
+
 	/**
 	 * Notice: normal but significant condition
 	 *
@@ -70,6 +76,7 @@ class LogLevel {
 	 * @var int
 	 */
 	const NOTICE = 5;
+
 	/**
 	 * Informational: informational messages
 	 *
@@ -78,6 +85,7 @@ class LogLevel {
 	 * @var int
 	 */
 	const INFO = 6;
+
 	/**
 	 * Debug: debug-level messages
 	 *
@@ -86,6 +94,7 @@ class LogLevel {
 	 * @var int
 	 */
 	const DEBUG = 7;
+
 	/**
 	 * Reverse look up of log level to level name.
 	 *

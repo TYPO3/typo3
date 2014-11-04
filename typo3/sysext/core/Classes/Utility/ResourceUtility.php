@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Core\Utility;
  * Utility class for the File Abstraction Layer (aka subpackage Resource in EXT:core)
  */
 class ResourceUtility {
+
 	/**
 	 * This is a helper method that can be used with u?sort methods to sort a list of (relative) file paths, e.g.
 	 * array("someDir/fileA", "fileA", "fileB", "anotherDir/fileA").
@@ -29,7 +30,7 @@ class ResourceUtility {
 	 * @param string $elementB
 	 * @return int
 	 */
-	public static function recursiveFileListSortingHelper($elementA, $elementB) {
+	static public function recursiveFileListSortingHelper($elementA, $elementB) {
 		if (strpos($elementA, '/') === FALSE) {
 			// first element is a file
 			if (strpos($elementB, '/') === FALSE) {

@@ -13,16 +13,17 @@ namespace TYPO3\CMS\Core\Error;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A basic but solid exception handler which catches everything which
  * falls through the other exception handlers and provides useful debugging
  * information.
  *
- * This file is a backport from FLOW3
+ * This file is a backport from TYPO3 Flow
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
-class DebugExceptionHandler extends \TYPO3\CMS\Core\Error\AbstractExceptionHandler {
+class DebugExceptionHandler extends AbstractExceptionHandler {
 
 	/**
 	 * Constructs this exception handler - registers itself as the default exception handler.

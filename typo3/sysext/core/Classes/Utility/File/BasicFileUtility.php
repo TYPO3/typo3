@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class BasicFileUtility {
+
 	/**
 	 * @var string
 	 */
@@ -42,51 +43,58 @@ class BasicFileUtility {
 	 */
 	public $getUniqueNamePrefix = '';
 
-	// Prefix which will be prepended the file when using the getUniqueName-function
 	/**
+	 * Prefix which will be prepended the file when using the getUniqueName-function
+	 *
 	 * @var int
 	 */
 	public $maxNumber = 99;
 
-	// This number decides the highest allowed appended number used on a filename before we use naming with unique strings
 	/**
+	 * This number decides the highest allowed appended number used on a filename before we use naming with unique strings
+	 *
 	 * @var int
 	 */
 	public $uniquePrecision = 6;
 
-	// This number decides how many characters out of a unique MD5-hash that is appended to a filename if getUniqueName is asked to find an available filename.
 	/**
+	 * This number decides how many characters out of a unique MD5-hash that is appended to a filename if getUniqueName is asked to find an available filename.
+	 *
 	 * @var int
 	 */
 	public $maxInputNameLen = 60;
 
-	// This is the maximum length of names treated by cleanFileName()
 	/**
+	 * This is the maximum length of names treated by cleanFileName()
+	 *
 	 * @var string
 	 */
 	public $tempFN = '_temp_';
 
-	// Temp-foldername. A folder in the root of one of the mounts with this name is regarded a TEMP-folder (used for upload from clipboard)
-	// internal
 	/**
+	 * Temp-foldername. A folder in the root of one of the mounts with this name is regarded a TEMP-folder (used for upload from clipboard)
+	 *
 	 * @var array
 	 */
 	public $f_ext = array();
 
-	// See comment in header
 	/**
+	 * See comment in header
+	 *
 	 * @var array
 	 */
 	public $mounts = array();
 
-	// See comment in header
 	/**
+	 * See comment in header
+	 *
 	 * @var string
 	 */
 	public $webPath = '';
 
-	// Set to DOCUMENT_ROOT.
 	/**
+	 * Set to DOCUMENT_ROOT.
+	 *
 	 * @var bool
 	 */
 	public $isInit = 0;
@@ -96,7 +104,6 @@ class BasicFileUtility {
 	 */
 	public $csConvObj;
 
-	// Set to TRUE after init()/start();
 	/**********************************
 	 *
 	 * Checking functions

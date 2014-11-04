@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Category\CategoryRegistry;
 use TYPO3\CMS\Core\Package\PackageManager;
 
@@ -26,6 +27,9 @@ use TYPO3\CMS\Core\Package\PackageManager;
  */
 class ExtensionManagementUtility {
 
+	/**
+	 * @var array
+	 */
 	static protected $extensionKeyMap;
 
 	/**

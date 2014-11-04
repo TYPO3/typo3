@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Tree\TableConfiguration;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Renders a tca tree array for ExtJS
  *
@@ -27,7 +28,7 @@ class ExtJsArrayTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\ExtJsJsonT
 	 * @param \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeNode $node
 	 * @return array
 	 */
-	protected function getNodeArray(\TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeNode $node) {
+	protected function getNodeArray(DatabaseTreeNode $node) {
 		$nodeArray = parent::getNodeArray($node);
 		$nodeArray = array_merge($nodeArray, array(
 			'expanded' => $node->getExpanded(),

@@ -13,13 +13,14 @@ namespace TYPO3\CMS\Core\Log\Writer;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Log writer that writes to syslog
  *
  * @author Ingo Renner <ingo@typo3.org>
  * @author Steffen Müller <typo3@t3node.com>
  */
-class SyslogWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
+class SyslogWriter extends AbstractWriter {
 
 	/**
 	 * List of valid syslog facility names.

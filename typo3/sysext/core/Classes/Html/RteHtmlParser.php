@@ -25,74 +25,84 @@ use TYPO3\CMS\Core\Resource;
  */
 class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 
-	// Static:
 	/**
 	 * @var string
 	 */
 	public $blockElementList = 'PRE,UL,OL,H1,H2,H3,H4,H5,H6,ADDRESS,DL,DD,HEADER,SECTION,FOOTER,NAV,ARTICLE,ASIDE';
 
-	// List of tags for these elements
-	// Internal, static:
-	// Set this to the pid of the record manipulated by the class.
 	/**
+	 * Set this to the pid of the record manipulated by the class.
+	 *
 	 * @var int
 	 */
 	public $recPid = 0;
 
-	// Element reference [table]:[field], eg. "tt_content:bodytext"
 	/**
+	 * Element reference [table]:[field], eg. "tt_content:bodytext"
+	 *
 	 * @var string
 	 */
 	public $elRef = '';
 
-	// Relative path
 	/**
+	 * Relative path
+	 *
 	 * @var string
 	 */
 	public $relPath = '';
 
-	// Relative back-path
 	/**
+	 * Relative back-path
+	 *
 	 * @var string
 	 */
 	public $relBackPath = '';
 
-	// Current Page TSConfig
+	/**
+	 * Current Page TSConfig
+	 *
+	 * @var array
+	 */
 	public $tsConfig = array();
 
-	// Set to the TSconfig options coming from Page TSconfig
 	/**
+	 * Set to the TSconfig options coming from Page TSconfig
+	 *
 	 * @var array
 	 */
 	public $procOptions = array();
 
-	// Internal, dynamic
-	// Run-away brake for recursive calls.
 	/**
+	 * Run-away brake for recursive calls.
+	 *
 	 * @var int
 	 */
 	public $TS_transform_db_safecounter = 100;
 
-	// Parameters from TCA types configuration related to the RTE
 	/**
+	 * Parameters from TCA types configuration related to the RTE
+	 *
 	 * @var string
 	 */
 	public $rte_p = '';
 
-	// Data caching for processing function
 	/**
+	 * Data caching for processing function
+	 *
 	 * @var array
 	 */
 	public $getKeepTags_cache = array();
 
-	// Storage of the allowed CSS class names in the RTE
 	/**
+	 * Storage of the allowed CSS class names in the RTE
+	 *
 	 * @var array
 	 */
 	public $allowedClasses = array();
 
-	// Set to tags to preserve from Page TSconfig configuration
 	/**
+	 * Set to tags to preserve from Page TSconfig configuration
+	 *
 	 * @var string
 	 */
 	public $preserveTags = '';
@@ -1712,7 +1722,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	* @return \TYPO3\CMS\Core\Log\Logger
 	*/
 	protected function getLogger() {
-
 		/** @var $logManager \TYPO3\CMS\Core\Log\LogManager */
 		$logManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager');
 

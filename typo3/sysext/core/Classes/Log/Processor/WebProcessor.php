@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Log\Processor;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Web log processor to automatically add web request related data to a log
  * record.
@@ -20,7 +21,7 @@ namespace TYPO3\CMS\Core\Log\Processor;
  * @author Ingo Renner <ingo@typo3.org>
  * @author Steffen Müller <typo3@t3node.com>
  */
-class WebProcessor extends \TYPO3\CMS\Core\Log\Processor\AbstractProcessor {
+class WebProcessor extends AbstractProcessor {
 
 	/**
 	 * Processes a log record and adds webserver environment data.

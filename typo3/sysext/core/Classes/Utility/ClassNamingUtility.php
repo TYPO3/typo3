@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Several functions related to naming and conversions of names
  * such as translation between Repository and Model names or

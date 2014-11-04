@@ -27,28 +27,30 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class GraphicalFunctions {
 
-	// Internal configuration, set in init()
-
-	// If set, there is no frame pointer prepended to the filenames.
 	/**
+	 * If set, there is no frame pointer prepended to the filenames.
+	 *
 	 * @var bool
 	 */
 	public $noFramePrepended = 0;
 
-	// This should be changed to 'png' if you want this class to read/make PNG-files instead!
 	/**
+	 * This should be changed to 'png' if you want this class to read/make PNG-files instead!
+	 *
 	 * @var string
 	 */
 	public $gifExtension = 'gif';
 
-	// File formats supported by gdlib. This variable get's filled in "init" method
 	/**
+	 * File formats supported by gdlib. This variable get's filled in "init" method
+	 *
 	 * @var string
 	 */
 	public $gdlibExtensions = '';
 
-	// Set to TRUE if generated png's should be truecolor by default
 	/**
+	 * Set to TRUE if generated png's should be truecolor by default
+	 *
 	 * @var bool
 	 */
 	public $png_truecolor = FALSE;
@@ -94,26 +96,33 @@ class GraphicalFunctions {
 		'YUV'
 	);
 
-	// 16777216 Colors is the maximum value for PNG, JPEG truecolor images (24-bit, 8-bit / Channel)
 	/**
+	 * 16777216 Colors is the maximum value for PNG, JPEG truecolor images (24-bit, 8-bit / Channel)
+	 *
 	 * @var int
 	 */
 	public $truecolorColors = 16777215;
 
-	// If set, then all files in typo3temp will be logged in a database table. In addition to being a log of the files with original filenames, it also serves to secure that the same image is not rendered simultaneously by two different processes.
 	/**
+	 * If set, then all files in typo3temp will be logged in a database table.
+	 * In addition to being a log of the files with original filenames,
+	 * it also serves to secure that the same image is not rendered simultaneously by two different processes.
+	 *
 	 * @var bool
 	 */
 	public $enable_typo3temp_db_tracking = 0;
 
-	// Commalist of file extensions perceived as images by TYPO3. List should be set to 'gif,png,jpeg,jpg' if IM is not available. Lowercase and no spaces between!
 	/**
+	 * Commalist of file extensions perceived as images by TYPO3.
+	 * List should be set to 'gif,png,jpeg,jpg' if IM is not available. Lowercase and no spaces between!
+	 *
 	 * @var string
 	 */
 	public $imageFileExt = 'gif,jpg,jpeg,png,tif,bmp,tga,pcx,ai,pdf';
 
-	// Commalist of web image extensions (can be shown by a webbrowser)
 	/**
+	 * Commalist of web image extensions (can be shown by a webbrowser)
+	 *
 	 * @var string
 	 */
 	public $webImageExt = 'gif,jpg,jpeg,png';
@@ -148,46 +157,53 @@ class GraphicalFunctions {
 	 */
 	public $mayScaleUp = 1;
 
-	// Variables for testing, alternative usage etc.
-	// Filename prefix for images scaled in imageMagickConvert()
 	/**
+	 * Filename prefix for images scaled in imageMagickConvert()
+	 *
 	 * @var string
 	 */
 	public $filenamePrefix = '';
 
-	// Forcing the output filename of imageMagickConvert() to this value. However after calling imageMagickConvert() it will be set blank again.
 	/**
+	 * Forcing the output filename of imageMagickConvert() to this value. However after calling imageMagickConvert() it will be set blank again.
+	 *
 	 * @var string
 	 */
 	public $imageMagickConvert_forceFileNameBody = '';
 
-	// This flag should always be FALSE. If set TRUE, imageMagickConvert will always write a new file to the tempdir! Used for debugging.
 	/**
+	 * This flag should always be FALSE. If set TRUE, imageMagickConvert will always write a new file to the tempdir! Used for debugging.
+	 *
 	 * @var bool
 	 */
 	public $dontCheckForExistingTempFile = 0;
 
-	// Prevents imageMagickConvert() from compressing the gif-files with \TYPO3\CMS\Core\Utility\GeneralUtility::gif_compress()
 	/**
+	 * Prevents imageMagickConvert() from compressing the gif-files with \TYPO3\CMS\Core\Utility\GeneralUtility::gif_compress()
+	 *
 	 * @var bool
 	 */
 	public $dontCompress = 0;
 
-	// For debugging ONLY!
 	/**
+	 * For debugging ONLY!
+	 *
 	 * @var bool
 	 */
 	public $dontUnlinkTempFiles = 0;
 
-	// For debugging only. Filenames will not be based on mtime and only filename (not path) will be used. This key is also included in the hash of the filename...
 	/**
+	 * For debugging only.
+	 * Filenames will not be based on mtime and only filename (not path) will be used.
+	 * This key is also included in the hash of the filename...
+	 *
 	 * @var string
 	 */
 	public $alternativeOutputKey = '';
 
-	// Internal:
-	// All ImageMagick commands executed is stored in this array for tracking. Used by the Install Tools Image section
 	/**
+	 * All ImageMagick commands executed is stored in this array for tracking. Used by the Install Tools Image section
+	 *
 	 * @var array
 	 */
 	public $IM_commands = array();
@@ -204,45 +220,51 @@ class GraphicalFunctions {
 	 */
 	protected $saveAlphaLayer = FALSE;
 
-	// Constants:
-	// The temp-directory where to store the files. Normally relative to PATH_site but is allowed to be the absolute path AS LONG AS it is a subdir to PATH_site.
 	/**
+	 * The temp-directory where to store the files. Normally relative to PATH_site but is allowed to be the absolute path AS LONG AS it is a subdir to PATH_site.
+	 *
 	 * @var string
 	 */
 	public $tempPath = 'typo3temp/';
 
-	// Prefix for relative paths. Used in "show_item.php" script. Is prefixed the output file name IN imageMagickConvert()
 	/**
+	 * Prefix for relative paths. Used in "show_item.php" script. Is prefixed the output file name IN imageMagickConvert()
+	 *
 	 * @var string
 	 */
 	public $absPrefix = '';
 
-	// ImageMagick scaling command; "-geometry" eller "-sample". Used in makeText() and imageMagickConvert()
 	/**
+	 * ImageMagick scaling command; "-geometry" eller "-sample". Used in makeText() and imageMagickConvert()
+	 *
 	 * @var string
 	 */
 	public $scalecmd = '-geometry';
 
-	// Used by v5_blur() to simulate 10 continuous steps of blurring
 	/**
+	 * Used by v5_blur() to simulate 10 continuous steps of blurring
+	 *
 	 * @var string
 	 */
 	public $im5fx_blurSteps = '1x2,2x2,3x2,4x3,5x3,5x4,6x4,7x5,8x5,9x5';
 
-	// Used by v5_sharpen() to simulate 10 continuous steps of sharpening.
 	/**
+	 * Used by v5_sharpen() to simulate 10 continuous steps of sharpening.
+	 *
 	 * @var string
 	 */
 	public $im5fx_sharpenSteps = '1x2,2x2,3x2,2x3,3x3,4x3,3x4,4x4,4x5,5x5';
 
-	// This is the limit for the number of pixels in an image before it will be rendered as JPG instead of GIF/PNG
 	/**
+	 * This is the limit for the number of pixels in an image before it will be rendered as JPG instead of GIF/PNG
+	 *
 	 * @var int
 	 */
 	public $pixelLimitGif = 10000;
 
-	// Array mapping HTML color names to RGB values.
 	/**
+	 * Array mapping HTML color names to RGB values.
+	 *
 	 * @var array
 	 */
 	public $colMap = array(
@@ -271,8 +293,9 @@ class GraphicalFunctions {
 	 */
 	public $csConvObj;
 
-	// Is set to the native character set of the input strings.
 	/**
+	 * Is set to the native character set of the input strings.
+	 *
 	 * @var string
 	 */
 	public $nativeCharset = '';

@@ -38,7 +38,7 @@ class Logger implements \Psr\Log\LoggerInterface {
 	 *
 	 * @var int
 	 */
-	protected $minimumLogLevel = \TYPO3\CMS\Core\Log\LogLevel::EMERGENCY;
+	protected $minimumLogLevel = LogLevel::EMERGENCY;
 
 	/**
 	 * Writers used by this logger
@@ -71,7 +71,7 @@ class Logger implements \Psr\Log\LoggerInterface {
 	 * @return \TYPO3\CMS\Core\Log\Logger $this
 	 */
 	protected function setMinimumLogLevel($level) {
-		\TYPO3\CMS\Core\Log\LogLevel::validateLevel($level);
+		LogLevel::validateLevel($level);
 		$this->minimumLogLevel = $level;
 		return $this;
 	}
@@ -102,10 +102,10 @@ class Logger implements \Psr\Log\LoggerInterface {
 	 * @return \TYPO3\CMS\Core\Log\Logger $this
 	 */
 	public function addWriter($minimumLevel, \TYPO3\CMS\Core\Log\Writer\WriterInterface $writer) {
-		\TYPO3\CMS\Core\Log\LogLevel::validateLevel($minimumLevel);
+		LogLevel::validateLevel($minimumLevel);
 		// Cycle through all the log levels which are as severe as or higher
 		// than $minimumLevel and add $writer to each severity level
-		for ($logLevelWhichTriggersWriter = \TYPO3\CMS\Core\Log\LogLevel::EMERGENCY; $logLevelWhichTriggersWriter <= $minimumLevel; $logLevelWhichTriggersWriter++) {
+		for ($logLevelWhichTriggersWriter = LogLevel::EMERGENCY; $logLevelWhichTriggersWriter <= $minimumLevel; $logLevelWhichTriggersWriter++) {
 			if (!isset($this->writers[$logLevelWhichTriggersWriter])) {
 				$this->writers[$logLevelWhichTriggersWriter] = array();
 			}
@@ -134,10 +134,10 @@ class Logger implements \Psr\Log\LoggerInterface {
 	 * @return void
 	 */
 	public function addProcessor($minimumLevel, \TYPO3\CMS\Core\Log\Processor\ProcessorInterface $processor) {
-		\TYPO3\CMS\Core\Log\LogLevel::validateLevel($minimumLevel);
+		LogLevel::validateLevel($minimumLevel);
 		// Cycle through all the log levels which are as severe as or higher
 		// than $minimumLevel and add $processor to each severity level
-		for ($logLevelWhichTriggersProcessor = \TYPO3\CMS\Core\Log\LogLevel::EMERGENCY; $logLevelWhichTriggersProcessor <= $minimumLevel; $logLevelWhichTriggersProcessor++) {
+		for ($logLevelWhichTriggersProcessor = LogLevel::EMERGENCY; $logLevelWhichTriggersProcessor <= $minimumLevel; $logLevelWhichTriggersProcessor++) {
 			if (!isset($this->processors[$logLevelWhichTriggersProcessor])) {
 				$this->processors[$logLevelWhichTriggersProcessor] = array();
 			}
@@ -167,7 +167,7 @@ class Logger implements \Psr\Log\LoggerInterface {
 	 */
 	public function log($level, $message, array $data = array()) {
 		$level = LogLevel::normalizeLevel($level);
-		\TYPO3\CMS\Core\Log\LogLevel::validateLevel($level);
+		LogLevel::validateLevel($level);
 		if ($level > $this->minimumLogLevel) {
 			return $this;
 		}
@@ -185,11 +185,11 @@ class Logger implements \Psr\Log\LoggerInterface {
 	 * @throws \RuntimeException
 	 * @return \TYPO3\CMS\Core\Log\LogRecord Processed log record
 	 */
-	protected function callProcessors(\TYPO3\CMS\Core\Log\LogRecord $record) {
+	protected function callProcessors(LogRecord $record) {
 		if (!empty($this->processors[$record->getLevel()])) {
 			foreach ($this->processors[$record->getLevel()] as $processor) {
 				$processedRecord = $processor->processLogRecord($record);
-				if (!$processedRecord instanceof \TYPO3\CMS\Core\Log\LogRecord) {
+				if (!$processedRecord instanceof LogRecord) {
 					throw new \RuntimeException('Processor ' . get_class($processor) . ' returned invalid data. Instance of TYPO3\\CMS\\Core\\Log\\LogRecord expected', 1343593398);
 				}
 				$record = $processedRecord;
@@ -204,7 +204,7 @@ class Logger implements \Psr\Log\LoggerInterface {
 	 * @param \TYPO3\CMS\Core\Log\LogRecord $record
 	 * @return void
 	 */
-	protected function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record) {
+	protected function writeLog(LogRecord $record) {
 		if (!empty($this->writers[$record->getLevel()])) {
 			foreach ($this->writers[$record->getLevel()] as $writer) {
 				$writer->writeLog($record);
@@ -220,7 +220,7 @@ class Logger implements \Psr\Log\LoggerInterface {
 	 * @return \TYPO3\CMS\Core\Log\Logger $this
 	 */
 	public function emergency($message, array $data = array()) {
-		return $this->log(\TYPO3\CMS\Core\Log\LogLevel::EMERGENCY, $message, $data);
+		return $this->log(LogLevel::EMERGENCY, $message, $data);
 	}
 
 	/**
@@ -231,7 +231,7 @@ class Logger implements \Psr\Log\LoggerInterface {
 	 * @return \TYPO3\CMS\Core\Log\Logger $this
 	 */
 	public function alert($message, array $data = array()) {
-		return $this->log(\TYPO3\CMS\Core\Log\LogLevel::ALERT, $message, $data);
+		return $this->log(LogLevel::ALERT, $message, $data);
 	}
 
 	/**
@@ -242,7 +242,7 @@ class Logger implements \Psr\Log\LoggerInterface {
 	 * @return \TYPO3\CMS\Core\Log\Logger $this
 	 */
 	public function critical($message, array $data = array()) {
-		return $this->log(\TYPO3\CMS\Core\Log\LogLevel::CRITICAL, $message, $data);
+		return $this->log(LogLevel::CRITICAL, $message, $data);
 	}
 
 	/**
@@ -253,7 +253,7 @@ class Logger implements \Psr\Log\LoggerInterface {
 	 * @return \TYPO3\CMS\Core\Log\Logger $this
 	 */
 	public function error($message, array $data = array()) {
-		return $this->log(\TYPO3\CMS\Core\Log\LogLevel::ERROR, $message, $data);
+		return $this->log(LogLevel::ERROR, $message, $data);
 	}
 
 	/**
@@ -264,7 +264,7 @@ class Logger implements \Psr\Log\LoggerInterface {
 	 * @return \TYPO3\CMS\Core\Log\Logger $this
 	 */
 	public function warning($message, array $data = array()) {
-		return $this->log(\TYPO3\CMS\Core\Log\LogLevel::WARNING, $message, $data);
+		return $this->log(LogLevel::WARNING, $message, $data);
 	}
 
 	/**
@@ -275,7 +275,7 @@ class Logger implements \Psr\Log\LoggerInterface {
 	 * @return \TYPO3\CMS\Core\Log\Logger $this
 	 */
 	public function notice($message, array $data = array()) {
-		return $this->log(\TYPO3\CMS\Core\Log\LogLevel::NOTICE, $message, $data);
+		return $this->log(LogLevel::NOTICE, $message, $data);
 	}
 
 	/**
@@ -286,7 +286,7 @@ class Logger implements \Psr\Log\LoggerInterface {
 	 * @return \TYPO3\CMS\Core\Log\Logger $this
 	 */
 	public function info($message, array $data = array()) {
-		return $this->log(\TYPO3\CMS\Core\Log\LogLevel::INFO, $message, $data);
+		return $this->log(LogLevel::INFO, $message, $data);
 	}
 
 	/**
@@ -297,7 +297,7 @@ class Logger implements \Psr\Log\LoggerInterface {
 	 * @return \TYPO3\CMS\Core\Log\Logger $this
 	 */
 	public function debug($message, array $data = array()) {
-		return $this->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, $message, $data);
+		return $this->log(LogLevel::DEBUG, $message, $data);
 	}
 
 }

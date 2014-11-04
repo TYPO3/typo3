@@ -13,12 +13,14 @@ namespace TYPO3\CMS\Core\Log\Writer;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Log writer interface
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
 interface WriterInterface {
+
 	/**
 	 * Writes the log record
 	 *

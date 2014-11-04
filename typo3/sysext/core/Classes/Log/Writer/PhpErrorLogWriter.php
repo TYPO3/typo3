@@ -13,13 +13,14 @@ namespace TYPO3\CMS\Core\Log\Writer;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Log writer that writes the log records into PHP error log.
  *
  * @author Steffen Gebert <steffen.gebert@typo3.org>
  * @author Steffen Müller <typo3@t3node.com>
  */
-class PhpErrorLogWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
+class PhpErrorLogWriter extends AbstractWriter {
 
 	/**
 	 * Writes the log record

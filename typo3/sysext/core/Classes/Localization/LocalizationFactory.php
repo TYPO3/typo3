@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Localization;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Provides a language parser factory.
  *

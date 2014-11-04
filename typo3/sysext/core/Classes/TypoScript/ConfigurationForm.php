@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\TypoScript;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Provides a simplified layer for making Constant Editor style configuration forms
  *
@@ -20,7 +21,6 @@ namespace TYPO3\CMS\Core\TypoScript;
  */
 class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService {
 
-	// Internal
 	/**
 	 * @var array
 	 */
@@ -51,7 +51,7 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	 * @param string $pathRel PathRel is the path relative to the typo3/ directory
 	 * @param string $pathAbs PathAbs is the absolute path from root
 	 * @param string $backPath BackPath is the backReference from current position to typo3/ dir
-	 * @return 	[type]		...
+	 * @return array
 	 */
 	public function ext_initTSstyleConfig($configTemplate, $pathRel, $pathAbs, $backPath) {
 		// Do not log time-performance information
@@ -66,11 +66,11 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	}
 
 	/**
-	 * [Describe function...]
+	 * Ext set value array
 	 *
-	 * @param 	[type]		$theConstants: ...
-	 * @param 	[type]		$valueArray: ...
-	 * @return 	[type]		...
+	 * @param array $theConstants
+	 * @param array $valueArray
+	 * @return array
 	 */
 	public function ext_setValueArray($theConstants, $valueArray) {
 		$temp = $this->flatSetup;
@@ -91,19 +91,15 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	}
 
 	/**
-	 * [Describe function...]
-	 *
-	 * @return 	[type]		...
+	 * @return array
 	 */
 	public function ext_getCategoriesForModMenu() {
 		return $this->ext_getCategoryLabelArray();
 	}
 
 	/**
-	 * [Describe function...]
-	 *
-	 * @param 	[type]		$cat: ...
-	 * @return 	[type]		...
+	 * @param string $cat
+	 * @return void
 	 */
 	public function ext_makeHelpInformationForCategory($cat) {
 		return $this->ext_getTSCE_config($cat);
@@ -141,9 +137,9 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	}
 
 	/**
-	 * [Describe function...]
+	 * Display example
 	 *
-	 * @return 	[type]		...
+	 * @return string
 	 */
 	public function ext_displayExample() {
 		if ($this->helpConfig['imagetag'] || $this->helpConfig['description'] || $this->helpConfig['header']) {
@@ -153,10 +149,10 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	}
 
 	/**
-	 * [Describe function...]
+	 * Merge incoming with existing
 	 *
-	 * @param 	[type]		$arr: ...
-	 * @return 	[type]		...
+	 * @param array $arr
+	 * @return array
 	 */
 	public function ext_mergeIncomingWithExisting($arr) {
 		$parseObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
@@ -166,18 +162,16 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 		return $arr;
 	}
 
-	// Extends:
 	/**
+	 * @return string
 	 */
 	public function ext_getKeyImage($key) {
 		return '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->ext_backPath, ('gfx/rednumbers/' . $key . '.gif'), '') . ' hspace="2" align="top" alt="" />';
 	}
 
 	/**
-	 * [Describe function...]
-	 *
-	 * @param 	[type]		$imgConf: ...
-	 * @return 	[type]		...
+	 * @param string $imgConf
+	 * @return string
 	 */
 	public function ext_getTSCE_config_image($imgConf) {
 		$iFile = $this->ext_localGfxPrefix . $imgConf;
@@ -187,10 +181,8 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	}
 
 	/**
-	 * [Describe function...]
-	 *
-	 * @param 	[type]		$params: ...
-	 * @return 	[type]		...
+	 * @param array $params
+	 * @return array
 	 */
 	public function ext_fNandV($params) {
 		$fN = 'data[' . $params['name'] . ']';
@@ -205,21 +197,17 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	}
 
 	/**
-	 * [Describe function...]
-	 *
-	 * @param 	[type]		$key: ...
-	 * @param 	[type]		$var: ...
-	 * @return 	[type]		...
+	 * @param string $key
+	 * @param string $var
+	 * @return void
 	 */
 	public function ext_putValueInConf($key, $var) {
 		$this->ext_incomingValues[$key] = $key . '=' . $var;
 	}
 
 	/**
-	 * [Describe function...]
-	 *
-	 * @param 	[type]		$key: ...
-	 * @return 	[type]		...
+	 * @param string $key
+	 * @return void
 	 */
 	public function ext_removeValueInConf($key) {
 

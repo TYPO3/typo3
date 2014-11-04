@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Log\Processor;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Log processor interface
  *
@@ -22,6 +23,7 @@ namespace TYPO3\CMS\Core\Log\Processor;
  * @author Ingo Renner <ingo@typo3.org>
  */
 interface ProcessorInterface {
+
 	/**
 	 * Processes a log record and adds additional data.
 	 *

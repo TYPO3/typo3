@@ -13,12 +13,13 @@ namespace TYPO3\CMS\Core\Messaging;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Abstract class as base for standalone messages (error pages etc.)
  *
  * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
-abstract class AbstractStandaloneMessage extends \TYPO3\CMS\Core\Messaging\AbstractMessage {
+abstract class AbstractStandaloneMessage extends AbstractMessage {
 
 	/**
 	 * Path to the HTML template file, relative to PATH_site
@@ -48,7 +49,7 @@ abstract class AbstractStandaloneMessage extends \TYPO3\CMS\Core\Messaging\Abstr
 	 * @param string $title Title
 	 * @param int $severity Severity, see class constants of AbstractMessage
 	 */
-	public function __construct($message = '', $title = '', $severity = \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR) {
+	public function __construct($message = '', $title = '', $severity = AbstractMessage::ERROR) {
 		if (!empty($message)) {
 			$this->setMessage($message);
 		}

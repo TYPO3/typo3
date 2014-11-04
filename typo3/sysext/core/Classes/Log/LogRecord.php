@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Log;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Log record
  *
@@ -47,7 +48,7 @@ class LogRecord implements \ArrayAccess {
 	 *
 	 * @var int
 	 */
-	protected $level = \TYPO3\CMS\Core\Log\LogLevel::INFO;
+	protected $level = LogLevel::INFO;
 
 	/**
 	 * Log message one-liner
@@ -154,7 +155,7 @@ class LogRecord implements \ArrayAccess {
 	 * @see \TYPO3\CMS\Core\Log\Level
 	 */
 	public function setLevel($level) {
-		\TYPO3\CMS\Core\Log\LogLevel::validateLevel($level);
+		LogLevel::validateLevel($level);
 		$this->level = $level;
 		return $this;
 	}
@@ -249,7 +250,7 @@ class LogRecord implements \ArrayAccess {
 	 */
 	public function __toString() {
 		$timestamp = date('r', (int)$this->created);
-		$levelName = \TYPO3\CMS\Core\Log\LogLevel::getName($this->level);
+		$levelName = LogLevel::getName($this->level);
 		$data = !empty($this->data) ? '- ' . json_encode($this->data) : '';
 		$logRecordString = sprintf('%s [%s] request="%s" component="%s": %s %s', $timestamp, $levelName, $this->requestId, $this->component, $this->message, $data);
 		return $logRecordString;

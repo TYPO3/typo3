@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\TimeTracker;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A fake time tracker that does nothing but providing the methods of the real time tracker.
  * This is done to save some performance over the real time tracker.

@@ -13,8 +13,9 @@ namespace TYPO3\CMS\Core\TypoScript\Parser;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use \TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * The TypoScript parser
@@ -23,130 +24,150 @@ use \TYPO3\CMS\Core\Utility\PathUtility;
  */
 class TypoScriptParser {
 
-	// If set, then key names cannot contain characters other than [:alnum:]_\.-
 	/**
+	 * If set, then key names cannot contain characters other than [:alnum:]_\.-
+	 *
 	 * @var bool
 	 */
 	public $strict = 1;
 
-	// Internal
-	// TypoScript hierarchy being build during parsing.
 	/**
+	 * TypoScript hierarchy being build during parsing.
+	 *
 	 * @var array
 	 */
 	public $setup = array();
 
-	// Raw data, the input string exploded by LF
 	/**
+	 * Raw data, the input string exploded by LF
+	 *
 	 * @var array
 	 */
 	public $raw;
 
-	// Pointer to entry in raw data array
 	/**
+	 * Pointer to entry in raw data array
+	 *
 	 * @var int
 	 */
 	public $rawP;
 
-	// Holding the value of the last comment
 	/**
+	 * Holding the value of the last comment
+	 *
 	 * @var string
 	 */
 	public $lastComment = '';
 
-	// Internally set, used as internal flag to create a multi-line comment (one of those like /*... */)
 	/**
+	 * Internally set, used as internal flag to create a multi-line comment (one of those like /* ... * /
+	 *
 	 * @var bool
 	 */
 	public $commentSet = 0;
 
-	// Internally set, when multiline value is accumulated
 	/**
+	 * Internally set, when multiline value is accumulated
+	 *
 	 * @var bool
 	 */
 	public $multiLineEnabled = 0;
 
-	// Internally set, when multiline value is accumulated
 	/**
+	 * Internally set, when multiline value is accumulated
+	 *
 	 * @var string
 	 */
 	public $multiLineObject = '';
 
-	// Internally set, when multiline value is accumulated
 	/**
+	 * Internally set, when multiline value is accumulated
+	 *
 	 * @var array
 	 */
 	public $multiLineValue = array();
 
-	// Internally set, when in brace. Counter.
 	/**
+	 * Internally set, when in brace. Counter.
+	 *
 	 * @var int
 	 */
 	public $inBrace = 0;
 
-	// For each condition this flag is set, if the condition is TRUE, else it's cleared. Then it's used by the [ELSE] condition to determine if the next part should be parsed.
 	/**
+	 * For each condition this flag is set, if the condition is TRUE,
+	 * else it's cleared. Then it's used by the [ELSE] condition to determine if the next part should be parsed.
+	 *
 	 * @var bool
 	 */
 	public $lastConditionTrue = 1;
 
-	// Tracking all conditions found
 	/**
+	 * Tracking all conditions found
+	 *
 	 * @var array
 	 */
 	public $sections = array();
 
-	// Tracking all matching conditions found
 	/**
+	 * Tracking all matching conditions found
+	 *
 	 * @var array
 	 */
 	public $sectionsMatch = array();
 
-	// If set, then syntax highlight mode is on; Call the function syntaxHighlight() to use this function
 	/**
+	 * If set, then syntax highlight mode is on; Call the function syntaxHighlight() to use this function
+	 *
 	 * @var bool
 	 */
 	public $syntaxHighLight = 0;
 
-	// Syntax highlight data is accumulated in this array. Used by syntaxHighlight_print() to construct the output.
 	/**
+	 * Syntax highlight data is accumulated in this array. Used by syntaxHighlight_print() to construct the output.
+	 *
 	 * @var array
 	 */
 	public $highLightData = array();
 
-	// Syntax highlight data keeping track of the curly brace level for each line
 	/**
+	 * Syntax highlight data keeping track of the curly brace level for each line
+	 *
 	 * @var array
 	 */
 	public $highLightData_bracelevel = array();
 
-	// Debugging, analysis:
-	// DO NOT register the comments. This is default for the ordinary sitetemplate!
 	/**
+	 * DO NOT register the comments. This is default for the ordinary sitetemplate!
+	 *
 	 * @var bool
 	 */
 	public $regComments = 0;
 
-	// DO NOT register the linenumbers. This is default for the ordinary sitetemplate!
 	/**
+	 * DO NOT register the linenumbers. This is default for the ordinary sitetemplate!
+	 *
 	 * @var bool
 	 */
 	public $regLinenumbers = 0;
 
-	// Error accumulation array.
 	/**
+	 * Error accumulation array.
+	 *
 	 * @var array
 	 */
 	public $errors = array();
 
-	// Used for the error messages line number reporting. Set externally.
 	/**
+	 * Used for the error messages line number reporting. Set externally.
+	 *
 	 * @var string
 	 */
 	public $lineNumberOffset = 0;
 
-	// Line for break point.
 	/**
+	 * Line for break point.
+	 *
 	 * @var int
 	 */
 	public $breakPointLN = 0;
@@ -184,14 +205,16 @@ class TypoScriptParser {
 		'linenum' => array('<span class="ts-linenum">', '</span>')
 	);
 
-	// Additional attributes for the <span> tags for a blockmode line
 	/**
+	 * Additional attributes for the <span> tags for a blockmode line
+	 *
 	 * @var string
 	 */
 	public $highLightBlockStyles = '';
 
-	// The hex-HTML color for the blockmode
 	/**
+	 * The hex-HTML color for the blockmode
+	 *
 	 * @var string
 	 */
 	public $highLightBlockStyles_basecolor = '#cccccc';

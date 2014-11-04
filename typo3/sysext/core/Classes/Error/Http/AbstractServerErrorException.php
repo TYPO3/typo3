@@ -13,12 +13,12 @@ namespace TYPO3\CMS\Core\Error\Http;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * HTTP Server Error Exception (Error 5xx)
  *
  * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
 abstract class AbstractServerErrorException extends StatusException {
-
 
 }

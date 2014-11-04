@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Core\Localization\Parser;
  *
  * @author Dominique Feyer <dfeyer@reelpeek.net>
  */
-class LocallangXmlParser extends \TYPO3\CMS\Core\Localization\Parser\AbstractXmlParser {
+class LocallangXmlParser extends AbstractXmlParser {
 
 	/**
 	 * Associative array of "filename => parsed data" pairs.

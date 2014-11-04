@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Encoder;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Adopted from OWASP Enterprise Security API (ESAPI) reference implementation for the JavaScript Codec.
  * Original Author: Mike Boberski

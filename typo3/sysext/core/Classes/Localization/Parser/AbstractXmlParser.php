@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Localization\Parser;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Abstract class for XML based parser.
  *

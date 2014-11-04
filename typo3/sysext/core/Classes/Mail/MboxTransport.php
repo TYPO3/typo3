@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Mail;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Adapter for Swift_Mailer to be used by TYPO3 extensions.
  *

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Log;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Global LogManager that keeps track of global logging information.
  *
@@ -28,10 +29,12 @@ class LogManager implements \TYPO3\CMS\Core\SingletonInterface, LogManagerInterf
 	 * @var string
 	 */
 	const CONFIGURATION_TYPE_WRITER = 'writer';
+
 	/**
 	 * @var string
 	 */
 	const CONFIGURATION_TYPE_PROCESSOR = 'processor';
+
 	/**
 	 * Loggers to retrieve them for repeated use.
 	 *
@@ -120,7 +123,7 @@ class LogManager implements \TYPO3\CMS\Core\SingletonInterface, LogManagerInterf
 	 * @return void
 	 * @throws \RangeException
 	 */
-	protected function setWritersForLogger(\TYPO3\CMS\Core\Log\Logger $logger) {
+	protected function setWritersForLogger(Logger $logger) {
 		$configuration = $this->getConfigurationForLogger(self::CONFIGURATION_TYPE_WRITER, $logger->getName());
 		foreach ($configuration as $severityLevel => $writer) {
 			foreach ($writer as $logWriterClassName => $logWriterOptions) {
@@ -143,7 +146,7 @@ class LogManager implements \TYPO3\CMS\Core\SingletonInterface, LogManagerInterf
 	 * @return void
 	 * @throws \RangeException
 	 */
-	protected function setProcessorsForLogger(\TYPO3\CMS\Core\Log\Logger $logger) {
+	protected function setProcessorsForLogger(Logger $logger) {
 		$configuration = $this->getConfigurationForLogger(self::CONFIGURATION_TYPE_PROCESSOR, $logger->getName());
 		foreach ($configuration as $severityLevel => $processor) {
 			foreach ($processor as $logProcessorClassName => $logProcessorOptions) {
@@ -187,7 +190,7 @@ class LogManager implements \TYPO3\CMS\Core\SingletonInterface, LogManagerInterf
 		// Validate the config
 		foreach ($result as $level => $unused) {
 			try {
-				\TYPO3\CMS\Core\Log\LogLevel::validateLevel($level);
+				LogLevel::validateLevel($level);
 			} catch (\RangeException $e) {
 				throw new \RangeException('The given severity level "' . htmlspecialchars($level) . '" for ' . $configurationKey . ' of logger "' . $loggerName . '" is not valid.', 1326406447);
 			}

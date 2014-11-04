@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Log\Processor;
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
-class IntrospectionProcessor extends \TYPO3\CMS\Core\Log\Processor\AbstractProcessor {
+class IntrospectionProcessor extends AbstractProcessor {
 
 	/**
 	 * Add the full backtrace to the log entry or

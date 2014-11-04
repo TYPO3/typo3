@@ -13,12 +13,13 @@ namespace TYPO3\CMS\Core\Messaging;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A class representing flash messages.
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
-class FlashMessage extends \TYPO3\CMS\Core\Messaging\AbstractMessage {
+class FlashMessage extends AbstractMessage {
 
 	/**
 	 * defines whether the message should be stored in the session (to survive redirects) or only for one request (default)

@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Core\ExtDirect;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Ext Direct Router
  *
@@ -29,12 +32,12 @@ class ExtDirectRouter {
 	 * @return void
 	 */
 	public function route($ajaxParams, \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj) {
-		$GLOBALS['error'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\ExtDirect\\ExtDirectDebug');
+		$GLOBALS['error'] = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\ExtDirect\\ExtDirectDebug');
 		$isForm = FALSE;
 		$isUpload = FALSE;
 		$rawPostData = file_get_contents('php://input');
-		$postParameters = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST();
-		$namespace = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('namespace');
+		$postParameters = GeneralUtility::_POST();
+		$namespace = GeneralUtility::_GET('namespace');
 		$response = array();
 		$request = NULL;
 		$isValidRequest = TRUE;
@@ -131,7 +134,7 @@ class ExtDirectRouter {
 				), TRUE);
 			}
 		}
-		$endpointObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($callbackClass, FALSE);
+		$endpointObject = GeneralUtility::getUserObj($callbackClass, FALSE);
 		return call_user_func_array(array($endpointObject, $singleRequest->method), is_array($singleRequest->data) ? $singleRequest->data : array());
 	}
 

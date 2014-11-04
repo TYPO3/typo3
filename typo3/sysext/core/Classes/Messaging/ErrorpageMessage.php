@@ -13,13 +13,14 @@ namespace TYPO3\CMS\Core\Messaging;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A class representing error messages shown on a page.
  * Classic Example: "No pages are found on rootlevel"
  *
  * @author Benjamin Mack <benni@typo3.org>
  */
-class ErrorpageMessage extends \TYPO3\CMS\Core\Messaging\AbstractStandaloneMessage {
+class ErrorpageMessage extends AbstractStandaloneMessage {
 
 	/**
 	 * Constructor for an Error message
@@ -28,7 +29,7 @@ class ErrorpageMessage extends \TYPO3\CMS\Core\Messaging\AbstractStandaloneMessa
 	 * @param string $title Title of the message, can be empty
 	 * @param int $severity Optional severity, must be either of AbstractMessage::INFO or related constants
 	 */
-	public function __construct($message = '', $title = '', $severity = \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR) {
+	public function __construct($message = '', $title = '', $severity = AbstractMessage::ERROR) {
 		$this->setHtmlTemplate(TYPO3_mainDir . 'sysext/t3skin/templates/errorpage-message.html');
 		parent::__construct($message, $title, $severity);
 	}

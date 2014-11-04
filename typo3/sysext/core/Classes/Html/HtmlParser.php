@@ -24,10 +24,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class HtmlParser {
 
+	/**
+	 * @var array
+	 */
 	protected $caseShift_cache = array();
 
 	// Void elements that do not have closing tags, as defined by HTML5, except link element
 	const VOID_ELEMENTS = 'area|base|br|col|command|embed|hr|img|input|keygen|meta|param|source|track|wbr';
+
 	/**
 	 * Returns the first subpart encapsulated in the marker, $marker
 	 * (possibly present in $content as a HTML comment)

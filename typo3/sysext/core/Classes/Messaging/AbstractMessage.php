@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Messaging;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A class used for any kind of messages.
  *
@@ -26,6 +27,7 @@ abstract class AbstractMessage {
 	const OK = 0;
 	const WARNING = 1;
 	const ERROR = 2;
+
 	/**
 	 * The message's title
 	 *

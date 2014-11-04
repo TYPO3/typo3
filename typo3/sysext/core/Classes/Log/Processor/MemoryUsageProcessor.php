@@ -13,13 +13,14 @@ namespace TYPO3\CMS\Core\Log\Processor;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Memory usage processor methods.
  *
  * @author Ingo Renner <ingo@typo3.org>
  * @author Steffen Müller <typo3@t3node.com>
  */
-class MemoryUsageProcessor extends \TYPO3\CMS\Core\Log\Processor\AbstractMemoryProcessor {
+class MemoryUsageProcessor extends AbstractMemoryProcessor {
 
 	/**
 	 * Processes a log record and adds memory usage information.

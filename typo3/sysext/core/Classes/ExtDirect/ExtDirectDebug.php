@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\ExtDirect;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Ext Direct Debug
  *

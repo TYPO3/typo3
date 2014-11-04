@@ -13,13 +13,14 @@ namespace TYPO3\CMS\Core\Localization\Parser;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Parser for PHP locallang array.
  *
  * @author Dominique Feyer <dfeyer@reelpeek.net>
  * @author Dmitry Dulepov <dmitry.dulepov@gmail.com>
  */
-class LocallangArrayParser implements \TYPO3\CMS\Core\Localization\Parser\LocalizationParserInterface {
+class LocallangArrayParser implements LocalizationParserInterface {
 
 	/**
 	 * @var string

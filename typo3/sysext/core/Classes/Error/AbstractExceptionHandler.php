@@ -13,12 +13,13 @@ namespace TYPO3\CMS\Core\Error;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * An abstract exception handler
  *
- * This file is a backport from FLOW3
+ * This file is a backport from TYPO3 Flow
  *
  * @author Ingo Renner <ingo@typo3.org>
  */

@@ -23,14 +23,17 @@ namespace TYPO3\CMS\Core\TimeTracker;
  */
 class TimeTracker {
 
-	// Is loaded with the millisecond time when this object is created
 	/**
+	 * Is loaded with the millisecond time when this object is created
+	 *
 	 * @var int
 	 */
 	public $starttime = 0;
 
-	// Log Rendering flag. If set, ->push() and ->pull() is called from the cObj->cObjGetSingle(). This determines whether or not the TypoScript parsing activity is logged. But it also slows down the rendering
 	/**
+	 * Log Rendering flag. If set, ->push() and ->pull() is called from the cObj->cObjGetSingle().
+	 * This determines whether or not the TypoScript parsing activity is logged. But it also slows down the rendering
+	 *
 	 * @var bool
 	 */
 	public $LR = 1;
@@ -97,8 +100,9 @@ class TimeTracker {
 	 */
 	public $currentHashPointer = array();
 
-	// Log entries that take than this number of milliseconds (own time) will be highlighted during log display. Set 0 to disable highlighting.
 	/**
+	 * Log entries that take than this number of milliseconds (own time) will be highlighted during log display. Set 0 to disable highlighting.
+	 *
 	 * @var int
 	 */
 	public $highlightLongerThan = 0;

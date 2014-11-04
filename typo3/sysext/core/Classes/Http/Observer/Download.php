@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Http\Observer;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Observer to automatically save a http request chunk by chunk to a file.
  * If the file already exists, it will be overwritten.
@@ -74,7 +75,6 @@ class Download implements \SplObserver {
 				$this->openFile();
 				break;
 			case 'receivedBodyPart':
-
 			case 'receivedEncodedBodyPart':
 				fwrite($this->filePointer, $event['data']);
 				break;

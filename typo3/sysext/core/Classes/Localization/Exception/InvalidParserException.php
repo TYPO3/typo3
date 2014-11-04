@@ -13,12 +13,12 @@ namespace TYPO3\CMS\Core\Localization\Exception;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Invalid Parser exception
  *
  * @author Dominique Feyer <dfeyer@reelpeek.net>
  */
 class InvalidParserException extends \RuntimeException {
-
 
 }

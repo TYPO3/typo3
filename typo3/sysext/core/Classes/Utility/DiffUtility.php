@@ -21,22 +21,23 @@ namespace TYPO3\CMS\Core\Utility;
  */
 class DiffUtility {
 
-	// External, static
-	// If set, the HTML tags are stripped from the input strings first.
 	/**
+	 * If set, the HTML tags are stripped from the input strings first.
+	 *
 	 * @var bool
 	 */
 	public $stripTags = 0;
 
-	// Diff options. eg "--unified=3"
 	/**
+	 * Diff options. eg "--unified=3"
+	 *
 	 * @var string
 	 */
 	public $diffOptions = '';
 
-	// Internal, dynamic
-	// This indicates the number of times the function addClearBuffer has been called - and used to detect the very first call...
 	/**
+	 * This indicates the number of times the function addClearBuffer has been called - and used to detect the very first call...
+	 *
 	 * @var int
 	 */
 	public $clearBufferIdx = 0;

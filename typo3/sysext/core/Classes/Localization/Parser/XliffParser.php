@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Core\Localization\Parser;
  *
  * @author Dominique Feyer <dfeyer@reelpeek.net>
  */
-class XliffParser extends \TYPO3\CMS\Core\Localization\Parser\AbstractXmlParser {
+class XliffParser extends AbstractXmlParser {
 
 	/**
 	 * Returns array representation of XML data, starting from a root node.

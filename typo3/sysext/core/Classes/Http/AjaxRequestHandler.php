@@ -21,20 +21,44 @@ namespace TYPO3\CMS\Core\Http;
  */
 class AjaxRequestHandler {
 
+	/**
+	 * @var string|NULL
+	 */
 	protected $ajaxId = NULL;
 
+	/**
+	 * @var string|NULL
+	 */
 	protected $errorMessage = NULL;
 
+	/**
+	 * @var bool
+	 */
 	protected $isError = FALSE;
 
+	/**
+	 * @var array
+	 */
 	protected $content = array();
 
+	/**
+	 * @var string
+	 */
 	protected $contentFormat = 'plain';
 
+	/**
+	 * @var string
+	 */
 	protected $charset = 'utf-8';
 
+	/**
+	 * @var string
+	 */
 	protected $requestCharset = 'utf-8';
 
+	/**
+	 * @var string
+	 */
 	protected $javascriptCallbackWrap = '
 		<script type="text/javascript">
 			/*<![CDATA[*/
@@ -179,9 +203,7 @@ class AjaxRequestHandler {
 		}
 		switch ($this->contentFormat) {
 			case 'jsonhead':
-
 			case 'jsonbody':
-
 			case 'json':
 				$this->renderAsJSON();
 				break;

@@ -13,12 +13,12 @@ namespace TYPO3\CMS\Core\FormProtection;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Invalid token exception
  *
  * @api
  */
 class Exception extends \UnexpectedValueException {
-
 
 }

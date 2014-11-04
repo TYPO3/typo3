@@ -13,12 +13,14 @@ namespace TYPO3\CMS\Core\Utility\File;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Interface for classes which hook into extFileFunctions and do additional processData processing.
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  */
 interface ExtendedFileUtilityProcessDataHookInterface {
+
 	/**
 	 * Post-process a file action.
 	 *

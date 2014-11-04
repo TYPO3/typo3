@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\DataHandling;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Interface for classes which hook into TCEmain and do additional processing
  * after the upload of a file.
@@ -20,6 +21,7 @@ namespace TYPO3\CMS\Core\DataHandling;
  * @author Xavier Perseguers <typo3@perseguers.ch>
  */
 interface DataHandlerProcessUploadHookInterface {
+
 	/**
 	 * Post-process a file upload.
 	 *

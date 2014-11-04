@@ -13,12 +13,14 @@ namespace TYPO3\CMS\Core\Mail;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Mailer Adapter interface
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
 interface MailerAdapterInterface {
+
 	/**
 	 * Mail sending function
 	 *

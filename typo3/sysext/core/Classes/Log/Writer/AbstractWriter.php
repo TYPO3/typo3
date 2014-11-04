@@ -13,12 +13,13 @@ namespace TYPO3\CMS\Core\Log\Writer;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Abstract implementation of a log writer
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
-abstract class AbstractWriter implements \TYPO3\CMS\Core\Log\Writer\WriterInterface {
+abstract class AbstractWriter implements WriterInterface {
 
 	/**
 	 * Constructs this log writer

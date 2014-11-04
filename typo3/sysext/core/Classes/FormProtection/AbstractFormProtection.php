@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\FormProtection;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * This class provides protection against cross-site request forgery (XSRF/CSRF)
  * for forms.
@@ -79,7 +81,7 @@ abstract class AbstractFormProtection {
 		if ($formName == '') {
 			throw new \InvalidArgumentException('$formName must not be empty.', 1294586643);
 		}
-		$tokenId = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac($formName . $action . $formInstanceName . $this->getSessionToken());
+		$tokenId = GeneralUtility::hmac($formName . $action . $formInstanceName . $this->getSessionToken());
 		return $tokenId;
 	}
 
@@ -94,7 +96,7 @@ abstract class AbstractFormProtection {
 	 * @return bool
 	 */
 	public function validateToken($tokenId, $formName, $action = '', $formInstanceName = '') {
-		$validTokenId = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac(((string)$formName . (string)$action) . (string)$formInstanceName . $this->getSessionToken());
+		$validTokenId = GeneralUtility::hmac(((string)$formName . (string)$action) . (string)$formInstanceName . $this->getSessionToken());
 		if ((string)$tokenId === $validTokenId) {
 			$isValid = TRUE;
 		} else {
@@ -112,7 +114,7 @@ abstract class AbstractFormProtection {
 	 * @return string
 	 */
 	protected function generateSessionToken() {
-		return bin2hex(\TYPO3\CMS\Core\Utility\GeneralUtility::generateRandomBytes(32));
+		return bin2hex(GeneralUtility::generateRandomBytes(32));
 	}
 
 	/**

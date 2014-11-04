@@ -40,6 +40,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	const JQUERY_NAMESPACE_NONE = 'none';
 	const JQUERY_NAMESPACE_DEFAULT = 'jQuery';
 	const JQUERY_NAMESPACE_DEFAULT_NOCONFLICT = 'defaultNoConflict';
+
 	/**
 	 * @var bool
 	 */

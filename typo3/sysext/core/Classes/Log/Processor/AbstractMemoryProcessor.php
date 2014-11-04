@@ -13,13 +13,14 @@ namespace TYPO3\CMS\Core\Log\Processor;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Common memory processor methods.
  *
  * @author Ingo Renner <ingo@typo3.org>
  * @author Steffen Müller <typo3@t3node.com>
  */
-abstract class AbstractMemoryProcessor extends \TYPO3\CMS\Core\Log\Processor\AbstractProcessor {
+abstract class AbstractMemoryProcessor extends AbstractProcessor {
 
 	/**
 	 * Allocated memory usage type to use

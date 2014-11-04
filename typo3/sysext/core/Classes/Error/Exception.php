@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Error;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * An exception which represents a PHP error.
  *
@@ -21,6 +22,5 @@ namespace TYPO3\CMS\Core\Error;
  * @author Ingo Renner <ingo@typo3.org>
  */
 class Exception extends \TYPO3\CMS\Core\Exception {
-
 
 }

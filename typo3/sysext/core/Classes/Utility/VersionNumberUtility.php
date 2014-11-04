@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Class with helper functions for version number handling
  *

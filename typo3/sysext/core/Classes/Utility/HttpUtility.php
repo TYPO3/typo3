@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * HTTP Utility class
  *
@@ -64,6 +65,7 @@ class HttpUtility {
 	// URL Schemes
 	const SCHEME_HTTP = 1;
 	const SCHEME_HTTPS = 2;
+
 	/**
 	 * Sends a redirect header response and exits. Additionally the URL is
 	 * checked and if needed corrected to match the format required for a

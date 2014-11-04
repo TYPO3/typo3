@@ -13,12 +13,13 @@ namespace TYPO3\CMS\Core\Log\Processor;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A log processor that does nothing. Used in unit tests.
  *
  * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
-class NullProcessor extends \TYPO3\CMS\Core\Log\Processor\AbstractProcessor {
+class NullProcessor extends AbstractProcessor {
 
 	/**
 	 * Processes a log record and returns the same.

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A class to store and retrieve entries in a registry database table.
  *

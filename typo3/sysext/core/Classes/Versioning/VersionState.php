@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Versioning;
 
 /**
  * Enumeration object for VersionState
- *
- * @package TYPO3\CMS\Core\Versioning
  */
 class VersionState extends \TYPO3\CMS\Core\Type\Enumeration {
 

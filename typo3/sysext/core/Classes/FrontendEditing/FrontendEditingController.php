@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Core\FrontendEditing;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Controller class for frontend editing.
  *
@@ -40,7 +43,7 @@ class FrontendEditingController {
 	 * @return void
 	 */
 	public function initConfigOptions() {
-		$this->TSFE_EDIT = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('TSFE_EDIT');
+		$this->TSFE_EDIT = GeneralUtility::_GP('TSFE_EDIT');
 		// Include classes for editing IF editing module in Admin Panel is open
 		if ($GLOBALS['BE_USER']->isFrontendEditingActive()) {
 			if ($this->isEditAction()) {
@@ -88,7 +91,7 @@ class FrontendEditingController {
 		if ($GLOBALS['TSFE']->displayEditIcons && $table && $this->allowedToEdit($table, $dataArray, $conf, $checkEditAccessInternals) && $this->allowedToEditLanguage($table, $dataArray)) {
 			$editClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/classes/class.frontendedit.php']['edit'];
 			if ($editClass) {
-				$edit = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($editClass, FALSE);
+				$edit = GeneralUtility::getUserObj($editClass, FALSE);
 				if (is_object($edit)) {
 					$allowedActions = $this->getAllowedEditActions($table, $conf, $dataArray['pid']);
 					$content = $edit->editPanel($content, $conf, $currentRecord, $dataArray, $table, $allowedActions, $newUid, $this->getHiddenFields($dataArray));
@@ -113,7 +116,7 @@ class FrontendEditingController {
 	public function displayEditIcons($content, $params, array $conf = array(), $currentRecord = '', array $dataArray = array(), $addUrlParamStr = '') {
 		// Check incoming params:
 		list($currentRecordTable, $currentRecordUID) = explode(':', $currentRecord);
-		list($fieldList, $table) = array_reverse(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(':', $params, TRUE));
+		list($fieldList, $table) = array_reverse(GeneralUtility::trimExplode(':', $params, TRUE));
 		// Reverse the array because table is optional
 		if (!$table) {
 			$table = $currentRecordTable;
@@ -129,7 +132,7 @@ class FrontendEditingController {
 		if ($GLOBALS['TSFE']->displayFieldEditIcons && $table && $this->allowedToEdit($table, $dataArray, $conf) && $fieldList && $this->allowedToEditLanguage($table, $dataArray)) {
 			$editClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/classes/class.frontendedit.php']['edit'];
 			if ($editClass) {
-				$edit = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($editClass);
+				$edit = GeneralUtility::getUserObj($editClass);
 				if (is_object($edit)) {
 					$content = $edit->editIcons($content, $params, $conf, $currentRecord, $dataArray, $addUrlParamStr, $table, $editUid, $fieldList);
 				}
@@ -202,7 +205,7 @@ class FrontendEditingController {
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['extEditAction'])) {
 				$_params = array();
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['extEditAction'] as $_funcRef) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+					GeneralUtility::callUserFunction($_funcRef, $_params, $this);
 				}
 			}
 			// Perform the requested editing command.
@@ -299,7 +302,7 @@ class FrontendEditingController {
 		$sortField = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
 		if ($sortField) {
 			// Get self
-			$fields = array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields'] . ',uid,pid,' . $sortField, TRUE));
+			$fields = array_unique(GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields'] . ',uid,pid,' . $sortField, TRUE));
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',', $fields), $table, 'uid=' . $uid);
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				// Record before or after
@@ -308,7 +311,7 @@ class FrontendEditingController {
 				}
 				$copyAfterFieldsQuery = '';
 				if ($GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields']) {
-					$cAFields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields'], TRUE);
+					$cAFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields'], TRUE);
 					foreach ($cAFields as $fieldName) {
 						$copyAfterFieldsQuery .= ' AND ' . $fieldName . '="' . $row[$fieldName] . '"';
 					}
@@ -470,7 +473,7 @@ class FrontendEditingController {
 			}
 			if (!$conf['onlyCurrentPid'] || $dataArray['pid'] == $GLOBALS['TSFE']->id) {
 				// Permissions:
-				$types = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($conf['allow']), TRUE);
+				$types = GeneralUtility::trimExplode(',', GeneralUtility::strtolower($conf['allow']), TRUE);
 				$allow = array_flip($types);
 				$perms = $GLOBALS['BE_USER']->calcPerms($GLOBALS['TSFE']->page);
 				if ($table == 'pages') {
@@ -498,12 +501,12 @@ class FrontendEditingController {
 	 */
 	protected function getAllowedEditActions($table, array $conf, $pid, $allow = '') {
 		if (!$allow) {
-			$types = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($conf['allow']), TRUE);
+			$types = GeneralUtility::trimExplode(',', GeneralUtility::strtolower($conf['allow']), TRUE);
 			$allow = array_flip($types);
 		}
 		if (!$conf['onlyCurrentPid'] || $pid == $GLOBALS['TSFE']->id) {
 			// Permissions
-			$types = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($conf['allow']), TRUE);
+			$types = GeneralUtility::trimExplode(',', GeneralUtility::strtolower($conf['allow']), TRUE);
 			$allow = array_flip($types);
 			$perms = $GLOBALS['BE_USER']->calcPerms($GLOBALS['TSFE']->page);
 			if ($table == 'pages') {
@@ -558,7 +561,7 @@ class FrontendEditingController {
 	 */
 	protected function initializeTceMain() {
 		if (!isset($this->tce)) {
-			$this->tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+			$this->tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 			$this->tce->stripslashes_values = 0;
 		}
 	}

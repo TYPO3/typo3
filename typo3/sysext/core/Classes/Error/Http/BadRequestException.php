@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Error\Http;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Exception for Error 400 - Bad Request
  *

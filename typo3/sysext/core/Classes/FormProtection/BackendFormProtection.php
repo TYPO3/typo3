@@ -72,7 +72,7 @@ namespace TYPO3\CMS\Core\FormProtection;
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  * @author Helmut Hummel <helmut.hummel@typo3.org>
  */
-class BackendFormProtection extends \TYPO3\CMS\Core\FormProtection\AbstractFormProtection {
+class BackendFormProtection extends AbstractFormProtection {
 
 	/**
 	 * Keeps the instance of the user which existed during creation
@@ -92,6 +92,8 @@ class BackendFormProtection extends \TYPO3\CMS\Core\FormProtection\AbstractFormP
 
 	/**
 	 * Only allow construction if we have a backend session
+	 *
+	 * @throws \TYPO3\CMS\Core\Error\Exception
 	 */
 	public function __construct() {
 		if (!$this->isAuthorizedBackendSession()) {

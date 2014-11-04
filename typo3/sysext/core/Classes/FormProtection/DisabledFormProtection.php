@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\FormProtection;
  *
  * @author Helmut Hummel <helmut.hummel@typo3.org>
  */
-class DisabledFormProtection extends \TYPO3\CMS\Core\FormProtection\AbstractFormProtection {
+class DisabledFormProtection extends AbstractFormProtection {
 
 	/**
 	 * Disable parent constructor

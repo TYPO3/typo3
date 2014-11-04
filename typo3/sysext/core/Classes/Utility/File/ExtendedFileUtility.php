@@ -55,16 +55,18 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 class ExtendedFileUtility extends BasicFileUtility {
 
-	// External static variables:
-	// Notice; some of these are overridden in the start() method with values from $GLOBALS['TYPO3_CONF_VARS']['BE']
-	// Path to unzip-program (with trailing '/')
 	/**
+	 * External static variables:
+	 * Notice; some of these are overridden in the start() method with values from $GLOBALS['TYPO3_CONF_VARS']['BE']
+	 * Path to unzip-program (with trailing '/')
+	 *
 	 * @var string
 	 */
 	public $unzipPath = '';
 
-	// If set, the uploaded files will overwrite existing files.
 	/**
+	 * If set, the uploaded files will overwrite existing files.
+	 *
 	 * @var bool
 	 */
 	public $dontCheckForUnique = 0;
@@ -97,15 +99,16 @@ class ExtendedFileUtility extends BasicFileUtility {
 		'recursivedeleteFolder' => FALSE
 	);
 
-	// This is regarded to be the recycler folder
 	/**
+	 * This is regarded to be the recycler folder
+	 *
 	 * @var string
 	 */
 	public $recyclerFN = '_recycler_';
 
-	// Internal, dynamic
-	// Will contain map between upload ID and the final filename
 	/**
+	 * Will contain map between upload ID and the final filename
+	 *
 	 * @var array
 	 */
 	public $internalUploadMap = array();
@@ -133,7 +136,6 @@ class ExtendedFileUtility extends BasicFileUtility {
 	 * @var \TYPO3\CMS\Core\Resource\ResourceFactory
 	 */
 	protected $fileFactory;
-
 
 	/**
 	 * Initialization of the class

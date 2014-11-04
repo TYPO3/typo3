@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Tree\TableConfiguration;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Represents a node in a TCA database setup
  *
