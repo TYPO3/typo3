@@ -21,6 +21,12 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Widget;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
+use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
+use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController;
+use TYPO3\CMS\Fluid\Core\Widget\WidgetRequest;
+
 /**
  * Test case
  */
@@ -30,7 +36,9 @@ class AbstractWidgetControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function canHandleWidgetRequest() {
+		/** @var WidgetRequest|\PHPUnit_Framework_MockObject_MockObject $request */
 		$request = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetRequest', array('dummy'), array(), '', FALSE);
+		/** @var AbstractWidgetController|\PHPUnit_Framework_MockObject_MockObject $abstractWidgetController */
 		$abstractWidgetController = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Widget\\AbstractWidgetController', array('dummy'), array(), '', FALSE);
 		$this->assertTrue($abstractWidgetController->canProcessRequest($request));
 	}
@@ -41,9 +49,12 @@ class AbstractWidgetControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function processRequestSetsWidgetConfiguration() {
 		$widgetContext = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetContext');
 		$widgetContext->expects($this->once())->method('getWidgetConfiguration')->will($this->returnValue('myConfiguration'));
+		/** @var WidgetRequest|\PHPUnit_Framework_MockObject_MockObject $request */
 		$request = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetRequest', array(), array(), '', FALSE);
 		$request->expects($this->once())->method('getWidgetContext')->will($this->returnValue($widgetContext));
+		/** @var ResponseInterface|\PHPUnit_Framework_MockObject_MockObject $response */
 		$response = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\ResponseInterface');
+		/** @var AbstractWidgetController|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $abstractWidgetController */
 		$abstractWidgetController = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Widget\\AbstractWidgetController', array('resolveActionMethodName', 'initializeActionMethodArguments', 'initializeActionMethodValidators', 'initializeAction', 'checkRequestHash', 'mapRequestArgumentsToControllerArguments', 'buildControllerContext', 'resolveView', 'callActionMethod'), array(), '', FALSE);
 		$mockUriBuilder = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
 		$objectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
@@ -51,7 +62,7 @@ class AbstractWidgetControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$configurationService = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\MvcPropertyMappingConfigurationService');
 		$abstractWidgetController->_set('mvcPropertyMappingConfigurationService', $configurationService);
-		$abstractWidgetController->_set('arguments', new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments());
+		$abstractWidgetController->_set('arguments', new Arguments());
 
 		$abstractWidgetController->_set('objectManager', $objectManager);
 		$abstractWidgetController->processRequest($request, $response);
@@ -83,6 +94,6 @@ class AbstractWidgetControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$abstractWidgetController->_set('configurationManager', $configurationManager);
 		$abstractWidgetController->_set('request', $request);
 		$abstractWidgetController->_call('setViewConfiguration', $view);
-		$this->assertEquals(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('EXT:fluid/Resources/Private/DummyTestTemplates'), $view->_call('getTemplateRootPath'));
+		$this->assertSame(array(GeneralUtility::getFileAbsFileName('EXT:fluid/Resources/Private/DummyTestTemplates')), $view->_call('getTemplateRootPaths'));
 	}
 }

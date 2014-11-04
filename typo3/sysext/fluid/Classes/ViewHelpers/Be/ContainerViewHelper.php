@@ -21,7 +21,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+
 
 /**
  * View helper which allows you to create extbase based modules in the style of TYPO3 default modules.
@@ -36,8 +37,8 @@ use \TYPO3\CMS\Core\Utility\GeneralUtility;
  * Default backend CSS styles and JavaScript will be included
  * </output>
  *
- * <code title="All options (except deprecated ones)">
- * <f:be.container pageTitle="foo" enableJumpToUrl="false" enableClickMenu="false" loadPrototype="false" loadScriptaculous="false" scriptaculousModule="someModule,someOtherModule" loadExtJs="true" loadExtJsTheme="false" extJsAdapter="jQuery" enableExtJsDebug="true" loadJQuery="true" includeCssFiles="0: '{f:uri.resource(path:\'Styles/Styles.css\')}'" includeJsFiles="0: '{f:uri.resource(path:\'JavaScript/Library1.js\')}', 1: '{f:uri.resource(path:\'JavaScript/Library2.js\')}'" addJsInlineLabels="{0: 'label1', 1: 'label2'}" includeCsh="true">your module content</f:be.container>
+ * <code title="All options">
+ * <f:be.container pageTitle="foo" enableClickMenu="false" loadPrototype="false" loadScriptaculous="false" scriptaculousModule="someModule,someOtherModule" loadExtJs="true" loadExtJsTheme="false" extJsAdapter="jQuery" enableExtJsDebug="true" loadJQuery="true" includeCssFiles="0: '{f:uri.resource(path:\'Styles/Styles.css\')}'" includeJsFiles="0: '{f:uri.resource(path:\'JavaScript/Library1.js\')}', 1: '{f:uri.resource(path:\'JavaScript/Library2.js\')}'" addJsInlineLabels="{0: 'label1', 1: 'label2'}" includeCsh="true">your module content</f:be.container>
  * </code>
  * <output>
  * "your module content" wrapped with proper head & body tags.
@@ -46,23 +47,20 @@ use \TYPO3\CMS\Core\Utility\GeneralUtility;
  * will be loaded, plus ExtJS and jQuery and some inline labels for usage in JS code.
  * </output>
  */
-class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
+class ContainerViewHelper extends AbstractBackendViewHelper {
 
 	/**
 	 * Render start page with \TYPO3\CMS\Backend\Template\DocumentTemplate and pageTitle
 	 *
-	 * @param string  $pageTitle title tag of the module. Not required by default, as BE modules are shown in a frame
-	 * @param bool $enableJumpToUrl If TRUE, includes "jumpTpUrl" javascript function required by ActionMenu. Defaults to TRUE, deprecated, as not needed anymore
+	 * @param string $pageTitle title tag of the module. Not required by default, as BE modules are shown in a frame
 	 * @param bool $enableClickMenu If TRUE, loads clickmenu.js required by BE context menus. Defaults to TRUE
 	 * @param bool $loadPrototype specifies whether to load prototype library. Defaults to TRUE
 	 * @param bool $loadScriptaculous specifies whether to load scriptaculous libraries. Defaults to FALSE
-	 * @param string  $scriptaculousModule additionales modules for scriptaculous
+	 * @param string $scriptaculousModule additionales modules for scriptaculous
 	 * @param bool $loadExtJs specifies whether to load ExtJS library. Defaults to FALSE
 	 * @param bool $loadExtJsTheme whether to load ExtJS "grey" theme. Defaults to FALSE
-	 * @param string  $extJsAdapter load alternative adapter (ext-base is default adapter)
+	 * @param string $extJsAdapter load alternative adapter (ext-base is default adapter)
 	 * @param bool $enableExtJsDebug if TRUE, debug version of ExtJS is loaded. Use this for development only
-	 * @param string $addCssFile Custom CSS file to be loaded (deprecated, use $includeCssFiles)
-	 * @param string $addJsFile Custom JavaScript file to be loaded (deprecated, use $includeJsFiles)
 	 * @param bool $loadJQuery whether to load jQuery library. Defaults to FALSE
 	 * @param array $includeCssFiles List of custom CSS file to be loaded
 	 * @param array $includeJsFiles List of custom JavaScript file to be loaded
@@ -72,7 +70,7 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 * @see \TYPO3\CMS\Core\Page\PageRenderer
 	 */
-	public function render($pageTitle = '', $enableJumpToUrl = TRUE, $enableClickMenu = TRUE, $loadPrototype = TRUE, $loadScriptaculous = FALSE, $scriptaculousModule = '', $loadExtJs = FALSE, $loadExtJsTheme = TRUE, $extJsAdapter = '', $enableExtJsDebug = FALSE, $addCssFile = NULL, $addJsFile = NULL, $loadJQuery = FALSE, $includeCssFiles = NULL, $includeJsFiles = NULL, $addJsInlineLabels = NULL, $includeCsh = TRUE) {
+	public function render($pageTitle = '', $enableClickMenu = TRUE, $loadPrototype = TRUE, $loadScriptaculous = FALSE, $scriptaculousModule = '', $loadExtJs = FALSE, $loadExtJsTheme = TRUE, $extJsAdapter = '', $enableExtJsDebug = FALSE, $loadJQuery = FALSE, $includeCssFiles = NULL, $includeJsFiles = NULL, $addJsInlineLabels = NULL, $includeCsh = TRUE) {
 		$doc = $this->getDocInstance();
 		$pageRenderer = $doc->getPageRenderer();
 		$doc->JScode .= $doc->wrapScriptTags($doc->redirectUrls());
@@ -96,15 +94,6 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 		if ($loadJQuery) {
 			$pageRenderer->loadJquery(NULL, NULL, $pageRenderer::JQUERY_NAMESPACE_DEFAULT_NOCONFLICT);
 		}
-		// This way of adding a single CSS or JS file is deprecated, the array below should be used instead
-		if ($addCssFile !== NULL) {
-			GeneralUtility::deprecationLog('Usage of addCssFile attribute is deprecated since TYPO3 CMS 6.2. It will be removed in TYPO3 CMS 7.0. Use includeCssFiles instead.');
-			$pageRenderer->addCssFile($addCssFile);
-		}
-		if ($addJsFile !== NULL) {
-			GeneralUtility::deprecationLog('Usage of addJsFile attribute is deprecated since TYPO3 CMS 6.2. It will be removed in TYPO3 CMS 7.0. Use includeJsFiles instead.');
-			$pageRenderer->addJsFile($addJsFile);
-		}
 		// Include custom CSS and JS files
 		if (is_array($includeCssFiles) && count($includeCssFiles) > 0) {
 			foreach ($includeCssFiles as $addCssFile) {
@@ -120,7 +109,7 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 		if (is_array($addJsInlineLabels) && count($addJsInlineLabels) > 0) {
 			$extensionKey = $this->controllerContext->getRequest()->getControllerExtensionKey();
 			foreach ($addJsInlineLabels as $key) {
-				$label = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, $extensionKey);
+				$label = LocalizationUtility::translate($key, $extensionKey);
 				$pageRenderer->addInlineLanguageLabel($key, $label);
 			}
 		}

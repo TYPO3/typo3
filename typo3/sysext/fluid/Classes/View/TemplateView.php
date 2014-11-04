@@ -11,8 +11,11 @@ namespace TYPO3\CMS\Fluid\View;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
+use TYPO3\CMS\Fluid\Compatibility\TemplateParserBuilder;
+use TYPO3\CMS\Fluid\Fluid;
 
 /**
  * The main template view. Should be used as view if you want Fluid Templating
@@ -125,12 +128,18 @@ class TemplateView extends AbstractTemplateView {
 	 */
 	protected $layoutPathAndFilename = NULL;
 
+	/**
+	 * Constructor
+	 */
 	public function __construct() {
-		$this->templateParser = \TYPO3\CMS\Fluid\Compatibility\TemplateParserBuilder::build();
+		$this->templateParser = TemplateParserBuilder::build();
 		$this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 		$this->setRenderingContext($this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Rendering\\RenderingContextInterface'));
 	}
 
+	/**
+	 * Init view
+	 */
 	public function initializeView() {
 	}
 	// Here, the backporter can insert a constructor method, which is needed for the TYPO3 CMS extension
@@ -172,16 +181,6 @@ class TemplateView extends AbstractTemplateView {
 	}
 
 	/**
-	 * @return string Path to template root directory
-	 * @deprecated since fluid 6.2, will be removed two versions later. Use getTemplateRootPaths() instead
-	 */
-	protected function getTemplateRootPath() {
-		GeneralUtility::logDeprecatedFunction();
-		$templateRootPaths = $this->getTemplateRootPaths();
-		return array_shift($templateRootPaths);
-	}
-
-	/**
 	 * Resolves the template root to be used inside other paths.
 	 *
 	 * @return array Path(s) to template root directory
@@ -192,7 +191,7 @@ class TemplateView extends AbstractTemplateView {
 		}
 		/** @var $actionRequest \TYPO3\CMS\Extbase\Mvc\Request */
 		$actionRequest = $this->controllerContext->getRequest();
-		return array(str_replace('@packageResourcesPath', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($actionRequest->getControllerExtensionKey()) . 'Resources/', $this->templateRootPathPattern));
+		return array(str_replace('@packageResourcesPath', ExtensionManagementUtility::extPath($actionRequest->getControllerExtensionKey()) . 'Resources/', $this->templateRootPathPattern));
 	}
 
 	/**
@@ -221,16 +220,6 @@ class TemplateView extends AbstractTemplateView {
 	}
 
 	/**
-	 * @return string Path to partial root directory
-	 * @deprecated since fluid 6.2, will be removed two versions later. Use setPartialRootPaths() instead
-	 */
-	protected function getPartialRootPath() {
-		GeneralUtility::logDeprecatedFunction();
-		$partialRootPaths = $this->getPartialRootPaths();
-		return array_shift($partialRootPaths);
-	}
-
-	/**
 	 * Set the root path(s) to the partials.
 	 * If set, overrides the one determined from $this->partialRootPathPattern
 	 *
@@ -253,7 +242,7 @@ class TemplateView extends AbstractTemplateView {
 		}
 		/** @var $actionRequest \TYPO3\CMS\Extbase\Mvc\Request */
 		$actionRequest = $this->controllerContext->getRequest();
-		return array(str_replace('@packageResourcesPath', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($actionRequest->getControllerExtensionKey()) . 'Resources/', $this->partialRootPathPattern));
+		return array(str_replace('@packageResourcesPath', ExtensionManagementUtility::extPath($actionRequest->getControllerExtensionKey()) . 'Resources/', $this->partialRootPathPattern));
 	}
 
 	/**
@@ -282,16 +271,6 @@ class TemplateView extends AbstractTemplateView {
 	}
 
 	/**
-	 * @return string Path to layout root directory
-	 * @deprecated since fluid 6.2, will be removed two versions later. Use getLayoutRootPaths() instead
-	 */
-	protected function getLayoutRootPath() {
-		GeneralUtility::logDeprecatedFunction();
-		$layoutRootPaths = $this->getLayoutRootPaths();
-		return array_shift($layoutRootPaths);
-	}
-
-	/**
 	 * Resolves the layout root to be used inside other paths.
 	 *
 	 * @return string Path(s) to layout root directory
@@ -302,7 +281,7 @@ class TemplateView extends AbstractTemplateView {
 		}
 		/** @var $actionRequest \TYPO3\CMS\Extbase\Mvc\Request */
 		$actionRequest = $this->controllerContext->getRequest();
-		return array(str_replace('@packageResourcesPath', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($actionRequest->getControllerExtensionKey()) . 'Resources/', $this->layoutRootPathPattern));
+		return array(str_replace('@packageResourcesPath', ExtensionManagementUtility::extPath($actionRequest->getControllerExtensionKey()) . 'Resources/', $this->layoutRootPathPattern));
 	}
 
 	/**
@@ -540,10 +519,10 @@ class TemplateView extends AbstractTemplateView {
 		$subpackageKey = $actionRequest->getControllerSubpackageKey();
 		$controllerName = $actionRequest->getControllerName();
 		if ($subpackageKey !== NULL) {
-			if (strpos($subpackageKey, \TYPO3\CMS\Fluid\Fluid::NAMESPACE_SEPARATOR) !== FALSE) {
-				$namespaceSeparator = \TYPO3\CMS\Fluid\Fluid::NAMESPACE_SEPARATOR;
+			if (strpos($subpackageKey, Fluid::NAMESPACE_SEPARATOR) !== FALSE) {
+				$namespaceSeparator = Fluid::NAMESPACE_SEPARATOR;
 			} else {
-				$namespaceSeparator = \TYPO3\CMS\Fluid\Fluid::LEGACY_NAMESPACE_SEPARATOR;
+				$namespaceSeparator = Fluid::LEGACY_NAMESPACE_SEPARATOR;
 			}
 			$subpackageKeyParts = explode($namespaceSeparator, $subpackageKey);
 		} else {

@@ -30,10 +30,10 @@ namespace TYPO3\CMS\Install\ViewHelpers\Be;
  * </output>
  *
  * <code title="All options">
- * <f:be.container pageTitle="foo" enableJumpToUrl="false" enableClickMenu="false" loadPrototype="false" loadScriptaculous="false" scriptaculousModule="someModule,someOtherModule" loadExtJs="true" loadExtJsTheme="false" extJsAdapter="jQuery" enableExtJsDebug="true" addCssFile="{f:uri.resource(path:'styles/backend.css')}" addJsFile="{f:uri.resource(path:'scripts/main.js')}">your module content</f:be.container>
+ * <f:be.container pageTitle="foo" enableClickMenu="false" loadPrototype="false" loadScriptaculous="false" scriptaculousModule="someModule,someOtherModule" loadExtJs="true" loadExtJsTheme="false" extJsAdapter="jQuery" enableExtJsDebug="true">your module content</f:be.container>
  * </code>
  * <output>
- * "your module content" wrapped with propper head & body tags.
+ * "your module content" wrapped with proper head & body tags.
  * Custom CSS file EXT:your_extension/Resources/Public/styles/backend.css and JavaScript file EXT:your_extension/Resources/Public/scripts/main.js will be loaded
  * </output>
  *
@@ -44,15 +44,14 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 	/**
 	 * Render start page with \TYPO3\CMS\Backend\Template\DocumentTemplate and pageTitle
 	 *
-	 * @param string  $pageTitle title tag of the module. Not required by default, as BE modules are shown in a frame
-	 * @param bool $enableJumpToUrl If TRUE, includes "jumpTpUrl" javascript function required by ActionMenu. Defaults to TRUE, not needed anymore, as it is included all the time
+	 * @param string $pageTitle title tag of the module. Not required by default, as BE modules are shown in a frame
 	 * @param bool $enableClickMenu If TRUE, loads clickmenu.js required by BE context menus. Defaults to TRUE
 	 * @param bool $loadPrototype specifies whether to load prototype library. Defaults to TRUE
 	 * @param bool $loadScriptaculous specifies whether to load scriptaculous libraries. Defaults to FALSE
-	 * @param string  $scriptaculousModule additionales modules for scriptaculous
+	 * @param string $scriptaculousModule additionales modules for scriptaculous
 	 * @param bool $loadExtJs specifies whether to load ExtJS library. Defaults to FALSE
 	 * @param bool $loadExtJsTheme whether to load ExtJS "grey" theme. Defaults to FALSE
-	 * @param string  $extJsAdapter load alternative adapter (ext-base is default adapter)
+	 * @param string $extJsAdapter load alternative adapter (ext-base is default adapter)
 	 * @param bool $enableExtJsDebug if TRUE, debug version of ExtJS is loaded. Use this for development only
 	 * @param array $addCssFiles Custom CSS files to be loaded
 	 * @param array $addJsFiles Custom JavaScript files to be loaded
@@ -62,7 +61,7 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 * @see \TYPO3\CMS\Core\Page\PageRenderer
 	 */
-	public function render($pageTitle = '', $enableJumpToUrl = TRUE, $enableClickMenu = TRUE, $loadPrototype = TRUE, $loadScriptaculous = FALSE, $scriptaculousModule = '', $loadExtJs = FALSE, $loadExtJsTheme = TRUE, $extJsAdapter = '', $enableExtJsDebug = FALSE, $addCssFiles = array(), $addJsFiles = array(), $triggers = array()) {
+	public function render($pageTitle = '', $enableClickMenu = TRUE, $loadPrototype = TRUE, $loadScriptaculous = FALSE, $scriptaculousModule = '', $loadExtJs = FALSE, $loadExtJsTheme = TRUE, $extJsAdapter = '', $enableExtJsDebug = FALSE, $addCssFiles = array(), $addJsFiles = array(), $triggers = array()) {
 		$doc = $this->getDocInstance();
 		$pageRenderer = $doc->getPageRenderer();
 

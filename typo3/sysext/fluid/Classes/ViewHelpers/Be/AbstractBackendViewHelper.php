@@ -1,8 +1,6 @@
 <?php
 namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
 
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
-
 /*                                                                        *
  * This script is backported from the TYPO3 Flow package "TYPO3.Fluid".   *
  *                                                                        *
@@ -22,72 +20,31 @@ use \TYPO3\CMS\Core\Utility\GeneralUtility;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
 /**
  * The abstract base class for all backend view helpers
  * Note: backend view helpers are still experimental!
  */
-abstract class AbstractBackendViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+abstract class AbstractBackendViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Gets instance of template if exists or create a new one.
 	 * Saves instance in viewHelperVariableContainer
 	 *
-	 * @return \TYPO3\CMS\Backend\Template\DocumentTemplate $doc
+	 * @return DocumentTemplate $doc
 	 */
 	public function getDocInstance() {
-		if ($this->viewHelperVariableContainer->exists(
-			'TYPO3\\CMS\\Fluid\\ViewHelpers\\Be\\AbstractBackendViewHelper',
-			'DocumentTemplate'
-		)
-		) {
-			$doc = $this->viewHelperVariableContainer->get(
-				'TYPO3\\CMS\\Fluid\\ViewHelpers\\Be\\AbstractBackendViewHelper',
-				'DocumentTemplate'
-			);
+		if ($this->viewHelperVariableContainer->exists(AbstractBackendViewHelper::class, 'DocumentTemplate')) {
+			$doc = $this->viewHelperVariableContainer->get(AbstractBackendViewHelper::class, 'DocumentTemplate');
 		} else {
-			/** @var $doc \TYPO3\CMS\Backend\Template\DocumentTemplate */
-			$doc = $this->createDocInstance();
+			/** @var $doc DocumentTemplate */
+			$doc = GeneralUtility::makeInstance(DocumentTemplate::class);
 			$doc->backPath = $GLOBALS['BACK_PATH'];
-			$this->viewHelperVariableContainer->add(
-				'TYPO3\\CMS\\Fluid\\ViewHelpers\\Be\\AbstractBackendViewHelper',
-				'DocumentTemplate',
-				$doc
-			);
-		}
-
-		return $doc;
-	}
-
-	/**
-	 * Other extensions may rely on the fact that $GLOBALS['SOBE'] exists and holds
-	 * the DocumentTemplate instance. We should really get rid of this, but for now, let's be backwards compatible.
-	 * Relying on $GLOBALS['SOBE'] is @deprecated since 6.0 and will be removed in 6.2 Instead ->getDocInstance() should be used.
-	 *
-	 * If $GLOBALS['SOBE']->doc holds an instance of \TYPO3\CMS\Backend\Template\DocumentTemplate we reuse it,
-	 * if not we create a new one.
-	 *
-	 * Relying on $GLOBALS['SOBE'] is
-	 * @deprecated since 6.0 and will be removed in 6.2 ->getDocInstance() should be used instead.
-	 *
-	 * @return \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 */
-	protected function createDocInstance() {
-		if (
-			isset($GLOBALS['SOBE']) &&
-			is_object($GLOBALS['SOBE']) &&
-			isset($GLOBALS['SOBE']->doc) &&
-			$GLOBALS['SOBE']->doc instanceof \TYPO3\CMS\Backend\Template\DocumentTemplate
-		) {
-			GeneralUtility::deprecationLog('Usage of $GLOBALS[\'SOBE\'] is deprecated since 6.0 and will be removed in 6.2 ->getDocInstance() should be used instead');
-			$doc = $GLOBALS['SOBE']->doc;
-		} else {
-			$doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-			if (!isset($GLOBALS['SOBE'])) {
-				$GLOBALS['SOBE'] = new \stdClass();
-			}
-			if (!isset($GLOBALS['SOBE']->doc)) {
-				$GLOBALS['SOBE']->doc = $doc;
-			}
+			$this->viewHelperVariableContainer->add(AbstractBackendViewHelper::class, 'DocumentTemplate', $doc);
 		}
 
 		return $doc;
