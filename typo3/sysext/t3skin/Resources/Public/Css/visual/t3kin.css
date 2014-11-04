@@ -10991,6 +10991,9 @@ Topbar
 #typo3-topbar #typo3-top-container #typo3-toolbar > li {
   position: relative;
 }
+#typo3-topbar #typo3-top-container #typo3-toolbar .toolbar-item {
+  text-align: center;
+}
 #typo3-topbar #typo3-top-container #typo3-toolbar .toolbar-item .badge {
   position: absolute;
   top: 6px;

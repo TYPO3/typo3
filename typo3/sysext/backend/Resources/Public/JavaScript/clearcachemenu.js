@@ -77,7 +77,7 @@ var ClearCacheMenu = Class.create({
 
 			// activate the spinner
 		var parent = Element.up(toolbarItemIcon);
-		var spinner = new Element('span').addClassName('spinner');
+		var spinner = new Element('span').addClassName('t3-icon fa fa-spinner fa-spin');
 		var oldIcon = toolbarItemIcon.replace(spinner);
 
 		if (clickedElement.tagName === 'SPAN') {
