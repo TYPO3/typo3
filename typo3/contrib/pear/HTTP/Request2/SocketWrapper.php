@@ -4,41 +4,18 @@
  *
  * PHP version 5
  *
- * LICENSE:
+ * LICENSE
  *
- * Copyright (c) 2008-2012, Alexey Borzov <avb@php.net>
- * All rights reserved.
+ * This source file is subject to BSD 3-Clause License that is bundled
+ * with this package in the file LICENSE and available at the URL
+ * https://raw.github.com/pear/HTTP_Request2/trunk/docs/LICENSE
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- *    * Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.
- *    * The names of the authors may not be used to endorse or promote products
- *      derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
- * IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
- * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * @category HTTP
- * @package  HTTP_Request2
- * @author   Alexey Borzov <avb@php.net>
- * @license  http://opensource.org/licenses/bsd-license.php New BSD License
- * @version  SVN: $Id: SocketWrapper.php 324935 2012-04-07 07:10:50Z avb $
- * @link     http://pear.php.net/package/HTTP_Request2
+ * @category  HTTP
+ * @package   HTTP_Request2
+ * @author    Alexey Borzov <avb@php.net>
+ * @copyright 2008-2014 Alexey Borzov <avb@php.net>
+ * @license   http://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
+ * @link      http://pear.php.net/package/HTTP_Request2
  */
 
 /** Exception classes for HTTP_Request2 package */
@@ -53,8 +30,8 @@ require_once 'HTTP/Request2/Exception.php';
  * @category HTTP
  * @package  HTTP_Request2
  * @author   Alexey Borzov <avb@php.net>
- * @license  http://opensource.org/licenses/bsd-license.php New BSD License
- * @version  Release: 2.1.1
+ * @license  http://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
+ * @version  Release: 2.2.1
  * @link     http://pear.php.net/package/HTTP_Request2
  * @link     http://pear.php.net/bugs/bug.php?id=19332
  * @link     http://tools.ietf.org/html/rfc1928
@@ -88,22 +65,30 @@ class HTTP_Request2_SocketWrapper
     /**
      * Class constructor, tries to establish connection
      *
-     * @param string $address    Address for stream_socket_client() call,
-     *                           e.g. 'tcp://localhost:80'
-     * @param int    $timeout    Connection timeout (seconds)
-     * @param array  $sslOptions SSL context options
+     * @param string $address        Address for stream_socket_client() call,
+     *                               e.g. 'tcp://localhost:80'
+     * @param int    $timeout        Connection timeout (seconds)
+     * @param array  $contextOptions Context options
      *
      * @throws HTTP_Request2_LogicException
      * @throws HTTP_Request2_ConnectionException
      */
-    public function __construct($address, $timeout, array $sslOptions = array())
+    public function __construct($address, $timeout, array $contextOptions = array())
     {
+        if (!empty($contextOptions)
+            && !isset($contextOptions['socket']) && !isset($contextOptions['ssl'])
+        ) {
+            // Backwards compatibility with 2.1.0 and 2.1.1 releases
+            $contextOptions = array('ssl' => $contextOptions);
+        }
         $context = stream_context_create();
-        foreach ($sslOptions as $name => $value) {
-            if (!stream_context_set_option($context, 'ssl', $name, $value)) {
-                throw new HTTP_Request2_LogicException(
-                    "Error setting SSL context option '{$name}'"
-                );
+        foreach ($contextOptions as $wrapper => $options) {
+            foreach ($options as $name => $value) {
+                if (!stream_context_set_option($context, $wrapper, $name, $value)) {
+                    throw new HTTP_Request2_LogicException(
+                        "Error setting '{$wrapper}' wrapper context option '{$name}'"
+                    );
+                }
             }
         }
         set_error_handler(array($this, 'connectionWarningsHandler'));
@@ -111,7 +96,14 @@ class HTTP_Request2_SocketWrapper
             $address, $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $context
         );
         restore_error_handler();
-        if (!$this->socket) {
+        // if we fail to bind to a specified local address (see request #19515),
+        // connection still succeeds, albeit with a warning. Throw an Exception
+        // with the warning text in this case as that connection is unlikely
+        // to be what user wants and as Curl throws an error in similar case.
+        if ($this->connectionWarnings) {
+            if ($this->socket) {
+                fclose($this->socket);
+            }
             $error = $errstr ? $errstr : implode("\n", $this->connectionWarnings);
             throw new HTTP_Request2_ConnectionException(
                 "Unable to connect to {$address}. Error: {$error}", 0, $errno
@@ -151,20 +143,42 @@ class HTTP_Request2_SocketWrapper
      * Strips the trailing newline from the returned data, handles global
      * request timeout. Method idea borrowed from Net_Socket PEAR package.
      *
-     * @param int $bufferSize buffer size to use for reading
+     * @param int $bufferSize   buffer size to use for reading
+     * @param int $localTimeout timeout value to use just for this call
+     *                          (used when waiting for "100 Continue" response)
      *
      * @return   string Available data up to the newline (not including newline)
      * @throws   HTTP_Request2_MessageException     In case of timeout
      */
-    public function readLine($bufferSize)
+    public function readLine($bufferSize, $localTimeout = null)
     {
         $line = '';
         while (!feof($this->socket)) {
-            if ($this->deadline) {
+            if (null !== $localTimeout) {
+                stream_set_timeout($this->socket, $localTimeout);
+            } elseif ($this->deadline) {
                 stream_set_timeout($this->socket, max($this->deadline - time(), 1));
             }
+
             $line .= @fgets($this->socket, $bufferSize);
-            $this->checkTimeout();
+
+            if (null === $localTimeout) {
+                $this->checkTimeout();
+
+            } else {
+                $info = stream_get_meta_data($this->socket);
+                // reset socket timeout if we don't have request timeout specified,
+                // prevents further calls failing with a bogus Exception
+                if (!$this->deadline) {
+                    $default = (int)@ini_get('default_socket_timeout');
+                    stream_set_timeout($this->socket, $default > 0 ? $default : PHP_INT_MAX);
+                }
+                if ($info['timed_out']) {
+                    throw new HTTP_Request2_MessageException(
+                        "readLine() call timed out", HTTP_Request2_Exception::TIMEOUT
+                    );
+                }
+            }
             if (substr($line, -1) == "\n") {
                 return rtrim($line, "\r\n");
             }

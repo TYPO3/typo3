@@ -90,15 +90,15 @@ class HttpRequest extends \HTTP_Request2 {
 		$this->setConfig('store_body', FALSE);
 		// Check if we already attached an instance of download. If so, just reuse it.
 		foreach ($this->observers as $observer) {
-			if ($observer instanceof \TYPO3\CMS\Core\Http\Observer\Download) {
-				/** @var \TYPO3\CMS\Core\Http\Observer\Download $attached */
+			if ($observer instanceof Observer\Download) {
+				/** @var Observer\Download $attached */
 				$observer->setDirectory($directory);
 				$observer->setFilename($filename);
 				$isAttached = TRUE;
 			}
 		}
 		if (!$isAttached) {
-			/** @var \TYPO3\CMS\Core\Http\Observer\Download $observer */
+			/** @var Observer\Download $observer */
 			$observer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Http\Observer\Download::class, $directory, $filename);
 			$this->attach($observer);
 		}
