@@ -108,7 +108,7 @@ class InTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$blog1 = $this->blogRepository->findByUid(1);
 		$blog2 = $this->blogRepository->findByUid(2);
 
-		$objectStorage = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
+		$objectStorage = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
 		$objectStorage->attach($blog1);
 		$objectStorage->attach($blog2);
 
@@ -128,7 +128,7 @@ class InTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$blog1 = $this->blogRepository->findByUid(1);
 		$blog2 = $this->blogRepository->findByUid(2);
 
-		$objectStorage = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
+		$objectStorage = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
 		$objectStorage->attach($blog1);
 		$objectStorage->attach($blog2);
 
@@ -140,7 +140,7 @@ class InTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 
 		$this->assertSame(11, $inQuery->count());
 
-		$newObjectStorage = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
+		$newObjectStorage = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
 		$newObjectStorage->attach($blog1);
 
 		$newInQuery = $this->postRepository->createQuery();

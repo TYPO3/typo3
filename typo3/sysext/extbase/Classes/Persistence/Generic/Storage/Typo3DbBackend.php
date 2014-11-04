@@ -403,14 +403,6 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
 
 			$realStatement->free();
 		} else {
-			/**
-			 * @deprecated since 6.2, this block will be removed in two versions
-			 * the deprecation log is in Qom\Statement
-			 */
-			if (!empty($parameters)) {
-				$this->replacePlaceholders($realStatement, $parameters);
-			}
-
 			$result = $this->databaseHandle->sql_query($realStatement);
 			$this->checkSqlErrors();
 

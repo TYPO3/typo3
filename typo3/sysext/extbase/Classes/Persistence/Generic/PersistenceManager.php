@@ -73,8 +73,7 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 	/**
 	 * Registers a repository
 	 *
-	 * @param string $className The class name of the repository to be reigistered
-	 * @deprecated since 6.1, will be remove two versions later
+	 * @param string $className The class name of the repository to be registered
 	 * @return void
 	 */
 	public function registerRepositoryClassName($className) {

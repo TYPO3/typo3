@@ -247,27 +247,6 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	}
 
 	/**
-	 * Replaces the given object by the second object.
-	 *
-	 * This method will unregister the existing object at the identity map and
-	 * register the new object instead. The existing object must therefore
-	 * already be registered at the identity map which is the case for all
-	 * reconstituted objects.
-	 *
-	 * The new object will be identified by the uid which formerly belonged
-	 * to the existing object. The existing object looses its uid.
-	 *
-	 * @param object $existingObject The existing object
-	 * @param object $newObject The new object
-	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
-	 * @return void
-	 * @deprecated since 6.1, will be removed two versions later
-	 */
-	public function replaceObject($existingObject, $newObject) {
-		$this->session->replaceReconstitutedEntity($existingObject, $newObject);
-	}
-
-	/**
 	 * Sets the aggregate root objects
 	 *
 	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $objects

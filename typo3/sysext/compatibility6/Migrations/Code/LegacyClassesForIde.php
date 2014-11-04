@@ -921,8 +921,6 @@ interface Tx_Extbase_Persistence_QOM_LowerCaseInterface extends \TYPO3\CMS\Extba
 
 interface Tx_Extbase_Persistence_QOM_NotInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\NotInterface {}
 
-class Tx_Extbase_Persistence_QOM_Operand extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Operand {}
-
 interface Tx_Extbase_Persistence_QOM_OperandInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\OperandInterface {}
 
 class Tx_Extbase_Persistence_QOM_Ordering extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Ordering {}
@@ -935,11 +933,7 @@ class Tx_Extbase_Persistence_QOM_PropertyValue extends \TYPO3\CMS\Extbase\Persis
 
 interface Tx_Extbase_Persistence_QOM_PropertyValueInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\PropertyValueInterface {}
 
-interface Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelConstantsInterface {}
-
 class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory {}
-
-interface Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactoryInterface {}
 
 class Tx_Extbase_Persistence_QOM_Selector extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Selector {}
 
@@ -948,8 +942,6 @@ interface Tx_Extbase_Persistence_QOM_SelectorInterface extends \TYPO3\CMS\Extbas
 interface Tx_Extbase_Persistence_QOM_SourceInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface {}
 
 class Tx_Extbase_Persistence_QOM_Statement extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement {}
-
-class Tx_Extbase_Persistence_QOM_StaticOperand extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\StaticOperand {}
 
 interface Tx_Extbase_Persistence_QOM_StaticOperandInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\StaticOperandInterface {}
 

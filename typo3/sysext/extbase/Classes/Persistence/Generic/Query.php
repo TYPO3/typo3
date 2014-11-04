@@ -197,7 +197,7 @@ class Query implements QueryInterface {
 	 * @api
 	 */
 	public function execute($returnRawQueryResult = FALSE) {
-		if ($returnRawQueryResult === TRUE || $this->getQuerySettings()->getReturnRawQueryResult() === TRUE) {
+		if ($returnRawQueryResult) {
 			return $this->persistenceManager->getObjectDataByQuery($this);
 		} else {
 			return $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\QueryResultInterface', $this);

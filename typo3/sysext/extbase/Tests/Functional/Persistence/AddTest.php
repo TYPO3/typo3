@@ -59,7 +59,7 @@ class AddTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	 */
 	public function addSimpleObjectTest() {
 		$newBlogTitle = 'aDi1oogh';
-		$newBlog = $this->objectManager->create('ExtbaseTeam\\BlogExample\\Domain\\Model\\Blog');
+		$newBlog = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Model\\Blog');
 		$newBlog->setTitle($newBlogTitle);
 
 		/** @var \ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository $blogRepository */

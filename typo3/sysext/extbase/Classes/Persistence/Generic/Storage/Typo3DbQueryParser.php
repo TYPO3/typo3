@@ -291,13 +291,9 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function parseOrderings(array $orderings, Qom\SourceInterface $source, array &$sql) {
 		foreach ($orderings as $propertyName => $order) {
 			switch ($order) {
-				case Qom\QueryObjectModelConstantsInterface::JCR_ORDER_ASCENDING:
-
 				case QueryInterface::ORDER_ASCENDING:
 					$order = 'ASC';
 					break;
-				case Qom\QueryObjectModelConstantsInterface::JCR_ORDER_DESCENDING:
-
 				case QueryInterface::ORDER_DESCENDING:
 					$order = 'DESC';
 					break;

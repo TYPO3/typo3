@@ -35,15 +35,6 @@ class Statement implements ConstraintInterface {
 	 * @param array $boundVariables An array of variables to bind to the statement, only to be used with preparedStatement
 	 */
 	public function __construct($statement, array $boundVariables = array()) {
-		// @deprecated since 6.2, using $boundVariables without preparedStatement will be removed in two versions
-		if (
-			!empty($boundVariables)
-			&& !($statement instanceof \TYPO3\CMS\Core\Database\PreparedStatement)
-		) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('Using boundVariables'
-				. ' in Extbase\'s custom statement without using preparedStatement is'
-				. ' deprecated since TYPO3 6.2 and will be removed in two versions.');
-		}
 		$this->statement = $statement;
 		$this->boundVariables = $boundVariables;
 	}

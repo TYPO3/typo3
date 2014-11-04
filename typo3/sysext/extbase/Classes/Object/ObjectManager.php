@@ -112,25 +112,6 @@ class ObjectManager implements ObjectManagerInterface {
 	}
 
 	/**
-	 * Creates a fresh instance of the object specified by $objectName.
-	 *
-	 * This factory method can only create objects of the scope prototype.
-	 * Singleton objects must be either injected by some type of Dependency Injection or
-	 * if that is not possible, be retrieved by the get() method of the
-	 * Object Manager
-	 *
-	 * @param string $objectName The name of the object to create
-	 * @return object The new object instance
-	 * @deprecated since Extbase 6.1.0; will be removed in Extbase 6.3.0
-	 */
-	public function create($objectName) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		$arguments = func_get_args();
-		$instance = call_user_func_array(array($this, 'get'), $arguments);
-		return $instance;
-	}
-
-	/**
 	 * Create an instance of $className without calling its constructor
 	 *
 	 * @param string $className

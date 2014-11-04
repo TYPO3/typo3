@@ -176,22 +176,4 @@ class Typo3QuerySettingsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setIncludeDeletedAllowsChaining() {
 		$this->assertTrue($this->typo3QuerySettings->setIncludeDeleted(TRUE) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface);
 	}
-
-	/**
-	 * @test
-	 * @dataProvider booleanValueProvider
-	 *
-	 * @param bool $input
-	 */
-	public function setReturnRawQueryResultSetsReturnRawQueryResultCorrectly($input) {
-		$this->typo3QuerySettings->setReturnRawQueryResult($input);
-		$this->assertEquals($input, $this->typo3QuerySettings->getReturnRawQueryResult());
-	}
-
-	/**
-	 * @test
-	 */
-	public function setReturnRawQueryResultAllowsChaining() {
-		$this->assertTrue($this->typo3QuerySettings->setReturnRawQueryResult(TRUE) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface);
-	}
 }

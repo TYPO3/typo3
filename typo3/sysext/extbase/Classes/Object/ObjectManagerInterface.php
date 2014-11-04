@@ -36,20 +36,6 @@ interface ObjectManagerInterface extends \TYPO3\CMS\Core\SingletonInterface {
 	public function get($objectName);
 
 	/**
-	 * Creates a fresh instance of the object specified by $objectName.
-	 *
-	 * This factory method can only create objects of the scope prototype.
-	 * Singleton objects must be either injected by some type of Dependency Injection or
-	 * if that is not possible, be retrieved by the get() method of the
-	 * Object Manager
-	 *
-	 * @param string $objectName The name of the object to create
-	 * @return object The new object instance
-	 * @deprecated since 6.1
-	 */
-	public function create($objectName);
-
-	/**
 	 * Create an instance of $className without calling its constructor
 	 *
 	 * @param string $className

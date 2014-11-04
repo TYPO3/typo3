@@ -90,14 +90,6 @@ class Typo3QuerySettings implements QuerySettingsInterface {
 	protected $languageUid = 0;
 
 	/**
-	 * Flag if the the query result should be returned as raw QueryResult.
-	 *
-	 * @var bool
-	 * @deprecated since Extbase 6.2, will be removed two versions later
-	 */
-	protected $returnRawQueryResult = FALSE;
-
-	/**
 	 * Flag whether the query should use a prepared statement
 	 *
 	 * @var bool
@@ -251,29 +243,6 @@ class Typo3QuerySettings implements QuerySettingsInterface {
 	}
 
 	/**
-	 * Sets the language uid for the language overlay.
-	 *
-	 * @param int $sysLanguageUid language uid for the language overlay
-	 * @return QuerySettingsInterface instance of $this to allow method chaining
-	 * @deprecated since Extbase 6.2, will be removed two versions later. Use setLanguageUid() instead.
-	 */
-	public function setSysLanguageUid($sysLanguageUid) {
-		GeneralUtility::logDeprecatedFunction();
-		return $this->setLanguageUid($sysLanguageUid);
-	}
-
-	/**
-	 * Returns the language uid for the language overlay
-	 *
-	 * @return int language uid for the language overlay
-	 * @deprecated since Extbase 6.2, will be removed two versions later. Use getLanguageUid() instead.
-	 */
-	public function getSysLanguageUid() {
-		GeneralUtility::logDeprecatedFunction();
-		return $this->getLanguageUid();
-	}
-
-	/**
 	 * Sets a flag indicating whether all or some enable fields should be ignored. If TRUE, all enable fields are ignored.
 	 * If--in addition to this--enableFieldsToBeIgnored is set, only fields specified there are ignored. If FALSE, all
 	 * enable fields are taken into account, regardless of the enableFieldsToBeIgnored setting.
@@ -346,30 +315,6 @@ class Typo3QuerySettings implements QuerySettingsInterface {
 	 */
 	public function getIncludeDeleted() {
 		return $this->includeDeleted;
-	}
-
-	/**
-	 * Sets the state, if the QueryResult should be returned unmapped.
-	 *
-	 * @param bool $returnRawQueryResult TRUE, if the QueryResult should be returned unmapped; otherwise FALSE.
-	 * @return QuerySettingsInterface
-	 * @deprecated since Extbase 6.2, will be removed two versions later. Please use argument in query->execute() instead.
-	 */
-	public function setReturnRawQueryResult($returnRawQueryResult) {
-		GeneralUtility::logDeprecatedFunction();
-		$this->returnRawQueryResult = $returnRawQueryResult;
-		return $this;
-	}
-
-	/**
-	 * Returns the state, if the QueryResult should be returned unmapped.
-	 *
-	 * @return bool TRUE, if the QueryResult should be returned unmapped; otherwise FALSE.
-	 * @deprecated since Extbase 6.2, will be removed two versions later. Please use argument in query->execute() instead.
-	 */
-	public function getReturnRawQueryResult() {
-		// We do not log this call intentionally, otherwise the deprecation log would be filled up
-		return $this->returnRawQueryResult;
 	}
 
 	/**
