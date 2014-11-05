@@ -94,33 +94,52 @@ HTMLArea.DOM = function () {
 			}
 			return found;
 		},
-		/*
+		/**
 		 * Add a class name to the class attribute of a node
 		 *
-		 * @param	object		node: the node
-		 * @param	string		className: the name of the class to be added
-		 * @return	void
+		 * @param object node: the node
+		 * @param string className: the name of the class to be added
+		 * @param integer recursionLevel: recursion level of current call
+		 * @return void
 		 */
-		addClass: function (node, className) {
+		addClass: function (node, className, recursionLevel) {
 			if (node) {
-				HTMLArea.DOM.removeClass(node, className);
+				var classNames = HTMLArea.DOM.getClassNames(node);
+				if (classNames.indexOf(className) === -1) {
 					// Remove classes configured to be incompatible with the class to be added
-				if (node.className && HTMLArea.classesXOR && HTMLArea.classesXOR[className] && typeof HTMLArea.classesXOR[className].test === 'function') {
-					var classNames = node.className.trim().split(' ');
-					for (var i = classNames.length; --i >= 0;) {
-						if (HTMLArea.classesXOR[className].test(classNames[i])) {
-							HTMLArea.DOM.removeClass(node, classNames[i]);
+					if (node.className && HTMLArea.classesXOR && HTMLArea.classesXOR[className] && Ext.isFunction(HTMLArea.classesXOR[className].test)) {
+						for (var i = classNames.length; --i >= 0;) {
+							if (HTMLArea.classesXOR[className].test(classNames[i])) {
+								HTMLArea.DOM.removeClass(node, classNames[i]);
+							}
 						}
 					}
-				}
-				if (node.className) {
-					node.className += ' ' + className;
-				} else {
-					node.className = className;
+					// Check dependencies to add required classes recursively
+					if (typeof HTMLArea.classesRequires !== 'undefined' && typeof HTMLArea.classesRequires[className] !== 'undefined') {
+						if (typeof recursionLevel === 'undefined') {
+							var recursionLevel = 1;
+						} else {
+							recursionLevel++;
+						}
+						if (recursionLevel < 20) {
+							for (var i = 0, n = HTMLArea.classesRequires[className].length; i < n; i++) { 
+								var classNames = HTMLArea.DOM.getClassNames(node);
+								if (classNames.indexOf(HTMLArea.classesRequires[className][i]) === -1) {
+									HTMLArea.DOM.addClass(node, HTMLArea.classesRequires[className][i], recursionLevel);
+								}
+							}
+						}
+					}
+					if (node.className) {
+						node.className += ' ' + className;
+					} else {
+						node.className = className;
+					}
 				}
 			}
 		},
-		/*
+
+		/**
 		 * Remove a class name from the class attribute of a node
 		 *
 		 * @param	object		node: the node
@@ -140,18 +159,48 @@ HTMLArea.DOM = function () {
 				if (newClasses.length) {
 					node.className = newClasses.join(' ');
 				} else {
-					if (!HTMLArea.UserAgent.isOpera) {
+					if (!Ext.isOpera) {
 						node.removeAttribute('class');
-						if (HTMLArea.UserAgent.isIEBeforeIE9) {
+						if (HTMLArea.isIEBeforeIE9) {
 							node.removeAttribute('className');
 						}
 					} else {
 						node.className = '';
 					}
 				}
+				// Remove the first unselectable class that is no more required, the following ones being removed by recursive calls
+				if (node.className && typeof HTMLArea.classesSelectable !== 'undefined') {
+					classes = HTMLArea.DOM.getClassNames(node);
+					for (var i = classes.length; --i >= 0;) {
+						if (typeof HTMLArea.classesSelectable[classes[i]] !== 'undefined' && !HTMLArea.classesSelectable[classes[i]] && !HTMLArea.DOM.isRequiredClass(node, classes[i])) {
+							HTMLArea.DOM.removeClass(node, classes[i]);
+							break;
+						}
+					}
+				}
 			}
 		},
-		/*
+
+		/**
+		 * Check if the class is required by another class assigned to the node
+		 * 
+		 * @param object node: the node
+		 * @param string className: the class name to check
+		 * @return boolean 
+		 */
+		isRequiredClass: function (node, className) {
+			if (typeof HTMLArea.classesRequiredBy !== 'undefined') {
+				var classes = HTMLArea.DOM.getClassNames(node);
+				for (var i = classes.length; --i >= 0;) {
+					if (typeof HTMLArea.classesRequiredBy[classes[i]] !== 'undefined' && HTMLArea.classesRequiredBy[classes[i]].indexOf(className) !== -1) {
+						return true;
+					}
+				}
+			}
+			return false;
+		},
+
+		/**
 		 * Get the innerText of a given node
 		 *
 		 * @param	object		node: the node
@@ -159,7 +208,7 @@ HTMLArea.DOM = function () {
 		 * @return	string		the text inside the node
 		 */
 		getInnerText: function (node) {
-			return HTMLArea.UserAgent.isIEBeforeIE9 ? node.innerText : node.textContent;;
+			return HTMLArea.isIEBeforeIE9 ? node.innerText : node.textContent;;
 		},
 		/*
 		 * Get the block ancestors of a node within a given block
@@ -185,15 +234,15 @@ HTMLArea.DOM = function () {
 		 * Get the deepest element ancestor of a given node that is of one of the specified types
 		 *
 		 * @param	object		node: the given node
-		 * @param	mixed		types: an array of nodeNames, or a nodeName
+		 * @param	array		types: an array of nodeNames
 		 *
 		 * @return	object		the found ancestor of one of the given types or null
 		 */
 		getFirstAncestorOfType: function (node, types) {
 			var ancestor = null,
 				parent = node;
-			if (typeof types !== 'undefined' && types.length > 0) {
-				if (typeof types === 'string') {
+			if (!Ext.isEmpty(types)) {
+				if (Ext.isString(types)) {
 					var types = [types];
 				}
 				types = new RegExp( '^(' + types.join('|') + ')$', 'i');
@@ -243,7 +292,7 @@ HTMLArea.DOM = function () {
 		 hasAllowedAttributes: function (node, allowedAttributes) {
 			var value,
 				hasAllowedAttributes = false;
-			if (typeof allowedAttributes === 'string') {
+			if (Ext.isString(allowedAttributes)) {
 				allowedAttributes = [allowedAttributes];
 			}
 			allowedAttributes = allowedAttributes || [];
@@ -310,7 +359,7 @@ HTMLArea.DOM = function () {
 			var rangeIntersectsNode = false,
 				ownerDocument = node.ownerDocument;
 			if (ownerDocument) {
-				if (HTMLArea.UserAgent.isIEBeforeIE9) {
+				if (HTMLArea.isIEBeforeIE9) {
 					var nodeRange = ownerDocument.body.createTextRange();
 					nodeRange.moveToElementText(node);
 					rangeIntersectsNode = (range.compareEndPoints('EndToStart', nodeRange) == -1 && range.compareEndPoints('StartToEnd', nodeRange) == 1) ||
@@ -320,7 +369,7 @@ HTMLArea.DOM = function () {
 					try {
 						nodeRange.selectNode(node);
 					} catch (e) {
-						if (HTMLArea.UserAgent.isWebKit) {
+						if (Ext.isWebKit) {
 							nodeRange.setStart(node, 0);
 							if (node.nodeType === HTMLArea.DOM.TEXT_NODE || node.nodeType === HTMLArea.DOM.COMMENT_NODE || node.nodeType === HTMLArea.DOM.CDATA_SECTION_NODE) {
 								nodeRange.setEnd(node, node.textContent.length);

@@ -1063,13 +1063,24 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		} else {
 			$RTEProperties = $this->RTEsetup['properties'];
 		}
-		$classesArray = array('labels' => array(), 'values' => array(), 'noShow' => array(), 'alternating' => array(), 'counting' => array(), 'selectable' => array(), 'XOR' => array());
+		// Declare sub-arrays
+		$classesArray = array(
+			'labels' => array(),
+			'values' => array(),
+			'noShow' => array(),
+			'alternating' => array(),
+			'counting' => array(),
+			'selectable' => array(),
+			'requires' => array(),
+			'requiredBy' => array(),
+			'XOR' => array()
+		);
 		$JSClassesArray = '';
 		// Scanning the list of classes if specified in the RTE config
 		if (is_array($RTEProperties['classes.'])) {
 			foreach ($RTEProperties['classes.'] as $className => $conf) {
 				$className = rtrim($className, '.');
-				$classesArray['labels'][$className] = $this->getPageConfigLabel($conf['name'], FALSE);
+				$classesArray['labels'][$className] = trim($conf['name']) ? $this->getPageConfigLabel($conf['name'], FALSE) : '';
 				$classesArray['values'][$className] = str_replace('\\\'', '\'', $conf['value']);
 				if (isset($conf['noShow'])) {
 					$classesArray['noShow'][$className] = $conf['noShow'];
@@ -1082,6 +1093,28 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 				}
 				if (isset($conf['selectable'])) {
 					$classesArray['selectable'][$className] = $conf['selectable'];
+				}
+				if (isset($conf['requires'])) {
+					$classesArray['requires'][$className] = explode(',', GeneralUtility::rmFromList($className, $this->cleanList($conf['requires'])));
+				}
+			}
+			// Remove circularities from classes dependencies
+			$requiringClasses = array_keys($classesArray['requires']);
+			foreach ($requiringClasses as $requiringClass) {
+				if ($this->hasCircularDependency($classesArray, $requiringClass, $requiringClass)) {
+					unset($classesArray['requires'][$requiringClass]);
+				}
+			}
+			// Reverse relationship for the dependency checks when removing styles
+			$requiringClasses = array_keys($classesArray['requires']);
+			foreach ($requiringClasses as $className) {
+				foreach ($classesArray['requires'][$className] as $requiredClass) {
+					if (!is_array($classesArray['requiredBy'][$requiredClass])) {
+						$classesArray['requiredBy'][$requiredClass] = array();
+					}
+					if (!in_array($className, $classesArray['requiredBy'][$requiredClass])) {
+						$classesArray['requiredBy'][$requiredClass][] = $className;
+					}
 				}
 			}
 		}
@@ -1099,6 +1132,34 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			$JSClassesArray .= 'HTMLArea.classes' . ucfirst($key) . ' = ' . $this->buildNestedJSArray($subArray) . ';' . LF;
 		}
 		return $JSClassesArray;
+	}
+
+	/**
+	 * Check for possible circularity in classes dependencies
+	 *
+	 * @param array $classesArray: reference to the array of classes dependencies
+	 * @param string $requiringClass: class requiring at some iteration level from the initial requiring class
+	 * @param string $initialClass: initial class from which a circular relationship is being searched
+	 * @param integer $recursionLevel: depth of recursive call
+	 * @return boolean TRUE, if a circular relationship is found
+	 */
+	protected function hasCircularDependency(&$classesArray, $requiringClass, $initialClass, $recursionLevel = 0) {
+		if (is_array($classesArray['requires'][$requiringClass])) {
+			if (in_array($initialClass, $classesArray['requires'][$requiringClass])) {
+				return TRUE;
+			} else {
+				if ($recursionLevel++ < 20) {
+					foreach ($classesArray['requires'][$requiringClass] as $requiringClass2) {
+						if ($this->hasCircularDependency($classesArray, $requiringClass2, $initialClass, $recursionLevel)) {
+							return TRUE;
+						}
+					}
+				}
+				return FALSE;
+			}
+		} else {
+			return FALSE;
+		}
 	}
 
 	/**

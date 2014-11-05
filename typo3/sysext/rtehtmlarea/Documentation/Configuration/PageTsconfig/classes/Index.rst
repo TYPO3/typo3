@@ -38,7 +38,12 @@ classes.[ *classname* ]
             .name = label of the class (may be a reference to an entry in a localization file of the form LLL:EXT:[fileref]:[labelkey])
             .value = the style for the class
             .noShow = boolean; if set, the style of the class is not used to render it in the pop-up selector.
-            .selectable = boolean; if set to 0, the class is not selectable in the style selectors; if the property is omitted, or set to 1, the class is selectable in the style selectors
+            .selectable = boolean; if set to 0, the class is not selectable in the style selectors; 
+            		if the property is omitted, or set to 1, the class is selectable in the style selectors.
+            .requires = list of class names; list of classes that are required by the class;
+            		if this property, in combination with others, produces a circular relationship, it is ignored;
+            		when a class is added on an element, the classes it requires are also added, possibly recursively;
+            		when a class is removed from an element, any non-selectable class that is not required by any of the classes remaining on the element is also removed.
             
             # specification of alternating classes for rows and/or columns of a table
             .alternating { 
