@@ -2616,13 +2616,12 @@ class FormEngine {
 									if (isset($wConf['module']['urlParameters']) && is_array($wConf['module']['urlParameters'])) {
 										$urlParameters = $wConf['module']['urlParameters'];
 									}
-									$wScript = BackendUtility::getModuleUrl($wConf['module']['name'], $urlParameters);
+									$wScript = BackendUtility::getModuleUrl($wConf['module']['name'], $urlParameters, $this->backPath);
 								} elseif (in_array($wConf['type'], array('script', 'colorbox', 'popup'), TRUE)) {
 									// Illegal configuration, fail silently
 									break;
 								}
-
-								$url = $this->backPath . $wScript . (strstr($wScript, '?') ? '' : '?');
+								$url = ($wScript ?: $this->backPath) . (strstr($wScript, '?') ? '' : '?');
 								// If "script" type, create the links around the icon:
 								if ((string)$wConf['type'] === 'script') {
 									$aUrl = $url . GeneralUtility::implodeArrayForUrl('', array('P' => $params));
