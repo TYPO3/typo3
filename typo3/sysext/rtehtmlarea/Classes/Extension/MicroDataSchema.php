@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Microdata Schema extension for htmlArea RTE
  *
@@ -65,13 +68,14 @@ class MicroDataSchema extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		// Parse configured schemas
 		if (is_array($this->thisConfig['schema.']) && is_array($this->thisConfig['schema.']['sources.'])) {
 			foreach ($this->thisConfig['schema.']['sources.'] as $source) {
-				$fileName = $this->htmlAreaRTE->getFullFileName($source);
-				$absolutePath = $fileName ? \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath(PATH_site . ($this->htmlAreaRTE->is_FE() || $this->htmlAreaRTE->isFrontendEditActive() ? '' : TYPO3_mainDir) . $fileName) : '';
+				$fileName = trim($source);
+				$absolutePath = GeneralUtility::getFileAbsFileName($fileName);
 				// Fallback to default schema file if configured file does not exists or is of zero size
 				if (!$fileName || !file_exists($absolutePath) || !filesize($absolutePath)) {
-					$fileName = $this->htmlAreaRTE->getFullFileName('EXT:' . $this->ID . '/extensions/MicrodataSchema/res/schemaOrgAll.rdf');
+					$fileName = 'EXT:' . $this->ID . '/extensions/MicrodataSchema/res/schemaOrgAll.rdf';
 				}
-				$rdf = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($fileName);
+				$fileName = $this->htmlAreaRTE->getFullFileName($fileName);
+				$rdf = GeneralUtility::getUrl($fileName);
 				if ($rdf) {
 					$this->parseSchema($rdf, $schema);
 				}
