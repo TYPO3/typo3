@@ -526,15 +526,12 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	protected function getContentCssFileName() {
 		// Get stylesheet file name from Page TSConfig if any
 		$fileName = trim($this->thisConfig['contentCSS']);
-		if ($fileName) {
-			$fileName = $this->getFullFileName($fileName);
-		}
-		$backPathResolvedFileName = $fileName ? GeneralUtility::resolveBackPath(($this->is_FE() || $this->isFrontendEditActive() ? '' : TYPO3_mainDir) . $fileName) : '';
-		$absolutePath = $fileName ? GeneralUtility::getFileAbsFileName($backPathResolvedFileName) : '';
+		$absolutePath = GeneralUtility::getFileAbsFileName($fileName);
 		// Fallback to default content css file if configured file does not exists or is of zero size
 		if (!$fileName || !file_exists($absolutePath) || !filesize($absolutePath)) {
-			$fileName = $this->getFullFileName('EXT:' . $this->ID . '/res/contentcss/default.css');
+			$fileName = 'EXT:' . $this->ID . '/res/contentcss/default.css';
 		}
+		$fileName = $this->getFullFileName($fileName);
 		return $fileName;
 	}
 
@@ -1287,6 +1284,12 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		return GeneralUtility::quoteJSvalue($str);
 	}
 
+	/**
+	 * Make a file name relative to the PATH_site or to the PATH_typo3
+	 *
+	 * @param string $filename: a file name of the form EXT:.... or relative to the PATH_site
+	 * @return string the file name relative to the PATH_site if in frontend or relative to the PATH_typo3 if in backend
+	 */
 	public function getFullFileName($filename) {
 		if (substr($filename, 0, 4) == 'EXT:') {
 			// extension
@@ -1295,10 +1298,9 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			if ((string)$extKey !== '' && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey) && (string)$local !== '') {
 				$newFilename = ($this->is_FE() || $this->isFrontendEditActive() ? \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath($extKey) : $this->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($extKey)) . $local;
 			}
-		} elseif ($filename[0] !== '/') {
-			$newFilename = ($this->is_FE() || $this->isFrontendEditActive() ? '' : $this->backPath . '../') . $filename;
 		} else {
-			$newFilename = ($this->is_FE() || $this->isFrontendEditActive() ? '' : $this->backPath . '../') . substr($filename, 1);
+			$path = ($this->is_FE() || $this->isFrontendEditActive() ? '' : $this->backPath . '../');
+			$newFilename = $path . ($filename[0] === '/' ? substr($filename, 1) : $filename);
 		}
 		return GeneralUtility::resolveBackPath($newFilename);
 	}
