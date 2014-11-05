@@ -49,13 +49,16 @@
 }
 .htmlarea .toolbar .x-form-item {
 	float: left;
-	margin: 0 0.5em 0 0;
+	height: 26px;
+	margin: 0 2px;
 }
 .htmlarea .toolbar .x-form-item-label {
 	vertical-align:middle;
 	background-color:transparent;
 	border-style:none;
-	margin:0;padding:3px 3px 0px 3px;
+	margin:0;
+	padding:2px 3px 0px 3px;
+	min-width: 110px;
 }
 .htmlarea .toolbar .button {
 	background-color: transparent;
@@ -64,7 +67,8 @@
 	border-width: 1px;
 	border-color: transparent;
 	border-collapse: separate;
-	margin: 0 0 4px 0;
+	height: 23px;
+	margin: 0 0 3px 0;
 	padding: 0;
 	float: left;
 }
@@ -109,13 +113,12 @@
 .htmlarea .toolbar .indicator {
 	cursor: default;
 	background-color: white;
-	width: 20px;
-	height: 16px;
+	width: 24px;
+	height: 18px;
 	overflow: hidden;
 	text-align: center;
 	border: 1px solid ButtonShadow;
 	margin: 3px 1px 5px 1px;
-	padding: 0 3px;
 	float: left;
 }
 .htmlarea .toolbar .buttonDisabled {
@@ -123,28 +126,25 @@
 	opacity: 0.25;
 }
 .htmlarea .toolbar .separator {
-	background-color: transparent;
-	background-image: url("images/separator.gif");
-	background-repeat: no-repeat;
-	background-position: 0 -1px;
-	width: 7px;
-	height: 23px;
-	border: 1px solid #EFEFF4;
-	margin-bottom: 1px;
+	background-color: rgb(115, 115, 115);
 	float: left;
+	height: 18px;
+	margin: 3px 2px 2px 2px;
+	width: 1px;
 }
 .htmlarea .toolbar .space {
 	background-color:transparent;
 	height:22px;
 	border-style:none;
-	margin:0;padding:0 1px;
+	margin:0;
+	padding:0 1px;
 	float:left;
 }
 .htmlarea .toolbar .select {
 	color: WindowText;
-	margin: 0 0 4px 0;
+	height: 17px;
 }
-.htmlarea .toolbar .x-form-item label.x-form-item-label{
+.htmlarea .toolbar .x-form-item label.x-form-item-label {
 	padding-right: 0;
 }
 .htmlarea .toolbar .x-form-field-wrap .x-form-trigger {
@@ -162,9 +162,12 @@
 	width:100%;
 	border:1px solid #c7c7c7;
 	border-bottom: none;
-	margin:0;padding:0;
+	margin:0;
+	padding:0;
 }
-
+div.resizable .editorIframe {
+	margin-right: 7px !important;
+}
 .htmlarea .noStatusBar {
 	border-bottom:1px solid #A2AAB8;
 }
