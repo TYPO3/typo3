@@ -31,14 +31,6 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	// *********
 
 	/**
-	 * If TRUE, table rows in the list will alternate in background colors (and have
-	 * background colors at all!)
-	 *
-	 * @var bool
-	 */
-	public $alternateBgColors = FALSE;
-
-	/**
 	 * Used to indicate which tables (values in the array) that can have a
 	 * create-new-record link. If the array is empty, all tables are allowed.
 	 *
@@ -706,12 +698,9 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			if ($cc == $this->totalRowCount || $cc == $this->iLimit) {
 				$rowSpecial .= ' lastcol';
 			}
-			// Background color, if any:
-			if ($this->alternateBgColors) {
-				$row_bgColor = $cc % 2 ? ' class="db_list_normal' . $rowSpecial . '"' : ' class="db_list_alt' . $rowSpecial . '"';
-			} else {
-				$row_bgColor = ' class="db_list_normal' . $rowSpecial . '"';
-			}
+
+			$row_bgColor = ' class="db_list_normal' . $rowSpecial . '"';
+
 			// Overriding with versions background color if any:
 			$row_bgColor = $row['_CSSCLASS'] ? ' class="' . $row['_CSSCLASS'] . '"' : $row_bgColor;
 			// Incr. counter.

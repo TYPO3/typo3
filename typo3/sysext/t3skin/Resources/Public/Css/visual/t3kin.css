@@ -8863,14 +8863,14 @@ table.t3-table > tfoot > tr.success > td,
 table.t3-table > thead > tr.success > th,
 table.t3-table > tbody > tr.success > th,
 table.t3-table > tfoot > tr.success > th {
-  background-color: #dff0d8;
+  background-color: #c7f6d1;
 }
 table.t3-table > tbody > tr > td.success:hover,
 table.t3-table > tbody > tr > th.success:hover,
 table.t3-table > tbody > tr.success:hover > td,
 table.t3-table > tbody > tr:hover > .success,
 table.t3-table > tbody > tr.success:hover > th {
-  background-color: #d0e9c6;
+  background-color: #b1f2c0;
 }
 table.t3-table > thead > tr > td.info,
 table.t3-table > tbody > tr > td.info,
@@ -8884,14 +8884,14 @@ table.t3-table > tfoot > tr.info > td,
 table.t3-table > thead > tr.info > th,
 table.t3-table > tbody > tr.info > th,
 table.t3-table > tfoot > tr.info > th {
-  background-color: #d9edf7;
+  background-color: #d8f0f8;
 }
 table.t3-table > tbody > tr > td.info:hover,
 table.t3-table > tbody > tr > th.info:hover,
 table.t3-table > tbody > tr.info:hover > td,
 table.t3-table > tbody > tr:hover > .info,
 table.t3-table > tbody > tr.info:hover > th {
-  background-color: #c4e3f3;
+  background-color: #c2e7f4;
 }
 table.t3-table > thead > tr > td.warning,
 table.t3-table > tbody > tr > td.warning,
@@ -8905,14 +8905,14 @@ table.t3-table > tfoot > tr.warning > td,
 table.t3-table > thead > tr.warning > th,
 table.t3-table > tbody > tr.warning > th,
 table.t3-table > tfoot > tr.warning > th {
-  background-color: #fcf8e3;
+  background-color: #fbd8bc;
 }
 table.t3-table > tbody > tr > td.warning:hover,
 table.t3-table > tbody > tr > th.warning:hover,
 table.t3-table > tbody > tr.warning:hover > td,
 table.t3-table > tbody > tr:hover > .warning,
 table.t3-table > tbody > tr.warning:hover > th {
-  background-color: #faf2cc;
+  background-color: #f9cba4;
 }
 table.t3-table > thead > tr > td.danger,
 table.t3-table > tbody > tr > td.danger,
@@ -8926,14 +8926,14 @@ table.t3-table > tfoot > tr.danger > td,
 table.t3-table > thead > tr.danger > th,
 table.t3-table > tbody > tr.danger > th,
 table.t3-table > tfoot > tr.danger > th {
-  background-color: #f2dede;
+  background-color: #efc7c7;
 }
 table.t3-table > tbody > tr > td.danger:hover,
 table.t3-table > tbody > tr > th.danger:hover,
 table.t3-table > tbody > tr.danger:hover > td,
 table.t3-table > tbody > tr:hover > .danger,
 table.t3-table > tbody > tr.danger:hover > th {
-  background-color: #ebcccc;
+  background-color: #eab3b3;
 }
 /**
  * This file is part of the TYPO3 CMS project.
@@ -11736,9 +11736,7 @@ div#typo3-dblist-pagination span.bar {
   padding: 0 2px;
 }
 .db_list_normal td.col-control,
-.db_list_alt td.col-control,
-.db_list_normal td.col-clipboard,
-.db_list_alt td.col-clipboard {
+.db_list_normal td.col-clipboard {
   padding-left: 3px;
   padding-right: 0px;
 }
