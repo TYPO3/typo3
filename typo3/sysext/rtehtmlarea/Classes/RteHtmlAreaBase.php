@@ -829,16 +829,28 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			'Extjs/ux/Ext.ux.menu.HTMLAreaColorMenu',
 			'Extjs/ux/Ext.ux.form.ColorPaletteField',
 			'LoremIpsum',
-			'plugins/Plugin'
+			'Plugin/Plugin'
 		);
 		foreach ($components as $component) {
-			$this->pageRenderer->addJsFile($this->getFullFileName('EXT:' . $this->ID . '/htmlarea/' . $component . '.js'));
+			$this->pageRenderer->addJsFile($this->getFullFileName('EXT:' . $this->ID . '/Resources/Public/JavaScript/HTMLArea/' . $component . '.js'));
 		}
 		foreach ($this->pluginEnabledCumulativeArray[$RTEcounter] as $pluginId) {
 			$extensionKey = is_object($this->registeredPlugins[$pluginId]) ? $this->registeredPlugins[$pluginId]->getExtensionKey() : $this->ID;
-			$this->pageRenderer->addJsFile($this->getFullFileName('EXT:' . $extensionKey . '/htmlarea/plugins/' . $pluginId . '/' . strtolower(preg_replace('/([a-z])([A-Z])([a-z])/', '$1-$2$3', $pluginId)) . '.js'));
+			$pluginName = strtolower(preg_replace('/([a-z])([A-Z])([a-z])/', '$1-$2$3', $pluginId));
+			$fileName = 'EXT:' . $extensionKey . '/Resources/Public/JavaScript/Plugins/' . $pluginName . '.js';
+			$absolutePath = GeneralUtility::getFileAbsFileName($fileName);
+			if (file_exists($absolutePath)) {
+				$this->pageRenderer->addJsFile($this->getFullFileName($fileName));
+			} else {
+				// Backward compatibility
+				$fileName = 'EXT:' . $extensionKey . '/htmlarea/plugins/' . $pluginId . '/' . $pluginName . '.js';
+				$absolutePath = GeneralUtility::getFileAbsFileName($fileName);
+				if (file_exists($absolutePath)) {
+					$this->pageRenderer->addJsFile($this->getFullFileName($fileName));
+				}
+			}
 		}
-		$this->pageRenderer->addJsFile($this->getFullFileName('EXT:' . $this->ID . '/htmlarea/Util/Wrap.close.js'));
+		$this->pageRenderer->addJsFile($this->getFullFileName('EXT:' . $this->ID . '/Resources/Public/JavaScript/HTMLArea/Util/Wrap.close.js'));
 	}
 
 	/**
