@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Rendering of tables for content positioning
  *
@@ -21,104 +22,121 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  */
 class TableRenderer {
 
-	// offset, x
 	/**
+	 * offset, x
+	 *
 	 * @var int
 	 */
 	public $offX = 0;
 
-	// offset, y
 	/**
+	 * offset, y
+	 *
 	 * @var int
 	 */
 	public $offY = 0;
 
-	// top menu
 	/**
+	 * top menu
+	 *
 	 * @var string
 	 */
 	public $tm = '';
 
-	// left menu
 	/**
+	 * left menu
+	 *
 	 * @var string
 	 */
 	public $lm = '';
 
-	// right menu
 	/**
+	 * right menu
+	 *
 	 * @var string
 	 */
 	public $rm = '';
 
-	// bottom menu
 	/**
+	 * bottom menu
+	 *
 	 * @var string
 	 */
 	public $bm = '';
 
-	// content
 	/**
+	 * content
+	 *
 	 * @var string
 	 */
 	public $content = '';
 
-	// top menu TDparams
 	/**
+	 * top menu TDparams
+	 *
 	 * @var string
 	 */
 	public $tmTDparams = 'valign="top"';
 
-	// left menu TDparams
 	/**
+	 * left menu TDparams
+	 *
 	 * @var string
 	 */
 	public $lmTDparams = 'valign="top"';
 
-	// right menu TDparams
 	/**
+	 * right menu TDparams
+	 *
 	 * @var string
 	 */
 	public $rmTDparams = 'valign="top"';
 
-	// bottom menu TDparams
 	/**
+	 * bottom menu TDparams
+	 *
 	 * @var string
 	 */
 	public $bmTDparams = 'valign="top"';
 
-	// content TDparams
 	/**
+	 * content TDparams
+	 *
 	 * @var string
 	 */
 	public $contentTDparams = 'valign="top"';
 
-	// content margin, left
 	/**
+	 * content margin, left
+	 *
 	 * @var int
 	 */
 	public $cMl = 1;
 
-	// content margin, right
 	/**
+	 * content margin, right
+	 *
 	 * @var int
 	 */
 	public $cMr = 1;
 
-	// content margin, top
 	/**
+	 * content margin, top
+	 *
 	 * @var int
 	 */
 	public $cMt = 0;
 
-	// content margin, bottom
 	/**
+	 * content margin, bottom
+	 *
 	 * @var int
 	 */
 	public $cMb = 1;
 
-	// Places a little gif-spacer in the bottom of the content frame
 	/**
+	 * Places a little gif-spacer in the bottom of the content frame
+	 *
 	 * @var int
 	 */
 	public $contentW = 0;

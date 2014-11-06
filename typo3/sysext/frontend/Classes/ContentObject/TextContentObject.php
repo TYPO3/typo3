@@ -13,13 +13,14 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Contains TEXT class object.
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  * @author Steffen Kamper <steffen@typo3.org>
  */
-class TextContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
+class TextContentObject extends AbstractContentObject {
 
 	/**
 	 * Rendering the cObject, TEXT

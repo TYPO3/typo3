@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  * @author Tolleiv Nietsch <nietsch@aoemedia.de>
  */
 interface AbstractMenuFilterPagesHookInterface {
+
 	/**
 	 * Checks if a page is OK to include in the final menu item array.
 	 *
@@ -29,6 +30,6 @@ interface AbstractMenuFilterPagesHookInterface {
 	 * @param \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject $obj The menu object
 	 * @return bool Returns TRUE if the page can be safely included.
 	 */
-	public function processFilter(array &$data, array $banUidArray, $spacer, \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject $obj);
+	public function processFilter(array &$data, array $banUidArray, $spacer, AbstractMenuContentObject $obj);
 
 }

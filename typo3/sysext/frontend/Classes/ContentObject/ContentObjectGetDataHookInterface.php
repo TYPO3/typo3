@@ -13,12 +13,14 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * interface for classes which hook into tslib_content and do additional getData processing
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
 interface ContentObjectGetDataHookInterface {
+
 	/**
 	 * Extends the getData()-Method of \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer to process more/other commands
 	 *
@@ -29,6 +31,6 @@ interface ContentObjectGetDataHookInterface {
 	 * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $parentObject Parent content object
 	 * @return string Get data result
 	 */
-	public function getDataExtension($getDataString, array $fields, $sectionValue, $returnValue, \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer &$parentObject);
+	public function getDataExtension($getDataString, array $fields, $sectionValue, $returnValue, ContentObjectRenderer &$parentObject);
 
 }

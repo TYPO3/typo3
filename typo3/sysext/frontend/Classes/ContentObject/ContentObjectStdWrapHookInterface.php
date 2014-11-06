@@ -13,12 +13,14 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * interface for classes which hook into tslib_content and do additional stdWrap processing
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
 interface ContentObjectStdWrapHookInterface {
+
 	/**
 	 * Hook for modifying $content before core's stdWrap does anything
 	 *
@@ -27,7 +29,7 @@ interface ContentObjectStdWrapHookInterface {
 	 * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $parentObject Parent content object
 	 * @return string Further processed $content
 	 */
-	public function stdWrapPreProcess($content, array $configuration, \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer &$parentObject);
+	public function stdWrapPreProcess($content, array $configuration, ContentObjectRenderer &$parentObject);
 
 	/**
 	 * Hook for modifying $content after core's stdWrap has processed setContentToCurrent, setCurrent, lang, data, field, current, cObject, numRows, filelist and/or preUserFunc
@@ -37,7 +39,7 @@ interface ContentObjectStdWrapHookInterface {
 	 * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $parentObject Parent content object
 	 * @return string Further processed $content
 	 */
-	public function stdWrapOverride($content, array $configuration, \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer &$parentObject);
+	public function stdWrapOverride($content, array $configuration, ContentObjectRenderer &$parentObject);
 
 	/**
 	 * Hook for modifying $content after core's stdWrap has processed override, preIfEmptyListNum, ifEmpty, ifBlank, listNum, trim and/or more (nested) stdWraps
@@ -47,7 +49,7 @@ interface ContentObjectStdWrapHookInterface {
 	 * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $parentObject Parent content object
 	 * @return string Further processed $content
 	 */
-	public function stdWrapProcess($content, array $configuration, \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer &$parentObject);
+	public function stdWrapProcess($content, array $configuration, ContentObjectRenderer &$parentObject);
 
 	/**
 	 * Hook for modifying $content after core's stdWrap has processed anything but debug
@@ -57,6 +59,6 @@ interface ContentObjectStdWrapHookInterface {
 	 * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $parentObject Parent content object
 	 * @return string Further processed $content
 	 */
-	public function stdWrapPostProcess($content, array $configuration, \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer &$parentObject);
+	public function stdWrapPostProcess($content, array $configuration, ContentObjectRenderer &$parentObject);
 
 }

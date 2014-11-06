@@ -13,12 +13,13 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Contains EDITPANEL class object.
  *
  * @author Jeff Segars <jeff@webempoweredchurch.org>
  */
-class EditPanelContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
+class EditPanelContentObject extends AbstractContentObject {
 
 	/**
 	 * Rendering the cObject, EDITPANEL

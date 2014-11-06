@@ -23,7 +23,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * @author Steffen Ritter <info@steffen-ritter.net>
  * @author Benjamin Mack <benni@typo3.org>
  */
-class FluidTemplateContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
+class FluidTemplateContentObject extends AbstractContentObject {
 
 	/**
 	 * @var \TYPO3\CMS\Fluid\View\StandaloneView
@@ -33,7 +33,7 @@ class FluidTemplateContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstr
 	/**
 	 * Constructor
 	 */
-	public function __construct(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObjectRenderer) {
+	public function __construct(ContentObjectRenderer $contentObjectRenderer) {
 		parent::__construct($contentObjectRenderer);
 	}
 

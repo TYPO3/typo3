@@ -29,24 +29,52 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  */
 class AbstractMenuContentObject {
 
-	// tells you which menu-number this is. This is important when getting data from the setup
+	/**
+	 * tells you which menu-number this is. This is important when getting data from the setup
+	 *
+	 * @var int
+	 */
 	public $menuNumber = 1;
 
-	// 0 = rootFolder
+	/**
+	 * 0 = rootFolder
+	 *
+	 * @var int
+	 */
 	public $entryLevel = 0;
 
-	// The doktype-number that defines a spacer
+	/**
+	 * The doktype-number that defines a spacer
+	 *
+	 * @var string
+	 */
 	public $spacerIDList = '199';
 
-	// Doktypes that define which should not be included in a menu
+	/**
+	 * Doktypes that define which should not be included in a menu
+	 *
+	 * @var string
+	 */
 	public $doktypeExcludeList = '6';
 
+	/**
+	 * @var array
+	 */
 	public $alwaysActivePIDlist = array();
 
+	/**
+	 * @var string
+	 */
 	public $imgNamePrefix = 'img';
 
+	/**
+	 * @var int
+	 */
 	public $imgNameNotRandom = 0;
 
+	/**
+	 * @var bool
+	 */
 	public $debug = 0;
 
 	/**
@@ -56,16 +84,30 @@ class AbstractMenuContentObject {
 	 */
 	public $parent_cObj;
 
+	/**
+	 * @var string
+	 */
 	public $GMENU_fixKey = 'gmenu';
 
-	// accumulation of mount point data
+	/**
+	 * accumulation of mount point data
+	 *
+	 * @var array
+	 */
 	public $MP_array = array();
 
-	// internal
-	// HMENU configuration
+	/**
+	 * HMENU configuration
+	 *
+	 * @var array
+	 */
 	public $conf = array();
 
-	// xMENU configuration (TMENU, GMENU etc)
+	/**
+	 * xMENU configuration (TMENU, GMENU etc)
+	 *
+	 * @var array
+	 */
 	public $mconf = array();
 
 	/**
@@ -82,42 +124,93 @@ class AbstractMenuContentObject {
 	 */
 	public $sys_page;
 
-	// The base page-id of the menu.
+	/**
+	 * The base page-id of the menu.
+	 *
+	 * @var int
+	 */
 	public $id;
 
-	// Holds the page uid of the NEXT page in the root line from the page pointed to by entryLevel;
-	// Used to expand the menu automatically if in a certain root line.
+	/**
+	 * Holds the page uid of the NEXT page in the root line from the page pointed to by entryLevel;
+	 * Used to expand the menu automatically if in a certain root line.
+	 *
+	 * @var string
+	 */
 	public $nextActive;
 
-	// The array of menuItems which is built
+	/**
+	 * The array of menuItems which is built
+	 *
+	 * @var array
+	 */
 	public $menuArr;
 
+	/**
+	 * @var string
+	 */
 	public $hash;
 
+	/**
+	 * @var array
+	 */
 	public $result = array();
 
-	// Array: Is filled with an array of page uid numbers + RL parameters which are in the current
-	// root line (used to evaluate whether a menu item is in active state)
+	/**
+	 * Is filled with an array of page uid numbers + RL parameters which are in the current
+	 * root line (used to evaluate whether a menu item is in active state)
+	 *
+	 * @var string
+	 */
 	public $rL_uidRegister = '';
 
+	/**
+	 * @var string
+	 */
 	public $INPfixMD5;
 
+	/**
+	 * @var array
+	 */
 	public $I;
 
+	/**
+	 * @var string
+	 */
 	public $WMresult;
 
+	/**
+	 * @var string
+	 */
 	public $WMfreezePrefix;
 
+	/**
+	 * @var int
+	 */
 	public $WMmenuItems;
 
+	/**
+	 * @var array
+	 */
 	public $WMsubmenuObjSuffixes;
 
+	/**
+	 * @var string
+	 */
 	public $WMextraScript;
 
-	// Can be set to contain menu item arrays for sub-levels.
+	/**
+	 * Can be set to contain menu item arrays for sub-levels.
+	 *
+	 * @var string
+	 */
 	public $alternativeMenuTempArray = '';
 
-	// Will be 'id' in XHTML-mode
+	/**
+	 * Will be 'id' in XHTML-mode
+	 *
+	 * @var string
+	 */
 	public $nameAttribute = 'name';
 
 	/**

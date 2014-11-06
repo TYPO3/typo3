@@ -29,6 +29,6 @@ interface ContentObjectOneSourceCollectionHookInterface {
 	 * @internal param array $configuration Array with the Source Configuration
 	 * @return string HTML Content for oneSourceCollection
 	 */
-	public function getOneSourceCollection(array $sourceRenderConfiguration, array $sourceConfiguration, $oneSourceCollection, \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer &$parentObject);
+	public function getOneSourceCollection(array $sourceRenderConfiguration, array $sourceConfiguration, $oneSourceCollection, ContentObjectRenderer &$parentObject);
 
 }

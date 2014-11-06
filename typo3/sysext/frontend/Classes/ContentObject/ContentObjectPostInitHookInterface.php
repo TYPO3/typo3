@@ -21,11 +21,12 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * @author Ingo Renner <ingo@typo3.org>
  */
 interface ContentObjectPostInitHookInterface {
+
 	/**
 	 * Hook for post processing the initialization of ContentObjectRenderer
 	 *
 	 * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $parentObject Parent content object
 	 */
-	public function postProcessContentObjectInitialization(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer &$parentObject);
+	public function postProcessContentObjectInitialization(ContentObjectRenderer &$parentObject);
 
 }

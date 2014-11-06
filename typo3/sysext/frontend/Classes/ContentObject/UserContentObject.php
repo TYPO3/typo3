@@ -13,13 +13,14 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Contains USER class object.
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  * @author Steffen Kamper <steffen@typo3.org>
  */
-class UserContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
+class UserContentObject extends AbstractContentObject {
 
 	/**
 	 * Rendering the cObject, USER
@@ -35,7 +36,7 @@ class UserContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 		$content = '';
 		if ($this->cObj->getUserObjectType() === FALSE) {
 			// Come here only if we are not called from $TSFE->INTincScript_process()!
-			$this->cObj->setUserObjectType(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::OBJECTTYPE_USER);
+			$this->cObj->setUserObjectType(ContentObjectRenderer::OBJECTTYPE_USER);
 		}
 		$this->cObj->includeLibs($conf);
 		$tempContent = $this->cObj->callUserFunction($conf['userFunc'], $conf, '');

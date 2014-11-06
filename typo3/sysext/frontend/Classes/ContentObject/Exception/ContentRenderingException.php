@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Frontend\ContentObject\Exception;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Class Exception
  */

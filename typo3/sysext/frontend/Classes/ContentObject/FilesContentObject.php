@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  *
  * @author Ingmar Schlecht <ingmar@typo3.org>
  */
-class FilesContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
+class FilesContentObject extends AbstractContentObject {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Resource\FileCollectionRepository|NULL

@@ -13,13 +13,14 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Interface for classes which hook into tslib_content and do additional cObjGetSingle processing
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
-interface ContentObjectGetSingleHookInterface
-{
+interface ContentObjectGetSingleHookInterface {
+
 	/**
 	 * Renders content objects, that are not defined in the core
 	 *
@@ -29,6 +30,6 @@ interface ContentObjectGetSingleHookInterface
 	 * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $parentObject Parent content object
 	 * @return string cObject output
 	 */
-	public function getSingleContentObject($contentObjectName, array $configuration, $TypoScriptKey, \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer &$parentObject);
+	public function getSingleContentObject($contentObjectName, array $configuration, $TypoScriptKey, ContentObjectRenderer &$parentObject);
 
 }

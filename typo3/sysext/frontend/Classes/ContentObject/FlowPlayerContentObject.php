@@ -13,15 +13,18 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Contains FlowPlayer class object.
  *
  * @author Stanislas Rolland
  */
-class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
+class FlowPlayerContentObject extends AbstractContentObject {
 
 	/**
 	 * File extension to mime type
+	 *
+	 * @var array
 	 */
 	public $mimeTypes = array(
 		'aif' => array(
@@ -101,6 +104,8 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 
 	/**
 	 * VideoJS options
+	 *
+	 * @var array
 	 */
 	public $videoJsOptions = array(
 		// Use the browser's controls (iPhone)
@@ -119,6 +124,8 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 
 	/**
 	 * html5 tag attributes
+	 *
+	 * @var array
 	 */
 	public $html5TagAttributes = array(
 		'autoPlay',
@@ -129,6 +136,8 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 
 	/**
 	 * Flowplayer captions plugin configuration
+	 *
+	 * @var array
 	 */
 	public $flowplayerCaptionsConfig = array(
 		'plugins' => array(
@@ -161,6 +170,8 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 
 	/**
 	 * Flowplayer audio configuration
+	 *
+	 * @var array
 	 */
 	public $flowplayerAudioConfig = array(
 		'provider' => 'audio',
@@ -177,6 +188,8 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 
 	/**
 	 * Flowplayer configuration for the audio description
+	 *
+	 * @var array
 	 */
 	public $flowplayerAudioDescriptionConfig = array(
 		// The controls plugin

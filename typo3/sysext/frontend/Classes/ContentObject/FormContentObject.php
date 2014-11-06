@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @author Xavier Perseguers <typo3@perseguers.ch>
  * @author Steffen Kamper <steffen@typo3.org>
  */
-class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
+class FormContentObject extends AbstractContentObject {
 
 	/**
 	 * Rendering the cObject, FORM

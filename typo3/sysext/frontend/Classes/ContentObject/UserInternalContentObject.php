@@ -13,13 +13,14 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Contains USER_INT class object.
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  * @author Steffen Kamper <steffen@typo3.org>
  */
-class UserInternalContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
+class UserInternalContentObject extends AbstractContentObject {
 
 	/**
 	 * Rendering the cObject, USER_INT
@@ -28,7 +29,7 @@ class UserInternalContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 	 * @return string Output
 	 */
 	public function render($conf = array()) {
-		$this->cObj->setUserObjectType(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::OBJECTTYPE_USER_INT);
+		$this->cObj->setUserObjectType(ContentObjectRenderer::OBJECTTYPE_USER_INT);
 		$substKey = 'INT_SCRIPT.' . $GLOBALS['TSFE']->uniqueHash();
 		$content = '<!--' . $substKey . '-->';
 		$includeLibs = isset($conf['includeLibs.']) ? $this->cObj->stdWrap($conf['includeLibs'], $conf['includeLibs.']) : $conf['includeLibs'];

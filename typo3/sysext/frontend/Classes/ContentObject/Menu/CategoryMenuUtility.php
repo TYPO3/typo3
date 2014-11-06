@@ -24,10 +24,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @author Francois Suter <francois.suter@typo3.org>
  */
 class CategoryMenuUtility {
+
 	/**
 	 * @var string Name of the field used for sorting the pages
 	 */
-	protected static $sortingField;
+	static protected $sortingField;
 
 	/**
 	 * Collects all pages for the selected categories, sorted according to configuration.

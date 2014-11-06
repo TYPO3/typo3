@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * @author Xavier Perseguers <typo3@perseguers.ch>
  * @author Steffen Kamper <steffen@typo3.org>
  */
-class RestoreRegisterContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
+class RestoreRegisterContentObject extends AbstractContentObject {
 
 	/**
 	 * Rendering the cObject, RESTORE_REGISTER

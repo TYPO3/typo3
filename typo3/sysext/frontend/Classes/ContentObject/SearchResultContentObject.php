@@ -21,20 +21,23 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * The class is included from "TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer"
  * based on whether there has been detected content in the GPvar "sword"
  */
-class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
+class SearchResultContentObject extends AbstractContentObject {
+
 	/**
 	 * @var array
 	 */
 	public $tables = array();
 
-	// Alternatively 'PRIMARY_KEY'; sorting by primary key
 	/**
+	 * Alternatively 'PRIMARY_KEY'; sorting by primary key
+	 *
 	 * @var string
 	 */
 	public $group_by = 'PRIMARY_KEY';
 
-	// Standard SQL-operator between words
 	/**
+	 * Standard SQL-operator between words
+	 *
 	 * @var string
 	 */
 	public $default_operator = 'AND';
@@ -44,8 +47,9 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 	 */
 	public $operator_translate_table_caseinsensitive = TRUE;
 
-	// case-sensitive. Defines the words, which will be operators between words
 	/**
+	 * case-sensitive. Defines the words, which will be operators between words
+	 *
 	 * @var array
 	 */
 	public $operator_translate_table = array(
@@ -58,45 +62,51 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 		array('not', 'AND NOT')
 	);
 
-	// Internal
-	// Contains the search-words and operators
 	/**
+	 * Contains the search-words and operators
+	 *
 	 * @var array
 	 */
 	public $sword_array;
 
-	// Contains the query parts after processing.
 	/**
+	 * Contains the query parts after processing.
+	 *
 	 * @var array
 	 */
 	public $queryParts;
 
-	// This is set with the foreign table that 'pages' are connected to.
 	/**
+	 * This is set with the foreign table that 'pages' are connected to.
+	 *
 	 * @var string
 	 */
 	public $fTable;
 
-	// How many rows to offset from the beginning
 	/**
+	 * How many rows to offset from the beginning
+	 *
 	 * @var int
 	 */
 	public $res_offset = 0;
 
-	// How many results to show (0 = no limit)
 	/**
+	 * How many results to show (0 = no limit)
+	 *
 	 * @var int
 	 */
 	public $res_shows = 20;
 
-	// Intern: How many results, there was last time (with the exact same searchstring.
 	/**
+	 * Intern: How many results, there was last time (with the exact same searchstring.
+	 *
 	 * @var int
 	 */
 	public $res_count;
 
-	// List of pageIds.
 	/**
+	 * List of pageIds.
+	 *
 	 * @var string
 	 */
 	public $pageIdList = '';
@@ -112,7 +122,7 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 	 *
 	 * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj
 	 */
-	public function __construct(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj = NULL) {
+	public function __construct(ContentObjectRenderer $cObj = NULL) {
 		if (!is_null($cObj)) {
 			$this->cObj = $cObj;
 			$this->fileFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();

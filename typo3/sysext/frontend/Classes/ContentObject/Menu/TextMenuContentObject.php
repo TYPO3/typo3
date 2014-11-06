@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-class TextMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject {
+class TextMenuContentObject extends AbstractMenuContentObject {
 
 	/**
 	 * Calls procesItemStates() so that the common configuration for the menu items are resolved into individual configuration per item.

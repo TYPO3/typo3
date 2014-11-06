@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-class JavaScriptMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject {
+class JavaScriptMenuContentObject extends AbstractMenuContentObject {
 
 	/**
 	 * Dummy. Should do nothing, because we don't use the result-array here!

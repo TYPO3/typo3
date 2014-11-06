@@ -13,10 +13,12 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Rendering of tables for offset
  */
-class OffsetTableContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
+class OffsetTableContentObject extends AbstractContentObject {
+
 	/**
 	 * @var string
 	 */
@@ -38,7 +40,7 @@ class OffsetTableContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstrac
 	 *
 	 * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj
 	 */
-	public function __construct(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj = NULL) {
+	public function __construct(ContentObjectRenderer $cObj = NULL) {
 		if (!is_null($cObj)) {
 			$this->cObj = $cObj;
 			$this->fileFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();

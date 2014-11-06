@@ -13,13 +13,14 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Contains IMAGE class object.
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  * @author Steffen Kamper <steffen@typo3.org>
  */
-class ImageContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
+class ImageContentObject extends AbstractContentObject {
 
 	/**
 	 * Rendering the cObject, IMAGE

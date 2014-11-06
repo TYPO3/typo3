@@ -34,6 +34,9 @@ use TYPO3\CMS\Frontend\ContentObject\Exception\ExceptionHandlerInterface;
  */
 class ContentObjectRenderer {
 
+	/**
+	 * @var array
+	 */
 	public $align = array(
 		'center',
 		'right',
@@ -262,6 +265,7 @@ class ContentObjectRenderer {
 	/**
 	 * Holds ImageMagick parameters and extensions used for compression
 	 *
+	 * @var array
 	 * @see IMGTEXT()
 	 */
 	public $image_compression = array(
@@ -358,6 +362,7 @@ class ContentObjectRenderer {
 	/**
 	 * ImageMagick parameters for image effects
 	 *
+	 * @var array
 	 * @see IMGTEXT()
 	 */
 	public $image_effects = array(
@@ -378,78 +383,154 @@ class ContentObjectRenderer {
 	 * If the instance of this class is used to render records from the database those records are found in this array.
 	 * The function stdWrap has TypoScript properties that fetch field-data from this array.
 	 *
+	 * @var array
 	 * @see init()
 	 */
 	public $data = array();
 
+	/**
+	 * @var string
+	 */
 	protected $table = '';
 
-	// Used for backup...
+	/**
+	 * Used for backup...
+	 *
+	 * @var array
+	 */
 	public $oldData = array();
 
-	// If this is set with an array before stdWrap, it's used instead of $this->data in the data-property in stdWrap
+	/**
+	 * If this is set with an array before stdWrap, it's used instead of $this->data in the data-property in stdWrap
+	 *
+	 * @var string
+	 */
 	public $alternativeData = '';
 
-	// Used by the parseFunc function and is loaded with tag-parameters when parsing tags.
+	/**
+	 * Used by the parseFunc function and is loaded with tag-parameters when parsing tags.
+	 *
+	 * @var array
+	 */
 	public $parameters = array();
 
+	/**
+	 * @var string
+	 */
 	public $currentValKey = 'currentValue_kidjls9dksoje';
 
-	// This is set to the [table]:[uid] of the record delivered in the $data-array, if the cObjects CONTENT or RECORD is in operation.
-	// Note that $GLOBALS['TSFE']->currentRecord is set to an equal value but always indicating the latest record rendered.
+	/**
+	 * This is set to the [table]:[uid] of the record delivered in the $data-array, if the cObjects CONTENT or RECORD is in operation.
+	 * Note that $GLOBALS['TSFE']->currentRecord is set to an equal value but always indicating the latest record rendered.
+	 *
+	 * @var string
+	 */
 	public $currentRecord = '';
 
-	// Set in cObj->RECORDS and cObj->CONTENT to the current number of records selected in a query.
+	/**
+	 * Set in cObj->RECORDS and cObj->CONTENT to the current number of records selected in a query.
+	 *
+	 * @var int
+	 */
 	public $currentRecordTotal = 0;
 
-	// Incremented in cObj->RECORDS and cObj->CONTENT before each record rendering.
+	/**
+	 * Incremented in cObj->RECORDS and cObj->CONTENT before each record rendering.
+	 *
+	 * @var int
+	 */
 	public $currentRecordNumber = 0;
 
-	// Incremented in parent cObj->RECORDS and cObj->CONTENT before each record rendering.
+	/**
+	 * Incremented in parent cObj->RECORDS and cObj->CONTENT before each record rendering.
+	 *
+	 * @var int
+	 */
 	public $parentRecordNumber = 0;
 
-	// If the ContentObjectRender was started from CONTENT, RECORD or SEARCHRESULT cObject's this array has two keys, 'data' and 'currentRecord' which indicates the record and data for the parent cObj.
+	/**
+	 * If the ContentObjectRender was started from CONTENT, RECORD or SEARCHRESULT cObject's this array has two keys, 'data' and 'currentRecord' which indicates the record and data for the parent cObj.
+	 *
+	 * @var array
+	 */
 	public $parentRecord = array();
 
-	// This may be set as a reference to the calling object of eg. cObjGetSingle. Anyway, just use it as you like. It's used in productsLib.inc for example.
-	public $regObj;
-
-	// internal
-	// Is set to 1 if the instance of this cObj is executed from a *_INT plugin (see pagegen, bottom of document)
+	/**
+	 * Is set to 1 if the instance of this cObj is executed from a *_INT plugin (see pagegen, bottom of document)
+	 *
+	 * @var bool
+	 */
 	public $INT_include = 0;
 
-	// This is used by checkPid, that checks if pages are accessible. The $checkPid_cache['page_uid'] is set TRUE or FALSE upon this check featuring a caching function for the next request.
+	/**
+	 * This is used by checkPid, that checks if pages are accessible. The $checkPid_cache['page_uid'] is set TRUE or FALSE upon this check featuring a caching function for the next request.
+	 *
+	 * @var array
+	 */
 	public $checkPid_cache = array();
 
+	/**
+	 * @var string
+	 */
 	public $checkPid_badDoktypeList = '255';
 
-	// This will be set by typoLink() to the url of the most recent link created.
+	/**
+	 * This will be set by typoLink() to the url of the most recent link created.
+	 *
+	 * @var string
+	 */
 	public $lastTypoLinkUrl = '';
 
-	// DO. link target.
+	/**
+	 * DO. link target.
+	 *
+	 * @var string
+	 */
 	public $lastTypoLinkTarget = '';
 
+	/**
+	 * @var array
+	 */
 	public $lastTypoLinkLD = array();
 
-	// Caching substituteMarkerArrayCached function
+	/**
+	 * Caching substituteMarkerArrayCached function
+	 *
+	 * @var array
+	 */
 	public $substMarkerCache = array();
 
-	// array that registers rendered content elements (or any table) to make sure they are not rendered recursively!
+	/**
+	 * array that registers rendered content elements (or any table) to make sure they are not rendered recursively!
+	 *
+	 * @var array
+	 */
 	public $recordRegister = array();
 
-	// Containing hooks for userdefined cObjects
 	/**
 	 * Additionally registered content object types and class names
+	 *
 	 * @var array
 	 */
 	protected $cObjHookObjectsRegistry = array();
 
+	/**
+	 * @var array
+	 */
 	public $cObjHookObjectsArr = array();
 
-	// Containing hook objects for stdWrap
+	/**
+	 * Containing hook objects for stdWrap
+	 *
+	 * @var array
+	 */
 	protected $stdWrapHookObjects = array();
 
-	// Containing hook objects for getImgResource
+	/**
+	 * Containing hook objects for getImgResource
+	 *
+	 * @var array
+	 */
 	protected $getImgResourceHookObjects;
 
 	/**

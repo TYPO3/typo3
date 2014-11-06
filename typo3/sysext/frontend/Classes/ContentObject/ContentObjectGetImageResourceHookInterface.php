@@ -13,12 +13,14 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Interface for classes which hook into tslib_content and do additional getImgResource processing
  *
  * @author Oliver Hader <oliver@typo3.org>
  */
 interface ContentObjectGetImageResourceHookInterface {
+
 	/**
 	 * Hook for post-processing image resources
 	 *
@@ -28,6 +30,6 @@ interface ContentObjectGetImageResourceHookInterface {
 	 * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $parent Parent content object
 	 * @return array Modified image resource information
 	 */
-	public function getImgResourcePostProcess($file, array $configuration, array $imageResource, \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $parent);
+	public function getImgResourcePostProcess($file, array $configuration, array $imageResource, ContentObjectRenderer $parent);
 
 }
