@@ -1192,7 +1192,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 					if (isset($keepTags['span'])) {
 						$classes = array_merge(array(''), $this->allowedClasses);
 						$keepTags['span'] = array(
-							'allowedAttribs' => 'id,class,style,title,lang,xml:lang,dir',
+							'allowedAttribs' => 'id,class,style,title,lang,xml:lang,dir,itemscope,itemtype,itemprop',
 							'fixAttrib' => array(
 								'class' => array(
 									'list' => $classes,
