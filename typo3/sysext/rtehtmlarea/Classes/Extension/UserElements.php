@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * User Elements extension for htmlArea RTE
  *
@@ -65,8 +68,8 @@ class UserElements extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 			RTEarea[' . $RTEcounter . '].buttons.' . $button . ' = new Object();';
 			}
 			$registerRTEinJavascriptString .= '
-			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.pathUserModule = "' .
-				\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('rtehtmlarea_wizard_user') . '";';
+			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.pathUserModule = ' .
+				GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('rtehtmlarea_wizard_user_elements')) . ';';
 		}
 		return $registerRTEinJavascriptString;
 	}

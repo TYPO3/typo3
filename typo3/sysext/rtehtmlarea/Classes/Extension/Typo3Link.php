@@ -75,7 +75,7 @@ class Typo3Link extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 			RTEarea[' . $RTEcounter . '].buttons.' . $button . ' = new Object();';
 			}
 			$registerRTEinJavascriptString .= '
-			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.pathLinkModule = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('rtehtmlarea_wizard_element_browser'));
+			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.pathLinkModule = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('rtehtmlarea_wizard_browse_links')) . ';';
 			if ($this->htmlAreaRTE->is_FE()) {
 				$RTEProperties = $this->htmlAreaRTE->RTEsetup;
 			} else {

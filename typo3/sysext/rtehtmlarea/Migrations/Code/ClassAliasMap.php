@@ -1,7 +1,7 @@
 <?php
 return array(
 	'tx_rtehtmlarea_browse_links' => 'TYPO3\\CMS\\Rtehtmlarea\\BrowseLinks',
-	'tx_rtehtmlarea_parse_html' => 'TYPO3\\CMS\\Rtehtmlarea\\ContentParser',
+	'tx_rtehtmlarea_parse_html' => 'TYPO3\\CMS\\Rtehtmlarea\\Controller\\ParseHtmlController',
 	'tx_rtehtmlarea_SC_browse_links' => 'TYPO3\\CMS\\Rtehtmlarea\\Controller\\BrowseLinksController',
 	'tx_rtehtmlarea_pi3' => 'TYPO3\\CMS\\Rtehtmlarea\\Controller\\CustomAttributeController',
 	'tx_rtehtmlarea_pi2' => 'TYPO3\\CMS\\Rtehtmlarea\\Controller\\FrontendRteController',
@@ -49,6 +49,6 @@ return array(
 	'tx_rtehtmlarea_api' => 'TYPO3\\CMS\\Rtehtmlarea\\RteHtmlAreaApi',
 	'tx_rtehtmlarea_base' => 'TYPO3\\CMS\\Rtehtmlarea\\RteHtmlAreaBase',
 	'tx_rtehtmlarea_select_image' => 'TYPO3\\CMS\\Rtehtmlarea\\SelectImage',
-	'tx_rtehtmlarea_user' => 'TYPO3\\CMS\\Rtehtmlarea\\User',
+	'tx_rtehtmlarea_user' => 'TYPO3\\CMS\\Rtehtmlarea\\Controller\\UserElementsController',
 	'TYPO3\\CMS\\Rtehtmlarea\\ImageFolderTree' => 'TYPO3\\CMS\\Rtehtmlarea\\FolderTree',
 );

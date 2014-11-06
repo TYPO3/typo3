@@ -13,6 +13,10 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * TYPO3 HTML Parser extension for htmlArea RTE
  *
@@ -69,8 +73,8 @@ class Typo3HtmlParser extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 			RTEarea[' . $RTEcounter . '].buttons.' . $button . ' = new Object();';
 			}
 			$registerRTEinJavascriptString .= '
-			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.pathParseHtmlModule = "' .
-				\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('rtehtmlarea_wizard_parse_html') . '";
+			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.pathParseHtmlModule = ' .
+				GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('rtehtmlarea_wizard_parse_html')) . ';
 			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.hotKey = "' . ($this->thisConfig['enableWordClean.']['hotKey'] ?: '0') . '";';
 		}
 		return $registerRTEinJavascriptString;
@@ -84,7 +88,7 @@ class Typo3HtmlParser extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	 * @return array toolbar button array, possibly updated
 	 */
 	public function applyToolbarConstraints($show) {
-		return array_unique(array_merge($show, \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->pluginButtons)));
+		return array_unique(array_merge($show, GeneralUtility::trimExplode(',', $this->pluginButtons)));
 	}
 
 }

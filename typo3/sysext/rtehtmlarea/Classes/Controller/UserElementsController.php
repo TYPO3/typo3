@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Rtehtmlarea;
+namespace TYPO3\CMS\Rtehtmlarea\Controller;
 /**
  * This file is part of the TYPO3 CMS project.
  *
@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @author Kasper Skårhøj <kasper@typo3.com>
  * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
-class User {
+class UserElementsController {
 
 	/**
 	 * @var string
@@ -252,7 +252,7 @@ class User {
 								}
 								$A = array('<a href="#" onClick="' . $onClickEvent . 'return false;">', '</a>');
 								$subcats[$k2i] = '<tr>
-									<td><img src="clear.gif" width="18" height="1" /></td>
+									<td></td>
 									<td class="bgColor4" valign="top">' . $A[0] . $logo . $A[1] . '</td>
 									<td class="bgColor4" valign="top">' . $A[0] . '<strong>' . $title . '</strong><br />' . $description . $A[1] . '</td>
 								</tr>';

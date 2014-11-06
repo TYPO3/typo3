@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Rtehtmlarea;
+namespace TYPO3\CMS\Rtehtmlarea\Controller;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
-class ContentParser {
+class ParseHtmlController {
 
 	/**
 	 * @var string

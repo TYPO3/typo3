@@ -60,27 +60,27 @@ if (TYPO3_MODE === 'BE' && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::i
 	$GLOBALS['TYPO3_USER_SETTINGS']['showitem'] .= ',--div--;LLL:EXT:rtehtmlarea/locallang.xlf:rteSettings,rteWidth,rteHeight,rteResize,rteMaxHeight,rteCleanPasteBehaviour';
 }
 if (TYPO3_MODE === 'BE') {
-	// Register RTE element browser wizard
+	// Register RTE browse links wizard
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'rtehtmlarea_wizard_element_browser',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod3/'
+		'rtehtmlarea_wizard_browse_links',
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/BrowseLinks/'
 	);
 
-	// Register RTE wizard_select_image
+	// Register RTE select image wizard
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'rtehtmlarea_wizard_select_image',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod4/'
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/SelectImage/'
 	);
 
-	// Register RTE wizard_user
+	// Register RTE user elements wizard
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'rtehtmlarea_wizard_user',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod5/'
+		'rtehtmlarea_wizard_user_elements',
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/UserElements/'
 	);
 
-	// Register RTE wizard_user
+	// Register RTE parse html wizard
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'rtehtmlarea_wizard_parse_html',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod6/'
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/ParseHtml/'
 	);
 }

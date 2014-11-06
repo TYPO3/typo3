@@ -12,13 +12,14 @@
  * The TYPO3 project - inspiring people to share!
  */
 /**
- * Content parsing for htmlArea RTE
+ * User defined content for htmlArea RTE
  *
+ * @author Kasper Skårhøj <kasper@typo3.com>
  * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
 
 // Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Rtehtmlarea\\ContentParser');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Rtehtmlarea\\Controller\\UserElementsController');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
