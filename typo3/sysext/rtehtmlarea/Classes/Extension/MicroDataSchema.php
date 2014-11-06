@@ -72,7 +72,7 @@ class MicroDataSchema extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 				$absolutePath = GeneralUtility::getFileAbsFileName($fileName);
 				// Fallback to default schema file if configured file does not exists or is of zero size
 				if (!$fileName || !file_exists($absolutePath) || !filesize($absolutePath)) {
-					$fileName = 'EXT:' . $this->ID . '/extensions/MicrodataSchema/res/schemaOrgAll.rdf';
+					$fileName = 'EXT:' . $this->extensionKey . '/Resources/Public/Rdf/MicrodataSchema/SchemaOrgAll.rdf';
 				}
 				$fileName = $this->htmlAreaRTE->getFullFileName($fileName);
 				$rdf = GeneralUtility::getUrl($fileName);
