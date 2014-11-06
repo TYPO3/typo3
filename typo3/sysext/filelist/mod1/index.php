@@ -15,7 +15,6 @@
 /**
  * Web>File: File listing
  */
-
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Filelist\\Controller\\FileListController');
 $SOBE->init();
 $SOBE->main();

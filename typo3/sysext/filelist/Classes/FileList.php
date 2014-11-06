@@ -29,59 +29,98 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	/**
 	 * Default Max items shown
 	 *
+	 * @var int
 	 */
 	public $iLimit = 40;
 
 	/**
-	 * Boolean. Thumbnails on records containing files (pictures)
+	 * Thumbnails on records containing files (pictures)
 	 *
+	 * @var bool
 	 */
-	public $thumbs = 0;
+	public $thumbs = FALSE;
 
+	/**
+	 * @var string
+	 */
 	public $widthGif = '<img src="clear.gif" width="1" height="1" hspace="165" alt="" />';
 
 	/**
 	 * Max length of strings
 	 *
+	 * @var int
 	 */
 	public $fixedL = 30;
 
+	/**
+	 * @var string
+	 */
 	public $script = '';
 
 	/**
 	 * If TRUE click menus are generated on files and folders
 	 *
+	 * @var bool
 	 */
 	public $clickMenus = 1;
 
 	/**
 	 * The field to sort by
 	 *
+	 * @var string
 	 */
 	public $sort = '';
 
 	/**
 	 * Reverse sorting flag
 	 *
+	 * @var bool
 	 */
 	public $sortRev = 1;
 
+	/**
+	 * @var int
+	 */
 	public $firstElementNumber = 0;
 
+	/**
+	 * @var bool
+	 */
 	public $clipBoard = 0;
 
+	/**
+	 * @var bool
+	 */
 	public $bigControlPanel = 0;
 
+	/**
+	 * @var string
+	 */
 	public $JScode = '';
 
+	/**
+	 * @var string
+	 */
 	public $HTMLcode = '';
 
+	/**
+	 * @var int
+	 */
 	public $totalbytes = 0;
 
+	/**
+	 * @var array
+	 */
 	public $dirs = array();
 
+	/**
+	 * @var array
+	 */
 	public $files = array();
 
+	/**
+	 * @var string
+	 */
 	public $path = '';
 
 	/**
@@ -92,13 +131,23 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	/**
 	 * Counting the elements no matter what
 	 *
+	 * @var int
 	 */
 	public $eCounter = 0;
 
+	/**
+	 * @var int
+	 */
 	public $dirCounter = 0;
 
+	/**
+	 * @var string
+	 */
 	public $totalItems = '';
 
+	/**
+	 * @var array
+	 */
 	public $CBnames = array();
 
 	/**

@@ -27,16 +27,24 @@ class FileListController {
 	/**
 	 * Module configuration
 	 *
+	 * @var array
 	 */
 	public $MCONF = array();
 
+	/**
+	 * @var array
+	 */
 	public $MOD_MENU = array();
 
+	/**
+	 * @var array
+	 */
 	public $MOD_SETTINGS = array();
 
 	/**
 	 * Accumulated HTML output
 	 *
+	 * @var string
 	 */
 	public $content;
 
@@ -50,6 +58,7 @@ class FileListController {
 	/**
 	 * "id" -> the path to list.
 	 *
+	 * @var string
 	 */
 	public $id;
 
@@ -66,23 +75,32 @@ class FileListController {
 	/**
 	 * Pointer to listing
 	 *
+	 * @var int
 	 */
 	public $pointer;
 
 	/**
 	 * "Table"
 	 *
+	 * @var string
 	 */
 	public $table;
 
 	/**
 	 * Thumbnail mode.
 	 *
+	 * @var string
 	 */
 	public $imagemode;
 
+	/**
+	 * @var string
+	 */
 	public $cmd;
 
+	/**
+	 * @var bool
+	 */
 	public $overwriteExistingFiles;
 
 	/**
