@@ -534,7 +534,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		}
 		// Fallback to default content css file if none of the configured files exists and is not empty
 		if (count($contentCssFiles) === 0) {
-			$contentCssFiles['default'] = $this->getFullFileName('EXT:' . $this->ID . '/res/contentcss/default.css');
+			$contentCssFiles['default'] = $this->getFullFileName('EXT:' . $this->ID . '/Resources/Public/Css/ContentCss/Default.css');
 		}
 		return array_unique($contentCssFiles);
 	}

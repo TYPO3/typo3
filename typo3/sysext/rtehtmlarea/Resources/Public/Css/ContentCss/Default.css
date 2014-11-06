@@ -17,7 +17,7 @@ p.csc-frame-frame2, table.csc-frame-frame2 { background-color: #F5FFAA; padding:
 
 /* Bullet styles for unordered lists.*/
 ul.component-items { color: #186900; list-style-type: circle; }
-ul.action-items { color: #8A0020; list-style-image: url(img/red_arrow_bullet.gif); }
+ul.action-items { color: #8A0020; list-style-image: url(../../Images/red_arrow_bullet.png); }
 
 /* Numbering styles for ordered lists.*/
 ol.component-items-ordered { color: #10007B; list-style-type: lower-roman; }
