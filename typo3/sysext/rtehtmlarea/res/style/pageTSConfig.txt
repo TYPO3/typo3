@@ -15,7 +15,7 @@ RTE.default.proc {
 		tags {
 				## CLEAN ATTRIBUTES ON THE FOLLOWING TAGS
 			span.fixAttrib.style.unset >
-			span.allowedAttribs = id, title, dir, lang, xml:lang, class, style
+			span.allowedAttribs := addToList(style)
 			p.allowedAttribs := addToList(style)
 			div < .p
 			hr.allowedAttribs := addToList(style)
