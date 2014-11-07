@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Recycler\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Recycler\Utility\RecyclerUtility;
+
 /**
  * Model class for the 'recycler' extension.
  *
@@ -45,7 +48,7 @@ class DeletedRecords {
 	/**
 	 * Object from helper class
 	 *
-	 * @var \TYPO3\CMS\Recycler\Utility\RecyclerUtility
+	 * @var RecyclerUtility
 	 */
 	protected $recyclerHelper;
 
@@ -63,6 +66,20 @@ class DeletedRecords {
 	 */
 	public $title;
 
+	/**
+	 * Database Connection
+	 *
+	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected $databaseConnection;
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$this->databaseConnection = $GLOBALS['TYPO3_DB'];
+	}
+
 	/************************************************************
 	 * GET DATA FUNCTIONS
 	 *
@@ -72,12 +89,12 @@ class DeletedRecords {
 	 * Load all deleted rows from $table
 	 * If table is not set, it iterates the TCA tables
 	 *
-	 * @param int $id: UID from selected page
-	 * @param string $table: Tablename
-	 * @param int $depth: How many levels recursive
-	 * @param int $limit: MySQL LIMIT
-	 * @param string $filter: Filter text
-	 * @return 	recycler_model_delRecords
+	 * @param int $id UID from selected page
+	 * @param string $table Tablename
+	 * @param int $depth How many levels recursive
+	 * @param string $limit MySQL LIMIT
+	 * @param string $filter Filter text
+	 * @return DeletedRecords
 	 */
 	public function loadData($id, $table, $depth, $limit = '', $filter = '') {
 		// set the limit
@@ -91,7 +108,7 @@ class DeletedRecords {
 			foreach ($GLOBALS['TCA'] as $tableKey => $tableValue) {
 				// only go into this table if the limit allows it
 				if ($this->limit != '') {
-					$parts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->limit);
+					$parts = GeneralUtility::trimExplode(',', $this->limit);
 					// abort loop if LIMIT 0,0
 					if ($parts[0] == 0 && $parts[1] == 0) {
 						break;
@@ -107,11 +124,11 @@ class DeletedRecords {
 	/**
 	 * Find the total count of deleted records
 	 *
-	 * @param int $id: UID from record
-	 * @param string $table: Tablename from record
-	 * @param int $depth: How many levels recursive
-	 * @param string $filter: Filter text
-	 * @return void
+	 * @param int $id UID from record
+	 * @param string $table Tablename from record
+	 * @param int $depth How many levels recursive
+	 * @param string $filter Filter text
+	 * @return int
 	 */
 	public function getTotalCount($id, $table, $depth, $filter) {
 		$deletedRecords = $this->loadData($id, $table, $depth, '', $filter)->getDeletedRows();
@@ -125,28 +142,30 @@ class DeletedRecords {
 	/**
 	 * Set all deleted rows
 	 *
-	 * @param int $id: UID from record
-	 * @param string $table: Tablename from record
-	 * @param int $depth: How many levels recursive
-	 * @param array $ctrl: TCA CTRL Array
-	 * @param string $filter: Filter text
+	 * @param int $id UID from record
+	 * @param string $table Tablename from record
+	 * @param int $depth How many levels recursive
+	 * @param array $tcaCtrl TCA CTRL array
+	 * @param string $filter Filter text
 	 * @return void
 	 */
 	protected function setData($id = 0, $table, $depth, $tcaCtrl, $filter) {
 		$id = (int)$id;
 		if (array_key_exists('delete', $tcaCtrl)) {
 			// find the 'deleted' field for this table
-			$deletedField = \TYPO3\CMS\Recycler\Utility\RecyclerUtility::getDeletedField($table);
+			$deletedField = RecyclerUtility::getDeletedField($table);
 			// create the filter WHERE-clause
+			$filterWhere = '';
 			if (trim($filter) != '') {
 				$filterWhere = ' AND (' . (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($filter) ? 'uid = ' . $filter . ' OR pid = ' . $filter . ' OR ' : '') . $tcaCtrl['label'] . ' LIKE "%' . $this->escapeValueForLike($filter, $table) . '%"' . ')';
 			}
+
 			// get the limit
 			if ($this->limit != '') {
 				// count the number of deleted records for this pid
-				$deletedCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $table, $deletedField . '<>0 AND pid = ' . $id . $filterWhere);
+				$deletedCount = $this->databaseConnection->exec_SELECTcountRows('uid', $table, $deletedField . '<>0 AND pid = ' . $id . $filterWhere);
 				// split the limit
-				$parts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->limit);
+				$parts = GeneralUtility::trimExplode(',', $this->limit);
 				$offset = $parts[0];
 				$rowCount = $parts[1];
 				// subtract the number of deleted records from the limit's offset
@@ -216,20 +235,20 @@ class DeletedRecords {
 			// go into depth
 			if ($allowDepth && $depth >= 1) {
 				// check recursively for elements beneath this page
-				$resPages = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'pid=' . $id, '', 'sorting');
+				$resPages = $this->databaseConnection->exec_SELECTquery('uid', 'pages', 'pid=' . $id, '', 'sorting');
 				if ($resPages) {
-					while ($rowPages = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resPages)) {
+					while ($rowPages = $this->databaseConnection->sql_fetch_assoc($resPages)) {
 						$this->setData($rowPages['uid'], $table, $depth - 1, $tcaCtrl, $filter);
 						// some records might have been added, check if we still have the limit for further queries
 						if ('' != $this->limit) {
-							$parts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->limit);
+							$parts = GeneralUtility::trimExplode(',', $this->limit);
 							// abort loop if LIMIT 0,0
 							if ($parts[0] == 0 && $parts[1] == 0) {
 								break;
 							}
 						}
 					}
-					$GLOBALS['TYPO3_DB']->sql_free_result($resPages);
+					$this->databaseConnection->sql_free_result($resPages);
 				}
 			}
 			$this->label[$table] = $tcaCtrl['label'];
@@ -240,13 +259,13 @@ class DeletedRecords {
 	/**
 	 * Checks whether the current backend user has access to the given records.
 	 *
-	 * @param string $table: Name of the table
-	 * @param array $rows: Record row
+	 * @param string $table Name of the table
+	 * @param array $rows Record row
 	 * @return void
 	 */
 	protected function checkRecordAccess($table, array $rows) {
 		foreach ($rows as $key => $row) {
-			if (\TYPO3\CMS\Recycler\Utility\RecyclerUtility::checkAccess($table, $row)) {
+			if (RecyclerUtility::checkAccess($table, $row)) {
 				$this->setDeletedRows($table, $row);
 			}
 		}
@@ -256,12 +275,12 @@ class DeletedRecords {
 	 * Escapes a value to be used for like in a database query.
 	 * There is a special handling for the characters '%' and '_'.
 	 *
-	 * @param string $value: The value to be escaped for like conditions
-	 * @param string $tableName: The name of the table the query should be used for
+	 * @param string $value The value to be escaped for like conditions
+	 * @param string $tableName The name of the table the query should be used for
 	 * @return string The escaped value to be used for like conditions
 	 */
 	protected function escapeValueForLike($value, $tableName) {
-		return $GLOBALS['TYPO3_DB']->escapeStrForLike($GLOBALS['TYPO3_DB']->quoteStr($value, $tableName), $tableName);
+		return $this->databaseConnection->escapeStrForLike($this->databaseConnection->quoteStr($value, $tableName), $tableName);
 	}
 
 	/************************************************************
@@ -270,13 +289,13 @@ class DeletedRecords {
 	/**
 	 * Delete element from any table
 	 *
-	 * @param string $recordArray: Representation of the records
-	 * @return void
+	 * @param array $recordsArray Representation of the records
+	 * @return bool
 	 */
 	public function deleteData($recordsArray) {
 		$recordsArray = json_decode($recordsArray);
 		if (is_array($recordsArray)) {
-			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+			$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 			$tce->start('', '');
 			$tce->disableDeleteClause();
 			foreach ($recordsArray as $key => $record) {
@@ -294,8 +313,8 @@ class DeletedRecords {
 	 * Undelete records
 	 * If $recursive is TRUE all records below the page uid would be undelete too
 	 *
-	 * @param string $recordArray: Representation of the records
-	 * @param bool $recursive: TRUE/FALSE
+	 * @param array $recordsArray Representation of the records
+	 * @param bool $recursive Whether to recursively undelete
 	 * @return bool
 	 */
 	public function undeleteData($recordsArray, $recursive = FALSE) {
@@ -320,7 +339,7 @@ class DeletedRecords {
 				}
 			}
 			if ($cmd) {
-				$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+				$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 				$tce->start(array(), $cmd);
 				$tce->process_cmdmap();
 				$result = TRUE;
@@ -335,8 +354,8 @@ class DeletedRecords {
 	/**
 	 * Set deleted rows
 	 *
-	 * @param string $table: Tablename
-	 * @param array $row: Deleted record row
+	 * @param string $table Tablename
+	 * @param array $row Deleted record row
 	 * @return void
 	 */
 	public function setDeletedRows($table, array $row) {
@@ -349,7 +368,7 @@ class DeletedRecords {
 	/**
 	 * Get deleted Rows
 	 *
-	 * @return array $this->deletedRows: Array with all deleted rows from TCA
+	 * @return array Array with all deleted rows from TCA
 	 */
 	public function getDeletedRows() {
 		return $this->deletedRows;
@@ -358,10 +377,9 @@ class DeletedRecords {
 	/**
 	 * Get table
 	 *
-	 * @return array $this->table: Array with table from TCA
+	 * @return array Array with table from TCA
 	 */
 	public function getTable() {
 		return $this->table;
 	}
-
 }

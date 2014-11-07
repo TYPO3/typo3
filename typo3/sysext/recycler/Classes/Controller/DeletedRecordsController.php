@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Recycler\Controller;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Recycler\Utility\RecyclerUtility;
 
 /**
  * Deleted Records View
@@ -25,11 +26,23 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 class DeletedRecordsController {
 
 	/**
+	 * @var \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected $languageService;
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$this->languageService = $GLOBALS['LANG'];
+	}
+
+	/**
 	 * Transforms the rows for the deleted Records into the Array View necessary for ExtJS Ext.data.ArrayReader
 	 *
-	 * @param array $rows Array with table as key and array with all deleted rows
-	 * @param int $totalDeleted: Number of deleted records in total, for PagingToolbar
-	 * @return string JSON Array
+	 * @param array $deletedRowsArray Array with table as key and array with all deleted rows
+	 * @param int $totalDeleted Number of deleted records in total, for PagingToolbar
+	 * @return string JSON array
 	 */
 	public function transform($deletedRowsArray, $totalDeleted) {
 		$total = 0;
@@ -50,10 +63,10 @@ class DeletedRecordsController {
 						'tstamp' => BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['tstamp']]),
 						'owner' => htmlspecialchars($backendUser['username']),
 						'owner_uid' => $row[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']],
-						'tableTitle' => \TYPO3\CMS\Recycler\Utility\RecyclerUtility::getUtf8String($GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['ctrl']['title'])),
-						'title' => htmlspecialchars(\TYPO3\CMS\Recycler\Utility\RecyclerUtility::getUtf8String(
+						'tableTitle' => RecyclerUtility::getUtf8String($this->languageService->sL($GLOBALS['TCA'][$table]['ctrl']['title'])),
+						'title' => htmlspecialchars(RecyclerUtility::getUtf8String(
 								BackendUtility::getRecordTitle($table, $row))),
-						'path' => \TYPO3\CMS\Recycler\Utility\RecyclerUtility::getRecordPath($row['pid'])
+						'path' => RecyclerUtility::getRecordPath($row['pid'])
 					);
 				}
 			}
@@ -61,5 +74,4 @@ class DeletedRecordsController {
 		$jsonArray['total'] = $totalDeleted;
 		return json_encode($jsonArray);
 	}
-
 }

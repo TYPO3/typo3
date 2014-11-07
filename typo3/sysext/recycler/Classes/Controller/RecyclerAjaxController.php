@@ -68,7 +68,7 @@ class RecyclerAjaxController {
 		// check params
 		if (!is_string($this->command)) {
 			// @TODO make devlog output
-			return FALSE;
+			return;
 		}
 		// Create content
 		$this->createContent();
@@ -80,7 +80,6 @@ class RecyclerAjaxController {
 	 * @return void
 	 */
 	protected function createContent() {
-		$str = '';
 		switch ($this->command) {
 			case 'getDeletedRecords':
 				$table = GeneralUtility::_GP('table') ? GeneralUtility::_GP('table') : GeneralUtility::_GP('tableDefault');
@@ -90,17 +89,20 @@ class RecyclerAjaxController {
 				$startUid = GeneralUtility::_GP('startUid') ? GeneralUtility::_GP('startUid') : '';
 				$depth = GeneralUtility::_GP('depth') ? GeneralUtility::_GP('depth') : '';
 				$this->setDataInSession('tableSelection', $table);
+				/* @var $model \TYPO3\CMS\Recycler\Domain\Model\DeletedRecords */
 				$model = GeneralUtility::makeInstance('TYPO3\\CMS\\Recycler\\Domain\\Model\\DeletedRecords');
 				$model->loadData($startUid, $table, $depth, $start . ',' . $limit, $filter);
 				$deletedRowsArray = $model->getDeletedRows();
 				$model = GeneralUtility::makeInstance('TYPO3\\CMS\\Recycler\\Domain\\Model\\DeletedRecords');
 				$totalDeleted = $model->getTotalCount($startUid, $table, $depth, $filter);
 				// load view
+				/* @var $view \TYPO3\CMS\Recycler\Controller\DeletedRecordsController */
 				$view = GeneralUtility::makeInstance('TYPO3\\CMS\\Recycler\\Controller\\DeletedRecordsController');
 				$str = $view->transform($deletedRowsArray, $totalDeleted);
 				break;
 			case 'doDelete':
 				$str = FALSE;
+				/* @var $model \TYPO3\CMS\Recycler\Domain\Model\DeletedRecords */
 				$model = GeneralUtility::makeInstance('TYPO3\\CMS\\Recycler\\Domain\\Model\\DeletedRecords');
 				if ($model->deleteData($this->data)) {
 					$str = TRUE;
@@ -109,6 +111,7 @@ class RecyclerAjaxController {
 			case 'doUndelete':
 				$str = FALSE;
 				$recursive = GeneralUtility::_GP('recursive');
+				/* @var $model \TYPO3\CMS\Recycler\Domain\Model\DeletedRecords */
 				$model = GeneralUtility::makeInstance('TYPO3\\CMS\\Recycler\\Domain\\Model\\DeletedRecords');
 				if ($model->undeleteData($this->data, $recursive)) {
 					$str = TRUE;
@@ -118,8 +121,9 @@ class RecyclerAjaxController {
 				$depth = GeneralUtility::_GP('depth') ? GeneralUtility::_GP('depth') : 0;
 				$startUid = GeneralUtility::_GP('startUid') ? GeneralUtility::_GP('startUid') : '';
 				$this->setDataInSession('depthSelection', $depth);
+				/* @var $model \TYPO3\CMS\Recycler\Domain\Model\Tables */
 				$model = GeneralUtility::makeInstance('TYPO3\\CMS\\Recycler\\Domain\\Model\\Tables');
-				$str = $model->getTables('json', 1, $startUid, $depth);
+				$str = $model->getTables('json', TRUE, $startUid, $depth);
 				break;
 			default:
 				$str = 'No command was recognized.';
@@ -144,8 +148,9 @@ class RecyclerAjaxController {
 	 * @return void
 	 */
 	protected function setDataInSession($identifier, $data) {
-		$GLOBALS['BE_USER']->uc['tx_recycler'][$identifier] = $data;
-		$GLOBALS['BE_USER']->writeUC();
+		/* @var $beUser \TYPO3\CMS\Core\Authentication\BackendUserAuthentication */
+		$beUser = $GLOBALS['BE_USER'];
+		$beUser->uc['tx_recycler'][$identifier] = $data;
+		$beUser->writeUC();
 	}
-
 }

@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Recycler\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Recycler\Utility\RecyclerUtility;
+
 /**
  * Model class for the 'recycler' extension.
  *
@@ -22,23 +24,44 @@ namespace TYPO3\CMS\Recycler\Domain\Model;
 class Tables {
 
 	/**
+	 * @var \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected $languageService;
+
+	/**
+	 * Database Connection
+	 *
+	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected $databaseConnection;
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$this->languageService = $GLOBALS['LANG'];
+		$this->databaseConnection = $GLOBALS['TYPO3_DB'];
+	}
+
+	/**
 	 * Get tables for menu example
 	 *
-	 * @param string $format: Return format (example: json)
-	 * @param bool $withAllOption: 0 no, 1 return tables with a "all" option
-	 * @param int $id: UID from selected page
-	 * @param int $depth: How many levels recursive
+	 * @param string $format Return format (example: json) - currently unused
+	 * @param bool $withAllOption FALSE: no, TRUE: return tables with a "all" option
+	 * @param int $startUid UID from selected page
+	 * @param int $depth How many levels recursive
 	 * @return string The tables to be displayed
 	 */
-	public function getTables($format, $withAllOption = 0, $startUid, $depth = 0) {
+	public function getTables($format, $withAllOption = TRUE, $startUid, $depth = 0) {
 		$deletedRecordsTotal = 0;
 		$tables = array();
 		foreach (array_keys($GLOBALS['TCA']) as $tableName) {
-			$deletedField = \TYPO3\CMS\Recycler\Utility\RecyclerUtility::getDeletedField($tableName);
+			$deletedField = RecyclerUtility::getDeletedField($tableName);
 			if ($deletedField) {
 				// Determine whether the table has deleted records:
-				$deletedCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $tableName, $deletedField . '<>0');
+				$deletedCount = $this->databaseConnection->exec_SELECTcountRows('uid', $tableName, $deletedField . '<>0');
 				if ($deletedCount) {
+					/* @var $deletedDataObject \TYPO3\CMS\Recycler\Domain\Model\DeletedRecords */
 					$deletedDataObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Recycler\\Domain\\Model\\DeletedRecords');
 					$deletedData = $deletedDataObject->loadData($startUid, $tableName, $depth)->getDeletedRows();
 					if (isset($deletedData[$tableName])) {
@@ -48,7 +71,7 @@ class Tables {
 								$tableName,
 								$deletedRecordsInTable,
 								$tableName,
-								\TYPO3\CMS\Recycler\Utility\RecyclerUtility::getUtf8String($GLOBALS['LANG']->sL($GLOBALS['TCA'][$tableName]['ctrl']['title']))
+								RecyclerUtility::getUtf8String($this->languageService->sL($GLOBALS['TCA'][$tableName]['ctrl']['title']))
 							);
 						}
 					}
@@ -61,11 +84,10 @@ class Tables {
 				'',
 				$deletedRecordsTotal,
 				'',
-				$GLOBALS['LANG']->sL('LLL:EXT:recycler/mod1/locallang.xlf:label_alltables')
+				$this->languageService->sL('LLL:EXT:recycler/mod1/locallang.xlf:label_alltables')
 			));
 		}
 		$output = json_encode($jsonArray);
 		return $output;
 	}
-
 }
