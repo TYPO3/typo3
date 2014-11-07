@@ -15,7 +15,14 @@
 DocHeader
 - - - - - - - - - - - - - - - - - - - - - */
 
+@docheader-text: rgb(45, 45, 45);
+@docheader-bg: linear-gradient(to bottom, rgb(235, 235, 235) 0%, rgb(205, 205, 205) 100%);
+@docheader-border: rgb(195, 195, 195);
+
 #typo3-docheader {
+	background-color: @docheader-bg;
+	background: @docheader-bg;
+
 	img,
 	input {
 		cursor: pointer;
@@ -52,25 +59,96 @@ DocHeader
 
 
 	.typo3-docheader-functions {
-		background-color: #585858;
-		color: #dadada;
+		color: @docheader-text;
+		border-bottom: 1px solid @docheader-border;
 		height: 27px;
 		line-height: 27px;
 		padding: 0 24px;
 		overflow: hidden;
 
+		a {
+			color: @docheader-text;
+
+			&:hover {
+				color: #000;
+			}
+		}
+
 		/* overwrite defaults from normalize.css */
 		select {
-			color: #000;
+			color: @docheader-text;
 		}
 	}
 
 	.typo3-docheader-buttons {
-		background-color: #dadada;
-		color: #000;
+		color: @docheader-text;
+		border-bottom: 1px solid @docheader-border;
 		height: 22px;
 		padding: 3px 24px;
 		overflow: hidden;
+
+		a {
+			color: @docheader-text;
+
+			&:hover {
+				color: #000;
+			}
+		}
+	}
+}
+
+/**
+ * ExtJS Viewport
+ */
+
+/* Collapsed tree frame is not invisible, but 5px wide.
+   If no tree frame is in use, an empty container is shown instead */
+
+#typo3-module-menu-xsplit,
+#typo3-navigationContainer-xsplit,
+#typo3-navigationContainer-xcollapsed,
+#typo3-navigationDummy {
+	background: @body-bg url(../../Images/docheader-split-background.png) left top repeat-x;
+}
+
+/** ExtJS theme for PageTree */
+#typo3-pagetree-topPanelItems {
+	background-color: @docheader-bg;
+	background: @docheader-bg;
+
+	#typo3-pagetree-topPanel {
+		// Functions
+		.x-panel-tbar {
+			color: @docheader-text;
+			border-bottom: 1px solid @docheader-border;
+
+			a {
+				color: @docheader-text;
+
+				&:hover {
+					color: #000;
+				}
+			}
+
+		}
+
+		// Buttons
+		.x-panel-body {
+			color: @docheader-text;
+			border-bottom: 1px solid @docheader-border;
+
+			.typo3-pagetree-topPanel-button {
+				margin-top: 0;
+			}
+
+			a {
+				color: @docheader-text;
+
+				&:hover {
+					color: #000;
+				}
+			}
+		}
 	}
 
 }

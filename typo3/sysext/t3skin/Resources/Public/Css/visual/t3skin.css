@@ -6990,6 +6990,10 @@ div#contentMenu1 {
 /* - - - - - - - - - - - - - - - - - - - - -
 DocHeader
 - - - - - - - - - - - - - - - - - - - - - */
+#typo3-docheader {
+  background-color: linear-gradient(to bottom, #ebebeb 0%, #cdcdcd 100%);
+  background: linear-gradient(to bottom, #ebebeb 0%, #cdcdcd 100%);
+}
 #typo3-docheader img,
 #typo3-docheader input {
   cursor: pointer;
@@ -7019,23 +7023,74 @@ DocHeader
   margin-left: 6px;
 }
 #typo3-docheader .typo3-docheader-functions {
-  background-color: #585858;
-  color: #dadada;
+  color: #2d2d2d;
+  border-bottom: 1px solid #c3c3c3;
   height: 27px;
   line-height: 27px;
   padding: 0 24px;
   overflow: hidden;
   /* overwrite defaults from normalize.css */
 }
-#typo3-docheader .typo3-docheader-functions select {
+#typo3-docheader .typo3-docheader-functions a {
+  color: #2d2d2d;
+}
+#typo3-docheader .typo3-docheader-functions a:hover {
   color: #000;
 }
+#typo3-docheader .typo3-docheader-functions select {
+  color: #2d2d2d;
+}
 #typo3-docheader .typo3-docheader-buttons {
-  background-color: #dadada;
-  color: #000;
+  color: #2d2d2d;
+  border-bottom: 1px solid #c3c3c3;
   height: 22px;
   padding: 3px 24px;
   overflow: hidden;
+}
+#typo3-docheader .typo3-docheader-buttons a {
+  color: #2d2d2d;
+}
+#typo3-docheader .typo3-docheader-buttons a:hover {
+  color: #000;
+}
+/**
+ * ExtJS Viewport
+ */
+/* Collapsed tree frame is not invisible, but 5px wide.
+   If no tree frame is in use, an empty container is shown instead */
+#typo3-module-menu-xsplit,
+#typo3-navigationContainer-xsplit,
+#typo3-navigationContainer-xcollapsed,
+#typo3-navigationDummy {
+  background: #ffffff url(../../Images/docheader-split-background.png) left top repeat-x;
+}
+/** ExtJS theme for PageTree */
+#typo3-pagetree-topPanelItems {
+  background-color: linear-gradient(to bottom, #ebebeb 0%, #cdcdcd 100%);
+  background: linear-gradient(to bottom, #ebebeb 0%, #cdcdcd 100%);
+}
+#typo3-pagetree-topPanelItems #typo3-pagetree-topPanel .x-panel-tbar {
+  color: #2d2d2d;
+  border-bottom: 1px solid #c3c3c3;
+}
+#typo3-pagetree-topPanelItems #typo3-pagetree-topPanel .x-panel-tbar a {
+  color: #2d2d2d;
+}
+#typo3-pagetree-topPanelItems #typo3-pagetree-topPanel .x-panel-tbar a:hover {
+  color: #000;
+}
+#typo3-pagetree-topPanelItems #typo3-pagetree-topPanel .x-panel-body {
+  color: #2d2d2d;
+  border-bottom: 1px solid #c3c3c3;
+}
+#typo3-pagetree-topPanelItems #typo3-pagetree-topPanel .x-panel-body .typo3-pagetree-topPanel-button {
+  margin-top: 0;
+}
+#typo3-pagetree-topPanelItems #typo3-pagetree-topPanel .x-panel-body a {
+  color: #2d2d2d;
+}
+#typo3-pagetree-topPanelItems #typo3-pagetree-topPanel .x-panel-body a:hover {
+  color: #000;
 }
 /**
  * This file is part of the TYPO3 CMS project.
@@ -7171,8 +7226,7 @@ Pagetree
   padding: 2px 3px 4px 3px;
 }
 #typo3-pagetree .x-panel-tbar .x-toolbar {
-  padding-top: 2px;
-  height: 27px;
+  height: 26px;
 }
 #typo3-pagetree .x-toolbar {
   background: none;
@@ -7215,10 +7269,6 @@ Pagetree
 #typo3-pagetree .x-tree-node-readableRootline {
   padding: 10px 0 3px 10px;
 }
-#typo3-pagetree .x-panel-tbar {
-  background-color: #585858;
-  border: none;
-}
 #typo3-pagetree .x-unselectable,
 #typo3-pagetree .x-unselectable * {
   /* restore behaviour from x-tree-node-el which gets overwritten by x-unselectable in default-css */
@@ -7250,9 +7300,6 @@ Drag and Drop
 }
 .x-tree-lines .typo3-pagetree-node-notExpandable ul .x-tree-ec-icon {
   visibility: visible;
-}
-.typo3-pagetree-topPanel-item .x-toolbar {
-  padding: 0;
 }
 .x-tree-node a .typo3-pagetree-status,
 .x-dd-drag-ghost a .typo3-pagetree-status {
@@ -7377,7 +7424,6 @@ Top Panel
   outline: none;
 }
 #typo3-pagetree .typo3-pagetree-topPanel-item {
-  background-color: #dadada;
   line-height: normal;
 }
 #typo3-pagetree-topPanel-filter {
@@ -7494,13 +7540,6 @@ Deletion Drop Zone
 }
 #typo3-pagetree .typo3-pagetree-deletionDropZone-activateProxyOver {
   background-color: #644d2d;
-}
-/* - - - - - - - - - - - - - - - - - - - - -
-Pagetree
-- - - - - - - - - - - - - - - - - - - - - */
-#typo3-pagetree-treeContainer,
-#typo3-pagetree-topPanelItems {
-  background-color: #ebebeb;
 }
 /* - - - - - - - - - - - - - - - - - - - - -
 Tree Highlighting
@@ -9028,7 +9067,8 @@ body#typo3-alt-file-navframe-php {
 }
 #typo3-alt-file-navframe-php #typo3-docbody,
 #typo3-pagetree-treeContainer {
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA9JREFUeNpiun79OkCAAQAFFgKIFwyKvQAAAABJRU5ErkJggg==");
+  border-right: 1px solid #c3c3c3;
+  background-color: #f5f5f5;
 }
 table#typo3-tree tr:hover {
   background-color: #d7dbe2;
@@ -10058,6 +10098,7 @@ Topbar
 }
 #typo3-topbar #typo3-top-container {
   margin-bottom: 0;
+  border: none;
 }
 #typo3-topbar #typo3-top-container #typo3-logo {
   margin: 8px 0 0 0;

@@ -2153,16 +2153,6 @@ body.x-body-masked .x-window-plain .x-window-mc {
 body.ext-chrome #typo3-module-menu-xsplit,
 body.ext-chrome #typo3-navigationContainer-xsplit {
 	width: 5px;
-	background-image: url('images/splitbar/splitbar-background-top.png');
-	background-repeat: repeat-x;
-}
-
-body.ext-chrome #typo3-module-menu-xsplit {
-	background-color: #ebebeb;
-}
-
-body.ext-chrome #typo3-navigationContainer-xsplit {
-	background-color: #fff;
 }
 
 /* Collapse icon */
@@ -2189,18 +2179,6 @@ body.ext-chrome #typo3-navigationContainer-xsplit {
 #typo3-module-menu-xcollapsed:hover .x-layout-mini-west {
 	left: 5px;
 }
-
-/* Collapsed tree frame is not invisible, but 5px wide.
-   If no tree frame is in use, an empty container is shown instead */
-#typo3-navigationContainer-xcollapsed,
-#typo3-navigationDummy {
-	background-color: #ebebeb;
-	box-shadow:
-		inset 0 27px #585858,
-		inset 0 49px #dadada;
-	overflow: visible;
-}
-
 
 #typo3-navigationContainer-xcollapsed {
 	width: 10px !important;

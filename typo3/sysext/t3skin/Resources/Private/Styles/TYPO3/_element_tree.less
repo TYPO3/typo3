@@ -15,6 +15,10 @@
 Trees
 - - - - - - - - - - - - - - - - - - - - - */
 
+@navigation-text: #000;
+@navigation-bg: rgb(245, 245, 245);
+@navigation-border: rgb(195, 195, 195);
+
 table#typo3-tree {
 	margin: 10px 0 20px 10px;
 	width: 95%;
@@ -271,7 +275,8 @@ body#typo3-alt-file-navframe-php {
 
 #typo3-alt-file-navframe-php #typo3-docbody,
 #typo3-pagetree-treeContainer {
-	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA9JREFUeNpiun79OkCAAQAFFgKIFwyKvQAAAABJRU5ErkJggg==");
+	border-right: 1px solid @navigation-border;
+	background-color: @navigation-bg;
 }
 
 table#typo3-tree tr:hover {
