@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Rsaauth\Storage;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * This class contains a session-based storage for private keys. This storage
  * is not secure enough because its implementation stores keys completely in the
@@ -22,7 +23,7 @@ namespace TYPO3\CMS\Rsaauth\Storage;
  *
  * @author Dmitry Dulepov <dmitry@typo3.org>
  */
-class SessionStorage extends \TYPO3\CMS\Rsaauth\Storage\AbstractStorage {
+class SessionStorage extends AbstractStorage {
 
 	/**
 	 * Creates an instance of this class. It checks and initializes PHP

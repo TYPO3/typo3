@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Reports\Task;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Additional field to set the notification email address(es) for system health
  * issue notifications.

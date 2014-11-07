@@ -27,14 +27,14 @@ class RecyclerAjaxController {
 	/**
 	 * Stores the content for the ajax output
 	 *
-	 * @var 	string
+	 * @var string
 	 */
 	protected $content;
 
 	/**
 	 * Command to be processed
 	 *
-	 * @var 	string
+	 * @var string
 	 */
 	protected $command;
 
@@ -43,7 +43,7 @@ class RecyclerAjaxController {
 	 * Example: Json format
 	 * [ ["pages",1],["pages",2],["tt_content",34] ]
 	 *
-	 * @var 	string
+	 * @var string
 	 */
 	protected $data;
 

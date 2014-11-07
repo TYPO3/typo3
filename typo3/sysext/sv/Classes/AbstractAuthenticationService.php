@@ -28,44 +28,51 @@ class AbstractAuthenticationService extends \TYPO3\CMS\Core\Service\AbstractServ
 	 */
 	public $pObj;
 
-	// Subtype of the service which is used to call the service.
 	/**
+	 * Subtype of the service which is used to call the service.
+	 *
 	 * @var string
 	 */
 	public $mode;
 
-	// Submitted login form data
 	/**
+	 * Submitted login form data
+	 *
 	 * @var array
 	 */
 	public $login = array();
 
-	// Various data
 	/**
+	 * Various data
+	 *
 	 * @var array
 	 */
 	public $authInfo = array();
 
-	// User db table definition
 	/**
+	 * User db table definition
+	 *
 	 * @var array
 	 */
 	public $db_user = array();
 
-	// Usergroups db table definition
 	/**
+	 * Usergroups db table definition
+	 *
 	 * @var array
 	 */
 	public $db_groups = array();
 
-	// If the writelog() functions is called if a login-attempt has be tried without success
 	/**
+	 * If the writelog() functions is called if a login-attempt has be tried without success
+	 *
 	 * @var bool
 	 */
 	public $writeAttemptLog = FALSE;
 
-	// If the \TYPO3\CMS\Core\Utility\GeneralUtility::devLog() function should be used
 	/**
+	 * If the \TYPO3\CMS\Core\Utility\GeneralUtility::devLog() function should be used
+	 *
 	 * @var bool
 	 */
 	public $writeDevLog = FALSE;

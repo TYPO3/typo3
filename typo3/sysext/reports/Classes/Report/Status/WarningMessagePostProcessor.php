@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Reports\Report\Status;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Post processes the warning messages found in about modules.
  *

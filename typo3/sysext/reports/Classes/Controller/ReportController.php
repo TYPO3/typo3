@@ -13,9 +13,9 @@ namespace TYPO3\CMS\Reports\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Reports controller
- *
  */
 class ReportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 

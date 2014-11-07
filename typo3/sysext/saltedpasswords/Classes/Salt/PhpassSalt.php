@@ -27,27 +27,31 @@ namespace TYPO3\CMS\Saltedpasswords\Salt;
  * @see http://drupal.org/node/29706/
  * @see http://www.openwall.com/phpass/
  */
-class PhpassSalt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface {
+class PhpassSalt extends AbstractSalt implements SaltInterface {
 
 	/**
 	 * Keeps a string for mapping an int to the corresponding
 	 * base 64 character.
 	 */
 	const ITOA64 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+
 	/**
 	 * The default log2 number of iterations for password stretching.
 	 */
 	const HASH_COUNT = 14;
+
 	/**
 	 * The default maximum allowed log2 number of iterations for
 	 * password stretching.
 	 */
 	const MAX_HASH_COUNT = 24;
+
 	/**
 	 * The default minimum allowed log2 number of iterations for
 	 * password stretching.
 	 */
 	const MIN_HASH_COUNT = 7;
+
 	/**
 	 * Keeps log2 number
 	 * of iterations for password stretching.

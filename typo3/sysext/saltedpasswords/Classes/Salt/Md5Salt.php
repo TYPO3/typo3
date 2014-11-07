@@ -23,13 +23,14 @@ namespace TYPO3\CMS\Saltedpasswords\Salt;
  *
  * @author Marcus Krause <marcus#exp2009@t3sec.info>
  */
-class Md5Salt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface {
+class Md5Salt extends AbstractSalt implements SaltInterface {
 
 	/**
 	 * Keeps a string for mapping an int to the corresponding
 	 * base 64 character.
 	 */
 	const ITOA64 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+
 	/**
 	 * Keeps length of a MD5 salt in bytes.
 	 *

@@ -22,6 +22,7 @@ namespace TYPO3\CMS\Saltedpasswords\Salt;
  * @author Steffen Ritter <info@rs-websystems.de>
  */
 interface SaltInterface {
+
 	/**
 	 * Method checks if a given plaintext password is correct by comparing it with
 	 * a given salted hashed password.

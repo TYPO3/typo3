@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Reports\Report\Status;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Performs several checks about the system's health
  *

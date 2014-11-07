@@ -27,20 +27,44 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
  */
 class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
+	/**
+	 * @var string
+	 */
 	public $perms_clause;
 
+	/**
+	 * @var string
+	 */
 	public $e;
 
+	/**
+	 * @var string
+	 */
 	public $sObj;
 
+	/**
+	 * @var string
+	 */
 	public $edit;
 
+	/**
+	 * @var string
+	 */
 	public $textExtensions = 'html,htm,txt,css,tmpl,inc,js';
 
+	/**
+	 * @var string
+	 */
 	public $modMenu_type = '';
 
+	/**
+	 * @var string
+	 */
 	public $modMenu_dontValidateList = '';
 
+	/**
+	 * @var string
+	 */
 	public $modMenu_setDefaultList = '';
 
 	/**

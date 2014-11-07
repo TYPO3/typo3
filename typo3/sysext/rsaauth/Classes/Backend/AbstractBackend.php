@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Rsaauth\Backend;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * This class contains an abstract SSL backend for the TYPO3 RSA authentication
  * service.

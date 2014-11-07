@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Saltedpasswords\Evaluation;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Class implementing salted evaluation methods for FE users.
  *
@@ -20,7 +21,7 @@ namespace TYPO3\CMS\Saltedpasswords\Evaluation;
  * @author Steffen Ritter <info@rs-websystems.de>
  * @since 2009-06-14
  */
-class FrontendEvaluator extends \TYPO3\CMS\Saltedpasswords\Evaluation\Evaluator {
+class FrontendEvaluator extends Evaluator {
 
 	/**
 	 * Class constructor.

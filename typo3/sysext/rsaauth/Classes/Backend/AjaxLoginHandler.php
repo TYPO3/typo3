@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Rsaauth\Backend;
  * Class AjaxLoginHandler
  */
 class AjaxLoginHandler {
+
 	/**
 	 * Gets RSA Public Key.
 	 *
@@ -26,7 +27,7 @@ class AjaxLoginHandler {
 	 * @return void
 	 */
 	public function getRsaPublicKey(array $parameters, \TYPO3\CMS\Core\Http\AjaxRequestHandler $parent) {
-		$backend = \TYPO3\CMS\Rsaauth\Backend\BackendFactory::getBackend();
+		$backend = BackendFactory::getBackend();
 		if ($backend !== NULL) {
 			$keyPair = $backend->createNewKeyPair();
 			$storage = \TYPO3\CMS\Rsaauth\Storage\StorageFactory::getStorage();

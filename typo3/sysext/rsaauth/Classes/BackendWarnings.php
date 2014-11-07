@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Rsaauth;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * This class contains a hook to the backend warnings collection. It checks
  * RSA configuration and create a warning if the configuration is wrong.

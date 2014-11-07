@@ -24,6 +24,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
+	/**
+	 * @var array
+	 */
 	protected $pageinfo;
 
 	/**

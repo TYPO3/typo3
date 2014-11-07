@@ -13,12 +13,14 @@ namespace TYPO3\CMS\Reports;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Interface for classes which provide a report.
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
 interface ReportInterface {
+
 	/**
 	 * Returns the content for a report
 	 *

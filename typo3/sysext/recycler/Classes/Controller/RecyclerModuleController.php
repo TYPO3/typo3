@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Recycler\Controller;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
-// This checks permissions and exits if the users has no permission for entry.
-
 /**
  * Module 'Recycler' for the 'recycler' extension.
  *
@@ -30,14 +28,29 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 	 */
 	public $doc;
 
+	/**
+	 * @var string
+	 */
 	protected $relativePath;
 
+	/**
+	 * @var array
+	 */
 	protected $pageRecord = array();
 
+	/**
+	 * @var bool
+	 */
 	protected $isAccessibleForCurrentUser = FALSE;
 
+	/**
+	 * @var bool
+	 */
 	protected $allowDelete = FALSE;
 
+	/**
+	 * @var int
+	 */
 	protected $recordsPageLimit = 50;
 
 	/**

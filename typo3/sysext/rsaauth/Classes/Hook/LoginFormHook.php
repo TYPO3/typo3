@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Rsaauth\Hook;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * This class provides a hook to the login form to add extra javascript code
  * and supply a proper form tag.

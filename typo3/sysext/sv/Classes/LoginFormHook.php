@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Sv;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * This class contains a BE login form hook. It adds all necessary JavaScript
  * for the superchallenged authentication.
@@ -32,7 +33,6 @@ class LoginFormHook {
 		// Get the code according to the login level
 		switch ($pObj->loginSecurityLevel) {
 			case 'challenged':
-
 			case 'superchallenged':
 				$_SESSION['login_challenge'] = $this->getChallenge();
 				$content = '<form action="index.php" method="post" name="loginform" ' . 'onsubmit="doChallengeResponse(' . ($pObj->loginSecurityLevel == 'challenged' ? 0 : 1) . ');">' . '<input type="hidden" name="challenge" value="' . htmlspecialchars($_SESSION['login_challenge']) . '" />';

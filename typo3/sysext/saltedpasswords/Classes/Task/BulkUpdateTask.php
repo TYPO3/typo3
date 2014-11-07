@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Saltedpasswords\Task;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Update plaintext and hashed passwords of existing users to salted passwords.
  *

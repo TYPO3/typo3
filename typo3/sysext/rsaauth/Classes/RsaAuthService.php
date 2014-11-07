@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Rsaauth;
  * The TYPO3 project - inspiring people to share!
  */
 
-// Include backends
 /**
  * Service "RSA authentication" for the "rsaauth" extension. This service will
  * authenticate a user using hos password encoded with one time public key. It

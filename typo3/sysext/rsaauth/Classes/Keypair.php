@@ -21,6 +21,7 @@ namespace TYPO3\CMS\Rsaauth;
  * @author Dmitry Dulepov <dmitry@typo3.org>
  */
 class Keypair implements \TYPO3\CMS\Core\SingletonInterface {
+
 	/**
 	 * RSA public exponent (3 or 0x10001)
 	 *

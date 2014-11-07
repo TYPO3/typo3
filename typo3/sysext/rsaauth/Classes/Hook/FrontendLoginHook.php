@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Rsaauth\Hook;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * This class contains a hook to implement RSA authentication for the TYPO3
  * Frontend. Warning: felogin must be USER_INT for this to work!

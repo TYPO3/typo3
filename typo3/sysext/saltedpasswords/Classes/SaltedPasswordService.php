@@ -13,11 +13,10 @@ namespace TYPO3\CMS\Saltedpasswords;
  *
  * The TYPO3 project - inspiring people to share!
  */
-/**
- * Contains authentication service class for salted hashed passwords.
- */
+
 /**
  * Class implements salted-password hashes authentication service.
+ * Contains authentication service class for salted hashed passwords.
  *
  * @author Marcus Krause <marcus#exp2009@t3sec.info>
  * @author Steffen Ritter <info@rs-websystems.de>

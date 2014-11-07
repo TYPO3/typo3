@@ -23,7 +23,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @author Dmitry Dulepov <dmitry@typo3.org>
  */
-class CommandLineBackend extends \TYPO3\CMS\Rsaauth\Backend\AbstractBackend {
+class CommandLineBackend extends AbstractBackend {
+
 	/**
 	 * @var int
 	 */

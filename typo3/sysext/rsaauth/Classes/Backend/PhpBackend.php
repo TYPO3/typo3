@@ -21,7 +21,7 @@ namespace TYPO3\CMS\Rsaauth\Backend;
  *
  * @author Dmitry Dulepov <dmitry@typo3.org>
  */
-class PhpBackend extends \TYPO3\CMS\Rsaauth\Backend\AbstractBackend {
+class PhpBackend extends AbstractBackend {
 	/**
 	 * Creates a new key pair for the encryption or gets the existing key pair (if one already has been generated).
 	 *

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Rsaauth\Backend;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * This class contains a factory for the RSA backends.
  *
@@ -62,7 +63,7 @@ class BackendFactory {
 			foreach (self::$availableBackends as $backend) {
 				$backendObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($backend);
 				// Check that it is derived from the proper base class
-				if ($backendObject instanceof \TYPO3\CMS\Rsaauth\Backend\AbstractBackend) {
+				if ($backendObject instanceof AbstractBackend) {
 					/** @var $backendObject \TYPO3\CMS\Rsaauth\Backend\AbstractBackend */
 					if ($backendObject->isAvailable()) {
 						// The backend is available, save it and stop the loop

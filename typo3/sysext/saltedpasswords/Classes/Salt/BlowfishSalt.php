@@ -23,22 +23,25 @@ namespace TYPO3\CMS\Saltedpasswords\Salt;
  *
  * @author Marcus Krause <marcus#exp2009@t3sec.info>
  */
-class BlowfishSalt extends \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt {
+class BlowfishSalt extends Md5Salt {
 
 	/**
 	 * The default log2 number of iterations for password stretching.
 	 */
 	const HASH_COUNT = 7;
+
 	/**
 	 * The default maximum allowed log2 number of iterations for
 	 * password stretching.
 	 */
 	const MAX_HASH_COUNT = 17;
+
 	/**
 	 * The default minimum allowed log2 number of iterations for
 	 * password stretching.
 	 */
 	const MIN_HASH_COUNT = 4;
+
 	/**
 	 * Keeps log2 number
 	 * of iterations for password stretching.

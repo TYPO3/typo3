@@ -13,9 +13,9 @@ namespace TYPO3\CMS\Reports\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Render an item of the menu
- *
  */
 class ActionMenuItemViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
 

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Reports;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A class representing a certain status
  *
@@ -25,6 +26,7 @@ class Status {
 	const OK = 0;
 	const WARNING = 1;
 	const ERROR = 2;
+
 	/**
 	 * @var string
 	 */

@@ -24,21 +24,21 @@ class DeletedRecords {
 	/**
 	 * Array with all deleted rows
 	 *
-	 * @var 	array
+	 * @var array
 	 */
 	protected $deletedRows = array();
 
 	/**
 	 * String with the global limit
 	 *
-	 * @var 	string
+	 * @var string
 	 */
 	protected $limit = '';
 
 	/**
 	 * Array with all available FE tables
 	 *
-	 * @var 	array
+	 * @var array
 	 */
 	protected $table = array();
 
@@ -52,14 +52,14 @@ class DeletedRecords {
 	/**
 	 * Array with all label fields drom different tables
 	 *
-	 * @var 	array
+	 * @var array
 	 */
 	public $label;
 
 	/**
 	 * Array with all title fields drom different tables
 	 *
-	 * @var 	array
+	 * @var array
 	 */
 	public $title;
 

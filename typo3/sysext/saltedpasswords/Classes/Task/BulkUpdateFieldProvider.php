@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Saltedpasswords\Task;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Additional field for salted passwords bulk update task
  *
