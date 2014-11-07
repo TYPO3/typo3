@@ -133,7 +133,7 @@ class ActionToolbarMenu implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInt
 	 */
 	protected function addJavascriptToBackend() {
 		$this->backendReference->addJavascriptFile(
-			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extensionKey) . 'toolbarmenu/tx_sysactions.js'
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extensionKey) . 'Resources/Public/JavaScript/tx_sysactions.js'
 		);
 	}
 
@@ -145,7 +145,7 @@ class ActionToolbarMenu implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInt
 	protected function addCssToBackend() {
 		$this->backendReference->addCssFile(
 			'sysaction',
-			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extensionKey) . 'toolbarmenu/tx_sysactions.css'
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extensionKey) . 'Resources/Public/Styles/styles.css'
 		);
 	}
 
