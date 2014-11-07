@@ -55,8 +55,6 @@ class PageRepository {
 	 */
 	public $sys_language_uid = 0;
 
-	// Versioning preview related
-
 	/**
 	 * If TRUE, versioning preview of other record versions is allowed. THIS MUST
 	 * ONLY BE SET IF the page is not cached and truely previewed by a backend
@@ -78,8 +76,6 @@ class PageRepository {
 	 */
 	public $workspaceCache = array();
 
-	// Internal, dynamic
-
 	/**
 	 * Error string set by getRootLine()
 	 *
@@ -93,8 +89,6 @@ class PageRepository {
 	 * @var int
 	 */
 	public $error_getRootLine_failPid = 0;
-
-	// Internal caching
 
 	/**
 	 * @var array

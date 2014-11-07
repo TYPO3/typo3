@@ -13,9 +13,9 @@ namespace TYPO3\CMS\Frontend\Hooks;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Adds extra fields into 'media' flexform
- *
  */
 class MediaItemHooks implements \TYPO3\CMS\Core\SingletonInterface {
 

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Frontend\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * This class contains compression functions for the TYPO3 Frontend. It can be
  * used only in EXT:cms/tslib/index_ts.php

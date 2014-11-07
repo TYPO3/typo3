@@ -26,8 +26,9 @@ use \TYPO3\CMS\Core\Utility\MathUtility;
  */
 class ShowImageController {
 
-	// Parameters loaded into these internal variables:
 	/**
+	 * Parameters loaded into these internal variables:
+	 *
 	 * @var \TYPO3\CMS\Core\Resource\File
 	 */
 	protected $file;
@@ -93,6 +94,9 @@ class ShowImageController {
 </html>
 EOF;
 
+	/**
+	 * @var string
+	 */
 	protected $imageTag = '<img src="###publicUrl###" alt="###alt###" title="###title###" />';
 
 	/**
@@ -129,7 +133,7 @@ EOF;
 		}
 
 		try {
-			if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($fileUid)) {
+			if (MathUtility::canBeInterpretedAsInteger($fileUid)) {
 				$this->file = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObject((int)$fileUid);
 			} else {
 				$this->file = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($fileUid);
@@ -169,6 +173,7 @@ EOF;
 
 	/**
 	 * Does the actual image processing
+	 *
 	 * @return \TYPO3\CMS\Core\Resource\ProcessedFile
 	 */
 	protected function processImage() {
@@ -199,6 +204,7 @@ EOF;
 	}
 
 	/**
+	 * Execute
 	 *
 	 * @return void
 	 */

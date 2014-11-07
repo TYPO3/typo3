@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Frontend\MediaWizard;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Manager to register and call registered media wizard providers
  *

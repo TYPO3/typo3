@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Frontend\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * eID controller for ExtDirect
  *

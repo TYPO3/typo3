@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Frontend\Page;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Logic for cHash calculation
  *

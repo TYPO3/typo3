@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Frontend\MediaWizard;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Interface for classes which hook into tslib_mediawizard adding additional
  * media wizard providers
@@ -20,6 +21,7 @@ namespace TYPO3\CMS\Frontend\MediaWizard;
  * @author Ernesto Baschny <ernst@cron-it.de>
  */
 interface MediaWizardProviderInterface {
+
 	/**
 	 * Tells the calling party if we can handle the URL passed to the constructor
 	 *

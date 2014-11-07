@@ -23,29 +23,66 @@ use TYPO3\CMS\Core\Utility;
  */
 class DataSubmissionController {
 
+	/**
+	 * @var string
+	 */
 	protected $reserved_names = 'recipient,recipient_copy,auto_respond_msg,auto_respond_checksum,redirect,subject,attachment,from_email,from_name,replyto_email,replyto_name,organisation,priority,html_enabled,quoted_printable,submit_x,submit_y';
 
-	// Collection of suspicious header data, used for logging
+	/**
+	 * Collection of suspicious header data, used for logging
+	 *
+	 * @var array
+	 */
 	protected $dirtyHeaders = array();
 
+	/**
+	 * @var string
+	 */
 	protected $characterSet;
 
+	/**
+	 * @var string
+	 */
 	protected $subject;
 
+	/**
+	 * @var string
+	 */
 	protected $fromName;
 
+	/**
+	 * @var string
+	 */
 	protected $replyToName;
 
+	/**
+	 * @var string
+	 */
 	protected $organisation;
 
+	/**
+	 * @var string
+	 */
 	protected $fromAddress;
 
+	/**
+	 * @var string
+	 */
 	protected $replyToAddress;
 
+	/**
+	 * @var int
+	 */
 	protected $priority;
 
+	/**
+	 * @var string
+	 */
 	protected $autoRespondMessage;
 
+	/**
+	 * @var string
+	 */
 	protected $encoding = 'quoted-printable';
 
 	/**
@@ -53,8 +90,14 @@ class DataSubmissionController {
 	 */
 	protected $mailMessage;
 
+	/**
+	 * @var string
+	 */
 	protected $recipient;
 
+	/**
+	 * @var string
+	 */
 	protected $plainContent = '';
 
 	/**

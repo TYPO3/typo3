@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Frontend\View;
  * @author Georg Ringer <typo3@ringerge.org>
  */
 interface AdminPanelViewHookInterface {
+
 	/**
 	 * Extend the adminPanel
 	 *

@@ -38,8 +38,6 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  */
 class TypoScriptFrontendController {
 
-	// CURRENT PAGE
-
 	/**
 	 * The page id (int)
 	 * @var string
@@ -211,8 +209,6 @@ class TypoScriptFrontendController {
 	 */
 	public $ADMCMD_preview_BEUSER_uid = 0;
 
-	// PREVIEW
-
 	/**
 	 * Flag indication that preview is active. This is based on the login of a
 	 * backend user and whether the backend user has read access to the current
@@ -243,8 +239,6 @@ class TypoScriptFrontendController {
 	 */
 	public $simUserGroup = 0;
 
-	// CONFIGURATION
-
 	/**
 	 * Copy of $GLOBALS['TYPO3_CONF_VARS']
 	 *
@@ -258,8 +252,6 @@ class TypoScriptFrontendController {
 	 * @var array
 	 */
 	public $config = '';
-
-	// TEMPLATE / CACHE
 
 	/**
 	 * The TypoScript template object. Used to parse the TypoScript template
@@ -365,8 +357,6 @@ class TypoScriptFrontendController {
 	 */
 	public $pagesTSconfig = '';
 
-	// PAGE-GENERATION / cOBJ
-
 	/**
 	 * Eg. insert JS-functions in this array ($additionalHeaderData) to include them
 	 * once. Use associative keys.
@@ -438,9 +428,6 @@ class TypoScriptFrontendController {
 	 * @var string
 	 */
 	public $defaultBodyTag = '<body>';
-
-	// RENDERING configuration, settings from TypoScript is loaded into these
-	// vars. See pagegen.php
 
 	/**
 	 * Debug flag, may output special debug html-code.
@@ -587,8 +574,6 @@ class TypoScriptFrontendController {
 	 */
 	public $sys_language_isocode = '';
 
-	// RENDERING data
-
 	/**
 	 * 'Global' Storage for various applications. Keys should be 'tx_'.extKey for
 	 * extensions.
@@ -705,15 +690,11 @@ class TypoScriptFrontendController {
 	 */
 	public $cObj = '';
 
-	// CONTENT accumulation
-
 	/**
 	 * All page content is accumulated in this variable. See pagegen.php
 	 * @var string
 	 */
 	public $content = '';
-
-	// GENERAL
 
 	/**
 	 * Set to the browser: net / msie if 4+ browsers
@@ -759,8 +740,6 @@ class TypoScriptFrontendController {
 	 * @var string
 	 */
 	public $localeCharset = '';
-
-	// LANG
 
 	/**
 	 * Set to the system language key (used on the site)

@@ -24,8 +24,12 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  */
 class TreelistCacheUpdateHooks {
 
-	// Should not be manipulated from others except through the
-	// configuration provided @see __construct()
+	/**
+	 * Should not be manipulated from others except through the
+	 * configuration provided @see __construct()
+	 *
+	 * @var array
+	 */
 	private $updateRequiringFields = array(
 		'pid',
 		'php_tree_stop',

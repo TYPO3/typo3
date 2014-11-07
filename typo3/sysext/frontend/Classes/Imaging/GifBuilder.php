@@ -42,27 +42,30 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 
-	// Internal
-	// the main image
 	/**
+	 * the main image
+	 *
 	 * @var string
 	 */
 	public $im = '';
 
-	// the image-width
 	/**
+	 * the image-width
+	 *
 	 * @var int
 	 */
 	public $w = 0;
 
-	// the image-height
 	/**
+	 * the image-height
+	 *
 	 * @var int
 	 */
 	public $h = 0;
 
-	// map-data
 	/**
+	 * map-data
+	 *
 	 * @var string
 	 */
 	public $map;
@@ -72,26 +75,30 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 	 */
 	public $workArea;
 
-	// This holds the operational setup for gifbuilder. Basically this is a TypoScript array with properties.
 	/**
+	 * This holds the operational setup for gifbuilder. Basically this is a TypoScript array with properties.
+	 *
 	 * @var array
 	 */
 	public $setup = array();
 
-	// Contains all text strings used on this image
 	/**
+	 * Contains all text strings used on this image
+	 *
 	 * @var array
 	 */
 	public $combinedTextStrings = array();
 
-	// Contains all filenames (basename without extension) used on this image
 	/**
+	 * Contains all filenames (basename without extension) used on this image
+	 *
 	 * @var array
 	 */
 	public $combinedFileNames = array();
 
-	// This is the array from which data->field: [key] is fetched. So this is the current record!
 	/**
+	 * This is the array from which data->field: [key] is fetched. So this is the current record!
+	 *
 	 * @var array
 	 */
 	public $data = array();

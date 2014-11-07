@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Frontend\MediaWizard;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Contains an implementation of the mediaWizardProvider supporting some
  * well known providers.

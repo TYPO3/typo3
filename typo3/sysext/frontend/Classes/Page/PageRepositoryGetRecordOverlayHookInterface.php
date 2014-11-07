@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Frontend\Page;
  * @author Tolleiv Nietsch <nietsch@aoemedia.de>
  */
 interface PageRepositoryGetRecordOverlayHookInterface {
+
 	/**
 	 * Enables to preprocess a record overlay
 	 *
