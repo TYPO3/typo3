@@ -1,13 +1,14 @@
 <f:flashMessages renderMode="div"/>
 
 <h1><f:translate key="configuration" /></h1>
+
 <h2>{label}</h2>
+
 <div id="lowlevel-config">
 	<label for="search_field">
 		<f:translate key="enterSearchPhrase" />
 	</label>
 	<input type="search" id="search_field" name="search_field" value="{search_field}" style="width:192px;"/>
-	<input type="submit" name="search" id="search" value="{f:translate(key: 'search')}"/>
 
 	<div class="checkbox">
 		<label for="checkRegexsearch">
@@ -15,14 +16,11 @@
 			<f:translate key="useRegExp" />
 		</label>
 	</div>
-	<div class="checkbox">
-		<label for="checkFixedLgd">
-			<f:format.raw>{checkbox_checkFixedLgd}</f:format.raw>
-			<f:translate key="cropLines" />
-		</label>
-	</div>
+
+	<input type="submit" name="search" id="search" value="{f:translate(key: 'search')}"/>
 </div>
-<div style="padding-top: 5px;" id="lowlevel-config-var">
+
+<div id="lowlevel-config-var">
 	<f:if condition="{varname}">
 		<strong>
 			<f:translate key="variable" />
@@ -40,6 +38,6 @@
 	</f:if>
 </div>
 
-<div class="nowrap" style="margin-top: 20px;">
+<div class="nowrap">
 	<f:format.raw>{tree}</f:format.raw>
 </div>

@@ -88,6 +88,7 @@ class ConfigurationView {
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:lowlevel/Resources/Private/Templates/config.html');
 		$this->doc->form = '<form action="" method="post">';
+		$this->doc->addStyleSheet('module', 'sysext/lowlevel/Resources/Public/Styles/styles.css');
 	}
 
 	/**
@@ -126,6 +127,7 @@ class ConfigurationView {
 	 * @return void
 	 */
 	public function main() {
+		/** @var \TYPO3\CMS\Lowlevel\Utility\ArrayBrowser $arrayBrowser */
 		$arrayBrowser = GeneralUtility::makeInstance('TYPO3\\CMS\\Lowlevel\\Utility\\ArrayBrowser');
 		$label = $this->MOD_MENU['function'][$this->MOD_SETTINGS['function']];
 		$search_field = GeneralUtility::_GP('search_field');
@@ -135,7 +137,6 @@ class ConfigurationView {
 		$this->view->assign('label', $label);
 		$this->view->assign('search_field', $search_field);
 		$this->view->assign('checkbox_checkRegexsearch', BackendUtility::getFuncCheck(0, 'SET[regexsearch]', $this->MOD_SETTINGS['regexsearch'], '', '', 'id="checkRegexsearch"'));
-		$this->view->assign('checkbox_checkFixedLgd', BackendUtility::getFuncCheck(0, 'SET[fixedLgd]', $this->MOD_SETTINGS['fixedLgd'], '', '', 'id="checkFixedLgd"'));
 
 		switch ($this->MOD_SETTINGS['function']) {
 			case 0:

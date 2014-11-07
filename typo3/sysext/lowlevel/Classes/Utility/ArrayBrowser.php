@@ -112,15 +112,10 @@ class ArrayBrowser {
 			$HTML .= $this->wrapArrayKey($label, $depth, !$isArray ? $value : '');
 			if (!$isArray) {
 				$theValue = $value;
-				if ($this->fixedLgd) {
-					$imgBlocks = ceil(1 + strlen($depthData) / 77);
-					$lgdChars = 68 - ceil(strlen(('[' . $key . ']')) * 0.8) - $imgBlocks * 3;
-					$theValue = $this->fixed_lgd($theValue, $lgdChars);
-				}
 				if ($this->searchKeys[$depth]) {
-					$HTML .= '=<span style="color:red;">' . $this->wrapValue($theValue, $depth) . '</span>';
+					$HTML .= ' = <span style="color:red;">' . $this->wrapValue($theValue, $depth) . '</span>';
 				} else {
-					$HTML .= '=' . $this->wrapValue($theValue, $depth);
+					$HTML .= ' = ' . $this->wrapValue($theValue, $depth);
 				}
 			}
 			$HTML .= '<br />';
@@ -157,13 +152,14 @@ class ArrayBrowser {
 	public function wrapArrayKey($label, $depth, $theValue) {
 		// Protect label:
 		$label = htmlspecialchars($label);
+
 		// If varname is set:
 		if ($this->varName && !$this->dontLinkVar) {
 			$variableName = $this->varName . '[\'' . str_replace('.', '\'][\'', $depth) . '\'] = ' . (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($theValue) ? '\'' . addslashes($theValue) . '\'' : $theValue) . '; ';
 			$label = '<a href="' . htmlspecialchars((\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('M')) . '&varname=' . urlencode($variableName))) . '#varname">' . $label . '</a>';
 		}
-		// Return:
-		return '[' . $label . ']';
+
+		return $label;
 	}
 
 	/**
@@ -201,22 +197,6 @@ class ArrayBrowser {
 			}
 		}
 		return $keyArray;
-	}
-
-	/**
-	 * Fixed length function
-	 *
-	 * @param string $string String to process
-	 * @param int $chars Max number of chars
-	 * @return string Processed string
-	 */
-	public function fixed_lgd($string, $chars) {
-		if ($chars >= 4) {
-			if (strlen($string) > $chars) {
-				return substr($string, 0, ($chars - 3)) . '...';
-			}
-		}
-		return $string;
 	}
 
 	/**
