@@ -17,9 +17,9 @@
 The language selector box may also appear in some dialogues along with a text direction selector box.</source>
 			</trans-unit>
 			<trans-unit id=".image" xml:space="preserve">
-				<source>EXT:rtehtmlarea/extensions/Language/skin/images/left_to_right.gif,
-EXT:rtehtmlarea/extensions/Language/skin/images/right_to_left.gif,
-EXT:rtehtmlarea/extensions/Language/skin/images/show-language-marks.gif</source>
+				<source>EXT:rtehtmlarea/Resources/Public/Images/Plugins/Language/left_to_right.gif,
+EXT:rtehtmlarea/Resources/Public/Images/Plugins/Language/right_to_left.gif,
+EXT:rtehtmlarea/Resources/Public/Images/Plugins/Language/show-language-marks.gif</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr" xml:space="preserve">

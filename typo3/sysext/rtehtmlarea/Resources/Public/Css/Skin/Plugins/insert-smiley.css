@@ -1,0 +1,5 @@
+/* Selectors for the Insert Smiley plugin of htmlArea RTE */
+.htmlarea-action-smiley-insert {
+	background-image: url('../../../Images/Plugins/InsertSmiley/smiley.gif') !important;
+	background-position: 0 0 !important;
+}

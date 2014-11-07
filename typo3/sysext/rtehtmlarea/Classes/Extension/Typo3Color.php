@@ -20,21 +20,41 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
  */
 class Typo3Color extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 
+	/**
+	 * The key of the extension that is extending htmlArea RTE
+	 *
+	 * @var string
+	 */
 	protected $extensionKey = 'rtehtmlarea';
 
-	// The key of the extension that is extending htmlArea RTE
+	/**
+	 * The name of the plugin registered by the extension
+	 *
+	 * @var string
+	 */
 	protected $pluginName = 'TYPO3Color';
 
-	// The name of the plugin registered by the extension
+	/**
+	 * Path to this main locallang file of the extension relative to the extension directory
+	 *
+	 * @var string
+	 */
 	protected $relativePathToLocallangFile = 'extensions/TYPO3Color/locallang.xlf';
 
-	// Path to this main locallang file of the extension relative to the extension dir.
-	protected $relativePathToSkin = 'extensions/TYPO3Color/skin/htmlarea.css';
+	/**
+	 * Path to the skin file relative to the extension directory
+	 *
+	 * @var string
+	 */
+	protected $relativePathToSkin = 'Resources/Public/Css/Skin/Plugins/typo3-color.css';
 
-	// Path to the skin (css) file relative to the extension dir.
+	/**
+	 * Reference to the invoking object
+	 *
+	 * @var \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase
+	 */
 	protected $htmlAreaRTE;
 
-	// Reference to the invoking object
 	protected $thisConfig;
 
 	// Reference to RTE PageTSConfig

@@ -1,0 +1,5 @@
+/* Selectors for the Acronym extension of htmlArea RTE */
+.htmlarea-action-abbreviation-edit {
+	background-image: url('../../../Images/Plugins/Acronym/acronym.gif') !important;
+	background-position: 0 0 !important;
+}

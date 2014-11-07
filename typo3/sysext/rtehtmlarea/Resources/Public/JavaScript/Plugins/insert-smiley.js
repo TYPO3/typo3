@@ -19,24 +19,25 @@ HTMLArea.InsertSmiley = Ext.extend(HTMLArea.Plugin, {
 	 */
 	configurePlugin: function (editor) {
 		this.pageTSConfiguration = this.editorConfiguration.buttons.emoticon;
-			// Default set of imoticons from Mozilla Thunderbird
+		// Default set of imoticons from Mozilla Thunderbird
+		var path = HTMLArea.editorUrl + 'Resources/Public/Images/Plugins/InsertSmiley/Smileys/';
 		this.icons = [
-			{ file: HTMLArea.editorUrl + 'plugins/InsertSmiley/smileys/' + 'mozilla_smile' + '.png', alt: ':-)', title: this.localize('mozilla_smile')},
-			{ file: HTMLArea.editorUrl + 'plugins/InsertSmiley/smileys/' + 'mozilla_frown' + '.png', alt: ':-(', title: this.localize('mozilla_frown')},
-			{ file: HTMLArea.editorUrl + 'plugins/InsertSmiley/smileys/' + 'mozilla_wink' + '.png', alt: ';-)', title: this.localize('mozilla_wink')},
-			{ file: HTMLArea.editorUrl + 'plugins/InsertSmiley/smileys/' + 'mozilla_tongueout' + '.png', alt: ':-P', title: this.localize('mozilla_tongueout')},
-			{ file: HTMLArea.editorUrl + 'plugins/InsertSmiley/smileys/' + 'mozilla_laughing' + '.png', alt: ':-D', title: this.localize('mozilla_laughing')},
-			{ file: HTMLArea.editorUrl + 'plugins/InsertSmiley/smileys/' + 'mozilla_embarassed' + '.png', alt: ':-[', title: this.localize('mozilla_embarassed')},
-			{ file: HTMLArea.editorUrl + 'plugins/InsertSmiley/smileys/' + 'mozilla_undecided' + '.png', alt: ':-\\', title: this.localize('mozilla_undecided')},
-			{ file: HTMLArea.editorUrl + 'plugins/InsertSmiley/smileys/' + 'mozilla_surprised' + '.png', alt: '=-O', title: this.localize('mozilla_surprised')},
-			{ file: HTMLArea.editorUrl + 'plugins/InsertSmiley/smileys/' + 'mozilla_kiss' + '.png', alt: ':-*', title: this.localize('mozilla_kiss')},
-			{ file: HTMLArea.editorUrl + 'plugins/InsertSmiley/smileys/' + 'mozilla_yell' + '.png', alt: '>:o', title: this.localize('mozilla_yell')},
-			{ file: HTMLArea.editorUrl + 'plugins/InsertSmiley/smileys/' + 'mozilla_cool' + '.png', alt: '8-)', title: this.localize('mozilla_cool')},
-			{ file: HTMLArea.editorUrl + 'plugins/InsertSmiley/smileys/' + 'mozilla_moneyinmouth' + '.png', alt: ':-$', title: this.localize('mozilla_moneyinmouth')},
-			{ file: HTMLArea.editorUrl + 'plugins/InsertSmiley/smileys/' + 'mozilla_footinmouth' + '.png', alt: ':-!', title: this.localize('mozilla_footinmouth')},
-			{ file: HTMLArea.editorUrl + 'plugins/InsertSmiley/smileys/' + 'mozilla_innocent' + '.png', alt: 'O:-)', title: this.localize('mozilla_innocent')},
-			{ file: HTMLArea.editorUrl + 'plugins/InsertSmiley/smileys/' + 'mozilla_cry' + '.png', alt: ':\'(', title: this.localize('mozilla_cry')},
-			{ file: HTMLArea.editorUrl + 'plugins/InsertSmiley/smileys/' + 'mozilla_sealed' + '.png', alt: ':-X', title: this.localize('mozilla_sealed')}
+			{ file: path + 'mozilla_smile' + '.png', alt: ':-)', title: this.localize('mozilla_smile')},
+			{ file: path + 'mozilla_frown' + '.png', alt: ':-(', title: this.localize('mozilla_frown')},
+			{ file: path + 'mozilla_wink' + '.png', alt: ';-)', title: this.localize('mozilla_wink')},
+			{ file: path + 'mozilla_tongueout' + '.png', alt: ':-P', title: this.localize('mozilla_tongueout')},
+			{ file: path + 'mozilla_laughing' + '.png', alt: ':-D', title: this.localize('mozilla_laughing')},
+			{ file: path + 'mozilla_embarassed' + '.png', alt: ':-[', title: this.localize('mozilla_embarassed')},
+			{ file: path + 'mozilla_undecided' + '.png', alt: ':-\\', title: this.localize('mozilla_undecided')},
+			{ file: path + 'mozilla_surprised' + '.png', alt: '=-O', title: this.localize('mozilla_surprised')},
+			{ file: path + 'mozilla_kiss' + '.png', alt: ':-*', title: this.localize('mozilla_kiss')},
+			{ file: path + 'mozilla_yell' + '.png', alt: '>:o', title: this.localize('mozilla_yell')},
+			{ file: path + 'mozilla_cool' + '.png', alt: '8-)', title: this.localize('mozilla_cool')},
+			{ file: path + 'mozilla_moneyinmouth' + '.png', alt: ':-$', title: this.localize('mozilla_moneyinmouth')},
+			{ file: path + 'mozilla_footinmouth' + '.png', alt: ':-!', title: this.localize('mozilla_footinmouth')},
+			{ file: path + 'mozilla_innocent' + '.png', alt: 'O:-)', title: this.localize('mozilla_innocent')},
+			{ file: path + 'mozilla_cry' + '.png', alt: ':\'(', title: this.localize('mozilla_cry')},
+			{ file: path + 'mozilla_sealed' + '.png', alt: ':-X', title: this.localize('mozilla_sealed')}
 		 ];
 		/*
 		 * Registering plugin "About" information

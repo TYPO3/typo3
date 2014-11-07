@@ -17,7 +17,7 @@ By default, this features uses the microdata dictionary defined by schema.org (h
 			</trans-unit>
 			<trans-unit id=".image" xml:space="preserve">
 				<source>EXT:rtehtmlarea/extensions/EditElement/skin/images/element-edit.png,
-EXT:rtehtmlarea/extensions/MicrodataSchema/skin/images/microdata-show.gif</source>
+EXT:rtehtmlarea/Resources/Public/Images/Plugins/MicrodataSchema/microdata-show.gif</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr" xml:space="preserve">
@@ -37,7 +37,7 @@ xEXT_rtehtmlarea_MicrodataSchema:itemprop</source>
 				<source>Show microdata</source>
 			</trans-unit>
 			<trans-unit id="Show_microdata.image" xml:space="preserve">
-				<source>EXT:rtehtmlarea/extensions/MicrodataSchema/skin/images/microdata-show.gif</source>
+				<source>EXT:rtehtmlarea/Resources/Public/Images/Plugins/MicrodataSchema/microdata-show.gif</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="Show_microdata.image_descr" xml:space="preserve">

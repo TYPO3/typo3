@@ -33,8 +33,8 @@ Ext.apply(HTMLArea, {
 				// Apply global configuration settings
 			Ext.apply(HTMLArea, RTEarea[0]);
 			Ext.applyIf(HTMLArea, {
-				editorSkin	: HTMLArea.editorUrl + 'skins/default/',
-				editorCSS	: HTMLArea.editorUrl + 'skins/default/htmlarea.css'
+				editorSkin	: HTMLArea.editorUrl + 'Resources/Public/Css/Skin/',
+				editorCSS	: HTMLArea.editorUrl + 'Resources/Public/Css/Skin/htmlarea.css'
 			});
 			if (typeof HTMLArea.editedContentCSS !== 'string' || HTMLArea.editedContentCSS === '') {
 				HTMLArea.editedContentCSS = HTMLArea.editorSkin + 'htmlarea-edited-content.css';

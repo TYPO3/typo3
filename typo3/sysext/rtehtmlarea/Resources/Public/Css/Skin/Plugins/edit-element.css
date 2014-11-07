@@ -1,0 +1,5 @@
+/* Selectors for the Edit Element extension of htmlArea RTE */
+.htmlarea-action-element-edit {
+	background-image: url('../../../Images/Plugins/EditElement/element-edit.png') !important;
+	background-position: 0 0 !important;
+}

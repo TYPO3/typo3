@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Rtehtmlarea;
 
 use TYPO3\CMS\Backend\Form\FormEngine;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -346,7 +347,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			// Set backPath
 			$this->backPath = $this->TCEform->backPath;
 			// Get the path to this extension:
-			$this->extHttpPath = $this->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->ID);
+			$this->extHttpPath = $this->backPath . ExtensionManagementUtility::extRelPath($this->ID);
 			// Get the site URL
 			$this->siteURL = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 			// Get the host URL
@@ -387,7 +388,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			$this->contentLanguageUid = max($row['sys_language_uid'], 0);
 			if ($this->contentLanguageUid) {
 				$this->contentISOLanguage = $this->language;
-				if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables')) {
+				if (ExtensionManagementUtility::isLoaded('static_info_tables')) {
 					$tableA = 'sys_language';
 					$tableB = 'static_languages';
 					$selectFields = $tableA . '.uid,' . $tableB . '.lg_iso_2,' . $tableB . '.lg_country_iso_2';
@@ -546,7 +547,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 */
 	protected function addSkin() {
 		// Get skin file name from Page TSConfig if any
-		$skinFilename = trim($this->thisConfig['skin']) ?: 'EXT:' . $this->ID . '/htmlarea/skins/default/htmlarea.css';
+		$skinFilename = trim($this->thisConfig['skin']) ?: 'EXT:' . $this->ID . '/Resources/Public/Css/Skin/htmlarea.css';
 		$this->editorCSS = $this->getFullFileName($skinFilename);
 		$skinDir = dirname($this->editorCSS);
 		// Editing area style sheet
@@ -560,7 +561,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 				$pathToSkin = $this->registeredPlugins[$pluginId]->getPathToSkin();
 				if ($pathToSkin) {
 					$key = $this->registeredPlugins[$pluginId]->getExtensionKey();
-					$this->addStyleSheet('rtehtmlarea-plugin-' . $pluginId . '-skin', ($this->is_FE() ? \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath($key) : $this->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($key)) . $pathToSkin);
+					$this->addStyleSheet('rtehtmlarea-plugin-' . $pluginId . '-skin', ($this->is_FE() ? ExtensionManagementUtility::siteRelPath($key) : $this->backPath . ExtensionManagementUtility::extRelPath($key)) . $pathToSkin);
 				}
 			}
 		}
@@ -864,7 +865,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 				RTEarea = new Object();
 				RTEarea[0] = new Object();
 				RTEarea[0].version = "' . $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['version'] . '";
-				RTEarea[0].editorUrl = "' . $this->extHttpPath . 'htmlarea/";
+				RTEarea[0].editorUrl = "' . $this->extHttpPath . '";
 				RTEarea[0].editorCSS = "' . GeneralUtility::createVersionNumberedFilename($this->editorCSS) . '";
 				RTEarea[0].editorSkin = "' . dirname($this->editorCSS) . '/";
 				RTEarea[0].editedContentCSS = "' . GeneralUtility::createVersionNumberedFilename($this->editedContentCSS) . '";
@@ -1389,8 +1390,8 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			// extension
 			list($extKey, $local) = explode('/', substr($filename, 4), 2);
 			$newFilename = '';
-			if ((string)$extKey !== '' && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey) && (string)$local !== '') {
-				$newFilename = ($this->is_FE() || $this->isFrontendEditActive() ? \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath($extKey) : $this->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($extKey)) . $local;
+			if ((string)$extKey !== '' && ExtensionManagementUtility::isLoaded($extKey) && (string)$local !== '') {
+				$newFilename = ($this->is_FE() || $this->isFrontendEditActive() ? ExtensionManagementUtility::siteRelPath($extKey) : $this->backPath . ExtensionManagementUtility::extRelPath($extKey)) . $local;
 			}
 		} else {
 			$path = ($this->is_FE() || $this->isFrontendEditActive() ? '' : $this->backPath . '../');

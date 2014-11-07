@@ -1,0 +1,4 @@
+/* Selectors for the MicrodataSchema plugin of htmlArea RTE */
+.htmlarea-action-microdata-show {
+	background-image: url('../../../Images/Plugins/MicrodataSchema/microdata-show.gif') !important;
+}

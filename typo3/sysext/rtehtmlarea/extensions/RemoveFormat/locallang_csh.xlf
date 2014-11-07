@@ -20,7 +20,7 @@ In the dialogue window that opens when the button is clicked:
 - Press the OK button for the format removal operation to be performed. The dialogue window will be automatically closed.</source>
 			</trans-unit>
 			<trans-unit id=".image" xml:space="preserve">
-				<source>EXT:rtehtmlarea/extensions/RemoveFormat/skin/images/remove-format.gif</source>
+				<source>EXT:rtehtmlarea/Resources/Public/Images/Plugins/RemoveFormat/remove-format.gif</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr" xml:space="preserve">

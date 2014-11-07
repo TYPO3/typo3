@@ -1,0 +1,5 @@
+/* Selectors for the RemoveFormat plugin of htmlArea RTE */
+.htmlarea-action-remove-format {
+	background-image: url('../../../Images/Plugins/RemoveFormat/remove-format.gif') !important;
+	background-position: 0 0 !important;
+}

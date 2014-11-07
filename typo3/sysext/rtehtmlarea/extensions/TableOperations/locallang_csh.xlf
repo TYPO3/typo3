@@ -15,26 +15,26 @@ A number of buttons may also appear, usually as the last line of the toolbar. Th
 All buttons that may be configured are shown below.</source>
 			</trans-unit>
 			<trans-unit id=".image" xml:space="preserve">
-				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/insert_table.gif,
-EXT:rtehtmlarea/extensions/TableOperations/skin/images/table-prop.gif,
-EXT:rtehtmlarea/extensions/TableOperations/skin/images/table-restyle.gif,
-EXT:rtehtmlarea/extensions/TableOperations/skin/images/toggle-borders.gif,
-EXT:rtehtmlarea/extensions/TableOperations/skin/images/row-prop.gif,
-EXT:rtehtmlarea/extensions/TableOperations/skin/images/row-insert-above.gif,
-EXT:rtehtmlarea/extensions/TableOperations/skin/images/row-insert-under.gif,
-EXT:rtehtmlarea/extensions/TableOperations/skin/images/row-delete.gif,
-EXT:rtehtmlarea/extensions/TableOperations/skin/images/row-split.gif,
-EXT:rtehtmlarea/extensions/TableOperations/skin/images/col-prop.gif,
-EXT:rtehtmlarea/extensions/TableOperations/skin/images/col-insert-before.gif,
-EXT:rtehtmlarea/extensions/TableOperations/skin/images/col-insert-after.gif,
-EXT:rtehtmlarea/extensions/TableOperations/skin/images/col-delete.gif,
-EXT:rtehtmlarea/extensions/TableOperations/skin/images/col-split.gif,
-EXT:rtehtmlarea/extensions/TableOperations/skin/images/cell-prop.gif,
-EXT:rtehtmlarea/extensions/TableOperations/skin/images/cell-insert-before.gif,
-EXT:rtehtmlarea/extensions/TableOperations/skin/images/cell-insert-after.gif,
-EXT:rtehtmlarea/extensions/TableOperations/skin/images/cell-delete.gif,
-EXT:rtehtmlarea/extensions/TableOperations/skin/images/cell-split.gif,
-EXT:rtehtmlarea/extensions/TableOperations/skin/images/cell-merge.gif
+				<source>EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/insert_table.gif,
+EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/table-prop.gif,
+EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/table-restyle.gif,
+EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/toggle-borders.gif,
+EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/row-prop.gif,
+EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/row-insert-above.gif,
+EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/row-insert-under.gif,
+EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/row-delete.gif,
+EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/row-split.gif,
+EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/col-prop.gif,
+EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/col-insert-before.gif,
+EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/col-insert-after.gif,
+EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/col-delete.gif,
+EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/col-split.gif,
+EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/cell-prop.gif,
+EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/cell-insert-before.gif,
+EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/cell-insert-after.gif,
+EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/cell-delete.gif,
+EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/cell-split.gif,
+EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/cell-merge.gif
 </source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -87,7 +87,7 @@ xEXT_rtehtmlarea_TableOperations:TO_cell_merge</source>
 				<source>Insert table</source>
 			</trans-unit>
 			<trans-unit id="InsertTable.image" xml:space="preserve">
-				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/insert_table.gif</source>
+				<source>EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/insert_table.gif</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="InsertTable.image_descr" xml:space="preserve">
@@ -116,7 +116,7 @@ xEXT_rtehtmlarea_TableOperations:textColor,xEXT_rtehtmlarea_TableOperations:back
 				<source>Table properties</source>
 			</trans-unit>
 			<trans-unit id="TO_table_prop.image" xml:space="preserve">
-				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/table-prop.gif</source>
+				<source>EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/table-prop.gif</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="TO_table_prop.image_descr" xml:space="preserve">
@@ -343,7 +343,7 @@ Note that this attribute is not supported in HTML5.</source>
 				<source>Re-apply table styles</source>
 			</trans-unit>
 			<trans-unit id="TO_table_restyle.image" xml:space="preserve">
-				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/table-restyle.gif</source>
+				<source>EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/table-restyle.gif</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="TO_table_restyle.image_descr" xml:space="preserve">
@@ -360,7 +360,7 @@ Clicking the "Re-apply table styles" button will re-calculate the odd/even and t
 				<source>Toggle borders</source>
 			</trans-unit>
 			<trans-unit id="TO_toggle_borders.image" xml:space="preserve">
-				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/toggle-borders.gif</source>
+				<source>EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/toggle-borders.gif</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="TO_toggle_borders.image_descr" xml:space="preserve">
@@ -378,7 +378,7 @@ This button may be configured so that it is activated when the element is opened
 				<source>Row properties</source>
 			</trans-unit>
 			<trans-unit id="TO_row_prop.image" xml:space="preserve">
-				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/row-prop.gif</source>
+				<source>EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/row-prop.gif</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="TO_row_prop.image_descr" xml:space="preserve">
@@ -423,7 +423,7 @@ xEXT_rtehtmlarea_TableOperations:textColor,xEXT_rtehtmlarea_TableOperations:back
 				<source>Insert row before</source>
 			</trans-unit>
 			<trans-unit id="TO_row_insert_above.image" xml:space="preserve">
-				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/row-insert-above.gif</source>
+				<source>EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/row-insert-above.gif</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="TO_row_insert_above.image_descr" xml:space="preserve">
@@ -441,7 +441,7 @@ The cells of the new row also have the same properties as the corresponding cell
 				<source>Insert row after</source>
 			</trans-unit>
 			<trans-unit id="TO_row_insert_under.image" xml:space="preserve">
-				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/row-insert-under.gif</source>
+				<source>EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/row-insert-under.gif</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="TO_row_insert_under.image_descr" xml:space="preserve">
@@ -459,7 +459,7 @@ The cells of the new row also have the same properties as the corresponding cell
 				<source>Delete row</source>
 			</trans-unit>
 			<trans-unit id="TO_row_delete.image" xml:space="preserve">
-				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/row-delete.gif</source>
+				<source>EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/row-delete.gif</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="TO_row_delete.image_descr" xml:space="preserve">
@@ -477,7 +477,7 @@ If the deleted row was the last row of the table, then the table is deleted.</so
 				<source>Split row</source>
 			</trans-unit>
 			<trans-unit id="TO_row_split.image" xml:space="preserve">
-				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/row-split.gif</source>
+				<source>EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/row-split.gif</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="TO_row_split.image_descr" xml:space="preserve">
@@ -497,7 +497,7 @@ If the deleted row was the last row of the table, then the table is deleted.</so
 				<source>Column cells properties</source>
 			</trans-unit>
 			<trans-unit id="TO_col_prop.image" xml:space="preserve">
-				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/col-prop.gif</source>
+				<source>EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/col-prop.gif</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="TO_col_prop.image_descr" xml:space="preserve">
@@ -527,7 +527,7 @@ xEXT_rtehtmlarea_TableOperations:textColor,xEXT_rtehtmlarea_TableOperations:back
 				<source>Insert column before</source>
 			</trans-unit>
 			<trans-unit id="TO_column_insert_before.image" xml:space="preserve">
-				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/col-insert-before.gif</source>
+				<source>EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/col-insert-before.gif</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="TO_column_insert_before.image_descr" xml:space="preserve">
@@ -544,7 +544,7 @@ The cells of the new column are of the same type, i.e. header for row/row group 
 				<source>Insert column after</source>
 			</trans-unit>
 			<trans-unit id="TO_column_insert_after.image" xml:space="preserve">
-				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/col-insert-after.gif</source>
+				<source>EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/col-insert-after.gif</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="TO_column_insert_after.image_descr" xml:space="preserve">
@@ -561,7 +561,7 @@ The cells of the new column are of the same type, i.e. header for row/row group 
 				<source>Delete column</source>
 			</trans-unit>
 			<trans-unit id="TO_column_delete.image" xml:space="preserve">
-				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/col-delete.gif</source>
+				<source>EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/col-delete.gif</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="TO_column_delete.image_descr" xml:space="preserve">
@@ -578,7 +578,7 @@ If the deleted column was the last column of the table, then the table is delete
 				<source>Split column</source>
 			</trans-unit>
 			<trans-unit id="TO_column_split.image" xml:space="preserve">
-				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/col-split.gif</source>
+				<source>EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/col-split.gif</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="TO_column_split.image_descr" xml:space="preserve">
@@ -598,7 +598,7 @@ If the deleted column was the last column of the table, then the table is delete
 				<source>Cell properties</source>
 			</trans-unit>
 			<trans-unit id="TO_cell_prop.image" xml:space="preserve">
-				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/cell-prop.gif</source>
+				<source>EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/cell-prop.gif</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="TO_cell_prop.image_descr" xml:space="preserve">
@@ -646,7 +646,7 @@ xEXT_rtehtmlarea_TableOperations:textColor,xEXT_rtehtmlarea_TableOperations:back
 				<source>Insert cell before</source>
 			</trans-unit>
 			<trans-unit id="TO_cell_insert_before.image" xml:space="preserve">
-				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/cell-insert-before.gif</source>
+				<source>EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/cell-insert-before.gif</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="TO_cell_insert_before.image_descr" xml:space="preserve">
@@ -663,7 +663,7 @@ The new cell is of the same type, i.e. header or data, belongs to the same row, 
 				<source>Insert cell after</source>
 			</trans-unit>
 			<trans-unit id="TO_cell_insert_after.image" xml:space="preserve">
-				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/cell-insert-after.gif</source>
+				<source>EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/cell-insert-after.gif</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="TO_cell_insert_after.image_descr" xml:space="preserve">
@@ -680,7 +680,7 @@ The new cell is of the same type, i.e. header or data, belongs to the same row, 
 				<source>Delete cell</source>
 			</trans-unit>
 			<trans-unit id="TO_cell_delete.image" xml:space="preserve">
-				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/cell-delete.gif</source>
+				<source>EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/cell-delete.gif</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="TO_cell_delete.image_descr" xml:space="preserve">
@@ -697,7 +697,7 @@ If the deleted cell was the last cell of the table, then the table is deleted.</
 				<source>Split cell</source>
 			</trans-unit>
 			<trans-unit id="TO_cell_split.image" xml:space="preserve">
-				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/cell-split.gif</source>
+				<source>EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/cell-split.gif</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="TO_cell_split.image_descr" xml:space="preserve">
@@ -717,7 +717,7 @@ If the deleted cell was the last cell of the table, then the table is deleted.</
 				<source>Merge cells</source>
 			</trans-unit>
 			<trans-unit id="TO_cell_merge.image" xml:space="preserve">
-				<source>EXT:rtehtmlarea/extensions/TableOperations/skin/images/cell-merge.gif</source>
+				<source>EXT:rtehtmlarea/Resources/Public/Images/Plugins/TableOperations/cell-merge.gif</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="TO_cell_merge.image_descr" xml:space="preserve">

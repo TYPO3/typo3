@@ -41,7 +41,7 @@ HTMLArea.Config = function (editorId) {
 		this.baseURL = RegExp.$1;
 	}
 		// URL-s
-	this.popupURL = "popups/";
+	this.popupURL = "Resources/Public/Html/";
 		// DocumentType
 	this.documentType = '<!DOCTYPE html\r'
 			+ '    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"\r'

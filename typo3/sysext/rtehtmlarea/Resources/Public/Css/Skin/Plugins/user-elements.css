@@ -1,0 +1,5 @@
+/* Selectors for the User Elements extension of htmlArea RTE */
+.htmlarea-action-user-element-edit {
+	background-image: url('../../../Images/Plugins/UserElements/user.gif') !important;
+	background-position: 0 0 !important;
+}

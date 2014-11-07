@@ -14,7 +14,7 @@
 The dialogue allows to edit the id, title, class, lang and dir attributes, as well as the microdata attributes of the element. It also allows to specify handlers for keyboard and mouse events.</source>
 			</trans-unit>
 			<trans-unit id=".image" xml:space="preserve">
-				<source>EXT:rtehtmlarea/extensions/EditElement/skin/images/element-edit.png</source>
+				<source>EXT:rtehtmlarea/Resources/Public/Images/Plugins/EditElement/element-edit.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr" xml:space="preserve">

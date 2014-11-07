@@ -1,0 +1,91 @@
+/* Selectors for the InlineElements plugin of htmlArea RTE */
+.htmlarea-action-bidi-override {
+	background-image: url('../../../Images/Plugins/InlineElements/bidioverride.gif') !important;
+}
+.htmlarea-action-big {
+	background-image: url('../../../Images/Plugins/InlineElements/big.gif') !important;
+}
+.htmlarea-action-bold {
+	background-image: url('../../../Images/Plugins/InlineElements/bold.gif') !important;
+}
+.htmlarea-action-citation {
+	background-image: url('../../../Images/Plugins/InlineElements/citation.gif') !important;
+}
+.htmlarea-action-code {
+	background-image: url('../../../Images/Plugins/InlineElements/code.gif') !important;
+}
+.htmlarea-action-definition {
+	background-image: url('../../../Images/Plugins/InlineElements/definition.gif') !important;
+}
+.htmlarea-action-deleted-text {
+	background-image: url('../../../Images/Plugins/InlineElements/deletedtext.gif') !important;
+}
+.htmlarea-action-emphasis {
+	background-image: url('../../../Images/Plugins/InlineElements/emphasis.gif') !important;
+}
+.htmlarea-action-italic {
+	background-image: url('../../../Images/Plugins/InlineElements/italic.gif') !important;
+}
+.htmlarea-action-inserted-text {
+	background-image: url('../../../Images/Plugins/InlineElements/insertedtext.gif') !important;
+}
+.htmlarea-action-keyboard {
+	background-image: url('../../../Images/Plugins/InlineElements/keyboard.gif') !important;
+}
+.htmlarea-action-mono-spaced {
+	background-image: url('../../../Images/Plugins/InlineElements/monospaced.gif') !important;
+}
+.htmlarea-action-quotation {
+	background-image: url('../../../Images/Plugins/InlineElements/quotation.gif') !important;
+}
+.htmlarea-action-sample {
+	background-image: url('../../../Images/Plugins/InlineElements/sample.gif') !important;
+}
+.htmlarea-action-small {
+	background-image: url('../../../Images/Plugins/InlineElements/small.gif') !important;
+}
+.htmlarea-action-span {
+	background-image: url('../../../Images/Plugins/InlineElements/span.gif') !important;
+}
+.htmlarea-action-strike-through {
+	background-image: url('../../../Images/Plugins/InlineElements/strikethrough.gif') !important;
+}
+.htmlarea-action-strong {
+	background-image: url('../../../Images/Plugins/InlineElements/strong.gif') !important;
+}
+.htmlarea-action-subscript {
+	background-image: url('../../../Images/Plugins/InlineElements/subscript.gif') !important;
+}
+.htmlarea-action-superscript {
+	background-image: url('../../../Images/Plugins/InlineElements/superscript.gif') !important;
+}
+.htmlarea-action-underline {
+	background-image: url('../../../Images/Plugins/InlineElements/underline.gif') !important;
+}
+.htmlarea-action-variable {
+	background-image: url('../../../Images/Plugins/InlineElements/variable.gif') !important;
+}
+.htmlarea-action-bidi-override,
+.htmlarea-action-big,
+.htmlarea-action-bold,
+.htmlarea-action-citation,
+.htmlarea-action-code,
+.htmlarea-action-definition,
+.htmlarea-action-deleted-text,
+.htmlarea-action-emphasis,
+.htmlarea-action-inserted-text,
+.htmlarea-action-italic,
+.htmlarea-action-keyboard,
+.htmlarea-action-mono-spaced,
+.htmlarea-action-quotation,
+.htmlarea-action-sample,
+.htmlarea-action-small,
+.htmlarea-action-span,
+.htmlarea-action-strike-through,
+.htmlarea-action-strong,
+.htmlarea-action-subscript,
+.htmlarea-action-superscript,
+.htmlarea-action-underline,
+.htmlarea-action-variable {
+	background-position: 0 0 !important;
+}

@@ -15,7 +15,7 @@ Any existing abbreviation is underlined with a broken line and the cursor change
 The dialogue allows to associate an abbreviation to a term. The abbreviation may be selected among abbreviations that have been pre-defined in the database or may be entered directly in the dialogue.</source>
 			</trans-unit>
 			<trans-unit id=".image" xml:space="preserve">
-				<source>EXT:rtehtmlarea/extensions/Acronym/skin/images/acronym.gif</source>
+				<source>EXT:rtehtmlarea/Resources/Public/Images/Plugins/Acronym/acronym.gif</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr" xml:space="preserve">

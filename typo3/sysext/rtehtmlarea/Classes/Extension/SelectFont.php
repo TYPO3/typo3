@@ -20,21 +20,41 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
  */
 class SelectFont extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 
+	/**
+	 * The key of the extension that is extending htmlArea RTE
+	 *
+	 * @var string
+	 */
 	protected $extensionKey = 'rtehtmlarea';
 
-	// The key of the extension that is extending htmlArea RTE
+	/**
+	 * The name of the plugin registered by the extension
+	 *
+	 * @var string
+	 */
 	protected $pluginName = 'SelectFont';
 
-	// The name of the plugin registered by the extension
+	/**
+	 * Path to this main locallang file of the extension relative to the extension directory
+	 *
+	 * @var string
+	 */
 	protected $relativePathToLocallangFile = 'extensions/SelectFont/locallang.xlf';
 
-	// Path to this main locallang file of the extension relative to the extension dir.
+	/**
+	 * Path to the skin file relative to the extension directory
+	 *
+	 * @var string
+	 */
 	protected $relativePathToSkin = '';
 
-	// Path to the skin (css) file relative to the extension dir.
+	/**
+	 * Reference to the invoking object
+	 *
+	 * @var \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase
+	 */
 	protected $htmlAreaRTE;
 
-	// Reference to the invoking object
 	protected $thisConfig;
 
 	// Reference to RTE PageTSConfig

@@ -1,0 +1,5 @@
+/* Selectors for the QuickTag plugin of htmlArea RTE */
+.htmlarea-action-tag-insert {
+	background-image: url('../../../Images/Plugins/QuickTag/inserttag.gif') !important;
+	background-position: 0 0 !important;
+}

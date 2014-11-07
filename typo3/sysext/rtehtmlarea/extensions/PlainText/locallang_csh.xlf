@@ -17,8 +17,8 @@ Clicking on the "Clean paste" button puts the button "on". This action does not 
 Clicking again on the toggle button puts it "off". Any subsequent paste operation is performed as a normal paste.</source>
 			</trans-unit>
 			<trans-unit id=".image" xml:space="preserve">
-				<source>EXT:rtehtmlarea/extensions/PlainText/skin/images/paste-toggle.gif,
-EXT:rtehtmlarea/extensions/PlainText/skin/images/paste-behaviour.gif</source>
+				<source>EXT:rtehtmlarea/Resources/Public/Images/Plugins/PlainText/paste-toggle.gif,
+EXT:rtehtmlarea/Resources/Public/Images/Plugins/PlainText/paste-behaviour.gif</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr" xml:space="preserve">

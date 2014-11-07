@@ -1,9 +1,0 @@
-/* Selectors for the PlainText extension of htmlArea RTE */
-.htmlarea-action-paste-toggle {
-	background-image: url('images/paste-toggle.gif') !important;
-	background-position: 0 0 !important;
-}
-.htmlarea-action-paste-behaviour {
-	background-image: url('images/paste-behaviour.gif') !important;
-	background-position: 0 0 !important;
-}

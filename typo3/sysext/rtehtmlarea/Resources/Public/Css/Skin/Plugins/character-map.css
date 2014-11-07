@@ -1,0 +1,9 @@
+/* Selectors for the CharacterMap plugin of htmlArea RTE */
+.htmlarea-action-character-insert-from-map {
+	background-image: url('../../../Images/Plugins/CharacterMap/character-insert-from-map.gif') !important;
+	background-position: 0 0 !important;
+}
+.htmlarea-action-soft-hyphen-insert {
+	background-image: url('../../../Images/Plugins/CharacterMap/soft-hyphen-insert.gif') !important;
+	background-position: 0 0 !important;
+}

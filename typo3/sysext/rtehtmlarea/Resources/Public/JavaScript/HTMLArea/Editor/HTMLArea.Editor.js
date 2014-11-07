@@ -157,7 +157,7 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 						id: this.editorId + '-iframe',
 						tag: 'iframe',
 						cls: 'editorIframe',
-						src: HTMLArea.UserAgent.isGecko ? 'javascript:void(0);' : (HTMLArea.UserAgent.isWebKit ? 'javascript: \'' + HTMLArea.util.htmlEncode(this.config.documentType + this.config.blankDocument) + '\'' : HTMLArea.editorUrl + 'popups/blank.html')
+						src: HTMLArea.UserAgent.isGecko ? 'javascript:void(0);' : (HTMLArea.UserAgent.isWebKit ? 'javascript: \'' + HTMLArea.util.htmlEncode(this.config.documentType + this.config.blankDocument) + '\'' : HTMLArea.editorUrl + 'Resources/Public/Html/blank.html')
 					},
 					isNested: this.isNested,
 					nestedParentElements: this.nestedParentElements,
