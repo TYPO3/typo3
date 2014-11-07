@@ -24,6 +24,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class ConfigurationView {
+
 	/**
 	 * @var \TYPO3\CMS\Fluid\View\StandaloneView
 	 */
@@ -34,10 +35,19 @@ class ConfigurationView {
 	 */
 	protected $flashMessageQueue;
 
+	/**
+	 * @var array
+	 */
 	public $MCONF = array();
 
+	/**
+	 * @var array
+	 */
 	public $MOD_MENU = array();
 
+	/**
+	 * @var array
+	 */
 	public $MOD_SETTINGS = array();
 
 	/**
@@ -47,8 +57,14 @@ class ConfigurationView {
 	 */
 	public $doc;
 
+	/**
+	 * @var array
+	 */
 	public $include_once = array();
 
+	/**
+	 * @var string
+	 */
 	public $content;
 
 	/**

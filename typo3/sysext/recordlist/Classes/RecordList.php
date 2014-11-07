@@ -24,51 +24,102 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  */
 class RecordList {
 
-	// Internal, GPvars:
-	// Page Id for which to make the listing
 	/**
+	 * Page Id for which to make the listing
+	 *
 	 * @var int
 	 */
 	public $id;
 
-	// Pointer - for browsing list of records.
+	/**
+	 * Pointer - for browsing list of records.
+	 *
+	 * @var int
+	 */
 	public $pointer;
 
-	// Thumbnails or not
+	/**
+	 * Thumbnails or not
+	 *
+	 * @var string
+	 */
 	public $imagemode;
 
-	// Which table to make extended listing for
+	/**
+	 * Which table to make extended listing for
+	 *
+	 * @var string
+	 */
 	public $table;
 
-	// Search-fields
+	/**
+	 * Search-fields
+	 *
+	 * @var string
+	 */
 	public $search_field;
 
-	// Search-levels
+	/**
+	 * Search-levels
+	 *
+	 * @var int
+	 */
 	public $search_levels;
 
-	// Show-limit
+	/**
+	 * Show-limit
+	 *
+	 * @var int
+	 */
 	public $showLimit;
 
-	// Return URL
+	/**
+	 * Return URL
+	 *
+	 * @var string
+	 */
 	public $returnUrl;
 
-	// Clear-cache flag - if set, clears page cache for current id.
+	/**
+	 * Clear-cache flag - if set, clears page cache for current id.
+	 *
+	 * @var bool
+	 */
 	public $clear_cache;
 
-	// Command: Eg. "delete" or "setCB" (for TCEmain / clipboard operations)
+	/**
+	 * Command: Eg. "delete" or "setCB" (for TCEmain / clipboard operations)
+	 *
+	 * @var string
+	 */
 	public $cmd;
 
-	// Table on which the cmd-action is performed.
+	/**
+	 * Table on which the cmd-action is performed.
+	 *
+	 * @var string
+	 */
 	public $cmd_table;
 
-	// Internal, static:
-	// Page select perms clause
+	/**
+	 * Page select perms clause
+	 *
+	 * @var int
+	 */
 	public $perms_clause;
 
-	// Module TSconfig
+	/**
+	 * Module TSconfig
+	 *
+	 * @var array
+	 */
 	public $modTSconfig;
 
-	// Current ids page record
+	/**
+	 * Current ids page record
+	 *
+	 * @var array
+	 */
 	public $pageinfo;
 
 	/**
@@ -78,17 +129,32 @@ class RecordList {
 	 */
 	public $doc;
 
-	// Module configuration
+	/**
+	 * Module configuration
+	 *
+	 * @var array
+	 */
 	public $MCONF = array();
 
-	// Menu configuration
+	/**
+	 * Menu configuration
+	 *
+	 * @var array
+	 */
 	public $MOD_MENU = array();
 
-	// Module settings (session variable)
+	/**
+	 * Module settings (session variable)
+	 *
+	 * @var array
+	 */
 	public $MOD_SETTINGS = array();
 
-	// Internal, dynamic:
-	// Module output accumulation
+	/**
+	 * Module output accumulation
+	 *
+	 * @var string
+	 */
 	public $content;
 
 	/**

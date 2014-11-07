@@ -25,6 +25,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 	/**
+	 * @var array
 	 * @internal
 	 */
 	public $pageinfo;

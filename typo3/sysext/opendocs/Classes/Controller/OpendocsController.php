@@ -29,10 +29,19 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 	 */
 	protected $backendReference;
 
+	/**
+	 * @var aray
+	 */
 	protected $openDocs;
 
+	/**
+	 * @var aray
+	 */
 	protected $recentDocs;
 
+	/**
+	 * @var string
+	 */
 	protected $EXTKEY = 'opendocs';
 
 	/**

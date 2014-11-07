@@ -22,6 +22,9 @@ namespace TYPO3\CMS\FuncWizards\Controller;
  */
 class WebFunctionWizardsBaseController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
 
+	/**
+	 * @var string
+	 */
 	public $function_key = 'wiz';
 
 	/**

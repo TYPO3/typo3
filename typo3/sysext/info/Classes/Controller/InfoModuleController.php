@@ -24,6 +24,9 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  */
 class InfoModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
+	/**
+	 * @var array
+	 */
 	public $pageinfo;
 
 	/**

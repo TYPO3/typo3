@@ -28,17 +28,23 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 
 	/**
 	 * The extension key
+	 *
+	 * @var string
 	 */
 	public $extKey = 'openid';
 
 	/**
 	 * Login data as passed to initAuth()
+	 *
+	 * @var array
 	 */
 	protected $loginData = array();
 
 	/**
 	 * Additional authentication information provided by AbstractUserAuthentication.
 	 * We use it to decide what database table contains user records.
+	 *
+	 * @var array
 	 */
 	protected $authenticationInformation = array();
 
@@ -64,6 +70,8 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 
 	/**
 	 * If set to TRUE, than libraries are already included.
+	 *
+	 * @var bool
 	 */
 	static protected $openIDLibrariesIncluded = FALSE;
 

@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @author Christian Weiske <cweiske@cweiske.de>
  */
 class Wizard extends OpenidService {
+
 	/**
 	 * OpenID of the user after authentication
 	 *

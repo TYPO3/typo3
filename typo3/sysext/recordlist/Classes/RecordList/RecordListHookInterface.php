@@ -13,13 +13,14 @@ namespace TYPO3\CMS\Recordlist\RecordList;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Interface for classes which hook into localRecordList and modify clip-icons
  *
  * @author Bernhard Kraft <kraftb@kraftb.at>
  */
-interface RecordListHookInterface
-{
+interface RecordListHookInterface {
+
 	/**
 	 * Modifies Web>List clip icons (copy, cut, paste, etc.) of a displayed row
 	 *

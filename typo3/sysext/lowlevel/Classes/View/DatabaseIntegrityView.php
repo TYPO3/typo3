@@ -24,10 +24,19 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  */
 class DatabaseIntegrityView {
 
+	/**
+	 * @var array
+	 */
 	public $MCONF = array();
 
+	/**
+	 * @var array
+	 */
 	public $MOD_MENU = array();
 
+	/**
+	 * @var array
+	 */
 	public $MOD_SETTINGS = array();
 
 	/**
@@ -37,10 +46,19 @@ class DatabaseIntegrityView {
 	 */
 	public $doc;
 
+	/**
+	 * @var string
+	 */
 	public $content;
 
+	/**
+	 * @var array
+	 */
 	public $menu;
 
+	/**
+	 * @var string
+	 */
 	protected $formName = 'queryform';
 
 	/**

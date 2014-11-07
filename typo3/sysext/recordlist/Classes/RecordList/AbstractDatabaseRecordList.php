@@ -26,135 +26,288 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 
-	// External, static:
-	// Specify a list of tables which are the only ones allowed to be displayed.
+	/**
+	 * Specify a list of tables which are the only ones allowed to be displayed.
+	 *
+	 * @var string
+	 */
 	public $tableList = '';
 
-	// Return URL
+	/**
+	 * Return URL
+	 *
+	 * @var string
+	 */
 	public $returnUrl = '';
 
-	// Boolean. Thumbnails on records containing files (pictures)
+	/**
+	 * Thumbnails on records containing files (pictures)
+	 *
+	 * @var bool
+	 */
 	public $thumbs = 0;
 
-	// default Max items shown per table in "multi-table mode", may be overridden by tables.php
+	/**
+	 * default Max items shown per table in "multi-table mode", may be overridden by tables.php
+	 *
+	 * @var int
+	 */
 	public $itemsLimitPerTable = 20;
 
-	// default Max items shown per table in "single-table mode", may be overridden by tables.php
+	/**
+	 * default Max items shown per table in "single-table mode", may be overridden by tables.php
+	 *
+	 * @var int
+	 */
 	public $itemsLimitSingleTable = 100;
 
+	/**
+	 * @var string
+	 */
 	public $widthGif = '<img src="clear.gif" width="1" height="4" hspace="160" alt="" />';
 
-	// Current script name
+	/**
+	 * Current script name
+	 *
+	 * @var string
+	 */
 	public $script = 'index.php';
 
-	// Indicates if all available fields for a user should be selected or not.
+	/**
+	 * Indicates if all available fields for a user should be selected or not.
+	 *
+	 * @var int
+	 */
 	public $allFields = 0;
 
-	// Whether to show localization view or not.
+	/**
+	 * Whether to show localization view or not
+	 *
+	 * @var bool
+	 */
 	public $localizationView = FALSE;
 
-	// Internal, static: GPvar:
-	// If set, csvList is outputted.
+	/**
+	 * If set, csvList is outputted.
+	 *
+	 * @var bool
+	 */
 	public $csvOutput = FALSE;
 
-	// Field, to sort list by
+	/**
+	 * Field, to sort list by
+	 *
+	 * @var string
+	 */
 	public $sortField;
 
-	// Field, indicating to sort in reverse order.
+	/**
+	 * Field, indicating to sort in reverse order.
+	 *
+	 * @var bool
+	 */
 	public $sortRev;
 
-	// Array, containing which fields to display in extended mode
+	/**
+	 * Containing which fields to display in extended mode
+	 *
+	 * @var array
+	 */
 	public $displayFields;
 
-	// String, can contain the field name from a table which must have duplicate values marked.
+	/**
+	 * String, can contain the field name from a table which must have duplicate values marked.
+	 *
+	 * @var string
+	 */
 	public $duplicateField;
 
-	// Internal, static:
-	// Page id
+	/**
+	 * Page id
+	 *
+	 * @var int
+	 */
 	public $id;
 
-	// Tablename if single-table mode
+	/**
+	 * Tablename if single-table mode
+	 *
+	 * @var string
+	 */
 	public $table = '';
 
-	// If TRUE, records are listed only if a specific table is selected.
+	/**
+	 * If TRUE, records are listed only if a specific table is selected.
+	 *
+	 * @var bool
+	 */
 	public $listOnlyInSingleTableMode = FALSE;
 
-	// Pointer for browsing list
+	/**
+	 * Pointer for browsing list
+	 *
+	 * @var int
+	 */
 	public $firstElementNumber = 0;
 
-	// Search string
+	/**
+	 * Search string
+	 *
+	 * @var string
+	 */
 	public $searchString = '';
 
-	// Levels to search down.
+	/**
+	 * Levels to search down.
+	 *
+	 * @var int
+	 */
 	public $searchLevels = '';
 
-	// Number of records to show
+	/**
+	 * Number of records to show
+	 *
+	 * @var int
+	 */
 	public $showLimit = 0;
 
-	// Query part for either a list of ids "pid IN (1,2,3)" or a single id "pid = 123" from
-	// which to select/search etc. (when search-levels are set high). See start()
+	/**
+	 * Query part for either a list of ids "pid IN (1,2,3)" or a single id "pid = 123" from
+	 * which to select/search etc. (when search-levels are set high). See start()
+	 *
+	 * @var string
+	 */
 	public $pidSelect = '';
 
-	// Page select permissions
+	/**
+	 * Page select permissions
+	 *
+	 * @var string
+	 */
 	public $perms_clause = '';
 
-	// Some permissions...
+	/**
+	 * Some permissions...
+	 *
+	 * @var int
+	 */
 	public $calcPerms = 0;
 
-	// Mode for what happens when a user clicks the title of a record.
+	/**
+	 * Mode for what happens when a user clicks the title of a record.
+	 *
+	 * @var string
+	 */
 	public $clickTitleMode = '';
 
-	// Shared module configuration, used by localization features
+	/**
+	 * Shared module configuration, used by localization features
+	 *
+	 * @var array
+	 */
 	public $modSharedTSconfig = array();
 
-	// Loaded with page record with version overlay if any.
+	/**
+	 * Loaded with page record with version overlay if any.
+	 *
+	 * @var array
+	 */
 	public $pageRecord = array();
 
-	// Tables which should not get listed
+	/**
+	 * Tables which should not get listed
+	 *
+	 * @var string
+	 */
 	public $hideTables = '';
 
 	/**
 	 * Tables which should not list their translations
 	 *
-	 * @var $hideTranslations string
+	 * @var string
 	 */
 	public $hideTranslations = '';
 
-	//TSconfig which overwrites TCA-Settings
+	/**
+	 * TSconfig which overwrites TCA-Settings
+	 *
+	 * @var array
+	 */
 	public $tableTSconfigOverTCA = array();
 
-	// Array of collapsed / uncollapsed tables in multi table view
+	/**
+	 * Array of collapsed / uncollapsed tables in multi table view
+	 *
+	 * @var array
+	 */
 	public $tablesCollapsed = array();
 
-	// Internal, dynamic:
-	// JavaScript code accumulation
+	/**
+	 * JavaScript code accumulation
+	 *
+	 * @var string
+	 */
 	public $JScode = '';
 
-	// HTML output
+	/**
+	 * HTML output
+	 *
+	 * @var string
+	 */
 	public $HTMLcode = '';
 
-	// "LIMIT " in SQL...
+	/**
+	 * "LIMIT " in SQL...
+	 *
+	 * @var int
+	 */
 	public $iLimit = 0;
 
-	// Counting the elements no matter what...
+	/**
+	 * Counting the elements no matter what...
+	 *
+	 * @var int
+	 */
 	public $eCounter = 0;
 
-	// Set to the total number of items for a table when selecting.
+	/**
+	 * Set to the total number of items for a table when selecting.
+	 *
+	 * @var string
+	 */
 	public $totalItems = '';
 
-	// Cache for record path
+	/**
+	 * Cache for record path
+	 *
+	 * @var array
+	 */
 	public $recPath_cache = array();
 
-	// Fields to display for the current table
+	/**
+	 * Fields to display for the current table
+	 *
+	 * @var array
+	 */
 	public $setFields = array();
 
-	// Used for tracking next/prev uids
+	/**
+	 * Used for tracking next/prev uids
+	 *
+	 * @var array
+	 */
 	public $currentTable = array();
 
-	// Used for tracking duplicate values of fields
+	/**
+	 * Used for tracking duplicate values of fields
+	 *
+	 * @var array
+	 */
 	public $duplicateStack = array();
 
-	// module configuratio
+	/**
+	 * @var array Module configuration
+	 */
 	public $modTSconfig;
 
 	/**
