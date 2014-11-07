@@ -52,11 +52,6 @@ class DatabaseIntegrityView {
 	public $content;
 
 	/**
-	 * @var array
-	 */
-	public $menu;
-
-	/**
 	 * @var string
 	 */
 	protected $formName = 'queryform';
@@ -187,10 +182,6 @@ class DatabaseIntegrityView {
 	 * @return void
 	 */
 	public function main() {
-		// Content creation
-		if (!$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableTopMenu']) {
-			$this->menu = BackendUtility::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
-		}
 		switch ($this->MOD_SETTINGS['function']) {
 			case 'search':
 				$this->func_search();
@@ -252,10 +243,7 @@ class DatabaseIntegrityView {
 	 * @return string HTML of the function menu
 	 */
 	protected function getFuncMenu() {
-		if (!$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableTopMenu']) {
-			$funcMenu = BackendUtility::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
-		}
-		return $funcMenu;
+		return BackendUtility::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
 	}
 
 	/**
@@ -333,14 +321,9 @@ class DatabaseIntegrityView {
 		$fullsearch->setFormName($this->formName);
 		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('search'));
 		$this->content .= $this->doc->spacer(5);
-		$menu2 = '';
-		if (!$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableTopMenu']) {
-			$menu2 = BackendUtility::getFuncMenu(0, 'SET[search]', $this->MOD_SETTINGS['search'], $this->MOD_MENU['search']);
-		}
-		if ($this->MOD_SETTINGS['search'] == 'query' && !$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableTopMenu']) {
+		$menu2 = BackendUtility::getFuncMenu(0, 'SET[search]', $this->MOD_SETTINGS['search'], $this->MOD_MENU['search']);
+		if ($this->MOD_SETTINGS['search'] == 'query') {
 			$menu2 .= BackendUtility::getFuncMenu(0, 'SET[search_query_makeQuery]', $this->MOD_SETTINGS['search_query_makeQuery'], $this->MOD_MENU['search_query_makeQuery']) . '<br />';
-		}
-		if (!$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableTopCheckboxes'] && $this->MOD_SETTINGS['search'] == 'query') {
 			$menu2 .= '<div class="checkbox"><label for="checkSearch_query_smallparts">' . BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[search_query_smallparts]', $this->MOD_SETTINGS['search_query_smallparts'], '', '', 'id="checkSearch_query_smallparts"') . $GLOBALS['LANG']->getLL('showSQL') . '</label></div>';
 			$menu2 .= '<div class="checkbox"><label for="checkSearch_result_labels">' . BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[search_result_labels]', $this->MOD_SETTINGS['search_result_labels'], '', '', 'id="checkSearch_result_labels"') . $GLOBALS['LANG']->getLL('useFormattedStrings') . '</label></div>';
 			$menu2 .= '<div class="checkbox"><label for="checkLabels_noprefix">' . BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[labels_noprefix]', $this->MOD_SETTINGS['labels_noprefix'], '', '', 'id="checkLabels_noprefix"') . $GLOBALS['LANG']->getLL('dontUseOrigValues') . '</label></div>';
