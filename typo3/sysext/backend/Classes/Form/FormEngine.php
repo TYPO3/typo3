@@ -4554,7 +4554,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 									if (isset($wConf['module']['urlParameters']) && is_array($wConf['module']['urlParameters'])) {
 										$urlParameters = $wConf['module']['urlParameters'];
 									}
-									$wScript = BackendUtility::getModuleUrl($wConf['module']['name'], $urlParameters);
+									$wScript = BackendUtility::getModuleUrl($wConf['module']['name'], $urlParameters, $this->backPath);
 								} elseif (isset($wConf['script'])) {
 									GeneralUtility::deprecationLog(
 										'The way registering a wizard in TCA has changed in 6.2. '
@@ -4564,7 +4564,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 									if (substr($wConf['script'], 0, 4) === 'EXT:') {
 										$wScript = GeneralUtility::getFileAbsFileName($wConf['script']);
 										if ($wScript) {
-											$wScript = '../' . PathUtility::stripPathSitePrefix($wScript);
+											$wScript = $this->backPath . '../' . PathUtility::stripPathSitePrefix($wScript);
 										} else {
 											// Illeagal configuration, fail silently
 											break;
@@ -4594,7 +4594,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 												array('', 'wizard_element_browser', 'wizard_backend_layout'),
 												$parsedWizardUrl['path']
 											);
-											$wScript = BackendUtility::getModuleUrl($moduleName, $urlParameters);
+											$wScript = BackendUtility::getModuleUrl($moduleName, $urlParameters, $this->backPath);
 											unset($moduleName, $urlParameters, $parsedWizardUrl);
 										} else {
 											$wScript = $wConf['script'];
@@ -4605,7 +4605,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 									break;
 								}
 
-								$url = $this->backPath . $wScript . (strstr($wScript, '?') ? '' : '?');
+								$url = ($wScript ?: $this->backPath) . (strstr($wScript, '?') ? '' : '?');
 								// If "script" type, create the links around the icon:
 								if ((string) $wConf['type'] === 'script') {
 									$aUrl = $url . GeneralUtility::implodeArrayForUrl('', array('P' => $params));
