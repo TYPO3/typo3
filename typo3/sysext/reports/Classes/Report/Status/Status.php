@@ -137,22 +137,13 @@ class Status implements ReportInterface {
 	 * @return string The system status as an HTML table
 	 */
 	protected function renderStatus(array $statusCollection) {
-		// TODO refactor into separate methods, status list and single status
 		$content = '';
 		$template = '
-		<table class="t3-table">
-			<thead>
-				<tr>
-					<th colspan="2" class="default">###HEADER###</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td class="###CLASS### col-sm-2">###STATUS###</td>
-					<td class="###CLASS### col-sm-10">###CONTENT###</td>
-				</tr>
-			</tbody>
-		</table>';
+			<tr>
+				<td class="###CLASS### col-xs-6">###HEADER###</td>
+				<td class="###CLASS### col-xs-6">###STATUS###<br>###CONTENT###</td>
+			</tr>';
+
 		$statuses = $this->sortStatusProviders($statusCollection);
 		foreach ($statuses as $provider => $providerStatus) {
 			$headerIcon = '';
@@ -183,10 +174,13 @@ class Status implements ReportInterface {
 					'###CONTENT###' => $status->getMessage()
 				));
 			}
+
+			$table = '<table class="t3-table"><tbody>' . $messages . '</tbody></table>';
+
 			if ($sectionSeverity > 0) {
 				$headerIcon = $icon[$sectionSeverity];
 			}
-			$content .= $GLOBALS['TBE_TEMPLATE']->collapseableSection($headerIcon . $provider, $messages, $id, 'reports.states');
+			$content .= $GLOBALS['TBE_TEMPLATE']->collapseableSection($headerIcon . $provider, $table, $id, 'reports.states');
 		}
 		return $content;
 	}
