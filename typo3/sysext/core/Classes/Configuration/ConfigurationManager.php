@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Configuration;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\OpcodeCacheUtility;
 
 /**
  * Handle loading and writing of global and local (instance specific)
@@ -303,11 +304,12 @@ class ConfigurationManager {
 					ArrayUtility::arrayExport(
 						ArrayUtility::renumberKeysToAvoidLeapsIfKeysAreAllNumeric($configuration)
 					) .
-				';' . LF,
+				';' . LF .
+			'?>',
 			TRUE
 		);
 
-		Utility\OpcodeCacheUtility::clearAllActive($localConfigurationFile);
+		OpcodeCacheUtility::clearAllActive($localConfigurationFile);
 
 		return $result;
 	}
