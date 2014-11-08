@@ -11,7 +11,7 @@ return array(
 			'starttime' => 'starttime',
 			'endtime' => 'endtime'
 		),
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('rtehtmlarea') . 'extensions/Acronym/skin/images/acronym.gif'
+		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('rtehtmlarea') . 'Resources/Public/Images/Plugins/Acronym/acronym.gif'
 	),
 	'interface' => array(
 		'showRecordFieldList' => 'hidden,sys_language_uid,term,acronym'

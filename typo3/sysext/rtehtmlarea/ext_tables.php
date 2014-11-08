@@ -4,8 +4,6 @@ defined('TYPO3_MODE') or die();
 // Add static template for Click-enlarge rendering
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'static/clickenlarge/', 'Clickenlarge Rendering');
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_rtehtmlarea_acronym');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_rtehtmlarea_acronym', 'EXT:' . $_EXTKEY . '/locallang_csh_abbreviation.xlf');
 // Add contextual help files
 $htmlAreaRteContextHelpFiles = array(
 	'General' => 'EXT:' . $_EXTKEY . '/locallang_csh.xlf',
@@ -21,6 +19,7 @@ foreach ($htmlAreaRteContextHelpFiles as $key => $file) {
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('xEXT_' . $_EXTKEY . '_' . $key, $file);
 }
 unset($htmlAreaRteContextHelpFiles);
+
 // Extend TYPO3 User Settings Configuration
 if (TYPO3_MODE === 'BE' && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('setup') && is_array($GLOBALS['TYPO3_USER_SETTINGS'])) {
 	$GLOBALS['TYPO3_USER_SETTINGS']['columns'] = array_merge($GLOBALS['TYPO3_USER_SETTINGS']['columns'], array(
