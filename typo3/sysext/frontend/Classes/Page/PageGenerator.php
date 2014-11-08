@@ -268,7 +268,7 @@ class PageGenerator {
 		// Reset the content variables:
 		$GLOBALS['TSFE']->content = '';
 		$htmlTagAttributes = array();
-		$htmlLang = $GLOBALS['TSFE']->config['config']['htmlTag_langKey'] ?: 'en';
+		$htmlLang = $GLOBALS['TSFE']->config['config']['htmlTag_langKey'] ?: ($GLOBALS['TSFE']->sys_language_isocode ?: 'en');
 		// Set content direction: (More info: http://www.tau.ac.il/~danon/Hebrew/HTML_and_Hebrew.html)
 		if ($GLOBALS['TSFE']->config['config']['htmlTag_dir']) {
 			$htmlTagAttributes['dir'] = htmlspecialchars($GLOBALS['TSFE']->config['config']['htmlTag_dir']);

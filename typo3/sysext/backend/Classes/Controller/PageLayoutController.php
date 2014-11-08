@@ -1260,7 +1260,7 @@ class PageLayoutController {
 				'pages_language_overlay,sys_language',
 				'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid=' . (int)$id . $exQ .
 					BackendUtility::versioningPlaceholderClause('pages_language_overlay'),
-				'pages_language_overlay.sys_language_uid,sys_language.uid,sys_language.pid,sys_language.tstamp,sys_language.hidden,sys_language.title,sys_language.static_lang_isocode,sys_language.flag',
+				'pages_language_overlay.sys_language_uid,sys_language.uid,sys_language.pid,sys_language.tstamp,sys_language.hidden,sys_language.title,sys_language.language_isocode,sys_language.static_lang_isocode,sys_language.flag',
 				'sys_language.title'
 			);
 		} else {

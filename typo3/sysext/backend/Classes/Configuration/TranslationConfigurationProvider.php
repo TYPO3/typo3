@@ -60,7 +60,10 @@ class TranslationConfigurationProvider {
 		$sysLanguages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_language', '');
 		foreach ($sysLanguages as $row) {
 			$languageIconTitles[$row['uid']] = $row;
-			if ($row['static_lang_isocode'] && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables')) {
+			if (!empty($row['language_isocode'])) {
+				$languageIconTitles[$row['uid']]['ISOcode'] = $row['language_isocode'];
+			} elseif ($row['static_lang_isocode'] && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables')) {
+				\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('Usage of the field "static_lang_isocode" is discouraged, and will stop working with CMS 8. Use the built-in language field "language_isocode" in your sys_language records.');
 				$staticLangRow = BackendUtility::getRecord('static_languages', $row['static_lang_isocode'], 'lg_iso_2');
 				if ($staticLangRow['lg_iso_2']) {
 					$languageIconTitles[$row['uid']]['ISOcode'] = $staticLangRow['lg_iso_2'];

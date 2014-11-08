@@ -567,8 +567,7 @@ class TypoScriptFrontendController {
 
 	/**
 	 * Is set to the iso code of the sys_language_content if that is properly defined
-	 * by the sys_language record representing the sys_language_uid. (Requires the
-	 * extension "static_info_tables")
+	 * by the sys_language record representing the sys_language_uid.
 	 * @var string
 	 */
 	public $sys_language_isocode = '';
@@ -2558,17 +2557,38 @@ class TypoScriptFrontendController {
 			$this->pageNotFoundAndExit($message);
 		}
 		$this->updateRootLinesWithTranslations();
-		// Finding the ISO code:
-		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables') && $this->sys_language_content) {
+
+		// Finding the ISO code for the currently selected language
+		// fetched by the sys_language record when not fetching content from the default language
+		if ($this->sys_language_content > 0) {
 			// using sys_language_content because the ISO code only (currently) affect content selection from FlexForms - which should follow "sys_language_content"
 			// Set the fourth parameter to TRUE in the next two getRawRecord() calls to
 			// avoid versioning overlay to be applied as it generates an SQL error
-			$sys_language_row = $this->sys_page->getRawRecord('sys_language', $this->sys_language_content, 'static_lang_isocode', TRUE);
-			if (is_array($sys_language_row) && $sys_language_row['static_lang_isocode']) {
-				$stLrow = $this->sys_page->getRawRecord('static_languages', $sys_language_row['static_lang_isocode'], 'lg_iso_2', TRUE);
-				$this->sys_language_isocode = $stLrow['lg_iso_2'];
+			$sys_language_row = $this->sys_page->getRawRecord('sys_language', $this->sys_language_content, 'language_isocode,static_lang_isocode', TRUE);
+			if (is_array($sys_language_row)) {
+				if (!empty($sys_language_row['language_isocode'])) {
+					$this->sys_language_isocode = $sys_language_row['language_isocode'];
+				} elseif ($sys_language_row['static_lang_isocode'] && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables')) {
+					GeneralUtility::deprecationLog('Usage of the field "static_lang_isocode" is discouraged, and will stop working with CMS 8. Use the built-in language field "language_isocode" in your sys_language records.');
+					$stLrow = $this->sys_page->getRawRecord('static_languages', $sys_language_row['static_lang_isocode'], 'lg_iso_2', TRUE);
+					$this->sys_language_isocode = $stLrow['lg_iso_2'];
+				}
+			}
+			// the DB value is overriden by TypoScript
+			if (!empty($this->config['config']['sys_language_isocode'])) {
+				$this->sys_language_isocode = $this->config['config']['sys_language_isocode'];
+			}
+		} else {
+			// fallback to the TypoScript option when rendering with sys_language_uid=0
+			// also: use "en" by default
+			if (!empty($this->config['config']['sys_language_isocode_default'])) {
+				$this->sys_language_isocode = $this->config['config']['sys_language_isocode_default'];
+			} else {
+				$this->sys_language_isocode = $this->lang != 'default' ? $this->lang : 'en';
 			}
 		}
+
+
 		// Setting softMergeIfNotBlank:
 		$table_fields = GeneralUtility::trimExplode(',', $this->config['config']['sys_language_softMergeIfNotBlank'], TRUE);
 		foreach ($table_fields as $TF) {

@@ -1302,7 +1302,7 @@ class EditDocumentController {
 		);
 		$exQ = $GLOBALS['BE_USER']->isAdmin() ? '' : ' AND sys_language.hidden=0';
 		if ($id) {
-			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('sys_language.*', 'pages_language_overlay,sys_language', 'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid=' . (int)$id . BackendUtility::deleteClause('pages_language_overlay') . $exQ, 'pages_language_overlay.sys_language_uid,sys_language.uid,sys_language.pid,sys_language.tstamp,sys_language.hidden,sys_language.title,sys_language.static_lang_isocode,sys_language.flag', 'sys_language.title');
+			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('sys_language.*', 'pages_language_overlay,sys_language', 'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid=' . (int)$id . BackendUtility::deleteClause('pages_language_overlay') . $exQ, 'pages_language_overlay.sys_language_uid,sys_language.uid,sys_language.pid,sys_language.tstamp,sys_language.hidden,sys_language.title,sys_language.language_isocode,sys_language.static_lang_isocode,sys_language.flag', 'sys_language.title');
 		} else {
 			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('sys_language.*', 'sys_language', 'sys_language.hidden=0', '', 'sys_language.title');
 		}

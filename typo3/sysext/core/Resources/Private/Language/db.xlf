@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2014-09-10T14:22:34Z" product-name="core">
+		<header/>
+		<body>
+			<trans-unit id="sys_language.language_isocode.ab" xml:space="preserve">
+				<source>Abkhaz</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.aa" xml:space="preserve">
+				<source>Afar</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.af" xml:space="preserve">
+				<source>Afrikaans</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ak" xml:space="preserve">
+				<source>Akan</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.sq" xml:space="preserve">
+				<source>Albanian</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.am" xml:space="preserve">
+				<source>Amharic</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ar" xml:space="preserve">
+				<source>Arabic</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.an" xml:space="preserve">
+				<source>Aragonese</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.hy" xml:space="preserve">
+				<source>Armenian</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.as" xml:space="preserve">
+				<source>Assamese</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.av" xml:space="preserve">
+				<source>Avaric</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ae" xml:space="preserve">
+				<source>Avestan</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ay" xml:space="preserve">
+				<source>Aymara</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.az" xml:space="preserve">
+				<source>Azerbaijani</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.bm" xml:space="preserve">
+				<source>Bambara</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ba" xml:space="preserve">
+				<source>Bashkir</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.eu" xml:space="preserve">
+				<source>Basque</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.be" xml:space="preserve">
+				<source>Belarusian</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.bn" xml:space="preserve">
+				<source>Bengali, Bangla</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.bh" xml:space="preserve">
+				<source>Bihari</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.bi" xml:space="preserve">
+				<source>Bislama</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.bs" xml:space="preserve">
+				<source>Bosnian</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.br" xml:space="preserve">
+				<source>Breton</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.bg" xml:space="preserve">
+				<source>Bulgarian</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.my" xml:space="preserve">
+				<source>Burmese</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ca" xml:space="preserve">
+				<source>Catalan, Valencian</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ch" xml:space="preserve">
+				<source>Chamorro</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ce" xml:space="preserve">
+				<source>Chechen</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ny" xml:space="preserve">
+				<source>Chichewa, Chewa, Nyanja</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.zh" xml:space="preserve">
+				<source>Chinese</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.cv" xml:space="preserve">
+				<source>Chuvash</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.kw" xml:space="preserve">
+				<source>Cornish</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.co" xml:space="preserve">
+				<source>Corsican</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.cr" xml:space="preserve">
+				<source>Cree</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.hr" xml:space="preserve">
+				<source>Croatian</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.cs" xml:space="preserve">
+				<source>Czech</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.da" xml:space="preserve">
+				<source>Danish</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.dv" xml:space="preserve">
+				<source>Divehi, Dhivehi, Maldivian</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.nl" xml:space="preserve">
+				<source>Dutch</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.dz" xml:space="preserve">
+				<source>Dzongkha</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.en" xml:space="preserve">
+				<source>English</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.eo" xml:space="preserve">
+				<source>Esperanto</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.et" xml:space="preserve">
+				<source>Estonian</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ee" xml:space="preserve">
+				<source>Ewe</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.fo" xml:space="preserve">
+				<source>Faroese</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.fj" xml:space="preserve">
+				<source>Fijian</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.fi" xml:space="preserve">
+				<source>Finnish</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.fr" xml:space="preserve">
+				<source>French</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ff" xml:space="preserve">
+				<source>Fula, Fulah, Pulaar, Pular</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.gl" xml:space="preserve">
+				<source>Galician</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ka" xml:space="preserve">
+				<source>Georgian</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.de" xml:space="preserve">
+				<source>German</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.el" xml:space="preserve">
+				<source>Greek (modern)</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.gn" xml:space="preserve">
+				<source>Guaraní</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.gu" xml:space="preserve">
+				<source>Gujarati</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ht" xml:space="preserve">
+				<source>Haitian, Haitian Creole</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ha" xml:space="preserve">
+				<source>Hausa</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.he" xml:space="preserve">
+				<source>Hebrew (modern)</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.hz" xml:space="preserve">
+				<source>Herero</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.hi" xml:space="preserve">
+				<source>Hindi</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ho" xml:space="preserve">
+				<source>Hiri Motu</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.hu" xml:space="preserve">
+				<source>Hungarian</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ia" xml:space="preserve">
+				<source>Interlingua</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.id" xml:space="preserve">
+				<source>Indonesian</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ie" xml:space="preserve">
+				<source>Interlingue</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ga" xml:space="preserve">
+				<source>Irish</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ig" xml:space="preserve">
+				<source>Igbo</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ik" xml:space="preserve">
+				<source>Inupiaq</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.io" xml:space="preserve">
+				<source>Ido</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.is" xml:space="preserve">
+				<source>Icelandic</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.it" xml:space="preserve">
+				<source>Italian</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.iu" xml:space="preserve">
+				<source>Inuktitut</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ja" xml:space="preserve">
+				<source>Japanese</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.jv" xml:space="preserve">
+				<source>Javanese</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.kl" xml:space="preserve">
+				<source>Kalaallisut, Greenlandic</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.kn" xml:space="preserve">
+				<source>Kannada</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.kr" xml:space="preserve">
+				<source>Kanuri</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ks" xml:space="preserve">
+				<source>Kashmiri</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.kk" xml:space="preserve">
+				<source>Kazakh</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.km" xml:space="preserve">
+				<source>Khmer</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ki" xml:space="preserve">
+				<source>Kikuyu, Gikuyu</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.rw" xml:space="preserve">
+				<source>Kinyarwanda</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ky" xml:space="preserve">
+				<source>Kyrgyz</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.kv" xml:space="preserve">
+				<source>Komi</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.kg" xml:space="preserve">
+				<source>Kongo</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ko" xml:space="preserve">
+				<source>Korean</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ku" xml:space="preserve">
+				<source>Kurdish</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.kj" xml:space="preserve">
+				<source>Kwanyama, Kuanyama</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.la" xml:space="preserve">
+				<source>Latin</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.lb" xml:space="preserve">
+				<source>Luxembourgish, Letzeburgesch</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.lg" xml:space="preserve">
+				<source>Ganda</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.li" xml:space="preserve">
+				<source>Limburgish, Limburgan, Limburger</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ln" xml:space="preserve">
+				<source>Lingala</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.lo" xml:space="preserve">
+				<source>Lao</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.lt" xml:space="preserve">
+				<source>Lithuanian</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.lu" xml:space="preserve">
+				<source>Luba-Katanga</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.lv" xml:space="preserve">
+				<source>Latvian</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.gv" xml:space="preserve">
+				<source>Manx</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.mk" xml:space="preserve">
+				<source>Macedonian</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.mg" xml:space="preserve">
+				<source>Malagasy</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ms" xml:space="preserve">
+				<source>Malay</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ml" xml:space="preserve">
+				<source>Malayalam</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.mt" xml:space="preserve">
+				<source>Maltese</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.mi" xml:space="preserve">
+				<source>Māori</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.mr" xml:space="preserve">
+				<source>Marathi (Marāṭhī)</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.mh" xml:space="preserve">
+				<source>Marshallese</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.mn" xml:space="preserve">
+				<source>Mongolian</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.na" xml:space="preserve">
+				<source>Nauru</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.nv" xml:space="preserve">
+				<source>Navajo, Navaho</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.nd" xml:space="preserve">
+				<source>Northern Ndebele</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ne" xml:space="preserve">
+				<source>Nepali</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ng" xml:space="preserve">
+				<source>Ndonga</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.nb" xml:space="preserve">
+				<source>Norwegian Bokmål</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.nn" xml:space="preserve">
+				<source>Norwegian Nynorsk</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.no" xml:space="preserve">
+				<source>Norwegian</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ii" xml:space="preserve">
+				<source>Nuosu</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.nr" xml:space="preserve">
+				<source>Southern Ndebele</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.oc" xml:space="preserve">
+				<source>Occitan</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.oj" xml:space="preserve">
+				<source>Ojibwe, Ojibwa</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.cu" xml:space="preserve">
+				<source>Old Church Slavonic, Church Slavonic, Old Bulgarian</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.om" xml:space="preserve">
+				<source>Oromo</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.or" xml:space="preserve">
+				<source>Oriya</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.os" xml:space="preserve">
+				<source>Ossetian, Ossetic</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.pa" xml:space="preserve">
+				<source>Panjabi, Punjabi</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.pi" xml:space="preserve">
+				<source>Pāli</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.fa" xml:space="preserve">
+				<source>Persian (Farsi)</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.pl" xml:space="preserve">
+				<source>Polish</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ps" xml:space="preserve">
+				<source>Pashto, Pushto</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.pt" xml:space="preserve">
+				<source>Portuguese</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.qu" xml:space="preserve">
+				<source>Quechua</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.rm" xml:space="preserve">
+				<source>Romansh</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.rn" xml:space="preserve">
+				<source>Kirundi</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ro" xml:space="preserve">
+				<source>Romanian</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ru" xml:space="preserve">
+				<source>Russian</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.sa" xml:space="preserve">
+				<source>Sanskrit (Saṁskṛta)</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.sc" xml:space="preserve">
+				<source>Sardinian</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.sd" xml:space="preserve">
+				<source>Sindhi</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.se" xml:space="preserve">
+				<source>Northern Sami</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.sm" xml:space="preserve">
+				<source>Samoan</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.sg" xml:space="preserve">
+				<source>Sango</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.sr" xml:space="preserve">
+				<source>Serbian</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.gd" xml:space="preserve">
+				<source>Scottish Gaelic, Gaelic</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.sn" xml:space="preserve">
+				<source>Shona</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.si" xml:space="preserve">
+				<source>Sinhala, Sinhalese</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.sk" xml:space="preserve">
+				<source>Slovak</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.sl" xml:space="preserve">
+				<source>Slovene</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.so" xml:space="preserve">
+				<source>Somali</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.st" xml:space="preserve">
+				<source>Southern Sotho</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.es" xml:space="preserve">
+				<source>Spanish, Castilian</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.su" xml:space="preserve">
+				<source>Sundanese</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.sw" xml:space="preserve">
+				<source>Swahili</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ss" xml:space="preserve">
+				<source>Swati</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.sv" xml:space="preserve">
+				<source>Swedish</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ta" xml:space="preserve">
+				<source>Tamil</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.te" xml:space="preserve">
+				<source>Telugu</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.tg" xml:space="preserve">
+				<source>Tajik</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.th" xml:space="preserve">
+				<source>Thai</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ti" xml:space="preserve">
+				<source>Tigrinya</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.bo" xml:space="preserve">
+				<source>Tibetan Standard, Tibetan, Central</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.tk" xml:space="preserve">
+				<source>Turkmen</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.tl" xml:space="preserve">
+				<source>Tagalog</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.tn" xml:space="preserve">
+				<source>Tswana</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.to" xml:space="preserve">
+				<source>Tonga (Tonga Islands)</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.tr" xml:space="preserve">
+				<source>Turkish</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ts" xml:space="preserve">
+				<source>Tsonga</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.tt" xml:space="preserve">
+				<source>Tatar</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.tw" xml:space="preserve">
+				<source>Twi</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ty" xml:space="preserve">
+				<source>Tahitian</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ug" xml:space="preserve">
+				<source>Uyghur, Uighur</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.uk" xml:space="preserve">
+				<source>Ukrainian</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ur" xml:space="preserve">
+				<source>Urdu</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.uz" xml:space="preserve">
+				<source>Uzbek</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.ve" xml:space="preserve">
+				<source>Venda</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.vi" xml:space="preserve">
+				<source>Vietnamese</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.vo" xml:space="preserve">
+				<source>Volapük</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.wa" xml:space="preserve">
+				<source>Walloon</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.cy" xml:space="preserve">
+				<source>Welsh</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.wo" xml:space="preserve">
+				<source>Wolof</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.fy" xml:space="preserve">
+				<source>Western Frisian</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.xh" xml:space="preserve">
+				<source>Xhosa</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.yi" xml:space="preserve">
+				<source>Yiddish</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.yo" xml:space="preserve">
+				<source>Yoruba</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.za" xml:space="preserve">
+				<source>Zhuang, Chuang</source>
+			</trans-unit>
+			<trans-unit id="sys_language.language_isocode.zu" xml:space="preserve">
+				<source>Zulu</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

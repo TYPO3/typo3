@@ -576,6 +576,9 @@
 			<trans-unit id="sys_language.isocode" xml:space="preserve">
 				<source>Select Official Language (ISO code):</source>
 			</trans-unit>
+			<trans-unit id="sys_language.language_isocode" xml:space="preserve">
+				<source>Select language:</source>
+			</trans-unit>
 			<trans-unit id="sys_language.flag" xml:space="preserve">
 				<source>Select flag icon:</source>
 			</trans-unit>
