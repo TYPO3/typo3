@@ -74,9 +74,9 @@ class ExternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 		try {
 			/** @var $response \HTTP_Request2_Response */
 			$response = $request->send();
-			// HEAD was not allowed, now trying GET
 			$status = isset($response) ? $response->getStatus() : 0;
-			if ($status === 405 || $status === 403) {
+			// HEAD was not allowed or threw an error, now trying GET
+			if ($status >= 400) {
 				$request->setMethod('GET');
 				$request->setHeader('Range', 'bytes = 0 - 4048');
 				/** @var $response \HTTP_Request2_Response */
