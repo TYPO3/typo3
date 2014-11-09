@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Reports\Report\Status;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Reports\ExtendedStatusProviderInterface;
 use TYPO3\CMS\Reports\ReportInterface;
 use TYPO3\CMS\Reports\StatusProviderInterface;
@@ -145,9 +146,10 @@ class Status implements ReportInterface {
 			</tr>
 		';
 		$statuses = $this->sortStatusProviders($statusCollection);
+		$id = 0;
 		foreach ($statuses as $provider => $providerStatus) {
 			$providerState = $this->sortStatuses($providerStatus);
-			$id = str_replace(' ', '-', $provider);
+			$id++;
 			$classes = array(
 				\TYPO3\CMS\Reports\Status::NOTICE => 'notice',
 				\TYPO3\CMS\Reports\Status::INFO => 'info',
@@ -166,8 +168,12 @@ class Status implements ReportInterface {
 					'###CONTENT###' => $status->getMessage()
 				));
 			}
-			$table = '<table class="t3-table"><tbody>' . $messages . '</tbody></table>';
-			$content .= $GLOBALS['TBE_TEMPLATE']->collapseableSection($provider, $table, $id, 'reports.states');
+			$header = '<h2>' . $provider . '</h2>';
+			$table = '<table class="t3-table">';
+			$table .= '<tbody>' . $messages . '</tbody>';
+			$table .= '</table>';
+
+			$content .= $header . $table;
 		}
 		return $content;
 	}
