@@ -142,11 +142,10 @@ class Status implements ReportInterface {
 			<tr>
 				<td class="###CLASS### col-xs-6">###HEADER###</td>
 				<td class="###CLASS### col-xs-6">###STATUS###<br>###CONTENT###</td>
-			</tr>';
-
+			</tr>
+		';
 		$statuses = $this->sortStatusProviders($statusCollection);
 		foreach ($statuses as $provider => $providerStatus) {
-			$headerIcon = '';
 			$providerState = $this->sortStatuses($providerStatus);
 			$id = str_replace(' ', '-', $provider);
 			$classes = array(
@@ -156,17 +155,10 @@ class Status implements ReportInterface {
 				\TYPO3\CMS\Reports\Status::WARNING => 'warning',
 				\TYPO3\CMS\Reports\Status::ERROR => 'danger'
 			);
-			$icon[\TYPO3\CMS\Reports\Status::NOTICE] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-notification');
-			$icon[\TYPO3\CMS\Reports\Status::INFO] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-information');
-			$icon[\TYPO3\CMS\Reports\Status::OK] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-ok');
-			$icon[\TYPO3\CMS\Reports\Status::WARNING] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-warning');
-			$icon[\TYPO3\CMS\Reports\Status::ERROR] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-error');
 			$messages = '';
-			$sectionSeverity = 0;
 			/** @var $status \TYPO3\CMS\Reports\Status */
 			foreach ($providerState as $status) {
 				$severity = $status->getSeverity();
-				$sectionSeverity = $severity > $sectionSeverity ? $severity : $sectionSeverity;
 				$messages .= strtr($template, array(
 					'###CLASS###' => $classes[$severity],
 					'###HEADER###' => $status->getTitle(),
@@ -174,13 +166,8 @@ class Status implements ReportInterface {
 					'###CONTENT###' => $status->getMessage()
 				));
 			}
-
 			$table = '<table class="t3-table"><tbody>' . $messages . '</tbody></table>';
-
-			if ($sectionSeverity > 0) {
-				$headerIcon = $icon[$sectionSeverity];
-			}
-			$content .= $GLOBALS['TBE_TEMPLATE']->collapseableSection($headerIcon . $provider, $table, $id, 'reports.states');
+			$content .= $GLOBALS['TBE_TEMPLATE']->collapseableSection($provider, $table, $id, 'reports.states');
 		}
 		return $content;
 	}
