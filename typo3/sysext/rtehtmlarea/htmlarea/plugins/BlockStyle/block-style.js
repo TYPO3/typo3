@@ -158,13 +158,13 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 		}
 			// Monitor css parsing being completed
 		this.editor.iframe.mon(this.blockStyles, 'HTMLAreaEventCssParsingComplete', this.onCssParsingComplete, this);
-		this.blockStyles.initiateParsing();
+		this.blockStyles.parse();
 	},
 	/*
 	 * This handler gets called when parsing of css classes is completed
 	 */
 	onCssParsingComplete: function () {
-		if (this.blockStyles.isReady) {
+		if (this.blockStyles.isReady()) {
 			this.cssArray = this.blockStyles.getClasses();
 			if (this.getEditorMode() === 'wysiwyg' && this.editor.isEditable()) {
 				this.updateValue('BlockStyle');
@@ -175,7 +175,7 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 	 * This handler gets called when the toolbar is being updated
 	 */
 	onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
-		if (mode === 'wysiwyg' && this.editor.isEditable() && this.blockStyles.isReady) {
+		if (mode === 'wysiwyg' && this.editor.isEditable() && this.blockStyles.isReady()) {
 			this.updateValue(button.itemId);
 		}
 	},
@@ -231,7 +231,7 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 	buildDropDownOptions: function (dropDown, nodeName) {
 		var store = dropDown.getStore();
 		this.initializeDropDown(dropDown);
-		if (this.blockStyles.isReady) {
+		if (this.blockStyles.isReady()) {
 			var allowedClasses = {};
 			if (Ext.isDefined(this.cssArray[nodeName])) {
 				allowedClasses = this.cssArray[nodeName];

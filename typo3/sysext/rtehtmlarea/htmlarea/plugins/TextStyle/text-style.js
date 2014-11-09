@@ -202,13 +202,13 @@ HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 		}
 			// Monitor css parsing being completed
 		this.editor.iframe.mon(this.textStyles, 'HTMLAreaEventCssParsingComplete', this.onCssParsingComplete, this);
-		this.textStyles.initiateParsing();
+		this.textStyles.parse();
 	},
 	/*
 	 * This handler gets called when parsing of css classes is completed
 	 */
 	onCssParsingComplete: function () {
-		if (this.textStyles.isReady) {
+		if (this.textStyles.isReady()) {
 			this.cssArray = this.textStyles.getClasses();
 			if (this.getEditorMode() === 'wysiwyg' && this.editor.isEditable()) {
 				this.updateToolbar('TextStyle');
@@ -219,7 +219,7 @@ HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 	 * This handler gets called when the toolbar is being updated
 	 */
 	onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
-		if (mode === 'wysiwyg' && this.editor.isEditable() && this.textStyles.isReady) {
+		if (mode === 'wysiwyg' && this.editor.isEditable() && this.textStyles.isReady()) {
 			this.updateToolbar(button.itemId);
 		}
 	},
@@ -303,7 +303,7 @@ HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 	buildDropDownOptions: function (dropDown, nodeName) {
 		var store = dropDown.getStore();
 		this.initializeDropDown(dropDown);
-		if (this.textStyles.isReady) {
+		if (this.textStyles.isReady()) {
 			var allowedClasses = {};
 			if (this.REInlineTags.test(nodeName)) {
 				if (Ext.isDefined(this.cssArray[nodeName])) {
