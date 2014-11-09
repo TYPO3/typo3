@@ -10641,6 +10641,29 @@ em {
 /* - - - - - - - - - - - - - - - - - - - - -
 Various classes
 - - - - - - - - - - - - - - - - - - - - - */
+.typo3-app-icon {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  height: 32px;
+  width: 32px;
+  overflow: hidden;
+  border-radius: 2px;
+}
+.typo3-app-icon > span {
+  display: table;
+  height: 100%;
+  width: 100%;
+}
+.typo3-app-icon > span > span {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+.typo3-app-icon img {
+  max-height: 32px;
+  max-width: 32px;
+}
 .section {
   margin-bottom: 15px;
 }
@@ -11419,6 +11442,24 @@ Topbar
 }
 #typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu > ul > li.active > a {
   background-color: #282828;
+}
+#typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu > ul > li.typo3-module-menu-item {
+  margin: 1px 0;
+}
+#typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu > ul > li.typo3-module-menu-item > a {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  height: 36px;
+}
+#typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu > ul > li.typo3-module-menu-item > a .typo3-app-icon {
+  display: block;
+  float: left;
+  margin-right: 10px;
+}
+#typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu > ul > li.typo3-module-menu-item > a .submodule-label {
+  display: block;
+  padding-left: 42px;
+  padding-top: 8px;
 }
 #typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu li a,
 #typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu td a {

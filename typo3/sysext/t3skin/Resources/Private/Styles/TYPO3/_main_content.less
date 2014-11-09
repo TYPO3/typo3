@@ -129,6 +129,32 @@ em {
 Various classes
 - - - - - - - - - - - - - - - - - - - - - */
 
+// Please use .typo3-app-icon in your extensions.
+// Wrap <img> in span>span for 16x16px horizontally and vertically centered icons (backwards compatibility)
+.typo3-app-icon {
+	display: inline-block;
+	padding: 0;
+	margin: 0;
+	height: 32px;
+	width: 32px;
+	overflow: hidden;
+	border-radius: @border-radius-small;
+	> span {
+		display: table;
+		height: 100%;
+		width: 100%;
+		> span {
+			display: table-cell;
+			text-align: center;
+			vertical-align: middle;
+		}
+	}
+	img {
+		max-height: 32px;
+		max-width: 32px;
+	}
+}
+
 .section {
 	margin-bottom: 15px;
 }

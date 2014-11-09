@@ -13,7 +13,7 @@ if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 		),
 		array(
 			'access' => 'user,group',
-			'icon' => 'EXT:aboutmodules/Resources/Public/Icons/module-aboutmodules.gif',
+			'icon' => 'EXT:aboutmodules/Resources/Public/Icons/module-aboutmodules.png',
 			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xlf'
 		)
 	);

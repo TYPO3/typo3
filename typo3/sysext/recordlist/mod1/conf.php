@@ -3,5 +3,5 @@
 $MCONF['name'] = 'web_list';
 $MCONF['script'] = '_DISPATCH';
 $MCONF['access'] = 'user,group';
-$MLANG['default']['tabs_images']['tab'] = '../Resources/Public/Icons/module-list.gif';
+$MLANG['default']['tabs_images']['tab'] = '../Resources/Public/Icons/module-list.png';
 $MLANG['default']['ll_ref'] = 'LLL:EXT:lang/locallang_mod_web_list.xlf';

@@ -15,7 +15,7 @@ if (TYPO3_MODE === 'BE') {
 		),
 		array(
 			'access' => 'admin',
-			'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module-install.gif',
+			'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module-install.png',
 			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/BackendModule.xlf',
 		)
 	);

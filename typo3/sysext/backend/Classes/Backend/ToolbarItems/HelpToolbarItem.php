@@ -74,14 +74,14 @@ class HelpToolbarItem implements ToolbarItemInterface {
 			$moduleIcon = $module->getIcon();
 			$dropdown[] ='<li'
 				. ' id="' . $module->getName() . '"'
-				. ' class="t3-menuitem-submodule submodule mod-' . $module->getName() . '" '
+				. ' class="typo3-module-menu-item submodule mod-' . $module->getName() . '" '
 				. ' data-modulename="' . $module->getName() . '"'
 				. ' data-navigationcomponentid="' . $module->getNavigationComponentId() . '"'
 				. ' data-navigationframescript="' . $module->getNavigationFrameScript() . '"'
 				. ' data-navigationframescriptparameters="' . $module->getNavigationFrameScriptParameters() . '"'
 				. '>';
 			$dropdown[] = '<a title="' .$module->getDescription() . '" href="' . $module->getLink() . '" class="modlink">';
-			$dropdown[] = '<span class="submodule-icon">' . ($moduleIcon['html'] ?: $moduleIcon['html']) . '</span>';
+			$dropdown[] = '<span class="typo3-app-icon"><span><span>' . ($moduleIcon['html'] ?: $moduleIcon['html']) . '</span></span></span>';
 			$dropdown[] = '<span class="submodule-label">' . $module->getTitle() . '</span>';
 			$dropdown[] = '</a>';
 			$dropdown[] = '</li>';
@@ -96,7 +96,7 @@ class HelpToolbarItem implements ToolbarItemInterface {
 	 * @return array
 	 */
 	public function getAdditionalAttributes() {
-		return array();
+		return array('class' => 'typo3-module-menu-group');
 	}
 
 	/**

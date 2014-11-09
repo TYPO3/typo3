@@ -11,7 +11,7 @@ if (TYPO3_MODE === 'BE') {
 			'Report' => 'index,detail'
 		), array(
 			'access' => 'admin',
-			'icon' => 'EXT:' . $_EXTKEY . '/ext_icon.png',
+			'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module-reports.png',
 			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xlf'
 		)
 	);

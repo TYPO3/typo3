@@ -43,7 +43,7 @@ class VersionClickMenu {
 			$url = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_txversionM1', array('table' => $table, 'uid' => $uid));
 			$localItems[] = $backRef->linkItem(
 				$GLOBALS['LANG']->getLLL('title', $LL),
-				$backRef->excludeIcon('<img src="' . $backRef->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('version') . 'cm1/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'),
+				$backRef->excludeIcon('<img src="' . $backRef->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('version') . 'Resources/Public/Icons/module-version.png" width="15" height="12" border="0" align="top" alt="" />'),
 				$backRef->urlRefForCM($url),
 				TRUE
 			);

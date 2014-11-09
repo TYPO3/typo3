@@ -11,7 +11,7 @@ if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 		array('About' => 'index'),
 		array(
 			'access' => 'user,group',
-			'icon' => 'EXT:about/Resources/Public/Icons/module-about.gif',
+			'icon' => 'EXT:about/Resources/Public/Icons/module-about.png',
 			'labels' => 'LLL:EXT:lang/locallang_mod_help_about.xlf'
 		)
 	);

@@ -23,7 +23,7 @@ if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 		),
 		array(
 			'access' => 'admin',
-			'icon' => 'EXT:belog/Resources/Public/Icons/module-belog.gif',
+			'icon' => 'EXT:belog/Resources/Public/Icons/module-belog.png',
 			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xlf',
 		)
 	);
