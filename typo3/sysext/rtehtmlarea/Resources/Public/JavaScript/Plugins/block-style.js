@@ -241,7 +241,7 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 			for (var cssClass in allowedClasses) {
 				if (typeof HTMLArea.classesSelectable[cssClass] === 'undefined' || HTMLArea.classesSelectable[cssClass]) {
 					var style = null;
-					if (!this.pageTSconfiguration.disableStyleOnOptionLabel) {
+					if (!this.pageTSconfiguration || !this.pageTSconfiguration.disableStyleOnOptionLabel) {
 						if (HTMLArea.classesValues[cssClass] && !HTMLArea.classesNoShow[cssClass]) {
 							style = HTMLArea.classesValues[cssClass];
 						} else if (/-[0-9]+$/.test(cssClass) && HTMLArea.classesValues[RegExp.leftContext + '-'])  {
