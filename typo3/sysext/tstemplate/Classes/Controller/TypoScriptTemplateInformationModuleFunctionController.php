@@ -49,17 +49,24 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 	 * @param string $label The label to be shown (e.g. 'Title:', 'Sitetitle:')
 	 * @param string $data The data/information to be shown (e.g. 'Template for my site')
 	 * @param string $field The field/variable to be sent on clicking the edit icon (e.g. 'title', 'sitetitle')
+	 * @param int $id The field/variable to be sent on clicking the edit icon (e.g. 'title', 'sitetitle')
 	 * @return string A row for a HTML table
 	 */
-	public function tableRow($label, $data, $field) {
+	public function tableRow($label, $data, $field, $id) {
 		$lang = $this->getLanguageService();
 		$ret = '<tr><td>';
-		$urlParameters = array(
-			'id' => $this->pObj->id
-		);
-		$aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
-		$ret .= '<a href="' . htmlspecialchars(($aHref . '&e[' . $field . ']=1')) . '">'
-			. IconUtility::getSpriteIcon(
+		if ($field === 'config' || $field === 'constants') {
+			$urlParameters = array(
+				'id' => $this->pObj->id
+			);
+			$aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
+			$ret .= '<a href="' . htmlspecialchars(($aHref . '&e[' . $field . ']=1')) . '">';
+		} else {
+			$params = '&columnsOnly=' . $field . '&createExtension=0' . '&edit[sys_template][' . $id . ']=edit';
+			$editOnClick = BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH'], '');
+			$ret .= '<a href="#" onclick="' . $editOnClick . '">';
+		}
+		$ret .= IconUtility::getSpriteIcon(
 				'actions-document-open',
 				array('title' => $lang->sL('LLL:EXT:lang/locallang_common.xlf:editField', TRUE))
 			) . '<strong>' . $label . '</strong></a>';
@@ -181,9 +188,6 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 						switch ($field) {
 							case 'constants':
 							case 'config':
-							case 'title':
-							case 'sitetitle':
-							case 'description':
 								$recData['sys_template'][$saveId][$field] = $val;
 							break;
 						}
@@ -233,24 +237,6 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 			if ($POST['abort'] || MathUtility::canBeInterpretedAsInteger($POST['abort_x']) && MathUtility::canBeInterpretedAsInteger($POST['abort_y']) || $POST['saveclose'] || MathUtility::canBeInterpretedAsInteger($POST['saveclose_x']) && MathUtility::canBeInterpretedAsInteger($POST['saveclose_y'])) {
 				unset($e);
 			}
-			if (isset($e['title'])) {
-				$outCode = '<input type="Text" name="data[title]" value="' . htmlspecialchars($tplRow['title']) . '"' . $this->pObj->doc->formWidth() . '>';
-				$outCode .= '<input type="hidden" name="e[title]" value="1">';
-				$theOutput .= $this->pObj->doc->spacer(15);
-				$theOutput .= $this->pObj->doc->section($lang->getLL('title'), $outCode, TRUE);
-			}
-			if (isset($e['sitetitle'])) {
-				$outCode = '<input type="Text" name="data[sitetitle]" value="' . htmlspecialchars($tplRow['sitetitle']) . '"' . $this->pObj->doc->formWidth() . '>';
-				$outCode .= '<input type="hidden" name="e[sitetitle]" value="1">';
-				$theOutput .= $this->pObj->doc->spacer(15);
-				$theOutput .= $this->pObj->doc->section($lang->getLL('sitetitle'), $outCode, TRUE);
-			}
-			if (isset($e['description'])) {
-				$outCode = '<textarea name="data[description]" rows="5" class="fixed-font enable-tab"' . $this->pObj->doc->formWidth(48) . '>' . GeneralUtility::formatForTextarea($tplRow['description']) . '</textarea>';
-				$outCode .= '<input type="hidden" name="e[description]" value="1">';
-				$theOutput .= $this->pObj->doc->spacer(15);
-				$theOutput .= $this->pObj->doc->section($lang->getLL('description'), $outCode, TRUE);
-			}
 			if (isset($e['constants'])) {
 				$outCode = '<textarea name="data[constants]" rows="' . $numberOfRows . '" wrap="off" class="fixed-font enable-tab"' . $this->pObj->doc->formWidth(48, TRUE, 'width:98%;height:70%') . ' class="fixed-font">' . GeneralUtility::formatForTextarea($tplRow['constants']) . '</textarea>';
 				$outCode .= '<input type="hidden" name="e[constants]" value="1">';
@@ -271,20 +257,23 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 				$theOutput .= $this->pObj->doc->section($lang->getLL('setup'), '', TRUE);
 				$theOutput .= $this->pObj->doc->sectionEnd() . $outCode;
 			}
+
 			// Processing:
 			$outCode = '';
-			$outCode .= $this->tableRow($lang->getLL('title'), htmlspecialchars($tplRow['title']), 'title');
-			$outCode .= $this->tableRow($lang->getLL('sitetitle'), htmlspecialchars($tplRow['sitetitle']), 'sitetitle');
-			$outCode .= $this->tableRow($lang->getLL('description'), nl2br(htmlspecialchars($tplRow['description'])), 'description');
-			$outCode .= $this->tableRow($lang->getLL('constants'), sprintf($lang->getLL('editToView'), trim($tplRow['constants']) ? count(explode(LF, $tplRow['constants'])) : 0), 'constants');
-			$outCode .= $this->tableRow($lang->getLL('setup'), sprintf($lang->getLL('editToView'), trim($tplRow['config']) ? count(explode(LF, $tplRow['config'])) : 0), 'config');
+			$outCode .= $this->tableRow($lang->getLL('title'), htmlspecialchars($tplRow['title']), 'title', $tplRow['uid']);
+			$outCode .= $this->tableRow($lang->getLL('sitetitle'), htmlspecialchars($tplRow['sitetitle']), 'sitetitle', $tplRow['uid']);
+			$outCode .= $this->tableRow($lang->getLL('description'), nl2br(htmlspecialchars($tplRow['description'])), 'description', $tplRow['uid']);
+			$outCode .= $this->tableRow($lang->getLL('constants'), sprintf($lang->getLL('editToView'), trim($tplRow['constants']) ? count(explode(LF, $tplRow['constants'])) : 0), 'constants', $tplRow['uid']);
+			$outCode .= $this->tableRow($lang->getLL('setup'), sprintf($lang->getLL('editToView'), trim($tplRow['config']) ? count(explode(LF, $tplRow['config'])) : 0), 'config', $tplRow['uid']);
 			$outCode = '<table class="t3-table">' . $outCode . '</table>';
+
 			// Edit all icon:
 			$editOnClick = BackendUtility::editOnClick(rawurlencode('&createExtension=0') . '&amp;edit[sys_template][' . $tplRow['uid'] . ']=edit', $GLOBALS['BACK_PATH'], '');
 			$icon = IconUtility::getSpriteIcon('actions-document-open', array('title' => $lang->getLL('editTemplateRecord'))) . $lang->getLL('editTemplateRecord');
 			$outCode .= '<br /><a href="#" onclick="' . $editOnClick . '"><strong>' . $icon . '</strong></a>';
 			$theOutput .= $this->pObj->doc->section('', $outCode);
-			// hook	after compiling the output
+
+				// hook	after compiling the output
 			if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tstemplate_info/class.tx_tstemplateinfo.php']['postOutputProcessingHook'])) {
 				$postOutputProcessingHook = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tstemplate_info/class.tx_tstemplateinfo.php']['postOutputProcessingHook'];
 				if (is_array($postOutputProcessingHook)) {
