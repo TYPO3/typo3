@@ -40,9 +40,7 @@ var TBE_EDITOR = {
 
 	formname: '',
 	formnameUENC: '',
-	loadTime: 0,
 	isChanged: 0,
-	auth_timeout_field: 0,
 
 	backPath: '',
 	prependFormFieldNames: 'data',
@@ -315,18 +313,6 @@ var TBE_EDITOR = {
 		TBE_EDITOR.actionChecks[type].push(checks);
 	},
 
-	// Regular TCEforms JSbottom scripts:
-	loginRefreshed: function() {
-		var date = new Date();
-		TBE_EDITOR.loadTime = Math.floor(date.getTime()/1000);
-	},
-	checkLoginTimeout: function() {
-		var date = new Date();
-		var theTime = Math.floor(date.getTime()/1000);
-		if (theTime > TBE_EDITOR.loadTime+TBE_EDITOR.auth_timeout_field-10) {
-			return true;
-		}
-	},
 	fieldChanged_fName: function(fName,el) {
 		var idx=2+TBE_EDITOR.prependFormFieldNamesCnt;
 		var table = TBE_EDITOR.split(fName, "[", idx);
@@ -562,8 +548,6 @@ var TS = new typoSetup();
 var evalFunc = new evalFunc();
 
 // backwards compatibility for extensions
-var TBE_EDITOR_loginRefreshed = TBE_EDITOR.loginRefreshed;
-var TBE_EDITOR_checkLoginTimeout = TBE_EDITOR.checkLoginTimeout;
 var TBE_EDITOR_setHiddenContent = TBE_EDITOR.setHiddenContent;
 var TBE_EDITOR_isChanged = TBE_EDITOR.isChanged;
 var TBE_EDITOR_fieldChanged_fName = TBE_EDITOR.fieldChanged_fName;

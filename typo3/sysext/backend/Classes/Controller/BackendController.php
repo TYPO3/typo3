@@ -121,7 +121,6 @@ class BackendController {
 			'tabclosemenu' => 'js/extjs/ux/ext.ux.tabclosemenu.js',
 			'notifications' => 'sysext/backend/Resources/Public/JavaScript/notifications.js',
 			'backend' => 'sysext/backend/Resources/Public/JavaScript/backend.js',
-			'loginrefresh' => 'sysext/backend/Resources/Public/JavaScript/loginrefresh.js',
 			'debugPanel' => 'js/extjs/debugPanel.js',
 			'viewport' => 'js/extjs/viewport.js',
 			'iframepanel' => 'sysext/backend/Resources/Public/JavaScript/iframepanel.js',
@@ -129,8 +128,8 @@ class BackendController {
 			'viewportConfiguration' => 'js/extjs/viewportConfiguration.js',
 			'util' => 'sysext/backend/Resources/Public/JavaScript/util.js'
 		);
-		if ($this->debug) {
-			unset($this->jsFiles['loginrefresh']);
+		if (!$this->debug) {
+			$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LoginRefresh');
 		}
 		// Add default BE css
 		$this->pageRenderer->addCssLibrary('contrib/normalize/normalize.css', 'stylesheet', 'all', '', TRUE, TRUE);

@@ -3989,7 +3989,6 @@ class FormEngine {
 			TBE_EDITOR.images.sel.src = "' . IconUtility::skinImg($this->backPath, 'gfx/content_selected.gif', '', 1) . '";
 			TBE_EDITOR.images.clear.src = "' . $this->backPath . 'clear.gif";
 
-			TBE_EDITOR.auth_timeout_field = ' . (int)$beUserAuth->auth_timeout_field . ';
 			TBE_EDITOR.formname = "' . $formname . '";
 			TBE_EDITOR.formnameUENC = "' . rawurlencode($formname) . '";
 			TBE_EDITOR.backPath = "' . addslashes($this->backPath) . '";
@@ -4037,9 +4036,6 @@ class FormEngine {
 			';
 		}
 		$out .= LF . implode(LF, $this->additionalJS_post) . LF . $this->extJSCODE;
-		$out .= '
-			TBE_EDITOR.loginRefreshed();
-		';
 		// Regular direct output:
 		if (!$update) {
 			$spacer = LF . TAB;

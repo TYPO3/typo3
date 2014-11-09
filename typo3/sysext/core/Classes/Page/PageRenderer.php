@@ -1614,7 +1614,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function loadRequireJs() {
 
-			// load all paths to map to package names / namespaces
+		// load all paths to map to package names / namespaces
 		if (count($this->requireJsConfig) === 0) {
 			// first, load all paths for the namespaces, and configure contrib libs.
 			$this->requireJsConfig['paths'] = array(
@@ -1634,7 +1634,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				}
 			}
 
-				// check if additional AMD modules need to be loaded if a single AMD module is initialized
+			// check if additional AMD modules need to be loaded if a single AMD module is initialized
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RequireJS']['postInitializationModules'])) {
 				$this->addInlineSettingArray('RequireJS.PostInitializationModules', $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RequireJS']['postInitializationModules']);
 			}
