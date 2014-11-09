@@ -45,13 +45,15 @@ var ShortcutManager = {
 
 	/**
 	 * central entry point to create a shortcut, delegates the call to correct endpoint
+	 * kept for backwards compatibility, use top.TYPO3.ShortcutMenu.createShortcut directly
+	 * in the future
 	 */
 	createShortcut: function(confirmQuestion, backPath, moduleName, url) {
-		if(confirm(confirmQuestion)) {
-			if (typeof TYPO3BackendShortcutMenu !== undefined) {
-					// backend.php
-				TYPO3BackendShortcutMenu.createShortcut('', moduleName, url);
-			}
+		if (console) {
+			console.debug('ShortcutManager.createShortcut is deprecated since TYPO3 CMS 7, use TYPO3.ShortcutMenu directly.');
+		}
+		if (TYPO3.ShortcutMenu !== undefined) {
+			TYPO3.ShortcutMenu.createShortcut(moduleName, url, confirmQuestion);
 		}
 	}
 }

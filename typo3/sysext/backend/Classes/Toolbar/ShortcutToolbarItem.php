@@ -112,7 +112,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 	 */
 	public function render() {
 		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarks', TRUE);
-		$this->addJavascriptToBackend();
+		$this->backendReference->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Toolbar/ShortcutMenu');
 		$shortcutMenu = array();
 		$shortcutMenu[] = '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . IconUtility::getSpriteIcon('apps-toolbar-menu-shortcut', array('title' => $title)) . '</a>';
 		$shortcutMenu[] = '<div class="dropdown-menu" role="menu">';
@@ -138,12 +138,12 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 		$noGroupShortcuts = $this->getShortcutsByGroup(0);
 		foreach ($noGroupShortcuts as $shortcut) {
 			$shortcutMenu[] = '
-			<tr id="shortcut-' . $shortcut['raw']['uid'] . '" class="shortcut">
+			<tr class="shortcut" data-shortcutid="' . $shortcut['raw']['uid'] . '">
 				<td class="shortcut-icon">' . $shortcut['icon'] . '</td>
 				<td class="shortcut-label">
-					<a id="shortcut-label-' . $shortcut['raw']['uid'] . '" href="#" onclick="' . $shortcut['action'] . '; return false;">' . htmlspecialchars($shortcut['label']) . '</a>
+					<a href="#" onclick="' . $shortcut['action'] . '; return false;">' . htmlspecialchars($shortcut['label']) . '</a>
 				</td>
-				<td class="shortcut-edit">' . $editIcon . ' id="shortcut-edit-' . $shortcut['raw']['uid'] . '" /></td>
+				<td class="shortcut-edit">' . $editIcon . ' /></td>
 				<td class="shortcut-delete">' . $deleteIcon . '</td>
 			</tr>';
 		}
@@ -167,12 +167,12 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 						$firstRow = ' first-row';
 					}
 					$shortcutGroup .= '
-					<tr id="shortcut-' . $shortcut['raw']['uid'] . '" class="shortcut' . $firstRow . '">
+					<tr class="shortcut' . $firstRow . '" data-shortcutid="' . $shortcut['raw']['uid'] . '" data-shortcutgroup="' . $groupId . '">
 						<td class="shortcut-icon">' . $shortcut['icon'] . '</td>
 						<td class="shortcut-label">
-							<a id="shortcut-label-' . $shortcut['raw']['uid'] . '" href="#" onclick="' . $shortcut['action'] . '; return false;">' . htmlspecialchars($shortcut['label']) . '</a>
+							<a href="#" onclick="' . $shortcut['action'] . '; return false;">' . htmlspecialchars($shortcut['label']) . '</a>
 						</td>
-						<td class="shortcut-edit">' . $editIcon . ' id="shortcut-edit-' . $shortcut['raw']['uid'] . '" /></td>
+						<td class="shortcut-edit">' . $editIcon . ' /></td>
 						<td class="shortcut-delete">' . $deleteIcon . '</td>
 					</tr>';
 				}
@@ -200,18 +200,9 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
 	 * @return void
 	 */
-	public function renderAjax($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj = NULL) {
+	public function renderAjaxMenu($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj = NULL) {
 		$menuContent = $this->renderMenu();
 		$ajaxObj->addContent('shortcutMenu', $menuContent);
-	}
-
-	/**
-	 * Adds the necessary JavaScript to the backend
-	 *
-	 * @return void
-	 */
-	protected function addJavascriptToBackend() {
-		$this->backendReference->addJavascriptFile('sysext/backend/Resources/Public/JavaScript/shortcutmenu.js');
 	}
 
 	/**
@@ -446,13 +437,17 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 	}
 
 	/**
-	 * gets the available shortcut groups
+	 * gets the available shortcut groups, renders a form so it can be saved lateron
 	 *
 	 * @param array $params Array of parameters from the AJAX interface, currently unused
 	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
 	 * @return void
 	 */
-	public function getAjaxShortcutGroups($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj = NULL) {
+	public function getAjaxShortcutEditForm($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj = NULL) {
+		$selectedShortcutId = (int)GeneralUtility::_GP('shortcutId');
+		$selectedShortcutGroupId = (int)GeneralUtility::_GP('shortcutGroup');
+		$selectedShortcut = $this->getShortcutById($selectedShortcutId);
+
 		$shortcutGroups = $this->shortcutGroups;
 		if (!$GLOBALS['BE_USER']->isAdmin()) {
 			foreach ($shortcutGroups as $groupId => $groupName) {
@@ -461,8 +456,18 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 				}
 			}
 		}
-		$ajaxObj->addContent('shortcutGroups', $shortcutGroups);
-		$ajaxObj->setContentFormat('json');
+
+		// build the form
+		$content = '<form class="shortcut-form">' .
+			'<input type="text" name="shortcut-title" value="' . htmlspecialchars($selectedShortcut['label']) . '">';
+
+		$content .= '<select name="shortcut-group">';
+		foreach ($shortcutGroups as $shortcutGroupId => $shortcutGroupTitle) {
+			$content .= '<option value="' . (int)$shortcutGroupId . '"' . ($selectedShortcutGroupId == $shortcutGroupId ? ' selected="selected"' : '') . '>' . htmlspecialchars($shortcutGroupTitle) . '</option>';
+		}
+		$content .= '</select><input type="button" class="shortcut-form-save" value="Save"><input type="button" class="shortcut-form-cancel" value="Cancel"></form>';
+
+		$ajaxObj->addContent('data', $content);
 	}
 
 	/**
@@ -501,6 +506,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 		$module = GeneralUtility::_POST('module');
 		$motherModule = GeneralUtility::_POST('motherModName');
 		// Determine shortcut type
+		$url = rawurldecode($url);
 		$queryParts = parse_url($url);
 		$queryParameters = GeneralUtility::explodeUrl2Array($queryParts['query'], 1);
 		// Proceed only if no scheme is defined, as URL is expected to be relative
@@ -567,8 +573,8 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 	 */
 	public function setAjaxShortcut($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj = NULL) {
 		$shortcutId = (int)GeneralUtility::_POST('shortcutId');
-		$shortcutName = strip_tags(GeneralUtility::_POST('value'));
-		$shortcutGroupId = (int)GeneralUtility::_POST('shortcut-group');
+		$shortcutName = strip_tags(GeneralUtility::_POST('shortcutTitle'));
+		$shortcutGroupId = (int)GeneralUtility::_POST('shortcutGroup');
 		if ($shortcutGroupId > 0 || $GLOBALS['BE_USER']->isAdmin()) {
 			// Users can delete only their own shortcuts (except admins)
 			$addUserWhere = !$GLOBALS['BE_USER']->isAdmin() ? ' AND userid=' . (int)$GLOBALS['BE_USER']->user['uid'] : '';

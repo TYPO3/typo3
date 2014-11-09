@@ -634,8 +634,8 @@ return array(
 				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Form\\Element\\SuggestElement->processAjaxRequest',
 				'csrfTokenCheck' => TRUE
 			),
-			'ShortcutMenu::getGroups' => array(
-				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Toolbar\\ShortcutToolbarItem->getAjaxShortcutGroups',
+			'ShortcutMenu::getShortcutEditForm' => array(
+				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Toolbar\\ShortcutToolbarItem->getAjaxShortcutEditForm',
 				'csrfTokenCheck' => TRUE
 			),
 			'ShortcutMenu::saveShortcut' => array(
@@ -643,7 +643,7 @@ return array(
 				'csrfTokenCheck' => TRUE
 			),
 			'ShortcutMenu::render' => array(
-				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Toolbar\\ShortcutToolbarItem->renderAjax',
+				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Toolbar\\ShortcutToolbarItem->renderAjaxMenu',
 				'csrfTokenCheck' => TRUE
 			),
 			'ShortcutMenu::delete' => array(

@@ -615,7 +615,6 @@ function jumpToUrl(URL) {
 	 * @return string HTML content
 	 */
 	public function makeShortcutIcon($gvList, $setList, $modName, $motherModName = '') {
-		$backPath = $this->backPath;
 		$storeUrl = $this->makeShortcutUrl($gvList, $setList);
 		$pathInfo = parse_url(GeneralUtility::getIndpEnv('REQUEST_URI'));
 		// Add the module identifier automatically if typo3/mod.php is used:
@@ -629,9 +628,9 @@ function jumpToUrl(URL) {
 		} else {
 			$mMN = '';
 		}
-		$onClick = 'top.ShortcutManager.createShortcut(' . GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.makeBookmark')) . ', ' . '\'' . $backPath . '\', ' . '\'' . rawurlencode($modName) . '\', ' . '\'' . rawurlencode(($pathInfo['path'] . '?' . $storeUrl)) . $mMN . '\'' . ');return false;';
-		$sIcon = '<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.makeBookmark', TRUE) . '">' . IconUtility::getSpriteIcon('actions-system-shortcut-new') . '</a>';
-		return $sIcon;
+		$confirmationText = GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.makeBookmark'));
+		$onClick = 'top.TYPO3.ShortcutMenu.createShortcut(\'' . rawurlencode($modName) . '\', ' . '\'' . rawurlencode(($pathInfo['path'] . '?' . $storeUrl)) . $mMN . '\', ' . $confirmationText . ');return false;';
+		return '<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.makeBookmark', TRUE) . '">' . IconUtility::getSpriteIcon('actions-system-shortcut-new') . '</a>';
 	}
 
 	/**
