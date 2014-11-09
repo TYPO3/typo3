@@ -420,12 +420,8 @@ class LoginController {
 				$formProtection->setSessionTokenFromRegistry();
 				$formProtection->persistSessionToken();
 				$GLOBALS['TBE_TEMPLATE']->JScode .= $GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
-					if (parent.opener && (parent.opener.busy || parent.opener.TYPO3.loginRefresh)) {
-						if (parent.opener.TYPO3.loginRefresh) {
-							parent.opener.TYPO3.loginRefresh.startTimer();
-						} else {
-							parent.opener.busy.loginRefreshed();
-						}
+					if (parent.opener && parent.opener.TYPO3 && parent.opener.TYPO3.loginRefresh) {
+						parent.opener.TYPO3.loginRefresh.startTimer();
 						parent.close();
 					}
 				');

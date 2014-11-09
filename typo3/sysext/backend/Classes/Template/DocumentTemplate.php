@@ -165,6 +165,7 @@ function jumpToUrl(URL) {
 	 * If set, then a JavaScript section will be outputted in the bottom of page which will try and update the top.busy session expiry object.
 	 *
 	 * @var int
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public $endJS = 1;
 
@@ -873,7 +874,7 @@ function jumpToUrl(URL) {
 	 * @see startPage()
 	 */
 	public function endPage() {
-		$str = $this->sectionEnd() . $this->postCode . $this->endPageJS() . $this->wrapScriptTags(BackendUtility::getUpdateSignalCode()) . $this->parseTime() . ($this->form ? '
+		$str = $this->sectionEnd() . $this->postCode . $this->wrapScriptTags(BackendUtility::getUpdateSignalCode()) . $this->parseTime() . ($this->form ? '
 </form>' : '');
 		// If something is in buffer like debug, put it to end of page
 		if (ob_get_contents()) {
@@ -1058,13 +1059,10 @@ function jumpToUrl(URL) {
 	 * Further a JavaScript section is outputted which will update the top.busy session-expiry object (unless $this->endJS is set to FALSE)
 	 *
 	 * @return string HTML content (<script> tag section)
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8, nothing there to output anymore
 	 */
 	public function endPageJS() {
-		return $this->endJS ? $this->wrapScriptTags('
-		if (top.busy && top.busy.loginRefreshed) {
-			top.busy.loginRefreshed();
-		}
-') : '';
+		return '';
 	}
 
 	/**

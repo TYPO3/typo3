@@ -319,7 +319,6 @@ var TBE_EDITOR = {
 	loginRefreshed: function() {
 		var date = new Date();
 		TBE_EDITOR.loadTime = Math.floor(date.getTime()/1000);
-		if (top.busy && top.busy.loginRefreshed) { top.busy.loginRefreshed(); }
 	},
 	checkLoginTimeout: function() {
 		var date = new Date();
