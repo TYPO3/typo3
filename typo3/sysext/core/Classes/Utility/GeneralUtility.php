@@ -4620,8 +4620,10 @@ Connection: close
 	 * @param string $string Content to encode
 	 * @param int $maxlen Length of the lines, default is 76
 	 * @return string The QP encoded string
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8. Use mailer API instead
 	 */
 	static public function quoted_printable($string, $maxlen = 76) {
+		static::logDeprecatedFunction();
 		// Make sure the string contains only Unix line breaks
 		// Replace Windows breaks (\r\n)
 		$string = str_replace(CRLF, LF, $string);
@@ -4678,8 +4680,10 @@ Connection: close
 	 * @param string $enc Encoding type: "base64" or "quoted-printable". Default value is "quoted-printable".
 	 * @param string $charset Charset used for encoding
 	 * @return string The encoded string
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8. Use mailer API instead
 	 */
 	static public function encodeHeader($line, $enc = 'quoted-printable', $charset = 'utf-8') {
+		static::logDeprecatedFunction();
 		// Avoid problems if "###" is found in $line (would conflict with the placeholder which is used below)
 		if (strpos($line, '###') !== FALSE) {
 			return $line;
@@ -4732,8 +4736,10 @@ Connection: close
 	 * @param string $index_script_url URL of index script (see makeRedirectUrl())
 	 * @return string Processed message content
 	 * @see makeRedirectUrl()
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8. Use mailer API instead
 	 */
 	static public function substUrlsInPlainText($message, $urlmode = '76', $index_script_url = '') {
+		static::logDeprecatedFunction();
 		switch ((string)$urlmode) {
 			case '':
 				$lengthLimit = FALSE;
@@ -4768,8 +4774,10 @@ Connection: close
 	 * @param int $l URL string length limit
 	 * @param string $index_script_url URL of "index script" - the prefix of the "?RDCT=..." parameter. If not supplied it will default to \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_DIR').'index.php'
 	 * @return string Processed URL
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8. Use mailer API instead
 	 */
 	static public function makeRedirectUrl($inUrl, $l = 0, $index_script_url = '') {
+		static::logDeprecatedFunction();
 		if (strlen($inUrl) > $l) {
 			$md5 = substr(md5($inUrl), 0, 20);
 			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'cache_md5params', 'md5hash=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($md5, 'cache_md5params'));
