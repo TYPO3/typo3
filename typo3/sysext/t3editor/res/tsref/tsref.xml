@@ -761,28 +761,6 @@ If this property is set, images are not allowed to be scaled up in size. This pa
 			<description><![CDATA[If this is set to true, the page will not be cached. If set to false, it's ignored. Other parameters may have set it to true of other reasons.]]></description>
 			<default><![CDATA[-]]></default>
 		</property>
-		<property name="notification_email_charset" type="string">
-			<description><![CDATA[Alternative charset for the notification mails.]]></description>
-			<default><![CDATA[utf-8]]></default>
-		</property>
-		<property name="notification_email_encoding" type="string">
-			<description><![CDATA[This sets the encoding of plaintext emails (notification messages). The default encoding is "quoted-printable". But setting this to eg. "base64" will encode the content with base64 encoding.
-
-Values possible:
-base64
-quoted-printable
-8bit]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="notification_email_urlmode" type="string">
-			<description><![CDATA[This option allows you to handle URL's in plain text emails so long URLS of more than 76 chars are not broken. This option can be either empty or "76" or "all".
-If the string is blank, all links in plaintext emails are untouched.
-If it's set to 76 then all links longer then 76 characters are stored in the database and a hash is sent in the GET-var ?RDCT=[md5/20] to the index.php script which finds the proper link in the database and issues a location header (redirection).
-If the value is "all" then ALL "http://" links in the message are converted.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="pageGenScript" type="string">
 			<description><![CDATA[Alternative page generation script for applications using index_ts.php for initialization, caching, stating and so on. This script is included in the global scope of index_ts.php-script and thus you may include libraries here. Always use include_once for libraries.
 Remember not to output anything from such an included script. All content must be set into $TSFE->content. Take a look at typo3/sysext/cms/tslib/pagegen.php
