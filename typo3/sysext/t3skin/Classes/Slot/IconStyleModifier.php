@@ -77,6 +77,8 @@ class IconStyleModifier {
 		't3-icon t3-icon-actions t3-icon-actions-view t3-icon-view-go-back' => 'fa-angle-double-left',
 		't3-icon t3-icon-actions t3-icon-actions-view t3-icon-view-go-forward' => 'fa-angle-double-right',
 		't3-icon t3-icon-actions t3-icon-actions-view t3-icon-view-go-up' => 'fa-level-up',
+		't3-icon t3-icon-actions t3-icon-actions-view t3-icon-view-list-collapse collapseIcon' => 'fa-angle-double-up',
+		't3-icon t3-icon-actions t3-icon-actions-view t3-icon-view-list-expand collapseIcon' => 'fa-angle-double-down',
 		't3-icon t3-icon-actions t3-icon-actions-view t3-icon-view-paging-first' => 'fa-step-backward',
 		't3-icon t3-icon-actions t3-icon-actions-view t3-icon-view-paging-last' => 'fa-step-forward',
 		't3-icon t3-icon-actions t3-icon-actions-view t3-icon-view-paging-next' => 'fa-arrow-right',
