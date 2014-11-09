@@ -155,6 +155,124 @@ class ResourceCompressorTest extends BaseTestCase {
 	/**
 	 * @test
 	 */
+	public function concatenatedCssFilesAreSeparatedByMediaType() {
+		$allFileName = 'allFile.css';
+		$screenFileName1 = 'screenFile.css';
+		$screenFileName2 = 'screenFile2.css';
+		$testFileFixture = array(
+			$allFileName => array(
+				'file' => $allFileName,
+				'excludeFromConcatenation' => FALSE,
+				'media' => 'all',
+			),
+			// use two screen files to check if they are merged into one, even with a different media type
+			$screenFileName1 => array(
+				'file' => $screenFileName1,
+				'excludeFromConcatenation' => FALSE,
+				'media' => 'screen',
+			),
+			$screenFileName2 => array(
+				'file' => $screenFileName2,
+				'excludeFromConcatenation' => FALSE,
+				'media' => 'screen',
+			),
+		);
+		$this->subject->expects($this->exactly(2))
+			->method('createMergedCssFile')
+			->will($this->onConsecutiveCalls(
+				$this->returnValue('merged_' . $allFileName),
+				$this->returnValue('merged_' . $screenFileName1)
+			));
+		$this->subject->setRelativePath('');
+
+		$result = $this->subject->concatenateCssFiles($testFileFixture);
+
+		$this->assertEquals(array(
+			'merged_' . $allFileName,
+			'merged_' . $screenFileName1
+		), array_keys($result));
+		$this->assertEquals('all', $result['merged_' . $allFileName]['media']);
+		$this->assertEquals('screen', $result['merged_' . $screenFileName1]['media']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function concatenatedCssFilesObeyForceOnTopOption() {
+		$screen1FileName = 'screen1File.css';
+		$screen2FileName = 'screen2File.css';
+		$screen3FileName = 'screen3File.css';
+		$testFileFixture = array(
+			$screen1FileName => array(
+				'file' => $screen1FileName,
+				'excludeFromConcatenation' => FALSE,
+				'media' => 'screen',
+			),
+			$screen2FileName => array(
+				'file' => $screen2FileName,
+				'excludeFromConcatenation' => FALSE,
+				'media' => 'screen',
+			),
+			$screen3FileName => array(
+				'file' => $screen3FileName,
+				'excludeFromConcatenation' => FALSE,
+				'forceOnTop' => TRUE,
+				'media' => 'screen',
+			),
+		);
+		// Replace mocked method getFilenameFromMainDir by passthrough callback
+		$this->subject->expects($this->any())->method('getFilenameFromMainDir')->willReturnArgument(0);
+		$this->subject->expects($this->once())
+			->method('createMergedCssFile')
+			->with($this->equalTo(array($screen3FileName, $screen1FileName, $screen2FileName)));
+		$this->subject->setRelativePath('');
+
+		$this->subject->concatenateCssFiles($testFileFixture);
+	}
+
+	/**
+	 * @test
+	 */
+	public function concatenatedCssFilesObeyExcludeFromConcatenation() {
+		$screen1FileName = 'screen1File.css';
+		$screen2FileName = 'screen2File.css';
+		$screen3FileName = 'screen3File.css';
+		$testFileFixture = array(
+			$screen1FileName => array(
+				'file' => $screen1FileName,
+				'excludeFromConcatenation' => FALSE,
+				'media' => 'screen',
+			),
+			$screen2FileName => array(
+				'file' => $screen2FileName,
+				'excludeFromConcatenation' => TRUE,
+				'media' => 'screen',
+			),
+			$screen3FileName => array(
+				'file' => $screen3FileName,
+				'excludeFromConcatenation' => FALSE,
+				'media' => 'screen',
+			),
+		);
+		$this->subject->expects($this->any())->method('getFilenameFromMainDir')->willReturnArgument(0);
+		$this->subject->expects($this->once())
+			->method('createMergedCssFile')
+			->with($this->equalTo(array($screen1FileName, $screen3FileName)))
+			->will($this->returnValue('merged_screen'));
+		$this->subject->setRelativePath('');
+
+		$result = $this->subject->concatenateCssFiles($testFileFixture);
+		$this->assertEquals(array(
+			$screen2FileName,
+			'merged_screen'
+		), array_keys($result));
+		$this->assertEquals('screen', $result[$screen2FileName]['media']);
+		$this->assertEquals('screen', $result['merged_screen']['media']);
+	}
+
+	/**
+	 * @test
+	 */
 	public function concatenatedJsFileIsFlaggedToNotConcatenateAgain() {
 		$fileName = 'fooFile.js';
 		$concatenatedFileName = 'merged_' . $fileName;
