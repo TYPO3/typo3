@@ -14,7 +14,10 @@ namespace TYPO3\CMS\Info\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Module\BaseScriptClass;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Script Class for the Web > Info module
@@ -22,7 +25,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-class InfoModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
+class InfoModuleController extends BaseScriptClass {
 
 	/**
 	 * @var array
@@ -37,11 +40,24 @@ class InfoModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	public $doc;
 
 	/**
+	 * @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected $backendUser;
+
+	/**
+	 * @var \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected $languageService;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
-		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_mod_web_info.xlf');
-		$GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], TRUE);
+		$this->languageService = $GLOBALS['LANG'];
+		$this->languageService->includeLLFile('EXT:lang/locallang_mod_web_info.xlf');
+
+		$this->backendUser = $GLOBALS['BE_USER'];
+		$this->backendUser->modAccess($GLOBALS['MCONF'], TRUE);
 	}
 
 	/**
@@ -51,31 +67,35 @@ class InfoModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 */
 	public function main() {
 		// Access check...
-		// The page will show only if there is a valid page and if this page may be viewed by the user
+		// The page will show only if there is a valid page and if this page
+		// may be viewed by the user
 		$this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
 		$access = is_array($this->pageinfo);
-		if ($this->id && $access || $GLOBALS['BE_USER']->user['admin'] && !$this->id) {
-			if ($GLOBALS['BE_USER']->user['admin'] && !$this->id) {
+		if ($this->id && $access || $this->backendUser->user['admin'] && !$this->id) {
+			if ($this->backendUser->user['admin'] && !$this->id) {
 				$this->pageinfo = array('title' => '[root-level]', 'uid' => 0, 'pid' => 0);
 			}
-			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+			$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 			$this->doc->backPath = $GLOBALS['BACK_PATH'];
 			$this->doc->setModuleTemplate('EXT:info/Resources/Private/Templates/info.html');
 			$this->doc->tableLayout = array(
 				'0' => array(
 					'0' => array('<td valign="top"><strong>', '</strong></td>'),
-					'defCol' => array('<td><img src="' . $this->doc->backPath . 'clear.gif" width="10" height="1" alt="" /></td><td valign="top"><strong>', '</strong></td>')
+					'defCol' => array('<td><img src="' . $this->doc->backPath .
+						'clear.gif" width="10" height="1" alt="" /></td><td valign="top"><strong>', '</strong></td>')
 				),
 				'defRow' => array(
 					'0' => array('<td valign="top">', '</td>'),
-					'defCol' => array('<td><img src="' . $this->doc->backPath . 'clear.gif" width="10" height="1" alt="" /></td><td valign="top">', '</td>')
+					'defCol' => array('<td><img src="' . $this->doc->backPath .
+						'clear.gif" width="10" height="1" alt="" /></td><td valign="top">', '</td>')
 				)
 			);
 			// JavaScript
 			$this->doc->postCode = $this->doc->wrapScriptTags('if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';');
 			// Setting up the context sensitive menu:
 			$this->doc->getContextMenuCode();
-			$this->doc->form = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('web_info')) . '" method="post" name="webinfoForm">';
+			$this->doc->form = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('web_info')) .
+				'" method="post" name="webinfoForm">';
 			$vContent = $this->doc->getVersionSelector($this->id, 1);
 			if ($vContent) {
 				$this->content .= $this->doc->section('', $vContent);
@@ -97,14 +117,14 @@ class InfoModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$this->content = $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 		} else {
 			// If no access or if ID == zero
-			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+			$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 			$this->doc->backPath = $GLOBALS['BACK_PATH'];
-			$this->content = $this->doc->header($GLOBALS['LANG']->getLL('title'));
+			$this->content = $this->doc->header($this->languageService->getLL('title'));
 			$this->content .= $this->doc->spacer(5);
 			$this->content .= $this->doc->spacer(10);
 		}
 		// Renders the module page
-		$this->content = $this->doc->render($GLOBALS['LANG']->getLL('title'), $this->content);
+		$this->content = $this->doc->render($this->languageService->getLL('title'), $this->content);
 	}
 
 	/**
@@ -131,18 +151,20 @@ class InfoModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		// CSH
 		$buttons['csh'] = BackendUtility::cshItem('_MOD_web_info', '', $GLOBALS['BACK_PATH'], '', TRUE);
 		// View page
-		$buttons['view'] = '<a href="#" '
-			. 'onclick="' . htmlspecialchars(
-				BackendUtility::viewOnClick($this->pageinfo['uid'], $GLOBALS['BACK_PATH'], BackendUtility::BEgetRootLine($this->pageinfo['uid']))
-			) . '" '
-			. 'title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">'
-			. \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view')
-			. '</a>';
+		$buttons['view'] = '<a href="#" ' .
+			'onclick="' . htmlspecialchars(
+				BackendUtility::viewOnClick($this->pageinfo['uid'], $GLOBALS['BACK_PATH'],
+					BackendUtility::BEgetRootLine($this->pageinfo['uid']))
+			) . '" ' .
+			'title="' . $this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' .
+				IconUtility::getSpriteIcon('actions-document-view') .
+			'</a>';
 		// Shortcut
-		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
-			$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
+		if ($this->backendUser->mayMakeShortcut()) {
+			$buttons['shortcut'] = $this->doc->makeShortcutIcon(
+				'id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit',
+				implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
 		}
 		return $buttons;
 	}
-
 }
