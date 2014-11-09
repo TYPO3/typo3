@@ -2,7 +2,8 @@
  *  HTMLArea.CSS.Parser: CSS Parser
  ***************************************************/
 HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
-	/*
+
+	/**
 	 * HTMLArea.CSS.Parser constructor
 	 */
 	constructor: function (config) {
@@ -26,15 +27,20 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 			 */
 			'HTMLAreaEventCssParsingComplete'
 		);
+		this.parsedClasses = {};
+		this.ready = false;
 	},
-	/*
+
+	/**
 	 * The parsed classes
 	 */
 	parsedClasses: {},
-	/*
+
+	/**
 	 * Boolean indicating whether are not parsing is complete
 	 */
-	isReady: false,
+	ready: false,
+
 	/*
 	 * Boolean indicating whether or not the stylesheets were accessible
 	 */
@@ -51,7 +57,8 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 	 * The error that occurred on the last attempt at parsing the stylesheets
 	 */
 	error: null,
-	/*
+
+	/**
 	 * This function gets the parsed css classes
 	 *
 	 * @return	object	this.parsedClasses
@@ -59,30 +66,17 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 	getClasses: function() {
 		return this.parsedClasses;
 	},
-	/*
-	 * This function initiates parsing of the stylesheets
+
+	/**
+	 * This function gets the ready state
 	 *
-	 * @return	void
+	 * @return bool this.ready
 	 */
-	initiateParsing: function () {
-		if (this.editor.config.classesUrl && typeof HTMLArea.classesLabels === 'undefined') {
-			this.editor.ajax.getJavascriptFile(this.editor.config.classesUrl, function (options, success, response) {
-				if (success) {
-					try {
-						if (typeof HTMLArea.classesLabels === 'undefined') {
-							eval(response.responseText);
-						}
-					} catch(e) {
-						this.editor.appendToLog('HTMLArea.CSS.Parser', 'initiateParsing', 'Error evaluating contents of Javascript file: ' + this.editor.config.classesUrl, 'error');
-					}
-				}
-				this.parse();
-			}, this);
-		} else {
-			this.parse();
-		}
+	isReady: function() {
+		return this.ready;
 	},
-	/*
+
+	/**
 	 * This function parses the stylesheets of the iframe set in config
 	 *
 	 * @return	void	parsed css classes are accumulated in this.parsedClasses
@@ -103,7 +97,7 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 				}
 			} else {
 				this.attemptTimeout = null;
-				this.isReady = true;
+				this.ready = true;
 				this.filterAllowedClasses();
 				this.sort();
 				this.fireEvent('HTMLAreaEventCssParsingComplete');
@@ -330,11 +324,11 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 	 * @return	void
 	 */
 	sort: function() {
-		var nodeName, cssClass, i, n;
+		var nodeName, cssClass, i, n, x, y;
 		for (nodeName in this.parsedClasses) {
 			var value = this.parsedClasses[nodeName];
 			var classes = [];
-			var sortedClasses= {};
+			var sortedClasses = {};
 			// Collect keys
 			for (cssClass in value) {
 				classes.push(cssClass);

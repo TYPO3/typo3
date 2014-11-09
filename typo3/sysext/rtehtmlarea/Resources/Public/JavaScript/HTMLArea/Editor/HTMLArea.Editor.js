@@ -206,20 +206,55 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 		this.relayEvents(this.htmlArea, ['HTMLAreaEventFrameworkReady']);
 		this.on('HTMLAreaEventFrameworkReady', this.onFrameworkReady, this, {single: true});
 	},
-	/*
+	/**
 	 * Initialize the editor
 	 */
 	onFrameworkReady: function () {
-			// Initialize editor mode
+		// Initialize editor mode
 		this.setMode('wysiwyg');
-			// Create the selection object
+		// Create the selection object
 		this.getSelection();
-			// Create the bookmark object
+		// Create the bookmark object
 		this.getBookMark();
-			// Create the DOM node object
+		// Create the DOM node object
 		this.getDomNode();
-			// Initiate events listening
+		// Initiate events listening
 		this.initEventsListening();
+		// Load the classes configuration
+		this.getClassesConfiguration();
+	},
+	
+	/**
+	 * Get the classes configuration
+	 * This is required before plugins are generated
+	 *
+	 * @return	void
+	 */
+	getClassesConfiguration: function () {
+		if (this.config.classesUrl && typeof HTMLArea.classesLabels === 'undefined') {
+			this.ajax.getJavascriptFile(this.config.classesUrl, function (options, success, response) {
+				if (success) {
+					try {
+						if (typeof HTMLArea.classesLabels === 'undefined') {
+							eval(response.responseText);
+						}
+					} catch(e) {
+						this.appendToLog('HTMLArea.Editor', 'getClassesConfiguration', 'Error evaluating contents of Javascript file: ' + this.config.classesUrl, 'error');
+					}
+				}
+				this.initializeEditor();
+			}, this);
+		} else {
+			this.initializeEditor();
+		}
+	},
+
+	/**
+	 * Complete editor initialization
+	 *
+	 * @return	void
+	 */
+	initializeEditor: function () {
 			// Generate plugins
 		this.generatePlugins();
 			// Make the editor visible
@@ -242,6 +277,7 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 		this.fireEvent('HTMLAreaEventEditorReady');
 		this.appendToLog('HTMLArea.Editor', 'onFrameworkReady', 'Editor ready.', 'info');
 	},
+
 	/*
 	 * Set editor mode
 	 *

@@ -137,13 +137,13 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 			}
 		}
 	},
-	/*
+	/**
 	 * This handler gets called when the editor is generated
 	 */
 	onGenerate: function () {
-			// Monitor editor changing mode
+		// Monitor editor changing mode
 		this.editor.iframe.mon(this.editor, 'HTMLAreaEventModeChange', this.onModeChange, this);
-			// Create CSS Parser object
+		// Create CSS Parser object
 		this.blockStyles = new HTMLArea.CSS.Parser({
 			prefixLabelWithClassName: this.prefixLabelWithClassName,
 			postfixLabelWithClassName: this.postfixLabelWithClassName,
@@ -151,20 +151,20 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 			tags: this.tags,
 			editor: this.editor
 		});
-			// Disable the combo while initialization completes
+		// Disable the combo while initialization completes
 		var dropDown = this.getButton('BlockStyle');
 		if (dropDown) {
 			dropDown.setDisabled(true);
 		}
-			// Monitor css parsing being completed
+		// Monitor css parsing being completed
 		this.editor.iframe.mon(this.blockStyles, 'HTMLAreaEventCssParsingComplete', this.onCssParsingComplete, this);
-		this.blockStyles.initiateParsing();
+		this.blockStyles.parse();
 	},
 	/*
 	 * This handler gets called when parsing of css classes is completed
 	 */
 	onCssParsingComplete: function () {
-		if (this.blockStyles.isReady) {
+		if (this.blockStyles.isReady()) {
 			this.cssArray = this.blockStyles.getClasses();
 			if (this.getEditorMode() === 'wysiwyg' && this.editor.isEditable()) {
 				this.updateValue('BlockStyle');
@@ -175,7 +175,7 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 	 * This handler gets called when the toolbar is being updated
 	 */
 	onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
-		if (mode === 'wysiwyg' && this.editor.isEditable() && this.blockStyles.isReady) {
+		if (mode === 'wysiwyg' && this.editor.isEditable() && this.blockStyles.isReady()) {
 			this.updateValue(button.itemId);
 		}
 	},
@@ -194,18 +194,18 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 		var dropDown = this.getButton(dropDownId);
 		if (dropDown) {
 			var classNames = new Array();
-			var tagName = null;
+			var nodeName = '';
 			var statusBarSelection = this.editor.statusBar ? this.editor.statusBar.getSelection() : null;
 			var parent = statusBarSelection ? statusBarSelection : this.editor.getSelection().getParentElement();
 			while (parent && !HTMLArea.DOM.isBlockElement(parent) && !/^(img)$/i.test(parent.nodeName)) {
 				parent = parent.parentNode;
 			}
 			if (parent) {
-				tagName = parent.nodeName.toLowerCase();
+				nodeName = parent.nodeName.toLowerCase();
 				classNames = HTMLArea.DOM.getClassNames(parent);
 			}
-			if (tagName && tagName !== "body"){
-				this.buildDropDownOptions(dropDown, tagName);
+			if (nodeName && nodeName !== 'body'){
+				this.buildDropDownOptions(dropDown, nodeName);
 				this.setSelectedOption(dropDown, classNames);
 			} else {
 				this.initializeDropDown(dropDown);
@@ -231,7 +231,7 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 	buildDropDownOptions: function (dropDown, nodeName) {
 		var store = dropDown.getStore();
 		this.initializeDropDown(dropDown);
-		if (this.blockStyles.isReady) {
+		if (this.blockStyles.isReady()) {
 			var allowedClasses = {};
 			if (typeof this.cssArray[nodeName] !== 'undefined') {
 				allowedClasses = this.cssArray[nodeName];

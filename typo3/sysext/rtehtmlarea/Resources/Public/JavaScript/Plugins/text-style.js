@@ -180,14 +180,14 @@ HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 			}
 		}
 	},
-	/*
+	/**
 	 * This function gets called when the plugin is generated
 	 * Get the classes configuration and initiate the parsing of the style sheets
 	 */
 	onGenerate: function () {
-			// Monitor editor changing mode
+		// Monitor editor changing mode
 		this.editor.iframe.mon(this.editor, 'HTMLAreaEventModeChange', this.onModeChange, this);
-			// Create CSS Parser object
+		// Create CSS Parser object
 		this.textStyles = new HTMLArea.CSS.Parser({
 			prefixLabelWithClassName: this.prefixLabelWithClassName,
 			postfixLabelWithClassName: this.postfixLabelWithClassName,
@@ -195,20 +195,20 @@ HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 			tags: this.tags,
 			editor: this.editor
 		});
-			// Disable the combo while initialization completes
+		// Disable the combo while initialization completes
 		var dropDown = this.getButton('TextStyle');
 		if (dropDown) {
 			dropDown.setDisabled(true);
 		}
-			// Monitor css parsing being completed
+		// Monitor css parsing being completed
 		this.editor.iframe.mon(this.textStyles, 'HTMLAreaEventCssParsingComplete', this.onCssParsingComplete, this);
-		this.textStyles.initiateParsing();
+		this.textStyles.parse();
 	},
 	/*
 	 * This handler gets called when parsing of css classes is completed
 	 */
 	onCssParsingComplete: function () {
-		if (this.textStyles.isReady) {
+		if (this.textStyles.isReady()) {
 			this.cssArray = this.textStyles.getClasses();
 			if (this.getEditorMode() === 'wysiwyg' && this.editor.isEditable()) {
 				this.updateToolbar('TextStyle');
@@ -219,7 +219,7 @@ HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 	 * This handler gets called when the toolbar is being updated
 	 */
 	onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
-		if (mode === 'wysiwyg' && this.editor.isEditable() && this.textStyles.isReady) {
+		if (mode === 'wysiwyg' && this.editor.isEditable() && this.textStyles.isReady()) {
 			this.updateToolbar(button.itemId);
 		}
 	},
@@ -303,7 +303,7 @@ HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 	buildDropDownOptions: function (dropDown, nodeName) {
 		var store = dropDown.getStore();
 		this.initializeDropDown(dropDown);
-		if (this.textStyles.isReady) {
+		if (this.textStyles.isReady()) {
 			var allowedClasses = {};
 			if (this.REInlineTags.test(nodeName)) {
 				if (typeof this.cssArray[nodeName] !== 'undefined') {
