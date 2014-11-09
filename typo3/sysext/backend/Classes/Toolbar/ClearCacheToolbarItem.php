@@ -155,7 +155,7 @@ class ClearCacheToolbarItem implements ToolbarItemInterface {
 	 * @return void
 	 */
 	protected function addJavascriptToBackend() {
-		$this->backendReference->addJavascriptFile('sysext/backend/Resources/Public/JavaScript/clearcachemenu.js');
+		$this->backendReference->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Toolbar/ClearCacheMenu');
 	}
 
 	/**
