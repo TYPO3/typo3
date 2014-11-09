@@ -188,8 +188,8 @@ HTMLArea.DOM.BookMark = Ext.extend(HTMLArea.DOM.BookMark, {
 				}
 			}
 			bookMark = {
-				start: this.editor.domNode.getPositionWithinTree(startContainer, normalized),
-				end: collapsed ? null : getPositionWithinTree(endContainer, normalized),
+				start: this.editor.getDomNode().getPositionWithinTree(startContainer, normalized),
+				end: collapsed ? null : this.editor.getDomNode().getPositionWithinTree(endContainer, normalized),
 				startOffset: startOffset,
 				endOffset: endOffset,
 				normalized: normalized,
@@ -288,12 +288,12 @@ HTMLArea.DOM.BookMark = Ext.extend(HTMLArea.DOM.BookMark, {
 	moveToNonIntrusiveBookMark: function (range, bookMark) {
 		if (bookMark.start) {
 			// Get the start information
-			var startContainer = this.editor.getNodeByPosition(bookMark.start, bookMark.normalized),
+			var startContainer = this.editor.getDomNode().getNodeByPosition(bookMark.start, bookMark.normalized),
 				startOffset = bookMark.startOffset;
 			// Set the start boundary
 			range.setStart(startContainer, startOffset);
 			// Get the end information
-			var endContainer = bookMark.end && this.editor.getNodeByPosition(bookMark.end, bookMark.normalized),
+			var endContainer = bookMark.end && this.editor.getDomNode().getNodeByPosition(bookMark.end, bookMark.normalized),
 				endOffset = bookMark.endOffset;
 			// Set the end boundary. If not available, collapse the range
 			if (endContainer) {

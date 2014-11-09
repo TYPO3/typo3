@@ -376,45 +376,8 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 				break;
 		}
 	},
-	/*
-	 * Get the node given its position in the document tree.
-	 * Adapted from FCKeditor
-	 * See HTMLArea.DOM.Node::getPositionWithinTree
-	 *
-	 * @param	array		position: the position of the node in the document tree
-	 * @param	boolean		normalized: if true, a normalized position is given
-	 *
-	 * @return	objet		the node
-	 */
-	getNodeByPosition: function (position, normalized) {
-		var current = this.document.documentElement;
-		var i, j, n, m;
-		for (i = 0, n = position.length; current && i < n; i++) {
-			var target = position[i];
-			if (normalized) {
-				var currentIndex = -1;
-				for (j = 0, m = current.childNodes.length; j < m; j++) {
-					var candidate = current.childNodes[j];
-					if (
-						candidate.nodeType == HTMLArea.DOM.TEXT_NODE
-						&& candidate.previousSibling
-						&& candidate.previousSibling.nodeType == HTMLArea.DOM.TEXT_NODE
-					) {
-						continue;
-					}
-					currentIndex++;
-					if (currentIndex == target) {
-						current = candidate;
-						break;
-					}
-				}
-			} else {
-				current = current.childNodes[target];
-			}
-		}
-		return current ? current : null;
-	},
-	/*
+
+	/**
 	 * Instantiate the specified plugin and register it with the editor
 	 *
 	 * @param	string		plugin: the name of the plugin
