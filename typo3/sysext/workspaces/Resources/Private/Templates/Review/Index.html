@@ -4,8 +4,8 @@
 
 <f:if condition="{performWorkspaceSwitch}">
 <script type="text/javascript">
-	top.TYPO3ModuleMenu.refreshMenu();
-	top.TYPO3BackendWorkspaceMenu.performWorkspaceSwitch({activeWorkspaceUid}, "{activeWorkspaceTitle}");
+	top.TYPO3.ModuleMenu.App.refreshMenu();
+	top.TYPO3.WorkspacesMenu.performWorkspaceSwitch({activeWorkspaceUid}, "{activeWorkspaceTitle}");
 </script>
 </f:if>
 

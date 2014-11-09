@@ -195,6 +195,9 @@ TYPO3.ModuleMenu.App = {
 	refreshMenu: function() {
 		jQuery.ajax(TYPO3.settings.ajaxUrls['ModuleMenu::reload']).done(function(result) {
 			jQuery('#typo3-menu').replaceWith(result.menu);
+			if (top.currentModuleLoaded) {
+				TYPO3.ModuleMenu.App.highlightModuleMenuItem(top.currentModuleLoaded);
+			}
 		});
 	},
 

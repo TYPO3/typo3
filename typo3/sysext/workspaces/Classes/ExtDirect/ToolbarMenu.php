@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Workspaces\ExtDirect;
  * ExtDirect toolbar menu
  *
  * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
+ * @deprecated since TYPO3 CMS 7, this file will be removed in TYPO3 CMS 8, as the AJAX functionality is now done via plain AJAX
  */
 class ToolbarMenu {
 
@@ -26,9 +27,10 @@ class ToolbarMenu {
 	 *
 	 * @param $parameter
 	 * @return array
-	 * @todo Check where this is used.
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, not in use anymore
 	 */
 	public function toggleWorkspacePreviewMode($parameter) {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		$newState = $GLOBALS['BE_USER']->user['workspace_preview'] ? '0' : '1';
 		$GLOBALS['BE_USER']->setWorkspacePreview($newState);
 		return array('newWorkspacePreviewState' => $newState);
@@ -39,8 +41,10 @@ class ToolbarMenu {
 	 *
 	 * @param $parameter
 	 * @return array
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, not in use anymore
 	 */
 	public function setWorkspace($parameter) {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		$workspaceId = (int)$parameter->workSpaceId;
 		$pageId = (int)$parameter->pageId;
 

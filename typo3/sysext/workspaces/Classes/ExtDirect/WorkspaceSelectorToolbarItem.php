@@ -40,9 +40,7 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 	 */
 	public function __construct(\TYPO3\CMS\Backend\Controller\BackendController &$backendReference = NULL) {
 		$this->backendReference = $backendReference;
-		$this->backendReference->addJavaScript(
-			'TYPO3.Workspaces = { workspaceTitle : ' . GeneralUtility::quoteJSvalue(addslashes(\TYPO3\CMS\Workspaces\Service\WorkspaceService::getWorkspaceTitle($GLOBALS['BE_USER']->workspace))) . '};'
-		);
+		$this->backendReference->getPageRenderer()->addInlineLanguageLabel('Workspaces.workspaceTitle', \TYPO3\CMS\Workspaces\Service\WorkspaceService::getWorkspaceTitle($GLOBALS['BE_USER']->workspace));
 	}
 
 	/**
@@ -71,7 +69,7 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 	 */
 	public function render() {
 		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.workspace', TRUE);
-		$this->addJavascriptToBackend();
+		$this->backendReference->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Workspaces/Toolbar/WorkspacesMenu');
 
 		$index = 0;
 		/** @var \TYPO3\CMS\Workspaces\Service\WorkspaceService $wsService */
@@ -93,16 +91,17 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 			$iconState = ($workspaceId === $activeWorkspace ? $stateCheckedIcon : $stateUncheckedIcon);
 			$classValue = ($workspaceId === $activeWorkspace ? ' class="selected"' : '');
 			$sectionName = ($index++ === 0 ? 'top' : 'items');
-			$workspaceSections[$sectionName][] = '<li' . $classValue . '>' . '<a href="backend.php?changeWorkspace=' . $workspaceId . '" id="ws-' . $workspaceId . '" class="ws">' . $iconState . ' ' . htmlspecialchars($label) . '</a></li>';
+			$workspaceSections[$sectionName][] = '<li' . $classValue . '>' . '<a href="backend.php?changeWorkspace=' . $workspaceId . '" data-workspaceid="' . $workspaceId . '" class="tx-workspaces-switchlink">' . $iconState . ' ' . htmlspecialchars($label) . '</a></li>';
 		}
 
-		if (count($workspaceSections['top']) > 0) {
-			// Go to workspace module link
+		if (!empty($workspaceSections['top'])) {
+			// Add the "Go to workspace module" link
+			// if there is at least one icon on top and if the access rights are there
 			if ($GLOBALS['BE_USER']->check('modules', 'web_WorkspacesWorkspaces')) {
-				$workspaceSections['top'][] = '<li>' . '<a href="javascript:top.goToModule(\'web_WorkspacesWorkspaces\');" target="content" id="goToWsModule">' . $stateUncheckedIcon . ' ' . $GLOBALS['LANG']->getLL('bookmark_workspace', TRUE) . '</a></li>';
+				$workspaceSections['top'][] = '<li><a target="content" data-module="web_WorkspacesWorkspaces" class="tx-workspaces-modulelink">' . $stateUncheckedIcon . ' ' . $GLOBALS['LANG']->getLL('bookmark_workspace', TRUE) . '</a></li>';
 			}
-			$workspaceSections['top'][] = '<li class="divider"></li>';
 		} else {
+			// no items on top (= no workspace to work in)
 			$workspaceSections['top'][] = '<li>' . $stateUncheckedIcon . ' ' . $GLOBALS['LANG']->getLL('bookmark_noWSfound', TRUE) . '</li>';
 		}
 
@@ -110,23 +109,12 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 			'<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-toolbar-menu-workspace', array('title' => $title)) . '</a>',
 			'<ul class="dropdown-menu" role="menu">' ,
 				implode(LF, $workspaceSections['top']),
-				'<li class="divider"></li>',
+				(!empty($workspaceSections['items']) ? '<li class="divider"></li>' : ''),
 				implode(LF, $workspaceSections['items']),
 			'</ul>'
 		);
 
 		return implode(LF, $workspaceMenu);
-	}
-
-	/**
-	 * Adds the necessary JavaScript to the backend
-	 *
-	 * @return void
-	 */
-	protected function addJavascriptToBackend() {
-		$this->backendReference->addJavascriptFile(
-			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('workspaces') . 'Resources/Public/JavaScript/workspacemenu.js'
-		);
 	}
 
 	/**
@@ -169,4 +157,3 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 	}
 
 }
-
