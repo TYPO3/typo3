@@ -163,14 +163,14 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemInterf
 			$closeIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close');
 			$entry = '
 				<li class="opendoc' . $firstRow . '">
-					<a href="#" onclick="jump(unescape(\'' . htmlspecialchars($link) . '\'), \'web_list\', \'web\', ' . $pageId . '); TYPO3BackendOpenDocs.toggleMenu(); return false;" target="content">' . $icon . $label . '</a>
-					<a href="#" class="close" onclick="return TYPO3BackendOpenDocs.closeDocument(\'' . $md5sum . '\');">' . $closeIcon . '</a>
+					<a href="#" onclick="jump(unescape(\'' . htmlspecialchars($link) . '\'), \'web_list\', \'web\', ' . $pageId . ');TYPO3.OpendocsMenu.toggleMenu(); return false;" target="content">' . $icon . $label . '</a>
+					<a href="#" class="close" data-opendocsidentifier="' . $md5sum . '">' . $closeIcon . '</a>
 				</li>';
 		} else {
 			// Recently used document
 			$entry = '
 				<li class="recentdoc' . $firstRow . '">
-					<a href="#" onclick="jump(unescape(\'' . htmlspecialchars($link) . '\'), \'web_list\', \'web\', ' . $pageId . '); TYPO3BackendOpenDocs.toggleMenu(); return false;" target="content">' . $icon . $label . '</a>
+					<a href="#" onclick="jump(unescape(\'' . htmlspecialchars($link) . '\'), \'web_list\', \'web\', ' . $pageId . '); TYPO3.OpendocsMenu.toggleMenu(); return false;" target="content">' . $icon . $label . '</a>
 				</li>';
 		}
 		return $entry;
@@ -221,9 +221,7 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemInterf
 	 * @return void
 	 */
 	protected function addJavascriptToBackend() {
-		$this->backendReference->addJavascriptFile(
-			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->EXTKEY) . 'Resources/Public/JavaScript/opendocs.js'
-		);
+		$this->backendReference->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Opendocs/Toolbar/OpendocsMenu');
 	}
 
 	/**
@@ -251,8 +249,8 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemInterf
 	 */
 	public function updateNumberOfOpenDocsHook(&$params, $ref) {
 		$params['JScode'] = '
-			if (top && top.TYPO3BackendOpenDocs) {
-				top.TYPO3BackendOpenDocs.updateNumberOfDocs(' . count($this->openDocs) . ', true);
+			if (top && top.TYPO3.OpendocsMenu) {
+				top.TYPO3.OpendocsMenu.updateMenu();
 			}
 		';
 	}
