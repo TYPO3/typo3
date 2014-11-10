@@ -29,8 +29,6 @@ $LOCAL_LANG_orig = $LOCAL_LANG;
 $LANG->includeLLFile('EXT:cms/layout/locallang_db_new_content_el.xlf');
 \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($LOCAL_LANG_orig, $LOCAL_LANG);
 $LOCAL_LANG = $LOCAL_LANG_orig;
-// Exits if 'cms' extension is not loaded:
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms', 1);
 /**
  * Local position map class
  *
