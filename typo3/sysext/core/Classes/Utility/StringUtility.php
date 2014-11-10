@@ -31,7 +31,7 @@ class StringUtility {
 	 * @param string $needle Reference string which must be found as the "last part" of the full string
 	 * @throws \InvalidArgumentException
 	 * @return bool TRUE if $needle was found to be equal to the last part of $str
-	 * @deprecated since 7.0, use beginsWith() instead
+	 * @deprecated since 7.0, use endsWith() instead
 	 */
 	static public function isLastPartOfString($haystack, $needle) {
 		GeneralUtility::logDeprecatedFunction();
@@ -54,7 +54,8 @@ class StringUtility {
 	}
 
 	/**
-	 * Returns TRUE if the first part of $str matches the string $partStr
+	 * Returns TRUE if $haystack begins with $needle.
+	 * The input string is not trimmed before and search is done case sensitive.
 	 *
 	 * @param string $haystack Full string to check
 	 * @param string $needle Reference string which must be found as the "first part" of the full string
