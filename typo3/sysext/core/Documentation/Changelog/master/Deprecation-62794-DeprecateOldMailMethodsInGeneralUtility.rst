@@ -10,7 +10,6 @@ The following methods of the class \TYPO3\CMS\Core\Utility\GeneralUtility are de
  * quoted_printable()
  * encodeHeader()
  * substUrlsInPlainText()
- * makeRedirectUrl()
 
 Impact
 ======

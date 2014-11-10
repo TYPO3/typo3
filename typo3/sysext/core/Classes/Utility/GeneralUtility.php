@@ -4768,16 +4768,14 @@ Connection: close
 	}
 
 	/**
-	 * Sub-function for substUrlsInPlainText() above.
+	 * Create a shortened "redirect" URL with specified length from an incoming URL
 	 *
 	 * @param string $inUrl Input URL
 	 * @param int $l URL string length limit
 	 * @param string $index_script_url URL of "index script" - the prefix of the "?RDCT=..." parameter. If not supplied it will default to \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_DIR').'index.php'
 	 * @return string Processed URL
-	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8. Use mailer API instead
 	 */
 	static public function makeRedirectUrl($inUrl, $l = 0, $index_script_url = '') {
-		static::logDeprecatedFunction();
 		if (strlen($inUrl) > $l) {
 			$md5 = substr(md5($inUrl), 0, 20);
 			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'cache_md5params', 'md5hash=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($md5, 'cache_md5params'));
