@@ -48,10 +48,9 @@ return array(
 		// System related concerning both frontend and backend.
 		'lang' => array(
 			'format' => array(
-				'priority' => 'xlf,xml,php'
+				'priority' => 'xlf,xml'
 			),
 			'parser' => array(
-				'php' => 'TYPO3\\CMS\\Core\\Localization\\Parser\\LocallangArrayParser',
 				'xml' => 'TYPO3\\CMS\\Core\\Localization\\Parser\\LocallangXmlParser',
 				'xlf' => 'TYPO3\\CMS\\Core\\Localization\\Parser\\XliffParser'
 			)
