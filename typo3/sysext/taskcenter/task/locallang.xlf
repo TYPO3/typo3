@@ -57,9 +57,6 @@
 			<trans-unit id="lUpdate" xml:space="preserve">
 				<source>Update</source>
 			</trans-unit>
-			<trans-unit id="task_description" xml:space="preserve">
-				<source>Description, blablabla lipusm</source>
-			</trans-unit>
 			<trans-unit id="taskcenter-about" xml:space="preserve">
 				<source>
 &lt;p&gt;The menu on the left side shows all allowed tasks and let you allow to complete your tasks in an effecient way.&lt;/p&gt;

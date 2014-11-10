@@ -94,13 +94,13 @@
 				<source>Permissions of created files</source>
 			</trans-unit>
 			<trans-unit id="status_CreatedFilePermissions.writable" xml:space="preserve">
-				<source>Files created by TYPO3 are configured to be world writeable. Depending on your server configuration, this can be a security risk. It is usually better to configure the create mask to not allow writing to files by "others". A sane default is often '0660' for $GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask']. This can be set in the install tool.</source>
+				<source>Files created by TYPO3 are configured to be world writable. Depending on your server configuration, this can be a security risk. It is usually better to configure the create mask to not allow writing to files by "others". A sane default is often '0660' for $GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask']. This can be set in the install tool.</source>
 			</trans-unit>
 			<trans-unit id="status_CreatedDirectoryPermissions" xml:space="preserve">
 				<source>Permissions of created directories</source>
 			</trans-unit>
 			<trans-unit id="status_CreatedDirectoryPermissions.writable" xml:space="preserve">
-				<source>Directories created by TYPO3 are configured to be world writeable. Depending on your server configuration, this can be a security risk. It is usually better to configure the create mask to not allow writing to directories by "others". A sane default is often '2770' for $GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']. This can be set in the install tool.</source>
+				<source>Directories created by TYPO3 are configured to be world writable. Depending on your server configuration, this can be a security risk. It is usually better to configure the create mask to not allow writing to directories by "others". A sane default is often '2770' for $GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']. This can be set in the install tool.</source>
 			</trans-unit>
 			<trans-unit id="status_adminUserAccount" xml:space="preserve">
 				<source>Admin User Account</source>

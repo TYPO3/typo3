@@ -780,7 +780,7 @@ This release contains numerous bugfixes, and a few small features:
   );
 * Hidden Records in Workspaces now work
   Before, if t3lib_pageSelect::getRecordOverlay returned FALSE (if
-  no translation is found), a fatal error occured:
+  no translation is found), a fatal error occurred:
   PHP Catchable Fatal Error: Argument 2 passed to Tx_Extbase_Persistence_Mapper_DataMapper::getTargetType()
   must be an array, boolean given, called in Persistence/Mapper/DataMapper.php
 

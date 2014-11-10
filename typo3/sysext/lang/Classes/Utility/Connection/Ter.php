@@ -122,7 +122,7 @@ class Ter extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility {
 	 * @param string $extensionKey The extension key to install the translations for
 	 * @param string $language Language code of translation to fetch
 	 * @param string $mirrorUrl Mirror URL to fetch data from
-	 * @return bool TRUE on success, error string on fauilure
+	 * @return bool TRUE on success, error string on failure
 	 */
 	public function updateTranslation($extensionKey, $language, $mirrorUrl) {
 		$result = FALSE;

@@ -77,7 +77,7 @@ About $PAGES_TYPES | http://typo3.org/documentation/document-library/doc_core_ap
 				<source>Page TSConfig.</source>
 			</trans-unit>
 			<trans-unit id="TSconfig.details" xml:space="preserve">
-				<source>'TypoScript' is a concept for entering values in a heirarchacal structure that is used to create templates for TYPO3 websites.
+				<source>'TypoScript' is a concept for entering values in a hierarchical structure that is used to create templates for TYPO3 websites.
 The same principles  of storing a hierarchy of values is also used to configure various Backend functionality such as Modules and the RTE.
 The 'TSConfig' for an individual page is actually an accumulation of all 'TSConfig' values beginning from the root page and trickling downward to the current page. This means the TSConfig on the current page will affect all of its subpages as well. All TSconfig in use on a page is available from the 'Page TSconfig' menu in the 'Web&gt;Info' Module (requires the "info_pagetsconfig" extension to be installed).</source>
 			</trans-unit>
@@ -125,7 +125,7 @@ If you click the red "+" the page will be mounted temporarily in the navigation 
 				<source>A General Record Storage Page is a global page for storing of general database elements (records) of a website. This could be for templates, frontend users, and other records that are not limited to a single page but shared across the whole website.</source>
 			</trans-unit>
 			<trans-unit id="storage_pid.details" xml:space="preserve">
-				<source>It is recommended that extensions support the "General Record Storage Pages" so that the extension accesses records in this location by default when not conifgured to look elsewhere.
+				<source>It is recommended that extensions support the "General Record Storage Pages" so that the extension accesses records in this location by default when not configured to look elsewhere.
 
 A General Record Storage Page is typically a page of the "Folder" type.</source>
 			</trans-unit>

@@ -30,12 +30,12 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 	protected $backendReference;
 
 	/**
-	 * @var aray
+	 * @var array
 	 */
 	protected $openDocs;
 
 	/**
-	 * @var aray
+	 * @var array
 	 */
 	protected $recentDocs;
 
@@ -183,14 +183,14 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 	/**
 	 * Returns additional attributes for the list item in the toolbar
 	 *
-	 * @return string List item HTML attibutes
+	 * @return string List item HTML attributes
 	 */
 	public function getAdditionalAttributes() {
 		return 'id="tx-opendocs-menu"';
 	}
 
 	/**
-	 * Adds the neccessary javascript to the backend
+	 * Adds the necessary javascript to the backend
 	 *
 	 * @return void
 	 */
@@ -221,7 +221,7 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 	 *
 	 * @param array $params
 	 * @param unknown_type $ref
-	 * @return string list item HTML attibutes
+	 * @return string list item HTML attributes
 	 */
 	public function updateNumberOfOpenDocsHook(&$params, $ref) {
 		$params['JScode'] = '
@@ -239,7 +239,7 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 	 *
 	 * @param array $params Array of parameters from the AJAX interface, currently unused
 	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
-	 * @return string List item HTML attibutes
+	 * @return string List item HTML attributes
 	 */
 	public function closeDocument($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj = NULL) {
 		$md5sum = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('md5sum');

@@ -36,7 +36,7 @@ class FormatDetailsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
 	public function render(\TYPO3\CMS\Belog\Domain\Model\LogEntry $logEntry) {
 		$detailString = $logEntry->getDetails();
 		$substitutes = $logEntry->getLogData();
-		// Strip pathes from file names if the log was a file action
+		// Strip paths from file names if the log was a file action
 		if ($logEntry->getType() === 2) {
 			$substitutes = $this->stripPathFromFilenames($substitutes);
 		}

@@ -394,7 +394,7 @@
 				<source>The server returned the status code 401, which is related to a .htaccess file used for password protection on your server. Unfortunately this can not be handled by your browser's Flash plugin.</source>
 			</trans-unit>
 			<trans-unit id="fileUpload_allError2038" xml:space="preserve">
-				<source>An input/output error occured (Error #2038). This i.e. happens with servers using a self-signed SSL certificate, which is a limitation of your browser's Flash plugin.</source>
+				<source>An input/output error occurred (Error #2038). This i.e. happens with servers using a self-signed SSL certificate, which is a limitation of your browser's Flash plugin.</source>
 			</trans-unit>
 			<trans-unit id="liveSearch_title" xml:space="preserve">
 				<source>Short result list</source>

@@ -34,7 +34,7 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction {
 	protected $protocolFile = '';
 
 	/**
-	 * Store errors that occured during checks.
+	 * Store errors that occurred during checks.
 	 *
 	 * @var string
 	 */
@@ -218,7 +218,7 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction {
 	}
 
 	/**
-	 * Log last occured error for logging.
+	 * Log last occurred error for logging.
 	 *
 	 * @return void
 	 */

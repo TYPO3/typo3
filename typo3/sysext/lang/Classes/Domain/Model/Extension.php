@@ -155,7 +155,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Getter for the version
 	 *
-	 * @return int interpretion of the extension version
+	 * @return int interpretation of the extension version
 	 */
 	public function getVersion() {
 		return $this->version;
@@ -174,7 +174,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Getter for updateResult
 	 *
-	 * @return array returns the update result as an arry in the structure like array('icon' => '', 'message' => '')
+	 * @return array returns the update result as an array in the structure like array('icon' => '', 'message' => '')
 	 */
 	public function getUpdateResult() {
 		return $this->updateResult;
