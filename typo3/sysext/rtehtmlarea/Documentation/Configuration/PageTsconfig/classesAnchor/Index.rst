@@ -50,13 +50,13 @@ classesAnchor.[ *id-string* ]
          
          .altText = the text that will be used as altText for the image when
          the class is applied to an anchor; may be language-splitted; the TYPO3
-         syntax LLL:EXT:extension-key/sub-directory/locallang.xml:label-index
+         syntax LLL:EXT:extension-key/sub-directory/locallang.xlf:label-index
          may also be used in order for the text to be localized to the language
          of the content using the specified language file and label index
          
          .titleText = the text that will be used as title for the anchor when
          the class is applied to an anchor; may be language-splitted;the TYPO3
-         syntax LLL:EXT:extension-key/sub-directory/locallang.xml:label-index
+         syntax LLL:EXT:extension-key/sub-directory/locallang.xlf:label-index
          may also be used in order for the text to be localized to the language
          of the content using the specified language file and label index
          

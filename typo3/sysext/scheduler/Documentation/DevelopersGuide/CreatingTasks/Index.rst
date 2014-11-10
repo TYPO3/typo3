@@ -277,8 +277,8 @@ task. Let's look at one of the base classes declaration as an example:
 	// Add caching framework garbage collection task
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\CachingFrameworkGarbageCollectionTask::class] = array(
 		'extension' => $_EXTKEY,
-		'title' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:cachingFrameworkGarbageCollection.name',
-		'description' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:cachingFrameworkGarbageCollection.description',
+		'title' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xlf:cachingFrameworkGarbageCollection.name',
+		'description' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xlf:cachingFrameworkGarbageCollection.description',
 		'additionalFields' => \TYPO3\CMS\Scheduler\Task\CachingFrameworkGarbageCollectionAdditionalFieldProvider::class
 	);
 

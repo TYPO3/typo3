@@ -101,7 +101,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * "func_wizard" actually does:
  *
  * class WebFunctionWizardsBaseController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
- * var $localLangFile = "locallang.php";
+ * var $localLangFile = "locallang.xlf";
  * var $function_key = "wiz";
  * function init(&$pObj, $conf) {
  * OK, handles ordinary init. This includes setting up the
@@ -145,12 +145,12 @@ abstract class AbstractFunctionModule {
 	public $thisPath = '';
 
 	/**
-	 * Can be hardcoded to the name of a locallang.php file (from the same directory as the class file) to use/load
+	 * Can be hardcoded to the name of a locallang.xlf file (from the same directory as the class file) to use/load
 	 *
 	 * @see incLocalLang()
 	 * @var string
 	 */
-	public $localLangFile = 'locallang.php';
+	public $localLangFile = 'locallang.xlf';
 
 	/**
 	 * Contains module configuration parts from TBE_MODULES_EXT if found
@@ -218,7 +218,7 @@ abstract class AbstractFunctionModule {
 	 * @return void
 	 */
 	public function incLocalLang() {
-		if ($this->localLangFile && (@is_file(($this->thisPath . '/' . $this->localLangFile)) || @is_file(($this->thisPath . '/' . substr($this->localLangFile, 0, -4) . '.xml')) || @is_file(($this->thisPath . '/' . substr($this->localLangFile, 0, -4) . '.xlf')))) {
+		if ($this->localLangFile && (@is_file(($this->thisPath . '/' . $this->localLangFile)) || @is_file(($this->thisPath . '/' . substr($this->localLangFile, 0, -4) . '.xml')) || @is_file(($this->thisPath . '/' . substr($this->localLangFile, 0, -4) . '.php')))) {
 			$LOCAL_LANG = $GLOBALS['LANG']->includeLLFile($this->thisPath . '/' . $this->localLangFile, FALSE);
 			if (is_array($LOCAL_LANG)) {
 				$GLOBALS['LOCAL_LANG'] = (array)$GLOBALS['LOCAL_LANG'];

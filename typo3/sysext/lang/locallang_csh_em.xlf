@@ -491,7 +491,7 @@ In effect you can therefore have, say, a "stable" version of an extension instal
 				<source>locallang-files</source>
 			</trans-unit>
 			<trans-unit id="emconf_locallang.description" xml:space="preserve">
-				<source>Shows which files named "locallang.php" are present in the extension folder (recursive search). Such files are usually used to present an array $LOCAL_LANG with labels for the application in the system languages.</source>
+				<source>Shows which files named "locallang.xlf" are present in the extension folder (recursive search). Such files are usually used to present an array $LOCAL_LANG with labels for the application in the system languages.</source>
 			</trans-unit>
 			<trans-unit id="emconf_moduleNames.alttitle" xml:space="preserve">
 				<source>Backend Module names</source>

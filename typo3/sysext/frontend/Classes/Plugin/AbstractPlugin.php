@@ -970,13 +970,13 @@ class AbstractPlugin {
 	 * plugin class directory ($this->scriptRelPath) and if found includes it.
 	 * Also locallang values set in the TypoScript property "_LOCAL_LANG" are
 	 * merged onto the values found in the "locallang" file.
-	 * Supported file extensions xlf, xml, php
+	 * Supported file extensions xlf, xml
 	 *
 	 * @return void
 	 */
 	public function pi_loadLL() {
 		if (!$this->LOCAL_LANG_loaded && $this->scriptRelPath) {
-			$basePath = 'EXT:' . $this->extKey . '/' . dirname($this->scriptRelPath) . '/locallang.xml';
+			$basePath = 'EXT:' . $this->extKey . '/' . dirname($this->scriptRelPath) . '/locallang.xlf';
 			// Read the strings in the required charset (since TYPO3 4.2)
 			$this->LOCAL_LANG = GeneralUtility::readLLfile($basePath, $this->LLkey, $this->frontendController->renderCharset);
 			$alternativeLanguageKeys = GeneralUtility::trimExplode(',', $this->altLLkey, TRUE);

@@ -330,7 +330,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	public function drawRTE($parentObject, $table, $field, $row, $PA, $specConf, $thisConfig, $RTEtypeVal, $RTErelPath, $thePidValue) {
 		$this->TCEform = $parentObject;
 		$inline = $this->TCEform->inline;
-		$GLOBALS['LANG']->includeLLFile('EXT:' . $this->ID . '/locallang.xml');
+		$GLOBALS['LANG']->includeLLFile('EXT:' . $this->ID . '/locallang.xlf');
 		$this->client = $this->clientInfo();
 		$this->typoVersion = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version);
 		$this->userUid = 'BE_' . $GLOBALS['BE_USER']->user['uid'];

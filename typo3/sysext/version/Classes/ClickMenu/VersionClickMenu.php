@@ -64,7 +64,7 @@ class VersionClickMenu {
 	}
 
 	/**
-	 * Includes the [extDir]/locallang.php and returns the $LOCAL_LANG array found in that file.
+	 * Includes the [extDir]/locallang.xlf and returns the translations found in that file.
 	 *
 	 * @return array Local lang array
 	 */

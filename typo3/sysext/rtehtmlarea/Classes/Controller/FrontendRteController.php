@@ -148,7 +148,7 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 		// Language
 		$GLOBALS['TSFE']->initLLvars();
 		$this->language = $GLOBALS['TSFE']->lang;
-		$this->LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile('EXT:' . $this->ID . '/locallang.xml', $this->language);
+		$this->LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile('EXT:' . $this->ID . '/locallang.xlf', $this->language);
 		if ($this->language === 'default' || !$this->language) {
 			$this->language = 'en';
 		}

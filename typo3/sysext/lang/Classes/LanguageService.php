@@ -431,9 +431,11 @@ class LanguageService {
 	 *
 	 * @param string $fileRef Filename/path of a 'locallang.php' file
 	 * @return string Input filename with a '.[lang-key].php' ending added if $this->lang is not 'default'
+	 * @deprecated since TYPO3 CMS 7, this method will be removed in CMS 8. Please use XLF files for translation handling.
 	 */
 	protected function localizedFileRef($fileRef) {
 		if ($this->lang !== 'default' && substr($fileRef, -4) === '.php') {
+			GeneralUtility::logDeprecatedFunction();
 			return substr($fileRef, 0, -4) . '.' . $this->lang . '.php';
 		} else {
 			return NULL;
