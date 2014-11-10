@@ -53,10 +53,6 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 	 * @return bool TRUE if user has access, FALSE if not
 	 */
 	public function checkAccess() {
-		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
-			return FALSE;
-		}
-
 		if ($this->checkAccess === NULL) {
 			/** @var \TYPO3\CMS\Workspaces\Service\WorkspaceService $wsService */
 			$wsService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
