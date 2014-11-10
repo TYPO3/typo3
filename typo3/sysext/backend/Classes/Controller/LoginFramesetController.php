@@ -28,24 +28,21 @@ class LoginFramesetController {
 
 	/**
 	 * Main function.
-	 * Creates the header code in XHTML, then the frameset for the two frames.
+	 * Creates the header code and the frameset for the two frames.
 	 *
 	 * @return void
 	 */
 	public function main() {
-		// Set doktype:
-		$GLOBALS['TBE_TEMPLATE']->docType = 'xhtml_frames';
 		$title = 'TYPO3 Re-Login (' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ')';
-		$this->content .= $GLOBALS['TBE_TEMPLATE']->startPage($title);
-		// Create the frameset for the window:
-		$this->content .= '
+		$GLOBALS['TBE_TEMPLATE']->startPage($title);
+
+		// Create the frameset for the window
+		$this->content = $GLOBALS['TBE_TEMPLATE']->getPageRenderer()->render(\TYPO3\CMS\Core\Page\PageRenderer::PART_HEADER) . '
 			<frameset rows="*,1">
 				<frame name="login" src="index.php?loginRefresh=1" marginwidth="0" marginheight="0" scrolling="no" noresize="noresize" />
 				<frame name="dummy" src="dummy.php" marginwidth="0" marginheight="0" scrolling="auto" noresize="noresize" />
 			</frameset>
-		';
-		$this->content .= '
-</html>';
+		</html>';
 	}
 
 	/**
