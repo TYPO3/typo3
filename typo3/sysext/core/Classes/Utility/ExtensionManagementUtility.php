@@ -251,7 +251,7 @@ class ExtensionManagementUtility {
 			$GLOBALS['TCA'][$table]['columns'] = array_merge($GLOBALS['TCA'][$table]['columns'], $columnArray);
 			if ($addTofeInterface) {
 				GeneralUtility::deprecationLog(
-					'Usage of feInterface is no longer part of the TYPO3 CMS Core. Please check EXT:statictemplates.'
+					'Usage of feInterface is no longer part of the TYPO3 CMS Core. Please check EXT:' . $GLOBALS['_EXTKEY'] . '.'
 				);
 			}
 		}
