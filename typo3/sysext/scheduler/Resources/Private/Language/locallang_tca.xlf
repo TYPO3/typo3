@@ -9,6 +9,9 @@
 			<trans-unit id="tx_scheduler_task_group.groupName" xml:space="preserve">
 				<source>Group name</source>
 			</trans-unit>
+			<trans-unit id="tx_scheduler_task_group.description" xml:space="preserve">
+				<source>Description</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
