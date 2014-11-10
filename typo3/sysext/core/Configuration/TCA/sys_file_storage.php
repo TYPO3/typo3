@@ -13,7 +13,6 @@ return array(
 		'enablecolumns' => array(
 			'disabled' => 'hidden'
 		),
-		'dividers2tabs' => TRUE,
 		'requestUpdate' => 'driver',
 		'iconfile' => '_icon_ftp.gif',
 		'searchFields' => 'name,description'

@@ -24,7 +24,6 @@ $TCA['tx_irretutorial_1ncsv_hotel'] = array(
 		'origUid' => 't3_origuid',
 		'shadowColumnsForNewPlaceholders' => 'offers',
 		'shadowColumnsForMovePlaceholders' => 'offers',
-		'dividers2tabs' => TRUE,
 	),
 	'feInterface' => array(
 		'fe_admin_fieldList' => 'sys_language_uid, l18n_parent, l18n_diffsource, hidden, title, offers',
@@ -55,7 +54,6 @@ $TCA['tx_irretutorial_1ncsv_offer'] = array(
 		'origUid' => 't3_origuid',
 		'shadowColumnsForNewPlaceholders' => 'prices',
 		'shadowColumnsForMovePlaceholders' => 'prices',
-		'dividers2tabs' => TRUE,
 	),
 	'feInterface' => array(
 		'fe_admin_fieldList' => 'sys_language_uid, l18n_parent, l18n_diffsource, hidden, title, prices',
@@ -84,7 +82,6 @@ $TCA['tx_irretutorial_1ncsv_price'] = array(
 		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/icon_tx_irretutorial_price.gif',
 		'versioningWS' => 2,
 		'origUid' => 't3_origuid',
-		'dividers2tabs' => TRUE,
 	),
 	'feInterface' => array(
 		'fe_admin_fieldList' => 'sys_language_uid, l18n_parent, l18n_diffsource, hidden, title, price',

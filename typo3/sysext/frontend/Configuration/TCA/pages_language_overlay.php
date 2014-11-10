@@ -25,7 +25,6 @@ return array(
 		'typeicon_classes' => array(
 			'default' => 'mimetypes-x-content-page-language-overlay'
 		),
-		'dividers2tabs' => TRUE,
 		'searchFields' => 'title,subtitle,nav_title,keywords,description,abstract,author,author_email,url'
 	),
 	'interface' => array(

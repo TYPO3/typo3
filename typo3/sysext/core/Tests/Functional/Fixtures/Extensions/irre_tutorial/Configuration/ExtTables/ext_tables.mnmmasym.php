@@ -22,7 +22,6 @@ $TCA['tx_irretutorial_mnmmasym_hotel'] = array(
 		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/icon_tx_irretutorial_hotel.gif',
 		'versioningWS' => 2,
 		'origUid' => 't3_origuid',
-		'dividers2tabs' => TRUE,
 	),
 	'feInterface' => array(
 		'fe_admin_fieldList' => 'sys_language_uid, l18n_parent, l18n_diffsource, hidden, title, offers',
@@ -51,7 +50,6 @@ $TCA['tx_irretutorial_mnmmasym_offer'] = array(
 		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/icon_tx_irretutorial_offer.gif',
 		'versioningWS' => 2,
 		'origUid' => 't3_origuid',
-		'dividers2tabs' => TRUE,
 	),
 	'feInterface' => array(
 		'fe_admin_fieldList' => 'sys_language_uid, l18n_parent, l18n_diffsource, hidden, title, hotels, prices',
@@ -80,7 +78,6 @@ $TCA['tx_irretutorial_mnmmasym_price'] = array(
 		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/icon_tx_irretutorial_price.gif',
 		'versioningWS' => 2,
 		'origUid' => 't3_origuid',
-		'dividers2tabs' => TRUE,
 	),
 	'feInterface' => array(
 		'fe_admin_fieldList' => 'hidden, title, price, offers',

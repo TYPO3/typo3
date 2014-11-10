@@ -18,7 +18,6 @@ return array(
 		),
 		'title' => 'LLL:EXT:lang/locallang_tca.xlf:be_groups',
 		'useColumnsForDefaultValues' => 'lockToDomain, file_permissions',
-		'dividers2tabs' => TRUE,
 		'versioningWS_alwaysAllowLiveEdit' => TRUE,
 		'searchFields' => 'title'
 	),

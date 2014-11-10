@@ -17,8 +17,7 @@ return array(
 		'default_sortby' => 'crdate DESC',
 		'typeicon_classes' => array(
 			'default' => 'mimetypes-x-sys_news'
-		),
-		'dividers2tabs' => TRUE
+		)
 	),
 	'interface' => array(
 		'showRecordFieldList' => 'hidden,title,content,starttime,endtime'

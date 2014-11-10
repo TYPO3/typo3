@@ -22,7 +22,6 @@ $TCA['tx_irretutorial_mnattr_hotel'] = array(
 		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/icon_tx_irretutorial_hotel.gif',
 		'versioningWS' => 2,
 		'origUid' => 't3_origuid',
-		'dividers2tabs' => TRUE,
 	),
 	'feInterface' => array(
 		'fe_admin_fieldList' => 'sys_language_uid, l18n_parent, l18n_diffsource, hidden, title, offers',
@@ -52,7 +51,6 @@ $TCA['tx_irretutorial_mnattr_hotel_offer_rel'] = array(
 		'origUid' => 't3_origuid',
 		// @see http://forge.typo3.org/issues/29278 which solves it implicitly in the Core
 		// 'shadowColumnsForNewPlaceholders' => 'hotelid,offerid',
-		'dividers2tabs' => TRUE,
 	),
 	'feInterface' => array(
 		'fe_admin_fieldList' => 'sys_language_uid, l18n_parent, l18n_diffsource, hidden, hotelid, offerid, quality, allincl',
@@ -81,7 +79,6 @@ $TCA['tx_irretutorial_mnattr_offer'] = array(
 		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/icon_tx_irretutorial_offer.gif',
 		'versioningWS' => 2,
 		'origUid' => 't3_origuid',
-		'dividers2tabs' => TRUE,
 	),
 	'feInterface' => array(
 		'fe_admin_fieldList' => 'sys_language_uid, l18n_parent, l18n_diffsource, hidden, title, hotels',

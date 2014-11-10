@@ -27,7 +27,6 @@ return array(
 		'typeicons' => array(
 			'0' => 'template_add.gif'
 		),
-		'dividers2tabs' => 1,
 		'searchFields' => 'title,constants,config'
 	),
 	'interface' => array(

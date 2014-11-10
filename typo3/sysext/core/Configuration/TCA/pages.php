@@ -15,7 +15,6 @@ return array(
 		'cruser_id' => 'cruser_id',
 		'editlock' => 'editlock',
 		'useColumnsForDefaultValues' => 'doktype,fe_group,hidden',
-		'dividers2tabs' => 1,
 		'enablecolumns' => array(
 			'disabled' => 'hidden',
 			'starttime' => 'starttime',

@@ -15,7 +15,6 @@ return array(
 			'default' => 'status-user-group-frontend'
 		),
 		'useColumnsForDefaultValues' => 'lockToDomain',
-		'dividers2tabs' => 1,
 		'searchFields' => 'title,description'
 	),
 	'interface' => array(

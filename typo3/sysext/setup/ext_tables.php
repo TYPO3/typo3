@@ -14,9 +14,6 @@ if (TYPO3_MODE === 'BE') {
 	);
 
 	$GLOBALS['TYPO3_USER_SETTINGS'] = array(
-		'ctrl' => array(
-			'dividers2tabs' => 1
-		),
 		'columns' => array(
 			'realName' => array(
 				'type' => 'text',

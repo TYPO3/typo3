@@ -18,7 +18,6 @@ return array(
 			'default' => 'status-user-frontend'
 		),
 		'useColumnsForDefaultValues' => 'usergroup,lockToDomain,disable,starttime,endtime',
-		'dividers2tabs' => 1,
 		'searchFields' => 'username,name,first_name,last_name,middle_name,address,telephone,fax,email,title,zip,city,country,company'
 	),
 	'interface' => array(

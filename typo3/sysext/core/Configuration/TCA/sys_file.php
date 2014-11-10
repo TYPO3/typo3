@@ -8,7 +8,6 @@ return array(
 		'hideTable' => TRUE,
 		'rootLevel' => TRUE,
 		'default_sortby' => 'ORDER BY name ASC',
-		'dividers2tabs' => TRUE,
 		'typeicon_column' => 'type',
 		'typeicon_classes' => array(
 			'1' => 'mimetypes-text-text',

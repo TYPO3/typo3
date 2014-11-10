@@ -189,8 +189,7 @@ class FlexElement extends AbstractFormElement {
 					);
 				}
 				if (is_array($dataStructArray['sheets'])) {
-					$dividersToTabsBehaviour = isset($GLOBALS['TCA'][$table]['ctrl']['dividers2tabs']) ? $GLOBALS['TCA'][$table]['ctrl']['dividers2tabs'] : 1;
-					$item .= $this->formEngine->getDynTabMenu($tabParts, 'TCEFORMS:flexform:' . $additionalInformation['itemFormElName'] . $additionalInformation['_lang'], $dividersToTabsBehaviour);
+					$item .= $this->formEngine->getDynTabMenu($tabParts, 'TCEFORMS:flexform:' . $additionalInformation['itemFormElName'] . $additionalInformation['_lang']);
 				} else {
 					$item .= $sheetContent;
 				}

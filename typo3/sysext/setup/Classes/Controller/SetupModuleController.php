@@ -77,11 +77,6 @@ class SetupModuleController {
 	protected $isAdmin;
 
 	/**
-	 * @var int
-	 */
-	protected $dividers2tabs;
-
-	/**
 	 * @var array
 	 */
 	protected $tsFieldConf;
@@ -383,7 +378,7 @@ class SetupModuleController {
 
 		// Render the menu items
 		$menuItems = $this->renderUserSetup();
-		$this->content .= $this->doc->getDynTabMenu($menuItems, 'user-setup', FALSE, FALSE, 1, FALSE, 1, $this->dividers2tabs);
+		$this->content .= $this->doc->getDynTabMenu($menuItems, 'user-setup', FALSE, FALSE, 1, FALSE, 1, 1);
 		$formToken = $this->formProtection->generateToken('BE user setup', 'edit');
 		$this->content .= $this->doc->section('', '<input type="hidden" name="simUser" value="' . $this->simUser . '" />
 			<input type="hidden" name="formToken" value="' . $formToken . '" />
@@ -448,7 +443,6 @@ class SetupModuleController {
 		$code = array();
 		$i = 0;
 		$fieldArray = $this->getFieldsFromShowItem();
-		$this->dividers2tabs = isset($GLOBALS['TYPO3_USER_SETTINGS']['ctrl']['dividers2tabs']) ? (int)$GLOBALS['TYPO3_USER_SETTINGS']['ctrl']['dividers2tabs'] : 0;
 		$tabLabel = '';
 		foreach ($fieldArray as $fieldName) {
 			$more = '';
@@ -458,15 +452,13 @@ class SetupModuleController {
 					$tabLabel = $this->getLabel(substr($fieldName, 8), '', FALSE);
 					$firstTabLabel = $tabLabel;
 				} else {
-					if ($this->dividers2tabs) {
-						$result[] = array(
-							'label' => $tabLabel,
-							'content' => count($code) ? implode(LF, $code) : ''
-						);
-						$tabLabel = $this->getLabel(substr($fieldName, 8), '', FALSE);
-						$i = 0;
-						$code = array();
-					}
+					$result[] = array(
+						'label' => $tabLabel,
+						'content' => count($code) ? implode(LF, $code) : ''
+					);
+					$tabLabel = $this->getLabel(substr($fieldName, 8), '', FALSE);
+					$i = 0;
+					$code = array();
 				}
 				continue;
 			}
@@ -572,10 +564,6 @@ class SetupModuleController {
 				$label .
 				$html .
 				'</div>';
-		}
-
-		if ($this->dividers2tabs == 0) {
-			$tabLabel = $firstTabLabel;
 		}
 
 		$result[] = array(

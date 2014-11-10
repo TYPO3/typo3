@@ -70,7 +70,6 @@ return array(
 		),
 		'thumbnail' => 'image',
 		'requestUpdate' => 'list_type,rte_enabled,menu_type',
-		'dividers2tabs' => 1,
 		'searchFields' => 'header,header_link,subheader,bodytext,pi_flexform'
 	),
 	'interface' => array(

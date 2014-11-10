@@ -15,7 +15,6 @@ return array(
 		'versioningWS' => TRUE,
 		'origUid' => 't3_origuid',
 		'default_sortby' => 'ORDER BY crdate DESC',
-		'dividers2tabs' => TRUE,
 		'typeicon_classes' => array(
 			'default' => 'mimetypes-other-other'
 		),

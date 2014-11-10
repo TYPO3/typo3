@@ -782,8 +782,6 @@ class FormEngine {
 		$tabIdentString = '';
 		$tabIdentStringMD5 = '';
 		if ($GLOBALS['TCA'][$table]) {
-			// Get dividers2tabs setting from TCA of the current table:
-			$dividers2tabs = &$GLOBALS['TCA'][$table]['ctrl']['dividers2tabs'];
 			// Load the description content for the table.
 			if ($this->edit_showFieldHelp || $this->doLoadTableDescr($table)) {
 				$this->getLanguageService()->loadSingleTableDescription($table);
@@ -807,7 +805,7 @@ class FormEngine {
 					$excludeElements = ($this->excludeElements = $this->getExcludeElements($table, $row, $typeNum));
 					$fields = $this->mergeFieldsWithAddedFields($fields, $this->getFieldsToAdd($table, $row, $typeNum), $table);
 					// If TCEforms will render a tab menu in the next step, push the name to the tab stack:
-					if (strstr($itemList, '--div--') !== FALSE && $this->enableTabMenu && $dividers2tabs) {
+					if (strstr($itemList, '--div--') !== FALSE && $this->enableTabMenu) {
 						$tabIdentString = 'TCEforms:' . $table . ':' . $row['uid'];
 						$tabIdentStringMD5 = $this->getDocumentTemplate()->getDynTabMenuId($tabIdentString);
 						// Remember that were currently working on the general tab:
@@ -841,8 +839,7 @@ class FormEngine {
 								$out_array[$out_sheet][$out_pointer] .= $sField;
 							} elseif ($theField == '--div--') {
 								if ($cc > 0) {
-									$out_array[$out_sheet][$out_pointer] .= $this->getDivider();
-									if ($this->enableTabMenu && $dividers2tabs) {
+									if ($this->enableTabMenu) {
 										// Remove last tab entry from the dynNestedStack:
 										$out_sheet++;
 										// Remove the previous sheet from stack (if any):
@@ -924,8 +921,7 @@ class FormEngine {
 			if (count($parts) > 1) {
 				// Unset the current level of tab menus:
 				$this->popFromDynNestedStack('tab', $tabIdentStringMD5 . '-' . ($out_sheet + 1));
-				$dividersToTabsBehaviour = isset($GLOBALS['TCA'][$table]['ctrl']['dividers2tabs']) ? $GLOBALS['TCA'][$table]['ctrl']['dividers2tabs'] : 1;
-				$output = $this->getDynTabMenu($parts, $tabIdentString, $dividersToTabsBehaviour);
+				$output = $this->getDynTabMenu($parts, $tabIdentString);
 			} else {
 				// If there is only one tab/part there is no need to wrap it into the dynTab code
 				$output = isset($parts[0]) ? trim($parts[0]['content']) : '';
@@ -971,8 +967,6 @@ class FormEngine {
 				// Don't sent palette pointer - there are no options anyways for a field-list.
 				$sField = $this->getSingleField($table, $theField, $row, $parts[1], 0, $parts[3], 0);
 				$out .= $sField;
-			} elseif ($theField == '--div--') {
-				$out .= $this->getDivider();
 			}
 			if ($palFields) {
 				$out .= $this->getPaletteFields($table, $row, '', '', implode(',', GeneralUtility::trimExplode('|', $palFields, TRUE)));
@@ -3084,14 +3078,18 @@ class FormEngine {
 	 *
 	 * @param array $parts Parts for the tab menu, fed to template::getDynTabMenu()
 	 * @param string $idString ID string for the tab menu
-	 * @param int $dividersToTabsBehaviour If set to '1' empty tabs will be removed, If set to '2' empty tabs will be disabled
+	 * @param int $dividersToTabsBehaviour If set to '1' empty tabs will be removed, If set to '2' empty tabs will be disabled, deprecated, and not in use anymore since TYPO3 CMS 7
 	 * @return string HTML for the menu
 	 */
-	public function getDynTabMenu($parts, $idString, $dividersToTabsBehaviour = 1) {
+	public function getDynTabMenu($parts, $idString, $dividersToTabsBehaviour = -1) {
+		// if the third (obsolete) parameter is used, throw a deprecation warning
+		if ($dividersToTabsBehaviour !== -1) {
+			GeneralUtility::deprecationLog('The parameter $dividersToTabsBehaviour in FormEngine::getDynTabMenu is deprecated. Please remove this option from your code');
+		}
 		$docTemplate = $this->getDocumentTemplate();
 		if (is_object($docTemplate)) {
 			$docTemplate->backPath = $this->backPath;
-			return $docTemplate->getDynTabMenu($parts, $idString, 0, FALSE, 1, FALSE, 1, $dividersToTabsBehaviour);
+			return $docTemplate->getDynTabMenu($parts, $idString, 0, FALSE, 1, FALSE, 1);
 		} else {
 			$output = '';
 			foreach ($parts as $singlePad) {
@@ -3713,8 +3711,10 @@ class FormEngine {
 	 * Currently not implemented and returns only blank value.
 	 *
 	 * @return string Empty string
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function getDivider() {
+		GeneralUtility::logDeprecatedFunction();
 		return '';
 	}
 

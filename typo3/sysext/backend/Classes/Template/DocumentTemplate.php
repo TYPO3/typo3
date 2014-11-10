@@ -1564,10 +1564,10 @@ function jumpToUrl(URL) {
 	 * @param bool $noWrap Deprecated - delivered by CSS
 	 * @param bool $fullWidth If set, the tabs will span the full width of their position
 	 * @param int $defaultTabIndex Default tab to open (for toggle <=0). Value corresponds to integer-array index + 1 (index zero is "1", index "1" is 2 etc.). A value of zero (or something non-existing) will result in no default tab open.
-	 * @param int $dividers2tabs If set to '1' empty tabs will be remove, If set to '2' empty tabs will be disabled
+	 * @param int $tabBehaviour If set to '1' empty tabs will be remove, If set to '2' empty tabs will be disabled
 	 * @return string JavaScript section for the HTML header.
 	 */
-	public function getDynTabMenu($menuItems, $identString, $toggle = 0, $foldout = FALSE, $noWrap = TRUE, $fullWidth = FALSE, $defaultTabIndex = 1, $dividers2tabs = 2) {
+	public function getDynTabMenu($menuItems, $identString, $toggle = 0, $foldout = FALSE, $noWrap = TRUE, $fullWidth = FALSE, $defaultTabIndex = 1, $tabBehaviour = 2) {
 		// Load the static code, if not already done with the function below
 		$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tabmenu.js');
 		$content = '';
@@ -1599,7 +1599,7 @@ function jumpToUrl(URL) {
 				}
 				$isEmpty = trim($def['content']) === '' && trim($def['icon']) === '';
 				// "Removes" empty tabs
-				if ($isEmpty && $dividers2tabs == 1) {
+				if ($isEmpty && $tabBehaviour == 1) {
 					continue;
 				}
 				$requiredIcon = '<img name="' . $id . '-' . $index . '-REQ" src="' . $GLOBALS['BACK_PATH'] . 'gfx/clear.gif" class="t3-TCEforms-reqTabImg" alt="" />';

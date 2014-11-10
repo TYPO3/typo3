@@ -28,7 +28,6 @@ return array(
 		),
 		'mainpalette' => '1',
 		'useColumnsForDefaultValues' => 'usergroup,lockToDomain,options,db_mountpoints,file_mountpoints,file_permissions,userMods',
-		'dividers2tabs' => TRUE,
 		'versioningWS_alwaysAllowLiveEdit' => TRUE,
 		'searchFields' => 'username,email,realName'
 	),

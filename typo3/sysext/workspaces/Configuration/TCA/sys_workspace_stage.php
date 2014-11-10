@@ -13,8 +13,7 @@ return array(
 		'typeicon_classes' => array(
 			'default' => 'mimetypes-x-sys_workspace'
 		),
-		'versioningWS_alwaysAllowLiveEdit' => TRUE,
-		'dividers2tabs' => TRUE
+		'versioningWS_alwaysAllowLiveEdit' => TRUE
 	),
 	'columns' => array(
 		'title' => array(

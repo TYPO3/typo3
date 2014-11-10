@@ -8,7 +8,6 @@ return array(
 		'cruser_id' => 'cruser_id',
 		'delete' => 'deleted',
 		'sortby' => 'sorting',
-		'dividers2tabs' => TRUE,
 		'versioningWS' => 2,
 		'rootLevel' => -1,
 		'versioning_followPages' => TRUE,
