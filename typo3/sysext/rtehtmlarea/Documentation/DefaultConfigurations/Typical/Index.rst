@@ -141,16 +141,14 @@ feature
 
 ::
 
-      showButtons (
-                   blockstylelabel, blockstyle, textstylelabel, textstyle,
-                   formatblock, bold, italic, subscript, superscript,
-                   orderedlist, unorderedlist, outdent, indent, textindicator,
-                   insertcharacter, link, table, findreplace, chMode, removeformat, undo, redo, about,
-                   toggleborders, tableproperties,
-                   rowproperties, rowinsertabove, rowinsertunder, rowdelete, rowsplit,
-                   columninsertbefore, columninsertafter, columndelete, columnsplit,
-                   cellproperties, cellinsertbefore, cellinsertafter, celldelete, cellsplit, cellmerge
-      )
+      showButtons = blockstylelabel, blockstyle, textstylelabel, textstyle
+      showButtons := addToList(formatblock, bold, italic, subscript, superscript)
+      showButtons := addToList(orderedlist, unorderedlist, outdent, indent, textindicator)
+      showButtons := addToList(insertcharacter, link, table, findreplace, chMode, removeformat, undo, redo, about)
+      showButtons := addToList(toggleborders, tableproperties)
+      showButtons := addToList(rowproperties, rowinsertabove, rowinsertunder, rowdelete, rowsplit)
+      showButtons := addToList(columninsertbefore, columninsertafter, columndelete, columnsplit)
+      showButtons := addToList(cellproperties, cellinsertbefore, cellinsertafter, celldelete, cellsplit, cellmerge)
 
 ## More toolbar options
 
@@ -175,25 +173,21 @@ database
 
 ::
 
-      proc.allowedClasses (
-              external-link, external-link-new-window, internal-link, internal-link-new-window, download, mail,
-              align-left, align-center, align-right, align-justify,
-              csc-frame-frame1, csc-frame-frame2,
-              component-items, action-items,
-              component-items-ordered, action-items-ordered,
-              important, name-of-person, detail,
-              indent
-      )
+      proc.allowedClasses = external-link, external-link-new-window, internal-link, internal-link-new-window, download, mail
+      proc.allowedClasses := addToList(align-left, align-center, align-right, align-justify)
+      proc.allowedClasses := addToList(csc-frame-frame1, csc-frame-frame2)
+      proc.allowedClasses := addToList(component-items, action-items)
+      proc.allowedClasses := addToList(component-items-ordered, action-items-ordered)
+      proc.allowedClasses := addToList(important, name-of-person, detail)
+      proc.allowedClasses := addToList(indent)
 
 ## Restrict the list of class selectors presented by the RTE to the
 following for the specified tags:
 
 ::
 
-      buttons.blockstyle.tags.div.allowedClasses (
-              align-left, align-center, align-right,
-              csc-frame-frame1, csc-frame-frame2
-      )
+      buttons.blockstyle.tags.div.allowedClasses = align-left, align-center, align-right
+      buttons.blockstyle.tags.div.allowedClasses := addToList(csc-frame-frame1, csc-frame-frame2)
       buttons.blockstyle.tags.table.allowedClasses = csc-frame-frame1, csc-frame-frame2
       buttons.blockstyle.tags.td.allowedClasses = align-left, align-center, align-right
       buttons.textstyle.tags.span.allowedClasses = important, name-of-person, detail
