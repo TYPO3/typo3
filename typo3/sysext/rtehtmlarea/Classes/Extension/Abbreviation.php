@@ -17,11 +17,11 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
- * Acronym extension for htmlArea RTE
+ * Abbreviation extension for htmlArea RTE
  *
  * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
-class Acronym extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
+class Abbreviation extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 
 	/**
 	 * The key of the extension that is extending htmlArea RTE
@@ -35,7 +35,7 @@ class Acronym extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	 *
 	 * @var string
 	 */
-	protected $pluginName = 'Acronym';
+	protected $pluginName = 'Abbreviation';
 
 	/**
 	 * Path to this main locallang file of the extension relative to the extension directory
@@ -49,7 +49,7 @@ class Acronym extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	 *
 	 * @var string
 	 */
-	protected $relativePathToSkin = 'Resources/Public/Css/Skin/Plugins/acronym.css';
+	protected $relativePathToSkin = 'Resources/Public/Css/Skin/Plugins/abbreviation.css';
 
 	/**
 	 * Reference to the invoking object
@@ -67,17 +67,64 @@ class Acronym extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	protected $LOCAL_LANG;
 
 	// Frontend language array
-	protected $pluginButtons = 'acronym';
 
+	/**
+	 * Comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
+	 *
+	 * @var string
+	 */
+	protected $pluginButtons = 'abbreviation';
+
+	/**
+	 * Name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
+	 *
+	 * @var array
+	 */
 	protected $convertToolbarForHtmlAreaArray = array(
-		'acronym' => 'Acronym'
+		'abbreviation' => 'Abbreviation'
 	);
 
 	protected $acronymIndex = 0;
 
 	protected $abbreviationIndex = 0;
 
-	public function main($parentObject) {
+	/**
+	 * Returns TRUE if the plugin is available and correctly initialized
+	 *
+	 * @param \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase Reference to parent object
+	 * @return bool TRUE if this plugin should be made available in the current environment and is correctly initialized
+	 */
+	public function main(\TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase $parentObject) {
+		// acronym button is deprecated as of TYPO3 CMS 7.0, use abbreviation instead
+		// Convert the acronym button configuration
+		if (isset($this->thisConfig['buttons.']['acronym.']) && is_array($this->thisConfig['buttons.']['acronym.'])) {
+			if (!isset($this->thisConfig['buttons.']['abbreviation.']) || !is_array($this->thisConfig['buttons.']['abbreviation.'])) {
+				$this->thisConfig['buttons.']['abbreviation.'] = $this->thisConfig['buttons.']['acronym.'];
+			}
+			unset($this->thisConfig['buttons.']['acronym.']);
+		}
+		// Convert any other reference to acronym two levels down in Page TSconfig, except in processing options
+		foreach ($parentObject->thisConfig as $key => $config) {
+			if ($key !== 'proc.') {
+				if (is_array($config)) {
+					foreach ($config as $subKey => $subConfig) {
+						$parentObject->thisConfig[$key][$subKey] = str_replace('acronym', 'abbreviation', $subConfig);
+					}
+				} else {
+					$parentObject->thisConfig[$key] = str_replace('acronym', 'abbreviation', $config);
+				}
+			}
+		}
+		// Convert any reference to acronym in special configuration options
+		if (is_array($parentObject->specConf['richtext']['parameters'])) {
+			foreach ($parentObject->specConf['richtext']['parameters'] as $key => $config) {
+				$parentObject->specConf['richtext']['parameters'][$key] = str_replace('acronym', 'abbreviation', $config);
+			}
+		}
+		// Convert any reference to acronym in user TSconfig
+		if (is_object($GLOBALS['BE_USER']) && isset($GLOBALS['BE_USER']->userTS['options.']['RTEkeyList'])) {
+			$GLOBALS['BE_USER']->userTS['options.']['RTEkeyList'] = str_replace('acronym', 'abbreviation', $GLOBALS['BE_USER']->userTS['options.']['RTEkeyList']);
+		}
 		return parent::main($parentObject) && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables');
 	}
 
@@ -88,7 +135,7 @@ class Acronym extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	 * @return string the transformed content
 	 */
 	public function transformContent($content) {
-		// <abbr> was not supported by IE before verison 7
+		// <abbr> was not supported by IE before version 7
 		if ($this->htmlAreaRTE->client['browser'] == 'msie' && $this->htmlAreaRTE->client['version'] < 7) {
 			// change <abbr> to <acronym>
 			$content = preg_replace('/<(\\/?)abbr/i', '<$1acronym', $content);
@@ -104,14 +151,14 @@ class Acronym extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {
 		$registerRTEinJavascriptString = '';
-		$button = 'acronym';
+		$button = 'abbreviation';
 		if (in_array($button, $this->toolbar)) {
 			if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][($button . '.')])) {
 				$registerRTEinJavascriptString .= '
-			RTEarea[' . $RTEcounter . ']["buttons"]["' . $button . '"] = new Object();';
+			RTEarea[' . $RTEcounter . '].buttons.' . $button . ' = new Object();';
 			}
 			$registerRTEinJavascriptString .= '
-			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.acronymUrl = "' . $this->htmlAreaRTE->writeTemporaryFile('', ('acronym_' . $this->htmlAreaRTE->contentLanguageUid), 'js', $this->buildJSAcronymArray($this->htmlAreaRTE->contentLanguageUid)) . '";';
+			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.abbreviationUrl = "' . $this->htmlAreaRTE->writeTemporaryFile('', ('abbreviation_' . $this->htmlAreaRTE->contentLanguageUid), 'js', $this->buildJSAbbreviationArray($this->htmlAreaRTE->contentLanguageUid)) . '";';
 			// <abbr> was not supported by IE before version 7
 			if ($this->htmlAreaRTE->client['browser'] == 'msie' && $this->htmlAreaRTE->client['version'] < 7) {
 				$this->abbreviationIndex = 0;
@@ -124,12 +171,12 @@ class Acronym extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	}
 
 	/**
-	 * Return an acronym array for the Acronym plugin
+	 * Return an abbreviation array for the Abbreviation plugin
 	 *
-	 * @return string acronym Javascript array
+	 * @return string abbreviation Javascript array
 	 */
-	public function buildJSAcronymArray($languageUid) {
-		$button = 'acronym';
+	protected function buildJSAbbreviationArray($languageUid) {
+		$button = 'abbreviation';
 		$acronymArray = array();
 		$abbrArray = array();
 		$tableA = 'tx_rtehtmlarea_acronym';
@@ -137,7 +184,7 @@ class Acronym extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		$fields = $tableA . '.type,' . $tableA . '.term,' . $tableA . '.acronym,' . $tableB . '.lg_iso_2,' . $tableB . '.lg_country_iso_2';
 		$tableAB = $tableA . ' LEFT JOIN ' . $tableB . ' ON ' . $tableA . '.static_lang_isocode=' . $tableB . '.uid';
 		$whereClause = '1=1';
-		// Get all acronyms on pages to which the user has access
+		// Get all abbreviations on pages to which the user has access
 		$lockBeUserToDBmounts = isset($this->thisConfig['buttons.'][$button . '.']['lockBeUserToDBmounts']) ? $this->thisConfig['buttons.'][$button . '.']['lockBeUserToDBmounts'] : $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts'];
 		if (!$GLOBALS['BE_USER']->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts'] && $lockBeUserToDBmounts) {
 			// Temporarily setting alternative web browsing mounts
@@ -174,11 +221,11 @@ class Acronym extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 			}
 			$whereClause .= ' AND ' . $tableA . '.pid IN (' . $GLOBALS['TYPO3_DB']->fullQuoteStr(($pageTree ?: ''), $tableA) . ')';
 		}
-		// Restrict to acronyms applicable to the language of current content element
+		// Restrict to abbreviations applicable to the language of current content element
 		if ($this->htmlAreaRTE->contentLanguageUid > -1) {
 			$whereClause .= ' AND (' . $tableA . '.sys_language_uid=' . $this->htmlAreaRTE->contentLanguageUid . ' OR ' . $tableA . '.sys_language_uid=-1) ';
 		}
-		// Restrict to acronyms in certain languages
+		// Restrict to abbreviations in certain languages
 		if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['language.']) && isset($this->thisConfig['buttons.']['language.']['restrictToItems'])) {
 			$languageList = implode('\',\'', \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_DB']->fullQuoteStr(strtoupper($this->thisConfig['buttons.']['language.']['restrictToItems']), $tableB)));
 			$whereClause .= ' AND ' . $tableB . '.lg_iso_2 IN (' . $languageList . ') ';
@@ -188,11 +235,11 @@ class Acronym extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		$whereClause .= BackendUtility::BEenableFields($tableB);
 		$whereClause .= BackendUtility::deleteClause($tableB);
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $tableAB, $whereClause);
-		while ($acronymRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$item = array('term' => $acronymRow['term'], 'abbr' => $acronymRow['acronym'], 'language' => strtolower($acronymRow['lg_iso_2']) . ($acronymRow['lg_country_iso_2'] ? '-' . $acronymRow['lg_country_iso_2'] : ''));
-			if ($acronymRow['type'] == 1) {
+		while ($abbreviationRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			$item = array('term' => $abbreviationRow['term'], 'abbr' => $abbreviationRow['acronym'], 'language' => strtolower($abbreviationRow['lg_iso_2']) . ($abbreviationRow['lg_country_iso_2'] ? '-' . $abbreviationRow['lg_country_iso_2'] : ''));
+			if ($abbreviationRow['type'] == 1) {
 				$acronymArray[] = $item;
-			} elseif ($acronymRow['type'] == 2) {
+			} elseif ($abbreviationRow['type'] == 2) {
 				$abbrArray[] = $item;
 			}
 		}

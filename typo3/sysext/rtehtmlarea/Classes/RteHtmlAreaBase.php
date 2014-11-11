@@ -657,7 +657,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			bar, left, center, right, justifyfull,
 			bar, orderedlist, unorderedlist, definitionlist, definitionitem, outdent, indent,  bar, lefttoright, righttoleft, language, showlanguagemarks,
 			bar, textcolor, bgcolor, textindicator,
-			bar, editelement, showmicrodata, emoticon, insertcharacter, insertsofthyphen, link, unlink, image, table,' . ($this->thisConfig['hideTableOperationsInToolbar'] && is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['toggleborders.']) && $this->thisConfig['buttons.']['toggleborders.']['keepInToolbar'] ? ' toggleborders,' : '') . ' user, acronym, bar, findreplace, spellcheck,
+			bar, editelement, showmicrodata, emoticon, insertcharacter, insertsofthyphen, link, unlink, image, table,' . ($this->thisConfig['hideTableOperationsInToolbar'] && is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['toggleborders.']) && $this->thisConfig['buttons.']['toggleborders.']['keepInToolbar'] ? ' toggleborders,' : '') . ' user, abbreviation, bar, findreplace, spellcheck,
 			bar, chMode, inserttag, removeformat, bar, copy, cut, paste, pastetoggle, pastebehaviour, bar, undo, redo, bar, showhelp, about, linebreak,
 			' . ($this->thisConfig['hideTableOperationsInToolbar'] ? '' : 'bar, toggleborders,') . ' bar, tableproperties, tablerestyle, bar, rowproperties, rowinsertabove, rowinsertunder, rowdelete, rowsplit, bar,
 			columnproperties, columninsertbefore, columninsertafter, columndelete, columnsplit, bar,

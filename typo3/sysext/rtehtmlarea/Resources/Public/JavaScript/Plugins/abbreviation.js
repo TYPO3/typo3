@@ -11,19 +11,19 @@
  * The TYPO3 project - inspiring people to share!
  */
 /*
- * Acronym plugin for htmlArea RTE
+ * Abbreviation plugin for htmlArea RTE
  */
-HTMLArea.Acronym = Ext.extend(HTMLArea.Plugin, {
+HTMLArea.Abbreviation = Ext.extend(HTMLArea.Plugin, {
 	/*
 	 * This function gets called by the class constructor
 	 */
 	configurePlugin: function(editor) {
-		this.pageTSConfiguration = this.editorConfiguration.buttons.acronym;
+		this.pageTSConfiguration = this.editorConfiguration.buttons.abbreviation;
 		/*
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '3.0',
+			version		: '7.0',
 			developer	: 'Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Stanislas Rolland',
@@ -35,10 +35,10 @@ HTMLArea.Acronym = Ext.extend(HTMLArea.Plugin, {
 		/*
 		 * Registering the button
 		 */
-		var buttonId = 'Acronym';
+		var buttonId = 'Abbreviation';
 		var buttonConfiguration = {
 			id		: buttonId,
-			tooltip		: this.localize('Insert/Modify Acronym'),
+			tooltip		: this.localize('Insert abbreviation'),
 			action		: 'onButtonPress',
 			hide		: (this.pageTSConfiguration.noAcronym && this.pageTSConfiguration.noAbbr),
 			dialog		: true,
@@ -205,12 +205,14 @@ HTMLArea.Acronym = Ext.extend(HTMLArea.Plugin, {
 		buttonsConfig.push(this.buildButtonConfig('Cancel', this.onCancel));
 		return buttonsConfig;
 	},
-	/*
+
+	/**
 	 * This function builds the configuration object for the defined Abbreviation or Acronym fieldset
 	 *
-	 * @param	object		element: the element being edited, if any
+	 * @param object element: the element being edited, if any
+	 * @param string type: 'abbr' or 'acronym'
 	 *
-	 * @return	object		the fieldset configuration object
+	 * @return object the fieldset configuration object
 	 */
 	buildDefinedTermFieldsetConfig: function (element, type) {
 		var itemsConfig = [];
@@ -226,7 +228,7 @@ HTMLArea.Acronym = Ext.extend(HTMLArea.Plugin, {
 				autoLoad: true,
 				root: type,
 				fields: [ { name: 'term'}, { name: 'abbr'},  { name: 'language'}],
-				url: this.pageTSConfiguration.acronymUrl
+				url: this.pageTSConfiguration.abbreviationUrl
 			}),
 			width: 350,
 			listeners: {
@@ -258,7 +260,7 @@ HTMLArea.Acronym = Ext.extend(HTMLArea.Plugin, {
 				autoLoad: true,
 				root: type,
 				fields: [ { name: 'term'}, { name: 'abbr'},  { name: 'language'}],
-				url: this.pageTSConfiguration.acronymUrl
+				url: this.pageTSConfiguration.abbreviationUrl
 			}),
 			width: 100,
 			listeners: {

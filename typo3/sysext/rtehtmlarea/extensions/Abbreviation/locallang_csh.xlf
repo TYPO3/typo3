@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea">
+		<header/>
+		<body>
+			<trans-unit id=".alttitle" xml:space="preserve">
+				<source>htmlArea RTE &gt; Abbreviation</source>
+			</trans-unit>
+			<trans-unit id=".description" xml:space="preserve">
+				<source>The "Abbreviation" dialogue allows to associate an abbreviation to a term.</source>
+			</trans-unit>
+			<trans-unit id=".details" xml:space="preserve">
+				<source>Clicking the "Insert abbreviation" icon in the RTE tool bar opens a dialogue that allows to insert an abbreviation or to edit one that already exists in the content.
+Any existing abbreviation is underlined with a broken line and the cursor changes to a question mark when the mouse goes over it.
+The dialogue allows to associate an abbreviation to a term. The abbreviation may be selected among abbreviations that have been pre-defined in the database or may be entered directly in the dialogue.</source>
+			</trans-unit>
+			<trans-unit id=".image" xml:space="preserve">
+				<source>EXT:rtehtmlarea/Resources/Public/Images/Plugins/Abbreviation/abbreviation.gif</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id=".image_descr" xml:space="preserve">
+				<source>"Insert abbreviation" icon in the editor tool bar.</source>
+			</trans-unit>
+			<trans-unit id=".seeAlso" xml:space="preserve">
+				<source>xEXT_rtehtmlarea_Abbreviation:preDefinedAbbreviation,
+xEXT_rtehtmlarea_Abbreviation:unabridgedTerm,
+xEXT_rtehtmlarea_Abbreviation:abridgedTerm,
+xEXT_rtehtmlarea_Abbreviation:language,
+xEXT_rtehtmlarea_Abbreviation:termToAbridge,
+xEXT_rtehtmlarea_Abbreviation:useThisTerm
+tx_rtehtmlarea_acronym</source>
+				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
+			</trans-unit>
+			<trans-unit id="preDefinedAbbreviation.alttitle" xml:space="preserve">
+				<source>Pre-defined abbreviations</source>
+			</trans-unit>
+			<trans-unit id="preDefinedAbbreviation.description" xml:space="preserve">
+				<source>This section lets you select abbreviations already defined in the database.</source>
+			</trans-unit>
+			<trans-unit id="preDefinedAbbreviation.seeAlso" xml:space="preserve">
+				<source>tx_rtehtmlarea_acronym</source>
+			</trans-unit>
+			<trans-unit id="preDefinedAcronym.alttitle" xml:space="preserve">
+				<source>Pre-defined acronyms</source>
+			</trans-unit>
+			<trans-unit id="preDefinedAcronym.description" xml:space="preserve">
+				<source>This section lets you select acronyms already defined in the database.</source>
+			</trans-unit>
+			<trans-unit id="preDefinedAcronym.seeAlso" xml:space="preserve">
+				<source>tx_rtehtmlarea_acronym</source>
+			</trans-unit>
+			<trans-unit id="unabridgedTerm.alttitle" xml:space="preserve">
+				<source>Unabbreviated term</source>
+			</trans-unit>
+			<trans-unit id="unabridgedTerm.description" xml:space="preserve">
+				<source>Select the unabbreviated form of the term.</source>
+			</trans-unit>
+			<trans-unit id="unabridgedTerm.details" xml:space="preserve">
+				<source>The selected term will be set as the title attribute of the abbreviation (or acronym) element.</source>
+			</trans-unit>
+			<trans-unit id="abridgedTerm.alttitle" xml:space="preserve">
+				<source>Abbreviation</source>
+			</trans-unit>
+			<trans-unit id="abridgedTerm.description" xml:space="preserve">
+				<source>Select the short form of the term.</source>
+			</trans-unit>
+			<trans-unit id="language.alttitle" xml:space="preserve">
+				<source>Language</source>
+			</trans-unit>
+			<trans-unit id="language.description" xml:space="preserve">
+				<source>Select the language for which the abbreviation is defined.</source>
+			</trans-unit>
+			<trans-unit id="language.details" xml:space="preserve">
+				<source>The selected language will be set as the language attribute of the abbreviation (or acronym) element.
+If a pre-defined abbreviation (or acronym) is selected, the language for which it is defined, if any, is initially selected.</source>
+			</trans-unit>
+			<trans-unit id="termToAbridge.alttitle" xml:space="preserve">
+				<source>Term to abbreviate</source>
+			</trans-unit>
+			<trans-unit id="termToAbridge.description" xml:space="preserve">
+				<source>This section lets you enter a term for which the current selection will be the short form.</source>
+			</trans-unit>
+			<trans-unit id="useThisTerm.alttitle" xml:space="preserve">
+				<source>Use this term</source>
+			</trans-unit>
+			<trans-unit id="useThisTerm.description" xml:space="preserve">
+				<source>Enter the term that you want to associate as the unabbreviated form of the current selection.</source>
+			</trans-unit>
+			<trans-unit id="useThisTerm.details" xml:space="preserve">
+				<source>The entered term will be set as the title attribute of the abbreviation (or acronym) element.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

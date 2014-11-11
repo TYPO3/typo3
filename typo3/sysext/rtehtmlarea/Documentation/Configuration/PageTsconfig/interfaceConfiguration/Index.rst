@@ -104,7 +104,7 @@ showButtons
          monospaced, quotation, sample, small, span, strikethrough, strong,
          subscript, superscript, underline, variable, textcolor, bgcolor,
          textindicator, editelement, showmicrodata, emoticon, insertcharacter,
-         insertsofthyphen, line, link, unlink, image, table, user, acronym,
+         insertsofthyphen, line, link, unlink, image, table, user, abbreviation,
          findreplace, spellcheck, chMode, inserttag, removeformat, copy, cut,
          paste, pastetoggle, pastebehaviour, undo, redo, about, toggleborders,
          tableproperties, tablerestyle, rowproperties, rowinsertabove,
@@ -118,20 +118,20 @@ showButtons
          the extension manager.
          
          Note: If extension static\_info\_tables is not installed, the
-         spellcheck, language and acronym buttons are not enabled.
+         spellcheck, language and abbreviation buttons are not enabled.
          
          Note: If the encoding of the content element is not either iso-8859-1
          or utf-8, the spellcheck button is not enabled.
          
-         Note: Buttons user and acronym are never available in the front end.
+         Note: Buttons user and abbreviation are never available in the front end.
          
          Note: Button unlink is not available if button link is not available.
          
          Note: None of the table operations buttons is available if the button
          table is not available.
          
-         Note: Opera, Safari 5+ and Chrome 6+ do not support the copy, cut and
-         paste buttons.
+         Note: Firefox 29+, Opera, Safari 5+ and Chrome 6+ do not support the copy,
+         cut and paste buttons.
 
 
 
@@ -185,7 +185,7 @@ toolbarOrder
          orderedlist, unorderedlist, definitionlist, definitionitem, outdent,
          indent, bar, textcolor, bgcolor, textindicator, bar, editelement,
          showmicrodata, emoticon, insertcharacter, insertsofthyphen, line,
-         link, unlink, image, table, user, acronym, bar, findreplace,
+         link, unlink, image, table, user, abbreviation, bar, findreplace,
          spellcheck, bar, chMode, inserttag, removeformat, bar, copy, cut,
          paste, pastetoggle, pastebehaviour, bar, undo, redo, bar, about,
          linebreak, toggleborders, bar, tableproperties, tablerestyle, bar,
@@ -1899,6 +1899,82 @@ buttons.link.properties.target.default
 
 
 
+.. _buttons-abbreviation-pages:
+
+buttons.abbreviation.pages
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. container:: table-row
+
+   Property
+         buttons.abbreviation.pages
+   
+   Data type
+         list of page id's
+   
+   Description
+         List of page id's from which to obtain the abbreviation records.
+         
+         Note: If not set, the list of current webmounts is used.
+         
+         Note: If no abbreviation records are found in the specified page id's, the
+         abbreviation button will not be present in the toolbar. If no abbreviation
+         records of type acronym or abreviation are found, the corresponding tab of the
+         abbreviation dialogue will not be enabled.
+         
+         Note: In IE, before IE7, the abreviation tab of the abbreviation dialogue
+         is never shown.
+
+
+
+.. _buttons-abbreviation-recursive:
+
+buttons.abbreviation.recursive
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. container:: table-row
+
+   Property
+         buttons.abbreviation.recursive
+   
+   Data type
+         int
+   
+   Description
+         The number of levels in the page tree, under each page listed in
+         buttons.abbreviation.pages or under each webmount, from which abbreviations
+         are retrieved.
+         
+         Default: 0
+
+
+
+.. _buttons-abbreviation-lockbeusertodbmounts:
+
+buttons.abbreviation.lockBeUserToDBmounts
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. container:: table-row
+
+   Property
+         buttons.abbreviation.lockBeUserToDBmounts
+   
+   Data type
+         boolean
+   
+   Description
+         If set, the pid's listed under buttons.abbreviation.pages (see above) are
+         validated against the user's current webmounts.
+         
+         If not set or if the user is admin, buttons.abbreviation.pages is ignored
+         and abbreviations from all pages are retrieved.
+         
+         Default: The default value of this property is the value of the
+         property with same name in the backend section of theTYPO3
+         configuration as set by the Install Tool.
+
+
+
 .. _buttons-acronym-pages:
 
 buttons.acronym.pages
@@ -1907,23 +1983,7 @@ buttons.acronym.pages
 .. container:: table-row
 
    Property
-         buttons.acronym.pages
-   
-   Data type
-         list of page id's
-   
-   Description
-         List of page id's from which to obtain the acronym records.
-         
-         Note: If not set, the list of current webmounts is used.
-         
-         Note: If no acronym records are found in the specified page id's, the
-         acronym button will not be present in the toolbar. If no records of
-         type acronym or abreviation are found, the corresponding tab of the
-         acronym dialogue will not be disabled.
-         
-         Note: In IE, before IE7, the abreviation tab of the acronym dialogue
-         is never shown.
+         This property is deprecated. Use :ref:`buttons.abbreviation.pages <buttons-abbreviation-pages>`
 
 
 
@@ -1935,43 +1995,19 @@ buttons.acronym.recursive
 .. container:: table-row
 
    Property
-         buttons.acronym.recursive
-   
-   Data type
-         int
-   
-   Description
-         The number of levels in the page tree, under each page listed in
-         buttons.acronym.pages or under each webmount, from which acronyms are
-         retrieved.
-         
-         Default: 0
+         This property is deprecated. Use :ref:`buttons.abbreviation.recursive <buttons-abbreviation-recursive>`
 
 
 
 .. _buttons-acronym-lockbeusertodbmounts:
 
-buttons.acronym. lockBeUserToDBmounts
+buttons.acronym.lockBeUserToDBmounts
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. container:: table-row
 
    Property
-         buttons.acronym. lockBeUserToDBmounts
-   
-   Data type
-         boolean
-   
-   Description
-         If set, the pid's listed under buttons.acronym.pages (see above) are
-         validated against the user's current webmounts.
-         
-         If not set or if the user is admin, buttons.acronym.pages is ignored
-         and acronyms from all pages are retrieved.
-         
-         Default: The default value of this property is the value of the
-         property with same name in the backend section of theTYPO3
-         configuration as set by the Install Tool.
+         This property is deprecated. Use :ref:`buttons.abbreviation.lockBeUserToDBmounts <buttons-abbreviation-lockBeUserToDBmounts>`
 
 
 

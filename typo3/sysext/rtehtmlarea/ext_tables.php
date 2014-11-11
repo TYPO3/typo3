@@ -5,9 +5,10 @@ defined('TYPO3_MODE') or die();
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'static/clickenlarge/', 'Clickenlarge Rendering');
 
 // Add contextual help files
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_rtehtmlarea_acronym', 'EXT:' . $_EXTKEY . '/locallang_csh_abbreviation.xlf');
 $htmlAreaRteContextHelpFiles = array(
 	'General' => 'EXT:' . $_EXTKEY . '/locallang_csh.xlf',
-	'Acronym' => 'EXT:' . $_EXTKEY . '/extensions/Acronym/locallang_csh.xlf',
+	'Abbreviation' => 'EXT:' . $_EXTKEY . '/extensions/Abbreviation/locallang_csh.xlf',
 	'EditElement' => 'EXT:' . $_EXTKEY . '/extensions/EditElement/locallang_csh.xlf',
 	'Language' => 'EXT:' . $_EXTKEY . '/extensions/Language/locallang_csh.xlf',
 	'MicrodataSchema' => 'EXT:' . $_EXTKEY . '/extensions/MicrodataSchema/locallang_csh.xlf',

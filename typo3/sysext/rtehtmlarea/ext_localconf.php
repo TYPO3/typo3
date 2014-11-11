@@ -40,6 +40,8 @@ require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKE
 
 // Set warning in the Update Wizard of the Install Tool for deprecated Page TS Config properties
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['checkForDeprecatedRtePageTSConfigProperties'] = 'TYPO3\\CMS\\Rtehtmlarea\\Hook\\Install\\DeprecatedRteProperties';
+// Set warning in the Update Wizard of the Install Tool for replacement of "acronym" button by "abbreviation" button
+$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['checkForRteAcronymButtonRenamedToAbbreviation'] = 'TYPO3\\CMS\\Rtehtmlarea\\Hook\\Install\\RteAcronymButtonRenamedToAbbreviation';
 
 // Initialize plugin registration array
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins'] = array();
@@ -86,10 +88,10 @@ $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['CharacterMap'] = array();
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['CharacterMap']['objectReference'] = '&TYPO3\\CMS\\Rtehtmlarea\\Extension\\CharacterMap';
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['CharacterMap']['addIconsToSkin'] = 0;
 
-$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['Acronym'] = array();
-$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['Acronym']['objectReference'] = '&TYPO3\\CMS\\Rtehtmlarea\\Extension\\Acronym';
-$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['Acronym']['addIconsToSkin'] = 0;
-$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['Acronym']['disableInFE'] = 1;
+$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['Abbreviation'] = array();
+$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['Abbreviation']['objectReference'] = '&TYPO3\\CMS\\Rtehtmlarea\\Extension\\Abbreviation';
+$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['Abbreviation']['addIconsToSkin'] = 0;
+$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['Abbreviation']['disableInFE'] = 1;
 
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['UserElements'] = array();
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['UserElements']['objectReference'] = '&TYPO3\\CMS\\Rtehtmlarea\\Extension\\UserElements';
