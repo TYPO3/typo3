@@ -560,3 +560,13 @@ class t3lib_utility_VersionNumber extends \TYPO3\CMS\Core\Utility\VersionNumberU
 class SC_view_help extends \TYPO3\CMS\Cshmanual\Controller\HelpModuleController {}
 
 class tx_cssstyledcontent_pi1 extends \TYPO3\CMS\CssStyledContent\Controller\CssStyledContentController {}
+
+class tx_dbal_module1 extends \TYPO3\CMS\Dbal\Controller\ModuleController {}
+
+class tx_dbal_querycache extends \TYPO3\CMS\Dbal\QueryCache {}
+
+class ux_t3lib_DB extends \TYPO3\CMS\Dbal\Database\DatabaseConnection {}
+
+class ux_t3lib_sqlparser extends \TYPO3\CMS\Dbal\Database\SqlParser {}
+
+class ux_localRecordList extends \TYPO3\CMS\Dbal\RecordList\DatabaseRecordList {}

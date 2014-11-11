@@ -279,4 +279,9 @@ return array(
 	't3lib_utility_VersionNumber' => 'TYPO3\\CMS\\Core\\Utility\\VersionNumberUtility',
 	'SC_view_help' => 'TYPO3\\CMS\\Cshmanual\\Controller\\HelpModuleController',
 	'tx_cssstyledcontent_pi1' => 'TYPO3\\CMS\\CssStyledContent\\Controller\\CssStyledContentController',
+	'tx_dbal_module1' => 'TYPO3\\CMS\\Dbal\\Controller\\ModuleController',
+	'tx_dbal_querycache' => 'TYPO3\\CMS\\Dbal\\QueryCache',
+	'ux_t3lib_DB' => 'TYPO3\\CMS\\Dbal\\Database\\DatabaseConnection',
+	'ux_t3lib_sqlparser' => 'TYPO3\\CMS\\Dbal\\Database\\SqlParser',
+	'ux_localRecordList' => 'TYPO3\\CMS\\Dbal\\RecordList\\DatabaseRecordList',
 );
