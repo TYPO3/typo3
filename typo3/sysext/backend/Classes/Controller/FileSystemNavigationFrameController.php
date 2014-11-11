@@ -201,7 +201,7 @@ class FileSystemNavigationFrameController {
 		// Refresh
 		$buttons['refresh'] = '<a href="' . htmlspecialchars(GeneralUtility::getIndpEnv('REQUEST_URI')) . '">' . IconUtility::getSpriteIcon('actions-system-refresh') . '</a>';
 		// CSH
-		$buttons['csh'] = str_replace('typo3-csh-inline', 'typo3-csh-inline show-right', \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'filetree', $GLOBALS['BACK_PATH']));
+		$buttons['csh'] = str_replace('typo3-csh-inline', 'typo3-csh-inline show-right', \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'filetree'));
 		return $buttons;
 	}
 

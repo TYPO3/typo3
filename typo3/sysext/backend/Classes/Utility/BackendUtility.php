@@ -2465,8 +2465,10 @@ class BackendUtility {
 	 * @param string $BACK_PATH UNUSED
 	 * @param bool $force Force display of icon no matter BE_USER setting for help
 	 * @return string HTML content for a help icon/text
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use cshItem() instead
 	 */
 	static public function helpTextIcon($table, $field, $BACK_PATH = '', $force = FALSE) {
+		GeneralUtility::logDeprecatedFunction();
 		if (
 			is_array($GLOBALS['TCA_DESCR'][$table]) && is_array($GLOBALS['TCA_DESCR'][$table]['columns'][$field])
 			&& (isset(static::getBackendUserAuthentication()->uc['edit_showFieldHelp']) || $force)
@@ -2516,7 +2518,7 @@ class BackendUtility {
 	 * @param string $table Table name
 	 * @param string $field Field name
 	 * @return string HTML content for help text
-	 * @see wrapInHelp()
+	 * @see cshItem()
 	 */
 	static public function helpText($table, $field) {
 		$helpTextArray = self::helpTextArray($table, $field);
@@ -2589,19 +2591,17 @@ class BackendUtility {
 	 *
 	 * @param string $table Table name ('_MOD_'+module name)
 	 * @param string $field Field name (CSH locallang main key)
-	 * @param string $BACK_PATH Back path
+	 * @param string $BACK_PATH Back path, not needed anymore, don't use
 	 * @param string $wrap Wrap code for icon-mode, splitted by "|". Not used for full-text mode.
 	 * @return string HTML content for help text
 	 * @see helpTextIcon()
 	 */
-	static public function cshItem($table, $field, $BACK_PATH, $wrap = '') {
-		if (!static::getBackendUserAuthentication()->uc['edit_showFieldHelp']) {
-			return '';
-		}
+	static public function cshItem($table, $field, $BACK_PATH = NULL, $wrap = '') {
 		static::getLanguageService()->loadSingleTableDescription($table);
-		if (is_array($GLOBALS['TCA_DESCR'][$table])) {
-			// Creating CSH icon and short description:
-			$output = self::helpTextIcon($table, $field, $BACK_PATH);
+		if (is_array($GLOBALS['TCA_DESCR'][$table])
+			&& is_array($GLOBALS['TCA_DESCR'][$table]['columns'][$field])) {
+			// Creating short description
+			$output = self::wrapInHelp($table, $field);
 			if ($output && $wrap) {
 				$wrParts = explode('|', $wrap);
 				$output = $wrParts[0] . $output . $wrParts[1];

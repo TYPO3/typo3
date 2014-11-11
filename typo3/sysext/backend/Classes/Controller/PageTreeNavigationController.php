@@ -253,7 +253,7 @@ class PageTreeNavigationController {
 		// Refresh
 		$buttons['refresh'] = '<a href="' . htmlspecialchars(GeneralUtility::getIndpEnv('REQUEST_URI')) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.refresh', TRUE) . '">' . IconUtility::getSpriteIcon('actions-system-refresh') . '</a>';
 		// CSH
-		$buttons['csh'] = str_replace('typo3-csh-inline', 'typo3-csh-inline show-right', BackendUtility::cshItem('xMOD_csh_corebe', 'pagetree', $GLOBALS['BACK_PATH'], '', TRUE));
+		$buttons['csh'] = str_replace('typo3-csh-inline', 'typo3-csh-inline show-right', BackendUtility::cshItem('xMOD_csh_corebe', 'pagetree'));
 		// Filter
 		if ($this->hasFilterBox) {
 			$buttons['filter'] = '<a href="#" id="tree-toolbar-filter-item">' . IconUtility::getSpriteIcon('actions-system-tree-search-open', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xlf:labels.filter', TRUE))) . '</a>';

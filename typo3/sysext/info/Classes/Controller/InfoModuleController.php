@@ -149,7 +149,7 @@ class InfoModuleController extends BaseScriptClass {
 			'shortcut' => ''
 		);
 		// CSH
-		$buttons['csh'] = BackendUtility::cshItem('_MOD_web_info', '', $GLOBALS['BACK_PATH'], '', TRUE);
+		$buttons['csh'] = BackendUtility::cshItem('_MOD_web_info', '');
 		// View page
 		$buttons['view'] = '<a href="#" ' .
 			'onclick="' . htmlspecialchars(

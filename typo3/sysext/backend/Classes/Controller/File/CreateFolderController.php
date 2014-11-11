@@ -184,7 +184,7 @@ class CreateFolderController {
 				</div>
 				';
 			// CSH:
-			$code .= BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfolder', $GLOBALS['BACK_PATH'], '<br />');
+			$code .= BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfolder', NULL, '<br />');
 			$pageContent .= $code;
 			// Add spacer:
 			$pageContent .= $this->doc->spacer(10);
@@ -220,7 +220,7 @@ class CreateFolderController {
 				</div>
 				';
 			// CSH:
-			$code .= BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfile', $GLOBALS['BACK_PATH'], '<br />');
+			$code .= BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfile', NULL, '<br />');
 			$pageContent .= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfile'), $code);
 			$pageContent .= $this->doc->sectionEnd();
 			$pageContent .= '</form>';

@@ -284,11 +284,11 @@ class NewRecordController {
 				$buttons['new_page'] = '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('pagesOnly' => '1'))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xlf:newPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-page-new') . '</a>';
 			}
 			// CSH
-			$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'new_regular', $GLOBALS['BACK_PATH'], '', TRUE);
+			$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'new_regular');
 		} elseif ($this->showNewRecLink('pages')) {
 			// Pages only wizard
 			// CSH
-			$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'new_pages', $GLOBALS['BACK_PATH'], '', TRUE);
+			$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'new_pages');
 		}
 		// Back
 		if ($this->R_URI) {

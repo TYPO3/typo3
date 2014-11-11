@@ -127,7 +127,7 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 			'shortcut' => ''
 		);
 		// CSH
-		$buttons['csh'] = BackendUtility::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH'], '', TRUE);
+		$buttons['csh'] = BackendUtility::cshItem('_MOD_web_func', '');
 		if ($this->id && is_array($this->pageinfo)) {
 			// View page
 			$buttons['view'] = '<a href="#" '

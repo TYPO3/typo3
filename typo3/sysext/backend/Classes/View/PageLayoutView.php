@@ -378,7 +378,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			// Start table:
 			$this->oddColumnsCssClass = '';
 			// CSH:
-			$out = BackendUtility::cshItem($this->descrTable, ('func_' . $pKey), $GLOBALS['BACK_PATH']) . '
+			$out = BackendUtility::cshItem($this->descrTable, ('func_' . $pKey)) . '
 				<table class="t3-table typo3-page-pages">' .
 					'<thead>' .
 						$this->addelement(1, '', $theData) .
@@ -651,7 +651,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					$out .= $grid . '</table></div>';
 				}
 				// CSH:
-				$out .= BackendUtility::cshItem($this->descrTable, 'columns_multi', $GLOBALS['BACK_PATH']);
+				$out .= BackendUtility::cshItem($this->descrTable, 'columns_multi');
 			}
 			// If language mode, then make another presentation:
 			// Notice that THIS presentation will override the value of $out!
@@ -739,7 +739,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						</table>
 					</div>';
 				// CSH:
-				$out .= BackendUtility::cshItem($this->descrTable, 'language_list', $GLOBALS['BACK_PATH']);
+				$out .= BackendUtility::cshItem($this->descrTable, 'language_list');
 			}
 		} else {
 			// SINGLE column mode (columns shown beneath each other):
@@ -844,7 +844,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						' . $out . '
 					</table>';
 				// CSH:
-				$out .= BackendUtility::cshItem($this->descrTable, 'columns_single', $GLOBALS['BACK_PATH']);
+				$out .= BackendUtility::cshItem($this->descrTable, 'columns_single');
 			} else {
 				$out = '<br/><br/>' . $this->getPageLayoutController()->doc->icons(1)
 					. 'Sorry, you cannot view a single language in this localization mode (Default Language Binding is enabled)<br/><br/>';
@@ -902,7 +902,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					<tr>
 						<td>' . implode('</td>
 						<td>', $bArray) . '</td>
-						<td>' . BackendUtility::cshItem($this->descrTable, 'button_panel', $GLOBALS['BACK_PATH']) . '</td>
+						<td>' . BackendUtility::cshItem($this->descrTable, 'button_panel') . '</td>
 					</tr>
 				</table>
 				<br />

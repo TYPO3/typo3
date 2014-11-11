@@ -101,7 +101,7 @@ class ElementHistoryController {
 			'back' => ''
 		);
 		// CSH
-		$buttons['csh'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'history_log', $GLOBALS['BACK_PATH'], '', TRUE);
+		$buttons['csh'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'history_log');
 		// Start history object
 		$historyObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\History\RecordHistory::class);
 		if ($historyObj->returnUrl) {

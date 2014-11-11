@@ -631,7 +631,7 @@ class PageLayoutController {
 				'history_record' => '',
 				'edit_language' => ''
 			);
-			$this->markers['CSH'] = BackendUtility::cshItem($this->descrTable, '', $GLOBALS['BACK_PATH'], '', TRUE);
+			$this->markers['CSH'] = '';
 			$this->markers['TOP_FUNCTION_MENU'] = '';
 			$this->markers['LANGSELECTOR'] = '';
 			$this->markers['CONTENT'] = $body;
@@ -882,7 +882,7 @@ class PageLayoutController {
 			$posMap->cur_sys_language = $this->current_sys_language;
 			$HTMLcode = '';
 			// CSH:
-			$HTMLcode .= BackendUtility::cshItem($this->descrTable, 'quickEdit_selElement', $GLOBALS['BACK_PATH'], '|<br />');
+			$HTMLcode .= BackendUtility::cshItem($this->descrTable, 'quickEdit_selElement', NULL, '|<br />');
 			$HTMLcode .= $posMap->printContentElementColumns($this->id, $this->eRParts[1], $this->colPosList, $this->MOD_SETTINGS['tt_content_showHidden'], $this->R_URI);
 			$content .= $this->doc->spacer(20);
 			$content .= $this->doc->section($GLOBALS['LANG']->getLL('CEonThisPage'), $HTMLcode, 0, 1);
@@ -1157,9 +1157,9 @@ class PageLayoutController {
 
 			// Add CSH (Context Sensitive Help) icon to tool bar
 			if ($function == 'quickEdit') {
-				$buttons['csh'] = BackendUtility::cshItem($this->descrTable, 'quickEdit', $GLOBALS['BACK_PATH'], '', TRUE, 'margin-top: 0px; margin-bottom: 0px;');
+				$buttons['csh'] = BackendUtility::cshItem($this->descrTable, 'quickEdit');
 			} else {
-				$buttons['csh'] = BackendUtility::cshItem($this->descrTable, 'columns_' . $this->MOD_SETTINGS['function'], $GLOBALS['BACK_PATH'], '', TRUE, 'margin-top: 0px; margin-bottom: 0px;');
+				$buttons['csh'] = BackendUtility::cshItem($this->descrTable, 'columns_' . $this->MOD_SETTINGS['function']);
 			}
 			if ($function == 'quickEdit') {
 				// Save record

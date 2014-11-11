@@ -517,7 +517,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$row[] = '
 				<tr class="tableheader bgColor5">
 					<td colspan="2">' . $this->lang->getLL('makeconfig_exportPagetreeConfiguration', TRUE)
-						. BackendUtility::cshItem('xMOD_tx_impexp', 'pageTreeCfg', $GLOBALS['BACK_PATH'], '') . '</td>
+						. BackendUtility::cshItem('xMOD_tx_impexp', 'pageTreeCfg') . '</td>
 				</tr>';
 			$row[] = '
 				<tr class="bgColor4">
@@ -528,7 +528,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$row[] = '
 				<tr class="bgColor4">
 					<td><strong>' . $this->lang->getLL('makeconfig_tree', TRUE) . '</strong>'
-						. BackendUtility::cshItem('xMOD_tx_impexp', 'pageTreeDisplay', $GLOBALS['BACK_PATH'], '') . '</td>
+						. BackendUtility::cshItem('xMOD_tx_impexp', 'pageTreeDisplay') . '</td>
 					<td>' . ($this->treeHTML ?: $this->lang->getLL('makeconfig_noTreeExportedOnly', TRUE)) . '</td>
 				</tr>';
 			$opt = array(
@@ -544,13 +544,13 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$row[] = '
 				<tr class="bgColor4">
 					<td><strong>' . $this->lang->getLL('makeconfig_levels', TRUE) . '</strong>'
-						. BackendUtility::cshItem('xMOD_tx_impexp', 'pageTreeMode', $GLOBALS['BACK_PATH'], '') . '</td>
+						. BackendUtility::cshItem('xMOD_tx_impexp', 'pageTreeMode') . '</td>
 					<td>' . $this->renderSelectBox('tx_impexp[pagetree][levels]', $inData['pagetree']['levels'], $opt) . '</td>
 				</tr>';
 			$row[] = '
 				<tr class="bgColor4">
 					<td><strong>' . $this->lang->getLL('makeconfig_includeTables', TRUE) . '</strong>'
-						. BackendUtility::cshItem('xMOD_tx_impexp', 'pageTreeRecordLimit', $GLOBALS['BACK_PATH'], '') . '</td>
+						. BackendUtility::cshItem('xMOD_tx_impexp', 'pageTreeRecordLimit') . '</td>
 					<td>' . $this->tableSelector('tx_impexp[pagetree][tables]', $inData['pagetree']['tables'], 'pages') . '<br/>
 						' . $this->lang->getLL('makeconfig_maxNumberOfRecords', TRUE) . '<br/>
 						<input type="text" name="tx_impexp[pagetree][maxNumber]" value="'
@@ -563,7 +563,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$row[] = '
 				<tr class="tableheader bgColor5">
 					<td colspan="2">' . $this->lang->getLL('makeconfig_exportSingleRecord', TRUE)
-						. BackendUtility::cshItem('xMOD_tx_impexp', 'singleRecord', $GLOBALS['BACK_PATH'], '') . '</td>
+						. BackendUtility::cshItem('xMOD_tx_impexp', 'singleRecord') . '</td>
 				</tr>';
 			foreach ($inData['record'] as $ref) {
 				$rParts = explode(':', $ref);
@@ -607,13 +607,13 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$row[] = '
 			<tr class="bgColor4">
 				<td><strong>' . $this->lang->getLL('makeconfig_tablePids', TRUE) . '</strong>'
-					. BackendUtility::cshItem('xMOD_tx_impexp', 'tableList', $GLOBALS['BACK_PATH'], '') . '</td>
+					. BackendUtility::cshItem('xMOD_tx_impexp', 'tableList') . '</td>
 				<td>' . $tblList . '</td>
 			</tr>';
 			$row[] = '
 				<tr class="bgColor4">
 					<td><strong>' . $this->lang->getLL('makeconfig_maxNumberOfRecords', TRUE)
-						. BackendUtility::cshItem('xMOD_tx_impexp', 'tableListMaxNumber', $GLOBALS['BACK_PATH'], '') . '</strong></td>
+						. BackendUtility::cshItem('xMOD_tx_impexp', 'tableListMaxNumber') . '</strong></td>
 					<td>
 						<input type="text" name="tx_impexp[listCfg][maxNumber]" value="'
 						. htmlspecialchars($inData['listCfg']['maxNumber']) . '"' . $this->doc->formWidth(10) . ' /><br/>
@@ -628,14 +628,14 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$row[] = '
 				<tr class="bgColor4">
 					<td><strong>' . $this->lang->getLL('makeconfig_includeRelationsToTables', TRUE) . '</strong>'
-						. BackendUtility::cshItem('xMOD_tx_impexp', 'inclRelations', $GLOBALS['BACK_PATH'], '') . '</td>
+						. BackendUtility::cshItem('xMOD_tx_impexp', 'inclRelations') . '</td>
 					<td>' . $this->tableSelector('tx_impexp[external_ref][tables]', $inData['external_ref']['tables']) . '</td>
 				</tr>';
 		// Add static relation selector:
 		$row[] = '
 				<tr class="bgColor4">
 					<td><strong>' . $this->lang->getLL('makeconfig_useStaticRelationsFor', TRUE) . '</strong>'
-						. BackendUtility::cshItem('xMOD_tx_impexp', 'staticRelations', $GLOBALS['BACK_PATH'], '') . '</td>
+						. BackendUtility::cshItem('xMOD_tx_impexp', 'staticRelations') . '</td>
 					<td>' . $this->tableSelector('tx_impexp[external_static][tables]', $inData['external_static']['tables']) . '<br/>
 						<label for="checkShowStaticRelations">' . $this->lang->getLL('makeconfig_showStaticRelations', TRUE)
 							. '</label> <input type="checkbox" name="tx_impexp[showStaticRelations]" id="checkShowStaticRelations" value="1"'
@@ -659,7 +659,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$row[] = '
 				<tr class="bgColor4">
 					<td><strong>' . $this->lang->getLL('makeconfig_excludeElements', TRUE) . '</strong>'
-						. BackendUtility::cshItem('xMOD_tx_impexp', 'excludedElements', $GLOBALS['BACK_PATH'], '') . '</td>
+						. BackendUtility::cshItem('xMOD_tx_impexp', 'excludedElements') . '</td>
 					<td>' . $excludeHiddenFields . '
 					' . $excludedElements . '
 					</td>
@@ -693,7 +693,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				<tr class="bgColor4">
 					<td><label for="checkExcludeHTMLfileResources"><strong>'
 						. $this->lang->getLL('makeadvanc_excludeHtmlCssFile', TRUE)	. '</strong></label>'
-						. BackendUtility::cshItem('xMOD_tx_impexp', 'htmlCssResources', $GLOBALS['BACK_PATH'], '') . '</td>
+						. BackendUtility::cshItem('xMOD_tx_impexp', 'htmlCssResources') . '</td>
 					<td><input type="checkbox" name="tx_impexp[excludeHTMLfileResources]" id="checkExcludeHTMLfileResources" value="1"'
 						. ($inData['excludeHTMLfileResources'] ? ' checked="checked"' : '') . ' /></td>
 				</tr>';
@@ -719,7 +719,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$row[] = '
 				<tr class="bgColor4">
 					<td><strong>' . $this->lang->getLL('makeadvanc_selectExtensionsThatThe', TRUE) . '</strong>'
-						. BackendUtility::cshItem('xMOD_tx_impexp', 'extensionDependencies', $GLOBALS['BACK_PATH'], '') . '</td>
+						. BackendUtility::cshItem('xMOD_tx_impexp', 'extensionDependencies') . '</td>
 					<td>' . $this->extensionSelector('tx_impexp[extension_dep]', $inData['extension_dep']) . '</td>
 				</tr>';
 		// Add buttons:
@@ -760,7 +760,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$row[] = '
 				<tr class="bgColor4">
 					<td><strong>' . $this->lang->getLL('makesavefo_presets', TRUE) . '</strong>'
-						. BackendUtility::cshItem('xMOD_tx_impexp', 'presets', $GLOBALS['BACK_PATH'], '') . '</td>
+						. BackendUtility::cshItem('xMOD_tx_impexp', 'presets') . '</td>
 					<td>
 						' . $this->lang->getLL('makesavefo_selectPreset', TRUE) . '<br/>
 						' . $this->renderSelectBox('preset[select]', '', $opt) . '
@@ -800,7 +800,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$row[] = '
 				<tr class="bgColor4">
 					<td><strong>' . $this->lang->getLL('makesavefo_metaData', TRUE) . '</strong>'
-						. BackendUtility::cshItem('xMOD_tx_impexp', 'metadata', $GLOBALS['BACK_PATH'], '') . '</td>
+						. BackendUtility::cshItem('xMOD_tx_impexp', 'metadata') . '</td>
 					<td>
 							' . $this->lang->getLL('makesavefo_title', TRUE) . ' <br/>
 							<input type="text" name="tx_impexp[meta][title]" value="' . htmlspecialchars($inData['meta']['title']) . '"' . $this->doc->formWidth(30) . ' /><br/>
@@ -835,7 +835,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$row[] = '
 				<tr class="bgColor4">
 					<td><strong>' . $this->lang->getLL('makesavefo_fileFormat', TRUE) . '</strong>'
-						. BackendUtility::cshItem('xMOD_tx_impexp', 'fileFormat', $GLOBALS['BACK_PATH'], '') . '</td>
+						. BackendUtility::cshItem('xMOD_tx_impexp', 'fileFormat') . '</td>
 					<td>' . $this->renderSelectBox('tx_impexp[filetype]', $inData['filetype'], $opt) . '<br/>
 						' . $this->lang->getLL('makesavefo_maxSizeOfFiles', TRUE) . '<br/>
 						<input type="text" name="tx_impexp[maxFileSize]" value="'
@@ -908,7 +908,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				: '';
 			$row[] = '<tr class="bgColor4">
 				<td><strong>' . $this->lang->getLL('importdata_file', TRUE) . '</strong>'
-					. BackendUtility::cshItem('xMOD_tx_impexp', 'importFile', $GLOBALS['BACK_PATH'], '') . '</td>
+					. BackendUtility::cshItem('xMOD_tx_impexp', 'importFile') . '</td>
 				<td>' . $this->renderSelectBox('tx_impexp[file]', $inData['file'], $selectOptions) . '<br />'
 					. sprintf($this->lang->getLL('importdata_fromPathS', TRUE), $path ? $path->getCombinedIdentifier() : $this->lang->getLL('importdata_no_accessible_file_mount', TRUE)) .
 				$noCompressorAvailable . '</td>
@@ -918,7 +918,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				</tr>';
 			$row[] = '<tr class="bgColor4">
 				<td><strong>' . $this->lang->getLL('importdata_update', TRUE) . '</strong>'
-					. BackendUtility::cshItem('xMOD_tx_impexp', 'update', $GLOBALS['BACK_PATH'], '') . '</td>
+					. BackendUtility::cshItem('xMOD_tx_impexp', 'update') . '</td>
 				<td>
 					<input type="checkbox" name="tx_impexp[do_update]" id="checkDo_update" value="1"'
 						. ($inData['do_update'] ? ' checked="checked"' : '') . ' />
@@ -947,7 +947,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				: '';
 			$row[] = '<tr class="bgColor4">
 				<td><strong>' . $this->lang->getLL('importdata_options', TRUE) . '</strong>'
-					. BackendUtility::cshItem('xMOD_tx_impexp', 'options', $GLOBALS['BACK_PATH'], '') . '</td>
+					. BackendUtility::cshItem('xMOD_tx_impexp', 'options') . '</td>
 				<td>
 					<input type="checkbox" name="tx_impexp[notShowDiff]" id="checkNotShowDiff" value="1"'
 						. ($inData['notShowDiff'] ? ' checked="checked"' : '') . ' />
@@ -968,13 +968,13 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				: '<input type="submit" name="tx_impexp[new_import]" value="' . $this->lang->getLL('importdata_newImport', TRUE) . '" />';
 			$row[] = '<tr class="bgColor4">
 				<td><strong>' . $this->lang->getLL('importdata_action', TRUE) . '</strong>'
-					. BackendUtility::cshItem('xMOD_tx_impexp', 'action', $GLOBALS['BACK_PATH'], '') . '</td>
+					. BackendUtility::cshItem('xMOD_tx_impexp', 'action') . '</td>
 				<td>' . $newImport . '
 					<input type="hidden" name="tx_impexp[action]" value="import" /></td>
 				</tr>';
 			$row[] = '<tr class="bgColor4">
 				<td><strong>' . $this->lang->getLL('importdata_enableLogging', TRUE) . '</strong>'
-					. BackendUtility::cshItem('xMOD_tx_impexp', 'enableLogging', $GLOBALS['BACK_PATH'], '') . '</td>
+					. BackendUtility::cshItem('xMOD_tx_impexp', 'enableLogging') . '</td>
 				<td>
 					<input type="checkbox" name="tx_impexp[enableLogging]" id="checkEnableLogging" value="1"'
 						. ($inData['enableLogging'] ? ' checked="checked"' : '') . ' />
@@ -1000,7 +1000,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					</tr>';
 				$row[] = '<tr class="bgColor4">
 						<td>' . $this->lang->getLL('importdata_browse', TRUE)
-							. BackendUtility::cshItem('xMOD_tx_impexp', 'upload', $GLOBALS['BACK_PATH'], '') . '</td>
+							. BackendUtility::cshItem('xMOD_tx_impexp', 'upload') . '</td>
 						<td>
 
 								<input type="file" name="upload_1"' . $this->doc->formWidth(35) . ' size="40" />

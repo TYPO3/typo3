@@ -1052,7 +1052,7 @@ class EditDocumentController {
 			}
 		}
 		// add the CSH icon
-		$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'TCEforms', $GLOBALS['BACK_PATH'], '', TRUE);
+		$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'TCEforms');
 		$buttons['shortcut'] = $this->shortCutLink();
 		$buttons['open_in_new_window'] = $this->openInNewWindowLink();
 		return $buttons;

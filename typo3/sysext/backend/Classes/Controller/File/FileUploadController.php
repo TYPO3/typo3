@@ -125,7 +125,7 @@ class FileUploadController {
 		$pageContent = $this->doc->header($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.pagetitle')) . $this->doc->section('', $form);
 		// Header Buttons
 		$docHeaderButtons = array(
-			'csh' => BackendUtility::cshItem('xMOD_csh_corebe', 'file_upload', $GLOBALS['BACK_PATH']),
+			'csh' => BackendUtility::cshItem('xMOD_csh_corebe', 'file_upload'),
 			'back' => ''
 		);
 		$markerArray = array(

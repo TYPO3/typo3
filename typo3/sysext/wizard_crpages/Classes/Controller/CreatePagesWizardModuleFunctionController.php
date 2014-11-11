@@ -153,7 +153,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 			$theCode .= GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, '', $GLOBALS['LANG']->getLL('wiz_newPages_errorMsg1'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR)->render();
 		}
 		// CSH
-		$theCode .= BackendUtility::cshItem('_MOD_web_func', 'tx_wizardcrpages', $GLOBALS['BACK_PATH'], '<br />|');
+		$theCode .= BackendUtility::cshItem('_MOD_web_func', 'tx_wizardcrpages', NULL, '<br />|');
 		$out = $this->pObj->doc->header($GLOBALS['LANG']->getLL('wiz_crMany'));
 		$out .= $this->pObj->doc->section('', $theCode, FALSE, TRUE);
 		return $out;

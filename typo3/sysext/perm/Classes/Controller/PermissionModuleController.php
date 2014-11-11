@@ -246,7 +246,7 @@ class PermissionModuleController {
 			}
 
 			$docHeaderButtons = $this->getButtons();
-			$markers['CSH'] = $this->docHeaderButtons['csh'];
+			$markers['CSH'] = '';
 			$markers['FUNC_MENU'] = BackendUtility::getFuncMenu($this->id, 'SET[mode]', $this->MOD_SETTINGS['mode'], $this->MOD_MENU['mode']);
 			$markers['CONTENT'] = $this->content;
 
@@ -277,12 +277,9 @@ class PermissionModuleController {
 	 */
 	protected function getButtons() {
 		$buttons = array(
-			'csh' => '',
 			'view' => '',
 			'shortcut' => ''
 		);
-		// CSH
-		$buttons['csh'] = BackendUtility::cshItem('_MOD_web_info', '', $GLOBALS['BACK_PATH'], '', TRUE);
 		// View page
 		$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewonclick($this->pageinfo['uid'], $GLOBALS['BACK_PATH'], BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-view') . '</a>';
 		// Shortcut
@@ -418,7 +415,7 @@ class PermissionModuleController {
 		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('permissions'), $code, TRUE);
 
 		// CSH for permissions setting
-		$this->content .= BackendUtility::cshItem('xMOD_csh_corebe', 'perm_module_setting', $GLOBALS['BACK_PATH'], '<br /><br />');
+		$this->content .= BackendUtility::cshItem('xMOD_csh_corebe', 'perm_module_setting', NULL, '<br /><br />');
 
 		// Adding help text:
 		if ($GLOBALS['BE_USER']->uc['helpText']) {
@@ -559,7 +556,7 @@ class PermissionModuleController {
 		$this->content .= $this->doc->section('', $code);
 
 		// CSH for permissions setting
-		$this->content .= BackendUtility::cshItem('xMOD_csh_corebe', 'perm_module', $GLOBALS['BACK_PATH'], '<br />|');
+		$this->content .= BackendUtility::cshItem('xMOD_csh_corebe', 'perm_module', NULL, '<br />|');
 
 		// Creating legend table:
 		$legendText = '<strong>' . $GLOBALS['LANG']->getLL('1', TRUE) . '</strong>: ' . $GLOBALS['LANG']->getLL('1_t', TRUE);

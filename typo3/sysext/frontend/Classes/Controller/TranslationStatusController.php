@@ -63,7 +63,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 			$h_func .= BackendUtility::getFuncMenu($this->pObj->id, 'SET[lang]', $this->pObj->MOD_SETTINGS['lang'], $this->pObj->MOD_MENU['lang']);
 			$theOutput .= $h_func;
 			// Add CSH:
-			$theOutput .= BackendUtility::cshItem('_MOD_web_info', 'lang', $GLOBALS['BACK_PATH'], '|<br />');
+			$theOutput .= BackendUtility::cshItem('_MOD_web_info', 'lang', NULL, '|<br />');
 			// Showing the tree:
 			// Initialize starting point of page tree:
 			$treeStartingPoint = (int)$this->pObj->id;

@@ -246,9 +246,9 @@ class MoveElementController {
 		);
 		if ($this->page_id) {
 			if ((string)$this->table == 'pages') {
-				$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'move_el_pages', $GLOBALS['BACK_PATH'], '', TRUE);
+				$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'move_el_pages');
 			} elseif ((string)$this->table == 'tt_content') {
-				$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'move_el_cs', $GLOBALS['BACK_PATH'], '', TRUE);
+				$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'move_el_cs');
 			}
 			if ($this->R_URI) {
 				$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->getLL('goBack', TRUE) . '">' . IconUtility::getSpriteIcon('actions-view-go-back') . '</a>';

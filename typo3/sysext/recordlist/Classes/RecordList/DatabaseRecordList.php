@@ -204,11 +204,11 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		$localCalcPerms = $GLOBALS['BE_USER']->calcPerms($this->pageRow);
 		// CSH
 		if ((string)$this->id === '') {
-			$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'list_module_noId', $GLOBALS['BACK_PATH'], '', TRUE);
+			$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'list_module_noId');
 		} elseif (!$this->id) {
-			$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'list_module_root', $GLOBALS['BACK_PATH'], '', TRUE);
+			$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'list_module_root');
 		} else {
-			$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'list_module', $GLOBALS['BACK_PATH'], '', TRUE);
+			$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'list_module');
 		}
 		if (isset($this->id)) {
 			// View Exclude doktypes 254,255 Configuration:

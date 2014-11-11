@@ -417,7 +417,7 @@ class SetupModuleController {
 			'save' => '',
 			'shortcut' => ''
 		);
-		$buttons['csh'] = BackendUtility::cshItem('_MOD_user_setup', '', $GLOBALS['BACK_PATH'], '|', TRUE);
+		$buttons['csh'] = BackendUtility::cshItem('_MOD_user_setup', '');
 		$buttons['save'] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-save', array('html' => '<input type="image" name="data[save]" class="c-inputButton" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" />'));
 		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('', '', $this->MCONF['name']);

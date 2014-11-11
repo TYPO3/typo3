@@ -96,7 +96,7 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 				$theCode .= $flashMessage->render();
 			}
 			// CSH:
-			$theCode .= BackendUtility::cshItem('_MOD_web_func', 'tx_wizardsortpages', $GLOBALS['BACK_PATH'], '<br />|');
+			$theCode .= BackendUtility::cshItem('_MOD_web_func', 'tx_wizardsortpages', NULL, '<br />|');
 			$out .= $this->pObj->doc->section('', $theCode, FALSE, TRUE);
 		} else {
 			$out .= $this->pObj->doc->section('', 'Sorry, this function is not available in the current draft workspace!', FALSE, TRUE, 1);

@@ -374,7 +374,7 @@ class FileListController {
 				// Set clipboard:
 				if ($this->MOD_SETTINGS['clipBoard']) {
 					$pageContent .= $this->filelist->clipObj->printClipboard();
-					$pageContent .= BackendUtility::cshItem('xMOD_csh_corebe', 'filelist_clipboard', $GLOBALS['BACK_PATH']);
+					$pageContent .= BackendUtility::cshItem('xMOD_csh_corebe', 'filelist_clipboard');
 				}
 			}
 			$markerArray = array(
@@ -447,7 +447,7 @@ class FileListController {
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('pointer,id,target,table', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
 		}
 		// FileList Module CSH:
-		$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'filelist_module', $GLOBALS['BACK_PATH'], '', TRUE);
+		$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'filelist_module');
 		// Upload button (only if upload to this directory is allowed)
 		if ($this->folderObject && $this->folderObject->getStorage()->checkUserActionPermission('add', 'File') && $this->folderObject->checkActionPermission('write')) {
 			$buttons['upload'] = '<a href="' . htmlspecialchars($GLOBALS['BACK_PATH']

@@ -182,9 +182,9 @@ class TableController {
 		);
 		if ($this->P['table'] && $this->P['field'] && $this->P['uid']) {
 			// CSH
-			$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'wizard_table_wiz', $GLOBALS['BACK_PATH'], '');
+			$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'wizard_table_wiz');
 			// CSH Buttons
-			$buttons['csh_buttons'] = BackendUtility::cshItem('xMOD_csh_corebe', 'wizard_table_wiz_buttons', $GLOBALS['BACK_PATH'], '');
+			$buttons['csh_buttons'] = BackendUtility::cshItem('xMOD_csh_corebe', 'wizard_table_wiz_buttons');
 			// Close
 			$buttons['close'] = '<a href="#" onclick="' . htmlspecialchars(('jumpToUrl(unescape(\'' . rawurlencode(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl'])) . '\')); return false;')) . '">' . IconUtility::getSpriteIcon('actions-document-close', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE))) . '</a>';
 			// Save

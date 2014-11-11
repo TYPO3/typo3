@@ -69,7 +69,7 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
 		$dblist->generateList();
 		// CSH
 		$theOutput = $this->pObj->doc->header($GLOBALS['LANG']->sL('LLL:EXT:cms/web_info/locallang.xlf:page_title'));
-		$theOutput .= $this->pObj->doc->section('', BackendUtility::cshItem($dblist->descrTable, 'pagetree_overview', $GLOBALS['BACK_PATH'], '|<br />') . $h_func . $dblist->HTMLcode, 0, 1);
+		$theOutput .= $this->pObj->doc->section('', BackendUtility::cshItem($dblist->descrTable, 'pagetree_overview', NULL, '|<br />') . $h_func . $dblist->HTMLcode, 0, 1);
 		// Additional footer content
 		$footerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/web_info/class.tx_cms_webinfo.php']['drawFooterHook'];
 		if (is_array($footerContentHook)) {

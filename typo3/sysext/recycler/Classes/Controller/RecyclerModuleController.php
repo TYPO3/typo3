@@ -251,7 +251,7 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 	 */
 	protected function getDocHeaderButtons() {
 		$buttons = array(
-			'csh' => BackendUtility::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']),
+			'csh' => BackendUtility::cshItem('_MOD_web_func', ''),
 			'shortcut' => $this->getShortcutButton(),
 			'save' => ''
 		);

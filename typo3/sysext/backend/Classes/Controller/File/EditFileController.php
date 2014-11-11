@@ -221,7 +221,7 @@ class EditFileController {
 	public function getButtons() {
 		$buttons = array();
 		// CSH button
-		$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'file_edit', $GLOBALS['BACK_PATH'], '', TRUE);
+		$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'file_edit');
 		// Save button
 		$theIcon = IconUtility::getSpriteIcon('actions-document-save');
 		$buttons['SAVE'] = '<a href="#" onclick="document.editform.submit();" title="' . $GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.submit', TRUE)) . '">' . $theIcon . '</a>';

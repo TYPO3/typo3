@@ -312,7 +312,7 @@ class NewContentElementController {
 			'back' => ''
 		);
 		if ($this->id && $this->access) {
-			$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'new_ce', $GLOBALS['BACK_PATH'], '', TRUE);
+			$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'new_ce');
 			if ($this->R_URI) {
 				$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->getLL('goBack', TRUE) . '">' . IconUtility::getSpriteIcon('actions-view-go-back') . '</a>';
 			}
