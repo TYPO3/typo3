@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Frontend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Frontend\Utility\EidUtility;
+
 /**
  * This is the MAIN DOCUMENT of the TypoScript driven standard front-end
  *
@@ -57,13 +59,12 @@ class FrontendRequestHandler {
 			unset($hookParameters);
 		}
 		// Look for extension ID which will launch alternative output engine
-		if ($temp_extId = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('eID')) {
-			if ($classPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include'][$temp_extId])) {
-				// Remove any output produced until now
-				ob_clean();
-				require $classPath;
-			}
-			die;
+		if (EidUtility::isEidRequest()) {
+			// Remove any output produced until now
+			ob_clean();
+			require EidUtility::getEidScriptPath();
+			\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->shutdown();
+			exit;
 		}
 
 		/** @var $GLOBALS['TSFE'] \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Frontend\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Tools for scripts using the eID feature of index.php
@@ -27,6 +28,33 @@ namespace TYPO3\CMS\Frontend\Utility;
  * @author Dmitry Dulepov <dmitry@typo3.org>
  */
 class EidUtility {
+
+	/**
+	 * Returns true if within an eID-request. False if not.
+	 *
+	 * @return bool
+	 */
+	static public function isEidRequest() {
+		return GeneralUtility::_GP('eID') ? TRUE : FALSE;
+	}
+
+	/**
+	 * Returns the script path associated with the requested eID identifier.
+	 *
+	 * @return string eID associated script path
+	 * @throws \TYPO3\CMS\Core\Exception
+	 */
+	static public function getEidScriptPath() {
+		$eID = GeneralUtility::_GP('eID');
+		if (!$eID || !isset($GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include'][$eID])) {
+			throw new \TYPO3\CMS\Core\Exception('eID not registered in $GLOBALS[\'TYPO3_CONF_VARS\'][\'FE\'][\'eID_include\'].', 1415714161);
+		}
+		$scriptPath = GeneralUtility::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include'][$eID]);
+		if ($scriptPath === '') {
+			throw new \TYPO3\CMS\Core\Exception('Registered eID has invalid script path.', 1416391467);
+		}
+		return $scriptPath;
+	}
 
 	/**
 	 * Load and initialize Frontend User. Note, this process is slow because
@@ -53,7 +81,7 @@ class EidUtility {
 	 */
 	static public function initLanguage($language = 'default') {
 		if (!is_object($GLOBALS['LANG'])) {
-			$GLOBALS['LANG'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Lang\LanguageService::class);
+			$GLOBALS['LANG'] = GeneralUtility::makeInstance(\TYPO3\CMS\Lang\LanguageService::class);
 			$GLOBALS['LANG']->init($language);
 		}
 	}
@@ -101,7 +129,7 @@ class EidUtility {
 		// Cached instance
 		static $tsfe = NULL;
 		if (is_null($tsfe)) {
-			$tsfe = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, $GLOBALS['TYPO3_CONF_VARS'], 0, 0);
+			$tsfe = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, $GLOBALS['TYPO3_CONF_VARS'], 0, 0);
 		}
 		return $tsfe;
 	}
