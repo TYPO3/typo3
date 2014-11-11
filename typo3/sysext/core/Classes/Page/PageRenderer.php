@@ -1192,9 +1192,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $allWrap
 	 * @param bool $excludeFromConcatenation
 	 * @param string $splitChar The char used to split the allWrap value, default is "|"
+	 * @param bool $async Flag if property 'async="async"' should be added to JavaScript tags
 	 * @return void
 	 */
-	public function addJsLibrary($name, $file, $type = 'text/javascript', $compress = FALSE, $forceOnTop = FALSE, $allWrap = '', $excludeFromConcatenation = FALSE, $splitChar = '|') {
+	public function addJsLibrary($name, $file, $type = 'text/javascript', $compress = FALSE, $forceOnTop = FALSE, $allWrap = '', $excludeFromConcatenation = FALSE, $splitChar = '|', $async = FALSE) {
 		if (!$type) {
 			$type = 'text/javascript';
 		}
@@ -1207,7 +1208,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				'forceOnTop' => $forceOnTop,
 				'allWrap' => $allWrap,
 				'excludeFromConcatenation' => $excludeFromConcatenation,
-				'splitChar' => $splitChar
+				'splitChar' => $splitChar,
+				'async' => $async
 			);
 		}
 	}
@@ -1223,9 +1225,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $allWrap
 	 * @param bool $excludeFromConcatenation
 	 * @param string $splitChar The char used to split the allWrap value, default is "|"
+	 * @param bool $async Flag if property 'async="async"' should be added to JavaScript tags
 	 * @return void
 	 */
-	public function addJsFooterLibrary($name, $file, $type = 'text/javascript', $compress = FALSE, $forceOnTop = FALSE, $allWrap = '', $excludeFromConcatenation = FALSE, $splitChar = '|') {
+	public function addJsFooterLibrary($name, $file, $type = 'text/javascript', $compress = FALSE, $forceOnTop = FALSE, $allWrap = '', $excludeFromConcatenation = FALSE, $splitChar = '|', $async = FALSE) {
 		if (!$type) {
 			$type = 'text/javascript';
 		}
@@ -1238,7 +1241,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				'forceOnTop' => $forceOnTop,
 				'allWrap' => $allWrap,
 				'excludeFromConcatenation' => $excludeFromConcatenation,
-				'splitChar' => $splitChar
+				'splitChar' => $splitChar,
+				'async' => $async
 			);
 		}
 	}
@@ -1253,9 +1257,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $allWrap
 	 * @param bool $excludeFromConcatenation
 	 * @param string $splitChar The char used to split the allWrap value, default is "|"
+	 * @param bool $async Flag if property 'async="async"' should be added to JavaScript tags
 	 * @return void
 	 */
-	public function addJsFile($file, $type = 'text/javascript', $compress = TRUE, $forceOnTop = FALSE, $allWrap = '', $excludeFromConcatenation = FALSE, $splitChar = '|') {
+	public function addJsFile($file, $type = 'text/javascript', $compress = TRUE, $forceOnTop = FALSE, $allWrap = '', $excludeFromConcatenation = FALSE, $splitChar = '|', $async = FALSE) {
 		if (!$type) {
 			$type = 'text/javascript';
 		}
@@ -1271,7 +1276,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				'forceOnTop' => $forceOnTop,
 				'allWrap' => $allWrap,
 				'excludeFromConcatenation' => $excludeFromConcatenation,
-				'splitChar' => $splitChar
+				'splitChar' => $splitChar,
+				'async' => $async
 			);
 		}
 	}
@@ -1286,9 +1292,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $allWrap
 	 * @param bool $excludeFromConcatenation
 	 * @param string $splitChar The char used to split the allWrap value, default is "|"
+	 * @param bool $async Flag if property 'async="async"' should be added to JavaScript tags
 	 * @return void
 	 */
-	public function addJsFooterFile($file, $type = 'text/javascript', $compress = TRUE, $forceOnTop = FALSE, $allWrap = '', $excludeFromConcatenation = FALSE, $splitChar = '|') {
+	public function addJsFooterFile($file, $type = 'text/javascript', $compress = TRUE, $forceOnTop = FALSE, $allWrap = '', $excludeFromConcatenation = FALSE, $splitChar = '|', $async = FALSE) {
 		if (!$type) {
 			$type = 'text/javascript';
 		}
@@ -1304,7 +1311,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				'forceOnTop' => $forceOnTop,
 				'allWrap' => $allWrap,
 				'excludeFromConcatenation' => $excludeFromConcatenation,
-				'splitChar' => $splitChar
+				'splitChar' => $splitChar,
+				'async' => $async
 			);
 		}
 	}
@@ -2460,7 +2468,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			foreach ($this->jsLibs as $properties) {
 				$properties['file'] = GeneralUtility::resolveBackPath($properties['file']);
 				$properties['file'] = GeneralUtility::createVersionNumberedFilename($properties['file']);
-				$tag = '<script src="' . htmlspecialchars($properties['file']) . '" type="' . htmlspecialchars($properties['type']) . '"></script>';
+				$async = ($properties['async']) ? ' async="async"' : '';
+				$tag = '<script src="' . htmlspecialchars($properties['file']) . '" type="' . htmlspecialchars($properties['type']) . '"' . $async . '></script>';
 				if ($properties['allWrap']) {
 					$wrapArr = explode($properties['splitChar'] ?: '|', $properties['allWrap'], 2);
 					$tag = $wrapArr[0] . $tag . $wrapArr[1];
@@ -2500,7 +2509,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			foreach ($this->jsFiles as $file => $properties) {
 				$file = GeneralUtility::resolveBackPath($file);
 				$file = GeneralUtility::createVersionNumberedFilename($file);
-				$tag = '<script src="' . htmlspecialchars($file) . '" type="' . htmlspecialchars($properties['type']) . '"></script>';
+				$async = ($properties['async']) ? ' async="async"' : '';
+				$tag = '<script src="' . htmlspecialchars($file) . '" type="' . htmlspecialchars($properties['type']) . '"' . $async . '></script>';
 				if ($properties['allWrap']) {
 					$wrapArr = explode($properties['splitChar'] ?: '|', $properties['allWrap'], 2);
 					$tag = $wrapArr[0] . $tag . $wrapArr[1];
