@@ -27,7 +27,10 @@ if (!$formprotection->validateToken(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP(
 }
 if ($temp_path = $TBE_MODULES['_PATHS'][$moduleName]) {
 	$MCONF['_'] = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl($moduleName);
-	require $temp_path . 'conf.php';
+	if (file_exists($temp_path . 'conf.php')) {
+		require $temp_path . 'conf.php';
+	}
+
 	$BACK_PATH = '';
 	require $temp_path . 'index.php';
 	$isDispatched = TRUE;

@@ -25,10 +25,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class FileListController {
 
 	/**
-	 * Module configuration
-	 *
-	 * @var array
-	 */
+	* Module configuration
+	*
+	* @var array
+	* @deprecated since TYPO3 CMS 7, will be removed in CMS 8. The Module gets configured by ExtensionManagementUtility::addModule() in ext_tables.php
+	*/
 	public $MCONF = array();
 
 	/**
@@ -111,12 +112,18 @@ class FileListController {
 	public $filelist = NULL;
 
 	/**
+	 * The name of the module
+	 *
+	 * @var string
+	 */
+	protected $moduleName = 'file_list';
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
 		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_mod_file_list.xlf');
 		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xlf');
-		$GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], TRUE);
 	}
 
 	/**
@@ -124,6 +131,7 @@ class FileListController {
 	 * Incoming GET vars include id, pointer, table, imagemode
 	 *
 	 * @return void
+	 * @throws \RuntimeException
 	 */
 	public function init() {
 		// Setting GPvars:
@@ -133,8 +141,7 @@ class FileListController {
 		$this->imagemode = GeneralUtility::_GP('imagemode');
 		$this->cmd = GeneralUtility::_GP('cmd');
 		$this->overwriteExistingFiles = GeneralUtility::_GP('overwriteExistingFiles');
-		// Setting module name:
-		$this->MCONF = $GLOBALS['MCONF'];
+
 		try {
 			if ($combinedIdentifier) {
 				/** @var $fileFactory \TYPO3\CMS\Core\Resource\ResourceFactory */
@@ -207,7 +214,7 @@ class FileListController {
 		$this->MOD_SETTINGS = BackendUtility::getModuleData(
 			$this->MOD_MENU,
 			GeneralUtility::_GP('SET'),
-			$this->MCONF['name']
+			$this->moduleName
 		);
 	}
 
@@ -444,7 +451,7 @@ class FileListController {
 		);
 		// Add shortcut
 		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
-			$buttons['shortcut'] = $this->doc->makeShortcutIcon('pointer,id,target,table', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
+			$buttons['shortcut'] = $this->doc->makeShortcutIcon('pointer,id,target,table', implode(',', array_keys($this->MOD_MENU)), $this->moduleName);
 		}
 		// FileList Module CSH:
 		$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'filelist_module');

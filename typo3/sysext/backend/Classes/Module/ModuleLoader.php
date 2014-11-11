@@ -255,7 +255,12 @@ class ModuleLoader {
 				if (is_object($GLOBALS['LANG'])) {
 					// $setupInformation['labels']['default']['tabs_images']['tab'] is for modules the reference
 					// to the module icon.
-					$defaultLabels = $setupInformation['labels']['default'];
+					if (isset($setupInformation['configuration']['labels'])) {
+						$defaultLabels = $setupInformation['configuration']['labels'];
+					} else {
+						$defaultLabels = $setupInformation['labels']['default'];
+					}
+
 					// Here the path is transformed to an absolute reference.
 					if ($defaultLabels['tabs_images']['tab']) {
 						// Initializing search for alternative icon:
