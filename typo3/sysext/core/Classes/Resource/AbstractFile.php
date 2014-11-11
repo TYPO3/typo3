@@ -298,7 +298,7 @@ abstract class AbstractFile implements FileInterface {
 					$this->properties['type'] = self::FILETYPE_UNKNOWN;
 			}
 		}
-		return $this->properties['type'];
+		return (int)$this->properties['type'];
 	}
 
 	/******************

@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Core\Resource\Index;
 
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Type\File as FileType;
 
 /**
  * Repository Class as an abstraction layer to sys_file_metadata
@@ -54,7 +56,29 @@ class MetaDataRepository implements SingletonInterface {
 	 * @return array
 	 */
 	public function findByFile(File $file) {
-		return $this->findByFileUid($file->getUid());
+		$record = $this->findByFileUid($file->getUid());
+
+		// It could be possible that the meta information is freshly
+		// created and inserted into the database. If this is the case
+		// we have to take care about correct meta information for width and
+		// height in case of an image.
+		if (!empty($record['newlyCreated'])) {
+			if ($file->getType() === File::FILETYPE_IMAGE && $file->getStorage()->getDriverType() === 'Local') {
+				$fileNameAndPath = $file->getForLocalProcessing(FALSE);
+
+				$imageInfo = GeneralUtility::makeInstance(FileType\ImageInfo::class, $fileNameAndPath);
+
+				$additionalMetaInformation = array(
+					'width' => $imageInfo->getWidth(),
+					'height' => $imageInfo->getHeight(),
+				);
+
+				$this->update($file->getUid(), $additionalMetaInformation);
+			}
+			$record = $this->findByFileUid($file->getUid());
+		}
+
+		return $record;
 	}
 
 	/**
@@ -108,6 +132,7 @@ class MetaDataRepository implements SingletonInterface {
 		$this->getDatabaseConnection()->exec_INSERTquery($this->tableName, $emptyRecord);
 		$record = $emptyRecord;
 		$record['uid'] = $this->getDatabaseConnection()->sql_insert_id();
+		$record['newlyCreated']  = TRUE;
 
 		$this->emitRecordCreatedSignal($record);
 
