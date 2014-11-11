@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
 /**
  * Shows the elapsed time since the last update of the extension repository
  * from TER in a readable manner.
+ *
+ * @internal
  */
 class TimeSinceLastUpdateViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 

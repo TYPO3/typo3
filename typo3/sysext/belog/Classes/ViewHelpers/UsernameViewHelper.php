@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
  * Get username from backend user id
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
+ * @internal
  */
 class UsernameViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 

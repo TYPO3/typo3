@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers\Format;
  * View Helper for imploding arrays
  *
  * @author Susanne Moog <typo3@susannemoog.de>
+ * @internal
  */
 class ImplodeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 

@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
  * Display error icon from error integer value
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
+ * @internal
  */
 class ErrorIconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
 

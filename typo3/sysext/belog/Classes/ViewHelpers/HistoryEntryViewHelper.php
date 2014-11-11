@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Get history entry from for log entry
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
+ * @internal
  */
 class HistoryEntryViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 

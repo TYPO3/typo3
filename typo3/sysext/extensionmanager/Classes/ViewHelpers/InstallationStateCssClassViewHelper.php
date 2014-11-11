@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  * available or installed
  *
  * @author Susanne Moog <susanne.moog@typo3.org>
+ * @internal
  */
 class InstallationStateCssClassViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 

@@ -18,6 +18,8 @@ namespace TYPO3\CMS\Documentation\ViewHelpers;
  * ViewHelper to display all download links for a document
  *
  * Example: <doc:formats document="{document}" />
+ *
+ * @internal
  */
 class FormatsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 

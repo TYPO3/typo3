@@ -16,6 +16,8 @@ namespace TYPO3\CMS\SysNote\ViewHelpers;
 
 /**
  * ViewHelper to create a link to delete a note
+ *
+ * @internal
  */
 class DeleteLinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 

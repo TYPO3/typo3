@@ -20,6 +20,8 @@ namespace TYPO3\CMS\About\ViewHelpers;
  * This view helper is a helper for ext:about only and should
  * not be used outside of the extension for now.
  * See the fluid templates of ext:about for a usage example.
+ *
+ * @internal
  */
 class SkinImageViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\ImageViewHelper {
 

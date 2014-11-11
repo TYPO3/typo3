@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
  * Displays sprite icon identified by iconName key
  *
  * @author Felix Kopp <felix-source@phorax.com>
+ * @internal
  */
 class SpriteManagerIconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
 

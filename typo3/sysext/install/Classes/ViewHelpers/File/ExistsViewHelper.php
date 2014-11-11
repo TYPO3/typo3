@@ -26,6 +26,8 @@ namespace TYPO3\CMS\Install\ViewHelpers\File;
  * <output>
  * TRUE or FALSE
  * </output>
+ *
+ * @internal
  */
 class ExistsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 

@@ -33,6 +33,8 @@ namespace TYPO3\CMS\Install\ViewHelpers\Format;
  * someLongText cropped after 10 characters...
  * (depending on the value of {someLongText})
  * </output>
+ *
+ * @internal
  */
 class CropViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 

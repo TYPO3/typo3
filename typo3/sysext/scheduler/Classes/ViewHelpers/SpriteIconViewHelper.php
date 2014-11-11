@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Scheduler\ViewHelpers;
 
 /**
  * Displays sprite icon identified by iconName key
+ *
+ * @internal
  */
 class SpriteIconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
 

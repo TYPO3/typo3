@@ -20,6 +20,7 @@ namespace TYPO3\CMS\IndexedSearch\ViewHelpers;
  * functionality
  *
  * @author Benjamin Mack <benni@typo3.org>
+ * @internal
  */
 class PageBrowsingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 

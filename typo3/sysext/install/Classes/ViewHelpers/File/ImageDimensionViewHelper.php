@@ -25,6 +25,8 @@ namespace TYPO3\CMS\Install\ViewHelpers\File;
  * <output>
  * 170
  * </output>
+ *
+ * @internal
  */
 class ImageDimensionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 

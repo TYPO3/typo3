@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Scheduler\ViewHelpers;
 /**
  * Create internal link within backend app
  * @TODO: Later I want to be an AbstractTagBasedViewHelper
+ * @internal
  */
 class ModuleLinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 

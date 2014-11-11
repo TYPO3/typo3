@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  * view helper for displaying a remove extension link
  *
  * @author Susanne Moog <typo3@susannemoog.de>
+ * @internal
  */
 class RemoveExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper {
 

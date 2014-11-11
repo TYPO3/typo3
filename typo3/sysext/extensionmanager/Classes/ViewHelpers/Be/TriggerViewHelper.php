@@ -28,6 +28,8 @@ use \TYPO3\CMS\Extensionmanager\Controller\AbstractController;
  * <output>
  * Writes some JS inline code
  * </output>
+ *
+ * @internal
  */
 class TriggerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
 

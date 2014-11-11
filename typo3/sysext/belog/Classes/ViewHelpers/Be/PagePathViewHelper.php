@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Belog\ViewHelpers\Be;
  * Get page path string from page id
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
+ * @internal
  */
 class PagePathViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
 

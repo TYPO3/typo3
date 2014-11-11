@@ -44,6 +44,8 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  * <output>
  * Could not get image resource for "NonExistingImage.png".
  * </output>
+ *
+ * @internal
  */
 class ImageViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\ImageViewHelper {
 

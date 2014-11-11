@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
  * Displays 'SwitchUser' link with sprite icon to change current backend user to target (non-admin) backendUser
  *
  * @author Felix Kopp <felix-source@phorax.com>
+ * @internal
  */
 class SwitchUserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 

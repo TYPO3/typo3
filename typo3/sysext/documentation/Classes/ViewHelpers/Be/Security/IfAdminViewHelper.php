@@ -43,6 +43,7 @@ namespace TYPO3\CMS\Documentation\ViewHelpers\Be\Security;
  * </output>
  *
  * @api
+ * @internal
  */
 class IfAdminViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
 

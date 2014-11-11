@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  * View helper for update script link
  *
  * @author Francois Suter <francois.suter@typo3.org>
+ * @internal
  */
 class UpdateScriptViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper {
 

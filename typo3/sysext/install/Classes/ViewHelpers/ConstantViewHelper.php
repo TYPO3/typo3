@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Install\ViewHelpers;
 
 /**
  * Render value of a constant
+ *
+ * @internal
  */
 class ConstantViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 

@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Install\ViewHelpers\Format;
 
 /**
  * Display image magick commands
+ *
+ * @internal
  */
 class ImageMagickCommandsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 

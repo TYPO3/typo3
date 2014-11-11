@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers\Format;
  * Wrapper for PHPs json_encode function.
  *
  * @see http://www.php.net/manual/en/function.json-encode.php
+ * @internal
  */
 class JsonEncodeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 

@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
 
 /**
  * Displays 'Delete user' link with sprite icon to remove user
+ *
+ * @internal
  */
 class RemoveUserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 

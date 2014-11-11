@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Install\ViewHelpers;
  * Utility class for phpinfo()
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
+ * @internal
  */
 class PhpInfoViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 

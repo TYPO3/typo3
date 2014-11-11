@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Install\ViewHelpers\Format;
 
 /**
  * Transform PHP error code to readable text
+ *
+ * @internal
  */
 class PhpErrorCodeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 

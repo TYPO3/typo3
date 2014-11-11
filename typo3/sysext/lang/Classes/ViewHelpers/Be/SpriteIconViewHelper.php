@@ -22,6 +22,7 @@ namespace TYPO3\CMS\Lang\ViewHelpers\Be;
  * <myext:be.spriteIcon icon="actions-document-close" title="Close" class="myClass" />
  *
  * @author Kai Vogel <kai.vogel@speedprogs.de>
+ * @internal
  */
 class SpriteIconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
 

@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Reports\ViewHelpers;
 
 /**
  * Render the icon of a report
+ *
+ * @internal
  */
 class IconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
 

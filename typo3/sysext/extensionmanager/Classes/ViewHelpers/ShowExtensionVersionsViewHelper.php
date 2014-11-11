@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  * Display a link to show all versions of an extension
  *
  * @author Susanne Moog <susanne.moog@typo3.org>
+ * @internal
  */
 class ShowExtensionVersionsViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper {
 

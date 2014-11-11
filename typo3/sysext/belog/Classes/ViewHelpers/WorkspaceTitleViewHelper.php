@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
  * Get workspace title from workspace id
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
+ * @internal
  */
 class WorkspaceTitleViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 

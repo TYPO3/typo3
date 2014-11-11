@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
  * Create detail string from log entry
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
+ * @internal
  */
 class FormatDetailsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 

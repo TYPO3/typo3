@@ -25,6 +25,8 @@ namespace TYPO3\CMS\Install\ViewHelpers\File;
  * <output>
  * typo3temp/foo.jpg
  * </output>
+ *
+ * @internal
  */
 class RelativePathViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
