@@ -16,28 +16,20 @@ This default configuration establishes default settings in Page
 TSconfig for RTE content transformation.
 
 For documentation of RTE tranformations, see:
-`http://typo3.org/documentation/document-library/core-
-documentation/doc\_core\_api/4.1.0/view/5/2/
-<http://typo3.org/documentation/document-library/core-
-documentation/doc_core_api/current/view/5/2/>`_
+`http://docs.typo3.org/typo3cms/CoreApiReference/Rte/Transformations/Index.html
+<http://docs.typo3.org/typo3cms/CoreApiReference/Rte/Transformations/Index.html>`_
 
-For documentation of Page TSconfig configuration of RTE processing,
-see: `http://typo3.org/documentation/document-
-library/references/doc\_core\_tsconfig/current/view/1/3/
-<http://typo3.org/documentation/document-
-library/references/doc_core_tsconfig/current/view/1/3/>`_
+For documentation of Page TSconfig configuration of RTE processing, see:
+`http://docs.typo3.org/typo3cms/CoreApiReference/Rte/Transformations/Tsconfig/Index.html
+<http://docs.typo3.org/typo3cms/CoreApiReference/Rte/Transformations/Tsconfig/Index.html>`_
 
 For documentation of the HTMLparser, see:
-`http://typo3.org/documentation/document-
-library/references/doc\_core\_tsref/current/view/5/17/
-<http://typo3.org/documentation/document-
-library/references/doc_core_tsref/current/view/5/17/>`_
+`http://docs.typo3.org/typo3cms/TyposcriptReference/Functions/Htmlparser/Index.html
+<http://docs.typo3.org/typo3cms/TyposcriptReference/Functions/Htmlparser/Index.html>`_
 
 For documentation of RTE settings in TCA, see:
-`http://typo3.org/documentation/document-library/core-
-documentation/doc\_core\_api/4.1.0/view/4/3/#id3665895
-<http://typo3.org/documentation/document-library/core-
-documentation/doc_core_api/current/view/4/3/>`_
+`http://docs.typo3.org/typo3cms/TCAReference/AdditionalFeatures/SpecialConfigurationOptions/Index.html
+<http://docs.typo3.org/typo3cms/TCAReference/AdditionalFeatures/SpecialConfigurationOptions/Index.html>`_
 
 
 .. _default-configuration-page-tsconfig:
