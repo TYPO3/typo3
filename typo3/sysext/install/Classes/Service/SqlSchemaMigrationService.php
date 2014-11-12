@@ -327,6 +327,14 @@ class SqlSchemaMigrationService {
 			if (is_array($diffArr[$theKey])) {
 				foreach ($diffArr[$theKey] as $table => $info) {
 					$whole_table = array();
+					if (isset($info['keys']) && is_array($info['keys'])) {
+						foreach ($info['keys'] as $fN => $fV) {
+							if (!$info['whole_table'] && $theKey === 'extra' && $remove) {
+								$statement = 'ALTER TABLE ' . $table . ($fN === 'PRIMARY' ? ' DROP PRIMARY KEY' : ' DROP KEY ' . $fN) . ';';
+								$statements['drop'][md5($statement)] = $statement;
+							}
+						}
+					}
 					if (is_array($info['fields'])) {
 						foreach ($info['fields'] as $fN => $fV) {
 							if ($info['whole_table']) {
@@ -373,10 +381,7 @@ class SqlSchemaMigrationService {
 								$whole_table[] = $fV;
 							} else {
 								if ($theKey == 'extra') {
-									if ($remove) {
-										$statement = 'ALTER TABLE ' . $table . ($fN == 'PRIMARY' ? ' DROP PRIMARY KEY' : ' DROP KEY ' . $fN) . ';';
-										$statements['drop'][md5($statement)] = $statement;
-									} else {
+									if (!$remove) {
 										$statement = 'ALTER TABLE ' . $table . ' ADD ' . $fV . ';';
 										$statements['add'][md5($statement)] = $statement;
 									}
