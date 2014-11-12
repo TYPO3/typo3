@@ -60,6 +60,21 @@
 			<trans-unit id="status_remainingUpdates" xml:space="preserve">
 				<source>Remaining updates</source>
 			</trans-unit>
+			<trans-unit id="status_remoteFetchException" xml:space="preserve">
+				<source>Could not fetch version matrix of TYPO3. Maybe this instance is blocked by a firewall?</source>
+			</trans-unit>
+			<trans-unit id="status_isDevelopmentVersion" xml:space="preserve">
+				<source>This version of TYPO3 seems to be a development version. Thus no update information exists.</source>
+			</trans-unit>
+			<trans-unit id="status_patchLevelNotFoundInReleaseMatrix" xml:space="preserve">
+				<source>It seems that this TYPO3 version has never been released. Thus no update information exists.</source>
+			</trans-unit>
+			<trans-unit id="status_newVersionSecurityRelevant" xml:space="preserve">
+				<source>There is a new version of TYPO3 available. This update is security relevant. Please update to version %s</source>
+			</trans-unit>
+			<trans-unit id="status_newVersion" xml:space="preserve">
+				<source>There is a new version of TYPO3 available. You can update to version %s</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

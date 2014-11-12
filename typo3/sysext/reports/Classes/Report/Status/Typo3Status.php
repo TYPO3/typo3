@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Reports\Report\Status;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Reports\Status as ReportStatus;
 
 /**
  * Performs basic checks about the TYPO3 install
@@ -28,20 +30,10 @@ class Typo3Status implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	 */
 	public function getStatus() {
 		$statuses = array(
-			'Typo3Version' => $this->getTypo3VersionStatus(),
 			'oldXclassStatus' => $this->getOldXclassUsageStatus(),
 			'registeredXclass' => $this->getRegisteredXclassStatus(),
 		);
 		return $statuses;
-	}
-
-	/**
-	 * Simply gets the current TYPO3 version.
-	 *
-	 * @return \TYPO3\CMS\Reports\Status
-	 */
-	protected function getTypo3VersionStatus() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class, 'TYPO3', TYPO3_version, '', \TYPO3\CMS\Reports\Status::NOTICE);
 	}
 
 	/**
@@ -52,7 +44,7 @@ class Typo3Status implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	protected function getOldXclassUsageStatus() {
 		$message = '';
 		$value = $GLOBALS['LANG']->getLL('status_none');
-		$severity = \TYPO3\CMS\Reports\Status::OK;
+		$severity = ReportStatus::OK;
 
 		$xclasses = array_merge(
 			(array)$GLOBALS['TYPO3_CONF_VARS']['BE']['XCLASS'],
@@ -64,11 +56,11 @@ class Typo3Status implements \TYPO3\CMS\Reports\StatusProviderInterface {
 			$value = sprintf($GLOBALS['LANG']->getLL('status_oldXclassUsageFound'), $numberOfXclasses);
 			$message = $GLOBALS['LANG']->getLL('status_oldXclassUsageFound_message') . '<br />';
 			$message .= '<ol><li>' . implode('</li><li>', $xclasses) . '</li></ol>';
-			$severity = \TYPO3\CMS\Reports\Status::NOTICE;
+			$severity = ReportStatus::NOTICE;
 		}
 
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-			\TYPO3\CMS\Reports\Status::class,
+		return GeneralUtility::makeInstance(
+			ReportStatus::class,
 			$GLOBALS['LANG']->getLL('status_oldXclassUsage'),
 			$value,
 			$message,
@@ -84,7 +76,7 @@ class Typo3Status implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	protected function getRegisteredXclassStatus() {
 		$message = '';
 		$value = $GLOBALS['LANG']->getLL('status_none');
-		$severity = \TYPO3\CMS\Reports\Status::OK;
+		$severity = ReportStatus::OK;
 
 		$xclassFoundArray = array();
 		if (array_key_exists('Objects', $GLOBALS['TYPO3_CONF_VARS']['SYS'])) {
@@ -107,16 +99,15 @@ class Typo3Status implements \TYPO3\CMS\Reports\StatusProviderInterface {
 				$message .= '<li>' . $messageDetail . '</li>';
 			}
 			$message .= '</ol>';
-			$severity = \TYPO3\CMS\Reports\Status::NOTICE;
+			$severity = ReportStatus::NOTICE;
 		}
 
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-			\TYPO3\CMS\Reports\Status::class,
+		return GeneralUtility::makeInstance(
+			ReportStatus::class,
 			$GLOBALS['LANG']->getLL('status_xclassUsage'),
 			$value,
 			$message,
 			$severity
 		);
 	}
-
 }

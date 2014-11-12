@@ -15,6 +15,9 @@ namespace TYPO3\CMS\Install\Report;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Reports\Status;
+use TYPO3\CMS\Install\Service\Exception;
 
 /**
  * Provides an installation status report
@@ -23,12 +26,12 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  */
 class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface {
 
-	protected $reportList = 'FileSystem,RemainingUpdates';
+	protected $reportList = 'FileSystem,RemainingUpdates,NewVersion';
 
 	/**
 	 * Compiles a collection of system status checks as a status report.
 	 *
-	 * @return array<\TYPO3\CMS\Reports\Status>
+	 * @return Status[]
 	 */
 	public function getStatus() {
 		$reports = array();
@@ -47,7 +50,7 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface 
 	protected function getFileSystemStatus() {
 		$value = $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_writable');
 		$message = '';
-		$severity = \TYPO3\CMS\Reports\Status::OK;
+		$severity = Status::OK;
 		// Requirement level
 		// -1 = not required, but if it exists may be writable or not
 		//  0 = not required, if it exists the dir should be writable
@@ -74,23 +77,23 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface 
 		foreach ($checkWritable as $relPath => $requirementLevel) {
 			if (!@is_dir((PATH_site . $relPath))) {
 				// If the directory is missing, try to create it
-				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir(PATH_site . $relPath);
+				GeneralUtility::mkdir(PATH_site . $relPath);
 			}
 			if (!@is_dir((PATH_site . $relPath))) {
 				if ($requirementLevel > 0) {
 					// directory is required
 					$value = $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_missingDirectory');
 					$message .= sprintf($GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_directoryDoesNotExistCouldNotCreate'), $relPath) . '<br />';
-					$severity = \TYPO3\CMS\Reports\Status::ERROR;
+					$severity = Status::ERROR;
 				} else {
 					$message .= sprintf($GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_directoryDoesNotExist'), $relPath);
 					if ($requirementLevel == 0) {
 						$message .= ' ' . $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_directoryShouldAlsoBeWritable');
 					}
 					$message .= '<br />';
-					if ($severity < \TYPO3\CMS\Reports\Status::WARNING) {
+					if ($severity < Status::WARNING) {
 						$value = $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_nonExistingDirectory');
-						$severity = \TYPO3\CMS\Reports\Status::WARNING;
+						$severity = Status::WARNING;
 					}
 				}
 			} else {
@@ -98,21 +101,21 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface 
 					switch ($requirementLevel) {
 						case 0:
 							$message .= sprintf($GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_directoryShouldBeWritable'), (PATH_site . $relPath)) . '<br />';
-							if ($severity < \TYPO3\CMS\Reports\Status::WARNING) {
+							if ($severity < Status::WARNING) {
 								$value = $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_recommendedWritableDirectory');
-								$severity = \TYPO3\CMS\Reports\Status::WARNING;
+								$severity = Status::WARNING;
 							}
 							break;
 						case 2:
 							$value = $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_requiredWritableDirectory');
 							$message .= sprintf($GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_directoryMustBeWritable'), (PATH_site . $relPath)) . '<br />';
-							$severity = \TYPO3\CMS\Reports\Status::ERROR;
+							$severity = Status::ERROR;
 							break;
 					}
 				}
 			}
 		}
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class, $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_fileSystem'), $value, $message, $severity);
+		return GeneralUtility::makeInstance(Status::class, $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_fileSystem'), $value, $message, $severity);
 	}
 
 	/**
@@ -123,14 +126,57 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface 
 	protected function getRemainingUpdatesStatus() {
 		$value = $GLOBALS['LANG']->getLL('status_updateComplete');
 		$message = '';
-		$severity = \TYPO3\CMS\Reports\Status::OK;
-		if (!\TYPO3\CMS\Core\Utility\GeneralUtility::compat_version(TYPO3_branch)) {
+		$severity = Status::OK;
+		if (!GeneralUtility::compat_version(TYPO3_branch)) {
 			$value = $GLOBALS['LANG']->getLL('status_updateIncomplete');
-			$severity = \TYPO3\CMS\Reports\Status::WARNING;
+			$severity = Status::WARNING;
 			$url = BackendUtility::getModuleUrl('system_InstallInstall');
 			$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_update'), '<a href="' . htmlspecialchars($url) . '">', '</a>');
 		}
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class, $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_remainingUpdates'), $value, $message, $severity);
+		return GeneralUtility::makeInstance(Status::class, $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_remainingUpdates'), $value, $message, $severity);
+	}
+
+
+	/**
+	 * Checks if there is a new minor TYPO3 version to update to
+	 *
+	 * @return \TYPO3\CMS\Reports\Status Represents whether there is a new version available online
+	 */
+	protected function getNewVersionStatus() {
+		$objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+		/** @var \TYPO3\CMS\Install\Service\CoreVersionService $coreVersionService */
+		$coreVersionService = $objectManager->get(\TYPO3\CMS\Install\Service\CoreVersionService::class);
+
+		// No updates for development versions
+		if (!$coreVersionService->isInstalledVersionAReleasedVersion()) {
+			return GeneralUtility::makeInstance(Status::class, 'TYPO3', TYPO3_version, $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_isDevelopmentVersion'), Status::NOTICE);
+		}
+
+		// If fetching version matrix fails we can not do anything except print out the current version
+		try {
+			$coreVersionService->updateVersionMatrix();
+		} catch (Exception\RemoteFetchException $remoteFetchException) {
+			return GeneralUtility::makeInstance(Status::class, 'TYPO3', TYPO3_version, $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_remoteFetchException'), Status::NOTICE);
+		}
+
+		try {
+			$isUpdateAvailable = $coreVersionService->isYoungerPatchReleaseAvailable();
+		} catch (Exception\CoreVersionServiceException $coreVersionServiceException) {
+			return GeneralUtility::makeInstance(Status::class, 'TYPO3', TYPO3_version, $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_patchLevelNotFoundInReleaseMatrix'), Status::WARNING);
+		}
+
+		if (!$isUpdateAvailable) {
+			// Everything is fine, working with the latest version
+			return GeneralUtility::makeInstance(Status::class, 'TYPO3', TYPO3_version, '', Status::OK);
+		}
+
+		// There is an update available
+		$newVersion = $coreVersionService->getYoungestPatchRelease();
+		if ($coreVersionService->isUpdateSecurityRelevant()) {
+			return GeneralUtility::makeInstance(Status::class, 'TYPO3', TYPO3_version, sprintf($GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_newVersionSecurityRelevant'), $newVersion), Status::ERROR);
+		} else {
+			return GeneralUtility::makeInstance(Status::class, 'TYPO3', TYPO3_version, sprintf($GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_newVersion'), $newVersion), Status::WARNING);
+		}
 	}
 
 }
