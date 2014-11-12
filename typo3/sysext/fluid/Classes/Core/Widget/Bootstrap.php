@@ -83,7 +83,7 @@ class Bootstrap {
 	 *
 	 * @return void
 	 * @see initialize()
-	 * @todo this is duplicated code (see Tx_Extbase_Core_Bootstrap::configureObjectManager())
+	 * @todo this is duplicated code (see \TYPO3\CMS\Extbase\Core\Bootstrap::configureObjectManager())
 	 */
 	public function configureObjectManager() {
 		$typoScriptSetup = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);

@@ -214,7 +214,6 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 						// $propertyValue = $this->mapArray($row[$columnName]); // Not supported, yet!
 						break;
 					case 'SplObjectStorage':
-					case 'Tx_Extbase_Persistence_ObjectStorage':
 					case 'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage':
 						$propertyValue = $this->mapResultToPropertyValue(
 							$object,
@@ -289,7 +288,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	public function fetchRelated(DomainObjectInterface $parentObject, $propertyName, $fieldValue = '', $enableLazyLoading = TRUE) {
 		$propertyMetaData = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
 		if ($enableLazyLoading === TRUE && $propertyMetaData['lazy']) {
-			if (in_array($propertyMetaData['type'], array('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', 'Tx_Extbase_Persistence_ObjectStorage'), TRUE)) {
+			if ($propertyMetaData['type'] === 'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage') {
 				$result = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\LazyObjectStorage', $parentObject, $propertyName, $fieldValue);
 			} else {
 				if (empty($fieldValue)) {
@@ -476,14 +475,14 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 			$propertyValue = $result;
 		} else {
 			$propertyMetaData = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
-			if (in_array($propertyMetaData['type'], array('array', 'ArrayObject', 'SplObjectStorage', 'Tx_Extbase_Persistence_ObjectStorage', 'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage'), TRUE)) {
+			if (in_array($propertyMetaData['type'], array('array', 'ArrayObject', 'SplObjectStorage', 'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage'), TRUE)) {
 				$objects = array();
 				foreach ($result as $value) {
 					$objects[] = $value;
 				}
 				if ($propertyMetaData['type'] === 'ArrayObject') {
 					$propertyValue = new \ArrayObject($objects);
-				} elseif (in_array($propertyMetaData['type'], array('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', 'Tx_Extbase_Persistence_ObjectStorage'), TRUE)) {
+				} elseif (in_array($propertyMetaData['type'], array('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage'), TRUE)) {
 					$propertyValue = new Persistence\ObjectStorage();
 					foreach ($objects as $object) {
 						$propertyValue->attach($object);

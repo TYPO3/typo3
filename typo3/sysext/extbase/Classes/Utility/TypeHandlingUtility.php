@@ -20,7 +20,7 @@ class TypeHandlingUtility {
 	/**
 	 * A property type parse pattern.
 	 */
-	const PARSE_TYPE_PATTERN = '/^\\\\?(?P<type>integer|int|float|double|boolean|bool|string|DateTime|Tx_[a-zA-Z0-9_]+|[A-Z][a-zA-Z0-9\\\\_]+|object|array|ArrayObject|SplObjectStorage|TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\ObjectStorage|Tx_Extbase_Persistence_ObjectStorage)(?:<\\\\?(?P<elementType>[a-zA-Z0-9\\\\_]+)>)?/';
+	const PARSE_TYPE_PATTERN = '/^\\\\?(?P<type>integer|int|float|double|boolean|bool|string|DateTime|Tx_[a-zA-Z0-9_]+|[A-Z][a-zA-Z0-9\\\\_]+|object|array|ArrayObject|SplObjectStorage|TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\ObjectStorage)(?:<\\\\?(?P<elementType>[a-zA-Z0-9\\\\_]+)>)?/';
 
 	/**
 	 * A type pattern to detect literal types.
@@ -30,7 +30,7 @@ class TypeHandlingUtility {
 	/**
 	 * @var array
 	 */
-	static protected $collectionTypes = array('array', 'ArrayObject', 'SplObjectStorage', 'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', 'Tx_Extbase_Persistence_ObjectStorage');
+	static protected $collectionTypes = array('array', 'ArrayObject', 'SplObjectStorage', 'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
 
 	/**
 	 * Returns an array with type information, including element type for

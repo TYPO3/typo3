@@ -35,7 +35,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
 class DebugViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
-	 * A wrapper for Tx_Extbase_Utility_Debugger::var_dump().
+	 * A wrapper for \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump().
 	 *
 	 * @param string $title optional custom title for the debug output
 	 * @param int $maxDepth Sets the max recursion depth of the dump (defaults to 8). De- or increase the number according to your needs and memory limit.

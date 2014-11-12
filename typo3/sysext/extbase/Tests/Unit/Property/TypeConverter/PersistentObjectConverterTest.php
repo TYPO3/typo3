@@ -114,9 +114,9 @@ class PersistentObjectConverterTest extends UnitTestCase {
 	public function canConvertFromReturnsTrueIfClassIsTaggedWithEntityOrValueObject($isEntity, $isValueObject, $expected) {
 		$className = uniqid('Test_Class');
 		if ($isEntity) {
-			eval("class {$className} extends Tx_Extbase_DomainObject_AbstractEntity {}");
+			eval("class {$className} extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {}");
 		} elseif ($isValueObject) {
-			eval("class {$className} extends Tx_Extbase_DomainObject_AbstractValueObject {}");
+			eval("class {$className} extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractValueObject {}");
 		} else {
 			eval("class {$className} {}");
 		}
