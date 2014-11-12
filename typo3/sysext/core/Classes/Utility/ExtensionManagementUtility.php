@@ -650,18 +650,19 @@ class ExtensionManagementUtility {
 	 */
 	static protected function removeDuplicatesForInsertion($insertionList, $list = '') {
 		$insertionListParts = preg_split('/\\s*,\\s*/', $insertionList);
-		$insertionList = implode(', ', array_unique($insertionListParts));
-		if ($list === '') {
-			return $insertionList;
+		$listMatches = array();
+		if ($list !== '') {
+			preg_match_all('/(?:^|,)\\s*\\b([^;,]+)\\b[^,]*/', $list, $listMatches);
+			$listMatches = $listMatches[1];
 		}
-		// Get a list of fieldNames that are present in the list.
-		preg_match_all('/(?:^|,)\\s*\\b([^;,]+)\\b[^,]*/', $list, $listMatches);
-		// Remove the field names from the insertionlist.
-		$fieldReplacePatterns = array();
-		foreach ($listMatches[1] as $fieldName) {
-			$fieldReplacePatterns[] = '/(?:^|,)\\s*\\b' . preg_quote($fieldName, '/') . '\\b[^,$]*/';
+
+		$cleanInsertionListParts = array();
+		foreach ($insertionListParts as $fieldName) {
+			if ($fieldName == '--linebreak--' || (!in_array($fieldName, $cleanInsertionListParts) && !in_array($fieldName, $listMatches))) {
+				$cleanInsertionListParts[] = $fieldName;
+			}
 		}
-		return preg_replace($fieldReplacePatterns, '', $insertionList);
+		return implode(', ', $cleanInsertionListParts);
 	}
 
 	/**

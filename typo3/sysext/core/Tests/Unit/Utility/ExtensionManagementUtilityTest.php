@@ -101,6 +101,9 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 				'  }' .
 				'  public static function emitTcaIsBeingBuiltSignal(array $tca) {' .
 				'  }' .
+				'  public static function removeDuplicatesForInsertion($insertionList, $list = \'\') {' .
+				'    return parent::removeDuplicatesForInsertion($insertionList, $list);' .
+				'  }' .
 				'}'
 			);
 		}
@@ -468,6 +471,41 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
 		ExtensionManagementUtility::addFieldsToPalette($table, 'paletteA', 'newA, newA, newB, fieldX', 'after:' . uniqid('notExisting'));
 		$this->assertEquals('fieldX, fieldX1, fieldY, newA, newB', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function removeDuplicatesForInsertionRemovesDuplicatesDataProvider() {
+		return array(
+			'Simple' => array(
+				'field_b, field_d, field_c',
+				'field_a, field_b, field_c',
+				'field_d'
+			),
+			'with linebreaks' => array(
+				'field_b, --linebreak--, field_d, --linebreak--, field_c',
+				'field_a, field_b, field_c',
+				'--linebreak--, field_d, --linebreak--'
+			),
+			'with linebreaks in list and insertion list' => array(
+				'field_b, --linebreak--, field_d, --linebreak--, field_c',
+				'field_a, field_b, --linebreak--, field_c',
+				'--linebreak--, field_d, --linebreak--'
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider removeDuplicatesForInsertionRemovesDuplicatesDataProvider
+	 * @param $insertionList
+	 * @param $list
+	 * @param $expected
+	 */
+	public function removeDuplicatesForInsertionRemovesDuplicates($insertionList, $list, $expected) {
+		$result = ExtensionManagementUtilityAccessibleProxy::removeDuplicatesForInsertion($insertionList, $list);
+		$this->assertSame($expected, $result);
 	}
 
 	/**
