@@ -13,7 +13,7 @@ HTMLArea.util.TYPO3 = function () {
 		simplifyNested: function(nested) {
 			var i, type, level, elementId, max, simplifiedNested=[],
 				elementIdSuffix = {
-					tab: '-DIV',
+					tab: '',
 					inline: '_fields',
 					flex: '-content'
 				};
