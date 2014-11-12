@@ -686,12 +686,6 @@ Used by "filelist" in stdWrap]]></description>
 			<description><![CDATA[This lets you specify an alternative "mainScript" which is the document that TYPO3 expects to be the default doc. This is used in form-tags and other places where TYPO3 needs to refer directly to the main-script of the application]]></description>
 			<default><![CDATA[index.php]]></default>
 		</property>
-		<property name="meaningfulTempFilePrefix" type="boolean">
-			<description><![CDATA[If set it will try to render a meaningful prefix before temporary image files.
-Works with GIFBUILDER files (taking content from the Gifbuilder TEXT objects), menus (taking the title of the menu item) and scaled images (using original filename base).]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="message_page_is_being_generated" type="string">
 			<description><![CDATA[Alternative HTML message that appears if a page is being generated.
 Normally when a page is being generated a temporary copy is stored in the cache-table with an expire-time of 30 seconds.

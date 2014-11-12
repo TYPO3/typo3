@@ -5360,9 +5360,6 @@ class ContentObjectRenderer {
 						$processingConfiguration['maskImages']['maskBottomImage'] = $bottomImg['processedFile'];
 						$processingConfiguration['maskImages']['maskBottomImageMask'] = $bottomImg_mask['processedFile'];
 					}
-					if ($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix']) {
-						$processingConfiguration['useTargetFileNameAsPrefix'] = 1;
-					}
 					$processedFileObject = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingConfiguration);
 					$hash = $processedFileObject->calculateChecksum();
 					// store info in the TSFE template cache (kept for backwards compatibility)

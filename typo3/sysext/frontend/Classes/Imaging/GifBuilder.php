@@ -676,33 +676,21 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 
 	/**
 	 * Calculates the GIFBUILDER output filename/path based on a serialized, hashed value of this->setup
+	 * and prefixes the original filename
+	 * also, the filename gets an additional prefix (max 100 characters),
+	 * something like "GB_MD5HASH_myfilename_is_very_long_and_such.jpg"
 	 *
 	 * @param string $pre Filename prefix, eg. "GB_
 	 * @return string The relative filepath (relative to PATH_site)
 	 * @access private
 	 */
 	public function fileName($pre) {
-		$meaningfulPrefix = '';
-		if ($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix']) {
-			/** @var $basicFileFunctions \TYPO3\CMS\Core\Utility\File\BasicFileUtility */
-			$basicFileFunctions = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\File\BasicFileUtility::class);
-			$meaningfulPrefix = implode('_', array_merge($this->combinedTextStrings, $this->combinedFileNames));
-			$meaningfulPrefix = $basicFileFunctions->cleanFileName($meaningfulPrefix);
-			$meaningfulPrefixLength = (int)$GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix'];
-			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
-				/** @var $t3libCsInstance \TYPO3\CMS\Core\Charset\CharsetConverter */
-				$t3libCsInstance = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
-				$meaningfulPrefix = $t3libCsInstance->substr('utf-8', $meaningfulPrefix, 0, $meaningfulPrefixLength);
-			} else {
-				$meaningfulPrefix = substr($meaningfulPrefix, 0, $meaningfulPrefixLength);
-			}
-			$meaningfulPrefix .= '_';
-		}
-		// WARNING: In PHP5 I discovered that rendering with freetype of Japanese letters was totally corrupt.
-		// Not only the wrong glyphs are printed but also some memory stack overflow resulted in strange additional
-		// chars - and finally the reason for this investigation: The Bounding box data was changing all the time
-		// resulting in new images being generated all the time. With PHP4 it works fine.
-		return $this->tempPath . $pre . $meaningfulPrefix . GeneralUtility::shortMD5(serialize($this->setup)) . '.' . $this->extension();
+		/** @var $basicFileFunctions \TYPO3\CMS\Core\Utility\File\BasicFileUtility */
+		$basicFileFunctions = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility');
+		$filePrefix = implode('_', array_merge($this->combinedTextStrings, $this->combinedFileNames));
+		$filePrefix = $basicFileFunctions->cleanFileName($filePrefix);
+
+		return $this->tempPath . $pre . $filePrefix . '_' . GeneralUtility::shortMD5(serialize($this->setup)) . '.' . $this->extension();
 	}
 
 	/**
