@@ -133,8 +133,9 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 			unset($_params);
 		}
 		$aOnClick = 'return jumpTo(\'' . $this->getJumpToParam($row) . '\',this,\'' . $this->domIdPrefix . $this->getId($row) . '\',' . $bank . ');';
-		$CSM = ' oncontextmenu="' . htmlspecialchars($GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon('', 'pages', $row['uid'], 0, ('&bank=' . $this->bank), '', TRUE)) . ';"';
-		$thePageTitle = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '"' . $CSM . '>' . $title . '</a>';
+		$clickMenuParts = $GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon('', 'pages', $row['uid'], 0, ('&bank=' . $this->bank), '', TRUE);
+
+		$thePageTitle = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '"' . GeneralUtility::implodeAttributes($clickMenuParts) . '>' . $title . '</a>';
 		// Wrap title in a drag/drop span.
 		return '<span class="dragTitle" id="dragTitleID_' . $row['uid'] . '">' . $thePageTitle . '</span>';
 	}

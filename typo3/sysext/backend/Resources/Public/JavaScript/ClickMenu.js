@@ -27,6 +27,11 @@ define('TYPO3/CMS/Backend/ClickMenu', ['jquery'], function($) {
 
 	ClickMenu.initializeEvents = function() {
 		$(document).on('click contextmenu', '.t3-js-clickmenutrigger', function(event) {
+			// if there is an other "inline" onclick setting, clickmenu is not triggered
+			// usually this is the case for the foldertree
+			if ($(this).prop('onclick') && event.type === 'click') {
+				return;
+			}
 			event.preventDefault();
 			ClickMenu.show(
 				$(this).data('table'),

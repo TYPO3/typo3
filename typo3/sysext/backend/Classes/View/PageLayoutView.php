@@ -1524,9 +1524,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 							$shortcutRecord = BackendUtility::getRecord($tableName, $split[1]);
 							if (is_array($shortcutRecord)) {
 								$icon = IconUtility::getSpriteIconForRecord($tableName, $shortcutRecord);
-								$onClick = $this->getPageLayoutController()->doc->wrapClickMenuOnIcon($icon, $tableName,
-									$shortcutRecord['uid'], 1, '', '+copy,info,edit,view', TRUE);
-								$shortcutContent[] = '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $icon . '</a>'
+								$icon = $this->getPageLayoutController()->doc->wrapClickMenuOnIcon($icon, $tableName,
+									$shortcutRecord['uid'], 1, '', '+copy,info,edit,view');
+								$shortcutContent[] = $icon
 									. htmlspecialchars(BackendUtility::getRecordTitle($tableName, $shortcutRecord));
 							}
 						}
