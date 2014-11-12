@@ -1122,6 +1122,7 @@ class TypoScriptFrontendController {
 					$_SERVER['HTTP_COOKIE'] .= ';' . $cookieName . '=' . $fe_sParts[0];
 				}
 				$this->fe_user->forceSetCookie = 1;
+				$this->fe_user->dontSetCookie = FALSE;
 				unset($cookieName);
 			}
 		}
