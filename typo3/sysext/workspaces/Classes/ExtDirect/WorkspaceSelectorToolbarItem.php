@@ -21,11 +21,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
-class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInterface {
+class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface {
 
 	/**
-	 * Reference back to the backend object
-	 *
 	 * @var \TYPO3\CMS\Backend\Controller\BackendController
 	 */
 	protected $backendReference;
@@ -109,15 +107,12 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 		}
 
 		$workspaceMenu = array(
-			'<a href="#" class="toolbar-item">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-toolbar-menu-workspace', array('title' => $title)) . '</a>',
-			'<div class="toolbar-item-menu" style="display: none">' ,
-				'<ul class="top list-unstyled">',
-					implode(LF, $workspaceSections['top']),
-				'</ul>',
-				'<ul class="items list-unstyled">',
-					implode(LF, $workspaceSections['items']),
-				'</ul>',
-			'</div>'
+			'<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-toolbar-menu-workspace', array('title' => $title)) . '</a>',
+			'<ul class="dropdown-menu" role="menu">' ,
+				implode(LF, $workspaceSections['top']),
+				'<li class="divider"></li>',
+				implode(LF, $workspaceSections['items']),
+			'</ul>'
 		);
 
 		return implode(LF, $workspaceMenu);
@@ -137,10 +132,40 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 	/**
 	 * Returns additional attributes for the list item in the toolbar
 	 *
+	 * This should not contain the "class" or "id" attribute.
+	 * Use the methods for setting these attributes
+	 *
 	 * @return string List item HTML attibutes
 	 */
 	public function getAdditionalAttributes() {
-		return 'id="workspace-selector-menu"';
+		return '';
+	}
+
+	/**
+	 * Return attribute id name
+	 *
+	 * @return string The name of the ID attribute
+	 */
+	public function getIdAttribute() {
+		return 'workspace-selector-menu';
+	}
+
+	/**
+	 * Returns extra classes
+	 *
+	 * @return array
+	 */
+	public function getExtraClasses() {
+		return array();
+	}
+
+	/**
+	 * Get dropdown
+	 *
+	 * @return bool
+	 */
+	public function getDropdown() {
+		return TRUE;
 	}
 
 }

@@ -13,7 +13,6 @@
 
 /**
  * class to handle the open documents menu, loads the open documents dynamically
- *
  */
 var OpenDocs = Class.create({
 	menu: null,
@@ -25,15 +24,8 @@ var OpenDocs = Class.create({
 	initialize: function() {
 
 		Ext.onReady(function() {
-			Event.observe(
-				window, 'resize',
-				function() { TYPO3BackendToolbarManager.positionMenu('tx-opendocs-menu'); }
-			);
-			TYPO3BackendToolbarManager.positionMenu('tx-opendocs-menu');
-			this.toolbarItemIcon = $$('#tx-opendocs-menu .toolbar-item span.t3-icon')[0];
-
-			Event.observe($$('#tx-opendocs-menu .toolbar-item')[0], 'click', this.toggleMenu);
-			this.menu = $$('#tx-opendocs-menu .toolbar-item-menu')[0];
+			this.toolbarItemIcon = $$('#tx-opendocs-menu .dropdown-toggle span.t3-icon')[0];
+			this.menu = $$('#tx-opendocs-menu .dropdown-menu')[0];
 			this.updateNumberOfDocs(-1, true);
 		}, this);
 	},
@@ -41,24 +33,7 @@ var OpenDocs = Class.create({
 	/**
 	 * toggles the visibility of the menu and places it under the toolbar icon
 	 */
-	toggleMenu: function(event) {
-		var toolbarItem = $$('#tx-opendocs-menu > a')[0];
-		var menu        = $$('#tx-opendocs-menu .toolbar-item-menu')[0];
-		toolbarItem.blur();
-
-		if(!toolbarItem.hasClassName('toolbar-item-active')) {
-			toolbarItem.addClassName('toolbar-item-active');
-			Effect.Appear(menu, {duration: 0.2});
-			TYPO3BackendToolbarManager.hideOthers(toolbarItem);
-		} else {
-			toolbarItem.removeClassName('toolbar-item-active');
-			Effect.Fade(menu, {duration: 0.1});
-		}
-
-		if(event) {
-			Event.stop(event);
-		}
-	},
+	toggleMenu: function(event) {},
 
 	/**
 	 * displays the menu and does the AJAX call to the TYPO3 backend
@@ -92,7 +67,7 @@ var OpenDocs = Class.create({
 		}
 
 		if (num < 0) {
-			num = $$('#tx-opendocs-menu tr.opendoc').length;
+			num = $$('#tx-opendocs-menu li.opendoc').length;
 		}
 		var counter = $('tx-opendocs-counter');
 		counter.update(num);

@@ -19,6 +19,24 @@
  * file in your script, the responder is only added if prototype was loaded
  */
 
+// This is done to prevent trouble with Twitter Bootstrap
+if (Prototype.BrowserFeatures.ElementExtensions) {
+    var disablePrototypeJS = function (method, pluginsToDisable) {
+            var handler = function (event) {
+                event.target[method] = undefined;
+                setTimeout(function () {
+                    delete event.target[method];
+                }, 0);
+            };
+            pluginsToDisable.each(function (plugin) {
+                TYPO3.jQuery(window).on(method + '.bs.' + plugin, handler);
+            });
+        },
+        pluginsToDisable = ['collapse', 'dropdown', 'modal', 'tooltip'];
+    disablePrototypeJS('show', pluginsToDisable);
+    disablePrototypeJS('hide', pluginsToDisable);
+}
+
 if (Prototype) {
 	// adding generic a responder to use when a AJAX request is done
 	Ajax.Responders.register({

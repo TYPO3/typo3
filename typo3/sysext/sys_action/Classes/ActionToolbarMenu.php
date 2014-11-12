@@ -13,6 +13,7 @@ namespace TYPO3\CMS\SysAction;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
@@ -20,11 +21,9 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  *
  * @author Steffen Kamper <info@sk-typo3.de>
  */
-class ActionToolbarMenu implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInterface {
+class ActionToolbarMenu implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface {
 
 	/**
-	 * Reference back to the backend object
-	 *
 	 * @var \TYPO3\CMS\Backend\Controller\BackendController
 	 */
 	protected $backendReference;
@@ -62,11 +61,9 @@ class ActionToolbarMenu implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInt
 		$actionMenu = array();
 		$actionEntries = $this->getActionEntries();
 		if ($actionEntries) {
-			$this->addJavascriptToBackend();
-			$this->addCssToBackend();
 			$title = $GLOBALS['LANG']->getLL('action_toolbaritem', TRUE);
-			$actionMenu[] = '<a href="#" class="toolbar-item">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-toolbar-menu-actions', array('title' => $title)) . '</a>';
-			$actionMenu[] = '<ul class="toolbar-item-menu" style="display: none;">';
+			$actionMenu[] = '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-toolbar-menu-actions', array('title' => $title)) . '</a>';
+			$actionMenu[] = '<ul class="dropdown-menu" role="menu">';
 			foreach ($actionEntries as $linkConf) {
 				$actionMenu[] = '<li><a href="' . htmlspecialchars($linkConf[1]) . '" target="content">' . $linkConf[2] . htmlspecialchars($linkConf[0]) . '</a></li>';
 			}
@@ -120,33 +117,40 @@ class ActionToolbarMenu implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInt
 	/**
 	 * Returns additional attributes for the list item in the toolbar
 	 *
+	 * This should not contain the "class" or "id" attribute.
+	 * Use the methods for setting these attributes
+	 *
 	 * @return string List item HTML attibutes
 	 */
 	public function getAdditionalAttributes() {
-		return 'id="tx-sys-action-menu"';
+		return '';
 	}
 
 	/**
-	 * Adds the necessary javascript ot the backend
+	 * Return attribute id name
 	 *
-	 * @return void
+	 * @return string The name of the ID attribute
 	 */
-	protected function addJavascriptToBackend() {
-		$this->backendReference->addJavascriptFile(
-			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extensionKey) . 'Resources/Public/JavaScript/tx_sysactions.js'
-		);
+	public function getIdAttribute() {
+		return 'tx-sys-action-menu';
 	}
 
 	/**
-	 * Adds the necessary css ot the backend
+	 * Returns extra classes
 	 *
-	 * @return void
+	 * @return array
 	 */
-	protected function addCssToBackend() {
-		$this->backendReference->addCssFile(
-			'sysaction',
-			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extensionKey) . 'Resources/Public/Styles/styles.css'
-		);
+	public function getExtraClasses() {
+		return array();
+	}
+
+	/**
+	 * Get dropdown
+	 *
+	 * @return bool
+	 */
+	public function getDropdown() {
+		return TRUE;
 	}
 
 	/**

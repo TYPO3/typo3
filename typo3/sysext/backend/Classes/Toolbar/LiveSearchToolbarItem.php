@@ -13,17 +13,16 @@ namespace TYPO3\CMS\Backend\Toolbar;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Adds backend live search to the toolbar
  *
  * @author Michael Klapper <michael.klapper@aoemedia.de>
  * @author Jeff Segars <jeff@webempoweredchurch.org>
  */
-class LiveSearchToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInterface {
+class LiveSearchToolbarItem implements ToolbarItemInterface {
 
 	/**
-	 * Reference back to the backend object
-	 *
 	 * @var \TYPO3\CMS\Backend\Controller\BackendController
 	 */
 	protected $backendReference;
@@ -61,30 +60,61 @@ class LiveSearchToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHoo
 	 * @return string Workspace selector as HTML select
 	 */
 	public function render() {
-		$this->addJavascriptToBackend();
-		return '<div class="live-search-wrapper">
-					<span title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:search') . '" class="t3-icon t3-icon-apps t3-icon-apps-toolbar t3-icon-toolbar-menu-search">&nbsp;</span>
-					<input id="live-search-box" />
-				</div>';
-	}
-
-	/**
-	 * Adds the necessary JavaScript to the backend
-	 *
-	 * @return void
-	 */
-	protected function addJavascriptToBackend() {
-		$pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
 		$this->backendReference->addJavascriptFile('sysext/backend/Resources/Public/JavaScript/livesearch.js');
+
+		return '
+			<form class="navbar-form" role="search">
+				<div class="live-search-wrapper">
+					<div class="form-group">
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="Search" id="live-search-box">
+							<span class="input-group-addon">
+								<span title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:search') . '" class="t3-icon t3-icon-apps t3-icon-apps-toolbar t3-icon-toolbar-menu-search">&nbsp;</span>
+							</span>
+						</div>
+					</div>
+				</div>
+			</form>
+		';
 	}
 
 	/**
-	 * returns additional attributes for the list item in the toolbar
+	 * Returns additional attributes for the list item in the toolbar
 	 *
-	 * @return string List item HTML attributes
+	 * This should not contain the "class" or "id" attribute.
+	 * Use the methods for setting these attributes
+	 *
+	 * @return string List item HTML attibutes
 	 */
 	public function getAdditionalAttributes() {
-		return 'id="live-search-menu"';
+		return '';
+	}
+
+	/**
+	 * Return attribute id name
+	 *
+	 * @return string The name of the ID attribute
+	 */
+	public function getIdAttribute() {
+		return 'live-search-menu';
+	}
+
+	/**
+	 * Returns extra classes
+	 *
+	 * @return array
+	 */
+	public function getExtraClasses() {
+		return array();
+	}
+
+	/**
+	 * Get dropdown
+	 *
+	 * @return bool
+	 */
+	public function getDropdown() {
+		return FALSE;
 	}
 
 }

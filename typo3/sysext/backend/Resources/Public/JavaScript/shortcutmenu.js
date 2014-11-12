@@ -22,15 +22,7 @@ var ShortcutMenu = Class.create({
 	 */
 	initialize: function() {
 		Ext.onReady(function() {
-			Event.observe(
-				window, 'resize',
-				function() { TYPO3BackendToolbarManager.positionMenu('shortcut-menu'); }
-			);
-			TYPO3BackendToolbarManager.positionMenu('shortcut-menu');
-
-			this.toolbarItemIcon = $$('#shortcut-menu .toolbar-item span.t3-icon')[0];
-
-			Event.observe($$('#shortcut-menu .toolbar-item')[0], 'click', this.toggleMenu);
+			this.toolbarItemIcon = $$('#shortcut-menu .dropdown-toggle span.t3-icon')[0];
 			this.initControls();
 		}, this);
 	},
@@ -90,20 +82,7 @@ var ShortcutMenu = Class.create({
 	/**
 	 * toggles the visibility of the menu and places it under the toolbar icon
 	 */
-	toggleMenu: function(event) {
-		var toolbarItem = $$('#shortcut-menu > a')[0];
-		var menu        = $$('#shortcut-menu .toolbar-item-menu')[0];
-		toolbarItem.blur();
-
-		if (!toolbarItem.hasClassName('toolbar-item-active')) {
-			toolbarItem.addClassName('toolbar-item-active');
-			Effect.Appear(menu, {duration: 0.2});
-			TYPO3BackendToolbarManager.hideOthers(toolbarItem);
-		} else {
-			toolbarItem.removeClassName('toolbar-item-active');
-			Effect.Fade(menu, {duration: 0.1});
-		}
-	},
+	toggleMenu: function(event) {},
 
 	/**
 	 * adds a select field for the groups
@@ -174,11 +153,10 @@ var ShortcutMenu = Class.create({
 	 * honor changes in group assignments
 	 */
 	reRenderMenu: function(transport, element, backPath) {
-		var container = $$('#shortcut-menu .toolbar-item-menu')[0];
+		var container = $$('#shortcut-menu .dropdown-menu')[0];
 		if (!backPath) {
 			var backPath = '';
 		}
-
 
 		container.setStyle({
 			height: container.getHeight() + 'px'
@@ -205,7 +183,7 @@ var ShortcutMenu = Class.create({
 	 * when finished it reloads the menu
 	 */
 	createShortcut: function(backPath, moduleName, url) {
-		var toolbarItemIcon = $$('#shortcut-menu .toolbar-item span.t3-icon')[0];
+		var toolbarItemIcon = $$('#shortcut-menu .dropdown-toggle span.t3-icon')[0];
 
 		var parent = Element.up(toolbarItemIcon);
 		var spinner = new Element('span').addClassName('spinner');

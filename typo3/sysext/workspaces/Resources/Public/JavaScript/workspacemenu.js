@@ -32,8 +32,6 @@ var WorkspaceMenu = Class.create({
 			} else {
 				Ext.getBody().removeClass('typo3-in-workspace');
 			}
-			TYPO3BackendToolbarManager.refreshAll();
-			Event.observe('workspace-selector-menu', 'click', this.toggleMenu);
 			if(Ext.get('goToWsModule')) {
 				Event.observe('goToWsModule', 'click', this.goToWorkspaceModule.bind(this));
 			}
@@ -49,32 +47,13 @@ var WorkspaceMenu = Class.create({
 	/**
 	 * toggles the visibility of the menu and places it under the toolbar icon
 	 */
-	toggleMenu: function(event) {
-		var toolbarItem = $$('#workspace-selector-menu > a')[0];
-		var menu = $$('#workspace-selector-menu .toolbar-item-menu')[0];
-		toolbarItem.blur();
-
-		if (!toolbarItem.hasClassName('toolbar-item-active')) {
-			toolbarItem.addClassName('toolbar-item-active');
-			TYPO3BackendWorkspaceMenu.updateDimension();
-			Effect.Appear(menu, {duration: 0.2});
-			TYPO3BackendToolbarManager.hideOthers(toolbarItem);
-		} else {
-			toolbarItem.removeClassName('toolbar-item-active');
-			Effect.Fade(menu, {duration: 0.1});
-		}
-
-		if (event) {
-			Event.stop(event);
-		}
-	},
+	toggleMenu: function(event) {},
 
 	/**
 	 * redirects the user to the workspace module
 	 */
 	goToWorkspaceModule: function(event) {
 		top.goToModule('web_WorkspacesWorkspaces');
-		this.toggleMenu(event);
 	},
 
 	/**
@@ -115,8 +94,6 @@ var WorkspaceMenu = Class.create({
 			// reload the module menu
 			TYPO3ModuleMenu.refreshMenu();
 		});
-
-		TYPO3BackendWorkspaceMenu.toggleMenu(event);
 	},
 
 	performWorkspaceSwitch: function(id, title) {
@@ -129,8 +106,6 @@ var WorkspaceMenu = Class.create({
 			Ext.getBody().removeClass('typo3-in-workspace');
 			this.updateTopBar();
 		}
-
-		TYPO3BackendToolbarManager.refreshAll();
 
 		// first remove all checks, then set the check in front of the selected workspace
 		var stateActiveClass = 't3-icon t3-icon-status t3-icon-status-status t3-icon-status-checked';
@@ -162,13 +137,12 @@ var WorkspaceMenu = Class.create({
 	},
 
 	updateDimension: function() {
-		var toolbarItem = Ext.get('workspace-selector-menu');
-		var container = toolbarItem.select('.toolbar-item-menu').first();
+		//@TODO needs a fix
+		/*var toolbarItem = Ext.get('workspace-selector-menu');
+		var container = toolbarItem.select('.dropdown-menu').first();
 		var menuTop = toolbarItem.select('.top').first();
 		var menuItems = toolbarItem.select('.items').first();
 		var fixDisplay = container.isStyle('display', 'none');
-
-		TYPO3BackendToolbarManager.positionMenu('workspace-selector-menu');
 
 		if (fixDisplay) {
 			container.setStyle({visibility: 'hidden', display: 'block'});
@@ -181,7 +155,7 @@ var WorkspaceMenu = Class.create({
 
 		if (fixDisplay) {
 			container.setStyle({display: 'none', visibility: 'visible'});
-		}
+		}*/
 	}
 
 });

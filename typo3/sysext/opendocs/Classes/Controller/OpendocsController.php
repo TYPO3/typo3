@@ -20,11 +20,9 @@ namespace TYPO3\CMS\Opendocs\Controller;
  * @author Benjamin Mack <benni@typo3.org>
  * @author Ingo Renner <ingo@typo3.org>
  */
-class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInterface {
+class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface {
 
 	/**
-	 * reference back to the backend object
-	 *
 	 * @var \TYPO3\CMS\Backend\Controller\BackendController
 	 */
 	protected $backendReference;
@@ -88,15 +86,15 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 		$title = $GLOBALS['LANG']->getLL('toolbaritem', TRUE);
 
 		// Toolbar item icon
-		$opendocsMenu[] = '<a href="#" class="toolbar-item">';
+		$opendocsMenu[] = '<a href="#" class="dropdown-toggle" data-toggle="dropdown">';
 		$opendocsMenu[] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-toolbar-menu-opendocs', array('title' => $title));
 		$opendocsMenu[] = '<span class="badge" id="tx-opendocs-counter">' . $numDocs . '</span>';
 		$opendocsMenu[] = '</a>';
 
 		// Toolbar item menu and initial content
-		$opendocsMenu[] = '<div class="toolbar-item-menu" style="display: none;">';
+		$opendocsMenu[] = '<ul class="dropdown-menu" role="menu">';
 		$opendocsMenu[] = $this->renderMenu();
-		$opendocsMenu[] = '</div>';
+		$opendocsMenu[] = '</ul>';
 		return implode(LF, $opendocsMenu);
 	}
 
@@ -111,7 +109,7 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 		$entries = array();
 		$content = '';
 		if (count($openDocuments)) {
-			$entries[] = '<tr><th colspan="3">' . $GLOBALS['LANG']->getLL('open_docs', TRUE) . '</th></tr>';
+			$entries[] = '<li class="dropdown-header">' . $GLOBALS['LANG']->getLL('open_docs', TRUE) . '</li>';
 			$i = 0;
 			foreach ($openDocuments as $md5sum => $openDocument) {
 				$i++;
@@ -120,7 +118,7 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 		}
 		// If there are "recent documents" in the list, add them
 		if (count($recentDocuments)) {
-			$entries[] = '<tr><th colspan="3">' . $GLOBALS['LANG']->getLL('recent_docs', TRUE) . '</th></tr>';
+			$entries[] = '<li class="dropdown-header">' . $GLOBALS['LANG']->getLL('recent_docs', TRUE) . '</li>';
 			$i = 0;
 			foreach ($recentDocuments as $md5sum => $recentDocument) {
 				$i++;
@@ -128,9 +126,9 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 			}
 		}
 		if (count($entries)) {
-			$content = '<table class="list" cellspacing="0" cellpadding="0" border="0">' . implode('', $entries) . '</table>';
+			$content = implode('', $entries);
 		} else {
-			$content = '<div class="no-docs">' . $GLOBALS['LANG']->getLL('no_docs', TRUE) . '</div>';
+			$content = '<li>' . $GLOBALS['LANG']->getLL('no_docs', TRUE) . '</li>';
 		}
 		return $content;
 	}
@@ -164,18 +162,16 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 			// Open document
 			$closeIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close');
 			$entry = '
-				<tr class="opendoc' . $firstRow . '">
-					<td class="icon">' . $icon . '</td>
-					<td><a href="#" onclick="jump(unescape(\'' . htmlspecialchars($link) . '\'), \'web_list\', \'web\', ' . $pageId . '); TYPO3BackendOpenDocs.toggleMenu(); return false;" target="content">' . $label . '</a></td>
-					<td class="close" onclick="return TYPO3BackendOpenDocs.closeDocument(\'' . $md5sum . '\');">' . $closeIcon . '</td>
-				</tr>';
+				<li class="opendoc' . $firstRow . '">
+					<a href="#" onclick="jump(unescape(\'' . htmlspecialchars($link) . '\'), \'web_list\', \'web\', ' . $pageId . '); TYPO3BackendOpenDocs.toggleMenu(); return false;" target="content">' . $icon . $label . '</a>
+					<a href="#" class="close" onclick="return TYPO3BackendOpenDocs.closeDocument(\'' . $md5sum . '\');">' . $closeIcon . '</a>
+				</li>';
 		} else {
 			// Recently used document
 			$entry = '
-				<tr class="recentdoc' . $firstRow . '">
-					<td class="icon">' . $icon . '</td>
-					<td class="label" colspan="2"><a href="#" onclick="jump(unescape(\'' . htmlspecialchars($link) . '\'), \'web_list\', \'web\', ' . $pageId . '); TYPO3BackendOpenDocs.toggleMenu(); return false;" target="content">' . $label . '</a></td>
-				</tr>';
+				<li class="recentdoc' . $firstRow . '">
+					<a href="#" onclick="jump(unescape(\'' . htmlspecialchars($link) . '\'), \'web_list\', \'web\', ' . $pageId . '); TYPO3BackendOpenDocs.toggleMenu(); return false;" target="content">' . $icon . $label . '</a>
+				</li>';
 		}
 		return $entry;
 	}
@@ -183,10 +179,40 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 	/**
 	 * Returns additional attributes for the list item in the toolbar
 	 *
-	 * @return string List item HTML attributes
+	 * This should not contain the "class" or "id" attribute.
+	 * Use the methods for setting these attributes
+	 *
+	 * @return string List item HTML attibutes
 	 */
 	public function getAdditionalAttributes() {
-		return 'id="tx-opendocs-menu"';
+		return '';
+	}
+
+	/**
+	 * Return attribute id name
+	 *
+	 * @return string The name of the ID attribute
+	 */
+	public function getIdAttribute() {
+		return 'tx-opendocs-menu';
+	}
+
+	/**
+	 * Returns extra classes
+	 *
+	 * @return array
+	 */
+	public function getExtraClasses() {
+		return array();
+	}
+
+	/**
+	 * Get dropdown
+	 *
+	 * @return bool
+	 */
+	public function getDropdown() {
+		return TRUE;
 	}
 
 	/**

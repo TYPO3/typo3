@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
-class ClearCacheToolbarItem implements ToolbarItemHookInterface {
+class ClearCacheToolbarItem implements ToolbarItemInterface {
 
 	/**
 	 * @var array
@@ -36,8 +36,6 @@ class ClearCacheToolbarItem implements ToolbarItemHookInterface {
 	protected $optionValues;
 
 	/**
-	 * Reference back to the backend object
-	 *
 	 * @var \TYPO3\CMS\Backend\Controller\BackendController
 	 */
 	protected $backendReference;
@@ -140,8 +138,8 @@ class ClearCacheToolbarItem implements ToolbarItemHookInterface {
 		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.clearCache_clearCache', TRUE);
 		$this->addJavascriptToBackend();
 		$cacheMenu = array();
-		$cacheMenu[] = '<a href="#" class="toolbar-item">' . IconUtility::getSpriteIcon('apps-toolbar-menu-cache', array('title' => $title)) . '</a>';
-		$cacheMenu[] = '<ul class="toolbar-item-menu" style="display: none;">';
+		$cacheMenu[] = '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . IconUtility::getSpriteIcon('apps-toolbar-menu-cache', array('title' => $title)) . '</a>';
+		$cacheMenu[] = '<ul class="dropdown-menu" role="menu">';
 		foreach ($this->cacheActions as $actionKey => $cacheAction) {
 			$cacheMenu[] = '<li><a href="' . htmlspecialchars($cacheAction['href'])
 				. '" title="' . htmlspecialchars($cacheAction['description'] ?: $cacheAction['title']) . '">'
@@ -163,10 +161,40 @@ class ClearCacheToolbarItem implements ToolbarItemHookInterface {
 	/**
 	 * Returns additional attributes for the list item in the toolbar
 	 *
-	 * @return string List item HTML attributes
+	 * This should not contain the "class" or "id" attribute.
+	 * Use the methods for setting these attributes
+	 *
+	 * @return string List item HTML attibutes
 	 */
 	public function getAdditionalAttributes() {
-		return 'id="clear-cache-actions-menu"';
+		return '';
+	}
+
+	/**
+	 * Return attribute id name
+	 *
+	 * @return string The name of the ID attribute
+	 */
+	public function getIdAttribute() {
+		return 'clear-cache-actions-menu';
+	}
+
+	/**
+	 * Returns extra classes
+	 *
+	 * @return array
+	 */
+	public function getExtraClasses() {
+		return array();
+	}
+
+	/**
+	 * Get dropdown
+	 *
+	 * @return bool
+	 */
+	public function getDropdown() {
+		return TRUE;
 	}
 
 	/**
@@ -177,4 +205,5 @@ class ClearCacheToolbarItem implements ToolbarItemHookInterface {
 	protected function getBackendUser() {
 		return $GLOBALS['BE_USER'];
 	}
+
 }

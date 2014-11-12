@@ -166,8 +166,9 @@ class BackendController {
 		);
 		foreach ($coreToolbarItems as $toolbarItemName => $toolbarItemClassName) {
 			$toolbarItem = GeneralUtility::makeInstance($toolbarItemClassName, $this);
-			if (!$toolbarItem instanceof \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInterface) {
-				throw new \UnexpectedValueException('$toolbarItem "' . $toolbarItemName . '" must implement interface TYPO3\\CMS\\Backend\\Toolbar\\ToolbarItemHookInterface', 1195126772);
+			// @TODO: Should throw as soon as "loading by convention" is implemented
+			if (!$toolbarItem instanceof \TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface) {
+				continue;
 			}
 			if ($toolbarItem->checkAccess()) {
 				$this->toolbarItems[$toolbarItemName] = $toolbarItem;
@@ -321,8 +322,19 @@ class BackendController {
 		foreach ($this->toolbarItems as $key => $toolbarItem) {
 			$menu = $toolbarItem->render();
 			if ($menu) {
-				$additionalAttributes = trim($toolbarItem->getAdditionalAttributes());
-				$toolbar .= '<li ' . $additionalAttributes . ' role="menu">' . $menu . '</li>';
+				// @TODO: Should throw as soon as "loading by convention" is implemented
+				if ($toolbarItem instanceof \TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface) {
+					$classes = $toolbarItem->getExtraClasses();
+					if ($toolbarItem->getDropdown()) {
+						$classes[] = 'dropdown';
+					}
+
+					$class = implode(' ', $classes);
+					if ($class !== '') {
+						$class = ' class="' . $class . '"';
+					}
+					$toolbar .= '<li' . $class . ' id="' . $toolbarItem->getIdAttribute() . '"' . $toolbarItem->getAdditionalAttributes() . '>' . $menu . '</li>';
+				}
 			}
 		}
 
@@ -340,7 +352,7 @@ class BackendController {
 	 * @return string Html code snippet displaying the currently logged in user
 	 */
 	protected function renderUserToolbar() {
-		$css = '';
+		$css = 'dropdown';
 		$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-user-' . ($GLOBALS['BE_USER']->isAdmin() ? 'admin' : 'backend'));
 		$realName = $GLOBALS['BE_USER']->user['realName'];
 		$username = $GLOBALS['BE_USER']->user['username'];
@@ -354,7 +366,7 @@ class BackendController {
 			$label = $GLOBALS['LANG']->getLL('switchtousershort') . ' ' . ($realName ? $realName . ' (' . $username . ')' : $username);
 		}
 
-		$toolbar = '<ul class="toolbar-item-menu" style="display: none">';
+		$toolbar = '<ul class="dropdown-menu" role="menu">';
 
 		/** @var \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule $userModuleMenu */
 		$userModuleMenu = $this->backendModuleRepository->findByModuleName('user');
@@ -376,7 +388,7 @@ class BackendController {
 		$toolbar .= '</ul>';
 
 		return '<li id="topbar-user-menu" class="' . $css . '" role="menu">' .
-			'<a href="#" class="toolbar-item">' .
+			'<a href="#" class="dropdown-toggle" data-toggle="dropdown">' .
 			$icon . '<span title="' . htmlspecialchars($title) . '">' . htmlspecialchars($label) . ' <span class="caret"></span></span>' .
 			'</a>' .
 			$toolbar .
@@ -740,8 +752,9 @@ class BackendController {
 	 */
 	public function addToolbarItem($toolbarItemName, $toolbarItemClassName) {
 		$toolbarItem = GeneralUtility::makeInstance($toolbarItemClassName, $this);
-		if (!$toolbarItem instanceof \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInterface) {
-			throw new \UnexpectedValueException('$toolbarItem "' . $toolbarItemName . '" must implement interface TYPO3\\CMS\\Backend\\Toolbar\\ToolbarItemHookInterface', 1195125501);
+		if (!$toolbarItem instanceof \TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface) {
+			// @TODO: Should throw as soon as "loading by convention" is implemented
+			return;
 		}
 		if ($toolbarItem->checkAccess()) {
 			$this->toolbarItems[$toolbarItemName] = $toolbarItem;

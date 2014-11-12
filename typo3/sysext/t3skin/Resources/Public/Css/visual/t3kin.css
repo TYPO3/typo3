@@ -10312,22 +10312,14 @@ Live Search
   padding-left: 15px;
   padding-right: 15px;
 }
-.live-search-results .t3-icon-toolbar-menu-search {
-  position: absolute;
-  z-index: 3000;
-  top: 13px;
-  margin: 3px;
-}
 .t3-icon-input-clear {
   cursor: pointer;
   position: absolute;
   top: 0px;
   right: 20px;
 }
-#live-search-box {
-  padding-left: 20px;
-  width: 180px;
-  border: none;
+.live-search-box .x-form-field-wrap {
+  display: inline-block;
 }
 .live-search-list {
   background-color: white;

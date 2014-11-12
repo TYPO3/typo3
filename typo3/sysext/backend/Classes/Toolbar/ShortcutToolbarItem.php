@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
-class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInterface {
+class ShortcutToolbarItem implements ToolbarItemInterface {
 
 	const SUPERGLOBAL_GROUP = -100;
 
@@ -114,8 +114,8 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarks', TRUE);
 		$this->addJavascriptToBackend();
 		$shortcutMenu = array();
-		$shortcutMenu[] = '<a href="#" class="toolbar-item">' . IconUtility::getSpriteIcon('apps-toolbar-menu-shortcut', array('title' => $title)) . '</a>';
-		$shortcutMenu[] = '<div class="toolbar-item-menu" style="display: none;">';
+		$shortcutMenu[] = '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . IconUtility::getSpriteIcon('apps-toolbar-menu-shortcut', array('title' => $title)) . '</a>';
+		$shortcutMenu[] = '<div class="dropdown-menu" role="menu">';
 		$shortcutMenu[] = $this->renderMenu();
 		$shortcutMenu[] = '</div>';
 		return implode(LF, $shortcutMenu);
@@ -217,10 +217,40 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 	/**
 	 * Returns additional attributes for the list item in the toolbar
 	 *
+	 * This should not contain the "class" or "id" attribute.
+	 * Use the methods for setting these attributes
+	 *
 	 * @return string List item HTML attibutes
 	 */
 	public function getAdditionalAttributes() {
-		return 'id="shortcut-menu"';
+		return '';
+	}
+
+	/**
+	 * Return attribute id name
+	 *
+	 * @return string The name of the ID attribute
+	 */
+	public function getIdAttribute() {
+		return 'shortcut-menu';
+	}
+
+	/**
+	 * Returns extra classes
+	 *
+	 * @return array
+	 */
+	public function getExtraClasses() {
+		return array();
+	}
+
+	/**
+	 * Get dropdown
+	 *
+	 * @return bool
+	 */
+	public function getDropdown() {
+		return TRUE;
 	}
 
 	/**

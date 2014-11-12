@@ -11,48 +11,31 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-
+/**
+ * @deprecated with CMS 7, will be removed in CMS 8
+ */
 var ToolbarManager = Class.create({
 
 	/**
 	 * hides all toolbar item menus except for the which was clicked
 	 */
-	hideOthers: function(toolbarItem) {
-		var sibling = toolbarItem.next();
-
-			// check whether it is a toolbar item with menu
-		if (sibling.hasClassName('toolbar-item-menu')) {
-			this.hideAll();
-				// show toolbarItem
-			toolbarItem.addClassName('toolbar-item-active');
-		}
-	},
+	hideOthers: function(toolbarItem) {},
 
 	/**
 	 * Hide all expanded toolbar menus
 	 */
-	hideAll: function() {
-		$$('#typo3-toolbar a.toolbar-item + .toolbar-item-menu').invoke('hide');
-		$$('#typo3-toolbar a.toolbar-item').each(function(element) {
-			element.removeClassName('toolbar-item-active');
-		});
-	},
+	hideAll: function() {},
 
 	/**
 	 * refreshs positioning of all submenus
 	 */
-	refreshAll: function() {
-	},
+	refreshAll: function() {},
 
 	/**
-	 * positions a toolbar item (has to have .toolbar-item-menu)
 	 * @param elementId The parent element of the menu to be positioned
 	 */
-	positionMenu: function(elementId) {
-	}
+	positionMenu: function(elementId) {}
 
 });
 
 var TYPO3BackendToolbarManager = new ToolbarManager();
-
-
