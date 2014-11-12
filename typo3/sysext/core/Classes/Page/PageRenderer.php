@@ -1616,7 +1616,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			// first, load all paths for the namespaces, and configure contrib libs.
 			$this->requireJsConfig['paths'] = array(
 				'jquery-ui' => 'contrib/jqueryui',
-				'jquery' => 'contrib/jquery'
+				'jquery' => 'contrib/jquery',
+				'twbs' => 'contrib/twbs/bootstrap.min',
 			);
 			// get all extensions that are loaded
 			$loadedExtensions = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray();
