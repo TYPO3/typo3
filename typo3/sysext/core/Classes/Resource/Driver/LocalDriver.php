@@ -15,8 +15,10 @@ namespace TYPO3\CMS\Core\Resource\Driver;
  */
 
 use TYPO3\CMS\Core\Resource\FolderInterface;
+use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Resource\Exception;
 
 /**
  * Driver for the local file system
@@ -70,9 +72,9 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 		parent::__construct($configuration);
 		// The capabilities default of this driver. See CAPABILITY_* constants for possible values
 		$this->capabilities =
-			\TYPO3\CMS\Core\Resource\ResourceStorage::CAPABILITY_BROWSABLE
-			| \TYPO3\CMS\Core\Resource\ResourceStorage::CAPABILITY_PUBLIC
-			| \TYPO3\CMS\Core\Resource\ResourceStorage::CAPABILITY_WRITABLE;
+			ResourceStorage::CAPABILITY_BROWSABLE
+			| ResourceStorage::CAPABILITY_PUBLIC
+			| ResourceStorage::CAPABILITY_WRITABLE;
 	}
 
 	/**
@@ -100,7 +102,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 		$this->determineBaseUrl();
 		if ($this->baseUri === NULL) {
 			// remove public flag
-			$this->capabilities &= ~\TYPO3\CMS\Core\Resource\ResourceStorage::CAPABILITY_PUBLIC;
+			$this->capabilities &= ~ResourceStorage::CAPABILITY_PUBLIC;
 		}
 	}
 
@@ -121,10 +123,10 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 */
 	protected function determineBaseUrl() {
 		// only calculate baseURI if the storage does not enforce jumpUrl Script
-		if ($this->hasCapability(\TYPO3\CMS\Core\Resource\ResourceStorage::CAPABILITY_PUBLIC)) {
+		if ($this->hasCapability(ResourceStorage::CAPABILITY_PUBLIC)) {
 			if (GeneralUtility::isFirstPartOfStr($this->absoluteBasePath, PATH_site)) {
 				// use site-relative URLs
-				$temporaryBaseUri = rtrim(\TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($this->absoluteBasePath), '/');
+				$temporaryBaseUri = rtrim(PathUtility::stripPathSitePrefix($this->absoluteBasePath), '/');
 				if ($temporaryBaseUri !== '') {
 					$uriParts = explode('/', $temporaryBaseUri);
 					$uriParts = array_map('rawurlencode', $uriParts);
@@ -140,13 +142,13 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	/**
 	 * Calculates the absolute path to this drivers storage location.
 	 *
-	 * @throws \TYPO3\CMS\Core\Resource\Exception\InvalidConfigurationException
+	 * @throws Exception\InvalidConfigurationException
 	 * @param array $configuration
 	 * @return string
 	 */
 	protected function calculateBasePath(array $configuration) {
 		if (!array_key_exists('basePath', $configuration) || empty($configuration['basePath'])) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InvalidConfigurationException(
+			throw new Exception\InvalidConfigurationException(
 				'Configuration must contain base path.',
 				1346510477
 			);
@@ -161,7 +163,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 		$absoluteBasePath = $this->canonicalizeAndCheckFilePath($absoluteBasePath);
 		$absoluteBasePath = rtrim($absoluteBasePath, '/') . '/';
 		if (!is_dir($absoluteBasePath)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InvalidConfigurationException(
+			throw new Exception\InvalidConfigurationException(
 				'Base path "' . $absoluteBasePath . '" does not exist or is no directory.',
 				1299233097
 			);
@@ -246,15 +248,15 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @throws \InvalidArgumentException
 	 */
 	public function getFileInfoByIdentifier($fileIdentifier, array $propertiesToExtract = array()) {
-		$dirPath = PathUtility::dirname($fileIdentifier);
-		$dirPath = $this->canonicalizeAndCheckFolderIdentifier($dirPath);
-
 		$absoluteFilePath = $this->getAbsolutePath($fileIdentifier);
 		// don't use $this->fileExists() because we need the absolute path to the file anyways, so we can directly
 		// use PHP's filesystem method.
 		if (!file_exists($absoluteFilePath) || !is_file($absoluteFilePath)) {
 			throw new \InvalidArgumentException('File ' . $fileIdentifier . ' does not exist.', 1314516809);
 		}
+
+		$dirPath = PathUtility::dirname($fileIdentifier);
+		$dirPath = $this->canonicalizeAndCheckFolderIdentifier($dirPath);
 		return $this->extractFileInformation($absoluteFilePath, $dirPath, $propertiesToExtract);
 	}
 
@@ -263,13 +265,13 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 *
 	 * @param string $folderIdentifier In the case of the LocalDriver, this is the (relative) path to the file.
 	 * @return array
-	 * @throws \TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException
+	 * @throws Exception\FolderDoesNotExistException
 	 */
 	public function getFolderInfoByIdentifier($folderIdentifier) {
 		$folderIdentifier = $this->canonicalizeAndCheckFolderIdentifier($folderIdentifier);
 
 		if (!$this->folderExists($folderIdentifier)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException(
+			throw new Exception\FolderDoesNotExistException(
 				'File ' . $folderIdentifier . ' does not exist.',
 				1314516810
 			);
@@ -291,7 +293,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @param string $fileName Input string, typically the body of a fileName
 	 * @param string $charset Charset of the a fileName (defaults to current charset; depending on context)
 	 * @return string Output string with any characters not matching [.a-zA-Z0-9_-] is substituted by '_' and trailing dots removed
-	 * @throws \TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException
+	 * @throws Exception\InvalidFileNameException
 	 */
 	public function sanitizeFileName($fileName, $charset = '') {
 		// Handle UTF-8 characters
@@ -318,7 +320,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 		// Strip trailing dots and return
 		$cleanFileName = preg_replace('/\\.*$/', '', $cleanFileName);
 		if (!$cleanFileName) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException(
+			throw new Exception\InvalidFileNameException(
 				'File name ' . $cleanFileName . ' is invalid.',
 				1320288991
 			);
@@ -563,7 +565,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 			default:
 				throw new \InvalidArgumentException(sprintf('The information "%s" is not available.', $property));
 		}
-		return NULL;
 	}
 
 	/**
@@ -822,7 +823,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @param string $targetFolderIdentifier
 	 *
 	 * @return array
-	 * @throws \TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException
+	 * @throws Exception\FileOperationErrorException
 	 */
 	protected function createIdentifierMap(array $filesAndFolders, $sourceFolderIdentifier, $targetFolderIdentifier) {
 		$identifierMap = array();
@@ -840,7 +841,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 				);
 			}
 			if (!file_exists($this->getAbsolutePath($newIdentifier))) {
-				throw new \TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException(
+				throw new Exception\FileOperationErrorException(
 					sprintf('File "%1$s" was not found (should have been copied/moved from "%2$s").', $newIdentifier, $oldIdentifier),
 					1330119453
 				);
@@ -883,7 +884,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @param string $newFolderName
 	 *
 	 * @return bool
-	 * @throws \TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException
+	 * @throws Exception\FileOperationErrorException
 	 */
 	public function copyFolderWithinStorage($sourceFolderIdentifier, $targetFolderIdentifier, $newFolderName) {
 		// This target folder path already includes the topmost level, i.e. the folder this method knows as $folderToCopy.
@@ -912,7 +913,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 				if ($result === FALSE) {
 					// rollback
 					GeneralUtility::rmdir($targetFolderIdentifier, TRUE);
-					throw new \TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException(
+					throw new Exception\FileOperationErrorException(
 						'Copying file "' . $sourceFolderPath . $itemSubPath . '" to "' . $targetFolderPath . $itemSubPath . '" failed.',
 						1330119452
 					);
@@ -931,7 +932,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @param string $fileIdentifier
 	 * @param string $newName The target path (including the file name!)
 	 * @return string The identifier of the file after renaming
-	 * @throws \TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException
+	 * @throws Exception\ExistingTargetFileNameException
 	 * @throws \RuntimeException
 	 */
 	public function renameFile($fileIdentifier, $newName) {
@@ -941,7 +942,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 		$newIdentifier = $this->canonicalizeAndCheckFileIdentifier($newIdentifier);
 		// The target should not exist already
 		if ($this->fileExists($newIdentifier)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException('The target file already exists.', 1320291063);
+			throw new Exception\ExistingTargetFileNameException('The target file already exists.', 1320291063);
 		}
 		$sourcePath = $this->getAbsolutePath($fileIdentifier);
 		$targetPath = $this->getAbsolutePath($newIdentifier);
@@ -1016,13 +1017,13 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @param string $folderIdentifier
 	 * @param bool $deleteRecursively
 	 * @return bool
-	 * @throws \TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException
+	 * @throws Exception\FileOperationErrorException
 	 */
 	public function deleteFolder($folderIdentifier, $deleteRecursively = FALSE) {
 		$folderPath = $this->getAbsolutePath($folderIdentifier);
 		$result = GeneralUtility::rmdir($folderPath, $deleteRecursively);
 		if ($result === FALSE) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException(
+			throw new Exception\FileOperationErrorException(
 				'Deleting folder "' . $folderIdentifier . '" failed.',
 				1330119451
 			);
@@ -1116,12 +1117,12 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @param string $fileName
 	 * @param string $parentFolderIdentifier
 	 * @return string
-	 * @throws \TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException
+	 * @throws Exception\InvalidFileNameException
 	 * @throws \RuntimeException
 	 */
 	public function createFile($fileName, $parentFolderIdentifier) {
 		if (!$this->isValidFilename($fileName)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException(
+			throw new Exception\InvalidFileNameException(
 				'Invalid characters in fileName "' . $fileName . '"',
 				1320572272
 			);
