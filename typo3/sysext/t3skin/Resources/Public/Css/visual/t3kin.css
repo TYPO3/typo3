@@ -10047,14 +10047,14 @@ Module menu
   display: block;
   margin-left: 26px;
 }
-#typo3-module-menu #typo3-menu > li ul li.highlighted {
+#typo3-module-menu #typo3-menu > li ul li.active {
   font-weight: bold;
 }
-#typo3-module-menu #typo3-menu > li ul li.highlighted a {
+#typo3-module-menu #typo3-menu > li ul li.active a {
   background-color: #4e4e4e;
   color: #ffffff;
 }
-#typo3-module-menu #typo3-menu > li ul li.highlighted a:after {
+#typo3-module-menu #typo3-menu > li ul li.active a:after {
   content: " ";
   line-height: 0;
   position: absolute;
@@ -10271,38 +10271,12 @@ Username inside the toolbar
 #username.su-user a {
   color: #eb6e5a;
 }
-#logout-button {
-  margin-top: 11.5px;
-  padding: 0 15px;
-}
 /* - - - - - - - - - - - - - - - - - - - - -
 Logon / Logout
 - - - - - - - - - - - - - - - - - - - - - */
 #login-info p {
   padding-bottom: 30px;
   padding-top: 5px;
-}
-#logout-button {
-  padding-top: 1px;
-  padding-bottom: 2px;
-}
-#logout-button input {
-  height: 20px;
-  padding: 0 0 2px 0;
-  background: #494949;
-  border: 1px solid #636363;
-  color: #fff;
-  cursor: pointer;
-  text-align: center;
-  padding: 0 5px;
-  padding-top: 1px;
-}
-#logout-button input:hover {
-  background-color: #c8c8c8;
-  background-image: url('../../../../images/backgrounds/button-hover.png');
-  background-image: linear-gradient(center top, #f6f6f6 10%, #c8c8c8 90%);
-  border: 1px solid #737f91;
-  color: #000;
 }
 /* - - - - - - - - - - - - - - - - - - - - -
 Workspace Selector

@@ -138,6 +138,10 @@ class BackendController {
 		}
 		// Add default BE css
 		$this->pageRenderer->addCssLibrary('contrib/normalize/normalize.css', 'stylesheet', 'all', '', TRUE, TRUE);
+
+		// load the toolbar items
+		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Toolbar/UserMenu');
+
 		$this->css = '';
 		$this->cssFiles = array();
 		$this->toolbarItems = array();
@@ -310,30 +314,20 @@ class BackendController {
 		if (array_key_exists('liveSearch', $this->toolbarItems)) {
 			$search = $this->toolbarItems['liveSearch'];
 			unset($this->toolbarItems['liveSearch']);
-			$this->toolbarItems['liveSearch'] = $search;
 		}
-		$toolbar = $this->getLoggedInUserLabel();
-		$toolbar .= '<li class="toolbar-item" id="logout-button">' . $this->renderLogoutButton() . '</li>';
 
-		$i = 0;
-		$numberOfToolbarItems = count($this->toolbarItems);
+		$toolbar = $this->renderUserToolbar();
+
 		foreach ($this->toolbarItems as $key => $toolbarItem) {
-			$i++;
 			$menu = $toolbarItem->render();
 			if ($menu) {
 				$additionalAttributes = trim($toolbarItem->getAdditionalAttributes());
-				if ($numberOfToolbarItems > 1 && $i == $numberOfToolbarItems - 1) {
-					if (strpos($additionalAttributes, 'class="') !== FALSE) {
-						$additionalAttributes = str_replace('class="', 'class="separator ', $additionalAttributes);
-					} else {
-						$additionalAttributes .= ' class="separator"';
-					}
-				}
-				if ($additionalAttributes !== '') {
-					$additionalAttributes = ' ' . $additionalAttributes;
-				}
-				$toolbar .= '<li' . $additionalAttributes . ' role="menu">' . $menu . '</li>';
+				$toolbar .= '<li ' . $additionalAttributes . ' role="menu">' . $menu . '</li>';
 			}
+		}
+
+		if ($search) {
+			$toolbar .= '<li ' . $search->getAdditionalAttributes() . ' role="menu">' . $search->render() . '</li>';
 		}
 		return $toolbar;
 	}
@@ -343,21 +337,13 @@ class BackendController {
 	 *
 	 * @return string Html code snippet displaying the currently logged in user
 	 */
-	protected function getLoggedInUserLabel() {
+	protected function renderUserToolbar() {
 		$css = '';
 		$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-user-' . ($GLOBALS['BE_USER']->isAdmin() ? 'admin' : 'backend'));
 		$realName = $GLOBALS['BE_USER']->user['realName'];
 		$username = $GLOBALS['BE_USER']->user['username'];
 		$label = $realName ?: $username;
 		$title = $username;
-
-		// Link to user setup if it's loaded and user has access
-		$link = '';
-		if (ExtensionManagementUtility::isLoaded('setup') && $GLOBALS['BE_USER']->check('modules', 'user_setup')) {
-			$link = '<a href="#" onclick="top.goToModule(\'user_setup\'); this.blur(); return false;">';
-		} else {
-			$link = '<a name="username">';
-		}
 
 		// Superuser mode
 		if ($GLOBALS['BE_USER']->user['ses_backuserid']) {
@@ -366,8 +352,32 @@ class BackendController {
 			$label = $GLOBALS['LANG']->getLL('switchtousershort') . ' ' . ($realName ? $realName . ' (' . $username . ')' : $username);
 		}
 
-		return '<li id="username" class="' . $css . '">' .
-			$link . $icon . '<span title="' . htmlspecialchars($title) . '">' . htmlspecialchars($label) . '</span></a>' .
+		$toolbar = '<ul class="toolbar-item-menu" style="display: none">';
+
+		/** @var \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule $userModuleMenu */
+		$userModuleMenu = $this->backendModuleRepository->findByModuleName('user');
+		if ($userModuleMenu != FALSE && $userModuleMenu->getChildren()->count() > 0) {
+			foreach ($userModuleMenu->getChildren() as $key => $module) {
+				$moduleIcon = $module->getIcon();
+				$toolbar .= '
+					<li id="' . $module->getName() . '" class="t3-menuitem-submodule submodule mod-' . $module->getName() . '" data-modulename="' . $module->getName() . '" data-navigationcomponentid="' . $module->getNavigationComponentId() . '" data-navigationframescript="' . $module->getNavigationFrameScript() . '" data-navigationframescriptparameters="' . $module->getNavigationFrameScriptParameters() . '">
+						<a title="' .$module->getDescription() . '" href="' . $module->getLink() . '" class="modlink">
+							<span class="submodule-icon">' . ($moduleIcon['html'] ?: $moduleIcon['html']) . '</span>
+							<span class="submodule-label">' . $module->getTitle() . '</span>
+						</a>
+					</li>';
+			}
+			$toolbar .= '<li class="divider"></li>';
+		}
+
+		$toolbar .= '<li>' . $this->renderLogoutButton() . '</li>';
+		$toolbar .= '</ul>';
+
+		return '<li id="topbar-user-menu" class="' . $css . '" role="menu">' .
+			'<a href="#" class="toolbar-item">' .
+			$icon . '<span title="' . htmlspecialchars($title) . '">' . htmlspecialchars($label) . ' <span class="caret"></span></span>' .
+			'</a>' .
+			$toolbar .
 		'</li>';
 	}
 
@@ -760,18 +770,14 @@ class BackendController {
 	}
 
 	/**
-	 * renders the logout button form
+	 * Renders the logout button form
 	 *
 	 * @return string Html code snippet displaying the logout button
 	 */
 	protected function renderLogoutButton() {
 		// show logout or "exit" (from switch user mode) label
 		$buttonLabel = 'LLL:EXT:lang/locallang_core.xlf:' . ($GLOBALS['BE_USER']->user['ses_backuserid'] ? 'buttons.exit' : 'buttons.logout');
-		$buttonForm = '
-		<form action="logout.php" target="_top">
-			<input type="submit" id="logout-submit-button" value="' . $GLOBALS['LANG']->sL($buttonLabel, TRUE) . '" />
-		</form>';
-		return $buttonForm;
+		return '<a href="logout.php" target="_top">' . $GLOBALS['LANG']->sL($buttonLabel, TRUE) . '</a>';
 	}
 
 	/**
@@ -781,7 +787,8 @@ class BackendController {
 	 * @return string
 	 */
 	protected function generateModuleMenu() {
-		$moduleStorage = $this->backendModuleRepository->loadAllowedModules();
+		// get all modules except the user modules for the side menu
+		$moduleStorage = $this->backendModuleRepository->loadAllowedModules(array('user'));
 
 		/** @var $view \TYPO3\CMS\Fluid\View\StandaloneView */
 		$view = GeneralUtility::makeInstance('TYPO3\\CMS\\Fluid\\View\\StandaloneView');

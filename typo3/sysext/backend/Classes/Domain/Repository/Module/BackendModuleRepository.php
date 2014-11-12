@@ -35,6 +35,11 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function __construct() {
 		$this->moduleStorage = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleStorage');
+
+		$rawData = $this->getRawModuleMenuData();
+
+		$this->convertRawModuleDataToModuleMenuObject($rawData);
+		$this->createMenuEntriesForTbeModulesExt();
 	}
 
 	/**
@@ -44,11 +49,6 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \SplObjectStorage
 	 */
 	public function loadAllowedModules(array $excludeGroupNames = array()) {
-		$rawData = $this->getRawModuleMenuData();
-
-		$this->convertRawModuleDataToModuleMenuObject($rawData);
-		$this->createMenuEntriesForTbeModulesExt();
-
 		if (empty($excludeGroupNames)) {
 			return $this->moduleStorage->getEntries();
 		}
@@ -61,6 +61,20 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 
 		return $modules;
+	}
+
+	/**
+	 * @param string $groupName
+	 * @return \SplObjectStorage|FALSE
+	 **/
+	public function findByGroupName($groupName = '') {
+		foreach ($this->moduleStorage->getEntries() as $moduleGroup) {
+			if ($moduleGroup->getName() === $groupName) {
+				return $moduleGroup;
+			}
+		}
+
+		return FALSE;
 	}
 
 	/**

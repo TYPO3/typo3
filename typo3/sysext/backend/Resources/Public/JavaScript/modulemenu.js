@@ -183,8 +183,8 @@ TYPO3.ModuleMenu.App = {
 	},
 
 	highlightModuleMenuItem: function(module, mainModule) {
-		jQuery('#typo3-menu').find('.highlighted').removeClass('highlighted');
-		jQuery('#' + module).addClass('highlighted');
+		jQuery('.t3-menuitem-submodule.active').removeClass('active');
+		jQuery('#' + module).addClass('active');
 	},
 
 	relativeUrl: function(url) {
