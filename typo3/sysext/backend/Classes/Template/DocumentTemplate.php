@@ -859,7 +859,7 @@ function jumpToUrl(URL) {
 		// Note: please do not reference "twbs" outside of the TYPO3 Core (not in your own extensions)
 		// as this is preliminary as long as twbs does not support AMD modules
 		// this logic will be changed once twbs 4 is included
-		$this->pageRenderer->loadRequireJsModule('twbs');
+		$this->pageRenderer->addJsFile($this->backPath . 'contrib/twbs/bootstrap.min.js');
 
 		// hook for additional headerData
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preHeaderRenderHook'])) {
