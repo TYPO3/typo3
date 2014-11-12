@@ -14,7 +14,6 @@ if (TYPO3_MODE === 'FE' && !isset($_REQUEST['eID'])) {
 	'frontend',
 	'setup',
 	'config.extTarget = _top'
-	. LF . 'config.uniqueLinkVars = 1'
 );
 
 

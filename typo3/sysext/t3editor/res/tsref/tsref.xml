@@ -1073,10 +1073,6 @@ Will create a link to page with id 29 and add GET parameters where the return UR
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="uniqueLinkVars" type="boolean">
-			<description><![CDATA[It might happen that TYPO3 generates links with the same parameter twice or more. This is no problem because only the last parameter is used, thus the problem is just a cosmetical one.]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
 		<property name="xhtmlDoctype" type="string">
 			<description><![CDATA[Sets the document type for the XHTML version of the generated page.
 

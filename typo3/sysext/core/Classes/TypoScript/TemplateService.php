@@ -1479,14 +1479,10 @@ class TemplateService {
 		// noCache
 		$LD['no_cache'] = trim($page['no_cache']) || $no_cache ? '&no_cache=1' : '';
 		// linkVars
-		if ($GLOBALS['TSFE']->config['config']['uniqueLinkVars']) {
-			if ($addParams) {
-				$LD['linkVars'] = GeneralUtility::implodeArrayForUrl('', GeneralUtility::explodeUrl2Array($GLOBALS['TSFE']->linkVars . $addParams), '', FALSE, TRUE);
-			} else {
-				$LD['linkVars'] = $GLOBALS['TSFE']->linkVars;
-			}
+		if ($addParams) {
+			$LD['linkVars'] = GeneralUtility::implodeArrayForUrl('', GeneralUtility::explodeUrl2Array($GLOBALS['TSFE']->linkVars . $addParams), '', FALSE, TRUE);
 		} else {
-			$LD['linkVars'] = $GLOBALS['TSFE']->linkVars . $addParams;
+			$LD['linkVars'] = $GLOBALS['TSFE']->linkVars;
 		}
 		// Add absRefPrefix if exists.
 		$LD['url'] = $GLOBALS['TSFE']->absRefPrefix . $LD['url'];
