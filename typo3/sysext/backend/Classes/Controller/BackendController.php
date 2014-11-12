@@ -118,7 +118,6 @@ class BackendController {
 			'md5' => 'sysext/backend/Resources/Public/JavaScript/md5.js',
 			'modulemenu' => 'sysext/backend/Resources/Public/JavaScript/modulemenu.js',
 			'evalfield' => 'sysext/backend/Resources/Public/JavaScript/jsfunc.evalfield.js',
-			'flashmessages' => 'sysext/backend/Resources/Public/JavaScript/flashmessages.js',
 			'tabclosemenu' => 'js/extjs/ux/ext.ux.tabclosemenu.js',
 			'notifications' => 'sysext/backend/Resources/Public/JavaScript/notifications.js',
 			'backend' => 'sysext/backend/Resources/Public/JavaScript/backend.js',
@@ -136,6 +135,8 @@ class BackendController {
 		// Add default BE css
 		$this->pageRenderer->addCssLibrary('contrib/normalize/normalize.css', 'stylesheet', 'all', '', TRUE, TRUE);
 
+		// load FlashMessages functionality
+		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FlashMessages');
 		$this->css = '';
 		$this->initializeToolbarItems();
 		$this->menuWidth = isset($GLOBALS['TBE_STYLES']['dims']['leftMenuFrameW']) ? (int)$GLOBALS['TBE_STYLES']['dims']['leftMenuFrameW'] : $this->menuWidthDefault;

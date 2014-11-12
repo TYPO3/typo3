@@ -197,7 +197,7 @@ TYPO3.Components.PageModule = {
 			 */
 			evaluateResponse: function (response) {
 				if (response.success === false) {
-					TYPO3.Flashmessage.display(4, 'Exception', response.message);
+					top.TYPO3.Flashmessage.display(top.TYPO3.Severity.error, 'Exception', response.message);
 					return false;
 				}
 

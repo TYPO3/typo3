@@ -173,9 +173,9 @@ T3editor.prototype = {
 				this.textModified = false;
 			} else {
 				if (typeof returnedData.exceptionMessage != 'undefined') {
-					TYPO3.Flashmessage.display(4, T3editor.lang.errorWhileSaving[0]['target'], returnedData.exceptionMessage);
+					top.TYPO3.Flashmessage.display(top.TYPO3.Severity.error, T3editor.lang.errorWhileSaving[0]['target'], returnedData.exceptionMessage);
 				} else {
-					TYPO3.Flashmessage.display(4, T3editor.lang.errorWhileSaving[0]['target']);
+					top.TYPO3.Flashmessage.display(top.TYPO3.Severity.error, T3editor.lang.errorWhileSaving[0]['target']);
 				}
 			}
 			this.modalOverlay.hide();

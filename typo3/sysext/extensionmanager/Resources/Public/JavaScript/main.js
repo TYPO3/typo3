@@ -184,15 +184,15 @@
 						dataType: 'json',
 						success: function(data) {
 							if (data.hasErrors) {
-								TYPO3.Flashmessage.display(
-									TYPO3.Severity.error,
+								top.TYPO3.Flashmessage.display(
+									top.TYPO3.Severity.error,
 									TYPO3.l10n.localize('downloadExtension.updateExtension.error'),
 									data.errorMessage,
 									15
 								);
 							} else {
-								TYPO3.Flashmessage.display(
-									TYPO3.Severity.information,
+								top.TYPO3.Flashmessage.display(
+									top.TYPO3.Severity.info,
 									TYPO3.l10n.localize('extensionList.updateFlashMessage.title'),
 									TYPO3.l10n.localize('extensionList.updateFlashMessage.message').replace(/\{0\}/g, data.extension),
 									15
@@ -204,8 +204,8 @@
 							// Create an error message with diagnosis info.
 							var errorMessage = textStatus + '(' + errorThrown + '): ' + jqXHR.responseText;
 
-							TYPO3.Flashmessage.display(
-								TYPO3.Severity.error,
+							top.TYPO3.Flashmessage.display(
+								top.TYPO3.Severity.error,
 								TYPO3.l10n.localize('downloadExtension.updateExtension.error'),
 								errorMessage,
 								15

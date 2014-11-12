@@ -1379,8 +1379,11 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 		if (count($filterNamespaces) === 0) {
 			$filterNamespaces = array('TYPO3');
 		}
-		// For ExtDirect we need flash message support
-		$this->addJsFile(GeneralUtility::resolveBackPath($this->backPath . 'sysext/backend/Resources/Public/JavaScript/flashmessages.js'));
+		// @deprecated since 7.0 and will be removed with CMS 8
+		// add compatibility mapping for the old flashmessage API
+		$this->addJsFile(GeneralUtility::resolveBackPath($this->backPath .
+			'sysext/backend/Resources/Public/JavaScript/flashmessage_compatibility.js'));
+
 		// Add language labels for ExtDirect
 		if (TYPO3_MODE === 'FE') {
 			$this->addInlineLanguageLabelArray(array(
@@ -1447,8 +1450,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 
 			Ext.Direct.on("exception", function(event) {
 				if (event.code === Ext.Direct.exceptions.TRANSPORT && !event.where) {
-					TYPO3.Flashmessage.display(
-						TYPO3.Severity.error,
+					top.TYPO3.Flashmessage.display(
+						top.TYPO3.Severity.error,
 						TYPO3.l10n.localize("extDirect_timeoutHeader"),
 						TYPO3.l10n.localize("extDirect_timeoutMessage"),
 						30
@@ -1462,8 +1465,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 							"ExtDirect - Exception"
 						);
 					} else if (event.code === "router") {
-						TYPO3.Flashmessage.display(
-							TYPO3.Severity.error,
+						top.TYPO3.Flashmessage.display(
+							top.TYPO3.Severity.error,
 							event.code,
 							event.message,
 							30
@@ -1617,7 +1620,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			$this->requireJsConfig['paths'] = array(
 				'jquery-ui' => 'contrib/jquery-ui',
 				'jquery' => 'contrib/jquery',
-				'twbs' => 'contrib/twbs/bootstrap.min',
+				'twbs' => 'contrib/twbs/bootstrap.min'
 			);
 			// get all extensions that are loaded
 			$loadedExtensions = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray();

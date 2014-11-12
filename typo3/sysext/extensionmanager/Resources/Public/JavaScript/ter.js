@@ -93,7 +93,7 @@
 		} else {
 			if(data.hasErrors) {
 				$('.typo3-extension-manager').unmask();
-				TYPO3.Flashmessage.display(TYPO3.Severity.error, data.title, data.message, 15);
+				top.TYPO3.Flashmessage.display(top.TYPO3.Severity.error, data.title, data.message, 15);
 			} else {
 				var button = 'yes';
 				var dialog = [];
@@ -135,7 +135,7 @@
 							});
 							successMessage += '</ul>';
 						});
-						TYPO3.Flashmessage.display(TYPO3.Severity.information, TYPO3.l10n.localize('extensionList.dependenciesResolveFlashMessage.title').replace(/\{0\}/g, data.extension), successMessage, 15);
+						top.TYPO3.Flashmessage.display(top.TYPO3.Severity.info, TYPO3.l10n.localize('extensionList.dependenciesResolveFlashMessage.title').replace(/\{0\}/g, data.extension), successMessage, 15);
 					}
 				}
 			});

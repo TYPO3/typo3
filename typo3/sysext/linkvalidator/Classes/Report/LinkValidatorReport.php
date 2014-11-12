@@ -203,7 +203,6 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		}');
 		// Add JS
 		$this->pageRenderer->addJsFile($this->doc->backPath . 'js/extjs/ux/Ext.ux.FitToParent.js');
-		$this->pageRenderer->addJsFile($this->doc->backPath . 'sysext/backend/Resources/Public/JavaScript/flashmessages.js');
 		$this->pageRenderer->addJsFile($this->doc->backPath . 'sysext/backend/Resources/Public/JavaScript/iframepanel.js');
 		if ($this->modTS['showCheckLinkTab'] == 1) {
 			$this->updateListHtml = '<input type="submit" name="updateLinkList" id="updateLinkList" value="' . $GLOBALS['LANG']->getLL('label_update') . '"/>';

@@ -46,7 +46,7 @@
 
 				// Something went wrong, show message
 				if (data.errorMessage.length) {
-					TYPO3.Flashmessage.display(TYPO3.Severity.warning, TYPO3.l10n.localize('extensionList.updateFromTerFlashMessage.title'), data.errorMessage, 10);
+					top.TYPO3.Flashmessage.display(top.TYPO3.Severity.warning, TYPO3.l10n.localize('extensionList.updateFromTerFlashMessage.title'), data.errorMessage, 10);
 				}
 
 				// Message with latest updates
@@ -75,8 +75,8 @@
 				var errorMessage = textStatus + '(' + errorThrown + '): ' + jqXHR.responseText;
 
 
-				TYPO3.Flashmessage.display(
-					TYPO3.Severity.warning,
+				top.TYPO3.Flashmessage.display(
+					top.TYPO3.Severity.warning,
 					TYPO3.l10n.localize('extensionList.updateFromTerFlashMessage.title'),
 					errorMessage,
 					10

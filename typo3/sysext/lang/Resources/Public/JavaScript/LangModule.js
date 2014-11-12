@@ -260,8 +260,8 @@ var languageModule = {
 		if (typeof label !== 'string' || label === '') {
 			return;
 		}
-		TYPO3.Flashmessage.display(
-			TYPO3.Severity.error,
+		top.TYPO3.Flashmessage.display(
+			top.TYPO3.Severity.error,
 			TYPO3.l10n.localize('flashmessage.error'),
 			TYPO3.l10n.localize(label),
 			5
@@ -278,8 +278,8 @@ var languageModule = {
 		if (typeof label !== 'string' || label === '') {
 			return;
 		}
-		TYPO3.Flashmessage.display(
-			TYPO3.Severity.information,
+		top.TYPO3.Flashmessage.display(
+			top.TYPO3.Severity.info,
 			TYPO3.l10n.localize('flashmessage.information'),
 			TYPO3.l10n.localize(label),
 			3
@@ -296,8 +296,8 @@ var languageModule = {
 		if (typeof label !== 'string' || label === '') {
 			return;
 		}
-		TYPO3.Flashmessage.display(
-			TYPO3.Severity.ok,
+		top.TYPO3.Flashmessage.display(
+			top.TYPO3.Severity.ok,
 			TYPO3.l10n.localize('flashmessage.success'),
 			TYPO3.l10n.localize(label),
 			3
