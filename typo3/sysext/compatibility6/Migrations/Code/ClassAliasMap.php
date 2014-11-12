@@ -208,7 +208,6 @@ return array(
 	't3lib_error_http_UnauthorizedException' => 'TYPO3\\CMS\\Core\\Error\\Http\\UnauthorizedException',
 	't3lib_error_ProductionExceptionHandler' => 'TYPO3\\CMS\\Core\\Error\\ProductionExceptionHandler',
 	't3lib_exception' => 'TYPO3\\CMS\\Core\\Exception',
-	't3lib_extMgm' => 'TYPO3\\CMS\\Core\\Utility\\ExtensionManagementUtility',
 	't3lib_formprotection_Abstract' => 'TYPO3\\CMS\\Core\\FormProtection\\AbstractFormProtection',
 	't3lib_formprotection_BackendFormProtection' => 'TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection',
 	't3lib_formprotection_DisabledFormProtection' => 'TYPO3\\CMS\\Core\\FormProtection\\DisabledFormProtection',
