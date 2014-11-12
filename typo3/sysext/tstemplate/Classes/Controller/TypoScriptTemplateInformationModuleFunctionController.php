@@ -221,6 +221,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 						GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
 					}
 				}
+			}
 			$content = IconUtility::getSpriteIconForRecord('sys_template', $tplRow, array('class' => 't3-js-clickmenutrigger', 'data-table' => 'sys_template', 'data-uid' => $tplRow['uid'], 'data-listframe' => 1)) . '<strong>' . htmlspecialchars($tplRow['title']) . '</strong>' . htmlspecialchars((trim($tplRow['sitetitle']) ? ' (' . $tplRow['sitetitle'] . ')' : ''));
 			$theOutput .= $this->pObj->doc->section($lang->getLL('templateInformation'), $content, 0, 1);
 			if ($manyTemplatesMenu) {
