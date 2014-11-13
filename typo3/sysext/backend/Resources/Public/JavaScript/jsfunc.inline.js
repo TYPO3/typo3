@@ -667,7 +667,7 @@ var inline = {
 			$sortingContainer.addClass('t3-form-field-container-wrap');
 			$sortingContainer.sortable(
 				{
-					containment: 'body',
+					containment: 'parent',
 					handle: '.sortableHandle',
 					zIndex: '4000',
 					axis: 'y',
