@@ -96,7 +96,7 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 	 */
 	protected function getActionService() {
 		return GeneralUtility::makeInstance(
-			'TYPO3\\CMS\\Core\\Tests\\Functional\\DataHandling\\Framework\\ActionService'
+			\TYPO3\CMS\Core\Tests\Functional\DataHandling\Framework\ActionService::class
 		);
 	}
 

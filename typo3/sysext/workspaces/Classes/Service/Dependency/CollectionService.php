@@ -31,7 +31,7 @@ class CollectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $dataHandler;
 
 	/**
-	 * @var \TYPO3\CMS\Version\Dependency\ElementEntityProcessor
+	 * @var Dependency\ElementEntityProcessor
 	 */
 	protected $elementEntityProcessor;
 
@@ -87,7 +87,7 @@ class CollectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function getDependencyCallback($method, array $targetArguments = array()) {
 		return GeneralUtility::makeInstance(
-			'TYPO3\\CMS\\Version\\Dependency\\EventCallback',
+			\TYPO3\CMS\Version\Dependency\EventCallback::class,
 			$this->getElementEntityProcessor(), $method, $targetArguments
 		);
 	}
@@ -95,13 +95,11 @@ class CollectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Gets the element entity processor.
 	 *
-	 * @return \TYPO3\CMS\Version\Dependency\ElementEntityProcessor
+	 * @return Dependency\ElementEntityProcessor
 	 */
 	protected function getElementEntityProcessor() {
 		if (!isset($this->elementEntityProcessor)) {
-			$this->elementEntityProcessor = GeneralUtility::makeInstance(
-				'TYPO3\\CMS\\Version\\Dependency\\ElementEntityProcessor'
-			);
+			$this->elementEntityProcessor = GeneralUtility::makeInstance(Dependency\ElementEntityProcessor::class);
 			$this->elementEntityProcessor->setWorkspace($this->getWorkspace());
 		}
 		return $this->elementEntityProcessor;

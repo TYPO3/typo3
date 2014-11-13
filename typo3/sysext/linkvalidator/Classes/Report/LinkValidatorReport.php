@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Linkvalidator\Report;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -338,12 +339,12 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 			$this->content = $this->renderBrokenLinksTable();
 		} else {
 			// If no access or if ID == zero
-			/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $message */
+			/** @var FlashMessage $message */
 			$message = GeneralUtility::makeInstance(
-				'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+				FlashMessage::class,
 				$GLOBALS['LANG']->getLL('no.access'),
 				$GLOBALS['LANG']->getLL('no.access.title'),
-				\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+				FlashMessage::ERROR
 			);
 			$this->content .= $message->render();
 		}
@@ -453,12 +454,12 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 	 */
 	protected function getNoBrokenLinkMessage(array $brokenLinksMarker) {
 		$brokenLinksMarker['LIST_HEADER'] = $this->doc->sectionHeader($GLOBALS['LANG']->getLL('list.header'));
-		/** @var $message \TYPO3\CMS\Core\Messaging\FlashMessage */
+		/** @var $message FlashMessage */
 		$message = GeneralUtility::makeInstance(
-			'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+			FlashMessage::class,
 			$GLOBALS['LANG']->getLL('list.no.broken.links'),
 			$GLOBALS['LANG']->getLL('list.no.broken.links.title'),
-			\TYPO3\CMS\Core\Messaging\FlashMessage::OK
+			FlashMessage::OK
 		);
 		$brokenLinksMarker['NO_BROKEN_LINKS'] = $message->render();
 		return $brokenLinksMarker;

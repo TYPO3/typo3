@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Lowlevel\View;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
@@ -241,7 +242,7 @@ class ConfigurationView {
 				if ($success) {
 					// show flash message
 					$flashMessage = GeneralUtility::makeInstance(
-						'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+						FlashMessage::class,
 						'',
 						sprintf(
 							LocalizationUtility::translate('writeMessage', 'lowlevel'),
@@ -249,15 +250,15 @@ class ConfigurationView {
 							'<br />',
 							'<strong>' . nl2br(htmlspecialchars($changedLine)) . '</strong>'
 						),
-						\TYPO3\CMS\Core\Messaging\FlashMessage::OK
+						FlashMessage::OK
 					);
 				} else {
 					// Error: show flash message
 					$flashMessage = GeneralUtility::makeInstance(
-						'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+						FlashMessage::class,
 						'',
 						sprintf(LocalizationUtility::translate('writeMessageFailed', 'lowlevel'), TYPO3_extTableDef_script),
-						\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+						FlashMessage::ERROR
 					);
 				}
 				$this->getFlashMessageQueue()->enqueue($flashMessage);

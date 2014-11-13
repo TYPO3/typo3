@@ -64,7 +64,7 @@ class CategoryCollection extends \TYPO3\CMS\Core\Collection\AbstractRecordCollec
 	static public function create(array $collectionRecord, $fillItems = FALSE) {
 		/** @var $collection \TYPO3\CMS\Core\Category\Collection\CategoryCollection */
 		$collection = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-			'TYPO3\\CMS\\Core\\Category\\Collection\\CategoryCollection',
+			CategoryCollection::class,
 			$collectionRecord['table_name'],
 			$collectionRecord['field_name']
 		);

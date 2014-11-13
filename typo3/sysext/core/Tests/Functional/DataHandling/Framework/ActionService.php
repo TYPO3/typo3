@@ -426,14 +426,10 @@ class ActionService {
 	}
 
 	/**
-	 * @return \TYPO3\CMS\Core\DataHandling\DataHandler
+	 * @return DataHandler
 	 */
 	protected function createDataHandler() {
-		$dataHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-			'TYPO3\\CMS\\Core\\DataHandling\\DataHandler'
-		);
-		$this->dataHandler = $dataHandler;
-		return $dataHandler;
+		return $this->dataHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(DataHandler::class);
 	}
 
 	/**
@@ -441,7 +437,7 @@ class ActionService {
 	 */
 	protected function getWorkspaceService() {
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-			'TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService'
+			\TYPO3\CMS\Workspaces\Service\WorkspaceService::class
 		);
 	}
 

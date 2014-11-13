@@ -68,7 +68,7 @@ class Typo3Status implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		}
 
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-			'TYPO3\\CMS\\Reports\\Status',
+			\TYPO3\CMS\Reports\Status::class,
 			$GLOBALS['LANG']->getLL('status_oldXclassUsage'),
 			$value,
 			$message,
@@ -111,7 +111,7 @@ class Typo3Status implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		}
 
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-			'TYPO3\\CMS\\Reports\\Status',
+			\TYPO3\CMS\Reports\Status::class,
 			$GLOBALS['LANG']->getLL('status_xclassUsage'),
 			$value,
 			$message,

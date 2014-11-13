@@ -27,5 +27,5 @@ Migration
 Use \TYPO3\CMS\Backend\Form\ElementConditionMatcher instead of \TYPO3\CMS\Backend\Form\FormEngine::isDisplayCondition
 
 /** @var $elementConditionMatcher \TYPO3\CMS\Backend\Form\ElementConditionMatcher */
-$elementConditionMatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\ElementConditionMatcher');
+$elementConditionMatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\ElementConditionMatcher::class);
 $elementConditionMatcher->match($displayCond, $row, $ffValueKey);

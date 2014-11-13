@@ -59,7 +59,7 @@ class BackendLayout {
 	 */
 	static public function create($identifier, $title, $configuration) {
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-			'TYPO3\\CMS\\Backend\\View\\BackendLayout\\BackendLayout',
+			BackendLayout::class,
 			$identifier,
 			$title,
 			$configuration

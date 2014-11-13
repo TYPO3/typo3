@@ -111,7 +111,7 @@ class FalStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 			$severity = \TYPO3\CMS\Reports\Status::WARNING;
 		}
 		return GeneralUtility::makeInstance(
-			'TYPO3\\CMS\\Reports\\Status',
+			\TYPO3\CMS\Reports\Status::class,
 			$GLOBALS['LANG']->getLL('status_contentAdapterActive'),
 			$value,
 			$message,

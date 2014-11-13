@@ -15,7 +15,7 @@
 require __DIR__ . '/init.php';
 
 $elementInformationController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-	'TYPO3\\CMS\\Backend\\Controller\\ContentElement\\ElementInformationController'
+	\TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController::class
 );
 $elementInformationController->main();
 $elementInformationController->printContent();

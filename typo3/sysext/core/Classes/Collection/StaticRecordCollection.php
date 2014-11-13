@@ -32,7 +32,7 @@ class StaticRecordCollection extends AbstractRecordCollection implements Editabl
 	static public function create(array $collectionRecord, $fillItems = FALSE) {
 		/** @var $collection StaticRecordCollection */
 		$collection = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-			'TYPO3\\CMS\\Core\\Collection\\StaticRecordCollection',
+			StaticRecordCollection::class,
 			$collectionRecord['table_name']
 		);
 		$collection->fromArray($collectionRecord);

@@ -108,7 +108,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 						break;
 					default:
 						$flashMessage = GeneralUtility::makeInstance(
-							'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+							\TYPO3\CMS\Core\Messaging\FlashMessage::class,
 							$GLOBALS['LANG']->getLL('action_noType', TRUE),
 							$GLOBALS['LANG']->getLL('action_error'),
 							\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR

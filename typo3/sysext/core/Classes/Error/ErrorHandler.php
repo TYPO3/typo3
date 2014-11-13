@@ -145,7 +145,7 @@ class ErrorHandler implements ErrorHandlerInterface {
 				if (defined('TYPO3_ERRORHANDLER_MODE') && TYPO3_ERRORHANDLER_MODE == 'debug') {
 					/** @var $flashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
 					$flashMessage = GeneralUtility::makeInstance(
-						'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+						\TYPO3\CMS\Core\Messaging\FlashMessage::class,
 						$message,
 						'PHP ' . $errorLevels[$errorLevel],
 						$severity

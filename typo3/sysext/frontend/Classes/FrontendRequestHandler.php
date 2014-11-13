@@ -68,7 +68,7 @@ class FrontendRequestHandler {
 
 		/** @var $GLOBALS['TSFE'] \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
 		$GLOBALS['TSFE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-			'TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController',
+			\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class,
 			$GLOBALS['TYPO3_CONF_VARS'],
 			\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'),
 			\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('type'),

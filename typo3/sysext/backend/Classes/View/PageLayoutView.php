@@ -1556,7 +1556,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						} else {
 							$message = sprintf($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noMatchingValue'), $row['list_type']);
 							$out .= GeneralUtility::makeInstance(
-								'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+								FlashMessage::class,
 								htmlspecialchars($message),
 								'',
 								FlashMessage::WARNING
@@ -1596,7 +1596,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 							$row['CType']
 						);
 						$out .= GeneralUtility::makeInstance(
-							'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+							FlashMessage::class,
 							htmlspecialchars($message),
 							'',
 							FlashMessage::WARNING
@@ -2175,9 +2175,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @return BackendLayoutView
 	 */
 	protected function getBackendLayoutView() {
-		return GeneralUtility::makeInstance(
-			'TYPO3\\CMS\\Backend\\View\\BackendLayoutView'
-		);
+		return GeneralUtility::makeInstance(BackendLayoutView::class);
 	}
 
 	/**

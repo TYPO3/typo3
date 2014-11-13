@@ -1326,7 +1326,7 @@ class DataHandlerHook {
 	 */
 	public function getCommandMap(DataHandler $tceMain) {
 		return GeneralUtility::makeInstance(
-			'TYPO3\\CMS\\Version\\DataHandler\\CommandMap',
+			\TYPO3\CMS\Version\DataHandler\CommandMap::class,
 			$this,
 			$tceMain,
 			$tceMain->cmdmap,

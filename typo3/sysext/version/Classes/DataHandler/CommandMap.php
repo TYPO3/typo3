@@ -224,7 +224,7 @@ class CommandMap {
 	protected function getElementEntityProcessor() {
 		if (!isset($this->elementEntityProcessor)) {
 			$this->elementEntityProcessor = GeneralUtility::makeInstance(
-				'TYPO3\\CMS\\Version\\Dependency\\ElementEntityProcessor'
+				\TYPO3\CMS\Version\Dependency\ElementEntityProcessor::class
 			);
 			$this->elementEntityProcessor->setWorkspace($this->getWorkspace());
 		}
@@ -830,8 +830,10 @@ class CommandMap {
 	 */
 	protected function getDependencyCallback($method, array $targetArguments = array()) {
 		return GeneralUtility::makeInstance(
-			'TYPO3\\CMS\\Version\\Dependency\\EventCallback',
-			$this->getElementEntityProcessor(), $method, $targetArguments
+			\TYPO3\CMS\Version\Dependency\EventCallback::class,
+			$this->getElementEntityProcessor(),
+			$method,
+			$targetArguments
 		);
 	}
 

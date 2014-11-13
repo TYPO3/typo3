@@ -409,7 +409,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:missingTcaColumnsMessage', TRUE), $table, $table);
 			$messageTitle = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:missingTcaColumnsMessageTitle', TRUE);
 			$flashMessage = GeneralUtility::makeInstance(
-				'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+				\TYPO3\CMS\Core\Messaging\FlashMessage::class,
 				$message,
 				$messageTitle,
 				\TYPO3\CMS\Core\Messaging\FlashMessage::WARNING,

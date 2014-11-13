@@ -90,7 +90,7 @@ class EnvironmentStatusReport implements StatusProviderInterface, ExtendedStatus
 				}
 				$severity = constant('\TYPO3\CMS\Reports\Status::' . strtoupper($type));
 				$statusArray[] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-					'TYPO3\\CMS\\Reports\\Status',
+					\TYPO3\CMS\Reports\Status::class,
 					$GLOBALS['LANG']->sL($pathToXliff . ':environment.status.title'),
 					sprintf($GLOBALS['LANG']->sL($pathToXliff . ':environment.status.value'), $value),
 					$message,

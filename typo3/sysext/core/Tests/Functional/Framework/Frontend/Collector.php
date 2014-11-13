@@ -166,7 +166,7 @@ class Collector implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function getRenderer() {
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-			'TYPO3\\CMS\\Core\\Tests\\Functional\\Framework\\Frontend\\Renderer'
+			\TYPO3\CMS\Core\Tests\Functional\Framework\Frontend\Renderer::class
 		);
 	}
 

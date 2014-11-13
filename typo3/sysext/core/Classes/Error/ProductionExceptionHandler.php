@@ -56,7 +56,7 @@ class ProductionExceptionHandler extends AbstractExceptionHandler {
 		$this->sendStatusHeaders($exception);
 		$this->writeLogEntries($exception, self::CONTEXT_WEB);
 		$messageObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-			'TYPO3\\CMS\\Core\\Messaging\\ErrorpageMessage',
+			\TYPO3\CMS\Core\Messaging\ErrorpageMessage::class,
 			$this->getMessage($exception),
 			$this->getTitle($exception)
 		);

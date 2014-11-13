@@ -89,7 +89,7 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 		} else {
 			// If no access or if ID == zero
 			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-				'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+				\TYPO3\CMS\Core\Messaging\FlashMessage::class,
 				$GLOBALS['LANG']->getLL('clickAPage_content'),
 				$GLOBALS['LANG']->getLL('title'),
 				\TYPO3\CMS\Core\Messaging\FlashMessage::INFO

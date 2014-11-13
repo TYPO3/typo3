@@ -66,6 +66,8 @@ namespace TYPO3\CMS\Core\FormProtection;
  * }
  * </pre>
  */
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
+
 /**
  * Backend form protection
  *
@@ -109,17 +111,17 @@ class BackendFormProtection extends AbstractFormProtection {
 	 * @return void
 	 */
 	protected function createValidationErrorMessage() {
+		/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
 		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-			'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+			\TYPO3\CMS\Core\Messaging\FlashMessage::class,
 			$this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:error.formProtection.tokenInvalid'),
 			'',
 			\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR,
 			!$this->isAjaxRequest()
 		);
-		/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-		$flashMessageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-			'TYPO3\\CMS\\Core\\Messaging\\FlashMessageService'
-		);
+		/** @var $flashMessageService FlashMessageService */
+		$flashMessageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(FlashMessageService::class);
+
 		/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
 		$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 		$defaultFlashMessageQueue->enqueue($flashMessage);

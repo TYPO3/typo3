@@ -55,7 +55,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function initializeDataProviderCollection() {
 		/** @var $dataProviderCollection BackendLayout\DataProviderCollection */
 		$dataProviderCollection = GeneralUtility::makeInstance(
-			'TYPO3\\CMS\\Backend\\View\\BackendLayout\\DataProviderCollection'
+			BackendLayout\DataProviderCollection::class
 		);
 
 		$dataProviderCollection->add(
@@ -403,9 +403,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return BackendLayout\DataProviderContext
 	 */
 	protected function createDataProviderContext() {
-		return GeneralUtility::makeInstance(
-			'TYPO3\\CMS\\Backend\\View\\BackendLayout\\DataProviderContext'
-		);
+		return GeneralUtility::makeInstance(BackendLayout\DataProviderContext::class);
 	}
 
 	/**

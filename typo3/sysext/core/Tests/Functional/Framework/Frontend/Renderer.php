@@ -82,7 +82,7 @@ class Renderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function createParser() {
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-			'TYPO3\\CMS\\Core\\Tests\\Functional\\Framework\\Frontend\\Parser'
+			\TYPO3\CMS\Core\Tests\Functional\Framework\Frontend\Parser::class
 		);
 	}
 

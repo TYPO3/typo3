@@ -62,7 +62,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 			// because the GET variables are taken from the preview
 			// configuration
 			$this->tsfeObj = GeneralUtility::makeInstance(
-				'TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController',
+				\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class,
 				$GLOBALS['TYPO3_CONF_VARS'],
 				GeneralUtility::_GP('id'),
 				GeneralUtility::_GP('type'),

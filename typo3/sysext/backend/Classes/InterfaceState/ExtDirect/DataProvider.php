@@ -31,7 +31,7 @@ class DataProvider {
 	public function __construct() {
 		// All data is saved in BE_USER->uc
 		$this->userSettings = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-			'TYPO3\\CMS\\Backend\\User\\ExtDirect\\BackendUserSettingsDataProvider'
+			\TYPO3\CMS\Backend\User\ExtDirect\BackendUserSettingsDataProvider::class
 		);
 	}
 

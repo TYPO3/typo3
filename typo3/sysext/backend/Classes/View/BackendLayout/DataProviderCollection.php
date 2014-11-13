@@ -120,7 +120,7 @@ class DataProviderCollection implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function createBackendLayoutCollection($identifier) {
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-			'TYPO3\\CMS\\Backend\\View\\BackendLayout\\BackendLayoutCollection', $identifier
+			BackendLayoutCollection::class, $identifier
 		);
 	}
 

@@ -1985,7 +1985,7 @@ class ResourceStorage implements ResourceStorageInterface {
 				$parentPermissions = $this->driver->getPermissions($this->driver->getParentFolderIdentifierOfIdentifier($identifier));
 				if ($parentPermissions['r']) {
 					$folder = GeneralUtility::makeInstance(
-						'TYPO3\\CMS\\Core\\Resource\\InaccessibleFolder', $this, $data['identifier'], $data['name']
+						\TYPO3\CMS\Core\Resource\InaccessibleFolder::class, $this, $data['identifier'], $data['name']
 					);
 				}
 			}

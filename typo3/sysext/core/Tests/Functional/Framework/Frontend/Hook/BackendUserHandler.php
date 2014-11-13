@@ -47,7 +47,7 @@ class BackendUserHandler implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function createBackendUser() {
 		return GeneralUtility::makeInstance(
-			'TYPO3\\CMS\\Backend\\FrontendBackendUserAuthentication'
+			\TYPO3\CMS\Backend\FrontendBackendUserAuthentication::class
 		);
 	}
 

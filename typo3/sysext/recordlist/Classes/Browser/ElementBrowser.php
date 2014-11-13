@@ -2629,7 +2629,7 @@ class ElementBrowser {
 			. $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_core.xlf:labels.temporaryDBmount', TRUE) . '</a>';
 		/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
 		$flashMessage = GeneralUtility::makeInstance(
-			'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+			\TYPO3\CMS\Core\Messaging\FlashMessage::class,
 			$link,
 			'',
 			\TYPO3\CMS\Core\Messaging\FlashMessage::INFO

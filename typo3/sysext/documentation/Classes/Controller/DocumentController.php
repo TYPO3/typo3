@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Documentation\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -150,56 +151,56 @@ class DocumentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 			$result = $this->documentationService->fetchNearestDocument($url, $key, $version ?: 'latest', $language);
 
 			if ($result) {
-				$this->controllerContext->getFlashMessageQueue()->enqueue(
-					GeneralUtility::makeInstance(
-						'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
-						\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
-							'downloadSucceeded',
-							'documentation'
-						),
-						'',
-						\TYPO3\CMS\Core\Messaging\AbstractMessage::OK,
-						TRUE
-					)
+				/** @var FlashMessage $message */
+				$message = GeneralUtility::makeInstance(
+					FlashMessage::class,
+					\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+						'downloadSucceeded',
+						'documentation'
+					),
+					'',
+					\TYPO3\CMS\Core\Messaging\AbstractMessage::OK,
+					TRUE
 				);
 			} else {
-				$this->controllerContext->getFlashMessageQueue()->enqueue(
-					GeneralUtility::makeInstance(
-						'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
-						\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
-							'downloadFailedNoArchive',
-							'documentation'
-						),
-						\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
-							'downloadFailed',
-							'documentation'
-						),
-						\TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR,
-						TRUE
-					)
-				);
-			}
-		} catch (\Exception $e) {
-			$this->controllerContext->getFlashMessageQueue()->enqueue(
-				GeneralUtility::makeInstance(
-					'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+				/** @var FlashMessage $message */
+				$message = GeneralUtility::makeInstance(
+					FlashMessage::class,
 					\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
-						'downloadFailedDetails',
-						'documentation',
-						array(
-							$key,
-							$e->getMessage(),
-							$e->getCode()
-						)
+						'downloadFailedNoArchive',
+						'documentation'
 					),
 					\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
 						'downloadFailed',
 						'documentation'
 					),
-					\TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR,
+					FlashMessage::ERROR,
 					TRUE
-				)
+				);
+
+			}
+			$this->controllerContext->getFlashMessageQueue()->enqueue($message);
+		} catch (\Exception $e) {
+			/** @var FlashMessage $message */
+			$message = GeneralUtility::makeInstance(
+				FlashMessage::class,
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+					'downloadFailedDetails',
+					'documentation',
+					array(
+						$key,
+						$e->getMessage(),
+						$e->getCode()
+					)
+				),
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+					'downloadFailed',
+					'documentation'
+				),
+				FlashMessage::ERROR,
+				TRUE
 			);
+			$this->controllerContext->getFlashMessageQueue()->enqueue($message);
 		}
 		$this->redirect('download');
 	}

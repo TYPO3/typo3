@@ -69,7 +69,7 @@ class ModulesController extends ActionController {
 				$securityWarnings = '<p>' . implode('', $warnings) . '</p>';
 			}
 			$securityMessage = GeneralUtility::makeInstance(
-				'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+				FlashMessage::class,
 				$securityWarnings,
 				$this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:warning.header'),
 				FlashMessage::ERROR

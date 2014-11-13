@@ -34,7 +34,7 @@ class DataSet {
 		$data = self::parseData(self::readData($fileName));
 
 		return GeneralUtility::makeInstance(
-			'TYPO3\\CMS\\Core\\Tests\\Functional\\DataHandling\\Framework\\DataSet',
+			\TYPO3\CMS\Core\Tests\Functional\DataHandling\Framework\DataSet::class,
 			$data
 		);
 	}

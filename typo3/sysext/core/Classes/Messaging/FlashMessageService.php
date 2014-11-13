@@ -39,7 +39,7 @@ class FlashMessageService implements \TYPO3\CMS\Core\SingletonInterface {
 	public function getMessageQueueByIdentifier($identifier = 'core.template.flashMessages') {
 		if (!isset($this->flashMessageQueues[$identifier])) {
 			$this->flashMessageQueues[$identifier] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-				'TYPO3\CMS\Core\Messaging\FlashMessageQueue',
+				\TYPO3\CMS\Core\Messaging\FlashMessageQueue::class,
 				$identifier
 			);
 		}

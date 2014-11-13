@@ -3174,15 +3174,14 @@ class FormEngine {
 			);
 			/** @var $flashMessage FlashMessage */
 			$flashMessage = GeneralUtility::makeInstance(
-				'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+				FlashMessage::class,
 				htmlspecialchars($message),
 				'',
 				FlashMessage::ERROR,
 				TRUE
 			);
-			$class = 'TYPO3\\CMS\\Core\\Messaging\\FlashMessageService';
 			/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-			$flashMessageService = GeneralUtility::makeInstance($class);
+			$flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
 			$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 			$defaultFlashMessageQueue->enqueue($flashMessage);
 		}

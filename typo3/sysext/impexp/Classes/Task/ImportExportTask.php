@@ -138,7 +138,7 @@ class ImportExportTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 			} else {
 				// No presets found
 				$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-					'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+					\TYPO3\CMS\Core\Messaging\FlashMessage::class,
 					$GLOBALS['LANG']->getLL('no-presets'),
 					'',
 					\TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE
