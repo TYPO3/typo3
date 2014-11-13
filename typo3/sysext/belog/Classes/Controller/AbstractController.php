@@ -77,6 +77,20 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 	protected $logEntryRepository = NULL;
 
 	/**
+	 * @var \TYPO3\CMS\Core\Page\PageRenderer
+	 */
+	protected $pageRenderer;
+
+	/**
+	 * init all actions
+	 * @return void
+	 */
+	public function initializeAction() {
+		$this->pageRenderer = $this->objectManager->get(\TYPO3\CMS\Core\Page\PageRenderer::class);
+		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DateTimePicker');
+	}
+
+	/**
 	 * Initialize index action
 	 *
 	 * @return void
@@ -95,20 +109,11 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 			);
 		}
 		if (!isset($this->settings['dateFormat'])) {
-			$this->settings['dateFormat'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
+			$this->settings['dateFormat'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? 'm-d-Y' : 'd-m-Y';
 		}
 		if (!isset($this->settings['timeFormat'])) {
 			$this->settings['timeFormat'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
 		}
-		// @TODO: The dateTime property mapper throws exceptions that cannot be caught
-		// if the property is not given in the expected format. This is documented with
-		// issue http://forge.typo3.org/issues/33861. Depending on the outcome of the
-		// ticket, the code below might have to be adapted again.
-		// @TODO: There is a second solution to hint the property mapper with fluid on the expected
-		// format: <f:form.hidden property="manualDateStart.dateFormat" value="..." />. This
-		// could make the method below obsolete.
-		$this->configurePropertyMapperForDateTimeFormat($this->arguments['constraint']->getPropertyMappingConfiguration()->forProperty('manualDateStart'));
-		$this->configurePropertyMapperForDateTimeFormat($this->arguments['constraint']->getPropertyMappingConfiguration()->forProperty('manualDateStop'));
 	}
 
 	/**
@@ -198,16 +203,6 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 		}
 		ksort($targetStructure);
 		return $targetStructure;
-	}
-
-	/**
-	 * Configure the property mapper to expect date strings in configured BE format
-	 *
-	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $propertyMapperDate
-	 * @return void
-	 */
-	protected function configurePropertyMapperForDateTimeFormat(\TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $propertyMapperDate) {
-		$propertyMapperDate->setTypeConverterOption(\TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT, $this->settings['dateFormat'] . ' ' . $this->settings['timeFormat']);
 	}
 
 	/**
@@ -329,20 +324,14 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 				$startTime = mktime(0, 0, 0) - 31 * 3600 * 24;
 				break;
 			case self::TIMEFRAME_CUSTOM:
-				if ($constraint->getManualDateStart() instanceof \DateTime) {
-					$startTime = $constraint->getManualDateStart()->format('U');
-					if ($constraint->getManualDateStop() instanceof \DateTime) {
-						$manualEndTime = $constraint->getManualDateStop()->format('U');
-						if ($manualEndTime > $startTime) {
-							$endTime = $manualEndTime;
-						}
-					} else {
-						$endTime = $GLOBALS['EXEC_TIME'];
-					}
+				$startTime = $constraint->getStartTimestamp();
+				if ($constraint->getEndTimestamp() > $constraint->getStartTimestamp()) {
+					$endTime = $constraint->getEndTimestamp();
+				} else {
+					$endTime = $GLOBALS['EXEC_TIME'];
 				}
 				break;
 			default:
-
 		}
 		$constraint->setStartTimestamp($startTime);
 		$constraint->setEndTimestamp($endTime);

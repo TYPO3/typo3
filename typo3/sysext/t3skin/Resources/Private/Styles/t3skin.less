@@ -13,6 +13,8 @@
 
 // Prefix for composer require-dev libraries
 @composer-package-directory-prefix: "../../../../../../Packages/Libraries";
+// Prefix for third-party libraries in typo3contrib/
+@typo3contrib-directory-prefix: "../../../../../contrib/";
 
 // Core variables and mixins
 @import "@{composer-package-directory-prefix}/twbs/bootstrap/less/variables.less";
@@ -65,6 +67,9 @@
 // Utility classes
 @import "@{composer-package-directory-prefix}/twbs/bootstrap/less/utilities.less";
 @import "@{composer-package-directory-prefix}/twbs/bootstrap/less/responsive-utilities.less";
+
+// Components from bootstrap plugins
+@import "@{typo3contrib-directory-prefix}/twbs/bootstrap-datetimepicker.less";
 
 /*!
  *  Font Awesome 4.2.0 by @davegandy - http://fontawesome.io - @fontawesome

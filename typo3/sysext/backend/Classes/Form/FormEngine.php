@@ -4068,14 +4068,6 @@ class FormEngine {
 				$this->loadJavascriptLib('contrib/placeholdersjs/placeholders.jquery.min.js');
 			}
 
-			// Needed for tceform manipulation (date picker)
-			$typo3Settings = array(
-				'datePickerUSmode' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? 1 : 0,
-				'dateFormat' => array('j-n-Y', 'G:i j-n-Y'),
-				'dateFormatUS' => array('n-j-Y', 'G:i n-j-Y')
-			);
-			$pageRenderer->addInlineSettingArray('', $typo3Settings);
-			$this->loadJavascriptLib('js/extjs/ux/Ext.ux.DateTimePicker.js');
 			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tceforms.js');
 			// If IRRE fields were processed, add the JavaScript functions:
 			if ($this->inline->inlineCount) {

@@ -70,7 +70,12 @@
 				// be shown or hidden.
 				var handler = function() {
 					var value = $inputFieldWithValue.val();
-					if ($input.data('isHovering') && value.length > 0) {
+					var hasEmptyValue = (value.length === 0);
+					if (value == "0" && $inputFieldWithValue.closest('.date').length) {
+						hasEmptyValue = true;
+					}
+					// only show the clearing button if the value is set, or if the value is not "0" on a datetime field
+					if ($input.data('isHovering') && !hasEmptyValue) {
 						$clearer.show();
 					} else {
 						$clearer.hide();

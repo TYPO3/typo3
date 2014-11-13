@@ -541,8 +541,8 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 					// The task object is valid, process with fetching current data
 					$taskInfo['class'] = get_class($task);
 					// Get execution information
-					$taskInfo['start'] = $task->getExecution()->getStart();
-					$taskInfo['end'] = $task->getExecution()->getEnd();
+					$taskInfo['start'] = (int)$task->getExecution()->getStart();
+					$taskInfo['end'] = (int)$task->getExecution()->getEnd();
 					$taskInfo['interval'] = $task->getExecution()->getInterval();
 					$taskInfo['croncmd'] = $task->getExecution()->getCronCmd();
 					$taskInfo['multiple'] = $task->getExecution()->getMultiple();
@@ -618,16 +618,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		$this->pageRenderer->loadExtJS();
 		$this->pageRenderer->loadJquery();
 		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Scheduler/Scheduler');
-		$this->pageRenderer->addJsFile($this->backPath . 'sysext/backend/Resources/Public/JavaScript/tceforms.js');
-		$this->pageRenderer->addJsFile($this->backPath . 'js/extjs/ux/Ext.ux.DateTimePicker.js');
-
-		// Define settings for Date Picker
-		$typo3Settings = array(
-			'datePickerUSmode' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? 1 : 0,
-			'dateFormat' => array('j-n-Y', 'G:i j-n-Y'),
-			'dateFormatUS' => array('n-j-Y', 'G:i n-j-Y')
-		);
-		$this->pageRenderer->addInlineSettingArray('', $typo3Settings);
+		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DateTimePicker');
 
 		// Define a style for hiding
 		// Some fields will be hidden when the task is not recurring
@@ -710,34 +701,34 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 						$cell .
 					'</div>';
 
-		// Start date/time field
-		// NOTE: datetime fields need a special id naming scheme
-		$label = '<label for="tceforms-datetimefield-task_start">' . $GLOBALS['LANG']->getLL('label.start') . '</label>';
-		$table[] = '<div id="task_start_row" class="form-group">' .
-						BackendUtility::wrapInHelp($this->cshKey, 'task_start', $label) .
-						'<div class="input-group">
-							<input name="tx_scheduler[start]" type="text" class="form-control" id="tceforms-datetimefield-task_start" value="' . (empty($taskInfo['start']) ? '' : strftime('%H:%M %d-%m-%Y', $taskInfo['start'])) . '" />
-							<span class="input-group-addon">' .
-							IconUtility::getSpriteIcon('actions-edit-pick-date', array(
-								'style' => 'cursor:pointer;',
-								'id' => 'picker-tceforms-datetimefield-task_start'
-							)) . '</span>
-							</div>
-					</div>';
+		$dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? '%H:%M %m-%d-%Y' : '%H:%M %d-%m-%Y';
+
+		$label = '<label for="tceforms-datetimefield-task_start">' . BackendUtility::wrapInHelp($this->cshKey, 'task_start', $GLOBALS['LANG']->getLL('label.start')) . '</label>';
+		$value = ($taskInfo['start'] > 0 ? strftime($dateFormat, $taskInfo['start']) : '');
+		$table[] = '<div class="form-group">' .
+			$label .
+			'<div class="input-group date t3js-datetimepicker" data-date-offset="0" id="tceforms-datetimefield-task_start_row-wrapper">' .
+				'<input name="tx_scheduler[start]_hr" value="' . $value . '" class="form-control datetime" type="text" ' .
+					'id="tceforms-datetimefield-task_start_row">' .
+				'<input name="tx_scheduler[start]" value="' . $taskInfo['start'] . '" type="hidden">' .
+				'<span class="input-group-addon datepickerbutton"><span class="fa fa-calendar"></span></span>' .
+			'</div>' .
+		'</div>';
+
 
 		// End date/time field
 		// NOTE: datetime fields need a special id naming scheme
+		$value = ($taskInfo['end'] > 0 ? strftime($dateFormat, $taskInfo['end']) : '');
 		$label = '<label for="tceforms-datetimefield-task_end">' . $GLOBALS['LANG']->getLL('label.end') . '</label>';
-		$table[] = '<div id="task_end_row" class="form-group">' .
-						BackendUtility::wrapInHelp($this->cshKey, 'task_end', $label) .
-						'<div class="input-group">
-							<input name="tx_scheduler[end]" type="text" class="form-control" id="tceforms-datetimefield-task_end" value="' . (empty($taskInfo['end']) ? '' : strftime('%H:%M %d-%m-%Y', $taskInfo['end'])) . '" />
-							<span class="input-group-addon">' . IconUtility::getSpriteIcon('actions-edit-pick-date', array(
-								'style' => 'cursor:pointer;',
-								'id' => 'picker-tceforms-datetimefield-task_end'
-							)) . '</span>
-							</div>
-					</div>';
+		$table[] = '<div class="form-group">' .
+			BackendUtility::wrapInHelp($this->cshKey, 'task_end', $label) .
+			'<div class="input-group date t3js-datetimepicker" data-date-offset="0" id="tceforms-datetimefield-task_end_row-wrapper">' .
+				'<input name="tx_scheduler[end]_hr" value="' . $value . '" class="form-control datetime" type="text" ' .
+					'id="tceforms-datetimefield-task_end_row">' .
+				'<input name="tx_scheduler[end]" value="' . $taskInfo['end'] . '" type="hidden">' .
+				'<span class="input-group-addon datepickerbutton"><span class="fa fa-calendar"></span></span>' .
+			'</div>' .
+		'</div>';
 
 		// Frequency input field
 		$label = '<label for="task_frequency">' . $GLOBALS['LANG']->getLL('label.frequency.long') . '</label>';
@@ -1210,8 +1201,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			$result = FALSE;
 		} else {
 			try {
-				$timestamp = $this->checkDate($this->submittedData['start']);
-				$this->submittedData['start'] = $timestamp;
+				$this->submittedData['start'] = (int)$this->submittedData['start'];
 			} catch (\Exception $e) {
 				$this->addMessage($GLOBALS['LANG']->getLL('msg.invalidStartDate'), FlashMessage::ERROR);
 				$result = FALSE;
@@ -1220,8 +1210,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		// Check end date, if recurring task
 		if ($this->submittedData['type'] == 2 && !empty($this->submittedData['end'])) {
 			try {
-				$timestamp = $this->checkDate($this->submittedData['end']);
-				$this->submittedData['end'] = $timestamp;
+				$this->submittedData['end'] = (int)$this->submittedData['end'];
 				if ($this->submittedData['end'] < $this->submittedData['start']) {
 					$this->addMessage($GLOBALS['LANG']->getLL('msg.endDateSmallerThanStartDate'), FlashMessage::ERROR);
 					$result = FALSE;
@@ -1289,8 +1278,10 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	 * @param string $string String to check
 	 * @return int Unix timestamp
 	 * @throws \InvalidArgumentException
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8, as the unified datetime picker with a separate timestamp field is used.
 	 */
 	public function checkDate($string) {
+		GeneralUtility::logDeprecatedFunction();
 		// Try with strtotime
 		$timestamp = strtotime($string);
 		// That failed. Try TYPO3's standard date/time input format

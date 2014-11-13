@@ -1,15 +1,5 @@
 {namespace belog=TYPO3\CMS\Belog\ViewHelpers}
 
-<belog:be.addJsFile file="sysext/backend/Resources/Public/JavaScript/tceforms.js" />
-<belog:be.addJsFile file="js/extjs/ux/Ext.ux.DateTimePicker.js" />
-
-<belog:be.inlineSettingsArray
-	settings="{
-		datePickerUSmode: 0,
-		dateFormat: {0:settings.dateFormat, 1:'{settings.dateFormat} {settings.timeFormat}'}
-	}"
-/>
-
 <f:comment>
 	This is an ugly workaround.
 	The function module in Web->Info already renders a form tag, and there is
@@ -108,45 +98,6 @@
 						additionalAttributes="{onchange : 'submit()'}"
 						id="belog-time"
 					/>
-
-					<f:comment>
-						Date time fields for manual date selection
-					</f:comment>
-					<f:if condition="{constraint.timeFrame} == 30">
-						<br />
-
-						<label for="tceforms-datetimefield-manualDateStart"><f:translate key="LLL:EXT:lang/locallang_common.xlf:from" /></label>&nbsp;
-						<f:form.textfield
-							property="manualDateStart"
-							value="{constraint.manualDateStart -> f:format.date(format:'{settings.dateFormat} {settings.timeFormat}')}"
-							id="tceforms-datetimefield-manualDateStart"
-							style="margin:4px 2px; padding:1px; vertical-align:middle; width: 115px;"
-						/>
-						<span
-							style="cursor:pointer;"
-							id="picker-tceforms-datetimefield-manualDateStart"
-							class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date"
-						>
-							&nbsp;
-						</span>
-
-						<label for="tceforms-datetimefield-manualDateStop"><f:translate key="LLL:EXT:lang/locallang_common.xlf:to" /></label>&nbsp;
-						<f:form.textfield
-							property="manualDateStop"
-							value="{constraint.manualDateStop -> f:format.date(format:'{settings.dateFormat} {settings.timeFormat}')}"
-							id="tceforms-datetimefield-manualDateStop"
-							style="margin:4px 2px; padding:1px; vertical-align:middle; width: 115px;"
-						/>
-						<span
-							style="cursor:pointer;"
-							id="picker-tceforms-datetimefield-manualDateStop"
-							class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date"
-						>
-							&nbsp;
-						</span>
-
-						<f:form.submit value="{f:translate(key:'set')}" />
-					</f:if>
 				</td>
 
 				<th>
@@ -176,6 +127,48 @@
 
 				<th></th><td></td>
 			</tr>
+			<f:comment>
+				Date time fields for manual date selection
+			</f:comment>
+
+			<f:if condition="{constraint.timeFrame} == 30">
+				<tr>
+					<td colspan="8">
+						<div class="form-group col-sm-5">
+							<label for="manualDateStart"><f:translate key="LLL:EXT:lang/locallang_common.xlf:from" /></label>&nbsp;
+							<div class="input-group date t3js-datetimepicker" data-date-offset="0" id="tceforms-datetimefield-manualDateStart-wrapper">
+								<f:form.textfield
+										name="manualDateStart"
+										value="{f:if(condition: constraint.startTimestamp, then: \"{f:format.date(format:'{settings.timeFormat} {settings.dateFormat}', date: '@{constraint.startTimestamp}')}\")}"
+										id="manualDateStart"
+										class="form-control datetime"
+										/>
+								<f:form.hidden property="startTimestamp" value="{constraint.startTimestamp}" />
+								<span class="input-group-addon datepickerbutton"><span class="fa fa-calendar"></span></span>
+							</div>
+						</div>
+						<div class="form-group col-sm-5">
+							<label for="manualDateStop"><f:translate key="LLL:EXT:lang/locallang_common.xlf:to" /></label>&nbsp;
+							<div class="input-group date t3js-datetimepicker" data-date-offset="0" id="tceforms-datetimefield-manualDateStop-wrapper">
+								<f:form.textfield
+										name="manualDateStop"
+										value="{f:format.date(format:'{settings.timeFormat} {settings.dateFormat}', date: '@{constraint.endTimestamp}')}"
+										id="manualDateStop"
+										class="form-control datetime"
+										/>
+								<f:form.hidden property="endTimestamp" />
+								<span class="input-group-addon datepickerbutton"><span class="fa fa-calendar"></span></span>
+							</div>
+						</div>
+						<div class="form-group col-sm-2">
+							<label for="submit">&nbsp;</label>
+							<div class="input-group">
+								<f:form.submit id="submit" value="{f:translate(key: 'set')}" />
+							</div>
+						</div>
+					</td>
+				</tr>
+			</f:if>
 		</tbody>
 	</table>
 </f:form>

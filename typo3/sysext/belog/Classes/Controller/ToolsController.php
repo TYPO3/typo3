@@ -20,5 +20,4 @@ namespace TYPO3\CMS\Belog\Controller;
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class ToolsController extends \TYPO3\CMS\Belog\Controller\AbstractController {
-
 }

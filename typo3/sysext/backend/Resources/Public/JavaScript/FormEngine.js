@@ -25,7 +25,7 @@ var setFormValueOpenBrowser
 	,setFormValueFromBrowseWin
 	,setHiddenFromList
 	,setFormValueManipulate
-	,setFormValue_getFObj
+	,setFormValue_getFObj;
 
 
 define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
@@ -637,8 +637,8 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 				$('.t3-tceforms-input-wrapper .formfield-input, .t3-tceforms-input-wrapper-datetime .formfield-input').clearable();
 			});
 		}
-		// note, this will be migrated to FormEngine itself soon
-		TYPO3.TCEFORMS.convertDateFieldsToDatePicker();
+		// apply DatePicker to all date time fields
+		require(['TYPO3/CMS/Backend/DateTimePicker']);
 	};
 
 	/**

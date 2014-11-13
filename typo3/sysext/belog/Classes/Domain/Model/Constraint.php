@@ -64,20 +64,6 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $groupByPage = FALSE;
 
 	/**
-	 * Manual date start
-	 *
-	 * @var \DateTime
-	 */
-	protected $manualDateStart = NULL;
-
-	/**
-	 * Manual date stop
-	 *
-	 * @var \DateTime
-	 */
-	protected $manualDateStop = NULL;
-
-	/**
 	 * Calculated start timestamp
 	 *
 	 * @var int
@@ -231,44 +217,6 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function getGroupByPage() {
 		return (bool)$this->groupByPage;
-	}
-
-	/**
-	 * Set manual date start
-	 *
-	 * @param \DateTime $manualDateStart
-	 * @return void
-	 */
-	public function setManualDateStart(\DateTime $manualDateStart = NULL) {
-		$this->manualDateStart = $manualDateStart;
-	}
-
-	/**
-	 * Get manual date start
-	 *
-	 * @return \DateTime
-	 */
-	public function getManualDateStart() {
-		return $this->manualDateStart;
-	}
-
-	/**
-	 * Set manual date stop
-	 *
-	 * @param \DateTime $manualDateStop
-	 * @return void
-	 */
-	public function setManualDateStop(\DateTime $manualDateStop = NULL) {
-		$this->manualDateStop = $manualDateStop;
-	}
-
-	/**
-	 * Get manual date stop
-	 *
-	 * @return \DateTime
-	 */
-	public function getManualDateStop() {
-		return $this->manualDateStop;
 	}
 
 	/**

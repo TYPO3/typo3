@@ -1620,7 +1620,9 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			$this->requireJsConfig['paths'] = array(
 				'jquery-ui' => 'contrib/jquery-ui',
 				'jquery' => 'contrib/jquery',
-				'twbs' => 'contrib/twbs/bootstrap.min'
+				'moment' => 'contrib/moment/moment.min',
+				'twbs' => 'contrib/twbs/bootstrap.min',
+				'twbs/bootstrap-datetimepicker' => 'contrib/twbs/bootstrap-datetimepicker.min',
 			);
 			// get all extensions that are loaded
 			$loadedExtensions = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray();

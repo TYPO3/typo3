@@ -467,6 +467,11 @@ class BackendController {
 	 * @return void
 	 */
 	protected function generateJavascript() {
+
+		// Needed for tceform manipulation (date picker)
+		$dateFormat = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? array('MM-DD-YYYY', 'HH:mm MM-DD-YYYY') : array('DD-MM-YYYY', 'HH:mm DD-MM-YYYY'));
+		$this->pageRenderer->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
+
 		$pathTYPO3 = GeneralUtility::dirname(GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '/';
 		// If another page module was specified, replace the default Page module with the new one
 		$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
