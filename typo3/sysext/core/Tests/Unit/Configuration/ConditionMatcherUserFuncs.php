@@ -48,5 +48,17 @@ namespace {
 	function user_testQuotes($value) {
 		return $value === '1 " 2';
 	}
+
+	class ConditionMatcherUserFunctions {
+
+		/**
+		 * @param mixed $value
+		 * @return bool
+		 */
+		static public function isTrue($value) {
+			return (bool)$value;
+		}
+
+	}
 }
 

@@ -417,7 +417,7 @@ abstract class AbstractConditionMatcher {
 				preg_match_all('/^\s*([^\(\s]+)\s*(?:\((.*)\))?\s*$/', $value, $matches);
 				$funcName = $matches[1][0];
 				$funcValues = $matches[2][0] ? $this->parseUserFuncArguments($matches[2][0]) : array();
-				if (function_exists($funcName) && call_user_func_array($funcName, $funcValues)) {
+				if (is_callable($funcName) && call_user_func_array($funcName, $funcValues)) {
 					return TRUE;
 				}
 				return FALSE;

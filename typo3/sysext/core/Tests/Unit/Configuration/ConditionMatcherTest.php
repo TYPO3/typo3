@@ -122,5 +122,13 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertTrue($this->conditionMatcher->match('[userFunc = user_testQuotes("1 \" 2") ]'));
 	}
 
+	/**
+	 * @test
+	 * @return void
+	 */
+	public function testUserFuncWithClassMethodCall() {
+		$this->assertTrue($this->conditionMatcher->match('[userFunc = ConditionMatcherUserFunctions::isTrue(1)]'));
+	}
+
 }
 
