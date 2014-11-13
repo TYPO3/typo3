@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Formats a \DateTime object.
@@ -38,14 +39,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  * <output>
  * 13.12.1980 - 21:03:42
  * (depending on the current time, see http://www.php.net/manual/en/function.strtotime.php)
- * </output>
- *
- * <code title="output date from unix timestamp">
- * <f:format.date format="d.m.Y - H:i:s">@{someTimestamp}</f:format.date>
- * </code>
- * <output>
- * 13.12.1980 - 21:03:42
- * (depending on the current time. Don't forget the "@" in front of the timestamp see http://www.php.net/manual/en/function.strtotime.php)
  * </output>
  *
  * <code title="Localized dates using strftime date format">
@@ -103,7 +96,7 @@ class DateViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 		}
 		if (!$date instanceof \DateTime) {
 			try {
-				if (is_integer($date)) {
+				if (MathUtility::canBeInterpretedAsInteger($date)) {
 					$date = new \DateTime('@' . $date);
 				} else {
 					$date = new \DateTime($date);
