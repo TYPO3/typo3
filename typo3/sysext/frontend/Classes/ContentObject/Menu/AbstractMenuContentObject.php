@@ -925,7 +925,7 @@ class AbstractMenuContentObject {
 		$filteredPages = array();
 		foreach ($pages as $aPage) {
 			if ($this->filterMenuPages($aPage, $banned, $aPage['doktype'] === PageRepository::DOKTYPE_SPACER)) {
-				$filteredPages[] = $aPage;
+				$filteredPages[$aPage['uid']] = $aPage;
 			}
 		}
 		return $filteredPages;
