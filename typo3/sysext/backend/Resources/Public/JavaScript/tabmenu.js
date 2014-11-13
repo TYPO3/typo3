@@ -13,7 +13,6 @@
 
 /**
  * javascript functions regarding the "dyntabmenu" used throughout the TYPO3 backend
- * @deprecated with TYPO3 CMS 7, will be removed with CMS 8
  */
 
 var DTM_array = DTM_array || [];
