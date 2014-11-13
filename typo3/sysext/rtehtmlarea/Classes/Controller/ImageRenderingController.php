@@ -123,8 +123,8 @@ class ImageRenderingController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
 		// Get RTE configuration
 		$pageTSConfig = $this->getFrontendObject()->getPagesTSconfig();
-		if (is_array($pageTSConfig) && is_array($pageTSConfig['RTE.'])) {
-			$magicImageService->setMagicImageMaximumDimensions($pageTSConfig['RTE.']);
+		if (is_array($pageTSConfig) && is_array($pageTSConfig['RTE.']['default.'])) {
+			$magicImageService->setMagicImageMaximumDimensions($pageTSConfig['RTE.']['default.']);
 		}
 
 		return $magicImageService;
