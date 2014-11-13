@@ -5,7 +5,7 @@ Feature: #59396 - TypolinkViewHelper
 Description
 ===========
 
-Added a ViewHelper that deals with the contents of any field that was filled with a link wizard in
+Adding Link and Uri ViewHelper that cope with the contents of any field that was filled with a link wizard in
 TYPO3 CMS Backend.
 Those fields contain various parts split by a space and being escaped to provide input for the
 typoLink function.
@@ -17,7 +17,9 @@ The full parameter usage in Fluid might look like this, where {link} is the fiel
 
 ::
 
-<f:link.typolink parameter="{link}" target="_blank" class="ico-class" title="some title" additionalParams="" additionalAttributes="{type:'button'}">
+<f:link.typolink parameter="{link}" target="_blank" class="ico-class" title="some title" additionalParams="b=u" additionalAttributes="{type:'button'}">
+
+<f:uri.typolink parameter="{link}" additionalParameters="b=u">
 
 ..
 
@@ -31,11 +33,15 @@ While passing additional parameters to the ViewHelper, following rules apply:
 - additionalAttributes is (as usual) added to the resulting tag as *type="button"*
 
 {link} contains *19 _blank - "testtitle with whitespace" &X=y*.
+In case of the Uri.Typolink Viewhelper, only the first and the fourth parameter of the field content are taken into account,
+the tag related properties are discarded.
 For the given example, the output is:
 
 ::
 
-<a href="index.php?id=19&X=y" title="some title" target="_blank" class="ico-class" type="button">
+<a href="index.php?id=19&X=y&b=u" title="some title" target="_blank" class="ico-class" type="button">
+
+index.php?id=19&X=y&b=u
 
 ..
 
