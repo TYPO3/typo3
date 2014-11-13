@@ -316,7 +316,7 @@ class BackendController {
 			unset($this->toolbarItems['liveSearch']);
 		}
 
-		$toolbar = $this->renderUserToolbar();
+		$toolbar = '';
 
 		foreach ($this->toolbarItems as $key => $toolbarItem) {
 			$menu = $toolbarItem->render();
@@ -325,6 +325,8 @@ class BackendController {
 				$toolbar .= '<li ' . $additionalAttributes . ' role="menu">' . $menu . '</li>';
 			}
 		}
+
+		$toolbar .= $this->renderUserToolbar();
 
 		if ($search) {
 			$toolbar .= '<li ' . $search->getAdditionalAttributes() . ' role="menu">' . $search->render() . '</li>';
