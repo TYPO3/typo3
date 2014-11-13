@@ -32,7 +32,7 @@ class ReviewController extends AbstractController {
 	 * @return void
 	 */
 	public function indexAction() {
-		$wsService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
+		$wsService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
 		$this->view->assign('showGrid', !($GLOBALS['BE_USER']->workspace === 0 && !$GLOBALS['BE_USER']->isAdmin()));
 		$this->view->assign('showAllWorkspaceTab', TRUE);
 		$this->view->assign('pageUid', GeneralUtility::_GP('id'));
@@ -78,7 +78,7 @@ class ReviewController extends AbstractController {
 	 * @return void
 	 */
 	public function fullIndexAction() {
-		$wsService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
+		$wsService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
 		$wsList = $wsService->getAvailableWorkspaces();
 
 		if (!$GLOBALS['BE_USER']->isAdmin()) {
@@ -109,7 +109,7 @@ class ReviewController extends AbstractController {
 	 * @return void
 	 */
 	public function singleIndexAction() {
-		$wsService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
+		$wsService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
 		$wsList = $wsService->getAvailableWorkspaces();
 		$activeWorkspace = $GLOBALS['BE_USER']->workspace;
 		$wsCur = array($activeWorkspace => TRUE);
@@ -131,9 +131,9 @@ class ReviewController extends AbstractController {
 		parent::initializeAction();
 		$this->template->setExtDirectStateProvider();
 		if (WorkspaceService::isOldStyleWorkspaceUsed()) {
-			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:warning.oldStyleWorkspaceInUser'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
+			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:warning.oldStyleWorkspaceInUser'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
 			/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-			$flashMessageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+			$flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
 			/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
 			$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 			$defaultFlashMessageQueue->enqueue($flashMessage);

@@ -175,7 +175,7 @@ class Wizard extends OpenidService {
 	 */
 	protected function renderHtml() {
 		// use FLUID standalone view for wizard content
-		$view = GeneralUtility::makeInstance('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+		$view = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
 		$view->setTemplatePathAndFilename(
 			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('openid') .
 			'Resources/Private/Templates/Wizard/Content.html'

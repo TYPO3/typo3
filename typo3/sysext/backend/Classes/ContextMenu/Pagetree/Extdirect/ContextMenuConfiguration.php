@@ -28,7 +28,7 @@ class ContextMenuConfiguration extends \TYPO3\CMS\Backend\ContextMenu\Extdirect\
 	 */
 	protected function initDataProvider() {
 		/** @var $dataProvider \TYPO3\CMS\Backend\ContextMenu\Pagetree\ContextMenuDataProvider */
-		$dataProvider = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\ContextMenu\\Pagetree\\ContextMenuDataProvider');
+		$dataProvider = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\ContextMenu\Pagetree\ContextMenuDataProvider::class);
 		$this->setDataProvider($dataProvider);
 	}
 
@@ -40,7 +40,7 @@ class ContextMenuConfiguration extends \TYPO3\CMS\Backend\ContextMenu\Extdirect\
 	 */
 	public function getActionsForNodeArray($nodeData) {
 		/** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
-		$node = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode', (array)$nodeData);
+		$node = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode::class, (array)$nodeData);
 		$node->setRecord(\TYPO3\CMS\Backend\Tree\Pagetree\Commands::getNodeRecord($node->getId()));
 		$this->initDataProvider();
 		$this->dataProvider->setContextMenuType('table.' . $node->getType());

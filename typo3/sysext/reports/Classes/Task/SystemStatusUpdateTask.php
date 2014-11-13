@@ -43,9 +43,9 @@ class SystemStatusUpdateTask extends AbstractTask {
 	 */
 	public function execute() {
 		/** @var $registry \TYPO3\CMS\Core\Registry */
-		$registry = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
+		$registry = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Registry::class);
 		/** @var $statusReport \TYPO3\CMS\Reports\Report\Status\Status */
-		$statusReport = GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Report\\Status\\Status');
+		$statusReport = GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Report\Status\Status::class);
 		$systemStatus = $statusReport->getDetailedSystemStatus();
 		$highestSeverity = $statusReport->getHighestSeverity($systemStatus);
 		$registry->set('tx_reports', 'status.highestSeverity', $highestSeverity);
@@ -105,7 +105,7 @@ class SystemStatusUpdateTask extends AbstractTask {
 		$message .= CRLF . CRLF;
 		$from = MailUtility::getSystemFrom();
 		/** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
-		$mail = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+		$mail = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
 		$mail->setFrom($from);
 		$mail->setTo($sendEmailsTo);
 		$mail->setSubject($subject);

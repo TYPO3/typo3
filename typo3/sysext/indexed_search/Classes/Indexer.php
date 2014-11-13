@@ -259,7 +259,7 @@ class Indexer {
 		// cHash values:
 		if ($createCHash) {
 			/* @var $cacheHash \TYPO3\CMS\Frontend\Page\CacheHashCalculator */
-			$cacheHash = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
+			$cacheHash = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class);
 			$this->conf['cHash'] = $cacheHash->generateForParameters(GeneralUtility::implodeArrayForUrl('', $cHash_array));
 		} else {
 			$this->conf['cHash'] = '';
@@ -386,7 +386,7 @@ class Indexer {
 			$this->metaphoneObj->pObj = $this;
 		}
 		// Init charset class:
-		$this->csObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
+		$this->csObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
 	}
 
 	/**
@@ -648,7 +648,7 @@ class Indexer {
 		$list = $this->extractHyperLinks($content);
 		if ($this->indexerConfig['useCrawlerForExternalFiles'] && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('crawler')) {
 			$this->includeCrawlerClass();
-			$crawler = GeneralUtility::makeInstance('tx_crawler_lib');
+			$crawler = GeneralUtility::makeInstance(\tx_crawler_lib::class);
 		}
 		// Traverse links:
 		foreach ($list as $linkInfo) {
@@ -722,7 +722,7 @@ class Indexer {
 	 * @see extractLinks()
 	 */
 	public function extractHyperLinks($html) {
-		$htmlParser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
+		$htmlParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
 		$htmlParts = $htmlParser->splitTags('a', $html);
 		$hyperLinksData = array();
 		foreach ($htmlParts as $index => $tagData) {
@@ -751,7 +751,7 @@ class Indexer {
 	 */
 	public function extractBaseHref($html) {
 		$href = '';
-		$htmlParser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
+		$htmlParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
 		$htmlParts = $htmlParser->splitTags('base', $html);
 		foreach ($htmlParts as $index => $tagData) {
 			if ($index % 2 !== 0) {

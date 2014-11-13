@@ -97,7 +97,7 @@ class FluidTemplateContentObject extends AbstractContentObject {
 	 * @return void
 	 */
 	protected function initializeStandaloneViewInstance() {
-		$this->view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+		$this->view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
 	}
 
 	/**
@@ -228,7 +228,7 @@ class FluidTemplateContentObject extends AbstractContentObject {
 	protected function assignSettings(array $conf) {
 		if (array_key_exists('settings.', $conf)) {
 			/** @var $typoScriptService \TYPO3\CMS\Extbase\Service\TypoScriptService */
-			$typoScriptService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Service\\TypoScriptService');
+			$typoScriptService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Service\TypoScriptService::class);
 			$settings = $typoScriptService->convertTypoScriptArrayToPlainArray($conf['settings.']);
 			$this->view->assign('settings', $settings);
 		}

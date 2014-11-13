@@ -54,7 +54,7 @@ class ProcessedFileRepository extends AbstractRepository {
 	 * Creates this object.
 	 */
 	public function __construct() {
-		$this->resourceFactory = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+		$this->resourceFactory = Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
 		$this->databaseConnection = $GLOBALS['TYPO3_DB'];
 	}
 

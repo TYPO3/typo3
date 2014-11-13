@@ -55,8 +55,8 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 	public function __construct(\TYPO3\CMS\Form\Domain\Model\Form $form, array $typoScript) {
 		$this->form = $form;
 		$this->typoScript = $typoScript;
-		$this->mailMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
-		$this->requestHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Request');
+		$this->mailMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
+		$this->requestHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Request::class);
 	}
 
 	/**
@@ -149,7 +149,7 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 		}
 
 		/** @var $addressParser \TYPO3\CMS\Core\Mail\Rfc822AddressesParser */
-		$addressParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\Rfc822AddressesParser', $emails);
+		$addressParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\Rfc822AddressesParser::class, $emails);
 		$addresses = $addressParser->parseAddressList();
 
 		$validEmails = array();
@@ -254,7 +254,7 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 	 */
 	protected function setHtmlContent() {
 		/** @var $view \TYPO3\CMS\Form\View\Mail\Html\HtmlView */
-		$view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\View\\Mail\\Html\\HtmlView', $this->form, $this->typoScript);
+		$view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Mail\Html\HtmlView::class, $this->form, $this->typoScript);
 		$htmlContent = $view->get();
 		$this->mailMessage->setBody($htmlContent, 'text/html');
 	}
@@ -268,7 +268,7 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 	 */
 	protected function setPlainContent() {
 		/** @var $view \TYPO3\CMS\Form\View\Mail\Plain\PlainView */
-		$view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\View\\Mail\\Plain\\PlainView', $this->form);
+		$view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Mail\Plain\PlainView::class, $this->form);
 		$plainContent = $view->render();
 		$this->mailMessage->addPart($plainContent, 'text/plain');
 	}
@@ -292,7 +292,7 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 	 */
 	protected function render() {
 		/** @var $view \TYPO3\CMS\Form\View\Mail\MailView */
-		$view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\View\\Mail\\MailView', $this->mailMessage, $this->typoScript);
+		$view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Mail\MailView::class, $this->mailMessage, $this->typoScript);
 		return $view->render();
 	}
 

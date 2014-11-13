@@ -23,6 +23,6 @@ require __DIR__ . '/init.php';
 	'Editing a file is moved to an own module. Please use BackendUtility::getModuleUrl(\'file_edit\') to link to file_edit.php. This script will be removed in two versions.'
 );
 
-$editFileController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\File\\EditFileController');
+$editFileController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\File\EditFileController::class);
 $editFileController->main();
 $editFileController->printContent();

@@ -92,7 +92,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 	 */
 	public function getRoot() {
 		/** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
-		$node = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode');
+		$node = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode::class);
 		$node->setId('root');
 		$node->setExpanded(TRUE);
 		return $node;
@@ -108,7 +108,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 	 */
 	public function getNodes(\TYPO3\CMS\Backend\Tree\TreeNode $node, $mountPoint = 0, $level = 0) {
 		/** @var $nodeCollection \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection */
-		$nodeCollection = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNodeCollection');
+		$nodeCollection = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection::class);
 		if ($level >= 99) {
 			return $nodeCollection;
 		}
@@ -194,7 +194,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 	 */
 	public function getFilteredNodes(\TYPO3\CMS\Backend\Tree\TreeNode $node, $searchFilter, $mountPoint = 0) {
 		/** @var $nodeCollection \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection */
-		$nodeCollection = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNodeCollection');
+		$nodeCollection = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection::class);
 		$records = $this->getSubpages(-1, $searchFilter);
 		if (!is_array($records) || !count($records)) {
 			return $nodeCollection;
@@ -280,7 +280,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 					$refNode->setLeaf(FALSE);
 					$reference = $refNode->getChildNodes();
 					if ($reference == NULL) {
-						$reference = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNodeCollection');
+						$reference = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection::class);
 						$refNode->setChildNodes($reference);
 					}
 				} else {
@@ -293,7 +293,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 					}
 					$refNode->setText($text, $refNode->getTextSourceField(), $refNode->getPrefix(), $refNode->getSuffix());
 					/** @var $childCollection \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection */
-					$childCollection = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNodeCollection');
+					$childCollection = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection::class);
 					if ($i + 1 >= $amountOfRootlineElements) {
 						$childNodes = $this->getNodes($refNode, $mountPoint);
 						foreach ($childNodes as $childNode) {
@@ -328,7 +328,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 	 */
 	public function getTreeMounts($searchFilter = '') {
 		/** @var $nodeCollection \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection */
-		$nodeCollection = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNodeCollection');
+		$nodeCollection = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection::class);
 		$isTemporaryMountPoint = FALSE;
 		$rootNodeIsVirtual = FALSE;
 		$mountPoints = (int)$GLOBALS['BE_USER']->uc['pageTree_temporaryMountPoint'];

@@ -35,7 +35,7 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 		// Package manager is mocked in some tests. Backup the original one here to re-inject it to
 		// ExtensionManagementUtility in tearDown() again. makeInstance() is allowed to be used here
 		// since the PackageManager is registered as singleton by bootstrap.
-		$this->backupPackageManager = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Package\\PackageManager');
+		$this->backupPackageManager = Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
 	}
 
 	/**

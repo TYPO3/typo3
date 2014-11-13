@@ -34,7 +34,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * function main() {
  * reStore settings
- * $store = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\ModuleSettings');
+ * $store = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\ModuleSettings::class);
  * $store->init('tx_dam_select');
  * $store->setStoreList('tx_dam_select');
  * $store->processStoreControl();

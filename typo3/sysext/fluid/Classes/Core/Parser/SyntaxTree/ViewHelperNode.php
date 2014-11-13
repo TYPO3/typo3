@@ -53,7 +53,7 @@ class ViewHelperNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNod
 	 */
 	public function __construct(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper $viewHelper, array $arguments) {
 		$this->uninitializedViewHelper = $viewHelper;
-		$this->viewHelpersByContext = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
+		$this->viewHelpersByContext = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class);
 		$this->arguments = $arguments;
 		$this->viewHelperClassName = get_class($this->uninitializedViewHelper);
 	}

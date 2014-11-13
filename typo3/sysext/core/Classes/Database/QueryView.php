@@ -177,7 +177,7 @@ class QueryView {
 			// Show query
 			if ($saveArr['queryTable']) {
 				/** @var \TYPO3\CMS\Core\Database\QueryGenerator */
-				$qGen = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\QueryGenerator');
+				$qGen = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\QueryGenerator::class);
 				$qGen->init('queryConfig', $saveArr['queryTable']);
 				$qGen->makeSelectorTable($saveArr);
 				$qGen->enablePrefix = 1;
@@ -238,7 +238,7 @@ class QueryView {
 				if ($storeIndex > 0) {
 					$writeArray = $this->loadStoreQueryConfigs($storeQueryConfigs, $storeIndex, $writeArray);
 					$saveStoreArray = 1;
-					$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', sprintf($GLOBALS['LANG']->getLL('query_loaded'), htmlspecialchars($storeArray[$storeIndex])));
+					$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, sprintf($GLOBALS['LANG']->getLL('query_loaded'), htmlspecialchars($storeArray[$storeIndex])));
 				} elseif ($storeIndex < 0 && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('sys_action')) {
 					$actionRecord = BackendUtility::getRecord('sys_action', abs($storeIndex));
 					if (is_array($actionRecord)) {
@@ -249,16 +249,16 @@ class QueryView {
 						}
 						$writeArray = $this->loadStoreQueryConfigs($dbSC, '0', $writeArray);
 						$saveStoreArray = 1;
-						$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', sprintf($GLOBALS['LANG']->getLL('query_from_action_loaded'), htmlspecialchars($actionRecord['title'])));
+						$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, sprintf($GLOBALS['LANG']->getLL('query_from_action_loaded'), htmlspecialchars($actionRecord['title'])));
 					}
 				}
 			} elseif ($storeControl['SAVE']) {
 				if ($storeIndex < 0) {
 					$qOK = $this->saveQueryInAction(abs($storeIndex));
 					if ($qOK) {
-						$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('query_saved'));
+						$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('query_saved'));
 					} else {
-						$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('query_notsaved'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+						$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('query_notsaved'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 					}
 				} else {
 					if (trim($storeControl['title'])) {
@@ -271,12 +271,12 @@ class QueryView {
 						}
 						$storeQueryConfigs = $this->addToStoreQueryConfigs($storeQueryConfigs, $storeIndex);
 						$saveStoreArray = 1;
-						$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('query_saved'));
+						$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('query_saved'));
 					}
 				}
 			} elseif ($storeControl['REMOVE']) {
 				if ($storeIndex > 0) {
-					$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', sprintf($GLOBALS['LANG']->getLL('query_removed'), htmlspecialchars($storeArray[$storeControl['STORE']])));
+					$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, sprintf($GLOBALS['LANG']->getLL('query_removed'), htmlspecialchars($storeArray[$storeControl['STORE']])));
 					// Removing
 					unset($storeArray[$storeControl['STORE']]);
 					$saveStoreArray = 1;
@@ -315,7 +315,7 @@ class QueryView {
 			$output .= $GLOBALS['SOBE']->doc->spacer(20);
 		}
 		// Query Maker:
-		$qGen = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\QueryGenerator');
+		$qGen = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\QueryGenerator::class);
 		$qGen->init('queryConfig', $GLOBALS['SOBE']->MOD_SETTINGS['queryTable']);
 		if ($this->formName) {
 			$qGen->setFormName($this->formName);
@@ -522,7 +522,7 @@ class QueryView {
 	 */
 	public function resultRowDisplay($row, $conf, $table) {
 		static $even = FALSE;
-		$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 		$SET = $GLOBALS['SOBE']->MOD_SETTINGS;
 		$out = '<tr class="bgColor' . ($even ? '6' : '4') . '">';
 		$even = !$even;

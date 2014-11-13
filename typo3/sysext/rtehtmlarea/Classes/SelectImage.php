@@ -194,7 +194,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	public function insertMagicImage(Resource\File $fileObject, $altText = '', $titleText = '', $additionalParams = '') {
 		// Create the magic image service
 		/** @var $magicImageService Resource\Service\MagicImageService */
-		$magicImageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Service\\MagicImageService');
+		$magicImageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Service\MagicImageService::class);
 		$magicImageService->setMagicImageMaximumDimensions($this->thisConfig);
 		// Create the magic image
 		$imageConfiguration = array(
@@ -643,7 +643,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 
 			case 'magic':
 				// Create folder tree:
-				$foldertree = GeneralUtility::makeInstance('TYPO3\\CMS\\Rtehtmlarea\\FolderTree');
+				$foldertree = GeneralUtility::makeInstance(\TYPO3\CMS\Rtehtmlarea\FolderTree::class);
 				$foldertree->thisScript = $this->thisScript;
 				$tree = $foldertree->getBrowsableTree();
 				// Get currently selected folder
@@ -724,7 +724,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				$this->content .= '<br />';
 				break;
 			case 'dragdrop':
-				$foldertree = GeneralUtility::makeInstance('TBE_FolderTree');
+				$foldertree = GeneralUtility::makeInstance(\TBE_FolderTree::class);
 				$foldertree->thisScript = $this->thisScript;
 				$foldertree->ext_noTempRecyclerDirs = TRUE;
 				$tree = $foldertree->getBrowsableTree();

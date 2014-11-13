@@ -122,7 +122,7 @@ class FrontendFormEngine extends \TYPO3\CMS\Backend\Form\FormEngine {
 	 * @return void
 	 */
 	public function initializeTemplateContainer() {
-		$GLOBALS['TBE_TEMPLATE'] = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\FrontendDocumentTemplate');
+		$GLOBALS['TBE_TEMPLATE'] = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\FrontendDocumentTemplate::class);
 		$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->addInlineSetting('', 'PATH_typo3', GeneralUtility::dirname(GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '/' . TYPO3_mainDir);
 		$GLOBALS['SOBE'] = new \stdClass();
 		$GLOBALS['SOBE']->doc = $GLOBALS['TBE_TEMPLATE'];

@@ -55,7 +55,7 @@ class FileStorageIndexingTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 * @return \TYPO3\CMS\Core\Resource\Index\Indexer
 	 */
 	protected function getIndexer(\TYPO3\CMS\Core\Resource\ResourceStorage $storage) {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Index\\Indexer', $storage);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\Indexer::class, $storage);
 	}
 
 

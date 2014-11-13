@@ -57,7 +57,7 @@ class JavaScriptEncoder implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Alphanumerical character are set to NULL in the matrix.
 	 */
 	public function __construct() {
-		$this->charsetConversion = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
+		$this->charsetConversion = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
 		for ($i = 0; $i < 256; $i++) {
 			if ($i >= ord('0') && $i <= ord('9') || $i >= ord('A') && $i <= ord('Z') || $i >= ord('a') && $i <= ord('z')) {
 				$this->hexMatrix[$i] = NULL;

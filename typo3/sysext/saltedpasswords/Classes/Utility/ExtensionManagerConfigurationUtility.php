@@ -274,7 +274,7 @@ class ExtensionManagerConfigurationUtility {
 		// Try to instantiate an RSAauth backend. If this does not work,
 		// it means that OpenSSL is not usable
 		/** @var \TYPO3\CMS\Rsaauth\Backend\BackendFactory $rsaauthBackendFactory */
-		$rsaauthBackendFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Rsaauth\\Backend\\BackendFactory');
+		$rsaauthBackendFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Rsaauth\Backend\BackendFactory::class);
 		$backend = $rsaauthBackendFactory->getBackend();
 		return $backend !== NULL;
 	}

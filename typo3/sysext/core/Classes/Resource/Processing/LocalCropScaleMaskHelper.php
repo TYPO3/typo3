@@ -56,7 +56,7 @@ class LocalCropScaleMaskHelper {
 
 		$originalFileName = $sourceFile->getForLocalProcessing(FALSE);
 		/** @var $gifBuilder \TYPO3\CMS\Frontend\Imaging\GifBuilder */
-		$gifBuilder = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
+		$gifBuilder = Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Imaging\GifBuilder::class);
 		$gifBuilder->init();
 		$gifBuilder->absPrefix = PATH_site;
 

@@ -371,7 +371,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 
 		} else {
 			/** @var $flashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
-			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('storageNotBrowsableMessage'), $GLOBALS['LANG']->getLL('storageNotBrowsableTitle'), \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
+			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('storageNotBrowsableMessage'), $GLOBALS['LANG']->getLL('storageNotBrowsableTitle'), \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
 			$out = $flashMessage->render();
 		}
 		return $out;
@@ -559,7 +559,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	public function formatFileList(array $files) {
 		$out = '';
 		// first two keys are "0" (default) and "-1" (multiple), after that comes the "other languages"
-		$allSystemLanguages = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TranslationConfigurationProvider')->getSystemLanguages();
+		$allSystemLanguages = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider::class)->getSystemLanguages();
 		$systemLanguages = array_filter($allSystemLanguages, function($languageRecord) {
 			if ($languageRecord['uid'] === -1 || $languageRecord['uid'] === 0 || !$GLOBALS['BE_USER']->checkLanguageAccess($languageRecord['uid'])) {
 				return FALSE;

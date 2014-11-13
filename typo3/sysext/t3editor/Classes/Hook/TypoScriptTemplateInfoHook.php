@@ -36,7 +36,7 @@ class TypoScriptTemplateInfoHook {
 	 */
 	protected function getT3editor() {
 		if ($this->t3editor == NULL) {
-			$this->t3editor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\T3editor\\T3editor')->setMode(\TYPO3\CMS\T3editor\T3editor::MODE_TYPOSCRIPT)->setAjaxSaveType($this->ajaxSaveType);
+			$this->t3editor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\T3editor\T3editor::class)->setMode(\TYPO3\CMS\T3editor\T3editor::MODE_TYPOSCRIPT)->setAjaxSaveType($this->ajaxSaveType);
 		}
 		return $this->t3editor;
 	}
@@ -101,7 +101,7 @@ class TypoScriptTemplateInfoHook {
 			$set = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SET');
 			$template_uid = $set['templatesOnPage'] ?: 0;
 			// Defined global here!
-			$tmpl = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService');
+			$tmpl = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);
 			// Do not log time-performance information
 			$tmpl->tt_track = 0;
 			$tmpl->init();
@@ -127,14 +127,14 @@ class TypoScriptTemplateInfoHook {
 					}
 					if (count($recData)) {
 						// process template row before saving
-						$tstemplateinfo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Tstemplate\\Controller\\TypoScriptTemplateInformationModuleFunctionController');
+						$tstemplateinfo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateInformationModuleFunctionController::class);
 						/* @var $tstemplateinfo \TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateInformationModuleFunctionController */
 						// load the MOD_SETTINGS in order to check if the includeTypoScriptFileContent is set
 						$tstemplateinfo->pObj = $pObj;
 						$tstemplateinfo->pObj->MOD_SETTINGS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData(array('includeTypoScriptFileContent' => TRUE), array(), 'web_ts');
 						$recData['sys_template'][$saveId] = $tstemplateinfo->processTemplateRowBeforeSaving($recData['sys_template'][$saveId]);
 						// Create new tce-object
-						$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+						$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 						$tce->stripslashes_values = 0;
 						// Initialize
 						$tce->start($recData, array());

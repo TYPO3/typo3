@@ -212,7 +212,7 @@ class Abbreviation extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 				$GLOBALS['BE_USER']->groupData['webmounts'] = $savedGroupDataWebmounts;
 				$GLOBALS['WEBMOUNTS'] = $GLOBALS['BE_USER']->returnWebmounts();
 			}
-			$queryGenerator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\QueryGenerator');
+			$queryGenerator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\QueryGenerator::class);
 			foreach ($pids as $key => $val) {
 				if ($pageTree) {
 					$pageTreePrefix = ',';

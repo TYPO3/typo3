@@ -64,7 +64,7 @@ class BackendLayoutWizardController {
 		$this->md5ID = $this->P['md5ID'];
 		$uid = (int)$this->P['uid'];
 		// Initialize document object:
-		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$pageRenderer = $this->doc->getPageRenderer();
 		$pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('cms') . 'layout/res/grideditor.js');
@@ -97,7 +97,7 @@ class BackendLayoutWizardController {
 			$rowCount = 1;
 		} else {
 			// load TS parser
-			$parser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
+			$parser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
 			$parser->parse($record[0][$this->P['field']]);
 			$data = $parser->setup['backend_layout.'];
 			$rows = array();

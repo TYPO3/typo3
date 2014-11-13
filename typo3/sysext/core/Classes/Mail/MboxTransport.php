@@ -76,7 +76,7 @@ class MboxTransport implements \Swift_Transport {
 		// Add the complete mail inclusive headers
 		$messageStr .= $message->toString();
 		$messageStr .= LF . LF;
-		$lockObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Locking\\Locker', $this->debugFile);
+		$lockObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Locking\Locker::class, $this->debugFile);
 		/** @var \TYPO3\CMS\Core\Locking\Locker $lockObject */
 		$lockObject->acquireExclusiveLock();
 		// Write the mbox file

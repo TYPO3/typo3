@@ -15,6 +15,6 @@
 /**
  * Wizard for choosing colors in TCEforms
  */
-$colorpickerController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\Wizard\\ColorpickerController');
+$colorpickerController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\Wizard\ColorpickerController::class);
 $colorpickerController->main();
 $colorpickerController->printContent();

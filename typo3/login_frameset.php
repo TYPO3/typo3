@@ -23,6 +23,6 @@ define('TYPO3_PROCEED_IF_NO_USER', 1);
 require __DIR__ . '/init.php';
 
 // Make instance:
-$loginFramesetController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\LoginFramesetController');
+$loginFramesetController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\LoginFramesetController::class);
 $loginFramesetController->main();
 $loginFramesetController->printContent();

@@ -92,7 +92,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 						$editIcon = '<a href="#" onclick="' . htmlspecialchars($onclickUrl) . '" title="' . $GLOBALS['LANG']->getLL('editTSconfig', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 					}
 					$TScontent = nl2br(htmlspecialchars(trim($v) . chr(10)));
-					$tsparser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
+					$tsparser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
 					$tsparser->lineNumberOffset = 0;
 					$TScontent = $tsparser->doSyntaxHighlight(trim($v) . LF);
 					$lines[] = '
@@ -117,7 +117,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 
 		} else {
 			// Defined global here!
-			$tmpl = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService');
+			$tmpl = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);
 
 			// Do not log time-performance information
 			$tmpl->tt_track = 0;

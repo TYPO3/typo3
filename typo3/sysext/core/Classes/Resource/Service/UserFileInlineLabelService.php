@@ -51,7 +51,7 @@ class UserFileInlineLabelService {
 				if (isset($params['row']['title'])) {
 					$fullTitle = $params['row']['title'];
 				} else {
-					$metaDataRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Index\\MetaDataRepository');
+					$metaDataRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class);
 					$metaData = $metaDataRepository->findByFileUid($fileRecord['uid']);
 					$fullTitle = $metaData['title'];
 				}

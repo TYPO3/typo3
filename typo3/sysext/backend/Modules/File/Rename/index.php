@@ -12,6 +12,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-$renameFileController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\File\\RenameFileController');
+$renameFileController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\File\RenameFileController::class);
 $renameFileController->main();
 $renameFileController->printContent();

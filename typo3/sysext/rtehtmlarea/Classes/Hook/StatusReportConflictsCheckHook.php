@@ -54,7 +54,7 @@ class StatusReportConflictsCheckHook implements \TYPO3\CMS\Reports\StatusProvide
 			$message = '';
 			$status = \TYPO3\CMS\Reports\Status::OK;
 		}
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $title, $value, $message, $status);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class, $title, $value, $message, $status);
 	}
 
 }

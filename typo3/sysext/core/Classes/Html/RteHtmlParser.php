@@ -359,7 +359,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 			/** @var $resourceFactory Resource\ResourceFactory */
 			$resourceFactory = Resource\ResourceFactory::getInstance();
 			/** @var $magicImageService Resource\Service\MagicImageService */
-			$magicImageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Service\\MagicImageService');
+			$magicImageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Service\MagicImageService::class);
 			$magicImageService->setMagicImageMaximumDimensions($this->tsConfig);
 			foreach ($imgSplit as $k => $v) {
 				// Image found, do processing:
@@ -1723,7 +1723,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	*/
 	protected function getLogger() {
 		/** @var $logManager \TYPO3\CMS\Core\Log\LogManager */
-		$logManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager');
+		$logManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class);
 
 		return $logManager->getLogger(get_class($this));
 	}

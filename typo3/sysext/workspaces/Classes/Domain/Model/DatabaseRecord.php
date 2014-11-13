@@ -43,7 +43,7 @@ class DatabaseRecord {
 	 * @return \TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord
 	 */
 	static public function create($table, $uid) {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Domain\\Model\\DatabaseRecord', $table, $uid);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord::class, $table, $uid);
 	}
 
 	/**
@@ -54,7 +54,7 @@ class DatabaseRecord {
 	 * @return \TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord
 	 */
 	static public function createFromArray($table, array $row) {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Domain\\Model\\DatabaseRecord', $table, $row['uid'], $row);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord::class, $table, $row['uid'], $row);
 	}
 
 	/**

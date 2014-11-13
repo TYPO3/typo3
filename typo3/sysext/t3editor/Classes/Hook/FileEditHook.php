@@ -38,7 +38,7 @@ class FileEditHook {
 	 */
 	protected function getT3editor() {
 		if ($this->t3editor == NULL) {
-			$this->t3editor = GeneralUtility::makeInstance('TYPO3\\CMS\\T3editor\\T3editor')->setAjaxSaveType($this->ajaxSaveType);
+			$this->t3editor = GeneralUtility::makeInstance(\TYPO3\CMS\T3editor\T3editor::class)->setAjaxSaveType($this->ajaxSaveType);
 		}
 		return $this->t3editor;
 	}
@@ -108,7 +108,7 @@ class FileEditHook {
 	public function save($parameters, $pObj) {
 		$savingsuccess = FALSE;
 		if ($parameters['type'] == $this->ajaxSaveType) {
-			$tceFile = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\File\\FileController');
+			$tceFile = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\File\FileController::class);
 			$tceFile->processAjaxRequest(array(), $parameters['ajaxObj']);
 			$result = $parameters['ajaxObj']->getContent('result');
 			$savingsuccess = is_array($result) && $result['editfile'][0];

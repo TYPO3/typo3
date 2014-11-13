@@ -196,7 +196,7 @@ class Commands {
 	 */
 	static protected function processTceCmdAndDataMap(array $cmd, array $data = array()) {
 		/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
-		$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 		$tce->stripslashes_values = 0;
 		$tce->start($data, $cmd);
 		$tce->copyTree = MathUtility::forceIntegerInRange($GLOBALS['BE_USER']->uc['copyLevels'], 0, 100);
@@ -298,7 +298,7 @@ class Commands {
 			self::$titleLength = (int)$GLOBALS['BE_USER']->uc['titleLen'];
 		}
 		/** @var $subNode \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
-		$subNode = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode');
+		$subNode = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode::class);
 		$subNode->setRecord($record);
 		$subNode->setCls($record['_CSSCLASS']);
 		$subNode->setType('pages');

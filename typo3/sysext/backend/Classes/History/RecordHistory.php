@@ -216,7 +216,7 @@ class RecordHistory {
 		}
 		// Writes the data:
 		if ($cmdmapArray) {
-			$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+			$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 			$tce->stripslashes_values = 0;
 			$tce->debug = 0;
 			$tce->dontProcessTransformations = 1;
@@ -251,7 +251,7 @@ class RecordHistory {
 		// Removing fields:
 		$data = $this->removeFilefields($rollbackData[0], $data);
 		// Writes the data:
-		$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 		$tce->stripslashes_values = 0;
 		$tce->debug = 0;
 		$tce->dontProcessTransformations = 1;
@@ -456,7 +456,7 @@ class RecordHistory {
 			$theCode .= '<br />' . $this->linkPage(IconUtility::getSpriteIcon('actions-move-to-bottom', array('title' => $GLOBALS['LANG']->getLL('fullView', TRUE))), array('diff' => ''));
 		}
 		// Add message about the difference view.
-		$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('differenceMsg'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
+		$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('differenceMsg'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
 		$theCode .= '<br /><br />' . $flashMessage->render() . '<br />';
 		// Add the whole content as a module section:
 		return $GLOBALS['SOBE']->doc->section($GLOBALS['LANG']->getLL('changes'), $theCode, FALSE, TRUE);
@@ -517,7 +517,7 @@ class RecordHistory {
 	public function renderDiff($entry, $table, $rollbackUid = 0) {
 		$lines = array();
 		if (is_array($entry['newRecord'])) {
-			$t3lib_diff_Obj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\DiffUtility');
+			$t3lib_diff_Obj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\DiffUtility::class);
 			$fieldsToDisplay = array_keys($entry['newRecord']);
 			foreach ($fieldsToDisplay as $fN) {
 				if (is_array($GLOBALS['TCA'][$table]['columns'][$fN]) && $GLOBALS['TCA'][$table]['columns'][$fN]['config']['type'] != 'passthrough') {

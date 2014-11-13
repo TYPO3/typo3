@@ -307,7 +307,7 @@ class Bootstrap {
 		Utility\ExtensionManagementUtility::setPackageManager($packageManager);
 		$packageManager->injectClassLoader($this->getEarlyInstance('TYPO3\\CMS\\Core\\Core\\ClassLoader'));
 		$packageManager->injectCoreCache($this->getEarlyInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_core'));
-		$packageManager->injectDependencyResolver(Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Package\\DependencyResolver'));
+		$packageManager->injectDependencyResolver(Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\DependencyResolver::class));
 		$packageManager->initialize($this);
 		Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Package\\PackageManager', $packageManager);
 		return $this;
@@ -729,7 +729,7 @@ class Bootstrap {
 	 */
 	public function initializeTypo3DbGlobal() {
 		/** @var $databaseConnection \TYPO3\CMS\Core\Database\DatabaseConnection */
-		$databaseConnection = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\DatabaseConnection');
+		$databaseConnection = Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
 		$databaseConnection->setDatabaseName(TYPO3_db);
 		$databaseConnection->setDatabaseUsername(TYPO3_db_username);
 		$databaseConnection->setDatabasePassword(TYPO3_db_password);
@@ -976,7 +976,7 @@ class Bootstrap {
 	 */
 	public function initializeBackendUser() {
 		/** @var $backendUser \TYPO3\CMS\Core\Authentication\BackendUserAuthentication */
-		$backendUser = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
+		$backendUser = Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
 		$backendUser->warningEmail = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
 		$backendUser->lockIP = $GLOBALS['TYPO3_CONF_VARS']['BE']['lockIP'];
 		$backendUser->auth_timeout_field = (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'];
@@ -1023,7 +1023,7 @@ class Bootstrap {
 	 */
 	public function initializeLanguageObject() {
 		/** @var $GLOBALS['LANG'] \TYPO3\CMS\Lang\LanguageService */
-		$GLOBALS['LANG'] = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Lang\\LanguageService');
+		$GLOBALS['LANG'] = Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Lang\LanguageService::class);
 		$GLOBALS['LANG']->init($GLOBALS['BE_USER']->uc['lang']);
 		return $this;
 	}
@@ -1090,7 +1090,7 @@ class Bootstrap {
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function initializeBackendTemplate() {
-		$GLOBALS['TBE_TEMPLATE'] = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$GLOBALS['TBE_TEMPLATE'] = Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		return $this;
 	}
 }

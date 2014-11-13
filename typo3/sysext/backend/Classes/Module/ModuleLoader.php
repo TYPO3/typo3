@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Load Backend Interface modules
  *
  * Typically instantiated like this:
- * $this->loadModules = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleLoader');
+ * $this->loadModules = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Module\ModuleLoader::class);
  * $this->loadModules->load($TBE_MODULES);
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>

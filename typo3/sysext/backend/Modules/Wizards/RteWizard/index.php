@@ -17,6 +17,6 @@
  */
 \TYPO3\CMS\Backend\Utility\BackendUtility::lockRecords();
 
-$rteController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\Wizard\\RteController');
+$rteController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\Wizard\RteController::class);
 $rteController->main();
 $rteController->printContent();

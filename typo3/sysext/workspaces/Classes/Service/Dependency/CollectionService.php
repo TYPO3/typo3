@@ -55,7 +55,7 @@ class CollectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function getDependencyResolver() {
 		if (!isset($this->dependencyResolver)) {
-			$this->dependencyResolver = GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\Dependency\\DependencyResolver');
+			$this->dependencyResolver = GeneralUtility::makeInstance(\TYPO3\CMS\Version\Dependency\DependencyResolver::class);
 			$this->dependencyResolver->setOuterMostParentsRequireReferences(TRUE);
 			$this->dependencyResolver->setWorkspace($this->getWorkspace());
 

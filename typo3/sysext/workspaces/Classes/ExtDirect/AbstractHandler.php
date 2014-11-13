@@ -55,7 +55,7 @@ abstract class AbstractHandler {
 	 * @return \TYPO3\CMS\Workspaces\Service\WorkspaceService
 	 */
 	protected function getWorkspaceService() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
 	}
 
 	/**
@@ -111,7 +111,7 @@ abstract class AbstractHandler {
 	 */
 	protected function createIntegrityService(array $affectedElements) {
 		/** @var $integrityService \TYPO3\CMS\Workspaces\Service\IntegrityService */
-		$integrityService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\IntegrityService');
+		$integrityService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\IntegrityService::class);
 		$integrityService->setAffectedElements($affectedElements);
 		return $integrityService;
 	}

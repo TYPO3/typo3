@@ -373,14 +373,14 @@ class File extends AbstractFile {
 	 * @return \TYPO3\CMS\Core\Resource\Index\MetaDataRepository
 	 */
 	protected function getMetaDataRepository() {
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Index\\MetaDataRepository');
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class);
 	}
 
 	/**
 	 * @return \TYPO3\CMS\Core\Resource\Index\FileIndexRepository
 	 */
 	protected function getFileIndexRepository() {
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository');
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\FileIndexRepository::class);
 	}
 
 	/**

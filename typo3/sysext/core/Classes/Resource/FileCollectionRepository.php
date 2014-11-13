@@ -66,7 +66,7 @@ class FileCollectionRepository extends \TYPO3\CMS\Core\Collection\RecordCollecti
 	 * @return ResourceFactory
 	 */
 	protected function getFileFactory() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
 	}
 
 }

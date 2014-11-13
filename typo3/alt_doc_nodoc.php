@@ -21,6 +21,6 @@
  */
 require __DIR__ . '/init.php';
 
-$noDocumentsOpenController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\NoDocumentsOpenController');
+$noDocumentsOpenController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\NoDocumentsOpenController::class);
 $noDocumentsOpenController->main();
 $noDocumentsOpenController->printContent();

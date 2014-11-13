@@ -27,7 +27,7 @@ class ObjectManagerException implements \TYPO3\CMS\Extbase\Object\ObjectManagerI
 	 * Constructs a new Object Manager
 	 */
 	public function __construct() {
-		$this->objectContainer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\Container\\Container');
+		$this->objectContainer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\Container\Container::class);
 	}
 
 	/**

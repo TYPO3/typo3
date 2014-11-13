@@ -34,7 +34,7 @@ class ActionHandler extends AbstractHandler {
 	 * Creates this object.
 	 */
 	public function __construct() {
-		$this->stageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\StagesService');
+		$this->stageService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\StagesService::class);
 	}
 
 	/**
@@ -362,9 +362,9 @@ class ActionHandler extends AbstractHandler {
 	public function discardStagesFromPage($pageId) {
 		$cmdMapArray = array();
 		/** @var $workspaceService \TYPO3\CMS\Workspaces\Service\WorkspaceService */
-		$workspaceService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
+		$workspaceService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
 		/** @var $stageService StagesService */
-		$stageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\StagesService');
+		$stageService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\StagesService::class);
 		$workspaceItemsArray = $workspaceService->selectVersionsInWorkspace($stageService->getWorkspaceId(), ($filter = 1), ($stage = -99), $pageId, ($recursionLevel = 0), ($selectionType = 'tables_modify'));
 		foreach ($workspaceItemsArray as $tableName => $items) {
 			foreach ($items as $item) {
@@ -444,7 +444,7 @@ class ActionHandler extends AbstractHandler {
 		}
 
 		/** @var \TYPO3\CMS\Core\DataHandling\DataHandler $dataHandler */
-		$dataHandler = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$dataHandler = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 		$dataHandler->start(array(), $cmdMapArray);
 		$dataHandler->process_cmdmap();
 
@@ -717,7 +717,7 @@ class ActionHandler extends AbstractHandler {
 	 */
 	protected function getStageService() {
 		if (!isset($this->stageService)) {
-			$this->stageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\StagesService');
+			$this->stageService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\StagesService::class);
 		}
 		return $this->stageService;
 	}
@@ -730,7 +730,7 @@ class ActionHandler extends AbstractHandler {
 	 * @author Michael Klapper <development@morphodo.com>
 	 */
 	public function sendPageToPreviousStage($id) {
-		$workspaceService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
+		$workspaceService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
 		$workspaceItemsArray = $workspaceService->selectVersionsInWorkspace($this->stageService->getWorkspaceId(), ($filter = 1), ($stage = -99), $id, ($recursionLevel = 0), ($selectionType = 'tables_modify'));
 		list($currentStage, $previousStage) = $this->getStageService()->getPreviousStageForElementCollection($workspaceItemsArray);
 		// get only the relevant items for processing
@@ -749,7 +749,7 @@ class ActionHandler extends AbstractHandler {
 	 * @author Michael Klapper <development@morphodo.com>
 	 */
 	public function sendPageToNextStage($id) {
-		$workspaceService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
+		$workspaceService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
 		$workspaceItemsArray = $workspaceService->selectVersionsInWorkspace($this->stageService->getWorkspaceId(), ($filter = 1), ($stage = -99), $id, ($recursionLevel = 0), ($selectionType = 'tables_modify'));
 		list($currentStage, $nextStage) = $this->getStageService()->getNextStageForElementCollection($workspaceItemsArray);
 		// get only the relevant items for processing
@@ -770,8 +770,8 @@ class ActionHandler extends AbstractHandler {
 	 * @author Michael Klapper <development@morphodo.com>
 	 */
 	public function updateStageChangeButtons($id) {
-		$stageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\StagesService');
-		$workspaceService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
+		$stageService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\StagesService::class);
+		$workspaceService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
 		// fetch the next and previous stage
 		$workspaceItemsArray = $workspaceService->selectVersionsInWorkspace($stageService->getWorkspaceId(), ($filter = 1), ($stage = -99), $id, ($recursionLevel = 0), ($selectionType = 'tables_modify'));
 		list(, $nextStage) = $stageService->getNextStageForElementCollection($workspaceItemsArray);

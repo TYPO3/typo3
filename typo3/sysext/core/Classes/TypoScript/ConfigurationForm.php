@@ -155,7 +155,7 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	 * @return array
 	 */
 	public function ext_mergeIncomingWithExisting($arr) {
-		$parseObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
+		$parseObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
 		$parseObj->parse(implode(LF, $this->ext_incomingValues));
 		$arr2 = $parseObj->setup;
 		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($arr, $arr2);

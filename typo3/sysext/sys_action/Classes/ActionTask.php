@@ -84,7 +84,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 			$record = BackendUtility::getRecord('sys_action', $show);
 			// If the action is not found
 			if (count($record) == 0) {
-				$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('action_error-not-found', TRUE), $GLOBALS['LANG']->getLL('action_error'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+				$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('action_error-not-found', TRUE), $GLOBALS['LANG']->getLL('action_error'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				$content .= $flashMessage->render();
 			} else {
 				// Render the task
@@ -193,7 +193,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 		if (count($actionList) > 0) {
 			$content .= $this->taskObject->renderListMenu($actionList);
 		} else {
-			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('action_not-found-description', TRUE), $GLOBALS['LANG']->getLL('action_not-found'), \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
+			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('action_not-found-description', TRUE), $GLOBALS['LANG']->getLL('action_not-found'), \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
 			$content .= $flashMessage->render();
 		}
 		// Admin users can create a new action
@@ -217,7 +217,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 		$beRec = BackendUtility::getRecord('be_users', (int)$record['t1_copy_of_user']);
 		// A record is need which is used as copy for the new user
 		if (!is_array($beRec)) {
-			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('action_notReady', TRUE), $GLOBALS['LANG']->getLL('action_error'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('action_notReady', TRUE), $GLOBALS['LANG']->getLL('action_error'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 			$content .= $flashMessage->render();
 			return $content;
 		}
@@ -245,13 +245,13 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 			}
 			// Show errors if there are any
 			if (count($errors) > 0) {
-				$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', implode('<br />', $errors), $GLOBALS['LANG']->getLL('action_error'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+				$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, implode('<br />', $errors), $GLOBALS['LANG']->getLL('action_error'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				$content .= $flashMessage->render() . '<br />';
 			} else {
 				// Save user
 				$key = $this->saveNewBackendUser($record, $vars);
 				// Success message
-				$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $vars['key'] === 'NEW' ? $GLOBALS['LANG']->getLL('success-user-created') : $GLOBALS['LANG']->getLL('success-user-updated'), $GLOBALS['LANG']->getLL('success'), \TYPO3\CMS\Core\Messaging\FlashMessage::OK);
+				$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $vars['key'] === 'NEW' ? $GLOBALS['LANG']->getLL('success-user-created') : $GLOBALS['LANG']->getLL('success-user-updated'), $GLOBALS['LANG']->getLL('success'), \TYPO3\CMS\Core\Messaging\FlashMessage::OK);
 				$content .= $flashMessage->render() . '<br />';
 			}
 		}
@@ -270,7 +270,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 			}
 		}
 		$this->JScode();
-		$loadDB = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+		$loadDB = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
 		$loadDB->start($vars['db_mountpoints'], 'pages');
 		$content .= '<form action="" method="post" enctype="multipart/form-data">
 						<fieldset class="fields">
@@ -463,7 +463,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 		}
 		// Save/update user by using TCEmain
 		if (is_array($data)) {
-			$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+			$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 			$tce->stripslashes_values = 0;
 			$tce->start($data, array(), $GLOBALS['BE_USER']);
 			$tce->admin = 1;
@@ -565,7 +565,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 	 * @return void
 	 */
 	protected function JScode() {
-		$this->t3lib_TCEforms = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormEngine');
+		$this->t3lib_TCEforms = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\FormEngine::class);
 		$this->t3lib_TCEforms->backPath = $GLOBALS['BACK_PATH'];
 		$this->t3lib_TCEforms->printNeededJSFunctions();
 	}
@@ -643,7 +643,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 	protected function viewEditRecord($record) {
 		$content = '';
 		$actionList = array();
-		$dbAnalysis = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+		$dbAnalysis = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
 		$dbAnalysis->setFetchAllFields(TRUE);
 		$dbAnalysis->start($record['t4_recordsToEdit'], '*');
 		$dbAnalysis->getFromDB();
@@ -682,7 +682,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 			$sql_query = unserialize($record['t2_data']);
 			if (!is_array($sql_query) || is_array($sql_query) && strtoupper(substr(trim($sql_query['qSelect']), 0, 6)) === 'SELECT') {
 				$actionContent = '';
-				$fullsearch = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\QueryView');
+				$fullsearch = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\QueryView::class);
 				$fullsearch->formW = 40;
 				$fullsearch->noDownloadB = 1;
 				$type = $sql_query['qC']['search_query_makeQuery'];
@@ -709,7 +709,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 				} else {
 					// Query is empty (not built)
 					$queryIsEmpty = TRUE;
-					$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('action_emptyQuery', TRUE), $GLOBALS['LANG']->getLL('action_error'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+					$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('action_emptyQuery', TRUE), $GLOBALS['LANG']->getLL('action_error'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 					$content .= '<br />' . $flashMessage->render();
 				}
 				// Admin users are allowed to see and edit the query
@@ -728,12 +728,12 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 				$content .= $this->taskObject->doc->section($GLOBALS['LANG']->getLL('action_t2_result'), $actionContent, 0, 1);
 			} else {
 				// Query is not configured
-				$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('action_notReady', TRUE), $GLOBALS['LANG']->getLL('action_error'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+				$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('action_notReady', TRUE), $GLOBALS['LANG']->getLL('action_error'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				$content .= '<br />' . $flashMessage->render();
 			}
 		} else {
 			// Required sysext lowlevel is not installed
-			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('action_lowlevelMissing', TRUE), $GLOBALS['LANG']->getLL('action_error'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('action_lowlevelMissing', TRUE), $GLOBALS['LANG']->getLL('action_error'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 			$content .= '<br />' . $flashMessage->render();
 		}
 		return $content;
@@ -750,7 +750,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 		$this->id = (int)$record['t3_listPid'];
 		$this->table = $record['t3_tables'];
 		if ($this->id == 0 || $this->table == '') {
-			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('action_notReady', TRUE), $GLOBALS['LANG']->getLL('action_error'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('action_notReady', TRUE), $GLOBALS['LANG']->getLL('action_error'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 			$content .= '<br />' . $flashMessage->render();
 			return $content;
 		}
@@ -760,7 +760,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 		// If there is access to the page, then render the list contents and set up the document template object:
 		if ($access) {
 			// Initialize the dblist object:
-			$dblist = GeneralUtility::makeInstance('TYPO3\\CMS\\SysAction\\ActionList');
+			$dblist = GeneralUtility::makeInstance(\TYPO3\CMS\SysAction\ActionList::class);
 			$dblist->script = GeneralUtility::getIndpEnv('REQUEST_URI');
 			$dblist->backPath = $GLOBALS['BACK_PATH'];
 			$dblist->calcPerms = $GLOBALS['BE_USER']->calcPerms($this->pageinfo);
@@ -847,7 +847,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 			}
 		} else {
 			// Not enough rights to access the list view or the page
-			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('action_error-access', TRUE), $GLOBALS['LANG']->getLL('action_error'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('action_error-access', TRUE), $GLOBALS['LANG']->getLL('action_error'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 			$content .= $flashMessage->render();
 		}
 		return $content;

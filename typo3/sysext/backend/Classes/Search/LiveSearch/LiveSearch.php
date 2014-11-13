@@ -77,7 +77,7 @@ class LiveSearch {
 	 */
 	public function __construct() {
 		$this->userPermissions = $GLOBALS['BE_USER']->getPagePermsClause(1);
-		$this->queryParser = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Search\\LiveSearch\\QueryParser');
+		$this->queryParser = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Search\LiveSearch\QueryParser::class);
 	}
 
 	/**
@@ -436,7 +436,7 @@ class LiveSearch {
 	 */
 	protected function getAvailablePageIds($id, $depth) {
 		$idList = '';
-		$tree = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\View\\PageTreeView');
+		$tree = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\PageTreeView::class);
 		$tree->init('AND ' . $this->userPermissions);
 		$tree->makeHTML = 0;
 		$tree->fieldArray = array('uid', 'php_tree_stop');

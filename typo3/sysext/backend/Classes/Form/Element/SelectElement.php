@@ -63,7 +63,7 @@ class SelectElement extends AbstractFormElement {
 			$item = $this->getSingleField_typeSelect_singlebox($table, $field, $row, $additionalInformation, $config, $selItems, $nMV_label);
 		} elseif ($config['renderMode'] === 'tree') {
 			// Tree renderMode
-			$treeClass = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\Element\\TreeElement', $this->formEngine);
+			$treeClass = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\Element\TreeElement::class, $this->formEngine);
 			$item = $treeClass->renderField($table, $field, $row, $additionalInformation, $config, $selItems, $nMV_label);
 			// Register the required number of elements
 			$minitems = MathUtility::forceIntegerInRange($config['minitems'], 0);

@@ -332,7 +332,7 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function getSignalSlotDispatcher() {
 		if (!isset($this->signalSlotDispatcher)) {
-			$this->signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')
+			$this->signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class)
 				->get('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
 		}
 		return $this->signalSlotDispatcher;

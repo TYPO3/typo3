@@ -23,6 +23,6 @@
  */
 
 // Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Rtehtmlarea\\Controller\\BrowseLinksController');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Rtehtmlarea\Controller\BrowseLinksController::class);
 $SOBE->main();
 $SOBE->printContent();

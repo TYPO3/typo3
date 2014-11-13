@@ -96,7 +96,7 @@ class ModulesController extends ActionController {
 	 */
 	protected function getModulesData() {
 		/** @var $loadedModules \TYPO3\CMS\Backend\Module\ModuleLoader */
-		$loadedModules = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleLoader');
+		$loadedModules = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Module\ModuleLoader::class);
 		$loadedModules->observeWorkspaces = TRUE;
 		$loadedModules->load($GLOBALS['TBE_MODULES']);
 		$mainModulesData = array();

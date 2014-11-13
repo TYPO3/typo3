@@ -45,12 +45,12 @@ class UserFileMountService {
 		}
 		if ($storageUid > 0) {
 			/** @var $storageRepository \TYPO3\CMS\Core\Resource\StorageRepository */
-			$storageRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
+			$storageRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\StorageRepository::class);
 			/** @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
 			$storage = $storageRepository->findByUid($storageUid);
 			if ($storage === NULL) {
 				/** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
-				$flashMessageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+				$flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
 				$queue = $flashMessageService->getMessageQueueByIdentifier();
 				$queue->enqueue(new FlashMessage('Storage #' . $storageUid . ' does not exist. No folder is currently selectable.', '', FlashMessage::ERROR));
 				if (!count($PA['items'])) {
@@ -82,7 +82,7 @@ class UserFileMountService {
 				}
 			} else {
 				/** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
-				$flashMessageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+				$flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
 				$queue = $flashMessageService->getMessageQueueByIdentifier();
 				$queue->enqueue(new FlashMessage('Storage "' . $storage->getName() . '" is not browsable. No folder is currently selectable.', '', FlashMessage::WARNING));
 				if (!count($PA['items'])) {

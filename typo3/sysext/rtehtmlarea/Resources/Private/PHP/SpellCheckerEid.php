@@ -14,6 +14,6 @@ namespace TYPO3\CMS\Rtehtmlarea\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 if (TYPO3_MODE === 'FE') {
-	$spellChecker = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Rtehtmlarea\\Controller\\SpellCheckingController');
+	$spellChecker = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Rtehtmlarea\Controller\SpellCheckingController::class);
 	$spellChecker->main();
 }

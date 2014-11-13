@@ -945,7 +945,7 @@ class PageGenerator {
 		}
 		// Header complete, now add content
 		if ($GLOBALS['TSFE']->pSetup['frameSet.']) {
-			$fs = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\FramesetRenderer');
+			$fs = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\FramesetRenderer::class);
 			$pageRenderer->addBodyContent($fs->make($GLOBALS['TSFE']->pSetup['frameSet.']));
 			$pageRenderer->addBodyContent(LF . '<noframes>' . LF);
 		}
@@ -1130,7 +1130,7 @@ class PageGenerator {
 		);
 
 		/** @var TypoScriptService $typoScriptService */
-		$typoScriptService = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Service\\TypoScriptService');
+		$typoScriptService = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Service\TypoScriptService::class);
 		$conf = $typoScriptService->convertTypoScriptArrayToPlainArray($metaTagTypoScript);
 		foreach ($conf as $key => $properties) {
 			if (is_array($properties)) {

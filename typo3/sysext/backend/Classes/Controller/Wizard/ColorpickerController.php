@@ -156,7 +156,7 @@ class ColorpickerController {
 			}
 		}
 		// Initialize document object:
-		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->JScode = $this->doc->wrapScriptTags('
 			function checkReference() {	//

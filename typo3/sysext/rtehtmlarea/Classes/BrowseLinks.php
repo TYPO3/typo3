@@ -66,7 +66,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	public function init() {
 		$this->initVariables();
 		// Create content language service
-		$this->contentLanguageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Lang\\LanguageService');
+		$this->contentLanguageService = GeneralUtility::makeInstance(\TYPO3\CMS\Lang\LanguageService::class);
 		$this->contentLanguageService->init($this->contentTypo3Language);
 		$this->initConfiguration();
 

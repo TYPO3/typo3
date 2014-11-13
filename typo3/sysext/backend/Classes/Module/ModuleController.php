@@ -37,8 +37,8 @@ class ModuleController {
 	 */
 	public function __construct() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		$this->moduleMenu = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleStorage');
-		$this->moduleMenuRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Domain\\Repository\\Module\\BackendModuleRepository');
+		$this->moduleMenu = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Module\ModuleStorage::class);
+		$this->moduleMenuRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository::class);
 	}
 
 	/**
@@ -51,7 +51,7 @@ class ModuleController {
 	public function createModuleMenu() {
 		if (count($this->moduleMenu->getEntries()) === 0) {
 			/** @var $moduleMenu \TYPO3\CMS\Backend\View\ModuleMenuView */
-			$moduleMenu = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\View\\ModuleMenuView');
+			$moduleMenu = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\View\ModuleMenuView::class);
 			$rawData = $moduleMenu->getRawModuleData();
 			$this->convertRawModuleDataToModuleMenuObject($rawData);
 			$this->createMenuEntriesForTbeModulesExt();
@@ -86,7 +86,7 @@ class ModuleController {
 	 */
 	protected function createEntryFromRawData(array $module) {
 		/** @var $entry \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule */
-		$entry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Domain\\Model\\Module\\BackendModule');
+		$entry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Domain\Model\Module\BackendModule::class);
 		if (!empty($module['name']) && is_string($module['name'])) {
 			$entry->setName($module['name']);
 		}

@@ -47,7 +47,7 @@ abstract class AbstractExportTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTe
 
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->initializeLanguageObject();
 
-		$this->export = GeneralUtility::makeInstance('TYPO3\\CMS\\Impexp\\ImportExport');
+		$this->export = GeneralUtility::makeInstance(\TYPO3\CMS\Impexp\ImportExport::class);
 		$this->export->init(0, 'export');
 	}
 
@@ -64,7 +64,7 @@ abstract class AbstractExportTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTe
 		$permsClause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 
 		/** @var $tree \TYPO3\CMS\Backend\Tree\View\PageTreeView */
-		$tree = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\View\\PageTreeView');
+		$tree = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\PageTreeView::class);
 		$tree->init('AND ' . $permsClause);
 		$tree->tree[] = array('row' => $pidToStart);
 		$tree->buffer_idH = array();

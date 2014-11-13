@@ -87,7 +87,7 @@ class ClickMenuController {
 		$this->extClassArray = $GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses'];
 
 		// Initialize template object
-		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 
 		// Setting mode for display and background image in the top frame
@@ -149,7 +149,7 @@ class ClickMenuController {
 	 */
 	public function main() {
 		// Initialize Clipboard object:
-		$clipObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Clipboard\\Clipboard');
+		$clipObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
 		$clipObj->initializeClipboard();
 		// This locks the clipboard to the Normal for this request.
 		$clipObj->lockToNormal();
@@ -160,7 +160,7 @@ class ClickMenuController {
 		// Saves
 		$clipObj->endClipboard();
 		// Create clickmenu object
-		$clickMenu = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\ClickMenu\\ClickMenu');
+		$clickMenu = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\ClickMenu\ClickMenu::class);
 		// Set internal vars in clickmenu object:
 		$clickMenu->clipObj = $clipObj;
 		$clickMenu->extClassArray = $this->extClassArray;
@@ -188,7 +188,7 @@ class ClickMenuController {
 	public function printContentForAjaxRequest($parameters, \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxRequestHandler) {
 
 		$this->init();
-		$clipObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Clipboard\\Clipboard');
+		$clipObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
 		$clipObj->initializeClipboard();
 		// This locks the clipboard to the Normal for this request.
 		$clipObj->lockToNormal();
@@ -199,7 +199,7 @@ class ClickMenuController {
 		// Saves
 		$clipObj->endClipboard();
 		// Create clickmenu object
-		$clickMenu = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\ClickMenu\\ClickMenu');
+		$clickMenu = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\ClickMenu\ClickMenu::class);
 		$clickMenu->ajax = TRUE;
 		// Set internal vars in clickmenu object:
 		$clickMenu->clipObj = $clipObj;

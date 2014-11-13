@@ -61,12 +61,12 @@ class TemplateAnalyzerModuleFunctionController extends \TYPO3\CMS\Backend\Module
 	 */
 	public function initialize_editor($pageId, $template_uid = 0) {
 		// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
-		$GLOBALS['tmpl'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService');
+		$GLOBALS['tmpl'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);
 		// Do not log time-performance information
 		$GLOBALS['tmpl']->tt_track = 0;
 		$GLOBALS['tmpl']->init();
 		// Gets the rootLine
-		$sys_page = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+		$sys_page = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
 		$GLOBALS['rootLine'] = $sys_page->getRootLine($pageId);
 		// This generates the constants/config + hierarchy info for the template.
 		$GLOBALS['tmpl']->runThroughTemplates($GLOBALS['rootLine'], $template_uid);

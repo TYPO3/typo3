@@ -208,7 +208,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 			$this->updateListHtml = '<input type="submit" name="updateLinkList" id="updateLinkList" value="' . $GLOBALS['LANG']->getLL('label_update') . '"/>';
 		}
 		$this->refreshListHtml = '<input type="submit" name="refreshLinkList" id="refreshLinkList" value="' . $GLOBALS['LANG']->getLL('label_refresh') . '"/>';
-		$this->processor = GeneralUtility::makeInstance('TYPO3\\CMS\\Linkvalidator\\LinkAnalyzer');
+		$this->processor = GeneralUtility::makeInstance(\TYPO3\CMS\Linkvalidator\LinkAnalyzer::class);
 		$this->updateBrokenLinks();
 		$brokenLinkOverView = $this->processor->getLinkCounts($this->pObj->id);
 		$this->checkOptHtml = $this->getCheckOptions($brokenLinkOverView);
@@ -279,7 +279,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 				$this->hookObjectsArr[$linkType] = GeneralUtility::getUserObj($classRef);
 			}
 		}
-		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('linkvalidator') . 'Resources/Private/Templates/mod_template.html');
 		$this->relativePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('linkvalidator');

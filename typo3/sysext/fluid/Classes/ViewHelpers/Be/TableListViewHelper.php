@@ -80,7 +80,7 @@ class TableListViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 
 		$pageinfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'), $GLOBALS['BE_USER']->getPagePermsClause(1));
 		/** @var $dblist \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList */
-		$dblist = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Recordlist\\RecordList\\DatabaseRecordList');
+		$dblist = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList::class);
 		$dblist->backPath = $GLOBALS['BACK_PATH'];
 		$dblist->pageRow = $pageinfo;
 		if ($readOnly === FALSE) {

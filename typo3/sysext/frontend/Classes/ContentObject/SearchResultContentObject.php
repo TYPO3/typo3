@@ -261,7 +261,7 @@ class SearchResultContentObject extends AbstractContentObject {
 				// Searching result
 				$theValue = $this->cObj->cObjGetSingle($conf['resultObj'], $conf['resultObj.'], 'resultObj');
 				/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj */
-				$cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+				$cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 				$cObj->setParent($this->cObj->data, $this->cObj->currentRecord);
 				$renderCode = '';
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($this->result)) {

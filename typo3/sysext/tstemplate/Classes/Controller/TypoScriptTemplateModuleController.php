@@ -106,7 +106,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 	 */
 	public function clearCache() {
 		if (GeneralUtility::_GP('clear_all_cache')) {
-			$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+			$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 			/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
 			$tce->stripslashes_values = 0;
 			$tce->start(array(), array());
@@ -133,7 +133,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 		$this->access = is_array($this->pageinfo);
 
 		/** @var \TYPO3\CMS\Backend\Template\DocumentTemplate doc */
-		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:tstemplate/Resources/Private/Templates/tstemplate.html');
 		$this->doc->addStyleSheet('module', 'sysext/tstemplate/Resources/Public/Styles/styles.css');
@@ -320,13 +320,13 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 	 */
 	public function noTemplate($newStandardTemplate = 0) {
 		// Defined global here!
-		$tmpl = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService');
+		$tmpl = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);
 		/** @var $tmpl \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService */
 		// Do not log time-performance information
 		$tmpl->tt_track = FALSE;
 		$tmpl->init();
 		$theOutput = '';
-		$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('noTemplateDescription') . '<br />' . $GLOBALS['LANG']->getLL('createTemplateToEditConfiguration'), $GLOBALS['LANG']->getLL('noTemplate'), \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
+		$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('noTemplateDescription') . '<br />' . $GLOBALS['LANG']->getLL('createTemplateToEditConfiguration'), $GLOBALS['LANG']->getLL('noTemplate'), \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
 		$theOutput .= $flashMessage->render();
 		// New standard?
 		if ($newStandardTemplate) {
@@ -372,7 +372,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 
 	public function templateMenu() {
 		// Defined global here!
-		$tmpl = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService');
+		$tmpl = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);
 		/** @var $tmpl \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService */
 		// Do not log time-performance information
 		$tmpl->tt_track = FALSE;
@@ -399,7 +399,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 	 */
 	public function createTemplate($id, $actTemplateId = 0) {
 		if (GeneralUtility::_GP('createExtension') || GeneralUtility::_GP('createExtension_x')) {
-			$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+			$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 			/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
 			$tce->stripslashes_values = 0;
 			$recData = array();
@@ -411,7 +411,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 			$tce->process_datamap();
 			return $tce->substNEWwithIDs['NEW'];
 		} elseif (GeneralUtility::_GP('newWebsite')) {
-			$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+			$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 			/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
 			$tce->stripslashes_values = 0;
 			$recData = array();

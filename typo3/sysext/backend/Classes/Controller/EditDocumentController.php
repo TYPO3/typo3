@@ -398,7 +398,7 @@ class EditDocumentController {
 	 */
 	protected function getSignalSlotDispatcher() {
 		if (!isset($this->signalSlotDispatcher)) {
-			$this->signalSlotDispatcher = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+			$this->signalSlotDispatcher = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
 		}
 		return $this->signalSlotDispatcher;
 	}
@@ -500,7 +500,7 @@ class EditDocumentController {
 		// See tce_db.php for relevate options here:
 		// Only options related to $this->data submission are included here.
 		/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
-		$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 		$tce->stripslashes_values = 0;
 
 		if (!empty($control)) {
@@ -707,7 +707,7 @@ class EditDocumentController {
 		// Begin edit:
 		if (is_array($this->editconf)) {
 			// Initialize TCEforms (rendering the forms)
-			$this->tceforms = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormEngine');
+			$this->tceforms = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\FormEngine::class);
 			$this->tceforms->initDefaultBEMode();
 			$this->tceforms->doSaveFieldName = 'doSave';
 			$this->tceforms->localizationMode = GeneralUtility::inList('text,media', $this->localizationMode) ? $this->localizationMode : '';
@@ -719,7 +719,7 @@ class EditDocumentController {
 			$this->tceforms->enableTabMenu = TRUE;
 			// Clipboard is initialized:
 			// Start clipboard
-			$this->tceforms->clipObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Clipboard\\Clipboard');
+			$this->tceforms->clipObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
 			// Initialize - reads the clipboard content from the user session
 			$this->tceforms->clipObj->initializeClipboard();
 			// Setting external variables:
@@ -887,7 +887,7 @@ class EditDocumentController {
 							// records and we can now proceed with creating the form elements:
 							if ($hasAccess) {
 								$prevPageID = is_object($trData) ? $trData->prevPageID : '';
-								$trData = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\DataPreprocessor');
+								$trData = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\DataPreprocessor::class);
 								$trData->addRawData = TRUE;
 								$trData->defVals = $this->defVals;
 								$trData->lockRecords = 1;
@@ -941,9 +941,9 @@ class EditDocumentController {
 									}
 									// Display "is-locked" message:
 									if ($lockInfo = BackendUtility::isRecordLocked($table, $rec['uid'])) {
-										$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', htmlspecialchars($lockInfo['msg']), '', \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
+										$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, htmlspecialchars($lockInfo['msg']), '', \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
 										/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-										$flashMessageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+										$flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
 										/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
 										$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 										$defaultFlashMessageQueue->enqueue($flashMessage);

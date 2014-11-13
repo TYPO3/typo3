@@ -15,5 +15,5 @@
 /**
  * @var $wizard \TYPO3\CMS\Form\Controller\WizardController
  */
-$wizard = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Controller\\WizardController');
+$wizard = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Controller\WizardController::class);
 $wizard->dispatch();

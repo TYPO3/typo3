@@ -252,7 +252,7 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
 		$entryIdentifiers = array();
 		$now = $GLOBALS['EXEC_TIME'];
 		$cacheEntryFileExtensionLength = strlen($this->cacheEntryFileExtension);
-		for ($directoryIterator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('DirectoryIterator', $this->cacheDirectory); $directoryIterator->valid(); $directoryIterator->next()) {
+		for ($directoryIterator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\DirectoryIterator::class, $this->cacheDirectory); $directoryIterator->valid(); $directoryIterator->next()) {
 			if ($directoryIterator->isDot()) {
 				continue;
 			}

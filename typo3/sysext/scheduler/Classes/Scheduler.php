@@ -179,7 +179,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 			$type = 'cron';
 		}
 		/** @var $registry \TYPO3\CMS\Core\Registry */
-		$registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
+		$registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Registry::class);
 		$runInformation = array('start' => $GLOBALS['EXEC_TIME'], 'end' => time(), 'type' => $type);
 		$registry->set('tx_scheduler', 'lastRun', $runInformation);
 	}
@@ -391,7 +391,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 			return FALSE;
 		}
 		/** @var $registry \TYPO3\CMS\Core\Registry */
-		$registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
+		$registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Registry::class);
 		// Get at job id from registry and remove at job
 		$atJobId = $registry->get('tx_scheduler', 'atJobId');
 		if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($atJobId)) {

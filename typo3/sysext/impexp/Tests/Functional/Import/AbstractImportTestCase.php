@@ -49,7 +49,7 @@ abstract class AbstractImportTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	public function setUp() {
 		parent::setUp();
 
-		$this->import = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Impexp\\ImportExport');
+		$this->import = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Impexp\ImportExport::class);
 		$this->import->init(0, 'import');
 	}
 

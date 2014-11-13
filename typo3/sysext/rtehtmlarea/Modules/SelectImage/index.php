@@ -19,6 +19,6 @@
  */
 
 // Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Rtehtmlarea\\Controller\\SelectImageController');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Rtehtmlarea\Controller\SelectImageController::class);
 $SOBE->main();
 $SOBE->printContent();

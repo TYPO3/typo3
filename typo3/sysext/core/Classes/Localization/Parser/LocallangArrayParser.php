@@ -114,7 +114,7 @@ class LocallangArrayParser implements LocalizationParserInterface {
 		} elseif (is_object($GLOBALS['TSFE'])) {
 			$this->csConvObj = $GLOBALS['TSFE']->csConvObj;
 		} else {
-			$this->csConvObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
+			$this->csConvObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
 		}
 	}
 

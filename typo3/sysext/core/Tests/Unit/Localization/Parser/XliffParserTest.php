@@ -48,7 +48,7 @@ class XliffParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			// Backup locallangXMLOverride and localization format priority
 		$this->locallangXMLOverride = $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'];
 		$this->l10nPriority = $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'];
-		$this->parser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Parser\\XliffParser');
+		$this->parser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\Parser\XliffParser::class);
 
 			// We have to take the whole relative path as otherwise this test fails on Windows systems
 		$fixturePath = PATH_site . 'typo3/sysext/core/Tests/Unit/Localization/Parser/Fixtures/';
@@ -58,9 +58,9 @@ class XliffParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'locallang_override_fr' => $fixturePath . 'fr.locallang_override.xlf'
 		);
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'] = 'xlf';
-		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\LanguageStore')->initialize();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageStore::class)->initialize();
 			// Clear localization cache
-		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('l10n')->flush();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('l10n')->flush();
 	}
 
 	/**
@@ -70,7 +70,7 @@ class XliffParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		// Restore locallangXMLOverride and localization format priority
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'] = $this->locallangXMLOverride;
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'] = $this->l10nPriority;
-		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\LanguageStore')->initialize();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageStore::class)->initialize();
 		parent::tearDown();
 	}
 

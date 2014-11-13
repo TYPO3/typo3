@@ -108,7 +108,7 @@ class AuthenticationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function processLoginReturnsCorrectData($passwordSubmissionStrategy, $loginData, $expectedProcessedData) {
 		/** @var $authenticationService \TYPO3\CMS\Sv\AuthenticationService */
-		$authenticationService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Sv\\AuthenticationService');
+		$authenticationService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Sv\AuthenticationService::class);
 		// Login data is modified by reference
 		$authenticationService->processLoginData($loginData, $passwordSubmissionStrategy);
 		$this->assertEquals($expectedProcessedData, $loginData);

@@ -40,7 +40,7 @@ class ImportExportUtility {
 			throw new \InvalidArgumentException('Input parameter $int has to be of type integer', 1377625646);
 		}
 		/** @var $import \TYPO3\CMS\Impexp\ImportExport */
-		$import = GeneralUtility::makeInstance('TYPO3\\CMS\\Impexp\\ImportExport');
+		$import = GeneralUtility::makeInstance(\TYPO3\CMS\Impexp\ImportExport::class);
 		$import->init(0, 'import');
 
 		$this->emitAfterImportExportInitialisationSignal($import);
@@ -60,7 +60,7 @@ class ImportExportUtility {
 		$errors = $import->printErrorLog();
 		if ($errors !== '') {
 			/** @var \TYPO3\CMS\Core\Log\Logger $logger */
-			$logger = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager')->getLogger(__CLASS__);
+			$logger = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
 			$logger->warning($errors);
 
 			if (!$importResponse) {
@@ -76,7 +76,7 @@ class ImportExportUtility {
 	 * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
 	 */
 	protected function getSignalSlotDispatcher() {
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
 	}
 
 	/**

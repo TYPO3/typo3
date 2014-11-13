@@ -37,7 +37,7 @@ class SwitchBackUserHook {
 	 */
 	public function switchBack($params, AbstractUserAuthentication $authentication) {
 		if ($this->isAHandledBackendSession($authentication)) {
-			$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+			$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 			$backendUserSessionRepository = $objectManager->get('TYPO3\\CMS\\Beuser\\Domain\\Repository\\BackendUserSessionRepository');
 			$backendUserSessionRepository->switchBackToOriginalUser($authentication);
 			\TYPO3\CMS\Core\Utility\HttpUtility::redirect($GLOBALS['BACK_PATH'] . 'backend.php');

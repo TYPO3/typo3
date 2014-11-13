@@ -15,5 +15,5 @@
 /**
  * Wizard to add new records to a group/select TCEform formfield
  */
-$editController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\Wizard\\AddController');
+$editController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\Wizard\AddController::class);
 $editController->main();

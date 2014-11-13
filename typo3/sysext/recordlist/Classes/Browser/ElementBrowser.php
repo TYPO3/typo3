@@ -319,7 +319,7 @@ class ElementBrowser {
 		}
 
 		// Init fileProcessor
-		$this->fileProcessor = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility');
+		$this->fileProcessor = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\File\BasicFileUtility::class);
 		$this->fileProcessor->init(array(), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 	}
 
@@ -342,7 +342,7 @@ class ElementBrowser {
 	 */
 	protected function initDocumentTemplate() {
 		// Creating backend template object:
-		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->bodyTagId = 'typo3-browse-links-php';
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		// Load the Prototype library and browse_links.js
@@ -1362,7 +1362,7 @@ class ElementBrowser {
 
 		// Making the browsable pagetree:
 		/** @var \TBE_PageTree $pageTree */
-		$pageTree = GeneralUtility::makeInstance('TBE_PageTree');
+		$pageTree = GeneralUtility::makeInstance(\TBE_PageTree::class);
 		$pageTree->thisScript = $this->thisScript;
 		$pageTree->ext_pArrPages = $tables === 'pages' ? 1 : 0;
 		$pageTree->ext_showNavTitle = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showNavTitle');
@@ -1441,7 +1441,7 @@ class ElementBrowser {
 
 		if (isset($allowedFileExtensions)) {
 			// Create new filter object
-			$filterObject = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Filter\\FileExtensionFilter');
+			$filterObject = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter::class);
 			$filterObject->setAllowedFileExtensions($allowedFileExtensions);
 			// Set file extension filters on all storages
 			$storages = $GLOBALS['BE_USER']->getFileStorages();
@@ -1501,7 +1501,7 @@ class ElementBrowser {
 		}
 		$noThumbs = $noThumbs ?: !$_MOD_SETTINGS['displayThumbs'];
 		// Create folder tree:
-		$folderTree = GeneralUtility::makeInstance('TBE_FolderTree');
+		$folderTree = GeneralUtility::makeInstance(\TBE_FolderTree::class);
 		$folderTree->thisScript = $this->thisScript;
 		$folderTree->ext_noTempRecyclerDirs = $this->mode == 'filedrag';
 		$tree = $folderTree->getBrowsableTree();
@@ -1572,7 +1572,7 @@ class ElementBrowser {
 			$createFolder = '';
 		}
 		// Create folder tree:
-		$folderTree = GeneralUtility::makeInstance('TBE_FolderTree');
+		$folderTree = GeneralUtility::makeInstance(\TBE_FolderTree::class);
 		$folderTree->thisScript = $this->thisScript;
 		$folderTree->ext_noTempRecyclerDirs = $this->mode == 'filedrag';
 		$tree = $folderTree->getBrowsableTree(FALSE);
@@ -1740,7 +1740,7 @@ class ElementBrowser {
 		if (is_object($this->recordList)) {
 			$dbList = $this->recordList;
 		} else {
-			$dbList = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\RecordList\\ElementBrowserRecordList');
+			$dbList = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\RecordList\ElementBrowserRecordList::class);
 		}
 		$dbList->thisScript = $this->thisScript;
 		$dbList->backPath = $GLOBALS['BACK_PATH'];
@@ -2647,7 +2647,7 @@ class ElementBrowser {
 	protected function getFilesInFolder(\TYPO3\CMS\Core\Resource\Folder $folder, $extensionList) {
 		if ($extensionList !== '') {
 			/** @var \TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter $filter */
-			$filter = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Filter\\FileExtensionFilter');
+			$filter = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter::class);
 			$filter->setAllowedFileExtensions($extensionList);
 			$folder->setFileAndFolderNameFilters(array(array($filter, 'filterFileList')));
 		}

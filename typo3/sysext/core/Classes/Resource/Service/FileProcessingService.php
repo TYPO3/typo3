@@ -58,7 +58,7 @@ class FileProcessingService {
 		$this->driver = $driver;
 
 		/** @var $logManager \TYPO3\CMS\Core\Log\LogManager */
-		$logManager = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager');
+		$logManager = Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class);
 		$this->logger = $logManager->getLogger(__CLASS__);
 	}
 
@@ -75,7 +75,7 @@ class FileProcessingService {
 	 */
 	public function processFile(Resource\FileInterface $fileObject, Resource\ResourceStorage $targetStorage, $taskType, $configuration) {
 		/** @var $processedFileRepository Resource\ProcessedFileRepository */
-		$processedFileRepository = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ProcessedFileRepository');
+		$processedFileRepository = Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ProcessedFileRepository::class);
 
 		$processedFile = $processedFileRepository->findOneByOriginalFileAndTaskTypeAndConfiguration($fileObject, $taskType, $configuration);
 
@@ -118,12 +118,12 @@ class FileProcessingService {
 
 			$task = $processedFile->getTask();
 			/** @var $processor Resource\Processing\LocalImageProcessor */
-			$processor = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Processing\\LocalImageProcessor');
+			$processor = Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Processing\LocalImageProcessor::class);
 			$processor->processTask($task);
 
 			if ($processedFile->isProcessed()) {
 				/** @var $processedFileRepository Resource\ProcessedFileRepository */
-				$processedFileRepository = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ProcessedFileRepository');
+				$processedFileRepository = Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ProcessedFileRepository::class);
 				$processedFileRepository->add($processedFile);
 			}
 		}
@@ -136,7 +136,7 @@ class FileProcessingService {
 	 */
 	protected function getSignalSlotDispatcher() {
 		if (!isset($this->signalSlotDispatcher)) {
-			$this->signalSlotDispatcher = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')
+			$this->signalSlotDispatcher = Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class)
 				->get('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
 		}
 		return $this->signalSlotDispatcher;

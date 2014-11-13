@@ -1189,7 +1189,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 				$this->charsetConversion = $GLOBALS['LANG']->csConvObj;
 			} else {
 				// The object may not exist yet, so we need to create it now. Happens in the Install Tool for example.
-				$this->charsetConversion = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
+				$this->charsetConversion = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
 			}
 		}
 		return $this->charsetConversion;

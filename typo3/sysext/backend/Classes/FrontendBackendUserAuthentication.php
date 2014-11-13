@@ -100,7 +100,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 		if (isset($this->extAdminConfig['enable.'])) {
 			foreach ($this->extAdminConfig['enable.'] as $value) {
 				if ($value) {
-					$this->adminPanel = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\View\\AdminPanelView');
+					$this->adminPanel = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\View\AdminPanelView::class);
 					$this->extAdmEnabled = TRUE;
 					break;
 				}
@@ -261,7 +261,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 	 */
 	public function extGetNumberOfCachedPages($pageId) {
 		/** @var FrontendInterface $pageCache */
-		$pageCache = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_pages');
+		$pageCache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_pages');
 		$pageCacheEntries = $pageCache->getByTag('pageId_' . (int)$pageId);
 		return count($pageCacheEntries);
 	}

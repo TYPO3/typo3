@@ -165,7 +165,7 @@ class MetaDataRepository implements SingletonInterface {
 	 * @return \TYPO3\CMS\Extbase\Object\ObjectManager
 	 */
 	protected function getObjectManager() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 	}
 
 	/**
@@ -214,6 +214,6 @@ class MetaDataRepository implements SingletonInterface {
 	 * @return \TYPO3\CMS\Core\Resource\Index\MetaDataRepository
 	 */
 	public static function getInstance() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Index\\MetaDataRepository');
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class);
 	}
 }

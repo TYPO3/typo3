@@ -48,7 +48,7 @@ class TemplateContentObject extends AbstractContentObject {
 		}
 		// Fixing all relative paths found:
 		if ($conf['relPathPrefix']) {
-			$htmlParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
+			$htmlParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
 			$content = $htmlParser->prefixResourcePath($conf['relPathPrefix'], $content, $conf['relPathPrefix.']);
 		}
 		if ($content) {

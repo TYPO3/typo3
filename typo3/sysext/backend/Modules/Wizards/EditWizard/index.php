@@ -15,5 +15,5 @@
 /**
  * Wizard to edit records from group/select lists in TCEforms
  */
-$editController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\Wizard\\EditController');
+$editController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\Wizard\EditController::class);
 $editController->main();

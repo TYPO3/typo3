@@ -101,7 +101,7 @@ class FileSystemNavigationFrameController {
 			$GLOBALS['SOBE']->browser->mode = $this->scopeData['browser']['mode'];
 			$GLOBALS['SOBE']->browser->act = $this->scopeData['browser']['act'];
 		} else {
-			$this->foldertree = GeneralUtility::makeInstance('TYPO3\\CMS\\Filelist\\FileListFolderTree');
+			$this->foldertree = GeneralUtility::makeInstance(\TYPO3\CMS\Filelist\FileListFolderTree::class);
 			$this->foldertree->thisScript = 'alt_file_navframe.php';
 		}
 
@@ -118,7 +118,7 @@ class FileSystemNavigationFrameController {
 		// Setting highlight mode:
 		$this->doHighlight = !$GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.disableTitleHighlight');
 		// Create template object:
-		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/alt_file_navframe.html');
 		$this->doc->showFlashMessages = FALSE;

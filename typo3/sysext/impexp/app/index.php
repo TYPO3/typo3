@@ -46,7 +46,7 @@
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Impexp\\Controller\\ImportExportController');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Impexp\Controller\ImportExportController::class);
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();

@@ -38,7 +38,7 @@ class FlexElement extends AbstractFormElement {
 		$item = '';
 		// Manipulate Flexform DS via TSConfig and group access lists
 		if (is_array($dataStructArray)) {
-			$flexFormHelper = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\FlexFormsHelper');
+			$flexFormHelper = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\FlexFormsHelper::class);
 			$dataStructArray = $flexFormHelper->modifyFlexFormDS($dataStructArray, $table, $field, $row, $additionalInformation['fieldConf']);
 			unset($flexFormHelper);
 		}
@@ -104,7 +104,7 @@ class FlexElement extends AbstractFormElement {
 			}
 
 			/** @var $elementConditionMatcher \TYPO3\CMS\Backend\Form\ElementConditionMatcher */
-			$elementConditionMatcher = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\ElementConditionMatcher');
+			$elementConditionMatcher = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\ElementConditionMatcher::class);
 
 			foreach ($rotateLang as $lKey) {
 				if (!$langChildren && !$langDisabled) {
@@ -409,7 +409,7 @@ class FlexElement extends AbstractFormElement {
 						$tRows = array();
 
 						/** @var $elementConditionMatcher \TYPO3\CMS\Backend\Form\ElementConditionMatcher */
-						$elementConditionMatcher = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\ElementConditionMatcher');
+						$elementConditionMatcher = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\ElementConditionMatcher::class);
 
 						foreach ($rotateLang as $vDEFkey) {
 							$vDEFkey = 'v' . $vDEFkey;

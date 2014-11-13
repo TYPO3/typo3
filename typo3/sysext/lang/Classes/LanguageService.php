@@ -111,7 +111,7 @@ class LanguageService {
 	/**
 	 * Initializes the backend language.
 	 * This is for example done in \TYPO3\CMS\Backend\Template\DocumentTemplate with lines like these:
-	 * $LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Lang\\LanguageService');
+	 * $LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Lang\LanguageService::class);
 	 * $LANG->init($GLOBALS['BE_USER']->uc['lang']);
 	 *
 	 * @throws \RuntimeException
@@ -120,14 +120,14 @@ class LanguageService {
 	 */
 	public function init($lang) {
 		// Initialize the conversion object:
-		$this->csConvObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
+		$this->csConvObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
 		$this->charSetArray = $this->csConvObj->charSetArray;
 		// Initialize the parser factory object
-		$this->parserFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\LocalizationFactory');
+		$this->parserFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LocalizationFactory::class);
 		// Find the requested language in this list based
 		// on the $lang key being inputted to this function.
 		/** @var $locales \TYPO3\CMS\Core\Localization\Locales */
-		$locales = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Locales');
+		$locales = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\Locales::class);
 		// Language is found. Configure it:
 		if (in_array($lang, $locales->getLocales())) {
 			// The current language key

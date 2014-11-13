@@ -78,7 +78,7 @@ abstract class AbstractTask {
 	 */
 	public function __construct() {
 		$this->setScheduler();
-		$this->execution = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Scheduler\\Execution');
+		$this->execution = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Execution::class);
 	}
 
 	/**
@@ -236,7 +236,7 @@ abstract class AbstractTask {
 	 * @return void
 	 */
 	public function setScheduler() {
-		$this->scheduler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Scheduler\\Scheduler');
+		$this->scheduler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Scheduler::class);
 	}
 
 	/**
@@ -257,7 +257,7 @@ abstract class AbstractTask {
 	 */
 	public function registerSingleExecution($timestamp) {
 		/** @var $execution \TYPO3\CMS\Scheduler\Execution */
-		$execution = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Scheduler\\Execution');
+		$execution = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Execution::class);
 		$execution->setStart($timestamp);
 		$execution->setInterval(0);
 		$execution->setEnd($timestamp);
@@ -280,7 +280,7 @@ abstract class AbstractTask {
 	 */
 	public function registerRecurringExecution($start, $interval, $end = 0, $multiple = FALSE, $cron_cmd = '') {
 		/** @var $execution \TYPO3\CMS\Scheduler\Execution */
-		$execution = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Scheduler\\Execution');
+		$execution = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Execution::class);
 		// Set general values
 		$execution->setStart($start);
 		$execution->setEnd($end);
@@ -470,7 +470,7 @@ abstract class AbstractTask {
 	 * @return void
 	 */
 	public function stop() {
-		$this->execution = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Scheduler\\Execution');
+		$this->execution = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Execution::class);
 	}
 
 	/**

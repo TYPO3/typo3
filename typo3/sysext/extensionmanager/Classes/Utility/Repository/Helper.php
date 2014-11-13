@@ -68,7 +68,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function __construct() {
 		/** @var $objectManager \TYPO3\CMS\Extbase\Object\ObjectManager */
-		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 		/** @var \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository $repositoryRepository */
 		$repositoryRepository = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\RepositoryRepository');
 		$this->extensionRepository = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ExtensionRepository');
@@ -222,7 +222,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 				$this->fetchMirrorListFile();
 			}
 			/** @var $objMirrorListImporter \TYPO3\CMS\Extensionmanager\Utility\Importer\MirrorListUtility */
-			$objMirrorListImporter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extensionmanager\\Utility\\Importer\\MirrorListUtility');
+			$objMirrorListImporter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extensionmanager\Utility\Importer\MirrorListUtility::class);
 			$this->repository->addMirrors($objMirrorListImporter->getMirrors($this->getLocalMirrorListFile()));
 		}
 		return $this->repository->getMirrors();

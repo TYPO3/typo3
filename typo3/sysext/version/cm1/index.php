@@ -12,7 +12,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\Controller\\VersionModuleController');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Version\Controller\VersionModuleController::class);
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();

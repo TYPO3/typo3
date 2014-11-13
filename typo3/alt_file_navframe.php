@@ -21,7 +21,7 @@ require_once 'init.php';
 
 // Make instance if it is not an AJAX call
 if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX)) {
-	$fileSystemNavigationFrameController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\FileSystemNavigationFrameController');
+	$fileSystemNavigationFrameController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\FileSystemNavigationFrameController::class);
 	$fileSystemNavigationFrameController->initPage();
 	$fileSystemNavigationFrameController->main();
 	$fileSystemNavigationFrameController->printContent();

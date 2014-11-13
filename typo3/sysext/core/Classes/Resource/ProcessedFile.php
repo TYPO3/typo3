@@ -119,7 +119,7 @@ class ProcessedFile extends AbstractFile {
 		if (is_array($databaseRow)) {
 			$this->reconstituteFromDatabaseRecord($databaseRow);
 		}
-		$this->taskTypeRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Processing\\TaskTypeRegistry');
+		$this->taskTypeRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Processing\TaskTypeRegistry::class);
 	}
 
 	/**

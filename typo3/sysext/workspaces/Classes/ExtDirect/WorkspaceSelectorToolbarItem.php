@@ -55,7 +55,7 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 	public function checkAccess() {
 		if ($this->checkAccess === NULL) {
 			/** @var \TYPO3\CMS\Workspaces\Service\WorkspaceService $wsService */
-			$wsService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
+			$wsService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
 			$availableWorkspaces = $wsService->getAvailableWorkspaces();
 			if (count($availableWorkspaces) > 0) {
 				$this->checkAccess = TRUE;
@@ -77,7 +77,7 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 
 		$index = 0;
 		/** @var \TYPO3\CMS\Workspaces\Service\WorkspaceService $wsService */
-		$wsService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
+		$wsService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
 		$availableWorkspaces = $wsService->getAvailableWorkspaces();
 		$activeWorkspace = (int)$GLOBALS['BE_USER']->workspace;
 		$stateCheckedIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-checked');

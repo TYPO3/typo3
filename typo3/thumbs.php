@@ -21,6 +21,6 @@
 require __DIR__ . '/init.php';
 
 // Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\View\\ThumbnailView');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\View\ThumbnailView::class);
 $SOBE->init();
 $SOBE->main();

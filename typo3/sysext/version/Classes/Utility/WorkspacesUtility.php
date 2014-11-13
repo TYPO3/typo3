@@ -121,7 +121,7 @@ class WorkspacesUtility {
 			$cmd = $this->getCmdArrayForPublishWS($rec['uid'], $rec['swap_modes'] == 1);
 			// $rec['swap_modes']==1 means that auto-publishing will swap versions, not just publish and empty the workspace.
 			// Execute CMD array:
-			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 			$tce->stripslashes_values = 0;
 			$tce->start(array(), $cmd);
 			$tce->process_cmdmap();

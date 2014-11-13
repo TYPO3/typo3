@@ -1059,7 +1059,7 @@ class IconUtility {
 	 * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
 	 */
 	static protected function getSignalSlotDispatcher() {
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
 	}
 
 }

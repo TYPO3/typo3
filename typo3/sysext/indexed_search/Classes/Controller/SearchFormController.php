@@ -354,7 +354,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 				// type = Sentence
 				$sWordArray = array(array('sword' => trim($inSW), 'oper' => 'AND'));
 			} else {
-				$search = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\SearchResultContentObject');
+				$search = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\SearchResultContentObject::class);
 				$search->default_operator = $defOp == 1 ? 'OR' : 'AND';
 				$search->operator_translate_table = $this->operator_translate_table;
 				$search->register_and_explode_search_string($inSW);
@@ -754,7 +754,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 					* @var \TYPO3\CMS\IndexedSearch\Indexer
 					*/
 					// Initialize the indexer-class
-					$indexerObj = GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
+					$indexerObj = GeneralUtility::makeInstance(\TYPO3\CMS\IndexedSearch\Indexer::class);
 					// Perform metaphone search
 					$res = $this->searchMetaphone($indexerObj->metaphone($sWord, $this->storeMetaphoneInfoAsWords));
 					unset($indexerObj);

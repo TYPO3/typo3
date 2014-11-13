@@ -69,7 +69,7 @@ class NameAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttri
 	public function getValue() {
 		$value = $this->getValueWithoutPrefix();
 		if ($this->returnValueWithoutPrefix === FALSE) {
-			$requestHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Request');
+			$requestHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Request::class);
 			$attribute = $requestHandler->getPrefix() . '[' . $value . ']' . $this->addition;
 		} else {
 			$attribute = $value;

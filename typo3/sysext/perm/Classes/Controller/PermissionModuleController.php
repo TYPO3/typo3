@@ -170,7 +170,7 @@ class PermissionModuleController {
 		// Page select clause:
 		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 		// Initializing document template object:
-		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:perm/Resources/Private/Templates/perm.html');
 		$this->doc->form = '<form action="' . $GLOBALS['BACK_PATH'] . 'tce_db.php" method="post" name="editform">';
@@ -306,9 +306,9 @@ class PermissionModuleController {
 	public function doEdit() {
 		if ($GLOBALS['BE_USER']->workspace != 0) {
 			// Adding section with the permission setting matrix:
-			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('WorkspaceWarningText'), $GLOBALS['LANG']->getLL('WorkspaceWarning'), \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
+			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('WorkspaceWarningText'), $GLOBALS['LANG']->getLL('WorkspaceWarning'), \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
 			/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-			$flashMessageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+			$flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
 			/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
 			$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 			$defaultFlashMessageQueue->enqueue($flashMessage);
@@ -461,7 +461,7 @@ class PermissionModuleController {
 		$this->content .= $this->doc->section('', $code);
 
 		/** @var \TYPO3\CMS\Backend\Tree\View\PageTreeView */
-		$tree = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\View\\PageTreeView');
+		$tree = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\PageTreeView::class);
 		$tree->init('AND ' . $this->perms_clause);
 		$tree->addField('perms_user', 1);
 		$tree->addField('perms_group', 1);
@@ -611,7 +611,7 @@ class PermissionModuleController {
 	 */
 	public function getRecursiveSelect($id, $perms_clause) {
 		// Initialize tree object:
-		$tree = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\View\\PageTreeView');
+		$tree = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\PageTreeView::class);
 		$tree->init('AND ' . $perms_clause);
 		$tree->addField('perms_userid', 1);
 		$tree->makeHTML = 0;

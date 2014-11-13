@@ -70,7 +70,7 @@ class CommandLineBackend extends AbstractBackend {
 	 */
 	public function createNewKeyPair() {
 		/** @var $keyPair \TYPO3\CMS\Rsaauth\Keypair */
-		$keyPair = GeneralUtility::makeInstance('TYPO3\\CMS\\Rsaauth\\Keypair');
+		$keyPair = GeneralUtility::makeInstance(\TYPO3\CMS\Rsaauth\Keypair::class);
 		if ($keyPair->isReady()) {
 			return $keyPair;
 		}

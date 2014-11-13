@@ -39,7 +39,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], TRUE);
 		parent::init();
 		// Initialize document
-		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('taskcenter') . 'res/mod_template.html');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->getPageRenderer()->loadJquery();
@@ -116,16 +116,16 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				if ($this->checkAccess($extKey, $taskClass)) {
 					$actionContent .= $taskInstance->getTask();
 				} else {
-					$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('error-access', TRUE), $GLOBALS['LANG']->getLL('error_header'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+					$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('error-access', TRUE), $GLOBALS['LANG']->getLL('error_header'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 					$actionContent .= $flashMessage->render();
 				}
 			} else {
 				// Error if the task is not an instance of \TYPO3\CMS\Taskcenter\TaskInterface
-				$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', sprintf($GLOBALS['LANG']->getLL('error_no-instance', TRUE), $taskClass, 'TYPO3\\CMS\\Taskcenter\\TaskInterface'), $GLOBALS['LANG']->getLL('error_header'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+				$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, sprintf($GLOBALS['LANG']->getLL('error_no-instance', TRUE), $taskClass, 'TYPO3\\CMS\\Taskcenter\\TaskInterface'), $GLOBALS['LANG']->getLL('error_header'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				$actionContent .= $flashMessage->render();
 			}
 		} else {
-			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->sL('LLL:EXT:taskcenter/task/locallang_mod.xlf:mlang_labels_tabdescr'), $GLOBALS['LANG']->sL('LLL:EXT:taskcenter/task/locallang_mod.xlf:mlang_tabs_tab'), \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
+			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->sL('LLL:EXT:taskcenter/task/locallang_mod.xlf:mlang_labels_tabdescr'), $GLOBALS['LANG']->sL('LLL:EXT:taskcenter/task/locallang_mod.xlf:mlang_tabs_tab'), \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
 			$actionContent .= $flashMessage->render();
 		}
 		$content = '<div id="taskcenter-main">
@@ -299,7 +299,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			}
 			$content .= $this->renderListMenu($tasks, TRUE);
 		} else {
-			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('no-tasks', TRUE), '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
+			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('no-tasks', TRUE), '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
 			$this->content .= $flashMessage->render();
 		}
 		return $content;

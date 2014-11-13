@@ -35,7 +35,7 @@ class CrawlerFilesHook {
 			return;
 		}
 		// Initialize the indexer class:
-		$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
+		$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\IndexedSearch\Indexer::class);
 		$indexerObj->conf = $params['conf'];
 		$indexerObj->init();
 		// Index document:

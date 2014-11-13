@@ -38,7 +38,7 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 	 */
 	protected function initDataProvider() {
 		/** @var $dataProvider \TYPO3\CMS\Backend\Tree\Pagetree\DataProvider */
-		$dataProvider = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\DataProvider');
+		$dataProvider = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\DataProvider::class);
 		$this->setDataProvider($dataProvider);
 	}
 
@@ -63,7 +63,7 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 	public function getNextTreeLevel($nodeId, $nodeData) {
 		$this->initDataProvider();
 		/** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
-		$node = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode', (array)$nodeData);
+		$node = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode::class, (array)$nodeData);
 		if ($nodeId === 'root') {
 			$nodeCollection = $this->dataProvider->getTreeMounts();
 		} else {
@@ -85,7 +85,7 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 			return array();
 		}
 		/** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
-		$node = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode', (array)$nodeData);
+		$node = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode::class, (array)$nodeData);
 		$this->initDataProvider();
 		if ($nodeId === 'root') {
 			$nodeCollection = $this->dataProvider->getTreeMounts($searchFilter);
@@ -139,7 +139,7 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 	 */
 	public function getIndicators() {
 		/** @var $indicatorProvider \TYPO3\CMS\Backend\Tree\Pagetree\Indicator */
-		$indicatorProvider = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\Indicator');
+		$indicatorProvider = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\Indicator::class);
 		$indicatorHtmlArr = $indicatorProvider->getAllIndicators();
 		$indicator = array(
 			'html' => implode(' ', $indicatorHtmlArr),

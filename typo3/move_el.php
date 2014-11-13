@@ -142,6 +142,6 @@ class ext_posMap_tt_content extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap
 	}
 }
 
-$moveElementController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\ContentElement\\MoveElementController');
+$moveElementController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController::class);
 $moveElementController->main();
 $moveElementController->printContent();

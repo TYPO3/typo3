@@ -421,7 +421,7 @@ class DataHandlerHook {
 		if (is_array($workspaceRec)) {
 			// Get the new stage title from workspaces library, if workspaces extension is installed
 			if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
-				$stageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\StagesService');
+				$stageService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\StagesService::class);
 				$newStage = $stageService->getStageTitle((int)$stageId);
 			} else {
 				// TODO: CONSTANTS SHOULD BE USED - tx_service_workspace_workspaces
@@ -531,7 +531,7 @@ class DataHandlerHook {
 				);
 				// add marker for preview links if workspace extension is loaded
 				if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
-					$this->workspaceService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
+					$this->workspaceService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
 					// only generate the link if the marker is in the template - prevents database from getting to much entries
 					if (GeneralUtility::isFirstPartOfStr($emailConfig['message'], 'LLL:')) {
 						$tempEmailMessage = $GLOBALS['LANG']->sL($emailConfig['message']);
@@ -576,7 +576,7 @@ class DataHandlerHook {
 							// a LANG object in this language hasn't been
 							// instantiated yet, so this is done here
 							/** @var $languageObject \TYPO3\CMS\Lang\LanguageService */
-							$languageObject = GeneralUtility::makeInstance('TYPO3\\CMS\\Lang\\LanguageService');
+							$languageObject = GeneralUtility::makeInstance(\TYPO3\CMS\Lang\LanguageService::class);
 							$languageObject->init($recipientLanguage);
 							$languageObjects[$recipientLanguage] = $languageObject;
 						} else {
@@ -593,7 +593,7 @@ class DataHandlerHook {
 					$emailMessage = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($emailMessage, $markers, '', TRUE, TRUE);
 					// Send an email to the recipient
 					/** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
-					$mail = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+					$mail = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
 					if (!empty($recipientData['realName'])) {
 						$recipient = array($recipientData['email'] => $recipientData['realName']);
 					} else {
@@ -1359,7 +1359,7 @@ class DataHandlerHook {
 	 * @return \TYPO3\CMS\Core\Database\RelationHandler
 	 */
 	protected function createRelationHandlerInstance() {
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
 	}
 
 }

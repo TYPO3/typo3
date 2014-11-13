@@ -18,6 +18,6 @@ if (isset($_GET['login_status'])) {
 define('TYPO3_MOD_PATH', 'sysext/openid/');
 require_once '../../init.php';
 
-$module = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Openid\\OpenidReturn');
+$module = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Openid\OpenidReturn::class);
 /* @var \TYPO3\CMS\Openid\OpenidReturn $module */
 $module->main();

@@ -83,7 +83,7 @@ class PermissionAjaxController {
 		if ($this->conf['page'] > 0) {
 			// Init TCE for execution of update
 			/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
-			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 			$tce->stripslashes_values = 1;
 			// Determine the scripts to execute
 			switch ($this->conf['action']) {

@@ -170,7 +170,7 @@ class NewRecordController {
 		$this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
 		$this->pagesOnly = GeneralUtility::_GP('pagesOnly');
 		// Create instance of template class for output
-		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/db_new.html');
 		$this->doc->JScode = '';
@@ -312,7 +312,7 @@ class NewRecordController {
 			$this->code .= '
 				<h3>' . htmlspecialchars($GLOBALS['LANG']->getLL('selectPosition')) . ':</h3>
 			';
-			$positionMap = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\View\\PagePositionMap', 'newRecordLocalPageTree');
+			$positionMap = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\PagePositionMap::class, 'newRecordLocalPageTree');
 			/** @var $positionMap \TYPO3\CMS\Backend\Tree\View\PagePositionMap */
 			$this->code .= $positionMap->positionTree($this->id, $this->pageinfo, $this->perms_clause, $this->R_URI);
 		} else {

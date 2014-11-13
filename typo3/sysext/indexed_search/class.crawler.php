@@ -19,6 +19,6 @@
  */
 // To make sure the backend charset is available:
 if (!is_object($GLOBALS['LANG'])) {
-	$GLOBALS['LANG'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Lang\\LanguageService');
+	$GLOBALS['LANG'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Lang\LanguageService::class);
 	$GLOBALS['LANG']->init($GLOBALS['BE_USER']->uc['lang']);
 }

@@ -70,7 +70,7 @@ class CategoryPermissionsAspect {
 
 				// Create an empty tree node collection to receive the secured nodes.
 				/** @var TreeNodeCollection $securedTreeNodeCollection */
-				$securedTreeNodeCollection = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\TreeNodeCollection');
+				$securedTreeNodeCollection = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\TreeNodeCollection::class);
 
 				foreach ($categoryMountPoints as $categoryMountPoint) {
 

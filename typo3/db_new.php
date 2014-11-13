@@ -52,6 +52,6 @@ class newRecordLocalPageTree extends \TYPO3\CMS\Backend\Tree\View\PageTreeView {
 	}
 }
 
-$newRecordController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\NewRecordController');
+$newRecordController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\NewRecordController::class);
 $newRecordController->main();
 $newRecordController->printContent();

@@ -762,7 +762,7 @@ class InlineElement {
 				$comboRecord = $this->getNewRecord($this->inlineFirstPid, $comboConfig['foreign_table']);
 				$isNewRecord = TRUE;
 			}
-			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.inline_use_combination'), '', FlashMessage::WARNING);
+			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.inline_use_combination'), '', FlashMessage::WARNING);
 			$out = $flashMessage->render();
 			// Get the TCEforms interpretation of the TCA of the child table
 			$out .= $this->renderMainFields($comboConfig['foreign_table'], $comboRecord);
@@ -1105,10 +1105,10 @@ class InlineElement {
 		// CLEANSE SETTINGS
 		$GLOBALS['SOBE']->MOD_SETTINGS = BackendUtility::getModuleData($GLOBALS['SOBE']->MOD_MENU, GeneralUtility::_GP('SET'), $GLOBALS['SOBE']->MCONF['name']);
 		// Create an instance of the document template object
-		$GLOBALS['SOBE']->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$GLOBALS['SOBE']->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$GLOBALS['SOBE']->doc->backPath = $GLOBALS['BACK_PATH'];
 		// Initialize TCEforms (rendering the forms)
-		$GLOBALS['SOBE']->tceforms = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormEngine');
+		$GLOBALS['SOBE']->tceforms = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\FormEngine::class);
 		$GLOBALS['SOBE']->tceforms->inline = $this;
 		$GLOBALS['SOBE']->tceforms->RTEcounter = (int)array_shift($ajaxArguments);
 		$GLOBALS['SOBE']->tceforms->initDefaultBEMode();
@@ -1118,7 +1118,7 @@ class InlineElement {
 		$GLOBALS['SOBE']->tceforms->enableTabMenu = TRUE;
 		// Clipboard is initialized:
 		// Start clipboard
-		$GLOBALS['SOBE']->tceforms->clipObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Clipboard\\Clipboard');
+		$GLOBALS['SOBE']->tceforms->clipObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
 		// Initialize - reads the clipboard content from the user session
 		$GLOBALS['SOBE']->tceforms->clipObj->initializeClipboard();
 	}
@@ -1290,7 +1290,7 @@ class InlineElement {
 			$cmd = array();
 			$cmd[$parent['table']][$parent['uid']]['inlineLocalizeSynchronize'] = $parent['field'] . ',' . $type;
 			/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
-			$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+			$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 			$tce->stripslashes_values = FALSE;
 			$tce->start(array(), $cmd);
 			$tce->process_cmdmap();
@@ -1482,7 +1482,7 @@ class InlineElement {
 						$flexFormParts = $this->extractFlexFormParts($PA['itemFormElName']);
 						$flexData = GeneralUtility::xml2array($fieldValue);
 						/** @var  $flexFormTools  \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools */
-						$flexFormTools = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
+						$flexFormTools = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
 						$flexFormFieldValue = $flexFormTools->getArrayValueByPath($flexFormParts, $flexData);
 
 						if ($flexFormFieldValue !== NULL) {
@@ -1746,7 +1746,7 @@ class InlineElement {
 			}
 		}
 		/** @var $trData \TYPO3\CMS\Backend\Form\DataPreprocessor */
-		$trData = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\DataPreprocessor');
+		$trData = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\DataPreprocessor::class);
 		$trData->addRawData = TRUE;
 		$trData->lockRecords = 1;
 		$trData->disableRTE = $GLOBALS['SOBE']->MOD_SETTINGS['disableRTE'];
@@ -2514,7 +2514,7 @@ class InlineElement {
 		$headDataRaw = $this->fObj->JStop() . $this->getJavaScriptAndStyleSheetsOfPageRenderer();
 		if ($headDataRaw) {
 			// Create instance of the HTML parser:
-			$parseObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
+			$parseObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
 			// Removes script wraps:
 			$headDataRaw = str_replace(array('/*<![CDATA[*/', '/*]]>*/'), '', $headDataRaw);
 			// Removes leading spaces of a multiline string:

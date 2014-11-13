@@ -714,7 +714,7 @@ class CommandMap {
 	 */
 	protected function getDependencyUtility($scope) {
 		/** @var $dependency \TYPO3\CMS\Version\Dependency\DependencyResolver */
-		$dependency = GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\Dependency\\DependencyResolver');
+		$dependency = GeneralUtility::makeInstance(\TYPO3\CMS\Version\Dependency\DependencyResolver::class);
 		$dependency->setWorkspace($this->getWorkspace());
 		$dependency->setOuterMostParentsRequireReferences(TRUE);
 		if ($this->getScopeData($scope, self::KEY_ElementConstructCallback)) {

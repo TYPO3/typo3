@@ -36,7 +36,7 @@ class FileDeletionAspect {
 	 * @return \TYPO3\CMS\Core\Resource\Index\FileIndexRepository
 	 */
 	protected function getFileIndexRepository() {
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository');
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\FileIndexRepository::class);
 	}
 
 	/**
@@ -45,7 +45,7 @@ class FileDeletionAspect {
 	 * @return \TYPO3\CMS\Core\Resource\Index\MetaDataRepository
 	 */
 	protected function getMetaDataRepository() {
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Index\\MetaDataRepository');
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class);
 	}
 
 	/**
@@ -54,7 +54,7 @@ class FileDeletionAspect {
 	 * @return \TYPO3\CMS\Core\Resource\ProcessedFileRepository
 	 */
 	protected function getProcessedFileRepository() {
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ProcessedFileRepository');
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ProcessedFileRepository::class);
 	}
 
 	/**

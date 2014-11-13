@@ -40,7 +40,7 @@ class DependencyEntityFactory {
 	 */
 	public function getElement($table, $id, array $data = array(), \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency) {
 		/** @var $element ElementEntity */
-		$element = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\Dependency\\ElementEntity', $table, $id, $data, $dependency);
+		$element = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Version\Dependency\ElementEntity::class, $table, $id, $data, $dependency);
 		$elementName = $element->__toString();
 		if (!isset($this->elements[$elementName])) {
 			$this->elements[$elementName] = $element;
@@ -58,7 +58,7 @@ class DependencyEntityFactory {
 	public function getReference(\TYPO3\CMS\Version\Dependency\ElementEntity $element, $field) {
 		$referenceName = $element->__toString() . '.' . $field;
 		if (!isset($this->references[$referenceName][$field])) {
-			$this->references[$referenceName][$field] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\Dependency\\ReferenceEntity', $element, $field);
+			$this->references[$referenceName][$field] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Version\Dependency\ReferenceEntity::class, $element, $field);
 		}
 		return $this->references[$referenceName][$field];
 	}

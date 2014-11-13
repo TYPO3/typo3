@@ -30,7 +30,7 @@ class ObjectManager implements ObjectManagerInterface {
 	 * Constructs a new Object Manager
 	 */
 	public function __construct() {
-		$this->objectContainer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\Container\\Container');
+		$this->objectContainer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\Container\Container::class);
 	}
 
 	/**

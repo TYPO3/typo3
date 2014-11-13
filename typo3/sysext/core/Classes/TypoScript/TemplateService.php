@@ -400,7 +400,7 @@ class TemplateService {
 	 * @return array Returns the unmatched array $currentPageData if found cached in "cache_pagesection". Otherwise FALSE is returned which means that the array must be generated and stored in the cache
 	 */
 	public function getCurrentPageData() {
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_pagesection')->get((int)$GLOBALS['TSFE']->id . '_' . GeneralUtility::md5int($GLOBALS['TSFE']->MP));
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_pagesection')->get((int)$GLOBALS['TSFE']->id . '_' . GeneralUtility::md5int($GLOBALS['TSFE']->MP));
 	}
 
 	/**
@@ -412,7 +412,7 @@ class TemplateService {
 	public function matching($cc) {
 		if (is_array($cc['all'])) {
 			/** @var $matchObj \TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher */
-			$matchObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Configuration\\TypoScript\\ConditionMatching\\ConditionMatcher');
+			$matchObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher::class);
 			$matchObj->setRootline((array)$cc['rootLine']);
 			foreach ($cc['all'] as $key => $pre) {
 				if ($matchObj->match($pre)) {
@@ -525,7 +525,7 @@ class TemplateService {
 				// Only save the data if we're not simulating by hidden/starttime/endtime
 				$mpvarHash = GeneralUtility::md5int($GLOBALS['TSFE']->MP);
 				/** @var $pageSectionCache \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface */
-				$pageSectionCache = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_pagesection');
+				$pageSectionCache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_pagesection');
 				$pageSectionCache->set((int)$GLOBALS['TSFE']->id . '_' . $mpvarHash, $cc, array(
 					'pageId_' . (int)$GLOBALS['TSFE']->id,
 					'mpvarHash_' . $mpvarHash
@@ -927,11 +927,11 @@ class TemplateService {
 		// ****************************
 		// Initialize parser and match-condition classes:
 		/** @var $constants \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser */
-		$constants = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
+		$constants = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
 		$constants->breakPointLN = (int)$this->ext_constants_BRP;
 		$constants->setup = $this->mergeConstantsFromPageTSconfig(array());
 		/** @var $matchObj \TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher */
-		$matchObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Configuration\\TypoScript\\ConditionMatching\\ConditionMatcher');
+		$matchObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher::class);
 		$matchObj->setSimulateMatchConditions($this->matchAlternative);
 		$matchObj->setSimulateMatchResult((bool)$this->matchAll);
 		// Traverse constants text fields and parse them
@@ -948,7 +948,7 @@ class TemplateService {
 		// ***********************************************
 		// Initialize parser and match-condition classes:
 		/** @var $config \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser */
-		$config = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
+		$config = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
 		$config->breakPointLN = (int)$this->ext_config_BRP;
 		$config->regLinenumbers = $this->ext_regLinenumbers;
 		$config->regComments = $this->ext_regComments;
@@ -1091,7 +1091,7 @@ class TemplateService {
 		$TSdataArray = \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::checkIncludeLines_array($TSdataArray);
 		$userTS = implode(LF . '[GLOBAL]' . LF, $TSdataArray);
 		/** @var $parseObj \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser */
-		$parseObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
+		$parseObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
 		$parseObj->parse($userTS);
 		if (is_array($parseObj->setup['TSFE.']['constants.'])) {
 			\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($constArray, $parseObj->setup['TSFE.']['constants.']);

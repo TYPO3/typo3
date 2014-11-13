@@ -75,7 +75,7 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface 
 		$message = '';
 		$severity = \TYPO3\CMS\Reports\Status::OK;
 		$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'sys_refindex');
-		$registry = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
+		$registry = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Registry::class);
 		$lastRefIndexUpdate = $registry->get('core', 'sys_refindex_lastUpdate');
 		if (!$count && $lastRefIndexUpdate) {
 			$value = $GLOBALS['LANG']->getLL('status_empty');
@@ -83,7 +83,7 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface 
 			$url =  \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('system_dbint') . '&id=0&SET[function]=refindex';
 			$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.backend_reference_index'), '<a href="' . $url . '">', '</a>', \TYPO3\CMS\Backend\Utility\BackendUtility::dateTime($lastRefIndexUpdate));
 		}
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->getLL('status_referenceIndex'), $value, $message, $severity);
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class, $GLOBALS['LANG']->getLL('status_referenceIndex'), $value, $message, $severity);
 	}
 
 	/**
@@ -164,7 +164,7 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface 
 			$severity = \TYPO3\CMS\Reports\Status::WARNING;
 			$message = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.memcache_not_usable') . '<br /><br />' . '<ul><li>' . implode('</li><li>', $failedConnections) . '</li></ul>';
 		}
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->getLL('status_memcachedConfiguration'), $value, $message, $severity);
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class, $GLOBALS['LANG']->getLL('status_memcachedConfiguration'), $value, $message, $severity);
 	}
 
 	/**
@@ -197,7 +197,7 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface 
 				$severity = \TYPO3\CMS\Reports\Status::ERROR;
 			}
 		}
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $title, $value, $message, $severity);
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class, $title, $value, $message, $severity);
 	}
 
 	/**
@@ -214,7 +214,7 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface 
 			$severity = \TYPO3\CMS\Reports\Status::WARNING;
 			$message = $GLOBALS['LANG']->getLL('status_CreatedFilePermissions.writable');
 		}
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->getLL('status_CreatedFilePermissions'), $value, $message, $severity);
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class, $GLOBALS['LANG']->getLL('status_CreatedFilePermissions'), $value, $message, $severity);
 	}
 
 	/**
@@ -231,7 +231,7 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface 
 			$severity = \TYPO3\CMS\Reports\Status::WARNING;
 			$message = $GLOBALS['LANG']->getLL('status_CreatedDirectoryPermissions.writable');
 		}
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->getLL('status_CreatedDirectoryPermissions'), $value, $message, $severity);
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class, $GLOBALS['LANG']->getLL('status_CreatedDirectoryPermissions'), $value, $message, $severity);
 	}
 
 	/**
@@ -279,9 +279,9 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface 
 			$message = $GLOBALS['LANG']->getLL('status_configuration_DeprecationLogDeletionFailed');
 			$severity = \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR;
 		}
-		$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $message, '', $severity, TRUE);
+		$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $message, '', $severity, TRUE);
 		/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-		$flashMessageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+		$flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
 		/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
 		$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 		$defaultFlashMessageQueue->enqueue($flashMessage);

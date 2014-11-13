@@ -54,7 +54,7 @@ class ParseHtmlController {
 	 * @return 	[type]		...
 	 */
 	public function init() {
-		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->JScode = '';
 		$this->modData = $GLOBALS['BE_USER']->getModuleData($GLOBALS['MCONF']['name'], 'ses');
@@ -96,7 +96,7 @@ class ParseHtmlController {
 		$RTEtsConfigParts = explode(':', GeneralUtility::_GP('RTEtsConfigParams'));
 		$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($RTEtsConfigParts[5]));
 		$thisConfig = \TYPO3\CMS\Backend\Utility\BackendUtility::RTEsetup($RTEsetup['properties'], $RTEtsConfigParts[0], $RTEtsConfigParts[2], $RTEtsConfigParts[4]);
-		$HTMLParser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
+		$HTMLParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
 		if (is_array($thisConfig['enableWordClean.'])) {
 			$HTMLparserConfig = $thisConfig['enableWordClean.']['HTMLparser.'];
 			if (is_array($HTMLparserConfig)) {

@@ -78,7 +78,7 @@ class TypolinkViewHelper extends AbstractViewHelper {
 
 		if ($parameter) {
 			/** @var ContentObjectRenderer $contentObject */
-			$contentObject = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+			$contentObject = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 			$contentObject->start(array(), '');
 			$content = $contentObject->stdWrap(
 				$content,

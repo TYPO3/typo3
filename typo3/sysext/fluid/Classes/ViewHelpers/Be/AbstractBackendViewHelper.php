@@ -81,7 +81,7 @@ abstract class AbstractBackendViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelpe
 			GeneralUtility::deprecationLog('Usage of $GLOBALS[\'SOBE\'] is deprecated since 6.0 and will be removed in 6.2 ->getDocInstance() should be used instead');
 			$doc = $GLOBALS['SOBE']->doc;
 		} else {
-			$doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+			$doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 			if (!isset($GLOBALS['SOBE'])) {
 				$GLOBALS['SOBE'] = new \stdClass();
 			}

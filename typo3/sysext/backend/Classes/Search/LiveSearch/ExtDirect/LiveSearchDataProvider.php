@@ -44,8 +44,8 @@ class LiveSearchDataProvider {
 	 * Initialize the live search
 	 */
 	public function __construct() {
-		$this->liveSearch = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Search\\LiveSearch\\LiveSearch');
-		$this->queryParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Search\\LiveSearch\\QueryParser');
+		$this->liveSearch = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Search\LiveSearch\LiveSearch::class);
+		$this->queryParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Search\LiveSearch\QueryParser::class);
 	}
 
 	/**

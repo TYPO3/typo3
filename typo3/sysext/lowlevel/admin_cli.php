@@ -4,5 +4,5 @@ if (!defined('TYPO3_cliMode')) {
 }
 
 // Call the functionality
-$adminObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Lowlevel\\AdminCommand');
+$adminObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Lowlevel\AdminCommand::class);
 $adminObj->cli_main($_SERVER['argv']);

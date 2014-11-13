@@ -49,7 +49,7 @@ class EnvironmentStatusReport implements StatusProviderInterface, ExtendedStatus
 	 */
 	protected function getStatusInternal($verbose) {
 		/** @var $statusCheck \TYPO3\CMS\Install\SystemEnvironment\Check */
-		$statusCheck = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\SystemEnvironment\\Check');
+		$statusCheck = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Install\SystemEnvironment\Check::class);
 		$statusObjects = $statusCheck->getStatus();
 
 		$reportStatusTypes = array(

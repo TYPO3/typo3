@@ -65,7 +65,7 @@ class UserElementsController {
 	public function init() {
 		$this->editorNo = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('editorNo');
 		$this->siteUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->bodyTagAdditions = 'onload="Init();"';
 		$this->doc->form = '

@@ -183,7 +183,7 @@ class LocalizationUtility {
 					self::$alternativeLanguageKeys[] = $GLOBALS['TSFE']->config['config']['language_alt'];
 				} else {
 					/** @var $locales \TYPO3\CMS\Core\Localization\Locales */
-					$locales = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Locales');
+					$locales = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\Locales::class);
 					if (in_array(self::$languageKey, $locales->getLocales())) {
 						foreach ($locales->getLocaleDependencies(self::$languageKey) as $language) {
 							self::$alternativeLanguageKeys[] = $language;
@@ -292,7 +292,7 @@ class LocalizationUtility {
 		if (!is_null(static::$configurationManager)) {
 			return static::$configurationManager;
 		}
-		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 		$configurationManager = $objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
 		static::$configurationManager = $configurationManager;
 		return $configurationManager;

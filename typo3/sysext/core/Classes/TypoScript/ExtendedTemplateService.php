@@ -278,12 +278,12 @@ class ExtendedTemplateService extends TemplateService {
 		$this->setup['resources'] = $this->resources;
 		$this->setup['sitetitle'] = $this->sitetitle;
 		// Parse constants
-		$constants = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
+		$constants = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
 		// Register comments!
 		$constants->regComments = 1;
 		$constants->setup = $this->mergeConstantsFromPageTSconfig(array());
 		/** @var $matchObj \TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher */
-		$matchObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Configuration\\TypoScript\\ConditionMatching\\ConditionMatcher');
+		$matchObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher::class);
 		// Matches ALL conditions in TypoScript
 		$matchObj->setSimulateMatchResult(TRUE);
 		$c = 0;
@@ -692,7 +692,7 @@ class ExtendedTemplateService extends TemplateService {
 			$all .= '[GLOBAL]' . LF . $str;
 		}
 		if ($syntaxHL) {
-			$tsparser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
+			$tsparser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
 			$tsparser->lineNumberOffset = $this->ext_lineNumberOffset + 1;
 			$tsparser->parentObject = $this;
 			return $tsparser->doSyntaxHighlight($all, $lineNumbers ? array($this->ext_lineNumberOffset + 1) : '', $syntaxHLBlockmode);

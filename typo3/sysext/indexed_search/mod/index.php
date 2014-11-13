@@ -16,7 +16,7 @@
  * Module: Indexing Engine Overview
  */
 
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Controller\\ModuleController');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\IndexedSearch\Controller\ModuleController::class);
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();

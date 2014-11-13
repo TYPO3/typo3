@@ -154,7 +154,7 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	static public function initialize() {
 		/** @var $instance \TYPO3\CMS\Core\Localization\Locales */
-		$instance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Locales');
+		$instance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\Locales::class);
 		$instance->isoMapping = array_flip($instance->isoReverseMapping);
 		// Allow user-defined locales
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['user']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['user'])) {

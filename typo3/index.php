@@ -45,6 +45,6 @@ if (!empty($_SERVER['HTTP_REFERER'])) {
 	unset($typo3RequestDir);
 }
 
-$loginController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\LoginController');
+$loginController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\LoginController::class);
 $loginController->main();
 $loginController->printContent();

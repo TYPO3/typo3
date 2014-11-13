@@ -366,7 +366,7 @@ class PageLayoutController {
 	 */
 	public function clearCache() {
 		if ($this->clear_cache) {
-			$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+			$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 			$tce->stripslashes_values = 0;
 			$tce->start(array(), array());
 			$tce->clear_cacheCmd($this->id);
@@ -383,11 +383,11 @@ class PageLayoutController {
 		// If page is a folder
 		if ($this->pageinfo['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SYSFOLDER) {
 			// Access to list module
-			$moduleLoader = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleLoader');
+			$moduleLoader = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Module\ModuleLoader::class);
 			$moduleLoader->load($GLOBALS['TBE_MODULES']);
 			$modules = $moduleLoader->modules;
 			if (is_array($modules['web']['sub']['list'])) {
-				$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', '<p>' . $GLOBALS['LANG']->getLL('goToListModuleMessage') . '</p>
+				$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, '<p>' . $GLOBALS['LANG']->getLL('goToListModuleMessage') . '</p>
 					<p>' . IconUtility::getSpriteIcon('actions-system-list-open') . '<a href="javascript:top.goToModule( \'web_list\',1);">' . $GLOBALS['LANG']->getLL('goToListModule') . '
 						</a>
 					</p>', '', FlashMessage::INFO);
@@ -400,7 +400,7 @@ class PageLayoutController {
 			$title = BackendUtility::getRecordTitle('pages', $contentPage);
 			$linkToPid = $this->local_linkThisScript(array('id' => $this->pageinfo['content_from_pid']));
 			$link = '<a href="' . $linkToPid . '">' . htmlspecialchars($title) . ' (PID ' . (int)$this->pageinfo['content_from_pid'] . ')</a>';
-			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', sprintf($GLOBALS['LANG']->getLL('content_from_pid_title'), $link), '', FlashMessage::INFO);
+			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, sprintf($GLOBALS['LANG']->getLL('content_from_pid_title'), $link), '', FlashMessage::INFO);
 			$content .= $flashMessage->render();
 		}
 		return $content;
@@ -445,7 +445,7 @@ class PageLayoutController {
 			$this->CALC_PERMS = $GLOBALS['BE_USER']->calcPerms($this->pageinfo);
 			$this->EDIT_CONTENT = $this->CALC_PERMS & 16 ? 1 : 0;
 			// Start document template object:
-			$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+			$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 			$this->doc->backPath = $GLOBALS['BACK_PATH'];
 			$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/db_layout.html');
 			// JavaScript:
@@ -603,13 +603,13 @@ class PageLayoutController {
 			$this->content = $this->doc->render($GLOBALS['LANG']->getLL('title'), $this->content);
 		} else {
 			// If no access or id value, create empty document:
-			$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+			$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 			$this->doc->backPath = $GLOBALS['BACK_PATH'];
 			$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/db_layout.html');
 			$this->doc->JScode = $this->doc->wrapScriptTags('
 				if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';
 			');
-			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('clickAPage_content'), $GLOBALS['LANG']->getLL('clickAPage_header'), FlashMessage::INFO);
+			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('clickAPage_content'), $GLOBALS['LANG']->getLL('clickAPage_header'), FlashMessage::INFO);
 			$body = $flashMessage->render();
 			// Setting up the buttons and markers for docheader
 			$docHeaderButtons = array(
@@ -765,7 +765,7 @@ class PageLayoutController {
 				}
 			}
 			// Initializing transfer-data object:
-			$trData = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\DataPreprocessor');
+			$trData = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\DataPreprocessor::class);
 			$trData->addRawData = TRUE;
 			$trData->defVals[$this->eRParts[0]] = array(
 				'colPos' => (int)$ex_colPos,
@@ -794,7 +794,7 @@ class PageLayoutController {
 			} elseif (is_array($rec)) {
 				// If the record is an array (which it will always be... :-)
 				// Create instance of TCEforms, setting defaults:
-				$tceforms = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormEngine');
+				$tceforms = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\FormEngine::class);
 				$tceforms->backPath = $GLOBALS['BACK_PATH'];
 				$tceforms->initDefaultBEMode();
 				$tceforms->fieldOrder = $this->modTSconfig['properties']['tt_content.']['fieldOrder'];
@@ -803,7 +803,7 @@ class PageLayoutController {
 				$tceforms->enableClickMenu = TRUE;
 				// Clipboard is initialized:
 				// Start clipboard
-				$tceforms->clipObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Clipboard\\Clipboard');
+				$tceforms->clipObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
 				// Initialize - reads the clipboard content from the user session
 				$tceforms->clipObj->initializeClipboard();
 				// Render form, wrap it:
@@ -825,9 +825,9 @@ class PageLayoutController {
 				$theCode = $tceforms->printNeededJSFunctions_top() . $theCode . $tceforms->printNeededJSFunctions();
 				// Add warning sign if record was "locked":
 				if ($lockInfo = BackendUtility::isRecordLocked($this->eRParts[0], $rec['uid'])) {
-					$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', htmlspecialchars($lockInfo['msg']), '', FlashMessage::WARNING);
+					$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, htmlspecialchars($lockInfo['msg']), '', FlashMessage::WARNING);
 					/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-					$flashMessageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+					$flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
 					/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
 					$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 					$defaultFlashMessageQueue->enqueue($flashMessage);
@@ -877,7 +877,7 @@ class PageLayoutController {
 		$content .= $this->doc->spacer(10);
 		// Select element matrix:
 		if ($this->eRParts[0] == 'tt_content' && MathUtility::canBeInterpretedAsInteger($this->eRParts[1])) {
-			$posMap = GeneralUtility::makeInstance('ext_posMap');
+			$posMap = GeneralUtility::makeInstance(\ext_posMap::class);
 			$posMap->backPath = $GLOBALS['BACK_PATH'];
 			$posMap->cur_sys_language = $this->current_sys_language;
 			$HTMLcode = '';
@@ -907,7 +907,7 @@ class PageLayoutController {
 	public function renderListContent() {
 		// Initialize list object (see "class.db_layout.inc"):
 		/** @var $dblist \TYPO3\CMS\Backend\View\PageLayoutView */
-		$dblist = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\View\\PageLayoutView');
+		$dblist = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\View\PageLayoutView::class);
 		$dblist->backPath = $GLOBALS['BACK_PATH'];
 		$dblist->thumbs = $this->imagemode;
 		$dblist->no_noWrap = 1;

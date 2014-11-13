@@ -34,7 +34,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Constructs the module menu and gets the Singleton instance of the menu
 	 */
 	public function __construct() {
-		$this->moduleStorage = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleStorage');
+		$this->moduleStorage = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Module\ModuleStorage::class);
 
 		$rawData = $this->getRawModuleMenuData();
 
@@ -139,7 +139,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function createEntryFromRawData(array $module) {
 		/** @var $entry \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule */
-		$entry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Domain\\Model\\Module\\BackendModule');
+		$entry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Domain\Model\Module\BackendModule::class);
 		if (!empty($module['name']) && is_string($module['name'])) {
 			$entry->setName($module['name']);
 		}
@@ -221,7 +221,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function getRawModuleMenuData() {
 		// Loads the backend modules available for the logged in user.
-		$moduleLoader = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleLoader');
+		$moduleLoader = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Module\ModuleLoader::class);
 		$moduleLoader->observeWorkspaces = TRUE;
 		$moduleLoader->load($GLOBALS['TBE_MODULES']);
 		$loadedModules = $moduleLoader->modules;

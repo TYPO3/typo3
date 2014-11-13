@@ -15,6 +15,6 @@
 /**
  * Wizard to help make forms (fx. for tt_content elements) of type 'form'.
  */
-$formsController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\Wizard\\FormsController');
+$formsController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\Wizard\FormsController::class);
 $formsController->main();
 $formsController->printContent();

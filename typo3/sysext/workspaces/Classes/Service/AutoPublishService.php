@@ -43,7 +43,7 @@ class AutoPublishService {
 				((publish_time!=0 AND publish_time<=' . (int)$GLOBALS['EXEC_TIME'] . ')
 				OR (publish_time=0 AND unpublish_time!=0 AND unpublish_time<=' . (int)$GLOBALS['EXEC_TIME'] . '))' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_workspace')
 		);
-		$workspaceService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
+		$workspaceService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
 		foreach ($workspaces as $rec) {
 			// First, clear start/end time so it doesn't get select once again:
 			$fieldArray = $rec['publish_time'] != 0 ? array('publish_time' => 0) : array('unpublish_time' => 0);
@@ -52,7 +52,7 @@ class AutoPublishService {
 			$cmd = $workspaceService->getCmdArrayForPublishWS($rec['uid'], $rec['swap_modes'] == 1);
 			// $rec['swap_modes']==1 means that auto-publishing will swap versions, not just publish and empty the workspace.
 			// Execute CMD array:
-			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 			$tce->stripslashes_values = 0;
 			$tce->start(array(), $cmd);
 			$tce->process_cmdmap();

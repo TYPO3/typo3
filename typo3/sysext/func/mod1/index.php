@@ -20,7 +20,7 @@
  */
 
 /** @var $SOBE \TYPO3\CMS\Func\Controller\PageFunctionsController */
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Func\\Controller\\PageFunctionsController');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Func\Controller\PageFunctionsController::class);
 $SOBE->init();
 // Include files?
 // @deprecated since 6.2 (see ExtensionManagementUtility::insertModuleFunction)

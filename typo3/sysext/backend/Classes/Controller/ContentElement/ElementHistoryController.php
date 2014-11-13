@@ -53,7 +53,7 @@ class ElementHistoryController {
 	 */
 	protected function init() {
 		// Create internal template object
-		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/show_rechis.html');
 		// Start the page header
@@ -67,7 +67,7 @@ class ElementHistoryController {
 	 */
 	public function main() {
 		// Start history object
-		$historyObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\History\\RecordHistory');
+		$historyObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\History\RecordHistory::class);
 		// Get content:
 		$this->content .= $historyObj->main();
 		// Setting up the buttons and markers for docheader
@@ -103,7 +103,7 @@ class ElementHistoryController {
 		// CSH
 		$buttons['csh'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'history_log', $GLOBALS['BACK_PATH'], '', TRUE);
 		// Start history object
-		$historyObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\History\\RecordHistory');
+		$historyObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\History\RecordHistory::class);
 		if ($historyObj->returnUrl) {
 			$buttons['back'] = '<a href="' . htmlspecialchars($historyObj->returnUrl) . '" class="typo3-goBack">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back') . '</a>';
 		}

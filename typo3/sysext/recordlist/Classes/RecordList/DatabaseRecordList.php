@@ -416,7 +416,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 				TRUE
 			);
 			/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-			$flashMessageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+			$flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
 			/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
 			$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 			$defaultFlashMessageQueue->enqueue($flashMessage);

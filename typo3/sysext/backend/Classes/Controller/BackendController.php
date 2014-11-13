@@ -96,12 +96,12 @@ class BackendController {
 	 * Constructor
 	 */
 	public function __construct() {
-		$this->backendModuleRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Domain\\Repository\\Module\\BackendModuleRepository');
+		$this->backendModuleRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository::class);
 
 		// Set debug flag for BE development only
 		$this->debug = (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] === 1;
 		// Initializes the backend modules structure for use later.
-		$this->moduleLoader = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleLoader');
+		$this->moduleLoader = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Module\ModuleLoader::class);
 		$this->moduleLoader->load($GLOBALS['TBE_MODULES']);
 		$this->pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
 		$this->pageRenderer->loadScriptaculous('builder,effects,controls,dragdrop');
@@ -186,7 +186,7 @@ class BackendController {
 		$this->executeHook('renderPreProcess');
 
 		// Prepare the scaffolding, at this point extension may still add javascript and css
-		$logo = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\View\\LogoView');
+		$logo = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\View\LogoView::class);
 
 		// Create backend scaffolding
 		$backendScaffolding = '
@@ -793,7 +793,7 @@ class BackendController {
 		$moduleStorage = $this->backendModuleRepository->loadAllowedModules(array('user'));
 
 		/** @var $view \TYPO3\CMS\Fluid\View\StandaloneView */
-		$view = GeneralUtility::makeInstance('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+		$view = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
 		$view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/ModuleMenu/Main.html'));
 		$view->assign('modules', $moduleStorage);
 		return $view->render();

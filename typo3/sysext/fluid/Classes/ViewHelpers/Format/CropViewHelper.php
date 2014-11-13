@@ -119,7 +119,7 @@ class CropViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 			if (is_object($GLOBALS['LANG'])) {
 				$GLOBALS['TSFE']->csConvObj = $GLOBALS['LANG']->csConvObj;
 			} else {
-				$GLOBALS['TSFE']->csConvObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
+				$GLOBALS['TSFE']->csConvObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
 			}
 		}
 		// preparing renderCharset

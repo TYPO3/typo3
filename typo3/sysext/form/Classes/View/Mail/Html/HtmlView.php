@@ -64,8 +64,8 @@ class HtmlView extends \TYPO3\CMS\Form\View\Mail\Html\Element\ContainerElementVi
 	 * Constructor
 	 */
 	public function __construct(\TYPO3\CMS\Form\Domain\Model\Form $model, array $typoscript) {
-		$this->localCobj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
-		$this->localizationHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Localization');
+		$this->localCobj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+		$this->localizationHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Localization::class);
 		$this->typoscript = $typoscript;
 		parent::__construct($model);
 	}

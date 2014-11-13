@@ -114,7 +114,7 @@ class Mailer extends \Swift_Mailer {
 					throw new \TYPO3\CMS\Core\Exception('$TYPO3_CONF_VARS[\'MAIL\'][\'transport_mbox_file\'] needs to be set when transport is set to "mbox"', 1294586645);
 				}
 				// Create our transport
-				$this->transport = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MboxTransport', $mboxFile);
+				$this->transport = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MboxTransport::class, $mboxFile);
 				break;
 			case 'mail':
 				// Create the transport, no configuration required

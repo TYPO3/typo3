@@ -78,7 +78,7 @@ class ExtdirectPageCommands {
 			)
 		);
 		/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
-		$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 		$tce->stripslashes_values = 0;
 		$tce->start($action['data'], $action['cmd']);
 		$tce->process_datamap();

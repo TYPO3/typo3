@@ -50,7 +50,7 @@ class StaticFileCollection extends \TYPO3\CMS\Core\Resource\Collection\AbstractF
 	 */
 	public function loadContents() {
 		/** @var \TYPO3\CMS\Core\Resource\FileRepository $fileRepository */
-		$fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
+		$fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\FileRepository::class);
 		$fileReferences = $fileRepository->findByRelation('sys_file_collection', 'files', $this->getIdentifier());
 		foreach ($fileReferences as $file) {
 			$this->add($file);

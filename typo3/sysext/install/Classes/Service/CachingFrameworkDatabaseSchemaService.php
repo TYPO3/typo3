@@ -54,7 +54,7 @@ class CachingFrameworkDatabaseSchemaService {
 			'groups' => array('system')
 		);
 		/** @var \TYPO3\CMS\Core\Cache\CacheManager $cacheManager */
-		$cacheManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager');
+		$cacheManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
 		$cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
 		$cacheSqlString = \TYPO3\CMS\Core\Cache\Cache::getDatabaseTableDefinitions();
 		$sqlString = str_replace($extbaseObjectFakeName, 'extbase_object', $cacheSqlString);

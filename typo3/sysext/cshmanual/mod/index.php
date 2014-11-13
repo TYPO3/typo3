@@ -40,7 +40,7 @@ class local_t3lib_parsehtml extends \TYPO3\CMS\Core\Html\HtmlParser {
  * typo3/sysext/cshmanual/Classes/Controller/HelpModuleController.php
  */
 
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Cshmanual\\Controller\\HelpModuleController');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Cshmanual\Controller\HelpModuleController::class);
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();

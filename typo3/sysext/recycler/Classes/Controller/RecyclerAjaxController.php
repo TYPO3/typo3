@@ -90,20 +90,20 @@ class RecyclerAjaxController {
 				$depth = GeneralUtility::_GP('depth') ? GeneralUtility::_GP('depth') : '';
 				$this->setDataInSession('tableSelection', $table);
 				/* @var $model \TYPO3\CMS\Recycler\Domain\Model\DeletedRecords */
-				$model = GeneralUtility::makeInstance('TYPO3\\CMS\\Recycler\\Domain\\Model\\DeletedRecords');
+				$model = GeneralUtility::makeInstance(\TYPO3\CMS\Recycler\Domain\Model\DeletedRecords::class);
 				$model->loadData($startUid, $table, $depth, $start . ',' . $limit, $filter);
 				$deletedRowsArray = $model->getDeletedRows();
-				$model = GeneralUtility::makeInstance('TYPO3\\CMS\\Recycler\\Domain\\Model\\DeletedRecords');
+				$model = GeneralUtility::makeInstance(\TYPO3\CMS\Recycler\Domain\Model\DeletedRecords::class);
 				$totalDeleted = $model->getTotalCount($startUid, $table, $depth, $filter);
 				// load view
 				/* @var $view \TYPO3\CMS\Recycler\Controller\DeletedRecordsController */
-				$view = GeneralUtility::makeInstance('TYPO3\\CMS\\Recycler\\Controller\\DeletedRecordsController');
+				$view = GeneralUtility::makeInstance(\TYPO3\CMS\Recycler\Controller\DeletedRecordsController::class);
 				$str = $view->transform($deletedRowsArray, $totalDeleted);
 				break;
 			case 'doDelete':
 				$str = FALSE;
 				/* @var $model \TYPO3\CMS\Recycler\Domain\Model\DeletedRecords */
-				$model = GeneralUtility::makeInstance('TYPO3\\CMS\\Recycler\\Domain\\Model\\DeletedRecords');
+				$model = GeneralUtility::makeInstance(\TYPO3\CMS\Recycler\Domain\Model\DeletedRecords::class);
 				if ($model->deleteData($this->data)) {
 					$str = TRUE;
 				}
@@ -112,7 +112,7 @@ class RecyclerAjaxController {
 				$str = FALSE;
 				$recursive = GeneralUtility::_GP('recursive');
 				/* @var $model \TYPO3\CMS\Recycler\Domain\Model\DeletedRecords */
-				$model = GeneralUtility::makeInstance('TYPO3\\CMS\\Recycler\\Domain\\Model\\DeletedRecords');
+				$model = GeneralUtility::makeInstance(\TYPO3\CMS\Recycler\Domain\Model\DeletedRecords::class);
 				if ($model->undeleteData($this->data, $recursive)) {
 					$str = TRUE;
 				}
@@ -122,7 +122,7 @@ class RecyclerAjaxController {
 				$startUid = GeneralUtility::_GP('startUid') ? GeneralUtility::_GP('startUid') : '';
 				$this->setDataInSession('depthSelection', $depth);
 				/* @var $model \TYPO3\CMS\Recycler\Domain\Model\Tables */
-				$model = GeneralUtility::makeInstance('TYPO3\\CMS\\Recycler\\Domain\\Model\\Tables');
+				$model = GeneralUtility::makeInstance(\TYPO3\CMS\Recycler\Domain\Model\Tables::class);
 				$str = $model->getTables('json', TRUE, $startUid, $depth);
 				break;
 			default:

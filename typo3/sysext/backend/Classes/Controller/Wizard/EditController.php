@@ -87,7 +87,7 @@ class EditController {
 				$prependName = 1;
 				$params = '';
 				// Selecting selected values into an array:
-				$dbAnalysis = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+				$dbAnalysis = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
 				$dbAnalysis->start($this->P['currentSelectedValues'], $allowedTables);
 				$value = $dbAnalysis->getValueArray($prependName);
 				// Traverse that array and make parameters for alt_doc.php:

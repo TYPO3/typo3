@@ -37,7 +37,7 @@ class HierarchicalMenuContentObject extends AbstractContentObject {
 		$menuType = $conf[1];
 		try {
 			/** @var $menuObjectFactory \TYPO3\CMS\Frontend\ContentObject\Menu\MenuContentObjectFactory */
-			$menuObjectFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\Menu\\MenuContentObjectFactory');
+			$menuObjectFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\Menu\MenuContentObjectFactory::class);
 			$menu = $menuObjectFactory->getMenuObjectByType($menuType);
 			$GLOBALS['TSFE']->register['count_HMENU']++;
 			$GLOBALS['TSFE']->register['count_HMENU_MENUOBJ'] = 0;

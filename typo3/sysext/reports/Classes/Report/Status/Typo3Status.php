@@ -41,7 +41,7 @@ class Typo3Status implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	 * @return \TYPO3\CMS\Reports\Status
 	 */
 	protected function getTypo3VersionStatus() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', 'TYPO3', TYPO3_version, '', \TYPO3\CMS\Reports\Status::NOTICE);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class, 'TYPO3', TYPO3_version, '', \TYPO3\CMS\Reports\Status::NOTICE);
 	}
 
 	/**

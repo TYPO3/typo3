@@ -64,7 +64,7 @@ class SubmitElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement
 	 */
 	public function setValue($value = '') {
 		/** @var $localizationHandler \TYPO3\CMS\Form\Localization */
-		$localizationHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Localization');
+		$localizationHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Localization::class);
 		// Value not set from typoscript
 		$oldValue = $this->getAttributeValue('value');
 		if (empty($oldValue)) {

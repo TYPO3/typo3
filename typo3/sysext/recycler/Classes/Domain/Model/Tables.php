@@ -62,7 +62,7 @@ class Tables {
 				$deletedCount = $this->databaseConnection->exec_SELECTcountRows('uid', $tableName, $deletedField . '<>0');
 				if ($deletedCount) {
 					/* @var $deletedDataObject \TYPO3\CMS\Recycler\Domain\Model\DeletedRecords */
-					$deletedDataObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Recycler\\Domain\\Model\\DeletedRecords');
+					$deletedDataObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Recycler\Domain\Model\DeletedRecords::class);
 					$deletedData = $deletedDataObject->loadData($startUid, $tableName, $depth)->getDeletedRows();
 					if (isset($deletedData[$tableName])) {
 						if ($deletedRecordsInTable = count($deletedData[$tableName])) {

@@ -82,7 +82,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 			}
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status',
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class,
 			$GLOBALS['LANG']->getLL('status_adminUserAccount'), $value, $message, $severity);
 	}
 
@@ -102,7 +102,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 			$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_encryption'),
 				'<a href="' . $url . '">', '</a>');
 		}
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status',
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class,
 			$GLOBALS['LANG']->getLL('status_encryptionKey'), $value, $message, $severity);
 	}
 
@@ -125,7 +125,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 			$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_deny_pattern_partsNotPresent'),
 				'<br /><pre>' . htmlspecialchars(FILE_DENY_PATTERN_DEFAULT) . '</pre><br />');
 		}
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status',
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class,
 			$GLOBALS['LANG']->getLL('status_fileDenyPattern'), $value, $message, $severity);
 	}
 
@@ -145,7 +145,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 			$severity = \TYPO3\CMS\Reports\Status::ERROR;
 			$message = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_deny_htaccess');
 		}
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status',
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class,
 			$GLOBALS['LANG']->getLL('status_htaccessUploadProtection'), $value, $message, $severity);
 	}
 
@@ -203,7 +203,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 			$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.installtool_default_password'),
 				'<a href="' . $changeInstallToolPasswordUrl . '">', '</a>');
 		}
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status',
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class,
 			$GLOBALS['LANG']->getLL('status_installToolPassword'), $value, $message, $severity);
 	}
 
@@ -216,7 +216,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		$value = $GLOBALS['LANG']->getLL('status_ok');
 		$severity = \TYPO3\CMS\Reports\Status::OK;
 		/** @var \TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility $configCheck */
-		$configCheck = GeneralUtility::makeInstance('TYPO3\\CMS\\Saltedpasswords\\Utility\\ExtensionManagerConfigurationUtility');
+		$configCheck = GeneralUtility::makeInstance(\TYPO3\CMS\Saltedpasswords\Utility\ExtensionManagerConfigurationUtility::class);
 		$message = '<p>' . $GLOBALS['LANG']->getLL('status_saltedPasswords_infoText') . '</p>';
 		$messageDetail = '';
 		$resultCheck = $configCheck->checkConfigurationBackend(array(), new \TYPO3\CMS\Core\TypoScript\ConfigurationForm());
@@ -249,7 +249,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		if (empty($messageDetail)) {
 			$message = '';
 		}
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status',
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class,
 			$GLOBALS['LANG']->getLL('status_saltedPasswords'), $value, $message, $severity);
 	}
 
@@ -286,7 +286,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 				}
 			}
 		}
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status',
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class,
 			$GLOBALS['LANG']->getLL('status_installTool'), $value, $message, $severity);
 	}
 }

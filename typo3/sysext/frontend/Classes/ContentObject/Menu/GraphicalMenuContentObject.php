@@ -143,7 +143,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 			$c++;
 			if ($isGD) {
 				// Pre-working the item
-				$gifCreator = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
+				$gifCreator = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Imaging\GifBuilder::class);
 				$gifCreator->init();
 				$gifCreator->start($val, $this->menuArr[$key]);
 				// If useLargestItemH/W is specified
@@ -157,7 +157,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 					}
 					// Regenerate the new values...
 					$val['XY'] = implode(',', $tempXY);
-					$gifCreator = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
+					$gifCreator = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Imaging\GifBuilder::class);
 					$gifCreator->init();
 					$gifCreator->start($val, $this->menuArr[$key]);
 				}
@@ -178,7 +178,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 					}
 					// Regenerate the new values...
 					$val['XY'] = implode(',', $tempXY);
-					$gifCreator = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
+					$gifCreator = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Imaging\GifBuilder::class);
 					$gifCreator->init();
 					$gifCreator->start($val, $this->menuArr[$key]);
 				}
@@ -195,7 +195,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 					}
 					if ($maxFlag) {
 						$val['XY'] = implode(',', $tempXY);
-						$gifCreator = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
+						$gifCreator = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Imaging\GifBuilder::class);
 						$gifCreator->init();
 						$gifCreator->start($val, $this->menuArr[$key]);
 					}
@@ -222,7 +222,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 			$gifFileName = '';
 			if ($conf[$key]['altImgResource'] || is_array($conf[$key]['altImgResource.'])) {
 				if (!is_object($cObj)) {
-					$cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+					$cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 				}
 				$cObj->start($this->menuArr[$key], 'pages');
 				$altImgInfo = $cObj->getImgResource($conf[$key]['altImgResource'], $conf[$key]['altImgResource.']);
@@ -314,7 +314,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 				}
 			}
 			$c++;
-			$gifCreator = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
+			$gifCreator = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Imaging\GifBuilder::class);
 			$gifCreator->init();
 			$gifCreator->start($val, $this->menuArr[$key]);
 			if ($maxDim) {
@@ -329,7 +329,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 				}
 				if ($maxFlag) {
 					$val['XY'] = implode(',', $tempXY);
-					$gifCreator = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
+					$gifCreator = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Imaging\GifBuilder::class);
 					$gifCreator->init();
 					$gifCreator->start($val, $this->menuArr[$key]);
 				}
@@ -360,7 +360,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 	public function writeMenu() {
 		if (is_array($this->menuArr) && is_array($this->result) && count($this->result) && is_array($this->result['NO'])) {
 			// Create new \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer for our use
-			$this->WMcObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+			$this->WMcObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 			$this->WMresult = '';
 			$this->INPfixMD5 = substr(md5(microtime() . $this->GMENU_fixKey), 0, 4);
 			$this->WMmenuItems = count($this->result['NO']);

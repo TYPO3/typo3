@@ -61,7 +61,7 @@ class BackendLogModuleBootstrap {
 		// provides a clean way to solve this.
 		$_GET['tx_belog_system_beloglog']['controller'] = 'WebInfo';
 		/** @var $extbaseBootstrap \TYPO3\CMS\Extbase\Core\Bootstrap */
-		$extbaseBootstrap = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Core\\Bootstrap');
+		$extbaseBootstrap = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Core\Bootstrap::class);
 		return $extbaseBootstrap->run('', $configuration);
 	}
 

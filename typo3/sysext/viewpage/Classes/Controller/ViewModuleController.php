@@ -60,7 +60,7 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 		$domainName = $this->getDomainName($pageIdToShow);
 		// Mount point overlay: Set new target page id and mp parameter
 		/** @var \TYPO3\CMS\Frontend\Page\PageRepository $sysPage */
-		$sysPage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+		$sysPage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
 		$sysPage->init(FALSE);
 		$mountPointMpParameter = '';
 		$finalPageIdToShow = $pageIdToShow;

@@ -175,7 +175,7 @@ Reports problems with RTE images';
 											\TYPO3\CMS\Core\Utility\GeneralUtility::upload_copy_move(PATH_site . $fileName, $copyDestName);
 											clearstatcache();
 											if (@is_file($copyDestName)) {
-												$sysRefObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ReferenceIndex');
+												$sysRefObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ReferenceIndex::class);
 												$error = $sysRefObj->setReferenceValue($hash, \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($copyDestName));
 												if ($error) {
 													echo '	- ERROR:	TYPO3\\CMS\\Core\\Database\\ReferenceIndex::setReferenceValue(): ' . $error . LF;
@@ -234,7 +234,7 @@ Reports problems with RTE images';
 	 */
 	public function getFileProcObj() {
 		if (!is_object($this->fileProcObj)) {
-			$this->fileProcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\ExtendedFileUtility');
+			$this->fileProcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::class);
 			$this->fileProcObj->init(array(), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 			$this->fileProcObj->setActionPermissions();
 		}

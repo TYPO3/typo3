@@ -26,7 +26,7 @@ class StandaloneView extends \TYPO3\CMS\Fluid\View\StandaloneView {
 	 * Constructor
 	 */
 	public function __construct() {
-		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 		$this->templateParser = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Parser\\TemplateParser');
 		$this->setRenderingContext($this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Rendering\\RenderingContext'));
 		$request = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request');
@@ -39,6 +39,6 @@ class StandaloneView extends \TYPO3\CMS\Fluid\View\StandaloneView {
 		$controllerContext->setUriBuilder($uriBuilder);
 		$this->setControllerContext($controllerContext);
 		$this->templateCompiler = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Compiler\\TemplateCompiler');
-		$this->templateCompiler->setTemplateCache(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('fluid_template'));
+		$this->templateCompiler->setTemplateCache(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('fluid_template'));
 	}
 }

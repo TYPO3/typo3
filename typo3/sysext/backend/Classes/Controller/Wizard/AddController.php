@@ -144,13 +144,13 @@ class AddController {
 		if ($this->returnEditConf) {
 			if ($this->processDataFlag) {
 				// Preparing the data of the parent record...:
-				$trData = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\DataPreprocessor');
+				$trData = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\DataPreprocessor::class);
 				// 'new'
 				$trData->fetchRecord($this->P['table'], $this->P['uid'], '');
 				$current = reset($trData->regTableItems_data);
 				// If that record was found (should absolutely be...), then init TCEmain and set, prepend or append the record
 				if (is_array($current)) {
-					$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+					$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 					$tce->stripslashes_values = 0;
 					$data = array();
 					$addEl = $this->table . '_' . $this->id;
@@ -159,7 +159,7 @@ class AddController {
 					if ($this->P['flexFormPath']) {
 						// Current value of flexform path:
 						$currentFlexFormData = GeneralUtility::xml2array($current[$this->P['field']]);
-						$flexToolObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
+						$flexToolObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
 						$curValueOfFlexform = $flexToolObj->getArrayValueByPath($this->P['flexFormPath'], $currentFlexFormData);
 						$insertValue = '';
 						switch ((string)$this->P['params']['setValue']) {

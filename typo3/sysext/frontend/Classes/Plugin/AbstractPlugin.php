@@ -259,7 +259,7 @@ class AbstractPlugin {
 			$this->LLkey = $this->frontendController->config['config']['language'];
 			if (empty($this->frontendController->config['config']['language_alt'])) {
 				/** @var $locales \TYPO3\CMS\Core\Localization\Locales */
-				$locales = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Locales');
+				$locales = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\Locales::class);
 				if (in_array($this->LLkey, $locales->getLocales())) {
 					$this->altLLkey = '';
 					foreach ($locales->getLocaleDependencies($this->LLkey) as $language) {
@@ -852,7 +852,7 @@ class AbstractPlugin {
 		if ($this->frontendController->beUserLogin) {
 			// Create local cObj if not set:
 			if (!is_object($this->pi_EPtemp_cObj)) {
-				$this->pi_EPtemp_cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+				$this->pi_EPtemp_cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 				$this->pi_EPtemp_cObj->setParent($this->cObj->data, $this->cObj->currentRecord);
 			}
 			// Initialize the cObj object with current row

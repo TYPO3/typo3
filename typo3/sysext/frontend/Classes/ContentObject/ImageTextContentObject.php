@@ -155,7 +155,7 @@ class ImageTextContentObject extends AbstractContentObject {
 			$equalHeight = isset($conf['equalH.']) ? (int)$this->cObj->stdWrap($conf['equalH'], $conf['equalH.']) : (int)$conf['equalH'];
 			// Initiate gifbuilder object in order to get dimensions AND calculate the imageWidth's
 			if ($equalHeight) {
-				$gifCreator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
+				$gifCreator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Imaging\GifBuilder::class);
 				$gifCreator->init();
 				$relations = array();
 				$relations_cols = array();

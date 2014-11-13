@@ -149,7 +149,7 @@ class SpellCheckingController {
 	 * @return string content produced by the plugin
 	 */
 	public function main() {
-		$this->csConvObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
+		$this->csConvObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
 		// Setting start time
 		$time_start = microtime(TRUE);
 		$this->pspell_is_available = in_array('pspell', get_loaded_extensions());

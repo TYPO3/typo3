@@ -60,7 +60,7 @@ class DocumentRepository {
 		// Initialize the dependency of languages
 		$languageDependencies = array();
 		/** @var $locales \TYPO3\CMS\Core\Localization\Locales */
-		$locales = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Locales');
+		$locales = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\Locales::class);
 		// Language is found. Configure it:
 		$shortLanguage = $language;
 		if (!in_array($shortLanguage, $locales->getLocales()) && strpos($shortLanguage, '_') !== FALSE) {

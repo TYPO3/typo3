@@ -148,7 +148,7 @@ class SimpleDataHandlerController {
 		$this->uPT = GeneralUtility::_GP('uPT');
 		$this->generalComment = GeneralUtility::_GP('generalComment');
 		// Creating TCEmain object
-		$this->tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$this->tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 		$this->tce->stripslashes_values = 0;
 		$this->tce->generalComment = $this->generalComment;
 		// Configuring based on user prefs.
@@ -180,7 +180,7 @@ class SimpleDataHandlerController {
 	 */
 	public function initClipboard() {
 		if (is_array($this->CB)) {
-			$clipObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Clipboard\\Clipboard');
+			$clipObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
 			$clipObj->initializeClipboard();
 			if ($this->CB['paste']) {
 				$clipObj->setCurrentPad($this->CB['pad']);

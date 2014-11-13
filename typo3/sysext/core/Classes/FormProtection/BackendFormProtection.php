@@ -202,7 +202,7 @@ class BackendFormProtection extends AbstractFormProtection {
 	 */
 	protected function getRegistry() {
 		if (!$this->registry instanceof \TYPO3\CMS\Core\Registry) {
-			$this->registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
+			$this->registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Registry::class);
 		}
 		return $this->registry;
 	}

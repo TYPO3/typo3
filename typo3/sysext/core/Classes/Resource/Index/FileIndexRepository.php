@@ -69,7 +69,7 @@ class FileIndexRepository implements SingletonInterface {
 	 * @return FileIndexRepository
 	 */
 	public static function getInstance() {
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository');
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\FileIndexRepository::class);
 	}
 
 	/**
@@ -356,7 +356,7 @@ class FileIndexRepository implements SingletonInterface {
 	 * @return \TYPO3\CMS\Extbase\Object\ObjectManager
 	 */
 	protected function getObjectManager() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 	}
 
 

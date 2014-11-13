@@ -12,6 +12,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-$elementHistoryController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\ContentElement\\ElementHistoryController');
+$elementHistoryController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\ContentElement\ElementHistoryController::class);
 $elementHistoryController->main();
 $elementHistoryController->printContent();

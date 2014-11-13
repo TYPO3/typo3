@@ -88,7 +88,7 @@ class MysqlFulltextIndexHook {
 					$searchBoolean = TRUE;
 					break;
 				case self::SOUNDS_LIKE:
-					$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
+					$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\IndexedSearch\Indexer::class);
 					// Initialize the indexer-class
 					/** @var \TYPO3\CMS\IndexedSearch\Indexer $indexerObj */
 					$searchWord = $indexerObj->metaphone($searchWord, $indexerObj->storeMetaphoneInfoAsWords);
@@ -161,7 +161,7 @@ class MysqlFulltextIndexHook {
 			$idList = array();
 			foreach ($siteIdNumbers as $rootId) {
 				/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj */
-				$cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+				$cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 				$idList[] = $cObj->getTreeList( -1 * $rootId, 9999);
 			}
 			$pageWhere = ' ISEC.page_id IN (' . implode(',', $idList) . ')';

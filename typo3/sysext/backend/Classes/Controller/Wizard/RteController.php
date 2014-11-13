@@ -83,7 +83,7 @@ class RteController {
 		// "Module name":
 		$this->MCONF['name'] = 'wizard_rte';
 		// Starting the document template object:
-		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/wizard_rte.html');
 		// Need to NOT have the page wrapped in DIV since if we do that we destroy
@@ -128,7 +128,7 @@ class RteController {
 				$this->doc->JScode = $this->doc->wrapScriptTags(BackendUtility::viewOnClick($rawRec['pid'], '', BackendUtility::BEgetRootLine($rawRec['pid'])));
 			}
 			// Initialize TCeforms - for rendering the field:
-			$tceforms = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormEngine');
+			$tceforms = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\FormEngine::class);
 			// Init...
 			$tceforms->initDefaultBEMode();
 			// SPECIAL: Disables all wizards - we are NOT going to need them.
@@ -140,7 +140,7 @@ class RteController {
 				$RTEobj->RTEdivStyle = 'position:relative; left:0px; top:0px; height:100%; width:100%; border:solid 0px;';
 			}
 			// Fetching content of record:
-			$trData = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\DataPreprocessor');
+			$trData = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\DataPreprocessor::class);
 			$trData->lockRecords = 1;
 			$trData->fetchRecord($this->P['table'], $this->P['uid'], '');
 			// Getting the processed record content out:

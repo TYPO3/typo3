@@ -12,6 +12,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-$editFileController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\File\\EditFileController');
+$editFileController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\File\EditFileController::class);
 $editFileController->main();
 $editFileController->printContent();

@@ -484,8 +484,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function __construct($templateFile = '', $backPath = NULL) {
 		$this->reset();
-		$this->csConvObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
-		$this->locales = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Locales');
+		$this->csConvObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
+		$this->locales = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\Locales::class);
 		if (strlen($templateFile)) {
 			$this->templateFile = $templateFile;
 		}
@@ -1399,7 +1399,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			$token = $formprotection->generateToken('extDirect');
 		}
 		/** @var $extDirect \TYPO3\CMS\Core\ExtDirect\ExtDirectApi */
-		$extDirect = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\ExtDirect\\ExtDirectApi');
+		$extDirect = GeneralUtility::makeInstance(\TYPO3\CMS\Core\ExtDirect\ExtDirectApi::class);
 		$api = $extDirect->getApiPhp($filterNamespaces);
 		if ($api) {
 			$this->addJsInlineCode('TYPO3ExtDirectAPI', $api, FALSE);
@@ -2769,7 +2769,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function getCompressor() {
 		if ($this->compressor === NULL) {
-			$this->compressor = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceCompressor');
+			$this->compressor = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ResourceCompressor::class);
 		}
 		return $this->compressor;
 	}

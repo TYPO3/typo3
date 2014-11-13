@@ -208,9 +208,9 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 */
 	public function __construct() {
 		// Set SQL parser object for internal use:
-		$this->SQLparser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\SqlParser', $this);
-		$this->installerSql = GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\Service\\SqlSchemaMigrationService');
-		$this->queryCache = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('dbal');
+		$this->SQLparser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\SqlParser::class, $this);
+		$this->installerSql = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class);
+		$this->queryCache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('dbal');
 		// Set internal variables with configuration:
 		$this->conf = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal'];
 	}
@@ -241,7 +241,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * @return \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend
 	 */
 	protected function getFieldInfoCache() {
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_phpcode');
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_phpcode');
 	}
 
 	/**
@@ -1368,7 +1368,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				}
 			}
 		}
-		$preparedStatement = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\PreparedStatement', '', $from_table, $precompiledParts);
+		$preparedStatement = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\PreparedStatement::class, '', $from_table, $precompiledParts);
 		/* @var $preparedStatement \TYPO3\CMS\Core\Database\PreparedStatement */
 		// Bind values to parameters
 		foreach ($input_parameters as $key => $value) {
@@ -1509,7 +1509,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				break;
 			case 'adodb':
 				/** @var \TYPO3\CMS\Dbal\Database\AdodbPreparedStatement $preparedStatement */
-				$preparedStatement = GeneralUtility::makeInstance('TYPO3\\CMS\\Dbal\\Database\\AdodbPreparedStatement', $query, $queryComponents, $this);
+				$preparedStatement = GeneralUtility::makeInstance(\TYPO3\CMS\Dbal\Database\AdodbPreparedStatement::class, $query, $queryComponents, $this);
 				if (!$preparedStatement->prepare()) {
 					$preparedStatement = FALSE;
 				}

@@ -78,7 +78,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function getClassInfoFactory() {
 		if ($this->classInfoFactory == NULL) {
-			$this->classInfoFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\Container\\ClassInfoFactory');
+			$this->classInfoFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\Container\ClassInfoFactory::class);
 		}
 		return $this->classInfoFactory;
 	}
@@ -90,7 +90,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function getClassInfoCache() {
 		if ($this->cache == NULL) {
-			$this->cache = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\Container\\ClassInfoCache');
+			$this->cache = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\Container\ClassInfoCache::class);
 		}
 		return $this->cache;
 	}
@@ -138,10 +138,10 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 			return $this;
 		}
 		if ($className === 'TYPO3\\CMS\\Core\\Cache\\CacheManager') {
-			return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager');
+			return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
 		}
 		if ($className === 'TYPO3\\CMS\\Core\\Package\\PackageManager') {
-			return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Package\\PackageManager');
+			return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
 		}
 		$className = \TYPO3\CMS\Core\Core\ClassLoader::getClassNameForAlias($className);
 		if (isset($this->singletonInstances[$className])) {
@@ -219,7 +219,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 			if ($classInfo->getIsSingleton() && !$instanceToInject instanceof \TYPO3\CMS\Core\SingletonInterface) {
 				$this->log('The singleton "' . $classInfo->getClassName() . '" needs a prototype in "' . $injectPropertyName . '". This is often a bad code smell; often you rather want to inject a singleton.', 1);
 			}
-			$propertyReflection = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Reflection\\PropertyReflection', $instance, $injectPropertyName);
+			$propertyReflection = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Reflection\PropertyReflection::class, $instance, $injectPropertyName);
 
 			$propertyReflection->setAccessible(TRUE);
 			$propertyReflection->setValue($instance, $instanceToInject);

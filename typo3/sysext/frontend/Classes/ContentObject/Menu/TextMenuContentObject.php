@@ -50,7 +50,7 @@ class TextMenuContentObject extends AbstractMenuContentObject {
 	public function writeMenu() {
 		if (is_array($this->result) && count($this->result)) {
 			// Create new \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer for our use
-			$this->WMcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+			$this->WMcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 			$this->WMresult = '';
 			$this->INPfixMD5 = substr(md5(microtime() . 'tmenu'), 0, 4);
 			$this->WMmenuItems = count($this->result);

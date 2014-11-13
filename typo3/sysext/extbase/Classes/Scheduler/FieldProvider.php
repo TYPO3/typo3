@@ -46,7 +46,7 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
 	 * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
 	 */
 	public function __construct(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager = NULL, \TYPO3\CMS\Extbase\Mvc\Cli\CommandManager $commandManager = NULL, \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService = NULL) {
-		$this->objectManager = $objectManager !== NULL ? $objectManager : \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$this->objectManager = $objectManager !== NULL ? $objectManager : \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 		$this->commandManager = $commandManager !== NULL ? $commandManager : $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\CommandManager');
 		$this->reflectionService = $reflectionService !== NULL ? $reflectionService : $this->objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService');
 	}

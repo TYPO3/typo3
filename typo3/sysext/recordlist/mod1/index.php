@@ -25,7 +25,7 @@
  */
 \TYPO3\CMS\Backend\Utility\BackendUtility::lockRecords();
 
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Recordlist\\RecordList');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Recordlist\RecordList::class);
 $SOBE->init();
 $SOBE->clearCache();
 $SOBE->main();

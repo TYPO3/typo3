@@ -102,7 +102,7 @@ class FolderBasedFileCollection extends \TYPO3\CMS\Core\Resource\Collection\Abst
 		$this->description = $array['description'];
 		if (!empty($array['folder']) && !empty($array['storage'])) {
 			/** @var $storageRepository \TYPO3\CMS\Core\Resource\StorageRepository */
-			$storageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
+			$storageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\StorageRepository::class);
 			/** @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
 			$storage = $storageRepository->findByUid($array['storage']);
 			if ($storage) {

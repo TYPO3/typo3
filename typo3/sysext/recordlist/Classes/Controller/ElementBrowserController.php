@@ -74,7 +74,7 @@ class ElementBrowserController {
 		}
 		// Creating backend template object:
 		// this might not be needed but some classes refer to $GLOBALS['SOBE']->doc, so ...
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		// Apply the same styles as those of the base script
 		$this->doc->bodyTagId = 'typo3-browse-links-php';
@@ -130,7 +130,7 @@ class ElementBrowserController {
 		}
 		// if type was not rendered use default rendering functions
 		if (!$browserRendered) {
-			$this->browser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Recordlist\\Browser\\ElementBrowser');
+			$this->browser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Recordlist\Browser\ElementBrowser::class);
 			$this->browser->init();
 			$modData = $GLOBALS['BE_USER']->getModuleData('browse_links.php', 'ses');
 			list($modData, $store) = $this->browser->processSessionData($modData);

@@ -35,7 +35,7 @@ class SpriteBuildingHandler extends AbstractSpriteHandler {
 	 * @return void
 	 */
 	public function generate() {
-		$this->generatorInstance = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Sprite\\SpriteGenerator', 'GeneratorHandler');
+		$this->generatorInstance = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Sprite\SpriteGenerator::class, 'GeneratorHandler');
 		$this->generatorInstance
 			->setOmitSpriteNameInIconName(TRUE)
 			->setIncludeTimestampInCSS(TRUE)

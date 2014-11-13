@@ -34,7 +34,7 @@ if ($temp_path = $TBE_MODULES['_PATHS'][$moduleName]) {
 } else {
 	if (is_array($TBE_MODULES['_dispatcher'])) {
 		foreach ($TBE_MODULES['_dispatcher'] as $dispatcherClassName) {
-			$dispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')->get($dispatcherClassName);
+			$dispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class)->get($dispatcherClassName);
 			if ($dispatcher->callModule($moduleName) === TRUE) {
 				$isDispatched = TRUE;
 				break;

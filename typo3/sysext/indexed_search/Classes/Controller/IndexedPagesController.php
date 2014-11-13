@@ -121,7 +121,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 			}
 		}
 		// Initialize indexer if we need it (metaphone display does...)
-		$this->indexerObj = GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
+		$this->indexerObj = GeneralUtility::makeInstance(\TYPO3\CMS\IndexedSearch\Indexer::class);
 		// Set CSS styles specific for this document:
 		$this->pObj->content = str_replace('/*###POSTCSSMARKER###*/', '
 			TABLE.c-list TR TD { white-space: nowrap; vertical-align: top; }
@@ -168,7 +168,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 */
 	public function drawTableOfIndexedPages() {
 		// Drawing tree:
-		$tree = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\View\\PageTreeView');
+		$tree = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\PageTreeView::class);
 		$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 		$tree->init('AND ' . $perms_clause);
 		$HTML = '<img src="' . $GLOBALS['BACK_PATH'] . \TYPO3\CMS\Backend\Utility\IconUtility::getIcon('pages', $this->pObj->pageinfo) . '" width="18" height="16" align="top" alt="" />';
@@ -860,7 +860,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 		if (is_array($resultRow)) {
 			if ($resultRow['item_type'] && $resultRow['item_type'] !== '0') {
 				// (Re)-Indexing file on page.
-				$indexerObj = GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
+				$indexerObj = GeneralUtility::makeInstance(\TYPO3\CMS\IndexedSearch\Indexer::class);
 				$indexerObj->backend_initIndexer($pageId, 0, 0, '', $this->getUidRootLineForClosestTemplate($pageId));
 				// URL or local file:
 				if ($resultRow['externalUrl']) {
@@ -892,13 +892,13 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 * @return array Array where the root lines uid values are found.
 	 */
 	public function getUidRootLineForClosestTemplate($id) {
-		$tmpl = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService');
+		$tmpl = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);
 		// Defined global here!
 		$tmpl->tt_track = 0;
 		// Do not log time-performance information
 		$tmpl->init();
 		// Gets the rootLine
-		$sys_page = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+		$sys_page = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
 		$rootLine = $sys_page->getRootLine($id);
 		$tmpl->runThroughTemplates($rootLine, 0);
 		// This generates the constants/config + hierarchy info for the template.
@@ -942,7 +942,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 						while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 							$idList[] = (int)$row['page_id'];
 						}
-						$pageCache = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_pages');
+						$pageCache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_pages');
 						foreach ($idList as $pageId) {
 							$pageCache->flushByTag('pageId_' . $pageId);
 						}
@@ -1018,7 +1018,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 		// Compile new list:
 		$data = array();
 		$data['pages'][$pageUid]['keywords'] = implode(', ', array_keys($keywords));
-		$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 		$tce->stripslashes_values = 0;
 		$tce->start($data, array());
 		$tce->process_datamap();

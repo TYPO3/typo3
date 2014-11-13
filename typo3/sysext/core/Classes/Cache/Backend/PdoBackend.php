@@ -242,10 +242,10 @@ class PdoBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
 			$splitdsn = explode(':', $this->dataSourceName, 2);
 			$this->pdoDriver = $splitdsn[0];
 			if ($this->pdoDriver === 'sqlite' && !file_exists($splitdsn[1])) {
-				$this->databaseHandle = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('PDO', $this->dataSourceName, $this->username, $this->password);
+				$this->databaseHandle = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\PDO::class, $this->dataSourceName, $this->username, $this->password);
 				$this->createCacheTables();
 			} else {
-				$this->databaseHandle = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('PDO', $this->dataSourceName, $this->username, $this->password);
+				$this->databaseHandle = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\PDO::class, $this->dataSourceName, $this->username, $this->password);
 			}
 			$this->databaseHandle->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 			if (substr($this->pdoDriver, 0, 5) === 'mysql') {

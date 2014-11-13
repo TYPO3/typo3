@@ -23,6 +23,6 @@ require __DIR__ . '/init.php';
 	'Creating a new folder is moved to an own module. Please use BackendUtility::getModuleUrl(\'file_newfolder\') to link to this script. This script will be removed in two versions.'
 );
 
-$createFolderController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\File\\CreateFolderController');
+$createFolderController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\File\CreateFolderController::class);
 $createFolderController->main();
 $createFolderController->printContent();

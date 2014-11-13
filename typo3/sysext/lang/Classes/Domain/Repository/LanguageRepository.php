@@ -50,10 +50,10 @@ class LanguageRepository {
 	 */
 	public function __construct() {
 		try {
-			$globalSettings = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getLocalConfigurationValueByPath($this->configurationPath);
+			$globalSettings = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class)->getLocalConfigurationValueByPath($this->configurationPath);
 			$this->selectedLanguages = (array)$globalSettings['availableLanguages'];
 		} catch (\Exception $e) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->setLocalConfigurationValueByPath(
+			\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class)->setLocalConfigurationValueByPath(
 				$this->configurationPath,
 				array('availableLanguages' => array())
 			);
@@ -155,7 +155,7 @@ class LanguageRepository {
 		$dir = count($languages) - count($this->selectedLanguages);
 		$diff = $dir < 0 ? array_diff($this->selectedLanguages, $languages) : array_diff($languages, $this->selectedLanguages);
 
-		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->setLocalConfigurationValueByPath(
+		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class)->setLocalConfigurationValueByPath(
 			$this->configurationPath,
 			array('availableLanguages' => $languages)
 		);

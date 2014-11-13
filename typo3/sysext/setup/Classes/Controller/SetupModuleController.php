@@ -249,7 +249,7 @@ class SetupModuleController {
 			// Persist data if something has changed:
 			if (count($storeRec) && $this->saveData) {
 				// Make instance of TCE for storing the changes.
-				$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+				$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 				$tce->stripslashes_values = 0;
 				$tce->start($storeRec, array(), $GLOBALS['BE_USER']);
 				// This is so the user can actually update his user record.
@@ -292,7 +292,7 @@ class SetupModuleController {
 			$this->tsFieldConf['password2.']['disabled'] = 1;
 		}
 		// Create instance of object for output of data
-		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:setup/Resources/Private/Templates/setup.html');
 		$this->doc->form = '<form action="' . BackendUtility::getModuleUrl('user_setup') . '" method="post" name="usersetup" enctype="application/x-www-form-urlencoded">';
@@ -339,36 +339,36 @@ class SetupModuleController {
 		// Use a wrapper div
 		$this->content .= '<div id="user-setup-wrapper">';
 		// Load available backend modules
-		$this->loadModules = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleLoader');
+		$this->loadModules = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Module\ModuleLoader::class);
 		$this->loadModules->observeWorkspaces = TRUE;
 		$this->loadModules->load($GLOBALS['TBE_MODULES']);
 		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('UserSettings'));
 		// Show if setup was saved
 		if ($this->setupIsUpdated && !$this->tempDataIsCleared && !$this->settingsAreResetToDefault) {
-			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('setupWasUpdated'), $GLOBALS['LANG']->getLL('UserSettings'));
+			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('setupWasUpdated'), $GLOBALS['LANG']->getLL('UserSettings'));
 			$this->content .= $flashMessage->render();
 		}
 		// Show if temporary data was cleared
 		if ($this->tempDataIsCleared) {
-			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('tempDataClearedFlashMessage'), $GLOBALS['LANG']->getLL('tempDataCleared'));
+			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('tempDataClearedFlashMessage'), $GLOBALS['LANG']->getLL('tempDataCleared'));
 			$this->content .= $flashMessage->render();
 		}
 		// Show if temporary data was cleared
 		if ($this->settingsAreResetToDefault) {
-			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('settingsAreReset'), $GLOBALS['LANG']->getLL('resetConfiguration'));
+			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('settingsAreReset'), $GLOBALS['LANG']->getLL('resetConfiguration'));
 			$this->content .= $flashMessage->render();
 		}
 		// Notice
 		if ($this->setupIsUpdated || $this->settingsAreResetToDefault) {
-			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('activateChanges'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
+			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('activateChanges'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
 			$this->content .= $flashMessage->render();
 		}
 		// If password is updated, output whether it failed or was OK.
 		if ($this->passwordIsSubmitted) {
 			if ($this->passwordIsUpdated) {
-				$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('newPassword_ok'), $GLOBALS['LANG']->getLL('newPassword'));
+				$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('newPassword_ok'), $GLOBALS['LANG']->getLL('newPassword'));
 			} else {
-				$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('newPassword_failed'), $GLOBALS['LANG']->getLL('newPassword'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+				$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('newPassword_failed'), $GLOBALS['LANG']->getLL('newPassword'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 			}
 			$this->content .= $flashMessage->render();
 		}
@@ -600,7 +600,7 @@ class SetupModuleController {
 		$languageOptions[$langDefault] = '<option value=""' . ($GLOBALS['BE_USER']->uc['lang'] === '' ? ' selected="selected"' : '') . '>' . $langDefault . '</option>';
 		// Traverse the number of languages
 		/** @var $locales \TYPO3\CMS\Core\Localization\Locales */
-		$locales = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Locales');
+		$locales = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\Locales::class);
 		$languages = $locales->getLanguages();
 		foreach ($languages as $locale => $name) {
 			if ($locale !== 'default') {
@@ -622,7 +622,7 @@ class SetupModuleController {
 				</select>';
 		if ($GLOBALS['BE_USER']->uc['lang'] && !@is_dir((PATH_typo3conf . 'l10n/' . $GLOBALS['BE_USER']->uc['lang']))) {
 			$languageUnavailableWarning = 'The selected language "' . $GLOBALS['LANG']->getLL(('lang_' . $GLOBALS['BE_USER']->uc['lang']), TRUE) . '" is not available before the language pack is installed.<br />' . ($GLOBALS['BE_USER']->isAdmin() ? 'You can use the Extension Manager to easily download and install new language packs.' : 'Please ask your system administrator to do this.');
-			$languageUnavailableMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $languageUnavailableWarning, '', \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
+			$languageUnavailableMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $languageUnavailableWarning, '', \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
 			$languageCode = $languageUnavailableMessage->render() . $languageCode;
 		}
 		return $languageCode;
@@ -685,7 +685,7 @@ class SetupModuleController {
 			unset($GLOBALS['BE_USER']);
 			// Unset current
 			// New backend user object
-			$BE_USER = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
+			$BE_USER = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
 			$BE_USER->OS = TYPO3_OS;
 			$BE_USER->setBeUserByUid($this->simUser);
 			$BE_USER->fetchGroupData();

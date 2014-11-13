@@ -24,6 +24,6 @@ require __DIR__ . '/init.php';
 	This script will be removed two versions after 6.2.'
 );
 
-$elementHistoryController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\ContentElement\\ElementHistoryController');
+$elementHistoryController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\ContentElement\ElementHistoryController::class);
 $elementHistoryController->main();
 $elementHistoryController->printContent();

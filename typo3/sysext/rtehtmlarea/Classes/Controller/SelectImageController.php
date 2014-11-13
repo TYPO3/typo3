@@ -66,7 +66,7 @@ class SelectImageController {
 		}
 		// If type was not rendered, use default rendering functions
 		if (!$browserRendered) {
-			$GLOBALS['SOBE']->browser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Rtehtmlarea\\SelectImage');
+			$GLOBALS['SOBE']->browser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Rtehtmlarea\SelectImage::class);
 			$GLOBALS['SOBE']->browser->init();
 			$modData = $GLOBALS['BE_USER']->getModuleData('select_image.php', 'ses');
 			list($modData, $store) = $GLOBALS['SOBE']->browser->processSessionData($modData);

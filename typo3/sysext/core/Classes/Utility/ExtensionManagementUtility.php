@@ -72,7 +72,7 @@ class ExtensionManagementUtility {
 	 */
 	static protected function getCacheManager() {
 		if (static::$cacheManager === NULL) {
-			static::$cacheManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager');
+			static::$cacheManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
 		}
 		return static::$cacheManager;
 	}
@@ -89,7 +89,7 @@ class ExtensionManagementUtility {
 	 */
 	static protected function getSignalSlotDispatcher() {
 		if (static::$signalSlotDispatcher === NULL) {
-			static::$signalSlotDispatcher = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+			static::$signalSlotDispatcher = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
 		}
 		return static::$signalSlotDispatcher;
 	}
@@ -1901,7 +1901,7 @@ tt_content.' . $key . $prefix . ' {
 		if ($result === FALSE) {
 			$message = '\TYPO3\CMS\Core\Category\CategoryRegistry: no category registered for table "%s". Key was already registered.';
 			/** @var $logger \TYPO3\CMS\Core\Log\Logger */
-			$logger = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager')->getLogger(__CLASS__);
+			$logger = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
 			$logger->warning(
 				sprintf($message, $tableName)
 			);

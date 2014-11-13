@@ -69,7 +69,7 @@ class MirrorListUtility implements \SplObserver {
 		$zlibStream = 'compress.zlib://';
 		$this->parser->parseXml($zlibStream . $localMirrorListFile);
 		/** @var $objRepositoryMirrors \TYPO3\CMS\Extensionmanager\Domain\Model\Mirrors */
-		$objRepositoryMirrors = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Mirrors');
+		$objRepositoryMirrors = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extensionmanager\Domain\Model\Mirrors::class);
 		$objRepositoryMirrors->setMirrors($this->arrTmpMirrors);
 		$this->arrTmpMirrors = array();
 		return $objRepositoryMirrors;

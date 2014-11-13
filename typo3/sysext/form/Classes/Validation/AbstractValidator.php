@@ -92,9 +92,9 @@ abstract class AbstractValidator implements \TYPO3\CMS\Form\Validation\Validator
 	 * @param array $arguments Typoscript configuration for the validation rule
 	 */
 	public function __construct($arguments) {
-		$this->localCobj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
-		$this->injectRequestHandler(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Request'));
-		$this->localizationHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Localization');
+		$this->localCobj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+		$this->injectRequestHandler(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Request::class));
+		$this->localizationHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Localization::class);
 		$this->setFieldName($arguments['element']);
 		$this->setMessage($arguments['message.'], $arguments['message']);
 		$this->setShowMessage($arguments['showMessage']);

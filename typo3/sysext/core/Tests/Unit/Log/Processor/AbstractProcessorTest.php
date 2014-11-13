@@ -29,7 +29,7 @@ class AbstractProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$invalidConfiguration = array(
 			'foo' => 'bar'
 		);
-		$processor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Tests\\Unit\\Log\\Fixtures\\ProcessorFixture', $invalidConfiguration);
+		$processor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Tests\Unit\Log\Fixtures\ProcessorFixture::class, $invalidConfiguration);
 	}
 
 	/**

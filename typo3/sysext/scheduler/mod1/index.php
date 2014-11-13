@@ -12,7 +12,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Scheduler\\Controller\\SchedulerModuleController');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Controller\SchedulerModuleController::class);
 $SOBE->init();
 // Include files?
 // @deprecated since 6.2 (see ExtensionManagementUtility::insertModuleFunction)

@@ -75,7 +75,7 @@ class InfoModuleController extends BaseScriptClass {
 			if ($this->backendUser->user['admin'] && !$this->id) {
 				$this->pageinfo = array('title' => '[root-level]', 'uid' => 0, 'pid' => 0);
 			}
-			$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+			$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 			$this->doc->backPath = $GLOBALS['BACK_PATH'];
 			$this->doc->setModuleTemplate('EXT:info/Resources/Private/Templates/info.html');
 			$this->doc->tableLayout = array(
@@ -117,7 +117,7 @@ class InfoModuleController extends BaseScriptClass {
 			$this->content = $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 		} else {
 			// If no access or if ID == zero
-			$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+			$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 			$this->doc->backPath = $GLOBALS['BACK_PATH'];
 			$this->content = $this->doc->header($this->languageService->getLL('title'));
 			$this->content .= $this->doc->spacer(5);

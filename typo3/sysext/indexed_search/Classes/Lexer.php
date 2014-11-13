@@ -62,7 +62,7 @@ class Lexer {
 	 * @return void
 	 */
 	public function __construct() {
-		$this->csObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
+		$this->csObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
 	}
 
 	/**

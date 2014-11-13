@@ -331,7 +331,7 @@ class ResourceStorage implements ResourceStorageInterface {
 					$this->isOnline = TRUE;
 				} else {
 					// check if the storage is disabled temporary for now
-					$registryObject = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
+					$registryObject = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Registry::class);
 					$offlineUntil = $registryObject->get('core', 'sys_file_storage-' . $this->getUid() . '-offline-until');
 					if ($offlineUntil && $offlineUntil > time()) {
 						$this->isOnline = FALSE;
@@ -371,7 +371,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @return void
 	 */
 	public function markAsTemporaryOffline() {
-		$registryObject = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
+		$registryObject = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Registry::class);
 		$registryObject->set('core', 'sys_file_storage-' . $this->getUid() . '-offline-until', time() + 60 * 5);
 		$this->storageRecord['is_online'] = 0;
 		$this->isOnline = FALSE;
@@ -2368,14 +2368,14 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @return \TYPO3\CMS\Extbase\Object\ObjectManager
 	 */
 	protected function getObjectManager() {
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 	}
 
 	/**
 	 * @return ResourceFactory
 	 */
 	protected function getFileFactory() {
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
 	}
 
 	/**
@@ -2390,7 +2390,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 */
 	protected function getFileProcessingService() {
 		if (!$this->fileProcessingService) {
-			$this->fileProcessingService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Service\\FileProcessingService', $this, $this->driver);
+			$this->fileProcessingService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Service\FileProcessingService::class, $this, $this->driver);
 		}
 		return $this->fileProcessingService;
 	}
@@ -2462,7 +2462,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @return \TYPO3\CMS\Core\Resource\Index\Indexer
 	 */
 	protected function getIndexer() {
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Index\\Indexer', $this);
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\Indexer::class, $this);
 	}
 
 	/**

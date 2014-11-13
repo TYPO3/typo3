@@ -218,7 +218,7 @@ class LinkAnalyzer {
 		// Put together content of all relevant fields
 		$haystack = '';
 		/** @var $htmlParser \TYPO3\CMS\Core\Html\HtmlParser */
-		$htmlParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
+		$htmlParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
 		$idRecord = $record['uid'];
 		// Get all references
 		foreach ($fields as $field) {

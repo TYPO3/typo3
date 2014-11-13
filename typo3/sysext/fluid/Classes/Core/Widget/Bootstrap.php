@@ -49,7 +49,7 @@ class Bootstrap {
 	 * @return string $content The processed content
 	 */
 	public function run($content, $configuration) {
-		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 		$this->initializeConfiguration($configuration);
 		$this->configureObjectManager();
 		$ajaxWidgetContextHolder = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Widget\\AjaxWidgetContextHolder');
@@ -72,7 +72,7 @@ class Bootstrap {
 	public function initializeConfiguration($configuration) {
 		$this->configurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
 		/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObject */
-		$contentObject = isset($this->cObj) ? $this->cObj : \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+		$contentObject = isset($this->cObj) ? $this->cObj : \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 		$this->configurationManager->setContentObject($contentObject);
 		$this->configurationManager->setConfiguration($configuration);
 	}
@@ -90,7 +90,7 @@ class Bootstrap {
 		if (!is_array($typoScriptSetup['config.']['tx_extbase.']['objects.'])) {
 			return;
 		}
-		$objectContainer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\Container\\Container');
+		$objectContainer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\Container\Container::class);
 		foreach ($typoScriptSetup['config.']['tx_extbase.']['objects.'] as $classNameWithDot => $classConfiguration) {
 			if (isset($classConfiguration['className'])) {
 				$originalClassName = rtrim($classNameWithDot, '.');

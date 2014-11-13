@@ -180,7 +180,7 @@ Automatic Repair:
 					echo $bypass;
 				} else {
 					// Execute CMD array:
-					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 					$tce->stripslashes_values = FALSE;
 					$tce->start(array(), array());
 					$tce->deleteEl($table, $uid, TRUE, TRUE);
@@ -219,7 +219,7 @@ Automatic Repair:
 				echo $bypass;
 			} else {
 				// Execute CMD array:
-				$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+				$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 				$tce->stripslashes_values = FALSE;
 				$tce->start(array(), array());
 				$tce->deleteAction($table, $uid);

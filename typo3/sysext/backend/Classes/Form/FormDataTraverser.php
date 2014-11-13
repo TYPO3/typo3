@@ -349,7 +349,7 @@ class FormDataTraverser {
 	 */
 	protected function getRecordRow($uid) {
 		/** @var \TYPO3\CMS\Backend\Form\DataPreprocessor $dataPreprocessor */
-		$dataPreprocessor = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\DataPreprocessor');
+		$dataPreprocessor = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\DataPreprocessor::class);
 		$dataPreprocessor->fetchRecord($this->currentTable, $uid, '');
 		return reset($dataPreprocessor->regTableItems_data);
 	}

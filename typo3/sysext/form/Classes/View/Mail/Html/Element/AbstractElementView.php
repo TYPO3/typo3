@@ -187,7 +187,7 @@ abstract class AbstractElementView {
 	 */
 	public function getLayout($type) {
 		/** @var $layoutHandler \TYPO3\CMS\Form\Layout */
-		$layoutHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Layout');
+		$layoutHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Layout::class);
 		$layout = '';
 		switch ($type) {
 			case 'element':

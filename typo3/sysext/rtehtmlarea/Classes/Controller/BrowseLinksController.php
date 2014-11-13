@@ -80,7 +80,7 @@ class BrowseLinksController {
 		}
 		// If type was not rendered, use default rendering functions
 		if (!$browserRendered) {
-			$GLOBALS['SOBE']->browser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Rtehtmlarea\\BrowseLinks');
+			$GLOBALS['SOBE']->browser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Rtehtmlarea\BrowseLinks::class);
 			$GLOBALS['SOBE']->browser->init();
 			$modData = $GLOBALS['BE_USER']->getModuleData('browse_links.php', 'ses');
 			list($modData, $store) = $GLOBALS['SOBE']->browser->processSessionData($modData);

@@ -333,7 +333,7 @@ class DataPreprocessor {
 				$dataAcc = array();
 				// Now, load the files into the $dataAcc array, whether stored by MM or as a list of filenames:
 				if ($fieldConfig['config']['MM']) {
-					$loadDB = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+					$loadDB = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
 					$loadDB->start('', 'files', $fieldConfig['config']['MM'], $row['uid']);
 					// Setting dummy startup
 					foreach ($loadDB->itemArray as $value) {
@@ -353,7 +353,7 @@ class DataPreprocessor {
 				$data = implode(',', $dataAcc);
 				break;
 			case 'db':
-				$loadDB = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+				$loadDB = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
 				/** @var $loadDB \TYPO3\CMS\Core\Database\RelationHandler */
 				$loadDB->start($data, $fieldConfig['config']['allowed'], $fieldConfig['config']['MM'], $row['uid'], $table, $fieldConfig['config']);
 				$loadDB->getFromDB();
@@ -448,13 +448,13 @@ class DataPreprocessor {
 			$dataStructArray = BackendUtility::getFlexFormDS($fieldConfig['config'], $row, $table, $field);
 			// Manipulate Flexform DS via TSConfig and group access lists
 			if (is_array($dataStructArray)) {
-				$flexFormHelper = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\FlexFormsHelper');
+				$flexFormHelper = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\FlexFormsHelper::class);
 				$dataStructArray = $flexFormHelper->modifyFlexFormDS($dataStructArray, $table, $field, $row, $fieldConfig);
 				unset($flexFormHelper);
 			}
 			if (is_array($dataStructArray)) {
 				$currentValueArray['data'] = $this->renderRecord_flexProc_procInData($currentValueArray['data'], $dataStructArray, array($data, $fieldConfig, $TSconfig, $table, $row, $field));
-				$flexObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
+				$flexObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
 				$data = $flexObj->flexArray2Xml($currentValueArray, TRUE);
 			}
 		}
@@ -481,7 +481,7 @@ class DataPreprocessor {
 				if ($eFile['loadFromFileField'] && $totalRecordContent[$eFile['loadFromFileField']]) {
 					// Read the external file, and insert the content between the ###TYPO3_STATICFILE_EDIT### markers:
 					$SW_fileContent = GeneralUtility::getUrl($eFile['editFile']);
-					$parseHTML = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\RteHtmlParser');
+					$parseHTML = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\RteHtmlParser::class);
 					$parseHTML->init('', '');
 					$totalRecordContent[$vconf['field']] = $parseHTML->getSubpart($SW_fileContent, $eFile['markerField'] && trim($totalRecordContent[$eFile['markerField']]) ? trim($totalRecordContent[$eFile['markerField']]) : '###TYPO3_STATICFILE_EDIT###');
 				}
@@ -704,7 +704,7 @@ class DataPreprocessor {
 
 			case 'modListUser':
 				if (!$this->loadModules) {
-					$this->loadModules = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleLoader');
+					$this->loadModules = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Module\ModuleLoader::class);
 					$this->loadModules->load($GLOBALS['TBE_MODULES']);
 				}
 				$modList = $specialKey == 'modListUser' ? $this->loadModules->modListUser : $this->loadModules->modListGroup;
@@ -805,7 +805,7 @@ class DataPreprocessor {
 		if (empty($fieldConfig['config']['MM'])) {
 			$recordId = $this->getLiveDefaultId($table, $row['uid']);
 		}
-		$loadDB = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+		$loadDB = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
 		$loadDB->registerNonTableValues = $fieldConfig['config']['allowNonIdValues'] ? 1 : 0;
 		$loadDB->start(implode(',', $elements), $fieldConfig['config']['foreign_table'] . ',' . $fieldConfig['config']['neg_foreign_table'], $fieldConfig['config']['MM'], $recordId, $table, $fieldConfig['config']);
 		$idList = $loadDB->convertPosNeg($loadDB->getValueArray(), $fieldConfig['config']['foreign_table'], $fieldConfig['config']['neg_foreign_table']);

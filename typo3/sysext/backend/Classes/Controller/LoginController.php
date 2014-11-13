@@ -500,7 +500,7 @@ class LoginController {
 		// Traverse news array IF there are records in it:
 		if (is_array($systemNews) && count($systemNews) && !GeneralUtility::_GP('loginRefresh')) {
 			/** @var $htmlParser \TYPO3\CMS\Core\Html\RteHtmlParser */
-			$htmlParser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\RteHtmlParser');
+			$htmlParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\RteHtmlParser::class);
 			$htmlParser->procOptions['dontHSC_rte'] = TRUE;
 
 			// Get the main news template, and replace the subpart after looped through
@@ -631,7 +631,7 @@ class LoginController {
 	 * @return \TYPO3\CMS\Extbase\Object\ObjectManager
 	 */
 	protected function getObjectManager() {
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 	}
 
 }

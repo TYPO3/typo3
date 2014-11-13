@@ -76,7 +76,7 @@ class CrawlerHook {
 					// Prepare the GET variables array that must be added to the page URL in order to view result:
 					parse_str('&itemID=' . rawurlencode($item['ID']), $GETparams);
 					// Prepare indexer (make instance, initialize it, set special features for indexing parameterized content - probably none of this should be changed by you) [DON'T CHANGE]:
-					$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
+					$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\IndexedSearch\Indexer::class);
 					$indexerObj->backend_initIndexer($cfgRec['pid'], 0, $sys_language_uid, '', $rl, $GETparams, FALSE);
 					$indexerObj->backend_setFreeIndexUid($cfgRec['uid'], $cfgRec['set_id']);
 					$indexerObj->forceIndexing = TRUE;
@@ -91,7 +91,7 @@ class CrawlerHook {
 				// Set up language uid, if any:
 				$sys_language_uid = 0;
 				// Prepare indexer (make instance, initialize it, set special features for indexing parameterized content - probably none of this should be changed by you) [DON'T CHANGE]:
-				$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
+				$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\IndexedSearch\Indexer::class);
 				$indexerObj->backend_initIndexer($cfgRec['pid'], 0, $sys_language_uid, '', $rl);
 				$indexerObj->backend_setFreeIndexUid($cfgRec['uid'], $cfgRec['set_id']);
 				$indexerObj->hash['phash'] = -1;
@@ -102,7 +102,7 @@ class CrawlerHook {
 			case 3:
 				// Indexing Example: Content accessed on External URLs:
 				// Index external URL:
-				$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
+				$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\IndexedSearch\Indexer::class);
 				$indexerObj->backend_initIndexer($cfgRec['pid'], 0, $sys_language_uid, '', $rl);
 				$indexerObj->backend_setFreeIndexUid($cfgRec['uid'], $cfgRec['set_id']);
 				$indexerObj->hash['phash'] = -1;

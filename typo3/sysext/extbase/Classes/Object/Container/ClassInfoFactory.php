@@ -110,7 +110,7 @@ class ClassInfoFactory {
 		$reflectionProperties = $reflectedClass->getProperties();
 		if (is_array($reflectionProperties)) {
 			foreach ($reflectionProperties as $reflectionProperty) {
-				$reflectedProperty = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Reflection\\PropertyReflection', $reflectedClass->getName(), $reflectionProperty->getName());
+				$reflectedProperty = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Reflection\PropertyReflection::class, $reflectedClass->getName(), $reflectionProperty->getName());
 				if ($reflectedProperty->isTaggedWith('inject') && $reflectedProperty->getName() !== 'settings') {
 					$varValues = $reflectedProperty->getTagValues('var');
 					if (count($varValues) == 1) {

@@ -78,7 +78,7 @@ abstract class AbstractXmlParser implements \TYPO3\CMS\Core\Localization\Parser\
 		} elseif (is_object($GLOBALS['TSFE'])) {
 			$csConvObj = $GLOBALS['TSFE']->csConvObj;
 		} else {
-			$csConvObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
+			$csConvObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
 		}
 		if ($charset !== '') {
 			$targetCharset = $csConvObj->parse_charset($charset);

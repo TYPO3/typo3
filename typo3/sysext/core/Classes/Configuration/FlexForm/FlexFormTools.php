@@ -290,7 +290,7 @@ class FlexFormTools {
 		// New structure:
 		$this->cleanFlexFormXML = array();
 		// Create and call iterator object:
-		$flexObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
+		$flexObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
 		$flexObj->reNumberIndexesOfSectionData = TRUE;
 		$flexObj->traverseFlexFormXMLData($table, $field, $row, $this, 'cleanFlexFormXML_callBackFunction');
 		return $this->flexArray2Xml($this->cleanFlexFormXML, TRUE);

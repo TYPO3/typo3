@@ -16,6 +16,6 @@
  * Wizard to help make tables (eg. for tt_content elements) of type "table".
  * Each line is a table row, each cell divided by a |
  */
-$tableController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\Wizard\\TableController');
+$tableController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\Wizard\TableController::class);
 $tableController->main();
 $tableController->printContent();

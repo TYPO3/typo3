@@ -324,7 +324,7 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	 */
 	protected function getOpenIDConsumer() {
 		/* @var $openIDStore OpenidStore */
-		$openIDStore = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Openid\\OpenidStore');
+		$openIDStore = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Openid\OpenidStore::class);
 		$openIDStore->cleanup();
 		return new \Auth_OpenID_Consumer($openIDStore);
 	}

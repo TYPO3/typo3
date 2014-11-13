@@ -173,7 +173,7 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 			case 'check':
 
 			case 'update':
-				$refIndexObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ReferenceIndex');
+				$refIndexObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ReferenceIndex::class);
 				list($headerContent, $bodyContent, $errorCount) = $refIndexObj->updateIndex($refIndexMode == 'check', $this->cli_echo());
 				if ($errorCount && $refIndexMode == 'check') {
 					$ok = FALSE;

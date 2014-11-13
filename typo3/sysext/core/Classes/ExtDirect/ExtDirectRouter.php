@@ -32,7 +32,7 @@ class ExtDirectRouter {
 	 * @return void
 	 */
 	public function route($ajaxParams, \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj) {
-		$GLOBALS['error'] = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\ExtDirect\\ExtDirectDebug');
+		$GLOBALS['error'] = GeneralUtility::makeInstance(\TYPO3\CMS\Core\ExtDirect\ExtDirectDebug::class);
 		$isForm = FALSE;
 		$isUpload = FALSE;
 		$rawPostData = file_get_contents('php://input');

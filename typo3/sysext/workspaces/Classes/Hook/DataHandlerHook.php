@@ -117,7 +117,7 @@ class DataHandlerHook {
 	 * @return \TYPO3\CMS\Core\DataHandling\DataHandler
 	 */
 	protected function getTceMain() {
-		$tceMain = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$tceMain = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 		$tceMain->stripslashes_values = 0;
 		return $tceMain;
 	}
@@ -129,7 +129,7 @@ class DataHandlerHook {
 	 * @return void
 	 */
 	protected function flushWorkspaceCacheEntriesByWorkspaceId($workspaceId) {
-		$workspacesCache = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('workspaces_cache');
+		$workspacesCache = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('workspaces_cache');
 		$workspacesCache->flushByTag($workspaceId);
 		$workspacesCache->flushByTag(\TYPO3\CMS\Workspaces\Service\WorkspaceService::SELECT_ALL_WORKSPACES);
 	}

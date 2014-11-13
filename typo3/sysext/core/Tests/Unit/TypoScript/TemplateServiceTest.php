@@ -106,7 +106,7 @@ class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			in_array('test.Core.TypoScript = 1', $this->templateService->config)
 		);
 
-		ExtensionManagementUtility::setPackageManager(GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Package\\PackageManager'));
+		ExtensionManagementUtility::setPackageManager(GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\PackageManager::class));
 	}
 
 	/**

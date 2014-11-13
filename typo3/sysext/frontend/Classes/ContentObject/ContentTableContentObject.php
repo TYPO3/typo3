@@ -29,7 +29,7 @@ class ContentTableContentObject extends AbstractContentObject {
 	 * @return string Output
 	 */
 	public function render($conf = array()) {
-		$controlTable = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\TableRenderer');
+		$controlTable = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\TableRenderer::class);
 		$tableParams = isset($conf['tableParams.']) ? $this->cObj->stdWrap($conf['tableParams'], $conf['tableParams.']) : $conf['tableParams'];
 		if ($tableParams) {
 			$controlTable->tableParams = $tableParams;

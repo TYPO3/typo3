@@ -245,7 +245,7 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
 	 * @return \TYPO3\CMS\Core\Database\RelationHandler
 	 */
 	protected function getLoadDbGroup() {
-		$loadDbGroup = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+		$loadDbGroup = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
 
 		return $loadDbGroup;
 	}
@@ -256,7 +256,7 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
 	 * @return \TYPO3\CMS\Core\DataHandling\DataHandler
 	 */
 	protected function getTceMain() {
-		$tceMain = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$tceMain = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 		return $tceMain;
 	}
 

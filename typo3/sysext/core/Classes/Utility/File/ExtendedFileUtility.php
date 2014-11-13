@@ -966,7 +966,7 @@ class ExtendedFileUtility extends BasicFileUtility {
 	 * @return \TYPO3\CMS\Core\Resource\Index\Indexer
 	 */
 	protected function getIndexer(ResourceStorage $storage) {
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Index\\Indexer', $storage);
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\Indexer::class, $storage);
 	}
 
 	/**

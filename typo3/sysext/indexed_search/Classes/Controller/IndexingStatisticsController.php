@@ -140,7 +140,7 @@ class IndexingStatisticsController extends \TYPO3\CMS\Backend\Module\AbstractFun
 	 * @return string Returns the list with a comma in the end (if any pages selected!)
 	 */
 	public function extGetTreeList($id, $depth, $begin = 0, $perms_clause) {
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\FrontendBackendUserAuthentication')->extGetTreeList($id, $depth, $begin, $perms_clause);
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Backend\FrontendBackendUserAuthentication::class)->extGetTreeList($id, $depth, $begin, $perms_clause);
 	}
 
 	/**

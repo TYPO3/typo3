@@ -16,7 +16,7 @@
  * Module: Permission setting
  */
 
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Perm\\Controller\\PermissionModuleController');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Perm\Controller\PermissionModuleController::class);
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();

@@ -410,7 +410,7 @@ class ReferenceIndex {
 							'softrefs' => array()
 						);
 						// Create and call iterator object:
-						$flexObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
+						$flexObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
 						$flexObj->traverseFlexFormXMLData($table, $field, $row, $this, 'getRelations_flexFormCallBack');
 						// Create an entry for the field:
 						$outRow[$field] = array(
@@ -526,7 +526,7 @@ class ReferenceIndex {
 		// Collect file values in array:
 		if ($conf['MM']) {
 			$theFileValues = array();
-			$dbAnalysis = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+			$dbAnalysis = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
 			$dbAnalysis->start('', 'files', $conf['MM'], $uid);
 			foreach ($dbAnalysis->itemArray as $someval) {
 				if ($someval['id']) {
@@ -593,7 +593,7 @@ class ReferenceIndex {
 			if ($conf['MM_opposite_field']) {
 				return array();
 			}
-			$dbAnalysis = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+			$dbAnalysis = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
 			$dbAnalysis->start($value, $allowedTables, $conf['MM'], $uid, $table, $conf);
 			return $dbAnalysis->itemArray;
 		} elseif ($conf['type'] == 'inline' && $conf['foreign_table'] == 'sys_file_reference') {
@@ -707,7 +707,7 @@ class ReferenceIndex {
 								return $dataArray;
 							} else {
 								// Execute CMD array:
-								$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+								$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 								$tce->stripslashes_values = FALSE;
 								$tce->dontProcessTransformations = TRUE;
 								$tce->bypassWorkspaceRestrictions = TRUE;
@@ -761,7 +761,7 @@ class ReferenceIndex {
 			}
 			// Set in data array:
 			if ($flexpointer) {
-				$flexToolObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
+				$flexToolObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
 				$dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'] = array();
 				$flexToolObj->setArrayValueByPath(substr($flexpointer, 0, -1), $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'], implode(',', $saveValue));
 			} else {
@@ -799,7 +799,7 @@ class ReferenceIndex {
 			}
 			// Set in data array:
 			if ($flexpointer) {
-				$flexToolObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
+				$flexToolObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
 				$dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'] = array();
 				$flexToolObj->setArrayValueByPath(substr($flexpointer, 0, -1), $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'], implode(',', $saveValue));
 			} else {
@@ -833,7 +833,7 @@ class ReferenceIndex {
 			// Set in data array:
 			if (!strstr($softref['tokenizedContent'], '{softref:')) {
 				if ($flexpointer) {
-					$flexToolObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
+					$flexToolObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
 					$dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'] = array();
 					$flexToolObj->setArrayValueByPath(substr($flexpointer, 0, -1), $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'], $softref['tokenizedContent']);
 				} else {
@@ -922,7 +922,7 @@ class ReferenceIndex {
 			$uidList = array(0);
 			foreach ($allRecs as $recdat) {
 				/** @var $refIndexObj ReferenceIndex */
-				$refIndexObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ReferenceIndex');
+				$refIndexObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ReferenceIndex::class);
 				if (isset($recdat['t3ver_wsid'])) {
 					$refIndexObj->setWorkspaceId($recdat['t3ver_wsid']);
 				}
@@ -970,7 +970,7 @@ class ReferenceIndex {
 			echo $testedHowMuch . (count($errors) ? 'Updates: ' . count($errors) : 'Index Integrity was perfect!') . LF;
 		}
 		if (!$testOnly) {
-			$registry = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
+			$registry = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Registry::class);
 			$registry->set('core', 'sys_refindex_lastUpdate', $GLOBALS['EXEC_TIME']);
 		}
 		return array($headerContent, $bodyContent, count($errors));
@@ -980,7 +980,7 @@ class ReferenceIndex {
 	 * @return RelationHandler
 	 */
 	protected function getRelationHandler() {
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
 	}
 
 }

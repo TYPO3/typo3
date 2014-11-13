@@ -27,7 +27,7 @@ class TemplateParserBuilder {
 	 */
 	static public function build() {
 		/** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 		$templateParser = $objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Parser\\TemplateParser');
 		return $templateParser;
 	}

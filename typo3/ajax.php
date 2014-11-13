@@ -60,7 +60,7 @@ if ($ajaxRegistryEntry !== NULL) {
 }
 
 // Instantiating the AJAX object
-$ajaxObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Http\\AjaxRequestHandler', $ajaxID);
+$ajaxObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Http\AjaxRequestHandler::class, $ajaxID);
 $ajaxParams = array();
 
 // Evaluating the arguments and calling the AJAX method/function

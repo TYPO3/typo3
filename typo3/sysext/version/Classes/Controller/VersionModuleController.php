@@ -138,7 +138,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 		$this->MCONF = $GLOBALS['MCONF'];
 		$this->REQUEST_URI = str_replace('&sendToReview=1', '', GeneralUtility::getIndpEnv('REQUEST_URI'));
 		// Draw the header.
-		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:version/Resources/Private/Templates/version.html');
 		// Add styles
@@ -285,7 +285,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 				$diff_1_record = BackendUtility::getRecord($this->table, $diff_1);
 				$diff_2_record = BackendUtility::getRecord($this->table, $diff_2);
 				if (is_array($diff_1_record) && is_array($diff_2_record)) {
-					$t3lib_diff_Obj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\DiffUtility');
+					$t3lib_diff_Obj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\DiffUtility::class);
 					$tRows = array();
 					$tRows[] = '
 									<tr class="bgColor5 tableheader">

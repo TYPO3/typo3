@@ -49,7 +49,7 @@ class Status implements ReportInterface {
 		$status = $this->getSystemStatus();
 		$highestSeverity = $this->getHighestSeverity($status);
 		// Updating the registry
-		$registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
+		$registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Registry::class);
 		$registry->set('tx_reports', 'status.highestSeverity', $highestSeverity);
 		$content .= '<p class="lead">' . $GLOBALS['LANG']->getLL('status_report_explanation') . '</p>';
 		return $content . $this->renderStatus($status);

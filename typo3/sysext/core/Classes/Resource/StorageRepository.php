@@ -60,7 +60,7 @@ class StorageRepository extends AbstractRepository {
 		parent::__construct();
 
 		/** @var $logManager \TYPO3\CMS\Core\Log\LogManager */
-		$logManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager');
+		$logManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class);
 		$this->logger = $logManager->getLogger(__CLASS__);
 		$this->db = $GLOBALS['TYPO3_DB'];
 	}
@@ -131,7 +131,7 @@ class StorageRepository extends AbstractRepository {
 		$this->initializeLocalCache();
 
 		/** @var $driverRegistry Driver\DriverRegistry */
-		$driverRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Driver\\DriverRegistry');
+		$driverRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Driver\DriverRegistry::class);
 
 		$storageObjects = array();
 		foreach (static::$storageRowCache as $storageRow) {
@@ -160,7 +160,7 @@ class StorageRepository extends AbstractRepository {
 		$this->initializeLocalCache();
 
 		/** @var $driverRegistry Driver\DriverRegistry */
-		$driverRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Driver\\DriverRegistry');
+		$driverRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Driver\DriverRegistry::class);
 
 		$storageObjects = array();
 		foreach (static::$storageRowCache as $storageRow) {
@@ -202,7 +202,7 @@ class StorageRepository extends AbstractRepository {
 		);
 
 		/** @var $flexObj \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools */
-		$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
+		$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
 		$flexFormXml = $flexObj->flexArray2Xml($flexFormData, TRUE);
 
 			// create the record

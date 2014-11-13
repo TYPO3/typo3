@@ -36,7 +36,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends \TYPO3\CM
 	public function initialize_editor($pageId, $template_uid = 0) {
 		// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
 		global $tmpl, $tplRow, $theConstants;
-		$tmpl = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService');
+		$tmpl = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);
 		// Defined global here!
 		$tmpl->tt_track = 0;
 		// Do not log time-performance information
@@ -48,7 +48,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends \TYPO3\CM
 		// IF there was a template...
 		if (is_array($tplRow)) {
 			// Gets the rootLine
-			$sys_page = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+			$sys_page = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
 			$rootLine = $sys_page->getRootLine($pageId);
 			// This generates the constants/config + hierarchy info for the template.
 			$tmpl->runThroughTemplates($rootLine, $template_uid);
@@ -108,7 +108,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends \TYPO3\CM
 					$recData = array();
 					$recData['sys_template'][$saveId]['constants'] = implode($tmpl->raw, LF);
 					// Create new  tce-object
-					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 					$tce->stripslashes_values = 0;
 					$tce->start($recData, array());
 					$tce->process_datamap();

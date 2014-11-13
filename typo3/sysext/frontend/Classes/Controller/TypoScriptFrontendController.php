@@ -847,7 +847,7 @@ class TypoScriptFrontendController {
 		$this->RDCT = $RDCT;
 		$this->clientInfo = GeneralUtility::clientInfo();
 		$this->uniqueString = md5(microtime());
-		$this->csConvObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
+		$this->csConvObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
 		// Call post processing function for constructor:
 		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-PostProc'])) {
 			$_params = array('pObj' => &$this);
@@ -855,7 +855,7 @@ class TypoScriptFrontendController {
 				GeneralUtility::callUserFunction($_funcRef, $_params, $this);
 			}
 		}
-		$this->cacheHash = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
+		$this->cacheHash = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class);
 		$this->initCaches();
 	}
 
@@ -931,7 +931,7 @@ class TypoScriptFrontendController {
 	 */
 	public function getPageRenderer() {
 		if (!isset($this->pageRenderer)) {
-			$this->pageRenderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
+			$this->pageRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
 			$this->pageRenderer->setTemplateFile('EXT:frontend/Resources/Private/Templates/MainPage.html');
 			$this->pageRenderer->setBackPath(TYPO3_mainDir);
 		}
@@ -958,7 +958,7 @@ class TypoScriptFrontendController {
 	 * @return void
 	 */
 	protected function initCaches() {
-		$this->pageCache = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_pages');
+		$this->pageCache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_pages');
 	}
 
 	/**
@@ -967,7 +967,7 @@ class TypoScriptFrontendController {
 	 * @return void
 	 */
 	public function initFEuser() {
-		$this->fe_user = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication');
+		$this->fe_user = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication::class);
 		$this->fe_user->lockIP = $this->TYPO3_CONF_VARS['FE']['lockIP'];
 		$this->fe_user->checkPid = $this->TYPO3_CONF_VARS['FE']['checkFeUserPid'];
 		$this->fe_user->lifetime = (int)$this->TYPO3_CONF_VARS['FE']['lifetime'];
@@ -1133,7 +1133,7 @@ class TypoScriptFrontendController {
 			// the value this->formfield_status is set to empty in order to
 			// disable login-attempts to the backend account through this script
 			// New backend user object
-			$BE_USER = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\FrontendBackendUserAuthentication');
+			$BE_USER = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\FrontendBackendUserAuthentication::class);
 			$BE_USER->OS = TYPO3_OS;
 			$BE_USER->lockIP = $this->TYPO3_CONF_VARS['BE']['lockIP'];
 			// Object is initialized
@@ -1226,7 +1226,7 @@ class TypoScriptFrontendController {
 				// For Live workspace: Check root line for proper connection to tree root (done because of possible preview of page / branch versions)
 				if (!$this->fePreview && $this->whichWorkspace() === 0) {
 					// Initialize the page-select functions to check rootline:
-					$temp_sys_page = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+					$temp_sys_page = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
 					$temp_sys_page->init($this->showHiddenPage);
 					// If root line contained NO records and ->error_getRootLine_failPid tells us that it was because of a pid=-1 (indicating a "version" record)...:
 					if (!count($temp_sys_page->getRootLine($this->id, $this->MP)) && $temp_sys_page->error_getRootLine_failPid == -1) {
@@ -1306,7 +1306,7 @@ class TypoScriptFrontendController {
 		$workspace = $this->whichWorkspace();
 		if ($workspace !== 0 && $workspace !== FALSE) {
 			// Fetch overlay of page if in workspace and check if it is hidden
-			$pageSelectObject = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+			$pageSelectObject = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
 			$pageSelectObject->versioningPreview = TRUE;
 			$pageSelectObject->init(FALSE);
 			$targetPage = $pageSelectObject->getWorkspaceVersionOfRecord($this->whichWorkspace(), 'pages', $page['uid']);
@@ -1329,7 +1329,7 @@ class TypoScriptFrontendController {
 	public function fetch_the_id() {
 		$GLOBALS['TT']->push('fetch_the_id initialize/', '');
 		// Initialize the page-select functions.
-		$this->sys_page = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+		$this->sys_page = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
 		$this->sys_page->versioningPreview = $this->fePreview === 2 || (int)$this->workspacePreview || (bool)GeneralUtility::_GP('ADMCMD_view');
 		$this->sys_page->versioningWorkspaceId = $this->whichWorkspace();
 		$this->sys_page->init($this->showHiddenPage);
@@ -1949,7 +1949,7 @@ class TypoScriptFrontendController {
 		if (gettype($code) == 'boolean' || (string)$code === '1') {
 			$title = 'Page Not Found';
 			$message = 'The page did not exist or was inaccessible.' . ($reason ? ' Reason: ' . htmlspecialchars($reason) : '');
-			$messagePage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\ErrorpageMessage', $message, $title);
+			$messagePage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\ErrorpageMessage::class, $message, $title);
 			$messagePage->output();
 			die;
 		} elseif (GeneralUtility::isFirstPartOfStr($code, 'USER_FUNCTION:')) {
@@ -2057,7 +2057,7 @@ class TypoScriptFrontendController {
 		} else {
 			$title = 'Page Not Found';
 			$message = $reason ? 'Reason: ' . htmlspecialchars($reason) : 'Page cannot be found.';
-			$messagePage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\ErrorpageMessage', $message, $title);
+			$messagePage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\ErrorpageMessage::class, $message, $title);
 			$messagePage->output();
 		}
 		die;
@@ -2183,7 +2183,7 @@ class TypoScriptFrontendController {
 	 * @return void
 	 */
 	public function initTemplate() {
-		$this->tmpl = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\TemplateService');
+		$this->tmpl = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\TemplateService::class);
 		$this->tmpl->setVerbose((bool)$this->beUserLogin);
 		$this->tmpl->init();
 		$this->tmpl->tt_track = (bool)$this->beUserLogin;
@@ -2730,7 +2730,7 @@ class TypoScriptFrontendController {
 	 */
 	protected function sendFormmail() {
 		/** @var $formmail \TYPO3\CMS\Frontend\Controller\DataSubmissionController */
-		$formmail = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Controller\\DataSubmissionController');
+		$formmail = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Controller\DataSubmissionController::class);
 		$EMAIL_VARS = GeneralUtility::_POST();
 		$locationData = $EMAIL_VARS['locationData'];
 		unset($EMAIL_VARS['locationData']);
@@ -3003,7 +3003,7 @@ class TypoScriptFrontendController {
 		$this->calculateLinkVars();
 		// instantiate tslib_content to generate the correct target URL
 		/** @var $cObj \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
-		$cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+		$cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 		$parameter = $this->page['uid'];
 		$type = GeneralUtility::_GET('type');
 		if ($type) {
@@ -3204,7 +3204,7 @@ class TypoScriptFrontendController {
 		}
 		try {
 			if (!is_object($lockObj)) {
-				$lockObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Locking\\Locker', $key, $this->TYPO3_CONF_VARS['SYS']['lockingMode']);
+				$lockObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Locking\Locker::class, $key, $this->TYPO3_CONF_VARS['SYS']['lockingMode']);
 			}
 			$success = FALSE;
 			if (strlen($key)) {
@@ -3304,7 +3304,7 @@ class TypoScriptFrontendController {
 		// XHTML-clean the code, if flag set
 		if ($this->doXHTML_cleaning() == 'all') {
 			$GLOBALS['TT']->push('XHTML clean, all', '');
-			$XHTML_clean = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
+			$XHTML_clean = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
 			$this->content = $XHTML_clean->XHTML_clean($this->content);
 			$GLOBALS['TT']->pull();
 		}
@@ -3326,7 +3326,7 @@ class TypoScriptFrontendController {
 			// XHTML-clean the code, if flag set
 			if ($this->doXHTML_cleaning() == 'cached') {
 				$GLOBALS['TT']->push('XHTML clean, cached', '');
-				$XHTML_clean = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
+				$XHTML_clean = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
 				$this->content = $XHTML_clean->XHTML_clean($this->content);
 				$GLOBALS['TT']->pull();
 			}
@@ -3620,7 +3620,7 @@ class TypoScriptFrontendController {
 		// XHTML-clean the code, if flag set
 		if ($this->doXHTML_cleaning() == 'output') {
 			$GLOBALS['TT']->push('XHTML clean, output', '');
-			$XHTML_clean = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
+			$XHTML_clean = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
 			$this->content = $XHTML_clean->XHTML_clean($this->content);
 			$GLOBALS['TT']->pull();
 		}
@@ -3982,7 +3982,7 @@ class TypoScriptFrontendController {
 	 * @see pagegen.php
 	 */
 	public function newCObj() {
-		$this->cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+		$this->cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 		$this->cObj->start($this->page, 'pages');
 	}
 
@@ -4193,7 +4193,7 @@ class TypoScriptFrontendController {
 			if (is_array($cachedContent)) {
 				$this->pagesTSconfig = $cachedContent;
 			} else {
-				$parseObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
+				$parseObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
 				$parseObj->parse($userTS);
 				$this->pagesTSconfig = $parseObj->setup;
 				$this->sys_page->storeHash($hash, $this->pagesTSconfig, 'PAGES_TSconfig');
@@ -4331,7 +4331,7 @@ class TypoScriptFrontendController {
 	 */
 	public function get_cache_timeout() {
 		/** @var $runtimeCache \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend */
-		$runtimeCache = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_runtime');
+		$runtimeCache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_runtime');
 		$cachedCacheLifetimeIdentifier = 'core-tslib_fe-get_cache_timeout';
 		$cachedCacheLifetime = $runtimeCache->get($cachedCacheLifetimeIdentifier);
 		if ($cachedCacheLifetime === FALSE) {
@@ -4490,7 +4490,7 @@ class TypoScriptFrontendController {
 		// Finding the requested language in this list based
 		// on the $lang key being inputted to this function.
 		/** @var $locales \TYPO3\CMS\Core\Localization\Locales */
-		$locales = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Locales');
+		$locales = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\Locales::class);
 		$locales->initialize();
 
 		// Language is found. Configure it:
@@ -4644,7 +4644,7 @@ class TypoScriptFrontendController {
 	protected function getSysDomainCache() {
 		$entryIdentifier = 'core-database-sys_domain-complete';
 		/** @var $runtimeCache \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend */
-		$runtimeCache = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_runtime');
+		$runtimeCache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_runtime');
 
 		$sysDomainData = array();
 		if ($runtimeCache->has($entryIdentifier)) {

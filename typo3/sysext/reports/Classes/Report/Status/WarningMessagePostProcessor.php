@@ -31,7 +31,7 @@ class WarningMessagePostProcessor {
 	 */
 	public function displayWarningMessages_postProcess(array &$warningMessages) {
 		// Get highest severity
-		$registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
+		$registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Registry::class);
 		$highestSeverity = $registry->get('tx_reports', 'status.highestSeverity', NULL);
 		if (!is_null($highestSeverity)) {
 			if ($highestSeverity > \TYPO3\CMS\Reports\Status::OK) {

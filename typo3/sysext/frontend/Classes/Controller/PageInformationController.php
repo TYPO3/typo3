@@ -51,7 +51,7 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
 	 * @return string Output HTML for the module.
 	 */
 	public function main() {
-		$dblist = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\View\\PageLayoutView');
+		$dblist = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\View\PageLayoutView::class);
 		$dblist->descrTable = '_MOD_' . $GLOBALS['MCONF']['name'];
 		$dblist->backPath = $GLOBALS['BACK_PATH'];
 		$dblist->thumbs = 0;

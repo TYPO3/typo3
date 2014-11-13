@@ -82,7 +82,7 @@ Cleaning XML for FlexForm fields.
 					echo LF . '			[cleanflexform:] Field "' . $colName . '" in ' . $tableName . ':' . $uid . ' was a flexform and...';
 				}
 				$recRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw($tableName, 'uid=' . (int)$uid);
-				$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
+				$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
 				if ($recRow[$colName]) {
 					// Clean XML:
 					$newXML = $flexObj->cleanFlexFormXML($tableName, $colName, $recRow);
@@ -120,12 +120,12 @@ Cleaning XML for FlexForm fields.
 				// Clean XML:
 				$data = array();
 				$recRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw($table, 'uid=' . (int)$uid);
-				$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
+				$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
 				if ($recRow[$field]) {
 					$data[$table][$uid][$field] = $flexObj->cleanFlexFormXML($table, $field, $recRow);
 				}
 				// Execute Data array:
-				$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+				$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 				$tce->stripslashes_values = FALSE;
 				$tce->dontProcessTransformations = TRUE;
 				$tce->bypassWorkspaceRestrictions = TRUE;

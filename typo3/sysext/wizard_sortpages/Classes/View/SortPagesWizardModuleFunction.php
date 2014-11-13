@@ -35,7 +35,7 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 		if ($GLOBALS['BE_USER']->workspace === 0) {
 			$theCode = '';
 			// Check if user has modify permissions to
-			$sys_pages = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+			$sys_pages = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
 			$sortByField = GeneralUtility::_GP('sortByField');
 			if ($sortByField) {
 				$menuItems = array();
@@ -46,7 +46,7 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 					$menuItems = array_reverse($menuItems);
 				}
 				if (!empty($menuItems)) {
-					$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+					$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 					$tce->stripslashes_values = 0;
 					$menuItems = array_reverse($menuItems);
 					$cmd = array();
@@ -92,7 +92,7 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 				$lines[] = $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_REVERSE'), 'REV');
 				$theCode .= '<h4>' . $GLOBALS['LANG']->getLL('wiz_changeOrder') . '</h4>' . implode('<br />', $lines);
 			} else {
-				$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('no_subpages'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE);
+				$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('no_subpages'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE);
 				$theCode .= $flashMessage->render();
 			}
 			// CSH:

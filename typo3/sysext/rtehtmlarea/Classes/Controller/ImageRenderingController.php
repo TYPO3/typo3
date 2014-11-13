@@ -119,7 +119,7 @@ class ImageRenderingController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 	protected function getMagicImageService() {
 
 		/** @var $magicImageService Resource\Service\MagicImageService */
-		$magicImageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Service\\MagicImageService');
+		$magicImageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Service\MagicImageService::class);
 
 		// Get RTE configuration
 		$pageTSConfig = $this->getFrontendObject()->getPagesTSconfig();
@@ -146,7 +146,7 @@ class ImageRenderingController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 	protected function getLogger() {
 
 		/** @var $logManager \TYPO3\CMS\Core\Log\LogManager */
-		$logManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager');
+		$logManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class);
 
 		return $logManager->getLogger(get_class($this));
 	}

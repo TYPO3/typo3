@@ -190,7 +190,7 @@ abstract class AbstractUpdate {
 	 * @return void
 	 */
 	protected function markWizardAsDone($confValue = 1) {
-		GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')
+		GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class)
 			->setLocalConfigurationValueByPath('INSTALL/wizardDone/' . get_class($this), $confValue);
 	}
 

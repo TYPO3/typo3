@@ -31,7 +31,7 @@ class RecordListHook {
 	 */
 	public function render(array $params = array(), \TYPO3\CMS\Recordlist\RecordList $parentObject) {
 		/** @var $noteBootstrap \TYPO3\CMS\SysNote\Core\Bootstrap */
-		$noteBootstrap = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\SysNote\\Core\\Bootstrap');
+		$noteBootstrap = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\SysNote\Core\Bootstrap::class);
 		return $noteBootstrap->run('Note', 'list', array('pids' => $parentObject->id));
 	}
 

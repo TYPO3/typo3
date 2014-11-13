@@ -49,7 +49,7 @@ class FalStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		$severity = \TYPO3\CMS\Reports\Status::OK;
 
 		/** @var $storageRepository \TYPO3\CMS\Core\Resource\StorageRepository */
-		$storageRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
+		$storageRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\StorageRepository::class);
 		$storageObjects = $storageRepository->findAll();
 		$storages = array();
 
@@ -93,7 +93,7 @@ class FalStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 			}
 		}
 
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->getLL('status_missingFiles'), $value, $message, $severity);
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class, $GLOBALS['LANG']->getLL('status_missingFiles'), $value, $message, $severity);
 	}
 
 	/**

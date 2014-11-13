@@ -31,7 +31,7 @@ class AutoPublishTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 */
 	public function execute() {
 		// Load the workspace library class and instatiate it
-		$autopubObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\Utility\\WorkspacesUtility');
+		$autopubObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Version\Utility\WorkspacesUtility::class);
 		// Publish the workspaces that need to be
 		$autopubObj->autoPublishWorkspaces();
 		// There's no feedback from the publishing process,

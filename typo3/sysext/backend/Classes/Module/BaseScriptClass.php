@@ -44,7 +44,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * MAIN FUNCTION - HERE YOU CREATE THE MODULE CONTENT IN $this->content
  * public function main() {
  * 	TYPICALLY THE INTERNAL VAR, $this->doc is instantiated like this:
- * 	$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+ * 	$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
  * 	TYPICALLY THE INTERNAL VAR, $this->backPath is set like this:
  * 	$this->backPath = $this->doc->backPath = $GLOBALS['BACK_PATH'];
  * 	... AND OF COURSE A LOT OF OTHER THINGS GOES ON - LIKE PUTTING CONTENT INTO $this->content
@@ -56,7 +56,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * }
  *
  * MAKE INSTANCE OF THE SCRIPT CLASS AND CALL init()
- * $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Vendor\\Prototype\\Controller\\PrototypeController');
+ * $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Vendor\Prototype\Controller\PrototypeController::class);
  * $SOBE->init();
  *
  * AFTER INIT THE INTERNAL ARRAY ->include_once MAY HOLD FILENAMES TO INCLUDE

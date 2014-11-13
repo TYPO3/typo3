@@ -243,7 +243,7 @@ class PdoBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected function setUpBackend() {
 		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
 		$mockCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('TestCache'));
-		$backend = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\Backend\\PdoBackend', 'Testing');
+		$backend = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\Backend\PdoBackend::class, 'Testing');
 		$backend->setCache($mockCache);
 		$backend->setDataSourceName('sqlite::memory:');
 		$backend->initializeObject();

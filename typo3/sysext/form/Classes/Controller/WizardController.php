@@ -50,7 +50,7 @@ class WizardController {
 	 */
 	protected function indexAction() {
 		/** @var $view \TYPO3\CMS\Form\View\Wizard\WizardView */
-		$view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\View\\Wizard\\WizardView', $this->getRepository());
+		$view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Wizard\WizardView::class, $this->getRepository());
 		$view->render();
 	}
 
@@ -63,7 +63,7 @@ class WizardController {
 	 */
 	protected function saveAction() {
 		/** @var $view \TYPO3\CMS\Form\View\Wizard\SaveWizardView */
-		$view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\View\\Wizard\\SaveWizardView', $this->getRepository());
+		$view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Wizard\SaveWizardView::class, $this->getRepository());
 		$view->render();
 	}
 
@@ -76,7 +76,7 @@ class WizardController {
 	 */
 	protected function loadAction() {
 		/** @var $view \TYPO3\CMS\Form\View\Wizard\LoadWizardView */
-		$view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\View\\Wizard\\LoadWizardView', $this->getRepository());
+		$view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Wizard\LoadWizardView::class, $this->getRepository());
 		$view->render();
 	}
 
@@ -86,7 +86,7 @@ class WizardController {
 	 * @return \TYPO3\CMS\Form\Domain\Repository\ContentRepository
 	 */
 	protected function getRepository() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Domain\\Repository\\ContentRepository');
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Domain\Repository\ContentRepository::class);
 	}
 
 }

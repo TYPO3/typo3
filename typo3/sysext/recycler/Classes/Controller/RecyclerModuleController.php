@@ -88,7 +88,7 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 	 */
 	public function initialize() {
 		parent::init();
-		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->setModuleTemplate(ExtensionManagementUtility::extPath('recycler') . 'mod1/mod_template.html');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setExtDirectStateProvider();

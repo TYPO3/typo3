@@ -42,7 +42,7 @@ class RendererRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return RendererRegistry
 	 */
 	static public function getInstance() {
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Rendering\\RendererRegistry');
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Rendering\RendererRegistry::class);
 	}
 
 	/**

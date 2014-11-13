@@ -122,7 +122,7 @@ class GridDataService {
 		// check for dataArray in cache
 		if ($this->getDataArrayFromCache($versions, $filterTxt) === FALSE) {
 			/** @var $stagesObj \TYPO3\CMS\Workspaces\Service\StagesService */
-			$stagesObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\StagesService');
+			$stagesObj = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\StagesService::class);
 			$defaultGridColumns = array(
 				self::GridColumn_Collection => 0,
 				self::GridColumn_CollectionLevel => 0,
@@ -280,7 +280,7 @@ class GridDataService {
 	 * @return void
 	 */
 	protected function initializeWorkspacesCachingFramework() {
-		$this->workspacesCache = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('workspaces_cache');
+		$this->workspacesCache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('workspaces_cache');
 	}
 
 	/**
@@ -573,7 +573,7 @@ class GridDataService {
 	public function getSystemLanguages() {
 		if (!isset($this->systemLanguages)) {
 			/** @var $translateTools \TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider */
-			$translateTools = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TranslationConfigurationProvider');
+			$translateTools = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider::class);
 			$this->systemLanguages = $translateTools->getSystemLanguages();
 		}
 		return $this->systemLanguages;
@@ -586,7 +586,7 @@ class GridDataService {
 	 */
 	protected function getIntegrityService() {
 		if (!isset($this->integrityService)) {
-			$this->integrityService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\IntegrityService');
+			$this->integrityService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\IntegrityService::class);
 		}
 		return $this->integrityService;
 	}
@@ -607,7 +607,7 @@ class GridDataService {
 	 * @return \TYPO3\CMS\Workspaces\Service\Dependency\CollectionService
 	 */
 	protected function getDependencyCollectionService() {
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\Dependency\\CollectionService');
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\Dependency\CollectionService::class);
 	}
 
 	/**
@@ -628,7 +628,7 @@ class GridDataService {
 	 * @return \TYPO3\CMS\Extbase\Object\ObjectManager
 	 */
 	protected function getObjectManager() {
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 	}
 
 }

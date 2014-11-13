@@ -53,7 +53,7 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function initializeObject() {
 		if (!$this->isInitialized) {
-			$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+			$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 			$this->isInitialized = TRUE;
 		}
 	}

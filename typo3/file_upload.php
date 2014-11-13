@@ -23,6 +23,6 @@ require __DIR__ . '/init.php';
 	'Uploading a file is moved to an own module. Please use BackendUtility::getModuleUrl(\'file_upload\') to link to this script. This script will be removed.'
 );
 
-$fileUploadController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\File\\FileUploadController');
+$fileUploadController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\File\FileUploadController::class);
 $fileUploadController->main();
 $fileUploadController->printContent();

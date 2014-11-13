@@ -67,7 +67,7 @@ class Bootstrap {
 		$arguments['action'] = lcfirst(trim($actionName));
 		$this->overrideGetArguments($arguments);
 		/** @var $extbaseBootstrap \TYPO3\CMS\Extbase\Core\Bootstrap */
-		$extbaseBootstrap = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Core\\Bootstrap');
+		$extbaseBootstrap = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Core\Bootstrap::class);
 		$content = $extbaseBootstrap->run('', $this->extbaseConfiguration);
 		$this->revertGetArguments();
 		return $content;

@@ -58,7 +58,7 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	 * Default constructor
 	 */
 	public function __construct() {
-		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 		$this->repositoryRepository = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\RepositoryRepository');
 		$this->listUtility = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\ListUtility');
 		$this->languageService = $this->objectManager->get('TYPO3\\CMS\\Lang\\LanguageService');

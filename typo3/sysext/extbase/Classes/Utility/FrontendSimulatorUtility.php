@@ -36,7 +36,7 @@ class FrontendSimulatorUtility {
 		self::$tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : NULL;
 		$GLOBALS['TSFE'] = new \stdClass();
 		$GLOBALS['TSFE']->cObjectDepthCounter = 100;
-		$GLOBALS['TSFE']->cObj = $cObj !== NULL ? $cObj : \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+		$GLOBALS['TSFE']->cObj = $cObj !== NULL ? $cObj : \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 	}
 
 	/**

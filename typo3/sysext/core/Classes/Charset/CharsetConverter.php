@@ -622,7 +622,7 @@ class CharsetConverter {
 	 * Default constructor.
 	 */
 	public function __construct() {
-		$this->locales = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Locales');
+		$this->locales = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\Locales::class);
 	}
 
 	/**

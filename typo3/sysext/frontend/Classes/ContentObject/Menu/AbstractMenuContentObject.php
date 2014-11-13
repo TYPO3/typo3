@@ -488,7 +488,7 @@ class AbstractMenuContentObject {
 							$value = $this->id;
 						}
 						/** @var \TYPO3\CMS\Core\Database\RelationHandler $loadDB*/
-						$loadDB = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+						$loadDB = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
 						$loadDB->setFetchAllFields(TRUE);
 						$loadDB->start($value, 'pages');
 						$loadDB->additionalWhere['pages'] = $this->parent_cObj->enableFields('pages');
@@ -675,7 +675,7 @@ class AbstractMenuContentObject {
 						break;
 					case 'categories':
 						/** @var \TYPO3\CMS\Frontend\ContentObject\Menu\CategoryMenuUtility $categoryMenuUtility */
-						$categoryMenuUtility = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\Menu\\CategoryMenuUtility');
+						$categoryMenuUtility = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\Menu\CategoryMenuUtility::class);
 						$temp = $categoryMenuUtility->collectPages($value, $this->conf['special.'], $this);
 						break;
 					case 'rootline':
@@ -940,7 +940,7 @@ class AbstractMenuContentObject {
 	protected function analyzeCacheHashRequirements($queryString) {
 		$parameters = \TYPO3\CMS\Core\Utility\GeneralUtility::explodeUrl2Array($queryString);
 		if (count($parameters) > 0) {
-			$cacheHashCalculator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
+			$cacheHashCalculator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class);
 			/** @var \TYPO3\CMS\Frontend\Page\CacheHashCalculator $cacheHashCalculator */
 			$cHashParameters = $cacheHashCalculator->getRelevantParameters($queryString);
 			if (count($cHashParameters) > 1) {
@@ -1486,7 +1486,7 @@ class AbstractMenuContentObject {
 		}
 		if (($this->mconf['expAll'] || $this->isNext($uid, $this->getMPvar($this->I['key'])) || is_array($altArray)) && !$this->mconf['sectionIndex']) {
 			try {
-				$menuObjectFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\Menu\\MenuContentObjectFactory');
+				$menuObjectFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\Menu\MenuContentObjectFactory::class);
 				$submenu = $menuObjectFactory->getMenuObjectByType($menuType);
 				$submenu->entryLevel = $this->entryLevel + 1;
 				$submenu->rL_uidRegister = $this->rL_uidRegister;

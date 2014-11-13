@@ -105,7 +105,7 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 		// Check if we should get a whole tree of pages and not only a single page
 		if ($constraint->getDepth() > 0) {
 			/** @var $pageTree \TYPO3\CMS\Backend\Tree\View\PageTreeView */
-			$pageTree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\View\\PageTreeView');
+			$pageTree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\PageTreeView::class);
 			$pageTree->init('AND ' . $GLOBALS['BE_USER']->getPagePermsClause(1));
 			$pageTree->makeHTML = 0;
 			$pageTree->fieldArray = array('uid');

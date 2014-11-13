@@ -56,7 +56,7 @@ class ElementEntityProcessor {
 	 */
 	public function getDataHandler() {
 		if (!isset($this->dataHandler)) {
-			$this->dataHandler = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+			$this->dataHandler = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 		}
 		return $this->dataHandler;
 	}

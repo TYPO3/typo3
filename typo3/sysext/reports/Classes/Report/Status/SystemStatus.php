@@ -45,7 +45,7 @@ class SystemStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		switch ($command) {
 			case 'clear_peak_memory_usage_flag':
 				/** @var $registry \TYPO3\CMS\Core\Registry */
-				$registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
+				$registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Registry::class);
 				$registry->remove('core', 'reports-peakMemoryUsage');
 				break;
 			default:
@@ -60,7 +60,7 @@ class SystemStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	 */
 	protected function getPhpPeakMemoryStatus() {
 		/** @var $registry \TYPO3\CMS\Core\Registry */
-		$registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
+		$registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Registry::class);
 		$peakMemoryUsage = $registry->get('core', 'reports-peakMemoryUsage');
 		$memoryLimit = \TYPO3\CMS\Core\Utility\GeneralUtility::getBytesFromSizeMeasurement(ini_get('memory_limit'));
 		$value = $GLOBALS['LANG']->getLL('status_ok');
@@ -77,7 +77,7 @@ class SystemStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 			$severity = \TYPO3\CMS\Reports\Status::WARNING;
 			$value = $percentageUsed;
 		}
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->getLL('status_phpPeakMemory'), $value, $message, $severity);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class, $GLOBALS['LANG']->getLL('status_phpPeakMemory'), $value, $message, $severity);
 	}
 
 	/**
@@ -119,7 +119,7 @@ class SystemStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 			$message = '';
 			$severity = \TYPO3\CMS\Reports\Status::OK;
 		}
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->getLL('status_phpModules'), $value, $message, $severity);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class, $GLOBALS['LANG']->getLL('status_phpModules'), $value, $message, $severity);
 	}
 
 }

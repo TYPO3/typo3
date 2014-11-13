@@ -12,6 +12,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-$createFolderController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\File\\CreateFolderController');
+$createFolderController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\File\CreateFolderController::class);
 $createFolderController->main();
 $createFolderController->printContent();

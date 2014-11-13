@@ -260,7 +260,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface {
 		$tsConfig = BackendUtility::getModTSconfig($id, 'TCEFORM.tt_content.colPos');
 		$tcaConfig = $GLOBALS['TCA']['tt_content']['columns']['colPos']['config'];
 		/** @var $tceForms \TYPO3\CMS\Backend\Form\FormEngine */
-		$tceForms = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormEngine');
+		$tceForms = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\FormEngine::class);
 		$tcaItems = $tcaConfig['items'];
 		$tcaItems = $tceForms->addItems($tcaItems, $tsConfig['properties']['addItems.']);
 		if (isset($tcaConfig['itemsProcFunc']) && $tcaConfig['itemsProcFunc']) {
@@ -303,9 +303,9 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface {
 
 		if (!empty($backendLayout)) {
 			/** @var $parser \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser */
-			$parser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
+			$parser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
 			/** @var \TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher $conditionMatcher */
-			$conditionMatcher = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TypoScript\\ConditionMatching\\ConditionMatcher');
+			$conditionMatcher = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher::class);
 			$parser->parse($parser->checkIncludeLines($backendLayout->getConfiguration()), $conditionMatcher);
 
 			$backendLayoutData = array();

@@ -52,7 +52,7 @@ class MailMessage extends \Swift_Message {
 	 * @return void
 	 */
 	private function initializeMailer() {
-		$this->mailer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\Mailer');
+		$this->mailer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\Mailer::class);
 	}
 
 	/**

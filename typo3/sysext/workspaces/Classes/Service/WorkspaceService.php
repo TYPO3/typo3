@@ -352,7 +352,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 		// mount points are not covered yet
 		$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 		/** @var $searchObj \TYPO3\CMS\Core\Database\QueryView */
-		$searchObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\QueryView');
+		$searchObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\QueryView::class);
 		if ($pageId > 0) {
 			$pageList = $searchObj->getTreeList($pageId, $recursionLevel, 0, $perms_clause);
 		} else {
@@ -577,7 +577,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return string the full domain including the protocol http:// or https://, but without the trailing '/'
 	 */
 	public function generateWorkspacePreviewLink($uid) {
-		$previewObject = GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\Hook\\PreviewHook');
+		$previewObject = GeneralUtility::makeInstance(\TYPO3\CMS\Version\Hook\PreviewHook::class);
 		$timeToLiveHours = $previewObject->getPreviewLinkLifetime();
 		$previewKeyword = $previewObject->compilePreviewKeyword('', $GLOBALS['BE_USER']->user['uid'], $timeToLiveHours * 3600, $this->getCurrentWorkspace());
 		$linkParams = array(
@@ -642,7 +642,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \TYPO3\CMS\Extbase\Object\ObjectManager
 	 */
 	protected function getObjectManager() {
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 	}
 
 }

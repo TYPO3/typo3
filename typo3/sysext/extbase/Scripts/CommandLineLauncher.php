@@ -17,5 +17,5 @@
  * ONLY USED INTERNALLY, MIGHT CHANGE WITHOUT NOTICE!
  */
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('extbase', 'Classes/Core/Bootstrap.php');
-$bootstrap = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Core\\Bootstrap');
+$bootstrap = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Core\Bootstrap::class);
 echo $bootstrap->run('', array());

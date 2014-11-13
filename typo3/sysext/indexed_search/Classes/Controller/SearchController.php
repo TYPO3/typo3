@@ -128,7 +128,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 		if ($this->settings['rootPidList']) {
 			$this->searchRootPageIdList = implode(',', GeneralUtility::intExplode(',', $this->settings['rootPidList']));
 		}
-		$this->searchRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Domain\\Repository\\IndexSearchRepository');
+		$this->searchRepository = GeneralUtility::makeInstance(\TYPO3\CMS\IndexedSearch\Domain\Repository\IndexSearchRepository::class);
 		$this->searchRepository->initialize($this->settings, $searchData, $this->externalParsers, $this->searchRootPageIdList);
 		$this->searchData = $searchData;
 		// Calling hook for modification of initialized content
@@ -489,7 +489,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			// If TypoScript is used to render the flag:
 			if (is_array($this->settings['flagRendering.'])) {
 				/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj */
-				$cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+				$cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 				$cObj->setCurrentVal($row['sys_language_uid']);
 				$output = $cObj->cObjGetSingle($this->settings['flagRendering'], $this->settings['flagRendering.']);
 			}
@@ -729,7 +729,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 					array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $GLOBALS['TSFE']->csConvObj->utf8_encode(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('localizedOperandOr', 'indexed_search'), $GLOBALS['TSFE']->renderCharset), 'toLower'), 'OR'),
 					array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $GLOBALS['TSFE']->csConvObj->utf8_encode(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('localizedOperandNot', 'indexed_search'), $GLOBALS['TSFE']->renderCharset), 'toLower'), 'AND NOT')
 				);
-				$search = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\SearchResultContentObject');
+				$search = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\SearchResultContentObject::class);
 				$search->default_operator = $defaultOperator == 1 ? 'OR' : 'AND';
 				$search->operator_translate_table = $operatorTranslateTable;
 				$search->register_and_explode_search_string($searchWords);

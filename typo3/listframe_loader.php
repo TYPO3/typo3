@@ -19,5 +19,5 @@
  */
 require __DIR__ . '/init.php';
 
-$listFrameLoaderController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\ListFrameLoaderController');
+$listFrameLoaderController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\ListFrameLoaderController::class);
 $listFrameLoaderController->main();

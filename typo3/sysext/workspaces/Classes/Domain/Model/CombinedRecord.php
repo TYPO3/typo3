@@ -46,7 +46,7 @@ class CombinedRecord {
 	static public function create($table, $liveId, $versionId) {
 		$liveRecord = DatabaseRecord::create($table, $liveId);
 		$versionRecord = DatabaseRecord::create($table, $versionId);
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Domain\\Model\\CombinedRecord', $table, $liveRecord, $versionRecord);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord::class, $table, $liveRecord, $versionRecord);
 	}
 
 	/**
@@ -60,7 +60,7 @@ class CombinedRecord {
 	static public function createFromArrays($table, array $liveRow, array $versionRow) {
 		$liveRecord = DatabaseRecord::createFromArray($table, $liveRow);
 		$versionRecord = DatabaseRecord::createFromArray($table, $versionRow);
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Domain\\Model\\CombinedRecord', $table, $liveRecord, $versionRecord);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord::class, $table, $liveRecord, $versionRecord);
 	}
 
 	/**

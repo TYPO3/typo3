@@ -170,7 +170,7 @@ class HelpModuleController {
 			$this->content .= $this->render_TOC();
 		}
 
-		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:cshmanual/Resources/Private/Templates/cshmanual.html');
 
@@ -208,7 +208,7 @@ class HelpModuleController {
 		$GLOBALS['LANG']->loadSingleTableDescription('xMOD_csh_corebe');
 		$this->render_TOC_el('xMOD_csh_corebe', 'core', $outputSections, $tocArray, $CSHkeys);
 		// Backend Modules:
-		$loadModules = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleLoader');
+		$loadModules = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Module\ModuleLoader::class);
 		$loadModules->load($GLOBALS['TBE_MODULES']);
 		foreach ($loadModules->modules as $mainMod => $info) {
 			$cshKey = '_MOD_' . $mainMod;
@@ -666,7 +666,7 @@ class HelpModuleController {
 	 * @return string Output HTML code
 	 */
 	public function substituteGlossaryWords($code) {
-		$htmlParser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
+		$htmlParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
 		$htmlParser->pObj = $this;
 		$code = $htmlParser->HTMLcleaner($code, array(), 1);
 		return $code;

@@ -109,7 +109,7 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			if ($class[0] === '<') {
 				$key = trim(substr($class, 1));
 				/** @var $typoscriptParser \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser */
-				$typoscriptParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
+				$typoscriptParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
 				$oldArguments = $arguments;
 				list($class, $arguments) = $typoscriptParser->getVal($key, $GLOBALS['TSFE']->tmpl->setup);
 				if (is_array($oldArguments) && count($oldArguments)) {
@@ -306,7 +306,7 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function setLayoutHandler(array $typoscript) {
 		/** @var $layoutHandler \TYPO3\CMS\Form\Layout */
-		$layoutHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Layout');
+		$layoutHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Layout::class);
 		$layoutHandler->setLayout($this->getLayoutFromTypoScript($typoscript));
 		return $layoutHandler;
 	}
@@ -332,7 +332,7 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		$prefix = isset($typoscript['prefix']) ? $typoscript['prefix'] : '';
 		$method = isset($typoscript['method']) ? $typoscript['method'] : '';
 		/** @var $requestHandler \TYPO3\CMS\Form\Request */
-		$requestHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Request');
+		$requestHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Request::class);
 		// singleton
 		$requestHandler->setPrefix($prefix);
 		$requestHandler->setMethod($method);
@@ -351,7 +351,7 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	public function setRules(array $typoscript) {
 		$rulesTyposcript = isset($typoscript['rules.']) ? $typoscript['rules.'] : NULL;
 		/** @var $rulesClass \TYPO3\CMS\Form\Utility\ValidatorUtility */
-		$rulesClass = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Utility\\ValidatorUtility', $rulesTyposcript);
+		$rulesClass = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Utility\ValidatorUtility::class, $rulesTyposcript);
 		// singleton
 		if (is_array($rulesTyposcript)) {
 			$keys = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($rulesTyposcript);
@@ -376,7 +376,7 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function getLocalConentObject() {
 		if (!isset($this->localContentObject)) {
-			$this->localContentObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+			$this->localContentObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 		}
 		return $this->localContentObject;
 	}

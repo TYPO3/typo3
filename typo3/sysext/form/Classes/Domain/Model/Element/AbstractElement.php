@@ -154,10 +154,10 @@ abstract class AbstractElement {
 	 * @param array $arguments Configuration array
 	 */
 	public function __construct() {
-		$this->localCobj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
-		$this->requestHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Request');
-		$this->validateClass = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Utility\\ValidatorUtility');
-		$this->elementCounter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\ElementCounter');
+		$this->localCobj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+		$this->requestHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Request::class);
+		$this->validateClass = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Utility\ValidatorUtility::class);
+		$this->elementCounter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\ElementCounter::class);
 		$this->setElementId();
 		$this->createAttributes();
 		$this->createAdditional();
@@ -476,7 +476,7 @@ abstract class AbstractElement {
 	 * @return void
 	 */
 	protected function createFilter() {
-		$this->filter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Utility\\FilterUtility');
+		$this->filter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Utility\FilterUtility::class);
 	}
 
 	/**

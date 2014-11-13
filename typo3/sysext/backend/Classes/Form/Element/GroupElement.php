@@ -154,7 +154,7 @@ class GroupElement extends AbstractFormElement {
 									htmlspecialchars($message), '', FlashMessage::ERROR, TRUE
 								);
 								/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-								$flashMessageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+								$flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
 								$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 								$defaultFlashMessageQueue->enqueue($flashMessage);
 

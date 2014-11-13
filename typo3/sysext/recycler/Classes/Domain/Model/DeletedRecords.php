@@ -295,7 +295,7 @@ class DeletedRecords {
 	public function deleteData($recordsArray) {
 		$recordsArray = json_decode($recordsArray);
 		if (is_array($recordsArray)) {
-			$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+			$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 			$tce->start('', '');
 			$tce->disableDeleteClause();
 			foreach ($recordsArray as $key => $record) {
@@ -339,7 +339,7 @@ class DeletedRecords {
 				}
 			}
 			if ($cmd) {
-				$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+				$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 				$tce->start(array(), $cmd);
 				$tce->process_cmdmap();
 				$result = TRUE;

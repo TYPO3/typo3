@@ -12,6 +12,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-$fileUploadController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\File\\FileUploadController');
+$fileUploadController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\File\FileUploadController::class);
 $fileUploadController->main();
 $fileUploadController->printContent();

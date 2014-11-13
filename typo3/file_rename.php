@@ -23,6 +23,6 @@ require __DIR__ . '/init.php';
 	'Renaming a file/folder is moved to an own module. Please use BackendUtility::getModuleUrl(\'file_rename\') to link to this script. This script will be removed.'
 );
 
-$renameFileController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\File\\RenameFileController');
+$renameFileController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\File\RenameFileController::class);
 $renameFileController->main();
 $renameFileController->printContent();

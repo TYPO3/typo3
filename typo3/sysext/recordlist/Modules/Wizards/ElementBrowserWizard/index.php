@@ -17,6 +17,6 @@
  * Used from TCEFORMS an other elements
  * In other words: This is the ELEMENT BROWSER!
  */
-$elementBrowserController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Recordlist\\Controller\\ElementBrowserController');
+$elementBrowserController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Recordlist\Controller\ElementBrowserController::class);
 $elementBrowserController->main();
 $elementBrowserController->printContent();

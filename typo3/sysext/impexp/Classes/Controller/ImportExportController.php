@@ -91,7 +91,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	public function main() {
 		$this->lang->includeLLFile('EXT:impexp/app/locallang.xlf');
 		// Start document template object:
-		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->bodyTagId = 'imp-exp-mod';
 		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('impexp') . '/app/template.html');
@@ -210,7 +210,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		// Saving/Loading/Deleting presets:
 		$this->processPresets($inData);
 		// Create export object and configure it:
-		$this->export = GeneralUtility::makeInstance('TYPO3\\CMS\\Impexp\\ImportExport');
+		$this->export = GeneralUtility::makeInstance(\TYPO3\CMS\Impexp\ImportExport::class);
 		$this->export->init(0, 'export');
 		$this->export->setCharset($this->lang->charSet);
 		$this->export->maxFileSize = $inData['maxFileSize'] * 1024;
@@ -276,7 +276,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			// Based on click-expandable tree
 			$idH = NULL;
 			if ($inData['pagetree']['levels'] == -1) {
-				$pagetree = GeneralUtility::makeInstance('TYPO3\\CMS\\Impexp\\LocalPageTree');
+				$pagetree = GeneralUtility::makeInstance(\TYPO3\CMS\Impexp\LocalPageTree::class);
 				$tree = $pagetree->ext_tree($inData['pagetree']['id'], $this->filterPageIds($this->export->excludeMap));
 				$this->treeHTML = $pagetree->printTree($tree);
 				$idH = $pagetree->buffer_idH;
@@ -296,7 +296,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				}
 				if (is_array($sPage)) {
 					$pid = $inData['pagetree']['id'];
-					$tree = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\View\\PageTreeView');
+					$tree = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\PageTreeView::class);
 					$tree->init('AND ' . $this->perms_clause . $this->filterPageIds($this->export->excludeMap));
 					$HTML = IconUtility::getSpriteIconForRecord('pages', $sPage);
 					$tree->tree[] = array('row' => $sPage, 'HTML' => $HTML);
@@ -309,7 +309,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					if (count($tree->buffer_idH)) {
 						$idH[$pid]['subrow'] = $tree->buffer_idH;
 					}
-					$pagetree = GeneralUtility::makeInstance('TYPO3\\CMS\\Impexp\\LocalPageTree');
+					$pagetree = GeneralUtility::makeInstance(\TYPO3\CMS\Impexp\LocalPageTree::class);
 					$this->treeHTML = $pagetree->printTree($tree->tree);
 				}
 			}
@@ -878,7 +878,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				unset($inData['import_mode']);
 			}
 			/** @var $import \TYPO3\CMS\Impexp\ImportExport */
-			$import = GeneralUtility::makeInstance('TYPO3\\CMS\\Impexp\\ImportExport');
+			$import = GeneralUtility::makeInstance(\TYPO3\CMS\Impexp\ImportExport::class);
 			$import->init(0, 'import');
 			$import->update = $inData['do_update'];
 			$import->import_mode = $inData['import_mode'];
@@ -1290,7 +1290,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	public function checkUpload() {
 		$file = GeneralUtility::_GP('file');
 		// Initializing:
-		$this->fileProcessor = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\ExtendedFileUtility');
+		$this->fileProcessor = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::class);
 		$this->fileProcessor->init(array(), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 		$this->fileProcessor->setActionPermissions();
 		$this->fileProcessor->dontCheckForUnique = GeneralUtility::_GP('overwriteExistingFiles') ? 1 : 0;
@@ -1457,7 +1457,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		}
 
 		/** @var $filter \TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter */
-		$filter = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Filter\\FileExtensionFilter');
+		$filter = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter::class);
 		$filter->setAllowedFileExtensions(array('png', 'gif', 'jpg'));
 		$defaultTemporaryFolder->getStorage()->addFileAndFolderNameFilter(array($filter, 'filterFileList'));
 		$thumbnailFiles = $defaultTemporaryFolder->getFiles();
@@ -1478,7 +1478,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		if ($folder !== FALSE) {
 
 			/** @var $filter \TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter */
-			$filter = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Filter\\FileExtensionFilter');
+			$filter = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter::class);
 			$filter->setAllowedFileExtensions(array('t3d', 'xml'));
 			$folder->getStorage()->addFileAndFolderNameFilter(array($filter, 'filterFileList'));
 

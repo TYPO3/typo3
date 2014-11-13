@@ -19,7 +19,7 @@
  */
 
 // Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Rtehtmlarea\\Controller\\UserElementsController');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Rtehtmlarea\Controller\UserElementsController::class);
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();

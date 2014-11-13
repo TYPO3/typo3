@@ -72,12 +72,12 @@ class TaskExecutor implements \TYPO3\CMS\Core\SingletonInterface {
 		$this->request = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Request');
 		$this->response = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Response');
 		// initialize configuration
-		$this->configurationManager->setContentObject(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer'));
+		$this->configurationManager->setContentObject(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class));
 		$this->configurationManager->setConfiguration($configuration);
 		// configure object container
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		if (isset($frameworkConfiguration['objects'])) {
-			$objectContainer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\Container\\Container');
+			$objectContainer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\Container\Container::class);
 			foreach ($frameworkConfiguration['objects'] as $classNameWithDot => $classConfiguration) {
 				if (isset($classConfiguration['className'])) {
 					$originalClassName = rtrim($classNameWithDot, '.');
@@ -87,7 +87,7 @@ class TaskExecutor implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		// initialize reflection
 		$reflectionService = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService');
-		$reflectionService->setDataCache(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('extbase_reflection'));
+		$reflectionService->setDataCache(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('extbase_reflection'));
 		if (!$reflectionService->isInitialized()) {
 			$reflectionService->initialize();
 		}

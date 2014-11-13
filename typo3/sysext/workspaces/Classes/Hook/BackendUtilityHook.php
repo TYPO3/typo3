@@ -57,7 +57,7 @@ class BackendUtilityHook implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \TYPO3\CMS\Workspaces\Service\WorkspaceService
 	 */
 	protected function getWorkspaceService() {
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
 	}
 
 	/**
@@ -72,13 +72,13 @@ class BackendUtilityHook implements \TYPO3\CMS\Core\SingletonInterface {
 		if ($GLOBALS['BE_USER']->workspace !== 0 && $GLOBALS['TCA'][$params['table']]['ctrl']['versioningWS']) {
 			$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($params['table'], $params['uid']);
 			if (abs($record['t3ver_stage']) > \TYPO3\CMS\Workspaces\Service\StagesService::STAGE_EDIT_ID) {
-				$stages = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\StagesService');
+				$stages = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\StagesService::class);
 				$stageName = $stages->getStageTitle($record['t3ver_stage']);
 				$editingName = $stages->getStageTitle(\TYPO3\CMS\Workspaces\Service\StagesService::STAGE_EDIT_ID);
 				$message = $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:info.elementAlreadyModified');
-				$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', sprintf($message, $stageName, $editingName), '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO, TRUE);
+				$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, sprintf($message, $stageName, $editingName), '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO, TRUE);
 				/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-				$flashMessageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+				$flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
 				/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
 				$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 				$defaultFlashMessageQueue->enqueue($flashMessage);

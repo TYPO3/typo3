@@ -28,11 +28,11 @@ class LogManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $logManagerInstance = NULL;
 
 	public function setUp() {
-		$this->logManagerInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager');
+		$this->logManagerInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class);
 	}
 
 	public function tearDown() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager')->reset();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->reset();
 		parent::tearDown();
 	}
 

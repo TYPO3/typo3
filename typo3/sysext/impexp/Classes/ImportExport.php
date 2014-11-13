@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * EXAMPLE for using the impexp-class for exporting stuff:
  *
  * Create and initialize:
- * $this->export = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Impexp\\ImportExport');
+ * $this->export = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Impexp\ImportExport::class);
  * $this->export->init();
  * Set which tables relations we will allow:
  * $this->export->relOnlyTables[]="tt_news";	// exclusively includes. See comment in the class
@@ -691,7 +691,7 @@ class ImportExport {
 						// Create entry in the PID lookup:
 						$this->dat['header']['pid_lookup'][$row['pid']][$table][$row['uid']] = 1;
 						// Initialize reference index object:
-						$refIndexObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ReferenceIndex');
+						$refIndexObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ReferenceIndex::class);
 						// Yes to workspace overlays for exporting....
 						$refIndexObj->WSOL = TRUE;
 						$relations = $refIndexObj->getRelations($table, $row);
@@ -1133,7 +1133,7 @@ class ImportExport {
 					$prefixedMedias = explode($uniquePrefix, preg_replace('/(url[[:space:]]*\\([[:space:]]*["\']?)([^"\')]*)(["\']?[[:space:]]*\\))/i', '\\1' . $uniquePrefix . '\\2' . $uniquePrefix . '\\3', $fileRec['content']));
 				} else {
 					// html, htm:
-					$htmlParser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
+					$htmlParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
 					$prefixedMedias = explode($uniquePrefix, $htmlParser->prefixResourcePath($uniquePrefix, $fileRec['content'], array(), $uniquePrefix));
 				}
 				$htmlResourceCaptured = FALSE;
@@ -1482,7 +1482,7 @@ class ImportExport {
 	 */
 	protected function initializeStorageObjects() {
 		/** @var $storageRepository \TYPO3\CMS\Core\Resource\StorageRepository */
-		$storageRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
+		$storageRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\StorageRepository::class);
 		$this->storageObjects = $storageRepository->findAll();
 	}
 
@@ -2157,7 +2157,7 @@ class ImportExport {
 	 * @return object $TCE object
 	 */
 	public function getNewTCE() {
-		$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 		$tce->stripslashes_values = 0;
 		$tce->dontProcessTransformations = 1;
 		$tce->enableLogging = $this->enableLogging;
@@ -2431,7 +2431,7 @@ class ImportExport {
 								$dataStructArray = BackendUtility::getFlexFormDS($conf, $origRecordRow, $table, $field);
 								$currentValueArray = GeneralUtility::xml2array($updateData[$table][$thisNewUid][$field]);
 								// Do recursive processing of the XML data:
-								$iteratorObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+								$iteratorObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 								$iteratorObj->callBackObj = $this;
 								$currentValueArray['data'] = $iteratorObj->checkValue_flex_procInData(
 									$currentValueArray['data'],
@@ -2541,7 +2541,7 @@ class ImportExport {
 										$currentValueArray = GeneralUtility::xml2array($origRecordRow[$field]);
 										// Do recursive processing of the XML data:
 										/** @var $iteratorObj \TYPO3\CMS\Core\DataHandling\DataHandler */
-										$iteratorObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+										$iteratorObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 										$iteratorObj->callBackObj = $this;
 										$currentValueArray['data'] = $iteratorObj->checkValue_flex_procInData($currentValueArray['data'], array(), array(), $dataStructArray, array($table, $uid, $field, $softRefCfgs), 'processSoftReferences_flexFormCallBack');
 										// The return value is set as an array which means it will be processed by tcemain for file and DB references!
@@ -4040,7 +4040,7 @@ class ImportExport {
 	public function compareRecords($databaseRecord, $importRecord, $table, $inverseDiff = FALSE) {
 		// Initialize:
 		$output = array();
-		$t3lib_diff_Obj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\DiffUtility');
+		$t3lib_diff_Obj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\DiffUtility::class);
 		// Check if both inputs are records:
 		if (is_array($databaseRecord) && is_array($importRecord)) {
 			// Traverse based on database record
@@ -4106,7 +4106,7 @@ class ImportExport {
 	 */
 	public function getFileProcObj() {
 		if ($this->fileProcObj === NULL) {
-			$this->fileProcObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\ExtendedFileUtility');
+			$this->fileProcObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::class);
 			$this->fileProcObj->init(array(), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 			$this->fileProcObj->setActionPermissions();
 		}

@@ -27,6 +27,6 @@
  */
 require __DIR__ . '/init.php';
 
-$clickMenuController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\ClickMenuController');
+$clickMenuController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\ClickMenuController::class);
 $clickMenuController->main();
 $clickMenuController->printContent();

@@ -48,7 +48,7 @@ class LengthValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	 * @param array $arguments Typoscript configuration
 	 */
 	public function __construct($arguments) {
-		$this->charsetConverter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
+		$this->charsetConverter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
 		$this->setMinimum($arguments['minimum'])->setMaximum($arguments['maximum']);
 		parent::__construct($arguments);
 	}

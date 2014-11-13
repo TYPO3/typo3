@@ -82,7 +82,7 @@ class RecordsContentObject extends AbstractContentObject {
 
 			if (count($this->itemArray) > 0) {
 				/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj */
-				$cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+				$cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 				$cObj->setParent($this->cObj->data, $this->cObj->currentRecord);
 				$this->cObj->currentRecordNumber = 0;
 				$this->cObj->currentRecordTotal = count($this->itemArray);
@@ -147,7 +147,7 @@ class RecordsContentObject extends AbstractContentObject {
 	 */
 	protected function collectRecordsFromSource($source, array $tables) {
 		/** @var \TYPO3\CMS\Core\Database\RelationHandler $loadDB*/
-		$loadDB = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+		$loadDB = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
 		$loadDB->setFetchAllFields(TRUE);
 		$loadDB->start($source, implode(',', $tables));
 		foreach ($loadDB->tableArray as $table => $v) {

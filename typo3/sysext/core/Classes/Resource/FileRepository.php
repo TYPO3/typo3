@@ -90,7 +90,7 @@ class FileRepository extends AbstractRepository {
 			}
 		} else {
 			/** @var $relationHandler \TYPO3\CMS\Core\Database\RelationHandler */
-			$relationHandler = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+			$relationHandler = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
 			$relationHandler->start(
 				'', 'sys_file_reference', '', $uid, $tableName,
 				\TYPO3\CMS\Backend\Utility\BackendUtility::getTcaFieldConfiguration($tableName, $fieldName)

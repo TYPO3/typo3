@@ -354,7 +354,7 @@ class FrontendUserAuthentication extends \TYPO3\CMS\Core\Authentication\Abstract
 			// Parsing the user TS (or getting from cache)
 			$this->TSdataArray = \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::checkIncludeLines_array($this->TSdataArray);
 			$userTS = implode(LF . '[GLOBAL]' . LF, $this->TSdataArray);
-			$parseObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
+			$parseObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
 			$parseObj->parse($userTS);
 			$this->userTS = $parseObj->setup;
 			$this->userTSUpdated = TRUE;

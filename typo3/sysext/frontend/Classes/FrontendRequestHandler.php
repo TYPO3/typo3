@@ -98,7 +98,7 @@ class FrontendRequestHandler {
 				// Prevent errors if ini_set() is unavailable (safe mode)
 				@ini_set('zlib.output_compression_level', $GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel']);
 			}
-			ob_start(array(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Utility\\CompressionUtility'), 'compressionOutputHandler'));
+			ob_start(array(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Utility\CompressionUtility::class), 'compressionOutputHandler'));
 		}
 
 		// FE_USER

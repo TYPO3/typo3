@@ -39,7 +39,7 @@ class ExtractorRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return ExtractorRegistry
 	 */
 	public static function getInstance() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Index\\ExtractorRegistry');
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\ExtractorRegistry::class);
 	}
 
 	/**

@@ -79,7 +79,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 		if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
 			$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xlf');
 			// Needed to get the correct icons when reloading the menu after saving it
-			$loadModules = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleLoader');
+			$loadModules = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Module\ModuleLoader::class);
 			$loadModules->load($GLOBALS['TBE_MODULES']);
 		}
 		$this->backendReference = $backendReference;

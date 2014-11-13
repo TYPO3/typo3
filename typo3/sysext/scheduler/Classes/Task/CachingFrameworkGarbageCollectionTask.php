@@ -48,7 +48,7 @@ class CachingFrameworkGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\Ab
 				// The cache backend used for this cache
 				$usedCacheBackend = $cacheConfiguration['backend'];
 				if (in_array($usedCacheBackend, $this->selectedBackends)) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache($cacheName)->collectGarbage();
+					\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache($cacheName)->collectGarbage();
 				}
 			}
 		}

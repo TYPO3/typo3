@@ -45,10 +45,10 @@ class ContentRepository {
 			}
 
 			/** @var $typoScriptParser \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser */
-			$typoScriptParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
+			$typoScriptParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
 			$typoScriptParser->parse($bodytext);
 			/** @var $record \TYPO3\CMS\Form\Domain\Model\Content */
-			$record = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Domain\\Model\\Content');
+			$record = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Domain\Model\Content::class);
 			$record->setUid($row['uid']);
 			$record->setPageId($row['pid']);
 			$record->setTyposcript($typoScriptParser->setup);
@@ -75,12 +75,12 @@ class ContentRepository {
 		$parameters = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('P');
 		$success = FALSE;
 		/** @var $converter \TYPO3\CMS\Form\Domain\Factory\JsonToTypoScript */
-		$converter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Domain\\Factory\\JsonToTypoScript');
+		$converter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Domain\Factory\JsonToTypoScript::class);
 		$typoscript = $converter->convert($json);
 		if ($typoscript) {
 			// Make TCEmain object:
 			/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
-			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 			$tce->stripslashes_values = 0;
 			// Put content into the data array:
 			$data = array();
@@ -104,7 +104,7 @@ class ContentRepository {
 		if ($record) {
 			$typoscript = $record->getTyposcript();
 			/** @var $converter \TYPO3\CMS\Form\Utility\TypoScriptToJsonConverter */
-			$converter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Utility\\TypoScriptToJsonConverter');
+			$converter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Utility\TypoScriptToJsonConverter::class);
 			$json = $converter->convert($typoscript);
 		}
 		return $json;

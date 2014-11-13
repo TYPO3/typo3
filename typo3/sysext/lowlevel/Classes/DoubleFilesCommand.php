@@ -141,7 +141,7 @@ This will check the system for double files relations.';
 						echo '	Keeping ' . $key . ' for record "' . $recReference . '"' . LF;
 					} else {
 						// Create unique name for file:
-						$fileFunc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility');
+						$fileFunc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\File\BasicFileUtility::class);
 						$newName = $fileFunc->getUniqueName(basename($key), dirname($absFileName));
 						echo '	Copying ' . $key . ' to ' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($newName) . ' for record "' . $recReference . '": ';
 						if ($bypass = $this->cli_noExecutionCheck($recReference)) {
@@ -150,7 +150,7 @@ This will check the system for double files relations.';
 							\TYPO3\CMS\Core\Utility\GeneralUtility::upload_copy_move($absFileName, $newName);
 							clearstatcache();
 							if (@is_file($newName)) {
-								$sysRefObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ReferenceIndex');
+								$sysRefObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ReferenceIndex::class);
 								$error = $sysRefObj->setReferenceValue($hash, basename($newName));
 								if ($error) {
 									echo '	ERROR:	TYPO3\\CMS\\Core\\Database\\ReferenceIndex::setReferenceValue(): ' . $error . LF;

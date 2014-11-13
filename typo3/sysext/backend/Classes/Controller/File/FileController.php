@@ -100,7 +100,7 @@ class FileController {
 		$this->vC = GeneralUtility::_GP('vC');
 		$this->redirect = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('redirect'));
 		$this->initClipboard();
-		$this->fileProcessor = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\ExtendedFileUtility');
+		$this->fileProcessor = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::class);
 	}
 
 	/**
@@ -110,7 +110,7 @@ class FileController {
 	 */
 	public function initClipboard() {
 		if (is_array($this->CB)) {
-			$clipObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Clipboard\\Clipboard');
+			$clipObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
 			$clipObj->initializeClipboard();
 			if ($this->CB['paste']) {
 				$clipObj->setCurrentPad($this->CB['pad']);

@@ -40,11 +40,11 @@ abstract class AbstractExtdirectContextMenu extends \TYPO3\CMS\Backend\ContextMe
 	 */
 	public function getActionsForNodeArray($nodeData) {
 		if ($this->dataProvider === NULL) {
-			$dataProvider = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\ContextMenu\\AbstractContextMenuDataProvider');
+			$dataProvider = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\ContextMenu\AbstractContextMenuDataProvider::class);
 			$this->setDataProvider($dataProvider);
 		}
 		/** @var $node \TYPO3\CMS\Backend\Tree\TreeNode */
-		$node = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\TreeNode', (array)$nodeData);
+		$node = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\TreeNode::class, (array)$nodeData);
 		$actions = $this->dataProvider->getActionsForNode($node);
 		return $actions;
 	}

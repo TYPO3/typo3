@@ -30,7 +30,7 @@ if (\TYPO3\CMS\Core\Utility\GeneralUtility::hmac(implode('|', $parameters), 'res
 			$file = NULL;
 		}
 	} else {
-		$file = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ProcessedFileRepository')->findByUid($parameters['p']);
+		$file = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ProcessedFileRepository::class)->findByUid($parameters['p']);
 		if ($file->isDeleted()) {
 			$file = NULL;
 		}

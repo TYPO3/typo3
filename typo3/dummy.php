@@ -19,6 +19,6 @@
  */
 require __DIR__ . '/init.php';
 
-$dummyController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\DummyController');
+$dummyController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\DummyController::class);
 $dummyController->main();
 $dummyController->printContent();

@@ -72,7 +72,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 	 * Inject signal slot dispatcher
 	 */
 	public function __construct(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher = NULL) {
-		$this->signalSlotDispatcher = $signalSlotDispatcher ?: GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+		$this->signalSlotDispatcher = $signalSlotDispatcher ?: GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
 	}
 
 	/**
@@ -85,7 +85,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 	 */
 	public function getDriverObject($driverIdentificationString, array $driverConfiguration) {
 		/** @var $driverRegistry Driver\DriverRegistry */
-		$driverRegistry = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Driver\\DriverRegistry');
+		$driverRegistry = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Driver\DriverRegistry::class);
 		$driverClass = $driverRegistry->getDriverClass($driverIdentificationString);
 		$driverObject = GeneralUtility::makeInstance($driverClass, $driverConfiguration);
 		return $driverObject;
@@ -104,7 +104,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 	 */
 	public function getDefaultStorage() {
 		/** @var $storageRepository StorageRepository */
-		$storageRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
+		$storageRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\StorageRepository::class);
 
 		$allStorages = $storageRepository->findAll();
 		foreach ($allStorages as $storage) {
@@ -159,7 +159,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 				);
 			} elseif (count($recordData) === 0 || (int)$recordData['uid'] !== $uid) {
 				/** @var $storageRepository StorageRepository */
-				$storageRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
+				$storageRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\StorageRepository::class);
 				/** @var $storage ResourceStorage */
 				$storageObject = $storageRepository->findByUid($uid);
 			}
@@ -220,7 +220,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 	 */
 	protected function initializeLocalStorageCache() {
 		/** @var $storageRepository StorageRepository */
-		$storageRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
+		$storageRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\StorageRepository::class);
 		/** @var $storageObjects ResourceStorage[] */
 		$storageObjects = $storageRepository->findByStorageType('Local');
 
@@ -289,7 +289,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 	 */
 	public function createCollectionObject(array $collectionData) {
 		/** @var $registry Collection\FileCollectionRegistry */
-		$registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Collection\\FileCollectionRegistry');
+		$registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Collection\FileCollectionRegistry::class);
 		$class = $registry->getFileCollectionClass($collectionData['type']);
 
 		return $class::create($collectionData);
@@ -324,7 +324,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 	 * @return Folder
 	 */
 	public function createFolderObject(ResourceStorage $storage, $identifier, $name) {
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Folder', $storage, $identifier, $name);
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Folder::class, $storage, $identifier, $name);
 	}
 
 	protected function createPublisherFromConfiguration(array $configuration) {
@@ -550,7 +550,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 		} else {
 			throw new \RuntimeException('A file needs to reside in a Storage', 1381570997);
 		}
-		$fileObject = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\File', $fileData, $storageObject);
+		$fileObject = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\File::class, $fileData, $storageObject);
 		return $fileObject;
 	}
 
@@ -592,7 +592,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 	 */
 	public function createFileReferenceObject(array $fileReferenceData) {
 		/** @var FileReference $fileReferenceObject */
-		$fileReferenceObject = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileReference', $fileReferenceData);
+		$fileReferenceObject = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\FileReference::class, $fileReferenceData);
 		return $fileReferenceObject;
 	}
 
@@ -630,7 +630,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 	 * @return ProcessedFileRepository
 	 */
 	protected function getProcessedFileRepository() {
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ProcessedFileRepository');
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ProcessedFileRepository::class);
 	}
 
 	/**
@@ -639,7 +639,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 	 * @return \TYPO3\CMS\Core\Resource\Index\Indexer
 	 */
 	protected function getIndexer(ResourceStorage $storage) {
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Index\\Indexer', $storage);
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\Indexer::class, $storage);
 	}
 
 }

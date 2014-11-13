@@ -115,7 +115,7 @@ class ElementInformationController {
 		$this->uid = GeneralUtility::_GET('uid');
 
 		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
-		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 
 		if (isset($GLOBALS['TCA'][$this->table])) {
 			$this->initDatabaseRecord();
@@ -145,7 +145,7 @@ class ElementInformationController {
 				}
 			}
 			/** @var $treatData \TYPO3\CMS\Backend\Form\DataPreprocessor */
-			$treatData = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\DataPreprocessor');
+			$treatData = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\DataPreprocessor::class);
 			$treatData->renderRecord($this->table, $this->uid, 0, $this->row);
 		}
 	}
@@ -253,7 +253,7 @@ class ElementInformationController {
 		} else {
 
 			/** @var \TYPO3\CMS\Core\Resource\Rendering\RendererRegistry $rendererRegistry */
-			$rendererRegistry = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Rendering\\RendererRegistry');
+			$rendererRegistry = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Rendering\RendererRegistry::class);
 			$fileRenderer = $rendererRegistry->getRenderer($this->fileObject);
 			$fileExtension = $this->fileObject->getExtension();
 			$url = $this->fileObject->getPublicUrl(TRUE);

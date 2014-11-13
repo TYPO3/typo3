@@ -20,5 +20,5 @@
  */
 require __DIR__ . '/init.php';
 
-$logoutController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\LogoutController');
+$logoutController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\LogoutController::class);
 $logoutController->logout();

@@ -183,7 +183,7 @@ class FormsController {
 		// Setting options:
 		$this->xmlStorage = $this->P['params']['xmlOutput'];
 		// Document template object:
-		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/wizard_forms.html');
 		// Setting form tag:
@@ -310,7 +310,7 @@ class FormsController {
 			// If a save button has been pressed, then save the new field content:
 			if ($_POST['savedok_x'] || $_POST['saveandclosedok_x']) {
 				// Make TCEmain object:
-				$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+				$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 				$tce->stripslashes_values = 0;
 				// Put content into the data array:
 				$data = array();

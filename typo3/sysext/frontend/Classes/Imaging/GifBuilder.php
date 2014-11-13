@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * Here is an example of how to use this class (from tslib_content.php, function getImgResource):
  *
- * $gifCreator = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
+ * $gifCreator = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Imaging\GifBuilder::class);
  * $gifCreator->init();
  * $theImage='';
  * if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) {
@@ -133,7 +133,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 		if (is_array($conf)) {
 			$this->setup = $conf;
 			$this->data = $data;
-			$this->cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+			$this->cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 			$this->cObj->start($this->data);
 			// Hook preprocess gifbuilder conf
 			// Added by Julle for 3.8.0
@@ -230,7 +230,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 					}
 					// Checks if disabled is set... (this is also done in menu.php / imgmenu!!)
 					if ($conf['if.']) {
-						$cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+						$cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 						$cObj->start($this->data);
 						if (!$cObj->checkIf($conf['if.'])) {
 							unset($this->setup[$theKey]);
@@ -533,7 +533,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 	 * @access private
 	 */
 	public function checkTextObj($conf) {
-		$cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+		$cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 		$cObj->start($this->data);
 		$isStdWrapped = array();
 		foreach ($conf as $key => $value) {
@@ -656,7 +656,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 			$fileArray['ext'] = $this->gifExtension;
 		}
 		/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj */
-		$cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+		$cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 		$cObj->start($this->data);
 		return $cObj->getImgResource($file, $fileArray);
 	}
@@ -684,13 +684,13 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 		$meaningfulPrefix = '';
 		if ($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix']) {
 			/** @var $basicFileFunctions \TYPO3\CMS\Core\Utility\File\BasicFileUtility */
-			$basicFileFunctions = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility');
+			$basicFileFunctions = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\File\BasicFileUtility::class);
 			$meaningfulPrefix = implode('_', array_merge($this->combinedTextStrings, $this->combinedFileNames));
 			$meaningfulPrefix = $basicFileFunctions->cleanFileName($meaningfulPrefix);
 			$meaningfulPrefixLength = (int)$GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix'];
 			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
 				/** @var $t3libCsInstance \TYPO3\CMS\Core\Charset\CharsetConverter */
-				$t3libCsInstance = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
+				$t3libCsInstance = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
 				$meaningfulPrefix = $t3libCsInstance->substr('utf-8', $meaningfulPrefix, 0, $meaningfulPrefixLength);
 			} else {
 				$meaningfulPrefix = substr($meaningfulPrefix, 0, $meaningfulPrefixLength);

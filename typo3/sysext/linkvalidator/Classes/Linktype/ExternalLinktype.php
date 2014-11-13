@@ -68,7 +68,7 @@ class ExternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 			'strict_redirects' => TRUE
 		);
 		/** @var $request \TYPO3\CMS\Core\Http\HttpRequest|\HTTP_Request2 */
-		$request = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Http\\HttpRequest', $url, 'HEAD', $config);
+		$request = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Http\HttpRequest::class, $url, 'HEAD', $config);
 		// Observe cookies
 		$request->setCookieJar(TRUE);
 		try {

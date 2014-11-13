@@ -59,7 +59,7 @@ class NoDocumentsOpenController {
 	 */
 	protected function init() {
 		// Start the template object:
-		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->bodyTagMargins['x'] = 5;
 		$this->doc->bodyTagMargins['y'] = 5;
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
@@ -81,7 +81,7 @@ class NoDocumentsOpenController {
 		$this->content = '';
 		$this->content .= $this->doc->startPage('TYPO3 Edit Document');
 		// Loads the backend modules available for the logged in user.
-		$this->loadModules = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleLoader');
+		$this->loadModules = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Module\ModuleLoader::class);
 		$this->loadModules->load($GLOBALS['TBE_MODULES']);
 	}
 
@@ -125,7 +125,7 @@ class NoDocumentsOpenController {
 			$msg[] = '<p>' . sprintf($GLOBALS['LANG']->getLL('noDocuments_msg2', 1), implode(' ', $msg_2)) . '</p><br />';
 		}
 		// Display the list of the most recently edited documents:
-		$modObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Opendocs\\Controller\\OpendocsController');
+		$modObj = GeneralUtility::makeInstance(\TYPO3\CMS\Opendocs\Controller\OpendocsController::class);
 		$msg[] = '<p>' . $GLOBALS['LANG']->getLL('noDocuments_msg3', TRUE) . '</p><br />' . $modObj->renderMenu();
 		// Adding the content:
 		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('noDocuments'), implode(' ', $msg), 0, 1);

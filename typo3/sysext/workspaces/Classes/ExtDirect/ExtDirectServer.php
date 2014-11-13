@@ -74,7 +74,7 @@ class ExtDirectServer extends AbstractHandler {
 	 */
 	public function getHistory($parameters) {
 		/** @var $historyService \TYPO3\CMS\Workspaces\Service\HistoryService */
-		$historyService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\HistoryService');
+		$historyService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\HistoryService::class);
 		$history = $historyService->getHistory($parameters->table, $parameters->liveId);
 		return array(
 			'data' => $history,
@@ -111,9 +111,9 @@ class ExtDirectServer extends AbstractHandler {
 		$diffReturnArray = array();
 		$liveReturnArray = array();
 		/** @var $t3lib_diff \TYPO3\CMS\Core\Utility\DiffUtility */
-		$t3lib_diff = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\DiffUtility');
+		$t3lib_diff = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\DiffUtility::class);
 		/** @var $parseObj \TYPO3\CMS\Core\Html\RteHtmlParser */
-		$parseObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\RteHtmlParser');
+		$parseObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\RteHtmlParser::class);
 		$liveRecord = BackendUtility::getRecord($parameter->table, $parameter->t3ver_oid);
 		$versionRecord = BackendUtility::getRecord($parameter->table, $parameter->uid);
 		$icon_Live = \TYPO3\CMS\Backend\Utility\IconUtility::mapRecordTypeToSpriteIconClass($parameter->table, $liveRecord);
@@ -278,7 +278,7 @@ class ExtDirectServer extends AbstractHandler {
 	 */
 	protected function getGridDataService() {
 		if (!isset($this->gridDataService)) {
-			$this->gridDataService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\GridDataService');
+			$this->gridDataService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\GridDataService::class);
 		}
 		return $this->gridDataService;
 	}
@@ -290,7 +290,7 @@ class ExtDirectServer extends AbstractHandler {
 	 */
 	protected function getStagesService() {
 		if (!isset($this->stagesService)) {
-			$this->stagesService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\StagesService');
+			$this->stagesService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\StagesService::class);
 		}
 		return $this->stagesService;
 	}

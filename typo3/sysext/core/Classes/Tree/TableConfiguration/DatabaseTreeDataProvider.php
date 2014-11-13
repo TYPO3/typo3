@@ -234,7 +234,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
 	 */
 	protected function buildRepresentationForNode(\TYPO3\CMS\Backend\Tree\TreeNode $basicNode, DatabaseTreeNode $parent = NULL, $level = 0) {
 		/** @var $node \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeNode */
-		$node = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Tree\\TableConfiguration\\DatabaseTreeNode');
+		$node = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeNode::class);
 		$row = array();
 		if ($basicNode->getId() == 0) {
 			$node->setSelected(FALSE);
@@ -258,7 +258,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
 		if ($basicNode->hasChildNodes()) {
 			$node->setHasChildren(TRUE);
 			/** @var $childNodes \TYPO3\CMS\Backend\Tree\SortedTreeNodeCollection */
-			$childNodes = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\SortedTreeNodeCollection');
+			$childNodes = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\SortedTreeNodeCollection::class);
 			foreach ($basicNode->getChildNodes() as $child) {
 				$childNodes->append($this->buildRepresentationForNode($child, $node, $level + 1));
 			}
@@ -279,7 +279,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
 		if (isset($this->columnConfiguration['foreign_table']) && $this->columnConfiguration['foreign_table'] != $this->getTableName()) {
 			throw new \InvalidArgumentException('TCA Tree configuration is invalid: tree for different node-Tables is not implemented yet', 1290944650);
 		}
-		$this->treeData = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\TreeNode');
+		$this->treeData = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\TreeNode::class);
 		$this->treeData->setId($this->getRootUid());
 		$this->treeData->setParentNode(NULL);
 		$childNodes = $this->getChildrenOf($this->treeData, 0);
@@ -312,9 +312,9 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
 		$children = $this->getRelatedRecords($nodeData);
 		if (count($children)) {
 			/** @var $storage \TYPO3\CMS\Backend\Tree\TreeNodeCollection */
-			$storage = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\TreeNodeCollection');
+			$storage = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\TreeNodeCollection::class);
 			foreach ($children as $child) {
-				$node = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\TreeNode');
+				$node = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\TreeNode::class);
 				$node->setId($child);
 				if ($level <= $this->levelMaximum) {
 					$children = $this->getChildrenOf($node, $level + 1);
@@ -364,7 +364,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
 			case 'select':
 				if ($this->columnConfiguration['MM']) {
 					/** @var $dbGroup \TYPO3\CMS\Core\Database\RelationHandler */
-					$dbGroup = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+					$dbGroup = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
 					// Dummy field for setting "look from other site"
 					$this->columnConfiguration['MM_oppositeField'] = 'children';
 					$dbGroup->start($row[$this->getLookupField()], $this->getTableName(), $this->columnConfiguration['MM'], $uid, $this->getTableName(), $this->columnConfiguration);
@@ -397,7 +397,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
 			case 'select':
 				if ($this->columnConfiguration['MM']) {
 					/** @var $dbGroup \TYPO3\CMS\Core\Database\RelationHandler */
-					$dbGroup = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+					$dbGroup = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
 					$dbGroup->start($value, $this->getTableName(), $this->columnConfiguration['MM'], $uid, $this->getTableName(), $this->columnConfiguration);
 					$relatedUids = $dbGroup->tableArray[$this->getTableName()];
 				} elseif ($this->columnConfiguration['foreign_field']) {
@@ -461,7 +461,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
 	 * @return \TYPO3\CMS\Extbase\Object\ObjectManager
 	 */
 	protected function getObjectManager() {
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 	}
 
 }

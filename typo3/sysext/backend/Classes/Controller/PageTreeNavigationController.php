@@ -109,7 +109,7 @@ class PageTreeNavigationController {
 		// look for User setting
 		$this->hasFilterBox = !$GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.hideFilter');
 		// Create page tree object:
-		$this->pagetree = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\View\\PageTreeView');
+		$this->pagetree = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\View\PageTreeView::class);
 		$this->pagetree->ext_IconMode = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.disableIconLinkToContextmenu');
 		$this->pagetree->ext_showPageId = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showPageIdWithTitle');
 		$this->pagetree->ext_showNavTitle = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showNavTitle');
@@ -142,7 +142,7 @@ class PageTreeNavigationController {
 			$hlClass = $GLOBALS['BE_USER']->workspace === 0 ? 'active' : 'active active-ws wsver' . $GLOBALS['BE_USER']->workspace;
 		}
 		// Create template object:
-		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/alt_db_navframe.html');
 		$this->doc->showFlashMessages = FALSE;
@@ -195,7 +195,7 @@ class PageTreeNavigationController {
 			$flashText = '
 				<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('setTempDBmount' => 0))) . '">' . $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_core.xlf:labels.temporaryDBmount', TRUE) . '</a>		<br />' . $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_core.xlf:labels.path', TRUE) . ': <span title="' . htmlspecialchars($this->active_tempMountPoint['_thePathFull']) . '">' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($this->active_tempMountPoint['_thePath'], -50)) . '</span>
 			';
-			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $flashText, '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
+			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $flashText, '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
 			$this->content .= $flashMessage->render();
 		}
 		// Outputting page tree:

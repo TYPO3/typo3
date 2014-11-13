@@ -669,11 +669,11 @@ class FormEngine {
 		);
 		// Create instance of InlineElement only if this a non-IRRE-AJAX call:
 		if (!isset($GLOBALS['ajaxID']) || strpos($GLOBALS['ajaxID'], 'TYPO3\\CMS\\Backend\\Form\\Element\\InlineElement::') !== 0) {
-			$this->inline = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\Element\\InlineElement');
+			$this->inline = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\Element\InlineElement::class);
 		}
 		// Create instance of \TYPO3\CMS\Backend\Form\Element\SuggestElement only if this a non-Suggest-AJAX call:
 		if (!isset($GLOBALS['ajaxID']) || strpos($GLOBALS['ajaxID'], 'TYPO3\\CMS\\Backend\\Form\\Element\\SuggestElement::') !== 0) {
-			$this->suggest = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\Element\\SuggestElement');
+			$this->suggest = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\Element\SuggestElement::class);
 		}
 		// Prepare user defined objects (if any) for hooks which extend this function:
 		$this->hookObjectsMainFields = array();
@@ -1055,7 +1055,7 @@ class FormEngine {
 		$displayConditionResult = TRUE;
 		if (is_array($PA['fieldConf']) && $PA['fieldConf']['displayCond'] && is_array($row)) {
 			/** @var $elementConditionMatcher \TYPO3\CMS\Backend\Form\ElementConditionMatcher */
-			$elementConditionMatcher = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\ElementConditionMatcher');
+			$elementConditionMatcher = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\ElementConditionMatcher::class);
 			$displayConditionResult = $elementConditionMatcher->match($PA['fieldConf']['displayCond'], $row);
 		}
 		// Check if this field is configured and editable (according to excludefields + other configuration)
@@ -1296,7 +1296,7 @@ class FormEngine {
 	 */
 	public function getSingleField_typeInput($table, $field, $row, &$PA) {
 		GeneralUtility::logDeprecatedFunction();
-		return $item = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\Element\\InputElement', $this)
+		return $item = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\Element\InputElement::class, $this)
 			->render($table, $field, $row, $PA);
 	}
 
@@ -1369,7 +1369,7 @@ class FormEngine {
 	 */
 	public function getSingleField_typeText($table, $field, $row, &$PA) {
 		GeneralUtility::logDeprecatedFunction();
-		return $item = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\Element\\TextElement', $this)
+		return $item = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\Element\TextElement::class, $this)
 			->render($table, $field, $row, $PA);
 	}
 
@@ -1386,7 +1386,7 @@ class FormEngine {
 	 */
 	public function getSingleField_typeCheck($table, $field, $row, &$PA) {
 		GeneralUtility::logDeprecatedFunction();
-		return $item = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\Element\\CheckboxElement', $this)
+		return $item = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\Element\CheckboxElement::class, $this)
 			->render($table, $field, $row, $PA);
 	}
 
@@ -1403,7 +1403,7 @@ class FormEngine {
 	 */
 	public function getSingleField_typeRadio($table, $field, $row, &$PA) {
 		GeneralUtility::logDeprecatedFunction();
-		return $item = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\Element\\RadioElement', $this)
+		return $item = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\Element\RadioElement::class, $this)
 			->render($table, $field, $row, $PA);
 	}
 
@@ -1421,7 +1421,7 @@ class FormEngine {
 	 */
 	public function getSingleField_typeSelect($table, $field, $row, &$PA) {
 		GeneralUtility::logDeprecatedFunction();
-		return $item = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\Element\\SelectElement', $this)
+		return $item = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\Element\SelectElement::class, $this)
 			->render($table, $field, $row, $PA);
 	}
 
@@ -1438,7 +1438,7 @@ class FormEngine {
 	 */
 	public function getSingleField_typeGroup($table, $field, $row, &$PA) {
 		GeneralUtility::logDeprecatedFunction();
-		return $item = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\Element\\GroupElement', $this)
+		return $item = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\Element\GroupElement::class, $this)
 			->render($table, $field, $row, $PA);
 	}
 
@@ -1455,7 +1455,7 @@ class FormEngine {
 	 */
 	public function getSingleField_typeNone($table, $field, $row, &$PA) {
 		GeneralUtility::logDeprecatedFunction();
-		return $item = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\Element\\NoneElement', $this)
+		return $item = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\Element\NoneElement::class, $this)
 			->render($table, $field, $row, $PA);
 	}
 
@@ -1524,7 +1524,7 @@ class FormEngine {
 	 */
 	public function getSingleField_typeFlex($table, $field, $row, &$PA) {
 		GeneralUtility::logDeprecatedFunction();
-		return $item = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\Element\\FlexElement', $this)
+		return $item = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\Element\FlexElement::class, $this)
 			->render($table, $field, $row, $PA);
 	}
 
@@ -1590,7 +1590,7 @@ class FormEngine {
 	 */
 	public function getSingleField_typeUnknown($table, $field, $row, &$PA) {
 		GeneralUtility::logDeprecatedFunction();
-		return $item = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\Element\\UnknownElement', $this)
+		return $item = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\Element\UnknownElement::class, $this)
 			->render($table, $field, $row, $PA);
 	}
 
@@ -1606,7 +1606,7 @@ class FormEngine {
 	 */
 	public function getSingleField_typeUser($table, $field, $row, &$PA) {
 		GeneralUtility::logDeprecatedFunction();
-		return $item = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\Element\\UserElement', $this)
+		return $item = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\Element\UserElement::class, $this)
 			->render($table, $field, $row, $PA);
 	}
 
@@ -2077,7 +2077,7 @@ class FormEngine {
 			$prLang = $this->getAdditionalPreviewLanguages();
 			foreach ($prLang as $prL) {
 				/** @var $t8Tools \TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider */
-				$t8Tools = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TranslationConfigurationProvider');
+				$t8Tools = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider::class);
 				$tInfo = $t8Tools->translationInfo($lookUpTable, (int)$rec[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']], $prL['uid']);
 				if (is_array($tInfo['translations']) && is_array($tInfo['translations'][$prL['uid']])) {
 					$this->additionalPreviewLanguageData[$table . ':' . $rec['uid']][$prL['uid']] = BackendUtility::getRecordWSOL($table, (int)$tInfo['translations'][$prL['uid']]['uid']);
@@ -2171,7 +2171,7 @@ class FormEngine {
 			if (isset($dLVal['old'][$field])) {
 				if ((string)$dLVal['old'][$field] !== (string)$dLVal['new'][$field]) {
 					// Create diff-result:
-					$t3lib_diff_Obj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\DiffUtility');
+					$t3lib_diff_Obj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\DiffUtility::class);
 					$diffres = $t3lib_diff_Obj->makeDiffDisplay(
 						BackendUtility::getProcessedValue($table, $field, $dLVal['old'][$field], 0, 1),
 						BackendUtility::getProcessedValue($table, $field, $dLVal['new'][$field], 0, 1)
@@ -2199,7 +2199,7 @@ class FormEngine {
 			&& (string)$vArray[$vDEFkey . '.vDEFbase'] !== (string)$vArray['vDEF']
 		) {
 			// Create diff-result:
-			$t3lib_diff_Obj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\DiffUtility');
+			$t3lib_diff_Obj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\DiffUtility::class);
 			$diffres = $t3lib_diff_Obj->makeDiffDisplay($vArray[$vDEFkey . '.vDEFbase'], $vArray['vDEF']);
 			$item = '<div class="typo3-TCEforms-diffBox">' . '<div class="typo3-TCEforms-diffBox-header">'
 				. htmlspecialchars($this->getLL('l_changeInOrig')) . ':</div>' . $diffres . '</div>';
@@ -2664,7 +2664,7 @@ class FormEngine {
 											$params['iTitle'] = $iTitle;
 											$params['wConf'] = $wConf;
 											$params['row'] = $row;
-											$wizard = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\Element\\ValueSlider');
+											$wizard = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\Element\ValueSlider::class);
 											$outArr[] = call_user_func_array(array(&$wizard, 'renderWizard'), array(&$params, &$this));
 											break;
 									}
@@ -3376,7 +3376,7 @@ class FormEngine {
 				case 'modListGroup':
 
 				case 'modListUser':
-					$loadModules = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleLoader');
+					$loadModules = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Module\ModuleLoader::class);
 					$loadModules->load($GLOBALS['TBE_MODULES']);
 					$modList = $fieldValue['config']['special'] == 'modListUser' ? $loadModules->modListUser : $loadModules->modListGroup;
 					if (is_array($modList)) {
@@ -3453,9 +3453,9 @@ class FormEngine {
 			$msg .= $this->sL('LLL:EXT:lang/locallang_core.xlf:error.database_schema_mismatch');
 			$msgTitle = $this->sL('LLL:EXT:lang/locallang_core.xlf:error.database_schema_mismatch_title');
 			/** @var $flashMessage FlashMessage */
-			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $msg, $msgTitle, FlashMessage::ERROR, TRUE);
+			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $msg, $msgTitle, FlashMessage::ERROR, TRUE);
 			/** @var $flashMessageService FlashMessageService */
-			$flashMessageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+			$flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
 			/** @var $defaultFlashMessageQueue FlashMessageQueue */
 			$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 			$defaultFlashMessageQueue->enqueue($flashMessage);
@@ -4395,7 +4395,7 @@ class FormEngine {
 			BackendUtility::fixVersioningPid($table, $row);
 			list($tscPID) = $this->getTSCpid($table, $row['uid'], $row['pid']);
 			/** @var $t8Tools \TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider */
-			$t8Tools = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TranslationConfigurationProvider');
+			$t8Tools = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider::class);
 			$this->cachedLanguageFlag[$mainKey] = $t8Tools->getSystemLanguages($tscPID, $this->backPath);
 		}
 		// Convert sys_language_uid to sys_language_uid if input was in fact a string (ISO code expected then)
@@ -4633,7 +4633,7 @@ class FormEngine {
 		if (substr($value, 0, 6) === '__row|') {
 			/** @var \TYPO3\CMS\Backend\Form\FormDataTraverser $traverser */
 			$traverseFields = GeneralUtility::trimExplode('|', substr($value, 6));
-			$traverser = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormDataTraverser', $this);
+			$traverser = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\FormDataTraverser::class, $this);
 			$value = $traverser->getTraversedFieldValue($traverseFields, $table, $row);
 		}
 

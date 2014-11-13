@@ -21,7 +21,7 @@ require_once 'init.php';
 
 // Make instance if it is not an AJAX call
 if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX)) {
-	$pageTreeNavigationController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\PageTreeNavigationController');
+	$pageTreeNavigationController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\PageTreeNavigationController::class);
 	$pageTreeNavigationController->initPage();
 	$pageTreeNavigationController->main();
 	$pageTreeNavigationController->printContent();

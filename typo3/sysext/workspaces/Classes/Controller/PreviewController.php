@@ -42,8 +42,8 @@ class PreviewController extends AbstractController {
 	 */
 	protected function initializeAction() {
 		parent::initializeAction();
-		$this->stageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\StagesService');
-		$this->workspaceService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
+		$this->stageService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\StagesService::class);
+		$this->workspaceService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
 		$this->template->setExtDirectStateProvider();
 		$resourcePath = ExtensionManagementUtility::extRelPath('workspaces') . 'Resources/Public/StyleSheet/preview.css';
 		$GLOBALS['TBE_STYLES']['extJS']['theme'] = $resourcePath;
@@ -97,7 +97,7 @@ class PreviewController extends AbstractController {
 		list(, $nextStage) = $this->stageService->getNextStageForElementCollection($workspaceItemsArray);
 		list(, $previousStage) = $this->stageService->getPreviousStageForElementCollection($workspaceItemsArray);
 		/** @var $wsService \TYPO3\CMS\Workspaces\Service\WorkspaceService */
-		$wsService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
+		$wsService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
 		$wsList = $wsService->getAvailableWorkspaces();
 		$activeWorkspace = $GLOBALS['BE_USER']->workspace;
 		if (!is_null($previewWS)) {
@@ -174,9 +174,9 @@ class PreviewController extends AbstractController {
 	 * @return void
 	 */
 	public function newPageAction() {
-		$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:info.newpage.detail'), $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:info.newpage'), \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
+		$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:info.newpage.detail'), $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:info.newpage'), \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
 		/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-		$flashMessageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+		$flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
 		/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
 		$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 		$defaultFlashMessageQueue->enqueue($flashMessage);

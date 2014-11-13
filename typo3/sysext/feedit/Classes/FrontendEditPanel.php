@@ -31,7 +31,7 @@ class FrontendEditPanel {
 	 * Constructor for the edit panel
 	 */
 	public function __construct() {
-		$this->cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+		$this->cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 		$this->cObj->start(array());
 	}
 

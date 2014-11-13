@@ -41,7 +41,7 @@ class UpdateExtensionListTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 */
 	protected function updateExtensionList() {
 		/** @var $objectManager \TYPO3\CMS\Extbase\Object\ObjectManager */
-		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 
 		/** @var $repositoryHelper \TYPO3\CMS\Extensionmanager\Utility\Repository\Helper */
 		$repositoryHelper = $objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\Repository\\Helper');

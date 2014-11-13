@@ -39,7 +39,7 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			1 => array('uid' => 111, 'pid' => 101),
 			0 => array('uid' => 101, 'pid' => 0)
 		);
-		$this->matchCondition = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Configuration\\TypoScript\\ConditionMatching\\ConditionMatcher');
+		$this->matchCondition = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher::class);
 	}
 
 	/**

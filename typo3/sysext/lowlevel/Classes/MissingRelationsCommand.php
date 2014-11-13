@@ -139,7 +139,7 @@ Reports missing relations';
 					if ($bypass = $this->cli_noExecutionCheck($recReference)) {
 						echo $bypass;
 					} else {
-						$sysRefObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ReferenceIndex');
+						$sysRefObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ReferenceIndex::class);
 						$error = $sysRefObj->setReferenceValue($hash, NULL);
 						if ($error) {
 							echo '		TYPO3\\CMS\\Core\\Database\\ReferenceIndex::setReferenceValue(): ' . $error . LF;

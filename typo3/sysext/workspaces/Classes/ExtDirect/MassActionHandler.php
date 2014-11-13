@@ -191,7 +191,7 @@ class MassActionHandler extends AbstractHandler {
 			$GLOBALS['BE_USER']->setAndSaveSessionData('workspaceMassAction_total', 0);
 		} else {
 			/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
-			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 			$tce->stripslashes_values = 0;
 			// Execute the commands:
 			$tce->start(array(), $limitedCmd);

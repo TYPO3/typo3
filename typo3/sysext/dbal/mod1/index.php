@@ -21,7 +21,7 @@
 $LANG->includeLLFile('EXT:dbal/mod1/locallang.xlf');
 $BE_USER->modAccess($MCONF, 1);
 
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Dbal\\Controller\\ModuleController');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Dbal\Controller\ModuleController::class);
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();

@@ -33,7 +33,7 @@ class Configuration {
 	public function addInterceptor(\TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface $interceptor) {
 		foreach ($interceptor->getInterceptionPoints() as $interceptionPoint) {
 			if (!isset($this->interceptors[$interceptionPoint])) {
-				$this->interceptors[$interceptionPoint] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
+				$this->interceptors[$interceptionPoint] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class);
 			}
 			if (!$this->interceptors[$interceptionPoint]->contains($interceptor)) {
 				$this->interceptors[$interceptionPoint]->attach($interceptor);
@@ -51,6 +51,6 @@ class Configuration {
 		if (isset($this->interceptors[$interceptionPoint]) && $this->interceptors[$interceptionPoint] instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage) {
 			return $this->interceptors[$interceptionPoint];
 		}
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class);
 	}
 }

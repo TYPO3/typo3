@@ -188,7 +188,7 @@ class DependencyResolver {
 	 */
 	public function getFactory() {
 		if (!isset($this->factory)) {
-			$this->factory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\Dependency\\DependencyEntityFactory');
+			$this->factory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Version\Dependency\DependencyEntityFactory::class);
 		}
 		return $this->factory;
 	}

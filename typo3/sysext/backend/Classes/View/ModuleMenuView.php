@@ -58,7 +58,7 @@ class ModuleMenuView {
 		$this->backPath = '';
 		$this->linkModules = TRUE;
 		// Loads the backend modules available for the logged in user.
-		$this->moduleLoader = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleLoader');
+		$this->moduleLoader = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Module\ModuleLoader::class);
 		$this->moduleLoader->observeWorkspaces = TRUE;
 		$this->moduleLoader->load($GLOBALS['TBE_MODULES']);
 		$this->loadedModules = $this->moduleLoader->modules;

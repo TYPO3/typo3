@@ -54,7 +54,7 @@ class ValidatorUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return String
 	 */
 	protected function getPrefix() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Request')->getPrefix();
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Request::class)->getPrefix();
 	}
 
 	/**

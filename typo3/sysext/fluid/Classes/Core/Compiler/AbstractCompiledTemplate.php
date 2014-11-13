@@ -44,7 +44,7 @@ abstract class AbstractCompiledTemplate implements \TYPO3\CMS\Fluid\Core\Parser\
 	 */
 	public function getViewHelper($uniqueCounter, \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext, $viewHelperName) {
 		if (self::$objectContainer === NULL) {
-			self::$objectContainer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\Container\\Container');
+			self::$objectContainer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\Container\Container::class);
 		}
 		if (isset($this->viewHelpersByPositionAndContext[$uniqueCounter])) {
 			if ($this->viewHelpersByPositionAndContext[$uniqueCounter]->contains($renderingContext)) {
@@ -60,7 +60,7 @@ abstract class AbstractCompiledTemplate implements \TYPO3\CMS\Fluid\Core\Parser\
 				return $viewHelperInstance;
 			}
 		} else {
-			$this->viewHelpersByPositionAndContext[$uniqueCounter] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
+			$this->viewHelpersByPositionAndContext[$uniqueCounter] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class);
 			$viewHelperInstance = self::$objectContainer->getInstance($viewHelperName);
 			if ($viewHelperInstance instanceof \TYPO3\CMS\Core\SingletonInterface) {
 				$viewHelperInstance->resetState();

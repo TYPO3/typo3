@@ -275,7 +275,7 @@ class CrawlerHook {
 				// Get root line (need to provide this when indexing external files)
 				$rl = $this->getUidRootLineForClosestTemplate($cfgRec['pid']);
 				// (Re)-Indexing file on page.
-				$indexerObj = GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
+				$indexerObj = GeneralUtility::makeInstance(\TYPO3\CMS\IndexedSearch\Indexer::class);
 				$indexerObj->backend_initIndexer($cfgRec['pid'], 0, 0, '', $rl);
 				$indexerObj->backend_setFreeIndexUid($cfgRec['uid'], $cfgRec['set_id']);
 				$indexerObj->hash['phash'] = -1;
@@ -472,7 +472,7 @@ class CrawlerHook {
 	 */
 	public function indexExtUrl($url, $pageId, $rl, $cfgUid, $setId) {
 		// Index external URL:
-		$indexerObj = GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
+		$indexerObj = GeneralUtility::makeInstance(\TYPO3\CMS\IndexedSearch\Indexer::class);
 		$indexerObj->backend_initIndexer($pageId, 0, 0, '', $rl);
 		$indexerObj->backend_setFreeIndexUid($cfgUid, $setId);
 		$indexerObj->hash['phash'] = -1;
@@ -523,7 +523,7 @@ class CrawlerHook {
 		$languageField = $GLOBALS['TCA'][$cfgRec['table2index']]['ctrl']['languageField'];
 		$sys_language_uid = $languageField ? $r[$languageField] : 0;
 		// (Re)-Indexing a row from a table:
-		$indexerObj = GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
+		$indexerObj = GeneralUtility::makeInstance(\TYPO3\CMS\IndexedSearch\Indexer::class);
 		parse_str(str_replace('###UID###', $r['uid'], $cfgRec['get_params']), $GETparams);
 		$indexerObj->backend_initIndexer($cfgRec['pid'], 0, $sys_language_uid, '', $rl, $GETparams, $cfgRec['chashcalc'] ? TRUE : FALSE);
 		$indexerObj->backend_setFreeIndexUid($cfgRec['uid'], $cfgRec['set_id']);
@@ -548,12 +548,12 @@ class CrawlerHook {
 	 * @return array Array where the root lines uid values are found.
 	 */
 	public function getUidRootLineForClosestTemplate($id) {
-		$tmpl = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService');
+		$tmpl = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);
 		$tmpl->tt_track = 0;
 		// Do not log time-performance information
 		$tmpl->init();
 		// Gets the rootLine
-		$sys_page = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+		$sys_page = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
 		$rootLine = $sys_page->getRootLine($id);
 		// This generates the constants/config + hierarchy info for the template.
 		$tmpl->runThroughTemplates($rootLine, 0);

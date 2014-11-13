@@ -72,7 +72,7 @@ class ConfigurationView {
 	 */
 	public function __construct() {
 		$GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], 1);
-		$this->view = GeneralUtility::makeInstance('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+		$this->view = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
 		$this->view->getRequest()->setControllerExtensionName('lowlevel');
 	}
 
@@ -84,7 +84,7 @@ class ConfigurationView {
 	public function init() {
 		$this->MCONF = $GLOBALS['MCONF'];
 		$this->menuConfig();
-		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:lowlevel/Resources/Private/Templates/config.html');
 		$this->doc->form = '<form action="" method="post">';
@@ -128,7 +128,7 @@ class ConfigurationView {
 	 */
 	public function main() {
 		/** @var \TYPO3\CMS\Lowlevel\Utility\ArrayBrowser $arrayBrowser */
-		$arrayBrowser = GeneralUtility::makeInstance('TYPO3\\CMS\\Lowlevel\\Utility\\ArrayBrowser');
+		$arrayBrowser = GeneralUtility::makeInstance(\TYPO3\CMS\Lowlevel\Utility\ArrayBrowser::class);
 		$label = $this->MOD_MENU['function'][$this->MOD_SETTINGS['function']];
 		$search_field = GeneralUtility::_GP('search_field');
 
@@ -330,7 +330,7 @@ class ConfigurationView {
 	protected function getFlashMessageQueue() {
 		if (!$this->flashMessageQueue instanceof \TYPO3\CMS\Core\Messaging\FlashMessageQueue) {
 			/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-			$flashMessageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+			$flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
 			$this->flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 		}
 

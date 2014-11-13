@@ -69,12 +69,12 @@ class StandaloneView extends AbstractTemplateView {
 	 * @throws \UnexpectedValueException
 	 */
 	public function __construct(ContentObjectRenderer $contentObject = NULL) {
-		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 		/** @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager */
 		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
 		if ($contentObject === NULL) {
 			/** @var ContentObjectRenderer $contentObject */
-			$contentObject = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+			$contentObject = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 		}
 		$configurationManager->setContentObject($contentObject);
 		$this->templateParser = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Parser\\TemplateParser');
@@ -93,7 +93,7 @@ class StandaloneView extends AbstractTemplateView {
 		$this->setControllerContext($controllerContext);
 		$this->templateCompiler = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Compiler\\TemplateCompiler');
 		// singleton
-		$this->templateCompiler->setTemplateCache(GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('fluid_template'));
+		$this->templateCompiler->setTemplateCache(GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('fluid_template'));
 	}
 
 	/**

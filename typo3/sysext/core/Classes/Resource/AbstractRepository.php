@@ -45,7 +45,7 @@ abstract class AbstractRepository implements \TYPO3\CMS\Extbase\Persistence\Repo
 	 * Creates this object.
 	 */
 	public function __construct() {
-		$this->factory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+		$this->factory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
 	}
 
 	/**

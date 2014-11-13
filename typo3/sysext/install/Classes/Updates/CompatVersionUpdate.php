@@ -182,7 +182,7 @@ class CompatVersionUpdate extends AbstractUpdate {
 			$customMessages .= 'If you want to see what you need to do to use the new features, run the update wizard again!';
 		}
 		$version = $this->userInput['version'] ? $this->userInput['version'] : TYPO3_branch;
-		GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->setLocalConfigurationValueByPath('SYS/compat_version', $version);
+		GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class)->setLocalConfigurationValueByPath('SYS/compat_version', $version);
 		$customMessages .= '<br />The compatibility version has been set to ' . $version . '.';
 		return TRUE;
 	}

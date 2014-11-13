@@ -150,7 +150,7 @@ abstract class AbstractContextMenuDataProvider {
 	 */
 	protected function getNextContextMenuLevel(array $actions, \TYPO3\CMS\Backend\Tree\TreeNode $node, $level = 0) {
 		/** @var $actionCollection \TYPO3\CMS\Backend\ContextMenu\ContextMenuActionCollection */
-		$actionCollection = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\ContextMenu\\ContextMenuActionCollection');
+		$actionCollection = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\ContextMenu\ContextMenuActionCollection::class);
 		if ($level > 5) {
 			return $actionCollection;
 		}
@@ -166,7 +166,7 @@ abstract class AbstractContextMenuDataProvider {
 				continue;
 			}
 			/** @var $action \TYPO3\CMS\Backend\ContextMenu\ContextMenuAction */
-			$action = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\ContextMenu\\ContextMenuAction');
+			$action = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\ContextMenu\ContextMenuAction::class);
 			$action->setId($index);
 			if ($type === 'DIVIDER') {
 				$action->setType('divider');

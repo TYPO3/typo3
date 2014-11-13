@@ -215,7 +215,7 @@ class RecordList {
 	 */
 	public function clearCache() {
 		if ($this->clear_cache) {
-			$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+			$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 			$tce->stripslashes_values = 0;
 			$tce->start(array(), array());
 			$tce->clear_cacheCmd($this->id);
@@ -229,7 +229,7 @@ class RecordList {
 	 */
 	public function main() {
 		// Start document template object:
-		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:recordlist/Resources/Private/Templates/db_list.html');
 		// Loading current page record and checking access:
@@ -258,7 +258,7 @@ class RecordList {
 
 		// Initialize the dblist object:
 		/** @var $dblist \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList */
-		$dblist = GeneralUtility::makeInstance('TYPO3\\CMS\\Recordlist\\RecordList\\DatabaseRecordList');
+		$dblist = GeneralUtility::makeInstance(\TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList::class);
 		$dblist->backPath = $GLOBALS['BACK_PATH'];
 		$dblist->script = BackendUtility::getModuleUrl('web_list', array(), '');
 		$dblist->calcPerms = $GLOBALS['BE_USER']->calcPerms($this->pageinfo);
@@ -283,7 +283,7 @@ class RecordList {
 		$dblist->clickTitleMode = $clickTitleMode === '' ? 'edit' : $clickTitleMode;
 		// Clipboard is initialized:
 		// Start clipboard
-		$dblist->clipObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Clipboard\\Clipboard');
+		$dblist->clipObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
 		// Initialize - reads the clipboard content from the user session
 		$dblist->clipObj->initializeClipboard();
 		// Clipboard actions are handled:
@@ -320,7 +320,7 @@ class RecordList {
 						$iKParts = explode('|', $iK);
 						$cmd[$iKParts[0]][$iKParts[1]]['delete'] = 1;
 					}
-					$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+					$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 					$tce->stripslashes_values = 0;
 					$tce->start(array(), $cmd);
 					$tce->process_cmdmap();

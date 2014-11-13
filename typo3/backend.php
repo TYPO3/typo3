@@ -15,7 +15,7 @@ require_once 'init.php';
 $GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xlf');
 
 // Document generation
-$TYPO3backend = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\BackendController');
+$TYPO3backend = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\BackendController::class);
 // Include extensions which may add css, javascript or toolbar items
 if (is_array($GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'])) {
 	foreach ($GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'] as $additionalBackendItem) {

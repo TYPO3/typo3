@@ -424,7 +424,7 @@ abstract class AbstractRecordList {
 	 */
 	protected function getTranslateTools() {
 		if (!isset($this->translateTools)) {
-			$this->translateTools = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TranslationConfigurationProvider');
+			$this->translateTools = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider::class);
 		}
 		return $this->translateTools;
 	}

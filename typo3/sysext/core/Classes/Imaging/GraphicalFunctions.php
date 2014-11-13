@@ -375,7 +375,7 @@ class GraphicalFunctions {
 			$this->csConvObj = $GLOBALS['LANG']->csConvObj;
 		} else {
 			// The object may not exist yet, so we need to create it now. Happens in the Install Tool for example.
-			$this->csConvObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
+			$this->csConvObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
 		}
 		$this->nativeCharset = 'utf-8';
 	}

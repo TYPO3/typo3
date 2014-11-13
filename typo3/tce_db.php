@@ -22,7 +22,7 @@
  */
 require __DIR__ . '/init.php';
 
-$simpleDataHandlerController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\SimpleDataHandlerController');
+$simpleDataHandlerController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\SimpleDataHandlerController::class);
 
 $formprotection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
 if ($formprotection->validateToken(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('formToken'), 'tceAction')) {

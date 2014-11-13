@@ -1844,7 +1844,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 */
 	protected function initializeClipboard() {
 		// Start clipboard
-		$this->clipboard = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Clipboard\\Clipboard');
+		$this->clipboard = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
 
 		// Initialize - reads the clipboard content from the user session
 		$this->clipboard->initializeClipboard();

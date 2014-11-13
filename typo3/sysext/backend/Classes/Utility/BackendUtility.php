@@ -613,7 +613,7 @@ class BackendUtility {
 	 */
 	static public function getSystemLanguages() {
 		/** @var TranslationConfigurationProvider $translationConfigurationProvider */
-		$translationConfigurationProvider = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TranslationConfigurationProvider');
+		$translationConfigurationProvider = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider::class);
 		$languages = $translationConfigurationProvider->getSystemLanguages();
 		$sysLanguages = array();
 		foreach ($languages as $language) {
@@ -1129,7 +1129,7 @@ class BackendUtility {
 	 */
 	static public function storeHash($hash, $data, $ident) {
 		/** @var CacheManager $cacheManager */
-		$cacheManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager');
+		$cacheManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
 		$cacheManager->getCache('cache_hash')->set($hash, $data, array('ident_' . $ident), 0);
 	}
 
@@ -1144,7 +1144,7 @@ class BackendUtility {
 	 */
 	static public function getHash($hash) {
 		/** @var CacheManager $cacheManager */
-		$cacheManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager');
+		$cacheManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
 		$cacheEntry = $cacheManager->getCache('cache_hash')->get($hash);
 		$hashContent = NULL;
 		if ($cacheEntry) {
@@ -1201,7 +1201,7 @@ class BackendUtility {
 			// Parsing the page TS-Config
 			$pageTS = implode(LF . '[GLOBAL]' . LF, $TSdataArray);
 			/* @var $parseObj \TYPO3\CMS\Backend\Configuration\TsConfigParser */
-			$parseObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TsConfigParser');
+			$parseObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TsConfigParser::class);
 			$res = $parseObj->parseTSconfig($pageTS, 'PAGES', $id, $rootLine);
 			if ($res) {
 				$TSconfig = $res['TSconfig'];
@@ -1523,7 +1523,7 @@ class BackendUtility {
 
 		$fileReferences = array();
 		/** @var $relationHandler \TYPO3\CMS\Core\Database\RelationHandler */
-		$relationHandler = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+		$relationHandler = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
 		if ($workspaceId !== NULL) {
 			$relationHandler->setWorkspaceId($workspaceId);
 		}
@@ -1616,7 +1616,7 @@ class BackendUtility {
 						}
 					} catch (ResourceDoesNotExistException $exception) {
 						/** @var FlashMessage $flashMessage */
-						$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+						$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class,
 							htmlspecialchars($exception->getMessage()),
 							static::getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_missing', TRUE),
 							FlashMessage::ERROR
@@ -2116,7 +2116,7 @@ class BackendUtility {
 							$MMfield = join(',', $MMfields);
 						}
 						/** @var $dbGroup \TYPO3\CMS\Core\Database\RelationHandler */
-						$dbGroup = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+						$dbGroup = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
 						$dbGroup->start($value, $theColConf['foreign_table'], $theColConf['MM'], $uid, $table, $theColConf);
 						$selectUids = $dbGroup->tableArray[$theColConf['foreign_table']];
 						if (is_array($selectUids) && count($selectUids) > 0) {
@@ -2715,7 +2715,7 @@ class BackendUtility {
 		}
 
 		// Check a mount point needs to be previewed
-		$sys_page = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+		$sys_page = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
 		$sys_page->init(FALSE);
 		$mountPointInfo = $sys_page->getMountPointInfo($pageUid);
 
@@ -2746,7 +2746,7 @@ class BackendUtility {
 		if (count($rootLine) > 0) {
 			$urlParts = parse_url($domain);
 			/** @var PageRepository $sysPage */
-			$sysPage = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+			$sysPage = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
 			$page = (array)$sysPage->getPage($pageId);
 			$protocol = 'http';
 			if ($page['url_scheme'] == HttpUtility::SCHEME_HTTPS || $page['url_scheme'] == 0 && GeneralUtility::getIndpEnv('TYPO3_SSL')) {
@@ -4283,7 +4283,7 @@ class BackendUtility {
 	 * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
 	 */
 	static protected function getSignalSlotDispatcher() {
-		return GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
 	}
 
 	/**

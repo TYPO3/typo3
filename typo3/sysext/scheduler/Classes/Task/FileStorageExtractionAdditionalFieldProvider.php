@@ -48,7 +48,7 @@ class FileStorageExtractionAdditionalFieldProvider implements \TYPO3\CMS\Schedul
 	 */
 	protected function getAllStoragesField(FileStorageExtractionTask $task = NULL) {
 		/** @var \TYPO3\CMS\Core\Resource\ResourceStorage[] $storages */
-		$storages = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository')->findAll();
+		$storages = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\StorageRepository::class)->findAll();
 		$options = array();
 		foreach ($storages as $storage) {
 			if ($task !== NULL && $task->storageUid === $storage->getUid()) {

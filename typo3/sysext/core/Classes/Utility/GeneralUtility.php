@@ -378,7 +378,7 @@ class GeneralUtility {
 			return $GLOBALS['TSFE']->csConvObj->crop($charSet, $string, $chars, $appendString);
 		} else {
 			// This case should not happen
-			$csConvObj = self::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
+			$csConvObj = self::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
 			return $csConvObj->crop('utf-8', $string, $chars, $appendString);
 		}
 	}
@@ -3979,7 +3979,7 @@ Connection: close
 	 */
 	static public function readLLfile($fileRef, $langKey, $charset = '', $errorMode = 0) {
 		/** @var $languageFactory \TYPO3\CMS\Core\Localization\LocalizationFactory */
-		$languageFactory = self::makeInstance('TYPO3\\CMS\\Core\\Localization\\LocalizationFactory');
+		$languageFactory = self::makeInstance(\TYPO3\CMS\Core\Localization\LocalizationFactory::class);
 		return $languageFactory->getParsedData($fileRef, $langKey, $charset, $errorMode);
 	}
 
@@ -4253,7 +4253,7 @@ Connection: close
 	 * Eg. "$obj = new myclass;" should be "$obj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("myclass")" instead!
 	 *
 	 * You can also pass arguments for a constructor:
-	 * \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('myClass', $arg1, $arg2, ..., $argN)
+	 * \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\myClass::class, $arg1, $arg2, ..., $argN)
 	 *
 	 * You may want to use \TYPO3\CMS\Extbase\Object\ObjectManager::get() if you
 	 * want TYPO3 to take care about injecting dependencies of the class to be
@@ -4902,7 +4902,7 @@ Connection: close
 					$from = MailUtility::getSystemFrom();
 				}
 				/** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
-				$mail = self::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+				$mail = self::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
 				$mail->setTo($to)->setFrom($from)->setSubject('Warning - error in TYPO3 installation')->setBody('Host: ' . $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] . LF . 'Extension: ' . $extKey . LF . 'Severity: ' . $severity . LF . LF . $msg);
 				$mail->send();
 			} elseif ($type == 'error_log') {

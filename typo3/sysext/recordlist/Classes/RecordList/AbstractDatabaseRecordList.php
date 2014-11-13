@@ -937,7 +937,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 */
 	protected function getSearchableWebmounts($id, $depth, $perms_clause) {
 		/** @var \TYPO3\CMS\Backend\Tree\View\PageTreeView $tree */
-		$tree = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\View\\PageTreeView');
+		$tree = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\PageTreeView::class);
 		$tree->init('AND ' . $perms_clause);
 		$tree->makeHTML = 0;
 		$tree->fieldArray = array('uid', 'php_tree_stop');

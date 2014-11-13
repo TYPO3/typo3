@@ -31,7 +31,7 @@ class LocalImageProcessor implements ProcessorInterface {
 	 */
 	public function __construct() {
 		/** @var $logManager \TYPO3\CMS\Core\Log\LogManager */
-		$logManager = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager');
+		$logManager = Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class);
 		$this->logger = $logManager->getLogger(__CLASS__);
 	}
 
@@ -88,10 +88,10 @@ class LocalImageProcessor implements ProcessorInterface {
 	protected function getHelperByTaskName($taskName) {
 		switch ($taskName) {
 			case 'Preview':
-				$helper = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Processing\\LocalPreviewHelper', $this);
+				$helper = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Processing\LocalPreviewHelper::class, $this);
 			break;
 			case 'CropScaleMask':
-				$helper = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Processing\\LocalCropScaleMaskHelper', $this);
+				$helper = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Processing\LocalCropScaleMaskHelper::class, $this);
 			break;
 			default:
 				throw new \InvalidArgumentException('Cannot find helper for task name: "' . $taskName . '"', 1353401352);
@@ -177,7 +177,7 @@ class LocalImageProcessor implements ProcessorInterface {
 		static $graphicalFunctionsObject = NULL;
 
 		if ($graphicalFunctionsObject === NULL) {
-			$graphicalFunctionsObject = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Imaging\\GraphicalFunctions');
+			$graphicalFunctionsObject = Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\GraphicalFunctions::class);
 		}
 
 		return $graphicalFunctionsObject;

@@ -72,7 +72,7 @@ class FilesContentObject extends AbstractContentObject {
 					);
 				} catch (\TYPO3\CMS\Core\Resource\Exception $e) {
 					/** @var \TYPO3\CMS\Core\Log\Logger $logger */
-					$logger = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager')->getLogger(__CLASS__);
+					$logger = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
 					$logger->warning('The file-reference with uid  "' . $referenceUid . '" could not be found and won\'t be included in frontend output');
 				}
 			}
@@ -92,7 +92,7 @@ class FilesContentObject extends AbstractContentObject {
 					$this->addToArray($this->getFileFactory()->getFileObject($fileUid), $fileObjects);
 				} catch (\TYPO3\CMS\Core\Resource\Exception $e) {
 					/** @var \TYPO3\CMS\Core\Log\Logger $logger */
-					$logger = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager')->getLogger(__CLASS__);
+					$logger = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
 					$logger->warning('The file with uid  "' . $fileUid . '" could not be found and won\'t be included in frontend output');
 				}
 			}
@@ -108,7 +108,7 @@ class FilesContentObject extends AbstractContentObject {
 					}
 				} catch (\TYPO3\CMS\Core\Resource\Exception $e) {
 					/** @var \TYPO3\CMS\Core\Log\Logger $logger */
-					$logger = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager')->getLogger(__CLASS__);
+					$logger = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
 					$logger->warning('The file-collection with uid  "' . $collectionUid . '" could not be found or contents could not be loaded and won\'t be included in frontend output');
 				}
 			}
@@ -124,7 +124,7 @@ class FilesContentObject extends AbstractContentObject {
 						}
 					} catch (\TYPO3\CMS\Core\Resource\Exception $e) {
 						/** @var \TYPO3\CMS\Core\Log\Logger $logger */
-						$logger = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager')->getLogger(__CLASS__);
+						$logger = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
 						$logger->warning('The folder with identifier  "' . $folderIdentifier . '" could not be found and won\'t be included in frontend output');
 					}
 				}
@@ -207,7 +207,7 @@ class FilesContentObject extends AbstractContentObject {
 	 */
 	public function getFileFactory() {
 		if ($this->fileFactory === NULL) {
-			$this->fileFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+			$this->fileFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
 		}
 
 		return $this->fileFactory;
@@ -230,7 +230,7 @@ class FilesContentObject extends AbstractContentObject {
 	 */
 	public function getFileRepository() {
 		if ($this->fileRepository === NULL) {
-			$this->fileRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
+			$this->fileRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\FileRepository::class);
 		}
 
 		return $this->fileRepository;
@@ -253,7 +253,7 @@ class FilesContentObject extends AbstractContentObject {
 	 */
 	public function getCollectionRepository() {
 		if ($this->collectionRepository === NULL) {
-			$this->collectionRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileCollectionRepository');
+			$this->collectionRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\FileCollectionRepository::class);
 		}
 
 		return $this->collectionRepository;

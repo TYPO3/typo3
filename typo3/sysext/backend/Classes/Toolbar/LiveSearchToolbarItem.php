@@ -45,7 +45,7 @@ class LiveSearchToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHoo
 	public function checkAccess() {
 		$access = FALSE;
 		// Loads the backend modules available for the logged in user.
-		$loadModules = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleLoader');
+		$loadModules = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Module\ModuleLoader::class);
 		$loadModules->observeWorkspaces = TRUE;
 		$loadModules->load($GLOBALS['TBE_MODULES']);
 		// Live search is heavily dependent on the list module and only available when that module is.

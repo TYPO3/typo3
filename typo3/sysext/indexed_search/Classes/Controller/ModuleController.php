@@ -71,7 +71,7 @@ class ModuleController {
 	public function init() {
 		$this->MCONF = $GLOBALS['MCONF'];
 		$this->menuConfig();
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->form = '<form action="" method="post">';
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('indexed_search') . '/mod/mod_template.html');
@@ -81,7 +81,7 @@ class ModuleController {
 				'defCol' => array('<td><img src="' . $this->doc->backPath . 'clear.gif" width=10 height=1></td><td valign="top" nowrap>', '</td>')
 			)
 		);
-		$indexer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
+		$indexer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\IndexedSearch\Indexer::class);
 		$indexer->initializeExternalParsers();
 	}
 

@@ -14,7 +14,7 @@
 if (!defined('PATH_typo3conf')) {
 	die('Could not access this script directly!');
 }
-$extDirectEidInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Controller\\ExtDirectEidController');
+$extDirectEidInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Controller\ExtDirectEidController::class);
 if ($extDirectEidInstance->actionIsAllowed()) {
 	$extDirectEidInstance->routeAction();
 	$extDirectEidInstance->render();

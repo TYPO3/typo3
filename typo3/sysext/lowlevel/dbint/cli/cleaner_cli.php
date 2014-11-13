@@ -4,5 +4,5 @@ if (!defined('TYPO3_cliMode')) {
 }
 
 // Call the functionality
-$cleanerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Lowlevel\\CleanerCommand');
+$cleanerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Lowlevel\CleanerCommand::class);
 $cleanerObj->cli_main($_SERVER['argv']);

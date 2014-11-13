@@ -128,7 +128,7 @@ class DataSubmissionController {
 	 * @return void
 	 */
 	public function start($valueList, $base64 = FALSE) {
-		$this->mailMessage = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+		$this->mailMessage = Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
 		if ($GLOBALS['TSFE']->config['config']['formMailCharset']) {
 			// Respect formMailCharset if it was set
 			$this->characterSet = $GLOBALS['TSFE']->csConvObj->parse_charset($GLOBALS['TSFE']->config['config']['formMailCharset']);
@@ -266,7 +266,7 @@ class DataSubmissionController {
 	 */
 	protected function parseAddresses($rawAddresses = '') {
 		/** @var $addressParser \TYPO3\CMS\Core\Mail\Rfc822AddressesParser */
-		$addressParser = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\Rfc822AddressesParser', $rawAddresses);
+		$addressParser = Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\Rfc822AddressesParser::class, $rawAddresses);
 		$addresses = $addressParser->parseAddressList();
 		$addressList = array();
 		foreach ($addresses as $address) {
@@ -302,7 +302,7 @@ class DataSubmissionController {
 				$theParts[1]
 			);
 			/** @var $autoRespondMail \TYPO3\CMS\Core\Mail\MailMessage */
-			$autoRespondMail = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+			$autoRespondMail = Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
 			$autoRespondMail->setTo($this->fromAddress)->setSubject($theParts[0])->setFrom($this->recipient)->setBody($theParts[1]);
 			$autoRespondMail->send();
 		}

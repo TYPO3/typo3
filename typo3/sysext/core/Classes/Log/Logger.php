@@ -172,7 +172,7 @@ class Logger implements \Psr\Log\LoggerInterface {
 			return $this;
 		}
 		/** @var $record \TYPO3\CMS\Core\Log\LogRecord */
-		$record = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogRecord', $this->name, $level, $message, $data);
+		$record = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogRecord::class, $this->name, $level, $message, $data);
 		$record = $this->callProcessors($record);
 		$this->writeLog($record);
 		return $this;

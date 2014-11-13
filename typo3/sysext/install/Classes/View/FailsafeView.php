@@ -46,7 +46,7 @@ class FailsafeView extends \TYPO3\CMS\Extbase\Mvc\View\AbstractView {
 	 * Constructor
 	 */
 	public function __construct() {
-		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 	}
 
 	/**

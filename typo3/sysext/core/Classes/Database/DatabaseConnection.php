@@ -735,7 +735,7 @@ class DatabaseConnection {
 	public function prepare_SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '', array $input_parameters = array()) {
 		$query = $this->SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
 		/** @var $preparedStatement \TYPO3\CMS\Core\Database\PreparedStatement */
-		$preparedStatement = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\PreparedStatement', $query, $from_table, array());
+		$preparedStatement = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\PreparedStatement::class, $query, $from_table, array());
 		// Bind values to parameters
 		foreach ($input_parameters as $key => $value) {
 			$preparedStatement->bindValue($key, $value, PreparedStatement::PARAM_AUTOTYPE);

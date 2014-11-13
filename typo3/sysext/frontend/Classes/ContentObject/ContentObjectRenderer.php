@@ -748,7 +748,7 @@ class ContentObjectRenderer {
 			// Checking if the COBJ is a reference to another object. (eg. name of 'blabla.blabla = < styles.something')
 			if ($name[0] === '<') {
 				$key = trim(substr($name, 1));
-				$cF = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
+				$cF = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
 				// $name and $conf is loaded with the referenced values.
 				$confOverride = is_array($conf) ? $conf : array();
 				list($name, $conf) = $cF->getVal($key, $GLOBALS['TSFE']->tmpl->setup);
@@ -2244,7 +2244,7 @@ class ContentObjectRenderer {
 	public function stdWrap_cacheRead($content = '', $conf = array()) {
 		if (!empty($conf['cache.']['key'])) {
 			/** @var $cacheFrontend \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend */
-			$cacheFrontend = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_hash');
+			$cacheFrontend = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_hash');
 			if ($cacheFrontend && $cacheFrontend->has($conf['cache.']['key'])) {
 				$content = $cacheFrontend->get($conf['cache.']['key']);
 				$this->stopRendering[$this->stdWrapRecursionLevel] = TRUE;
@@ -3390,7 +3390,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_offsetWrap($content = '', $conf = array()) {
-		$controlTable = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\OffsetTableContentObject');
+		$controlTable = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\OffsetTableContentObject::class);
 		if ($conf['offsetWrap.']['tableParams'] || $conf['offsetWrap.']['tableParams.']) {
 			$controlTable->tableParams = isset($conf['offsetWrap.']['tableParams.']) ? $this->stdWrap($conf['offsetWrap.']['tableParams'], $conf['offsetWrap.']['tableParams.']) : $conf['offsetWrap.']['tableParams'];
 		}
@@ -3496,7 +3496,7 @@ class ContentObjectRenderer {
 	public function stdWrap_cacheStore($content = '', $conf = array()) {
 		if (!empty($conf['cache.']['key'])) {
 			/** @var $cacheFrontend \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend */
-			$cacheFrontend = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_hash');
+			$cacheFrontend = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_hash');
 			if ($cacheFrontend) {
 				$tags = !empty($conf['cache.']['tags']) ? GeneralUtility::trimExplode(',', $conf['cache.']['tags']) : array();
 				if (strtolower($conf['cache.']['lifetime']) == 'unlimited') {
@@ -3826,7 +3826,7 @@ class ContentObjectRenderer {
 	 * @see stdWrap(), \TYPO3\CMS\Core\Html\HtmlParser::HTMLparserConfig(), \TYPO3\CMS\Core\Html\HtmlParser::HTMLcleaner()
 	 */
 	public function HTMLparser_TSbridge($theValue, $conf) {
-		$htmlParser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
+		$htmlParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
 		$htmlParserCfg = $htmlParser->HTMLparserConfig($conf);
 		return $htmlParser->HTMLcleaner($theValue, $htmlParserCfg[0], $htmlParserCfg[1], $htmlParserCfg[2], $htmlParserCfg[3]);
 	}
@@ -4730,7 +4730,7 @@ class ContentObjectRenderer {
 		// Process:
 		if ((string)$conf['externalBlocks'] !== '') {
 			$tags = strtolower(implode(',', GeneralUtility::trimExplode(',', $conf['externalBlocks'])));
-			$htmlParser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
+			$htmlParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
 			$parts = $htmlParser->splitIntoBlock($tags, $theValue);
 			foreach ($parts as $k => $v) {
 				if ($k % 2) {
@@ -5277,7 +5277,7 @@ class ContentObjectRenderer {
 		$imageResource = NULL;
 		if ($file === 'GIFBUILDER') {
 			/** @var GifBuilder $gifCreator */
-			$gifCreator = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
+			$gifCreator = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Imaging\GifBuilder::class);
 			$gifCreator->init();
 			$theImage = '';
 			if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) {
@@ -5317,7 +5317,7 @@ class ContentObjectRenderer {
 					}
 				} catch (\TYPO3\CMS\Core\Resource\Exception $exception) {
 					/** @var \TYPO3\CMS\Core\Log\Logger $logger */
-					$logger = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager')->getLogger(__CLASS__);
+					$logger = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
 					$logger->warning('The image "' . $file . '" could not be found and won\'t be included in frontend output');
 					return NULL;
 				}
@@ -5385,7 +5385,7 @@ class ContentObjectRenderer {
 		if (!isset($imageResource)) {
 			$theImage = $GLOBALS['TSFE']->tmpl->getFileName($file);
 			if ($theImage) {
-				$gifCreator = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
+				$gifCreator = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Imaging\GifBuilder::class);
 				/** @var $gifCreator GifBuilder */
 				$gifCreator->init();
 				$info = $gifCreator->imageMagickConvert($theImage, 'WEB');
@@ -5593,14 +5593,14 @@ class ContentObjectRenderer {
 				$fileObject = $this->getCurrentFile();
 			} elseif (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($fileUidOrCurrentKeyword)) {
 				/** @var \TYPO3\CMS\Core\Resource\ResourceFactory $fileFactory */
-				$fileFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+				$fileFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
 				$fileObject = $fileFactory->getFileObject($fileUidOrCurrentKeyword);
 			} else {
 				$fileObject = NULL;
 			}
 		} catch (\TYPO3\CMS\Core\Resource\Exception $exception) {
 			/** @var \TYPO3\CMS\Core\Log\Logger $logger */
-			$logger = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager')->getLogger(__CLASS__);
+			$logger = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
 			$logger->warning('The file "' . $fileUidOrCurrentKeyword . '" could not be found and won\'t be included in frontend output');
 			$fileObject = NULL;
 		}
@@ -6151,7 +6151,7 @@ class ContentObjectRenderer {
 							$params = $GLOBALS['TSFE']->linkVars . $addQueryParams;
 							if (trim($params, '& ') != '') {
 								/** @var $cacheHash \TYPO3\CMS\Frontend\Page\CacheHashCalculator */
-								$cacheHash = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
+								$cacheHash = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class);
 								$cHash = $cacheHash->generateForParameters($params);
 								$addQueryParams .= $cHash ? '&cHash=' . $cHash : '';
 							}
@@ -6888,7 +6888,7 @@ class ContentObjectRenderer {
 	public function sendNotifyEmail($message, $recipients, $cc, $senderAddress, $senderName = '', $replyTo = '') {
 		$result = FALSE;
 		/** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
-		$mail = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+		$mail = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
 		$senderName = trim($senderName);
 		$senderAddress = trim($senderAddress);
 		if ($senderName !== '' && $senderAddress !== '') {
@@ -6919,7 +6919,7 @@ class ContentObjectRenderer {
 			$parsedCc = \TYPO3\CMS\Core\Utility\MailUtility::parseAddresses($cc);
 			if (count($parsedCc) > 0) {
 				/** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
-				$mail = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+				$mail = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
 				if (count($parsedReplyTo) > 0) {
 					$mail->setReplyTo($parsedReplyTo);
 				}
@@ -6979,7 +6979,7 @@ class ContentObjectRenderer {
 	public function mergeTSRef($confArr, $prop) {
 		if ($confArr[$prop][0] === '<') {
 			$key = trim(substr($confArr[$prop], 1));
-			$cF = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
+			$cF = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
 			// $name and $conf is loaded with the referenced values.
 			$old_conf = $confArr[$prop . '.'];
 			list($name, $conf) = $cF->getVal($key, $GLOBALS['TSFE']->tmpl->setup);

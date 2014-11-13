@@ -18,7 +18,7 @@
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Info\\Controller\\InfoModuleController');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Info\Controller\InfoModuleController::class);
 $SOBE->init();
 // Include files?
 // @deprecated since 6.2 (see ExtensionManagementUtility::insertModuleFunction)

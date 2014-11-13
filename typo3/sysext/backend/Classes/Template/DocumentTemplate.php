@@ -438,7 +438,7 @@ function jumpToUrl(URL) {
 	 */
 	public function getPageRenderer() {
 		if (!isset($this->pageRenderer)) {
-			$this->pageRenderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
+			$this->pageRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
 			$this->pageRenderer->setLanguage($GLOBALS['LANG']->lang);
 			$this->pageRenderer->addCssLibrary($GLOBALS['BACK_PATH'] . 'contrib/normalize/normalize.css', 'stylesheet', 'all', '', TRUE, TRUE);
 			$this->pageRenderer->enableConcatenateFiles();
@@ -1705,7 +1705,7 @@ function jumpToUrl(URL) {
 				ExtensionManagementUtility::isLoaded('version') &&
 				!ExtensionManagementUtility::isLoaded('workspaces')
 		) {
-			$versionGuiObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\View\\VersionView');
+			$versionGuiObj = GeneralUtility::makeInstance(\TYPO3\CMS\Version\View\VersionView::class);
 			return $versionGuiObj->getVersionSelector($id, $noAction);
 		}
 	}
@@ -1810,7 +1810,7 @@ function jumpToUrl(URL) {
 	 */
 	public function getFlashMessages() {
 		/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-		$flashMessageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+		$flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
 		/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
 		$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 		$flashMessages = $defaultFlashMessageQueue->renderFlashMessages();
@@ -1956,7 +1956,7 @@ function jumpToUrl(URL) {
 		$collapsedStyle = ($collapsedClass = '');
 		if ($hasSave) {
 			/** @var $settings \TYPO3\CMS\Backend\User\ExtDirect\BackendUserSettingsDataProvider */
-			$settings = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\User\\ExtDirect\\BackendUserSettingsDataProvider');
+			$settings = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\User\ExtDirect\BackendUserSettingsDataProvider::class);
 			$value = $settings->get($saveStatePointer . '.' . $id);
 			if ($value) {
 				$collapsedStyle = ' style="display: none"';

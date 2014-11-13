@@ -106,7 +106,7 @@ class AbstractRte {
 			// There must be a mode set for transformation
 			if ($p['mode']) {
 				// Initialize transformation:
-				$parseHTML = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\RteHtmlParser');
+				$parseHTML = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\RteHtmlParser::class);
 				$parseHTML->init($table . ':' . $field, $pid);
 				$parseHTML->setRelPath($RTErelPath);
 				// Perform transformation:

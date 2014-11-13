@@ -86,7 +86,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		$this->backPath = $GLOBALS['BACK_PATH'];
 		$this->cshKey = '_MOD_' . $GLOBALS['MCONF']['name'];
 		$this->backendTemplatePath = ExtensionManagementUtility::extPath('scheduler') . 'Resources/Private/Templates/Backend/SchedulerModule/';
-		$this->view = GeneralUtility::makeInstance('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+		$this->view = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
 		$this->view->getRequest()->setControllerExtensionName('scheduler');
 	}
 
@@ -99,7 +99,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		parent::init();
 
 		// Initialize document
-		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->setModuleTemplate(ExtensionManagementUtility::extPath('scheduler') . 'Resources/Private/Templates/Module.html');
 		$this->doc->backPath = $this->backPath;
 		$this->doc->bodyTagId = 'typo3-mod-php';
@@ -109,7 +109,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		$this->pageRenderer->addCssFile(ExtensionManagementUtility::extRelPath('scheduler') . 'Resources/Public/Styles/styles.css');
 
 		// Create scheduler instance
-		$this->scheduler = GeneralUtility::makeInstance('TYPO3\\CMS\\Scheduler\\Scheduler');
+		$this->scheduler = GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Scheduler::class);
 	}
 
 	/**
@@ -296,7 +296,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			$password = md5(uniqid('scheduler', TRUE));
 			$data = array('be_users' => array('NEW' => array('username' => '_cli_scheduler', 'password' => $password, 'pid' => 0)));
 			/** @var $tcemain \TYPO3\CMS\Core\DataHandling\DataHandler */
-			$tcemain = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+			$tcemain = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 			$tcemain->stripslashes_values = 0;
 			$tcemain->start($data, array());
 			$tcemain->process_datamap();
@@ -330,7 +330,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 
 		// Display information about last automated run, as stored in the system registry
 		/** @var $registry \TYPO3\CMS\Core\Registry */
-		$registry = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
+		$registry = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Registry::class);
 		$lastRun = $registry->get('tx_scheduler', 'lastRun');
 		if (!is_array($lastRun)) {
 			$message = $GLOBALS['LANG']->getLL('msg.noLastRun');
@@ -354,7 +354,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			}
 		}
 		/** @var $flashMessage FlashMessage */
-		$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $message, '', $severity);
+		$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $message, '', $severity);
 		$this->view->assign('lastRun', $flashMessage->render());
 
 		// Check CLI user
@@ -370,7 +370,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			$message = $GLOBALS['LANG']->getLL('msg.schedulerUserFound');
 			$severity = FlashMessage::OK;
 		}
-		$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $message, '', $severity);
+		$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $message, '', $severity);
 		$this->view->assign('cliUser', $flashMessage->render());
 
 		// Check if CLI script is executable or not
@@ -392,7 +392,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			$message = $GLOBALS['LANG']->getLL('msg.cliScriptNotExecutable');
 			$severity = FlashMessage::ERROR;
 		}
-		$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $message, '', $severity);
+		$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $message, '', $severity);
 		$this->view->assign('isExecutable', $flashMessage->render());
 
 		return $this->view->render();
@@ -863,7 +863,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			$this->view->setTemplatePathAndFilename($this->backendTemplatePath . 'ListTasksNoTasks.html');
 
 			/** @var $flashMessage FlashMessage */
-			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('msg.noTasks'), '', FlashMessage::INFO);
+			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('msg.noTasks'), '', FlashMessage::INFO);
 			$this->view->assign('message', $flashMessage->render());
 			return $this->view->render();
 		} else {
@@ -1057,7 +1057,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 						// The task object is not valid
 						// Prepare to issue an error
 						/** @var $flashMessage FlashMessage */
-						$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', sprintf($GLOBALS['LANG']->getLL('msg.invalidTaskClass'), $class), '', FlashMessage::ERROR);
+						$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, sprintf($GLOBALS['LANG']->getLL('msg.invalidTaskClass'), $class), '', FlashMessage::ERROR);
 						$executionStatusOutput = $flashMessage->render();
 						$table[] = '<tr>
 										<td>' . $startExecutionElement . '</td>
@@ -1317,9 +1317,9 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	 * @return void
 	 */
 	public function addMessage($message, $severity = FlashMessage::OK) {
-		$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $message, '', $severity);
+		$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $message, '', $severity);
 		/** @var $flashMessageService FlashMessageService */
-		$flashMessageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+		$flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
 		/** @var $defaultFlashMessageQueue FlashMessageQueue */
 		$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 		$defaultFlashMessageQueue->enqueue($flashMessage);

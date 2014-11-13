@@ -44,14 +44,14 @@ class UserStorageCapabilityService {
 
 			// Display a warning to the BE User in case settings is not inline with storage capability.
 			if ($storageRecord['is_public'] != $storage->isPublic()) {
-				$message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+				$message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class,
 					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.message.storage_is_no_public'),
 					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.header.storage_is_no_public'),
 					\TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
 				);
 
 				/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-				$flashMessageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+				$flashMessageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
 				/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
 				$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 				$defaultFlashMessageQueue->enqueue($message);

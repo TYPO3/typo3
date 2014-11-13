@@ -72,7 +72,7 @@ class ext_posMap extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('backend') . 'Classes/Controller/ContentElement/NewContentElementController.php';
 // Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\ContentElement\\NewContentElementController');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController::class);
 $SOBE->init();
 // Include files?
 foreach ($SOBE->include_once as $INC_FILE) {

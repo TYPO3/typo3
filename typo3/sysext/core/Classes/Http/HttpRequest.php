@@ -99,7 +99,7 @@ class HttpRequest extends \HTTP_Request2 {
 		}
 		if (!$isAttached) {
 			/** @var \TYPO3\CMS\Core\Http\Observer\Download $observer */
-			$observer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Http\\Observer\\Download', $directory, $filename);
+			$observer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Http\Observer\Download::class, $directory, $filename);
 			$this->attach($observer);
 		}
 		return $this->send();

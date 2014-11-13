@@ -429,7 +429,7 @@ class Query implements QueryInterface {
 			$comparison = $this->qomFactory->comparison(
 				$this->qomFactory->lowerCase($this->qomFactory->propertyValue($propertyName, $this->getSelectorName())),
 				QueryInterface::OPERATOR_EQUAL_TO,
-				\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter')->conv_case(\TYPO3\CMS\Extbase\Persistence\Generic\Query::CHARSET, $operand, 'toLower')
+				\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class)->conv_case(\TYPO3\CMS\Extbase\Persistence\Generic\Query::CHARSET, $operand, 'toLower')
 			);
 		}
 		return $comparison;
@@ -530,7 +530,7 @@ class Query implements QueryInterface {
 	 * @return void
 	 */
 	public function __wakeup() {
-		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 		$this->persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface');
 		$this->dataMapper = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapper');
 		$this->qomFactory = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\QueryObjectModelFactory');

@@ -86,7 +86,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 	public function initialize_editor($pageId, $template_uid = 0) {
 		// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
 		/** @var ExtendedTemplateService $tmpl */
-		$GLOBALS['tmpl'] = $tmpl = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService');
+		$GLOBALS['tmpl'] = $tmpl = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);
 		// Do not log time-performance information
 		$tmpl->tt_track = 0;
 		$tmpl->init();
@@ -196,7 +196,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 				if (count($recData)) {
 					$recData['sys_template'][$saveId] = $this->processTemplateRowBeforeSaving($recData['sys_template'][$saveId]);
 					// Create new  tce-object
-					$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+					$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 					$tce->stripslashes_values = 0;
 					$tce->alternativeFileName = $alternativeFileName;
 					// Initialize

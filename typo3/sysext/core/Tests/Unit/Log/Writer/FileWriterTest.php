@@ -53,9 +53,9 @@ class FileWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		if (empty($name)) {
 			$name = uniqid('test.core.log.');
 		}
-		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager')->registerLogger($name);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->registerLogger($name);
 		/** @var \TYPO3\CMS\Core\Log\Logger $logger */
-		$logger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager')->getLogger($name);
+		$logger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger($name);
 		return $logger;
 	}
 
@@ -67,7 +67,7 @@ class FileWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected function createWriter($prependName = '') {
 		/** @var \TYPO3\CMS\Core\Log\Writer\FileWriter $writer */
-		$writer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\Writer\\FileWriter', array(
+		$writer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\Writer\FileWriter::class, array(
 			'logFile' => $this->getDefaultFileName($prependName)
 		));
 		return $writer;
@@ -83,7 +83,7 @@ class FileWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setLogFileSetsLogFile() {
 		$this->setUpVfsStream();
 		vfsStream::newFile($this->logFileName)->at(vfsStreamWrapper::getRoot());
-		$writer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\Writer\\FileWriter');
+		$writer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\Writer\FileWriter::class);
 		$writer->setLogFile($this->getDefaultFileName());
 		$this->assertAttributeEquals($this->getDefaultFileName(), 'logFile', $writer);
 	}
@@ -93,7 +93,7 @@ class FileWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function setLogFileRefusesIllegalPath() {
-		$writer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\Writer\\FileWriter');
+		$writer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\Writer\FileWriter::class);
 		$writer->setLogFile('/tmp/typo3.log');
 	}
 
@@ -119,8 +119,8 @@ class FileWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return array
 	 */
 	public function logsToFileDataProvider() {
-		$simpleRecord = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogRecord', uniqid('test.core.log.fileWriter.simpleRecord.'), \TYPO3\CMS\Core\Log\LogLevel::INFO, 'test record');
-		$recordWithData = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogRecord', uniqid('test.core.log.fileWriter.recordWithData.'), \TYPO3\CMS\Core\Log\LogLevel::ALERT, 'test record with data', array('foo' => array('bar' => 'baz')));
+		$simpleRecord = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogRecord::class, uniqid('test.core.log.fileWriter.simpleRecord.'), \TYPO3\CMS\Core\Log\LogLevel::INFO, 'test record');
+		$recordWithData = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogRecord::class, uniqid('test.core.log.fileWriter.recordWithData.'), \TYPO3\CMS\Core\Log\LogLevel::ALERT, 'test record with data', array('foo' => array('bar' => 'baz')));
 		return array(
 			'simple record' => array($simpleRecord, trim((string)$simpleRecord)),
 			'record with data' => array($recordWithData, trim((string)$recordWithData))

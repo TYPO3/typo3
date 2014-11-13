@@ -47,6 +47,6 @@ class ExtbaseRequirementsCheckUtility implements \TYPO3\CMS\Reports\StatusProvid
 			$message = '';
 			$status = \TYPO3\CMS\Reports\Status::OK;
 		}
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', 'DBAL Extension', $value, $message, $status);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class, 'DBAL Extension', $value, $message, $status);
 	}
 }

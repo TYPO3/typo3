@@ -52,7 +52,7 @@ class RedirectPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessor
 	public function __construct(\TYPO3\CMS\Form\Domain\Model\Form $form, array $typoScript) {
 		$this->form = $form;
 		$this->typoScript = $typoScript;
-		$this->requestHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Request');
+		$this->requestHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Request::class);
 	}
 
 	/**

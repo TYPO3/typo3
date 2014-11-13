@@ -18,7 +18,7 @@
  */
 
 // Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Rtehtmlarea\\Controller\\ParseHtmlController');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Rtehtmlarea\Controller\ParseHtmlController::class);
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();

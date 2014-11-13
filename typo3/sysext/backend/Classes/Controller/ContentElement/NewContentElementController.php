@@ -121,7 +121,7 @@ class NewContentElementController {
 		$config = BackendUtility::getPagesTSconfig($this->id);
 		$this->config = $config['mod.']['wizards.']['newContentElement.'];
 		// Starting the document template object:
-		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/db_new_content_el.html');
 		$this->doc->JScode = '';
@@ -142,7 +142,7 @@ class NewContentElementController {
 	public function main() {
 		if ($this->id && $this->access) {
 			// Init position map object:
-			$posMap = GeneralUtility::makeInstance('ext_posMap');
+			$posMap = GeneralUtility::makeInstance(\ext_posMap::class);
 			$posMap->cur_sys_language = $this->sys_language;
 			$posMap->backPath = $GLOBALS['BACK_PATH'];
 			// If a column is pre-set:

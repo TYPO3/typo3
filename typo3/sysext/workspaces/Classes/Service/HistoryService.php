@@ -140,7 +140,7 @@ class HistoryService implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function getHistoryObject($table, $id) {
 		if (!isset($this->historyObjects[$table][$id])) {
 			/** @var $historyObject \TYPO3\CMS\Backend\History\RecordHistory */
-			$historyObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\History\\RecordHistory');
+			$historyObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\History\RecordHistory::class);
 			$historyObject->element = $table . ':' . $id;
 			$historyObject->createChangeLog();
 			$this->historyObjects[$table][$id] = $historyObject;
@@ -155,7 +155,7 @@ class HistoryService implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function getDifferencesObject() {
 		if (!isset($this->differencesObject)) {
-			$this->differencesObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\DiffUtility');
+			$this->differencesObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\DiffUtility::class);
 		}
 		return $this->differencesObject;
 	}

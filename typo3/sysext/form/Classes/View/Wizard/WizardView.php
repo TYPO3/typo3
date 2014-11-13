@@ -54,7 +54,7 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 		$GLOBALS['LANG']->includeLLFile('EXT:form/Resources/Private/Language/locallang_wizard.xlf');
 		$GLOBALS['SOBE'] = $this;
 		// Define the document template object
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:form/Resources/Private/Templates/Wizard.html');
 		$this->pageRenderer = $this->doc->getPageRenderer();
@@ -343,7 +343,7 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 			$bodyContent = '';
 		} else {
 			/** @var $flashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
-			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('errorMessage', TRUE), $GLOBALS['LANG']->getLL('errorTitle', TRUE), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('errorMessage', TRUE), $GLOBALS['LANG']->getLL('errorTitle', TRUE), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 			$bodyContent = $flashMessage->render();
 		}
 		return $bodyContent;

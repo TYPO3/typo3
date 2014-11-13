@@ -59,7 +59,7 @@ class SoftReferenceHook extends \TYPO3\CMS\Core\Database\SoftReferenceIndex {
 	public function findRef_rtehtmlarea_images($content, $spParams) {
 		$retVal = FALSE;
 		// Start HTML parser and split content by image tag
-		$htmlParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
+		$htmlParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
 		$imgTags = $htmlParser->splitTags('img', $content);
 		$elements = array();
 		// Traverse splitted parts

@@ -58,8 +58,8 @@ class TreeElement extends AbstractFormElement {
 		$treeDataProvider->setSelectedList(implode(',', $selectedNodes));
 		$treeDataProvider->setItemWhiteList($allowedUids);
 		$treeDataProvider->initializeTreeData();
-		$treeRenderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Tree\\TableConfiguration\\ExtJsArrayTreeRenderer');
-		$tree = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Tree\\TableConfiguration\\TableConfigurationTree');
+		$treeRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Tree\TableConfiguration\ExtJsArrayTreeRenderer::class);
+		$tree = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Tree\TableConfiguration\TableConfigurationTree::class);
 		$tree->setDataProvider($treeDataProvider);
 		$tree->setNodeRenderer($treeRenderer);
 		$treeData = $tree->render();

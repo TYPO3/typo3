@@ -91,11 +91,11 @@ class CodeCompletion {
 	protected function getMergedTemplates($pageId, $templateId = 0) {
 		$result = array();
 		/** @var $tsParser \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService */
-		$tsParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService');
+		$tsParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);
 		$tsParser->tt_track = 0;
 		$tsParser->init();
 		// Gets the rootLine
-		$page = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+		$page = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
 		$rootLine = $page->getRootLine($pageId);
 		// This generates the constants/config + hierarchy info for the template.
 		$tsParser->runThroughTemplates($rootLine);

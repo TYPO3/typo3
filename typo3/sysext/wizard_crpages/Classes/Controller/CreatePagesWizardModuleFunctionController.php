@@ -62,7 +62,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 		// Create new pages here?
 		$m_perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(8);
 		$pRec = BackendUtility::getRecord('pages', $this->pObj->id, 'uid', ' AND ' . $m_perms_clause);
-		$sys_pages = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+		$sys_pages = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
 		$menuItems = $sys_pages->getMenu($this->pObj->id, '*', 'sorting', '', FALSE);
 		if (is_array($pRec)) {
 			$data = GeneralUtility::_GP('data');
@@ -95,7 +95,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 				}
 				if (!empty($data['pages'])) {
 					reset($data);
-					$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+					$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 					$tce->stripslashes_values = 0;
 					// set default TCA values specific for the user
 					$TCAdefaultOverride = $GLOBALS['BE_USER']->getTSConfigProp('TCAdefaults');
@@ -105,9 +105,9 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 					$tce->start($data, array());
 					$tce->process_datamap();
 					BackendUtility::setUpdateSignal('updatePageTree');
-					$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', '', $GLOBALS['LANG']->getLL('wiz_newPages_create'));
+					$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, '', $GLOBALS['LANG']->getLL('wiz_newPages_create'));
 				} else {
-					$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', '', $GLOBALS['LANG']->getLL('wiz_newPages_noCreate'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+					$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, '', $GLOBALS['LANG']->getLL('wiz_newPages_noCreate'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				}
 				$theCode .= $flashMessage->render();
 				// Display result:
@@ -150,7 +150,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 				');
 			}
 		} else {
-			$theCode .= GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', '', $GLOBALS['LANG']->getLL('wiz_newPages_errorMsg1'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR)->render();
+			$theCode .= GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, '', $GLOBALS['LANG']->getLL('wiz_newPages_errorMsg1'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR)->render();
 		}
 		// CSH
 		$theCode .= BackendUtility::cshItem('_MOD_web_func', 'tx_wizardcrpages', $GLOBALS['BACK_PATH'], '<br />|');

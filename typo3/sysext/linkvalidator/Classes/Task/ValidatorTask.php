@@ -283,7 +283,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 		$searchFields = $this->getSearchField($modTs);
 		$linkTypes = $this->getLinkTypes($modTs);
 		/** @var $processor \TYPO3\CMS\Linkvalidator\LinkAnalyzer */
-		$processor = GeneralUtility::makeInstance('TYPO3\\CMS\\Linkvalidator\\LinkAnalyzer');
+		$processor = GeneralUtility::makeInstance(\TYPO3\CMS\Linkvalidator\LinkAnalyzer::class);
 		if ($page === 0) {
 			$rootLineHidden = FALSE;
 		} else {
@@ -322,7 +322,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 */
 	protected function loadModTsConfig($page) {
 		$modTs = BackendUtility::getModTSconfig($page, 'mod.linkvalidator');
-		$parseObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
+		$parseObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
 		$parseObj->parse($this->configuration);
 		if (count($parseObj->errors) > 0) {
 			$parseErrorMessage = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.error.invalidTSconfig') . '<br />';
@@ -412,7 +412,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 		}
 		$content = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($content, $markerArray, '###|###', TRUE, TRUE);
 		/** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
-		$mail = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+		$mail = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
 		if (empty($modTsConfig['mail.']['fromemail'])) {
 			$modTsConfig['mail.']['fromemail'] = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFromAddress();
 		}

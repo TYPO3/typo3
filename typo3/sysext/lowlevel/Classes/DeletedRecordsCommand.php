@@ -92,7 +92,7 @@ Although deleted records are not errors to be repaired, this tool allows you to 
 					echo $bypass;
 				} else {
 					// Execute CMD array:
-					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 					$tce->stripslashes_values = FALSE;
 					$tce->start(array(), array());
 					// Notice, we are deleting pages with no regard to subpages/subrecords - we do this since they

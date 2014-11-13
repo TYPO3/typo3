@@ -39,7 +39,7 @@ class PostProcessor {
 	 */
 	public function __construct(\TYPO3\CMS\Form\Domain\Model\Form $form, array $typoScript) {
 		$this->form = $form;
-		$this->typoscriptFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Domain\\Factory\\TypoScriptFactory');
+		$this->typoscriptFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Domain\Factory\TypoScriptFactory::class);
 		$this->typoScript = $typoScript;
 	}
 

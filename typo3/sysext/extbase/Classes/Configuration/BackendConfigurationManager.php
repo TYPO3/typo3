@@ -47,7 +47,7 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
 
 		if (!array_key_exists($pageId, $this->typoScriptSetupCache)) {
 			/** @var $template \TYPO3\CMS\Core\TypoScript\TemplateService */
-			$template = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\TemplateService');
+			$template = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\TemplateService::class);
 			// do not log time-performance information
 			$template->tt_track = 0;
 			// Explicitly trigger processing of extension static files
@@ -57,7 +57,7 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
 			$rootline = array();
 			if ($pageId > 0) {
 				/** @var $sysPage \TYPO3\CMS\Frontend\Page\PageRepository */
-				$sysPage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+				$sysPage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
 				// Get the rootline for the current page
 				$rootline = $sysPage->getRootLine($pageId, '', TRUE);
 			}
