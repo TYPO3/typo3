@@ -34,14 +34,4 @@ class RadioGroupElementView extends \TYPO3\CMS\Form\View\Mail\Html\Element\Field
 			</table>
 		</td>
 	';
-
-	/**
-	 * Constructor
-	 *
-	 * @param \TYPO3\CMS\Form\Domain\Model\Element\RadioGroupElement $model Model for this element
-	 */
-	public function __construct(\TYPO3\CMS\Form\Domain\Model\Element\RadioGroupElement $model) {
-		parent::__construct($model);
-	}
-
 }

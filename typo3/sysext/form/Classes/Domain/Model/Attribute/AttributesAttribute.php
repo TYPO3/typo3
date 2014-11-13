@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Attribute;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Attribute class for the form elements
@@ -46,13 +47,13 @@ class AttributesAttribute {
 	 * Constructor
 	 *
 	 * @param int $elementId The ID of the element
-	 * @return void
+	 * @return AttributesAttribute
 	 */
 	public function __construct($elementId) {
 		$this->elementId = (int)$elementId;
-		$this->localCobj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
-		$this->localizationHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Localization::class);
-		$this->requestHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Request::class);
+		$this->localCobj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+		$this->localizationHandler = GeneralUtility::makeInstance(\TYPO3\CMS\Form\Localization::class);
+		$this->requestHandler = GeneralUtility::makeInstance(\TYPO3\CMS\Form\Request::class);
 	}
 
 	/**
@@ -60,12 +61,12 @@ class AttributesAttribute {
 	 *
 	 * @param string $class Name of the attribute
 	 * @param mixed $value Typoscript configuration to construct value
-	 * @return tx_form_Domain_Model_Attributes
+	 * @return \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttribute
 	 */
 	public function addAttribute($class, $value) {
 		$class = strtolower((string)$class);
 		$className = 'TYPO3\\CMS\\Form\\Domain\\Model\\Attribute\\' . ucfirst($class) . 'Attribute';
-		$this->attributes[$class] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className, $value, $this->elementId);
+		$this->attributes[$class] = GeneralUtility::makeInstance($className, $value, $this->elementId);
 		return $this;
 	}
 
@@ -73,7 +74,7 @@ class AttributesAttribute {
 	 * Remove an attribute object from the attribute array
 	 *
 	 * @param string $class Name of the attribute
-	 * @return tx_form_Domain_Model_Attributes
+	 * @return \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttribute
 	 */
 	public function removeAttribute($class) {
 		unset($this->attributes[$class]);
@@ -83,7 +84,7 @@ class AttributesAttribute {
 	/**
 	 * Get the attributes of the object
 	 *
-	 * @return array Attributes objects
+	 * @return \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttribute[] Attributes objects
 	 */
 	public function getAttributes() {
 		return $this->attributes;
@@ -103,7 +104,7 @@ class AttributesAttribute {
 	 * Add an attribute object to the attribute array
 	 *
 	 * @param string $key The name of the attribute
-	 * @param object $attributeObject The attribute object
+	 * @param \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttribute $attributeObject The attribute object
 	 * @return void
 	 */
 	public function setAttribute($key, $attributeObject) {

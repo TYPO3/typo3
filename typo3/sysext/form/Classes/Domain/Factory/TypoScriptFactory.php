@@ -13,6 +13,10 @@ namespace TYPO3\CMS\Form\Domain\Factory;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
+use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Form\Domain\Model\Element\AbstractElement;
 
 /**
  * Typoscript factory for form
@@ -38,6 +42,21 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @var bool
 	 */
 	protected $disableContentElement = FALSE;
+
+	/**
+	 * @var TimeTracker
+	 */
+	protected $timeTracker;
+
+	/**
+	 * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+	 */
+	protected $frontendController;
+
+	public function __construct() {
+		$this->timeTracker = $GLOBALS['TT'];
+		$this->frontendController = $GLOBALS['TSFE'];
+	}
 
 	/**
 	 * Build model from Typoscript
@@ -68,14 +87,14 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Rendering of a "numerical array" of Form objects from TypoScript
 	 * Creates new object for each element found
 	 *
-	 * @param \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement $parentElement Parent model object
+	 * @param AbstractElement $parentElement Parent model object
 	 * @param array $typoscript Configuration array
 	 * @return void
 	 * @throws \InvalidArgumentException
 	 */
-	public function getChildElementsByIntegerKey(\TYPO3\CMS\Form\Domain\Model\Element\AbstractElement $parentElement, array $typoscript) {
+	public function getChildElementsByIntegerKey(AbstractElement $parentElement, array $typoscript) {
 		if (is_array($typoscript)) {
-			$keys = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($typoscript);
+			$keys = TemplateService::sortedKeyList($typoscript);
 			foreach ($keys as $key) {
 				$class = $typoscript[$key];
 				if ((int)$key && strpos($key, '.') === FALSE) {
@@ -97,31 +116,31 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * This can be a derived Typoscript object by "<",
 	 * a form element, or a regular Typoscript object.
 	 *
-	 * @param \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement $parentElement The parent for the new element
+	 * @param AbstractElement $parentElement The parent for the new element
 	 * @param string $class Classname for the element
 	 * @param array $arguments Configuration array
 	 * @return void
 	 */
-	public function setElementType(\TYPO3\CMS\Form\Domain\Model\Element\AbstractElement $parentElement, $class, array $arguments) {
+	public function setElementType(AbstractElement $parentElement, $class, array $arguments) {
 		if (in_array($class, \TYPO3\CMS\Form\Utility\FormUtility::getInstance()->getFormObjects())) {
 			$this->addElement($parentElement, $class, $arguments);
 		} elseif ($this->disableContentElement === FALSE) {
 			if ($class[0] === '<') {
 				$key = trim(substr($class, 1));
 				/** @var $typoscriptParser \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser */
-				$typoscriptParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
+				$typoscriptParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
 				$oldArguments = $arguments;
-				list($class, $arguments) = $typoscriptParser->getVal($key, $GLOBALS['TSFE']->tmpl->setup);
+				list($class, $arguments) = $typoscriptParser->getVal($key, $this->frontendController->tmpl->setup);
 				if (is_array($oldArguments) && count($oldArguments)) {
 					$arguments = array_replace_recursive($arguments, $oldArguments);
 				}
-				$GLOBALS['TT']->incStackPointer();
+				$this->timeTracker->incStackPointer();
 				$contentObject = array(
 					'cObj' => $class,
 					'cObj.' => $arguments
 				);
 				$this->addElement($parentElement, 'content', $contentObject);
-				$GLOBALS['TT']->decStackPointer();
+				$this->timeTracker->decStackPointer();
 			} else {
 				$contentObject = array(
 					'cObj' => $class,
@@ -135,12 +154,12 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Add child object to this element
 	 *
-	 * @param \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement $parentElement Parent model object
+	 * @param AbstractElement $parentElement Parent model object
 	 * @param string $class Type of element
 	 * @param array $arguments Configuration array
 	 * @return object
 	 */
-	public function addElement(\TYPO3\CMS\Form\Domain\Model\Element\AbstractElement $parentElement, $class, array $arguments = array()) {
+	public function addElement(AbstractElement $parentElement, $class, array $arguments = array()) {
 		$element = $this->createElement($class, $arguments);
 		if (method_exists($parentElement, 'addElement')) {
 			$parentElement->addElement($element);
@@ -153,7 +172,7 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $class Type of element
 	 * @param array $arguments Configuration array
-	 * @return \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement
+	 * @return AbstractElement
 	 * @throws \InvalidArgumentException
 	 */
 	public function createElement($class, array $arguments = array()) {
@@ -163,13 +182,14 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		} else {
 			$className = 'TYPO3\\CMS\\Form\\Domain\\Model\\Element\\' . ucfirst($class) . 'Element';
 		}
-		/** @var $object \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement */
-		$object = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className);
-		if ($object->getElementType() === \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement::ELEMENT_TYPE_CONTENT) {
+		/* @var $object AbstractElement */
+		$object = GeneralUtility::makeInstance($className);
+		if ($object->getElementType() === AbstractElement::ELEMENT_TYPE_CONTENT) {
 			$object->setData($arguments['cObj'], $arguments['cObj.']);
-		} elseif ($object->getElementType() === \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement::ELEMENT_TYPE_PLAIN) {
+		} elseif ($object->getElementType() === AbstractElement::ELEMENT_TYPE_PLAIN) {
+			/* @var $object \TYPO3\CMS\Form\Domain\Model\Element\AbstractPlainElement */
 			$object->setProperties($arguments);
-		} elseif ($object->getElementType() === \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement::ELEMENT_TYPE_FORM) {
+		} elseif ($object->getElementType() === AbstractElement::ELEMENT_TYPE_FORM) {
 			$object->setData($arguments['data']);
 			$this->reconstituteElement($object, $arguments);
 		} else {
@@ -181,13 +201,13 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Reconstitutes the domain model of the accordant element.
 	 *
-	 * @param \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement $element
+	 * @param AbstractElement $element
 	 * @param array $arguments Configuration array
 	 * @return void
 	 */
-	protected function reconstituteElement(\TYPO3\CMS\Form\Domain\Model\Element\AbstractElement $element, array $arguments = array()) {
+	protected function reconstituteElement(AbstractElement $element, array $arguments = array()) {
 		if (isset($arguments['value.'])) {
-			$cObj = $this->getLocalConentObject();
+			$cObj = $this->getLocalContentObject();
 			$arguments['value'] = $cObj->stdWrap($arguments['value'], $arguments['value.']);
 		}
 
@@ -208,13 +228,13 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Set the attributes
 	 *
-	 * @param \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement $element Model object
+	 * @param AbstractElement $element Model object
 	 * @param array $arguments Arguments
 	 * @return void
 	 * @throws \RuntimeException
 	 * @throws \InvalidArgumentException
 	 */
-	public function setAttributes(\TYPO3\CMS\Form\Domain\Model\Element\AbstractElement $element, array $arguments) {
+	public function setAttributes(AbstractElement $element, array $arguments) {
 		if ($element->hasAllowedAttributes()) {
 			$attributes = $element->getAllowedAttributes();
 			$mandatoryAttributes = $element->getMandatoryAttributes();
@@ -240,13 +260,13 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Set the additionals from Element Typoscript configuration
 	 *
-	 * @param \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement $element Model object
+	 * @param AbstractElement $element Model object
 	 * @param array $arguments Arguments
 	 * @return void
 	 * @throws \RuntimeException
 	 * @throws \InvalidArgumentException
 	 */
-	public function setAdditionals(\TYPO3\CMS\Form\Domain\Model\Element\AbstractElement $element, array $arguments) {
+	public function setAdditionals(AbstractElement $element, array $arguments) {
 		if (!empty($arguments)) {
 			if ($element->hasAllowedAdditionals()) {
 				$additionals = $element->getAllowedAdditionals();
@@ -282,12 +302,12 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Add the filters according to the settings in the Typoscript array
 	 *
-	 * @param \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement $element Model object
+	 * @param AbstractElement $element Model object
 	 * @param array $arguments TypoScript
 	 * @return void
 	 */
-	protected function setFilters(\TYPO3\CMS\Form\Domain\Model\Element\AbstractElement $element, array $arguments) {
-		$keys = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($arguments);
+	protected function setFilters(AbstractElement $element, array $arguments) {
+		$keys = TemplateService::sortedKeyList($arguments);
 		foreach ($keys as $key) {
 			$class = $arguments[$key];
 			if ((int)$key && strpos($key, '.') === FALSE) {
@@ -306,7 +326,7 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function setLayoutHandler(array $typoscript) {
 		/** @var $layoutHandler \TYPO3\CMS\Form\Layout */
-		$layoutHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Layout::class);
+		$layoutHandler = GeneralUtility::makeInstance(\TYPO3\CMS\Form\Layout::class);
 		$layoutHandler->setLayout($this->getLayoutFromTypoScript($typoscript));
 		return $layoutHandler;
 	}
@@ -332,7 +352,7 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		$prefix = isset($typoscript['prefix']) ? $typoscript['prefix'] : '';
 		$method = isset($typoscript['method']) ? $typoscript['method'] : '';
 		/** @var $requestHandler \TYPO3\CMS\Form\Request */
-		$requestHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Request::class);
+		$requestHandler = GeneralUtility::makeInstance(\TYPO3\CMS\Form\Request::class);
 		// singleton
 		$requestHandler->setPrefix($prefix);
 		$requestHandler->setMethod($method);
@@ -351,10 +371,10 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	public function setRules(array $typoscript) {
 		$rulesTyposcript = isset($typoscript['rules.']) ? $typoscript['rules.'] : NULL;
 		/** @var $rulesClass \TYPO3\CMS\Form\Utility\ValidatorUtility */
-		$rulesClass = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Utility\ValidatorUtility::class, $rulesTyposcript);
+		$rulesClass = GeneralUtility::makeInstance(\TYPO3\CMS\Form\Utility\ValidatorUtility::class, $rulesTyposcript);
 		// singleton
 		if (is_array($rulesTyposcript)) {
-			$keys = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($rulesTyposcript);
+			$keys = TemplateService::sortedKeyList($rulesTyposcript);
 			foreach ($keys as $key) {
 				$class = $rulesTyposcript[$key];
 				if ((int)$key && strpos($key, '.') === FALSE) {
@@ -374,9 +394,9 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
 	 */
-	protected function getLocalConentObject() {
+	protected function getLocalContentObject() {
 		if (!isset($this->localContentObject)) {
-			$this->localContentObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+			$this->localContentObject = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 		}
 		return $this->localContentObject;
 	}

@@ -65,7 +65,7 @@ class InArrayValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	 * Set the array as haystack
 	 *
 	 * @param array $array The haystack
-	 * @return object Rule object
+	 * @return InArrayValidator Rule object
 	 */
 	public function setArray($array) {
 		$this->array = (array)$array;
@@ -76,7 +76,7 @@ class InArrayValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	 * Set the strict mode for the search
 	 *
 	 * @param bool $strict True if strict
-	 * @return object Rule object
+	 * @return InArrayValidator Rule object
 	 */
 	public function setStrict($strict) {
 		$this->strict = (bool)$strict;

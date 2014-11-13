@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Form\View\Mail\Html;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Form\Domain\Model\Form;
 
 /**
  * Main view layer for Forms.
@@ -62,10 +64,13 @@ class HtmlView extends \TYPO3\CMS\Form\View\Mail\Html\Element\ContainerElementVi
 
 	/**
 	 * Constructor
+	 *
+	 * @param Form $model
+	 * @param array $typoscript
 	 */
-	public function __construct(\TYPO3\CMS\Form\Domain\Model\Form $model, array $typoscript) {
-		$this->localCobj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
-		$this->localizationHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Localization::class);
+	public function __construct(Form $model, array $typoscript) {
+		$this->localCobj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+		$this->localizationHandler = GeneralUtility::makeInstance(\TYPO3\CMS\Form\Localization::class);
 		$this->typoscript = $typoscript;
 		parent::__construct($model);
 	}
@@ -73,10 +78,10 @@ class HtmlView extends \TYPO3\CMS\Form\View\Mail\Html\Element\ContainerElementVi
 	/**
 	 * Set the data for the FORM tag
 	 *
-	 * @param \TYPO3\CMS\Form\Domain\Model\Form $model The model of the form
+	 * @param Form $model The model of the form
 	 * @return void
 	 */
-	public function setData(\TYPO3\CMS\Form\Domain\Model\Form $model) {
+	public function setData(Form $model) {
 		$this->model = (object) $model;
 	}
 

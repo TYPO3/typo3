@@ -25,7 +25,7 @@ interface ValidatorInterface {
 	 * Set the fieldName
 	 *
 	 * @param string $fieldName The field name
-	 * @return object The rule object
+	 * @return ValidatorInterface The rule object
 	 */
 	public function setFieldName($fieldName);
 
@@ -67,7 +67,7 @@ interface ValidatorInterface {
 	 * When both are filled, it's supposed to be a cObj made by the administrator
 	 * In the last case, no markers will be substituted
 	 *
-	 * @param mixed $message Message as string or TS
+	 * @param string|array $message Message as string or TS
 	 * @param string $type Name of the cObj
 	 * @return void
 	 */
@@ -77,7 +77,7 @@ interface ValidatorInterface {
 	 * Set if message needs to be displayed
 	 *
 	 * @param bool $show TRUE is display
-	 * @return object The rule object
+	 * @return ValidatorInterface The rule object
 	 */
 	public function setShowMessage($show);
 

@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Form\View\Confirmation\Element;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Form\Utility\FormUtility;
 
 /**
  * Abstract class for the form elements view
@@ -164,7 +166,7 @@ abstract class AbstractElementView {
 	 *
 	 * @param string $type Type of element for layout
 	 * @param bool $returnFirstChild If TRUE, the first child will be returned instead of the DOMDocument
-	 * @return mixed \DOMDocument|\DOMNode XML part of the view object
+	 * @return \DOMNode XML part of the view object
 	 */
 	public function render($type = 'element', $returnFirstChild = TRUE) {
 		$useLayout = $this->getLayout((string)$type);
@@ -190,11 +192,11 @@ abstract class AbstractElementView {
 	 */
 	public function getLayout($type) {
 		/** @var $layoutHandler \TYPO3\CMS\Form\Layout */
-		$layoutHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Layout::class);
+		$layoutHandler = GeneralUtility::makeInstance(\TYPO3\CMS\Form\Layout::class);
 		switch ($type) {
 			case 'element':
 				$layoutDefault = $this->layout;
-				$layout = $layoutHandler->getLayoutByObject(\TYPO3\CMS\Form\Utility\FormUtility::getInstance()->getLastPartOfClassName($this, TRUE), $layoutDefault);
+				$layout = $layoutHandler->getLayoutByObject(FormUtility::getInstance()->getLastPartOfClassName($this, TRUE), $layoutDefault);
 				break;
 			case 'elementWrap':
 				$layoutDefault = $this->elementWrap;
@@ -264,7 +266,7 @@ abstract class AbstractElementView {
 	 * @param \DOMElement $domElement DOM element of the specific HTML tag
 	 * @param string $key Key of the attribute which needs to be changed
 	 * @param string $other Key of the attribute to take the value from
-	 * @return unknown_type
+	 * @return void
 	 */
 	public function setAttributeWithValueofOtherAttribute(\DOMElement $domElement, $key, $other) {
 		$attribute = $this->model->getAttributeValue((string)$other);
@@ -282,7 +284,7 @@ abstract class AbstractElementView {
 	protected function createAdditional($class) {
 		$class = strtolower((string)$class);
 		$className = 'TYPO3\\CMS\\Form\\View\\Confirmation\\Additional\\' . ucfirst($class) . 'AdditionalElementView';
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className, $this->model);
+		return GeneralUtility::makeInstance($className, $this->model);
 	}
 
 	/**
@@ -327,7 +329,7 @@ abstract class AbstractElementView {
 	 * @return string
 	 */
 	public function getElementWrapType() {
-		$elementType = strtolower(\TYPO3\CMS\Form\Utility\FormUtility::getInstance()->getLastPartOfClassName($this->model));
+		$elementType = strtolower(FormUtility::getInstance()->getLastPartOfClassName($this->model));
 		$wrapType = 'csc-form-element csc-form-element-' . $elementType;
 		return $wrapType;
 	}

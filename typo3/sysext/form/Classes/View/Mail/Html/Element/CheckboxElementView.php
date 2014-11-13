@@ -35,13 +35,4 @@ class CheckboxElementView extends \TYPO3\CMS\Form\View\Mail\Html\Element\Abstrac
 		</td>
 	';
 
-	/**
-	 * Constructor
-	 *
-	 * @param \TYPO3\CMS\Form\Domain\Model\Element\CheckboxElement $model Model for this element
-	 */
-	public function __construct(\TYPO3\CMS\Form\Domain\Model\Element\CheckboxElement $model) {
-		parent::__construct($model);
-	}
-
 }

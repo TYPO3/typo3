@@ -46,7 +46,8 @@ abstract class AbstractAttribute {
 	 * Constructor
 	 *
 	 * @param string $value Attribute value
-	 * @return void
+	 * @param int $elementId
+	 * @return AbstractAttribute
 	 */
 	public function __construct($value, $elementId) {
 		/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer localCobj */

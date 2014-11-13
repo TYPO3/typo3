@@ -41,7 +41,7 @@ class SaveWizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 	/**
 	 * Construct the reponse header
 	 *
-	 * @param string $json JSON string
+	 * @param string $success JSON string
 	 * @return void
 	 */
 	protected function headerOutput($success) {

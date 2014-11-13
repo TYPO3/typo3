@@ -36,8 +36,8 @@ class ContainerElementView extends \TYPO3\CMS\Form\View\Mail\Html\Element\Abstra
 	 * Get the child objects
 	 * and render them as document fragment
 	 *
-	 * @param DOMDocument $dom DOMDocument
-	 * @return DOMDocumentFragment
+	 * @param \DOMDocument $dom DOMDocument
+	 * @return \DOMDocumentFragment
 	 */
 	public function getChildElements(\DOMDocument $dom) {
 		$modelChildren = $this->model->getElements();

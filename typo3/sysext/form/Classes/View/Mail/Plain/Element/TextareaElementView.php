@@ -22,16 +22,6 @@ namespace TYPO3\CMS\Form\View\Mail\Plain\Element;
 class TextareaElementView extends \TYPO3\CMS\Form\View\Mail\Plain\Element\AbstractElementView {
 
 	/**
-	 * Constructor
-	 *
-	 * @param \TYPO3\CMS\Form\Domain\Model\Element\TextareaElement $model Model for this element
-	 * @param int $spaces
-	 */
-	public function __construct(\TYPO3\CMS\Form\Domain\Model\Element\TextareaElement $model, $spaces) {
-		parent::__construct($model, $spaces);
-	}
-
-	/**
 	 * @return string
 	 */
 	public function render() {

@@ -43,7 +43,7 @@ class TrimFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 	 * in addition to the default trim characters
 	 *
 	 * @param string $characterList
-	 * @return tx_form_Filter_Trim
+	 * @return \TYPO3\CMS\Form\Filter\TrimFilter
 	 */
 	public function setCharacterList($characterList) {
 		$this->characterList = $characterList;

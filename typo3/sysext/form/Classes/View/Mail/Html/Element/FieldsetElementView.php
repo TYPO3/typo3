@@ -34,14 +34,4 @@ class FieldsetElementView extends \TYPO3\CMS\Form\View\Mail\Html\Element\Contain
 			</table>
 		</td>
 	';
-
-	/**
-	 * Constructor
-	 *
-	 * @param \TYPO3\CMS\Form\Domain\Model\Element\FieldsetElement $model Model for this element
-	 */
-	public function __construct(\TYPO3\CMS\Form\Domain\Model\Element\FieldsetElement $model) {
-		parent::__construct($model);
-	}
-
 }

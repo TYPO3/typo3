@@ -58,7 +58,7 @@ class RegExpValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	 * Set the regular expression
 	 *
 	 * @param string $expression The regular expression
-	 * @return object Rule object
+	 * @return RegExpValidator Rule object
 	 */
 	public function setRegularExpression($expression) {
 		$this->regularExpression = (string)$expression;

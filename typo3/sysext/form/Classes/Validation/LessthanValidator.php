@@ -58,7 +58,7 @@ class LessthanValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	 * Set the maximum value
 	 *
 	 * @param mixed $maximum Maximum value
-	 * @return object Rule object
+	 * @return LessthanValidator Rule object
 	 */
 	public function setMaximum($maximum) {
 		$this->maximum = $maximum;

@@ -27,16 +27,6 @@ class FileuploadElementView extends \TYPO3\CMS\Form\View\Mail\Plain\Element\Cont
 	protected $model;
 
 	/**
-	 * Constructor
-	 *
-	 * @param \TYPO3\CMS\Form\Domain\Model\Element\FileuploadElement $model Model for this element
-	 * @param int $spaces
-	 */
-	public function __construct(\TYPO3\CMS\Form\Domain\Model\Element\FileuploadElement $model, $spaces) {
-		parent::__construct($model, $spaces);
-	}
-
-	/**
 	 * @return string
 	 */
 	public function render() {

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Form\PostProcess;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * The post processor
@@ -39,7 +40,7 @@ class PostProcessor {
 	 */
 	public function __construct(\TYPO3\CMS\Form\Domain\Model\Form $form, array $typoScript) {
 		$this->form = $form;
-		$this->typoscriptFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Domain\Factory\TypoScriptFactory::class);
+		$this->typoscriptFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Form\Domain\Factory\TypoScriptFactory::class);
 		$this->typoScript = $typoScript;
 	}
 
@@ -79,7 +80,7 @@ class PostProcessor {
 					$layout = $this->typoscriptFactory->getLayoutFromTypoScript($this->typoScript[$processorName . '.']);
 					$layoutHandler->setLayout($layout);
 
-					$processor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className, $this->form, $processorArguments);
+					$processor = GeneralUtility::makeInstance($className, $this->form, $processorArguments);
 					if ($processor instanceof PostProcessorInterface) {
 						$html .= $processor->process();
 					}

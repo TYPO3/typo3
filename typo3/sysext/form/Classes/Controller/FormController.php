@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Form\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Main controller for Forms.  All requests come through this class
@@ -61,9 +62,9 @@ class FormController {
 	 * @return void
 	 */
 	public function initialize(array $typoscript) {
-		$this->typoscriptFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Domain\Factory\TypoScriptFactory::class);
-		$this->localizationHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Localization::class);
-		$this->layoutHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Layout::class);
+		$this->typoscriptFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Form\Domain\Factory\TypoScriptFactory::class);
+		$this->localizationHandler = GeneralUtility::makeInstance(\TYPO3\CMS\Form\Localization::class);
+		$this->layoutHandler = GeneralUtility::makeInstance(\TYPO3\CMS\Form\Layout::class);
 		$this->requestHandler = $this->typoscriptFactory->setRequestHandler($typoscript);
 		$this->validate = $this->typoscriptFactory->setRules($typoscript);
 		$this->typoscript = $typoscript;
@@ -94,7 +95,7 @@ class FormController {
 			if ($contentObject->data['CType'] === 'mailform') {
 				$bodytext = $contentObject->data['bodytext'];
 				/** @var $typoScriptParser \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser */
-				$typoScriptParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
+				$typoScriptParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
 				$typoScriptParser->parse($bodytext);
 				$mergedTypoScript = (array)$typoScriptParser->setup;
 				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($mergedTypoScript, (array)$typoScript);
@@ -169,7 +170,7 @@ class FormController {
 
 		$form = $this->typoscriptFactory->buildModelFromTyposcript($this->typoscript);
 		/** @var $view \TYPO3\CMS\Form\View\Form\FormView */
-		$view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Form\FormView::class, $form);
+		$view = GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Form\FormView::class, $form);
 		return $view->get();
 	}
 
@@ -210,7 +211,7 @@ class FormController {
 		$this->layoutHandler->setLayout($layout);
 		$this->requestHandler->storeSession();
 		/** @var $view \TYPO3\CMS\Form\View\Confirmation\ConfirmationView */
-		$view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Confirmation\ConfirmationView::class, $form, $confirmationTyposcript);
+		$view = GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Confirmation\ConfirmationView::class, $form, $confirmationTyposcript);
 		return $view->get();
 	}
 
@@ -228,7 +229,7 @@ class FormController {
 			$postProcessorTypoScript = $this->typoscript['postProcessor.'];
 		}
 		/** @var $postProcessor \TYPO3\CMS\Form\PostProcess\PostProcessor */
-		$postProcessor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\PostProcess\PostProcessor::class, $form, $postProcessorTypoScript);
+		$postProcessor = GeneralUtility::makeInstance(\TYPO3\CMS\Form\PostProcess\PostProcessor::class, $form, $postProcessorTypoScript);
 		$content = $postProcessor->process();
 		$this->requestHandler->destroySession();
 		return $content;

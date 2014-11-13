@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Form\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Form\Validation\AbstractValidator;
 
 /**
  * Static methods for validation
@@ -38,7 +40,7 @@ class ValidatorUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Errors for all form fields
 	 *
-	 * @var unknown_type
+	 * @var array
 	 */
 	protected $errors = array();
 
@@ -54,7 +56,7 @@ class ValidatorUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return String
 	 */
 	protected function getPrefix() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Request::class)->getPrefix();
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Form\Request::class)->getPrefix();
 	}
 
 	/**
@@ -63,12 +65,12 @@ class ValidatorUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $class Name of the validation rule
 	 * @param array $arguments Configuration of the rule
-	 * @return \TYPO3\CMS\Form\Validation\AbstractValidator The rule object
+	 * @return AbstractValidator The rule object
 	 */
 	public function createRule($class, $arguments = array()) {
 		$class = strtolower((string)$class);
 		$className = 'TYPO3\\CMS\\Form\\Validation\\' . ucfirst($class) . 'Validator';
-		$rule = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className, $arguments);
+		$rule = GeneralUtility::makeInstance($className, $arguments);
 		return $rule;
 	}
 
@@ -76,12 +78,12 @@ class ValidatorUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Add a rule to the rules array
 	 * The rule needs to be completely configured before adding it to the array
 	 *
-	 * @param object $rule Rule object
+	 * @param AbstractValidator $rule Rule object
 	 * @param string $fieldName Field name the rule belongs to
 	 * @param bool $breakOnError Break the rule chain when TRUE
 	 * @return \TYPO3\CMS\Form\Utility\ValidatorUtility
 	 */
-	public function addRule($rule, $fieldName, $breakOnError = FALSE) {
+	public function addRule(AbstractValidator $rule, $fieldName, $breakOnError = FALSE) {
 		$prefix = $this->getPrefix();
 		$this->rules[$prefix][] = array(
 			'instance' => (object) $rule,
@@ -113,6 +115,7 @@ class ValidatorUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		$this->errors[$prefix] = array();
 		$result = TRUE;
 		foreach ($this->rules[$prefix] as $key => $element) {
+			/* @var $rule AbstractValidator */
 			$rule = $element['instance'];
 			$fieldName = $element['fieldName'];
 			if ($rule->isValid()) {

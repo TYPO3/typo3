@@ -34,14 +34,4 @@ class CheckboxGroupElementView extends \TYPO3\CMS\Form\View\Mail\Html\Element\Fi
 			</table>
 		</td>
 	';
-
-	/**
-	 * Constructor
-	 *
-	 * @param \TYPO3\CMS\Form\Domain\Model\Element\CheckboxGroupElement $model Model for this element
-	 */
-	public function __construct(\TYPO3\CMS\Form\Domain\Model\Element\CheckboxGroupElement $model) {
-		parent::__construct($model);
-	}
-
 }

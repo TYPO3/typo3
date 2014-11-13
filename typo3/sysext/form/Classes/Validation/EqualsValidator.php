@@ -63,7 +63,7 @@ class EqualsValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	 * Set the field to compare value with
 	 *
 	 * @param string $field Field to compare
-	 * @return Rule object
+	 * @return EqualsValidator object
 	 */
 	public function setField($field) {
 		$this->field = (string)$field;

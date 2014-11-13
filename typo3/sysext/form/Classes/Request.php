@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Form;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Request Handler for Form
@@ -45,6 +46,21 @@ class Request implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @var array
 	 */
 	protected $sessionData = array();
+
+	/**
+	 * TypoScript Frontend Controller
+	 *
+	 * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+	 */
+	protected $frontendController;
+
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$this->frontendController = $GLOBALS['TSFE'];
+	}
 
 	/**
 	 * Set the prefix used in the form
@@ -85,10 +101,10 @@ class Request implements \TYPO3\CMS\Core\SingletonInterface {
 			'session'
 		);
 		$method = strtolower((string)$method);
-		if ($GLOBALS['TSFE']->loginUser) {
-			$this->sessionData = $GLOBALS['TSFE']->fe_user->getKey('user', $this->prefix);
+		if ($this->frontendController->loginUser) {
+			$this->sessionData = $this->frontendController->fe_user->getKey('user', $this->prefix);
 		} else {
-			$this->sessionData = $GLOBALS['TSFE']->fe_user->getKey('ses', $this->prefix);
+			$this->sessionData = $this->frontendController->fe_user->getKey('ses', $this->prefix);
 		}
 		if (!empty($this->sessionData)) {
 			$method = 'session';
@@ -242,12 +258,12 @@ class Request implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	public function storeSession() {
-		if ($GLOBALS['TSFE']->loginUser) {
-			$GLOBALS['TSFE']->fe_user->setKey('user', $this->prefix, $this->getByMethod());
+		if ($this->frontendController->loginUser) {
+			$this->frontendController->fe_user->setKey('user', $this->prefix, $this->getByMethod());
 		} else {
-			$GLOBALS['TSFE']->fe_user->setKey('ses', $this->prefix, $this->getByMethod());
+			$this->frontendController->fe_user->setKey('ses', $this->prefix, $this->getByMethod());
 		}
-		$GLOBALS['TSFE']->storeSessionData();
+		$this->frontendController->storeSessionData();
 	}
 
 	/**
@@ -257,12 +273,12 @@ class Request implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function destroySession() {
 		$this->removeFiles();
-		if ($GLOBALS['TSFE']->loginUser) {
-			$GLOBALS['TSFE']->fe_user->setKey('user', $this->prefix, NULL);
+		if ($this->frontendController->loginUser) {
+			$this->frontendController->fe_user->setKey('user', $this->prefix, NULL);
 		} else {
-			$GLOBALS['TSFE']->fe_user->setKey('ses', $this->prefix, NULL);
+			$this->frontendController->fe_user->setKey('ses', $this->prefix, NULL);
 		}
-		$GLOBALS['TSFE']->storeSessionData();
+		$this->frontendController->storeSessionData();
 	}
 
 	/**
@@ -276,9 +292,9 @@ class Request implements \TYPO3\CMS\Core\SingletonInterface {
 		if (isset($_FILES[$this->prefix]) && is_array($_FILES[$this->prefix])) {
 			foreach ($_FILES[$this->prefix]['tmp_name'] as $fieldName => $uploadedFile) {
 				if (is_uploaded_file($uploadedFile)) {
-					$tempFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::upload_to_tempfile($uploadedFile);
+					$tempFilename = GeneralUtility::upload_to_tempfile($uploadedFile);
 					if (TYPO3_OS === 'WIN') {
-						$tempFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath($tempFilename);
+						$tempFilename = GeneralUtility::fixWindowsFilePath($tempFilename);
 					}
 					if ($tempFilename !== '') {
 						// Use finfo to get the mime type
@@ -318,7 +334,7 @@ class Request implements \TYPO3\CMS\Core\SingletonInterface {
 		if (is_array($values)) {
 			foreach ($values as $value) {
 				if (is_array($value) && isset($value['tempFilename'])) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile($value['tempFilename']);
+					GeneralUtility::unlink_tempfile($value['tempFilename']);
 				}
 			}
 		}

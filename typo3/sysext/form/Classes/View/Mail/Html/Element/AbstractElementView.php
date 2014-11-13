@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Form\View\Mail\Html\Element;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Abstract class for the form elements view
@@ -187,7 +188,7 @@ abstract class AbstractElementView {
 	 */
 	public function getLayout($type) {
 		/** @var $layoutHandler \TYPO3\CMS\Form\Layout */
-		$layoutHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Layout::class);
+		$layoutHandler = GeneralUtility::makeInstance(\TYPO3\CMS\Form\Layout::class);
 		$layout = '';
 		switch ($type) {
 			case 'element':
@@ -280,7 +281,7 @@ abstract class AbstractElementView {
 	protected function createAdditional($class) {
 		$class = strtolower((string)$class);
 		$className = 'TYPO3\\CMS\\Form\\View\\Mail\\Html\\Additional\\' . ucfirst($class) . 'AdditionalElementView';
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className, $this->model);
+		return GeneralUtility::makeInstance($className, $this->model);
 	}
 
 	/**

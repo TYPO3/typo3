@@ -79,7 +79,7 @@ class BetweenValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator impl
 	 * Set the minimum value
 	 *
 	 * @param mixed $minimum Minimum value
-	 * @return object Rule object
+	 * @return BetweenValidator Rule object
 	 */
 	public function setMinimum($minimum) {
 		$this->minimum = $minimum;
@@ -90,7 +90,7 @@ class BetweenValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator impl
 	 * Set the maximum value
 	 *
 	 * @param mixed $maximum Maximum value
-	 * @return object Rule object
+	 * @return BetweenValidator Rule object
 	 */
 	public function setMaximum($maximum) {
 		$this->maximum = $maximum;
@@ -101,7 +101,7 @@ class BetweenValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator impl
 	 * Set boolean to make minimum and maximum value inclusive in comparison
 	 *
 	 * @param bool $inclusive True is inclusive
-	 * @return object Rule object
+	 * @return BetweenValidator Rule object
 	 */
 	public function setInclusive($inclusive) {
 		if ($inclusive === NULL) {

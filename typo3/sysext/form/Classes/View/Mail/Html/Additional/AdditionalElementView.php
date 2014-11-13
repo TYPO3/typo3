@@ -32,7 +32,6 @@ class AdditionalElementView extends \TYPO3\CMS\Form\View\Mail\Html\Element\Abstr
 	 * Constructor
 	 *
 	 * @param object $model The parent model
-	 * @return void
 	 */
 	public function __construct($model) {
 		$this->model = $model;

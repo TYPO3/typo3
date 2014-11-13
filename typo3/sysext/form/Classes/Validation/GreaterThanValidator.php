@@ -58,7 +58,7 @@ class GreaterThanValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator 
 	 * Set the minimum value
 	 *
 	 * @param mixed $minimum Minimum value
-	 * @return object Rule object
+	 * @return GreaterThanValidator Rule object
 	 */
 	public function setMinimum($minimum) {
 		$this->minimum = (int)$minimum;

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Abstract for the form elements
@@ -149,15 +150,12 @@ abstract class AbstractElement {
 
 	/**
 	 * Constructor
-	 *
-	 * @param int $elementId Internal Id of the element
-	 * @param array $arguments Configuration array
 	 */
 	public function __construct() {
-		$this->localCobj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
-		$this->requestHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Request::class);
-		$this->validateClass = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Utility\ValidatorUtility::class);
-		$this->elementCounter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\ElementCounter::class);
+		$this->localCobj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+		$this->requestHandler = GeneralUtility::makeInstance(\TYPO3\CMS\Form\Request::class);
+		$this->validateClass = GeneralUtility::makeInstance(\TYPO3\CMS\Form\Utility\ValidatorUtility::class);
+		$this->elementCounter = GeneralUtility::makeInstance(\TYPO3\CMS\Form\ElementCounter::class);
 		$this->setElementId();
 		$this->createAttributes();
 		$this->createAdditional();
@@ -167,7 +165,6 @@ abstract class AbstractElement {
 	/**
 	 * Set the internal ID of the element
 	 *
-	 * @param int $elementId Internal Id of the element
 	 * @return void
 	 */
 	public function setElementId() {
@@ -329,7 +326,7 @@ abstract class AbstractElement {
 	 * Get a specific additional object by using the key
 	 *
 	 * @param string $key Key of the additional
-	 * @return string The additional object
+	 * @return \TYPO3\CMS\Form\Domain\Model\Additional\AbstractAdditionalElement The additional object
 	 */
 	public function getAdditionalObjectByKey($key) {
 		return $this->additional->getAdditionalObjectByKey($key);
@@ -352,7 +349,7 @@ abstract class AbstractElement {
 	 */
 	protected function createAttributes() {
 		$className = 'TYPO3\\CMS\\Form\\Domain\\Model\\Attribute\\AttributesAttribute';
-		$this->attributes = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className, $this->elementId);
+		$this->attributes = GeneralUtility::makeInstance($className, $this->elementId);
 	}
 
 	/**
@@ -431,6 +428,7 @@ abstract class AbstractElement {
 	 * Set a specific additional by name and value
 	 *
 	 * @param string $additional Name of the additional
+	 * @param string $type Typoscript content object
 	 * @param mixed $value Value of the additional
 	 * @return \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement
 	 */
@@ -456,7 +454,7 @@ abstract class AbstractElement {
 	 */
 	protected function createAdditional() {
 		$className = 'TYPO3\\CMS\\Form\\Domain\\Model\\Additional\\AdditionalAdditionalElement';
-		$this->additional = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className);
+		$this->additional = GeneralUtility::makeInstance($className);
 	}
 
 	/**
@@ -476,7 +474,7 @@ abstract class AbstractElement {
 	 * @return void
 	 */
 	protected function createFilter() {
-		$this->filter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Utility\FilterUtility::class);
+		$this->filter = GeneralUtility::makeInstance(\TYPO3\CMS\Form\Utility\FilterUtility::class);
 	}
 
 	/**
@@ -496,7 +494,7 @@ abstract class AbstractElement {
 	 * Add a filter to the filter list
 	 * This is a shortcut to the function in _filter
 	 *
-	 * @param object $filter Filter object
+	 * @param \TYPO3\CMS\Form\Filter\FilterInterface $filter Filter object
 	 * @return void
 	 */
 	public function addFilter($filter) {

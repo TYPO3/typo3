@@ -22,16 +22,6 @@ namespace TYPO3\CMS\Form\View\Mail\Plain\Element;
 class TextlineElementView extends \TYPO3\CMS\Form\View\Mail\Plain\Element\AbstractElementView {
 
 	/**
-	 * Constructor
-	 *
-	 * @param \TYPO3\CMS\Form\Domain\Model\Element\TextlineElement $model Model for this element
-	 * @param int $spaces
-	 */
-	public function __construct(\TYPO3\CMS\Form\Domain\Model\Element\TextlineElement $model, $spaces) {
-		parent::__construct($model, $spaces);
-	}
-
-	/**
 	 * @return string
 	 */
 	public function render() {
@@ -43,7 +33,6 @@ class TextlineElementView extends \TYPO3\CMS\Form\View\Mail\Plain\Element\Abstra
 	 * @return mixed
 	 */
 	protected function getLabel() {
-		$label = '';
 		if ($this->model->additionalIsSet('label')) {
 			$label = $this->model->getAdditionalValue('label');
 		} else {

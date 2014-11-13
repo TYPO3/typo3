@@ -510,7 +510,7 @@ class JsonToTypoScript {
 	 * Set the various configuration of an element
 	 *
 	 * @param array $element The JSON array for this element
-	 * @param array $options The JSON array for the various options of this element
+	 * @param array $various The JSON array for the various options of this element
 	 * @param array $parent The parent element
 	 * @param int $elementCounter The element counter
 	 * @return void

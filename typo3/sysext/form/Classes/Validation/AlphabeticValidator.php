@@ -70,7 +70,7 @@ class AlphabeticValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	 * Set TRUE if white space is allowed in submitted value
 	 *
 	 * @param bool $allowWhiteSpace TRUE if white space allowed
-	 * @return object Rule object
+	 * @return AlphabeticValidator Rule object
 	 */
 	public function setAllowWhiteSpace($allowWhiteSpace) {
 		if ($allowWhiteSpace === NULL) {

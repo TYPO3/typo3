@@ -60,7 +60,7 @@ class FileAllowedTypesValidator extends \TYPO3\CMS\Form\Validation\AbstractValid
 	 * Set the allowed types
 	 *
 	 * @param string $allowedTypes Allowed Types
-	 * @return object Rule object
+	 * @return FileAllowedTypesValidator Rule object
 	 */
 	public function setAllowedTypes($allowedTypes) {
 		$allowedTypes = strtolower($allowedTypes);

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Form\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * The form wizard controller
@@ -29,7 +30,7 @@ class WizardController {
 	 * @return void
 	 */
 	public function dispatch() {
-		switch (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('action')) {
+		switch (GeneralUtility::_GP('action')) {
 			case 'save':
 				$this->saveAction();
 				break;
@@ -50,7 +51,7 @@ class WizardController {
 	 */
 	protected function indexAction() {
 		/** @var $view \TYPO3\CMS\Form\View\Wizard\WizardView */
-		$view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Wizard\WizardView::class, $this->getRepository());
+		$view = GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Wizard\WizardView::class, $this->getRepository());
 		$view->render();
 	}
 
@@ -63,7 +64,7 @@ class WizardController {
 	 */
 	protected function saveAction() {
 		/** @var $view \TYPO3\CMS\Form\View\Wizard\SaveWizardView */
-		$view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Wizard\SaveWizardView::class, $this->getRepository());
+		$view = GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Wizard\SaveWizardView::class, $this->getRepository());
 		$view->render();
 	}
 
@@ -76,7 +77,7 @@ class WizardController {
 	 */
 	protected function loadAction() {
 		/** @var $view \TYPO3\CMS\Form\View\Wizard\LoadWizardView */
-		$view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Wizard\LoadWizardView::class, $this->getRepository());
+		$view = GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Wizard\LoadWizardView::class, $this->getRepository());
 		$view->render();
 	}
 
@@ -86,7 +87,7 @@ class WizardController {
 	 * @return \TYPO3\CMS\Form\Domain\Repository\ContentRepository
 	 */
 	protected function getRepository() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Domain\Repository\ContentRepository::class);
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Form\Domain\Repository\ContentRepository::class);
 	}
 
 }

@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Form\Domain\Repository;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Repository for tx_form_Domain_Model_Content
@@ -30,10 +32,10 @@ class ContentRepository {
 	 */
 	public function getRecord() {
 		$record = FALSE;
-		$getPostVariables = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('P');
+		$getPostVariables = GeneralUtility::_GP('P');
 		$table = (string)$getPostVariables['table'];
 		$recordId = (int)$getPostVariables['uid'];
-		$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $recordId);
+		$row = BackendUtility::getRecord($table, $recordId);
 		if (is_array($row)) {
 			// strip off the leading "[Translate to XY]" text after localizing the original record
 			$languageField = $GLOBALS['TCA']['tt_content']['ctrl']['languageField'];
@@ -45,10 +47,10 @@ class ContentRepository {
 			}
 
 			/** @var $typoScriptParser \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser */
-			$typoScriptParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
+			$typoScriptParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
 			$typoScriptParser->parse($bodytext);
 			/** @var $record \TYPO3\CMS\Form\Domain\Model\Content */
-			$record = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Domain\Model\Content::class);
+			$record = GeneralUtility::makeInstance(\TYPO3\CMS\Form\Domain\Model\Content::class);
 			$record->setUid($row['uid']);
 			$record->setPageId($row['pid']);
 			$record->setTyposcript($typoScriptParser->setup);
@@ -71,16 +73,16 @@ class ContentRepository {
 	 * @return bool TRUE if succeeded, FALSE if not
 	 */
 	public function save() {
-		$json = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('configuration');
-		$parameters = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('P');
+		$json = GeneralUtility::_GP('configuration');
+		$parameters = GeneralUtility::_GP('P');
 		$success = FALSE;
 		/** @var $converter \TYPO3\CMS\Form\Domain\Factory\JsonToTypoScript */
-		$converter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Domain\Factory\JsonToTypoScript::class);
+		$converter = GeneralUtility::makeInstance(\TYPO3\CMS\Form\Domain\Factory\JsonToTypoScript::class);
 		$typoscript = $converter->convert($json);
 		if ($typoscript) {
 			// Make TCEmain object:
 			/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
-			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+			$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 			$tce->stripslashes_values = 0;
 			// Put content into the data array:
 			$data = array();
@@ -96,7 +98,7 @@ class ContentRepository {
 	/**
 	 * Read and convert the content record to JSON
 	 *
-	 * @return The JSON object if record exists, FALSE if not
+	 * @return string The JSON object if record exists, FALSE if not
 	 */
 	public function getRecordAsJson() {
 		$json = FALSE;
@@ -104,7 +106,7 @@ class ContentRepository {
 		if ($record) {
 			$typoscript = $record->getTyposcript();
 			/** @var $converter \TYPO3\CMS\Form\Utility\TypoScriptToJsonConverter */
-			$converter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Utility\TypoScriptToJsonConverter::class);
+			$converter = GeneralUtility::makeInstance(\TYPO3\CMS\Form\Utility\TypoScriptToJsonConverter::class);
 			$json = $converter->convert($typoscript);
 		}
 		return $json;

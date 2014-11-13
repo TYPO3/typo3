@@ -29,6 +29,7 @@ class SelectedAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractA
 	 * @return string Attribute value
 	 */
 	public function getValue() {
+		$attribute = '';
 		if (((int)$this->value === 1 || (bool)$this->value === TRUE) || strtolower((string)$this->value) === 'selected') {
 			$attribute = 'selected';
 		}

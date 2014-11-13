@@ -39,7 +39,7 @@ class FormView extends \TYPO3\CMS\Form\View\Form\Element\ContainerElementView {
 	/**
 	 * Set the data for the FORM tag
 	 *
-	 * @param \TYPO3\CMS\Form\Domain\Model\Form $formModel The model of the form
+	 * @param \TYPO3\CMS\Form\Domain\Model\Form $model The model of the form
 	 * @return void
 	 */
 	public function setData(\TYPO3\CMS\Form\Domain\Model\Form $model) {

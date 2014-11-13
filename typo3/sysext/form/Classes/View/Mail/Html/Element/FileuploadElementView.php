@@ -34,14 +34,4 @@ class FileuploadElementView extends \TYPO3\CMS\Form\View\Mail\Html\Element\Abstr
 			<inputvalue />
 		</td>
 	';
-
-	/**
-	 * Constructor
-	 *
-	 * @param \TYPO3\CMS\Form\Domain\Model\Element\FileuploadElement $model Model for this element
-	 */
-	public function __construct(\TYPO3\CMS\Form\Domain\Model\Element\FileuploadElement $model) {
-		parent::__construct($model);
-	}
-
 }

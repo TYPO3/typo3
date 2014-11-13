@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Form\View\Confirmation;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Form\Domain\Model\Form;
 
 /**
  * Main view layer for Forms.
@@ -53,12 +55,12 @@ class ConfirmationView extends \TYPO3\CMS\Form\View\Confirmation\Element\Contain
 	/**
 	 * Constructor
 	 *
-	 * @param \TYPO3\CMS\Form\Domain\Model\Form $model
+	 * @param Form $model
 	 * @param array $typoscript
 	 */
-	public function __construct(\TYPO3\CMS\Form\Domain\Model\Form $model, array $typoscript) {
-		$this->localCobj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
-		$this->localizationHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Localization::class);
+	public function __construct(Form $model, array $typoscript) {
+		$this->localCobj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+		$this->localizationHandler = GeneralUtility::makeInstance(\TYPO3\CMS\Form\Localization::class);
 		$this->typoscript = $typoscript;
 		parent::__construct($model);
 	}
@@ -66,10 +68,10 @@ class ConfirmationView extends \TYPO3\CMS\Form\View\Confirmation\Element\Contain
 	/**
 	 * Set the data for the FORM tag
 	 *
-	 * @param \TYPO3\CMS\Form\Domain\Model\Form $formModel The model of the form
+	 * @param Form $model The model of the form
 	 * @return void
 	 */
-	public function setData(\TYPO3\CMS\Form\Domain\Model\Form $model) {
+	public function setData(Form $model) {
 		$this->model = (object) $model;
 	}
 
@@ -126,7 +128,7 @@ class ConfirmationView extends \TYPO3\CMS\Form\View\Confirmation\Element\Contain
 	 * @return string
 	 */
 	protected function getConfirmationButtons() {
-		$requestHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Request::class);
+		$requestHandler = GeneralUtility::makeInstance(\TYPO3\CMS\Form\Request::class);
 		$prefix = $requestHandler->getPrefix();
 		$action = $this->localCobj->getTypoLink_URL($GLOBALS['TSFE']->id);
 		$confirmationButtons = '

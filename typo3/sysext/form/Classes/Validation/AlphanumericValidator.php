@@ -29,6 +29,11 @@ class AlphanumericValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator
 	protected $allowWhiteSpace;
 
 	/**
+	 * @var \TYPO3\CMS\Form\Filter\AlphanumericFilter
+	 */
+	protected $filter;
+
+	/**
 	 * Constructor
 	 *
 	 * @param array $arguments Typoscript configuration
@@ -63,7 +68,7 @@ class AlphanumericValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator
 	 * Set TRUE if white space is allowed in submitted value
 	 *
 	 * @param bool $allowWhiteSpace TRUE if white space allowed
-	 * @return object Rule object
+	 * @return AlphanumericValidator Rule object
 	 */
 	public function setAllowWhiteSpace($allowWhiteSpace) {
 		if ($allowWhiteSpace === NULL) {

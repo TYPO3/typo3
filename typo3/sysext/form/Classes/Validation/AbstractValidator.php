@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Form\Validation;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Form\Request;
 
 /**
  * Abstract for validation
@@ -65,7 +67,7 @@ abstract class AbstractValidator implements \TYPO3\CMS\Form\Validation\Validator
 	/**
 	 * Request handler object
 	 *
-	 * @var \TYPO3\CMS\Form\Request
+	 * @var Request
 	 */
 	protected $requestHandler;
 
@@ -79,10 +81,10 @@ abstract class AbstractValidator implements \TYPO3\CMS\Form\Validation\Validator
 	/**
 	 * Inject the Request Handler
 	 *
-	 * @param \TYPO3\CMS\Form\Request $requestHandler
+	 * @param Request $requestHandler
 	 * @return void
 	 */
-	public function injectRequestHandler(\TYPO3\CMS\Form\Request $requestHandler) {
+	public function injectRequestHandler(Request $requestHandler) {
 		$this->requestHandler = $requestHandler;
 	}
 
@@ -92,9 +94,9 @@ abstract class AbstractValidator implements \TYPO3\CMS\Form\Validation\Validator
 	 * @param array $arguments Typoscript configuration for the validation rule
 	 */
 	public function __construct($arguments) {
-		$this->localCobj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
-		$this->injectRequestHandler(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Request::class));
-		$this->localizationHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Localization::class);
+		$this->localCobj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+		$this->injectRequestHandler(GeneralUtility::makeInstance(Request::class));
+		$this->localizationHandler = GeneralUtility::makeInstance(\TYPO3\CMS\Form\Localization::class);
 		$this->setFieldName($arguments['element']);
 		$this->setMessage($arguments['message.'], $arguments['message']);
 		$this->setShowMessage($arguments['showMessage']);
@@ -105,7 +107,7 @@ abstract class AbstractValidator implements \TYPO3\CMS\Form\Validation\Validator
 	 * Set the fieldName
 	 *
 	 * @param string $fieldName The field name
-	 * @return object The rule object
+	 * @return ValidatorInterface The rule object
 	 */
 	public function setFieldName($fieldName) {
 		$this->fieldName = (string)$fieldName;
@@ -149,7 +151,7 @@ abstract class AbstractValidator implements \TYPO3\CMS\Form\Validation\Validator
 	 * When both are filled, it's supposed to be a cObj made by the administrator
 	 * In the last case, no markers will be substituted
 	 *
-	 * @param mixed $message Message as string or TS
+	 * @param string|array $message Message as string or TS
 	 * @param string $type Name of the cObj
 	 * @return void
 	 */
@@ -208,7 +210,7 @@ abstract class AbstractValidator implements \TYPO3\CMS\Form\Validation\Validator
 	 * Set if message needs to be displayed
 	 *
 	 * @param bool $show TRUE is display
-	 * @return object The rule object
+	 * @return ValidatorInterface The rule object
 	 */
 	public function setShowMessage($show) {
 		if ($show === NULL) {

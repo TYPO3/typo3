@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Form\PostProcess;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Form\Domain\Model\Form;
 
 /**
  * The mail post processor
@@ -22,7 +24,7 @@ namespace TYPO3\CMS\Form\PostProcess;
 class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInterface {
 
 	/**
-	 * @var \TYPO3\CMS\Form\Domain\Model\Form
+	 * @var Form
 	 */
 	protected $form;
 
@@ -49,14 +51,14 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 	/**
 	 * Constructor
 	 *
-	 * @param \TYPO3\CMS\Form\Domain\Model\Form $form Form domain model
+	 * @param Form $form Form domain model
 	 * @param array $typoScript Post processor TypoScript settings
 	 */
-	public function __construct(\TYPO3\CMS\Form\Domain\Model\Form $form, array $typoScript) {
+	public function __construct(Form $form, array $typoScript) {
 		$this->form = $form;
 		$this->typoScript = $typoScript;
-		$this->mailMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
-		$this->requestHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Request::class);
+		$this->mailMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
+		$this->requestHandler = GeneralUtility::makeInstance(\TYPO3\CMS\Form\Request::class);
 	}
 
 	/**
@@ -94,7 +96,7 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 		} elseif ($this->requestHandler->has($this->typoScript['subjectField'])) {
 			$subject = $this->requestHandler->get($this->typoScript['subjectField']);
 		} else {
-			$subject = 'Formmail on ' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_HOST');
+			$subject = 'Formmail on ' . GeneralUtility::getIndpEnv('HTTP_HOST');
 		}
 		$subject = $this->sanitizeHeaderString($subject);
 		$this->mailMessage->setSubject($subject);
@@ -108,7 +110,6 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 	 * @return void
 	 */
 	protected function setFrom() {
-		$fromEmail = '';
 		if ($this->typoScript['senderEmail']) {
 			$fromEmail = $this->typoScript['senderEmail'];
 		} elseif ($this->requestHandler->has($this->typoScript['senderEmailField'])) {
@@ -116,10 +117,9 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 		} else {
 			$fromEmail = $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'];
 		}
-		if (!\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($fromEmail)) {
+		if (!GeneralUtility::validEmail($fromEmail)) {
 			$fromEmail = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFromAddress();
 		}
-		$fromName = '';
 		if ($this->typoScript['senderName']) {
 			$fromName = $this->typoScript['senderName'];
 		} elseif ($this->requestHandler->has($this->typoScript['senderNameField'])) {
@@ -149,13 +149,13 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 		}
 
 		/** @var $addressParser \TYPO3\CMS\Core\Mail\Rfc822AddressesParser */
-		$addressParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\Rfc822AddressesParser::class, $emails);
+		$addressParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\Rfc822AddressesParser::class, $emails);
 		$addresses = $addressParser->parseAddressList();
 
 		$validEmails = array();
 		foreach ($addresses as $address) {
 			$fullAddress = $address->mailbox . '@' . $address->host;
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($fullAddress)) {
+			if (GeneralUtility::validEmail($fullAddress)) {
 				if ($address->personal) {
 					$validEmails[$fullAddress] = $address->personal;
 				} else {
@@ -254,7 +254,7 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 	 */
 	protected function setHtmlContent() {
 		/** @var $view \TYPO3\CMS\Form\View\Mail\Html\HtmlView */
-		$view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Mail\Html\HtmlView::class, $this->form, $this->typoScript);
+		$view = GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Mail\Html\HtmlView::class, $this->form, $this->typoScript);
 		$htmlContent = $view->get();
 		$this->mailMessage->setBody($htmlContent, 'text/html');
 	}
@@ -268,7 +268,7 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 	 */
 	protected function setPlainContent() {
 		/** @var $view \TYPO3\CMS\Form\View\Mail\Plain\PlainView */
-		$view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Mail\Plain\PlainView::class, $this->form);
+		$view = GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Mail\Plain\PlainView::class, $this->form);
 		$plainContent = $view->render();
 		$this->mailMessage->addPart($plainContent, 'text/plain');
 	}
@@ -292,7 +292,7 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 	 */
 	protected function render() {
 		/** @var $view \TYPO3\CMS\Form\View\Mail\MailView */
-		$view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Mail\MailView::class, $this->mailMessage, $this->typoScript);
+		$view = GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Mail\MailView::class, $this->mailMessage, $this->typoScript);
 		return $view->render();
 	}
 
@@ -341,7 +341,7 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 				$elementName = $element->getName();
 				if (is_array($submittedValues[$elementName]) && isset($submittedValues[$elementName]['tempFilename'])) {
 					$filename = $submittedValues[$elementName]['tempFilename'];
-					if (is_file($filename) && \TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath($filename)) {
+					if (is_file($filename) && GeneralUtility::isAllowedAbsPath($filename)) {
 						$this->mailMessage->attach(\Swift_Attachment::fromPath($filename)->setFilename($submittedValues[$elementName]['originalFilename']));
 					}
 				}

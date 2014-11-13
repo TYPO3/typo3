@@ -34,14 +34,4 @@ class RadioElementView extends \TYPO3\CMS\Form\View\Mail\Html\Element\AbstractEl
 			<inputvalue />
 		</td>
 	';
-
-	/**
-	 * Constructor
-	 *
-	 * @param \TYPO3\CMS\Form\Domain\Model\Element\RadioElement $model Model for this element
-	 */
-	public function __construct(\TYPO3\CMS\Form\Domain\Model\Element\RadioElement $model) {
-		parent::__construct($model);
-	}
-
 }

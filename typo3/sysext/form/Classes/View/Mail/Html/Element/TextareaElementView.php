@@ -34,14 +34,4 @@ class TextareaElementView extends \TYPO3\CMS\Form\View\Mail\Html\Element\Abstrac
 			<inputvalue />
 		</td>
 	';
-
-	/**
-	 * Constructor
-	 *
-	 * @param \TYPO3\CMS\Form\Domain\Model\Element\TextareaElement $model Model for this element
-	 */
-	public function __construct(\TYPO3\CMS\Form\Domain\Model\Element\TextareaElement $model) {
-		parent::__construct($model);
-	}
-
 }

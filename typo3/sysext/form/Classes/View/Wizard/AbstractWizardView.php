@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Form\View\Wizard;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Form\Domain\Repository\ContentRepository;
 
 /**
  * The form wizard load view
@@ -29,26 +30,26 @@ abstract class AbstractWizardView {
 	protected $recordIsAvailable = FALSE;
 
 	/**
-	 * @var \TYPO3\CMS\Form\Domain\Repository\ContentRepository
+	 * @var ContentRepository
 	 */
 	protected $repository;
 
 	/**
 	 * Creates the object and calls the initialize() method.
 	 *
-	 * @param \TYPO3\CMS\Form\Domain\Repository\ContentRepository $repository
+	 * @param ContentRepository $repository
 	 */
-	public function __construct(\TYPO3\CMS\Form\Domain\Repository\ContentRepository $repository) {
+	public function __construct(ContentRepository $repository) {
 		$this->setRepository($repository);
 	}
 
 	/**
 	 * Sets the content repository to be used.
 	 *
-	 * @param \TYPO3\CMS\Form\Domain\Repository\ContentRepository $repository
+	 * @param ContentRepository $repository
 	 * @return void
 	 */
-	public function setRepository(\TYPO3\CMS\Form\Domain\Repository\ContentRepository $repository) {
+	public function setRepository(ContentRepository $repository) {
 		$this->repository = $repository;
 	}
 

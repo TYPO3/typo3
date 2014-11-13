@@ -60,7 +60,7 @@ class DateValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	 * Set the format of the date
 	 *
 	 * @param string $format strftime format
-	 * @return Rule object
+	 * @return DateValidator object
 	 */
 	public function setFormat($format) {
 		if ($format === NULL) {
