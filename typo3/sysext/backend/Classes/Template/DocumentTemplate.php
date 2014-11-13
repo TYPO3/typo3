@@ -1485,7 +1485,6 @@ function jumpToUrl(URL) {
 	public function getDragDropCode($table) {
 		$this->getContextMenuCode();
 		$this->pageRenderer->loadPrototype();
-		$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/common.js');
 		$this->loadJavascriptLib('js/tree.js');
 		// Setting prefs for drag & drop
 		$this->JScodeArray['dragdrop'] = '

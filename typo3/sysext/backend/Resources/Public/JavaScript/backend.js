@@ -11,6 +11,35 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+
+/**
+ * common storage and global object, could later hold more information about the current user etc.
+ */
+var TYPO3 = TYPO3 || {};
+TYPO3 = Ext.apply(TYPO3, {
+	// store instances that only should be running once
+	_instances: {},
+	getInstance: function(className) {
+		return TYPO3._instances[className] || false;
+	},
+	addInstance: function(className, instance) {
+		TYPO3._instances[className] = instance;
+		return instance;
+	},
+
+	helpers: {
+		// creates an array by splitting a string into parts, taking a delimiter
+		split: function(str, delim) {
+			var res = [];
+			while (str.indexOf(delim) > 0) {
+				res.push(str.substr(0, str.indexOf(delim)));
+				str = str.substr(str.indexOf(delim) + delim.length);
+			}
+			return res;
+		}
+	}
+});
+
 /**
  * general backend javascript functions
  */

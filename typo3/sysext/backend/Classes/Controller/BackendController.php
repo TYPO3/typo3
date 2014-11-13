@@ -104,7 +104,6 @@ class BackendController {
 		$this->moduleLoader = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Module\ModuleLoader::class);
 		$this->moduleLoader->load($GLOBALS['TBE_MODULES']);
 		$this->pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
-		$this->pageRenderer->loadScriptaculous('builder,effects,controls,dragdrop');
 		$this->pageRenderer->loadExtJS();
 		$this->pageRenderer->loadJquery(NULL, NULL, \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_NAMESPACE_DEFAULT_NOCONFLICT);
 		$this->pageRenderer->enableExtJSQuickTips();
@@ -113,11 +112,9 @@ class BackendController {
 		// Add default BE javascript
 		$this->js = '';
 		$this->jsFiles = array(
-			'common' => 'sysext/backend/Resources/Public/JavaScript/common.js',
 			'locallang' => $this->getLocalLangFileName(),
 			'modernizr' => 'contrib/modernizr/modernizr.min.js',
 			'md5' => 'sysext/backend/Resources/Public/JavaScript/md5.js',
-			'toolbarmanager' => 'sysext/backend/Resources/Public/JavaScript/toolbarmanager.js',
 			'modulemenu' => 'sysext/backend/Resources/Public/JavaScript/modulemenu.js',
 			'evalfield' => 'sysext/backend/Resources/Public/JavaScript/jsfunc.evalfield.js',
 			'flashmessages' => 'sysext/backend/Resources/Public/JavaScript/flashmessages.js',
