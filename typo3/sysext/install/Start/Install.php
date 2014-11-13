@@ -93,6 +93,10 @@
  *   can exist yet.
  */
 
+if (version_compare(PHP_VERSION, '5.5.0', '<')) {
+	throw new \Exception('TYPO3 CMS requires PHP 5.5 or above', 1415878732);
+}
+
 define('TYPO3_MODE', 'BE');
 define('TYPO3_enterInstallScript', '1');
 
