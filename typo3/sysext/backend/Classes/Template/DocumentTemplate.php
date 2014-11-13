@@ -508,7 +508,7 @@ function jumpToUrl(URL) {
 		if ($returnTagParameters) {
 			return $tagParameters;
 		} else {
-			return '<a href="#"' . GeneralUtility::implodeAttributes($tagParameters) . '>' . $content . '</a>';
+			return '<a href="#" ' . GeneralUtility::implodeAttributes($tagParameters) . '>' . $content . '</a>';
 		}
 	}
 

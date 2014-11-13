@@ -73,7 +73,7 @@ class CheckboxElement extends AbstractFormElement {
 				$checkboxName = $additionalInformation['itemFormElName'] . '_' . $c;
 				$checkboxId = $additionalInformation['itemFormElID'] . '_' . $c;
 				$item .= '<td nowrap="nowrap"><input type="checkbox" ' . $this->formEngine->insertDefStyle('check')
-					. 'value="1" name="' . $checkboxName . '" ' . $checkboxParameters . $disabled . 'id="' . $checkboxId . '" />'
+					. ' value="1" name="' . $checkboxName . '" ' . $checkboxParameters . $disabled . ' id="' . $checkboxId . '" />'
 					. '<label for="' . $checkboxId . '">' . htmlspecialchars($selectedItem[0]) . '</label>&nbsp;'
 					. '</td>';
 				if ($c % $cols + 1 == $cols) {
@@ -102,7 +102,7 @@ class CheckboxElement extends AbstractFormElement {
 				);
 				$checkboxName = $additionalInformation['itemFormElName'] . '_' . $c;
 				$checkboxId = $additionalInformation['itemFormElID'] . '_' . $c;
-				$item .= ($c > 0 ? '<br />' : '') . '<input type="checkbox"' . $this->formEngine->insertDefStyle('check')
+				$item .= ($c > 0 ? '<br />' : '') . '<input type="checkbox" ' . $this->formEngine->insertDefStyle('check')
 					. ' value="1" name="' . $checkboxName . '"' . $checkboxParameters . $additionalInformation['onFocus'] . $disabled
 					. ' id="' . $checkboxId . '" /> '
 					. '<label for="' . $checkboxId . '">' . htmlspecialchars($selectedItem[0]) . '</label>';

@@ -2291,7 +2291,7 @@ class FormEngine {
 		if (!$selector) {
 			$isMultiple = $params['maxitems'] != 1 && $params['size'] != 1;
 			$selector = '<select id="' . str_replace('.', '', uniqid('tceforms-multiselect-', TRUE)) . '" '
-				. ($params['noList'] ? 'style="display: none"' : 'size="' . $sSize . '"' . $this->insertDefStyle('group', 'tceforms-multiselect'))
+				. ($params['noList'] ? 'style="display: none"' : 'size="' . $sSize . '" ' . $this->insertDefStyle('group', 'tceforms-multiselect'))
 				. ($isMultiple ? ' multiple="multiple"' : '')
 				. ' name="' . $fName . '_list" ' . $onFocus . $params['style'] . $disabled . '>' . implode('', $opt)
 				. '</select>';

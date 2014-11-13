@@ -842,7 +842,7 @@ class InlineElement {
 			$size = $conf['autoSizeMax'] ? MathUtility::forceIntegerInRange(count($selItems) + 1, MathUtility::forceIntegerInRange($size, 1), $conf['autoSizeMax']) : $size;
 			$onChange = 'return inline.importNewRecord(\'' . $this->inlineNames['object'] . self::Structure_Separator . $conf['foreign_table'] . '\')';
 			$item = '
-				<select id="' . $this->inlineNames['object'] . self::Structure_Separator . $conf['foreign_table'] . '_selector"' . $this->fObj->insertDefStyle('select') . ($size ? ' size="' . $size . '"' : '') . ' onchange="' . htmlspecialchars($onChange) . '"' . $PA['onFocus'] . $selector_itemListStyle . ($conf['foreign_unique'] ? ' isunique="isunique"' : '') . '>
+				<select id="' . $this->inlineNames['object'] . self::Structure_Separator . $conf['foreign_table'] . '_selector" ' . $this->fObj->insertDefStyle('select') . ($size ? ' size="' . $size . '"' : '') . ' onchange="' . htmlspecialchars($onChange) . '"' . $PA['onFocus'] . $selector_itemListStyle . ($conf['foreign_unique'] ? ' isunique="isunique"' : '') . '>
 					' . implode('
 					', $opt) . '
 				</select>';

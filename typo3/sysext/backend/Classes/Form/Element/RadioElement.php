@@ -54,7 +54,7 @@ class RadioElement extends AbstractFormElement {
 			$radioId = $additionalInformation['itemFormElID'] . '_' . $checkbox;
 			$radioOnClick = implode('', $additionalInformation['fieldChangeFunc']);
 			$radioChecked = (string)$selectedItem[1] === (string)$additionalInformation['itemFormElValue'] ? ' checked="checked"' : '';
-			$item .= '<input type="radio"' . $this->formEngine->insertDefStyle('radio') . ' name="' . $additionalInformation['itemFormElName']
+			$item .= '<input type="radio" ' . $this->formEngine->insertDefStyle('radio') . ' name="' . $additionalInformation['itemFormElName']
 				. '" value="' . htmlspecialchars($selectedItem[1]) . '" onclick="' . htmlspecialchars($radioOnClick) . '"' . $radioChecked
 				. $additionalInformation['onFocus'] . $disabled . ' id="' . $radioId . '" />
 					<label for="' . $radioId . '">' . htmlspecialchars($selectedItem[0]) . '</label>
