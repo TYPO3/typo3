@@ -656,7 +656,7 @@ var inline = {
 	},
 
 	createDragAndDropSorting: function (objectId) {
-		require(['jquery', 'jquery-ui/jquery-ui-1.10.4.custom.min'], function ($) {
+		require(['jquery', 'jquery-ui/sortable'], function ($) {
 			var $sortingContainer = $('#' + inline.escapeObjectId(objectId));
 
 			if ($sortingContainer.hasClass('ui-sortable')) {
@@ -681,7 +681,7 @@ var inline = {
 	},
 
 	destroyDragAndDropSorting: function (objectId) {
-		require(['jquery', 'jquery-ui/jquery-ui-1.10.4.custom.min'], function ($) {
+		require(['jquery', 'jquery-ui/sortable'], function ($) {
 			var $sortingContainer = $('#' + inline.escapeObjectId(objectId));
 			if (!$sortingContainer.hasClass('ui-sortable')) {
 				return;

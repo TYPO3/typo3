@@ -1615,7 +1615,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 		if (count($this->requireJsConfig) === 0) {
 			// first, load all paths for the namespaces, and configure contrib libs.
 			$this->requireJsConfig['paths'] = array(
-				'jquery-ui' => 'contrib/jqueryui',
+				'jquery-ui' => 'contrib/jquery-ui',
 				'jquery' => 'contrib/jquery',
 				'twbs' => 'contrib/twbs/bootstrap.min',
 			);
@@ -1647,7 +1647,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * To add another path mapping deliver the following configuration:
 	 * 		'paths' => array(
-     *			'EXTERN/JQUERY-UI/1.10.3' => 'contrib/jqueryui/jquery-ui-1.10.4.custom.min',
+     *			'EXTERN/mybootstrapjs' => 'contrib/twbs/bootstrap.min',
 	 *      ),
 	 *
 	 * @author Daniel Siepmann <daniel.siepmann@typo3.org>

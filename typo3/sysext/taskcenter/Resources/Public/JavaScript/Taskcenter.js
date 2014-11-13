@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-define('TYPO3/CMS/Taskcenter/Taskcenter', ['jquery', 'jquery-ui/jquery-ui-1.10.4.custom.min'], function($) {
+define('TYPO3/CMS/Taskcenter/Taskcenter', ['jquery', 'jquery-ui/sortable'], function($) {
 
 	var Taskcenter = {};
 
