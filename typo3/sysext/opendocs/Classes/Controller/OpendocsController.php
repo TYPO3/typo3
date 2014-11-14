@@ -128,7 +128,7 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemInterf
 		if (count($entries)) {
 			$content = implode('', $entries);
 		} else {
-			$content = '<li>' . $GLOBALS['LANG']->getLL('no_docs', TRUE) . '</li>';
+			$content = '<li class="noOpenDocs">' . $GLOBALS['LANG']->getLL('no_docs', TRUE) . '</li>';
 		}
 		return $content;
 	}
@@ -163,8 +163,10 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemInterf
 			$closeIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close');
 			$entry = '
 				<li class="opendoc' . $firstRow . '">
-					<a href="#" onclick="jump(unescape(\'' . htmlspecialchars($link) . '\'), \'web_list\', \'web\', ' . $pageId . ');TYPO3.OpendocsMenu.toggleMenu(); return false;" target="content">' . $icon . $label . '</a>
-					<a href="#" class="close" data-opendocsidentifier="' . $md5sum . '">' . $closeIcon . '</a>
+					<div class="linkWrap">
+						<a href="#" class="opendocLink" onclick="jump(unescape(\'' . htmlspecialchars($link) . '\'), \'web_list\', \'web\', ' . $pageId . ');TYPO3.OpendocsMenu.toggleMenu(); return false;" target="content">' . $icon . $label . '</a>
+						<a href="#" class="close" data-opendocsidentifier="' . $md5sum . '">' . $closeIcon . '</a>
+					</div>
 				</li>';
 		} else {
 			// Recently used document

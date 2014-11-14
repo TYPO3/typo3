@@ -9,30 +9,48 @@ Description : styles the Open Documents toolbar item
 
 - - - - - - - - - - - - - - - - - - - - - */
 
-#tx-opendocs-menu .toolbar-item-menu .list th {
-	text-align: left;
-	font-weight: normal;
-	line-height: 16px;
-	padding-left: 7px;
+#tx-opendocs-menu .opendoc {
+	width: inherit;
 }
 
-#tx-opendocs-menu .toolbar-item-menu td.label {
-	font-size: 100%;
+#tx-opendocs-menu .dropdown-menu {
+	max-width: 400px;
+	width: auto;
+	white-space: nowrap;
 }
 
-#tx-opendocs-menu .toolbar-item-menu .list .opendoc .icon,
-#tx-opendocs-menu .toolbar-item-menu .list .recentdoc .icon {
+#tx-opendocs-menu .opendoc .icon,
+#tx-opendocs-menu .recentdoc .icon {
 	padding-left: 7px;
 	vertical-align: top;
 	width: 16px;
 }
 
-#tx-opendocs-menu .toolbar-item-menu .list .opendoc .close {
+#tx-opendocs-menu .linkWrap {
+	display: table;
+	padding: 3px 20px;
+	width: 100%;
+}
+
+#tx-opendocs-menu .opendoc .opendocLink {
+	display: table-cell;
+	padding-right: 10px;
+}
+
+#tx-opendocs-menu .opendoc .close {
 	width: 20px;
 	text-align: center;
 	vertical-align: top;
+	display: table-cell;
+	position: relative;
+	top: 3px;
 }
 
-#tx-opendocs-menu .toolbar-item-menu .list .opendoc .close span {
+#tx-opendocs-menu .opendoc .close span {
 	cursor: pointer;
+}
+
+
+#tx-opendocs-menu .noOpenDocs {
+	padding: 3px 20px;
 }
