@@ -177,4 +177,37 @@ class ResourceCompressorTest extends BaseTestCase {
 		$this->assertTrue($result[$concatenatedFileName]['excludeFromConcatenation']);
 	}
 
+	/**
+	 * @return array
+	 */
+	public function calcStatementsDataProvider() {
+		return array(
+			'simple calc' => array(
+				'calc(100% - 3px)',
+				'calc(100% - 3px)',
+			),
+			'complex calc with parentheses at the beginning' => array(
+				'calc((100%/20) - 2*3px)',
+				'calc((100%/20) - 2*3px)',
+			),
+			'complex calc with parentheses at the end' => array(
+				'calc(100%/20 - 2*3px - (200px + 3%))',
+				'calc(100%/20 - 2*3px - (200px + 3%))',
+			),
+			'complex calc with many parentheses' => array(
+				'calc((100%/20) - (2 * (3px - (200px + 3%))))',
+				'calc((100%/20) - (2 * (3px - (200px + 3%))))',
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider calcStatementsDataProvider
+	 */
+	public function calcFunctionMustRetainWhitespaces($input, $expected) {
+		$result = $this->subject->_call('compressCssString', $input);
+		$this->assertSame($expected, trim($result));
+    }
+
 }
