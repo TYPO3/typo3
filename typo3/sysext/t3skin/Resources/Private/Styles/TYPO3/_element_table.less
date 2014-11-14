@@ -26,10 +26,6 @@
 	padding-left: 22px;
 }
 
-table {
-	background: transparent;
-}
-
 /**
  * Common style for tables
  *
@@ -51,54 +47,16 @@ table {
  * </table>
  */
 
-.table {
 
-	> thead,
-	> tbody {
-		tr {
-			th:first-child,
-			th:last-child,
-			td:first-child,
-			td:last-child {
-				padding-left: 12px;
-			}
-		}
-	}
+/**
+ * Copy table stylings from bootstrap
+ **/
+.t3-table {
+    .table();
+    .table-striped();
+    .table-hover();
 
-	> thead {
-		> tr {
-			> th,
-			> td {
-				border-bottom: 1px solid #666;
-			}
-		}
-	}
-
-	> tbody {
-		> tr {
-			> td {
-				background-color: @table-bg;
-			}
-		}
-		> tr:hover {
-			> td {
-				transition: background-color 100ms linear;
-
-				a {
-					text-decoration: underline;
-				}
-			}
-		}
-	}
-}
-
-// TYPO3 standard <table class="t3-table">
-table.t3-table {
-	.table;
-	.table-striped;
-	.table-hover;
-
-	// .active
+    // .active
 	> thead > tr,
 	> tbody > tr,
 	> tfoot > tr {
@@ -109,10 +67,9 @@ table.t3-table {
 			background-color: @table-bg-active;
 		}
 	}
-
-	> tbody > tr {
-		> td.active:hover,
-		> th.active:hover,
+    > tbody > tr {
+    > td.active:hover,
+    > th.active:hover,
 		&.active:hover > td,
 		&:hover > .active,
 		&.active:hover > th {
@@ -120,7 +77,7 @@ table.t3-table {
 		}
 	}
 
-	// .success
+    // .success
 	> thead > tr,
 	> tbody > tr,
 	> tfoot > tr {
@@ -131,7 +88,6 @@ table.t3-table {
 			background-color: @state-success-bg;
 		}
 	}
-
 	> tbody > tr {
 		> td.success:hover,
 		> th.success:hover,
@@ -153,7 +109,6 @@ table.t3-table {
 			background-color: @state-info-bg;
 		}
 	}
-
 	> tbody > tr {
 		> td.info:hover,
 		> th.info:hover,
@@ -175,7 +130,6 @@ table.t3-table {
 			background-color: @state-warning-bg;
 		}
 	}
-
 	> tbody > tr {
 		> td.warning:hover,
 		> th.warning:hover,
@@ -197,7 +151,6 @@ table.t3-table {
 			background-color: @state-danger-bg;
 		}
 	}
-
 	> tbody > tr {
 		> td.danger:hover,
 		> th.danger:hover,
@@ -207,5 +160,259 @@ table.t3-table {
 			background-color: darken(@state-danger-bg, 5%);
 		}
 	}
+}
 
+/**
+ * Default table styling
+ **/
+.table,
+.t3-table {
+    margin-bottom: 1.5em;
+    * {
+        box-sizing: border-box;
+    }
+    > thead > tr > th,
+    > tbody > tr > th,
+    > tfoot > tr > th,
+    > thead > tr > td,
+    > tbody > tr > td,
+    > tfoot > tr > td {
+        vertical-align: middle;
+    }
+    > thead > tr {
+        background-color: darken(@table-bg,4%);
+        th,
+        td {
+            border-bottom: 1px solid @table-border-color;
+            i {
+                font-weight: normal;
+            }
+        }
+    }
+    .btn {
+        .btn-sm();
+        color: #333;
+        background-color: darken(@table-bg-accent,10%);
+        border-color: darken(@table-bg-accent,20%);
+        margin-top: -2px;
+        margin-bottom: -2px;
+        &:hover {
+            border-color: darken(@table-bg-accent,30%);
+            background-color: darken(@table-bg-accent,20%);
+        }
+        .t3-icon {
+            margin: 0;
+        }
+        &.btn-danger {
+            .btn-danger();
+        }
+        &.btn-success {
+            .btn-success();
+        }
+        &.btn-warning {
+            .btn-warning();
+        }
+        &.btn-info {
+            .btn-info();
+        }
+        &.btn-default {
+            .btn-default();
+        }
+        &.btn-primary {
+            .btn-primary();
+        }
+    }
+    .btn-group {
+        font-size: 0;
+        .btn {
+            font-size: 12px;
+            float: none;
+        }
+    }
+    .btn-checkbox-holder {
+        position: relative;
+        display: inline-block;
+        .btn-checkbox {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            opacity: 0;
+            z-index: 10;
+        }
+        input[type=checkbox] + .btn {
+            .t3-icon:before {
+                content: "\f096";
+            }
+        }
+        input[type=checkbox]:checked + .btn {
+            .btn-primary();
+            .t3-icon:before {
+                content: "\f00c";
+            }
+        }
+    }
+	.btn-group {
+		.btn + .btn-checkbox-holder {
+            margin-left: -1px;
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
+		}
+	}
+    .pagination {
+        margin: 0;
+    }
+    .col-icon {
+        .t3-icon {
+            margin: 0;
+        }
+        text-align: center;
+    }
+    .col-title {
+        width: 95%;
+    }
+    .col-control,
+    .col-clipboard {
+        white-space: nowrap;
+        text-align: right;
+    }
+}
+
+
+// TYPO3 standard <table class="t3-table">
+.t3-table {
+
+
+	// .success
+	> thead > tr,
+	> tbody > tr,
+	> tfoot > tr {
+		> td.success,
+		> th.success,
+		&.success > td,
+		&.success > th {
+			background-color: @state-success-bg;
+		}
+	}
+	> tbody > tr {
+		> td.success:hover,
+		> th.success:hover,
+		&.success:hover > td,
+		&:hover > .success,
+		&.success:hover > th {
+			background-color: darken(@state-success-bg, 5%);
+		}
+	}
+	// .info
+	> thead > tr,
+	> tbody > tr,
+	> tfoot > tr {
+		> td.info,
+		> th.info,
+		&.info > td,
+		&.info > th {
+			background-color: @state-info-bg;
+		}
+	}
+	> tbody > tr {
+		> td.info:hover,
+		> th.info:hover,
+		&.info:hover > td,
+		&:hover > .info,
+		&.info:hover > th {
+			background-color: darken(@state-info-bg, 5%);
+		}
+	}
+	// .warning
+	> thead > tr,
+	> tbody > tr,
+	> tfoot > tr {
+		> td.warning,
+		> th.warning,
+		&.warning > td,
+		&.warning > th {
+			background-color: @state-warning-bg;
+		}
+	}
+	> tbody > tr {
+		> td.warning:hover,
+		> th.warning:hover,
+		&.warning:hover > td,
+		&:hover > .warning,
+		&.warning:hover > th {
+			background-color: darken(@state-warning-bg, 5%);
+		}
+	}
+	// .danger
+	> thead > tr,
+	> tbody > tr,
+	> tfoot > tr {
+		> td.danger,
+		> th.danger,
+		&.danger > td,
+		&.danger > th {
+			background-color: @state-danger-bg;
+		}
+	}
+	> tbody > tr {
+		> td.danger:hover,
+		> th.danger:hover,
+		&.danger:hover > td,
+		&:hover > .danger,
+		&.danger:hover > th {
+			background-color: darken(@state-danger-bg, 5%);
+		}
+	}
+}
+
+
+/**
+ * Fits the table in the viewport and makes overflow possible
+ **/
+.table-fit {
+    width: 100%;
+    margin-bottom: 1.5em;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    border: 1px solid #ddd;
+    > .table,
+    > .t3-table {
+        margin-top: 0;
+        margin-bottom: 0;
+        > thead > tr > th,
+        > tbody > tr > th,
+        > tfoot > tr > th,
+        > thead > tr > td,
+        > tbody > tr > td,
+        > tfoot > tr > td {
+            white-space: nowrap;
+        }
+    }
+    > .table-bordered {
+        border: 0;
+    }
+    > .table-bordered > thead > tr > th:first-child,
+    > .table-bordered > tbody > tr > th:first-child,
+    > .table-bordered > tfoot > tr > th:first-child,
+    > .table-bordered > thead > tr > td:first-child,
+    > .table-bordered > tbody > tr > td:first-child,
+    > .table-bordered > tfoot > tr > td:first-child {
+        border-left: 0;
+    }
+    > .table-bordered > thead > tr > th:last-child,
+    > .table-bordered > tbody > tr > th:last-child,
+    > .table-bordered > tfoot > tr > th:last-child,
+    > .table-bordered > thead > tr > td:last-child,
+    > .table-bordered > tbody > tr > td:last-child,
+    > .table-bordered > tfoot > tr > td:last-child {
+        border-right: 0;
+    }
+    > .table-bordered > tbody > tr:last-child > th,
+    > .table-bordered > tfoot > tr:last-child > th,
+    > .table-bordered > tbody > tr:last-child > td,
+    > .table-bordered > tfoot > tr:last-child > td {
+        border-bottom: 0;
+    }
 }

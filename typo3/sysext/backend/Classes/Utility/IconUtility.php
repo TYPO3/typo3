@@ -1033,7 +1033,7 @@ class IconUtility {
 	static protected function buildSpriteHtmlIconTag(array $tagAttributes, $innerHtml = NULL, $tagName = NULL) {
 		list($tagAttributes, $innerHtml, $tagName) = static::emitBuildSpriteHtmlIconTagSignal($tagAttributes, $innerHtml, $tagName);
 
-		$innerHtml = $innerHtml === NULL ? '&nbsp;' : $innerHtml;
+		$innerHtml = $innerHtml === NULL ? ' ' : $innerHtml;
 		$tagName = $tagName === NULL ? 'span' : $tagName;
 		$attributes = '';
 		foreach ($tagAttributes as $attribute => $value) {

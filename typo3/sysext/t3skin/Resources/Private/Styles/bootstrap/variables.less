@@ -124,15 +124,15 @@
 @table-condensed-cell-padding:  6px; /* Not supported yet in CMS */
 
 //** Default background color used for all tables.
-@table-bg:                      #f9f9f9;
+@table-bg:                      #fafafa;
 //** Background color used for `.table-striped`.
-@table-bg-accent:               darken(@table-bg, 2%);
+@table-bg-accent:               darken(@table-bg, 1%);
 //** Background color used for `.table-hover`.
-@table-bg-hover:                darken(@table-bg, 10%);
+@table-bg-hover:                darken(@table-bg, 5%);
 @table-bg-active:               @table-bg-hover;
 
 //** Border color for table and cell borders.
-@table-border-color:            #fff;
+@table-border-color:            #ccc;
 
 
 //== Buttons
@@ -143,7 +143,7 @@
 
 @btn-default-color:              #fff;
 @btn-default-bg:                 rgb(130, 130, 130);
-@btn-default-border:             transparent;
+@btn-default-border:             darken(@btn-default-bg, 5%);
 
 @btn-primary-color:              #fff;
 @btn-primary-bg:                 @brand-primary;
@@ -483,24 +483,24 @@
 //
 //## Define colors for form feedback states and, by default, alerts.
 
-@state-success-text:             rgb(50, 50, 50);
+@state-success-text:             @brand-success;
 @state-success-bg:               lighten(@brand-success, 45%);
 @state-success-border:           @brand-success;
 
-@state-info-text:                rgb(50, 50, 50);
+@state-info-text:                @brand-info;
 @state-info-bg:                  lighten(@brand-info, 35%);
 @state-info-border:              @brand-info;
 
-@state-warning-text:             rgb(50, 50, 50);
+@state-warning-text:             @brand-warning;
 @state-warning-bg:               lighten(@brand-warning, 35%);
 @state-warning-border:           @brand-warning;
 
-@state-danger-text:              rgb(50, 50, 50);
+@state-danger-text:              @brand-danger;
 @state-danger-bg:                lighten(@brand-danger, 35%);
 @state-danger-border:            @brand-danger;
 
 // TYPO3
-@state-notice-text:              rgb(50, 50, 50);
+@state-notice-text:              rgb(140, 140, 140);
 @state-notice-bg:                lighten(rgb(140, 140, 140), 40%);
 @state-notice-border:            rgb(140, 140, 140);
 
@@ -617,19 +617,19 @@
 @alert-link-font-weight:      bold;
 
 @alert-success-bg:            @state-success-bg;
-@alert-success-text:          @state-success-text;
+@alert-success-text:          rgb(50,50,50);
 @alert-success-border:        @state-success-border;
 
 @alert-info-bg:               @state-info-bg;
-@alert-info-text:             @state-info-text;
+@alert-info-text:             rgb(50,50,50);
 @alert-info-border:           @state-info-border;
 
 @alert-warning-bg:            @state-warning-bg;
-@alert-warning-text:          @state-warning-text;
+@alert-warning-text:          rgb(50,50,50);
 @alert-warning-border:        @state-warning-border;
 
 @alert-danger-bg:             @state-danger-bg;
-@alert-danger-text:           @state-danger-text;
+@alert-danger-text:           rgb(50,50,50);
 @alert-danger-border:         @state-danger-border;
 
 
@@ -838,7 +838,7 @@
 //** Horizontal offset for forms and lists.
 @component-offset-horizontal: 180px;
 //** Text muted color
-@text-muted:                  lighten(@text-color, 45%);
+@text-muted:                  lighten(@text-color,45%);
 //** Abbreviations and acronyms border color
 @abbr-border-color:           @gray-light;
 //** Headings small color

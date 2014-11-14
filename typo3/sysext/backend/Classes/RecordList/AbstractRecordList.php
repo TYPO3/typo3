@@ -197,23 +197,25 @@ abstract class AbstractRecordList {
 	 * @param int $h Is an integer >=0 and denotes how tall a element is. Set to '0' makes a halv line, -1 = full line, set to 1 makes a 'join' and above makes 'line'
 	 * @param string $icon Is the <img>+<a> of the record. If not supplied the first 'join'-icon will be a 'line' instead
 	 * @param array $data Is the dataarray, record with the fields. Notice: These fields are (currently) NOT htmlspecialchar'ed before being wrapped in <td>-tags
-	 * @param string $tdParams Is insert in the <td>-tags. Must carry a ' ' as first character
+	 * @param string $rowParams Is insert in the <tr>-tags. Must carry a ' ' as first character
 	 * @param int OBSOLETE - NOT USED ANYMORE. $lMargin is the leftMargin (int)
 	 * @param string $altLine Is the HTML <img>-tag for an alternative 'gfx/ol/line.gif'-icon (used in the top)
+	 * @param string $colType Defines the tag being used for the columns. Default is td.
 	 * @return string HTML content for the table row
 	 */
-	public function addElement($h, $icon, $data, $trParams = '', $lMargin = '', $altLine = '') {
+	public function addElement($h, $icon, $data, $rowParams = '', $lMargin = '', $altLine = '', $colType = 'td') {
+		$colType = ($colType === 'th') ? 'th' : 'td';
 		$noWrap = $this->no_noWrap ? '' : ' nowrap="nowrap"';
 		// Start up:
 		$out = '
 		<!-- Element, begin: -->
-		<tr ' . $trParams . '>';
+		<tr ' . $rowParams . '>';
 		// Show icon and lines
 		if ($this->showIcon) {
 			$out .= '
-			<td nowrap="nowrap" class="col-icon">';
+			<' . $colType . ' nowrap="nowrap" class="col-icon">';
 			if (!$h) {
-				$out .= '<img src="clear.gif" width="1" height="8" alt="" />';
+				$out .= '&nbsp;';
 			} else {
 				for ($a = 0; $a < $h; $a++) {
 					if (!$a) {
@@ -225,7 +227,7 @@ abstract class AbstractRecordList {
 					}
 				}
 			}
-			$out .= '</td>
+			$out .= '</' . $colType . '>
 			';
 		}
 		// Init rendering.
@@ -242,7 +244,7 @@ abstract class AbstractRecordList {
 						$cssClass = implode(' ', array($this->addElement_tdCssClass[$lastKey], $this->oddColumnsCssClass));
 					}
 					$out .= '
-						<td' . $noWrap . ' class="' . $cssClass . '"' . $colsp . $this->addElement_tdParams[$lastKey] . '>' . $data[$lastKey] . '</td>';
+						<' . $colType . $noWrap . ' class="' . $cssClass . '"' . $colsp . $this->addElement_tdParams[$lastKey] . '>' . $data[$lastKey] . '</' . $colType .'>';
 				}
 				$lastKey = $vKey;
 				$c = 1;
@@ -265,7 +267,7 @@ abstract class AbstractRecordList {
 				$cssClass = implode(' ', array($this->addElement_tdCssClass[$lastKey], $this->oddColumnsCssClass));
 			}
 			$out .= '
-				<td' . $noWrap . ' class="' . $cssClass . '"' . $colsp . $this->addElement_tdParams[$lastKey] . '>' . $data[$lastKey] . '</td>';
+				<' . $colType . $noWrap . ' class="' . $cssClass . '"' . $colsp . $this->addElement_tdParams[$lastKey] . '>' . $data[$lastKey] . '</' . $colType . '>';
 		}
 		// End row
 		$out .= '
