@@ -237,6 +237,10 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return array
 	 */
 	protected function selectAllVersionsFromPages($table, $pageList, $wsid, $filter, $stage, $language = NULL) {
+		// Include root level page as there might be some records with where root level restriction is ignored (e.g. FAL records)
+		if ($pageList !== '' && BackendUtility::isRootLevelRestrictionIgnored($table)) {
+			$pageList .= ',0';
+		}
 		$isTableLocalizable = BackendUtility::isTableLocalizable($table);
 		$languageParentField = '';
 		// If table is not localizable, but localized reocrds shall
@@ -413,17 +417,36 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return array
 	 */
 	protected function filterPermittedElements($recs, $table) {
-		$checkField = $table == 'pages' ? 'uid' : 'wspid';
 		$permittedElements = array();
 		if (is_array($recs)) {
 			foreach ($recs as $rec) {
-				$page = BackendUtility::getRecord('pages', $rec[$checkField], 'uid,pid,perms_userid,perms_user,perms_groupid,perms_group,perms_everybody');
-				if ($GLOBALS['BE_USER']->doesUserHaveAccess($page, 1) && $this->isLanguageAccessibleForCurrentUser($table, $rec)) {
+				if ($this->isPageAccessibleForCurrentUser($table, $rec) && $this->isLanguageAccessibleForCurrentUser($table, $rec)) {
 					$permittedElements[] = $rec;
 				}
 			}
 		}
 		return $permittedElements;
+	}
+
+	/**
+	 * Checking access to the page the record is on, respecting ignored root level restrictions
+	 *
+	 * @param string $table Name of the table
+	 * @param array $record Record row to be checked
+	 * @return bool
+	 */
+	protected function isPageAccessibleForCurrentUser($table, array $record) {
+		$pageIdField = $table === 'pages' ? 'uid' : 'wspid';
+		$pageId = isset($record[$pageIdField]) ? (int)$record[$pageIdField] : NULL;
+		if ($pageId === NULL) {
+			return FALSE;
+		}
+		if ($pageId === 0 && BackendUtility::isRootLevelRestrictionIgnored($table)) {
+			return TRUE;
+		}
+		$page = BackendUtility::getRecord('pages', $pageId, 'uid,pid,perms_userid,perms_user,perms_groupid,perms_group,perms_everybody');
+
+		return $GLOBALS['BE_USER']->doesUserHaveAccess($page, 1);
 	}
 
 	/**
@@ -434,7 +457,6 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return boolean
 	 */
 	protected function isLanguageAccessibleForCurrentUser($table, array $record) {
-		$languageUid = 0;
 		if (BackendUtility::isTableLocalizable($table)) {
 			$languageUid = $record[$GLOBALS['TCA'][$table]['ctrl']['languageField']];
 		} else {
@@ -450,7 +472,6 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return boolean
 	 */
 	static public function isOldStyleWorkspaceUsed() {
-		$oldStyleWorkspaceIsUsed = FALSE;
 		$cacheKey = 'workspace-oldstyleworkspace-notused';
 		$cacheResult = $GLOBALS['BE_USER']->getSessionData($cacheKey);
 		if (!$cacheResult) {
