@@ -10075,95 +10075,40 @@ Topbar
   background-image: url('../../../../images/spinner/3f3f3f.gif');
 }
 #typo3-topbar #typo3-top-container #typo3-toolbar > li {
-  position: relative;
+  margin-right: 1px;
 }
-#typo3-topbar #typo3-top-container #typo3-toolbar .toolbar-item {
-  text-align: center;
+#typo3-topbar #typo3-top-container #typo3-toolbar > li .t3-icon {
+  margin-right: 0;
 }
-#typo3-topbar #typo3-top-container #typo3-toolbar .toolbar-item .badge {
+#typo3-topbar #typo3-top-container #typo3-toolbar > li.dropdown {
+  color: #999999;
+  background-color: #353535;
+}
+#typo3-topbar #typo3-top-container #typo3-toolbar > li .badge {
   position: absolute;
   top: 6px;
   right: 4px;
   font-size: 7px;
 }
-#typo3-topbar #typo3-top-container #typo3-toolbar .toolbar-item-active {
-  background-color: #4e4e4e;
-  color: #ffffff;
-}
-#typo3-topbar #typo3-top-container #typo3-toolbar .toolbar-item-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 1000;
-  display: none;
-  float: left;
-  min-width: 160px;
-  padding: 5px 0;
-  margin: 2px 0 0;
-  list-style: none;
-  font-size: 12px;
-  text-align: left;
-  background-color: #ffffff;
-  border: 1px solid #cccccc;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 2px;
-  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-  background-clip: padding-box;
-  display: block;
-  visiblity: hidden;
-  left: auto;
-  right: 0;
+#typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu {
   background-color: #4e4e4e;
   color: #ffffff;
   border: 0;
   margin: 0;
 }
-#typo3-topbar #typo3-top-container #typo3-toolbar .toolbar-item-menu.pull-right {
-  right: 0;
-  left: auto;
+#typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu .active a {
+  background-color: #282828;
 }
-#typo3-topbar #typo3-top-container #typo3-toolbar .toolbar-item-menu .divider {
-  height: 1px;
-  margin: 8px 0;
-  overflow: hidden;
-  background-color: #e5e5e5;
-}
-#typo3-topbar #typo3-top-container #typo3-toolbar .toolbar-item-menu > li > a {
-  display: block;
-  padding: 3px 20px;
-  clear: both;
-  font-weight: normal;
-  line-height: 1.5;
-  color: #5a5a5a;
-  white-space: nowrap;
-}
-#typo3-topbar #typo3-top-container #typo3-toolbar .toolbar-item-menu li a,
-#typo3-topbar #typo3-top-container #typo3-toolbar .toolbar-item-menu td a {
+#typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu li a,
+#typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu td a {
   color: #ffffff;
   text-decoration: none;
 }
-#typo3-topbar #typo3-top-container #typo3-toolbar .toolbar-item-menu li a:hover,
-#typo3-topbar #typo3-top-container #typo3-toolbar .toolbar-item-menu td a:hover {
+#typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu li a:hover,
+#typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu td a:hover {
   background-color: #353535;
   color: #ffffff;
   text-decoration: none;
-}
-/* - - - - - - - - - - - - - - - - - - - - -
-Clear cache
-- - - - - - - - - - - - - - - - - - - - - */
-#clear-cache-actions-menu li {
-  text-align: left;
-}
-#clear-cache-actions-menu li img {
-  float: left;
-  padding-right: 6px;
-}
-#clear-cache-actions-menu li a {
-  text-decoration: none;
-}
-#clear-cache-actions-menu li a span.t3-icon {
-  vertical-align: middle;
 }
 /* - - - - - - - - - - - - - - - - - - - - -
 Shortcuts menu
@@ -10172,7 +10117,6 @@ Shortcuts menu
   width: 100%;
 }
 #shortcut-menu .shortcut-list tr.shortcut td {
-  line-height: 16px;
   padding: 2px 1px;
 }
 #shortcut-menu .shortcut-list tr.shortcut-group td.shortcut-group-icon,
@@ -10181,16 +10125,9 @@ Shortcuts menu
 #shortcut-menu .shortcut-list td.shortcut-delete {
   text-align: center;
 }
-#shortcut-menu .shortcut-list tr.shortcut td.shortcut-label a,
 #shortcut-menu .shortcut-list tr.shortcut td.shortcut-edit img,
 #shortcut-menu .shortcut-list tr.shortcut td.shortcut-delete img {
   cursor: pointer;
-}
-#shortcut-menu .shortcut-list .shortcut-group td {
-  background-color: #dbdbdb;
-  color: #000;
-  border-bottom: 1px solid #a5a5a5;
-  border-top: 1px solid #a5a5a5;
 }
 #shortcut-menu .shortcut-list tr.shortcut-group td.shortcut-group-icon,
 #shortcut-menu .shortcut-list tr.shortcut td.shortcut-icon,
@@ -10218,32 +10155,8 @@ Shortcuts menu
 /* - - - - - - - - - - - - - - - - - - - - -
 Username inside the toolbar
 - - - - - - - - - - - - - - - - - - - - - */
-#username {
-  color: #fff;
-}
-#username a {
-  color: #ffffff;
-  font-weight: bold;
-  font-size: 11px;
-  text-decoration: none;
-  line-height: 18px;
-}
-#username a span.t3-icon {
-  vertical-align: top;
-  margin-top: 1px;
-}
-#username img {
-  padding-right: 4px;
-}
-#username.su-user a {
+#topbar-user-menu.su-user a {
   color: #eb6e5a;
-}
-/* - - - - - - - - - - - - - - - - - - - - -
-Logon / Logout
-- - - - - - - - - - - - - - - - - - - - - */
-#login-info p {
-  padding-bottom: 30px;
-  padding-top: 5px;
 }
 /* - - - - - - - - - - - - - - - - - - - - -
 Workspace Selector
@@ -10267,9 +10180,6 @@ body.typo3-in-workspace #typo3-top-container {
   background-image: url('../../../../images/backgrounds/topbar-in-workspace-background-left.png'), url('../../../../images/backgrounds/topbar-in-workspace-background-right.png'), url('../../../../images/backgrounds/topbar-in-workspace-background.gif');
   background-repeat: no-repeat, no-repeat, repeat-x;
   background-position: left top, right top, left top;
-}
-body.typo3-in-workspace #typo3-top-container #username {
-  text-shadow: 0 0 5px #000000;
 }
 /* - - - - - - - - - - - - - - - - - - - - -
 Live Search
@@ -10316,15 +10226,9 @@ Live Search
   color: #ddd;
 }
 .search-list-help-content {
-  margin: 5px;
+  margin: 13.5px 15px;
   height: 100%;
-  padding: 0.6em 0.6em 0.6em 2.6em;
-  background-repeat: no-repeat;
-  background-position: 0.5em 0.7em;
-  border: 1px solid;
   color: #000000;
-  background-color: #ddeef9;
-  border-color: #8aafc4;
 }
 /**
  * This file is part of the TYPO3 CMS project.

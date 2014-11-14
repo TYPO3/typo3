@@ -66,12 +66,7 @@ class LiveSearchToolbarItem implements ToolbarItemInterface {
 			<form class="navbar-form" role="search">
 				<div class="live-search-wrapper">
 					<div class="form-group">
-						<div class="input-group">
-							<input type="text" class="form-control" placeholder="Search" id="live-search-box">
-							<span class="input-group-addon">
-								<span title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:search') . '" class="t3-icon t3-icon-apps t3-icon-apps-toolbar t3-icon-toolbar-menu-search">&nbsp;</span>
-							</span>
-						</div>
+						<input type="text" class="form-control" placeholder="Search" id="live-search-box">
 					</div>
 				</div>
 			</form>

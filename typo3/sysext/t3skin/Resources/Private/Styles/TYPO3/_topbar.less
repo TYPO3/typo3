@@ -45,38 +45,36 @@ Topbar
 			}
 
 			> li {
-				.dropdown;
-			}
+				margin-right: 1px;
 
-			.toolbar-item {
+				.t3-icon {
+					margin-right: 0;
+				}
+
+				&.dropdown {
+					color: @navbar-inverse-link-color;
+					background-color: @navbar-inverse-link-bg;
+				}
+
 				.badge {
 					position: absolute;
 					top: 6px;
 					right: 4px;
 					font-size: 7px;
 				}
-
-				text-align: center;
 			}
 
-			.toolbar-item-active {
-				background-color: @navbar-inverse-link-active-bg;
-				color: @navbar-inverse-link-active-color;
-			}
-
-			.toolbar-item-menu {
-				.dropdown-menu;
-
-				// Migration between Toolbaritem -> Bootstrap
-				display: block;
-				visiblity: hidden;
-				left: auto;
-				right: 0;
-
+			.dropdown-menu {
 				background-color: @navbar-inverse-link-active-bg;
 				color: @navbar-inverse-link-active-color;
 				border: 0;
 				margin: 0;
+
+				.active {
+					a {
+						background-color: darken(@navbar-inverse-link-active-bg, 15%);
+					}
+				}
 
 				li,
 				td {
@@ -97,28 +95,6 @@ Topbar
 }
 
 /* - - - - - - - - - - - - - - - - - - - - -
-Clear cache
-- - - - - - - - - - - - - - - - - - - - - */
-
-#clear-cache-actions-menu {
-	li {
-		text-align: left;
-
-		img {
-			float: left;
-			padding-right: 6px;
-		}
-		a {
-			text-decoration: none;
-
-			span.t3-icon {
-				vertical-align: middle;
-			}
-		}
-	}
-}
-
-/* - - - - - - - - - - - - - - - - - - - - -
 Shortcuts menu
 - - - - - - - - - - - - - - - - - - - - - */
 
@@ -127,7 +103,6 @@ Shortcuts menu
 		width: 100%;
 
 		tr.shortcut td {
-			line-height: 16px;
 			padding: 2px 1px;
 		}
 
@@ -142,19 +117,10 @@ Shortcuts menu
 	text-align: center;
 }
 
-#shortcut-menu .shortcut-list tr.shortcut td.shortcut-label a,
 #shortcut-menu .shortcut-list tr.shortcut td.shortcut-edit img,
 #shortcut-menu .shortcut-list tr.shortcut td.shortcut-delete img {
 	cursor: pointer;
 }
-
-#shortcut-menu .shortcut-list .shortcut-group td {
-	background-color: #dbdbdb;
-	color: #000;
-	border-bottom: 1px solid #a5a5a5;
-	border-top: 1px solid #a5a5a5;
-}
-
 
 #shortcut-menu .shortcut-list tr.shortcut-group td.shortcut-group-icon,
 #shortcut-menu .shortcut-list tr.shortcut td.shortcut-icon,
@@ -188,47 +154,18 @@ Shortcuts menu
 Username inside the toolbar
 - - - - - - - - - - - - - - - - - - - - - */
 
-#username {
-	color: #fff;
-
-	a {
-		color: #ffffff;
-		font-weight: bold;
-		font-size: 11px;
-		text-decoration: none;
-		line-height: 18px;
-
-		span.t3-icon {
-			vertical-align: top;
-			margin-top: 1px;
-		}
-	}
-
-	img {
-		padding-right: 4px;
-	}
-
-
+#topbar-user-menu {
 	&.su-user {
 		a {
 			color: #eb6e5a;
 		}
-
 	}
-}
-
-/* - - - - - - - - - - - - - - - - - - - - -
-Logon / Logout
-- - - - - - - - - - - - - - - - - - - - - */
-
-#login-info p {
-	padding-bottom: 30px;
-	padding-top: 5px;
 }
 
 /* - - - - - - - - - - - - - - - - - - - - -
 Workspace Selector
 - - - - - - - - - - - - - - - - - - - - - */
+
 #workspace-selector-menu  {
 	ul {
 		li {
@@ -262,10 +199,6 @@ body.typo3-in-workspace {
 			url('../../../../images/backgrounds/topbar-in-workspace-background.gif');
 		background-repeat: no-repeat, no-repeat, repeat-x;
 		background-position: left top, right top, left top;
-
-		#username {
-			text-shadow: 0 0 5px #000000;
-		}
 	}
 }
 
@@ -327,14 +260,7 @@ Live Search
 }
 
 .search-list-help-content {
-	margin: 5px;
+	margin: @navbar-padding-vertical @navbar-padding-horizontal;
 	height: 100%;
-	padding: 0.6em 0.6em 0.6em 2.6em;
-	background-repeat: no-repeat;
-	background-position: 0.5em 0.7em;
-	border: 1px solid;
 	color: #000000;
-
-	background-color: #ddeef9;
-	border-color: #8aafc4;
 }
