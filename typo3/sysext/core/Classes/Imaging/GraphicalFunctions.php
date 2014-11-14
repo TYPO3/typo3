@@ -2192,7 +2192,7 @@ class GraphicalFunctions {
 				// the image to be scaled!! (that is if no width / height is
 				// given or if the destination w/h matches the original image
 				// dimensions or if the option to not scale the image is set)
-				$noScale = !$w && !$h || $data[0] == $info[0] && $data[1] == $info[1] || $options['noScale'];
+				$noScale = !$w && !$h || $data[0] == $info[0] && $data[1] == $info[1] || !empty($options['noScale']);
 				if ($noScale && !$data['crs'] && !$params && !$frame && $newExt == $info[2] && !$mustCreate) {
 					// Set the new width and height before returning,
 					// if the noScale option is set
