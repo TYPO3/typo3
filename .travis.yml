@@ -32,6 +32,7 @@ notifications:
 before_script:
   - if [ -e ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini ]; then echo "extension = memcache.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
   - if [ -e ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini ]; then echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
+  - chmod a+x typo3/sysext/core/Build/Scripts/*
   - sudo apt-get install parallel
   - composer self-update
   - composer install
@@ -57,3 +58,7 @@ script:
             exit 99;
         fi
     "
+  - >
+    echo;
+    echo "Running XLF checker";
+    ./typo3/sysext/core/Build/Scripts/xlfcheck.sh
