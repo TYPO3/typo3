@@ -179,8 +179,6 @@ class LiveSearch extends \TYPO3\CMS\Backend\Toolbar\LiveSearchToolbarItem {}
 
 class ShortcutMenu extends \TYPO3\CMS\Backend\Toolbar\ShortcutToolbarItem {}
 
-interface backend_toolbarItem extends \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInterface {}
-
 abstract class t3lib_tree_ExtDirect_AbstractExtJsTree extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTree {}
 
 abstract class t3lib_tree_AbstractTree extends \TYPO3\CMS\Backend\Tree\AbstractTree {}

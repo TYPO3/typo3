@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Backend\Toolbar;
+namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 
 /**
  * Class to render the shortcut menu
@@ -740,6 +741,15 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 	 */
 	protected function getLinkedPageId($url) {
 		return preg_replace('/.*[\\?&]id=([^&]+).*/', '$1', $url);
+	}
+
+	/**
+	 * Position relative to others, live search should be very right
+	 *
+	 * @return int
+	 */
+	public function getIndex() {
+		return 20;
 	}
 
 }

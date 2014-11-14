@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Backend\Toolbar;
+namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Toolbar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 
 /**
  * class to render the menu for the cache clearing actions
@@ -140,7 +141,7 @@ class ClearCacheToolbarItem implements ToolbarItemInterface {
 		$cacheMenu = array();
 		$cacheMenu[] = '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . IconUtility::getSpriteIcon('apps-toolbar-menu-cache', array('title' => $title)) . '</a>';
 		$cacheMenu[] = '<ul class="dropdown-menu" role="menu">';
-		foreach ($this->cacheActions as $actionKey => $cacheAction) {
+		foreach ($this->cacheActions as $cacheAction) {
 			$cacheMenu[] = '<li><a href="' . htmlspecialchars($cacheAction['href'])
 				. '" title="' . htmlspecialchars($cacheAction['description'] ?: $cacheAction['title']) . '">'
 				. $cacheAction['icon'] . ' ' . htmlspecialchars($cacheAction['title']) . '</a></li>';
@@ -204,6 +205,15 @@ class ClearCacheToolbarItem implements ToolbarItemInterface {
 	 */
 	protected function getBackendUser() {
 		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * Position relative to others
+	 *
+	 * @return int
+	 */
+	public function getIndex() {
+		return 25;
 	}
 
 }

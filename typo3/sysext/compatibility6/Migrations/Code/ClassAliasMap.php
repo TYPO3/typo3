@@ -89,7 +89,6 @@ return array(
 	'ClearCacheMenu' => 'TYPO3\\CMS\\Backend\\Toolbar\\ClearCacheToolbarItem',
 	'LiveSearch' => 'TYPO3\\CMS\\Backend\\Toolbar\\LiveSearchToolbarItem',
 	'ShortcutMenu' => 'TYPO3\\CMS\\Backend\\Toolbar\\ShortcutToolbarItem',
-	'backend_toolbarItem' => 'TYPO3\\CMS\\Backend\\Toolbar\\ToolbarItemHookInterface',
 	't3lib_tree_ExtDirect_AbstractExtJsTree' => 'TYPO3\\CMS\\Backend\\Tree\\AbstractExtJsTree',
 	't3lib_tree_AbstractTree' => 'TYPO3\\CMS\\Backend\\Tree\\AbstractTree',
 	't3lib_tree_AbstractDataProvider' => 'TYPO3\\CMS\\Backend\\Tree\\AbstractTreeDataProvider',

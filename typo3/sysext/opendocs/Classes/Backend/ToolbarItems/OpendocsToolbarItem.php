@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Opendocs\Controller;
+namespace TYPO3\CMS\Opendocs\Backend\ToolbarItems;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -14,13 +14,15 @@ namespace TYPO3\CMS\Opendocs\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
+
 /**
  * Adding a list of all open documents of a user to the backend.php
  *
  * @author Benjamin Mack <benni@typo3.org>
  * @author Ingo Renner <ingo@typo3.org>
  */
-class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface {
+class OpendocsToolbarItem implements ToolbarItemInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Backend\Controller\BackendController
@@ -295,6 +297,15 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemInterf
 	public function renderAjax($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj = NULL) {
 		$menuContent = $this->renderMenu();
 		$ajaxObj->addContent('opendocsMenu', $menuContent);
+	}
+
+	/**
+	 * Position relative to others
+	 *
+	 * @return int
+	 */
+	public function getIndex() {
+		return 30;
 	}
 
 }

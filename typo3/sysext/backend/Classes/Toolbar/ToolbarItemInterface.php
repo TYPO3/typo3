@@ -74,4 +74,15 @@ interface ToolbarItemInterface {
 	 */
 	public function getAdditionalAttributes();
 
+	/**
+	 * Returns an integer between 0 and 100 to determine
+	 * the position of this item relative to others
+	 *
+	 * By default, extensions should return 50 to be sorted between main core
+	 * items and other items that should be on the very right.
+	 *
+	 * @return integer 0 .. 100
+	 */
+	public function getIndex();
+
 }

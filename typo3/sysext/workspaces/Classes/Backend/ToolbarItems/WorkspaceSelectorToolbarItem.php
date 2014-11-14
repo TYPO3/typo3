@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Workspaces\ExtDirect;
+namespace TYPO3\CMS\Workspaces\Backend\ToolbarItems;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -154,6 +154,15 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 	 */
 	public function getDropdown() {
 		return TRUE;
+	}
+
+	/**
+	 * Position relative to others
+	 *
+	 * @return int
+	 */
+	public function getIndex() {
+		return 40;
 	}
 
 }

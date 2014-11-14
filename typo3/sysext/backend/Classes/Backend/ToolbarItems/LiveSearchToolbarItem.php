@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Backend\Toolbar;
+namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Backend\Toolbar;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 
 /**
  * Adds backend live search to the toolbar
@@ -91,7 +93,7 @@ class LiveSearchToolbarItem implements ToolbarItemInterface {
 	 * @return string The name of the ID attribute
 	 */
 	public function getIdAttribute() {
-		return 'live-search-menu';
+		return 'livesearch-menu';
 	}
 
 	/**
@@ -110,6 +112,15 @@ class LiveSearchToolbarItem implements ToolbarItemInterface {
 	 */
 	public function getDropdown() {
 		return FALSE;
+	}
+
+	/**
+	 * Position relative to others, live search should be very right
+	 *
+	 * @return int
+	 */
+	public function getIndex() {
+		return 90;
 	}
 
 }

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\SysAction;
+namespace TYPO3\CMS\SysAction\Backend\ToolbarItems;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -15,13 +15,14 @@ namespace TYPO3\CMS\SysAction;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 
 /**
  * Adds action links to the backend's toolbar
  *
  * @author Steffen Kamper <info@sk-typo3.de>
  */
-class ActionToolbarMenu implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface {
+class ActionToolbarItem implements ToolbarItemInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Backend\Controller\BackendController
@@ -161,6 +162,15 @@ class ActionToolbarMenu implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemInterfa
 	public function checkAccess() {
 		// Taskcenter is enabled for everybody
 		return TRUE;
+	}
+
+	/**
+	 * Position relative to others
+	 *
+	 * @return int
+	 */
+	public function getIndex() {
+		return 35;
 	}
 
 }

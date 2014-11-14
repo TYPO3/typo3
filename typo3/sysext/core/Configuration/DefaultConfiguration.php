@@ -702,6 +702,7 @@ return array(
 				'csrfTokenCheck' => TRUE
 			),
 		),
+		'toolbarItems' => array(), // Array: Registered toolbar items classes
 		'HTTP' => array(
 			'Response' => array(
 				'Headers' => array('clickJackingProtection' => 'X-Frame-Options: SAMEORIGIN')
