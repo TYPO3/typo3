@@ -62,8 +62,8 @@ interface ToolbarItemInterface {
 	 *
 	 * @return bool
 	 */
-	public function hasDropDrown();
-
+//	public function hasDropDrown();
+// TODO put that back in action and fix all classes by 2014-11-15
 	/**
 	 * Returns additional attributes for the list item in the toolbar
 	 *
