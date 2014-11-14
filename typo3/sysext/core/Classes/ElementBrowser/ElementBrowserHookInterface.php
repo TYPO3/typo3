@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Core\ElementBrowser;
  */
 
 /**
- * Interface for classes which hook into browse_links
+ * Interface for classes which hook into \TYPO3\CMS\Recordlist\Browser\ElementBrowser
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
@@ -24,7 +24,7 @@ interface ElementBrowserHookInterface {
 	/**
 	 * Initializes the hook object
 	 *
-	 * @param \TYPO3\CMS\Recordlist\Browser\ElementBrowser Parent browse_links object
+	 * @param \TYPO3\CMS\Recordlist\Browser\ElementBrowser Parent \TYPO3\CMS\Recordlist\Browser\ElementBrowser object
 	 * @param array Additional parameters
 	 * @return void
 	 */

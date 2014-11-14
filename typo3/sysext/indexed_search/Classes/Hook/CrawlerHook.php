@@ -419,7 +419,7 @@ class CrawlerHook {
 				// Lookup old phash rows:
 				$oldPhashRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('phash', 'index_phash', 'freeIndexUid=' . (int)$cfgRec['uid'] . ' AND freeIndexSetId<>' . (int)$cfgRec['set_id']);
 				foreach ($oldPhashRows as $pHashRow) {
-					// Removing old registrations for all tables (code copied from class.tx_indexedsearch_modfunc1.php)
+					// Removing old registrations for all tables (code copied from \TYPO3\CMS\IndexedSearch\Controller\IndexedPagesController)
 					$tableArr = explode(',', 'index_phash,index_rel,index_section,index_grlist,index_fulltext,index_debug');
 					foreach ($tableArr as $table) {
 						$GLOBALS['TYPO3_DB']->exec_DELETEquery($table, 'phash=' . (int)$pHashRow['phash']);

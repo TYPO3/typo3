@@ -1290,7 +1290,7 @@ class TemplateService {
 	 * @param bool $noTitle If set, then only the site title is outputted (from $this->setup['sitetitle'])
 	 * @param bool $showTitleFirst If set, then "sitetitle" and $title is swapped
 	 * @return string The page title on the form "[sitetitle]: [input-title]". Not htmlspecialchar()'ed.
-	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::tempPageCacheContent(), TSpagegen::renderContentWithHeader()
+	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::tempPageCacheContent(), \TYPO3\CMS\Frontend\Page\PageGenerator::renderContentWithHeader()
 	 */
 	public function printTitle($pageTitle, $noTitle = FALSE, $showTitleFirst = FALSE) {
 		$siteTitle = trim($this->setup['sitetitle']);
@@ -1425,7 +1425,7 @@ class TemplateService {
 	 * @param string $typeOverride If you set this value to something else than a blank string, then the typeNumber used in the link will be forced to this value. Normally the typeNum is based on the target set OR on $GLOBALS['TSFE']->config['config']['forceTypeValue'] if found.
 	 * @param string $targetDomain The target Doamin, if any was detected in typolink
 	 * @return array Contains keys like "totalURL", "url", "sectionIndex", "linkVars", "no_cache", "type", "target" of which "totalURL" is normally the value you would use while the other keys contains various parts that was used to construct "totalURL
-	 * @see \TYPO3\CMS\Frontend\Page\FramesetRenderer::frameParams(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::SEARCHRESULT(), TSpagegen::pagegenInit(), \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::link()
+	 * @see \TYPO3\CMS\Frontend\Page\FramesetRenderer::frameParams(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::SEARCHRESULT(), \TYPO3\CMS\Frontend\Page\PageGenerator::pagegenInit(), \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::link()
 	 */
 	public function linkData($page, $oTarget, $no_cache, $script, $overrideArray = NULL, $addParams = '', $typeOverride = '', $targetDomain = '') {
 		$LD = array();

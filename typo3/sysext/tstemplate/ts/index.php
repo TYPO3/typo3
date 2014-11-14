@@ -13,7 +13,7 @@
  */
 
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController::class);
-/* @var $SOBE SC_mod_web_ts_index */
+/* @var $SOBE \TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController */
 $SOBE->init();
 // Include files?
 foreach ($SOBE->include_once as $INC_FILE) {

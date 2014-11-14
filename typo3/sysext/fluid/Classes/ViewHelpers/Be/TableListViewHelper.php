@@ -69,7 +69,7 @@ class TableListViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 	 * @param string $clickTitleMode one of "edit", "show" (only pages, tt_content), "info
 	 * @param bool $alternateBackgroundColors Deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 * @return string the rendered record list
-	 * @see localRecordList
+	 * @see \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList
 	 */
 	public function render($tableName, array $fieldList = array(), $storagePid = NULL, $levels = 0, $filter = '', $recordsPerPage = 0, $sortField = '', $sortDescending = FALSE, $readOnly = FALSE, $enableClickMenu = TRUE, $clickTitleMode = NULL, $alternateBackgroundColors = FALSE) {
 		if ($alternateBackgroundColors) {

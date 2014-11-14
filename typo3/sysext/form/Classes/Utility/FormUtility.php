@@ -111,7 +111,7 @@ class FormUtility implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Gets the last part of the current object's class name.
-	 * e.g. for 'tx_form_View_Confirmation_Additional' it will be 'Additional'
+	 * e.g. for '\TYPO3\CMS\Form\View\Confirmation\Additional\AdditionalElementView' it will be 'Additional'
 	 *
 	 * @param object $object The object to be used
 	 * @param bool $lowercase Whether to convert to lowercase

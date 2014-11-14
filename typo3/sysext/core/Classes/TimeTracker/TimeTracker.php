@@ -212,7 +212,7 @@ class TimeTracker {
 	 * Increases the stack pointer
 	 *
 	 * @return void
-	 * @see decStackPointer(), TSpagegen::renderContent(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGetSingle()
+	 * @see decStackPointer(), \TYPO3\CMS\Frontend\Page\PageGenerator::renderContent(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGetSingle()
 	 */
 	public function incStackPointer() {
 		$this->tsStackPointer++;
@@ -223,7 +223,7 @@ class TimeTracker {
 	 * Decreases the stack pointer
 	 *
 	 * @return void
-	 * @see incStackPointer(), TSpagegen::renderContent(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGetSingle()
+	 * @see incStackPointer(), \TYPO3\CMS\Frontend\Page\PageGenerator::renderContent(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGetSingle()
 	 */
 	public function decStackPointer() {
 		unset($this->tsStack[$this->tsStackPointer]);

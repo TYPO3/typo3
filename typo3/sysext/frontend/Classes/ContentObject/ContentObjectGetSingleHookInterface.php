@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  */
 
 /**
- * Interface for classes which hook into tslib_content and do additional cObjGetSingle processing
+ * Interface for classes which hook into \TYPO3\CMS\Frontend\ContentObject and do additional cObjGetSingle processing
  *
  * @author Ingo Renner <ingo@typo3.org>
  */

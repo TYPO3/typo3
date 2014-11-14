@@ -178,12 +178,12 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		// initialization
 		$wsid = 987654321;
 
-		// simulate calls from tslib_fe->fetch_the_id()
+		// simulate calls from \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->fetch_the_id()
 		$this->pageSelectObject->versioningPreview = FALSE;
 		$this->pageSelectObject->versioningWorkspaceId = $wsid;
 		$this->pageSelectObject->init(FALSE);
 
-		// check SQL created by t3lib_pageSelect->getPage()
+		// check SQL created by \TYPO3\CMS\Frontend\Page\PageRepository->getPage()
 		$GLOBALS['TYPO3_DB']->expects($this->once())
 			->method('exec_SELECTquery')
 			->with(
@@ -208,12 +208,12 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		// initialization
 		$wsid = 987654321;
 
-		// simulate calls from tslib_fe->fetch_the_id()
+		// simulate calls from \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->fetch_the_id()
 		$this->pageSelectObject->versioningPreview = TRUE;
 		$this->pageSelectObject->versioningWorkspaceId = $wsid;
 		$this->pageSelectObject->init(FALSE);
 
-		// check SQL created by t3lib_pageSelect->getPage()
+		// check SQL created by \TYPO3\CMS\Frontend\Page\PageRepository->getPage()
 		$GLOBALS['TYPO3_DB']->expects($this->once())
 			->method('exec_SELECTquery')
 			->with(

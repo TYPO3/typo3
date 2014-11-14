@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  */
 
 /**
- * interface for classes which hook into tslib_content and do additional stdWrap processing
+ * interface for classes which hook into \TYPO3\CMS\Frontend\ContentObject and do additional stdWrap processing
  *
  * @author Ingo Renner <ingo@typo3.org>
  */

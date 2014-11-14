@@ -230,7 +230,7 @@ class SoftReferenceIndex {
 	 * @param string $content The input content to analyse
 	 * @param array $spParams Parameters set for the softref parser key in TCA/columns. value "linkList" will split the string by comma before processing.
 	 * @return array Result array on positive matches, see description above. Otherwise FALSE
-	 * @see tslib_content::typolink(), getTypoLinkParts()
+	 * @see \TYPO3\CMS\Frontend\ContentObject::typolink(), getTypoLinkParts()
 	 */
 	public function findRef_typolink($content, $spParams) {
 		// First, split the input string by a comma if the "linkList" parameter is set.
@@ -265,7 +265,7 @@ class SoftReferenceIndex {
 	 * @param string $content The input content to analyse
 	 * @param array $spParams Parameters set for the softref parser key in TCA/columns
 	 * @return array Result array on positive matches, see description above. Otherwise FALSE
-	 * @see tslib_content::typolink(), getTypoLinkParts()
+	 * @see \TYPO3\CMS\Frontend\ContentObject::typolink(), getTypoLinkParts()
 	 */
 	public function findRef_typolink_tag($content, $spParams) {
 		// Parse string for special TYPO3 <link> tag:
@@ -534,11 +534,11 @@ class SoftReferenceIndex {
 	 * TypoLinks format is: <link [typolink] [browser target] [css class] [title attribute] [additionalParams]>.
 	 * See TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typolink()
 	 * The syntax of the [typolink] part is: [typolink] = [page id or alias][,[type value]][#[anchor, if integer = tt_content uid]]
-	 * The extraction is based on how tslib_content::typolink() behaves.
+	 * The extraction is based on how \TYPO3\CMS\Frontend\ContentObject::typolink() behaves.
 	 *
 	 * @param string $typolinkValue TypoLink value.
 	 * @return array Array with the properties of the input link specified. The key "LINK_TYPE" will reveal the type. If that is blank it could not be determined.
-	 * @see TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typolink(), setTypoLinkPartsElement()
+	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typolink(), setTypoLinkPartsElement()
 	 */
 	public function getTypoLinkParts($typolinkValue) {
 		$finalTagParts = array();

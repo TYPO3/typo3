@@ -17,7 +17,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Repository for tx_form_Domain_Model_Content
+ * Repository for \TYPO3\CMS\Form\Domain\Model\Content
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
  */

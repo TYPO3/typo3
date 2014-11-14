@@ -69,7 +69,7 @@ class FrontendContentAdapterService {
 	);
 
 	/**
-	 * Modifies the DB row in the CONTENT cObj of tslib_content for supplying
+	 * Modifies the DB row in the CONTENT cObj of \TYPO3\CMS\\Frontend\ContentObject for supplying
 	 * backwards compatibility for some file fields which have switched to using
 	 * the new File API instead of the old uploads/ folder for storing files.
 	 *

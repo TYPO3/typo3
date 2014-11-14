@@ -22,7 +22,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  * Class for starting TypoScript page generation
  *
  * The class is not instantiated as an objects but called directly with the "::" operator.
- * eg: TSpagegen::pagegenInit()
+ * eg: \TYPO3\CMS\Frontend\Page\PageGenerator::pagegenInit()
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
@@ -1002,7 +1002,7 @@ class PageGenerator {
 	/*************************
 	 *
 	 * Helper functions
-	 * Remember: Calls internally must still be done on the non-instantiated class: TSpagegen::inline2TempFile()
+	 * Remember: Calls internally must still be done on the non-instantiated class: PageGenerator::inline2TempFile()
 	 *
 	 *************************/
 	/**

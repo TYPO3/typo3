@@ -49,7 +49,7 @@ Can I put the cache tables in a different database?
 
 Yes, you can map the cache tables somewhere else. There is one caveat,
 though – if you put the ``cache_pages`` table into a different database
-than the pages table the FE will throw an error. The ``tslib_fe`` class
+than the pages table the FE will throw an error. The ``\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController`` class
 uses a join over those two tables, which cannot work. Never.
 
 You can do two things to work around this: Use the file-based caching

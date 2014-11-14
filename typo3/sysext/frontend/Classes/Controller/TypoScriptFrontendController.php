@@ -3000,7 +3000,7 @@ class TypoScriptFrontendController {
 	 */
 	protected function redirectToCurrentPage() {
 		$this->calculateLinkVars();
-		// instantiate tslib_content to generate the correct target URL
+		// Instantiate \TYPO3\CMS\Frontend\ContentObject to generate the correct target URL
 		/** @var $cObj \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
 		$cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 		$parameter = $this->page['uid'];

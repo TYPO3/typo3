@@ -692,7 +692,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 				$tagCode = GeneralUtility::unQuoteFilenames(trim(substr($this->getFirstTag($v), 0, -1)), TRUE);
 				$link_param = $tagCode[1];
 				$href = '';
-				// Parsing the typolink data. This parsing is roughly done like in tslib_content->typolink()
+				// Parsing the typolink data. This parsing is roughly done like in \TYPO3\CMS\Frontend\ContentObject->typolink()
 				// Parse URL:
 				$pU = parse_url($link_param);
 				if (strstr($link_param, '@') && (!$pU['scheme'] || $pU['scheme'] == 'mailto')) {

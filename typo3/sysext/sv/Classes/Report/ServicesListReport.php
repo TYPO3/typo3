@@ -30,9 +30,9 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface {
 	protected $reportsModule;
 
 	/**
-	 * Constructor for class tx_sv_reports_ServicesList
+	 * Constructor
 	 *
-	 * @param tx_reports_Module $reportsModule Back-reference to the calling reports module
+	 * @param \TYPO3\CMS\Reports\Controller\ReportController $reportsModule Back-reference to the calling reports module
 	 */
 	public function __construct(\TYPO3\CMS\Reports\Controller\ReportController $reportsModule) {
 		$this->reportsModule = $reportsModule;

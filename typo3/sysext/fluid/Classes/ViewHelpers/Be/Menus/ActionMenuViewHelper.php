@@ -56,7 +56,7 @@ class ActionMenuViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagB
 	protected $tagName = 'select';
 
 	/**
-	 * An array of Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode
+	 * An array of \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode
 	 *
 	 * @var array
 	 */

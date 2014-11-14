@@ -22,7 +22,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Menus;
  *                                                                        */
 /**
  * View helper which returns a option tag.
- * This view helper only works in conjunction with Tx_Fluid_ViewHelpers_Be_Menus_ActionMenuViewHelper
+ * This view helper only works in conjunction with \TYPO3\CMS\Fluid\ViewHelpers\Be\Menus\ActionMenuViewHelper
  * Note: This view helper is experimental!
  *
  * = Examples =
@@ -63,7 +63,7 @@ class ActionMenuItemViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
 	 * @param string $action the action to be associated with this ActionMenuItem
 	 * @param array $arguments additional controller arguments to be passed to the action when this ActionMenuItem is selected
 	 * @return string the rendered option tag
-	 * @see Tx_Fluid_ViewHelpers_Be_Menus_ActionMenuViewHelper
+	 * @see \TYPO3\CMS\Fluid\ViewHelpers\Be\Menus\ActionMenuViewHelper
 	 */
 	public function render($label, $controller, $action, array $arguments = array()) {
 		$uriBuilder = $this->controllerContext->getUriBuilder();

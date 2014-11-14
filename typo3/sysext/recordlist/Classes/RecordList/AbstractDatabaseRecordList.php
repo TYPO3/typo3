@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Shared between Web>List (db_list.php) and Web>Page (sysext/cms/layout/db_layout.php)
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @see localRecordList
+ * @see \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList
  */
 class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 
