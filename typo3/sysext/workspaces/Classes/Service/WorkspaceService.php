@@ -186,14 +186,13 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 		$wsid = (int)$wsid;
 		$filter = (int)$filter;
 		$output = array();
-		// Include root level page as there might be some records with where root level restriction is ignored (e.g. FAL records)
-		$pageList = '0,';
 		// Contains either nothing or a list with live-uids
 		if ($pageId != -1 && $recursionLevel > 0) {
-			$pageList .= $this->getTreeUids($pageId, $wsid, $recursionLevel);
+			$pageList = $this->getTreeUids($pageId, $wsid, $recursionLevel);
 		} elseif ($pageId != -1) {
-			$pageList .= $pageId;
+			$pageList = $pageId;
 		} else {
+			$pageList = '';
 			// check if person may only see a "virtual" page-root
 			$mountPoints = array_map('intval', $GLOBALS['BE_USER']->returnWebmounts());
 			$mountPoints = array_unique($mountPoints);
@@ -202,7 +201,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 				foreach ($mountPoints as $mountPoint) {
 					$tempPageIds[] = $this->getTreeUids($mountPoint, $wsid, $recursionLevel);
 				}
-				$pageList .= implode(',', $tempPageIds);
+				$pageList = implode(',', $tempPageIds);
 			}
 		}
 		// Traversing all tables supporting versioning:
@@ -414,36 +413,17 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return array
 	 */
 	protected function filterPermittedElements($recs, $table) {
+		$checkField = $table == 'pages' ? 'uid' : 'wspid';
 		$permittedElements = array();
 		if (is_array($recs)) {
 			foreach ($recs as $rec) {
-				if ($this->isPageAccessibleForCurrentUser($table, $rec) && $this->isLanguageAccessibleForCurrentUser($table, $rec)) {
+				$page = BackendUtility::getRecord('pages', $rec[$checkField], 'uid,pid,perms_userid,perms_user,perms_groupid,perms_group,perms_everybody');
+				if ($GLOBALS['BE_USER']->doesUserHaveAccess($page, 1) && $this->isLanguageAccessibleForCurrentUser($table, $rec)) {
 					$permittedElements[] = $rec;
 				}
 			}
 		}
 		return $permittedElements;
-	}
-
-	/**
-	 * Checking access to the page the record is on, respecting ignored root level restrictions
-	 *
-	 * @param string $table Name of the table
-	 * @param array $record Record row to be checked
-	 * @return bool
-	 */
-	protected function isPageAccessibleForCurrentUser($table, array $record) {
-		$pageIdField = $table === 'pages' ? 'uid' : 'wspid';
-		$pageId = isset($record[$pageIdField]) ? (int)$record[$pageIdField] : NULL;
-		if ($pageId === NULL) {
-			return FALSE;
-		}
-		if ($pageId === 0 && BackendUtility::isRootLevelRestrictionIgnored($table)) {
-			return TRUE;
-		}
-		$page = BackendUtility::getRecord('pages', $pageId, 'uid,pid,perms_userid,perms_user,perms_groupid,perms_group,perms_everybody');
-
-		return $GLOBALS['BE_USER']->doesUserHaveAccess($page, 1);
 	}
 
 	/**
@@ -454,6 +434,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return boolean
 	 */
 	protected function isLanguageAccessibleForCurrentUser($table, array $record) {
+		$languageUid = 0;
 		if (BackendUtility::isTableLocalizable($table)) {
 			$languageUid = $record[$GLOBALS['TCA'][$table]['ctrl']['languageField']];
 		} else {
