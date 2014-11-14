@@ -26,14 +26,15 @@ class InlineSettingsArrayViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Abst
 	 * Render additional javascript to page
 	 *
 	 * @param array $settings Custom JavaScript settings to be added
+	 * @param string $namespace Set custom namespace for inline settings array
 	 * @return void
 	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 * @see \TYPO3\CMS\Core\Page\PageRenderer
 	 */
-	public function render(array $settings) {
+	public function render(array $settings, $namespace = '') {
 		$doc = $this->getDocInstance();
 		$pageRenderer = $doc->getPageRenderer();
-		$pageRenderer->addInlineSettingArray('', $settings);
+		$pageRenderer->addInlineSettingArray($namespace, $settings);
 	}
 
 }
