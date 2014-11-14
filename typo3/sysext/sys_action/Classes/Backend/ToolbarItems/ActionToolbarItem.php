@@ -146,11 +146,11 @@ class ActionToolbarItem implements ToolbarItemInterface {
 	}
 
 	/**
-	 * Get dropdown
+	 * This item has a drop down
 	 *
 	 * @return bool
 	 */
-	public function getDropdown() {
+	public function hasDropDown() {
 		return TRUE;
 	}
 

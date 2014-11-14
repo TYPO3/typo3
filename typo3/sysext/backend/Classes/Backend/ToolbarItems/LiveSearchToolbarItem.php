@@ -106,11 +106,11 @@ class LiveSearchToolbarItem implements ToolbarItemInterface {
 	}
 
 	/**
-	 * Get dropdown
+	 * This item has no drop down
 	 *
 	 * @return bool
 	 */
-	public function getDropdown() {
+	public function hasDropDown() {
 		return FALSE;
 	}
 

@@ -58,11 +58,11 @@ interface ToolbarItemInterface {
 	public function getExtraClasses();
 
 	/**
-	 * Get dropdown
+	 * TRUE if this toolbar item has a collapsible drop down
 	 *
 	 * @return bool
 	 */
-	public function getDropdown();
+	public function hasDropDrown();
 
 	/**
 	 * Returns additional attributes for the list item in the toolbar

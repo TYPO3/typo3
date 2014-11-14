@@ -326,7 +326,7 @@ class BackendController {
 				// @TODO: Should throw as soon as "loading by convention" is implemented
 				if ($toolbarItem instanceof \TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface) {
 					$classes = $toolbarItem->getExtraClasses();
-					if ($toolbarItem->getDropdown()) {
+					if ($toolbarItem->hasDropdown()) {
 						$classes[] = 'dropdown';
 					}
 
