@@ -385,38 +385,8 @@ class ResourceCompressor {
 		// only create it, if it doesn't exist, yet
 		if (!file_exists((PATH_site . $targetFile)) || $this->createGzipped && !file_exists((PATH_site . $targetFile . '.gzip'))) {
 			$contents = GeneralUtility::getUrl($filenameAbsolute);
-			// Perform some safe CSS optimizations.
-			$contents = str_replace(CR, '', $contents);
-			// Strip any and all carriage returns.
-			// Match and process strings, comments and everything else, one chunk at a time.
-			// To understand this regex, read: "Mastering Regular Expressions 3rd Edition" chapter 6.
-			$contents = preg_replace_callback('%
-				# One-regex-to-rule-them-all! - version: 20100220_0100
-				# Group 1: Match a double quoted string.
-				("[^"\\\\]*+(?:\\\\.[^"\\\\]*+)*+") |  # or...
-				# Group 2: Match a single quoted string.
-				(\'[^\'\\\\]*+(?:\\\\.[^\'\\\\]*+)*+\') |  # or...
-				# Group 3: Match a regular non-MacIE5-hack comment.
-				(/\\*[^\\\\*]*+\\*++(?:[^\\\\*/][^\\\\*]*+\\*++)*+/) |  # or...
-				# Group 4: Match a MacIE5-type1 comment.
-				(/\\*(?:[^*\\\\]*+\\**+(?!/))*+\\\\[^*]*+\\*++(?:[^*/][^*]*+\\*++)*+/(?<!\\\\\\*/)) |  # or...
-				# Group 5: Match a MacIE5-type2 comment.
-				(/\\*[^*]*\\*+(?:[^/*][^*]*\\*+)*/(?<=\\\\\\*/))  # folllowed by...
-				# Group 6: Match everything up to final closing regular comment
-				([^/]*+(?:(?!\\*)/[^/]*+)*?)
-				# Group 7: Match final closing regular comment
-				(/\\*[^/]++(?:(?<!\\*)/(?!\\*)[^/]*+)*+/(?<=(?<!\\\\)\\*/)) |  # or...
-				# Group 8: Match regular non-string, non-comment text.
-				([^"\'/]*+(?:(?!/\\*)/[^"\'/]*+)*+)
-				%Ssx', array('self', 'compressCssPregCallback'), $contents);
-			// Do it!
-			$contents = preg_replace('/^\\s++/', '', $contents);
-			// Strip leading whitespace.
-			$contents = preg_replace('/[ \\t]*+\\n\\s*+/S', '
-', $contents);
-			// Consolidate multi-lines space.
-			$contents = preg_replace('/(?<!\\s)\\s*+$/S', '
-', $contents);
+			// Compress CSS Content
+			$contents = $this->compressCssString($contents);
 			// Ensure file ends in newline.
 			// we have to fix relative paths, if we aren't working on a file in our target directory
 			if (strpos($filename, $this->targetDirectory) === FALSE) {
@@ -464,22 +434,25 @@ class ResourceCompressor {
 /*T2\\*/' . $matches[6] . '
 /*T2E*/
 ';
-		} elseif (isset($matches[8])) {
-			// Group 8: Non-string, non-comment. Safe to clean whitespace here.
-			$matches[8] = preg_replace('/^\\s++/', '', $matches[8]);
+		} elseif ($matches[8]) {
+			// Group 8: calc function (see http://www.w3.org/TR/2006/WD-css3-values-20060919/#calc)
+			return 'calc' . $matches[8];
+		} elseif (isset($matches[9])) {
+			// Group 9: Non-string, non-comment. Safe to clean whitespace here.
+			$matches[9] = preg_replace('/^\\s++/', '', $matches[9]);
 			// Strip all leading whitespace.
-			$matches[8] = preg_replace('/\\s++$/', '', $matches[8]);
+			$matches[9] = preg_replace('/\\s++$/', '', $matches[9]);
 			// Strip all trailing whitespace.
-			$matches[8] = preg_replace('/\\s{2,}+/', ' ', $matches[8]);
+			$matches[9] = preg_replace('/\\s{2,}+/', ' ', $matches[9]);
 			// Consolidate multiple whitespace.
-			$matches[8] = preg_replace('/\\s++([+>{};,)])/S', '$1', $matches[8]);
+			$matches[9] = preg_replace('/\\s++([+>{};,)])/S', '$1', $matches[9]);
 			// Clean pre-punctuation.
-			$matches[8] = preg_replace('/([+>{}:;,(])\\s++/S', '$1', $matches[8]);
+			$matches[9] = preg_replace('/([+>{}:;,(])\\s++/S', '$1', $matches[9]);
 			// Clean post-punctuation.
-			$matches[8] = preg_replace('/;?\\}/S', '}
-', $matches[8]);
+			$matches[9] = preg_replace('/;?\\}/S', '}
+', $matches[9]);
 			// Add a touch of formatting.
-			return $matches[8];
+			return $matches[9];
 		}
 		return $matches[0] . '
 /* ERROR! Unexpected _proccess_css_minify() parameter */
@@ -715,6 +688,51 @@ class ResourceCompressor {
 			GeneralUtility::writeFile(PATH_site . $filename, $externalContent);
 		}
 		return $filename;
+	}
+
+	/**
+	 * Compress a CSS string by removing comments and whitespace characters
+	 *
+	 * @param string $contents
+	 * @return string
+	 */
+	protected function compressCssString($contents) {
+		// Perform some safe CSS optimizations.
+		$contents = str_replace(CR, '', $contents);
+		// Strip any and all carriage returns.
+		// Match and process strings, comments and everything else, one chunk at a time.
+		// To understand this regex, read: "Mastering Regular Expressions 3rd Edition" chapter 6.
+		$contents = preg_replace_callback('%
+				# One-regex-to-rule-them-all! - version: 20100220_0100
+				# Group 1: Match a double quoted string.
+				("[^"\\\\]*+(?:\\\\.[^"\\\\]*+)*+") |  # or...
+				# Group 2: Match a single quoted string.
+				(\'[^\'\\\\]*+(?:\\\\.[^\'\\\\]*+)*+\') |  # or...
+				# Group 3: Match a regular non-MacIE5-hack comment.
+				(/\\*[^\\\\*]*+\\*++(?:[^\\\\*/][^\\\\*]*+\\*++)*+/) |  # or...
+				# Group 4: Match a MacIE5-type1 comment.
+				(/\\*(?:[^*\\\\]*+\\**+(?!/))*+\\\\[^*]*+\\*++(?:[^*/][^*]*+\\*++)*+/(?<!\\\\\\*/)) |  # or...
+				# Group 5: Match a MacIE5-type2 comment.
+				(/\\*[^*]*\\*+(?:[^/*][^*]*\\*+)*/(?<=\\\\\\*/))  # folllowed by...
+				# Group 6: Match everything up to final closing regular comment
+				([^/]*+(?:(?!\\*)/[^/]*+)*?)
+				# Group 7: Match final closing regular comment
+				(/\\*[^/]++(?:(?<!\\*)/(?!\\*)[^/]*+)*+/(?<=(?<!\\\\)\\*/)) |  # or...
+				# Group 8: Match a calc function (see http://www.w3.org/TR/2006/WD-css3-values-20060919/#calc)
+				(?:calc(\\((?:(?:[^\\(\\)]+)|(?8))*+\\))) | # or...
+				# Group 9: Match regular non-string, non-comment text.
+				((?:[^"\'/](?!calc))*+(?:(?!/\\*)/(?:[^"\'/](?!calc))*+)*+)
+				%Ssx', array('self', 'compressCssPregCallback'), $contents);
+		// Do it!
+		$contents = preg_replace('/^\\s++/', '', $contents);
+		// Strip leading whitespace.
+		$contents = preg_replace('/[ \\t]*+\\n\\s*+/S', '
+', $contents);
+		// Consolidate multi-lines space.
+		$contents = preg_replace('/(?<!\\s)\\s*+$/S', '
+', $contents);
+
+		return $contents;
 	}
 
 }
