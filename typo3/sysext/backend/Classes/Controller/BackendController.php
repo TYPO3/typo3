@@ -730,7 +730,7 @@ class BackendController {
 	 */
 	protected function generateModuleMenu() {
 		// get all modules except the user modules for the side menu
-		$moduleStorage = $this->backendModuleRepository->loadAllowedModules(array('user'));
+		$moduleStorage = $this->backendModuleRepository->loadAllowedModules(array('user', 'help'));
 
 		/** @var $view \TYPO3\CMS\Fluid\View\StandaloneView */
 		$view = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
