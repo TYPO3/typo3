@@ -1,0 +1,53 @@
+{namespace csh=TYPO3\CMS\Cshmanual\ViewHelpers}
+<a id="{manual.table}{f:if(condition:manual.field,then:'.{manual.field}')}"></a>
+
+<h2>{manual.headerLine}</h2>
+
+<p>{manual.content}</p>
+
+<f:if condition="{manual.configuration.details}">
+	<h3>
+		<f:translate key="LLL:EXT:lang/locallang_view_help.xlf:details" />
+	</h3>
+	<csh:format>{manual.configuration.details}</csh:format>
+</f:if>
+
+<f:if condition="{manual.configuration.syntax}">
+	<h3>
+		<f:translate key="LLL:EXT:lang/locallang_view_help.xlf:syntax" />
+	</h3>
+	{manual.configuration.syntax}
+</f:if>
+
+<f:if condition="{manual.images}">
+	<f:for each="{manual.images}" as="image">
+		<div>
+			<img src="../{image.image}" />
+			<f:if condition="{image.description}">
+				<p>{image.description}</p>
+			</f:if>
+		</div>
+	</f:for>
+	{manual.configuration.syntax}
+</f:if>
+
+<f:if condition="{manual.seeAlso}">
+	<h3>
+		<f:translate key="LLL:EXT:lang/locallang_view_help.xlf:seeAlso" />
+	</h3>
+	<ul>
+		<f:for each="{manual.seeAlso}" as="link">
+			<li>
+				<f:if condition="{link.internal}">
+					<f:then>
+						<f:link.action action="detail" arguments="{link.arguments}">{link.title}</f:link.action>
+					</f:then>
+					<f:else>
+						<a href="{link.url}" target="{link.target}">{link.title}</a>
+					</f:else>
+				</f:if>
+
+			</li>
+		</f:for>
+	</ul>
+</f:if>

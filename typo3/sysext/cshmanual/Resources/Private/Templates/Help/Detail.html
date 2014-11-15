@@ -1,0 +1,12 @@
+{namespace csh=TYPO3\CMS\Cshmanual\ViewHelpers}
+<f:layout name="Default" />
+
+<f:section name="docheader">
+	<f:be.buttons.icon uri="{f:uri.action(action:'index')}" icon="actions-view-go-up" />
+</f:section>
+
+<f:section name="content">
+	<f:for each="{manuals}" as="manual">
+		<f:render partial="Manual" arguments="{manual:manual}" />
+	</f:for>
+</f:section>

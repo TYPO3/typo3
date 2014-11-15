@@ -83,7 +83,12 @@ class BackendLayoutWizardController {
 		$pageRenderer->loadExtJS();
 		$pageRenderer->addJsFile(ExtensionManagementUtility::extRelPath('backend') . 'Resources/Public/JavaScript/grideditor.js');
 		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
-		$pageRenderer->addInlineSetting('ContextHelp', 'moduleUrl', BackendUtility::getModuleUrl('help_cshmanual'));
+		$pageRenderer->addInlineSetting('ContextHelp', 'moduleUrl', BackendUtility::getModuleUrl('help_CshmanualCshmanual', array(
+			'tx_cshmanual_help_cshmanualcshmanual' => array(
+				'controller' => 'Help',
+				'action' => 'detail'
+			)
+		)));
 		$pageRenderer->addJsInlineCode('storeData', '
 			function storeData(data) {
 				if (parent.opener && parent.opener.document && parent.opener.document.' . $this->formName . ' && parent.opener.document.' . $this->formName . '[' . GeneralUtility::quoteJSvalue($this->fieldName) . ']) {

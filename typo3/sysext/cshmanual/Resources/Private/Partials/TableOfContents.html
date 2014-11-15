@@ -1,0 +1,35 @@
+<h1>
+	<f:translate key="LLL:EXT:lang/locallang_view_help.xlf:manual_title" />
+</h1>
+<p class="lead">
+	<f:translate key="LLL:EXT:lang/locallang_view_help.xlf:description" />
+</p>
+
+<h2>
+	<f:translate key="LLL:EXT:lang/locallang_view_help.xlf:TOC" />
+</h2>
+
+<f:if condition="{toc}">
+	<ul>
+		<f:for each="{toc}" as="modules" key="type">
+			<li>
+				<f:translate key="LLL:EXT:lang/locallang_view_help.xlf:TOC_{type}" default="{type}" />
+
+				<ul>
+					<f:for each="{modules}" as="title" key="module">
+						<li>
+							<f:if condition="{all}">
+								<f:then>
+									<a href="#{module}">{module}</a>
+								</f:then>
+								<f:else>
+									<f:link.action action="detail" arguments="{table:module,field:'*'}">{title}</f:link.action>
+								</f:else>
+							</f:if>
+						</li>
+					</f:for>
+				</ul>
+			</li>
+		</f:for>
+	</ul>
+</f:if>

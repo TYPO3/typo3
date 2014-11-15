@@ -94,11 +94,12 @@ define('TYPO3/CMS/Backend/ContextHelp', ['jquery', 'TYPO3/CMS/Backend/Popover', 
 	 * @param {object} $trigger
 	 */
 	ContextHelp.showHelpPopup = function($trigger) {
-		var identifier = $trigger.data('table') + '.' + $trigger.data('field'),
-			configuration = top.TYPO3.configuration.ContextHelpWindows || top.TYPO3.configuration.PopupWindow;
+		var configuration = top.TYPO3.configuration.ContextHelpWindows || top.TYPO3.configuration.PopupWindow;
 		try {
 			var cshWindow = window.open(
-				ContextHelp.helpModuleUrl + '&tfID=' + identifier,
+				ContextHelp.helpModuleUrl +
+					'&tx_cshmanual_help_cshmanualcshmanual[table]=' + $trigger.data('table') +
+					'&tx_cshmanual_help_cshmanualcshmanual[field]=' + $trigger.data('field'),
 				'ContextHelpWindow',
 				'height=' + configuration.height + ',width=' + configuration.width + ',status=0,menubar=0,scrollbars=1'
 			);

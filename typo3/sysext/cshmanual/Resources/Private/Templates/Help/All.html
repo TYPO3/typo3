@@ -1,0 +1,15 @@
+<f:layout name="Default" />
+
+<f:section name="docheader">
+	<f:be.buttons.icon uri="{f:uri.action(action:'index')}" icon="actions-view-go-up" />
+</f:section>
+
+<f:section name="content">
+	<f:render partial="TableOfContents" arguments="{toc:all.toc,all:1}" />
+
+	<f:for each="{all.content}" as="sections">
+		<f:for each="{sections.content}" as="item">
+			<f:render partial="Manual" arguments="{manual:item}" />
+		</f:for>
+	</f:for>
+</f:section>
