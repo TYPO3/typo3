@@ -172,7 +172,8 @@ class tx_t3editor_hooks_tstemplateinfo {
 						// process template row before saving
 						require_once t3lib_extMgm::extPath('tstemplate_info').'class.tx_tstemplateinfo.php';
 						$tstemplateinfo = t3lib_div::makeInstance('tx_tstemplateinfo'); /* @var $tstemplateinfo tx_tstemplateinfo */
-							// load the MOD_SETTINGS in order to check if the includeTypoScriptFileContent is set						
+							// load the MOD_SETTINGS in order to check if the includeTypoScriptFileContent is set
+						$tstemplateinfo->pObj = $pObj;
 						$tstemplateinfo->pObj->MOD_SETTINGS = t3lib_BEfunc::getModuleData(
 							array('includeTypoScriptFileContent' => true), 
 							array(), 
