@@ -7096,6 +7096,9 @@ DocHeader
   float: left;
   margin-right: 6px;
 }
+#typo3-docheader .left .buttongroup .c-inputButton {
+  color: inherit;
+}
 #typo3-docheader .left select {
   margin-right: 12px;
 }
