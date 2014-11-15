@@ -1465,43 +1465,26 @@ class FormEngine {
 		if ($config['format']) {
 			$itemValue = $this->formatValue($config, $itemValue);
 		}
+		if (!$config['pass_content']) {
+			$itemValue = htmlspecialchars($itemValue);
+		}
+
 		$rows = (int)$config['rows'];
+		// Render as textarea
 		if ($rows > 1) {
 			if (!$config['pass_content']) {
-				$itemValue = nl2br(htmlspecialchars($itemValue));
+				$itemValue = nl2br($itemValue);
 			}
-			// Like textarea
-			$cols = MathUtility::forceIntegerInRange($config['cols'] ? $config['cols'] : 30, 5, $this->maxTextareaWidth);
-			if (!$config['fixedRows']) {
-				$origRows = ($rows = MathUtility::forceIntegerInRange($rows, 1, 20));
-				if (strlen($itemValue) > $this->charsPerRow * 2) {
-					$cols = $this->maxTextareaWidth;
-					$rows = MathUtility::forceIntegerInRange(round(strlen($itemValue) / $this->charsPerRow), count(explode(LF, $itemValue)), 20);
-					if ($rows < $origRows) {
-						$rows = $origRows;
-					}
-				}
-			}
-
-			$cols = round($cols * $this->form_largeComp);
+			$cols = round($config['cols'] * $this->form_largeComp);
 			$width = ceil($cols * $this->form_rowsToStylewidth);
-			// Hardcoded: 12 is the height of the font
-			$height = $rows * 12;
-			$item = '
-				<div style="overflow:auto; height:' . $height . 'px; width:' . $width . 'px;" class="t3-tceforms-fieldReadOnly">'
-				. $itemValue . IconUtility::getSpriteIcon('status-status-readonly') . '</div>';
+			$item = '<textarea class="form-control" style="width:' . $width . 'px;" cols="' . $cols . '" rows="' . $rows . '" disabled>' . $itemValue . '</textarea>';
 		} else {
-			if (!$config['pass_content']) {
-				$itemValue = htmlspecialchars($itemValue);
-			}
-			$cols = $config['cols'] ? $config['cols'] : ($config['size'] ? $config['size'] : $this->maxInputWidth);
+			$cols = $config['cols'] ?: ($config['size'] ?: $this->maxInputWidth);
 			$cols = round($cols * $this->form_largeComp);
 			$width = ceil($cols * $this->form_rowsToStylewidth);
-			// Overflow:auto crashes mozilla here. Title tag is useful when text is longer than the div box (overflow:hidden).
 			$item = '
-				<div style="overflow:hidden; width:' . $width . 'px;" class="t3-tceforms-fieldReadOnly" title="' . $itemValue . '">'
-				. '<span class="nobr">' . ((string)$itemValue !== '' ? $itemValue : '&nbsp;') . '</span>'
-				. IconUtility::getSpriteIcon('status-status-readonly') . '</div>';
+				<input class="form-control" value="'. $itemValue .'" style="width:' . $width . 'px;" type="text" disabled>'
+				. '<span class="nobr">' . ((string)$itemValue !== '' ? $itemValue : '&nbsp;') . '</span>';
 		}
 		return $item;
 	}

@@ -36,9 +36,6 @@ class TextElement extends AbstractFormElement {
 	 */
 	public function render($table, $field, $row, &$additionalInformation) {
 		$config = $additionalInformation['fieldConf']['config'];
-		if ($this->formEngine->renderReadonly || $config['readOnly']) {
-			return $this->formEngine->getSingleField_typeNone_render($config, $additionalInformation['itemFormElValue']);
-		}
 
 		// Setting columns number
 		$cols = MathUtility::forceIntegerInRange($config['cols'] ?: 30, 5, $this->formEngine->maxTextareaWidth);
@@ -58,6 +55,14 @@ class TextElement extends AbstractFormElement {
 			if ($rows < $originalRows) {
 				$rows = $originalRows;
 			}
+		}
+
+		// must be called after the cols and rows calculation, so the parameters are applied
+		// to read-only fields as well.
+		if ($this->formEngine->renderReadonly || $config['readOnly']) {
+			$config['cols'] = $cols;
+			$config['rows'] = $rows;
+			return $this->formEngine->getSingleField_typeNone_render($config, $additionalInformation['itemFormElValue']);
 		}
 
 		$evalList = GeneralUtility::trimExplode(',', $config['eval'], TRUE);
