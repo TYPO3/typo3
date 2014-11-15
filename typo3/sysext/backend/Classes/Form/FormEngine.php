@@ -4529,10 +4529,6 @@ class FormEngine {
 	 * @return string
 	 */
 	public function getPlaceholderAttribute($table, $field, array $config, array $row) {
-		if (!isset($config['mode']) || $config['mode'] !== 'useOrOverridePlaceholder') {
-			return '';
-		}
-
 		$value = $this->getPlaceholderValue($table, $field, $config, $row);
 
 		// Cleanup the string and support 'LLL:'
