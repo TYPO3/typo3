@@ -37,9 +37,14 @@ TYPO3.Components.PageModule = {
 				this.el.addClass('active-drag');
 
 				// Add css class for the drag shadow
-				this.el.child('.t3-page-ce-dragitem').addClass('dragitem-shadow');
+				if (this.el.child('.t3-icon-ce-dragitem')) {
+					this.el.child('.t3-page-ce-dragitem').addClass('dragitem-shadow');
+				}
+
 				// Hide create new element button
-				this.el.child('.t3-icon-document-new').addClass('drag-start');
+				if (this.el.child('.t3-icon-document-new')) {
+					this.el.child('.t3-icon-document-new').addClass('drag-start');
+				}
 
 				// Cache the original XY Coordinates of the element, we'll use this later.
 				this.originalXY = this.el.getXY();
@@ -94,9 +99,13 @@ TYPO3.Components.PageModule = {
 				// Remove css class to define inactive state
 				this.el.removeClass('active-drag');
 				// Remove dragitem-shadow after dragging
-				this.el.child('.t3-page-ce-dragitem').removeClass('dragitem-shadow');
+				if (this.el.child('.t3-page-ce-dragitem')) {
+					this.el.child('.t3-page-ce-dragitem').removeClass('dragitem-shadow');
+				}
 				// Show create new element button again
-				this.el.child('.t3-icon-document-new').removeClass('drag-start');
+				if (this.el.child('.t3-icon-document-new')) {
+					this.el.child('.t3-icon-document-new').removeClass('drag-start');
+				}
 			},
 
 			// Called upon successful drop of an element on a DDTarget with the same
