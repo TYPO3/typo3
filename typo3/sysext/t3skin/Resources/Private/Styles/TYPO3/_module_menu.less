@@ -14,7 +14,6 @@
 /* - - - - - - - - - - - - - - - - - - - - -
 Module menu
 - - - - - - - - - - - - - - - - - - - - - */
-
 @module-menu-height: 32px;
 @module-menu-padding-horizontal: @navbar-padding-horizontal;
 @module-menu-padding-vertical: floor((@module-menu-height - @line-height-computed) / 2);
@@ -22,84 +21,136 @@ Module menu
 #typo3-module-menu {
 	background: @navbar-inverse-bg;
 	color: @navbar-inverse-color;
-	padding-bottom: ceil(@module-menu-padding-vertical * 2);
-
-	.x-panel-body {
-		background-color: transparent;
-	}
-
-	#typo3-menu {
-	    margin-top: 18px;
-		.list-unstyled;
-
+}
+#typo3-menu {
+	.list-unstyled();
+	background-color: darken(@navbar-inverse-bg,5%);
+	margin-bottom: ceil(@module-menu-padding-vertical * 2);
+	.typo3-module-menu-group-container {
+		.list-unstyled();
 		> li {
-			margin-bottom: 1px;
-
-			div.modgroup {
-				.text-nowrap;
-				background-color: @navbar-inverse-link-disabled-bg;
-				color: @navbar-inverse-link-disabled-color;
-				cursor: pointer;
-				font-weight: bold;
-				text-transform: uppercase;
-				font-size: 0.9em;
-				padding: @module-menu-padding-vertical @module-menu-padding-horizontal;
+			margin: 1px 0;
+		}
+	}
+	.typo3-module-menu-group {
+		.transition(all 0.4s ease-in-out);
+		position: relative;
+		background-color: @navbar-inverse-bg;
+		padding: 4px 0 5px;
+		border-left: 3px solid lighten(@navbar-inverse-bg, 10%);
+		margin: 1px 0;
+	}
+	.typo3-module-menu-group.expanded {
+		background-color: darken(@navbar-inverse-bg, 3%);
+		border-left-color: lighten(@navbar-inverse-bg, 25%);
+	}
+	.typo3-module-menu-group-header {
+		.clearfix();
+		position: relative;
+		cursor: pointer;
+		display: block;
+		padding: 3px 10px 3px 7px;
+		text-transform: uppercase;
+	}
+	.typo3-module-menu-item {
+		&:hover {
+			color: @navbar-inverse-link-hover-color;
+			background-color: @navbar-inverse-link-hover-bg;
+		}
+		&.active {
+			position: relative;
+			background-color: lighten(@navbar-inverse-bg, 10%);
+			a {
+				color: @navbar-inverse-link-active-color;
+				background-color: @navbar-inverse-link-active-bg;
 			}
-
-			ul {
-				.list-unstyled;
-
-				li {
-					a {
-						.text-nowrap;
-						color: @navbar-inverse-link-color;
-						padding: @module-menu-padding-vertical @module-menu-padding-horizontal;
-						position: relative;
-						display: block;
-						text-decoration: none;
-						overflow: hidden;
-
-						&:hover {
-							background-color: @navbar-inverse-link-hover-bg;
-							color: @navbar-inverse-link-hover-color;
-						}
-
-						span.submodule-icon {
-							position: absolute;
-						}
-
-						span.submodule-label {
-							display: block;
-							margin-left: 26px;
-						}
-
-					}
-
-					&.active {
-						font-weight: bold;
-
-						a {
-							background-color: @navbar-inverse-link-active-bg;
-							color: @navbar-inverse-link-active-color;
-
-							&:after {
-								content: " ";
-								line-height: 0;
-								position: absolute;
-								right: 0;
-								top: 8px;
-								border: 8px solid transparent;
-								border-right: 8px solid white;
-							}
-						}
-					}
-				}
+			&:after {
+				display: block;
+				content: '';
+				position: absolute;
+				right: 0;
+				top: 50%;
+				margin-top: -8px;
+				border: 8px solid transparent;
+				border-right: 8px solid white;
 			}
-
-			img {
-				max-width: 16px;
-				max-height: 16px;
+		}
+	}
+	.typo3-module-menu-item-link {
+		.clearfix();
+		display: block;
+		padding: 2px 10px 2px 7px;
+		color: @navbar-inverse-link-color;
+		&:hover {
+			text-decoration: none;
+			color: @navbar-inverse-link-hover-color;
+		}
+	}
+	.typo3-module-menu-group-icon,
+	.typo3-module-menu-item-icon {
+		position: relative;
+		display: block;
+		padding: 0px;
+		height: 32px;
+		width: 32px;
+		margin-right: 10px;
+		float: left;
+		overflow: hidden;
+		border-radius: @border-radius-small;
+		> span {
+			display: table;
+			height: 100%;
+			width: 100%;
+			> span {
+				display: table-cell;
+				text-align: center;
+				vertical-align: middle;
 			}
+		}
+		img {
+			max-height: 32px;
+			max-width: 32px;
+		}
+	}
+	.typo3-module-menu-group-icon {
+		.fa {
+			font-size: 1.6em;
+			vertical-align: middle;
+		}
+	}
+	.typo3-module-menu-group-title,
+	.typo3-module-menu-item-title {
+		padding-top: 8px;
+		display: block;
+		overflow: hidden;
+		*zoom: 1;
+	}
+	.typo3-module-menu-group-title {
+		padding-right: 20px;
+		.caret {
+			.transition(all 0.25s ease-in-out);
+			position: absolute;
+			top: 17px;
+			right: 20px;
+		}
+	}
+	// Module Group Expanded
+	.expanded {
+		.typo3-module-menu-group-header {
+			color: @navbar-inverse-link-active-color;
+		}
+		.typo3-module-menu-group-title {
+			.caret {
+				.rotate(-180deg);
+			}
+		}
+	}
+	// Navigation Snapped
+	// Not used in use right now
+	&.nav-snapped {
+		.typo3-module-menu-group-title,
+		.typo3-module-menu-item-title {
+			display: none;
 		}
 	}
 }

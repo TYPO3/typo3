@@ -36,36 +36,39 @@ TYPO3.ModuleMenu.App = {
 			me.showModule(top.startInModule[0]);
 		} else {
 			// fetch first module
-			me.showModule(jQuery('.t3-menuitem-submodule:first').attr('id'));
+			me.showModule(jQuery('.typo3-module-menu-item:first').attr('id'));
 		}
 
 		// check if there are collapsed items in the local storage
 		var collapsedMainMenuItems = this.getCollapsedMainMenuItems();
 		jQuery.each(collapsedMainMenuItems, function(key, itm) {
-			var $headerElement = jQuery('#' + key).find('.modgroup:first');
-			if ($headerElement.length > 0) {
-				$headerElement.addClass('collapsed').removeClass('expanded').next('.t3-menuitem-submodules').slideUp('fast');
+			var $group = jQuery('#' + key);
+			if ($group.length > 0) {
+				var $groupContainer = $group.find('.typo3-module-menu-group-container');
+				$group.addClass('collapsed').removeClass('expanded');
+				$groupContainer.slideUp('fast');
 			}
 		});
-
 		me.initializeEvents();
 	},
 
 	initializeEvents: function() {
 		var me = this;
-		jQuery(document).on('click', '.t3-menuitem-main .modgroup', function() {
-			var $headerElement = jQuery(this);
-			if ($headerElement.hasClass('expanded')) {
-				me.addCollapsedMainMenuItem($headerElement.parent().attr('id'));
-				$headerElement.addClass('collapsed').removeClass('expanded').next('.t3-menuitem-submodules').slideUp();
+		jQuery(document).on('click', '.typo3-module-menu-group .typo3-module-menu-group-header', function() {
+			var $group = jQuery(this).parent('.typo3-module-menu-group');
+			var $groupContainer = $group.find('.typo3-module-menu-group-container');
+			if ($group.hasClass('expanded')) {
+				me.addCollapsedMainMenuItem($group.attr('id'));
+				$group.addClass('collapsed').removeClass('expanded');
+				$groupContainer.slideUp();
 			} else {
-				me.removeCollapseMainMenuItem($headerElement.parent().attr('id'));
-				$headerElement.addClass('expanded').removeClass('collapsed').next('.t3-menuitem-submodules').slideDown();
+				me.removeCollapseMainMenuItem($group.attr('id'));
+				$group.addClass('expanded').removeClass('collapsed');
+				$groupContainer.slideDown();
 			}
 		});
-
 		// register clicking on sub modules
-		jQuery(document).on('click', '.t3-menuitem-submodule', function(evt) {
+		jQuery(document).on('click', '.typo3-module-menu-item,.t3-menuitem-submodule', function(evt) {
 			evt.preventDefault();
 			me.showModule(jQuery(this).attr('id'));
 		});
@@ -183,7 +186,7 @@ TYPO3.ModuleMenu.App = {
 	},
 
 	highlightModuleMenuItem: function(module, mainModule) {
-		jQuery('.t3-menuitem-submodule.active').removeClass('active');
+		jQuery('.typo3-module-menu-item.active').removeClass('active');
 		jQuery('#' + module).addClass('active');
 	},
 

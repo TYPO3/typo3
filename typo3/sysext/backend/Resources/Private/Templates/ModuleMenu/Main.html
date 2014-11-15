@@ -1,15 +1,45 @@
 <ul class="nav nav-modules" data-typo3-role="typo3-module-menu" id="typo3-menu">
 	<f:for each="{modules}" as="mainModule">
-		<li class="menuSection t3-menuitem-main" id="{mainModule.name}" data-modulename="{mainModule.name}" data-navigationcomponentid="{mainModule.navigationComponentId}" data-navigationframescript="{mainModule.navigationFrameScript}" data-navigationframescriptparameters="{mainModule.navigationFrameScriptParameters}">
-			<div class="modgroup expanded">{mainModule.title}</div>
-			<ul class="t3-menuitem-submodules">
+		<li class="typo3-module-menu-group expanded" id="{mainModule.name}" data-modulename="{mainModule.name}" data-navigationcomponentid="{mainModule.navigationComponentId}" data-navigationframescript="{mainModule.navigationFrameScript}" data-navigationframescriptparameters="{mainModule.navigationFrameScriptParameters}">
+			<div class="typo3-module-menu-group-header">
+				<span class="typo3-module-menu-group-icon">
+					<span>
+						<span>
+							<f:if condition="{mainModule.icon.html}">
+								<f:then>
+									<f:format.raw>{mainModule.icon.html}</f:format.raw>
+								</f:then>
+								<f:else>
+									<f:switch expression="{mainModule.name}">
+										<f:case value="web"><i class="fa fa-file-o"></i></f:case>
+										<f:case value="system"><i class="fa fa-plug"></i></f:case>
+										<f:case value="file"><i class="fa fa-image"></i></f:case>
+										<f:case value="tools"><i class="fa fa-rocket"></i></f:case>
+										<f:case default="TRUE"><i class="fa fa-bars"></i></f:case>
+									</f:switch>
+								</f:else>
+							</f:if>
+						</span>
+					</span>
+				</span>
+				<span class="typo3-module-menu-group-title">
+					{mainModule.title} <span class="caret"></span>
+				</span>
+			</div>
+			<ul class="typo3-module-menu-group-container">
 				<f:for each="{mainModule.children}" as="subModule">
-					<li id="{subModule.name}" class="t3-menuitem-submodule submodule mod-{subModule.name}" data-modulename="{mainModule.name}" data-navigationcomponentid="{subModule.navigationComponentId}" data-navigationframescript="{subModule.navigationFrameScript}" data-navigationframescriptparameters="{subModule.navigationFrameScriptParameters}">
-						<a title="{subModule.description}" href="{subModule.link}" class="modlink">
-							<span class="submodule-icon">
-								<f:format.raw>{subModule.icon.html}</f:format.raw>
+					<li id="{subModule.name}" class="typo3-module-menu-item" data-modulename="{mainModule.name}" data-navigationcomponentid="{subModule.navigationComponentId}" data-navigationframescript="{subModule.navigationFrameScript}" data-navigationframescriptparameters="{subModule.navigationFrameScriptParameters}">
+						<a title="{subModule.description}" href="{subModule.link}" class="typo3-module-menu-item-link">
+							<span class="typo3-module-menu-item-icon">
+								<span>
+									<span>
+										<f:format.raw>{subModule.icon.html}</f:format.raw>
+									</span>
+								</span>
 							</span>
-							<span class="submodule-label">{subModule.title}</span>
+							<span class="typo3-module-menu-item-title">
+								{subModule.title}
+							</span>
 						</a>
 					</li>
 				</f:for>
