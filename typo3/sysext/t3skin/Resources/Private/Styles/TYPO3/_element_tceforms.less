@@ -18,47 +18,60 @@ TCEforms
 // Special handling of Tabs within FormEngine
 .typo3-TCEforms {
 
+	// Move dyntab inner padding into fieldset for horizontal HR
 	div.typo3-dyntabmenu-divs {
-		// Override .tab inner padding: for section border
 		padding: 0;
 	}
 
-	.table {
-		margin-bottom: 0;
+	.c-tablayer {
+		div,
+		td {
+			vertical-align: top;
+		}
 
-		> tbody {
-			> tr {
-				> td {
-					background: none;
+		> table {
+			margin-bottom: 0;
 
+			> tbody {
+				> tr {
+					> td {
+						padding: 0 @line-height-computed 0 @line-height-computed;
+						background: none;
 
+						&.palette-header {
+							border-top: 1px solid @gray-light;
+							padding: ceil(@line-height-computed * 1.5) @line-height-computed floor(@line-height-computed * 0.25) @line-height-computed;
 
-					&.palette-header {
-						border-top: 1px solid @gray-light;
+							h3 {
+								margin-top: 0;
+							}
+						}
 
-						h3 {
-							// Padding and margin are created by table <td>
-							margin-top: @padding-large-vertical;
-							margin-bottom: 0;
+						.t3-form-palette-fieldset {
+							.t3-form-palette-field-container {
+								display: inline-block;
+								padding-right: 25px;
+								padding-bottom: @line-height-computed;
+							}
+						}
+
+					}
+
+					&:first-child {
+						> td {
+							padding-top: @line-height-computed;
+
+							&.palette-header {
+								border-top: none;
+							}
 						}
 					}
 
-					.t3-form-palette-fieldset {
-						margin-bottom: @padding-large-vertical;
-
-						.t3-form-palette-field-container {
-							margin-bottom: @padding-base-vertical;
+					&:last-child {
+						> td {
+							padding-bottom: @line-height-computed;
 						}
 					}
-
-
-					table.t3-form-field-group-file {
-						td {
-							// Padding coming from outer wrap
-							padding-left: 0;
-						}
-					}
-
 				}
 			}
 		}
@@ -140,10 +153,6 @@ img.t3-TCEforms-contentchangedPaletteImg {
 .typo3-TCEforms-recHeaderRow {
 	padding-top: 5px;
 	padding-bottom: 20px;
-}
-
-td.palette-header {
-	padding-left: 10px;
 }
 
 .typo3-TCEforms .bgColor2,
@@ -238,7 +247,7 @@ div.typo3-TCEforms div.c-tablayer table > tbody > tr > td > table.wrapperTable >
 }
 
 .typo3-TCEforms td.icons {
-	padding: 2px;
+	padding: 0 2px 2px 2px;
 }
 
 .typo3-TCEforms td.thumbnails {
@@ -307,18 +316,6 @@ div.typo3-TCEforms div.c-tablayer table > tbody > tr > td > table.wrapperTable >
 	margin: 4px 2px 4px 1px;
 }
 
-.t3-form-multiselect-filter-textfield {
-	width: 60px;
-	padding-left: 25px;
-}
-
-.t3-form-palette-field-container {
-	display: inline-block;
-	vertical-align: top;
-	padding-right: 25px;
-	margin-bottom: 0.5em;
-}
-
 .t3-form-palette-field-container .t3-form-palette-field-label,
 .t3-form-palette-field-container .t3-form-palette-field {
 	display: block;
@@ -347,9 +344,9 @@ div.typo3-TCEforms div.c-tablayer table > tbody > tr > td > table.wrapperTable >
 /* - - - - - - - - - - - - - - - - - - - - -
 TCEforms suggest
 - - - - - - - - - - - - - - - - - - - - - */
+
 div.typo3-TCEforms-suggest-position-right {
 	margin-left: 10px;
-	margin-top: 5px;
 }
 
 div.typo3-TCEforms-suggest label {
@@ -822,12 +819,6 @@ select option.c-divider {
 	padding-right: 5px;
 }
 
-
-.typo3-TCEforms .typo3-dyntabmenu-divs table {
-	border: none;
-	border-bottom: 1px solid #c0c0c0;
-}
-
 input.typo3-TCEforms-suggest-search {
 	background-image: url('../../../../icons/gfx/zoom.gif');
 	background-position: 2px center;
@@ -1004,6 +995,7 @@ TCEforms Sections
 /* - - - - - - - - - - - - - - - - - - - - -
 TCEforms Tree
 - - - - - - - - - - - - - - - - - - - - - */
+
 .t3-form-field-item .x-tree input.x-tree-node-cb {
 	height: auto;
 	margin: 0 0 0 1px;
