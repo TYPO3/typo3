@@ -448,8 +448,6 @@ class PageLayoutController {
 			$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 			$this->doc->backPath = $GLOBALS['BACK_PATH'];
 			$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/db_layout.html');
-			// JavaScript:
-			$this->doc->JScode = '<script type="text/javascript" ' . 'src="' . GeneralUtility::createVersionNumberedFilename(($GLOBALS['BACK_PATH'] . 'js/jsfunc.updateform.js')) . '">' . '</script>';
 
 			// override the default jumpToUrl
 			$this->doc->JScodeArray['jumpToUrl'] = '

@@ -364,7 +364,6 @@ class TypoScriptFrontendController {
 	 * Keys in use:
 	 *
 	 * JSFormValidate: <script type="text/javascript" src="'.$GLOBALS["TSFE"]->absRefPrefix.'typo3/sysext/frontend/Resources/Public/JavaScript/jsfunc.validateform.js"></script>
-	 * JSincludeFormupdate:	<script type="text/javascript" src="typo3/js/jsfunc.updateform.js"></script>
 	 * JSMenuCode, JSMenuCode_menu: JavaScript for the JavaScript menu
 	 * JSCode: reserved
 	 *
