@@ -559,12 +559,73 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 		});
 	};
 
+	/**
+	 * select field filter functions, see TCA option "enableMultiSelectFilterTextfield"
+	 * and "multiSelectFilterItems"
+	 */
+	FormEngine.SelectBoxFilter = {
+		options: {
+			fieldContainerSelector: '.t3-form-field-group-file',
+			filterContainerSelector: '.t3-form-multiselect-filter-container',
+			filterTextFieldSelector: '.t3-form-multiselect-filter-textfield',
+			filterSelectFieldSelector: '.t3-form-multiselect-filter-dropdown',
+			itemsToSelectElementSelector: '.t3-form-select-itemstoselect'
+		}
+	};
+
+	/**
+	 * make sure that all selectors and input filters are recognized
+	 */
+	FormEngine.SelectBoxFilter.initializeEvents = function() {
+		$(document).on('keyup', FormEngine.SelectBoxFilter.options.filterTextFieldSelector, function() {
+			var $selectElement = FormEngine.SelectBoxFilter.getSelectElement($(this));
+			FormEngine.SelectBoxFilter.filter($selectElement, $(this).val());
+		}).on('change', FormEngine.SelectBoxFilter.options.filterSelectFieldSelector, function() {
+			var $selectElement = FormEngine.SelectBoxFilter.getSelectElement($(this));
+			FormEngine.SelectBoxFilter.filter($selectElement, $(this).val());
+		});
+	};
+
+	/**
+	 * fetch the "itemstoselect" select element where a filter item is attached to
+	 */
+	FormEngine.SelectBoxFilter.getSelectElement = function($relativeElement) {
+		var $containerElement = $relativeElement.closest(FormEngine.SelectBoxFilter.options.fieldContainerSelector);
+		return $containerElement.find(FormEngine.SelectBoxFilter.options.itemsToSelectElementSelector);
+	};
+
+	/**
+	 * filter the actual items
+	 */
+	FormEngine.SelectBoxFilter.filter = function($selectElement, filterText) {
+		var $allOptionElements;
+		if (!$selectElement.data('alloptions')) {
+			$allOptionElements = $selectElement.find('option').clone();
+			$selectElement.data('alloptions', $allOptionElements);
+		} else {
+			$allOptionElements = $selectElement.data('alloptions');
+		}
+
+		if (filterText.length > 0) {
+			var matchFilter = new RegExp(filterText, 'i');
+			$selectElement.html('');
+			$allOptionElements.each(function() {
+				if ($(this).text().match(matchFilter)) {
+					$selectElement.append($(this).clone());
+				}
+			});
+		} else {
+			$selectElement.html($allOptionElements);
+		}
+	};
 
 
-	// initialize function, always require possible post-render hooks return the main object
-	var initializeModule = function(options) {
-
+	/**
+	 * initialize function, always require possible post-render hooks return the main object
+	 */
+	return function() {
 		FormEngine.initializeEvents();
+		FormEngine.SelectBoxFilter.initializeEvents();
 
 		// load required modules to hook in the post initialize function
 		if (undefined !== TYPO3.settings.RequireJS && undefined !== TYPO3.settings.RequireJS.PostInitializationModules['TYPO3/CMS/Backend/FormEngine']) {
@@ -578,8 +639,5 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 
 		// return the object in the global space
 		return FormEngine;
-	};
-
-	// call the main initialize function and execute the hooks
-	return initializeModule();
+	}();
 });

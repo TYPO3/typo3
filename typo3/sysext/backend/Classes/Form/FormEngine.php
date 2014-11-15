@@ -637,12 +637,6 @@ class FormEngine {
 	public $templateFile = '';
 
 	/**
-	 * @var int
-	 * @internal
-	 */
-	public $multiSelectFilterCount = 0;
-
-	/**
 	 * @var \TYPO3\CMS\Backend\Form\Element\SuggestElement
 	 */
 	protected $suggest;
@@ -3982,24 +3976,14 @@ class FormEngine {
 				';
 				// Always include JS functions for Suggest fields as we don't know what will come
 				$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.tceforms_suggest.js');
-				$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.tceforms_selectboxfilter.js');
 			} else {
 				// If Suggest fields were processed, add the JS functions
 				if ($this->suggest->suggestCount > 0) {
 					$pageRenderer->loadScriptaculous();
 					$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.tceforms_suggest.js');
 				}
-				if ($this->multiSelectFilterCount > 0) {
-					$pageRenderer->loadScriptaculous();
-					$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.tceforms_selectboxfilter.js');
-				}
 			}
 			$out .= '
-			function getOuterHTML(idTagPrefix) {	// Function getting the outerHTML of an element with id
-				var str=($(idTagPrefix).inspect()+$(idTagPrefix).innerHTML+"</"+$(idTagPrefix).tagName.toLowerCase()+">");
-				return str;
-			}
-
 			TBE_EDITOR.images.req.src = "' . IconUtility::skinImg($this->backPath, 'gfx/required_h.gif', '', 1) . '";
 			TBE_EDITOR.images.cm.src = "' . IconUtility::skinImg($this->backPath, 'gfx/content_client.gif', '', 1) . '";
 			TBE_EDITOR.images.sel.src = "' . IconUtility::skinImg($this->backPath, 'gfx/content_selected.gif', '', 1) . '";

@@ -9555,6 +9555,10 @@ div.typo3-TCEforms div.c-tablayer table > tbody > tr > td > table.wrapperTable >
 .t3-form-palette-field-container select.select {
   margin: 4px 2px 4px 1px;
 }
+.t3-form-multiselect-filter-textfield {
+  width: 80px;
+  padding-left: 25px;
+}
 .t3-form-palette-field-container {
   display: inline-block;
   vertical-align: top;
