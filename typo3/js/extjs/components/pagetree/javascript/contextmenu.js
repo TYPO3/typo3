@@ -172,7 +172,7 @@ TYPO3.Components.PageTree.ContextMenu = Ext.extend(Ext.menu.Menu, {
 		}
 
 			// remove divider if it's the last item of the context menu
-		if (components.last() === '-') {
+		if (components[components.length - 1] === '-') {
 			components[components.length - 1] = '';
 		}
 
