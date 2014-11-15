@@ -15,32 +15,24 @@ namespace TYPO3\CMS\Workspaces\Backend\ToolbarItems;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
+use \TYPO3\CMS\Workspaces\Service\WorkspaceService;
+use TYPO3\CMS\Backend\Utility\IconUtility;
 
 /**
  * Class to render the workspace selector
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
-class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface {
-
-	/**
-	 * @var \TYPO3\CMS\Backend\Controller\BackendController
-	 */
-	protected $backendReference;
-
-	/**
-	 * @var bool|null
-	 */
-	protected $checkAccess = NULL;
+class WorkspaceSelectorToolbarItem implements ToolbarItemInterface {
 
 	/**
 	 * Constructor
-	 *
-	 * @param \TYPO3\CMS\Backend\Controller\BackendController $backendReference TYPO3 backend object reference
 	 */
-	public function __construct(\TYPO3\CMS\Backend\Controller\BackendController &$backendReference = NULL) {
-		$this->backendReference = $backendReference;
-		$this->backendReference->getPageRenderer()->addInlineLanguageLabel('Workspaces.workspaceTitle', \TYPO3\CMS\Workspaces\Service\WorkspaceService::getWorkspaceTitle($GLOBALS['BE_USER']->workspace));
+	public function __construct() {
+		$pageRenderer = $this->getPageRenderer();
+		$pageRenderer->addInlineLanguageLabel('Workspaces.workspaceTitle', WorkspaceService::getWorkspaceTitle($this->getBackendUser()->workspace));
+		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Workspaces/Toolbar/WorkspacesMenu');
 	}
 
 	/**
@@ -49,36 +41,43 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 	 * @return bool TRUE if user has access, FALSE if not
 	 */
 	public function checkAccess() {
-		if ($this->checkAccess === NULL) {
-			/** @var \TYPO3\CMS\Workspaces\Service\WorkspaceService $wsService */
-			$wsService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
-			$availableWorkspaces = $wsService->getAvailableWorkspaces();
-			if (count($availableWorkspaces) > 0) {
-				$this->checkAccess = TRUE;
-			} else {
-				$this->checkAccess = FALSE;
-			}
+		/** @var \TYPO3\CMS\Workspaces\Service\WorkspaceService $wsService */
+		$wsService = GeneralUtility::makeInstance(WorkspaceService::class);
+		$availableWorkspaces = $wsService->getAvailableWorkspaces();
+		if (count($availableWorkspaces) > 0) {
+			$result = TRUE;
+		} else {
+			$result = FALSE;
 		}
-		return $this->checkAccess;
+		return $result;
 	}
 
 	/**
-	 * Creates the selector for workspaces
+	 * Render item
 	 *
-	 * @return string workspace selector as HTML select
+	 * @return string HTML
 	 */
-	public function render() {
-		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.workspace', TRUE);
-		$this->backendReference->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Workspaces/Toolbar/WorkspacesMenu');
+	public function getItem() {
+		return IconUtility::getSpriteIcon(
+			'apps-toolbar-menu-workspace',
+			array(
+				'title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.workspace', TRUE),
+			)
+		);
+	}
+
+	public function getDropDown() {
+		$backendUser = $this->getBackendUser();
+		$languageService = $this->getLanguageService();
 
 		$index = 0;
-		/** @var \TYPO3\CMS\Workspaces\Service\WorkspaceService $wsService */
-		$wsService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
+		/** @var WorkspaceService $wsService */
+		$wsService = GeneralUtility::makeInstance(WorkspaceService::class);
 		$availableWorkspaces = $wsService->getAvailableWorkspaces();
-		$activeWorkspace = (int)$GLOBALS['BE_USER']->workspace;
-		$stateCheckedIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-checked');
-		$stateUncheckedIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('empty-empty', array(
-			'title' => $GLOBALS['LANG']->getLL('bookmark_inactive')
+		$activeWorkspace = (int)$backendUser->workspace;
+		$stateCheckedIcon = IconUtility::getSpriteIcon('status-status-checked');
+		$stateUncheckedIcon = IconUtility::getSpriteIcon('empty-empty', array(
+			'title' => $languageService->getLL('bookmark_inactive')
 		));
 
 		$workspaceSections = array(
@@ -91,23 +90,27 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 			$iconState = ($workspaceId === $activeWorkspace ? $stateCheckedIcon : $stateUncheckedIcon);
 			$classValue = ($workspaceId === $activeWorkspace ? ' class="selected"' : '');
 			$sectionName = ($index++ === 0 ? 'top' : 'items');
-			$workspaceSections[$sectionName][] = '<li' . $classValue . '>' . '<a href="backend.php?changeWorkspace=' . $workspaceId . '" data-workspaceid="' . $workspaceId . '" class="tx-workspaces-switchlink">' . $iconState . ' ' . htmlspecialchars($label) . '</a></li>';
+			$workspaceSections[$sectionName][] = '<li' . $classValue . '>'
+				. '<a href="backend.php?changeWorkspace=' . $workspaceId . '" data-workspaceid="' . $workspaceId . '" class="tx-workspaces-switchlink">'
+				. $iconState . ' ' . htmlspecialchars($label)
+				. '</a></li>';
 		}
 
 		if (!empty($workspaceSections['top'])) {
 			// Add the "Go to workspace module" link
 			// if there is at least one icon on top and if the access rights are there
-			if ($GLOBALS['BE_USER']->check('modules', 'web_WorkspacesWorkspaces')) {
-				$workspaceSections['top'][] = '<li><a target="content" data-module="web_WorkspacesWorkspaces" class="tx-workspaces-modulelink">' . $stateUncheckedIcon . ' ' . $GLOBALS['LANG']->getLL('bookmark_workspace', TRUE) . '</a></li>';
+			if ($backendUser->check('modules', 'web_WorkspacesWorkspaces')) {
+				$workspaceSections['top'][] = '<li><a target="content" data-module="web_WorkspacesWorkspaces" class="tx-workspaces-modulelink">'
+					. $stateUncheckedIcon . ' ' . $languageService->getLL('bookmark_workspace', TRUE)
+					. '</a></li>';
 			}
 		} else {
 			// no items on top (= no workspace to work in)
-			$workspaceSections['top'][] = '<li>' . $stateUncheckedIcon . ' ' . $GLOBALS['LANG']->getLL('bookmark_noWSfound', TRUE) . '</li>';
+			$workspaceSections['top'][] = '<li>' . $stateUncheckedIcon . ' ' . $languageService->getLL('bookmark_noWSfound', TRUE) . '</li>';
 		}
 
 		$workspaceMenu = array(
-			'<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-toolbar-menu-workspace', array('title' => $title)) . '</a>',
-			'<ul class="dropdown-menu" role="menu">' ,
+			'<ul>' ,
 				implode(LF, $workspaceSections['top']),
 				(!empty($workspaceSections['items']) ? '<li class="divider"></li>' : ''),
 				implode(LF, $workspaceSections['items']),
@@ -118,32 +121,11 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 	}
 
 	/**
-	 * Returns additional attributes for the list item in the toolbar
-	 *
-	 * This should not contain the "class" or "id" attribute.
-	 * Use the methods for setting these attributes
-	 *
-	 * @return string List item HTML attibutes
-	 */
-	public function getAdditionalAttributes() {
-		return '';
-	}
-
-	/**
-	 * Return attribute id name
-	 *
-	 * @return string The name of the ID attribute
-	 */
-	public function getIdAttribute() {
-		return 'workspace-selector-menu';
-	}
-
-	/**
-	 * Returns extra classes
+	 * This toolbar needs no additional attributes
 	 *
 	 * @return array
 	 */
-	public function getExtraClasses() {
+	public function getAdditionalAttributes() {
 		return array();
 	}
 
@@ -163,6 +145,35 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 	 */
 	public function getIndex() {
 		return 40;
+	}
+
+	/**
+	 * Returns the current BE user.
+	 *
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * Returns current PageRenderer
+	 *
+	 * @return \TYPO3\CMS\Core\Page\PageRenderer
+	 */
+	protected function getPageRenderer() {
+		/** @var  \TYPO3\CMS\Backend\Template\DocumentTemplate $documentTemplate */
+		$documentTemplate = $GLOBALS['TBE_TEMPLATE'];
+		return $documentTemplate->getPageRenderer();
+	}
+
+	/**
+	 * Returns LanguageService
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 
 }

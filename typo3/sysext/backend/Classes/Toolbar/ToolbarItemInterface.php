@@ -23,13 +23,6 @@ namespace TYPO3\CMS\Backend\Toolbar;
 interface ToolbarItemInterface {
 
 	/**
-	 * Constructor that receives a back reference to the backend
-	 *
-	 * @param \TYPO3\CMS\Backend\Controller\BackendController TYPO3 backend object reference
-	 */
-	public function __construct(\TYPO3\CMS\Backend\Controller\BackendController &$backendReference = NULL);
-
-	/**
 	 * Checks whether the user has access to this toolbar item
 	 *
 	 * @return boolean TRUE if user has access, FALSE if not
@@ -37,38 +30,36 @@ interface ToolbarItemInterface {
 	public function checkAccess();
 
 	/**
-	 * Renders the toolbar item
+	 * Render "item" part of this toolbar
 	 *
-	 * @return string The toolbar item rendered as HTML string
+	 * @return string Toolbar item HTML
 	 */
-	public function render();
-
-	/**
-	 * Return attribute id name
-	 *
-	 * @return string The name of the ID attribute
-	 */
-	public function getIdAttribute();
-
-	/**
-	 * Returns extra classes
-	 *
-	 * @return array
-	 */
-	public function getExtraClasses();
+	public function getItem();
 
 	/**
 	 * TRUE if this toolbar item has a collapsible drop down
 	 *
 	 * @return bool
 	 */
-//	public function hasDropDrown();
-// TODO put that back in action and fix all classes by 2014-11-15
+	public function hasDropDown();
+
 	/**
-	 * Returns additional attributes for the list item in the toolbar
+	 * Render "drop down" part of this toolbar
 	 *
-	 * This should not contain the "class" or "id" attribute.
-	 * Use the methods for setting these attributes
+	 * @return string Drop down HTML
+	 */
+	public function getDropDown();
+
+	/**
+	 * Returns an array with additional attributes added to containing <li> tag of the item.
+	 *
+	 * Typical usages are additional css classes and data-* attributes, classes may be merged
+	 * with other classes needed by the framework. Do NOT set an id attribute here.
+	 *
+	 * array(
+	 *     'class' => 'my-class',
+	 *     'data-foo' => '42',
+	 * )
 	 *
 	 * @return string List item HTML attibutes
 	 */

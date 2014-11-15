@@ -157,7 +157,7 @@ class BackendController {
 		$toolbarItemInstances = array();
 		$classNameRegistry = $GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'];
 		foreach ($classNameRegistry as $className) {
-			$toolbarItemInstance = GeneralUtility::makeInstance($className, $this);
+			$toolbarItemInstance = GeneralUtility::makeInstance($className);
 			if (!$toolbarItemInstance instanceof \TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface) {
 				throw new \RuntimeException(
 					'class ' . $className . ' is registered as toolbar item but does not implement'
@@ -172,10 +172,10 @@ class BackendController {
 					1415968498
 				);
 			}
+			// Find next free position in array
 			while(array_key_exists($index, $toolbarItemInstances)) {
 				$index++;
 			}
-			// Find next free position in
 			$toolbarItemInstances[$index] = $toolbarItemInstance;
 		}
 		ksort($toolbarItemInstances);
@@ -200,11 +200,9 @@ class BackendController {
 					<div class="navbar-header" id="typo3-logo">' .
 						$logo->render() .
 					'</div>
-					<div id="typo3-top">
-						<ul class="nav navbar-nav navbar-right typo3-top-toolbar" id="typo3-toolbar">' .
-							$this->renderToolbar() .
-						'</ul>
-					</div>
+					<div id="typo3-top">' .
+						$this->renderToolbar() .
+					'</div>
 				</div>
 			</div>' .
 			$this->generateModuleMenu();
@@ -315,26 +313,57 @@ class BackendController {
 	 * @return string top toolbar elements as HTML
 	 */
 	protected function renderToolbar() {
-		$toolbar = '';
+		$toolbar = array();
+		$toolbar[] = '<ul class="nav navbar-nav navbar-right typo3-top-toolbar" id="typo3-toolbar">';
 		foreach ($this->toolbarItems as $toolbarItem) {
-			$menu = $toolbarItem->render();
-			if ($menu) {
-				// @TODO: Should throw as soon as "loading by convention" is implemented
-				if ($toolbarItem instanceof \TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface) {
-					$classes = $toolbarItem->getExtraClasses();
-					if ($toolbarItem->hasDropdown()) {
-						$classes[] = 'dropdown';
-					}
+			/** @var \TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface $toolbarItem */
+			if ($toolbarItem->checkAccess()) {
+				$hasDropDown = (bool)$toolbarItem->hasDropDown();
+				$additionalAttributes = (array)$toolbarItem->getAdditionalAttributes();
 
-					$class = implode(' ', $classes);
-					if ($class !== '') {
-						$class = ' class="' . $class . '"';
-					}
-					$toolbar .= '<li' . $class . ' id="' . $toolbarItem->getIdAttribute() . '"' . $toolbarItem->getAdditionalAttributes() . '>' . $menu . '</li>';
+				$liAttributes = array();
+
+				// Merge class: Add dropdown class if hasDropDown, add classes from additonal attributes
+				$classes = array();
+				if ($hasDropDown) {
+					$classes[] = 'dropdown';
 				}
+				if (isset($additionalAttributes['class'])) {
+					$classes[] = $additionalAttributes['class'];
+					unset($additionalAttributes['class']);
+				}
+				$liAttributes[] = 'class="' . implode(' ', $classes) . '"';
+
+				// Add further attributes
+				foreach($additionalAttributes as $name => $value) {
+					$liAttributes[] = $name . '="' . $value . '"';
+				}
+
+				// Create a unique id from class name
+				$className = get_class($toolbarItem);
+				$className = GeneralUtility::underscoredToLowerCamelCase($className);
+				$className = GeneralUtility::camelCaseToLowerCaseUnderscored($className);
+				$className = str_replace(array('_', '\\'), '-', $className);
+				$liAttributes[] = 'id="' . $className . '"';
+
+				$toolbar[] = '<li ' . implode(' ', $liAttributes) . '>';
+
+				if ($hasDropDown) {
+					$toolbar[] = '<a href="#" class="dropdown-toggle" data-toggle="dropdown">';
+					$toolbar[] = $toolbarItem->getItem();
+					$toolbar[] = '</a>';
+					$toolbar[] = '<div class="dropdown-menu" role="menu">';
+					$toolbar[] = $toolbarItem->getDropDown();
+					$toolbar[] = '</div>';
+				} else {
+					$toolbar[] = $toolbarItem->getItem();
+				}
+				$toolbar[] = '</li>';
 			}
 		}
-		return $toolbar;
+		$toolbar[] = '</ul>';
+
+		return implode(LF, $toolbar);
 	}
 
 	/**

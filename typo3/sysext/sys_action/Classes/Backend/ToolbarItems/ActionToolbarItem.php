@@ -16,6 +16,7 @@ namespace TYPO3\CMS\SysAction\Backend\ToolbarItems;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
+use TYPO3\CMS\Backend\Utility\IconUtility;
 
 /**
  * Adds action links to the backend's toolbar
@@ -25,73 +26,68 @@ use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 class ActionToolbarItem implements ToolbarItemInterface {
 
 	/**
-	 * @var \TYPO3\CMS\Backend\Controller\BackendController
+	 * @var array List of action entries
 	 */
-	protected $backendReference;
-
-	/**
-	 * @var string
-	 */
-	protected $extensionKey = 'sys_action';
+	protected $actionEntries = array();
 
 	/**
 	 * Constructor
 	 */
-	public function __construct(\TYPO3\CMS\Backend\Controller\BackendController &$backendReference = NULL) {
-		$GLOBALS['LANG']->includeLLFile('EXT:sys_action/locallang.xlf');
-		$this->backendReference = $backendReference;
+	public function __construct() {
+		$this->getLanguageService()->includeLLFile('EXT:sys_action/locallang.xlf');
+		$this->initializeActionEntries();
 	}
 
 	/**
-	 * Sets the backend reference
+	 * Render toolbar icon
 	 *
-	 * @param \TYPO3\CMS\Backend\Controller\BackendController $backendReference Backend object reference
-	 * @return void
+	 * @return string HTML
 	 */
-	public function setBackend(\TYPO3\CMS\Backend\Controller\BackendController &$backendReference) {
-		$this->backendReference = $backendReference;
+	public function getItem() {
+		return IconUtility::getSpriteIcon(
+			'apps-toolbar-menu-actions',
+			array(
+				'title' => $this->getLanguageService()->getLL('action_toolbaritem', TRUE)
+			)
+		);
 	}
 
 	/**
-	 * Renders the toolbar menu
+	 * Render drop down
 	 *
-	 * @return string The rendered backend menu
-	 * @author Ingo Renner <ingo@typo3.org>
+	 * @return string HTML
 	 */
-	public function render() {
+	public function getDropDown() {
 		$actionMenu = array();
-		$actionEntries = $this->getActionEntries();
-		if ($actionEntries) {
-			$title = $GLOBALS['LANG']->getLL('action_toolbaritem', TRUE);
-			$actionMenu[] = '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-toolbar-menu-actions', array('title' => $title)) . '</a>';
-			$actionMenu[] = '<ul class="dropdown-menu" role="menu">';
-			foreach ($actionEntries as $linkConf) {
-				$actionMenu[] = '<li><a href="' . htmlspecialchars($linkConf[1]) . '" target="content">' . $linkConf[2] . htmlspecialchars($linkConf[0]) . '</a></li>';
-			}
-			$actionMenu[] = '</ul>';
-			return implode(LF, $actionMenu);
-		} else {
-			return '';
+		$actionMenu[] = '<ul>';
+		foreach ($this->actionEntries as $linkConf) {
+			$actionMenu[] = '<li>';
+			$actionMenu[] = '<a href="' . htmlspecialchars($linkConf[1]) . '" target="content">';
+			$actionMenu[] = $linkConf[2] . htmlspecialchars($linkConf[0]);
+			$actionMenu[] = '</a>';
+			$actionMenu[] = '</li>';
 		}
+		$actionMenu[] = '</ul>';
+		return implode(LF, $actionMenu);
 	}
 
 	/**
 	 * Gets the entries for the action menu
 	 *
 	 * @return array Array of action menu entries
-	 * @author Steffen Kamper <info@sk-typo3.de>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
-	protected function getActionEntries() {
+	protected function initializeActionEntries() {
+		$backendUser = $this->getBackendUser();
+		$databaseConnection = $this->getDatabaseConnection();
 		$actions = array();
-		if ($GLOBALS['BE_USER']->isAdmin()) {
-			$queryResource = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_action', 'pid = 0 AND hidden=0', '', 'sys_action.sorting');
+		if ($backendUser->isAdmin()) {
+			$queryResource = $databaseConnection->exec_SELECTquery('*', 'sys_action', 'pid = 0 AND hidden=0', '', 'sys_action.sorting');
 		} else {
 			$groupList = 0;
-			if ($GLOBALS['BE_USER']->groupList) {
-				$groupList = $GLOBALS['BE_USER']->groupList;
+			if ($backendUser->groupList) {
+				$groupList = $backendUser->groupList;
 			}
-			$queryResource = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query(
+			$queryResource = $databaseConnection->exec_SELECT_mm_query(
 				'sys_action.*',
 				'sys_action',
 				'sys_action_asgr_mm',
@@ -103,45 +99,24 @@ class ActionToolbarItem implements ToolbarItemInterface {
 		}
 
 		if ($queryResource) {
-			while ($actionRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($queryResource)) {
+			while ($actionRow = $databaseConnection->sql_fetch_assoc($queryResource)) {
 				$actions[] = array(
 					$actionRow['title'],
 					BackendUtility::getModuleUrl('user_task') . '&SET[mode]=tasks&SET[function]=sys_action.TYPO3\\CMS\\SysAction\\ActionTask&show=' . $actionRow['uid'],
-					\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('sys_action', $actionRow)
+					IconUtility::getSpriteIconForRecord('sys_action', $actionRow)
 				);
 			}
-			$GLOBALS['TYPO3_DB']->sql_free_result($queryResource);
+			$databaseConnection->sql_free_result($queryResource);
 		}
-		return $actions;
+		$this->actionEntries = $actions;
 	}
 
 	/**
-	 * Returns additional attributes for the list item in the toolbar
-	 *
-	 * This should not contain the "class" or "id" attribute.
-	 * Use the methods for setting these attributes
-	 *
-	 * @return string List item HTML attibutes
-	 */
-	public function getAdditionalAttributes() {
-		return '';
-	}
-
-	/**
-	 * Return attribute id name
-	 *
-	 * @return string The name of the ID attribute
-	 */
-	public function getIdAttribute() {
-		return 'tx-sys-action-menu';
-	}
-
-	/**
-	 * Returns extra classes
+	 * This toolbar needs no additional attributes
 	 *
 	 * @return array
 	 */
-	public function getExtraClasses() {
+	public function getAdditionalAttributes() {
 		return array();
 	}
 
@@ -155,13 +130,16 @@ class ActionToolbarItem implements ToolbarItemInterface {
 	}
 
 	/**
-	 * Checks if user has access to the sys action menu
+	 * This toolbar is rendered if there are action entries, no further user restriction
 	 *
-	 * @return bool TRUE if the user has access, FALSE otherwise
+	 * @return bool TRUE
 	 */
 	public function checkAccess() {
-		// Taskcenter is enabled for everybody
-		return TRUE;
+		$result = FALSE;
+		if (count($this->actionEntries)) {
+			$result = TRUE;
+		}
+		return $result;
 	}
 
 	/**
@@ -171,6 +149,33 @@ class ActionToolbarItem implements ToolbarItemInterface {
 	 */
 	public function getIndex() {
 		return 35;
+	}
+
+	/**
+	 * Returns the current BE user.
+	 *
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * Returns LanguageService
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
+
+	/**
+	 * Return DatabaseConnection
+	 *
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
 	}
 
 }

@@ -11419,10 +11419,22 @@ Topbar
 #typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu {
   background-color: #4e4e4e;
   color: #ffffff;
-  border: 0;
-  margin: 0;
+  border: none;
 }
-#typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu .active a {
+#typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu > ul {
+  padding-left: 0;
+  list-style: none;
+}
+#typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu > ul > li > a {
+  color: #ffffff;
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+#typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu > ul > li.active > a {
   background-color: #282828;
 }
 #typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu li a,

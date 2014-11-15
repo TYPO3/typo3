@@ -18,7 +18,7 @@ define('TYPO3/CMS/Workspaces/Toolbar/WorkspacesMenu', ['jquery'], function($) {
 
 	var WorkspacesMenu = {
 		options: {
-			containerSelector: '#workspace-selector-menu',
+			containerSelector: '#typo3-cms-workspaces-backend-toolbaritems-workspaceselectortoolbaritem',
 			menuItemSelector: '.dropdown-menu li a.tx-workspaces-switchlink',
 			activeMenuItemSelector: '.dropdown-menu .selected',
 			toolbarItemSelector: '.dropdown-toggle',

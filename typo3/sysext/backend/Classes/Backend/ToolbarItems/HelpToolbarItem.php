@@ -16,94 +16,86 @@ namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
+use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
+use TYPO3\CMS\Backend\Domain\Model\Module\BackendModule;
 
 /**
- * Help toobar item
+ * Help toolbar item
  */
 class HelpToolbarItem implements ToolbarItemInterface {
 
 	/**
-	 * Constructor
-	 *
-	 * @param \TYPO3\CMS\Backend\Controller\BackendController $backendReference TYPO3 backend object reference
-	 * @throws \UnexpectedValueException
+	 * @var \SplObjectStorage<BackendModule>
 	 */
-	public function __construct(\TYPO3\CMS\Backend\Controller\BackendController &$backendReference = NULL) {
+	protected $helpModuleMenu = NULL;
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		/** @var BackendModuleRepository $backendModuleRepository */
+		$backendModuleRepository = GeneralUtility::makeInstance(BackendModuleRepository::class);
+		/** @var \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule $userModuleMenu */
+		$helpModuleMenu = $backendModuleRepository->findByModuleName('help');
+		if ($helpModuleMenu && $helpModuleMenu->getChildren()->count() > 0) {
+			$this->helpModuleMenu = $helpModuleMenu;
+		}
 	}
 
 	/**
-	 * Checks whether the user has access to this toolbar item
+	 * Users see this if a module is available
 	 *
-	 * @return bool TRUE if user has access, FALSE if not
+	 * @return bool TRUE
 	 */
 	public function checkAccess() {
-		return TRUE;
+		$result = $this->helpModuleMenu ? TRUE : FALSE;
+		return $result;
 	}
 
 	/**
-	 * Creates the selector for workspaces
+	 * Render help icon
 	 *
 	 * @return string Help
 	 */
-	public function render() {
-		/** @var \TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository $backendModuleRepository */
-		$backendModuleRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository::class);
-		/** @var \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule $userModuleMenu */
-		$helpModuleMenu = $backendModuleRepository->findByModuleName('help');
+	public function getItem() {
+		return '<span class="fa fa-fw fa-question-circle"></span>';
+	}
 
-		if ($helpModuleMenu === FALSE || $helpModuleMenu->getChildren()->count() < 1) {
-			return '';
-		}
-
+	/**
+	 * Render drop down
+	 *
+	 * @return string
+	 */
+	public function getDropDown() {
 		$dropdown = array();
-
-		$dropdown[] = '<a href="#" class="dropdown-toggle" data-toggle="dropdown">';
-		$dropdown[] = '<span class="fa fa-fw fa-question-circle"></span>';
-		$dropdown[] = '</a>';
-
-		$dropdown[] = '<ul class="dropdown-menu">';
-		foreach ($helpModuleMenu->getChildren() as $module) {
+		$dropdown[] = '<ul>';
+		foreach ($this->helpModuleMenu->getChildren() as $module) {
+			/** @var BackendModule $module */
 			$moduleIcon = $module->getIcon();
-			$dropdown[] = '
-				<li id="' . $module->getName() . '" class="t3-menuitem-submodule submodule mod-' . $module->getName() . '" data-modulename="' . $module->getName() . '" data-navigationcomponentid="' . $module->getNavigationComponentId() . '" data-navigationframescript="' . $module->getNavigationFrameScript() . '" data-navigationframescriptparameters="' . $module->getNavigationFrameScriptParameters() . '">
-					<a title="' .$module->getDescription() . '" href="' . $module->getLink() . '" class="modlink">
-						<span class="submodule-icon">' . ($moduleIcon['html'] ?: $moduleIcon['html']) . '</span>
-						<span class="submodule-label">' . $module->getTitle() . '</span>
-					</a>
-				</li>';
+			$dropdown[] ='<li'
+				. ' id="' . $module->getName() . '"'
+				. ' class="t3-menuitem-submodule submodule mod-' . $module->getName() . '" '
+				. ' data-modulename="' . $module->getName() . '"'
+				. ' data-navigationcomponentid="' . $module->getNavigationComponentId() . '"'
+				. ' data-navigationframescript="' . $module->getNavigationFrameScript() . '"'
+				. ' data-navigationframescriptparameters="' . $module->getNavigationFrameScriptParameters() . '"'
+				. '>';
+			$dropdown[] = '<a title="' .$module->getDescription() . '" href="' . $module->getLink() . '" class="modlink">';
+			$dropdown[] = '<span class="submodule-icon">' . ($moduleIcon['html'] ?: $moduleIcon['html']) . '</span>';
+			$dropdown[] = '<span class="submodule-label">' . $module->getTitle() . '</span>';
+			$dropdown[] = '</a>';
+			$dropdown[] = '</li>';
 		}
 		$dropdown[] = '</ul>';
-
 		return implode(LF, $dropdown);
 	}
 
 	/**
-	 * Returns additional attributes for the list item in the toolbar
-	 *
-	 * This should not contain the "class" or "id" attribute.
-	 * Use the methods for setting these attributes
-	 *
-	 * @return string List item HTML attibutes
-	 */
-	public function getAdditionalAttributes() {
-		return '';
-	}
-
-	/**
-	 * Return attribute id name
-	 *
-	 * @return string The name of the ID attribute
-	 */
-	public function getIdAttribute() {
-		return 'topbar-help-menu';
-	}
-
-	/**
-	 * Returns extra classes
+	 * No additional attributes needed.
 	 *
 	 * @return array
 	 */
-	public function getExtraClasses() {
+	public function getAdditionalAttributes() {
 		return array();
 	}
 

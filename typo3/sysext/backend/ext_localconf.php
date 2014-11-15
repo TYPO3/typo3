@@ -10,10 +10,10 @@ if (TYPO3_MODE === 'BE') {
 	);
 
 	$GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'][] = 'TYPO3\\CMS\\Backend\\Backend\\ToolbarItems\\ClearCacheToolbarItem';
+	$GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'][] = 'TYPO3\\CMS\\Backend\\Backend\\ToolbarItems\\HelpToolbarItem';
 	$GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'][] = 'TYPO3\\CMS\\Backend\\Backend\\ToolbarItems\\LiveSearchToolbarItem';
 	$GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'][] = 'TYPO3\\CMS\\Backend\\Backend\\ToolbarItems\\ShortcutToolbarItem';
 	$GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'][] = 'TYPO3\\CMS\\Backend\\Backend\\ToolbarItems\\UserToolbarItem';
-	$GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'][] = 'TYPO3\\CMS\\Backend\\Backend\\ToolbarItems\\HelpToolbarItem';
 }
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['frontendEditingController']['default'] = 'TYPO3\\CMS\\Core\\FrontendEditing\\FrontendEditingController';

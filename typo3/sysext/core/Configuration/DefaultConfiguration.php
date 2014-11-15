@@ -635,23 +635,23 @@ return array(
 				'csrfTokenCheck' => TRUE
 			),
 			'ShortcutMenu::getShortcutEditForm' => array(
-				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Toolbar\\ShortcutToolbarItem->getAjaxShortcutEditForm',
+				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Backend\\ToolbarItems\\ShortcutToolbarItem->getAjaxShortcutEditForm',
 				'csrfTokenCheck' => TRUE
 			),
 			'ShortcutMenu::saveShortcut' => array(
-				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Toolbar\\ShortcutToolbarItem->setAjaxShortcut',
+				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Backend\\ToolbarItems\\ShortcutToolbarItem->setAjaxShortcut',
 				'csrfTokenCheck' => TRUE
 			),
 			'ShortcutMenu::render' => array(
-				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Toolbar\\ShortcutToolbarItem->renderAjaxMenu',
+				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Backend\\ToolbarItems\\ShortcutToolbarItem->renderAjaxMenu',
 				'csrfTokenCheck' => TRUE
 			),
 			'ShortcutMenu::delete' => array(
-				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Toolbar\\ShortcutToolbarItem->deleteAjaxShortcut',
+				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Backend\\ToolbarItems\\ShortcutToolbarItem->deleteAjaxShortcut',
 				'csrfTokenCheck' => TRUE
 			),
 			'ShortcutMenu::create' => array(
-				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Toolbar\\ShortcutToolbarItem->createAjaxShortcut',
+				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Backend\\ToolbarItems\\ShortcutToolbarItem->createAjaxShortcut',
 				'csrfTokenCheck' => TRUE
 			),
 			'ModuleMenu::reload' => array(

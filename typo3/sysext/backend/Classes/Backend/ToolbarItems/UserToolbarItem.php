@@ -16,114 +16,115 @@ namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
+use TYPO3\CMS\Backend\Domain\Model\Module\BackendModule;
 
 /**
- * User toobar item
+ * User toolbar item
  */
 class UserToolbarItem implements ToolbarItemInterface {
 
 	/**
-	 * Constructor
+	 * Item is always enabled
 	 *
-	 * @param \TYPO3\CMS\Backend\Controller\BackendController $backendReference TYPO3 backend object reference
-	 * @throws \UnexpectedValueException
-	 */
-	public function __construct(\TYPO3\CMS\Backend\Controller\BackendController &$backendReference = NULL) {
-	}
-
-	/**
-	 * Checks whether the user has access to this toolbar item
-	 *
-	 * @return bool TRUE if user has access, FALSE if not
+	 * @return bool TRUE
 	 */
 	public function checkAccess() {
 		return TRUE;
 	}
 
 	/**
-	 * Creates the selector for workspaces
+	 * Render username
 	 *
-	 * @return string Workspace selector as HTML select
+	 * @return string HTML
 	 */
-	public function render() {
-		$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-user-' . ($GLOBALS['BE_USER']->isAdmin() ? 'admin' : 'backend'));
+	public function getItem() {
+		$backendUser = $this->getBackendUser();
+		$languageService = $this->getLanguageService();
+		$icon = IconUtility::getSpriteIcon('status-user-' . ($backendUser->isAdmin() ? 'admin' : 'backend'));
 
-		$realName = $GLOBALS['BE_USER']->user['realName'];
-		$username = $GLOBALS['BE_USER']->user['username'];
+		$realName = $backendUser->user['realName'];
+		$username = $backendUser->user['username'];
 		$label = $realName ?: $username;
 		$title = $username;
 
-		// Superuser mode
-		if ($GLOBALS['BE_USER']->user['ses_backuserid']) {
-			$title = $GLOBALS['LANG']->getLL('switchtouser') . ': ' . $username;
-			$label = $GLOBALS['LANG']->getLL('switchtousershort') . ' ' . ($realName ? $realName . ' (' . $username . ')' : $username);
+		// Switch user mode
+		if ($backendUser->user['ses_backuserid']) {
+			$title = $languageService->getLL('switchtouser') . ': ' . $username;
+			$label = $languageService->getLL('switchtousershort') . ' ' . ($realName ? $realName . ' (' . $username . ')' : $username);
 		}
-
 
 		$html = array();
-		$html[] = '<a href="#" class="dropdown-toggle" data-toggle="dropdown">';
-		$html[] = $icon . '<span title="' . htmlspecialchars($title) . '">' . htmlspecialchars($label) . ' <span class="caret"></span></span>';
-		$html[] = '</a>';
-
-		$html[] = '<ul class="dropdown-menu" role="menu">';
-
-		/** @var \TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository $backendModuleRepository */
-		$backendModuleRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository::class);
-		/** @var \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule $userModuleMenu */
-		$userModuleMenu = $backendModuleRepository->findByModuleName('user');
-		if ($userModuleMenu != FALSE && $userModuleMenu->getChildren()->count() > 0) {
-			foreach ($userModuleMenu->getChildren() as $module) {
-				$moduleIcon = $module->getIcon();
-				$html[] = '
-					<li id="' . $module->getName() . '" class="t3-menuitem-submodule submodule mod-' . $module->getName() . '" data-modulename="' . $module->getName() . '" data-navigationcomponentid="' . $module->getNavigationComponentId() . '" data-navigationframescript="' . $module->getNavigationFrameScript() . '" data-navigationframescriptparameters="' . $module->getNavigationFrameScriptParameters() . '">
-						<a title="' .$module->getDescription() . '" href="' . $module->getLink() . '" class="modlink">
-							<span class="submodule-icon">' . ($moduleIcon['html'] ?: $moduleIcon['html']) . '</span>
-							<span class="submodule-label">' . $module->getTitle() . '</span>
-						</a>
-					</li>';
-			}
-			$html[] = '<li class="divider"></li>';
-		}
-
-		// logout button
-		$buttonLabel = 'LLL:EXT:lang/locallang_core.xlf:' . ($GLOBALS['BE_USER']->user['ses_backuserid'] ? 'buttons.exit' : 'buttons.logout');
-		$html[] = '<li><a href="logout.php" target="_top">' . $GLOBALS['LANG']->sL($buttonLabel, TRUE) . '</a></li>';
-
-		$html[] = '</ul>';
+		$html[] = $icon;
+		$html[] = '<span title="' . htmlspecialchars($title) . '">';
+		$html[] = htmlspecialchars($label);
+		$html[] = '<span class="caret"></span></span>';
 
 		return implode(LF, $html);
 	}
 
 	/**
-	 * Returns additional attributes for the list item in the toolbar
+	 * Render drop down
 	 *
-	 * This should not contain the "class" or "id" attribute.
-	 * Use the methods for setting these attributes
-	 *
-	 * @return string List item HTML attibutes
+	 * @return string HTML
 	 */
-	public function getAdditionalAttributes() {
-		if ($GLOBALS['BE_USER']->user['ses_backuserid']) {
-			return 'su-user';
+	public function getDropDown() {
+		$backendUser = $this->getBackendUser();
+		$languageService = $this->getLanguageService();
+
+		$dropdown = array();
+		$dropdown[] = '<ul>';
+
+		/** @var BackendModuleRepository $backendModuleRepository */
+		$backendModuleRepository = GeneralUtility::makeInstance(BackendModuleRepository::class);
+		/** @var \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule $userModuleMenu */
+		$userModuleMenu = $backendModuleRepository->findByModuleName('user');
+		if ($userModuleMenu != FALSE && $userModuleMenu->getChildren()->count() > 0) {
+			foreach ($userModuleMenu->getChildren() as $module) {
+				/** @var BackendModule $module */
+				$moduleIcon = $module->getIcon();
+				$dropdown[] ='<li'
+					. ' id="' . $module->getName() . '"'
+					. ' class="t3-menuitem-submodule submodule mod-' . $module->getName() . '" '
+					. ' data-modulename="' . $module->getName() . '"'
+					. ' data-navigationcomponentid="' . $module->getNavigationComponentId() . '"'
+					. ' data-navigationframescript="' . $module->getNavigationFrameScript() . '"'
+					. ' data-navigationframescriptparameters="' . $module->getNavigationFrameScriptParameters() . '"'
+					. '>';
+				$dropdown[] = '<a title="' .$module->getDescription() . '" href="' . $module->getLink() . '" class="modlink">';
+				$dropdown[] = '<span class="submodule-icon">' . ($moduleIcon['html'] ?: $moduleIcon['html']) . '</span>';
+				$dropdown[] = '<span class="submodule-label">' . $module->getTitle() . '</span>';
+				$dropdown[] = '</a>';
+				$dropdown[] = '</li>';
+			}
+			$dropdown[] = '<li class="divider"></li>';
 		}
+
+		// Logout button
+		$buttonLabel = 'LLL:EXT:lang/locallang_core.xlf:' . ($backendUser->user['ses_backuserid'] ? 'buttons.exit' : 'buttons.logout');
+		$dropdown[] = '<li>';
+		$dropdown[] = '<a href="logout.php" target="_top">';
+		$dropdown[] = $languageService->sL($buttonLabel, TRUE);
+		$dropdown[] = '</a>';
+		$dropdown[] = '</li>';
+
+		$dropdown[] = '</ul>';
+
+		return implode(LF, $dropdown);
 	}
 
 	/**
-	 * Return attribute id name
-	 *
-	 * @return string The name of the ID attribute
-	 */
-	public function getIdAttribute() {
-		return 'topbar-user-menu';
-	}
-
-	/**
-	 * Returns extra classes
+	 * Returns an additional class if user is in "switch user" mode
 	 *
 	 * @return array
 	 */
-	public function getExtraClasses() {
-		return array();
+	public function getAdditionalAttributes() {
+		$result = array();
+		if ($this->getBackendUser()->user['ses_backuserid']) {
+			$result['class'] = 'su-user';
+		}
+		return $result;
 	}
 
 	/**
@@ -142,6 +143,24 @@ class UserToolbarItem implements ToolbarItemInterface {
 	 */
 	public function getIndex() {
 		return 80;
+	}
+
+	/**
+	 * Returns the current BE user.
+	 *
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * Returns LanguageService
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 
 }

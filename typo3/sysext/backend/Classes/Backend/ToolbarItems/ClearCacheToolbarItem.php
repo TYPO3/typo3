@@ -18,9 +18,10 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
+use TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookInterface;
 
 /**
- * class to render the menu for the cache clearing actions
+ * Render cache clearing toolbar item
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
@@ -29,43 +30,31 @@ class ClearCacheToolbarItem implements ToolbarItemInterface {
 	/**
 	 * @var array
 	 */
-	protected $cacheActions;
+	protected $cacheActions = array();
 
 	/**
 	 * @var array
 	 */
-	protected $optionValues;
-
-	/**
-	 * @var \TYPO3\CMS\Backend\Controller\BackendController
-	 */
-	protected $backendReference;
-
-	/**
-	 * TODO potentially unused
-	 * @var string
-	 */
-	public $backPath = '';
+	protected $optionValues = array();
 
 	/**
 	 * Constructor
 	 *
-	 * @param \TYPO3\CMS\Backend\Controller\BackendController $backendReference TYPO3 backend object reference
 	 * @throws \UnexpectedValueException
 	 */
-	public function __construct(\TYPO3\CMS\Backend\Controller\BackendController &$backendReference = NULL) {
-		$this->backendReference = $backendReference;
-		$this->cacheActions = array();
-		$this->optionValues = array();
+	public function __construct() {
 		$backendUser = $this->getBackendUser();
+		$languageService = $this->getLanguageService();
+
+		$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Toolbar/ClearCacheMenu');
 
 		// Clear all page-related caches
 		if ($backendUser->isAdmin() || $backendUser->getTSConfigVal('options.clearCache.pages')) {
 			$this->cacheActions[] = array(
 				'id' => 'pages',
-				'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:flushPageCachesTitle', TRUE),
-				'description' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:flushPageCachesDescription', TRUE),
-				'href' => $this->backPath . 'tce_db.php?vC=' . $backendUser->veriCode() . '&cacheCmd=pages&ajaxCall=1' . BackendUtility::getUrlToken('tceAction'),
+				'title' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:flushPageCachesTitle', TRUE),
+				'description' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:flushPageCachesDescription', TRUE),
+				'href' => 'tce_db.php?vC=' . $backendUser->veriCode() . '&cacheCmd=pages&ajaxCall=1' . BackendUtility::getUrlToken('tceAction'),
 				'icon' => IconUtility::getSpriteIcon('actions-system-cache-clear-impact-low')
 			);
 			$this->optionValues[] = 'pages';
@@ -75,9 +64,9 @@ class ClearCacheToolbarItem implements ToolbarItemInterface {
 		if ($backendUser->isAdmin() || $backendUser->getTSConfigVal('options.clearCache.all')) {
 			$this->cacheActions[] = array(
 				'id' => 'all',
-				'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:flushGeneralCachesTitle', TRUE),
-				'description' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:flushGeneralCachesDescription', TRUE),
-				'href' => $this->backPath . 'tce_db.php?vC=' . $backendUser->veriCode() . '&cacheCmd=all&ajaxCall=1' . BackendUtility::getUrlToken('tceAction'),
+				'title' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:flushGeneralCachesTitle', TRUE),
+				'description' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:flushGeneralCachesDescription', TRUE),
+				'href' => 'tce_db.php?vC=' . $backendUser->veriCode() . '&cacheCmd=all&ajaxCall=1' . BackendUtility::getUrlToken('tceAction'),
 				'icon' => IconUtility::getSpriteIcon('actions-system-cache-clear-impact-medium')
 			);
 			$this->optionValues[] = 'all';
@@ -91,18 +80,19 @@ class ClearCacheToolbarItem implements ToolbarItemInterface {
 			|| ((bool)$GLOBALS['TYPO3_CONF_VARS']['SYS']['clearCacheSystem'] === TRUE && $backendUser->isAdmin())) {
 			$this->cacheActions[] = array(
 				'id' => 'system',
-				'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:flushSystemCachesTitle', TRUE),
-				'description' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:flushSystemCachesDescription', TRUE),
-				'href' => $this->backPath . 'tce_db.php?vC=' . $backendUser->veriCode() . '&cacheCmd=system&ajaxCall=1' . BackendUtility::getUrlToken('tceAction'),
+				'title' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:flushSystemCachesTitle', TRUE),
+				'description' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:flushSystemCachesDescription', TRUE),
+				'href' => 'tce_db.php?vC=' . $backendUser->veriCode() . '&cacheCmd=system&ajaxCall=1' . BackendUtility::getUrlToken('tceAction'),
 				'icon' => IconUtility::getSpriteIcon('actions-system-cache-clear-impact-high')
 			);
 			$this->optionValues[] = 'system';
 		}
+
 		// Hook for manipulating cacheActions
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['additionalBackendItems']['cacheActions'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['additionalBackendItems']['cacheActions'] as $cacheAction) {
 				$hookObject = GeneralUtility::getUserObj($cacheAction);
-				if (!$hookObject instanceof \TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookInterface) {
+				if (!$hookObject instanceof ClearCacheActionsHookInterface) {
 					throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Backend\\Toolbar\\ClearCacheActionsHookInterface', 1228262000);
 				}
 				$hookObject->manipulateCacheActions($this->cacheActions, $this->optionValues);
@@ -131,61 +121,41 @@ class ClearCacheToolbarItem implements ToolbarItemInterface {
 	}
 
 	/**
-	 * Creates the selector for workspaces
+	 * Render clear cache icon
 	 *
-	 * @return string Workspace selector as HTML select
+	 * @return string Icon HTML
 	 */
-	public function render() {
-		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.clearCache_clearCache', TRUE);
-		$this->addJavascriptToBackend();
-		$cacheMenu = array();
-		$cacheMenu[] = '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . IconUtility::getSpriteIcon('apps-toolbar-menu-cache', array('title' => $title)) . '</a>';
-		$cacheMenu[] = '<ul class="dropdown-menu" role="menu">';
+	public function getItem() {
+		$title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.clearCache_clearCache', TRUE);
+		return IconUtility::getSpriteIcon('apps-toolbar-menu-cache', array('title' => $title));
+	}
+
+	/**
+	 * Render drop down
+	 *
+	 * @return string Drop down HTML
+	 */
+	public function getDropDown() {
+		$result = array();
+		$result[] = '<ul>';
 		foreach ($this->cacheActions as $cacheAction) {
-			$cacheMenu[] = '<li><a href="' . htmlspecialchars($cacheAction['href'])
-				. '" title="' . htmlspecialchars($cacheAction['description'] ?: $cacheAction['title']) . '">'
-				. $cacheAction['icon'] . ' ' . htmlspecialchars($cacheAction['title']) . '</a></li>';
+			$title = $cacheAction['description'] ?: $cacheAction['title'];
+			$result[] = '<li>';
+			$result[] = '<a href="' . htmlspecialchars($cacheAction['href']) . '" title="' . htmlspecialchars($title) . '">';
+			$result[] = $cacheAction['icon'] . ' ' . htmlspecialchars($cacheAction['title']);
+			$result[] = '</a>';
+			$result[] = '</li>';
 		}
-		$cacheMenu[] = '</ul>';
-		return implode(LF, $cacheMenu);
+		$result[] = '</ul>';
+		return implode(LF, $result);
 	}
 
 	/**
-	 * Adds the necessary JavaScript to the backend
-	 *
-	 * @return void
-	 */
-	protected function addJavascriptToBackend() {
-		$this->backendReference->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Toolbar/ClearCacheMenu');
-	}
-
-	/**
-	 * Returns additional attributes for the list item in the toolbar
-	 *
-	 * This should not contain the "class" or "id" attribute.
-	 * Use the methods for setting these attributes
-	 *
-	 * @return string List item HTML attibutes
-	 */
-	public function getAdditionalAttributes() {
-		return '';
-	}
-
-	/**
-	 * Return attribute id name
-	 *
-	 * @return string The name of the ID attribute
-	 */
-	public function getIdAttribute() {
-		return 'clear-cache-actions-menu';
-	}
-
-	/**
-	 * Returns extra classes
+	 * No additional attributes needed.
 	 *
 	 * @return array
 	 */
-	public function getExtraClasses() {
+	public function getAdditionalAttributes() {
 		return array();
 	}
 
@@ -199,6 +169,15 @@ class ClearCacheToolbarItem implements ToolbarItemInterface {
 	}
 
 	/**
+	 * Position relative to others
+	 *
+	 * @return int
+	 */
+	public function getIndex() {
+		return 25;
+	}
+
+	/**
 	 * Returns the current BE user.
 	 *
 	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
@@ -208,12 +187,23 @@ class ClearCacheToolbarItem implements ToolbarItemInterface {
 	}
 
 	/**
-	 * Position relative to others
+	 * Returns current PageRenderer
 	 *
-	 * @return int
+	 * @return \TYPO3\CMS\Core\Page\PageRenderer
 	 */
-	public function getIndex() {
-		return 25;
+	protected function getPageRenderer() {
+		/** @var  \TYPO3\CMS\Backend\Template\DocumentTemplate $documentTemplate */
+		$documentTemplate = $GLOBALS['TBE_TEMPLATE'];
+		return $documentTemplate->getPageRenderer();
+	}
+
+	/**
+	 * Returns LanguageService
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 
 }

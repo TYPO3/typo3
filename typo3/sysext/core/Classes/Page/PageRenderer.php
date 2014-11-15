@@ -1671,7 +1671,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 *		"Backend": Extension Name
 	 *		"FormEngine": FileName in the Resources/Public/JavaScript folder
 	 *
-	 * @param $mainModuleName must be in the form of "TYPO3/CMS/PackageName/ModuleName" e.g. "TYPO3/CMS/Backend/FormEngine"
+	 * @param string $mainModuleName Must be in the form of "TYPO3/CMS/PackageName/ModuleName" e.g. "TYPO3/CMS/Backend/FormEngine"
 	 * @return void
 	 */
 	public function loadRequireJsModule($mainModuleName) {

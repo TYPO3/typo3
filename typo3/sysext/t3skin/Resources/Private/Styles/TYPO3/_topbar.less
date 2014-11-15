@@ -69,12 +69,30 @@ Topbar
 			.dropdown-menu {
 				background-color: @navbar-inverse-link-active-bg;
 				color: @navbar-inverse-link-active-color;
-				border: 0;
-				margin: 0;
+				border: none;
 
-				.active {
-					a {
-						background-color: darken(@navbar-inverse-link-active-bg, 15%);
+				// Dropdown-menu with UL
+				> ul {
+					.list-unstyled;
+
+					> li {
+						> a {
+							color: @navbar-inverse-link-active-color;
+							display: block;
+							padding: 3px 20px;
+							clear: both;
+							font-weight: normal;
+							line-height: @line-height-base;
+							white-space: nowrap;
+						}
+
+						&.active {
+							> a {
+								background-color: darken(@navbar-inverse-link-active-bg, 15%);
+
+							}
+
+						}
 					}
 				}
 
