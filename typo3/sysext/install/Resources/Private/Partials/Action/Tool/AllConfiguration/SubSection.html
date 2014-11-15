@@ -8,6 +8,7 @@
 	<div class="toggleData" style="display:none">
 		<f:for each="{sectionData}" as="item">
 			<div class="item">
+				<a id="{sectionName}-{item.key}"></a>
 				<strong>[{sectionName}][{item.key}] </strong>
 				<f:if condition="{item.type} == 'checkbox'">
 					<f:then>

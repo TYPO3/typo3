@@ -527,6 +527,21 @@ $(document).ready(function() {
 		TYPO3.Install.Scrolling.handleButtonScrolling();
 	});
 
+	$('.item-description').find('a').on('click', function() {
+		targetToggleGroupId = $(this.hash);
+		if (targetToggleGroupId) {
+			$currentToggleGroup = $(this).closest('.toggleGroup');
+			$targetToggleGroup = $(targetToggleGroupId).closest('.toggleGroup');
+			if ($targetToggleGroup != $currentToggleGroup) {
+				$currentToggleGroup.removeClass('expanded');
+				$currentToggleGroup.find('.toggleData').hide();
+				$targetToggleGroup.addClass('expanded');
+				$targetToggleGroup.find('.toggleData').show();
+				TYPO3.Install.Scrolling.handleButtonScrolling();
+			}
+		}
+	});
+
 	// Simple password strength indicator
 	$('.t3-install-form-password-strength').on('keyup', function() {
 		var value = $(this).val();
