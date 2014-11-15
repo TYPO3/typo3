@@ -122,19 +122,22 @@ define('TYPO3/CMS/Backend/FormEngineFlexForm', ['jquery', 'TYPO3/CMS/Backend/For
 	};
 
 
-	// Create sortables for flexform sections
+	/**
+	 * Allow flexform sections to be sorted
+	 */
 	TYPO3.FormEngine.FlexFormElement.prototype.createSortable = function() {
 		var me = this;
 
-			// @todo: use something else than scriptaculous sortable
-		Position.includeScrollOffsets = true;
-		Sortable.create(me.options.flexformId, {
-			tag: 'div',
-			constraint: false,
-			handle: me.options.sectionHeaderSelector.replace(/\./, ''),
-			onChange: function() {
-				me.setActionStatus();
-			}
+		require(['jquery-ui/sortable'], function () {
+			me.$el.sortable({
+				containment: 'parent',
+				handle: '.t3-js-sortable-handle',
+				axis: 'y',
+				tolerance: 'pointer',
+				stop: function () {
+					me.setActionStatus();
+				}
+			});
 		});
 	};
 

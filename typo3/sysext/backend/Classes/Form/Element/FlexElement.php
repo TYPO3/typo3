@@ -364,7 +364,7 @@ class FlexElement extends AbstractFormElement {
 
 							if ($mayRestructureFlexforms) {
 								$ctrlHeader .= '<div class="pull-right">'
-									. IconUtility::getSpriteIcon('actions-move-move', array('title' => 'Drag to Move'))
+									. IconUtility::getSpriteIcon('actions-move-move', array('title' => 'Drag to Move', 'class' => 't3-js-sortable-handle'))
 									. IconUtility::getSpriteIcon('actions-edit-delete', array('title' => 'Delete', 'class' => 't3-delete'))
 									. '</div>';
 							}
