@@ -231,4 +231,40 @@ Value 2.2
 	public function substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArray($template, $markersAndSubparts, $wrap, $uppercase, $deleteUnused, $expected) {
 		$this->assertSame($expected, $this->fixture->substituteMarkerAndSubpartArrayRecursive($template, $markersAndSubparts, $wrap, $uppercase, $deleteUnused));
 	}
+
+	/**
+	 * @return array
+	 */
+	public function cDataWillRemainUnmodifiedDataProvider() {
+		return array(
+			'single-line CDATA' => array(
+				'/*<![CDATA[*/ <hello world> /*]]>*/',
+				'/*<![CDATA[*/ <hello world> /*]]>*/',
+			),
+			'multi-line CDATA #1' => array(
+				'/*<![CDATA[*/' . LF . '<hello world> /*]]>*/',
+				'/*<![CDATA[*/' . LF . '<hello world> /*]]>*/',
+			),
+			'multi-line CDATA #2' => array(
+				'/*<![CDATA[*/ <hello world>' . LF . '/*]]>*/',
+				'/*<![CDATA[*/ <hello world>' . LF . '/*]]>*/',
+			),
+			'multi-line CDATA #3' => array(
+				'/*<![CDATA[*/' . LF . '<hello world>' . LF . '/*]]>*/',
+				'/*<![CDATA[*/' . LF . '<hello world>' . LF . '/*]]>*/',
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @param string $source
+	 * @param string $expected
+	 * @dataProvider cDataWillRemainUnmodifiedDataProvider
+	 */
+	public function xHtmlCleaningDoesNotModifyCDATA($source, $expected) {
+		$result = $this->fixture->XHTML_clean($source);
+		$this->assertSame($expected, $result);
+	}
+
 }
