@@ -781,7 +781,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 			foreach ($extraGrListRows as $r) {
 				$lines[] = $r['gr_list'];
 			}
-			return '<br />' . $GLOBALS['TBE_TEMPLATE']->dfw(implode('<br />', $lines));
+			return '<br /><span class="text-muted">' . implode('<br />', $lines) . '</span>';
 		}
 	}
 

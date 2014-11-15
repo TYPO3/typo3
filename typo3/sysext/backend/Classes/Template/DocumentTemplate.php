@@ -244,6 +244,7 @@ function jumpToUrl(URL) {
 	 * Background image of page (relative to PATH_typo3)
 	 *
 	 * @var string
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8, use a stylesheet instead
 	 */
 	public $backGroundImage = '';
 
@@ -427,7 +428,7 @@ function jumpToUrl(URL) {
 		}
 		// Background image
 		if ($GLOBALS['TBE_STYLES']['background']) {
-			$this->backGroundImage = $GLOBALS['TBE_STYLES']['background'];
+			GeneralUtility::deprecationLog('Usage of $TBE_STYLES["background"] is deprecated. Please use stylesheets directly.');
 		}
 	}
 
@@ -1080,6 +1081,7 @@ function jumpToUrl(URL) {
 	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8, nothing there to output anymore
 	 */
 	public function endPageJS() {
+		GeneralUtility::logDeprecatedFunction();
 		return '';
 	}
 
@@ -1099,10 +1101,6 @@ function jumpToUrl(URL) {
 	 * @return string HTML style section/link tags
 	 */
 	public function docStyle() {
-		// Request background image:
-		if ($this->backGroundImage) {
-			$this->inDocStylesArray[] = ' BODY { background-image: url(' . $this->backPath . $this->backGroundImage . '); }';
-		}
 		// Implode it all:
 		$inDocStyles = implode(LF, $this->inDocStylesArray);
 
@@ -1293,9 +1291,11 @@ function jumpToUrl(URL) {
 	 *
 	 * @param string $string Input string
 	 * @return string Output string
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8, use proper HTML directly
 	 */
 	public function dfw($string) {
-		return '<span class="typo3-dimmed">' . $string . '</span>';
+		GeneralUtility::logDeprecatedFunction();
+		return '<span class="text-muted">' . $string . '</span>';
 	}
 
 	/**
@@ -1303,9 +1303,11 @@ function jumpToUrl(URL) {
 	 *
 	 * @param string $string Input string
 	 * @return string Output string
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8, use proper HTML directly
 	 */
 	public function rfw($string) {
-		return '<span class="typo3-red">' . $string . '</span>';
+		GeneralUtility::logDeprecatedFunction();
+		return '<span class="text-danger">' . $string . '</span>';
 	}
 
 	/**
@@ -1580,10 +1582,13 @@ function jumpToUrl(URL) {
 	 * @param bool $noWrap Deprecated - delivered by CSS
 	 * @param bool $fullWidth If set, the tabs will span the full width of their position
 	 * @param int $defaultTabIndex Default tab to open (for toggle <=0). Value corresponds to integer-array index + 1 (index zero is "1", index "1" is 2 etc.). A value of zero (or something non-existing) will result in no default tab open.
-	 * @param int $tabBehaviour If set to '1' empty tabs will be remove, If set to '2' empty tabs will be disabled
+	 * @param int $tabBehaviour If set to '1' empty tabs will be remove, If set to '2' empty tabs will be disabled. setting this option to '2' is deprecated since TYPO3 CMS 7, and will be removed iwth CMS 8
 	 * @return string JavaScript section for the HTML header.
 	 */
 	public function getDynTabMenu($menuItems, $identString, $toggle = 0, $foldout = FALSE, $noWrap = TRUE, $fullWidth = FALSE, $defaultTabIndex = 1, $tabBehaviour = 1) {
+		if ($tabBehaviour === 2) {
+			GeneralUtility::deprecationLog('DocumentTemplate::getDynTabMenu parameter $tabBehavior (=2) with showing empty disabled since TYPO3 CMS 7, and will not be supported anymore with CMS 8');
+		}
 		// Load the static code, if not already done with the function below
 		$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tabmenu.js');
 		$content = '';
@@ -1948,8 +1953,10 @@ function jumpToUrl(URL) {
 	 * @param string $id
 	 * @param string $saveStatePointer
 	 * @return string
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Use HTML bootstrap classes, localStorage etc.
 	 */
 	public function collapseableSection($title, $html, $id, $saveStatePointer = '') {
+		GeneralUtility::logDeprecatedFunction();
 		$hasSave = $saveStatePointer ? TRUE : FALSE;
 		$collapsedStyle = ($collapsedClass = '');
 		if ($hasSave) {

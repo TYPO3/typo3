@@ -843,7 +843,7 @@ class PageLayoutController {
 		$h_func_b = '<div class="checkbox">' .
 			'<label for="checkTt_content_showHidden">' .
 			BackendUtility::getFuncCheck($this->id, 'SET[tt_content_showHidden]', $this->MOD_SETTINGS['tt_content_showHidden'], 'db_layout.php', '', 'id="checkTt_content_showHidden"') .
-			(!$q_count ? $GLOBALS['TBE_TEMPLATE']->dfw($GLOBALS['LANG']->getLL('hiddenCE', TRUE)) : $GLOBALS['LANG']->getLL('hiddenCE', TRUE) . ' (' . $q_count . ')') .
+			(!$q_count ? ('<span class="text-muted">' . $GLOBALS['LANG']->getLL('hiddenCE', TRUE) . '</span>') : $GLOBALS['LANG']->getLL('hiddenCE', TRUE) . ' (' . $q_count . ')') .
 			'</label>' .
 			'</div>';
 
@@ -942,7 +942,7 @@ class PageLayoutController {
 				$h_func_b = '<div class="checkbox">' .
 					'<label for="checkTt_content_showHidden">' .
 					BackendUtility::getFuncCheck($this->id, 'SET[tt_content_showHidden]', $this->MOD_SETTINGS['tt_content_showHidden'], 'db_layout.php', '', 'id="checkTt_content_showHidden"') .
-					(!$q_count ? $GLOBALS['TBE_TEMPLATE']->dfw($GLOBALS['LANG']->getLL('hiddenCE')) : $GLOBALS['LANG']->getLL('hiddenCE') . ' (' . $q_count . ')') .
+					(!$q_count ? ('<span class="text-muted">' . $GLOBALS['LANG']->getLL('hiddenCE') . '</span>') : $GLOBALS['LANG']->getLL('hiddenCE') . ' (' . $q_count . ')') .
 					'</label>' .
 					'</div>';
 
