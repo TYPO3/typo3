@@ -710,6 +710,7 @@ class HtmlParser {
 		$tagRegister = array();
 		$tagStack = array();
 		$inComment = FALSE;
+		$inCdata = FALSE;
 		$skipTag = FALSE;
 		while (list(, $tok) = each($tokArr)) {
 			if ($inComment) {
@@ -723,6 +724,17 @@ class HtmlParser {
 				$tok = substr($tok, $eocPos + 3);
 				$inComment = FALSE;
 				$skipTag = TRUE;
+			} elseif ($inCdata) {
+				if (($eocPos = strpos($tok, '/*]]>*/')) === FALSE) {
+					// End of comment is not found in the token. Go futher until end of comment is found in other tokens.
+					$newContent[$c++] = '<' . $tok;
+					continue;
+				}
+				// Comment ends in the middle of the token: add comment and proceed with rest of the token
+				$newContent[$c++] = '<' . substr($tok, 0, $eocPos + 10);
+				$tok = substr($tok, $eocPos + 10);
+				$inCdata = FALSE;
+				$skipTag = TRUE;
 			} elseif (substr($tok, 0, 3) == '!--') {
 				if (($eocPos = strpos($tok, '-->')) === FALSE) {
 					// Comment started in this token but it does end in the same token. Set a flag to skip till the end of comment
@@ -733,6 +745,17 @@ class HtmlParser {
 				// Start and end of comment are both in the current token. Add comment and proceed with rest of the token
 				$newContent[$c++] = '<' . substr($tok, 0, ($eocPos + 3));
 				$tok = substr($tok, $eocPos + 3);
+				$skipTag = TRUE;
+			} elseif (substr($tok, 0, 10) === '![CDATA[*/') {
+				if (($eocPos = strpos($tok, '/*]]>*/')) === FALSE) {
+					// Comment started in this token but it does end in the same token. Set a flag to skip till the end of comment
+					$newContent[$c++] = '<' . $tok;
+					$inCdata = TRUE;
+					continue;
+				}
+				// Start and end of comment are both in the current token. Add comment and proceed with rest of the token
+				$newContent[$c++] = '<' . substr($tok, 0, $eocPos + 10);
+				$tok = substr($tok, $eocPos + 10);
 				$skipTag = TRUE;
 			}
 			$firstChar = $tok[0];
