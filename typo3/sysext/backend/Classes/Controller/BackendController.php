@@ -126,7 +126,6 @@ class BackendController {
 			'viewport' => 'js/extjs/viewport.js',
 			'iframepanel' => 'sysext/backend/Resources/Public/JavaScript/iframepanel.js',
 			'backendcontentiframe' => 'js/extjs/backendcontentiframe.js',
-			'modulepanel' => 'js/extjs/modulepanel.js',
 			'viewportConfiguration' => 'js/extjs/viewportConfiguration.js',
 			'util' => 'sysext/backend/Resources/Public/JavaScript/util.js'
 		);
