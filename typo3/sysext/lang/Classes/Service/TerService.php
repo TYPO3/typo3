@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Lang\Utility\Connection;
+namespace TYPO3\CMS\Lang\Service;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,12 +14,16 @@ namespace TYPO3\CMS\Lang\Utility\Connection;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
- * Extends of extensionmanager ter connection to enrich with translation related methods
+ * Extends of extensionmanager ter connection to enrich with translation
+ * related methods
  *
  * @author Sebastian Fischer <typo3@evoweb.de>
+ * @author Kai Vogel <k.vogel@reply.de>
  */
-class Ter extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility {
+class TerService extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Fetches extensions translation status
@@ -30,15 +34,13 @@ class Ter extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility {
 	 */
 	public function fetchTranslationStatus($extensionKey, $mirrorUrl) {
 		$result = FALSE;
-		$extPath = \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($extensionKey);
+		$extPath = GeneralUtility::strtolower($extensionKey);
 		$mirrorUrl .= $extPath[0] . '/' . $extPath[1] . '/' . $extPath . '-l10n/' . $extPath . '-l10n.xml';
-		$remote = \TYPO3\CMS\Core\Utility\GeneralUtility::getURL($mirrorUrl, 0, array(TYPO3_user_agent));
-
+		$remote = GeneralUtility::getURL($mirrorUrl, 0, array(TYPO3_user_agent));
 		if ($remote !== FALSE) {
 			$parsed = $this->parseL10nXML($remote);
 			$result = $parsed['languagePackIndex'];
 		}
-
 		return $result;
 	}
 
@@ -54,13 +56,10 @@ class Ter extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility {
 		$parser = xml_parser_create();
 		$values = array();
 		$index = array();
-
 		xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
 		xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 0);
-
 			// Parse content
 		xml_parse_into_struct($parser, $string, $values, $index);
-
 			// If error, return error message
 		if (xml_get_error_code($parser)) {
 			$line = xml_get_current_line_number($parser);
@@ -74,7 +73,6 @@ class Ter extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility {
 			$current = array();
 			$tagName = '';
 			$documentTag = '';
-
 				// Traverse the parsed XML structure:
 			foreach ($values as $val) {
 					// First, process the tag-name (which is used in both cases, whether "complete" or "close")
@@ -82,7 +80,6 @@ class Ter extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility {
 				if (!$documentTag) {
 					$documentTag = $tagName;
 				}
-
 					// Setting tag-values, manage stack:
 				switch ($val['type']) {
 						// If open tag it means there is an array stored in sub-elements.
@@ -113,7 +110,6 @@ class Ter extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility {
 			}
 			$result = $current[$tagName];
 		}
-
 		return $result;
 	}
 
@@ -130,21 +126,20 @@ class Ter extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility {
 		try {
 			$l10n = $this->fetchTranslation($extensionKey, $language, $mirrorUrl);
 			if (is_array($l10n)) {
-				$absolutePathToZipFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/' . $extensionKey . '-l10n-' . $language . '.zip');
+				$absolutePathToZipFile = GeneralUtility::getFileAbsFileName('typo3temp/' . $extensionKey . '-l10n-' . $language . '.zip');
 				$relativeLanguagePath = 'l10n' . '/' . $language . '/';
-				$absoluteLanguagePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(PATH_typo3conf . $relativeLanguagePath);
-				$absoluteExtensionLanguagePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(PATH_typo3conf . $relativeLanguagePath . $extensionKey . '/');
+				$absoluteLanguagePath = GeneralUtility::getFileAbsFileName(PATH_typo3conf . $relativeLanguagePath);
+				$absoluteExtensionLanguagePath = GeneralUtility::getFileAbsFileName(PATH_typo3conf . $relativeLanguagePath . $extensionKey . '/');
 				if (empty($absolutePathToZipFile) || empty($absoluteLanguagePath) || empty($absoluteExtensionLanguagePath)) {
-					throw new \TYPO3\CMS\Lang\Exception\Lang('Given path is invalid.', 1352565336);
+					throw new \TYPO3\CMS\Lang\Exception\Language('Given path is invalid.', 1352565336);
 				}
 				if (!is_dir($absoluteLanguagePath)) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep(PATH_typo3conf, $relativeLanguagePath);
+					GeneralUtility::mkdir_deep(PATH_typo3conf, $relativeLanguagePath);
 				}
-				\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($absolutePathToZipFile, $l10n[0]);
+				GeneralUtility::writeFile($absolutePathToZipFile, $l10n[0]);
 				if (is_dir($absoluteExtensionLanguagePath)) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($absoluteExtensionLanguagePath, TRUE);
+					GeneralUtility::rmdir($absoluteExtensionLanguagePath, TRUE);
 				}
-
 				if ($this->unzipTranslationFile($absolutePathToZipFile, $absoluteLanguagePath)) {
 					$result = TRUE;
 				}
@@ -165,11 +160,10 @@ class Ter extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility {
 	 * @return array Array containing l10n data
 	 */
 	protected function fetchTranslation($extensionKey, $language, $mirrorUrl) {
-		$extensionPath = \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($extensionKey);
+		$extensionPath = GeneralUtility::strtolower($extensionKey);
 		$mirrorUrl .= $extensionPath[0] . '/' . $extensionPath[1] . '/' . $extensionPath .
 			'-l10n/' . $extensionPath . '-l10n-' . $language . '.zip';
-		$l10nResponse = \TYPO3\CMS\Core\Utility\GeneralUtility::getURL($mirrorUrl, 0, array(TYPO3_user_agent));
-
+		$l10nResponse = GeneralUtility::getURL($mirrorUrl, 0, array(TYPO3_user_agent));
 		if ($l10nResponse === FALSE) {
 			throw new \TYPO3\CMS\Lang\Exception\XmlParser('Error: Translation could not be fetched.', 1345736785);
 		} else {
@@ -178,22 +172,20 @@ class Ter extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility {
 	}
 
 	/**
-	 * Unzip an language.zip.
+	 * Unzip an language zip file
 	 *
 	 * @param string $file path to zip file
 	 * @param string $path path to extract to
-	 * @throws \TYPO3\CMS\Lang\Exception\Lang
+	 * @throws \TYPO3\CMS\Lang\Exception\Language
 	 * @return bool
 	 */
 	protected function unzipTranslationFile($file, $path) {
 		$zip = zip_open($file);
 		if (is_resource($zip)) {
 			$result = TRUE;
-
 			if (!is_dir($path)) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($path);
+				GeneralUtility::mkdir_deep($path);
 			}
-
 			while (($zipEntry = zip_read($zip)) !== FALSE) {
 				$zipEntryName = zip_entry_name($zipEntry);
 				if (strpos($zipEntryName, '/') !== FALSE) {
@@ -201,28 +193,27 @@ class Ter extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility {
 					$fileName = array_pop($zipEntryPathSegments);
 					// It is a folder, because the last segment is empty, let's create it
 					if (empty($fileName)) {
-						\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($path, implode('/', $zipEntryPathSegments));
+						GeneralUtility::mkdir_deep($path, implode('/', $zipEntryPathSegments));
 					} else {
-						$absoluteTargetPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($path . implode('/', $zipEntryPathSegments) . '/' . $fileName);
+						$absoluteTargetPath = GeneralUtility::getFileAbsFileName($path . implode('/', $zipEntryPathSegments) . '/' . $fileName);
 						if (strlen(trim($absoluteTargetPath)) > 0) {
-							$return = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(
+							$return = GeneralUtility::writeFile(
 								$absoluteTargetPath, zip_entry_read($zipEntry, zip_entry_filesize($zipEntry))
 							);
 							if ($return === FALSE) {
-								throw new \TYPO3\CMS\Lang\Exception\Lang('Could not write file ' . $zipEntryName, 1345304560);
+								throw new \TYPO3\CMS\Lang\Exception\Language('Could not write file ' . $zipEntryName, 1345304560);
 							}
 						} else {
-							throw new \TYPO3\CMS\Lang\Exception\Lang('Could not write file ' . $zipEntryName, 1352566904);
+							throw new \TYPO3\CMS\Lang\Exception\Language('Could not write file ' . $zipEntryName, 1352566904);
 						}
 					}
 				} else {
-					throw new \TYPO3\CMS\Lang\Exception\Lang('Extension directory missing in zip file!', 1352566905);
+					throw new \TYPO3\CMS\Lang\Exception\Language('Extension directory missing in zip file!', 1352566905);
 				}
 			}
 		} else {
-			throw new \TYPO3\CMS\Lang\Exception\Lang('Unable to open zip file ' . $file, 1345304561);
+			throw new \TYPO3\CMS\Lang\Exception\Language('Unable to open zip file ' . $file, 1345304561);
 		}
-
 		return $result;
 	}
 

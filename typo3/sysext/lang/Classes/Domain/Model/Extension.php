@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Lang\Domain\Model;
  * Extension model
  *
  * @author Sebastian Fischer <typo3@evoweb.de>
+ * @author Kai Vogel <k.vogel@reply.de>
  */
 class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
@@ -40,21 +41,6 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @var int
 	 */
 	protected $version = '';
-
-	/**
-	 * @var string
-	 */
-	protected $stateCls = '';
-
-	/**
-	 * @var string
-	 */
-	protected $versionislower = '';
-
-	/**
-	 * @var string
-	 */
-	protected $maxversion = '';
 
 	/**
 	 * @var array
@@ -178,6 +164,20 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function getUpdateResult() {
 		return $this->updateResult;
+	}
+
+	/**
+	 * Returns an array represetation of current model
+	 *
+	 * @return array The properties
+	 */
+	public function toArray() {
+		return array(
+			'key'     => $this->getKey(),
+			'title'   => $this->getTitle(),
+			'icon'    => $this->getIcon(),
+			'version' => $this->getVersion(),
+		);
 	}
 
 }

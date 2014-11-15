@@ -15,10 +15,9 @@ namespace TYPO3\CMS\Lang\Controller;
  */
 
 /**
- * Language controller handling the selection of available languages and update of extension translations
+ * Language controller
  *
- * @author Sebastian Fischer <typo3@evoweb.de>
- * @author Kai Vogel <kai.vogel@speedprogs.de>
+ * @author Kai Vogel <k.vogel@reply.de>
  */
 class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
@@ -35,85 +34,126 @@ class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	protected $extensionRepository;
 
 	/**
-	 * @var \TYPO3\CMS\Lang\Service\UpdateTranslationService
+	 * @var \TYPO3\CMS\Lang\Service\TranslationService
 	 * @inject
 	 */
-	protected $updateTranslationService;
+	protected $translationService;
 
 	/**
-	 * JSON actions
-	 * @var array
+	 * @var \TYPO3\CMS\Lang\Service\RegistryService
+	 * @inject
 	 */
-	protected $jsonActions = array('updateTranslation');
+	protected $registryService;
 
 	/**
-	 * Force JSON output for defined actions
+	 * List languages
 	 *
-	 * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view The view to be initialized
 	 * @return void
 	 */
-	protected function initializeView(\TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view) {
-		$actionName = $this->request->getControllerActionName();
-		if (in_array($actionName, $this->jsonActions)) {
-			$viewObjectName = 'TYPO3\\CMS\\Lang\\View\\Language\\' . ucfirst($actionName) . 'Json';
-			$this->view = $this->objectManager->get($viewObjectName);
-			$this->view->setControllerContext($this->controllerContext);
-			$this->view->initializeView();
-		}
+	public function listLanguagesAction() {
+		$languages = $this->languageRepository->findAll();
+		$this->view->assign('languages', $languages);
 	}
 
 	/**
-	 * Index action
+	 * List translations
 	 *
-	 * @param \TYPO3\CMS\Lang\Domain\Model\LanguageSelectionForm $languageSelectionForm
-	 * @param mixed $extensions Extensions to show in form
 	 * @return void
-	 * @dontvalidate $languageSelectionForm
-	 * @dontvalidate $extensions
 	 */
-	public function indexAction(\TYPO3\CMS\Lang\Domain\Model\LanguageSelectionForm $languageSelectionForm = NULL, $extensions = NULL) {
-		if ($languageSelectionForm === NULL) {
-			$languageSelectionForm = $this->objectManager->get(\TYPO3\CMS\Lang\Domain\Model\LanguageSelectionForm::class);
-			$languageSelectionForm->setLanguages($this->languageRepository->findAll());
-			$languageSelectionForm->setSelectedLanguages($this->languageRepository->findSelected());
-		}
-
-		$hasSelectedLanguages = !empty($languageSelectionForm->getSelectedLanguages());
-		if ($hasSelectedLanguages && empty($extensions)) {
-			$extensions = $this->extensionRepository->findAll();
-		}
-
-		$this->view->assign('hasSelectedLanguages', $hasSelectedLanguages);
-		$this->view->assign('languageSelectionForm', $languageSelectionForm);
-		$this->view->assign('extensions', $extensions);
+	public function listTranslationsAction() {
+		$languages = $this->languageRepository->findSelected();
+		$this->view->assign('languages', $languages);
 	}
 
 	/**
-	 * Update the language selection form
+	 * Returns the translations
 	 *
-	 * @param \TYPO3\CMS\Lang\Domain\Model\LanguageSelectionForm $languageSelectionForm
 	 * @return void
-	 * @dontvalidate $languageSelectionForm
 	 */
-	public function updateLanguageSelectionAction(\TYPO3\CMS\Lang\Domain\Model\LanguageSelectionForm $languageSelectionForm) {
-		if ($languageSelectionForm !== NULL) {
-			$this->languageRepository->updateSelectedLanguages($languageSelectionForm->getSelectedLanguages());
-		}
-		$this->redirect('index');
+	public function getTranslationsAction() {
+		$this->view->assign('extensions', $this->extensionRepository->findAll());
+		$this->view->assign('languages', $this->languageRepository->findSelected());
 	}
 
 	/**
-	 * Update translation for one extension.
-	 * The view of this action returns JSON!
+	 * Fetch all translations for given locale
 	 *
-	 * @param string $extension The extension key
-	 * @param string $locales Comma separated list of locales to update
+	 * @param array $data The request data
 	 * @return void
 	 */
-	public function updateTranslationAction($extension, $locales) {
-		$locales = $this->updateTranslationService->updateTranslation($extension, $locales);
-		$this->view->assign('extension', $extension);
-		$this->view->assign('locales', $locales);
+	public function updateLanguageAction(array $data) {
+		$response = array(
+			'success'  => FALSE,
+			'progress' => 0,
+		);
+		if (!empty($data['locale'])) {
+			$extension = $this->extensionRepository->findOneByOffset((int)$data['count']);
+			if (!empty($extension)) {
+				$allCount = (int)$this->extensionRepository->countAll();
+				$offset = (int)$data['count'];
+				$extensionKey = $extension->getKey();
+				$result = $this->translationService->updateTranslation($extensionKey, $data['locale']);
+				$progress = round((($offset + 1) * 100) / $allCount, 2);
+				if (empty($result[$extensionKey][$data['locale']]['error'])) {
+					$this->registryService->set($data['locale'], $GLOBALS['EXEC_TIME']);
+					$response = array(
+						'success'   => TRUE,
+						'result'    => $result,
+						'timestamp' => $GLOBALS['EXEC_TIME'],
+						'progress'  => $progress > 100 ? 100 : $progress,
+					);
+				}
+			}
+		}
+		$this->view->assign('response', $response);
+	}
+
+	/**
+	 * Fetch the translation for given extension and locale
+	 *
+	 * @param array $data The request data
+	 * @return void
+	 */
+	public function updateTranslationAction(array $data) {
+		$response = array('success' => FALSE);
+		if (!empty($data['extension']) && !empty($data['locale'])) {
+			$result = $this->translationService->updateTranslation($data['extension'], $data['locale']);
+			if (empty($result[$data['extension']][$data['locale']]['error'])) {
+				$response = array(
+					'success' => TRUE,
+					'result'  => $result,
+				);
+			}
+		}
+		$this->view->assign('response', $response);
+	}
+
+	/**
+	 * Activate a language
+	 *
+	 * @param array $data The request data
+	 * @return void
+	 */
+	public function activateLanguageAction(array $data) {
+		$response = array('success' => FALSE);
+		if (!empty($data['locale'])) {
+			$response = $this->languageRepository->activateByLocale($data['locale']);
+		}
+		$this->view->assign('response', $response);
+	}
+
+	/**
+	 * Deactivate a language
+	 *
+	 * @param array $data The request data
+	 * @return void
+	 */
+	public function deactivateLanguageAction(array $data) {
+		$response = array('success' => FALSE);
+		if (!empty($data['locale'])) {
+			$response = $this->languageRepository->deactivateByLocale($data['locale']);
+		}
+		$this->view->assign('response', $response);
 	}
 
 }

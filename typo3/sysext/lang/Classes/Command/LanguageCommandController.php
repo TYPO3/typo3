@@ -29,17 +29,22 @@ class LanguageCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Comman
 	protected $signalSlotDispatcher;
 
 	/**
+	 * @var \TYPO3\CMS\Lang\Service\RegistryService
+	 * @inject
+	 */
+	protected $registryService;
+
+	/**
 	 * Update language file for each extension
 	 *
 	 * @param string $localesToUpdate Comma separated list of locales that needs to be updated
 	 * @return void
 	 */
 	public function updateCommand($localesToUpdate = '') {
-		/** @var $updateTranslationService \TYPO3\CMS\Lang\Service\UpdateTranslationService */
-		$updateTranslationService = $this->objectManager->get(\TYPO3\CMS\Lang\Service\UpdateTranslationService::class);
+		/** @var $translationService \TYPO3\CMS\Lang\Service\TranslationService */
+		$translationService = $this->objectManager->get(\TYPO3\CMS\Lang\Service\TranslationService::class);
 		/** @var $languageRepository \TYPO3\CMS\Lang\Domain\Repository\LanguageRepository */
 		$languageRepository = $this->objectManager->get(\TYPO3\CMS\Lang\Domain\Repository\LanguageRepository::class);
-
 		$locales = array();
 		if (!empty($localesToUpdate)) {
 			$locales = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $localesToUpdate, TRUE);
@@ -53,9 +58,16 @@ class LanguageCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Comman
 		/** @var PackageManager $packageManager */
 		$packageManager = $this->objectManager->get(\TYPO3\CMS\Core\Package\PackageManager::class);
 		$this->emitPackagesMayHaveChangedSignal();
-		/** @var PackageInterface $package */
-		foreach ($packageManager->getAvailablePackages() as $package) {
-			$updateTranslationService->updateTranslation($package->getPackageKey(), $locales);
+		$packages = $packageManager->getAvailablePackages();
+		foreach ($locales as $locale) {
+			/** @var PackageInterface $package */
+			foreach ($packages as $package) {
+				$extensionKey = $package->getPackageKey();
+				$result = $translationService->updateTranslation($extensionKey, $locale);
+				if (empty($result[$extensionKey][$locale]['error'])) {
+					$this->registryService->set($locale, $GLOBALS['EXEC_TIME']);
+				}
+			}
 		}
 	}
 

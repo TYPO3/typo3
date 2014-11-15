@@ -11482,6 +11482,103 @@ span.ter-ext-state {
   right: 3px;
   top: 4px;
 }
+div.typo3-module-lang table.t3-datatable {
+  width: 100% !important;
+}
+div.typo3-module-lang table.t3-datatable th.sorting,
+div.typo3-module-lang table.t3-datatable th.sorting_asc,
+div.typo3-module-lang table.t3-datatable th.sorting_desc {
+  cursor: pointer;
+}
+div.typo3-module-lang table.t3-datatable tr > .extensionName {
+  padding-left: 0 !important;
+}
+div.typo3-module-lang table.t3-datatable tr > .dt-center {
+  text-align: center;
+}
+div.typo3-module-lang table.t3-datatable tr.disabled {
+  color: #aaaaaa;
+}
+div.typo3-module-lang table.t3-datatable tr.disabled a.deactivateLanguageLink,
+div.typo3-module-lang table.t3-datatable tr.disabled a.updateLanguageLink,
+div.typo3-module-lang table.t3-datatable tr.disabled a.updateTranslationLink {
+  display: none;
+}
+div.typo3-module-lang table.t3-datatable tr.enabled a.activateLanguageLink {
+  display: none;
+}
+div.typo3-module-lang table.t3-datatable tr div.progressBar {
+  display: none;
+}
+div.typo3-module-lang table.t3-datatable tr div.progressBar .progress {
+  position: relative;
+}
+div.typo3-module-lang table.t3-datatable tr div.progressBar .progress .progress-text {
+  position: absolute;
+  color: #FFFFFF;
+  text-align: center;
+  width: 100%;
+  text-shadow: 0 0 6px #000000;
+}
+div.typo3-module-lang table.t3-datatable tr.processing div.progressBar,
+div.typo3-module-lang table.t3-datatable tr.complete div.progressBar {
+  display: inline;
+  cursor: default;
+}
+div.typo3-module-lang table.t3-datatable tr.processing a.updateLanguageLink,
+div.typo3-module-lang table.t3-datatable td.processing a.updateLanguageLink,
+div.typo3-module-lang table.t3-datatable tr.complete a.updateLanguageLink,
+div.typo3-module-lang table.t3-datatable td.complete a.updateLanguageLink,
+div.typo3-module-lang table.t3-datatable tr.processing a.updateTranslationLink,
+div.typo3-module-lang table.t3-datatable td.processing a.updateTranslationLink,
+div.typo3-module-lang table.t3-datatable tr.complete a.updateTranslationLink,
+div.typo3-module-lang table.t3-datatable td.complete a.updateTranslationLink {
+  display: none;
+}
+div.typo3-module-lang table.t3-datatable td span.loading,
+div.typo3-module-lang table.t3-datatable td span.complete {
+  display: none;
+}
+div.typo3-module-lang table.t3-datatable td.actions span {
+  cursor: pointer;
+}
+div.typo3-module-lang table.t3-datatable td.processing span.loading {
+  display: inline;
+  cursor: default;
+}
+div.typo3-module-lang table.t3-datatable td.processing span.loading .t3-icon {
+  cursor: default;
+  width: 14px;
+  height: 14px;
+  margin: 0;
+}
+div.typo3-module-lang table.t3-datatable td.complete span.complete {
+  display: inline;
+}
+div.typo3-module-lang table.t3-datatable div.progress {
+  margin-bottom: 0;
+}
+div.typo3-module-lang div.menuItems.processing span.updateItem {
+  display: none;
+}
+div.typo3-module-lang div.menuItems.processing span.loadingItem,
+div.typo3-module-lang div.menuItems.processing span.cancelItem {
+  display: inline;
+}
+div.typo3-module-lang div.menuItems span.loadingItem,
+div.typo3-module-lang div.menuItems span.cancelItem {
+  display: none;
+}
+div.typo3-module-lang div.menuItems span.updateItem,
+div.typo3-module-lang div.menuItems span.cancelItem {
+  cursor: pointer;
+}
+div.typo3-module-lang .div.dataTables_filter input {
+  margin-left: 3px;
+}
+div.typo3-module-lang div.progress-bar {
+  background-color: #222222;
+}
 .beuser-legend {
   margin-bottom: 18px;
 }

@@ -14,19 +14,24 @@ namespace TYPO3\CMS\Lang\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
 /**
  * Extension repository
  *
- * @author Sebastian Fischer <typo3@evoweb.de>
+ * @author Kai Vogel <k.vogel@reply.de>
  */
 class ExtensionRepository {
+
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+	 * @inject
 	 */
 	protected $objectManager;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility
+	 * @inject
 	 */
 	protected $listUtility;
 
@@ -36,35 +41,14 @@ class ExtensionRepository {
 	protected $extensions = array();
 
 	/**
-	 * Injects the object manager
+	 * Returns all objects of this repository
 	 *
-	 * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
-	 * @return void
-	 */
-	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager) {
-		$this->objectManager = $objectManager;
-	}
-
-	/**
-	 * Inject the list utility
-	 *
-	 * @param \TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility
-	 * @return void
-	 */
-	public function injectListUtility(\TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility) {
-		$this->listUtility = $listUtility;
-	}
-
-	/**
-	 * Returns all objects of this repository.
-	 *
-	 * @return array
+	 * @return array The extensions
 	 */
 	public function findAll() {
-		if (!count($this->extensions)) {
-			$availableAndInstalledExtensions = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
-
-			foreach ($availableAndInstalledExtensions as $entry) {
+		if (empty($this->extensions)) {
+			$extensions = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
+			foreach ($extensions as $entry) {
 				/** @var $extension \TYPO3\CMS\Lang\Domain\Model\Extension */
 				$extension = $this->objectManager->get(
 					\TYPO3\CMS\Lang\Domain\Model\Extension::class,
@@ -75,30 +59,53 @@ class ExtensionRepository {
 				$extension->setVersionFromString($entry['version']);
 				$this->extensions[$entry['key']] = $extension;
 			}
-
-				// Sort the list by extension key
 			ksort($this->extensions);
 		}
-
 		return $this->extensions;
 	}
 
 	/**
+	 * Counts all objects of this repository
+	 *
+	 * @return int The extension count
+	 */
+	public function countAll() {
+		$extensions = $this->findAll();
+		return count($extensions);
+	}
+
+	/**
+	 * Find one extension by offset
+	 *
+	 * @param int $offset The offset
+	 * @return TYPO3\CMS\Lang\Domain\Model\Extension The extension
+	 */
+	public function findOneByOffset($offset) {
+		$extensions = $this->findAll();
+		$extensions = array_values($extensions);
+		$offset = (int)$offset;
+		if (!empty($extensions[$offset])) {
+			return $extensions[$offset];
+		}
+		return NULL;
+	}
+
+	/**
+	 * Returns the extension icon
+	 *
 	 * @param array $extensionEntry
 	 * @return string
 	 */
 	protected function getExtensionIconWithPath($extensionEntry) {
 		$extensionIcon = $GLOBALS['TYPO3_LOADED_EXT'][$extensionEntry['key']]['ext_icon'];
 		if (empty($extensionIcon)) {
-			$extensionIcon = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionIcon(PATH_site . $extensionEntry['siteRelPath'] . '/');
+			$extensionIcon = ExtensionManagementUtility::getExtensionIcon(PATH_site . $extensionEntry['siteRelPath'] . '/');
 		}
-
 		if (empty($extensionIcon)) {
 			$extensionIcon = '/typo3/clear.gif';
 		} else {
 			$extensionIcon = '../' . $extensionEntry['siteRelPath'] . '/' . $extensionIcon;
 		}
-
 		return $extensionIcon;
 	}
 

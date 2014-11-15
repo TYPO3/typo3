@@ -1,5 +1,4 @@
 <?php
-
 namespace TYPO3\CMS\Lang\Tests\Unit\Domain\Model;
 
 /*
@@ -16,7 +15,9 @@ namespace TYPO3\CMS\Lang\Tests\Unit\Domain\Model;
  */
 
 /**
- * Test case for Language
+ * Testcase for Language
+ *
+ * @author Wouter Wolters <typo3@wouterwolters.nl>
  */
 class LanguageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
@@ -74,7 +75,7 @@ class LanguageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getLanguageInitiallyReturnsEmptyString() {
 		$this->assertSame(
 			'',
-			$this->fixture->getLanguage()
+			$this->fixture->getLabel()
 		);
 	}
 
@@ -87,7 +88,7 @@ class LanguageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$this->assertSame(
 			$language,
-			$this->fixture->getLanguage()
+			$this->fixture->getLabel()
 		);
 	}
 
@@ -96,11 +97,11 @@ class LanguageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setLanguageSetsLanguage() {
 		$language = 'nl';
-		$this->fixture->setLanguage($language);
+		$this->fixture->setLabel($language);
 
 		$this->assertSame(
 			$language,
-			$this->fixture->getLanguage()
+			$this->fixture->getLabel()
 		);
 	}
 

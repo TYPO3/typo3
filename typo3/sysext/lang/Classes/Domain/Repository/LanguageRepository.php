@@ -14,30 +14,35 @@ namespace TYPO3\CMS\Lang\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Language repository
  *
  * @author Sebastian Fischer <typo3@evoweb.de>
+ * @author Kai Vogel <k.vogel@reply.de>
  */
 class LanguageRepository {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+	 * @inject
 	 */
 	protected $objectManager;
 
 	/**
-	 * @var array
-	 */
-	protected $selectedLanguages = array();
-
-	/**
 	 * @var \TYPO3\CMS\Core\Localization\Locales
+	 * @inject
 	 */
 	protected $locales;
 
 	/**
-	 * @var array
+	 * @var \TYPO3\CMS\Lang\Domain\Model\Language[]
+	 */
+	protected $selectedLocales = array();
+
+	/**
+	 * @var \TYPO3\CMS\Lang\Domain\Model\Language[]
 	 */
 	protected $languages = array();
 
@@ -47,14 +52,21 @@ class LanguageRepository {
 	protected $configurationPath = 'EXTCONF/lang';
 
 	/**
+	 * @var \TYPO3\CMS\Lang\Service\RegistryService
+	 * @inject
+	 */
+	protected $registryService;
+
+	/**
 	 * Constructor of the language repository
 	 */
 	public function __construct() {
+		$configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
 		try {
-			$globalSettings = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class)->getLocalConfigurationValueByPath($this->configurationPath);
-			$this->selectedLanguages = (array)$globalSettings['availableLanguages'];
+			$globalSettings = $configurationManager->getLocalConfigurationValueByPath($this->configurationPath);
+			$this->selectedLocales = (array)$globalSettings['availableLanguages'];
 		} catch (\Exception $e) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class)->setLocalConfigurationValueByPath(
+			$configurationManager->setLocalConfigurationValueByPath(
 				$this->configurationPath,
 				array('availableLanguages' => array())
 			);
@@ -62,86 +74,60 @@ class LanguageRepository {
 	}
 
 	/**
-	 * Injects the object manager
+	 * Returns all objects of this repository
 	 *
-	 * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
-	 * @return void
-	 */
-	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager) {
-		$this->objectManager = $objectManager;
-	}
-
-	/**
-	 * Injects the locales
-	 *
-	 * @param \TYPO3\CMS\Core\Localization\Locales $locales
-	 * @return void
-	 */
-	public function injectLocales(\TYPO3\CMS\Core\Localization\Locales $locales) {
-		$this->locales = $locales;
-	}
-
-	/**
-	 * Returns all objects of this repository.
-	 *
-	 * @return array
+	 * @return \TYPO3\CMS\Lang\Domain\Model\Language[] The language objects
 	 */
 	public function findAll() {
 		if (!count($this->languages)) {
 			$languages = $this->locales->getLanguages();
 			array_shift($languages);
-
 			foreach ($languages as $locale => $language) {
 				$label = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:setup/mod/locallang.xlf:lang_' . $locale));
 				if ($label === '') {
 					$label = htmlspecialchars($language);
 				}
-
 				$this->languages[$locale] = $this->objectManager->get(
 					\TYPO3\CMS\Lang\Domain\Model\Language::class,
 					$locale,
 					$label,
-					in_array($locale, $this->selectedLanguages)
+					in_array($locale, $this->selectedLocales),
+					$this->registryService->get($locale)
 				);
 			}
-
 			usort($this->languages, function($a, $b) {
 				/** @var $a \TYPO3\CMS\Lang\Domain\Model\Language */
 				/** @var $b \TYPO3\CMS\Lang\Domain\Model\Language */
-				if ($a->getLanguage() == $b->getLanguage()) {
+				if ($a->getLabel() == $b->getLabel()) {
 					return 0;
 				}
-				return $a->getLanguage() < $b->getLanguage() ? -1 : 1;
+				return $a->getLabel() < $b->getLabel() ? -1 : 1;
 			});
 		}
-
 		return $this->languages;
 	}
 
 	/**
 	 * Find selected languages
 	 *
-	 * @return array
+	 * @return \TYPO3\CMS\Lang\Domain\Model\Language[] The language objects
 	 */
 	public function findSelected() {
 		$languages = $this->findAll();
-
 		$result = array();
-		/** @var $language \TYPO3\CMS\Lang\Domain\Model\Language */
 		foreach ($languages as $language) {
 			if ($language->getSelected()) {
 				$result[] = $language;
 			}
 		}
-
 		return $result;
 	}
 
 	/**
 	 * Update selected languages
 	 *
-	 * @param array $languages
-	 * @return array
+	 * @param array $languages The languages
+	 * @return array Update information
 	 */
 	public function updateSelectedLanguages($languages) {
 			// Add possible dependencies for selected languages
@@ -152,21 +138,52 @@ class LanguageRepository {
 		if (count($dependencies)) {
 			$languages = array_unique(array_merge($languages, $dependencies));
 		}
-
-		$dir = count($languages) - count($this->selectedLanguages);
-		$diff = $dir < 0 ? array_diff($this->selectedLanguages, $languages) : array_diff($languages, $this->selectedLanguages);
-
-		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class)->setLocalConfigurationValueByPath(
+		$dir = count($languages) - count($this->selectedLocales);
+		$diff = $dir < 0 ? array_diff($this->selectedLocales, $languages) : array_diff($languages, $this->selectedLocales);
+		GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class)->setLocalConfigurationValueByPath(
 			$this->configurationPath,
 			array('availableLanguages' => $languages)
 		);
-
 		return array(
 			'success' => count($diff) > 0,
 			'dir' => $dir,
 			'diff' => array_values($diff),
 			'languages' => $languages
 		);
+	}
+
+	/**
+	 * Add a language to list of selected languages
+	 *
+	 * @param string $locale The locale
+	 * @return array Update information
+	 */
+	public function activateByLocale($locale) {
+		$languages = $this->findAll();
+		$locales = array();
+		foreach ($languages as $language) {
+			if ($language->getSelected() || $language->getLocale() === $locale) {
+				$locales[] = $language->getLocale();
+			}
+		}
+		return $this->updateSelectedLanguages($locales);
+	}
+
+	/**
+	 * Remove a language from list of selected languages
+	 *
+	 * @param string $locale The locale
+	 * @return array Update information
+	 */
+	public function deactivateByLocale($locale) {
+		$languages = $this->findAll();
+		$locales = array();
+		foreach ($languages as $language) {
+			if ($language->getSelected() && $language->getLocale() !== $locale) {
+				$locales[] = $language->getLocale();
+			}
+		}
+		return $this->updateSelectedLanguages($locales);
 	}
 
 }

@@ -1,0 +1,24 @@
+<f:layout name="Default"/>
+
+<f:section name="iconButtons">
+
+</f:section>
+
+<f:section name="content">
+	<h1><f:translate key="header.translations" /></h1>
+	<f:flashMessages renderMode="div" />
+	<table id="typo3-translation-list" class="t3-table t3-datatable" data-language-count="{f:count(subject: languages)}">
+		<thead>
+			<tr>
+				<th><!-- Icon --></th>
+				<th><f:translate key="table.extension" /></th>
+				<f:for each="{languages}" as="language">
+					<th title="{language.label}">{language.locale}</th>
+				</f:for>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- Will be filled by JS -->
+		</tbody>
+	</table>
+</f:section>

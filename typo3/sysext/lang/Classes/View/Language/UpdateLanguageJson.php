@@ -15,19 +15,19 @@ namespace TYPO3\CMS\Lang\View\Language;
  */
 
 /**
- * JSON view for "checkTranslation" action in "Language" controller
+ * JSON view for "updateLanguage" action in "Language" controller
  *
- * @author Kai Vogel <kai.vogel@speedprogs.de>
+ * @author Kai Vogel <k.vogel@reply.de>
  */
-class CheckTranslationJson extends \TYPO3\CMS\Extbase\Mvc\View\AbstractView {
+class UpdateLanguageJson extends \TYPO3\CMS\Lang\View\AbstractJsonView {
 
 	/**
-	 * Render method, returns json encoded template variables
+	 * Returns the response data
 	 *
-	 * @return string JSON content
+	 * @return array The response data
 	 */
-	public function render() {
-		return json_encode($this->variables);
+	protected function getReponseData() {
+		return $this->variables['response'];
 	}
 
 }

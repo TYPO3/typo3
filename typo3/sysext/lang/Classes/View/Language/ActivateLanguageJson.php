@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Lang\Exception;
+namespace TYPO3\CMS\Lang\View\Language;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,10 +15,19 @@ namespace TYPO3\CMS\Lang\Exception;
  */
 
 /**
- * An exception when something is wrong within the lang
+ * JSON view for "activateLanguage" action in "Language" controller
  *
- * @author Sebastian Fischer <typo3@evoweb.de>
+ * @author Kai Vogel <k.vogel@reply.de>
  */
-class Lang extends \TYPO3\CMS\Core\Exception {
+class ActivateLanguageJson extends \TYPO3\CMS\Lang\View\AbstractJsonView {
+
+	/**
+	 * Returns the response data
+	 *
+	 * @return array The response data
+	 */
+	protected function getReponseData() {
+		return $this->variables['response'];
+	}
 
 }

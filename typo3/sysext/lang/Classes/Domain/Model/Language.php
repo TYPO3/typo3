@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Lang\Domain\Model;
  * Language model
  *
  * @author Sebastian Fischer <typo3@evoweb.de>
+ * @author Kai Vogel <k.vogel@reply.de>
  */
 class Language extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
@@ -29,7 +30,7 @@ class Language extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * @var string
 	 */
-	protected $language = '';
+	protected $label = '';
 
 	/**
 	 * @var bool
@@ -37,16 +38,37 @@ class Language extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $selected = FALSE;
 
 	/**
+	 * @var int
+	 */
+	protected $lastUpdate;
+
+	/**
 	 * Constructor of the language model
 	 *
 	 * @param string $locale
-	 * @param string $language
+	 * @param string $label
 	 * @param bool $selected
+	 * @param int $lastUpdate
 	 */
-	public function __construct($locale = '', $language = '', $selected = FALSE) {
-		$this->setLocale($locale);
-		$this->setLanguage($language);
-		$this->setSelected($selected);
+	public function __construct($locale = '', $label = '', $selected = FALSE, $lastUpdate = NULL) {
+		$this->locale = $locale;
+		$this->label = $label;
+		$this->selected = $selected;
+		$this->lastUpdate = $lastUpdate;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getLastUpdate() {
+		return $this->lastUpdate;
+	}
+
+	/**
+	 * @param int $lastUpdate
+	 */
+	public function setLastUpdate($lastUpdate) {
+		$this->lastUpdate = $lastUpdate;
 	}
 
 	/**
@@ -55,8 +77,8 @@ class Language extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @param string $language the label of the language
 	 * @return void
 	 */
-	public function setLanguage($language) {
-		$this->language = $language;
+	public function setLabel($language) {
+		$this->label = $language;
 	}
 
 	/**
@@ -64,8 +86,8 @@ class Language extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 *
 	 * @return string
 	 */
-	public function getLanguage() {
-		return $this->language;
+	public function getLabel() {
+		return $this->label;
 	}
 
 	/**
@@ -104,6 +126,20 @@ class Language extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function getSelected() {
 		return $this->selected;
+	}
+
+	/**
+	 * Returns an array represetation of current model
+	 *
+	 * @return array The properties
+	 */
+	public function toArray() {
+		return array(
+			'locale'   => $this->getLocale(),
+			'label' => $this->getLabel(),
+			'selected' => $this->getSelected(),
+			'lastUpdate' => $this->getLastUpdate(),
+		);
 	}
 
 }

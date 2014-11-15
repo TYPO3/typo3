@@ -15,11 +15,11 @@ namespace TYPO3\CMS\Lang\View\Language;
  */
 
 /**
- * JSON view for "updateTranslation" action in "Language" controller
+ * JSON view for "getTranslations" action in "Language" controller
  *
  * @author Kai Vogel <k.vogel@reply.de>
  */
-class UpdateTranslationJson extends \TYPO3\CMS\Lang\View\AbstractJsonView {
+class GetTranslationsJson extends \TYPO3\CMS\Lang\View\AbstractJsonView {
 
 	/**
 	 * Returns the response data
@@ -27,7 +27,22 @@ class UpdateTranslationJson extends \TYPO3\CMS\Lang\View\AbstractJsonView {
 	 * @return array The response data
 	 */
 	protected function getReponseData() {
-		return $this->variables['response'];
+		$data = array();
+		$languages = $this->variables['languages'];
+		foreach ($this->variables['extensions'] as $extension) {
+			$extensionArray = $extension->toArray();
+			$row = array(
+				$extensionArray,
+				$extensionArray,
+			);
+			foreach ($languages as $language) {
+				$row[] = $language->toArray();
+			}
+			$data[] = $row;
+		}
+		return array(
+			'data' => $data,
+		);
 	}
 
 }
