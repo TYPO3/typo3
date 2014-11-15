@@ -33,7 +33,7 @@ class RadioElement extends AbstractFormElement {
 		$item = '';
 		$disabled = '';
 		if ($this->formEngine->renderReadonly || $config['readOnly']) {
-			$disabled = ' disabled="disabled"';
+			$disabled = ' disabled';
 		}
 
 		// Get items for the array
@@ -54,11 +54,22 @@ class RadioElement extends AbstractFormElement {
 			$radioId = $additionalInformation['itemFormElID'] . '_' . $checkbox;
 			$radioOnClick = implode('', $additionalInformation['fieldChangeFunc']);
 			$radioChecked = (string)$selectedItem[1] === (string)$additionalInformation['itemFormElValue'] ? ' checked="checked"' : '';
-			$item .= '<input type="radio" ' . $this->formEngine->insertDefStyle('radio') . ' name="' . $additionalInformation['itemFormElName']
-				. '" value="' . htmlspecialchars($selectedItem[1]) . '" onclick="' . htmlspecialchars($radioOnClick) . '"' . $radioChecked
-				. $additionalInformation['onFocus'] . $disabled . ' id="' . $radioId . '" />
-					<label for="' . $radioId . '">' . htmlspecialchars($selectedItem[0]) . '</label>
-					<br />';
+			$item .= '<div class="radio' . $disabled . '">'
+				. '<label for="' . $radioId . '">'
+				. '<input '
+				. 'type="radio" '
+				. $this->formEngine->insertDefStyle('radio') . ' '
+				. 'name="' . htmlspecialchars($additionalInformation['itemFormElName']) . '" '
+				. 'id="' . $radioId . '" '
+				. 'value="' . htmlspecialchars($selectedItem[1]) . '" '
+				. $radioChecked . ' '
+				. $additionalInformation['onFocus'] . ' '
+				. $disabled . ' '
+				. 'onclick="' . htmlspecialchars($radioOnClick) . '" '
+				. '/>'
+				. htmlspecialchars($selectedItem[0])
+				. '</label>'
+			. '</div>';
 		}
 		return $item;
 	}
