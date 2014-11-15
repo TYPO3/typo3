@@ -7069,42 +7069,6 @@ class ContentObjectRenderer {
 	}
 
 	/**
-	 * Returns a JavaScript <script> section with some function calls to JavaScript functions from "typo3/js/jsfunc.updateform.js" (which is also included by setting a reference in $GLOBALS['TSFE']->additionalHeaderData['JSincludeFormupdate'])
-	 * The JavaScript codes simply transfers content into form fields of a form which is probably used for editing information by frontend users. Used by fe_adminLib.inc.
-	 *
-	 * @param array $dataArray Data array which values to load into the form fields from $formName (only field names found in $fieldList)
-	 * @param string $formName The form name
-	 * @param string $arrPrefix A prefix for the data array
-	 * @param string $fieldList The list of fields which are loaded
-	 * @return string
-	 * @access private
-	 * @see user_feAdmin::displayCreateScreen()
-	 */
-	public function getUpdateJS($dataArray, $formName, $arrPrefix, $fieldList) {
-		$JSPart = '';
-		$updateValues = GeneralUtility::trimExplode(',', $fieldList);
-		foreach ($updateValues as $fKey) {
-			$value = $dataArray[$fKey];
-			if (is_array($value)) {
-				foreach ($value as $Nvalue) {
-					$JSPart .= '
-	updateForm(\'' . $formName . '\',\'' . $arrPrefix . '[' . $fKey . '][]\',' . GeneralUtility::quoteJSvalue($Nvalue, TRUE) . ');';
-				}
-			} else {
-				$JSPart .= '
-	updateForm(\'' . $formName . '\',\'' . $arrPrefix . '[' . $fKey . ']\',' . GeneralUtility::quoteJSvalue($value, TRUE) . ');';
-			}
-		}
-		$JSPart = '<script type="text/javascript">
-	/*<![CDATA[*/ ' . $JSPart . '
-	/*]]>*/
-</script>
-';
-		$GLOBALS['TSFE']->additionalHeaderData['JSincludeFormupdate'] = '<script type="text/javascript" src="' . GeneralUtility::createVersionNumberedFilename(($GLOBALS['TSFE']->absRefPrefix . 'typo3/js/jsfunc.updateform.js')) . '"></script>';
-		return $JSPart;
-	}
-
-	/**
 	 * Includes resources if the config property 'includeLibs' is set.
 	 *
 	 * @param array $config TypoScript configuration
