@@ -33,14 +33,16 @@ class FileMetadataOverlayAspect {
 	 * @return void
 	 */
 	public function languageAndWorkspaceOverlay(\ArrayObject $data) {
-		$overlayedMetaData = $this->getTsfe()->sys_page->getRecordOverlay(
+		$overlaidMetaData = $data->getArrayCopy();
+		$this->getTsfe()->sys_page->versionOL('sys_file_metadata', $overlaidMetaData);
+		$overlaidMetaData = $this->getTsfe()->sys_page->getRecordOverlay(
 			'sys_file_metadata',
-			$data->getArrayCopy(),
+			$overlaidMetaData,
 			$this->getTsfe()->sys_language_content,
 			$this->getTsfe()->sys_language_contentOL
 		);
-		if ($overlayedMetaData !== NULL) {
-			$data->exchangeArray($overlayedMetaData);
+		if ($overlaidMetaData !== NULL) {
+			$data->exchangeArray($overlaidMetaData);
 		}
 	}
 
