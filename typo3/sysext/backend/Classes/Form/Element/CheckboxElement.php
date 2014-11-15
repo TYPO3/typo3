@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 class CheckboxElement extends AbstractFormElement {
 
 	/**
-	 * This will render a checkbox OR an array of checkboxes
+	 * This will render a checkbox or an array of checkboxes
 	 *
 	 * @param string $table The table name of the record
 	 * @param string $field The field name which this element is supposed to edit
@@ -31,15 +31,15 @@ class CheckboxElement extends AbstractFormElement {
 	public function render($table, $field, $row, &$additionalInformation) {
 		$config = $additionalInformation['fieldConf']['config'];
 		$item = '';
-		$disabled = '';
+		$disabled = FALSE;
 		if ($this->formEngine->renderReadonly || $config['readOnly']) {
-			$disabled = ' disabled="disabled"';
+			$disabled = TRUE;
 		}
 		// Traversing the array of items
-		$selectedItems = $this->formEngine->initItemArray($additionalInformation['fieldConf']);
+		$items = $this->formEngine->initItemArray($additionalInformation['fieldConf']);
 		if ($config['itemsProcFunc']) {
-			$selectedItems = $this->formEngine->procItems(
-				$selectedItems,
+			$items = $this->formEngine->procItems(
+				$items,
 				$additionalInformation['fieldTSConfig']['itemsProcFunc.'],
 				$config,
 				$table,
@@ -48,70 +48,83 @@ class CheckboxElement extends AbstractFormElement {
 			);
 		}
 
-		$selectedItemsCount = count($selectedItems);
-		if ($selectedItemsCount === 0) {
-			$selectedItems[] = array('', '');
-			$selectedItemsCount = 1;
+		$numberOfItems = count($items);
+		if ($numberOfItems === 0) {
+			$items[] = array('', '');
+			$numberOfItems = 1;
 		}
-
 		$formElementValue = (int)$additionalInformation['itemFormElValue'];
 		$cols = (int)$config['cols'];
 		if ($cols > 1) {
-			$item .= '<table border="0" cellspacing="0" cellpadding="0" class="typo3-TCEforms-checkboxArray">';
-			for ($c = 0; $c < $selectedItemsCount; $c++) {
-				$selectedItem = $selectedItems[$c];
-				if (!($c % $cols)) {
-					$item .= '<tr>';
+			$colWidth = floor(12 / $cols);
+			$colLeftover = 12 - $colWidth * $cols;
+			for ($counter = 0; $counter < $numberOfItems; $counter++) {
+				if (!($counter % $cols)) {
+					$item .= '<div class="row">';
 				}
-				$checkboxParameters = $this->checkBoxParams(
-					$additionalInformation['itemFormElName'],
-					$formElementValue,
-					$c,
-					$selectedItemsCount,
-					implode('', $additionalInformation['fieldChangeFunc'])
-				);
-				$checkboxName = $additionalInformation['itemFormElName'] . '_' . $c;
-				$checkboxId = $additionalInformation['itemFormElID'] . '_' . $c;
-				$item .= '<td nowrap="nowrap"><input type="checkbox" ' . $this->formEngine->insertDefStyle('check')
-					. ' value="1" name="' . $checkboxName . '" ' . $checkboxParameters . $disabled . ' id="' . $checkboxId . '" />'
-					. '<label for="' . $checkboxId . '">' . htmlspecialchars($selectedItem[0]) . '</label>&nbsp;'
-					. '</td>';
-				if ($c % $cols + 1 == $cols) {
-					$item .= '</tr>';
+				$item .= '<div class="col-md-' . $colWidth . '">'
+					. $this->renderSingleCheckboxElement($items[$counter][0], $counter,  $formElementValue, $numberOfItems, $additionalInformation, $disabled)
+					. '</div>';
+				if ($counter % $cols + 1 == $cols) {
+					$item .= ($colLeftover > 0 ? '<div class="col-md-' . $colLeftover . '"></div>' : '') . '</div>';
 				}
 			}
-			if ($c % $cols) {
-				$rest = $cols - $c % $cols;
-				for ($c = 0; $c < $rest; $c++) {
-					$item .= '<td></td>';
+			if ($counter % $cols) {
+				$rest = $cols - $counter % $cols;
+				for ($counter = 0; $counter < $rest; $counter++) {
+					$item .= '<div class="col-md-' . $colWidth . '></div>';
 				}
-				if ($c > 0) {
-					$item .= '</tr>';
+				if ($counter > 0) {
+					$item .= ($colLeftover > 0 ? '<div class="col-md-' . $colLeftover . '"></div>' : '') . '</div>';
 				}
 			}
-			$item .= '</table>';
 		} else {
-			for ($c = 0; $c < $selectedItemsCount; $c++) {
-				$selectedItem = $selectedItems[$c];
-				$checkboxParameters = $this->checkBoxParams(
-					$additionalInformation['itemFormElName'],
-					$formElementValue,
-					$c,
-					$selectedItemsCount,
-					implode('', $additionalInformation['fieldChangeFunc'])
-				);
-				$checkboxName = $additionalInformation['itemFormElName'] . '_' . $c;
-				$checkboxId = $additionalInformation['itemFormElID'] . '_' . $c;
-				$item .= ($c > 0 ? '<br />' : '') . '<input type="checkbox" ' . $this->formEngine->insertDefStyle('check')
-					. ' value="1" name="' . $checkboxName . '"' . $checkboxParameters . $additionalInformation['onFocus'] . $disabled
-					. ' id="' . $checkboxId . '" /> '
-					. '<label for="' . $checkboxId . '">' . htmlspecialchars($selectedItem[0]) . '</label>';
+			for ($counter = 0; $counter < $numberOfItems; $counter++) {
+				$item .=  $this->renderSingleCheckboxElement($items[$counter][0], $counter, $formElementValue, $numberOfItems, $additionalInformation, $disabled);
 			}
 		}
 		if (!$disabled) {
 			$item .= '<input type="hidden" name="' . $additionalInformation['itemFormElName'] . '" value="' . htmlspecialchars($formElementValue) . '" />';
 		}
 		return $item;
+	}
+
+	/**
+	 * This functions builds the HTML output for the checkbox
+	 *
+	 * @param string $label Label of this item
+	 * @param integer $itemCounter Number of this element in the list of all elements
+	 * @param integer $formElementValue Value of this element
+	 * @param integer $numberOfItems Full number of items
+	 * @param array $additionalInformation Information with additional configuration options.
+	 * @param boolean $disabled TRUE if form element is disabled
+	 * @return string Single element HTML
+	 */
+	protected function renderSingleCheckboxElement($label, $itemCounter, $formElementValue, $numberOfItems, $additionalInformation, $disabled) {
+		$checkboxParameters = $this->checkBoxParams(
+			$additionalInformation['itemFormElName'],
+			$formElementValue,
+			$itemCounter,
+			$numberOfItems,
+			implode('', $additionalInformation['fieldChangeFunc'])
+		);
+		$checkboxName = $additionalInformation['itemFormElName'] . '_' . $itemCounter;
+		$checkboxId = $additionalInformation['itemFormElID'] . '_' . $itemCounter;
+		return '<div class="checkbox">'
+			. '<label for="' . $checkboxId . '">'
+			. '<input '
+			. 'type="checkbox" '
+			. 'value="1" '
+			. $this->formEngine->insertDefStyle('check') . ' '
+			. 'name="' . $checkboxName . '" '
+			. $checkboxParameters . ' '
+			. $additionalInformation['onFocus'] . ' '
+			. (!$disabled ?: ' disabled="disabled"')
+			. ' id="' . $checkboxId . '" '
+			. ' />'
+			.  htmlspecialchars($label)
+			. '</label>'
+		. '</div>';
 	}
 
 	/**
@@ -129,6 +142,6 @@ class CheckboxElement extends AbstractFormElement {
 		$checkboxPow = pow(2, $checkbox);
 		$onClick = $elementName . '.value=this.checked?(' . $elementName . '.value|' . $checkboxPow . '):('
 			. $elementName . '.value&' . (pow(2, $checkboxesCount) - 1 - $checkboxPow) . ');' . $additionalJavaScript;
-	 	return ' onclick="' . htmlspecialchars($onClick) . '"' . ($formElementValue & $checkboxPow ? ' checked="checked"' : '');
+		return ' onclick="' . htmlspecialchars($onClick) . '"' . ($formElementValue & $checkboxPow ? ' checked="checked"' : '');
 	}
 }
