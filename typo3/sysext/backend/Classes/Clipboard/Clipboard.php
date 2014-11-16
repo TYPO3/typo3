@@ -266,8 +266,10 @@ class Clipboard {
 		if (!$this->fileMode && $elCount) {
 			$opt[] = '<option value="' . htmlspecialchars(('window.location.href=\'' . $this->editUrl() . '&returnUrl=\'+top.rawurlencode(window.location.href);')) . '">' . $this->clLabel('edit', 'rm') . '</option>';
 		}
+		$deleteLink = '';
 		// Delete:
 		if ($elCount) {
+			$deleteLink = '<a class="btn btn-danger" href="' . htmlspecialchars($rmall_url) . '#clip_head">' . IconUtility::getSpriteIcon('actions-document-close', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:buttons.clear', TRUE)));
 			if ($GLOBALS['BE_USER']->jsConfirmation(4)) {
 				$js = '
 			if (confirm(' . GeneralUtility::quoteJSvalue(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.deleteClip'), $elCount)) . ')){
@@ -284,7 +286,7 @@ class Clipboard {
 			<tr>
 				<td nowrap="nowrap" class="col-icon">' . '<a href="' . htmlspecialchars($thumb_url) . '#clip_head">' . '<img' . IconUtility::skinImg($this->backPath, ('gfx/thumb_' . ($this->clipData['_setThumb'] ? 's' : 'n') . '.gif'), 'width="21" height="16"') . ' vspace="2" border="0" title="' . $this->clLabel('thumbmode_clip') . '" alt="" />' . '</a>' . '</td>
 				<td nowrap="nowrap" width="95%">' . $copymode_selector . ' ' . $selector_menu . '</td>
-				<td nowrap="nowrap" class="col-control">' . '<a class="btn btn-danger" href="' . htmlspecialchars($rmall_url) . '#clip_head">' . IconUtility::getSpriteIcon('actions-document-close', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:buttons.clear', TRUE))) . '</a></td>
+				<td nowrap="nowrap" class="col-control">' . $deleteLink . '</a></td>
 			</tr>';
 		// Print header and content for the NORMAL tab:
 		$out[] = '
