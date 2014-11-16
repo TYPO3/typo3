@@ -19,6 +19,7 @@
  */
 require_once 'init.php';
 
+\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('Usage of alt_db_navframe.php is deprecated since TYPO3 CMS 7, and will be removed in TYPO3 CMS 8');
 // Make instance if it is not an AJAX call
 if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX)) {
 	$pageTreeNavigationController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\PageTreeNavigationController::class);

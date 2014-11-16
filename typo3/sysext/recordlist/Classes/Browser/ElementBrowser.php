@@ -345,10 +345,8 @@ class ElementBrowser {
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->bodyTagId = 'typo3-browse-links-php';
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
-		// Load the Prototype library and the tree
-		$this->doc->getPageRenderer()->loadPrototype();
-		$this->doc->loadJavascriptLib('js/tree.js');
 		$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/BrowseLinks');
+		$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/LegacyTree');
 	}
 
 	/**
@@ -1222,9 +1220,9 @@ class ElementBrowser {
 			$files = $this->expandFolder($selectedFolder, $allowedExtensions);
 		}
 		// Create folder tree:
-		$this->doc->JScode .= $this->doc->wrapScriptTags('
-				Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";
-			');
+		$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/LegacyTree', 'function(Tree) {
+			Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";
+		}');
 		$content .= '
 				<!--
 					Wrapper table for folder tree / file/folder list:
@@ -1426,10 +1424,7 @@ class ElementBrowser {
 	 */
 	public function main_file() {
 		// include JS files and set prefs for foldertree
-		$this->doc->getDragDropCode('folders');
-		$this->doc->JScode .= $this->doc->wrapScriptTags('
-			Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";
-		');
+		$this->doc->getDragDropCode('folders', 'Tree.ajaxID = "SC_alt_file_navframe::expandCollapse"');
 		// Starting content:
 		$content = $this->doc->startPage('TBE file selector');
 		// Init variable:
@@ -1559,11 +1554,8 @@ class ElementBrowser {
 	 */
 	public function main_folder() {
 		// include JS files
-		$this->doc->getDragDropCode('folders');
 		// Setting prefs for foldertree
-		$this->doc->JScode .= $this->doc->wrapScriptTags('
-			Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";
-		');
+		$this->doc->getDragDropCode('folders', 'Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";');
 		// Starting content:
 		$content = $this->doc->startPage('TBE folder selector');
 		// Init variable:

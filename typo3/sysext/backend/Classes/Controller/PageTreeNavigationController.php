@@ -20,6 +20,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Main script class for the page tree navigation frame
+ * This is the class for rendering the "page tree" navigation frame without ExtJS, used prior to TYPO3 CMS 4.5.
+ * This functionality is deprecated since TYPO3 CMS 7, and will be removed with TYPO3 CMS 8
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
@@ -78,16 +80,10 @@ class PageTreeNavigationController {
 	public $template;
 
 	/**
-	 * Depends on userTS-setting
-	 *
-	 * @var bool
-	 */
-	public $hasFilterBox;
-
-	/**
 	 * Constructor
 	 */
 	public function __construct() {
+		GeneralUtility::deprecationLog('PageTreeNavigationController is deprecated in favor of new pagetrees');
 		$GLOBALS['SOBE'] = $this;
 		$GLOBALS['BACK_PATH'] = '';
 
@@ -106,8 +102,6 @@ class PageTreeNavigationController {
 		$this->cMR = (bool)GeneralUtility::_GP('cMR');
 		$this->currentSubScript = GeneralUtility::_GP('currentSubScript');
 		$this->setTempDBmount = GeneralUtility::_GP('setTempDBmount');
-		// look for User setting
-		$this->hasFilterBox = !$GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.hideFilter');
 		// Create page tree object:
 		$this->pagetree = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\View\PageTreeView::class);
 		$this->pagetree->ext_IconMode = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.disableIconLinkToContextmenu');
@@ -137,30 +131,30 @@ class PageTreeNavigationController {
 	public function initPage() {
 		// Setting highlight mode:
 		$this->doHighlight = !$GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.disableTitleHighlight');
-		// If highlighting is active, define the CSS class for the active item depending on the workspace
-		if ($this->doHighlight) {
-			$hlClass = $GLOBALS['BE_USER']->workspace === 0 ? 'active' : 'active active-ws wsver' . $GLOBALS['BE_USER']->workspace;
-		}
 		// Create template object:
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/alt_db_navframe.html');
 		$this->doc->showFlashMessages = FALSE;
 		// Get HTML-Template
-		// Adding javascript code for AJAX (prototype), drag&drop and the pagetree as well as the click menu code
-		$this->doc->getDragDropCode('pages');
+
+		// Adding javascript for drag & drop activation and highlighting
+		$dragDropCode = 'Tree.registerDragDropHandlers();';
+
+		// If highlighting is active, define the CSS class for the active item depending on the workspace
+		if ($this->doHighlight) {
+			$hlClass = $GLOBALS['BE_USER']->workspace === 0 ? 'active' : 'active active-ws wsver' . $GLOBALS['BE_USER']->workspace;
+			$dragDropCode .= '
+				Tree.highlightClass = "' . $hlClass . '";
+				Tree.highlightActiveItem("",top.fsMod.navFrameHighlightedID["web"]);';
+		}
+		// Adding javascript code for drag&drop and the pagetree as well as the click menu code
+		$this->doc->getDragDropCode('pages', $dragDropCode);
 		$this->doc->getContextMenuCode();
 		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
 		$pageRenderer = $this->doc->getPageRenderer();
-		$pageRenderer->loadScriptaculous('effects');
 		$pageRenderer->loadExtJS();
-		if ($this->hasFilterBox) {
-			$pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/pagetreefiltermenu.js');
-		}
 		$this->doc->JScode .= $this->doc->wrapScriptTags(($this->currentSubScript ? 'top.currentSubScript=unescape("' . rawurlencode($this->currentSubScript) . '");' : '') . '
-		// setting prefs for pagetree and drag & drop
-		' . ($this->doHighlight ? 'Tree.highlightClass = "' . $hlClass . '";' : '') . '
-
 		// Function, loading the list frame from navigation tree:
 		function jumpTo(id, linkObj, highlightID, bank) { //
 			var theUrl = top.TS.PATH_typo3 + top.currentSubScript ;
@@ -176,7 +170,7 @@ class PageTreeNavigationController {
 			if (linkObj) { linkObj.blur(); }
 			return false;
 		}
-		' . ($this->cMR ? 'jumpTo(top.fsMod.recentIds[\'web\'],\'\');' : '') . ($this->hasFilterBox ? 'var TYPO3PageTreeFilter = new PageTreeFilter();' : '') . '
+		' . ($this->cMR ? 'jumpTo(top.fsMod.recentIds[\'web\'],\'\');' : '') . '
 
 		');
 		$this->doc->bodyTagId = 'typo3-pagetree';
@@ -200,25 +194,13 @@ class PageTreeNavigationController {
 		}
 		// Outputting page tree:
 		$this->content .= '<div id="PageTreeDiv">' . $tree . '</div>';
-		// Adding javascript for drag & drop activation and highlighting
-		$this->content .= $this->doc->wrapScriptTags('
-			' . ($this->doHighlight ? 'Tree.highlightActiveItem("",top.fsMod.navFrameHighlightedID["web"]);' : '') . '
-			Tree.registerDragDropHandlers();');
 		// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
 		$markers = array(
-			'IMG_RESET' => IconUtility::getSpriteIcon('actions-document-close', array(
-				'id' => 'treeFilterReset',
-				'alt' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.resetFilter'),
-				'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.resetFilter')
-			)),
 			'WORKSPACEINFO' => $this->getWorkspaceInfo(),
 			'CONTENT' => $this->content
 		);
 		$subparts = array();
-		if (!$this->hasFilterBox) {
-			$subparts['###SECOND_ROW###'] = '';
-		}
 		// Build the <body> for the module
 		$this->content = $this->doc->startPage('TYPO3 Page Tree');
 		$this->content .= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers, $subparts);
@@ -244,8 +226,7 @@ class PageTreeNavigationController {
 		$buttons = array(
 			'csh' => '',
 			'new_page' => '',
-			'refresh' => '',
-			'filter' => ''
+			'refresh' => ''
 		);
 		// New Page
 		$onclickNewPageWizard = 'top.content.list_frame.location.href=top.TS.PATH_typo3+\'db_new.php?pagesOnly=1&amp;id=\'+Tree.pageID;';
@@ -254,10 +235,6 @@ class PageTreeNavigationController {
 		$buttons['refresh'] = '<a href="' . htmlspecialchars(GeneralUtility::getIndpEnv('REQUEST_URI')) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.refresh', TRUE) . '">' . IconUtility::getSpriteIcon('actions-system-refresh') . '</a>';
 		// CSH
 		$buttons['csh'] = str_replace('typo3-csh-inline', 'typo3-csh-inline show-right', BackendUtility::cshItem('xMOD_csh_corebe', 'pagetree'));
-		// Filter
-		if ($this->hasFilterBox) {
-			$buttons['filter'] = '<a href="#" id="tree-toolbar-filter-item">' . IconUtility::getSpriteIcon('actions-system-tree-search-open', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xlf:labels.filter', TRUE))) . '</a>';
-		}
 		return $buttons;
 	}
 

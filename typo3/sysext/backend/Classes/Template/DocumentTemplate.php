@@ -1484,21 +1484,18 @@ function jumpToUrl(URL) {
 	}
 
 	/**
-	 * Includes the necessary javascript file (tree.js) for use on pages which have the
-	 * drag and drop functionality (usually pages and folder display trees)
+	 * Includes the necessary javascript file for use on pages which have the
+	 * drag and drop functionality (legacy folder tree)
 	 *
 	 * @param string $table indicator of which table the drag and drop function should work on (pages or folders)
+	 * @param string $additionalJavaScriptCode adds more code to the additional javascript code
 	 * @return void
 	 */
-	public function getDragDropCode($table) {
-		$this->getContextMenuCode();
-		$this->pageRenderer->loadPrototype();
-		$this->loadJavascriptLib('js/tree.js');
-		// Setting prefs for drag & drop
-		$this->JScodeArray['dragdrop'] = '
-			DragDrop.backPath  = "' . GeneralUtility::shortMD5('|' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) . '";
-			DragDrop.table     = "' . $table . '";
-		';
+	public function getDragDropCode($table, $additionalJavaScriptCode = '') {
+		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LegacyTree', 'function() {
+			DragDrop.table = "' . $table . '";
+			' . $additionalJavaScriptCode . '
+		}');
 	}
 
 	/**

@@ -122,15 +122,23 @@ class FileSystemNavigationFrameController {
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/alt_file_navframe.html');
 		$this->doc->showFlashMessages = FALSE;
-		// Adding javascript code for AJAX (prototype), drag&drop and the filetree as well as the click menu code
-		$this->doc->getDragDropCode('folders');
+		// Adding javascript code for drag&drop and the filetree as well as the click menu code
+		$dragDropCode = '
+			Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";
+			Tree.registerDragDropHandlers()';
+		if ($this->doHighlight) {
+			$hlClass = $GLOBALS['BE_USER']->workspace === 0 ? 'active' : 'active active-ws wsver' . $GLOBALS['BE_USER']->workspace;
+			$dragDropCode .= '
+			Tree.highlightClass = "' . $hlClass . '";
+			Tree.highlightActiveItem("", top.fsMod.navFrameHighlightedID["file"]);
+			';
+		}
+		// Adding javascript for drag & drop activation and highlighting
+		$this->doc->getDragDropCode('folders', $dragDropCode);
 		$this->doc->getContextMenuCode();
+
 		// Setting JavaScript for menu.
 		$this->doc->JScode .= $this->doc->wrapScriptTags(($this->currentSubScript ? 'top.currentSubScript=unescape("' . rawurlencode($this->currentSubScript) . '");' : '') . '
-
-		// setting prefs for foldertree
-		Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";
-
 		// Function, loading the list frame from navigation tree:
 		function jumpTo(id, linkObj, highlightID, bank) {
 			var theUrl = top.TS.PATH_typo3 + top.currentSubScript ;
@@ -159,19 +167,12 @@ class FileSystemNavigationFrameController {
 		$tree = $this->foldertree->getBrowsableTree();
 		// Outputting page tree:
 		$this->content .= $tree;
-		// Adding javascript for drag & drop activation and highlighting
-		$this->content .= $this->doc->wrapScriptTags('
-			' . ($this->doHighlight ? 'Tree.highlightActiveItem("", top.fsMod.navFrameHighlightedID["file"]);' : '') . '
-			Tree.registerDragDropHandlers();');
 		// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
 		$markers = array(
-			'IMG_RESET' => '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/close_gray.gif', ' width="16" height="16"') . ' id="treeFilterReset" alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.resetFilter') . '" ' . 'title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.resetFilter') . '" />',
 			'CONTENT' => $this->content
 		);
 		$subparts = array();
-		// Possible filter/search like in page tree
-		$subparts['###SECOND_ROW###'] = '';
 		// Build the <body> for the module
 		$this->content = $this->doc->startPage('TYPO3 Folder Tree');
 		$this->content .= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers, $subparts);
