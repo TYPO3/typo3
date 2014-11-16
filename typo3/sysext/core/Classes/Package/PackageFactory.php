@@ -70,6 +70,7 @@ class PackageFactory extends \TYPO3\Flow\Package\PackageFactory {
 
 		return $package;
 	}
+
 	/**
 	 * Resolves package key from Composer manifest
 	 *
@@ -81,12 +82,14 @@ class PackageFactory extends \TYPO3\Flow\Package\PackageFactory {
 	 * Else the composer name will be used with the slash replaced by a dot
 	 *
 	 * @param object $manifest
+	 * @param string $packagePath
 	 * @param string $packagesBasePath
+	 * @throws \TYPO3\Flow\Package\Exception\InvalidPackageManifestException
 	 * @return string
 	 */
 	public static function getPackageKeyFromManifest($manifest, $packagePath, $packagesBasePath) {
 		if (!is_object($manifest)) {
-			throw new  \TYPO3\Flow\Package\Exception\InvalidPackageManifestException('Invalid composer manifest.', 1348146451);
+			throw new  \TYPO3\Flow\Package\Exception\InvalidPackageManifestException('Invalid composer manifest in package path: ' . $packagePath, 1348146451);
 		}
 		if (isset($manifest->type) && substr($manifest->type, 0, 10) === 'typo3-cms-') {
 			$relativePackagePath = substr($packagePath, strlen($packagesBasePath));
