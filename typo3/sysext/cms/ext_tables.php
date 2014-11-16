@@ -20,14 +20,3 @@ if (TYPO3_MODE === 'BE') {
 }
 // Add allowed records to pages:
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('pages_language_overlay,tt_content,sys_template,sys_domain,backend_layout');
-
-if (!function_exists('user_sortPluginList')) {
-	function user_sortPluginList(array &$parameters) {
-		usort(
-			$parameters['items'],
-			function ($item1, $item2) {
-				return strcasecmp($GLOBALS['LANG']->sL($item1[0]), $GLOBALS['LANG']->sL($item2[0]));
-			}
-		);
-	}
-}

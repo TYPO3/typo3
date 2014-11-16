@@ -1189,7 +1189,7 @@ return array(
 						''
 					)
 				),
-				'itemsProcFunc' => 'user_sortPluginList',
+				'itemsProcFunc' => 'TYPO3\\CMS\\Frontend\\Hooks\\TableColumnHooks->sortPluginList',
 				'default' => '',
 				'authMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'],
 				'iconsInOptionTags' => 1,
