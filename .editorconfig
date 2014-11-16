@@ -12,6 +12,16 @@ trim_trailing_whitespace = true
 end_of_line = lf
 insert_final_newline = true
 
+# CSS-Files
+[*.css]
+indent_style = tab
+indent_size = 4
+
+# LESS-Files
+[*.less]
+indent_style = tab
+indent_size = 4
+
 # JS-Files
 [*.js]
 indent_style = tab
