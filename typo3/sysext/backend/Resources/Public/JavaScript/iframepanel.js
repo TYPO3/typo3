@@ -24,8 +24,7 @@ TYPO3.iframePanel = Ext.extend(Ext.Panel, {
 	name: 'iframe',
 	iframe: null,
 	src: Ext.isIE && Ext.isSecure ? Ext.SSL_SECURE_URL : 'about:blank',
-	maskMessage: ' ',
-	doMask: true,
+	showLoadingIndicator: true,
 
 		// component build
 	initComponent: function() {
@@ -36,9 +35,6 @@ TYPO3.iframePanel = Ext.extend(Ext.Panel, {
 			name: this.name,
 			style: 'float:left;' // this is needed to prevent offset of 2.5 pixel, see #15771
 		}
-		Ext.apply(this, {
-
-		});
 		TYPO3.iframePanel.superclass.initComponent.apply(this, arguments);
 
 		// apply the addListener patch for 'message:tagging'
@@ -48,14 +44,13 @@ TYPO3.iframePanel = Ext.extend(Ext.Panel, {
 
 	onRender : function() {
 		TYPO3.iframePanel.superclass.onRender.apply(this, arguments);
-		this.maskMessage = ' ';
 		this.iframe = Ext.isIE ? this.body.dom.contentWindow : window.frames[this.name];
 		this.body.dom[Ext.isIE ? 'onreadystatechange' : 'onload'] = this.loadHandler.createDelegate(this);
 	},
 
 	loadHandler: function() {
 		this.src = this.body.dom.src;
-		this.removeMask();
+		this.finishLoader();
 	},
 
 	getIframe: function() {
@@ -67,7 +62,7 @@ TYPO3.iframePanel = Ext.extend(Ext.Panel, {
 
 	setUrl: function(source) {
 		this.body.dom.src = source;
-		this.setMask();
+		this.startLoader();
 	},
 
 	resetUrl: function() {
@@ -83,30 +78,27 @@ TYPO3.iframePanel = Ext.extend(Ext.Panel, {
 		if (!this.isVisible()) {
             return;
         }
-        this.setMask();
+		this.startLoader();
 		this.body.dom.src = this.body.dom.src;
 	},
 
-	/** @private */
-	setMask: function() {
-		if (this.doMask) {
-			this.el.mask(this.maskMessage, 'x-mask-loading-message');
-			this.el.addClass('t3-mask-loading');
-				// add an onClick handler to remove the mask while clicking on the loading message
-				// useful if user cancels loading and wants to access the content again
-			this.el.child('.x-mask-loading-message').on(
-				'click',
-				function() {
-					this.el.unmask();
-				},
-				this
-			);
+	/**
+	 * wrapper function for nprogress
+	 */
+	startLoader: function() {
+		if (this.showLoadingIndicator) {
+			require(['nprogress'], function(NProgress) {
+				NProgress.configure({parent: '#typo3-contentContainer', showSpinner: false});
+				NProgress.start();
+			});
 		}
 	},
 
-	removeMask: function() {
-		if (this.doMask) {
-			this.el.unmask();
+	finishLoader: function() {
+		if (this.showLoadingIndicator) {
+			require(['nprogress'], function(NProgress) {
+				NProgress.done();
+			});
 		}
 	}
 });

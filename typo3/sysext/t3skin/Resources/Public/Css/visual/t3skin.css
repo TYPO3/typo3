@@ -6806,6 +6806,84 @@ button.close {
   content: "\f20c";
 }
 /*!
+ * add nprogress styles, adapted to TYPO3 needs
+ */
+/**
+ * original color: #29d
+ * modified for less with the @nprogress-color
+ * variable by the TYPO3 CMS team to adapt
+ * to the styles of TYPO3
+ */
+/* Make clicks pass-through */
+#nprogress {
+  pointer-events: none;
+}
+#nprogress .bar {
+  background: #ff8700;
+  position: fixed;
+  z-index: 1031;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+}
+/* Fancy blur effect */
+#nprogress .peg {
+  display: block;
+  position: absolute;
+  right: 0px;
+  width: 100px;
+  height: 100%;
+  box-shadow: 0 0 10px #ff8700, 0 0 5px #ff8700;
+  opacity: 1.0;
+  -webkit-transform: rotate(3deg) translate(0px, -4px);
+  -ms-transform: rotate(3deg) translate(0px, -4px);
+  transform: rotate(3deg) translate(0px, -4px);
+}
+/* Remove these to get rid of the spinner */
+#nprogress .spinner {
+  display: block;
+  position: fixed;
+  z-index: 1031;
+  top: 15px;
+  right: 15px;
+}
+#nprogress .spinner-icon {
+  width: 18px;
+  height: 18px;
+  box-sizing: border-box;
+  border: solid 2px transparent;
+  border-top-color: #ff8700;
+  border-left-color: #ff8700;
+  border-radius: 50%;
+  -webkit-animation: nprogress-spinner 400ms linear infinite;
+  animation: nprogress-spinner 400ms linear infinite;
+}
+.nprogress-custom-parent {
+  overflow: hidden;
+  position: relative;
+}
+.nprogress-custom-parent #nprogress .spinner,
+.nprogress-custom-parent #nprogress .bar {
+  position: absolute;
+}
+@-webkit-keyframes nprogress-spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@keyframes nprogress-spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+/*!
  * TYPO3
  */
 /*
@@ -10349,9 +10427,6 @@ TCEforms Inline-Relational-Record-Editing
 .t3-form-field-header-inline:hover {
   background-color: #cccccc;
 }
-.t3-form-header-inline-loadingbar {
-  border-top: 1px solid #aaaaaa;
-}
 .t3-form-field-container-inline-hidden,
 .t3-form-field-container-inline-placeHolder {
   opacity: 0.3;
@@ -11562,86 +11637,6 @@ iframe {
 iframe {
   height: 100%;
   overflow: auto;
-}
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Loadingbar and Animations
-- - - - - - - - - - - - - - - - - - - - - */
-.loadingbar {
-  background-color: #f9f9f9;
-  display: block;
-  position: relative;
-}
-.cssanimations .loadingbar {
-  height: 5px;
-}
-.no-cssanimations .loadingbar {
-  height: 24px;
-  background-image: url('../../../../images/spinner/ffffff.gif');
-  background-repeat: no-repeat;
-  background-position: center center;
-}
-@keyframes fullexpand {
-  0% {
-    width: 0px;
-  }
-  100% {
-    width: 100%;
-  }
-}
-@-moz-keyframes fullexpand {
-  0% {
-    width: 0px;
-  }
-  100% {
-    width: 100%;
-  }
-}
-@-webkit-keyframes fullexpand {
-  0% {
-    width: 0px;
-  }
-  100% {
-    width: 100%;
-  }
-}
-@-o-keyframes fullexpand {
-  0% {
-    width: 0px;
-  }
-  100% {
-    width: 100%;
-  }
-}
-@-ms-keyframes fullexpand {
-  0% {
-    width: 0px;
-  }
-  100% {
-    width: 100%;
-  }
-}
-.cssanimations .loadingbar .expand {
-  width: 100%;
-  height: 5px;
-  background: #585858;
-  position: absolute;
-  animation: fullexpand 5s linear infinite;
-  -moz-animation: fullexpand 5s linear infinite;
-  -webkit-animation: fullexpand 5s linear infinite;
-  -o-animation: fullexpand 5s linear infinite;
-  -ms-animation: fullexpand 5s linear infinite;
 }
 /*
  * This file is part of the TYPO3 CMS project.

@@ -57,7 +57,7 @@ Ext.onReady(function() {
 					xtype: 'iframePanel',
 					x: 0, y:0,
 					id: 'wsPanel',
-					doMask: false,
+					showLoadingIndicator: false,
 					src: wsUrl,
 					autoScroll: false
 				}]
@@ -72,7 +72,7 @@ Ext.onReady(function() {
 					xtype: 'iframePanel',
 					x: 0, y:0,
 					id: 'livePanel',
-					doMask: false,
+					showLoadingIndicator: false,
 					src: liveUrl,
 					autoScroll: false
 				}]
@@ -92,7 +92,7 @@ Ext.onReady(function() {
 			xtype: 'iframePanel',
 			x: 0, y:0,
 			id: 'wsPanel-hbox',
-			doMask: false,
+			showLoadingIndicator: false,
 			src: wsUrl,
 			autoScroll: false,
 			flex: 1
@@ -100,7 +100,7 @@ Ext.onReady(function() {
 			xtype: 'iframePanel',
 			x: 0, y:0,
 			id: 'livePanel-hbox',
-			doMask: false,
+			showLoadingIndicator: false,
 			src: liveUrl,
 			autoScroll: false,
 			flex: 1
@@ -119,7 +119,7 @@ Ext.onReady(function() {
 			xtype: 'iframePanel',
 			x: 0, y:0,
 			id: 'wsPanel-vbox',
-			doMask: false,
+			showLoadingIndicator: false,
 			src: wsUrl,
 			autoScroll: false,
 			flex: 1
@@ -127,7 +127,7 @@ Ext.onReady(function() {
 			xtype: 'iframePanel',
 			x: 0, y:0,
 			id: 'livePanel-vbox',
-			doMask: false,
+			showLoadingIndicator: false,
 			src: liveUrl,
 			autoScroll: false,
 			flex: 1
@@ -330,7 +330,7 @@ Ext.onReady(function() {
 				items:  [{
 					xtype: 'iframePanel',
 					id: 'settingsPanel',
-					doMask: false,
+					showLoadingIndicator: false,
 					src: wsSettingsUrl
 				}]
 			}]

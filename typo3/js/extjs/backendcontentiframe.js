@@ -29,7 +29,7 @@ TYPO3.backendContentIframePanel = Ext.extend(TYPO3.iframePanel ,{
 			} else {
 				wrapper.getLayout().setActiveItem(this.id);
 				this.body.dom.src = source;
-				this.setMask();
+				this.startLoader();
 			}
 		}
 	},

@@ -64,15 +64,17 @@ var inline = {
 
 		var $currentObject = TYPO3.jQuery('#' + escapedObjectId + '_div');
 		// if content is not loaded yet, get it now from server
-		if (inline.isLoading || (TYPO3.jQuery('#' + escapedObjectId + '_fields').length > 0 && TYPO3.jQuery("#irre-loading-indicator" + escapedObjectId).length > 0)) {
+		if (inline.isLoading) {
 			return false;
 		} else if (TYPO3.jQuery('#' + escapedObjectId + '_fields').length > 0 && TYPO3.jQuery('#' + escapedObjectId + '_fields').html().substr(0, 16) == '<!--notloaded-->') {
 			inline.isLoading = true;
+			var headerIdentifier = '#' + escapedObjectId + '_header';
 			// add loading-indicator
-			if (TYPO3.jQuery('#' + escapedObjectId + '_loadingbar').length === 0) {
-				var loadingBar = '<div id="' + objectId + '_loadingbar" class="t3-form-header-inline-loadingbar loadingbar"><div class="expand"></div></div>';
-				TYPO3.jQuery('#' + escapedObjectId + '_header').after(loadingBar);
-			}
+			require(['nprogress'], function(NProgress) {
+				inline.progress = NProgress;
+				inline.progress.configure({parent: headerIdentifier, showSpinner: false});
+				inline.progress.start();
+			});
 			return this.getRecordDetails(objectId, returnURL);
 		}
 
@@ -198,10 +200,16 @@ var inline = {
 				success: function (data, message, jqXHR) {
 					inline.isLoading = false;
 					inline.processAjaxResponse(method, jqXHR);
+					if (inline.progress) {
+						inline.progress.done();
+					}
 				},
 				error: function (jqXHR, statusText, errorThrown) {
 					inline.isLoading = false;
 					inline.showAjaxFailure(method, jqXHR);
+					if (inline.progress) {
+						inline.progress.done();
+					}
 				}
 			};
 
@@ -534,9 +542,6 @@ var inline = {
 			valueObj[0].value = hiddenValue ? 1 : 0;
 			formObj[0].checked = hiddenValue;
 		}
-
-		// remove loading-indicator
-		TYPO3.jQuery('#' + escapeObjectId + '_loadingbar').remove();
 
 		// now that the content is loaded, set the expandState
 		this.expandCollapseRecord(objectId, expandSingle);

@@ -1620,6 +1620,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			$this->requireJsConfig['paths'] = array(
 				'jquery-ui' => $this->backPath . 'contrib/jquery-ui',
 				'jquery' => $this->backPath . 'contrib/jquery',
+				'nprogress' => $this->backPath . 'contrib/nprogress/nprogress',
 				'moment' => $this->backPath . 'contrib/moment/moment.min',
 				'twbs' => $this->backPath . 'contrib/twbs/bootstrap.min',
 				'twbs/bootstrap-datetimepicker' => $this->backPath . 'contrib/twbs/bootstrap-datetimepicker.min',
