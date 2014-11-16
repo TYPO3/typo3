@@ -2562,7 +2562,10 @@ class BackendUtility {
 			$helpText = self::helpText($table, $field);
 		}
 		// If there's a help text or some overload information, proceed with preparing an output
-		if (!empty($helpText) || $hasHelpTextOverload) {
+		// @todo: right now this is a hard dependency on csh manual, as the whole help system should be moved to
+		// the extension. The core provides a API for adding help, and rendering help, but the rendering
+		// should be up to the extension itself
+		if ((!empty($helpText) || $hasHelpTextOverload) && ExtensionManagementUtility::isLoaded('cshmanual')) {
 			// If no text was given, just use the regular help icon
 			if ($text == '') {
 				$text = IconUtility::getSpriteIcon('actions-system-help-open');

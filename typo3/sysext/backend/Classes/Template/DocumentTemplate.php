@@ -800,7 +800,10 @@ function jumpToUrl(URL) {
 			$this->pageRenderer->addJsFile($this->backPath . 'sysext/backend/Resources/Public/JavaScript/tab.js');
 		}
 		// Include the JS for the Context Sensitive Help
-		if ($includeCsh) {
+		// @todo: right now this is a hard dependency on csh manual, as the whole help system should be moved to
+		// the extension. The core provides a API for adding help, and rendering help, but the rendering
+		// should be up to the extension itself
+		if ($includeCsh && ExtensionManagementUtility::isLoaded('cshmanual')) {
 			$this->loadCshJavascript();
 		}
 

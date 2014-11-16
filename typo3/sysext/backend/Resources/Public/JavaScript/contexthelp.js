@@ -16,9 +16,11 @@ Ext.ns('TYPO3', 'TYPO3.CSH.ExtDirect');
 /**
  * Class to show tooltips for links that have the css t3-help-link
  * need the tags data-table and data-field (HTML5)
+ *
+ * @todo #1: rewrite it on jQuery base, or look for great alternatives
+ * @todo #2: make it so flexible that any extension register the JS code in backend.php and the rest should be handled via Data attributes
+ * @private please note that this javascript private API, don't depend on this code nor use it as blueprint
  */
-
-
 TYPO3.ContextHelp = function() {
 
 	/**
