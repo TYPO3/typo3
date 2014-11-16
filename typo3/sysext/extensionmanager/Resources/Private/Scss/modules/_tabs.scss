@@ -22,7 +22,7 @@
 			color: black;
 			border-bottom: 0;
 
-			padding-top: 8px;
+			padding-top: 4px;
 
 			cursor: default;
 		}
@@ -31,10 +31,10 @@
 			@include border-radius(4px 4px 0 0);
 
 			float: left;
-			height: 15px;
+			height: 22px;
 			background: #dadada;
 
-			padding: 7px 15px;
+			padding: 4px 15px;
 			margin-top: -1px;
 			margin-right: 2px;
 			border: 1px solid #adadad;
