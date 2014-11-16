@@ -217,6 +217,16 @@ return array(
 				'default' => NULL,
 			),
 		),
+		'crop' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.crop',
+			'config' => array(
+				'type' => 'input',
+				'size' => '10',
+				'max' => '30',
+				'placeholder' => 'x,y,w,h',
+			)
+		)
 	),
 	'types' => array(
 		// Note that at the moment we define the same fields for every media type.
@@ -262,7 +272,7 @@ return array(
 		'imageoverlayPalette' => array(
 			'showitem' => '
 				title,alternative,--linebreak--,
-				link,description
+				link,description,--linebreak--,crop
 				',
 			'canNotCollapse' => TRUE
 		),

@@ -5418,6 +5418,9 @@ class ContentObjectRenderer {
 				$fileObject = $file;
 			} elseif ($file instanceof FileReference) {
 				$fileObject = $file->getOriginalFile();
+				if (!isset($fileArray['crop'])) {
+					$fileArray['crop'] = $file->getProperty('crop');
+				}
 			} else {
 				try {
 					if ($fileArray['import.']) {
@@ -5429,7 +5432,11 @@ class ContentObjectRenderer {
 
 					if (MathUtility::canBeInterpretedAsInteger($file)) {
 						if (!empty($fileArray['treatIdAsReference'])) {
-							$fileObject = $this->getResourceFactory()->getFileReferenceObject($file)->getOriginalFile();
+							$fileReference = $this->getResourceFactory()->getFileReferenceObject($file);
+							$fileObject = $fileReference->getOriginalFile();
+							if (!isset($fileArray['crop'])) {
+								$fileArray['crop'] = $fileReference->getProperty('crop');
+							}
 						} else {
 							$fileObject = $this->getResourceFactory()->getFileObject($file);
 						}
@@ -5462,6 +5469,7 @@ class ContentObjectRenderer {
 				$processingConfiguration['noScale'] = isset($fileArray['noScale.']) ? $this->stdWrap($fileArray['noScale'], $fileArray['noScale.']) : $fileArray['noScale'];
 				$processingConfiguration['additionalParameters'] = isset($fileArray['params.']) ? $this->stdWrap($fileArray['params'], $fileArray['params.']) : $fileArray['params'];
 				$processingConfiguration['frame'] = isset($fileArray['frame.']) ? (int)$this->stdWrap($fileArray['frame'], $fileArray['frame.']) : (int)$fileArray['frame'];
+				$processingConfiguration['crop'] = isset($fileArray['crop.']) ? $this->stdWrap($fileArray['crop'], $fileArray['crop.']) : isset($fileArray['crop']) ? $fileArray['crop'] : NULL;
 				// Possibility to cancel/force profile extraction
 				// see $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_stripProfileCommand']
 				if (isset($fileArray['stripProfile'])) {

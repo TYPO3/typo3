@@ -612,6 +612,9 @@ class InlineElement {
 				} elseif($fileObject) {
 					$imageSetup = $config['appearance']['headerThumbnail'];
 					unset($imageSetup['field']);
+					if (!empty($rec['crop'])) {
+						$imageSetup['crop'] = $rec['crop'];
+					}
 					$imageSetup = array_merge(array('width' => '45', 'height' => '45c'), $imageSetup);
 					$processedImage = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $imageSetup);
 					// Only use a thumbnail if the processing was successful.

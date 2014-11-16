@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *                                                                        */
 
 use TYPO3\CMS\Core\Resource\FileInterface;
+use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder;
 
 /**
@@ -92,15 +93,19 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
 	 * @param int $maxHeight maximum height of the image
 	 * @param bool $treatIdAsReference given src argument is a sys_file_reference record
 	 * @param FileInterface|AbstractFileFolder $image a FAL object
+	 * @param string|bool $crop overrule cropping of image (setting to FALSE disables the cropping set in FileReference)
 	 *
 	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 * @return string Rendered tag
 	 */
-	public function render($src = NULL, $width = NULL, $height = NULL, $minWidth = NULL, $minHeight = NULL, $maxWidth = NULL, $maxHeight = NULL, $treatIdAsReference = FALSE, $image = NULL) {
+	public function render($src = NULL, $width = NULL, $height = NULL, $minWidth = NULL, $minHeight = NULL, $maxWidth = NULL, $maxHeight = NULL, $treatIdAsReference = FALSE, $image = NULL, $crop = NULL) {
 		if (is_null($src) && is_null($image) || !is_null($src) && !is_null($image)) {
 			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('You must either specify a string src or a File object.', 1382284106);
 		}
 		$image = $this->imageService->getImage($src, $image, $treatIdAsReference);
+		if ($crop === NULL) {
+			$crop = $image instanceof FileReference ? $image->getProperty('crop') : NULL;
+		}
 		$processingInstructions = array(
 			'width' => $width,
 			'height' => $height,
@@ -108,6 +113,7 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
 			'minHeight' => $minHeight,
 			'maxWidth' => $maxWidth,
 			'maxHeight' => $maxHeight,
+			'crop' => $crop,
 		);
 		$processedImage = $this->imageService->applyProcessingInstructions($image, $processingInstructions);
 		$imageUri = $this->imageService->getImageUri($processedImage);

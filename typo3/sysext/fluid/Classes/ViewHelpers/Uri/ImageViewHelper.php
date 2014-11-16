@@ -75,12 +75,16 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 	 * @param int $maxWidth maximum width of the image
 	 * @param int $maxHeight maximum height of the image
 	 * @param bool $treatIdAsReference given src argument is a sys_file_reference record
+	 * @param string|bool $crop overrule cropping of image (setting to FALSE disables the cropping set in FileReference)
 	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 * @return string path to the image
 	 */
-	public function render($src = NULL, $image = NULL, $width = NULL, $height = NULL, $minWidth = NULL, $minHeight = NULL, $maxWidth = NULL, $maxHeight = NULL, $treatIdAsReference = FALSE) {
+	public function render($src = NULL, $image = NULL, $width = NULL, $height = NULL, $minWidth = NULL, $minHeight = NULL, $maxWidth = NULL, $maxHeight = NULL, $treatIdAsReference = FALSE, $crop = NULL) {
 		if (is_null($src) && is_null($image) || !is_null($src) && !is_null($image)) {
 			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('You must either specify a string src or a File object.', 1382284105);
+		}
+		if ($crop === NULL) {
+			$crop = $image instanceof FileReference ? $image->getProperty('crop') : NULL;
 		}
 		$image = $this->imageService->getImage($src, $image, $treatIdAsReference);
 		$processingInstructions = array(
@@ -90,6 +94,7 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 			'minHeight' => $minHeight,
 			'maxWidth' => $maxWidth,
 			'maxHeight' => $maxHeight,
+			'crop' => $crop,
 		);
 		$processedImage = $this->imageService->applyProcessingInstructions($image, $processingInstructions);
 		return $this->imageService->getImageUri($processedImage);

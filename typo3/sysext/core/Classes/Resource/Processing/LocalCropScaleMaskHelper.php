@@ -70,6 +70,16 @@ class LocalCropScaleMaskHelper {
 
 		$options = $this->getConfigurationForImageCropScaleMask($targetFile, $gifBuilder);
 
+		$croppedImage = NULL;
+		if (!empty($configuration['crop'])) {
+			$im = $gifBuilder->imageCreateFromFile($originalFileName);
+			$croppedImage = Utility\GeneralUtility::tempnam('crop_', '.' . $sourceFile->getExtension());
+			$gifBuilder->crop($im, ['crop' => $configuration['crop']]);
+			if ($gifBuilder->ImageWrite($im, $croppedImage)) {
+				$originalFileName = $croppedImage;
+			}
+		}
+
 		// Normal situation (no masking)
 		if (!(is_array($configuration['maskImages']) && $GLOBALS['TYPO3_CONF_VARS']['GFX']['im'])) {
 				// the result info is an array with 0=width,1=height,2=extension,3=filename
@@ -144,9 +154,10 @@ class LocalCropScaleMaskHelper {
 				$result = $tempFileInfo;
 			}
 		}
-		// check if the processing really generated a new file
+
+		// check if the processing really generated a new file (scaled and/or cropped)
 		if ($result !== NULL) {
-			if ($result[3] !== $originalFileName) {
+			if ($result[3] !== $originalFileName || $originalFileName === $croppedImage) {
 				$result = array(
 					'width' => $result[0],
 					'height' => $result[1],
@@ -156,6 +167,11 @@ class LocalCropScaleMaskHelper {
 				// No file was generated
 				$result = NULL;
 			}
+		}
+
+		// Cleanup temp file if it isn't used as result
+		if ($croppedImage && ($result === NULL || $croppedImage !== $result['filePath'])) {
+			Utility\GeneralUtility::unlink_tempfile($croppedImage);
 		}
 
 		return $result;

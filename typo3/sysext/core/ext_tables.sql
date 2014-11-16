@@ -412,6 +412,7 @@ CREATE TABLE sys_file_reference (
 	alternative tinytext,
 	link varchar(1024) DEFAULT '' NOT NULL,
 	downloadname tinytext,
+	crop varchar(64) DEFAULT '' NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid,deleted),
