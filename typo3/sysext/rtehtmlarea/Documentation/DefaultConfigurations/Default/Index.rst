@@ -16,28 +16,16 @@ This default configuration establishes default settings in Page
 TSconfig for RTE content transformation.
 
 For documentation of RTE tranformations, see:
-`http://typo3.org/documentation/document-library/core-
-documentation/doc\_core\_api/4.1.0/view/5/2/
-<http://typo3.org/documentation/document-library/core-
-documentation/doc_core_api/current/view/5/2/>`_
+:ref:`RTE tranformations <t3api:transformations>`
 
 For documentation of Page TSconfig configuration of RTE processing,
-see: `http://typo3.org/documentation/document-
-library/references/doc\_core\_tsconfig/current/view/1/3/
-<http://typo3.org/documentation/document-
-library/references/doc_core_tsconfig/current/view/1/3/>`_
+:ref:`RTE tranformations Page TSconfig <t3api:transformations-tsconfig>`
 
 For documentation of the HTMLparser, see:
-`http://typo3.org/documentation/document-
-library/references/doc\_core\_tsref/current/view/5/17/
-<http://typo3.org/documentation/document-
-library/references/doc_core_tsref/current/view/5/17/>`_
+:ref:`TypoScript HTMLparser <t3tsref:htmlparser>`
 
 For documentation of RTE settings in TCA, see:
-`http://typo3.org/documentation/document-library/core-
-documentation/doc\_core\_api/4.1.0/view/4/3/#id3665895
-<http://typo3.org/documentation/document-library/core-
-documentation/doc_core_api/current/view/4/3/>`_
+:ref:`Special Configuration Options <t3tca:special-configuration-options>`
 
 
 .. _default-configuration-page-tsconfig:

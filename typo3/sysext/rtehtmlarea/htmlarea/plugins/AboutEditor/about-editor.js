@@ -137,7 +137,7 @@ HTMLArea.AboutEditor = Ext.extend(HTMLArea.Plugin, {
 			html: '<h1 id="version">htmlArea RTE ' +  RTEarea[0].version + '</h1>'
 				+ '<p>' + this.localize('free_editor').replace('<', '&lt;').replace('>', '&gt;') + '</p>'
 				+ '<p><br />' + this.localize('Browser support') + ': ' + this.browsers.join(', ') + '.</p>'
-				+ '<p><br />' + this.localize('product_documentation') + '&nbsp;<a href="http://typo3.org/extensions/repository/view/rtehtmlarea_manual/current/">typo3.org</a></p>'
+				+ '<p><br />' + this.localize('product_documentation') + '&nbsp;<a href="http://docs.typo3.org/typo3cms/extensions/rtehtmlarea/" target="_blank">typo3.org</a></p>'
 				+ '<p style="text-align: center;">'
 					+ '<br />'
 					+ '&copy; 2002-2004 <a href="http://interactivetools.com" target="_blank">interactivetools.com, inc.</a><br />'
