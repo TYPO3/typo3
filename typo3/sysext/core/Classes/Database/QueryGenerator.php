@@ -289,7 +289,7 @@ class QueryGenerator {
 							}
 							break;
 						case 'check':
-							if (!$this->fields[$fieldName]['items']) {
+							if (!$this->fields[$fieldName]['items'] || count($this->fields[$fieldName]['items']) <= 1) {
 								$this->fields[$fieldName]['type'] = 'boolean';
 							} else {
 								$this->fields[$fieldName]['type'] = 'binary';
