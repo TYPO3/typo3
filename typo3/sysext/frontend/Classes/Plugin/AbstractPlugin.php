@@ -653,8 +653,10 @@ class AbstractPlugin {
 	 *
 	 * @param string $tableParams Attributes for the table tag which is wrapped around the table cells containing the search box
 	 * @return string Output HTML, wrapped in <div>-tags with a class attribute
+	 * @deprecated since CMS 7, will be removed with version 8
 	 */
 	public function pi_list_searchBox($tableParams = '') {
+		GeneralUtility::logDeprecatedFunction();
 		// Search box design:
 		$sTables = '
 
