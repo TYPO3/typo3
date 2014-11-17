@@ -113,7 +113,7 @@ class FluidTemplateContentObject extends AbstractContentObject {
 			/** @var $templateService \TYPO3\CMS\Core\TypoScript\TemplateService */
 			$templateService = $GLOBALS['TSFE']->tmpl;
 			$templatePathAndFilename = $templateService->getFileName($file);
-			$this->view->setTemplatePathAndFilename($templatePathAndFilename);
+			$this->view->setTemplatePathAndFilename(PATH_site . $templatePathAndFilename);
 		}
 	}
 
