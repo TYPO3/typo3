@@ -3541,9 +3541,12 @@ Connection: close
 				$retVal = self::getIndpEnv('TYPO3_REQUEST_HOST') . self::dirname(self::getIndpEnv('SCRIPT_NAME')) . '/';
 				break;
 			case 'TYPO3_SITE_URL':
-				if (defined('PATH_thisScript') && defined('PATH_site')) {
+				$url = self::getIndpEnv('TYPO3_REQUEST_DIR');
+				// This can only be set by external entry scripts
+				if (defined('TYPO3_PATH_WEB')) {
+					$retVal = $url;
+				} elseif (defined('PATH_thisScript') && defined('PATH_site')) {
 					$lPath = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix(dirname(PATH_thisScript)) . '/';
-					$url = self::getIndpEnv('TYPO3_REQUEST_DIR');
 					$siteUrl = substr($url, 0, -strlen($lPath));
 					if (substr($siteUrl, -1) != '/') {
 						$siteUrl .= '/';
