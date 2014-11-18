@@ -1373,7 +1373,7 @@ class PageRepository {
 				$checkValue = '';
 			}
 
-			if (trim($checkValue) === '') {
+			if ($checkValue === array() || trim($checkValue) === '') {
 				$shouldFieldBeOverlaid = FALSE;
 			}
 		}
