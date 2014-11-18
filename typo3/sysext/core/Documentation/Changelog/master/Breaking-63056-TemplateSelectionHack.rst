@@ -1,0 +1,25 @@
+=================================================
+Breaking: #63056 - Remove Template Selection Hack
+=================================================
+
+Description
+===========
+
+There has been an ancient hack for the former "freesite" extension, which enabled selection
+of the template via GET variable.
+This technique is totally outdated and removed.
+
+Impact
+======
+
+Any extension using this hack will not be able to select the template in this way anymore.
+
+Affected installations
+======================
+
+Installations with third party extensions using the hack.
+
+Migration
+=========
+
+No migration path intended.

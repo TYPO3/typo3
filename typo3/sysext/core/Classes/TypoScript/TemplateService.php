@@ -643,41 +643,21 @@ class TemplateService {
 		// Include "Based On" sys_templates:
 		// 'basedOn' is a list of templates to include
 		if (trim($row['basedOn'])) {
-			// Manually you can put this value in the field and then the based_on ID will be taken from the $_GET var defined by '=....'.
-			// Example: If $row['basedOn'] is 'EXTERNAL_BASED_ON_TEMPLATE_ID=based_on_uid', then the global var, based_on_uid - given by the URL like '&based_on_uid=999' - is included instead!
-			// This feature allows us a hack to test/demonstrate various included templates on the same set of content bearing pages. Used by the "freesite" extension.
-			$basedOn_hackFeature = explode('=', $row['basedOn']);
-			if ($basedOn_hackFeature[0] == 'EXTERNAL_BASED_ON_TEMPLATE_ID' && $basedOn_hackFeature[1]) {
-				$id = (int)GeneralUtility::_GET($basedOn_hackFeature[1]);
-				// If $id is not allready included ...
-				if ($id && !GeneralUtility::inList($idList, ('sys_' . $id))) {
-					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', 'uid=' . $id . ' ' . $this->whereClause);
-					// there was a template, then we fetch that
-					if ($subrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-						$this->versionOL($subrow);
-						if (is_array($subrow)) {
-							$this->processTemplate($subrow, $idList . ',sys_' . $id, $pid, 'sys_' . $id, $templateID);
-						}
-					}
-					$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			// Normal Operation, which is to include the "based-on" sys_templates,
+			// if they are not already included, and maintaining the sorting of the templates
+			$basedOnIds = GeneralUtility::intExplode(',', $row['basedOn']);
+			// skip template if it's already included
+			foreach ($basedOnIds as $key => $basedOnId) {
+				if (GeneralUtility::inList($idList, 'sys_' . $basedOnId)) {
+					unset($basedOnIds[$key]);
 				}
-			} else {
-				// Normal Operation, which is to include the "based-on" sys_templates,
-				// if they are not already included, and maintaining the sorting of the templates
-				$basedOnIds = GeneralUtility::intExplode(',', $row['basedOn']);
-				// skip template if it's already included
-				foreach ($basedOnIds as $key => $basedOnId) {
-					if (GeneralUtility::inList($idList, 'sys_' . $basedOnId)) {
-						unset($basedOnIds[$key]);
-					}
-				}
-				$subTemplates = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_template', 'uid IN (' . implode(',', $basedOnIds) . ') ' . $this->whereClause, '', '', '', 'uid');
-				// Traversing list again to ensure the sorting of the templates
-				foreach ($basedOnIds as $id) {
-					if (is_array($subTemplates[$id])) {
-						$this->versionOL($subTemplates[$id]);
-						$this->processTemplate($subTemplates[$id], $idList . ',sys_' . $id, $pid, 'sys_' . $id, $templateID);
-					}
+			}
+			$subTemplates = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_template', 'uid IN (' . implode(',', $basedOnIds) . ') ' . $this->whereClause, '', '', '', 'uid');
+			// Traversing list again to ensure the sorting of the templates
+			foreach ($basedOnIds as $id) {
+				if (is_array($subTemplates[$id])) {
+					$this->versionOL($subTemplates[$id]);
+					$this->processTemplate($subTemplates[$id], $idList . ',sys_' . $id, $pid, 'sys_' . $id, $templateID);
 				}
 			}
 		}
