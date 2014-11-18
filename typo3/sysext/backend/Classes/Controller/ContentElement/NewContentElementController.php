@@ -262,9 +262,9 @@ class NewContentElementController {
 
 				// Load SHARED page-TSconfig settings and retrieve column list from there, if applicable:
 				$colPosArray = GeneralUtility::callUserFunction('TYPO3\\CMS\\Backend\\View\\BackendLayoutView->getColPosListItemsParsed', $this->id, $this);
-				$colPosIds = array_column($colPosArray, 1);
+				$colPosIds = array_map(function($element){ return (int)$element[1]; }, $colPosArray);
 				// Removing duplicates, if any
-				$colPosList = implode(',', array_unique(array_map('intval', $colPosIds)));
+				$colPosList = implode(',', array_unique($colPosIds));
 				// Finally, add the content of the column selector to the content:
 				$code .= $posMap->printContentElementColumns($this->id, 0, $colPosList, 1, $this->R_URI);
 				$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('2_selectPosition'), $code, 0, 1);
