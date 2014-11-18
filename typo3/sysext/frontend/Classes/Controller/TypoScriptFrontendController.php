@@ -4946,7 +4946,7 @@ if (version == "n3") {
 			$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'pid, domainName, forced',
 				'sys_domain',
-				'redirectTo=\'\' ' . $GLOBALS['TSFE']->sys_page->enableFields('sys_domain'),
+				'redirectTo=\'\' ' . $GLOBALS['TSFE']->sys_page->enableFields('sys_domain', 0),
 				'',
 				'sorting ASC'
 			);
