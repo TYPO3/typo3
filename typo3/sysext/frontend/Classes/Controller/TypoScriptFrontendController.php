@@ -4652,7 +4652,7 @@ class TypoScriptFrontendController {
 			$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'uid, pid, domainName, forced',
 				'sys_domain',
-				'redirectTo=\'\' ' . $GLOBALS['TSFE']->sys_page->enableFields('sys_domain'),
+				'redirectTo=\'\' ' . $GLOBALS['TSFE']->sys_page->enableFields('sys_domain', 0),
 				'',
 				'sorting ASC'
 			);
