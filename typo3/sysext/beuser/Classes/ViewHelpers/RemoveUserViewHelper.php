@@ -35,7 +35,7 @@ class RemoveUserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
 		$redirectUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI');
 		$parameters = 'cmd[be_users][' . $backendUser->getUid() . '][delete]=1';
 		$url = $GLOBALS['BACK_PATH'] . 'tce_db.php?&' . $parameters . '&redirect=' . ($redirectUrl == '' ? '\' + T3_THIS_LOCATION + \'' : rawurlencode($redirectUrl)) . '&vC=' . rawurlencode($GLOBALS['BE_USER']->veriCode()) . \TYPO3\CMS\Backend\Utility\BackendUtility::getUrlToken('tceAction') . '&prErr=1&uPT=1';
-		return '<a href="' . $url . '"  onclick="return confirm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('confirm', 'beuser', array($backendUser->getUserName()))) . ')">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(('actions-edit-delete')) . '</a>';
+		return '<a class="btn" href="' . $url . '"  onclick="return confirm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('confirm', 'beuser', array($backendUser->getUserName()))) . ')">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(('actions-edit-delete')) . '</a>';
 	}
 
 }

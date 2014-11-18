@@ -5,10 +5,12 @@
 		<b>{onlineUser.backendUser.userName}</b><br />
 		{onlineUser.backendUser.realName}
 	</td>
-	<td>
-		<a href="#" onclick="top.launchView('be_users', '{onlineUser.backendUser.uid}',''); return false;">
-			<bu:SpriteManagerIcon iconName="actions-document-info" />
-		</a>
+	<td class="col-control">
+		<div class="btn-group" role="group">
+			<a class="btn" href="#" onclick="top.launchView('be_users', '{onlineUser.backendUser.uid}',''); return false;">
+				<bu:SpriteManagerIcon iconName="actions-document-info" />
+			</a>
+		</div>
 	</td>
 
 	<f:for each="{onlineUser.sessions}" as="session" key="sessionKey">
