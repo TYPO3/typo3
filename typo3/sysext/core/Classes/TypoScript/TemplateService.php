@@ -582,7 +582,7 @@ class TemplateService {
 			if ($a == $c - 1 && $start_template_uid) {
 				$addC = ' AND uid=' . (int)$start_template_uid;
 			}
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', 'pid=' . (int)$this->absoluteRootLine[$a]['uid'] . $addC . ' ' . $this->whereClause, '', 'sorting', 1);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', 'pid=' . (int)$this->absoluteRootLine[$a]['uid'] . $addC . ' ' . $this->whereClause, '', 'root DESC, sorting', 1);
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				$this->versionOL($row);
 				if (is_array($row)) {
