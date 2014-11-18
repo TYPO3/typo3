@@ -1,10 +1,10 @@
-{namespace is=Tx_IndexedSearch_ViewHelpers}
+{namespace is=TYPO3\CMS\IndexedSearch\ViewHelpers}
 
 <f:for each="{resultsets}" as="result">
 	<f:if condition="{result.categoryTitle}">
 		<h1 class="tx-indexedsearch-category">{result.categoryTitle}</h1>
 	</f:if>
-	
+
 	<!-- show the info what was searched for -->
 	<f:for each="{searchWords}" as="searchWord" key="key">
 		<f:if condition="{key} > 0">
