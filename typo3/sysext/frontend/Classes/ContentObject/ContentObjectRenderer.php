@@ -3972,7 +3972,7 @@ class ContentObjectRenderer {
 				(?:
 					(?:
 						(?:
-							\\s+\\w+				# EITHER spaces, followed by word characters (attribute names)
+							\\s+\\w[\\w-]*		# EITHER spaces, followed by attribute names
 							(?:
 								\\s*=?\\s*		# equals
 								(?>

@@ -729,7 +729,13 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					'Some text with a link to <link email.address@example.org - mail "Open email window">my email.address@example.org</link> and text after it',
 					'Some text with a link to <link email.address@example.org - mail "Open email window">my...</link>',
 					$charset
-				)
+				),
+				$charset . ' html elements with dashes in attributes' => array(
+					'9',
+					'<em data-foo="x">foobar</em>foobaz',
+					'<em data-foo="x">foobar</em>foo',
+					$charset
+				),
 			));
 		}
 		return $data;
@@ -758,81 +764,86 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function cropHtmlWorksWithComplexContent() {
 		$GLOBALS['TSFE']->renderCharset = 'iso-8859-1';
-		$subject = '
-<h1>Blog Example</h1>
-<hr>
-<div class="csc-header csc-header-n1">
-	<h2 class="csc-firstHeader">Welcome to Blog #1</h2>
-</div>
-<p class="bodytext">
-	A blog about TYPO3 extension development. In order to start blogging, read the <a href="#">Help section</a>. If you have any further questions, feel free to contact the administrator John Doe (<a href="mailto:john.doe@example.com">john.doe@example.com)</a>.
-</p>
-<div class="tx-blogexample-list-container">
-	<p class="bodytext">
-		Below are the most recent posts:
-	</p>
-	<ul>
-		<li>
-			<h3>
-				<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[blog]=&amp;tx_blogexample_pi1[action]=show&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=003b0131ed">The Post #1</a>
-			</h3>
-			<p class="bodytext">
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut...
-			</p>
-			<p class="metadata">
-				Published on 26.08.2009 by Jochen Rau
-			</p>
-			<p>
-				Tags: [MVC]&nbsp;[Domain Driven Design]&nbsp;<br>
-				<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[action]=show&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=f982643bc3">read more &gt;&gt;</a><br>
-				<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[blog][uid]=70&amp;tx_blogexample_pi1[action]=edit&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=5b481bc8f0">Edit</a>&nbsp;<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[blog][uid]=70&amp;tx_blogexample_pi1[action]=delete&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=4e52879656">Delete</a>
-			</p>
-		</li>
-	</ul>
-	<p>
-		<a href="index.php?id=99&amp;tx_blogexample_pi1[blog][uid]=70&amp;tx_blogexample_pi1[action]=new&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=2718a4b1a0">Create a new Post</a>
-	</p>
-</div>
-<hr>
-<p>
-	? TYPO3 Association
-</p>
-';
-		$result = $this->subject->cropHTML($subject, '300');
-		$expected = '
-<h1>Blog Example</h1>
-<hr>
-<div class="csc-header csc-header-n1">
-	<h2 class="csc-firstHeader">Welcome to Blog #1</h2>
-</div>
-<p class="bodytext">
-	A blog about TYPO3 extension development. In order to start blogging, read the <a href="#">Help section</a>. If you have any further questions, feel free to contact the administrator John Doe (<a href="mailto:john.doe@example.com">john.doe@example.com)</a>.
-</p>
-<div class="tx-blogexample-list-container">
-	<p class="bodytext">
-		Below are the most recent posts:
-	</p>
-	<ul>
-		<li>
-			<h3>
-				<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[blog]=&amp;tx_blogexample_pi1[action]=show&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=003b0131ed">The Pos</a></h3></li></ul></div>';
+		$input =
+			'<h1>Blog Example</h1>' . LF .
+			'<hr>' . LF .
+			'<div class="csc-header csc-header-n1">' . LF .
+			'	<h2 class="csc-firstHeader">Welcome to Blog #1</h2>' . LF .
+			'</div>' . LF .
+			'<p class="bodytext">' . LF .
+			'	A blog about TYPO3 extension development. In order to start blogging, read the <a href="#">Help section</a>. If you have any further questions, feel free to contact the administrator John Doe (<a href="mailto:john.doe@example.com">john.doe@example.com)</a>.' . LF .
+			'</p>' . LF .
+			'<div class="tx-blogexample-list-container">' . LF .
+			'	<p class="bodytext">' . LF .
+			'		Below are the most recent posts:' . LF .
+			'	</p>' . LF .
+			'	<ul>' . LF .
+			'		<li data-element="someId">' . LF .
+			'			<h3>' . LF .
+			'				<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[blog]=&amp;tx_blogexample_pi1[action]=show&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=003b0131ed">The Post #1</a>' . LF .
+			'			</h3>' . LF .
+			'			<p class="bodytext">' . LF .
+			'				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut...' . LF .
+			'			</p>' . LF .
+			'			<p class="metadata">' . LF .
+			'				Published on 26.08.2009 by Jochen Rau' . LF .
+			'			</p>' . LF .
+			'			<p>' . LF .
+			'				Tags: [MVC]&nbsp;[Domain Driven Design]&nbsp;<br>' . LF .
+			'				<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[action]=show&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=f982643bc3">read more &gt;&gt;</a><br>' . LF .
+			'				<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[blog][uid]=70&amp;tx_blogexample_pi1[action]=edit&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=5b481bc8f0">Edit</a>&nbsp;<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[blog][uid]=70&amp;tx_blogexample_pi1[action]=delete&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=4e52879656">Delete</a>' . LF .
+			'			</p>' . LF .
+			'		</li>' . LF .
+			'	</ul>' . LF .
+			'	<p>' . LF .
+			'		<a href="index.php?id=99&amp;tx_blogexample_pi1[blog][uid]=70&amp;tx_blogexample_pi1[action]=new&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=2718a4b1a0">Create a new Post</a>' . LF .
+			'	</p>' . LF .
+			'</div>' . LF .
+			'<hr>' . LF .
+			'<p>' . LF .
+			'	? TYPO3 Association' . LF .
+			'</p>';
+
+		$result = $this->subject->cropHTML($input, '300');
+
+		$expected =
+			'<h1>Blog Example</h1>' . LF .
+			'<hr>' . LF .
+			'<div class="csc-header csc-header-n1">' . LF .
+			'	<h2 class="csc-firstHeader">Welcome to Blog #1</h2>' . LF .
+			'</div>' . LF .
+			'<p class="bodytext">' . LF .
+			'	A blog about TYPO3 extension development. In order to start blogging, read the <a href="#">Help section</a>. If you have any further questions, feel free to contact the administrator John Doe (<a href="mailto:john.doe@example.com">john.doe@example.com)</a>.' . LF .
+			'</p>' . LF .
+			'<div class="tx-blogexample-list-container">' . LF .
+			'	<p class="bodytext">' . LF .
+			'		Below are the most recent posts:' . LF .
+			'	</p>' . LF .
+			'	<ul>' . LF .
+			'		<li data-element="someId">' . LF .
+			'			<h3>' . LF .
+			'				<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[blog]=&amp;tx_blogexample_pi1[action]=show&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=003b0131ed">The Post</a></h3></li></ul></div>';
+
 		$this->assertEquals($expected, $result);
-		$result = $this->subject->cropHTML($subject, '-100');
-		$expected = '<div class="tx-blogexample-list-container"><ul><li><p>Design]&nbsp;<br>
-				<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[action]=show&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=f982643bc3">read more &gt;&gt;</a><br>
-				<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[blog][uid]=70&amp;tx_blogexample_pi1[action]=edit&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=5b481bc8f0">Edit</a>&nbsp;<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[blog][uid]=70&amp;tx_blogexample_pi1[action]=delete&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=4e52879656">Delete</a>
-			</p>
-		</li>
-	</ul>
-	<p>
-		<a href="index.php?id=99&amp;tx_blogexample_pi1[blog][uid]=70&amp;tx_blogexample_pi1[action]=new&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=2718a4b1a0">Create a new Post</a>
-	</p>
-</div>
-<hr>
-<p>
-	? TYPO3 Association
-</p>
-';
+
+		$result = $this->subject->cropHTML($input, '-100');
+
+		$expected =
+			'<div class="tx-blogexample-list-container"><ul><li data-element="someId"><p> Design]&nbsp;<br>' . LF .
+			'				<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[action]=show&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=f982643bc3">read more &gt;&gt;</a><br>' . LF .
+			'				<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[blog][uid]=70&amp;tx_blogexample_pi1[action]=edit&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=5b481bc8f0">Edit</a>&nbsp;<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[blog][uid]=70&amp;tx_blogexample_pi1[action]=delete&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=4e52879656">Delete</a>' . LF .
+			'			</p>' . LF .
+			'		</li>' . LF .
+			'	</ul>' . LF .
+			'	<p>' . LF .
+			'		<a href="index.php?id=99&amp;tx_blogexample_pi1[blog][uid]=70&amp;tx_blogexample_pi1[action]=new&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=2718a4b1a0">Create a new Post</a>' . LF .
+			'	</p>' . LF .
+			'</div>' . LF .
+			'<hr>' . LF .
+			'<p>' . LF .
+			'	? TYPO3 Association' . LF .
+			'</p>';
+
 		$this->assertEquals($expected, $result);
 	}
 
