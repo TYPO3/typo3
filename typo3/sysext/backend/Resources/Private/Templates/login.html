@@ -11,16 +11,19 @@
 
 		<div class="t3-login-footer">
 			<div id="t3-login-form-footer-default">
+                <!-- ###OPENID_LOADED### begin -->
 				<a id="t3-login-switchToOpenId" class="switchToOpenId text-muted">
 					<i class="fa fa-openid"></i>###LABEL_SWITCHOPENID###
 				</a>
+                <!-- ###OPENID_LOADED### end -->
 			</div>
-
+            <!-- ###OPENID_LOADED### begin -->
 			<div id="t3-login-form-footer-openId" style="display: none;">
 				<a id="t3-login-switchToDefault" class="switchToOpenId">
 					<i class="fa fa-key"></i>###LABEL_SWITCHDEFAULT###
 				</a>
 			</div>
+            <!-- ###OPENID_LOADED### end -->
 		</div>
 	</div>
 	###NEWS###
@@ -69,6 +72,7 @@
 		</div>
 	</div>
 
+<!-- ###OPENID_LOADED### begin -->
 	<div class="form-group" id="t3-login-openid_url-section" style="display: none;">
 		<div class="input-group">
 			<input type="text" id="openid_url" name="openid_url" value="###VALUE_OPENID_URL###" placeholder="###LABEL_OPENID###" class="form-control t3-openidurl" />
@@ -78,6 +82,7 @@
 			</div>
 		</div>
 	</div>
+<!-- ###OPENID_LOADED### end -->
 
 	<div class="form-group">
 		<!-- ###INTERFACE_SELECTOR### begin -->

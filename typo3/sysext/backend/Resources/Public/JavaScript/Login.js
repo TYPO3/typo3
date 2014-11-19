@@ -65,7 +65,7 @@ define('TYPO3/CMS/Backend/Login', ['jquery'], function($) {
 			$(options.usernameField).val('openid_url');
 		}
 
-		setLogintypeCookie('openid');
+		BackendLogin.setLogintypeCookie('openid');
 	};
 
 	/**
@@ -86,7 +86,7 @@ define('TYPO3/CMS/Backend/Login', ['jquery'], function($) {
 
 		$(options.usernameField).trigger('focus');
 
-		setLogintypeCookie('username');
+		BackendLogin.setLogintypeCookie('username');
 	};
 
 	/**
