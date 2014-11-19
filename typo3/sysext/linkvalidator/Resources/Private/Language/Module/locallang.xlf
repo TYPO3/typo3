@@ -129,6 +129,9 @@
 			<trans-unit id="list.report.contentnotexisting" xml:space="preserve">
 				<source>Element (###uid###) does not exist.</source>
 			</trans-unit>
+			<trans-unit id="list.report.rownotvisible" xml:space="preserve">
+				<source>###title### row (###uid###) is not visible.</source>
+			</trans-unit>
 			<trans-unit id="list.report.rowdeleted" xml:space="preserve">
 				<source>###title### row (###uid###) is deleted.</source>
 			</trans-unit>
