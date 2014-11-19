@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Service\TypoScriptService;
+
 /**
  * Testcase
  *
@@ -49,7 +52,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	 * Set up
 	 */
 	public function setUp() {
-		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
+		$this->singletonInstances = GeneralUtility::getSingletonInstances();
 		$this->contentObjectRenderer = $this->getMock(
 			'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer'
 		);
@@ -68,7 +71,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	 * Tear down
 	 */
 	public function tearDown() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
+		GeneralUtility::resetSingletonInstances($this->singletonInstances);
 		parent::tearDown();
 	}
 
@@ -95,7 +98,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	/**
 	 * @test
 	 */
-	public function renderCallsinitializeStandaloneViewInstance() {
+	public function renderCallsInitializeStandaloneViewInstance() {
 		$this->addMockViewToFixture();
 		$this->fixture
 			->expects($this->once())
@@ -180,8 +183,8 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		$this->addMockViewToFixture();
 		$this->standaloneView
 			->expects($this->once())
-			->method('setLayoutRootPath')
-			->with(PATH_site . 'foo/bar.html');
+			->method('setLayoutRootPaths')
+			->with(array(PATH_site . 'foo/bar.html'));
 		$this->fixture->render(array('layoutRootPath' => 'foo/bar.html'));
 	}
 
@@ -204,8 +207,8 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		$this->addMockViewToFixture();
 		$this->standaloneView
 			->expects($this->once())
-			->method('setPartialRootPath')
-			->with(PATH_site . 'foo/bar.html');
+			->method('setPartialRootPaths')
+			->with(array(PATH_site . 'foo/bar.html'));
 		$this->fixture->render(array('partialRootPath' => 'foo/bar.html'));
 	}
 
@@ -415,13 +418,14 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 			),
 		);
 
+		/** @var TypoScriptService|\PHPUnit_Framework_MockObject_MockObject $typoScriptServiceMock */
 		$typoScriptServiceMock = $this->getMock('TYPO3\\CMS\\Extbase\\Service\\TypoScriptService');
 		$typoScriptServiceMock
 			->expects($this->once())
 			->method('convertTypoScriptArrayToPlainArray')
 			->with($configuration['settings.'])
 			->will($this->returnValue($expectedSettingsToBeSet));
-		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Extbase\\Service\\TypoScriptService', $typoScriptServiceMock);
+		GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Extbase\\Service\\TypoScriptService', $typoScriptServiceMock);
 
 		$this->standaloneView
 			->expects($this->at(1))

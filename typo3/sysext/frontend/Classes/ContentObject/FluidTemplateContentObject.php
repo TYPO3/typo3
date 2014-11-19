@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Service\TypoScriptService;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Contains TEMPLATE class object.
@@ -26,12 +29,14 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 class FluidTemplateContentObject extends AbstractContentObject {
 
 	/**
-	 * @var \TYPO3\CMS\Fluid\View\StandaloneView
+	 * @var StandaloneView
 	 */
 	protected $view = NULL;
 
 	/**
 	 * Constructor
+	 *
+	 * @param ContentObjectRenderer $contentObjectRenderer
 	 */
 	public function __construct(ContentObjectRenderer $contentObjectRenderer) {
 		parent::__construct($contentObjectRenderer);
@@ -78,7 +83,7 @@ class FluidTemplateContentObject extends AbstractContentObject {
 		$this->setExtbaseVariables($conf);
 		$this->assignSettings($conf);
 		$this->assignContentObjectVariables($conf);
-		$this->assignContentObjectDataAndCurrent($conf);
+		$this->assignContentObjectDataAndCurrent();
 
 		$content = $this->renderFluidView();
 		$content = $this->applyStandardWrapToRenderedContent($content, $conf);
@@ -97,7 +102,7 @@ class FluidTemplateContentObject extends AbstractContentObject {
 	 * @return void
 	 */
 	protected function initializeStandaloneViewInstance() {
-		$this->view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
+		$this->view = GeneralUtility::makeInstance(StandaloneView::class);
 	}
 
 	/**
@@ -131,8 +136,8 @@ class FluidTemplateContentObject extends AbstractContentObject {
 		// Override the default layout path via typoscript
 		$layoutRootPath = isset($conf['layoutRootPath.']) ? $this->cObj->stdWrap($conf['layoutRootPath'], $conf['layoutRootPath.']) : $conf['layoutRootPath'];
 		if ($layoutRootPath) {
-			$layoutRootPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($layoutRootPath);
-			$this->view->setLayoutRootPath($layoutRootPath);
+			$layoutRootPath = GeneralUtility::getFileAbsFileName($layoutRootPath);
+			$this->view->setLayoutRootPaths(array($layoutRootPath));
 		}
 	}
 
@@ -145,8 +150,8 @@ class FluidTemplateContentObject extends AbstractContentObject {
 	protected function setPartialRootPath(array $conf) {
 		$partialRootPath = isset($conf['partialRootPath.']) ? $this->cObj->stdWrap($conf['partialRootPath'], $conf['partialRootPath.']) : $conf['partialRootPath'];
 		if ($partialRootPath) {
-			$partialRootPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($partialRootPath);
-			$this->view->setPartialRootPath($partialRootPath);
+			$partialRootPath = GeneralUtility::getFileAbsFileName($partialRootPath);
+			$this->view->setPartialRootPaths(array($partialRootPath));
 		}
 	}
 
@@ -227,8 +232,8 @@ class FluidTemplateContentObject extends AbstractContentObject {
 	 */
 	protected function assignSettings(array $conf) {
 		if (array_key_exists('settings.', $conf)) {
-			/** @var $typoScriptService \TYPO3\CMS\Extbase\Service\TypoScriptService */
-			$typoScriptService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Service\TypoScriptService::class);
+			/** @var $typoScriptService TypoScriptService */
+			$typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
 			$settings = $typoScriptService->convertTypoScriptArrayToPlainArray($conf['settings.']);
 			$this->view->assign('settings', $settings);
 		}
@@ -237,10 +242,9 @@ class FluidTemplateContentObject extends AbstractContentObject {
 	/**
 	 * Assign content object renderer data and current to view
 	 *
-	 * @param array $conf Configuration
 	 * @return void
 	 */
-	protected function assignContentObjectDataAndCurrent(array $conf) {
+	protected function assignContentObjectDataAndCurrent() {
 		$this->view->assign('data', $this->cObj->data);
 		$this->view->assign('current', $this->cObj->data[$this->cObj->currentValKey]);
 	}
