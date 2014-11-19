@@ -14,11 +14,12 @@
 	<table border="0" cellpadding="0" cellspacing="0" id="tx_beuser_compare" class="t3-table">
 		<thead>
 			<tr class="t3-row-header">
-				<th class="label"></th>
+				<th>&nbsp;</th>
 				<f:for each="{compareUserList}" as="compareUser">
 					<th>
 						<a href="#" class="t3-js-clickmenutrigger" data-table="be_users" data-uid="{compareUser.uid}" data-listframe="1" title="id={compareUser.uid}">
-							<bu:spriteIconForRecord table="be_users" object="{compareUser}" /></a>
+							<bu:spriteIconForRecord table="be_users" object="{compareUser}" />
+						</a>
 						{compareUser.userName}
 					</th>
 				</f:for>
@@ -26,13 +27,13 @@
 		</thead>
 		<tbody>
 			<tr>
-				<td><h5><f:translate key="realName">Real name</f:translate></h5></td>
+				<td><h5><f:translate key="realName" /></h5></td>
 				<f:for each="{compareUserList}" as="compareUser">
 					<td>{compareUser.realName}</td>
 				</f:for>
 			</tr>
 			<tr>
-				<td><h5><f:translate key="email">Email</f:translate></h5></td>
+				<td><h5><f:translate key="email" /></h5></td>
 				<f:for each="{compareUserList}" as="compareUser">
 					<td>
 						<f:if condition="{compareUser.email}">
@@ -47,32 +48,28 @@
 				</f:for>
 			</tr>
 			<tr>
-				<td><h5><f:translate key="admin">Admin</f:translate></h5></td>
+				<td><h5><f:translate key="admin" /></h5></td>
 				<f:for each="{compareUserList}" as="compareUser">
 					<td>
 						<f:if condition="{compareUser.isAdministrator}">
-							<f:then>
-								<f:translate key="yes">Yes</f:translate>
-							</f:then>
-							<f:else>
-								<f:translate key="no">No</f:translate>
-							</f:else>
+							<f:then><f:translate key="yes" /></f:then>
+							<f:else><f:translate key="no" /></f:else>
 						</f:if>
 					</td>
 				</f:for>
 			</tr>
 			<tr>
-				<td><h5><f:translate key="disable">Disable</f:translate></h5></td>
+				<td><h5><f:translate key="disable" /></h5></td>
 				<f:for each="{compareUserList}" as="compareUser">
 					<td>
 						<f:if condition="{compareUser.isDisabled} == 1">
 							<f:then>
-								<a href="<bu:issueCommand parameters="tce_db.php?&data[be_users][{compareUser.uid}][disable]=0&redirect={redirectUrl}" />">
+								<a href="{bu:issueCommand(parameters: 'data[be_users][{compareUser.uid}][disable]=0', redirectUrl: redirectUrl)}">
 									<bu:spriteManagerIcon iconName="actions-edit-unhide" options="{title: 'unhide'}" />
 								</a>
 							</f:then>
 							<f:else>
-								<a href="<bu:issueCommand parameters="tce_db.php?&data[be_users][{compareUser.uid}][disable]=1&redirect={redirectUrl}" />">
+								<a href="{bu:issueCommand(parameters: 'data[be_users][{compareUser.uid}][disable]=1', redirectUrl: redirectUrl)}">
 									<bu:spriteManagerIcon iconName="actions-edit-hide" options="{title: 'hide'}" />
 								</a>
 							</f:else>
@@ -111,7 +108,7 @@
 				</f:for>
 			</tr>
 			<tr>
-				<td><h5><f:translate key="lastLogin">Last login</f:translate></h5></td>
+				<td><h5><f:translate key="lastLogin" /></h5></td>
 				<f:for each="{compareUserList}" as="compareUser">
 					<td>
 						<f:if condition="{compareUser.lastLoginDateAndTime}">
@@ -119,14 +116,14 @@
 								<f:format.date format="{dateFormat} {timeFormat}">{compareUser.lastLoginDateAndTime}</f:format.date>
 							</f:then>
 							<f:else>
-								<f:translate key="never">Never</f:translate>
+								<f:translate key="never" />
 							</f:else>
 						</f:if>
 					</td>
 				</f:for>
 			</tr>
 			<tr>
-				<td><h5><f:translate key="backendUserGroups">Member of groups</f:translate></h5></td>
+				<td><h5><f:translate key="backendUserGroups" /></h5></td>
 				<f:for each="{compareUserList}" as="compareUser">
 					<td>
 						<f:for each="{compareUser.BackendUserGroups}" as="backendUserGroup">
@@ -139,7 +136,7 @@
 				</f:for>
 			</tr>
 			<tr>
-				<td><h5><f:translate key="allowedLanguages">Limit to languages</f:translate></h5></td>
+				<td><h5><f:translate key="allowedLanguages" /></h5></td>
 				<f:for each="{compareUserList}" as="compareUser">
 					<td>
 						<f:if condition="{compareUser.allowedLanguages}">
@@ -154,7 +151,7 @@
 				</f:for>
 			</tr>
 			<tr>
-				<td><h5><f:translate key="dbMountPoints">DB mountpoints</f:translate></h5></td>
+				<td><h5><f:translate key="dbMountPoints" /></h5></td>
 				<f:for each="{compareUserList}" as="compareUser">
 					<td>
 						<f:if condition="{compareUser.dbMountPoints}">
@@ -169,7 +166,7 @@
 				</f:for>
 			</tr>
 			<tr>
-				<td><h5><f:translate key="fileMounts">File mountpoints</f:translate></h5></td>
+				<td><h5><f:translate key="fileMounts" /></h5></td>
 				<f:for each="{compareUserList}" as="compareUser">
 					<td>
 						<f:if condition="{compareUser.fileMountPoints}">
@@ -184,20 +181,16 @@
 				</f:for>
 			</tr>
 			<tr>
-				<td><h5><f:translate key="disableIpLock">Disable IP lock</f:translate></h5></td>
+				<td><h5><f:translate key="disableIpLock" /></h5></td>
 				<f:for each="{compareUserList}" as="compareUser">
 					<td>
 						<f:if condition="{compareUser.ipLockIsDisabled} == 1">
-							<f:then>
-								<f:translate key="yes">Yes</f:translate>
-							</f:then>
-							<f:else>
-								<f:translate key="no">No</f:translate>
-							</f:else>
+							<f:then><f:translate key="yes" /></f:then>
+							<f:else><f:translate key="no" /></f:else>
 						</f:if>
 					</td>
 				</f:for>
 			</tr>
-		</table>
+		</tbody>
 	</table>
 </f:section>

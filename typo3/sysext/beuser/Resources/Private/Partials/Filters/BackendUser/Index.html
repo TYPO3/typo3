@@ -1,48 +1,68 @@
 {namespace bu = TYPO3\CMS\Beuser\ViewHelpers}
 
 <bu:section title="Filter" collapsible="TRUE">
-	<f:form action="index" objectName="demand" object="{demand}">
-		<div>
-			<label for="tx_Beuser_username"><f:translate key="userName">Username</f:translate></label>
-			<f:form.textfield
-				id="tx_Beuser_username"
-				property="userName"
-			/>
+	<f:form action="index" objectName="demand" object="{demand}" class="form-horizontal">
+		<div class="form-group">
+			<label for="tx_Beuser_username" class="col-sm-4 control-label"><f:translate key="userName">Username</f:translate></label>
+			<div class="col-sm-8">
+				<f:form.textfield
+					id="tx_Beuser_username"
+					class="form-control"
+					property="userName"
+				/>
+			</div>
 		</div>
-		<div>
-			<label for="tx_Beuser_usertype"><f:translate key="admin">Admin</f:translate></label>
-			<f:form.select
-				id="tx_Beuser_usertype"
-				property="userType"
-				options="{0: '{f:translate(key:\"both\")}', 1: '{f:translate(key:\"adminOnly\")}', 2: '{f:translate(key:\"normalUserOnly\")}'}"
-			/>
+		<div class="form-group">
+			<label for="tx_Beuser_usertype" class="col-sm-4 control-label"><f:translate key="admin">Admin</f:translate></label>
+			<div class="col-sm-8">
+				<f:form.select
+					id="tx_Beuser_usertype"
+					class="form-control"
+					property="userType"
+					options="{0: '{f:translate(key:\"both\")}', 1: '{f:translate(key:\"adminOnly\")}', 2: '{f:translate(key:\"normalUserOnly\")}'}"
+				/>
+			</div>
 		</div>
-		<div>
-			<label for="tx_Beuser_status"><f:translate key="status">Status</f:translate></label>
-			<f:form.select
-				id="tx_Beuser_status"
-				property="status"
-				options="{0: '{f:translate(key:\"both\")}', 1: '{f:translate(key:\"activeOnly\")}', 2: '{f:translate(key:\"inactiveOnly\")}'}"
-			/>
+		<div class="form-group">
+			<label for="tx_Beuser_status" class="col-sm-4 control-label"><f:translate key="status">Status</f:translate></label>
+			<div class="col-sm-8">
+				<f:form.select
+					id="tx_Beuser_status"
+					class="form-control"
+					property="status"
+					options="{0: '{f:translate(key:\"both\")}', 1: '{f:translate(key:\"activeOnly\")}', 2: '{f:translate(key:\"inactiveOnly\")}'}"
+				/>
+			</div>
 		</div>
-		<div>
-			<label for="tx_Beuser_logins"><f:translate key="login">Login</f:translate></label>
-			<f:form.select
-				id="tx_Beuser_logins"
-				property="logins"
-				options="{0: '{f:translate(key:\"both\")}', 1: '{f:translate(key:\"loginBefore\")}', 2: '{f:translate(key:\"neverLoggedIn\")}'}"
-			/>
+		<div class="form-group">
+			<label for="tx_Beuser_logins" class="col-sm-4 control-label"><f:translate key="login">Login</f:translate></label>
+			<div class="col-sm-8">
+				<f:form.select
+					id="tx_Beuser_logins"
+					class="form-control"
+					property="logins"
+					options="{0: '{f:translate(key:\"both\")}', 1: '{f:translate(key:\"loginBefore\")}', 2: '{f:translate(key:\"neverLoggedIn\")}'}"
+				/>
+			</div>
 		</div>
-		<div>
-			<label for="tx_beuser_backendUserGroup"><f:translate key="backendUserGroup">User Group</f:translate></label>
-			<f:form.select
-				id="tx_beuser_backendUserGroup"
-				property="backendUserGroup"
-				options="{backendUserGroups}"
-				optionLabelField="title"
-				optionValueField="uid"
-			/>
+		<div class="form-group">
+			<label for="tx_beuser_backendUserGroup" class="col-sm-4 control-label"><f:translate key="backendUserGroup">User Group</f:translate></label>
+			<div class="col-sm-8">
+				<f:form.select
+					id="tx_beuser_backendUserGroup"
+					class="form-control"
+					property="backendUserGroup"
+					options="{backendUserGroups}"
+					optionLabelField="title"
+					optionValueField="uid"
+				/>
+			</div>
 		</div>
-		<f:form.submit class="indent" value="{f:translate(key: 'filter')}" />
+		<div class="form-group">
+			<div class="col-sm-offset-4 col-sm-8">
+				<f:form.submit value="{f:translate(key: 'filter')}" />
+			</div>
+		</div>
+
 	</f:form>
 </bu:section>

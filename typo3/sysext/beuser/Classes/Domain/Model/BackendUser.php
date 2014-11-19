@@ -116,4 +116,21 @@ class BackendUser extends \TYPO3\CMS\Extbase\Domain\Model\BackendUser {
 		return $this->backendUserGroups;
 	}
 
+	/**
+	 * Check if user is currently logged in
+	 *
+	 * @return bool
+	 */
+	public function isCurrentlyLoggedIn() {
+		return $this->getUid() === (int)$this->getBackendUser()->user['uid'];
+	}
+
+	/**
+	 * Gets the currently logged in backend user
+	 *
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	public function getBackendUser() {
+		return $GLOBALS['BE_USER'];
+	}
 }

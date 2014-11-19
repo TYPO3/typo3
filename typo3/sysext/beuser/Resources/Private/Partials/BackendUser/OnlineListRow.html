@@ -1,40 +1,42 @@
 {namespace bu = TYPO3\CMS\Beuser\ViewHelpers}
 
-<tr class="db_list_normal">
-	<td>
-		<b>{onlineUser.backendUser.userName}</b><br />
-		{onlineUser.backendUser.realName}
-	</td>
-	<td class="col-control">
-		<div class="btn-group" role="group">
-			<a class="btn" href="#" onclick="top.launchView('be_users', '{onlineUser.backendUser.uid}',''); return false;">
-				<bu:SpriteManagerIcon iconName="actions-document-info" />
-			</a>
-		</div>
-	</td>
-
-	<f:for each="{onlineUser.sessions}" as="session" key="sessionKey">
-		<f:if condition="{sessionKey} > 0">
+<f:for each="{onlineUser.sessions}" as="session" iteration="it">
+	<tr class="db_list_normal">
+		<f:if condition="{it.isFirst}">
 			<f:then>
-				<tr class="db_list_normal">
-					<td colspan="2"></td>
+				<td>
+					<b>{onlineUser.backendUser.userName}</b><br />
+					{onlineUser.backendUser.realName}
+				</td>
+				<td class="col-control">
+					<div class="btn-group" role="group">
+						<a class="btn" href="#" onclick="top.launchView('be_users', '{onlineUser.backendUser.uid}',''); return false;">
+							<bu:SpriteManagerIcon iconName="actions-document-info" />
+						</a>
+					</div>
+				</td>
 			</f:then>
+			<f:else>
+				<td colspan="2"></td>
+			</f:else>
 		</f:if>
+
 		<td>
-			<f:format.date format="{dateFormat} {timeFormat}" date="@{session.timestamp}" />
+			<f:format.date format="{dateFormat} {timeFormat}" date="{session.timestamp}" />
 		</td>
 		<td>{session.ip}</td>
 		<td>
 			<f:if condition="{currentSessionId} == {session.id}">
 				<f:else>
 					<f:link.action
+						class="btn"
 						action="terminateBackendUserSession"
 						controller="BackendUser"
 						arguments="{backendUser: onlineUser.backendUser, sessionId: session.id}"
-						onclick="javascript:return confirm('{f:translate(key: \"reallyLogout\")} {onlineUser.backendUser.userName}?');"
+						onclick="javascript:return confirm('{f:translate(key: \'reallyLogout\')} {onlineUser.backendUser.userName}?');"
 					>
 						<bu:spriteManagerIcon iconName="actions-document-close" />
-						<f:translate key="endSession">End session</f:translate>
+						<f:translate key="endSession" />
 					</f:link.action>
 				</f:else>
 			</f:if>

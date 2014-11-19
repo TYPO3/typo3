@@ -13,6 +13,10 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Displays 'SwitchUser' link with sprite icon to change current backend user to target (non-admin) backendUser
@@ -25,15 +29,18 @@ class SwitchUserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
 	/**
 	 * Render link with sprite icon to change current backend user to target
 	 *
-	 * @param \TYPO3\CMS\Beuser\Domain\Model\BackendUser $backendUser Target backendUser to switch active session to
+	 * @param BackendUser $backendUser Target backendUser to switch active session to
 	 * @return string
 	 */
-	public function render(\TYPO3\CMS\Beuser\Domain\Model\BackendUser $backendUser) {
-		if ($backendUser->getUid() == $GLOBALS['BE_USER']->user['uid']) {
-			return '';
+	public function render(BackendUser $backendUser) {
+		if ($backendUser->getUid() == $GLOBALS['BE_USER']->user['uid'] || !$backendUser->isActive()) {
+			return '<span class="btn disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
 		}
-		$title = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('switchBackMode', 'beuser');
-		return '<a class="btn" href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('SwitchUser' => $backendUser->getUid()))) . '" target="_top" title="' . htmlspecialchars($title) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(('actions-system-backend-user-switch')) . '</a>';
+		$title = LocalizationUtility::translate('switchBackMode', 'beuser');
+		return '<a class="btn" href="' .
+			htmlspecialchars(GeneralUtility::linkThisScript(array('SwitchUser' => $backendUser->getUid()))) .
+			'" target="_top" title="' . htmlspecialchars($title) . '">' .
+			IconUtility::getSpriteIcon(('actions-system-backend-user-switch')) . '</a>';
 	}
 
 }

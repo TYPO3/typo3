@@ -3,11 +3,11 @@
 <f:layout name="Default" />
 
 <f:section name="iconButtons">
-	<a href="#" onclick="window.location.href='alt_doc.php?returnUrl='+T3_THIS_LOCATION+'&edit[be_users][0]=new'; return false;"><bu:spriteManagerIcon iconName="actions-document-new" /></a>
+	<a href="#" onclick="window.location.href='alt_doc.php?returnUrl='+T3_THIS_LOCATION+'&amp;edit[be_users][0]=new'; return false;"><bu:spriteManagerIcon iconName="actions-document-new" /></a>
 </f:section>
 
 <f:section name="headline">
-	<h1><f:translate key="backendUserListing">Backend User Listing</f:translate></h1>
+	<h1><f:translate key="backendUserListing" /></h1>
 </f:section>
 
 <f:section name="content">
@@ -16,14 +16,13 @@
 	</f:comment>
 
 	<f:if condition="{compareUserList}">
-		<bu:Section title="{f:translate(key: 'section.compare', default: 'Compare')}" collapsible="TRUE">
+		<bu:section title="{f:translate(key: 'section.compare', default: 'Compare')}" collapsible="TRUE">
 			<ul id="compareUsers">
 				<f:for each="{compareUserList}" as="compareUser">
 					<li>
-						<f:link.action
-							action="removeFromCompareList"
-							arguments="{uid: compareUser.uid}"
-						><bu:SpriteManagerIcon iconName="actions-selection-delete" /></f:link.action>
+						<f:link.action action="removeFromCompareList"	arguments="{uid: compareUser.uid}">
+							<bu:SpriteManagerIcon iconName="actions-selection-delete" />
+						</f:link.action>
 
 						<a href="#" class="t3-js-clickmenutrigger" data-table="be_users" data-uid="{compareUser.uid}" data-listframe="1" title="id={compareUser.uid}">
 							<bu:spriteIconForRecord table="be_users" object="{compareUser}" />
@@ -38,7 +37,7 @@
 				<f:form.submit value="{f:translate(key: 'compareUserList', default: 'Compare user list')}" />
 			</f:form>
 
-		</bu:Section>
+		</bu:section>
 	</f:if>
 
 	<f:comment>
@@ -56,13 +55,10 @@
 			<thead>
 				<tr>
 					<th>&nbsp;</th>
-					<th>
-						<f:translate key="userName">Username</f:translate> /
-						<f:translate key="realName">Real name</f:translate>
-					</th>
+					<th><f:translate key="userName" /> / <f:translate key="realName" /></th>
 					<th>&nbsp;</th>
 					<th>&nbsp;</th>
-					<th class="hidden-xs hidden-sm"><f:translate key="lastLogin">Last login</f:translate></th>
+					<th class="hidden-xs hidden-sm"><f:translate key="lastLogin" /></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -74,7 +70,7 @@
 				</f:comment>
 				<tr>
 					<td colspan="6">
-						<f:count subject="{backendUsers}" /> <f:translate key="users">Users</f:translate>
+						<f:count subject="{backendUsers}" /> <f:translate key="users" />
 					</td>
 				</tr>
 			</tbody>

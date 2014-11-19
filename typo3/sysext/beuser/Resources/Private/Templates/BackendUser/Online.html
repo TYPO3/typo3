@@ -13,21 +13,13 @@
 	<table class="t3-table">
 		<thead>
 			<tr>
-				<th>
-					<f:translate key="userName">Username</f:translate> /
-					<f:translate key="realName">Real name</f:translate>
-				</th>
+				<th><f:translate key="userName" /> / <f:translate key="realName" /></th>
 				<th>&nbsp;</th>
-				<th>
-					<f:translate key="lastAccess">Last access</f:translate>
-				</th>
-				<th>
-					<f:translate key="ipAddress">IP address</f:translate>
-				</th>
+				<th><f:translate key="lastAccess" /></th>
+				<th><f:translate key="ipAddress" /></th>
 				<th>&nbsp;</th>
 			</tr>
 		</thead>
-
 		<tbody>
 			<f:for each="{onlineUsersAndSessions}" as="onlineUser">
 				<f:render partial="BackendUser/OnlineListRow" arguments="{onlineUser: onlineUser, dateFormat: dateFormat, timeFormat: timeFormat, currentSessionId: currentSessionId}" />

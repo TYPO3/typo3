@@ -2,7 +2,7 @@
  * @group: Structure
  */
 
-#compareUsers { margin-bottom: 10px; }
+#compareUsers { margin-bottom: 10px; list-style-type: none; padding-left: 0.1em; }
 
 div.collapsibleSection { background-color: #ededed; border-top: 1px solid #cdcdcd; border-bottom: 1px solid #cdcdcd; padding: 12px; margin-bottom: 24px; }
 	#typo3-docbody div.collapsibleSection form { margin-bottom: 0; }
@@ -16,9 +16,6 @@ div.collapsibleSection { background-color: #ededed; border-top: 1px solid #cdcdc
 /**
  * @group: Form
  */
-
-form label { float: left; height: 20px; line-height: 20px; margin-right: 10px; width: 90px; }
-form div { clear: both; margin-bottom: 5px; }
 
 	form .field-row,
 	form .button-row { clear: both; margin-bottom: 10px; }
