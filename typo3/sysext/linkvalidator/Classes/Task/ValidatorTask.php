@@ -298,7 +298,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 			}
 		}
 		if (!empty($pageIds)) {
-			$processor->init($searchFields, $pageIds);
+			$processor->init($searchFields, $pageIds, $modTs);
 			if (!empty($this->email)) {
 				$oldLinkCounts = $processor->getLinkCounts($page);
 				$this->oldTotalBrokenLink += $oldLinkCounts['brokenlinkCount'];

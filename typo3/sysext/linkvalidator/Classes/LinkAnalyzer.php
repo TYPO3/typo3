@@ -88,6 +88,13 @@ class LinkAnalyzer {
 	protected $pageWithAnchor = '';
 
 	/**
+	 * The currently active TSConfig. Will be passed to the init function.
+	 *
+	 * @var array
+	 */
+	protected $tsConfig = array();
+
+	/**
 	 * Fill hookObjectsArr with different link types and possible XClasses.
 	 */
 	public function __construct() {
@@ -105,11 +112,13 @@ class LinkAnalyzer {
 	 *
 	 * @param array $searchField List of fields in which to search for links
 	 * @param string $pid List of comma separated page uids in which to search for links
+	 * @param array $tsConfig The currently active TSConfig.
 	 * @return void
 	 */
-	public function init(array $searchField, $pid) {
+	public function init(array $searchField, $pid, $tsConfig) {
 		$this->searchFields = $searchField;
 		$this->pidList = $pid;
+		$this->tsConfig = $tsConfig;
 	}
 
 	/**
@@ -248,6 +257,18 @@ class LinkAnalyzer {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Returns the TSConfig that was passed to the init() method.
+	 *
+	 * This can be used by link checkers that get a reference of this
+	 * object passed to the checkLink() method.
+	 *
+	 * @return array
+	 */
+	public function getTSConfig() {
+		return $this->tsConfig;
 	}
 
 	/**

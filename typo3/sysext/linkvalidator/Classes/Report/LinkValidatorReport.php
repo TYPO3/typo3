@@ -320,7 +320,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 			if ($this->pObj->pageinfo['hidden'] == 0 || $this->modTS['checkhidden'] == 1) {
 				$pageList .= $this->pObj->id;
 			}
-			$this->processor->init($searchFields, $pageList);
+			$this->processor->init($searchFields, $pageList, $this->modTS);
 			// Check if button press
 			$update = GeneralUtility::_GP('updateLinkList');
 			if (!empty($update)) {
