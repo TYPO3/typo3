@@ -13,6 +13,14 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Extbase\Service\TypoScriptService;
+use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject;
+
 /**
  * Testcase
  *
@@ -26,22 +34,22 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	protected $singletonInstances = array();
 
 	/**
-	 * @var \TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+	 * @var FluidTemplateContentObject|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
-	protected $fixture = NULL;
+	protected $subject = NULL;
 
 	/**
-	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer|\PHPUnit_Framework_MockObject_MockObject
+	 * @var ContentObjectRenderer|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $contentObjectRenderer = NULL;
 
 	/**
-	 * @var \TYPO3\CMS\Fluid\View\StandaloneView|\PHPUnit_Framework_MockObject_MockObject
+	 * @var StandaloneView|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $standaloneView = NULL;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Mvc\Request|\PHPUnit_Framework_MockObject_MockObject
+	 * @var Request|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $request = NULL;
 
@@ -53,7 +61,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		$this->contentObjectRenderer = $this->getMock(
 			'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer'
 		);
-		$this->fixture = $this->getAccessibleMock(
+		$this->subject = $this->getAccessibleMock(
 			'TYPO3\\CMS\\Frontend\\ContentObject\\FluidTemplateContentObject',
 			array('dummy', 'initializeStandaloneViewInstance'),
 			array($this->contentObjectRenderer)
@@ -73,67 +81,67 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	}
 
 	/**
-	 * Add a mock standalone view to fixture
+	 * Add a mock standalone view to subject
 	 */
-	protected function addMockViewToFixture() {
+	protected function addMockViewToSubject() {
 		$this->standaloneView = $this->getMock('TYPO3\\CMS\\Fluid\\View\\StandaloneView', array(), array(), '', FALSE);
 		$this->request = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request');
 		$this->standaloneView
 			->expects($this->any())
 			->method('getRequest')
 			->will($this->returnValue($this->request));
-		$this->fixture->_set('view', $this->standaloneView);
+		$this->subject->_set('view', $this->standaloneView);
 	}
 
 	/**
 	 * @test
 	 */
 	public function constructSetsContentObjectRenderer() {
-		$this->assertSame($this->contentObjectRenderer, $this->fixture->getContentObject());
+		$this->assertSame($this->contentObjectRenderer, $this->subject->getContentObject());
 	}
 
 	/**
 	 * @test
 	 */
-	public function renderCallsinitializeStandaloneViewInstance() {
-		$this->addMockViewToFixture();
-		$this->fixture
+	public function renderCallsInitializeStandaloneViewInstance() {
+		$this->addMockViewToSubject();
+		$this->subject
 			->expects($this->once())
 			->method('initializeStandaloneViewInstance');
-		$this->fixture->render(array());
+		$this->subject->render(array());
 	}
 
 	/**
 	 * @test
 	 */
 	public function renderCallsTemplateServiceGetFileNameForGivenTemplateFile() {
-		$this->addMockViewToFixture();
+		$this->addMockViewToSubject();
 		/** @var $templateService \PHPUnit_Framework_MockObject_MockObject */
 		$templateService = $GLOBALS['TSFE']->tmpl;
 		$templateService
 			->expects($this->any())
 			->method('getFileName')
 			->with('foo');
-		$this->fixture->render(array('file' => 'foo'));
+		$this->subject->render(array('file' => 'foo'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function renderCallsStandardWrapForGivenTemplateFileWithStandardWrap() {
-		$this->addMockViewToFixture();
+		$this->addMockViewToSubject();
 		$this->contentObjectRenderer
 			->expects($this->any())
 			->method('stdWrap')
 			->with('foo', array('bar' => 'baz'));
-		$this->fixture->render(array('file' => 'foo', 'file.' => array('bar' => 'baz')));
+		$this->subject->render(array('file' => 'foo', 'file.' => array('bar' => 'baz')));
 	}
 
 	/**
 	 * @test
 	 */
 	public function renderSetsTemplateFileInView() {
-		$this->addMockViewToFixture();
+		$this->addMockViewToSubject();
 		/** @var $templateService \PHPUnit_Framework_MockObject_MockObject */
 		$templateService = $GLOBALS['TSFE']->tmpl;
 		$templateService
@@ -145,14 +153,14 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 			->expects($this->any())
 			->method('setTemplatePathAndFilename')
 			->with('bar');
-		$this->fixture->render(array('file' => 'foo'));
+		$this->subject->render(array('file' => 'foo'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function renderSetsTemplateFileByTemplateInView() {
-		$this->addMockViewToFixture();
+		$this->addMockViewToSubject();
 
 		$this->contentObjectRenderer
 			->expects($this->any())
@@ -165,7 +173,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 			->method('setTemplateSource')
 			->with('baz');
 
-		$this->fixture->render(array(
+		$this->subject->render(array(
 			'template' => 'FILE',
 			'template.' => array(
 				'file' => PATH_site . 'foo/bar.html'
@@ -177,79 +185,128 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	 * @test
 	 */
 	public function renderSetsLayoutRootPathInView() {
-		$this->addMockViewToFixture();
+		$this->addMockViewToSubject();
 		$this->standaloneView
 			->expects($this->once())
-			->method('setLayoutRootPath')
-			->with(PATH_site . 'foo/bar.html');
-		$this->fixture->render(array('layoutRootPath' => 'foo/bar.html'));
+			->method('setLayoutRootPaths')
+			->with(array(PATH_site . 'foo/bar.html'));
+		$this->subject->render(array('layoutRootPath' => 'foo/bar.html'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function renderCallsStandardWrapForLayoutRootPath() {
-		$this->addMockViewToFixture();
+		$this->addMockViewToSubject();
 		$this->contentObjectRenderer
 			->expects($this->once())
 			->method('stdWrap')
 			->with('foo', array('bar' => 'baz'));
-		$this->fixture->render(array('layoutRootPath' => 'foo', 'layoutRootPath.' => array('bar' => 'baz')));
+		$this->subject->render(array('layoutRootPath' => 'foo', 'layoutRootPath.' => array('bar' => 'baz')));
+	}
+
+	/**
+	 * @test
+	 */
+	public function fallbacksForLayoutRootPathAreSet() {
+		$this->addMockViewToSubject();
+		$this->standaloneView
+			->expects($this->once())
+			->method('setLayoutRootPaths')
+			->with(array(10 => PATH_site . 'foo/bar.html', 20 => PATH_site . 'foo/bar2.html'));
+		$this->subject->render(array('layoutRootPaths.' => array(10 => 'foo/bar.html', 20 => 'foo/bar2.html')));
+	}
+
+	/**
+	 * @test
+	 */
+	public function fallbacksForLayoutRootPathAreAppendedToLayoutRootPath() {
+		$this->addMockViewToSubject();
+		$this->standaloneView
+			->expects($this->once())
+			->method('setLayoutRootPaths')
+			->with(array(0 => PATH_site . 'foo/main.html', 10 => PATH_site . 'foo/bar.html', 20 => PATH_site . 'foo/bar2.html'));
+		$this->subject->render(array('layoutRootPath' => 'foo/main.html', 'layoutRootPaths.' => array(10 => 'foo/bar.html', 20 => 'foo/bar2.html')));
 	}
 
 	/**
 	 * @test
 	 */
 	public function renderSetsPartialRootPathInView() {
-		$this->addMockViewToFixture();
+		$this->addMockViewToSubject();
 		$this->standaloneView
 			->expects($this->once())
-			->method('setPartialRootPath')
-			->with(PATH_site . 'foo/bar.html');
-		$this->fixture->render(array('partialRootPath' => 'foo/bar.html'));
+			->method('setPartialRootPaths')
+			->with(array(PATH_site . 'foo/bar.html'));
+		$this->subject->render(array('partialRootPath' => 'foo/bar.html'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function renderCallsStandardWrapForPartialRootPath() {
-		$this->addMockViewToFixture();
+		$this->addMockViewToSubject();
 		$this->contentObjectRenderer
 			->expects($this->once())
 			->method('stdWrap')
 			->with('foo', array('bar' => 'baz'));
-		$this->fixture->render(array('partialRootPath' => 'foo', 'partialRootPath.' => array('bar' => 'baz')));
+		$this->subject->render(array('partialRootPath' => 'foo', 'partialRootPath.' => array('bar' => 'baz')));
+	}
+
+
+	/**
+	 * @test
+	 */
+	public function fallbacksForPartialRootPathAreSet() {
+		$this->addMockViewToSubject();
+		$this->standaloneView
+			->expects($this->once())
+			->method('setPartialRootPaths')
+			->with(array(10 => PATH_site . 'foo', 20 => PATH_site . 'bar'));
+		$this->subject->render(array('partialRootPaths.' => array(10 => 'foo', 20 => 'bar')));
+	}
+
+	/**
+	 * @test
+	 */
+	public function fallbacksForPartialRootPathAreAppendedToPartialRootPath() {
+		$this->addMockViewToSubject();
+		$this->standaloneView
+			->expects($this->once())
+			->method('setPartialRootPaths')
+			->with(array(0 => PATH_site . 'main', 10 => PATH_site . 'foo', 20 => PATH_site . 'bar'));
+		$this->subject->render(array('partialRootPath' => 'main', 'partialRootPaths.' => array(10 => 'foo', 20 => 'bar')));
 	}
 
 	/**
 	 * @test
 	 */
 	public function renderSetsFormatInView() {
-		$this->addMockViewToFixture();
+		$this->addMockViewToSubject();
 		$this->standaloneView
 			->expects($this->once())
 			->method('setFormat')
 			->with('xml');
-		$this->fixture->render(array('format' => 'xml'));
+		$this->subject->render(array('format' => 'xml'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function renderCallsStandardWrapForFormat() {
-		$this->addMockViewToFixture();
+		$this->addMockViewToSubject();
 		$this->contentObjectRenderer
 			->expects($this->once())
 			->method('stdWrap')
 			->with('foo', array('bar' => 'baz'));
-		$this->fixture->render(array('format' => 'foo', 'format.' => array('bar' => 'baz')));
+		$this->subject->render(array('format' => 'foo', 'format.' => array('bar' => 'baz')));
 	}
 
 	/**
 	 * @test
 	 */
 	public function renderSetsExtbasePluginNameInRequest() {
-		$this->addMockViewToFixture();
+		$this->addMockViewToSubject();
 		$this->request
 			->expects($this->once())
 			->method('setPluginName')
@@ -259,14 +316,14 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 				'pluginName' => 'foo',
 			),
 		);
-		$this->fixture->render($configuration);
+		$this->subject->render($configuration);
 	}
 
 	/**
 	 * @test
 	 */
 	public function renderCallsStandardWrapForExtbasePluginName() {
-		$this->addMockViewToFixture();
+		$this->addMockViewToSubject();
 		$this->contentObjectRenderer
 			->expects($this->once())
 			->method('stdWrap')
@@ -279,14 +336,14 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 				),
 			),
 		);
-		$this->fixture->render($configuration);
+		$this->subject->render($configuration);
 	}
 
 	/**
 	 * @test
 	 */
 	public function renderSetsExtbaseControllerExtensionNameInRequest() {
-		$this->addMockViewToFixture();
+		$this->addMockViewToSubject();
 		$this->request
 			->expects($this->once())
 			->method('setControllerExtensionName')
@@ -296,14 +353,14 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 				'controllerExtensionName' => 'foo',
 			),
 		);
-		$this->fixture->render($configuration);
+		$this->subject->render($configuration);
 	}
 
 	/**
 	 * @test
 	 */
 	public function renderCallsStandardWrapForExtbaseControllerExtensionName() {
-		$this->addMockViewToFixture();
+		$this->addMockViewToSubject();
 		$this->contentObjectRenderer
 			->expects($this->once())
 			->method('stdWrap')
@@ -316,14 +373,14 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 				),
 			),
 		);
-		$this->fixture->render($configuration);
+		$this->subject->render($configuration);
 	}
 
 	/**
 	 * @test
 	 */
 	public function renderSetsExtbaseControllerNameInRequest() {
-		$this->addMockViewToFixture();
+		$this->addMockViewToSubject();
 		$this->request
 			->expects($this->once())
 			->method('setControllerName')
@@ -333,14 +390,14 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 				'controllerName' => 'foo',
 			),
 		);
-		$this->fixture->render($configuration);
+		$this->subject->render($configuration);
 	}
 
 	/**
 	 * @test
 	 */
 	public function renderCallsStandardWrapForExtbaseControllerName() {
-		$this->addMockViewToFixture();
+		$this->addMockViewToSubject();
 		$this->contentObjectRenderer
 			->expects($this->once())
 			->method('stdWrap')
@@ -353,14 +410,14 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 				),
 			),
 		);
-		$this->fixture->render($configuration);
+		$this->subject->render($configuration);
 	}
 
 	/**
 	 * @test
 	 */
 	public function renderSetsExtbaseControllerActionNameInRequest() {
-		$this->addMockViewToFixture();
+		$this->addMockViewToSubject();
 		$this->request
 			->expects($this->once())
 			->method('setControllerActionName')
@@ -370,14 +427,14 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 				'controllerActionName' => 'foo',
 			),
 		);
-		$this->fixture->render($configuration);
+		$this->subject->render($configuration);
 	}
 
 	/**
 	 * @test
 	 */
 	public function renderCallsStandardWrapForExtbaseControllerActionName() {
-		$this->addMockViewToFixture();
+		$this->addMockViewToSubject();
 		$this->contentObjectRenderer
 			->expects($this->once())
 			->method('stdWrap')
@@ -390,14 +447,14 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 				),
 			),
 		);
-		$this->fixture->render($configuration);
+		$this->subject->render($configuration);
 	}
 
 	/**
 	 * @test
 	 */
 	public function renderAssignsSettingsArrayToView() {
-		$this->addMockViewToFixture();
+		$this->addMockViewToSubject();
 
 		$configuration = array(
 			'settings.' => array(
@@ -428,7 +485,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 			->method('assign')
 			->with('settings', $expectedSettingsToBeSet);
 
-		$this->fixture->render($configuration);
+		$this->subject->render($configuration);
 	}
 
 	/**
@@ -436,7 +493,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function renderThrowsExceptionForNotAllowedVariableData() {
-		$this->addMockViewToFixture();
+		$this->addMockViewToSubject();
 		$configuration = array(
 			'variables.' => array(
 				'data' => 'foo',
@@ -445,7 +502,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 				),
 			),
 		);
-		$this->fixture->render($configuration);
+		$this->subject->render($configuration);
 	}
 
 	/**
@@ -453,7 +510,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function renderThrowsExceptionForNotAllowedVariableCurrent() {
-		$this->addMockViewToFixture();
+		$this->addMockViewToSubject();
 		$configuration = array(
 			'variables.' => array(
 				'current' => 'foo',
@@ -462,14 +519,14 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 				),
 			),
 		);
-		$this->fixture->render($configuration);
+		$this->subject->render($configuration);
 	}
 
 	/**
 	 * @test
 	 */
 	public function renderCallsCObjGetSingleForAllowedVariable() {
-		$this->addMockViewToFixture();
+		$this->addMockViewToSubject();
 		$configuration = array(
 			'variables.' => array(
 				'aVar' => 'TEXT',
@@ -482,14 +539,14 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 			->expects($this->once())
 			->method('cObjGetSingle')
 			->with('TEXT', array('value' => 'foo'));
-		$this->fixture->render($configuration);
+		$this->subject->render($configuration);
 	}
 
 	/**
 	 * @test
 	 */
 	public function renderAssignsRenderedContentObjectVariableToView() {
-		$this->addMockViewToFixture();
+		$this->addMockViewToSubject();
 		$configuration = array(
 			'variables.' => array(
 				'aVar' => 'TEXT',
@@ -506,52 +563,52 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 			->expects($this->at(1))
 			->method('assign')
 			->with('aVar', 'foo');
-		$this->fixture->render($configuration);
+		$this->subject->render($configuration);
 	}
 
 	/**
 	 * @test
 	 */
 	public function renderAssignsContentObjectRendererDataToView() {
-		$this->addMockViewToFixture();
+		$this->addMockViewToSubject();
 		$this->contentObjectRenderer->data = array('foo');
 		$this->standaloneView
 			->expects($this->at(1))
 			->method('assign')
 			->with('data', array('foo'));
-		$this->fixture->render(array());
+		$this->subject->render(array());
 	}
 
 	/**
 	 * @test
 	 */
 	public function renderAssignsContentObjectRendererCurrentValueToView() {
-		$this->addMockViewToFixture();
+		$this->addMockViewToSubject();
 		$this->contentObjectRenderer->data = array('currentKey' => 'currentValue');
 		$this->contentObjectRenderer->currentValKey= 'currentKey';
 		$this->standaloneView
 			->expects($this->at(2))
 			->method('assign')
 			->with('current', 'currentValue');
-		$this->fixture->render(array());
+		$this->subject->render(array());
 	}
 
 	/**
 	 * @test
 	 */
 	public function renderCallsRenderOnStandaloneViewie() {
-		$this->addMockViewToFixture();
+		$this->addMockViewToSubject();
 		$this->standaloneView
 			->expects($this->once())
 			->method('render');
-		$this->fixture->render(array());
+		$this->subject->render(array());
 	}
 
 	/**
 	 * @test
 	 */
 	public function renderCallsStandardWrapOnResultStringIfGivenInConfiguration() {
-		$this->addMockViewToFixture();
+		$this->addMockViewToSubject();
 		$configuration = array(
 			'stdWrap.' => array(
 				'foo' => 'bar',
@@ -565,6 +622,6 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 			->expects($this->once())
 			->method('stdWrap')
 			->with('baz', array('foo' => 'bar'));
-		$this->fixture->render($configuration);
+		$this->subject->render($configuration);
 	}
 }
