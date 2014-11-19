@@ -3,13 +3,6 @@
 	<head>
 		<title>Install tool on site {siteName}</title>
 		<f:render partial="Action/Common/Headers" arguments="{_all}" />
-		<f:if condition="{contextService.backendContext}">
-			<f:then>
-				<link rel="stylesheet" type="text/css" href="../../../sysext/t3skin/Resources/Public/Css/visual/element_docheader.css?{time}" />
-				<link rel="stylesheet" type="text/css" href="../../../sysext/t3skin/Resources/Public/Css/structure/element_docheader.css?{time}" />
-				<link rel="stylesheet" type="text/css" href="../../../sysext/t3skin/Resources/Public/Css/structure/main_body.css?{time}" />
-			</f:then>
-		</f:if>
 	</head>
 	<body class="{context}">
 	<f:if condition="{contextService.backendContext}">
