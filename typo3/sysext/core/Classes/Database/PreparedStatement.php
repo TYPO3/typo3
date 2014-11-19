@@ -295,7 +295,7 @@ class PreparedStatement {
 			// The statement has already been executed, we try to reset it
 			// for current run but will set it to NULL if it fails for some
 			// reason, just as if it were the first run
-			if (!$this->statement->reset()) {
+			if (!@$this->statement->reset()) {
 				$this->statement = NULL;
 			}
 		}
