@@ -17,7 +17,7 @@ The full parameter usage in Fluid might look like this, where {link} is the fiel
 
 ::
 
-<f:link.typolink parameter="{link}" target="_blank" class="ico-class" title="some title" additionalParams="" additionalAttributes="{type:'button'}">
+<f:link.typolink parameter="{link}" target="_blank" class="ico-class" title="some title" additionalParameters="&b=u" additionalAttributes="{type:'button'}">
 
 ..
 
@@ -27,7 +27,7 @@ While passing additional parameters to the ViewHelper, following rules apply:
 - target is overridden, the value from Fluid applies
 - class is merged from the values passed from the database and those of *class*
 - title is overridden, the value from Fluid applies
-- additionalParams is merged from the values passed from the database and those of *additionalParams*
+- additionalParameters is merged from the values passed from the database and those of *additionalParameters*
 - additionalAttributes is (as usual) added to the resulting tag as *type="button"*
 
 {link} contains *19 _blank - "testtitle with whitespace" &X=y*.
@@ -35,7 +35,7 @@ For the given example, the output is:
 
 ::
 
-<a href="index.php?id=19&X=y" title="some title" target="_blank" class="ico-class" type="button">
+<a href="index.php?id=19&X=y&b=u" title="some title" target="_blank" class="ico-class" type="button">
 
 ..
 

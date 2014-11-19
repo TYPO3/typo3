@@ -55,7 +55,7 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase {
 		$target = '-';
 		$class = 'fluid_class';
 		$title = 'a new title';
-		$additionalParams = '&a=b';
+		$additionalParameters = '&a=b';
 		$additionalAttributes = array(
 			'value1' => 'param1',
 			'value2' => 'par&am2', // Check htmlspecialchars is applied
@@ -72,7 +72,7 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase {
 
 		GeneralUtility::addInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', $contentObjectRendererMock);
 
-		$subject->render($params, $target, $class, $title, $additionalParams, $additionalAttributes);
+		$subject->render($params, $target, $class, $title, $additionalParameters, $additionalAttributes);
 	}
 
 	/**
