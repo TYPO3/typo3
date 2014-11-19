@@ -1,9 +1,12 @@
-=================================================================
-Feature: #61361 - Template Path Fallback for Fluid StandaloneView
-=================================================================
+===================================================================================
+Feature: #61361 - Template Path Fallback for Fluid StandaloneView and FLUIDTEMPLATE
+===================================================================================
 
 Description
 ===========
+
+StandaloneView
+--------------
 
 Earlier in the development of Fluid, a template fallback was introduced
 in the TemplateView, providing the possibility to pass a set of possible
@@ -40,6 +43,31 @@ You are free in the naming
 of the keys. The paths are searched from bottom to top.
 In case you choose for numeric array keys, the array is ordered first, then reversed for the lookup, so
 the highest index is accessed first.
+
+FLUIDTEMPLATE
+-------------
+
+Additionally the TypoScript Content Object FLUIDTEMPLATE, which is based on StandaloneView, also supports this
+kind of fallback mechanism.
+Two new TypoScript options are added for this purpose:
+
+ * partialRootPaths
+ * layoutRootPaths
+
+Example usage:
+
+::
+page.10 = FLUIDTEMPLATE
+page.10.file = EXT:sitedesign/Resources/Private/Templates/Main.html
+page.10.partialRootPaths {
+  10 = EXT:sitedesign/Resources/Private/Partials
+  20 = EXT:sitemodification/Resources/Private/Partials
+}
+..
+
+In case you're using the old options (partialRootPath, layoutRootPath) together with the new options, the content of
+the old options will be placed at the first position (index zero) in the fallback list.
+
 
 Impact
 ======

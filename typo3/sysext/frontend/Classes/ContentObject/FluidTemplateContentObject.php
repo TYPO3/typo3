@@ -34,21 +34,12 @@ class FluidTemplateContentObject extends AbstractContentObject {
 	protected $view = NULL;
 
 	/**
-	 * Constructor
-	 *
-	 * @param ContentObjectRenderer $contentObjectRenderer
-	 */
-	public function __construct(ContentObjectRenderer $contentObjectRenderer) {
-		parent::__construct($contentObjectRenderer);
-	}
-
-	/**
 	 * Rendering the cObject, FLUIDTEMPLATE
 	 *
 	 * Configuration properties:
 	 * - file string+stdWrap The FLUID template file
-	 * - layoutRootPath filepath+stdWrap Root path to layouts
-	 * - partialRootPath filepath+stdWrap Root path to partial
+	 * - layoutRootPaths array of filepath+stdWrap Root paths to layouts (fallback)
+	 * - partialRootPaths filepath+stdWrap Root paths to partials (fallback)
 	 * - variable array of cObjects, the keys are the variable names in fluid
 	 * - extbase.pluginName
 	 * - extbase.controllerExtensionName
@@ -59,7 +50,7 @@ class FluidTemplateContentObject extends AbstractContentObject {
 	 * 10 = FLUIDTEMPLATE
 	 * 10.template = FILE
 	 * 10.template.file = fileadmin/templates/mytemplate.html
-	 * 10.partialRootPath = fileadmin/templates/partial/
+	 * 10.partialRootPaths.10 = fileadmin/templates/partial/
 	 * 10.variables {
 	 *   mylabel = TEXT
 	 *   mylabel.value = Label from TypoScript coming
@@ -134,10 +125,20 @@ class FluidTemplateContentObject extends AbstractContentObject {
 	 */
 	protected function setLayoutRootPath(array $conf) {
 		// Override the default layout path via typoscript
-		$layoutRootPath = isset($conf['layoutRootPath.']) ? $this->cObj->stdWrap($conf['layoutRootPath'], $conf['layoutRootPath.']) : $conf['layoutRootPath'];
-		if ($layoutRootPath) {
-			$layoutRootPath = GeneralUtility::getFileAbsFileName($layoutRootPath);
-			$this->view->setLayoutRootPaths(array($layoutRootPath));
+		$layoutPaths = array();
+		if (isset($conf['layoutRootPath']) || isset($conf['layoutRootPath.'])) {
+			$layoutRootPath = isset($conf['layoutRootPath.'])
+				? $this->cObj->stdWrap($conf['layoutRootPath'], $conf['layoutRootPath.'])
+				: $conf['layoutRootPath'];
+			$layoutPaths[] = GeneralUtility::getFileAbsFileName($layoutRootPath);
+		}
+		if (isset($conf['layoutRootPaths.'])) {
+			foreach ($conf['layoutRootPaths.'] as $key => $path) {
+				$layoutPaths[$key] = GeneralUtility::getFileAbsFileName($path);
+			}
+		}
+		if (!empty($layoutPaths)) {
+			$this->view->setLayoutRootPaths($layoutPaths);
 		}
 	}
 
@@ -148,10 +149,20 @@ class FluidTemplateContentObject extends AbstractContentObject {
 	 * @return void
 	 */
 	protected function setPartialRootPath(array $conf) {
-		$partialRootPath = isset($conf['partialRootPath.']) ? $this->cObj->stdWrap($conf['partialRootPath'], $conf['partialRootPath.']) : $conf['partialRootPath'];
-		if ($partialRootPath) {
-			$partialRootPath = GeneralUtility::getFileAbsFileName($partialRootPath);
-			$this->view->setPartialRootPaths(array($partialRootPath));
+		$partialPaths = array();
+		if (isset($conf['partialRootPath']) || isset($conf['partialRootPath.'])) {
+			$partialRootPath = isset($conf['partialRootPath.'])
+				? $this->cObj->stdWrap($conf['partialRootPath'], $conf['partialRootPath.'])
+				: $conf['partialRootPath'];
+			$partialPaths[] = GeneralUtility::getFileAbsFileName($partialRootPath);
+		}
+		if (isset($conf['partialRootPaths.'])) {
+			foreach ($conf['partialRootPaths.'] as $key => $path) {
+				$partialPaths[$key] = GeneralUtility::getFileAbsFileName($path);
+			}
+		}
+		if (!empty($partialPaths)) {
+			$this->view->setPartialRootPaths($partialPaths);
 		}
 	}
 
@@ -231,7 +242,7 @@ class FluidTemplateContentObject extends AbstractContentObject {
 	 * @return void
 	 */
 	protected function assignSettings(array $conf) {
-		if (array_key_exists('settings.', $conf)) {
+		if (isset($conf['settings.'])) {
 			/** @var $typoScriptService TypoScriptService */
 			$typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
 			$settings = $typoScriptService->convertTypoScriptArrayToPlainArray($conf['settings.']);
