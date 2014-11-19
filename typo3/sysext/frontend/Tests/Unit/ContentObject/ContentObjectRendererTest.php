@@ -692,7 +692,13 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					'Some text with a link to <link email.address@example.org - mail "Open email window">my email.address@example.org</link> and text after it',
 					'Some text with a link to <link email.address@example.org - mail "Open email window">my...</link>',
 					$charset
-				)
+				),
+				$charset . ' html elements with dashes in attributes' => array(
+					'9',
+					'<em data-foo="x">foobar</em>foobaz',
+					'<em data-foo="x">foobar</em>foo',
+					$charset
+				),
 			));
 		}
 		return $data;
@@ -721,6 +727,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function cropHtmlWorksWithComplexContent() {
 		$GLOBALS['TSFE']->renderCharset = 'iso-8859-1';
+
 		$subject = '
 <h1>Blog Example</h1>
 <hr>
@@ -735,7 +742,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		Below are the most recent posts:
 	</p>
 	<ul>
-		<li>
+		<li data-element="someId">
 			<h3>
 				<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[blog]=&amp;tx_blogexample_pi1[action]=show&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=003b0131ed">The Post #1</a>
 			</h3>
@@ -776,12 +783,12 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		Below are the most recent posts:
 	</p>
 	<ul>
-		<li>
+		<li data-element="someId">
 			<h3>
 				<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[blog]=&amp;tx_blogexample_pi1[action]=show&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=003b0131ed">The Pos</a></h3></li></ul></div>';
 		$this->assertEquals($expected, $result);
 		$result = $this->cObj->cropHTML($subject, '-100');
-		$expected = '<div class="tx-blogexample-list-container"><ul><li><p>Design]&nbsp;<br>
+		$expected = '<div class="tx-blogexample-list-container"><ul><li data-element="someId"><p>Design]&nbsp;<br>
 				<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[action]=show&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=f982643bc3">read more &gt;&gt;</a><br>
 				<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[blog][uid]=70&amp;tx_blogexample_pi1[action]=edit&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=5b481bc8f0">Edit</a>&nbsp;<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[blog][uid]=70&amp;tx_blogexample_pi1[action]=delete&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=4e52879656">Delete</a>
 			</p>
