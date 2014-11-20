@@ -96,9 +96,6 @@
 			<trans-unit id="be_users.file_permissions.files_add" xml:space="preserve">
 				<source>Files: Add</source>
 			</trans-unit>
-			<trans-unit id="be_users.file_permissions.files_upload" xml:space="preserve">
-				<source>Files: Upload</source>
-			</trans-unit>
 			<trans-unit id="be_users.file_permissions.files_rename" xml:space="preserve">
 				<source>Files: Rename</source>
 			</trans-unit>
@@ -224,9 +221,6 @@
 			</trans-unit>
 			<trans-unit id="be_groups.file_permissions.files_add" xml:space="preserve">
 				<source>Files: Add</source>
-			</trans-unit>
-			<trans-unit id="be_groups.file_permissions.files_upload" xml:space="preserve">
-				<source>Files: Upload</source>
 			</trans-unit>
 			<trans-unit id="be_groups.file_permissions.files_rename" xml:space="preserve">
 				<source>Files: Rename</source>
