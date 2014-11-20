@@ -174,7 +174,7 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 */
 	public function getCommand() {
 		if ($this->command === NULL) {
-			$this->command = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Command', $this->controllerObjectName, $this->controllerCommandName);
+			$this->command = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Cli\Command::class, $this->controllerObjectName, $this->controllerCommandName);
 		}
 		return $this->command;
 	}

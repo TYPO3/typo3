@@ -56,7 +56,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \TYPO3\CMS\Extbase\Mvc\Cli\Request The CLI request as an object
 	 */
 	public function build($commandLine = '', $callingScript = './typo3/cli_dispatch.phpsh extbase') {
-		$request = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Request');
+		$request = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Cli\Request::class);
 		$request->setCallingScript($callingScript);
 		$request->setControllerObjectName('TYPO3\\CMS\\Extbase\\Command\\HelpCommandController');
 		$rawCommandLineArguments = is_array($commandLine) ? $commandLine : explode(' ', $commandLine);

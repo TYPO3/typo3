@@ -156,7 +156,7 @@ class MetaDataRepository implements SingletonInterface {
 	 * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
 	 */
 	protected function getSignalSlotDispatcher() {
-		return $this->getObjectManager()->get('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+		return $this->getObjectManager()->get(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
 	}
 
 	/**

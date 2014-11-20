@@ -28,7 +28,7 @@ class DatabaseData extends AbstractStepAction {
 		$result = array();
 
 		/** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
-		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+		$configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
 
 		$postValues = $this->postValues['values'];
 
@@ -37,7 +37,7 @@ class DatabaseData extends AbstractStepAction {
 		// Check password and return early if not good enough
 		$password = $postValues['password'];
 		if (strlen($password) < 8) {
-			$errorStatus = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+			$errorStatus = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 			$errorStatus->setTitle('Administrator password not secure enough!');
 			$errorStatus->setMessage(
 				'You are setting an important password here! It gives an attacker full control over your instance if cracked.' .
@@ -109,9 +109,9 @@ class DatabaseData extends AbstractStepAction {
 		// Import database data
 		$database = $this->getDatabaseConnection();
 		/** @var \TYPO3\CMS\Install\Service\SqlSchemaMigrationService $schemaMigrationService */
-		$schemaMigrationService = $this->objectManager->get('TYPO3\\CMS\\Install\\Service\\SqlSchemaMigrationService');
+		$schemaMigrationService = $this->objectManager->get(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class);
 		/** @var \TYPO3\CMS\Install\Service\SqlExpectedSchemaService $expectedSchemaService */
-		$expectedSchemaService = $this->objectManager->get('TYPO3\\CMS\\Install\\Service\\SqlExpectedSchemaService');
+		$expectedSchemaService = $this->objectManager->get(\TYPO3\CMS\Install\Service\SqlExpectedSchemaService::class);
 
 		// Raw concatenated ext_tables.sql and friends string
 		$expectedSchemaString = $expectedSchemaService->getTablesDefinitionString(TRUE);

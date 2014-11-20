@@ -108,7 +108,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface {
 	 * @see initialize()
 	 */
 	public function initializeConfiguration($configuration) {
-		$this->configurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
+		$this->configurationManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
 		/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObject */
 		$contentObject = isset($this->cObj) ? $this->cObj : \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 		$this->configurationManager->setContentObject($contentObject);
@@ -153,7 +153,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface {
 	 * @see initialize()
 	 */
 	protected function initializeReflection() {
-		$this->reflectionService = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService');
+		$this->reflectionService = $this->objectManager->get(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
 		$this->reflectionService->setDataCache($this->cacheManager->getCache('extbase_reflection'));
 		if (!$this->reflectionService->isInitialized()) {
 			$this->reflectionService->initialize();
@@ -167,7 +167,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface {
 	 * @see initialize()
 	 */
 	public function initializePersistence() {
-		$this->persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
+		$this->persistenceManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class);
 	}
 
 	/**
@@ -189,7 +189,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface {
 	 */
 	protected function handleRequest() {
 		/** @var $requestHandlerResolver \TYPO3\CMS\Extbase\Mvc\RequestHandlerResolver */
-		$requestHandlerResolver = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\RequestHandlerResolver');
+		$requestHandlerResolver = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\RequestHandlerResolver::class);
 		$requestHandler = $requestHandlerResolver->resolveRequestHandler();
 
 		$response = $requestHandler->handleRequest();
@@ -202,7 +202,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface {
 		} else {
 			$content = $response->shutdown();
 			$this->resetSingletons();
-			$this->objectManager->get('TYPO3\CMS\Extbase\Service\CacheService')->clearCachesOfRegisteredPageIds();
+			$this->objectManager->get(\TYPO3\CMS\Extbase\Service\CacheService::class)->clearCachesOfRegisteredPageIds();
 		}
 
 		return $content;

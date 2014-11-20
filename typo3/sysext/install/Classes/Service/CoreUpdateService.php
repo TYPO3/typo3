@@ -129,7 +129,7 @@ class CoreUpdateService {
 		} catch (\TYPO3\CMS\Install\Service\Exception\RemoteFetchException $e) {
 			$success = FALSE;
 			/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-			$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+			$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 			$message->setTitle('Version matrix could not be fetched from get.typo3.org');
 			$message->setMessage(
 				'Current version specification could not be fetched from http://get.typo3.org/json.'
@@ -150,17 +150,17 @@ class CoreUpdateService {
 		$messages = array();
 
 		/** @var \TYPO3\CMS\Install\Status\StatusUtility $statusUtility */
-		$statusUtility = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\StatusUtility');
+		$statusUtility = $this->objectManager->get(\TYPO3\CMS\Install\Status\StatusUtility::class);
 
 		// Folder structure test: Update can be done only if folder structure returns no errors
 		/** @var $folderStructureFacade \TYPO3\CMS\Install\FolderStructure\StructureFacade */
-		$folderStructureFacade = $this->objectManager->get('TYPO3\\CMS\\Install\\FolderStructure\\DefaultFactory')->getStructure();
+		$folderStructureFacade = $this->objectManager->get(\TYPO3\CMS\Install\FolderStructure\DefaultFactory::class)->getStructure();
 		$folderStructureErrors = $statusUtility->filterBySeverity($folderStructureFacade->getStatus(), 'error');
 		$folderStructureWarnings = $statusUtility->filterBySeverity($folderStructureFacade->getStatus(), 'warning');
 		if (count($folderStructureErrors) > 0 || count($folderStructureWarnings) > 0) {
 			$success = FALSE;
 			/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-			$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+			$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 			$message->setTitle('Automatic core update not possible: Folder structure has errors or warnings');
 			$message->setMessage(
 				'To perform an update, the folder structure of this TYPO3 CMS instance must'
@@ -174,7 +174,7 @@ class CoreUpdateService {
 		if (TYPO3_OS === 'WIN') {
 			$success = FALSE;
 			/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-			$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+			$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 			$message->setTitle('Automatic core update not possible: Update not supported on Windows OS');
 			$messages[] = $message;
 		}
@@ -186,7 +186,7 @@ class CoreUpdateService {
 			if (!$result) {
 				$success = FALSE;
 				/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-				$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+				$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 				$message->setTitle('Automatic core update not possible: No write access to document root');
 				$message->setMessage('Could not write a file in path "' . PATH_site . '"!');
 				$messages[] = $message;
@@ -201,7 +201,7 @@ class CoreUpdateService {
 			if (!$result) {
 				$success = FALSE;
 				/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-				$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+				$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 				$message->setTitle('Automatic core update not possible: No write access to core location');
 				$message->setMessage(
 					'New core should be installed in "' . $coreLocation . '", but this directory is not writable!'
@@ -215,7 +215,7 @@ class CoreUpdateService {
 		if ($success && !$this->coreVersionService->isInstalledVersionAReleasedVersion()) {
 			$success = FALSE;
 			/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-			$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+			$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 			$message->setTitle('Automatic core update not possible: You are running a development version of TYPO3');
 			$message->setMessage(
 				'Your current version is specified as ' . $this->coreVersionService->getInstalledVersion() . '.'
@@ -245,7 +245,7 @@ class CoreUpdateService {
 		if (@file_exists($fileLocation)) {
 			$success = FALSE;
 			/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-			$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+			$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 			$message->setTitle('Core download exists in download location: ' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($this->downloadTargetPath));
 			$messages[] = $message;
 		} else {
@@ -253,7 +253,7 @@ class CoreUpdateService {
 			if (!$fileContent) {
 				$success = FALSE;
 				/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-				$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+				$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 				$message->setTitle('Download not successful');
 				$messages[] = $message;
 			} else {
@@ -261,7 +261,7 @@ class CoreUpdateService {
 				if (!$fileStoreResult) {
 					$success = FALSE;
 					/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-					$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+					$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 					$message->setTitle('Unable to store download content');
 					$messages[] = $message;
 				}
@@ -287,7 +287,7 @@ class CoreUpdateService {
 		if (!file_exists($fileLocation)) {
 			$success = FALSE;
 			/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-			$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+			$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 			$message->setTitle('Downloaded core not found');
 			$messages[] = $message;
 		} else {
@@ -295,7 +295,7 @@ class CoreUpdateService {
 			if ($actualChecksum !== $expectedChecksum) {
 				$success = FALSE;
 				/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-				$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+				$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 				$message->setTitle('New core checksum mismatch');
 				$message->setMessage(
 					'The official TYPO3 CMS version system on https://get.typo3.org expects a sha1 checksum of '
@@ -325,13 +325,13 @@ class CoreUpdateService {
 		if (!@is_file($fileLocation)) {
 			$success = FALSE;
 			/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-			$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+			$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 			$message->setTitle('Downloaded core not found');
 			$messages[] = $message;
 		} elseif (@file_exists($this->downloadTargetPath . 'typo3_src-' . $version)) {
 			$success = FALSE;
 			/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-			$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+			$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 			$message->setTitle('Unpacked core exists in download location: ' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($this->downloadTargetPath));
 			$messages[] = $message;
 		} else {
@@ -340,7 +340,7 @@ class CoreUpdateService {
 			if ($errorCode) {
 				$success = FALSE;
 				/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-				$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+				$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 				$message->setTitle('Unpacking core not successful');
 				$messages[] = $message;
 			} else {
@@ -348,7 +348,7 @@ class CoreUpdateService {
 				if (!$removePackedFileResult) {
 					$success = FALSE;
 					/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-					$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+					$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 					$message->setTitle('Removing packed core not successful');
 					$messages[] = $message;
 				}
@@ -374,13 +374,13 @@ class CoreUpdateService {
 		if (!@is_dir($downloadedCoreLocation)) {
 			$success = FALSE;
 			/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-			$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+			$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 			$message->setTitle('Unpacked core not found');
 			$messages[] = $message;
 		} elseif (@is_dir($newCoreLocation)) {
 			$success = FALSE;
 			/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-			$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+			$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 			$message->setTitle('Another core source directory already exists in path ' . $newCoreLocation);
 			$messages[] = $message;
 		} else {
@@ -388,7 +388,7 @@ class CoreUpdateService {
 			if (!$moveResult) {
 				$success = FALSE;
 				/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-				$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+				$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 				$message->setTitle('Moving core to ' . $newCoreLocation . ' failed');
 				$messages[] = $message;
 			}
@@ -413,13 +413,13 @@ class CoreUpdateService {
 		if (!is_dir($newCoreLocation)) {
 			$success = FALSE;
 			/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-			$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+			$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 			$message->setTitle('New core not found');
 			$messages[] = $message;
 		} elseif (!is_link($this->currentCoreLocation)) {
 			$success = FALSE;
 			/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-			$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+			$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 			$message->setTitle('TYPO3 source directory (typo3_src) is not a link');
 			$messages[] = $message;
 		} else {
@@ -427,7 +427,7 @@ class CoreUpdateService {
 			if (!$unlinkResult) {
 				$success = FALSE;
 				/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-				$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+				$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 				$message->setTitle('Removing old symlink failed');
 				$messages[] = $message;
 			} else {
@@ -437,7 +437,7 @@ class CoreUpdateService {
 				} else {
 					$success = FALSE;
 					/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-					$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+					$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 					$message->setTitle('Linking new core failed');
 					$messages[] = $message;
 				}

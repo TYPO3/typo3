@@ -42,7 +42,7 @@ class ExtensionManager {
 	public function processActions(array $extension, array &$actions) {
 		if (static::$documents === NULL) {
 			/** @var \TYPO3\CMS\Documentation\Controller\DocumentController $documentController */
-			$documentController = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Controller\\DocumentController');
+			$documentController = $this->objectManager->get(\TYPO3\CMS\Documentation\Controller\DocumentController::class);
 			static::$documents = $documentController->getDocuments();
 		}
 
@@ -53,7 +53,7 @@ class ExtensionManager {
 			$document = static::$documents[$documentKey];
 
 			/** @var \TYPO3\CMS\Documentation\ViewHelpers\FormatsViewHelper $formatsViewHelper */
-			$formatsViewHelper = $this->objectManager->get('TYPO3\\CMS\\Documentation\\ViewHelpers\\FormatsViewHelper');
+			$formatsViewHelper = $this->objectManager->get(\TYPO3\CMS\Documentation\ViewHelpers\FormatsViewHelper::class);
 
 			foreach ($document->getTranslations() as $documentTranslation) {
 				$actions[] = $formatsViewHelper->render($documentTranslation);

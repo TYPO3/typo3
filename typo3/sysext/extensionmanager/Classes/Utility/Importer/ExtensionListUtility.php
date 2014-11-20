@@ -118,9 +118,9 @@ class ExtensionListUtility implements \SplObserver {
 	public function __construct() {
 		/** @var $objectManager \TYPO3\CMS\Extbase\Object\ObjectManager */
 		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-		$this->repositoryRepository = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\RepositoryRepository');
-		$this->extensionRepository = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ExtensionRepository');
-		$this->extensionModel = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Extension');
+		$this->repositoryRepository = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository::class);
+		$this->extensionRepository = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository::class);
+		$this->extensionModel = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class);
 		// TODO catch parser exception
 		$this->parser = \TYPO3\CMS\Extensionmanager\Utility\Parser\XmlParserFactory::getParserInstance('extension');
 		if (is_object($this->parser)) {

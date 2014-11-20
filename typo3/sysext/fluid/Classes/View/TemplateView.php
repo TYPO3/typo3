@@ -134,7 +134,7 @@ class TemplateView extends AbstractTemplateView {
 	public function __construct() {
 		$this->templateParser = TemplateParserBuilder::build();
 		$this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-		$this->setRenderingContext($this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Rendering\\RenderingContextInterface'));
+		$this->setRenderingContext($this->objectManager->get(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface::class));
 	}
 
 	/**

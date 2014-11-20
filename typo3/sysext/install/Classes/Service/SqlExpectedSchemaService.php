@@ -42,7 +42,7 @@ class SqlExpectedSchemaService {
 	 */
 	public function getExpectedDatabaseSchema() {
 		/** @var \TYPO3\CMS\Install\Service\SqlSchemaMigrationService $schemaMigrationService */
-		$schemaMigrationService = $this->objectManager->get('TYPO3\\CMS\\Install\\Service\\SqlSchemaMigrationService');
+		$schemaMigrationService = $this->objectManager->get(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class);
 		// Raw concatenated ext_tables.sql and friends string
 		$expectedSchemaString = $this->getTablesDefinitionString();
 		// Remove comments

@@ -58,9 +58,9 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/category-mm.xml');
 
 		$this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-		$this->persistentManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
+		$this->persistentManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class);
 		/* @var $blogRepository \TYPO3\CMS\Extbase\Persistence\Repository */
-		$blogRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\BlogRepository');
+		$blogRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository::class);
 		$this->blog = $blogRepository->findByUid(1);
 	}
 
@@ -74,7 +74,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$this->assertSame($this->numberOfRecordsInFixture, $countPosts);
 
 		$newPostTitle = 'sdufhisdhuf';
-		$newPost = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Model\\Post');
+		$newPost = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Model\Post::class);
 		$newPost->setBlog($this->blog);
 		$newPost->setTitle($newPostTitle);
 		$newPost->setContent('Bla Bla Bla');
@@ -138,7 +138,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		foreach ($posts as $post) {
 			$this->blog->addPost($post);
 			if ($counter == 5) {
-				$newPost = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Model\\Post');
+				$newPost = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Model\Post::class);
 				$newPost->setBlog($this->blog);
 				$newPost->setTitle($newPostTitle);
 				$newPost->setContent('Bla Bla Bla');
@@ -239,9 +239,9 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$this->assertSame(10, $count);
 
 		$newTagTitle = 'sdufhisdhuf';
-		$newTag = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Model\\Tag', $newTagTitle);
+		$newTag = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Model\Tag::class, $newTagTitle);
 
-		$postRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\PostRepository');
+		$postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
 		$post = $postRepository->findByUid(1);
 		$post->addTag($newTag);
 
@@ -265,7 +265,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$count = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'tx_blogexample_domain_model_tag');
 		$this->assertSame(10, $count);
 
-		$postRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\PostRepository');
+		$postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
 		$post = $postRepository->findByUid(1);
 		$tags = $post->getTags();
 		$tagsArray = $tags->toArray();
@@ -297,7 +297,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$countTags = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'tx_blogexample_post_tag_mm', 'uid_local=1');
 		$this->assertSame(10, $countTags);
 
-		$postRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\PostRepository');
+		$postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
 		$post = $postRepository->findByUid(1);
 		$tags = clone $post->getTags();
 		$post->setTags(new ObjectStorage());
@@ -306,7 +306,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		foreach ($tags as $tag) {
 			$post->addTag($tag);
 			if ($counter == 5) {
-				$newTag = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Model\\Tag', 'INSERTED TAG at position 6 : ' . strftime(''));
+				$newTag = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Model\Tag::class, 'INSERTED TAG at position 6 : ' . strftime(''));
 				$post->addTag($newTag);
 			}
 			$counter++;
@@ -335,7 +335,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$countTags = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'tx_blogexample_post_tag_mm', 'uid_local=1');
 		$this->assertSame(10, $countTags);
 
-		$postRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\PostRepository');
+		$postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
 		$post = $postRepository->findByUid(1);
 		$tags = clone $post->getTags();
 		$counter = 1;
@@ -369,7 +369,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$countTags = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'tx_blogexample_post_tag_mm', 'uid_local=1');
 		$this->assertSame(10, $countTags);
 
-		$postRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\PostRepository');
+		$postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
 		$post = $postRepository->findByUid(1);
 		$tags = clone $post->getTags();
 		$tagsArray = $tags->toArray();
@@ -413,7 +413,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	public function timestampFieldIsUpdatedOnPostSave() {
 		$rawPost = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'tx_blogexample_domain_model_post', 'uid=1');
 
-		$postRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\PostRepository');
+		$postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
 		$post = $postRepository->findByUid(1);
 		$post->setTitle("newTitle");
 
@@ -431,7 +431,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	 */
 	public function mmRelationWithoutMatchFieldIsResolved() {
 		/** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
-		$postRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\PostRepository');
+		$postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
 		$posts = $postRepository->findByTagAndBlog('Tag2', $this->blog);
 		$this->assertSame(1, count($posts));
 	}
@@ -444,7 +444,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$this->assertSame(3, $countCategories);
 
 		/** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
-		$postRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\PostRepository');
+		$postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
 		$post = $postRepository->findByUid(1);
 		$this->assertSame(3, count($post->getCategories()));
 	}
@@ -456,7 +456,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	 */
 	public function mmRelationWithMatchFieldIsResolvedFromForeignSide() {
 		/** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
-		$postRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\PostRepository');
+		$postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
 		$posts = $postRepository->findByCategory(1);
 		$this->assertSame(2, count($posts));
 
@@ -471,10 +471,10 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$countCategories = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'sys_category_record_mm', 'uid_foreign=1 AND tablenames="tx_blogexample_domain_model_post" AND fieldname="categories"');
 		$this->assertSame(3, $countCategories);
 
-		$postRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\PostRepository');
+		$postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
 		$post = $postRepository->findByUid(1);
 
-		$newCategory = $this->objectManager->get('\\TYPO3\\CMS\\Extbase\\Domain\\Model\\Category');
+		$newCategory = $this->objectManager->get(\TYPO3\CMS\Extbase\Domain\Model\Category::class);
 		$newCategory->setTitle('New Category');
 
 		$post->addCategory($newCategory);
@@ -497,7 +497,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	 */
 	public function adjustingMmRelationWithTablesnameAndFieldnameFieldDoNotTouchOtherRelations() {
 		/** @var \ExtbaseTeam\BlogExample\Domain\Repository\PostRepository $postRepository */
-		$postRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\PostRepository');
+		$postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
 		/** @var \ExtbaseTeam\BlogExample\Domain\Model\Post $post */
 		$post = $postRepository->findByUid(1);
 		// Move category down
@@ -526,7 +526,7 @@ class RelationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	 */
 	protected function updateAndPersistBlog() {
 		/** @var \ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository $blogRepository */
-		$blogRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\BlogRepository');
+		$blogRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository::class);
 		$blogRepository->update($this->blog);
 		$this->persistentManager->persistAll();
 	}

@@ -35,7 +35,7 @@ class ExtensionModelUtility {
 	 */
 	public function mapExtensionArrayToModel(array $extensionArray) {
 		/** @var \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension */
-		$extension = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Extension');
+		$extension = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class);
 		$extension->setExtensionKey($extensionArray['key']);
 		if (isset($extensionArray['version'])) {
 			$extension->setVersion($extensionArray['version']);
@@ -73,7 +73,7 @@ class ExtensionModelUtility {
 						$highest = '';
 					}
 					/** @var $dependencyObject \TYPO3\CMS\Extensionmanager\Domain\Model\Dependency */
-					$dependencyObject = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency');
+					$dependencyObject = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency::class);
 					$dependencyObject->setType($dependencyType);
 					$dependencyObject->setIdentifier($dependency);
 					$dependencyObject->setLowestVersion($lowest);

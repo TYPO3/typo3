@@ -101,14 +101,14 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 	 * @return \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
 	 */
 	protected function getPersistenceManager() {
-		return $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface');
+		return $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
 	}
 
 	/**
 	 * @return \OliverHader\IrreTutorial\Service\QueueService
 	 */
 	protected function getQueueService() {
-		return $this->objectManager->get('OliverHader\\IrreTutorial\\Service\\QueueService');
+		return $this->objectManager->get(\OliverHader\IrreTutorial\Service\QueueService::class);
 	}
 
 }

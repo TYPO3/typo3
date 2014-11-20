@@ -32,17 +32,17 @@ class EnvironmentAndFolders extends AbstractStepAction {
 	 */
 	public function execute() {
 		/** @var $folderStructureFactory \TYPO3\CMS\Install\FolderStructure\DefaultFactory */
-		$folderStructureFactory = $this->objectManager->get('TYPO3\\CMS\\Install\\FolderStructure\\DefaultFactory');
+		$folderStructureFactory = $this->objectManager->get(\TYPO3\CMS\Install\FolderStructure\DefaultFactory::class);
 		/** @var $structureFacade \TYPO3\CMS\Install\FolderStructure\StructureFacade */
 		$structureFacade = $folderStructureFactory->getStructure();
 		$structureFixMessages = $structureFacade->fix();
 		/** @var \TYPO3\CMS\Install\Status\StatusUtility $statusUtility */
-		$statusUtility = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\StatusUtility');
+		$statusUtility = $this->objectManager->get(\TYPO3\CMS\Install\Status\StatusUtility::class);
 		$errorsFromStructure = $statusUtility->filterBySeverity($structureFixMessages, 'error');
 
 		if (@is_dir(PATH_typo3conf)) {
 			/** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
-			$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+			$configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
 			$configurationManager->createLocalConfigurationFromFactoryConfiguration();
 
 			// Create a PackageStates.php with all packages activated marked as "part of factory default"
@@ -63,7 +63,7 @@ class EnvironmentAndFolders extends AbstractStepAction {
 
 			// Create enable install tool file after typo3conf & LocalConfiguration were created
 			/** @var \TYPO3\CMS\Install\Service\EnableFileService $installToolService */
-			$installToolService = $this->objectManager->get('TYPO3\\CMS\\Install\\Service\\EnableFileService');
+			$installToolService = $this->objectManager->get(\TYPO3\CMS\Install\Service\EnableFileService::class);
 			$installToolService->removeFirstInstallFile();
 			$installToolService->createInstallToolEnableFile();
 		}
@@ -91,17 +91,17 @@ class EnvironmentAndFolders extends AbstractStepAction {
 	 */
 	protected function executeAction() {
 		/** @var \TYPO3\CMS\Install\SystemEnvironment\Check $statusCheck */
-		$statusCheck = $this->objectManager->get('TYPO3\\CMS\\Install\\SystemEnvironment\\Check');
+		$statusCheck = $this->objectManager->get(\TYPO3\CMS\Install\SystemEnvironment\Check::class);
 		$statusObjects = $statusCheck->getStatus();
 		/** @var \TYPO3\CMS\Install\Status\StatusUtility $statusUtility */
-		$statusUtility = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\StatusUtility');
+		$statusUtility = $this->objectManager->get(\TYPO3\CMS\Install\Status\StatusUtility::class);
 		$environmentStatus = $statusUtility->sortBySeverity($statusObjects);
 		$alerts = $statusUtility->filterBySeverity($statusObjects, 'alert');
 		$this->view->assign('alerts', $alerts);
 		$this->view->assign('environmentStatus', $environmentStatus);
 
 		/** @var $folderStructureFactory \TYPO3\CMS\Install\FolderStructure\DefaultFactory */
-		$folderStructureFactory = $this->objectManager->get('TYPO3\\CMS\\Install\\FolderStructure\\DefaultFactory');
+		$folderStructureFactory = $this->objectManager->get(\TYPO3\CMS\Install\FolderStructure\DefaultFactory::class);
 		/** @var $structureFacade \TYPO3\CMS\Install\FolderStructure\StructureFacade */
 		$structureFacade = $folderStructureFactory->getStructure();
 		$structureMessages = $structureFacade->getStatus();

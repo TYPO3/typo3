@@ -44,8 +44,8 @@ class QueryFactory implements QueryFactoryInterface, \TYPO3\CMS\Core\SingletonIn
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception
 	 */
 	public function create($className) {
-		$query = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\QueryInterface', $className);
-		$querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface');
+		$query = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\QueryInterface::class, $className);
+		$querySettings = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class);
 
 		$dataMap = $this->dataMapper->getDataMap($className);
 		if ($dataMap->getIsStatic() || $dataMap->getRootLevel()) {

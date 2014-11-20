@@ -214,7 +214,7 @@ class PackageManager implements \TYPO3\Flow\Package\PackageManagerInterface {
 			return strlen($packageTwo->getPackagePath()) - strlen($packageOne->getPackagePath());
 		});
 
-		$className = $this->bootstrap->getObjectManager()->get('TYPO3\Flow\Reflection\ReflectionService')->getClassNameByObject($object);
+		$className = $this->bootstrap->getObjectManager()->get(\TYPO3\Flow\Reflection\ReflectionService::class)->getClassNameByObject($object);
 		$reflectedClass = new \ReflectionClass($className);
 		$fileName = Files::getUnixStylePath($reflectedClass->getFileName());
 
@@ -559,7 +559,7 @@ class PackageManager implements \TYPO3\Flow\Package\PackageManagerInterface {
 			return;
 		}
 
-		$this->bootstrap->getObjectManager()->get('TYPO3\Flow\Reflection\ReflectionService')->freezePackageReflection($packageKey);
+		$this->bootstrap->getObjectManager()->get(\TYPO3\Flow\Reflection\ReflectionService::class)->freezePackageReflection($packageKey);
 
 		$this->packageStatesConfiguration['packages'][$packageKey]['frozen'] = TRUE;
 		$this->sortAndSavePackageStates();
@@ -590,7 +590,7 @@ class PackageManager implements \TYPO3\Flow\Package\PackageManagerInterface {
 			return;
 		}
 
-		$this->bootstrap->getObjectManager()->get('TYPO3\Flow\Reflection\ReflectionService')->unfreezePackageReflection($packageKey);
+		$this->bootstrap->getObjectManager()->get(\TYPO3\Flow\Reflection\ReflectionService::class)->unfreezePackageReflection($packageKey);
 
 		unset($this->packageStatesConfiguration['packages'][$packageKey]['frozen']);
 		$this->sortAndSavePackageStates();
@@ -607,7 +607,7 @@ class PackageManager implements \TYPO3\Flow\Package\PackageManagerInterface {
 			return;
 		}
 
-		$this->bootstrap->getObjectManager()->get('TYPO3\Flow\Reflection\ReflectionService')->unfreezePackageReflection($packageKey);
+		$this->bootstrap->getObjectManager()->get(\TYPO3\Flow\Reflection\ReflectionService::class)->unfreezePackageReflection($packageKey);
 	}
 
 	/**

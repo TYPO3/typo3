@@ -289,12 +289,12 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 		$propertyMetaData = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
 		if ($enableLazyLoading === TRUE && $propertyMetaData['lazy']) {
 			if ($propertyMetaData['type'] === 'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage') {
-				$result = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\LazyObjectStorage', $parentObject, $propertyName, $fieldValue);
+				$result = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage::class, $parentObject, $propertyName, $fieldValue);
 			} else {
 				if (empty($fieldValue)) {
 					$result = NULL;
 				} else {
-					$result = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\LazyLoadingProxy', $parentObject, $propertyName, $fieldValue);
+					$result = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy::class, $parentObject, $propertyName, $fieldValue);
 				}
 			}
 		} else {

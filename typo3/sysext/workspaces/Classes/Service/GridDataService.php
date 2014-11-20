@@ -614,14 +614,14 @@ class GridDataService {
 	 * @return \TYPO3\CMS\Workspaces\Service\AdditionalColumnService
 	 */
 	protected function getAdditionalColumnService() {
-		return $this->getObjectManager()->get('TYPO3\\CMS\\Workspaces\\Service\\AdditionalColumnService');
+		return $this->getObjectManager()->get(\TYPO3\CMS\Workspaces\Service\AdditionalColumnService::class);
 	}
 
 	/**
 	 * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
 	 */
 	protected function getSignalSlotDispatcher() {
-		return $this->getObjectManager()->get('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+		return $this->getObjectManager()->get(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
 	}
 
 	/**

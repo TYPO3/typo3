@@ -293,7 +293,7 @@ class LocalizationUtility {
 			return static::$configurationManager;
 		}
 		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-		$configurationManager = $objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
+		$configurationManager = $objectManager->get(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
 		static::$configurationManager = $configurationManager;
 		return $configurationManager;
 	}

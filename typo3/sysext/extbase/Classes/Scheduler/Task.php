@@ -54,8 +54,8 @@ class Task extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	public function __construct() {
 		parent::__construct();
 		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-		$this->commandManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\CommandManager');
-		$this->taskExecutor = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Scheduler\\TaskExecutor');
+		$this->commandManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Cli\CommandManager::class);
+		$this->taskExecutor = $this->objectManager->get(\TYPO3\CMS\Extbase\Scheduler\TaskExecutor::class);
 	}
 
 	/**
@@ -78,8 +78,8 @@ class Task extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 */
 	public function __wakeup() {
 		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-		$this->commandManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\CommandManager');
-		$this->taskExecutor = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Scheduler\\TaskExecutor');
+		$this->commandManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Cli\CommandManager::class);
+		$this->taskExecutor = $this->objectManager->get(\TYPO3\CMS\Extbase\Scheduler\TaskExecutor::class);
 	}
 
 	/**

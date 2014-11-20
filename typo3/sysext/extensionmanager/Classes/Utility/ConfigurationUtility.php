@@ -57,7 +57,7 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function writeConfiguration(array $configuration = array(), $extensionKey) {
 		/** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
-		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+		$configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
 		$configurationManager->setLocalConfigurationValueByPath('EXT/extConf/' . $extensionKey, serialize($configuration));
 	}
 
@@ -114,7 +114,7 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		if (strlen($rawConfigurationString) > 0) {
 			$extensionPathInformation = $this->getExtensionPathInformation($extensionKey);
 
-			$tsStyleConfig = $this->objectManager->get('TYPO3\\CMS\\Core\\TypoScript\\ConfigurationForm');
+			$tsStyleConfig = $this->objectManager->get(\TYPO3\CMS\Core\TypoScript\ConfigurationForm::class);
 			$tsStyleConfig->doNotSortCategoriesBeforeMakingForm = TRUE;
 
 			$theConstants = $tsStyleConfig->ext_initTSstyleConfig(

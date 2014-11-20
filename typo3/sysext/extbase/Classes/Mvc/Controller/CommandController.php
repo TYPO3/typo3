@@ -76,7 +76,7 @@ class CommandController implements CommandControllerInterface {
 	 */
 	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
-		$this->arguments = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Arguments');
+		$this->arguments = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Controller\Arguments::class);
 		$this->userAuthentication = isset($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER'] : NULL;
 	}
 

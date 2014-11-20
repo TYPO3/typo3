@@ -45,7 +45,7 @@ class ConfigurationItemRepository {
 	 */
 	protected function getConfigurationArrayFromExtensionKey($extensionKey) {
 		/** @var $configurationUtility \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility */
-		$configurationUtility = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\ConfigurationUtility');
+		$configurationUtility = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class);
 		$defaultConfiguration = $configurationUtility->getDefaultConfigurationFromExtConfTemplateAsValuedArray($extensionKey);
 
 		$resultArray = array();
@@ -165,7 +165,7 @@ class ConfigurationItemRepository {
 	protected function mergeWithExistingConfiguration(array $defaultConfiguration, $extensionKey) {
 		try {
 			$currentExtensionConfig = unserialize(
-				$this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')
+				$this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class)
 					->getConfigurationValueByPath('EXT/extConf/' . $extensionKey)
 			);
 		} catch (\RuntimeException $e) {
@@ -191,7 +191,7 @@ class ConfigurationItemRepository {
 		$configurationObjectStorage = new \SplObjectStorage();
 		foreach ($configuration as $category => $subcategory) {
 			/** @var $configurationCategoryObject \TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationCategory */
-			$configurationCategoryObject = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\ConfigurationCategory');
+			$configurationCategoryObject = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationCategory::class);
 			$configurationCategoryObject->setName($category);
 			if ($subcategory['highlightText']) {
 				$configurationCategoryObject->setHighlightText($subcategory['highlightText']);
@@ -199,7 +199,7 @@ class ConfigurationItemRepository {
 			}
 			foreach ($subcategory as $subcatName => $configurationItems) {
 				/** @var $configurationSubcategoryObject \TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationSubcategory */
-				$configurationSubcategoryObject = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\ConfigurationSubcategory');
+				$configurationSubcategoryObject = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationSubcategory::class);
 				$configurationSubcategoryObject->setName($subcatName);
 				foreach ($configurationItems as $configurationItem) {
 					// Set sub category label if configuration item contains a subcat label.
@@ -211,7 +211,7 @@ class ConfigurationItemRepository {
 					}
 
 					/** @var $configurationObject \TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem */
-					$configurationObject = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\ConfigurationItem');
+					$configurationObject = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem::class);
 					if (isset($configurationItem['generic'])) {
 						$configurationObject->setGeneric($configurationItem['generic']);
 					}

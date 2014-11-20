@@ -59,9 +59,9 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	 */
 	public function __construct() {
 		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-		$this->repositoryRepository = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\RepositoryRepository');
-		$this->listUtility = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\ListUtility');
-		$this->languageService = $this->objectManager->get('TYPO3\\CMS\\Lang\\LanguageService');
+		$this->repositoryRepository = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository::class);
+		$this->listUtility = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\ListUtility::class);
+		$this->languageService = $this->objectManager->get(\TYPO3\CMS\Lang\LanguageService::class);
 		$this->languageService->includeLLFile('EXT:extensionmanager/Resources/Private/Language/locallang.xlf');
 	}
 
@@ -108,7 +108,7 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 
 		/** @var $status \TYPO3\CMS\Reports\Status */
 		$status = $this->objectManager->get(
-			'TYPO3\\CMS\\Reports\\Status',
+			\TYPO3\CMS\Reports\Status::class,
 			$this->languageService->getLL('report.status.mainRepository.title'),
 			$value,
 			$message,
@@ -197,7 +197,7 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 			$severity = \TYPO3\CMS\Reports\Status::ERROR;
 		}
 		$result->loaded = $this->objectManager->get(
-			'TYPO3\\CMS\\Reports\\Status',
+			\TYPO3\CMS\Reports\Status::class,
 			$this->languageService->getLL('report.status.loadedExtensions.title'),
 			$value,
 			$message,
@@ -228,7 +228,7 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 			$severity = \TYPO3\CMS\Reports\Status::WARNING;
 		}
 		$result->existing = $this->objectManager->get(
-			'TYPO3\\CMS\\Reports\\Status',
+			\TYPO3\CMS\Reports\Status::class,
 			$this->languageService->getLL('report.status.existingExtensions.title'),
 			$value,
 			$message,
@@ -259,7 +259,7 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 			$severity = \TYPO3\CMS\Reports\Status::WARNING;
 		}
 		$result->loadedoutdated = $this->objectManager->get(
-			'TYPO3\\CMS\\Reports\\Status',
+			\TYPO3\CMS\Reports\Status::class,
 			$this->languageService->getLL('report.status.loadedOutdatedExtensions.title'),
 			$value,
 			$message,
@@ -290,7 +290,7 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 			$severity = \TYPO3\CMS\Reports\Status::WARNING;
 		}
 		$result->existingoutdated = $this->objectManager->get(
-			'TYPO3\\CMS\\Reports\\Status',
+			\TYPO3\CMS\Reports\Status::class,
 			$this->languageService->getLL('report.status.existingOutdatedExtensions.title'),
 			$value,
 			$message,

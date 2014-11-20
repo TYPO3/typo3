@@ -63,7 +63,7 @@ class Configuration extends Action\AbstractAction {
 		if (count($configurationValues) > 0) {
 			$this->configurationManager->setLocalConfigurationValuesByPathValuePairs($configurationValues);
 			/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-			$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\OkStatus');
+			$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\OkStatus::class);
 			$message->setTitle('Configuration written');
 			$messageBody = array();
 			foreach ($configurationValues as $configurationKey => $configurationValue) {
@@ -72,7 +72,7 @@ class Configuration extends Action\AbstractAction {
 			$message->setMessage(implode(LF, $messageBody));
 		} else {
 			/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-			$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\InfoStatus');
+			$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\InfoStatus::class);
 			$message->setTitle('No configuration change selected');
 		}
 		return $message;

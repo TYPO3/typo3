@@ -28,7 +28,7 @@ class FolderStructure extends Action\AbstractAction {
 	 */
 	protected function executeAction() {
 		/** @var $folderStructureFactory \TYPO3\CMS\Install\FolderStructure\DefaultFactory */
-		$folderStructureFactory = $this->objectManager->get('TYPO3\\CMS\\Install\\FolderStructure\\DefaultFactory');
+		$folderStructureFactory = $this->objectManager->get(\TYPO3\CMS\Install\FolderStructure\DefaultFactory::class);
 		/** @var $structureFacade \TYPO3\CMS\Install\FolderStructure\StructureFacade */
 		$structureFacade = $folderStructureFactory->getStructure();
 
@@ -39,7 +39,7 @@ class FolderStructure extends Action\AbstractAction {
 
 		$statusObjects = $structureFacade->getStatus();
 		/** @var $statusUtility \TYPO3\CMS\Install\Status\StatusUtility */
-		$statusUtility = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\StatusUtility');
+		$statusUtility = $this->objectManager->get(\TYPO3\CMS\Install\Status\StatusUtility::class);
 
 		$errorStatus = array_merge(
 			$statusUtility->filterBySeverity($statusObjects, 'error'),
@@ -52,7 +52,7 @@ class FolderStructure extends Action\AbstractAction {
 		);
 
 		/** @var \TYPO3\CMS\Install\FolderStructure\DefaultPermissionsCheck $permissionCheck */
-		$permissionCheck = $this->objectManager->get('TYPO3\\CMS\\Install\\FolderStructure\\DefaultPermissionsCheck');
+		$permissionCheck = $this->objectManager->get(\TYPO3\CMS\Install\FolderStructure\DefaultPermissionsCheck::class);
 		$filePermissionStatus = $permissionCheck->getMaskStatus('fileCreateMask');
 		$directoryPermissionStatus = $permissionCheck->getMaskStatus('folderCreateMask');
 

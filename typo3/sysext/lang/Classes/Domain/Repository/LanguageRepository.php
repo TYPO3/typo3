@@ -97,7 +97,7 @@ class LanguageRepository {
 				}
 
 				$this->languages[$locale] = $this->objectManager->get(
-					'TYPO3\CMS\Lang\Domain\Model\Language',
+					\TYPO3\CMS\Lang\Domain\Model\Language::class,
 					$locale,
 					$label,
 					in_array($locale, $this->selectedLanguages)

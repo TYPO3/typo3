@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\Controller;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
 
 /**
  * Install step controller, dispatcher class of step actions.
@@ -173,7 +174,7 @@ class StepController extends AbstractController {
 	 */
 	protected function migrateLocalconfToLocalConfigurationIfNeeded() {
 		/** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
-		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+		$configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
 
 		$localConfigurationFileLocation = $configurationManager->getLocalConfigurationFileLocation();
 		$localConfigurationFileExists = is_file($localConfigurationFileLocation);
@@ -275,7 +276,7 @@ class StepController extends AbstractController {
 	 */
 	protected function migrateExtensionListToPackageStatesFile() {
 		/** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
-		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+		$configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
 		$localConfigurationFileLocation = $configurationManager->getLocalConfigurationFileLocation();
 		$localConfigurationFileExists = is_file($localConfigurationFileLocation);
 		$packageStatesFilePath = PATH_typo3conf . 'PackageStates.php';
@@ -365,13 +366,13 @@ class StepController extends AbstractController {
 			&& $postValues['action'] === 'environmentAndFolders'
 		) {
 			/** @var \TYPO3\CMS\Install\Controller\Action\Step\StepInterface $action */
-			$action = $this->objectManager->get('TYPO3\\CMS\\Install\\Controller\\Action\\Step\\EnvironmentAndFolders');
+			$action = $this->objectManager->get(\TYPO3\CMS\Install\Controller\Action\Step\EnvironmentAndFolders::class);
 			$errorMessagesFromExecute = $action->execute();
 			$wasExecuted = TRUE;
 		}
 
 		/** @var \TYPO3\CMS\Install\Controller\Action\Step\StepInterface $action */
-		$action = $this->objectManager->get('TYPO3\\CMS\\Install\\Controller\\Action\\Step\\EnvironmentAndFolders');
+		$action = $this->objectManager->get(\TYPO3\CMS\Install\Controller\Action\Step\EnvironmentAndFolders::class);
 
 		$needsExecution = TRUE;
 		try {
@@ -388,7 +389,7 @@ class StepController extends AbstractController {
 			|| $testReflection->getDocComment() === FALSE
 		) {
 			/** @var \TYPO3\CMS\Install\Controller\Action\Step\StepInterface $action */
-			$action = $this->objectManager->get('TYPO3\\CMS\\Install\\Controller\\Action\\Step\\EnvironmentAndFolders');
+			$action = $this->objectManager->get(\TYPO3\CMS\Install\Controller\Action\Step\EnvironmentAndFolders::class);
 			if ($this->isInitialInstallationInProgress()) {
 				$currentStep = (array_search('environmentAndFolders', $this->authenticationActions) + 1);
 				$totalSteps = count($this->authenticationActions);
@@ -413,10 +414,8 @@ class StepController extends AbstractController {
 	 * @return void
 	 */
 	protected function executeSilentConfigurationUpgradesIfNeeded() {
-		/** @var \TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService $upgradeService */
-		$upgradeService = $this->objectManager->get(
-			'TYPO3\\CMS\\Install\\Service\\SilentConfigurationUpgradeService'
-		);
+		/** @var SilentConfigurationUpgradeService $upgradeService */
+		$upgradeService = $this->objectManager->get(SilentConfigurationUpgradeService::class);
 		try {
 			$upgradeService->execute();
 		} catch (Exception\RedirectException $e) {

@@ -144,7 +144,7 @@ abstract class AbstractController implements ControllerInterface {
 	 */
 	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
-		$this->arguments = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Arguments');
+		$this->arguments = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Controller\Arguments::class);
 	}
 
 	/**
@@ -209,7 +209,7 @@ abstract class AbstractController implements ControllerInterface {
 		$this->request = $request;
 		$this->request->setDispatched(TRUE);
 		$this->response = $response;
-		$this->uriBuilder = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
+		$this->uriBuilder = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class);
 		$this->uriBuilder->setRequest($request);
 		$this->initializeControllerArgumentsBaseValidators();
 		$this->mapRequestArgumentsToControllerArguments();
@@ -224,7 +224,7 @@ abstract class AbstractController implements ControllerInterface {
 	 */
 	protected function buildControllerContext() {
 		/** @var $controllerContext \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext */
-		$controllerContext = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerContext');
+		$controllerContext = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class);
 		$controllerContext->setRequest($this->request);
 		$controllerContext->setResponse($this->response);
 		if ($this->arguments !== NULL) {
@@ -320,7 +320,7 @@ abstract class AbstractController implements ControllerInterface {
 			throw new UnsupportedRequestTypeException('redirect() only supports web requests.', 1220539735);
 		}
 
-		$this->objectManager->get('TYPO3\CMS\Extbase\Service\CacheService')->clearCachesOfRegisteredPageIds();
+		$this->objectManager->get(\TYPO3\CMS\Extbase\Service\CacheService::class)->clearCachesOfRegisteredPageIds();
 
 		$uri = $this->addBaseUriIfNecessary($uri);
 		$escapedUri = htmlentities($uri, ENT_QUOTES, 'utf-8');

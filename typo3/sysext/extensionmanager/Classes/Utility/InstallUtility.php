@@ -291,7 +291,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function saveDefaultConfiguration($extensionKey) {
 		/** @var $configUtility \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility */
-		$configUtility = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\ConfigurationUtility');
+		$configUtility = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class);
 		$configUtility->saveDefaultConfiguration($extensionKey);
 	}
 
@@ -451,14 +451,14 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		if ($importFileToUse !== NULL) {
 			/** @var ImportExportUtility $importExportUtility */
-			$importExportUtility = $this->objectManager->get('TYPO3\\CMS\\Impexp\\Utility\\ImportExportUtility');
+			$importExportUtility = $this->objectManager->get(\TYPO3\CMS\Impexp\Utility\ImportExportUtility::class);
 			try {
 				$importResult = $importExportUtility->importT3DFile(PATH_site . $importFileToUse, 0);
 				$this->registry->set('extensionDataImport', $extensionSiteRelPath . 'Initialisation/dataImported', 1);
 				$this->emitAfterExtensionT3DImportSignal($importFileToUse, $importResult);
 			} catch (\ErrorException $e) {
 				/** @var \TYPO3\CMS\Core\Log\Logger $logger */
-				$logger = $this->objectManager->get('TYPO3\\CMS\\Core\\Log\\LogManager')->getLogger(__CLASS__);
+				$logger = $this->objectManager->get(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
 				$logger->log(\TYPO3\CMS\Core\Log\LogLevel::WARNING, $e->getMessage());
 			}
 		}

@@ -38,7 +38,7 @@ class DatabaseSelect extends AbstractStepAction {
 		$postValues = $this->postValues['values'];
 		$localConfigurationPathValuePairs = array();
 		/** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
-		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+		$configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
 		if ($postValues['type'] === 'new') {
 			$newDatabaseName = $postValues['new'];
 			if (strlen($newDatabaseName) <= 50) {
@@ -47,7 +47,7 @@ class DatabaseSelect extends AbstractStepAction {
 					$localConfigurationPathValuePairs['DB/database'] = $newDatabaseName;
 				} else {
 					/** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
-					$errorStatus = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+					$errorStatus = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 					$errorStatus->setTitle('Unable to create database');
 					$errorStatus->setMessage(
 						'Database with name ' . $newDatabaseName . ' could not be created.' .
@@ -59,7 +59,7 @@ class DatabaseSelect extends AbstractStepAction {
 				}
 			} else {
 				/** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
-				$errorStatus = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+				$errorStatus = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 				$errorStatus->setTitle('Database name not valid');
 				$errorStatus->setMessage('Given database name must be shorter than fifty characters.');
 				$result[] = $errorStatus;
@@ -75,7 +75,7 @@ class DatabaseSelect extends AbstractStepAction {
 			}
 		} else {
 			/** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
-			$errorStatus = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+			$errorStatus = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 			$errorStatus->setTitle('No Database selected');
 			$errorStatus->setMessage('You must select a database.');
 			$result[] = $errorStatus;
@@ -117,7 +117,7 @@ class DatabaseSelect extends AbstractStepAction {
 	 */
 	protected function executeAction() {
 		/** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
-		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+		$configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
 		$isInitialInstallationInProgress = $configurationManager->getConfigurationValueByPath('SYS/isInitialInstallationInProgress');
 		$this->view->assign('databaseList', $this->getDatabaseList($isInitialInstallationInProgress));
 		$this->view->assign('isInitialInstallationInProgress', $isInitialInstallationInProgress);
@@ -163,7 +163,7 @@ class DatabaseSelect extends AbstractStepAction {
 	 * @return void
 	 */
 	protected function initializeDatabaseConnection() {
-		$this->databaseConnection = $this->objectManager->get('TYPO3\\CMS\\Core\\Database\\DatabaseConnection');
+		$this->databaseConnection = $this->objectManager->get(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
 		$this->databaseConnection->setDatabaseUsername($GLOBALS['TYPO3_CONF_VARS']['DB']['username']);
 		$this->databaseConnection->setDatabasePassword($GLOBALS['TYPO3_CONF_VARS']['DB']['password']);
 		$this->databaseConnection->setDatabaseHost($GLOBALS['TYPO3_CONF_VARS']['DB']['host']);

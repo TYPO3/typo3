@@ -30,7 +30,7 @@ class AdditionalColumnService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \TYPO3\CMS\Workspaces\Service\AdditionalColumnService
 	 */
 	static public function getInstance() {
-		return self::getObjectManager()->get('TYPO3\\CMS\\Workspaces\\Service\\AdditionalColumnService');
+		return self::getObjectManager()->get(\TYPO3\CMS\Workspaces\Service\AdditionalColumnService::class);
 	}
 
 	/**

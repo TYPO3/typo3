@@ -56,8 +56,8 @@ class InTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/post-tag-mm.xml');
 
 		$this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-		$this->blogRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\BlogRepository');
-		$this->postRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\PostRepository');
+		$this->blogRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository::class);
+		$this->postRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\PostRepository::class);
 
 	}
 
@@ -108,7 +108,7 @@ class InTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$blog1 = $this->blogRepository->findByUid(1);
 		$blog2 = $this->blogRepository->findByUid(2);
 
-		$objectStorage = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
+		$objectStorage = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class);
 		$objectStorage->attach($blog1);
 		$objectStorage->attach($blog2);
 
@@ -128,7 +128,7 @@ class InTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$blog1 = $this->blogRepository->findByUid(1);
 		$blog2 = $this->blogRepository->findByUid(2);
 
-		$objectStorage = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
+		$objectStorage = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class);
 		$objectStorage->attach($blog1);
 		$objectStorage->attach($blog2);
 
@@ -140,7 +140,7 @@ class InTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 
 		$this->assertSame(11, $inQuery->count());
 
-		$newObjectStorage = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
+		$newObjectStorage = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class);
 		$newObjectStorage->attach($blog1);
 
 		$newInQuery = $this->postRepository->createQuery();

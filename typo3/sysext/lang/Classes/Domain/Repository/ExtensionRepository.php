@@ -66,7 +66,7 @@ class ExtensionRepository {
 			foreach ($availableAndInstalledExtensions as $entry) {
 				/** @var $extension \TYPO3\CMS\Lang\Domain\Model\Extension */
 				$extension = $this->objectManager->get(
-					'TYPO3\CMS\Lang\Domain\Model\Extension',
+					\TYPO3\CMS\Lang\Domain\Model\Extension::class,
 					$entry['key'],
 					$entry['title'],
 					$this->getExtensionIconWithPath($entry)

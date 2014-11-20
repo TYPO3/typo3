@@ -144,7 +144,7 @@ class AllConfiguration extends Action\AbstractAction {
 							if ((string)$GLOBALS['TYPO3_CONF_VARS'][$section][$valueKey] !== (string)$value) {
 								$configurationPathValuePairs[$section . '/' . $valueKey] = $value;
 								/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-								$status = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\OkStatus');
+								$status = $this->objectManager->get(\TYPO3\CMS\Install\Status\OkStatus::class);
 								$status->setTitle('$TYPO3_CONF_VARS[\'' . $section . '\'][\'' . $valueKey . '\']');
 								$status->setMessage('New value = ' . $value);
 								$statusObjects[] = $status;
@@ -155,7 +155,7 @@ class AllConfiguration extends Action\AbstractAction {
 			}
 			if (count($statusObjects)) {
 				/** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
-				$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+				$configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
 				$configurationManager->setLocalConfigurationValuesByPathValuePairs($configurationPathValuePairs);
 			}
 		}
@@ -169,7 +169,7 @@ class AllConfiguration extends Action\AbstractAction {
 	 */
 	protected function getDefaultConfigArrayComments() {
 		/** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
-		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+		$configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
 		$string = GeneralUtility::getUrl($configurationManager->getDefaultConfigurationFileLocation());
 
 		$commentArray = array();

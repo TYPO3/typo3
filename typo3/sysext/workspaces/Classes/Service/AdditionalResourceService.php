@@ -35,7 +35,7 @@ class AdditionalResourceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \TYPO3\CMS\Workspaces\Service\AdditionalResourceService
 	 */
 	static public function getInstance() {
-		return self::getObjectManager()->get('TYPO3\\CMS\\Workspaces\\Service\\AdditionalResourceService');
+		return self::getObjectManager()->get(\TYPO3\CMS\Workspaces\Service\AdditionalResourceService::class);
 	}
 
 	/**

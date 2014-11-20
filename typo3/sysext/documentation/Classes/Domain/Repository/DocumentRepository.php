@@ -136,7 +136,7 @@ class DocumentRepository {
 			$icon = \TYPO3\CMS\Documentation\Utility\MiscUtility::getIcon($documentKey);
 
 			/** @var \TYPO3\CMS\Documentation\Domain\Model\Document $document */
-			$document = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\Document')
+			$document = $this->objectManager->get(\TYPO3\CMS\Documentation\Domain\Model\Document::class)
 				->setPackageKey($documentKey)
 				->setIcon($icon);
 
@@ -149,7 +149,7 @@ class DocumentRepository {
 				}
 
 				/** @var \TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation $documentTranslation */
-				$documentTranslation = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\DocumentTranslation')
+				$documentTranslation = $this->objectManager->get(\TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation::class)
 					->setLanguage($language)
 					->setTitle($metadata['title'])
 					->setDescription($metadata['description']);
@@ -179,7 +179,7 @@ class DocumentRepository {
 					}
 					if (!empty($documentFile)) {
 						/** @var \TYPO3\CMS\Documentation\Domain\Model\DocumentFormat $documentFormat */
-						$documentFormat = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\DocumentFormat')
+						$documentFormat = $this->objectManager->get(\TYPO3\CMS\Documentation\Domain\Model\DocumentFormat::class)
 							->setFormat($format)
 							->setPath($formatPath . $format . '/' . $documentFile);
 
@@ -213,20 +213,20 @@ class DocumentRepository {
 				$icon = \TYPO3\CMS\Documentation\Utility\MiscUtility::getIcon($documentKey);
 
 				/** @var \TYPO3\CMS\Documentation\Domain\Model\Document $document */
-				$document = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\Document')
+				$document = $this->objectManager->get(\TYPO3\CMS\Documentation\Domain\Model\Document::class)
 					->setPackageKey($documentKey)
 					->setExtensionKey($extensionKey)
 					->setIcon($icon);
 
 				$metadata = $this->getMetadata($documentKey, $language);
 				/** @var \TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation $documentTranslation */
-				$documentTranslation = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\DocumentTranslation')
+				$documentTranslation = $this->objectManager->get(\TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation::class)
 					->setLanguage($language)
 					->setTitle($metadata['title'])
 					->setDescription($metadata['description']);
 
 				/** @var \TYPO3\CMS\Documentation\Domain\Model\DocumentFormat $documentFormat */
-				$documentFormat = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\DocumentFormat')
+				$documentFormat = $this->objectManager->get(\TYPO3\CMS\Documentation\Domain\Model\DocumentFormat::class)
 					->setFormat('sxw')
 					->setPath($path . 'manual.sxw');
 

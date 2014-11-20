@@ -47,7 +47,7 @@ class ExtensionCommandController extends CommandController {
 		$this->emitPackagesMayHaveChangedSignal();
 
 		/** @var $service \TYPO3\CMS\Extensionmanager\Utility\InstallUtility */
-		$service = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility');
+		$service = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class);
 		$service->install($extensionKey);
 	}
 
@@ -62,7 +62,7 @@ class ExtensionCommandController extends CommandController {
 	 */
 	public function uninstallCommand($extensionKey) {
 		/** @var $service \TYPO3\CMS\Extensionmanager\Utility\InstallUtility */
-		$service = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility');
+		$service = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class);
 		$service->uninstall($extensionKey);
 	}
 

@@ -41,8 +41,8 @@ abstract class AbstractDatabaseSchemaUpdate extends AbstractUpdate {
 	 */
 	public function __construct() {
 		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-		$this->schemaMigrationService = $objectManager->get('TYPO3\\CMS\\Install\\Service\\SqlSchemaMigrationService');
-		$this->expectedSchemaService = $objectManager->get('TYPO3\\CMS\\Install\\Service\\SqlExpectedSchemaService');
+		$this->schemaMigrationService = $objectManager->get(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class);
+		$this->expectedSchemaService = $objectManager->get(\TYPO3\CMS\Install\Service\SqlExpectedSchemaService::class);
 	}
 
 	/**

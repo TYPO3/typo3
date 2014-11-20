@@ -209,11 +209,11 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator
 	 */
 	protected function buildSubObjectValidator(array $objectPath, \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $propertyValidator) {
-		$rootObjectValidator = $this->objectManager->get('TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator', array());
+		$rootObjectValidator = $this->objectManager->get(\TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator::class, array());
 		$parentObjectValidator = $rootObjectValidator;
 
 		while (count($objectPath) > 1) {
-			$subObjectValidator = $this->objectManager->get('TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator', array());
+			$subObjectValidator = $this->objectManager->get(\TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator::class, array());
 			$subPropertyName = array_shift($objectPath);
 			$parentObjectValidator->addPropertyValidator($subPropertyName, $subObjectValidator);
 			$parentObjectValidator = $subObjectValidator;
@@ -253,7 +253,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 		if (class_exists($targetClassName)) {
 				// Model based validator
 			/** @var \TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator $objectValidator */
-			$objectValidator = $this->objectManager->get('TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator', array());
+			$objectValidator = $this->objectManager->get(\TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator::class, array());
 			foreach ($this->reflectionService->getClassPropertyNames($targetClassName) as $classPropertyName) {
 				$classPropertyTagsValues = $this->reflectionService->getPropertyTagsValues($targetClassName, $classPropertyName);
 

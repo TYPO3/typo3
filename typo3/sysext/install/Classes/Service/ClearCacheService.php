@@ -101,7 +101,7 @@ class ClearCacheService {
 		static $database;
 		if (!is_object($database)) {
 			/** @var \TYPO3\CMS\Core\Database\DatabaseConnection $database */
-			$database = $this->objectManager->get('TYPO3\\CMS\\Core\\Database\\DatabaseConnection');
+			$database = $this->objectManager->get(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
 			$database->setDatabaseUsername($GLOBALS['TYPO3_CONF_VARS']['DB']['username']);
 			$database->setDatabasePassword($GLOBALS['TYPO3_CONF_VARS']['DB']['password']);
 			$database->setDatabaseHost($GLOBALS['TYPO3_CONF_VARS']['DB']['host']);

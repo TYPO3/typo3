@@ -36,7 +36,7 @@ class DatabaseConnect extends AbstractStepAction {
 		$result = array();
 
 		/** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
-		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+		$configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
 
 		$postValues = $this->postValues['values'];
 		if (isset($postValues['loadDbal'])) {
@@ -91,7 +91,7 @@ class DatabaseConnect extends AbstractStepAction {
 					$localConfigurationPathValuePairs['DB/username'] = $value;
 				} else {
 					/** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
-					$errorStatus = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+					$errorStatus = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 					$errorStatus->setTitle('Database username not valid');
 					$errorStatus->setMessage('Given username must be shorter than fifty characters.');
 					$result[] = $errorStatus;
@@ -104,7 +104,7 @@ class DatabaseConnect extends AbstractStepAction {
 					$localConfigurationPathValuePairs['DB/password'] = $value;
 				} else {
 					/** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
-					$errorStatus = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+					$errorStatus = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 					$errorStatus->setTitle('Database password not valid');
 					$errorStatus->setMessage('Given password must be shorter than fifty characters.');
 					$result[] = $errorStatus;
@@ -117,7 +117,7 @@ class DatabaseConnect extends AbstractStepAction {
 					$localConfigurationPathValuePairs['DB/host'] = $value;
 				} else {
 					/** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
-					$errorStatus = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+					$errorStatus = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 					$errorStatus->setTitle('Database host not valid');
 					$errorStatus->setMessage('Given host is not alphanumeric (a-z, A-Z, 0-9 or _-.:) or longer than fifty characters.');
 					$result[] = $errorStatus;
@@ -130,7 +130,7 @@ class DatabaseConnect extends AbstractStepAction {
 					$localConfigurationPathValuePairs['DB/port'] = (int)$value;
 				} else {
 					/** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
-					$errorStatus = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+					$errorStatus = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 					$errorStatus->setTitle('Database port not valid');
 					$errorStatus->setMessage('Given port is not numeric or within range 1 to 65535.');
 					$result[] = $errorStatus;
@@ -142,7 +142,7 @@ class DatabaseConnect extends AbstractStepAction {
 					$localConfigurationPathValuePairs['DB/socket'] = $postValues['socket'];
 				} else {
 					/** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
-					$errorStatus = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+					$errorStatus = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 					$errorStatus->setTitle('Socket does not exist');
 					$errorStatus->setMessage('Given socket location does not exist on server.');
 					$result[] = $errorStatus;
@@ -155,7 +155,7 @@ class DatabaseConnect extends AbstractStepAction {
 					$localConfigurationPathValuePairs['DB/database'] = $value;
 				} else {
 					/** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
-					$errorStatus = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+					$errorStatus = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 					$errorStatus->setTitle('Database name not valid');
 					$errorStatus->setMessage('Given database name must be shorter than fifty characters.');
 					$result[] = $errorStatus;
@@ -177,7 +177,7 @@ class DatabaseConnect extends AbstractStepAction {
 				}
 				if (!$this->isConnectSuccessful()) {
 					/** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
-					$errorStatus = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+					$errorStatus = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 					$errorStatus->setTitle('Database connect not successful');
 					$errorStatus->setMessage('Connecting to the database with given settings failed. Please check.');
 					$result[] = $errorStatus;
@@ -281,7 +281,7 @@ class DatabaseConnect extends AbstractStepAction {
 	 */
 	protected function isConnectSuccessful() {
 		/** @var $databaseConnection \TYPO3\CMS\Core\Database\DatabaseConnection */
-		$databaseConnection = $this->objectManager->get('TYPO3\\CMS\\Core\\Database\\DatabaseConnection');
+		$databaseConnection = $this->objectManager->get(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
 		$databaseConnection->initialize();
 
 		if ($this->isDbalEnabled()) {
@@ -394,7 +394,7 @@ class DatabaseConnect extends AbstractStepAction {
 		}
 
 		/** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
-		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+		$configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
 		$configurationManager->setLocalConfigurationValuesByPathValuePairs($localConfigurationPathValuePairs);
 	}
 
@@ -561,7 +561,7 @@ class DatabaseConnect extends AbstractStepAction {
 			ExtensionManagementUtility::loadExtension('dbal');
 		}
 		/** @var $errorStatus \TYPO3\CMS\Install\Status\WarningStatus */
-		$warningStatus = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\WarningStatus');
+		$warningStatus = $this->objectManager->get(\TYPO3\CMS\Install\Status\WarningStatus::class);
 		$warningStatus->setTitle('Loaded database abstraction layer');
 		return $warningStatus;
 	}
@@ -580,7 +580,7 @@ class DatabaseConnect extends AbstractStepAction {
 		}
 		// @TODO: Remove configuration from TYPO3_CONF_VARS['EXTCONF']['dbal']
 		/** @var $errorStatus \TYPO3\CMS\Install\Status\WarningStatus */
-		$warningStatus = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\WarningStatus');
+		$warningStatus = $this->objectManager->get(\TYPO3\CMS\Install\Status\WarningStatus::class);
 		$warningStatus->setTitle('Removed database abstraction layer');
 		return $warningStatus;
 	}

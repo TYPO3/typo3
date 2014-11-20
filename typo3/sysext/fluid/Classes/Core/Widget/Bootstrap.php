@@ -52,12 +52,12 @@ class Bootstrap {
 		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 		$this->initializeConfiguration($configuration);
 		$this->configureObjectManager();
-		$ajaxWidgetContextHolder = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Widget\\AjaxWidgetContextHolder');
+		$ajaxWidgetContextHolder = $this->objectManager->get(\TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder::class);
 		$widgetIdentifier = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('fluid-widget-id');
 		$widgetContext = $ajaxWidgetContextHolder->get($widgetIdentifier);
 		$configuration['extensionName'] = $widgetContext->getParentExtensionName();
 		$configuration['pluginName'] = $widgetContext->getParentPluginName();
-		$extbaseBootstrap = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Core\\Bootstrap');
+		$extbaseBootstrap = $this->objectManager->get(\TYPO3\CMS\Extbase\Core\Bootstrap::class);
 		$extbaseBootstrap->cObj = $this->cObj;
 		return $extbaseBootstrap->run($content, $configuration);
 	}
@@ -70,7 +70,7 @@ class Bootstrap {
 	 * @see initialize()
 	 */
 	public function initializeConfiguration($configuration) {
-		$this->configurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
+		$this->configurationManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
 		/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObject */
 		$contentObject = isset($this->cObj) ? $this->cObj : \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 		$this->configurationManager->setContentObject($contentObject);

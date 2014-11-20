@@ -621,7 +621,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 			$uid = $this->getLivePageUid($uid);
 		}
 		/** @var $uriBuilder \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder */
-		$uriBuilder = $this->getObjectManager()->get('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
+		$uriBuilder = $this->getObjectManager()->get(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class);
 		// This seems to be very harsh to set this directly to "/typo3 but the viewOnClick also
 		// has /index.php as fixed value here and dealing with the backPath is very error-prone
 		// @todo make sure this would work in local extension installation too

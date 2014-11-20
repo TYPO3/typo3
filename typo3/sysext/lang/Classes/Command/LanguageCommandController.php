@@ -36,9 +36,9 @@ class LanguageCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Comman
 	 */
 	public function updateCommand($localesToUpdate = '') {
 		/** @var $updateTranslationService \TYPO3\CMS\Lang\Service\UpdateTranslationService */
-		$updateTranslationService = $this->objectManager->get('TYPO3\\CMS\\Lang\Service\\UpdateTranslationService');
+		$updateTranslationService = $this->objectManager->get(\TYPO3\CMS\Lang\Service\UpdateTranslationService::class);
 		/** @var $languageRepository \TYPO3\CMS\Lang\Domain\Repository\LanguageRepository */
-		$languageRepository = $this->objectManager->get('TYPO3\\CMS\\Lang\\Domain\\Repository\\LanguageRepository');
+		$languageRepository = $this->objectManager->get(\TYPO3\CMS\Lang\Domain\Repository\LanguageRepository::class);
 
 		$locales = array();
 		if (!empty($localesToUpdate)) {
@@ -51,7 +51,7 @@ class LanguageCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Comman
 			}
 		}
 		/** @var PackageManager $packageManager */
-		$packageManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Package\\PackageManager');
+		$packageManager = $this->objectManager->get(\TYPO3\CMS\Core\Package\PackageManager::class);
 		$this->emitPackagesMayHaveChangedSignal();
 		/** @var PackageInterface $package */
 		foreach ($packageManager->getAvailablePackages() as $package) {

@@ -56,7 +56,7 @@ class WidgetRequestHandler extends \TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestHan
 		if (isset($this->cObj->data) && is_array($this->cObj->data)) {
 			$request->setContentObjectData($this->cObj->data);
 		}
-		$response = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Response');
+		$response = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Web\Response::class);
 		$this->dispatcher->dispatch($request, $response);
 		return $response;
 	}

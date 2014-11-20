@@ -28,7 +28,7 @@ class DefaultConfiguration extends AbstractStepAction {
 	 */
 	public function execute() {
 		/** @var \TYPO3\CMS\Install\Configuration\FeatureManager $featureManager */
-		$featureManager = $this->objectManager->get('TYPO3\\CMS\\Install\\Configuration\\FeatureManager');
+		$featureManager = $this->objectManager->get(\TYPO3\CMS\Install\Configuration\FeatureManager::class);
 		// Get best matching configuration presets
 		$configurationValues = $featureManager->getBestMatchingConfigurationForAllFeatures();
 
@@ -48,11 +48,11 @@ class DefaultConfiguration extends AbstractStepAction {
 		$configurationValues['SYS/isInitialInstallationInProgress'] = FALSE;
 
 		/** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
-		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+		$configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
 		$configurationManager->setLocalConfigurationValuesByPathValuePairs($configurationValues);
 
 		/** @var \TYPO3\CMS\Install\Service\SessionService $session */
-		$session = $this->objectManager->get('TYPO3\\CMS\\Install\\Service\\SessionService');
+		$session = $this->objectManager->get(\TYPO3\CMS\Install\Service\SessionService::class);
 		$session->destroySession();
 
 		/** @var $formProtection \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection */

@@ -60,9 +60,9 @@ class Escape implements \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface {
 				}
 			}
 		} elseif ($this->interceptorEnabled && $node instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode) {
-			$escapeViewHelper = $this->objectManager->get('TYPO3\\CMS\\Fluid\\ViewHelpers\\Format\\HtmlspecialcharsViewHelper');
+			$escapeViewHelper = $this->objectManager->get(\TYPO3\CMS\Fluid\ViewHelpers\Format\HtmlspecialcharsViewHelper::class);
 			$node = $this->objectManager->get(
-				'TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ViewHelperNode',
+				\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::class,
 				$escapeViewHelper,
 				array('value' => $node)
 			);

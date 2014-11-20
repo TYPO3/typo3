@@ -58,7 +58,7 @@ class TaskExecutor implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Initialize Dispatcher
 	 */
 	public function initializeObject() {
-		$this->dispatcher = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Dispatcher');
+		$this->dispatcher = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Dispatcher::class);
 	}
 
 	/**
@@ -69,8 +69,8 @@ class TaskExecutor implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function initialize(array $configuration) {
 		// initialize unconsumed Request and Response
-		$this->request = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Request');
-		$this->response = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Response');
+		$this->request = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Cli\Request::class);
+		$this->response = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Cli\Response::class);
 		// initialize configuration
 		$this->configurationManager->setContentObject(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class));
 		$this->configurationManager->setConfiguration($configuration);
@@ -86,7 +86,7 @@ class TaskExecutor implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 		}
 		// initialize reflection
-		$reflectionService = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService');
+		$reflectionService = $this->objectManager->get(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
 		$reflectionService->setDataCache(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('extbase_reflection'));
 		if (!$reflectionService->isInitialized()) {
 			$reflectionService->initialize();
@@ -123,9 +123,9 @@ class TaskExecutor implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function shutdown() {
 		// shutdown
-		$persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
+		$persistenceManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class);
 		$persistenceManager->persistAll();
-		$reflectionService = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService');
+		$reflectionService = $this->objectManager->get(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
 		$reflectionService->shutdown();
 	}
 }

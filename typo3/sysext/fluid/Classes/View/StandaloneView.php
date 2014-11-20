@@ -71,27 +71,27 @@ class StandaloneView extends AbstractTemplateView {
 	public function __construct(ContentObjectRenderer $contentObject = NULL) {
 		$this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 		/** @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager */
-		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
+		$configurationManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
 		if ($contentObject === NULL) {
 			/** @var ContentObjectRenderer $contentObject */
 			$contentObject = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 		}
 		$configurationManager->setContentObject($contentObject);
-		$this->templateParser = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Parser\\TemplateParser');
-		$this->setRenderingContext($this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Rendering\\RenderingContext'));
+		$this->templateParser = $this->objectManager->get(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class);
+		$this->setRenderingContext($this->objectManager->get(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext::class));
 		/** @var \TYPO3\CMS\Extbase\Mvc\Web\Request $request */
-		$request = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request');
+		$request = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Web\Request::class);
 		$request->setRequestURI(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
 		$request->setBaseURI(GeneralUtility::getIndpEnv('TYPO3_SITE_URL'));
 		/** @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder $uriBuilder */
-		$uriBuilder = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
+		$uriBuilder = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class);
 		$uriBuilder->setRequest($request);
 		/** @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext */
-		$controllerContext = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerContext');
+		$controllerContext = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class);
 		$controllerContext->setRequest($request);
 		$controllerContext->setUriBuilder($uriBuilder);
 		$this->setControllerContext($controllerContext);
-		$this->templateCompiler = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Compiler\\TemplateCompiler');
+		$this->templateCompiler = $this->objectManager->get(\TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler::class);
 		// singleton
 		$this->templateCompiler->setTemplateCache(GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('fluid_template'));
 	}

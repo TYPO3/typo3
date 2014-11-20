@@ -508,7 +508,7 @@ class FunctionalTestCaseBootstrapUtility {
 		/** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
 		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 		/** @var \TYPO3\CMS\Install\Service\SqlExpectedSchemaService $expectedSchemaService */
-		$expectedSchemaService = $objectManager->get('TYPO3\\CMS\\Install\\Service\\SqlExpectedSchemaService');
+		$expectedSchemaService = $objectManager->get(\TYPO3\CMS\Install\Service\SqlExpectedSchemaService::class);
 
 		// Raw concatenated ext_tables.sql and friends string
 		$expectedSchemaString = $expectedSchemaService->getTablesDefinitionString(TRUE);

@@ -52,7 +52,7 @@ class CommandManager implements \TYPO3\CMS\Core\SingletonInterface {
 				}
 				foreach (get_class_methods($className) as $methodName) {
 					if (substr($methodName, -7, 7) === 'Command') {
-						$this->availableCommands[] = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Command', $className, substr($methodName, 0, -7));
+						$this->availableCommands[] = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Cli\Command::class, $className, substr($methodName, 0, -7));
 					}
 				}
 			}

@@ -35,7 +35,7 @@ class ToggleExtensionInstallationStateViewHelper extends \TYPO3\CMS\Fluid\ViewHe
 	public function render($extension) {
 		// Early return if package is protected and can not be unloaded
 		/** @var $packageManager \TYPO3\CMS\Core\Package\PackageManager */
-		$packageManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Package\\PackageManager');
+		$packageManager = $this->objectManager->get(\TYPO3\CMS\Core\Package\PackageManager::class);
 		$package = $packageManager->getPackage($extension['key']);
 		if ($package->isProtected()) {
 			return '';

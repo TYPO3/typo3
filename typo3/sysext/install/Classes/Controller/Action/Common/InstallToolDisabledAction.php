@@ -28,10 +28,10 @@ class InstallToolDisabledAction extends Action\AbstractAction {
 	 */
 	protected function executeAction() {
 		/** @var \TYPO3\CMS\Install\SystemEnvironment\Check $statusCheck */
-		$statusCheck = $this->objectManager->get('TYPO3\\CMS\\Install\\SystemEnvironment\\Check');
+		$statusCheck = $this->objectManager->get(\TYPO3\CMS\Install\SystemEnvironment\Check::class);
 		$statusObjects = $statusCheck->getStatus();
 		/** @var \TYPO3\CMS\Install\Status\StatusUtility $statusUtility */
-		$statusUtility = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\StatusUtility');
+		$statusUtility = $this->objectManager->get(\TYPO3\CMS\Install\Status\StatusUtility::class);
 		$alerts = $statusUtility->filterBySeverity($statusObjects, 'alert');
 		$this->view->assign('alerts', $alerts);
 		return $this->view->render(!empty($alerts));

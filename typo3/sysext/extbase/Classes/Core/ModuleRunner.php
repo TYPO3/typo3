@@ -63,7 +63,7 @@ class ModuleRunner implements ModuleRunnerInterface {
 			$configuration['vendorName'] = $moduleConfiguration['vendorName'];
 		}
 
-		$bootstrap = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Core\\BootstrapInterface');
+		$bootstrap = $this->objectManager->get(\TYPO3\CMS\Extbase\Core\BootstrapInterface::class);
 		$content = $bootstrap->run('', $configuration);
 		print $content;
 

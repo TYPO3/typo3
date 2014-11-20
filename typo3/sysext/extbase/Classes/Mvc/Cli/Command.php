@@ -177,7 +177,7 @@ class Command {
 			$explodedAnnotation = preg_split('/\s+/', $annotations['param'][$i], 3);
 			$description = !empty($explodedAnnotation[2]) ? $explodedAnnotation[2] : '';
 			$required = $commandParameterDefinition['optional'] !== TRUE;
-			$commandArgumentDefinitions[] = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\CommandArgumentDefinition', $commandParameterName, $required, $description);
+			$commandArgumentDefinitions[] = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Cli\CommandArgumentDefinition::class, $commandParameterName, $required, $description);
 			$i++;
 		}
 		return $commandArgumentDefinitions;
@@ -230,7 +230,7 @@ class Command {
 	 */
 	protected function getCommandMethodReflection() {
 		if ($this->commandMethodReflection === NULL) {
-			$this->commandMethodReflection = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\MethodReflection', $this->controllerClassName, $this->controllerCommandName . 'Command');
+			$this->commandMethodReflection = $this->objectManager->get(\TYPO3\CMS\Extbase\Reflection\MethodReflection::class, $this->controllerClassName, $this->controllerCommandName . 'Command');
 		}
 		return $this->commandMethodReflection;
 	}

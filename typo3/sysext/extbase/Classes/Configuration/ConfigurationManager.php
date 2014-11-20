@@ -52,9 +52,9 @@ class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\Configura
 	 */
 	protected function initializeConcreteConfigurationManager() {
 		if ($this->environmentService->isEnvironmentInFrontendMode()) {
-			$this->concreteConfigurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\FrontendConfigurationManager');
+			$this->concreteConfigurationManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager::class);
 		} else {
-			$this->concreteConfigurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\BackendConfigurationManager');
+			$this->concreteConfigurationManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class);
 		}
 	}
 

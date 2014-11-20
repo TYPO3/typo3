@@ -428,8 +428,8 @@ class TemplateParser {
 		$regularExpression_openingViewHelperTag = $this->prepareTemplateRegularExpression(self::$SCAN_PATTERN_TEMPLATE_VIEWHELPERTAG);
 		$regularExpression_closingViewHelperTag = $this->prepareTemplateRegularExpression(self::$SCAN_PATTERN_TEMPLATE_CLOSINGVIEWHELPERTAG);
 
-		$state = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Parser\\ParsingState');
-		$rootNode = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\RootNode');
+		$state = $this->objectManager->get(\TYPO3\CMS\Fluid\Core\Parser\ParsingState::class);
+		$rootNode = $this->objectManager->get(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode::class);
 		$state->setRootNode($rootNode);
 		$state->pushNodeToStack($rootNode);
 
@@ -496,7 +496,7 @@ class TemplateParser {
 		$this->abortIfRequiredArgumentsAreMissing($expectedViewHelperArguments, $argumentsObjectTree);
 		$this->rewriteBooleanNodesInArgumentsObjectTree($expectedViewHelperArguments, $argumentsObjectTree);
 
-		$currentViewHelperNode = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ViewHelperNode', $viewHelper, $argumentsObjectTree);
+		$currentViewHelperNode = $this->objectManager->get(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::class, $viewHelper, $argumentsObjectTree);
 
 		$state->getNodeFromStack()->addChildNode($currentViewHelperNode);
 
@@ -663,7 +663,7 @@ class TemplateParser {
 		// Object Accessor
 		if (strlen($objectAccessorString) > 0) {
 
-			$node = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ObjectAccessorNode', $objectAccessorString);
+			$node = $this->objectManager->get(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode::class, $objectAccessorString);
 			$this->callInterceptor($node, \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_OBJECTACCESSOR, $state);
 
 			$state->getNodeFromStack()->addChildNode($node);
@@ -710,7 +710,7 @@ class TemplateParser {
 	protected function postProcessArgumentsForObjectAccessor(array $arguments) {
 		foreach ($arguments as $argumentName => $argumentValue) {
 			if (!($argumentValue instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode)) {
-				$arguments[$argumentName] = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\TextNode', (string)$argumentValue);
+				$arguments[$argumentName] = $this->objectManager->get(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode::class, (string)$argumentValue);
 			}
 		}
 		return $arguments;
@@ -753,7 +753,7 @@ class TemplateParser {
 	 */
 	protected function buildArgumentObjectTree($argumentString) {
 		if (strpos($argumentString, '{') === FALSE && strpos($argumentString, '<') === FALSE) {
-			return $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\TextNode', $argumentString);
+			return $this->objectManager->get(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode::class, $argumentString);
 		}
 		$splitArgument = $this->splitTemplateAtDynamicTags($argumentString);
 		$rootNode = $this->buildObjectTree($splitArgument, self::CONTEXT_INSIDE_VIEWHELPER_ARGUMENTS)->getRootNode();
@@ -831,7 +831,7 @@ class TemplateParser {
 	 */
 	protected function arrayHandler(\TYPO3\CMS\Fluid\Core\Parser\ParsingState $state, $arrayText) {
 		$state->getNodeFromStack()->addChildNode(
-			$this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ArrayNode', $this->recursiveArrayHandler($arrayText))
+			$this->objectManager->get(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ArrayNode::class, $this->recursiveArrayHandler($arrayText))
 		);
 	}
 
@@ -856,14 +856,14 @@ class TemplateParser {
 			foreach ($matches as $singleMatch) {
 				$arrayKey = $singleMatch['Key'];
 				if (!empty($singleMatch['VariableIdentifier'])) {
-					$arrayToBuild[$arrayKey] = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ObjectAccessorNode', $singleMatch['VariableIdentifier']);
+					$arrayToBuild[$arrayKey] = $this->objectManager->get(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode::class, $singleMatch['VariableIdentifier']);
 				} elseif (array_key_exists('Number', $singleMatch) && (!empty($singleMatch['Number']) || $singleMatch['Number'] === '0')) {
 					$arrayToBuild[$arrayKey] = floatval($singleMatch['Number']);
 				} elseif ((array_key_exists('QuotedString', $singleMatch) && !empty($singleMatch['QuotedString']))) {
 					$argumentString = $this->unquoteString($singleMatch['QuotedString']);
 					$arrayToBuild[$arrayKey] = $this->buildArgumentObjectTree($argumentString);
 				} elseif (array_key_exists('Subarray', $singleMatch) && !empty($singleMatch['Subarray'])) {
-					$arrayToBuild[$arrayKey] = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ArrayNode', $this->recursiveArrayHandler($singleMatch['Subarray']));
+					$arrayToBuild[$arrayKey] = $this->objectManager->get(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ArrayNode::class, $this->recursiveArrayHandler($singleMatch['Subarray']));
 				} else {
 					throw new \TYPO3\CMS\Fluid\Core\Parser\Exception('This exception should never be thrown, as the array value has to be of some type (Value given: "' . var_export($singleMatch, TRUE) . '"). Please post your template to the bugtracker at forge.typo3.org.', 1225136013);
 				}
@@ -882,7 +882,7 @@ class TemplateParser {
 	 * @return void
 	 */
 	protected function textHandler(\TYPO3\CMS\Fluid\Core\Parser\ParsingState $state, $text) {
-		$node = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\TextNode', $text);
+		$node = $this->objectManager->get(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode::class, $text);
 		$this->callInterceptor($node, \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_TEXT, $state);
 
 		$state->getNodeFromStack()->addChildNode($node);

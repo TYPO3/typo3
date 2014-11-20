@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers\Form;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
+
 /**
  * View Helper for rendering Extension Manager Configuration Form
  *
@@ -268,8 +270,8 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 	 */
 	protected function renderHiddenFieldForEmptyValue($configuration) {
 		$hiddenFieldNames = array();
-		if ($this->viewHelperVariableContainer->exists('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'renderedHiddenFields')) {
-			$hiddenFieldNames = $this->viewHelperVariableContainer->get('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'renderedHiddenFields');
+		if ($this->viewHelperVariableContainer->exists(FormViewHelper::class, 'renderedHiddenFields')) {
+			$hiddenFieldNames = $this->viewHelperVariableContainer->get(FormViewHelper::class, 'renderedHiddenFields');
 		}
 		$fieldName = $this->getName($configuration);
 		if (substr($fieldName, -2) === '[]') {
@@ -277,7 +279,7 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 		}
 		if (!in_array($fieldName, $hiddenFieldNames)) {
 			$hiddenFieldNames[] = $fieldName;
-			$this->viewHelperVariableContainer->addOrUpdate('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'renderedHiddenFields', $hiddenFieldNames);
+			$this->viewHelperVariableContainer->addOrUpdate(FormViewHelper::class, 'renderedHiddenFields', $hiddenFieldNames);
 			return '<input type="hidden" name="' . htmlspecialchars($fieldName) . '" value="0" />';
 		}
 		return '';

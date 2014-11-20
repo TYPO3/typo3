@@ -120,7 +120,7 @@ class ConfigurationController extends AbstractController {
 	 */
 	protected function saveConfiguration(array $config, $extensionKey) {
 		/** @var $configurationUtility \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility */
-		$configurationUtility = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\ConfigurationUtility');
+		$configurationUtility = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class);
 		$newConfiguration = $configurationUtility->getCurrentConfiguration($extensionKey);
 		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($newConfiguration, $config);
 		$configurationUtility->writeConfiguration(

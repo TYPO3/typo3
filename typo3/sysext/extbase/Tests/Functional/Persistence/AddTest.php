@@ -50,8 +50,8 @@ class AddTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		parent::setUp();
 
 		$this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-		$this->persistentManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
-		$this->blogRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\BlogRepository');
+		$this->persistentManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class);
+		$this->blogRepository = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository::class);
 	}
 
 	/**
@@ -59,7 +59,7 @@ class AddTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	 */
 	public function addSimpleObjectTest() {
 		$newBlogTitle = 'aDi1oogh';
-		$newBlog = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Model\\Blog');
+		$newBlog = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Model\Blog::class);
 		$newBlog->setTitle($newBlogTitle);
 
 		/** @var \ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository $blogRepository */

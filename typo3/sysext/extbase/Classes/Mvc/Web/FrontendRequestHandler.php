@@ -49,7 +49,7 @@ class FrontendRequestHandler extends AbstractRequestHandler {
 			$request->setIsCached(FALSE);
 		}
 		/** @var $response \TYPO3\CMS\Extbase\Mvc\ResponseInterface */
-		$response = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Response');
+		$response = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Web\Response::class);
 		$this->dispatcher->dispatch($request, $response);
 		return $response;
 	}

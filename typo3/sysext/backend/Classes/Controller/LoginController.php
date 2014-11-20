@@ -628,7 +628,7 @@ class LoginController {
 	 */
 	protected function getSignalSlotDispatcher() {
 		if (!isset($this->signalSlotDispatcher)) {
-			$this->signalSlotDispatcher = $this->getObjectManager()->get('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+			$this->signalSlotDispatcher = $this->getObjectManager()->get(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
 		}
 		return $this->signalSlotDispatcher;
 	}

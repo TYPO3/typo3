@@ -27,16 +27,16 @@ class FolderStatus extends AbstractAjaxAction {
 	protected function executeAction() {
 		// Count of folder structure errors are displayed in left navigation menu
 		/** @var $folderStructureFacade \TYPO3\CMS\Install\FolderStructure\StructureFacade */
-		$folderStructureFacade = $this->objectManager->get('TYPO3\\CMS\\Install\\FolderStructure\\DefaultFactory')->getStructure();
+		$folderStructureFacade = $this->objectManager->get(\TYPO3\CMS\Install\FolderStructure\DefaultFactory::class)->getStructure();
 		$folderStatus = $folderStructureFacade->getStatus();
 
 		/** @var $permissionCheck \TYPO3\CMS\Install\FolderStructure\DefaultPermissionsCheck */
-		$permissionCheck = $this->objectManager->get('TYPO3\\CMS\\Install\\FolderStructure\\DefaultPermissionsCheck');
+		$permissionCheck = $this->objectManager->get(\TYPO3\CMS\Install\FolderStructure\DefaultPermissionsCheck::class);
 		$folderStatus[] = $permissionCheck->getMaskStatus('fileCreateMask');
 		$folderStatus[] = $permissionCheck->getMaskStatus('folderCreateMask');
 
 		/** @var \TYPO3\CMS\Install\Status\StatusUtility $statusUtility */
-		$statusUtility = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\StatusUtility');
+		$statusUtility = $this->objectManager->get(\TYPO3\CMS\Install\Status\StatusUtility::class);
 
 		$folderStructureErrors = array_merge(
 			$statusUtility->filterBySeverity($folderStatus, 'error'),

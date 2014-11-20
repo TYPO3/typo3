@@ -132,7 +132,7 @@ class ActionController extends AbstractController {
 		$this->request = $request;
 		$this->request->setDispatched(TRUE);
 		$this->response = $response;
-		$this->uriBuilder = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
+		$this->uriBuilder = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class);
 		$this->uriBuilder->setRequest($request);
 		$this->actionMethodName = $this->resolveActionMethodName();
 		$this->initializeActionMethodArguments();
@@ -325,7 +325,7 @@ class ActionController extends AbstractController {
 			}
 		}
 		if (!isset($view)) {
-			$view = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\View\\NotFoundView');
+			$view = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\View\NotFoundView::class);
 			$view->assign('errorMessage', 'No template was found. View could not be resolved for action "'
 				. $this->request->getControllerActionName() . '" in class "' . $this->request->getControllerObjectName() . '"');
 		}
@@ -543,7 +543,7 @@ class ActionController extends AbstractController {
 	 * @return array Array of method parameters by action name
 	 */
 	static public function getActionMethodParameters($objectManager) {
-		$reflectionService = $objectManager->get('TYPO3\CMS\Extbase\Reflection\ReflectionService');
+		$reflectionService = $objectManager->get(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
 
 		$result = array();
 

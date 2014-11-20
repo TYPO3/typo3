@@ -21,7 +21,7 @@ for Templates there is no lookup requirement.
 As a developer or integrator, you can configure your View as follows:
 
 ::
-$view = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+$view = $this->objectManager->get(\TYPO3\CMS\Fluid\View\StandaloneView::class);
 $view->setFormat('html');
 $view->setTemplatePathAndFileName(ExtensionManagementUtility::extPath('myExt') . 'Resources/Private/Templates/Email.html');
 $view->setLayoutRootPaths(array(

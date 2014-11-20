@@ -128,14 +128,14 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 * @return \TYPO3\CMS\Workspaces\Service\AdditionalColumnService
 	 */
 	protected function getAdditionalColumnService() {
-		return $this->objectManager->get('TYPO3\\CMS\\Workspaces\\Service\\AdditionalColumnService');
+		return $this->objectManager->get(\TYPO3\CMS\Workspaces\Service\AdditionalColumnService::class);
 	}
 
 	/**
 	 * @return \TYPO3\CMS\Workspaces\Service\AdditionalResourceService
 	 */
 	protected function getAdditionalResourceService() {
-		return $this->objectManager->get('TYPO3\\CMS\\Workspaces\\Service\\AdditionalResourceService');
+		return $this->objectManager->get(\TYPO3\CMS\Workspaces\Service\AdditionalResourceService::class);
 	}
 
 	/**

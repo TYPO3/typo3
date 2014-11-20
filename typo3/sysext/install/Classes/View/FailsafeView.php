@@ -61,7 +61,7 @@ class FailsafeView extends \TYPO3\CMS\Extbase\Mvc\View\AbstractView {
 			return $this->renderAlertStatus();
 		}
 		/** @var \TYPO3\CMS\Install\View\StandaloneView $realView */
-		$realView = $this->objectManager->get('TYPO3\\CMS\\Install\\View\\StandaloneView');
+		$realView = $this->objectManager->get(\TYPO3\CMS\Install\View\StandaloneView::class);
 		$realView->assignMultiple($this->variables);
 		$realView->setTemplatePathAndFilename($this->templatePathAndFileName);
 		$realView->setLayoutRootPath($this->layoutRootPath);

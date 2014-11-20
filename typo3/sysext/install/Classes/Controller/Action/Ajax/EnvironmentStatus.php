@@ -26,10 +26,10 @@ class EnvironmentStatus extends AbstractAjaxAction {
 	 */
 	protected function executeAction() {
 		/** @var \TYPO3\CMS\Install\Status\StatusUtility $statusUtility */
-		$statusUtility = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\StatusUtility');
+		$statusUtility = $this->objectManager->get(\TYPO3\CMS\Install\Status\StatusUtility::class);
 
 		// Count of failed environment checks are displayed in the left navigation menu
-		$environmentStatus = $this->objectManager->get('TYPO3\\CMS\\Install\\SystemEnvironment\\Check')->getStatus();
+		$environmentStatus = $this->objectManager->get(\TYPO3\CMS\Install\SystemEnvironment\Check::class)->getStatus();
 		$environmentErrors = $statusUtility->filterBySeverity($environmentStatus, 'error');
 		return count($environmentErrors);
 	}

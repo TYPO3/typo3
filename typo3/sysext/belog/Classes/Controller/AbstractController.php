@@ -123,7 +123,7 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 		if ($constraint === NULL) {
 			$constraint = $this->getConstraintFromBeUserData();
 			if ($constraint === NULL) {
-				$constraint = $this->objectManager->get('TYPO3\\CMS\\Belog\\Domain\\Model\\Constraint');
+				$constraint = $this->objectManager->get(\TYPO3\CMS\Belog\Domain\Model\Constraint::class);
 			}
 		} else {
 			$this->persistConstraintInBeUserData($constraint);
@@ -248,7 +248,7 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 		// Two meta entries: 'all' and 'live'
 		$workspaceArray[-99] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('any', 'Belog');
 		$workspaceArray[0] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('live', 'Belog');
-		$workspaces = $this->objectManager->get('TYPO3\\CMS\\Belog\\Domain\\Repository\\WorkspaceRepository')->findAll();
+		$workspaces = $this->objectManager->get(\TYPO3\CMS\Belog\Domain\Repository\WorkspaceRepository::class)->findAll();
 		/** @var $workspace \TYPO3\CMS\Belog\Domain\Model\Workspace */
 		foreach ($workspaces as $workspace) {
 			$workspaceArray[$workspace->getUid()] = $workspace->getUid() . ': ' . $workspace->getTitle();

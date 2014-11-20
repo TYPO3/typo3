@@ -71,7 +71,7 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\ImageViewHelper {
 				$image = static::render($fallbackImage, $width, $height, $minWidth, $minHeight, $maxWidth, $maxHeight);
 			}
 			/** @var \TYPO3\CMS\Core\Log\Logger $logger */
-			$logger = $this->objectManager->get('TYPO3\\CMS\\Core\\Log\\LogManager')->getLogger(__CLASS__);
+			$logger = $this->objectManager->get(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
 			$logger->log(\TYPO3\CMS\Core\Log\LogLevel::WARNING, $e->getMessage());
 		}
 		return $image;

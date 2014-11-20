@@ -44,11 +44,11 @@ class UpdateExtensionListTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 
 		/** @var $repositoryHelper \TYPO3\CMS\Extensionmanager\Utility\Repository\Helper */
-		$repositoryHelper = $objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\Repository\\Helper');
+		$repositoryHelper = $objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\Repository\Helper::class);
 		$repositoryHelper->updateExtList();
 
 		/** @var $persistenceManager \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager */
-		$persistenceManager = $objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
+		$persistenceManager = $objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class);
 		$persistenceManager->persistAll();
 	}
 }

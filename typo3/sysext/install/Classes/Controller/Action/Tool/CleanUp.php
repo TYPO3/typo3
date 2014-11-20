@@ -135,12 +135,12 @@ class CleanUp extends Action\AbstractAction {
 		}
 		if (count($clearedTables)) {
 			/** @var \TYPO3\CMS\Install\Status\OkStatus $message */
-			$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\OkStatus');
+			$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\OkStatus::class);
 			$message->setTitle('Cleared tables');
 			$message->setMessage('List of cleared tables: ' . implode(', ', $clearedTables));
 		} else {
 			/** @var \TYPO3\CMS\Install\Status\OkStatus $message */
-			$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\InfoStatus');
+			$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\InfoStatus::class);
 			$message->setTitle('No tables selected to clear');
 		}
 		return $message;
@@ -155,7 +155,7 @@ class CleanUp extends Action\AbstractAction {
 		$database = $this->getDatabaseConnection();
 		$database->exec_UPDATEquery('be_users', '', array('uc' => ''));
 		/** @var \TYPO3\CMS\Install\Status\OkStatus $message */
-		$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\OkStatus');
+		$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\OkStatus::class);
 		$message->setTitle('Reset all backend users preferences');
 		return $message;
 	}
@@ -236,7 +236,7 @@ class CleanUp extends Action\AbstractAction {
 		$data['numberOfDeletedFiles'] = $deleteCounter;
 
 		if ($deleteCounter > 0) {
-			$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\OkStatus');
+			$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\OkStatus::class);
 			$message->setTitle('Deleted ' . $deleteCounter . ' files from typo3temp/' . $subDirectory . '/');
 			$this->actionMessages[] = $message;
 		}

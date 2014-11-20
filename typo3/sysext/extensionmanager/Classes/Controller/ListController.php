@@ -79,7 +79,7 @@ class ListController extends AbstractController {
 				)
 			);
 			/** @var \TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility $extensionModelUtility */
-			$extensionModelUtility = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\ExtensionModelUtility');
+			$extensionModelUtility = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility::class);
 			$extension = $extensionModelUtility->mapExtensionArrayToModel($extensionArray[$extensionKey]);
 		} else {
 			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Extension ' . $extensionKey . ' is not available', 1402421007);
@@ -118,7 +118,7 @@ class ListController extends AbstractController {
 		if ($importExportInstalled) {
 			// check if a TER update has been done at all, if not, fetch it directly
 			/** @var $repositoryHelper \TYPO3\CMS\Extensionmanager\Utility\Repository\Helper */
-			$repositoryHelper = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\Repository\\Helper');
+			$repositoryHelper = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\Repository\Helper::class);
 			// repository needs an update, but not because of the extension hash has changed
 			if ($repositoryHelper->isExtListUpdateNecessary() > 0 && ($repositoryHelper->isExtListUpdateNecessary() & $repositoryHelper::PROBLEM_EXTENSION_HASH_CHANGED) === 0) {
 				$repositoryHelper->fetchExtListFile();
