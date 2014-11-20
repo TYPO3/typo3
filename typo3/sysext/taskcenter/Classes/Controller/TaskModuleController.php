@@ -40,10 +40,10 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		parent::init();
 		// Initialize document
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('taskcenter') . 'res/mod_template.html');
+		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('taskcenter') . 'Resources/Private/Templates/mod_template.html');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->getPageRenderer()->loadJquery();
-		$this->doc->addStyleSheet('tx_taskcenter', '../' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('taskcenter') . 'res/mod_styles.css');
+		$this->doc->addStyleSheet('tx_taskcenter', '../' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('taskcenter') . 'Resources/Public/Styles/styles.css');
 	}
 
 	/**
