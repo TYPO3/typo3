@@ -223,6 +223,10 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function packageStatesConfigurationContainsRelativePaths() {
+		if (version_compare(phpversion(), '5.4.0', '<')) {
+			$this->markTestSkipped('This test is not reliable with PHP version below 5.4.0');
+		}
+
 		$packageKeys = array(
 			'RobertLemke.Flow.NothingElse' . md5(uniqid(mt_rand(), TRUE)),
 			'TYPO3.Flow' . md5(uniqid(mt_rand(), TRUE)),
