@@ -681,7 +681,7 @@ tt_content.image.20 {
 			}
 			picture {
 				element = <picture>###SOURCECOLLECTION###<img src="###SRC###"###PARAMS######ALTPARAMS######SELFCLOSINGTAGSLASH###></picture>
-				source = <source src="###SRC###" media="###MEDIAQUERY###"###SELFCLOSINGTAGSLASH###>
+				source = <source srcset="###SRC###" media="###MEDIAQUERY###"###SELFCLOSINGTAGSLASH###>
 			}
 			data {
 				element = <img src="###SRC###"###SOURCECOLLECTION######PARAMS######ALTPARAMS######SELFCLOSINGTAGSLASH###>
@@ -2251,4 +2251,3 @@ plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 	table.contenttable-color-243 { background-color: {$styles.content.table.backgroundColor.243}; }
 	table.contenttable-color-244 { background-color: {$styles.content.table.backgroundColor.244}; }
 )
-
