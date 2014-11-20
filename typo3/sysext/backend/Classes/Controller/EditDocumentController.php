@@ -1495,8 +1495,8 @@ class EditDocumentController {
 	 * @param string $retUrl Alternative/Default retUrl
 	 * @return void
 	 */
-	public function setDocument($currentDocFromHandlerMD5 = '', $retUrl = 'alt_doc_nodoc.php') {
-		if ($retUrl === 'alt_doc_nodoc.php') {
+	public function setDocument($currentDocFromHandlerMD5 = '', $retUrl = 'dummy.php') {
+		if ($retUrl === 'dummy.php') {
 			return;
 		}
 		if (!$this->modTSconfig['properties']['disableDocSelector'] && is_array($this->docHandler) && count($this->docHandler)) {

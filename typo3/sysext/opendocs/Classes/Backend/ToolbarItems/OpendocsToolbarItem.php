@@ -147,7 +147,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface {
 			$firstRow = ' first-row';
 		}
 		if (!$isRecentDoc) {
-			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE);
+			$title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE);
 			// Open document
 			$closeIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close');
 			$entry = '
@@ -215,7 +215,8 @@ class OpendocsToolbarItem implements ToolbarItemInterface {
 	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
 	 * @return string List item HTML attributes
 	 */
-	public function closeDocument($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj = NULL) {
+	public function closeDocument($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj = NULL) {
+		$backendUser = $this->getBackendUser();
 		$md5sum = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('md5sum');
 		if ($md5sum && isset($this->openDocs[$md5sum])) {
 			// Add the document to be closed to the recent documents
@@ -226,9 +227,9 @@ class OpendocsToolbarItem implements ToolbarItemInterface {
 			}
 			// Remove it from the list of the open documents, and store the status
 			unset($this->openDocs[$md5sum]);
-			list(, $docDat) = $GLOBALS['BE_USER']->getModuleData('alt_doc.php', 'ses');
-			$GLOBALS['BE_USER']->pushModuleData('alt_doc.php', array($this->openDocs, $docDat));
-			$GLOBALS['BE_USER']->pushModuleData('opendocs::recent', $this->recentDocs);
+			list(, $docDat) = $backendUser->getModuleData('alt_doc.php', 'ses');
+			$backendUser->pushModuleData('alt_doc.php', array($this->openDocs, $docDat));
+			$backendUser->pushModuleData('opendocs::recent', $this->recentDocs);
 		}
 		$this->renderAjax($params, $ajaxObj);
 	}
@@ -240,7 +241,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface {
 	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
 	 * @return void
 	 */
-	public function renderAjax($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj = NULL) {
+	public function renderAjax($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj = NULL) {
 		$ajaxObj->addContent('opendocsMenu', $this->getDropDown());
 	}
 

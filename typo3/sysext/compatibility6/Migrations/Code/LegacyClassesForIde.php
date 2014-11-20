@@ -59,8 +59,6 @@ class SC_dummy extends \TYPO3\CMS\Backend\Controller\DummyController {}
 
 class SC_alt_doc extends \TYPO3\CMS\Backend\Controller\EditDocumentController {}
 
-class SC_alt_doc_nodoc extends \TYPO3\CMS\Backend\Controller\NoDocumentsOpenController {}
-
 class SC_file_newfolder extends \TYPO3\CMS\Backend\Controller\File\CreateFolderController {}
 
 class SC_file_edit extends \TYPO3\CMS\Backend\Controller\File\EditFileController {}
@@ -2154,8 +2152,6 @@ class t3lib_arrayBrowser extends \TYPO3\CMS\Lowlevel\Utility\ArrayBrowser {}
 class SC_mod_tools_config_index extends \TYPO3\CMS\Lowlevel\View\ConfigurationView {}
 
 class SC_mod_tools_dbint_index extends \TYPO3\CMS\Lowlevel\View\DatabaseIntegrityView {}
-
-class tx_opendocs extends \TYPO3\CMS\Opendocs\Controller\OpendocsController {}
 
 class tx_openid_eID extends \TYPO3\CMS\Openid\OpenidEid {}
 
