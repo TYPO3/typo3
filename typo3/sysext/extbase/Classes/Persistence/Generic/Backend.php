@@ -639,6 +639,9 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 			$this->referenceIndex->updateRefIndexTable($dataMap->getTableName(), $uid);
 		}
 		$this->session->registerObject($object, $uid);
+		if ((int)$uid >= 1) {
+			$this->emitEndInsertObjectSignal($object);
+		}
 	}
 
 	/**
@@ -648,6 +651,16 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 */
 	protected function emitAfterInsertObjectSignal(DomainObjectInterface $object) {
 		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterInsertObject', array($object));
+	}
+
+	/**
+	 * Emits a signal after an object was registered in persistence session
+	 * This signal replaces the afterInsertObject signal which is now deprecated
+	 *
+	 * @param DomainObjectInterface $object
+	 */
+	protected function emitEndInsertObjectSignal(DomainObjectInterface $object) {
+		$this->signalSlotDispatcher->dispatch(__CLASS__, 'endInsertObject', array($object));
 	}
 
 	/**
