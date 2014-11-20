@@ -2070,7 +2070,7 @@ class BackendUtility {
 	 * @param bool $noRecordLookup If set, no records will be looked up, UIDs are just shown.
 	 * @param int $uid Uid of the current record
 	 * @param bool $forceResult If BackendUtility::getRecordTitle is used to process the value, this parameter is forwarded.
-	 * @return string
+	 * @return string|NULL
 	 */
 	static public function getProcessedValue($table, $col, $value, $fixed_lgd_chars = 0, $defaultPassthrough = FALSE, $noRecordLookup = FALSE, $uid = 0, $forceResult = TRUE) {
 		if ($col === 'uid') {
@@ -2079,7 +2079,7 @@ class BackendUtility {
 		}
 		// Check if table and field is configured
 		if (!is_array($GLOBALS['TCA'][$table]) || !is_array($GLOBALS['TCA'][$table]['columns'][$col])) {
-			return '';
+			return NULL;
 		}
 		// Depending on the fields configuration, make a meaningful output value.
 		$theColConf = $GLOBALS['TCA'][$table]['columns'][$col]['config'];
