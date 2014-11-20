@@ -1,1 +1,0 @@
-- BUG: When editing "TSconfig" field from this module, the page tree is not updated after saving/close.
