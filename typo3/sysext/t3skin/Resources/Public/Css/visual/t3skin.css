@@ -11403,18 +11403,22 @@ Topbar
 #typo3-topbar #typo3-top-container #typo3-toolbar div {
   overflow: visible !important;
 }
-#typo3-topbar #typo3-top-container #typo3-toolbar span.spinner {
-  background-image: url('../../../../images/spinner/3f3f3f.gif');
-}
 #typo3-topbar #typo3-top-container #typo3-toolbar > li {
   margin-right: 1px;
 }
 #typo3-topbar #typo3-top-container #typo3-toolbar > li .t3-icon {
   margin-right: 0;
 }
+#typo3-topbar #typo3-top-container #typo3-toolbar > li .t3-icon.fa {
+  height: 14px;
+  width: 14px;
+}
 #typo3-topbar #typo3-top-container #typo3-toolbar > li.dropdown {
   color: #999999;
   background-color: #353535;
+}
+#typo3-topbar #typo3-top-container #typo3-toolbar > li.dropdown > a {
+  text-align: center;
 }
 #typo3-topbar #typo3-top-container #typo3-toolbar > li .badge {
   position: absolute;

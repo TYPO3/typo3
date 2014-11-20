@@ -42,20 +42,25 @@ Topbar
 				overflow: visible !important;
 			}
 
-			span.spinner {
-				background-image: url('../../../../images/spinner/3f3f3f.gif');
-			}
-
 			> li {
 				margin-right: 1px;
 
 				.t3-icon {
 					margin-right: 0;
+
+					&.fa {
+						height: 14px;
+						width: 14px;
+					}
 				}
 
 				&.dropdown {
 					color: @navbar-inverse-link-color;
 					background-color: @navbar-inverse-link-bg;
+
+					> a {
+						text-align: center;
+					}
 				}
 
 				.badge {
