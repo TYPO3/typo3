@@ -474,10 +474,6 @@ class BackendController {
 		if (!$GLOBALS['BE_USER']->check('modules', $pageModule)) {
 			$pageModule = '';
 		}
-		$menuFrameName = 'menu';
-		if ($GLOBALS['BE_USER']->uc['noMenuMode'] === 'icons') {
-			$menuFrameName = 'topmenuFrame';
-		}
 		// Determine security level from conf vars and default to super challenged
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']) {
 			$this->loginSecurityLevel = $GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'];

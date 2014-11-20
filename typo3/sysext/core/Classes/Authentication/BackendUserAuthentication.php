@@ -304,7 +304,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 		// user-data for the modules
 		'thumbnailsByDefault' => 1,
 		'emailMeAtLogin' => 0,
-		'noMenuMode' => 0,
 		'startModule' => 'help_AboutmodulesAboutmodules',
 		'hideSubmoduleIcons' => 0,
 		'helpText' => 1,

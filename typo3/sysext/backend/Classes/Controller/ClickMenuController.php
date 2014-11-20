@@ -25,11 +25,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ClickMenuController {
 
 	/**
-	 * @var string
-	 */
-	public $backPath;
-
-	/**
 	 * Defines the name of the document object for which to reload the URL.
 	 *
 	 * @var int
@@ -40,6 +35,7 @@ class ClickMenuController {
 	 * Content accumulation
 	 *
 	 * @var string
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
 	 */
 	public $content = '';
 
@@ -62,92 +58,36 @@ class ClickMenuController {
 		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xlf');
 		$GLOBALS['SOBE'] = $this;
 
-		$this->init();
+		// Setting GPvars:
+		$this->reloadListFrame = GeneralUtility::_GP('reloadListFrame');
+		// Setting pseudo module name
+		$this->MCONF['name'] = 'xMOD_alt_clickmenu.php';
+
+		// Setting internal array of classes for extending the clickmenu:
+		$this->extClassArray = $GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses'];
+
+		// Initialize template object
+		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 	}
 
 	/**
 	 * Constructor function for script class.
 	 *
 	 * @return void
+	 * @deprecated since TYPO3 CMS 7, all done in the constructor now
 	 */
 	protected function init() {
-		// Setting GPvars:
-		$this->backPath = GeneralUtility::_GP('backPath');
-		$this->reloadListFrame = GeneralUtility::_GP('reloadListFrame');
-		// Setting pseudo module name
-		$this->MCONF['name'] = 'xMOD_alt_clickmenu.php';
-		// Takes the backPath as a parameter BUT since we are worried about someone forging a backPath (XSS security hole) we will check with sent md5 hash:
-		$inputBP = explode('|', $this->backPath);
-		if (count($inputBP) == 2 && $inputBP[1] == GeneralUtility::shortMD5($inputBP[0] . '|' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) {
-			$this->backPath = $inputBP[0];
-		} else {
-			$this->backPath = $GLOBALS['BACK_PATH'];
-		}
-		// Setting internal array of classes for extending the clickmenu:
-		$this->extClassArray = $GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses'];
-
-		// Initialize template object
-		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-		$this->doc->backPath = $GLOBALS['BACK_PATH'];
-
-		// Setting mode for display and background image in the top frame
-
-		// Setting clickmenu timeout
-		$secs = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($GLOBALS['BE_USER']->getTSConfigVal('options.contextMenu.options.clickMenuTimeOut'), 1, 100, 5);
-		// default is 5
-		// Setting the JavaScript controlling the timer on the page
-		$listFrameDoc = $this->reloadListFrame != 2 ? 'top.content.list_frame' : 'top.content';
-		$this->doc->JScode .= $this->doc->wrapScriptTags('
-	var date = new Date();
-	var mo_timeout = Math.floor(date.getTime()/1000);
-
-	roImg = "' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses('status-status-current') . '";
-
-	routImg = "t3-icon-empty";
-
-	function mo(c) {	//
-		var name="roimg_"+c;
-		document.getElementById(name).className = roImg;
-		updateTime();
-	}
-	function mout(c) {	//
-		var name="roimg_"+c;
-		document[name].src = routImg;
-		updateTime();
-	}
-	function updateTime() {	//
-		date = new Date();
-		mo_timeout = Math.floor(date.getTime()/1000);
-	}
-	function timeout_func() {	//
-		date = new Date();
-		if (Math.floor(date.getTime()/1000)-mo_timeout > ' . $secs . ') {
-			hideCM();
-			return false;
-		} else {
-			window.setTimeout("timeout_func();",1*1000);
-		}
-	}
-	function hideCM() {	//
-		window.location.href="alt_topmenu_dummy.php";
-		return false;
-	}
-
-		// Start timer
-	timeout_func();
-
-	' . ($this->reloadListFrame ? '
-		// Reload list frame:
-	if(' . $listFrameDoc . '){' . $listFrameDoc . '.location.href=' . $listFrameDoc . '.location.href;}' : '') . '
-		');
+		GeneralUtility::logDeprecatedFunction();
 	}
 
 	/**
 	 * Main function - generating the click menu in whatever form it has.
 	 *
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8, as ajax.php is now the main entry point
 	 * @return void
 	 */
 	public function main() {
+		GeneralUtility::logDeprecatedFunction();
 		// Initialize Clipboard object:
 		$clipObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
 		$clipObj->initializeClipboard();
@@ -172,9 +112,11 @@ class ClickMenuController {
 	/**
 	 * End page and output content.
 	 *
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8, as ajax.php is now the main entry point
 	 * @return void
 	 */
 	public function printContent() {
+		GeneralUtility::logDeprecatedFunction();
 		header('Content-Type: text/xml');
 		echo '<?xml version="1.0"?>' . LF . '<t3ajax>' . $this->content . '</t3ajax>';
 	}
@@ -187,7 +129,9 @@ class ClickMenuController {
 	 */
 	public function printContentForAjaxRequest($parameters, \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxRequestHandler) {
 
-		$this->init();
+		// XML has to be parsed, no parse errors allowed
+		@ini_set('display_errors', 0);
+
 		$clipObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
 		$clipObj->initializeClipboard();
 		// This locks the clipboard to the Normal for this request.
@@ -200,18 +144,16 @@ class ClickMenuController {
 		$clipObj->endClipboard();
 		// Create clickmenu object
 		$clickMenu = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\ClickMenu\ClickMenu::class);
-		$clickMenu->ajax = TRUE;
 		// Set internal vars in clickmenu object:
 		$clickMenu->clipObj = $clipObj;
 		$clickMenu->extClassArray = $this->extClassArray;
-		$clickMenu->backPath = $this->backPath;
 
 		// Set content of the clickmenu with the incoming var, "item"
-		$this->content = $clickMenu->init();
+		$ajaxContent = $clickMenu->init();
 
 		// send the data
-		$content = '<?xml version="1.0"?><t3ajax>' . $this->content . '</t3ajax>';
-		$ajaxRequestHandler->addContent('ClickMenu', $content);
+		$ajaxContent = '<?xml version="1.0"?><t3ajax>' . $ajaxContent . '</t3ajax>';
+		$ajaxRequestHandler->addContent('ClickMenu', $ajaxContent);
 		$ajaxRequestHandler->setContentFormat('xml');
 	}
 

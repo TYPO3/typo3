@@ -38,7 +38,6 @@ When you click the little "+" or "-" icons next to the main modules, you can col
 			<trans-unit id="_menu_modules.seeAlso" xml:space="preserve">
 				<source>be_groups:groupMods,
 be_users:userMods,
-_MOD_user_setup:option_noMenuMode,
 More about Modules | http://typo3.org/documentation/document-library/doc_tut_quickstart/Backend_and_frontend/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
