@@ -9744,7 +9744,6 @@ table#typo3-altdoc-header input,
 .t3-tceforms-input-wrapper-datetime,
 .t3-tceforms-input-wrapper-datetime-hover {
   display: block;
-  float: left;
   position: relative;
 }
 .t3-tceforms-widget-null-wrapper {
