@@ -3,6 +3,7 @@
 <f:layout name="Permission" />
 
 <f:section name="iconButtons">
+	<f:be.buttons.icon uri="{f:uri.action(action:'index')}" icon="actions-view-go-up" />
 	<a href="#" onclick="{previewUrl}" title="{f:translate(key: 'LLL:EXT:lang/locallang_core.xlf:labels.showPage')}"><bu:spriteManagerIcon iconName="actions-document-view" /></a>
 </f:section>
 
@@ -21,9 +22,17 @@
 		</div>
 
 		<h3><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Group" /></h3>
-		<div class="form-group">
-			<f:form.select name="data[pages][{id}][perms_groupid]" options="{beGroupData}" value="{currentBeGroup}" />
-		</div>
+		<f:if condition="{f:count(subject:beGroupData)} > 1">
+			<f:then>
+				<div class="form-group">
+					<f:form.select name="data[pages][{id}][perms_groupid]" options="{beGroupData}" value="{currentBeGroup}" />
+				</div>
+			</f:then>
+			<f:else>
+				<div class="alert alert-notice"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:noGroups" /></div>
+			</f:else>
+		</f:if>
+
 
 		<table class="t3-table" id="typo3-permissionMatrix">
 			<thead>
@@ -73,7 +82,7 @@
 
 		<f:form.hidden name="depth" value="{depth}" />
 		<f:form.submit name="submit" value="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Save')}" />
-		<f:link.action action="index" arguments="{id: id}"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Abort" /></f:link.action>
+		<f:link.action class="btn btn-default" action="index" arguments="{id: id}"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Abort" /></f:link.action>
 
 		<f:form.hidden name="redirect" value="{f:uri.action(action: 'index', arguments: {lastEdited: id, id: returnId})}" />
 	</f:form>

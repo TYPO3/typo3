@@ -117,6 +117,9 @@
 			<trans-unit id="deleted" xml:space="preserve">
 				<source>deleted</source>
 			</trans-unit>
+			<trans-unit id="noGroups" xml:space="preserve">
+				<source>No user groups exist.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

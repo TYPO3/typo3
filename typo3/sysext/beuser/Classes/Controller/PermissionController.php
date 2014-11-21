@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
@@ -98,6 +99,22 @@ class PermissionController extends ActionController {
 	}
 
 	/**
+	 * Initializes view
+	 *
+	 * @param ViewInterface $view The view to be initialized
+	 * @return void
+	 */
+	protected function initializeView(ViewInterface $view) {
+		$view->assign(
+				'previewUrl',
+				BackendUtility::viewonclick(
+					$this->pageInfo['uid'], $GLOBALS['BACK_PATH'],
+					BackendUtility::BEgetRootLine($this->pageInfo['uid'])
+				)
+			);
+	}
+
+	/**
 	 * Index action
 	 *
 	 * @return void
@@ -108,13 +125,7 @@ class PermissionController extends ActionController {
 			if ($this->getBackendUser()->isAdmin() && !$this->id) {
 				$this->pageInfo = array('title' => '[root-level]', 'uid' => 0, 'pid' => 0);
 			}
-			$this->view->assign(
-				'previewUrl',
-				BackendUtility::viewonclick(
-					$this->pageInfo['uid'], $GLOBALS['BACK_PATH'],
-					BackendUtility::BEgetRootLine($this->pageInfo['uid'])
-				)
-			);
+
 			$this->view->assign('versionSelector', $this->getVersionSelector($this->id, TRUE));
 			if ($this->getBackendUser()->workspace != 0) {
 				// Adding section with the permission setting matrix:
