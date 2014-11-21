@@ -105,7 +105,8 @@ class BackendController {
 		$this->moduleLoader->load($GLOBALS['TBE_MODULES']);
 		$this->pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
 		$this->pageRenderer->loadExtJS();
-		$this->pageRenderer->loadJquery(NULL, NULL, \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_NAMESPACE_DEFAULT_NOCONFLICT);
+		// included for the module menu JavaScript, please note that this is subject to change
+		$this->pageRenderer->loadJquery();
 		$this->pageRenderer->enableExtJSQuickTips();
 		$this->pageRenderer->addJsInlineCode('consoleOverrideWithDebugPanel', '//already done', FALSE);
 		$this->pageRenderer->addExtDirectCode();
