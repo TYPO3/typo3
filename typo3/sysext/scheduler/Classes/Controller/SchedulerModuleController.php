@@ -639,7 +639,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		$table[] = '<div id="task_disable_row" class="form-group">' .
 						BackendUtility::wrapInHelp($this->cshKey, 'task_disable', $label) .
 						'<input type="hidden" name="tx_scheduler[disable]" value="0" />
-						<input class="form-control" type="checkbox" name="tx_scheduler[disable]" value="1" id="task_disable"' . ($taskInfo['disable'] == 1 ? ' checked="checked"' : '') . ' />
+						<input class="checkbox" type="checkbox" name="tx_scheduler[disable]" value="1" id="task_disable"' . ($taskInfo['disable'] == 1 ? ' checked="checked"' : '') . ' />
 					</div>';
 
 		// Task class selector
@@ -743,7 +743,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		$table[] = '<div id="task_multiple_row" class="form-group">' .
 						BackendUtility::wrapInHelp($this->cshKey, 'task_multiple', $label) .
 						'<input type="hidden"   name="tx_scheduler[multiple]" value="0" />
-						<input class="form-control" type="checkbox" name="tx_scheduler[multiple]" value="1" id="task_multiple"' . ($taskInfo['multiple'] == 1 ? ' checked="checked"' : '') . ' />
+						<input class="checkbox" type="checkbox" name="tx_scheduler[multiple]" value="1" id="task_multiple"' . ($taskInfo['multiple'] == 1 ? ' checked="checked"' : '') . ' />
 					</div>';
 
 		// Description
