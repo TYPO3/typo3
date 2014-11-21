@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
+use TYPO3\CMS\Extbase\Mvc\Cli\CommandArgumentDefinition;
 
 /**
  * A controller which processes requests from the command line
@@ -165,7 +166,8 @@ class CommandController implements CommandControllerInterface {
 			if ($this->request->hasArgument($argumentName)) {
 				$argument->setValue($this->request->getArgument($argumentName));
 			} elseif ($argument->isRequired()) {
-				$exception = new \TYPO3\CMS\Extbase\Mvc\Exception\CommandException('Required argument "' . $argumentName . '" is not set.', 1306755520);
+				$commandArgumentDefinition = $this->objectManager->get(CommandArgumentDefinition::class, $argumentName, TRUE, NULL);
+				$exception = new \TYPO3\CMS\Extbase\Mvc\Exception\CommandException('Required argument "' . $commandArgumentDefinition->getDashedName() . '" is not set.', 1306755520);
 				$this->forward('error', 'TYPO3\\CMS\\Extbase\\Command\\HelpCommandController', array('exception' => $exception));
 			}
 		}
