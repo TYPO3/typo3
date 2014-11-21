@@ -68,7 +68,7 @@ class CoreUpdateIsUpdateAvailable extends AbstractCoreUpdate {
 	 */
 	protected function getMessage($severity, $title, $message = '') {
 		/** @var $statusMessage \TYPO3\CMS\Install\Status\StatusInterface */
-		$statusMessage = $this->objectManager->get(\TYPO3\CMS\Install\Status\::class . ucfirst($severity) . 'Status');
+		$statusMessage = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\' . ucfirst($severity) . 'Status');
 		$statusMessage->setTitle($title);
 		$statusMessage->setMessage($message);
 
