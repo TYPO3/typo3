@@ -164,7 +164,8 @@ class CommandController implements \TYPO3\CMS\Extbase\Mvc\Controller\CommandCont
 			if ($this->request->hasArgument($argumentName)) {
 				$argument->setValue($this->request->getArgument($argumentName));
 			} elseif ($argument->isRequired()) {
-				$exception = new \TYPO3\CMS\Extbase\Mvc\Exception\CommandException('Required argument "' . $argumentName . '" is not set.', 1306755520);
+				$commandArgumentDefinition = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\CommandArgumentDefinition', $argumentName, TRUE, NULL);
+				$exception = new \TYPO3\CMS\Extbase\Mvc\Exception\CommandException('Required argument "' . $commandArgumentDefinition->getDashedName() . '" is not set.', 1306755520);
 				$this->forward('error', 'TYPO3\\CMS\\Extbase\\Command\\HelpCommandController', array('exception' => $exception));
 			}
 		}
