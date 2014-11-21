@@ -52,7 +52,7 @@ class LanguageSelectionForm extends \TYPO3\CMS\Extbase\DomainObject\AbstractEnti
 	/**
 	 * Setter for the selected languages
 	 *
-	 * @param array $locale Selected languages
+	 * @param array $selectedLanguages Selected languages
 	 * @return void
 	 */
 	public function setSelectedLanguages(array $selectedLanguages) {

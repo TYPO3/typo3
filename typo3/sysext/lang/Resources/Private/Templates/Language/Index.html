@@ -3,9 +3,11 @@
 <f:layout name="Default"/>
 
 <f:section name="iconButtons">
-	<span class="menuItem updateItem"><lang:be.spriteIcon icon="actions-system-extension-download" title="{f:translate(key:'button.update')}" /><f:translate key="button.update"/></span>
-	&nbsp;
-	<span class="menuItem cancelItem"><lang:be.spriteIcon icon="status-status-permission-denied" title="{f:translate(key:'button.cancel')}" /><f:translate key="button.cancel"/></span>
+	<f:if condition="{hasSelectedLanguages}">
+		<span class="menuItem updateItem"><lang:be.spriteIcon icon="actions-system-extension-download" title="{f:translate(key:'button.update')}" /><f:translate key="button.update"/></span>
+		&nbsp;
+		<span class="menuItem cancelItem"><lang:be.spriteIcon icon="status-status-permission-denied" title="{f:translate(key:'button.cancel')}" /><f:translate key="button.cancel"/></span>
+	</f:if>
 </f:section>
 
 
@@ -13,7 +15,6 @@
 	<h1><f:translate key="header.module" /></h1>
 
 	<f:flashMessages renderMode="div" />
-
 	<table border="0" cellpadding="0" cellspacing="0">
 		<tr>
 			<td class="languageSelectionListContainer">
@@ -21,8 +22,10 @@
 				<f:render partial="LanguageSelectionList" arguments="{_all}" />
 			</td>
 			<td class="translationUpdateListContainer">
-				<h3><f:translate key="header.translationUpdateList" /></h3>
-				<f:render partial="TranslationUpdateList" arguments="{_all}" />
+				<f:if condition="{hasSelectedLanguages}">
+					<h3><f:translate key="header.translationUpdateList" /></h3>
+					<f:render partial="TranslationUpdateList" arguments="{_all}" />
+				</f:if>
 			</td>
 		</tr>
 	</table>
