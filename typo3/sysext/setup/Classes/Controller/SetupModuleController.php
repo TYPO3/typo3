@@ -475,7 +475,10 @@ class SetupModuleController {
 			$label = $this->getCSH($config['csh'] ?: $fieldName, $label);
 			$type = $config['type'];
 			$class = $config['class'];
-			$class .= ' form-control';
+
+			if ($type !== 'check') {
+				$class .= ' form-control';
+			}
 
 			$style = $config['style'];
 			if ($class) {
@@ -515,12 +518,13 @@ class SetupModuleController {
 					break;
 				}
 				case 'check': {
-					$html = '<input id="field_' . $fieldName . '"
+					$html = $label . '<div class="checkbox"><label><input id="field_' . $fieldName . '"
 						type="checkbox"
 						name="data' . $dataAdd . '[' . $fieldName . ']"' .
 						($value ? ' checked="checked"' : '') .
 						$more .
-						' />';
+						' /></label></div>';
+					$label = '';
 					break;
 				}
 				case 'select': {
