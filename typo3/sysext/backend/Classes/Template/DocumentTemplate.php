@@ -515,23 +515,22 @@ function jumpToUrl(URL) {
 
 	/**
 	 * Makes link to page $id in frontend (view page)
-	 * Returns an magnifier-glass icon which links to the frontend index.php document for viewing the page with id $id
+	 * Returns an icon which links to the frontend index.php document for viewing the page with id $id
 	 * $id must be a page-uid
 	 * If the BE_USER has access to Web>List then a link to that module is shown as well (with return-url)
 	 *
 	 * @param int $id The page id
 	 * @param string $backPath The current "BACK_PATH" (the back relative to the typo3/ directory)
-	 * @param string $addParams Additional parameters for the image tag(s)
 	 * @return string HTML string with linked icon(s)
 	 */
-	public function viewPageIcon($id, $backPath, $addParams = 'hspace="3"') {
+	public function viewPageIcon($id, $backPath) {
 		// If access to Web>List for user, then link to that module.
 		$str = BackendUtility::getListViewLink(array(
 			'id' => $id,
 			'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
 		), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showList'));
 		// Make link to view page
-		$str .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($id, $backPath, BackendUtility::BEgetRootLine($id))) . '">' . '<img' . IconUtility::skinImg($backPath, 'gfx/zoom.gif', 'width="12" height="12"') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '"' . ($addParams ? ' ' . trim($addParams) : '') . ' hspace="3" alt="" />' . '</a>';
+		$str .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($id, $backPath, BackendUtility::BEgetRootLine($id))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-view') . '</a>';
 		return $str;
 	}
 
@@ -569,7 +568,7 @@ function jumpToUrl(URL) {
 		if (is_array($row) && $row['uid']) {
 			$iconImgTag = IconUtility::getSpriteIconForRecord($table, $row, array('title' => htmlspecialchars($path)));
 			$title = strip_tags(BackendUtility::getRecordTitle($table, $row));
-			$viewPage = $noViewPageIcon ? '' : $this->viewPageIcon($row['uid'], $this->backPath, '');
+			$viewPage = $noViewPageIcon ? '' : $this->viewPageIcon($row['uid'], $this->backPath);
 			if ($table == 'pages') {
 				$path .= ' - ' . BackendUtility::titleAttribForPages($row, '', 0);
 			}
