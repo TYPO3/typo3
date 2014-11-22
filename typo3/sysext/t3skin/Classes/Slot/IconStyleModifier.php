@@ -135,4 +135,16 @@ class IconStyleModifier {
 		return array($tagAttributes, $innerHtml, $tagName);
 	}
 
+	/**
+	 * returns the old class name if modified, otherwise the replaced fa icon
+	 *
+	 * @param string $iconName
+	 * @param string $cssClasses
+	 * @return string
+	 */
+	public function buildSpriteIconClasses($iconName, &$cssClasses) {
+		if (isset($this->flatSpriteIconName[$cssClasses])) {
+			$cssClasses = 't3-icon fa ' . $this->flatSpriteIconName[$cssClasses];
+		}
+	}
 }

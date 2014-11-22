@@ -160,7 +160,7 @@ TYPO3.Components.PageTree.ContextMenu = Ext.extend(Ext.menu.Menu, {
 					component.itemTpl = Ext.menu.Item.prototype.itemTpl = new Ext.XTemplate(
 						'<a id="{id}" class="{cls}" hidefocus="true" unselectable="on" href="{href}">',
 							'<span class="{hrefTarget}">',
-								'<img src="{icon}" class="x-menu-item-icon {iconCls}" unselectable="on" />',
+								'<span class="x-menu-item-icon" unselectable="on"><span class="{iconCls}"></span></span>',
 							'</span>',
 							'<span class="x-menu-item-text">{text}</span>',
 						'</a>'
