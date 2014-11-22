@@ -136,15 +136,9 @@ class BackendController {
 		// Add default BE css
 		$this->pageRenderer->addCssLibrary('contrib/normalize/normalize.css', 'stylesheet', 'all', '', TRUE, TRUE);
 
-		// load the toolbar items
-		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Toolbar/UserMenu');
-
 		$this->css = '';
 		$this->initializeToolbarItems();
-		$this->menuWidth = $this->menuWidthDefault;
-		if (isset($GLOBALS['TBE_STYLES']['dims']['leftMenuFrameW']) && (int)$GLOBALS['TBE_STYLES']['dims']['leftMenuFrameW'] != (int)$this->menuWidth) {
-			$this->menuWidth = (int)$GLOBALS['TBE_STYLES']['dims']['leftMenuFrameW'];
-		}
+		$this->menuWidth = isset($GLOBALS['TBE_STYLES']['dims']['leftMenuFrameW']) ? (int)$GLOBALS['TBE_STYLES']['dims']['leftMenuFrameW'] : $this->menuWidthDefault;
 		$this->executeHook('constructPostProcess');
 	}
 
@@ -192,21 +186,11 @@ class BackendController {
 		$this->executeHook('renderPreProcess');
 
 		// Prepare the scaffolding, at this point extension may still add javascript and css
-		$logo = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\View\LogoView::class);
-
-		// Create backend scaffolding
-		$backendScaffolding = '
-			<div class="navbar navbar-inverse x-hide-display" role="navigation" id="typo3-top-container">
-				<div class="container-fluid">
-					<div class="navbar-header" id="typo3-logo">' .
-						$logo->render() .
-					'</div>
-					<div id="typo3-top">' .
-						$this->renderToolbar() .
-					'</div>
-				</div>
-			</div>' .
-			$this->generateModuleMenu();
+		$view = $this->getFluidTemplateObject('EXT:backend/Resources/Private/Templates/Backend/Main.html');
+		// @todo: kick logo view class and move all logic to Fluid
+		$view->assign('logo', GeneralUtility::makeInstance(\TYPO3\CMS\Backend\View\LogoView::class)->render());
+		$view->assign('moduleMenu', $this->generateModuleMenu());
+		$view->assign('toolbar', $this->renderToolbar());
 
 		/******************************************************
 		 * Now put the complete backend document together
@@ -252,9 +236,8 @@ class BackendController {
 		$this->pageRenderer->addExtOnReadyCode($extOnReadyCode);
 		// Set document title:
 		$title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ' [TYPO3 CMS ' . TYPO3_version . ']' : 'TYPO3 CMS ' . TYPO3_version;
-		$this->content = $backendScaffolding;
 		// Renders the module page
-		$this->content = $GLOBALS['TBE_TEMPLATE']->render($title, $this->content);
+		$this->content = $GLOBALS['TBE_TEMPLATE']->render($title, $view->render());
 		$hookConfiguration = array('content' => &$this->content);
 		$this->executeHook('renderPostProcess', $hookConfiguration);
 		echo $this->content;
@@ -315,7 +298,6 @@ class BackendController {
 	 */
 	protected function renderToolbar() {
 		$toolbar = array();
-		$toolbar[] = '<ul class="nav navbar-nav navbar-right typo3-top-toolbar" id="typo3-toolbar">';
 		foreach ($this->toolbarItems as $toolbarItem) {
 			/** @var \TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface $toolbarItem */
 			if ($toolbarItem->checkAccess()) {
@@ -362,8 +344,6 @@ class BackendController {
 				$toolbar[] = '</li>';
 			}
 		}
-		$toolbar[] = '</ul>';
-
 		return implode(LF, $toolbar);
 	}
 
@@ -758,9 +738,7 @@ class BackendController {
 		// get all modules except the user modules for the side menu
 		$moduleStorage = $this->backendModuleRepository->loadAllowedModules(array('user', 'help'));
 
-		/** @var $view \TYPO3\CMS\Fluid\View\StandaloneView */
-		$view = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
-		$view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/ModuleMenu/Main.html'));
+		$view = $this->getFluidTemplateObject('EXT:backend/Resources/Private/Templates/ModuleMenu/Main.html');
 		$view->assign('modules', $moduleStorage);
 		return $view->render();
 	}
@@ -776,5 +754,19 @@ class BackendController {
 		$content = $this->generateModuleMenu();
 		$ajaxRequestHandler->addContent('menu', $content);
 		$ajaxRequestHandler->setContentFormat('json');
+	}
+
+	/**
+	 * returns a new standalone view, shorthand function
+	 *
+	 * @param string $templatePathAndFileName optional the path to set the template path and filename
+	 * @return \TYPO3\CMS\Fluid\View\StandaloneView
+	 */
+	protected function getFluidTemplateObject($templatePathAndFileName = NULL) {
+		$view = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
+		if ($templatePathAndFileName) {
+			$view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templatePathAndFileName));
+		}
+		return $view;
 	}
 }
