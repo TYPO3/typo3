@@ -1115,7 +1115,11 @@ function jumpToUrl(URL) {
 		if ($this->styleSheetFile2) {
 			$this->pageRenderer->addCssFile($this->backPath . $this->styleSheetFile2);
 		}
-		$this->pageRenderer->addCssInlineBlock('inDocStyles', $inDocStyles . LF . '/*###POSTCSSMARKER###*/');
+
+		if ($inDocStyles !== '') {
+			$this->pageRenderer->addCssInlineBlock('inDocStyles', $inDocStyles . LF . '/*###POSTCSSMARKER###*/');
+		}
+
 		if ($this->styleSheetFile_post) {
 			$this->pageRenderer->addCssFile($this->backPath . $this->styleSheetFile_post);
 		}
