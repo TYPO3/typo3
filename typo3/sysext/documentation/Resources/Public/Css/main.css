@@ -92,7 +92,8 @@ p {
       background: none; }
 .typo3-documentation-list tr td img {
   vertical-align: middle;
-  margin-right: 5px; }
+  margin-right: 5px;
+  max-width: 16px; }
 
 .dataTables_info {
   display: none; }
