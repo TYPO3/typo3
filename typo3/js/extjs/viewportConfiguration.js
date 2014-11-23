@@ -72,13 +72,35 @@ TYPO3.Viewport.configuration = {
 			collapsible: false,
 			collapseMode: null,
 			floatable: true,
+			minWidth: 50,
+			maxWidth: 400,
 			hideCollapseTool: true,
 			split: true,
 			useSplitTips: true,
 			splitTip: top.TYPO3.LLL.viewPort.tooltipModuleMenuSplit,
 			enableChildSplit: true,
 			border: false,
-			autoScroll: true
+			autoScroll: true,
+			listeners: {
+				resize: function(cmp, adjWidth, adjHeight, rawWidth, rawHeight) {
+					var containerWidth = adjWidth,
+						moduleMenuWidth = document.getElementById('typo3-menu').clientWidth,
+						moduleMenuMinWidth = 100,
+						moduleMenuSnappedWidth = 50,
+						moduleMenuSnappingClass = 'typo3-module-menu-snapped',
+						forceSnapMode = (containerWidth <= moduleMenuMinWidth);
+					if (forceSnapMode){
+						cmp.addClass(moduleMenuSnappingClass);
+						snappedWidth =  moduleMenuSnappedWidth + containerWidth - moduleMenuWidth;
+						cmp.setWidth(snappedWidth);
+						if(snappedWidth !== containerWidth && TYPO3.Backend){
+							TYPO3.Backend.syncSize();
+						}
+					} else{
+						this.removeClass(moduleMenuSnappingClass);
+					}
+				}
+			}
 		},
 		{
 			region: 'center',

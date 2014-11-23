@@ -46,7 +46,9 @@ TYPO3.ModuleMenu.App = {
 			if ($group.length > 0) {
 				var $groupContainer = $group.find('.typo3-module-menu-group-container');
 				$group.addClass('collapsed').removeClass('expanded');
-				$groupContainer.slideUp('fast');
+				$groupContainer.hide().promise().done(function() {
+					TYPO3.Backend.doLayout();
+				});
 			}
 		});
 		me.initializeEvents();
@@ -60,11 +62,15 @@ TYPO3.ModuleMenu.App = {
 			if ($group.hasClass('expanded')) {
 				me.addCollapsedMainMenuItem($group.attr('id'));
 				$group.addClass('collapsed').removeClass('expanded');
-				$groupContainer.slideUp();
+				$groupContainer.slideUp().promise().done(function() {
+					TYPO3.Backend.doLayout();
+				});
 			} else {
 				me.removeCollapseMainMenuItem($group.attr('id'));
 				$group.addClass('expanded').removeClass('collapsed');
-				$groupContainer.slideDown();
+				$groupContainer.slideDown().promise().done(function() {
+					TYPO3.Backend.doLayout();
+				});
 			}
 		});
 		// register clicking on sub modules
