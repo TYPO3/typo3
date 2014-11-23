@@ -73,7 +73,7 @@
 				<source>This is the file administration system in TYPO3. It allows you to access the file mounts of your login. Through this module you can upload, copy, move an delete files on the server.</source>
 			</trans-unit>
 			<trans-unit id="mlang_tabs_tab" xml:space="preserve">
-				<source>Filelist</source>
+				<source>Media</source>
 			</trans-unit>
 			<trans-unit id="write" xml:space="preserve">
 				<source>W</source>
