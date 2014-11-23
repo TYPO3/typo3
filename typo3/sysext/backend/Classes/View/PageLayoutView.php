@@ -460,7 +460,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						<div class="t3-page-ce-dropzone" id="colpos-' . $key . '-' . 'page-' . $id . '-' . uniqid('', TRUE) . '">
 							<div class="t3-page-ce-wrapper-new-ce">
 								<a href="#" onclick="' . htmlspecialchars($this->newContentElementOnClick($id, $key, $lP))
-									. '" title="' . $this->getLanguageService()->getLL('newRecordHere', TRUE) . '">'
+									. '" title="' . $this->getLanguageService()->getLL('newRecordHere', TRUE) . '" class="btn btn-default btn-sm">'
 									. IconUtility::getSpriteIcon('actions-document-new') . '</a>
 							</div>
 						</div>
@@ -527,7 +527,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 								$singleElementHTML .= '
 									<div class="t3-page-ce-wrapper-new-ce">
 										<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
-											. $this->getLanguageService()->getLL('newRecordHere', TRUE) . '">'
+											. $this->getLanguageService()->getLL('newRecordHere', TRUE) . '" class="btn btn-default btn-sm">'
 											. IconUtility::getSpriteIcon('actions-document-new') . '</a>
 									</div>
 								';
