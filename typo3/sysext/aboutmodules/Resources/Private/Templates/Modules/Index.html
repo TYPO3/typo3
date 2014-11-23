@@ -15,7 +15,7 @@
         <h2>{mainModule.label}</h2>
 
 		<f:for each="{mainModule.subModules}" as="subModule" iteration="subModuleIterator">
-			<div class="media">
+			<div class="media clearfix">
 				<a
 					href="#"
 					onclick="top.goToModule('{mainModule.name}_{subModule.name}'); return false;"
