@@ -268,7 +268,7 @@ function jumpToUrl(URL) {
 	 *
 	 * @var string
 	 */
-	protected $xUaCompatibilityVersion = 'IE=10';
+	protected $xUaCompatibilityVersion = 'IE=edge,chrome=1';
 
 	// Skinning
 	/**
