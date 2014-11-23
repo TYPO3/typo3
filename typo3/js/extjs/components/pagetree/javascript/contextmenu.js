@@ -156,7 +156,6 @@ TYPO3.Components.PageTree.ContextMenu = Ext.extend(Ext.menu.Menu, {
 						'callbackAction': contextMenuConfiguration[singleAction]['callbackAction'],
 						'customAttributes': contextMenuConfiguration[singleAction]['customAttributes']
 					};
-
 					component.itemTpl = Ext.menu.Item.prototype.itemTpl = new Ext.XTemplate(
 						'<a id="{id}" class="{cls}" hidefocus="true" unselectable="on" href="{href}">',
 							'<span class="{hrefTarget}">',

@@ -1003,7 +1003,7 @@ class IconUtility {
 	 * is usually called by the methods that are responsible for fetching the names
 	 * out of the file name, or the record type
 	 *
-	 * @param string $name Iconname like 'actions-document-new'
+	 * @param string $iconName Iconname like 'actions-document-new'
 	 * @return string A list of all CSS classes needed for the HTML tag
 	 */
 	static public function getSpriteIconClasses($iconName) {

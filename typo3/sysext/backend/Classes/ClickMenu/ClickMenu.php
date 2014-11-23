@@ -682,7 +682,6 @@ class ClickMenu {
 		$addParam = '';
 		$theIcon = 'actions-document-open';
 		if ($this->iParts[0] === 'pages' && $this->iParts[1] && $this->backendUser->check('modules', $pageModule)) {
-			$theIcon = 'fa-desktop';
 			$this->editPageIconSet = TRUE;
 			if ($this->backendUser->uc['classicPageEditMode']) {
 				$addParam = '&editRegularContentFromId=' . (int)$this->iParts[1];
