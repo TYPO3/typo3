@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Backend\Utility\IconUtility;
 
 /**
  * View helper for update script link
@@ -57,6 +58,8 @@ class UpdateScriptViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionVie
 			$this->tag->addAttribute('title', \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('extensionList.update.script', 'extensionmanager'));
 			$this->tag->setContent(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-extensionmanager-update-script'));
 			$tag = $this->tag->render();
+		} else {
+			return '<span class="btn disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
 		}
 		return $tag;
 	}

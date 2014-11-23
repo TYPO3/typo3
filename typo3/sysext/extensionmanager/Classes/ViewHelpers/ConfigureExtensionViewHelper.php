@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Backend\Utility\IconUtility;
+
 /**
  * View helper for configure extension link
  *
@@ -56,7 +58,7 @@ class ConfigureExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\Act
 			$this->tag->setContent($content);
 			$content = $this->tag->render();
 		} elseif ($forceConfiguration) {
-			$content = '';
+			$content = '<span class="btn disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
 		}
 
 		return $content;
