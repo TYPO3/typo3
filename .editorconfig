@@ -17,6 +17,16 @@ insert_final_newline = true
 indent_style = tab
 indent_size = 4
 
+# HTML-Files
+[*.html]
+indent_style = tab
+indent_size = 4
+
+# TMPL-Files
+[*.tmpl]
+indent_style = tab
+indent_size = 4
+
 # LESS-Files
 [*.less]
 indent_style = tab
