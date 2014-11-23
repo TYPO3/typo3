@@ -69,12 +69,14 @@ class QueryView {
 	 * @return string
 	 */
 	public function form() {
-		$out = '
-		Search Word:<BR>
-		<input type="search" name="SET[sword]" value="' . htmlspecialchars($GLOBALS['SOBE']->MOD_SETTINGS['sword']) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . '>
-		<input class="btn btn-default" type="submit" name="submit" value="Search All Records">
+		return '
+		<div class="form-group">
+			<input placeholder="Search Word" class="form-control" type="search" name="SET[sword]" value="' . htmlspecialchars($GLOBALS['SOBE']->MOD_SETTINGS['sword']) . '">
+		</div>
+		<div class="form-group">
+			<input class="btn btn-default" type="submit" name="submit" value="Search All Records">
+		</div>
 		';
-		return $out;
 	}
 
 	/**
@@ -85,41 +87,34 @@ class QueryView {
 	public function makeStoreControl() {
 		// Load/Save
 		$storeArray = $this->initStoreArray();
-		// Store Array:
+
 		$opt = array();
 		foreach ($storeArray as $k => $v) {
 			$opt[] = '<option value="' . $k . '">' . htmlspecialchars($v) . '</option>';
 		}
 		// Actions:
 		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('sys_action') && $GLOBALS['BE_USER']->isAdmin()) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_action', 'type=2', '', 'title');
-			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
-				$opt[] = '<option value="0">__Save to Action:__</option>';
-				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-					$opt[] = '<option value="-' . $row['uid'] . '">' . htmlspecialchars(($row['title'] . ' [' . $row['uid'] . ']')) . '</option>';
-				}
+			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_action', 'type=2', '', 'title');
+			$opt[] = '<option value="0">__Save to Action:__</option>';
+			foreach($rows as $row) {
+				$opt[] = '<option value="-' . $row['uid'] . '">' . htmlspecialchars(($row['title'] . ' [' . $row['uid'] . ']')) . '</option>';
 			}
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
-		$TDparams = ' nowrap="nowrap" class="bgColor4"';
-		$tmpCode = '
-		<table border="0" cellpadding="3" cellspacing="1">
-			<tr' . $TDparams . '>
-				<td>
-					<select name="storeControl[STORE]" onChange="document.forms[0][\'storeControl[title]\'].value= this.options[this.selectedIndex].value!=0 ? this.options[this.selectedIndex].text : \'\';">' . implode(LF, $opt) . '</select>
+		return '<div class="load-queries">
+			<div class="form-inline">
+				<div class="form-group">
+					<select class="form-control" name="storeControl[STORE]" onChange="document.forms[0][\'storeControl[title]\'].value= this.options[this.selectedIndex].value!=0 ? this.options[this.selectedIndex].text : \'\';">' . implode(LF, $opt) . '</select>
 					<input class="btn btn-default" type="submit" name="storeControl[LOAD]" value="Load">
-				</td>
-			</tr>
-			<tr' . $TDparams . '>
-				<td nowrap>
-					<input name="storeControl[title]" value="" type="text" max="80"' . $GLOBALS['SOBE']->doc->formWidth() . '>
+				</div>
+			</div>
+			<div class="form-inline">
+				<div class="form-group">
+					<input name="storeControl[title]" value="" type="text" max="80" class="form-control">
 					<input class="btn btn-default" type="submit" name="storeControl[SAVE]" value="Save" onClick="if (document.forms[0][\'storeControl[STORE]\'].options[document.forms[0][\'storeControl[STORE]\'].selectedIndex].value<0) return confirm(\'Are you sure you want to overwrite the existing query in this action?\');">
 					<input class="btn btn-default" type="submit" name="storeControl[REMOVE]" value="Remove">
-				</td>
-			</tr>
-		</table>
-		';
-		return $tmpCode;
+				</div>
+			</div>
+		</div>';
 	}
 
 	/**
@@ -333,7 +328,7 @@ class QueryView {
 			$qGen->setFormName($this->formName);
 		}
 		$tmpCode = $qGen->makeSelectorTable($GLOBALS['SOBE']->MOD_SETTINGS);
-		$output .= $GLOBALS['SOBE']->doc->section('Make query', $tmpCode, 0, 1);
+		$output .= '<div id="query"></div>' . $GLOBALS['SOBE']->doc->section('Make query', $tmpCode, 0, 1);
 		$mQ = $GLOBALS['SOBE']->MOD_SETTINGS['search_query_makeQuery'];
 		// Make form elements:
 		if ($qGen->table && is_array($GLOBALS['TCA'][$qGen->table])) {
@@ -397,10 +392,10 @@ class QueryView {
 					}
 				}
 				if (count($rowArr)) {
-					$out .= '<table border="0" cellpadding="2" cellspacing="1" width="100%">' . $this->resultRowTitles($lrow, $GLOBALS['TCA'][$table], $table) . implode(LF, $rowArr) . '</table>';
+					$out .= '<table class="table table-striped table-hover">' . $this->resultRowTitles($lrow, $GLOBALS['TCA'][$table], $table) . implode(LF, $rowArr) . '</table>';
 				}
 				if (!$out) {
-					$out = '<em>No rows selected!</em>';
+					$out = '<div class="alert-info">No rows selected!</div>';
 				}
 				$cPR['header'] = 'Result';
 				$cPR['content'] = $out;
@@ -475,7 +470,7 @@ class QueryView {
 	 * @return string
 	 */
 	public function tableWrap($str) {
-		return '<table border="0" cellpadding="10" cellspacing="0" class="bgColor4"><tr><td nowrap><pre>' . $str . '</pre></td></tr></table>';
+		return '<pre>' . $str . '</pre>';
 	}
 
 	/**
@@ -488,7 +483,6 @@ class QueryView {
 		$swords = $SET['sword'];
 		$out = '';
 		$limit = 200;
-		$showAlways = 0;
 		if ($swords) {
 			foreach ($GLOBALS['TCA'] as $table => $value) {
 				// Get fields list
@@ -503,22 +497,21 @@ class QueryView {
 				$qp = $GLOBALS['TYPO3_DB']->searchQuery(array($swords), $list, $table);
 				// Count:
 				$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', $table, $qp . BackendUtility::deleteClause($table));
-				if ($count || $showAlways) {
-					// Output header:
-					$out .= '<strong>TABLE:</strong> ' . $GLOBALS['LANG']->sL($conf['ctrl']['title']) . '<BR>';
-					$out .= '<strong>Results:</strong> ' . $count . '<BR>';
-					// Show to limit
-					if ($count) {
-						$rowArr = array();
-						$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,' . $conf['ctrl']['label'], $table, $qp . BackendUtility::deleteClause($table), '', '', $limit);
-						while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-							$rowArr[] = $this->resultRowDisplay($row, $conf, $table);
-							$lrow = $row;
-						}
-						$GLOBALS['TYPO3_DB']->sql_free_result($res);
-						$out .= '<table border="0" cellpadding="2" cellspacing="1">' . $this->resultRowTitles($lrow, $conf, $table) . implode(LF, $rowArr) . '</table>';
+				if ($count) {
+					$rowArr = array();
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,' . $conf['ctrl']['label'], $table, $qp . BackendUtility::deleteClause($table), '', '', $limit);
+					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+						$rowArr[] = $this->resultRowDisplay($row, $conf, $table);
+						$lrow = $row;
 					}
-					$out .= '<HR>';
+					$GLOBALS['TYPO3_DB']->sql_free_result($res);
+					$out .= '<div class="panel panel-default">
+								<div class="panel-heading">' . $GLOBALS['LANG']->sL($conf['ctrl']['title'], TRUE) . ' (' . $count . ')</div>
+								<table class="table table-striped table-hover">' .
+						$this->resultRowTitles($lrow, $conf, $table) .
+						implode(LF, $rowArr) .
+						'</table>
+							</div>';
 				}
 			}
 		}
@@ -534,11 +527,8 @@ class QueryView {
 	 * @return string
 	 */
 	public function resultRowDisplay($row, $conf, $table) {
-		static $even = FALSE;
-		$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 		$SET = $GLOBALS['SOBE']->MOD_SETTINGS;
-		$out = '<tr class="bgColor' . ($even ? '6' : '4') . '">';
-		$even = !$even;
+		$out = '<tr>';
 		foreach ($row as $fieldName => $fieldValue) {
 			if (GeneralUtility::inList($SET['queryFields'], $fieldName) || !$SET['queryFields'] && $fieldName != 'pid' && $fieldName != 'deleted') {
 				if ($SET['search_result_labels']) {
@@ -550,23 +540,23 @@ class QueryView {
 			}
 		}
 		$params = '&edit[' . $table . '][' . $row['uid'] . ']=edit';
-		$out .= '<td nowrap>';
+		$out .= '<td><div class="btn-group">';
 		if (!$row['deleted']) {
-			$out .= '<a href="#" onClick="top.launchView(\'' . $table . '\',' . $row['uid'] . ',\'' . $GLOBALS['BACK_PATH'] . '\');return false;">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-information') . '</a>';
-			$out .= '<a href="#" onClick="' . BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH'], (GeneralUtility::getIndpEnv('REQUEST_URI') . GeneralUtility::implodeArrayForUrl('SET', (array)GeneralUtility::_POST('SET')))) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+			$out .= '<a class="btn" href="#" onClick="top.launchView(\'' . $table . '\',' . $row['uid'] . ',\'' . $GLOBALS['BACK_PATH'] . '\');return false;">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-information') . '</a>';
+			$out .= '<a class="btn" href="#" onClick="' . BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH'], (GeneralUtility::getIndpEnv('REQUEST_URI') . GeneralUtility::implodeArrayForUrl('SET', (array)GeneralUtility::_POST('SET')))) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 		} else {
-			$out .= '<a href="' . GeneralUtility::linkThisUrl(($GLOBALS['BACK_PATH'] . 'tce_db.php'), array(
-				('cmd[' . $table . '][' . $row['uid'] . '][undelete]') => '1',
-				'redirect' => GeneralUtility::linkThisScript(array())
-			)) . BackendUtility::getUrlToken('tceAction') . '">';
+			$out .= '<a class="btn" href="' . GeneralUtility::linkThisUrl(($GLOBALS['BACK_PATH'] . 'tce_db.php'), array(
+					('cmd[' . $table . '][' . $row['uid'] . '][undelete]') => '1',
+					'redirect' => GeneralUtility::linkThisScript(array())
+				)) . BackendUtility::getUrlToken('tceAction') . '">';
 			$out .= \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-restore', array('title' => 'undelete only')) . '</a>';
-			$out .= '<a href="' . GeneralUtility::linkThisUrl(($GLOBALS['BACK_PATH'] . 'tce_db.php'), array(
-				('cmd[' . $table . '][' . $row['uid'] . '][undelete]') => '1',
-				'redirect' => GeneralUtility::linkThisUrl('alt_doc.php', array(
-					('edit[' . $table . '][' . $row['uid'] . ']') => 'edit',
-					'returnUrl' => GeneralUtility::linkThisScript(array())
-				))
-			)) . BackendUtility::getUrlToken('tceAction') . '">';
+			$out .= '<a class="btn" href="' . GeneralUtility::linkThisUrl(($GLOBALS['BACK_PATH'] . 'tce_db.php'), array(
+					('cmd[' . $table . '][' . $row['uid'] . '][undelete]') => '1',
+					'redirect' => GeneralUtility::linkThisUrl('alt_doc.php', array(
+						('edit[' . $table . '][' . $row['uid'] . ']') => 'edit',
+						'returnUrl' => GeneralUtility::linkThisScript(array())
+					))
+				)) . BackendUtility::getUrlToken('tceAction') . '">';
 			$out .= \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-restore-edit', array('title' => 'undelete and edit')) . '</a>';
 		}
 		$_params = array($table => $row);
@@ -575,7 +565,7 @@ class QueryView {
 				$out .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
 			}
 		}
-		$out .= '</td>
+		$out .= '</div></td>
 		</tr>
 		';
 		return $out;
@@ -954,21 +944,20 @@ class QueryView {
 		$SET = $GLOBALS['SOBE']->MOD_SETTINGS;
 		$tableHeader = array();
 		// Start header row
-		$tableHeader[] = '<thead><tr class="bgColor5">';
+		$tableHeader[] = '<thead><tr>';
 		// Iterate over given columns
 		foreach ($row as $fieldName => $fieldValue) {
 			if (GeneralUtility::inList($SET['queryFields'], $fieldName) || !$SET['queryFields'] && $fieldName != 'pid' && $fieldName != 'deleted') {
-				$THparams = strlen($fieldValue) < 50 ? ' style="white-space:nowrap;"' : '';
 				if ($GLOBALS['SOBE']->MOD_SETTINGS['search_result_labels']) {
 					$title = $GLOBALS['LANG']->sL($conf['columns'][$fieldName]['label'] ? $conf['columns'][$fieldName]['label'] : $fieldName, TRUE);
 				} else {
 					$title = $GLOBALS['LANG']->sL($fieldName, TRUE);
 				}
-				$tableHeader[] = '<th' . $THparams . '>' . $title . '</th>';
+				$tableHeader[] = '<th>' . $title . '</th>';
 			}
 		}
 		// Add empty icon column
-		$tableHeader[] = '<th style="white-space:nowrap;"></th>';
+		$tableHeader[] = '<th></th>';
 		// Close header row
 		$tableHeader[] = '</tr></thead>';
 		return implode(LF, $tableHeader);
