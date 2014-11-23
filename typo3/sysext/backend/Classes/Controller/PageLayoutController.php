@@ -607,8 +607,10 @@ class PageLayoutController {
 			$this->doc->JScode = $this->doc->wrapScriptTags('
 				if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';
 			');
+
+			$body = $this->doc->header($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
 			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('clickAPage_content'), $GLOBALS['LANG']->getLL('clickAPage_header'), FlashMessage::INFO);
-			$body = $flashMessage->render();
+			$body .= $flashMessage->render();
 			// Setting up the buttons and markers for docheader
 			$docHeaderButtons = array(
 				'view' => '',
