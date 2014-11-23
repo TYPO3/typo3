@@ -379,7 +379,15 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 					} else {
 						$additionalWhereForMatchFields = '';
 					}
-					$sql['where'][] = $tableName . '.uid IN (SELECT ' . $columnMap->getParentKeyFieldName() . ' FROM ' . $relationTableName . ' WHERE ' . $columnMap->getChildKeyFieldName() . '=' . $parameterIdentifier . $additionalWhereForMatchFields . ')';
+					$operand2IsMultiValueType = \TYPO3\CMS\Extbase\Utility\TypeHandlingUtility::isValidTypeForMultiValueComparison($operand2);
+					$sql['where'][] = $tableName . '.uid IN (SELECT ' . $columnMap->getParentKeyFieldName()
+						. ' FROM ' . $relationTableName
+						. ' WHERE ' . $columnMap->getChildKeyFieldName()
+							. ($operand2IsMultiValueType
+								? ' IN (' . $parameterIdentifier . ')'
+								: '=' . $parameterIdentifier
+							)
+						. $additionalWhereForMatchFields . ')';
 				} elseif ($typeOfRelation === ColumnMap::RELATION_HAS_MANY) {
 					$parentKeyFieldName = $columnMap->getParentKeyFieldName();
 					if (isset($parentKeyFieldName)) {
