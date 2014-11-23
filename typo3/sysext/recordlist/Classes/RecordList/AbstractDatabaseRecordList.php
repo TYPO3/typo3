@@ -62,11 +62,6 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	public $itemsLimitSingleTable = 100;
 
 	/**
-	 * @var string
-	 */
-	public $widthGif = '<img src="clear.gif" width="1" height="4" hspace="160" alt="" />';
-
-	/**
 	 * Current script name
 	 *
 	 * @var string

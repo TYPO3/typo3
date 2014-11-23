@@ -41,11 +41,6 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	public $thumbs = FALSE;
 
 	/**
-	 * @var string
-	 */
-	public $widthGif = '<img src="clear.gif" width="1" height="1" hspace="165" alt="" />';
-
-	/**
 	 * Space icon used for alignment when no button is available
 	 *
 	 * @var string

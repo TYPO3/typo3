@@ -305,10 +305,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			}
 			// Getting select-depth:
 			$depth = (int)$this->getPageLayoutController()->MOD_SETTINGS['pages_levels'];
-			// Half line is drawn
-			$theData = array();
-			$theData['subject'] = $this->widthGif;
-			$out .= $this->addelement(0, '', $theData);
 			// Overriding a few things:
 			$this->no_noWrap = 0;
 			// Items
