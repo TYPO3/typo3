@@ -55,22 +55,24 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 	public function tableRow($label, $data, $field, $id) {
 		$lang = $this->getLanguageService();
 		$ret = '<tr><td>';
+		$startAnchor = '';
 		if ($field === 'config' || $field === 'constants') {
 			$urlParameters = array(
 				'id' => $this->pObj->id
 			);
 			$aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
-			$ret .= '<a href="' . htmlspecialchars(($aHref . '&e[' . $field . ']=1')) . '">';
+			$startAnchor = '<a href="' . htmlspecialchars(($aHref . '&e[' . $field . ']=1')) . '">';
 		} else {
 			$params = '&columnsOnly=' . $field . '&createExtension=0' . '&edit[sys_template][' . $id . ']=edit';
 			$editOnClick = BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH'], '');
-			$ret .= '<a href="#" onclick="' . $editOnClick . '">';
+			$startAnchor = '<a href="#" onclick="' . $editOnClick . '">';
 		}
-		$ret .= IconUtility::getSpriteIcon(
-				'actions-document-open',
-				array('title' => $lang->sL('LLL:EXT:lang/locallang_common.xlf:editField', TRUE))
-			) . '<strong>' . $label . '</strong></a>';
-		$ret .= '</td><td width="80%">' . $data . '&nbsp;</td></tr>';
+		$icon = IconUtility::getSpriteIcon(
+			'actions-document-open',
+			array('title' => $lang->sL('LLL:EXT:lang/locallang_common.xlf:editField', TRUE))
+		);
+		$ret .= $startAnchor . '<strong>' . $label . '</strong></a>';
+		$ret .= '</td><td width="80%">' . $data . $startAnchor . '&nbsp;<span class="btn pull-right">' . $icon . '</span></a></td></tr>';
 		return $ret;
 	}
 
