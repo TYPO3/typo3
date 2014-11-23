@@ -490,7 +490,8 @@ class QueryView {
 				if (empty($conf['columns'])) {
 					continue;
 				}
-				$list = array_keys($conf['columns']);
+				$fieldsInDatabase = $GLOBALS['TYPO3_DB']->admin_get_fields($table);
+				$list = array_intersect(array_keys($conf['columns']), array_keys($fieldsInDatabase));
 				// Get query
 				$qp = $GLOBALS['TYPO3_DB']->searchQuery(array($swords), $list, $table);
 				// Count:
