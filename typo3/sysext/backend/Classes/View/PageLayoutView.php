@@ -311,7 +311,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			$out .= $this->addelement(0, '', $theData);
 			// Overriding a few things:
 			$this->no_noWrap = 0;
-			$this->oddColumnsCssClass = 'bgColor3-20';
 			// Items
 			$this->eCounter = $this->firstElementNumber;
 			// Creating elements:
@@ -375,8 +374,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						}
 				}
 			}
-			// Start table:
-			$this->oddColumnsCssClass = '';
 			// CSH:
 			$out = BackendUtility::cshItem($this->descrTable, ('func_' . $pKey)) . '
 				<table class="t3-table typo3-page-pages">' .
@@ -388,7 +385,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					'</tbody>' .
 				'</table>';
 		}
-		$this->oddColumnsCssClass = '';
 		return $out;
 	}
 
