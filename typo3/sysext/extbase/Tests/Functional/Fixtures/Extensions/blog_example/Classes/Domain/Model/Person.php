@@ -35,6 +35,16 @@ class Person extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $email = '';
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\ExtbaseTeam\BlogExample\Domain\Model\Tag>
+	 */
+	protected $tags = NULL;
+
+	/**
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\ExtbaseTeam\BlogExample\Domain\Model\Tag>
+	 */
+	protected $tagsSpecial = NULL;
+
+	/**
 	 * Constructs a new Person
 	 *
 	 */

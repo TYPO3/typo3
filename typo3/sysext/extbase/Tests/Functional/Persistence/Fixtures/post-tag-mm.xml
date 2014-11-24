@@ -123,4 +123,16 @@
 		<sorting>1</sorting>
 		<sorting_foreign>10</sorting_foreign>
 	</tx_blogexample_post_tag_mm>
+	<tx_blogexample_post_tag_mm>
+		<uid_local>12</uid_local>
+		<uid_foreign>12</uid_foreign>
+		<sorting>1</sorting>
+		<sorting_foreign>10</sorting_foreign>
+	</tx_blogexample_post_tag_mm>
+	<tx_blogexample_post_tag_mm>
+		<uid_local>13</uid_local>
+		<uid_foreign>12</uid_foreign>
+		<sorting>1</sorting>
+		<sorting_foreign>10</sorting_foreign>
+	</tx_blogexample_post_tag_mm>
 </dataset>

@@ -43,10 +43,50 @@ $TCA['tx_blogexample_domain_model_person'] = array(
 				'eval' => 'trim, required',
 				'max' => 256
 			)
-		)
+		),
+		'tags' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_person.tags',
+			'config' => array(
+				'type' => 'inline',
+				'foreign_table' => 'tx_blogexample_domain_model_tag',
+				'MM' => 'tx_blogexample_domain_model_tag_mm',
+				'foreign_table_field' => 'tablenames',
+				'foreign_match_fields' => array(
+					'fieldname' => 'tags'
+				),
+				'maxitems' => 9999,
+				'appearance' => array(
+					'useCombination' => 1,
+					'useSortable' => 1,
+					'collapseAll' => 1,
+					'expandSingle' => 1,
+				)
+			)
+		),
+		'tags_special' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_person.tags_special',
+			'config' => array(
+				'type' => 'inline',
+				'foreign_table' => 'tx_blogexample_domain_model_tag',
+				'MM' => 'tx_blogexample_domain_model_tag_mm',
+				'foreign_table_field' => 'tablenames',
+				'foreign_match_fields' => array(
+					'fieldname' => 'tags_special'
+				),
+				'maxitems' => 9999,
+				'appearance' => array(
+					'useCombination' => 1,
+					'useSortable' => 1,
+					'collapseAll' => 1,
+					'expandSingle' => 1,
+				)
+			)
+		),
 	),
 	'types' => array(
-		'1' => array('showitem' => 'firstname, lastname, email, avatar')
+		'1' => array('showitem' => 'firstname, lastname, email, avatar, tags, tags_special')
 	),
 	'palettes' => array(
 		'1' => array('showitem' => '')

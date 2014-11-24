@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<tx_blogexample_domain_model_person>
+		<uid>1</uid>
+		<pid>0</pid>
+		<firstname>Author</firstname>
+		<lastname>With tag and special tag</lastname>
+		<tags>1</tags>
+		<tags_special>1</tags_special>
+	</tx_blogexample_domain_model_person>
+	<tx_blogexample_domain_model_person>
+		<uid>2</uid>
+		<pid>0</pid>
+		<firstname>Author</firstname>
+		<lastname>With tag</lastname>
+		<tags>1</tags>
+		<tags_special>0</tags_special>
+	</tx_blogexample_domain_model_person>
+	<tx_blogexample_domain_model_person>
+		<uid>3</uid>
+		<pid>0</pid>
+		<firstname>Author</firstname>
+		<lastname>With special tag</lastname>
+		<tags>0</tags>
+		<tags_special>1</tags_special>
+	</tx_blogexample_domain_model_person>
+</dataset>

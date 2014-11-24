@@ -81,6 +81,16 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
+	 * Maps domain model properties to their corresponding table aliases that are used in the query, e.g.:
+	 *
+	 * 'property1' => 'tableName',
+	 * 'property1.property2' => 'tableName1',
+	 *
+	 * @var array
+	 */
+	protected $tablePropertyMap = array();
+
+	/**
 	 * Constructor. takes the database handle from $GLOBALS['TYPO3_DB']
 	 */
 	public function __construct() {
@@ -202,6 +212,7 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return array The SQL statement parts
 	 */
 	public function parseQuery(QueryInterface $query) {
+		$this->tablePropertyMap = array();
 		$sql = array();
 		$sql['keywords'] = array();
 		$sql['tables'] = array();
@@ -212,15 +223,17 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 		$sql['orderings'] = array();
 		$sql['limit'] = ((int)$query->getLimit() ?: NULL);
 		$sql['offset'] = ((int)$query->getOffset() ?: NULL);
+		$sql['tableAliasMap'] = array();
 		$source = $query->getSource();
 		$this->parseSource($source, $sql);
 		$this->parseConstraint($query->getConstraint(), $source, $sql);
 		$this->parseOrderings($query->getOrderings(), $source, $sql);
 
-		$tableNames = array_unique(array_keys($sql['tables'] + $sql['unions']));
-		foreach ($tableNames as $tableName) {
-			if (is_string($tableName) && !empty($tableName)) {
-				$this->addAdditionalWhereClause($query->getQuerySettings(), $tableName, $sql);
+		foreach ($sql['tableAliasMap'] as $tableAlias => $tableName) {
+			$additionalWhereClause = $this->getAdditionalWhereClause($query->getQuerySettings(), $tableName, $tableAlias);
+			if ($additionalWhereClause !== '') {
+				$additionalWhereClause = $this->addNullConditionToStatementIfRequired($sql, $additionalWhereClause, $tableAlias);
+				$sql['additionalWhereClause'][] = $additionalWhereClause;
 			}
 		}
 
@@ -240,12 +253,33 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 		if (!isset($sql['additionalWhereClause'])) {
 			throw new \InvalidArgumentException('Invalid statement given.', 1399512421);
 		}
-		$tableNames = array_unique(array_keys($sql['tables'] + $sql['unions']));
-		foreach ($tableNames as $tableName) {
-			if (is_string($tableName) && !empty($tableName)) {
-				$this->addVisibilityConstraintStatement($querySettings, $tableName, $sql);
+		foreach ($sql['tableAliasMap'] as $tableAlias => $tableName) {
+			$statement = $this->getVisibilityConstraintStatement($querySettings, $tableName, $tableAlias);
+			if ($statement !== '') {
+				$statement = $this->addNullConditionToStatementIfRequired($sql, $statement, $tableAlias);
+				$sql['additionalWhereClause'][] = $statement;
 			}
 		}
+	}
+
+	/**
+	 * If the given table alias is used in a UNION statement it is required to
+	 * add an additional condition that allows the fields of the joined table
+	 * to be NULL. Otherwise the condition would be too strict and filter out
+	 * records that are actually valid.
+	 *
+	 * @param array $sql The current SQL query parts.
+	 * @param string $statement The SQL statement to which the NULL condition should be added.
+	 * @param string $tableAlias The table alias used in the SQL statement.
+	 * @return string The statement including the NULL condition or the original statement.
+	 */
+	protected function addNullConditionToStatementIfRequired(array $sql, $statement, $tableAlias) {
+
+		if (isset($sql['unions'][$tableAlias])) {
+			$statement = '((' . $statement . ') OR ' . $tableAlias . '.uid' . ' IS NULL)';
+		}
+
+		return $statement;
 	}
 
 	/**
@@ -260,6 +294,7 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 			$className = $source->getNodeTypeName();
 			$tableName = $this->dataMapper->getDataMap($className)->getTableName();
 			$this->addRecordTypeConstraint($className, $sql);
+			$tableName = $this->getUniqueAlias($sql, $tableName);
 			$sql['fields'][$tableName] = $tableName . '.*';
 			$sql['tables'][$tableName] = $tableName;
 		} elseif ($source instanceof Qom\JoinInterface) {
@@ -323,8 +358,9 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 			if ($source instanceof Qom\SelectorInterface) {
 				$className = $source->getNodeTypeName();
 				$tableName = $this->dataMapper->convertClassNameToTableName($className);
+				$fullPropertyPath = '';
 				while (strpos($propertyName, '.') !== FALSE) {
-					$this->addUnionStatement($className, $tableName, $propertyName, $sql);
+					$this->addUnionStatement($className, $tableName, $propertyName, $sql, $fullPropertyPath);
 				}
 			} elseif ($source instanceof Qom\JoinInterface) {
 				$tableName = $source->getLeft()->getSelectorName();
@@ -378,8 +414,9 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 				$tableName = $this->dataMapper->convertClassNameToTableName($className);
 				$operand1 = $comparison->getOperand1();
 				$propertyName = $operand1->getPropertyName();
+				$fullPropertyPath = '';
 				while (strpos($propertyName, '.') !== FALSE) {
-					$this->addUnionStatement($className, $tableName, $propertyName, $sql);
+					$this->addUnionStatement($className, $tableName, $propertyName, $sql, $fullPropertyPath);
 				}
 				$columnName = $this->dataMapper->convertPropertyNameToColumnName($propertyName, $className);
 				$dataMap = $this->dataMapper->getDataMap($className);
@@ -387,16 +424,7 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 				$typeOfRelation = $columnMap instanceof ColumnMap ? $columnMap->getTypeOfRelation() : NULL;
 				if ($typeOfRelation === ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 					$relationTableName = $columnMap->getRelationTableName();
-					$relationTableMatchFields = $columnMap->getRelationTableMatchFields();
-					if (is_array($relationTableMatchFields)) {
-						$additionalWhere = array();
-						foreach ($relationTableMatchFields as $fieldName => $value) {
-							$additionalWhere[] = $fieldName . ' = ' . $this->databaseHandle->fullQuoteStr($value, $relationTableName);
-						}
-						$additionalWhereForMatchFields = ' AND ' . implode(' AND ', $additionalWhere);
-					} else {
-						$additionalWhereForMatchFields = '';
-					}
+					$additionalWhereForMatchFields = $this->getAdditionalMatchFieldsStatement($columnMap, $relationTableName, $relationTableName);
 					$sql['where'][] = $tableName . '.uid IN (SELECT ' . $columnMap->getParentKeyFieldName() . ' FROM ' . $relationTableName . ' WHERE ' . $columnMap->getChildKeyFieldName() . '=' . $parameterIdentifier . $additionalWhereForMatchFields . ')';
 				} elseif ($typeOfRelation === ColumnMap::RELATION_HAS_MANY) {
 					$parentKeyFieldName = $columnMap->getParentKeyFieldName();
@@ -457,8 +485,9 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 				// @todo Only necessary to differ from  Join
 				$className = $source->getNodeTypeName();
 				$tableName = $this->dataMapper->convertClassNameToTableName($className);
+				$fullPropertyPath = '';
 				while (strpos($propertyName, '.') !== FALSE) {
-					$this->addUnionStatement($className, $tableName, $propertyName, $sql);
+					$this->addUnionStatement($className, $tableName, $propertyName, $sql, $fullPropertyPath);
 				}
 			} elseif ($source instanceof Qom\JoinInterface) {
 				$tableName = $source->getJoinCondition()->getSelector1Name();
@@ -505,20 +534,67 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
+	 * Builds a condition for filtering records by the configured match field,
+	 * e.g. MM_match_fields, foreign_match_fields or foreign_table_field.
+	 *
+	 * @param ColumnMap $columnMap The column man for which the condition should be build.
+	 * @param string $childTableName The real name of the child record table.
+	 * @param string $childTableAlias The alias of the child record table used in the query.
+	 * @param string $parentTable The real name of the parent table (used for building the foreign_table_field condition).
+	 * @return string The match field conditions or an empty string.
+	 */
+	protected function getAdditionalMatchFieldsStatement($columnMap, $childTableName, $childTableAlias, $parentTable = NULL) {
+
+		$additionalWhereForMatchFields = '';
+
+		$relationTableMatchFields = $columnMap->getRelationTableMatchFields();
+		if (is_array($relationTableMatchFields) && !empty($relationTableMatchFields)) {
+			$additionalWhere = array();
+			foreach ($relationTableMatchFields as $fieldName => $value) {
+				$additionalWhere[] = $childTableAlias . '.' . $fieldName . ' = ' . $this->databaseHandle->fullQuoteStr($value, $childTableName);
+			}
+			$additionalWhereForMatchFields .= ' AND ' . implode(' AND ', $additionalWhere);
+		}
+
+		if (isset($parentTable)) {
+			$parentTableFieldName = $columnMap->getParentTableFieldName();
+			if (isset($parentTableFieldName) && $parentTableFieldName !== '') {
+				$additionalWhereForMatchFields .= ' AND ' . $childTableAlias . '.' . $parentTableFieldName . ' = ' . $this->databaseHandle->fullQuoteStr($parentTable, $childTableAlias);
+			}
+		}
+
+		return $additionalWhereForMatchFields;
+	}
+
+	/**
 	 * Adds additional WHERE statements according to the query settings.
 	 *
 	 * @param QuerySettingsInterface $querySettings The TYPO3 CMS specific query settings
 	 * @param string $tableName The table name to add the additional where clause for
-	 * @param string &$sql
-	 * @return void
+	 * @param string $tableAlias The table alias used in the query.
+	 * @return string
 	 */
-	protected function addAdditionalWhereClause(QuerySettingsInterface $querySettings, $tableName, &$sql) {
+	protected function getAdditionalWhereClause(QuerySettingsInterface $querySettings, $tableName, $tableAlias = NULL) {
+
+		$sysLanguageStatement = '';
 		if ($querySettings->getRespectSysLanguage()) {
-			$this->addSysLanguageStatement($tableName, $sql, $querySettings);
+			$sysLanguageStatement = $this->getSysLanguageStatement($tableName, $tableAlias, $querySettings);
 		}
+
+		$pageIdStatement = '';
 		if ($querySettings->getRespectStoragePage()) {
-			$this->addPageIdStatement($tableName, $sql, $querySettings->getStoragePageIds());
+			$pageIdStatement = $this->getPageIdStatement($tableName, $tableAlias, $querySettings->getStoragePageIds());
 		}
+
+		if ($sysLanguageStatement !== '' && $pageIdStatement !== '') {
+			$whereClause = $sysLanguageStatement . ' AND ' . $pageIdStatement;
+		} elseif ($sysLanguageStatement !== '') {
+			$whereClause = $sysLanguageStatement;
+		} else {
+			$whereClause = $pageIdStatement;
+		}
+
+		return $whereClause;
 	}
 
 	/**
@@ -526,10 +602,10 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param QuerySettingsInterface $querySettings
 	 * @param string $tableName The database table name
-	 * @param array &$sql The query parts
-	 * @return void
+	 * @param string $tableAlias
+	 * @return string
 	 */
-	protected function addVisibilityConstraintStatement(QuerySettingsInterface $querySettings, $tableName, array &$sql) {
+	protected function getVisibilityConstraintStatement(QuerySettingsInterface $querySettings, $tableName, $tableAlias) {
 		$statement = '';
 		if (is_array($GLOBALS['TCA'][$tableName]['ctrl'])) {
 			$ignoreEnableFields = $querySettings->getIgnoreEnableFields();
@@ -542,10 +618,11 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 				$statement .= $this->getBackendConstraintStatement($tableName, $ignoreEnableFields, $includeDeleted);
 			}
 			if (!empty($statement)) {
+				$statement = $this->replaceTableNameWithAlias($statement, $tableName, $tableAlias);
 				$statement = strtolower(substr($statement, 1, 3)) === 'and' ? substr($statement, 5) : $statement;
-				$sql['additionalWhereClause'][] = $statement;
 			}
 		}
+		return $statement;
 	}
 
 	/**
@@ -598,15 +675,16 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Builds the language field statement
 	 *
 	 * @param string $tableName The database table name
-	 * @param array &$sql The query parts
+	 * @param string $tableAlias The table alias used in the query.
 	 * @param QuerySettingsInterface $querySettings The TYPO3 CMS specific query settings
-	 * @return void
+	 * @return string
 	 */
-	protected function addSysLanguageStatement($tableName, array &$sql, $querySettings) {
+	protected function getSysLanguageStatement($tableName, $tableAlias, $querySettings) {
+		$sysLanguageStatement = '';
 		if (is_array($GLOBALS['TCA'][$tableName]['ctrl'])) {
 			if (!empty($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])) {
 				// Select all entries for the current language
-				$additionalWhereClause = $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . ' IN (' . (int)$querySettings->getLanguageUid() . ',-1)';
+				$additionalWhereClause = $tableAlias . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . ' IN (' . (int)$querySettings->getLanguageUid() . ',-1)';
 				// If any language is set -> get those entries which are not translated yet
 				// They will be removed by \TYPO3\CMS\Frontend\Page\PageRepository::getRecordOverlay if not matching overlay mode
 				if (isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
@@ -615,17 +693,17 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 
 					$mode = $querySettings->getLanguageMode();
 					if ($mode === 'strict') {
-						$additionalWhereClause = $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '=-1' .
-							' OR (' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . ' = ' . (int)$querySettings->getLanguageUid() .
-							' AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'] . '=0' .
-							') OR (' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '=0' .
-							' AND ' . $tableName . '.uid IN (SELECT ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'] .
+						$additionalWhereClause = $tableAlias . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '=-1' .
+							' OR (' . $tableAlias . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . ' = ' . (int)$querySettings->getLanguageUid() .
+							' AND ' . $tableAlias . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'] . '=0' .
+							') OR (' . $tableAlias . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '=0' .
+							' AND ' . $tableAlias . '.uid IN (SELECT ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'] .
 							' FROM ' . $tableName .
 							' WHERE ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'] . '>0' .
 							' AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '=' . (int)$querySettings->getLanguageUid();
 					} else {
-						$additionalWhereClause .= ' OR (' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '=0' .
-							' AND ' . $tableName . '.uid NOT IN (SELECT ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'] .
+						$additionalWhereClause .= ' OR (' . $tableAlias . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '=0' .
+							' AND ' . $tableAlias . '.uid NOT IN (SELECT ' . $tableAlias . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'] .
 							' FROM ' . $tableName .
 							' WHERE ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'] . '>0' .
 							' AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '=' . (int)$querySettings->getLanguageUid();
@@ -637,21 +715,23 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 					}
 					$additionalWhereClause .= '))';
 				}
-				$sql['additionalWhereClause'][] = '(' . $additionalWhereClause . ')';
+				$sysLanguageStatement = '(' . $additionalWhereClause . ')';
 			}
 		}
+		return $sysLanguageStatement;
 	}
 
 	/**
 	 * Builds the page ID checking statement
 	 *
 	 * @param string $tableName The database table name
-	 * @param array &$sql The query parts
+	 * @param string $tableAlias The table alias used in the query.
 	 * @param array $storagePageIds list of storage page ids
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InconsistentQuerySettingsException
-	 * @return void
+	 * @return string
 	 */
-	protected function addPageIdStatement($tableName, array &$sql, array $storagePageIds) {
+	protected function getPageIdStatement($tableName, $tableAlias, array $storagePageIds) {
+		$pageIdStatement = '';
 		$tableColumns = $this->tableColumnCache->get($tableName);
 		if ($tableColumns === FALSE) {
 			$tableColumns = $this->databaseHandle->admin_get_fields($tableName);
@@ -661,15 +741,16 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 			$rootLevel = (int)$GLOBALS['TCA'][$tableName]['ctrl']['rootLevel'];
 			if ($rootLevel) {
 				if ($rootLevel === 1) {
-					$sql['additionalWhereClause'][] = $tableName . '.pid = 0';
+					$pageIdStatement = $tableAlias . '.pid = 0';
 				}
 			} else {
 				if (empty($storagePageIds)) {
 					throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InconsistentQuerySettingsException('Missing storage page ids.', 1365779762);
 				}
-				$sql['additionalWhereClause'][] = $tableName . '.pid IN (' . implode(', ', $storagePageIds) . ')';
+				$pageIdStatement = $tableAlias . '.pid IN (' . implode(', ', $storagePageIds) . ')';
 			}
 		}
+		return $pageIdStatement;
 	}
 
 	/**
@@ -695,13 +776,15 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 			$sql['fields'][$leftTableName] = $rightTableName . '.*';
 		}
 		$this->addRecordTypeConstraint($rightClassName, $sql);
+		$leftTableName = $this->getUniqueAlias($sql, $leftTableName);
 		$sql['tables'][$leftTableName] = $leftTableName;
+		$rightTableName = $this->getUniqueAlias($sql, $rightTableName);
 		$sql['unions'][$rightTableName] = 'LEFT JOIN ' . $rightTableName;
 		$joinCondition = $join->getJoinCondition();
 		if ($joinCondition instanceof Qom\EquiJoinCondition) {
 			$column1Name = $this->dataMapper->convertPropertyNameToColumnName($joinCondition->getProperty1Name(), $leftClassName);
 			$column2Name = $this->dataMapper->convertPropertyNameToColumnName($joinCondition->getProperty2Name(), $rightClassName);
-			$sql['unions'][$rightTableName] .= ' ON ' . $joinCondition->getSelector1Name() . '.' . $column1Name . ' = ' . $joinCondition->getSelector2Name() . '.' . $column2Name;
+			$sql['unions'][$rightTableName] .= ' ON ' . $leftTableName . '.' . $column1Name . ' = ' . $rightTableName . '.' . $column2Name;
 		}
 		if ($rightSource instanceof Qom\JoinInterface) {
 			$this->parseJoin($rightSource, $sql);
@@ -709,21 +792,56 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * adds a union statement to the query, mostly for tables referenced in the where condition.
+	 * Generates a unique alias for the given table and the given property path.
+	 * The property path will be mapped to the generated alias in the tablePropertyMap.
 	 *
-	 * @param string &$className
-	 * @param string &$tableName
-	 * @param array &$propertyPath
-	 * @param array &$sql
+	 * @param array $sql The SQL satement parts, will be filled with the tableAliasMap.
+	 * @param string $tableName The name of the table for which the alias should be generated.
+	 * @param string $fullPropertyPath The full property path that is related to the given table.
+	 * @return string The generated table alias.
+	 */
+	protected function getUniqueAlias(array &$sql, $tableName, $fullPropertyPath = NULL) {
+
+		if (isset($fullPropertyPath) && isset($this->tablePropertyMap[$fullPropertyPath])) {
+			return $this->tablePropertyMap[$fullPropertyPath];
+		}
+
+		$alias = $tableName;
+		$i = 0;
+		while (isset($sql['tableAliasMap'][$alias])) {
+			$alias = $tableName . $i;
+			$i++;
+		}
+
+		$sql['tableAliasMap'][$alias] = $tableName;
+
+		if (isset($fullPropertyPath)) {
+			$this->tablePropertyMap[$fullPropertyPath] = $alias;
+		}
+
+		return $alias;
+	}
+
+	/**
+	 * adds a union statement to the query, mostly for tables referenced in the where condition.
+	 * The property for which the union statement is generated will be appended.
+	 *
+	 * @param string &$className The name of the parent class, will be set to the child class after processing.
+	 * @param string &$tableName The name of the parent table, will be set to the table alias that is used in the union statement.
+	 * @param array &$propertyPath The remaining property path, will be cut of by one part during the process.
+	 * @param array &$sql The SQL statement parts, will be filled with the union statements.
+	 * @param string $fullPropertyPath The full path the the current property, will be used to make table names unique.
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidRelationConfigurationException
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\MissingColumnMapException
 	 */
-	protected function addUnionStatement(&$className, &$tableName, &$propertyPath, array &$sql) {
+	protected function addUnionStatement(&$className, &$tableName, &$propertyPath, array &$sql, &$fullPropertyPath) {
+
 		$explodedPropertyPath = explode('.', $propertyPath, 2);
 		$propertyName = $explodedPropertyPath[0];
 		$columnName = $this->dataMapper->convertPropertyNameToColumnName($propertyName, $className);
-		$tableName = $this->dataMapper->convertClassNameToTableName($className);
+		$realTableName = $this->dataMapper->convertClassNameToTableName($className);
+		$tableName = isset($this->tablePropertyMap[$fullPropertyPath]) ? $this->tablePropertyMap[$fullPropertyPath] : $realTableName;
 		$columnMap = $this->dataMapper->getDataMap($className)->getColumnMap($propertyName);
 
 		if ($columnMap === NULL) {
@@ -737,33 +855,64 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidRelationConfigurationException('The relation information for property "' . $propertyName . '" of class "' . $className . '" is missing.', 1353170925);
 		}
 
+		$fullPropertyPath .= ($fullPropertyPath === '') ? $propertyName : '.' . $propertyName;
+		$childTableAlias = $this->getUniqueAlias($sql, $childTableName, $fullPropertyPath);
+
+		// If there is already exists a union with the current identifier we do not need to build it again and exit early.
+		if (isset($sql['unions'][$childTableAlias])) {
+			$propertyPath = $explodedPropertyPath[1];
+			$tableName = $childTableAlias;
+			$className = $this->dataMapper->getType($className, $propertyName);
+			return;
+		}
+
 		if ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_ONE) {
 			if (isset($parentKeyFieldName)) {
-				$sql['unions'][$childTableName] = 'LEFT JOIN ' . $childTableName . ' ON ' . $tableName . '.uid=' . $childTableName . '.' . $parentKeyFieldName;
+				$sql['unions'][$childTableAlias] = 'LEFT JOIN ' . $childTableName . ' AS ' . $childTableAlias . ' ON ' . $tableName . '.uid=' . $childTableAlias . '.' . $parentKeyFieldName;
 			} else {
-				$sql['unions'][$childTableName] = 'LEFT JOIN ' . $childTableName . ' ON ' . $tableName . '.' . $columnName . '=' . $childTableName . '.uid';
+				$sql['unions'][$childTableAlias] = 'LEFT JOIN ' . $childTableName . ' AS ' . $childTableAlias . ' ON ' . $tableName . '.' . $columnName . '=' . $childTableAlias . '.uid';
 			}
-			$className = $this->dataMapper->getType($className, $propertyName);
+			$sql['unions'][$childTableAlias] .= $this->getAdditionalMatchFieldsStatement($columnMap, $childTableName, $childTableAlias, $realTableName);
 		} elseif ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_MANY) {
 			if (isset($parentKeyFieldName)) {
-				$sql['unions'][$childTableName] = 'LEFT JOIN ' . $childTableName . ' ON ' . $tableName . '.uid=' . $childTableName . '.' . $parentKeyFieldName;
+				$sql['unions'][$childTableAlias] = 'LEFT JOIN ' . $childTableName . ' AS ' . $childTableAlias . ' ON ' . $tableName . '.uid=' . $childTableAlias . '.' . $parentKeyFieldName;
 			} else {
-				$onStatement = '(FIND_IN_SET(' . $childTableName . '.uid, ' . $tableName . '.' . $columnName . '))';
-				$sql['unions'][$childTableName] = 'LEFT JOIN ' . $childTableName . ' ON ' . $onStatement;
+				$onStatement = '(FIND_IN_SET(' . $childTableAlias . '.uid, ' . $tableName . '.' . $columnName . '))';
+				$sql['unions'][$childTableAlias] = 'LEFT JOIN ' . $childTableName . ' AS ' . $childTableAlias . ' ON ' . $onStatement;
 			}
-			$className = $this->dataMapper->getType($className, $propertyName);
+			$sql['unions'][$childTableAlias] .= $this->getAdditionalMatchFieldsStatement($columnMap, $childTableName, $childTableAlias, $realTableName);
 		} elseif ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 			$relationTableName = $columnMap->getRelationTableName();
-			$sql['unions'][$relationTableName] = 'LEFT JOIN ' . $relationTableName . ' ON ' . $tableName . '.uid=' . $relationTableName . '.' . $columnMap->getParentKeyFieldName();
-			$sql['unions'][$childTableName] = 'LEFT JOIN ' . $childTableName . ' ON ' . $relationTableName . '.' . $columnMap->getChildKeyFieldName() . '=' . $childTableName . '.uid';
-			$className = $this->dataMapper->getType($className, $propertyName);
+			$relationTableAlias = $relationTableAlias = $this->getUniqueAlias($sql, $relationTableName, $fullPropertyPath . '_mm');
+			$sql['unions'][$relationTableAlias] = 'LEFT JOIN ' . $relationTableName . ' AS ' . $relationTableAlias . ' ON ' . $tableName . '.uid=' . $relationTableAlias . '.' . $columnMap->getParentKeyFieldName();
+			$sql['unions'][$childTableAlias] = 'LEFT JOIN ' . $childTableName . ' AS ' . $childTableAlias . ' ON ' . $relationTableAlias . '.' . $columnMap->getChildKeyFieldName() . '=' . $childTableAlias . '.uid';
+			$sql['unions'][$childTableAlias] .= $this->getAdditionalMatchFieldsStatement($columnMap, $relationTableName, $relationTableAlias, $realTableName);
 		} else {
 			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception('Could not determine type of relation.', 1252502725);
 		}
 		// @todo check if there is another solution for this
 		$sql['keywords']['distinct'] = 'DISTINCT';
 		$propertyPath = $explodedPropertyPath[1];
-		$tableName = $childTableName;
+		$tableName = $childTableAlias;
+		$className = $this->dataMapper->getType($className, $propertyName);
+	}
+
+	/**
+	 * If the table name does not match the table alias all occurrences of
+	 * "tableName." are replaced with "tableAlias." in the given SQL statement.
+	 *
+	 * @param string $statement The SQL statement in which the values are replaced.
+	 * @param string $tableName The table name that is replaced.
+	 * @param string $tableAlias The table alias that replaced the table name.
+	 * @return string The modified SQL statement.
+	 */
+	protected function replaceTableNameWithAlias($statement, $tableName, $tableAlias) {
+
+		if ($tableAlias !== $tableName) {
+			$statement = str_replace($tableName . '.', $tableAlias . '.', $statement);
+		}
+
+		return $statement;
 	}
 
 	/**

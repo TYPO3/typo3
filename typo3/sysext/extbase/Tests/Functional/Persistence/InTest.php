@@ -156,7 +156,9 @@ class InTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	 * @test
 	 */
 	public function inConditionWorksWithQueryResult() {
-		$queryResult = $this->blogRepository->findAll();
+		$query = $this->blogRepository->createQuery();
+		$query->matching($query->in('uid', array(1,2)));
+		$queryResult = $query->execute();
 
 		$inQuery = $this->postRepository->createQuery();
 
@@ -172,7 +174,9 @@ class InTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	 * @test
 	 */
 	public function inConditionWorksWithQueryResultOnSecondCall() {
-		$queryResult = $this->blogRepository->findAll();
+		$query = $this->blogRepository->createQuery();
+		$query->matching($query->in('uid', array(1,2)));
+		$queryResult = $query->execute();
 
 		$inQuery = $this->postRepository->createQuery();
 

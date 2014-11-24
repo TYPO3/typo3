@@ -28,6 +28,8 @@
 			<label index="tx_blogexample_domain_model_person.lastname">Lastname</label>
 			<label index="tx_blogexample_domain_model_person.email">E-Mail</label>
 			<label index="tx_blogexample_domain_model_person.avatar">Avatar</label>
+			<label index="tx_blogexample_domain_model_person.tags">Tags</label>
+			<label index="tx_blogexample_domain_model_person.tags_special">Special tags</label>
 			<label index="tx_blogexample_domain_model_comment">Comment</label>
 			<label index="tx_blogexample_domain_model_comment.date">Date</label>
 			<label index="tx_blogexample_domain_model_comment.author">Author</label>

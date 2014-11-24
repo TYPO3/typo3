@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<tx_blogexample_domain_model_tag_mm>
+		<uid_local>1</uid_local>
+		<uid_foreign>11</uid_foreign>
+		<tablenames>tx_blogexample_domain_model_person</tablenames>
+		<fieldname>tags</fieldname>
+		<sorting>1</sorting>
+		<sorting_foreign>1</sorting_foreign>
+	</tx_blogexample_domain_model_tag_mm>
+	<tx_blogexample_domain_model_tag_mm>
+		<uid_local>1</uid_local>
+		<uid_foreign>13</uid_foreign>
+		<tablenames>tx_blogexample_domain_model_person</tablenames>
+		<fieldname>tags_special</fieldname>
+		<sorting>1</sorting>
+		<sorting_foreign>1</sorting_foreign>
+	</tx_blogexample_domain_model_tag_mm>
+	<tx_blogexample_domain_model_tag_mm>
+		<uid_local>2</uid_local>
+		<uid_foreign>11</uid_foreign>
+		<tablenames>tx_blogexample_domain_model_person</tablenames>
+		<fieldname>tags</fieldname>
+		<sorting>1</sorting>
+		<sorting_foreign>1</sorting_foreign>
+	</tx_blogexample_domain_model_tag_mm>
+	<tx_blogexample_domain_model_tag_mm>
+		<uid_local>3</uid_local>
+		<uid_foreign>13</uid_foreign>
+		<tablenames>tx_blogexample_domain_model_person</tablenames>
+		<fieldname>tags_special</fieldname>
+		<sorting>1</sorting>
+		<sorting_foreign>1</sorting_foreign>
+	</tx_blogexample_domain_model_tag_mm>
+</dataset>

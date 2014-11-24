@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<!-- Blog post 2 is related to blog post 1 -->
+	<tx_blogexample_post_post_mm>
+		<uid_local>2</uid_local>
+		<uid_foreign>1</uid_foreign>
+		<sorting>1</sorting>
+		<sorting_foreign>1</sorting_foreign>
+	</tx_blogexample_post_post_mm>
+</dataset>

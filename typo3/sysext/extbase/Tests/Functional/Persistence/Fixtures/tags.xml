@@ -70,4 +70,25 @@
 		<name>Tag10</name>
 		<deleted>0</deleted>
 	</tx_blogexample_domain_model_tag>
+	<tx_blogexample_domain_model_tag>
+		<uid>11</uid>
+		<pid>0</pid>
+		<posts>0</posts>
+		<name>TagForAuthor1</name>
+		<deleted>0</deleted>
+	</tx_blogexample_domain_model_tag>
+	<tx_blogexample_domain_model_tag>
+		<uid>12</uid>
+		<pid>0</pid>
+		<posts>0</posts>
+		<name>Tag12</name>
+		<deleted>0</deleted>
+	</tx_blogexample_domain_model_tag>
+	<tx_blogexample_domain_model_tag>
+		<uid>13</uid>
+		<pid>0</pid>
+		<posts>0</posts>
+		<name>SpecialTagForAuthor1</name>
+		<deleted>0</deleted>
+	</tx_blogexample_domain_model_tag>
 </dataset>

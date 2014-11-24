@@ -16,6 +16,8 @@ namespace ExtbaseTeam\BlogExample\Domain\Repository;
 
 /**
  * A repository for blog posts
+ *
+ * @method \ExtbaseTeam\BlogExample\Domain\Model\Post findByUid($uid)
  */
 class PostRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 
