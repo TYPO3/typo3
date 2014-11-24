@@ -65,13 +65,18 @@ table {
 		box-sizing: border-box;
 	}
 
-	> thead > tr > th,
-	> tbody > tr > th,
-	> tfoot > tr > th,
-	> thead > tr > td,
-	> tbody > tr > td,
-	> tfoot > tr > td {
-		vertical-align: middle;
+	> thead,
+	> tbody,
+	> tfoot {
+		> tr {
+			> th {
+				white-space: nowrap;
+				vertical-align: middle;
+			}
+			> td {
+				vertical-align: middle;
+			}
+		}
 	}
 
 	> thead > tr {
@@ -214,7 +219,7 @@ table {
 		}
 	}
 
-    // .success
+	// .success
 	> thead > tr,
 	> tbody > tr,
 	> tfoot > tr {
@@ -318,13 +323,12 @@ table {
 		margin-bottom: 0;
 		border: 0;
 
-		> thead > tr > th,
-		> tbody > tr > th,
-		> tfoot > tr > th,
-		> thead > tr > td,
-		> tbody > tr > td,
-		> tfoot > tr > td {
-			white-space: nowrap;
+		> thead,
+		> tbody,
+		> tfoot {
+			> tr > td {
+				white-space: nowrap;
+			}
 		}
 	}
 }

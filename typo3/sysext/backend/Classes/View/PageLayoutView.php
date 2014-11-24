@@ -995,7 +995,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					} else {
 						$Nrow['__editIconLink__'] = $this->noEditIcon();
 					}
-					$out .= $this->addelement(1, '', $Nrow, 'class="db_list_normal"');
+					$out .= $this->addelement(1, '', $Nrow);
 				}
 				$this->eCounter++;
 			}

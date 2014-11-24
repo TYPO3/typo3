@@ -54,11 +54,10 @@
 		<table class="t3-table">
 			<thead>
 				<tr>
-					<th>&nbsp;</th>
-					<th><f:translate key="userName" /> / <f:translate key="realName" /></th>
-					<th>&nbsp;</th>
-					<th>&nbsp;</th>
-					<th class="hidden-xs hidden-sm"><f:translate key="lastLogin" /></th>
+					<th class="col-icon"></th>
+					<th class="col-title"><f:translate key="userName" /> / <f:translate key="realName" /></th>
+					<th class="col-control"></th>
+					<th><f:translate key="lastLogin" /></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -69,7 +68,7 @@
 					Footer row: no officially defined style yet
 				</f:comment>
 				<tr>
-					<td colspan="6">
+					<td colspan="4">
 						<f:count subject="{backendUsers}" /> <f:translate key="users" />
 					</td>
 				</tr>

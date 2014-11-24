@@ -544,7 +544,7 @@ class ElementInformationController {
 			$record = BackendUtility::getRecord($row['tablename'], $row['recuid']);
 			$parentRecord = BackendUtility::getRecord('pages', $record['pid']);
 			$actions = $this->getRecordActions($row['tablename'], $row['recuid']);
-			$infoData[] = '<tr class="db_list_normal">' .
+			$infoData[] = '<tr>' .
 					'<td style="white-space:nowrap;">' . $actions . '</td>' .
 					'<td>' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title'], TRUE) . '</td>' .
 					'<td>' . BackendUtility::getRecordTitle($row['tablename'], $record, TRUE) . '</td>' .
@@ -597,7 +597,7 @@ class ElementInformationController {
 		}
 		foreach ($rows as $row) {
 			$actions = $this->getRecordActions($row['ref_table'], $row['ref_uid']);
-			$infoData[] = '<tr class="db_list_normal">' .
+			$infoData[] = '<tr>' .
 					'<td style="white-space:nowrap;">' . $actions . '</td>' .
 					'<td>' . htmlspecialchars($this->getLabelForTableColumn($table, $row['field'])) . '</td>' .
 					'<td>' . htmlspecialchars($row['flexpointer']) . '</td>' .

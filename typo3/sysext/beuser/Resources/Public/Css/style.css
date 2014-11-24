@@ -24,29 +24,6 @@ div.collapsibleSection { background-color: #ededed; border-top: 1px solid #cdcdc
 /**
  * @end
  */
-
-/**
- * @group: Paginate
- */
-
-.f3-widget-paginator { display: block; float: left; margin: 0 0 10px; }
-
-	.f3-widget-paginator li { font-weight: bold; display: block; float: left; width: 30px; text-align: center; margin: 0 2px 2px; }
-
-	.f3-widget-paginator li.current { border: 1px solid black; padding: 2px; }
-
-	.f3-widget-paginator li.next,
-	.f3-widget-paginator li.previous { width: auto; }
-
-	.f3-widget-paginator a { font-weight: normal; display: block; border: 1px solid black; padding: 2px; }
-
-/**
- * @end
- */
-
 .legend .pull-left {
     margin-right: 0.5em;
-}
-.t3-table a {
-    cursor: pointer;
 }

@@ -1,21 +1,19 @@
 {namespace bu = TYPO3\CMS\Beuser\ViewHelpers}
 
-<tr class="db_list_normal">
+<tr>
 	<td class="col-icon">
 		<a href="#" class="t3-js-clickmenutrigger" data-table="be_users" data-uid="{backendUser.uid}" data-listframe="1" title="id={backendUser.uid}">
 			<bu:spriteIconForRecord table="be_users" object="{backendUser}" />
 		</a>
 	</td>
-	<td class="t3-title-column">
+	<td class="col-title">
 		<a href="alt_doc.php?edit[be_users][{backendUser.uid}]=edit&amp;returnUrl={returnUrl}">
 			<b>{backendUser.userName}</b><br />
 			{backendUser.realName}
 		</a>
 	</td>
-	<td>
-		<f:link.action action="addToCompareList" arguments="{uid: backendUser.uid}" class="btn"><bu:spriteManagerIcon iconName="actions-edit-add"/> <f:translate key="compare" /></f:link.action>
-	</td>
 	<td class="col-control">
+		<f:link.action action="addToCompareList" arguments="{uid: backendUser.uid}" class="btn"><bu:spriteManagerIcon iconName="actions-edit-add"/> <f:translate key="compare" /></f:link.action>
 		<div class="btn-group" role="group">
 			<a class="btn" href="#" onclick="top.launchView('be_users', '{backendUser.uid}'); return false;"><bu:spriteManagerIcon iconName="actions-document-info" /></a>
 			<a class="btn" href="alt_doc.php?edit[be_users][{backendUser.uid}]=edit&amp;returnUrl={returnUrl}"><bu:spriteManagerIcon iconName="actions-document-open" /></a>
@@ -38,7 +36,7 @@
 			<bu:SwitchUser backendUser="{backendUser}" />
 		</div>
 	</td>
-	<td class="hidden-xs hidden-sm">
+	<td>
 		<f:if condition="{backendUser.lastLoginDateAndTime}">
 			<f:then>
 				<f:format.date format="{dateFormat} {timeFormat}">{backendUser.lastLoginDateAndTime}</f:format.date>

@@ -4298,22 +4298,22 @@ a.list-group-item-danger.active:focus {
   border-bottom: 1px solid #dddddd;
 }
 .panel-default {
-  border-color: #dddddd;
+  border-color: #cccccc;
 }
 .panel-default > .panel-heading {
   color: #5a5a5a;
-  background-color: #f5f5f5;
-  border-color: #dddddd;
+  background-color: #dddddd;
+  border-color: #cccccc;
 }
 .panel-default > .panel-heading + .panel-collapse > .panel-body {
-  border-top-color: #dddddd;
+  border-top-color: #cccccc;
 }
 .panel-default > .panel-heading .badge {
-  color: #f5f5f5;
+  color: #dddddd;
   background-color: #5a5a5a;
 }
 .panel-default > .panel-footer + .panel-collapse > .panel-body {
-  border-bottom-color: #dddddd;
+  border-bottom-color: #cccccc;
 }
 .panel-primary {
   border-color: #0078e6;
@@ -7969,7 +7969,10 @@ table {
 .t3-table > tbody > tr > th,
 .table > tbody > tr > th,
 .t3-table > tfoot > tr > th,
-.table > tfoot > tr > th,
+.table > tfoot > tr > th {
+  white-space: nowrap;
+  vertical-align: middle;
+}
 .t3-table > thead > tr > td,
 .table > thead > tr > td,
 .t3-table > tbody > tr > td,
@@ -8638,7 +8641,10 @@ fieldset[disabled] .table .btn-checkbox-holder input[type=checkbox]:checked + .b
 }
 .t3-table > thead > tr > th,
 .t3-table > tbody > tr > th,
-.t3-table > tfoot > tr > th,
+.t3-table > tfoot > tr > th {
+  white-space: nowrap;
+  vertical-align: middle;
+}
 .t3-table > thead > tr > td,
 .t3-table > tbody > tr > td,
 .t3-table > tfoot > tr > td {
@@ -9164,12 +9170,6 @@ fieldset[disabled] .t3-table .btn-checkbox-holder input[type=checkbox]:checked +
   margin-bottom: 0;
   border: 0;
 }
-.table-fit > .table > thead > tr > th,
-.table-fit > .t3-table > thead > tr > th,
-.table-fit > .table > tbody > tr > th,
-.table-fit > .t3-table > tbody > tr > th,
-.table-fit > .table > tfoot > tr > th,
-.table-fit > .t3-table > tfoot > tr > th,
 .table-fit > .table > thead > tr > td,
 .table-fit > .t3-table > thead > tr > td,
 .table-fit > .table > tbody > tr > td,
@@ -9196,7 +9196,8 @@ fieldset[disabled] .t3-table .btn-checkbox-holder input[type=checkbox]:checked +
 .panel .panel-heading {
   font-weight: bold;
 }
-.panel .table {
+.panel .table,
+.panel .table-fit {
   border: 0;
   margin: 0;
 }
@@ -12005,11 +12006,6 @@ input.smallCheckboxes {
 }
 div#typo3-listOptions {
   margin: 0 0 24px 0;
-}
-.db_list_normal td.col-control,
-.db_list_normal td.col-clipboard {
-  padding-left: 3px;
-  padding-right: 0px;
 }
 .t3-list-table-header-icon-down {
   display: inline-block;
