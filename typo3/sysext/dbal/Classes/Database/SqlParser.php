@@ -654,7 +654,8 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 										}
 										$output .= ' ' . $v['comparator'];
 										// Detecting value type; list or plain:
-										if (GeneralUtility::inList('NOTIN,IN', strtoupper(str_replace(array(' ', TAB, CR, LF), '', $v['comparator'])))) {
+										$comparator = strtoupper(str_replace(array(' ', TAB, CR, LF), '', $v['comparator']));
+										if (GeneralUtility::inList('NOTIN,IN', $comparator)) {
 											if (isset($v['subquery'])) {
 												$output .= ' (' . $this->compileSELECT($v['subquery']) . ')';
 											} else {
@@ -662,7 +663,42 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 												foreach ($v['value'] as $realValue) {
 													$valueBuffer[] = $realValue[1] . $this->compileAddslashes($realValue[0]) . $realValue[1];
 												}
-												$output .= ' (' . trim(implode(',', $valueBuffer)) . ')';
+
+												$dbmsSpecifics = $this->databaseConnection->getSpecifics();
+												if ($dbmsSpecifics === NULL) {
+													$output .= ' (' . trim(implode(',', $valueBuffer)) . ')';
+												} else {
+													$chunkedList = $dbmsSpecifics->splitMaxExpressions($valueBuffer);
+													$chunkCount = count($chunkedList);
+
+													if ($chunkCount === 1) {
+														$output .= ' (' . trim(implode(',', $valueBuffer)) . ')';
+													} else {
+														$listExpressions = array();
+														$field = trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']);
+
+														switch ($comparator) {
+															case 'IN':
+																$operator = 'OR';
+																break;
+															case 'NOTIN':
+																$operator = 'AND';
+																break;
+														}
+
+														for ($i = 0; $i < $chunkCount; ++$i) {
+															$listPart = trim(implode(',', $chunkedList[$i]));
+															$listExpressions[] = ' (' . $listPart . ')';
+														}
+
+														$implodeString = ' ' . $operator . ' ' . $field . ' ' . $v['comparator'];
+
+														// add opening brace before field
+														$lastFieldPos = strpos($output, $field);
+														$output = substr_replace($output, '(', $lastFieldPos, 0);
+														$output .= implode($implodeString, $listExpressions) . ')';
+													}
+												}
 											}
 										} elseif (GeneralUtility::inList('BETWEEN,NOT BETWEEN', $v['comparator'])) {
 											$lbound = $v['values'][0];

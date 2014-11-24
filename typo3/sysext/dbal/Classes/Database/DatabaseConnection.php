@@ -203,6 +203,11 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	);
 
 	/**
+	 * @var Specifics\AbstractSpecifics
+	 */
+	protected $dbmsSpecifics;
+
+	/**
 	 * Constructor.
 	 * Creates SQL parser object and imports configuration from $TYPO3_CONF_VARS['EXTCONF']['dbal']
 	 */
@@ -230,11 +235,32 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		}
 		if (isset($this->conf['handlerCfg'])) {
 			$this->handlerCfg = $this->conf['handlerCfg'];
+
+			if (isset($this->handlerCfg['_DEFAULT']['config']['driver'])) {
+				// load DBMS specifics
+				$driver = $this->handlerCfg['_DEFAULT']['config']['driver'];
+				$className = 'TYPO3\\CMS\\Dbal\\Database\\Specifics\\' . ucfirst(strtolower($driver));
+				if (class_exists($className)) {
+					if (!is_subclass_of($className, Specifics\AbstractSpecifics::class)) {
+						throw new \InvalidArgumentException($className . ' must inherit from ' . Specifics\AbstractSpecifics::class, 1416919866);
+					}
+					$this->dbmsSpecifics = GeneralUtility::makeInstance($className);
+				}
+			}
 		}
 		$this->cacheFieldInfo();
 		// Debugging settings:
 		$this->printErrors = !empty($this->conf['debugOptions']['printErrors']);
 		$this->debug = !empty($this->conf['debugOptions']['enabled']);
+	}
+
+	/**
+	 * Gets the DBMS specifics object
+	 *
+	 * @return Specifics\AbstractSpecifics
+	 */
+	public function getSpecifics() {
+		return $this->dbmsSpecifics;
 	}
 
 	/**
