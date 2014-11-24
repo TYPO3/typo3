@@ -23,9 +23,6 @@ Scheduler
 .tx_scheduler_mod1 #typo3-docheader a {
   text-decoration: none;
 }
-.tx_scheduler_mod1 #typo3-inner-docbody {
-  padding-right: 10px;
-}
 .tx_scheduler_mod1 .late {
   color: #f00;
   font-weight: bold;
