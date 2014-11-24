@@ -20,5 +20,9 @@ Help > About modules
   text-decoration: underline;
 }
 .typo3-aboutmodules-inner-docbody .end-text {
-  padding-top: 3em;
+	padding-top: 3em;
+}
+.typo3-aboutmodules-inner-docbody .media .typo3-app-icon img.media-object {
+	max-height: 64px;
+	max-width: 64px;
 }
