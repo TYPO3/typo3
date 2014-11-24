@@ -59,7 +59,7 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface {
 	 */
 	protected function renderHelp() {
 		$help = '<p class="lead">' . $GLOBALS['LANG']->getLL('report_explanation') . '</p>';
-		$help .= '<p class="help">' . $GLOBALS['LANG']->getLL('externals_explanation') . '</p><br />';
+		$help .= '<p class="help">' . $GLOBALS['LANG']->getLL('externals_explanation') . '</p>';
 		return $help;
 	}
 
