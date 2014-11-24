@@ -909,4 +909,67 @@ class DatabaseConnectionOracleTest extends AbstractTestCase {
 		$expected = 'SELECT * FROM "tt_content" WHERE (dbms_lob.instr("bodytext", \'test\',1,1) > 0)';
 		$this->assertEquals($expected, $this->cleanSql($result));
 	}
+
+	/**
+	 * @test
+	 */
+	public function expressionListWithNotInIsConcatenatedWithAnd() {
+		$listMaxExpressions = 1000;
+
+		$mockSpecificsOci8 = $this->getAccessibleMock('TYPO3\\CMS\\Dbal\\Database\\Specifics\\Oci8', array(), array(), '', FALSE);
+		$mockSpecificsOci8->expects($this->any())->method('getSpecific')->will($this->returnValue($listMaxExpressions));
+
+		$items = range(0, 1250);
+		$where = 'uid NOT IN(' . implode(',', $items) . ')';
+		$result = $this->subject->SELECTquery('*', 'tt_content', $where);
+
+		$chunks = array_chunk($items, $listMaxExpressions);
+		$whereExpr = array();
+		foreach ($chunks as $chunk) {
+			$whereExpr[] = '"uid" NOT IN (' . implode(',', $chunk) . ')';
+		}
+
+		$expectedWhere = '(' . implode(' AND ', $whereExpr) . ')';
+		$expectedQuery = 'SELECT * FROM "tt_content" WHERE ' . $expectedWhere;
+		$this->assertEquals($expectedQuery, $this->cleanSql($result));
+	}
+
+	/**
+	 * @test
+	 */
+	public function expressionListWithInIsConcatenatedWithOr() {
+		$listMaxExpressions = 1000;
+
+		$mockSpecificsOci8 = $this->getAccessibleMock('TYPO3\\CMS\\Dbal\\Database\\Specifics\\Oci8', array(), array(), '', FALSE);
+		$mockSpecificsOci8->expects($this->any())->method('getSpecific')->will($this->returnValue($listMaxExpressions));
+
+		$items = range(0, 1250);
+		$where = 'uid IN(' . implode(',', $items) . ')';
+		$result = $this->subject->SELECTquery('*', 'tt_content', $where);
+
+		$chunks = array_chunk($items, $listMaxExpressions);
+		$whereExpr = array();
+		foreach ($chunks as $chunk) {
+			$whereExpr[] = '"uid" IN (' . implode(',', $chunk) . ')';
+		}
+
+		$expectedWhere = '(' . implode(' OR ', $whereExpr) . ')';
+		$expectedQuery = 'SELECT * FROM "tt_content" WHERE ' . $expectedWhere;
+		$this->assertEquals($expectedQuery, $this->cleanSql($result));
+	}
+
+	/**
+	 * @test
+	 */
+	public function expressionListIsUnchanged() {
+		$listMaxExpressions = 1000;
+
+		$mockSpecificsOci8 = $this->getAccessibleMock('TYPO3\\CMS\\Dbal\\Database\\Specifics\\Oci8', array(), array(), '', FALSE);
+		$mockSpecificsOci8->expects($this->any())->method('getSpecific')->will($this->returnValue($listMaxExpressions));
+
+		$result = $this->subject->SELECTquery('*', 'tt_content', 'uid IN (0,1,2,3,4,5,6,7,8,9,10)');
+
+		$expectedQuery = 'SELECT * FROM "tt_content" WHERE "uid" IN (0,1,2,3,4,5,6,7,8,9,10)';
+		$this->assertEquals($expectedQuery, $this->cleanSql($result));
+	}
 }
