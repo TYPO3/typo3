@@ -4,7 +4,7 @@
 		<header/>
 		<body>
 			<trans-unit id="menu" xml:space="preserve">
-				<source>[ MENU ]</source>
+				<source>Overview</source>
 			</trans-unit>
 			<trans-unit id="recordStatistics" xml:space="preserve">
 				<source>Record Statistics</source>
