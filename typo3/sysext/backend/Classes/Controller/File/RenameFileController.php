@@ -131,34 +131,30 @@ class RenameFileController {
 		// Make page header:
 		$this->content = $this->doc->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_rename.php.pagetitle'));
 		$pageContent = $this->doc->header($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_rename.php.pagetitle'));
-		$pageContent .= $this->doc->spacer(5);
-		$pageContent .= $this->doc->divider(5);
 		if ($this->fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\Folder) {
 			$fileIdentifier = $this->fileOrFolderObject->getCombinedIdentifier();
 		} else {
 			$fileIdentifier = $this->fileOrFolderObject->getUid();
 		}
-		$code = '<form action="tce_file.php" method="post" name="editform">';
+		$pageContent .= '<form action="tce_file.php" method="post" name="editform" role="form">';
 		// Making the formfields for renaming:
-		$code .= '
+		$pageContent .= '
 
-			<div id="c-rename">
-				<input type="text" name="file[rename][0][target]" value="' . htmlspecialchars($this->fileOrFolderObject->getName()) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(40) . ' />
+			<div class="form-group">
+				<input class="form-control" type="text" name="file[rename][0][target]" value="' . htmlspecialchars($this->fileOrFolderObject->getName()) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(40) . ' />
 				<input type="hidden" name="file[rename][0][data]" value="' . htmlspecialchars($fileIdentifier) . '" />
 			</div>
 		';
 		// Making submit button:
-		$code .= '
-			<div id="c-submit">
-				<input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_rename.php.submit', TRUE) . '" />
-				<input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.cancel', TRUE) . '" onclick="backToList(); return false;" />
+		$pageContent .= '
+			<div class="form-group">
+				<input class="btn btn-primary" type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_rename.php.submit', TRUE) . '" />
+				<input class="btn btn-danger" type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.cancel', TRUE) . '" onclick="backToList(); return false;" />
 				<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
 				' . \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction') . '
 			</div>
 		';
-		$code .= '</form>';
-		// Add the HTML as a section:
-		$pageContent .= $code;
+		$pageContent .= '</form>';
 		$docHeaderButtons = array(
 			'back' => ''
 		);
