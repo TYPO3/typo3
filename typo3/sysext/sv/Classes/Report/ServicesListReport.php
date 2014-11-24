@@ -161,7 +161,7 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface {
 	 */
 	protected function renderExecutablesSearchPathList() {
 		$searchPaths = \TYPO3\CMS\Core\Utility\CommandUtility::getPaths(TRUE);
-		$content = '<h3 class="divider">' . $GLOBALS['LANG']->getLL('search_paths') . '</h3>';
+		$content = '<h3>' . $GLOBALS['LANG']->getLL('search_paths') . '</h3>';
 		if (count($searchPaths) == 0) {
 			$content .= '<p>' . $GLOBALS['LANG']->getLL('no_search_paths') . '</p>';
 		} else {
