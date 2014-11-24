@@ -121,9 +121,9 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 		$shortcutGroup = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarksGroup', TRUE);
 		$shortcutEdit = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarksEdit', TRUE);
 		$shortcutDelete = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarksDelete', TRUE);
-		$groupIcon = '<img' . IconUtility::skinImg('', 'gfx/i/sysf.gif', 'width="18" height="16"') . ' title="' . $shortcutGroup . '" alt="' . $shortcutGroup . '" />';
-		$editIcon = '<img' . IconUtility::skinImg('', 'gfx/edit2.gif', 'width="11" height="12"') . ' title="' . $shortcutEdit . '" alt="' . $shortcutEdit . '"';
-		$deleteIcon = '<img' . IconUtility::skinImg('', 'gfx/garbage.gif', 'width="11" height="12"') . ' title="' . $shortcutDelete . '" alt="' . $shortcutDelete . '" />';
+		$groupIcon = IconUtility::getSpriteIcon('apps-pagetree-folder-default', array('title' => $shortcutGroup));
+		$editIcon = IconUtility::getSpriteIcon('actions-document-open', array('title' => $shortcutEdit));
+		$deleteIcon = IconUtility::getSpriteIcon('actions-edit-delete', array('title' => $shortcutEdit));
 		$shortcutMenu[] = '<table border="0" class="shortcut-list">';
 		// Render shortcuts with no group (group id = 0) first
 		$noGroupShortcuts = $this->getShortcutsByGroup(0);
@@ -134,7 +134,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 				<td class="shortcut-label">
 					<a href="#" onclick="' . $shortcut['action'] . '; return false;">' . htmlspecialchars($shortcut['label']) . '</a>
 				</td>
-				<td class="shortcut-edit">' . $editIcon . ' /></td>
+				<td class="shortcut-edit">' . $editIcon . '</td>
 				<td class="shortcut-delete">' . $deleteIcon . '</td>
 			</tr>';
 		}
@@ -163,7 +163,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 						<td class="shortcut-label">
 							<a href="#" onclick="' . $shortcut['action'] . '; return false;">' . htmlspecialchars($shortcut['label']) . '</a>
 						</td>
-						<td class="shortcut-edit">' . $editIcon . ' /></td>
+						<td class="shortcut-edit">' . $editIcon . '</td>
 						<td class="shortcut-delete">' . $deleteIcon . '</td>
 					</tr>';
 				}
