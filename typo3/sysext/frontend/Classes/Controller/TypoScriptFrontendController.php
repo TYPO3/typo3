@@ -2613,11 +2613,7 @@ class TypoScriptFrontendController {
 			// Do we set all except LC_NUMERIC
 			$locale = setlocale(LC_COLLATE, $this->config['config']['locale_all']);
 			if ($locale) {
-				// PHP fatals with uppercase I characters in method names with turkish locale LC_CTYPE
-				// @see http://bugs.php.net/bug.php?id=35050
-				if (substr($this->config['config']['locale_all'], 0, 2) != 'tr') {
-					setlocale(LC_CTYPE, $this->config['config']['locale_all']);
-				}
+				setlocale(LC_CTYPE, $this->config['config']['locale_all']);
 				setlocale(LC_MONETARY, $this->config['config']['locale_all']);
 				setlocale(LC_TIME, $this->config['config']['locale_all']);
 				$this->localeCharset = $this->csConvObj->get_locale_charset($this->config['config']['locale_all']);
