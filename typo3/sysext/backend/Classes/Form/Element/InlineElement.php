@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
@@ -870,14 +871,15 @@ class InlineElement {
 	 * @return string A HTML link that opens an element browser in a new window
 	 */
 	public function renderPossibleRecordsSelectorTypeGroupDB($conf, &$PA) {
-		$foreign_table = $conf['foreign_table'];
 		$config = $PA['fieldConf']['config'];
+		ArrayUtility::mergeRecursiveWithOverrule($config, $conf);
+		$foreign_table = $config['foreign_table'];
 		$allowed = $config['allowed'];
 		$objectPrefix = $this->inlineNames['object'] . self::Structure_Separator . $foreign_table;
 		$mode = 'db';
 		$showUpload = FALSE;
-		if (!empty($conf['appearance']['createNewRelationLinkTitle'])) {
-			$createNewRelationText = $GLOBALS['LANG']->sL($conf['appearance']['createNewRelationLinkTitle'], TRUE);
+		if (!empty($config['appearance']['createNewRelationLinkTitle'])) {
+			$createNewRelationText = $GLOBALS['LANG']->sL($config['appearance']['createNewRelationLinkTitle'], TRUE);
 		} else {
 			$createNewRelationText = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.createNewRelation', TRUE);
 		}
@@ -924,6 +926,7 @@ class InlineElement {
 				$this->loadDragUploadJs();
 			}
 		}
+
 		return $item;
 	}
 
