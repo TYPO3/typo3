@@ -144,14 +144,13 @@ class CreateFolderController {
 		$this->content .= $this->doc->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.pagetitle'));
 		// Make page header:
 		$pageContent = $this->doc->header($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.pagetitle'));
-		$pageContent .= $this->doc->spacer(5);
-		$pageContent .= $this->doc->divider(5);
+
 		if ($this->folderObject->checkActionPermission('add')) {
-			$code = '<form action="tce_file.php" method="post" name="editform">';
+			$code = '<form role="form" action="tce_file.php" method="post" name="editform">';
 			// Making the selector box for the number of concurrent folder-creations
 			$this->number = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->number, 1, 10);
 			$code .= '
-				<div id="c-select">
+				<div class="form-group">
 					<label for="number-of-new-folders">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.number_of_folders') . '</label>
 					<select name="number" id="number-of-new-folders" onchange="reload(this.options[this.selectedIndex].value);">';
 			for ($a = 1; $a <= $this->folderNumber; $a++) {
@@ -162,32 +161,24 @@ class CreateFolderController {
 				</div>
 				';
 			// Making the number of new-folder boxes needed:
-			$code .= '
-				<div id="c-createFolders">
-			';
 			for ($a = 0; $a < $this->number; $a++) {
 				$code .= '
-						<input' . $this->doc->formWidth(20) . ' type="text" name="file[newfolder][' . $a . '][data]" onchange="changed=true;" />
-						<input type="hidden" name="file[newfolder][' . $a . '][target]" value="' . htmlspecialchars($this->target) . '" /><br />
-					';
+				<div class="form-group">
+						<input type="text" class="form-control" name="file[newfolder][' . $a . '][data]" onchange="changed=true;" />
+						<input type="hidden" name="file[newfolder][' . $a . '][target]" value="' . htmlspecialchars($this->target) . '" />
+				</div>';
 			}
-			$code .= '
-				</div>
-			';
 			// Making submit button for folder creation:
 			$code .= '
-				<div id="c-submitFolders">
-					<input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.submit', TRUE) . '" />
-					<input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.cancel', TRUE) . '" onclick="backToList(); return false;" />
+				<div class="form-group">
+					<input class="btn btn-primary" type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.submit', TRUE) . '" />
+					<input class="btn btn-danger" type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.cancel', TRUE) . '" onclick="backToList(); return false;" />
 					<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
 					' . \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction') . '
+					' . BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfolder') . '
 				</div>
 				';
-			// CSH:
-			$code .= BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfolder', NULL, '<br />');
 			$pageContent .= $code;
-			// Add spacer:
-			$pageContent .= $this->doc->spacer(10);
 			// Switching form tags:
 			$pageContent .= $this->doc->sectionEnd() . '</form>';
 		}
@@ -204,23 +195,22 @@ class CreateFolderController {
 			}
 			// Add form fields for creation of a new, blank text file:
 			$code = '
-				<div id="c-newFile">
-					<p>[' . htmlspecialchars(implode(', ', $fileExtList)) . ']</p>
-					<input' . $this->doc->formWidth(20) . ' type="text" name="file[newfile][0][data]" onchange="changed=true;" />
+				<div class="form-group">
+					<label>[' . htmlspecialchars(implode(', ', $fileExtList)) . ']</label>
+					<input class="form-control" type="text" name="file[newfile][0][data]" onchange="changed=true;" />
 					<input type="hidden" name="file[newfile][0][target]" value="' . htmlspecialchars($this->target) . '" />
 				</div>
 				';
 			// Submit button for creation of a new file:
 			$code .= '
-				<div id="c-submitFiles">
-					<input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfile_submit', TRUE) . '" />
-					<input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.cancel', TRUE) . '" onclick="backToList(); return false;" />
+				<div class="form-group">
+					<input class="btn btn-primary" type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfile_submit', TRUE) . '" />
+					<input class="btn btn-danger" type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.cancel', TRUE) . '" onclick="backToList(); return false;" />
 					<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
 					' . \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction') . '
+					' . BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfile') . '
 				</div>
 				';
-			// CSH:
-			$code .= BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfile', NULL, '<br />');
 			$pageContent .= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfile'), $code);
 			$pageContent .= $this->doc->sectionEnd();
 			$pageContent .= '</form>';
