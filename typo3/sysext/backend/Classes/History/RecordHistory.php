@@ -19,7 +19,7 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class for the record history display script (show_rechis.php)
+ * Class for the record history display module show_rechis
  *
  * @author Sebastian Kurfürst <sebastian@garbage-group.de>
  */

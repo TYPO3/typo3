@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Backend\Controller;
  * Script Class for redirecting shortcut actions to the correct script
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @deprecated this logic is not needed anymore, and will be removed with CMS 8
  */
 class ListFrameLoaderController {
 
@@ -25,8 +26,10 @@ class ListFrameLoaderController {
 	 * Main content generated
 	 *
 	 * @return void
+	 * @deprecated since TYPO3 CMS 7, will be removed with CMS 8
 	 */
 	public function main() {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		$GLOBALS['TBE_TEMPLATE']->divClass = '';
 		$this->content .= $GLOBALS['TBE_TEMPLATE']->startPage('List Frame Loader');
 		$this->content .= $GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
