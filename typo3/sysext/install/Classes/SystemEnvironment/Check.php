@@ -274,7 +274,7 @@ class Check {
 	 * @return Status\StatusInterface
 	 */
 	protected function checkPhpVersion() {
-		$minimumPhpVersion = '5.3.7';
+		$minimumPhpVersion = '5.5.0';
 		$currentPhpVersion = phpversion();
 		if (version_compare($currentPhpVersion, $minimumPhpVersion) < 0) {
 			$status = new Status\ErrorStatus();

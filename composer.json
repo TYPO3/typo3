@@ -28,7 +28,7 @@
 		"bin-dir": "bin"
 	},
 	"require": {
-		"php": ">=5.3.7",
+		"php": ">=5.5.0",
 		"ext-fileinfo": "*",
 		"ext-pcre": "*",
 		"ext-session": "*",

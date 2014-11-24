@@ -2,7 +2,7 @@ INSTALLING TYPO3
 ================
 
 TYPO3 is an open source PHP based web content management system released
-under the GNU GPL. TYPO3 is copyright (c) 1999-2013 by Kasper Skaarhoj.
+under the GNU GPL. TYPO3 is copyright (c) 1999-2014 by Kasper Skaarhoj.
 
 This document describes:
 
@@ -13,10 +13,10 @@ This document describes:
 Client browser support
 ----------------------
 
-The TYPO3 backend is accessed through a web browser. TYPO3 CMS 6.2 LTS
+The TYPO3 backend is accessed through a web browser. TYPO3 CMS 7.0
 supports the following web browsers:
 
-* Internet Explorer 8 and later
+* Internet Explorer 9 and later
 * Google Chrome (Windows, MacOS, Linux)
 * Firefox (Windows, MacOS, Linux)
 * Safari on MacOS
@@ -26,11 +26,11 @@ Server system requirements
 --------------------------
 
 TYPO3 requires a web server with a PHP environment and a database. The minimum
-system requirements for running TYPO3 CMS 6.2 LTS are:
+system requirements for running TYPO3 CMS 7.0 are:
 
 * Webserver capable of running PHP applications (Apache, Nginx, IIS or other)
-* PHP >5.3.7 up to 5.5 (PHP 5.4 or later recommended)
-* MySQL 5.1 up to 5.6 or compatible (no "strict mode", see below)
+* PHP >5.5 up to 5.6
+* MySQL 5.5 up to 5.6 or compatible (no "strict mode", see below)
 * more than 200 MB of disk space
 
 ### MySQL environment
@@ -94,7 +94,7 @@ functionality:
 * GraphicsMagick or ImageMagick v6 or newer installed on the server
 
 * PHP
-  * version 5.4 or later
+  * version 5.5 or later
   * memory_limit set to at least 128M
   * max_execution_time set to at least 240s
 
@@ -114,20 +114,20 @@ functionality:
   reduces performance and throws out warnings in the TYPO3 system log.
 
 * TYPO3 works with PHP's IPv6 support, which is enabled by default since
-  PHP 5.3. If you compile PHP 5.3 on your own, be aware not to use option
+  PHP 5.3. If you compile PHP on your own, be aware not to use option
   "--disable-ipv6", because this will break the IPv6 support and the according
   unit tests.
 
 Installation
 ------------
 
-### Important note for upgrades from TYPO3 CMS versions **below 4.5 LTS**
+### Important note for upgrades from TYPO3 CMS versions **below 6.2 LTS**
 
-It is not possible to upgrade any version below 4.5 LTS to 6.2 LTS directly,
-since some upgrade wizards are not available anymore on 6.2 LTS.
+It is not possible to upgrade any version below 6.2 LTS to 7.0 directly,
+since some upgrade wizards are not available anymore on 7.0.
 
-It is highly recommended to upgrade to 4.5 LTS first and continue with
-a second upgrade to 6.2 LTS.
+It is highly recommended to upgrade to 6.2 LTS first and continue with
+a second upgrade to 7.0.
 
 ### If SSH and symlinks are possible
 
@@ -135,17 +135,17 @@ If you have SSH access to your webserver and are able to create symlinks,
 this is the recommended way of setting up TYPO3 so that it can easily
 be upgraded later through the Install Tool:
 
-* Uncompress the `typo3_src-6.2.x.tar.gz` file one level above the Document
+* Uncompress the `typo3_src-7.0.x.tar.gz` file one level above the Document
   Root of your Web server:
 ```
 /var/www/site/htdocs/ $ cd ..
-/var/www/site/ $ tar xzf typo3_src-6.2.x.tar.gz
+/var/www/site/ $ tar xzf typo3_src-7.0.x.tar.gz
 ```
 
 * Create the symlinks in your Document Root:
 ```
   cd htdocs
-  ln -s ../typo3_src-6.2.x typo3_src
+  ln -s ../typo3_src-7.0.x typo3_src
   ln -s typo3_src/index.php index.php
   ln -s typo3_src/typo3 typo3
 ```
@@ -158,8 +158,8 @@ be upgraded later through the Install Tool:
 You end up with the follow structure of files:
 
 ```
-  typo3_src-6.2.x/
-  htdocs/typo3_src -> ../typo3_src-6.2.x/
+  typo3_src-7.0.x/
+  htdocs/typo3_src -> ../typo3_src-7.0.x/
   htdocs/typo3 -> typo3_src/typo3/
   htdocs/index.php -> typo3_src/index.php
   htdocs/.htaccess
@@ -174,7 +174,7 @@ be found in the Install Tool.
 On Windows Vista and Windows 7, you can create symbolic links using
 the `mklink` tool:
 ```
-  mklink /D C:\<dir>\example.com\typo3_src C:\<dir>\typo3_src-6.2.x
+  mklink /D C:\<dir>\example.com\typo3_src C:\<dir>\typo3_src-7.0.x
 ```
 
 Users of Windows XP/2000 or newer can use the `junction` program by
@@ -196,7 +196,7 @@ installation once a new patchlevel release is out.
 
 Please note that this is not a recommended setup!
 
-* Uncompress `typo3_src-6.2.x.tar.gz` locally
+* Uncompress `typo3_src-7.0.x.tar.gz` locally
 * Upload all files and subdirectories directly in your Document Root
   (where files that are served by your webserver are located).
 * In case your provider uses Apache:
