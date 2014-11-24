@@ -37,7 +37,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  * </code>
  *
  * <code title="Full parameter usage">
- * <f:link.typolink parameter="{link}" target="_blank" class="ico-class" title="some title" additionalParameters="&b=u" additionalAttributes="{type:'button'}">
+ * <f:link.typolink parameter="{link}" target="_blank" class="ico-class" title="some title" additionalParams="&u=b" additionalAttributes="{type:'button'}">
  * Linktext
  * </f:link.typolink>
  * </code>
@@ -57,14 +57,14 @@ class TypolinkViewHelper extends AbstractViewHelper {
 	 * @param string $target
 	 * @param string $class
 	 * @param string $title
-	 * @param string $additionalParameters
+	 * @param string $additionalParams
 	 * @param array $additionalAttributes
 	 *
 	 * @return string
 	 */
-	public function render($parameter, $target = '', $class = '', $title = '', $additionalParameters = '', $additionalAttributes = array()) {
+	public function render($parameter, $target = '', $class = '', $title = '', $additionalParams = '', $additionalAttributes = array()) {
 		// Merge the $parameter with other arguments
-		$typolinkParameter = $this->createTypolinkParameterArrayFromArguments($parameter, $target, $class, $title, $additionalParameters);
+		$typolinkParameter = $this->createTypolinkParameterArrayFromArguments($parameter, $target, $class, $title, $additionalParams);
 
 		// array(param1 -> value1, param2 -> value2) --> "param1=value1 param2=>value2" for typolink.ATagParams
 		$extraAttributes = array();
@@ -101,11 +101,11 @@ class TypolinkViewHelper extends AbstractViewHelper {
 	 * @param string $target
 	 * @param string $class
 	 * @param string $title
-	 * @param string $additionalParameters
+	 * @param string $additionalParams
 	 *
 	 * @return array Final merged typolink.parameter as array to be imploded with empty string later
 	 */
-	protected function createTypolinkParameterArrayFromArguments($parameter, $target = '', $class = '', $title = '', $additionalParameters = '') {
+	protected function createTypolinkParameterArrayFromArguments($parameter, $target = '', $class = '', $title = '', $additionalParams = '') {
 		// Explode $parameter by whitespace and remove any " around resulting array values
 		$parameterArray = GeneralUtility::unQuoteFilenames($parameter, TRUE);
 
@@ -132,9 +132,9 @@ class TypolinkViewHelper extends AbstractViewHelper {
 			$typolinkConfiguration[3] = $title;
 		}
 
-		// Combine additionalParameters
-		if ($additionalParameters) {
-			$typolinkConfiguration[4] .= $additionalParameters;
+		// Combine additionalParams
+		if ($additionalParams) {
+			$typolinkConfiguration[4] .= $additionalParams;
 		}
 
 		// Unset unused parameters again from the end, wrap all given values with "
