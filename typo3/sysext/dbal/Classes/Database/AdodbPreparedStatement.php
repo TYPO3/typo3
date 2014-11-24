@@ -164,7 +164,7 @@ class AdodbPreparedStatement extends \TYPO3\CMS\Dbal\Database\DatabaseConnection
 				// If there are two parameters, do mapping differently than otherwise:
 				$numRows = $splitLimit[1];
 				$offset = $splitLimit[0];
-				$limit = $numrows . ' OFFSET ' . $offset;
+				$limit = $numRows . ' OFFSET ' . $offset;
 			}
 		}
 		if ($limit !== '') {
