@@ -20,7 +20,6 @@ namespace TYPO3\CMS\T3skin\Slot;
 class IconStyleModifier {
 
 	protected $flatSpriteIconName = array(
-		't3-icon t3-i-con-status t3-icon-status-warning t3-icon-warning-lock' => 'fa-lock',
 		't3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-close' => 'fa-close',
 		't3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-export-csv' => 'fa-download',
 		't3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-export-t3d' => 'fa-download',
@@ -118,6 +117,7 @@ class IconStyleModifier {
 		't3-icon t3-icon-status t3-icon-status-status t3-icon-status-permission-granted' => 'fa-check-circle-o',
 		't3-icon t3-icon-status t3-icon-status-status t3-icon-status-readonly' => 'fa-lock',
 		't3-icon t3-icon-status t3-icon-status-warning t3-icon-warning-lock' => 'fa-lock',
+		't3-icon t3-icon-status t3-icon-status-status t3-icon-status-checked' => 'fa-check',
 		't3-icon t3-icon-actions t3-icon-actions-move t3-icon-move-move sortableHandle' => 'fa-reorder sortableHandle',
 		't3-icon t3-icon-actions t3-icon-actions-move t3-icon-move-move' => 'fa-reorder',
 		't3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-paste-into' => 'fa-clipboard',
