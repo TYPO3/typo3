@@ -250,9 +250,10 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 				// NEW button
 				$urlParameters = array(
 					'id' => $this->id,
-					'template' => 'all'
+					'template' => 'all',
+					'createExtension' => 'new'
 				);
-				$buttons['new'] = '<a href="' . BackendUtility::getModuleUrl('web_ts', array_merge($urlParameters, array('createExtension' => 'new'))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-new') . '</a>';
+				$buttons['new'] = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_ts', $urlParameters)) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-new') . '</a>';
 				if (!empty($this->e) && !GeneralUtility::_POST('abort') && !GeneralUtility::_POST('saveclose')) {
 					// no NEW-button while edit
 					$buttons['new'] = '';
