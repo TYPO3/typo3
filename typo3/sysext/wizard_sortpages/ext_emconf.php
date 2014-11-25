@@ -1,6 +1,6 @@
 <?php
 $EM_CONF[$_EXTKEY] = array(
-	'title' => 'Web>Func, Wizards, Sort pages',
+	'title' => 'Web>Functions: Sort pages',
 	'description' => 'A little utility to rearrange the sorting order of pages in the backend.',
 	'category' => 'module',
 	'state' => 'stable',
@@ -15,7 +15,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'constraints' => array(
 		'depends' => array(
 			'typo3' => '7.0.0-7.0.99',
-			'func_wizards' => '7.0.0-7.0.99',
+			'func' => '7.0.0-7.0.99',
 		),
 		'conflicts' => array(),
 		'suggests' => array(),

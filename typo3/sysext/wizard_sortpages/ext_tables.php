@@ -6,8 +6,7 @@ if (TYPO3_MODE === 'BE') {
 		'web_func',
 		'TYPO3\\CMS\\WizardSortpages\\View\\SortPagesWizardModuleFunction',
 		NULL,
-		'LLL:EXT:wizard_sortpages/locallang.xlf:wiz_sort',
-		'wiz'
+		'LLL:EXT:wizard_sortpages/locallang.xlf:wiz_sort'
 	);
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
 		'_MOD_web_func',

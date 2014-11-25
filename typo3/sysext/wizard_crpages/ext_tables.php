@@ -6,8 +6,7 @@ if (TYPO3_MODE === 'BE') {
 		'web_func',
 		'TYPO3\\CMS\\WizardCrpages\\Controller\\CreatePagesWizardModuleFunctionController',
 		NULL,
-		'LLL:EXT:wizard_crpages/locallang.xlf:wiz_crMany',
-		'wiz'
+		'LLL:EXT:wizard_crpages/locallang.xlf:wiz_crMany'
 	);
 
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
