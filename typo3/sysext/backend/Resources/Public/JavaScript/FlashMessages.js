@@ -64,7 +64,7 @@ define('TYPO3/CMS/Backend/FlashMessages', ['jquery'], function ($) {
 		}
 		duration = duration || 5;
 		if (!this.messageContainer) {
-			this.messageContainer = $('<div id="msg-div" style="position:absolute;z-index:10000;width: 100%;"></div>').appendTo('body');
+			this.messageContainer = $('<div id="alert-container"></div>').appendTo('body');
 		}
 		$box = $('<div class="alert alert-' + className + ' alert-dismissible fade in" role="alert">' +
 		'<button type="button" class="close" data-dismiss="alert">' +
@@ -75,11 +75,6 @@ define('TYPO3/CMS/Backend/FlashMessages', ['jquery'], function ($) {
 		'<p>' + message + '</p>' +
 		'</div>');
 		$box.appendTo(this.messageContainer);
-		$box.css({
-			width: '400px',
-			position: 'relative',
-			margin: '0 auto 10px auto'
-		});
 		$box.fadeIn().delay(duration * 1000).slideUp();
 	};
 
