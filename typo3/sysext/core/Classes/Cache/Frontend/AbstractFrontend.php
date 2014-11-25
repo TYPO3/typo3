@@ -13,6 +13,11 @@ namespace TYPO3\CMS\Core\Cache\Frontend;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Cache\Backend\AbstractBackend;
+use TYPO3\CMS\Core\Cache\Backend\BackendInterface;
+use TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * An abstract cache
  *
@@ -22,7 +27,7 @@ namespace TYPO3\CMS\Core\Cache\Frontend;
  * @author Karsten Dambekalns <karsten@typo3.org>
  * @api
  */
-abstract class AbstractFrontend implements \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface {
+abstract class AbstractFrontend implements FrontendInterface {
 
 	/**
 	 * Identifies this cache
@@ -32,7 +37,7 @@ abstract class AbstractFrontend implements \TYPO3\CMS\Core\Cache\Frontend\Fronte
 	protected $identifier;
 
 	/**
-	 * @var \TYPO3\CMS\Core\Cache\Backend\AbstractBackend|\TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface
+	 * @var AbstractBackend|TaggableBackendInterface
 	 */
 	protected $backend;
 
@@ -40,10 +45,10 @@ abstract class AbstractFrontend implements \TYPO3\CMS\Core\Cache\Frontend\Fronte
 	 * Constructs the cache
 	 *
 	 * @param string $identifier A identifier which describes this cache
-	 * @param \TYPO3\CMS\Core\Cache\Backend\BackendInterface $backend Backend to be used for this cache
+	 * @param BackendInterface $backend Backend to be used for this cache
 	 * @throws \InvalidArgumentException if the identifier doesn't match PATTERN_ENTRYIDENTIFIER
 	 */
-	public function __construct($identifier, \TYPO3\CMS\Core\Cache\Backend\BackendInterface $backend) {
+	public function __construct($identifier, BackendInterface $backend) {
 		if (preg_match(self::PATTERN_ENTRYIDENTIFIER, $identifier) !== 1) {
 			throw new \InvalidArgumentException('"' . $identifier . '" is not a valid cache identifier.', 1203584729);
 		}
@@ -65,7 +70,7 @@ abstract class AbstractFrontend implements \TYPO3\CMS\Core\Cache\Frontend\Fronte
 	/**
 	 * Returns the backend used by this cache
 	 *
-	 * @return \TYPO3\CMS\Core\Cache\Backend\BackendInterface The backend used by this cache
+	 * @return BackendInterface The backend used by this cache
 	 * @api
 	 */
 	public function getBackend() {
@@ -127,10 +132,10 @@ abstract class AbstractFrontend implements \TYPO3\CMS\Core\Cache\Frontend\Fronte
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/cache/frontend/class.t3lib_cache_frontend_abstractfrontend.php']['flushByTag'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/cache/frontend/class.t3lib_cache_frontend_abstractfrontend.php']['flushByTag'] as $_funcRef) {
 				$params = array('tag' => $tag);
-				\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $params, $this);
+				GeneralUtility::callUserFunction($_funcRef, $params, $this);
 			}
 		}
-		if ($this->backend instanceof \TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface) {
+		if ($this->backend instanceof TaggableBackendInterface) {
 			$this->backend->flushByTag($tag);
 		}
 	}

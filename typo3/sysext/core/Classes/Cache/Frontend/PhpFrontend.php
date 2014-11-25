@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Core\Cache\Frontend;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Cache\Backend\PhpCapableBackendInterface;
+use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
+
 /**
  * A cache frontend tailored to PHP code.
  *
@@ -21,15 +24,15 @@ namespace TYPO3\CMS\Core\Cache\Frontend;
  * @author Robert Lemke <robert@typo3.org>
  * @api
  */
-class PhpFrontend extends \TYPO3\CMS\Core\Cache\Frontend\StringFrontend {
+class PhpFrontend extends StringFrontend {
 
 	/**
 	 * Constructs the cache
 	 *
 	 * @param string $identifier A identifier which describes this cache
-	 * @param \TYPO3\CMS\Core\Cache\Backend\PhpCapableBackendInterface $backend Backend to be used for this cache
+	 * @param PhpCapableBackendInterface $backend Backend to be used for this cache
 	 */
-	public function __construct($identifier, \TYPO3\CMS\Core\Cache\Backend\PhpCapableBackendInterface $backend) {
+	public function __construct($identifier, PhpCapableBackendInterface $backend) {
 		parent::__construct($identifier, $backend);
 	}
 
@@ -42,7 +45,7 @@ class PhpFrontend extends \TYPO3\CMS\Core\Cache\Frontend\StringFrontend {
 	 * @param int $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
 	 * @return void
 	 * @throws \InvalidArgumentException If $entryIdentifier or $tags is invalid
-	 * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException If $sourceCode is not a string
+	 * @throws InvalidDataException If $sourceCode is not a string
 	 * @api
 	 */
 	public function set($entryIdentifier, $sourceCode, array $tags = array(), $lifetime = NULL) {
@@ -50,7 +53,7 @@ class PhpFrontend extends \TYPO3\CMS\Core\Cache\Frontend\StringFrontend {
 			throw new \InvalidArgumentException('"' . $entryIdentifier . '" is not a valid cache entry identifier.', 1264023823);
 		}
 		if (!is_string($sourceCode)) {
-			throw new \TYPO3\CMS\Core\Cache\Exception\InvalidDataException('The given source code is not a valid string.', 1264023824);
+			throw new InvalidDataException('The given source code is not a valid string.', 1264023824);
 		}
 		foreach ($tags as $tag) {
 			if (!$this->isValidTag($tag)) {

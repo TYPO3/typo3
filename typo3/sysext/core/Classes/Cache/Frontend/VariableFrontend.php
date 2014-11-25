@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Core\Cache\Frontend;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * A cache frontend for any kinds of PHP variables
  *
@@ -22,7 +24,7 @@ namespace TYPO3\CMS\Core\Cache\Frontend;
  * @author Karsten Dambekalns <karsten@typo3.org>
  * @api
  */
-class VariableFrontend extends \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend {
+class VariableFrontend extends AbstractFrontend {
 
 	/**
 	 * If the extension "igbinary" is installed, use it for increased performance.
@@ -70,7 +72,7 @@ class VariableFrontend extends \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend {
 					'tags' => &$tags,
 					'lifetime' => &$lifetime
 				);
-				\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $params, $this);
+				GeneralUtility::callUserFunction($_funcRef, $params, $this);
 			}
 		}
 		if ($this->useIgBinary === TRUE) {
