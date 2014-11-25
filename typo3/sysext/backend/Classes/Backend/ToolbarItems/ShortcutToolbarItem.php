@@ -123,7 +123,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 		$shortcutDelete = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarksDelete', TRUE);
 		$groupIcon = IconUtility::getSpriteIcon('apps-pagetree-folder-default', array('title' => $shortcutGroup));
 		$editIcon = IconUtility::getSpriteIcon('actions-document-open', array('title' => $shortcutEdit));
-		$deleteIcon = IconUtility::getSpriteIcon('actions-edit-delete', array('title' => $shortcutEdit));
+		$deleteIcon = IconUtility::getSpriteIcon('actions-edit-delete', array('title' => $shortcutDelete));
 		$shortcutMenu[] = '<table border="0" class="shortcut-list">';
 		// Render shortcuts with no group (group id = 0) first
 		$noGroupShortcuts = $this->getShortcutsByGroup(0);
@@ -623,6 +623,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 	protected function getShortcutIcon($row, $shortcut) {
 		$databaseConnection = $this->getDatabaseConnection();
 		$languageService = $this->getLanguageService();
+		$titleAttribute = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.shortcut', TRUE);
 		switch ($row['module_name']) {
 			case 'xMOD_alt_doc.php':
 				$table = $shortcut['table'];
@@ -660,17 +661,16 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 					);
 					$result = $databaseConnection->exec_SELECT_queryArray($sqlQueryParts);
 					$row = $databaseConnection->sql_fetch_assoc($result);
-					$icon = IconUtility::getIcon($table, $row);
+					$icon = IconUtility::getSpriteIconForRecord($table, $row, array('title' => $titleAttribute));
 				} elseif ($shortcut['type'] == 'new') {
-					$icon = IconUtility::getIcon($table, array());
+					$icon = IconUtility::getSpriteIconForRecord($table, array(), array('title' => $titleAttribute));
 				}
-				$icon = IconUtility::skinImg('', $icon, '', 1);
 				break;
 			case 'file_edit':
-				$icon = 'gfx/edit_file.gif';
+				$icon = IconUtility::getSpriteIcon('mimetypes-text-html', array('title' => $titleAttribute));
 				break;
 			case 'wizard_rte':
-				$icon = 'gfx/edit_rtewiz.gif';
+				$icon = IconUtility::getSpriteIcon('mimetypes-word', array('title' => $titleAttribute));
 				break;
 			default:
 				if ($languageService->moduleLabels['tabs_images'][$row['module_name'] . '_tab']) {
@@ -680,11 +680,13 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 					if (GeneralUtility::isAbsPath($icon)) {
 						$icon = '../' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($icon);
 					}
+					// @todo: hardcoded width as we don't have a way to address module icons with an API yet.
+					$icon = '<img src="' . htmlspecialchars($icon) . '" alt="' . $titleAttribute . '" width="16">';
 				} else {
-					$icon = 'gfx/dummy_module.gif';
+					$icon = IconUtility::getSpriteIcon('empty-empty', array('title' => $titleAttribute));
 				}
 		}
-		return '<img src="' . $icon . '" alt="' . $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.shortcut', TRUE) . '" title="' . $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.shortcut', TRUE) . '" />';
+		return $icon;
 	}
 
 	/**
