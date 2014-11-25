@@ -97,7 +97,6 @@ class IconStyleModifier {
 		't3-icon t3-icon-actions t3-icon-actions-view t3-icon-view-table-collapse' => 'fa-chevron-left',
 		't3-icon t3-icon-actions t3-icon-actions-window t3-icon-window-open' => 'fa-arrows-alt',
 		't3-icon t3-icon-actions t3-icon-system-extension-import' => 'fa-cloud-download',
-		't3-icon t3-icon-apps t3-icon-apps-pagetree t3-icon-pagetree-page-mountpoint' => 'fa-anchor',
 		't3-icon t3-icon-apps t3-icon-apps-toolbar t3-icon-toolbar-menu-actions' => 'fa-cog',
 		't3-icon t3-icon-apps t3-icon-apps-toolbar t3-icon-toolbar-menu-cache' => 'fa-bolt',
 		't3-icon t3-icon-apps t3-icon-apps-toolbar t3-icon-toolbar-menu-opendocs' => 'fa-file',
