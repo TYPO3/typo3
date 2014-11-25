@@ -1133,13 +1133,11 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 					);
 
 					$params = '&cmd[' . $table . '][' . $row['uid'] . '][delete]=1';
-					$onClick = htmlspecialchars(
-						('if (confirm(' . $warningText . ')) {jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');} return false;')
-					);
+					$onClick = 'if (confirm(' . $warningText . ')) {jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');} return false;';
 
 					$icon = IconUtility::getSpriteIcon('actions-edit-' . $actionName);
 					$linkTitle = $GLOBALS['LANG']->getLL($actionName, TRUE);
-					$cells['delete'] = '<a href="#" onclick="' . $onClick . '" title="' . $linkTitle . '">' . $icon . '</a>';
+					$cells['delete'] = '<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $linkTitle . '">' . $icon . '</a>';
 				} elseif (!$this->table) {
 					$cells['delete'] = $this->spaceIcon;
 				}

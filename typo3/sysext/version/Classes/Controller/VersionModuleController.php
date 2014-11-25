@@ -447,7 +447,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 							<td>' . $this->adminLinks($tN, $subrow) . '</td>
 							<td>' . $subrow['uid'] . '</td>
 							' . ($ownVer > 1 ? '<td style="font-weight: bold; background-color: yellow;"><a href="' .
-							BackendUtility::getModuleUrl('web_txversionM1', array('table' => $tN, 'uid' => $subrow['uid'])) .
+							htmlspecialchars(BackendUtility::getModuleUrl('web_txversionM1', array('table' => $tN, 'uid' => $subrow['uid']))) .
 							'">' . ($ownVer - 1) . '</a></td>' : '<td></td>') . '
 							<td width="98%">' . BackendUtility::getRecordTitle($tN, $subrow, TRUE) . '</td>
 						</tr>';
