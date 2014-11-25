@@ -1186,25 +1186,25 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		}
 		// "Move" wizard link for pages/tt_content elements:
 		if ($table == 'tt_content' && $permsEdit || $table == 'pages') {
-			$onClick = htmlspecialchars('return jumpExt(\'' . $this->backPath . 'move_el.php?table=' . $table . '&uid=' . $row['uid'] . '\');');
+			$onClick = 'return jumpExt(\'' . $this->backPath . 'move_el.php?table=' . $table . '&uid=' . $row['uid'] . '\');';
 			$linkTitleLL = $GLOBALS['LANG']->getLL('move_' . ($table === 'tt_content' ? 'record' : 'page'), TRUE);
 			$spriteIcon = $table === 'tt_content'
 				? IconUtility::getSpriteIcon('actions-document-move')
 				: IconUtility::getSpriteIcon('actions-page-move');
-			$cells['move'] = '<a class="btn" href="#" onclick="' . $onClick . '" title="' . $linkTitleLL . '">' . $spriteIcon . '</a>';
+			$cells['move'] = '<a class="btn" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $linkTitleLL . '">' . $spriteIcon . '</a>';
 		}
 		// If the extended control panel is enabled OR if we are seeing a single table:
 		if ($GLOBALS['SOBE']->MOD_SETTINGS['bigControlPanel'] || $this->table) {
 			// "Info": (All records)
-			$onClick = htmlspecialchars(('top.launchView(\'' . $table . '\', \'' . $row['uid'] . '\'); return false;'));
-			$cells['viewBig'] = '<a class="btn" href="#" onclick="' . $onClick . '" title="' . $GLOBALS['LANG']->getLL('showInfo', TRUE) . '">'
+			$onClick = 'top.launchView(\'' . $table . '\', \'' . $row['uid'] . '\'); return false;';
+			$cells['viewBig'] = '<a class="btn" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $GLOBALS['LANG']->getLL('showInfo', TRUE) . '">'
 				. IconUtility::getSpriteIcon('actions-document-info') . '</a>';
 			// If the table is NOT a read-only table, then show these links:
 			if (!$GLOBALS['TCA'][$table]['ctrl']['readOnly']) {
 				// "Revert" link (history/undo)
 				$moduleUrl = BackendUtility::getModuleUrl('record_history', array('element' => $table . ':' . $row['uid']));
-				$onClick = htmlspecialchars('return jumpExt(' . GeneralUtility::quoteJSvalue($this->backPath . $moduleUrl) . ',\'#latest\');');
-				$cells['history'] = '<a class="btn" href="#" onclick="' . $onClick . '" title="'
+				$onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue($this->backPath . $moduleUrl) . ',\'#latest\');';
+				$cells['history'] = '<a class="btn" href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
 					. $GLOBALS['LANG']->getLL('history', TRUE) . '">'
 					. IconUtility::getSpriteIcon('actions-document-history-open') . '</a>';
 				// Versioning:
@@ -1216,18 +1216,18 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 						if (count($vers) > 1) {
 							$versionIcon = count($vers) - 1;
 						}
-						$href = htmlspecialchars($this->backPath . BackendUtility::getModuleUrl('web_txversionM1', array(
+						$href = $this->backPath . BackendUtility::getModuleUrl('web_txversionM1', array(
 							'table' => $table, 'uid' => $row['uid']
-						)));
-						$cells['version'] = '<a class="btn" href="' . $href . '" title="'
+						));
+						$cells['version'] = '<a class="btn" href="' . htmlspecialchars($href) . '" title="'
 							. $GLOBALS['LANG']->getLL('displayVersions', TRUE) . '">'
 							. IconUtility::getSpriteIcon(('status-version-' . $versionIcon)) . '</a>';
 					}
 				}
 				// "Edit Perms" link:
 				if ($table === 'pages' && $GLOBALS['BE_USER']->check('modules', 'system_BeuserTxPermission') && ExtensionManagementUtility::isLoaded('beuser')) {
-					$href = htmlspecialchars((BackendUtility::getModuleUrl('system_BeuserTxPermission') . '&id=' . $row['uid'] . '&return_id=' . $row['uid'] . '&edit=1'));
-					$cells['perms'] = '<a class="btn" href="' . $href . '" title="'
+					$href = BackendUtility::getModuleUrl('system_BeuserTxPermission') . '&id=' . $row['uid'] . '&return_id=' . $row['uid'] . '&edit=1';
+					$cells['perms'] = '<a class="btn" href="' . htmlspecialchars($href) . '" title="'
 						. $GLOBALS['LANG']->getLL('permissions', TRUE) . '">'
 						. IconUtility::getSpriteIcon('status-status-locked') . '</a>';
 				}
@@ -1311,12 +1311,12 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 					);
 
 					$params = '&cmd[' . $table . '][' . $row['uid'] . '][delete]=1';
-					$onClick = htmlspecialchars('if (confirm(' . $warningText . ')) {jumpToUrl(\''
-						. $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');} return false;');
+					$onClick = 'if (confirm(' . $warningText . ')) {jumpToUrl(\''
+						. $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');} return false;';
 
 					$icon = IconUtility::getSpriteIcon('actions-edit-' . $actionName);
 					$linkTitle = $GLOBALS['LANG']->getLL($actionName, TRUE);
-					$cells['delete'] = '<a class="btn" href="#" onclick="' . $onClick . '" title="' . $linkTitle . '">' . $icon . '</a>';
+					$cells['delete'] = '<a class="btn" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $linkTitle . '">' . $icon . '</a>';
 				}
 				// "Levels" links: Moving pages into new levels...
 				if ($permsEdit && $table == 'pages' && !$this->searchLevels) {

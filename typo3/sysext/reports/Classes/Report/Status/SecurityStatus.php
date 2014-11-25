@@ -78,7 +78,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 				$editUserAccountUrl = 'alt_doc.php?returnUrl=' .
 					rawurlencode(BackendUtility::getModuleUrl('system_ReportsTxreportsm1')) . '&edit[be_users][' . $row['uid'] . ']=edit';
 				$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.backend_admin'),
-					'<a href="' . $editUserAccountUrl . '">', '</a>');
+					'<a href="' . htmlspecialchars($editUserAccountUrl) . '">', '</a>');
 			}
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
@@ -201,7 +201,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 			$severity = \TYPO3\CMS\Reports\Status::ERROR;
 			$changeInstallToolPasswordUrl = BackendUtility::getModuleUrl('system_InstallInstall');
 			$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.installtool_default_password'),
-				'<a href="' . $changeInstallToolPasswordUrl . '">', '</a>');
+				'<a href="' . htmlspecialchars($changeInstallToolPasswordUrl) . '">', '</a>');
 		}
 		return GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class,
 			$GLOBALS['LANG']->getLL('status_installToolPassword'), $value, $message, $severity);

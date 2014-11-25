@@ -679,7 +679,7 @@ class SetupModuleController {
 				}
 			}
 			if (count($opt)) {
-				$this->simulateSelector = '<select id="field_simulate" name="simulateUser" onchange="window.location.href=\'' . BackendUtility::getModuleUrl('user_setup') . '&simUser=\'+this.options[this.selectedIndex].value;"><option></option>' . implode('', $opt) . '</select>';
+				$this->simulateSelector = '<select id="field_simulate" name="simulateUser" onchange="window.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('user_setup') . '&simUser=') . '+this.options[this.selectedIndex].value;"><option></option>' . implode('', $opt) . '</select>';
 			}
 		}
 		// This can only be set if the previous code was executed.

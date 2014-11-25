@@ -718,9 +718,10 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 						$actionContent .= '<hr /> ' . $fullsearch->tableWrap($sql_query['qSelect']);
 					}
 					$actionContent .= '<br /><a title="' . $GLOBALS['LANG']->getLL('action_editQuery') . '" href="'
-						. BackendUtility::getModuleUrl('system_dbint')
-						. '&id=' . '&SET[function]=search' . '&SET[search]=query'
-						. '&storeControl[STORE]=-' . $record['uid'] . '&storeControl[LOAD]=1' . '">
+						. htmlspecialchars(BackendUtility::getModuleUrl('system_dbint')
+							. '&id=' . '&SET[function]=search' . '&SET[search]=query'
+							. '&storeControl[STORE]=-' . $record['uid'] . '&storeControl[LOAD]=1')
+						. '">
 						<img class="icon"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'],
 						'gfx/edit2.gif') . ' alt="" />' . $GLOBALS['LANG']->getLL(($queryIsEmpty ? 'action_createQuery'
 						: 'action_editQuery')) . '</a><br /><br />';

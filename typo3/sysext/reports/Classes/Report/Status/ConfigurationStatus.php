@@ -81,7 +81,7 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface 
 			$value = $GLOBALS['LANG']->getLL('status_empty');
 			$severity = \TYPO3\CMS\Reports\Status::WARNING;
 			$url =  \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('system_dbint') . '&id=0&SET[function]=refindex';
-			$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.backend_reference_index'), '<a href="' . $url . '">', '</a>', \TYPO3\CMS\Backend\Utility\BackendUtility::dateTime($lastRefIndexUpdate));
+			$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.backend_reference_index'), '<a href="' . htmlspecialchars($url) . '">', '</a>', \TYPO3\CMS\Backend\Utility\BackendUtility::dateTime($lastRefIndexUpdate));
 		}
 		return GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class, $GLOBALS['LANG']->getLL('status_referenceIndex'), $value, $message, $severity);
 	}
