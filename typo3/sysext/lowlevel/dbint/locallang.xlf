@@ -3,7 +3,10 @@
 	<file t3:id="1415814898" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:34Z" product-name="lowlevel">
 		<header/>
 		<body>
-			<trans-unit id="menu" xml:space="preserve">
+			<trans-unit id="menu" xml:space="preserve" deprecated="Unused since CMS 7">
+				<source>[ MENU ]</source>
+			</trans-unit>
+			<trans-unit id="menuTitle" xml:space="preserve">
 				<source>Overview</source>
 			</trans-unit>
 			<trans-unit id="recordStatistics" xml:space="preserve">

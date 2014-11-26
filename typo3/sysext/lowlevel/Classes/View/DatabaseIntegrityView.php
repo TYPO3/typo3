@@ -101,7 +101,7 @@ class DatabaseIntegrityView {
 		// Values NOT in this array will not be saved in the settings-array for the module.
 		$this->MOD_MENU = array(
 			'function' => array(
-				0 => $GLOBALS['LANG']->getLL('menu', TRUE),
+				0 => $GLOBALS['LANG']->getLL('menuTitle', TRUE),
 				'records' => $GLOBALS['LANG']->getLL('recordStatistics', TRUE),
 				'relations' => $GLOBALS['LANG']->getLL('databaseRelations', TRUE),
 				'search' => $GLOBALS['LANG']->getLL('fullSearch', TRUE),
