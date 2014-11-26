@@ -15,12 +15,6 @@
 Module menu
 - - - - - - - - - - - - - - - - - - - - - */
 
-// Module icons
-@module-menu-icon-border-radius: @border-radius-small;
-@module-menu-icon-height: 28px;
-@module-menu-icon-width: 28px;
-@module-menu-icon-font-size: 21px;
-
 // Module base
 @module-menu-color: #ddd;
 @module-menu-bg: #222;
@@ -38,25 +32,40 @@ Module menu
 @module-menu-link-hover-bg: lighten(@module-menu-bg,3%);
 @module-menu-link-active-color: #fff;
 @module-menu-link-active-bg: lighten(@module-menu-bg,15%);
-@module-menu-item-padding-vertical: 5px;
-@module-menu-item-padding-horizontal: 10px;
+@module-menu-item-padding-vertical: 4px;
+@module-menu-item-padding-horizontal: 8px;
 
+// Module icons
+@module-menu-icon-border-radius: @border-radius-small;
+@module-menu-icon-height: 32px;
+@module-menu-icon-width: 32px;
+@module-menu-icon-font-size: 21px;
+@module-menu-icon-bg: @module-menu-link-active-bg;
 
+// Module menu container
 [id="typo3-module-menu"] {
 	background: @module-menu-bg;
 	color: @module-menu-color;
 }
+
+// Invisible module menu drag handler
+[id="typo3-module-menu-xsplit"] {
+	z-index: 10;
+	width: 1px;
+	background-color: @module-menu-border-color;
+	.box-shadow(2px 0px 3px rgba(0,0,0,0.5));
+	&:hover {
+		.box-shadow(2px 0px 3px rgba(0,0,0,0.9));
+	}
+	.x-layout-mini-wrapper {
+		left: -7px;
+		width: 15px;
+	}
+}
+
+// Module menu styling
 [id="typo3-menu"] {
 	.list-unstyled();
-	&:after {
-		content: '';
-		position: absolute;
-		top: 0;
-		right: 0;
-		height: 100%;
-		width: 1px;
-		background-color: darken(@module-menu-group-bg,10%);
-	}
 
 	/// Module menu group
 	.typo3-module-menu-group-container {
@@ -69,6 +78,7 @@ Module menu
 		position: relative;
 		color: @module-menu-group-color;
 		background-color: @module-menu-group-bg;
+		border-top: 1px solid lighten(@module-menu-border-color,10%);
 		border-bottom: 1px solid @module-menu-border-color;
 		padding: 5px 0;
 	}
@@ -99,7 +109,9 @@ Module menu
 		color: @module-menu-link-color;
 		border-radius: @module-menu-link-border-radius;
 		text-decoration: none;
+		&:focus,
 		&:hover {
+			outline: none;
 			color: @module-menu-link-hover-color;
 			background-color: @module-menu-link-hover-bg;
 		}
@@ -142,13 +154,27 @@ Module menu
 			vertical-align: middle;
 		}
 	}
+	.typo3-module-menu-item-icon {
+		background-color: @module-menu-icon-bg;
+		&:after {
+			position: absolute;
+			content: '';
+			display: block;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			border: 1px solid rgba(255,255,255,0.1);
+			border-radius: @module-menu-icon-border-radius;
+		}
+	}
 
 	// Module menu group and item titles
 	.typo3-module-menu-group-title,
 	.typo3-module-menu-item-title {
 		white-space: nowrap;
 		text-overflow: ellipsis;
-		padding-top: 6px;
+		padding-top: 7px;
 		display: block;
 		overflow: hidden;
 		*zoom: 1;
@@ -178,6 +204,9 @@ Module menu
 .typo3-module-menu-snapped {
 	.typo3-module-menu-group-container {
 		padding-right: 0;
+	}
+	.typo3-module-menu-item-link {
+		border-radius: 0;
 	}
 	.typo3-module-menu-group-title,
 	.typo3-module-menu-item-title {

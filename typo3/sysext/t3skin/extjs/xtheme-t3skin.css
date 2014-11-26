@@ -2148,33 +2148,21 @@ body.x-body-masked .x-window-plain .x-window-mc {
 }
 
 /* Tree frame split bar */
-#typo3-module-menu-xsplit,
 #typo3-navigationContainer-xsplit {
 	width: 0;
 }
 
-/* Tree frame split bar fix for Google Chrome 14 in Ext JS 3.4, see #27660 */
-body.ext-chrome #typo3-module-menu-xsplit,
-body.ext-chrome #typo3-navigationContainer-xsplit {
-	width: 5px;
-}
-
 /* Collapse icon */
-#typo3-module-menu-xsplit .x-layout-mini-west,
-#typo3-module-menu-xcollapsed .x-layout-mini-west,
 #typo3-navigationContainer-xsplit .x-layout-mini-west,
 #typo3-navigationContainer-xcollapsed .x-layout-mini-west {
 	background-position: center;
 	background-repeat: no-repeat;
-	display: none;
 	left: 0px;
 	padding: 5px 0;
 	position: absolute;
 }
 
 /* Only show collapse icon, when user hovers the split bar */
-#typo3-module-menu-xsplit:hover .x-layout-mini-west,
-#typo3-module-menu-xcollapsed:hover .x-layout-mini-west,
 #typo3-navigationContainer-xsplit:hover .x-layout-mini-west,
 #typo3-navigationContainer-xcollapsed:hover .x-layout-mini-west {
 	display: block;
@@ -2186,10 +2174,6 @@ body.ext-chrome #typo3-navigationContainer-xsplit {
 
 #typo3-navigationContainer-xcollapsed {
 	width: 10px !important;
-}
-
-#typo3-navigationContainer-xcollapsed:hover .x-layout-mini-west {
-	left: 10px;
 }
 
 /**

@@ -7148,7 +7148,6 @@ DocHeader
  */
 /* Collapsed tree frame is not invisible, but 5px wide.
    If no tree frame is in use, an empty container is shown instead */
-#typo3-module-menu-xsplit,
 #typo3-navigationContainer-xsplit,
 #typo3-navigationContainer-xcollapsed,
 #typo3-navigationDummy {
@@ -11208,18 +11207,24 @@ Module menu
   background: #222222;
   color: #dddddd;
 }
+[id="typo3-module-menu-xsplit"] {
+  z-index: 10;
+  width: 1px;
+  background-color: #111111;
+  -webkit-box-shadow: 2px 0px 3px rgba(0, 0, 0, 0.5);
+  box-shadow: 2px 0px 3px rgba(0, 0, 0, 0.5);
+}
+[id="typo3-module-menu-xsplit"]:hover {
+  -webkit-box-shadow: 2px 0px 3px rgba(0, 0, 0, 0.9);
+  box-shadow: 2px 0px 3px rgba(0, 0, 0, 0.9);
+}
+[id="typo3-module-menu-xsplit"] .x-layout-mini-wrapper {
+  left: -7px;
+  width: 15px;
+}
 [id="typo3-menu"] {
   padding-left: 0;
   list-style: none;
-}
-[id="typo3-menu"]:after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 100%;
-  width: 1px;
-  background-color: #080808;
 }
 [id="typo3-menu"] .typo3-module-menu-group-container {
   clear: both;
@@ -11234,6 +11239,7 @@ Module menu
   position: relative;
   color: #dddddd;
   background-color: #222222;
+  border-top: 1px solid #2b2b2b;
   border-bottom: 1px solid #111111;
   padding: 5px 0;
 }
@@ -11244,7 +11250,7 @@ Module menu
   position: relative;
   cursor: pointer;
   display: block;
-  padding: 5px 10px;
+  padding: 4px 8px;
   text-transform: uppercase;
 }
 [id="typo3-menu"] .typo3-module-menu-group-header:before,
@@ -11270,7 +11276,7 @@ Module menu
   position: relative;
   cursor: pointer;
   display: block;
-  padding: 5px 10px;
+  padding: 4px 8px;
   color: #666666;
   border-radius: 0 2px 2px 0;
   text-decoration: none;
@@ -11291,7 +11297,9 @@ Module menu
 [id="typo3-menu"] .typo3-module-menu-item-link:after {
   clear: both;
 }
+[id="typo3-menu"] .typo3-module-menu-item-link:focus,
 [id="typo3-menu"] .typo3-module-menu-item-link:hover {
+  outline: none;
   color: #dddddd;
   background-color: #2a2a2a;
 }
@@ -11304,8 +11312,8 @@ Module menu
   position: relative;
   display: block;
   padding: 0px;
-  height: 28px;
-  width: 28px;
+  height: 32px;
+  width: 32px;
   margin-right: 10px;
   float: left;
   overflow: hidden;
@@ -11325,19 +11333,33 @@ Module menu
 }
 [id="typo3-menu"] .typo3-module-menu-group-icon img,
 [id="typo3-menu"] .typo3-module-menu-item-icon img {
-  max-height: 28px;
-  max-width: 28px;
+  max-height: 32px;
+  max-width: 32px;
 }
 [id="typo3-menu"] .typo3-module-menu-group-icon .fa,
 [id="typo3-menu"] .typo3-module-menu-item-icon .fa {
   font-size: 21px;
   vertical-align: middle;
 }
+[id="typo3-menu"] .typo3-module-menu-item-icon {
+  background-color: #484848;
+}
+[id="typo3-menu"] .typo3-module-menu-item-icon:after {
+  position: absolute;
+  content: '';
+  display: block;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
 [id="typo3-menu"] .typo3-module-menu-group-title,
 [id="typo3-menu"] .typo3-module-menu-item-title {
   white-space: nowrap;
   text-overflow: ellipsis;
-  padding-top: 6px;
+  padding-top: 7px;
   display: block;
   overflow: hidden;
   *zoom: 1;
@@ -11365,6 +11387,9 @@ Module menu
 }
 .typo3-module-menu-snapped .typo3-module-menu-group-container {
   padding-right: 0;
+}
+.typo3-module-menu-snapped .typo3-module-menu-item-link {
+  border-radius: 0;
 }
 .typo3-module-menu-snapped .typo3-module-menu-group-title,
 .typo3-module-menu-snapped .typo3-module-menu-item-title {
