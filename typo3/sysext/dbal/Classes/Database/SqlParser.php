@@ -694,7 +694,7 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 														$implodeString = ' ' . $operator . ' ' . $field . ' ' . $v['comparator'];
 
 														// add opening brace before field
-														$lastFieldPos = strpos($output, $field);
+														$lastFieldPos = strrpos($output, $field);
 														$output = substr_replace($output, '(', $lastFieldPos, 0);
 														$output .= implode($implodeString, $listExpressions) . ')';
 													}
