@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\DataHandler;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Dbal\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
 
 /**
  * Test case
@@ -38,19 +38,25 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $subject;
 
 	/**
-	 * @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication a mock logged-in back-end user
+	 * @var BackendUserAuthentication a mock logged-in back-end user
 	 */
 	protected $backEndUser;
 
+	/**
+	 * Set up the tests
+	 */
 	public function setUp() {
 		$GLOBALS['TCA'] = array();
 		$this->singletonInstances = GeneralUtility::getSingletonInstances();
-		$this->backEndUser = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
+		$this->backEndUser = $this->getMock(BackendUserAuthentication::class);
 		$GLOBALS['TYPO3_DB'] = $this->getMock(DatabaseConnection::class, array(), array(), '', FALSE);
 		$this->subject = new DataHandler();
 		$this->subject->start(array(), '', $this->backEndUser);
 	}
 
+	/**
+	 * Tear down the tests
+	 */
 	public function tearDown() {
 		GeneralUtility::resetSingletonInstances($this->singletonInstances);
 		parent::tearDown();
@@ -170,6 +176,8 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider inputValuesStringsDataProvider
+	 * @param string $value
+	 * @param int $expectedReturnValue
 	 */
 	public function inputValueCheckRecognizesStringValuesAsIntegerValuesCorrectly($value, $expectedReturnValue) {
 		$tcaFieldConf = array(
@@ -582,7 +590,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			array('dummy')
 		);
 
-		$backendUser = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
+		$backendUser = $this->getMock(BackendUserAuthentication::class);
 		$subject->BE_USER = $backendUser;
 		$subject->BE_USER->workspace = 1;
 

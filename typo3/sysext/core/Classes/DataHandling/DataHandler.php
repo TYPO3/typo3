@@ -629,10 +629,10 @@ class DataHandler {
 	protected $databaseConnection;
 
 	/**
-	 * @param DatabaseConnection $databaseConnection
+	 *
 	 */
-	public function __construct(DatabaseConnection $databaseConnection = NULL) {
-		$this->databaseConnection = $databaseConnection ?: $GLOBALS['TYPO3_DB'];
+	public function __construct() {
+		$this->databaseConnection = $GLOBALS['TYPO3_DB'];
 	}
 
 	/**
@@ -850,7 +850,7 @@ class DataHandler {
 	 * Processing the data-array
 	 * Call this function to process the data-array set by start()
 	 *
-	 * @return void
+	 * @return void|FALSE
 	 */
 	public function process_datamap() {
 		$this->controlActiveElements();
