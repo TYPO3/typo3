@@ -24,13 +24,12 @@ Ext.ux.plugins.FitToParent = Ext.extend(Object, {
 
 	fitSizeToParent : function() {
 			// Uses the dimension of the current viewport, but removes the document header
-			// initial is the height of the TYPO3 Topbar which i 42. If Topbar is not rendered, set the height as default
-		var documentHeaderHeight = 42 || top.TYPO3.Backend.Topbar.getHeight();
+			// initial is the height of the TYPO3 Topbar which is 45px. If Topbar is not rendered, set the height as default
+		var documentHeaderHeight = 45 || top.TYPO3.Backend.Topbar.getHeight();
 		var documentHeader = Ext.get('typo3-docheader');
 
 		if (Ext.isObject(documentHeader)) {
-				// use 5px bottom margin
-			documentHeaderHeight -= documentHeader.getHeight() + 5;
+			documentHeaderHeight -= documentHeader.getHeight() + 26;
 		}
 
 		if (this.heightOffset && Ext.isNumber(this.heightOffset)) {
