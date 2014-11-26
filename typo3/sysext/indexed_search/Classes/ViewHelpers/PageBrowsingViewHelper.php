@@ -40,7 +40,7 @@ class PageBrowsingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 	 * @return string The content
 	 */
 	public function render($maximumNumberOfResultPages, $numberOfResults, $resultsPerPage, $currentPage = 0, $freeIndexUid = NULL) {
-		$pageCount = ceil($numberOfResults / $resultsPerPage);
+		$pageCount = (int)ceil($numberOfResults / $resultsPerPage);
 		// only show the result browser if more than one page is needed
 		if ($pageCount === 1) {
 			return '';
@@ -59,7 +59,7 @@ class PageBrowsingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 		// Check if $maximumNumberOfResultPages is in range
 		$maximumNumberOfResultPages = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($maximumNumberOfResultPages, 1, $pageCount, 10);
 		// Assume $currentPage is in the middle and calculate the index limits of the result page listing
-		$minPage = $currentPage - floor($maximumNumberOfResultPages / 2);
+		$minPage = $currentPage - (int)floor($maximumNumberOfResultPages / 2);
 		$maxPage = $minPage + $maximumNumberOfResultPages - 1;
 		// Check if the indexes are within the page limits
 		if ($minPage < 0) {

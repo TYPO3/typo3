@@ -1495,7 +1495,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		$pointer = (int)$this->piVars['pointer'];
 		$count = (int)$this->internal['res_count'];
 		$results_at_a_time = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->internal['results_at_a_time'], 1, 1000);
-		$pageCount = ceil($count / $results_at_a_time);
+		$pageCount = (int)ceil($count / $results_at_a_time);
 
 		$links = array();
 		// only show the result browser if more than one page is needed
