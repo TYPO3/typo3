@@ -972,4 +972,28 @@ class DatabaseConnectionOracleTest extends AbstractTestCase {
 		$expectedQuery = 'SELECT * FROM "tt_content" WHERE "uid" IN (0,1,2,3,4,5,6,7,8,9,10)';
 		$this->assertEquals($expectedQuery, $this->cleanSql($result));
 	}
+
+	/**
+	 * @test
+	 */
+	public function expressionListBracesAreSetCorrectly() {
+		$listMaxExpressions = 1000;
+
+		$mockSpecificsOci8 = $this->getAccessibleMock('TYPO3\\CMS\\Dbal\\Database\\Specifics\\Oci8', array(), array(), '', FALSE);
+		$mockSpecificsOci8->expects($this->any())->method('getSpecific')->will($this->returnValue($listMaxExpressions));
+
+		$items = range(0, 1250);
+		$where = 'uid = 1981 AND uid IN(' . implode(',', $items) . ')';
+		$result = $this->subject->SELECTquery('uid, pid', 'tt_content', $where);
+
+		$chunks = array_chunk($items, $listMaxExpressions);
+		$whereExpr = array();
+		foreach ($chunks as $chunk) {
+			$whereExpr[] = '"uid" IN (' . implode(',', $chunk) . ')';
+		}
+
+		$expectedWhere = '"uid" = 1981 AND (' . implode(' OR ', $whereExpr) . ')';
+		$expectedQuery = 'SELECT "uid", "pid" FROM "tt_content" WHERE ' . $expectedWhere;
+		$this->assertEquals($expectedQuery, $this->cleanSql($result));
+	}
 }
