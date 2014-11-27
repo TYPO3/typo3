@@ -525,6 +525,28 @@ class StandaloneViewTest extends UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function getLayoutPathAndFilenameRespectsCasingOfLayoutName() {
+		$this->view->setLayoutRootPaths(array('some/Default/Directory'));
+		$this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
+		$this->view->expects($this->at(0))->method('testFileExistence')->with('some/Default/Directory/LayoutName.html')->willReturn(FALSE);
+		$this->view->expects($this->at(1))->method('testFileExistence')->with('some/Default/Directory/LayoutName')->willReturn(FALSE);
+		$this->view->expects($this->at(2))->method('testFileExistence')->with('some/Default/Directory/layoutName.html')->willReturn(TRUE);
+		$this->assertSame('some/Default/Directory/layoutName.html', $this->view->_call('getLayoutPathAndFilename', 'layoutName'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getLayoutPathAndFilenameFindsUpperCasedLayoutName() {
+		$this->view->setLayoutRootPaths(array('some/Default/Directory'));
+		$this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
+		$this->view->expects($this->at(0))->method('testFileExistence')->with('some/Default/Directory/LayoutName.html')->willReturn(TRUE);
+		$this->assertSame('some/Default/Directory/LayoutName.html', $this->view->_call('getLayoutPathAndFilename', 'layoutName'));
+	}
+
+	/**
+	 * @test
+	 */
 	public function getLayoutPathAndFilenameResolvesTheSpecificFile() {
 		$this->view->setLayoutRootPaths(array(
 			'default' => 'some/Default/Directory',
@@ -590,6 +612,28 @@ class StandaloneViewTest extends UnitTestCase {
 		$this->view->expects($this->any())->method('testFileExistence')->will($this->returnValue(FALSE));
 		$this->view->_call('getLayoutPathAndFilename');
 
+	}
+
+	/**
+	 * @test
+	 */
+	public function getPartialPathAndFilenameRespectsCasingOfPartialName() {
+		$this->view->setPartialRootPaths(array('some/Default/Directory'));
+		$this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
+		$this->view->expects($this->at(0))->method('testFileExistence')->with('some/Default/Directory/PartialName.html')->willReturn(FALSE);
+		$this->view->expects($this->at(1))->method('testFileExistence')->with('some/Default/Directory/PartialName')->willReturn(FALSE);
+		$this->view->expects($this->at(2))->method('testFileExistence')->with('some/Default/Directory/partialName.html')->willReturn(TRUE);
+		$this->assertSame('some/Default/Directory/partialName.html', $this->view->_call('getPartialPathAndFilename', 'partialName'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getPartialPathAndFilenameFindsUpperCasedPartialName() {
+		$this->view->setPartialRootPaths(array('some/Default/Directory'));
+		$this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
+		$this->view->expects($this->at(0))->method('testFileExistence')->with('some/Default/Directory/PartialName.html')->willReturn(TRUE);
+		$this->assertSame('some/Default/Directory/PartialName.html', $this->view->_call('getPartialPathAndFilename', 'partialName'));
 	}
 
 	/**
