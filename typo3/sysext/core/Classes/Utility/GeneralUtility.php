@@ -2061,7 +2061,7 @@ class GeneralUtility {
 	 * However using MSIE to read the XML output didn't always go well: One reason could be that the character encoding is not observed in the PHP data. The other reason may be if the tag-names are invalid in the eyes of MSIE. Also using the namespace feature will make MSIE break parsing. There might be more reasons...
 	 *
 	 * @param array $array The input PHP array with any kind of data; text, binary, integers. Not objects though.
-	 * @param string $NSprefix tag-prefix, eg. a namespace prefix like "T3:
+	 * @param string $NSprefix tag-prefix, eg. a namespace prefix like "T3:"
 	 * @param int $level Current recursion level. Don't change, stay at zero!
 	 * @param string $docTag Alternative document tag. Default is "phparray".
 	 * @param int $spaceInd If greater than zero, then the number of spaces corresponding to this number is used for indenting, if less than zero - no indentation, if zero - a single TAB is used
@@ -2178,7 +2178,7 @@ class GeneralUtility {
 	 * This is a wrapper for xml2arrayProcess that adds a two-level cache
 	 *
 	 * @param string $string XML content to convert into an array
-	 * @param string $NSprefix The tag-prefix resolve, eg. a namespace like "T3:
+	 * @param string $NSprefix The tag-prefix resolve, eg. a namespace like "T3:"
 	 * @param bool $reportDocTag If set, the document tag will be set in the key "_DOCUMENT_TAG" of the output array
 	 * @return mixed If the parsing had errors, a string with the error message is returned. Otherwise an array with the content.
 	 * @see array2xml(),xml2arrayProcess()
@@ -2207,7 +2207,7 @@ class GeneralUtility {
 	 * This is the reverse function of array2xml()
 	 *
 	 * @param string $string XML content to convert into an array
-	 * @param string $NSprefix The tag-prefix resolve, eg. a namespace like "T3:
+	 * @param string $NSprefix The tag-prefix resolve, eg. a namespace like "T3:"
 	 * @param bool $reportDocTag If set, the document tag will be set in the key "_DOCUMENT_TAG" of the output array
 	 * @return mixed If the parsing had errors, a string with the error message is returned. Otherwise an array with the content.
 	 * @see array2xml()
