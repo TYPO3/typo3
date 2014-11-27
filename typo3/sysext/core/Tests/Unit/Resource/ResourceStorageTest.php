@@ -1,7 +1,8 @@
 <?php
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
-use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Resource\Driver\AbstractDriver;
+use TYPO3\CMS\Core\Resource\ResourceStorageInterface;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -40,7 +41,7 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 			'TYPO3\\CMS\\Core\\Resource\\FileRepository',
 			$this->getMock('TYPO3\\CMS\\Core\\Resource\\FileRepository')
 		);
-
+		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\Core\\Database\\DatabaseConnection');
 	}
 
 	public function tearDown() {
@@ -70,7 +71,7 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 		}
 		$mockedMethods[] = 'getIndexer';
 
-		$this->fixture = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', $mockedMethods, array($driverObject, $storageRecord), '', FALSE);
+		$this->fixture = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', $mockedMethods, array($driverObject, $storageRecord));
 		$this->fixture->expects($this->any())->method('getIndexer')->will($this->returnValue($this->getMock('TYPO3\CMS\Core\Resource\Index\Indexer', array(), array(), '', FALSE)));
 		foreach ($permissionMethods as $method) {
 			$this->fixture->expects($this->any())->method($method)->will($this->returnValue(TRUE));
@@ -124,6 +125,95 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 		$driver->processConfiguration();
 		$driver->initialize();
 		return $driver;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function isWithinFileMountBoundariesDataProvider() {
+		return array(
+			'Access to file in ro file mount denied for write request' => array(
+				'$fileIdentifier' => '/fooBaz/bar.txt',
+				'$fileMountFolderIdentifier' => '/fooBaz/',
+				'$isFileMountReadOnly' => TRUE,
+				'$checkWriteAccess' => TRUE,
+				'$expectedResult' => FALSE,
+			),
+			'Access to file in ro file mount allowed for read request' => array(
+				'$fileIdentifier' => '/fooBaz/bar.txt',
+				'$fileMountFolderIdentifier' => '/fooBaz/',
+				'$isFileMountReadOnly' => TRUE,
+				'$checkWriteAccess' => FALSE,
+				'$expectedResult' => TRUE,
+			),
+			'Access to file in rw file mount allowed for write request' => array(
+				'$fileIdentifier' => '/fooBaz/bar.txt',
+				'$fileMountFolderIdentifier' => '/fooBaz/',
+				'$isFileMountReadOnly' => FALSE,
+				'$checkWriteAccess' => TRUE,
+				'$expectedResult' => TRUE,
+			),
+			'Access to file in rw file mount allowed for read request' => array(
+				'$fileIdentifier' => '/fooBaz/bar.txt',
+				'$fileMountFolderIdentifier' => '/fooBaz/',
+				'$isFileMountReadOnly' => FALSE,
+				'$checkWriteAccess' => FALSE,
+				'$expectedResult' => TRUE,
+			),
+			'Access to file not in file mount denied for write request' => array(
+				'$fileIdentifier' => '/fooBaz/bar.txt',
+				'$fileMountFolderIdentifier' => '/barBaz/',
+				'$isFileMountReadOnly' => FALSE,
+				'$checkWriteAccess' => TRUE,
+				'$expectedResult' => FALSE,
+			),
+			'Access to file not in file mount denied for read request' => array(
+				'$fileIdentifier' => '/fooBaz/bar.txt',
+				'$fileMountFolderIdentifier' => '/barBaz/',
+				'$isFileMountReadOnly' => FALSE,
+				'$checkWriteAccess' => FALSE,
+				'$expectedResult' => FALSE,
+			),
+		);
+	}
+
+	/**
+	 * @param string $fileIdentifier
+	 * @param string $fileMountFolderIdentifier
+	 * @param bool $isFileMountReadOnly
+	 * @param bool $checkWriteAccess
+	 * @param bool $expectedResult
+	 * @throws \TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException
+	 * @test
+	 * @dataProvider isWithinFileMountBoundariesDataProvider
+	 */
+	public function isWithinFileMountBoundariesRespectsReadOnlyFileMounts($fileIdentifier, $fileMountFolderIdentifier, $isFileMountReadOnly, $checkWriteAccess, $expectedResult) {
+		/** @var AbstractDriver|\PHPUnit_Framework_MockObject_MockObject $driverMock */
+		$driverMock = $this->getMockForAbstractClass('TYPO3\\CMS\\Core\\Resource\\Driver\\AbstractDriver', array(), '', FALSE);
+		$driverMock->expects($this->any())
+			->method('getFolderInfoByIdentifier')
+			->willReturnCallback(function($identifier) use ($isFileMountReadOnly) {
+				return array(
+					'identifier' => $identifier,
+					'name' => trim($identifier, '/'),
+				);
+			});
+		$driverMock->expects($this->any())
+			->method('isWithin')
+			->willReturnCallback(function($folderIdentifier, $fileIdentifier)  {
+				if ($fileIdentifier === ResourceStorageInterface::DEFAULT_ProcessingFolder . '/') {
+					return FALSE;
+				} else {
+					return strpos($fileIdentifier, $folderIdentifier) === 0;
+				}
+			});
+		$this->prepareFixture(array(), FALSE, $driverMock);
+		$fileMock = $this->getSimpleFileMock($fileIdentifier);
+		$this->fixture->setEvaluatePermissions(TRUE);
+		$this->fixture->addFileMount('/' . uniqid('random') . '/', array('read_only' => FALSE));
+		$this->fixture->addFileMount($fileMountFolderIdentifier, array('read_only' => $isFileMountReadOnly));
+		$this->fixture->addFileMount('/' . uniqid('random') . '/', array('read_only' => FALSE));
+		$this->assertSame($expectedResult, $this->fixture->isWithinFileMountBoundaries($fileMock, $checkWriteAccess));
 	}
 
 	/**

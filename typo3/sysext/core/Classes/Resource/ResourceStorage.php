@@ -463,35 +463,43 @@ class ResourceStorage implements ResourceStorageInterface {
 
 	/**
 	 * Checks if the given subject is within one of the registered user
-	 * filemounts. If not, working with the file is not permitted for the user.
+	 * file mounts. If not, working with the file is not permitted for the user.
 	 *
-	 * @param Folder $subject
+	 * @param ResourceInterface $subject file or folder
+	 * @param bool $checkWriteAccess If true, it is not only checked if the subject is within the file mount but also whether it isn't a read only file mount
 	 * @return bool
 	 */
-	public function isWithinFileMountBoundaries($subject) {
+	public function isWithinFileMountBoundaries($subject, $checkWriteAccess = FALSE) {
 		if (!$this->evaluatePermissions) {
 			return TRUE;
 		}
-		$isWithinFilemount = FALSE;
+		$isWithinFileMount = FALSE;
 		if (!$subject) {
 			$subject = $this->getRootLevelFolder();
 		}
 		$identifier = $subject->getIdentifier();
 
 		// Allow access to processing folder
-		if ($this->driver->isWithin($this->getProcessingFolder()->getIdentifier(), $identifier)) {
-			$isWithinFilemount = TRUE;
+		if ($this->isWithinProcessingFolder($identifier)) {
+			$isWithinFileMount = TRUE;
 		} else {
 			// Check if the identifier of the subject is within at
 			// least one of the file mounts
+			$writableFileMountAvailable = FALSE;
 			foreach ($this->fileMounts as $fileMount) {
 				if ($this->driver->isWithin($fileMount['folder']->getIdentifier(), $identifier)) {
-					$isWithinFilemount = TRUE;
-					break;
+					$isWithinFileMount = TRUE;
+					if (!$checkWriteAccess) {
+						break;
+					} elseif (empty($fileMount['read_only'])) {
+						$writableFileMountAvailable = TRUE;
+						break;
+					}
 				}
 			}
+			$isWithinFileMount = $checkWriteAccess ? $writableFileMountAvailable : $isWithinFileMount;
 		}
-		return $isWithinFilemount;
+		return $isWithinFileMount;
 	}
 
 	/**
@@ -568,11 +576,6 @@ class ResourceStorage implements ResourceStorageInterface {
 		if (!$this->checkFileExtensionPermission($file->getName())) {
 			return FALSE;
 		}
-		// Check 3: Does the user have the right to perform the action?
-		// (= is he within the file mount borders)
-		if (!$isProcessedFile && !$this->isWithinFileMountBoundaries($file)) {
-			return FALSE;
-		}
 		$isReadCheck = FALSE;
 		if (in_array($action, array('read', 'copy', 'move'), TRUE)) {
 			$isReadCheck = TRUE;
@@ -581,17 +584,10 @@ class ResourceStorage implements ResourceStorageInterface {
 		if (in_array($action, array('add', 'write', 'move', 'rename', 'unzip', 'delete'), TRUE)) {
 			$isWriteCheck = TRUE;
 		}
-
-		// Check 4: "Read-only" filemount
-		if ($isWriteCheck) {
-			foreach ($this->fileMounts as $fileMount) {
-				if ($this->driver->isWithin($fileMount['folder']->getIdentifier(), $file->getIdentifier())) {
-					if (!empty($fileMount['read_only'])) {
-						return FALSE;
-					}
-					break;
-				}
-			}
+		// Check 3: Does the user have the right to perform the action?
+		// (= is he within the file mount borders)
+		if (!$isProcessedFile && !$this->isWithinFileMountBoundaries($file, $isWriteCheck)) {
+			return FALSE;
 		}
 
 		$isMissing = FALSE;
@@ -599,11 +595,11 @@ class ResourceStorage implements ResourceStorageInterface {
 			$isMissing = $file->isMissing();
 		}
 
-		// Check 5: Check the capabilities of the storage (and the driver)
+		// Check 4: Check the capabilities of the storage (and the driver)
 		if ($isWriteCheck && ($isMissing || !$this->isWritable())) {
 			return FALSE;
 		}
-		// Check 6: "File permissions" of the driver (only when file isn't marked as missing)
+		// Check 5: "File permissions" of the driver (only when file isn't marked as missing)
 		if (!$isMissing) {
 			$filePermissions = $this->driver->getPermissions($file->getIdentifier());
 			if ($isReadCheck && !$filePermissions['r']) {
@@ -637,11 +633,6 @@ class ResourceStorage implements ResourceStorageInterface {
 			return TRUE;
 		}
 
-		// Check 2: Does the user has the right to perform the action?
-		// (= is he within the file mount borders)
-		if (!$this->isWithinFileMountBoundaries($folder)) {
-			return FALSE;
-		}
 		$isReadCheck = FALSE;
 		if (in_array($action, array('read', 'copy'), TRUE)) {
 			$isReadCheck = TRUE;
@@ -649,6 +640,11 @@ class ResourceStorage implements ResourceStorageInterface {
 		$isWriteCheck = FALSE;
 		if (in_array($action, array('add', 'move', 'write', 'delete', 'rename'), TRUE)) {
 			$isWriteCheck = TRUE;
+		}
+		// Check 2: Does the user has the right to perform the action?
+		// (= is he within the file mount borders)
+		if (!$this->isWithinFileMountBoundaries($folder, $isWriteCheck)) {
+			return FALSE;
 		}
 		// Check 3: Check the capabilities of the storage (and the driver)
 		if ($isReadCheck && !$this->isBrowsable()) {
@@ -658,19 +654,7 @@ class ResourceStorage implements ResourceStorageInterface {
 			return FALSE;
 		}
 
-		// Check 4: "Read-only" filemount
-		if ($isWriteCheck) {
-			foreach ($this->fileMounts as $fileMount) {
-				if ($this->driver->isWithin($fileMount['folder']->getIdentifier(), $folder->getIdentifier())) {
-					if (!empty($fileMount['read_only'])) {
-						return FALSE;
-					}
-					break;
-				}
-			}
-		}
-
-		// Check 5: "Folder permissions" of the driver
+		// Check 4: "Folder permissions" of the driver
 		$folderPermissions = $this->driver->getPermissions($folder->getIdentifier());
 		if ($isReadCheck && !$folderPermissions['r']) {
 			return FALSE;
