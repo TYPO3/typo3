@@ -2423,14 +2423,13 @@ class TypoScriptFrontendController {
 						$this->config['config']['typolinkCheckRootline'] = TRUE;
 					}
 					// Set default values for removeDefaultJS and inlineStyle2TempFile so CSS and JS are externalized if compatversion is higher than 4.0
-					if (GeneralUtility::compat_version('4.0')) {
-						if (!isset($this->config['config']['removeDefaultJS'])) {
-							$this->config['config']['removeDefaultJS'] = 'external';
-						}
-						if (!isset($this->config['config']['inlineStyle2TempFile'])) {
-							$this->config['config']['inlineStyle2TempFile'] = 1;
-						}
+					if (!isset($this->config['config']['removeDefaultJS'])) {
+						$this->config['config']['removeDefaultJS'] = 'external';
 					}
+					if (!isset($this->config['config']['inlineStyle2TempFile'])) {
+						$this->config['config']['inlineStyle2TempFile'] = 1;
+					}
+
 					if (!isset($this->config['config']['compressJs'])) {
 						$this->config['config']['compressJs'] = 0;
 					}
