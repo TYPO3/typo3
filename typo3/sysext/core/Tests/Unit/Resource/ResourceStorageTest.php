@@ -141,6 +141,95 @@ class ResourceStorageTest extends BaseTestCase {
 	/**
 	 * @return array
 	 */
+	public function isWithinFileMountBoundariesDataProvider() {
+		return array(
+			'Access to file in ro file mount denied for write request' => array(
+				'$fileIdentifier' => '/fooBaz/bar.txt',
+				'$fileMountFolderIdentifier' => '/fooBaz/',
+				'$isFileMountReadOnly' => TRUE,
+				'$checkWriteAccess' => TRUE,
+				'$expectedResult' => FALSE,
+			),
+			'Access to file in ro file mount allowed for read request' => array(
+				'$fileIdentifier' => '/fooBaz/bar.txt',
+				'$fileMountFolderIdentifier' => '/fooBaz/',
+				'$isFileMountReadOnly' => TRUE,
+				'$checkWriteAccess' => FALSE,
+				'$expectedResult' => TRUE,
+			),
+			'Access to file in rw file mount allowed for write request' => array(
+				'$fileIdentifier' => '/fooBaz/bar.txt',
+				'$fileMountFolderIdentifier' => '/fooBaz/',
+				'$isFileMountReadOnly' => FALSE,
+				'$checkWriteAccess' => TRUE,
+				'$expectedResult' => TRUE,
+			),
+			'Access to file in rw file mount allowed for read request' => array(
+				'$fileIdentifier' => '/fooBaz/bar.txt',
+				'$fileMountFolderIdentifier' => '/fooBaz/',
+				'$isFileMountReadOnly' => FALSE,
+				'$checkWriteAccess' => FALSE,
+				'$expectedResult' => TRUE,
+			),
+			'Access to file not in file mount denied for write request' => array(
+				'$fileIdentifier' => '/fooBaz/bar.txt',
+				'$fileMountFolderIdentifier' => '/barBaz/',
+				'$isFileMountReadOnly' => FALSE,
+				'$checkWriteAccess' => TRUE,
+				'$expectedResult' => FALSE,
+			),
+			'Access to file not in file mount denied for read request' => array(
+				'$fileIdentifier' => '/fooBaz/bar.txt',
+				'$fileMountFolderIdentifier' => '/barBaz/',
+				'$isFileMountReadOnly' => FALSE,
+				'$checkWriteAccess' => FALSE,
+				'$expectedResult' => FALSE,
+			),
+		);
+	}
+
+	/**
+	 * @param string $fileIdentifier
+	 * @param string $fileMountFolderIdentifier
+	 * @param bool $isFileMountReadOnly
+	 * @param bool $checkWriteAccess
+	 * @param bool $expectedResult
+	 * @throws \TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException
+	 * @test
+	 * @dataProvider isWithinFileMountBoundariesDataProvider
+	 */
+	public function isWithinFileMountBoundariesRespectsReadOnlyFileMounts($fileIdentifier, $fileMountFolderIdentifier, $isFileMountReadOnly, $checkWriteAccess, $expectedResult) {
+		/** @var AbstractDriver|\PHPUnit_Framework_MockObject_MockObject $driverMock */
+		$driverMock = $this->getMockForAbstractClass(AbstractDriver::class, array(), '', FALSE);
+		$driverMock->expects($this->any())
+			->method('getFolderInfoByIdentifier')
+			->willReturnCallback(function($identifier) use ($isFileMountReadOnly) {
+				return array(
+					'identifier' => $identifier,
+					'name' => trim($identifier, '/'),
+				);
+			});
+		$driverMock->expects($this->any())
+			->method('isWithin')
+			->willReturnCallback(function($folderIdentifier, $fileIdentifier)  {
+				if ($fileIdentifier === ResourceStorageInterface::DEFAULT_ProcessingFolder . '/') {
+					return FALSE;
+				} else {
+					return strpos($fileIdentifier, $folderIdentifier) === 0;
+				}
+			});
+		$this->prepareSubject(array(), FALSE, $driverMock);
+		$fileMock = $this->getSimpleFileMock($fileIdentifier);
+		$this->subject->setEvaluatePermissions(TRUE);
+		$this->subject->addFileMount('/' . uniqid('random') . '/', array('read_only' => FALSE));
+		$this->subject->addFileMount($fileMountFolderIdentifier, array('read_only' => $isFileMountReadOnly));
+		$this->subject->addFileMount('/' . uniqid('random') . '/', array('read_only' => FALSE));
+		$this->assertSame($expectedResult, $this->subject->isWithinFileMountBoundaries($fileMock, $checkWriteAccess));
+	}
+
+	/**
+	 * @return array
+	 */
 	public function capabilitiesDataProvider() {
 		return array(
 			'only public' => array(
