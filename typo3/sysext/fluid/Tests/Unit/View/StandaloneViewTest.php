@@ -21,10 +21,14 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\View;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
+
 /**
  * Test case
  */
-class StandaloneViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class StandaloneViewTest extends UnitTestCase {
 
 	/**
 	 * @var array A backup of registered singleton instances
@@ -32,67 +36,67 @@ class StandaloneViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $singletonInstances = array();
 
 	/**
-	 * @var \TYPO3\CMS\Fluid\View\StandaloneView|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+	 * @var StandaloneView|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $view;
 
 	/**
-	 * @var \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface
+	 * @var \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $mockRenderingContext;
 
 	/**
-	 * @var \TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer
+	 * @var \TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $mockViewHelperVariableContainer;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
+	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $mockControllerContext;
 
 	/**
-	 * @var \TYPO3\CMS\Fluid\Core\Parser\TemplateParser
+	 * @var \TYPO3\CMS\Fluid\Core\Parser\TemplateParser|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $mockTemplateParser;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $mockObjectManager;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Mvc\Web\Request
+	 * @var \TYPO3\CMS\Extbase\Mvc\Web\Request|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $mockRequest;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
+	 * @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $mockUriBuilder;
 
 	/**
-	 * @var \TYPO3\CMS\Fluid\Core\Parser\ParsedTemplateInterface
+	 * @var \TYPO3\CMS\Fluid\Core\Parser\ParsedTemplateInterface|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $mockParsedTemplate;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $mockConfigurationManager;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer
+	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $mockFlashMessageContainer;
 
 	/**
-	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $mockContentObject;
 
 	/**
-	 * @var \TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler
+	 * @var \TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $mockTemplateCompiler;
 
@@ -102,8 +106,8 @@ class StandaloneViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function setUp() {
-		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
-		$this->view = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\View\\StandaloneView', array('testFileExistence'), array(), '', FALSE);
+		$this->singletonInstances = GeneralUtility::getSingletonInstances();
+		$this->view = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\View\\StandaloneView', array('testFileExistence', 'buildParserConfiguration'), array(), '', FALSE);
 		$this->mockTemplateParser = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\TemplateParser');
 		$this->mockParsedTemplate = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\ParsedTemplateInterface');
 		$this->mockTemplateParser->expects($this->any())->method('parse')->will($this->returnValue($this->mockParsedTemplate));
@@ -125,21 +129,22 @@ class StandaloneViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->view->setRenderingContext($this->mockRenderingContext);
 		$this->mockTemplateCompiler = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Compiler\\TemplateCompiler');
 		$this->view->_set('templateCompiler', $this->mockTemplateCompiler);
-		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager', $this->mockObjectManager);
-		\TYPO3\CMS\Core\Utility\GeneralUtility::addInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', $this->mockContentObject);
+		GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager', $this->mockObjectManager);
+		GeneralUtility::addInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', $this->mockContentObject);
 
+		/** @var \TYPO3\CMS\Core\Cache\CacheManager|\PHPUnit_Framework_MockObject_MockObject $mockCacheManager */
 		$mockCacheManager = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array(), array(), '', FALSE);
 		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\PhpFrontend', array(), array(), '', FALSE);
 		$mockCacheManager->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
-		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager', $mockCacheManager);
+		GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager', $mockCacheManager);
 	}
 
 	/**
 	 * @return void
 	 */
 	public function tearDown() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::purgeInstances();
-		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
+		GeneralUtility::purgeInstances();
+		GeneralUtility::resetSingletonInstances($this->singletonInstances);
 		parent::tearDown();
 	}
 
@@ -166,43 +171,43 @@ class StandaloneViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			case 'TYPO3\\CMS\\Fluid\\Core\\Compiler\\TemplateCompiler':
 				return $this->mockTemplateCompiler;
 		}
+		throw new \InvalidArgumentException('objectManagerCallback cannot handle class "' . $className . '". Looks like incomplete mocking in the tests.', 1417105493);
 	}
 
 	/**
 	 * @test
 	 */
 	public function constructorSetsSpecifiedContentObject() {
+		/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer|\PHPUnit_Framework_MockObject_MockObject $mockContentObject */
 		$mockContentObject = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
-		// FIXME should be compared with identicalTo() - but that does not seem to work
-		$this->mockConfigurationManager->expects($this->once())->method('setContentObject')->with($this->equalTo($this->mockContentObject));
-		new \TYPO3\CMS\Fluid\View\StandaloneView($mockContentObject);
+		$this->mockConfigurationManager->expects($this->once())->method('setContentObject')->with($this->identicalTo($mockContentObject));
+		new StandaloneView($mockContentObject);
 	}
 
 	/**
 	 * @test
 	 */
 	public function constructorCreatesContentObjectIfItIsNotSpecified() {
-		// FIXME should be compared with identicalTo() - but that does not seem to work
-		$this->mockConfigurationManager->expects($this->once())->method('setContentObject')->with($this->equalTo($this->mockContentObject));
-		new \TYPO3\CMS\Fluid\View\StandaloneView();
+		$this->mockConfigurationManager->expects($this->once())->method('setContentObject')->with($this->identicalTo($this->mockContentObject));
+		new StandaloneView();
 	}
 
 	/**
 	 * @test
 	 */
 	public function constructorSetsRequestUri() {
-		$expectedRequestUri = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
+		$expectedRequestUri = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
 		$this->mockRequest->expects($this->once())->method('setRequestURI')->with($expectedRequestUri);
-		new \TYPO3\CMS\Fluid\View\StandaloneView();
+		new StandaloneView();
 	}
 
 	/**
 	 * @test
 	 */
 	public function constructorSetsBaseUri() {
-		$expectedBaseUri = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+		$expectedBaseUri = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 		$this->mockRequest->expects($this->once())->method('setBaseURI')->with($expectedBaseUri);
-		new \TYPO3\CMS\Fluid\View\StandaloneView();
+		new StandaloneView();
 	}
 
 	/**
@@ -210,7 +215,7 @@ class StandaloneViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function constructorInjectsRequestToUriBuilder() {
 		$this->mockUriBuilder->expects($this->once())->method('setRequest')->with($this->mockRequest);
-		new \TYPO3\CMS\Fluid\View\StandaloneView();
+		new StandaloneView();
 	}
 
 	/**
@@ -218,7 +223,7 @@ class StandaloneViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function constructorInjectsRequestToControllerContext() {
 		$this->mockControllerContext->expects($this->once())->method('setRequest')->with($this->mockRequest);
-		new \TYPO3\CMS\Fluid\View\StandaloneView();
+		new StandaloneView();
 	}
 
 	/**
@@ -226,7 +231,7 @@ class StandaloneViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function constructorInjectsUriBuilderToControllerContext() {
 		$this->mockControllerContext->expects($this->once())->method('setUriBuilder')->with($this->mockUriBuilder);
-		new \TYPO3\CMS\Fluid\View\StandaloneView();
+		new StandaloneView();
 	}
 
 	/**
@@ -498,23 +503,23 @@ class StandaloneViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function setPartialsRootPathOverrulesSetTemplateRootPaths() {
+	public function setPartialRootPathsOverridesValueSetBySetPartialRootPath() {
 		$this->view->setPartialRootPath('/foo/bar');
 		$this->view->setPartialRootPaths(array('/overruled/path'));
 		$expected = array('/overruled/path');
 		$actual = $this->view->_call('getPartialRootPaths');
-		$this->assertEquals($expected, $actual, 'A set template root path was not returned correctly.');
+		$this->assertEquals($expected, $actual, 'A set partial root path was not returned correctly.');
 	}
 
 	/**
 	 * @test
 	 */
-	public function setLayoutsRootPathOverrulesSetTemplateRootPaths() {
+	public function setLayoutRootPathsOverridesValuesSetBySetLayoutRootPath() {
 		$this->view->setLayoutRootPath('/foo/bar');
 		$this->view->setLayoutRootPaths(array('/overruled/path'));
 		$expected = array('/overruled/path');
 		$actual = $this->view->_call('getLayoutRootPaths');
-		$this->assertEquals($expected, $actual, 'A set template root path was not returned correctly.');
+		$this->assertEquals($expected, $actual, 'A set layout root path was not returned correctly.');
 	}
 
 	/**
