@@ -929,6 +929,13 @@ class DatabaseConnectionOracleTest extends AbstractTestCase {
 			$whereExpr[] = '"uid" NOT IN (' . implode(',', $chunk) . ')';
 		}
 
+		/**
+		 * $expectedWhere:
+		 * (
+		 *        "uid" NOT IN (1,2,3,4,...,1000)
+		 *    AND "uid" NOT IN (1001,1002,...,1250)
+		 * )
+		 */
 		$expectedWhere = '(' . implode(' AND ', $whereExpr) . ')';
 		$expectedQuery = 'SELECT * FROM "tt_content" WHERE ' . $expectedWhere;
 		$this->assertEquals($expectedQuery, $this->cleanSql($result));
@@ -953,6 +960,13 @@ class DatabaseConnectionOracleTest extends AbstractTestCase {
 			$whereExpr[] = '"uid" IN (' . implode(',', $chunk) . ')';
 		}
 
+		/**
+		 * $expectedWhere:
+		 * (
+		 *        "uid" IN (1,2,3,4,...,1000)
+		 *     OR "uid" IN (1001,1002,...,1250)
+		 * )
+		 */
 		$expectedWhere = '(' . implode(' OR ', $whereExpr) . ')';
 		$expectedQuery = 'SELECT * FROM "tt_content" WHERE ' . $expectedWhere;
 		$this->assertEquals($expectedQuery, $this->cleanSql($result));
@@ -983,7 +997,7 @@ class DatabaseConnectionOracleTest extends AbstractTestCase {
 		$mockSpecificsOci8->expects($this->any())->method('getSpecific')->will($this->returnValue($listMaxExpressions));
 
 		$items = range(0, 1250);
-		$where = 'uid = 1981 AND uid IN(' . implode(',', $items) . ')';
+		$where = 'uid = 1981 AND uid IN(' . implode(',', $items) . ') OR uid = 42';
 		$result = $this->subject->SELECTquery('uid, pid', 'tt_content', $where);
 
 		$chunks = array_chunk($items, $listMaxExpressions);
@@ -992,7 +1006,55 @@ class DatabaseConnectionOracleTest extends AbstractTestCase {
 			$whereExpr[] = '"uid" IN (' . implode(',', $chunk) . ')';
 		}
 
-		$expectedWhere = '"uid" = 1981 AND (' . implode(' OR ', $whereExpr) . ')';
+		/**
+		 * $expectedWhere:
+		 * "uid" = 1981 AND (
+		 *        "uid" IN (1,2,3,4,...,1000)
+		 *     OR "uid" IN (1001,1002,...,1250)
+		 * ) OR "uid" = 42
+		 */
+		$expectedWhere = '"uid" = 1981 AND (' . implode(' OR ', $whereExpr) . ') OR "uid" = 42';
+		$expectedQuery = 'SELECT "uid", "pid" FROM "tt_content" WHERE ' . $expectedWhere;
+		$this->assertEquals($expectedQuery, $this->cleanSql($result));
+	}
+
+	/**
+	 * @test
+	 */
+	public function multipleExpressiosInWhereClauseAreBracedCorrectly() {
+		$listMaxExpressions = 1000;
+
+		$mockSpecificsOci8 = $this->getAccessibleMock('TYPO3\\CMS\\Dbal\\Database\\Specifics\\Oci8', array(), array(), '', FALSE);
+		$mockSpecificsOci8->expects($this->any())->method('getSpecific')->will($this->returnValue($listMaxExpressions));
+
+		$INitems = range(0, 1250);
+		$NOTINItems = range(0, 1001);
+		$where = 'uid = 1981 AND uid IN(' . implode(',', $INitems) . ') OR uid = 42 AND uid NOT IN(' . implode(',', $NOTINItems) . ')';
+		$result = $this->subject->SELECTquery('uid, pid', 'tt_content', $where);
+
+		$chunks = array_chunk($INitems, $listMaxExpressions);
+		$INItemsWhereExpr = array();
+		foreach ($chunks as $chunk) {
+			$INItemsWhereExpr[] = '"uid" IN (' . implode(',', $chunk) . ')';
+		}
+
+		$chunks = array_chunk($NOTINItems, $listMaxExpressions);
+		$NOTINItemsWhereExpr = array();
+		foreach ($chunks as $chunk) {
+			$NOTINItemsWhereExpr[] = '"uid" NOT IN (' . implode(',', $chunk) . ')';
+		}
+
+		/**
+		 * $expectedWhere:
+		 * "uid" = 1981 AND (
+		 *        "uid" IN (1,2,3,4,...,1000)
+		 *     OR "uid" IN (1001,1002,...,1250)
+		 * ) OR "uid" = 42 AND (
+		 *        "uid" NOT IN (1,2,3,4,...,1000)
+		 *    AND "uid" NOT IN (1001)
+		 * )
+		 */
+		$expectedWhere = '"uid" = 1981 AND (' . implode(' OR ', $INItemsWhereExpr) . ') OR "uid" = 42 AND (' . implode(' AND ', $NOTINItemsWhereExpr) . ')';
 		$expectedQuery = 'SELECT "uid", "pid" FROM "tt_content" WHERE ' . $expectedWhere;
 		$this->assertEquals($expectedQuery, $this->cleanSql($result));
 	}
