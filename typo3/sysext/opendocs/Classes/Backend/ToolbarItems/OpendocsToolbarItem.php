@@ -94,7 +94,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface {
 		$recentDocuments = $this->recentDocs;
 		$entries = array();
 		if (count($openDocuments)) {
-			$entries[] = '<li class="dropdown-header">' . $languageService->getLL('open_docs', TRUE) . '</li>';
+			$entries[] = '<tr><td class="dropdown-header">' . $languageService->getLL('open_docs', TRUE) . '</td></tr>';
 			$i = 0;
 			foreach ($openDocuments as $md5sum => $openDocument) {
 				$i++;
@@ -103,7 +103,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface {
 		}
 		// If there are "recent documents" in the list, add them
 		if (count($recentDocuments)) {
-			$entries[] = '<li class="dropdown-header">' . $languageService->getLL('recent_docs', TRUE) . '</li>';
+			$entries[] = '<tr><td class="dropdown-header">' . $languageService->getLL('recent_docs', TRUE) . '</td></tr>';
 			$i = 0;
 			foreach ($recentDocuments as $md5sum => $recentDocument) {
 				$i++;
@@ -111,9 +111,9 @@ class OpendocsToolbarItem implements ToolbarItemInterface {
 			}
 		}
 		if (count($entries)) {
-			$content = '<ul>' . implode('', $entries) . '</ul>';
+			$content = '<table><tbody>' . implode('', $entries) . '</tbody></table>';
 		} else {
-			$content = '<ul><li class="noOpenDocs">' . $languageService->getLL('no_docs', TRUE) . '</li></ul>';
+			$content = '<p>' . $languageService->getLL('no_docs', TRUE) . '</p>';
 		}
 		return $content;
 	}
@@ -151,18 +151,22 @@ class OpendocsToolbarItem implements ToolbarItemInterface {
 			// Open document
 			$closeIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close');
 			$entry = '
-				<li class="opendoc' . $firstRow . '">
-					<div class="linkWrap">
-						<a href="#" class="opendocLink" onclick="jump(unescape(\'' . htmlspecialchars($link) . '\'), \'web_list\', \'web\', ' . $pageId . ');TYPO3.OpendocsMenu.toggleMenu(); return false;" target="content">' . $icon . $label . '</a>
-						<a href="#" class="close" data-opendocsidentifier="' . $md5sum . '">' . $closeIcon . '</a>
-					</div>
-				</li>';
+				<tr class="opendoc' . $firstRow . '">
+					<td>
+						<a href="#" class="opendocLink pull-left" onclick="jump(unescape(\'' . htmlspecialchars($link) . '\'), \'web_list\', \'web\', ' . $pageId . ');TYPO3.OpendocsMenu.toggleMenu(); return false;" target="content">' . $icon . ' ' . $label . '</a>
+					</td>
+					<td>
+						<a href="#" class="close pull-right" data-opendocsidentifier="' . $md5sum . '">' . $closeIcon . '</a>
+					</td>
+				</tr>';
 		} else {
 			// Recently used document
 			$entry = '
-				<li class="recentdoc' . $firstRow . '">
-					<a href="#" onclick="jump(unescape(\'' . htmlspecialchars($link) . '\'), \'web_list\', \'web\', ' . $pageId . '); TYPO3.OpendocsMenu.toggleMenu(); return false;" target="content">' . $icon . $label . '</a>
-				</li>';
+				<tr class="recentdoc' . $firstRow . '">
+					<td colspan="2">
+						<a href="#" onclick="jump(unescape(\'' . htmlspecialchars($link) . '\'), \'web_list\', \'web\', ' . $pageId . '); TYPO3.OpendocsMenu.toggleMenu(); return false;" target="content">' . $icon . ' ' . $label . '</a>
+					</td>
+				</tr>';
 		}
 		return $entry;
 	}

@@ -122,33 +122,34 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 		$shortcutEdit = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarksEdit', TRUE);
 		$shortcutDelete = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarksDelete', TRUE);
 		$groupIcon = IconUtility::getSpriteIcon('apps-pagetree-folder-default', array('title' => $shortcutGroup));
-		$editIcon = IconUtility::getSpriteIcon('actions-document-open', array('title' => $shortcutEdit));
-		$deleteIcon = IconUtility::getSpriteIcon('actions-edit-delete', array('title' => $shortcutDelete));
-		$shortcutMenu[] = '<table border="0" class="shortcut-list">';
+		$editIcon = '<a href="#">' . IconUtility::getSpriteIcon('actions-document-open', array('title' => $shortcutEdit)) . '</a>';
+		$deleteIcon = '<a href="#">' . IconUtility::getSpriteIcon('actions-edit-delete', array('title' => $shortcutDelete)) . '</a>';
+
+		$shortcutMenu[] = '<table><tbody>';
+
 		// Render shortcuts with no group (group id = 0) first
 		$noGroupShortcuts = $this->getShortcutsByGroup(0);
 		foreach ($noGroupShortcuts as $shortcut) {
 			$shortcutMenu[] = '
-			<tr class="shortcut" data-shortcutid="' . $shortcut['raw']['uid'] . '">
-				<td class="shortcut-icon">' . $shortcut['icon'] . '</td>
-				<td class="shortcut-label">
-					<a href="#" onclick="' . $shortcut['action'] . '; return false;">' . htmlspecialchars($shortcut['label']) . '</a>
-				</td>
-				<td class="shortcut-edit">' . $editIcon . '</td>
-				<td class="shortcut-delete">' . $deleteIcon . '</td>
-			</tr>';
+				<tr class="shortcut" data-shortcutid="' . $shortcut['raw']['uid'] . '">
+					<td class="shortcut-label">
+						<a href="#" onclick="' . $shortcut['action'] . '; return false;">' .
+							$shortcut['icon'] . ' ' .
+							htmlspecialchars($shortcut['label']) .
+						'</a>
+					</td>
+					<td class="shortcut-edit">' . $editIcon . '</td>
+					<td class="shortcut-delete"' . $deleteIcon . '</td>
+				</tr>';
 		}
 		// Now render groups and the contained shortcuts
 		$groups = $this->getGroupsFromShortcuts();
 		krsort($groups, SORT_NUMERIC);
 		foreach ($groups as $groupId => $groupLabel) {
 			if ($groupId != 0) {
-				$shortcutGroup = '
-				<tr class="shortcut-group" id="shortcut-group-' . $groupId . '">
-					<td class="shortcut-group-icon">' . $groupIcon . '</td>
-					<td class="shortcut-group-label">' . $groupLabel . '</td>
-					<td colspan="2">&nbsp;</td>
-				</tr>';
+				$shortcutGroup = '<tr><td class="dropdown-header shortcut-group typo3-module-menu-item" id="shortcut-group-' . $groupId . '" colspan="3">' .
+					$groupIcon . ' ' . $groupLabel .
+					'</td></tr>';
 				$shortcuts = $this->getShortcutsByGroup($groupId);
 				$i = 0;
 				foreach ($shortcuts as $shortcut) {
@@ -159,9 +160,11 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 					}
 					$shortcutGroup .= '
 					<tr class="shortcut' . $firstRow . '" data-shortcutid="' . $shortcut['raw']['uid'] . '" data-shortcutgroup="' . $groupId . '">
-						<td class="shortcut-icon">' . $shortcut['icon'] . '</td>
 						<td class="shortcut-label">
-							<a href="#" onclick="' . $shortcut['action'] . '; return false;">' . htmlspecialchars($shortcut['label']) . '</a>
+							<a href="#" onclick="' . $shortcut['action'] . '; return false;">' .
+								$shortcut['icon'] . ' ' .
+								htmlspecialchars($shortcut['label']) .
+							'</a>
 						</td>
 						<td class="shortcut-edit">' . $editIcon . '</td>
 						<td class="shortcut-delete">' . $deleteIcon . '</td>
@@ -170,17 +173,20 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 				$shortcutMenu[] = $shortcutGroup;
 			}
 		}
-		if (count($shortcutMenu) == 1) {
+		$shortcutMenu[] = '</tbody></table>';
+
+		if (count($shortcutMenu) == 2) {
 			// No shortcuts added yet, show a small help message how to add shortcuts
 			$title = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarks', TRUE);
 			$icon = IconUtility::getSpriteIcon('actions-system-shortcut-new', array(
 				'title' => $title
 			));
 			$label = str_replace('%icon%', $icon, $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:bookmarkDescription'));
-			$shortcutMenu[] = '<tr><td style="padding:1px 2px; color: #838383;">' . $label . '</td></tr>';
+			$compiledShortcutMenu = '<p>' . $label . '</p>';
+		} else {
+			$compiledShortcutMenu = implode(LF, $shortcutMenu);
 		}
-		$shortcutMenu[] = '</table>';
-		$compiledShortcutMenu = implode(LF, $shortcutMenu);
+
 		return $compiledShortcutMenu;
 	}
 

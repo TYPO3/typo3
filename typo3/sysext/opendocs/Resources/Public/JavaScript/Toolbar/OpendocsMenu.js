@@ -28,7 +28,7 @@ define('TYPO3/CMS/Opendocs/Toolbar/OpendocsMenu', ['jquery'], function($) {
 			menuContainerSelector: '.dropdown-menu',
 			menuItemSelector: '.dropdown-menu li a',
 			toolbarIconSelector: '.dropdown-toggle span.t3-icon',
-			openDocumentsItemsSelector: 'li.opendoc',
+			openDocumentsItemsSelector: 'tr.opendoc',
 			counterSelector: '#tx-opendocs-counter'
 		}
 	};

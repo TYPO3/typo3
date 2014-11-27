@@ -76,7 +76,7 @@ Topbar
 				color: @navbar-inverse-link-active-color;
 				border: none;
 
-				// Dropdown-menu with UL
+				// dropdown-menu > ul
 				> ul {
 					.list-unstyled;
 
@@ -94,9 +94,7 @@ Topbar
 						&.active {
 							> a {
 								background-color: darken(@navbar-inverse-link-active-bg, 15%);
-
 							}
-
 						}
 					}
 
@@ -116,6 +114,35 @@ Topbar
 								display: block;
 								padding-left: 42px;
 								padding-top: 8px;
+							}
+						}
+					}
+				}
+
+				// dropdown-menu > p
+				> p {
+					padding: 3px 20px;
+				}
+
+				// dropdown-menu > table > tr > td
+				> table {
+					width: 100%;
+
+					> thead > tr > td {
+						.dropdown-header;
+					}
+					> tbody > tr > td > a {
+						color: @navbar-inverse-link-active-color;
+						display: block;
+						padding: 3px 20px;
+						clear: both;
+						font-weight: normal;
+						line-height: @line-height-base;
+						white-space: nowrap;
+
+						&.active {
+							> a {
+								background-color: darken(@navbar-inverse-link-active-bg, 15%);
 							}
 						}
 					}

@@ -11496,6 +11496,32 @@ Topbar
   padding-left: 42px;
   padding-top: 8px;
 }
+#typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu > p {
+  padding: 3px 20px;
+}
+#typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu > table {
+  width: 100%;
+}
+#typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu > table > thead > tr > td {
+  display: block;
+  padding: 3px 20px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: #d7d7d7;
+  white-space: nowrap;
+}
+#typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu > table > tbody > tr > td > a {
+  color: #ffffff;
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+#typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu > table > tbody > tr > td > a.active > a {
+  background-color: #282828;
+}
 #typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu li a,
 #typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu td a {
   color: #ffffff;
