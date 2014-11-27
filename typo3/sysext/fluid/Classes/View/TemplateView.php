@@ -14,7 +14,9 @@ namespace TYPO3\CMS\Fluid\View;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\Compatibility\TemplateParserBuilder;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Fluid;
 
 /**
@@ -133,8 +135,8 @@ class TemplateView extends AbstractTemplateView {
 	 */
 	public function __construct() {
 		$this->templateParser = TemplateParserBuilder::build();
-		$this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-		$this->setRenderingContext($this->objectManager->get(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface::class));
+		$this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+		$this->setRenderingContext($this->objectManager->get(RenderingContextInterface::class));
 	}
 
 	/**
@@ -329,23 +331,22 @@ class TemplateView extends AbstractTemplateView {
 	 */
 	protected function getTemplatePathAndFilename($actionName = NULL) {
 		if ($this->templatePathAndFilename !== NULL) {
-			return $this->templatePathAndFilename;
+			return $this->resolveFileNamePath($this->templatePathAndFilename);
 		}
 		if ($actionName === NULL) {
 			/** @var $actionRequest \TYPO3\CMS\Extbase\Mvc\Request */
 			$actionRequest = $this->controllerContext->getRequest();
 			$actionName = $actionRequest->getControllerActionName();
 		}
-		$actionName = ucfirst($actionName);
 
 		$paths = $this->expandGenericPathPattern($this->templatePathAndFilenamePattern, FALSE, FALSE);
-		foreach ($paths as &$templatePathAndFilename) {
-			$templatePathAndFilename = $this->resolveFileNamePath(str_replace('@action', $actionName, $templatePathAndFilename));
-			if (is_file($templatePathAndFilename)) {
+		$possibleFileNames = $this->buildListOfTemplateCandidates($actionName, $paths, '@action');
+		foreach ($possibleFileNames as $templatePathAndFilename) {
+			if ($this->testFileExistence($templatePathAndFilename)) {
 				return $templatePathAndFilename;
 			}
 		}
-		throw new Exception\InvalidTemplateResourceException('Template could not be loaded. I tried "' . implode('", "', $paths) . '"', 1225709595);
+		throw new Exception\InvalidTemplateResourceException('Template could not be loaded. I tried "' . implode('", "', $possibleFileNames) . '"', 1225709595);
 	}
 
 	/**
@@ -396,17 +397,16 @@ class TemplateView extends AbstractTemplateView {
 	 */
 	protected function getLayoutPathAndFilename($layoutName = 'Default') {
 		if ($this->layoutPathAndFilename !== NULL) {
-			return $this->layoutPathAndFilename;
+			return $this->resolveFileNamePath($this->layoutPathAndFilename);
 		}
 		$paths = $this->expandGenericPathPattern($this->layoutPathAndFilenamePattern, TRUE, TRUE);
-		$layoutName = ucfirst($layoutName);
-		foreach ($paths as &$layoutPathAndFilename) {
-			$layoutPathAndFilename = $this->resolveFileNamePath(str_replace('@layout', $layoutName, $layoutPathAndFilename));
-			if (is_file($layoutPathAndFilename)) {
+		$possibleFileNames = $this->buildListOfTemplateCandidates($layoutName, $paths, '@layout');
+		foreach ($possibleFileNames as $layoutPathAndFilename) {
+			if ($this->testFileExistence($layoutPathAndFilename)) {
 				return $layoutPathAndFilename;
 			}
 		}
-		throw new Exception\InvalidTemplateResourceException('The template files "' . implode('", "', $paths) . '" could not be loaded.', 1225709596);
+		throw new Exception\InvalidTemplateResourceException('The layout files "' . implode('", "', $possibleFileNames) . '" could not be loaded.', 1225709596);
 	}
 
 	/**
@@ -447,13 +447,33 @@ class TemplateView extends AbstractTemplateView {
 	 */
 	protected function getPartialPathAndFilename($partialName) {
 		$paths = $this->expandGenericPathPattern($this->partialPathAndFilenamePattern, TRUE, TRUE);
-		foreach ($paths as &$partialPathAndFilename) {
-			$partialPathAndFilename = $this->resolveFileNamePath(str_replace('@partial', $partialName, $partialPathAndFilename));
-			if (is_file($partialPathAndFilename)) {
+		$possibleFileNames = $this->buildListOfTemplateCandidates($partialName, $paths, '@partial');
+		foreach ($possibleFileNames as $partialPathAndFilename) {
+			if ($this->testFileExistence($partialPathAndFilename)) {
 				return $partialPathAndFilename;
 			}
 		}
-		throw new Exception\InvalidTemplateResourceException('The template files "' . implode('", "', $paths) . '" could not be loaded.', 1225709597);
+		throw new Exception\InvalidTemplateResourceException('The partial files "' . implode('", "', $possibleFileNames) . '" could not be loaded.', 1225709597);
+	}
+
+	/**
+	 * Builds a list of possible candidates for a given template name
+	 *
+	 * @param string $templateName
+	 * @param array $paths Paths to search in
+	 * @param string $marker Marker to replace in the $templateName
+	 * @return array Array of paths to search for the template file
+	 */
+	protected function buildListOfTemplateCandidates($templateName, $paths, $marker) {
+		$upperCasedTemplateName = $this->ucFileNameInPath($templateName);
+		$possibleFileNames = array();
+		foreach ($paths as $partialPathAndFilename) {
+			$possibleFileNames[] = $this->resolveFileNamePath(str_replace($marker, $upperCasedTemplateName, $partialPathAndFilename));
+			if ($templateName !== $upperCasedTemplateName) {
+				$possibleFileNames[] = $this->resolveFileNamePath(str_replace($marker, $templateName, $partialPathAndFilename));
+			}
+		}
+		return $possibleFileNames;
 	}
 
 	/**
@@ -608,7 +628,7 @@ class TemplateView extends AbstractTemplateView {
 	 * @return string absolute pathAndFilename
 	 */
 	protected function resolveFileNamePath($pathAndFilename) {
-		return GeneralUtility::getFileAbsFileName($pathAndFilename);
+		return GeneralUtility::getFileAbsFileName(GeneralUtility::fixWindowsFilePath($pathAndFilename), TRUE);
 	}
 
 }

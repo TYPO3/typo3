@@ -15,13 +15,27 @@ include_once(__DIR__ . '/Fixtures/TransparentSyntaxTreeNode.php');
 include_once(__DIR__ . '/Fixtures/TemplateViewFixture.php');
 
 use org\bovigo\vfs\vfsStreamWrapper;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
+use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
+use TYPO3\CMS\Extbase\Mvc\Web\Request as WebRequest;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler;
+use TYPO3\CMS\Fluid\Core\Parser\ParsedTemplateInterface;
+use TYPO3\CMS\Fluid\Core\Parser\TemplateParser;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 use TYPO3\CMS\Fluid\View\TemplateView;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Test case
  */
-class TemplateViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class TemplateViewTest extends UnitTestCase {
 
 	/**
 	 * Test for #42123
@@ -30,7 +44,7 @@ class TemplateViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function expandGenericPathPatternWorksWithOldNamingSchemeOfSubPackage() {
 		$mockControllerContext = $this->setupMockControllerContextForPathResolving('MyPackage', 'ViewHelpers_Widget', 'Paginate', 'html');
-		$templateView = $this->getAccessibleMock(\TYPO3\CMS\Fluid\View\TemplateView::class, array('dummy'), array(), '', FALSE);
+		$templateView = $this->getAccessibleMock(TemplateView::class, array('dummy'), array(), '', FALSE);
 		$templateView->_set('controllerContext', $mockControllerContext);
 		$expected = array(ExtensionManagementUtility::extPath('frontend') . 'Resources/Private/Templates/ViewHelpers/Widget/Paginate/@action.html');
 		$actual = $templateView->_call('expandGenericPathPattern', '@templateRoot/@subpackage/@controller/@action.@format', FALSE, FALSE);
@@ -44,7 +58,7 @@ class TemplateViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function expandGenericPathPatternWorksWithNewNamingSchemeOfSubPackage() {
 		$mockControllerContext = $this->setupMockControllerContextForPathResolving('MyPackage', 'ViewHelpers\\Widget', 'Paginate', 'html');
-		$templateView = $this->getAccessibleMock(\TYPO3\CMS\Fluid\View\TemplateView::class, array('dummy'), array(), '', FALSE);
+		$templateView = $this->getAccessibleMock(TemplateView::class, array('dummy'), array(), '', FALSE);
 		$templateView->_set('controllerContext', $mockControllerContext);
 		$expected = array(ExtensionManagementUtility::extPath('frontend') . 'Resources/Private/Templates/ViewHelpers/Widget/Paginate/@action.html');
 		$actual = $templateView->_call('expandGenericPathPattern', '@templateRoot/@subpackage/@controller/@action.@format', FALSE, FALSE);
@@ -58,11 +72,11 @@ class TemplateViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param string $subPackageKey
 	 * @param string $controllerName
 	 * @param string $format
-	 * @return \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
+	 * @return ControllerContext
 	 */
 	protected function setupMockControllerContextForPathResolving($packageKey, $subPackageKey, $controllerName, $format) {
 		$controllerObjectName = "TYPO3\\$packageKey\\" . ($subPackageKey != $subPackageKey . '\\' ? : '') . 'Controller\\' . $controllerName . 'Controller';
-		$mockRequest = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Web\Request::class);
+		$mockRequest = $this->getMock(WebRequest::class);
 		$mockRequest->expects($this->any())->method('getControllerExtensionKey')->will($this->returnValue('frontend'));
 		$mockRequest->expects($this->any())->method('getControllerPackageKey')->will($this->returnValue($packageKey));
 		$mockRequest->expects($this->any())->method('getControllerSubPackageKey')->will($this->returnValue($subPackageKey));
@@ -70,7 +84,7 @@ class TemplateViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$mockRequest->expects($this->any())->method('getControllerObjectName')->will($this->returnValue($controllerObjectName));
 		$mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue($format));
 
-		$mockControllerContext = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class, array('getRequest'), array(), '', FALSE);
+		$mockControllerContext = $this->getMock(ControllerContext::class, array('getRequest'), array(), '', FALSE);
 		$mockControllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($mockRequest));
 
 		return $mockControllerContext;
@@ -491,7 +505,7 @@ class TemplateViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$mockControllerContext = $this->setupMockControllerContextForPathResolving($package, $subPackage, $controller, $format);
 
 		/** @var TemplateView|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $templateView */
-		$templateView = $this->getAccessibleMock(\TYPO3\CMS\Fluid\View\TemplateView::class, array('dummy'), array(), '', FALSE);
+		$templateView = $this->getAccessibleMock(TemplateView::class, array('dummy'), array(), '', FALSE);
 		$templateView->setControllerContext($mockControllerContext);
 		if ($templateRootPath !== NULL) {
 			$templateView->setTemplateRootPath($templateRootPath);
@@ -524,7 +538,7 @@ class TemplateViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function expandGenericPathPatternWorksWithBubblingDisabledAndFormatNotOptional() {
 		$mockControllerContext = $this->setupMockControllerContextForPathResolving('MyPackage', NULL, 'My', 'html');
 
-		$templateView = $this->getAccessibleMock(\TYPO3\CMS\Fluid\View\TemplateView::class, array('getTemplateRootPaths'), array(), '', FALSE);
+		$templateView = $this->getAccessibleMock(TemplateView::class, array('getTemplateRootPaths'), array(), '', FALSE);
 		$templateView->_set('controllerContext', $mockControllerContext);
 		$templateView->expects($this->any())->method('getTemplateRootPaths')->will($this->returnValue(array('Resources/Private/')));
 
@@ -540,7 +554,7 @@ class TemplateViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function expandGenericPathPatternWorksWithSubpackageAndBubblingDisabledAndFormatNotOptional() {
 		$mockControllerContext = $this->setupMockControllerContextForPathResolving('MyPackage', 'MySubPackage', 'My', 'html');
 
-		$templateView = $this->getAccessibleMock(\TYPO3\CMS\Fluid\View\TemplateView::class, array('getTemplateRootPaths'), array(), '', FALSE);
+		$templateView = $this->getAccessibleMock(TemplateView::class, array('getTemplateRootPaths'), array(), '', FALSE);
 		$templateView->_set('controllerContext', $mockControllerContext);
 		$templateView->expects($this->any())->method('getTemplateRootPaths')->will($this->returnValue(array('Resources/Private/')));
 		$actual = $templateView->_call('expandGenericPathPattern', '@templateRoot/Templates/@subpackage/@controller/@action.@format', FALSE, FALSE);
@@ -557,7 +571,7 @@ class TemplateViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function expandGenericPathPatternWorksWithSubpackageAndBubblingDisabledAndFormatOptional() {
 		$mockControllerContext = $this->setupMockControllerContextForPathResolving('MyPackage', 'MySubPackage', 'My', 'html');
 
-		$templateView = $this->getAccessibleMock(\TYPO3\CMS\Fluid\View\TemplateView::class, array('getTemplateRootPaths'), array(), '', FALSE);
+		$templateView = $this->getAccessibleMock(TemplateView::class, array('getTemplateRootPaths'), array(), '', FALSE);
 		$templateView->_set('controllerContext', $mockControllerContext);
 		$templateView->expects($this->any())->method('getTemplateRootPaths')->will($this->returnValue(array('Resources/Private/')));
 		$actual = $templateView->_call('expandGenericPathPattern', '@templateRoot/Templates/@subpackage/@controller/@action.@format', FALSE, TRUE);
@@ -575,7 +589,7 @@ class TemplateViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function expandGenericPathPatternWorksWithSubpackageAndBubblingEnabledAndFormatOptional() {
 		$mockControllerContext = $this->setupMockControllerContextForPathResolving('MyPackage', 'MySubPackage', 'My', 'html');
 
-		$templateView = $this->getAccessibleMock(\TYPO3\CMS\Fluid\View\TemplateView::class, array('getTemplateRootPaths'), array(), '', FALSE);
+		$templateView = $this->getAccessibleMock(TemplateView::class, array('getTemplateRootPaths'), array(), '', FALSE);
 		$templateView->_set('controllerContext', $mockControllerContext);
 		$templateView->expects($this->any())->method('getTemplateRootPaths')->will($this->returnValue(array('Resources/Private/')));
 		$actual = $templateView->_call('expandGenericPathPattern', '@templateRoot/Templates/@subpackage/@controller/@action.@format', TRUE, TRUE);
@@ -596,7 +610,7 @@ class TemplateViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getTemplateRootPathsReturnsUserSpecifiedTemplatePaths() {
 		/** @var TemplateView|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $templateView */
-		$templateView = $this->getAccessibleMock(\TYPO3\CMS\Fluid\View\TemplateView::class, array('dummy'), array(), '', FALSE);
+		$templateView = $this->getAccessibleMock(TemplateView::class, array('dummy'), array(), '', FALSE);
 		$templateView->setTemplateRootPath('/foo/bar');
 		$expected = array('/foo/bar');
 		$actual = $templateView->_call('getTemplateRootPaths');
@@ -608,7 +622,7 @@ class TemplateViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setTemplateRootPathOverrulesSetTemplateRootPaths() {
 		/** @var TemplateView|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $templateView */
-		$templateView = $this->getAccessibleMock(\TYPO3\CMS\Fluid\View\TemplateView::class, array('dummy'), array(), '', FALSE);
+		$templateView = $this->getAccessibleMock(TemplateView::class, array('dummy'), array(), '', FALSE);
 		$templateView->setTemplateRootPath('/foo/bar');
 		$templateView->setTemplateRootPaths(array('/overruled/path'));
 		$expected = array('/overruled/path');
@@ -621,7 +635,7 @@ class TemplateViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getPartialRootPathsReturnsUserSpecifiedPartialPath() {
 		/** @var TemplateView|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $templateView */
-		$templateView = $this->getAccessibleMock(\TYPO3\CMS\Fluid\View\TemplateView::class, array('dummy'), array(), '', FALSE);
+		$templateView = $this->getAccessibleMock(TemplateView::class, array('dummy'), array(), '', FALSE);
 		$templateView->setPartialRootPath('/foo/bar');
 		$expected = array('/foo/bar');
 		$actual = $templateView->_call('getPartialRootPaths');
@@ -633,7 +647,7 @@ class TemplateViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getLayoutRootPathsReturnsUserSpecifiedPartialPath() {
 		/** @var TemplateView|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $templateView */
-		$templateView = $this->getAccessibleMock(\TYPO3\CMS\Fluid\View\TemplateView::class, array('dummy'), array(), '', FALSE);
+		$templateView = $this->getAccessibleMock(TemplateView::class, array('dummy'), array(), '', FALSE);
 		$templateView->setLayoutRootPath('/foo/bar');
 		$expected = array('/foo/bar');
 		$actual = $templateView->_call('getLayoutRootPaths');
@@ -655,7 +669,7 @@ class TemplateViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 
 		/** @var TemplateView|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $templateView */
-		$templateView = $this->getAccessibleMock(\TYPO3\CMS\Fluid\View\TemplateView::class, array('expandGenericPathPattern', 'resolveFileNamePath'), array(), '', FALSE);
+		$templateView = $this->getAccessibleMock(TemplateView::class, array('expandGenericPathPattern', 'resolveFileNamePath'), array(), '', FALSE);
 		$templateView->expects($this->once())->method('expandGenericPathPattern')->with('@partialRoot/@subpackage/@partial.@format', TRUE, TRUE)->will($this->returnValue($paths));
 		$templateView->expects($this->any())->method('resolveFileNamePath')->will($this->onConsecutiveCalls(
 			$paths[0],
@@ -684,7 +698,7 @@ class TemplateViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 
 		/** @var TemplateView|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $templateView */
-		$templateView = $this->getAccessibleMock(\TYPO3\CMS\Fluid\View\TemplateView::class, array('expandGenericPathPattern', 'resolveFileNamePath'), array(), '', FALSE);
+		$templateView = $this->getAccessibleMock(TemplateView::class, array('expandGenericPathPattern', 'resolveFileNamePath'), array(), '', FALSE);
 		$templateView->expects($this->once())->method('expandGenericPathPattern')->with('@templateRoot/@subpackage/@controller/@action.@format', FALSE, FALSE)->will($this->returnValue($paths));
 		$templateView->expects($this->any())->method('resolveFileNamePath')->will($this->onConsecutiveCalls(
 			$paths[0],
@@ -707,10 +721,64 @@ class TemplateViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		mkdir('vfs://MyTemplates');
 		\file_put_contents('vfs://MyTemplates/MyCoolAction.html', 'contentsOfMyCoolAction');
 
-		$templateView = $this->getAccessibleMock(\TYPO3\CMS\Fluid\View\TemplateView::class, array('dummy'), array(), '', FALSE);
+		$templateView = $this->getAccessibleMock(TemplateView::class, array('resolveFileNamePath'), array(), '', FALSE);
+		$templateView->expects($this->any())->method('resolveFileNamePath')->willReturnArgument(0);
 		$templateView->_set('templatePathAndFilename', 'vfs://MyTemplates/MyCoolAction.html');
 
 		$this->assertSame('contentsOfMyCoolAction', $templateView->_call('getTemplateSource'));
 	}
 
+	/**
+	 * @test
+	 */
+	public function getLayoutPathAndFilenameRespectsCasingOfLayoutName() {
+		$singletonInstances = GeneralUtility::getSingletonInstances();
+
+		$mockParsedTemplate = $this->getMock(ParsedTemplateInterface::class);
+		$mockTemplateParser = $this->getMock(TemplateParser::class);
+		$mockTemplateParser->expects($this->any())->method('parse')->will($this->returnValue($mockParsedTemplate));
+
+		/** @var ObjectManager|\PHPUnit_Framework_MockObject_MockObject $mockObjectManager */
+		$mockObjectManager = $this->getMock(ObjectManager::class);
+		$mockObjectManager->expects($this->any())->method('get')->will($this->returnCallback(array($this, 'objectManagerCallback')));
+
+		$mockRequest = $this->getMock(WebRequest::class);
+		$mockControllerContext = $this->getMock(ControllerContext::class);
+		$mockControllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($mockRequest));
+
+		$mockViewHelperVariableContainer = $this->getMock(ViewHelperVariableContainer::class);
+		/** @var RenderingContext|\PHPUnit_Framework_MockObject_MockObject $mockRenderingContext */
+		$mockRenderingContext = $this->getMock(RenderingContext::class);
+		$mockRenderingContext->expects($this->any())->method('getControllerContext')->will($this->returnValue($mockControllerContext));
+		$mockRenderingContext->expects($this->any())->method('getViewHelperVariableContainer')->will($this->returnValue($mockViewHelperVariableContainer));
+
+		/** @var TemplateView|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $view */
+		$view = $this->getAccessibleMock(TemplateView::class, array('testFileExistence', 'buildParserConfiguration'), array(), '', FALSE);
+		$view->_set('templateParser', $mockTemplateParser);
+		$view->_set('objectManager', $mockObjectManager);
+		$view->setRenderingContext($mockRenderingContext);
+
+		$mockTemplateCompiler = $this->getMock(TemplateCompiler::class);
+		$view->_set('templateCompiler', $mockTemplateCompiler);
+		GeneralUtility::setSingletonInstance(ObjectManager::class, $mockObjectManager);
+		$mockContentObject = $this->getMock(ContentObjectRenderer::class);
+		GeneralUtility::addInstance(ContentObjectRenderer::class, $mockContentObject);
+
+		/** @var CacheManager|\PHPUnit_Framework_MockObject_MockObject $mockCacheManager */
+		$mockCacheManager = $this->getMock(CacheManager::class, array(), array(), '', FALSE);
+		$mockCache = $this->getMock(PhpFrontend::class, array(), array(), '', FALSE);
+		$mockCacheManager->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+		GeneralUtility::setSingletonInstance(CacheManager::class, $mockCacheManager);
+
+		$mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
+		$view->setLayoutRootPaths(array('some/Default/Directory'));
+		$view->setTemplateRootPaths(array('some/Default/Directory'));
+		$view->setPartialRootPaths(array('some/Default/Directory'));
+		$view->expects($this->at(0))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/LayoutName.html')->willReturn(FALSE);
+		$view->expects($this->at(1))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/layoutName.html')->willReturn(TRUE);
+		$this->assertSame(PATH_site . 'some/Default/Directory/layoutName.html', $view->_call('getLayoutPathAndFilename', 'layoutName'));
+
+		GeneralUtility::purgeInstances();
+		GeneralUtility::resetSingletonInstances($singletonInstances);
+	}
 }

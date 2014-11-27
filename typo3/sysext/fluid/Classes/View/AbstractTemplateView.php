@@ -283,6 +283,35 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
 	}
 
 	/**
+	 * Ensures the given templatePath gets the file name in UpperCamelCase
+	 *
+	 * @param string $templatePath A file name or a relative path
+	 * @return string
+	 */
+	protected function ucFileNameInPath($templatePath) {
+		if (strpos($templatePath, '/') > 0) {
+			$pathParts = explode('/', $templatePath);
+			$index = count($pathParts) - 1;
+			$pathParts[$index] = ucfirst($pathParts[$index]);
+
+			$upperCasedTemplateName = implode('/', $pathParts);
+		} else {
+			$upperCasedTemplateName = ucfirst($templatePath);
+		}
+		return $upperCasedTemplateName;
+	}
+
+	/**
+	 * Wrapper method for is_file function for testing reasons
+	 *
+	 * @param string $filePath
+	 * @return bool
+	 */
+	protected function testFileExistence($filePath) {
+		return is_file($filePath);
+	}
+
+	/**
 	 * Returns a unique identifier for the resolved template file.
 	 * This identifier is based on the template path and last modification date
 	 *

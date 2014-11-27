@@ -11,28 +11,35 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\View;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
+use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer;
+use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
+use TYPO3\CMS\Fluid\View\AbstractTemplateView;
+
 /**
  * Test case
  */
-class AbstractTemplateViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class AbstractTemplateViewTest extends UnitTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Fluid\View\AbstractTemplateView
+	 * @var AbstractTemplateView|AccessibleObjectInterface
 	 */
 	protected $view;
 
 	/**
-	 * @var \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext
+	 * @var RenderingContext|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $renderingContext;
 
 	/**
-	 * @var \TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer
+	 * @var ViewHelperVariableContainer|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $viewHelperVariableContainer;
 
 	/**
-	 * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer
+	 * @var TemplateVariableContainer|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $templateVariableContainer;
 
@@ -42,12 +49,12 @@ class AbstractTemplateViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function setUp() {
-		$this->templateVariableContainer = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer::class, array('exists', 'remove', 'add'));
-		$this->viewHelperVariableContainer = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer::class, array('setView'));
-		$this->renderingContext = $this->getMock(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext::class, array('getViewHelperVariableContainer', 'getTemplateVariableContainer'));
+		$this->templateVariableContainer = $this->getMock(TemplateVariableContainer::class, array('exists', 'remove', 'add'));
+		$this->viewHelperVariableContainer = $this->getMock(ViewHelperVariableContainer::class, array('setView'));
+		$this->renderingContext = $this->getMock(RenderingContext::class, array('getViewHelperVariableContainer', 'getTemplateVariableContainer'));
 		$this->renderingContext->expects($this->any())->method('getViewHelperVariableContainer')->will($this->returnValue($this->viewHelperVariableContainer));
 		$this->renderingContext->expects($this->any())->method('getTemplateVariableContainer')->will($this->returnValue($this->templateVariableContainer));
-		$this->view = $this->getMock(\TYPO3\CMS\Fluid\View\AbstractTemplateView::class, array('getTemplateSource', 'getLayoutSource', 'getPartialSource', 'canRender', 'getTemplateIdentifier', 'getLayoutIdentifier', 'getPartialIdentifier'));
+		$this->view = $this->getAccessibleMock(AbstractTemplateView::class, array('getTemplateSource', 'getLayoutSource', 'getPartialSource', 'canRender', 'getTemplateIdentifier', 'getLayoutIdentifier', 'getPartialIdentifier'));
 		$this->view->setRenderingContext($this->renderingContext);
 	}
 
@@ -117,6 +124,28 @@ class AbstractTemplateViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$this->view->assign('foo', 'FooValue');
 		$this->view->assignMultiple(array('foo' => 'FooValueOverridden', 'bar' => 'BarValue'));
+	}
+
+	/**
+	 * @return array
+	 */
+	public function ucFileNameInPathProperlyUpperCasesFileNamesDataProvider() {
+		return [
+			'keeps ucfirst' => ['LayoutPath', 'LayoutPath'],
+			'creates ucfirst' => ['layoutPath', 'LayoutPath'],
+			'ucfirst on file name only' => ['some/path/layout', 'some/path/Layout'],
+			'keeps ucfirst on file name' => ['some/Path/Layout', 'some/Path/Layout'],
+		];
+	}
+
+	/**
+	 * @param string $path
+	 * @param string $expected
+	 * @dataProvider ucFileNameInPathProperlyUpperCasesFileNamesDataProvider
+	 * @test
+	 */
+	public function ucFileNameInPathProperlyUpperCasesFileNames($path, $expected) {
+		$this->assertSame($expected, $this->view->_call('ucFileNameInPath', $path));
 	}
 
 }

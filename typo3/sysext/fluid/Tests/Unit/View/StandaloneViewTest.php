@@ -248,6 +248,7 @@ class StandaloneViewTest extends UnitTestCase {
 		$templatePathAndFilename = __DIR__ . '/Fixtures/StandaloneViewFixture.html';
 		$expectedResult = file_get_contents($templatePathAndFilename);
 		$this->view->setTemplatePathAndFilename($templatePathAndFilename);
+		$this->view->expects($this->once())->method('testFileExistence')->with($templatePathAndFilename)->will($this->returnValue(TRUE));
 		$this->mockTemplateParser->expects($this->once())->method('parse')->with($expectedResult);
 		$this->view->render();
 	}
@@ -518,10 +519,10 @@ class StandaloneViewTest extends UnitTestCase {
 	public function getLayoutPathAndFilenameRespectsCasingOfLayoutName() {
 		$this->view->setLayoutRootPaths(array('some/Default/Directory'));
 		$this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
-		$this->view->expects($this->at(0))->method('testFileExistence')->with('some/Default/Directory/LayoutName.html')->willReturn(FALSE);
-		$this->view->expects($this->at(1))->method('testFileExistence')->with('some/Default/Directory/LayoutName')->willReturn(FALSE);
-		$this->view->expects($this->at(2))->method('testFileExistence')->with('some/Default/Directory/layoutName.html')->willReturn(TRUE);
-		$this->assertSame('some/Default/Directory/layoutName.html', $this->view->_call('getLayoutPathAndFilename', 'layoutName'));
+		$this->view->expects($this->at(0))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/LayoutName.html')->willReturn(FALSE);
+		$this->view->expects($this->at(1))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/LayoutName')->willReturn(FALSE);
+		$this->view->expects($this->at(2))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/layoutName.html')->willReturn(TRUE);
+		$this->assertSame(PATH_site . 'some/Default/Directory/layoutName.html', $this->view->_call('getLayoutPathAndFilename', 'layoutName'));
 	}
 
 	/**
@@ -530,8 +531,8 @@ class StandaloneViewTest extends UnitTestCase {
 	public function getLayoutPathAndFilenameFindsUpperCasedLayoutName() {
 		$this->view->setLayoutRootPaths(array('some/Default/Directory'));
 		$this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
-		$this->view->expects($this->at(0))->method('testFileExistence')->with('some/Default/Directory/LayoutName.html')->willReturn(TRUE);
-		$this->assertSame('some/Default/Directory/LayoutName.html', $this->view->_call('getLayoutPathAndFilename', 'layoutName'));
+		$this->view->expects($this->at(0))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/LayoutName.html')->willReturn(TRUE);
+		$this->assertSame(PATH_site . 'some/Default/Directory/LayoutName.html', $this->view->_call('getLayoutPathAndFilename', 'layoutName'));
 	}
 
 	/**
@@ -543,8 +544,8 @@ class StandaloneViewTest extends UnitTestCase {
 			'specific' => 'specific/Layouts',
 		));
 		$this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
-		$this->view->expects($this->once())->method('testFileExistence')->with('specific/Layouts/Default.html')->will($this->returnValue(TRUE));
-		$this->assertEquals('specific/Layouts/Default.html', $this->view->_call('getLayoutPathAndFilename'));
+		$this->view->expects($this->once())->method('testFileExistence')->with(PATH_site . 'specific/Layouts/Default.html')->will($this->returnValue(TRUE));
+		$this->assertEquals(PATH_site . 'specific/Layouts/Default.html', $this->view->_call('getLayoutPathAndFilename'));
 	}
 
 	/**
@@ -556,8 +557,8 @@ class StandaloneViewTest extends UnitTestCase {
 			'specific' => 'specific/Layouts',
 		));
 		$this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
-		$this->view->expects($this->at(2))->method('testFileExistence')->with('some/Default/Directory/Default.html')->will($this->returnValue(TRUE));
-		$this->assertEquals('some/Default/Directory/Default.html', $this->view->_call('getLayoutPathAndFilename'));
+		$this->view->expects($this->at(2))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/Default.html')->will($this->returnValue(TRUE));
+		$this->assertEquals(PATH_site . 'some/Default/Directory/Default.html', $this->view->_call('getLayoutPathAndFilename'));
 	}
 
 	/**
@@ -570,8 +571,8 @@ class StandaloneViewTest extends UnitTestCase {
 			'17' => 'specific/Layouts',
 		));
 		$this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
-		$this->view->expects($this->at(2))->method('testFileExistence')->with('specific/Layouts/Default.html')->will($this->returnValue(TRUE));
-		$this->assertEquals('specific/Layouts/Default.html', $this->view->_call('getLayoutPathAndFilename'));
+		$this->view->expects($this->at(2))->method('testFileExistence')->with(PATH_site . 'specific/Layouts/Default.html')->will($this->returnValue(TRUE));
+		$this->assertEquals(PATH_site . 'specific/Layouts/Default.html', $this->view->_call('getLayoutPathAndFilename'));
 	}
 
 	/**
@@ -584,8 +585,8 @@ class StandaloneViewTest extends UnitTestCase {
 			'17' => 'specific/Layouts',
 		));
 		$this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
-		$this->view->expects($this->at(4))->method('testFileExistence')->with('some/Default/Directory/Default.html')->will($this->returnValue(TRUE));
-		$this->assertEquals('some/Default/Directory/Default.html', $this->view->_call('getLayoutPathAndFilename'));
+		$this->view->expects($this->at(4))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/Default.html')->will($this->returnValue(TRUE));
+		$this->assertEquals(PATH_site . 'some/Default/Directory/Default.html', $this->view->_call('getLayoutPathAndFilename'));
 	}
 
 	/**
@@ -601,7 +602,6 @@ class StandaloneViewTest extends UnitTestCase {
 		));
 		$this->view->expects($this->any())->method('testFileExistence')->will($this->returnValue(FALSE));
 		$this->view->_call('getLayoutPathAndFilename');
-
 	}
 
 	/**
@@ -610,10 +610,10 @@ class StandaloneViewTest extends UnitTestCase {
 	public function getPartialPathAndFilenameRespectsCasingOfPartialName() {
 		$this->view->setPartialRootPaths(array('some/Default/Directory'));
 		$this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
-		$this->view->expects($this->at(0))->method('testFileExistence')->with('some/Default/Directory/PartialName.html')->willReturn(FALSE);
-		$this->view->expects($this->at(1))->method('testFileExistence')->with('some/Default/Directory/PartialName')->willReturn(FALSE);
-		$this->view->expects($this->at(2))->method('testFileExistence')->with('some/Default/Directory/partialName.html')->willReturn(TRUE);
-		$this->assertSame('some/Default/Directory/partialName.html', $this->view->_call('getPartialPathAndFilename', 'partialName'));
+		$this->view->expects($this->at(0))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/PartialName.html')->willReturn(FALSE);
+		$this->view->expects($this->at(1))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/PartialName')->willReturn(FALSE);
+		$this->view->expects($this->at(2))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/partialName.html')->willReturn(TRUE);
+		$this->assertSame(PATH_site . 'some/Default/Directory/partialName.html', $this->view->_call('getPartialPathAndFilename', 'partialName'));
 	}
 
 	/**
@@ -622,8 +622,8 @@ class StandaloneViewTest extends UnitTestCase {
 	public function getPartialPathAndFilenameFindsUpperCasedPartialName() {
 		$this->view->setPartialRootPaths(array('some/Default/Directory'));
 		$this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
-		$this->view->expects($this->at(0))->method('testFileExistence')->with('some/Default/Directory/PartialName.html')->willReturn(TRUE);
-		$this->assertSame('some/Default/Directory/PartialName.html', $this->view->_call('getPartialPathAndFilename', 'partialName'));
+		$this->view->expects($this->at(0))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/PartialName.html')->willReturn(TRUE);
+		$this->assertSame(PATH_site . 'some/Default/Directory/PartialName.html', $this->view->_call('getPartialPathAndFilename', 'partialName'));
 	}
 
 	/**
@@ -635,8 +635,8 @@ class StandaloneViewTest extends UnitTestCase {
 			'specific' => 'specific/Partials',
 		));
 		$this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
-		$this->view->expects($this->once())->method('testFileExistence')->with('specific/Partials/Partial.html')->will($this->returnValue(TRUE));
-		$this->assertEquals('specific/Partials/Partial.html', $this->view->_call('getPartialPathAndFilename', 'Partial'));
+		$this->view->expects($this->once())->method('testFileExistence')->with(PATH_site . 'specific/Partials/Partial.html')->will($this->returnValue(TRUE));
+		$this->assertEquals(PATH_site . 'specific/Partials/Partial.html', $this->view->_call('getPartialPathAndFilename', 'Partial'));
 	}
 
 	/**
@@ -648,8 +648,8 @@ class StandaloneViewTest extends UnitTestCase {
 			'specific' => 'specific/Partials',
 		));
 		$this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
-		$this->view->expects($this->at(2))->method('testFileExistence')->with('some/Default/Directory/Partial.html')->will($this->returnValue(TRUE));
-		$this->assertEquals('some/Default/Directory/Partial.html', $this->view->_call('getPartialPathAndFilename', 'Partial'));
+		$this->view->expects($this->at(2))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/Partial.html')->will($this->returnValue(TRUE));
+		$this->assertEquals(PATH_site . 'some/Default/Directory/Partial.html', $this->view->_call('getPartialPathAndFilename', 'Partial'));
 	}
 
 	/**
@@ -662,8 +662,8 @@ class StandaloneViewTest extends UnitTestCase {
 			'17' => 'specific/Partials',
 		));
 		$this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
-		$this->view->expects($this->at(2))->method('testFileExistence')->with('specific/Partials/Partial.html')->will($this->returnValue(TRUE));
-		$this->assertEquals('specific/Partials/Partial.html', $this->view->_call('getPartialPathAndFilename', 'Partial'));
+		$this->view->expects($this->at(2))->method('testFileExistence')->with(PATH_site . 'specific/Partials/Partial.html')->will($this->returnValue(TRUE));
+		$this->assertEquals(PATH_site . 'specific/Partials/Partial.html', $this->view->_call('getPartialPathAndFilename', 'Partial'));
 	}
 
 	/**
@@ -676,8 +676,8 @@ class StandaloneViewTest extends UnitTestCase {
 			'17' => 'specific/Partials',
 		));
 		$this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
-		$this->view->expects($this->at(4))->method('testFileExistence')->with('some/Default/Directory/Partial.html')->will($this->returnValue(TRUE));
-		$this->assertEquals('some/Default/Directory/Partial.html', $this->view->_call('getPartialPathAndFilename', 'Partial'));
+		$this->view->expects($this->at(4))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/Partial.html')->will($this->returnValue(TRUE));
+		$this->assertEquals(PATH_site . 'some/Default/Directory/Partial.html', $this->view->_call('getPartialPathAndFilename', 'Partial'));
 	}
 
 	/**
@@ -705,13 +705,13 @@ class StandaloneViewTest extends UnitTestCase {
 			'17' => 'specific/Partials',
 		));
 		$this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
-		$this->view->expects($this->at(0))->method('testFileExistence')->with('evenMore/Specific/Partials/Partial.html')->will($this->returnValue(FALSE));
-		$this->view->expects($this->at(1))->method('testFileExistence')->with('evenMore/Specific/Partials/Partial')->will($this->returnValue(FALSE));
-		$this->view->expects($this->at(2))->method('testFileExistence')->with('specific/Partials/Partial.html')->will($this->returnValue(FALSE));
-		$this->view->expects($this->at(3))->method('testFileExistence')->with('specific/Partials/Partial')->will($this->returnValue(FALSE));
-		$this->view->expects($this->at(4))->method('testFileExistence')->with('some/Default/Directory/Partial.html')->will($this->returnValue(FALSE));
-		$this->view->expects($this->at(5))->method('testFileExistence')->with('some/Default/Directory/Partial')->will($this->returnValue(TRUE));
-		$this->assertEquals('some/Default/Directory/Partial', $this->view->_call('getPartialPathAndFilename', 'Partial'));
+		$this->view->expects($this->at(0))->method('testFileExistence')->with(PATH_site . 'evenMore/Specific/Partials/Partial.html')->will($this->returnValue(FALSE));
+		$this->view->expects($this->at(1))->method('testFileExistence')->with(PATH_site . 'evenMore/Specific/Partials/Partial')->will($this->returnValue(FALSE));
+		$this->view->expects($this->at(2))->method('testFileExistence')->with(PATH_site . 'specific/Partials/Partial.html')->will($this->returnValue(FALSE));
+		$this->view->expects($this->at(3))->method('testFileExistence')->with(PATH_site . 'specific/Partials/Partial')->will($this->returnValue(FALSE));
+		$this->view->expects($this->at(4))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/Partial.html')->will($this->returnValue(FALSE));
+		$this->view->expects($this->at(5))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/Partial')->will($this->returnValue(TRUE));
+		$this->assertEquals(PATH_site . 'some/Default/Directory/Partial', $this->view->_call('getPartialPathAndFilename', 'Partial'));
 	}
 
 	/**
@@ -724,13 +724,13 @@ class StandaloneViewTest extends UnitTestCase {
 			'17' => 'specific/Layouts',
 		));
 		$this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
-		$this->view->expects($this->at(0))->method('testFileExistence')->with('evenMore/Specific/Layouts/Default.html')->will($this->returnValue(FALSE));
-		$this->view->expects($this->at(1))->method('testFileExistence')->with('evenMore/Specific/Layouts/Default')->will($this->returnValue(FALSE));
-		$this->view->expects($this->at(2))->method('testFileExistence')->with('specific/Layouts/Default.html')->will($this->returnValue(FALSE));
-		$this->view->expects($this->at(3))->method('testFileExistence')->with('specific/Layouts/Default')->will($this->returnValue(FALSE));
-		$this->view->expects($this->at(4))->method('testFileExistence')->with('some/Default/Directory/Default.html')->will($this->returnValue(FALSE));
-		$this->view->expects($this->at(5))->method('testFileExistence')->with('some/Default/Directory/Default')->will($this->returnValue(TRUE));
-		$this->assertEquals('some/Default/Directory/Default', $this->view->_call('getLayoutPathAndFilename'));
+		$this->view->expects($this->at(0))->method('testFileExistence')->with(PATH_site . 'evenMore/Specific/Layouts/Default.html')->will($this->returnValue(FALSE));
+		$this->view->expects($this->at(1))->method('testFileExistence')->with(PATH_site . 'evenMore/Specific/Layouts/Default')->will($this->returnValue(FALSE));
+		$this->view->expects($this->at(2))->method('testFileExistence')->with(PATH_site . 'specific/Layouts/Default.html')->will($this->returnValue(FALSE));
+		$this->view->expects($this->at(3))->method('testFileExistence')->with(PATH_site . 'specific/Layouts/Default')->will($this->returnValue(FALSE));
+		$this->view->expects($this->at(4))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/Default.html')->will($this->returnValue(FALSE));
+		$this->view->expects($this->at(5))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/Default')->will($this->returnValue(TRUE));
+		$this->assertEquals(PATH_site . 'some/Default/Directory/Default', $this->view->_call('getLayoutPathAndFilename'));
 	}
 
 	/**
@@ -743,13 +743,13 @@ class StandaloneViewTest extends UnitTestCase {
 			'verySpecific' => 'evenMore/Specific/Partials',
 		));
 		$this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
-		$this->view->expects($this->at(0))->method('testFileExistence')->with('evenMore/Specific/Partials/Partial.html')->will($this->returnValue(FALSE));
-		$this->view->expects($this->at(1))->method('testFileExistence')->with('evenMore/Specific/Partials/Partial')->will($this->returnValue(FALSE));
-		$this->view->expects($this->at(2))->method('testFileExistence')->with('specific/Partials/Partial.html')->will($this->returnValue(FALSE));
-		$this->view->expects($this->at(3))->method('testFileExistence')->with('specific/Partials/Partial')->will($this->returnValue(FALSE));
-		$this->view->expects($this->at(4))->method('testFileExistence')->with('some/Default/Directory/Partial.html')->will($this->returnValue(FALSE));
-		$this->view->expects($this->at(5))->method('testFileExistence')->with('some/Default/Directory/Partial')->will($this->returnValue(TRUE));
-		$this->assertEquals('some/Default/Directory/Partial', $this->view->_call('getPartialPathAndFilename', 'Partial'));
+		$this->view->expects($this->at(0))->method('testFileExistence')->with(PATH_site . 'evenMore/Specific/Partials/Partial.html')->will($this->returnValue(FALSE));
+		$this->view->expects($this->at(1))->method('testFileExistence')->with(PATH_site . 'evenMore/Specific/Partials/Partial')->will($this->returnValue(FALSE));
+		$this->view->expects($this->at(2))->method('testFileExistence')->with(PATH_site . 'specific/Partials/Partial.html')->will($this->returnValue(FALSE));
+		$this->view->expects($this->at(3))->method('testFileExistence')->with(PATH_site . 'specific/Partials/Partial')->will($this->returnValue(FALSE));
+		$this->view->expects($this->at(4))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/Partial.html')->will($this->returnValue(FALSE));
+		$this->view->expects($this->at(5))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/Partial')->will($this->returnValue(TRUE));
+		$this->assertEquals(PATH_site . 'some/Default/Directory/Partial', $this->view->_call('getPartialPathAndFilename', 'Partial'));
 	}
 
 	/**
@@ -762,13 +762,13 @@ class StandaloneViewTest extends UnitTestCase {
 			'verySpecific' => 'evenMore/Specific/Layout',
 		));
 		$this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
-		$this->view->expects($this->at(0))->method('testFileExistence')->with('evenMore/Specific/Layout/Default.html')->will($this->returnValue(FALSE));
-		$this->view->expects($this->at(1))->method('testFileExistence')->with('evenMore/Specific/Layout/Default')->will($this->returnValue(FALSE));
-		$this->view->expects($this->at(2))->method('testFileExistence')->with('specific/Layout/Default.html')->will($this->returnValue(FALSE));
-		$this->view->expects($this->at(3))->method('testFileExistence')->with('specific/Layout/Default')->will($this->returnValue(FALSE));
-		$this->view->expects($this->at(4))->method('testFileExistence')->with('some/Default/Directory/Default.html')->will($this->returnValue(FALSE));
-		$this->view->expects($this->at(5))->method('testFileExistence')->with('some/Default/Directory/Default')->will($this->returnValue(TRUE));
-		$this->assertEquals('some/Default/Directory/Default', $this->view->_call('getLayoutPathAndFilename'));
+		$this->view->expects($this->at(0))->method('testFileExistence')->with(PATH_site . 'evenMore/Specific/Layout/Default.html')->will($this->returnValue(FALSE));
+		$this->view->expects($this->at(1))->method('testFileExistence')->with(PATH_site . 'evenMore/Specific/Layout/Default')->will($this->returnValue(FALSE));
+		$this->view->expects($this->at(2))->method('testFileExistence')->with(PATH_site . 'specific/Layout/Default.html')->will($this->returnValue(FALSE));
+		$this->view->expects($this->at(3))->method('testFileExistence')->with(PATH_site . 'specific/Layout/Default')->will($this->returnValue(FALSE));
+		$this->view->expects($this->at(4))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/Default.html')->will($this->returnValue(FALSE));
+		$this->view->expects($this->at(5))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/Default')->will($this->returnValue(TRUE));
+		$this->assertEquals(PATH_site . 'some/Default/Directory/Default', $this->view->_call('getLayoutPathAndFilename'));
 	}
 
 }
