@@ -1,9 +1,22 @@
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
 /***************************************************
  *  Color utilities
  ***************************************************/
 HTMLArea.util.Color = function () {
 	return {
-		/*
+
+		/**
 		 * Returns a rgb-style color from a number
 		 */
 		colorToRgb: function(v) {
@@ -15,7 +28,8 @@ HTMLArea.util.Color = function () {
 			var b = (v >> 16) & 0xFF;
 			return 'rgb(' + r + ',' + g + ',' + b + ')';
 		},
-		/*
+
+		/**
 		 * Returns hexadecimal color representation from a number or a rgb-style color.
 		 */
 		colorToHex: function(v) {
@@ -46,7 +60,8 @@ HTMLArea.util.Color = function () {
 			}
 			return '';
 		},
-		/*
+
+		/**
 		 * Select interceptor to ensure that the color exists in the palette before trying to select
 		 */
 		checkIfColorInPalette: function (color) {

@@ -1,21 +1,43 @@
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
 /***************************************************
  *  HTMLArea.DOM.Walker: DOM tree walk
  ***************************************************/
-HTMLArea.DOM.Walker = function (config) {
-	var configDefaults = {
-		keepComments: false,
-		keepCDATASections: false,
-		removeTags: /none/i,
-		removeTagsAndContents: /none/i,
-		keepTags: /.*/i,
-		removeAttributes: /none/i,
-		removeTrailingBR: true,
-		baseUrl: ''
+HTMLArea.DOM.Walker = function(UserAgent, Util, Dom) {
+
+	/**
+	 * Constructor method
+	 *
+	 * @param object config: an object with property "editor" giving reference to the parent object
+	 *
+	 * @return void
+	 */
+	var Walker = function (config) {
+		// Configuration defaults
+		var configDefaults = {
+			keepComments: false,
+			keepCDATASections: false,
+			removeTags: /none/i,
+			removeTagsAndContents: /none/i,
+			keepTags: /.*/i,
+			removeAttributes: /none/i,
+			removeTrailingBR: true,
+			baseUrl: ''
+		};
+		Util.apply(this, config, configDefaults);
 	};
-	Ext.apply(this, config, configDefaults);
-};
-HTMLArea.DOM.Walker = Ext.extend(HTMLArea.DOM.Walker, {
-	/*
+
+	/**
 	 * Walk the DOM tree
 	 *
 	 * @param	object		node: the root node of the tree
@@ -25,7 +47,7 @@ HTMLArea.DOM.Walker = Ext.extend(HTMLArea.DOM.Walker, {
 	 * @param	array		args: array of arguments
 	 * @return	void
 	 */
-	walk: function (node, includeNode, startCallback, endCallback, args) {
+	Walker.prototype.walk = function (node, includeNode, startCallback, endCallback, args) {
 		if (!this.removeTagsAndContents.test(node.nodeName)) {
 			if (includeNode) {
 				eval(startCallback);
@@ -40,48 +62,50 @@ HTMLArea.DOM.Walker = Ext.extend(HTMLArea.DOM.Walker, {
 				eval(endCallback);
 			}
 		}
-	},
-	/*
+	};
+
+	/**
 	 * Generate html string from DOM tree
 	 *
 	 * @param	object		node: the root node of the tree
 	 * @param	boolean		includeNode: if set, apply callback to root element
 	 * @return	string		rendered html code
 	 */
-	render: function (node, includeNode) {
+	Walker.prototype.render = function (node, includeNode) {
 		this.html = '';
 		this.walk(node, includeNode, 'args[0].renderNodeStart(node)', 'args[0].renderNodeEnd(node)', [this]);
 		return this.html;
-	},
-	/*
+	};
+
+	/**
 	 * Generate html string for the start of a node
 	 *
 	 * @param	object		node: the root node of the tree
 	 * @return	string		rendered html code (accumulated in this.html)
 	 */
-	renderNodeStart: function (node) {
+	Walker.prototype.renderNodeStart = function (node) {
 		var html = '';
 		switch (node.nodeType) {
-			case HTMLArea.DOM.ELEMENT_NODE:
+			case Dom.ELEMENT_NODE:
 				if (this.keepTags.test(node.nodeName) && !this.removeTags.test(node.nodeName)) {
 					html += this.setOpeningTag(node);
 				}
 				break;
-			case HTMLArea.DOM.TEXT_NODE:
-				html += /^(script|style)$/i.test(node.parentNode.nodeName) ? node.data : HTMLArea.util.htmlEncode(node.data);
+			case Dom.TEXT_NODE:
+				html += /^(script|style)$/i.test(node.parentNode.nodeName) ? node.data : Util.htmlEncode(node.data);
 				break;
-			case HTMLArea.DOM.ENTITY_NODE:
+			case Dom.ENTITY_NODE:
 				html += node.nodeValue;
 				break;
-			case HTMLArea.DOM.ENTITY_REFERENCE_NODE:
+			case Dom.ENTITY_REFERENCE_NODE:
 				html += '&' + node.nodeValue + ';';
 				break;
-			case HTMLArea.DOM.COMMENT_NODE:
+			case Dom.COMMENT_NODE:
 				if (this.keepComments) {
 					html += '<!--' + node.data + '-->';
 				}
 				break;
-			case HTMLArea.DOM.CDATA_SECTION_NODE:
+			case Dom.CDATA_SECTION_NODE:
 				if (this.keepCDATASections) {
 					html += '<![CDATA[' + node.data + ']]>';
 				}
@@ -91,29 +115,31 @@ HTMLArea.DOM.Walker = Ext.extend(HTMLArea.DOM.Walker, {
 				break;
 		}
 		this.html += html;
-	},
-	/*
+	};
+
+	/**
 	 * Generate html string for the end of a node
 	 *
 	 * @param	object		node: the root node of the tree
 	 * @return	string		rendered html code (accumulated in this.html)
 	 */
-	renderNodeEnd: function (node) {
+	Walker.prototype.renderNodeEnd = function (node) {
 		var html = '';
-		if (node.nodeType === HTMLArea.DOM.ELEMENT_NODE) {
+		if (node.nodeType === Dom.ELEMENT_NODE) {
 			if (this.keepTags.test(node.nodeName) && !this.removeTags.test(node.nodeName)) {
 				html += this.setClosingTag(node);
 			}
 		}
 		this.html += html;
-	},
-	/*
+	};
+
+	/**
 	 * Get the attributes of the node, filtered and cleaned-up
 	 *
 	 * @param	object		node: the node
 	 * @return	object		an object with attribute name as key and attribute value as value
 	 */
-	getAttributes: function (node) {
+	Walker.prototype.getAttributes = function (node) {
 		var attributes = node.attributes;
 		var filterededAttributes = [];
 		var attribute, attributeName, attributeValue;
@@ -129,10 +155,10 @@ HTMLArea.DOM.Walker = Ext.extend(HTMLArea.DOM.Walker, {
 			if (!attribute.specified && attributeName !== 'value') {
 				continue;
 			}
-			if (HTMLArea.UserAgent.isIE) {
+			if (UserAgent.isIE) {
 					// IE before I9 fails to put style in attributes list.
 				if (attributeName === 'style') {
-					if (HTMLArea.UserAgent.isIEBeforeIE9) {
+					if (UserAgent.isIEBeforeIE9) {
 						attributeValue = node.style.cssText;
 					}
 					// May need to strip the base url
@@ -142,13 +168,13 @@ HTMLArea.DOM.Walker = Ext.extend(HTMLArea.DOM.Walker, {
 				} else if (attributeName === 'value' && /^li$/i.test(node.nodeName) && attributeValue == 0) {
 					continue;
 				}
-			} else if (HTMLArea.UserAgent.isGecko) {
+			} else if (UserAgent.isGecko) {
 					// Ignore special values reported by Mozilla
 				if (/(_moz|^$)/.test(attributeValue)) {
 					continue;
 					// Pasted internal url's are made relative by Mozilla: https://bugzilla.mozilla.org/show_bug.cgi?id=613517
 				} else if (attributeName === 'href' || attributeName === 'src') {
-					attributeValue = HTMLArea.DOM.addBaseUrl(attributeValue, this.baseUrl);
+					attributeValue = Dom.addBaseUrl(attributeValue, this.baseUrl);
 				}
 			}
 				// Ignore id attributes generated by ExtJS
@@ -160,24 +186,25 @@ HTMLArea.DOM.Walker = Ext.extend(HTMLArea.DOM.Walker, {
 				attributeValue: attributeValue
 			});
 		}
-		return (HTMLArea.UserAgent.isWebKit || HTMLArea.UserAgent.isOpera) ? filterededAttributes.reverse() : filterededAttributes;
-	},
-	/*
+		return (UserAgent.isWebKit || UserAgent.isOpera) ? filterededAttributes.reverse() : filterededAttributes;
+	};
+
+	/**
 	 * Set opening tag for a node
 	 *
 	 * @param	object		node: the node
 	 * @return	object		opening tag
 	 */
-	setOpeningTag: function (node) {
+	Walker.prototype.setOpeningTag = function (node) {
 		var html = '';
 			// Handle br oddities
 		if (/^br$/i.test(node.nodeName)) {
 				// Remove Mozilla special br node
-			if (HTMLArea.UserAgent.isGecko && node.hasAttribute('_moz_editor_bogus_node')) {
+			if (UserAgent.isGecko && node.hasAttribute('_moz_editor_bogus_node')) {
 				return html;
 				// In Gecko, whenever some text is entered in an empty block, a trailing br tag is added by the browser.
 				// If the br element is a trailing br in a block element with no other content or with content other than a br, it may be configured to be removed
-			} else if (this.removeTrailingBR && !node.nextSibling && HTMLArea.DOM.isBlockElement(node.parentNode) && (!node.previousSibling || !/^br$/i.test(node.previousSibling.nodeName))) {
+			} else if (this.removeTrailingBR && !node.nextSibling && Dom.isBlockElement(node.parentNode) && (!node.previousSibling || !/^br$/i.test(node.previousSibling.nodeName))) {
 						// If an empty paragraph with a class attribute, insert a non-breaking space so that RTE transform does not clean it away
 					if (!node.previousSibling && node.parentNode && /^p$/i.test(node.parentNode.nodeName) && node.parentNode.className) {
 						html += "&nbsp;";
@@ -188,37 +215,42 @@ HTMLArea.DOM.Walker = Ext.extend(HTMLArea.DOM.Walker, {
 			// Normal node
 		var attributes = this.getAttributes(node);
 		for (var i = 0, n = attributes.length; i < n; i++) {
-			html +=  ' ' + attributes[i]['attributeName'] + '="' + HTMLArea.util.htmlEncode(attributes[i]['attributeValue']) + '"';
+			html +=  ' ' + attributes[i]['attributeName'] + '="' + Util.htmlEncode(attributes[i]['attributeValue']) + '"';
 		}
-		html = '<' + node.nodeName.toLowerCase() + html + (HTMLArea.DOM.RE_noClosingTag.test(node.nodeName) ? ' />' : '>');
+		html = '<' + node.nodeName.toLowerCase() + html + (Dom.RE_noClosingTag.test(node.nodeName) ? ' />' : '>');
 			// Fix orphan list elements
 		if (/^li$/i.test(node.nodeName) && !/^[ou]l$/i.test(node.parentNode.nodeName)) {
 			html = '<ul>' + html;
 		}
 		return html;
-	},
-	/*
+	};
+
+	/**
 	 * Set closing tag for a node
 	 *
 	 * @param	object		node: the node
 	 * @return	object		closing tag, if required
 	 */
-	setClosingTag: function (node) {
-		var html = HTMLArea.DOM.RE_noClosingTag.test(node.nodeName) ? '' : '</' + node.nodeName.toLowerCase() + '>';
+	Walker.prototype.setClosingTag = function (node) {
+		var html = Dom.RE_noClosingTag.test(node.nodeName) ? '' : '</' + node.nodeName.toLowerCase() + '>';
 			// Fix orphan list elements
 		if (/^li$/i.test(node.nodeName) && !/^[ou]l$/i.test(node.parentNode.nodeName)) {
 			html += '</ul>';
 		}
 		return html;
-	},
-	/*
+	};
+
+	/**
 	 * Strip base url
 	 * May be overridden by link handling plugin
 	 *
 	 * @param	string		value: value of a href or src attribute
 	 * @return	tring		stripped value
 	 */
-	stripBaseURL: function (value) {
+	Walker.prototype.stripBaseURL = function (value) {
 		return value;
-	}
-});
+	};
+
+	return Walker;
+
+}(HTMLArea.UserAgent, HTMLArea.util, HTMLArea.DOM);

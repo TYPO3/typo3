@@ -5,7 +5,7 @@
  * Intercept Ext.form.Field.afterRender in order to provide tips on form fields and menu items
  * Adapted from: http://www.extjs.com/forum/showthread.php?t=36642
  */
-HTMLArea.util.Tips = function () {
+HTMLArea.util.Tips = function (UserAgent) {
 	return {
 		tipsOnFormFields: function () {
 			if (this.helpText || this.helpTitle) {
@@ -14,7 +14,7 @@ HTMLArea.util.Tips = function () {
 				}
 				var label = this.label;
 					// IE has problems with img inside label tag
-				if (label && this.helpIcon && !HTMLArea.UserAgent.isIE) {
+				if (label && this.helpIcon && !UserAgent.isIE) {
 					var helpImage = label.insertFirst({
 						tag: 'img',
 						src: HTMLArea.editorSkin + 'images/system-help-open.png',
@@ -47,6 +47,6 @@ HTMLArea.util.Tips = function () {
 			}
 		}
 	}
-}();
+}(HTMLArea.UserAgent);
 Ext.form.Field.prototype.afterRender = Ext.form.Field.prototype.afterRender.createInterceptor(HTMLArea.util.Tips.tipsOnFormFields);
 Ext.menu.BaseItem.prototype.afterRender = Ext.menu.BaseItem.prototype.afterRender.createInterceptor(HTMLArea.util.Tips.tipsOnMenuItems);

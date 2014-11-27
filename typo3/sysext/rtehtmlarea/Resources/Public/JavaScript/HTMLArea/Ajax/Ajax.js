@@ -1,8 +1,28 @@
-HTMLArea.Ajax = function (config) {
-	Ext.apply(this, config);
-};
-HTMLArea.Ajax = Ext.extend(HTMLArea.Ajax, {
-	/*
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+/**
+ * Ajax object
+ */
+HTMLArea.Ajax = function(Util) {
+
+	/**
+	 * Constructor method
+	 */
+	var Ajax = function (config) {
+		Util.apply(this, config);
+	};
+
+	/**
 	 * Load a Javascript file asynchronously
 	 *
 	 * @param	string		url: url of the file to load
@@ -11,7 +31,7 @@ HTMLArea.Ajax = Ext.extend(HTMLArea.Ajax, {
 	 *
 	 * @return	boolean		true on success of the request submission
 	 */
-	getJavascriptFile: function (url, callback, scope) {
+	Ajax.prototype.getJavascriptFile = function (url, callback, scope) {
 		var success = false;
 		var self = this;
 		Ext.Ajax.request({
@@ -28,8 +48,9 @@ HTMLArea.Ajax = Ext.extend(HTMLArea.Ajax, {
 			scope: scope
 		});
 		return success;
-	},
-	/*
+	};
+
+	/**
 	 * Post data to the server
 	 *
 	 * @param	string		url: url to post data to
@@ -39,7 +60,7 @@ HTMLArea.Ajax = Ext.extend(HTMLArea.Ajax, {
 	 *
 	 * @return	boolean		true on success
 	 */
-	postData: function (url, data, callback, scope) {
+	Ajax.prototype.postData = function (url, data, callback, scope) {
 		var success = false;
 		var self = this;
 		data.charset = this.editor.config.typo3ContentCharset ? this.editor.config.typo3ContentCharset : 'utf-8';
@@ -69,5 +90,8 @@ HTMLArea.Ajax = Ext.extend(HTMLArea.Ajax, {
 			scope: scope
 		});
 		return success;
-	}
-});
+	};
+
+	return Ajax;
+
+}(HTMLArea.util);

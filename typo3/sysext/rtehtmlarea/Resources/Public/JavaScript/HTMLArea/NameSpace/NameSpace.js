@@ -13,10 +13,13 @@
 /**
  * Establish namespace
  */
-window.HTMLArea = {
-	CSS: {},
-	util: {}
-};
+var HTMLArea = HTMLArea || {};
+HTMLArea.jQuery = TYPO3.jQuery;
+HTMLArea.CSS = {};
+
+/**
+ * ExtJS namespacing
+ */
 Ext.ux.form = {};
 Ext.ux.menu = {};
 Ext.ux.Toolbar = {};

@@ -1,12 +1,13 @@
 /*****************************************************************
  * HTMLArea.DOM: Utility functions for dealing with the DOM tree *
  *****************************************************************/
-HTMLArea.DOM = function () {
-	return {
+HTMLArea.DOM = function (UserAgent) {
+
+	var Dom = {
+
 		/***************************************************
-		*  DOM-RELATED CONSTANTS
+		*  DOM NODES TYPES CONSTANTS
 		***************************************************/
-			// DOM node types
 		ELEMENT_NODE: 1,
 		ATTRIBUTE_NODE: 2,
 		TEXT_NODE: 3,
@@ -19,16 +20,18 @@ HTMLArea.DOM = function () {
 		DOCUMENT_TYPE_NODE: 10,
 		DOCUMENT_FRAGMENT_NODE: 11,
 		NOTATION_NODE: 12,
+
 		/***************************************************
 		*  DOM-RELATED REGULAR EXPRESSIONS
 		***************************************************/
 		RE_blockTags: /^(address|article|aside|body|blockquote|caption|dd|div|dl|dt|fieldset|footer|form|header|hr|h1|h2|h3|h4|h5|h6|iframe|li|ol|p|pre|nav|noscript|section|table|tbody|td|tfoot|th|thead|tr|ul)$/i,
 		RE_noClosingTag: /^(area|base|br|col|command|embed|hr|img|input|keygen|link|meta|param|source|track|wbr)$/i,
 		RE_bodyTag: new RegExp('<\/?(body)[^>]*>', 'gi'),
+
 		/***************************************************
 		*  STATIC METHODS ON DOM NODE
 		***************************************************/
-		/*
+		/**
 		 * Determine whether an element node is a block element
 		 *
 		 * @param	object		element: the element node
@@ -36,9 +39,10 @@ HTMLArea.DOM = function () {
 		 * @return	boolean		true, if the element node is a block element
 		 */
 		isBlockElement: function (element) {
-			return element && element.nodeType === HTMLArea.DOM.ELEMENT_NODE && HTMLArea.DOM.RE_blockTags.test(element.nodeName);
+			return element && element.nodeType === Dom.ELEMENT_NODE && Dom.RE_blockTags.test(element.nodeName);
 		},
-		/*
+
+		/**
 		 * Determine whether an element node needs a closing tag
 		 *
 		 * @param	object		element: the element node
@@ -46,9 +50,10 @@ HTMLArea.DOM = function () {
 		 * @return	boolean		true, if the element node needs a closing tag
 		 */
 		needsClosingTag: function (element) {
-			return element && element.nodeType === HTMLArea.DOM.ELEMENT_NODE && !HTMLArea.DOM.RE_noClosingTag.test(element.nodeName);
+			return element && element.nodeType === Dom.ELEMENT_NODE && !Dom.RE_noClosingTag.test(element.nodeName);
 		},
-		/*
+
+		/**
 		 * Gets the class names assigned to a node, reserved classes removed
 		 *
 		 * @param	object		node: the node
@@ -73,7 +78,8 @@ HTMLArea.DOM = function () {
 			}
 			return classNames;
 		},
-		/*
+
+		/**
 		 * Check if a class name is in the class attribute of a node
 		 *
 		 * @param	object		node: the node
@@ -94,6 +100,7 @@ HTMLArea.DOM = function () {
 			}
 			return found;
 		},
+
 		/**
 		 * Add a class name to the class attribute of a node
 		 *
@@ -104,13 +111,13 @@ HTMLArea.DOM = function () {
 		 */
 		addClass: function (node, className, recursionLevel) {
 			if (node) {
-				var classNames = HTMLArea.DOM.getClassNames(node);
+				var classNames = Dom.getClassNames(node);
 				if (classNames.indexOf(className) === -1) {
 					// Remove classes configured to be incompatible with the class to be added
-					if (node.className && HTMLArea.classesXOR && HTMLArea.classesXOR[className] && Ext.isFunction(HTMLArea.classesXOR[className].test)) {
+					if (node.className && HTMLArea.classesXOR && HTMLArea.classesXOR[className] && typeof HTMLArea.classesXOR[className].test === 'function') {
 						for (var i = classNames.length; --i >= 0;) {
 							if (HTMLArea.classesXOR[className].test(classNames[i])) {
-								HTMLArea.DOM.removeClass(node, classNames[i]);
+								Dom.removeClass(node, classNames[i]);
 							}
 						}
 					}
@@ -123,9 +130,9 @@ HTMLArea.DOM = function () {
 						}
 						if (recursionLevel < 20) {
 							for (var i = 0, n = HTMLArea.classesRequires[className].length; i < n; i++) { 
-								var classNames = HTMLArea.DOM.getClassNames(node);
+								var classNames = Dom.getClassNames(node);
 								if (classNames.indexOf(HTMLArea.classesRequires[className][i]) === -1) {
-									HTMLArea.DOM.addClass(node, HTMLArea.classesRequires[className][i], recursionLevel);
+									Dom.addClass(node, HTMLArea.classesRequires[className][i], recursionLevel);
 								}
 							}
 						}
@@ -159,9 +166,9 @@ HTMLArea.DOM = function () {
 				if (newClasses.length) {
 					node.className = newClasses.join(' ');
 				} else {
-					if (!Ext.isOpera) {
+					if (!UserAgent.isOpera) {
 						node.removeAttribute('class');
-						if (HTMLArea.isIEBeforeIE9) {
+						if (UserAgent.isIEBeforeIE9) {
 							node.removeAttribute('className');
 						}
 					} else {
@@ -170,10 +177,10 @@ HTMLArea.DOM = function () {
 				}
 				// Remove the first unselectable class that is no more required, the following ones being removed by recursive calls
 				if (node.className && typeof HTMLArea.classesSelectable !== 'undefined') {
-					classes = HTMLArea.DOM.getClassNames(node);
+					classes = Dom.getClassNames(node);
 					for (var i = classes.length; --i >= 0;) {
-						if (typeof HTMLArea.classesSelectable[classes[i]] !== 'undefined' && !HTMLArea.classesSelectable[classes[i]] && !HTMLArea.DOM.isRequiredClass(node, classes[i])) {
-							HTMLArea.DOM.removeClass(node, classes[i]);
+						if (typeof HTMLArea.classesSelectable[classes[i]] !== 'undefined' && !HTMLArea.classesSelectable[classes[i]] && !Dom.isRequiredClass(node, classes[i])) {
+							Dom.removeClass(node, classes[i]);
 							break;
 						}
 					}
@@ -190,7 +197,7 @@ HTMLArea.DOM = function () {
 		 */
 		isRequiredClass: function (node, className) {
 			if (typeof HTMLArea.classesRequiredBy !== 'undefined') {
-				var classes = HTMLArea.DOM.getClassNames(node);
+				var classes = Dom.getClassNames(node);
 				for (var i = classes.length; --i >= 0;) {
 					if (typeof HTMLArea.classesRequiredBy[classes[i]] !== 'undefined' && HTMLArea.classesRequiredBy[classes[i]].indexOf(className) !== -1) {
 						return true;
@@ -208,9 +215,10 @@ HTMLArea.DOM = function () {
 		 * @return	string		the text inside the node
 		 */
 		getInnerText: function (node) {
-			return HTMLArea.isIEBeforeIE9 ? node.innerText : node.textContent;;
+			return UserAgent.isIEBeforeIE9 ? node.innerText : node.textContent;;
 		},
-		/*
+
+		/**
 		 * Get the block ancestors of a node within a given block
 		 *
 		 * @param	object		node: the given node
@@ -221,8 +229,8 @@ HTMLArea.DOM = function () {
 		getBlockAncestors: function (node, withinBlock) {
 			var ancestors = [];
 			var ancestor = node;
-			while (ancestor && (ancestor.nodeType === HTMLArea.DOM.ELEMENT_NODE) && !/^(body)$/i.test(ancestor.nodeName) && ancestor != withinBlock) {
-				if (HTMLArea.DOM.isBlockElement(ancestor)) {
+			while (ancestor && (ancestor.nodeType === Dom.ELEMENT_NODE) && !/^(body)$/i.test(ancestor.nodeName) && ancestor != withinBlock) {
+				if (Dom.isBlockElement(ancestor)) {
 					ancestors.unshift(ancestor);
 				}
 				ancestor = ancestor.parentNode;
@@ -230,7 +238,8 @@ HTMLArea.DOM = function () {
 			ancestors.unshift(ancestor);
 			return ancestors;
 		},
-		/*
+
+		/**
 		 * Get the deepest element ancestor of a given node that is of one of the specified types
 		 *
 		 * @param	object		node: the given node
@@ -241,12 +250,13 @@ HTMLArea.DOM = function () {
 		getFirstAncestorOfType: function (node, types) {
 			var ancestor = null,
 				parent = node;
-			if (!Ext.isEmpty(types)) {
-				if (Ext.isString(types)) {
-					var types = [types];
-				}
+			if (typeof types === 'string') {
+				var types = [types];
+			}
+			// Is types a non-empty array?
+			if (types && toString.apply(types) === '[object Array]' && types.length > 0) {
 				types = new RegExp( '^(' + types.join('|') + ')$', 'i');
-				while (parent && parent.nodeType === HTMLArea.DOM.ELEMENT_NODE && !/^(body)$/i.test(parent.nodeName)) {
+				while (parent && parent.nodeType === Dom.ELEMENT_NODE && !/^(body)$/i.test(parent.nodeName)) {
 					if (types.test(parent.nodeName)) {
 						ancestor = parent;
 						break;
@@ -256,7 +266,8 @@ HTMLArea.DOM = function () {
 			}
 			return ancestor;
 		},
-		/*
+
+		/**
 		 * Get the position of the node within the children of its parent
 		 * Adapted from FCKeditor
 		 *
@@ -272,8 +283,8 @@ HTMLArea.DOM = function () {
 				// For a normalized position, do not count any empty text node or any text node following another one
 				if (
 					normalized
-					&& current.nodeType == HTMLArea.DOM.TEXT_NODE
-					&& (!current.nodeValue.length || (current.previousSibling && current.previousSibling.nodeType == HTMLArea.DOM.TEXT_NODE))
+					&& current.nodeType == Dom.TEXT_NODE
+					&& (!current.nodeValue.length || (current.previousSibling && current.previousSibling.nodeType == Dom.TEXT_NODE))
 				) {
 					continue;
 				}
@@ -281,7 +292,8 @@ HTMLArea.DOM = function () {
 			}
 			return position;
 		},
-		/*
+
+		/**
 		 * Determine whether a given node has any allowed attributes
 		 *
 		 * @param	object		node: the DOM node
@@ -292,27 +304,30 @@ HTMLArea.DOM = function () {
 		 hasAllowedAttributes: function (node, allowedAttributes) {
 			var value,
 				hasAllowedAttributes = false;
-			if (Ext.isString(allowedAttributes)) {
-				allowedAttributes = [allowedAttributes];
+			if (typeof allowedAttributes === 'string') {
+				var allowedAttributes = [allowedAttributes];
 			}
-			allowedAttributes = allowedAttributes || [];
-			for (var i = allowedAttributes.length; --i >= 0;) {
-				value = node.getAttribute(allowedAttributes[i]);
-				if (value) {
-					if (allowedAttributes[i] === 'style') {
-						if (node.style.cssText) {
+			// Is allowedAttributes an array?
+			if (allowedAttributes && toString.apply(allowedAttributes) === '[object Array]') {
+				for (var i = allowedAttributes.length; --i >= 0;) {
+					value = node.getAttribute(allowedAttributes[i]);
+					if (value) {
+						if (allowedAttributes[i] === 'style') {
+							if (node.style.cssText) {
+								hasAllowedAttributes = true;
+								break;
+							}
+						} else {
 							hasAllowedAttributes = true;
 							break;
 						}
-					} else {
-						hasAllowedAttributes = true;
-						break;
 					}
 				}
 			}
 			return hasAllowedAttributes;
 		},
-		/*
+
+		/**
 		 * Remove the given node from its parent
 		 *
 		 * @param	object		node: the DOM node
@@ -325,7 +340,8 @@ HTMLArea.DOM = function () {
 				parent.removeChild(node);
 			}
 		},
-		/*
+
+		/**
 		 * Change the nodeName of an element node
 		 *
 		 * @param	object		node: the node to convert (must belong to a document)
@@ -336,7 +352,7 @@ HTMLArea.DOM = function () {
 		convertNode: function (node, nodeName) {
 			var convertedNode = node,
 				ownerDocument = node.ownerDocument;
-			if (ownerDocument && node.nodeType === HTMLArea.DOM.ELEMENT_NODE) {
+			if (ownerDocument && node.nodeType === Dom.ELEMENT_NODE) {
 				var convertedNode = ownerDocument.createElement(nodeName),
 					parent = node.parentNode;
 				while (node.firstChild) {
@@ -347,7 +363,8 @@ HTMLArea.DOM = function () {
 			}
 			return convertedNode;
 		},
-		/*
+
+		/**
 		 * Determine whether a given range intersects a given node
 		 *
 		 * @param	object		range: the range
@@ -359,7 +376,7 @@ HTMLArea.DOM = function () {
 			var rangeIntersectsNode = false,
 				ownerDocument = node.ownerDocument;
 			if (ownerDocument) {
-				if (HTMLArea.isIEBeforeIE9) {
+				if (UserAgent.isIEBeforeIE9) {
 					var nodeRange = ownerDocument.body.createTextRange();
 					nodeRange.moveToElementText(node);
 					rangeIntersectsNode = (range.compareEndPoints('EndToStart', nodeRange) == -1 && range.compareEndPoints('StartToEnd', nodeRange) == 1) ||
@@ -369,9 +386,9 @@ HTMLArea.DOM = function () {
 					try {
 						nodeRange.selectNode(node);
 					} catch (e) {
-						if (Ext.isWebKit) {
+						if (UserAgent.isWebKit) {
 							nodeRange.setStart(node, 0);
-							if (node.nodeType === HTMLArea.DOM.TEXT_NODE || node.nodeType === HTMLArea.DOM.COMMENT_NODE || node.nodeType === HTMLArea.DOM.CDATA_SECTION_NODE) {
+							if (node.nodeType === Dom.TEXT_NODE || node.nodeType === Dom.COMMENT_NODE || node.nodeType === Dom.CDATA_SECTION_NODE) {
 								nodeRange.setEnd(node, node.textContent.length);
 							} else {
 								nodeRange.setEnd(node, node.childNodes.length);
@@ -380,14 +397,15 @@ HTMLArea.DOM = function () {
 							nodeRange.selectNodeContents(node);
 						}
 					}
-						// Note: sometimes WebKit inverts the end points
+					// Note: sometimes WebKit inverts the end points
 					rangeIntersectsNode = (range.compareBoundaryPoints(range.END_TO_START, nodeRange) == -1 && range.compareBoundaryPoints(range.START_TO_END, nodeRange) == 1) ||
 						(range.compareBoundaryPoints(range.END_TO_START, nodeRange) == 1 && range.compareBoundaryPoints(range.START_TO_END, nodeRange) == -1);
 				}
 			}
 			return rangeIntersectsNode;
 		},
-		/*
+
+		/**
 		 * Make url's absolute in the DOM tree under the root node
 		 *
 		 * @param	object		root: the root node
@@ -396,9 +414,10 @@ HTMLArea.DOM = function () {
 		 * @return	void
 		 */
 		makeUrlsAbsolute: function (node, baseUrl, walker) {
-			walker.walk(node, true, 'HTMLArea.DOM.makeImageSourceAbsolute(node, args[0]) || HTMLArea.DOM.makeLinkHrefAbsolute(node, args[0])', 'Ext.emptyFn', [baseUrl]);
+			walker.walk(node, true, 'HTMLArea.DOM.makeImageSourceAbsolute(node, args[0]) || HTMLArea.DOM.makeLinkHrefAbsolute(node, args[0])', 'function(){}', [baseUrl]);
 		},
-		/*
+
+		/**
 		 * Make the src attribute of an image node absolute
 		 *
 		 * @param	object		node: the image node
@@ -409,13 +428,14 @@ HTMLArea.DOM = function () {
 			if (/^img$/i.test(node.nodeName)) {
 				var src = node.getAttribute('src');
 				if (src) {
-					node.setAttribute('src', HTMLArea.DOM.addBaseUrl(src, baseUrl));
+					node.setAttribute('src', Dom.addBaseUrl(src, baseUrl));
 				}
 				return true;
 			}
 			return false;
 		},
-		/*
+
+		/**
 		 * Make the href attribute of an a node absolute
 		 *
 		 * @param	object		node: the image node
@@ -426,13 +446,14 @@ HTMLArea.DOM = function () {
 			if (/^a$/i.test(node.nodeName)) {
 				var href = node.getAttribute('href');
 				if (href) {
-					node.setAttribute('href', HTMLArea.DOM.addBaseUrl(href, baseUrl));
+					node.setAttribute('href', Dom.addBaseUrl(href, baseUrl));
 				}
 				return true;
 			}
 			return false;
 		},
-		/*
+
+		/**
 		 * Add base url
 		 *
 		 * @param	string		url: value of a href or src attribute
@@ -460,4 +481,7 @@ HTMLArea.DOM = function () {
 			return absoluteUrl;
 		}
 	};
-}();
+
+	return Dom;
+
+}(HTMLArea.UserAgent);

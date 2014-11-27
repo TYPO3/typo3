@@ -1,67 +1,86 @@
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
 /***************************************************
  *  HTMLArea.DOM.Selection: Selection object
  ***************************************************/
-HTMLArea.DOM.Selection = function (config) {
-};
-HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
-	/*
-	 * Reference to the editor MUST be set in config
+HTMLArea.DOM.Selection = function(UserAgent, Util, Dom) {
+
+	/**
+	 * Constructor method
+	 *
+	 * @param object config: an object with property "editor" giving reference to the parent object
+	 *
+	 * @return void
 	 */
-	editor: null,
-	/*
-	 * Reference to the editor document
-	 */
-	document: null,
-	/*
-	 * Reference to the editor iframe window
-	 */
-	window: null,
-	/*
-	 * The current selection
-	 */
-	selection: null,
-	/*
-	 * HTMLArea.DOM.Selection constructor
-	 */
-	constructor: function (config) {
-		 	// Apply config
-		Ext.apply(this, config);
-			// Initialize references
+	var Selection = function (config) {
+
+		/**
+		 * Reference to the editor MUST be set in config
+		 */
+		this.editor = null;
+
+		/**
+		 * The current selection
+		 */
+		this.selection = null;
+
+		Util.apply(this, config);
+
+		/**
+		 * Reference to the editor document
+		 */
 		this.document = this.editor.document;
+
+		/**
+		 * Reference to the editor iframe window
+		 */
 		this.window = this.editor.iframe.getEl().dom.contentWindow;
-			// Set current selection
+
+		// Set current selection
 		this.get();
-	},
-	/*
+	};
+
+	/**
 	 * Get the current selection object
 	 *
 	 * @return	object		this
 	 */
-	get: function () {
+	Selection.prototype.get = function () {
 		this.editor.focus();
 	 	this.selection = this.window.getSelection ? this.window.getSelection() : this.document.selection;
 	 	return this;
-	},
-	/*
+	};
+
+	/**
 	 * Get the type of the current selection
 	 *
 	 * @return	string		the type of selection ("None", "Text" or "Control")
 	 */
-	getType: function() {
-			// By default set the type to "Text"
+	Selection.prototype.getType = function() {
+		// By default set the type to "Text"
 		var type = 'Text';
 		this.get();
 		if (typeof this.selection === 'object' && this.selection !== null) {
 			if (typeof this.selection.getRangeAt === 'function') {
-					// Check if the current selection is a Control
+				// Check if the current selection is a Control
 				if (this.selection && this.selection.rangeCount == 1) {
 					var range = this.selection.getRangeAt(0);
-					if (range.startContainer.nodeType === HTMLArea.DOM.ELEMENT_NODE) {
+					if (range.startContainer.nodeType === Dom.ELEMENT_NODE) {
 						if (
-								// Gecko
+							// Gecko
 							(range.startContainer == range.endContainer && (range.endOffset - range.startOffset) == 1) ||
-								// Opera and WebKit
-							(range.endContainer.nodeType === HTMLArea.DOM.TEXT_NODE && range.endOffset == 0 && range.startContainer.childNodes[range.startOffset].nextSibling == range.endContainer)
+							// Opera and WebKit
+							(range.endContainer.nodeType === Dom.TEXT_NODE && range.endOffset == 0 && range.startContainer.childNodes[range.startOffset].nextSibling == range.endContainer)
 						) {
 							if (/^(img|hr|li|table|tr|td|embed|object|ol|ul|dl)$/i.test(range.startContainer.childNodes[range.startOffset].nodeName)) {
 								type = 'Control';
@@ -70,42 +89,44 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 					}
 				}
 			} else {
-					// IE8 or IE7
+				// IE8 or IE7
 				type = this.selection.type;
 			}
 		}
 		return type;
-	},
-	/*
+	};
+
+	/**
 	 * Empty the current selection
 	 *
-	 * @return	object		this
+	 * @return object this
 	 */
-	empty: function () {
+	Selection.prototype.empty = function () {
 		this.get();
 		if (typeof this.selection === 'object' && this.selection !== null) {
 			if (typeof this.selection.removeAllRanges === 'function') {
 				this.selection.removeAllRanges();
 			} else {
-					// IE8, IE7 or old version of WebKit
+				// IE8, IE7 or old version of WebKit
 				this.selection.empty();
 			}
-			if (HTMLArea.UserAgent.isOpera) {
+			if (UserAgent.isOpera) {
 				this.editor.focus();
 			}
 		}
 		return this;
-	},
-	/*
+	};
+
+	/**
 	 * Determine whether the current selection is empty or not
 	 *
 	 * @return	boolean		true, if the selection is empty
 	 */
-	isEmpty: function () {
+	Selection.prototype.isEmpty = function () {
 		var isEmpty = true;
 		this.get();
 		if (typeof this.selection === 'object' && this.selection !== null) {
-			if (HTMLArea.UserAgent.isIEBeforeIE9) {
+			if (UserAgent.isIEBeforeIE9) {
 				switch (this.selection.type) {
 					case 'None':
 						isEmpty = true;
@@ -122,23 +143,24 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 			}
 		}
 		return isEmpty;
-	},
-	/*
+	};
+
+	/**
 	 * Get a range corresponding to the current selection
 	 *
 	 * @return	object		the range of the selection
 	 */
-	createRange: function () {
+	Selection.prototype.createRange = function () {
 		var range;
 		this.get();
-		if (HTMLArea.UserAgent.isIEBeforeIE9) {
+		if (UserAgent.isIEBeforeIE9) {
 			range = this.selection.createRange();
 		} else {
 			if (typeof this.selection !== 'object' || this.selection === null) {
 				range = this.document.createRange();
 			} else {
-					// Older versions of WebKit did not support getRangeAt
-				if (HTMLArea.UserAgent.isWebKit && typeof this.selection.getRangeAt !== 'function') {
+				// Older versions of WebKit did not support getRangeAt
+				if (UserAgent.isWebKit && typeof this.selection.getRangeAt !== 'function') {
 					range = this.document.createRange();
 					if (this.selection.baseNode == null) {
 						range.setStart(this.document.body, 0);
@@ -161,16 +183,17 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 			}
 		}
 		return range;
-	},
-	/*
+	};
+
+	/**
 	 * Return the ranges of the selection
 	 *
 	 * @return	array		array of ranges
 	 */
-	getRanges: function () {
+	Selection.prototype.getRanges = function () {
 		this.get();
 		var ranges = [];
-			// Older versions of WebKit, IE7 and IE8 did not support getRangeAt
+		// Older versions of WebKit, IE7 and IE8 did not support getRangeAt
 		if (typeof this.selection === 'object' && this.selection !== null && typeof this.selection.getRangeAt === 'function') {
 			for (var i = this.selection.rangeCount; --i >= 0;) {
 				ranges.push(this.selection.getRangeAt(i));
@@ -179,60 +202,64 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 			ranges.push(this.createRange());
 		}
 		return ranges;
-	},
-	/*
+	};
+
+	/**
 	 * Add a range to the selection
 	 *
 	 * @param	object		range: the range to be added to the selection
 	 *
 	 * @return	object		this
 	 */
-	addRange: function (range) {
+	Selection.prototype.addRange = function (range) {
 		this.get();
 		if (typeof this.selection === 'object' && this.selection !== null) {
 			if (typeof this.selection.addRange === 'function') {
 				this.selection.addRange(range);
-			} else if (HTMLArea.UserAgent.isWebKit) {
+			} else if (UserAgent.isWebKit) {
 				this.selection.setBaseAndExtent(range.startContainer, range.startOffset, range.endContainer, range.endOffset);
 			}
 		}
 		return this;
-	},
-	/*
+	};
+
+	/**
 	 * Set the ranges of the selection
 	 *
 	 * @param	array		ranges: array of range to be added to the selection
 	 *
 	 * @return	object		this
 	 */
-	setRanges: function (ranges) {
+	Selection.prototype.setRanges = function (ranges) {
 		this.get();
 		this.empty();
 		for (var i = ranges.length; --i >= 0;) {
 			this.addRange(ranges[i]);
 		}
 		return this;
-	},
-	/*
+	};
+
+	/**
 	 * Set the selection to a given range
 	 *
 	 * @param	object		range: the range to be selected
 	 *
 	 * @return	object		this
 	 */
-	selectRange: function (range) {
+	Selection.prototype.selectRange = function (range) {
 		this.get();
 		if (typeof this.selection === 'object' && this.selection !== null) {
 			if (typeof this.selection.getRangeAt === 'function') {
 				this.empty().addRange(range);
 			} else {
-					// IE8 or IE7
+				// IE8 or IE7
 				range.select();
 			}
 		}
 		return this;
-	},
-	/*
+	};
+
+	/**
 	 * Set the selection to a given node
 	 *
 	 * @param	object		node: the node to be selected
@@ -240,18 +267,18 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 	 *
 	 * @return	object		this
 	 */
-	selectNode: function (node, endPoint) {
+	Selection.prototype.selectNode = function (node, endPoint) {
 		this.get();
 		if (typeof this.selection === 'object' && this.selection !== null) {
-			if (HTMLArea.UserAgent.isIEBeforeIE9) {
-					// IE8/7/6 cannot set this type of selection
+			if (UserAgent.isIEBeforeIE9) {
+				// IE8/7/6 cannot set this type of selection
 				this.selectNodeContents(node, endPoint);
-			} else if (HTMLArea.UserAgent.isWebKit && /^(img)$/i.test(node.nodeName)) {
+			} else if (UserAgent.isWebKit && /^(img)$/i.test(node.nodeName)) {
 				this.selection.setBaseAndExtent(node, 0, node, 1);
 			} else {
 				var range = this.document.createRange();
-				if (node.nodeType === HTMLArea.DOM.ELEMENT_NODE && /^(body)$/i.test(node.nodeName)) {
-					if (HTMLArea.UserAgent.isWebKit) {
+				if (node.nodeType === Dom.ELEMENT_NODE && /^(body)$/i.test(node.nodeName)) {
+					if (UserAgent.isWebKit) {
 						range.setStart(node, 0);
 						range.setEnd(node, node.childNodes.length);
 					} else {
@@ -267,8 +294,9 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 			}
 		}
 		return this;
-	},
-	/*
+	};
+
+	/**
 	 * Set the selection to the inner contents of a given node
 	 *
 	 * @param	object		node: the node of which the contents are to be selected
@@ -276,18 +304,18 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 	 *
 	 * @return	object		this
 	 */
-	selectNodeContents: function (node, endPoint) {
+	Selection.prototype.selectNodeContents = function (node, endPoint) {
 		var range;
 		this.get();
 		if (typeof this.selection === 'object' && this.selection !== null) {
-			if (HTMLArea.UserAgent.isIEBeforeIE9) {
+			if (UserAgent.isIEBeforeIE9) {
 				range = this.document.body.createTextRange();
 				range.moveToElementText(node);
 			} else {
 				range = this.document.createRange();
-				if (HTMLArea.UserAgent.isWebKit) {
+				if (UserAgent.isWebKit) {
 					range.setStart(node, 0);
-					if (node.nodeType === HTMLArea.DOM.TEXT_NODE || node.nodeType === HTMLArea.DOM.COMMENT_NODE || node.nodeType === HTMLArea.DOM.CDATA_SECTION_NODE) {
+					if (node.nodeType === Dom.TEXT_NODE || node.nodeType === Dom.COMMENT_NODE || node.nodeType === Dom.CDATA_SECTION_NODE) {
 						range.setEnd(node, node.textContent.length);
 					} else {
 						range.setEnd(node, node.childNodes.length);
@@ -302,17 +330,18 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 			this.selectRange(range);
 		}
 		return this;
-	},
-	/*
+	};
+
+	/**
 	 * Get the deepest node that contains both endpoints of the current selection.
 	 *
 	 * @return	object		the deepest node that contains both endpoints of the current selection.
 	 */
-	getParentElement: function () {
+	Selection.prototype.getParentElement = function () {
 		var parentElement,
 			range;
 		this.get();
-		if (HTMLArea.UserAgent.isIEBeforeIE9) {
+		if (UserAgent.isIEBeforeIE9) {
 			range = this.createRange();
 			switch (this.selection.type) {
 				case 'Text':
@@ -338,69 +367,73 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 				range = this.createRange();
 				parentElement = range.commonAncestorContainer;
 					// Firefox 3 may report the document as commonAncestorContainer
-				if (parentElement.nodeType === HTMLArea.DOM.DOCUMENT_NODE) {
+				if (parentElement.nodeType === Dom.DOCUMENT_NODE) {
 					parentElement = this.document.body;
 				} else {
-					while (parentElement && parentElement.nodeType === HTMLArea.DOM.TEXT_NODE) {
+					while (parentElement && parentElement.nodeType === Dom.TEXT_NODE) {
 						parentElement = parentElement.parentNode;
 					}
 				}
 			}
 		}
 		return parentElement;
-	},
-	/*
+	};
+
+	/**
 	 * Get the selected element (if any), in the case that a single element (object like and image or a table) is selected
 	 * In IE language, we have a range of type 'Control'
 	 *
 	 * @return	object		the selected node
 	 */
-	getElement: function () {
+	Selection.prototype.getElement = function () {
 		var element = null;
 		this.get();
-		if (typeof this.selection === 'object' && this.selection !== null && this.selection.anchorNode && this.selection.anchorNode.nodeType === HTMLArea.DOM.ELEMENT_NODE && this.getType() == 'Control') {
+		if (typeof this.selection === 'object' && this.selection !== null && this.selection.anchorNode && this.selection.anchorNode.nodeType === Dom.ELEMENT_NODE && this.getType() == 'Control') {
 			element = this.selection.anchorNode.childNodes[this.selection.anchorOffset];
 				// For Safari, the anchor node for a control selection is the control itself
 			if (!element) {
 				element = this.selection.anchorNode;
-			} else if (element.nodeType !== HTMLArea.DOM.ELEMENT_NODE) {
+			} else if (element.nodeType !== Dom.ELEMENT_NODE) {
 				element = null;
 			}
 		}
 		return element;
-	},
-	/*
+	};
+
+	/**
 	 * Get the deepest element ancestor of the selection that is of one of the specified types
 	 *
 	 * @param	array		types: an array of nodeNames
 	 *
 	 * @return	object		the found ancestor of one of the given types or null
 	 */
-	getFirstAncestorOfType: function (types) {
+	Selection.prototype.getFirstAncestorOfType = function (types) {
 		var node = this.getParentElement();
-		return HTMLArea.DOM.getFirstAncestorOfType(node, types);
-	},
-	/*
+		return Dom.getFirstAncestorOfType(node, types);
+	};
+
+	/**
 	 * Get an array with all the ancestor nodes of the current selection
 	 *
 	 * @return	array		the ancestor nodes
 	 */
-	getAllAncestors: function () {
+	Selection.prototype.getAllAncestors = function () {
 		var parent = this.getParentElement(),
 			ancestors = [];
-		while (parent && parent.nodeType === HTMLArea.DOM.ELEMENT_NODE && !/^(body)$/i.test(parent.nodeName)) {
+		while (parent && parent.nodeType === Dom.ELEMENT_NODE && !/^(body)$/i.test(parent.nodeName)) {
 			ancestors.push(parent);
 			parent = parent.parentNode;
 		}
 		ancestors.push(this.document.body);
 		return ancestors;
-	},
-	/*
+	};
+
+	/**
 	 * Get an array with the parent elements of a multiple selection
 	 *
 	 * @return	array		the selected elements
 	 */
-	getElements: function () {
+	Selection.prototype.getElements = function () {
 		var statusBarSelection = this.editor.statusBar ? this.editor.statusBar.getSelection() : null,
 			elements = [];
 		if (statusBarSelection) {
@@ -412,10 +445,10 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 				for (var i = ranges.length; --i >= 0;) {
 					parent = range[i].commonAncestorContainer;
 						// Firefox 3 may report the document as commonAncestorContainer
-					if (parent.nodeType === HTMLArea.DOM.DOCUMENT_NODE) {
+					if (parent.nodeType === Dom.DOCUMENT_NODE) {
 						parent = this.document.body;
 					} else {
-						while (parent && parent.nodeType === HTMLArea.DOM.TEXT_NODE) {
+						while (parent && parent.nodeType === Dom.TEXT_NODE) {
 							parent = parent.parentNode;
 						}
 					}
@@ -426,13 +459,14 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 			}
 		}
 		return elements;
-	},
-	/*
+	};
+
+	/**
 	 * Get the node whose contents are currently fully selected
 	 *
 	 * @return	object		the fully selected node, if any, null otherwise
 	 */
-	getFullySelectedNode: function () {
+	Selection.prototype.getFullySelectedNode = function () {
 		var node = null,
 			isFullySelected = false;
 		this.get();
@@ -442,7 +476,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 			var ancestors = this.getAllAncestors();
 			for (var i = 0, n = ancestors.length; i < n; i++) {
 				var ancestor = ancestors[i];
-				if (HTMLArea.UserAgent.isIEBeforeIE9) {
+				if (UserAgent.isIEBeforeIE9) {
 					isFullySelected = (type !== 'Control' && ancestor.innerText == range.text) || (type === 'Control' && ancestor.innerText == range.item(0).text);
 				} else {
 					isFullySelected = (ancestor.textContent == range.toString());
@@ -453,7 +487,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 				}
 			}
 				// Working around bug with WebKit selection
-			if (HTMLArea.UserAgent.isWebKit && !isFullySelected) {
+			if (UserAgent.isWebKit && !isFullySelected) {
 				var statusBarSelection = this.editor.statusBar ? this.editor.statusBar.getSelection() : null;
 				if (statusBarSelection && statusBarSelection.textContent == range.toString()) {
 					isFullySelected = true;
@@ -462,17 +496,18 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 			}
 		}
 		return node;
-	},
-	/*
+	};
+
+	/**
 	 * Get the block elements containing the start and the end points of the selection
 	 *
 	 * @return	object		object with properties start and end set to the end blocks of the selection
 	 */
-	getEndBlocks: function () {
+	Selection.prototype.getEndBlocks = function () {
 		var range = this.createRange(),
 			parentStart,
 			parentEnd;
-		if (HTMLArea.UserAgent.isIEBeforeIE9) {
+		if (UserAgent.isIEBeforeIE9) {
 			if (this.getType() === 'Control') {
 				parentStart = range.item(0);
 				parentEnd = parentStart;
@@ -493,23 +528,24 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 				parentEnd = parentEnd.lastChild;
 			}
 		}
-		while (parentStart && !HTMLArea.DOM.isBlockElement(parentStart)) {
+		while (parentStart && !Dom.isBlockElement(parentStart)) {
 			parentStart = parentStart.parentNode;
 		}
-		while (parentEnd && !HTMLArea.DOM.isBlockElement(parentEnd)) {
+		while (parentEnd && !Dom.isBlockElement(parentEnd)) {
 			parentEnd = parentEnd.parentNode;
 		}
 		return {
 			start: parentStart,
 			end: parentEnd
 		};
-	},
-	/*
+	};
+
+	/**
 	 * Determine whether the end poins of the current selection are within the same block
 	 *
 	 * @return	boolean		true if the end points of the current selection are in the same block
 	 */
-	endPointsInSameBlock: function() {
+	Selection.prototype.endPointsInSameBlock = function() {
 		var endPointsInSameBlock = true;
 		this.get();
 		if (!this.isEmpty()) {
@@ -518,16 +554,17 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 			endPointsInSameBlock = (endBlocks.start === endBlocks.end && !/^(table|thead|tbody|tfoot|tr)$/i.test(parent.nodeName));
 		}
 		return endPointsInSameBlock;
-	},
-	/*
+	};
+
+	/**
 	 * Retrieve the HTML contents of the current selection
 	 *
 	 * @return	string		HTML text of the current selection
 	 */
-	getHtml: function () {
+	Selection.prototype.getHtml = function () {
 		var range = this.createRange(),
 			html = '';
-		if (HTMLArea.UserAgent.isIEBeforeIE9) {
+		if (UserAgent.isIEBeforeIE9) {
 			if (this.getType() === 'Control') {
 					// We have a controlRange collection
 				var bodyRange = this.document.body.createTextRange();
@@ -544,8 +581,9 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 			html = this.editor.iframe.htmlRenderer.render(cloneContents, false);
 		}
 		return html;
-	},
-	 /*
+	};
+
+	/**
 	 * Insert a node at the current position
 	 * Delete the current selection, if any.
 	 * Split the text node, if needed.
@@ -554,19 +592,20 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 	 *
 	 * @return	object		this
 	 */
-	insertNode: function (toBeInserted) {
-		if (HTMLArea.UserAgent.isIEBeforeIE9) {
+	Selection.prototype.insertNode = function (toBeInserted) {
+		if (UserAgent.isIEBeforeIE9) {
 			this.insertHtml(toBeInserted.outerHTML);
 		} else {
 			var range = this.createRange();
 			range.deleteContents();
-			toBeSelected = (toBeInserted.nodeType === HTMLArea.DOM.DOCUMENT_FRAGMENT_NODE) ? toBeInserted.lastChild : toBeInserted;
+			toBeSelected = (toBeInserted.nodeType === Dom.DOCUMENT_FRAGMENT_NODE) ? toBeInserted.lastChild : toBeInserted;
 			range.insertNode(toBeInserted);
 			this.selectNodeContents(toBeSelected, false);
 		}
 		return this;
-	},
-	/*
+	};
+
+	/**
 	 * Insert HTML source code at the current position
 	 * Delete the current selection, if any.
 	 *
@@ -574,8 +613,8 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 	 *
 	 * @return	object		this
 	 */
-	insertHtml: function (html) {
-		if (HTMLArea.UserAgent.isIEBeforeIE9) {
+	Selection.prototype.insertHtml = function (html) {
+		if (UserAgent.isIEBeforeIE9) {
 			this.get();
 			if (this.getType() === 'Control') {
 				this.selection.clear();
@@ -594,8 +633,9 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 			this.insertNode(fragment);
 		}
 		return this;
-	},
-	/*
+	};
+
+	/**
 	 * Surround the selection with an element specified by its start and end tags
 	 * Delete the selection, if any.
 	 *
@@ -604,10 +644,11 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 	 *
 	 * @return	void
 	 */
-	surroundHtml: function (startTag, endTag) {
-		this.insertHtml(startTag + this.getHtml().replace(HTMLArea.DOM.RE_bodyTag, '') + endTag);
-	},
-	/*
+	Selection.prototype.surroundHtml = function (startTag, endTag) {
+		this.insertHtml(startTag + this.getHtml().replace(Dom.RE_bodyTag, '') + endTag);
+	};
+
+	/**
 	 * Execute some native execCommand command on the current selection
 	 *
 	 * @param	string		cmdID: the command name or id
@@ -616,26 +657,27 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 	 *
 	 * @return	boolean		false
 	 */
-	execCommand: function (cmdID, UI, param) {
+	Selection.prototype.execCommand = function (cmdID, UI, param) {
 		var success = true;
 		this.editor.focus();
 		try {
 			this.document.execCommand(cmdID, UI, param);
 		} catch (e) {
 			success = false;
-			this.editor.appendToLog('HTMLArea.DOM.Selection', 'execCommand', e + ' by execCommand(' + cmdID + ')', 'error');
+			this.editor.appendToLog('HTMLArea/DOM/Selection', 'execCommand', e + ' by execCommand(' + cmdID + ')', 'error');
 		}
 		this.editor.updateToolbar();
 		return success;
-	},
-	/*
+	};
+
+	/**
 	 * Handle backspace event on the current selection
 	 *
 	 * @return	boolean		true to stop the event and cancel the default action
 	 */
-	handleBackSpace: function () {
+	Selection.prototype.handleBackSpace = function () {
 		var range = this.createRange();
-		if (HTMLArea.UserAgent.isIEBeforeIE9) {
+		if (UserAgent.isIEBeforeIE9) {
 			if (this.getType() === 'Control') {
 					// Deleting or backspacing on a control selection : delete the element
 				var element = this.getParentElement();
@@ -645,7 +687,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 			} else if (this.isEmpty()) {
 					// Check if deleting an empty block with a table as next sibling
 				var element = this.getParentElement();
-				if (!element.innerHTML && HTMLArea.DOM.isBlockElement(element) && element.nextSibling && /^table$/i.test(element.nextSibling.nodeName)) {
+				if (!element.innerHTML && Dom.isBlockElement(element) && element.nextSibling && /^table$/i.test(element.nextSibling.nodeName)) {
 					var previous = element.previousSibling;
 					if (!previous) {
 						this.selectNodeContents(element.nextSibling.rows[0].cells[0], true);
@@ -700,7 +742,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 							// If there is no meaningful previous sibling, the cursor is at the start of body or the start of a direct child of body
 						if (previousSibling) {
 								// Remove the node
-							HTMLArea.DOM.removeFromParent(node);
+							Dom.removeFromParent(node);
 								// Position the cursor
 							if (/^(ol|ul|dl)$/i.test(previousSibling.nodeName)) {
 								self.selectNodeContents(previousSibling.lastChild, false);
@@ -719,7 +761,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 							&& (node.childNodes.length === 0 || (node.childNodes.length === 1 && /^(br)$/i.test(node.firstChild.nodeName)))
 						) {
 						var parentNode = node.parentNode;
-						HTMLArea.DOM.removeFromParent(node);
+						Dom.removeFromParent(node);
 						parentNode.innerHTML = '<br />';
 						self.selectNodeContents(parentNode, true);
 					}
@@ -727,8 +769,9 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 			}, 10);
 			return false;
 		}
-	},
-	/*
+	};
+
+	/**
 	 * Detect emails and urls as they are typed in non-IE browsers
 	 * Borrowed from Xinha (is not htmlArea) - http://xinha.gogo.co.nz/
 	 *
@@ -736,7 +779,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 	 *
 	 * @return	void
 	 */
-	detectURL: function (event) {
+	Selection.prototype.detectURL = function (event) {
 		var ev = event.browserEvent;
 		var editor = this.editor;
 		var selection = this.get().selection;
@@ -747,7 +790,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 					tag = editor.document.createElement(tag);
 				}
 				var a = textNode.parentNode.insertBefore(tag, rightText);
-				HTMLArea.DOM.removeFromParent(textNode);
+				Dom.removeFromParent(textNode);
 				a.appendChild(textNode);
 				selection.collapse(rightText, 0);
 				rightText.parentNode.normalize();
@@ -756,7 +799,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 					var t = a.firstChild;
 					a.removeChild(t);
 					a.parentNode.insertBefore(t, a);
-					HTMLArea.DOM.removeFromParent(a);
+					Dom.removeFromParent(a);
 					t.parentNode.normalize();
 					editor.unLink = null;
 					editor.unlinkOnUndo = false;
@@ -769,7 +812,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 					// Space or Enter or >, see if the text just typed looks like a URL, or email address and link it accordingly
 				case 13:
 				case 32:
-					if (selection && selection.isCollapsed && selection.anchorNode.nodeType === HTMLArea.DOM.TEXT_NODE && selection.anchorNode.data.length > 3 && selection.anchorNode.data.indexOf('.') >= 0) {
+					if (selection && selection.isCollapsed && selection.anchorNode.nodeType === Dom.TEXT_NODE && selection.anchorNode.data.length > 3 && selection.anchorNode.data.indexOf('.') >= 0) {
 						var midStart = selection.anchorNode.data.substring(0,selection.anchorOffset).search(/[a-zA-Z0-9]+\S{3,}$/);
 						if (midStart == -1) {
 							break;
@@ -816,7 +859,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 						break;
 					} else if (ev.which || ev.keyCode == 8 || ev.keyCode == 46) {
 						editor.unlinkOnUndo = false;
-						if (selection.anchorNode && selection.anchorNode.nodeType === HTMLArea.DOM.TEXT_NODE) {
+						if (selection.anchorNode && selection.anchorNode.nodeType === Dom.TEXT_NODE) {
 								// See if we might be changing a link
 							var a = this.getFirstAncestorOfType('a');
 							if (!a) {
@@ -848,13 +891,14 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 					break;
 			}
 		}
-	},
-	/*
+	};
+
+	/**
 	 * Enter event handler
 	 *
-	 * @return	boolean		true to stop the event and cancel the default action
+	 * @return boolean true to stop the event and cancel the default action
 	 */
-	checkInsertParagraph: function() {
+	Selection.prototype.checkInsertParagraph = function() {
 		var editor = this.editor;
 		var left, right, rangeClone,
 			sel	= this.get().selection,
@@ -864,7 +908,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 			a	= null,
 			doc	= this.document;
 		for (var i = 0, n = p.length; i < n; ++i) {
-			if (HTMLArea.DOM.isBlockElement(p[i]) && !/^(html|body|table|tbody|thead|tfoot|tr|dl)$/i.test(p[i].nodeName)) {
+			if (Dom.isBlockElement(p[i]) && !/^(html|body|table|tbody|thead|tfoot|tr|dl)$/i.test(p[i].nodeName)) {
 				block = p[i];
 				break;
 			}
@@ -888,7 +932,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 					var leftSibling = null;
 						// Looking for the farthest node on the left that is not a block
 					for (var i = range.startOffset; --i >= 0;) {
-						if (HTMLArea.DOM.isBlockElement(block.childNodes[i])) {
+						if (Dom.isBlockElement(block.childNodes[i])) {
 							blockOnLeft = block.childNodes[i];
 							break;
 						} else {
@@ -903,7 +947,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 					}
 						// Looking for the farthest node on the left that is not a block
 					var leftSibling = inlineContainer;
-					while (leftSibling.previousSibling && !HTMLArea.DOM.isBlockElement(leftSibling.previousSibling)) {
+					while (leftSibling.previousSibling && !Dom.isBlockElement(leftSibling.previousSibling)) {
 						leftSibling = leftSibling.previousSibling;
 					}
 					rangeClone.setStartBefore(leftSibling);
@@ -927,7 +971,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 				block.normalize();
 					// Looking for the farthest node on the right that is not a block
 				var rightSibling = left;
-				while (rightSibling.nextSibling && !HTMLArea.DOM.isBlockElement(rightSibling.nextSibling)) {
+				while (rightSibling.nextSibling && !Dom.isBlockElement(rightSibling.nextSibling)) {
 					rightSibling = rightSibling.nextSibling;
 				}
 				var blockOnRight = rightSibling.nextSibling;
@@ -956,7 +1000,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 					block.removeChild(first);
 				}
 				right = doc.createElement('p');
-				if (HTMLArea.UserAgent.isWebKit || HTMLArea.UserAgent.isOpera) {
+				if (UserAgent.isWebKit || UserAgent.isOpera) {
 					right.innerHTML = '<br />';
 				}
 				right = block.appendChild(right);
@@ -966,7 +1010,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 			range.setEndAfter(block);
 			var df = range.extractContents(), left_empty = false;
 			if (!/\S/.test(block.innerHTML) || (!/\S/.test(block.textContent) && !/<(img|hr|table)/i.test(block.innerHTML))) {
-				if (!HTMLArea.UserAgent.isOpera) {
+				if (!UserAgent.isOpera) {
 					block.innerHTML = '<br />';
 				}
 				left_empty = true;
@@ -975,12 +1019,12 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 			if (p) {
 				if (!/\S/.test(p.innerHTML) || (!/\S/.test(p.textContent) && !/<(img|hr|table)/i.test(p.innerHTML))) {
 					if (/^h[1-6]$/i.test(p.nodeName)) {
-						p = HTMLArea.DOM.convertNode(p, 'p');
+						p = Dom.convertNode(p, 'p');
 					}
 					if (/^(dt|dd)$/i.test(p.nodeName)) {
-						 p = HTMLArea.DOM.convertNode(p, /^(dt)$/i.test(p.nodeName) ? 'dd' : 'dt');
+						 p = Dom.convertNode(p, /^(dt)$/i.test(p.nodeName) ? 'dd' : 'dt');
 					}
-					if (!HTMLArea.UserAgent.isOpera) {
+					if (!UserAgent.isOpera) {
 						p.innerHTML = '<br />';
 					}
 					if (/^li$/i.test(p.nodeName) && left_empty && (!block.nextSibling || !/^li$/i.test(block.nextSibling.nodeName))) {
@@ -988,7 +1032,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 						left.removeChild(block);
 						range.setEndAfter(left);
 						range.collapse(false);
-						p = HTMLArea.DOM.convertNode(p, /^(li|dd|td|th|p|h[1-6])$/i.test(left.parentNode.nodeName) ? 'br' : 'p');
+						p = Dom.convertNode(p, /^(li|dd|td|th|p|h[1-6])$/i.test(left.parentNode.nodeName) ? 'br' : 'p');
 					}
 				}
 				range.insertNode(df);
@@ -996,15 +1040,15 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 				if (p.previousSibling) {
 					var a = p.previousSibling.lastChild;
 					if (a && /^a$/i.test(a.nodeName) && !/\S/.test(a.innerHTML)) {
-						HTMLArea.DOM.convertNode(a, 'br');
+						Dom.convertNode(a, 'br');
 					}
 				}
 				var a = p.lastChild;
 				if (a && /^a$/i.test(a.nodeName) && !/\S/.test(a.innerHTML)) {
-					HTMLArea.DOM.convertNode(a, 'br');
+					Dom.convertNode(a, 'br');
 				}
 					// Walk inside the deepest child element (presumably inline element)
-				while (p.firstChild && p.firstChild.nodeType === HTMLArea.DOM.ELEMENT_NODE && !/^(br|img|hr|table)$/i.test(p.firstChild.nodeName)) {
+				while (p.firstChild && p.firstChild.nodeType === Dom.ELEMENT_NODE && !/^(br|img|hr|table)$/i.test(p.firstChild.nodeName)) {
 					p = p.firstChild;
 				}
 				if (/^br$/i.test(p.nodeName)) {
@@ -1020,7 +1064,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 				} else {
 					p = doc.createElement('p');
 				}
-				if (!HTMLArea.UserAgent.isOpera) {
+				if (!UserAgent.isOpera) {
 					p.innerHTML = '<br />';
 				}
 				if (block.nextSibling) {
@@ -1033,5 +1077,8 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 		}
 		this.editor.scrollToCaret();
 		return true;
-	}
-});
+	};
+
+	return Selection;
+
+}(HTMLArea.UserAgent, HTMLArea.util, HTMLArea.DOM);

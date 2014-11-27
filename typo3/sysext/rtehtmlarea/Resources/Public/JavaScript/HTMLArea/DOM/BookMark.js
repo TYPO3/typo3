@@ -1,32 +1,48 @@
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
 /***************************************************
  *  HTMLArea.DOM.BookMark: BookMark object
  ***************************************************/
-HTMLArea.DOM.BookMark = function (config) {
-};
-HTMLArea.DOM.BookMark = Ext.extend(HTMLArea.DOM.BookMark, {
-	/*
-	 * Reference to the editor MUST be set in config
+HTMLArea.DOM.BookMark = function(UserAgent, Util, Dom) {
+
+	/**
+	 * Constructor method
+	 *
+	 * @param object config: an object with property "editor" giving reference to the parent object
+	 *
+	 * @return void
 	 */
-	editor: null,
-	/*
-	 * Reference to the editor document
-	 */
-	document: null,
-	/*
-	 * Reference to the editor selection object
-	 */
-	selection: null,
-	/*
-	 * HTMLArea.DOM.Selection constructor
-	 */
-	constructor: function (config) {
-		 	// Apply config
-		Ext.apply(this, config);
-			// Initialize references
+	var BookMark = function (config) {
+
+		/**
+		 * Reference to the editor MUST be set in config
+		 */
+		this.editor = null;
+
+		Util.apply(this, config);
+
+		/**
+		 * Reference to the editor document
+		 */
 		this.document = this.editor.document;
+
+		/**
+		 * Reference to the editor selection object
+		 */
 		this.selection = this.editor.getSelection();
-	},
-	/*
+	};
+
+	/**
 	 * Get a bookMark
 	 *
 	 * @param	object		range: the range to bookMark
@@ -34,9 +50,9 @@ HTMLArea.DOM.BookMark = Ext.extend(HTMLArea.DOM.BookMark, {
 	 *
 	 * @return	object		the bookMark
 	 */
-	get: function (range, nonIntrusive) {
+	BookMark.prototype.get = function (range, nonIntrusive) {
 		var bookMark;
-		if (HTMLArea.UserAgent.isIEBeforeIE9) {
+		if (UserAgent.isIEBeforeIE9) {
 			// Bookmarking will not work on control ranges
 			try {
 				bookMark = range.getBookmark();
@@ -51,8 +67,9 @@ HTMLArea.DOM.BookMark = Ext.extend(HTMLArea.DOM.BookMark, {
 			}
 		}
 		return bookMark;
-	},
-	/*
+	};
+
+	/**
 	 * Get an intrusive bookMark
 	 * Adapted from FCKeditor
 	 * This is an "intrusive" way to create a bookMark. It includes <span> tags
@@ -63,7 +80,7 @@ HTMLArea.DOM.BookMark = Ext.extend(HTMLArea.DOM.BookMark, {
 	 *
 	 * @return	object		the bookMark
 	 */
-	getIntrusiveBookMark: function (range) {
+	BookMark.prototype.getIntrusiveBookMark = function (range) {
 		// Create the bookmark info (random IDs).
 		var bookMark = {
 			nonIntrusive: false,
@@ -102,8 +119,9 @@ HTMLArea.DOM.BookMark = Ext.extend(HTMLArea.DOM.BookMark, {
 			range.collapse(false);
 		}
 		return bookMark;
-	},
-	/*
+	};
+
+	/**
 	 * Get a non-intrusive bookMark
 	 * Adapted from FCKeditor
 	 *
@@ -112,7 +130,7 @@ HTMLArea.DOM.BookMark = Ext.extend(HTMLArea.DOM.BookMark, {
 	 *
 	 * @return	object		the bookMark
 	 */
-	getNonIntrusiveBookMark: function (range, normalized) {
+	BookMark.prototype.getNonIntrusiveBookMark = function (range, normalized) {
 		var startContainer = range.startContainer,
 			endContainer = range.endContainer,
 			startOffset = range.startOffset,
@@ -130,28 +148,28 @@ HTMLArea.DOM.BookMark = Ext.extend(HTMLArea.DOM.BookMark, {
 		} else {
 			if (normalized) {
 				// Find out if the start is pointing to a text node that might be normalized
-				if (startContainer.nodeType == HTMLArea.DOM.NODE_ELEMENT) {
+				if (startContainer.nodeType == Dom.NODE_ELEMENT) {
 					child = startContainer.childNodes[startOffset];
 					// In this case, move the start to that text node
 					if (
 						child
-						&& child.nodeType == HTMLArea.DOM.NODE_TEXT
+						&& child.nodeType == Dom.NODE_TEXT
 						&& startOffset > 0
-						&& child.previousSibling.nodeType == HTMLArea.DOM.NODE_TEXT
+						&& child.previousSibling.nodeType == Dom.NODE_TEXT
 					) {
 						startContainer = child;
 						startOffset = 0;
 					}
 					// Get the normalized offset
-					if (child && child.nodeType == HTMLArea.DOM.NODE_ELEMENT) {
-						startOffset = HTMLArea.DOM.getPositionWithinParent(child, true);
+					if (child && child.nodeType == Dom.NODE_ELEMENT) {
+						startOffset = Dom.getPositionWithinParent(child, true);
 					}
 				}
 				// Normalize the start
 				while (
-					startContainer.nodeType == HTMLArea.DOM.NODE_TEXT
+					startContainer.nodeType == Dom.NODE_TEXT
 					&& (previous = startContainer.previousSibling)
-					&& previous.nodeType == HTMLArea.DOM.NODE_TEXT
+					&& previous.nodeType == Dom.NODE_TEXT
 				) {
 					startContainer = previous;
 					startOffset += previous.nodeValue.length;
@@ -159,28 +177,28 @@ HTMLArea.DOM.BookMark = Ext.extend(HTMLArea.DOM.BookMark, {
 				// Process the end only if not collapsed
 				if (!collapsed) {
 					// Find out if the start is pointing to a text node that will be normalized
-					if (endContainer.nodeType == HTMLArea.DOM.NODE_ELEMENT) {
+					if (endContainer.nodeType == Dom.NODE_ELEMENT) {
 						child = endContainer.childNodes[endOffset];
 						// In this case, move the end to that text node
 						if (
 							child
-							&& child.nodeType == HTMLArea.DOM.NODE_TEXT
+							&& child.nodeType == Dom.NODE_TEXT
 							&& endOffset > 0
-							&& child.previousSibling.nodeType == HTMLArea.DOM.NODE_TEXT
+							&& child.previousSibling.nodeType == Dom.NODE_TEXT
 						) {
 							endContainer = child;
 							endOffset = 0;
 						}
 						// Get the normalized offset
-						if (child && child.nodeType == HTMLArea.DOM.NODE_ELEMENT) {
-							endOffset = HTMLArea.DOM.getPositionWithinParent(child, true);
+						if (child && child.nodeType == Dom.NODE_ELEMENT) {
+							endOffset = Dom.getPositionWithinParent(child, true);
 						}
 					}
 					// Normalize the end
 					while (
-						endContainer.nodeType == HTMLArea.DOM.NODE_TEXT
+						endContainer.nodeType == Dom.NODE_TEXT
 						&& (previous = endContainer.previousSibling)
-						&& previous.nodeType == HTMLArea.DOM.NODE_TEXT
+						&& previous.nodeType == Dom.NODE_TEXT
 					) {
 						endContainer = previous;
 						endOffset += previous.nodeValue.length;
@@ -198,8 +216,9 @@ HTMLArea.DOM.BookMark = Ext.extend(HTMLArea.DOM.BookMark, {
 			};
 		}
 		return bookMark;
-	},
-	/*
+	};
+
+	/**
 	 * Get the end point of the bookMark
 	 * Adapted from FCKeditor
 	 *
@@ -208,23 +227,24 @@ HTMLArea.DOM.BookMark = Ext.extend(HTMLArea.DOM.BookMark, {
 	 *
 	 * @return	object		the endPoint node
 	 */
-	getEndPoint: function (bookMark, endPoint) {
+	BookMark.prototype.getEndPoint = function (bookMark, endPoint) {
 		if (endPoint) {
 			return this.document.getElementById(bookMark.startId);
 		} else {
 			return this.document.getElementById(bookMark.endId);
 		}
-	},
-	/*
+	};
+
+	/**
 	 * Get a range and move it to the bookMark
 	 *
 	 * @param	object		bookMark: the bookmark to move to
 	 *
 	 * @return	object		the range that was bookmarked
 	 */
-	moveTo: function (bookMark) {
+	BookMark.prototype.moveTo = function (bookMark) {
 		var range = this.selection.createRange();
-		if (HTMLArea.UserAgent.isIEBeforeIE9) {
+		if (UserAgent.isIEBeforeIE9) {
 			if (bookMark) {
 				range.moveToBookmark(bookMark);
 			}
@@ -236,8 +256,9 @@ HTMLArea.DOM.BookMark = Ext.extend(HTMLArea.DOM.BookMark, {
 			}
 		}
 		return range;
-	},
-	/*
+	};
+
+	/**
 	 * Move the range to the intrusive bookMark
 	 * Adapted from FCKeditor
 	 *
@@ -246,18 +267,18 @@ HTMLArea.DOM.BookMark = Ext.extend(HTMLArea.DOM.BookMark, {
 	 *
 	 * @return	object		the range that was bookmarked
 	 */
-	moveToIntrusiveBookMark: function (range, bookMark) {
+	BookMark.prototype.moveToIntrusiveBookMark = function (range, bookMark) {
 		var startSpan = this.getEndPoint(bookMark, true),
 			endSpan = this.getEndPoint(bookMark, false),
 			parent;
 		if (startSpan) {
 			// If the previous sibling is a text node, let the anchorNode have it as parent
-			if (startSpan.previousSibling && startSpan.previousSibling.nodeType === HTMLArea.DOM.TEXT_NODE) {
+			if (startSpan.previousSibling && startSpan.previousSibling.nodeType === Dom.TEXT_NODE) {
 				range.setStart(startSpan.previousSibling, startSpan.previousSibling.data.length);
 			} else {
 				range.setStartBefore(startSpan);
 			}
-			HTMLArea.DOM.removeFromParent(startSpan);
+			Dom.removeFromParent(startSpan);
 		} else {
 			// For some reason, the startSpan was removed or its id attribute was removed so that it cannot be retrieved
 			range.setStart(this.document.body, 0);
@@ -265,18 +286,19 @@ HTMLArea.DOM.BookMark = Ext.extend(HTMLArea.DOM.BookMark, {
 		// If the bookmarked range was collapsed, the end span will not be available
 		if (endSpan) {
 			// If the next sibling is a text node, let the focusNode have it as parent
-			if (endSpan.nextSibling && endSpan.nextSibling.nodeType === HTMLArea.DOM.TEXT_NODE) {
+			if (endSpan.nextSibling && endSpan.nextSibling.nodeType === Dom.TEXT_NODE) {
 				range.setEnd(endSpan.nextSibling, 0);
 			} else {
 				range.setEndBefore(endSpan);
 			}
-			HTMLArea.DOM.removeFromParent(endSpan);
+			Dom.removeFromParent(endSpan);
 		} else {
 			range.collapse(true);
 		}
 		return range;
-	},
-	/*
+	};
+
+	/**
 	 * Move the range to the non-intrusive bookMark
 	 * Adapted from FCKeditor
 	 *
@@ -285,7 +307,7 @@ HTMLArea.DOM.BookMark = Ext.extend(HTMLArea.DOM.BookMark, {
 	 *
 	 * @return	object		the range that was bookmarked
 	 */
-	moveToNonIntrusiveBookMark: function (range, bookMark) {
+	BookMark.prototype.moveToNonIntrusiveBookMark = function (range, bookMark) {
 		if (bookMark.start) {
 			// Get the start information
 			var startContainer = this.editor.getDomNode().getNodeByPosition(bookMark.start, bookMark.normalized),
@@ -303,5 +325,8 @@ HTMLArea.DOM.BookMark = Ext.extend(HTMLArea.DOM.BookMark, {
 			}
 		}
 		return range;
-	}
-});
+	};
+
+	return BookMark;
+
+}(HTMLArea.UserAgent, HTMLArea.util, HTMLArea.DOM);

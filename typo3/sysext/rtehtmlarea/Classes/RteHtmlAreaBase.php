@@ -805,27 +805,27 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			'Util/Wrap.open',
 			'NameSpace/NameSpace',
 			'UserAgent/UserAgent',
-			'HTMLArea',
-			'Configuration/HTMLArea.Config',
+			'Util/Util',
+			'Util/Color',
+			'Util/Tips',
+			'Util/TYPO3',
+			'Ajax/Ajax',
+			'CSS/Parser',
+			'DOM/DOM',
+			'DOM/BookMark',
+			'DOM/Node',
+			'DOM/Selection',
+			'DOM/Walker',
+			'Configuration/Config',
 			'Extjs/ux/Ext.ux.HTMLAreaButton',
 			'Extjs/ux/Ext.ux.Toolbar.HTMLAreaToolbarText',
 			'Extjs/ux/Ext.ux.form.HTMLAreaCombo',
-			'Editor/HTMLArea.Toolbar',
-			'Editor/HTMLArea.Iframe',
-			'Editor/HTMLArea.StatusBar',
-			'Editor/HTMLArea.Framework',
-			'Editor/HTMLArea.Editor',
-			'Ajax/HTMLArea.Ajax',
-			'Util/HTMLArea.util.TYPO3',
-			'Util/HTMLArea.util',
-			'DOM/HTMLArea.DOM',
-			'DOM/HTMLArea.DOM.Walker',
-			'DOM/HTMLArea.DOM.Selection',
-			'DOM/HTMLArea.DOM.BookMark',
-			'DOM/HTMLArea.DOM.Node',
-			'CSS/HTMLArea.CSS.Parser',
-			'Util/HTMLArea.util.Tips',
-			'Util/HTMLArea.util.Color',
+			'Editor/Toolbar',
+			'Editor/Iframe',
+			'Editor/StatusBar',
+			'Editor/Framework',
+			'Editor/Editor',
+			'HTMLArea',
 			'Extjs/Ext.ColorPalette',
 			'Extjs/ux/Ext.ux.menu.HTMLAreaColorMenu',
 			'Extjs/ux/Ext.ux.form.ColorPaletteField',
@@ -872,7 +872,9 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 				RTEarea[0].hostUrl = "' . $this->hostURL . '";
 				RTEarea.init = function() {
 					if (typeof HTMLArea === "undefined" || !Ext.isReady) {
-						window.setTimeout("RTEarea.init();", 10);
+						window.setTimeout(function () {
+							RTEarea.init();
+						}, 10);
 					} else {
 						Ext.QuickTips.init();
 						HTMLArea.init();
@@ -880,7 +882,9 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 				};
 				RTEarea.initEditor = function(editorNumber) {
 					if (typeof HTMLArea === "undefined" || !HTMLArea.isReady) {
-						RTEarea.initEditor.defer(40, null, [editorNumber]);
+						window.setTimeout(function () {
+							RTEarea.initEditor(editorNumber);
+						}, 40);
 					} else {
 						HTMLArea.initEditor(editorNumber);
 					}

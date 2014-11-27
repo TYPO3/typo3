@@ -46,6 +46,14 @@ HTMLArea.UserAgent = function () {
 		isAndroid: /android/i.test(userAgent),
 		isiPhone: isiPhone,
 		isiPad: isiPad,
-		isiOS: isiPhone || isiPad
+		isiOS: isiPhone || isiPad,
+		/**
+		 * Check if the client agent is supported
+		 *
+		 * @return boolean true if the client is supported
+		 */
+		isSupported: function () {
+			return isGecko || isWebKit || isOpera || isIE;
+		}
 	};
 }();

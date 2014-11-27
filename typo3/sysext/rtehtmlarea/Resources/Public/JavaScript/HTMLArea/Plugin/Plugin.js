@@ -1,21 +1,32 @@
 /**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+/**
  * HTMLArea.plugin class
  *
  * Every plugin should be a subclass of this class
  *
  */
-HTMLArea.Plugin = function (editor, pluginName) {
-};
-HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
+HTMLArea.Plugin = function(UserAgent, Util) {
+
 	/**
-	 * HTMLArea.Plugin constructor
+	 * Constructor method
 	 *
-	 * @param	object		editor: instance of RTE
-	 * @param	string		pluginName: name of the plugin
+	 * @param object editor: a reference to the parent object, instance of RTE
+	 * @param string pluginName: the name of the plugin
 	 *
-	 * @return	boolean		true if the plugin was configured
+	 * @return boolean true if the plugin was configured
 	 */
-	constructor: function (editor, pluginName) {
+	var Plugin = function (editor, pluginName) {
 		this.editor = editor;
 		this.editorNumber = editor.editorId;
 		this.editorId = editor.editorId;
@@ -27,7 +38,8 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 			this.I18N = new Object();
 		}
 		this.configurePlugin(editor);
-	},
+	};
+
 	/**
 	 * Configures the plugin
 	 * This function is invoked by the class constructor.
@@ -40,9 +52,10 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	boolean		true if the plugin was configured
 	 */
-	configurePlugin: function (editor) {
+	Plugin.prototype.configurePlugin = function (editor) {
 		return false;
-	},
+	};
+
 	/**
 	 * Registers the plugin "About" information
 	 *
@@ -57,7 +70,7 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	boolean		true if the information was registered
 	 */
-	registerPluginInformation: function (pluginInformation) {
+	Plugin.prototype.registerPluginInformation = function (pluginInformation) {
 		if (typeof pluginInformation !== 'object' || pluginInformation === null) {
 			this.appendToLog('registerPluginInformation', 'Plugin information was not provided', 'warn');
 			return false;
@@ -66,16 +79,16 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 			this.pluginInformation.name = this.name;
 			return true;
 		}
-	},
+	};
 
 	/**
 	 * Returns the plugin information
 	 *
 	 * @return	object		the plugin information object
 	 */
-	getPluginInformation: function () {
+	Plugin.prototype.getPluginInformation = function () {
 		return this.pluginInformation;
-	},
+	};
 
 	/**
 	 * Returns a plugin object
@@ -83,18 +96,18 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 * @param	string		pluinName: the name of some plugin
 	 * @return	object		the plugin object or null
 	 */
-	getPluginInstance: function (pluginName) {
+	Plugin.prototype.getPluginInstance = function (pluginName) {
 		return this.editor.getPlugin(pluginName);
-	},
+	};
 
 	/**
 	 * Returns a current editor mode
 	 *
 	 * @return	string		editor mode
 	 */
-	getEditorMode: function () {
+	Plugin.prototype.getEditorMode = function () {
 		return this.editor.getMode();
-	},
+	};
 
 	/**
 	 * Returns true if the button is enabled in the toolbar configuration
@@ -103,7 +116,7 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	boolean		true if the button is enabled in the toolbar configuration
 	 */
-	isButtonInToolbar: function (buttonId) {
+	Plugin.prototype.isButtonInToolbar = function (buttonId) {
 		var index = -1;
 		var i, j, n, m;
 		for (i = 0, n = this.editorConfiguration.toolbar.length; i < n; i++) {
@@ -120,7 +133,7 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 			}
 		}
 		return index !== -1;
-	},
+	};
 
 	/**
 	 * Returns the button object from the toolbar
@@ -129,9 +142,10 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	object		the toolbar button object
 	 */
-	getButton: function (buttonId) {
+	Plugin.prototype.getButton = function (buttonId) {
 		return this.editor.toolbar.getButton(buttonId);
-	},
+	};
+
 	/**
 	 * Registers a button for inclusion in the toolbar
 	 *
@@ -150,7 +164,7 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	boolean		true if the button was successfully registered
 	 */
-	registerButton: function (buttonConfiguration) {
+	Plugin.prototype.registerButton = function (buttonConfiguration) {
 		if (this.isButtonInToolbar(buttonConfiguration.id)) {
 			if (typeof buttonConfiguration.action === 'string' && buttonConfiguration.action.length > 0 && typeof this[buttonConfiguration.action] === 'function') {
 				buttonConfiguration.plugins = this;
@@ -162,11 +176,9 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 					buttonConfiguration.dimensions.left = buttonConfiguration.dimensions.left ?  buttonConfiguration.dimensions.left : this.editorConfiguration.dialogueWindows.defaultPositionFromLeft;
 				}
 				buttonConfiguration.hidden = buttonConfiguration.hide;
-					// Apply additional ExtJS config properties set in Page TSConfig
-					// May not always work for values that must be integers
-				if (this.editorConfiguration.buttons[this.editorConfiguration.convertButtonId[buttonConfiguration.id]]) {
-					Ext.applyIf(buttonConfiguration, this.editorConfiguration.buttons[this.editorConfiguration.convertButtonId[buttonConfiguration.id]]);
-				}
+				// Apply additional ExtJS config properties set in Page TSConfig
+				// May not always work for values that must be integers
+				Util.applyIf(buttonConfiguration, this.editorConfiguration.buttons[this.editorConfiguration.convertButtonId[buttonConfiguration.id]]);
 				if (this.editorConfiguration.registerButton(buttonConfiguration)) {
 					var hotKey = buttonConfiguration.hotKey ? buttonConfiguration.hotKey :
 						((this.editorConfiguration.buttons[this.editorConfiguration.convertButtonId[buttonConfiguration.id]] && this.editorConfiguration.buttons[this.editorConfiguration.convertButtonId[buttonConfiguration.id]].hotKey) ? this.editorConfiguration.buttons[this.editorConfiguration.convertButtonId[buttonConfiguration.id]].hotKey : null);
@@ -190,7 +202,8 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 			}
 		}
 		return false;
-	},
+	};
+
 	/**
 	 * Registers a drop-down list for inclusion in the toolbar
 	 *
@@ -202,24 +215,23 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	boolean		true if the drop-down list was successfully registered
 	 */
-	registerDropDown: function (dropDownConfiguration) {
+	Plugin.prototype.registerDropDown = function (dropDownConfiguration) {
 		if (this.isButtonInToolbar(dropDownConfiguration.id)) {
 			if (typeof dropDownConfiguration.action === 'string' && dropDownConfiguration.action.length > 0 && typeof this[dropDownConfiguration.action] === 'function') {
 				dropDownConfiguration.plugins = this;
 				dropDownConfiguration.hidden = dropDownConfiguration.hide;
 				dropDownConfiguration.xtype = 'htmlareacombo';
-					// Apply additional ExtJS config properties set in Page TSConfig
-					// May not always work for values that must be integers
-				if (this.editorConfiguration.buttons[this.editorConfiguration.convertButtonId[dropDownConfiguration.id]]) {
-					Ext.applyIf(dropDownConfiguration, this.editorConfiguration.buttons[this.editorConfiguration.convertButtonId[dropDownConfiguration.id]]);
-				}
+				// Apply additional ExtJS config properties set in Page TSConfig
+				// May not always work for values that must be integers
+				Util.applyIf(dropDownConfiguration, this.editorConfiguration.buttons[this.editorConfiguration.convertButtonId[dropDownConfiguration.id]]);
 				return this.editorConfiguration.registerButton(dropDownConfiguration);
 			} else {
 				this.appendToLog('registerDropDown', 'Function ' + dropDownConfiguration.action + ' was not defined when registering drop-down ' + dropDownConfiguration.id, 'error');
 			}
 		}
 		return false;
-	},
+	};
+
 	/**
 	 * Registers a text element for inclusion in the toolbar
 	 *
@@ -231,14 +243,14 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	boolean		true if the drop-down list was successfully registered
 	 */
-	registerText: function (textConfiguration) {
+	Plugin.prototype.registerText = function (textConfiguration) {
 		if (this.isButtonInToolbar(textConfiguration.id)) {
 			textConfiguration.plugins = this;
 			textConfiguration.xtype = 'htmlareatoolbartext';
 			return this.editorConfiguration.registerButton(textConfiguration);
 		}
 		return false;
-	},
+	};
 
 	/**
 	 * Returns the drop-down configuration
@@ -247,9 +259,9 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	object		the drop-down configuration object
 	 */
-	getDropDownConfiguration : function(dropDownId) {
+	Plugin.prototype.getDropDownConfiguration = function(dropDownId) {
 		return this.editorConfiguration.buttonsConfig[dropDownId];
-	},
+	};
 
 	/**
 	 * Registors a hotkey
@@ -261,9 +273,9 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	boolean		true if the hotkey was successfully registered
 	 */
-	registerHotKey : function (hotKeyConfiguration) {
+	Plugin.prototype.registerHotKey = function (hotKeyConfiguration) {
 		return this.editorConfiguration.registerHotKey(hotKeyConfiguration);
-	},
+	};
 
 	/**
 	 * Returns the buttonId corresponding to the hotkey, if any
@@ -272,7 +284,7 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	string		the buttonId or ""
 	 */
-	translateHotKey : function(key) {
+	Plugin.prototype.translateHotKey = function(key) {
 		if (typeof this.editorConfiguration.hotKeyList[key] !== 'undefined') {
 			var buttonId = this.editorConfiguration.hotKeyList[key].cmd;
 			if (typeof buttonId !== 'undefined') {
@@ -282,7 +294,7 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 			}
 		}
 		return "";
-	},
+	};
 
 	/**
 	 * Returns the hotkey configuration
@@ -291,13 +303,14 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	object		the hotkey configuration object
 	 */
-	getHotKeyConfiguration: function(key) {
+	Plugin.prototype.getHotKeyConfiguration = function(key) {
 		if (typeof this.editorConfiguration.hotKeyList[key] !== 'undefined') {
 			return this.editorConfiguration.hotKeyList[key];
 		} else {
 			return null;
 		}
-	},
+	};
+
 	/**
 	 * Initializes the plugin
 	 * Is invoked when the toolbar component is created (subclass of Ext.ux.HTMLAreaButton or Ext.ux.form.HTMLAreaCombo)
@@ -306,7 +319,8 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	void
 	 */
-	init: Ext.emptyFn,
+	Plugin.prototype.init = function () {};
+
 	/**
 	 * The toolbar refresh handler of the plugin
 	 * This function may be defined by the plugin subclass.
@@ -314,7 +328,8 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	boolean
 	 */
-	onUpdateToolbar: Ext.emptyFn,
+	Plugin.prototype.onUpdateToolbar = function () {};
+
 	/**
 	 * The onMode event handler
 	 * This function may be redefined by the plugin subclass.
@@ -324,11 +339,12 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	boolean
 	 */
-	onMode: function(mode) {
+	Plugin.prototype.onMode = function(mode) {
 		if (mode === "textmode" && this.dialog && !(this.dialog.buttonId && this.editorConfiguration.buttons[this.dialog.buttonId] && this.editorConfiguration.buttons[this.dialog.buttonId].textMode)) {
 			this.dialog.close();
 		}
-	},
+	};
+
 	/**
 	 * The onGenerate event handler
 	 * This function may be defined by the plugin subclass.
@@ -336,7 +352,8 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	boolean
 	 */
-	onGenerate: Ext.emptyFn,
+	Plugin.prototype.onGenerate = function () {};
+
 	/**
 	 * Localize a string
 	 *
@@ -344,7 +361,7 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	string		the localization of the label
 	 */
-	localize: function (label, plural) {
+	Plugin.prototype.localize = function (label, plural) {
 		var i = plural || 0;
 		var localized = this.I18N[label];
 		if (typeof localized === 'object' && localized !== null && typeof localized[i] !== 'undefined') {
@@ -353,7 +370,8 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 			localized = HTMLArea.localize(label, plural);
 		}
 		return localized;
-	},
+	};
+
 	/**
 	 * Get localized label wrapped with contextual help markup when available
 	 *
@@ -363,7 +381,7 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	string		localized label with CSH markup
 	 */
-	getHelpTip: function (fieldName, label, pluginName) {
+	Plugin.prototype.getHelpTip = function (fieldName, label, pluginName) {
 		if (typeof TYPO3.ContextHelp !== 'undefined' && typeof fieldName === 'string') {
 			var pluginName = typeof pluginName !== 'undefined' ? pluginName : this.name;
 			if (fieldName.length > 0) {
@@ -373,7 +391,8 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 		} else {
 			return this.localize(label) || label;
 		}
-	},
+	};
+
 	/**
 	 * Load a Javascript file asynchronously
 	 *
@@ -382,9 +401,10 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	boolean		true on success of the request submission
 	 */
-	getJavascriptFile: function (url, callback) {
+	Plugin.prototype.getJavascriptFile = function (url, callback) {
 		return this.editor.ajax.getJavascriptFile(url, callback, this);
-	},
+	};
+
 	/**
 	 * Post data to the server
 	 *
@@ -394,10 +414,11 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	boolean		true on success
 	 */
-	postData: function (url, data, callback) {
+	Plugin.prototype.postData = function (url, data, callback) {
 	 	return this.editor.ajax.postData(url, data, callback, this);
-	},
-	/*
+	};
+
+	/**
 	 * Open a window with container iframe
 	 *
 	 * @param	string		buttonId: the id of the button
@@ -407,7 +428,7 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @ return	void
 	 */
-	openContainerWindow: function (buttonId, title, dimensions, url) {
+	Plugin.prototype.openContainerWindow = function (buttonId, title, dimensions, url) {
 		this.dialog = new Ext.Window({
 			id: this.editor.editorId + buttonId,
 			title: this.localize(title) || title,
@@ -441,17 +462,19 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 			maximizable: true
 		});
 		this.show();
-	},
-	/*
+	};
+
+	/**
 	 * Handler invoked when the container window is rendered or resized in order to resize the content iframe to maximum size
 	 */
-	onContainerResize: function (panel) {
+	Plugin.prototype.onContainerResize = function (panel) {
 		var iframe = panel.getComponent('content-iframe');
 		if (iframe.rendered) {
 			iframe.getEl().setSize(panel.getInnerWidth(), panel.getInnerHeight());
 		}
-	},
-	/*
+	};
+
+	/**
 	 * Get the opening diment=sions of the window
 	 *
 	 * @param	object		dimensions: default opening width and height set by the plugin
@@ -459,29 +482,28 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	object		opening width and height of the window
 	 */
-	getWindowDimensions: function (dimensions, buttonId) {
-			// Apply default dimensions
+	Plugin.prototype.getWindowDimensions = function (dimensions, buttonId) {
+		// Apply default dimensions
 		this.dialogueWindowDimensions = {
 			width: 250,
 			height: 250
 		};
-			// Apply default values as per PageTSConfig
-		if (this.editorConfiguration.dialogueWindows) {
-			Ext.apply(this.dialogueWindowDimensions, this.editorConfiguration.dialogueWindows);
+		// Apply default values as per PageTSConfig
+		Util.apply(this.dialogueWindowDimensions, this.editorConfiguration.dialogueWindows);
+		// Apply dimensions as per button registration
+		if (typeof this.editorConfiguration.buttonsConfig[buttonId] === 'object' && this.editorConfiguration.buttonsConfig[buttonId] !== null) {
+			Util.apply(this.dialogueWindowDimensions, this.editorConfiguration.buttonsConfig[buttonId].dimensions);
 		}
-			// Apply dimensions as per button registration
-		if (this.editorConfiguration.buttonsConfig[buttonId]) {
-			Ext.apply(this.dialogueWindowDimensions, this.editorConfiguration.buttonsConfig[buttonId].dimensions);
-		}
-			// Apply dimensions as per call
-		Ext.apply(this.dialogueWindowDimensions, dimensions);
-			// Overrride dimensions as per PageTSConfig
+		// Apply dimensions as per call
+		Util.apply(this.dialogueWindowDimensions, dimensions);
+		// Overrride dimensions as per PageTSConfig
 		var buttonConfiguration = this.editorConfiguration.buttons[this.editorConfiguration.convertButtonId[buttonId]];
-		if (buttonConfiguration && buttonConfiguration.dialogueWindow) {
-			Ext.apply(this.dialogueWindowDimensions, buttonConfiguration.dialogueWindow);
+		if (buttonConfiguration) {
+			Util.apply(this.dialogueWindowDimensions, buttonConfiguration.dialogueWindow);
 		}
 		return this.dialogueWindowDimensions;
-	},
+	};
+
 	/**
 	 * Make url from module path
 	 *
@@ -490,9 +512,10 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	string		the url
 	 */
-	makeUrlFromModulePath: function(modulePath, parameters) {
+	Plugin.prototype.makeUrlFromModulePath = function (modulePath, parameters) {
 		return modulePath + (modulePath.indexOf("?") === -1 ? "?" : "&") + this.editorConfiguration.RTEtsConfigParams + '&editorNo=' + this.editor.editorId + '&sys_language_content=' + this.editorConfiguration.sys_language_content + '&contentTypo3Language=' + this.editorConfiguration.typo3ContentLanguage + (parameters?parameters:'');
-	},
+	};
+
 	/**
 	 * Append an entry at the end of the troubleshooting log
 	 *
@@ -502,10 +525,11 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	void
 	 */
-	appendToLog: function (functionName, text, type) {
+	Plugin.prototype.appendToLog = function (functionName, text, type) {
 		this.editor.appendToLog(this.name, functionName, text, type);
-	},
-	/*
+	};
+
+	/**
 	 * Add a config element to config array if not empty
 	 *
 	 * @param	object		configElement: the config element
@@ -513,26 +537,28 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	void
 	 */
-	addConfigElement: function (configElement, configArray) {
+	Plugin.prototype.addConfigElement = function (configElement, configArray) {
 		if (typeof configElement === 'object'  && configElement !== null) {
 			configArray.push(configElement);
 		}
-	},
-	/*
+	};
+
+	/**
 	 * Handler for Ext.TabPanel tabchange event
 	 * Force window ghost height synchronization
 	 * Working around ExtJS 3.1 bug
 	 */
-	syncHeight: function (tabPanel, tab) {
+	Plugin.prototype.syncHeight = function (tabPanel, tab) {
 		var position = this.dialog.getPosition();
 		if (position[0] > 0) {
 			this.dialog.setPosition(position);
 		}
-	},
-	/*
+	};
+
+	/**
 	 * Show the dialogue window
 	 */
-	show: function () {
+	Plugin.prototype.show = function () {
 			// Close the window if the editor changes mode
 		this.dialog.mon(this.editor, 'HTMLAreaEventModeChange', this.close, this, {single: true });
 		this.saveSelection();
@@ -541,53 +567,59 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 		}
 		this.dialog.show();
 		this.restoreSelection();
-	},
-	/*
+	};
+
+	/**
 	 * Close the dialogue window (after saving the selection, if IE)
 	 */
-	close: function () {
+	Plugin.prototype.close = function () {
 		this.saveSelection();
 		this.dialog.close();
-	},
-	/*
+	};
+
+	/**
 	 * Dialogue window onClose handler
 	 */
-	onClose: function () {
+	Plugin.prototype.onClose = function () {
 		this.editor.focus();
 		this.restoreSelection();
 	 	this.editor.updateToolbar();
-	},
-	/*
+	};
+
+	/**
 	 * Handler for window cancel
 	 */
-	onCancel: function () {
+	Plugin.prototype.onCancel = function () {
 		this.dialog.close();
 		this.editor.focus();
-	},
-	/*
+	};
+
+	/**
 	 * Save selection
 	 * Should be called after processing button other than Cancel
 	 */
-	saveSelection: function () {
-			// If IE, save the current selection
-		if (HTMLArea.UserAgent.isIE) {
+	Plugin.prototype.saveSelection = function () {
+		// If IE, save the current selection
+		if (UserAgent.isIE) {
 			this.savedRange = this.editor.getSelection().createRange();
 		}
-	},
-	/*
+	};
+
+	/**
 	 * Restore selection
 	 * Should be called before processing dialogue button or result
 	 */
-	restoreSelection: function () {
-			// If IE, restore the selection saved when the window was shown
-		if (HTMLArea.UserAgent.isIE && this.savedRange) {
+	Plugin.prototype.restoreSelection = function () {
+		// If IE, restore the selection saved when the window was shown
+		if (UserAgent.isIE && this.savedRange) {
 				// Restoring the selection will not work if the inner html was replaced by the plugin
 			try {
 				this.editor.getSelection().selectRange(this.savedRange);
 			} catch (e) {}
 		}
-	},
-	/*
+	};
+
+	/**
 	 * Build the configuration object of a button
 	 *
 	 * @param	string		button: the text of the button
@@ -595,7 +627,7 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 *
 	 * @return	object		the button configuration object
 	 */
-	buildButtonConfig: function (button, handler) {
+	Plugin.prototype.buildButtonConfig = function (button, handler) {
 		return {
 			xtype: 'button',
 			text: this.localize(button),
@@ -606,5 +638,8 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 				}
 			}
 		};
-	}
-});
+	};
+
+	return Plugin;
+
+}(HTMLArea.UserAgent, HTMLArea.util);

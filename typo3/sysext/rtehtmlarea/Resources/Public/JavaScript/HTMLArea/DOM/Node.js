@@ -1,44 +1,60 @@
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
 /***************************************************
  *  HTMLArea.DOM.Node: Node object
  ***************************************************/
-HTMLArea.DOM.Node = function (config) {
-};
-HTMLArea.DOM.Node = Ext.extend(HTMLArea.DOM.Node, {
-	/*
-	 * Reference to the editor MUST be set in config
+HTMLArea.DOM.Node = function(UserAgent, Util, Dom) {
+
+	/**
+	 * Constructor method
+	 *
+	 * @param object config: an object with property "editor" giving reference to the parent object
+	 *
+	 * @return void
 	 */
-	editor: null,
-	/*
-	 * Reference to the editor document
-	 */
-	document: null,
-	/*
-	 * Reference to the editor selection object
-	 */
-	selection: null,
-	/*
-	 * Reference to the editor bookmark object
-	 */
-	bookMark: null,
-	/*
-	 * HTMLArea.DOM.Selection constructor
-	 */
-	constructor: function (config) {
-		 	// Apply config
-		Ext.apply(this, config);
-			// Initialize references
+	var Node = function (config) {
+
+		/**
+		 * Reference to the editor MUST be set in config
+		 */
+		this.editor = null;
+
+		Util.apply(this, config);
+
+		/**
+		 * Reference to the editor document
+		 */
 		this.document = this.editor.document;
+
+		/**
+		 * Reference to the editor selection object
+		 */
 		this.selection = this.editor.getSelection();
+
+		/**
+		 * Reference to the editor bookmark object
+		 */
 		this.bookMark = this.editor.getBookMark();
-	},
-	/*
+	};
+
+	/**
 	 * Remove the given element
 	 *
 	 * @param	object		element: the element to be removed, content and selection being preserved
 	 *
 	 * @return	void
 	 */
-	removeMarkup: function (element) {
+	Node.prototype.removeMarkup = function (element) {
 		var bookMark = this.bookMark.get(this.selection.createRange());
 		var parent = element.parentNode;
 		while (element.firstChild) {
@@ -46,8 +62,9 @@ HTMLArea.DOM.Node = Ext.extend(HTMLArea.DOM.Node, {
 		}
 		parent.removeChild(element);
 		this.selection.selectRange(this.bookMark.moveTo(bookMark));
-	},
-	/*
+	};
+
+	/**
 	 * Wrap the range with an inline element
 	 *
 	 * @param	string	element: the node that will wrap the range
@@ -55,8 +72,8 @@ HTMLArea.DOM.Node = Ext.extend(HTMLArea.DOM.Node, {
 	 *
 	 * @return	void
 	 */
-	wrapWithInlineElement: function (element, range) {
-		if (HTMLArea.UserAgent.isIEBeforeIE9) {
+	Node.prototype.wrapWithInlineElement = function (element, range) {
+		if (UserAgent.isIEBeforeIE9) {
 			var nodeName = element.nodeName;
 			var bookMark = this.bookMark.get(range);
 			if (range.parentElement) {
@@ -86,13 +103,13 @@ HTMLArea.DOM.Node = Ext.extend(HTMLArea.DOM.Node, {
 					// IE inserts the element as the last child of the start container
 				if (parentStart !== parent
 						&& parentStart.lastChild
-						&& parentStart.lastChild.nodeType === HTMLArea.DOM.ELEMENT_NODE
+						&& parentStart.lastChild.nodeType === Dom.ELEMENT_NODE
 						&& parentStart.lastChild.nodeName.toLowerCase() === nodeName) {
 					parent.insertBefore(elementClone, upperParentStart.nextSibling);
 					parentStart.removeChild(parentStart.lastChild);
 						// Sometimes an empty previous sibling was created
 					if (elementClone.previousSibling
-							&& elementClone.previousSibling.nodeType === HTMLArea.DOM.ELEMENT_NODE
+							&& elementClone.previousSibling.nodeType === Dom.ELEMENT_NODE
 							&& !elementClone.previousSibling.innerText) {
 						parent.removeChild(elementClone.previousSibling);
 					}
@@ -125,16 +142,17 @@ HTMLArea.DOM.Node = Ext.extend(HTMLArea.DOM.Node, {
 			element.normalize();
 				// Sometimes Firefox inserts empty elements just outside the boundaries of the range
 			var neighbour = element.previousSibling;
-			if (neighbour && (neighbour.nodeType !== HTMLArea.DOM.TEXT_NODE) && !/\S/.test(neighbour.textContent)) {
-				HTMLArea.DOM.removeFromParent(neighbour);
+			if (neighbour && (neighbour.nodeType !== Dom.TEXT_NODE) && !/\S/.test(neighbour.textContent)) {
+				Dom.removeFromParent(neighbour);
 			}
 			neighbour = element.nextSibling;
-			if (neighbour && (neighbour.nodeType !== HTMLArea.DOM.TEXT_NODE) && !/\S/.test(neighbour.textContent)) {
-				HTMLArea.DOM.removeFromParent(neighbour);
+			if (neighbour && (neighbour.nodeType !== Dom.TEXT_NODE) && !/\S/.test(neighbour.textContent)) {
+				Dom.removeFromParent(neighbour);
 			}
 			this.selection.selectNodeContents(element, false);
 		}
-	},
+	};
+
 	/**
 	 * Get the position of the node within the document tree.
 	 * The tree address returned is an array of integers, with each integer
@@ -149,7 +167,7 @@ HTMLArea.DOM.Node = Ext.extend(HTMLArea.DOM.Node, {
 	 *
 	 * @return	array		the position of the node
 	 */
-	getPositionWithinTree: function (node, normalized) {
+	Node.prototype.getPositionWithinTree = function (node, normalized) {
 		var documentElement = this.document.documentElement,
 			current = node,
 			position = [];
@@ -157,24 +175,24 @@ HTMLArea.DOM.Node = Ext.extend(HTMLArea.DOM.Node, {
 			var parentNode = current.parentNode;
 			if (parentNode) {
 				// Get the current node position
-				position.unshift(HTMLArea.DOM.getPositionWithinParent(current, normalized));
+				position.unshift(Dom.getPositionWithinParent(current, normalized));
 			}
 			current = parentNode;
 		}
 		return position;
-	},
+	};
 
 	/**
 	 * Get the node given its position in the document tree.
 	 * Adapted from FCKeditor
-	 * See HTMLArea.DOM.Node::getPositionWithinTree
+	 * See Node.prototype.getPositionWithinTree
 	 *
 	 * @param	array		position: the position of the node in the document tree
 	 * @param	boolean		normalized: if true, a normalized position is given
 	 *
 	 * @return	objet		the node
 	 */
-	getNodeByPosition: function (position, normalized) {
+	Node.prototype.getNodeByPosition = function (position, normalized) {
 		var current = this.document.documentElement;
 		var i, j, n, m;
 		for (i = 0, n = position.length; current && i < n; i++) {
@@ -184,9 +202,9 @@ HTMLArea.DOM.Node = Ext.extend(HTMLArea.DOM.Node, {
 				for (j = 0, m = current.childNodes.length; j < m; j++) {
 					var candidate = current.childNodes[j];
 					if (
-						candidate.nodeType == HTMLArea.DOM.TEXT_NODE
+						candidate.nodeType == Dom.TEXT_NODE
 						&& candidate.previousSibling
-						&& candidate.previousSibling.nodeType == HTMLArea.DOM.TEXT_NODE
+						&& candidate.previousSibling.nodeType == Dom.TEXT_NODE
 					) {
 						continue;
 					}
@@ -201,7 +219,7 @@ HTMLArea.DOM.Node = Ext.extend(HTMLArea.DOM.Node, {
 			}
 		}
 		return current ? current : null;
-	},
+	};
 
 	/**
 	 * Clean Apple wrapping span and font elements under the specified node
@@ -210,8 +228,8 @@ HTMLArea.DOM.Node = Ext.extend(HTMLArea.DOM.Node, {
 	 *
 	 * @return	void
 	 */
-	cleanAppleStyleSpans: function (node) {
-		if (HTMLArea.UserAgent.isWebKit || HTMLArea.UserAgent.isOpera) {
+	Node.prototype.cleanAppleStyleSpans = function (node) {
+		if (UserAgent.isWebKit || UserAgent.isOpera) {
 			if (node.getElementsByClassName) {
 				var spans = node.getElementsByClassName('Apple-style-span');
 				for (var i = spans.length; --i >= 0;) {
@@ -220,7 +238,7 @@ HTMLArea.DOM.Node = Ext.extend(HTMLArea.DOM.Node, {
 			}
 			var spans = node.getElementsByTagName('span');
 			for (var i = spans.length; --i >= 0;) {
-				if (HTMLArea.DOM.hasClass(spans[i], 'Apple-style-span')) {
+				if (Dom.hasClass(spans[i], 'Apple-style-span')) {
 					this.removeMarkup(spans[i]);
 				}
 				if (/^(li)$/i.test(spans[i].parentNode.nodeName) && (spans[i].style.cssText.indexOf('line-height') !== -1 || spans[i].style.cssText.indexOf('font-family') !== -1 || spans[i].style.cssText.indexOf('font-size') !== -1)) {
@@ -229,10 +247,13 @@ HTMLArea.DOM.Node = Ext.extend(HTMLArea.DOM.Node, {
 			}
 			var fonts = node.getElementsByTagName('font');
 			for (i = fonts.length; --i >= 0;) {
-				if (HTMLArea.DOM.hasClass(fonts[i], 'Apple-style-span')) {
+				if (Dom.hasClass(fonts[i], 'Apple-style-span')) {
 					this.removeMarkup(fonts[i]);
 				}
 			}
 		}
-	}
-});
+	};
+
+	return Node;
+
+}(HTMLArea.UserAgent, HTMLArea.util, HTMLArea.DOM);
