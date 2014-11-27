@@ -1,3 +1,14 @@
+2014-11-27  7d66912                  [RELEASE] Release of TYPO3 4.5.38 (TYPO3 Release Team)
+2014-11-19  61d8b25  #58053          [BUGFIX] Handle opacity for IE in prototype.js (Jigal van Hemert)
+2014-11-15  42de3e0  #62984          [BUGFIX] PHP warning on saving TypoScript with t3editor (Oliver Hader)
+2014-11-13  152b14b  #62032          [BUGFIX] Fix PHP warning with date function in FormEngine (Oliver Hader)
+2014-11-03  79ba882  #62391          [BUGFIX] Ensure PHP 5.2 compatibility in php-openid (Michael Stucki)
+2014-10-31  f56c52f  #62513          [BUGFIX] Too many tags by identifier in CacheBackends (Michael Stucki)
+2014-10-23  528429b  #57006          [BUGFIX] softrefproc typolink lacks support for separation by line feed (Marc Bastian Heinrichs)
+2014-10-22  a62c19e  #62391          [BUGFIX] Ensure PHP 5.2 compatibility in makeInstance (Helmut Hummel)
+2014-10-22  4534943                  [TASK] Set TYPO3 version to 4.5.38-dev (TYPO3 Release Team)
+
+
 2014-10-22  01fee1f                  [RELEASE] Release of TYPO3 4.5.37 (TYPO3 Release Team)
 2014-10-22  da32b50  #62357          [SECURITY] Fix DoS in openid (Markus Klein)
 2014-10-22  dbdd9f2  #59573          [SECURITY] Fix RCE in swiftmailer (Helmut Hummel)
