@@ -27,3 +27,56 @@ div.collapsibleSection { background-color: #ededed; border-top: 1px solid #cdcdc
 .legend .pull-left {
     margin-right: 0.5em;
 }
+
+.legend td {
+    overflow:hidden;
+}
+
+.legend span.t3-icon {
+    margin-right: 0;
+}
+
+.number {
+	border: 1px solid #000000;
+	border-radius: 2px;
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	text-align: center;
+	margin-right: 5px;
+	margin-left: 10px;
+	line-height: 14px;
+	font-weight: bold;
+}
+
+.edge span {
+	width: 1px;
+	height: 10px;
+	background: #000000;
+	display: block;
+	margin-top: 8px;
+	margin-left: 6px;
+}
+.edge span span {
+	width: 10px;
+	height: 1px;
+	background: #000000;
+	display: block;
+	margin-left: 1px;
+}
+.hr span {
+	width: 20px;
+	height: 1px;
+	background: #000000;
+	display: block;
+	margin-top: -1px;
+	margin-left: -4px;
+}
+.vr span {
+	width: 1px;
+	height: 20px;
+	background: #000000;
+	margin-top: -2px;
+	margin-left: 6px;
+	display: block;
+}
