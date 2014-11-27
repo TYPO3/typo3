@@ -375,13 +375,17 @@ class StandaloneView extends AbstractTemplateView {
 	 * @throws InvalidTemplateResourceException
 	 */
 	protected function getLayoutPathAndFilename($layoutName = 'Default') {
-		$layoutName = ucfirst($layoutName);
+		$upperCasedLayoutName = ucfirst($layoutName);
 		$possibleLayoutPaths = array();
 		$paths = ArrayUtility::sortArrayWithIntegerKeys($this->getLayoutRootPaths());
 		$paths = array_reverse($paths, TRUE);
 		foreach ($paths as $layoutRootPath) {
-			$possibleLayoutPaths[] = GeneralUtility::fixWindowsFilePath($layoutRootPath . '/' . $layoutName . '.' . $this->getRequest()->getFormat());
-			$possibleLayoutPaths[] = GeneralUtility::fixWindowsFilePath($layoutRootPath . '/' . $layoutName);
+			$possibleLayoutPaths[] = GeneralUtility::fixWindowsFilePath($layoutRootPath . '/' . $upperCasedLayoutName . '.' . $this->getRequest()->getFormat());
+			$possibleLayoutPaths[] = GeneralUtility::fixWindowsFilePath($layoutRootPath . '/' . $upperCasedLayoutName);
+			if ($upperCasedLayoutName !== $layoutName) {
+				$possibleLayoutPaths[] = GeneralUtility::fixWindowsFilePath($layoutRootPath . '/' . $layoutName . '.' . $this->getRequest()->getFormat());
+				$possibleLayoutPaths[] = GeneralUtility::fixWindowsFilePath($layoutRootPath . '/' . $layoutName);
+			}
 		}
 		foreach ($possibleLayoutPaths as $layoutPathAndFilename) {
 			if ($this->testFileExistence($layoutPathAndFilename)) {
@@ -441,13 +445,17 @@ class StandaloneView extends AbstractTemplateView {
 	 * @throws InvalidTemplateResourceException
 	 */
 	protected function getPartialPathAndFilename($partialName) {
-		$partialName = ucfirst($partialName);
+		$upperCasedPartialName = ucfirst($partialName);
 		$paths = ArrayUtility::sortArrayWithIntegerKeys($this->getPartialRootPaths());
 		$paths = array_reverse($paths, TRUE);
 		$possiblePartialPaths = array();
 		foreach ($paths as $partialRootPath) {
-			$possiblePartialPaths[] = GeneralUtility::fixWindowsFilePath($partialRootPath . '/' . $partialName . '.' . $this->getRequest()->getFormat());
-			$possiblePartialPaths[] = GeneralUtility::fixWindowsFilePath($partialRootPath . '/' . $partialName);
+			$possiblePartialPaths[] = GeneralUtility::fixWindowsFilePath($partialRootPath . '/' . $upperCasedPartialName . '.' . $this->getRequest()->getFormat());
+			$possiblePartialPaths[] = GeneralUtility::fixWindowsFilePath($partialRootPath . '/' . $upperCasedPartialName);
+			if ($upperCasedPartialName !== $partialName) {
+				$possiblePartialPaths[] = GeneralUtility::fixWindowsFilePath($partialRootPath . '/' . $partialName . '.' . $this->getRequest()->getFormat());
+				$possiblePartialPaths[] = GeneralUtility::fixWindowsFilePath($partialRootPath . '/' . $partialName);
+			}
 		}
 		foreach ($possiblePartialPaths as $partialPathAndFilename) {
 			if ($this->testFileExistence($partialPathAndFilename)) {
