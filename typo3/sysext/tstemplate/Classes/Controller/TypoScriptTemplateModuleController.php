@@ -254,7 +254,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 					'createExtension' => 'new'
 				);
 				$buttons['new'] = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_ts', $urlParameters)) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-new') . '</a>';
-				if (!empty($this->e) && !GeneralUtility::_POST('abort') && !GeneralUtility::_POST('saveclose')) {
+				if (!empty($this->e) && !GeneralUtility::_POST('saveclose')) {
 					// no NEW-button while edit
 					$buttons['new'] = '';
 					// SAVE button
@@ -266,9 +266,8 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 						'html' => '<input type="image" class="c-inputButton" name="saveclose" src="clear.gif" ' . 'title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '" ' . 'value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '" ' . '/>'
 					));
 					// CLOSE button
-					$buttons['close'] = IconUtility::getSpriteIcon('actions-document-close', array(
-						'html' => '<input type="image" class="c-inputButton" name="abort" src="clear.gif" ' . 'title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '" ' . 'value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '" ' . '/>'
-					));
+					$url = BackendUtility::getModuleUrl('web_ts', array('id' => $this->id));
+					$buttons['close'] = '<a href="' . htmlspecialchars($url) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '">' .  IconUtility::getSpriteIcon('actions-document-close') .'</a>';
 				}
 			} elseif ($this->extClassConf['name'] == 'TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateConstantEditorModuleFunctionController' && count($this->MOD_MENU['constant_editor_cat'])) {
 				// SAVE button

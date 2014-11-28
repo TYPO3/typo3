@@ -236,7 +236,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 			$theOutput .= $this->pObj->doc->spacer(10);
 			$numberOfRows = 35;
 			// If abort pressed, nothing should be edited:
-			if ($POST['abort'] || MathUtility::canBeInterpretedAsInteger($POST['abort_x']) && MathUtility::canBeInterpretedAsInteger($POST['abort_y']) || $POST['saveclose'] || MathUtility::canBeInterpretedAsInteger($POST['saveclose_x']) && MathUtility::canBeInterpretedAsInteger($POST['saveclose_y'])) {
+			if ($POST['saveclose'] || MathUtility::canBeInterpretedAsInteger($POST['saveclose_x']) && MathUtility::canBeInterpretedAsInteger($POST['saveclose_y'])) {
 				unset($e);
 			}
 			if (isset($e['constants'])) {
