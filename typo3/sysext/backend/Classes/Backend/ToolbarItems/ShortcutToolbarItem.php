@@ -661,7 +661,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 					);
 					$result = $databaseConnection->exec_SELECT_queryArray($sqlQueryParts);
 					$row = $databaseConnection->sql_fetch_assoc($result);
-					$icon = IconUtility::getSpriteIconForRecord($table, $row, array('title' => $titleAttribute));
+					$icon = IconUtility::getSpriteIconForRecord($table, (array)$row, array('title' => $titleAttribute));
 				} elseif ($shortcut['type'] == 'new') {
 					$icon = IconUtility::getSpriteIconForRecord($table, array(), array('title' => $titleAttribute));
 				}
