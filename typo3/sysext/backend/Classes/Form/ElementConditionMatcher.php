@@ -141,6 +141,9 @@ class ElementConditionMatcher {
 			case 'VERSION':
 				$result = $this->matchVersionCondition($condition);
 				break;
+			case 'USER':
+				$result = $this->matchUserCondition($condition);
+				break;
 		}
 		return $result;
 	}
@@ -330,4 +333,22 @@ class ElementConditionMatcher {
 		return $GLOBALS['BE_USER'];
 	}
 
+	/**
+	 * Evaluates via the referenced user-defined method
+	 *
+	 * @param string $condition
+	 * @return bool
+	 */
+	protected function matchUserCondition($condition) {
+		$conditionParameters = explode(':', $condition);
+		$userFunction = array_shift($conditionParameters);
+
+		$parameter = array(
+			'record' => $this->record,
+			'flexformValueKey' => $this->flexformValueKey,
+			'conditionParameters' => $conditionParameters
+		);
+
+		return (bool)\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($userFunction, $parameter, $this);
+	}
 }
