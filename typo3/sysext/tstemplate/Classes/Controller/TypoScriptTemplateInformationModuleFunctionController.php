@@ -228,7 +228,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 					}
 				}
 			}
-			$content = IconUtility::getSpriteIconForRecord('sys_template', $tplRow, array('class' => 't3-js-clickmenutrigger', 'data-table' => 'sys_template', 'data-uid' => $tplRow['uid'], 'data-listframe' => 1)) . '<strong>' . htmlspecialchars($tplRow['title']) . '</strong>' . htmlspecialchars((trim($tplRow['sitetitle']) ? ' (' . $tplRow['sitetitle'] . ')' : ''));
+			$content = '<a href="#" class="t3-js-clickmenutrigger" data-table="sys_template" data-uid="' . $tplRow['uid'] . '" data-listframe="1">' . IconUtility::getSpriteIconForRecord('sys_template', $tplRow) . '</a><strong>' . htmlspecialchars($tplRow['title']) . '</strong>' . htmlspecialchars((trim($tplRow['sitetitle']) ? ' (' . $tplRow['sitetitle'] . ')' : ''));
 			$theOutput .= $this->pObj->doc->section($lang->getLL('templateInformation'), $content, 0, 1);
 			if ($manyTemplatesMenu) {
 				$theOutput .= $this->pObj->doc->section('', $manyTemplatesMenu);
