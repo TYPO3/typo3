@@ -12,6 +12,16 @@
 			{backendUser.realName}
 		</a>
 	</td>
+	<td>
+		<f:if condition="{backendUser.lastLoginDateAndTime}">
+			<f:then>
+				<f:format.date format="{dateFormat} {timeFormat}">{backendUser.lastLoginDateAndTime}</f:format.date>
+			</f:then>
+			<f:else>
+				<f:translate key="never" />
+			</f:else>
+		</f:if>
+	</td>
 	<td class="col-control">
 		<f:link.action action="addToCompareList" arguments="{uid: backendUser.uid}" class="btn"><bu:spriteManagerIcon iconName="actions-edit-add"/> <f:translate key="compare" /></f:link.action>
 		<div class="btn-group" role="group">
@@ -35,15 +45,5 @@
 			<bu:removeUser backendUser="{backendUser}" />
 			<bu:SwitchUser backendUser="{backendUser}" />
 		</div>
-	</td>
-	<td>
-		<f:if condition="{backendUser.lastLoginDateAndTime}">
-			<f:then>
-				<f:format.date format="{dateFormat} {timeFormat}">{backendUser.lastLoginDateAndTime}</f:format.date>
-			</f:then>
-			<f:else>
-				<f:translate key="never" />
-			</f:else>
-		</f:if>
 	</td>
 </tr>
