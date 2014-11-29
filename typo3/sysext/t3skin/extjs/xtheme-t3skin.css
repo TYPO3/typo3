@@ -1290,6 +1290,10 @@ td.x-grid3-hd-over, td.x-grid3-hd-menu-open {
 	background-image: none;
 }
 
+.x-tree-node .x-tree-node-anchor:focus {
+	text-decoration: none;
+}
+
 .x-tree-node-loading a span{
 	 font-style: italic;
 	 color:#444444;
