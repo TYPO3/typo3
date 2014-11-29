@@ -509,9 +509,9 @@ class PageLayoutController {
 						} else {
 							document.getElementById(idBase+"-"+index+"-DIV").style.display = "block";
 							if(DTM_origClass=="") {
-								document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").nodeValue = "tabact";
+								document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").nodeValue = "active";
 							} else {
-								DTM_origClass = "tabact";
+								DTM_origClass = "active";
 							}
 							top.DTM_currentTabs[idBase] = index;
 						}
@@ -531,9 +531,9 @@ class PageLayoutController {
 						} else {
 							document.getElementById(idBase+"-"+index+"-DIV").style.display = "block";
 							if(isInit) {
-								document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").nodeValue = "tabact";
+								document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").nodeValue = "active";
 							} else {
-								DTM_origClass = "tabact";
+								DTM_origClass = "active";
 							}
 							top.DTM_currentTabs[idBase+"-"+index] = 1;
 						}
@@ -578,14 +578,15 @@ class PageLayoutController {
 			$this->activeColPosList = implode(',', $this->activeColPosList);
 			$this->colPosList = implode(',', $this->colPosList);
 
-			// Page title
-			$body = $this->doc->header($this->getLocalizedPageTitle());
+			$body = '';
 			$body .= $this->getHeaderFlashMessagesForCurrentPid();
 			// Render the primary module content:
 			if ($this->MOD_SETTINGS['function'] == 0) {
 				// QuickEdit
 				$body .= $this->renderQuickEdit();
 			} else {
+				// Page title
+				$body .= $this->doc->header($this->getLocalizedPageTitle());
 				// All other listings
 				$body .= $this->renderListContent();
 			}
@@ -801,6 +802,7 @@ class PageLayoutController {
 				$tceforms->palettesCollapsed = !$this->MOD_SETTINGS['showPalettes'];
 				$tceforms->disableRTE = $this->MOD_SETTINGS['disableRTE'];
 				$tceforms->enableClickMenu = TRUE;
+				$tceforms->enableTabMenu = TRUE;
 				// Clipboard is initialized:
 				// Start clipboard
 				$tceforms->clipObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
