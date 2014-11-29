@@ -17,6 +17,7 @@ if (TYPO3_MODE === 'BE') {
 	);
 	$statusReport = array(
 		'title' => 'LLL:EXT:reports/reports/locallang.xlf:status_report_title',
+		'icon' => 'EXT:reports/Resources/Public/Icons/module-reports.png',
 		'description' => 'LLL:EXT:reports/reports/locallang.xlf:status_report_description',
 		'report' => 'TYPO3\\CMS\\Reports\\Report\\Status\\Status'
 	);
