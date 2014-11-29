@@ -89,6 +89,9 @@ Topbar
 							font-weight: normal;
 							line-height: @line-height-base;
 							white-space: nowrap;
+							> .t3-icon {
+								margin-right: 5px;
+							}
 						}
 
 						&.active {
@@ -145,6 +148,10 @@ Topbar
 								background-color: darken(@navbar-inverse-link-active-bg, 15%);
 							}
 						}
+					}
+					> tbody > tr > td.shortcut-edit > a,
+					> tbody > tr > td.shortcut-delete > a {
+						padding: 3px 5px;
 					}
 				}
 

@@ -139,7 +139,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 						'</a>
 					</td>
 					<td class="shortcut-edit">' . $editIcon . '</td>
-					<td class="shortcut-delete"' . $deleteIcon . '</td>
+					<td class="shortcut-delete">' . $deleteIcon . '</td>
 				</tr>';
 		}
 		// Now render groups and the contained shortcuts

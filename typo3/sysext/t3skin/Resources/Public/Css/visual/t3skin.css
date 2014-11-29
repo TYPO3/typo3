@@ -11478,6 +11478,9 @@ Topbar
   line-height: 1.5;
   white-space: nowrap;
 }
+#typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu > ul > li > a > .t3-icon {
+  margin-right: 5px;
+}
 #typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu > ul > li.active > a {
   background-color: #282828;
 }
@@ -11524,6 +11527,10 @@ Topbar
 }
 #typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu > table > tbody > tr > td > a.active > a {
   background-color: #282828;
+}
+#typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu > table > tbody > tr > td.shortcut-edit > a,
+#typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu > table > tbody > tr > td.shortcut-delete > a {
+  padding: 3px 5px;
 }
 #typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu li a,
 #typo3-topbar #typo3-top-container #typo3-toolbar .dropdown-menu td a {
