@@ -38,7 +38,7 @@ class DownloadExtensionDataViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\
 	public function render($extension) {
 		$filePrefix = PATH_site . $extension['siteRelPath'];
 		if (!file_exists(($filePrefix . 'ext_tables.sql')) && !file_exists(($filePrefix . 'ext_tables_static+adt.sql'))) {
-			return '<span class="btn disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
+			return '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
 		}
 		$uriBuilder = $this->controllerContext->getUriBuilder();
 		$uriBuilder->reset();
@@ -46,7 +46,7 @@ class DownloadExtensionDataViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\
 			'extension' => $extension['key']
 		), 'Action');
 		$this->tag->addAttribute('href', $uri);
-		$cssClass = 'downloadExtensionData btn';
+		$cssClass = 'downloadExtensionData btn btn-default';
 		$this->tag->addAttribute('class', $cssClass);
 		$this->tag->addAttribute('title', \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('extensionList.downloadsql', 'extensionmanager'));
 		$this->tag->setContent(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-extension-sqldump'));

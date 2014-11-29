@@ -1,20 +1,18 @@
 <tr data-uid="{record.uid}" data-table="{record.table}" data-recordtitle="{record.title}">
 	<td>
 		<div class="btn-group">
-			<div class="btn-group btn-checkbox-holder">
-				<input type="checkbox" class="smallCheckboxes btn-checkbox">
-				<span class="btn">
-					<span class="t3-icon fa"></span>
-				</span>
-			</div>
-			<a class="btn" data-action="expand" data-toggle="collapse" data-target="#{record.table}_{record.uid}">
+			<label class="btn btn-default btn-checkbox">
+				<input type="checkbox">
+				<span class="t3-icon fa"></span>
+			</label>
+			<a class="btn btn-default" data-action="expand" data-toggle="collapse" data-target="#{record.table}_{record.uid}">
 				<f:be.buttons.icon icon="apps-pagetree-collapse" title="{f:translate(key: 'LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:button.expand')}" />
 			</a>
-			<a class="btn" data-action="undo">
+			<a class="btn btn-default" data-action="undo">
 				<f:be.buttons.icon icon="actions-edit-undo" title="{f:translate(key: 'LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:button.undo')}" />
 			</a>
 			<f:if condition="{allowDelete}">
-				<a class="btn" data-action="delete">
+				<a class="btn btn-default" data-action="delete">
 					<f:be.buttons.icon icon="actions-edit-delete" title="{f:translate(key: 'LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:button.delete')}" />
 				</a>
 			</f:if>

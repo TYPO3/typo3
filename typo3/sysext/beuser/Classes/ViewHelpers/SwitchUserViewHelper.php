@@ -35,10 +35,10 @@ class SwitchUserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
 	 */
 	public function render(BackendUser $backendUser) {
 		if ($backendUser->getUid() == $GLOBALS['BE_USER']->user['uid'] || !$backendUser->isActive()) {
-			return '<span class="btn disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
+			return '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
 		}
 		$title = LocalizationUtility::translate('switchBackMode', 'beuser');
-		return '<a class="btn" href="' .
+		return '<a class="btn btn-default" href="' .
 			htmlspecialchars(GeneralUtility::linkThisScript(array('SwitchUser' => $backendUser->getUid()))) .
 			'" target="_top" title="' . htmlspecialchars($title) . '">' .
 			IconUtility::getSpriteIcon(('actions-system-backend-user-switch')) . '</a>';

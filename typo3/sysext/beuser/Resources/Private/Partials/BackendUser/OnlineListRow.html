@@ -28,7 +28,7 @@
 				<f:if condition="{currentSessionId} == {session.id}">
 					<f:else>
 						<f:link.action
-							class="btn"
+							class="btn btn-default"
 							action="terminateBackendUserSession"
 							controller="BackendUser"
 							arguments="{backendUser: onlineUser.backendUser, sessionId: session.id}"
@@ -39,7 +39,7 @@
 						</f:link.action>
 					</f:else>
 				</f:if>
-				<a class="btn" href="#" onclick="top.launchView('be_users', '{onlineUser.backendUser.uid}',''); return false;">
+				<a class="btn btn-default" href="#" onclick="top.launchView('be_users', '{onlineUser.backendUser.uid}',''); return false;">
 					<bu:SpriteManagerIcon iconName="actions-document-info" />
 				</a>
 			</div>

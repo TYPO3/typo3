@@ -52,11 +52,9 @@ table {
 .table {
 	background-color: @table-bg;
 	border: 1px solid @table-border-color;
-
 	* {
 		box-sizing: border-box;
 	}
-
 	> thead,
 	> tbody,
 	> tfoot {
@@ -70,7 +68,6 @@ table {
 			}
 		}
 	}
-
 	> thead > tr {
 		background-color: darken(@table-bg, 5%);
 		th,
@@ -81,123 +78,45 @@ table {
 			}
 		}
 	}
-
-	.btn {
-		.btn-sm();
-		color: #333;
-		background-color: darken(@table-bg-accent, 10%);
-		border-color: darken(@table-bg-accent, 20%);
-		margin-top: -2px;
-		margin-bottom: -2px;
-
-		&:hover {
-			border-color: darken(@table-bg-accent, 30%);
-			background-color: darken(@table-bg-accent, 20%);
-		}
-		.t3-icon {
-			margin: 0;
-		}
-		&.btn-danger {
-			.btn-danger();
-		}
-		&.btn-success {
-			.btn-success();
-		}
-		&.btn-warning {
-			.btn-warning();
-		}
-		&.btn-info {
-			.btn-info();
-		}
-		&.btn-default {
-			.btn-default();
-		}
-		&.btn-primary {
-			.btn-primary();
-		}
-	}
-
 	.btn-group {
-		font-size: 0;
-
-		.btn {
-			font-size: 12px;
+		> .btn-group,
+		> .btn {
 			float: none;
 		}
 	}
-
-	.btn-checkbox-holder {
-		position: relative;
-		display: inline-block;
-
-		&.btn-group {
-			float: none;
-		}
-
-		.btn-checkbox {
-			position: absolute;
-			top: 0;
-			height: 100%;
-			width: 100%;
-			opacity: 0;
-			z-index: 10;
-		}
-		input[type=checkbox] + .btn {
-			.t3-icon:before {
-				content: "\f096";
-			}
-		}
-		input[type=checkbox]:checked + .btn {
-			.btn-primary();
-			.t3-icon:before {
-				content: "\f00c";
-			}
-		}
+	.btn-default {
+		.button-variant(@btn-default-color; darken(@table-bg-accent, 10%); darken(@table-bg-accent, 20%));
 	}
-
-	.btn-group {
-		.btn + .btn-checkbox-holder {
-			margin-left: -1px;
-			border-top-left-radius: 0;
-			border-bottom-left-radius: 0;
-		}
-	}
-
 	.pagination {
 		margin: 0;
 	}
-
 	.col-icon {
 		text-align: center;
-
 		.t3-icon {
 			margin: 0;
 		}
-
 		img {
 			margin: 0;
 			display: block;
 			height: 16px;
 			width: 16px;
 		}
-
 	}
-
 	.col-icon,
 	.col-checkbox {
 		padding-right: 0;
 	}
-
 	.col-title {
 		width: 99%;
 	}
-
 	.col-control,
 	.col-clipboard {
 		white-space: nowrap;
 		text-align: right;
 	}
-
+	.col-control {
+		padding: 4px 6px;
+	}
 	.col-border-left {
 		border-left: 1px solid @table-border-color;
 	}

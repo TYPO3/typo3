@@ -343,7 +343,7 @@ class RecordList {
 		$dblist->clipObj->endClipboard();
 		// This flag will prevent the clipboard panel in being shown.
 		// It is set, if the clickmenu-layer is active AND the extended view is not enabled.
-		$dblist->dontShowClipControlPanels = (!$this->MOD_SETTINGS['bigControlPanel'] && $dblist->clipObj->current == 'normal' && !$this->modTSconfig['properties']['showClipControlPanelsDespiteOfCMlayers']);
+		$dblist->dontShowClipControlPanels = ($dblist->clipObj->current == 'normal' && !$this->modTSconfig['properties']['showClipControlPanelsDespiteOfCMlayers']);
 		// If there is access to the page or root page is used for searching, then render the list contents and set up the document template object:
 		if ($access || ($this->id === 0 && $this->search_levels > 0 && $this->search_field !== '')) {
 			// Deleting records...:

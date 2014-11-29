@@ -65,12 +65,12 @@
 						<td>
 							<f:if condition="{compareUser.isDisabled} == 1">
 								<f:then>
-									<a class="btn" href="{bu:issueCommand(parameters: 'data[be_users][{compareUser.uid}][disable]=0', redirectUrl: redirectUrl)}">
+									<a class="btn btn-default" href="{bu:issueCommand(parameters: 'data[be_users][{compareUser.uid}][disable]=0', redirectUrl: redirectUrl)}">
 										<bu:spriteManagerIcon iconName="actions-edit-unhide" options="{title: 'unhide'}" />
 									</a>
 								</f:then>
 								<f:else>
-									<a class="btn" href="{bu:issueCommand(parameters: 'data[be_users][{compareUser.uid}][disable]=1', redirectUrl: redirectUrl)}">
+									<a class="btn btn-default" href="{bu:issueCommand(parameters: 'data[be_users][{compareUser.uid}][disable]=1', redirectUrl: redirectUrl)}">
 										<bu:spriteManagerIcon iconName="actions-edit-hide" options="{title: 'hide'}" />
 									</a>
 								</f:else>

@@ -33,9 +33,9 @@ class FormatsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
 	 */
 	public function render(\TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation $documentTranslation) {
 		$icons = array(
-			'html' => '<a class="btn disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</a>',
-			'pdf' => '<a class="btn disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</a>',
-			'sxw' => '<a class="btn disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</a>'
+			'html' => '<a class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</a>',
+			'pdf' => '<a class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</a>',
+			'sxw' => '<a class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</a>'
 		);
 		$formats = $documentTranslation->getFormats();
 
@@ -48,13 +48,13 @@ class FormatsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
 			$extension = substr($uri, strrpos($uri, '.') + 1);
 			if (strlen($extension) < 5) {
 				// This is direct link to a file
-				$output .= 'href="' . $uri . '" class="btn"';
+				$output .= 'href="' . $uri . '" class="btn btn-default"';
 			} else {
 				$extension = $format->getFormat();
 				if ($extension === 'json') {
 					$extension = 'js';
 				}
-				$output .= 'href="#" onclick="top.TYPO3.Backend.ContentContainer.setUrl(\'' . $uri . '\')" class="btn"';
+				$output .= 'href="#" onclick="top.TYPO3.Backend.ContentContainer.setUrl(\'' . $uri . '\')" class="btn btn-default"';
 			}
 
 			$xliff = 'LLL:EXT:documentation/Resources/Private/Language/locallang.xlf';

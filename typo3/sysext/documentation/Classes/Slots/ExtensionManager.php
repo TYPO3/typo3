@@ -61,9 +61,9 @@ class ExtensionManager {
 				$actions[] = $formatsViewHelper->render($documentTranslation);
 			}
 		} else {
-			$actions[] = '<span class="btn disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
-			$actions[] = '<span class="btn disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
-			$actions[] = '<span class="btn disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
+			$actions[] = '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
+			$actions[] = '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
+			$actions[] = '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
 		}
 	}
 

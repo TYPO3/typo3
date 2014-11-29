@@ -59,7 +59,7 @@ class ConfigureExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\Act
 			$this->tag->setContent($content);
 			$content = $this->tag->render();
 		} elseif ($forceConfiguration) {
-			$content = '<span class="btn disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
+			$content = '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
 		}
 
 		return $content;

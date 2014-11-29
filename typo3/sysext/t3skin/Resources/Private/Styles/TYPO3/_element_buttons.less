@@ -1,0 +1,39 @@
+//
+// Button
+//
+.btn {
+	.t3-icon {
+		margin: 0;
+	}
+}
+
+//
+// Button Group
+//
+.btn-group {
+	.collapse + .btn.collapsed:last-child {
+		border-radius: @border-radius-base;
+	}
+}
+
+//
+// Button Checkbox and Radio
+//
+.btn-radio,
+.btn-checkbox {
+	input[type="radio"],
+    input[type="checkbox"] {
+		position: absolute;
+		clip: rect(0,0,0,0);
+		pointer-events: none;
+	}
+	.fa:before {
+		content: "\f096";
+	}
+	input[type=radio]:checked,
+	input[type=checkbox]:checked {
+		+ .fa:before {
+			content: "\f00c";
+		}
+	}
+}

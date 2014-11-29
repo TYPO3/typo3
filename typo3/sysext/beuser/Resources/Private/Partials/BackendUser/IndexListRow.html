@@ -23,21 +23,21 @@
 		</f:if>
 	</td>
 	<td class="col-control">
-		<f:link.action action="addToCompareList" arguments="{uid: backendUser.uid}" class="btn"><bu:spriteManagerIcon iconName="actions-edit-add"/> <f:translate key="compare" /></f:link.action>
+		<f:link.action action="addToCompareList" arguments="{uid: backendUser.uid}" class="btn btn-default"><bu:spriteManagerIcon iconName="actions-edit-add"/> <f:translate key="compare" /></f:link.action>
 		<div class="btn-group" role="group">
-			<a class="btn" href="#" onclick="top.launchView('be_users', '{backendUser.uid}'); return false;"><bu:spriteManagerIcon iconName="actions-document-info" /></a>
-			<a class="btn" href="alt_doc.php?edit[be_users][{backendUser.uid}]=edit&amp;returnUrl={returnUrl}"><bu:spriteManagerIcon iconName="actions-document-open" /></a>
+			<a class="btn btn-default" href="#" onclick="top.launchView('be_users', '{backendUser.uid}'); return false;"><bu:spriteManagerIcon iconName="actions-document-info" /></a>
+			<a class="btn btn-default" href="alt_doc.php?edit[be_users][{backendUser.uid}]=edit&amp;returnUrl={returnUrl}"><bu:spriteManagerIcon iconName="actions-document-open" /></a>
 			<f:if condition="{backendUser.currentlyLoggedIn} == 1">
 				<f:then>
-					<span class="btn disabled"><bu:spriteManagerIcon iconName="empty-empty" /></span>
+					<span class="btn btn-default disabled"><bu:spriteManagerIcon iconName="empty-empty" /></span>
 				</f:then>
 				<f:else>
 					<f:if condition="{backendUser.isDisabled} == 1">
 						<f:then>
-							<a class="btn" href="{bu:issueCommand(parameters: 'data[be_users][{backendUser.uid}][disable]=0', redirectUrl: redirectUrl)}"><bu:spriteManagerIcon iconName="actions-edit-unhide" options="{title: 'unhide'}" /></a>
+							<a class="btn btn-default" href="{bu:issueCommand(parameters: 'data[be_users][{backendUser.uid}][disable]=0', redirectUrl: redirectUrl)}"><bu:spriteManagerIcon iconName="actions-edit-unhide" options="{title: 'unhide'}" /></a>
 						</f:then>
 						<f:else>
-							<a class="btn" href="{bu:issueCommand(parameters: 'data[be_users][{backendUser.uid}][disable]=1', redirectUrl: redirectUrl)}"><bu:spriteManagerIcon iconName="actions-edit-hide" options="{title: 'hide'}" /></a>
+							<a class="btn btn-default" href="{bu:issueCommand(parameters: 'data[be_users][{backendUser.uid}][disable]=1', redirectUrl: redirectUrl)}"><bu:spriteManagerIcon iconName="actions-edit-hide" options="{title: 'hide'}" /></a>
 						</f:else>
 					</f:if>
 				</f:else>

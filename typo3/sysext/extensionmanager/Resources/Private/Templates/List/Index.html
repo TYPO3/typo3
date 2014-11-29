@@ -18,7 +18,7 @@
 	<f:render partial="List/UploadForm" />
 
 	<form class="form-inline">
-		<div class="input-group">
+		<div class="form-group">
 			<f:form.textfield name="Tx_Extensionmanager_extensionkey" placeholder="{f:translate(key:'extensionList.search')}" id="Tx_Extensionmanager_extensionkey" value="{search}" class="form-control" />
 		</div>
 	</form>
@@ -88,11 +88,11 @@
 				<td class="icons nowrap">
 					<div class="btn-group">
 						<em:processAvailableActions extension="{extension}">
-							<em:configureExtension class="btn" extension="{extension}"><f:be.buttons.icon icon="actions-system-extension-configure" title="{f:translate(key:'extensionList.configure')}" /></em:configureExtension>
-							<em:updateScript class="btn" extensionKey="{extension.key}" />
-							<em:removeExtension class="btn" extension="{extension}" />
-							<span class="btn"><f:be.buttons.icon uri="{f:uri.action(action:'downloadExtensionZip',controller:'Action',arguments:'{extension:extension.key}')}" icon="actions-system-extension-download" title="{f:translate(key:'extensionList.downloadzip')}"/></span>
-							<em:downloadExtensionData class="btn" extension="{extension}" />
+							<em:configureExtension class="btn btn-default" extension="{extension}"><f:be.buttons.icon icon="actions-system-extension-configure" title="{f:translate(key:'extensionList.configure')}" /></em:configureExtension>
+							<em:updateScript class="btn btn-default" extensionKey="{extension.key}" />
+							<em:removeExtension class="btn btn-default" extension="{extension}" />
+							<span class="btn btn-default"><f:be.buttons.icon uri="{f:uri.action(action:'downloadExtensionZip',controller:'Action',arguments:'{extension:extension.key}')}" icon="actions-system-extension-download" title="{f:translate(key:'extensionList.downloadzip')}"/></span>
+							<em:downloadExtensionData class="btn btn-default" extension="{extension}" />
 						</em:processAvailableActions>
 					</div>
 				</td>
