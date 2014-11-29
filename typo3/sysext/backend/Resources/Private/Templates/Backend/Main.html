@@ -1,11 +1,11 @@
-<div class="navbar navbar-inverse x-hide-display" role="navigation" id="typo3-top-container">
-	<div class="container-fluid">
-		<div class="navbar-header" id="typo3-logo"><f:format.raw>{logo}</f:format.raw></div>
-		<div id="typo3-top">
-			<ul class="nav navbar-nav navbar-right typo3-top-toolbar" id="typo3-toolbar">
-				<f:format.raw>{toolbar}</f:format.raw>
-			</ul>
-		</div>
+<div class="typo3-topbar-container" role="navigation" id="typo3-top-container">
+	<div class="typo3-topbar-site">
+		<f:format.raw>{logo}</f:format.raw>
+	</div>
+	<div class="typo3-topbar-navigation" id="typo3-topbar-navigation">
+		<ul class="typo3-topbar-navigation-items" data-typo3-role="typo3-module-menu">
+			<f:format.raw>{toolbar}</f:format.raw>
+		</ul>
 	</div>
 </div>
 <f:format.raw>{moduleMenu}</f:format.raw>

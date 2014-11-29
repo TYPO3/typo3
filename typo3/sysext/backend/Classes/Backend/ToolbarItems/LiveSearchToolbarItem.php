@@ -58,11 +58,9 @@ class LiveSearchToolbarItem implements ToolbarItemInterface {
 	 */
 	public function getItem() {
 		return '
-			<form class="navbar-form" role="search">
-				<div class="live-search-wrapper">
-					<div class="form-group">
-						<input type="text" class="form-control" placeholder="Search" id="live-search-box">
-					</div>
+			<form class="typo3-topbar-navigation-search live-search-wrapper" role="search">
+				<div class="form-group">
+					<input type="text" class="form-control" placeholder="Search" id="live-search-box">
 				</div>
 			</form>
 		';

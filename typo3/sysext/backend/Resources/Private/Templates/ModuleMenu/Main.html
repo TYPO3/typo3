@@ -2,7 +2,7 @@
 	<f:for each="{modules}" as="mainModule">
 		<li class="typo3-module-menu-group expanded" id="{mainModule.name}" data-modulename="{mainModule.name}" data-navigationcomponentid="{mainModule.navigationComponentId}" data-navigationframescript="{mainModule.navigationFrameScript}" data-navigationframescriptparameters="{mainModule.navigationFrameScriptParameters}">
 			<div class="typo3-module-menu-group-header">
-				<span class="typo3-module-menu-group-icon">
+				<span class="typo3-app-icon typo3-module-menu-group-icon">
 					<span>
 						<span>
 							<f:if condition="{mainModule.icon.html}">
@@ -30,7 +30,7 @@
 				<f:for each="{mainModule.children}" as="subModule">
 					<li id="{subModule.name}" class="typo3-module-menu-item" data-modulename="{mainModule.name}" data-navigationcomponentid="{subModule.navigationComponentId}" data-navigationframescript="{subModule.navigationFrameScript}" data-navigationframescriptparameters="{subModule.navigationFrameScriptParameters}">
 						<a title="{subModule.description}" href="{subModule.link}" class="typo3-module-menu-item-link">
-							<span class="typo3-module-menu-item-icon">
+							<span class="typo3-app-icon typo3-module-menu-item-icon">
 								<span>
 									<span>
 										<f:format.raw>{subModule.icon.html}</f:format.raw>

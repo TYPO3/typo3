@@ -207,6 +207,7 @@ TYPO3.ModuleMenu.App = {
 			if (top.currentModuleLoaded) {
 				TYPO3.ModuleMenu.App.highlightModuleMenuItem(top.currentModuleLoaded);
 			}
+			TYPO3.Backend.doLayout();
 		});
 	},
 

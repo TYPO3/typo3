@@ -137,11 +137,11 @@ class ClearCacheToolbarItem implements ToolbarItemInterface {
 	 */
 	public function getDropDown() {
 		$result = array();
-		$result[] = '<ul>';
+		$result[] = '<ul class="dropdown-list">';
 		foreach ($this->cacheActions as $cacheAction) {
 			$title = $cacheAction['description'] ?: $cacheAction['title'];
 			$result[] = '<li>';
-			$result[] = '<a href="' . htmlspecialchars($cacheAction['href']) . '" title="' . htmlspecialchars($title) . '">';
+			$result[] = '<a class="dropdown-list-link" href="' . htmlspecialchars($cacheAction['href']) . '" title="' . htmlspecialchars($title) . '">';
 			$result[] = $cacheAction['icon'] . ' ' . htmlspecialchars($cacheAction['title']);
 			$result[] = '</a>';
 			$result[] = '</li>';

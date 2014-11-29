@@ -24,11 +24,11 @@ define('TYPO3/CMS/Opendocs/Toolbar/OpendocsMenu', ['jquery'], function($) {
 		options: {
 			containerSelector: '#typo3-cms-opendocs-backend-toolbaritems-opendocstoolbaritem',
 			hashDataAttributeName: 'opendocsidentifier',
-			closeSelector: '.close',
+			closeSelector: '.dropdown-list-link-close',
 			menuContainerSelector: '.dropdown-menu',
 			menuItemSelector: '.dropdown-menu li a',
 			toolbarIconSelector: '.dropdown-toggle span.t3-icon',
-			openDocumentsItemsSelector: 'tr.opendoc',
+			openDocumentsItemsSelector: 'li.opendoc',
 			counterSelector: '#tx-opendocs-counter'
 		}
 	};

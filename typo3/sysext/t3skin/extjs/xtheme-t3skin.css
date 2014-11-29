@@ -158,26 +158,6 @@ button.x-btn-text:hover {
 	color: inherit;
 }
 
-/* Toolbars */
-
-.x-toolbar{
-	border-color:#A2AAB8;
-	background:#EFEFF4 url(images/toolbar/bg.gif) repeat-x top left;
-}
-.x-toolbar button {
-	color:#333;
-}
-.x-toolbar .x-btn-menu-arrow-wrap .x-btn-center button {
-	background-image:url(images/toolbar/btn-arrow.gif);
-}
-.x-toolbar .x-btn-text-icon .x-btn-menu-arrow-wrap .x-btn-center button {
-	background-image:url(images/toolbar/btn-arrow.gif);
-}
-
-.x-btn {
-	margin-left: 1px;
-	margin-right: 1px;
-}
 
 /* Tabs */
 
@@ -867,39 +847,6 @@ ul.x-tab-strip-bottom{
 
 .x-btn-group-notitle .x-btn-group-tc {
 	background-image: url(images/button/group-tb.gif);
-}
-.x-toolbar{
-	border-color:#A2AAB8;
-	background-color:#EFEFF4;
-	background-image:url(images/toolbar/bg.gif);
-}
-
-.x-toolbar .x-item-disabled {
-	color:gray;
-}
-
-.x-toolbar .x-btn-mc em.x-btn-split {
-	background-image:url(images/button/s-arrow-noline.gif);
-}
-
-.x-toolbar .x-btn-over .x-btn-mc em.x-btn-split, .x-toolbar .x-btn-click .x-btn-mc em.x-btn-split,
-.x-toolbar .x-btn-menu-active .x-btn-mc em.x-btn-split, .x-toolbar .x-btn-pressed .x-btn-mc em.x-btn-split
-{
-	background-image:url(images/button/s-arrow-o.gif);
-}
-
-.x-toolbar .x-btn-mc em.x-btn-split-bottom {
-	background-image:url(images/button/s-arrow-b-noline.gif);
-}
-
-.x-toolbar .x-btn-over .x-btn-mc em.x-btn-split-bottom, .x-toolbar .x-btn-click .x-btn-mc em.x-btn-split-bottom,
-.x-toolbar .x-btn-menu-active .x-btn-mc em.x-btn-split-bottom, .x-toolbar .x-btn-pressed .x-btn-mc em.x-btn-split-bottom
-{
-	background-image:url(images/button/s-arrow-bo.gif);
-}
-
-.x-toolbar .xtb-sep {
-	background-image: url(images/grid/grid-blue-split.gif);
 }
 
 .x-tbar-page-first{
@@ -1790,40 +1737,11 @@ a.x-menu-item {
 #x-debug-browser .x-tree .x-tree-node .x-tree-selected a span{
 	background-color:#d8d8d8;
 }
-.x-combo-list {
-	border-color:#bcbcbc;
-	background-color:#eaeaea;
-}
-
-.x-combo-list-inner {
-	background-color:#fff;
-}
-
-.x-combo-list-hd {
-	color:#55545E;
-	background-image: url(images/layout/panel-title-light-bg.gif);
-	border-bottom-color:#bcbcbc;
-}
 
 .x-resizable-pinned .x-combo-list-inner {
 	border-bottom-color:#bcbcbc;
 }
 
-.x-combo-list-item {
-	border-color:#fff;
-}
-
-.x-combo-list .x-combo-selected{
-	border-color:#b9b9b9 !important;
-	background-color:#e7e7e7;
-}
-
-.x-combo-list .x-toolbar {
-	border-top-color:#bcbcbc;
-}
-
-.x-combo-list-small {
-}
 .x-panel {
 	border-color: #A2AAB8;
 }

@@ -121,59 +121,54 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 		$shortcutGroup = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarksGroup', TRUE);
 		$shortcutEdit = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarksEdit', TRUE);
 		$shortcutDelete = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarksDelete', TRUE);
-		$groupIcon = IconUtility::getSpriteIcon('apps-pagetree-folder-default', array('title' => $shortcutGroup));
-		$editIcon = '<a href="#">' . IconUtility::getSpriteIcon('actions-document-open', array('title' => $shortcutEdit)) . '</a>';
-		$deleteIcon = '<a href="#">' . IconUtility::getSpriteIcon('actions-edit-delete', array('title' => $shortcutDelete)) . '</a>';
+		$editIcon = '<a href="#" class="dropdown-list-link-edit shortcut-edit">' . IconUtility::getSpriteIcon('actions-document-open', array('title' => $shortcutEdit)) . '</a>';
+		$deleteIcon = '<a href="#" class="dropdown-list-link-delete shortcut-delete">' . IconUtility::getSpriteIcon('actions-edit-delete', array('title' => $shortcutDelete)) . '</a>';
 
-		$shortcutMenu[] = '<table><tbody>';
+		$shortcutMenu[] = '<ul class="dropdown-list">';
 
 		// Render shortcuts with no group (group id = 0) first
 		$noGroupShortcuts = $this->getShortcutsByGroup(0);
 		foreach ($noGroupShortcuts as $shortcut) {
+
 			$shortcutMenu[] = '
-				<tr class="shortcut" data-shortcutid="' . $shortcut['raw']['uid'] . '">
-					<td class="shortcut-label">
-						<a href="#" onclick="' . $shortcut['action'] . '; return false;">' .
-							$shortcut['icon'] . ' ' .
-							htmlspecialchars($shortcut['label']) .
-						'</a>
-					</td>
-					<td class="shortcut-edit">' . $editIcon . '</td>
-					<td class="shortcut-delete">' . $deleteIcon . '</td>
-				</tr>';
+				<li class="shortcut" data-shortcutid="' . $shortcut['raw']['uid'] . '">
+					<a class="dropdown-list-link dropdown-link-list-add-editdelete" href="#" onclick="' . htmlspecialchars($shortcut['action']) . '; return false;">' .
+						$shortcut['icon'] . ' ' .
+						htmlspecialchars($shortcut['label']) .
+					'</a>
+					' . $editIcon . $deleteIcon . '
+				</li>';
 		}
 		// Now render groups and the contained shortcuts
 		$groups = $this->getGroupsFromShortcuts();
 		krsort($groups, SORT_NUMERIC);
 		foreach ($groups as $groupId => $groupLabel) {
 			if ($groupId != 0) {
-				$shortcutGroup = '<tr><td class="dropdown-header shortcut-group typo3-module-menu-item" id="shortcut-group-' . $groupId . '" colspan="3">' .
-					$groupIcon . ' ' . $groupLabel .
-					'</td></tr>';
+				$shortcutGroup = '';
+				if (count($shortcutMenu) > 1) {
+					$shortcutGroup .= '<li class="divider"></li>';
+				}
+				$shortcutGroup .= '
+					<li class="dropdown-header" id="shortcut-group-' . $groupId . '">
+						' . $groupLabel . '
+					</li>';
 				$shortcuts = $this->getShortcutsByGroup($groupId);
 				$i = 0;
 				foreach ($shortcuts as $shortcut) {
 					$i++;
-					$firstRow = '';
-					if ($i == 1) {
-						$firstRow = ' first-row';
-					}
 					$shortcutGroup .= '
-					<tr class="shortcut' . $firstRow . '" data-shortcutid="' . $shortcut['raw']['uid'] . '" data-shortcutgroup="' . $groupId . '">
-						<td class="shortcut-label">
-							<a href="#" onclick="' . $shortcut['action'] . '; return false;">' .
-								$shortcut['icon'] . ' ' .
-								htmlspecialchars($shortcut['label']) .
-							'</a>
-						</td>
-						<td class="shortcut-edit">' . $editIcon . '</td>
-						<td class="shortcut-delete">' . $deleteIcon . '</td>
-					</tr>';
+					<li class="shortcut" data-shortcutid="' . $shortcut['raw']['uid'] . '" data-shortcutgroup="' . $groupId . '">
+						<a class="dropdown-list-link dropdown-link-list-add-editdelete" href="#" onclick="' . $shortcut['action'] . '; return false;">' .
+							$shortcut['icon'] . ' ' .
+							htmlspecialchars($shortcut['label']) .
+						'</a>
+						' . $editIcon . $deleteIcon . '
+					</li>';
 				}
 				$shortcutMenu[] = $shortcutGroup;
 			}
 		}
-		$shortcutMenu[] = '</tbody></table>';
+		$shortcutMenu[] = '</ul>';
 
 		if (count($shortcutMenu) == 2) {
 			// No shortcuts added yet, show a small help message how to add shortcuts
@@ -438,14 +433,24 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 		}
 
 		// build the form
-		$content = '<form class="shortcut-form">' .
-			'<input type="text" name="shortcut-title" value="' . htmlspecialchars($selectedShortcut['label']) . '">';
+		$content = '
+			<form class="shortcut-form" role="form">
+				<div class="form-group">
+					<input type="text" class="form-control" name="shortcut-title" value="' . htmlspecialchars($selectedShortcut['label']) . '">
+				</div>';
 
-		$content .= '<select name="shortcut-group">';
+		$content .= '
+				<div class="form-group">
+					<select class="form-control" name="shortcut-group">';
 		foreach ($shortcutGroups as $shortcutGroupId => $shortcutGroupTitle) {
 			$content .= '<option value="' . (int)$shortcutGroupId . '"' . ($selectedShortcutGroupId == $shortcutGroupId ? ' selected="selected"' : '') . '>' . htmlspecialchars($shortcutGroupTitle) . '</option>';
 		}
-		$content .= '</select><input type="button" class="shortcut-form-save" value="Save"><input type="button" class="shortcut-form-cancel" value="Cancel"></form>';
+		$content .= '
+					</select>
+				</div>
+				<input type="button" class="btn btn-default shortcut-form-cancel" value="Cancel">
+				<input type="button" class="btn btn-success shortcut-form-save" value="Save">
+			</form>';
 
 		$ajaxObj->addContent('data', $content);
 	}

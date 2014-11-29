@@ -74,7 +74,7 @@ class UserToolbarItem implements ToolbarItemInterface {
 		$languageService = $this->getLanguageService();
 
 		$dropdown = array();
-		$dropdown[] = '<ul>';
+		$dropdown[] = '<ul class="dropdown-list">';
 
 		/** @var BackendModuleRepository $backendModuleRepository */
 		$backendModuleRepository = GeneralUtility::makeInstance(BackendModuleRepository::class);
@@ -92,9 +92,9 @@ class UserToolbarItem implements ToolbarItemInterface {
 					. ' data-navigationframescript="' . $module->getNavigationFrameScript() . '"'
 					. ' data-navigationframescriptparameters="' . $module->getNavigationFrameScriptParameters() . '"'
 					. '>';
-				$dropdown[] = '<a title="' .$module->getDescription() . '" href="' . $module->getLink() . '" class="modlink">';
-				$dropdown[] = '<span class="typo3-app-icon"><span><span>' . ($moduleIcon['html'] ?: $moduleIcon['html']) . '</span></span></span>';
-				$dropdown[] = '<span class="submodule-label">' . $module->getTitle() . '</span>';
+				$dropdown[] = '<a title="' . htmlspecialchars($module->getDescription()) . '" href="' . $module->getLink() . '" class="dropdown-list-link modlink">';
+				$dropdown[] = '<span class="submodule-icon typo3-app-icon"><span><span>' . ($moduleIcon['html'] ?: $moduleIcon['html']) . '</span></span></span>';
+				$dropdown[] = '<span class="submodule-label">' . htmlspecialchars($module->getTitle()) . '</span>';
 				$dropdown[] = '</a>';
 				$dropdown[] = '</li>';
 			}
@@ -103,8 +103,8 @@ class UserToolbarItem implements ToolbarItemInterface {
 
 		// Logout button
 		$buttonLabel = 'LLL:EXT:lang/locallang_core.xlf:' . ($backendUser->user['ses_backuserid'] ? 'buttons.exit' : 'buttons.logout');
-		$dropdown[] = '<li>';
-		$dropdown[] = '<a href="logout.php" target="_top">';
+		$dropdown[] = '<li class="reset-dropdown">';
+		$dropdown[] = '<a href="logout.php" class="btn btn-danger pull-right" target="_top"><i class="fa fa-power-off"></i> ';
 		$dropdown[] = $languageService->sL($buttonLabel, TRUE);
 		$dropdown[] = '</a>';
 		$dropdown[] = '</li>';

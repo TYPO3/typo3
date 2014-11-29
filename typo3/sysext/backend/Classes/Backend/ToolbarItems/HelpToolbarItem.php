@@ -68,7 +68,7 @@ class HelpToolbarItem implements ToolbarItemInterface {
 	 */
 	public function getDropDown() {
 		$dropdown = array();
-		$dropdown[] = '<ul>';
+		$dropdown[] = '<ul class="dropdown-list">';
 		foreach ($this->helpModuleMenu->getChildren() as $module) {
 			/** @var BackendModule $module */
 			$moduleIcon = $module->getIcon();
@@ -80,9 +80,9 @@ class HelpToolbarItem implements ToolbarItemInterface {
 				. ' data-navigationframescript="' . $module->getNavigationFrameScript() . '"'
 				. ' data-navigationframescriptparameters="' . $module->getNavigationFrameScriptParameters() . '"'
 				. '>';
-			$dropdown[] = '<a title="' .$module->getDescription() . '" href="' . $module->getLink() . '" class="modlink">';
-			$dropdown[] = '<span class="typo3-app-icon"><span><span>' . ($moduleIcon['html'] ?: $moduleIcon['html']) . '</span></span></span>';
-			$dropdown[] = '<span class="submodule-label">' . $module->getTitle() . '</span>';
+			$dropdown[] = '<a title="' . htmlspecialchars($module->getDescription()) . '" href="' . $module->getLink() . '" class="dropdown-list-link modlink">';
+			$dropdown[] = '<span class="submodule-icon typo3-app-icon"><span><span>' . ($moduleIcon['html'] ?: $moduleIcon['html']) . '</span></span></span>';
+			$dropdown[] = '<span class="submodule-label">' . htmlspecialchars($module->getTitle()) . '</span>';
 			$dropdown[] = '</a>';
 			$dropdown[] = '</li>';
 		}

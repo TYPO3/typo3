@@ -11,335 +11,451 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-/* - - - - - - - - - - - - - - - - - - - - -
-Topbar
-- - - - - - - - - - - - - - - - - - - - - */
+@topbar-color: #ddd;
+@topbar-height: 45px;
+@topbar-zindex: @zindex-navbar;
+@topbar-bg: @navbar-inverse-bg;
 
-#typo3-topbar {
-	background-color: @navbar-inverse-bg;
-	z-index: 200;
+@topbar-navigation-color: @topbar-color;
+@topbar-navigation-bg: #222;
+@topbar-navigation-border-color: #111;
 
-	div {
-		overflow: visible !important;
-	}
+@topbar-dropdown-padding: 16px;
+@topbar-dropdown-color: @topbar-navigation-color;
+@topbar-dropdown-bg: @topbar-navigation-bg;
 
-	#typo3-top-container {
-		margin-bottom: 0;
-		// Force 45px height without border
-		border: none;
+@topbar-dropdown-link-bg: @topbar-navigation-bg;
+@topbar-dropdown-link-color: #ddd;
+@topbar-dropdown-link-hover-bg: #333;
+@topbar-dropdown-link-hover-color: #fff;
+@topbar-dropdown-link-active-bg: lighten(@topbar-dropdown-bg, 15%);
+@topbar-dropdown-link-active-color: #fff;
 
-		#typo3-logo {
-			margin: 8px 0 0 0;
-			padding: 1px 0 0 0;
-			width: 159px;
-		}
+@tobar-navigation-search-bg: @topbar-navigation-bg;
+@tobar-navigation-search-hover-bg: @topbar-dropdown-link-hover-bg;
+@tobar-navigation-search-focus-bg: @topbar-dropdown-link-active-bg;
 
-		#typo3-toolbar {
-			list-style: none;
-			display: inline;
 
-			div {
-				overflow: visible !important;
-			}
-
-			> li {
-				margin-right: 1px;
-
-				.t3-icon {
-					margin-right: 0;
-
-					&.fa {
-						height: 14px;
-						width: 14px;
-					}
-				}
-
-				&.dropdown {
-					color: @navbar-inverse-link-color;
-					background-color: @navbar-inverse-link-bg;
-
-					> a {
-						text-align: center;
-					}
-				}
-
-				.badge {
-					position: absolute;
-					top: 6px;
-					right: 4px;
-					font-size: 7px;
-				}
-			}
-
-			.dropdown-menu {
-				background-color: @navbar-inverse-link-active-bg;
-				color: @navbar-inverse-link-active-color;
-				border: none;
-
-				// dropdown-menu > ul
-				> ul {
-					.list-unstyled;
-
-					> li {
-						> a {
-							color: @navbar-inverse-link-active-color;
-							display: block;
-							padding: 3px 20px;
-							clear: both;
-							font-weight: normal;
-							line-height: @line-height-base;
-							white-space: nowrap;
-							> .t3-icon {
-								margin-right: 5px;
-							}
-						}
-
-						&.active {
-							> a {
-								background-color: darken(@navbar-inverse-link-active-bg, 15%);
-							}
-						}
-					}
-
-					// User and Help module-menu ToolbarItems
-					> li.typo3-module-menu-item {
-						margin: 1px 0;
-						> a {
-							padding-top: 2px;
-							padding-bottom: 2px;
-							height: 36px;
-							.typo3-app-icon {
-								display: block;
-								float: left;
-								margin-right: 10px;
-							}
-							.submodule-label {
-								display: block;
-								padding-left: 42px;
-								padding-top: 8px;
-							}
-						}
-					}
-				}
-
-				// dropdown-menu > p
-				> p {
-					padding: 3px 20px;
-				}
-
-				// dropdown-menu > table > tr > td
-				> table {
-					width: 100%;
-
-					> thead > tr > td {
-						.dropdown-header;
-					}
-					> tbody > tr > td > a {
-						color: @navbar-inverse-link-active-color;
-						display: block;
-						padding: 3px 20px;
-						clear: both;
-						font-weight: normal;
-						line-height: @line-height-base;
-						white-space: nowrap;
-
-						&.active {
-							> a {
-								background-color: darken(@navbar-inverse-link-active-bg, 15%);
-							}
-						}
-					}
-					> tbody > tr > td.shortcut-edit > a,
-					> tbody > tr > td.shortcut-delete > a {
-						padding: 3px 5px;
-					}
-				}
-
-				li,
-				td {
-					a {
-						color: @navbar-inverse-link-active-color;
-						text-decoration: none;
-
-						&:hover {
-							background-color: darken(@navbar-inverse-link-active-bg, 10%);
-							color: @navbar-inverse-link-active-color;
-							text-decoration: none;
-						}
-					}
-				}
-			}
-		}
-	}
-}
-
-/* - - - - - - - - - - - - - - - - - - - - -
-Shortcuts menu
-- - - - - - - - - - - - - - - - - - - - - */
-
-#shortcut-menu {
-	.shortcut-list {
-		width: 100%;
-
-		tr.shortcut td {
-			padding: 2px 1px;
-		}
-
-	}
+// HOTFIX SCAFFOLDING
+[id="typo3-topbar"],
+[id="typo3-topbar"] .x-panel-body {
+	min-width: 1000px;
 }
 
 
-#shortcut-menu .shortcut-list tr.shortcut-group td.shortcut-group-icon,
-#shortcut-menu .shortcut-list tr.shortcut td.shortcut-icon,
-#shortcut-menu .shortcut-list td.shortcut-edit,
-#shortcut-menu .shortcut-list td.shortcut-delete {
+// Topbar
+[id="typo3-topbar"]{
+	height: @topbar-height;
+	position: relative;
+	background-color: @topbar-bg;
+	color: @topbar-color;
+	.x-panel-bwrap,
+	.x-panel-body {
+		overflow: visible;
+	}
+}
+.typo3-in-workspace [id="typo3-topbar"] {
+	background-color: #6d860d;
+	.typo3-topbar-site-name {
+		color: #fff;
+	}
+}
+
+// Container
+.typo3-topbar-container {
+	-moz-user-select: -moz-none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+	height: @topbar-height;
+	position: relative;
+}
+
+// Site
+.typo3-topbar-site {
+	display: table;
+	padding: 0;
+	height: @navbar-height;
+	float: left;
+}
+.typo3-topbar-site-logo,
+.typo3-topbar-site-name {
+	display: table-cell;
+	vertical-align: middle;
 	text-align: center;
 }
-
-#shortcut-menu .shortcut-list tr.shortcut td.shortcut-edit img,
-#shortcut-menu .shortcut-list tr.shortcut td.shortcut-delete img {
-	cursor: pointer;
+.typo3-topbar-site-logo {
+	background-color: @topbar-bg;
+	width: 51px;
+	.box-shadow(2px 0px 0px rgba(0, 0, 0, 0.15));
+	&:hover {
+		background-color: @tobar-navigation-search-hover-bg;
+	}
+	> img {
+		max-width: 50px;
+		max-height: 50px;
+	}
+}
+.typo3-topbar-site-name {
+	cursor: default;
+	padding: 0 (@grid-gutter-width / 2);
 }
 
-#shortcut-menu .shortcut-list tr.shortcut-group td.shortcut-group-icon,
-#shortcut-menu .shortcut-list tr.shortcut td.shortcut-icon,
-#shortcut-menu .shortcut-list td.shortcut-edit,
-#shortcut-menu .shortcut-list td.shortcut-delete {
-	vertical-align: top;
-	width: 18px;
+
+// Shared
+.typo3-topbar-navigation {
+	color: @topbar-navigation-color;
+	background-color: @topbar-navigation-bg;
+	float: right;
+	// Buttons
+	.btn {
+		.btn();
+	}
+	.btn.btn-default {
+		.btn-default();
+	}
+	.btn.btn-success {
+		.btn-success();
+	}
+	.btn.btn-danger {
+		.btn-danger();
+	}
+	// Shortcut
+	.shortcut {
+		min-width: 180px;
+	}
+	.shortcut-form {
+		padding: @topbar-dropdown-padding;
+		margin: (@topbar-dropdown-padding / 4) -@topbar-dropdown-padding;
+		border-top: 1px solid lighten(@topbar-navigation-border-color,15%);
+		background-color: lighten(@topbar-navigation-border-color,10%);
+		border-bottom: 1px solid @topbar-navigation-border-color;
+	}
 }
 
-#shortcut-menu .shortcut-list tr.shortcut td.shortcut-label a {
-	display: block;
+
+// Navigation Items
+.typo3-topbar-navigation-items {
+	height: @topbar-height;
+	margin-bottom: 0;
+	padding-left: 0;
+	list-style: none;
+	float: left;
+	a {
+		color: @topbar-navigation-color;
+		text-decoration: none;
+	}
+	> li {
+		float: left;
+		height: @topbar-height;
+		> a {
+			position: relative;
+			display: block;
+			padding: @navbar-padding-vertical 10px;
+			border-left: 1px solid lighten(@topbar-navigation-border-color,10%);
+			border-right: 1px solid @topbar-navigation-border-color;
+			&:hover,
+			&:focus,
+			&:active {
+				color: @topbar-dropdown-link-hover-color;
+				background-color: @topbar-dropdown-link-hover-bg;
+				border-left-color: lighten(@topbar-dropdown-link-hover-bg,3%)
+			}
+		}
+	}
+	> li.open {
+		> a {
+			color: @topbar-dropdown-link-active-color;
+			background-color: @topbar-dropdown-link-active-bg;
+			border-left-color: lighten(@topbar-dropdown-link-active-bg,3%);
+		}
+	}
 }
 
-#shortcut-menu .shortcut-list tr.shortcut td.shortcut-edit img,
-#shortcut-menu .shortcut-list tr.shortcut td.shortcut-delete img {
-	display: none;
-}
-
-#shortcut-menu .shortcut-list tr.shortcut:hover td.shortcut-edit img,
-#shortcut-menu .shortcut-list tr.shortcut:hover td.shortcut-delete img {
-	display: inline;
-}
-
-#shortcut-menu .shortcut-list tr.shortcut-group td.shortcut-group-icon,
-#shortcut-menu .shortcut-list tr.shortcut td.shortcut-icon {
-	padding-left: 7px;
-	vertical-align: top;
-}
-
-/* - - - - - - - - - - - - - - - - - - - - -
-Username inside the toolbar
-- - - - - - - - - - - - - - - - - - - - - */
-
-#topbar-user-menu {
-	&.su-user {
+// Dropdown
+.typo3-topbar-navigation-items {
+	.dropdown {
+		min-width: @topbar-height;
+		text-align: center;
+		> a > .fa {
+			font-size: 16px;
+			margin: 0;
+			display: inline-block;
+			position: relative;
+			vertical-align: middle;
+			width: auto;
+			height: auto;
+		}
+	}
+	.dropdown-toggle {
+		position: relative;
+		.badge {
+			display: none;
+			font-size: 10px;
+			min-width: 15px;
+			height: 15px;
+			position: absolute;
+			padding: 0;
+			border-radius: @border-radius-small;
+			line-height: 15px;
+			bottom: 5px;
+			right: 5px;
+		}
+	}
+	.dropdown-menu {
+		margin: 0;
+		padding: (@topbar-dropdown-padding / 2) @topbar-dropdown-padding;
+		color: @topbar-dropdown-color;
+		background-color: @topbar-dropdown-bg;
+		border-color: @topbar-navigation-border-color;
+		border-top: 1px solid lighten(@topbar-navigation-border-color, 20%);
+		border-left: 0;
+		border-right: 0;
+		border-radius: 0 0 @border-radius-small @border-radius-small;
+		.box-shadow(0px 3px 0px rgba(0, 0, 0, 0.15));
 		a {
-			color: #eb6e5a;
+			color: @topbar-dropdown-link-color;
+			white-space: nowrap;
+		}
+		> *:last-child {
+			margin-bottom: 0;
+		}
+	}
+	.dropdown-list {
+		.list-unstyled();
+		> li {
+			.clearfix();
+			position: relative;
+			&.active .dropdown-list-link {
+				background-color: @topbar-dropdown-link-active-bg;
+				color: @topbar-dropdown-link-active-color;
+			}
+		}
+		> li + li {
+			margin-top: 1px;
+		}
+		> li.divider + li {
+			margin-top: 0;
+		}
+		.divider {
+			border-top: 1px solid @topbar-navigation-border-color;
+			background-color: lighten(@topbar-navigation-border-color, 10%);
+			margin: (@topbar-dropdown-padding / 2) 0;
+			padding: 0;
+			padding-top: 1px;
+			margin-left: -@topbar-dropdown-padding;
+			margin-right: -@topbar-dropdown-padding;
+		}
+		.modlink {
+			.clearfix();
+			width: 210px;
+			.submodule-icon {
+				float: left;
+				margin-right: 10px;
+			}
+			.submodule-label {
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				padding-top: 7px;
+				display: block;
+				overflow: hidden;
+				*zoom: 1;
+			}
+		}
+		.dropdown-header {
+			font-size: 1em;
+			margin-left: -@topbar-dropdown-padding;
+			margin-right: -@topbar-dropdown-padding;
+			padding: (@topbar-dropdown-padding / 2) @topbar-dropdown-padding;
+		}
+	}
+	.dropdown-list-link {
+		max-width: 300px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: block;
+		text-decoration: none;
+		cursor: pointer;
+		white-space: nowrap;
+		color: @topbar-dropdown-link-color;
+		margin-left: -@topbar-dropdown-padding;
+		margin-right: -@topbar-dropdown-padding;
+		padding: (@topbar-dropdown-padding / 4) @topbar-dropdown-padding;
+		&:hover {
+			color: @topbar-dropdown-link-hover-color;
+			background-color: @topbar-dropdown-link-hover-bg;
+		}
+	}
+	.dropdown-list-link-edit,
+	.dropdown-list-link-delete,
+	.dropdown-list-link-close {
+		display: table;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		right: -(@topbar-dropdown-padding / 2);
+		padding: 0;
+		text-align: center;
+		width: 26px;
+		height: 26px;
+		.t3-icon {
+			display: table-cell;
+			margin: 0;
+			height: auto;
+			width: auto;
+		}
+		&:hover {
+			color: @topbar-dropdown-link-hover-color;
+			background-color: @topbar-dropdown-link-hover-bg;
+		}
+	}
+	.dropdown-list-link-edit {
+		right: 18px;
+	}
+	.dropdown-list-link-delete,
+	.dropdown-list-link-close {
+		&:hover {
+			color: @topbar-dropdown-link-hover-color;
+			background-color: @btn-danger-bg;
+		}
+	}
+	.dropdown-link-list-add-close {
+		padding-right: 50px;
+	}
+	.dropdown-link-list-add-editdelete {
+		padding-right: 85px;
+	}
+	.topbar-workspaces-title {
+		margin-left: 3px;
+	}
+}
+
+// Navigation Search
+.typo3-topbar-navigation-search {
+	position: relative;
+	padding: 0;
+	margin: 0;
+	.form-group {
+		&:before {
+			content: "\f002";
+			font: normal normal normal 14px/1 FontAwesome;
+			position: absolute;
+			top: 50%;
+			left: 15px;
+			margin-top: -8px;
+			z-index: 1;
+		}
+	}
+	.form-control {
+		box-sizing: content-box;
+		background-color: @tobar-navigation-search-bg;
+		color: @topbar-navigation-color;
+		height: @topbar-height - 27px;
+		padding-left: 35px;
+		padding-right: 30px;
+		padding-top: 14px;
+		padding-bottom: 13px;
+		border: none;
+		border-left: 1px solid lighten(@topbar-navigation-border-color, 10%);
+		border-radius: 0;
+		&:hover {
+			border-left-color: lighten(@topbar-navigation-border-color, 15%);
+			background-color: @tobar-navigation-search-hover-bg;
+		}
+		&:focus {
+			outline: none;
+			border-left-color: lighten(@topbar-navigation-border-color, 15%);
+			background-color: @tobar-navigation-search-focus-bg;
+			.box-shadow(none);
+		}
+		+ .t3-icon {
+			text-align: center;
+			position: absolute;
+			top: 50%;
+			right: 15px;
+			margin-right: 0;
+			margin-top: -8px;
 		}
 	}
 }
 
-/* - - - - - - - - - - - - - - - - - - - - -
-Workspace Selector
-- - - - - - - - - - - - - - - - - - - - - */
-
-#workspace-selector-menu  {
-	ul {
-		li {
-			span.t3-icon {
-				float: left;
-				margin-top: 0;
-				margin-right: 2px;
-			}
-
-			img {
-				float: left;
-				position: relative;
-				margin-right: 2px;
-			}
-		}
-	}
-
-	.items {
-		list-style: none;
-		overflow-y: auto;
-		max-height: 300px;
-	}
-}
-
-
-body.typo3-in-workspace {
-	#typo3-top-container {
-		background-image:
-			url('../../../../images/backgrounds/topbar-in-workspace-background-left.png'),
-			url('../../../../images/backgrounds/topbar-in-workspace-background-right.png'),
-			url('../../../../images/backgrounds/topbar-in-workspace-background.gif');
-		background-repeat: no-repeat, no-repeat, repeat-x;
-		background-position: left top, right top, left top;
-	}
-}
-
-/* - - - - - - - - - - - - - - - - - - - - -
-Live Search
-- - - - - - - - - - - - - - - - - - - - - */
-
-#typo3-toolbar #live-search-menu {
-	padding-top: 13px;
-	padding-left: @navbar-padding-horizontal;
-	padding-right: @navbar-padding-horizontal;
-}
-
-.t3-icon-input-clear {
-	cursor: pointer;
-	position: absolute;
-	top: 0px;
-	right: 20px;
-}
-
-.live-search-box {
-	.x-form-field-wrap {
-		display: inline-block;
-	}
-}
-
+// Livesearch
 .live-search-list {
-	background-color: white;
-	border: none;
-
-	.x-combo-list {
-		background-color: white;
+	.typo3-topbar-navigation-items .dropdown-menu();
+	padding: 0;
+	.x-toolbar {
+		padding: 0;
+		border: none;
+		background: transparent;
 	}
-
-	.search-item-type {
-		border-right: 1px solid #ddd;
-		padding: 2px 5px 2px 0;
+	.x-combo-list-hd,
+	.x-combo-list-inner,
+	.x-combo-list-ft {
+		border: none;
+		background: transparent;
+		color: @topbar-dropdown-color;
 	}
-
-	.search-item-content {
-		padding: 0 8px;
-
-		.search-item-title {
-			padding: 2px;
-			border: none !important;
-		}
+	.x-combo-list-hd,
+	.x-combo-list-inner,
+	.x-combo-list-ft {
+		padding: @topbar-dropdown-padding;
 	}
-
-	.x-combo-list-inner {
-		padding-bottom: 5px;
-	}
-
 	.x-combo-list-hd {
+		background-color: lighten(@topbar-dropdown-bg,3%);
+		border-top: 0;
+		border-bottom: 1px solid @topbar-navigation-border-color;
+	}
+	.x-combo-list-ft {
+		padding-top: 0;
+		border-bottom: 0;
+	}
+	.x-combo-list-inner {
+		padding-right: 0;
+		border-top: 1px solid lighten(@topbar-navigation-border-color, 10%);
+	}
+	.x-btn {
 		background: none;
 		border: none;
-		margin-left: 110px;
-		color: #ddd;
+		color: inherit;
+		.x-btn-tl,
+		.x-btn-tc,
+		.x-btn-tr,
+		.x-btn-ml,
+		.x-btn-mr,
+		.x-btn-bl,
+		.x-btn-bc,
+		.x-btn-br {
+			display: none;
+		}
+		button {
+			.btn();
+			.btn-sm();
+			.btn-default();
+			height: auto!important;
+		}
+	}
+	.search-item-type {
+		padding: 5px 20px 5px 0px;
+		white-space: nowrap;
+	}
+	.search-item-title {
+		border-radius: 2px 0px 0px 2px;
+		padding: 5px 20px 5px 10px;
+		&.x-combo-selected {
+			border: none!important;
+			background-color: lighten(@topbar-dropdown-bg, 10%);
+		}
 	}
 }
-
 .search-list-help-content {
-	margin: @navbar-padding-vertical @navbar-padding-horizontal;
-	height: 100%;
-	color: #000000;
+	padding: @topbar-dropdown-padding;
+	strong {
+		display: block;
+		margin-bottom: 0.5em;
+	}
+	p {
+		margin-top: 0.5em;
+		margin-bottom: 0;
+	}
 }

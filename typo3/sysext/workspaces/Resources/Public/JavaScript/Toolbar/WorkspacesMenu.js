@@ -102,7 +102,7 @@ define('TYPO3/CMS/Workspaces/Toolbar/WorkspacesMenu', ['jquery'], function($) {
 		WorkspacesMenu.updateBackendContext(title);
 
 		// first remove all checks, then set the check in front of the selected workspace
-		var stateActiveClass = 't3-icon t3-icon-status t3-icon-status-status t3-icon-status-checked';
+		var stateActiveClass = 't3-icon fa fa-check';
 		var stateInactiveClass = 't3-icon t3-icon-empty t3-icon-empty-empty t3-icon-empty';
 
 		// remove "selected" class and checkmark

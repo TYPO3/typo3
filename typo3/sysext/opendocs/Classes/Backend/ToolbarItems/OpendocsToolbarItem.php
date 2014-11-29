@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Opendocs\Backend\ToolbarItems;
 
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Alist of all open documents
@@ -43,7 +44,6 @@ class OpendocsToolbarItem implements ToolbarItemInterface {
 		$this->loadDocsFromUserSession();
 		$pageRenderer = $this->getPageRenderer();
 		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Opendocs/Toolbar/OpendocsMenu');
-		$pageRenderer->addCssFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('opendocs') . '/Resources/Public/Css/opendocs.css');
 	}
 
 	/**
@@ -94,16 +94,17 @@ class OpendocsToolbarItem implements ToolbarItemInterface {
 		$recentDocuments = $this->recentDocs;
 		$entries = array();
 		if (count($openDocuments)) {
-			$entries[] = '<tr><td class="dropdown-header">' . $languageService->getLL('open_docs', TRUE) . '</td></tr>';
+			$entries[] = '<li class="dropdown-header">' . $languageService->getLL('open_docs', TRUE) . '</li>';
 			$i = 0;
 			foreach ($openDocuments as $md5sum => $openDocument) {
 				$i++;
 				$entries[] = $this->renderMenuEntry($openDocument, $md5sum, FALSE, $i == 1);
 			}
+			$entries[] = '<li class="divider"></li>';
 		}
 		// If there are "recent documents" in the list, add them
 		if (count($recentDocuments)) {
-			$entries[] = '<tr><td class="dropdown-header">' . $languageService->getLL('recent_docs', TRUE) . '</td></tr>';
+			$entries[] = '<li class="dropdown-header">' . $languageService->getLL('recent_docs', TRUE) . '</li>';
 			$i = 0;
 			foreach ($recentDocuments as $md5sum => $recentDocument) {
 				$i++;
@@ -111,7 +112,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface {
 			}
 		}
 		if (count($entries)) {
-			$content = '<table><tbody>' . implode('', $entries) . '</tbody></table>';
+			$content = '<ul class="dropdown-list">' . implode('', $entries) . '</ul>';
 		} else {
 			$content = '<p>' . $languageService->getLL('no_docs', TRUE) . '</p>';
 		}
@@ -142,31 +143,22 @@ class OpendocsToolbarItem implements ToolbarItemInterface {
 		if ($document[3]['table'] !== 'pages') {
 			$pageId = (int)$document[3]['pid'];
 		}
-		$firstRow = '';
-		if ($isFirstDoc) {
-			$firstRow = ' first-row';
-		}
+		$onClickCode = 'jump(' . GeneralUtility::quoteJSvalue($link) . ', \'web_list\', \'web\', ' . $pageId . '); TYPO3.OpendocsMenu.toggleMenu(); return false;';
 		if (!$isRecentDoc) {
 			$title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE);
 			// Open document
 			$closeIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close');
 			$entry = '
-				<tr class="opendoc' . $firstRow . '">
-					<td>
-						<a href="#" class="opendocLink pull-left" onclick="jump(unescape(\'' . htmlspecialchars($link) . '\'), \'web_list\', \'web\', ' . $pageId . ');TYPO3.OpendocsMenu.toggleMenu(); return false;" target="content">' . $icon . ' ' . $label . '</a>
-					</td>
-					<td>
-						<a href="#" class="close pull-right" data-opendocsidentifier="' . $md5sum . '">' . $closeIcon . '</a>
-					</td>
-				</tr>';
+				<li class="opendoc">
+					<a href="#" class="dropdown-list-link dropdown-link-list-add-close" onclick="' . htmlspecialchars($onClickCode) . '" target="content">' . $icon . ' ' . $label . '</a>
+					<a href="#" class="dropdown-list-link-close" data-opendocsidentifier="' . $md5sum . '" title="' . $title . '">' . $closeIcon . '</a>
+				</li>';
 		} else {
 			// Recently used document
 			$entry = '
-				<tr class="recentdoc' . $firstRow . '">
-					<td colspan="2">
-						<a href="#" onclick="jump(unescape(\'' . htmlspecialchars($link) . '\'), \'web_list\', \'web\', ' . $pageId . '); TYPO3.OpendocsMenu.toggleMenu(); return false;" target="content">' . $icon . ' ' . $label . '</a>
-					</td>
-				</tr>';
+				<li>
+					<a href="#" class="dropdown-list-link" onclick="' . htmlspecialchars($onClickCode) . '" target="content">' . $icon . ' ' . $label . '</a>
+				</li>';
 		}
 		return $entry;
 	}

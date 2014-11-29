@@ -57,7 +57,7 @@ class LogoView {
 		}
 
 		$logoTag = '<img src="' . $imgUrl . '" width="' . $width . '" height="' . $height . '" title="TYPO3 Content Management System" alt="" />';
-		return '<a href="' . TYPO3_URL_GENERAL . '" target="_blank">' . $logoTag . '</a>';
+		return '<a class="typo3-topbar-site-logo" href="' . htmlspecialchars(TYPO3_URL_GENERAL) . '" target="_blank">' . $logoTag . '</a> <span class="typo3-topbar-site-name">' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . ' [' . TYPO3_version . ']</span>';
 	}
 
 	/**

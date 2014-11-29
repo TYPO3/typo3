@@ -27,14 +27,14 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 	listAlign : 'tr-br',
 	listClass: 'live-search-list',
 	listEmptyText: null,
-	listWidth: 315,
+	listWidth: 400,
 	listHovered: false,
 	loadingText: null,
 	minChars: 1,
 	resizable: false,
 	title: null,
 	triggerClass : 'x-form-clear-trigger',
-	triggerConfig: '<span tag="a" class="t3-icon t3-icon-actions t3-icon-actions-input t3-icon-input-clear t3-tceforms-input-clearer">&nbsp;</span>',
+	triggerConfig: '<span class="t3-icon fa fa-remove"></span>',
 	onTriggerClick: function() {
 		// Empty the form field, give it focus, and collapse the results
 		this.reset(this);
@@ -45,8 +45,8 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 		'<table border="0" cellspacing="0">',
 			'<tpl for=".">',
 				'<tr class="search-item">',
-					'<td class="search-item-type" width="105" align="right">{recordTitle}</td>',
-					'<td class="search-item-content" width="195">',
+					'<td class="search-item-type">{recordTitle}</td>',
+					'<td class="search-item-content" width="95%">',
 						'<div class="search-item-title">{iconHTML} {title}</div>',
 					'</td>',
 				'</tr>',
@@ -111,27 +111,9 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 
 	restrictHeight : function(){
 		this.innerList.dom.style.height = '';
-		var inner = this.innerList.dom;
-		var pad = this.list.getFrameWidth('tb')+(this.resizable?this.handleHeight:0)+this.assetHeight + 30; // @todo Remove hardcoded 30
-		var h = Math.max(inner.clientHeight, inner.offsetHeight, inner.scrollHeight);
-		var ha = this.getPosition()[1]-Ext.getBody().getScroll().top;
-		var hb = Ext.lib.Dom.getViewHeight()-ha-this.getSize().height;
-		var space = Math.max(ha, hb, this.minHeight || 0)-pad-2;
-		/** BUG FIX **/
-		if (this.shadow === true) { space-=this.list.shadow.offset; }
-
-		h = Math.min(h, space, this.maxHeight);
-
-		/**
-		 * @internal The calculated height of "h" in the line before seems not working as expected.
-		 *			 If i define a min height, the box should at least use this height also if only one entry is in there
-		 */
-		//h = this.maxHeight;
-
-		this.innerList.setHeight(h);
+		this.innerList.dom.style.width = '';
 		this.list.beginUpdate();
-		this.list.setHeight(h+pad);
-		this.list.alignTo(this.el, this.listAlign);
+		this.list.setHeight('auto');
 		this.list.endUpdate();
 	},
 
@@ -147,19 +129,15 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 		 * Create bottom Toolbar to the result layer
 		 */
 		this.footer = this.list.createChild({cls:cls+'-ft'});
-
 		this.pageTb = new Ext.Toolbar({
 			renderTo:this.footer,
-			height: 30,
 			items: [{
 				xtype: 'tbfill',
 				autoWidth : true
 			},{
 				xtype: 'button',
 				text: TYPO3.LLL.liveSearch.showAllResults,
-				arrowAlign : 'right',
 				shadow: false,
-				icon : '../typo3/sysext/t3skin/icons/module_web_list.gif',
 				listeners : {
 					scope : this,
 					click : function () {
@@ -171,7 +149,6 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 				}
 			}]
 		});
-		this.assetHeight += this.footer.getHeight();
 	},
 
 	initQuery : function(){
@@ -184,7 +161,7 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 
 			this.helpList = new Ext.Layer({
 				parentEl: this.getListParent(),
-				shadow: this.shadow,
+				shadow: false,
 				cls: [cls, this.listClass].join(' '),
 				constrain:false
 			});
@@ -193,17 +170,11 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 			this.mon(this.helpList, 'mouseover', function() {this.listHovered = true;}, this);
 			this.mon(this.helpList, 'mouseout', function() {this.listHovered = false; }, this);
 
-			var lw = this.listWidth || Math.max(this.wrap.getWidth(), this.minListWidth);
-			this.helpList.setSize(lw);
 			this.helpList.swallowEvent('mousewheel');
-			if(this.syncFont !== false){
-				this.helpList.setStyle('font-size', this.el.getStyle('font-size'));
-			}
 
 			this.innerHelpList = this.helpList.createChild({cls:cls+'-inner'});
 			this.mon(this.innerHelpList, 'mouseover', this.onViewOver, this);
 			this.mon(this.innerHelpList, 'mousemove', this.onViewMove, this);
-			this.innerHelpList.setWidth(lw - this.helpList.getFrameWidth('lr'));
 
 			if(!this.helpTpl){
 				this.helpTpl = '<tpl for="."><div class="'+cls+'-item">{' + this.displayField + '}</div></tpl>';

@@ -11,6 +11,13 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+// Menu icons
+@app-icon-border-radius: @border-radius-small;
+@app-icon-height: 32px;
+@app-icon-width: 32px;
+@app-icon-font-size: 21px;
+@app-icon-bg: #484848;
+
 /* - - - - - - - - - - - - - - - - - - - - -
 TYPO3 styles for basic elements
 - - - - - - - - - - - - - - - - - - - - - */
@@ -132,13 +139,14 @@ Various classes
 // Please use .typo3-app-icon in your extensions.
 // Wrap <img> in span>span for 16x16px horizontally and vertically centered icons (backwards compatibility)
 .typo3-app-icon {
+	position: relative;
 	display: inline-block;
-	padding: 0;
-	margin: 0;
-	height: 32px;
-	width: 32px;
+	padding: 0px;
+	height: @app-icon-width;
+	width: @app-icon-height;
 	overflow: hidden;
-	border-radius: @border-radius-small;
+	border-radius: @app-icon-border-radius;
+	background-color: @app-icon-bg;
 	> span {
 		display: table;
 		height: 100%;
@@ -150,8 +158,23 @@ Various classes
 		}
 	}
 	img {
-		max-height: 32px;
-		max-width: 32px;
+		max-height: @app-icon-width;
+		max-width: @app-icon-width;
+	}
+	.fa {
+		font-size: @app-icon-font-size;
+		vertical-align: middle;
+	}
+	&:after {
+		position: absolute;
+		content: '';
+		display: block;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		border: 1px solid rgba(255,255,255,0.1);
+		border-radius: @app-icon-border-radius;
 	}
 }
 

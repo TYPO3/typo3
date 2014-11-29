@@ -91,7 +91,7 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface {
 			$classValue = ($workspaceId === $activeWorkspace ? ' class="selected"' : '');
 			$sectionName = ($index++ === 0 ? 'top' : 'items');
 			$workspaceSections[$sectionName][] = '<li' . $classValue . '>'
-				. '<a href="backend.php?changeWorkspace=' . $workspaceId . '" data-workspaceid="' . $workspaceId . '" class="tx-workspaces-switchlink">'
+				. '<a href="backend.php?changeWorkspace=' . $workspaceId . '" data-workspaceid="' . $workspaceId . '" class="dropdown-list-link tx-workspaces-switchlink">'
 				. $iconState . ' ' . htmlspecialchars($label)
 				. '</a></li>';
 		}
@@ -100,7 +100,7 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface {
 			// Add the "Go to workspace module" link
 			// if there is at least one icon on top and if the access rights are there
 			if ($backendUser->check('modules', 'web_WorkspacesWorkspaces')) {
-				$workspaceSections['top'][] = '<li><a target="content" data-module="web_WorkspacesWorkspaces" class="tx-workspaces-modulelink">'
+				$workspaceSections['top'][] = '<li><a target="content" data-module="web_WorkspacesWorkspaces" class="dropdown-list-link tx-workspaces-modulelink">'
 					. $stateUncheckedIcon . ' ' . $languageService->getLL('bookmark_workspace', TRUE)
 					. '</a></li>';
 			}
@@ -110,7 +110,7 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface {
 		}
 
 		$workspaceMenu = array(
-			'<ul>' ,
+			'<ul class="dropdown-list">' ,
 				implode(LF, $workspaceSections['top']),
 				(!empty($workspaceSections['items']) ? '<li class="divider"></li>' : ''),
 				implode(LF, $workspaceSections['items']),
