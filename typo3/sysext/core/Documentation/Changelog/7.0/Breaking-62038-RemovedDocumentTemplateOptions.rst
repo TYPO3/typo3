@@ -1,0 +1,35 @@
+============================================================
+Breaking: #62038 - Deprecated DocumentTemplate functionality
+============================================================
+
+Description
+===========
+
+The Backend/DocumentTemplate class contains various options that have no effect in the core anymore:
+
+:php:`$doc->JScodeLibArray`
+:php:`$doc->docType` (as rendering is always as HTML5 by default)
+:php:`$doc->inDocStyles` (use inDocStylesArray)
+:php:`$doc->inDocStyles_TBEstyle` (now used as inDocStylesArray[tbeStyle]
+:php:`$doc->charset` (always utf-8)
+
+The methods :php:`$doc->formatTime()` and :php:`$doc->menuTable()` have also
+been deprecated as they are not used anymore.
+
+Impact
+======
+
+Extensions that still use the properties of DocumentTemplate will not see any changes in the output
+of the code anymore.
+
+
+Affected installations
+======================
+
+A TYPO3 instance is affected if a 3rd party extension uses the unused variables.
+
+
+Migration
+=========
+
+The variables can be removed safely, any modifications is possible via hooks in DocumentTemplate.
