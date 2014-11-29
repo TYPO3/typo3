@@ -7089,6 +7089,7 @@ DocHeader
   margin-bottom: 3px;
 }
 #typo3-docheader .left {
+  float: left;
   /** Extra margin 6px added to it-icon margin, doubled spacing = 12px */
 }
 #typo3-docheader .left .buttongroup {
