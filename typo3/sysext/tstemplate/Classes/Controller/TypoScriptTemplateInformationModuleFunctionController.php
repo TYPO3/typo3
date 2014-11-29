@@ -72,7 +72,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 			array('title' => $lang->sL('LLL:EXT:lang/locallang_common.xlf:editField', TRUE))
 		);
 		$ret .= $startAnchor . '<strong>' . $label . '</strong></a>';
-		$ret .= '</td><td width="80%">' . $data . $startAnchor . '&nbsp;<span class="btn pull-right">' . $icon . '</span></a></td></tr>';
+		$ret .= '</td><td width="80%">' . $data . '</td><td>' . $startAnchor . '<span class="btn">' . $icon . '</span></a></td></tr>';
 		return $ret;
 	}
 
