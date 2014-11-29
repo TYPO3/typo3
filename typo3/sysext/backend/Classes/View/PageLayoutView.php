@@ -372,14 +372,16 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			}
 			// CSH:
 			$out = BackendUtility::cshItem($this->descrTable, ('func_' . $pKey)) . '
-				<table class="t3-table typo3-page-pages">' .
-					'<thead>' .
-						$this->addelement(1, '', $theData) .
-					'</thead>' .
-					'<tbody>' .
-						$out .
-					'</tbody>' .
-				'</table>';
+				<div class="table-fit">
+					<table class="t3-table typo3-page-pages">' .
+						'<thead>' .
+							$this->addelement(1, '', $theData) .
+						'</thead>' .
+						'<tbody>' .
+							$out .
+						'</tbody>' .
+					'</table>
+				</div>';
 		}
 		return $out;
 	}

@@ -51,28 +51,30 @@
 	</f:comment>
 
 	<f:be.widget.paginate objects="{backendUsers}" as="paginatedBackendUsers" configuration="{itemsPerPage: 50, insertAbove: 1, insertBelow: 1}">
-		<table class="t3-table">
-			<thead>
-				<tr>
-					<th class="col-icon"></th>
-					<th class="col-title"><f:translate key="userName" /> / <f:translate key="realName" /></th>
-					<th class="col-control"></th>
-					<th><f:translate key="lastLogin" /></th>
-				</tr>
-			</thead>
-			<tbody>
-				<f:for each="{paginatedBackendUsers}" as="backendUser">
-					<f:render partial="BackendUser/IndexListRow" arguments="{demand: demand, backendUser: backendUser, dateFormat: dateFormat, timeFormat: timeFormat, returnUrl: returnUrl}" />
-				</f:for>
-				<f:comment>
-					Footer row: no officially defined style yet
-				</f:comment>
-				<tr>
-					<td colspan="4">
-						<f:count subject="{backendUsers}" /> <f:translate key="users" />
-					</td>
-				</tr>
-			</tbody>
-		</table>
+		<div class="table-fit">
+			<table class="t3-table">
+				<thead>
+					<tr>
+						<th class="col-icon"></th>
+						<th class="col-title"><f:translate key="userName" /> / <f:translate key="realName" /></th>
+						<th class="col-control"></th>
+						<th><f:translate key="lastLogin" /></th>
+					</tr>
+				</thead>
+				<tbody>
+					<f:for each="{paginatedBackendUsers}" as="backendUser">
+						<f:render partial="BackendUser/IndexListRow" arguments="{demand: demand, backendUser: backendUser, dateFormat: dateFormat, timeFormat: timeFormat, returnUrl: returnUrl}" />
+					</f:for>
+					<f:comment>
+						Footer row: no officially defined style yet
+					</f:comment>
+					<tr>
+						<td colspan="4">
+							<f:count subject="{backendUsers}" /> <f:translate key="users" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</f:be.widget.paginate>
 </f:section>

@@ -127,7 +127,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 				for ($a = 0; $a < 9; $a++) {
 					$tableData[] = $this->getFormLine($a);
 				}
-				$lines[] = '<table id="formFieldContainer" class="t3-table"><tbody id="formFieldContainerBody">' . implode(LF, $tableData) . '</tbody></table>';
+				$lines[] = '<div class="table-fit"><table id="formFieldContainer" class="t3-table"><tbody id="formFieldContainerBody">' . implode(LF, $tableData) . '</tbody></table></div>';
 				$theCode .= '<h4>' . $GLOBALS['LANG']->getLL('wiz_newPages') . ':</h4>' . implode('', $lines) . '<br class="clearLeft" />' . '<input type="button" id="createNewFormFields" value="' . $GLOBALS['LANG']->getLL('wiz_newPages_addMoreLines') . '" />' . '<br /><br />';
 				$theCode .= '<div class="checkbox"><label for="createInListEnd"><input type="checkbox" name="createInListEnd" id="createInListEnd" value="1" />' . $GLOBALS['LANG']->getLL('wiz_newPages_listEnd') . '</label></div>';
 				$theCode .= '<div class="checkbox"><label for="hidePages"><input type="checkbox" name="hidePages" id="hidePages" value="1" />' . $GLOBALS['LANG']->getLL('wiz_newPages_hidePages') . '</label></div>';

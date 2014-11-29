@@ -121,7 +121,7 @@ class TemplateAnalyzerModuleFunctionController extends \TYPO3\CMS\Backend\Module
 		$head .= '<th>' . $GLOBALS['LANG']->getLL('nextLevel', TRUE) . '</th>';
 		$head .= '</tr></thead>';
 		$hierar = implode(array_reverse($GLOBALS['tmpl']->ext_getTemplateHierarchyArr($hierarchyInfo, '', array(), 1)), '');
-		$hierar = '<table class="t3-table" id="ts-analyzer">' . $head . $hierar . '</table>';
+		$hierar = '<div class="table-fit"><table class="t3-table" id="ts-analyzer">' . $head . $hierar . '</table></div>';
 		$theOutput .= $this->pObj->doc->spacer(5);
 		$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('templateHierarchy', TRUE), $hierar, 0, 1);
 		$urlParameters = array(

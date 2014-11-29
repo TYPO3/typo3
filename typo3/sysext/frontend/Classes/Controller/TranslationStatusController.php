@@ -250,16 +250,19 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 			}
 		}
 
-		$output = '<table id="langTable" class="t3-table">' .
-			'<thead>' .
-				'<tr>' .
-					implode('', $tCells) .
-				'</tr>' .
-				'</thead>' .
-				'<tbody>' .
-					$output .
-				'</tbody>' .
-			'</table>';
+		$output =
+			'<div class="table-fit">' .
+				'<table id="langTable" class="t3-table">' .
+					'<thead>' .
+						'<tr>' .
+							implode('', $tCells) .
+						'</tr>' .
+					'</thead>' .
+					'<tbody>' .
+						$output .
+					'</tbody>' .
+				'</table>' .
+			'</div>';
 		return $output;
 	}
 

@@ -267,7 +267,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 			$outCode .= $this->tableRow($lang->getLL('description'), nl2br(htmlspecialchars($tplRow['description'])), 'description', $tplRow['uid']);
 			$outCode .= $this->tableRow($lang->getLL('constants'), sprintf($lang->getLL('editToView'), trim($tplRow['constants']) ? count(explode(LF, $tplRow['constants'])) : 0), 'constants', $tplRow['uid']);
 			$outCode .= $this->tableRow($lang->getLL('setup'), sprintf($lang->getLL('editToView'), trim($tplRow['config']) ? count(explode(LF, $tplRow['config'])) : 0), 'config', $tplRow['uid']);
-			$outCode = '<table class="t3-table">' . $outCode . '</table>';
+			$outCode = '<div class="table-fit"><table class="t3-table">' . $outCode . '</table></div>';
 
 			// Edit all icon:
 			$editOnClick = BackendUtility::editOnClick(rawurlencode('&createExtension=0') . '&amp;edit[sys_template][' . $tplRow['uid'] . ']=edit', $GLOBALS['BACK_PATH'], '');

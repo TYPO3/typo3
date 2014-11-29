@@ -80,7 +80,7 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 					</tr>';
 				}
 				$theCode .= '<h2>' . $GLOBALS['LANG']->getLL('wiz_currentPageOrder', TRUE) . '</h2>';
-				$theCode .= '<table class="t3-table">' . implode('', $lines) . '</table>';
+				$theCode .= '<div class="table-fit"><table class="t3-table">' . implode('', $lines) . '</table></div>';
 
 				// Menu:
 				$lines = array();

@@ -191,7 +191,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
-			$table = '<table class="t3-table" id="ts-overview">' .
+			$table = '<div class="table-fit"><table class="t3-table" id="ts-overview">' .
 					'<thead>' .
 					'<tr>' .
 					'<th>' . $GLOBALS['LANG']->getLL('pageName') . '</th>' .
@@ -201,7 +201,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 					'</tr>' .
 					'</thead>' .
 					'<tbody>' . implode('', $this->renderList($pArray)) . '</tbody>' .
-					'</table>';
+					'</table></div>';
 
 			$this->content = $this->doc->header($GLOBALS['LANG']->getLL('moduleTitle'));
 			$this->content .= $this->doc->section('', '<p class="lead">' . $GLOBALS['LANG']->getLL('overview') . '</p>' . $table);
