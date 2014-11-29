@@ -15,11 +15,11 @@ namespace TYPO3\CMS\Felogin\Tests\Unit\Controller;
  */
 
 /**
- * Testcase for URL validation in class FrontendLoginController
+ * Test case
  *
  * @author Helmut Hummel <helmut@typo3.org>
  */
-class FrontendLoginTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class FrontendLoginControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Felogin\Controller\FrontendLoginController|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
