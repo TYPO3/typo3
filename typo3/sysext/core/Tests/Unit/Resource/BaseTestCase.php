@@ -123,7 +123,7 @@ abstract class BaseTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 *
 	 * @param string $identifier
 	 * @param array $mockedMethods the methods to mock
-	 * @return \TYPO3\CMS\Core\Resource\File
+	 * @return \TYPO3\CMS\Core\Resource\File|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected function getSimpleFileMock($identifier, $mockedMethods = array()) {
 		return $this->_createFileFolderMock('TYPO3\\CMS\\Core\\Resource\\File', $identifier, $mockedMethods);
