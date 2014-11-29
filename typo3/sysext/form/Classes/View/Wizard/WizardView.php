@@ -218,7 +218,8 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 			'Viewport/Left/Form/PostProcessors/Mail.js',
 			'Viewport/Left/Form/PostProcessors/Redirect.js'
 		);
-		// Load ExtJS
+		// Load ExtJS and prototype
+		$this->pageRenderer->loadPrototype();
 		$this->pageRenderer->loadExtJS();
 		// Load the wizards javascript
 		$baseUrl = ExtensionManagementUtility::extRelPath('form') . 'Resources/Public/JavaScript/Wizard/';
