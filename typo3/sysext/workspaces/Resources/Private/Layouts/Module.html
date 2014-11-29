@@ -25,6 +25,7 @@
 
 <div id="typo3-docbody">
 	<div id="typo3-inner-docbody">
+		<f:if condition="{pageTitle}"><h1>{pageTitle}</h1></f:if>
 		<f:flashMessages renderMode="div" />
 		<div id="workspacetabs"></div>
 		<div class="typo3-dyntabmenu-divs"><f:render section="main" /></div>

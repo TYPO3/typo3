@@ -36,6 +36,10 @@ class ReviewController extends AbstractController {
 		$this->view->assign('showGrid', !($GLOBALS['BE_USER']->workspace === 0 && !$GLOBALS['BE_USER']->isAdmin()));
 		$this->view->assign('showAllWorkspaceTab', TRUE);
 		$this->view->assign('pageUid', GeneralUtility::_GP('id'));
+		if (GeneralUtility::_GP('id')) {
+			$pageRecord = BackendUtility::getRecord('pages', GeneralUtility::_GP('id'));
+			$this->view->assign('pageTitle', BackendUtility::getRecordTitle('pages', $pageRecord));
+		}
 		$this->view->assign('showLegend', !($GLOBALS['BE_USER']->workspace === 0 && !$GLOBALS['BE_USER']->isAdmin()));
 		$wsList = $wsService->getAvailableWorkspaces();
 		$activeWorkspace = $GLOBALS['BE_USER']->workspace;
