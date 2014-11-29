@@ -297,12 +297,12 @@ CREATE TABLE sys_file (
 
 	# file info data
 	identifier text,
-	identifier_hash varchar(40) DEFAULT '' NOT NULL,
-	folder_hash varchar(40) DEFAULT '' NOT NULL,
+	identifier_hash char(40) DEFAULT '' NOT NULL,
+	folder_hash char(40) DEFAULT '' NOT NULL,
 	extension varchar(255) DEFAULT '' NOT NULL,
 	mime_type varchar(255) DEFAULT '' NOT NULL,
 	name tinytext,
-	sha1 tinytext,
+	sha1 char(40) DEFAULT '' NOT NULL,
 	size bigint(20) unsigned DEFAULT '0' NOT NULL,
 	creation_date int(11) DEFAULT '0' NOT NULL,
 	modification_date int(11) DEFAULT '0' NOT NULL,
@@ -312,7 +312,7 @@ CREATE TABLE sys_file (
 	KEY folder (storage,folder_hash),
 	KEY tstamp (tstamp),
 	KEY lastindex (last_indexed),
-	KEY sha1 (sha1(40))
+	KEY sha1 (sha1)
 );
 
 #
@@ -372,8 +372,8 @@ CREATE TABLE sys_file_processedfile (
 	identifier varchar(512) DEFAULT '' NOT NULL,
 	name tinytext,
 	configuration text,
-	configurationsha1 varchar(40) DEFAULT '' NOT NULL,
-	originalfilesha1 varchar(40) DEFAULT '' NOT NULL,
+	configurationsha1 char(40) DEFAULT '' NOT NULL,
+	originalfilesha1 char(40) DEFAULT '' NOT NULL,
 	task_type varchar(200) DEFAULT '' NOT NULL,
 	checksum varchar(255) DEFAULT '' NOT NULL,
 	width int(11) DEFAULT '0',
