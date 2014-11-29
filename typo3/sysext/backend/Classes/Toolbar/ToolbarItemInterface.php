@@ -24,6 +24,7 @@ interface ToolbarItemInterface {
 
 	/**
 	 * Checks whether the user has access to this toolbar item
+	 * @TODO: Split into two methods a permission method and a "hasContent" or similar
 	 *
 	 * @return boolean TRUE if user has access, FALSE if not
 	 */
@@ -61,7 +62,7 @@ interface ToolbarItemInterface {
 	 *     'data-foo' => '42',
 	 * )
 	 *
-	 * @return string List item HTML attibutes
+	 * @return string List item HTML attributes
 	 */
 	public function getAdditionalAttributes();
 
