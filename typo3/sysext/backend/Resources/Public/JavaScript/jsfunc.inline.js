@@ -273,7 +273,7 @@ var inline = {
 					eval(value);
 				});
 			}
-			TYPO3.TCEFORMS.convertDateFieldsToDatePicker();
+			TYPO3.FormEngine.reinitialize();
 		}
 	},
 

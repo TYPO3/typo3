@@ -133,19 +133,16 @@ class InputElement extends AbstractFormElement {
 		}
 		$paramsList = '\'' . $additionalInformation['itemFormElName'] . '\',\'' . implode(',', $evalList) . '\',\'' . trim($config['is_in']) . '\',' . (isset($config['checkbox']) ? 1 : 0) . ',\'' . $config['checkbox'] . '\'';
 		if (in_array('date', $evalList) || in_array('datetime', $evalList)) {
-			$item .= '<span class="t3-tceforms-input-wrapper-datetime" onmouseOver="if (document.getElementById(\'' . $inputId . '\').value) {this.className=\'t3-tceforms-input-wrapper-datetime-hover\';} else {this.className=\'t3-tceforms-input-wrapper-datetime\';};" onmouseOut="this.className=\'t3-tceforms-input-wrapper-datetime\';">';
+			$item .= '<span class="t3-tceforms-input-wrapper-datetime">';
 			// Add server timezone offset to UTC to our stored date
 			if ($additionalInformation['itemFormElValue'] > 0) {
 				$additionalInformation['itemFormElValue'] += date('Z', $additionalInformation['itemFormElValue']);
 			}
 		} else {
-			$item .= '<span class="t3-tceforms-input-wrapper" onmouseOver="if (document.getElementById(\'' . $inputId . '\').value) {this.className=\'t3-tceforms-input-wrapper-hover\';} else {this.className=\'t3-tceforms-input-wrapper\';};" onmouseOut="this.className=\'t3-tceforms-input-wrapper\';">';
+			$item .= '<span class="t3-tceforms-input-wrapper">';
 		}
 		$additionalInformation['fieldChangeFunc'] = array_merge(array('typo3form.fieldGet' => 'typo3form.fieldGet(' . $paramsList . ');'), $additionalInformation['fieldChangeFunc']);
-		// Old function "checkbox" now the option to set the date / remove the date
-		if (isset($config['checkbox'])) {
-			$item .= IconUtility::getSpriteIcon('actions-input-clear', array('tag' => 'a', 'class' => 't3-tceforms-input-clearer', 'onclick' => 'document.getElementById(\'' . $inputId . '\').value=\'\';document.getElementById(\'' . $inputId . '\').focus();' . implode('', $additionalInformation['fieldChangeFunc'])));
-		}
+
 		$mLgd = $config['max'] ?: 256;
 		$iOnChange = implode('', $additionalInformation['fieldChangeFunc']);
 		$cssClasses[] = 'hasDefaultValue';

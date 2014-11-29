@@ -9747,13 +9747,6 @@ table#typo3-altdoc-header input,
   background: #efeff4;
   border: 0;
 }
-.t3-tceforms-input-wrapper,
-.t3-tceforms-input-wrapper-hover,
-.t3-tceforms-input-wrapper-datetime,
-.t3-tceforms-input-wrapper-datetime-hover {
-  display: block;
-  position: relative;
-}
 .t3-tceforms-widget-null-wrapper {
   display: inline-block;
   float: right;
@@ -9765,41 +9758,8 @@ table#typo3-altdoc-header input,
   margin-left: 2px;
   margin-top: 42%;
 }
-.t3-tceforms-input-wrapper .t3-tceforms-input-clearer,
-.t3-tceforms-input-wrapper-hover .t3-tceforms-input-clearer {
-  position: absolute;
-  right: 10px;
-  top: 5px;
-  z-index: 1000;
-  cursor: pointer;
-}
-.t3-tceforms-input-wrapper-datetime .t3-tceforms-input-clearer,
-.t3-tceforms-input-wrapper-datetime-hover .t3-tceforms-input-clearer {
-  position: absolute;
-  right: 27px;
-  top: 5px;
-  z-index: 1000;
-  cursor: pointer;
-}
-.t3-tceforms-input-wrapper-datetime .t3-icon-edit-pick-date,
-.t3-tceforms-input-wrapper-datetime-hover .t3-icon-edit-pick-date {
+.t3-tceforms-input-wrapper-datetime .t3-icon-edit-pick-date {
   top: -4px;
-}
-.t3-tceforms-input-wrapper .tceforms-textfield,
-.t3-tceforms-input-wrapper-hover .tceforms-textfield,
-.t3-tceforms-input-wrapper .tceforms-datetimefield,
-.t3-tceforms-input-wrapper-hover .tceforms-datetimefield,
-.t3-tceforms-input-wrapper-datetime .tceforms-textfield,
-.t3-tceforms-input-wrapper-datetime-hover .tceforms-textfield,
-.t3-tceforms-input-wrapper-datetime .tceforms-datetimefield,
-.t3-tceforms-input-wrapper-datetime-hover .tceforms-datetimefield {
-  position: relative;
-  z-index: 2000;
-  padding-right: 30px!important;
-}
-.t3-tceforms-input-wrapper-hover .t3-tceforms-input-clearer,
-.t3-tceforms-input-wrapper-datetime-hover .t3-tceforms-input-clearer {
-  z-index: 3700;
 }
 .typo3-TCEforms table#typo3-altdoc-header input:hover,
 .c-inputButton:hover {
@@ -11078,6 +11038,21 @@ span.typo3-moduleHeader img {
 }
 a.typo3-goBack {
   font-weight: bold;
+}
+/* - - - - - - - - - - - - - - - - - - - - -
+   Styles for the "clearable" jquery plugin.
+- - - - - - - - - - - - - - - - - - - - - */
+.t3-clearable-wrapper {
+  position: relative;
+  display: inline-block;
+}
+.t3-clearable {
+  padding-right: 15px;
+}
+.t3-clearable-wrapper .t3-input-clearer {
+  position: absolute;
+  right: 5px;
+  top: 5px;
 }
 /**
  * This file is part of the TYPO3 CMS project.

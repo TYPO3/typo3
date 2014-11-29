@@ -514,6 +514,8 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 
 	/**
 	 * initialize events for all form engine relevant tasks
+	 * this function only needs to be called once on page load,
+	 * as it using deferrer methods only
 	 */
 	FormEngine.initializeEvents = function() {
 
@@ -575,6 +577,8 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 
 	/**
 	 * make sure that all selectors and input filters are recognized
+	 * note: this also works on elements that are loaded asynchronously via AJAX, no need to call this method
+	 * after an AJAX load.
 	 */
 	FormEngine.SelectBoxFilter.initializeEvents = function() {
 		$(document).on('keyup', FormEngine.SelectBoxFilter.options.filterTextFieldSelector, function() {
@@ -619,13 +623,32 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 		}
 	};
 
+	/**
+	 * this is the main function that is called on page load, but also after elements are asynchroniously
+	 * called e.g. after IRRE elements are loaded again, or a new flexform section is added.
+	 * use this function in your extension like this "TYPO3.FormEngine.initialize()"
+	 * if you add new fields dynamically.
+	 *
+	 */
+	FormEngine.reinitialize = function() {
+		// apply "close" button to all input / datetime fields
+		if ($('.t3-tceforms-input-wrapper, .t3-tceforms-input-wrapper-datetime').length) {
+			require(['jquery/jquery.clearable'], function() {
+				$('.t3-tceforms-input-wrapper .formfield-input, .t3-tceforms-input-wrapper-datetime .formfield-input').clearable();
+			});
+		}
+		// note, this will be migrated to FormEngine itself soon
+		TYPO3.TCEFORMS.convertDateFieldsToDatePicker();
+	};
 
 	/**
 	 * initialize function, always require possible post-render hooks return the main object
 	 */
 	return function() {
+		// the functions are both using delegates, thus no need to be called again
 		FormEngine.initializeEvents();
 		FormEngine.SelectBoxFilter.initializeEvents();
+		FormEngine.reinitialize();
 
 		// load required modules to hook in the post initialize function
 		if (undefined !== TYPO3.settings.RequireJS && undefined !== TYPO3.settings.RequireJS.PostInitializationModules['TYPO3/CMS/Backend/FormEngine']) {
