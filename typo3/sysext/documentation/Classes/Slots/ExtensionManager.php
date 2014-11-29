@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Documentation\Slots;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Backend\Utility\IconUtility;
 
 /**
  * This slot listens to a signal in Extension Manager to add links to
@@ -58,6 +59,10 @@ class ExtensionManager {
 			foreach ($document->getTranslations() as $documentTranslation) {
 				$actions[] = $formatsViewHelper->render($documentTranslation);
 			}
+		} else {
+			$actions[] = '<span class="btn disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
+			$actions[] = '<span class="btn disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
+			$actions[] = '<span class="btn disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
 		}
 	}
 
