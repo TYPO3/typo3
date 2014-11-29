@@ -214,7 +214,15 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		$this->checkOptHtml = $this->getCheckOptions($brokenLinkOverView);
 		$this->checkOptHtmlCheck = $this->getCheckOptions($brokenLinkOverView, 'check');
 		$this->createTabs();
-		return '<div id="linkvalidator-modfuncreport"></div>';
+
+		$content = '';
+		if ($this->pObj->id) {
+			$pageRecord = BackendUtility::getRecord('pages', $this->pObj->id);
+			$content = '<h1>' . htmlspecialchars(BackendUtility::getRecordTitle('pages', $pageRecord)) . '</h1>';
+		}
+
+		$content .= '<div id="linkvalidator-modfuncreport"></div>';
+		return $content;
 	}
 
 	/**
