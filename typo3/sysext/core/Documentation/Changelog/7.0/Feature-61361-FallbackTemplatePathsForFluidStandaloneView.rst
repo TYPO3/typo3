@@ -13,7 +13,7 @@ in the TemplateView, providing the possibility to pass a set of possible
 file locations to the View Configuration, where Templates, Layouts and Partials
 can be found.
 
-The same functionality is now in the StandaloneView. It is possible to
+The same functionality is now available in the StandaloneView. It is possible to
 let the system look up the fitting paths for Partials and Layouts. It is
 in the nature of the StandaloneView to get a specific template file set, so
 for Templates there is no lookup requirement.

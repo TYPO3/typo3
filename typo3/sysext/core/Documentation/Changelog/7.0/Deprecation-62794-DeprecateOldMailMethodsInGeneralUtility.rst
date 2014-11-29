@@ -5,7 +5,7 @@ Deprecation: #62794 - Mail methods in GeneralUtility
 Description
 ===========
 
-The following methods of the class \TYPO3\CMS\Core\Utility\GeneralUtility are deprecated:
+The following methods of the class \TYPO3\CMS\Core\Utility\GeneralUtility have been marked as deprecated:
 
  * quoted_printable()
  * encodeHeader()
@@ -14,7 +14,7 @@ The following methods of the class \TYPO3\CMS\Core\Utility\GeneralUtility are de
 Impact
 ======
 
-The methods were used together with the old mail API and are obsolete now. Deprecation warnings will be triggered if used.
+The methods were used together with the old mail API and are now obsolete. Deprecation warnings will be triggered if used.
 
 Affected installations
 ======================

@@ -5,7 +5,7 @@ Deprecation: #62864 - BackendUtility->helpTextIcon deprecated
 Description
 ===========
 
-The function helpTextIcon in BackendUtility is deprecated.
+The function :php:`helpTextIcon()` in BackendUtility has been marked as deprecated.
 
 Impact
 ======
@@ -16,9 +16,9 @@ The core does not use this functionality anymore.
 Affected installations
 ======================
 
-All installations which use the function helpTextIcon.
+All installations which use the function :php:`helpTextIcon()`.
 
 Migration
 =========
 
-Use BackendUtility::cshItem instead.
+Use :php:`BackendUtility::cshItem()` instead.

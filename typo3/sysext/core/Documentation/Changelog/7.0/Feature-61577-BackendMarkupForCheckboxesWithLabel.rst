@@ -21,4 +21,4 @@ Impact
 ======
 
 If this HTML markup is applied, CSS styles by the TYPO3 core will take care of optimized view
-and custom CSS is obsolete.
+and custom CSS has become obsolete.

@@ -5,7 +5,7 @@ Deprecation: #62795 - DocumentTemplate->endPageJS()
 Description
 ===========
 
-Method TYPO3\CMS\Backend\Template\DocumentTemplate::endPageJS() and the according property "endJS" is deprecated.
+Method :php:`TYPO3\CMS\Backend\Template\DocumentTemplate::endPageJS()` and the according property :php:`endJS` have been marked as deprecated.
 
 
 Impact

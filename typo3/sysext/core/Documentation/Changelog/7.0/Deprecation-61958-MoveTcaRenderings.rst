@@ -5,7 +5,7 @@ Deprecation: #61958 - TCA rendering methods
 Description
 ===========
 
-The following methods of the class \TYPO3\CMS\Backend\Form\FormEngine are deprecated:
+The following methods of the class \TYPO3\CMS\Backend\Form\FormEngine have been marked as deprecated:
 
  * getSingleField_typeInput
  * getSingleField_typeText
@@ -24,7 +24,7 @@ Each method is moved into a designated class inside \TYPO3\CMS\Backend\Form\Elem
 Impact
 ======
 
-If a 3rd party extension calls the mentioned methods directly, a deprecation log will be created.
+If a 3rd party extension calls the mentioned methods directly, a deprecation log entry will be created.
 
 Affected installations
 ======================

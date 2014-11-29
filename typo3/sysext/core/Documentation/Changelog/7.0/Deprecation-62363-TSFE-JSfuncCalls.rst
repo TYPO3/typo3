@@ -9,20 +9,20 @@ TYPO3 CMS provides a way to register direct JS calls to be added to the body tag
 to allow several functions to register for e.g. "onload". Nowadays this is done via JS frameworks directly,
 or via JS variables.
 
-The functionality has marked as deprecated.
+The functionality has been marked as deprecated.
 
 Impact
 ======
 
 The core does not use this functionality anymore. Installations with menus using "GMENU_LAYERS",
-which have been removed from the core a while ago, but still use it via third-party extensions,
+which has been removed from the core a while ago, but still use it via third-party extensions,
 might not work anymore as expected.
 
 
 Affected installations
 ======================
 
-All installations which use the $TSFE->JSeventFuncCalls option, e.g. like GMENU_LAYERS.
+All installations which use the :php:`$TSFE->JSeventFuncCalls` option, e.g. like GMENU_LAYERS.
 
 Migration
 =========

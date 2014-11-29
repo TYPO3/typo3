@@ -5,8 +5,8 @@ Feature: #62147 - New eval option in TCA: email
 Description
 ===========
 
-A new option is added to the eval field: email. This will 
-check on server side if entered value is a valid e-mail address.
+A new option has been added to the eval field: email. This will
+check if the entered value is a valid e-mail address server-side.
 If not, a flash error message will be shown.
 
 Usage:

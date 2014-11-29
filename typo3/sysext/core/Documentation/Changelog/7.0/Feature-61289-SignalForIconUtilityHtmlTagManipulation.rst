@@ -15,4 +15,4 @@ Extensions can now adjust the html tag, add or remove attributes and define own 
 Impact
 ======
 
-The rendered html code is not stuck to a span with fixed classes anymore, but can be modified by an extension.
+The rendered html code is no longer a span with fixed classes, but can be modified by an extension.

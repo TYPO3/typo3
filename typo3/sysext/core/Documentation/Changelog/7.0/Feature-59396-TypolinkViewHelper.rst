@@ -5,7 +5,7 @@ Feature: #59396 - TypolinkViewHelper
 Description
 ===========
 
-Adding a ViewHelper that copes with the contents of any field that was filled with a link wizard in
+Added a ViewHelper that deals with the contents of any field that was filled with a link wizard in
 TYPO3 CMS Backend.
 Those fields contain various parts split by a space and being escaped to provide input for the
 typoLink function.

@@ -27,5 +27,5 @@ Usage:
 Impact
 ======
 
-The method signature of `\TYPO3\CMS\Linkvalidator::LinkAnalyser::init()` is changed. A new paramter is added
+The method signature of `\TYPO3\CMS\Linkvalidator::LinkAnalyser::init()` is changed. A new paramter has been added
 for submitting the current TSconfig. This can break third party code that extends this method.

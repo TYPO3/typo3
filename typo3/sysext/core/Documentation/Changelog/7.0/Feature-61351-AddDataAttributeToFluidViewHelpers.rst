@@ -16,4 +16,5 @@ Impact
 ======
 
 Generic data attributes do not need to be passed by the
-`additionalAttributes` array anymore.
+`additionalAttributes` array anymore making the viewhelper
+more straight forward to use.

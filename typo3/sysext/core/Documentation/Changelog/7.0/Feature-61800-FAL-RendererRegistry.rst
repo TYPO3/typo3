@@ -18,12 +18,12 @@ getPriority(), canRender() and render() method.
 
 - getPriority() returns integer between 1 and 100
 - canRender() gets a file(Reference) object as parameter and returns TRUE if the class is able to render the file
-  It checks on mime-type but also storage type etc can be performed to determine if creating the correct output
+  It checks on mime-type but also storage type etc. can be performed to determine if creating the correct output
   is possible
-- render() get also the file(Reference) object as parameter together with width, height and an optional options array
+- render() also gets the file(Reference) object as parameter together with width, height and an optional options array
   the return value is the HTML output
 
-A AudioTagRenderer and VideoTagRenderer are already added.
+A AudioTagRenderer and VideoTagRenderer have already been added.
 
 It is possible to register your own renderer classes in the ext_localconf.php of an extension.
 

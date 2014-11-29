@@ -5,7 +5,7 @@ Feature: #60064 - Logging Framework Introspection Processor
 Description
 ===========
 
-The introspection processor of the logging framework was extended to log the full PHP backtrace and not only the last
+The introspection processor of the logging framework has been extended to log the full PHP backtrace and not only the last
 element of a backtrace.
 
 Two options were added to enable this feature:

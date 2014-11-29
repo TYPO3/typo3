@@ -32,5 +32,5 @@ where the TypoScript Condition class deals with =/!= etc itself.
 Impact
 ======
 
-If you've previously used the "userFunc" condition, it is encouraged
+If you've previously used the "userFunc" condition, you are encouraged
 to use this new API for your own TypoScript conditions.

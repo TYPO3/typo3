@@ -7,7 +7,7 @@ Description
 
 In previous versions the ExtendedTemplateService used a conditional wrapper method to apply htmlspecialchars()
 for rendering TypoScript search labels, keys and comments in the backend. This option was never used, so
-htmlspecialchars() was always activated anyways - and the option and method are redundant and not necessary.
+htmlspecialchars() was always activated rendering the option and method redundant and not necessary.
 Calls to the method are removed. The ExtendedTemplateServer method and property are now marked as deprecated
 for removal with CMS 8.
 
