@@ -64,7 +64,12 @@ class FormatsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
 			$output .= ' title="' . htmlspecialchars($title) . '">';
 			$spriteIconHtml = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile($extension);
 			$output .= $spriteIconHtml . '</a>' . LF;
-			$icons[$format->getFormat()] = $output;
+			$keyFormat = $format->getFormat();
+			if ($keyFormat === 'json') {
+				// It should take over the place of sxw which will then never be used
+				$keyFormat = 'sxw';
+			}
+			$icons[$keyFormat] = $output;
 		}
 		return implode('', array_values($icons));
 	}

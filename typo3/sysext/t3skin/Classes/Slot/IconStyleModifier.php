@@ -109,6 +109,7 @@ class IconStyleModifier {
 		't3-icon t3-icon-mimetypes t3-icon-mimetypes-text t3-icon-text-html' => 'fa-file-text-o',
 		't3-icon t3-icon-mimetypes t3-icon-mimetypes-word t3-icon-word' => 'fa-file-word-o',
 		't3-icon t3-icon-mimetypes t3-icon-mimetypes-x t3-icon-x-sys_language' => 'fa-globe',
+		't3-icon t3-icon-mimetypes t3-icon-mimetypes-text t3-icon-text-js' => 'fa-code',
 		't3-icon t3-icon-status t3-icon-status-dialog t3-icon-dialog-error' => 'fa-exclamation-triangle',
 		't3-icon t3-icon-status t3-icon-status-dialog t3-icon-dialog-information' => 'fa-info-circle',
 		't3-icon t3-icon-status t3-icon-status-status t3-icon-status-locked' => 'fa-lock',
