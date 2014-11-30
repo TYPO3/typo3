@@ -70,7 +70,6 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 	public function main() {
 		$menu = BackendUtility::getFuncMenu($this->pObj->id, 'SET[tsconf_parts]', $this->pObj->MOD_SETTINGS['tsconf_parts'], $this->pObj->MOD_MENU['tsconf_parts']);
 		$menu .= '<div class="checkbox"><label for="checkTsconf_alphaSort">' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[tsconf_alphaSort]', $this->pObj->MOD_SETTINGS['tsconf_alphaSort'], '', '', 'id="checkTsconf_alphaSort"') . $GLOBALS['LANG']->getLL('sort_alphabetic', TRUE) . '</label></div>';
-		$menu .= '<br /><br />';
 		$theOutput = $this->pObj->doc->header($GLOBALS['LANG']->getLL('tsconf_title'));
 
 		if ($this->pObj->MOD_SETTINGS['tsconf_parts'] == 99) {
@@ -109,9 +108,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 			} else {
 				$editIcon = '';
 			}
-			$theOutput .= $this->pObj->doc->section('', BackendUtility::cshItem(('_MOD_' . $GLOBALS['MCONF']['name']), 'tsconfig_edit', NULL, '|<br />') . $menu . '
-					<br /><br />
-
+			$theOutput .= $this->pObj->doc->section('', BackendUtility::cshItem(('_MOD_' . $GLOBALS['MCONF']['name']), 'tsconfig_edit', NULL) . $menu . '
 					<!-- Edit fields: -->
 					<table border="0" cellpadding="0" cellspacing="1">' . implode('', $lines) . '</table><br />' . $editIcon, 0, 1);
 
@@ -176,7 +173,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 				$modTSconfig = array();
 			}
 
-			$csh = BackendUtility::cshItem('_MOD_' . $GLOBALS['MCONF']['name'], 'tsconfig_hierarchy', NULL, '|<br />');
+			$csh = BackendUtility::cshItem('_MOD_' . $GLOBALS['MCONF']['name'], 'tsconfig_hierarchy', NULL);
 			$tree = $tmpl->ext_getObjTree($modTSconfig, '', '', '', '', $this->pObj->MOD_SETTINGS['tsconf_alphaSort']);
 
 			$theOutput .= $this->pObj->doc->section(
