@@ -67,7 +67,7 @@
 	});
 
 	function bindDownload() {
-		var installButtons = $('.downloadFromTer form.download input[type=submit]');
+		var installButtons = $('.downloadFromTer form.download button[type=submit]');
 		installButtons.off('click');
 		installButtons.on('click', function(event) {
 			event.preventDefault();

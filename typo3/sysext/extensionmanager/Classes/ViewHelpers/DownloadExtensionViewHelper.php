@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+
 /**
  * view helper
  *
@@ -52,8 +54,10 @@ class DownloadExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\FormViewH
 		$this->tag->addAttribute('data-href', $uri);
 
 		// @TODO Clean-up
-		$iconClasses = "t3-icon t3-icon-actions t3-icon-system-extension-import";
-		$label = '<input title="' . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('extensionList.downloadViewHelper.submit', 'extensionmanager') . '" type="submit" class="' . $iconClasses . '" value="' . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('extensionList.downloadViewHelper.submit', 'extensionmanager') . '">';
+		$iconClasses = 'btn fa fa-cloud-download';
+		$label = '<div class="btn-group"><button title="' . LocalizationUtility::translate('extensionList.downloadViewHelper.submit', 'extensionmanager') .
+			'" type="submit" class="' . $iconClasses . '" value="' .
+			LocalizationUtility::translate('extensionList.downloadViewHelper.submit', 'extensionmanager') . '" /></div>';
 
 		$this->tag->setContent($label . $pathSelector);
 		$this->tag->addAttribute('class', 'download');
