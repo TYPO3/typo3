@@ -28,4 +28,6 @@ nbproject
 Packages/*
 typo3temp/*
 typo3conf/*
+fileadmin/*
+uploads/*
 composer.lock
