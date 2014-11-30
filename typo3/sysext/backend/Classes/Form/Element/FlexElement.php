@@ -468,7 +468,7 @@ class FlexElement extends AbstractFormElement {
 								$theFormEl = $this->formEngine->getSingleField_SW($table, $field, $row, $fakePA);
 								$theTitle = htmlspecialchars($fakePA['fieldConf']['label']);
 								if (!in_array('DEF', $rotateLang)) {
-									$defInfo = '<div class="typo3-TCEforms-originalLanguageValue">'
+									$defInfo = '<div class="t3-form-original-language">'
 										. $this->formEngine->getLanguageIcon($table, $row, 0)
 										. $this->formEngine->previewFieldValue($editData[$key]['vDEF'], $fakePA['fieldConf'], $field)
 										. '&nbsp;</div>';
@@ -478,7 +478,7 @@ class FlexElement extends AbstractFormElement {
 								if (!$PA['_noEditDEF']) {
 									$prLang = $this->formEngine->getAdditionalPreviewLanguages();
 									foreach ($prLang as $prL) {
-										$defInfo .= '<div class="typo3-TCEforms-originalLanguageValue">'
+										$defInfo .= '<div class="t3-form-original-language">'
 											. $this->formEngine->getLanguageIcon($table, $row, ('v' . $prL['ISOcode']))
 											. $this->formEngine->previewFieldValue($editData[$key][('v' . $prL['ISOcode'])], $fakePA['fieldConf'], $field)
 											. '&nbsp;</div>';

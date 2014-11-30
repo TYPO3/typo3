@@ -2123,18 +2123,18 @@ class FormEngine {
 			// Don't show content if it's for IRRE child records:
 			if ($fieldConfig['config']['type'] != 'inline') {
 				if ($defaultLanguageValue !== '') {
-					$item .= '<div class="typo3-TCEforms-originalLanguageValue">' . $this->getLanguageIcon($table, $row, 0)
+					$item .= '<div class="t3-form-original-language">' . $this->getLanguageIcon($table, $row, 0)
 						. $this->getMergeBehaviourIcon($fieldConfig['l10n_mode'])
-						. $this->previewFieldValue($defaultLanguageValue, $fieldConfig, $field) . '&nbsp;</div>';
+						. $this->previewFieldValue($defaultLanguageValue, $fieldConfig, $field) . '</div>';
 				}
 				$previewLanguages = $this->getAdditionalPreviewLanguages();
 				foreach ($previewLanguages as $previewLanguage) {
 					$defaultLanguageValue = BackendUtility::getProcessedValue($table, $field, $this->additionalPreviewLanguageData[$table . ':' . $row['uid']][$previewLanguage['uid']][$field], 0, 1);
 					if ($defaultLanguageValue !== '') {
-						$item .= '<div class="typo3-TCEforms-originalLanguageValue">'
+						$item .= '<div class="t3-form-original-language">'
 							. $this->getLanguageIcon($table, $row, ('v' . $previewLanguage['ISOcode']))
 							. $this->getMergeBehaviourIcon($fieldConfig['l10n_mode'])
-							. $this->previewFieldValue($defaultLanguageValue, $fieldConfig, $field) . '&nbsp;</div>';
+							. $this->previewFieldValue($defaultLanguageValue, $fieldConfig, $field) . '</div>';
 					}
 				}
 			}
@@ -2170,8 +2170,10 @@ class FormEngine {
 						BackendUtility::getProcessedValue($table, $field, $dLVal['old'][$field], 0, 1),
 						BackendUtility::getProcessedValue($table, $field, $dLVal['new'][$field], 0, 1)
 					);
-					$item .= '<div class="typo3-TCEforms-diffBox">' . '<div class="typo3-TCEforms-diffBox-header">'
-						. htmlspecialchars($this->getLL('l_changeInOrig')) . ':</div>' . $diffres . '</div>';
+					$item .= '<div class="t3-form-original-language-diff">
+						<div class="t3-form-original-language-diffheader">' . htmlspecialchars($this->getLL('l_changeInOrig')) . '</div>
+						<div class="t3-form-original-language-diffcontent">' . $diffres . '</div>
+					</div>';
 				}
 			}
 		}
@@ -4327,7 +4329,7 @@ class FormEngine {
 			}
 		}
 		$out = '';
-		if ($this->cachedLanguageFlag[$mainKey][$sys_language_uid]['flagIcon']) {
+		if ($this->cachedLanguageFlag[$mainKey][$sys_language_uid]['flagIcon'] && $this->cachedLanguageFlag[$mainKey][$sys_language_uid]['flagIcon'] != 'empty-empty') {
 			$out .= IconUtility::getSpriteIcon($this->cachedLanguageFlag[$mainKey][$sys_language_uid]['flagIcon']);
 			$out .= '&nbsp;';
 		} elseif ($this->cachedLanguageFlag[$mainKey][$sys_language_uid]['title']) {

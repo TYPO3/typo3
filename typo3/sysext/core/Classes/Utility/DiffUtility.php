@@ -95,10 +95,10 @@ class DiffUtility {
 					$outString .= $this->addClearBuffer($clearBuffer);
 					$clearBuffer = '';
 					if (is_array($diffResArray[$a + 1]['old'])) {
-						$outString .= '<' . $wrapTag . ' class="diff-r">' . htmlspecialchars(implode(' ', $diffResArray[($a + 1)]['old'])) . '</' . $wrapTag . '> ';
+						$outString .= '<' . $wrapTag . ' class="text-danger">' . htmlspecialchars(implode(' ', $diffResArray[($a + 1)]['old'])) . '</' . $wrapTag . '> ';
 					}
 					if (is_array($diffResArray[$a + 1]['new'])) {
-						$outString .= '<' . $wrapTag . ' class="diff-g">' . htmlspecialchars(implode(' ', $diffResArray[($a + 1)]['new'])) . '</' . $wrapTag . '> ';
+						$outString .= '<' . $wrapTag . ' class="text-success">' . htmlspecialchars(implode(' ', $diffResArray[($a + 1)]['new'])) . '</' . $wrapTag . '> ';
 					}
 					$chInfParts = explode(',', $diffResArray[$a + 1]['changeInfo']);
 					if ((string)$chInfParts[0] === (string)($a + 1)) {

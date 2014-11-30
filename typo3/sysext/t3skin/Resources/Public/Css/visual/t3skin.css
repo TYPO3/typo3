@@ -9958,17 +9958,31 @@ select option.c-divider {
   font-style: italic;
   text-transform: uppercase;
 }
-.typo3-TCEforms div.typo3-TCEforms-originalLanguageValue {
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+show text of default language under the translated input field
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+.t3-form-original-language {
   background-color: #dadada;
   border: 1px solid #c0c0c0;
+  padding: 2px;
+  font-size: 0.9em;
+  margin-top: 4px;
 }
-.typo3-TCEforms div.typo3-TCEforms-diffBox {
-  background-color: white;
-  border: 1px solid black;
+.t3-form-original-language-diff {
+  border: 1px solid #c0c0c0;
+  font-size: 0.9em;
+  margin-top: 4px;
 }
-.typo3-TCEforms div.typo3-TCEforms-diffBox-header {
-  background-color: red;
+.t3-form-original-language-diffheader {
+  background-color: #efc7c7;
   font-weight: bold;
+  padding: 2px;
+}
+a.t3-form-original-language-diffheader:hover {
+  background-color: #e49f9f;
+}
+.t3-form-original-language-diffcontent {
+  padding: 2px;
 }
 /* Default. Always used on main-palettes in the bottom of the forms */
 .typo3-TCEforms .typo3-TCEforms-checkboxArray td {
