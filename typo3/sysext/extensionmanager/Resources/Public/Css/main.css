@@ -189,9 +189,6 @@
 .excludeFromUpdates {
   color: #000; }
 
-.typo3-extension-list td.icons {
-  width: 205px; }
-
 #typo3-extension-configuration-forms .info {
   color: #666;
   font-weight: normal; }
