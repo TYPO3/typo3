@@ -8,38 +8,35 @@
 					<b>{onlineUser.backendUser.userName}</b><br />
 					{onlineUser.backendUser.realName}
 				</td>
-				<td class="col-control">
-					<div class="btn-group" role="group">
-						<a class="btn" href="#" onclick="top.launchView('be_users', '{onlineUser.backendUser.uid}',''); return false;">
-							<bu:SpriteManagerIcon iconName="actions-document-info" />
-						</a>
-					</div>
-				</td>
 			</f:then>
 			<f:else>
-				<td colspan="2"></td>
+				<td></td>
 			</f:else>
 		</f:if>
-
 		<td>
 			<f:format.date format="{dateFormat} {timeFormat}" date="{session.timestamp}" />
 		</td>
 		<td>{session.ip}</td>
-		<td>
-			<f:if condition="{currentSessionId} == {session.id}">
-				<f:else>
-					<f:link.action
-						class="btn"
-						action="terminateBackendUserSession"
-						controller="BackendUser"
-						arguments="{backendUser: onlineUser.backendUser, sessionId: session.id}"
-						onclick="javascript:return confirm('{f:translate(key: \'reallyLogout\')} {onlineUser.backendUser.userName}?');"
-					>
-						<bu:spriteManagerIcon iconName="actions-document-close" />
-						<f:translate key="endSession" />
-					</f:link.action>
-				</f:else>
-			</f:if>
+		<td class="col-control">
+			<div class="btn-group" role="group">
+				<f:if condition="{currentSessionId} == {session.id}">
+					<f:else>
+						<f:link.action
+							class="btn"
+							action="terminateBackendUserSession"
+							controller="BackendUser"
+							arguments="{backendUser: onlineUser.backendUser, sessionId: session.id}"
+							onclick="javascript:return confirm('{f:translate(key: \'reallyLogout\')} {onlineUser.backendUser.userName}?');"
+						>
+							<bu:spriteManagerIcon iconName="actions-document-close" />
+							<f:translate key="endSession" />
+						</f:link.action>
+					</f:else>
+				</f:if>
+				<a class="btn" href="#" onclick="top.launchView('be_users', '{onlineUser.backendUser.uid}',''); return false;">
+					<bu:SpriteManagerIcon iconName="actions-document-info" />
+				</a>
+			</div>
 		</td>
 	</tr>
 </f:for>
