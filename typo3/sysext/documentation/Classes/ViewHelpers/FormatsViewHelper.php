@@ -53,7 +53,7 @@ class FormatsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
 				if ($extension === 'json') {
 					$extension = 'js';
 				}
-				$output .= 'href="#" onclick="top.TYPO3.Backend.ContentContainer.setUrl(\'' . $uri . '\')"';
+				$output .= 'href="#" onclick="top.TYPO3.Backend.ContentContainer.setUrl(\'' . $uri . '\')" class="btn"';
 			}
 
 			$xliff = 'LLL:EXT:documentation/Resources/Private/Language/locallang.xlf';
