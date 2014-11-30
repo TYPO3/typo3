@@ -724,7 +724,7 @@ class TypoScriptFrontendController {
 	 * Internal charset of the frontend during rendering. (Default: UTF-8)
 	 * @var string
 	 */
-	public $renderCharset = '';
+	public $renderCharset = 'utf-8';
 
 	/**
 	 * Output charset of the websites content. This is the charset found in the
@@ -732,7 +732,7 @@ class TypoScriptFrontendController {
 	 * happens before output to browser. Defaults to ->renderCharset if not set.
 	 * @var string
 	 */
-	public $metaCharset = '';
+	public $metaCharset = 'utf-8';
 
 	/**
 	 * Assumed charset of locale strings.
@@ -810,6 +810,15 @@ class TypoScriptFrontendController {
 	protected $domainDataCache = array();
 
 	/**
+	 * Content type HTTP header being sent in the request.
+	 * @todo Ticket: #63642 Should be refactored to a request/response model later
+	 * @internal Should only be used by TYPO3 core for now
+	 *
+	 * @var string
+	 */
+	protected $contentType = 'text/html';
+
+	/**
 	 * Class constructor
 	 * Takes a number of GET/POST input variable as arguments and stores them internally.
 	 * The processing of these variables goes on later in this class.
@@ -856,6 +865,14 @@ class TypoScriptFrontendController {
 		}
 		$this->cacheHash = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class);
 		$this->initCaches();
+	}
+
+	/**
+	 * @param string $contentType
+	 * @internal Should only be used by TYPO3 core for now
+	 */
+	public function setContentType($contentType) {
+		$this->contentType = $contentType;
 	}
 
 	/**
@@ -3605,7 +3622,7 @@ class TypoScriptFrontendController {
 	public function processOutput() {
 		// Set header for charset-encoding unless disabled
 		if (empty($this->config['config']['disableCharsetHeader'])) {
-			$headLine = 'Content-Type: text/html; charset=' . trim($this->metaCharset);
+			$headLine = 'Content-Type: ' . $this->contentType . '; charset=' . trim($this->metaCharset);
 			header($headLine);
 		}
 		// Set cache related headers to client (used to enable proxy / client caching!)
