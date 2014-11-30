@@ -1,5 +1,5 @@
 This file is not maintained anymore and is only here for backwards compatibility
-@deprecated since TYPO3 CMS 6.3 and the file will be deleted two versions later
+@deprecated since TYPO3 CMS 7 and the file will be deleted in TYPO3 CMS 8
 ================================================================================
 
 ChangeLog for Extbase
