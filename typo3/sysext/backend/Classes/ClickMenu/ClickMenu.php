@@ -305,7 +305,7 @@ class ClickMenu {
 					$localItems['moreoptions'] = $this->linkItem(
 						$this->label('more'),
 						'',
-						'top.loadTopMenu(\'' . GeneralUtility::linkThisScript() . '&cmLevel=1&subname=moreoptions\');return false;',
+						'TYPO3.ClickMenu.fetch(' . GeneralUtility::quoteJSvalue(GeneralUtility::linkThisScript() . '&cmLevel=1&subname=moreoptions') . ');return false;',
 						FALSE,
 						TRUE
 					);
@@ -511,7 +511,7 @@ class ClickMenu {
 		if ($this->listFrame) {
 			$addParam['reloadListFrame'] = $this->alwaysContentFrame ? 2 : 1;
 		}
-		return $this->linkItem($this->label($type), IconUtility::getSpriteIcon('actions-edit-' . $type . ($isSel === $type ? '-release' : '')), 'top.loadTopMenu(\'' . $this->clipObj->selUrlDB($table, $uid, ($type === 'copy' ? 1 : 0), ($isSel == $type), $addParam) . '\');return false;');
+		return $this->linkItem($this->label($type), IconUtility::getSpriteIcon('actions-edit-' . $type . ($isSel === $type ? '-release' : '')), 'TYPO3.ClickMenu.fetch(' . GeneralUtility::quoteJSvalue($this->clipObj->selUrlDB($table, $uid, ($type === 'copy' ? 1 : 0), ($isSel == $type), $addParam)) . ');return false;');
 	}
 
 	/**
@@ -995,7 +995,7 @@ class ClickMenu {
 		if ($this->listFrame) {
 			$addParam['reloadListFrame'] = $this->alwaysContentFrame ? 2 : 1;
 		}
-		return $this->linkItem($this->label($type), IconUtility::getSpriteIcon('actions-edit-' . $type . ($isSel === $type ? '-release' : '')), 'top.loadTopMenu(\'' . $this->clipObj->selUrlFile($path, ($type === 'copy' ? 1 : 0), ($isSel == $type), $addParam) . '\');return false;');
+		return $this->linkItem($this->label($type), IconUtility::getSpriteIcon('actions-edit-' . $type . ($isSel === $type ? '-release' : '')), 'TYPO3.ClickMenu.fetch(' . GeneralUtility::quoteJSvalue($this->clipObj->selUrlFile($path, ($type === 'copy' ? 1 : 0), ($isSel == $type), $addParam)) . ');return false;');
 	}
 
 	/**
