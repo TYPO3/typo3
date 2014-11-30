@@ -60,11 +60,6 @@ class ConfigurationView {
 	public $doc;
 
 	/**
-	 * @var array
-	 */
-	public $include_once = array();
-
-	/**
 	 * @var string
 	 */
 	public $content;

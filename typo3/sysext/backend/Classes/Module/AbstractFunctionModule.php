@@ -76,27 +76,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * $SOBE = GeneralUtility::makeInstance(\TYPO3\CMS\Func\Controller\PageFunctionsController::class);
  * $SOBE->init();
  *
- * Include files?
- * Note: This "include_once" is deprecated since TYPO3 6.2: use auto-loading instead!
- * foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
- * $SOBE->checkExtObj();	// Checking for first level external objects
- *
- * Repeat Include files! - if any files has been added by second-level extensions
- * foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
- * $SOBE->checkSubExtObj(); // Checking second level external objects
- *
- * $SOBE->main();
- * $SOBE->printContent();
- *
- * Notice that the first part is as usual: Include classes and call
- * $SOBE->checkExtObj() to initialize any level-1 sub-modules.
- * But then again ->include_once is traversed IF the initialization of
- * the level-1 modules might have added more files!!
- * And after that $SOBE->checkSubExtObj() is called to initialize the second level.
- *
- * In this way even a third level could be supported - but most likely that is
- * a too layered model to be practical.
- *
  * Anyways, the final interesting thing is to see what the framework
  * "func_wizard" actually does:
  *
@@ -107,9 +86,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * OK, handles ordinary init. This includes setting up the
  * menu array with ->modMenu
  * parent::init($pObj,$conf);
- * Making sure that any further external classes are added to the
- * include_once array. Notice that inclusion happens twice
- * in the main script because of this!!!
  * $this->handleExternalFunctionValue();
  * }
  * }
@@ -199,16 +175,12 @@ abstract class AbstractFunctionModule {
 	 *
 	 * @return void
 	 * @see $function_key, \TYPO3\CMS\FuncWizards\Controller\WebFunctionWizardsBaseController::init()
-	 * @deprecated since 6.2. Instead of this include_once array, extensions should use auto-loading
 	 */
 	public function handleExternalFunctionValue() {
 		// Must clean first to make sure the correct key is set...
 		$this->pObj->MOD_SETTINGS = BackendUtility::getModuleData($this->pObj->MOD_MENU, GeneralUtility::_GP('SET'), $this->pObj->MCONF['name']);
 		if ($this->function_key) {
 			$this->extClassConf = $this->pObj->getExternalItemConfig($this->pObj->MCONF['name'], $this->function_key, $this->pObj->MOD_SETTINGS[$this->function_key]);
-			if (is_array($this->extClassConf) && $this->extClassConf['path']) {
-				$this->pObj->include_once[] = $this->extClassConf['path'];
-			}
 		}
 	}
 

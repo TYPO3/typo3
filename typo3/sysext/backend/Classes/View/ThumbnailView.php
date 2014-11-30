@@ -32,11 +32,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 class ThumbnailView {
 
 	/**
-	 * @var array
-	 */
-	public $include_once = array();
-
-	/**
 	 * The output directory of temporary files in PATH_site
 	 *
 	 * @var string

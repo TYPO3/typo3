@@ -107,13 +107,6 @@ class SimpleDataHandlerController {
 	public $generalComment;
 
 	/**
-	 * Files to include after init() function is called:
-	 *
-	 * @var array
-	 */
-	public $include_once = array();
-
-	/**
 	 * TYPO3 Core Engine
 	 *
 	 * @var \TYPO3\CMS\Core\DataHandling\DataHandler

@@ -14,10 +14,5 @@
 
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Recycler\Controller\RecyclerModuleController::class);
 $SOBE->initialize();
-// Include files?
-// @deprecated since 6.2 (see ExtensionManagementUtility::insertModuleFunction)
-foreach ($SOBE->include_once as $INC_FILE) {
-	include_once $INC_FILE;
-}
 $SOBE->render();
 $SOBE->flush();

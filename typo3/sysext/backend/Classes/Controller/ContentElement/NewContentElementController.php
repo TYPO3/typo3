@@ -73,13 +73,6 @@ class NewContentElementController {
 	public $doc;
 
 	/**
-	 * Includes a list of files to include between init() and main() - see init()
-	 *
-	 * @var array
-	 */
-	public $include_once = array();
-
-	/**
 	 * Used to accumulate the content of the module.
 	 *
 	 * @var string
@@ -106,10 +99,6 @@ class NewContentElementController {
 	 * @return void
 	 */
 	public function init() {
-		// Setting class files to include:
-		if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'])) {
-			$this->include_once = array_merge($this->include_once, $GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses']);
-		}
 		// Setting internal vars:
 		$this->id = (int)GeneralUtility::_GP('id');
 		$this->sys_language = (int)GeneralUtility::_GP('sys_language_uid');

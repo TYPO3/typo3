@@ -206,13 +206,6 @@ class PageLayoutController {
 	public $MOD_SETTINGS = array();
 
 	/**
-	 * Array, where files to include is accumulated in the init() function
-	 *
-	 * @var array
-	 */
-	public $include_once = array();
-
-	/**
 	 * Array of tables to be listed by the Web > Page module in addition to the default tables
 	 *
 	 * @var array

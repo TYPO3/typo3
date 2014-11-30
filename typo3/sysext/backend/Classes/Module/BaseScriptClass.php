@@ -59,11 +59,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Vendor\Prototype\Controller\PrototypeController::class);
  * $SOBE->init();
  *
- * AFTER INIT THE INTERNAL ARRAY ->include_once MAY HOLD FILENAMES TO INCLUDE
- * foreach($SOBE->include_once as $INC_FILE) {
- * 	include_once($INC_FILE);
- * }
- * Note: This "include_once" is deprecated since TYPO3 6.2: use auto-loading instead!
  *
  * THEN WE WILL CHECK IF THERE IS A 'SUBMODULE' REGISTERED TO BE INITIALIZED AS WELL:
  * $SOBE->checkExtObj();
@@ -171,14 +166,6 @@ class BaseScriptClass {
 	public $extClassConf;
 
 	/**
-	 * Contains absolute paths to class files to include from the global scope. This is done in the module index.php files after calling the init() function
-	 *
-	 * @see handleExternalFunctionValue()
-	 * @deprecated since 6.2. Instead of this include_once array, extensions should use auto-loading
-	 */
-	public $include_once = array();
-
-	/**
 	 * Generally used for accumulating the output content of backend modules
 	 *
 	 * @var string
@@ -256,22 +243,17 @@ class BaseScriptClass {
 
 	/**
 	 * Loads $this->extClassConf with the configuration for the CURRENT function of the menu.
-	 * If for this array the key 'path' is set then that is expected to be an absolute path to a file which should be included - so it is set in the internal array $this->include_once
 	 *
 	 * @param string $MM_key The key to MOD_MENU for which to fetch configuration. 'function' is default since it is first and foremost used to get information per "extension object" (I think that is what its called)
 	 * @param string $MS_value The value-key to fetch from the config array. If NULL (default) MOD_SETTINGS[$MM_key] will be used. This is useful if you want to force another function than the one defined in MOD_SETTINGS[function]. Call this in init() function of your Script Class: handleExternalFunctionValue('function', $forcedSubModKey)
 	 * @return void
-	 * @see getExternalItemConfig(), $include_once, init()
-	 * @deprecated since 6.2. Instead of this include_once array, extensions should use auto-loading
+	 * @see getExternalItemConfig(), init()
 	 */
 	public function handleExternalFunctionValue($MM_key = 'function', $MS_value = NULL) {
 		if ($MS_value === NULL) {
 			$MS_value = $this->MOD_SETTINGS[$MM_key];
 		}
 		$this->extClassConf = $this->getExternalItemConfig($this->MCONF['name'], $MM_key, $MS_value);
-		if (is_array($this->extClassConf) && $this->extClassConf['path']) {
-			$this->include_once[] = $this->extClassConf['path'];
-		}
 	}
 
 	/**
@@ -292,7 +274,6 @@ class BaseScriptClass {
 	 * Creates an instance of the class found in $this->extClassConf['name'] in $this->extObj if any (this should hold three keys, "name", "path" and "title" if a "Function menu module" tries to connect...)
 	 * This value in extClassConf might be set by an extension (in a ext_tables/ext_localconf file) which thus "connects" to a module.
 	 * The array $this->extClassConf is set in handleExternalFunctionValue() based on the value of MOD_SETTINGS[function]
-	 * (Should be) called from global scope right after inclusion of files from the ->include_once array.
 	 * If an instance is created it is initiated with $this passed as value and $this->extClassConf as second argument. Further the $this->MOD_SETTING is cleaned up again after calling the init function.
 	 *
 	 * @return void

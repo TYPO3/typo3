@@ -14,10 +14,5 @@
 
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Controller\SchedulerModuleController::class);
 $SOBE->init();
-// Include files?
-// @deprecated since 6.2 (see ExtensionManagementUtility::insertModuleFunction)
-foreach ($SOBE->include_once as $INC_FILE) {
-	include_once $INC_FILE;
-}
 $SOBE->main();
 $SOBE->render();

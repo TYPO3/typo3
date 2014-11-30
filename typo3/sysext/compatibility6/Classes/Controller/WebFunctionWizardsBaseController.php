@@ -38,8 +38,6 @@ class WebFunctionWizardsBaseController extends \TYPO3\CMS\Backend\Module\Abstrac
 	public function init(&$pObj, $conf) {
 		// OK, handles ordinary init. This includes setting up the menu array with ->modMenu
 		parent::init($pObj, $conf);
-		// Making sure that any further external classes are added to the include_once array.
-		// Notice that inclusion happens twice in the main script because of this!!!
 		$this->handleExternalFunctionValue();
 	}
 

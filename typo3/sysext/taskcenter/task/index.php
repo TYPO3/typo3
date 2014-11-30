@@ -13,9 +13,5 @@
  */
 
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Taskcenter\Controller\TaskModuleController::class);
-// Include files?
-foreach ($SOBE->include_once as $INC_FILE) {
-	include_once $INC_FILE;
-}
 $SOBE->main();
 $SOBE->printContent();

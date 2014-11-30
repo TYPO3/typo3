@@ -22,18 +22,10 @@
 /** @var $SOBE \TYPO3\CMS\Func\Controller\PageFunctionsController */
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Func\Controller\PageFunctionsController::class);
 $SOBE->init();
-// Include files?
-// @deprecated since 6.2 (see ExtensionManagementUtility::insertModuleFunction)
-foreach ($SOBE->include_once as $INC_FILE) {
-	include_once $INC_FILE;
-}
+
 // Checking for first level external objects
 $SOBE->checkExtObj();
-// Repeat Include files! - if any files has been added by second-level extensions
-// @deprecated since 6.2 (see ExtensionManagementUtility::insertModuleFunction)
-foreach ($SOBE->include_once as $INC_FILE) {
-	include_once $INC_FILE;
-}
+
 // Checking second level external objects
 $SOBE->checkSubExtObj();
 $SOBE->main();
