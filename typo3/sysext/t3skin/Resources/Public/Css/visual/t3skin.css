@@ -12607,9 +12607,11 @@ Web > Page
 .t3-page-langMode {
   width: 100%;
 }
+.t3-gridContainer {
+  margin: 0px -12px;
+}
 .t3-page-columns {
   width: 100%;
-  margin: 0px -12px;
 }
 .t3-page-colHeader {
   background: #fff;
