@@ -100,14 +100,14 @@ class UploadExtensionFileController extends AbstractController {
 			$emConfiguration = $this->configurationUtility->getCurrentConfiguration('extensionmanager');
 			if (!$emConfiguration['automaticInstallation']['value']) {
 				$this->addFlashMessage(
-					htmlspecialchars($this->translate('extensionList.uploadFlashMessage.message', array($extensionData['extKey']))),
-					htmlspecialchars($this->translate('extensionList.uploadFlashMessage.title')),
+					$this->translate('extensionList.uploadFlashMessage.message', array($extensionData['extKey'])),
+					$this->translate('extensionList.uploadFlashMessage.title'),
 					FlashMessage::OK
 				);
 			} else {
 				if ($this->activateExtension($extensionData['extKey'])) {
 					$this->addFlashMessage(
-						htmlspecialchars($this->translate('extensionList.installedFlashMessage.message', array($extensionData['extKey']))),
+						$this->translate('extensionList.installedFlashMessage.message', array($extensionData['extKey'])),
 						'',
 						FlashMessage::OK
 					);
@@ -119,7 +119,7 @@ class UploadExtensionFileController extends AbstractController {
 			throw $exception;
 		} catch (\Exception $exception) {
 			$this->removeExtensionAndRestoreFromBackup($fileName);
-			$this->addFlashMessage(htmlspecialchars($exception->getMessage()), '', FlashMessage::ERROR);
+			$this->addFlashMessage($exception->getMessage(), '', FlashMessage::ERROR);
 		}
 		$this->redirect('index', 'List', NULL, array(self::TRIGGER_RefreshModuleMenu => TRUE));
 	}

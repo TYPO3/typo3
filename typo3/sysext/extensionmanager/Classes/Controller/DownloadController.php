@@ -168,7 +168,7 @@ class DownloadController extends AbstractController {
 			// FlashMessage that extension is installed
 			$this->addFlashMessage(
 				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('distribution.welcome.message', 'extensionmanager')
-					. ' <strong>' . $extension->getExtensionKey() . '</strong>',
+					. $extension->getExtensionKey(),
 				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('distribution.welcome.headline', 'extensionmanager')
 			);
 
@@ -206,11 +206,11 @@ class DownloadController extends AbstractController {
 				$this->managementService->downloadMainExtension($extension);
 			}
 			$this->addFlashMessage(
-				htmlspecialchars($this->translate('extensionList.updateFlashMessage.body', array($extensionKey))),
+				$this->translate('extensionList.updateFlashMessage.body', array($extensionKey)),
 				$this->translate('extensionList.updateFlashMessage.title')
 			);
 		} catch (\Exception $e) {
-			$this->addFlashMessage(htmlspecialchars($e->getMessage()), '', FlashMessage::ERROR);
+			$this->addFlashMessage($e->getMessage(), '', FlashMessage::ERROR);
 		}
 
 		return '';

@@ -120,8 +120,8 @@ class PermissionController extends ActionController {
 		if ($this->getBackendUser()->workspace != 0) {
 			// Adding section with the permission setting matrix:
 			$this->addFlashMessage(
-				LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:WorkspaceWarningText', 'beuser'),
-				LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:WorkspaceWarning', 'beuser'),
+				'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:WorkspaceWarningText',
+				'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:WorkspaceWarning',
 				FlashMessage::WARNING
 			);
 		}

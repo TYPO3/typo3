@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * View helper which renders the flash messages (if there are any) as an unsorted list.
  *
@@ -45,18 +47,34 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  * </output>
  *
  * <code title="TYPO3 core style">
- * <f:flashMessages renderMode="div" />
+ * <f:flashMessages />
  * </code>
  * <output>
- * <div class="typo3-messages">
- * <div class="alert alert-ok">
+ * <ul class="typo3-messages">
+ * <li class="alert alert-ok">
  * <h4>Some Message Header</h4>
- * <div class="alert-body">Some message body</div>
- * </div>
- * <div class="alert alert-notice">
- * <div class="alert-body">Some notice message without header</div>
- * </div>
- * </div>
+ * Some message body
+ * </li>
+ * <li class="alert alert-notice">
+ * Some notice message without header
+ * </li>
+ * </ul>
+ * </output>
+ * <code title="Output flash messages as a description list">
+ * <f:flashMessages as="flashMessages">
+ * 	<dl class="messages">
+ * 	<f:for each="{flashMessages}" as="flashMessage">
+ * 		<dt>{flashMessage.code}</dt>
+ * 		<dd>{flashMessage.message}</dd>
+ * 	</f:for>
+ * 	</dl>
+ * </f:flashMessages>
+ * </code>
+ * <output>
+ * <dl class="messages">
+ * 	<dt>1013</dt>
+ * 	<dd>Some Warning Message.</dd>
+ * </dl>
  * </output>
  *
  * @api
@@ -67,9 +85,9 @@ class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractT
 	const RENDER_MODE_DIV = 'div';
 
 	/**
-	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+	 * @var string
 	 */
-	protected $contentObject;
+	protected $tagName = 'ul';
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
@@ -82,7 +100,6 @@ class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractT
 	 */
 	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
-		$this->contentObject = $this->configurationManager->getContentObject();
 	}
 
 	/**
@@ -101,42 +118,52 @@ class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractT
 	 * from being cached.
 	 *
 	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::no_cache
-	 * @param string $renderMode one of the RENDER_MODE_* constants
+	 * @param string $renderMode @deprecated since TYPO3 CMS 7.3. If you need custom output, use <f:flashMessages as="messages"><f:for each="messages" as="message">...</f:for></f:flashMessages>
+	 * @param string $as The name of the current flashMessage variable for rendering inside
 	 * @return string rendered Flash Messages, if there are any.
 	 * @api
 	 */
-	public function render($renderMode = self::RENDER_MODE_UL) {
+	public function render($renderMode = NULL, $as = NULL) {
 		$flashMessages = $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
 		if ($flashMessages === NULL || count($flashMessages) === 0) {
 			return '';
 		}
-		if (isset($GLOBALS['TSFE']) && $this->contentObject->getUserObjectType() === \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::OBJECTTYPE_USER) {
-			$GLOBALS['TSFE']->no_cache = 1;
+		if ($renderMode !== NULL) {
+			GeneralUtility::deprecationLog('renderMode has been deprecated in TYPO3 CMS 7.3 and will be removed in TYPO3 CMS 8');
+			if ($renderMode === self::RENDER_MODE_DIV) {
+				$content = $this->renderDiv($flashMessages);
+			} else {
+				$content = $this->renderAsList($flashMessages);
+			}
+		} else {
+			if ($as === NULL) {
+				$content = $this->renderAsList($flashMessages);
+			} else {
+				$content = $this->renderFromTemplate($flashMessages, $as);
+			}
 		}
-		switch ($renderMode) {
-			case self::RENDER_MODE_UL:
-				return $this->renderUl($flashMessages);
-			case self::RENDER_MODE_DIV:
-				return $this->renderDiv($flashMessages);
-			default:
-				throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('Invalid render mode "' . $renderMode . '" passed to FlashMessageViewhelper', 1290697924);
-		}
+
+		return $content;
 	}
 
 	/**
 	 * Renders the flash messages as unordered list
 	 *
-	 * @param array $flashMessages array<\TYPO3\CMS\Core\Messaging\FlashMessage>
+	 * @param array $flashMessages \TYPO3\CMS\Core\Messaging\FlashMessage[]
 	 * @return string
 	 */
-	protected function renderUl(array $flashMessages) {
-		$this->tag->setTagName('ul');
-		if ($this->hasArgument('class')) {
-			$this->tag->addAttribute('class', $this->arguments['class']);
-		}
+	protected function renderAsList(array $flashMessages) {
+		$flashMessagesClass = $this->hasArgument('class') ? $this->arguments['class'] : 'typo3-messages';
 		$tagContent = '';
+		$this->tag->addAttribute('class', $flashMessagesClass);
+		/** @var $singleFlashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
 		foreach ($flashMessages as $singleFlashMessage) {
-			$tagContent .= '<li>' . htmlspecialchars($singleFlashMessage->getMessage()) . '</li>';
+			$severityClass = sprintf('alert %s', $singleFlashMessage->getClass());
+			$messageContent = htmlspecialchars($singleFlashMessage->getMessage());
+			if ($singleFlashMessage->getTitle() !== '') {
+				$messageContent = sprintf('<h4>%s</h4>', htmlspecialchars($singleFlashMessage->getTitle())) . $messageContent;
+			}
+			$tagContent .= sprintf('<li class="%s">%s</li>', htmlspecialchars($severityClass), $messageContent);
 		}
 		$this->tag->setContent($tagContent);
 		return $this->tag->render();
@@ -144,8 +171,28 @@ class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractT
 
 	/**
 	 * Renders the flash messages as nested divs
+	 * Defer the rendering of Flash Messages to the template. In this case,
+	 * the flash messages are stored in the template inside the variable specified
+	 * in "as".
 	 *
-	 * @param array $flashMessages array<\TYPO3\CMS\Core\Messaging\FlashMessage>
+	 * @param array $flashMessages \TYPO3\CMS\Core\Messaging\FlashMessage[]
+	 * @param string $as
+	 * @return string
+	 */
+	protected function renderFromTemplate(array $flashMessages, $as) {
+		$templateVariableContainer = $this->renderingContext->getTemplateVariableContainer();
+		$templateVariableContainer->add($as, $flashMessages);
+		$content = $this->renderChildren();
+		$templateVariableContainer->remove($as);
+
+		return $content;
+	}
+
+	/**
+	 * Renders the flash messages as nested divs
+	 *
+	 * @deprecated in 7.3 will be removed in 8.0
+	 * @param array $flashMessages \TYPO3\CMS\Core\Messaging\FlashMessage[]
 	 * @return string
 	 */
 	protected function renderDiv(array $flashMessages) {

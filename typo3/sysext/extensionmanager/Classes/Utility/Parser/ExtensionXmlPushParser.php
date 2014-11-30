@@ -76,11 +76,11 @@ class ExtensionXmlPushParser extends AbstractExtensionXmlParser {
 		xml_set_element_handler($this->objXml, 'startElement', 'endElement');
 		xml_set_character_data_handler($this->objXml, 'characterData');
 		if (!($fp = fopen($file, 'r'))) {
-			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(sprintf('Unable to open file resource %s.', htmlspecialchars($file)), 1342640689);
+			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(sprintf('Unable to open file resource %s.', $file), 1342640689);
 		}
 		while ($data = fread($fp, 4096)) {
 			if (!xml_parse($this->objXml, $data, feof($fp))) {
-				throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(sprintf('XML error %s in line %u of file resource %s.', xml_error_string(xml_get_error_code($this->objXml)), xml_get_current_line_number($this->objXml), htmlspecialchars($file)), 1342640703);
+				throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(sprintf('XML error %s in line %u of file resource %s.', xml_error_string(xml_get_error_code($this->objXml)), xml_get_current_line_number($this->objXml), $file), 1342640703);
 			}
 		}
 		xml_parser_free($this->objXml);

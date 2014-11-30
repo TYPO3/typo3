@@ -7,58 +7,85 @@
 <f:section name="iconButtons">
 	<div class="menuItems">
 		<span class="menuItem updateItem" data-action="updateActiveLanguages">
-			<f:be.buttons.icon icon="actions-system-extension-download" title="{f:translate(key:'button.downloadAll')}" />
+			<f:be.buttons.icon icon="actions-system-extension-download"
+							   title="{f:translate(key:'button.downloadAll')}"/>
 		</span>
 		<span class="menuItem loadingItem">
 			<span title="" class="t3-icon fa fa-spin fa-circle-o-notch">&nbsp;</span>
 		</span>
 		<span class="menuItem cancelItem" data-action="cancelLanguageUpdate">
-			&nbsp;<f:be.buttons.icon icon="actions-document-close" title="{f:translate(key:'button.cancel')}" />
+			&nbsp;<f:be.buttons.icon icon="actions-document-close" title="{f:translate(key:'button.cancel')}"/>
 		</span>
 	</div>
 </f:section>
 
 <f:section name="content">
-	<h1><f:translate key="header.languages" /></h1>
-	<f:flashMessages renderMode="div" />
+	<h1>
+		<f:translate key="header.languages"/>
+	</h1>
+	<f:flashMessages/>
 	<form class="form-inline">
 		<div class="form-group">
-			<f:form.textfield name="typo3-language-searchfield" placeholder="{f:translate(key:'table.search')}" id="typo3-language-searchfield" value="{search}" class="form-control t3js-language-searchfield" />
+			<f:form.textfield name="typo3-language-searchfield" placeholder="{f:translate(key:'table.search')}"
+							  id="typo3-language-searchfield" value="{search}"
+							  class="form-control t3js-language-searchfield"/>
 		</div>
 	</form>
 	<table id="typo3-language-list" class="t3-table t3-datatable">
 		<thead>
-			<tr>
-				<th title="{f:translate(key:'table.ad.title')}"><f:translate key="table.ad" /></th>
-				<th><f:translate key="table.language" /></th>
-				<th><f:translate key="table.locale" /></th>
-				<th><f:translate key="table.date" /></th>
-				<th><f:translate key="table.actions" /></th>
-			</tr>
+		<tr>
+			<th title="{f:translate(key:'table.ad.title')}">
+				<f:translate key="table.ad"/>
+			</th>
+			<th>
+				<f:translate key="table.language"/>
+			</th>
+			<th>
+				<f:translate key="table.locale"/>
+			</th>
+			<th>
+				<f:translate key="table.date"/>
+			</th>
+			<th>
+				<f:translate key="table.actions"/>
+			</th>
+		</tr>
 		</thead>
 		<tbody>
-			<f:for each="{languages}" as="language" iteration="iterator">
-				<tr id="language-{language.locale}" data-locale="{language.locale}" class="{f:if(condition: language.selected, then: 'enabled', else: 'disabled')} {f:if(condition: iterator.isEven, then: 'even', else: 'odd')}" role="row">
-					<td>
-						<a class="btn btn-default deactivateLanguageLink" data-action="deactivateLanguage" data-locale="{language.locale}" data-language="{language.label}" data-selected="{f:if(condition: language.selected, then: 'true', else: 'false')}"><span title="Deactivate" class="t3-icon fa fa-minus-square"> </span></a>
-						<a class="btn btn-default activateLanguageLink" data-action="activateLanguage" data-locale="{language.locale}" data-language="{language.label}" data-selected="{f:if(condition: language.selected, then: 'true', else: 'false')}"><span title="Activate" class="t3-icon fa fa-plus-circle"> </span></a>
-					</td>
-					<td class="sorting_1">{language.label}</td>
-					<td>{language.locale}</td>
-					<td class="lastUpdate">
-						<f:format.date date="{language.lastUpdate}" format="Y-m-d H:i" />
-					</td>
-					<td class="actions">
-						<a class="btn btn-default updateLanguageLink" data-action="updateLanguage" data-locale="{language.locale}" data-language="{language.label}" data-selected="true"><span title="Download" class="t3-icon fa fa-download"> </span></a>
-						<div class="progressBar">
-							<div class="progress">
-								<div class="progress-text"></div>
-								<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
-							</div>
+		<f:for each="{languages}" as="language" iteration="iterator">
+			<tr id="language-{language.locale}" data-locale="{language.locale}"
+				class="{f:if(condition: language.selected, then: 'enabled', else: 'disabled')} {f:if(condition: iterator.isEven, then: 'even', else: 'odd')}"
+				role="row">
+				<td>
+					<a class="btn btn-default deactivateLanguageLink" data-action="deactivateLanguage"
+					   data-locale="{language.locale}" data-language="{language.label}"
+					   data-selected="{f:if(condition: language.selected, then: 'true', else: 'false')}"><span
+						title="Deactivate" class="t3-icon fa fa-minus-square"> </span></a>
+					<a class="btn btn-default activateLanguageLink" data-action="activateLanguage"
+					   data-locale="{language.locale}" data-language="{language.label}"
+					   data-selected="{f:if(condition: language.selected, then: 'true', else: 'false')}"><span
+						title="Activate" class="t3-icon fa fa-plus-circle"> </span></a>
+				</td>
+				<td class="sorting_1">{language.label}</td>
+				<td>{language.locale}</td>
+				<td class="lastUpdate">
+					<f:format.date date="{language.lastUpdate}" format="Y-m-d H:i"/>
+				</td>
+				<td class="actions">
+					<a class="btn btn-default updateLanguageLink" data-action="updateLanguage"
+					   data-locale="{language.locale}" data-language="{language.label}" data-selected="true"><span
+						title="Download" class="t3-icon fa fa-download"> </span></a>
+
+					<div class="progressBar">
+						<div class="progress">
+							<div class="progress-text"></div>
+							<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0"
+								 aria-valuemax="100" style="width: 0;"></div>
 						</div>
-					</td>
-				</tr>
-			</f:for>
+					</div>
+				</td>
+			</tr>
+		</f:for>
 		</tbody>
 	</table>
 </f:section>

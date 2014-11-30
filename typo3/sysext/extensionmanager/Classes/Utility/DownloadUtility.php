@@ -67,7 +67,7 @@ class DownloadUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function setDownloadPath($downloadPath) {
 		if (!in_array($downloadPath, \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::returnAllowedInstallTypes())) {
-			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(htmlspecialchars($downloadPath) . ' not in allowed download paths', 1344766387);
+			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException($downloadPath . ' not in allowed download paths', 1344766387);
 		}
 		$this->downloadPath = $downloadPath;
 	}

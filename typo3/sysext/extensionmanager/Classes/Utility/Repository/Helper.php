@@ -139,10 +139,10 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 			$fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($remoteResource, 0, array(TYPO3_user_agent));
 			if ($fileContent !== FALSE) {
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($localResource, $fileContent) === FALSE) {
-					throw new ExtensionManagerException(sprintf('Could not write to file %s.', htmlspecialchars($localResource)), 1342635378);
+					throw new ExtensionManagerException(sprintf('Could not write to file %s.', $localResource), 1342635378);
 				}
 			} else {
-				throw new ExtensionManagerException(sprintf('Could not access remote resource %s.', htmlspecialchars($remoteResource)), 1342635425);
+				throw new ExtensionManagerException(sprintf('Could not access remote resource %s.', $remoteResource), 1342635425);
 			}
 		}
 	}

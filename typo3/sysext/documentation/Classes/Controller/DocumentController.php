@@ -149,23 +149,17 @@ class DocumentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 		$language = $this->languageUtility->getDocumentationLanguage();
 		try {
 			$result = $this->documentationService->fetchNearestDocument($url, $key, $version ?: 'latest', $language);
-
 			if ($result) {
-				/** @var FlashMessage $message */
-				$message = GeneralUtility::makeInstance(
-					FlashMessage::class,
+				$this->addFlashMessage(
 					\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
 						'downloadSucceeded',
 						'documentation'
 					),
 					'',
-					\TYPO3\CMS\Core\Messaging\AbstractMessage::OK,
-					TRUE
+					FlashMessage::OK
 				);
 			} else {
-				/** @var FlashMessage $message */
-				$message = GeneralUtility::makeInstance(
-					FlashMessage::class,
+				$this->addFlashMessage(
 					\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
 						'downloadFailedNoArchive',
 						'documentation'
@@ -174,16 +168,11 @@ class DocumentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 						'downloadFailed',
 						'documentation'
 					),
-					FlashMessage::ERROR,
-					TRUE
+					FlashMessage::ERROR
 				);
-
 			}
-			$this->controllerContext->getFlashMessageQueue()->enqueue($message);
 		} catch (\Exception $e) {
-			/** @var FlashMessage $message */
-			$message = GeneralUtility::makeInstance(
-				FlashMessage::class,
+			$this->addFlashMessage(
 				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
 					'downloadFailedDetails',
 					'documentation',
@@ -197,10 +186,8 @@ class DocumentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 					'downloadFailed',
 					'documentation'
 				),
-				FlashMessage::ERROR,
-				TRUE
+				FlashMessage::ERROR
 			);
-			$this->controllerContext->getFlashMessageQueue()->enqueue($message);
 		}
 		$this->redirect('download');
 	}

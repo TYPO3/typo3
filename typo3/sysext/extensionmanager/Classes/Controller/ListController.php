@@ -132,7 +132,7 @@ class ListController extends AbstractController {
 					$repositoryHelper->updateExtList();
 				}
 			} catch (ExtensionManagerException $e) {
-				$this->addFlashMessage(htmlspecialchars($e->getMessage()), $e->getCode(), FlashMessage::ERROR);
+				$this->addFlashMessage($e->getMessage(), $e->getCode(), FlashMessage::ERROR);
 			}
 
 			$officialDistributions = $this->extensionRepository->findAllOfficialDistributions();

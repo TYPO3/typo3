@@ -58,7 +58,7 @@ class ExtensionXmlPullParser extends AbstractExtensionXmlParser {
 			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Unable to create XML parser.', 1342640540);
 		}
 		if ($this->objXml->open($file, 'utf-8') === FALSE) {
-			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(sprintf('Unable to open file resource %s.', htmlspecialchars($file)));
+			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(sprintf('Unable to open file resource %s.', $file));
 		}
 		while ($this->objXml->read()) {
 			if ($this->objXml->nodeType == \XMLReader::ELEMENT) {
