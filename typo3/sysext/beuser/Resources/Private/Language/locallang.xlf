@@ -135,6 +135,9 @@
 			<trans-unit id="compare" xml:space="preserve">
 				<source>Compare</source>
 			</trans-unit>
+			<trans-unit id="terminateSessionSuccess" xml:space="preserve">
+				<source>Session successfully terminated.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

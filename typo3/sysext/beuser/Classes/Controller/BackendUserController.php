@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Beuser\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Backend module user administration controller
@@ -186,8 +187,7 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
 			'ses_userid = "' . (int)$backendUser->getUid() . '" AND ses_id = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($sessionId, 'be_sessions') . ' LIMIT 1'
 		);
 		if ($GLOBALS['TYPO3_DB']->sql_affected_rows() == 1) {
-			$message = 'Session successfully terminated.';
-			$this->controllerContext->getFlashMessageQueue()->enqueue($message, '', \TYPO3\CMS\Core\Messaging\FlashMessage::OK);
+			$this->addFlashMessage(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:terminateSessionSuccess', 'beuser'));
 		}
 		$this->forward('online');
 	}
@@ -222,5 +222,4 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
 			\TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectUrl);
 		}
 	}
-
 }
