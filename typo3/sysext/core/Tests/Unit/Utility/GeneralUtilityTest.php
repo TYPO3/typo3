@@ -3437,19 +3437,18 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		vfsStream::setup('test', NULL, $structure);
 		$vfsUrl = vfsStream::url('test');
 
-		if (version_compare(PHP_VERSION, '5.4.0', '>=')) {
-			// set random values for mtime
-			foreach ($structure as $structureLevel1Key => $structureLevel1Content) {
-				$newMtime = rand();
-				if (is_array($structureLevel1Content)) {
-					foreach ($structureLevel1Content as $structureLevel2Key => $structureLevel2Content) {
-						touch($vfsUrl . '/' . $structureLevel1Key . '/' . $structureLevel2Key, $newMtime);
-					}
-				} else {
-					touch($vfsUrl . '/' . $structureLevel1Key, $newMtime);
+		// set random values for mtime
+		foreach ($structure as $structureLevel1Key => $structureLevel1Content) {
+			$newMtime = rand();
+			if (is_array($structureLevel1Content)) {
+				foreach ($structureLevel1Content as $structureLevel2Key => $structureLevel2Content) {
+					touch($vfsUrl . '/' . $structureLevel1Key . '/' . $structureLevel2Key, $newMtime);
 				}
+			} else {
+				touch($vfsUrl . '/' . $structureLevel1Key, $newMtime);
 			}
 		}
+
 		return $vfsUrl;
 	}
 
@@ -3528,10 +3527,6 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getFilesInDirCanOrderByMtime() {
-		if (version_compare(PHP_VERSION, '5.4.0', '<')) {
-			$this->markTestSkipped('touch() does not work with vfsStream in PHP 5.3 and below.');
-		}
-
 		$vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
 		$files = array();
 		$iterator = new \DirectoryIterator($vfsStreamUrl);

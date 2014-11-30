@@ -186,9 +186,6 @@ class ApcBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function flushByTagRemovesCacheEntriesWithSpecifiedTag() {
-		if (version_compare(phpversion(), '5.4.0', '<')) {
-			$this->markTestSkipped('This test is not reliable with PHP version below 5.4.0');
-		}
 		$backend = $this->setUpBackend();
 		$data = 'some data' . microtime();
 		$backend->set('BackendAPCTest1', $data, array('UnitTestTag%test', 'UnitTestTag%boring'));

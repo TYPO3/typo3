@@ -85,7 +85,6 @@ class Check {
 		$statusArray[] = $this->checkMaxExecutionTime();
 		$statusArray[] = $this->checkDisableFunctions();
 		$statusArray[] = $this->checkDownloadsPossible();
-		$statusArray[] = $this->checkSafeMode();
 		$statusArray[] = $this->checkDocRoot();
 		$statusArray[] = $this->checkOpenBaseDir();
 		$statusArray[] = $this->checkXdebugMaxNestingLevel();
@@ -415,34 +414,6 @@ class Check {
 			$status->setMessage(
 				'Either enable PHP runtime setting "allow_url_fopen"' . LF . 'or enable curl by setting [SYS][curlUse] accordingly.'
 			);
-		}
-		return $status;
-	}
-
-	/**
-	 * Check if safe mode is enabled
-	 *
-	 * @return Status\StatusInterface
-	 */
-	protected function checkSafeMode() {
-		$safeModeEnabled = FALSE;
-		if (version_compare(phpversion(), '5.4', '<')) {
-			$safeModeEnabled = filter_var(
-				ini_get('safe_mode'),
-				FILTER_VALIDATE_BOOLEAN,
-				array(FILTER_REQUIRE_SCALAR, FILTER_NULL_ON_FAILURE)
-			);
-		}
-		if ($safeModeEnabled) {
-			$status = new Status\ErrorStatus();
-			$status->setTitle('PHP safe mode on');
-			$status->setMessage(
-				'PHP safe_mode enabled. This is unsupported by TYPO3 CMS, it must be turned off:' . LF .
-				'safe_mode=Off'
-			);
-		} else {
-			$status = new Status\OkStatus();
-			$status->setTitle('PHP safe mode off');
 		}
 		return $status;
 	}
