@@ -16,7 +16,28 @@ Tab menu
 - - - - - - - - - - - - - - - - - - - - - */
 
 .nav-tabs {
-	background-color: @gray-light;
+	background-color: darken(@nav-tabs-active-link-bg, 5%);
+
+	> li {
+		> a {
+			margin-right: 3px;
+
+			&:hover {
+				background: @nav-tabs-link-hover-bg;
+			}
+		}
+
+		&.active > a {
+			&,
+			&:focus {
+				background: @nav-tabs-active-link-bg;
+			}
+
+			&:hover {
+				background: @nav-tabs-active-link-hover-bg;
+			}
+		}
+	}
 }
 
 
@@ -24,9 +45,10 @@ div.typo3-dyntabmenu-divs {
 	padding: floor(@line-height-computed * 1.5) @line-height-computed;
 	margin-bottom: 1em;
 
-	border-right: 1px solid @gray-light;
-	border-bottom: 1px solid @gray-light;
-	border-left: 1px solid @gray-light;
+	background: @nav-tabs-active-link-bg;
+	border-right: 1px solid @nav-tabs-border-color;
+	border-bottom: 1px solid @nav-tabs-border-color;
+	border-left: 1px solid @nav-tabs-border-color;
 
 	p.c-descr {
 		background: #e7dba8;

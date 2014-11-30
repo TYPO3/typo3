@@ -414,21 +414,26 @@
 @nav-open-link-hover-color:                 #fff;
 
 //== Tabs
-@nav-tabs-border-color:                     @gray-light;
+@nav-tabs-border-color:                     #ccc;
 
+@nav-tabs-link-hover-bg:                    darken(@nav-tabs-active-link-bg, 10%);
 @nav-tabs-link-hover-border-color:          @gray-light;
+
+@nav-tabs-active-link-bg:                   #fafafa;
 
 @nav-tabs-active-link-hover-bg:             @body-bg;
 @nav-tabs-active-link-hover-color:          #000;
-@nav-tabs-active-link-hover-border-color:   #ddd;
 
-@nav-tabs-justified-link-border-color:            #ddd;
-@nav-tabs-justified-active-link-border-color:     @body-bg;
+@nav-tabs-active-link-hover-border-color:   #ccc;
+@nav-tabs-active-link-hover-bg:             darken(@nav-tabs-active-link-bg, 5%);
 
+@nav-tabs-justified-link-border-color:            #ccc;
+@nav-tabs-justified-active-link-border-color:     @nav-tabs-border-color;
 //== Pills
 @nav-pills-border-radius:                   @border-radius-base;
 @nav-pills-active-link-hover-bg:            @component-active-bg;
 @nav-pills-active-link-hover-color:         @component-active-color;
+
 
 
 //== Pagination

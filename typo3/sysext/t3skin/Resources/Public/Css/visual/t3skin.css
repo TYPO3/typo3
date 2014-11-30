@@ -2800,7 +2800,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   max-width: none;
 }
 .nav-tabs {
-  border-bottom: 1px solid #d7d7d7;
+  border-bottom: 1px solid #cccccc;
 }
 .nav-tabs > li {
   float: left;
@@ -2813,14 +2813,14 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   border-radius: 2px 2px 0 0;
 }
 .nav-tabs > li > a:hover {
-  border-color: #d7d7d7 #d7d7d7 #d7d7d7;
+  border-color: #d7d7d7 #d7d7d7 #cccccc;
 }
 .nav-tabs > li.active > a,
 .nav-tabs > li.active > a:hover,
 .nav-tabs > li.active > a:focus {
   color: #000000;
-  background-color: #ffffff;
-  border: 1px solid #dddddd;
+  background-color: #ededed;
+  border: 1px solid #cccccc;
   border-bottom-color: transparent;
   cursor: default;
 }
@@ -2855,17 +2855,17 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav-tabs.nav-justified > .active > a,
 .nav-tabs.nav-justified > .active > a:hover,
 .nav-tabs.nav-justified > .active > a:focus {
-  border: 1px solid #dddddd;
+  border: 1px solid #cccccc;
 }
 @media (min-width: 768px) {
   .nav-tabs.nav-justified > li > a {
-    border-bottom: 1px solid #dddddd;
+    border-bottom: 1px solid #cccccc;
     border-radius: 2px 2px 0 0;
   }
   .nav-tabs.nav-justified > .active > a,
   .nav-tabs.nav-justified > .active > a:hover,
   .nav-tabs.nav-justified > .active > a:focus {
-    border-bottom-color: #ffffff;
+    border-bottom-color: #cccccc;
   }
 }
 .nav-pills > li {
@@ -2923,17 +2923,17 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav-tabs-justified > .active > a,
 .nav-tabs-justified > .active > a:hover,
 .nav-tabs-justified > .active > a:focus {
-  border: 1px solid #dddddd;
+  border: 1px solid #cccccc;
 }
 @media (min-width: 768px) {
   .nav-tabs-justified > li > a {
-    border-bottom: 1px solid #dddddd;
+    border-bottom: 1px solid #cccccc;
     border-radius: 2px 2px 0 0;
   }
   .nav-tabs-justified > .active > a,
   .nav-tabs-justified > .active > a:hover,
   .nav-tabs-justified > .active > a:focus {
-    border-bottom-color: #ffffff;
+    border-bottom-color: #cccccc;
   }
 }
 .tab-content > .tab-pane {
@@ -7863,14 +7863,28 @@ span.spinner {
 Tab menu
 - - - - - - - - - - - - - - - - - - - - - */
 .nav-tabs {
-  background-color: #d7d7d7;
+  background-color: #ededed;
+}
+.nav-tabs > li > a {
+  margin-right: 3px;
+}
+.nav-tabs > li > a:hover {
+  background: #e1e1e1;
+}
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:focus {
+  background: #fafafa;
+}
+.nav-tabs > li.active > a:hover {
+  background: #ededed;
 }
 div.typo3-dyntabmenu-divs {
   padding: 27px 18px;
   margin-bottom: 1em;
-  border-right: 1px solid #d7d7d7;
-  border-bottom: 1px solid #d7d7d7;
-  border-left: 1px solid #d7d7d7;
+  background: #fafafa;
+  border-right: 1px solid #cccccc;
+  border-bottom: 1px solid #cccccc;
+  border-left: 1px solid #cccccc;
 }
 div.typo3-dyntabmenu-divs p.c-descr {
   background: #e7dba8;
@@ -9245,7 +9259,7 @@ TCEforms
   background: none;
 }
 .typo3-TCEforms .c-tablayer > table > tbody > tr > td.palette-header {
-  border-top: 1px solid #d7d7d7;
+  border-top: 1px solid #cccccc;
   padding: 27px 18px 4px 18px;
 }
 .typo3-TCEforms .c-tablayer > table > tbody > tr > td.palette-header h3 {
