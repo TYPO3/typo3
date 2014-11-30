@@ -153,6 +153,10 @@
 .x-tip .x-tip-bd-right {
 	background-image:url(images/qtip/tip-sprite.gif);
 }
+button.x-btn-text:hover {
+	background-color: inherit;
+	color: inherit;
+}
 
 /* Toolbars */
 
