@@ -159,10 +159,10 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return string formatted title and description
 	 */
 	public function description($title, $description = '') {
+		$content = '<h1>' . nl2br(htmlspecialchars($title)) . '</h1>';
 		if (!empty($description)) {
-			$description = '<p class="description">' . nl2br(htmlspecialchars($description)) . '</p><br />';
+			$content .= '<p class="description">' . nl2br(htmlspecialchars($description)) . '</p>';
 		}
-		$content = $this->doc->section($title, $description, FALSE, TRUE);
 		return $content;
 	}
 
@@ -238,7 +238,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				$active = (string)$this->MOD_SETTINGS['function'] == $item['uid'] ? ' active-task' : '';
 				// Main menu: Render additional syntax to sort tasks
 				if ($mainMenu) {
-					$dragIcon = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/move.gif', 'width="16" height="16" hspace="2"') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.move', TRUE) . '" alt="" />';
+					$dragIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-move', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.move', TRUE)));
 					$section = '<div class="down">&nbsp;</div>
 								<div class="drag">' . $dragIcon . '</div>';
 					$backgroundClass = 't3-row-header ';

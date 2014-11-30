@@ -72,6 +72,7 @@ body#ext-taskcenter-task-index-php h3 {
 
 #taskcenter-menu .down {
 	background: url(../../../../t3skin/icons/gfx/pil2down.gif) no-repeat 5px 7px;
+	color: #fff;
 	height: 23px;
 	float: left;
 	width: 25px;
@@ -83,9 +84,11 @@ body#ext-taskcenter-task-index-php h3 {
 }
 
 #taskcenter-menu .drag {
+	color: #fff;
 	float: right;
 	height: 23px;
 	width: 24px;
+	padding: 3px;
 }
 
 #taskcenter-menu .drag img {
@@ -100,6 +103,9 @@ body#ext-taskcenter-task-index-php h3 {
 	display: block;
 }
 
+#taskcenter-menu .t3-row-header {
+	padding: 0;
+}
 #taskcenter-menu .t3-row-header a {
 	float: none;
 }

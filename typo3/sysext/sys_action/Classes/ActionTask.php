@@ -200,8 +200,11 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 		if ($GLOBALS['BE_USER']->isAdmin()) {
 			$returnUrl = rawurlencode($this->moduleUrl);
 			$link = GeneralUtility::getIndpEnv('TYPO3_REQUEST_DIR') . $GLOBALS['BACK_PATH'] . 'alt_doc.php?returnUrl=' . $returnUrl . '&edit[sys_action][0]=new';
-			$content .= '<br />
-						<a href="' . $link . '" title="' . $GLOBALS['LANG']->getLL('new-sys_action') . '">' . '<img class="icon"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/new_record.gif') . ' title="' . $GLOBALS['LANG']->getLL('new-sys_action') . '" alt="" /> ' . $GLOBALS['LANG']->getLL('new-sys_action') . '</a>';
+			$content .= '<p>' .
+				'<a href="' . $link . '" title="' . $GLOBALS['LANG']->getLL('new-sys_action') . '">' .
+				\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new', array('class' => 'icon', 'title' => $GLOBALS['LANG']->getLL('new-sys_action'))) .
+				$GLOBALS['LANG']->getLL('new-sys_action') .
+				'</a></p>';
 		}
 		return $content;
 	}
