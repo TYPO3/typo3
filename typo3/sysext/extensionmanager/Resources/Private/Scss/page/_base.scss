@@ -147,6 +147,15 @@
 	color: #0c08ff;
 }
 
+.typo3-extension-manager form#extensionUploadForm {
+	margin-bottom: 0;
+
+	div.control-group:last-child {
+		margin-bottom: 0;
+	}
+}
+
+
 .typo3-extension-list .inactive {
 	color: rgb(170, 170, 170);
 }

@@ -205,6 +205,11 @@
 .typo3-extension-manager .outdated {
   color: #0c08ff; }
 
+.typo3-extension-manager form#extensionUploadForm {
+  margin-bottom: 0; }
+  .typo3-extension-manager form#extensionUploadForm div.control-group:last-child {
+    margin-bottom: 0; }
+
 .typo3-extension-list .inactive {
   color: #aaaaaa; }
 
