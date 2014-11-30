@@ -6459,7 +6459,6 @@ button.close {
  */
 .t3-row-header {
   background-color: #666;
-  color: #fff;
 }
 .t3-row-header a,
 .t3-row-header a:hover {
@@ -6481,6 +6480,7 @@ table.t3-table-info td {
 }
 .t3-row-header span.t3-icon {
   margin-right: 3px;
+  color: #212424;
 }
 .typo3-tstemplate-ceditor-control {
   margin-right: 6px;
