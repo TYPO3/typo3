@@ -424,11 +424,6 @@ class t3lib_SpriteManager extends \TYPO3\CMS\Backend\Sprite\SpriteManager {}
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class bigDoc extends \TYPO3\CMS\Backend\Template\BigDocumentTemplate {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
 class template extends \TYPO3\CMS\Backend\Template\DocumentTemplate {}
 
 /**

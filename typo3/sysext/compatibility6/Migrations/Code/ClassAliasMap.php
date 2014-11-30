@@ -83,7 +83,6 @@ return array(
 	't3lib_spritemanager_SpriteGenerator' => 'TYPO3\\CMS\\Backend\\Sprite\\SpriteGenerator',
 	't3lib_spritemanager_SpriteIconGenerator' => 'TYPO3\\CMS\\Backend\\Sprite\\SpriteIconGeneratorInterface',
 	't3lib_SpriteManager' => 'TYPO3\\CMS\\Backend\\Sprite\\SpriteManager',
-	'bigDoc' => 'TYPO3\\CMS\\Backend\\Template\\BigDocumentTemplate',
 	'template' => 'TYPO3\\CMS\\Backend\\Template\\DocumentTemplate',
 	'frontendDoc' => 'TYPO3\\CMS\\Backend\\Template\\FrontendDocumentTemplate',
 	't3lib_tree_ExtDirect_AbstractExtJsTree' => 'TYPO3\\CMS\\Backend\\Tree\\AbstractExtJsTree',
